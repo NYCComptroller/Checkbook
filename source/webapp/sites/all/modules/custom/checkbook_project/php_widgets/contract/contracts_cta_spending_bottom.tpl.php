@@ -137,7 +137,8 @@ foreach ($vendor_contract_summary as $vendor => $vendor_summary) {
     if(_getRequestParamValue("doctype")=="CT1" || _getRequestParamValue("doctype")=="CTA1"){
         
         $querySubVendorStatusInPIP = "SELECT
-                                        c.aprv_sta_id, c.aprv_sta_value AS sub_vendor_status_pip
+                                        c.aprv_sta_id, 
+                                        c.aprv_sta_value AS sub_vendor_status_pip
                                     FROM sub_agreement_snapshot a
                                     LEFT JOIN subcontract_approval_status c ON c.aprv_sta_id = COALESCE(a.aprv_sta,6)
                                     WHERE a.latest_flag = 'Y'
@@ -147,7 +148,7 @@ foreach ($vendor_contract_summary as $vendor => $vendor_summary) {
 
         $results5 = _checkbook_project_execute_sql_by_data_source($querySubVendorStatusInPIP,_get_current_datasource());
         $result->data = $results5;
-        $subVendorStatusInPIP = $result->data[0]['sub_vendor_status_pip'];
+        $subVendorStatusInPIP = ($result->data[0]['aprv_sta_id'] == 4 && $vendor_summary['check_amount'] == 0) ? "No Subcontract Payments Submitted" : $result->data[0]['sub_vendor_status_pip'];
 
         if(count($sub_contract_reference[$vendor]) > 1 && $index_spending == 0){
             $viewAll = "<a class='subContractViewAll'>Hide All<<</a>";
@@ -190,7 +191,7 @@ foreach ($vendor_contract_summary as $vendor => $vendor_summary) {
 
         $results6 = _checkbook_project_execute_sql_by_data_source($querySubContractStatusInPIP,_get_current_datasource());
         $result->data = $results6;
-        $subContractStatusInPIP = $result->data[0]['sub_contract_status_pip'];
+        $subContractStatusInPIP = ($result->data[0]['aprv_sta_id'] == 4 && $vendor_summary['check_amount'] == 0) ? "No Subcontract Payments Submitted" : $result->data[0]['sub_contract_status_pip'];
 
         $ref_id = $reference_id;
         $open = $index_sub_contract_reference == 0 ? '' : 'open';
