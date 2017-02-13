@@ -25,10 +25,10 @@
 "widgetUpdateJSONConfig":"
 	
 	$series_data = array();
-        $legend_order = array(1 => 'Contracts With No Response by Prime',
-                        4 => 'Contracts With Response Not Required by Prime',
-                        2 => 'Reported Contracts With Sub Vendors',
-                        3 => 'Reported Contracts Without Sub Vendors'
+        $legend_order = array(1 => 'Contracts with No Response by Prime',
+                        4 => 'Contracts with Response Not Required by Prime',
+                        2 => 'Reported Contracts with Sub Vendors',
+                        3 => 'Reported Contracts without Sub Vendors'
                         );
 	$index = 0;
         $total_contracts = 0;
@@ -93,10 +93,10 @@
 tooltipformatter^^'formatter' :
 function() {
     var statusName = new Array();
-    statusName['Contracts With No Response by Prime'] = 'Contracts With No Response<br/>by Prime';
-    statusName['Contracts With Response Not Required by Prime'] = 'Contracts With Response<br/>Not Required by Prime';
-    statusName['Reported Contracts With Sub Vendors'] = 'Reported Contracts With<br/>Sub Vendors';
-    statusName['Reported Contracts Without Sub Vendors'] = 'Reported Contracts Without<br/>Sub Vendors';
+    statusName['Contracts with No Response by Prime'] = 'Contracts with No Response<br/>by Prime';
+    statusName['Contracts with Response Not Required by Prime'] = 'Contracts with Response<br/>Not Required by Prime';
+    statusName['Reported Contracts with Sub Vendors'] = 'Reported Contracts with<br/>Sub Vendors';
+    statusName['Reported Contracts without Sub Vendors'] = 'Reported Contracts without<br/>Sub Vendors';
     return statusName[this.point.name] + ': <b>'+ (this.point.y).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +'</b>';
 }
 </function>
