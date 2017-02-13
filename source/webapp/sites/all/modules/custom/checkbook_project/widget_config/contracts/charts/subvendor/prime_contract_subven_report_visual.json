@@ -26,7 +26,7 @@
 	
 	$series_data = array();
         $legend_order = array(1 => 'Contracts With No Response by Prime',
-                        4 => 'Reported Contracts With No Data Required',
+                        4 => 'Contracts With Response Not Required by Prime',
                         2 => 'Reported Contracts With Sub Vendors',
                         3 => 'Reported Contracts Without Sub Vendors'
                         );
@@ -94,7 +94,7 @@ tooltipformatter^^'formatter' :
 function() {
     var statusName = new Array();
     statusName['Contracts With No Response by Prime'] = 'Contracts With No Response<br/>by Prime';
-    statusName['Reported Contracts With No Data Required'] = 'Reported Contracts With<br/>No Data Required';
+    statusName['Contracts With Response Not Required by Prime'] = 'Contracts With Response<br/>Not Required by Prime';
     statusName['Reported Contracts With Sub Vendors'] = 'Reported Contracts With<br/>Sub Vendors';
     statusName['Reported Contracts Without Sub Vendors'] = 'Reported Contracts Without<br/>Sub Vendors';
     return statusName[this.point.name] + ': <b>'+ (this.point.y).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +'</b>';
