@@ -25,19 +25,25 @@
 "widgetUpdateJSONConfig":"
 	
 	$series_data = array();
-        $legend = array(1 =>'Contracts With No Response by Prime',
+        $legend_order = array(1 => 'Contracts With No Response by Prime',
+                        4 => 'Reported Contracts With No Data Required',
                         2 => 'Reported Contracts With Sub Vendors',
-                        3 => 'Reported Contracts Without Sub Vendors',
-                        4 => 'Reported Contracts With No Data Required');
+                        3 => 'Reported Contracts Without Sub Vendors'
+                        );
 	$index = 0;
         $total_contracts = 0;
-        
+       
         if(count($node->data) > 0){
-            foreach($node->data as $row){	 								 						
-                $series[$index]->y = (int)$row['total_contracts'];
-                $series[$index]->name = $legend[$row['scntrc_status']];
-                $index += 1;
-                $total_contracts += (int)$row['total_contracts'];
+            foreach($node->data as $row){
+                $data[$row['scntrc_status']] = (int)$row['total_contracts'];
+            }
+            foreach($legend_order as $scntrc_status_id => $scntrc_status_name){
+                if($data[$scntrc_status_id] > 0){
+                    $series[$index]->y = $data[$scntrc_status_id];
+                    $series[$index]->name = $scntrc_status_name;
+                    $index += 1;
+                    $total_contracts += $data[$scntrc_status_id];
+                }
             }
             $node->widgetConfig->chartConfig->series[0]->data = $series;
         }else{
@@ -53,7 +59,7 @@
             "plotBorderWidth": null,
             "plotShadow": false
         },
-        "colors": ["#78b5e9", "#f79d60", "#8dea84"],
+        "colors": ["#78b5e9", "#9B85DE","#f79d60", "#8dea84"],
         "tooltip": {
             "function":"tooltipformatter"
         },
@@ -88,6 +94,7 @@ tooltipformatter^^'formatter' :
 function() {
     var statusName = new Array();
     statusName['Contracts With No Response by Prime'] = 'Contracts With No Response<br/>by Prime';
+    statusName['Reported Contracts With No Data Required'] = 'Reported Contracts With<br/>No Data Required';
     statusName['Reported Contracts With Sub Vendors'] = 'Reported Contracts With<br/>Sub Vendors';
     statusName['Reported Contracts Without Sub Vendors'] = 'Reported Contracts Without<br/>Sub Vendors';
     return statusName[this.point.name] + ': <b>'+ (this.point.y).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +'</b>';
