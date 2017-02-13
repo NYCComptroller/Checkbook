@@ -25,26 +25,25 @@
 "widgetUpdateJSONConfig":"
 	
 	$series_data = array();
-        foreach($node->data as $row){
-            $total_contracts = $row['total_contracts'];
-            if($row['no_response_status'] > 0|| $row['reported_sub_count'] > 0 || $row['reported_no_sub_count'] > 0){
-                $series_data[] = array('status' => 'Contracts With No Response by Prime', 'count' => $row['no_response_status']);
-                $series_data[] = array('status' => 'Reported Contracts With Sub Vendors', 'count' => $row['reported_sub_count']);
-                $series_data[] = array('status' => 'Reported Contracts Without Sub Vendors', 'count' => $row['reported_no_sub_count']);
-            }
-        }
+        $legend = array(1 =>'Contracts With No Response by Prime',
+                        2 => 'Reported Contracts With Sub Vendors',
+                        3 => 'Reported Contracts Without Sub Vendors',
+                        4 => 'Reported Contracts With No Data Required');
 	$index = 0;
-        if(count($series_data) > 0){
-            foreach($series_data as $row){	 								 						
-                $series_new[$index]->y = (int)$row['count'];
-                $series_new[$index]->name = $row['status'];
+        $total_contracts = 0;
+        
+        if(count($node->data) > 0){
+            foreach($node->data as $row){	 								 						
+                $series[$index]->y = (int)$row['total_contracts'];
+                $series[$index]->name = $legend[$row['scntrc_status']];
                 $index += 1;
+                $total_contracts += (int)$row['total_contracts'];
             }
-            $node->widgetConfig->chartConfig->series[0]->data = $series_new;
+            $node->widgetConfig->chartConfig->series[0]->data = $series;
         }else{
             $node->data = null;
         }
-	    $node->widgetConfig->chartTitle =  MappingUtil::getCurrenEhtnicityName() . ' Sub Vendor Reporting by Prime Contracts';
+        $node->widgetConfig->chartTitle =  MappingUtil::getCurrenEhtnicityName() . ' Sub Vendor Reporting by Prime Contracts';
         $node->widgetConfig->chartSubTitle =  'Total Number of Contracts: '.number_format($total_contracts);
 ",
 "chartConfig": {

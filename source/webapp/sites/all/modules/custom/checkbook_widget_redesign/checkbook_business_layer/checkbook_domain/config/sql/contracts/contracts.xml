@@ -1019,11 +1019,11 @@
         <param name="cindustry" />
         <sql>
             SELECT
-                COUNT(DISTINCT l1.contract_number) as total_contracts,
-                SUM(CASE WHEN l1.scntrc_status = 1 THEN 1 ELSE 0 END) AS no_response_status,
-                SUM(CASE WHEN l1.scntrc_status = 2 THEN 1 ELSE 0 END) AS reported_sub_count,
-                SUM(CASE WHEN l1.scntrc_status = 3 THEN 1 ELSE 0 END) AS reported_no_sub_count
+                l1.scntrc_status,
+                ref_status.scntrc_status_name,
+                COUNT(DISTINCT l1.contract_number) as total_contracts
             FROM aggregateon_mwbe_contracts_cumulative_spending l1
+            JOIN ref_subcontract_status ref_status on ref_status.scntrc_status = l1.scntrc_status
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="l1.fiscal_year_id" paramName="year" />
@@ -1038,6 +1038,7 @@
                     <exp op="IN" dbField="l1.minority_type_id" paramName="mwbe" />
                 </exp>
             </where>
+            GROUP BY ref_status.scntrc_status_name, l1.scntrc_status
         </sql>
     </statement>
     <!--- Sub Vendor Level - Sub Vendor Reporting by Prime Contracts Pie Chart-->
@@ -1055,10 +1056,9 @@
         <param name="cindustry" />
         <sql>
             SELECT
-                COUNT(DISTINCT l1.contract_number) as total_contracts,
-                SUM(CASE WHEN l1.scntrc_status = 1 THEN 1 ELSE 0 END) AS no_response_status,
-                SUM(CASE WHEN l1.scntrc_status = 2 THEN 1 ELSE 0 END) AS reported_sub_count,
-                SUM(CASE WHEN l1.scntrc_status = 3 THEN 1 ELSE 0 END) AS reported_no_sub_count
+                l1.scntrc_status,
+                ref_status.scntrc_status_name,
+                COUNT(DISTINCT l1.contract_number) as total_contracts
             FROM aggregateon_mwbe_contracts_cumulative_spending l1
             JOIN
             (
@@ -1070,6 +1070,7 @@
                 </exp>
             </where>
             ) sd ON l1.contract_number = sd.contract_number AND l1.vendor_id = sd.prime_vendor_id
+            JOIN ref_subcontract_status ref_status on ref_status.scntrc_status = l1.scntrc_status
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="l1.fiscal_year_id" paramName="year" />
@@ -1084,6 +1085,7 @@
                     <exp op="IN" dbField="l1.minority_type_id" paramName="mwbe" />
                 </exp>
             </where>
+            GROUP BY ref_status.scntrc_status_name, l1.scntrc_status
         </sql>
     </statement>
 </statements>
