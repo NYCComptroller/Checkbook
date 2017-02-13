@@ -233,13 +233,15 @@ function _checkbook_advanced_search_get_subcontract_approval_status_and_id($attr
             $statuses = array('Select Status');
         }
         foreach ($values as $value) {
-            if($attributes){
-                $statuses[$value['aprv_sta_id']] = array('title' => $value['aprv_sta_value']);
-            }else{
-                if(strlen($value['aprv_sta_value']) > 20)
-                    $statuses[$value['aprv_sta_id']] = substr($value['aprv_sta_value'], 0, 20) . '...';
-                else
-                    $statuses[$value['aprv_sta_id']] = $value['aprv_sta_value'];
+            if ($value['aprv_sta_id'] != "7") {
+                if ($attributes) {
+                    $statuses[$value['aprv_sta_id']] = array('title' => $value['aprv_sta_value']);
+                } else {
+                    if (strlen($value['aprv_sta_value']) > 20)
+                        $statuses[$value['aprv_sta_id']] = substr($value['aprv_sta_value'], 0, 20) . '...';
+                    else
+                        $statuses[$value['aprv_sta_id']] = $value['aprv_sta_value'];
+                }
             }
         }
         return $statuses;
