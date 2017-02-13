@@ -5977,12 +5977,13 @@ function _sub_vendor_status_in_pip() {
         $menu_options_attributes = array($title => array('title' => $title));
 
         foreach ($data as $row) {
-            $option = $row['aprv_sta_value'];
-            //Menu options
-            $menu_options[$row['aprv_sta_id']] = (strlen($option) > 20) ? substr($option, 0, 20) . '...' : $option;
-            //Menu option titles
-            $menu_options_attributes[$row['aprv_sta_id']] = array('title' => $option);
-
+            if ($row['aprv_sta_id'] != "7") {
+                $option = $row['aprv_sta_value'];
+                //Menu options
+                $menu_options[$row['aprv_sta_id']] = (strlen($option) > 20) ? substr($option, 0, 20) . '...' : $option;
+                //Menu option titles
+                $menu_options_attributes[$row['aprv_sta_id']] = array('title' => $option);
+            }
         }
         $results['options'] = $menu_options;
         $results['options_attributes'] = $menu_options_attributes;
