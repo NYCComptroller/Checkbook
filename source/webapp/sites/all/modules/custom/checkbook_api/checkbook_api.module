@@ -512,5 +512,5 @@ function get_public_ip_address()
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
     $data = curl_exec($ch);
     curl_close($ch);
-    return $data;
+    return trim($data);
 }
