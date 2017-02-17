@@ -43,6 +43,7 @@ class CheckbookAPIRepository {
             country_code,
             continent,
             continent_code,
+            host_name,
             created_date
             FROM {checkbook_api}
             WHERE api_id = :api_id", array(':api_id' => $api_id));
