@@ -27,7 +27,7 @@ if(_checkbook_check_isEDCPage()){
     $contract_amount = $node->data[0]['current_amount_sum'];
     $spending_amount = $node->data[1]['check_amount_sum'];
 }else{
-    $contract_amount = $node->data[0]['current_amount_sum'];
+    $contract_amount = $node->data[0]['current_amount_sum']
     $spending_amount = $node->data[2]['check_amount_sum'];
 }
 
