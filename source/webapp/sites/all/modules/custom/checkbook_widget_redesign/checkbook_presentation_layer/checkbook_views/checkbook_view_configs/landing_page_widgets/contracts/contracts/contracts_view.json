@@ -8,13 +8,8 @@
     "table_columns":[
         {"labelAlias":"contract_id","column":"contract_number","derivedColumn":"contract_id_link"},
         {"labelAlias":"contract_purpose","column":"contract_purpose","tooltip":20},
-<<<<<<< HEAD:source/webapp/sites/all/modules/custom/checkbook_widget_redesign/checkbook_presentation_layer/checkbook_views/checkbook_view_configs/landing_page_widgets/contracts/contracts/contracts_view.json
         {"labelAlias":"contract_agency","column":"agency_name","tooltip":30,"derivedColumn":"agency_name_link"},
         {"labelAlias":"prime_vendor","column":"vendor_name","tooltip":30,"derivedColumn":"prime_vendor_link"},
-=======
-        {"labelAlias":"contract_agency","column":"agency_name","tooltip":28,"derivedColumn":"agency_name_link"},
-        {"labelAlias":"prime_vendor","column":"vendor_name","tooltip":28,"derivedColumn":"vendor_name_link"},
->>>>>>> release/checkbook_4.13.0:source/webapp/sites/all/modules/custom/checkbook_project/widget_controller_config/contracts/landing_page_widgets/contracts_view.json
         {"labelAlias":"contract_includes_sub","column":"contract_subvendor_status"},
         {"labelAlias":"current_amount","column":"current_amount_sum","format":"dollar"},
         {"labelAlias":"original_amount","column":"original_amount_sum","format":"dollar"},
@@ -25,14 +20,14 @@
     "dataTableOptions":{
         "aoColumns":[
             {"bSortable":false,"sClass":"text"},
-            {"bSortable":false,"sWidth":"120px","sClass":"text"},
-            {"bSortable":false,"sWidth":"120px","sClass":"text"},
-            {"bSortable":false,"sWidth":"120px","sClass":"text"},
-            {"bSortable":false,"sWidth":"150px","sClass":"number-center"},
+            {"bSortable":false,"sWidth":"130px","sClass":"text"},
+            {"bSortable":false,"sWidth":"150px","sClass":"text"},
+            {"bSortable":false,"sWidth":"150px","sClass":"text"},
+            {"bSortable":false,"sWidth":"136px","sClass":"number-center"},
             {"bSortable":true,"sWidth":"74px","sClass":"number","asSorting":["desc","asc"]},
             {"bSortable":true,"sWidth":"74px","sClass":"number","asSorting":["desc" ,"asc"]},
-            {"bSortable":true,"sWidth":"80px","sClass":"number","asSorting":["desc","asc"]},
-            {"bSortable":false,"sWidth":"8px"}
+            {"bSortable":true,"sWidth":"75px","sClass":"number","asSorting":["desc","asc"]},
+            {"bSortable":false,"sWidth":"5px"}
         ],
         "bServerSide":true,
         "bFilter":false,

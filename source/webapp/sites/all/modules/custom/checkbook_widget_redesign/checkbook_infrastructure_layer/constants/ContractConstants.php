@@ -50,10 +50,6 @@ abstract class ContractStatusParameter {
     const PENDING = "P";
 
     static public function getCurrent() {
-<<<<<<< HEAD
-=======
-        $database = _getRequestParamValue('datasource');
->>>>>>> release/checkbook_4.13.0
         return RequestUtilities::getRequestParamValue(UrlParameter::CONTRACT_STATUS);
     }
 }
@@ -75,11 +71,7 @@ abstract class ContractType {
     }
 }
 
-<<<<<<< HEAD
 abstract class subVendorContractsByPrimeVendor {
-=======
-abstract class noStatusExpenseContracts {
->>>>>>> release/checkbook_4.13.0
 
     const EXPENSE = "expense";
 
@@ -89,11 +81,7 @@ abstract class noStatusExpenseContracts {
         $category = NULL;
 
         if((preg_match('/contracts_landing/',$urlPath) || preg_match('/contracts_landing/',$ajaxPath)) &&
-<<<<<<< HEAD
             (preg_match('/bottom_slider/',$urlPath) || preg_match('/bottom_slider/',$ajaxPath))) {
-=======
-            !(preg_match('/status/',$urlPath) || preg_match('/status/',$ajaxPath))) {
->>>>>>> release/checkbook_4.13.0
             $category = self::EXPENSE;
         }
 
