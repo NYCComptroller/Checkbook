@@ -64,8 +64,12 @@ $current_dashboard = _getRequestParamValue("dashboard");
 if($contract_amount == 0){
   //Check if there are any Active contracts when the registered amount is zero to enable 'Contracts' domain
   if($node->data[14]['total_contracts'] > 0){
-     $contracts_url = (!in_array($current_dashboard, array('sp','ss', 'ms'))) ? str_replace('/status/A','',RequestUtil::getTopNavURL("contracts")) : RequestUtil::getTopNavURL("contracts");
-     $contracts_link = l('<span class="nav-title">Contracts</span><br>'.custom_number_formatter_format(0, 1,'$'),$contracts_url,$options); 
+    if(in_array($current_dashboard, array('sp','ss', 'ms'))){
+        $contracts_url = ContractURLHelper::prepareSubvendorContractsSliderFilter('contracts_landing', $dashboard);
+    }else{
+        $contracts_url =  RequestUtil::getTopNavURL("contracts");
+    }
+    $contracts_link = l('<span class="nav-title">Contracts</span><br>'.custom_number_formatter_format(0, 1,'$'),$contracts_url,$options); 
   }else{
     $contracts_link =  l('<span class="nav-title">Contracts</span><br>'. custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
   }
@@ -187,18 +191,6 @@ if($mwbe_amount  == 0 && $mwbe_amount_active_inc == 0){
     $mwbe_link = l('<div><div class="top-navigation-amount"><span class="nav-title">' . RequestUtil::getDashboardTopNavTitle("mwbe") . '</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') . '</div></div>','',$options_disabled);	
 }else{	
     $mwbe_link = l('<div><div class="top-navigation-amount"><span class="nav-title">' . RequestUtil::getDashboardTopNavTitle("mwbe") . '</span><br>&nbsp;'. custom_number_formatter_format($mwbe_amount ,1,'$') . '</div></div>',$mwbe_active_domain_link,$options);	
-}
-
-
-if($svendor_amount  == 0 && $svendor_amount_active_inc == 0){
-    if($svendor_amount_active_inc == 0 && preg_match('/contract/',$_GET['q']) && !_checkbook_check_isEDCPage()){
-        $svendor_active_domain_link = str_replace('/status/A', '', $svendor_active_domain_link);
-        $subvendors_link = l('<div><div class="top-navigation-amount"><span class="nav-title">' .RequestUtil::getDashboardTopNavTitle("subvendor")  .'</span><br>&nbsp;'. custom_number_formatter_format($svendor_amount ,1,'$') . '</div></div>',$svendor_active_domain_link ,$options);	
-    }else{
-        $subvendors_link = l('<div><div class="top-navigation-amount"><span class="nav-title">' .RequestUtil::getDashboardTopNavTitle("subvendor")  .'</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') . '</div></div>','',$options_disabled);			
-    }
-}else{
-    $subvendors_link = l('<div><div class="top-navigation-amount"><span class="nav-title">' .RequestUtil::getDashboardTopNavTitle("subvendor")  .'</span><br>&nbsp;'. custom_number_formatter_format($svendor_amount ,1,'$') . '</div></div>',$svendor_active_domain_link ,$options);	
 }
 
 $indicator_left = true;
