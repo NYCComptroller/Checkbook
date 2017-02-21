@@ -226,7 +226,45 @@ function _checkbook_advanced_search_get_subcontract_approval_status_and_id($attr
     try {
         $dataController = data_controller_get_instance();
         $values = $dataController->queryDataset('checkbook:subcontract_approval_status', array('aprv_sta_id', 'aprv_sta_value'), NULL, 'sort_order', 0, 10, NULL);
-        
+
+        if($attributes){
+            $statuses = array('title' => 'Select Status');
+        }else{
+            $statuses = array('Select Status');
+        }
+        foreach ($values as $value) {
+            if ($value['aprv_sta_id'] != "7") {
+                if ($attributes) {
+                    $statuses[$value['aprv_sta_id']] = array('title' => $value['aprv_sta_value']);
+                } else {
+                    if (strlen($value['aprv_sta_value']) > 20)
+                        $statuses[$value['aprv_sta_id']] = substr($value['aprv_sta_value'], 0, 20) . '...';
+                    else
+                        $statuses[$value['aprv_sta_id']] = $value['aprv_sta_value'];
+                }
+            }
+        }
+        return $statuses;
+    } catch (Exception $e) {
+        log_error("Error getting data from controller: \n" . $e->getMessage());
+        return;
+    }
+}
+
+
+
+/**
+ * Gets the scntrc_status_name, scntrc_status(id), and display_flag using the data controller
+ * @return array
+ */
+function _checkbook_advanced_search_get_contract_includes_subvendors_status($attributes = NULL)
+{
+    try {
+        $dataController = data_controller_get_instance();
+        $values = $dataController->queryDataset('checkbook:ref_subcontract_status',
+            array('scntrc_status', 'scntrc_status_name', 'display_flag'),
+            NULL, 'sort_order', 0, 10, NULL);
+
         if($attributes){
             $statuses = array('title' => 'Select Status');
         }else{
@@ -234,12 +272,14 @@ function _checkbook_advanced_search_get_subcontract_approval_status_and_id($attr
         }
         foreach ($values as $value) {
             if($attributes){
-                $statuses[$value['aprv_sta_id']] = array('title' => $value['aprv_sta_value']);
+                $statuses[$value['scntrc_status']] = array('title' => $value['scntrc_status_name']);
             }else{
-                if(strlen($value['aprv_sta_value']) > 20)
-                    $statuses[$value['aprv_sta_id']] = substr($value['aprv_sta_value'], 0, 20) . '...';
-                else
-                    $statuses[$value['aprv_sta_id']] = $value['aprv_sta_value'];
+                if($value['display_flag'] == 1) {
+                    if(strlen($value['scntrc_status_name']) > 20)
+                        $statuses[$value['scntrc_status']] = substr($value['scntrc_status_name'], 0, 20) . '...';
+                    else
+                        $statuses[$value['scntrc_status']] = $value['scntrc_status_name'];
+                }
             }
         }
         return $statuses;
@@ -529,7 +569,7 @@ function _checkbook_advanced_search_get_expensetype_and_id($data_source = 'check
     try {
         $dataController = data_controller_get_instance();
         $data = $dataController->queryDataset($data_source.':spending_category', array(
-        'spending_category_id', 'spending_category_name'
+            'spending_category_id', 'spending_category_name'
         ), NULL, 'display_order');
         $results = array('' => "Total Spending");
         foreach ($data as $row) {
@@ -700,7 +740,7 @@ function _checkbook_advanced_search_add_payroll_range_filter_param($from,$to,$ur
         $parameters[] = 2;
     if(($from >= 51000 && $from <= 100000 ) || ($to >= 51000 && $to <= 100000 ))
         $parameters[] = 3;
-        if(($from >= 101000 && $from <= 250000 ) || ($to >= 101000 && $to <= 250000 ))
+    if(($from >= 101000 && $from <= 250000 ) || ($to >= 101000 && $to <= 250000 ))
         $parameters[] = 4;
     if($to > 250000 || $from > 250000)
         $parameters[] = 5;

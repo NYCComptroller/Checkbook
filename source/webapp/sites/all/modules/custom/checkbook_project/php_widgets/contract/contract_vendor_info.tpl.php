@@ -174,13 +174,9 @@ if (_getRequestParamValue("datasource") != "checkbook_oge") {
     $res->data = $results3;
     $total_subvendor_count = $res->data[0]['sub_vendor_count'];
     
-    $querySubVendorStatus = "SELECT CASE
-                                WHEN scntrc_status = 1 THEN 'NO DATA ENTERED'
-                                WHEN scntrc_status = 2 THEN 'YES'
-                                WHEN scntrc_status = 3 THEN 'NO'
-                                ELSE 'Prior Year Exclusions'
-                            END AS contract_subvendor_status
-                            FROM all_agreement_transactions
+    $querySubVendorStatus = "SELECT ref_status.scntrc_status_name  AS contract_subvendor_status
+                            FROM all_agreement_transactions l1
+                            JOIN ref_subcontract_status ref_status on ref_status.scntrc_status = l1.scntrc_status
                             WHERE contract_number = '". $contract_number . "' AND latest_flag = 'Y' LIMIT 1";
     
     $results6 = _checkbook_project_execute_sql_by_data_source($querySubVendorStatus,_get_current_datasource());
@@ -197,7 +193,7 @@ if (_getRequestParamValue("datasource") != "checkbook_oge") {
     </h4>
     <?php
     if(_getRequestParamValue("doctype")=="CTA1" || _getRequestParamValue("doctype")=="CT1"){
-        echo '<ul class="left"><li><span class="gi-list-item">Contract Includes Sub Vendors: </span>'.$subVendorStatus.'</li>';
+        echo '<ul class="left"><li><span class="gi-list-item">Contract Includes Sub Vendors: </span>'.strtoupper($subVendorStatus).'</li>';
         echo  '<li><span class="gi-list-item">Total Number of Sub Vendors: </span>'.$total_subvendor_count .'</li></ul>';
     }
      ?>
