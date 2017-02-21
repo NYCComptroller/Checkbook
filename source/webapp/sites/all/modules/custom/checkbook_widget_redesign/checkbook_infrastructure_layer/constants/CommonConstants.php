@@ -83,12 +83,12 @@ abstract class Dashboard {
     static public function getCurrent() {
         $domain = CheckbookDomain::getCurrent();
         $year = RequestUtilities::getRequestParamValue(UrlParameter::YEAR);
-        
+
         if($domain == CheckbookDomain::REVENUE){
             if($year >= RequestUtilities::getCurrentYearID())
-                return self::CURRENT; 
-            else 
-                return self::PREVIOUS; 
+                return self::CURRENT;
+            else
+                return self::PREVIOUS;
         }else{
             $dashboard = DashboardParameter::getCurrent();
             switch($dashboard) {

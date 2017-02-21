@@ -830,7 +830,7 @@ namespace { //global
             return str_replace('__', '/', $string);
         }
 
-        static public function expenseContractsFooterUrl() {
+        static public function expenseContractsFooterUrl($subvendor_widget = false) {
             $subvendor = _getRequestParamValue('subvendor');
             $vendor = _getRequestParamValue('vendor');
             $dashboard = _getRequestParamValue('dashboard');
@@ -851,10 +851,10 @@ namespace { //global
             $mwbe_param = "";
             //pmwbe & smwbe
             if(isset($status) && isset($mwbe)) {
-                $mwbe_param = self::showSubVendorData() ? '/smwbe/'.$mwbe : '/pmwbe/'.$mwbe;
+                $mwbe_param = self::showSubVendorData() || $subvendor_widget ? '/smwbe/'.$mwbe : '/pmwbe/'.$mwbe;
             }
             if(isset($industry)) {
-                $industry_param = self::showSubVendorData() ? '/scindustry/'.$industry : '/pcindustry/'.$industry;
+                $industry_param = self::showSubVendorData() || $subvendor_widget ? '/scindustry/'.$industry : '/pcindustry/'.$industry;
             }
 
             $url = '/panel_html/'. $detailsPageURL .'/contract/transactions/contcat/expense'

@@ -24,7 +24,11 @@ core = 7.x
 
 files[] = data_access/SqlUtil.php
 
+files[] = constants/commonConstants.php
+files[] = constants/ContractConstants.php
 files[] = data_access/constants/SqlOperator.php
+
+files[] = utilities/RequestUtilities.php
 
 files[] = data_access/factory/SqlModelFactory.php
 files[] = data_access/models/ISqlModel.php

@@ -1465,6 +1465,9 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
     $contract_type_options = _contract_type_options();
     $award_method_options = _award_method_options();
     $sub_vendor_status_in_pip_options = _sub_vendor_status_in_pip();
+    $contract_includes_sub_vendors_options = _get_contract_includes_subvendors_data();
+    $contract_includes_sub_vendors_attributes = _get_contract_includes_subvendors_data('attributes');
+
 
     switch ($data_source) {
         case 'checkbook_oge':
@@ -1792,12 +1795,8 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
             $form['filter']['contract_includes_sub_vendors_id'] = array(
                 '#type' => 'select',
                 '#title' => t('Contract Includes <br />Sub Vendors:'),
-                '#options' => array(
-                    0 => 'Select Status',
-                    2 => 'Yes',
-                    3 => 'No',
-                    1 => 'No Data Entered',
-                ),
+                '#options' => $contract_includes_sub_vendors_options,
+                '#option_attributes' => $contract_includes_sub_vendors_attributes,
                 '#attributes' => array('class' => array('watch')),
                 '#prefix' => '<div class="datafield scntrc_status">',
                 '#suffix' => '</div>',
@@ -1935,6 +1934,8 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                             array('select[name="contract_includes_sub_vendors_id"]' => array('value' => '1')),
                             'or',
                             array('select[name="contract_includes_sub_vendors_id"]' => array('value' => '3')),
+                            'or',
+                            array('select[name="contract_includes_sub_vendors_id"]' => array('value' => '4'))
                         ),
                     ),
                 )
@@ -4735,7 +4736,15 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
                 '#default_value' => $dept,
                 '#id' => 'edit-dept',
                 '#name' => 'dept',
-                '#validated' => true
+                '#validated' => true,
+                '#ajax' => array(
+                    'callback' => 'checkbook_datafeeds_dept_ajax',
+                    'wrapper' => 'expense-category',
+                    'progress' => array(
+                        'message' => NULL,
+                        'type' => 'throbber',
+                    ),
+                ),
             );
             $form['filter']['expense_category'] = array(
                 '#type' => 'select',
@@ -5960,7 +5969,7 @@ function _sub_vendor_status_in_pip() {
     try {
         $dataController = data_controller_get_instance();
         $data = $dataController->queryDataset('checkbook:subcontract_approval_status', 
-                                                array('aprv_sta_id', 'aprv_sta_value'), 
+                                                array('aprv_sta_id', 'aprv_sta_value'),
                                                 NULL, 'sort_order', 0, 10, NULL);
 
         $menu_options = array('0' => 'Select Status');
@@ -5968,11 +5977,13 @@ function _sub_vendor_status_in_pip() {
         $menu_options_attributes = array($title => array('title' => $title));
 
         foreach ($data as $row) {
-            $option = $row['aprv_sta_value'];
-            //Menu options
-            $menu_options[$row['aprv_sta_id']] = (strlen($option) > 20) ? substr($option, 0, 20) . '...' : $option;
-            //Menu option titles
-            $menu_options_attributes[$row['aprv_sta_id']] = array('title' => $option);
+            if ($row['aprv_sta_id'] != "7") {
+                $option = $row['aprv_sta_value'];
+                //Menu options
+                $menu_options[$row['aprv_sta_id']] = (strlen($option) > 20) ? substr($option, 0, 20) . '...' : $option;
+                //Menu option titles
+                $menu_options_attributes[$row['aprv_sta_id']] = array('title' => $option);
+            }
         }
         $results['options'] = $menu_options;
         $results['options_attributes'] = $menu_options_attributes;
