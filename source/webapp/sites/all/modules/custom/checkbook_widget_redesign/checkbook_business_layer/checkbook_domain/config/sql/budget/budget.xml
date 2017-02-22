@@ -4,6 +4,7 @@
         <param name="agency" type="int" />
         <param name="expcategory" type="int" />
         <param name="dept" type="int" />
+        <param name="filter_type" type="string" />
         <sql>
         SELECT s0.budget_fiscal_year_id,
             s0.department_id,
@@ -23,6 +24,7 @@
                 <exp op="=" dbField="s0.budget_fiscal_year_id" paramName="year" />
                 <exp op="=" dbField="s0.agency_id " paramName="agency" />
                 <exp op="=" dbField="s0.department_id " paramName="dept" />
+                <exp op="=" dbField="s0.filter_type" paramName="filter_type" />
             </exp>
         </where>
         GROUP BY s0.budget_fiscal_year_id, s0.department_id, d.department_name
