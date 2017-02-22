@@ -27,7 +27,7 @@ class BudgetWidgetService extends WidgetSqlService implements IWidgetService {
 
     public function adjustParameters($parameters, $urlPath) {
         //$type_filter is used for 'Percent Difference' widgets
-        $type_filter = NULL;
+        /*$type_filter = NULL;
         $agency = RequestUtilities::getRequestParamValue('agency');
         $dept = RequestUtilities::getRequestParamValue('dept');
         $expcategory = RequestUtilities::getRequestParamValue('expcategory');
@@ -35,15 +35,13 @@ class BudgetWidgetService extends WidgetSqlService implements IWidgetService {
         if($agency){ 
             $type_filter .= 'A';
         }
-        if($dept){
-            $type_filter .= 'D';
-        }
+        $type_filter .= 'D';
         
         if($expcategory){
             $type_filter .= 'O';
         }
 
-        $parameters['filter_type'] = $type_filter;
+        $parameters['filter_type'] = $type_filter;*/
         return $parameters;
     }
 
