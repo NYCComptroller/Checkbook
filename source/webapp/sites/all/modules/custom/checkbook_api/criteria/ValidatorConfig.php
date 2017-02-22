@@ -26,5 +26,5 @@ class ValidatorConfig {
   static $domains = array('Budget','Revenue','Spending','Payroll','Contracts','Spending_OGE','Contracts_OGE');
   static $response_formats = array('xml','csv');
   static $specialChars = "!\"#$%&'()*+,–./:;<=>@?[\\]^{}|~`";
-  static $allow_special_chars_params = array('payee_name','budget_name','vendor_name','prime_vendor','purpose','minority_type_id','mwbe_category','title','title_exact','apt_pin','expense_category');
+  static $allow_special_chars_params = array('payee_name','budget_name','vendor_name','prime_vendor','purpose','minority_type_id','mwbe_category','title','title_exact','apt_pin');
 }
