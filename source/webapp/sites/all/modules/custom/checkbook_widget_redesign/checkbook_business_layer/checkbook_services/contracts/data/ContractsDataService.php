@@ -131,6 +131,13 @@ class ContractsDataService extends DataService implements IContractsDataService 
             ->setLimit($limit)
             ->setOrderBy($orderBy);
     }
+    function GetPrimeContractSubVenReportingSubLevel($parameters, $limit = null, $orderBy = null) {
+        return $this->setDataFunction(__FUNCTION__)
+            ->setSqlConfigPath(SqlConfigPath::CitywideContracts)
+            ->setParameters($parameters)
+            ->setLimit($limit)
+            ->setOrderBy($orderBy);
+    }
 
     function GetContractsSubvendorContractsByPrime($parameters, $limit = null, $orderBy = null) {
         return $this->setDataFunction(__FUNCTION__)
@@ -140,14 +147,28 @@ class ContractsDataService extends DataService implements IContractsDataService 
             ->setOrderBy($orderBy);
     }
 
-    function GetCountContractsReportedWithSubVendors($parameters) {
+    function GetContractsSubvendorContractsByAgency($parameters, $limit = null, $orderBy = null) {
         return $this->setDataFunction(__FUNCTION__)
+            ->setSqlConfigPath(SqlConfigPath::CitywideContracts)
+            ->setParameters($parameters)
+            ->setLimit($limit)
+            ->setOrderBy($orderBy);
+    }
+
+    function GetCountContractsReportedWithSubVendors($parameters) {
+        $dataFunction = isset($parameters['subvendor']) && $parameters['subvendor'] != null
+            ? "GetCountContractsReportedWithSubVendorsSubLevel"
+            : "GetCountContractsReportedWithSubVendors";
+        return $this->setDataFunction($dataFunction)
             ->setSqlConfigPath(SqlConfigPath::CitywideContracts)
             ->setParameters($parameters);
     }
 
     function GetCountContractsReported($parameters) {
-        return $this->setDataFunction(__FUNCTION__)
+        $dataFunction = isset($parameters['subvendor']) && $parameters['subvendor'] != null
+            ? "GetCountContractsReportedSubLevel"
+            : "GetCountContractsReported";
+        return $this->setDataFunction($dataFunction)
             ->setSqlConfigPath(SqlConfigPath::CitywideContracts)
             ->setParameters($parameters);
     }
