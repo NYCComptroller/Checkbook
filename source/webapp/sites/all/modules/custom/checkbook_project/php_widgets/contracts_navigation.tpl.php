@@ -316,7 +316,3 @@ if(_checkbook_check_isEDCPage()) {
         </table>
     </div>
 </div>
-
-
-
-//test
