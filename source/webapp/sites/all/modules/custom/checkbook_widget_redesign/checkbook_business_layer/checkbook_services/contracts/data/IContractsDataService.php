@@ -24,7 +24,9 @@ interface IContractsDataService {
     /* Sub Vendor */
     function GetContractsSubvendorStatusByPrime($parameters, $limit = null, $orderBy = null);
     function GetContractsSubvendorReporting($parameters, $limit = null, $orderBy = null);
+    function GetPrimeContractSubVenReportingSubLevel($parameters, $limit = null, $orderBy = null);
     function GetContractsSubvendorContractsByPrime($parameters, $limit = null, $orderBy = null);
+    function GetContractsSubvendorContractsByAgency($parameters, $limit = null, $orderBy = null);
     /* Count Queries */
     function GetCountContractsReportedWithSubVendors($parameters);
     function GetCountContractsReported($parameters);

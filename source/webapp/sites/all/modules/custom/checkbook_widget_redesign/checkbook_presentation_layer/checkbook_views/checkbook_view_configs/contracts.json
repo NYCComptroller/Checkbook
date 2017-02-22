@@ -712,16 +712,26 @@
                 }
             }
         },
-        "expense":{
+        "active":{
             "landing_page_widgets":{
                 "subcontract_status_by_prime_contract":{
-                   "widget_config":"subcontract_status_by_prime_contract_view"
+                    "widget_config":"subcontract_status_by_prime_contract_view"
                 },
                 "prime_contract_subven_report":{
-                   "widget_config":"prime_contract_subven_report_view"
+                    "widget_config":"prime_contract_subven_report_view",
+                    "visibility_parameters":["-subvendor"]
+                },
+                "prime_contract_subven_report_sub_level":{
+                    "widget_config":"prime_contract_subven_report_sub_level_view",
+                    "visibility_parameters":["subvendor"]
                 },
                 "subvendor_contracts_by_prime":{
-                   "widget_config":"subvendor_contracts_by_prime_view"
+                    "widget_config":"subvendor_contracts_by_prime_view",
+                    "visibility_parameters":["-subvendor"]
+                },
+                "subvendor_contracts_by_prime_sub_level":{
+                    "widget_config":"subvendor_contracts_by_prime_sub_level_view",
+                    "visibility_parameters":["subvendor"]
                 }
             }
         }
@@ -811,16 +821,26 @@
                 }
             }
         },
-        "expense":{
+        "active":{
             "landing_page_widgets":{
                 "subcontract_status_by_prime_contract":{
-                   "widget_config":"subcontract_status_by_prime_contract_view"
+                    "widget_config":"subcontract_status_by_prime_contract_view"
                 },
                 "prime_contract_subven_report":{
-                   "widget_config":"prime_contract_subven_report_view"
+                    "widget_config":"prime_contract_subven_report_view",
+                    "visibility_parameters":["-subvendor"]
+                },
+                "prime_contract_subven_report_sub_level":{
+                    "widget_config":"prime_contract_subven_report_sub_level_view",
+                    "visibility_parameters":["subvendor"]
                 },
                 "subvendor_contracts_by_prime":{
-                   "widget_config":"subvendor_contracts_by_prime_view"
+                    "widget_config":"subvendor_contracts_by_prime_view",
+                    "visibility_parameters":["-subvendor"]
+                },
+                "subvendor_contracts_by_prime_sub_level":{
+                    "widget_config":"subvendor_contracts_by_prime_sub_level_view",
+                    "visibility_parameters":["subvendor"]
                 }
             }
         }
@@ -910,17 +930,25 @@
                 }
             }
         },
-        "expense":{
-            "landing_page_widgets":{
-                "subcontract_status_by_prime_contract":{
-                   "widget_config":"subcontract_status_by_prime_contract_view"
-                },
-                "prime_contract_subven_report":{
-                   "widget_config":"prime_contract_subven_report_view"
-                },
-                "subvendor_contracts_by_prime":{
-                   "widget_config":"subvendor_contracts_by_prime_view"
-                }
+        "active":{
+            "subcontract_status_by_prime_contract":{
+                "widget_config":"subcontract_status_by_prime_contract_view"
+            },
+            "prime_contract_subven_report":{
+                "widget_config":"prime_contract_subven_report_view",
+                "visibility_parameters":["-subvendor"]
+            },
+            "prime_contract_subven_report_sub_level":{
+                "widget_config":"prime_contract_subven_report_sub_level_view",
+                "visibility_parameters":["subvendor"]
+            },
+            "subvendor_contracts_by_prime":{
+                "widget_config":"subvendor_contracts_by_prime_view",
+                "visibility_parameters":["-subvendor"]
+            },
+            "subvendor_contracts_by_prime_sub_level":{
+                "widget_config":"subvendor_contracts_by_prime_sub_level_view",
+                "visibility_parameters":["subvendor"]
             }
         }
     }

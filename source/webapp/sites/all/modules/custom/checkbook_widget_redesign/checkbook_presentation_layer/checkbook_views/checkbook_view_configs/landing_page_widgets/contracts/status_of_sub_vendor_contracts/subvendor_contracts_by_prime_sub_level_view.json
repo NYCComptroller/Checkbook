@@ -1,13 +1,13 @@
 {
     "serviceName":"ContractsWidgetService",
-    "dataFunc":"GetContractsSubvendorContractsByAgency",
+    "dataFunc":"GetContractsSubvendorContractsByPrime",
     "countFunc":"GetCountContractsReportedWithSubVendors",
     "defaultParameters":{"doctype":"'CTA1'~'CT1'~'CT2'","status_flag":"A"},
     "table_title":"Summary of Sub Vendor Contracts by Prime Contracts",
     "headerSubTitle":"Reported Prime Contracts with Sub Vendors",
     "footerUrl":"",
     "table_columns":[
-        {"labelAlias":"contract_agency","column":"agency_name","tooltip":40,"derivedColumn":"agency_landing_link"},
+        {"labelAlias":"prime_vendor","column":"vendor_name","tooltip":"40","derivedColumn":"prime_vendor_link"},
         {"labelAlias":"contracts_reported_with_subvendors","column":"reported_contracts_with_subvendors","format":"number"},
         {"labelAlias":"no_of_subvendor_contracts_submitted","column":"no_of_subvendors_submitted","format":"number"},
         {"labelAlias":"acco_reviewing","column":"acco_reviewing","format":"number"},
