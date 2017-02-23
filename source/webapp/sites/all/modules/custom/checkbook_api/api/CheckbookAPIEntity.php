@@ -26,7 +26,6 @@ class CheckbookAPIEntity {
     public $country_code;
     public $continent;
     public $continent_code;
-    public $host_name;
     public $created_date;
 
     function __construct(Array $properties=array())
