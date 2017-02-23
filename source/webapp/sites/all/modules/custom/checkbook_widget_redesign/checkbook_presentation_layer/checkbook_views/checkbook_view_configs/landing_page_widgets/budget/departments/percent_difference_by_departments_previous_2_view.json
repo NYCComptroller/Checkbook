@@ -6,6 +6,7 @@
     "statementName": "GetPercentDifferenceByDepartments"
   },
   "serviceName": "BudgetWidgetService",
+  "defaultParameters":{"filter_type":"D"},
   "headerTitle": "Departments by Percent Difference",
   "headerSubTitle": "Departments",
   "table_columns": [

@@ -26,22 +26,25 @@ class BudgetWidgetService extends WidgetSqlService implements IWidgetService {
     }
 
     public function adjustParameters($parameters, $urlPath) {
-        //$type_filter is used for 'Percent Difference' widgets
-        /*$type_filter = NULL;
-        $agency = RequestUtilities::getRequestParamValue('agency');
-        $dept = RequestUtilities::getRequestParamValue('dept');
-        $expcategory = RequestUtilities::getRequestParamValue('expcategory');
+        //'filter_type' is used for 'Percent Difference' widgets
+        if(isset($parameters['filter_type'])){
+            $type_filter = array();
+            $agency = RequestUtilities::getRequestParamValue('agency');
+            $dept = RequestUtilities::getRequestParamValue('dept');
+            $expcategory = RequestUtilities::getRequestParamValue('expcategory');
 
-        if($agency){ 
-            $type_filter .= 'A';
+            if($agency || $parameters['filter_type'] == 'A'){ 
+                $type_filter[] = 'A';
+            }
+            if($dept || $parameters['filter_type'] == 'D'){ 
+                $type_filter[] = 'D';
+            }
+            if($expcategory || $parameters['filter_type'] == 'O'){
+                $type_filter[] = 'O';
+            }        
+            $parameters['filter_type'] = implode("", $type_filter);
         }
-        $type_filter .= 'D';
         
-        if($expcategory){
-            $type_filter .= 'O';
-        }
-
-        $parameters['filter_type'] = $type_filter;*/
         return $parameters;
     }
 
