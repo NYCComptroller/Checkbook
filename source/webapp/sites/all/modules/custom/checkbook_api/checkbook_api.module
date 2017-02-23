@@ -70,9 +70,8 @@ function checkbook_api() {
     $request_xml = $document->saveXML();
     $client_ip = get_public_ip_address();
     $client_location = checkbook_api_get_ip_info($client_ip, "Location");
-    $host_name = gethostbyaddr(trim($client_ip));
     $checkbook_api_service = new CheckbookAPIService();
-    $api = $checkbook_api_service->createCheckbookAPI($domain,$request_xml,trim($client_ip),$client_location,$host_name);
+    $api = $checkbook_api_service->createCheckbookAPI($domain,$request_xml,$client_ip,$client_location);
     $response_status = ResponseStatus::$SUCCEEDED;
     $response_log = null;
 
