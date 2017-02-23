@@ -9,26 +9,62 @@ abstract class DataService implements IDataService {
     private $orderBy;
     private $sqlConfigPath;
 
+    /**
+     * @param $dataFunction
+     * @param $parameters
+     * @param null $limit
+     * @param null $orderBy
+     * @param $sqlConfigPath
+     * @return DataService
+     */
+    public function configure($dataFunction, $parameters, $limit = null, $orderBy = null, $sqlConfigPath) {
+        return self::setDataFunction($dataFunction)
+            ->setSqlConfigPath($sqlConfigPath)
+            ->setParameters($parameters)
+            ->setLimit($limit)
+            ->setOrderBy($orderBy);
+    }
+
+    /**
+     * @param $sqlConfigPath
+     * @return DataService
+     */
     public function setSqlConfigPath($sqlConfigPath) {
         $this->sqlConfigPath = $sqlConfigPath;
         return $this;
     }
 
+    /**
+     * @param $fnData
+     * @return DataService
+     */
     public function setDataFunction($fnData) {
         $this->fnData = $fnData;
         return $this;
     }
 
+    /**
+     * @param $parameters
+     * @return DataService
+     */
     public function setParameters($parameters) {
         $this->parameters = $parameters;
         return $this;
     }
 
+    /**
+     * @param $limit
+     * @return DataService
+     */
     public function setLimit($limit) {
         $this->limit = $limit;
         return $this;
     }
 
+    /**
+     * @param $orderBy
+     * @return DataService
+     */
     public function setOrderBy($orderBy) {
         $this->orderBy = $orderBy;
         return $this;

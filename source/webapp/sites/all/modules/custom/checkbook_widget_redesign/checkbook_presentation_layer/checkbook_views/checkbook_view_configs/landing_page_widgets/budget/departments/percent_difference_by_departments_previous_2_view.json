@@ -1,11 +1,7 @@
 
 {
-  "sqlConfig": {
-    "serviceName": "BudgetWidgetService",
-    "sqlConfigName": "budget/budget",
-    "statementName": "GetPercentDifferenceByDepartments"
-  },
   "serviceName": "BudgetWidgetService",
+  "dataFunc":"GetDepartmentsByPercentDifference",
   "defaultParameters":{"filter_type":"D"},
   "headerTitle": "Departments by Percent Difference",
   "headerSubTitle": "Departments",
