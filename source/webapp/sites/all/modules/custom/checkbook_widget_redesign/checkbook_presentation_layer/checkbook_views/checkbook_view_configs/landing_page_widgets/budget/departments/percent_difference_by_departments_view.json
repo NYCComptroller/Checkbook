@@ -1,11 +1,10 @@
-
 {
-  "serviceName": "BudgetWidgetService",
-  "dataFunc":"GetDepartmentsByPercentDifference",
-  "defaultParameters":{"filter_type":"D"},
-  "headerTitle": "Departments by Percent Difference",
-  "headerSubTitle": "Departments",
-  "table_columns": [
+    "serviceName": "BudgetWidgetService",
+    "dataFunc":"GetDepartmentsByPercentDifference",
+    "defaultParameters":{"filter_type":"D"},
+    "headerTitle": "Departments by Percent Difference",
+    "headerSubTitle": "Departments",
+    "table_columns": [
         {"labelAlias": "dept_name","column": "department_name"},
         {"labelAlias": "previous_2_modified","column": "previous_2_amount","format": "dollar"},
         {"labelAlias": "previous_1_modified","column": "previous_1_amount","format": "dollar"},
@@ -13,9 +12,9 @@
         {"labelAlias": "current_modified","column": "current_amount","format": "dollar"},
         {"labelAlias": "percent_diff","column": "percent_difference3","format": "percent"},
         {"label": "","column": ""}
-  ],
-  "dataTableOptions": {
-    "aoColumns": [
+    ],
+    "dataTableOptions": {
+      "aoColumns": [
         { "bSortable": false,"sWidth":"250px","sClass":"text" },
         { "bSortable": true,"sWidth":"150px","sClass":"number","asSorting": [ "desc","asc"  ] },
         { "bSortable": true,"sWidth":"150px","sClass":"number","asSorting": [ "desc","asc"  ] },
@@ -23,20 +22,20 @@
         { "bSortable": true,"sWidth":"150px","sClass":"number","asSorting": [ "desc","asc"  ] },
         { "bSortable": true,"sWidth":"150px","sClass":"number","asSorting": [ "desc","asc"  ] },
         { "bSortable": true,"sWidth":"15px" }
-    ],
-    "aaSorting": [[5, "desc"]],
-    "bServerSide": true,
-    "bFilter": false,
-    "bPaginate": false,
-    "bProcessing": true,
-    "bLengthChange": false,
-    "bInfo": false,
-    "bAutoWidth": false,
-    "fnServerParams": "##function ( aoData ) { reloadExpandCollapseWidget(this,aoData); }##",
-    "oLanguage": {
-      "sProcessing": "<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"
+      ],
+      "aaSorting": [[5, "desc"]],
+      "bServerSide": true,
+      "bFilter": false,
+      "bPaginate": false,
+      "bProcessing": true,
+      "bLengthChange": false,
+      "bInfo": false,
+      "bAutoWidth": false,
+      "fnServerParams": "##function ( aoData ) { reloadExpandCollapseWidget(this,aoData); }##",
+      "oLanguage": {
+        "sProcessing": "<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"
+      }
     }
-  }
 }
 
 
