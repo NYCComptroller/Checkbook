@@ -1,12 +1,23 @@
 <statements>
-    <statement name="GetPercentDifferenceByDepartments" datasource="checkbook">
+    <!--Agencies Methods-->
+    <statement name="GetAgenciesByBudget" datasource="checkbook"></statement>
+    <statement name="GetAgenciesByCommittedExpenseBudget" datasource="checkbook"></statement>
+    <statement name="GetAgenciesByPercentDifference" datasource="checkbook"></statement>
+    <!--Expense Categories Methods-->
+    <statement name="GetExpenseCategoriesByBudget" datasource="checkbook"></statement>
+    <statement name="GetExpenseCategoriesByCommittedExpenseBudget" datasource="checkbook"></statement>
+    <statement name="GetExpenseCategoriesByPercentDifference" datasource="checkbook"></statement>
+    <!--Department Methods-->
+    <statement name="GetDepartmentsByBudget" datasource="checkbook"></statement>
+    <statement name="GetDepartmentsByCommittedExpenseBudget" datasource="checkbook"></statement>
+    <statement name="GetDepartmentsByPercentDifference" datasource="checkbook">
         <param name="year" required ="true" type="int" />
         <param name="agency" type="int" />
         <param name="expcategory" type="int" />
         <param name="dept" type="int" />
         <param name="filter_type" type="string" />
         <sql>
-        SELECT s0.budget_fiscal_year_id,
+            SELECT s0.budget_fiscal_year_id,
             s0.department_id,
             d.department_name,
             SUM(COALESCE(modified_budget_amount,0)) AS current_amount,
@@ -16,18 +27,21 @@
             CASE SUM(COALESCE(modified_budget_amount_py,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(modified_budget_amount,0)) - SUM(COALESCE(modified_budget_amount_py,0)))/SUM(COALESCE(modified_budget_amount_py,0)))*100 END AS percent_difference1,
             CASE SUM(COALESCE(modified_budget_amount_py_1,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(modified_budget_amount,0)) - SUM(COALESCE(modified_budget_amount_py_1,0)))/SUM(COALESCE(modified_budget_amount_py_1,0)))*100 END AS percent_difference2,
             CASE SUM(COALESCE(modified_budget_amount_py_2,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(modified_budget_amount,0)) - SUM(COALESCE(modified_budget_amount_py_2,0)))/SUM(COALESCE(modified_budget_amount_py_2,0)))*100 END AS percent_difference3
-        FROM aggregateon_budget_by_year s0
-        JOIN ref_department d ON s0.department_id = d.department_id
-        <where>
-            <exp op="AND">
-                <exp op="=" dbField="s0.object_class_id" paramName="expcategory" />
-                <exp op="=" dbField="s0.budget_fiscal_year_id" paramName="year" />
-                <exp op="=" dbField="s0.agency_id " paramName="agency" />
-                <exp op="=" dbField="s0.department_id " paramName="dept" />
-                <exp op="=" dbField="s0.filter_type" paramName="filter_type" />
-            </exp>
-        </where>
-        GROUP BY s0.budget_fiscal_year_id, s0.department_id, d.department_name
+            FROM aggregateon_budget_by_year s0
+            JOIN ref_department d ON s0.department_id = d.department_id
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="s0.object_class_id" paramName="expcategory" />
+                    <exp op="=" dbField="s0.budget_fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="s0.agency_id " paramName="agency" />
+                    <exp op="=" dbField="s0.department_id " paramName="dept" />
+                    <exp op="=" dbField="s0.filter_type" paramName="filter_type" />
+                </exp>
+            </where>
+            GROUP BY s0.budget_fiscal_year_id, s0.department_id, d.department_name
         </sql>
     </statement>
+    <!--Expense Budget Categories Methods-->
+    <statement name="GetExpenseBudgetCategories" datasource="checkbook"></statement>
+    <statement name="GetExpenseBudgetCategoriesByCommittedExpenseBudget" datasource="checkbook"></statement>
 </statements>
