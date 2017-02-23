@@ -55,6 +55,6 @@ class BudgetDataService extends DataService implements IBudgetDataService {
      * @return DataService
      */
     private function configureCitywide($dataFunction, $parameters, $limit = null, $orderBy = null) {
-        return $this->configure(__FUNCTION__,$parameters,$limit,$orderBy,SqlConfigPath::CitywideBudget);
+        return $this->configure($dataFunction,$parameters,$limit,$orderBy,SqlConfigPath::CitywideBudget);
     }
 }

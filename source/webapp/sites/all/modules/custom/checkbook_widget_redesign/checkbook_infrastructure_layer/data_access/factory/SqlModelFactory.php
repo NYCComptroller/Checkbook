@@ -30,6 +30,13 @@ class SqlModelFactory {
      * @return SqlStatementModel
      */
     static function getSqlStatementModel($parameters, $limit, $orderBy, $sqlConfigName, $statementName) {
+
+//        log_info("\n\n\nSQL parameters: ".$parameters."\n\n"
+//            ."SQL limit: ".$limit."\n\n"
+//            ."SQL orderBy: ".$orderBy."\n\n"
+//            ."SQL sqlConfigName: ".$sqlConfigName."\n\n"
+//            ."SQL statementName: ".$statementName."\n\n");
+
         $sqlModel = self::getSqlModel($sqlConfigName);
         $sqlStatementModel = $sqlModel->getStatement($statementName);
         $query = $sqlStatementModel->sql;
