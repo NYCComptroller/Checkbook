@@ -5,7 +5,7 @@
     "headerTitle": "Departments by Percent Difference",
     "headerSubTitle": "Departments",
     "table_columns": [
-        {"labelAlias": "dept_name","column": "department_name"},
+        {"labelAlias": "dept_name","column": "department_name","derivedColumn":"department_name_link"},
         {"labelAlias": "previous_2_modified","column": "previous_2_amount","format": "dollar"},
         {"labelAlias": "previous_1_modified","column": "previous_1_amount","format": "dollar"},
         {"labelAlias": "previous_modified","column": "previous_amount","format": "dollar"},

@@ -20,9 +20,14 @@ class BudgetWidgetService extends WidgetDataService implements IWidgetService {
         $value = null;
         $legacy_node_id = $this->getLegacyNodeId();
         switch($column_name) {
-           case "agency_name_link":
+            case "agency_name_link":
                 $column = $row['agency_name'];
                 $url = "";
+                $value = "<a href='{$url}'>{$column}</a>";
+                break;
+            case "department_name_link":
+                $column = $row['department_name'];
+                $url = BudgetUrlService::departmentUrl($row['department_id']);
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
         }
