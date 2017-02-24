@@ -1,26 +1,26 @@
+
 {
-    "serviceName":"BudgetWidgetService",
-    "dataFunc":"GetDepartmentsByBudget",
-    "headerTitle": "Departments",
+    "serviceName": "BudgetWidgetService",
+    "dataFunc":"GetDepartmentsByPercentDifference",
+    "defaultParameters":{"filter_type":"D"},
+    "headerTitle": "Departments by Percent Difference",
     "headerSubTitle": "Departments",
     "table_columns": [
         {"labelAlias": "dept_name","column": "department_name","derivedColumn":"department_name_link"},
-        {"labelAlias": "adopted","column": "budget_adopted","format": "dollar"},
-        {"labelAlias": "modified","column": "budget_current","format": "dollar"},
-        {"labelAlias": "committed","column": "budget_committed","format": "dollar"},
-        {"labelAlias": "remaining","column": "budget_remaining","format": "dollar"},
+        {"labelAlias": "previous_modified","column": "previous_amount","format": "dollar"},
+        {"labelAlias": "current_modified","column": "current_amount","format": "dollar"},
+        {"labelAlias": "percent_diff","column": "percent_difference1","format": "percent"},
         {"label": "","column": ""}
     ],
     "dataTableOptions": {
         "aoColumns": [
             { "bSortable": false,"sWidth":"250px","sClass":"text" },
             { "bSortable": true,"sWidth":"150px","sClass":"number","asSorting": [ "desc","asc"  ] },
+            { "bSortable": true,"sWidth":"150px","sClass":"number","asSorting": [ "desc","asc"  ] },
             { "bSortable": true,"sWidth":"150px" ,"sClass":"number","asSorting": [ "desc" ,"asc" ]},
-            { "bSortable": true,"sWidth":"150px","sClass":"number","asSorting": [ "desc","asc"  ] },
-            { "bSortable": true,"sWidth":"150px","sClass":"number","asSorting": [ "desc","asc"  ] },
             { "bSortable": true,"sWidth":"15px" }
         ],
-        "aaSorting": [[2, "desc"]],
+        "aaSorting": [[3, "desc"]],
         "bServerSide": true,
         "bFilter": false,
         "bPaginate": false,
@@ -34,6 +34,5 @@
         }
     }
 }
-
 
 

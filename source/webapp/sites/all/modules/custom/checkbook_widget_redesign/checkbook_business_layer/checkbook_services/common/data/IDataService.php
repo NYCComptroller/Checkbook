@@ -2,6 +2,7 @@
 
 interface IDataService {
 
+    function configure($dataFunction, $parameters, $limit = null, $orderBy = null, $sqlConfigPath);
     function setSqlConfigPath($sqlConfigPath);
     function setDataFunction($fnData);
     function setParameters($parameters);
