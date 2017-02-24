@@ -1,9 +1,4 @@
 {
-//  "sqlConfig": {
-//    "serviceName": "BudgetWidgetService",
-//    "sqlConfigName": "budget/budget",
-//    "statementName": "GetBudgetByAgencies"
-//  },
   "serviceName": "BudgetWidgetService",
   "dataFunc": "GetAgenciesByBudget",
   "headerTitle": "Agencies",
@@ -12,7 +7,7 @@
     {"labelAlias": "agency_name","column": "agency_name", "derivedColumn": "agency_name_link","tooltip": 60},
     {"labelAlias": "adopted","column": "adopted_budget","format": "dollar"},
     {"labelAlias": "modified","column": "current_modified_budget","format": "dollar"},
-    {"labelAlias": "committed","column": "committed_budget","format": "dollar","derivedColumn": "committed_budget_link"},
+    {"labelAlias": "committed","column": "committed_budget","format": "dollar","derivedColumn": "agency_committed_budget_link"},
     {"labelAlias": "remaining","column": "remaining_budget","format": "dollar"},
     {"label": "","column": ""}
   ],
