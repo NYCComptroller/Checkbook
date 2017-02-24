@@ -4,12 +4,20 @@
 class BudgetUrlService {
 
     /**
+     * Function to build the footer url for the budget widgets
      * @param $parameters
      * @param null $legacy_node_id
      * @return string
      */
     static function getFooterUrl($parameters,$legacy_node_id = null) {
-        $url = "";
+        $legacy_node_id = isset($legacy_node_id) ? '/dtsmnid/'.$legacy_node_id : '';
+        $url = '/panel_html/budget_transactions/budget/transactions'
+            . $legacy_node_id
+            .RequestUtilities::_getUrlParamString("agency")
+            .RequestUtilities::_getUrlParamString("dept")
+            .RequestUtilities::_getUrlParamString("expcategory")
+            . _checkbook_project_get_year_url_param_string();
+
         return $url;
     }
 
@@ -26,7 +34,6 @@ class BudgetUrlService {
 
         $url = "/panel_html/budget_transactions/budget/transactions"
             . $legacy_node_id
-            .RequestUtilities::_getUrlParamString("year")
             .RequestUtilities::_getUrlParamString("agency")
             .RequestUtilities::_getUrlParamString("dept")
             .RequestUtilities::_getUrlParamString("expcategory")

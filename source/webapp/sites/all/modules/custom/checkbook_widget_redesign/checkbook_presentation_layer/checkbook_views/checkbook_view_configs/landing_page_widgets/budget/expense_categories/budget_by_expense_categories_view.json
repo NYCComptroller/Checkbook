@@ -1,7 +1,7 @@
 {
     "serviceName":"BudgetWidgetService",
     "dataFunc":"GetExpenseCategoriesByBudget",
-    "table_title":"Expense Categories",
+    "headerTitle": "Expense Categories",
     "table_columns":[
         {"labelAlias":"expense_category","column":"expense_category","derivedColumn":"expense_category_name_link"},
         {"labelAlias":"adopted","column":"adopted_budget","format":"dollar"},
