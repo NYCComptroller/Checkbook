@@ -28,6 +28,7 @@ class BudgetUrlService {
             . $legacy_node_id
             .RequestUtilities::_getUrlParamString("year")
             .RequestUtilities::_getUrlParamString("agency")
+            .RequestUtilities::_getUrlParamString("dept")
             .RequestUtilities::_getUrlParamString("expcategory")
             . _checkbook_project_get_year_url_param_string()
             . $dynamic_parameter;
