@@ -25,7 +25,7 @@
       { "bSortable": true,"sWidth":"150px","sClass":"number","asSorting": [ "desc","asc"  ] },
       { "bSortable": true,"sWidth":"15px" }
     ],
-    "aaSorting": [[3, "desc"]],
+    "aaSorting": [[2, "desc"]],
     "bServerSide": true,
     "bFilter": false,
     "bPaginate": false,

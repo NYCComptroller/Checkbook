@@ -1,7 +1,10 @@
 <statements>
     <!--Agencies Methods-->
     <statement name="GetAgenciesByBudget" datasource="checkbook">
-        <param name="fiscalYear" type="int" />
+        <param name="year" type="int" />
+        <param name="agency" type="int" />
+        <param name="dept" type="int" />
+        <param name="filter_type" type="string" />
         <sql>
             SELECT budget.budget_fiscal_year_id AS year_id,
             budget.agency_id AS agency_id,
@@ -13,7 +16,7 @@
             FROM budget
             <where>
                 <exp op="AND">
-                    <exp op="=" dbField="budget.budget_fiscal_year_id" paramName="fiscalYear" />
+                    <exp op="=" dbField="budget.budget_fiscal_year_id" paramName="year" />
                 </exp>
             </where>
             GROUP BY budget.budget_fiscal_year_id, budget.agency_id, budget.agency_name
