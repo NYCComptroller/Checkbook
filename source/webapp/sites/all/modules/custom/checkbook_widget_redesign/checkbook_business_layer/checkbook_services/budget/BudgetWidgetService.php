@@ -16,10 +16,10 @@ class BudgetWidgetService extends WidgetDataService implements IWidgetService {
         return new BudgetDataService();
     }
 
-    public function implementDerivedColumn($column_name,$row) {
+    public function implementDerivedColumn($column_name, $row) {
         $value = null;
         $legacy_node_id = $this->getLegacyNodeId();
-        switch($column_name) {
+        switch ($column_name) {
             case "agency_name_link":
                 $column = $row['agency_name'];
                 $url = "";
@@ -30,11 +30,20 @@ class BudgetWidgetService extends WidgetDataService implements IWidgetService {
                 $url = BudgetUrlService::departmentUrl($row['department_id']);
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
-            case "committed_budget_link":
-               $column = $row['committed'];
-               $url = "";
-               $value = "<a href='{$url}'>{$column}</a>";
-               break;
+            case "expense_category_name_link":
+                $column = $row['expense_category_name'];
+                $url = BudgetUrlService::expenseCategoryUrl($row['expense_category_id']);
+                $value = "<a href='{$url}'>{$column}</a>";
+                break;
+
+            // Committed budget link variations
+            case "expense_category_committed_budget_link":
+                $column = $row['committed_budget'];
+                $class = "bottomContainerReload";
+                $dynamic_parameter = "/expcategory/" . $row["expense_category_id"];
+                $url = BudgetUrlService::committedBudgetUrl($dynamic_parameter, $this->getLegacyNodeId());
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+                break;
         }
 
         if(isset($value)) {
