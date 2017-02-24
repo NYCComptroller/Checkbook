@@ -76,12 +76,12 @@ require_once(realpath(drupal_get_path('module', 'data_controller')) .'/common/ob
 //require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/spending/SpendingWidgetVisibilityService.php');
 //
 //
-//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/contracts/ContractsUrlService.php');
-//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/contracts/ContractsWidgetService.php');
-//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/contracts/ContractsWidgetVisibilityService.php');
+require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/budget/BudgetUrlService.php');
+//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/budget/BudgetWidgetVisibilityService.php');
 //require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/contracts/ContractsParameters.php');
-//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/contracts/data/IContractsDataService.php');
-//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/contracts/data/ContractsDataService.php');
+require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/budget/BudgetWidgetService.php');
+require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/budget/data/IBudgetDataService.php');
+require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/budget/data/BudgetDataService.php');
 //
 //require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/revenue/RevenueDataService.php');
 //require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/revenue/RevenueUrlService.php');

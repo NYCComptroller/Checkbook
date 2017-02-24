@@ -22,7 +22,31 @@
     <statement name="GetAgenciesByCommittedExpenseBudget" datasource="checkbook"></statement>
     <statement name="GetAgenciesByPercentDifference" datasource="checkbook"></statement>
     <!--Expense Categories Methods-->
-    <statement name="GetExpenseCategoriesByBudget" datasource="checkbook"></statement>
+    <statement name="GetExpenseCategoriesByBudget" datasource="checkbook">
+        <param name="year" required ="true" type="int" />
+        <param name="agency" type="int" />
+        <param name="dept" type="int" />
+        <param name="filter_type" type="string" />
+        <sql>
+            SELECT
+            budget_fiscal_year_id as year_id,
+            object_class_id as expense_category_id,
+            object_class_name as expense_category_name,
+            SUM(adopted_amount) as adopted_budget,
+            SUM(COALESCE(current_budget_amount,0)) as modified_budget,
+            SUM(total_expenditure_amount) as committed_budget,
+            SUM(remaining_budget) as remaining_budget
+            FROM budget
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="budget_fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="agency_id " paramName="agency" />
+                    <exp op="=" dbField="department_id " paramName="dept" />
+                </exp>
+            </where>
+            GROUP BY budget_fiscal_year_id, object_class_id, object_class_name
+        </sql>
+    </statement>
     <statement name="GetExpenseCategoriesByCommittedExpenseBudget" datasource="checkbook"></statement>
     <statement name="GetExpenseCategoriesByPercentDifference" datasource="checkbook"></statement>
     <!--Department Methods-->
