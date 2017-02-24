@@ -31,7 +31,7 @@
         "bLengthChange":false,
         "bInfo":false,
         "bAutoWidth":false,
-        "aaSorting":[[2,"desc"]],
+        "aaSorting":[[1,"desc"]],
         "fnServerParams":"##function ( aoData ) { reloadExpandCollapseWidget(this,aoData); }##",
         "oLanguage":{"sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"}
     }
