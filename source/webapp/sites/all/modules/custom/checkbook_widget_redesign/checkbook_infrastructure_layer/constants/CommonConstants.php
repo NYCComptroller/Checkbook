@@ -30,6 +30,7 @@ abstract class CheckbookDomain {
     const SPENDING = "spending";
     const CONTRACTS = "contracts";
     const REVENUE = "revenue";
+    const BUDGET = "budget";
 
     static public function getCurrent() {
         $urlPath = $_GET['q'];
@@ -46,6 +47,9 @@ abstract class CheckbookDomain {
         }
         else if(preg_match('/revenue/',$urlPath) || preg_match('/revenue/',$ajaxPath)) {
             $domain = self::REVENUE;
+        }
+        else if(preg_match('/budget/',$urlPath) || preg_match('/budget/',$ajaxPath)) {
+            $domain = self::BUDGET;
         }
         return $domain;
     }
