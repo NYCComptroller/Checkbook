@@ -22,7 +22,7 @@ class BudgetWidgetService extends WidgetDataService implements IWidgetService {
         switch ($column_name) {
             case "agency_name_link":
                 $column = $row['agency_name'];
-                $url = "";
+                $url = BudgetUrlService::agencyNameUrl($row['agency_id']);
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
             case "department_name_link":
@@ -44,7 +44,7 @@ class BudgetWidgetService extends WidgetDataService implements IWidgetService {
                 $url = BudgetUrlService::committedBudgetUrl($dynamic_parameter, $this->getLegacyNodeId());
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
-            case "committed_budget_link":
+            case "agency_committed_budget_link":
                 $column = $row['committed_budget'];
                 $class = "bottomContainerReload";
                 $dynamic_parameter = "/agency/" . $row["agency_id"];

@@ -62,4 +62,13 @@ class BudgetUrlService {
             .'/expcategory/'.$expense_category_id;
         return $url;
     }
+
+    static function agencyNameUrl($agency_id) {
+        $url = "/budget"
+            .RequestUtilities::_getUrlParamString("yeartype")
+            .RequestUtilities::_getUrlParamString("year")
+            .RequestUtilities::_getUrlParamString("agency")
+            ."/agency/".$agency_id;
+        return $url;
+    }
 }
