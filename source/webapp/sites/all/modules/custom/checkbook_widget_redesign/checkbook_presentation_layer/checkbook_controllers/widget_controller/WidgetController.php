@@ -80,7 +80,7 @@ class WidgetController {
             case Domain::$CONTRACTS:
                 $status = ContractStatus::getCurrent();
                 $category = ContractCategory::getCurrent();
-                $dimension = ($category == ContractCategory::NONE) ? "{$status}" : "{$status}_{$category}";
+                $dimension = "{$status}_{$category}";
                 $config = $configuration->$dashboard->$dimension->landing_page_widgets->$widget;
                 break;
             case Domain::$SPENDING:

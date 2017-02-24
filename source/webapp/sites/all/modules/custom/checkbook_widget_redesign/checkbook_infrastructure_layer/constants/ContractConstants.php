@@ -10,19 +10,16 @@ abstract class ContractCategory {
 
     const EXPENSE = "expense";
     const REVENUE = "revenue";
-    const NONE = "none";
 
     static public function getCurrent() {
         $urlPath = $_GET['q'];
         $ajaxPath = $_SERVER['HTTP_REFERER'];
+        $category = self::EXPENSE;
 
         if(preg_match('/contracts_revenue/',$urlPath) || preg_match('/contracts_revenue/',$ajaxPath)
             || preg_match('/contracts_revenue_landing/',$urlPath) || preg_match('/contracts_revenue_landing/',$ajaxPath)
             || preg_match('/contracts_pending_rev/',$urlPath) || preg_match('/contracts_pending_rev/',$ajaxPath)) {
             $category = self::REVENUE;
-        }
-        if(!isset($category)) {
-            $category = Dashboard::isSubDashboard() ? self::NONE : self::EXPENSE;
         }
 
         return $category;
