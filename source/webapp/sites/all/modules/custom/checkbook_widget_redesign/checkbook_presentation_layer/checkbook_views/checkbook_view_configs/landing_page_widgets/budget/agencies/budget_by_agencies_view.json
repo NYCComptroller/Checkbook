@@ -1,10 +1,11 @@
 {
-  "sqlConfig": {
-    "serviceName": "BudgetWidgetService",
-    "sqlConfigName": "budget/budget",
-    "statementName": "GetBudgetByAgencies"
-  },
+//  "sqlConfig": {
+//    "serviceName": "BudgetWidgetService",
+//    "sqlConfigName": "budget/budget",
+//    "statementName": "GetBudgetByAgencies"
+//  },
   "serviceName": "BudgetWidgetService",
+  "dataFunc": "GetAgenciesByBudget",
   "headerTitle": "Agencies",
   "headerSubTitle": "Agencies",
   "table_columns": [
