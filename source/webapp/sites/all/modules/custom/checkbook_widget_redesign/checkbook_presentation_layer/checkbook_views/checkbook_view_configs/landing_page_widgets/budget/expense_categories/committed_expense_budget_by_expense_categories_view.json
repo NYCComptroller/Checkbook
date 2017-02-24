@@ -1,1 +1,38 @@
-
+{
+    "serviceName":"BudgetWidgetService",
+    "dataFunc":"GetExpenseCategoriesByCommittedExpenseBudget",
+    "headerTitle":"Expense Categories by Committed Expense Budget",
+    "headerSubTitle":"Expense Categories",
+    "table_columns":[
+        {"labelAlias":"expense_category","column":"expense_category","derivedColumn":"expense_category_name_link"},
+        {"labelAlias":"committed","column":"committed_budget","format":"dollar","derivedColumn":"expense_category_committed_budget_link"},
+        {"labelAlias":"pre_encumbered","column":"pre_encumbered","format":"dollar"},
+        {"labelAlias":"encumbered","column":"encumbered","format":"dollar"},
+        {"labelAlias":"accrued_expense","column":"accrued_expense","format":"dollar"},
+        {"labelAlias":"cash_payments","column":"cash_payments_formatted","format":"dollar"},
+        {"labelAlias":"post_adjustments","column":"post_adjustments","format":"dollar"},
+        {"label":"","column":""}
+    ],
+    "dataTableOptions":{
+        "aoColumns":[
+            {"bSortable":false,"sWidth":"250px","sClass":"text" },
+            {"bSortable":true,"sWidth":"120px","sClass":"number","asSorting":["desc","asc"]},
+            {"bSortable":true,"sWidth":"120px" ,"sClass":"number","asSorting":["desc" ,"asc"]},
+            {"bSortable":true,"sWidth":"120px","sClass":"number","asSorting":["desc","asc"]},
+            {"bSortable":true,"sWidth":"120px","sClass":"number","asSorting":["desc","asc"]},
+            {"bSortable":true,"sWidth":"120px","sClass":"number","asSorting":["desc","asc"]},
+            {"bSortable":true,"sWidth":"120px","sClass":"number","asSorting":["desc","asc"]},
+            {"bSortable":false,"sWidth":"15px" }
+        ],
+        "bServerSide":true,
+        "bFilter":false,
+        "bPaginate":false,
+        "bProcessing":true,
+        "bLengthChange":false,
+        "bInfo":false,
+        "bAutoWidth":false,
+        "aaSorting":[[2,"desc"]],
+        "fnServerParams":"##function ( aoData ) { reloadExpandCollapseWidget(this,aoData); }##",
+        "oLanguage":{"sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"}
+    }
+}
