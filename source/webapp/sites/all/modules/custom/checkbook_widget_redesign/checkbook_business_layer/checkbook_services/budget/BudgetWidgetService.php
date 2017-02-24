@@ -13,10 +13,17 @@ class BudgetWidgetService extends WidgetSqlService implements IWidgetService {
         $legacy_node_id = $this->getLegacyNodeId();
         switch($column_name) {
            case "agency_name_link":
-                $column = $row['agency_name'];
-                $url = "";
-                $value = "<a href='{$url}'>{$column}</a>";
-                break;
+               $column = $row['agency_name'];
+               $url = "";
+               $value = "<a href='{$url}'>{$column}</a>";
+               break;
+            // (ISAAC) need to updated this
+           case "committed_budget_link":
+               $column = $row['committed'];
+               $url = "";
+               $value = "<a href='{$url}'>{$column}</a>";
+               break;
+
         }
 
         if(isset($value)) {

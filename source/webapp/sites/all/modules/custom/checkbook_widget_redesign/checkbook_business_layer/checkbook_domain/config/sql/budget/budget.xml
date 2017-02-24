@@ -1,4 +1,5 @@
 <statements>
+    <!--GetPercentDifferenceByDepartments-->
     <statement name="GetPercentDifferenceByDepartments" datasource="checkbook">
         <param name="year" required ="true" type="int" />
         <param name="agency" type="int" />
@@ -26,6 +27,30 @@
             </exp>
         </where>
         GROUP BY s0.budget_fiscal_year_id, s0.department_id, d.department_name
+        </sql>
+    </statement>
+    <!--GetBudgetByAgencies-->
+    <statement name="GetBudgetByAgencies" datasource="checkbook">
+        <param name="objectClassId" required ="true" type="int" />
+        <param name="fiscalYear" type="int" />
+        <sql>
+            SELECT budget.budget_fiscal_year_id AS year_id_year_id,
+            budget.agency_id AS agency_id_agency_id,
+            budget.agency_name AS agency_name,
+            SUM(adopted_amount) AS adopted_budget,
+            SUM(COALESCE(current_budget_amount,0)) AS current_modified_budget,
+            SUM(total_expenditure_amount) AS committed_budget,
+            SUM(remaining_budget) AS remaining_budget
+            FROM budget
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="budget.object_class_id" paramName="objectClassId" />
+                    <exp op="=" dbField="budget.budget_fiscal_year_id" paramName="fiscalYear" />
+                </exp>
+            </where>
+            GROUP BY budget.budget_fiscal_year_id,
+            budget.agency_id,
+            budget.agency_name
         </sql>
     </statement>
 </statements>
