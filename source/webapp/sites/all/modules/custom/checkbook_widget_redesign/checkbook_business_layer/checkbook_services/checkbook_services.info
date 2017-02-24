@@ -53,5 +53,7 @@ files[] = revenue/RevenueWidgetService.php
 
 files[] = budget/BudgetUrlService.php
 files[] = budget/BudgetWidgetService.php
+files[] = budget/data/BudgetDataService.php
+files[] = budget/data/IBudgetDataService.php
 
 dependencies[] = checkbook_domain

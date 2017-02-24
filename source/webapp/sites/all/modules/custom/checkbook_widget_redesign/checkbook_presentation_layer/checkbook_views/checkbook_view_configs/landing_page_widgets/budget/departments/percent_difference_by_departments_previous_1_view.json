@@ -1,14 +1,15 @@
 {
     "serviceName":"BudgetWidgetService",
-    "dataFunc":"GetDepartmentsByBudget",
-    "headerTitle": "Departments",
+    "dataFunc":"GetDepartmentsByPercentDifference",
+    "defaultParameters":{"filter_type":"D"},
+    "headerTitle": "Departments by Percent Difference",
     "headerSubTitle": "Departments",
     "table_columns": [
         {"labelAlias": "dept_name","column": "department_name","derivedColumn":"department_name_link"},
-        {"labelAlias": "adopted","column": "budget_adopted","format": "dollar"},
-        {"labelAlias": "modified","column": "budget_current","format": "dollar"},
-        {"labelAlias": "committed","column": "budget_committed","format": "dollar"},
-        {"labelAlias": "remaining","column": "budget_remaining","format": "dollar"},
+        {"labelAlias": "previous_1_modified","column": "previous_1_amount","format": "dollar"},
+        {"labelAlias": "previous_modified","column": "previous_amount","format": "dollar"},
+        {"labelAlias": "current_modified","column": "current_amount","format": "dollar"},
+        {"labelAlias": "percent_diff","column": "percent_difference2","format": "percent"},
         {"label": "","column": ""}
     ],
     "dataTableOptions": {
@@ -20,7 +21,7 @@
             { "bSortable": true,"sWidth":"150px","sClass":"number","asSorting": [ "desc","asc"  ] },
             { "bSortable": true,"sWidth":"15px" }
         ],
-        "aaSorting": [[2, "desc"]],
+        "aaSorting": [[4, "desc"]],
         "bServerSide": true,
         "bFilter": false,
         "bPaginate": false,
@@ -34,6 +35,5 @@
         }
     }
 }
-
 
 

@@ -59,11 +59,10 @@ class CheckbookAPIService {
      * @param $request_xml
      * @param $client_ip
      * @param $client_location
-     * @param $host_name
      * @param string $response_log
      * @return mixed
      */
-    public function createCheckbookAPI($domain, $request_xml, $client_ip, $client_location, $host_name, $response_log = '') {
+    public function createCheckbookAPI($domain, $request_xml, $client_ip, $client_location, $response_log = '') {
 
         if(isset($client_location)) {
             $city = $client_location['city'];
@@ -85,7 +84,6 @@ class CheckbookAPIService {
             'country_code' => $country_code,
             'continent' => $continent,
             'continent_code' => $continent_code,
-            'host_name' => $host_name,
             'created_date' => time(),
         );
         $api = new CheckbookAPIEntity($api_properties);
