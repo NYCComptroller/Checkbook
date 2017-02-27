@@ -5,7 +5,7 @@
     "headerSubTitle": "Departments",
     "table_columns": [
         {"labelAlias": "dept_name","column": "department_name","derivedColumn":"department_name_link"},
-        {"labelAlias": "adopted","column": "budget_committed","derivedColumn":"dept_committed_budget_link","format": "dollar"},
+        {"labelAlias": "committed","column": "budget_committed","derivedColumn":"dept_committed_budget_link","format": "dollar"},
         {"labelAlias": "pre_encumbered","column": "pre_encumbered","format": "dollar"},
         {"labelAlias": "encumbered","column": "encumbered","format": "dollar"},
         {"labelAlias": "accrued_expense","column": "accrued_expense","format": "dollar"},
