@@ -20,6 +20,32 @@ class BudgetUrlService {
 
         return $url;
     }
+    
+    /**
+     * Function to build the footer url for the budget widgets
+     * @param $footerUrl
+     * @param $percentDiffWidget 
+     * @return string
+     */
+    static function getPercentDiffFooterUrl($footerUrl, $percentDiffWidget){
+        $url = null;
+        switch($percentDiffWidget){
+            case "departments":
+                $url = "/panel_html/deppartment_budget_details/budget/dept_details";
+                break;
+            case "agencies":
+                $url = "/panel_html/budget_agency_perecent_difference_transactions/budget/agency_details";
+                break;
+            case "expense_categories":
+                $url = "/panel_html/expense_category_budget_details/budget/expcategory_details";
+                break;
+        }
+        if(isset($url)){
+            return str_replace("/panel_html/budget_transactions/budget/transactions", $url, $footerUrl);
+        }else{
+            return $footerUrl;
+        }
+    }
 
     /**
      * Gets the Committed Budget link in a generic way
