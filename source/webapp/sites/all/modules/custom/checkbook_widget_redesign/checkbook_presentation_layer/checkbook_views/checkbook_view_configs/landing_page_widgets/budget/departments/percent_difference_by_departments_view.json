@@ -4,6 +4,7 @@
     "defaultParameters":{"filter_type":"D"},
     "headerTitle": "Departments by Percent Difference",
     "headerSubTitle": "Departments",
+    "footerUrl":"BudgetUrlService::getPercentDiffFooterUrl(_widget_controller_footer_url($node),'departments')",
     "table_columns": [
         {"labelAlias": "dept_name","column": "department_name","derivedColumn":"department_name_link"},
         {"labelAlias": "previous_2_modified","column": "previous_2_amount","format": "dollar"},
