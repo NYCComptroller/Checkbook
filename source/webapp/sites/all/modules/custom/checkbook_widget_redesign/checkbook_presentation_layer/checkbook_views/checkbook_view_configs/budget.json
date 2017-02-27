@@ -16,31 +16,30 @@
                "legacy_node_id":560,
                 "visibility_parameters":["-agency"]
             },
-
             "budget_by_departments":{
                 "widget_config":"budget_by_departments_view",
                 "legacy_node_id":567,
-                "visibility_parameters":["agency"]
+                "visibility_parameters":["agency","-dept"]
             },
             "committed_expense_budget_by_departments":{
                 "widget_config":"committed_expense_budget_by_departments_view",
                 "legacy_node_id":568,
-                "visibility_parameters":["agency"]
+                "visibility_parameters":["agency","-dept"]
             },
             "percent_difference_by_departments":{
                 "widget_config":"percent_difference_by_departments_view",
                 "legacy_node_id":569,
-                "visibility_parameters":["agency"]
+                "visibility_parameters":["agency","-dept"]
             },
             "percent_difference_by_departments_previous_1":{
                 "widget_config":"percent_difference_by_departments_previous_1_view",
                 "legacy_node_id":569,
-                "visibility_parameters":["agency"]
+                "visibility_parameters":["agency","-dept"]
             },
             "percent_difference_by_departments_previous_2":{
                 "widget_config":"percent_difference_by_departments_previous_2_view",
                 "legacy_node_id":569,
-                "visibility_parameters":["agency"]
+                "visibility_parameters":["agency","-dept"]
             },
 
             "budget_by_expense_categories":{
