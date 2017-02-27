@@ -7,7 +7,7 @@
         {"labelAlias": "dept_name","column": "department_name","derivedColumn":"department_name_link"},
         {"labelAlias": "adopted","column": "budget_adopted","format": "dollar"},
         {"labelAlias": "modified","column": "budget_current","format": "dollar"},
-        {"labelAlias": "committed","column": "budget_committed","format": "dollar"},
+        {"labelAlias": "committed","column": "budget_committed","derivedColumn":"dept_committed_budget_link","format": "dollar"},
         {"labelAlias": "remaining","column": "budget_remaining","format": "dollar"},
         {"label": "","column": ""}
     ],
