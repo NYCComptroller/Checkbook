@@ -2642,10 +2642,21 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 .contract_transactions,
 #nyc-expense-pending-contracts .omega-12-twocol-3-9 .inside .contract-details-heading,
 .page-revenue #revenue-transactions .inside .panel-pane.pane-custom.pane-2,
-.page-budget .inside .panel-pane.pane-custom.pane-2,
+/*.page-budget .inside .panel-pane.pane-custom.pane-2,*/
 .expense_category_budget_details .panel-pane.pane-custom.pane-1{
     width:420px;
 }
+
+/*style fix for budget domain - top 5 agencies by committed expense budget*/
+#spending-transactions .page-budget .inside .panel-pane.pane-custom.pane-2 {
+    width: auto;
+}
+
+#node-widget-percent_difference_by_agencies_view > div.content.clearfix {
+    position: static;
+}
+
+
 h1.no-spending-transactions {width: 500px}
 .newwindow .inside .transactions-container,
 .newwindow .inside .contract-details-heading,
@@ -3629,6 +3640,8 @@ a.new-features-morelink{
     font-size: 13px;
 }
 
-#table_revenue_by_agencies_view tr {
+/* Fix height for headers with single line labels */
+#table_revenue_by_agencies_view,
+#table_budget_by_agencies_view tr {
   height: 40px;
 }
