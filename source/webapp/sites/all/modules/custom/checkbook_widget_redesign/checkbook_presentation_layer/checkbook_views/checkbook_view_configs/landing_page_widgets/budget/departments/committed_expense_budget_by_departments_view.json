@@ -1,7 +1,7 @@
 {
     "serviceName":"BudgetWidgetService",
     "dataFunc":"GetDepartmentsByCommittedExpenseBudget",
-    "headerTitle": "Departments",
+    "headerTitle": "Departments by Committed Expense Budget",
     "headerSubTitle": "Departments",
     "table_columns": [
         {"labelAlias": "dept_name","column": "department_name","derivedColumn":"department_name_link"},
