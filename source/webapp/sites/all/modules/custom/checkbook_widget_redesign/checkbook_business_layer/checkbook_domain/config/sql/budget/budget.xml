@@ -5,6 +5,7 @@
         <param name="agency" type="int" />
         <param name="dept" type="int" />
         <param name="filter_type" type="string" />
+        <param name="expcategory" type="int" />
         <sql>
             SELECT budget.budget_fiscal_year_id AS year_id,
             budget.agency_id AS agency_id,
@@ -17,6 +18,7 @@
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="budget.budget_fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="budget.object_class_id" paramName="expcategory" />
                 </exp>
             </where>
             GROUP BY budget.budget_fiscal_year_id, budget.agency_id, budget.agency_name
@@ -27,6 +29,7 @@
         <param name="agency" type="int" />
         <param name="dept" type="int" />
         <param name="filter_type" type="string" />
+        <param name="expcategory" type="int" />
         <sql>
             SELECT budget.budget_fiscal_year_id AS year_id,
             budget.agency_id AS agency_id,
@@ -41,6 +44,7 @@
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="budget.budget_fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="budget.object_class_id" paramName="expcategory" />
                 </exp>
             </where>
             GROUP BY budget.budget_fiscal_year_id, budget.agency_id, budget.agency_name
@@ -236,6 +240,7 @@
                 <exp op="AND">
                     <exp op="=" dbField="budget.agency_id" paramName="agency" />
                     <exp op="=" dbField="budget.budget_fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="budget.object_class_id" paramName="expcategory" />
                 </exp>
             </where>
             GROUP BY budget.budget_fiscal_year_id, budget.budget_code_id, budget.budget_code_name
