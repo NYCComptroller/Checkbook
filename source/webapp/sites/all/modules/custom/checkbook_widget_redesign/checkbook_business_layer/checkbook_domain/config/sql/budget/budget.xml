@@ -105,8 +105,8 @@
         <param name="filter_type" type="string" />
         <sql>
             SELECT s0.budget_fiscal_year_id,
-                s0.object_class_id,
-                j1.object_class_name,
+                s0.object_class_id AS expense_category_id,
+                j1.object_class_name AS expense_category_name,
                 SUM(COALESCE(modified_budget_amount,0)) AS current_amount,
                 SUM(COALESCE(modified_budget_amount_py,0)) AS previous_amount,
                 SUM(COALESCE(modified_budget_amount_py_1,0)) AS previous_1_amount,
