@@ -7,11 +7,9 @@
     "footerUrl":"BudgetUrlService::getPercentDiffFooterUrl(_widget_controller_footer_url($node),'expense_categories')",
     "table_columns": [
         {"labelAlias": "expense_category","column": "object_class_name","derivedColumn":"expense_category_name_link"},
-        {"labelAlias": "previous_2_modified","column": "previous_2_amount","format": "dollar"},
-        {"labelAlias": "previous_1_modified","column": "previous_1_amount","format": "dollar"},
         {"labelAlias": "previous_modified","column": "previous_amount","format": "dollar"},
         {"labelAlias": "current_modified","column": "current_amount","format": "dollar"},
-        {"labelAlias": "percent_diff","column": "percent_difference3","format": "percent"},
+        {"labelAlias": "percent_diff","column": "percent_difference1","format": "percent"},
         {"label": "","column": ""}
     ],
     "dataTableOptions": {
@@ -20,11 +18,9 @@
             { "bSortable": true,"sWidth":"150px","sClass":"number","asSorting": [ "desc","asc"  ] },
             { "bSortable": true,"sWidth":"150px","sClass":"number","asSorting": [ "desc","asc"  ] },
             { "bSortable": true,"sWidth":"150px" ,"sClass":"number","asSorting": [ "desc" ,"asc" ]},
-            { "bSortable": true,"sWidth":"150px","sClass":"number","asSorting": [ "desc","asc"  ] },
-            { "bSortable": true,"sWidth":"150px","sClass":"number","asSorting": [ "desc","asc"  ] },
             { "bSortable": true,"sWidth":"15px" }
         ],
-        "aaSorting": [[5, "desc"]],
+        "aaSorting": [[3, "desc"]],
         "bServerSide": true,
         "bFilter": false,
         "bPaginate": false,
@@ -38,6 +34,7 @@
         }
     }
 }
+
 
 
 

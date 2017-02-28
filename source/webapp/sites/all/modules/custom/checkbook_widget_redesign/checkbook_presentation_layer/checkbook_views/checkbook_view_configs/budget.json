@@ -61,12 +61,12 @@
             "budget_by_expense_budget_categories":{
                 "widget_config":"budget_by_expense_budget_categories_view",
                 "legacy_node_id":570,
-                "visibility_parameters":["-expcategory","agency"]
+                "visibility_parameters":["agency"]
             },
             "committed_expense_budget_by_expense_budget_categories":{
                 "widget_config":"committed_expense_budget_by_expense_budget_categories_view",
                 "legacy_node_id":571,
-                "visibility_parameters":["-expcategory","agency"]
+                "visibility_parameters":["agency"]
             }
         }
     }
