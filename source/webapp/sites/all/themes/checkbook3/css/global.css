@@ -3515,11 +3515,6 @@ div#table_576_wrapper div.dataTables_scrollHeadInner table, table#table_576{
     width: 938px !important;
 }
 
-table#table_263 thead tr,
-table#table_578 thead tr,
-table#table_567 thead tr{
-    height:40px;
-}
 div.payroll-year-month span.label,
 div.payroll-year-month span.data{
     font-size: 15px;
@@ -3642,6 +3637,7 @@ a.new-features-morelink{
 
 /* Fix height for headers with single line labels */
 #table_revenue_by_agencies_view,
-#table_budget_by_agencies_view tr {
+#table_budget_by_agencies_view thead tr,
+#table_budget_by_departments_view thead tr{
   height: 40px;
 }
