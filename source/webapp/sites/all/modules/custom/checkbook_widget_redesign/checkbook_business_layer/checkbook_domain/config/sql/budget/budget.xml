@@ -160,7 +160,30 @@
         </sql>
     </statement>
     <!--Expense Budget Categories Methods-->
-    <statement name="GetExpenseBudgetCategories" datasource="checkbook"></statement>
+    <statement name="GetExpenseBudgetCategories" datasource="checkbook">
+        <param name="year" required ="true" type="int" />
+        <param name="agency" type="int" />
+        <param name="expcategory" type="int" />
+        <param name="dept" type="int" />
+        <param name="filter_type" type="string" />
+        <sql>
+            SELECT budget.budget_fiscal_year_id AS year_id,
+            budget.budget_code_id AS budget_code,
+            budget.budget_code_name AS budget_code_name,
+            SUM(adopted_amount) AS budget_adopted,
+            SUM(COALESCE(current_budget_amount,0)) AS budget_current,
+            SUM(total_expenditure_amount) AS budget_committed,
+            SUM(remaining_budget) AS budget_remaining
+            FROM budget
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="budget.agency_id" paramName="agency" />
+                    <exp op="=" dbField="budget.budget_fiscal_year_id" paramName="year" />
+                </exp>
+            </where>
+            GROUP BY budget.budget_fiscal_year_id, budget.budget_code_id, budget.budget_code_name
+        </sql>
+    </statement>
     <statement name="GetExpenseBudgetCategoriesByCommittedExpenseBudget" datasource="checkbook"></statement>
 </statements>
 
