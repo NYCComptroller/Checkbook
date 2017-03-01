@@ -57,16 +57,18 @@
         <param name="filter_type" type="string" />
         <param name="expcategory" type="int" />
         <sql>
-            SELECT budget.budget_fiscal_year_id AS year_id,
-            budget.agency_id AS agency_id,
-            budget.agency_name AS agency_name,
-            SUM(total_expenditure_amount) AS committed_budget,
-            SUM(pre_encumbered_amount) AS pre_encumbered,
-            SUM(encumbered_amount) AS encumbered,
-            SUM(accrued_expense_amount) AS accrued_expense,
-            SUM(cash_expense_amount) AS cash_payments,
-            SUM(post_closing_adjustment_amount) AS post_adjustments
-            FROM budget
+            SELECT s0.budget_fiscal_year_id,
+                s0.agency_id,
+                j1.agency_name,
+                SUM(COALESCE(modified_budget_amount,0)) AS current_amount,
+                SUM(COALESCE(modified_budget_amount_py,0)) AS previous_amount,
+                SUM(COALESCE(modified_budget_amount_py_1,0)) AS previous_1_amount,
+                SUM(COALESCE(modified_budget_amount_py_2,0)) AS previous_2_amount,
+                CASE SUM(COALESCE(modified_budget_amount_py,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(modified_budget_amount,0)) - SUM(COALESCE(modified_budget_amount_py,0)))/SUM(COALESCE(modified_budget_amount_py,0)))*100 END AS percent_difference1,
+                CASE SUM(COALESCE(modified_budget_amount_py_1,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(modified_budget_amount,0)) - SUM(COALESCE(modified_budget_amount_py_1,0)))/SUM(COALESCE(modified_budget_amount_py_1,0)))*100 END AS percent_difference2,
+                CASE SUM(COALESCE(modified_budget_amount_py_2,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(modified_budget_amount,0)) - SUM(COALESCE(modified_budget_amount_py_2,0)))/SUM(COALESCE(modified_budget_amount_py_2,0)))*100 END AS percent_difference3
+            FROM aggregateon_budget_by_year s0
+            JOIN ref_agency j1 ON j1.agency_id = s0.agency_id
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="s0.object_class_id" paramName="expcategory" />
@@ -76,7 +78,7 @@
                     <exp op="=" dbField="s0.filter_type" paramName="filter_type" />
                 </exp>
             </where>
-            GROUP BY budget.budget_fiscal_year_id, budget.agency_id, budget.agency_name
+            GROUP BY budget.budget_fiscal_year_id, s0.agency_id, s0.agency_name
         </sql>
     </statement>
     <!--Expense Categories Methods-->
