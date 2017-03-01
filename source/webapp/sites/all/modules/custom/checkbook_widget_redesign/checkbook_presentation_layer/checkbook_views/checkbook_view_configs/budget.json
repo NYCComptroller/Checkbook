@@ -57,7 +57,16 @@
                 "legacy_node_id":561,
                 "visibility_parameters":["-expcategory"]
             },
-
+            "percent_difference_by_expense_categories_previous_1":{
+                "widget_config":"percent_difference_by_expense_categories_previous_1_view",
+                "legacy_node_id":561,
+                "visibility_parameters":["-expcategory"]
+            },
+            "percent_difference_by_expense_categories_previous_2":{
+                "widget_config":"percent_difference_by_expense_categories_previous_2_view",
+                "legacy_node_id":561,
+                "visibility_parameters":["-expcategory"]
+            },
             "budget_by_expense_budget_categories":{
                 "widget_config":"budget_by_expense_budget_categories_view",
                 "legacy_node_id":570,
