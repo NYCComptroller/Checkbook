@@ -51,7 +51,6 @@
                 "legacy_node_id":569,
                 "visibility_parameters":["agency","-dept"]
             },
-
             "budget_by_expense_categories":{
                 "widget_config":"budget_by_expense_categories_view",
                 "legacy_node_id":264,
