@@ -30,9 +30,9 @@ abstract class BudgetAgencyPercentWidgetViews {
 }
 
 abstract class BudgetDepartmentPercentWidgetViews {
-    const DEPT_PERCENT_DIFF = "percent_difference_by_depatments";
-    const DEPT_PERCENT_DIFF_PREVIOUS_1 = "percent_difference_by_depatments_previous_1";
-    const DEPT_PERCENT_DIFF_PREVIOUS_2 = "percent_difference_by_depatments_previous_2";
+    const DEPT_PERCENT_DIFF = "percent_difference_by_departments";
+    const DEPT_PERCENT_DIFF_PREVIOUS_1 = "percent_difference_by_departments_previous_1";
+    const DEPT_PERCENT_DIFF_PREVIOUS_2 = "percent_difference_by_departments_previous_2";
     
     static public function getCurrent() {
         $base_year = BudgetConstants::getCurrent();
