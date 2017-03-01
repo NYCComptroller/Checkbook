@@ -92,6 +92,7 @@ class BudgetUrlService {
             .RequestUtilities::_getUrlParamString("year")
             .RequestUtilities::_getUrlParamString("agency")
             .RequestUtilities::_getUrlParamString("expcategory")
+            .RequestUtilities::_getUrlParamString("dept")
             .'/expcategory/'.$expense_category_id;
         return $url;
     }

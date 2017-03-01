@@ -50,7 +50,37 @@
             GROUP BY budget.budget_fiscal_year_id, budget.agency_id, budget.agency_name
         </sql>
     </statement>
-    <statement name="GetAgenciesByPercentDifference" datasource="checkbook"></statement>
+    <statement name="GetAgenciesByPercentDifference" datasource="checkbook">
+        <param name="year" type="int" />
+        <param name="agency" type="int" />
+        <param name="dept" type="int" />
+        <param name="filter_type" type="string" />
+        <param name="expcategory" type="int" />
+        <sql>
+            SELECT s0.budget_fiscal_year_id,
+                s0.agency_id,
+                j1.agency_name,
+                SUM(COALESCE(modified_budget_amount,0)) AS current_amount,
+                SUM(COALESCE(modified_budget_amount_py,0)) AS previous_amount,
+                SUM(COALESCE(modified_budget_amount_py_1,0)) AS previous_1_amount,
+                SUM(COALESCE(modified_budget_amount_py_2,0)) AS previous_2_amount,
+                CASE SUM(COALESCE(modified_budget_amount_py,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(modified_budget_amount,0)) - SUM(COALESCE(modified_budget_amount_py,0)))/SUM(COALESCE(modified_budget_amount_py,0)))*100 END AS percent_difference1,
+                CASE SUM(COALESCE(modified_budget_amount_py_1,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(modified_budget_amount,0)) - SUM(COALESCE(modified_budget_amount_py_1,0)))/SUM(COALESCE(modified_budget_amount_py_1,0)))*100 END AS percent_difference2,
+                CASE SUM(COALESCE(modified_budget_amount_py_2,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(modified_budget_amount,0)) - SUM(COALESCE(modified_budget_amount_py_2,0)))/SUM(COALESCE(modified_budget_amount_py_2,0)))*100 END AS percent_difference3
+            FROM aggregateon_budget_by_year s0
+            JOIN ref_agency j1 ON j1.agency_id = s0.agency_id
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="s0.object_class_id" paramName="expcategory" />
+                    <exp op="=" dbField="s0.budget_fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="s0.agency_id " paramName="agency" />
+                    <exp op="=" dbField="s0.department_id " paramName="dept" />
+                    <exp op="=" dbField="s0.filter_type" paramName="filter_type" />
+                </exp>
+            </where>
+            GROUP BY s0.budget_fiscal_year_id, s0.agency_id, j1.agency_name
+        </sql>
+    </statement>
     <!--Expense Categories Methods-->
     <statement name="GetExpenseCategoriesByBudget" datasource="checkbook">
         <param name="year" required ="true" type="int" />
