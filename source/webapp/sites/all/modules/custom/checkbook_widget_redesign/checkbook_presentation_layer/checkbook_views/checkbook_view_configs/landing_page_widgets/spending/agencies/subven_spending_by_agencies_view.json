@@ -1,20 +1,15 @@
 {
-    "sqlConfig":
-    {
-        "serviceName":"SpendingWidgetService",
-        "sqlConfigName":"spending/sub_contracts_spending",
-        "statementName":"GetSubVenSpendingByAgencies"
-    },
     "serviceName":"SpendingWidgetService",
+    "dataFunc": "GetSubVendorSpendingByAgencies",
     "defaultParameters":{"type_of_year":"B"},
     "headerTitle":"Agencies",
     "headerSubTitle":"Agencies",
     "table_columns":[
         {"labelAlias":"agency_name","column":"agency_name","derivedColumn":"agency_name_link","tooltip":47},
         {"labelAlias":"num_sub_vendors","column":"sub_vendor_count","format":"number"},
-        {"labelAlias":"ytd_spending_sub_vendors","column":"ytd_spending_sub_vendors","derivedColumn":"agency_ytd_spending_link","format":"dollar"},
-        {"labelAlias":"sub_vendors_percent_paid","column":"percent_spending","format":"percent"},
-        {"labelAlias":"ytd_spending_agency","column":"check_amount_sum","format":"dollar"},
+        {"labelAlias":"ytd_spending_sub_vendors","column":"check_amount_sum","derivedColumn":"agency_ytd_spending_link","format":"dollar"},
+        {"labelAlias":"sub_vendors_percent_paid","column":"percent_paid_sub_vendors","format":"percent"},
+        {"labelAlias":"ytd_spending_agency","column":"ytd_spending_agency","format":"dollar"},
         {"label":"","column":""}
     ],
     "dataTableOptions":{

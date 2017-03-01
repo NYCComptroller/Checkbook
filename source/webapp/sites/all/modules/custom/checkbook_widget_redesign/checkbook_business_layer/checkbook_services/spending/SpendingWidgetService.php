@@ -1,6 +1,14 @@
 <?php
 
-class SpendingWidgetService extends WidgetSqlService implements IWidgetService {
+class SpendingWidgetService extends WidgetDataService implements IWidgetService {
+
+    /**
+     * Function to allow the client to initialize the data service
+     * @return mixed
+     */
+    public function initializeDataService() {
+        return new SpendingDataService();
+    }
 
     public function implementDerivedColumn($column_name,$row) {
         $value = null;
@@ -175,6 +183,11 @@ class SpendingWidgetService extends WidgetSqlService implements IWidgetService {
     }
     
     public function adjustParameters($parameters, $urlPath) {
+
+        $category = SpendingCategory::getCurrent();
+        if($category == SpendingCategory::TOTAL) {
+            $parameters['is_all_categories'] = 'Y';
+        }
         return $parameters;
     }
 }

@@ -1,11 +1,6 @@
 {
-    "sqlConfig":
-    {
-        "serviceName":"SpendingWidgetService",
-        "sqlConfigName":"spending/spending",
-        "statementName":"GetSpendingByPayrollAgencies"
-    },
     "serviceName":"SpendingWidgetService",
+    "dataFunc":"GetSpendingByPayrollAgencies",
     "defaultParameters":{"type_of_year":"B","spending_category_id":2},
     "headerTitle":"Agencies",
     "headerSubTitle":"Agencies",

@@ -1,6 +1,10 @@
 <?php
 
 abstract class SqlConfigPath {
+    /* Spending */
+    const CitywideSpending = "spending/spending";
+    const OgeSpending = "spending/oge_spending";
+    const SubVendorsSpending = "spending/sub_vendors_spending";
     /* Contracts */
     const CitywideContracts = "contracts/contracts";
     const PendingContracts = "contracts/pending_contracts";
