@@ -26,6 +26,7 @@ files[] = data_access/SqlUtil.php
 
 files[] = constants/commonConstants.php
 files[] = constants/ContractConstants.php
+files[] = constants/BudgetConstants.php
 files[] = data_access/constants/SqlOperator.php
 
 files[] = utilities/RequestUtilities.php
