@@ -271,6 +271,7 @@
                     <exp op="=" dbField="budget.agency_id" paramName="agency" />
                     <exp op="=" dbField="budget.budget_fiscal_year_id" paramName="year" />
                     <exp op="=" dbField="budget.object_class_id" paramName="expcategory" />
+                    <exp op="=" dbField="budget.department_id" paramName="dept" />
                 </exp>
             </where>
             GROUP BY budget.budget_fiscal_year_id, budget.budget_code_id, budget.budget_code_name
