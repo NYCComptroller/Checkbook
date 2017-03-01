@@ -50,7 +50,35 @@
             GROUP BY budget.budget_fiscal_year_id, budget.agency_id, budget.agency_name
         </sql>
     </statement>
-    <statement name="GetAgenciesByPercentDifference" datasource="checkbook"></statement>
+    <statement name="GetAgenciesByPercentDifference" datasource="checkbook">
+        <param name="year" type="int" />
+        <param name="agency" type="int" />
+        <param name="dept" type="int" />
+        <param name="filter_type" type="string" />
+        <param name="expcategory" type="int" />
+        <sql>
+            SELECT budget.budget_fiscal_year_id AS year_id,
+            budget.agency_id AS agency_id,
+            budget.agency_name AS agency_name,
+            SUM(total_expenditure_amount) AS committed_budget,
+            SUM(pre_encumbered_amount) AS pre_encumbered,
+            SUM(encumbered_amount) AS encumbered,
+            SUM(accrued_expense_amount) AS accrued_expense,
+            SUM(cash_expense_amount) AS cash_payments,
+            SUM(post_closing_adjustment_amount) AS post_adjustments
+            FROM budget
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="s0.object_class_id" paramName="expcategory" />
+                    <exp op="=" dbField="s0.budget_fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="s0.agency_id " paramName="agency" />
+                    <exp op="=" dbField="s0.department_id " paramName="dept" />
+                    <exp op="=" dbField="s0.filter_type" paramName="filter_type" />
+                </exp>
+            </where>
+            GROUP BY budget.budget_fiscal_year_id, budget.agency_id, budget.agency_name
+        </sql>
+    </statement>
     <!--Expense Categories Methods-->
     <statement name="GetExpenseCategoriesByBudget" datasource="checkbook">
         <param name="year" required ="true" type="int" />
