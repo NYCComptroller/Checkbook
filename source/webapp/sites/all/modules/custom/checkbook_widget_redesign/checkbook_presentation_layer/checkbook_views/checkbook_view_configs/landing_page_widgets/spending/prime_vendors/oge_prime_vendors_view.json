@@ -1,9 +1,6 @@
 {
     "defaultConfigKey":"prime_vendors_view",
-    "sqlConfig":
-    {
-        "serviceName":"SpendingWidgetService",
-        "sqlConfigName":"spending/oge_spending",
-        "statementName":"GetOGESpendingByPrimeVendors"
-    }
+    "serviceName":"SpendingWidgetService",
+    "dataFunc":"GetOGESpendingByPrimeVendors",
+    "countFunc":"GetCountOGEPrimeVendors"
 }

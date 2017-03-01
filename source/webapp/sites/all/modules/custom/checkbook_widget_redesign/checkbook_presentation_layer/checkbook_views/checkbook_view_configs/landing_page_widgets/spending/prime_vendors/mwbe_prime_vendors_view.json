@@ -1,12 +1,7 @@
 {
-    "sqlConfig":
-    {
-        "serviceName":"SpendingWidgetService",
-        "sqlConfigName":"spending/mwbe_spending",
-        "statementName":"GetMWBESpendingByPrimeVendors",
-        "countStatementName":"GetMWBESpendingCountByPrimeVendors"
-    },
     "serviceName":"SpendingWidgetService",
+    "dataFunc":"GetSpendingByPrimeVendors",
+    "countFunc":"GetCountPrimeVendors",
     "defaultParameters":{"type_of_year":"B","spending_category_id":""},
     "headerTitle":"Prime Vendors",
     "headerSubTitle":"Prime Vendors",

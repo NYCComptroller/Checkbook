@@ -1,8 +1,5 @@
 {
     "defaultConfigKey": "mwbe_spending_by_industries_view",
-    "sqlConfig": {
-        "serviceName": "SpendingWidgetService",
-        "sqlConfigName": "spending/sub_contracts_spending",
-        "statementName": "GetMWBESubVenSpendingByIndustries"
-    }
+    "serviceName":"SpendingWidgetService",
+    "dataFunc":"GetSubVendorSpendingByIndustries"
 }

@@ -1,12 +1,7 @@
 {
-    "sqlConfig":
-    {
-        "serviceName":"SpendingWidgetService",
-        "sqlConfigName":"spending/spending",
-        "statementName":"GetSpendingByContracts",
-        "countStatementName":"GetCountContracts"
-    },
     "serviceName":"SpendingWidgetService",
+    "dataFunc":"GetSpendingByContracts",
+    "countFunc":"GetCountContracts",
     "defaultParameters":{"type_of_year":"B"},
     "headerTitle":"Contracts",
     "headerSubTitle":"Contracts",

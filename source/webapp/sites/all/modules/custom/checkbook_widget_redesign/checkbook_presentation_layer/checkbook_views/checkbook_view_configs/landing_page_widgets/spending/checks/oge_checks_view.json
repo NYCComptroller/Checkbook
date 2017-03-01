@@ -1,11 +1,6 @@
 {
-    "sqlConfig":
-    {
-        "serviceName":"SpendingWidgetService",
-        "sqlConfigName":"spending/oge_spending",
-        "statementName":"GetOGESpendingByChecksAgency"
-    },
     "serviceName":"SpendingWidgetService",
+    "dataFunc":"GetOGESpendingByChecks",
     "headerTitle":"Checks",
     "headerSubTitle":"Checks",
     "table_columns": [

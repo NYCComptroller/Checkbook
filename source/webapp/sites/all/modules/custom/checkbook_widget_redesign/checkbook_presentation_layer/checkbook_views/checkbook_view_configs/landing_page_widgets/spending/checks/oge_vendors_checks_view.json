@@ -1,9 +1,0 @@
-{
-    "defaultConfigKey":"checks_view",
-    "sqlConfig":
-    {
-        "serviceName":"SpendingWidgetService",
-        "sqlConfigName":"spending/oge_spending",
-        "statementName":"GetOGESpendingByChecksVendors"
-    }
-}

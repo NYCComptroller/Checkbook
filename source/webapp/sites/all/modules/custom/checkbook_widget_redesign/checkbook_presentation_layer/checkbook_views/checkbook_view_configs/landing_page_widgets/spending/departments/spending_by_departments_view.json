@@ -1,11 +1,6 @@
 {
-    "sqlConfig":
-    {
-        "serviceName":"SpendingWidgetService",
-        "sqlConfigName":"spending/spending",
-        "statementName":"GetSpendingByDepartments"
-    },
     "serviceName":"SpendingWidgetService",
+    "dataFunc":"GetSpendingByDepartments",
     "defaultParameters":{"type_of_year":"B"},
     "headerTitle":"Departments",
     "headerSubTitle":"Departments",

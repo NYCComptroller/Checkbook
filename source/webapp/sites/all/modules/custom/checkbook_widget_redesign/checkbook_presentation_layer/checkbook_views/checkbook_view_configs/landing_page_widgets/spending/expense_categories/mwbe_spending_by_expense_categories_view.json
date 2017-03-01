@@ -1,16 +1,11 @@
 {
-    "sqlConfig":
-    {
-        "serviceName":"SpendingWidgetService",
-        "sqlConfigName":"spending/mwbe_spending",
-        "statementName":"GetMWBESpendingByExpenseCategories"
-    },
     "serviceName":"SpendingWidgetService",
+    "dataFunc":"GetSpendingByExpenseCategories",
     "defaultParameters":{"type_of_year":"B"},
     "headerTitle":"Expense Categories",
     "headerSubTitle":"Expense Categories",
     "table_columns":[
-        {"labelAlias":"expense_category","column":"original_expenditure_object_name"},
+        {"labelAlias":"expense_category","column":"expenditure_object_name"},
         {"labelAlias":"ytd_spending","column":"check_amount_sum","derivedColumn":"expense_cat_ytd_spending_link","format":"dollar"},
         {"labelAlias":"percent_spending","column":"percent_spending","format":"percent"},
         {"label":"","column":""}
