@@ -78,7 +78,7 @@
                     <exp op="=" dbField="s0.filter_type" paramName="filter_type" />
                 </exp>
             </where>
-            GROUP BY budget.budget_fiscal_year_id, s0.agency_id, s0.agency_name
+            GROUP BY s0.budget_fiscal_year_id, s0.agency_id, s0.agency_name
         </sql>
     </statement>
     <!--Expense Categories Methods-->
