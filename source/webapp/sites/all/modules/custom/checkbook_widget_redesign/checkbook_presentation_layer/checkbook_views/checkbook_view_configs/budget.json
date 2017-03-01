@@ -24,7 +24,7 @@
             "percent_difference_by_agencies_previous_2":{
                "widget_config":"percent_difference_by_agencies_previous_2_view",
                "legacy_node_id":560,
-                "visibility_parameters":["-agency"]
+               "visibility_parameters":["-agency"]
             },
             "budget_by_departments":{
                 "widget_config":"budget_by_departments_view",
