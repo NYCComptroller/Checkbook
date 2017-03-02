@@ -60,7 +60,7 @@ pre-packaged for direct installation by copying, as described below.
 
 5. Then restart PostgreSQL:
           
-          $ sudo service postgresql-9.3 restart
+          $ sudo service postgresql restart
 
  Verify that the user postgres can connect to the checkbook database with
  the following command. 
@@ -89,6 +89,10 @@ pre-packaged for direct installation by copying, as described below.
           url="jdbc:postgresql://localhost/checkbook" \
           user="postgres" password="postgres"
 
+* Question: In this file we have two dataSources, "db1" and "db2."
+  Should both be edited to have localhost instead of the 192.168.3.23 IP
+  address?  And should both use postgres as their username and password?
+
  *Note: Actually, you may not need to edit it if you're just testing,
  as the shipped file has the username "postgres" with password
  "postgres", for testing.  However, in a production environment those
@@ -113,10 +117,16 @@ pre-packaged for direct installation by copying, as described below.
  Solr is now running.  For troubleshooting errors, see the detailed
  logs in `/opt/apache-tomcat-6.0.35/logs/`.
 
+ * Note that if another Tomcat application is running on your machine,
+   you may need to kill the existing Tomcat process and then run
+   startup.sh to avoid "Address already in use" errors.
+
 9. Start Solr indexing.
 
  Visit this url in a browser start indexing:
  <http://localhost:8080/solr-checkbook/dataimport?command=full-import&clean=true&jobID=0>
+
+ *Question: What data does this import?  To which database(s)? 
 
  You can monitor the progress of indexing by repeatedly visiting
  <http://localhost:8080/solr-checkbook/dataimport>.

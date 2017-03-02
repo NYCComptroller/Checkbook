@@ -251,18 +251,9 @@ Steps to install:
 
             $ ls /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highcharts/3.0.1/js/highcharts.src.js
 
-    **Highstock:**
-    - Download version 1.2.4 from <http://www.highcharts.com/products/highstock>:
-
-            $ wget http://code.highcharts.com/zips/Highstock-1.2.4.zip
-    - Unpack it:
-
-            $ mkdir -p /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highstock/
-            $ unzip Highstock-1.2.4.zip -d \
-            /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highstock/1.2.4
-    - Verify that it is unpacked into the right place, by checking that the path to `highstock.src.js`:
-
-            $ ls /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highstock/1.2.4/js/highstock.src.js
+    * Note: These instructions used to suggest getting and unpacking
+      Highstock in the same way, but that package is now included in this
+      repo.
 
     Note that these Highcharts and Highstock downloads are available at
     no charge, but they are not licensed under open source licenses.
@@ -310,22 +301,61 @@ Steps to install:
     Create and import the database into PostgreSQL using the following commands:
 
         $ cd data
-        $ unzip checkbook_demo_database_for_postgres_db_20140708.zip
-        Archive:  checkbook_demo_database_for_postgres_db_20140708.zip
-          inflating: checkbook_demo_database_for_postgres_db_20140708.sql
-        $ unzip checkbook_demo_database_for_postgres_ogent_db_20140708.zip
-        Archive:  checkbook_demo_database_for_postgres_ogent_db_20140708.zip
-          inflating: checkbook_demo_database_for_postgres_ogent_db_20140708.sql
+        $ 7z x checkbook_demo_database_for_postgres_db_20150408.7z
+
+7-Zip [64] 16.02 : Copyright (c) 1999-2016 Igor Pavlov : 2016-05-21
+p7zip Version 16.02 (locale=en_US.UTF-8,Utf16=on,HugeFiles=on,64 bits,8 CPUs Intel(R) Core(TM) i7-4702MQ CPU @ 2.20GHz (306C3),ASM,AES-NI)
+
+Scanning the drive for archives:
+1 file, 63583088 bytes (61 MiB)
+
+Extracting archive: checkbook_demo_database_for_postgres_db_20150408.7z
+--
+Path = checkbook_demo_database_for_postgres_db_20150408.7z
+Type = 7z
+Physical Size = 63583088
+Headers Size = 207
+Method = LZMA:24
+Solid = -
+Blocks = 1
+
+Everything is Ok
+
+Size:       1101880965
+Compressed: 63583088
+        $ 7z x checkbook_demo_database_for_postgres_ogent_db_20150408.7z
+
+7-Zip [64] 16.02 : Copyright (c) 1999-2016 Igor Pavlov : 2016-05-21
+p7zip Version 16.02 (locale=en_US.UTF-8,Utf16=on,HugeFiles=on,64 bits,8 CPUs Intel(R) Core(TM) i7-4702MQ CPU @ 2.20GHz (306C3),ASM,AES-NI)
+
+Scanning the drive for archives:
+1 file, 5744527 bytes (5610 KiB)
+
+Extracting archive: checkbook_demo_database_for_postgres_ogent_db_20150408.7z
+--
+Path = checkbook_demo_database_for_postgres_ogent_db_20150408.7z
+Type = 7z
+Physical Size = 5744527
+Headers Size = 218
+Method = LZMA:24
+Solid = -
+Blocks = 1
+
+Everything is Ok
+
+Size:       83122422
+Compressed: 5744527
         $ cd ..
         $ sudo su postgres
         bash-4.1$ psql
-        postgres=# create database checkbook ;
-        postgres=# create database checkbook_ogent ;
+        postgres=# create database checkbook;
+        postgres=# create database checkbook_ogent;
         postgres=# \q
           _(to exit from the database interactive prompt)_
-        bash-4.1$ psql checkbook -f         data/checkbook_demo_database_for_postgres_db_20140708/checkbook_demo_database_for_postgres_db_20140708.sql
-        bash-4.1$ psql checkbook_ogent -f         data/checkbook_demo_database_for_postgres_ogent_db_20140708/checkbook_demo_database_for_postgres_ogent_db_20140708.sql
-         bash-4.1$ exit
+        $ psql checkbook -f data/checkbook_demo_database_for_postgres_db_20150408.sql
+        $ chmod a+r data/checkbook_demo_database_for_postgres_ogent_db_20150408.sql 
+        $ psql checkbook_ogent -f data/checkbook_demo_database_for_postgres_ogent_db_20150408.sql
+        $ exit
        
     
     Set the PostgreSQL database user's username and password with the following command:
@@ -415,6 +445,8 @@ Steps to install:
      You can change the value to "`http://localhost:8080/solr-checkbook`",
      assuming a deployment where everything runs on one server.
 
+     * Question: Should this value be added to the default settings file?
+
    **DB settings:**
    - Update the psql command in the obvious ways.  Again, there is no actual
      backslash nor linebreak after it:
@@ -477,6 +509,10 @@ Steps to install:
 
             //no of records to limit for datatables
             $conf['check_book']['datatables']['iTotalDisplayRecords'] = 200000;
+
+   - To create all those directories:
+     $ cd sites/default/files
+     $ mkdir data datafeeds refdata exportdata
 
 11. Optionally install Fonts.
 
