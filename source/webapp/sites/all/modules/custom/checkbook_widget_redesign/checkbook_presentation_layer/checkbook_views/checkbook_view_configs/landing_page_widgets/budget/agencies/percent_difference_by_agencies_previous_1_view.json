@@ -6,7 +6,7 @@
     "headerSubTitle": "Agencies",
     "footerUrl":"BudgetUrlService::getPercentDiffFooterUrl(_widget_controller_footer_url($node),'agencies')",
     "table_columns": [
-        {"labelAlias": "agency","column": "agency_name","derivedColumn":"agency_name_link"},
+        {"labelAlias": "agency_name","column": "agency_name","derivedColumn":"agency_name_link"},
         {"labelAlias": "previous_modified","column": "previous_amount","format": "dollar"},
         {"labelAlias": "current_modified","column": "current_amount","format": "dollar"},
         {"labelAlias": "percent_diff","column": "percent_difference1","format": "percent"},
