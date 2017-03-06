@@ -120,20 +120,24 @@ Steps to install:
     should be pretty similar):
 
         $ sudo apt-get update
-        $ sudo apt-get install php5
-        $ sudo apt-get install php5-gd
-        $ sudo apt-get install php5-intl
-        $ sudo apt-get install php5-mysql
-        $ sudo apt-get install php5-pgsql
+        $ sudo apt-get install php
+        $ sudo apt-get install php-gd
+        $ sudo apt-get install php-intl
+        $ sudo apt-get install php-mysql
+        $ sudo apt-get install php-pgsql
         $ sudo apt-get install mysql-server
         $ sudo apt-get install postgresql
         $ sudo apt-get install postgresql-client
         $ sudo apt-get install postgresql-contrib
         $ sudo apt-get install git
-        $ sudo apt-get install drush
         $ sudo apt-get install apache2
-        $ sudo apt-get install openjdk-6-jre-headless
+        $ sudo apt-get install openjdk-6-jre-headless # does not exist
         $ sudo apt-get install zip
+        $ sudo apt install libapache2-mod-php
+
+        # You may need to upgrade your Apache from PHP5 to PHP7
+        $ sudo a2dismod php5
+        $ sudo a2enmod php7.0
 
     On CentOS 6.4 (Red Hat RHEL should similar), it's this:
 
@@ -154,6 +158,8 @@ Steps to install:
     install it using Composer:
     * https://getcomposer.org/doc/00-intro.md#globally
     * http://docs.drush.org/en/master/install-alternative/
+
+    $ composer require drush/drush
 
     For PostgreSQL, we want version 9.x, but base CentOS 6.4
     only packages PostgreSQL 8.x.  So first download the RPM
@@ -356,13 +362,12 @@ Compressed: 5744527
         $ chmod a+r data/checkbook_demo_database_for_postgres_ogent_db_20150408.sql 
         $ psql checkbook_ogent -f data/checkbook_demo_database_for_postgres_ogent_db_20150408.sql
         $ exit
-       
     
     Set the PostgreSQL database user's username and password with the following command:
     $ sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'postgres';"
     
     Verify that PostgreSQL can accept password authentication from the postgres user with the following command: 
-    $ PGPASSWORD=postgres psql -U postgres checkbook
+    $ PGPASSWORD=postgres psql -U postgres -h 127.0.0.1 checkbook
     *Notes:*
 
     The demo dataset loaded above assumes the PostgreSQL database user
@@ -412,7 +417,7 @@ Compressed: 5744527
                     'schema' => 'public'
                 ),
               ),
-             'checkbook_ogent' => array(
+             'checkbook_oge' => array(
                 'main' => array(
                     'database' => 'checkbook_ogent',
                     'username' => 'postgres',
@@ -512,7 +517,9 @@ Compressed: 5744527
 
    - To create all those directories:
      $ cd sites/default/files
-     $ mkdir data datafeeds refdata exportdata
+     $ mkdir datafeeds refdata exportdata
+     $ chgrp www-data datafeeds refdata exportdata
+     $ chmod g+w datafeeds refdata exportdata
 
 11. Optionally install Fonts.
 
@@ -659,3 +666,12 @@ and once we've figured out the solution we'll list it here too.
     `service httpd restart` 
 
     `./bin/shutdown.sh` (from within the apache-tomcat directory)
+
+
+For better logging, follow the log4drupal set up instructions:
+
+# as root:
+$ mkdir /var/log/drupal
+$ chown www-data.www-data /var/log/drupal
+
+This file will hold more detailed logs with Drupal errors.

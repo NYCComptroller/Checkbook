@@ -1,6 +1,6 @@
 <dataConfig>
-    <dataSource name="db1" type="JdbcDataSource" driver="org.postgresql.Driver" url="jdbc:postgresql://192.168.3.23/checkbook" user="webuser1" password="webuser1" readOnly="true" autoCommit="false" transactionIsolation="TRANSACTION_READ_COMMITTED" holdability="CLOSE_CURSORS_AT_COMMIT"/>
-    <dataSource name="db2" type="JdbcDataSource" driver="org.postgresql.Driver" url="jdbc:postgresql://192.168.3.23/checkbook_ogent" user="webuser1" password="webuser1" readOnly="true" autoCommit="false" transactionIsolation="TRANSACTION_READ_COMMITTED" holdability="CLOSE_CURSORS_AT_COMMIT"/>
+    <dataSource name="db1" type="JdbcDataSource" driver="org.postgresql.Driver" url="jdbc:postgresql://127.0.0.1/checkbook" user="postgres" password="postgres" readOnly="true" autoCommit="false" transactionIsolation="TRANSACTION_READ_COMMITTED" holdability="CLOSE_CURSORS_AT_COMMIT"/>
+    <dataSource name="db2" type="JdbcDataSource" driver="org.postgresql.Driver" url="jdbc:postgresql://127.0.0.1/checkbook_ogent" user="postgres" password="postgres" readOnly="true" autoCommit="false" transactionIsolation="TRANSACTION_READ_COMMITTED" holdability="CLOSE_CURSORS_AT_COMMIT"/>
     <document>
         <entity dataSource="db1" name="budget" query="select
 			'budget:' || budget_id id,
