@@ -100,6 +100,7 @@ class SpendingUrlService {
 
         $year_type = _getRequestParamValue("yeartype");
         $agency_id = _getRequestParamValue("agency");
+        $category = _getRequestParamValue("category");
         $dashboard = _getRequestParamValue("dashboard");
         $datasource = _getRequestParamValue("datasource");
 
@@ -115,6 +116,7 @@ class SpendingUrlService {
 
         $mwbe = $is_mwbe_certified ? "/mwbe/2~3~4~5~9" : "";
         $agency = isset($agency_id) ? "/agency/{$agency_id}" : "";
+        $category = isset($category) ? "/category/{$category}" : "";
         $vendor = isset($vendor_id) ? "/vendor/{$vendor_id}" : "";
         $datasource = isset($datasource) ? "/datasource/{$datasource}" : "";
         $dashboard_param = isset($new_dashboard) ? "/dashboard/{$new_dashboard}" : "";
@@ -124,8 +126,8 @@ class SpendingUrlService {
          * if remaining in the same dashboard persist all filters (drill-down) except sub vendor
          */
         $url = $dashboard != $new_dashboard
-            ? $url = $url . $dashboard_param . $mwbe . $agency . $vendor
-            : $url . $datasource . $dashboard_param . $mwbe . $agency . $vendor;
+            ? $url = $url . $dashboard_param . $mwbe . $category . $agency . $vendor
+            : $url . $datasource . $dashboard_param . $mwbe . $category . $agency . $vendor;
         return $url;
     }
 
