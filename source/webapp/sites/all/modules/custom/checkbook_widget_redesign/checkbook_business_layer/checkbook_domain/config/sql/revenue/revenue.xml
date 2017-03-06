@@ -1,6 +1,7 @@
 
 <statements>
-    <statement name="GetRevenueByAgencies" datasource="checkbook">
+    <!--GetAgenciesByRevenue-->
+    <statement name="GetAgenciesByRevenue" datasource="checkbook">
         <param name="year" required ="true" type="int" />
         <param name="agency" type="int" />
         <sql>
@@ -21,7 +22,8 @@
           GROUP BY b.agency_id, b.agency_name
         </sql>
     </statement>
-    <statement name="GetRevenueByFundingClasses" datasource="checkbook">
+    <!--GetFundingClassesByRevenue-->
+    <statement name="GetFundingClassesByRevenue" datasource="checkbook">
         <param name="year" required ="true" type="int" />
         <param name="agency" type="int" />
         <sql>
@@ -44,8 +46,8 @@
             GROUP BY ref.funding_class_id, ref.funding_class_name, ref.funding_class_code
         </sql>
     </statement>
-    <!--GetRevenueCategories-->
-    <statement name="GetRevenueCategories" datasource="checkbook">
+    <!--GetRevenueCategoriesByRevenue-->
+    <statement name="GetRevenueCategoriesByRevenue" datasource="checkbook">
         <param name="year" required ="true" type="int" />
         <param name="agency" type="int" />
         <sql>
@@ -66,8 +68,8 @@
             GROUP BY s0.revenue_category_id, j1.revenue_category_name
         </sql>
     </statement>
-    <!--GetCrossYearCollectionsByAgencies-->
-    <statement name="GetCrossYearCollectionsByAgencies" datasource="checkbook">
+    <!--GetAgenciesCrossYearCollectionsByRevenue-->
+    <statement name="GetAgenciesCrossYearCollectionsByRevenue" datasource="checkbook">
         <param name="year" required ="true" type="int" />
         <param name="agency" type="int" />
         <sql>
@@ -89,8 +91,8 @@
             GROUP BY s0.agency_id, j1.agency_name
         </sql>
     </statement>
-    <!--GetRevenueCategoriesByCrossYearCollections-->
-    <statement name="GetRevenueCategoriesByCrossYearCollections" datasource="checkbook">
+    <!--GetRevenueCategoriesCrossYearCollectionsByRevenue-->
+    <statement name="GetRevenueCategoriesCrossYearCollectionsByRevenue" datasource="checkbook">
         <param name="year" required ="true" type="int" />
         <param name="agency" type="int" />
         <sql>
@@ -112,8 +114,8 @@
             GROUP BY s0.revenue_category_id, j1.revenue_category_name
         </sql>
     </statement>
-    <!--GetRevenueFundingClassesByCrossYears-->
-    <statement name="GetRevenueFundingClassesByCrossYears" datasource="checkbook">
+    <!--GetRevenueFundingClassesCrossYearCollectionsByRevenue-->
+    <statement name="GetRevenueFundingClassesCrossYearCollectionsByRevenue" datasource="checkbook">
         <param name="year" required ="true" type="int" />
         <param name="agency" type="int" />
         <sql>

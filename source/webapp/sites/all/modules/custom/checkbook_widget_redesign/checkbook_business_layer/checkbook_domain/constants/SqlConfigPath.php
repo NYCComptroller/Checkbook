@@ -12,4 +12,6 @@ abstract class SqlConfigPath {
     const SubContracts = "contracts/sub_contracts";
     /* Budget */
     const CitywideBudget = "budget/budget";
+     /* Revenue */
+    const CitywideRevenue = "revenue/revenue";
 }
