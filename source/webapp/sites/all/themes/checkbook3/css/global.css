@@ -3636,7 +3636,7 @@ a.new-features-morelink{
 }
 
 /* Fix height for headers with single line labels */
-#table_revenue_by_agencies_view,
+#table_revenue_by_agencies_view thead tr,
 #table_budget_by_agencies_view thead tr,
 #table_budget_by_departments_view thead tr{
   height: 40px;
