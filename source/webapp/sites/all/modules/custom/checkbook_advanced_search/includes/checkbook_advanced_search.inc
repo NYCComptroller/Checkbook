@@ -4,6 +4,10 @@
  * has been clicked and invoke the respective functions that generate the
  * redirect URL with the necessary parameters
  */
+$mapping_file = DRUPAL_ROOT . '/sites/all/modules/custom/checkbook_project/customclasses/util/MappingUtil.php';
+
+include_once $mapping_file;
+
 function checkbook_advanced_search_form_submit($form, &$form_state) {
 
     switch ($form_state['clicked_button']['#name']) {
