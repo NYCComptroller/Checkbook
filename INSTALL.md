@@ -161,6 +161,26 @@ Steps to install:
 
     $ composer require drush/drush
 
+    Or, to use drush everywhere, assuming you already have composer,
+    follow these directions from
+    https://www.linode.com/docs/websites/cms/drush-drupal:
+    
+    $ sudo ln -s /usr/local/bin/composer /usr/bin/composer
+    $ sudo git clone https://github.com/drush-ops/drush.git /usr/local/src/drush
+    $ cd /usr/local/src/drush
+    $ sudo git checkout 8.1.10 # or whatever the latest version is
+    $ sudo ln -s /usr/local/src/drush/drush /usr/bin/drush
+    $ sudo composer install
+    # if you want to check that you have the right version:
+    $ drush --version
+
+    Now, to clear the cache for a development version, run:
+    $ cd /var/www/html # or wherever your Checkbook instance is installed
+    $ drush cc all
+
+    This allows you to use debugging print statements on your webpages
+    and to have them accurately reflect the latest version of your code.
+
     For PostgreSQL, we want version 9.x, but base CentOS 6.4
     only packages PostgreSQL 8.x.  So first download the RPM
     file from the PostgreSQL Yum/RPM Building Project at
