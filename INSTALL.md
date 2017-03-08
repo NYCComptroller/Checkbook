@@ -159,24 +159,26 @@ Steps to install:
     * https://getcomposer.org/doc/00-intro.md#globally
     * http://docs.drush.org/en/master/install-alternative/
 
-    $ composer require drush/drush
+
+        `$ composer require drush/drush`
 
     Or, to use drush everywhere, assuming you already have composer,
     follow these directions from
-    https://www.linode.com/docs/websites/cms/drush-drupal:
+    [linode](https://www.linode.com/docs/websites/cms/drush-drupal):
     
-    $ sudo ln -s /usr/local/bin/composer /usr/bin/composer
-    $ sudo git clone https://github.com/drush-ops/drush.git /usr/local/src/drush
-    $ cd /usr/local/src/drush
-    $ sudo git checkout 8.1.10 # or whatever the latest version is
-    $ sudo ln -s /usr/local/src/drush/drush /usr/bin/drush
-    $ sudo composer install
-    # if you want to check that you have the right version:
-    $ drush --version
-
+        $ sudo ln -s /usr/local/bin/composer /usr/bin/composer
+        $ sudo git clone https://github.com/drush-ops/drush.git /usr/local/src/drush
+        $ cd /usr/local/src/drush
+        $ sudo git checkout 8.1.10 # or whatever the latest version is
+        $ sudo ln -s /usr/local/src/drush/drush /usr/bin/drush
+        $ sudo composer install
+        # if you want to check that you have the right version:
+        $ drush --version
+    
     Now, to clear the cache for a development version, run:
-    $ cd /var/www/html # or wherever your Checkbook instance is installed
-    $ drush cc all
+    
+        $ cd /var/www/html # or wherever your Checkbook instance is installed
+        $ drush cc all
 
     This allows you to use debugging print statements on your webpages
     and to have them accurately reflect the latest version of your code.
@@ -329,48 +331,49 @@ Steps to install:
         $ cd data
         $ 7z x checkbook_demo_database_for_postgres_db_20150408.7z
 
-7-Zip [64] 16.02 : Copyright (c) 1999-2016 Igor Pavlov : 2016-05-21
-p7zip Version 16.02 (locale=en_US.UTF-8,Utf16=on,HugeFiles=on,64 bits,8 CPUs Intel(R) Core(TM) i7-4702MQ CPU @ 2.20GHz (306C3),ASM,AES-NI)
-
-Scanning the drive for archives:
-1 file, 63583088 bytes (61 MiB)
-
-Extracting archive: checkbook_demo_database_for_postgres_db_20150408.7z
---
-Path = checkbook_demo_database_for_postgres_db_20150408.7z
-Type = 7z
-Physical Size = 63583088
-Headers Size = 207
-Method = LZMA:24
-Solid = -
-Blocks = 1
-
-Everything is Ok
-
-Size:       1101880965
-Compressed: 63583088
+            7-Zip [64] 16.02 : Copyright (c) 1999-2016 Igor Pavlov : 2016-05-21
+            p7zip Version 16.02 (locale=en_US.UTF-8,Utf16=on,HugeFiles=on,64 bits,8 CPUs Intel(R) Core(TM) i7-4702MQ CPU @ 2.20GHz (306C3),ASM,AES-NI)
+            
+            Scanning the drive for archives:
+            1 file, 63583088 bytes (61 MiB)
+            
+            Extracting archive: checkbook_demo_database_for_postgres_db_20150408.7z
+            --
+            Path = checkbook_demo_database_for_postgres_db_20150408.7z
+            Type = 7z
+            Physical Size = 63583088
+            Headers Size = 207
+            Method = LZMA:24
+            Solid = -
+            Blocks = 1
+            
+            Everything is Ok
+            
+            Size:       1101880965
+            Compressed: 63583088
         $ 7z x checkbook_demo_database_for_postgres_ogent_db_20150408.7z
-
-7-Zip [64] 16.02 : Copyright (c) 1999-2016 Igor Pavlov : 2016-05-21
-p7zip Version 16.02 (locale=en_US.UTF-8,Utf16=on,HugeFiles=on,64 bits,8 CPUs Intel(R) Core(TM) i7-4702MQ CPU @ 2.20GHz (306C3),ASM,AES-NI)
-
-Scanning the drive for archives:
-1 file, 5744527 bytes (5610 KiB)
-
-Extracting archive: checkbook_demo_database_for_postgres_ogent_db_20150408.7z
---
-Path = checkbook_demo_database_for_postgres_ogent_db_20150408.7z
-Type = 7z
-Physical Size = 5744527
-Headers Size = 218
-Method = LZMA:24
-Solid = -
-Blocks = 1
-
-Everything is Ok
-
-Size:       83122422
-Compressed: 5744527
+            
+            7-Zip [64] 16.02 : Copyright (c) 1999-2016 Igor Pavlov : 2016-05-21
+            p7zip Version 16.02 (locale=en_US.UTF-8,Utf16=on,HugeFiles=on,64 bits,8 CPUs Intel(R) Core(TM) i7-4702MQ CPU @ 2.20GHz (306C3),ASM,AES-NI)
+            
+            Scanning the drive for archives:
+            1 file, 5744527 bytes (5610 KiB)
+            
+            Extracting archive: checkbook_demo_database_for_postgres_ogent_db_20150408.7z
+            --
+            Path = checkbook_demo_database_for_postgres_ogent_db_20150408.7z
+            Type = 7z
+            Physical Size = 5744527
+            Headers Size = 218
+            Method = LZMA:24
+            Solid = -
+            Blocks = 1
+            
+            Everything is Ok
+            
+            Size:       83122422
+            Compressed: 5744527
+            
         $ cd ..
         $ sudo su postgres
         bash-4.1$ psql
@@ -688,10 +691,13 @@ and once we've figured out the solution we'll list it here too.
     `./bin/shutdown.sh` (from within the apache-tomcat directory)
 
 
+Logging
+-------------------
+
 For better logging, follow the log4drupal set up instructions:
 
-# as root:
-$ mkdir /var/log/drupal
-$ chown www-data.www-data /var/log/drupal
+    # as root:
+    $ mkdir /var/log/drupal
+    $ chown www-data.www-data /var/log/drupal
 
 This file will hold more detailed logs with Drupal errors.
