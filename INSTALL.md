@@ -387,10 +387,11 @@ Steps to install:
         $ exit
     
     Set the PostgreSQL database user's username and password with the following command:
-    $ sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'postgres';"
+        $ sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'postgres';"
     
     Verify that PostgreSQL can accept password authentication from the postgres user with the following command: 
-    $ PGPASSWORD=postgres psql -U postgres -h 127.0.0.1 checkbook
+        $ PGPASSWORD=postgres psql -U postgres -h 127.0.0.1 checkbook
+        
     *Notes:*
 
     The demo dataset loaded above assumes the PostgreSQL database user
@@ -413,7 +414,7 @@ Steps to install:
 
 8.  Check the basic database settings in `settings.php`.
 
-    Look for: $databases = array (); text in the following file `/var/www/html/sites/default/settings.php`:
+    Look for: `$databases = array ();` text in the following file `/var/www/html/sites/default/settings.php`:
     Insert the following settings listed below. 
         
         $databases = array(
@@ -472,8 +473,6 @@ Steps to install:
 
      You can change the value to "`http://localhost:8080/solr-checkbook`",
      assuming a deployment where everything runs on one server.
-
-     * Question: Should this value be added to the default settings file?
 
    **DB settings:**
    - Update the psql command in the obvious ways.  Again, there is no actual
