@@ -89,10 +89,6 @@ pre-packaged for direct installation by copying, as described below.
           url="jdbc:postgresql://localhost/checkbook" \
           user="postgres" password="postgres"
 
-* Question: In this file we have two dataSources, "db1" and "db2."
-  Should both be edited to have localhost instead of the 192.168.3.23 IP
-  address?  And should both use postgres as their username and password?
-
  *Note: Actually, you may not need to edit it if you're just testing,
  as the shipped file has the username "postgres" with password
  "postgres", for testing.  However, in a production environment those
@@ -125,8 +121,6 @@ pre-packaged for direct installation by copying, as described below.
 
  Visit this url in a browser start indexing:
  <http://localhost:8080/solr-checkbook/dataimport?command=full-import&clean=true&jobID=0>
-
- *Question: What data does this import?  To which database(s)? 
 
  You can monitor the progress of indexing by repeatedly visiting
  <http://localhost:8080/solr-checkbook/dataimport>.
