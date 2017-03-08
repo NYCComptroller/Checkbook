@@ -4,6 +4,7 @@
     "defaultParameters":{"type_of_year":"B","spending_category_id":2},
     "headerTitle":"Agencies",
     "headerSubTitle":"Agencies",
+    "footerUrl":"_widget_controller_footer_url($node).'/category/2'",
     "table_columns": [
         {"labelAlias":"agency_name","column":"agency_name","derivedColumn":"payroll_agency_name_link"},
         {"labelAlias":"ytd_spending","column":"check_amount_sum","derivedColumn":"payroll_agency_ytd_spending_link","format":"dollar"},
