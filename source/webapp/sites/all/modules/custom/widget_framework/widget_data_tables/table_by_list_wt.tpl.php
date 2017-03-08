@@ -20,7 +20,7 @@
 ?>
 <?php require_once(realpath(drupal_get_path('module', 'data_controller')) . '/common/object/converter/handler/PHP2Json.php');
 if (module_exists('widget_highcharts')) {
-  drupal_add_js(drupal_get_path('module', 'widget_highcharts') . '/highcharts/3.0.1/js/highcharts.src.js', array(
+  drupal_add_js(drupal_get_path('module', 'widget_highcharts') . '/highcharts/4.0.4/js/highcharts.src.js', array(
     'group' => JS_LIBRARY,
     'weight' => -1
   ));

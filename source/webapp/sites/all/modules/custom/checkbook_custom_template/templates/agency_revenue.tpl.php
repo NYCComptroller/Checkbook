@@ -20,7 +20,7 @@
 ?>
 <?php require_once(realpath(drupal_get_path('module', 'data_controller')) .'/common/object/converter/handler/PHP2Json.php');
 if (module_exists('widget_highcharts')){
-    drupal_add_js(drupal_get_path('module', 'widget_highcharts') .'/highcharts/3.0.1/js/highcharts.src.js', array('group'=>JS_LIBRARY,'weight'=>-1));
+    drupal_add_js(drupal_get_path('module', 'widget_highcharts') .'/highcharts/4.0.4/js/highcharts.src.js', array('group'=>JS_LIBRARY,'weight'=>-1));
     drupal_add_js(drupal_get_path('module', 'widget_highcharts') .'/highcharts-globals.js',array('group'=>JS_LIBRARY,'weight'=>0));
 } else if (module_exists('widget_highstock')) {
     drupal_add_js(drupal_get_path('module', 'widget_highstock') .'/highstock/1.2.4/js/highstock.js');
