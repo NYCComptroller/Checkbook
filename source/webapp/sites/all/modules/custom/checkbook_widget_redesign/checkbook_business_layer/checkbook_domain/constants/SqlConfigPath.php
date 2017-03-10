@@ -9,5 +9,5 @@ abstract class SqlConfigPath {
     /* Budget */
     const CitywideBudget = "budget/budget";
     /*Payroll*/
-    const PayrollContracts = "payroll/payroll";
+    const CitywidePayroll = "payroll/payroll";
 }
