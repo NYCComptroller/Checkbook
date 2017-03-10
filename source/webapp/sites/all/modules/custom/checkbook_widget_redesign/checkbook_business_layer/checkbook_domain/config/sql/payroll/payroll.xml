@@ -1,0 +1,8 @@
+
+<statements>
+    <statement name="GetAgenciesByPayroll" datasource="checkbook"></statement>
+    <statement name="GetAgenciesByOvertime" datasource="checkbook"></statement>
+    <statement name="GetAnnualSalaries" datasource="checkbook"></statement>
+    <statement name="GetAnnualSalariesPerAgency" datasource="checkbook"></statement>
+    <statement name="GetTitlesByNumberOfEmployees" datasource="checkbook"></statement>
+</statements>
