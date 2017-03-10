@@ -34,7 +34,7 @@
             JOIN ref_document_code l2 ON l2.document_code_id = l1.document_code_id
             JOIN ref_agency l3 on l3.agency_id = l1.agency_id
             JOIN vendor l4 on l4.vendor_id = l1.vendor_id
-            JOIN ref_subcontract_status ref_status on ref_status.scntrc_status = l1.scntrc_status
+            LEFT JOIN ref_subcontract_status ref_status on ref_status.scntrc_status = l1.scntrc_status
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="l1.fiscal_year_id" paramName="year" />
