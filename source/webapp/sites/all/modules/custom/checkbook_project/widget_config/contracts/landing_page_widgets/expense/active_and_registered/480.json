@@ -170,7 +170,7 @@ return $footer;
     { "bSortable": true, "sWidth":"78px","sClass":"number" ,"asSorting": [ "desc","asc"  ]},
     { "bSortable": true, "sWidth":"78px", "sClass":"number" ,"asSorting": [ "desc","asc"  ]},
     { "bSortable": true, "sWidth":"78px", "sClass":"number" ,"asSorting": [ "desc" ,"asc" ]},
-    { "bSortable": false, "sWidth":"15px" }
+    { "bSortable": false, "sWidth":"5px" }
     ] ,
 "bServerSide": true,
 "bFilter": false,
