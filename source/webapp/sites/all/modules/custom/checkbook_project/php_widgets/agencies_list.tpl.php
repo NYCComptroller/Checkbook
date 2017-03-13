@@ -68,20 +68,34 @@ $agency_list .= "<div class='agency-list-open'><span id='all-agency-list-open' c
 $agency_list .= "<div class='agency-list-content all-agency-list-content'>";
 $agency_list .= "<div class='listContainer1' id='allAgenciesList'>";
 
-foreach($agencies as $key => $agencies_chunck){
+if (empty($agencies)) {
+    // If we're in this conditional, then agencies are missing in the
+    // data.  This should only ever show up in a testing instance.  It
+    // resolves issue #56: the agency dropdowns were broken on some
+    // parts of a local instance.
+    $key = 0;
     $agency_list .= ((($key+1)%2 == 0)? "" : "<div class='agency-slide'>");
-    $agency_list .= "<ul class='listCol".($key+1)."'>";
-    foreach($agencies_chunck as $a => $agency){
-        $agency_url ="";
-        $agency_url = ($current_url[1] == 'payroll')?'payroll/agency_landing/agency/'.$agency['agency_id'].'/yeartype/B/year/'.$current_fy_year
-            : $url.'/agency/'.$agency['agency_id'];
-
-        $agency_list .= "<li id=agency-list-id-".$agency['agency_id'].">
-                            <a href='/".$agency_url. "'>".$agency['agency_name']."</a>
-                        </li>";
-    }
+    $agency_list .= "<ul class='listCol1'>";
+    $agency_list .= "<li id='agency-list-id-0'>No citywide agencies found in Checkbook NYC data.</li>";
     $agency_list .= "</ul>";
     $agency_list .= (($key%2 == 1)? "</div>" : "");
+}
+else {
+    foreach($agencies as $key => $agencies_chunck){
+        $agency_list .= ((($key+1)%2 == 0)? "" : "<div class='agency-slide'>");
+        $agency_list .= "<ul class='listCol".($key+1)."'>";
+        foreach($agencies_chunck as $a => $agency){
+            $agency_url ="";
+            $agency_url = ($current_url[1] == 'payroll')?'payroll/agency_landing/agency/'.$agency['agency_id'].'/yeartype/B/year/'.$current_fy_year
+                : $url.'/agency/'.$agency['agency_id'];
+
+            $agency_list .= "<li id=agency-list-id-".$agency['agency_id'].">
+                            <a href='/".$agency_url. "'>".$agency['agency_name']."</a>
+                        </li>";
+        }
+        $agency_list .= "</ul>";
+        $agency_list .= (($key%2 == 1)? "</div>" : "");
+    }
 }
 
 $agency_list .= "</div>";
