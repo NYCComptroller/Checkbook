@@ -633,63 +633,63 @@
                 "contracts":{
                     "widget_config":"sub_contracts_view",
                     "legacy_node_id":721,
-                    "visibility_parameters":["-sub_vendor"]
+                    "visibility_parameters":["-bottom_slider:sub_vendor"]
                 },
                 "contracts_modifications":{
                     "widget_config":"subcontracts_modifications_view",
                     "legacy_node_id":722,
-                    "visibility_parameters":["-sub_vendor"]
+                    "visibility_parameters":["-bottom_slider:sub_vendor"]
                 },
                 "vendors":{
                     "widget_config":"subcontracts_by_prime_vendors_view",
                     "legacy_node_id":725,
-                    "visibility_parameters":["-vendor","-sub_vendor"]
+                    "visibility_parameters":["-vendor","-bottom_slider:sub_vendor"]
                 },
                 "sub_vendors":{
                     "widget_config":"contracts_subvendor_view",
                     "legacy_node_id":720,
-                    "visibility_parameters":["-subvendor","-sub_vendor"]
+                    "visibility_parameters":["-subvendor","-bottom_slider:sub_vendor"]
                 },
                 "award_methods":{
                     "widget_config":"subvendor_award_methods_view",
                     "legacy_node_id":726,
-                    "visibility_parameters":["-awdmethod","-sub_vendor"]
+                    "visibility_parameters":["-awdmethod","-bottom_slider:sub_vendor"]
                 },
                 "agencies":{
                     "widget_config":"subcontracts_by_agencies_view",
                     "legacy_node_id":727,
-                    "visibility_parameters":["-agency","-sub_vendor"]
+                    "visibility_parameters":["-agency","-bottom_slider:sub_vendor"]
                 },
                 "industries":{
                     "widget_config":"sub_contracts_by_industries_view",
                     "legacy_node_id":728,
-                    "visibility_parameters":["-cindustry","-sub_vendor"]
+                    "visibility_parameters":["-cindustry","-bottom_slider:sub_vendor"]
                 },
                 "size":{
                     "widget_config":"sub_contracts_by_size_view",
                     "legacy_node_id":729,
-                    "visibility_parameters":["-csize","-sub_vendor"]
+                    "visibility_parameters":["-csize","-bottom_slider:sub_vendor"]
                 },
 
                 "subcontract_status_by_prime_contract":{
                     "widget_config":"subcontract_status_by_prime_contract_view",
-                    "visibility_parameters":["sub_vendor"]
+                    "visibility_parameters":["bottom_slider:sub_vendor"]
                 },
                 "prime_contract_subven_report":{
                     "widget_config":"prime_contract_subven_report_view",
-                    "visibility_parameters":["-subvendor","sub_vendor"]
+                    "visibility_parameters":["-subvendor","bottom_slider:sub_vendor"]
                 },
                 "prime_contract_subven_report_sub_level":{
                     "widget_config":"prime_contract_subven_report_sub_level_view",
-                    "visibility_parameters":["subvendor","sub_vendor"]
+                    "visibility_parameters":["subvendor","bottom_slider:sub_vendor"]
                 },
                 "subvendor_contracts_by_prime":{
                     "widget_config":"subvendor_contracts_by_prime_view",
-                    "visibility_parameters":["-subvendor","sub_vendor"]
+                    "visibility_parameters":["-subvendor","bottom_slider:sub_vendor"]
                 },
                 "subvendor_contracts_by_prime_sub_level":{
                     "widget_config":"subvendor_contracts_by_prime_sub_level_view",
-                    "visibility_parameters":["subvendor","sub_vendor"]
+                    "visibility_parameters":["subvendor","bottom_slider:sub_vendor"]
                 }
             }
         },
@@ -742,63 +742,63 @@
                 "contracts":{
                     "widget_config":"mwbe_sub_contracts_view",
                     "legacy_node_id":781,
-                    "visibility_parameters":["-sub_vendor"]
+                    "visibility_parameters":["-bottom_slider:sub_vendor"]
                 },
                 "contracts_modifications":{
                     "widget_config":"mwbe_sub_contracts_modifications_view",
                     "legacy_node_id":782,
-                    "visibility_parameters":["-sub_vendor"]
+                    "visibility_parameters":["-bottom_slider:sub_vendor"]
                 },
                 "vendors":{
                     "widget_config":"mwbe_subcontracts_by_prime_vendors_view",
                     "legacy_node_id":783,
-                    "visibility_parameters":["-vendor","-sub_vendor"]
+                    "visibility_parameters":["-vendor","-bottom_slider:sub_vendor"]
                 },
                 "sub_vendors":{
                     "widget_config":"contracts_subvendor_view",
                     "legacy_node_id":784,
-                    "visibility_parameters":["-subvendor","-sub_vendor"]
+                    "visibility_parameters":["-subvendor","-bottom_slider:sub_vendor"]
                 },
                 "award_methods":{
                     "widget_config":"subvendor_award_methods_view",
                     "legacy_node_id":785,
-                    "visibility_parameters":["-awdmethod","-sub_vendor"]
+                    "visibility_parameters":["-awdmethod","-bottom_slider:sub_vendor"]
                 },
                 "agencies":{
                     "widget_config":"mwbe_subcontracts_by_agencies_view",
                     "legacy_node_id":786,
-                    "visibility_parameters":["-agency","-sub_vendor"]
+                    "visibility_parameters":["-agency","-bottom_slider:sub_vendor"]
                 },
                 "industries":{
                     "widget_config":"mwbe_sub_contracts_by_industries_view",
                     "legacy_node_id":787,
-                    "visibility_parameters":["-cindustry","-sub_vendor"]
+                    "visibility_parameters":["-cindustry","-bottom_slider:sub_vendor"]
                 },
                 "size":{
                     "widget_config":"mwbe_sub_contracts_by_size_view",
                     "legacy_node_id":788,
-                    "visibility_parameters":["-csize","-sub_vendor"]
+                    "visibility_parameters":["-csize","-bottom_slider:sub_vendor"]
                 },
 
                 "subcontract_status_by_prime_contract":{
                     "widget_config":"subcontract_status_by_prime_contract_view",
-                    "visibility_parameters":["sub_vendor"]
+                    "visibility_parameters":["bottom_slider:sub_vendor"]
                 },
                 "prime_contract_subven_report":{
                     "widget_config":"prime_contract_subven_report_view",
-                    "visibility_parameters":["-subvendor","sub_vendor"]
+                    "visibility_parameters":["-subvendor","bottom_slider:sub_vendor"]
                 },
                 "prime_contract_subven_report_sub_level":{
                     "widget_config":"prime_contract_subven_report_sub_level_view",
-                    "visibility_parameters":["subvendor","sub_vendor"]
+                    "visibility_parameters":["subvendor","bottom_slider:sub_vendor"]
                 },
                 "subvendor_contracts_by_prime":{
                     "widget_config":"subvendor_contracts_by_prime_view",
-                    "visibility_parameters":["-subvendor","sub_vendor"]
+                    "visibility_parameters":["-subvendor","bottom_slider:sub_vendor"]
                 },
                 "subvendor_contracts_by_prime_sub_level":{
                     "widget_config":"subvendor_contracts_by_prime_sub_level_view",
-                    "visibility_parameters":["subvendor","sub_vendor"]
+                    "visibility_parameters":["subvendor","bottom_slider:sub_vendor"]
                 }
             }
         },
@@ -850,41 +850,64 @@
             "landing_page_widgets":{
                 "contracts":{
                     "widget_config":"sub_contracts_view",
-                    "legacy_node_id":721
+                    "legacy_node_id":721,
+                    "visibility_parameters":["-bottom_slider:sub_vendor"]
                 },
                 "contracts_modifications":{
                     "widget_config":"subcontracts_modifications_view",
-                    "legacy_node_id":722
+                    "legacy_node_id":722,
+                    "visibility_parameters":["-bottom_slider:sub_vendor"]
                 },
                 "vendors":{
                     "widget_config":"subcontracts_by_prime_vendors_view",
                     "legacy_node_id":725,
-                    "visibility_parameters":["-vendor"]
+                    "visibility_parameters":["-vendor","-bottom_slider:sub_vendor"]
                 },
                 "sub_vendors":{
                     "widget_config":"contracts_subvendor_view",
                     "legacy_node_id":720,
-                    "visibility_parameters":["-subvendor"]
+                    "visibility_parameters":["-subvendor","-bottom_slider:sub_vendor"]
                 },
                 "award_methods":{
                     "widget_config":"subvendor_award_methods_view",
                     "legacy_node_id":726,
-                    "visibility_parameters":["-awdmethod"]
+                    "visibility_parameters":["-awdmethod","-bottom_slider:sub_vendor"]
                 },
                 "agencies":{
                     "widget_config":"subcontracts_by_agencies_view",
                     "legacy_node_id":727,
-                    "visibility_parameters":["-agency"]
+                    "visibility_parameters":["-agency","-bottom_slider:sub_vendor"]
                 },
                 "industries":{
                     "widget_config":"sub_contracts_by_industries_view",
                     "legacy_node_id":728,
-                    "visibility_parameters":["-cindustry"]
+                    "visibility_parameters":["-cindustry","-bottom_slider:sub_vendor"]
                 },
                 "size":{
                     "widget_config":"sub_contracts_by_size_view",
                     "legacy_node_id":729,
-                    "visibility_parameters":["-csize"]
+                    "visibility_parameters":["-csize","-bottom_slider:sub_vendor"]
+                },
+                
+                "subcontract_status_by_prime_contract":{
+                    "widget_config":"subcontract_status_by_prime_contract_view",
+                    "visibility_parameters":["bottom_slider:sub_vendor"]
+                },
+                "prime_contract_subven_report":{
+                    "widget_config":"prime_contract_subven_report_view",
+                    "visibility_parameters":["-subvendor","bottom_slider:sub_vendor"]
+                },
+                "prime_contract_subven_report_sub_level":{
+                    "widget_config":"prime_contract_subven_report_sub_level_view",
+                    "visibility_parameters":["subvendor","bottom_slider:sub_vendor"]
+                },
+                "subvendor_contracts_by_prime":{
+                    "widget_config":"subvendor_contracts_by_prime_view",
+                    "visibility_parameters":["-subvendor","bottom_slider:sub_vendor"]
+                },
+                "subvendor_contracts_by_prime_sub_level":{
+                    "widget_config":"subvendor_contracts_by_prime_sub_level_view",
+                    "visibility_parameters":["subvendor","bottom_slider:sub_vendor"]
                 }
             }
         },
@@ -928,27 +951,6 @@
                     "legacy_node_id":729,
                     "visibility_parameters":["-csize"]
                 }
-            }
-        },
-        "active":{
-            "subcontract_status_by_prime_contract":{
-                "widget_config":"subcontract_status_by_prime_contract_view"
-            },
-            "prime_contract_subven_report":{
-                "widget_config":"prime_contract_subven_report_view",
-                "visibility_parameters":["-subvendor"]
-            },
-            "prime_contract_subven_report_sub_level":{
-                "widget_config":"prime_contract_subven_report_sub_level_view",
-                "visibility_parameters":["subvendor"]
-            },
-            "subvendor_contracts_by_prime":{
-                "widget_config":"subvendor_contracts_by_prime_view",
-                "visibility_parameters":["-subvendor"]
-            },
-            "subvendor_contracts_by_prime_sub_level":{
-                "widget_config":"subvendor_contracts_by_prime_sub_level_view",
-                "visibility_parameters":["subvendor"]
             }
         }
     }

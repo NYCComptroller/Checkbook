@@ -204,7 +204,7 @@ class ContractURLHelper{
             $allowedFilters =  array("year","calyear","agency","yeartype","awdmethod","vendor","csize","cindustry","agid","subvendor","mwbe","status");
             //Add new parameter for bottom slider
             $dashboard = isset($dashboard)? $dashboard : _getRequestParamValue("dashboard");
-            $url .= "/bottom_slider/sub_vendor".
+            $url .= "/bottom_slider/sub_vendor/status/A".
                     (isset($dashboard)? '/dashboard/'.$dashboard :"");
         }
         

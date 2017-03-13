@@ -100,6 +100,9 @@
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
         <param name="mwbe" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
         <sql>
             SELECT
             a.type_of_year,
@@ -123,6 +126,9 @@
                     <exp op="=" dbField="c.agency_id" paramName="agency" />
                     <exp op="=" dbField="d.vendor_id" paramName="vendor" />
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
+                    <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="a.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
                 </exp>
             </where>
             GROUP BY a.type_of_year,e.agency_id,e.agency_name
