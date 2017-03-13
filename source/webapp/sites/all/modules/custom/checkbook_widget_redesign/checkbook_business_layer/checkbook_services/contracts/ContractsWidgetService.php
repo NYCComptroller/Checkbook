@@ -88,9 +88,7 @@ class ContractsWidgetService extends WidgetDataService implements IWidgetService
                 if($datasource == 'checkbook_oge'){
                     return $column;
                 }
-                $year_id = _getRequestParamValue("year");
-                $year_type = _getRequestParamValue("yeartype");
-                $url = ContractsUrlService::primeVendorUrl($row['vendor_id'], $row['agency_id'], $row['minority_type_id'], $year_id, $year_type);
+                $url = ContractsUrlService::primeVendorUrl($row['vendor_id']);
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
 
