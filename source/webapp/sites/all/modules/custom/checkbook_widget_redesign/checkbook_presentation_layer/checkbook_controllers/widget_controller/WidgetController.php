@@ -114,7 +114,7 @@ class WidgetController {
                 foreach($visibility_parameters as $value) {
                     if(isset($value)) {
 
-                        //Don't show widget if this parameter is in the URL
+                        //Don't show the widget if this parameter is in the URL
                         if(substr($value, 0, 1 ) == "-") {
                             $value = ltrim($value, "-");
                             $param_value = explode(':', $value);
@@ -123,8 +123,11 @@ class WidgetController {
                                 return null;
                             }
                         }
-                        //Don't show widget if this parameter is not in the URL
-                        elseif(!RequestUtilities::getRequestParamValue($value)) {
+                        //Don't show the widget if this parameter is not in the URL
+                        else{
+                            $param_value = explode(':', $value);
+                            if(!((count($param_value) == 1 && RequestUtilities::getRequestParamValue($param_value[0])) || 
+                               (count($param_value) == 2 && $param_value[1] == RequestUtilities::getRequestParamValue($param_value[0]))))
                                 return null;
                         }
                     }
