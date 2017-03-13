@@ -268,6 +268,13 @@ class ContractsUrlService {
         else {
             $industry_param = isset($industry) ? (Dashboard::isSubDashboard() ||  $legacy_node_id == 720 ? '/scindustry/'.$industry : '/pcindustry/'.$industry) : '';
         }
+        //Handle 3rd bottom navigation
+        $bottom_slider = RequestUtilities::getRequestParamValue('bottom_slider');
+        if($bottom_slider == "sub_vendor") {
+            $mwbe_param = isset($mwbe) ? '/pmwbe/'.$mwbe : "";
+        }
+
+
         $category_param = '/contcat/'.(isset($category) ? $category : ContractCategory::EXPENSE);
         $smnid_param = isset($legacy_node_id) ? '/smnid/'.$legacy_node_id : '';
         $contract_status = _checkbook_project_get_url_param_string('status','contstatus');
