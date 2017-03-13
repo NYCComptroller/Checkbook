@@ -1,6 +1,33 @@
 
 <statements>
-    <statement name="GetAgenciesByPayroll" datasource="checkbook"></statement>
+    <statement name="GetAgenciesByPayroll" datasource="checkbook">
+        <param name="year" required ="true" type="int" />
+        <param name="agency" type="int" />
+        <param name="title" type="int" />
+        <sql>
+            SELECT
+            agency_name,
+            agency_short_name,
+            agg_agency.agency_id AS agency,
+            SUM(agg_agency.overtime_pay) AS total_overtime_pay,
+            SUM(agg_agency.gross_pay) AS total_gross_pay,
+            SUM( CASE WHEN agg_agency.type_of_employment = 'Salaried' THEN COALESCE(agg_agency.annual_salary, 0) else NULL END) AS total_employees,
+            COUNT(DISTINCT (CASE WHEN agg_agency.type_of_employment = 'Salaried' THEN agg_agency.employee_number END)) AS total_salaried_employees,
+            SUM( CASE WHEN agg_agency.type_of_employment = 'Salaried' THEN NULL else COALESCE(agg_agency.annual_salary,0) END) AS total_non_salaried_employees,
+            agg_agency.type_of_year AS year_type,
+            agg_agency.fiscal_year_id AS year,
+            SUM(agg_agency.other_payments) AS total_other_payments
+            FROM aggregateon_payroll_employee_agency agg_agency
+            JOIN ref_agency
+            ON ref_agency.agency_id = agg_agency.agency_id
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="agg_agency.fiscal_year_id" paramName="year" />
+                </exp>
+            </where>
+            GROUP BY agg_agency.agency_id, agg_agency.fiscal_year_id, agg_agency.type_of_year, agency_name, agency_short_name
+        </sql>
+    </statement>
     <statement name="GetAgenciesByOvertime" datasource="checkbook"></statement>
     <statement name="GetAnnualSalaries" datasource="checkbook"></statement>
     <statement name="GetAnnualSalariesPerAgency" datasource="checkbook"></statement>

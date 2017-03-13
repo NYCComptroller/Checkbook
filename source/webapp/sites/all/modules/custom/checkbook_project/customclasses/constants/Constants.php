@@ -11,6 +11,7 @@ class Domain {
     public static $CONTRACTS = 'contracts';
     public static $REVENUE = 'revenue';
     public static $BUDGET = 'budget';
+    public static $PAYROLL = 'payroll';
 }
 
 class VendorType {
