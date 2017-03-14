@@ -56,4 +56,9 @@ files[] = budget/BudgetWidgetService.php
 files[] = budget/data/BudgetDataService.php
 files[] = budget/data/IBudgetDataService.php
 
+files[] = payroll/PayrollUrlService.php
+files[] = payroll/PayrollWidgetService.php
+files[] = payroll/data/PayrollDataService.php
+files[] = payroll/data/IPayrollDataService.php
+
 dependencies[] = checkbook_domain
