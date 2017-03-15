@@ -35,11 +35,11 @@
 "derivedColumns": {
     "agency_name_formatted": {
       "type": "expression2",
-      "expression": "_get_tooltip_markup($row['agency_agency_agency_name'],30)"
+      "expression": "_get_tooltip_markup($row['agency_agency_agency_name'],20)"
     },
      "vendor_name_formatted": {
       "type": "expression2",
-      "expression": "_get_tooltip_markup($row['vendor_vendor_legal_name'],30)"
+      "expression": "_get_tooltip_markup($row['vendor_vendor_legal_name'],20)"
     },
     "agency_name_link": {
       "type": "expression2",
@@ -169,7 +169,7 @@ return $footer;
     { "bSortable": true, "sWidth":"78px","sClass":"number" ,"asSorting": [ "desc","asc"  ]},
     { "bSortable": true, "sWidth":"78px", "sClass":"number" ,"asSorting": [ "desc","asc"  ]},
     { "bSortable": true, "sWidth":"78px", "sClass":"number" ,"asSorting": [ "desc" ,"asc" ]},
-    { "bSortable": false, "sWidth":"15px" }
+    { "bSortable": false, "sWidth":"5px" }
     ] ,
 "bServerSide": true,
 "bFilter": false,
