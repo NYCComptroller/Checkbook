@@ -1,6 +1,6 @@
 <?php
 
-class PayrollWidgetService extends WidgetSqlService implements IWidgetService {
+class PayrollWidgetService extends WidgetDataService implements IWidgetService {
 
     public function initializeDataService() {
         return new PayrollDataService();
@@ -28,7 +28,9 @@ class PayrollWidgetService extends WidgetSqlService implements IWidgetService {
     return $value;
     }
 
-    public function adjustParameters() {}
+    public function adjustParameters($parameters, $urlPath) {
+        return $parameters;
+    }
 
     public function getWidgetFooterUrl($parameters) {
         return BudgetUrlService::getFooterUrl($parameters,$this->getLegacyNodeId());
