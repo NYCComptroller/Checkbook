@@ -4,7 +4,7 @@
     "startWith":0,
     "maxSelect":5,
     "limit":100,
-	"columns":["fundingcode.fundingcode","funding.funding.funding_class_name", "txcount"],
+	"columns":["fundingcode.fundingcode","funding_class_name.funding_class_name", "txcount"],
 	"orderBy":"-txcount",    
     "filterName":"Funding Class",
     "getTotalDataCount":true,    
@@ -12,7 +12,7 @@
     "urlParameterName":"fundsrccode",
     "autocompleteParamName":"ffundingSourceId_auto",    
     "autocompleteID":"ffundingSourceId",
-    "autocompleteField":"funding.funding.funding_class_name",
+    "autocompleteField":"funding_class_name.funding_class_name",
     "adjustParameters":"
     checkbook_faceted_search_adjust_param($node);
     if(function_exists('_checkbook_project_applyParameterFilters')){
