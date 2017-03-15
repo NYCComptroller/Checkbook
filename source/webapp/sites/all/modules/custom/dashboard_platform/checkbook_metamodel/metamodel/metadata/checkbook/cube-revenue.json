@@ -54,6 +54,16 @@
                     ]
                 },
                 {
+                    "name": "funding_class_name",
+                    "levels": [
+                        {
+                            "name": "funding_class_name",
+                            "sourceColumnName": "funding_class_name"
+                        }
+                    ]
+                },
+
+                {
                     "name": "agency",
                     "levels": [
                                 {
