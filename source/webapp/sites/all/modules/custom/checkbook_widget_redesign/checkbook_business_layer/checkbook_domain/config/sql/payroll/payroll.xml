@@ -149,15 +149,13 @@
         <param name="agency" type="int" />
         <param name="title" type="int" />
         <sql>
-            SELECT COUNT(*) AS record_count
-            FROM (SELECT agency_id FROM aggregateon_payroll_employee_agency
+            SELECT DISTINCT agency_id FROM aggregateon_payroll_employee_agency
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="fiscal_year_id" paramName="year" />
                     <exp op="=" dbField="type_of_year" paramName="yeartype" />
                 </exp>
             </where>
-            GROUP BY agency_id) c
         </sql>
     </statement>
     <statement name="GetCountSalariedEmployees" datasource="checkbook">
@@ -166,15 +164,13 @@
         <param name="agency" type="int" />
         <param name="title" type="int" />
         <sql>
-            SELECT COUNT(*) AS record_count
-            FROM (SELECT agency_id FROM aggregateon_payroll_employee_agency
+            SELECT DISTINCT agency_id FROM aggregateon_payroll_employee_agency
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="fiscal_year_id" paramName="year" />
                     <exp op="=" dbField="type_of_year" paramName="yeartype" />
                 </exp>
             </where>
-            GROUP BY agency_id) c
         </sql>
     </statement>
 </statements>
