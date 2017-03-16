@@ -108,10 +108,11 @@ class SqlModelFactory {
             $limit = "\nLIMIT {$limit}";
         }
         $sql = $query.$orderBy.$limit;
-        $sqlStatementModel->query = $sql;
+        $sqlStatementModel->query = htmlspecialchars_decode($sql, ENT_NOQUOTES);
 
         //count query
-        $sqlStatementModel->countQuery = "SELECT COUNT(*) as record_count FROM ( {$query} ) sub_query";
+        $sqlCount = "SELECT COUNT(*) as record_count FROM ( {$query} ) sub_query";
+        $sqlStatementModel->countQuery = htmlspecialchars_decode($sqlCount, ENT_NOQUOTES);
         return $sqlStatementModel;
     }
 
