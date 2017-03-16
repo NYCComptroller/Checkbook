@@ -11,7 +11,7 @@
             SUM(emp.other_payments) AS total_other_payments,
             COUNT(DISTINCT (CASE WHEN COALESCE(emp_type.type_of_employment,'Non-Salaried') = 'Salaried' THEN emp_type.employee_number_1 END)) AS total_salaried_employees,
             COUNT(DISTINCT (CASE WHEN COALESCE(emp_type.type_of_employment,'Non-Salaried') = 'Non-Salaried' AND emp.pay_date = latest_emp.pay_date THEN emp.employee_number END)) AS total_non_salaried_employees,
-            agency.agency_id, agency.agency_name
+            agency.agency_id as agency, agency.agency_name
             FROM aggregateon_payroll_employee_agency emp
             JOIN ref_agency agency ON agency.agency_id = emp.agency_id
             LEFT JOIN
