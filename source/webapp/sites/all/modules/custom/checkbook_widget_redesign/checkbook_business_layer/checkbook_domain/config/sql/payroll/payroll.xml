@@ -80,19 +80,13 @@
         <param name="title" type="int" />
         <sql>
             SELECT
-            ref_agency.agency_short_name AS agency_short,
             ref_agency.agency_name AS agency_name,
             agg.agency_id AS agency,
             SUM(agg.gross_pay) AS total_gross_pay,
-            <!--COUNT(DISTINCT (CASE WHEN COALESCE(agg.positive_overtime_pay,0) > 0 THEN agg.employee_number END)) AS total_overtime_employees,-->
-            123 as total_overtime_employees,
-            <!--SUM(agg.overtime_pay) AS total_overtime_pay,-->
-            456 as total_overtime_pay,
-            agg.type_of_year AS year_type,
-            agg.fiscal_year_id AS year
-            FROM ref_agency
-            JOIN aggregateon_payroll_employee_agency agg
-            ON ref_agency.agency_id = agg.agency_id
+            COUNT(DISTINCT (CASE WHEN COALESCE(agg.positive_overtime_pay,0) &gt; 0 THEN agg.employee_number END)) AS total_overtime_employees,
+            SUM(agg.overtime_pay) AS total_overtime_pay
+            FROM aggregateon_payroll_employee_agency agg
+            JOIN ref_agency ON ref_agency.agency_id = agg.agency_id
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="agg.type_of_year" paramName="yeartype" />
@@ -100,11 +94,7 @@
                     <exp op="=" dbField="agg.civil_service_title_code" paramName="title" />
                 </exp>
             </where>
-            GROUP BY agg.agency_id,
-            agg.fiscal_year_id,
-            agg.type_of_year,
-            ref_agency.agency_short_name,
-            ref_agency.agency_name
+            GROUP BY agg.agency_id, ref_agency.agency_name
         </sql>
     </statement>
     <statement name="GetAnnualSalaries" datasource="checkbook">
