@@ -26,6 +26,10 @@ class PayrollDataService extends DataService implements IPayrollDataService {
         return $this->configureCitywide(__FUNCTION__, $parameters);
     }
 
+    function GetCountSalariedEmployees($parameters) {
+        return $this->configureCitywide(__FUNCTION__, $parameters);
+    }
+
     /**
      * Common function that automatically configures the Citywide Budget sql
      * @param $dataFunction
