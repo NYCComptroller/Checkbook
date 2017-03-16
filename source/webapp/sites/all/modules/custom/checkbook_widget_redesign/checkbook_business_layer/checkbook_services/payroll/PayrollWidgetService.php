@@ -13,19 +13,33 @@ class PayrollWidgetService extends WidgetDataService implements IWidgetService {
     * @return mixed
     */
     public function implementDerivedColumn($column_name, $row) {
-    $value = null;
-    $legacy_node_id = $this->getLegacyNodeId();
-    switch($column_name) {
-      case "":
-        // url
-        break;
-    }
+        $value = null;
+        $legacy_node_id = $this->getLegacyNodeId();
+        switch($column_name) {
+            case "agency_name_link":
+                $column = $row['agency_name'];
+                $url = PayrollUrlService::agencyNameUrl($row['agency']);
+                $value = "<a href='{$url}'>{$column}</a>";
+                break;
+            case "total_gross_pay_link":
+                $column = $row['total_gross_pay'];
+                $dynamic_parameter = "/agency/" . $row['agency'];
+                $url = PayrollUrlService::payUrl($dynamic_parameter, $this->getLegacyNodeId());
+                $value = "<a href='{$url}'>{$column}</a>";
+                break;
+            case "total_overtime_pay_link":
+                $column = $row['total_overtime_pay'];
+                $dynamic_parameter = "/agency/" . $row['agency'];
+                $url = PayrollUrlService::payUrl($dynamic_parameter, $this->getLegacyNodeId());
+                $value = "<a href='{$url}'>{$column}</a>";
+                break;
+        }
 
-    if(isset($value)) {
-      return $value;
-    }
+        if(isset($value)) {
+          return $value;
+        }
 
-    return $value;
+        return $value;
     }
 
     public function adjustParameters($parameters, $urlPath) {

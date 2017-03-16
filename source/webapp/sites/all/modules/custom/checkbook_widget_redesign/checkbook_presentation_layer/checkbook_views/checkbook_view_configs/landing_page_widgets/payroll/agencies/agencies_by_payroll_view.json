@@ -3,22 +3,11 @@
     "dataFunc": "GetAgenciesByPayroll",
     "headerTitle": "Agencies",
     "headerSubTitle": "Agencies",
-    "transformationPHP":"
-        $employee_totals = PayrollUtil::getAgencyEmployeeCountByType(
-                            _getRequestParamValue('year'),
-                            _getRequestParamValue('yeartype'),
-                            _getRequestParamValue('title'));
-        foreach($node->data as &$row) {
-            $agency_id = $row['agency_agency'];
-            $row['total_salaried_employees'] = $employee_totals[$row['agency_agency']]['total_salaried_employees'];
-            $row['total_non_salaried_employees'] = $employee_totals[$row['agency_agency']]['total_non_salaried_employees'];
-        }
-        return $node->data;
-        ",
     "table_columns": [
         {
             "labelAlias":"agency_name",
-            "column":"agency_name"
+            "column":"agency_name",
+            "derivedColumn": "agency_name_link"
         },
         {
             "labelAlias":"no_of_sal_employees",
@@ -31,6 +20,7 @@
         {
             "labelAlias":"gross_pay_ytd",
             "column":"total_gross_pay",
+            "derivedColumn": "total_gross_pay_link",
             "format": "dollar"
         },
         {
