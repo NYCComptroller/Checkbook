@@ -2,8 +2,6 @@
 <statements>
     <statement name="GetAgenciesByPayroll" datasource="checkbook">
         <param name="year" required ="true" type="int" />
-        <param name="agency" type="int" />
-        <param name="title" type="int" />
         <sql>
             SELECT
             agency_name,
@@ -34,8 +32,6 @@
     </statement>
     <statement name="GetAgenciesByOvertime" datasource="checkbook">
         <param name="year" required ="true" type="int" />
-        <param name="agency" type="int" />
-        <param name="title" type="int" />
         <sql>
             SELECT
             ref_agency.agency_short_name AS agency_short,
@@ -53,8 +49,7 @@
             ON ref_agency.agency_id = agg.agency_id
             <where>
                 <exp op="AND">
-                    <exp op="=" dbField="agg.type_of_year" />
-                    <exp op="=" dbField="agg.fiscal_year_id" />
+                    <exp op="=" dbField="agg.fiscal_year_id" paramName="year" />
                 </exp>
             </where>
             GROUP BY agg.agency_id,
@@ -64,7 +59,48 @@
             ref_agency.agency_name
         </sql>
     </statement>
-    <statement name="GetAnnualSalaries" datasource="checkbook"></statement>
+    <statement name="GetAnnualSalaries" datasource="checkbook">
+        <param name="year" required ="true" type="int" />
+        <param name="agency" type="int" />
+        <param name="title" type="int" />
+        <param name="type_of_employment" type="string" />
+        <sql>
+            SELECT agg.employee_id,
+            ref.agency_name,
+            agg.agency_id,
+            ref.agency_short_name,
+            agg.employee_number,
+            agg.civil_service_title,
+            agg.civil_service_title_code,
+            MAX(agg.annual_salary) AS max_annual_salary,
+            SUM(agg.gross_pay) AS total_gross_pay,
+            SUM(agg.base_pay) AS total_base_salary,
+            SUM(agg.other_payments) AS total_other_payments,
+            SUM(agg.overtime_pay) AS total_overtime_amount,
+            agg.type_of_year,
+            agg.fiscal_year_id,
+            agg.type_of_employment
+            FROM aggregateon_payroll_latest_employee_agency agg
+            JOIN ref_agency ref
+            ON ref.agency_id = agg.agency_id
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="agg.type_of_employment" paramName="type_of_employment" />
+                    <exp op="=" dbField="agg.fiscal_year_id" paramName="year" />
+                </exp>
+            </where>
+            GROUP BY agg.agency_id,
+            agg.employee_id,
+            agg.type_of_employment,
+            agg.fiscal_year_id,
+            agg.type_of_year,
+            agg.civil_service_title,
+            agg.civil_service_title_code,
+            agg.employee_number,
+            ref.agency_name,
+            ref.agency_short_name
+        </sql>
+    </statement>
     <statement name="GetAnnualSalariesPerAgency" datasource="checkbook"></statement>
     <statement name="GetTitlesByNumberOfEmployees" datasource="checkbook"></statement>
 </statements>

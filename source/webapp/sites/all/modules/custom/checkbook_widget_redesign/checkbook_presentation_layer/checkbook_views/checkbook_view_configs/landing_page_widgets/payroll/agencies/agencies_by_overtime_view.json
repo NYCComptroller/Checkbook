@@ -6,7 +6,8 @@
     "table_columns": [
         {
             "labelAlias": "agency_name",
-            "column": "agency_name"
+            "column": "agency_name",
+            "derivedColumn": "agency_name_link"
         },
         {
             "labelAlias": "no_of_ot_employees",
@@ -15,11 +16,13 @@
         {
             "labelAlias": "gross_pay_ytd",
             "column": "total_gross_pay",
+            "derivedColumn": "total_gross_pay_link",
             "format": "dollar"
         },
         {
             "labelAlias": "overtime_pay_ytd",
             "column": "total_overtime_pay",
+            "derivedColumn": "total_overtime_pay_link",
             "format": "dollar"
         },
         {
