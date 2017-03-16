@@ -1,0 +1,49 @@
+{
+    "serviceName": "PayrollWidgetService",
+    "dataFunc": "GetAgenciesByOvertime",
+    "headerTitle": "Agencies",
+    "headerSubTitle": "Agencies",
+    "table_columns": [
+        {
+            "labelAlias": "agency_name",
+            "column": "agency_name"
+        },
+        {
+            "labelAlias": "no_of_ot_employees",
+            "column": "total_overtime_employees"
+        },
+        {
+            "labelAlias": "gross_pay_ytd",
+            "column": "total_gross_pay"
+        },
+        {
+            "labelAlias": "overtime_pay_ytd",
+            "column": "total_overtime_pay"
+        },
+        {
+            "labelAlias": "",
+            "column": ""
+        }
+    ],
+    "dataTableOptions": {
+        "aoColumns": [
+            {"bSortable":false,"sClass":"text","sWidth":"250px","asSorting": [ "asc","desc"  ]},
+            {"bSortable":true,"sClass":"number","sWidth":"200px","asSorting": [ "desc","asc"  ]},
+            {"bSortable":true,"sClass":"number","asSorting": [ "desc","asc"  ]},
+            {"bSortable":true,"sClass":"number","asSorting": [ "desc","asc"  ]},
+            { "bSortable": false,"sWidth":"15px" }
+        ],
+        "aaSorting": [[3, "desc"]],
+        "bServerSide": true,
+        "bFilter": false,
+        "bPaginate": false,
+        "bProcessing": true,
+        "bLengthChange": false,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "fnServerParams": "##function ( aoData ) { reloadExpandCollapseWidget(this,aoData); }##",
+        "oLanguage": {
+            "sProcessing": "<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"
+        }
+    }
+}
