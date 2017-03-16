@@ -1,20 +1,9 @@
 {
     "serviceName": "PayrollWidgetService",
     "dataFunc": "GetAgenciesByPayroll",
-    "headerTitle": "Agencies",
+    "countFunc": "GetCountAgencies",
+    "headerTitle": "Agencies by Payroll",
     "headerSubTitle": "Agencies",
-    "transformationPHP":"
-        $employee_totals = PayrollUtil::getAgencyEmployeeCountByType(
-                            _getRequestParamValue('year'),
-                            _getRequestParamValue('yeartype'),
-                            _getRequestParamValue('title'));
-        foreach($node->data as &$row) {
-            $agency_id = $row['agency_agency'];
-            $row['total_salaried_employees'] = $employee_totals[$row['agency_agency']]['total_salaried_employees'];
-            $row['total_non_salaried_employees'] = $employee_totals[$row['agency_agency']]['total_non_salaried_employees'];
-        }
-        return $node->data;
-        ",
     "table_columns": [
         {
             "labelAlias":"agency_name",
@@ -22,16 +11,18 @@
         },
         {
             "labelAlias":"no_of_sal_employees",
-            "column":"total_salaried_employees"
+            "column":"total_salaried_employees",
+            "format":"number"
         },
         {
             "labelAlias":"no_of_non_sal_employees",
-            "column":"total_non_salaried_employees"
+            "column":"total_non_salaried_employees",
+            "format":"number"
         },
         {
             "labelAlias":"gross_pay_ytd",
             "column":"total_gross_pay",
-            "format": "dollar"
+            "format":"dollar"
         },
         {
             "labelAlias":"other_pay_ytd",

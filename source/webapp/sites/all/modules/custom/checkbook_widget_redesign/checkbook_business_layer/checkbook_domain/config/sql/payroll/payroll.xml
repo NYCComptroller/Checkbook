@@ -2,34 +2,72 @@
 <statements>
     <statement name="GetAgenciesByPayroll" datasource="checkbook">
         <param name="year" required ="true" type="int" />
+        <param name="yeartype" required ="true" type="string"/>
         <param name="agency" type="int" />
         <param name="title" type="int" />
         <sql>
             SELECT
-            agency_name,
-            agency_short_name,
-            agg_agency.agency_id AS agency,
-            SUM(agg_agency.overtime_pay) AS total_overtime_pay,
-            SUM(agg_agency.gross_pay) AS total_gross_pay,
-            SUM( CASE WHEN agg_agency.type_of_employment = 'Salaried' THEN COALESCE(agg_agency.annual_salary, 0) else NULL END) AS total_employees,
-            COUNT(DISTINCT (CASE WHEN agg_agency.type_of_employment = 'Salaried' THEN agg_agency.employee_number END)) AS total_salaried_employees,
-            SUM( CASE WHEN agg_agency.type_of_employment = 'Salaried' THEN NULL else COALESCE(agg_agency.annual_salary,0) END) AS total_non_salaried_employees,
-            agg_agency.type_of_year AS year_type,
-            agg_agency.fiscal_year_id AS year,
-            SUM(agg_agency.other_payments) AS total_other_payments
-            FROM aggregateon_payroll_employee_agency agg_agency
-            JOIN ref_agency
-            ON ref_agency.agency_id = agg_agency.agency_id
+            SUM(emp.gross_pay) AS total_gross_pay,
+            SUM(emp.other_payments) AS total_other_payments,
+            COUNT(DISTINCT (CASE WHEN COALESCE(emp_type.type_of_employment,'Non-Salaried') = 'Salaried' THEN emp_type.employee_number_1 END)) AS total_salaried_employees,
+            COUNT(DISTINCT (CASE WHEN COALESCE(emp_type.type_of_employment,'Non-Salaried') = 'Non-Salaried' AND emp.pay_date = latest_emp.pay_date THEN emp.employee_number END)) AS total_non_salaried_employees,
+            agency.agency_id, agency.agency_name
+            FROM aggregateon_payroll_employee_agency emp
+            JOIN ref_agency agency ON agency.agency_id = emp.agency_id
+            LEFT JOIN
+            (
+                SELECT DISTINCT
+                emp.type_of_employment AS type_of_employment,
+                emp.employee_number AS employee_number_1,
+                emp.fiscal_year_id AS fiscal_year_id_1,
+                emp.type_of_year AS type_of_year_1
+                ,agency_id AS agency_id_1
+                FROM aggregateon_payroll_employee_agency emp
+                JOIN
+                (
+                    SELECT max(pay_date) as pay_date,
+                    employee_number,fiscal_year_id,type_of_year
+                    FROM aggregateon_payroll_employee_agency
+                    <where>
+                        <exp op="AND">
+                            <exp op="=" dbField="fiscal_year_id" paramName="year" />
+                            <exp op="=" dbField="type_of_year" paramName="yeartype" />
+                        </exp>
+                    </where>
+                    GROUP BY employee_number,fiscal_year_id,type_of_year
+                ) latest_emp ON latest_emp.pay_date = emp.pay_date
+                AND latest_emp.employee_number = emp.employee_number
+                AND latest_emp.fiscal_year_id = emp.fiscal_year_id
+                AND latest_emp.type_of_year = emp.type_of_year
+                AND type_of_employment = 'Salaried'
+                WHERE emp.fiscal_year_id = 118 AND emp.type_of_year = 'B'
+            ) emp_type ON emp_type.employee_number_1 = emp.employee_number
+            AND emp_type.type_of_year_1 = emp.type_of_year
+            AND emp_type.fiscal_year_id_1 = emp.fiscal_year_id
+            AND emp_type.agency_id_1 = emp.agency_id
+            LEFT JOIN
+            (
+                SELECT max(pay_date) as pay_date,
+                employee_number,fiscal_year_id,type_of_year
+                FROM aggregateon_payroll_employee_agency
+                <where>
+                    <exp op="AND">
+                        <exp op="=" dbField="fiscal_year_id" paramName="year" />
+                        <exp op="=" dbField="type_of_year" paramName="yeartype" />
+                    </exp>
+                </where>
+                GROUP BY employee_number,fiscal_year_id,type_of_year
+            ) latest_emp ON latest_emp.pay_date = emp.pay_date
+            AND latest_emp.employee_number = emp.employee_number
+            AND latest_emp.fiscal_year_id = emp.fiscal_year_id
+            AND latest_emp.type_of_year = emp.type_of_year
             <where>
                 <exp op="AND">
-                    <exp op="=" dbField="agg_agency.fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="emp.fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="emp.type_of_year" paramName="yeartype" />
                 </exp>
             </where>
-            GROUP BY agg_agency.agency_id,
-            agg_agency.fiscal_year_id,
-            agg_agency.type_of_year,
-            agency_name,
-            agency_short_name
+            GROUP BY agency.agency_id, agency.agency_name
         </sql>
     </statement>
     <statement name="GetAgenciesByOvertime" datasource="checkbook">
@@ -67,4 +105,21 @@
     <statement name="GetAnnualSalaries" datasource="checkbook"></statement>
     <statement name="GetAnnualSalariesPerAgency" datasource="checkbook"></statement>
     <statement name="GetTitlesByNumberOfEmployees" datasource="checkbook"></statement>
+    <statement name="GetCountAgencies" datasource="checkbook">
+        <param name="year" required ="true" type="int" />
+        <param name="yeartype" required ="true" type="string"/>
+        <param name="agency" type="int" />
+        <param name="title" type="int" />
+        <sql>
+            SELECT COUNT(*) AS record_count
+            FROM (SELECT agency_id FROM aggregateon_payroll_employee_agency
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="type_of_year" paramName="yeartype" />
+                </exp>
+            </where>
+            GROUP BY agency_id) c
+        </sql>
+    </statement>
 </statements>
