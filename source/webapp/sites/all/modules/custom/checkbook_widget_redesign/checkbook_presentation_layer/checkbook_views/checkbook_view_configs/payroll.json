@@ -9,7 +9,7 @@
             "agencies_by_overtime": {
                 "widget_config": "agencies_by_overtime_view",
                 "legacy_node_id": 322,
-                "visibility_parameters": []
+                "visibility_parameters": ["-agency"]
             },
             "annual_salaries": {
                 "widget_config": "annual_salaries_view",
