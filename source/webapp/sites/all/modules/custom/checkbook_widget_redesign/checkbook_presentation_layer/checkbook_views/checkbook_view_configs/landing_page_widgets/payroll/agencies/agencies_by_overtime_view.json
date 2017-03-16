@@ -14,11 +14,13 @@
         },
         {
             "labelAlias": "gross_pay_ytd",
-            "column": "total_gross_pay"
+            "column": "total_gross_pay",
+            "format": "dollar"
         },
         {
             "labelAlias": "overtime_pay_ytd",
-            "column": "total_overtime_pay"
+            "column": "total_overtime_pay",
+            "format": "dollar"
         },
         {
             "labelAlias": "",
@@ -47,3 +49,4 @@
         }
     }
 }
+
