@@ -1,7 +1,8 @@
 {
     "serviceName": "PayrollWidgetService",
     "dataFunc": "GetAgenciesByPayroll",
-    "headerTitle": "Agencies",
+    "countFunc": "GetCountAgencies",
+    "headerTitle": "Agencies by Payroll",
     "headerSubTitle": "Agencies",
     "table_columns": [
         {
@@ -11,11 +12,13 @@
         },
         {
             "labelAlias":"no_of_sal_employees",
-            "column":"total_salaried_employees"
+            "column":"total_salaried_employees",
+            "format":"number"
         },
         {
             "labelAlias":"no_of_non_sal_employees",
-            "column":"total_non_salaried_employees"
+            "column":"total_non_salaried_employees",
+            "format":"number"
         },
         {
             "labelAlias":"gross_pay_ytd",
