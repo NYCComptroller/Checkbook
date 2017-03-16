@@ -1,6 +1,7 @@
 {
     "serviceName": "PayrollWidgetService",
     "dataFunc": "GetAgenciesByOvertime",
+    "countFunc": "GetCountAgencies",
     "headerTitle": "Agencies by Overtime",
     "headerSubTitle": "Agencies",
     "table_columns": [
@@ -11,7 +12,8 @@
         },
         {
             "labelAlias": "no_of_ot_employees",
-            "column": "total_overtime_employees"
+            "column": "total_overtime_employees",
+            "format":"number"
         },
         {
             "labelAlias": "gross_pay_ytd",
