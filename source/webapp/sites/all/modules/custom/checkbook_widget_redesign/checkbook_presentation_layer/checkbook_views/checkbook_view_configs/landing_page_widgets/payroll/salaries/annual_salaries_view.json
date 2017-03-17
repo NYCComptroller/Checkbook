@@ -1,6 +1,7 @@
 {
     "serviceName": "PayrollWidgetService",
     "dataFunc": "GetAnnualSalaries",
+    "countFunc": "GetCountSalariedEmployees",
     "headerTitle": "Annual Salaries",
     "headerSubTitle": "Salaried Employees",
     "table_columns": [
