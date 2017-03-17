@@ -168,11 +168,31 @@
         <param name="agency" type="int" />
         <param name="title" type="int" />
         <sql>
-            SELECT DISTINCT agency_id FROM aggregateon_payroll_employee_agency
+            SELECT DISTINCT emp.employee_number
+            FROM aggregateon_payroll_employee_agency emp
+            JOIN
+            (
+                SELECT max(pay_date) as pay_date,
+                employee_number,fiscal_year_id,type_of_year
+                FROM aggregateon_payroll_employee_agency
+                <where>
+                    <exp op="AND">
+                        <exp op="=" dbField="fiscal_year_id" paramName="year" />
+                        <exp op="=" dbField="type_of_year" paramName="yeartype" />
+                    </exp>
+                </where>
+                GROUP BY employee_number,fiscal_year_id,type_of_year
+            ) latest_emp ON latest_emp.pay_date = emp.pay_date
+            AND latest_emp.employee_number = emp.employee_number
+            AND latest_emp.fiscal_year_id = emp.fiscal_year_id
+            AND latest_emp.type_of_year = emp.type_of_year
+            AND type_of_employment = 'Salaried'
             <where>
                 <exp op="AND">
-                    <exp op="=" dbField="fiscal_year_id" paramName="year" />
-                    <exp op="=" dbField="type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="emp.fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="emp.type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="emp.agency_id" paramName="agency" />
+                    <exp op="=" dbField="emp.civil_service_title_code" paramName="title" />
                 </exp>
             </where>
         </sql>
