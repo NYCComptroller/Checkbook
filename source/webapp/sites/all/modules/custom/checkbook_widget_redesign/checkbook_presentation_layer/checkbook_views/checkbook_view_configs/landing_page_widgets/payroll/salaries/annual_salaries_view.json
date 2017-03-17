@@ -1,6 +1,7 @@
 {
     "serviceName": "PayrollWidgetService",
     "dataFunc": "GetAnnualSalaries",
+    "countFunc": "GetCountSalariedEmployees",
     "headerTitle": "Annual Salaries",
     "headerSubTitle": "Salaried Employees",
     "table_columns": [
@@ -16,7 +17,6 @@
         {
             "labelAlias": "annual_salary",
             "column": "max_annual_salary",
-//            "derivedColumn": "total_gross_pay_link",
             "format": "dollar"
         },
         {
