@@ -8,10 +8,10 @@ class PayrollUrlService
      * @param null $legacy_node_id
      * @return string
      */
-    static function getFooterUrl($legacy_node_id = null)
+    static function getFooterUrl($parameters, $legacy_node_id = null)
     {
-        $legacy_node_id = isset($legacy_node_id) ? '/smnid/' . $legacy_node_id : '';
 
+        $legacy_node_id = isset($legacy_node_id) ? '/dtsmnid/'.$legacy_node_id : '';
         $url = '/panel_html/payroll_nyc_transactions/payroll/transactions'
             . RequestUtilities::_getUrlParamString('yeartype')
             . RequestUtilities::_getUrlParamString('year')
@@ -38,10 +38,10 @@ class PayrollUrlService
             . $agency
             . RequestUtilities::_getUrlParamString("yeartype")
             . RequestUtilities::_getUrlParamString("year")
-            . $dynamic_parameter
+            . $dynamic_parameter;
         return $url;
     }
 
-    static function annualSalary()
+
 
 }
