@@ -33,6 +33,12 @@ class PayrollWidgetService extends WidgetDataService implements IWidgetService {
                 $url = PayrollUrlService::payUrl($dynamic_parameter, $this->getLegacyNodeId());
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
+            case "max_annual_salary_link":
+                $column = $row['max_annual_salary'];
+                $dynamic_parameter = "/agency/" . $row['agency'];
+                $url = PayrollUrlService::annualSalaryUrl($dynamic_parameter, $this->getLegacyNodeId());
+                $value = "<a href='{$url}'>{$column}</a>";
+                break;
         }
 
         if(isset($value)) {
