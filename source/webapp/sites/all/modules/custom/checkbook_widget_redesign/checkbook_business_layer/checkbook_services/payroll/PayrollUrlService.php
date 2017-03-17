@@ -29,17 +29,19 @@ class PayrollUrlService
         return $url;
     }
 
-    static function payUrl($dynamic_parameter, $legacy_node_id = null)
+    static function payUrl($agency, $dynamic_parameter)
     {
-        $legacy_node_id = isset($legacy_node_id) ? '/smnid/' . $legacy_node_id : '';
+        $agency = isset($agency) ? '/agency/' . $agency : '';
         $dynamic_parameter = isset($dynamic_parameter) ? $dynamic_parameter : '';
 
-        $url = "/panel_html/payroll_agencytransactions/payroll/agencywide/transactions"
+        $url = "/panel_html/payroll_employee_transactions/payroll/employee/transactions"
+            . $agency
             . RequestUtilities::_getUrlParamString("yeartype")
             . RequestUtilities::_getUrlParamString("year")
             . $dynamic_parameter
-            . $legacy_node_id;
         return $url;
     }
+
+    static function annualSalary()
 
 }

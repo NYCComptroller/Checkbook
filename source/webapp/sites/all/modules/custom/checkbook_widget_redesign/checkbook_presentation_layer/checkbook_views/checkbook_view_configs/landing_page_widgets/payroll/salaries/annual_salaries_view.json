@@ -2,34 +2,42 @@
     "serviceName": "PayrollWidgetService",
     "dataFunc": "GetAnnualSalaries",
     "headerTitle": "Annual Salaries",
-    "headerSubTitle": "Agencies",
+    "headerSubTitle": "Salaried Employees",
     "table_columns": [
         {
             "labelAlias": "title",
-            "column": "employee_name_formatted"
+            "column": "civil_service_title"
         },
         {
             "labelAlias": "agency_name",
-            "column": "agency_name"
+            "column": "agency_name",
+            "derivedColumn": "agency_name_link"
         },
         {
             "labelAlias": "annual_salary",
-            "column": "annual_salary_link"
+            "column": "max_annual_salary",
+//            "derivedColumn": "total_gross_pay_link",
+            "format": "dollar"
+        },
         {
             "labelAlias": "gross_pay_ytd",
-            "column": "total_gross_pay_formatted"
+            "column": "total_gross_pay",
+            "format": "dollar"
         },
         {
             "labelAlias": "base_pay_ytd",
-            "column": "total_base_salary_formatted"
+            "column": "total_base_salary",
+            "format": "dollar"
         },
         {
             "labelAlias": "other_pay_ytd",
-            "column": "total_other_payments_formatted"
+            "column": "total_other_payments",
+            "format": "dollar"
         },
         {
             "labelAlias": "overtime_pay_ytd",
-            "column": "total_overtime_amount_formatted"
+            "column": "total_overtime_amount",
+            "format": "dollar"
         },
         {
             "labelAlias": "",

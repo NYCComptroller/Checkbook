@@ -109,9 +109,9 @@
     </statement>
     <statement name="GetAnnualSalaries" datasource="checkbook">
         <param name="year" required ="true" type="int" />
+        <param name="yeartype" required ="true" type="string"/>
         <param name="agency" type="int" />
         <param name="title" type="int" />
-        <param name="type_of_employment" type="string" />
         <sql>
             SELECT agg.employee_id,
             ref.agency_name,
@@ -133,10 +133,11 @@
             ON ref.agency_id = agg.agency_id
             <where>
                 <exp op="AND">
-                    <exp op="=" dbField="agg.type_of_employment" paramName="type_of_employment" />
                     <exp op="=" dbField="agg.fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="agg.type_of_year" paramName="yeartype" />
                 </exp>
             </where>
+            AND agg.type_of_employment='Salaried'
             GROUP BY agg.agency_id,
             agg.employee_id,
             agg.type_of_employment,
