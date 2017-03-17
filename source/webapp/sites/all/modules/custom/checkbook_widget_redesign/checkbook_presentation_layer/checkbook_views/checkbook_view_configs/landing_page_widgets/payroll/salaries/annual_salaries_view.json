@@ -16,7 +16,7 @@
         {
             "labelAlias": "annual_salary",
             "column": "max_annual_salary",
-//            "derivedColumn": "total_gross_pay_link",
+            "derivedColumn": "max_annual_salary_link",
             "format": "dollar"
         },
         {

@@ -19,7 +19,7 @@
             "annual_salaries_agency": {
                 "widget_config": "annual_salaries_agency_view",
                 "legacy_node_id": 325,
-                "visibility_parameters": ["title"]
+                "visibility_parameters": ["agency"]
             },
             "titles_by_number_of_employees": {
                 "widget_config": "titles_by_number_of_employees",
