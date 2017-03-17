@@ -103,9 +103,9 @@
         <param name="agency" type="int" />
         <param name="title" type="int" />
         <sql>
-            SELECT agg.employee_id,
+            SELECT agg.employee_id as employee_id,
             ref.agency_name,
-            agg.agency_id,
+            agg.agency_id as agency,
             ref.agency_short_name,
             agg.employee_number,
             agg.civil_service_title,
@@ -140,7 +140,37 @@
             ref.agency_short_name
         </sql>
     </statement>
-    <statement name="GetAnnualSalariesPerAgency" datasource="checkbook"></statement>
+    <statement name="GetAnnualSalariesPerAgency" datasource="checkbook">
+        <param name="year" required ="true" type="int" />
+        <param name="yeartype" required ="true" type="string"/>
+        <param name="agency" type="int" />
+        <param name="title" type="int" />
+        <param name="salary" type="string" />
+        <sql>
+            SELECT type_of_year,
+            agency_id,
+            employee_id,
+            fiscal_year_id,
+            civil_service_title,
+            civil_service_title_code,
+            employee_number,
+            MAX(annual_salary) as max_annual_salary,
+            SUM(gross_pay) as total_gross_pay,
+            SUM(base_pay) as total_base_pay,
+            SUM(other_payments) as total_other_pay,
+            SUM(overtime_pay) as total_overtime_pay
+            FROM aggregateon_payroll_latest_employee_agency
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="agency_id" paramName="agency" />
+                    <exp op="=" dbField="type_of_employment" paramName="salary" />
+                </exp>
+            </where>
+            GROUP BY agency_id, employee_id, fiscal_year_id, type_of_year, civil_service_title, civil_service_title_code, employee_number
+        </sql>
+    </statement>
     <statement name="GetTitlesByNumberOfEmployees" datasource="checkbook"></statement>
     <statement name="GetCountAgencies" datasource="checkbook">
         <param name="year" required ="true" type="int" />

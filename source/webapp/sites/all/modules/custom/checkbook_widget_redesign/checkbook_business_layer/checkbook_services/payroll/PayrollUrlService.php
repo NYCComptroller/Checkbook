@@ -29,17 +29,41 @@ class PayrollUrlService
         return $url;
     }
 
-    static function payUrl($agency, $dynamic_parameter)
+    static function payUrl($agency)
     {
         $agency = isset($agency) ? '/agency/' . $agency : '';
-        $dynamic_parameter = isset($dynamic_parameter) ? $dynamic_parameter : '';
+
+        $url = "/panel_html/payroll_employee_transactions/payroll/employee/transactions"
+            . $agency
+            . RequestUtilities::_getUrlParamString("yeartype")
+            . RequestUtilities::_getUrlParamString("year");
+        return $url;
+    }
+
+    static function annualSalaryUrl($agency, $employee) {
+        $agency = isset($agency) ? '/agency/' . $agency : '';
+        $employee = isset($employee) ? "/abc/" . $employee : '';
 
         $url = "/panel_html/payroll_employee_transactions/payroll/employee/transactions"
             . $agency
             . RequestUtilities::_getUrlParamString("yeartype")
             . RequestUtilities::_getUrlParamString("year")
-            . $dynamic_parameter;
+            . "/salamttype/1"
+            . $employee;
         return $url;
+    }
+
+    static function annualSalaryPerAgencyUrl($agency, $employee) {
+        $agency = isset($agency) ? '/agency/' . $agency : '';
+        $employee = isset($employee) ? "/abc/" . $employee : '';
+
+        $url = "/panel_html/payroll_employee_transactions/payroll/employee/transactions"
+            . $agency
+            . RequestUtilities::_getUrlParamString("yeartype")
+            . RequestUtilities::_getUrlParamString("year")
+            . $employee;
+        return $url;
+
     }
 
 
