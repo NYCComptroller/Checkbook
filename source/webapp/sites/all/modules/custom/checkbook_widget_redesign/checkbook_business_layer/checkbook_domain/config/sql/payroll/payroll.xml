@@ -32,7 +32,6 @@
                         <exp op="AND">
                             <exp op="=" dbField="fiscal_year_id" paramName="year" />
                             <exp op="=" dbField="type_of_year" paramName="yeartype" />
-                            <exp op="=" dbField="civil_service_title_code" paramName="title" />
                         </exp>
                     </where>
                     GROUP BY employee_number,fiscal_year_id,type_of_year
@@ -41,7 +40,13 @@
                 AND latest_emp.fiscal_year_id = emp.fiscal_year_id
                 AND latest_emp.type_of_year = emp.type_of_year
                 AND type_of_employment = 'Salaried'
-                WHERE emp.fiscal_year_id = 118 AND emp.type_of_year = 'B'
+                <where>
+                    <exp op="AND">
+                        <exp op="=" dbField="emp.fiscal_year_id" paramName="year" />
+                        <exp op="=" dbField="emp.type_of_year" paramName="yeartype" />
+                        <exp op="=" dbField="emp.civil_service_title_code" paramName="title" />
+                    </exp>
+                </where>
             ) emp_type ON emp_type.employee_number_1 = emp.employee_number
             AND emp_type.type_of_year_1 = emp.type_of_year
             AND emp_type.fiscal_year_id_1 = emp.fiscal_year_id
@@ -55,7 +60,6 @@
                     <exp op="AND">
                         <exp op="=" dbField="fiscal_year_id" paramName="year" />
                         <exp op="=" dbField="type_of_year" paramName="yeartype" />
-                        <exp op="=" dbField="civil_service_title_code" paramName="title" />
                     </exp>
                 </where>
                 GROUP BY employee_number,fiscal_year_id,type_of_year
@@ -153,6 +157,7 @@
                 <exp op="AND">
                     <exp op="=" dbField="fiscal_year_id" paramName="year" />
                     <exp op="=" dbField="type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="civil_service_title_code" paramName="title" />
                 </exp>
             </where>
         </sql>
