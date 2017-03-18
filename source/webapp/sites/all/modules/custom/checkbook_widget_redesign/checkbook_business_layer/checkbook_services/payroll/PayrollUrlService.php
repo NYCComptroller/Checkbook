@@ -66,6 +66,15 @@ class PayrollUrlService
 
     }
 
+    static function titleUrl($title) {
+        $title = isset($title) ? '/title/' . $title : '';
 
+        $url = '/payroll/title_landing'
+            . RequestUtilities::_getUrlParamString("yeartype")
+            . RequestUtilities::_getUrlParamString("year")
+            . $title;
+        return $url;
+
+    }
 
 }

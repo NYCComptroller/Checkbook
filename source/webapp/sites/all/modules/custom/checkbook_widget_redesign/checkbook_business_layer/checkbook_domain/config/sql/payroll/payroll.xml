@@ -149,7 +149,6 @@
         <param name="yeartype" required ="true" type="string"/>
         <param name="agency" type="int" />
         <param name="title" type="int" />
-        <param name="salary" type="string" />
         <sql>
             SELECT type_of_year,
             agency_id,
@@ -169,13 +168,43 @@
                     <exp op="=" dbField="fiscal_year_id" paramName="year" />
                     <exp op="=" dbField="type_of_year" paramName="yeartype" />
                     <exp op="=" dbField="agency_id" paramName="agency" />
-                    <exp op="=" dbField="type_of_employment" paramName="salary" />
                 </exp>
             </where>
+            AND type_of_employment = 'Salaried'
             GROUP BY agency_id, employee_id, fiscal_year_id, type_of_year, civil_service_title, civil_service_title_code, employee_number
         </sql>
     </statement>
-    <statement name="GetTitlesByNumberOfEmployees" datasource="checkbook"></statement>
+    <statement name="GetTitlesByNumberOfEmployees" datasource="checkbook">
+        <param name="year" required ="true" type="int" />
+        <param name="yeartype" required ="true" type="string"/>
+        <param name="agency" type="int" />
+        <param name="title" type="int" />
+        <sql>
+            SELECT noid.employee_count as employee_count,
+            id.agency_id as agency_id,
+            noid.civil_service_title as civil_service_title,
+            noid.civil_service_title_code as civil_service_title_code,
+            noid.total_annual_salary as total_annual_salary,
+            noid.total_gross_pay as total_gross_pay,
+            noid.total_base_salary as total_base_salary,
+            noid.total_other_payments as total_other_payments,
+            noid.total_overtime_amount as total_overtime_amount,
+            noid.type_of_year as type_of_year,
+            noid.fiscal_year_id as fiscal_year,
+            noid.type_of_employment as type_of_employment
+            FROM aggregateon_payroll_employee_title noid
+            JOIN aggregateon_payroll_employee_agency_title id
+            ON noid.civil_service_title_code = id.civil_service_title_code
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="noid.fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="noid.type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="id.agency_id" paramName="agency" />
+                </exp>
+            </where>
+            AND noid.type_of_employment = 'Salaried'
+        </sql>
+    </statement>
     <statement name="GetCountAgencies" datasource="checkbook">
         <param name="year" required ="true" type="int" />
         <param name="yeartype" required ="true" type="string"/>

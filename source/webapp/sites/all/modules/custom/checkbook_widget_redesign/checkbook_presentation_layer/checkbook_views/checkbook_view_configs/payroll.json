@@ -23,7 +23,8 @@
             },
             "titles_by_number_of_employees": {
                 "widget_config": "titles_by_number_of_employees_view",
-                "legacy_node_id": 263
+                "legacy_node_id": 263,
+                "visibility_parameters": ["-title"]
             }
         }
     }
