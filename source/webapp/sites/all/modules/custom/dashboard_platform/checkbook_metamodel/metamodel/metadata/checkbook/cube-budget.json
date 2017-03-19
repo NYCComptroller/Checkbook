@@ -2,7 +2,7 @@
     "datasets":{
         "budget":{
             "datasourceName":"main",
-            "source":"budget"
+            "source":"tmp_budget"
         }
     },
     "cubes":{
@@ -109,6 +109,24 @@
                         {
                             "name":"budget_code_name",
                             "sourceColumnName":"budget_code_name"
+                        }
+                    ]
+                },
+                {
+                    "name":"budget_code_name_code",
+                    "levels":[
+                        {
+                            "name":"budget_code_name_code",
+                            "sourceColumnName":"budget_code_name_code"
+                        }
+                    ]
+                },
+                {
+                    "name":"budget_code_name_code_display",
+                    "levels":[
+                        {
+                            "name":"budget_code_name_code_display",
+                            "sourceColumnName":"budget_code_name_code_display"
                         }
                     ]
                 },
