@@ -47,6 +47,13 @@ class PayrollWidgetService extends WidgetDataService implements IWidgetService {
                 $url = PayrollUrlService::annualSalaryPerAgencyUrl($agency, $employee);
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
+            case "title_agency_link":
+                $column = $row['civil_service_title'];
+                $agency = $row['agency_id'];
+                $title = $row['civil_service_title_code'];
+                $url = PayrollUrlService::titleAgencyUrl($agency, $title);
+                $value = "<a href='{$url}'>{$column}</a>";
+                break;
             case "title_link":
                 $column = $row['civil_service_title'];
                 $title = $row['civil_service_title_code'];

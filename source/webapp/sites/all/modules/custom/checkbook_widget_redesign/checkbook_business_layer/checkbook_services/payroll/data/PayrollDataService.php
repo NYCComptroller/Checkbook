@@ -22,6 +22,10 @@ class PayrollDataService extends DataService implements IPayrollDataService {
         return $this->configureCitywide(__FUNCTION__, $parameters, $limit, $orderBy);
     }
 
+    function GetTitlesByAgency($parameters, $limit = null, $orderBy = null) {
+        return $this->configureCitywide(__FUNCTION__, $parameters, $limit, $orderBy);
+    }
+
     function GetCountAgencies($parameters) {
         return $this->configureCitywide(__FUNCTION__, $parameters);
     }
