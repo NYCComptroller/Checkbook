@@ -25,10 +25,10 @@ class BudgetUtil{
     
     
     /**
-        * Function to get Budget Code Id for the combination of Budget Code, Budget Code Name and year
+        * Function to get Budget Code Id for the combination of Budget Code, Budget Code Name and Year
         * @param $budget_code_name
         * @param $budget_code
-        * $year
+        * @param $year
     */
     static public function getBudgetCodeId($budget_code_name, $budget_code, $year){
         $query = "SELECT DISTINCT budget_code_id FROM budget
