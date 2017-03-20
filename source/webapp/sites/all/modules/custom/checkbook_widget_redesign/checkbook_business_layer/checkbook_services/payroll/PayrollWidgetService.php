@@ -23,20 +23,41 @@ class PayrollWidgetService extends WidgetDataService implements IWidgetService {
                 break;
             case "total_gross_pay_link":
                 $column = $row['total_gross_pay'];
-                $dynamic_parameter = "/agency/" . $row['agency'];
-                $url = PayrollUrlService::payUrl($dynamic_parameter, $this->getLegacyNodeId());
+                $agency = "/agency/" . $row['agency'];
+                $url = PayrollUrlService::payUrl($agency);
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
             case "total_overtime_pay_link":
                 $column = $row['total_overtime_pay'];
-                $dynamic_parameter = "/agency/" . $row['agency'];
-                $url = PayrollUrlService::payUrl($dynamic_parameter, $this->getLegacyNodeId());
+                $agency = "/agency/" . $row['agency'];
+                $url = PayrollUrlService::payUrl($agency);
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
             case "max_annual_salary_link":
                 $column = $row['max_annual_salary'];
-                $dynamic_parameter = "/agency/" . $row['agency'];
-                $url = PayrollUrlService::annualSalaryUrl($dynamic_parameter, $this->getLegacyNodeId());
+                $employee = $row['employee_id'];
+                $agency = $row['agency_id'];
+                $url = PayrollUrlService::annualSalaryUrl($agency, $employee);
+                $value = "<a href='{$url}'>{$column}</a>";
+                break;
+            case "max_annual_salary_per_agency_link":
+                $column = $row['max_annual_salary'];
+                $employee = $row['employee_id'];
+                $agency = $row['agency_id'];
+                $url = PayrollUrlService::annualSalaryPerAgencyUrl($agency, $employee);
+                $value = "<a href='{$url}'>{$column}</a>";
+                break;
+            case "title_agency_link":
+                $column = $row['civil_service_title'];
+                $agency = $row['agency_id'];
+                $title = $row['civil_service_title_code'];
+                $url = PayrollUrlService::titleAgencyUrl($agency, $title);
+                $value = "<a href='{$url}'>{$column}</a>";
+                break;
+            case "title_link":
+                $column = $row['civil_service_title'];
+                $title = $row['civil_service_title_code'];
+                $url = PayrollUrlService::titleUrl($title);
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
         }

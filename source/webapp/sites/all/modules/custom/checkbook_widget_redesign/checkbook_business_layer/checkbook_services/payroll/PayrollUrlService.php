@@ -29,19 +29,60 @@ class PayrollUrlService
         return $url;
     }
 
-    static function payUrl($agency, $dynamic_parameter)
+    static function payUrl($agency)
     {
         $agency = isset($agency) ? '/agency/' . $agency : '';
-        $dynamic_parameter = isset($dynamic_parameter) ? $dynamic_parameter : '';
+
+        $url = "/panel_html/payroll_employee_transactions/payroll/employee/transactions"
+            . $agency
+            . RequestUtilities::_getUrlParamString("yeartype")
+            . RequestUtilities::_getUrlParamString("year");
+        return $url;
+    }
+
+    static function annualSalaryUrl($agency, $employee) {
+        $agency = isset($agency) ? '/agency/' . $agency : '';
+        $employee = isset($employee) ? "/abc/" . $employee : '';
 
         $url = "/panel_html/payroll_employee_transactions/payroll/employee/transactions"
             . $agency
             . RequestUtilities::_getUrlParamString("yeartype")
             . RequestUtilities::_getUrlParamString("year")
-            . $dynamic_parameter;
+            . "/salamttype/1"
+            . $employee;
         return $url;
     }
 
+    static function annualSalaryPerAgencyUrl($agency, $employee) {
+        $agency = isset($agency) ? '/agency/' . $agency : '';
+        $employee = isset($employee) ? "/abc/" . $employee : '';
 
+        $url = "/panel_html/payroll_employee_transactions/payroll/employee/transactions"
+            . $agency
+            . RequestUtilities::_getUrlParamString("yeartype")
+            . RequestUtilities::_getUrlParamString("year")
+            . $employee;
+        return $url;
+    }
+
+    static function titleUrl($title) {
+        $title = isset($title) ? '/title/' . $title : '';
+
+        $url = '/payroll/title_landing'
+            . RequestUtilities::_getUrlParamString("yeartype")
+            . RequestUtilities::_getUrlParamString("year")
+            . $title;
+        return $url;
+    }
+
+    static function titleAgencyUrl($agency, $title) {
+        $agency = isset($agency) ? '/agency/' . $agency : '';
+        $title = isset($title) ? '/title/' . $title : '';
+
+        $url = '/payroll/title_landing/yeartype/B/year/118'
+            .$agency
+            .$title;
+        return $url;
+    }
 
 }

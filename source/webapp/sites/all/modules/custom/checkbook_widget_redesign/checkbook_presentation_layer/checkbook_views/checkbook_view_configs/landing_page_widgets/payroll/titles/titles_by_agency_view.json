@@ -1,42 +1,42 @@
 {
     "serviceName": "PayrollWidgetService",
-    "dataFunc": "GetAnnualSalaries",
+    "dataFunc": "GetTitlesByAgency",
     "countFunc": "GetCountSalariedEmployees",
-    "headerTitle": "Annual Salaries",
+    "headerTitle": "Titles by Number of Employees",
     "headerSubTitle": "Salaried Employees",
     "table_columns": [
         {
             "labelAlias": "title",
-            "column": "civil_service_title"
+            "column": "civil_service_title",
+            "derivedColumn": "title_agency_link"
         },
         {
-            "labelAlias": "agency_name",
-            "column": "agency_name",
-            "derivedColumn": "agency_name_link"
+            "labelAlias": "no_of_employees",
+            "column": "employee_count",
+            "format": "number"
         },
         {
-            "labelAlias": "annual_salary",
-            "column": "max_annual_salary",
-            "derivedColumn": "max_annual_salary_link",
+            "labelAlias": "combined_annual_salary",
+            "column": "total_annual_salary",
             "format": "dollar"
         },
         {
-            "labelAlias": "gross_pay_ytd",
+            "labelAlias": "combined_gross_pay_ytd",
             "column": "total_gross_pay",
             "format": "dollar"
         },
         {
-            "labelAlias": "base_pay_ytd",
+            "labelAlias": "combined_base_pay_ytd",
             "column": "total_base_salary",
             "format": "dollar"
         },
         {
-            "labelAlias": "other_pay_ytd",
+            "labelAlias": "combined_other_pay_ytd",
             "column": "total_other_payments",
             "format": "dollar"
         },
         {
-            "labelAlias": "overtime_pay_ytd",
+            "labelAlias": "combined_overtime_pay_ytd",
             "column": "total_overtime_amount",
             "format": "dollar"
         },
@@ -47,16 +47,16 @@
     ],
     "dataTableOptions": {
         "aoColumns": [
-            {"bSortable":false,"sClass":"text","sWidth":"220px","asSorting": [ "asc","desc"  ]},
-            {"bSortable":false,"sClass":"text","asSorting": [ "asc","desc"  ]},
-            {"bSortable":true,"sClass":"number","sWidth":"100px","asSorting": [ "desc","asc"  ]},
+            {"bSortable":false,"sClass":"text","sWidth":"100px","asSorting": [ "asc","desc"  ]},
+            {"bSortable":true,"sClass":"number","sWidth":"85px","asSorting": [ "desc","asc"  ]},
+            {"bSortable":true,"sClass":"number","sWidth":"110px","asSorting": [ "desc","asc"  ]},
             {"bSortable":true,"sClass":"number","sWidth":"100px","asSorting": [ "desc","asc"  ]},
             {"bSortable":true,"sClass":"number","sWidth":"100px","asSorting": [ "desc","asc"  ]},
             {"bSortable":true,"sClass":"number","sWidth":"110px","asSorting": [ "desc","asc"  ]},
-            {"bSortable":true,"sClass":"number","sWidth":"110px","asSorting": [ "desc","asc"  ]},
+            {"bSortable":true,"sClass":"number","sWidth":"115px","asSorting": [ "desc","asc"  ]},
             { "bSortable": false,"sWidth":"15px" }
         ],
-        "aaSorting": [[2, "desc"]],
+        "aaSorting": [[1, "desc"]],
         "bServerSide": true,
         "bFilter": false,
         "bPaginate": false,
