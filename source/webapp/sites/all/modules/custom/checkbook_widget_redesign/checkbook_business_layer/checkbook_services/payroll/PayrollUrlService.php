@@ -24,6 +24,7 @@ class PayrollUrlService
         $url = "/payroll/agency_landing"
             . RequestUtilities::_getUrlParamString("yeartype")
             . RequestUtilities::_getUrlParamString("year")
+            . RequestUtilities::_getUrlParamString("title")
             . RequestUtilities::_getUrlParamString("agency")
             . "/agency/" . $agency_id;
         return $url;

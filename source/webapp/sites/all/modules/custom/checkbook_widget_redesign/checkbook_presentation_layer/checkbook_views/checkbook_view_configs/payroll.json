@@ -1,35 +1,48 @@
 {
     "citywide": {
-        "landing_page_widgets":{
-            "agencies_by_payroll": {
-                "widget_config": "agencies_by_payroll_view",
-                "legacy_node_id": 323,
-                "visibility_parameters": ["-agency"]
-            },
-            "agencies_by_overtime": {
-                "widget_config": "agencies_by_overtime_view",
-                "legacy_node_id": 322,
-                "visibility_parameters": ["-agency"]
-            },
-            "annual_salaries": {
-                "widget_config": "annual_salaries_view",
-                "legacy_node_id": 320,
-                "visibility_parameters": ["-agency", "-title"]
-            },
-            "annual_salaries_agency": {
-                "widget_config": "annual_salaries_agency_view",
-                "legacy_node_id": 325,
-                "visibility_parameters": ["agency"]
-            },
-            "titles_by_number_of_employees": {
-                "widget_config": "titles_by_number_of_employees_view",
-                "legacy_node_id": 881,
-                "visibility_parameters": ["-agency", "-title"]
-            },
-            "titles_by_agency": {
-                "widget_config": "titles_by_agency_view",
-                "legacy_node_id": 882,
-                "visibility_parameters": ["agency"]
+        "nyc_landing":{
+            "landing_page_widgets":{
+                "agencies_by_payroll": {
+                    "widget_config": "agencies_by_payroll_view",
+                    "legacy_node_id": 323
+                },
+                "agencies_by_overtime": {
+                    "widget_config": "agencies_by_overtime_view",
+                    "legacy_node_id": 322
+                },
+                "annual_salaries": {
+                    "widget_config": "annual_salaries_view",
+                    "legacy_node_id": 320
+                },
+                "titles_by_number_of_employees": {
+                    "widget_config": "titles_by_number_of_employees_view",
+                    "legacy_node_id": 881
+                }
+            }
+        },
+        "agency_landing":{
+            "landing_page_widgets":{
+                "annual_salaries_agency": {
+                    "widget_config": "annual_salaries_agency_view",
+                    "legacy_node_id": 325
+                },
+                "titles_by_agency": {
+                    "widget_config": "titles_by_agency_view",
+                    "legacy_node_id": 882,
+                    "visibility_parameters": ["-title"]
+                }
+            }
+        },
+        "title_landing":{
+            "landing_page_widgets":{
+                "agencies_by_payroll": {
+                    "widget_config": "agencies_by_payroll_view",
+                    "legacy_node_id": 323
+                },
+                "agencies_by_overtime": {
+                    "widget_config": "agencies_by_overtime_view",
+                    "legacy_node_id": 322
+                }
             }
         }
     }

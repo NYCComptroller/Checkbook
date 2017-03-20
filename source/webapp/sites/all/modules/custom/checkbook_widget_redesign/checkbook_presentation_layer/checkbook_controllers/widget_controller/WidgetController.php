@@ -83,9 +83,12 @@ class WidgetController {
                 $dimension = "{$status}_{$category}";
                 $config = $configuration->$dashboard->$dimension->landing_page_widgets->$widget;
                 break;
+            case Domain::$PAYROLL:
+                $dimension = PayrollLandingPage::getCurrent();
+                $config = $configuration->$dashboard->$dimension->landing_page_widgets->$widget;
+                break;
             case Domain::$SPENDING:
             case Domain::$REVENUE:
-            case Domain::$PAYROLL:
             case Domain::$BUDGET:
                 $config = $configuration->$dashboard->landing_page_widgets->$widget;
                 break;
