@@ -7,8 +7,9 @@ import pages.home.HomePage;
 import pages.revenue.RevenuePage;
 import utilities.NYCBaseTest;
 import utility.Helper;
+import utility.TestStatusReport;
 
-public class RevenueTest extends NYCBaseTest{
+public class RevenueTest extends TestStatusReport{
 	@Before
     public void GoToPage(){
 	   if (!RevenuePage.isAt())
