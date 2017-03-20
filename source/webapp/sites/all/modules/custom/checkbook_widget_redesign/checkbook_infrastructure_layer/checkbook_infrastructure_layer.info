@@ -48,3 +48,4 @@ files[] = utilities/FormattingUtilities.php
 files[] = constants/CommonConstants.php
 files[] = constants/ContractConstants.php
 files[] = constants/SpendingConstants.php
+files[] = constants/PayrollConstants.php
