@@ -14,7 +14,7 @@ class BudgetUtil{
         * @param $parameters
     */
     static public function adjustBudgetCodeNameParameter(&$node, &$parameters){
-        if(isset($parameters['budget_code_name']) && !(isset($parameters['budget_code']))){
+        if(isset($parameters['budget_code_name'])){
             $data_controller_instance = data_controller_get_operator_factory_instance();
             $budget_code = $parameters['budget_code_name'][0];
             $parameters['budget_code'] = $data_controller_instance->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME, array($budget_code, false, true));
