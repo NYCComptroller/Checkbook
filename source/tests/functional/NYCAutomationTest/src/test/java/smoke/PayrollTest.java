@@ -7,8 +7,10 @@ import pages.home.HomePage;
 import pages.payroll.PayrollPage;
 import utilities.NYCBaseTest;
 import utility.Helper;
+import utility.TestStatusReport;
 
-public class PayrollTest extends NYCBaseTest{
+
+public class PayrollTest extends TestStatusReport{
 	@Before
     public void GoToPage(){
 	   if (!PayrollPage.isAt())

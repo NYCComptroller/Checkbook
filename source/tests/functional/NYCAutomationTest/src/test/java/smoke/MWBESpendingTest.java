@@ -14,8 +14,9 @@ import pages.home.HomePage;
 import pages.mwbe.MWBEPage;
 import utilities.NYCBaseTest;
 import utility.Helper;
+import utility.TestStatusReport;
 
-public class MWBESpendingTest extends NYCBaseTest{
+public class MWBESpendingTest extends TestStatusReport{
 	@Before
 	public void GoToPage(){
 		if(!MWBEPage.IsAt()){
