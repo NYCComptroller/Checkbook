@@ -14,7 +14,7 @@ class BudgetUtil{
         * @param $parameters
     */
     static public function adjustBudgetCodeNameParameter(&$node, &$parameters){
-        if(isset($parameters['budget_code_name'])){
+        if(isset($parameters['budget_code_name']) && !(isset($parameters['budget_code']))){
             $data_controller_instance = data_controller_get_operator_factory_instance();
             $budget_code = $parameters['budget_code_name'][0];
             $parameters['budget_code'] = $data_controller_instance->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME, array($budget_code, false, true));
@@ -22,4 +22,22 @@ class BudgetUtil{
         }
         return $parameters;
     }
+    
+    
+    /**
+        * Function to get Budget Code Id for the combination of Budget Code, Budget Code Name and year
+        * @param $budget_code_name
+        * @param $budget_code
+        * $year
+    */
+    static public function getBudgetCodeId($budget_code_name, $budget_code, $year){
+        $query = "SELECT DISTINCT budget_code_id FROM budget
+                  WHERE budget_code = ". $budget_code
+                ." AND lower(budget_code_name) = '". strtolower($budget_code_name) . "'"
+                ." AND budget_fiscal_year_id = ".$year;log_error($query);
+
+        $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
+        return $results[0]['budget_code_id'];
+    }
+    
 }

@@ -1107,7 +1107,8 @@ function _checkbook_advanced_search_budget_submit($form, &$form_state)
             $budget_budget_code = str_replace($budget_code, "", $budget_budget_code);
             $budget_budget_code = str_replace("[", "", $budget_budget_code);
             $budget_budget_code = str_replace("]", "", $budget_budget_code);
-            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_budget_code, 'bdgcodenm_exact');
+            $budget_code_id = BudgetUtil::getBudgetCodeId($budget_budget_code, $budget_code, $budget_fiscal_year);
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_code_id, 'bdgcode');
         } else {
             $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_budget_code, 'bdgcodenm');
         }
