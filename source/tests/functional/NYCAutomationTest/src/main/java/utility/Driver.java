@@ -41,7 +41,7 @@ public class Driver {
                 break;
 
             case "CHROME":
-                System.setProperty("webdriver.chrome.driver", Driver.DriverPath + "chromedriver-mac");
+                System.setProperty("webdriver.chrome.driver", Driver.DriverPath + "chromedriver.exe");
                 Instance = new ChromeDriver();
                 break;
 

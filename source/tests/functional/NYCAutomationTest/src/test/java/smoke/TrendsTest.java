@@ -25,9 +25,9 @@ public class TrendsTest extends TestStatusReport{
         assertTrue(Helper.stringToInt(AllTrendsPage.changesInNetAssets2015()) >= 5479762);
     }
     
-//	    @Test
-//	    public void verifyFeaturedTrendsHover() {
-//	        assertEquals(FeaturedTrendsPage.featuredTrends2015orange(), "$78.04B");
-//	    } 
+   // @Test
+   // public void verifyFeaturedTrendsHover() {
+    //    assertEquals(FeaturedTrendsPage.featuredTrends2015orange(), "$78.04B");
+  //  } 
 	
 }

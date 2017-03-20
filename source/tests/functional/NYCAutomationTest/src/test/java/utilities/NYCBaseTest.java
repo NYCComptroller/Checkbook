@@ -37,7 +37,9 @@ public class NYCBaseTest{
             e.printStackTrace();
         }
 
-        //NYCDatabaseUtil.connectToDatabase();
+        //conncet to data base
+        
+        NYCDatabaseUtil.connectToDatabase();
 
         String browserSelection = NYCBaseTest.prop.getProperty("BrowserSelection");
 

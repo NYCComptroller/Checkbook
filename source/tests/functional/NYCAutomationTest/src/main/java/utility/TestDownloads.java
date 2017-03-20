@@ -1,9 +1,9 @@
 package utility;
 
-import org.sikuli.script.Screen;
+//import org.sikuli.script.Screen;
 
 public class TestDownloads {
 	public void FileDownload(){
-		Screen s = new Screen();
+	//	Screen s = new Screen();
 	}
 }
