@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import pages.search.SearchPage;
+import utilities.NYCBaseTest;
 import utility.TestStatusReport;
 
 public class SmartSearch extends TestStatusReport{

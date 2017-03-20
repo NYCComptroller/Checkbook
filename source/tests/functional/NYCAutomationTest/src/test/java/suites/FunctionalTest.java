@@ -16,6 +16,7 @@ import functional.RegisteredExpenseContractsDetailsTest;
 import functional.RegisteredExpenseContractsTest;
 import functional.RegisteredRevenueContractsDetailsTest;
 import functional.RegisteredRevenueContractsTest;
+import FunctionalBudget.BurgetwidgetTest;
 import smoke.AdvancedSearchTest;
 import smoke.DataFeedsTest;
 import smoke.HomePageTest;
@@ -30,19 +31,20 @@ import utilities.NYCBaseTest;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-	ActiveExpenseContractsTest.class,
-	ActiveExpenseContractsDetailsTest.class,
-	ActiveRevenueContractsTest.class,
-	ActiveRevenueContractsDetailsTest.class,
-	PendingExpenseContractsTest.class,
-	PendingExpenseContractsDetailsTest.class,
-	PendingRevenueContractsTest.class,
-	PendingRevenueContractsDetailsTest.class,
-	RegisteredExpenseContractsTest.class,
-	RegisteredExpenseContractsDetailsTest.class,
-	RegisteredRevenueContractsTest.class,
-	RegisteredRevenueContractsDetailsTest.class
+	//ActiveExpenseContractsTest.class,
+	//ActiveExpenseContractsDetailsTest.class,
+	//ActiveRevenueContractsTest.class,
+	//ActiveRevenueContractsDetailsTest.class,
+	//PendingExpenseContractsTest.class,
+	//PendingExpenseContractsDetailsTest.class,
+	//PendingRevenueContractsTest.class,
+	//PendingRevenueContractsDetailsTest.class,
+	//RegisteredExpenseContractsTest.class,
+	//RegisteredExpenseContractsDetailsTest.class,
+	//RegisteredRevenueContractsTest.class,
+	//RegisteredRevenueContractsDetailsTest.class,
+	BurgetwidgetTest.class
 })
-public class FunctionalTest extends NYCBaseTest{
+public class FunctionalTest extends NYCBaseTest{	
 	
 }

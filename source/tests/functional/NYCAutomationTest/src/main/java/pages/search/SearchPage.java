@@ -76,8 +76,8 @@ public class SearchPage {
             new Select(Driver.Instance.findElement(By.id("edit-checkbook-contracts-year"))).selectByVisibleText("FY 2016");
             Driver.Instance.findElement(By.id("edit-contracts-submit")).click();
 
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"table_656_info\"]")));
-            String totalTransactionsString = Driver.Instance.findElement(By.xpath("//*[@id=\"table_656_info\"]")).getText();
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"table_939_info\"]")));
+            String totalTransactionsString = Driver.Instance.findElement(By.xpath("//*[@id=\"table_939_info\"]")).getText();
             int totalTransactions = Helper.GetTotalEntries(totalTransactionsString, 5);		
             		
             

@@ -48,8 +48,8 @@ public class SpendingTest extends TestStatusReport{
 	    						"Top 5 Agencies",
 	    						"Top 5 Expense Categories",
 	    						"Top 5 Prime Vendors",
-	    						"Top 5 Contracts",
-	    						"Top 5 Agencies"};  
+	    						"Top 5 Contracts"};
+	    						//"Top 5 Agencies"};  
     	HomePage.ShowWidgetDetails();
     	assertTrue(Arrays.equals(widgetTitles, SpendingPage.WidgetTitles().toArray()));
     }

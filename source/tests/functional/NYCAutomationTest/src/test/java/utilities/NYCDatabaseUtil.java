@@ -193,4 +193,189 @@ public class NYCDatabaseUtil {
         rs = amountQueryHelper(yearTypeVal);
         return rs.getInt("AECount");
     }
+    // Revenue Widgets
+    
+    public static int getRevenueAgenciesCount(int year, char yearTypeVal) throws SQLException {
+        query = "SELECT COUNT(Distinct(agency_id)) aCount " +
+                "FROM  revenue_budget where budget_fiscal_year= " + year ;
+
+        rs = amountQueryHelper(yearTypeVal);
+        int count = 0;
+        while (rs.next()) {
+            count = rs.getInt("aCount");
+        }
+     
+        return count;
+        
+    }
+        
+        public static int getRevenueCategoriesCount(int year, char yearTypeVal) throws SQLException {
+            query = "SELECT COUNT(Distinct(revenue_category_id)) aCount " +
+                    "FROM  revenue_budget where budget_fiscal_year= " + year ;
+
+            rs = amountQueryHelper(yearTypeVal);
+            int count = 0;
+            while (rs.next()) {
+                count = rs.getInt("aCount");
+            }
+         
+            return count;
+    }
+        
+        public static int getRevenueFundingclassCount(int year, char yearTypeVal) throws SQLException {
+            query = "SELECT COUNT(Distinct(funding_class_code)) aCount " +
+                    "FROM  revenue_budget where budget_fiscal_year= " + year ;
+
+            rs = amountQueryHelper(yearTypeVal);
+            int count = 0;
+            while (rs.next()) {
+                count = rs.getInt("aCount");
+            }
+         
+            return count;
+    }
+        
+        //Spending widget counts
+        
+        public static int getTotalSpendingAgenciesCount(int year,char yearTypeVal) throws SQLException {
+            query = "SELECT COUNT(distinct agency_id) aCount from disbursement_line_item_details where fiscal_year =" + year ;
+          
+           rs = amountQueryHelper(yearTypeVal);
+           int count = 0;
+           while (rs.next()) {
+               count = rs.getInt("aCount");
+           }
+           return count;
+        }
+        
+           
+        public static int getTotalSpendingChecksCount(int year,char yearTypeVal) throws SQLException {
+            query = "SELECT COUNT(*) aCount from disbursement_line_item_details where fiscal_year =" + year ;
+           // query2 = "SELECT COUNT(*) aCount from disbursement_line_item_details where fiscal_year =" + year ;  
+
+           rs = amountQueryHelper(yearTypeVal);
+           int count = 0;
+           while (rs.next()) {
+               count = rs.getInt("aCount");
+           }
+        
+           return count;
+           
+        }        
+        
+        public static int getTotalSpendingPrimeVendorsCount(int year,char yearTypeVal) throws SQLException {
+            query = "SELECT COUNT(distinct vendor_id) aCount from disbursement_line_item_details where fiscal_year =" + year ;
+           // query2 = "SELECT COUNT(*) aCount from disbursement_line_item_details where fiscal_year =" + year ;  
+
+           rs = amountQueryHelper(yearTypeVal);
+           int count = 0;
+           while (rs.next()) {
+               count = rs.getInt("aCount");
+           }
+        
+           return count;
+           
+        }
+        
+
+		public static int getTotalSpendingExpCategoriesCount(int year, char yearTypeVal)  throws SQLException {
+			// TODO Auto-generated method stub
+		       query = "SELECT COUNT(distinct expenditure_object_id) aCount from disbursement_line_item_details where fiscal_year =" + year ;
+	           // query2 = "SELECT COUNT(*) aCount from disbursement_line_item_details where fiscal_year =" + year ;  
+
+	           rs = amountQueryHelper(yearTypeVal);
+	           int count = 0;
+	           while (rs.next()) {
+	               count = rs.getInt("aCount");
+	           }
+	        
+	           return count;
+	           
+	       		}  		
+        
+public static int getTotalSpendingContractsCount(int year,char yearTypeVal) throws SQLException {
+   // query = "SELECT COUNT(distinct contract_number) aCount from disbursement_line_item_details where fiscal_year =" + year ;
+    query =   "select  count(distinct contract_number) aCount from ( SELECT COALESCE(master_agreement_id, agreement_id) as agreement_id,"+ 
+    	       "COALESCE(master_contract_number,contract_number) as contract_number,"+ 
+    	       "COALESCE(master_contract_document_code,contract_document_code) as contract_document_code,"+ 
+    	      "COALESCE(master_contract_vendor_id_cy,contract_vendor_id) as vendor_id,"+ 
+    	       "COALESCE(master_contract_agency_id_cy,contract_agency_id) as agency_id,"+ 
+    	    "COALESCE(master_purpose,purpose) as description, "+
+    	           " fiscal_year AS year_id, sum(check_amount) AS total_spending_amount,"+ 
+    	     " MIN(COALESCE(maximum_spending_limit,maximum_contract_amount)) AS contract_amount"+ 
+    	  "FROM disbursement_line_item_details  WHERE agreement_id IS NOT NULL AND contract_number IS NOT NULL"+ 
+    	  "and fiscal_year = "+ year +
+    	   "and contract_document_code in ('CT1', 'CTA1', 'POD', 'POC', 'PCC1', 'DO1','MA1','MMA1')	GROUP BY 1,2,3,4,5,6,7 ) a "; 
+
+   rs = amountQueryHelper(yearTypeVal);
+   int count = 0;
+   while (rs.next()) {
+       count = rs.getInt("aCount");
+   }
+
+   return count;
+   
+}
+// Budget Widgets
+
+
+
+public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLException {
+    query = "SELECT COUNT(Distinct(agency_id)) aCount " +
+            "FROM  budget where budget_fiscal_year= " + year ;
+
+    rs = amountQueryHelper(yearTypeVal);
+    int count = 0;
+    while (rs.next()) {
+        count = rs.getInt("aCount");
+    }
+ 
+    return count;
+    
+}
+    
+    public static int getBudgetExpenseCategoriesCount(int year, char yearTypeVal) throws SQLException {
+        query = "SELECT COUNT(Distinct(object_class_id)) aCount " +
+                "FROM  budget where budget_fiscal_year= " + year ;
+
+        rs = amountQueryHelper(yearTypeVal);
+        int count = 0;
+        while (rs.next()) {
+            count = rs.getInt("aCount");
+        }
+     
+        return count;
+}
+    
+    public static int getBudgetExpenseBudgetCategoriesCount(int year, char yearTypeVal) throws SQLException {
+        query = "SELECT COUNT(Distinct(budget_code)) aCount " +
+                "FROM  budget where budget_fiscal_year= " + year ;
+
+        rs = amountQueryHelper(yearTypeVal);
+        int count = 0;
+        while (rs.next()) {
+            count = rs.getInt("aCount");
+        }
+     
+        return count;
+}
+    
+    
+    public static String getBudgetAmount(int year, char yearTypeVal) throws SQLException {
+        query = "SELECT SUM(current_budget_amount) sumBudgetAmt "
+                + "FROM budget"
+                + " WHERE budget_fiscal_year = " + year;
+
+
+        rs = amountQueryHelper(yearTypeVal);
+
+        BigDecimal totalBudgetAmount = new BigDecimal(0);
+
+        while (rs.next()) {
+            totalBudgetAmount = rs.getBigDecimal("sumBudgetAmt");
+        }
+        return formatNumber(totalBudgetAmount);
+        // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
+    }
+   		
 }
