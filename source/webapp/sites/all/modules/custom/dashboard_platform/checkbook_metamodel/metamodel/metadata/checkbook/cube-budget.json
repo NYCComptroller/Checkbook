@@ -113,15 +113,6 @@
                     ]
                 },
                 {
-                    "name":"budget_code_name_code",
-                    "levels":[
-                        {
-                            "name":"budget_code_name_code",
-                            "sourceColumnName":"budget_code_name_code"
-                        }
-                    ]
-                },
-                {
                     "name":"budget_code_name_code_display",
                     "levels":[
                         {
