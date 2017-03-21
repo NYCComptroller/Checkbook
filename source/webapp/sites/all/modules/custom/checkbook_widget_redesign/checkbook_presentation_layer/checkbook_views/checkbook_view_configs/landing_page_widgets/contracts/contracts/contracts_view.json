@@ -26,8 +26,8 @@
             {"bSortable":false,"sWidth":"150px","sClass":"number-center"},
             {"bSortable":true,"sWidth":"74px","sClass":"number","asSorting":["desc","asc"]},
             {"bSortable":true,"sWidth":"74px","sClass":"number","asSorting":["desc" ,"asc"]},
-            {"bSortable":true,"sWidth":"75px","sClass":"number","asSorting":["desc","asc"]},
-            {"bSortable":false,"sWidth":"5px"}
+            {"bSortable":true,"sWidth":"77px","sClass":"number","asSorting":["desc","asc"]},
+            {"bSortable":false,"sWidth":"3px"}
         ],
         "bServerSide":true,
         "bFilter":false,
