@@ -23,22 +23,23 @@ class PayrollWidgetService extends WidgetDataService implements IWidgetService {
                 break;
             case "total_gross_pay_link":
                 $column = $row['total_gross_pay'];
-                $agency = "/agency/" . $row['agency'];
-                $url = PayrollUrlService::payUrl($agency);
-                $value = "<a href='{$url}'>{$column}</a>";
+                $url = PayrollUrlService::payUrl($row['agency']);
+                $class = "bottomContainerReload";
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
             case "total_overtime_pay_link":
                 $column = $row['total_overtime_pay'];
-                $agency = "/agency/" . $row['agency'];
-                $url = PayrollUrlService::payUrl($agency);
-                $value = "<a href='{$url}'>{$column}</a>";
+                $url = PayrollUrlService::payUrl($row['agency']);
+                $class = "bottomContainerReload";
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
             case "max_annual_salary_link":
                 $column = $row['max_annual_salary'];
                 $employee = $row['employee_id'];
                 $agency = $row['agency_id'];
                 $url = PayrollUrlService::annualSalaryUrl($agency, $employee);
-                $value = "<a href='{$url}'>{$column}</a>";
+                $class = "bottomContainerReload";
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
             case "max_annual_salary_per_agency_link":
                 $column = $row['max_annual_salary'];
