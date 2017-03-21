@@ -34,10 +34,11 @@ class PayrollUrlService
     {
         $agency = isset($agency) ? '/agency/' . $agency : '';
 
-        $url = "/panel_html/payroll_employee_transactions/payroll/employee/transactions"
+        $url = "/panel_html/payroll_agencytransactions/payroll/agencywide/transactions"
             . $agency
             . RequestUtilities::_getUrlParamString("yeartype")
-            . RequestUtilities::_getUrlParamString("year");
+            . RequestUtilities::_getUrlParamString("year")
+            . RequestUtilities::_getUrlParamString("title");
         return $url;
     }
 
