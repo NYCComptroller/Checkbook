@@ -15,7 +15,7 @@
 						cookiecontent = $.cookie(cookiename);						
 					}
 					if(cookiecontent == null)  { return; }
-					cookiecontent = decodeURI(cookiecontent);
+					cookiecontent = unescape(cookiecontent);
 					var historyList = cookiecontent.split('@@');
 					for( var i = 0; i < historyList.length; i++ ) {
 						var link = historyList[i].split('::',2);
