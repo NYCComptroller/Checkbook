@@ -34,7 +34,7 @@ class BudgetUtil{
         $query = "SELECT DISTINCT budget_code_id FROM budget
                   WHERE budget_code = ". $budget_code
                 ." AND lower(budget_code_name) = '". strtolower($budget_code_name) . "'"
-                ." AND budget_fiscal_year_id = ".$year;log_error($query);
+                ." AND budget_fiscal_year_id = ".$year;
 
         $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
         return $results[0]['budget_code_id'];
