@@ -2,7 +2,7 @@
     "datasets":{
         "budget":{
             "datasourceName":"main",
-            "source":"tmp_budget"
+            "source":"budget"
         }
     },
     "cubes":{
