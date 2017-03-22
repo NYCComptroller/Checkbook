@@ -7,7 +7,8 @@
     "table_columns": [
         {
             "labelAlias": "title",
-            "column": "civil_service_title"
+            "column": "civil_service_title",
+            "tooltip": 30
         },
         {
             "labelAlias": "agency_name",
