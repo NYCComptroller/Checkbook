@@ -1,10 +1,5 @@
 {
-    "sqlConfig":
-    {
-        "serviceName":"RevenueWidgetService",
-        "sqlConfigName":"revenue/revenue",
-        "statementName":"GetRevenueByFundingClasses"
-    },
+    "dataFunc": "GetFundingClassesByRevenue",
     "serviceName":"RevenueWidgetService",
     "table_title":"Revenue by Funding Classes",
     "headerSubTitle":"Funding Classes",

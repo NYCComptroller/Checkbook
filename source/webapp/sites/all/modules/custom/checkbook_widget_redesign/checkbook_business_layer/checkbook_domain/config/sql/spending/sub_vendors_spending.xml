@@ -1,5 +1,6 @@
 <statements>
-    <statement name="GetSpendingSubVendorsByChecks" datasource="checkbook">
+    <!--GetSubVendorSpendingByChecks-->
+    <statement name="GetSubVendorSpendingByChecks" datasource="checkbook">
         <param name="year" required ="true" type="int" />
         <param name="yeartype" required ="true" type="string"/>
         <param name="agency" type="int" />
@@ -35,8 +36,8 @@
             </where>
         </sql>
     </statement>
-<!--GetMWBESubvenSpendingByAgencies-->
-    <statement name="GetMWBESubvenSpendingByAgencies" datasource="checkbook">
+    <!--GetSubVendorSpendingByAgencies-->
+    <statement name="GetSubVendorSpendingByAgencies" datasource="checkbook">
         <param name="year" required ="true" type="int" />
         <param name="yeartype" required ="true" type="string"/>
         <param name="agency" type="int" />
@@ -47,30 +48,49 @@
         <param name="mwbe"/>
         <sql>
             SELECT s0.type_of_year,
-                   s0.year_id,
-                   s0.agency_id,
-                   a.agency_name,
-                   SUM(total_spending_amount) AS check_amount_sum,
-                   SUM(total_spending_amount)/MAX(total.check_amount)*100 as percent_spending
+            s0.year_id,
+            s0.agency_id,
+            a.agency_name,
+            COUNT(DISTINCT vendor_id) AS sub_vendor_count,
+            prime_spending.check_amount_sum as ytd_spending_agency,
+            SUM(total_spending_amount) AS check_amount_sum,
+            SUM(total_spending_amount)/MAX(total.check_amount)*100 as percent_spending,
+            SUM(total_spending_amount)/MAX(prime_spending.check_amount_sum_no_payroll)*100 as percent_paid_sub_vendors
             FROM aggregateon_subven_spending_coa_entities s0
             JOIN ref_agency a ON a.agency_id = s0.agency_id
             JOIN
             (
                 SELECT SUM(total_spending_amount) AS check_amount
                 FROM aggregateon_subven_spending_coa_entities
-                    <where>
-                        <exp op="AND">
-                            <exp op="=" dbField="year_id" paramName="year" />
-                            <exp op="=" dbField="type_of_year" paramName="yeartype" />
-                            <exp op="=" dbField="prime_vendor_id" paramName="vendor" />
-                            <exp op="=" dbField="vendor_id" paramName="subvendor" />
-                            <exp op="=" dbField="agency_id" paramName="agency" />
-                            <exp op="=" dbField="spending_category_id" paramName="category" />
-                            <exp op="=" dbField="industry_type_id" paramName="industry" />
-                            <exp op="IN" dbField="minority_type_id" paramName="mwbe" />
-                        </exp>
-                    </where>
-                ) total on 1 = 1
+                <where>
+                    <exp op="AND">
+                        <exp op="=" dbField="year_id" paramName="year" />
+                        <exp op="=" dbField="type_of_year" paramName="yeartype" />
+                        <exp op="=" dbField="prime_vendor_id" paramName="vendor" />
+                        <exp op="=" dbField="vendor_id" paramName="subvendor" />
+                        <exp op="=" dbField="agency_id" paramName="agency" />
+                        <exp op="=" dbField="spending_category_id" paramName="category" />
+                        <exp op="=" dbField="industry_type_id" paramName="industry" />
+                        <exp op="IN" dbField="minority_type_id" paramName="mwbe" />
+                    </exp>
+                </where>
+            ) total on 1 = 1
+            JOIN
+            (
+                SELECT s0.year_id,
+                s0.type_of_year,
+                s0.agency_id,
+                SUM(total_spending_amount) AS check_amount_sum,
+                SUM(CASE WHEN spending_category_id !=2 THEN total_spending_amount ELSE 0 END) AS check_amount_sum_no_payroll
+                FROM aggregateon_spending_coa_entities s0
+                <where>
+                    <exp op="AND">
+                        <exp op="=" dbField="year_id" paramName="year" />
+                        <exp op="=" dbField="type_of_year" paramName="yeartype" />
+                    </exp>
+                </where>
+                GROUP BY s0.agency_id, s0.year_id, s0.type_of_year
+            ) prime_spending ON prime_spending.agency_id = s0.agency_id AND prime_spending.year_id = s0.year_id AND prime_spending.type_of_year = s0.type_of_year
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="s0.year_id" paramName="year" />
@@ -83,11 +103,11 @@
                     <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
                 </exp>
             </where>
-            GROUP BY s0.agency_id, s0.year_id, s0.type_of_year, a.agency_name
+            GROUP BY s0.agency_id, s0.year_id, s0.type_of_year, a.agency_name, prime_spending.check_amount_sum
         </sql>
     </statement>
-    <!--GetSubVendorsSpendingByPrimeVendors-->
-    <statement name="GetSubVendorsSpendingByPrimeVendors" datasource="checkbook">
+    <!--GetSubVendorSpendingByPrimeVendors-->
+    <statement name="GetSubVendorSpendingByPrimeVendors" datasource="checkbook">
         <param name="year" required ="true" type="int" />
         <param name="yeartype" required ="true" type="string"/>
         <param name="agency" type="int" />
@@ -96,6 +116,7 @@
         <param name="category" type="int" />
         <param name="industry" type="int" />
         <param name="mwbe" />
+        <param name="is_all_categories" type="string"/>
         <sql>
             SELECT
             a.type_of_year,
@@ -105,9 +126,29 @@
             a.prime_minority_type_id,
             SUM(COALESCE(total_spending_amount,0)) AS check_amount_sum,
             SUM(COALESCE(total_contract_amount,0)) AS total_contract_amount_sum,
+            SUM(COALESCE(total_spending_amount,0))/MAX(total.check_amount)*100 as percent_spending,
             COUNT(DISTINCT a.vendor_id) AS sub_vendor_count
             FROM aggregateon_subven_spending_vendor a
             JOIN vendor b ON b.vendor_id = a.prime_vendor_id
+            JOIN
+            (
+                SELECT SUM(total_spending_amount) AS check_amount
+                FROM aggregateon_subven_spending_vendor
+                <where>
+                    <exp op="AND">
+                        <exp op="=" dbField="year_id" paramName="year" />
+                        <exp op="=" dbField="type_of_year" paramName="yeartype" />
+                        <exp op="=" dbField="prime_vendor_id" paramName="vendor" />
+                        <exp op="=" dbField="prime_vendor_id" paramName="fvendor" />
+                        <exp op="=" dbField="vendor_id" paramName="subvendor" />
+                        <exp op="=" dbField="agency_id" paramName="agency" />
+                        <exp op="=" dbField="spending_category_id" paramName="category" />
+                        <exp op="=" dbField="industry_type_id" paramName="industry" />
+                        <exp op="IN" dbField="minority_type_id" paramName="mwbe" />
+                        <exp op="=" dbField="is_all_categories" paramName="is_all_categories" />
+                    </exp>
+                </where>
+            ) total on 1 = 1
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="a.year_id" paramName="year" />
@@ -118,16 +159,14 @@
                     <exp op="=" dbField="a.agency_id" paramName="agency" />
                     <exp op="=" dbField="a.industry_type_id" paramName="industry" />
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
-                    <exp op="IF" condition="=" paramName="category" compareValue="">
-                        <exp op="=" dbField="a.is_all_categories">'Y'</exp>
-                    </exp>
+                    <exp op="=" dbField="a.is_all_categories" paramName="is_all_categories" />
                 </exp>
             </where>
             GROUP BY a.year_id, a.type_of_year, a.prime_vendor_id, a.prime_minority_type_id, b.legal_name
         </sql>
     </statement>
-    <!--GetSubVendorsSpendingCountByPrimeVendors-->
-    <statement name="GetSubVendorsSpendingCountByPrimeVendors" datasource="checkbook">
+    <!--GetCountSubVendorPrimeVendors-->
+    <statement name="GetCountSubVendorPrimeVendors" datasource="checkbook">
         <param name="year" required ="true" type="int" />
         <param name="yeartype" required ="true" type="string"/>
         <param name="agency" type="int" />
@@ -136,82 +175,85 @@
         <param name="category" type="int" />
         <param name="industry" type="int" />
         <param name="mwbe" />
+        <param name="is_all_categories" type="string"/>
         <sql>
-            SELECT COUNT(*) AS record_count
-            FROM (SELECT a.prime_vendor_id FROM aggregateon_subven_spending_vendor a
+            SELECT DISTINCT prime_vendor_id FROM aggregateon_subven_spending_vendor
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="year_id" paramName="year" />
+                    <exp op="=" dbField="type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="spending_category_id" paramName="category" />
+                    <exp op="=" dbField="prime_vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="vendor_id" paramName="subvendor" />
+                    <exp op="=" dbField="agency_id" paramName="agency" />
+                    <exp op="=" dbField="industry_type_id" paramName="industry" />
+                    <exp op="IN" dbField="minority_type_id" paramName="mwbe" />
+                    <exp op="=" dbField="is_all_categories" paramName="is_all_categories" />
+                </exp>
+            </where>
+        </sql>
+    </statement>
+    <!--GetSubVendorSpendingBySubVendors-->
+    <statement name="GetSubVendorSpendingBySubVendors" datasource="checkbook">
+        <param name="year" required ="true" type="int" />
+        <param name="yeartype" required ="true" type="string"/>
+        <param name="agency" type="int" />
+        <param name="subvendor" type="int" />
+        <param name="fvendor" type="int" />
+        <param name="category" type="int" />
+        <param name="industry" type="int" />
+        <param name="mwbe"/>
+        <param name="is_all_categories" type="string"/>
+        <sql>
+            SELECT
+            a.minority_type_id as sub_minority_type_id,
+            a.vendor_id as sub_vendor_id,
+            b.legal_name AS sub_vendor_name,
+            SUM(COALESCE(total_spending_amount,0)) AS check_amount_sum,
+            SUM(COALESCE(total_contract_amount,0)) AS total_contract_amount_sum,
+            SUM(total_sub_contracts) AS total_sub_contracts,
+            SUM(total_spending_amount) AS ytd_spending_sub_vendors,
+            SUM(COALESCE(total_spending_amount,0))/MAX(total.check_amount)*100 as percent_spending
+            FROM aggregateon_subven_spending_vendor a
+            JOIN subvendor b ON b.vendor_id = a.vendor_id
+            JOIN
+            (
+                SELECT SUM(total_spending_amount) AS check_amount
+                FROM aggregateon_subven_spending_vendor
+                <where>
+                    <exp op="AND">
+                        <exp op="=" dbField="year_id" paramName="year" />
+                        <exp op="=" dbField="type_of_year" paramName="yeartype" />
+                        <exp op="=" dbField="vendor_id" paramName="subvendor" />
+                        <exp op="=" dbField="prime_vendor_id" paramName="fvendor" />
+                        <exp op="=" dbField="prime_vendor_id" paramName="vendor" />
+                        <exp op="=" dbField="agency_id" paramName="agency" />
+                        <exp op="=" dbField="spending_category_id" paramName="category" />
+                        <exp op="=" dbField="industry_type_id" paramName="industry" />
+                        <exp op="IN" dbField="minority_type_id" paramName="mwbe" />
+                        <exp op="=" dbField="is_all_categories" paramName="is_all_categories" />
+                    </exp>
+                </where>
+            ) total on 1 = 1
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="a.year_id" paramName="year" />
                     <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
-                    <exp op="=" dbField="a.spending_category_id" paramName="category" />
-                    <exp op="=" dbField="a.prime_vendor_id" paramName="vendor" />
                     <exp op="=" dbField="a.vendor_id" paramName="subvendor" />
+                    <exp op="=" dbField="a.prime_vendor_id" paramName="fvendor" />
+                    <exp op="=" dbField="a.prime_vendor_id" paramName="vendor" />
                     <exp op="=" dbField="a.agency_id" paramName="agency" />
                     <exp op="=" dbField="a.industry_type_id" paramName="industry" />
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
-                    <exp op="IF" condition="=" paramName="category" compareValue="">
-                        <exp op="=" dbField="a.is_all_categories">'Y'</exp>
-                    </exp>
+                    <exp op="=" dbField="a.spending_category_id" paramName="category" />
+                    <exp op="=" dbField="a.is_all_categories" paramName="is_all_categories" />
                 </exp>
             </where>
-            GROUP BY a.prime_vendor_id) c
+            GROUP BY a.vendor_id, a.minority_type_id, b.legal_name
         </sql>
     </statement>
-<!--GetSubVenSpendingByAgencies-->
-    <statement name="GetSubVenSpendingByAgencies" datasource="checkbook">
-        <param name="year" required ="true" type="int" />
-        <param name="yeartype" required ="true" type="string"/>
-        <param name="agency" type="int" />
-        <param name="vendor" type="int" />
-        <param name="subvendor" type="int" />
-        <param name="category" type="int" />
-        <param name="industry" type="int" />
-        <param name="mwbe"/>
-        <sql>
-            SELECT
-            s0.type_of_year,
-            s0.year_id,
-            s0.agency_id,
-            COUNT(DISTINCT vendor_id) AS sub_vendor_count,
-            SUM(total_spending_amount) AS ytd_spending_sub_vendors,
-            SUM(total_spending_amount) AS ytd_spending_vendors,
-            r2.check_amount_sum,
-            r2.check_amount_sum_no_payroll,
-            a.agency_name,
-            SUM(total_spending_amount)/MAX(check_amount_sum_no_payroll)*100 as percent_spending
-            FROM aggregateon_subven_spending_coa_entities s0
-            JOIN (SELECT s0.year_id,
-                            s0.type_of_year,
-                            s0.agency_id,
-                            SUM(total_spending_amount) AS check_amount_sum,
-                            SUM(CASE WHEN spending_category_id !=2 THEN total_spending_amount ELSE 0 END) AS check_amount_sum_no_payroll
-                    FROM aggregateon_spending_coa_entities s0
-                    <where>
-                        <exp op="AND">
-                            <exp op="=" dbField="year_id" paramName="year" />
-                            <exp op="=" dbField="type_of_year" paramName="yeartype" />
-                        </exp>
-                    </where>
-                    GROUP BY s0.agency_id, s0.year_id, s0.type_of_year) r2
-            ON r2.agency_id = s0.agency_id AND r2.year_id = s0.year_id AND r2.type_of_year = s0.type_of_year
-            JOIN ref_agency a ON a.agency_id = s0.agency_id
-            <where>
-                <exp op="AND">
-                    <exp op="=" dbField="s0.year_id" paramName="year" />
-                    <exp op="=" dbField="s0.type_of_year" paramName="yeartype" />
-                    <exp op="=" dbField="s0.prime_vendor_id" paramName="vendor" />
-                    <exp op="=" dbField="s0.vendor_id" paramName="subvendor" />
-                    <exp op="=" dbField="s0.agency_id" paramName="agency" />
-                    <exp op="=" dbField="s0.spending_category_id" paramName="category" />
-                    <exp op="=" dbField="s0.industry_type_id" paramName="industry" />
-                    <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
-                </exp>
-            </where>
-            GROUP BY s0.agency_id, s0.year_id, s0.type_of_year, r2.check_amount_sum,r2.check_amount_sum_no_payroll,a.agency_name
-        </sql>
-    </statement>
-    <!--GetSpendingBySubVendors-->
-    <statement name="GetSubVendorSpendingBySubVendors" datasource="checkbook">
+    <!--GetSubVendorSpendingByPrimeSubVendors-->
+    <statement name="GetSubVendorSpendingByPrimeSubVendors" datasource="checkbook">
         <param name="mwbe" />
         <param name="year" required ="true" type="int" />
         <param name="yeartype" required ="true" type="string"/>
@@ -220,6 +262,7 @@
         <param name="subvendor" type="int" />
         <param name="category" type="int" />
         <param name="industry" type="int" />
+        <param name="is_all_categories" type="string"/>
         <sql>
             SELECT
             a.vendor_id as sub_vendor_id,
@@ -228,10 +271,31 @@
             a.prime_vendor_id,
             c.legal_name AS prime_vendor_name,
             SUM(COALESCE(total_spending_amount,0)) AS check_amount_sum,
+            SUM(COALESCE(total_contract_amount,0)) AS total_contract_amount_sum,
+            SUM(COALESCE(total_spending_amount,0))/MAX(total.check_amount)*100 as percent_spending,
             SUM(total_sub_contracts) AS total_sub_contracts
             FROM aggregateon_subven_spending_vendor a
             JOIN subvendor b ON b.vendor_id = a.vendor_id
             JOIN vendor c ON c.vendor_id = a.prime_vendor_id
+            JOIN
+            (
+                SELECT SUM(total_spending_amount) AS check_amount
+                FROM aggregateon_subven_spending_vendor
+                <where>
+                    <exp op="AND">
+                        <exp op="=" dbField="year_id" paramName="year" />
+                        <exp op="=" dbField="type_of_year" paramName="yeartype" />
+                        <exp op="=" dbField="vendor_id" paramName="subvendor" />
+                        <exp op="=" dbField="prime_vendor_id" paramName="fvendor" />
+                        <exp op="=" dbField="prime_vendor_id" paramName="vendor" />
+                        <exp op="=" dbField="agency_id" paramName="agency" />
+                        <exp op="=" dbField="spending_category_id" paramName="category" />
+                        <exp op="=" dbField="industry_type_id" paramName="industry" />
+                        <exp op="IN" dbField="minority_type_id" paramName="mwbe" />
+                        <exp op="=" dbField="is_all_categories" paramName="is_all_categories" />
+                    </exp>
+                </where>
+            ) total on 1 = 1
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="a.prime_vendor_id" paramName="vendor" />
@@ -242,16 +306,14 @@
                     <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe"/>
                     <exp op="=" dbField="a.spending_category_id" paramName="category" />
-                    <exp op="IF" condition="=" paramName="category" compareValue="">
-                        <exp op="=" dbField="a.is_all_categories">'Y'</exp>
-                    </exp>
+                    <exp op="=" dbField="a.is_all_categories" paramName="is_all_categories" />
                 </exp>
             </where>
             GROUP BY a.vendor_id, a.minority_type_id, b.legal_name, a.year_id,  b.legal_name, c.legal_name, a.prime_vendor_id, a.agency_id
         </sql>
     </statement>
-    <!--GetSpendingCountBySubVendors-->
-    <statement name="GetSubVendorSpendingCountBySubVendors" datasource="checkbook">
+    <!--GetCountSubVendors-->
+    <statement name="GetCountSubVendors" datasource="checkbook">
         <param name="mwbe" />
         <param name="year" required ="true" type="int" />
         <param name="yeartype" required ="true" type="string"/>
@@ -260,29 +322,26 @@
         <param name="subvendor" type="int" />
         <param name="category" type="int" />
         <param name="industry" type="int" />
+        <param name="is_all_categories" type="string"/>
         <sql>
-            SELECT COUNT(*) AS record_count
-            FROM (SELECT a.vendor_id FROM aggregateon_subven_spending_vendor a
+            SELECT DISTINCT vendor_id FROM aggregateon_subven_spending_vendor
             <where>
                 <exp op="AND">
-                    <exp op="=" dbField="a.prime_vendor_id" paramName="vendor" />
-                    <exp op="=" dbField="a.vendor_id" paramName="subvendor" />
-                    <exp op="=" dbField="a.agency_id" paramName="agency" />
-                    <exp op="=" dbField="a.industry_type_id" paramName="industry" />
-                    <exp op="=" dbField="a.year_id" paramName="year" />
-                    <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
-                    <exp op="IN" dbField="a.minority_type_id" paramName="mwbe"/>
-                    <exp op="=" dbField="a.spending_category_id" paramName="category" />
-                    <exp op="IF" condition="=" paramName="category" compareValue="">
-                        <exp op="=" dbField="a.is_all_categories">'Y'</exp>
-                    </exp>
+                    <exp op="=" dbField="prime_vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="vendor_id" paramName="subvendor" />
+                    <exp op="=" dbField="agency_id" paramName="agency" />
+                    <exp op="=" dbField="industry_type_id" paramName="industry" />
+                    <exp op="=" dbField="year_id" paramName="year" />
+                    <exp op="=" dbField="type_of_year" paramName="yeartype" />
+                    <exp op="IN" dbField="minority_type_id" paramName="mwbe"/>
+                    <exp op="=" dbField="spending_category_id" paramName="category" />
+                    <exp op="=" dbField="is_all_categories" paramName="is_all_categories" />
                 </exp>
             </where>
-            GROUP BY a.vendor_id) c
         </sql>
     </statement>
-    <!--GetSubVendorsMWBESpendingBySubContracts-->
-    <statement name="GetSubVendorsMWBESpendingBySubContracts" datasource="checkbook">
+    <!--GetSubVendorSpendingBySubContracts-->
+    <statement name="GetSubVendorSpendingBySubContracts" datasource="checkbook">
         <param name="mwbe" />
         <param name="year" required ="true" type="int" />
         <param name="yeartype" required ="true" type="string"/>
@@ -323,8 +382,9 @@
             GROUP BY a.description, a.document_id, a.document_code, a.agreement_id, a.document_id, a.vendor_id, a.prime_vendor_id, b.legal_name, c.legal_name, d.original_agreement_id
         </sql>
     </statement>
+    <!--GetCountSubContracts-->
     <!--GetSubVendorsMWBESpendingCountBySubContracts-->
-    <statement name="GetSubVendorsMWBESpendingCountBySubContracts" datasource="checkbook">
+    <statement name="GetCountSubContracts" datasource="checkbook">
         <param name="mwbe" />
         <param name="year" required ="true" type="int" />
         <param name="yeartype" required ="true" type="string"/>
@@ -334,25 +394,23 @@
         <param name="category" type="int" />
         <param name="industry" type="int" />
         <sql>
-            SELECT COUNT(*) AS record_count
-            FROM (SELECT a.document_id, a.agreement_id FROM aggregateon_subven_spending_contract a
+            SELECT DISTINCT document_id, agreement_id FROM aggregateon_subven_spending_contract
             <where>
                 <exp op="AND">
-                    <exp op="=" dbField="a.year_id" paramName="year" />
-                    <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
-                    <exp op="IN" dbField="a.minority_type_id" paramName="mwbe"/>
-                    <exp op="=" dbField="a.spending_category_id" paramName="category" />
-                    <exp op="=" dbField="a.prime_vendor_id" paramName="vendor" />
-                    <exp op="=" dbField="a.vendor_id" paramName="subvendor" />
-                    <exp op="=" dbField="a.agency_id" paramName="agency" />
-                    <exp op="=" dbField="a.industry_type_id" paramName="industry" />
+                    <exp op="=" dbField="year_id" paramName="year" />
+                    <exp op="=" dbField="type_of_year" paramName="yeartype" />
+                    <exp op="IN" dbField="minority_type_id" paramName="mwbe"/>
+                    <exp op="=" dbField="spending_category_id" paramName="category" />
+                    <exp op="=" dbField="prime_vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="vendor_id" paramName="subvendor" />
+                    <exp op="=" dbField="agency_id" paramName="agency" />
+                    <exp op="=" dbField="industry_type_id" paramName="industry" />
                 </exp>
             </where>
-            GROUP BY a.document_id, a.agreement_id) c
         </sql>
     </statement>
-    <!--GetMWBESpendingByContracts-->
-    <statement name="GetMWBESubvenSpendingByContracts" datasource="checkbook">
+    <!--GetSubVendorSpendingByContracts-->
+    <statement name="GetSubVendorSpendingByContracts" datasource="checkbook">
         <param name="year" required ="true" type="int" />
         <param name="yeartype" required ="true" type="string"/>
         <param name="agency" type="int" />
@@ -374,7 +432,7 @@
             s0.type_of_year,
             s0.year_id,
             s0.agency_id,
-            s0.description,
+            s0.description as contract_purpose,
             s0.document_id,
             s0.agreement_id,
             s0.document_id AS sub_contract_number,
@@ -384,9 +442,7 @@
             JOIN subvendor j1 ON j1.vendor_id = s0.vendor_id
             JOIN vendor j2 ON j2.vendor_id = s0.prime_vendor_id
             JOIN ref_agency j3 ON j3.agency_id = s0.agency_id
-            JOIN (SELECT DISTINCT original_agreement_id, 
-                        contract_number 
-                    FROM agreement_snapshot WHERE latest_flag = 'Y') j4_b
+            JOIN (SELECT DISTINCT original_agreement_id,contract_number FROM agreement_snapshot WHERE latest_flag = 'Y') j4_b
             ON j4_b.contract_number = s0.document_id
             <where>
                 <exp op="AND">
@@ -406,7 +462,8 @@
             j1.legal_name,j2.legal_name,j3.agency_name,j4_b.original_agreement_id      
         </sql>
     </statement>
-    <statement name="GetMWBESubvenCountContracts" datasource="checkbook">
+    <!--GetCountSubVendorContracts-->
+    <statement name="GetCountSubVendorContracts" datasource="checkbook">
         <param name="year" required ="true" type="int" />
         <param name="yeartype" required ="true" type="string"/>
         <param name="agency" type="int" />
@@ -418,27 +475,25 @@
         <param name="agid"/>
         <param name="magid"/>
         <sql>
-            SELECT COUNT(*) AS record_count
-            FROM (SELECT s0.document_id, s0.agreement_id FROM aggregateon_subven_spending_contract s0
-                  <where>
-                        <exp op="AND">
-                        <exp op="=" dbField="s0.year_id" paramName="year" />
-                        <exp op="=" dbField="s0.type_of_year" paramName="yeartype" />
-                        <exp op="=" dbField="s0.vendor_id" paramName="subvendor" />
-                        <exp op="=" dbField="s0.prime_vendor_id" paramName="vendor" />
-                        <exp op="=" dbField="s0.agency_id" paramName="agency" />
-                        <exp op="=" dbField="s0.spending_category_id" paramName="category" />
-                        <exp op="=" dbField="s0.industry_type_id" paramName="industry" />
-                        <exp op="=" dbField="s0.agreement_id" paramName="agid" />
-                        <exp op="=" dbField="s0.agreement_id" paramName="magid" />
-                        <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
-                        </exp>
-                </where>
-         GROUP BY s0.document_id, s0.agreement_id) c
+            SELECT DISTINCT document_id, agreement_id FROM aggregateon_subven_spending_contract
+              <where>
+                    <exp op="AND">
+                    <exp op="=" dbField="year_id" paramName="year" />
+                    <exp op="=" dbField="type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="vendor_id" paramName="subvendor" />
+                    <exp op="=" dbField="prime_vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="agency_id" paramName="agency" />
+                    <exp op="=" dbField="spending_category_id" paramName="category" />
+                    <exp op="=" dbField="industry_type_id" paramName="industry" />
+                    <exp op="=" dbField="agreement_id" paramName="agid" />
+                    <exp op="=" dbField="agreement_id" paramName="magid" />
+                    <exp op="IN" dbField="minority_type_id" paramName="mwbe" />
+                    </exp>
+            </where>
         </sql>
     </statement>
-    <!--GetMWBESubVenSpendingByIndustries-->
-    <statement name="GetMWBESubVenSpendingByIndustries" datasource="checkbook">
+    <!--GetSubVendorSpendingByIndustries-->
+    <statement name="GetSubVendorSpendingByIndustries" datasource="checkbook">
         <param name="year" required ="true" type="int" />
         <param name="yeartype" required ="true" type="string"/>
         <param name="agency" type="int" />

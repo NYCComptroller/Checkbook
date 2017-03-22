@@ -1,11 +1,6 @@
 {
-    "sqlConfig":
-    {
-        "serviceName":"SpendingWidgetService",
-        "sqlConfigName":"spending/mwbe_spending",
-        "statementName":"GetMWBESpendingByIndustries"
-    },
     "serviceName":"SpendingWidgetService",
+    "dataFunc":"GetSpendingByIndustries",
     "defaultParameters":{"type_of_year":"B"},
     "table_title":"Spending by Industries",
     "headerSubTitle":"Industries",

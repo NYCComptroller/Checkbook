@@ -1,11 +1,6 @@
 {
-    "sqlConfig":
-    {
-        "serviceName":"SpendingWidgetService",
-        "sqlConfigName":"spending/spending",
-        "statementName":"GetSpendingByChecks"
-    },
     "serviceName":"SpendingWidgetService",
+    "dataFunc":"GetSpendingByChecks",
     "headerTitle":"Checks",
     "headerSubTitle":"Checks",
     "table_columns":[
