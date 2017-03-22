@@ -47,3 +47,4 @@ files[] = customclasses/util/WidgetUtil.php
 files[] = customclasses/contract/PendingContractDetails.php
 files[] = customclasses/util/MappingUtil.php
 files[] = customclasses/util/CheckbookAPIUtil.php
+files[] = customclasses/budget/BudgetUtil.php
