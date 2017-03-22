@@ -236,6 +236,7 @@ class SpendingUrlService {
             . RequestUtilities::_getUrlParamString('agency')
             . RequestUtilities::_getUrlParamString('vendor')
             . RequestUtilities::_getUrlParamString('category')
+            . RequestUtilities::_getUrlParamString('industry')
             . '/dashboard/'. $dashboard
             . '/mwbe/'. $minority_type_id
             . '?expandBottomCont=true';
