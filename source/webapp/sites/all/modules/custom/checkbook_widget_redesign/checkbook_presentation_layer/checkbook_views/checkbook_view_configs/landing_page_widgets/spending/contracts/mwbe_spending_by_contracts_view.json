@@ -1,9 +1,6 @@
 {
     "defaultConfigKey": "spending_by_contracts_view",
-    "sqlConfig": {
-        "serviceName": "SpendingWidgetService",
-        "sqlConfigName": "spending/mwbe_spending",
-        "statementName": "GetMWBESpendingByContracts",
-        "countStatementName":"GetMWBECountContracts"
-    }
+    "serviceName":"SpendingWidgetService",
+    "dataFunc":"GetSpendingByContracts",
+    "countFunc":"GetCountContracts"
 }

@@ -1,10 +1,6 @@
 {
-    "sqlConfig": {
-        "serviceName": "SpendingWidgetService",
-        "sqlConfigName": "spending/sub_contracts_spending",
-        "statementName": "GetMWBESubvenSpendingByAgencies"
-    },
     "serviceName":"SpendingWidgetService",
+    "dataFunc": "GetSubVendorSpendingByAgencies",
     "defaultParameters":{"type_of_year":"B"},
     "headerTitle":"Agencies",
     "headerSubTitle":"Agencies",

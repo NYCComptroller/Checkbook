@@ -1,10 +1,6 @@
 {
     "defaultConfigKey":"mwbe_prime_vendors_view",
-    "sqlConfig":
-    {
-        "serviceName":"SpendingWidgetService",
-        "sqlConfigName":"spending/mwbe_spending",
-        "statementName":"GetMWBESubVendorsSpendingByPrimeVendors",
-        "countStatementName":"GetMWBESubVendorsSpendingCountByPrimeVendors"
-    }
+    "serviceName":"SpendingWidgetService",
+    "dataFunc":"GetSubVendorSpendingByPrimeVendors",
+    "countFunc":"GetCountSubVendorPrimeVendors"
 }

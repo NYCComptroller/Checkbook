@@ -1,8 +1,5 @@
 {
-    "defaultConfigKey": "spending_by_expense_categories_view",
-    "sqlConfig": {
-        "serviceName": "SpendingWidgetService",
-        "sqlConfigName": "spending/oge_spending",
-        "statementName": "GetOGESpendingByExpenseCategories"
-    }
+    "defaultConfigKey":"spending_by_expense_categories_view",
+    "serviceName":"SpendingWidgetService",
+    "dataFunc":"GetOGESpendingByExpenseCategories"
 }

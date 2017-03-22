@@ -1,10 +1,6 @@
 
 {
-  "sqlConfig": {
-    "serviceName": "RevenueWidgetService",
-    "sqlConfigName": "revenue/revenue",
-    "statementName": "GetRevenueCategoriesByCrossYearCollections"
-  },
+  "dataFunc": "GetRevenueCategoriesCrossYearCollectionsByRevenue",
   "serviceName": "RevenueWidgetService",
   "headerTitle": "Revenue Categories by Cross Year Collections",
   "headerSubTitle": "Revenue Categories",

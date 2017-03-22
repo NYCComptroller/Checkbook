@@ -6,7 +6,15 @@
  * Time: 2:05 PM
  */
 
-class RevenueWidgetService extends WidgetSqlService implements IWidgetService {
+class RevenueWidgetService extends WidgetDataService implements IWidgetService {
+    
+    /**
+     * Function to allow the client to initialize the data service
+     * @return mixed
+     */
+    public function initializeDataService() {
+        return new RevenueDataService();
+    }
 
     public function implementDerivedColumn($column_name,$row) {
         $value = null;

@@ -39,6 +39,8 @@ files[] = spending/SpendingWidgetService.php
 files[] = spending/SpendingWidgetVisibilityService.php
 files[] = spending/SpendingParameters.php
 files[] = spending/SpendingUrlService.php
+files[] = spending/ISpendingDataService.php
+files[] = spending/SpendingDataService.php
 
 files[] = contracts/ContractsUrlService.php
 files[] = contracts/ContractsWidgetService.php
@@ -47,7 +49,8 @@ files[] = contracts/ContractsParameters.php
 files[] = contracts/data/IContractsDataService.php
 files[] = contracts/data/ContractsDataService.php
 
-files[] = revenue/RevenueDataService.php
+files[] = revenue/data/RevenueDataService.php
+files[] = revenue/data/IRevenueDataService.php
 files[] = revenue/RevenueUrlService.php
 files[] = revenue/RevenueWidgetService.php
 

@@ -1,9 +1,5 @@
 {
-  "sqlConfig": {
-    "serviceName": "RevenueWidgetService",
-    "sqlConfigName": "revenue/revenue",
-    "statementName": "GetRevenueByAgencies"
-  },
+  "dataFunc": "GetAgenciesByRevenue",
   "serviceName": "RevenueWidgetService",
   "headerTitle": "Agencies",
   "headerSubTitle": "Agencies",

@@ -1,12 +1,7 @@
 {
-    "sqlConfig":
-    {
-        "serviceName":"SpendingWidgetService",
-        "sqlConfigName":"spending/sub_contracts_spending",
-        "statementName":"GetSubVendorSpendingBySubVendors",
-        "countStatementName":"GetSubVendorSpendingCountBySubVendors"
-    },
     "serviceName":"SpendingWidgetService",
+    "dataFunc":"GetSubVendorSpendingByPrimeSubVendors",
+    "countFunc":"GetCountSubVendors",
     "headerTitle":"Sub Vendors",
     "headerSubTitle":"Sub Vendors",
     "table_columns": [

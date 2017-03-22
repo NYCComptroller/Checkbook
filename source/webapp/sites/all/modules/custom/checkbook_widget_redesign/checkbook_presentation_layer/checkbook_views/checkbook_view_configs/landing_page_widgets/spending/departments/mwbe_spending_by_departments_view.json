@@ -1,16 +1,11 @@
 {
-    "sqlConfig":
-    {
-        "serviceName":"SpendingWidgetService",
-        "sqlConfigName":"spending/mwbe_spending",
-        "statementName":"GetMWBESpendingByDepartments"
-    },
     "serviceName":"SpendingWidgetService",
+    "dataFunc":"GetSpendingByDepartments",
     "defaultParameters":{"type_of_year":"B"},
     "headerTitle":"Departments",
     "headerSubTitle":"Departments",
     "table_columns":[
-        {"labelAlias":"expense_category","column":"department_name"},
+        {"labelAlias":"dept_name","column":"department_name"},
         {"labelAlias":"ytd_spending","column":"check_amount_sum","derivedColumn":"department_ytd_spending_link","format":"dollar"},
         {"labelAlias": "percent_spending","column": "percent_spending","format":"percent"},
         {"label":"","column":""}
