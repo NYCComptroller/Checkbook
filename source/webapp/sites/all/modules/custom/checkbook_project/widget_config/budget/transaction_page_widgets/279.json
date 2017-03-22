@@ -1,16 +1,16 @@
 {
-"widgetType": "phpparser",
- "cleanURLParameters":["agency","agencyh","year","dept","deptnm","expcategory","expcategorynm","bdgcode","bdgcodenm","adpamt","preamt","encamt","cshamt","postamt","acramt","curamt","curamtr"],
- "urlParamMap":{"agency":"agency_id","agencyh":"agency_history_id","year":"budget_fiscal_year_id","dept":"department_id","deptnm":"department_name","expcategory":"object_class_id","expcategorynm":"object_class_name","bdgcode":"budget_code_id","bdgcodenm":"budget_code_name","adpamt":"adopted_amount","preamt":"pre_encumbered_amount","encamt":"encumbered_amount","cshamt":"cash_expense_amount","postamt":"post_closing_adjustment_amount","acramt":"accrued_expense_amount","curamt":"current_budget_amount","curamtr":"current_budget_amount"},
-"paramTypeConfig":{"curamt":"range","adpamt":"range","preamt":"range","encamt":"range","cshamt":"range","postamt":"range","acramt":"range","curamtr":"rangeid","deptnm":"like","bdgcodenm":"like","expcategorynm":"like"},
-"dataset": "checkbook:budget",
-"adjustParameters":"
-            $adjustedParameters = $parameters;
-            if(function_exists('_checkbook_project_applyParameterFilters')){
-                  $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
-            }
-            return $adjustedParameters;
-",
-"columns": ["budget_adopted","budget_current","budget_committed", "budget_remaining"],
-"template":"budget_expense_transaction_total_amount"
+    "widgetType": "phpparser",
+    "cleanURLParameters":["agency","agencyh","year","dept","deptnm","expcategory","expcategorynm","bdgcode","bdgcodenm","adpamt","preamt","encamt","cshamt","postamt","acramt","curamt","curamtr"],
+    "urlParamMap":{"agency":"agency_id","agencyh":"agency_history_id","year":"budget_fiscal_year_id","dept":"department_id","deptnm":"department_name","expcategory":"object_class_id","expcategorynm":"object_class_name","bdgcode":"budget_code_id","bdgcodenm":"budget_code_name","adpamt":"adopted_amount","preamt":"pre_encumbered_amount","encamt":"encumbered_amount","cshamt":"cash_expense_amount","postamt":"post_closing_adjustment_amount","acramt":"accrued_expense_amount","curamt":"current_budget_amount","curamtr":"current_budget_amount"},
+    "paramTypeConfig":{"curamt":"range","adpamt":"range","preamt":"range","encamt":"range","cshamt":"range","postamt":"range","acramt":"range","curamtr":"rangeid","deptnm":"like","bdgcodenm":"like","expcategorynm":"like"},
+    "dataset": "checkbook:budget",
+    "adjustParameters":"
+        $parameters = BudgetUtil::adjustBudgetCodeNameParameter($node, $parameters);
+        if(function_exists('_checkbook_project_applyParameterFilters')){
+            $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+        }
+        return $adjustedParameters;
+    ",
+    "columns": ["budget_adopted","budget_current","budget_committed", "budget_remaining"],
+    "template":"budget_expense_transaction_total_amount"
 }

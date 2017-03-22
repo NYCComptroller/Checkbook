@@ -6,8 +6,8 @@
     "maxSelect":5,
     "showAllRecords":true,
     "allowFacetDeselect":true,
-	"columns":["object_class_name.object_class_name", "txcount"],
-	"orderBy":"-txcount",    
+    "columns":["object_class_name.object_class_name", "txcount"],
+    "orderBy":"-txcount",    
     "filterName":"Expense Category",
     "getTotalDataCount":true,    
     "facetPager":true,
@@ -16,12 +16,13 @@
     "autocompleteID":"fExpCategoryNm",
     "autocompleteField":"object_class_name.object_class_name",
     "adjustParameters":"
-    checkbook_faceted_search_adjust_param($node);
-    if(function_exists('_checkbook_project_applyParameterFilters')){
-        $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
-    }
-    $adjustedParameters['object_class_id.object_class_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
-    return $adjustedParameters;
+        checkbook_faceted_search_adjust_param($node);
+        $parameters = BudgetUtil::adjustBudgetCodeNameParameter($node, $parameters);
+        if(function_exists('_checkbook_project_applyParameterFilters')){
+            $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+        }
+        $adjustedParameters['object_class_id.object_class_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+        return $adjustedParameters;
     ",   
     "template":"individual_filter"
 }
