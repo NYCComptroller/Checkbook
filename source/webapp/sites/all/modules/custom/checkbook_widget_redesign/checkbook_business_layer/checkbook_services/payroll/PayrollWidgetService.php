@@ -14,6 +14,7 @@ class PayrollWidgetService extends WidgetDataService implements IWidgetService {
     */
     public function implementDerivedColumn($column_name, $row) {
         $value = null;
+        $class = "bottomContainerReload";
         $legacy_node_id = $this->getLegacyNodeId();
         switch($column_name) {
             case "agency_name_link":
@@ -24,13 +25,11 @@ class PayrollWidgetService extends WidgetDataService implements IWidgetService {
             case "total_gross_pay_link":
                 $column = $row['total_gross_pay'];
                 $url = PayrollUrlService::payUrl($row['agency']);
-                $class = "bottomContainerReload";
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
             case "total_overtime_pay_link":
                 $column = $row['total_overtime_pay'];
                 $url = PayrollUrlService::payUrl($row['agency']);
-                $class = "bottomContainerReload";
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
             case "max_annual_salary_link":
@@ -38,7 +37,6 @@ class PayrollWidgetService extends WidgetDataService implements IWidgetService {
                 $employee = $row['employee_id'];
                 $agency = $row['agency_id'];
                 $url = PayrollUrlService::annualSalaryUrl($agency, $employee);
-                $class = "bottomContainerReload";
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
             case "max_annual_salary_per_agency_link":
@@ -46,7 +44,7 @@ class PayrollWidgetService extends WidgetDataService implements IWidgetService {
                 $employee = $row['employee_id'];
                 $agency = $row['agency_id'];
                 $url = PayrollUrlService::annualSalaryPerAgencyUrl($agency, $employee);
-                $value = "<a href='{$url}'>{$column}</a>";
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
             case "title_agency_link":
                 $column = $row['civil_service_title'];
