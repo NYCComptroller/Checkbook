@@ -6,27 +6,29 @@
     "maxSelect":5,
     "showAllRecords":true,
     "allowFacetDeselect":true,
-    "columns":["budget_code_name.budget_code_name", "txcount"],
-    "orderBy":["-txcount", "budget_code_name.budget_code_name"],
-	"getTotalDataCount":true,    
-	"facetPager":true,	    
+    "columns":["budget_code.budget_code","budget_code_name_code_display.budget_code_name_code_display", "txcount"],
+    "orderBy":["-txcount", "budget_code_name_code_display.budget_code_name_code_display"],
+    "getTotalDataCount":true,    
+    "facetPager":true,	    
     "filterName":"Expense Budget Code",
-    "urlParameterName":"bdgcodenm_exact",
+    "urlParameterName":"bdgcode",
     "urlParameterNameType":"eqtext",    
-    "autocompleteParamName":"bdgcodenm_exact_auto",    
-    "autocompleteID":"fbdgcodeexactId",
-    "autocompleteField":"budget_code_name",
+    "autocompleteParamName":"bdgcode_auto",    
+    "autocompleteID":"fbdgcodeId",
+    "autocompleteField":"budget_code_name_code_display",
     "adjustParameters":"
-    $page = $_REQUEST['page'];
-	checkbook_faceted_search_adjust_param($node);
-    if(function_exists('_checkbook_project_adjust_spending_parameter_filters')){
-    	$parameters = _checkbook_project_adjust_spending_parameter_filters($node, $parameters);
-    }
-    if(function_exists('_checkbook_project_applyParameterFilters')){
-        $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
-    }
-    $adjustedParameters['budget_code_name.budget_code_name'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
-    return $adjustedParameters;
+        $page = $_REQUEST['page'];
+        checkbook_faceted_search_adjust_param($node);
+        if(function_exists('_checkbook_project_adjust_spending_parameter_filters')){
+            $parameters = _checkbook_project_adjust_spending_parameter_filters($node, $parameters);
+        }
+        
+        $parameters = BudgetUtil::adjustBudgetCodeNameParameter($node, $parameters);
+        if(function_exists('_checkbook_project_applyParameterFilters')){
+            $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+        }
+        $adjustedParameters['budget_code_name_code_display.budget_code_name_code_display'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+        return $adjustedParameters;
     ",
     "template":"individual_filter"
 }
