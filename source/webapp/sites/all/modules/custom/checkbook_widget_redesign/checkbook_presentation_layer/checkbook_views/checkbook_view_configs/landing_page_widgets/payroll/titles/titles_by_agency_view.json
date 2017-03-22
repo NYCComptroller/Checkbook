@@ -8,7 +8,8 @@
         {
             "labelAlias": "title",
             "column": "civil_service_title",
-            "derivedColumn": "title_agency_link"
+            "derivedColumn": "title_agency_link",
+            "tooltip": 40
         },
         {
             "labelAlias": "no_of_employees",
