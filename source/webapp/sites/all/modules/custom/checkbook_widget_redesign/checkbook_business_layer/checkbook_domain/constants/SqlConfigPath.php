@@ -12,11 +12,8 @@ abstract class SqlConfigPath {
     const SubContracts = "contracts/sub_contracts";
     /* Budget */
     const CitywideBudget = "budget/budget";
-<<<<<<< HEAD
     /*Payroll*/
     const CitywidePayroll = "payroll/payroll";
-=======
      /* Revenue */
     const CitywideRevenue = "revenue/revenue";
->>>>>>> feature/NYCCHKBK-7207
 }
