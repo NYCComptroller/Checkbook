@@ -32,10 +32,10 @@ class BudgetUtil{
     */
     static public function getBudgetCodeId($budget_code_name, $budget_code, $year){
         $query = "SELECT DISTINCT budget_code_id FROM budget
-                  WHERE budget_code = ". $budget_code
+                  WHERE budget_code = '". trim($budget_code). "'"
                 ." AND budget_code_name ILIKE '". $budget_code_name . "'"
                 ." AND budget_fiscal_year_id = ".$year;
-
+        
         $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
         return $results[0]['budget_code_id'];
     }
