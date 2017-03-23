@@ -13,7 +13,8 @@
         {
             "labelAlias": "agency_name",
             "column": "agency_name",
-            "derivedColumn": "agency_name_link"
+            "derivedColumn": "agency_name_link",
+            "tooltip": 40
         },
         {
             "labelAlias": "annual_salary",
