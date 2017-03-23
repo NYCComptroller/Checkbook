@@ -100,7 +100,7 @@
             "budget_code_name":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxLength":"100"
+                "maxLength":100
             },
             "agency_code":{
                 "valueType":"value",
