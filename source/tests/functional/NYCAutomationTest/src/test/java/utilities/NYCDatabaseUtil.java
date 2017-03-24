@@ -377,5 +377,71 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
         return formatNumber(totalBudgetAmount);
         // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
     }
-   		
+    
+ ///Payroll widget sqls
+    
+    public static int getPayrollAgenciesCount(int year, char yearTypeVal) throws SQLException {
+        query = "SELECT COUNT(Distinct(agency_id)) aCount " +
+                "FROM  payroll where fiscal_year= " + year ;
+
+        rs = amountQueryHelper(yearTypeVal);
+        int count = 0;
+        while (rs.next()) {
+            count = rs.getInt("aCount");
+        }
+        return count;
+}
+       
+        public static int getPayrollSalCount(int year, char yearTypeVal) throws SQLException 
+        {
+            query = "SELECT COUNT(Distinct employee_number) aCount from (  SELECT latest_emp.employee_number,latest_emp.pay_date,latest_emp.fiscal_year, emp.amount_basis_id FROM payroll emp"
+            		+"JOIN(SELECT max(pay_date) as pay_date, employee_number,fiscal_year FROM payroll where fiscal_year = "+year+" GROUP BY employee_number,fiscal_year )"
+            		+"latest_emp ON latest_emp.pay_date = emp.pay_date AND latest_emp.employee_number = emp.employee_number AND latest_emp.fiscal_year = emp.fiscal_year and emp.amount_basis_id =1 ) a";
+
+        	
+           /* query = "SELECT COUNT(Distinct(employee_number)) aCount " +
+                    "FROM  payroll where fiscal_year= " + year ;*/
+            rs = amountQueryHelper(yearTypeVal);
+            int count = 0;
+            while (rs.next()) {
+                count = rs.getInt("aCount");
+            }
+         
+            return count;
+}
+        public static String getPayrollAmount(int year, char yearTypeVal) throws SQLException {
+            query = "SELECT sum(gross_pay)  sumPayrollAmt "
+                    + "FROM Payroll"
+                    + " WHERE fiscal_year = " + year;
+
+
+            rs = amountQueryHelper(yearTypeVal);
+
+            BigDecimal totalPayrollAmount = new BigDecimal(0);
+
+            while (rs.next()) {
+                totalPayrollAmount = rs.getBigDecimal("sumPayrollAmt");
+            }
+            return formatNumber(totalPayrollAmount);
+            // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
+        }
+        
+        public static int getPayrollDetailsCount(int year, char yearTypeVal) throws SQLException {
+            //query = "SELECT COUNT(*) aCount " +
+                    //"FROM  payroll where fiscal_year= " + year ;            
+
+            query = 	"select count(*) aCount from ("
+        	+"SELECT employee_id , agency_id,civil_service_title, sum(base_pay)as base_pay, sum(gross_pay),"  
+        	+" max(annual_salary) as annual_salary, sum(overtime_pay)as overtime_pay, sum(other_payments)as OT," 
+        	+"(CASE WHEN amount_basis_id=1 THEN 'Salaried' ELSE 'Non-Salaried' END) as type_of_employment "
+        	+"FROM payroll WHERE fiscal_year = "+year+" and amount_basis_id in (1,2,3)	GROUP BY 1,2,3,9 ) a";
+
+            rs = amountQueryHelper(yearTypeVal);
+            int count = 0;
+            while (rs.next()) {
+                count = rs.getInt("aCount");
+            }
+            return count;
+    }
+        	
 }
