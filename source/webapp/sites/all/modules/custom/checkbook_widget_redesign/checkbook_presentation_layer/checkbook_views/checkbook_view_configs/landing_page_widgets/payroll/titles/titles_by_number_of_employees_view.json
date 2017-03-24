@@ -9,7 +9,7 @@
             "labelAlias": "title",
             "column": "civil_service_title",
             "derivedColumn": "title_link",
-            "tooltip": 40
+            "tooltip": 35
         },
         {
             "labelAlias": "no_of_employees",
