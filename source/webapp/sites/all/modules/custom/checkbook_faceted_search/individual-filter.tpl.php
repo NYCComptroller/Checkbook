@@ -446,14 +446,15 @@ $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
             enable:false
         },
         callbacks:{
-            onTotalScroll: function (){   
+            // this function causing disappearing checkbox issue
+            onTotalScroll: function (){
 				var pages = $(this).next().find('input.autocomplete').attr('pages');
 				if(pages == 1) return false;
 				if(page" . $node->nid ."  >= pages ) {
 					return false;
 				}
-				page" . $node->nid ."++;                      
-                paginateScroll(" . $node->nid .", page" . $node->nid .")
+				page" . $node->nid ."++;
+
             },
             onTotalScrollBack: function(){
                 var pages = $(this).next().find('input.autocomplete').attr('pages');
@@ -462,7 +463,7 @@ $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
                     page" . $node->nid ."--;
                     paginateScroll(" . $node->nid .", page" . $node->nid .");
                 }
-                
+
             }
         },
         theme:'dark'
