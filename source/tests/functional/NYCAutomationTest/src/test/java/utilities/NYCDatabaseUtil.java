@@ -394,8 +394,9 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
        
         public static int getPayrollSalCount(int year, char yearTypeVal) throws SQLException 
         {
-            query = "SELECT COUNT(Distinct employee_number) aCount from (  SELECT latest_emp.employee_number,latest_emp.pay_date,latest_emp.fiscal_year, emp.amount_basis_id FROM payroll emp"
-            		+"JOIN(SELECT max(pay_date) as pay_date, employee_number,fiscal_year FROM payroll where fiscal_year = "+year+" GROUP BY employee_number,fiscal_year )"
+            query = "SELECT COUNT(Distinct employee_number) aCount from ("
+            		+ "SELECT latest_emp.employee_number,latest_emp.pay_date,latest_emp.fiscal_year, emp.amount_basis_id FROM "
+            		+"Payroll emp JOIN ( SELECT max(pay_date) as pay_date, employee_number,fiscal_year FROM payroll where fiscal_year = "+year+" GROUP BY employee_number,fiscal_year )"
             		+"latest_emp ON latest_emp.pay_date = emp.pay_date AND latest_emp.employee_number = emp.employee_number AND latest_emp.fiscal_year = emp.fiscal_year and emp.amount_basis_id =1 ) a";
 
         	
@@ -406,7 +407,6 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
             while (rs.next()) {
                 count = rs.getInt("aCount");
             }
-         
             return count;
 }
         public static String getPayrollAmount(int year, char yearTypeVal) throws SQLException {
@@ -442,6 +442,22 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
                 count = rs.getInt("aCount");
             }
             return count;
+        }   
+            public static int getPayrollTitleDetailsCount(int year, char yearTypeVal) throws SQLException {
+                //query = "SELECT COUNT(*) aCount " +
+                        //"FROM  payroll where fiscal_year= " + year ;            
+
+                query = 	"select count(*) aCount from ("
+            	+"SELECT civil_service_title,count(distinct employee_ID),sum(gross_pay) as gross_pay_ytd ,sum(base_pay) as base_pay_ytd,"  
+            	+"sum(other_payments) as other_payments_ytd ,sum(overtime_pay) as overtime_pay_ytd "
+            	+"FROM payroll WHERE fiscal_year = "+year+" and amount_basis_id in (1) group by 1 ) a";
+
+                rs = amountQueryHelper(yearTypeVal);
+                int count = 0;
+                while (rs.next()) {
+                    count = rs.getInt("aCount");
+                }
+                return count;
     }
         	
 }

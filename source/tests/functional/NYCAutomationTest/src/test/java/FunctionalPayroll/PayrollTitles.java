@@ -10,8 +10,10 @@ import pages.home.HomePage;
 import pages.payroll.PayrollPage;
 import utilities.NYCBaseTest;
 import utility.Helper;
+import utility.TestStatusReport;
 
-public class PayrollTitles  extends NYCBaseTest{
+//public class PayrollTitles  extends NYCBaseTest{
+	public class PayrollTitles extends TestStatusReport{
 	@Before
     public void GoToPage(){
 		PayrollPage.GoTo();
