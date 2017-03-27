@@ -155,6 +155,12 @@ public static int GetTransactionCount() {
 	String count = (Driver.Instance.findElement(By.id("table_317_info"))).getText();
 	return Helper.GetTotalEntries(count, 9);
 }
+	public static int GetTransactionCount1() {
+		WebDriverWait wait = new WebDriverWait(Driver.Instance, 10);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("table_886_info")));
+		String count = (Driver.Instance.findElement(By.id("table_886_info"))).getText();
+		return Helper.GetTotalEntries(count, 5);
+}
 
 }
 
