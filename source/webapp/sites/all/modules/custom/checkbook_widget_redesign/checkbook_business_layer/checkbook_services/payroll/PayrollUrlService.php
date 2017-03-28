@@ -19,6 +19,26 @@ class PayrollUrlService
         return $url;
     }
 
+    static function getTitleFooterUrl($footerUrl, $widget){
+        $url = null;
+        $old = array("/panel_html/payroll_nyc_transactions/payroll/transactions", "dtsmnid");
+        switch($widget){
+            case "landing":
+                $url = array("/panel_html/payroll_nyc_title_transactions/payroll/payroll_title/transactions", "smnid");
+                break;
+            case "agency":
+                $url = array("/panel_html/payroll_nyc_title_transactions/payroll/payroll_title/transactions"
+                    . RequestUtilities::_getUrlParamString("agency"),
+                     "smnid");
+                break;
+        }
+        if(isset($url)){
+            return str_replace($old, $url, $footerUrl);
+        }else{
+            return $footerUrl;
+        }
+    }
+
     static function agencyNameUrl($agency_id)
     {
         $url = "/payroll/agency_landing"

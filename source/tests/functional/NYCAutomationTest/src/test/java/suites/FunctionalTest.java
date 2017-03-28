@@ -17,6 +17,9 @@ import functional.RegisteredExpenseContractsTest;
 import functional.RegisteredRevenueContractsDetailsTest;
 import functional.RegisteredRevenueContractsTest;
 import FunctionalBudget.BurgetwidgetTest;
+import FunctionalPayroll.PayrollwidgetTest;
+import FunctionalPayroll.PayrollTitles;
+import FunctionalPayroll.PayrollWidgetDetailsTest;
 import smoke.AdvancedSearchTest;
 import smoke.DataFeedsTest;
 import smoke.HomePageTest;
@@ -43,7 +46,10 @@ import utilities.NYCBaseTest;
 	//RegisteredExpenseContractsDetailsTest.class,
 	//RegisteredRevenueContractsTest.class,
 	//RegisteredRevenueContractsDetailsTest.class,
-	BurgetwidgetTest.class
+	//BurgetwidgetTest.class
+	//PayrollwidgetTest.class
+	//PayrollTitles.class
+	PayrollWidgetDetailsTest.class
 })
 public class FunctionalTest extends NYCBaseTest{	
 	

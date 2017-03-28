@@ -4,6 +4,7 @@
     "countFunc": "GetCountSalariedEmployees",
     "headerTitle": "Titles by Number of Employees",
     "headerSubTitle": "Salaried Employees",
+    "footerUrl":"PayrollUrlService::getTitleFooterUrl(_widget_controller_footer_url($node), 'agency')",
     "table_columns": [
         {
             "labelAlias": "title",
