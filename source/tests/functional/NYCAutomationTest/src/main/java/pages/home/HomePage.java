@@ -86,7 +86,7 @@ public class HomePage {
 		List<WebElement> panelContainers = Driver.Instance.findElements(By.cssSelector(".bottomContainer > .panel-display > .panel-panel > .inside > .panel-pane"));
 		for (WebElement panelContainer : panelContainers) {
 			WebElement header= panelContainer.findElement(By.tagName("h2"));
-			String headerText = header.getText();
+		//	String headerText = header.getText();
 			String subTitle = header.getText().substring(0, header.getText().indexOf("Number")-1);
 			if(subTitle.equalsIgnoreCase(TableTitle)){
 				List<WebElement> emptyContainer = panelContainer.findElements(By.id("no-records-datatable"));
@@ -101,7 +101,7 @@ public class HomePage {
 		return null;
 	}
 	
-	/*public static String GetWidgetTotalNumber(String WidgetTitle) {
+public static String GetWidgetTotalNumber(String WidgetTitle) {
 		List<WebElement> panelContainers = Driver.Instance.findElements(By.cssSelector(".bottomContainer > .panel-display > .panel-panel > .inside > .panel-pane"));
 		for (WebElement panelContainer : panelContainers) {
 			WebElement header= panelContainer.findElement(By.tagName("h2"));
@@ -115,8 +115,9 @@ public class HomePage {
 			}
 		}
 		return null;
-		}*/
+		}
 	
+	/*
 	public static String GetWidgetTotalNumber(String WidgetTitle) {
 		List<WebElement> panelContainers = Driver.Instance.findElements(By.cssSelector(".bottomContainer > .panel-display > .panel-panel .panel-pane"));
 		for (WebElement panelContainer : panelContainers) {
@@ -132,17 +133,14 @@ public class HomePage {
 		}
 		return null;
 	}
-	
-	
-	
-	
-	
+	*/
+
 	
 	public static WebElement GetWidgetDetailsContainer(String WidgetTitle) {
 		List<WebElement> panelContainers = Driver.Instance.findElements(By.cssSelector(".bottomContainer > .panel-display > .panel-panel > .inside > .panel-pane"));
 		for (WebElement panelContainer : panelContainers) {
 			WebElement header= panelContainer.findElement(By.tagName("h2"));
-//			String headerText = header.getText();
+          //	String headerText = header.getText();
 			String subTitle = header.getText().substring(0, header.getText().indexOf("Number")-1);
 			if(subTitle.equalsIgnoreCase(WidgetTitle)){
 		        return panelContainer;
