@@ -1,6 +1,7 @@
 package functional;
 
 import static org.junit.Assert.assertEquals;
+import helpers.Helper;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -11,7 +12,6 @@ import pages.contracts.ContractsPage;
 import pages.contracts.ContractsPage.WidgetOption;
 import pages.home.HomePage;
 import utilities.NYCBaseTest;
-import utility.Helper;
 
 public class ActiveRevenueContractsTest extends NYCBaseTest{
 	@Before
@@ -26,50 +26,50 @@ public class ActiveRevenueContractsTest extends NYCBaseTest{
 	/* ***************** Test Widget Counts ****************** */
 	@Test
 	public void VerifyNumOfContracts(){
-	 	int numOfContractsFY2016 = 3144;	 	
-        int numOfContracts = Helper.stringToInt(ContractsPage.GetTop5WidgetTotalCount(WidgetOption.Top5Contracts));
+	 	Integer numOfContractsFY2016 = 3144;	 	
+        Integer numOfContracts = ContractsPage.GetTop5WidgetTotalCount(WidgetOption.Top5Contracts);
         assertEquals("Number of Contracts in the Active Revenue Contracts did not match", numOfContracts, numOfContractsFY2016);
 	}
 	
 	@Test
 	public void VerifyNumOfContractAmountModificationsContracts(){
-	 	int numOfContractAmountModificationsContractsFY2016 = 46;
-        int numOfContractAmountModificationsContracts = Helper.stringToInt(ContractsPage.GetTop5WidgetTotalCount(WidgetOption.Top5ContractAmountModifications));
+	 	Integer numOfContractAmountModificationsContractsFY2016 = 46;
+        Integer numOfContractAmountModificationsContracts = ContractsPage.GetTop5WidgetTotalCount(WidgetOption.Top5ContractAmountModifications);
         assertEquals("Number of Contract Amount Modifications Contracts in the Active Revenue Contracts did not match", numOfContractAmountModificationsContracts, numOfContractAmountModificationsContractsFY2016);
 	}
 	
 	@Test
 	public void VerifyNumOfPrimeVendorsContracts(){
-	 	int numOfPrimeVendorsContractsFY2016 = 2416;
-        int numOfPrimeVendorsContracts = Helper.stringToInt(ContractsPage.GetTop5WidgetTotalCount(WidgetOption.Top5PrimeVendors));
+	 	Integer numOfPrimeVendorsContractsFY2016 = 2416;
+        Integer numOfPrimeVendorsContracts = ContractsPage.GetTop5WidgetTotalCount(WidgetOption.Top5PrimeVendors);
         assertEquals("Number of Prime Vendors Contracts in the Active Revenue Contracts did not match", numOfPrimeVendorsContracts, numOfPrimeVendorsContractsFY2016);
 	}
 	
 	@Test
 	public void VerifyNumOfAwardMethodsContracts(){
-	 	int numOfAwardMethodsContractsFY2016 = 17;
-        int numOfAwardMethodsContracts = Helper.stringToInt(ContractsPage.GetTop5WidgetTotalCount(WidgetOption.Top5AwardMethods));
+	 	Integer numOfAwardMethodsContractsFY2016 = 17;
+        Integer numOfAwardMethodsContracts = ContractsPage.GetTop5WidgetTotalCount(WidgetOption.Top5AwardMethods);
         assertEquals("Number of Award Methods Contracts in the Active Revenue Contracts did not match", numOfAwardMethodsContracts, numOfAwardMethodsContractsFY2016);
 	}
 	
 	@Test
 	public void VerifyNumOfAgenciesContracts(){
-	 	int numOfAgenciesContractsFY2016 = 20;
-        int numOfAgenciesContracts = Helper.stringToInt(ContractsPage.GetTop5WidgetTotalCount(WidgetOption.Top5Agencies));
+	 	Integer numOfAgenciesContractsFY2016 = 20;
+        Integer numOfAgenciesContracts = ContractsPage.GetTop5WidgetTotalCount(WidgetOption.Top5Agencies);
         assertEquals("Number of Agencies Contracts in the Active Revenue Contracts did not match", numOfAgenciesContracts, numOfAgenciesContractsFY2016);
 	}
 	
 	@Test
 	public void VerifyNumOfContractsByIndustries(){
-	 	int numOfContractsByIndustriesFY2016 = 3144;
-        int numOfContractsByIndustries = Helper.stringToInt(ContractsPage.GetTop5WidgetTotalCount(WidgetOption.ContractsByIndustries));
+	 	Integer numOfContractsByIndustriesFY2016 = 3144;
+        Integer numOfContractsByIndustries = ContractsPage.GetTop5WidgetTotalCount(WidgetOption.ContractsByIndustries);
         assertEquals("Number of Contracts By Industries in the Active Revenue Contracts did not match", numOfContractsByIndustries, numOfContractsByIndustriesFY2016);
 	}
 	
 	@Test
 	public void VerifyNumOfContractsBySize(){
-	 	int numOfContractsBySizeFY2016 = 3144;
-        int numOfContractsBySize = Helper.stringToInt(ContractsPage.GetTop5WidgetTotalCount(WidgetOption.ContractsBySize));
+	 	Integer numOfContractsBySizeFY2016 = 3144;
+        Integer numOfContractsBySize = ContractsPage.GetTop5WidgetTotalCount(WidgetOption.ContractsBySize);
         assertEquals("Number of Contracts By Size in the Agencies Revenue did not match", numOfContractsBySize, numOfContractsBySizeFY2016);
 	}
 	

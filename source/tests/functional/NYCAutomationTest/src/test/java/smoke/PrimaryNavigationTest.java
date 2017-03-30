@@ -1,6 +1,7 @@
 package smoke;
 
 import static org.junit.Assert.assertTrue;
+import helpers.Helper;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -20,8 +21,7 @@ import pages.tools.trends.FinancialPages;
 import pages.tools.trends.OperationalPages;
 import pages.tools.trends.RevenueCapacityPages;
 import utilities.NYCBaseTest;
-import utility.Helper;
-import utility.TestStatusReport;
+import utilities.TestStatusReport;
 
 public class PrimaryNavigationTest extends TestStatusReport{
 	@Before

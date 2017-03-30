@@ -3,7 +3,7 @@ package pages.datafeeds;
 import navigation.PrimaryMenuNavigation;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import utility.Driver;
+import helpers.Driver;
 
 public class DataFeedsPage{
     public static void GoTo() {

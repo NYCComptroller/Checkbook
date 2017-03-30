@@ -3,8 +3,7 @@ package navigation;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-
-import utility.Driver;
+import helpers.Driver;
 
 public class MWBECategory {
 	

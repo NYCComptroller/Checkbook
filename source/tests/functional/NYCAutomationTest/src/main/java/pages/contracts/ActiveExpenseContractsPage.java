@@ -5,8 +5,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import navigation.TopNavigation;
-import utility.Driver;
-import utility.Helper;
+import helpers.Driver;
+import helpers.Helper;
 
 public class ActiveExpenseContractsPage {
 	public static void GoTo() {

@@ -1,6 +1,7 @@
 package functional;
 
 import static org.junit.Assert.assertTrue;
+import helpers.Helper;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -10,9 +11,8 @@ import pages.contracts.ContractsPage;
 import pages.contracts.ContractsPage.WidgetOption;
 import pages.home.HomePage;
 import utilities.NYCBaseTest;
-import utility.Helper;
 
-public class ActiveExpenseContractsDetailsTest extends NYCBaseTest{
+public class ActiveExpenseContractsDetailsTest extends NYCBaseTest {
 
 	@Before
     public void GoToPage(){

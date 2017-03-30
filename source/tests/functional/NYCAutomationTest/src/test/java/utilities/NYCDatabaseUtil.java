@@ -294,18 +294,7 @@ public class NYCDatabaseUtil {
 	       		}  		
         
 public static int getTotalSpendingContractsCount(int year,char yearTypeVal) throws SQLException {
-   // query = "SELECT COUNT(distinct contract_number) aCount from disbursement_line_item_details where fiscal_year =" + year ;
-    query =   "select  count(distinct contract_number) aCount from ( SELECT COALESCE(master_agreement_id, agreement_id) as agreement_id,"+ 
-    	       "COALESCE(master_contract_number,contract_number) as contract_number,"+ 
-    	       "COALESCE(master_contract_document_code,contract_document_code) as contract_document_code,"+ 
-    	      "COALESCE(master_contract_vendor_id_cy,contract_vendor_id) as vendor_id,"+ 
-    	       "COALESCE(master_contract_agency_id_cy,contract_agency_id) as agency_id,"+ 
-    	    "COALESCE(master_purpose,purpose) as description, "+
-    	           " fiscal_year AS year_id, sum(check_amount) AS total_spending_amount,"+ 
-    	     " MIN(COALESCE(maximum_spending_limit,maximum_contract_amount)) AS contract_amount"+ 
-    	  "FROM disbursement_line_item_details  WHERE agreement_id IS NOT NULL AND contract_number IS NOT NULL"+ 
-    	  "and fiscal_year = "+ year +
-    	   "and contract_document_code in ('CT1', 'CTA1', 'POD', 'POC', 'PCC1', 'DO1','MA1','MMA1')	GROUP BY 1,2,3,4,5,6,7 ) a "; 
+    query =   "SELECT count(DISTINCT document_id) as aCount FROM aggregateon_mwbe_spending_contract WHERE type_of_year = 'B' AND year_id = "+ year;
 
    rs = amountQueryHelper(yearTypeVal);
    int count = 0;

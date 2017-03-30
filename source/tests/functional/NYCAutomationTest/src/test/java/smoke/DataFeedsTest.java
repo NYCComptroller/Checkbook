@@ -7,7 +7,7 @@ import org.junit.*;
 import navigation.PrimaryMenuNavigation;
 import pages.datafeeds.DataFeedsPage;
 import utilities.NYCBaseTest;
-import utility.TestStatusReport;
+import utilities.TestStatusReport;
 
 public class DataFeedsTest extends TestStatusReport{
 	@Before

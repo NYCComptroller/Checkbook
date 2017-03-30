@@ -2,6 +2,7 @@ package smoke;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import helpers.Helper;
 
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -13,8 +14,7 @@ import pages.home.HomePage;
 import pages.spending.SpendingPage;
 import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
-import utility.Helper;
-import utility.TestStatusReport;
+import utilities.TestStatusReport;
 
 public class SpendingTest extends TestStatusReport{
 	
