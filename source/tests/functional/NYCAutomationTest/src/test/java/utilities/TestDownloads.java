@@ -1,4 +1,4 @@
-package utility;
+package utilities;
 
 //import org.sikuli.script.Screen;
 

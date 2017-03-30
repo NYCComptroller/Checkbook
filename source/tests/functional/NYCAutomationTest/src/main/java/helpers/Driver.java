@@ -1,4 +1,4 @@
-package utility;
+package helpers;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -24,9 +24,12 @@ public class Driver {
         System.out.println("hello");
         Instance = new FirefoxDriver();
     }
-
     public static void Initialize(String BrowswerSelection) {
-        if (Driver.DriverPath == null) {
+       Driver.Initialize(BrowswerSelection, null);
+    }
+    
+    public static void Initialize(String BrowswerSelection, String Platform) {
+    	if (Driver.DriverPath == null) {
 			Driver.GetDriverPath();
 		}
 
@@ -41,7 +44,20 @@ public class Driver {
                 break;
 
             case "CHROME":
-                System.setProperty("webdriver.chrome.driver", Driver.DriverPath + "chromedriver.exe");
+            	String driver;
+            	Platform = Platform != null ? Platform.replace(" ", "").toUpperCase() : "";
+            	switch (Platform.replace(" ", "").toUpperCase()) {
+	                case "MAC":
+	              	  driver = "chromedriver-mac";
+	                    break;
+	                case "LINUX":
+	              	  driver = "chromedriver.linux-64";
+	                    break;
+	                default:
+	              	  driver = "chromedriver.exe";
+	                    break;
+	  		  }
+                System.setProperty("webdriver.chrome.driver", Driver.DriverPath + driver);
                 Instance = new ChromeDriver();
                 break;
 

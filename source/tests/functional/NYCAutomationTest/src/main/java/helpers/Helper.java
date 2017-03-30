@@ -1,8 +1,7 @@
-package utility;
+package helpers;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -14,8 +13,8 @@ public class Helper {
 		return stringToInt(fifth);
 	}
 	
-	 public static int stringToInt(String num) {
-		return Integer.parseInt(num.replace(",", ""));
+	 public static Integer stringToInt(String num) {
+		 return (num != null) ? Integer.parseInt(num.replace(",", "")) : null;
 	}
 	 
 	 public static Number billionStringToNumber(String num){

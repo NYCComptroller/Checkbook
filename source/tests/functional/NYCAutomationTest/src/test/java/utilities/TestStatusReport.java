@@ -1,4 +1,4 @@
-package utility;
+package utilities;
 
 import org.junit.Rule;
 import org.junit.rules.TestRule;
@@ -7,8 +7,11 @@ import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
 import utilities.NYCBaseTest;
+import utilities.TestMethodResults;
+import utilities.InterfaceExcel;
 
 public class TestStatusReport {
+	
 	@Rule
 	public TestRule watchman = new TestWatcher() {
 		@Override
@@ -23,7 +26,12 @@ public class TestStatusReport {
 						+ "success!");
 				NYCBaseTest.writer.write("<br/>");
 				
-				InterfaceExcel.AddTestResultsToExcelFile(new TestMethodResults(description.getClassName()+" - "+description.getMethodName(), " " ,true));
+				String testName = description.getClassName()+" - "+description.getMethodName();
+				String testResults = " ";// description.
+				boolean testPassed = true;
+				InterfaceExcel.AddTestResultsToExcelFile(new TestMethodResults(testName, testResults, testPassed));
+				
+//				InterfaceExcel.AddTestResultsToExcelFile(new TestMethodResults(description.getClassName()+" - "+description.getMethodName(), " " ,true));
 			} catch (Exception e1) {
 				System.out.println(e1.getMessage());
 			}
@@ -35,7 +43,14 @@ public class TestStatusReport {
 				NYCBaseTest.writer.write(description.getClassName()+" - "+description.getMethodName()+ " "
 						+ e.getClass().getSimpleName());
 				NYCBaseTest.writer.write("<br/>");
-				InterfaceExcel.AddTestResultsToExcelFile(new TestMethodResults(description.getClassName()+" - "+description.getMethodName(), e.getClass().getSimpleName(),false));
+//				InterfaceExcel.AddTestResultsToExcelFile(new TestMethodResults(description.getClassName()+" - "+description.getMethodName(), e.getClass().getSimpleName(),false));
+
+				
+				String testName = description.getClassName()+" - "+description.getMethodName();
+				String testResults = e.getMessage();
+				boolean testPassed = false;
+				InterfaceExcel.AddTestResultsToExcelFile(new TestMethodResults(testName, testResults, testPassed));
+
 			} catch (Exception e2) {
 				System.out.println(e2.getMessage());
 			}

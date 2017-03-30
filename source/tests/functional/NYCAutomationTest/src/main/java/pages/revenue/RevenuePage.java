@@ -3,10 +3,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 
-import navigation.TopNavigation;
-import utility.Driver;
+import helpers.Driver;
 import pages.home.HomePage;
 
 public class RevenuePage {	
@@ -16,7 +14,7 @@ public class RevenuePage {
 		 Top5RevenueCategoriesbyCrossYearCollections, TopRevenueCategoriesbyCrossYearCollections,RevenuebyFundingClassesbyCrossYearCollections
 	}
 	public static void GoTo() {
-        TopNavigation.Revenue.Select();
+		navigation.TopNavigation.Revenue.Select();
     }
 	public static boolean isAt() {
     	WebElement topTitleCont = Driver.Instance.findElement(By.cssSelector(".top-navigation-left > table > tbody > tr .revenue"));
@@ -25,31 +23,31 @@ public class RevenuePage {
         //Boolean totalSpendingSelected = h2title.getText().equals("Total Spending");    
         return revenueSelected;
     }
-	public static String GetTop5WidgetTotalCount(WidgetOption option) {
+	
+	public static Integer GetTop5WidgetTotalCount(WidgetOption option) {
 		switch (option) {
-		
-		case Top5Agencies:
-			return HomePage.GetWidgetTotalNumber("Top 5 Agencies");
-		case TopAgencies:
-			return HomePage.GetWidgetTotalNumber("Top Agencies");
-		case Top5RevenueCategories:	
-			return HomePage.GetWidgetTotalNumber("Top 5 Revenue Categories");
-		case TopRevenueCategories:
-			return HomePage.GetWidgetTotalNumber("Top Revenue Categories");
-		case RevenuebyFundingClasses:
-			return HomePage.GetWidgetTotalNumber("Revenue by Funding Classes");
-		case Top5AgenciesbyCrossYearCollections:
-			return HomePage.GetWidgetTotalNumber("Top 5 Agencies by Cross Year Collections");
-		case TopAgenciesbyCrossYearCollections:
-			return HomePage.GetWidgetTotalNumber("Top Agencies by Cross Year Collections");
-		case Top5RevenueCategoriesbyCrossYearCollections:
-			return HomePage.GetWidgetTotalNumber("Top 5 Revenue Categories by Cross Year Collections");
-		case TopRevenueCategoriesbyCrossYearCollections:
-			return HomePage.GetWidgetTotalNumber("Top Revenue Categories by Cross Year Collections");
-		case RevenuebyFundingClassesbyCrossYearCollections:
-			return HomePage.GetWidgetTotalNumber("Revenue by Funding Classes by Cross Year Collections");			
-		default:		
-			return null;
+			case Top5Agencies:
+				return HomePage.GetWidgetTotalNumber("Top 5 Agencies");
+			case TopAgencies:
+				return HomePage.GetWidgetTotalNumber("Top Agencies");
+			case Top5RevenueCategories:	
+				return HomePage.GetWidgetTotalNumber("Top 5 Revenue Categories");
+			case TopRevenueCategories:
+				return HomePage.GetWidgetTotalNumber("Top Revenue Categories");
+			case RevenuebyFundingClasses:
+				return HomePage.GetWidgetTotalNumber("Revenue by Funding Classes");
+			case Top5AgenciesbyCrossYearCollections:
+				return HomePage.GetWidgetTotalNumber("Top 5 Agencies by Cross Year Collections");
+			case TopAgenciesbyCrossYearCollections:
+				return HomePage.GetWidgetTotalNumber("Top Agencies by Cross Year Collections");
+			case Top5RevenueCategoriesbyCrossYearCollections:
+				return HomePage.GetWidgetTotalNumber("Top 5 Revenue Categories by Cross Year Collections");
+			case TopRevenueCategoriesbyCrossYearCollections:
+				return HomePage.GetWidgetTotalNumber("Top Revenue Categories by Cross Year Collections");
+			case RevenuebyFundingClassesbyCrossYearCollections:
+				return HomePage.GetWidgetTotalNumber("Revenue by Funding Classes by Cross Year Collections");			
+			default:		
+				return null;
 		}
 	}
 	

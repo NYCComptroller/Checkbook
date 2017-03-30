@@ -1,13 +1,13 @@
 package smoke;
 
 import static org.junit.Assert.assertTrue;
+import helpers.Helper;
 
 import org.junit.Test;
 
 import navigation.PrimaryMenuNavigation;
 import pages.tools.trends.AllTrendsPage;
-import utility.Helper;
-import utility.TestStatusReport;
+import utilities.TestStatusReport;
 
 public class TrendsTest extends TestStatusReport{
 	

@@ -1,6 +1,7 @@
 package utilities;
 
-import java.awt.Desktop;
+import helpers.Driver;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
@@ -16,10 +17,13 @@ import java.util.logging.Logger;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Rule;
+import org.junit.rules.TestRule;
+import org.junit.rules.TestWatcher;
+import org.junit.runner.Description;
+import org.junit.runners.model.Statement;
 
 import pages.home.HomePage;
-import utility.Driver;
-import utility.InterfaceExcel;
 
 public class NYCBaseTest{
     // class fields
@@ -37,18 +41,18 @@ public class NYCBaseTest{
             e.printStackTrace();
         }
 
-        //conncet to data base
-        
+        //connect to data base
         NYCDatabaseUtil.connectToDatabase();
 
         String browserSelection = NYCBaseTest.prop.getProperty("BrowserSelection");
+        String platform = NYCBaseTest.prop.getProperty("Platform");
 
         // Disables needless css warnings
         Logger log = Logger.getLogger("com.gargoylesoftware");
         log.setLevel(Level.OFF);
 
         // launches web browser
-        Driver.Initialize(browserSelection);
+        Driver.Initialize(browserSelection, platform);
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         String addDate = sdf.format(new Date());
@@ -75,7 +79,6 @@ public class NYCBaseTest{
         HomePage.GoTo(NYCBaseTest.prop.getProperty("BaseUrl"));       
        
     }
-
 
     @AfterClass
     public static void Stop() throws SQLException, IOException {

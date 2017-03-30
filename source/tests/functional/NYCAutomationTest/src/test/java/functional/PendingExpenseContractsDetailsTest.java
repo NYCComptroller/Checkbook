@@ -1,17 +1,16 @@
 package functional;
 
 import static org.junit.Assert.assertTrue;
+import helpers.Helper;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import pages.contracts.ActiveExpenseContractsPage;
 import pages.contracts.ContractsPage;
 import pages.contracts.ContractsPage.WidgetOption;
 import pages.contracts.PendingExpenseContractsPage;
 import pages.home.HomePage;
 import utilities.NYCBaseTest;
-import utility.Helper;
 
 public class PendingExpenseContractsDetailsTest extends NYCBaseTest{
 
