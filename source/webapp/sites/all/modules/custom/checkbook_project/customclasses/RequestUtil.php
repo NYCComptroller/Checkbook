@@ -611,85 +611,79 @@ class RequestUtil{
     static function getTopNavURL($domain){
         $year = _getRequestParamValue("year");
         if($year == null){
-          $year = _getCurrentYearID();
+            $year = _getCurrentYearID();
         }
         switch($domain){
-          case "contracts":            
-              $path ="contracts_landing/status/A/yeartype/B/year/".$year._checkbook_append_url_params(null, array(),true);
-              if(_getRequestParamValue("agency") > 0){
-                $path =  $path . "/agency/" . _getRequestParamValue("agency")  ;
-              }else if(_checkbook_check_isEDCPage()){
-                $path =  $path . "/agency/9000";
-              }
-
-              if(_getRequestParamValue("vendor") > 0){
-                $path =  $path . "/vendor/" . _getRequestParamValue("vendor")  ;
-              }
-              break;
-          case "spending":
-              $path ="spending_landing/yeartype/B/year/".$year._checkbook_append_url_params(null, array(),true);
-              if(_getRequestParamValue("agency") > 0){
-                $path =  $path . "/agency/" . _getRequestParamValue("agency")  ;
-              }else if(_checkbook_check_isEDCPage()){
-                  $path =  $path . "/agency/9000";
-              }
-
-              if(_getRequestParamValue("vendor") > 0){
-                $path =  $path . "/vendor/" . _getRequestParamValue("vendor")  ;
-              }
-              break;
-          case "payroll":
-               //Year Type value for Payroll is set to 'C' irrespective of the 'yeartpe' paramenter in the URL
-               $yeartype = 'C';
-                    
-              if(preg_match('/agency_landing/',current_path())) {
-                  $path = "payroll/agency_landing/yeartype/". $yeartype ."/year/".$year;
-                  $path .= _checkbook_project_get_url_param_string("title");
-                  $path .= "/agency/" . _getRequestParamValue("agency");
-              }
-              else if(preg_match('/title_landing/',current_path())) {
-                  $path = "payroll/title_landing/yeartype/". $yeartype ."/year/".$year;
-                  $path .= _checkbook_project_get_url_param_string("agency");
-                  $path .= "/title/" . _getRequestParamValue("title");
-              }
-              else {
-                  $bottomURL = $_REQUEST['expandBottomContURL'];
-                  $bottomURL = ($bottomURL)? $bottomURL : current_path();
-                  $last_parameter = _getLastRequestParamValue($bottomURL);
-                  if($last_parameter['agency'] > 0){
-                      $path = "payroll/agency_landing/yeartype/".$yeartype."/year/".$year;
-                      $path .= _checkbook_project_get_url_param_string("title");
-                      $path .= "/agency/" . _getRequestParamValue("agency");
-                  }
-                  else if($last_parameter['title'] > 0){
-                      $path = "payroll/title_landing/yeartype/".$yeartype."/year/".$year;
-                      $path .= _checkbook_project_get_url_param_string("agency");
-                      $path .= "/title/" . _getRequestParamValue("title");
-                  }
-                  else { //NYC Level9
-                      $path ="payroll/yeartype/".$yeartype."/year/".$year;
-                  }
-              }
-              break;
-          case "budget":
-            if(_getRequestParamValue("agency") > 0){
-              $path ="budget/yeartype/B/year/".$year . "/agency/" . _getRequestParamValue("agency") ;
-            }else{
-              $path ="budget/yeartype/B/year/".$year;
-            }
-            break;
+            case "contracts":            
+                $path ="contracts_landing/status/A/yeartype/B/year/".$year._checkbook_append_url_params(null, array(),true);
+                if(_getRequestParamValue("agency") > 0){
+                    $path =  $path . "/agency/" . _getRequestParamValue("agency")  ;
+                }else if(_checkbook_check_isEDCPage()){
+                    $path =  $path . "/agency/9000";
+                }
+                if(_getRequestParamValue("vendor") > 0){
+                    $path =  $path . "/vendor/" . _getRequestParamValue("vendor")  ;
+                }
+                break;
+            case "spending":
+                $path ="spending_landing/yeartype/B/year/".$year._checkbook_append_url_params(null, array(),true);
+                if(_getRequestParamValue("agency") > 0){
+                    $path =  $path . "/agency/" . _getRequestParamValue("agency")  ;
+                }else if(_checkbook_check_isEDCPage()){
+                    $path =  $path . "/agency/9000";
+                }
+                if(_getRequestParamValue("vendor") > 0){
+                    $path =  $path . "/vendor/" . _getRequestParamValue("vendor")  ;
+                }
+                break;
+            case "payroll":
+                 //Year Type value for Payroll is set to 'C' irrespective of the 'yeartpe' paramenter in the URL
+                 $yeartype = 'C';
+                if(preg_match('/agency_landing/',current_path())) {
+                    $path = "payroll/agency_landing/yeartype/". $yeartype ."/year/".$year;
+                    $path .= _checkbook_project_get_url_param_string("title");
+                    $path .= "/agency/" . _getRequestParamValue("agency");
+                }
+                else if(preg_match('/title_landing/',current_path())) {
+                    $path = "payroll/title_landing/yeartype/". $yeartype ."/year/".$year;
+                    $path .= _checkbook_project_get_url_param_string("agency");
+                    $path .= "/title/" . _getRequestParamValue("title");
+                }
+                else {
+                    $bottomURL = $_REQUEST['expandBottomContURL'];
+                    $bottomURL = ($bottomURL)? $bottomURL : current_path();
+                    $last_parameter = _getLastRequestParamValue($bottomURL);
+                    if($last_parameter['agency'] > 0){
+                        $path = "payroll/agency_landing/yeartype/".$yeartype."/year/".$year;
+                        $path .= _checkbook_project_get_url_param_string("title");
+                        $path .= "/agency/" . _getRequestParamValue("agency");
+                    }
+                    else if($last_parameter['title'] > 0){
+                        $path = "payroll/title_landing/yeartype/".$yeartype."/year/".$year;
+                        $path .= _checkbook_project_get_url_param_string("agency");
+                        $path .= "/title/" . _getRequestParamValue("title");
+                    }
+                    else { //NYC Level
+                        $path ="payroll/yeartype/".$yeartype."/year/".$year;
+                    }
+                }
+                break;
+            case "budget":
+                if(_getRequestParamValue("agency") > 0){
+                    $path ="budget/yeartype/B/year/".$year . "/agency/" . _getRequestParamValue("agency") ;
+                }else{
+                    $path ="budget/yeartype/B/year/".$year;
+                }
+                break;
           case "revenue":
             if(_getRequestParamValue("agency") > 0){
-              $path ="revenue/yeartype/B/year/".$year . "/agency/" . _getRequestParamValue("agency") ;
+                $path ="revenue/yeartype/B/year/".$year . "/agency/" . _getRequestParamValue("agency") ;
             }else{
-              $path ="revenue/yeartype/B/year/".$year;
+                $path ="revenue/yeartype/B/year/".$year;
             }
             break;
-            
         }
-
         return $path;
-     
     }
 
     /** Checks if the current page is NYC level*/
