@@ -251,7 +251,7 @@ if($display){
                                             );
         }
     }
-    $year_data_array = array_merge($fiscal_year_data_array,$calendar_year_data_array);
+    $year_data_array = array_merge($calendar_year_data_array, $fiscal_year_data_array);
 
     if(_getRequestParamValue('contstatus') == 'P'){
         return;
