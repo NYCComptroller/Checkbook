@@ -35,7 +35,7 @@ public class Driver {
 
         switch (BrowswerSelection.replace(" ", "").toUpperCase()) {
             case "FIREFOX":
-                Instance = new ChromeDriver();
+                Instance = new FirefoxDriver();
                 break;
 
             case "IE":
@@ -51,7 +51,7 @@ public class Driver {
 	              	  driver = "chromedriver-mac";
 	                    break;
 	                case "LINUX":
-	              	  driver = "chromedriver.linux-64";
+	              	  driver = "chromedriver-linux-64";
 	                    break;
 	                default:
 	              	  driver = "chromedriver.exe";
