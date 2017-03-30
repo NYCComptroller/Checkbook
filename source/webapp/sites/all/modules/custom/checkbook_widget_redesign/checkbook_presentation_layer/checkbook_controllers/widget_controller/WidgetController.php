@@ -52,7 +52,7 @@ class WidgetController {
      */
     private function _getCurrentWidgetViewConfig($widget) {
 
-        $domain = CheckbookDomain::getCurrent();log_error($domain);
+        $domain = CheckbookDomain::getCurrent();
         $dashboard = Dashboard::getCurrent();
         $config = null;
 
