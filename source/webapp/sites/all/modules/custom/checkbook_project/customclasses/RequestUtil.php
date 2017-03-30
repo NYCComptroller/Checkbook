@@ -639,7 +639,8 @@ class RequestUtil{
               }
               break;
           case "payroll":
-               $yeartype = _getRequestParamValue("yeartype");
+               //Year Type value for Payroll is set to 'C' irrespective of the 'yeartpe' paramenter in the URL
+               $yeartype = 'C';
                     
               if(preg_match('/agency_landing/',current_path())) {
                   $path = "payroll/agency_landing/yeartype/". $yeartype ."/year/".$year;
@@ -666,7 +667,7 @@ class RequestUtil{
                       $path .= "/title/" . _getRequestParamValue("title");
                   }
                   else { //NYC Level9
-                      $path ="payroll/yeartype/".(isset($yeartype)?$yeartype:'B')."/year/".$year;
+                      $path ="payroll/yeartype/".$yeartype."/year/".$year;
                   }
               }
               break;
