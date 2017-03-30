@@ -5852,7 +5852,7 @@ function _year_options($yeartype = NULL) {
                 foreach ($cydata as $row) {
                     $cyarray['CY ' . $row['year_value']] = 'CY ' . $row['year_value'];
                 }
-                $results = array_merge($fyarray, $cyarray);
+                $results = array_merge($cyarray, $fyarray);
                 return $results;
             }
             catch (Exception $e) {
