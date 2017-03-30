@@ -32,9 +32,24 @@ public class Driver {
     	if (Driver.DriverPath == null) {
 			Driver.GetDriverPath();
 		}
+    	String driver;
 
         switch (BrowswerSelection.replace(" ", "").toUpperCase()) {
+        
             case "FIREFOX":
+            	Platform = Platform != null ? Platform.replace(" ", "").toUpperCase() : "";
+            	switch (Platform.replace(" ", "").toUpperCase()) {
+	                case "MAC":
+	              	  driver = "geckodriver-mac";
+	                    break;
+	                case "LINUX":
+	              	  driver = "geckodriver-linux-64";
+	                    break;
+	                default:
+	              	  driver = "geckodriver.exe";
+	                    break;
+	            }
+                System.setProperty("webdriver.gecko.driver", Driver.DriverPath + driver);
                 Instance = new FirefoxDriver();
                 break;
 
@@ -44,7 +59,6 @@ public class Driver {
                 break;
 
             case "CHROME":
-            	String driver;
             	Platform = Platform != null ? Platform.replace(" ", "").toUpperCase() : "";
             	switch (Platform.replace(" ", "").toUpperCase()) {
 	                case "MAC":
@@ -56,7 +70,7 @@ public class Driver {
 	                default:
 	              	  driver = "chromedriver.exe";
 	                    break;
-	  		  }
+	            }
                 System.setProperty("webdriver.chrome.driver", Driver.DriverPath + driver);
                 Instance = new ChromeDriver();
                 break;
