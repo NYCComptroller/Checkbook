@@ -258,10 +258,11 @@ class SpendingUtil{
      * @param $year_id
      * @param $year_type
      * @param $current_dashboard
-     * @param $payee_name
+     * @param bool $payee_name
+     * @param $datasource
      * @return string
      */
-    static function getPrimeVendorLink($vendor_id, $agency_id, $year_id, $year_type, $current_dashboard, $payee_name = false, $datasource = false){
+    static function getPrimeVendorLink($vendor_id, $agency_id, $year_id, $year_type, $current_dashboard, $payee_name = false, $datasource = null){
 
         $override_params = null;
         $latest_certified_minority_type_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id, $year_id, $year_type, "P");
