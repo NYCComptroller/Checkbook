@@ -928,4 +928,43 @@
             GROUP BY ref_status.scntrc_status_name, l1.scntrc_status
         </sql>
     </statement>
+    <statement name="GetContractsByDepartments" datasource="checkbook">
+        <param name="year" required ="true" type="int"/>
+        <param name="yeartype" required ="true" type="string" />
+        <param name="status" type="string"/>
+        <param name="doctype" />
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="subvendor" type="int" />
+        <param name="mwbe" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
+        <sql>
+            SELECT agency.agency_id AS agency_id,
+            agency.agency_name AS agency_name,
+            dept.department_id AS department_id,
+            dept.department_name AS department_name,
+            SUM(COALESCE(a.spending_amount,0)) AS spending_amount_sum,
+            sum(a.total_contracts) AS total_contracts
+            FROM aggregateon_mwbe_contracts_department a
+            JOIN ref_document_code b ON b.document_code_id = a.document_code_id
+            JOIN ref_agency agency ON agency.agency_id = a.agency_id
+            JOIN ref_department dept ON dept.department_id = a.department_id
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="a.status_flag" paramName="status" />
+                    <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
+                    <exp op="IN" dbField="b.document_code" paramName="doctype" />
+                    <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
+                    <exp op="=" dbField="agency.agency_id" paramName="agency" />
+                </exp>
+            </where>
+            GROUP BY agency.agency_id,
+            agency.agency_name,
+            dept.department_id,
+            dept.department_name
+        </sql>
+    </statement>
 </statements>
