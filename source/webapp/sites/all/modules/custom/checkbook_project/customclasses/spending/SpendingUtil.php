@@ -233,7 +233,6 @@ class SpendingUtil{
         $year_type = isset($calyear) ? "C" : "B";
         $year_id = isset($calyear) ? $calyear : (isset($year) ? $year : _getCurrentYearID());
         $vendor_id = $row["vendor_id"];
-        $agency_id = $row["agency_id"];
         $dashboard = _getRequestParamValue("dashboard");
 
         return $row["is_sub_vendor"] == "No"
