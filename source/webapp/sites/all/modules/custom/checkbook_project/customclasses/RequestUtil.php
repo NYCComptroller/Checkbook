@@ -607,15 +607,40 @@ class RequestUtil{
             }
             return html_entity_decode($title);
     }
+    /** Set 'year' parameter to calculate amounts in the Top Navigation for Payroll, Spending, Contracts, Budget and Revenue domains
+     * @param obeject $node widget configuration
+     * @return obeject $node widget configuration
+     */
+    static function processFiscalYearIdForTopNavJson($node){
+       /* $url = $_SERVER['REQUEST_URI'];
+        //For CY 2010 Payroll selection, other domains amounts should be calculated for FY 2011  
+        if(preg_match("/payroll/",$url) && _getRequestParamValue("year") == 111){
+            $fiscalYearId = self::getFiscalYearIdForTopNavigation();
+            $node->widgetConfig->model->series[0]->seriesURLParamMap->fiscal_year_id = $fiscalYearId;
+            $node->widgetConfig->model->series[2]->seriesURLParamMap->year_year = $fiscalYearId;
+            error_log($node->widgetConfig->model->series[2]->seriesURLParamMap);log_error($node->widgetConfig->model->series[2]->seriesURLParamMap);
+        }else{
+            
+        }*/
+        return $node;
+    }
+    
+    /** Returns Year ID for Spending, Contracts, Budget and Revenue domains navigation URLs from Top Navigation 
+     *  @return integer $fiscalYearId 
+     */
+    static function getFiscalYearIdForTopNavigation(){
+        $year = (_getRequestParamValue("year") != NULL) ? _getRequestParamValue("year") : _getCurrentYearID();
+        //For CY 2010 Payroll selection, other domains should be navigated to FY 2011  
+        $fiscalYearId = ($year == 111 && strtoupper(_getRequestParamValue("yeartype")) == 'C') ? 112 : $year;
+        return $fiscalYearId;
+    }
+    
     /** Returns top navigation URL */
     static function getTopNavURL($domain){
-        $year = _getRequestParamValue("year");
-        if($year == null){
-            $year = _getCurrentYearID();
-        }
+        $fiscalYearId = self::getFiscalYearIdForTopNavigation();
         switch($domain){
             case "contracts":            
-                $path ="contracts_landing/status/A/yeartype/B/year/".$year._checkbook_append_url_params(null, array(),true);
+                $path ="contracts_landing/status/A/yeartype/B/year/".$fiscalYearId._checkbook_append_url_params(null, array(),true);
                 if(_getRequestParamValue("agency") > 0){
                     $path =  $path . "/agency/" . _getRequestParamValue("agency")  ;
                 }else if(_checkbook_check_isEDCPage()){
@@ -626,7 +651,7 @@ class RequestUtil{
                 }
                 break;
             case "spending":
-                $path ="spending_landing/yeartype/B/year/".$year._checkbook_append_url_params(null, array(),true);
+                $path ="spending_landing/yeartype/B/year/".$fiscalYearId._checkbook_append_url_params(null, array(),true);
                 if(_getRequestParamValue("agency") > 0){
                     $path =  $path . "/agency/" . _getRequestParamValue("agency")  ;
                 }else if(_checkbook_check_isEDCPage()){
@@ -637,8 +662,10 @@ class RequestUtil{
                 }
                 break;
             case "payroll":
-                 //Year Type value for Payroll is set to 'C' irrespective of the 'yeartpe' paramenter in the URL
+                $year = (_getRequestParamValue("year") != NULL) ? _getRequestParamValue("year") : _getCurrentYearID();
+                //Payroll is always redirected to the respective Calendar Year irrespective of the 'yeartpe' paramenter in the URL
                  $yeartype = 'C';
+                 
                 if(preg_match('/agency_landing/',current_path())) {
                     $path = "payroll/agency_landing/yeartype/". $yeartype ."/year/".$year;
                     $path .= _checkbook_project_get_url_param_string("title");
@@ -670,16 +697,16 @@ class RequestUtil{
                 break;
             case "budget":
                 if(_getRequestParamValue("agency") > 0){
-                    $path ="budget/yeartype/B/year/".$year . "/agency/" . _getRequestParamValue("agency") ;
+                    $path ="budget/yeartype/B/year/".$fiscalYearId . "/agency/" . _getRequestParamValue("agency") ;
                 }else{
-                    $path ="budget/yeartype/B/year/".$year;
+                    $path ="budget/yeartype/B/year/".$fiscalYearId;
                 }
                 break;
           case "revenue":
             if(_getRequestParamValue("agency") > 0){
-                $path ="revenue/yeartype/B/year/".$year . "/agency/" . _getRequestParamValue("agency") ;
+                $path ="revenue/yeartype/B/year/".$fiscalYearId . "/agency/" . _getRequestParamValue("agency") ;
             }else{
-                $path ="revenue/yeartype/B/year/".$year;
+                $path ="revenue/yeartype/B/year/".$fiscalYearId;
             }
             break;
         }
