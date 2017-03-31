@@ -607,23 +607,6 @@ class RequestUtil{
             }
             return html_entity_decode($title);
     }
-    /** Set 'year' parameter to calculate amounts in the Top Navigation for Payroll, Spending, Contracts, Budget and Revenue domains
-     * @param obeject $node widget configuration
-     * @return obeject $node widget configuration
-     */
-    static function processFiscalYearIdForTopNavJson($node){
-       /* $url = $_SERVER['REQUEST_URI'];
-        //For CY 2010 Payroll selection, other domains amounts should be calculated for FY 2011  
-        if(preg_match("/payroll/",$url) && _getRequestParamValue("year") == 111){
-            $fiscalYearId = self::getFiscalYearIdForTopNavigation();
-            $node->widgetConfig->model->series[0]->seriesURLParamMap->fiscal_year_id = $fiscalYearId;
-            $node->widgetConfig->model->series[2]->seriesURLParamMap->year_year = $fiscalYearId;
-            error_log($node->widgetConfig->model->series[2]->seriesURLParamMap);log_error($node->widgetConfig->model->series[2]->seriesURLParamMap);
-        }else{
-            
-        }*/
-        return $node;
-    }
     
     /** Returns Year ID for Spending, Contracts, Budget and Revenue domains navigation URLs from Top Navigation 
      *  @return integer $fiscalYearId 
