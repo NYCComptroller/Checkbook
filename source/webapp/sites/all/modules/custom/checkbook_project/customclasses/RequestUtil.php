@@ -612,7 +612,13 @@ class RequestUtil{
      *  @return integer $fiscalYearId 
      */
     static function getFiscalYearIdForTopNavigation(){
-        $year = (_getRequestParamValue("year") != NULL) ? _getRequestParamValue("year") : _getCurrentYearID();
+        if(_getRequestParamValue("year") != NULL){
+            $year =  _getRequestParamValue("year");
+        }else if(_getRequestParamValue("calyear") != NULL){
+            $year = _getRequestParamValue("calyear");
+        }else{
+            $year = _getCurrentYearID();
+        }
         //For CY 2010 Payroll selection, other domains should be navigated to FY 2011  
         $fiscalYearId = ($year == 111 && strtoupper(_getRequestParamValue("yeartype")) == 'C') ? 112 : $year;
         return $fiscalYearId;
