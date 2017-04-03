@@ -1129,6 +1129,12 @@ function _checkbook_advanced_search_create_alert_results_ajax($form, &$form_stat
     /* Schedule Alert */
     $commands[] = ajax_command_invoke(NULL, 'onScheduleAlertNextClick', array('select_criteria'));
 
+    //clear the page cache for create alerts ajax complete command to finish properly with memcache enabled
+    $cache_tables = array_merge(module_invoke_all('flush_caches'), array('cache_page'));
+    foreach ($cache_tables as $table) {
+        cache_clear_all('*', $table, TRUE);
+    }
+
     /* Load Customize Results Form */
     $redirect_url = '/' . checkbook_advanced_search_form_submit($form, $form_state) . '/createalert';
     $redirect_url = _checkbook_advanced_search_encode_url($redirect_url);
