@@ -164,6 +164,7 @@ class MappingUtil {
             $mwbe_total_link_html  ="<li class='no-click'><a href='" . $total_mwbe_link."'>Total M/WBE</a></li>";
         }
 
+        //Set year value to 2011 for CY2010
         $year = RequestUtil::getFiscalYearIdForTopNavigation();
         $yearType = 'B';
         $filters_html .=  "
