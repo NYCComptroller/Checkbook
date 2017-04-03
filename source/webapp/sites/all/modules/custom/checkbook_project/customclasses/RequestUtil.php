@@ -1047,10 +1047,10 @@ class RequestUtil{
     	foreach($reqParams as $key=>$value){
     		
     		$value = _getRequestParamValue($key); 
-    		if($key == "year" && $value == null) {
-    			$value = _getFiscalYearID();
+    		if($key == "year") {
+    			$value = self::getFiscalYearIdForTopNavigation();
     		}
-    		if($key == "yeartype" && ($value == null || $value == 'C')) {
+    		if($key == "yeartype") {
     			$value = 'B';
     		}
     		
@@ -1134,7 +1134,7 @@ class RequestUtil{
     	}else{
     		return "";
     	}
-    	return '/' . RequestUtil::getLandingPageUrl($domain,_getRequestParamValue("year"), 'B') . "/mwbe/" . MappingUtil::$total_mwbe_cats
+    	return '/' . RequestUtil::getLandingPageUrl($domain, self::getFiscalYearIdForTopNavigation(), 'B') . "/mwbe/" . MappingUtil::$total_mwbe_cats
     	. "/dashboard/" . $dashboard . 
     				_checkbook_project_get_url_param_string("agency")
     			. _checkbook_project_get_url_param_string("vendor")  ;
