@@ -99,7 +99,10 @@ class SpendingWidgetService extends WidgetDataService implements IWidgetService 
             case "expense_cat_ytd_spending_link":
                 $column = $row['check_amount_sum'];
                 $class = "bottomContainerReload";
-                $dynamic_parameter = "/expcategory/" . $row["expenditure_object_id"];
+                if($row["expenditure_object_id"] == 4)
+                    $dynamic_parameter = "/expcategorynm/" . strtoupper($row["expenditure_object_name"]);
+                else
+                    $dynamic_parameter = "/expcategory/" . $row["expenditure_object_id"];
                 $url = SpendingUrlService::ytdSpendingUrl($dynamic_parameter, $this->getLegacyNodeId());
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
