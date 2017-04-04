@@ -652,8 +652,12 @@ class RequestUtil{
                 break;
             case "payroll":
                 $year = (_getRequestParamValue("year") != NULL) ? _getRequestParamValue("year") : _getCurrentYearID();
-                //Payroll is always redirected to the respective Calendar Year irrespective of the 'yeartpe' paramenter in the URL
-                 $yeartype = 'C';
+                //Payroll is always redirected to the respective Calendar Year irrespective of the 'yeartpe' paramenter in the URL for all the other Domains
+                if(!preg_match('/payroll/',$_SERVER['REQUEST_URI'])){
+                    $yeartype = 'C';
+                }else{
+                    $yeartype = _getRequestParamValue("yeartype");
+                }
                  
                 if(preg_match('/agency_landing/',current_path())) {
                     $path = "payroll/agency_landing/yeartype/". $yeartype ."/year/".$year;
