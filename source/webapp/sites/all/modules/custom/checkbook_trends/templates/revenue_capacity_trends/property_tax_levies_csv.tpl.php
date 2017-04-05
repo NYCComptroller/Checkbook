@@ -49,7 +49,7 @@
         $count++;
    	}
 
-   echo "\n".'"'."(1) Adjustments to Tax Levy are Non-Cash Liquidations and Cancellations of Real Property Tax and include (School Tax Relief) payments which are not included in the City Council Resolutions.".'"';
+   echo "\n".'"'."(1) Adjustments to Tax Levy are Non-Cash Liquidations and Cancellations of Real Property Tax and include School Tax Relief payments which are not included in the City Council Resolutions.".'"';
    echo "\n".'"'."SOURCES: Resolutions of the City Council and other Department of Finance reports.".'"';
 ?>
 
