@@ -65,10 +65,20 @@
         $count++;
    	}
 
-echo "\n".'"'."(1) Includes adjustments for Business Improvement Districts, Original Issue Discount, Capital Appreciation Bonds Discounts and cash on hand for defeasance.".'"'.
-     "\n"."\n".'"'."(2) TFA Debt Outstanding above 13.5 billion (Excludes TFA Building Aid Revenue bonds).".'"'.
-     "\n"."\n".'"'."The Constitution of the State of New York limits the general debt-incurring power of The City of New York to ten percent of the five-year average of full valuations of taxable real estate.".'"'.
-     "\n"."\n".'"'."Obligations for water supply and certain obligations for rapid transit and sewage are excluded pursuant to the State Constitution and in accordance with provisions of the State Local Finance Law. Resources of the General Debt Service Fund applicable to non-excluded debt and debt service appropriations for the redemption of such debt are deducted from the non-excluded funded debt to arrive at the funded debt within the debt limit.".'"'.
-     "\n"."\n".'"'."To provide for the City's capital program, State legislation was enacted which created the Transitional Finance Authority (TFA) and TSASC Inc. (TSASC). The new authorization as of July 2009 provides that TFA debt above $13.5 billion is subject to the general debt limit of the City.".'"';
+echo "\n"."\n".
+     "\n".'"'."Notes:".'"'.
+     "\n"."\n".
+     "\n"."\n".'"'."(1) The Legal Debt Margin and the Net Debt Applicable to the Debt Limit as a Percentage of the Debt Limit are recalculated on July 1, the first day of each City fiscal year, based on the new assessed value".'"'.
+     "\n"."\n".'"'."      in accordance with the new year’s enacted tax fixing resolution. Hence, the amounts applicable to the succeeding fiscal year differ from these June 30th fiscal year end amounts. The extent and direction of the change.".'"'.
+     "\n"."\n".'"'."      in debt limit depends on those of the change in assessed value from year to year, smoothed by the five year averaging. For fiscal year 2017, beginning July 1, 2016, the Legal Debt Margin and the Net Debt Applicable.".'"'.
+     "\n"."\n".'"'."      to the Debt Limit as a Percentage of the Debt Limit are $30,165,671 and 66.57%, respectively.".'"'.
+     "\n"."\n".'"'."(2) A five-year average of full valuations of taxable real estate from the Resolutions of the Council Fixing the Tax Rates for the fiscal year beginning on July 1, 2015 and ending on June 30, 2016. ".'"'.
+     "\n"."\n".'"'."(3) The Constitution of the State of New York limits the general debt-incurring power of The City of New York to ten percent of the five-year average of full valuations of taxable real estate.".'"'.
+     "\n"."\n".'"'."(4) Includes adjustments for Business Improvement Districts, Original Issue Discount, Capital Appreciation Bonds Discounts and cash on hand for defeasance.".'"'.
+     "\n"."\n".'"'."(5) Transitional Finance Authority (TFA) Debt Outstanding above $13.5 billion (Excludes TFA Building Aid Revenue bonds).".'"'.
+     "\n"."\n".'"'."(6) To provide for the City's capital program, State legislation was enacted which created TFA. The new authorization as of July  2009 provide that TFA debt above $13.5 billion is subject to the general ".'"'.
+     "\n"."\n".'"'."      debt limit of the City.".'"'.
+     "\n"."\n".'"'."(7) Obligations for water supply and certain obligations for rapid transit are excluded pursuant to the State Constitution and in accordance with provisions of the State Local Finance Law. Resources of the General".'"'.
+     "\n"."\n".'"'."        Debt Service Fund applicable to non-excluded debt and debt service appropriations for the redemption of such debt are deducted from the non-excluded funded debt to arrive at the funded debt within the debt limit.".'"';
 ?>
 
