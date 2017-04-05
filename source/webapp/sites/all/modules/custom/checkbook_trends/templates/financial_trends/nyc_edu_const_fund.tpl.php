@@ -84,14 +84,11 @@ echo eval($node->widgetConfig->header);
 
     </tbody>
 </table>
-<div class="footnote "><p>(*)
-    The 2005A Bonds were issued on January 5, 2005 to refinance the 1994 Bonds.</p>
-    <p>The 2007A bonds were issued on January 18, 2007.</p>
-    <p>Capitalized interest of $1,037,000.00 was not included on interest expense for year 2009 for the 2007A Bonds.</p>
-    <p>The 2010A Bonds were issued on April 28, 2010 for capital purposes.</p>
-    <p>Capitalized interest of $1,969,000 was not included on interest expense for year 2010 for the 2007A Bonds and $289,000 was not included on interest expense for year 2010 for the 2010A Bonds.</p>
-    <p>The 2011A Bonds were issued on January 25, 2011 for capital purposes.</p>
-    <p>Capitalized interest of $1,936,000 was included on interest expense for year 2011 for the 2011 and 2010 Bonds.</p>
+<div class="footnote "><p>(*) Interest of 8,919,000 was capitalized during Fiscal Year 2013 construction for year 2011 and 2010 bonds.</p>
+    <p>In Fiscal Year 2014 ECF received $7 million in income for option for E. 57th development to extend lease beyond 99 years.</p>
+    <p>Operating Expenses exclude Post Employment Benefits accrual.</p>
+    <p>Principal in Fiscal Year 2016 does not include the redemption amount  of the 2005 bonds on October 1, 2015.</p>
+    <br/>
     <p>Source: New York City Educational Construction Fund</p>
 </div>
 <?php 

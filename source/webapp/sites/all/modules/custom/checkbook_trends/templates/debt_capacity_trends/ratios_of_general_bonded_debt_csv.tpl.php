@@ -20,11 +20,11 @@
 ?>
 <?php
 	$header = 'Fiscal Year';
-    $header .=  ",General Bonded Debt" ;
-    $header .=  ",Debt Secure by Revenue other than property tax" ;
+    $header .=  ",General Bonded Debt (1)" ;
+    $header .=  ",Debt Secure by Revenue other than property tax (2) (3)" ;
     $header .=  ",General Obligation Bonds (in millions)" ;
-    $header .=  ",Percentage of Actual Taxable Value of Property," ;
-    $header .=  ",Per Capita General Obligations";
+    $header .=  ",Percentage of Actual Taxable Value of Property (4)," ;
+    $header .=  ",Per Capita (5)";
 
 	echo $header . "\n";
 
@@ -43,6 +43,15 @@
         echo $rowString . "\n";
         $count++;
    	}
-echo "\n\n"."Sources: Comprehensive Annual Financial Reports of the Comptroller\n\n";
+echo "\n"."SOURCES: Comprehensive Annual Financial Reports of the Comptroller". '"' ."\n".
+'"' ."(1) See Notes to Financial Statements (Note D.5), “Changes in Long Term Liabilities”—Bonds and Notes Payable net of".'"' ."\n".
+'"' ."premium and discount.".'"' ."\n".
+'"' ."(2) Includes ECF, FSC, HYIC, IDA, STAR, TFA, NYCTLTs and TSASC.".'"' ."\n".
+'"' ."(3) See Exhibit “Pledged- Revenue Coverage”, Part III—Statistical Information, CAFR".'"'.
+'"' ."(4) See Exhibit “Assessed Value and Estimated Actual Value of Taxable Property—Ten Year Trend”, Part III—Statistical".'"'.
+'"' ."Information, CAFR".'"'.
+'"' ."(5) See Exhibit “Population—Ten Year Trend”, Part III—Statistical Information, CAFR".'"';
+
+
 ?>
 
