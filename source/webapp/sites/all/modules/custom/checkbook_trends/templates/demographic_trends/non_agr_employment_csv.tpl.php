@@ -31,7 +31,7 @@
 	}
 	rsort($years);
 	$header = '';
-    $header .= ',,,,,,1997-2015,,,,,'."\n";
+    $header .= ',,,,,,1997-2016,,,,,'."\n";
     $header .= ',,,,,,(average annual employment in thousands),,,,,'."\n";
 
     foreach ($years as $year){

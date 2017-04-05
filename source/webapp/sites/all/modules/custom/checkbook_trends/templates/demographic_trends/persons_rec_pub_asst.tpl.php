@@ -35,7 +35,7 @@ echo eval($node->widgetConfig->header);
     ?>
     <thead>
     <tr class="first-row">
-        <th colspan="3" class="centrig bb"><div>2002-2015<br>(Average Annual Recipients)</div></th>
+        <th colspan="3" class="centrig bb"><div>2002-2016<br>(Average Annual Recipients)</div></th>
     </tr>
 	<tr class="second-row">
         <th class="number" ><div class="trendCen">Year</div></th>
