@@ -32,7 +32,7 @@ suite of tests:
    <include>**/suites/__YOUR_SUITE_NAME__.java</include>
 
 This should be in the same `<includes>` block as the other suites
-(currently just `SmokeTest.java`).
+(currently `FunctionalTest.java`).
 
 
 To add a new class of tests to an existing suite:
@@ -41,7 +41,7 @@ To add a new class of tests to an existing suite:
 (e.g. `source/tests/functional/NYCAutomationTest/src/test/java/smoke/`).
 
 2. Add the class to the list of classes in the suite file
-(e.g. `source/tests/functional/NYCAutomationTest/src/test/java/suites/SmokeTest.java`),
+(e.g. `source/tests/functional/NYCAutomationTest/src/test/java/suites/FunctionalTest.java`),
 under `@SuiteClasses`.
 
 Add a new test to an existing class:
@@ -53,9 +53,11 @@ Add a new test to an existing class:
 To use these tests:
 
     $ cd source/tests/functional/NYCAutomationTest
-    $ cp src/test/resources/conf.properties.tmpl src/test/resources/conf.properties
 
-    # Using whatever editor you prefer, edit the conf file:
+    # Using whatever editor you prefer, edit the conf file to use your
+    server and auth credentials.  Make sure not to commit your secrets
+    to a public repository:
+    
     $ emacs src/test/resources/conf.properties
     
       # Edit the file to use your URL and database connection
