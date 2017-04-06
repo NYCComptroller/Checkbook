@@ -958,13 +958,10 @@
                     <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
                     <exp op="IN" dbField="b.document_code" paramName="doctype" />
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
-                    <exp op="=" dbField="agency.agency_id" paramName="agency" />
+                    <exp op="=" dbField="a.document_agency_id" paramName="agency" />
                 </exp>
             </where>
-            GROUP BY agency.agency_id,
-            agency.agency_name,
-            dept.department_id,
-            dept.department_name
+            GROUP BY agency.agency_id,agency.agency_name,dept.department_id,dept.department_name
         </sql>
     </statement>
 </statements>
