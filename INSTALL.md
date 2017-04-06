@@ -237,14 +237,14 @@ Steps to install:
 5.  Bring over some third-party libraries.
 
     **Highcharts:**
-    - Download version 3.0.1 from <http://www.highcharts.com/products/highcharts>:
+    - Download version 4.0.4 from <http://www.highcharts.com/products/highcharts>:
 
-            $ wget http://code.highcharts.com/zips/Highcharts-3.0.1.zip
+            $ wget http://code.highcharts.com/zips/Highcharts-4.0.4.zip
     - Unpack it into the appropriate place in the web application:
 
             $ mkdir -p /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highcharts/
-            $ unzip Highcharts-3.0.1.zip -d \
-            /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highcharts/3.0.1
+            $ unzip Highcharts-4.0.4.zip -d \
+            /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highcharts/4.0.4
 
       (That creates the "3.0.1" destination dir.)
     - Verify that it unpacked into the right place, by checking the path to `highcharts.src.js`:
