@@ -1104,6 +1104,12 @@ Drupal.behaviors.hoveOverMWBE = {
                 /* For oge, Budget, Revenue & Payroll are not applicable and are disabled */
                 disableAccordionSections(data_source);
 
+                clearInputFields("#payroll-advanced-search",'payroll');
+                clearInputFieldByDataSource("#contracts-advanced-search",'contracts',data_source);
+                clearInputFieldByDataSource("#spending-advanced-search",'spending',data_source);
+                clearInputFields("#budget-advanced-search",'budget');
+                clearInputFields("#revenue-advanced-search",'revenue');
+
                 return false;
             });
         }
@@ -1270,6 +1276,12 @@ Drupal.behaviors.hoveOverMWBE = {
 
                 /* For oge, Budget, Revenue & Payroll are not applicable and are disabled */
                 disableAccordionSections(data_source);
+
+                clearInputFields("#payroll-advanced-search",'payroll');
+                clearInputFieldByDataSource("#contracts-advanced-search",'contracts',data_source);
+                clearInputFieldByDataSource("#spending-advanced-search",'spending',data_source);
+                clearInputFields("#budget-advanced-search",'budget');
+                clearInputFields("#revenue-advanced-search",'revenue');
 
                 return false;
             });
@@ -1538,8 +1550,9 @@ Drupal.behaviors.hoveOverMWBE = {
                         $('#edit-next-submit').css('display','none');
                         $('#edit-back-submit').css('display','none');
 
-                        /* Show the accordion */
+                        /* Show the accordion and disable the input fields based on the selection criteria */
                         $('.advanced-search-accordion').css('display','block');
+                        disableInputFields();
 
                         break;
 
