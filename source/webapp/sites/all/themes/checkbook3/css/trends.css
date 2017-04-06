@@ -357,7 +357,7 @@ td.number div.dollarItem {float:left; margin-left:12px;}
 #table_355_wrapper tr > td:nth-child(13) .tdCen {margin-right:47px;}
 #table_355_wrapper tr > td:nth-child(14) .tdCen {margin-right:43px;}
 
-#node-widget-355,#node-widget-404,#node-widget-395 h5{
+#node-widget-355,#node-widget-404,#node-widget-395, #node-widget-406 h5{
     color: #2D4C68;
 }
 
@@ -533,6 +533,10 @@ body.page-trends-node-404 #page-title {
 #table_406_wrapper tr > td:nth-child(2) .tdCen {margin-right:98px;}
 #table_406_wrapper tr > td:nth-child(3) .tdCen {margin-right:99px;}
 #table_406_wrapper tr > td:nth-child(4) .tdCen {margin-right:101px;}
+
+#node-widget-406 h5 {
+    margin-bottom: 10px;
+}
 
 /* 420 */
 #node-widget-420 h5{

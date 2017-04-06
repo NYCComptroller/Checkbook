@@ -114,7 +114,6 @@ rsort($years);
     </tbody>
 </table>
 <div class="footnote">
-    <p>(a) Effective July 2003, certain employees of the education area were reclassified from part-time to full-time status.</p>
     <p>Sources: Financial Management System (FMS), Mayor’s Office of Management and Budget, and Mayor’s Office of Operations.</p>
 </div>
 <?php
