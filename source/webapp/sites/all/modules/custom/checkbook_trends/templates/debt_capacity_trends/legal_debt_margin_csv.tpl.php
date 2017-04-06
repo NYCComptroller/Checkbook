@@ -69,7 +69,7 @@ echo "\n"."\n".
      "\n".'"'."Notes:".'"'.
      "\n"."\n".
      "\n"."\n".'"'."(1) The Legal Debt Margin and the Net Debt Applicable to the Debt Limit as a Percentage of the Debt Limit are recalculated on July 1, the first day of each City fiscal year, based on the new assessed value".'"'.
-     "\n"."\n".'"'."      in accordance with the new year’s enacted tax fixing resolution. Hence, the amounts applicable to the succeeding fiscal year differ from these June 30th fiscal year end amounts. The extent and direction of the change.".'"'.
+     "\n"."\n".'"'."      in accordance with the new year's enacted tax fixing resolution. Hence, the amounts applicable to the succeeding fiscal year differ from these June 30th fiscal year end amounts. The extent and direction of the change.".'"'.
      "\n"."\n".'"'."      in debt limit depends on those of the change in assessed value from year to year, smoothed by the five year averaging. For fiscal year 2017, beginning July 1, 2016, the Legal Debt Margin and the Net Debt Applicable.".'"'.
      "\n"."\n".'"'."      to the Debt Limit as a Percentage of the Debt Limit are $30,165,671 and 66.57%, respectively.".'"'.
      "\n"."\n".'"'."(2) A five-year average of full valuations of taxable real estate from the Resolutions of the Council Fixing the Tax Rates for the fiscal year beginning on July 1, 2015 and ending on June 30, 2016. ".'"'.
