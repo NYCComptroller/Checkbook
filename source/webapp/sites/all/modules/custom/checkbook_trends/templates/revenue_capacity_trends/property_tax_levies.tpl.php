@@ -87,7 +87,7 @@ if(preg_match('/featuredtrends/',$_GET['q'])){
     </tbody>
 </table>
 <div class="footnote">
-<p>(1) Adjustments to Tax Levy are Non-Cash Liquidations and Cancellations of Real Property Tax and include (School Tax Relief) payments which are not included in the City Council Resolutions.</p>
+<p>(1) Adjustments to Tax Levy are Non-Cash Liquidations and Cancellations of Real Property Tax and include School Tax Relief payments which are not included in the City Council Resolutions.</p>
 <p>SOURCES: Resolutions of the City Council and other Department of Finance reports.</p>
 </div>
 <?php
