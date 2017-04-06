@@ -1,6 +1,9 @@
 Checkbook NYC
 =============
 
+Current build status of `develop` branch: ![Build
+status](https://travis-ci.org/OpenTechStrategies/Checkbook.svg?branch=develop)
+
 Checkbook NYC is an open source financial transparency web application.
 
 Checkbook provides transparent access to a city's or other jurisdiction's
