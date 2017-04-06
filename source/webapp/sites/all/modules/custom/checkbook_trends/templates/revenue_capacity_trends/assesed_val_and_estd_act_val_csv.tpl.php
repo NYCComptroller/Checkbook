@@ -62,13 +62,11 @@ echo "\n"."(1) Property tax rate based on every $100 of assessed valuation". '"'
     '"' ."     was previously classified as Class One or no more than three stories in height and built as condominiums.".'"' ."\n".
     '"' ."     Mixed-use property with three units or less, provided 50 percent or more of the space is used for residential purposes.".'"' ."\n".
     '"' ."     Vacant land, primarily residentially zoned, except in Manhattan below 110th Street.".'"' ."\n".
-
-
     '"' ."   Class Two - All other residential property not in Class One, except hotels and motels.".'"'."\n".
     '"' ."     Mixed-use property with four or more units, provided 50 percent or more of the space is used for residential  purposes.".'"' ."\n".
     '"' ."   Class Three - Utility real property owned by utility corporations, except land and buildings.".'"' ."\n".
     '"' ."   Class Four - All other real property.".'"' ."\n".
-    '"' ."Classes One to Four amounts include Tax Exempt Property.".'"'."\n".
+    '"' ."Classes One to Four amounts include Tax Exempt Property.".'"' ."\n".
     '"' ."Property in New York City is reassessed every year. The City assesses property at approximately 40 percent of Market Value for
 commercial and industrial property and 20 percent of Market Value for residential property.".'"'."\n".
     '"' ."Sources: Resolutions of the City Council and The Annual Report of The New York City Property Tax Fiscal Year 2016.".'"';
