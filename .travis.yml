@@ -1,0 +1,2 @@
+language: java
+script: mvn test -f ./source/tests/functional/NYCAutomationTest/pom.xml
