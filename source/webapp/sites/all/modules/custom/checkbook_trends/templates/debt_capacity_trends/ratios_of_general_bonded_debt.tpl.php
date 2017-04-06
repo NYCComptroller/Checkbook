@@ -23,7 +23,7 @@ echo eval($node->widgetConfig->header);
 ?>
 
 <a class="trends-export" href="/export/download/trends_ratios_of_general_bonded_debt_csv?dataUrl=/node/<?php echo $node->nid ?>">Export</a>
-
+<h5>(DOLLARS IN MILLIONS EXCEPT PER CAPITA)</h5>
 <table id="table_<?php echo widget_unique_identifier($node) ?>" style='display:none' class="trendsShowOnLoad <?php echo $node->widgetConfig->html_class ?>">
     <?php
     if (isset($node->widgetConfig->caption_column)) {
@@ -38,7 +38,7 @@ echo eval($node->widgetConfig->header);
         <th class="number"><div class="trendCen" >Fiscal<br>Year</div></th>
         <th class="number"><div class="trendCen" >General<br>Bonded<br>Debt<br>(1)</div></th>
         <th class="number"><div class="trendCen" >Debt Secure<br>by Revenue<br>other than<br>property tax <br>(2) (3)</div></th>
-        <th class="number"><div class="trendCen" >General<br>Obligation<br>Bonds<br/>(in millions)</div></th>
+        <th class="number"><div class="trendCen" >General<br>Obligation<br>Bonds</div></th>
         <th class="number"><div class="trendCen" >Percentage of<br>Actual Taxable<br>Value of Property <br>(4)</div></th>
         <th class="number"><div class="trendCen" >Per Capita <br>(5)</div></th>
         <th class="number"><div class="trendCen" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></th>

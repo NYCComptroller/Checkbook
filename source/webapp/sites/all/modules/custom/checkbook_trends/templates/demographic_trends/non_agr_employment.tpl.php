@@ -101,7 +101,7 @@ rsort($years);
                     $row[2016]['amount'] = $row[2016]['amount'] . '(b)';
             		break;
             	default:
-            		$conditionCategory = "<div class='" . $cat_class . "' >" . str_replace('(a)','<sup>(a)</sup>',$row['category'])  . "</div>";
+            		$conditionCategory = "<div class='" . $cat_class . "' >" . str_replace('(a)','<sup style="text-transform: lowercase">(a)</sup>',$row['category'])  . "</div>";
             		break;
             }
             
