@@ -5466,10 +5466,6 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state)
         $user_criteria['Budget Name'] = $values['budget_name'];
         $formatted_search_criteria['Budget Name'] = $values['budget_name'];
     }
-
-
-
-
     if ($values['issuedfrom'] && $values['issuedto']) {
         $form['filter']['issued_date'] = array(
             '#markup' => '<div><strong>Issue Date:</strong> From: ' . $values['issuedfrom'] . ' To: ' . $values['issuedto'] . '</div>'
@@ -5490,7 +5486,7 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state)
         $user_criteria['Issued Date After'] = $values['issuedfrom'];
         $formatted_search_criteria['Issue Date'] = 'To: ' . $values['issuedfrom'];
     }
-    // gate test
+    // Only adds year if date range is not present.
     else {
         if (startsWith($values['year'], 'F')) {
             $form['filter']['year'] = array(
