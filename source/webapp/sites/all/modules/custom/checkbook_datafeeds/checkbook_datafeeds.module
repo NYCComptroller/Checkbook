@@ -5466,45 +5466,6 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state)
         $user_criteria['Budget Name'] = $values['budget_name'];
         $formatted_search_criteria['Budget Name'] = $values['budget_name'];
     }
-    if (startsWith($values['year'], 'F')) {
-        $form['filter']['year'] = array(
-            '#markup' => '<div><strong>Year:</strong> ' . $values['year'] . '</div>',
-        );
-        $user_criteria['Fiscal Year'] = $values['year'];
-        $formatted_search_criteria['Year'] = $values['year'];
-    }
-    elseif (startsWith($values['year'], 'C')) {
-        $form['filter']['year'] = array(
-            '#markup' => '<div><strong>Year:</strong> ' . $values['year'] . '</div>',
-        );
-        $user_criteria['Calendar Year'] = $values['year'];
-        $formatted_search_criteria['Year'] = $values['year'];
-    }
-    else {
-        $form['filter']['year'] = array(
-            '#markup' => '<div><strong>Year:</strong> All Years</div>',
-        );
-        $formatted_search_criteria['Year'] = $values['year'];
-    }
-    if (startsWith($values['year'], 'F')) {
-        $form['filter']['year'] = array(
-            '#markup' => '<div><strong>Fiscal Year:</strong> ' . ltrim($values['year'], 'FY') . '</div>',
-        );
-        $user_criteria['Fiscal Year'] = ltrim($values['year'], 'FY');
-        $formatted_search_criteria['Year'] = $values['year'];
-    }
-    else {
-        if (startsWith($values['year'], 'C')) {
-            $form['filter']['year'] = array(
-                '#markup' => '<div><strong>Calendar Year:</strong> ' . ltrim($values['year'], 'CY') . '</div>',
-            );
-            $user_criteria['Calendar Year'] = ltrim($values['year'], 'CY');
-            $formatted_search_criteria['Year'] = $values['year'];
-        }
-        else {
-            $formatted_search_criteria['Year'] = 'All Years';
-        }
-    }
     if ($values['issuedfrom'] && $values['issuedto']) {
         $form['filter']['issued_date'] = array(
             '#markup' => '<div><strong>Issue Date:</strong> From: ' . $values['issuedfrom'] . ' To: ' . $values['issuedto'] . '</div>'
@@ -5524,6 +5485,29 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state)
         );
         $user_criteria['Issued Date After'] = $values['issuedfrom'];
         $formatted_search_criteria['Issue Date'] = 'To: ' . $values['issuedfrom'];
+    }
+    // Only adds year if date range is not present.
+    else {
+        if (startsWith($values['year'], 'F')) {
+            $form['filter']['year'] = array(
+                '#markup' => '<div><strong>Year:</strong> ' . $values['year'] . '</div>',
+            );
+            $user_criteria['Fiscal Year'] = $values['year'];
+            $formatted_search_criteria['Year'] = $values['year'];
+        }
+        elseif (startsWith($values['year'], 'C')) {
+            $form['filter']['year'] = array(
+                '#markup' => '<div><strong>Year:</strong> ' . $values['year'] . '</div>',
+            );
+            $user_criteria['Calendar Year'] = $values['year'];
+            $formatted_search_criteria['Year'] = $values['year'];
+        }
+        else {
+            $form['filter']['year'] = array(
+                '#markup' => '<div><strong>Year:</strong> All Years</div>',
+            );
+            $formatted_search_criteria['Year'] = $values['year'];
+        }
     }
 
     //</editor-fold>
