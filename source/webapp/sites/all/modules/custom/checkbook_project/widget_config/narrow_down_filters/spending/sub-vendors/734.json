@@ -4,7 +4,7 @@
     "limit":100,
     "startWith":0,
     "maxSelect":5,
-    "columns":["expobjetcode.expobjetcode","expobjectname.expobjectname", "txcount"],
+    "columns":["expobjectcode.expobjectcode","expobjectname.expobjectname", "txcount"],
     "defaultParameters":{"is_prime_or_sub":"S"},
     "orderBy":["-txcount", "expobjectname.expobjectname"],
 	"getTotalDataCount":true,    
@@ -30,7 +30,7 @@
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
         }
-        $adjustedParameters['expobjetcode.expobjetcode'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+        $adjustedParameters['expobjectcode.expobjectcode'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
 
         return $adjustedParameters;
     ",

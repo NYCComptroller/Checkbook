@@ -70,10 +70,10 @@
                         ]
                     },
                                         {
-                        "name": "expobjetcode",
+                        "name": "expobjectcode",
                         "levels": [
                                     {
-                                    "name": "expobjetcode",                                   
+                                    "name": "expobjectcode",                                   
                                     "sourceColumnName": "expenditure_object_code"
                                     }
                         ]
