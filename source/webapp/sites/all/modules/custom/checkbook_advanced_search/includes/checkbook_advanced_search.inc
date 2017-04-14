@@ -1005,7 +1005,7 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_s
         $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_agencies, 'agency');
     }
     if (!empty($spending_expense_category)) {
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_expense_category, 'expcategorynm');
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_expense_category, 'expcategorycode');
     }
     if (!empty($spending_fund_class)) {
         $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_fund_class, 'fundcls');

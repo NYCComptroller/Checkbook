@@ -103,6 +103,15 @@
                     ]
                 },
                 {
+                    "name": "expobjectcode",
+                    "levels": [
+                                {
+                                "name": "expobjectcode",
+                                "sourceColumnName": "expenditure_object_code"
+                                }
+                    ]
+                },
+                {
                     "name": "dept",
                     "levels": [
                                 {
