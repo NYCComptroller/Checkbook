@@ -35,7 +35,7 @@
 			   "orderBy":"-txcount"
 				    },
 			 {"dataset": "checkbook:fact_disbursement_line_item",
-			  "columns":["expobjectname.expobjectname","txcount"],
+			  "columns":["expobjetcode.expobjetcode","expobjectname.expobjectname","txcount"],
 			   "orderBy":"-txcount"
 				    },
 			 {"dataset": "checkbook:fact_disbursement_line_item",

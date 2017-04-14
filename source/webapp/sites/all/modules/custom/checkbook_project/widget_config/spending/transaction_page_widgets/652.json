@@ -353,7 +353,7 @@ cUrl = adjustUrlParameter(cUrl,'category',oSpendCategoryIds );
 cUrl = adjustUrlParameter(cUrl,'checkamtr',oCheckAmount);
 cUrl = adjustUrlParameter(cUrl,'dept',oDeptIds);
 cUrl = adjustUrlParameter(cUrl,'deptnm',oDeptNms);
-cUrl = adjustUrlParameter(cUrl,'expcategorynm',oSpendCategoryNms);
+cUrl = adjustUrlParameter(cUrl,'expcategorycode',oSpendCategoryNms);
 
 return cUrl;
 }"
