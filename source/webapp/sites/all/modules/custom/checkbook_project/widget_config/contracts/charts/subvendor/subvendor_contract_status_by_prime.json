@@ -30,10 +30,16 @@
 "widgetUpdateJSONConfig":"
 	$series_data = array();
         foreach($node->data as $row){
-            if($row['acco_approved'] > 0|| $row['acco_reviewing'] > 0 || $row['acco_rejected'] > 0 || $row['acco_cancelled'] > 0){
+            if($row['acco_approved'] > 0){
                 $series_data[] = array('status' => 'ACCO Approved Sub Vendor', 'count' => $row['acco_approved']);
+            }
+            if($row['acco_reviewing'] > 0){
                 $series_data[] = array('status' => 'ACCO Reviewing Sub Vendor', 'count' => $row['acco_reviewing']);
+            }
+            if($row['acco_rejected'] > 0){
                 $series_data[] = array('status' => 'ACCO Rejected Sub Vendor', 'count' => $row['acco_rejected']);
+            }
+            if($row['acco_cancelled'] > 0){
                 $series_data[] = array('status' => 'ACCO Canceled Sub Vendor', 'count' => $row['acco_cancelled']);
             }
         }
