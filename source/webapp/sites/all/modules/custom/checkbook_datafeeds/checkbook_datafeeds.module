@@ -4656,7 +4656,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
                 '#id' => 'edit-date-filter',
                 '#name' => 'date_filter',
                 '#ajax' => array(
-                    'callback' => 'checkbook_datafeeds_datefilter_ajax',
+                    //'callback' => 'checkbook_datafeeds_datefilter_ajax',
                     'wrapper' => 'datefilter',
                     'progress' => array(
                         'message' => NULL,
@@ -4880,7 +4880,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
                 '#id' => 'edit-date-filter',
                 '#name' => 'date_filter',
                 '#ajax' => array(
-                    'callback' => 'checkbook_datafeeds_datefilter_ajax',
+                    //'callback' => 'checkbook_datafeeds_datefilter_ajax',
                     'wrapper' => 'datefilter',
                     'progress' => array(
                         'message' => NULL,
@@ -5003,7 +5003,7 @@ function checkbook_datafeeds_dept_ajax($form, &$form_state) {
  * @return array
  *   Array of ajax commands
  */
-function checkbook_datafeeds_datefilter_ajax($form, &$form_state)
+/*function checkbook_datafeeds_datefilter_ajax($form, &$form_state)
 {
     $value = $form_state['values']['date_filter'];
     if ($value == 0) {
@@ -5037,7 +5037,7 @@ function checkbook_datafeeds_datefilter_ajax($form, &$form_state)
     }
     $commands[] = ajax_command_invoke(NULL, 'refreshMultiSelect');
     return array('#type' => 'ajax', '#commands' => $commands);
-}
+}*/
 
 /**
  * Ajax callback to disable contractno or payee_name fields and column options based on expense category field.
