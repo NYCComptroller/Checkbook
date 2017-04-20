@@ -5367,6 +5367,10 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state)
         $formatted_search_criteria['Department'] = $values['dept'];
     }
     if ($values['expense_category']) {
+        // converts special characters to HTML entities
+        if (preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $values['expense_category'])) {
+            $values['expense_category'] = htmlspecialchars($values['expense_category']);
+        }
         $form['filter']['expense_category'] = array('#markup' => '<div><strong>Expense Category:</strong> ' . $values['expense_category'] . '</div>');
         $user_criteria['Expense Category'] = $values['expense_category'];
         $formatted_search_criteria['Expense Category'] = $values['expense_category'];
