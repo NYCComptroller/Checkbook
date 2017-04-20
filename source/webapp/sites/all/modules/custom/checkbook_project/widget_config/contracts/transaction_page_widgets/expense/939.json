@@ -3,7 +3,7 @@
     "widgetSubType":"dataTableList",
     "stickyHeader":true,
     "cleanURLParameters":[
-        "vendortype","pmwbe","smwbe","psmwbe","doctype","contstatus","year","calyear","agency","curamtid","pcuramtr","scuramtr","vendor","vendorcode","vendornm","vendornm_exact","pcontdesc","scontdesc","agrmnttype",
+        "vendortype","pmwbe","smwbe","psmwbe","doctype","contstatus","year","calyear","agency","pcuramt","scuramt","pcuramtr","scuramtr","vendor","vendorcode","vendornm","vendornm_exact","pcontdesc","scontdesc","agrmnttype",
         "agencyh","contnum","contnum_exact","aptpin","pin","awdmethod","startdate","enddate","regdate","cindustry","pcindustry","scindustry","csize","pmodamt","smodamt","subcontstatus","subvendorstatus"
     ],
     "urlParamMap":{
@@ -19,9 +19,10 @@
         "vendornm_exact":"vendor_name",
         "vendornm":"vendor_name",
         "vendortype":"vendor_type",
+        "pcuramt":"prime_maximum_contract_amount",
+        "scuramt":"sub_maximum_contract_amount",
         "pcuramtr":"prime_maximum_contract_amount",
         "scuramtr":"sub_maximum_contract_amount",
-        "curamtid":"amount_id",
         "pcontdesc":"prime_purpose",
         "scontdesc":"sub_purpose",
         "agencyh":"agency_history_id",
@@ -45,9 +46,9 @@
         "contnum_exact":"contract_number",
         "year":"year"
     },
-    "allowRequestParams":["smnid","doctype","mwbe","modamt","psmwbe","vendor"],
+    "allowRequestParams":["smnid","doctype","mwbe","modamt","psmwbe","vendor","pcuramtr","scuramtr"],
     "paramTypeConfig":{"vendornm_exact":"eqignorecase","vendornm":"like","pcontdesc":"contains","scontdesc":"contains","contnum":"like","contnum_exact":"eqignorecase","aptpin":"like","pin":"like",
-        "startdate":"range","enddate":"range","regdate":"range","pcuramtr":"rangeid","scuramtr":"rangeid","pmodamt":"ne","smodamt":"ne"},
+        "startdate":"range","enddate":"range","regdate":"range","pcuramt":"range","scuramt":"range","pcuramtr":"rangeid","scuramtr":"rangeid","pmodamt":"ne","smodamt":"ne"},
     "header":"
         $header = NULL;
         $header .= widget_data_tables_export_link($node);
@@ -122,8 +123,7 @@
         ["prime_vendor_code","sub_vendor_code"],
         ["prime_vendor_name","sub_vendor_name"],
         ["prime_vendor_type","sub_vendor_type"],
-        ["prime_purpose","sub_purpose"],
-        ["prime_amount_id","sub_amount_id"]
+        ["prime_purpose","sub_purpose"]
     ],
     "preProcessConfiguration":"
         $doctype = _getRequestParamValue('doctype');
