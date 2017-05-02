@@ -31,6 +31,10 @@ $filter_years = _checkbook_max_data_year();
     
 //$q is the new URL for the Date Filter options
 $q = $_SERVER['REQUEST_URI'];
+$url_parts = parse_url($q);
+if(!isset($_REQUEST['expandBottomContURL']) && $url_parts['query']){
+  $q = str_replace('?'.$url_parts['query'], "", $q);
+}
 
 //Set the default Domain to be 'Spending' for Trends and Smart Search
 if(preg_match("/trends/",$q)){
@@ -53,9 +57,8 @@ if(_getRequestParamValue('year')){
     $url_year_id_value = _getRequestParamValue('year');
 }else if(_getRequestParamValue('calyear')){
     $url_year_id_value = _getRequestParamValue('calyear');
-}else{
-    $url_year_id_value = _getFiscalYearID();
 }
+
 $url_year_type_value = (_getRequestParamValue('yeartype')) ? _getRequestParamValue('yeartype') : 'B';
 
 //Set $year_id_value to current Fiscal Year ID for Pending Contracts
