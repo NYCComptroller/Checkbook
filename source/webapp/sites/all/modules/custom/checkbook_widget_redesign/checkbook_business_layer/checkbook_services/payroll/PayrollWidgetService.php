@@ -35,7 +35,7 @@ class PayrollWidgetService extends WidgetDataService implements IWidgetService {
             case "max_annual_salary_link":
                 $column = $row['max_annual_salary'];
                 $employee = $row['employee_id'];
-                $agency = $row['agency_id'];
+                $agency = $row['agency'];
                 $url = PayrollUrlService::annualSalaryUrl($agency, $employee);
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
