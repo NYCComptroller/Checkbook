@@ -812,12 +812,14 @@ namespace { //global
                 unset($parameters['minority_type_id']);
             }
 
-            //Handle amount_id mapping to prime_amount_id and sub_amount_id
-            if(isset($parameters['amount_id'])) {
-                $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, array($parameters['amount_id']));
-                $parameters['prime_amount_id'] = $condition;
-                $parameters['sub_amount_id'] = $condition;
-                unset($parameters['amount_id']);
+            //if ONLY Prime or ONLY Sub amount selected, need to filter only that type
+            $prime_cur_amt = _getRequestParamValue('pcuramtr');
+            $sub_cur_amt = _getRequestParamValue('scuramtr');
+            if(isset($prime_cur_amt) && !isset($sub_cur_amt)) {
+                $parameters['prime_amount_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
+            }
+            elseif(isset($sub_cur_amt) && !isset($prime_cur_amt)) {
+                $parameters['sub_amount_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
             }
 
             unset($parameters['year']);
