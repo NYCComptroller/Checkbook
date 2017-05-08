@@ -895,7 +895,6 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
 
     $contracts_contract_current_contract_amount_range_array = array('from' => $contracts_contract_current_contract_amount_from, 'to' => $contracts_contract_current_contract_amount_to, 'type' => 'amount');
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_current_contract_amount_range_array, 'curamt', TRUE);
-    $redirect_url .= _checkbook_advanced_search_add_current_amount_id($contracts_contract_current_contract_amount_range_array);
 
     $contracts_contract_start_date_range_array = array('from' => $contracts_contract_start_date_from, 'to' => $contracts_contract_start_date_to, 'type' => 'date');
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_start_date_range_array, 'startdate', TRUE);
