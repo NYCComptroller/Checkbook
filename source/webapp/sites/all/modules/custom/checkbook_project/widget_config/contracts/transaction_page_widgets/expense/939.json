@@ -3,7 +3,7 @@
     "widgetSubType":"dataTableList",
     "stickyHeader":true,
     "cleanURLParameters":[
-        "vendortype","pmwbe","smwbe","psmwbe","doctype","contstatus","year","calyear","agency","pcuramt","scuramt","pcuramtr","scuramtr","vendor","vendorcode","vendornm","vendornm_exact","pcontdesc","scontdesc","agrmnttype",
+        "vendortype","pmwbe","smwbe","psmwbe","doctype","contstatus","year","calyear","agency","curamt","pcuramtr","scuramtr","vendor","vendorcode","vendornm","vendornm_exact","pcontdesc","scontdesc","agrmnttype",
         "agencyh","contnum","contnum_exact","aptpin","pin","awdmethod","startdate","enddate","regdate","cindustry","pcindustry","scindustry","csize","pmodamt","smodamt","subcontstatus","subvendorstatus"
     ],
     "urlParamMap":{
@@ -19,8 +19,7 @@
         "vendornm_exact":"vendor_name",
         "vendornm":"vendor_name",
         "vendortype":"vendor_type",
-        "pcuramt":"prime_maximum_contract_amount",
-        "scuramt":"sub_maximum_contract_amount",
+        "curamt":"maximum_contract_amount",
         "pcuramtr":"prime_maximum_contract_amount",
         "scuramtr":"sub_maximum_contract_amount",
         "pcontdesc":"prime_purpose",
@@ -48,7 +47,7 @@
     },
     "allowRequestParams":["smnid","doctype","mwbe","modamt","psmwbe","vendor","pcuramtr","scuramtr"],
     "paramTypeConfig":{"vendornm_exact":"eqignorecase","vendornm":"like","pcontdesc":"contains","scontdesc":"contains","contnum":"like","contnum_exact":"eqignorecase","aptpin":"like","pin":"like",
-        "startdate":"range","enddate":"range","regdate":"range","pcuramt":"range","scuramt":"range","pcuramtr":"rangeid","scuramtr":"rangeid","pmodamt":"ne","smodamt":"ne"},
+        "startdate":"range","enddate":"range","regdate":"range","curamt":"range","pcuramtr":"rangeid","scuramtr":"rangeid","pmodamt":"ne","smodamt":"ne"},
     "header":"
         $header = NULL;
         $header .= widget_data_tables_export_link($node);
