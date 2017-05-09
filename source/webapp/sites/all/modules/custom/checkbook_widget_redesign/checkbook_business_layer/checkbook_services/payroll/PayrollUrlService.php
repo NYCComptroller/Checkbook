@@ -59,11 +59,13 @@ class PayrollUrlService
         return $url;
     }
 
-    static function payUrl($agency)
+    static function payUrl($agency, $legacy_node_id = null)
     {
         $agency = isset($agency) ? '/agency/' . $agency : '';
 
+
         $url = "/panel_html/payroll_agencytransactions/payroll/agencywide/transactions"
+            . '/smnid/' . $legacy_node_id
             . $agency
             . RequestUtilities::_getUrlParamString("yeartype")
             . RequestUtilities::_getUrlParamString("year")
