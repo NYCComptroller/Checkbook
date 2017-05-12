@@ -2177,7 +2177,9 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
         ),
     );
 
-    $selected_columns = $values['column_select_expense'];
+    $formatted_search_criteria = array();
+    //Used to maintain the order of the columns
+    $selected_columns = checkbook_datafeeds_format_columns();
     //Filter columns for current data source
     $filtered_columns = checkbook_datafeeds_contracts_filter_selected_columns($selected_columns, $data_source, $response_type, $values['df_contract_status'],$values['category'],$values['year']);
     $form_state['step_information']['contracts']['stored_values']['column_select'] = $filtered_columns;

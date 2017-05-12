@@ -77,7 +77,61 @@ class DataSetHandler {
       $limit = $request_limit;
 
       $parameters = $this->getDataSetParameters($data_set, $criteria);
-      $data_set->columns = $columns;
+
+        // array of new sort order for contracts datafeed export
+        $contractsOrder = array("fiscal_year@checkbook:contracts_coa_aggregates_datafeeds",
+            "document_code",
+            "contract_number",
+            "scntrc_status_name",
+            "vendor_record_type",
+            "prime_vendor_name",
+            "prime_minority_type_name",
+            "prime_purpose",
+            "prime_maximum_contract_amount",
+            "prime_original_contract_amount",
+            "prime_rfed_amount",
+            "prime_effective_begin_date",
+            "sub_effective_end_date_export",
+            "registered_date",
+            "agency_name",
+            "version",
+            "master_contract_number_export",
+            "agreement_type_name",
+            "award_method_name",
+            "expenditure_object_names",
+            "prime_industry_type_name",
+            "prime_pin",
+            "prime_apt_pin",
+            "sub_vendor_name_export",
+            "sub_minority_type_name_export",
+            "sub_purpose_export",
+            "aprv_sta_name_export",
+            "sub_industry_type_name_export",
+            "sub_maximum_contract_amount",
+            "sub_original_contract_amount",
+            "sub_rfed_amount",
+            "sub_effective_begin_date_export",
+            "prime_effective_end_date",
+            "sub_contract_id_export"
+        );
+
+        // takes $columns and sorts them by $intendedOrder (currently hardcoded as $contractsOrder)
+        function sortColumnsForContracts(array $selectedColumns, array $intendedOrder) {
+            $ordered = [];
+            foreach ($intendedOrder as $key) {
+                if (in_array($key, $selectedColumns)) {
+                    array_push($ordered, $key);
+                }
+            }
+            return $ordered;
+        }
+
+        // to debug array order, to be deleted - isaac
+        var_dump($columns);
+        var_dump(sortColumnsForContracts($columns, $contractsOrder));
+
+      $data_set->columns = sortColumnsForContracts($columns, $contractsOrder);
+//      $data_set->columns = $columns;
       $data_set->parameters = $parameters;
       $data_set->startWith = $start_with;
       $data_set->limit = $limit;
