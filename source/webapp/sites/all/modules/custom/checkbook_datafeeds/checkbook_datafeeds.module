@@ -5697,7 +5697,7 @@ function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_
  *   Data Feeds wizard form_state array
  */
 function checkbook_datafeeds_spending_validate($form, &$form_state) {
-
+    
     $data_source = $form_state['input']['datafeeds-spending-domain-filter'];
     $agency = $form_state['values']['agency'];
     $agency_code = emptyToZero($agency);
@@ -5798,9 +5798,9 @@ function _year_options($yeartype = NULL) {
                     'year_id',
                 ), array(
                     'year_value' => data_controller_get_operator_factory_instance()->initiateHandler(RangeOperatorHandler::$OPERATOR__NAME, array(
-                            2011,
-                            $fiscal_year,
-                        ))
+                        2011,
+                        $fiscal_year,
+                    ))
                 ), 'year_value', 0);
                 $fydata = array_reverse($fydata, true);
                 $fyarray = array();
@@ -5837,9 +5837,9 @@ function _year_options($yeartype = NULL) {
                     'year_id',
                 ), array(
                     'year_value' => data_controller_get_operator_factory_instance()->initiateHandler(RangeOperatorHandler::$OPERATOR__NAME, array(
-                            2011,
-                            $fiscal_year,
-                        ))
+                        2011,
+                        $fiscal_year,
+                    ))
                 ), 'year_value', 0);
                 $fydata = array_reverse($fydata, true);
                 $cydata = $dataController->queryDataset("checkbook:year", array(
@@ -5847,9 +5847,9 @@ function _year_options($yeartype = NULL) {
                     'year_id',
                 ), array(
                     'year_value' => data_controller_get_operator_factory_instance()->initiateHandler(RangeOperatorHandler::$OPERATOR__NAME, array(
-                            2010,
-                            $calendar_year,
-                        ))
+                        2010,
+                        $calendar_year,
+                    ))
                 ), 'year_value', 0);
                 $cydata = array_reverse($cydata, true);
                 $fyarray = array();
@@ -5979,9 +5979,9 @@ function _sub_vendor_status_in_pip() {
     $statuses[0] = 'Select Status';
     try {
         $dataController = data_controller_get_instance();
-        $data = $dataController->queryDataset('checkbook:subcontract_approval_status',
-            array('aprv_sta_id', 'aprv_sta_value'),
-            NULL, 'sort_order', 0, 10, NULL);
+        $data = $dataController->queryDataset('checkbook:subcontract_approval_status', 
+                                                array('aprv_sta_id', 'aprv_sta_value'),
+                                                NULL, 'sort_order', 0, 10, NULL);
 
         $menu_options = array('0' => 'Select Status');
         $title = 'Select Status';
@@ -6374,7 +6374,7 @@ function _dept_options($agency, $sc, $year, $data_source = null) {
             $query = "SELECT DISTINCT department_name || ' [' || department_code || ']' department_name FROM disbursement_line_item_details, ref_spending_category WHERE disbursement_line_item_details.spending_category_id = ref_spending_category.spending_category_id " . $agencystring . $yearstring . $scstring . "ORDER BY department_name ASC";
             $data = _checkbook_project_execute_sql_by_data_source($query,$data_source);
             $results = _checkbook_datafeeds_dept_options($data,$data_source);
-            break;
+           break;
         default:
             $agency = emptyToZero($agency);
             $sc = emptyToZero($sc);
