@@ -42,4 +42,21 @@ class DatafeedsConfigUtil {
 
         return $configuration;
     }
+
+    /**
+     * Get order for columns to be exported.
+     *
+     * @static
+     *
+     * @return order
+     *   Array
+     */
+    static function getOrderedList() {
+        $config_str = file_get_contents(realpath(drupal_get_path('module', 'checkbook_datafeeds')) . "/config/checkbook_datafeeds_contracts_column_order.json");
+
+        $converter = new Json2PHPArray();
+        $order = $converter->convert($config_str);
+
+        return $order;
+    }
 }
