@@ -1,7 +1,7 @@
 {
   "dataFunc": "GetRevenueFundingClassesCrossYearCollectionsByRevenue",
   "serviceName": "RevenueWidgetService",
-  "table_title": "Revenue by Funding Classes by Cross Year collections",
+  "table_title": "Revenue by Funding Classes by Cross Year Collections",
   "headerSubTitle": "Funding Classes",
   "footerUrl":"RevenueUrlService::getCrossYearFooterUrl(_widget_controller_footer_url($node),'/funding_class_revenue_by_cross_year_collections_details/revenue/fundsrc_details/')",
   "table_columns": [
