@@ -638,6 +638,12 @@ class RequestUtil{
                 if(_getRequestParamValue("vendor") > 0){
                     $path =  $path . "/vendor/" . _getRequestParamValue("vendor")  ;
                 }
+                if(_getRequestParamValue("vendornm_exact") != NULL){
+                    $vendor_id = PrimeVendorService::getVendorIdByName(_getRequestParamValue('vendornm_exact'));
+                    $path = isset($vendor_id)
+                        ? "contracts_landing".ContractsUrlService::primeVendorUrl($vendor_id)
+                        : $path;
+                }
                 break;
             case "spending":
                 $path ="spending_landing/yeartype/B/year/".$fiscalYearId._checkbook_append_url_params(null, array(),true);
