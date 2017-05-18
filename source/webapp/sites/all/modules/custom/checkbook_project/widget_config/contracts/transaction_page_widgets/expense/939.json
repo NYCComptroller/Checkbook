@@ -261,7 +261,7 @@
         "prime_vendor_name_link": {
             "type": "expression2",
             "expression": " '<a href=\"/contracts_landing'
-            . ContractUtil::get_contract_vendor_minority_category($row['prime_vendor_id'], null, null, null, 'P')
+            . ContractsUrlService::primeVendorUrl($row['prime_vendor_id'])
             .  '?expandBottomCont=true\">'. $row['prime_vendor_name_formatted'] . '</a>'  "
         },
         "subvendor_name_formatted": {
