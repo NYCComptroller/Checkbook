@@ -36,8 +36,10 @@
                 "seriesDefaultParameters":{"document_code.document_code.document_code":"CT1~CTA1~RCT1~MA1","contract_status.contract_status":"R","type_of_year":"B"},
                 "adjustSerieParameters":"
                     if(_getRequestParamValue('vendornm_exact') != NULL) {
-                        $vendor_id = PrimeVendorService::getVendorIdByName(_getRequestParamValue('vendornm_exact'));
-                        if(isset($vendor_id)) { $serieParameters['vendor_id'] = $vendor_id; }
+                        $vendor_id = RequestUtil::getVendorFilterForTopNavigation(_getRequestParamValue('vendornm_exact'),'P');
+                        if($vendor_id != NULL) {
+                            $serieParameters['vendor_id'] = $vendor_id;
+                        }
                     }
                     $serieParameters['fiscal_year_id'] = RequestUtil::getFiscalYearIdForTopNavigation();
                     return $serieParameters;
@@ -57,6 +59,12 @@
                 "allowedParams":["vendor_id","year.year","agency_id","calyear"],
                 "seriesDefaultParameters":{"type_of_year":"B"},
                 "adjustSerieParameters":"
+                    if(_getRequestParamValue('vendornm_exact') != NULL) {
+                        $vendor_id = RequestUtil::getVendorFilterForTopNavigation(_getRequestParamValue('vendornm_exact'),'P');
+                        if($vendor_id != NULL) {
+                            $serieParameters['vendor_id'] = $vendor_id;
+                        }
+                    }
                     $serieParameters['year.year'] = RequestUtil::getFiscalYearIdForTopNavigation();
                     return $serieParameters;
                 "
@@ -101,8 +109,10 @@
                 "type_of_year":"B","minority_type_id":"2~3~4~5~9"},
                 "adjustSerieParameters":"
                     if(_getRequestParamValue('vendornm_exact') != NULL) {
-                        $vendor_id = PrimeVendorService::getVendorIdByName(_getRequestParamValue('vendornm_exact'));
-                        if(isset($vendor_id)) { $serieParameters['vendor_id'] = $vendor_id; }
+                        $vendor_id = RequestUtil::getVendorFilterForTopNavigation(_getRequestParamValue('vendornm_exact'));
+                        if($vendor_id != NULL) {
+                            $serieParameters['vendor_id'] = $vendor_id;
+                        }
                     }
                     return $serieParameters;
                 "
@@ -126,8 +136,7 @@
                 "seriesDefaultParameters":{"document_code.document_code.document_code":"CT1~CTA1~RCT1~MA1","contract_status.contract_status":"R","type_of_year":"B"},
                 "adjustSerieParameters":"
                     if(_getRequestParamValue('vendornm_exact') != NULL) {
-                        $vendor_id = SubVendorService::getVendorIdByName(_getRequestParamValue('vendornm_exact'));
-                        if(isset($vendor_id)) { $serieParameters['vendor_id'] = $vendor_id; }
+                        $serieParameters['vendor_id'] = RequestUtil::getVendorFilterForTopNavigation(_getRequestParamValue('vendornm_exact'));
                     }
                     return $serieParameters;
                 "
@@ -151,8 +160,7 @@
                 "seriesDefaultParameters":{"document_code.document_code.document_code":"CT1~CTA1~RCT1~MA1","contract_status.contract_status":"R","type_of_year":"B","minority_type_id":"2~3~4~5~9"},
                 "adjustSerieParameters":"
                     if(_getRequestParamValue('vendornm_exact') != NULL) {
-                        $vendor_id = SubVendorService::getVendorIdByName(_getRequestParamValue('vendornm_exact'));
-                        if(isset($vendor_id)) { $serieParameters['vendor_id'] = $vendor_id; }
+                        $serieParameters['vendor_id'] = RequestUtil::getVendorFilterForTopNavigation(_getRequestParamValue('vendornm_exact'));
                     }
                     return $serieParameters;
                 "
@@ -165,8 +173,10 @@
                 "seriesDefaultParameters":{"document_code.document_code.document_code":"CT1~CTA1~RCT1~MA1","contract_status.contract_status":"A","type_of_year":"B","minority_type_id":"2~3~4~5~9"},
                 "adjustSerieParameters":"
                     if(_getRequestParamValue('vendornm_exact') != NULL) {
-                        $vendor_id = PrimeVendorService::getVendorIdByName(_getRequestParamValue('vendornm_exact'));
-                        if(isset($vendor_id)) { $serieParameters['vendor_id'] = $vendor_id; }
+                        $vendor_id = RequestUtil::getVendorFilterForTopNavigation(_getRequestParamValue('vendornm_exact'));
+                        if($vendor_id != NULL) {
+                            $serieParameters['vendor_id'] = $vendor_id;
+                        }
                     }
                     return $serieParameters;
                 "
@@ -179,8 +189,7 @@
                 "seriesDefaultParameters":{"document_code.document_code.document_code":"CT1~CTA1~RCT1~MA1","contract_status.contract_status":"A","type_of_year":"B"},
                 "adjustSerieParameters":"
                     if(_getRequestParamValue('vendornm_exact') != NULL) {
-                        $vendor_id = SubVendorService::getVendorIdByName(_getRequestParamValue('vendornm_exact'));
-                        if(isset($vendor_id)) { $serieParameters['vendor_id'] = $vendor_id; }
+                        $serieParameters['vendor_id'] = RequestUtil::getVendorFilterForTopNavigation(_getRequestParamValue('vendornm_exact'));
                     }
                     return $serieParameters;
                 "
@@ -193,8 +202,7 @@
                 "seriesDefaultParameters":{"document_code.document_code.document_code":"CT1~CTA1~RCT1~MA1","contract_status.contract_status":"A","type_of_year":"B","minority_type_id":"2~3~4~5~9"},
                 "adjustSerieParameters":"
                     if(_getRequestParamValue('vendornm_exact') != NULL) {
-                        $vendor_id = SubVendorService::getVendorIdByName(_getRequestParamValue('vendornm_exact'));
-                        if(isset($vendor_id)) { $serieParameters['vendor_id'] = $vendor_id; }
+                        $serieParameters['vendor_id'] = RequestUtil::getVendorFilterForTopNavigation(_getRequestParamValue('vendornm_exact'));
                     }
                     return $serieParameters;
                 "
@@ -207,8 +215,10 @@
                 "seriesDefaultParameters":{"document_code.document_code.document_code":"CT1~CTA1~RCT1~MA1","contract_status.contract_status":"A","type_of_year":"B"},
                 "adjustSerieParameters":"
                     if(_getRequestParamValue('vendornm_exact') != NULL) {
-                        $vendor_id = PrimeVendorService::getVendorIdByName(_getRequestParamValue('vendornm_exact'));
-                        if(isset($vendor_id)) { $serieParameters['vendor_id'] = $vendor_id; }
+                        $vendor_id = RequestUtil::getVendorFilterForTopNavigation(_getRequestParamValue('vendornm_exact'),'P');
+                        if($vendor_id != NULL) {
+                            $serieParameters['vendor_id'] = $vendor_id;
+                        }
                     }
                     return $serieParameters;
                 "
