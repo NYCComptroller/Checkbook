@@ -638,6 +638,12 @@ class RequestUtil{
                 if(_getRequestParamValue("vendor") > 0){
                     $path =  $path . "/vendor/" . _getRequestParamValue("vendor")  ;
                 }
+                if(_getRequestParamValue("vendornm_exact") != NULL){
+                    $vendor_id = PrimeVendorService::getVendorIdByName(_getRequestParamValue('vendornm_exact'));
+                    $path = isset($vendor_id)
+                        ? "contracts_landing".ContractsUrlService::primeVendorUrl($vendor_id)
+                        : $path;
+                }
                 break;
             case "spending":
                 $path ="spending_landing/yeartype/B/year/".$fiscalYearId._checkbook_append_url_params(null, array(),true);
@@ -944,11 +950,11 @@ class RequestUtil{
     			break;
     	}
     }
-        
-    
+
+
     static function getDashboardTopNavURL($dashboard_filter){
-    	
-    	
+
+
     	if(self::isContractsSpendingLandingPage()){
     		$url = $_GET['q'];
 
@@ -959,15 +965,15 @@ class RequestUtil{
                 $override_params = array("category"=>null);
                 $url =  SpendingUtil::getLandingPageWidgetUrl($override_params);
     		}
-    		
+
     	}else{
     		$url = self::getCurrentDomainURLFromParams();
     	}
 
         switch($dashboard_filter){
     		case "mwbe":
-    	    	if(_getRequestParamValue("dashboard") !=  null){    				
-    				$url = preg_replace('/\/dashboard\/[^\/]*/','',$url);    				   				    				    				
+    	    	if(_getRequestParamValue("dashboard") !=  null){
+    				$url = preg_replace('/\/dashboard\/[^\/]*/','',$url);
     			}
     			$url .=  "/dashboard/" . self::getNextMWBEDashboardStateParam();
     			if(!preg_match('/mwbe/',$url)){
@@ -977,6 +983,12 @@ class RequestUtil{
     					$url .=  "/mwbe/2~3~4~5~9";
     				}
     			}
+                if(_getRequestParamValue("vendornm_exact") != NULL){
+                    $vendor_id = PrimeVendorService::getVendorIdByName(_getRequestParamValue('vendornm_exact'));
+                    $url = isset($vendor_id)
+                        ? "contracts_landing".ContractsUrlService::primeVendorUrl($vendor_id)
+                        : $url;
+                }
     			break;
     		case "subvendor":
     			
@@ -987,7 +999,12 @@ class RequestUtil{
 				if(_getRequestParamValue("dashboard") == 'ms' && _getRequestParamValue("mwbe") == '2~3~4~5~9' && _getRequestParamValue("tm_wbe") != 'Y'){
     				$url = preg_replace('/\/mwbe\/[^\/]*/','',$url);
     			}
-    			
+                if(_getRequestParamValue("vendornm_exact") != NULL){
+                    $vendor_id = SubVendorService::getVendorIdByName(_getRequestParamValue('vendornm_exact'));
+                    $url = isset($vendor_id)
+                        ? "contracts_landing".ContractsUrlService::subVendorUrl($vendor_id)
+                        : $url;
+                }
     			$url .=  "/dashboard/" . self::getNextSubvendorDashboardStateParam();    			
     			break;
     	}
@@ -1235,5 +1252,29 @@ class RequestUtil{
 
     static function checkDomain($domain) {
         return preg_match('/^'.$domain.'/',current_path());
+    }
+
+    /**
+     * Given a vendor name, returns a list of vendor ids, either prime, sub or both
+     * @param $vendor_name
+     * @param null $vendor_type
+     * @return string
+     */
+    static function getVendorFilterForTopNavigation($vendor_name, $vendor_type = null) {
+
+        if($vendor_name == null) return null;
+        $vendors = array();
+        switch($vendor_type) {
+            case VendorType::$PRIME_VENDOR:
+                $vendors[] = PrimeVendorService::getVendorIdByName($vendor_name);
+                break;
+            case VendorType::$SUB_VENDOR:
+                $vendors[] = SubVendorService::getVendorIdByName($vendor_name);
+                break;
+            default:
+                $vendors = VendorService::getVendorIdByName($vendor_name);
+                break;
+        }
+        return implode('~',$vendors);
     }
 }

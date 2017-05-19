@@ -397,7 +397,7 @@ class ContractsUrlService {
             $url .= RequestUtilities::_getUrlParamString("datasource")."/vendor/".$vendor_id;
         }
         $currentUrl = RequestUtilities::_getCurrentPage();
-        return $currentUrl . $url . "?expandBottomCont=true";
+        return $currentUrl . $url;
     }
 
     /**
@@ -435,5 +435,9 @@ class ContractsUrlService {
                 ($is_mwbe_certified ? "/mwbe/2~3~4~5~9" : "" ) . "/subvendor/".$vendor_id;
             return $currentUrl.$url;
         }
+    }
+
+    static function applyVendorParameter($vendor_id, $year_id = null) {
+        $vendornm_exact = _getRequestParamValue("vendornm_exact");
     }
 }

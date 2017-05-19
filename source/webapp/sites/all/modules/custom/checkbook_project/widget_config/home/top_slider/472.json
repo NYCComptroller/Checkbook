@@ -21,7 +21,6 @@
         if(!preg_match('/payroll/',$_SERVER['REQUEST_URI'])){
             unset($node->widgetConfig->model->series[1]->seriesURLParamMap->yeartype);
         }
-        
     ",
     
     "model": {
@@ -36,6 +35,12 @@
                 "allowedParams":["vendor_id","fiscal_year_id","agency_id","calyear"],
                 "seriesDefaultParameters":{"document_code.document_code.document_code":"CT1~CTA1~RCT1~MA1","contract_status.contract_status":"R","type_of_year":"B"},
                 "adjustSerieParameters":"
+                    if(_getRequestParamValue('vendornm_exact') != NULL) {
+                        $vendor_id = RequestUtil::getVendorFilterForTopNavigation(_getRequestParamValue('vendornm_exact'),'P');
+                        if($vendor_id != NULL) {
+                            $serieParameters['vendor_id'] = $vendor_id;
+                        }
+                    }
                     $serieParameters['fiscal_year_id'] = RequestUtil::getFiscalYearIdForTopNavigation();
                     return $serieParameters;
                 "
@@ -54,6 +59,12 @@
                 "allowedParams":["vendor_id","year.year","agency_id","calyear"],
                 "seriesDefaultParameters":{"type_of_year":"B"},
                 "adjustSerieParameters":"
+                    if(_getRequestParamValue('vendornm_exact') != NULL) {
+                        $vendor_id = RequestUtil::getVendorFilterForTopNavigation(_getRequestParamValue('vendornm_exact'),'P');
+                        if($vendor_id != NULL) {
+                            $serieParameters['vendor_id'] = $vendor_id;
+                        }
+                    }
                     $serieParameters['year.year'] = RequestUtil::getFiscalYearIdForTopNavigation();
                     return $serieParameters;
                 "
@@ -95,7 +106,16 @@
                 "seriesURLParamMap":{"vendor":"vendor_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","mwbe":"minority_type_id"},
                 "allowedParams":["vendor_id","fiscal_year_id","agency_id","minority_type_id","calyear"],
                 "seriesDefaultParameters":{"document_code.document_code.document_code":"CT1~CTA1~RCT1~MA1","contract_status.contract_status":"R",
-                "type_of_year":"B","minority_type_id":"2~3~4~5~9"}
+                "type_of_year":"B","minority_type_id":"2~3~4~5~9"},
+                "adjustSerieParameters":"
+                    if(_getRequestParamValue('vendornm_exact') != NULL) {
+                        $vendor_id = RequestUtil::getVendorFilterForTopNavigation(_getRequestParamValue('vendornm_exact'));
+                        if($vendor_id != NULL) {
+                            $serieParameters['vendor_id'] = $vendor_id;
+                        }
+                    }
+                    return $serieParameters;
+                "
             },
             {
                 "dataset":"checkbook:spending_subven_data",
@@ -113,7 +133,13 @@
                 "columns":["current_amount_sum","total_contracts"],
                 "seriesURLParamMap":{"subvendor":"vendor_id","vendor":"prime_vendor_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","mwbe":"minority_type_id"},
                 "allowedParams":["prime_vendor_id","vendor_id","fiscal_year_id","agency_id","minority_type_id","calyear"],
-                "seriesDefaultParameters":{"document_code.document_code.document_code":"CT1~CTA1~RCT1~MA1","contract_status.contract_status":"R","type_of_year":"B"}
+                "seriesDefaultParameters":{"document_code.document_code.document_code":"CT1~CTA1~RCT1~MA1","contract_status.contract_status":"R","type_of_year":"B"},
+                "adjustSerieParameters":"
+                    if(_getRequestParamValue('vendornm_exact') != NULL) {
+                        $serieParameters['vendor_id'] = RequestUtil::getVendorFilterForTopNavigation(_getRequestParamValue('vendornm_exact'));
+                    }
+                    return $serieParameters;
+                "
             },
             {
                 "dataset":"checkbook:spending_subven_data",
@@ -131,35 +157,71 @@
                 "columns":["current_amount_sum","total_contracts"],
                 "seriesURLParamMap":{"subvendor":"vendor_id","vendor":"prime_vendor_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","mwbe":"minority_type_id"},
                 "allowedParams":["vendor_id","prime_vendor_id","fiscal_year_id","agency_id","minority_type_id","calyear"],
-                "seriesDefaultParameters":{"document_code.document_code.document_code":"CT1~CTA1~RCT1~MA1","contract_status.contract_status":"R","type_of_year":"B","minority_type_id":"2~3~4~5~9"}
+                "seriesDefaultParameters":{"document_code.document_code.document_code":"CT1~CTA1~RCT1~MA1","contract_status.contract_status":"R","type_of_year":"B","minority_type_id":"2~3~4~5~9"},
+                "adjustSerieParameters":"
+                    if(_getRequestParamValue('vendornm_exact') != NULL) {
+                        $serieParameters['vendor_id'] = RequestUtil::getVendorFilterForTopNavigation(_getRequestParamValue('vendornm_exact'));
+                    }
+                    return $serieParameters;
+                "
             },
             {
                 "dataset":"checkbook:mwbe_contracts_coa_aggregates",
                 "columns":["current_amount_sum"],
                 "seriesURLParamMap":{"vendor":"vendor_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","mwbe":"minority_type_id"},
                 "allowedParams":["vendor_id","fiscal_year_id","agency_id","minority_type_id","calyear"],
-                "seriesDefaultParameters":{"document_code.document_code.document_code":"CT1~CTA1~RCT1~MA1","contract_status.contract_status":"A","type_of_year":"B","minority_type_id":"2~3~4~5~9"}
+                "seriesDefaultParameters":{"document_code.document_code.document_code":"CT1~CTA1~RCT1~MA1","contract_status.contract_status":"A","type_of_year":"B","minority_type_id":"2~3~4~5~9"},
+                "adjustSerieParameters":"
+                    if(_getRequestParamValue('vendornm_exact') != NULL) {
+                        $vendor_id = RequestUtil::getVendorFilterForTopNavigation(_getRequestParamValue('vendornm_exact'));
+                        if($vendor_id != NULL) {
+                            $serieParameters['vendor_id'] = $vendor_id;
+                        }
+                    }
+                    return $serieParameters;
+                "
             },
             {
                 "dataset":"checkbook:subven_contracts_coa_aggregates",
                 "columns":["current_amount_sum"],
                 "seriesURLParamMap":{"subvendor":"vendor_id","vendor":"prime_vendor_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","mwbe":"minority_type_id"},
                 "allowedParams":["prime_vendor_id","vendor_id","fiscal_year_id","agency_id","minority_type_id","calyear"],
-                "seriesDefaultParameters":{"document_code.document_code.document_code":"CT1~CTA1~RCT1~MA1","contract_status.contract_status":"A","type_of_year":"B"}
+                "seriesDefaultParameters":{"document_code.document_code.document_code":"CT1~CTA1~RCT1~MA1","contract_status.contract_status":"A","type_of_year":"B"},
+                "adjustSerieParameters":"
+                    if(_getRequestParamValue('vendornm_exact') != NULL) {
+                        $serieParameters['vendor_id'] = RequestUtil::getVendorFilterForTopNavigation(_getRequestParamValue('vendornm_exact'));
+                    }
+                    return $serieParameters;
+                "
             },
             {
                 "dataset":"checkbook:subven_contracts_coa_aggregates",
                 "columns":["current_amount_sum"],
                 "seriesURLParamMap":{"subvendor":"vendor_id","vendor":"prime_vendor_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","mwbe":"minority_type_id"},
                 "allowedParams":["vendor_id","prime_vendor_id","fiscal_year_id","agency_id","minority_type_id","calyear"],
-                "seriesDefaultParameters":{"document_code.document_code.document_code":"CT1~CTA1~RCT1~MA1","contract_status.contract_status":"A","type_of_year":"B","minority_type_id":"2~3~4~5~9"}
+                "seriesDefaultParameters":{"document_code.document_code.document_code":"CT1~CTA1~RCT1~MA1","contract_status.contract_status":"A","type_of_year":"B","minority_type_id":"2~3~4~5~9"},
+                "adjustSerieParameters":"
+                    if(_getRequestParamValue('vendornm_exact') != NULL) {
+                        $serieParameters['vendor_id'] = RequestUtil::getVendorFilterForTopNavigation(_getRequestParamValue('vendornm_exact'));
+                    }
+                    return $serieParameters;
+                "
             },
             {
                 "dataset":"checkbook:contracts_coa_aggregates",
                 "columns":["current_amount_sum","total_contracts"],
                 "seriesURLParamMap":{"vendor":"vendor_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id"},
                 "allowedParams":["vendor_id","fiscal_year_id","agency_id","calyear"],
-                "seriesDefaultParameters":{"document_code.document_code.document_code":"CT1~CTA1~RCT1~MA1","contract_status.contract_status":"A","type_of_year":"B"}
+                "seriesDefaultParameters":{"document_code.document_code.document_code":"CT1~CTA1~RCT1~MA1","contract_status.contract_status":"A","type_of_year":"B"},
+                "adjustSerieParameters":"
+                    if(_getRequestParamValue('vendornm_exact') != NULL) {
+                        $vendor_id = RequestUtil::getVendorFilterForTopNavigation(_getRequestParamValue('vendornm_exact'),'P');
+                        if($vendor_id != NULL) {
+                            $serieParameters['vendor_id'] = $vendor_id;
+                        }
+                    }
+                    return $serieParameters;
+                "
             }
         ]
     },
