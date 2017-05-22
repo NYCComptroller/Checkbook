@@ -48,7 +48,8 @@
       }
       $sortedArray[$row['source_updated_fiscal_year']][] = $row;
     }
-    if (count($sortedArray) > 0) {
+
+    if (count($sortedArray) > 0 && !isset($sortedArray[""])) {
       //TODO To be clarified
       $keys = array_keys($sortedArray);
       $lastKey = $keys[sizeof($sortedArray) - 1];
