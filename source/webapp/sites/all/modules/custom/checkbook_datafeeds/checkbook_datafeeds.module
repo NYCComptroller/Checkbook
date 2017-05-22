@@ -2177,7 +2177,9 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
         ),
     );
 
-    $selected_columns = $values['column_select_expense'];
+    $formatted_search_criteria = array();
+    //Used to maintain the order of the columns
+    $selected_columns = checkbook_datafeeds_format_columns();
     //Filter columns for current data source
     $filtered_columns = checkbook_datafeeds_contracts_filter_selected_columns($selected_columns, $data_source, $response_type, $values['df_contract_status'],$values['category'],$values['year']);
     $form_state['step_information']['contracts']['stored_values']['column_select'] = $filtered_columns;
@@ -2549,6 +2551,26 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
     $criteria['required_columns'] = checkbook_datafeeds_contracts_add_required_columns($response_type, $data_source,$values['df_contract_status'],$values['category'],$values['year']);
     $form_state['step_information']['confirmation']['stored_values']['criteria'] = $criteria;
     $form_state['step_information']['confirmation']['stored_values']['user_criteria'] = $user_criteria;
+
+    /**
+     * Sorts selected columns to match intended order for export
+     *
+     * @param array $selectedColumns
+     *   Array of selected columns
+     * @param array $intendedOrder
+     *   Array of intended order
+     */
+    function sortColumnsForContracts(array $selectedColumns, array $intendedOrder) {
+        $ordered = [];
+        foreach ($intendedOrder as $key) {
+            if (in_array($key, $selectedColumns)) {
+                $ordered[$key] = $selectedColumns[$key];
+            }
+        }
+        return $ordered;
+    }
+
+    $criteria['responseColumns'] = sortColumnsForContracts($criteria['responseColumns'], DatafeedsConfigUtil::getOrderedList());
     $modified_form = checkbook_datafeeds_end_of_confirmation_form($form, $form_state, $criteria, $response_type, 'contracts');
     return $modified_form;
 }
