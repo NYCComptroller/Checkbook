@@ -6684,13 +6684,29 @@ function checkbook_datafeeds_confirmation_download_submit($form, &$form_state) {
  *   Data Feeds wizard form_state array
  */
 function checkbook_datafeeds_confirmation_queue_submit($form, &$form_state) {
+
+    $response_type = $form_state['step_information']['type']['stored_values']['format'];
     $email = $form_state['values']['email_address'];
     $criteria = $form_state['step_information']['confirmation']['stored_values']['criteria'];
+
+    //Update Criteria with overridden column order on export only
+    $domain = strtolower($criteria['global']['type_of_data']);
+    //Contracts Only
+    if($domain == 'contracts') {
+        $data_source = 'checkbook';
+        $category = $criteria['value']['category'];
+        $status = $criteria['value']['status'];
+        $year = $criteria['value']['fiscal_year'];
+        $intended_order =  _checkbook_datafeeds_contracts_override_column_options($response_type, $data_source,$status,$category,$year);
+        $criteria['responseColumns'] = checkbook_datafeeds_override_column_order($criteria['responseColumns'], $intended_order);
+    }
+
     unset($criteria['global']['max_records']);
-    $responsetype = $form_state['step_information']['type']['stored_values']['format'];
-    $searchCriteria = new QueueCriteria($criteria, $responsetype);
+    $searchCriteria = new QueueCriteria($criteria, $response_type);
     $user_criteria = $form_state['step_information']['confirmation']['stored_values']['user_criteria'];
     $searchCriteria->setUserCriteria($user_criteria);
+
+
     try {
         $checkBookApi = new CheckBookAPI($searchCriteria);
     }
