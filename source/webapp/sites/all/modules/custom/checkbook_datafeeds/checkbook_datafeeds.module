@@ -2177,7 +2177,9 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
         ),
     );
 
-    $selected_columns = $values['column_select_expense'];
+    $formatted_search_criteria = array();
+    //Used to maintain the order of the columns
+    $selected_columns = checkbook_datafeeds_format_columns();
     //Filter columns for current data source
     $filtered_columns = checkbook_datafeeds_contracts_filter_selected_columns($selected_columns, $data_source, $response_type, $values['df_contract_status'],$values['category'],$values['year']);
     $form_state['step_information']['contracts']['stored_values']['column_select'] = $filtered_columns;
@@ -2549,8 +2551,56 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
     $criteria['required_columns'] = checkbook_datafeeds_contracts_add_required_columns($response_type, $data_source,$values['df_contract_status'],$values['category'],$values['year']);
     $form_state['step_information']['confirmation']['stored_values']['criteria'] = $criteria;
     $form_state['step_information']['confirmation']['stored_values']['user_criteria'] = $user_criteria;
+
+    //Update Criteria with overridden column order on export only
+    $intended_order =  _checkbook_datafeeds_contracts_override_column_options($response_type, $data_source,$values['df_contract_status'],$values['category'],$values['year']);
+    $criteria['responseColumns'] = checkbook_datafeeds_override_column_order($criteria['responseColumns'], $intended_order);
+
     $modified_form = checkbook_datafeeds_end_of_confirmation_form($form, $form_state, $criteria, $response_type, 'contracts');
     return $modified_form;
+}
+
+/**
+ * Reads the checkbook api configuration file to get the column order to override on export
+ * @param $response_type
+ * @param $data_source
+ * @param $status
+ * @param $expense_category
+ * @param $year
+ * @return array
+ */
+function _checkbook_datafeeds_contracts_override_column_options($response_type, $data_source, $status, $expense_category, $year)
+{
+    ///Get column configurations
+    $domain = 'contracts';
+    $domain = $data_source == 'checkbook_oge' ? $domain.'_oge' : $domain;
+    $domain_config = ConfigUtil::getDomainConfiguration($domain);
+
+    $domain_filter = $domain;
+    $domain_filter .= $status == 'pending' ? '_pending' : '_active';
+    $domain_filter .= $status == 'pending' ? '' :  '_'.$expense_category;
+    if ($year == 'All Years') $domain_filter .= "_all_years";
+
+    //Get columns which should be required to get but not display
+    $override_columns = $domain_config->$domain_filter->dataset->displayConfiguration->$response_type->overrideColumns;
+
+    return (array)$override_columns;
+}
+
+/**
+ * Sorts selected columns to match intended order for export
+ * @param array $selectedColumns
+ * @param array $intendedOrder
+ * @return array
+ */
+function checkbook_datafeeds_override_column_order(array $selectedColumns, array $intendedOrder) {
+    $ordered = [];
+    foreach ($intendedOrder as $key) {
+        if (in_array($key, $selectedColumns)) {
+            $ordered[$key] = $selectedColumns[$key];
+        }
+    }
+    return $ordered;
 }
 
 /**
