@@ -221,7 +221,7 @@
             }
             //Set up multiselects/option transfers
             //Active/Registered Expense
-            $('#edit-column-select-expense', context).multiSelect({ keepOrder: true });
+            $('#edit-column-select-expense', context).multiSelect();
             if(!$('#ms-edit-column-select-expense .ms-selection', context).next().is("a")){
                 $('#ms-edit-column-select-expense .ms-selection', context).after('<a class="deselect">Remove All</a>');
                 $('#ms-edit-column-select-expense .ms-selection', context).after('<a class="select">Add All</a>');
