@@ -20,15 +20,6 @@
 ?>
 <?php
 
-$urlPath = $_GET['q'];
-$ajaxPath = $_SERVER['HTTP_REFERER'];
-
-$contracts_advanced_search = false;
-if(preg_match('/contract\/all\/transactions/',$urlPath) || preg_match('/contract\/all\/transactions/',$ajaxPath) ||
-    preg_match('/contract\/search\/transactions/',$urlPath) || preg_match('/contract\/search\/transactions/',$ajaxPath)) {
-    $contracts_advanced_search = true;
-}
-
 $options = array('html'=>true);
 $options_disabled = array('html'=>true,"attributes"=>array("class"=>"noclick"));
 
@@ -99,7 +90,7 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
     $svendor_active_domain_link = preg_replace('/\/industry\/[^\/]*/','',$svendor_active_domain_link);
 	
     // calcluate amount for mwbe and subvendors top nav. 
-    if(preg_match('/contract/',$_GET['q']) || $contracts_advanced_search){
+    if(preg_match('/contract/',$_GET['q'])){
 
         /*For M/WBE and Sub Vendors dashboard, need to consider both active & registered expense contracts for highlighting.
         This will resolve the case where there is active contracts, so user should be able to click on the dashboards. */
@@ -146,10 +137,6 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
             $mwbe_amount_active_inc += $mwbe_subven_amount_active_inc;
             RequestUtil::$is_prime_mwbe_amount_zero_sub_mwbe_not_zero = true;
             $mwbe_active_domain_link = preg_replace('/\/dashboard\/../','/dashboard/ms',$mwbe_active_domain_link);
-            if(_getRequestParamValue("vendornm_exact") != NULL){
-                $vendor_id = SubVendorService::getVendorIdByName(_getRequestParamValue('vendornm_exact'));
-                $mwbe_active_domain_link .= isset($vendor_id) ? '/subvendor/' . $vendor_id : '';
-            }
         }
 
         // call function to get mwbe drop down filters.
@@ -173,10 +160,6 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
             $mwbe_amount += $mwbe_subven_amount;
             RequestUtil::$is_prime_mwbe_amount_zero_sub_mwbe_not_zero = true;
             $mwbe_active_domain_link = preg_replace('/\/dashboard\/../','/dashboard/ms',$mwbe_active_domain_link);
-            if(_getRequestParamValue("vendornm_exact") != NULL){
-                $vendor_id = SubVendorService::getVendorIdByName(_getRequestParamValue('vendornm_exact'));
-                $mwbe_active_domain_link .= isset($vendor_id) ? '/subvendor/' . $vendor_id : '';
-            }
         }
 
         // call function to get mwbe drop down filters.
@@ -198,6 +181,11 @@ if(preg_match('/mwbe\/7/',$_GET['q']) || preg_match('/mwbe\/11/',$_GET['q'])){
     $svendor_amount  == 0;
 }
 
+// dont hightlight mwbe for advanced search pages.
+if(!preg_match('/smnid/',$_GET['q']) && (preg_match('/spending\/transactions/',$_GET['q'])|| preg_match('/contract\/all\/transactions/',$_GET['q']) 
+        || preg_match('/contract\/search\/transactions/',$_GET['q']))){
+	$mwbeclass = ' ';
+}
 
 if($mwbe_amount  == 0 && $mwbe_amount_active_inc == 0){
     $mwbe_link = l('<div><div class="top-navigation-amount"><span class="nav-title">' . RequestUtil::getDashboardTopNavTitle("mwbe") . '</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') . '</div></div>','',$options_disabled);	
@@ -214,8 +202,10 @@ if($featured_dashboard != null){
 }
 
 if($svendor_amount  == 0 && $svendor_amount_active_inc == 0){
-    if($svendor_amount_active_inc == 0 && (preg_match('/contract/',$_GET['q'] || $contracts_advanced_search)) && !_checkbook_check_isEDCPage()){
-        $dashboard = isset($featured_dashboard) ? $featured_dashboard : 'ss';
+    if($svendor_amount_active_inc == 0 && preg_match('/contract/',$_GET['q']) && !_checkbook_check_isEDCPage()){
+        
+        $dashboard = (isset($featured_dashboard) && $featured_dashboard == 'mp')? 'sp': 'ss';
+        
         $svendor_active_domain_link = ContractURLHelper::prepareSubvendorContractsSliderFilter('contracts_landing', $dashboard);
         $subvendors_link = l('<div><div class="top-navigation-amount"><span class="nav-title">' .RequestUtil::getDashboardTopNavTitle("subvendor")  .'</span><br>&nbsp;'. custom_number_formatter_format($svendor_amount ,1,'$') . '</div></div>',$svendor_active_domain_link ,$options);	 
     }else{
@@ -225,20 +215,14 @@ if($svendor_amount  == 0 && $svendor_amount_active_inc == 0){
     $subvendors_link = l('<div><div class="top-navigation-amount"><span class="nav-title">' .RequestUtil::getDashboardTopNavTitle("subvendor")  .'</span><br>&nbsp;'. custom_number_formatter_format($svendor_amount ,1,'$') . '</div></div>',$svendor_active_domain_link ,$options);	
 }
 
-
 // conditions for making mwbe active.
-if($featured_dashboard == "mp" ||$featured_dashboard == "ms" || ( ($featured_dashboard != null || $contracts_advanced_search) && ($mwbe_amount > 0 || $mwbe_amount_active_inc > 0) ) || RequestUtil::$is_prime_mwbe_amount_zero_sub_mwbe_not_zero ){
+if($featured_dashboard == "mp" ||$featured_dashboard == "ms" || ($featured_dashboard != null && ($mwbe_amount > 0 || $mwbe_amount_active_inc > 0) ) || RequestUtil::$is_prime_mwbe_amount_zero_sub_mwbe_not_zero ){
     $mwbeclass = ' active';	
 }
-if( $featured_dashboard == "sp" || $featured_dashboard == "ss" || ( ($featured_dashboard != null || $contracts_advanced_search) && ($svendor_amount > 0 || $svendor_amount_active_inc > 0) ) || RequestUtil::$is_prime_mwbe_amount_zero_sub_mwbe_not_zero ){
+if( $featured_dashboard == "sp" || $featured_dashboard == "ss" || ($featured_dashboard != null && ($svendor_amount > 0 || $svendor_amount_active_inc > 0) ) || RequestUtil::$is_prime_mwbe_amount_zero_sub_mwbe_not_zero ){
     $svclass = ' active';
 }
 
-
-// dont hightlight mwbe for advanced search pages.
-if(!preg_match('/smnid/',$_GET['q']) && (preg_match('/spending\/transactions/',$_GET['q']))){ // || $contracts_advanced_search
-	$mwbeclass = ' ';
-}
  
 
 $expclass = '';
