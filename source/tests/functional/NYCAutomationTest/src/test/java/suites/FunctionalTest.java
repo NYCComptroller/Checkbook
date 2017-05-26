@@ -47,9 +47,9 @@ import utilities.NYCBaseTest;
 	//RegisteredRevenueContractsTest.class,
 	//RegisteredRevenueContractsDetailsTest.class,
 	//BurgetwidgetTest.class
-	//PayrollwidgetTest.class
+	PayrollwidgetTest.class
 	//PayrollTitles.class
-	PayrollWidgetDetailsTest.class
+	//PayrollWidgetDetailsTest.class
 })
 public class FunctionalTest extends NYCBaseTest{	
 	

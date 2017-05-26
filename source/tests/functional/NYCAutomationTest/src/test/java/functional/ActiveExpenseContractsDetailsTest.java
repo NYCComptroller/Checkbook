@@ -64,6 +64,9 @@ public class ActiveExpenseContractsDetailsTest extends NYCBaseTest{
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5Agencies);
 		HomePage.ShowWidgetDetails();
 	   assertTrue(ActiveExpenseContractsPage.GetTransactionCount() >= 25892); 
+	   
+	   
+	   
     }
 	@Test
     public void VerifyContractsByIndustriesTransactionCount(){

@@ -98,7 +98,7 @@ public class TopNavigation {
 				SecondaryTabSelector.Select("Pending Expense Contracts");	
 			}
 			public static boolean isAt() {
-				return SecondaryTabSelector.isAt("Pending Expense Contract");	
+				return SecondaryTabSelector.isAt("Pending Expense Contracts");	
 			}
 		}
 		
