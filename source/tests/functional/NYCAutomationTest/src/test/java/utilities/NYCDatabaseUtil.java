@@ -459,5 +459,607 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
                 }
                 return count;
     }
-        	
+    //Active Expense contracts widget counts
+            
+            
+               
+            public static int getAEContractsAgenciesCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct agency_id ) aCount  from agreement_snapshot"
+                		+ "   where  document_code_id in (1,2,5) "
+                		+ "and (2016 between effective_begin_year and effective_end_year)"
+                		+ "and (2016 between starting_year and ending_year)";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+           
+            public static int getAEContractsPrimeVendorsCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct vendor_id ) aCount  from agreement_snapshot"
+                		+ "   where  document_code_id in (1,2,5) "
+                		+ "and (2016 between effective_begin_year and effective_end_year)"
+                		+ "and (2016 between starting_year and ending_year)";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+            public static int getAEContractsAwardMethodsCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct award_method_id ) aCount  from agreement_snapshot"
+                		+ "   where  document_code_id in (1,2,5) "
+                		+ "and (2016 between effective_begin_year and effective_end_year)"
+                		+ "and (2016 between starting_year and ending_year)";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+            public static int getAEContractsIndustriesCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct contract_number ) aCount  from agreement_snapshot"
+                		+ "   where  document_code_id in (1,2,5) "
+                		+ "and (2016 between effective_begin_year and effective_end_year)"
+                		+ "and (2016 between starting_year and ending_year)";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            } 
+            
+            public static int getAEContractsSizeCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct contract_number ) aCount  from agreement_snapshot"
+                		+ "   where  document_code_id in (1,2,5) "
+                		+ "and (2016 between effective_begin_year and effective_end_year)"
+                		+ "and (2016 between starting_year and ending_year)";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+            public static int getAEContractsCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct contract_number ) aCount  from agreement_snapshot"
+                		+ "   where  document_code_id in (1,2) "
+                		+ "and (2016 between effective_begin_year and effective_end_year)"
+                		+ "and (2016 between starting_year and ending_year)";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+            public static int getAEMasterContractsCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct contract_number ) aCount  from agreement_snapshot"
+                		+ "   where  document_code_id in (5,6) "
+                		+ "and (2016 between effective_begin_year and effective_end_year)"
+                		+ "and (2016 between starting_year and ending_year)";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+            public static int getAEMasterContractsModificationCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct contract_number ) aCount  from agreement_snapshot"
+                		+ "   where  document_code_id in (5,6) "
+                		+ "and (2016 between effective_begin_year and effective_end_year)"
+                		+ "and (2016 between starting_year and ending_year)"
+                		+ "and maximum_contract_amount <> original_contract_amount";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+            public static int getAEContractsModificationCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct contract_number ) aCount  from agreement_snapshot"
+                		+ "   where  document_code_id in (1,2) "
+                		+ "and (2016 between effective_begin_year and effective_end_year)"
+                		+ "and (2016 between starting_year and ending_year)"
+                		+ "and maximum_contract_amount <> original_contract_amount";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+            
+          //Registered Expense contracts widget counts
+            
+            
+            
+            public static int getREContractsAgenciesCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct agency_id ) aCount  from agreement_snapshot"
+                		+ "   where  document_code_id in (1,2,5) "
+                		+ "and registered_year = 2016"
+                		+ "and (2016 between starting_year and ending_year)";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+           
+            public static int getREContractsPrimeVendorsCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct vendor_id ) aCount  from agreement_snapshot"
+                		+ "   where  document_code_id in (1,2,5) "
+                		+ "and registered_year = 2016"
+                		+ "and (2016 between starting_year and ending_year)";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+            public static int getREContractsAwardMethodsCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct award_method_id ) aCount  from agreement_snapshot"
+                		+ "   where  document_code_id in (1,2,5) "
+                		+ "and registered_year = 2016"
+                		+ "and (2016 between starting_year and ending_year)";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+            public static int getREContractsIndustriesCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct contract_number ) aCount  from agreement_snapshot"
+                		+ "   where  document_code_id in (1,2,5) "
+                		+ "and registered_year = 2016"
+                		+ "and (2016 between starting_year and ending_year)";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            } 
+            
+            public static int getREContractsSizeCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct contract_number ) aCount  from agreement_snapshot"
+                		+ "   where  document_code_id in (1,2,5) "
+                		+ "and registered_year = 2016"
+                		+ "and (2016 between starting_year and ending_year)";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+            public static int getREContractsCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct contract_number ) aCount  from agreement_snapshot"
+                		+ "   where  document_code_id in (1,2) "
+                		+ "and registered_year = 2016"
+                		+ "and (2016 between starting_year and ending_year)";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+            public static int getREContractsMasterCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct contract_number ) aCount  from agreement_snapshot"
+                		+ "   where  document_code_id in (5,6) "
+                		+ "and registered_year = 2016"
+                		+ "and (2016 between starting_year and ending_year)";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+            public static int getREContractsMasterModificationsCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct contract_number ) aCount  from agreement_snapshot"
+                		+ "   where  document_code_id in (5,6) "
+                		+ "and registered_year = 2016"
+                		+ "and (2016 between starting_year and ending_year)"
+                		+ "and maximum_contract_amount <> original_contract_amount";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+            public static int getREContractsModificationsCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct contract_number ) aCount  from agreement_snapshot"
+                		+ "   where  document_code_id in (1,2) "
+                		+ "and registered_year = 2016"
+                		+ "and (2016 between starting_year and ending_year)"
+                		+ "and maximum_contract_amount <> original_contract_amount";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+            
+ //Registered Revenue contracts widget counts
+            
+            
+            
+            public static int getRRContractsAgenciesCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct agency_id ) aCount  from agreement_snapshot"
+                		+ "   where  document_code_id in (7) "
+                		+ "and registered_year = 2016"
+                		+ "and (2016 between starting_year and ending_year)";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+           
+            public static int getRRContractsPrimeVendorsCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct vendor_id ) aCount  from agreement_snapshot"
+                		+ "   where  document_code_id in (7) "
+                		+ "and registered_year = 2016"
+                		+ "and (2016 between starting_year and ending_year)";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+            public static int getRRContractsAwardMethodsCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct award_method_id ) aCount  from agreement_snapshot"
+                		+ "   where  document_code_id in (7) "
+                		+ "and registered_year = 2016"
+                		+ "and (2016 between starting_year and ending_year)";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+            public static int getRRContractsIndustriesCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct contract_number ) aCount  from agreement_snapshot"
+                		+ "   where  document_code_id in (7) "
+                		+ "and registered_year = 2016"
+                		+ "and (2016 between starting_year and ending_year)";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            } 
+            
+            public static int getRRContractsSizeCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct contract_number ) aCount  from agreement_snapshot"
+                		+ "   where  document_code_id in (7) "
+                		+ "and registered_year = 2016"
+                		+ "and (2016 between starting_year and ending_year)";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+            public static int getRRContractsCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct contract_number ) aCount  from agreement_snapshot"
+                		+ "   where  document_code_id in (7) "
+                		+ "and registered_year = 2016"
+                		+ "and (2016 between starting_year and ending_year)";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+
+            public static int getRRContractsModificationsCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct contract_number ) aCount  from agreement_snapshot"
+                		+ "   where  document_code_id in (7) "
+                		+ "and registered_year = 2016"
+                		+ "and (2016 between starting_year and ending_year)"
+                		+ "and maximum_contract_amount <> original_contract_amount";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+            
+            //Active Revenue contracts widget counts
+            
+            
+            
+            public static int getARContractsAgenciesCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct agency_id ) aCount  from agreement_snapshot"
+                		+ "   where  document_code_id in (7) "
+                		+ "and (2016 between effective_begin_year and effective_end_year)"
+                		+ "and (2016 between starting_year and ending_year)";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+           
+            public static int getARContractsPrimeVendorsCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct vendor_id ) aCount  from agreement_snapshot"
+                		+ "   where  document_code_id in (7) "
+                		+ "and (2016 between effective_begin_year and effective_end_year)"
+                		+ "and (2016 between starting_year and ending_year)";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+            public static int getARContractsAwardMethodsCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct award_method_id ) aCount  from agreement_snapshot"
+                		+ "   where  document_code_id in (7) "
+                		+ "and (2016 between effective_begin_year and effective_end_year)"
+                		+ "and (2016 between starting_year and ending_year)";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+            public static int getARContractsIndustriesCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct contract_number ) aCount  from agreement_snapshot"
+                		+ "   where  document_code_id in (7) "
+                		+ "and (2016 between effective_begin_year and effective_end_year)"
+                		+ "and (2016 between starting_year and ending_year)";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            } 
+            
+            public static int getARContractsSizeCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct contract_number ) aCount  from agreement_snapshot"
+                		+ "   where  document_code_id in (7) "
+                		+ "and (2016 between effective_begin_year and effective_end_year)"
+                		+ "and (2016 between starting_year and ending_year)";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+            public static int getARContractsCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct contract_number ) aCount  from agreement_snapshot"
+                		+ "   where  document_code_id in (7) "
+                		+ "and (2016 between effective_begin_year and effective_end_year)"
+                		+ "and (2016 between starting_year and ending_year)";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+        
+            public static int getARContractsModificationsCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct contract_number ) aCount  from agreement_snapshot"
+                		+ "   where  document_code_id in (7) "
+                		+ "and (2016 between effective_begin_year and effective_end_year)"
+                		+ "and (2016 between starting_year and ending_year)"
+                		+ "and maximum_contract_amount <> original_contract_amount";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+            
+ //PendingRevenue contracts widget counts
+            
+            
+            
+            public static int getPRContractsAgenciesCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct document_agency_id ) aCount  from pending_contracts"
+                		+ "   where  document_code_id in (7) ";
+                	
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+           
+            public static int getPRContractsPrimeVendorsCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct vendor_id ) aCount  from pending_contracts"
+                		+ "   where  document_code_id in (7) ";
+                	
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+            public static int getPRContractsAwardMethodsCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct award_method_id ) aCount  from pending_contracts"
+                		+ "   where  document_code_id in (7) ";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+            public static int getPRContractsIndustriesCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct contract_number ) aCount  from pending_contracts"
+                		+ "   where  document_code_id in (7) ";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            } 
+            
+            public static int getPRContractsSizeCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct contract_number ) aCount  from pending_contracts"
+                		+ "   where  document_code_id in (7) ";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+            public static int getPRContractsCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct contract_number ) aCount  from pending_contracts"
+                		+ "   where  document_code_id in (7) ";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+        
+            public static int getPRContractsModificationsCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct contract_number ) aCount  from pending_contracts"
+                		+ "   where  document_code_id in (7) "
+                		+ " and original_maximum_amount <> revised_maximum_amount ";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+            
+//Pending Expense contracts widget counts
+            
+            
+            
+            public static int getPEContractsAgenciesCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct document_agency_id ) aCount  from pending_contracts"
+                		+ "   where  document_code_id in (1,2,5,6,19,20) ";
+                	
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+           
+            public static int getPEContractsPrimeVendorsCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct vendor_id ) aCount  from pending_contracts"
+                		+ "   where  document_code_id in (1,2,5,6,19,20) ";
+                	
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+            public static int getPEContractsAwardMethodsCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(distinct award_method_id ) aCount  from pending_contracts"
+                		+ "   where  document_code_id in (1,2,5,6,19,20) ";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+            public static int getPEContractsIndustriesCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(contract_number ) aCount  from pending_contracts"
+                		+ "   where  document_code_id in (1,2,5,6,19,20) ";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            } 
+            
+            public static int getPEContractsSizeCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(contract_number ) aCount  from pending_contracts"
+                		+ "   where  document_code_id in (1,2,5,6,19,20) ";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+            public static int getPEContractsCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(contract_number ) aCount  from pending_contracts"
+                		+ "   where  document_code_id in (1,2,20) ";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+        
+            public static int getPEContractsModificationsCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(contract_number ) aCount  from pending_contracts"
+                		+ "   where  document_code_id in (1,2,20) "
+                		+ " and  original_maximum_amount <> revised_maximum_amount";  
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+            public static int getPEContractsMasterCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(contract_number ) aCount  from pending_contracts"
+                		+ "   where  document_code_id in (5,6,19) ";
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
+        
+            public static int getPEContractsMasterModificationsCount(int year,char yearTypeVal) throws SQLException {
+                query = "select  count(contract_number ) aCount  from pending_contracts"
+                		+ "   where  document_code_id in (5,6,19) "
+                		+ " and  original_maximum_amount <> revised_maximum_amount";  
+               rs = amountQueryHelper(yearTypeVal);
+               int count = 0;
+               while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+            }
 }
