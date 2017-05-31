@@ -8,15 +8,13 @@ import java.sql.SQLException;
 import org.junit.Before;
 import org.junit.Test;
 
-import pages.contracts.ActiveExpenseContractsPage;
-import pages.contracts.ActiveRevenueContractsPage;
 import pages.contracts.ContractsPage;
 import pages.contracts.ContractsPage.WidgetOption;
 import pages.contracts.RegisteredRevenueContractsPage;
 import pages.home.HomePage;
 import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
-import utility.Helper;
+import helpers.Helper;
 
 public class RegisteredRevenueContractsDetailsTest extends NYCBaseTest{
 

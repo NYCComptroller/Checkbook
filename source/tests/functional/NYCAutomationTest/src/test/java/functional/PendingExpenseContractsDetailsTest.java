@@ -15,7 +15,7 @@ import pages.contracts.PendingExpenseContractsPage;
 import pages.home.HomePage;
 import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
-import utility.Helper;
+import helpers.Helper;
 
 public class PendingExpenseContractsDetailsTest extends NYCBaseTest{
 
