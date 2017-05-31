@@ -6620,7 +6620,7 @@ function checkbook_datafeeds_confirmation_download_submit($form, &$form_state) {
 
     $record_count = $checkBookApi->getRecordCount();
     //records <= 100,000
-    if ($record_count <= 100000) {
+    if ($record_count <= 30000) {
         if (isset($checkBookApi)) {
             if ($checkBookApi->validateRequest()) {
                 try {
@@ -6893,7 +6893,7 @@ function checkbook_datafeeds_end_of_confirmation_form($form, &$form_state, $crit
     elseif ($recordcount > 0 && $recordcount < 200000) {
         if (isset($checkBookApi)) {
             if ($checkBookApi->validateRequest()) {
-                if ($recordcount <= 100000) {
+                if ($recordcount <= 30000) {
                     $form_state['step_information']['confirmation']['response'] = $checkBookApi->getData();
                 }
                 else {
