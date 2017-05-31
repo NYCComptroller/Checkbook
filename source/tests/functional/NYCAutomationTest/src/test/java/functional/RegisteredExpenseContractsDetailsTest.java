@@ -1,6 +1,9 @@
 package functional;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+
+import java.sql.SQLException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -11,6 +14,7 @@ import pages.contracts.ContractsPage.WidgetOption;
 import pages.contracts.RegisteredExpenseContractsPage;
 import pages.home.HomePage;
 import utilities.NYCBaseTest;
+import utilities.NYCDatabaseUtil;
 import utility.Helper;
 
 public class RegisteredExpenseContractsDetailsTest extends NYCBaseTest{
@@ -23,8 +27,116 @@ public class RegisteredExpenseContractsDetailsTest extends NYCBaseTest{
 	   HomePage.ShowWidgetDetails();
     }
 	
-	/* ***************** Test Widget Transaction Count ****************** */
+	
+    /* ***************** Test Widget Transaction Total Count ****************** */
+    
+    @Test
+    public void VerifyTop5MasterAgreementsTransactionCount() throws SQLException{
+		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5MasterAgreements);
+		HomePage.ShowWidgetDetails();
+	   //assertTrue(ActiveExpenseContractsPage.GetTransactionCount() >= 3725); 
+		int NumOfREContractsDetailsCount2016 =  NYCDatabaseUtil.getREContractsMasterDetailsCount(2016,'B');
+		 int numOfREContractsDetailsCountapp = RegisteredExpenseContractsPage.GetTransactionCount();
+		 
+	   //assertTrue(PayrollPage.GetTransactionCount() == 600296); 
+		 assertEquals("Number of Registered Expense master contracts widget Details page table count did not match", numOfREContractsDetailsCountapp, NumOfREContractsDetailsCount2016); 
+    }
+
 	@Test
+    public void VerifyTop5MasterAgreementModificationsTransactionCount() throws SQLException{
+		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5MasterAgreementModifications);
+		HomePage.ShowWidgetDetails();
+	  // assertTrue(ActiveExpenseContractsPage.GetTransactionCount() >= 324); 
+		
+		int NumOfREContractsDetailsCount2016 =  NYCDatabaseUtil.getREContractsMasterModificationsDetailsCount(2016,'B');
+			 int numOfREContractsDetailsCountapp = ActiveExpenseContractsPage.GetTransactionCount();
+			 
+		   //assertTrue(PayrollPage.GetTransactionCount() == 600296); 
+			 assertEquals("Number of Registered Expense master Contracts modification widget Details page table count did not match", numOfREContractsDetailsCountapp, NumOfREContractsDetailsCount2016); 
+	    }
+    
+	@Test
+    public void VerifyTop5ContractsTransactionCount() throws SQLException{
+		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5Contracts);
+		HomePage.ShowWidgetDetails();
+	  // assertTrue(ActiveExpenseContractsPage.GetTransactionCount() >= 22659); 
+		int NumOfREContractsDetailsCount2016 =  NYCDatabaseUtil.getREContractsDetailsCount(2016,'B');
+		 int numOfREContractsDetailsCountapp = RegisteredExpenseContractsPage.GetTransactionCount();
+		 
+	   //assertTrue(PayrollPage.GetTransactionCount() == 600296); 
+		 assertEquals("Number of Registered Expense Contracts  widget Details page table count did not match", numOfREContractsDetailsCountapp, NumOfREContractsDetailsCount2016); 
+   }
+	@Test
+    public void VerifyTop5ContractAmountModificationsTransactionCount() throws SQLException{
+		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5ContractAmountModifications);
+		HomePage.ShowWidgetDetails();
+	   //assertTrue(ActiveExpenseContractsPage.GetTransactionCount() >= 5201); 
+		int NumOfREContractsDetailsCount2016 =  NYCDatabaseUtil.getREContractsModificationsDetailsCount(2016,'B');
+		 int numOfREContractsDetailsCountapp = RegisteredExpenseContractsPage.GetTransactionCount();
+		 
+	   //assertTrue(PayrollPage.GetTransactionCount() == 600296); 
+		 assertEquals("Number of REgistered Expense Contracts modification widget Details page table count did not match", numOfREContractsDetailsCountapp, NumOfREContractsDetailsCount2016); 
+   }
+	@Test
+    public void VerifyTop5PrimeVendorsTransactionCount() throws SQLException{
+		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5PrimeVendors);
+		HomePage.ShowWidgetDetails();
+	  // assertTrue(ActiveExpenseContractsPage.GetTransactionCount() >= 25892); 
+		int NumOfREContractsDetailsCount2016 =  NYCDatabaseUtil.getREContractsDetailsCount(2016,'B');
+		 int numOfREContractsDetailsCountapp = RegisteredExpenseContractsPage.GetTransactionCount();
+		 
+	   //assertTrue(PayrollPage.GetTransactionCount() == 600296); 
+		 assertEquals("Number of Registered Expense Contracts Prime Vendors widget Details page table count did not match", numOfREContractsDetailsCountapp, NumOfREContractsDetailsCount2016); 
+   }
+	@Test
+    public void VerifyTop5AwardMethodsTransactionCount() throws SQLException{
+		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5AwardMethods);
+		HomePage.ShowWidgetDetails();
+	   //assertTrue(ActiveExpenseContractsPage.GetTransactionCount() >= 25892); 
+		int NumOfREContractsDetailsCount2016 =  NYCDatabaseUtil.getREContractsDetailsCount(2016,'B');
+		 int numOfREContractsDetailsCountapp = RegisteredExpenseContractsPage.GetTransactionCount();
+		 
+	   //assertTrue(PayrollPage.GetTransactionCount() == 600296); 
+		 assertEquals("Number of Registered Expense Contracts Award Method widget Details page table count did not match", numOfREContractsDetailsCountapp, NumOfREContractsDetailsCount2016); 
+   }
+	@Test
+    public void VerifyTop5AgenciesTransactionCount() throws SQLException{
+		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5Agencies);
+		HomePage.ShowWidgetDetails();
+	 //  assertTrue(ActiveExpenseContractsPage.GetTransactionCount() >= 25892);   
+	   
+		int NumOfREContractsDetailsCount2016 =  NYCDatabaseUtil.getREContractsDetailsCount(2016,'B');
+		 int numOfREContractsDetailsCountapp = RegisteredExpenseContractsPage.GetTransactionCount();
+		 
+	   //assertTrue(PayrollPage.GetTransactionCount() == 600296); 
+		 assertEquals("Number of  Registered Expense Contracts Agencies widget Details page table count did not match", numOfREContractsDetailsCountapp, NumOfREContractsDetailsCount2016); 
+   }
+	@Test
+    public void VerifyContractsByIndustriesTransactionCount() throws SQLException{
+		ContractsPage.GoToTop5DetailsPage(WidgetOption.ContractsByIndustries);
+		HomePage.ShowWidgetDetails();
+	   //assertTrue(ActiveExpenseContractsPage.GetTransactionCount() >= 25892); 
+		int NumOfREContractsDetailsCount2016 =  NYCDatabaseUtil.getREContractsDetailsCount(2016,'B');
+		 int numOfREContractsDetailsCountapp = RegisteredExpenseContractsPage.GetTransactionCount();
+		 
+	   //assertTrue(PayrollPage.GetTransactionCount() == 600296); 
+		 assertEquals("Number of  Registered Expense Contracts by Industies widget Details page table count did not match", numOfREContractsDetailsCountapp, NumOfREContractsDetailsCount2016); 
+   }
+    @Test
+    public void VerifyContractsBySizeTransactionCount() throws SQLException{
+		ContractsPage.GoToTop5DetailsPage(WidgetOption.ContractsBySize);
+		HomePage.ShowWidgetDetails();
+	  // assertTrue(ActiveExpenseContractsPage.GetTransactionCount() >= 25892); 
+		int NumOfREContractsDetailsCount2016 =  NYCDatabaseUtil.getREContractsDetailsCount(2016,'B');
+		 int numOfREContractsDetailsCountapp = RegisteredExpenseContractsPage.GetTransactionCount();
+		 
+	   //assertTrue(PayrollPage.GetTransactionCount() == 600296); 
+		 assertEquals("Number of Registered Expense Contracts by size  widget Details page table count did not match", numOfREContractsDetailsCountapp, NumOfREContractsDetailsCount2016); 
+   }
+    
+    /* ***************** Test Widget Transaction Count ****************** */
+	/*
+	 @Test
     public void VerifyTop5MasterAgreementsTransactionCount(){
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5MasterAgreements);
 		HomePage.ShowWidgetDetails();
@@ -77,9 +189,9 @@ public class RegisteredExpenseContractsDetailsTest extends NYCBaseTest{
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.ContractsBySize);
 		HomePage.ShowWidgetDetails();
 	   assertTrue(RegisteredExpenseContractsPage.GetTransactionCount() >= 13339); 
-    }
+    }*/
     
-    /* ***************** Test Widget Transaction Total Amount ****************** */
+    /* ***************** Test Widget Transaction Amount ****************** */ 
     @Test
     public void VerifyTop5MasterAgreementsTransactionAmount(){
     	Float transactionAmt = 6.16f;

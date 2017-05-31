@@ -17,8 +17,8 @@ public class ActiveExpenseContractsPage {
 	
 	public static int GetTransactionCount() {
 		WebDriverWait wait = new WebDriverWait(Driver.Instance, 10);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("table_656_info")));
-		String count = (Driver.Instance.findElement(By.id("table_656_info"))).getText();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("table_939_info")));
+		String count = (Driver.Instance.findElement(By.id("table_939_info"))).getText();
 		return Helper.GetTotalEntries(count, 5);
 	}
 }
