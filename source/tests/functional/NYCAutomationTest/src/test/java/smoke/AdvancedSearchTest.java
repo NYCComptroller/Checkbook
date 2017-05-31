@@ -1,16 +1,10 @@
 package smoke;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.Test;
 
-
 import pages.search.SearchPage;
-import utilities.NYCBaseTest;
-import utilities.NYCDatabaseUtil;
-import utility.Helper;
-import utility.TestStatusReport;
+import utilities.TestStatusReport;
 
 public class AdvancedSearchTest extends TestStatusReport{
 	

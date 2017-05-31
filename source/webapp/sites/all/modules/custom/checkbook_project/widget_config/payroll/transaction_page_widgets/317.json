@@ -149,6 +149,9 @@
         }
 
         $adjustedParameters = $parameters;
+        if(isset($parameters['annual_salary.annual_salary'])){
+            $parameters['type_of_employment'] = 'Salaried';
+        }
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
         }

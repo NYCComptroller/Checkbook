@@ -47,7 +47,7 @@ if(preg_match('/featuredtrends/',$_GET['q'])){
         <th colspan="3" class="centrig bb"><div class="trendCen" >Collected Within the<br>Fiscal Year of the Levy</div></th>
         <th rowspan="2" class="number"><div class="trendCen" >Non-Cash<br>Liquidations<br>and Adjustments<br>to Levy<sup>(1)</sup></div></th>
         <th colspan="2" class="centrig bb"><div>Total Collections<br>and Adjustments to Date</div></th>
-        <th rowspan="2" class="number"><div class="trendCen" >Remaining<br>Uncollected<br>July 1, 2015</div></th>
+        <th rowspan="2" class="number"><div class="trendCen" >Remaining<br>Uncollected<br>July 1, 2016</div></th>
         <th rowspan="2">&nbsp;</th>
     </tr>
     <tr>
@@ -87,7 +87,7 @@ if(preg_match('/featuredtrends/',$_GET['q'])){
     </tbody>
 </table>
 <div class="footnote">
-<p>(1) Adjustments to Tax Levy are Non-Cash Liquidations and Cancellations of Real Property Tax and include (School Tax Relief) payments which are not included in the City Council Resolutions.</p>
+<p>(1) Adjustments to Tax Levy are Non-Cash Liquidations and Cancellations of Real Property Tax and include School Tax Relief payments which are not included in the City Council Resolutions.</p>
 <p>SOURCES: Resolutions of the City Council and other Department of Finance reports.</p>
 </div>
 <?php

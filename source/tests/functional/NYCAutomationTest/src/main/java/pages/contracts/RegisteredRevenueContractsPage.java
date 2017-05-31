@@ -4,16 +4,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import navigation.TopNavigation;
-import pages.home.HomePage;
-import utility.Driver;
-import utility.Helper;
+import helpers.Driver;
+import helpers.Helper;
 
 public class RegisteredRevenueContractsPage {
 	public static void GoTo() {
 		if(!ContractsPage.isAt())
 			ContractsPage.GoTo();
-		TopNavigation.Contracts.RegisteredRevenueContracts.Select();	
+		navigation.TopNavigation.Contracts.RegisteredRevenueContracts.Select();	
 	}
 
 	public static int GetTransactionCount() {

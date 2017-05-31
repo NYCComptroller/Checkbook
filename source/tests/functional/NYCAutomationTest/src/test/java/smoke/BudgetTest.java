@@ -1,15 +1,12 @@
 package smoke;
 
-import static org.junit.Assert.assertTrue;
+import helpers.Helper;
 
 import org.junit.Before;
-import org.junit.Test;
-
 import pages.budget.BudgetPage;
 import pages.home.HomePage;
 import utilities.NYCBaseTest;
-import utility.Helper;
-import utility.TestStatusReport;
+import utilities.TestStatusReport;
 
 public class BudgetTest extends TestStatusReport{
 	@Before

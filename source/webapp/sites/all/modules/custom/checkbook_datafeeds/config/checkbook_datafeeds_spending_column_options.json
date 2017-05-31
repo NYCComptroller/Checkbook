@@ -5,7 +5,7 @@
                 "csv":{
                     "Agency":"Agency",
                     "Associated Prime Vendor":"Associated Prime Vendor",
-                    "Calendar year":"Calendar year",
+//                    "Calendar year":"Calendar year",
                     "Capital Project":"Capital Project",
                     "Check Amount":"Check Amount",
                     "Contract ID":"Contract ID",
@@ -25,7 +25,7 @@
                 "xml":{
                     "agency":"agency",
                     "associated_prime_vendor":"associated_prime_vendor",
-                    "calendar_year":"calendar_year",
+//                    "calendar_year":"calendar_year",
                     "capital_project":"capital_project",
                     "check_amount":"check_amount",
                     "contract_ID":"contract_ID",
@@ -48,7 +48,7 @@
             "data_type":{
                 "csv":{
                     "Budget Name":"Budget Name",
-                    "Calendar year":"Calendar year",
+//                    "Calendar year":"Calendar year",
                     "Capital Project":"Capital Project",
                     "Check Amount":"Check Amount",
                     "Commodity Line":"Commodity Line",
@@ -64,7 +64,7 @@
                 },
                 "xml":{
                     "budget_name":"budget_name",
-                    "calendar_year":"calendar_year",
+//                    "calendar_year":"calendar_year",
                     "capital_project":"capital_project",
                     "check_amount":"check_amount",
                     "commodity_line":"commodity_line",

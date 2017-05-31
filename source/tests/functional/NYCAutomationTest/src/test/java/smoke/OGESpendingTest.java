@@ -1,6 +1,7 @@
 package smoke;
 
 import static org.junit.Assert.assertEquals;
+import helpers.Helper;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -9,8 +10,7 @@ import navigation.SecondaryMenuNavigation.OtherGovernmentEntities;
 import pages.home.HomePage;
 import pages.spending.SpendingPage;
 import utilities.NYCBaseTest;
-import utility.Helper;
-import utility.TestStatusReport;
+import utilities.TestStatusReport;
 
 public class OGESpendingTest extends TestStatusReport{
 

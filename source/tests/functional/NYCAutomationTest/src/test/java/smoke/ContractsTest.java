@@ -1,6 +1,7 @@
 package smoke;
 
 import static org.junit.Assert.assertEquals;
+import helpers.Helper;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -9,7 +10,6 @@ import pages.contracts.ContractsPage;
 import pages.home.HomePage;
 import pages.spending.SpendingPage;
 import utilities.NYCBaseTest;
-import utility.Helper;
 
 public class ContractsTest extends NYCBaseTest{
 	@Before

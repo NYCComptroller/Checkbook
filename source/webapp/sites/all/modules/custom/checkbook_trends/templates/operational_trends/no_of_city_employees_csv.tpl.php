@@ -55,8 +55,7 @@
         $i++;
    	}
 
-echo "\n".'"'."(a) Effective July 2003, certain employees of the education area were reclassified from part-time to full-time status.".'"'
-     ."\n\n".'"'."Sources: Financial Management System (FMS), Mayor's Office of Management and Budget, and Mayor's Office of Operations.".'"'."\n";
+echo "\n\n".'"'."Sources: Financial Management System (FMS), Mayor's Office of Management and Budget, and Mayor's Office of Operations.".'"'."\n";
 
 ?>
 

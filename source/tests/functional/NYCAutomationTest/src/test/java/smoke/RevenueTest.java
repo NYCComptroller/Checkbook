@@ -1,13 +1,13 @@
 package smoke;
 
+import helpers.Helper;
+
 import org.junit.Before;
-import org.junit.Test;
 
 import pages.home.HomePage;
 import pages.revenue.RevenuePage;
 import utilities.NYCBaseTest;
-import utility.Helper;
-import utility.TestStatusReport;
+import utilities.TestStatusReport;
 
 public class RevenueTest extends TestStatusReport{
 	@Before

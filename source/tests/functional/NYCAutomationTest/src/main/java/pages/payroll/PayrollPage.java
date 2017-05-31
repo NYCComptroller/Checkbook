@@ -13,8 +13,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import navigation.TopNavigation;
-import utility.Driver;
-import utility.Helper;
+import helpers.Driver;
+import helpers.Helper;
 
 public class PayrollPage {
 
@@ -40,30 +40,28 @@ public class PayrollPage {
 		
 
 	    
-		public static String GetTop5WidgetTotalCount(WidgetOption option) {
+		public static Integer GetTop5WidgetTotalCount(WidgetOption option) {
 			switch (option) {
 			
-			case Top5AgenciesbyPayroll:
-				return HomePage.GetWidgetTotalNumber("Top 5 Agencies by Payroll");
-			case TopAgenciesbyPayroll:
-				return HomePage.GetWidgetTotalNumber("Top Agencies by Payroll");
-			case Top5AgenciesbyOvertime:
-				return HomePage.GetWidgetTotalNumber("Top 5 Agencies by Overtime");
-			case TopAgenciesbyOvertime:
-				return HomePage.GetWidgetTotalNumber("Top Agencies by Overtime");
-			case Top5AnnualSalaries:
-				return HomePage.GetWidgetTotalNumber("Top 5 Annual Salaries");
-			case TopAnnualSalaries:
-				return HomePage.GetWidgetTotalNumber("Top Annual Salaries");
-			case Top5TitlesbyNumberofEmployees:	
-				return HomePage.GetWidgetTotalNumber("Top 5 Titles by Number of Employees");
-			case TopTitlesbyNumberofEmployees:
-				return HomePage.GetWidgetTotalNumber("Top Titles by Number of Employees");
-							
-			
-				
-			default:		
-				return null;
+				case Top5AgenciesbyPayroll:
+					return HomePage.GetWidgetTotalNumber("Top 5 Agencies by Payroll");
+				case TopAgenciesbyPayroll:
+					return HomePage.GetWidgetTotalNumber("Top Agencies by Payroll");
+				case Top5AgenciesbyOvertime:
+					return HomePage.GetWidgetTotalNumber("Top 5 Agencies by Overtime");
+				case TopAgenciesbyOvertime:
+					return HomePage.GetWidgetTotalNumber("Top Agencies by Overtime");
+				case Top5AnnualSalaries:
+					return HomePage.GetWidgetTotalNumber("Top 5 Annual Salaries");
+				case TopAnnualSalaries:
+					return HomePage.GetWidgetTotalNumber("Top Annual Salaries");
+				case Top5TitlesbyNumberofEmployees:	
+					return HomePage.GetWidgetTotalNumber("Top 5 Titles by Number of Employees");
+				case TopTitlesbyNumberofEmployees:
+					return HomePage.GetWidgetTotalNumber("Top Titles by Number of Employees");
+					
+				default:		
+					return null;
 			}
 		}
 		

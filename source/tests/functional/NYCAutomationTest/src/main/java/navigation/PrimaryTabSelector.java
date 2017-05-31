@@ -2,8 +2,7 @@ package navigation;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import utility.Driver;
-
+import helpers.Driver;
 import java.util.List;
 
 class PrimaryTabSelector {

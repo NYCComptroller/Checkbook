@@ -69,7 +69,7 @@
          "\n\n"."Classes One to Four amounts include Tax Exempt Property.".
          "\n\n"."Property in New York City is reassessed every year. The City assesses property at approximately 40 percent of Market Value for
 commercial and industrial property and 20 percent of Market Value for residential property.".
-         "\n\n"."Sources: Resolutions of the City Council and The Annual Report of The New York City Property Tax Fiscal Year 2015.";
+         "\n\n"."Sources: Resolutions of the City Council and The Annual Report of The New York City Property Tax Fiscal Year 2016.";
 
 ?>
 

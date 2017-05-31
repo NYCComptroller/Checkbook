@@ -4,12 +4,12 @@
     "limit":100,
     "startWith":0,
     "maxSelect":5,
-    "columns":["expobjectname.expobjectname", "txcount"],
-    "orderBy":["-txcount", "expobjectname.expobjectname"],
+    "columns":["expobjectcode.expobjectcode", "expobjetname.expobjetname", "txcount"],
+    "orderBy":["-txcount", "expobjetname.expobjetname"],
 	"getTotalDataCount":true,    
 	"facetPager":true,	    
     "filterName":"Expense Category",
-    "urlParameterName":"expcategorynm",
+    "urlParameterName":"expcategorycode",
     "urlParameterNameType":"eqtext",    
     "autocompleteParamName":"expcategorynm_auto",    
     "autocompleteID":"fCategoryNm",
@@ -23,7 +23,7 @@
     if(function_exists('_checkbook_project_applyParameterFilters')){
         $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
     }
-    $adjustedParameters['expobjectname.expobjectname'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+    $adjustedParameters['expobjectcode.expobjectcode'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
     //Using child_contract_agency_id column in OGE domainO
     if(_checkbook_check_isEDCPage()){
         foreach($adjustedParameters as $key=>$value){

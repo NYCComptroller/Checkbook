@@ -466,8 +466,14 @@ function checkbook_api_adjustPayrollDataSetResults(&$data_records) {
  * @param $criteria
  */
 function checkbook_api_adjustSpendingParameterFilters(&$data_set, &$parameters, $criteria) {
-    if(isset($parameters['minority_type_id']))
+    if(isset($parameters['minority_type_id'])){
         $parameters['minority_type_id'] = explode('~',$parameters['minority_type_id']);
+    }
+    if(isset($parameters['vendor_customer_code']) && strtolower($parameters['vendor_customer_code']) == 'n/a'){
+        unset($parameters['vendor_customer_code']);
+        $parameters['vendor_name'] = "N/A (PRIVACY/SECURITY)";
+    }
+    
 }
 /**
  * Used to adjust columns in the data set after sql call.

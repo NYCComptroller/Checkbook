@@ -2,6 +2,7 @@ package FunctionalBudget;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import helpers.Helper;
 
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -10,12 +11,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import pages.home.HomePage;
-import pages.spending.TotalSpendingPage;
 import pages.budget.BudgetPage;
 import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
-import utility.Helper;
-import utility.TestStatusReport;
 
 public class BudgetWidgetTitles  extends NYCBaseTest{
 	
