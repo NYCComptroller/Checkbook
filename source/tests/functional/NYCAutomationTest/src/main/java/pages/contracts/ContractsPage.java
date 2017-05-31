@@ -4,12 +4,9 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-
 import navigation.TopNavigation;
-import navigation.MWBECategory.MWBECategoryOption;
 import pages.home.HomePage;
-import utility.Driver;
+import helpers.Driver;
 
 public class ContractsPage {
 	public enum WidgetOption{
@@ -26,40 +23,40 @@ public class ContractsPage {
         //Boolean totalSpendingSelected = h2title.getText().equals("Total Spending");    
         return contractsSelected;
     }
-	public static String GetTop5WidgetTotalCount(WidgetOption option) {
+	public static Integer GetTop5WidgetTotalCount(WidgetOption option) {
 		switch (option) {
-		case Top5MasterAgreements:	
-			return HomePage.GetWidgetTotalNumber("Top 5 Master Agreements");
-		case Top5MasterAgreementModifications:
-			return HomePage.GetWidgetTotalNumber("Top 5 Master Agreement Modifications");
-		case Top5Contracts:
-			return HomePage.GetWidgetTotalNumber("Top 5 Contracts");
-		case Top5ContractAmountModifications:
-			return HomePage.GetWidgetTotalNumber("Top 5 Contract Amount Modifications");
-		case Top5ContractsAmountModifications:
-			return HomePage.GetWidgetTotalNumber("Top 5 Contracts Amount Modifications");
-		case TopContractsAmountModifications:
-			return HomePage.GetWidgetTotalNumber("Top Contracts Amount Modifications");
-		case TopContractAmountModifications:
-			return HomePage.GetWidgetTotalNumber("Top Contract Amount Modifications");
-		case Top5PrimeVendors:
-			return HomePage.GetWidgetTotalNumber("Top 5 Prime Vendors");
-		case TopPrimeVendors:
-			return HomePage.GetWidgetTotalNumber("Top Prime Vendors");
-		case Top5AwardMethods:
-			return HomePage.GetWidgetTotalNumber("Top 5 Award Methods");
-		case TopAwardMethods:
-			return HomePage.GetWidgetTotalNumber("Top Award Methods");
-		case Top5Agencies:
-			return HomePage.GetWidgetTotalNumber("Top 5 Agencies");
-		case TopAgencies:
-			return HomePage.GetWidgetTotalNumber("Top Agencies");
-		case ContractsByIndustries:
-			return HomePage.GetWidgetTotalNumber("Contracts by Industries");
-		case ContractsBySize:
-			return HomePage.GetWidgetTotalNumber("Contracts by Size");	
-		default:
-			return null;
+			case Top5MasterAgreements:	
+				return HomePage.GetWidgetTotalNumber("Top 5 Master Agreements");
+			case Top5MasterAgreementModifications:
+				return HomePage.GetWidgetTotalNumber("Top 5 Master Agreement Modifications");
+			case Top5Contracts:
+				return HomePage.GetWidgetTotalNumber("Top 5 Contracts");
+			case Top5ContractAmountModifications:
+				return HomePage.GetWidgetTotalNumber("Top 5 Contract Amount Modifications");
+			case Top5ContractsAmountModifications:
+				return HomePage.GetWidgetTotalNumber("Top 5 Contracts Amount Modifications");
+			case TopContractsAmountModifications:
+				return HomePage.GetWidgetTotalNumber("Top Contracts Amount Modifications");
+			case TopContractAmountModifications:
+				return HomePage.GetWidgetTotalNumber("Top Contract Amount Modifications");
+			case Top5PrimeVendors:
+				return HomePage.GetWidgetTotalNumber("Top 5 Prime Vendors");
+			case TopPrimeVendors:
+				return HomePage.GetWidgetTotalNumber("Top Prime Vendors");
+			case Top5AwardMethods:
+				return HomePage.GetWidgetTotalNumber("Top 5 Award Methods");
+			case TopAwardMethods:
+				return HomePage.GetWidgetTotalNumber("Top Award Methods");
+			case Top5Agencies:
+				return HomePage.GetWidgetTotalNumber("Top 5 Agencies");
+			case TopAgencies:
+				return HomePage.GetWidgetTotalNumber("Top Agencies");
+			case ContractsByIndustries:
+				return HomePage.GetWidgetTotalNumber("Contracts by Industries");
+			case ContractsBySize:
+				return HomePage.GetWidgetTotalNumber("Contracts by Size");	
+			default:
+				return null;
 		}
 	}
 	

@@ -50,4 +50,19 @@ abstract class VendorService {
         $minority_type_id = $results[0]['minority_type_id'];
         return $minority_type_id != '' ? $minority_type_id : false;
     }
+
+    /**
+     * Given the vendor name, returns an array of sub and prime vendor ids
+     * @param null $vendor_name
+     * @return array|null
+     */
+    public static function getVendorIdByName($vendor_name) {
+        $vendors = array();
+        if($vendor_name != NULL) {
+            $vendors[] = PrimeVendorService::getVendorIdByName($vendor_name);
+            $vendors[] = SubVendorService::getVendorIdByName($vendor_name);
+            $vendors = array_filter($vendors);
+        }
+        return !empty($vendors) ? $vendors : null;
+    }
 }

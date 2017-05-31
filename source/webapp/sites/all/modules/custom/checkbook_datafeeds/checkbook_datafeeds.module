@@ -2551,8 +2551,56 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
     $criteria['required_columns'] = checkbook_datafeeds_contracts_add_required_columns($response_type, $data_source,$values['df_contract_status'],$values['category'],$values['year']);
     $form_state['step_information']['confirmation']['stored_values']['criteria'] = $criteria;
     $form_state['step_information']['confirmation']['stored_values']['user_criteria'] = $user_criteria;
+
+    //Update Criteria with overridden column order on export only
+    $intended_order =  _checkbook_datafeeds_contracts_override_column_options($response_type, $data_source,$values['df_contract_status'],$values['category'],$values['year']);
+    $criteria['responseColumns'] = checkbook_datafeeds_override_column_order($criteria['responseColumns'], $intended_order);
+
     $modified_form = checkbook_datafeeds_end_of_confirmation_form($form, $form_state, $criteria, $response_type, 'contracts');
     return $modified_form;
+}
+
+/**
+ * Reads the checkbook api configuration file to get the column order to override on export
+ * @param $response_type
+ * @param $data_source
+ * @param $status
+ * @param $expense_category
+ * @param $year
+ * @return array
+ */
+function _checkbook_datafeeds_contracts_override_column_options($response_type, $data_source, $status, $expense_category, $year)
+{
+    ///Get column configurations
+    $domain = 'contracts';
+    $domain = $data_source == 'checkbook_oge' ? $domain.'_oge' : $domain;
+    $domain_config = ConfigUtil::getDomainConfiguration($domain);
+
+    $domain_filter = $domain;
+    $domain_filter .= $status == 'pending' ? '_pending' : '_active';
+    $domain_filter .= $status == 'pending' ? '' :  '_'.$expense_category;
+    if ($year == 'All Years') $domain_filter .= "_all_years";
+
+    //Get columns which should be required to get but not display
+    $override_columns = $domain_config->$domain_filter->dataset->displayConfiguration->$response_type->overrideColumns;
+
+    return (array)$override_columns;
+}
+
+/**
+ * Sorts selected columns to match intended order for export
+ * @param array $selectedColumns
+ * @param array $intendedOrder
+ * @return array
+ */
+function checkbook_datafeeds_override_column_order(array $selectedColumns, array $intendedOrder) {
+    $ordered = [];
+    foreach ($intendedOrder as $key) {
+        if (in_array($key, $selectedColumns)) {
+            $ordered[$key] = $selectedColumns[$key];
+        }
+    }
+    return $ordered;
 }
 
 /**
@@ -3074,7 +3122,7 @@ function checkbook_datafeeds_payroll($form, &$form_state) {
         '#title' => t('Year:'),
         '#options' => _year_options(),
         '#attributes' => array('class' => array('watch')),
-        '#default_value' => !empty($form_state['values']['year']) ? $form_state['values']['year'] : 'FY ' . currentFiscalYear(),
+        '#default_value' => !empty($form_state['values']['year']) ? $form_state['values']['year'] : 'CY ' . currentFiscalYear(),
         '#prefix' => '<div class="datafield fiscalyear">',
         '#suffix' => '</div>',
     );
@@ -4656,7 +4704,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
                 '#id' => 'edit-date-filter',
                 '#name' => 'date_filter',
                 '#ajax' => array(
-                    'callback' => 'checkbook_datafeeds_datefilter_ajax',
+                    //'callback' => 'checkbook_datafeeds_datefilter_ajax',
                     'wrapper' => 'datefilter',
                     'progress' => array(
                         'message' => NULL,
@@ -4880,7 +4928,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
                 '#id' => 'edit-date-filter',
                 '#name' => 'date_filter',
                 '#ajax' => array(
-                    'callback' => 'checkbook_datafeeds_datefilter_ajax',
+                    //'callback' => 'checkbook_datafeeds_datefilter_ajax',
                     'wrapper' => 'datefilter',
                     'progress' => array(
                         'message' => NULL,
@@ -5003,7 +5051,7 @@ function checkbook_datafeeds_dept_ajax($form, &$form_state) {
  * @return array
  *   Array of ajax commands
  */
-function checkbook_datafeeds_datefilter_ajax($form, &$form_state)
+/*function checkbook_datafeeds_datefilter_ajax($form, &$form_state)
 {
     $value = $form_state['values']['date_filter'];
     if ($value == 0) {
@@ -5037,7 +5085,7 @@ function checkbook_datafeeds_datefilter_ajax($form, &$form_state)
     }
     $commands[] = ajax_command_invoke(NULL, 'refreshMultiSelect');
     return array('#type' => 'ajax', '#commands' => $commands);
-}
+}*/
 
 /**
  * Ajax callback to disable contractno or payee_name fields and column options based on expense category field.
@@ -5367,6 +5415,10 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state)
         $formatted_search_criteria['Department'] = $values['dept'];
     }
     if ($values['expense_category']) {
+        // converts special characters to HTML entities
+        if (preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $values['expense_category'])) {
+            $values['expense_category'] = htmlspecialchars($values['expense_category']);
+        }
         $form['filter']['expense_category'] = array('#markup' => '<div><strong>Expense Category:</strong> ' . $values['expense_category'] . '</div>');
         $user_criteria['Expense Category'] = $values['expense_category'];
         $formatted_search_criteria['Expense Category'] = $values['expense_category'];
@@ -5466,45 +5518,6 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state)
         $user_criteria['Budget Name'] = $values['budget_name'];
         $formatted_search_criteria['Budget Name'] = $values['budget_name'];
     }
-    if (startsWith($values['year'], 'F')) {
-        $form['filter']['year'] = array(
-            '#markup' => '<div><strong>Year:</strong> ' . $values['year'] . '</div>',
-        );
-        $user_criteria['Fiscal Year'] = $values['year'];
-        $formatted_search_criteria['Year'] = $values['year'];
-    }
-    elseif (startsWith($values['year'], 'C')) {
-        $form['filter']['year'] = array(
-            '#markup' => '<div><strong>Year:</strong> ' . $values['year'] . '</div>',
-        );
-        $user_criteria['Calendar Year'] = $values['year'];
-        $formatted_search_criteria['Year'] = $values['year'];
-    }
-    else {
-        $form['filter']['year'] = array(
-            '#markup' => '<div><strong>Year:</strong> All Years</div>',
-        );
-        $formatted_search_criteria['Year'] = $values['year'];
-    }
-    if (startsWith($values['year'], 'F')) {
-        $form['filter']['year'] = array(
-            '#markup' => '<div><strong>Fiscal Year:</strong> ' . ltrim($values['year'], 'FY') . '</div>',
-        );
-        $user_criteria['Fiscal Year'] = ltrim($values['year'], 'FY');
-        $formatted_search_criteria['Year'] = $values['year'];
-    }
-    else {
-        if (startsWith($values['year'], 'C')) {
-            $form['filter']['year'] = array(
-                '#markup' => '<div><strong>Calendar Year:</strong> ' . ltrim($values['year'], 'CY') . '</div>',
-            );
-            $user_criteria['Calendar Year'] = ltrim($values['year'], 'CY');
-            $formatted_search_criteria['Year'] = $values['year'];
-        }
-        else {
-            $formatted_search_criteria['Year'] = 'All Years';
-        }
-    }
     if ($values['issuedfrom'] && $values['issuedto']) {
         $form['filter']['issued_date'] = array(
             '#markup' => '<div><strong>Issue Date:</strong> From: ' . $values['issuedfrom'] . ' To: ' . $values['issuedto'] . '</div>'
@@ -5524,6 +5537,29 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state)
         );
         $user_criteria['Issued Date After'] = $values['issuedfrom'];
         $formatted_search_criteria['Issue Date'] = 'To: ' . $values['issuedfrom'];
+    }
+    // Only adds year if date range is not present.
+    else {
+        if (startsWith($values['year'], 'F')) {
+            $form['filter']['year'] = array(
+                '#markup' => '<div><strong>Year:</strong> ' . $values['year'] . '</div>',
+            );
+            $user_criteria['Fiscal Year'] = $values['year'];
+            $formatted_search_criteria['Year'] = $values['year'];
+        }
+        elseif (startsWith($values['year'], 'C')) {
+            $form['filter']['year'] = array(
+                '#markup' => '<div><strong>Year:</strong> ' . $values['year'] . '</div>',
+            );
+            $user_criteria['Calendar Year'] = $values['year'];
+            $formatted_search_criteria['Year'] = $values['year'];
+        }
+        else {
+            $form['filter']['year'] = array(
+                '#markup' => '<div><strong>Year:</strong> All Years</div>',
+            );
+            $formatted_search_criteria['Year'] = $values['year'];
+        }
     }
 
     //</editor-fold>
@@ -5852,7 +5888,7 @@ function _year_options($yeartype = NULL) {
                 foreach ($cydata as $row) {
                     $cyarray['CY ' . $row['year_value']] = 'CY ' . $row['year_value'];
                 }
-                $results = array_merge($fyarray, $cyarray);
+                $results = array_merge($cyarray, $fyarray);
                 return $results;
             }
             catch (Exception $e) {
@@ -6584,7 +6620,7 @@ function checkbook_datafeeds_confirmation_download_submit($form, &$form_state) {
 
     $record_count = $checkBookApi->getRecordCount();
     //records <= 100,000
-    if ($record_count <= 100000) {
+    if ($record_count <= 30000) {
         if (isset($checkBookApi)) {
             if ($checkBookApi->validateRequest()) {
                 try {
@@ -6648,13 +6684,29 @@ function checkbook_datafeeds_confirmation_download_submit($form, &$form_state) {
  *   Data Feeds wizard form_state array
  */
 function checkbook_datafeeds_confirmation_queue_submit($form, &$form_state) {
+
+    $response_type = $form_state['step_information']['type']['stored_values']['format'];
     $email = $form_state['values']['email_address'];
     $criteria = $form_state['step_information']['confirmation']['stored_values']['criteria'];
+
+    //Update Criteria with overridden column order on export only
+    $domain = strtolower($criteria['global']['type_of_data']);
+    //Contracts Only
+    if($domain == 'contracts') {
+        $data_source = 'checkbook';
+        $category = $criteria['value']['category'];
+        $status = $criteria['value']['status'];
+        $year = $criteria['value']['fiscal_year'];
+        $intended_order =  _checkbook_datafeeds_contracts_override_column_options($response_type, $data_source,$status,$category,$year);
+        $criteria['responseColumns'] = checkbook_datafeeds_override_column_order($criteria['responseColumns'], $intended_order);
+    }
+
     unset($criteria['global']['max_records']);
-    $responsetype = $form_state['step_information']['type']['stored_values']['format'];
-    $searchCriteria = new QueueCriteria($criteria, $responsetype);
+    $searchCriteria = new QueueCriteria($criteria, $response_type);
     $user_criteria = $form_state['step_information']['confirmation']['stored_values']['user_criteria'];
     $searchCriteria->setUserCriteria($user_criteria);
+
+
     try {
         $checkBookApi = new CheckBookAPI($searchCriteria);
     }
@@ -6841,7 +6893,7 @@ function checkbook_datafeeds_end_of_confirmation_form($form, &$form_state, $crit
     elseif ($recordcount > 0 && $recordcount < 200000) {
         if (isset($checkBookApi)) {
             if ($checkBookApi->validateRequest()) {
-                if ($recordcount <= 100000) {
+                if ($recordcount <= 30000) {
                     $form_state['step_information']['confirmation']['response'] = $checkBookApi->getData();
                 }
                 else {

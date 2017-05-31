@@ -47,6 +47,7 @@ function checkbook_advanced_search_form_submit($form, &$form_state) {
 
 /*
  * Get year_value and id using the data controller
+ * To populate Year Filter drop downs on Advanced Search form
  * @return array
  */
 function _checkbook_advanced_search_get_year($domain = null, $form = null, $data_source = 'checkbook')
@@ -78,7 +79,7 @@ function _checkbook_advanced_search_get_year($domain = null, $form = null, $data
         arsort($calendar_year_array);
 
         if ($domain == 'payroll') {
-            $fiscal_year_array = array_merge($fiscal_year_array, $calendar_year_array);
+            $fiscal_year_array = array_merge($calendar_year_array, $fiscal_year_array);
         }
         if ($domain == 'contracts' || $domain == 'spending') {
             $fiscal_year_array = array_reverse($fiscal_year_array, true);
@@ -894,7 +895,6 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
 
     $contracts_contract_current_contract_amount_range_array = array('from' => $contracts_contract_current_contract_amount_from, 'to' => $contracts_contract_current_contract_amount_to, 'type' => 'amount');
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_current_contract_amount_range_array, 'curamt', TRUE);
-    $redirect_url .= _checkbook_advanced_search_add_current_amount_id($contracts_contract_current_contract_amount_range_array);
 
     $contracts_contract_start_date_range_array = array('from' => $contracts_contract_start_date_from, 'to' => $contracts_contract_start_date_to, 'type' => 'date');
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_start_date_range_array, 'startdate', TRUE);
@@ -1004,7 +1004,7 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_s
         $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_agencies, 'agency');
     }
     if (!empty($spending_expense_category)) {
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_expense_category, 'expcategorynm');
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_expense_category, 'expcategorycode');
     }
     if (!empty($spending_fund_class)) {
         $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_fund_class, 'fundcls');

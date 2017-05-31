@@ -2,14 +2,13 @@ package pages.budget;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import org.openqa.selenium.interactions.Actions;
 import pages.home.HomePage;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import navigation.TopNavigation;
-import utility.Driver;
+import helpers.Driver;
 
 public class BudgetPage {
 	
@@ -37,57 +36,57 @@ public class BudgetPage {
 	    	Boolean budgetSelected = (topTitleCont.getAttribute("class")).contains("active");	    
 	        return budgetSelected;
 	    }
-		public static String GetTop5WidgetTotalCount(WidgetOption option) {
+		
+		public static Integer GetTop5WidgetTotalCount(WidgetOption option) {
 			switch (option) {
-			
-			case Top5Agencies:
-				return HomePage.GetWidgetTotalNumber("Top 5 Agencies");
-			case TopAgencies:
-				return HomePage.GetWidgetTotalNumber("Top Agencies");
-			case Top5AgenciesbyCommittedExpenseBudget:
-				return HomePage.GetWidgetTotalNumber("Top 5 Agencies by Committed Expense Budget");
-			case TopAgenciesbyCommittedExpenseBudget:
-				return HomePage.GetWidgetTotalNumber("Top Agencies by Committed Expense Budget");
-			case Top5AgenciesbyPercentDifference:
-				return HomePage.GetWidgetTotalNumber("Top 5 Agencies by Percent Difference");
-			case TopAgenciesbyPercentDifference:
-				return HomePage.GetWidgetTotalNumber("Top Agencies by Percent Difference");
-			case Top5ExpenseCategories:	
-				return HomePage.GetWidgetTotalNumber("Top 5 Expense Categories");
-			case TopExpenseCategories:
-				return HomePage.GetWidgetTotalNumber("Top Expense Categories");
-			case Top5ExpenseCategoriesbyCommittedExpenseBudget:
-				return HomePage.GetWidgetTotalNumber("Top 5 Expense Categories by Committed Expense Budget");
-			case TopExpenseCategoriesbyCommittedExpenseBudget:
-				return HomePage.GetWidgetTotalNumber("Top Expense Categories by Committed Expense Budget");					
-			case Top5ExpenseCategoriesbyPercentDifference:
-				return HomePage.GetWidgetTotalNumber("Top 5 Expense Categories by Percent Difference");
-			case TopExpenseCategoriesbyPercentDifference:
-				return HomePage.GetWidgetTotalNumber("Top Expense Categories by Percent Difference");
-			case Top5Departments:	
-				return HomePage.GetWidgetTotalNumber("Top 5 Departments");
-			case TopDepartments:
-				return HomePage.GetWidgetTotalNumber("Top Departments");
-			case Top5DepartmentsbyCommittedExpenseBudget:
-				return HomePage.GetWidgetTotalNumber("Top 5 Departments by Committed Expense Budget");
-			case TopDepartmentsbyCommittedExpenseBudget:
-				return HomePage.GetWidgetTotalNumber("Top Departments by Committed Expense Budget");
-			case Top5DepartmentsbyPercentDifference:
-				return HomePage.GetWidgetTotalNumber("Top 5 Departments by Percent Difference");
-			case TopDepartmentsbyPercentDifference:
-				return HomePage.GetWidgetTotalNumber("Top Departments by Percent Difference");
-			case Top5ExpenseBudgetCategories:	
-				return HomePage.GetWidgetTotalNumber("Top 5 Expense Budget Categories");
-			case TopExpenseBudgetCategories:
-				return HomePage.GetWidgetTotalNumber("Top Expense Budget Categories");
-			case Top5ExpenseBudgetCategoriesbyCommittedExpenseBudget:
-				return HomePage.GetWidgetTotalNumber("Top 5 Expense Budget Categories by Committed Expense Budget");
-			case TopExpenseBudgetCategoriesbyCommittedExpenseBudget:
-				return HomePage.GetWidgetTotalNumber("Top Expense Budget Categories by Committed Expense Budget");					
-			
+				case Top5Agencies:
+					return HomePage.GetWidgetTotalNumber("Top 5 Agencies");
+				case TopAgencies:
+					return HomePage.GetWidgetTotalNumber("Top Agencies");
+				case Top5AgenciesbyCommittedExpenseBudget:
+					return HomePage.GetWidgetTotalNumber("Top 5 Agencies by Committed Expense Budget");
+				case TopAgenciesbyCommittedExpenseBudget:
+					return HomePage.GetWidgetTotalNumber("Top Agencies by Committed Expense Budget");
+				case Top5AgenciesbyPercentDifference:
+					return HomePage.GetWidgetTotalNumber("Top 5 Agencies by Percent Difference");
+				case TopAgenciesbyPercentDifference:
+					return HomePage.GetWidgetTotalNumber("Top Agencies by Percent Difference");
+				case Top5ExpenseCategories:	
+					return HomePage.GetWidgetTotalNumber("Top 5 Expense Categories");
+				case TopExpenseCategories:
+					return HomePage.GetWidgetTotalNumber("Top Expense Categories");
+				case Top5ExpenseCategoriesbyCommittedExpenseBudget:
+					return HomePage.GetWidgetTotalNumber("Top 5 Expense Categories by Committed Expense Budget");
+				case TopExpenseCategoriesbyCommittedExpenseBudget:
+					return HomePage.GetWidgetTotalNumber("Top Expense Categories by Committed Expense Budget");					
+				case Top5ExpenseCategoriesbyPercentDifference:
+					return HomePage.GetWidgetTotalNumber("Top 5 Expense Categories by Percent Difference");
+				case TopExpenseCategoriesbyPercentDifference:
+					return HomePage.GetWidgetTotalNumber("Top Expense Categories by Percent Difference");
+				case Top5Departments:	
+					return HomePage.GetWidgetTotalNumber("Top 5 Departments");
+				case TopDepartments:
+					return HomePage.GetWidgetTotalNumber("Top Departments");
+				case Top5DepartmentsbyCommittedExpenseBudget:
+					return HomePage.GetWidgetTotalNumber("Top 5 Departments by Committed Expense Budget");
+				case TopDepartmentsbyCommittedExpenseBudget:
+					return HomePage.GetWidgetTotalNumber("Top Departments by Committed Expense Budget");
+				case Top5DepartmentsbyPercentDifference:
+					return HomePage.GetWidgetTotalNumber("Top 5 Departments by Percent Difference");
+				case TopDepartmentsbyPercentDifference:
+					return HomePage.GetWidgetTotalNumber("Top Departments by Percent Difference");
+				case Top5ExpenseBudgetCategories:	
+					return HomePage.GetWidgetTotalNumber("Top 5 Expense Budget Categories");
+				case TopExpenseBudgetCategories:
+					return HomePage.GetWidgetTotalNumber("Top Expense Budget Categories");
+				case Top5ExpenseBudgetCategoriesbyCommittedExpenseBudget:
+					return HomePage.GetWidgetTotalNumber("Top 5 Expense Budget Categories by Committed Expense Budget");
+				case TopExpenseBudgetCategoriesbyCommittedExpenseBudget:
+					return HomePage.GetWidgetTotalNumber("Top Expense Budget Categories by Committed Expense Budget");					
 				
-			default:		
-				return null;
+					
+				default:		
+					return null;
 			}
 		}
 		

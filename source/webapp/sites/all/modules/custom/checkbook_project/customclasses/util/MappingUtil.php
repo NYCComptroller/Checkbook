@@ -138,16 +138,13 @@ class MappingUtil {
             $applicable_minority_types = self::getCurrentPrimeMWBEApplicableFilters($domain);
         }
 
-
         $mwbe_featured_dashboard_param = RequestUtil::getNextMWBEDashboardState();
         $active_domain_link =  preg_replace('/\/mwbe\/[^\/]*/','',$active_domain_link);
-
 
         $filters_html =  "<div class='main-nav-drop-down' style='display:none'>
   		<ul>
   			<li class='no-click title'>M/WBE Category</li>
   					";
-
 
         if(array_intersect($applicable_minority_types,array(4,5))){
             $filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/4~5'>Asian American</a></li>";
@@ -162,22 +159,13 @@ class MappingUtil {
             $filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/3'>Hispanic American</a></li>";
         }
 
-        /*    	if(array_intersect($applicable_minority_types,array(7,11))){
-                    $filters_html .=  "<li class='no-click title'>Other</li>";
-                    if(array_intersect($applicable_minority_types,array(7))){
-                        $filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/7/dashboard/dsv" . "'>Non-M/WBE</a></li>";
-                    }
-                    if(array_intersect($applicable_minority_types,array(11))){
-                        $filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/11/dashboard/dsv" . "'>Individuals & Others</a></li>";
-                    }
-                }
-        */
         $total_mwbe_link = RequestUtil::getTotalMWBELink();
         if($total_mwbe_link !=  null && $total_mwbe_link != ""){
             $mwbe_total_link_html  ="<li class='no-click'><a href='" . $total_mwbe_link."'>Total M/WBE</a></li>";
         }
 
-        $year = _getRequestParamValue('year');
+        //Set year value to 2011 for CY2010
+        $year = RequestUtil::getFiscalYearIdForTopNavigation();
         $yearType = 'B';
         $filters_html .=  "
   			 " . $mwbe_total_link_html . "
@@ -226,7 +214,7 @@ class MappingUtil {
         }
 
         //Sub vendors home link
-        $year = _getRequestParamValue('year');
+        $year = RequestUtil::getFiscalYearIdForTopNavigation();
         $yearType = 'B';
         $sub_vendors_home_link = RequestUtil::getLandingPageUrl($domain,$year,$yearType);
         $home_link_html = "<li class='no-click'><a href='/" . $sub_vendors_home_link . "/dashboard/ss'>Sub Vendors Home</a></li>";

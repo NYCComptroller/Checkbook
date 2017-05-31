@@ -1,19 +1,18 @@
 package pages.contracts;
 
+import helpers.Driver;
+import helpers.Helper;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import navigation.TopNavigation;
-import pages.home.HomePage;
-import utility.Driver;
-import utility.Helper;
 
 public class ActiveRevenueContractsPage {
 	public static void GoTo() {
 		if(!ContractsPage.isAt())
 			ContractsPage.GoTo();
-		TopNavigation.Contracts.ActiveRevenueContracts.Select();	
+		navigation.TopNavigation.Contracts.ActiveRevenueContracts.Select();	
 	}
 	
 	public static int GetTransactionCount() {

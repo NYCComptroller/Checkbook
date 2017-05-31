@@ -5,8 +5,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import utility.Driver;
-import utility.Helper;
+import helpers.Driver;
+import helpers.Helper;
 
 public class SearchPage {
     public static void GoToSmartSearch() {

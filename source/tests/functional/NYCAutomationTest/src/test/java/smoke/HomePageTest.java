@@ -1,6 +1,7 @@
 package smoke;
 
 import static org.junit.Assert.assertTrue;
+import helpers.Helper;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -9,9 +10,8 @@ import org.openqa.selenium.By;
 import navigation.PrimaryMenuNavigation;
 import pages.spending.SpendingPage;
 import pages.home.HomePage;
-import utilities.NYCBaseTest; 
-import utility.Helper;
-import utility.TestStatusReport;
+import utilities.NYCBaseTest;
+import utilities.TestStatusReport;
 
 public class HomePageTest extends TestStatusReport{
 	@Before

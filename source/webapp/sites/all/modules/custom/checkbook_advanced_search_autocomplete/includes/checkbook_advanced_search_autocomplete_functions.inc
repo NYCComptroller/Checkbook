@@ -95,7 +95,7 @@ function _get_spending_expense_cat_options($agency, $dept, $spending_cat, $year,
     if ($dept){
         $deptstring = " AND department_name ILIKE '".trim($dept)."' ";
     }
-    $query = "SELECT DISTINCT expenditure_object_name FROM disbursement_line_item_details
+    $query = "SELECT DISTINCT expenditure_object_code, expenditure_object_name FROM disbursement_line_item_details
             WHERE ".$scstring.$yearstring.$agencystring.$deptstring."ORDER BY expenditure_object_name ASC";
 
     $db_name = "main";
@@ -104,7 +104,7 @@ function _get_spending_expense_cat_options($agency, $dept, $spending_cat, $year,
         $output = array('label' => 'No Matches Found','value' => '');
     }else{
         foreach ($results as $result) {
-            $output[$result['expenditure_object_name']] = $result['expenditure_object_name'];
+            $output[$result['expenditure_object_code']] = $result['expenditure_object_name'];
         }
     }
     return $output;
@@ -323,8 +323,9 @@ function _checkbook_advanced_search_autocomplete_spending_expcategory($year, $ag
         $matches[] = $options['label'];
     }
     else {
-        foreach($options as $key => $value)
-            $matches[] = htmlentities($value);
+        foreach($options as $key => $value){
+            $matches[] = array("code" => $key, "name" => htmlentities($value));
+        }
     }
     drupal_json_output($matches);
 }

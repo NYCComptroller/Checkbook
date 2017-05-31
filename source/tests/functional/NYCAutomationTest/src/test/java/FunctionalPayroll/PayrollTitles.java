@@ -2,18 +2,18 @@ package FunctionalPayroll;
 
 import org.junit.Before;
 import org.junit.Test;
-import java.util.Arrays;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
+import helpers.Helper;
+
+import java.util.Arrays;
+
+import static org.junit.Assert.assertTrue;
 import pages.home.HomePage;
 import pages.payroll.PayrollPage;
 import utilities.NYCBaseTest;
-import utility.Helper;
-import utility.TestStatusReport;
+import utilities.TestStatusReport;
 
-//public class PayrollTitles  extends NYCBaseTest{
-	public class PayrollTitles extends TestStatusReport{
+public class PayrollTitles extends TestStatusReport {
 	@Before
     public void GoToPage(){
 		PayrollPage.GoTo();

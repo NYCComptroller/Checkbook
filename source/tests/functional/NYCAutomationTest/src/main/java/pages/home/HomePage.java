@@ -5,8 +5,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import utility.Driver;
-import utility.Helper;
+import helpers.Driver;
+import helpers.Helper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,11 +101,15 @@ public class HomePage {
 		return null;
 	}
 	
-public static String GetWidgetTotalNumber(String WidgetTitle) {
+	public static int GetWidgetTotalNumber(String WidgetTitle) {
+		String strTotalNumber = GetWidgetTotalNumberText(WidgetTitle);
+		return Helper.stringToInt(strTotalNumber);
+	}
+	
+	public static String GetWidgetTotalNumberText(String WidgetTitle) {
 		List<WebElement> panelContainers = Driver.Instance.findElements(By.cssSelector(".bottomContainer > .panel-display > .panel-panel > .inside > .panel-pane"));
 		for (WebElement panelContainer : panelContainers) {
 			WebElement header= panelContainer.findElement(By.tagName("h2"));
-	//		String headerText = header.getText();
 			String subTitle = header.getText().substring(0, header.getText().indexOf("Number")-1);
 			if(subTitle.equalsIgnoreCase(WidgetTitle)){
 				WebElement countContainer = panelContainer.findElement(By.className("contentCount"));
@@ -117,23 +121,20 @@ public static String GetWidgetTotalNumber(String WidgetTitle) {
 		return null;
 		}
 	
-	/*
-	public static String GetWidgetTotalNumber(String WidgetTitle) {
-		List<WebElement> panelContainers = Driver.Instance.findElements(By.cssSelector(".bottomContainer > .panel-display > .panel-panel .panel-pane"));
-		for (WebElement panelContainer : panelContainers) {
-			WebElement header= panelContainer.findElement(By.tagName("h2"));
-	//		String headerText = header.getText();
-			String subTitle = header.getText().substring(0, header.getText().indexOf("Number")-1);
-			if(subTitle.equalsIgnoreCase(WidgetTitle)){
-				WebElement countContainer = panelContainer.findElement(By.className("contentCount"));
-				String numAgencyText = countContainer.getText();
-		        String numAgency = numAgencyText.substring(numAgencyText.indexOf(":") + 1).trim();
-		        return numAgency;
-			}
-		}
-		return null;
-	}
-	*/
+//	public static String GetWidgetTotalNumberText(String WidgetTitle) {
+//		List<WebElement> panelContainers = Driver.Instance.findElements(By.cssSelector(".bottomContainer > .panel-display > .panel-panel > .inside > .panel-pane"));
+//		for (WebElement panelContainer : panelContainers) {
+//			WebElement header= panelContainer.findElement(By.tagName("h2"));
+//			String subTitle = header.getText().substring(0, header.getText().indexOf("Number")-1);
+//			if(subTitle.equalsIgnoreCase(WidgetTitle)) {
+//				WebElement countContainer = panelContainer.findElement(By.className("contentCount"));
+//				String numTotalText = countContainer.getText();
+//		        numTotalText = numTotalText.substring(numTotalText.indexOf(":") + 1).trim();
+//		        return numTotalText;
+//			}
+//		}
+//        return "150";
+//	}
 
 	
 	public static WebElement GetWidgetDetailsContainer(String WidgetTitle) {

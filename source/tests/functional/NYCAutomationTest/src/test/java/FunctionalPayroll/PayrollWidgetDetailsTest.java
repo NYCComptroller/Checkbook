@@ -2,6 +2,7 @@ package FunctionalPayroll;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import helpers.Helper;
 
 import java.sql.SQLException;
 
@@ -10,13 +11,11 @@ import org.junit.Test;
 
 import pages.payroll.PayrollPage;
 import pages.payroll.PayrollPage.WidgetOption;
-import pages.contracts.ActiveRevenueContractsPage;
-import pages.contracts.ContractsPage;
+
 import pages.home.HomePage;
 import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
-import utility.Helper;
-import utility.TestStatusReport;
+import utilities.TestStatusReport;
 
 //public class PayrollWidgetDetailsTest extends NYCBaseTest{
 	public class PayrollWidgetDetailsTest   extends TestStatusReport{

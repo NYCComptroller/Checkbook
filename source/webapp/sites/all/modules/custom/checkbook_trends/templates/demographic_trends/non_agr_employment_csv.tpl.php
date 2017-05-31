@@ -31,11 +31,11 @@
 	}
 	rsort($years);
 	$header = '';
-    $header .= ',,,,,,1997-2015,,,,,'."\n";
+    $header .= ',,,,,,1997-2016,,,,,'."\n";
     $header .= ',,,,,,(average annual employment in thousands),,,,,'."\n";
 
     foreach ($years as $year){
-        if($year == 2014)
+        if($year == 2016)
     	    $header = $header .  "," . $year .'(b)' ;
         else
     	    $header = $header .  "," . $year ;
@@ -47,7 +47,7 @@
         foreach ($years as $year){
             if($i == count($table_rows)-1){
                 if($row[$year]['amount'] > 0){
-                    if($year == 2014)
+                    if($year == 2016)
                         $amount = $row[$year]['amount'] . "(b)%";
                     else
                        $amount = $row[$year]['amount'] . "%";
@@ -78,11 +78,11 @@
    	}
 
 echo "\n"."\n"."(a) Includes rounding  adjustments"."\n"."\n"
-        ."(b) Six month average"."\n"."\n"
+        ."(b) Six month average"."\n"."\n";
 
-.'"'."Notes: This schedule is provided in lieu of a schedule of principal employees because it provides more meaningful information. Other than the City of New York, no single
-employer employs more than 2 percent of total nonagricultural employees.".'"'."\n\n".
-"Data are not seasonally adjusted."."\n\n".'"'.
-"Source: New York State Department of Labor, Division of Research and Statistics.".'"';
+//.'"'."Notes: This schedule is provided in lieu of a schedule of principal employees because it provides more meaningful information. Other than the City of New York, no single
+//employer employs more than 2 percent of total nonagricultural employees.".'"'."\n\n".
+//"Data are not seasonally adjusted."."\n\n".'"'.
+//"Source: New York State Department of Labor, Division of Research and Statistics.".'"'
 ?>
 

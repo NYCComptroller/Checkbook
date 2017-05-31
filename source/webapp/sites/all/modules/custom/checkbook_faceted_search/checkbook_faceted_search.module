@@ -257,7 +257,7 @@ function _checkbook_faceted_search_update_data_range_filter($node){
     $initial[5] = array(1, 'Less than $1M', $data[0]['less1m_'.$rangeColumnNameVariant.'count']);
 
     //sort
-    usort($initial,
+    /*usort($initial,
         function($a, $b)
         {
             if ($a[2] == $b[2]) {
@@ -265,8 +265,8 @@ function _checkbook_faceted_search_update_data_range_filter($node){
             }
             return ($a[2] > $b[2]) ? -1 : 1;
         }
-    );
-
+    );*/
+    
     for ($i = 0; $i < 6; $i++){
       $checked = false;
       foreach ($params as $param){

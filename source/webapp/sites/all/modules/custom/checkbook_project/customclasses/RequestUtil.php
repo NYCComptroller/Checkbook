@@ -607,88 +607,109 @@ class RequestUtil{
             }
             return html_entity_decode($title);
     }
+    
+    /** Returns Year ID for Spending, Contracts, Budget and Revenue domains navigation URLs from Top Navigation 
+     *  @return integer $fiscalYearId 
+     */
+    static function getFiscalYearIdForTopNavigation(){
+        if(_getRequestParamValue("year") != NULL){
+            $year =  _getRequestParamValue("year");
+        }else if(_getRequestParamValue("calyear") != NULL){
+            $year = _getRequestParamValue("calyear");
+        }else{
+            $year = _getCurrentYearID();
+        }
+        //For CY 2010 Payroll selection, other domains should be navigated to FY 2011  
+        $fiscalYearId = ($year == 111 && strtoupper(_getRequestParamValue("yeartype")) == 'C') ? 112 : $year;
+        return $fiscalYearId;
+    }
+    
     /** Returns top navigation URL */
     static function getTopNavURL($domain){
-        $year = _getRequestParamValue("year");
-        if($year == null){
-          $year = _getCurrentYearID();
-        }
+        $fiscalYearId = self::getFiscalYearIdForTopNavigation();
         switch($domain){
-          case "contracts":            
-              $path ="contracts_landing/status/A/yeartype/B/year/".$year._checkbook_append_url_params(null, array(),true);
-              if(_getRequestParamValue("agency") > 0){
-                $path =  $path . "/agency/" . _getRequestParamValue("agency")  ;
-              }else if(_checkbook_check_isEDCPage()){
-                $path =  $path . "/agency/9000";
-              }
-
-              if(_getRequestParamValue("vendor") > 0){
-                $path =  $path . "/vendor/" . _getRequestParamValue("vendor")  ;
-              }
-              break;
-          case "spending":
-              $path ="spending_landing/yeartype/B/year/".$year._checkbook_append_url_params(null, array(),true);
-              if(_getRequestParamValue("agency") > 0){
-                $path =  $path . "/agency/" . _getRequestParamValue("agency")  ;
-              }else if(_checkbook_check_isEDCPage()){
-                  $path =  $path . "/agency/9000";
-              }
-
-              if(_getRequestParamValue("vendor") > 0){
-                $path =  $path . "/vendor/" . _getRequestParamValue("vendor")  ;
-              }
-              break;
-          case "payroll":
-               $yeartype = _getRequestParamValue("yeartype");
-                    
-              if(preg_match('/agency_landing/',current_path())) {
-                  $path = "payroll/agency_landing/yeartype/". $yeartype ."/year/".$year;
-                  $path .= _checkbook_project_get_url_param_string("title");
-                  $path .= "/agency/" . _getRequestParamValue("agency");
-              }
-              else if(preg_match('/title_landing/',current_path())) {
-                  $path = "payroll/title_landing/yeartype/". $yeartype ."/year/".$year;
-                  $path .= _checkbook_project_get_url_param_string("agency");
-                  $path .= "/title/" . _getRequestParamValue("title");
-              }
-              else {
-                  $bottomURL = $_REQUEST['expandBottomContURL'];
-                  $bottomURL = ($bottomURL)? $bottomURL : current_path();
-                  $last_parameter = _getLastRequestParamValue($bottomURL);
-                  if($last_parameter['agency'] > 0){
-                      $path = "payroll/agency_landing/yeartype/".$yeartype."/year/".$year;
-                      $path .= _checkbook_project_get_url_param_string("title");
-                      $path .= "/agency/" . _getRequestParamValue("agency");
-                  }
-                  else if($last_parameter['title'] > 0){
-                      $path = "payroll/title_landing/yeartype/".$yeartype."/year/".$year;
-                      $path .= _checkbook_project_get_url_param_string("agency");
-                      $path .= "/title/" . _getRequestParamValue("title");
-                  }
-                  else { //NYC Level9
-                      $path ="payroll/yeartype/".(isset($yeartype)?$yeartype:'B')."/year/".$year;
-                  }
-              }
-              break;
-          case "budget":
-            if(_getRequestParamValue("agency") > 0){
-              $path ="budget/yeartype/B/year/".$year . "/agency/" . _getRequestParamValue("agency") ;
-            }else{
-              $path ="budget/yeartype/B/year/".$year;
-            }
-            break;
+            case "contracts":            
+                $path ="contracts_landing/status/A/yeartype/B/year/".$fiscalYearId._checkbook_append_url_params(null, array(),true);
+                if(_getRequestParamValue("agency") > 0){
+                    $path =  $path . "/agency/" . _getRequestParamValue("agency")  ;
+                }else if(_checkbook_check_isEDCPage()){
+                    $path =  $path . "/agency/9000";
+                }
+                if(_getRequestParamValue("vendor") > 0){
+                    $path =  $path . "/vendor/" . _getRequestParamValue("vendor")  ;
+                }
+                if(_getRequestParamValue("vendornm_exact") != NULL){
+                    $vendor_id = PrimeVendorService::getVendorIdByName(_getRequestParamValue('vendornm_exact'));
+                    $path = isset($vendor_id)
+                        ? "contracts_landing".ContractsUrlService::primeVendorUrl($vendor_id)
+                        : $path;
+                }
+                break;
+            case "spending":
+                $path ="spending_landing/yeartype/B/year/".$fiscalYearId._checkbook_append_url_params(null, array(),true);
+                if(_getRequestParamValue("agency") > 0){
+                    $path =  $path . "/agency/" . _getRequestParamValue("agency")  ;
+                }else if(_checkbook_check_isEDCPage()){
+                    $path =  $path . "/agency/9000";
+                }
+                if(_getRequestParamValue("vendor") > 0){
+                    $path =  $path . "/vendor/" . _getRequestParamValue("vendor")  ;
+                }
+                break;
+            case "payroll":
+                $year = (_getRequestParamValue("year") != NULL) ? _getRequestParamValue("year") : _getCurrentYearID();
+                //Payroll is always redirected to the respective Calendar Year irrespective of the 'yeartpe' paramenter in the URL for all the other Domains
+                if(!preg_match('/payroll/',$_SERVER['REQUEST_URI'])){
+                    $yeartype = 'C';
+                }else{
+                    $yeartype = _getRequestParamValue("yeartype");
+                }
+                 
+                if(preg_match('/agency_landing/',current_path())) {
+                    $path = "payroll/agency_landing/yeartype/". $yeartype ."/year/".$year;
+                    $path .= _checkbook_project_get_url_param_string("title");
+                    $path .= "/agency/" . _getRequestParamValue("agency");
+                }
+                else if(preg_match('/title_landing/',current_path())) {
+                    $path = "payroll/title_landing/yeartype/". $yeartype ."/year/".$year;
+                    $path .= _checkbook_project_get_url_param_string("agency");
+                    $path .= "/title/" . _getRequestParamValue("title");
+                }
+                else {
+                    $bottomURL = $_REQUEST['expandBottomContURL'];
+                    $bottomURL = ($bottomURL)? $bottomURL : current_path();
+                    $last_parameter = _getLastRequestParamValue($bottomURL);
+                    if($last_parameter['agency'] > 0){
+                        $path = "payroll/agency_landing/yeartype/".$yeartype."/year/".$year;
+                        $path .= _checkbook_project_get_url_param_string("title");
+                        $path .= "/agency/" . _getRequestParamValue("agency");
+                    }
+                    else if($last_parameter['title'] > 0){
+                        $path = "payroll/title_landing/yeartype/".$yeartype."/year/".$year;
+                        $path .= _checkbook_project_get_url_param_string("agency");
+                        $path .= "/title/" . _getRequestParamValue("title");
+                    }
+                    else { //NYC Level
+                        $path ="payroll/yeartype/".$yeartype."/year/".$year;
+                    }
+                }
+                break;
+            case "budget":
+                if(_getRequestParamValue("agency") > 0){
+                    $path ="budget/yeartype/B/year/".$fiscalYearId . "/agency/" . _getRequestParamValue("agency") ;
+                }else{
+                    $path ="budget/yeartype/B/year/".$fiscalYearId;
+                }
+                break;
           case "revenue":
             if(_getRequestParamValue("agency") > 0){
-              $path ="revenue/yeartype/B/year/".$year . "/agency/" . _getRequestParamValue("agency") ;
+                $path ="revenue/yeartype/B/year/".$fiscalYearId . "/agency/" . _getRequestParamValue("agency") ;
             }else{
-              $path ="revenue/yeartype/B/year/".$year;
+                $path ="revenue/yeartype/B/year/".$fiscalYearId;
             }
             break;
-            
         }
-
         return $path;
-     
     }
 
     /** Checks if the current page is NYC level*/
@@ -929,11 +950,11 @@ class RequestUtil{
     			break;
     	}
     }
-        
-    
+
+
     static function getDashboardTopNavURL($dashboard_filter){
-    	
-    	
+
+
     	if(self::isContractsSpendingLandingPage()){
     		$url = $_GET['q'];
 
@@ -944,15 +965,15 @@ class RequestUtil{
                 $override_params = array("category"=>null);
                 $url =  SpendingUtil::getLandingPageWidgetUrl($override_params);
     		}
-    		
+
     	}else{
     		$url = self::getCurrentDomainURLFromParams();
     	}
 
         switch($dashboard_filter){
     		case "mwbe":
-    	    	if(_getRequestParamValue("dashboard") !=  null){    				
-    				$url = preg_replace('/\/dashboard\/[^\/]*/','',$url);    				   				    				    				
+    	    	if(_getRequestParamValue("dashboard") !=  null){
+    				$url = preg_replace('/\/dashboard\/[^\/]*/','',$url);
     			}
     			$url .=  "/dashboard/" . self::getNextMWBEDashboardStateParam();
     			if(!preg_match('/mwbe/',$url)){
@@ -962,6 +983,12 @@ class RequestUtil{
     					$url .=  "/mwbe/2~3~4~5~9";
     				}
     			}
+                if(_getRequestParamValue("vendornm_exact") != NULL){
+                    $vendor_id = PrimeVendorService::getVendorIdByName(_getRequestParamValue('vendornm_exact'));
+                    $url = isset($vendor_id)
+                        ? "contracts_landing".ContractsUrlService::primeVendorUrl($vendor_id)
+                        : $url;
+                }
     			break;
     		case "subvendor":
     			
@@ -972,7 +999,12 @@ class RequestUtil{
 				if(_getRequestParamValue("dashboard") == 'ms' && _getRequestParamValue("mwbe") == '2~3~4~5~9' && _getRequestParamValue("tm_wbe") != 'Y'){
     				$url = preg_replace('/\/mwbe\/[^\/]*/','',$url);
     			}
-    			
+                if(_getRequestParamValue("vendornm_exact") != NULL){
+                    $vendor_id = SubVendorService::getVendorIdByName(_getRequestParamValue('vendornm_exact'));
+                    $url = isset($vendor_id)
+                        ? "contracts_landing".ContractsUrlService::subVendorUrl($vendor_id)
+                        : $url;
+                }
     			$url .=  "/dashboard/" . self::getNextSubvendorDashboardStateParam();    			
     			break;
     	}
@@ -1042,10 +1074,10 @@ class RequestUtil{
     	foreach($reqParams as $key=>$value){
     		
     		$value = _getRequestParamValue($key); 
-    		if($key == "year" && $value == null) {
-    			$value = _getFiscalYearID();
+    		if($key == "year") {
+    			$value = self::getFiscalYearIdForTopNavigation();
     		}
-    		if($key == "yeartype" && ($value == null || $value == 'C')) {
+    		if($key == "yeartype") {
     			$value = 'B';
     		}
     		
@@ -1129,7 +1161,7 @@ class RequestUtil{
     	}else{
     		return "";
     	}
-    	return '/' . RequestUtil::getLandingPageUrl($domain,_getRequestParamValue("year"), 'B') . "/mwbe/" . MappingUtil::$total_mwbe_cats
+    	return '/' . RequestUtil::getLandingPageUrl($domain, self::getFiscalYearIdForTopNavigation(), 'B') . "/mwbe/" . MappingUtil::$total_mwbe_cats
     	. "/dashboard/" . $dashboard . 
     				_checkbook_project_get_url_param_string("agency")
     			. _checkbook_project_get_url_param_string("vendor")  ;
@@ -1220,5 +1252,29 @@ class RequestUtil{
 
     static function checkDomain($domain) {
         return preg_match('/^'.$domain.'/',current_path());
+    }
+
+    /**
+     * Given a vendor name, returns a list of vendor ids, either prime, sub or both
+     * @param $vendor_name
+     * @param null $vendor_type
+     * @return string
+     */
+    static function getVendorFilterForTopNavigation($vendor_name, $vendor_type = null) {
+
+        if($vendor_name == null) return null;
+        $vendors = array();
+        switch($vendor_type) {
+            case VendorType::$PRIME_VENDOR:
+                $vendors[] = PrimeVendorService::getVendorIdByName($vendor_name);
+                break;
+            case VendorType::$SUB_VENDOR:
+                $vendors[] = SubVendorService::getVendorIdByName($vendor_name);
+                break;
+            default:
+                $vendors = VendorService::getVendorIdByName($vendor_name);
+                break;
+        }
+        return implode('~',$vendors);
     }
 }

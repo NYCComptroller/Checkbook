@@ -2,6 +2,7 @@ package smoke;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import helpers.Helper;
 
 import java.util.Arrays;
 
@@ -13,8 +14,7 @@ import navigation.MWBECategory.MWBECategoryOption;
 import pages.home.HomePage;
 import pages.mwbe.MWBEPage;
 import utilities.NYCBaseTest;
-import utility.Helper;
-import utility.TestStatusReport;
+import utilities.TestStatusReport;
 
 public class MWBESpendingTest extends TestStatusReport{
 	@Before

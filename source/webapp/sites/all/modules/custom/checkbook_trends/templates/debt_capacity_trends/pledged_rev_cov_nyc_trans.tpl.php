@@ -87,7 +87,9 @@ echo eval($node->widgetConfig->header);
 <div class="footnote">
   <p>(1) Personal income tax (PIT).</p>
     <p>(2) Sales tax revenue has not been required by the TFA. This amount is available to cover debt service if required.</p>
-    <p>(3) Grant from City and Federal Subsidy.</p></div>
+    <p>(3) Grant from City and Federal Subsidy.</p>
+    <p>(4) Net of fair market value adjusted.</p>
+</div>
 <?php 
   widget_data_tables_add_js($node);
 

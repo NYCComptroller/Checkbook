@@ -1,7 +1,7 @@
 package pages.spending;
 
-import navigation.TopNavigation;
 import pages.home.HomePage;
+import helpers.Driver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import utility.Driver;
 
 public class SpendingPage {	
    
@@ -19,7 +18,7 @@ public class SpendingPage {
     		TopDepartments
     	}
     	public static void GoTo() {
-            TopNavigation.Spending.Select();
+    		navigation.TopNavigation.Spending.Select();
             
     	}        	
     
@@ -39,7 +38,7 @@ public class SpendingPage {
         
         ///Widgets counts
     	
-    	public static String GetTop5WidgetTotalCount(WidgetOption option) {
+    	public static Integer GetTop5WidgetTotalCount(WidgetOption option) {
     		switch (option) {
     		case Top5Checks:	
     			return HomePage.GetWidgetTotalNumber("Top 5 Checks");
