@@ -1,7 +1,9 @@
 package functional;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import helpers.Helper;
+
+import java.sql.SQLException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -11,6 +13,8 @@ import pages.contracts.ContractsPage.WidgetOption;
 import pages.contracts.RegisteredRevenueContractsPage;
 import pages.home.HomePage;
 import utilities.NYCBaseTest;
+import utilities.NYCDatabaseUtil;
+import helpers.Helper;
 
 public class RegisteredRevenueContractsDetailsTest extends NYCBaseTest{
 
@@ -24,47 +28,70 @@ public class RegisteredRevenueContractsDetailsTest extends NYCBaseTest{
 	
 	/* ***************** Test Widget Transaction Count ****************** */
 	@Test
-    public void VerifyTop5ContractsTransactionCount(){
+    public void VerifyTop5ContractsTransactionCount()throws SQLException{
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5Contracts);
 		HomePage.ShowWidgetDetails();
-	   assertTrue(RegisteredRevenueContractsPage.GetTransactionCount() >= 937); 
-    }
+	  // assertTrue(RegisteredRevenueContractsPage.GetTransactionCount() >= 937); 
+		int NumOfRRContractsDetailsCount2016 =  NYCDatabaseUtil.getRRContractsDetailsCount(2016,'B');
+		 int numOfRRContractsDetailsCountapp = RegisteredRevenueContractsPage.GetTransactionCount();
+		 assertEquals("Number of Registered Revenue Contracts  widget Details page table count did not match", numOfRRContractsDetailsCountapp, NumOfRRContractsDetailsCount2016); 
+	  }
+
+	
 	@Test
-    public void VerifyTop5ContractAmountModificationsTransactionCount(){
+    public void VerifyTop5ContractAmountModificationsTransactionCount()throws SQLException{
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.TopContractAmountModifications);
 		HomePage.ShowWidgetDetails();
-	   assertTrue(RegisteredRevenueContractsPage.GetTransactionCount() >= 1); 
-    }
+	  // assertTrue(RegisteredRevenueContractsPage.GetTransactionCount() >= 1); 
+		int NumOfRRContractsDetailsCount2016 =  NYCDatabaseUtil.getRRContractsModificationsDetailsCount(2016,'B');
+		 int numOfRRContractsDetailsCountapp = RegisteredRevenueContractsPage.GetTransactionCount();
+		 assertEquals("Number of Registered Revenue Contracts Modfications  widget Details page table count did not match", numOfRRContractsDetailsCountapp, NumOfRRContractsDetailsCount2016); 
+	  }
 	@Test
-    public void VerifyTop5PrimeVendorsTransactionCount(){
+    public void VerifyTop5PrimeVendorsTransactionCount()throws SQLException{
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5PrimeVendors);
 		HomePage.ShowWidgetDetails();
-	   assertTrue(RegisteredRevenueContractsPage.GetTransactionCount() >= 937); 
-    }
+	  // assertTrue(RegisteredRevenueContractsPage.GetTransactionCount() >= 937); 
+		int NumOfRRContractsDetailsCount2016 =  NYCDatabaseUtil.getRRContractsDetailsCount(2016,'B');
+		 int numOfRRContractsDetailsCountapp = RegisteredRevenueContractsPage.GetTransactionCount();
+		 assertEquals("Number of Registered Revenue Contracts Prime Vendors widget Details page table count did not match", numOfRRContractsDetailsCountapp, NumOfRRContractsDetailsCount2016); 
+	  }
 	@Test
-    public void VerifyTop5AwardMethodsTransactionCount(){
+    public void VerifyTop5AwardMethodsTransactionCount()throws SQLException{
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5AwardMethods);
 		HomePage.ShowWidgetDetails();
-	   assertTrue(RegisteredRevenueContractsPage.GetTransactionCount() >= 937); 
-    }
+	  // assertTrue(RegisteredRevenueContractsPage.GetTransactionCount() >= 937); 
+		int NumOfRRContractsDetailsCount2016 =  NYCDatabaseUtil.getRRContractsDetailsCount(2016,'B');
+		 int numOfRRContractsDetailsCountapp = RegisteredRevenueContractsPage.GetTransactionCount();
+		 assertEquals("Number of Registered Revenue Contracts Award Method  widget Details page table count did not match", numOfRRContractsDetailsCountapp, NumOfRRContractsDetailsCount2016); 
+	  }
 	@Test
-    public void VerifyTop5AgenciesTransactionCount(){
+    public void VerifyTop5AgenciesTransactionCount()throws SQLException{
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5Agencies);
 		HomePage.ShowWidgetDetails();
-	   assertTrue(RegisteredRevenueContractsPage.GetTransactionCount() >= 937); 
-    }
+	   //assertTrue(RegisteredRevenueContractsPage.GetTransactionCount() >= 937); 
+		int NumOfRRContractsDetailsCount2016 =  NYCDatabaseUtil.getRRContractsDetailsCount(2016,'B');
+		 int numOfRRContractsDetailsCountapp = RegisteredRevenueContractsPage.GetTransactionCount();
+		 assertEquals("Number of Registered Revenue Contracts Agencies widget Details page table count did not match", numOfRRContractsDetailsCountapp, NumOfRRContractsDetailsCount2016); 
+	  }
 	@Test
-    public void VerifyContractsByIndustriesTransactionCount(){
+    public void VerifyContractsByIndustriesTransactionCount()throws SQLException{
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.ContractsByIndustries);
 		HomePage.ShowWidgetDetails();
-	   assertTrue(RegisteredRevenueContractsPage.GetTransactionCount() >= 937); 
-    }
+	   //assertTrue(RegisteredRevenueContractsPage.GetTransactionCount() >= 937); 
+		int NumOfRRContractsDetailsCount2016 =  NYCDatabaseUtil.getRRContractsDetailsCount(2016,'B');
+		 int numOfRRContractsDetailsCountapp = RegisteredRevenueContractsPage.GetTransactionCount();
+		 assertEquals("Number of Registered Revenue Contracts Industries widget Details page table count did not match", numOfRRContractsDetailsCountapp, NumOfRRContractsDetailsCount2016); 
+	  }
     @Test
-    public void VerifyContractsBySizeTransactionCount(){
+    public void VerifyContractsBySizeTransactionCount()throws SQLException{
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.ContractsBySize);
 		HomePage.ShowWidgetDetails();
-	   assertTrue(RegisteredRevenueContractsPage.GetTransactionCount() >= 937); 
-    }
+	   //assertTrue(RegisteredRevenueContractsPage.GetTransactionCount() >= 937); 
+		int NumOfRRContractsDetailsCount2016 =  NYCDatabaseUtil.getRRContractsDetailsCount(2016,'B');
+		 int numOfRRContractsDetailsCountapp = RegisteredRevenueContractsPage.GetTransactionCount();
+		 assertEquals("Number of Registered Revenue Contracts Size  widget Details page table count did not match", numOfRRContractsDetailsCountapp, NumOfRRContractsDetailsCount2016); 
+	  }
     
     /* ***************** Test Widget Transaction Total Amount ****************** */
 	@Test
