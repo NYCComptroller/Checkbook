@@ -361,7 +361,7 @@ class ContractsUrlService {
      * @param $year_id
      * @return string
      */
-    static function primeVendorUrl($vendor_id, $year_id = null) {
+    static function primeVendorUrl($vendor_id, $year_id = null, $current = true) {
 
         $url = RequestUtilities::_getUrlParamString("agency")
             . RequestUtilities::_getUrlParamString("contstatus","status")
@@ -397,7 +397,8 @@ class ContractsUrlService {
             $url .= RequestUtilities::_getUrlParamString("datasource")."/vendor/".$vendor_id;
         }
         $currentUrl = RequestUtilities::_getCurrentPage();
-        return $currentUrl . $url;
+        $url = ($currentUrl) ? $currentUrl . $url: $url;
+        return $url;
     }
 
     /**
