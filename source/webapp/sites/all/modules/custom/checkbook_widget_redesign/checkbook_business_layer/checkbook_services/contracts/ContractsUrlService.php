@@ -397,7 +397,7 @@ class ContractsUrlService {
             $url .= RequestUtilities::_getUrlParamString("datasource")."/vendor/".$vendor_id;
         }
         $currentUrl = RequestUtilities::_getCurrentPage();
-        $url = ($currentUrl) ? $currentUrl . $url: $url;
+        $url = ($current) ? $currentUrl . $url: $url;
         return $url;
     }
 
