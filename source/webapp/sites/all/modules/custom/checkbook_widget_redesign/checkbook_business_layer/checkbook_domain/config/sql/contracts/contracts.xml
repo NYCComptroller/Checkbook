@@ -959,6 +959,10 @@
                     <exp op="IN" dbField="b.document_code" paramName="doctype" />
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
                     <exp op="=" dbField="a.document_agency_id" paramName="agency" />
+                    <exp op="=" dbField="a.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="a.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
+                    <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
                 </exp>
             </where>
             GROUP BY agency.agency_id,agency.agency_name,dept.department_id,dept.department_name
