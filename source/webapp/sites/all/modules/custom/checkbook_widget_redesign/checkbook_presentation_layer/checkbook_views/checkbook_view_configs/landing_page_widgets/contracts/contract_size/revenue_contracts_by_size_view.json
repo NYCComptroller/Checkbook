@@ -14,7 +14,7 @@
     "dataTableOptions":{
         "aoColumns":[
             {"sClass":"text","sWidth":"249px","bSortable":false},
-            {"sClass":"number","sWidth":"120px","bSortable":false},
+            {"sClass":"number","sWidth":"120px","asSorting":["desc","asc"]},
             {"sClass":"number","sWidth":"177px","asSorting":["desc","asc"]},
             {"sClass":"number","sWidth":"217px","asSorting":["desc","asc"]},
             {"sWidth":"15px","bSortable":false}
