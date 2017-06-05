@@ -1151,6 +1151,7 @@
                         "Prime Contract Registration Date":"registered_date",
                         "Prime Contract Start Date":"prime_effective_begin_date",
                         "Prime Contract Type":"agreement_type_name",
+                        "Prime Contract Version":"version",
                         "Prime Contracting Agency":"agency_name",
                         "Prime Vendor":"prime_vendor_name",
                         "Prime Vendor M/WBE Category":"prime_minority_type_name",
