@@ -201,7 +201,9 @@
         <sql>
             SELECT DISTINCT s0.vendor_id,
             s0.vendor_legal_name AS vendor_name,
-            s0.minority_type_id,
+             <exp op="IF" condition="&lt;&gt;" paramName="mwbe" compareValue="">
+                s0.minority_type_id,
+            </exp>
             SUM(COALESCE(original_maximum_amount,0)) AS original_amount_sum,
             SUM(COALESCE(revised_maximum_amount,0)) AS current_amount_sum,
             COUNT(contract_number) AS total_contracts
@@ -218,7 +220,10 @@
                     <exp op="=" dbField="s0.industry_type_id" paramName="cindustry" />
                 </exp>
             </where>
-            GROUP BY s0.vendor_id, s0.vendor_legal_name, s0.minority_type_id
+            GROUP BY s0.vendor_id, s0.vendor_legal_name
+            <exp op="IF" condition="&lt;&gt;" paramName="mwbe" compareValue="">
+                ,s0.minority_type_id
+            </exp>        
         </sql>
     </statement>
     <statement name="GetCountContractsByPrimeVendors" datasource="checkbook">
