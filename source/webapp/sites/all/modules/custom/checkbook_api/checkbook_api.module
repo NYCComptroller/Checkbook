@@ -169,7 +169,7 @@ function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, 
   $type_of_data = ($datasource == 'checkbook_oge') ? "contracts_oge":"";
 
     //For Active/Registered Expense Contracts
-    if(($category == "expense" || $category == "all") && ($contract_status == "active" || $contract_status == "registered")) {
+    if(($type_of_data != "contracts_oge") && ($category == "expense" || $category == "all") && ($contract_status == "active" || $contract_status == "registered")) {
         checkbook_api_adjust_expense_contracts_params($parameters, $criteria, $contract_status, $category);
     }
     else {
@@ -253,8 +253,11 @@ function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, 
             default:
                 break;
         }
+
+        //Document Code - Parameter name changes for OGE
+        $doc_code = strtolower($type_of_data) == 'contracts_oge' ? "document_code" : "document_code@checkbook:ref_document_code";
         if( $category == 'all') {
-            $parameters[checkbook_api_change_datasource($datasource,'document_code@checkbook:ref_document_code')] = array(
+            $parameters[checkbook_api_change_datasource($datasource,$doc_code)] = array(
                 "MMA1",
                 "MA1",
                 "CT1",
@@ -266,11 +269,11 @@ function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, 
             );
         }
         else if ($category == 'revenue') {
-            $parameters[checkbook_api_change_datasource($datasource,'document_code@checkbook:ref_document_code')] = 'RCT1';
+            $parameters[checkbook_api_change_datasource($datasource,$doc_code)] = 'RCT1';
         }
         else {
             if ($category == 'expense') {
-                $parameters[checkbook_api_change_datasource($datasource,'document_code@checkbook:ref_document_code')] = array(
+                $parameters[checkbook_api_change_datasource($datasource,$doc_code)] = array(
                     "MMA1",
                     "MA1",
                     "CT1",
@@ -383,18 +386,6 @@ function checkbook_api_adjust_expense_contracts_params(&$parameters, $criteria, 
         $parameters['sub_maximum_contract_amount'] = $parameters['amount_id'];
         unset($parameters['amount_id']);
     }
-
-//    //Industry type
-//        if(isset($parameters['industry_type_id'])) {
-//                $logicalOrColumns[] = array("prime_industry_type_id","sub_industry_type_id");
-//               $industry_type_id = explode('~',$parameters['industry_type_id']);
-//                $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, array($industry_type_id));
-//                $parameters['prime_industry_type_id'] = $condition;
-//                $parameters['sub_industry_type_id'] = $condition;
-//                unset($parameters['industry_type_id']);
-//      }
-
-    //if(isset($parameters['scntrc_status_name']))
 
     if(count($logicalOrColumns) > 0) {
         $parameters['logicalOrColumns'] = $logicalOrColumns;
