@@ -84,7 +84,7 @@ class CSVDataHandler extends AbstractDataHandler {
   function getDataSetResultFormatter($data_set, $data_records) {
     $criteria = $this->requestSearchCriteria->getCriteria();
     $data_set_configured_columns = get_object_vars($data_set->displayConfiguration->csv->elementsColumn);
-    $requested_response_columns = isset($criteria['responseColumns']) ? $criteria['responseColumns'] : array_keys($data_set_configured_columns);
+    $requested_response_columns = isset($criteria['responseColumns']) && !empty($criteria['responseColumns']) ? $criteria['responseColumns'] : array_keys($data_set_configured_columns);
 
     return new CSVFormatter($data_records, $requested_response_columns, $data_set_configured_columns);
   }

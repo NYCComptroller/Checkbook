@@ -107,7 +107,7 @@ class XMLDataHandler extends AbstractDataHandler
     function getDataSetResultFormatter($data_set, $data_records){
         $criteria = $this->requestSearchCriteria->getCriteria();
         $dataSetConfiguredColumns = get_object_vars($data_set->displayConfiguration->xml->elementsColumn);
-        $requestedResponseColumns = isset($criteria['responseColumns']) ? $criteria['responseColumns'] : array_keys($dataSetConfiguredColumns);
+        $requestedResponseColumns = isset($criteria['responseColumns']) && !empty($criteria['responseColumns'])  ? $criteria['responseColumns'] : array_keys($dataSetConfiguredColumns);
 
         return new XMLFormatter($data_records,$requestedResponseColumns,$data_set->displayConfiguration->xml,TRUE);
     }
