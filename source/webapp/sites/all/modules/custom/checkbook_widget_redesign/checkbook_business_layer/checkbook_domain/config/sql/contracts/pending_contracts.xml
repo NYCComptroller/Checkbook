@@ -101,14 +101,12 @@
             COUNT(contract_number) AS total_contracts
             FROM pending_contracts a
             JOIN ref_document_code b ON a.document_code_id = b.document_code_id
-            JOIN ref_agency c on c.agency_id = a.awarding_agency_id
-            JOIN vendor d on d.vendor_id = a.vendor_id
             <where>
                 <exp op="AND">
                     <exp op="IN" dbField="b.document_code" paramName="doctype" />
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
-                    <exp op="=" dbField="c.agency_id" paramName="agency" />
-                    <exp op="=" dbField="d.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="a.document_agency_id" paramName="agency" />
+                    <exp op="=" dbField="a.vendor_id" paramName="vendor" />
                     <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
                     <exp op="=" dbField="a.award_size_id" paramName="csize" />
                     <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
