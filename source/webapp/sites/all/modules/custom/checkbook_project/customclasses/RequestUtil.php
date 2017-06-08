@@ -992,6 +992,10 @@ class RequestUtil{
     			break;
     	}
     	
+        //For MWBE and Sub Vendor dashboard links add status parameters if it is not there
+        if(!preg_match('/status/',$url)){
+            $url .=  "/status/A";
+        }
     	return $url;
     }
     
