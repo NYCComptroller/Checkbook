@@ -62,10 +62,7 @@
         $('select[name="year"]').val('');
 
         //reset the selected columns
-        $('#edit-column-select-expense').multiSelect('deselect_all');
-        $('#edit-column-select-revenue').multiSelect('deselect_all');
-        $('#edit-column-select-pending').multiSelect('deselect_all');
-        $('#edit-column-select-all').multiSelect('deselect_all');
+        resetSelectedColumns();
 
         $('#edit-column-select-expense option[value="Year"]').attr('disabled','disabled');
         $('#edit-column-select-expense option[value="year"]').attr('disabled','disabled');
@@ -123,11 +120,13 @@
             $contractStatus.change(function () {
                 csval = $('select[name="df_contract_status"]', context).val();
                 catval = $('#edit-category', context).val();
+                resetSelectedColumns();
                 hideShow(csval, catval);
             });
             $category.change(function () {
                 csval = $('select[name="df_contract_status"]', context).val();
                 catval = $('#edit-category', context).val();
+                resetSelectedColumns();
                 hideShow(csval, catval);
             });
             function hideShow(csval, catval) {
@@ -410,6 +409,14 @@
             fixAutoCompleteWrapping($("#dynamic-filter-data-wrapper").children());
         }
     };
+
+    //Reset the selected columns
+    function resetSelectedColumns() {
+        $('#edit-column-select-expense').multiSelect('deselect_all');
+        $('#edit-column-select-revenue').multiSelect('deselect_all');
+        $('#edit-column-select-pending').multiSelect('deselect_all');
+        $('#edit-column-select-all').multiSelect('deselect_all');
+    }
 
     //Prevent the auto-complete from wrapping un-necessarily
     function fixAutoCompleteWrapping(divWrapper) {
