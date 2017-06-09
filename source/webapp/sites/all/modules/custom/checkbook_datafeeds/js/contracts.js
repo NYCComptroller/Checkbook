@@ -415,6 +415,7 @@
         $('#edit-column-select-expense').multiSelect('deselect_all');
         $('#edit-column-select-revenue').multiSelect('deselect_all');
         $('#edit-column-select-pending').multiSelect('deselect_all');
+        $('#edit-column-select-pending-all').multiSelect('deselect_all');
         $('#edit-column-select-all').multiSelect('deselect_all');
     }
 
