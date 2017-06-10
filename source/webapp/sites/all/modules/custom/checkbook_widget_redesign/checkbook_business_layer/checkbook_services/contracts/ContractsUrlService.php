@@ -232,6 +232,7 @@ class ContractsUrlService {
         $url = $currentUrl
             . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
             .RequestUtilities::_getUrlParamString('vendor')
+            .RequestUtilities::_getUrlParamString('subvendor')
             .RequestUtilities::_getUrlParamString('agency')
             .RequestUtilities::_getUrlParamString('csize')
             .RequestUtilities::_getUrlParamString('awdmethod')
