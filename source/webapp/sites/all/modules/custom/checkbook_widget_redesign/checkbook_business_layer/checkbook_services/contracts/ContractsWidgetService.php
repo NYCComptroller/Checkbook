@@ -17,28 +17,21 @@ class ContractsWidgetService extends WidgetDataService implements IWidgetService
             case "contract_id_link":
                 $column = $row['contract_number'];
                 $class = "bottomContainerReload";
-                $url = ContractsUrlService::contractIdUrl($row['original_agreement_id'],$row['document_code']);
+                if(ContractStatus::getCurrent() == ContractStatus::PENDING)
+                    $url = ContractsUrlService::pendingContractIdLink($row['original_agreement_id'],$row['document_code'],$row['pending_contract_number'],$row['contract_number'],$row['document_version']); 
+                else
+                    $url = ContractsUrlService::contractIdUrl($row['original_agreement_id'],$row['document_code']);
+                
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
 
             case "master_contract_id_link":
                 $column = $row['contract_number'];
                 $class = "bottomContainerReload";
-                $url = ContractsUrlService::masterContractIdUrl($row['original_agreement_id'],$row['document_code']);
-                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
-                break;
-
-            case "pending_master_contract_id_link":
-                $column = $row['contract_number'];
-                $class = "bottomContainerReload";
-                $url = ContractsUrlService::pendingMasterContractIdUrl($row['original_agreement_id'],$row['document_code'],$row['fms_contract_number'],$row['contract_number'],$row['document_version']);
-                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
-                break;
-
-            case "pending_contract_id_link":
-                $column = $row['contract_number'];
-                $class = "bottomContainerReload";
-                $url = ContractsUrlService::pendingContractIdLink($row['original_agreement_id'],$row['document_code'],$row['fms_contract_number'],$row['contract_number'],$row['document_version']);
+                if(ContractStatus::getCurrent() == ContractStatus::PENDING)
+                    $url = ContractsUrlService::pendingMasterContractIdUrl($row['original_agreement_id'],$row['document_code'],$row['pending_contract_number'],$row['contract_number'],$row['document_version']); 
+                else
+                    $url = ContractsUrlService::masterContractIdUrl($row['original_agreement_id'],$row['document_code']);
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
 
