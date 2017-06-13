@@ -273,6 +273,12 @@ class ContractsDataService extends DataService implements IContractsDataService 
             ->setParameters($parameters);
     }
 
+    function GetCountOgeContractsByPrimeVendors($parameters) {
+        return $this->setDataFunction(__FUNCTION__)
+            ->setSqlConfigPath(SqlConfigPath::OgeContracts)
+            ->setParameters($parameters);
+    }
+
     function GetSubContracts($parameters, $limit = null, $orderBy = null) {
         return $this->setDataFunction(__FUNCTION__)
             ->setSqlConfigPath(SqlConfigPath::SubContracts)
