@@ -323,7 +323,12 @@ class ContractsUrlService {
                             $doc_type = "RCT1";
                             break;
                         default:
-                            $doc_type = "MMA1~MA1~MAR~CT1~CTA1~CTR";
+                            if($parameters['contract_type'] == 'master_agreement')
+                                $doc_type = "MMA1~MA1~MAR";
+                            else if($parameters['contract_type'] == 'child_contract')
+                                $doc_type = "CT1~CTA1~CTR";
+                            else 
+                                $doc_type = "MMA1~MA1~MAR~CT1~CTA1~CTR";
                             break;
                     }
                     break;
