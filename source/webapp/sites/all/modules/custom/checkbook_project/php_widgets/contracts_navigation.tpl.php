@@ -31,7 +31,23 @@ if(_checkbook_check_isEDCPage()){
     $spending_amount = $node->data[2]['check_amount_sum'];
 }
 
-if(preg_match('/\/vendor/',$_GET['q'])){
+/**
+ *  Set Budget, Payroll & Revenue domains to "0" and disable them if a vendor was present in the URL.
+ *  This logic should only apply to the landing & transaction pages from the details links, NOT the advanced search pages.
+ */
+$urlPath = $_GET['q'];
+$ajaxPath = $_SERVER['HTTP_REFERER'];
+$contracts_advanced_search = $spending_advanced_search = false;
+if(preg_match('/spending\/search\/transactions/',$urlPath) || preg_match('/spending\/search\/transactions/',$ajaxPath)) {
+    $spending_advanced_search = true;
+}
+if(preg_match('/contract\/all\/transactions/',$urlPath) || preg_match('/contract\/all\/transactions/',$ajaxPath) ||
+    preg_match('/contract\/search\/transactions/',$urlPath) || preg_match('/contract\/search\/transactions/',$ajaxPath)) {
+    $contracts_advanced_search = true;
+}
+$has_vendor_parameter = preg_match('/\/vendor/',$_GET['q']);
+
+if($has_vendor_parameter && (!$contracts_advanced_search && !$spending_advanced_search)){
     $budget_link = l('<span class="nav-title">Budget</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') ,'',$options_disabled);
     $revenue_link = l('<span class="nav-title">Revenue</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
     $payroll_link = l('<span class="nav-title">Payroll</span><br>'.custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
