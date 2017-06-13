@@ -219,7 +219,11 @@ class ContractsDataService extends DataService implements IContractsDataService 
     }
 
     function GetOgeMasterAgreementContracts($parameters, $limit = null, $orderBy = null) {
-        return $this->GetOgeContracts($parameters,$limit,$orderBy);
+        return $this->setDataFunction(__FUNCTION__)
+            ->setSqlConfigPath(SqlConfigPath::OgeContracts)
+            ->setParameters($parameters)
+            ->setLimit($limit)
+            ->setOrderBy($orderBy);
     }
 
     function GetOgeMasterAgreementContractModifications($parameters, $limit = null, $orderBy = null) {
@@ -268,6 +272,12 @@ class ContractsDataService extends DataService implements IContractsDataService 
     }
 
     function GetCountOgeContracts($parameters) {
+        return $this->setDataFunction(__FUNCTION__)
+            ->setSqlConfigPath(SqlConfigPath::OgeContracts)
+            ->setParameters($parameters);
+    }
+
+    function GetCountOgeContractsByPrimeVendors($parameters) {
         return $this->setDataFunction(__FUNCTION__)
             ->setSqlConfigPath(SqlConfigPath::OgeContracts)
             ->setParameters($parameters);
