@@ -191,7 +191,7 @@ class ContractURLHelper{
 
     }
 
-    public function prepareSubvendorContractsSliderFilter($page, $dashboard=NULL){
+    public function prepareSubvendorContractsSliderFilter($page, $dashboard=NULL, $third_bottom_slider = FALSE){
 
         $pathParams = explode('/',drupal_get_path_alias($_GET['q']));
         $url = $page;
@@ -207,7 +207,7 @@ class ContractURLHelper{
             
             //Remove dashboard parameter before appending the new value
             $url = preg_replace("/dashboard\/../","",$url);
-            $url .= "/bottom_slider/sub_vendor/status/A"        
+            $url .= (($third_bottom_slider)?"/bottom_slider/sub_vendor":"")."/status/A"        
                  .(isset($dashboard)? '/dashboard/'.$dashboard :"");
         }
         for($i=1;$i < count($pathParams);$i++){

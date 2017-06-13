@@ -66,7 +66,7 @@
             </td>
             <?php
                 $td_class3 = (preg_match("/^contracts_landing/", $_GET['q']) & _getRequestParamValue("bottom_slider") == "sub_vendor")?' class="active"':"";
-                $subvendor_link = ContractURLHelper::prepareSubvendorContractsSliderFilter('contracts_landing');
+                $subvendor_link = ContractURLHelper::prepareSubvendorContractsSliderFilter('contracts_landing', NULL, TRUE);
             ?>
             <td<?php echo $td_class3; ?>>
                 <div class="positioning">
