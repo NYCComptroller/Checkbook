@@ -50,6 +50,7 @@ interface IContractsDataService {
     function GetOgeContractsBySize($parameters, $limit = null, $orderBy = null);
     /* Count Queries */
     function GetCountOgeContracts($parameters);
+    function GetCountOgeContractsByPrimeVendors($parameters);
 
     /*
      * Sub Contracts Methods
