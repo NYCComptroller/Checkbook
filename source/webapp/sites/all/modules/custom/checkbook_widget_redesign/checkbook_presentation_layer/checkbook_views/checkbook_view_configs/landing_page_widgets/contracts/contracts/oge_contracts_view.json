@@ -1,6 +1,7 @@
 {
     "serviceName":"ContractsWidgetService",
     "dataFunc":"GetOgeContracts",
+    "countFunc":"GetCountOgeContracts",
     "uniqueSortColumn":"original_agreement_id",
     "defaultParameters":{"doctype":"'CTA1'~'CT1'","contract_type":"child_contract"},
     "headerTitle":"Contracts",
@@ -19,12 +20,12 @@
     "dataTableOptions":{
         "aoColumns":[
             { "bSortable": false,"sWidth":"150px", "sClass":"text" },
-            { "bSortable": false,"sWidth":"146px","sClass":"text" },
-            { "bSortable": false,"sWidth":"170px", "sClass":"text pad-left" },
-            { "bSortable": false ,"sWidth":"150px", "sClass":"text"},
-            { "bSortable": true,"sWidth":"80px", "sClass":"number" ,"asSorting": [ "desc" ,"asc" ]},
-            { "bSortable": true,"sWidth":"110", "sClass":"number","asSorting": [ "desc" ,"asc" ]},
-            { "bSortable": true,"sWidth":"110px", "sClass":"number" ,"asSorting": [ "desc" ,"asc" ]},
+            { "bSortable": false,"sWidth":"127px","sClass":"text" },
+            { "bSortable": false,"sWidth":"129px", "sClass":"text pad-left" },
+            { "bSortable": false ,"sWidth":"129px", "sClass":"text"},
+            { "bSortable": true,"sWidth":"130px", "sClass":"number" ,"asSorting": [ "desc" ,"asc" ]},
+            { "bSortable": true,"sWidth":"130px", "sClass":"number","asSorting": [ "desc" ,"asc" ]},
+            { "bSortable": true,"sWidth":"130px", "sClass":"number" ,"asSorting": [ "desc" ,"asc" ]},
             { "bSortable": false,"sWidth":"15px" }
         ],
         "bServerSide":true,
