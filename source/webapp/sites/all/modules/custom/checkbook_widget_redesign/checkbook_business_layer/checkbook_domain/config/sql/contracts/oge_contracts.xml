@@ -301,5 +301,37 @@
             </where>
             GROUP BY s0.type_of_year, s0.vendor_id, legal_name
         </sql>
+    </statement>>
+    <!---Get Count OGE PrimeVendors-->
+    <statement name="GetCountOgeContractsByPrimeVendors" datasource="checkbook_oge">
+        <param name="year" required ="true" type="int"/>
+        <param name="yeartype" required ="true" type="string" />
+        <param name="status" type="string"/>
+        <param name="doctype" />
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="mwbe" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
+        <sql>
+            SELECT DISTINCT s0.vendor_id
+            FROM aggregateon_contracts_cumulative_spending s0
+            JOIN ref_document_code rfd ON rfd.document_code_id = s0.document_code_id
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="s0.fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="s0.type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="s0.status_flag" paramName="status" />
+                    <exp op="IN" dbField="rfd.document_code" paramName="doctype" />
+                    <exp op="=" dbField="s0.agency_id" paramName="agency" />
+                    <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
+                    <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="s0.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="s0.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="s0.industry_type_id" paramName="cindustry" />
+                </exp>
+            </where>
+        </sql>
     </statement>
 </statements>
