@@ -996,6 +996,16 @@ class RequestUtil{
         if(!preg_match('/status/',$url)){
             $url .=  "/status/A";
         }
+        
+        //Persist the last parameter in the current page URL as the last param only to fix the title issues
+        $lastReqParam = _getLastRequestParamValue();
+        if($lastReqParam != _getLastRequestParamValue($url)){
+            foreach($lastReqParam as $key=>$value){
+                $url = preg_replace("/\/".$key."\/".$value."/","",$url);
+                $url .= "/".$key."/".$value;
+            }
+        }
+        
     	return $url;
     }
     
