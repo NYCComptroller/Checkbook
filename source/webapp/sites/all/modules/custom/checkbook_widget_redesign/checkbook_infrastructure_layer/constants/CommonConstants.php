@@ -143,3 +143,71 @@ abstract class DashboardParameter {
         return RequestUtilities::getRequestParamValue(UrlParameter::DASHBOARD);
     }
 }
+
+abstract class PageType {
+
+    const LANDING_PAGE = "landing_page";
+    const TRANSACTION_PAGE = "transaction_page";
+    const ADVANCED_SEARCH_PAGE = "advanced_search_page";
+
+    static public function getCurrent() {
+        $urlPath = $_GET['q'];
+        $ajaxPath = $_SERVER['HTTP_REFERER'];
+
+        $pageType = null;
+        switch(CheckbookDomain::getCurrent()) {
+
+            case CheckbookDomain::SPENDING:
+                /**
+                 * ADVANCED_SEARCH_PAGE - spending/search/transactions
+                 * TRANSACTION_PAGE - spending/transactions, contract/spending/transactions
+                 * LANDING_PAGE - spending_landing
+                 */
+                if(preg_match('/spending\/search\/transactions/',$urlPath) || preg_match('/spending\/search\/transactions/',$ajaxPath)) {
+                    $pageType = self::ADVANCED_SEARCH_PAGE;
+                }
+                else if(preg_match('/spending\/transactions/',$urlPath) || preg_match('/spending\/transactions/',$ajaxPath) ||
+                    preg_match('/contract\/spending\/transactions/',$urlPath) || preg_match('/contract\/spending\/transactions/',$ajaxPath)) {
+                    $pageType = self::TRANSACTION_PAGE;
+                }
+                else if(preg_match('/spending_landing/',$urlPath) || preg_match('/spending_landing/',$ajaxPath)) {
+                    $pageType = self::LANDING_PAGE;
+                }
+                break;
+
+            case CheckbookDomain::CONTRACTS:
+                /**
+                 * ADVANCED_SEARCH_PAGE - contract/all/transactions, contract/search/transactions
+                 * TRANSACTION_PAGE - contract/transactions
+                 * LANDING_PAGE - contracts_landing, contracts_revenue_landing, contracts_pending_landing, contracts_pending_exp_landing, contracts_pending_rev_landing
+                 */
+                if(preg_match('/contract\/all\/transactions/',$urlPath) || preg_match('/contract\/all\/transactions/',$ajaxPath) ||
+                    preg_match('/contract\/search\/transactions/',$urlPath) || preg_match('/contract\/search\/transactions/',$ajaxPath)) {
+                    $pageType = self::ADVANCED_SEARCH_PAGE;
+                }
+                else if(preg_match('/contract\/transactions/',$urlPath) || preg_match('/contract\/transactions/',$ajaxPath)) {
+                    $pageType = self::TRANSACTION_PAGE;
+                }
+                else if(preg_match('/contracts_landing/',$urlPath) || preg_match('/contracts_landing/',$ajaxPath) ||
+                    preg_match('/contracts_revenue_landing/',$urlPath) || preg_match('/contracts_revenue_landing/',$ajaxPath) ||
+                    preg_match('/contracts_pending/',$urlPath) || preg_match('/contracts_pending/',$urlPath)) {
+                    $pageType = self::LANDING_PAGE;
+                }
+                break;
+
+            case CheckbookDomain::REVENUE:
+            case CheckbookDomain::BUDGET:
+            case CheckbookDomain::PAYROLL:
+                break;
+        }
+        return $pageType;
+    }
+
+    static public function isSpendingAdvancedSearch() {
+        return self::getCurrent() == self::ADVANCED_SEARCH_PAGE && CheckbookDomain::getCurrent() == CheckbookDomain::SPENDING;
+    }
+
+    static public function isContractsAdvancedSearch() {
+        return self::getCurrent() == self::ADVANCED_SEARCH_PAGE && CheckbookDomain::getCurrent() == CheckbookDomain::CONTRACTS;
+    }
+}
