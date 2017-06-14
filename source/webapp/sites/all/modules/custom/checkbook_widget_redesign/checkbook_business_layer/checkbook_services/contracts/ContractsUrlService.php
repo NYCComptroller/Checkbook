@@ -170,7 +170,7 @@ class ContractsUrlService {
                 . RequestUtilities::_getUrlParamString("contstatus","status")
                 . RequestUtilities::_getUrlParamString("vendor")
                 . RequestUtilities::_getUrlParamString("subvendor")
-                . RequestUtilities::_getUrlParamString("bottom_slider")
+                //. RequestUtilities::_getUrlParamString("bottom_slider")
                 . '/dashboard/' . $dashboard
                 . '/mwbe/'. $minority_type_id;
         }
@@ -188,7 +188,7 @@ class ContractsUrlService {
             .RequestUtilities::_getUrlParamString('csize')
             .RequestUtilities::_getUrlParamString('awdmethod')
             .RequestUtilities::_getUrlParamString('status')
-            .RequestUtilities::_getUrlParamString('bottom_slider')
+            //.RequestUtilities::_getUrlParamString('bottom_slider')
             ._checkbook_project_get_year_url_param_string()
             ."/agency/".$agency_id
             ."?expandBottomCont=true";
@@ -204,7 +204,7 @@ class ContractsUrlService {
             .RequestUtilities::_getUrlParamString('csize')
             .RequestUtilities::_getUrlParamString('agency')
             .RequestUtilities::_getUrlParamString('status')
-            . RequestUtilities::_getUrlParamString("bottom_slider")
+            //. RequestUtilities::_getUrlParamString("bottom_slider")
             ._checkbook_project_get_year_url_param_string()
             ."/awdmethod/".$award_method_id
             ."?expandBottomCont=true";
@@ -221,7 +221,7 @@ class ContractsUrlService {
             .RequestUtilities::_getUrlParamString('awdmethod')
             .RequestUtilities::_getUrlParamString('status')
             . RequestUtilities::_getUrlParamString("bottom_slider")
-            ._checkbook_project_get_year_url_param_string()
+            //._checkbook_project_get_year_url_param_string()
             ."/cindustry/".$industry_type_id
             ."?expandBottomCont=true";
         return $url;
@@ -237,7 +237,7 @@ class ContractsUrlService {
             .RequestUtilities::_getUrlParamString('csize')
             .RequestUtilities::_getUrlParamString('awdmethod')
             .RequestUtilities::_getUrlParamString('status')
-            . RequestUtilities::_getUrlParamString("bottom_slider")
+            //. RequestUtilities::_getUrlParamString("bottom_slider")
             ._checkbook_project_get_year_url_param_string()
             ."/csize/".$award_size_id
             ."?expandBottomCont=true";
@@ -384,7 +384,7 @@ class ContractsUrlService {
             . RequestUtilities::_getUrlParamString("cindustry")
             . RequestUtilities::_getUrlParamString("csize")
             . RequestUtilities::_getUrlParamString("awdmethod")
-            .RequestUtilities::_getUrlParamString('bottom_slider')
+            //.RequestUtilities::_getUrlParamString('bottom_slider')
             . _checkbook_project_get_year_url_param_string();
 
         $year_type = _getRequestParamValue("yeartype");
