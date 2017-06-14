@@ -351,9 +351,19 @@ class ContractsUrlService {
 
     /**
      * @param $blnIsMasterAgreement
+     * @param $primeOrSub - Used to set prime or sub dollar difference parameter for 
+     *        Active/Registered Expense Contracts Modifications details links
      * @return string
      */
-    static function getAmtModificationUrlString($blnIsMasterAgreement = false) {
+    static function getAmtModificationUrlString($blnIsMasterAgreement = false, $primeOrSub = NULL) {
+        
+        // Set modification parameter for Active/Registered Expense Contracts Modifications details links
+        if($primeOrSub == 'P'){
+            return '/modamt/0/pmodamt/0';
+        }else if($primeOrSub == 'S'){
+           return '/modamt/0/smodamt/0'; 
+        }
+        
         if($blnIsMasterAgreement)
             $url = "/modamt/0".(ContractUtil::showSubVendorData() ? '/smodamt/0' : '/pmodamt/0');
         else

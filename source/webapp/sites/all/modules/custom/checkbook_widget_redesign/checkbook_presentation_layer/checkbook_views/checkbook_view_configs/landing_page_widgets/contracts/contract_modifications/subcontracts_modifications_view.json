@@ -4,7 +4,7 @@
     "defaultParameters":{"is_modification":"true","doctype":"'CT1'~'CTA1'","contract_type":"child_contract"},
     "headerTitle":"Sub Contract Amount Modifications",
     "headerSubTitle":"Sub Contract Modifications",
-    "footerUrl":"_widget_controller_footer_url($node).ContractsUrlService::getAmtModificationUrlString()",
+    "footerUrl":"_widget_controller_footer_url($node).ContractsUrlService::getAmtModificationUrlString(false, 'S')",
     "table_columns":[
         {"labelAlias":"contract_id","column":"contract_number","derivedColumn":"contract_id_link"},
         {"labelAlias":"sub_contract_purpose","column":"contract_purpose","tooltip":26},
