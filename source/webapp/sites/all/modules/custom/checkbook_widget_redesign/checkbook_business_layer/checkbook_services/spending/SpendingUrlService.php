@@ -99,6 +99,7 @@ class SpendingUrlService {
         }
 
         $year_type = _getRequestParamValue("yeartype");
+        $industry = _getRequestParamValue("industry");
         $agency_id = _getRequestParamValue("agency");
         $category = _getRequestParamValue("category");
         $dashboard = _getRequestParamValue("dashboard");
@@ -115,6 +116,7 @@ class SpendingUrlService {
         $url = RequestUtilities::_getCurrentPage() . _checkbook_project_get_year_url_param_string();
 
         $mwbe = $is_mwbe_certified ? "/mwbe/2~3~4~5~9" : "";
+        $industry = isset($industry) ? "/industry/{$industry}" : "";
         $agency = isset($agency_id) ? "/agency/{$agency_id}" : "";
         $category = isset($category) ? "/category/{$category}" : "";
         $vendor = isset($vendor_id) ? "/vendor/{$vendor_id}" : "";
@@ -126,8 +128,8 @@ class SpendingUrlService {
          * if remaining in the same dashboard persist all filters (drill-down) except sub vendor
          */
         $url = $dashboard != $new_dashboard
-            ? $url = $url . $dashboard_param . $mwbe . $category . $agency . $vendor
-            : $url . $datasource . $dashboard_param . $mwbe . $category . $agency . $vendor;
+            ? $url = $url . $dashboard_param . $mwbe . $industry . $category . $agency . $vendor
+            : $url . $datasource . $dashboard_param . $mwbe . $industry . $category . $agency . $vendor;
         return $url;
     }
 
@@ -150,6 +152,7 @@ class SpendingUrlService {
 
         $year_type = _getRequestParamValue("yeartype");
         $agency_id = _getRequestParamValue("agency");
+        $industry = _getRequestParamValue("industry");
         $dashboard = _getRequestParamValue("dashboard");
         $datasource = _getRequestParamValue("datasource");
 
@@ -165,6 +168,7 @@ class SpendingUrlService {
 
         $mwbe = $is_mwbe_certified ? "/mwbe/2~3~4~5~9" : "";
         $agency = isset($agency_id) ? "/agency/{$agency_id}" : "";
+        $industry = isset($industry) ? "/industry/{$industry}" : "";
         $vendor = isset($vendor_id) ? "/subvendor/{$vendor_id}" : "";
         $datasource = isset($datasource) ? "/datasource/{$datasource}" : "";
         $dashboard_param = isset($new_dashboard) ? "/dashboard/{$new_dashboard}" : "";
@@ -174,8 +178,8 @@ class SpendingUrlService {
          * if remaining in the same dashboard persist all filters (drill-down) except sub vendor
          */
         $url = $dashboard != $new_dashboard
-            ? $url = $url . $dashboard_param . $mwbe . $agency . $vendor
-            : $url . $datasource . $dashboard_param . $mwbe . $agency . $vendor;
+            ? $url = $url . $dashboard_param . $mwbe . $industry . $agency . $vendor
+            : $url . $datasource . $dashboard_param . $mwbe . $industry . $agency . $vendor;
         return $url;
     }
 
