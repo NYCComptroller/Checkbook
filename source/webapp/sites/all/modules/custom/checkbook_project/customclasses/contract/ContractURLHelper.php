@@ -173,7 +173,7 @@ class ContractURLHelper{
         }
         $url .= _checkbook_append_url_params();
         if( preg_match("/^contracts_pending/", drupal_get_path_alias($_GET['q'])) ){
-          $allowedFilters =  array("agency","vendor","awrdmthd","csize","cindustry","agid","dashboard","subvendor","mwbe");
+          $allowedFilters =  array("agency","vendor","awrdmthd","awdmethod","csize","cindustry","agid","dashboard","subvendor","mwbe");
           $url .= "/yeartype/B/year/"._getCurrentYearID();
         }
         else{
@@ -197,7 +197,7 @@ class ContractURLHelper{
         $url = $page;
         $url .= _checkbook_append_url_params();
         if( preg_match("/^contracts_pending/", drupal_get_path_alias($_GET['q'])) ){
-            $allowedFilters =  array("agency","vendor","awrdmthd","csize","cindustry","agid","dashboard","subvendor","mwbe");
+            $allowedFilters =  array("agency","vendor","awrdmthd","awdmethod","csize","cindustry","agid","dashboard","subvendor","mwbe");
             $url .= "/yeartype/B/year/"._getCurrentYearID();
         }
         else{
@@ -237,7 +237,7 @@ class ContractURLHelper{
         $pathParams = explode('/',drupal_get_path_alias($_GET['q']));
         $url = $page;
         if( preg_match("/^contracts_pending/", drupal_get_path_alias($_GET['q'])) ){
-          $allowedFilters =  array("year","calyear","agency","yeartype","awrdmthd","vendor","csize","cindustry","mwbe","dashboard");
+          $allowedFilters =  array("year","calyear","agency","yeartype","awrdmthd","awdmethod","vendor","csize","cindustry","mwbe","dashboard");
                
         }
         else{
