@@ -1641,7 +1641,7 @@
                         "original_amount":"original_maximum_amount",
                         "original_modified":"original_or_modified_desc",
                         "industry":"industry_type_name@checkbook:industry_type",
-                        "prime_mwbe_category":"minority_type_id",
+                        "prime_mwbe_category":"mwbe_category_name@checkbook:mwbe_category",
                         "version":"document_version"
                     },
                     "rowElements":[
@@ -1686,7 +1686,7 @@
                         "Original Amount":"original_maximum_amount",
                         "Original Modified":"original_or_modified_desc",
                         "Industry":"industry_type_name@checkbook:industry_type",
-                        "Prime M/WBE Category":"minority_type_id",
+                        "Prime M/WBE Category":"mwbe_category_name@checkbook:mwbe_category",
                         "Version":"document_version"
                     }
                 }
