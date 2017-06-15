@@ -13,7 +13,7 @@ import utilities.NYCBaseTest;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-
+	
 	/* Spending */
 	SpendingWidgetTest.class,
 
