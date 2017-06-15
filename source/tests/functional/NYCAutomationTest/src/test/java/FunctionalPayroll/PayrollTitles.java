@@ -13,7 +13,7 @@ import pages.payroll.PayrollPage;
 import utilities.NYCBaseTest;
 import utilities.TestStatusReport;
 
-public class PayrollTitles extends TestStatusReport {
+public class PayrollTitles extends NYCBaseTest {
 	@Before
 	public void GoToPage(){
 		PayrollPage.GoTo();
