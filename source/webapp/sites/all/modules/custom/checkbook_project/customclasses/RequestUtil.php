@@ -993,8 +993,11 @@ class RequestUtil{
     	}
     	
         //For MWBE and Sub Vendor dashboard links add status parameters if it is not there
+        //If status parameter is existing, set it to 'Active' always
         if(!preg_match('/status/',$url)){
             $url .=  "/status/A";
+        }else{
+            $url = preg_replace('/\/status\/[^\/]*/','/status/A',$url);    				   				    				    				
         }
         
         //Persist the last parameter in the current page URL as the last param only to fix the title issues
