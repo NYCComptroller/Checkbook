@@ -122,7 +122,8 @@
         ["prime_vendor_code","sub_vendor_code"],
         ["prime_vendor_name","sub_vendor_name"],
         ["prime_vendor_type","sub_vendor_type"],
-        ["prime_purpose","sub_purpose"]
+        ["prime_purpose","sub_purpose"],
+        ["prime_dollar_difference","sub_dollar_difference"]
     ],
     "preProcessConfiguration":"
         $doctype = _getRequestParamValue('doctype');
