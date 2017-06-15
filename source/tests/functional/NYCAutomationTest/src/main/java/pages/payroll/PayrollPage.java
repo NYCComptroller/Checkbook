@@ -147,13 +147,13 @@ public static ArrayList<String> WidgetTitles() {
 
 ///Transaction count
 
-public static int GetTransactionCount() {
+public static Integer GetTransactionCount() {
 	WebDriverWait wait = new WebDriverWait(Driver.Instance, 10);
 	wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("table_317_info")));
 	String count = (Driver.Instance.findElement(By.id("table_317_info"))).getText();
 	return Helper.GetTotalEntries(count, 9);
 }
-	public static int GetTransactionCount1() {
+	public static Integer GetTransactionCount1() {
 		WebDriverWait wait = new WebDriverWait(Driver.Instance, 10);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("table_886_info")));
 		String count = (Driver.Instance.findElement(By.id("table_886_info"))).getText();

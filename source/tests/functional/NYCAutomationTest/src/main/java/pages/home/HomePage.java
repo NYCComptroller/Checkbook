@@ -101,7 +101,7 @@ public class HomePage {
 		return null;
 	}
 	
-	public static int GetWidgetTotalNumber(String WidgetTitle) {
+	public static Integer GetWidgetTotalNumber(String WidgetTitle) {
 		String strTotalNumber = GetWidgetTotalNumberText(WidgetTitle);
 		return Helper.stringToInt(strTotalNumber);
 	}

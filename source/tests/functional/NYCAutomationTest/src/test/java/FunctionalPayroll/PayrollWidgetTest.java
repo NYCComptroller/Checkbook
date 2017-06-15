@@ -13,8 +13,9 @@ import pages.payroll.PayrollPage.WidgetOption;
 import pages.home.HomePage;
 import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
+import utilities.TestStatusReport;
 
-public class PayrollWidgetTest extends NYCBaseTest {
+public class PayrollWidgetTest extends TestStatusReport {
 
 	@Before
 	public void GoToPage(){

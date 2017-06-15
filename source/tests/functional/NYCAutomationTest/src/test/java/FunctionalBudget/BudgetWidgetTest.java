@@ -16,6 +16,7 @@ import utilities.NYCDatabaseUtil;
 import utilities.TestStatusReport;
 
 public class BudgetWidgetTest extends TestStatusReport {
+	
 		@Before
 	    public void GoToPage(){
 			BudgetPage.GoTo();
@@ -28,38 +29,38 @@ public class BudgetWidgetTest extends TestStatusReport {
 		/* ***************** Test Widget Counts ****************** */
 		@Test
 		public void VerifyNumOfBudgetAgencies() throws SQLException { 
-			int NumOfBudgetAgencies2016 =  NYCDatabaseUtil.getBudgetAgenciesCount(2016,'B');
-			int numOfBudgetAgenciesapp = BudgetPage.GetTop5WidgetTotalCount(WidgetOption.Top5Agencies);
+			Integer NumOfBudgetAgencies2016 =  NYCDatabaseUtil.getBudgetAgenciesCount(2016,'B');
+			Integer numOfBudgetAgenciesapp = BudgetPage.GetTop5WidgetTotalCount(WidgetOption.Top5Agencies);
 			assertEquals("Number of Budget Agenies did not match", numOfBudgetAgenciesapp, NumOfBudgetAgencies2016);
 		}
 		@Test
 		public void VerifyNumOfBudgetAgenciesbyCommittedExpenseBudget() throws SQLException {
-			int NumOfBudgetAgencies2016 =  NYCDatabaseUtil.getBudgetAgenciesCount(2016,'B');
-			int numOfBudgetAgenciesapp = BudgetPage.GetTop5WidgetTotalCount(WidgetOption.Top5AgenciesbyCommittedExpenseBudget);
+			Integer NumOfBudgetAgencies2016 =  NYCDatabaseUtil.getBudgetAgenciesCount(2016,'B');
+			Integer numOfBudgetAgenciesapp = BudgetPage.GetTop5WidgetTotalCount(WidgetOption.Top5AgenciesbyCommittedExpenseBudget);
 			assertEquals("Number of Budget Agenies did not match", numOfBudgetAgenciesapp, NumOfBudgetAgencies2016);
 		}
 		@Test
 		public void VerifyNumOfBudgetAgenciesbyPercentDifference() throws SQLException {
-			int NumOfBudgetAgencies2016 =  NYCDatabaseUtil.getBudgetAgenciesCount(2016,'B');
-			int numOfBudgetAgenciesapp = BudgetPage.GetTop5WidgetTotalCount(WidgetOption.Top5AgenciesbyPercentDifference);
+			Integer NumOfBudgetAgencies2016 =  NYCDatabaseUtil.getBudgetAgenciesCount(2016,'B');
+			Integer numOfBudgetAgenciesapp = BudgetPage.GetTop5WidgetTotalCount(WidgetOption.Top5AgenciesbyPercentDifference);
 			assertEquals("Number of Budget Agenies did not match", numOfBudgetAgenciesapp, NumOfBudgetAgencies2016);
 		}
 		@Test
 		public void VerifyNumOfExpenseCategories() throws SQLException {
-			int NumOfBudgetExpenseCategories2016 =  NYCDatabaseUtil.getBudgetExpenseCategoriesCount(2016,'B');
-			int numOfBudgeteExpenseCategoriesapp = BudgetPage.GetTop5WidgetTotalCount(WidgetOption.Top5ExpenseCategories);
+			Integer NumOfBudgetExpenseCategories2016 =  NYCDatabaseUtil.getBudgetExpenseCategoriesCount(2016,'B');
+			Integer numOfBudgeteExpenseCategoriesapp = BudgetPage.GetTop5WidgetTotalCount(WidgetOption.Top5ExpenseCategories);
 	        assertEquals("Number of Budget Expense Categories did not match", numOfBudgeteExpenseCategoriesapp, NumOfBudgetExpenseCategories2016);
 		}
 		@Test
 		public void VerifyNumOfExpenseCategoriesbyCommittedExpenseBudget() throws SQLException {
-			int NumOfBudgetExpenseCategories2016 =  NYCDatabaseUtil.getBudgetExpenseCategoriesCount(2016,'B');
-			int numOfBudgeteExpenseCategoriesapp = BudgetPage.GetTop5WidgetTotalCount(WidgetOption.Top5ExpenseCategoriesbyCommittedExpenseBudget);
+			Integer NumOfBudgetExpenseCategories2016 =  NYCDatabaseUtil.getBudgetExpenseCategoriesCount(2016,'B');
+			Integer numOfBudgeteExpenseCategoriesapp = BudgetPage.GetTop5WidgetTotalCount(WidgetOption.Top5ExpenseCategoriesbyCommittedExpenseBudget);
 	        assertEquals("Number of Budget Expense Categories did not match", numOfBudgeteExpenseCategoriesapp, NumOfBudgetExpenseCategories2016);
 		}
 		@Test
 		public void VerifyNumOfExpenseCategoriesbyPercentDifference() throws SQLException {
-			int NumOfBudgetExpenseCategories2016 =  NYCDatabaseUtil.getBudgetExpenseCategoriesCount(2016,'B');
-			int numOfBudgeteExpenseCategoriesapp = BudgetPage.GetTop5WidgetTotalCount(WidgetOption.Top5ExpenseCategoriesbyPercentDifference);
+			Integer NumOfBudgetExpenseCategories2016 =  NYCDatabaseUtil.getBudgetExpenseCategoriesCount(2016,'B');
+			Integer numOfBudgeteExpenseCategoriesapp = BudgetPage.GetTop5WidgetTotalCount(WidgetOption.Top5ExpenseCategoriesbyPercentDifference);
 	        assertEquals("Number of Budget Expense Categories did not match", numOfBudgeteExpenseCategoriesapp, NumOfBudgetExpenseCategories2016);
 		}
 	
