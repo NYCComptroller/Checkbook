@@ -4,7 +4,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import functional.*;
+import FunctionalContracts.*;
 import FunctionalSpending.*;
 import FunctionalBudget.*;
 import FunctionalRevenue.*;
@@ -14,13 +14,10 @@ import utilities.NYCBaseTest;
 @RunWith(Suite.class)
 @SuiteClasses({
 
-//	SpendingWidgetTest.class,
-//	/* Need to fix path to retrieve count */
-//	// BudgetWidgetTest.class, 
-//	RevenueWidgetTest.class,
-//	PayrollWidgetTest.class
-	
-	
+	/* Spending */
+	SpendingWidgetTest.class,
+
+	/* Contracts */
 	ActiveExpenseContractsTest.class,
 	ActiveExpenseContractsDetailsTest.class,
 	ActiveRevenueContractsTest.class,
@@ -33,12 +30,18 @@ import utilities.NYCBaseTest;
 	RegisteredExpenseContractsDetailsTest.class,
 	RegisteredRevenueContractsTest.class,
 	RegisteredRevenueContractsDetailsTest.class,
+
+	/* Budget */
+	/* Need to fix path to retrieve count */
 	BudgetWidgetTest.class,
+
+	/* Revenue */
+	RevenueWidgetTest.class,
+
+	/* Payroll */
 	PayrollWidgetTest.class,
 	PayrollTitles.class,
 	PayrollWidgetDetailsTest.class
-	
-	
 })
 public class FunctionalTest extends NYCBaseTest{	
 	

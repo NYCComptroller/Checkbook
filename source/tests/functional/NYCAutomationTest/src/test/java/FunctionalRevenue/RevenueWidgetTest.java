@@ -26,26 +26,26 @@ public class RevenueWidgetTest extends TestStatusReport {
 		/* ***************** Test Widget Counts ****************** */
 		@Test
 		public void VerifyNumOfRevenueAgenies() throws SQLException {
-			int NumOfRevenueAgencies2016 =  NYCDatabaseUtil.getRevenueAgenciesCount(2016,'B');
-			int numOfRevenueAgenciesapp = RevenuePage.GetTop5WidgetTotalCount(WidgetOption.Top5Agencies);
+			Integer NumOfRevenueAgencies2016 =  NYCDatabaseUtil.getRevenueAgenciesCount(2016,'B');
+			Integer numOfRevenueAgenciesapp = RevenuePage.GetTop5WidgetTotalCount(WidgetOption.Top5Agencies);
 			assertEquals("Number of Revenue Agencies did not match", numOfRevenueAgenciesapp, NumOfRevenueAgencies2016);
 		}
 
 		public void VerifyNumOfRevenueAgenies1() {
-			int NumOfRevenueAgencies2016 =  150;
-	        int numOfRevenueAgenciesapp = RevenuePage.GetTop5WidgetTotalCount(WidgetOption.Top5Agencies);
+			Integer NumOfRevenueAgencies2016 =  150;
+			Integer numOfRevenueAgenciesapp = RevenuePage.GetTop5WidgetTotalCount(WidgetOption.Top5Agencies);
 			 assertEquals("Number of Revenue Agencies did not match", numOfRevenueAgenciesapp, NumOfRevenueAgencies2016);
 		}
 		@Test
 		public void VerifyNumOfRevenueCategories() throws SQLException {
-		 	int NumOfRevenueCategories2016 =  NYCDatabaseUtil.getRevenueCategoriesCount(2016,'B');
-	        int numOfRevenueCategoriesapp = RevenuePage.GetTop5WidgetTotalCount(WidgetOption.Top5RevenueCategories);
+			Integer NumOfRevenueCategories2016 =  NYCDatabaseUtil.getRevenueCategoriesCount(2016,'B');
+			Integer numOfRevenueCategoriesapp = RevenuePage.GetTop5WidgetTotalCount(WidgetOption.Top5RevenueCategories);
 	        assertEquals("Number of Revenue categories did not match", numOfRevenueCategoriesapp, NumOfRevenueCategories2016);
 		}
 		@Test
 		public void VerifyNumOfRevenueFundingclass() throws SQLException {
-		 	int NumOfRevenueFundingclass2016 =  NYCDatabaseUtil.getRevenueFundingclassCount(2016,'B');
-	        int numOfRevenueFundingclassapp = RevenuePage.GetTop5WidgetTotalCount(WidgetOption.RevenuebyFundingClasses);
+			Integer NumOfRevenueFundingclass2016 =  NYCDatabaseUtil.getRevenueFundingclassCount(2016,'B');
+			Integer numOfRevenueFundingclassapp = RevenuePage.GetTop5WidgetTotalCount(WidgetOption.RevenuebyFundingClasses);
 	        assertEquals("Number of Revenue funding class did not match", numOfRevenueFundingclassapp, NumOfRevenueFundingclass2016);
 		}
 

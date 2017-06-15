@@ -60,10 +60,7 @@ public class SpendingWidgetTest extends TestStatusReport {
 		Integer totalContractswidgetCountFY2016 = NYCDatabaseUtil.getTotalSpendingContractsCount(2016,'B');
 		Integer totalContractsWidgetCountApp = SpendingPage.GetTop5WidgetTotalCount(WidgetOption.Top5Contracts);
 		assertEquals("Number of Contracts  widget count  did not match with the DB",totalContractsWidgetCountApp, totalContractswidgetCountFY2016);
-
-
 	}
-
 }
 
 

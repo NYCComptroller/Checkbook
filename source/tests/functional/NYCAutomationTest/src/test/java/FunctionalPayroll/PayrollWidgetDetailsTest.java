@@ -13,8 +13,9 @@ import pages.payroll.PayrollPage.WidgetOption;
 import pages.home.HomePage;
 import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
+import utilities.TestStatusReport;
 
-public class PayrollWidgetDetailsTest extends NYCBaseTest {
+public class PayrollWidgetDetailsTest extends TestStatusReport {
 
 	@Before
 	public void GoToPage(){
@@ -26,14 +27,15 @@ public class PayrollWidgetDetailsTest extends NYCBaseTest {
 	}
 
 	/* ***************** Test Widget Transaction Count ****************** */
+//	@Test
+//	public void VerifyTop5AgenciesbyPayrollTransactionCount() throws SQLException{
+//		PayrollPage.GoToTop5DetailsPage(WidgetOption.Top5AgenciesbyPayroll);
+//		HomePage.ShowWidgetDetails();
+//		int NumOfPayrollDetailsCount2016 = NYCDatabaseUtil.getPayrollDetailsCount(2016,'B');
+//		int numOfPayrollDetailsCountapp = PayrollPage.GetTransactionCount();
+//		assertEquals("Number of Payroll salaried employees did not match", numOfPayrollDetailsCountapp, NumOfPayrollDetailsCount2016); 
+//	}
 	@Test
-	public void VerifyTop5AgenciesbyPayrollTransactionCount() throws SQLException{
-		PayrollPage.GoToTop5DetailsPage(WidgetOption.Top5AgenciesbyPayroll);
-		HomePage.ShowWidgetDetails();
-		int NumOfPayrollDetailsCount2016 = NYCDatabaseUtil.getPayrollDetailsCount(2016,'B');
-		int numOfPayrollDetailsCountapp = PayrollPage.GetTransactionCount();
-		assertEquals("Number of Payroll salaried employees did not match", numOfPayrollDetailsCountapp, NumOfPayrollDetailsCount2016); 
-	}
 	public void VerifyTop5AgenciesbyOvertimeTransactionCount() throws SQLException{
 		PayrollPage.GoToTop5DetailsPage(WidgetOption.Top5AgenciesbyOvertime);
 		HomePage.ShowWidgetDetails();
@@ -41,22 +43,12 @@ public class PayrollWidgetDetailsTest extends NYCBaseTest {
 		int numOfPayrollDetailsCountapp = PayrollPage.GetTransactionCount();
 		assertEquals("Number of Payroll salaried employees did not match", numOfPayrollDetailsCountapp, NumOfPayrollDetailsCount2016); 
 	}
-	@Test
-	public void VerifyNumOfPayrollAnnualSalariesTransactioncount() throws SQLException {
-		PayrollPage.GoToTop5DetailsPage(WidgetOption.Top5AnnualSalaries);
-		HomePage.ShowWidgetDetails();
-		int NumOfPayrollDetailsCount2016 = NYCDatabaseUtil.getPayrollDetailsCount(2016,'B');
-		int numOfPayrollDetailsCountapp = PayrollPage.GetTransactionCount();
-		assertEquals("Number of Payroll salaried employees did not match", numOfPayrollDetailsCountapp, NumOfPayrollDetailsCount2016); 
-	}
-	/* issue with widgettitle function for titile widget	
-	@Test
-		public void VerifyNumOfPayrollTitlesbyNumberofEmployeesTransactioncount() throws SQLException {
-			PayrollPage.GoToTop5DetailsPage(WidgetOption.Top5TitlesbyNumberofEmployees);
-			HomePage.ShowWidgetDetails();
-			 int NumOfPayrollDetailsCount2016 = NYCDatabaseUtil.getPayrollTitleDetailsCount(2016,'B');
-			 int numOfPayrollDetailsCountapp = PayrollPage.GetTransactionCount1();
-			 assertEquals("Number of Payroll salaried employees did not match", numOfPayrollDetailsCountapp, NumOfPayrollDetailsCount2016); 
-		}
-	 */
+//	@Test
+//	public void VerifyNumOfPayrollAnnualSalariesTransactioncount() throws SQLException {
+//		PayrollPage.GoToTop5DetailsPage(WidgetOption.Top5AnnualSalaries);
+//		HomePage.ShowWidgetDetails();
+//		int NumOfPayrollDetailsCount2016 = NYCDatabaseUtil.getPayrollDetailsCount(2016,'B');
+//		int numOfPayrollDetailsCountapp = PayrollPage.GetTransactionCount();
+//		assertEquals("Number of Payroll salaried employees did not match", numOfPayrollDetailsCountapp, NumOfPayrollDetailsCount2016); 
+//	}
 }

@@ -1,4 +1,4 @@
-package functional;
+package FunctionalContracts;
 
 import static org.junit.Assert.assertEquals;
 import java.sql.SQLException;
