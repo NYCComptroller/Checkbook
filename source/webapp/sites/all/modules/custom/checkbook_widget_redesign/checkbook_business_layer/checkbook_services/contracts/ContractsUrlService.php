@@ -367,7 +367,7 @@ class ContractsUrlService {
         if($blnIsMasterAgreement)
             $url = "/modamt/0".(ContractUtil::showSubVendorData() ? '/smodamt/0' : '/pmodamt/0');
         else
-            $url = "/modamt/0";
+            $url = "/modamt/0/pmodamt/0/smodamt/0";
         return $url;
     }
 
