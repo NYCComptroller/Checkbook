@@ -206,7 +206,7 @@ class ContractURLHelper{
             $dashboard = isset($dashboard)? $dashboard : _getRequestParamValue("dashboard");
             
             //Remove dashboard parameter before appending the new value
-            $url = preg_replace("/dashboard\/../","",$url);
+            $url = preg_replace("/\/dashboard\/../","",$url);
             $url .= (($third_bottom_slider)?"/bottom_slider/sub_vendor":"")."/status/A"        
                  .(isset($dashboard)? '/dashboard/'.$dashboard :"");
         }
