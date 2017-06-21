@@ -952,11 +952,13 @@ class RequestUtil{
     	if(self::isContractsSpendingLandingPage()){
     		$url = $_GET['q'];
 
+            //Exclude parameters that should not persist in the feature dashboards
             if(preg_match('/contract/',$url)){
-                $url =  ContractUtil::getLandingPageWidgetUrl(null);
+                $override_params = array("awdmethod"=>null,"cindustry"=>null,"csize"=>null);
+                $url =  ContractUtil::getLandingPageWidgetUrl($override_params);
             }else{
                 //Default to total spending
-                $override_params = array("category"=>null);
+                $override_params = array("category"=>null,"industry"=>null);
                 $url =  SpendingUtil::getLandingPageWidgetUrl($override_params);
     		}
     		
@@ -994,10 +996,13 @@ class RequestUtil{
     	
         //For MWBE and Sub Vendor dashboard links add status parameters if it is not there
         //If status parameter is existing, set it to 'Active' always
-        if(!preg_match('/status/',$url)){
-            $url .=  "/status/A";
-        }else{
-            $url = preg_replace('/\/status\/[^\/]*/','/status/A',$url);    				   				    				    				
+        //Do this only for contracts
+        if(preg_match('/contracts/',$url)){
+            if(!preg_match('/status/',$url)){
+                $url .=  "/status/A";
+            }else{
+                $url = preg_replace('/\/status\/[^\/]*/','/status/A',$url);
+            }
         }
         
         //Persist the last parameter in the current page URL as the last param only to fix the title issues
