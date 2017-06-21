@@ -55,7 +55,7 @@
             prime_spending.check_amount_sum as ytd_spending_agency,
             SUM(total_spending_amount) AS check_amount_sum,
             SUM(total_spending_amount)/MAX(total.check_amount)*100 as percent_spending,
-            SUM(total_spending_amount)/MAX(prime_spending.check_amount_sum_no_payroll)*100 as percent_paid_sub_vendors
+            COALESCE(SUM(total_spending_amount)/MAX(prime_spending.check_amount_sum_no_payroll)*100,0) as percent_paid_sub_vendors
             FROM aggregateon_subven_spending_coa_entities s0
             JOIN ref_agency a ON a.agency_id = s0.agency_id
             JOIN
@@ -75,7 +75,7 @@
                     </exp>
                 </where>
             ) total on 1 = 1
-            JOIN
+            LEFT JOIN
             (
                 SELECT s0.year_id,
                 s0.type_of_year,
