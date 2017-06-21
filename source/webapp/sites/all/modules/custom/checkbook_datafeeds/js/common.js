@@ -10,13 +10,7 @@
                     url: 'data-feeds/download/'+token,
                     dataType: 'json',
                     success: function () {
-                        var downloadLink = document.createElement("a");
-                        downloadLink.href = url;
-                        downloadLink.download = "nyc-data-feed";
-
-                        document.body.appendChild(downloadLink);
-                        downloadLink.click();
-                        document.body.removeChild(downloadLink);
+                        window.location.assign(url);
                     }
                 });
                 return false;
