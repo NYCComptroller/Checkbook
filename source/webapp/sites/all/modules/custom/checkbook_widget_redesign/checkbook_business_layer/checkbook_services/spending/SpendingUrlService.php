@@ -65,13 +65,12 @@ class SpendingUrlService {
     static function industryUrl($industry_type_id) {
 
         $url = '/spending_landing'
+            ._checkbook_project_get_year_url_param_string()
+            .RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
             .RequestUtilities::_getUrlParamString('vendor')
             .RequestUtilities::_getUrlParamString('subvendor')
             .RequestUtilities::_getUrlParamString('category')
-            .RequestUtilities::_getUrlParamString('industry')
             .RequestUtilities::_getUrlParamString('agency')
-            .RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
-            ._checkbook_project_get_year_url_param_string()
             . '/industry/'. $industry_type_id;
 
         return $url;
