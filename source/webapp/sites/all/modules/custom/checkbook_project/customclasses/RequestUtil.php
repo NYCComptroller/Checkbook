@@ -954,11 +954,11 @@ class RequestUtil{
 
             //Exclude parameters that should not persist in the feature dashboards
             if(preg_match('/contract/',$url)){
-                $override_params = array("awdmethod"=>null,"cindustry"=>null,"csize"=>null);
+                $override_params = array(null);
                 $url =  ContractUtil::getLandingPageWidgetUrl($override_params);
             }else{
                 //Default to total spending
-                $override_params = array("category"=>null,"industry"=>null);
+                $override_params = array("category"=>null);
                 $url =  SpendingUtil::getLandingPageWidgetUrl($override_params);
     		}
     		
