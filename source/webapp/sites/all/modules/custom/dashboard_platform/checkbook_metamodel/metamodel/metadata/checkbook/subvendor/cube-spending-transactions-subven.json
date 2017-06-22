@@ -416,6 +416,10 @@
         "spending_transactions_all__sub_vendor_agid": [
             {"datasetName": "spending_transactions_all", "columnNames": ["reference_document_number"]},
             {"datasetName": "sub_vendor_agid", "columnNames": ["contract_number"]}
+        ],
+        "spending_transactions_all__mwbe_category": [
+            {"datasetName": "spending_transactions_all", "columnNames": ["minority_type_id"]},
+            {"datasetName": "mwbe_category", "columnNames": ["minority_type_id"]}
         ]
     }
 }
