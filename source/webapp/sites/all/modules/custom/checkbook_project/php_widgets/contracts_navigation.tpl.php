@@ -103,7 +103,6 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
     // Get mwbe and subvendor links.	
     $mwbe_active_domain_link = RequestUtil::getDashboardTopNavURL("mwbe") ;
     $svendor_active_domain_link = RequestUtil::getDashboardTopNavURL("subvendor") ;
-    $svendor_active_domain_link = preg_replace('/\/industry\/[^\/]*/','',$svendor_active_domain_link);
 	
     // calcluate amount for mwbe and subvendors top nav. 
     if(preg_match('/contract/',$_GET['q'])){
@@ -212,7 +211,7 @@ if($mwbe_amount  == 0 && $mwbe_amount_active_inc == 0){
     if((!isset($mwbe_amount) || $mwbe_amount == 0) && preg_match('/contract/',$_GET['q']) && !_checkbook_check_isEDCPage() && RequestUtil::getDashboardTopNavTitle("mwbe") == 'M/WBE (Sub Vendors)'){
         $mwbe_active_domain_link = ContractURLHelper::prepareSubvendorContractsSliderFilter($mwbe_active_domain_link, 'ms', TRUE);
     }
-    $mwbe_link = l('<div><div class="top-navigation-amount"><span class="nav-title">' . RequestUtil::getDashboardTopNavTitle("mwbe") . '</span><br>&nbsp;'. custom_number_formatter_format($mwbe_amount ,1,'$') . '</div></div>',$mwbe_active_domain_link,$options);	
+    $mwbe_link = l('<div><div class="top-navigation-amount"><span class="nav-title">' . RequestUtil::getDashboardTopNavTitle("mwbe") . '</span><br>&nbsp;'. custom_number_formatter_format($mwbe_amount ,1,'$') . '</div></div>',$mwbe_active_domain_link,$options);
 }
 
 $indicator_left = true;
@@ -241,8 +240,6 @@ if($featured_dashboard == "mp" ||$featured_dashboard == "ms" || ($featured_dashb
 if( $featured_dashboard == "sp" || $featured_dashboard == "ss" || ($featured_dashboard != null && ($svendor_amount > 0 || $svendor_amount_active_inc > 0) ) || RequestUtil::$is_prime_mwbe_amount_zero_sub_mwbe_not_zero ){
     $svclass = ' active';
 }
-
- 
 
 $expclass = '';
 $rclass = '';
