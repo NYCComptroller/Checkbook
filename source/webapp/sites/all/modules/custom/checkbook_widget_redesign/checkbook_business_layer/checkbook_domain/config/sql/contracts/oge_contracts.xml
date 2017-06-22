@@ -25,7 +25,7 @@
                 b.document_code,
                 SUM(COALESCE(a.original_contract_amount,0)) AS original_amount_sum,
                 SUM(COALESCE(a.maximum_contract_amount,0)) AS current_amount_sum,
-                SUM(COALESCE(a.spending_amount,0)) AS spending_amount_sum,
+                SUM(COALESCE(a.spending_amount_disb,0)) AS spending_amount_sum,
                 SUM(COALESCE(dollar_difference,0)) AS dollar_difference,
                 AVG(percent_difference) AS percent_difference
             FROM aggregateon_contracts_cumulative_spending a
@@ -106,7 +106,7 @@
             b.document_code,
             MIN(COALESCE(a.original_contract_amount,0)) AS original_amount_sum,
             MIN(COALESCE(a.maximum_contract_amount,0)) AS current_amount_sum,
-            SUM(COALESCE(a.spending_amount,0)) AS spending_amount_sum,
+            SUM(COALESCE(a.spending_amount_disb,0)) AS spending_amount_sum,
             SUM(COALESCE(dollar_difference,0)) AS dollar_difference,
             AVG(percent_difference) AS percent_difference
             FROM aggregateon_contracts_cumulative_spending a
@@ -331,7 +331,7 @@
                 type_of_year,
                 SUM(COALESCE(original_contract_amount,0)) AS original_amount_sum,
                 SUM(COALESCE(maximum_contract_amount,0)) AS current_amount_sum,
-                SUM(COALESCE(spending_amount,0)) AS spending_amount_sum,
+                SUM(COALESCE(spending_amount_disb,0)) AS spending_amount_sum,
                 COUNT(contract_number) AS total_contracts    
             FROM aggregateon_contracts_cumulative_spending s0
                 JOIN ref_document_code rfd ON rfd.document_code_id = s0.document_code_id
