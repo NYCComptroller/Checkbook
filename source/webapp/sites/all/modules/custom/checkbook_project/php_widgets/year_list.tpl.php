@@ -22,7 +22,8 @@
 //Hide the Date Filter 
 //on Spending Advanced Search page when 'Check Date' parameter is present in the URL &
 //on Pending Contracts Advanced Search page
-if((preg_match('/^spending\/search\/transactions/',$_GET['q']) && _getRequestParamValue('chkdate')) || _getRequestParamValue('contstatus') == 'P'){
+if((preg_match('/^spending\/search\/transactions/',$_GET['q']) && (_getRequestParamValue('chkdate') || !_getRequestParamValue('year'))) || _getRequestParamValue('contstatus') == 'P'
+    || preg_match('/^contract\/all\/transactions/',$_GET['q'])){
     return;
 }
 
