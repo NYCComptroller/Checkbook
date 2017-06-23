@@ -142,10 +142,18 @@ class CSVDataHandler extends AbstractDataHandler {
                     $new_column = "CASE \n";
                     $new_column .= "WHEN " . $alias . $column . " = 2 THEN 'Black American' \n";
                     $new_column .= "WHEN " . $alias . $column . " = 3 THEN 'Hispanic American' \n";
+                    $new_column .= "WHEN " . $alias . $column . " = 4 THEN 'Asian American' \n";
+                    $new_column .= "WHEN " . $alias . $column . " = 5 THEN 'Asian American' \n";
                     $new_column .= "WHEN " . $alias . $column . " = 7 THEN 'Non-M/WBE' \n";
                     $new_column .= "WHEN " . $alias . $column . " = 9 THEN 'Women' \n";
                     $new_column .= "WHEN " . $alias . $column . " = 11 THEN 'Individuals and Others' \n";
-                    $new_column .= "ELSE 'Asian American' END";
+                    $new_column .= "WHEN " . $alias . $column . " = 'African American' THEN 'Black American' \n";
+                    $new_column .= "WHEN " . $alias . $column . " = 'Hispanic American' THEN 'Hispanic American' \n";
+                    $new_column .= "WHEN " . $alias . $column . " = 'Asian-Pacific' THEN 'Asian American' \n";
+                    $new_column .= "WHEN " . $alias . $column . " = 'Asian-Indian' THEN 'Asian American' \n";
+                    $new_column .= "WHEN " . $alias . $column . " = 'Non-Minority' THEN 'Non-M/WBE' \n";
+                    $new_column .= "WHEN " . $alias . $column . " = 'Caucasian Woman' THEN 'Women' \n";
+                    $new_column .= "WHEN " . $alias . $column . " = 'Individuals & Others' THEN 'Individuals and Others' END \n";
                     $new_select_part .= $new_column . ' AS \\"' . $columnMappings[$column] . '\\",' .  "\n";
                     break;
                 case "vendor_type":
