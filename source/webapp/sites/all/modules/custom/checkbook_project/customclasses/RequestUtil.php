@@ -952,10 +952,9 @@ class RequestUtil{
     	if(self::isContractsSpendingLandingPage()){
     		$url = $_GET['q'];
 
-            //Exclude parameters that should not persist in the feature dashboards
+            //Exclude parameters that should not persist in the feature dashboards for Spending Domain
             if(preg_match('/contract/',$url)){
-                $override_params = array(null);
-                $url =  ContractUtil::getLandingPageWidgetUrl($override_params);
+                $url =  ContractUtil::getLandingPageWidgetUrl();
             }else{
                 //Default to total spending
                 $override_params = array("category"=>null);
