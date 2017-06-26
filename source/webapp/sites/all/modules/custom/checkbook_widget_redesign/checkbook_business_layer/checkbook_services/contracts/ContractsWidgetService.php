@@ -121,7 +121,7 @@ class ContractsWidgetService extends WidgetDataService implements IWidgetService
                 $class = "new_window";
 
                 $spend_type_parameter = _checkbook_check_isEDCPage()
-                    ? "/agid/".$row['original_agreement_id']
+                    ? "/agid/".$row['original_agreement_id']."/cvendor/".$row['vendor_id']
                     : "/contnum/".$row['contract_number'];
                 $url = ContractsUrlService::spentToDateUrl($spend_type_parameter,$legacy_node_id);
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
