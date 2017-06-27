@@ -81,7 +81,11 @@ EOD;
 
     //Hide Contract summary on Contract Spending Transactions page (Total Spent to Date link under 'Sub Vendor Information' section)                    
     if($smnid == 721 && preg_match("/^contract\/spending\/transactions\/contnum/",$_GET['q'])) {
-        print "";
+        print "<div class='contract-details-heading'>
+	<div class='contract-id'>
+		<h2 class='contract-title'>{$node->widgetConfig->summaryView->templateTitle}</h2>
+	</div>
+        </div><br/>";
     }else{                 
         print $summaryContent;
     }
