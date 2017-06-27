@@ -1228,6 +1228,10 @@ class SpendingUtil{
         }
 
         if($dashboard_param == 'ss' || $dashboard_param == 'ms' || $dashboard_param == 'sp') {
+            //Title for Contract Spending Transactions page (Total Spent to Date link under 'Sub Vendor Information' section)
+            if($smnid == 721 && preg_match("/^contract\/spending\/transactions\/contnum/",$_GET['q'])) {
+                return "Total Sub Vendors Spending Transactions";
+            }
             if($dashboard_param == 'ms' || $dashboard_param == 'sp'){
                 if($status == 'A')
                     $bottomNavigation = "Total Active M/WBE Sub Vendor Contracts";
