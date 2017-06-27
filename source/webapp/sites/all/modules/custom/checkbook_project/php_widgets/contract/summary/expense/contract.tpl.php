@@ -79,6 +79,11 @@ if(is_array($records)){
 </div>
 EOD;
 
-    print $summaryContent;
+    //Hide Contract summary on Contract Spending Transactions page (Total Spent to Date link under 'Sub Vendor Information' section)                    
+    if($smnid == 721 && preg_match("/^contract\/spending\/transactions\/contnum/",$_GET['q'])) {
+        print "";
+    }else{                 
+        print $summaryContent;
+    }
 
 }
