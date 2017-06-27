@@ -221,7 +221,7 @@ class ContractsUrlService {
             .RequestUtilities::_getUrlParamString('awdmethod')
             .RequestUtilities::_getUrlParamString('status')
             . RequestUtilities::_getUrlParamString("bottom_slider")
-            //._checkbook_project_get_year_url_param_string()
+            ._checkbook_project_get_year_url_param_string()
             ."/cindustry/".$industry_type_id
             ."?expandBottomCont=true";
         return $url;
