@@ -178,7 +178,7 @@
         "formatted_paid_to_date": {
             "type":"expression2",
             "expression":"(strtolower($row['vendor_record_type']) == 'sub vendor')? (
-            '<a href=\"/spending/transactions'
+            '<a href=\"/spending/search/transactions'
             .  ($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['original_agreement_id']
             .  _checkbook_project_get_url_param_string(\"dashboard\") . _checkbook_project_get_url_param_string(\"mwbe\")
             .    '/year/'. _getFiscalYearID() .'/syear/'. _getFiscalYearID()
