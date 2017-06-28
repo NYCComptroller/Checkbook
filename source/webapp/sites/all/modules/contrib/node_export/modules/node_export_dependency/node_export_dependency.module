@@ -100,7 +100,7 @@ function node_export_dependency_node_export_alter(&$nodes, $format) {
 /**
  *  Recursively load dependencies.
  */
-function node_export_dependency_load_dependencies(&$nodes, $nid) {
+function node_export_dependency_load_dependencies(&$nodes, $nid, $reset = FALSE) {
   $node = &$nodes[$nid];
   $dependencies = node_export_dependency_get_dependencies('node', $node);
   foreach ($dependencies as $dep_key => &$dependency) {
@@ -114,8 +114,8 @@ function node_export_dependency_load_dependencies(&$nodes, $nid) {
     if ($dependency['type'] == 'node' && variable_get('node_export_dependency_attach_nodes', 1)) {
       // It the node doesn't exist in keyed nodes, add it.
       if (!isset($nodes[$dependency['id']])) {
-        $new_node = node_load($dependency['id']);
-        if (node_export_access_export($new_node)) {
+        $new_node = node_load($dependency['id'], NULL, $reset);
+        if (node_export_access_export($new_node, $reset)) {
           $new_node = node_export_prepare_node($new_node);
           $nodes[$new_node->nid] = $new_node;
           // Recursively load dependent nodes.
@@ -140,20 +140,16 @@ function node_export_dependency_load_dependencies(&$nodes, $nid) {
 /**
  * Implements hook_node_export_import_alter().
  */
-function node_export_dependency_node_export_import_alter($nodes, $format) {
+function node_export_dependency_node_export_after_import_alter($nodes, $format, $save) {
   $node_export_dependency = variable_get('node_export_dependency', array());
-
   foreach ($nodes as $node) {
     if (isset($node->node_export_dependency)) {
       foreach ($node->node_export_dependency as $dep_key => $dependency) {
-        // Try to handle this dependency now, and unset if successfull.
+        // Try to handle this dependency now, and unset if successful.
         // Only do this now if maintaining dependency to original node, because
         // if that setting is turned off, doing this at this stage will break
         // things.
-        if (
-          variable_get('node_export_dependency_existing', 1) &&
-          node_export_dependency_handle_dependency($node, $dependency)
-        ) {
+        if (variable_get('node_export_dependency_existing', 1) && node_export_dependency_handle_dependency($node, $dependency)) {
           unset($node->node_export_dependency[$dep_key]);
         }
         else {
@@ -164,6 +160,7 @@ function node_export_dependency_node_export_import_alter($nodes, $format) {
         }
       }
       unset($node->node_export_dependency);
+      node_save($node);
     }
   }
 
@@ -185,8 +182,10 @@ function node_export_dependency_node_export_import_alter($nodes, $format) {
  *   How many iterations to run.
  * @param $seconds
  *   How long to lock others from processing (will release upon completion).
+ * @param $reset
+ *   Whether to reset the node_load_multiple cache.
  */
-function node_export_dependency_process_outstanding_dependencies($iterations, $seconds = 240) {
+function node_export_dependency_process_outstanding_dependencies($iterations, $seconds = 240, $reset = FALSE) {
   if (REQUEST_TIME - variable_get('node_export_dependency_lock', REQUEST_TIME) >= 0) {
     variable_set('node_export_dependency_lock', REQUEST_TIME + $seconds);
     $node_export_dependency = variable_get('node_export_dependency', array());
@@ -206,9 +205,9 @@ function node_export_dependency_process_outstanding_dependencies($iterations, $s
       $dependencies = &$node_export_dependency[$node_uuid];
       foreach ($dependencies as $dep_key => &$dependency) {
         $nids = entity_get_id_by_uuid('node', array($node_uuid));
-        $node = node_load($nids[$node_uuid]);
+        $node = node_load($nids[$node_uuid], $reset);
         if (!empty($node)) {
-          // Try to handle this dependency now, and unset if successfull.
+          // Try to handle this dependency now, and unset if successful.
           if (node_export_dependency_handle_dependency($node, $dependency)) {
             unset($dependencies[$dep_key]);
             node_save($node);
@@ -257,10 +256,25 @@ function node_export_dependency_init() {
 }
 
 /**
- *  Attempt to handle a dependency.
+ * Attempt to handle a dependency.
  *
- *  @return
- *    TRUE or FALSE whether the dependency was handled.
+ * Handles field collection items excluding file/image fields (not supported
+ * yet) and adds the data to the given node.
+ *
+ * Passes all dependencies to hook_node_export_dependency_alter() for external
+ * handling.
+ *
+ * @param $node
+ *   Node object before importing it.
+ * @param $dependency
+ *   Associative array with data for the given dependency as exported under the
+ *   'node_export_dependency' key.
+ *
+ * @return
+ *   TRUE or FALSE whether the dependency was handled.
+ *
+ * @todo
+ *   Implement file/image field handling for field collection items.
  */
 function node_export_dependency_handle_dependency(&$node, $dependency) {
   $handled = FALSE;
@@ -269,6 +283,111 @@ function node_export_dependency_handle_dependency(&$node, $dependency) {
     // We're not handling it, so it is 'handled'.
     return TRUE;
   }
+
+  // Handle exported field collection items.
+  if ($dependency['type'] == 'field_collection_item' &&
+      isset($dependency['node_export_field_collection_data'])) {
+    $entity_controller = new EntityAPIController("field_collection_item");
+    $field_collection_item = $entity_controller
+      ->create($dependency['node_export_field_collection_data']);
+
+    // The import of file/image field data is not yet supported. Thus we need
+    // to remove any file data from the field collection item's fields to avoid
+    // errors about non-existent files during import.
+
+    $supported_file_fields = array_map('trim', explode(',',
+      variable_get('node_export_file_supported_fields', 'file, image')));
+
+    // Gather information about the field collection item's individual fields.
+    $field_info = field_info_instances('field_collection_item',
+      $dependency['field_name']);
+
+    // Loop all fields to remove possibly contained file data.
+    foreach ($field_info as $field_name => $info) {
+      // If this is some file field.
+      if (in_array($info['widget']['module'], $supported_file_fields) && is_array($field_collection_item->{$field_name})) {
+
+        // Import the files, similar to node_export_file_field_import().
+        foreach ($field_collection_item->{$field_name} as $language => $files) {
+          if (is_array($files)) {
+            foreach ($files as $i => $field_value) {
+
+              $file = (object) $field_value;
+
+              $result = _node_export_file_field_import_file($file);
+
+              // The file was saved successfully, update the file field (by reference).
+              if ($result == TRUE && isset($file->fid)) {
+                // Retain any special properties from the original field value.
+                $field_collection_item->{$field_name}[$language][$i] = array_merge($field_value, (array) $file);
+              }
+
+            }
+          }
+        }
+      }
+    }
+
+    // Get the nid of the host node in the target system, if it already exits.
+    $nid = db_query('SELECT nid FROM {node} WHERE uuid = :uuid',
+      array(':uuid' => $node->uuid))->fetchField();
+
+    if ($nid) {
+      // Find the field collection item's current ID if it already exists.
+      $item_id = db_query('
+        SELECT d.' . $dependency['field_name'] . '_value
+        FROM {field_data_' . $dependency['field_name'] . '} d
+        INNER JOIN {field_collection_item} ci ON
+          ci.item_id = d.' . $dependency['field_name'] . '_value
+          AND ci.revision_id = d.' . $dependency['field_name'] . '_revision_id
+        WHERE d.entity_id = :nid AND d.delta = :delta
+        AND ci.field_name = :field_name',
+        array(
+          ':nid' => $nid,
+          ':delta' => $dependency['delta'],
+          ':field_name' =>  $dependency['field_name'])
+      )->fetchField();
+
+      $field_collection_item->item_id = $item_id ? $item_id : NULL;
+    }
+    else {
+      $field_collection_item->item_id = NULL;
+    }
+
+    if ($field_collection_item->item_id) {
+      // The item already exists in the DB, so we need its uuid and revision_id
+      // to overwrite exactly the existing one with the new data.
+      $data = db_query('
+          SELECT revision_id, uuid
+          FROM {field_collection_item}
+          WHERE item_id = :item_id',
+        array(':item_id' => $field_collection_item->item_id))->fetchAssoc();
+
+      $field_collection_item->uuid = $data['uuid'];
+      $field_collection_item->revision_id = $data['revision_id'];
+
+      // Property is not needed.
+      if (property_exists($field_collection_item, 'is_new')) {
+        unset($field_collection_item->is_new);
+      }
+    }
+    // If there is no item_id, i.e. this is a new field collection item.
+    else {
+      $field_collection_item->is_new = TRUE;
+      $field_collection_item->revision_id = NULL;
+
+      // Remove the old uuid, a new one will be created.
+      unset($field_collection_item->uuid);
+    }
+
+    // Add the field collection item data to the node where node_save() expects
+    // it. It will save the new data later.
+    $node->{$dependency['field_name']}[$dependency['langcode']]
+      [$dependency['delta']]['entity'] = $field_collection_item;
+
+    $handled = TRUE;
+  }
+
   if (!isset($dependency['relationship'])) {
     // Entity id.
     $entity_ids = entity_get_id_by_uuid($dependency['type'], array($dependency['uuid']));

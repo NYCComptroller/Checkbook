@@ -98,7 +98,10 @@ class FeedsNodeExportProcessor extends FeedsNodeProcessor {
     node_export_save($node);
     $this->new_nodes[$node->nid] = $node;
     // @todo: Is this what we should do with output messages?
-    drupal_set_message(t("Imported node !nid: !node", array('!nid' => $node->nid, '!node' => l($node->title, 'node/' . $node->nid))));
+    drupal_set_message(t("Imported node !nid: !node", array(
+      '!nid' => $node->nid,
+      '!node' => l($node->title, 'node/' . $node->nid)
+    )));
   }
 
 }

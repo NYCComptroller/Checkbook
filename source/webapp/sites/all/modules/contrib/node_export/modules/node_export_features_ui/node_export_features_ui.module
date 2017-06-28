@@ -1,0 +1,85 @@
+<?php
+/**
+ * @file
+ * Node Export Features UI main module file
+ */
+/**
+ * Implements hook_menu().
+ */
+function node_export_features_ui_menu() {
+  $items = array();
+
+  $items['admin/config/content/node_export/features'] = array(
+    'access arguments' => array('administer site configuration'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('node_export_features_ui_settings'),
+    'title' => 'Features Configuration',
+    'description' => 'Configure filters for nodes available to be exported by node export features',
+    'file' => 'node_export_features_ui.pages.inc',
+    'type' => MENU_LOCAL_TASK,
+     'weight' => 10,
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_query_alter().
+ */
+function node_export_features_ui_query_alter(QueryAlterableInterface $query) {
+  if ($query->hasTag('node_export_features')) {
+    $range = variable_get('node_export_features_ui_range', 250);
+    $types = variable_get('node_export_features_ui_content_types', array());
+    $status = variable_get('node_export_features_ui_status', 0);
+    $promote = variable_get('node_export_features_ui_promote', 0);
+    $sticky = variable_get('node_export_features_ui_sticky', 0);
+    $title = trim(variable_get('node_export_features_ui_title', ''));
+    $uuids = node_export_features_ui_textarea_to_array(variable_get('node_export_features_ui_uuids', ''));
+
+    // Add in the specified conditions.
+    if ( $range ) {
+      $query->range(0, $range);
+    }
+    if ( ! empty($types) ) {
+      $query->condition('type', $types, 'IN');
+    }
+    if ( $status ) {
+      $query->condition('status', $status-1);
+    }
+    if ( $promote ) {
+      $query->condition('promote', $promote-1);
+    }
+    if ( $sticky ) {
+      $query->condition('sticky', $sticky-1);
+    }
+    if ( $title ) {
+      $query->condition('title', $title, 'LIKE');
+    }
+    if ( ! empty($uuids) ) {
+      $query->condition('uuid', $uuids, 'IN');
+    }
+  }
+}
+/**
+ * Utility function to convert a text area into a array of trimmed non-blank lines.
+ *
+ * @param string $area
+ *   The text area value to parse.
+ * @return array
+ *   The parsed array of non-blank trimmed lines found in the area.
+ *   An empty array is returned if no information found.
+ */
+function node_export_features_ui_textarea_to_array( $area ) {
+  $area = trim($area);
+  $results = array();
+  if ( $area ) {
+    $lines = explode("\r\n", $area);
+    foreach ( $lines as $key => $value ) {
+      $result = trim($value);
+      if ( $result ) {
+        $results[] = $result;
+      }
+    }
+  }
+  return $results;
+}

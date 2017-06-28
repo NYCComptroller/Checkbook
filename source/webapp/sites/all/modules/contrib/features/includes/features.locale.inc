@@ -13,7 +13,7 @@ function locale_features_api() {
     'language' => array(
       'name' => t('Languages'),
       'default_hook' => 'locale_default_languages',
-      'features_source' => TRUE,
+      'feature_source' => TRUE,
       'default_file' => FEATURES_DEFAULTS_INCLUDED,
     ),
   );
@@ -134,14 +134,19 @@ function _features_language_save($language) {
       ->fields(array(
         'plurals' => empty($language->plurals) ? 0 : $language->plurals,
         'formula' => empty($language->formula) ? '' : $language->formula,
+        'weight' => empty($language->weight) ? 0 : $language->weight,
       ))
       ->condition('language', $language->language)
       ->execute();
   }
   // Update Existing language.
   else {
-    // @TODO: get properties from schema.
-    $properties = array('language', 'name', 'native', 'direction', 'enabled', 'plurals', 'formula', 'domain', 'prefix', 'weight');
+    // Get field list from table schema.
+    $properties = drupal_schema_fields_sql('languages');
+    // The javascript hash is not in the imported data but should be empty
+    if (!isset($language->javascript)) {
+      $language->javascript = '';
+    }
 
     $fields = array_intersect_key((array) $language, array_flip($properties));
     db_update('languages')

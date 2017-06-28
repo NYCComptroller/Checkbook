@@ -1,0 +1,17 @@
+name = "Node export book"
+description = "Adds Book support to Node export"
+core = 7.x
+dependencies[] = book
+dependencies[] = node_export
+files[] = node_export_book.module
+files[] = node_export_book_utils.inc
+package = "Node export"
+project = node_export
+
+
+; Information added by Drupal.org packaging script on 2016-03-04
+version = "7.x-3.1"
+core = "7.x"
+project = "node_export"
+datestamp = "1457077222"
+

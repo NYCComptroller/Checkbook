@@ -39,5 +39,24 @@ function nodeblock_views_data() {
       'handler' => 'views_handler_sort',
     ),
   );
+  $data['nodeblock']['enabled'] = array(
+    'title' => t('Block available'),
+    'help' => t('Whether the node is available as block.'),
+    'field' => array(
+      'click sortable' => TRUE,
+    ),
+    'field' => array(
+      'handler' => 'views_handler_field_boolean',
+      'click sortable' => TRUE,
+      'output formats' => array(
+        'yes-no' => array(t('Available'), t('Unavailable')),
+      ),
+    ),
+    'filter' => array(
+      'handler' => 'views_handler_filter_boolean_operator',
+      'label' => t('Available as node block'),
+      'type' => 'yes-no',
+    ),
+  );
   return $data;
 }

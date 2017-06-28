@@ -1,0 +1,212 @@
+<?php
+/**
+ * @file
+ *   Adds Book support to the Node export module.
+ */
+
+/**
+ * Implements hook_node_export_node_alter().
+ */
+function node_export_book_node_export_node_alter(&$node, $original_node) {
+  module_load_include('inc', 'node_export_book', 'node_export_book_utils');
+
+  // Throw errors if the node doesn't have a UUID
+  if (module_exists('uuid') and drupal_strlen(_node_export_book_nid_to_uuid($node->nid)) < 1) {
+    drupal_set_message(t('The node %nid does not have a UUID; unable to export!', array('%nid' => $node->nid)), 'error');
+    watchdog('node_export_book', 'Unable to export %nid because it is missing a UUID.', array('%nid' => $node->nid), WATCHDOG_CRITICAL);
+  }
+  elseif (module_exists('book') and property_exists($original_node, 'book')) {
+    // Create a namespace for our export info in the book node
+    if (!property_exists($node, 'node_export_book')) {
+      $node->node_export_book = array();
+    }
+
+    // Dereference the Parent Link ID (PLID) and write the parent node's UUID
+    if (array_key_exists('plid', $original_node->book) and menu_link_load($original_node->book['plid'])) {
+      $node->node_export_book['#parent_uuid'] = _node_export_book_mlid_to_uuid($original_node->book['plid']);
+    }
+    // Dereference the Book ID (BID) and write the book node's UUID
+    if (array_key_exists('bid', $original_node->book) and node_load($original_node->book['bid'])) {
+      $node->node_export_book['#book_uuid'] = _node_export_book_nid_to_uuid($original_node->book['bid']);
+    }
+    // Add the weight of this page in the book heirarchy
+    if (array_key_exists('weight', $original_node->book)) {
+      $node->node_export_book['weight'] = intval($original_node->book['weight']);
+    }
+    if ($original_node->book['bid'] == $original_node->nid) {
+      $node->node_export_book['#is_root'] = TRUE;
+    }
+    else {
+      $node->node_export_book['#is_root'] = FALSE;
+    }
+
+    // When we're done, unset the book info in the node, so it isn't exported
+    // and book.module on the destination site can't get confused
+    unset($node->book);
+  }
+}
+
+/**
+ * Implements hook_node_export_after_import_alter().
+ */
+function node_export_book_node_export_after_import_alter(&$nodes, $format, $save) {
+  module_load_include('inc', 'node_export_book', 'node_export_book_utils');
+
+  if (module_exists('book')) {
+    // A smaller array of child nodes to parse later
+    $child_nodes = array();
+
+    // Loop through all the nodes, process books, and build a smaller array of nodes to parse later
+    foreach ($nodes as &$node) {
+      if (book_type_is_allowed($node->type) and property_exists($node, 'node_export_book')) {
+        // If this is a root book node, create the book
+        if (array_key_exists('#is_root', $node->node_export_book) and $node->node_export_book['#is_root']) {
+          $node->book = array('bid' => 'new');
+          book_node_update($node);
+        }
+        // Otherwise, it's a child node, so add it to a smaller array of nodes to parse
+        else {
+          $child_nodes[] = &$node;
+        }
+      }
+    }
+
+    // Add each child node to the book as a root item
+    foreach ($child_nodes as &$node) {
+      // Find the root book node
+      $book_nid = _node_export_book_uuid_to_nid($node->node_export_book['#book_uuid']);
+
+      // Set up the data we need to make this node a child of the root book node
+      $node->book = array();
+      $node->book['bid'] = $book_nid;
+      $node->book['plid'] = _node_export_book_nid_to_mlid($book_nid);
+
+      // Also set up the weight
+      $node->book['weight'] = $node->node_export_book['weight'];
+
+      // Add this node to the book
+      book_node_update($node);
+
+      // Derefernce the parent node's UUID to a nid
+      $node->node_export_book['#parent_nid'] = _node_export_book_uuid_to_nid($node->node_export_book['#parent_uuid']);
+    }
+
+    // Re-structure the book as it was on the source site
+    foreach ($child_nodes as &$node) {
+      // Force a reload of the node
+      $updated_node = node_load($node->nid, NULL, TRUE);
+
+      // Update this node's Parent Link ID (PLID)
+      $updated_node->book['plid'] = _node_export_book_nid_to_mlid($node->node_export_book['#parent_nid']);
+
+      // Update the node
+      book_node_update($updated_node);
+    }
+  }
+}
+
+/**
+ * Implements hook_menu().
+ */
+function node_export_book_menu() {
+  $items = array();
+
+  $items['admin/content/book/node_export_book/%node'] = array(
+    'title' => 'Export book',
+    'page callback' => '_node_export_book_run_export',
+    'page arguments' => array(4),
+    'access arguments' => array('export bulk nodes'),
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+/**
+ * Helper function to export a book.
+ */
+function _node_export_book_run_export($book_root) {
+  if (module_exists('node_export') and module_exists('book')) {
+    $nids = array();
+
+    // Include some useful utilities
+    module_load_include('inc', 'node_export_book', 'node_export_book_utils');
+    module_load_include('inc', 'node_export', 'node_export.pages');
+
+    // Get a list of all nodes in this book
+    $tree = book_menu_subtree_data(menu_link_load(_node_export_book_nid_to_mlid($book_root->nid)));
+    $nids = _node_export_book_get_nids($tree);
+
+    return node_export_gui($nids);
+  }
+}
+
+/**
+ * Helper function to return the node ID of a book page
+ */
+function _node_export_book_get_nids($tree) {
+  $answer = array();
+
+  foreach ($tree as $key => $value) {
+    // Base case: menu item is a node
+    if (is_numeric($tree[$key]['link']['nid'])) {
+      $answer[] = $tree[$key]['link']['nid'];
+    }
+
+    // Recursive case: menu item has children
+    if ($tree[$key]['below']) {
+      $sub_nids = _node_export_book_get_nids($tree[$key]['below']);
+      $answer = array_merge($answer, $sub_nids);
+    }
+  }
+
+  return $answer;
+}
+
+/**
+ * Implements hook_menu_alter().
+ */
+function node_export_book_menu_alter(&$items) {
+  // Alter the page callback for the book overview page
+  $items['admin/content/book']['page callback'] = '_node_export_book_book_admin_overview';
+}
+
+/**
+ * Helper function to override the book overview page and add an Export book
+ * operation.
+ *
+ * @see book_admin_overview()
+ */
+function _node_export_book_book_admin_overview() {
+  $rows = array();
+
+  $headers = array(t('Book'), t('Operations'));
+
+  // Add any recognized books to the table list.
+  foreach (book_get_books() as $book) {
+    $operations = array(
+      'links' => array(
+        'edit' => array(
+          'title' => t('edit order and titles'),
+          'href' => 'admin/content/book/' . $book['nid'],
+        ),
+        'export' => array(
+          'title' => t('export book'),
+          'href' => 'admin/content/book/node_export_book/' . $book['nid'],
+        ),
+      ),
+      'attributes' => array('class' => array('links', 'inline')),
+    );
+
+    $rows[] = array(
+      l($book['title'], $book['href'], $book['options']),
+      theme('links', $operations)
+    );
+  }
+
+  return theme('table', array(
+    'header' => $headers,
+    'rows' => $rows,
+    'empty' => t('No books available.')
+  ));
+}

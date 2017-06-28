@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * The Node export features ui install/uninstall code.
+ */
+
+/**
+ * Implements hook_uninstall().
+ */
+function node_export_features_ui_uninstall() {
+  $settings = array(
+    'node_export_features_ui_range',
+    'node_export_features_ui_content_types',
+    'node_export_features_ui_status',
+    'node_export_features_ui_promote',
+    'node_export_features_ui_sticky',
+    'node_export_features_ui_title',
+    'node_export_features_ui_uuids',
+  );
+  foreach ( $settings as $setting ) {
+    variable_del($setting);
+  }
+}

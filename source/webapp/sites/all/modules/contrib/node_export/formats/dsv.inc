@@ -18,7 +18,7 @@ function node_export_dsv_settings($form, $form_state) {
      'Select how your DSV output will be formatted - this must be configured the
      same on both sites.  By default this is configured to RFC4180 CSV format
      where the delimiter is a comma (,), the enclosure is a double-quote ("),
-     and the seperator is CRLF (\r\n).  Not all configurations may be possible,
+     and the separator is CRLF (\r\n).  Not all configurations may be possible,
      use wisely.  Enclosure will only be used to escape values that contain any
      of the configured strings.  Additionally single-quotes will be used to
      escape values that are equivalent to reserved words (NULL, TRUE, FALSE).'
@@ -45,12 +45,12 @@ function node_export_dsv_settings($form, $form_state) {
     '#required' => TRUE,
   );
 
-  $settings['dsv']['node_export_dsv_seperator'] = array(
+  $settings['dsv']['node_export_dsv_separator'] = array(
     '#type' => 'textfield',
-    '#title' => t('Record seperator'),
+    '#title' => t('Record separator'),
     '#size' => 5,
     '#maxlength' => 255,
-    '#default_value' => variable_get('node_export_dsv_seperator', '\r\n'),
+    '#default_value' => variable_get('node_export_dsv_separator', '\r\n'),
     '#required' => TRUE,
   );
 
@@ -82,15 +82,15 @@ function node_export_dsv_string($string) {
 function node_export_dsv_export($nodes, $format) {
   $delimiter = node_export_dsv_string(variable_get('node_export_dsv_delimiter', ','));
   $enclosure = node_export_dsv_string(variable_get('node_export_dsv_enclosure', '"'));
-  $seperator = node_export_dsv_string(variable_get('node_export_dsv_seperator', '\r\n'));
+  $separator = node_export_dsv_string(variable_get('node_export_dsv_separator', '\r\n'));
   $escape_eol = variable_get('node_export_dsv_escape_eol', 1);
-  return node_export_dsv_encode($nodes, $delimiter, $enclosure, $seperator, $escape_eol);
+  return node_export_dsv_encode($nodes, $delimiter, $enclosure, $separator, $escape_eol);
 }
 
 /**
  * Build DSV string.
  */
-function node_export_dsv_encode($nodes, $delimiter, $enclosure, $seperator, $escape_eol) {
+function node_export_dsv_encode($nodes, $delimiter, $enclosure, $separator, $escape_eol) {
   $encoded_nodes = array();
   $dsv_lines = array();
 
@@ -110,7 +110,7 @@ function node_export_dsv_encode($nodes, $delimiter, $enclosure, $seperator, $esc
     }
   }
 
-  return node_export_dsv_array_to_dsv($dsv_lines, $delimiter, $enclosure, $seperator, $escape_eol);
+  return node_export_dsv_array_to_dsv($dsv_lines, $delimiter, $enclosure, $separator, $escape_eol);
 }
 
 /**
@@ -199,16 +199,16 @@ function node_export_dsv_encode_header_value($parents, $var, $k) {
 function node_export_dsv_import($code_string) {
   $delimiter = node_export_dsv_string(variable_get('node_export_dsv_delimiter', ','));
   $enclosure = node_export_dsv_string(variable_get('node_export_dsv_enclosure', '"'));
-  $seperator = node_export_dsv_string(variable_get('node_export_dsv_seperator', '\r\n'));
-  return node_export_dsv_decode($code_string, $delimiter, $enclosure, $seperator);
+  $separator = node_export_dsv_string(variable_get('node_export_dsv_separator', '\r\n'));
+  return node_export_dsv_decode($code_string, $delimiter, $enclosure, $separator);
 }
 
 /**
  *  Interpret a DSV string.
  */
-function node_export_dsv_decode($code_string, $delimiter, $enclosure, $seperator) {
+function node_export_dsv_decode($code_string, $delimiter, $enclosure, $separator) {
   // Get array data from DSV.
-  $array = @node_export_dsv_dsv_to_array($code_string, $delimiter, $enclosure, $seperator);
+  $array = @node_export_dsv_dsv_to_array($code_string, $delimiter, $enclosure, $separator);
 
   // If the first two rows are of equal length, we can assume this is a DSV.
   // Also checks there are a decent number of fields.
@@ -235,7 +235,7 @@ function node_export_dsv_decode($code_string, $delimiter, $enclosure, $seperator
 /**
  *  Encode DSV.
  */
-function node_export_dsv_array_to_dsv($array, $delimiter, $enclosure, $seperator, $escape_eol) {
+function node_export_dsv_array_to_dsv($array, $delimiter, $enclosure, $separator, $escape_eol) {
   $lines = array();
   foreach ($array as $line) {
     $out_item = array();
@@ -246,7 +246,7 @@ function node_export_dsv_array_to_dsv($array, $delimiter, $enclosure, $seperator
       if (
         (stripos($item, $delimiter) !== FALSE)
         || (stripos($item, $enclosure) !== FALSE)
-        || (stripos($item, $seperator) !== FALSE)
+        || (stripos($item, $separator) !== FALSE)
         || ($escape_eol && stripos($item, "\n") !== FALSE)
       ) {
         $item = $enclosure . $item . $enclosure;
@@ -255,13 +255,13 @@ function node_export_dsv_array_to_dsv($array, $delimiter, $enclosure, $seperator
     }
     $lines[] = implode($delimiter, $out_item);
   }
-  return implode($seperator, $lines);
+  return implode($separator, $lines);
 }
 
 /**
  *  Decode DSV.
  */
-function node_export_dsv_dsv_to_array($string, $delimiter, $enclosure, $seperator) {
+function node_export_dsv_dsv_to_array($string, $delimiter, $enclosure, $separator) {
   $lines = array();
   $out_item = array();
   $count = strlen($string);
@@ -269,15 +269,15 @@ function node_export_dsv_dsv_to_array($string, $delimiter, $enclosure, $seperato
   $double_escape = FALSE;
   $position = 0;
   $i = 0;
-  $seperators = str_split($seperator);
+  $separators = str_split($separator);
 
   while ($i < $count) {
     $c = $string[$i];
 
     // Determine whether this is an EOL.
     $is_eol = TRUE;
-    for ($j = 0; $j < count($seperators); $j++) {
-      if (!isset($string[$i + $j]) || $string[$i + $j] != $seperators[$j]) {
+    for ($j = 0; $j < count($separators); $j++) {
+      if (!isset($string[$i + $j]) || $string[$i + $j] != $separators[$j]) {
         $is_eol = FALSE;
         break;
       }
@@ -288,7 +288,7 @@ function node_export_dsv_dsv_to_array($string, $delimiter, $enclosure, $seperato
         $out_item[$position] .= $c;
       }
       else {
-        $i += count($seperators);
+        $i += count($separators);
         $lines[] = $out_item;
         $out_item = array();
         $position = 0;
