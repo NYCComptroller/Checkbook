@@ -411,18 +411,8 @@ class view extends views_db_object {
    * Figure out what the exposed input for this view is.
    */
   function get_exposed_input() {
-    // Fill our input either from $_GET or from something previously set on the
-    // view.
     if (empty($this->exposed_input)) {
-      $this->exposed_input = $_GET;
-      // unset items that are definitely not our input:
-      foreach (array('page', 'q') as $key) {
-        if (isset($this->exposed_input[$key])) {
-          unset($this->exposed_input[$key]);
-        }
-      }
-
-      // If we have no input at all, check for remembered input via session.
+      $this->exposed_input = array();
 
       // If filters are not overridden, store the 'remember' settings on the
       // default display. If they are, store them on this display. This way,
@@ -430,8 +420,16 @@ class view extends views_db_object {
       // remember settings.
       $display_id = ($this->display_handler->is_defaulted('filters')) ? 'default' : $this->current_display;
 
-      if (empty($this->exposed_input) && !empty($_SESSION['views'][$this->name][$display_id])) {
+      // Start with remembered input via session.
+      if (!empty($_SESSION['views'][$this->name][$display_id])) {
         $this->exposed_input = $_SESSION['views'][$this->name][$display_id];
+      }
+
+      // Fetch exposed input values from $_GET. Overwrite if clashing.
+      foreach ($_GET as $key => $value) {
+        if (!in_array($key, array('page', 'q'))) {
+          $this->exposed_input[$key] = $value;
+        }
       }
     }
 
@@ -685,6 +683,10 @@ class view extends views_db_object {
    */
   function init_pager() {
     if (empty($this->query->pager)) {
+      // If the query doesn't exist, initialize it.
+      if (empty($this->query)) {
+        $this->init_query();
+      }
       $this->query->pager = $this->display_handler->get_plugin('pager');
 
       if ($this->query->pager->use_pager()) {
@@ -812,8 +814,6 @@ class view extends views_db_object {
           if (isset($arg)) {
             $this->args[$position] = $arg;
           }
-          // remember that this argument was computed, not passed on the URL.
-          $argument->is_default = TRUE;
         }
 
         // Set the argument, which will also validate that the argument can be set.
@@ -1150,7 +1150,7 @@ class view extends views_db_object {
       $cache = $this->display_handler->get_plugin('cache');
     }
     if ($cache && $cache->cache_get('results')) {
-      if($this->query->pager->use_pager()) {
+      if($this->query->pager->use_pager() || !empty($this->get_total_rows)) {
         $this->query->pager->total_items = $this->total_rows;
         $this->query->pager->update_page_info();
       }
@@ -1284,7 +1284,7 @@ class view extends views_db_object {
     foreach ($GLOBALS['base_theme_info'] as $base) {
       $function = $base->name . '_views_post_render';
       if (function_exists($function)) {
-        $function($this);
+        $function($this, $this->display_handler->output, $cache);
       }
     }
     $function = $GLOBALS['theme'] . '_views_post_render';
@@ -1480,7 +1480,7 @@ class view extends views_db_object {
    * this sets the display handler if it hasn't been.
    */
   function access($displays = NULL, $account = NULL) {
-    // Noone should have access to disabled views.
+    // No one should have access to disabled views.
     if (!empty($this->disabled)) {
       return FALSE;
     }
@@ -1593,7 +1593,7 @@ class view extends views_db_object {
       $position = 0;
       if (!empty($this->argument)) {
         foreach ($this->argument as $argument_id => $argument) {
-          if (!empty($argument->is_default) && !empty($argument->options['default_argument_skip_url'])) {
+          if (!empty($argument->options['default_argument_skip_url'])) {
             unset($args[$position]);
           }
           $position++;
@@ -1818,6 +1818,9 @@ class view extends views_db_object {
       $this->vid = $vid ? $vid : NULL;
     }
 
+    // Let modules modify the view just prior to saving it.
+    module_invoke_all('views_view_presave', $this);
+
     $transaction = db_transaction();
 
     try {
@@ -1848,6 +1851,9 @@ class view extends views_db_object {
 
     // Clear caches.
     views_invalidate_cache();
+
+    // Notify modules that this view has been saved.
+    module_invoke_all('views_view_save', $this);
   }
 
   /**
@@ -1887,6 +1893,9 @@ class view extends views_db_object {
       // Clear caches.
       views_invalidate_cache();
     }
+
+    // Notify modules that this view has been deleted.
+    module_invoke_all('views_view_delete', $this);
   }
 
   /**
@@ -1953,12 +1962,12 @@ class view extends views_db_object {
    *    The cloned view.
    */
   function clone_view() {
-    $clone = version_compare(phpversion(), '5.0') < 0 ? $this : clone($this);
+    $clone = clone $this;
 
     $keys = array('current_display', 'display_handler', 'build_info', 'built', 'executed', 'attachment_before', 'attachment_after', 'field', 'argument', 'filter', 'sort', 'relationship', 'header', 'footer', 'empty', 'query', 'inited', 'style_plugin', 'plugin_name', 'exposed_data', 'exposed_input', 'exposed_widgets', 'many_to_one_tables', 'feed_icon');
     foreach ($keys as $key) {
-      if (isset($clone->$key)) {
-        unset($clone->$key);
+      if (isset($clone->{$key})) {
+        unset($clone->{$key});
       }
     }
     $clone->built = $clone->executed = FALSE;
@@ -1987,7 +1996,7 @@ class view extends views_db_object {
    */
   function destroy() {
     foreach (array_keys($this->display) as $display_id) {
-      if (isset($this->display[$display_id]->handler)) {
+      if (isset($this->display[$display_id]->handler) && is_object($this->display[$display_id]->handler)) {
         $this->display[$display_id]->handler->destroy();
         unset($this->display[$display_id]->handler);
       }
@@ -2076,25 +2085,26 @@ class view extends views_db_object {
   }
 
   /**
-   * Find and initialize the localizer plugin.
+   * Find and initialize the localization plugin.
    */
   function init_localization() {
-    if (isset($this->localization_plugin) && is_object($this->localization_plugin)) {
-      return TRUE;
+    // If the translate attribute isn't set, init the localization plugin.
+    if (!isset($this->localization_plugin->translate)) {
+      $this->localization_plugin = views_get_plugin('localization', views_get_localization_plugin());
+
+      // If the plugin is still not set, turn off all localization by using the
+      // views_plugin_localization_none plugin. This plugin has the translate
+      // property set to FALSE, signifying localization should not occur.
+      if (empty($this->localization_plugin)) {
+        $this->localization_plugin = views_get_plugin('localization', 'none');
+      }
+
+      // Init the plugin.
+      $this->localization_plugin->init($this);
     }
 
-    $this->localization_plugin = views_get_plugin('localization', views_get_localization_plugin());
-
-    if (empty($this->localization_plugin)) {
-      $this->localization_plugin = views_get_plugin('localization', 'none');
-      return FALSE;
-    }
-
-    /**
-    * Figure out whether there should be options.
-    */
-    $this->localization_plugin->init($this);
-
+    // Return the value of the translate property. This is set to FALSE if
+    // localization is off.
     return $this->localization_plugin->translate;
   }
 
@@ -2102,6 +2112,10 @@ class view extends views_db_object {
    * Determine whether a view supports admin string translation.
    */
   function is_translatable() {
+    // Use translation no matter what type of view.
+    if (variable_get('views_localize_all', FALSE)) {
+      return TRUE;
+    }
     // If the view is normal or overridden, use admin string translation.
     // A newly created view won't have a type. Accept this.
     return (!isset($this->type) || in_array($this->type, array(t('Normal'), t('Overridden')))) ? TRUE : FALSE;
@@ -2566,7 +2580,7 @@ class views_display extends views_db_object {
   var $display_options;
 
   var $db_table = 'views_display';
-  function views_display($init = TRUE) {
+  function __construct($init = TRUE) {
     parent::init($init);
   }
 

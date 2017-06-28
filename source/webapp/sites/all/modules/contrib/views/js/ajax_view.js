@@ -57,8 +57,11 @@ Drupal.views.ajaxView = function(settings) {
   this.settings = settings;
 
   // Add the ajax to exposed forms.
-  this.$exposed_form = $('form#views-exposed-form-'+ settings.view_name.replace(/_/g, '-') + '-' + settings.view_display_id.replace(/_/g, '-'));
+  this.$exposed_form = $('#views-exposed-form-'+ settings.view_name.replace(/_/g, '-') + '-' + settings.view_display_id.replace(/_/g, '-'));
   this.$exposed_form.once(jQuery.proxy(this.attachExposedFormAjax, this));
+
+  // Store Drupal.ajax objects here for all pager links.
+  this.links = [];
 
   // Add the ajax to pagers.
   this.$view
@@ -67,6 +70,12 @@ Drupal.views.ajaxView = function(settings) {
     .filter(jQuery.proxy(this.filterNestedViews, this))
     .once(jQuery.proxy(this.attachPagerAjax, this));
 
+  // Add a trigger to update this view specifically. In order to trigger a
+  // refresh use the following code.
+  //
+  // @code
+  // jQuery('.view-name').trigger('RefreshView');
+  // @endcode
   // Add a trigger to update this view specifically.
   var self_settings = this.element_settings;
   self_settings.event = 'RefreshView';
@@ -117,6 +126,7 @@ Drupal.views.ajaxView.prototype.attachPagerLinkAjax = function(id, link) {
 
   this.element_settings.submit = viewData;
   this.pagerAjax = new Drupal.ajax(false, $link, this.element_settings);
+  this.links.push(this.pagerAjax);
 };
 
 Drupal.ajax.prototype.commands.viewsScrollTop = function (ajax, response, status) {

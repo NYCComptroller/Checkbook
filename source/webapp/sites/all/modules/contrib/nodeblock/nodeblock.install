@@ -44,14 +44,14 @@ function nodeblock_schema() {
         'type' => 'varchar',
         'length' => 255,
         'not null' => TRUE,
-        'default' => 0,
+        'default' => '0',
       ),
       'comment_link' => array(
         'description' => 'Whether the comment links should be shown.',
         'type' => 'varchar',
         'length' => 255,
         'not null' => TRUE,
-        'default' => 0,
+        'default' => '0',
       ),
       'translation_fallback' => array(
         'description' => 'A flag indicating whether the translation fallback is enabled.',
@@ -120,6 +120,7 @@ function nodeblock_update_7101() {
  * Adding a new nodeblock table and create entries for all existing nodeblocks.
  */
 function nodeblock_update_7102() {
+  module_load_include('module', 'nodeblock');
   if (!db_table_exists('nodeblock')) {
     $schema = nodeblock_schema();
     db_create_table('nodeblock', $schema['nodeblock']);
@@ -132,35 +133,37 @@ function nodeblock_update_7102() {
       }
     }
 
-    $results = db_select('node', 'n')
-      ->fields('n', array('nid'))
-      ->condition('type', $enabled_types)
-      ->execute()
-      ->fetchCol();
+    if (count($enabled_types)) {
+      $results = db_select('node', 'n')
+        ->fields('n', array('nid'))
+        ->condition('type', $enabled_types)
+        ->execute()
+        ->fetchCol();
 
-    $defaults = array(
-        'comment_link' => 'node_block_default',
-        'node_link' => 'node_block_default',
-        'view_mode' => 'node_block_default');
+      $defaults = array(
+          'comment_link' => 'node_block_default',
+          'node_link' => 'node_block_default',
+          'view_mode' => 'node_block_default');
 
-    foreach ($results as $nid) {
-      $settings = variable_get('nodeblock_block_' . $nid, $defaults);
-      $settings = array_merge($defaults, $settings);
-      if(isset($settings['teaser']) && $settings['teaser'] == 1) {
-        $settings['view_mode'] == 'teaser';
+      foreach ($results as $nid) {
+        $settings = variable_get('nodeblock_block_' . $nid, $defaults);
+        $settings = array_merge($defaults, $settings);
+        if(isset($settings['teaser']) && $settings['teaser'] == 1) {
+          $settings['view_mode'] == 'teaser';
+        }
+        if(isset($settings['links']) && $settings['links'] == 1) {
+          $settings['node_link'] = 1;
+          $settings['comment_link'] = 1;
+        }
+
+        db_insert('nodeblock')
+          ->fields(array('nid', 'machine_name', 'view_mode', 'node_link', 'comment_link', 'translation_fallback'))
+          ->values(array($nid, $nid, $settings['view_mode'], $settings['node_link'], $settings['comment_link'], variable_get('nodeblock_translation_fallback_' . $nid, 0)))
+          ->execute();
+
+        variable_del('nodeblock_translation_fallback_' . $nid);
+        variable_del('nodeblock_block_' . $nid);
       }
-      if(isset($settings['links']) && $settings['links'] == 1) {
-        $settings['node_link'] = 1;
-        $settings['comment_link'] = 1;
-      }
-
-      db_insert('nodeblock')
-        ->fields(array('nid', 'machine_name', 'view_mode', 'node_link', 'comment_link', 'translation_fallback'))
-        ->values(array($nid, $nid, $settings['view_mode'], $settings['node_link'], $settings['comment_link'], variable_get('nodeblock_translation_fallback_' . $nid, 0)))
-        ->execute();
-
-      variable_del('nodeblock_translation_fallback_' . $nid);
-      variable_del('nodeblock_block_' . $nid);
     }
   }
 }
@@ -169,6 +172,7 @@ function nodeblock_update_7102() {
  * Add new block title column in db.
  */
 function nodeblock_update_7103() {
+  module_load_include('module', 'nodeblock');
   if (!db_field_exists('nodeblock', 'block_title')) {
     db_add_field('nodeblock', 'block_title', array(
       'description' => 'The block title for a block.',
@@ -187,16 +191,31 @@ function nodeblock_update_7103() {
     }
   }
 
-  $results = db_select('node', 'n')
-    ->fields('n', array('nid', 'title'))
-    ->condition('type', $enabled_types)
-    ->execute();
-
-  foreach ($results as $node) {
-    db_update('nodeblock')
-      ->fields(array('block_title' => $node->title))
-      ->condition('nid', $node->nid)
+  if (count($enabled_types)) {
+    $results = db_select('node', 'n')
+      ->fields('n', array('nid', 'title'))
+      ->condition('type', $enabled_types)
       ->execute();
+
+    foreach ($results as $node) {
+      db_update('nodeblock')
+        ->fields(array('block_title' => $node->title))
+        ->condition('nid', $node->nid)
+        ->execute();
+    }
+  }
+}
+
+/**
+ * `Show the Block title field in the Node Block fieldset` default value, change schema weight.
+ */
+function nodeblock_update_7104() {
+  $types = node_type_get_types();
+  foreach ($types as $type_name => $type) {
+    if ($var = variable_get('nodeblock_node_overrides_' . $type_name)) {
+      $var[] = 'block_title_in_fieldset';
+      variable_set('nodeblock_node_overrides_' . $type_name, $var);
+    }
   }
 }
 
@@ -205,18 +224,25 @@ function nodeblock_update_7103() {
  */
 function nodeblock_uninstall() {
   $types = node_type_get_types();
+
   foreach ($types as $type_name => $type) {
     if (variable_get('nodeblock_' . $type_name, 0)) {
       variable_del('nodeblock_' . $type_name);
       variable_del('nodeblock_comment_link_' . $type_name);
       variable_del('nodeblock_node_link_' . $type_name);
       variable_del('nodeblock_view_mode_' . $type_name);
+      variable_del('nodeblock_node_overrides_' . $type_name);
+      variable_del('nodeblock_node_override_block_available_' . $type_name);
+      variable_del('nodeblock_node_override_block_title_field_' . $type_name);
     }
   }
-    db_delete('block')
-      ->condition('module', 'nodeblock')
-      ->execute();
-    db_delete('block_role')
-      ->condition('module', 'nodeblock')
-      ->execute();
+  db_delete('block')
+    ->condition('module', 'nodeblock')
+    ->execute();
+  db_delete('block_role')
+    ->condition('module', 'nodeblock')
+    ->execute();
+
+  variable_del('nodeblock_dangerous_force_block_caching');
+  variable_del('nodeblock_table_exists');
 }

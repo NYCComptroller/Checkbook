@@ -61,7 +61,7 @@ function node_export_relation_node_reference_update($nodes) {
 /**
  * Recursively load node references.
  */
-function node_export_relation_node_reference_load(&$nodes, $nid) {
+function node_export_relation_node_reference_load(&$nodes, $nid, $reset = FALSE) {
   // Alias for easy referencing.
   $node = &$nodes[$nid];
 
@@ -76,12 +76,12 @@ function node_export_relation_node_reference_load(&$nodes, $nid) {
             // Load the referenced nodes only if its not already loaded
             // This will save if from infinite loop of back references
             if (!isset($nodes[$node_reference['nid']])) {
-              $new_node = node_load($node_reference['nid']);
-              if (node_export_access_export($new_node)) {
+              $new_node = node_load($node_reference['nid'], NULL, $reset);
+              if (node_export_access_export($new_node, $reset)) {
                 $new_node = node_export_prepare_node($new_node);
                 $nodes[$new_node->nid] = $new_node;
                 // Recursively load references of new nodes
-                node_export_relation_node_reference_load($nodes, $new_node->nid);
+                node_export_relation_node_reference_load($nodes, $new_node->nid, $reset);
               }
               elseif (!variable_get('node_export_node_reference_skip', TRUE)) {
                 // Set this node to FALSE to trigger an error in node export.
