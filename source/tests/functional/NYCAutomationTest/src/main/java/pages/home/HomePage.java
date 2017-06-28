@@ -107,7 +107,8 @@ public class HomePage {
 	}
 	
 	public static String GetWidgetTotalNumberText(String WidgetTitle) {
-		List<WebElement> panelContainers = Driver.Instance.findElements(By.cssSelector(".bottomContainer > .panel-display > .panel-panel > .inside > .panel-pane"));
+//		List<WebElement> panelContainers = Driver.Instance.findElements(By.cssSelector(".bottomContainer > .panel-display > .panel-panel > .inside > .panel-pane"));
+		List<WebElement> panelContainers = Driver.Instance.findElements(By.cssSelector(".bottomContainer > .panel-display > .panel-panel > div > .panel-pane"));
 		for (WebElement panelContainer : panelContainers) {
 			WebElement header= panelContainer.findElement(By.tagName("h2"));
 			String subTitle = header.getText().substring(0, header.getText().indexOf("Number")-1);
