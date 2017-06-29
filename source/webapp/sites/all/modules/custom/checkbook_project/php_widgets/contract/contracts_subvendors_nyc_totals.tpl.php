@@ -42,7 +42,7 @@
                         <?php echo $dollars; ?>
                     </a>
                     <?php }else{?>
-                    <?php echo $count; ?><br>Active<br>Expense Contracts<br><?php echo $dollars; ?>
+                    <?php echo $count; ?><br>Total Active<br>Sub Vendor Contracts<br><?php echo $dollars; ?>
                     <?php }?>           
                 </div>
                 <div class="indicator"></div>
