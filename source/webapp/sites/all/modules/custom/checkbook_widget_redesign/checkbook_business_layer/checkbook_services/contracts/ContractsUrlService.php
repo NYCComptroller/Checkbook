@@ -188,7 +188,7 @@ class ContractsUrlService {
             .RequestUtilities::_getUrlParamString('csize')
             .RequestUtilities::_getUrlParamString('awdmethod')
             .RequestUtilities::_getUrlParamString('status')
-            //.RequestUtilities::_getUrlParamString('bottom_slider')
+            .RequestUtilities::_getUrlParamString('bottom_slider')
             ._checkbook_project_get_year_url_param_string()
             ."/agency/".$agency_id
             ."?expandBottomCont=true";
@@ -294,7 +294,7 @@ class ContractsUrlService {
             . _checkbook_project_get_url_param_string("vendor","fvendor")
             . _checkbook_project_get_url_param_string('awdmethod')
             . _checkbook_project_get_url_param_string('csize')
-            . _checkbook_project_get_url_param_string('bottom_silder')
+            . _checkbook_project_get_url_param_string('bottom_slider')
             . $mwbe_param . $subvendor_param . $vendor_param . $industry_param
             . _checkbook_project_get_year_url_param_string()
             . self::getDocumentCodeUrlString($parameters)
