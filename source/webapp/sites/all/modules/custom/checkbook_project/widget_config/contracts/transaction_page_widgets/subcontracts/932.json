@@ -81,11 +81,11 @@
             "type": "expression2",
             "expression": " '<a href=\"/contracts_landing'
             . _checkbook_append_url_params()
-            .((_getLastRequestParamValue($_SERVER['HTTP_REFERER'],'contstatus')['contstatus'] != NULL) ? ('/status/'._getLastRequestParamValue($_SERVER['HTTP_REFERER'],'contstatus')['contstatus'] ): '')
-            .((_getLastRequestParamValue($_SERVER['HTTP_REFERER'],'status')['status'] != NULL) ? ('/status/'._getLastRequestParamValue($_SERVER['HTTP_REFERER'],'status')['status'] ): '')
-            .((_getLastRequestParamValue($_SERVER['HTTP_REFERER'],'bottom_slider')['bottom_slider'] != NULL) ? ('/bottom_slider/'._getLastRequestParamValue($_SERVER['HTTP_REFERER'],'bottom_slider')['bottom_slider'] ): '')
+            . _checkbook_project_get_url_param_string(\"year\", null, true)
+            . _checkbook_project_get_url_param_string(\"yeartype\", null, true)
+            . _checkbook_project_get_url_param_string(\"contstatus\",\"status\", true)
             . '/agency/' . $row['agency_id']
-            .  '?expandBottomCont=true\">'. $row['agency_formatted'] . '</a>'  "
+            . '?expandBottomCont=true\">'. $row['agency_formatted'] . '</a>'  "
         },
         "purpose_formatted": {
             "type": "expression2",
@@ -107,9 +107,7 @@
         },
         "subvendor_name": {
             "type": "expression2",
-            "expression": "$row['sub_vendor_name'] == NULL ? 'NOT PROVIDED' : '<a href=\"/contracts_landing'  
-                                . ContractUtil::get_contracts_vendor_link_sub($row[sub_vendor_id],_getRequestParamValue('year'),_getRequestParamValue('yeartype'), null, $row[sub_minority_type_id]) 
-                                .  '?expandBottomCont=true\">' .$row[subvendor_name_formatted]. '</a>'"
+            "expression": "$row['sub_vendor_name'] == NULL ? 'NOT PROVIDED' : '<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row[sub_vendor_id],_getRequestParamValue('year'),_getRequestParamValue('yeartype'), null, $row[sub_minority_type_id]) .  '?expandBottomCont=true\">' .$row[subvendor_name_formatted]. '</a>'"
         },
         "subvendor_name_export": {
             "type": "expression2",

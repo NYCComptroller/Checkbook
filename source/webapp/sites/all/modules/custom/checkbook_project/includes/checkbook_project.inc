@@ -1426,9 +1426,12 @@ function _checkbook_project_get_year_url_param_string($applySpendingYear=false, 
 * returns keyvalue pair string is present in URL
 * @return string
 */
-function _checkbook_project_get_url_param_string($key,$key_alias =  null){
+function _checkbook_project_get_url_param_string($key,$key_alias =  null, $ajaxPath = FALSE){
   
   $urlPath = drupal_get_path_alias($_GET['q']);
+  if($ajaxPath)
+    $urlPath = $_SERVER['HTTP_REFERER'];
+  
   $pathParams = explode('/', $urlPath);
   $keyIndex = NULL;
   foreach($pathParams as $index => $value){
