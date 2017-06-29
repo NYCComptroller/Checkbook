@@ -84,6 +84,7 @@
             . _checkbook_project_get_url_param_string(\"year\", null, true)
             . _checkbook_project_get_url_param_string(\"yeartype\", null, true)
             . _checkbook_project_get_url_param_string(\"contstatus\",\"status\", true)
+            . _checkbook_project_get_url_param_string(\"bottom_slider\",null, true)
             . '/agency/' . $row['agency_id']
             . '?expandBottomCont=true\">'. $row['agency_formatted'] . '</a>'  "
         },
