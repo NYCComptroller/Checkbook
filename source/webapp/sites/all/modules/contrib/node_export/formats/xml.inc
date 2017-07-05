@@ -189,6 +189,9 @@ class NodeExportXmlDecoder {
           return NULL;
         }
       }
+      elseif (!empty($stack['attributes']['_NUMERIC_KEYS'])) {
+        return array();
+      }
       return htmlspecialchars_decode(trim($stack['data']));
     }
     else {

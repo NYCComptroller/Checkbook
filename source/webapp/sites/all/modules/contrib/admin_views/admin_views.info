@@ -3,16 +3,16 @@ description = Replaces all system object management pages in Drupal core with re
 package = Administration
 core = 7.x
 dependencies[] = views
-dependencies[] = views_bulk_operations
+dependencies[] = views_bulk_operations (>=7.x-3.2)
 
 files[] = plugins/views_plugin_display_system.inc
 files[] = plugins/views_plugin_access_menu.inc
 
 files[] = tests/admin_views.test
 
-; Information added by drupal.org packaging script on 2012-12-17
-version = "7.x-1.1"
+; Information added by Drupal.org packaging script on 2016-08-02
+version = "7.x-1.6"
 core = "7.x"
 project = "admin_views"
-datestamp = "1355764856"
+datestamp = "1470165840"
 

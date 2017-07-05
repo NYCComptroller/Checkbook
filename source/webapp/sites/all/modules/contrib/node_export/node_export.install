@@ -35,12 +35,9 @@ function node_export_uninstall() {
   // DSV format.
   variable_del('node_export_dsv_delimiter');
   variable_del('node_export_dsv_enclosure');
-  variable_del('node_export_dsv_seperator');
+  variable_del('node_export_dsv_separator');
   variable_del('node_export_dsv_escape_eol');
 
-  // Old vars.
-  variable_del('node_export_reset_' . $type);
-  variable_del('node_export_nodes_without_confirm');
 
 }
 
@@ -133,3 +130,21 @@ function node_export_update_7303() {
   }
   return 'Node export format modules removed, functionality moved to Node export.';
 }
+
+
+/**
+ * Remove and rename vars.
+ */
+function node_export_update_7304() {
+  $types = node_type_get_names();
+  foreach ($types as $type => $name) {
+    variable_del('node_export_reset_' . $type);
+  }
+
+  $sep = variable_get('node_export_dsv_seperator', '\r\n');
+  variable_set('node_export_dsv_separator', $sep);
+
+  variable_del('node_export_nodes_without_confirm');
+  variable_del('node_export_dsv_seperator');
+}
+

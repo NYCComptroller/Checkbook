@@ -88,6 +88,6 @@ Regarding the Node export features module which integrates with the Features
 module, any nodes to be used with this must have a UUID (universally unique 
 ID).  To export older nodes that don't have UUID make sure you have selected
 the content type and click on 'create missings uuids' from 
-'admin/settings/uuid' under the fieldset 'Synchronize'.  Then you should be 
+'admin/config/system/uuid' under the fieldset 'Synchronize'.  Then you should be
 able to see more nodes under the feature component, If you don't see the node
 export component, that means no nodes has been configured with UUID.

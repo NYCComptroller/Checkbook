@@ -21,15 +21,27 @@ function lock_initialize() {
 /**
  * Acquire (or renew) a lock, but do not block if it fails.
  *
- * @param $name
+ * @param string $name
  *   The name of the lock.
- * @param $timeout
+ * @param int $timeout
  *   A number of seconds (int) before the lock expires (minimum of 1).
- * @return
+ *
+ * @return bool
  *   TRUE if the lock was acquired, FALSE if it failed.
  */
 function lock_acquire($name, $timeout = 30) {
   global $locks;
+
+  // Special case variable_init, as on memcache errors we can get stuck in an
+  // infinite loop.
+  static $variable_init = 0;
+  if ($name == 'variable_init') {
+    if ($variable_init > 25) {
+      register_shutdown_function('watchdog', 'memcache', 'Broke out of loop trying to grab lock for variable_init.');
+      return TRUE;
+    }
+    $variable_init++;
+  }
 
   // Ensure that the timeout is at least 1 sec. This is a limitation
   // imposed by memcached.
@@ -38,7 +50,7 @@ function lock_acquire($name, $timeout = 30) {
   if (dmemcache_add($name, _lock_id(), $timeout, 'semaphore')) {
     $locks[$name] = _lock_id();
   }
-  elseif ($result = dmemcache_get($name, 'semaphore') && isset($locks[$name]) && $locks[$name] == _lock_id()) {
+  elseif (($result = dmemcache_get($name, 'semaphore')) && isset($locks[$name]) && $locks[$name] == $result) {
     // Only renew the lock if we already set it and it has not expired.
     dmemcache_set($name, _lock_id(), $timeout, 'semaphore');
   }
@@ -56,9 +68,10 @@ function lock_acquire($name, $timeout = 30) {
  *
  * If an existing lock has expired, it is removed.
  *
- * @param $name
+ * @param string $name
  *   The name of the lock.
- * @return
+ *
+ * @return bool
  *   TRUE if there is no lock or it was removed, FALSE otherwise.
  */
 function lock_may_be_available($name) {
@@ -74,23 +87,26 @@ function lock_may_be_available($name) {
  * that are acquired very frequently, since the lock is likely to be acquired
  * again by a different request while waiting.
  *
- * @param $name
+ * @param string $name
  *   The name of the lock.
- * @param $delay
+ * @param int $delay
  *   The maximum number of seconds to wait, as an integer.
- * @return
+ *
+ * @return bool
  *   TRUE if the lock holds, FALSE if it is available.
  */
 function lock_wait($name, $delay = 30) {
-  // Pause the process for short periods between calling
-  // lock_may_be_available(). This prevents hitting the database with constant
-  // database queries while waiting, which could lead to performance issues.
-  // However, if the wait period is too long, there is the potential for a
-  // large number of processes to be blocked waiting for a lock, especially
-  // if the item being rebuilt is commonly requested. To address both of these
-  // concerns, begin waiting for 25ms, then add 25ms to the wait period each
-  // time until it reaches 500ms. After this point polling will continue every
-  // 500ms until $delay is reached.
+  /*
+   * Pause the process for short periods between calling
+   * lock_may_be_available(). This prevents hitting the database with constant
+   * database queries while waiting, which could lead to performance issues.
+   * However, if the wait period is too long, there is the potential for a
+   * large number of processes to be blocked waiting for a lock, especially
+   * if the item being rebuilt is commonly requested. To address both of these
+   * concerns, begin waiting for 25ms, then add 25ms to the wait period each
+   * time until it reaches 500ms. After this point polling will continue every
+   * 500ms until $delay is reached.
+   */
 
   // $delay is passed in seconds, but we will be using usleep(), which takes
   // microseconds as a parameter. Multiply it by 1 million so that all
@@ -122,15 +138,17 @@ function lock_wait($name, $delay = 30) {
  *
  * This will release the named lock if it is still held by the current request.
  *
- * @param $name
+ * @param string $name
  *   The name of the lock.
  */
 function lock_release($name) {
   global $locks;
 
-  dmemcache_delete($name, 'semaphore');
-  // We unset unconditionally since caller assumes lock is released anyway.
-  unset($locks[$name]);
+  if (isset($locks[$name]) && (dmemcache_get($name, 'semaphore') == $locks[$name])) {
+    dmemcache_delete($name, 'semaphore');
+    // We unset unconditionally since caller assumes lock is released anyway.
+    unset($locks[$name]);
+  }
 }
 
 /**
@@ -149,7 +167,7 @@ function _lock_id() {
 /**
  * Release all locks acquired by this request.
  */
-function lock_release_all($lock_id) {
+function lock_release_all($lock_id = NULL) {
   global $locks;
   foreach ($locks as $name => $id) {
     $value = dmemcache_get($name, 'semaphore');

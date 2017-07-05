@@ -55,7 +55,7 @@ function node_export_token_info() {
       'node_export_filename' => array(
         'nid-list' => array(
           'name' => t("Node ID list"),
-          'description' => t("Comma seperated list of Node IDs in square brackets (if available)."),
+          'description' => t("Comma separated list of Node IDs in square brackets (if available)."),
         ),
         'node-count' => array(
           'name' => t("Node count"),
