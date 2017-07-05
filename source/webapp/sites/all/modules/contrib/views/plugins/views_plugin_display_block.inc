@@ -52,7 +52,8 @@ class views_plugin_display_block extends views_plugin_display {
     // Prior to this being called, the $view should already be set to this
     // display, and arguments should be set on the view.
     $info['content'] = $this->view->render();
-    $info['subject'] = filter_xss_admin($this->view->get_title());
+    $title = $this->view->get_title();
+    $info['subject'] = ($title == '<none>') ? '' : filter_xss_admin($title);
     if (!empty($this->view->result) || $this->get_option('empty') || !empty($this->view->style_plugin->definition['even empty'])) {
       return $info;
     }
@@ -222,8 +223,8 @@ class views_plugin_display_block extends views_plugin_display {
   }
 
   /**
-   * Save the block cache setting in the blocks table if this block allready
-   * exists in the blocks table. Dirty fix untill http://drupal.org/node/235673 gets in.
+   * Save the block cache setting in the blocks table if this block already
+   * exists in the blocks table. Dirty fix until http://drupal.org/node/235673 gets in.
    */
   function save_block_cache($delta, $cache_setting) {
     if (strlen($delta) >= 32) {

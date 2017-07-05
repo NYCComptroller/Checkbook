@@ -8,7 +8,11 @@
  * Implementation of hook_ctools_plugin_api().
  */
 function node_export_feeds_ctools_plugin_api($module = '', $api = '') {
-  if ($module == 'feeds' && in_array($api, array('feeds_importer_default', 'plugins'))) {
+  if ($module == 'feeds' && in_array($api, array(
+      'feeds_importer_default',
+      'plugins'
+    ))
+  ) {
     return array('version' => 1);
   }
 }

@@ -114,7 +114,7 @@ function taxonomy_views_data() {
     'field' => 'tid',
     'title' => t('Term'),
     'help' => t('Taxonomy terms are attached to nodes.'),
-    'access query tag' => 'term_access',
+    'access query tag' => 'taxonomy_term_access',
   );
   $data['taxonomy_term_data']['table']['entity type'] = 'taxonomy_term';
 
@@ -404,6 +404,20 @@ function taxonomy_views_data_alter(&$data) {
     'filter' => array(
       'title' => t('Has taxonomy terms (with depth)'),
       'handler' => 'views_handler_filter_term_node_tid_depth',
+    ),
+  );
+
+  $data['node']['term_node_tid_depth_join'] = array(
+    'help' => t('Display content if it has the selected taxonomy terms, or children of the selected terms. Due to additional complexity, this has fewer options than the versions without depth.'),
+    'real field' => 'nid',
+    'argument' => array(
+      'title' => t('Has taxonomy term ID with depth (using joins)'),
+      'handler' => 'views_handler_argument_term_node_tid_depth_join',
+      'accept depth modifier' => TRUE,
+    ),
+    'filter' => array(
+      'title' => t('Has taxonomy terms with depth (using joins)'),
+      'handler' => 'views_handler_filter_term_node_tid_depth_join',
     ),
   );
 

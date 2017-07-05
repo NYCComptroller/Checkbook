@@ -3,9 +3,9 @@ description = Exclude certain pages from being cached.
 core = 7.x
 configure = admin/config/system/cacheexclude
 
-; Information added by drupal.org packaging script on 2013-01-12
-version = "7.x-2.3+0-dev"
+; Information added by drupal.org packaging script on 2013-01-11
+version = "7.x-2.3"
 core = "7.x"
 project = "cacheexclude"
-datestamp = "1357951188"
+datestamp = "1357940416"
 
