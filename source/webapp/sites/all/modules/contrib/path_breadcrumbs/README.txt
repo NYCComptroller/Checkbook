@@ -2,7 +2,7 @@ INSTALL
 ==========
 
 1. Extract module into /sites/all/modules folder.
-2. Enable "Path breadcrumbs" and "Path breadcrumbs UI" on /admin/modules page.
+2. Enable "Path Breadcrumbs" and "Path Breadcrumbs UI" on /admin/modules page.
 
 
 USAGE

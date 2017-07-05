@@ -86,11 +86,37 @@ function node_export_features_features_export($data, &$export, $module_name = ''
 }
 
 /**
+ * Implements hook_node_export_alter().
+ */
+function node_export_features_node_export_alter(&$nodes, $format) {
+  if (_node_export_features_currently_exporting()) {
+    foreach ($nodes as $key => $node) {
+      // Perform cleaning of the node before creating the export for features.
+      // This can help strip volatile attributes like 'created' and 'changed'.
+      $nodes[$key] = node_export_node_clone($node);
+    }
+  }
+}
+
+/**
+ * Check if the code is currently running a feature export.
+ */
+function _node_export_features_currently_exporting($set = FALSE, $value = NULL) {
+  $exporting = &drupal_static(__FUNCTION__, FALSE);
+  if ($set) {
+    $exporting = $value;
+  }
+  return $exporting;
+}
+
+/**
  * Implements hook_features_export_render().
  */
 function node_export_features_features_export_render($module, $data, $export = NULL) {
   $nids = entity_get_id_by_uuid('node', $data);
+  _node_export_features_currently_exporting(TRUE, TRUE);
   $result = node_export($nids);
+  _node_export_features_currently_exporting(TRUE, FALSE);
   if ($result['success']) {
     $node_export['code_string'] = $result['output'];
     $node_export_code = '  $node_export = ' . features_var_export($node_export) . ';';
@@ -125,8 +151,10 @@ function node_export_features_features_rebuild($module) {
       }
     }
     else {
-      foreach ($result['output'] as $status) {
-        drupal_set_message($status);
+      if (!isset($_GET['profile'])) {
+        foreach ($result['output'] as $status) {
+          drupal_set_message($status);
+        }
       }
     }
   }

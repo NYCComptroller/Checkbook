@@ -1,13 +1,15 @@
-name = Path breadcrumbs
+name = Path Breadcrumbs
 description = Allow to create custom breadcrumbs for all pages on the site using contexts.
 core = 7.x
-package = Path breadcrumbs
+package = Path Breadcrumbs
 
 dependencies[] = ctools
+dependencies[] = entity
+dependencies[] = entity_token
 
-; Information added by drupal.org packaging script on 2012-08-05
-version = "7.x-2.0-beta17"
+; Information added by Drupal.org packaging script on 2015-07-15
+version = "7.x-3.3"
 core = "7.x"
 project = "path_breadcrumbs"
-datestamp = "1344169037"
+datestamp = "1436947141"
 

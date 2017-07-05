@@ -6,6 +6,17 @@
  */
 
 /**
+ * Implements hook_install().
+ */
+function path_breadcrumbs_install() {
+  db_update('system')
+    ->fields(array('weight' => 1000))
+    ->condition('name', 'path_breadcrumbs')
+    ->condition('type', 'module')
+    ->execute();
+}
+
+/**
  * Implements hook_uninstall().
  */
 function path_breadcrumbs_uninstall() {
@@ -15,12 +26,25 @@ function path_breadcrumbs_uninstall() {
   variable_del('path_breadcrumbs_rich_snippets');
   variable_del('path_breadcrumbs_hide_single_breadcrumb');
   variable_del('path_breadcrumbs_internal_render');
+  variable_del('path_breadcrumbs_cache_enabled');
+  variable_del('path_breadcrumbs_cache_lifetime');
+  variable_del('path_breadcrumbs_url_cleaning_method');
+  variable_del('path_breadcrumbs_truncate_title_length');
+  variable_del('path_breadcrumbs_internal_render_themes');
+  variable_del('path_breadcrumbs_decode_entities');
+  variable_del('path_breadcrumbs_enable_on_error_pages');
 }
 
 /**
  * Implements hook_schema().
  */
 function path_breadcrumbs_schema() {
+
+  // Create new cache table to store cached data from path_breadcrumbs.
+  $schema['cache_path_breadcrumbs'] = drupal_get_schema_unprocessed('system', 'cache');
+  $schema['cache_path_breadcrumbs']['description'] = 'Cache table used to store information about path breadcrumbs variants for every page.';
+
+  // Table stores exportable breadcrumbs variants.
   $schema['path_breadcrumbs'] = array(
     'description' => 'Stores path breadcrumbs.',
     'export' => array(
@@ -43,32 +67,32 @@ function path_breadcrumbs_schema() {
     ),
     'fields' => array(
       'path_id' => array(
-        'description' => t("Breadcrumb's variant unique identifier"),
+        'description' => "Breadcrumb's variant unique identifier",
         'type' => 'serial',
         'unsigned' => TRUE,
         'not null' => TRUE,
         'no export' => TRUE,
       ),
       'machine_name' => array(
-        'description' => t("Breadcrumb's variant machine name"),
+        'description' => "Breadcrumb's variant machine name",
         'type' => 'varchar',
         'length' => 64,
         'not null' => TRUE,
       ),
       'name' => array(
-        'description' => t("Breadcrumb's variant human-readable name"),
+        'description' => "Breadcrumb's variant human-readable name",
         'type' => 'varchar',
         'length' => 64,
         'not null' => TRUE,
       ),
       'path' => array(
-        'description' => t('URL where breadcrumb should be shown'),
+        'description' => 'URL where breadcrumb should be shown',
         'type' => 'varchar',
         'length' => 256,
         'not null' => TRUE,
       ),
       'data' => array(
-        'description' => t('Serialized data of breadcrumb'),
+        'description' => 'Serialized data of breadcrumb',
         'type' => 'blob',
         'not null' => TRUE,
         'size' => 'big',
@@ -76,7 +100,7 @@ function path_breadcrumbs_schema() {
         'object default' => array(),
       ),
       'weight' => array(
-        'description' => t('Breadcrumb weight related to other breadcrumbs'),
+        'description' => 'Breadcrumb weight related to other breadcrumbs',
         'type' => 'int',
         'not null' => TRUE,
         'default' => 0,
@@ -84,7 +108,7 @@ function path_breadcrumbs_schema() {
     ),
     'primary key' => array('path_id'),
     'unique keys' => array(
-      'machine_name' => array('machine_name'), // Added in path_breadcrumbs_update_7214().
+      'machine_name' => array('machine_name'),
     ),
   );
 
@@ -221,4 +245,46 @@ function path_breadcrumbs_update_7213() {
 function path_breadcrumbs_update_7214() {
   db_add_unique_key('path_breadcrumbs', 'machine_name', array('machine_name'));
   db_drop_field('path_breadcrumbs', 'disabled');
+}
+
+/**
+ * Migrate module from 7.x-2.x to 7.x-3.x.
+ * Add {cache_path_breadcrumbs} table.
+ */
+function path_breadcrumbs_update_7300() {
+
+  // Create new cache bin storage.
+  db_create_table('cache_path_breadcrumbs', drupal_get_schema_unprocessed('system', 'cache'));
+}
+
+/**
+ * Set module weight to 1000.
+ */
+function path_breadcrumbs_update_7301() {
+  db_update('system')
+    ->fields(array('weight' => 1000))
+    ->condition('name', 'path_breadcrumbs')
+    ->condition('type', 'module')
+    ->execute();
+}
+
+/**
+ * Clear Entity API cache to register new Path Breadcrumbs taxonomy token.
+ */
+function path_breadcrumbs_update_7302() {
+  entity_property_info_cache_clear();
+}
+
+/**
+ * Clear Path Breadcrumbs cache to use new Path Breadcrumbs cache object structure.
+ */
+function path_breadcrumbs_update_7303() {
+  cache_clear_all('*', 'cache_path_breadcrumbs', TRUE);
+}
+
+/**
+ * Clear Entity API cache to register new Path Breadcrumbs taxonomy token.
+ */
+function path_breadcrumbs_update_7304() {
+  entity_property_info_cache_clear();
 }

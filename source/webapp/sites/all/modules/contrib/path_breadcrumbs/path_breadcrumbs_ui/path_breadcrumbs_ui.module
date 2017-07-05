@@ -11,7 +11,7 @@
 function path_breadcrumbs_ui_menu() {
 
   $items['admin/structure/path-breadcrumbs'] = array(
-    'title' => 'Path breadcrumbs',
+    'title' => 'Path Breadcrumbs',
     'description' => 'Manage breadcrumbs for your site\'s pages.',
     'access arguments' => array('administer path breadcrumbs'),
     'page callback' => 'drupal_get_form',
@@ -20,14 +20,14 @@ function path_breadcrumbs_ui_menu() {
   );
 
   $items['admin/structure/path-breadcrumbs/list'] = array(
-    'title' => 'Path breadcrumbs list',
+    'title' => 'Path Breadcrumbs list',
     'file' => 'path_breadcrumbs_ui.admin.inc',
     'type' => MENU_DEFAULT_LOCAL_TASK,
     'weight' => 0,
   );
 
   $items['admin/structure/path-breadcrumbs/settings'] = array(
-    'title' => 'Path breadcrumbs settings',
+    'title' => 'Path Breadcrumbs settings',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('path_breadcrumbs_ui_settings'),
     'access arguments' => array('administer path breadcrumbs'),
@@ -75,6 +75,13 @@ function path_breadcrumbs_ui_menu() {
     'page arguments' => array(4),
     'access arguments' => array('administer path breadcrumbs'),
     'file' => 'path_breadcrumbs_ui.pages.inc',
+  );
+
+  $items['admin/structure/path-breadcrumbs/edit/%path_breadcrumbs_ui_cache/main'] = array(
+    'title' => 'Edit path breadcrumbs',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
+    'weight' => -10,
   );
 
   $items['admin/structure/path-breadcrumbs/edit/%path_breadcrumbs_ui_cache/ajax/%'] = array(
@@ -132,6 +139,14 @@ function path_breadcrumbs_ui_menu() {
     'file' => 'path_breadcrumbs_ui.pages.inc',
   );
 
+  $items['path_breadcrumbs_ui/%path_breadcrumbs_ui_cache'] = array(
+    'page callback' => 'path_breadcrumbs_ui_tokens_ajax_autocomplete',
+    'page arguments' => array(1, 2),
+    'access arguments' => array('administer path breadcrumbs'),
+    'type' => MENU_CALLBACK,
+    'file' => 'path_breadcrumbs_ui.pages.inc',
+  );
+
   return $items;
 }
 
@@ -141,14 +156,14 @@ function path_breadcrumbs_ui_menu() {
 function path_breadcrumbs_ui_permission() {
   return array(
     'administer path breadcrumbs' => array(
-      'title' => t('Administer Path breadcrumbs'),
+      'title' => t('Administer Path Breadcrumbs'),
       'description' => t('Allows to set or delete path breadcrumbs'),
     ),
   );
 }
 
 /**
- * Implementats hook_theme().
+ * Implements hook_theme().
  */
 function path_breadcrumbs_ui_theme() {
   return array(
@@ -167,7 +182,7 @@ function path_breadcrumbs_ui_theme() {
     'path_breadcrumbs_ui_add_form' => array(
       'render element' => 'form',
       'file' => 'path_breadcrumbs_ui.theme.inc',
-    )
+    ),
   );
 }
 
@@ -185,9 +200,15 @@ function path_breadcrumbs_ui_add_form($form, &$form_state, $show_navigation = TR
   $form['#prefix'] = '<div id="path-breadcrumbs-ui-form-wrapper" class="' . $class . '">';
   $form['#suffix'] = '</div>';
 
+  // Save query destination to redirect on AJAX submit.
+  if (!isset($form_state['storage']['destination']) && isset($_GET['destination'])) {
+    $form_state['storage']['destination'] = $_GET['destination'];
+  }
+
   if (!isset($form_state['storage']['step'])) {
     $form_state['storage']['step'] = 1;
   }
+
   $step = $form_state['storage']['step'];
 
   if ($show_navigation) {
@@ -226,10 +247,11 @@ function path_breadcrumbs_ui_add_form($form, &$form_state, $show_navigation = TR
   }
 
   // Provide default submit callback for all forms.
+  $form['#validate'][] = 'path_breadcrumbs_ui_add_form_validate';
   $form['#submit'][] = 'path_breadcrumbs_ui_add_form_submit';
 
   // Attach styles to form.
-  $form['#attached']['css'][] = drupal_get_path('module', 'path_breadcrumbs_ui') . '/path_breadcrumbs_ui.css';
+  $form['#attached']['css'][] = drupal_get_path('module', 'path_breadcrumbs_ui') . '/css/path_breadcrumbs_ui.css';
 
   // Build form according to current step.
   $function = '_path_breadcrumbs_ui_form_step_' . $form_build_function;
@@ -238,6 +260,34 @@ function path_breadcrumbs_ui_add_form($form, &$form_state, $show_navigation = TR
   }
 
   return $form;
+}
+
+/**
+ * Validate callback for path_breadcrumbs_ui_add_form.
+ *
+ * @param $form
+ * @param $form_state
+ */
+function path_breadcrumbs_ui_add_form_validate($form, $form_state) {
+  $values = $form_state['values'];
+
+  $machine_name = '';
+
+  if (isset($values['machine_name'])) {
+    $machine_name = $values['machine_name'];
+  }
+  elseif (isset($form_state['storage']['machine_name'])) {
+    $machine_name = $form_state['storage']['machine_name'];
+  }
+
+  // Don't allow to use existing machine name for new breadcrumbs.
+  if (!form_get_errors() && $form_state['build_info']['form_id'] == 'path_breadcrumbs_ui_add_form') {
+    $path_breadcrumb = path_breadcrumbs_load_by_name($machine_name);
+    if ($path_breadcrumb) {
+      $message = t('Breadcrumb <a href="@edit_url">%name</a> with the same machine name %machine_name already exists.', array('@edit_url' => url('admin/structure/path-breadcrumbs/edit/' . $path_breadcrumb->machine_name), '%name' => $path_breadcrumb->name, '%machine_name' => $path_breadcrumb->machine_name));
+      form_set_error('', $message);
+    }
+  }
 }
 
 /**
@@ -259,7 +309,7 @@ function path_breadcrumbs_ui_add_form_submit($form, &$form_state) {
     }
   }
   elseif (isset($values['machine_name'])) {
-    // Save machina name in form storage.
+    // Save machine name in form storage.
     $form_state['storage']['machine_name'] = $values['machine_name'];
   }
 
@@ -316,7 +366,7 @@ function _path_breadcrumbs_ui_add_form_finish_ajax_callback($form, &$form_state)
     // Save breadcrumb from cache to permanent storage.
     $breadcrumb = path_breadcrumbs_object_cache_get($form_state['storage']['machine_name']);
     path_breadcrumbs_save($breadcrumb);
-    drupal_set_message(filter_xss(t('New breadcrumb !name was created.', array('!name' => $breadcrumb->name))));
+    drupal_set_message(t('New breadcrumb @name was created.', array('@name' => $breadcrumb->name)));
 
     // Redirect user to page with breadcrumbs list.
     ctools_include('ajax');
@@ -361,7 +411,7 @@ function _path_breadcrumbs_ui_form_step_basic_settings(&$form, &$form_state) {
   $form['path'] = array(
     '#type' => 'textfield',
     '#title' => t('Path'),
-    '#description' => t('The URL path where breadcrumb will be shown. You may create named placeholders for variable parts of the path by using %name for required elements. For example: "node/%node/foo" or "forum/%forum". These named placeholders can be turned into contexts on the arguments form.'),
+    '#description' => t('The URL non-aliased path where breadcrumb will be shown. You may create named placeholders for variable parts of the path by using %name for required elements. For example: "node/%node/foo" or "taxonomy/term/%term". These named placeholders can be turned into contexts on the arguments form.'),
     '#required' => TRUE,
     '#maxlength' => 256,
     '#field_prefix' => url(NULL, array('absolute' => TRUE)) . (variable_get('clean_url', 0) ? '' : '?q='),
@@ -384,6 +434,16 @@ function _path_breadcrumbs_ui_form_step_basic_settings(&$form, &$form_state) {
  * @param $form_state
  */
 function _path_breadcrumbs_ui_form_step_basic_settings_validate(&$form, &$form_state) {
+  // Check for RFC 3986 URL percent-encoded sequences.
+  if (preg_match('/((%[0-9a-fA-f]{2}).*?)(\/|$)/', $form_state['values']['path'], $matches)) {
+    form_error($form['path'], t('Please rename token %token. Tokens started with %sequence are reserved.', array('%sequence' => $matches[2], '%token' => $matches[1])));
+  }
+
+  // Aliases are not supported.
+  $unaliased_path = drupal_lookup_path('source', $form_state['values']['path']);
+  if ($unaliased_path) {
+    form_error($form['path'], t('Path %alias is an alias. Use system path %path instead.', array('%alias' => $form_state['values']['path'], '%path' => $unaliased_path)));
+  }
 
   $path = explode('/', $form_state['values']['path']);
   $correct_path = array();
@@ -425,15 +485,15 @@ function _path_breadcrumbs_ui_form_step_basic_settings_validate(&$form, &$form_s
  */
 function _path_breadcrumbs_ui_form_step_basic_settings_submit($form, &$form_state) {
 
+  $arguments = array();
+  // Load breadcrumb from the cache.
+  $breadcrumb = path_breadcrumbs_object_cache_get($form_state['storage']['machine_name']);
+  if (empty($breadcrumb)) {
+    return;
+  }
+
   // Check if argument matches all keywords.
   if (!empty($form_state['values']['keywords'])) {
-
-    // Load breadcrumb from the cache.
-    $breadcrumb = path_breadcrumbs_object_cache_get($form_state['storage']['machine_name']);
-    if (empty($breadcrumb)) {
-      return;
-    }
-
     $arguments = array();
     foreach ($form_state['values']['keywords'] as $keyword => $position) {
       // Ensure that keywords were not changed after path update.
@@ -443,9 +503,10 @@ function _path_breadcrumbs_ui_form_step_basic_settings_submit($form, &$form_stat
       // Save keyword position.
       $arguments[$keyword]['position'] = $position['position'];
     }
-    $breadcrumb->arguments = $arguments;
-    path_breadcrumbs_object_cache_set($form_state['storage']['machine_name'], $breadcrumb);
   }
+
+  $breadcrumb->arguments = $arguments;
+  path_breadcrumbs_object_cache_set($form_state['storage']['machine_name'], $breadcrumb);
 }
 
 /**
@@ -629,14 +690,24 @@ function _path_breadcrumbs_ui_form_step_breadcrumbs_settings(&$form, &$form_stat
   $form['translatable'] = array(
     '#type' => 'checkbox',
     '#title' => t('Translatable'),
-    '#description' => t('Every breadcrumb will be available for translation.'),
     '#default_value' => isset($breadcrumb->translatable) ? $breadcrumb->translatable : 0,
   );
+
+  // Add help message about path_breadcrumbs_i18n module.
+  if (!module_exists('path_breadcrumbs_i18n')) {
+    $form['translatable']['#disabled'] = TRUE;
+    $form['translatable']['#description'] = t(
+      'You have to enable <a href="@modules_url">@module_name</a> module if you need translatable breadcrumbs.',
+      array('@module_name' => 'Path Breadcrumbs translation', '@modules_url' => url('admin/modules')));
+  }
+  else {
+    $form['translatable']['#description'] = t('Every breadcrumb will be available for translation.');
+  }
 
   $form['home'] = array(
     '#type' => 'checkbox',
     '#title' => t('Prepend Home link to the breadcrumb'),
-    '#description' => t('First breadcrumb will be a link to the front page. This setting will override the default behavior.'),
+    '#description' => t('First breadcrumb will be a link to the front page.'),
     '#default_value' => isset($breadcrumb->home) ? $breadcrumb->home : variable_get('path_breadcrumbs_home_link_enabled', 1),
   );
 
@@ -664,12 +735,19 @@ function _path_breadcrumbs_ui_form_step_breadcrumbs_settings(&$form, &$form_stat
 
     $form['breadcrumbs_table'][$unique_hash]['left_value'] = array(
       '#type'          => 'textfield',
-      '#default_value' => isset($breadcrumb->titles[$i]) ? $breadcrumb->titles[$i] : '',
+      '#default_value' => isset($breadcrumb->titles[$i]) ? filter_xss($breadcrumb->titles[$i], array('none', 'front')) : '',
+      '#maxlength' => 256,
     );
 
     $form['breadcrumbs_table'][$unique_hash]['right_value'] = array(
       '#type'          => 'textfield',
-      '#default_value' => isset($breadcrumb->paths[$i]) ? $breadcrumb->paths[$i] : '',
+      '#default_value' => isset($breadcrumb->paths[$i]) ? filter_xss($breadcrumb->paths[$i], array('none', 'front')) : '',
+      '#maxlength' => 256,
+    );
+
+    $form['breadcrumbs_table'][$unique_hash]['weight'] = array(
+      '#type'          => 'textfield',
+      '#default_value' => $i,
     );
 
     $form['breadcrumbs_table'][$unique_hash]['delete'] = array(
@@ -679,6 +757,10 @@ function _path_breadcrumbs_ui_form_step_breadcrumbs_settings(&$form, &$form_stat
       '#ajax'  => array(
         'callback' => '_path_breadcrumbs_ui_form_step_breadcrumbs_settings_ajax',
         'wrapper'  => 'path-breadcrumbs-ui-form-wrapper',
+        'progress' => array(
+          'type' => 'throbber',
+          'message' => '',
+        ),
       ),
     );
   }
@@ -700,42 +782,28 @@ function _path_breadcrumbs_ui_form_step_breadcrumbs_settings(&$form, &$form_stat
   $rows[] = array(check_plain('<none>'), t('Used for the link path to bring a breadcrumb as plain text.'));
   $rows[] = array('!page_title', t('Current page title'));
 
-  // Build context substitutions.
-  if (!empty($breadcrumb->arguments)) {
-
-    // Include ctools library for contexts.
-    ctools_include('context');
-
-    foreach ($breadcrumb->arguments as $keyword => $arg) {
-
-      // Provide module placeholder for arguments.
-      $rows[] = array('!' . $keyword, t('Unprocessed value of placeholder as it presented in the page url.'));
-
-      // Load argument plugin with its settings.
-      $argument = ctools_get_argument($arg['argument']);
-      if (isset($arg['settings'])) {
-        $argument += $arg['settings'];
-        $argument['id'] = 1;
-      }
-
-      // Provide tokens for selected contexts.
-      $context = ctools_context_get_context_from_argument($argument, $keyword, TRUE);
-      $converters = ctools_context_get_converters('%' . check_plain($keyword) . ':', $context);
-      foreach ($converters as $substitution => $title) {
-        $rows[] = array(check_plain($substitution), t($title));
-      }
-    }
-  }
-
   $form['contexts'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Substitutions'),
+    '#title' => t('Additional substitutions'),
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
   );
 
   $form['contexts']['placeholders'] = array(
-    '#markup' => theme('table', array('header' => array(t('Keyword'), t('Value')), 'rows' => $rows)),
+    '#theme' => 'table',
+    '#header' => array(t('Keyword'), t('Value')),
+    '#rows' => $rows,
+  );
+
+  drupal_alter('path_breadcrumbs_settings_form_custom', $form, $breadcrumb);
+
+  $form['#attached']['library'][] = array('system', 'ui.autocomplete');
+  $form['#attached']['library'][] = array('system', 'ui.button');
+  $form['#attached']['js'][] = drupal_get_path('module', 'path_breadcrumbs_ui') . '/js/path_breadcrumbs_ui.js';
+
+  $form['#attached']['js'][] = array(
+    'data' => array('pathBreadcrumbsUI' => array('machineName' => $form_state['storage']['machine_name'])),
+    'type' => 'setting',
   );
 
   $form['#validate'][] = '_path_breadcrumbs_ui_form_step_breadcrumbs_settings_validate';
@@ -800,12 +868,15 @@ function _path_breadcrumbs_ui_form_step_breadcrumbs_settings_submit($form, &$for
     $form_state['rebuild'] = TRUE;
   }
 
+  // Sort breadcrumb items based on weights changed by tabledrag.
+  usort($values['breadcrumbs_table'], 'drupal_sort_weight');
+
   // Rebuild breadcrumb titles and paths.
   $titles = array();
   $paths  = array();
   foreach ($values['breadcrumbs_table'] as $value) {
     $titles[] = $value['left_value'];
-    $paths[] = $value['right_value'];
+    $paths[]  = $value['right_value'];
   }
 
   // Update titles and paths in cache.
@@ -813,6 +884,14 @@ function _path_breadcrumbs_ui_form_step_breadcrumbs_settings_submit($form, &$for
   $breadcrumbs = path_breadcrumbs_object_cache_get($machine_name);
   $breadcrumbs->titles = $titles;
   $breadcrumbs->paths  = $paths;
+
+  // Possibility to implement custom breadcrumb settings.
+  $custom = array();
+  drupal_alter('path_breadcrumbs_settings_form_submit_custom', $custom, $form_state);
+  if (!empty($custom)) {
+    $breadcrumbs->custom = $custom;
+  }
+
   path_breadcrumbs_object_cache_set($machine_name, $breadcrumbs);
 }
 
@@ -845,7 +924,7 @@ function _path_breadcrumbs_ui_form_apply_default_values(&$form, $machine_name) {
   }
 
   // Try to apply values from cache to form.
-  foreach ($form as $key => $value) {
+  foreach ($form as $key => $form_value) {
     if (!empty($breadcrumb->{$key}) && is_array($breadcrumb->{$key})) {
       foreach ($breadcrumb->{$key} as $array_key => $value) {
         $form[$key][$array_key]['#default_value'] = $value;
@@ -992,7 +1071,19 @@ function path_breadcrumbs_ui_argument_context_form($form, &$form_state) {
       // Apply plugin's settings form to previously builded form.
       if ($function = (string) ctools_plugin_get_function($plugin, 'settings form')) {
         $settings_form = $settings_form_state = array();
-        $function($settings_form, $settings_form_state);
+
+        // Load default plugin settings.
+        $settings_default = array();
+        if (isset($plugin['default'])) {
+          if (is_array($plugin['default'])) {
+            $settings_default = $plugin['default'];
+          }
+          elseif (function_exists($plugin['default'])) {
+            $settings_default = $plugin['default']();
+          }
+        }
+
+        $function($settings_form, $settings_form_state, $settings_default);
         $form['settings'] += $settings_form['settings'];
       }
 
@@ -1106,7 +1197,7 @@ function path_breadcrumbs_ui_argument_context_form_ajax_callback($form, $form_st
         'storage' => array(
           'step' => 2,
           'machine_name' => $path_name,
-        )
+        ),
       );
 
       $form = drupal_build_form('path_breadcrumbs_ui_add_form', $add_form_state);
@@ -1128,7 +1219,7 @@ function path_breadcrumbs_ui_argument_context_form_ajax_callback($form, $form_st
  * @param $form_state
  * @return array
  */
-function path_breadcrumbs_ui_edit_form($form, $form_state) {
+function path_breadcrumbs_ui_edit_form($form, &$form_state) {
 
   // Load form for creation of breadcrumbs but with existing breadcrumb in cache.
   $form = path_breadcrumbs_ui_add_form(array(), $form_state, FALSE, 'edit-form');
@@ -1153,11 +1244,11 @@ function path_breadcrumbs_ui_edit_form($form, $form_state) {
   );
 
   $form['actions']['update'] = array(
-    '#value' => t('Update')
+    '#value' => t('Update'),
   ) + $base;
 
   $form['actions']['update_save'] = array(
-    '#value' => t('Update and Save')
+    '#value' => t('Update and Save'),
   ) + $base;
 
   $form['#submit'][] = 'path_breadcrumbs_ui_edit_form_submit';
@@ -1203,12 +1294,13 @@ function path_breadcrumbs_ui_edit_form_ajax_callback($form, $form_state) {
       // Redirect user to page with breadcrumbs list.
       ctools_include('ajax');
 
-      // Ajax responder not required since CTools 7.x-1.0 but this line
-      // should be added to keep module works properly.
+      // Ajax responder is not required since CTools 7.x-1.0 but this line
+      // should be added to keep module works properly for all versions.
       ctools_add_js('ajax-responder');
 
+      $destination = isset($form_state['storage']['destination']) ? $form_state['storage']['destination'] : 'admin/structure/path-breadcrumbs';
       $commands = array();
-      $commands[] = ctools_ajax_command_redirect('admin/structure/path-breadcrumbs');
+      $commands[] = ctools_ajax_command_redirect($destination);
       return array('#type' => 'ajax', '#commands' => $commands);
     }
   }
@@ -1234,17 +1326,17 @@ function path_breadcrumbs_ui_delete_form($form, $form_state, $path_breadcrumbs) 
 
   if ($path_breadcrumbs->is_overwritten) {
     $form['message'] = array(
-      '#markup' => t('Are you sure that you want to revert %name from database?', array('%name' => $path_breadcrumbs->name))
+      '#markup' => t('Are you sure that you want to revert %name from database?', array('%name' => $path_breadcrumbs->name)),
     );
   }
   else {
     $form['message'] = array(
-      '#markup' => t('Are you sure that you want to delete %name from database?', array('%name' => $path_breadcrumbs->name))
+      '#markup' => t('Are you sure that you want to delete %name from database?', array('%name' => $path_breadcrumbs->name)),
     );
   }
 
   $form['actions'] = array(
-    '#type' => 'actions'
+    '#type' => 'actions',
   );
 
   $form['actions']['submit'] = array(
