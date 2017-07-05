@@ -13,19 +13,14 @@
 class views_handler_field_node_link_export extends views_handler_field_node_link {
   function construct() {
     parent::construct();
-    $this->additional_fields['uid'] = 'uid';
-    $this->additional_fields['type'] = 'type';
-    $this->additional_fields['format'] = array('table' => 'node_revisions', 'field' => 'format');
+    $this->additional_fields['nid'] = 'nid';
   }
 
   function render($values) {
-    // Insure that user has access to export this node.
+    // Ensure that user has access to export this node.
     $node = new stdClass();
     $node->nid = $values->{$this->aliases['nid']};
-    $node->uid = $values->{$this->aliases['uid']};
-    $node->type = $values->{$this->aliases['type']};
-    $node->format = $values->{$this->aliases['format']};
-    if (!node_export_access_check($node)) {
+    if (!node_export_access_export($node->nid)) {
       return;
     }
 

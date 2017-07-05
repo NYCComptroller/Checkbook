@@ -17,8 +17,8 @@ function path_breadcrumbs_ui_configure_arguments_page($path_name, $keyword) {
   $form_state = array(
     'storage' => array(
       'path_name' => $path_name,
-      'keyword' => $keyword
-    )
+      'keyword' => $keyword,
+    ),
   );
 
   // Load context selections form.
@@ -68,11 +68,17 @@ function path_breadcrumbs_ui_edit_page($path_breadcrumb) {
   // Save form in cache.
   path_breadcrumbs_object_cache_set($path_breadcrumb->machine_name, $path_breadcrumb);
 
+  $link_options = array();
+  if (isset($_GET['destination'])) {
+    $link_options['query']['destination'] = $_GET['destination'];
+  }
+
   $links[] = array(
     '#type' => 'link',
     '#title' => t('Basic'),
     '#href' => 'admin/structure/path-breadcrumbs/edit/' . $path_breadcrumb->machine_name . '/ajax/1',
     '#attributes' => array('class' => array('use-ajax', 'active')),
+    '#options' => $link_options,
   );
 
   $links[] = array(
@@ -80,6 +86,7 @@ function path_breadcrumbs_ui_edit_page($path_breadcrumb) {
     '#title' => t('Arguments'),
     '#href' => 'admin/structure/path-breadcrumbs/edit/' . $path_breadcrumb->machine_name . '/ajax/2',
     '#attributes' => array('class' => array('use-ajax')),
+    '#options' => $link_options,
   );
 
   $links[] = array(
@@ -87,6 +94,7 @@ function path_breadcrumbs_ui_edit_page($path_breadcrumb) {
     '#title' => t('Selection rules'),
     '#href' => 'admin/structure/path-breadcrumbs/edit/' . $path_breadcrumb->machine_name . '/ajax/3',
     '#attributes' => array('class' => array('use-ajax')),
+    '#options' => $link_options,
   );
 
   $links[] = array(
@@ -94,6 +102,7 @@ function path_breadcrumbs_ui_edit_page($path_breadcrumb) {
     '#title' => t('Breadcrumbs'),
     '#href' => 'admin/structure/path-breadcrumbs/edit/' . $path_breadcrumb->machine_name . '/ajax/4',
     '#attributes' => array('class' => array('use-ajax')),
+    '#options' => $link_options,
   );
 
   $rendered_links = array();
@@ -109,7 +118,7 @@ function path_breadcrumbs_ui_edit_page($path_breadcrumb) {
     'storage' => array(
       'machine_name' => $path_breadcrumb->machine_name,
       'step' => 1,
-    )
+    ),
   );
 
   $form = drupal_build_form('path_breadcrumbs_ui_edit_form', $form_state);
@@ -118,7 +127,7 @@ function path_breadcrumbs_ui_edit_page($path_breadcrumb) {
   );
 
   drupal_add_library('system', 'drupal.ajax');
-  drupal_add_css(drupal_get_path('module', 'path_breadcrumbs_ui') . '/path_breadcrumbs_ui.css');
+  drupal_add_css(drupal_get_path('module', 'path_breadcrumbs_ui') . '/css/path_breadcrumbs_ui.css');
 
   return $page;
 }
@@ -132,7 +141,7 @@ function path_breadcrumbs_ui_edit_form_ajax_links($breadcrumb, $step) {
     'storage' => array(
       'machine_name' => $breadcrumb->machine_name,
       'step' => $step,
-    )
+    ),
   );
 
   $form = drupal_build_form('path_breadcrumbs_ui_edit_form', $form_state);
@@ -140,6 +149,7 @@ function path_breadcrumbs_ui_edit_form_ajax_links($breadcrumb, $step) {
   $commands[] = ajax_command_replace('#path-breadcrumbs-ui-form-wrapper', render($form));
   $commands[] = ajax_command_invoke('#path-breadcrumbs-ui-menu li a', 'removeClass', array('active'));
   $commands[] = ajax_command_invoke('#path-breadcrumbs-ui-menu li a:eq(' . --$step . ')', 'addClass', array('active'));
+  $commands[] = ajax_command_prepend('#path-breadcrumbs-ui-form-wrapper', theme('status_messages'));
   return array('#type' => 'ajax', '#commands' => $commands);
 }
 
@@ -169,4 +179,62 @@ function path_breadcrumbs_ui_enable_breadcrumbs_page($path_breadcrumbs) {
   drupal_set_message(t('Breadcrumb %name was enabled', array('%name' => $path_breadcrumbs->name)));
 
   drupal_goto('admin/structure/path-breadcrumbs');
+}
+
+/**
+ * AJAX callback for tokens autocomplete.
+ */
+function path_breadcrumbs_ui_tokens_ajax_autocomplete($path_breadcrumbs, $string) {
+
+  // Check if path breadcrumbs object is loaded.
+  if (empty($path_breadcrumbs)) {
+    return;
+  }
+
+  // Build context substitutions.
+  $contexts = array();
+  if (!empty($path_breadcrumbs->arguments)) {
+
+    // Include ctools library for contexts.
+    ctools_include('context');
+
+    foreach ($path_breadcrumbs->arguments as $keyword => $arg) {
+
+      // Load argument plugin with its settings.
+      $argument = ctools_get_argument($arg['argument']);
+      if (isset($arg['settings'])) {
+        $argument += $arg['settings'];
+        $argument['id'] = 1;
+      }
+
+      // Load entity context.
+      $contexts[$keyword] = ctools_context_get_context_from_argument($argument, $keyword, TRUE);
+    }
+  }
+
+  $context_keywords = array();
+  $raw_keywords = array();
+  foreach ($contexts as $keyword => $context) {
+    if ($context && $context->type) {
+      $type = is_array($context->type) ? array_pop($context->type) : $context->type;
+      $context_keywords[$context->original_argument] = $type;
+    }
+    else {
+      $raw_keywords[$keyword] = array(
+        'label' => t('Raw argument "@arg"', array('@arg' => $keyword)),
+        'description' => $context->original_argument,
+        'selector_sign' => '!',
+      );
+    }
+  }
+
+  // Default raw tokens.
+  $raw_keywords['page_title'] = array('label' => t('Current page title'), 'description' => t('Current page title'), 'selector_sign' => '!');
+  $raw_keywords['<front>'] = array('label' => t('Link to front page'), 'description' => t('Link to front page'), 'selector_sign' => '');
+  $raw_keywords['<none>'] = array('label' => t('Empty value'), 'description' => t('Empty value'), 'selector_sign' => '');
+
+  // Load class for autocomplete ui.
+  $matches = PathBreadcrumbsUIAutocomplete::processAutocomplete($string, $context_keywords, $raw_keywords);
+
+  drupal_json_output($matches);
 }

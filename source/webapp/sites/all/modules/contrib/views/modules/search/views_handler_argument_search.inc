@@ -42,7 +42,7 @@ class views_handler_argument_search extends views_handler_argument {
       }
     }
     if ($required) {
-      if ($this->operator == 'required') {
+      if (isset($this->operator) && ($this->operator == 'required')) {
         $this->query->add_where(0, 'FALSE');
       }
     }
@@ -56,7 +56,7 @@ class views_handler_argument_search extends views_handler_argument {
       $join->construct('search_total', $search_index, 'word', 'word');
       $search_total = $this->query->add_relationship('search_total', $join, $search_index);
 
-      $this->search_score = $this->query->add_field('', "SUM($search_index.score * $search_total.count)", 'score', array('aggregate' => TRUE));
+      $this->search_score = $this->query->add_field('', "$search_index.score * $search_total.count", 'score', array('aggregate' => TRUE, 'function' => 'sum'));
 
       if (empty($this->query->relationships[$this->relationship])) {
         $base_table = $this->query->base_table;

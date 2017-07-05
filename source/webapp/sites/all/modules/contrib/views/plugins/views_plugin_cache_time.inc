@@ -41,7 +41,7 @@ class views_plugin_cache_time extends views_plugin_cache {
       '#maxlength' => '30',
       '#description' => t('Length of time in seconds raw query results should be cached.'),
       '#default_value' => $this->options['results_lifespan_custom'],
-      '#process' => array('form_process_select','ctools_dependent_process'),
+      '#process' => array('ctools_dependent_process'),
       '#dependency' => array(
         'edit-cache-options-results-lifespan' => array('custom'),
       ),
@@ -60,7 +60,7 @@ class views_plugin_cache_time extends views_plugin_cache {
       '#maxlength' => '30',
       '#description' => t('Length of time in seconds rendered HTML output should be cached.'),
       '#default_value' => $this->options['output_lifespan_custom'],
-      '#process' => array('form_process_select','ctools_dependent_process'),
+      '#process' => array('ctools_dependent_process'),
       '#dependency' => array(
         'edit-cache-options-output-lifespan' => array('custom'),
       ),
@@ -105,6 +105,23 @@ class views_plugin_cache_time extends views_plugin_cache {
     }
     else {
       return CACHE_PERMANENT;
+    }
+  }
+
+  function cache_set($type) {
+    $lifespan = $this->get_lifespan($type);
+    if ($lifespan >= 0) {
+      parent::cache_set($type);
+    }
+  }
+
+  function cache_get($type) {
+    $lifespan = $this->get_lifespan($type);
+    if ($lifespan >= 0) {
+      return parent::cache_get($type);
+    }
+    else {
+      return FALSE;
     }
   }
 }
