@@ -30,44 +30,67 @@ function front_page_admin($form, &$form_state) {
   $roles = user_roles();
   $front_page_data = front_page_get_all();
 
-  // Set the type options common for all roles.
-  $options = array(
-    '' => t('skip'),
-    'themed' => t('themed'),
-    'full' => t('full'),
-    'redirect' => t('redirect'),
-    'alias' => t('alias'),
+  // Map the available modes common for all roles.
+  $modes = array(
+    '' => t('Skip'),
+    'themed' => t('Themed'),
+    'full' => t('Full'),
+    'redirect' => t('Redirect'),
+    'alias' => t('Alias'),
   );
 
   // Set the description common for all roles.
-  $description = '<dl><dt>' . t('themed') . '</dt>
-      <dd>' . t('means your default layout, theme and stylesheet will be loaded with your custom front_page.') . '</dd></dl>';
-  $description .= '<dl><dt>' . t('full') . '</dt>
-      <dd>' . t('allows you to have a completely different layout, style sheet etc.') . '</dd></dl>';
-  $description .= '<dl><dt>' . t('redirect') . '</dt>
-      <dd>' . t('will automatically redirect visitors already logged in to a specific page specified in the REDIRECT TO box.') . '</dd></dl>';
-  $description .= '<dl><dt>' . t('alias') . '</dt>
-      <dd>' . t('will display the page listed in path as if it were the home page. This option does not redirect.') . '</dd></dl>';
+  $descriptions = array(
+    '' => t('Disable functionality for this role.'),
+    'themed' => t('Means your default layout, theme and stylesheet will be loaded with your custom front_page.'),
+    'full' => t('Allows you to have a completely different layout, style sheet etc.'),
+    'redirect' => t('Will automatically redirect visitors to a specific page specified in the REDIRECT TO box.'),
+    'alias' => t('Will display the page listed in path as if it were the home page. This option does not redirect.'),
+  );
 
+  // Format the options to use as radio buttons
+  $options = array();
+  foreach ($modes as $key => $mode) {
+    $options[$key] = "<strong>{$mode}:</strong> {$descriptions[$key]}";
+  }
+
+  // Iterate each role
   foreach ($roles as $rid => $role) {
+
+    // Determine the mode for this role
+    $mode = isset($front_page_data[$rid]['mode']) ? $front_page_data[$rid]['mode'] : '';
 
     $form['roles'][$rid] = array(
       '#type' => 'fieldset',
       '#collapsible' => TRUE,
       '#collapsed' => TRUE,
-      '#title' => t('Front Page for !rolename.', array('!rolename' => $role)),
+      '#title' => t('Front Page for !rolename (%mode)', array('!rolename' => $role, '%mode' => $modes[$mode])),
       '#weight' => isset($front_page_data[$rid]['weight']) ? $front_page_data[$rid]['weight'] : 0,
     );
 
     $form['roles'][$rid]['mode'] = array(
-      '#type' => 'select',
+      '#type' => 'radios',
       '#title' => t('Select mode'),
-      '#default_value' => isset($front_page_data[$rid]['mode']) ? $front_page_data[$rid]['mode'] : '',
+      '#default_value' => $mode,
       '#options' => $options,
-      '#description' => '<p>' . $description . '</p>',
     );
 
-    $form['roles'][$rid]['data'] = array(
+    // We need a wrapper because of a core bug that prevents the visible
+    // #state from properly hiding text_format widgets:
+    // @see: https://drupal.org/node/997826
+    $form['roles'][$rid]['data_wrapper'] = array(
+      '#type' => 'container',
+      '#states' => array(
+        'visible' => array(
+          ':input[name="roles[' . $rid . '][mode]"]' => array(
+            array('value' => 'full'),
+            array('value' => 'themed')
+          ),
+        ),
+      ),
+    );
+
+    $form['roles'][$rid]['data_wrapper']['data'] = array(
       '#type' => 'text_format',
       '#title' => t('Data'),
       '#default_value' => (isset($front_page_data[$rid]['data']) && isset($front_page_data[$rid]['mode']) && ($front_page_data[$rid]['mode'] == 'themed' || $front_page_data[$rid]['mode'] == 'full')) ? $front_page_data[$rid]['data'] : NULL,
@@ -82,6 +105,14 @@ function front_page_admin($form, &$form_state) {
       '#cols' => 20,
       '#rows' => 1,
       '#description' => t('If you are using <strong>Redirect</strong> or <strong>Alias</strong> you need to specify the path. An alias path should only include the URL part of a URL (eg "node/51"). A redirect path can contain a full URL including get parameters and fragment string (eg "node/51?page=5#anchor").'),
+      '#states' => array(
+        'visible' => array(
+          ':input[name="roles[' . $rid . '][mode]"]' => array(
+            array('value' => 'redirect'),
+            array('value' => 'alias')
+          ),
+        ),
+      ),
     );
   }
 
@@ -89,7 +120,6 @@ function front_page_admin($form, &$form_state) {
     '#type' => 'submit',
     '#value' => t('Save Settings'),
   );
-
 
   return $form;
 }
@@ -103,7 +133,7 @@ function front_page_admin_validate($form, &$form_state) {
       switch ($role['mode']) {
         case 'themed':
         case 'full':
-          if (empty($role['data']['value'])) {
+          if (empty($role['data_wrapper']['data']['value'])) {
             form_set_error('roles][' . $rid . '][data][value', 'You must set the data field for ' . $role['mode'] . ' mode.');
           }
           break;
@@ -141,8 +171,8 @@ function front_page_admin_submit($form, &$form_state) {
               ->key(array('rid' => $rid))
               ->fields(array(
                 'mode' => $role['mode'],
-                'data' => $role['data']['value'],
-                'filter_format' => $role['data']['format'],
+                'data' => $role['data_wrapper']['data']['value'],
+                'filter_format' => $role['data_wrapper']['data']['format'],
               ))
               ->execute();
           break;
