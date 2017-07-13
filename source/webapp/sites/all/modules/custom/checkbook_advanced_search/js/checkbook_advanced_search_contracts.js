@@ -1,6 +1,8 @@
+
+
 (function ($) {
     $(document).ready(function () {
-
+        
         var contracts_div = function (data_source, div_contents) {
             this.div_elements = {
                 'agency':'select[name='+data_source+'_contracts_agency]',
@@ -23,7 +25,10 @@
                 'commodity_line':'input:text[name='+data_source+'_contracts_commodity_line]',
                 'budget_name':'input:text[name='+data_source+'_contracts_budget_name]',
                 'includes_sub_vendors':'select[name="'+data_source+'_contracts_includes_sub_vendors"]',
-                'sub_vendor_status':'select[name="'+data_source+'_contracts_sub_vendor_status"]'
+                'sub_vendor_status':'select[name="'+data_source+'_contracts_sub_vendor_status"]',
+                'purpose':'input:text[name='+data_source+'_contracts_purpose]',
+                'curremt_amount_from':'input:text[name="'+data_source+'_contracts_current_contract_amount_from"]',
+                'curremt_amount_to':'input:text[name="'+data_source+'_contracts_current_contract_amount_to"]'
             };
 
             this.data_source = data_source;
@@ -49,7 +54,36 @@
         $('input:radio[name=contracts_advanced_search_domain_filter]').click(function () {
             onChangeDataSource($('input[name=contracts_advanced_search_domain_filter]:checked').val());
         });
-
+        
+        showHidePrimeAndSubFields(div_checkbook_contracts);
+        function showHidePrimeAndSubFields(div){
+            
+            var primeAndSubIcon = "<img class='prime-and-sub' src='/sites/all/themes/checkbook3/images/prime-and-sub.png' />";
+            jQuery(".prime-and-sub-note").remove();
+            div.ele('status').parent().find('.prime-and-sub').remove();
+            div.ele('vendor_name').parent().find('.prime-and-sub').remove();
+            div.ele('mwbe_category').parent().find('.prime-and-sub').remove();
+            div.ele('curremt_amount_from').parent().parent().parent().find('.prime-and-sub').remove();
+            div.ele('category').parent().find('.prime-and-sub').remove();
+            div.ele('sub_vendor_status').parent().find('.prime-and-sub').remove();
+            div.ele('purpose').parent().find('.prime-and-sub').remove();
+            div.ele('industry').parent().find('.prime-and-sub').remove();
+            div.ele('year').parent().find('.prime-and-sub').remove();
+            
+            if((div.ele('status').val() == 'A' || div.ele('status').val() == 'R') && (div.ele('category').val() == 'expense' || div.ele('category').val() == 'all')){
+                jQuery("<div class='prime-and-sub-note'>All Fields are searchable by Prime data, unless designated as Prime & Sub (<img src='/sites/all/themes/checkbook3/images/prime-and-sub.png' />).</div>").insertBefore(jQuery("#edit-contracts-advanced-search-domain-filter"));
+                jQuery(primeAndSubIcon).insertBefore(div.ele('status').parent().find('label'));
+                jQuery(primeAndSubIcon).insertBefore(div.ele('vendor_name').parent().find('label'));
+                jQuery(primeAndSubIcon).insertBefore(div.ele('mwbe_category').parent().find('label'));
+                jQuery(primeAndSubIcon).insertBefore(div.ele('curremt_amount_from').parent().parent().parent().find('label:first'));
+                jQuery(primeAndSubIcon).insertBefore(div.ele('category').parent().find('label'));
+                jQuery(primeAndSubIcon).insertBefore(div.ele('sub_vendor_status').parent().find('label'));
+                jQuery(primeAndSubIcon).insertBefore(div.ele('purpose').parent().find('label'));
+                jQuery(primeAndSubIcon).insertBefore(div.ele('industry').parent().find('label'));
+                jQuery(primeAndSubIcon).insertBefore(div.ele('year').parent().find('label'));
+            }
+        }
+        
         function onChangeDataSource(dataSource) {
 
             /* Reset all the fields for the data source */
@@ -160,6 +194,7 @@
 
         //On change of "Status"
         div_checkbook_contracts.ele('status').change(function () {
+            showHidePrimeAndSubFields(div_checkbook_contracts);
             onStatusChange(div_checkbook_contracts);
         });
         div_checkbook_contracts_oge.ele('status').change(function () {
@@ -193,6 +228,7 @@
 
         //On change of "Category"
         div_checkbook_contracts.ele('category').change(function () {
+            showHidePrimeAndSubFields(div_checkbook_contracts);
             onCategoryChange(div_checkbook_contracts);
         });
         function onCategoryChange(div) {

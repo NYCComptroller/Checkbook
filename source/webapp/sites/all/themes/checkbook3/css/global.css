@@ -3649,3 +3649,24 @@ a.new-features-morelink{
 #table_budget_by_departments_view thead tr{
   height: 40px;
 }
+
+/**** Styles for Prime and Sub icon for Contracts***/
+.prime-and-sub
+{
+    height: 21px;
+    float: left;
+    padding-right:5px;
+}
+
+.prime-and-sub-note{
+    text-align:right;
+    font-style:italic;
+    font-size:10px;
+    position: relative;
+    top: -21px;
+}
+.prime-and-sub-note > img{
+    height: 18px;
+    position: relative;
+    top: 3px;
+}

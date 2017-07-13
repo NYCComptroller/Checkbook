@@ -24,6 +24,7 @@
             });
             $('div.contracts-submit.checkbook').find('input:submit[value="Clear All"]').click(function(e){
                 clearInputFieldByDataSource("#contracts-advanced-search",'contracts','checkbook');
+                showHidePrimeAndSubFieldsOnClear();
                 $(this).blur(); /* Remove focus */
                 e.preventDefault();
             });
@@ -202,3 +203,31 @@ function disableInputFields(){
     }
 }
 
+function showHidePrimeAndSubFieldsOnClear(){
+    var primeAndSubIcon = "<img class='prime-and-sub' src='/sites/all/themes/checkbook3/images/prime-and-sub.png' />";
+    jQuery(".prime-and-sub-note").remove();
+    jQuery("select[name=checkbook_contracts_status]").parent().find('.prime-and-sub').remove();
+    jQuery("input:text[name=checkbook_contracts_vendor_name]").parent().find('.prime-and-sub').remove();
+    jQuery("select[name=checkbook_contracts_mwbe_category]").parent().find('.prime-and-sub').remove();
+    jQuery('input:text[name=checkbook_contracts_current_contract_amount_from]').parent().parent().parent().find('.prime-and-sub').remove();
+    jQuery("select[name=checkbook_contracts_category]").parent().find('.prime-and-sub').remove();
+    jQuery("select[name=checkbook_contracts_sub_vendor_status]").parent().find('.prime-and-sub').remove();
+    jQuery("input:text[name=checkbook_contracts_purpose]").parent().find('.prime-and-sub').remove();
+    jQuery("select[name=checkbook_contracts_industry]").parent().find('.prime-and-sub').remove();
+    jQuery("select[name=checkbook_contracts_year]").parent().find('.prime-and-sub').remove();
+    
+    if((jQuery("select[name=checkbook_contracts_status]").val() == 'A' || jQuery("select[name=checkbook_contracts_status]").val() == 'R') 
+            && (jQuery("select[name=checkbook_contracts_category]").val() == 'expense' || jQuery("select[name=checkbook_contracts_category]").val() == 'all')){
+        jQuery("<div class='prime-and-sub-note'>All Fields are searchable by Prime data, unless designated as Prime & Sub (<img src='/sites/all/themes/checkbook3/images/prime-and-sub.png' />).</div>").insertBefore(jQuery("#edit-contracts-advanced-search-domain-filter"));
+        jQuery(primeAndSubIcon).insertBefore(jQuery("select[name=checkbook_contracts_status]").parent().find('label'));
+        jQuery(primeAndSubIcon).insertBefore(jQuery("input:text[name=checkbook_contracts_vendor_name]").parent().find('label'));
+        jQuery(primeAndSubIcon).insertBefore(jQuery("select[name=checkbook_contracts_mwbe_category]").parent().find('label'));
+        jQuery(primeAndSubIcon).insertBefore(jQuery('input:text[name=checkbook_contracts_current_contract_amount_from]').parent().parent().parent().find('label:first'));
+        jQuery(primeAndSubIcon).insertBefore(jQuery("select[name=checkbook_contracts_category]").parent().find('label'));
+        jQuery(primeAndSubIcon).insertBefore(jQuery("select[name=checkbook_contracts_sub_vendor_status]").parent().find('label'));
+        jQuery(primeAndSubIcon).insertBefore(jQuery("input:text[name=checkbook_contracts_purpose]").parent().find('label'));
+        jQuery(primeAndSubIcon).insertBefore(jQuery("select[name=checkbook_contracts_industry]").parent().find('label'));
+        jQuery(primeAndSubIcon).insertBefore(jQuery("select[name=checkbook_contracts_year]").parent().find('label'));
+    }
+
+}
