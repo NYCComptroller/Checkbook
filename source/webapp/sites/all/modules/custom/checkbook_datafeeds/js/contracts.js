@@ -10,6 +10,7 @@
             $('input:radio[name="datafeeds-contracts-domain-filter"][value="checkbook"]').attr('checked', 'checked').button("refresh");
             $('input:hidden[name="data_source"]').val("checkbook");
         }
+        showHidePrimeAndSubIcon();
 
         //On change of "Sub Vendor Status in PIP" status
         $('#edit-sub_vendor_status_in_pip_id').change(function() {
@@ -44,6 +45,36 @@
             }
         });
     });
+    
+    function showHidePrimeAndSubIcon(){
+        if(jQuery('input:hidden[name=data_source]').val() == 'checkbook'){
+            var primeAndSubIcon = "<img class='prime-and-sub-datafeeds' src='/sites/all/themes/checkbook3/images/prime-and-sub.png' />";
+            jQuery(".prime-and-sub-note-datafeeds").remove();
+            jQuery("select[name=df_contract_status]").parent().find('.prime-and-sub-datafeeds').remove();
+            jQuery("input:text[name=vendor]").parent().find('.prime-and-sub-datafeeds').remove();
+            jQuery("select[name=mwbe_category]").parent().find('.prime-and-sub-datafeeds').remove();
+            jQuery('input:text[name=currentamtfrom]').parent().parent().parent().find('.prime-and-sub-datafeeds').remove();
+            jQuery("select[name=category]").parent().find('.prime-and-sub-datafeeds').remove();
+            jQuery("select[name=sub_vendor_status_in_pip_id]").parent().find('.prime-and-sub-datafeeds').remove();
+            jQuery("input:text[name=purpose]").parent().find('.prime-and-sub-datafeeds').remove();
+            jQuery("select[name=industry]").parent().find('.prime-and-sub-datafeeds').remove();
+            jQuery("select[name=year]").parent().find('.prime-and-sub-datafeeds').remove();
+
+            if((jQuery("select[name=df_contract_status]").val() == 'active' || jQuery("select[name=df_contract_status]").val() == 'registered') 
+                    && (jQuery("select[name=category]").val() == 'expense' || jQuery("select[name=category]").val() == 'all')){
+                jQuery("<div class='prime-and-sub-note-datafeeds'><p>All Fields are searchable by Prime data, unless designated as Prime & Sub (<img src='/sites/all/themes/checkbook3/images/prime-and-sub.png' />).</p><br/></div>").insertAfter(jQuery("p.required-message"));
+                jQuery(primeAndSubIcon).insertBefore(jQuery("select[name=df_contract_status]").parent().find('label'));
+                jQuery(primeAndSubIcon).insertBefore(jQuery("input:text[name=vendor]").parent().find('label'));
+                jQuery(primeAndSubIcon).insertBefore(jQuery("select[name=mwbe_category]").parent().find('label'));
+                jQuery(primeAndSubIcon).insertBefore(jQuery('input:text[name=currentamtfrom]').parent().parent().parent().find('label:first'));
+                jQuery(primeAndSubIcon).insertBefore(jQuery("select[name=category]").parent().find('label'));
+                jQuery(primeAndSubIcon).insertBefore(jQuery("select[name=sub_vendor_status_in_pip_id]").parent().find('label'));
+                jQuery(primeAndSubIcon).insertBefore(jQuery("input:text[name=purpose]").parent().find('label'));
+                jQuery(primeAndSubIcon).insertBefore(jQuery("select[name=industry]").parent().find('label'));
+                jQuery(primeAndSubIcon).insertBefore(jQuery("select[name=year]").parent().find('label'));
+            }
+        }
+    }
 
     $.fn.onDataSourceChange = function(){
         //clear all text fields
@@ -122,12 +153,14 @@
                 catval = $('#edit-category', context).val();
                 resetSelectedColumns();
                 hideShow(csval, catval);
+                showHidePrimeAndSubIcon();
             });
             $category.change(function () {
                 csval = $('select[name="df_contract_status"]', context).val();
                 catval = $('#edit-category', context).val();
                 resetSelectedColumns();
                 hideShow(csval, catval);
+                showHidePrimeAndSubIcon();
             });
             function hideShow(csval, catval) {
                 var $expense = $('.form-item-column-select-expense', context);
@@ -439,6 +472,6 @@
             output = 0;
         }
         return output;
-    }
+    } 
 
 }(jQuery));

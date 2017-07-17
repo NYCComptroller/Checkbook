@@ -3651,22 +3651,34 @@ a.new-features-morelink{
 }
 
 /**** Styles for Prime and Sub icon for Contracts***/
-.prime-and-sub
+.prime-and-sub,
+.prime-and-sub-datafeeds
 {
     height: 21px;
     float: left;
     padding-right:5px;
 }
 
-.prime-and-sub-note{
+.prime-and-sub-note,
+.prime-and-sub-note-datafeeds p{
     text-align:right;
     font-style:italic;
     font-size:10px;
     position: relative;
     top: -21px;
 }
-.prime-and-sub-note > img{
+.prime-and-sub-note > img,
+.prime-and-sub-note-datafeeds p >img{
     height: 18px;
     position: relative;
     top: 3px;
+}
+
+#checkbook-datafeeds-data-feed-wizard .prime-and-sub-note-datafeeds p{
+    float: left;
+    top: 0;
+}
+
+#checkbook-datafeeds-data-feed-wizard .prime-and-sub-note-datafeeds p >img{
+    top: 0;
 }
