@@ -58,7 +58,7 @@
         showHidePrimeAndSubFields(div_checkbook_contracts);
         function showHidePrimeAndSubFields(div){
             
-            var primeAndSubIcon = "<img class='prime-and-sub' src='/sites/all/themes/checkbook3/images/prime-and-sub.png' />";
+            //var primeAndSubIcon = "<img class='prime-and-sub' src='/sites/all/themes/checkbook3/images/prime-and-sub.png' />";
             jQuery(".prime-and-sub-note").remove();
             div.ele('status').parent().find('.prime-and-sub').remove();
             div.ele('vendor_name').parent().find('.prime-and-sub').remove();

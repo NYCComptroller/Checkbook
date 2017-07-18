@@ -3651,7 +3651,7 @@ a.new-features-morelink{
 }
 
 /**** Styles for Prime and Sub icon for Contracts***/
-.prime-and-sub,
+/*.prime-and-sub,
 .prime-and-sub-datafeeds
 {
     height: 21px;
@@ -3690,4 +3690,4 @@ a.new-features-morelink{
 
 #checkbook-datafeeds-data-feed-wizard .prime-and-sub-note-datafeeds p >img{
     top: 0;
-}
+}*/
