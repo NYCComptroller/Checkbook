@@ -4,14 +4,14 @@
         //This is to reset the radio button to citywide if the user refreshes browser
         var data_source = $('input:hidden[name="data_source"]').val();
         var agency_selected = $('#edit-agency').val();
+        showHidePrimeAndSubIcon();
 
         if (data_source == "checkbook_oge" && agency_selected == 'Citywide (All Agencies)') {
             $('input:radio[name="datafeeds-contracts-domain-filter"][value="checkbook_oge"]').removeAttr('checked').button("refresh");
             $('input:radio[name="datafeeds-contracts-domain-filter"][value="checkbook"]').attr('checked', 'checked').button("refresh");
             $('input:hidden[name="data_source"]').val("checkbook");
         }
-        showHidePrimeAndSubIcon();
-
+        
         //On change of "Sub Vendor Status in PIP" status
         $('#edit-sub_vendor_status_in_pip_id').change(function() {
             var sub_vendor_status = $('#edit-sub_vendor_status_in_pip_id').val();
@@ -47,8 +47,6 @@
     });
     
     function showHidePrimeAndSubIcon(){
-        if(jQuery('input:hidden[name=data_source]').val() == 'checkbook'){
-
             var note = jQuery(".prime-and-sub-note-datafeeds");
             var contract_status = jQuery(".contractstatus");
             var vendor = jQuery(".vendor");
@@ -74,7 +72,7 @@
 
             var contract_status_val = jQuery("select[name=df_contract_status]").val();
             var category_val = jQuery("select[name=category]").val();
-
+        if(jQuery("input[name='datafeeds-contracts-domain-filter']:checked").val() == 'checkbook'){
             // Add asterisk fields & note
             if((contract_status_val == 'active' || contract_status_val == 'registered')
                 && (category_val == 'expense' || category_val == 'all')){
@@ -114,7 +112,7 @@
         ele.addClass('asterisk-style');
     }
 
-            $.fn.onDataSourceChange = function(){
+        $.fn.onDataSourceChange = function(){
         //clear all text fields
         var enclosingDiv = $("#dynamic-filter-data-wrapper").children('#edit-filter').children('div.fieldset-wrapper').children();
         jQuery(enclosingDiv).find(':input').each(function() {
@@ -176,6 +174,8 @@
         $('#ms-edit-column-select-all a.deselect').click(function () {
             $('#edit-column-select-all').multiSelect('deselect_all');
         });
+       
+        showHidePrimeAndSubIcon();
     }
 
     Drupal.behaviors.contractsDataFeeds = {
