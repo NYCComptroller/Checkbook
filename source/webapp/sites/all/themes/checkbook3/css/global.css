@@ -3658,6 +3658,15 @@ a.new-features-morelink{
     float: left;
     padding-right:5px;
 }
+.contracts-fieldset .datafield label {
+    padding-left: 17px;
+    white-space: nowrap;
+}
+
+.contracts-fieldset .asterisk-style label {
+    padding-left: 0px;
+    white-space: nowrap;
+}
 
 .prime-and-sub-note,
 .prime-and-sub-note-datafeeds p{
