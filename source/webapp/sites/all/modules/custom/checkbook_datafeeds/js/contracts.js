@@ -4,13 +4,13 @@
         //This is to reset the radio button to citywide if the user refreshes browser
         var data_source = $('input:hidden[name="data_source"]').val();
         var agency_selected = $('#edit-agency').val();
+        showHidePrimeAndSubIcon();
 
         if (data_source == "checkbook_oge" && agency_selected == 'Citywide (All Agencies)') {
             $('input:radio[name="datafeeds-contracts-domain-filter"][value="checkbook_oge"]').removeAttr('checked').button("refresh");
             $('input:radio[name="datafeeds-contracts-domain-filter"][value="checkbook"]').attr('checked', 'checked').button("refresh");
             $('input:hidden[name="data_source"]').val("checkbook");
         }
-        showHidePrimeAndSubIcon();
 
         //On change of "Sub Vendor Status in PIP" status
         $('#edit-sub_vendor_status_in_pip_id').change(function() {
@@ -47,19 +47,19 @@
     });
     
     function showHidePrimeAndSubIcon(){
-        if(jQuery('input:hidden[name=data_source]').val() == 'checkbook'){
-            var primeAndSubIcon = "<img class='prime-and-sub-datafeeds' src='/sites/all/themes/checkbook3/images/prime-and-sub.png' />";
-            jQuery(".prime-and-sub-note-datafeeds").remove();
-            jQuery("select[name=df_contract_status]").parent().find('.prime-and-sub-datafeeds').remove();
-            jQuery("input:text[name=vendor]").parent().find('.prime-and-sub-datafeeds').remove();
-            jQuery("select[name=mwbe_category]").parent().find('.prime-and-sub-datafeeds').remove();
-            jQuery('input:text[name=currentamtfrom]').parent().parent().parent().find('.prime-and-sub-datafeeds').remove();
-            jQuery("select[name=category]").parent().find('.prime-and-sub-datafeeds').remove();
-            jQuery("select[name=sub_vendor_status_in_pip_id]").parent().find('.prime-and-sub-datafeeds').remove();
-            jQuery("input:text[name=purpose]").parent().find('.prime-and-sub-datafeeds').remove();
-            jQuery("select[name=industry]").parent().find('.prime-and-sub-datafeeds').remove();
-            jQuery("select[name=year]").parent().find('.prime-and-sub-datafeeds').remove();
-
+        var primeAndSubIcon = "<img class='prime-and-sub-datafeeds' src='/sites/all/themes/checkbook3/images/prime-and-sub.png' />";
+        jQuery(".prime-and-sub-note-datafeeds").remove();
+        jQuery("select[name=df_contract_status]").parent().find('.prime-and-sub-datafeeds').remove();
+        jQuery("input:text[name=vendor]").parent().find('.prime-and-sub-datafeeds').remove();
+        jQuery("select[name=mwbe_category]").parent().find('.prime-and-sub-datafeeds').remove();
+        jQuery('input:text[name=currentamtfrom]').parent().parent().parent().find('.prime-and-sub-datafeeds').remove();
+        jQuery("select[name=category]").parent().find('.prime-and-sub-datafeeds').remove();
+        jQuery("select[name=sub_vendor_status_in_pip_id]").parent().find('.prime-and-sub-datafeeds').remove();
+        jQuery("input:text[name=purpose]").parent().find('.prime-and-sub-datafeeds').remove();
+        jQuery("select[name=industry]").parent().find('.prime-and-sub-datafeeds').remove();
+        jQuery("select[name=year]").parent().find('.prime-and-sub-datafeeds').remove();
+        
+        if(jQuery("input[name='datafeeds-contracts-domain-filter']:checked").val() == 'checkbook'){
             if((jQuery("select[name=df_contract_status]").val() == 'active' || jQuery("select[name=df_contract_status]").val() == 'registered') 
                     && (jQuery("select[name=category]").val() == 'expense' || jQuery("select[name=category]").val() == 'all')){
                 jQuery("<div class='prime-and-sub-note-datafeeds'><p>All Fields are searchable by Prime data, unless designated as Prime & Sub (<img src='/sites/all/themes/checkbook3/images/prime-and-sub.png' />).</p><br/></div>").insertAfter(jQuery("p.required-message"));
@@ -126,6 +126,8 @@
 
         $('#edit-column-select-all option[value="Year"]').attr('disabled','disabled');
         $('#edit-column-select-all option[value="year"]').attr('disabled','disabled');
+        
+        showHidePrimeAndSubIcon();
 
         $('#edit-column-select-expense').multiSelect('refresh');
         if(!$('#ms-edit-column-select-all .ms-selection').next().is("a")){
