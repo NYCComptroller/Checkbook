@@ -108,7 +108,7 @@
      */
     function addPrimeAndSubIcon(ele){
         var primeAndSubIcon = "<img class='prime-and-sub-datafeeds' src='/sites/all/themes/checkbook3/images/prime-and-sub.png' />";
-        jQuery(ele).find('label').prepend(primeAndSubIcon);
+        jQuery(ele).find('label').first().prepend(primeAndSubIcon);
         ele.addClass('asterisk-style');
     }
 
