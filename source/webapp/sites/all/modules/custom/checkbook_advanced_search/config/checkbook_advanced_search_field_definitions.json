@@ -148,7 +148,8 @@
         "field_type":"range",
         "field_name":"registration_date",
         "attributes":{
-            "date_year_range":"$year_range"
+            "date_year_range":"$year_range",
+            "title":"Registration<br/>Date"
         }
     },
     "category":{

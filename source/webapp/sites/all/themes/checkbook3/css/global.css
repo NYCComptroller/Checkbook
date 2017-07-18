@@ -3656,13 +3656,15 @@ a.new-features-morelink{
 {
     height: 21px;
     float: left;
-    padding-right:5px;
+    padding-right:4px;
 }
+#contracts-advanced-search .column .form-item label,
 .contracts-fieldset .datafield label {
-    padding-left: 17px;
+    padding-left: 15px;
     white-space: nowrap;
 }
 
+#contracts-advanced-search .column .asterisk-style label,
 .contracts-fieldset .asterisk-style label {
     padding-left: 0px;
     white-space: nowrap;
