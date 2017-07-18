@@ -103,7 +103,12 @@ foreach($node->data as $key => $value){
         $selected_cal_year = '';
         $isSelected =  true;
     }
-    
+    //For Trends page, set the default year value from the variable 'current_fiscal_year_id' since it doesn't have a default year value 
+    if($trends){
+        if($value['year_id'] == variable_get('current_fiscal_year_id')){
+            $selected_fiscal_year = 'selected = yes';
+        }
+    }
     /*********  Begining of Fiscal Year Options   ********/
     if($value['year_value'] <= $filter_years['year_value'] && $value['year_value'] != '2010'){
         
