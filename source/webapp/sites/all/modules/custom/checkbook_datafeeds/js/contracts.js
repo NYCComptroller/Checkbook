@@ -48,35 +48,73 @@
     
     function showHidePrimeAndSubIcon(){
         if(jQuery('input:hidden[name=data_source]').val() == 'checkbook'){
-            var primeAndSubIcon = "<img class='prime-and-sub-datafeeds' src='/sites/all/themes/checkbook3/images/prime-and-sub.png' />";
-            jQuery(".prime-and-sub-note-datafeeds").remove();
-            jQuery("select[name=df_contract_status]").parent().find('.prime-and-sub-datafeeds').remove();
-            jQuery("input:text[name=vendor]").parent().find('.prime-and-sub-datafeeds').remove();
-            jQuery("select[name=mwbe_category]").parent().find('.prime-and-sub-datafeeds').remove();
-            jQuery('input:text[name=currentamtfrom]').parent().parent().parent().find('.prime-and-sub-datafeeds').remove();
-            jQuery("select[name=category]").parent().find('.prime-and-sub-datafeeds').remove();
-            jQuery("select[name=sub_vendor_status_in_pip_id]").parent().find('.prime-and-sub-datafeeds').remove();
-            jQuery("input:text[name=purpose]").parent().find('.prime-and-sub-datafeeds').remove();
-            jQuery("select[name=industry]").parent().find('.prime-and-sub-datafeeds').remove();
-            jQuery("select[name=year]").parent().find('.prime-and-sub-datafeeds').remove();
 
-            if((jQuery("select[name=df_contract_status]").val() == 'active' || jQuery("select[name=df_contract_status]").val() == 'registered') 
-                    && (jQuery("select[name=category]").val() == 'expense' || jQuery("select[name=category]").val() == 'all')){
+            var note = jQuery(".prime-and-sub-note-datafeeds");
+            var contract_status = jQuery(".contractstatus");
+            var vendor = jQuery(".vendor");
+            var mwbe_category = jQuery(".mwbecategory");
+            var current_amt_from = jQuery(".currentamt");
+            var category = jQuery(".category");
+            var sub_vendor_status_in_pip = jQuery(".sub_vendor_status_in_pip_id");
+            var purpose = jQuery(".purpose");
+            var industry = jQuery(".industry");
+            var year = jQuery(".year");
+
+            // Remove all asterisk fields & note
+            note.remove();
+            removePrimeAndSubIcon(contract_status);
+            removePrimeAndSubIcon(vendor);
+            removePrimeAndSubIcon(mwbe_category);
+            removePrimeAndSubIcon(current_amt_from);
+            removePrimeAndSubIcon(category);
+            removePrimeAndSubIcon(sub_vendor_status_in_pip);
+            removePrimeAndSubIcon(purpose);
+            removePrimeAndSubIcon(industry);
+            removePrimeAndSubIcon(year);
+
+            var contract_status_val = jQuery("select[name=df_contract_status]").val();
+            var category_val = jQuery("select[name=category]").val();
+
+            // Add asterisk fields & note
+            if((contract_status_val == 'active' || contract_status_val == 'registered')
+                && (category_val == 'expense' || category_val == 'all')){
+
                 jQuery("<div class='prime-and-sub-note-datafeeds'><p>All Fields are searchable by Prime data, unless designated as Prime & Sub (<img src='/sites/all/themes/checkbook3/images/prime-and-sub.png' />).</p><br/></div>").insertAfter(jQuery("p.required-message"));
-                jQuery(primeAndSubIcon).insertBefore(jQuery("select[name=df_contract_status]").parent().find('label'));
-                jQuery(primeAndSubIcon).insertBefore(jQuery("input:text[name=vendor]").parent().find('label'));
-                jQuery(primeAndSubIcon).insertBefore(jQuery("select[name=mwbe_category]").parent().find('label'));
-                jQuery(primeAndSubIcon).insertBefore(jQuery('input:text[name=currentamtfrom]').parent().parent().parent().find('label:first'));
-                jQuery(primeAndSubIcon).insertBefore(jQuery("select[name=category]").parent().find('label'));
-                jQuery(primeAndSubIcon).insertBefore(jQuery("select[name=sub_vendor_status_in_pip_id]").parent().find('label'));
-                jQuery(primeAndSubIcon).insertBefore(jQuery("input:text[name=purpose]").parent().find('label'));
-                jQuery(primeAndSubIcon).insertBefore(jQuery("select[name=industry]").parent().find('label'));
-                jQuery(primeAndSubIcon).insertBefore(jQuery("select[name=year]").parent().find('label'));
+
+                addPrimeAndSubIcon(contract_status);
+                addPrimeAndSubIcon(vendor);
+                addPrimeAndSubIcon(mwbe_category);
+                addPrimeAndSubIcon(current_amt_from);
+                addPrimeAndSubIcon(category);
+                addPrimeAndSubIcon(sub_vendor_status_in_pip);
+                addPrimeAndSubIcon(purpose);
+                addPrimeAndSubIcon(industry);
+                addPrimeAndSubIcon(year);
             }
         }
     }
 
-    $.fn.onDataSourceChange = function(){
+    /**
+     * Function will remove the asterisk icon css from a field
+     * @param ele
+     */
+    function removePrimeAndSubIcon(ele){
+        ele.find('.prime-and-sub-datafeeds').remove();
+        ele.removeClass('asterisk-style');
+
+    }
+
+    /**
+     * Function will add the asterisk icon css to a field
+     * @param ele
+     */
+    function addPrimeAndSubIcon(ele){
+        var primeAndSubIcon = "<img class='prime-and-sub-datafeeds' src='/sites/all/themes/checkbook3/images/prime-and-sub.png' />";
+        jQuery(ele).find('label').prepend(primeAndSubIcon);
+        ele.addClass('asterisk-style');
+    }
+
+            $.fn.onDataSourceChange = function(){
         //clear all text fields
         var enclosingDiv = $("#dynamic-filter-data-wrapper").children('#edit-filter').children('div.fieldset-wrapper').children();
         jQuery(enclosingDiv).find(':input').each(function() {
