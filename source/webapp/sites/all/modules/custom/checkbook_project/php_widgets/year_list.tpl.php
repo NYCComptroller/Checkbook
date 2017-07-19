@@ -86,7 +86,7 @@ if(isset($bottomURL)){
  
 $fiscal_year_data_array = array();
 $calendar_year_data_array = array();
-$current_fy_id = _getFiscalYearID();
+$current_fy_id = _getCurrentYearID();
 $isSelected = false;
     
 
@@ -103,9 +103,9 @@ foreach($node->data as $key => $value){
         $selected_cal_year = '';
         $isSelected =  true;
     }
-    //For Trends page, set the default year value from the variable 'current_fiscal_year_id' since it doesn't have a default year value 
+    //For Trends page, set the default year value to NYC fiscal year since it doesn't have a default year value 
     if($trends){
-        if($value['year_id'] == variable_get('current_fiscal_year_id')){
+        if($value['year_id'] == $current_fy_id){
             $selected_fiscal_year = 'selected = yes';
         }
     }
