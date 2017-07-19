@@ -3654,7 +3654,7 @@ a.new-features-morelink{
 .prime-and-sub,
 .prime-and-sub-datafeeds
 {
-    height: 21px;
+    height: 22px;
     float: left;
     padding-right:4px;
 }
@@ -3673,8 +3673,7 @@ a.new-features-morelink{
 .prime-and-sub-note,
 .prime-and-sub-note-datafeeds p{
     text-align:right;
-    font-style:italic;
-    font-size:10px;
+    font:italic 11px verdana black;
     position: relative;
     top: -21px;
 }
