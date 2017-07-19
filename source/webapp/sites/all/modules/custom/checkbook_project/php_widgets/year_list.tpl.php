@@ -103,8 +103,8 @@ foreach($node->data as $key => $value){
         $selected_cal_year = '';
         $isSelected =  true;
     }
-    //For Trends page, set the default year value to NYC fiscal year since it doesn't have a default year value 
-    if($trends){
+    //For Trends and Smart Search, set the default year value to current NYC fiscal year 
+    if($trends || $search){
         if($value['year_id'] == $current_fy_id){
             $selected_fiscal_year = 'selected = yes';
         }
