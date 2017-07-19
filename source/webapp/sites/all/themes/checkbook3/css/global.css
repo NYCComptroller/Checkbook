@@ -3672,10 +3672,12 @@ a.new-features-morelink{
 
 .prime-and-sub-note,
 .prime-and-sub-note-datafeeds p{
-    text-align:right;
-    font:italic 11px verdana black;
+    font-family: Verdana,Geneva,sans-serif;
+    font-size: 11px;
+    font-style: italic;
     position: relative;
-    top: -21px;
+    text-align: right;
+    top: -20px;
 }
 .prime-and-sub-note > img,
 .prime-and-sub-note-datafeeds p >img{
