@@ -3658,18 +3658,28 @@ a.new-features-morelink{
     float: left;
     padding-right:4px;
 }
-#contracts-advanced-search .column > .form-item > label:first-child,
+
+
+#contracts-advanced-search .checkbook.column > .form-item > label:first-child,
 .contracts-fieldset .column > .datafield > .form-item > label:first-child,
 .contracts-fieldset .column > .datafield > label:first-child {
     padding-left: 15px;
     white-space: nowrap;
 }
 
-#contracts-advanced-search .column .asterisk-style > label:first-child,
+#contracts-advanced-search .checkbook.column .asterisk-style > label:first-child,
 .contracts-fieldset .column .asterisk-style > .form-item > label:first-child,
 .contracts-fieldset .column .asterisk-style > label:first-child {
     padding-left: 0px;
     white-space: nowrap;
+}
+
+#contracts-advanced-search .checkbook.column-left > .form-item > label:first-child {
+    margin-left: -15px;
+}
+
+#contracts-advanced-search .checkbook.column-left .asterisk-style > label:first-child {
+    margin-left: -15px;
 }
 
 .prime-and-sub-note,
