@@ -145,6 +145,9 @@
                     div_checkbook_contracts_oge.ele('received_date_to').attr('disabled','disabled');
                     div_checkbook_contracts_oge.ele('registration_date_from').attr('disabled','disabled');
                     div_checkbook_contracts_oge.ele('registration_date_to').attr('disabled','disabled');
+
+                    // Remove note
+                    jQuery(".prime-and-sub-note").remove();
                     break;
 
                 default:
@@ -336,6 +339,7 @@
                 }
             }
             jQuery("#edit-contracts-clear").click(function() {
+                showHidePrimeAndSubFields(div_checkbook_contracts);
                 div.ele('includes_sub_vendors').html('<option value="0" selected>Select Status</option>' +
                     '<option value="2">Yes</option>' +
                     '<option value="3">No</option>' +
