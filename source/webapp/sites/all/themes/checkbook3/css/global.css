@@ -3689,15 +3689,22 @@ a.new-features-morelink{
     font-style: italic;
     position: relative;
     text-align: right;
-    top: -20px;
+}
+.prime-and-sub-note{
+    margin-bottom: 20px;
+    margin-top: -20px;  
 }
 .prime-and-sub-note > img,
 .prime-and-sub-note-datafeeds p >img{
     height: 20px;
     position: relative;
-    top: 3px;
 }
-
+.prime-and-sub-note > img{
+    margin-bottom: -4px;
+}
+.prime-and-sub-note-datafeeds > img{
+    margin-bottom: -2px;
+}
 #checkbook-datafeeds-data-feed-wizard .prime-and-sub-note-datafeeds p{
     float: left;
     top: 0;
