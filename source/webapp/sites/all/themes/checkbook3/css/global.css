@@ -3657,6 +3657,7 @@ a.new-features-morelink{
     height: 22px;
     float: left;
     padding-right:4px;
+    margin-top: -2px;
 }
 
 
@@ -3702,7 +3703,7 @@ a.new-features-morelink{
 .prime-and-sub-note > img{
     margin-bottom: -4px;
 }
-.prime-and-sub-note-datafeeds > img{
+.prime-and-sub-note-datafeeds p > img{
     margin-bottom: -2px;
 }
 #checkbook-datafeeds-data-feed-wizard .prime-and-sub-note-datafeeds p{
