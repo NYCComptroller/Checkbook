@@ -27,7 +27,7 @@
     $header .=  ",Non-Cash Liquidations and Adjustments to Levy(1)"  ;
     $header .=  ",Total Collections and Adjustments to Date - Amount"  ;
     $header .=  ",Total Collections and Adjustments to Date - Percentage of Levy,"  ;
-    $header .=  ",".'"'."Remaining Uncollected July 1, 2015".'"'  ;
+    $header .=  ",".'"'."Remaining Uncollected July 1, 2016".'"'  ;
 	echo $header . "\n";
 
     $count = 1;
@@ -49,7 +49,7 @@
         $count++;
    	}
 
-   echo "\n".'"'."(1) Adjustments to Tax Levy are Non-Cash Liquidations and Cancellations of Real Property Tax and include (School Tax Relief) payments which are not included in the City Council Resolutions.".'"';
+   echo "\n".'"'."(1) Adjustments to Tax Levy are Non-Cash Liquidations and Cancellations of Real Property Tax and include School Tax Relief payments which are not included in the City Council Resolutions.".'"';
    echo "\n".'"'."SOURCES: Resolutions of the City Council and other Department of Finance reports.".'"';
 ?>
 

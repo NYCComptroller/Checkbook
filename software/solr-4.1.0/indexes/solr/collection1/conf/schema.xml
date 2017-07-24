@@ -278,6 +278,8 @@
         <field name="contract_type_text" type="text_general" indexed="true" stored="true"/>
         <field name="pin" type="string_custom" indexed="true" stored="true"/>
         <field name="apt_pin" type="string_custom" indexed="true" stored="true"/>
+        <field name="prime_pin" type="string_custom" indexed="true" stored="true"/>
+        <field name="prime_apt_pin" type="string_custom" indexed="true" stored="true"/>
         <field name="version_number" type="string_custom" indexed="true" stored="true"/>
         <field name="document_version" type="string_custom" indexed="true" stored="true"/>
         <field name="start_date" type="date" indexed="true" stored="true" />
@@ -312,6 +314,12 @@
         <field name="effective_end_year_id" type="int" indexed="true" stored="true"/>
         <field name="effective_begin_year" type="int" indexed="true" stored="true"/>
         <field name="effective_begin_year_id" type="int" indexed="true" stored="true"/>
+
+        <field name="aprv_sta" type="int" indexed="true" stored="true"/>
+        <field name="aprv_sta_name" type="string_custom" indexed="true" stored="true"/>
+        <field name="scntrc_status" type="int" indexed="true" stored="true"/>
+        <field name="scntrc_status_name" type="string_custom" indexed="true" stored="true"/>
+
     </fields>
 
 

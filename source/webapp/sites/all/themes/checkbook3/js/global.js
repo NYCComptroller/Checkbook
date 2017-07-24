@@ -1,4 +1,18 @@
 jQuery(document).ready(function ($) {
+    //New Features Menu
+    jQuery('#nice-menu-1 li.menu-path-node-975 a').addClass('btn-new-features gridpopup');
+
+    //Altering CSS for slider pager for pie charts on contracts page
+    if(jQuery(".slider-pager a").length == 2){
+        jQuery("div.slider-pager").addClass('pieSlider');
+    }else{
+        jQuery("div.slider-pager").removeClass('pieSlider');
+    }
+        
+    if (!getParameterByName("expandBottomCont") && !getParameterByName("expandBottomContURL")) {
+        jQuery('.bottomContainerToggle').click();
+        jQuery('.bottomContainer').show();
+    }
     if (parseInt($.browser.version, 10) == 7) {
         $("#page").addClass("ie");
     } else {
@@ -626,9 +640,9 @@ Drupal.behaviors.hoveOverMWBE = {
 
     Drupal.behaviors.disableClicks = {
         attach: function(context,settings){
-            if ($('body').hasClass('gridview') || $('body').hasClass('newwindow')){
+            if ($('body').hasClass('gridview') || ($('body').hasClass('newwindow') && !($('body').hasClass('page-new-features')))){
                 $('body').delegate('a', 'click', function () {
-                    if($(this).hasClass('showHide') || $(this).hasClass('logo') || $(this).attr('rel') == 'home' || $(this).hasClass('enable-link'))
+                    if($(this).hasClass('subContractViewAll') || $(this).hasClass('showHide') || $(this).hasClass('logo') || $(this).attr('rel') == 'home' || $(this).hasClass('enable-link'))
                         return true;
                     else
                         return false;
@@ -1103,6 +1117,12 @@ Drupal.behaviors.hoveOverMWBE = {
 
                 /* For oge, Budget, Revenue & Payroll are not applicable and are disabled */
                 disableAccordionSections(data_source);
+                
+                clearInputFields("#payroll-advanced-search",'payroll');
+                clearInputFieldByDataSource("#contracts-advanced-search",'contracts',data_source);
+                clearInputFieldByDataSource("#spending-advanced-search",'spending',data_source);
+                clearInputFields("#budget-advanced-search",'budget');
+                clearInputFields("#revenue-advanced-search",'revenue');
 
                 clearInputFields("#payroll-advanced-search",'payroll');
                 clearInputFieldByDataSource("#contracts-advanced-search",'contracts',data_source);
@@ -1276,6 +1296,12 @@ Drupal.behaviors.hoveOverMWBE = {
 
                 /* For oge, Budget, Revenue & Payroll are not applicable and are disabled */
                 disableAccordionSections(data_source);
+                
+                clearInputFields("#payroll-advanced-search",'payroll');
+                clearInputFieldByDataSource("#contracts-advanced-search",'contracts',data_source);
+                clearInputFieldByDataSource("#spending-advanced-search",'spending',data_source);
+                clearInputFields("#budget-advanced-search",'budget');
+                clearInputFields("#revenue-advanced-search",'revenue');
 
                 clearInputFields("#payroll-advanced-search",'payroll');
                 clearInputFieldByDataSource("#contracts-advanced-search",'contracts',data_source);
@@ -1340,14 +1366,14 @@ Drupal.behaviors.hoveOverMWBE = {
                 else {
                     $('#edit-back-submit').attr('disabled', true);
                 }
-                /* Fixed for Chrome browser issue */
+                
                 jQuery('.tableHeader').each(function( i ) {
-                    if(jQuery(this).find('.contCount').length > 0){
+                   if(jQuery(this).find('.contCount').length > 0){
                         jQuery(this).find('h2').append("<span class='contentCount'>"+jQuery('span.contCount').html()+'</span>');
                         jQuery(this).find('.contCount').remove();
                     }
                 });
-
+                
             });
 
             /*------------------------------------------------------------------------------------------------------------*/
@@ -1838,46 +1864,44 @@ Drupal.behaviors.hoveOverMWBE = {
                         var callBackURL = '';
                         var expandBottomContURL = getParameterByName("expandBottomContURL");
                         if (expandBottomContURL){
-                        	callBackURL = expandBottomContURL + "?appendScripts=true";
+                            callBackURL = expandBottomContURL + "?appendScripts=true";
                         } else{
-                        	callBackURL = this.href + window.location.pathname + "?appendScripts=true";
+                            callBackURL = this.href + window.location.pathname + "?appendScripts=true";
                         }
-
 
                         $('.bottomContainer').toggle();
                         $('.bottomContainer').html("<img style='float:right' src='/sites/all/themes/checkbook/images/loading_large.gif' title='Loading Data...'/>");
-                        $.cookie("showDetails","enable", { path: '/' });
                         $('.bottomContainerToggle').toggle();
                         $.ajax({
                             url:callBackURL,
                             success:function (data) {
                                 $('.bottomContainer').html(data);
-                                $('.bottomContainerToggle').html("Hide Details &#171;");
+                               // $('.bottomContainerToggle').html("Hide Details &#171;");
+                                $('.bottomContainerToggle').html("");
                                 $('.bottomContainerToggle').toggle();
                                 $('.first-item').trigger('click');
                             }
                         });
                     } else {
                         $('.bottomContainer').toggle();
-                        $('.bottomContainerToggle').html("Hide Details &#171;");
+                       // $('.bottomContainerToggle').html("Hide Details &#171;");
+                        $('.bottomContainerToggle').html("");
                     }
                 },
                 function (event) {
                     event.preventDefault();
                     $('.bottomContainer').toggle();
-                    $('.bottomContainerToggle').html("Show Details &#187;");
-                    $.cookie("showDetails","disable", { path: '/' });
+                  //  $('.bottomContainerToggle').html("Show Details &#187;");
+                    $('.bottomContainerToggle').html("");
                 }
 
             );
-            if (getParameterByName("expandBottomCont") ||getParameterByName("expandBottomContURL") || $.cookie("showDetails") == "enable" ) {
-            	$.cookie("showDetails","enable", { path: '/' });
+            if (getParameterByName("expandBottomCont") ||getParameterByName("expandBottomContURL")) {
                 $('.bottomContainerToggle', context).click();
             }
 
         }
     };
-
 
     $('.bottomContainerReload').live("click",
         function (event) {
@@ -2016,108 +2040,57 @@ $('.expandCollapseWidget').live("click",
    );
 
 $('.simultExpandCollapseWidget').live("click",
-       function (event) {
-           var toggled = $(this).data('toggled');
-           var oTable22 =  null;
-           var oTable23 =  null;
-           var oTable29 =  null;
-           var oElement22 =  null;
-           var oElement23 =  null;
-           var oElement29 =  null;
+    function (event) {
+        var toggled = $(this).data('toggled');
+        var nodes = ['node-widget-spending_by_expense_categories_view','node-widget-spending_by_agencies_view',
+                     'node-widget-spending_by_departments_view', 'node-widget-oge_spending_by_expense_categories_view', 
+                     'node-widget-oge_spending_by_departments_view', 'node-widget-mwbe_spending_by_agencies_view',
+                     'node-widget-mwe_spending_expense_categories_view','node-widget-mwbe_spending_by_departments_view'];
+        jQuery.each(nodes, function (index, value) {
+            var oTable = null;
+            var oElement = null;
+            var nodeId = '#'+ value +' a.simultExpandCollapseWidget';
 
-           if($('#node-widget-22 a.simultExpandCollapseWidget').parent().prev().find('.dataTable') != null){
-                oTable22 = $('#node-widget-22 a.simultExpandCollapseWidget').parent().prev().find('.dataTable').dataTable() ;
-                oElement22 = $('#node-widget-22 a.simultExpandCollapseWidget');
-                oElement22.data('toggled', !toggled);
-           }
-           if($('#node-widget-23 a.simultExpandCollapseWidget').parent().prev().find('.dataTable') != null){
-                oTable23 = $('#node-widget-23 a.simultExpandCollapseWidget').parent().prev().find('.dataTable').dataTable();
-                oElement23 = $('#node-widget-23 a.simultExpandCollapseWidget');
-                oElement23.data('toggled', !toggled);
-           }
-           if($('#node-widget-29 a.simultExpandCollapseWidget').parent().prev().find('.dataTable') != null){
-                oTable29 = $('#node-widget-29 a.simultExpandCollapseWidget').parent().prev().find('.dataTable').dataTable();
-                oElement29 = $('#node-widget-29 a.simultExpandCollapseWidget');
-                oElement29.data('toggled', !toggled);
-           }
+            if(jQuery(nodeId).parent().prev().find('.dataTable') != null){
+                oTable = jQuery(nodeId).parent().prev().find('.dataTable').dataTable() ;
+                oElement = jQuery(nodeId);
+                oElement.data('toggled', !toggled);
+            
+                event.preventDefault();
+                var text ="";
 
-           event.preventDefault();
-           var text ="";
+                if (!toggled) {
+                    if(oTable.size() > 0){
+                        oTable.fnSettings().oInit.expandto150 = true;
+                        oTable.fnSettings().oInit.expandto5 = false;
+                    }
 
-           if (!toggled) {
-               if(oTable22.size() > 0){
-                    oTable22.fnSettings().oInit.expandto150 = true;
-                    oTable22.fnSettings().oInit.expandto5 = false;
-               }
-               if(oTable23.size() > 0){
-                    oTable23.fnSettings().oInit.expandto150 = true;
-                    oTable23.fnSettings().oInit.expandto5 = false;
-               }
-               if(oTable29.size() > 0){
-                    oTable29.fnSettings().oInit.expandto150 = true;
-                    oTable29.fnSettings().oInit.expandto5 = false;
-               }
+                    text = "<img src='/sites/all/themes/checkbook/images/close.png'>";
+                    if(oElement != null){
+                        oElement.parent().parent().find('.hideOnExpand').hide();
+                    }
+                }else{
+                    if(oTable.size() > 0){
+                        oTable.fnSettings().oInit.expandto5 = true;
+                        oTable.fnSettings().oInit.expandto150 = false;
+                        var placeTable = $('#'+oTable.fnSettings().sInstance + '_wrapper').parent().parent().attr('id');
+                        document.getElementById(placeTable).scrollIntoView();
+                    }
 
-                text = "<img src='/sites/all/themes/checkbook/images/close.png'>";
-               if(oElement22 != null){
-                    oElement22.parent().parent().find('.hideOnExpand').hide();
-               }
-               if(oElement23 != null){
-                    oElement23.parent().parent().find('.hideOnExpand').hide();
-               }
-
-               if(oElement29 != null){
-                    oElement29.parent().parent().find('.hideOnExpand').hide();
-               }
-
-           }else{
-               if(oTable22.size() > 0){
-                    oTable22.fnSettings().oInit.expandto5 = true;
-                    oTable22.fnSettings().oInit.expandto150 = false;
-                    var place22 = $('#'+oTable22.fnSettings().sInstance + '_wrapper').parent().parent().attr('id');
-                    document.getElementById(place22).scrollIntoView();
-               }
-               if(oTable23.size() > 0){
-                    oTable23.fnSettings().oInit.expandto5 = true;
-                    oTable23.fnSettings().oInit.expandto150 = false;
-                    var place23 = $('#'+oTable23.fnSettings().sInstance + '_wrapper').parent().parent().attr('id');
-                    document.getElementById(place23).scrollIntoView();
-               }
-               if(oTable29.size() > 0){
-                    oTable29.fnSettings().oInit.expandto5 = true;
-                    oTable29.fnSettings().oInit.expandto150 = false;
-                    var place29 = $('#'+oTable29.fnSettings().sInstance + '_wrapper').parent().parent().attr('id');
-                    document.getElementById(place29).scrollIntoView();
-               }
-
-                text = "<img src='/sites/all/themes/checkbook/images/open.png'>";
-                if(oElement22 != null){
-                    oElement22.parent().parent().find('.hideOnExpand').show();
+                    text = "<img src='/sites/all/themes/checkbook/images/open.png'>";
+                    if(oElement != null){
+                        oElement.parent().parent().find('.hideOnExpand').show();
+                    }
                 }
 
-                if(oElement23 != null){
-                    oElement23.parent().parent().find('.hideOnExpand').show();
+                if(oTable.size() > 0){
+                    oTable.fnDraw();
+                    oElement.html(text);
                 }
-
-                if(oElement29 != null){
-                    oElement29.parent().parent().find('.hideOnExpand').show();
-                }
-
-           }
-            if(oTable22.size() > 0){
-                oTable22.fnDraw();
-                oElement22.html(text);
             }
-            if(oTable23.size() > 0){
-                oTable23.fnDraw();
-                oElement23.html(text);
-            }
-            if(oTable29.size() > 0){
-                oTable29.fnDraw();
-                oElement29.html(text);
-            }
-       }
-   );
+        });
+    }
+ );
 
     //Instructional Videos
     var instructionalVideos = '.instructional-video-toggle, .instructional-video-filter-highlight';

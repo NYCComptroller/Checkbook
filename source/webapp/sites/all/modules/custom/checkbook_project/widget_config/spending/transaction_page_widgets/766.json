@@ -347,7 +347,7 @@
             cUrl = adjustUrlParameter(cUrl,'dept',null);
             cUrl = adjustUrlParameter(cUrl,'deptnm',null);
         }
-        cUrl = adjustUrlParameter(cUrl,'expcategorynm',oSpendCategoryNms);
+        cUrl = adjustUrlParameter(cUrl,'expcategorycode',oSpendCategoryNms);
         cUrl = adjustUrlParameter(cUrl,'vendortype',oVendorType);
         cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
         cUrl = adjustUrlParameter(cUrl,'industry',oIndustryType);

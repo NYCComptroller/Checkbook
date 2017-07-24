@@ -1036,6 +1036,8 @@ function _checkbook_project_applyParameterFilters($node, $parameters){
     $urlParamMap = isset($node->widgetConfig->urlParamMap) ? get_object_vars($node->widgetConfig->urlParamMap) : array();
 
     $originalRequestParams = $node->widgetConfig->originalRequestParams;
+    $logicalOrFacet = $node->widgetConfig->logicalOrFacet;
+    $unionOrFacet = $node->widgetConfig->unionOrFacet;
 
     //adjust request parameter configurations
     $configurationTypes = array();
@@ -1046,7 +1048,8 @@ function _checkbook_project_applyParameterFilters($node, $parameters){
 
             foreach($intersectKeys as $intersectKey => $value){
                 if(isset($paramTypeConfig[$intersectKey]) && $urlParamMap[$intersectKey] == $param){
-                    $configurationTypes[$param][$paramTypeConfig[$intersectKey]] = explode("~",$originalRequestParams[$intersectKey]);
+                    if((!isset($logicalOrFacet) || !$logicalOrFacet) && (!isset($unionOrFacet) || !$unionOrFacet))
+                        $configurationTypes[$param][$paramTypeConfig[$intersectKey]] = explode("~",$originalRequestParams[$intersectKey]);
                 }
             }
         }
@@ -1423,9 +1426,12 @@ function _checkbook_project_get_year_url_param_string($applySpendingYear=false, 
 * returns keyvalue pair string is present in URL
 * @return string
 */
-function _checkbook_project_get_url_param_string($key,$key_alias =  null){
+function _checkbook_project_get_url_param_string($key,$key_alias =  null, $ajaxPath = FALSE){
   
   $urlPath = drupal_get_path_alias($_GET['q']);
+  if($ajaxPath)
+    $urlPath = $_SERVER['HTTP_REFERER'];
+  
   $pathParams = explode('/', $urlPath);
   $keyIndex = NULL;
   foreach($pathParams as $index => $value){
@@ -1565,7 +1571,8 @@ function _get_child_agreement_details($agid){
 function _get_contract_type($contnum){
     $contnum_3 = substr($contnum, 0, 3); //get first 3 characters from contract number
     $contnum_4 = substr($contnum, 0, 4); //get first 4 characters from contract number
-    if(strtolower($contnum_4) == 'mma1'){
+    $fourLetterContractTypes = array('mma1', 'cta1', 'rct1', 'pcc1', 'cta2', 'mac1');
+    if(in_array(strtolower($contnum_4), $fourLetterContractTypes)){
         return $contnum_4;
     }else{
         return $contnum_3;
@@ -2159,3 +2166,77 @@ function _getAnnualSalariedEmployeeCount($node){
     $result = _checkbook_project_execute_sql_by_data_source($sql,_get_default_datasource());
     $node->PayrollTotalDataCount = (int)$result[0]['record_count'];
 }
+
+
+function isAdvancedSearchResultsPage(){
+    $current_url = $_SERVER['HTTP_REFERER'];
+    if(preg_match("/contract\/search\/transactions/",$current_url)) {
+        return true;
+    }
+    else {
+        $current_url = $_SERVER['REQUEST_URI'];
+        if(preg_match("/contract\/search\/transactions/",$current_url)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function _get_contract_includes_subvendors_data($attributes = NULL) {
+    try {
+        $dataController = data_controller_get_instance();
+        $values = $dataController -> queryDataset('checkbook:ref_subcontract_status',
+            array('scntrc_status', 'scntrc_status_name', 'display_flag'),
+            NULL, 'sort_order', 0, 10, NULL);
+
+        if($attributes){
+            $statuses = array('title' => 'Select Status');
+        }else{
+            $statuses = array('Select Status');
+        }
+        foreach ($values as $value) {
+            if($attributes){
+                $statuses[$value['scntrc_status']] = array('title' => $value['scntrc_status_name']);
+            }else{
+                if($value['display_flag'] == 1) {
+                    if(strlen($value['scntrc_status_name']) > 20)
+                        $statuses[$value['scntrc_status']] = substr($value['scntrc_status_name'], 0, 20) . '...';
+                    else
+                        $statuses[$value['scntrc_status']] = $value['scntrc_status_name'];
+                }
+            }
+        }
+        return $statuses;
+    } catch (Exception $e) {
+        log_error("Error getting data from the controller: \n" . $e->getMessage());
+        return;
+    }
+}
+
+//Returns new features from Drupal database
+/*function _checkbook_get_new_features(){
+    $query = new EntityFieldQuery();
+    $per_page = 5;
+    $start_index = ($_REQUEST['page'])? $_REQUEST['page']*$per_page:0;
+    
+    //Results per page query
+    $result = $query->entityCondition('entity_type', 'node')
+                ->entityCondition('bundle', 'new_feature')
+                ->fieldCondition('field_display', 'value', 1)
+                ->fieldOrderBy('field_release_date', 'value', 'DESC')
+                ->range($start_index, $per_page)
+                ->execute();
+    $new_features = node_load_multiple(array_keys($result['node']));
+    
+    //Total count query
+    $countQuery = new EntityFieldQuery();
+    $count = $countQuery->entityCondition('entity_type', 'node')
+                ->entityCondition('bundle', 'new_feature')
+                ->fieldCondition('field_display', 'value', 1)
+                ->count()
+                ->execute();
+    
+    $html = theme('new_features',array('new_features'=>$new_features, 'total_count' => $count));
+    return $html;
+}*/
+

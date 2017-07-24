@@ -565,6 +565,11 @@ function load_widget_data($node, $resultFormatter) {
         }
         $parameters = $updatedParameters;
 
+        //$config->logicalOrColumns
+        if(isset($config->logicalOrColumns)) {
+            $parameters["logicalOrColumns"] = $config->logicalOrColumns;
+        }
+
         //if % (single or repeating) is passed as a parameter,
         //this field needs to be ignored in an ilike/like
         if(RequestUtil::isAdvancedSearchPage()) {
@@ -1304,6 +1309,9 @@ function widget_merge_config($parent_config, $child_config){
 
   if(!isset($child_config->dataset)){
     $child_config->dataset = $parent_config->dataset;
+  }
+  if(!isset($child_config->logicalOrColumns)){
+    $child_config->logicalOrColumns = $parent_config->logicalOrColumns;
   }
   return (object) $child_config;
 }

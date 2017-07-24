@@ -1,0 +1,99 @@
+<br/>
+<div class="new-features-description">
+    <p>
+        In order to keep up with the changing landscape of Checkbook, we have added the ‘New Features’ Button. Check in here for new functionality within the application, so that we can provide you with unparalleled levels of government transparency.
+    </p>
+</div>
+<h3 class="date-of-release">2017</h3>
+<h4 class="feature-title">1. Sub vendor Contracts Status</h4>
+<!--<div class="new-features-title">Sub vendor Contracts Status in Checkbook</div> -->
+<div class="new-features-description">
+    <p>
+        It is our wish to not only provide greater transparency, but to help prime and sub vendors track the progress of their sub-contracts within the City. In order to achieve this, we needed to provide Agency Chief Contracting Officers (ACCOs) with a simple way to review all of their prime contracts while encouraging more Prime vendors to enter their sub vendor information into the City’s Payment Information Portal.
+    </p>
+    <br/>
+    <p>By including additional subcontractor information into Checkbook, we are now able to allow:</p>
+    <ul>
+        <li>1) All interested parties to review sub vendor information, including contracts and payments.</li>
+        <li>2) Interested parties to see who has declared and entered sub vendor information on prime contracts into PIP as required by MOCS.</li>
+        <li>3) Prime vendors a simple way to review the status of all their contracts. </li>
+        <li>4) Sub vendors to cross-reference information entered in PIP to their own accounts payable systems to ensure proper, prompt payment.</li>
+    </ul>
+</div>
+
+<!--<h3 class="new-features">WHAT NEW INFORMATION IS BEING ADDED TO CHECKBOOK?</h3> -->
+<div class="new-features-title">a.  Prime Vendor Contract Status</div>
+<div class="new-features-description">
+    <p>Whether prime vendors have uploaded sub vendor information is displayed using one of three options.</p>
+    <ul style="list-style-type:disc;">
+        <li>1 = No Data Entered. Prime has not entered any sub vendor information</li>
+        <li>2 = Yes. Prime has indicated sub vendors on contract</li>
+        <li>3 = No. Prime has no sub vendor on contract</li>
+        <li>4 = Not Required. Prime Current Amount&lt;250,000 and/or prime contract associated to specified list of award method and contract types exclusions.</li>
+    </ul>
+</div>
+<div class="more" style="display:none">
+    <div class="new-features-title">b.	Status of Sub Vendor contract entered in PIP by Prime Vendor</div>
+    <div class="new-features-description">
+        <p>The status of sub vendor contracts being reviewed and approved within agencies is displayed using one of the following options.</p>
+        <ul style="list-style-type:disc;">
+            <li>2 = Rejected - ACCO rejected sub vendor contract</li>
+            <li>3 = Reviewing- Waiting for ACCO to approve or reject sub vendor contract</li>
+            <li>4 = Approved - ACCO approved sub vendor contract</li>
+            <li>5 = Cancelled - ACCO cancelled their approval of sub vendor contract.</li>
+            <li><strong>No Subcontract Information Submitted by Prime</strong>- This status indicates that the prime has not submitted subcontract information for approval.</li>
+            <li><strong>No Subcontract Payments submitted by Prime</strong>-This status indicates that the prime has said yes to sub vendors and ACCO has approved the sub vendor but there are no payments submitted by prime for the sub vendor.</li>
+        </ul>
+    </div>
+
+    <h3 class="new-features">UPDATED SEARCH FEATURES: ADVANCE SEARCH, ALERTS, DATA FEEDS, and API</h3>
+    <div class="new-features-description">
+        <p>
+            These methods for searching and extracting data from Checkbook have been updated to allow users to select status related to Contracts that include sub vendor and the status of all sub vendor contracts entered PIP by the prime vendor.
+        </p>
+    </div>
+    <div class="new-features-title">Advanced Search Form</div>
+    <div class="new-features-description">
+        <img src="/sites/all/themes/checkbook3/images/new-features/figure3.png" alt="Search Form">
+    </div>
+    <br/><br/>
+    <h3 class="new-features">UPDATED SUBVENDOR DASHBOARDS</h3>
+    <div class="new-features-title">Featured Dashboard Contract Modifications for Sub Vendors</div>
+    <div class="new-features-description">
+        <p>The bottom navigation bar was updated accurately reflect the sub vendor dashboard functionality.</p>
+        <br/>
+        <img src="/sites/all/themes/checkbook3/images/new-features/figure5.png" alt="New Navigation Bar">
+        <br/>
+        <p>The widget labeled, “Subcontract Status by Prime Contract ID” displays the sub vendor status in PIP for all prime contracts who declared having sub vendors at the City-wide, Agency and Vendor levels.</p>
+        <br/><p>The widget labeled, “Summary of Prime Contract Sub Vendor Reporting” summarizes status totals by prime contracts at the City-wide, Agency and Vendor levels.</p>
+        <br/><p>The widget labeled, “Summary of Sub Vendor Contract by Prime Contracts” summarizes status totals of sub vendor contracts submitted for ACCO approval at the City-wide, Agency and Vendor levels.</p>
+    </div>
+    <br/><br/>
+    <h3 class="new-features">UPDATED Contract ID Page</h3>
+    <div class="new-features-description">
+        <p>Contract ID page have been updated to now include sub vendor information section. Sub vendor Information section shall include details for contract status of sub vendors and total number of sub vendors. Sub vendor approval status in pip is also added to the spending by sub vendor table.</p>
+    </div>
+    <br/>
+    <h4 class="feature-title">2. Other Updates</h4>
+    <h3 class="new-features">ADDITION OF 2016 TRENDS</h3>
+    <div class="new-features-description">
+        <p>Trends shall now include data for year 2016. Featured trends and all trends now include data for 2016</p>
+        <br/>
+    </div>
+</div>
+<a href="" class="new-features-morelink">Show More »</a>
+<script type="text/javascript">
+jQuery(document).ready(function() {
+    jQuery(".new-features-morelink").click(function(){
+        if(jQuery(this).hasClass("less")) {
+            jQuery(this).removeClass("less");
+            jQuery(this).html('Show More »');
+        } else {
+            jQuery(this).addClass("less");
+            jQuery(this).html('Show Less «');
+        }
+        jQuery('.more').toggle();
+        return false;
+    });
+});
+</script>

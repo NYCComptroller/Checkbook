@@ -1,0 +1,37 @@
+{
+    "serviceName":"ContractsWidgetService",
+    "dataFunc":"GetSubContractsByAwardMethods",
+    "defaultParameters":{"type_of_year":"B","status_flag":"A","minority_type_id":"2~3~4~5~9"},
+    "headerTitle":"Award Methods",
+    "headerSubTitle":"Award Methods",
+    "table_columns":[
+        {"labelAlias": "award_method","column": "award_method_name","derivedColumn":"award_method_name_link"},
+        {"labelAlias": "num_sub_contracts","column": "total_contracts","format":"number"},
+        {"labelAlias": "current_amount","column": "current_amount_sum","format":"dollar"},
+        {"labelAlias": "original_amount","column": "original_amount_sum","format":"dollar"},
+        {"labelAlias": "spent_to_date","column": "spending_amount_sum","format":"dollar","derivedColumn":"award_method_spent_to_date_link"},
+        {"label":"","column":""}
+    ],
+    "dataTableOptions":{
+        "aoColumns": [
+            { "bSortable": false,"sWidth":"249px","sClass":"text"  },
+            {"sClass":"number","sWidth":"120px", "asSorting": [ "desc","asc"  ]},
+            {"sClass":"number", "sWidth":"177px", "asSorting": [ "desc","asc"  ] },
+            {"sClass":"number", "sWidth":"217px", "asSorting": [ "desc","asc"  ]},
+            {"sClass":"number", "sWidth":"160px", "asSorting": [ "desc","asc"  ]},
+            { "bSortable": false,"sWidth":"15px" }
+        ] ,
+        "bServerSide": true,
+        "bFilter": false,
+        "bPaginate": false,
+        "bProcessing":true,
+        "bLengthChange": false,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "aaSorting": [[ 2, "desc" ]],
+        "fnServerParams": "##function ( aoData ) {reloadExpandCollapseWidget(this,aoData);}##",
+        "oLanguage":{
+            "sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"
+        }
+    }
+}

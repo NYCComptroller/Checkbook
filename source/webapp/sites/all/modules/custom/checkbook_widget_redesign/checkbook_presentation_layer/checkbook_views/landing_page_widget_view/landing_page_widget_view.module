@@ -1,0 +1,783 @@
+<?php
+/**
+* This file is part of the Checkbook NYC financial transparency software.
+* 
+* Copyright (C) 2012, 2013 New York City
+* 
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as
+* published by the Free Software Foundation, either version 3 of the
+* License, or (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Affero General Public License for more details.
+* 
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+
+/*************************************************************************************/
+/* Widget Hooks                                                                      */
+/*************************************************************************************/
+
+function landing_page_widget_view_widget_controller_metadata() {
+	return array(
+    'data_tables' => array(
+      'name' => t('Table'),
+      'module' => 'landing_page_widget_view',
+      'description' => t("This widget type implements HTML table.")
+	)
+	);
+}
+
+/**
+ * Implementation for hook widget validate (custom)
+ * @param unknown_type $node
+ */
+function landing_page_widget_view_widget_controller_validate(&$node) {
+
+}
+
+/**
+ * Implementation for hook widget data ...
+ * @param unknown_type $node
+ */
+function landing_page_widget_view_widget_controller_data(&$node) {
+
+}
+
+/**
+ * Implementation of hook_menu
+ * @return multitype:string boolean multitype:number  
+ */
+function landing_page_widget_view_menu(){
+    $items['checkbook_views/data_tables/ajax_data/node/%widget_controller/%'] = array(
+        'page callback' => '_landing_page_widget_view_ajaxdata',
+        'page arguments' => array(4),
+        'access callback' => true,
+	    'type'=>MENU_CALLBACK
+  	);
+    $items['checkbook_views/data_tables/ajax_data/node/%widget_controller'] = array(
+        'page callback' => '_landing_page_widget_view_ajaxdata',
+        'page arguments' => array(4),
+        'access callback' => true,
+	    'type'=>MENU_CALLBACK
+  	);
+    $items['checkbook_views/data_tables_list/ajax_data/node/%widget_controller/%'] = array(
+        'page callback' => '_landing_page_widget_view_list_ajaxdata',
+        'page arguments' => array(4),
+        'access callback' => true,
+        'type'=>MENU_CALLBACK
+    );
+    $items['checkbook_views/data_tables_list/ajax_data/node/%widget_controller'] = array(
+        'page callback' => '_landing_page_widget_view_list_ajaxdata',
+        'page arguments' => array(4),
+        'access callback' => true,
+        'type'=>MENU_CALLBACK
+    );
+    $items['checkbook_views/data_tables_list_wt/ajax_data/node/%widget_controller'] = array(
+        'page callback' => '_landing_page_widget_view_list_wt_ajaxdata',
+        'page arguments' => array(4),
+        'access callback' => true,
+        'type'=>MENU_CALLBACK
+    );
+  	 	
+  	return $items;
+}
+
+/**
+ * supports ajax data callback for data table widget type..simpleAjax
+ * @param $node
+ */
+function _landing_page_widget_view_ajaxdata($node){
+  
+	if($node->nid ==  null){
+		$node = _widget_controller_node_load_file($node);
+	}
+    $node = landing_page_widget_view_get_data($node);
+    __landing_page_widget_add_padding_data($node);
+    drupal_add_http_header('Content-Type','application/json; utf-8');
+	echo _landing_page_widget_view_ajaxdata_json($node);
+}
+
+function __landing_page_widget_add_padding_data($node){
+  if($node->widgetConfig->skipCustomPadding) return;
+  $index= 0;
+  $paddings = array();
+  $columns_max_length = array();
+  foreach ($node->widgetConfig->table_columns as $row){
+      if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == _getRequestParamValue('datasource')))){
+          $colDataTableOptions = $node->widgetConfig->dataTableOptions->aoColumns[$index];
+          if(!isset($colDataTableOptions)){
+              $colDataTableOptions->sClass = $row->type;
+          }
+          if(preg_match("/number/",$colDataTableOptions->sClass)){
+              $label = (isset($row->labelAlias))? (WidgetUtil::generateLabelMapping($row->labelAlias)) : $row->label;
+              $labelWords =  explode("<br/>",$label);
+              $maxlength = 0;
+              foreach($labelWords as $word){
+                  $maxlength = ($maxlength > strlen(strip_tags($word))) ? $maxlength : strlen(strip_tags($word));
+              }
+              $maxColumnDataLength =  0;
+              foreach ($node->data as $datarow) {
+                  $maxColumnDataLength = ($maxColumnDataLength > strlen(strip_tags($datarow[$row->column]))) ? $maxColumnDataLength : strlen(strip_tags($datarow[$row->column]));
+              }
+              $paddings[$row->column] =  ( ($maxlength - $maxColumnDataLength )/2 > 0 ) ? ($maxlength - $maxColumnDataLength )/2 : 0;
+          }
+          if(preg_match("/number-center/",$colDataTableOptions->sClass) || preg_match("/number-center-scroll/",$colDataTableOptions->sClass)){
+              $label = (isset($row->labelAlias))? (WidgetUtil::generateLabelMapping($row->labelAlias)) : $row->label;
+              $labelWords =  explode("<br/>",$label);
+              $maxlength = 0;
+              foreach($labelWords as $word){
+                  $maxlength = ($maxlength > strlen(strip_tags($word))) ? $maxlength : strlen(strip_tags($word));
+              }
+              $maxColumnDataLength =  0;
+              foreach ($node->data as $datarow) {
+                  $maxColumnDataLength = ($maxColumnDataLength > strlen(strip_tags($datarow[$row->column]))) ? $maxColumnDataLength : strlen(strip_tags($datarow[$row->column]));
+              }
+              $columns_max_length[$row->column] =  $maxColumnDataLength;
+          }
+
+          $index +=1;
+      }
+  }
+  $node->customDataPaddings =  $paddings;
+  $node->maxColumnDataLength = $columns_max_length;
+}
+
+/**
+ * construct the json from data returned from data controller.This function is used for simple ajax data table widget .
+ * @param $node
+ * @return
+ */
+function _landing_page_widget_view_ajaxdata_json($node){
+    $response['aaData'] = array();
+    $response = array(
+        "sEcho"=> $_REQUEST['sEcho'],
+        "iTotalRecords"=> 5,
+        "iTotalDisplayRecords"=> 5);
+    $response['aaData'] = array();
+    if(is_array($node->data)){
+        foreach ($node->data as $datarow) {
+            $rowarray = array();
+            if(is_array($node->widgetConfig->table_columns)){
+                foreach ($node->widgetConfig->table_columns as $row){
+                    if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == _getRequestParamValue('datasource')))){
+                        if ($node->customDataPaddings[$row->column] > 0) {
+                            $style = "style='margin-right:" . $node->customDataPaddings[$row->column] * 8 . "px'";
+                        } else {
+                            $style = "";
+                        }
+                        if ($node->maxColumnDataLength[$row->column] > 0) {
+                            $style = "style='text-align: center;'";
+                            $value = str_pad($datarow[$row->column], $node->maxColumnDataLength[$row->column], " ", STR_PAD_LEFT);
+                            $value = str_replace(" ", "&nbsp;", $value);
+                            $rowarray[] = '<div ' . $style . '>' . $value . '</div>';
+                        } else {
+                            $rowarray[] = '<div ' . $style . '>' . $datarow[$row->column] . '</div>';
+                        }
+
+                    }
+                }
+            }
+            $response['aaData'][] = $rowarray;
+        }
+    }
+    return json_encode($response);
+}
+
+/**
+ * supports ajax data callback for data table widget type..dataTableWidgets...
+ * @param $node
+ */
+function _landing_page_widget_view_list_wt_ajaxdata($node){
+    drupal_add_http_header('Content-Type', 'application/json; utf-8');
+	$node = landing_page_widget_view_get_data($node);
+    echo _landing_page_widget_view_list_wt_prepare_json($node);
+}
+
+/**
+ * construct the json from data returned from data controller.This function is used for dataTableWidgets data table widget .
+ * @param $node
+ * @return json representation of data
+ */
+function _landing_page_widget_view_list_wt_prepare_json($node){
+	global $conf;
+	$iTotalDisplayRecords =  (isset($conf['check_book']['datatables']['iTotalDisplayRecords']))?$conf['check_book']['datatables']['iTotalDisplayRecords']:$node->totalDataCount;
+	$response = array(
+        "sEcho"=> intval($_REQUEST['sEcho']),
+        "iTotalRecords"=> $node->totalDataCount,
+        "iTotalDisplayRecords"=>($node->totalDataCount > $iTotalDisplayRecords)? $iTotalDisplayRecords:$node->totalDataCount,
+        "iDisplayLength"=> (isset($node->widgetConfig->limit) ? $node->widgetConfig->limit : 10)
+    );
+	$response['aaData'] = array();
+    if($node->data){
+        $i=0;
+        $isGridView = ($node->widgetConfig->displayType == 'gridview');
+        foreach ($node->data as $datarow) {
+            $rowarray = array();
+            foreach ($node->widgetConfig->table_columns as $row){
+                if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == _getRequestParamValue('datasource')))){
+                    if ($row->isWidget){
+                        $widgetnode = node_load($row->widgetNid);
+                        widget_set_uid($widgetnode,$i . '-' . uniqid());
+                        $additionalParams = array();
+                        foreach($row->columnParams as $paramColumn){
+                            $additionalParams[$paramColumn] = $datarow[str_replace(".", "_",$paramColumn)];
+                        }
+                        widget_add_additional_parameters($widgetnode,$additionalParams);
+                        $widgetChart = node_build_content($widgetnode);
+                        if(!$isGridView){
+                            $widgetChart = drupal_render($widgetnode->content);
+                            $rowarray[] = $widgetChart;
+                        }else{
+                            $tempDataSets = $widgetnode->data;
+                            if(is_array($tempDataSets)){
+                                foreach($row->gridViewColumns as $gridViewColumn){
+                                    $value = '';
+                                    foreach($tempDataSets as $tempDataSet){
+                                        if(isset($tempDataSet[$gridViewColumn->matchcolumn]) && $tempDataSet[$gridViewColumn->matchcolumn] == $gridViewColumn->matchvalue){
+                                            $value = $tempDataSet[$gridViewColumn->dataColumn];
+                                            break;
+                                        }
+                                    }
+                                    $rowarray[]= $value;
+                                }
+                            }
+                        }
+                        $i++;
+                    } else {
+                        $rowarray[] =  $datarow[$row->column];
+                    }
+                }
+            }
+            $response['aaData'][] = $rowarray;
+
+        }
+    }
+    return json_encode($response);
+}
+
+/**
+ * supports ajax data callback for data table widget type..dataTableList...
+ * @param $node
+ */
+function _landing_page_widget_view_list_ajaxdata($node){
+	$node = landing_page_widget_view_get_data($node);
+	__landing_page_widget_add_padding_data($node);
+
+	global $conf;
+    if(is_null($node->totalDataCount)){
+        $iTotalRecords_dataTable = 0;
+        $iTotalDisplayRecords_dataTable = 0;
+    }else{
+        $iTotalDisplayRecords =  isset($conf['check_book']['datatables']['iTotalDisplayRecords'])?$conf['check_book']['datatables']['iTotalDisplayRecords']:$node->totalDataCount;
+        $iTotalRecords_dataTable = $node->totalDataCount;
+        $iTotalDisplayRecords_dataTable = $node->totalDataCount > $iTotalDisplayRecords ? $iTotalDisplayRecords : $node->totalDataCount;
+    }
+	$response = array(
+        "sEcho"=> intval($_REQUEST['sEcho']),
+        "iTotalRecords"=> $iTotalRecords_dataTable,
+        "iTotalDisplayRecords"=> $iTotalDisplayRecords_dataTable,
+        "iDisplayLength"=> (isset($node->widgetConfig->limit) ? $node->widgetConfig->limit : 10)
+    );
+    $response['aaData'] = array();
+    if ($node->data) {
+        foreach ($node->data as $datarow) {
+            $rowarray = array();
+            foreach ($node->widgetConfig->table_columns as $row) {
+                if (!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == _getRequestParamValue('datasource')))) {
+                    if ($node->customDataPaddings[$row->column] > 0) {
+                        $style = "style='margin-right:" . $node->customDataPaddings[$row->column] * 8 . "px'";
+                    } else {
+                        $style = "";
+                    }
+                    if ($node->maxColumnDataLength[$row->column] > 0) {
+                        $style = "style='text-align: center;'";
+                        $value = str_pad($datarow[$row->column], $node->maxColumnDataLength[$row->column], " ", STR_PAD_LEFT);
+                        $value = str_replace(" ", "&nbsp;", $value);
+                        $rowarray[] = '<div ' . $style . '>' . $value . '</div>';
+                    } else {
+                        $rowarray[] = '<div ' . $style . '>' . $datarow[$row->column] . '</div>';
+                    }
+                }
+            }
+            $response['aaData'][] = $rowarray;
+        }
+    }
+    echo json_encode($response);
+}
+
+/**
+ * gets the data from the data controller based 
+ * @param  $node
+ * @return updated node data
+ */
+function landing_page_widget_view_get_data($node){
+    //merge default config settings into node config settings
+    $node = widget_merge_default_settings($node);
+
+    //make sure configuration is loaded
+    widget_controller_config($node);
+
+    //prepare anything we'll need before loading
+    widget_controller_prepare($node);
+
+    //invoke widget specific prepare
+    widget_controller_invoke($node, 'widget_prepare');
+
+    //load data
+    widget_controller_data($node);
+    return $node;
+}
+
+/*
+Modified the data controller query to add the right order by clause...
+*/
+function landing_page_widget_view_widget_prepare($node){
+
+    $sort_columns = array();
+    foreach($node->widgetConfig->table_columns as $column) {
+        array_push($sort_columns, $column);
+    }
+
+    if(isset($node->widgetConfig->dataTableOptions->aaSorting)) {
+        $count = 0;
+        if(isset($node->widgetConfig->orderBy))
+            $node->widgetConfig->orderBy = array($node->widgetConfig->orderBy);
+        else
+            $node->widgetConfig->orderBy = array();
+
+        while($count < $_REQUEST['iSortingCols']){
+            $index =  $count ;
+
+            $sort_column = $sort_columns[$_REQUEST['iSortCol_' . $index ]]->column;
+            if($_REQUEST['sSortDir_' . $index] == 'desc')
+                $node->widgetConfig->orderBy[]  = '-' . $sort_column;
+            else
+                $node->widgetConfig->orderBy[] =  $sort_column ;
+            $count += 1;
+        }
+    }
+
+    /**
+     * uniqueSortColumn will allow the data to order properly by a secondary unique sort
+     */
+    $sortDir = $_REQUEST['sSortDir_' . $index];
+    $uniqueSortColumn = $node->widgetConfig->uniqueSortColumn;
+    if(isset($node->widgetConfig->orderBy) && !empty($node->widgetConfig->orderBy)) {
+        if(isset($uniqueSortColumn)) {
+            if(is_array($uniqueSortColumn)) {
+                foreach($uniqueSortColumn as $value) {
+                    if($sortDir == 'desc' && strpos($value, '-') !== 0)
+                        $node->widgetConfig->orderBy[]  = '-' . $value;
+                    else
+                        $node->widgetConfig->orderBy[] =  (strpos($value, '-') === 0)? ltrim($value, '-') : $value;
+                }
+            }
+            else {
+                $node->widgetConfig->orderBy[] = ($sortDir == 'desc' && strpos($uniqueSortColumn, '-') !== 0) ? '-' . $uniqueSortColumn : ltrim($uniqueSortColumn, '-');
+            }
+        }
+    }
+
+    $iDisplayStart = $_REQUEST['iDisplayStart'];
+    if(is_numeric($iDisplayStart)){
+        $node->widgetConfig->startWith = (int)$iDisplayStart;
+    }
+
+    $iDisplayLength = (is_numeric($_REQUEST['iDisplayLength']) && ((int)$_REQUEST['iDisplayLength']) > 0) ?
+        (int)$_REQUEST['iDisplayLength'] : (isset($node->widgetConfig->limit) ? $node->widgetConfig->limit : NULL);
+    if(isset($iDisplayLength)){
+        $node->widgetConfig->limit = $iDisplayLength;
+    }
+}
+
+function landing_page_widget_view_library() {
+  $options = array(
+    'type' => 'file',
+    'group'=> JS_LIBRARY,
+    'every_page' => TRUE
+  );
+  $path = drupal_get_path('module','landing_page_widget_view');
+  return array(
+    'dataTables' => array(
+      'title' => 'DataTables',
+      'website' => 'http://www.datatables.net',
+      'version' => '1.9.1',
+      'js' => array(
+        $path.'/data_tables/1.9.1/media/js/jquery.dataTables.js' => $options,
+        $path.'/data_tables/1.9.1/extras/FixedColumns/media/js/FixedColumns.js' => $options,
+        $path.'/data_tables/extensions/pagination.js' => $options,
+        $path.'/data_tables/extensions/table_tools/2.1.4/media/js/ZeroClipboard.js' => $options,
+        $path.'/data_tables/extensions/table_tools/2.1.4/media/js/TableTools.js' => $options
+      ),
+      'dependencies'=>array(
+        array('system','jquery'),
+        array('system','ui')
+      )
+    ),
+    'dataTables_nightly'=>array(
+      'title' => 'DataTables',
+      'website' => 'http://www.datatables.net',
+      'version' => 'nightly',
+      'js'=> array(
+        'http://www.datatables.net/download/build/jquery.dataTables.nightly.js'=>array('type'=>'external'),
+        'http://www.datatables.net/download/build/FixedColumns.nightly.js'=>array('type'=>'external'),
+        $path.'/data_tables/extensions/pagination.js' => $options,
+      )
+    )
+  );
+}
+
+function landing_page_widget_view_init(){
+  drupal_add_library('landing_page_widget_view','dataTables',TRUE);
+}
+
+/**
+ * Function will create a url param string with values that exist
+ * in both the list of validUrlParameters and the query string
+ * @param $node
+ * @return string
+ */
+function _get_url_parameter_string($node) {
+    $urlParameterString = "";
+    if (isset($node->widgetConfig->validUrlParameters)) {
+        $urlParams = $node->widgetConfig->validUrlParameters;
+        $urlPath = drupal_get_path_alias($_GET['q']);
+        $pathParams = explode('/', $urlPath);
+        for($i = 0; $i < count($pathParams); $i = $i + 1) {
+            $key = $pathParams[$i];
+            $value = $pathParams[$i+1];
+            if(in_array($key,$urlParams)) {
+                $urlParameterString .= "/$key/$value" ;
+            }
+        }
+    }
+    return $urlParameterString;
+}
+
+function landing_page_widget_view_widget_controller_view(&$node) {
+ 	switch ($node->widgetConfig->widgetSubType){
+		case "template":
+			return theme($node->widgetConfig->template, array('node'=> $node));
+		break;
+		case "ajaxCustomTemplate" :
+		  $sAjaxSource =  $node->widgetConfig->ajaxCallBack . '/node/' .$node->nid  ;
+		  if(is_array($node->widgetConfig->requestParams))  {
+		    if(isset($node->widgetConfig->urlParamMap))
+		    $urlParamMap = array_flip(get_object_vars($node->widgetConfig->urlParamMap));
+		    foreach($node->widgetConfig->requestParams as $key=>$value) {
+		      $key = isset($urlParamMap[$key]) ? $urlParamMap[$key] : $key;
+		      $sAjaxSource .= "/$key/$value" ;
+		    }
+		  }
+
+          $sAjaxSource = $sAjaxSource._checkbook_append_url_params();
+		  $node->widgetConfig->dataTableOptions->sAjaxSource =  _escape_special_characters(html_entity_decode($sAjaxSource,ENT_QUOTES));
+
+            return theme($node->widgetConfig->template, array('node'=> $node));
+		  break;		
+		case "ajaxSimple" :
+            $sAjaxSource = '/checkbook_views/data_tables/ajax_data/node/' .$node->nid;
+            $sAjaxSource .= isset($node->legacy_node_id) ? '/legacy_node_id/'.$node->legacy_node_id : "";
+            $sAjaxSource .= _get_url_parameter_string($node);
+            $sAjaxSource = $sAjaxSource._checkbook_append_url_params();
+			$node->widgetConfig->dataTableOptions->sAjaxSource =  _escape_special_characters(html_entity_decode($sAjaxSource,ENT_QUOTES));
+
+			$node->widgetConfig->dataTableOptions->fnServerData= "##function ( sSource, aoData, fnCallback ) {			
+			aoData.push( {
+			  'name': 'data_type', 'value': 'json' } );
+			  jQuery.ajax( {
+			    'dataType': 'json',
+			    'type': 'GET',
+			    'url': sSource,
+			    'data': aoData,
+			    'success': fnCallback
+			  } );
+			}##";			
+
+				return theme('landing_page_widget_view_by_rows_theme', array('node'=> $node));
+
+		break;
+        case "dataTableList" :
+            $sAjaxSource = '/checkbook_views/data_tables_list/ajax_data/node/' . $node->nid;
+
+            if(is_array($node->widgetConfig->originalRequestParams)){
+                foreach($node->widgetConfig->originalRequestParams as $key=>$value) {
+                     $value = str_replace('/','__',$value);
+                     $sAjaxSource .= "/$key/$value" ;
+                }
+            }
+            if(is_array($node->widgetConfig->allowRequestParamValues)){
+                foreach($node->widgetConfig->allowRequestParamValues as $paramKey=>$paramValue) {
+                    $sAjaxSource .= "/$paramKey/$paramValue" ;
+                }
+            }
+            $sAjaxSource = $sAjaxSource._checkbook_append_url_params($sAjaxSource);
+
+
+            $node->widgetConfig->dataTableOptions->sAjaxSource =  _escape_special_characters(html_entity_decode($sAjaxSource,ENT_QUOTES));
+
+            $node->widgetConfig->dataTableOptions->fnServerData= "##function ( sSource, aoData, fnCallback ) {
+            aoData.push( {
+            'name': 'data_type', 'value': 'json' } );
+            jQuery.ajax( {
+            'dataType': 'json',
+            'type': 'GET',
+            'url': sSource,
+            'data': aoData,
+            'success': fnCallback
+            } );
+            }##";
+                return theme('landing_page_widget_view_list_by_rows_theme', array('node'=> $node));
+        break;        
+        case "dataTableWidgets" :
+            $node->widgetConfig->dataTableOptions->sAjaxSource .= '/checkbook_views/data_tables_list_wt/ajax_data/node/' .$node->nid;
+			if(is_array($node->widgetConfig->requestParams))  { 
+				if(isset($node->widgetConfig->urlParamMap))
+				$urlParamMap = array_flip(get_object_vars($node->widgetConfig->urlParamMap));
+		    	foreach($node->widgetConfig->requestParams as $key=>$value) {
+		    		 $key = isset($urlParamMap[$key]) ? $urlParamMap[$key] : $key;	
+					    $node->widgetConfig->dataTableOptions->sAjaxSource .= "/$key/$value"._checkbook_append_url_params();
+	    		}
+			}
+
+
+            $isGridView = ($node->widgetConfig->displayType == 'gridview');
+            if($isGridView){
+
+                //adjust datatable aoColumns
+                $updatedaoColumns = array();
+                $tableColumns = $node->widgetConfig->table_columns;
+                $cls = new stdClass();
+                $cls->bSortable = false;
+                foreach ($tableColumns as $tableColumn){
+                    if(!isset($tableColumn->datasource) || (isset($tableColumn->datasource) && ($tableColumn->datasource == _getRequestParamValue('datasource')))){
+                        if(isset($tableColumn->isWidget) && $tableColumn->isWidget){
+                            foreach($tableColumn->gridViewColumns as $gridViewColumn){
+                                $updatedaoColumns[] = $cls;
+                            }
+                        }else{
+                            $updatedaoColumns[] = $cls;
+                        }
+                    }
+                }
+
+                $node->widgetConfig->dataTableOptions->aoColumns = $updatedaoColumns;
+
+                return theme('landing_page_widget_view_list_by_rows_wt_grid_theme', array('node'=> $node));
+            }
+                return theme('landing_page_widget_view_list_by_rows_wt_theme', array('node'=> $node));
+        break;
+		default :
+			return theme('landing_page_widget_view_default_theme', array('node'=> $node));
+		break;	
+		
+	}	
+}
+
+
+function landing_page_widget_view_add_js($node){
+	require_once(realpath(drupal_get_path('module', 'data_controller')) .'/common/object/converter/handler/PHP2Json.php');
+	$theme_path =  drupal_get_path('theme',$GLOBALS['theme']);
+	$node->widgetConfig->dataTableOptions->oLanguage =
+	                 array("sProcessing"=>"<img src='/" . $theme_path . "/images/loading_large.gif' title='Processing...'/>",
+	                     "sZeroRecords"=>"<div class='clearfix' id='no-records-datatable'><span>No Matching Records Found</span></div>");
+
+    $oldDataTableOptions = get_object_vars($node->widgetConfig->dataTableOptions);
+    $newAolcols = array();
+    foreach($oldDataTableOptions['aoColumns'] as $key=>$value){
+        $aoCols = get_object_vars($value);
+        if(((isset($aoCols['datasource']) && _getRequestParamValue('datasource') == isset($aoCols['datasource'])))){
+            array_push($newAolcols, $value);
+        }else if((!isset($aoCols['datasource']))){
+        	array_push($newAolcols, $value);
+        }
+        
+        
+        
+        
+        
+    }
+    if(count($newAolcols)){
+    	$oldDataTableOptions['aoColumns'] = $newAolcols;
+    }
+
+if(isset($node->widgetConfig->stickyHeader)){
+    //<editor-fold desc="Sticky Headers">
+
+    /* NYCCHKBK-3724: hooks into fnDrawCallback and fnInitComplete for sticky header implementation */
+
+    //Append custom js to events
+    $fnInitComplete = $oldDataTableOptions["fnInitComplete"];
+    $fnInitCompleteExists = isset($fnInitComplete) ? true:false;
+    $fnInitComplete = str_replace("##","",$fnInitComplete);
+    $fnInitComplete = $fnInitComplete ? substr_replace($fnInitComplete,"fnCustomInitComplete();}",strlen($fnInitComplete)-1,1)  : "function () { new fnCustomInitComplete(); }";
+    $fnInitComplete = "##".$fnInitComplete."##";
+
+    $fnDrawCallback = $oldDataTableOptions["fnDrawCallback"];
+    $fnDrawCallbackExists = isset($fnDrawCallback);
+    $fnDrawCallback = str_replace("##","",$fnDrawCallback);
+    $fnDrawCallback = $fnDrawCallback ? substr_replace($fnDrawCallback,"fnCustomDrawCallback();}",strlen($fnDrawCallback)-1,1)  : "function () { new fnCustomDrawCallback(); }";
+    $fnDrawCallback = "##".$fnDrawCallback."##";
+
+//    if the function exists, update it, else insert it to the front
+    if($fnDrawCallbackExists)
+        $oldDataTableOptions["fnDrawCallback"] = $fnDrawCallback;
+    else
+        $oldDataTableOptions = array_slice($oldDataTableOptions, 0, 0, true) +
+            array("fnDrawCallback" => $fnDrawCallback) +
+            array_slice($oldDataTableOptions, 0, NULL, true);
+
+    if($fnInitCompleteExists)
+        $oldDataTableOptions["fnInitComplete"] = $fnInitComplete;
+    else
+        $oldDataTableOptions = array_slice($oldDataTableOptions, 0, 0, true) +
+            array("fnInitComplete" => $fnInitComplete) +
+            array_slice($oldDataTableOptions, 0, NULL, true);
+
+
+    //Custom js for sticky headers, top spacing will change if the drupal admin menu is present
+    $sticky_header_js = "
+    function fnCustomDrawCallback() {
+        jQuery('.dataTables_scrollHead').width(jQuery('.dataTables_scroll').width());
+    	jQuery('.dataTables_scrollHead').scrollLeft(0);
+    	jQuery('.dataTables_scrollBody').scrollLeft(0);	
+    }
+    function fnCustomInitComplete() {
+        var topSpacing = ".(user_is_logged_in() ? 66 : 0).";
+
+        var tableOffsetTop = jQuery('.dataTables_scroll').offset().top;
+        var tableHeight = jQuery('.dataTables_scroll').height();
+        var docHeight = jQuery(document).height();
+        var bottomSpacing = docHeight - (tableOffsetTop + tableHeight);
+
+        jQuery('.dataTables_scrollHead').sticky({ topSpacing: ".topSpacing.", bottomSpacing: ".bottomSpacing.", getWidthFrom:'.dataTables_scroll' });
+
+        if( jQuery('.DTFC_ScrollWrapper') && jQuery('.DTFC_ScrollWrapper').offset()) {
+            jQuery('.DTFC_LeftHeadWrapper').sticky({ topSpacing: ".topSpacing.", bottomSpacing: ".bottomSpacing.", getWidthFrom:'.DTFC_LeftWrapper' });
+        }
+    }";
+    //</editor-fold desc="Sticky Headers">
+}
+
+    $dataTableOptions = json_encode((object)$oldDataTableOptions);
+
+    $id  = "";
+    if($node->widgetConfig->widgetSubType == "ajaxSimple" || $node->widgetConfig->widgetSubType == "ajaxCustomTemplate" ){
+        $id = widget_controller_unique_identifier($node);
+    }
+    $js = "
+		    var oTable" . $id  .  ";
+		    jQuery(document).ready(function() {
+		        oTable" . $id  .  " = jQuery('#table_" . widget_controller_unique_identifier($node) . "').dataTable(
+
+		        " . stripcslashes(str_replace('##"','',str_replace('"##','',$dataTableOptions))) ."
+		        );
+		        oTable" . $id  .  ".node_id = \"" . $node->nid . "\" ;
+		        oTable" . $id  .  ".initAjaxSource = '" . $node->widgetConfig->sAjaxSource . _checkbook_append_url_params() . "' ;
+
+	    		" . stripcslashes($node->widgetConfig->customJS) .
+        (isset($sticky_header_js) ? $sticky_header_js : '') . //append sticky headers js
+        "} );" .
+        stripcslashes($node->widgetConfig->customExternalJS);
+	
+	if($node->widgetConfig->ajaxDataPopup || $_REQUEST['appendScripts']){
+		echo "<script type='text/javascript'>" . $js . "</script>";
+	}
+	else{
+		drupal_add_js($js,"inline");
+	}
+}
+
+function landing_page_widget_view_add_js_setting($node){
+  require_once(realpath(drupal_get_path('module', 'data_controller')) .'/common/object/converter/handler/PHP2Json.php');
+  $dataTableOptions = json_encode($node->widgetConfig->dataTableOptions);
+  $dataTableOptions = str_replace('"##',"",$dataTableOptions);
+  $dataTableOptions = str_replace('##"',"",$dataTableOptions);
+  $id = widget_controller_unique_identifier($node);
+  $options = array();
+  $options['deferredRender'][] = array(
+    'type'=>'datatable',
+    'id'=>$id,
+    'dataTableOptions'=>$dataTableOptions,
+    'nodeId'=>$node->nid,
+    'initAjaxSource'=>$node->widgetConfig->sAjaxSource._checkbook_append_url_params(),
+    'customJS'=>stripcslashes($node->widgetConfig->customJS),
+    'customExternalJS'=>stripcslashes($node->widgetConfig->customExternalJS),
+  );
+  drupal_add_js($options, 'setting');
+}
+/*************************************************************************************/
+/* Theme Hooks                                                                       */
+/*************************************************************************************/
+
+function landing_page_widget_view_theme($existing, $type, $theme, $path) {
+	return array(
+      'landing_page_widget_view_default_theme' => array(
+	    'template' => 'table_by_rows',
+        'arguments' => array('node' => NULL),
+	  ),
+	  'landing_page_widget_view_by_rows_theme' => array(
+	    'template' => 'table_by_rows',
+	    'arguments' => array('node' => NULL),
+	  ),
+      'landing_page_widget_view_list_by_rows_theme' => array(
+         'template' => 'table_by_list',
+         'arguments' => array('node' => NULL),
+      ),
+	  'landing_page_widget_view_no_results_theme' => array(
+	    'template' => 'no_results',
+	    'arguments' => array('node' => NULL),
+	  ),
+      'landing_page_widget_view_list_by_rows_wt_theme' => array(
+        'template' => 'table_by_list_wt',
+        'arguments' => array('node' => NULL),
+      ),
+      'landing_page_widget_view_list_by_rows_wt_grid_theme' => array(
+        'template' => 'table_by_list_wt_grid',
+        'arguments' => array('node' => NULL),
+      ),
+	);
+}
+
+function landing_page_widget_view_export_link($node) {
+    $nid = widget_controller_unique_identifier($node);
+	return landing_page_widget_view_alerts_link($node)." <span class=export exportid={$nid}>Export</span>";
+    //return "<span class=export exportid={$nid}>Export</span>";
+}
+
+function landing_page_widget_view_alerts_link($node){
+    $nid = widget_controller_unique_identifier($node);
+    return "<span class=alerts alertsid={$nid}>Schedule Alert</span>";
+}
+
+function _escape_special_characters($string) {
+
+    $string = str_replace("%", "%25", $string);
+    $string = str_replace("\\", "%5C%5C", $string);
+    $string = str_replace(" ", "%20", $string);
+    $string = str_replace("#", "%23", $string);
+    //$string = str_replace("/", "%2F", $string);
+    $string = str_replace("&", "%26", $string);
+    $string = str_replace("[", "\[", $string);
+    $string = str_replace("]", "\]", $string);
+    $string = str_replace(":", "\:", $string);
+    $string = str_replace("'", "%27", $string);
+    $string = str_replace("+", "\%2B", $string);
+    $string = str_replace("?", "\%3F", $string);
+    $string = str_replace("$", "\%24", $string);
+    $string = str_replace("!", "\%21", $string);
+    $string = str_replace("^", "\%5E", $string);
+    $string = str_replace("|", "\%7C", $string);
+    $string = str_replace("(", "\%28", $string);
+    $string = str_replace(")", "\%29", $string);
+    $string = str_replace("*", "\%2A", $string);
+    $string = str_replace(".", "\%2E", $string);
+
+  return $string;
+}

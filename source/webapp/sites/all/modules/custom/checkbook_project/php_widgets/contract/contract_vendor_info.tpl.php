@@ -164,6 +164,26 @@ if (_getRequestParamValue("datasource") != "checkbook_oge") {
     $total_current_amount = $res->data[0]['total_current_amt'];
     $total_original_amount = $res->data[0]['total_original_amt'];
     $total_spent_todate = $res->data[0]['total_spent_todate'];
+
+    $querySubVendorCount = "SELECT  COUNT(DISTINCT vendor_id) AS sub_vendor_count  FROM sub_agreement_snapshot
+                            WHERE contract_number = '". $contract_number . "'
+                            AND latest_flag = 'Y'
+                            LIMIT 1";
+
+    $results3 = _checkbook_project_execute_sql_by_data_source($querySubVendorCount,_get_current_datasource());
+    $res->data = $results3;
+    $total_subvendor_count = $res->data[0]['sub_vendor_count'];
+    
+    $querySubVendorStatus = "SELECT ref_status.scntrc_status_name  AS contract_subvendor_status
+                            FROM all_agreement_transactions l1
+                            JOIN ref_subcontract_status ref_status on ref_status.scntrc_status = l1.scntrc_status
+                            WHERE contract_number = '". $contract_number . "' AND latest_flag = 'Y' LIMIT 1";
+    
+    $results6 = _checkbook_project_execute_sql_by_data_source($querySubVendorStatus,_get_current_datasource());
+    $res->data = $results6;
+    $subVendorStatus = $res->data[0]['contract_subvendor_status'];
+    
+
 }
 ?>
 <?php if(!_getRequestParamValue("datasource") == "checkbook_oge"){?>
@@ -171,6 +191,12 @@ if (_getRequestParamValue("datasource") != "checkbook_oge") {
     <h4>
         Sub Vendor Information
     </h4>
+    <?php
+    if(_getRequestParamValue("doctype")=="CTA1" || _getRequestParamValue("doctype")=="CT1"){
+        echo '<ul class="left"><li><span class="gi-list-item">Contract Includes Sub Vendors: </span>'.strtoupper($subVendorStatus).'</li>';
+        echo  '<li><span class="gi-list-item">Total Number of Sub Vendors: </span>'.$total_subvendor_count .'</li></ul>';
+    }
+     ?>
     <div class="spent-to-date">
         <?php if(!preg_match('/newwindow/',$_GET['q'])){ ?>
         <a class="new_window" href="/contract/spending/transactions/contnum/<?php echo $contract_number; ?><?php echo $status;?>/dashboard/ss/yeartype/B/year/<?php echo _getCurrentYearID();?>/syear/<?php echo _getCurrentYearID();?>/smnid/721/newwindow"><?php echo custom_number_formatter_format($total_spent_todate, 2, "$");?></a>

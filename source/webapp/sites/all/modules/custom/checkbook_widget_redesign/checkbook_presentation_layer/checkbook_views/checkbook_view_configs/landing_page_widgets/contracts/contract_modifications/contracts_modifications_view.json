@@ -1,0 +1,45 @@
+{
+    "serviceName":"ContractsWidgetService",
+    "dataFunc":"GetContractModifications",
+    "defaultParameters":{"is_modification":"true","doctype":"'CT1'~'CTA1'","contract_type":"child_contract"},
+    "headerTitle":"Contract Amount Modifications",
+    "headerSubTitle":"Contract Modifications",
+    "footerUrl":"_widget_controller_footer_url($node).ContractsUrlService::getAmtModificationUrlString()",
+    "table_columns":[
+        {"labelAlias":"contract_id","column":"contract_number","derivedColumn":"contract_id_link"},
+        {"labelAlias":"contract_purpose","column":"contract_purpose","tooltip":20},
+        {"labelAlias":"contract_agency","column":"agency_name","tooltip":20,"derivedColumn":"agency_landing_link"},
+        {"labelAlias":"prime_vendor","column":"vendor_name","tooltip":20,"derivedColumn":"prime_vendor_link"},
+        {"labelAlias":"current_amount","column":"current_amount_sum","format":"dollar"},
+        {"labelAlias":"original_amount","column":"original_amount_sum","format":"dollar"},
+        {"labelAlias":"spent_to_date","column":"spending_amount_sum","format":"dollar","derivedColumn":"contracts_spent_to_date_link"},
+        {"labelAlias":"dollar_diff","column":"dollar_difference","format":"dollar"},
+        {"labelAlias":"percent_diff","column":"percent_difference","format":"percent"},
+        {"label":"","column":""}
+    ],
+    "skipCustomPadding":true,
+    "dataTableOptions":{
+        "aoColumns":[
+            { "bSortable": false, "sWidth":"150px","sClass":"text" },
+            { "bSortable": false, "sWidth":"127px","sClass":"text"  },
+            { "bSortable": false, "sWidth":"127px","sClass":"text"  },
+            { "bSortable": false, "sWidth":"127px","sClass":"text" },
+            { "bSortable": true, "sWidth":"78px", "sClass":"number" ,"asSorting": [ "desc" ,"asc" ] },
+            { "bSortable": true, "sWidth":"78px", "sClass":"number" ,"asSorting": [ "desc","asc"  ] },
+            { "bSortable": true, "sWidth":"79px","sClass":"number" ,"asSorting": [ "desc","asc"  ]},
+            { "bSortable": true, "sWidth":"79px", "sClass":"number" ,"asSorting": [ "desc","asc"  ]},
+            { "bSortable": true, "sWidth":"79px", "sClass":"number" ,"asSorting": [ "desc" ,"asc" ]},
+            { "bSortable": false, "sWidth":"5px" }
+        ],
+        "bServerSide":true,
+        "bFilter":false,
+        "bPaginate":false,
+        "bProcessing":true,
+        "bLengthChange":false,
+        "bInfo":false,
+        "bAutoWidth":false,
+        "aaSorting":[[ 7, "desc" ]],
+        "fnServerParams":"##function ( aoData ) { reloadExpandCollapseWidget(this,aoData); }##",
+         "oLanguage":{"sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"}
+   }
+}

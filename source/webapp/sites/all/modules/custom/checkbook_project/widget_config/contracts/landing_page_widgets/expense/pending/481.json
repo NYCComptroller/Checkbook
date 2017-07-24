@@ -66,17 +66,9 @@
 },
 "disableViewAll":true,
 "footer":"
-$url = '/panel_html/contract_details/contract/transactions/contcat/expense/contstatus/P';
-$url .= _checkbook_project_get_url_param_string('agency');
-$url .= _checkbook_project_get_url_param_string('vendor');
-$url .= _checkbook_project_get_url_param_string('awdmethod');
-$url .= _checkbook_project_get_url_param_string('csize');
-$url .= _checkbook_project_get_url_param_string('cindustry');
-$url .= _checkbook_project_get_url_param_string('mwbe');
-$url .= _checkbook_project_get_url_param_string('dashboard');
-$url .= _checkbook_project_get_year_url_param_string();
+$url = ContractUtil::expenseContractsFooterUrl();
+$url .= '/doctype/MMA1~MA1';
 $url .= '/smnid/' .  $node->nid;
-$url .= '/doctype/MMA1~MA1~MAR';
 $url .= '/modamt/0';
 $footer = '';
 if($node->totalDataCount > 0)

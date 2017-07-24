@@ -13,7 +13,6 @@
     <response_columns>
         <column>other_government_entities</column>
         <column>fiscal_year</column>
-        <column>calendar_year</column>
         <column>payee_name</column>
         <column>department</column>
         <column>check_amount</column>

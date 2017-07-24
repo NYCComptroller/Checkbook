@@ -113,6 +113,15 @@
                     ]
                 },
                 {
+                    "name":"budget_code_name_code_display",
+                    "levels":[
+                        {
+                            "name":"budget_code_name_code_display",
+                            "sourceColumnName":"budget_code_name_code_display"
+                        }
+                    ]
+                },
+                {
                     "name": "agency_id",
                     "levels": [
                                 {

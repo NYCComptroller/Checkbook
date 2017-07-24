@@ -1,0 +1,167 @@
+{
+    "datasets": {
+        "contract_transaction_vendor_facet_data":{
+            "datasourceName":"main",
+            "source":"SELECT prime_vendor_code as vendor_code, prime_vendor_name as vendor_name, 'PRIME' as vendor_type_name,
+                        CASE WHEN prime_minority_type_id IN (2,3,4,5,9) THEN 'PM' ELSE 'P' END as vendor_type,
+                        prime_minority_type_id as minority_type_id, prime_minority_type_name as minority_type_name, *
+                        FROM all_agreement_transactions_by_prime_vendor
+                        WHERE prime_sub_vendor_code_by_type ~* '(^P:.*$)|(.*,P:.*$)|(^P:.*,.*)|(^PM:.*$)|(.*,PM:.*$)|(^PM:.*,.*)'
+
+                        UNION ALL
+
+                        SELECT sub_vendor_code as vendor_code, sub_vendor_name as vendor_name, 'SUB' as vendor_type_name,
+                        CASE WHEN sub_minority_type_id IN (2,3,4,5,9) THEN 'SM' ELSE 'S' END as vendor_type,
+                        sub_minority_type_id as minority_type_id, sub_minority_type_name as minority_type_name, *
+                        FROM all_agreement_transactions_by_prime_vendor
+                        WHERE prime_sub_vendor_code_by_type ~* '(^S:.*$)|(.*,S:.*$)|(^S:.*,.*)|(^SM:.*$)|(.*,SM:.*$)|(^SM:.*,.*)'
+            "
+        },
+        "contract_transaction_vendor_type_facet_data":{
+            "datasourceName":"main",
+            "source":"SELECT 'PRIME VENDOR' vendor_type_name, 'P' as vendor_type_id, prime_vendor_code as vendor_code, prime_vendor_name as vendor_name, prime_minority_type_id as minority_type_id, CASE WHEN prime_minority_type_id IN (2,3,4,5,9) THEN 'PM' ELSE 'P' END as vendor_type, * FROM all_agreement_transactions_by_prime_vendor
+                        WHERE prime_sub_vendor_code_by_type ~* '(^P:.*$)|(.*,P:.*$)|(^P:.*,.*)|(^PM:.*$)|(.*,PM:.*$)|(^PM:.*,.*)'
+                        UNION ALL
+                        SELECT 'SUB VENDOR' as vendor_type_name, 'S' as vendor_type_id, sub_vendor_code as vendor_code, sub_vendor_name as vendor_name, sub_minority_type_id as minority_type_id, CASE WHEN sub_minority_type_id IN (2,3,4,5,9) THEN 'SM' ELSE 'S' END as vendor_type, * FROM all_agreement_transactions_by_prime_vendor
+                        WHERE prime_sub_vendor_code_by_type ~* '(^S:.*$)|(.*,S:.*$)|(^S:.*,.*)|(^SM:.*$)|(.*,SM:.*$)|(^SM:.*,.*)'
+                        UNION ALL
+                        SELECT 'M/WBE VENDOR' vendor_type_name, 'M' as vendor_type_id, prime_vendor_code as vendor_code, prime_vendor_name as vendor_name, prime_minority_type_id as minority_type_id, CASE WHEN prime_minority_type_id IN (2,3,4,5,9) THEN 'PM' ELSE 'P' END as vendor_type, * FROM all_agreement_transactions_by_prime_vendor
+                        WHERE prime_sub_vendor_code_by_type ~* '(^PM:.*$)|(.*,PM:.*$)|(^PM:.*,.*)'
+                        UNION ALL
+                        SELECT 'M/WBE VENDOR' as vendor_type_name, 'M' as vendor_type_id, sub_vendor_code as vendor_code, sub_vendor_name as vendor_name, sub_minority_type_id as minority_type_id, CASE WHEN sub_minority_type_id IN (2,3,4,5,9) THEN 'SM' ELSE 'S' END as vendor_type, * FROM all_agreement_transactions_by_prime_vendor
+                        WHERE prime_sub_vendor_code_by_type ~* '(^SM:.*$)|(.*,SM:.*$)|(^SM:.*,.*)'
+            "
+        }
+    },
+    "cubes":{
+        "contract_transaction_vendor_facet_data":{
+            "sourceDatasetName":"contract_transaction_vendor_facet_data",
+            "dimensions":[
+                {
+                    "name":"vendor_name",
+                    "levels": [
+                        {
+                            "name":"vendor_name",
+                            "sourceColumnName":"vendor_name"
+                        }
+                    ]
+                },
+                {
+
+                    "name":"vendor_code",
+                    "levels": [
+                        {
+                            "name":"vendor_code",
+                            "sourceColumnName":"vendor_code"
+                        }
+                    ]
+                },
+                {
+                    "name":"vendor_type_name",
+                    "levels": [
+                        {
+                            "name":"vendor_type_name",
+                            "sourceColumnName":"vendor_type_name"
+                        }
+                    ]
+                },
+                {
+                    "name":"vendor_type",
+                        "levels": [
+                        {
+                            "name":"vendor_type",
+                            "sourceColumnName":"vendor_type"
+                        }
+                    ]
+                },
+                {
+                    "name":"minority_type_name",
+                    "levels": [
+                        {
+                            "name":"minority_type_name",
+                            "sourceColumnName":"minority_type_name"
+                        }
+                    ]
+                },
+                {
+                    "name":"minority_type_id",
+                    "levels": [
+                        {
+                            "name":"minority_type_id",
+                            "sourceColumnName":"minority_type_id"
+                        }
+                    ]
+                }
+            ],
+            "measures": {
+                "txcount": {
+                    "function":"COUNT(*)"
+                }
+            }
+        },
+        "contract_transaction_vendor_type_facet_data":{
+            "sourceDatasetName":"contract_transaction_vendor_type_facet_data",
+            "dimensions":[
+                {
+                    "name": "vendor_type_name",
+                    "levels": [
+                        {
+                            "name": "vendor_type_name",
+                            "sourceColumnName": "vendor_type_name"
+                        }
+                    ]
+                },
+                {
+                    "name": "vendor_type_id",
+                    "levels": [
+                        {
+                            "name": "vendor_type_id",
+                            "sourceColumnName": "vendor_type_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "vendor_type",
+                    "levels": [
+                        {
+                            "name": "vendor_type",
+                            "sourceColumnName": "vendor_type"
+                        }
+                    ]
+                },
+                {
+                    "name": "minority_type_id",
+                    "levels": [
+                        {
+                            "name": "minority_type_id",
+                            "sourceColumnName": "minority_type_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "vendor_code",
+                    "levels": [
+                        {
+                            "name": "vendor_code",
+                            "sourceColumnName": "vendor_code"
+                        }
+                    ]
+                },
+                {
+                "name": "vendor_name",
+                    "levels": [
+                        {
+                            "name": "vendor_name",
+                            "sourceColumnName": "vendor_name"
+                        }
+                    ]
+                }
+            ],
+            "measures": {
+                "txcount": {
+                    "function": "COUNT(*)"
+                    }
+                }
+            }
+        }
+}

@@ -432,6 +432,8 @@
                 effective_end_date effective_end_date_orig,
                 brd_awd_no apt_pin,
                 tracking_number pin,
+                prime_tracking_number prime_pin,
+                prime_brd_awd_no prime_apt_pin,
                 document_version version_number,
                 registered_date,
                 original_contract_amount original_amount,
@@ -469,24 +471,39 @@
                 contract_original_agreement_id,
                 vendor_type,
                 industry_type_id,
-                industry_type_name
+                industry_type_name,
+                aprv_sta,
+                aprv_sta_name,
+                scntrc_status,
+                scntrc_status_name
                 from all_agreement_transactions a
                 left join ref_document_code dc on a.document_code_id = dc.document_code_id
                 left join ref_award_category rac on a.award_category_id = rac.award_category_id
-	    LEFT JOIN
-	    (SELECT agreement_id, GROUP_CONCAT(DISTINCT X.fiscal_year) AS fiscal_year, GROUP_CONCAT(DISTINCT Y.year_id) AS fiscal_year_id
-		FROM
-		(SELECT agreement_id, generate_series(effective_begin_year,effective_end_year,1) as fiscal_year
-			FROM all_agreement_transactions a
-			LEFT  JOIN ref_document_code dc ON a.document_code_id = dc.document_code_id
-			WHERE a.latest_flag = 'Y' AND dc.document_code in ('MMA1', 'MA1', 'MAR', 'CT1', 'CTR', 'DO1', 'CTA1', 'RCT1')
-			AND ( '${dataimporter.request.clean}' != 'false'
-      			OR  a.job_id >= ${dataimporter.request.jobID} )
- 		 ) X LEFT JOIN ref_year Y ON X.fiscal_year = Y.year_value
-            GROUP BY 1 ) active_fiscal_year ON a.agreement_id = active_fiscal_year.agreement_id
-            WHERE a.latest_flag = 'Y' AND dc.document_code in ('MMA1', 'MA1', 'MAR', 'CT1', 'CTR', 'DO1', 'CTA1', 'RCT1')
-            and ( '${dataimporter.request.clean}' != 'false'
-      		OR  a.job_id >= ${dataimporter.request.jobID} )
+                LEFT JOIN
+                (
+	                SELECT agreement_id, GROUP_CONCAT(DISTINCT X.fiscal_year) AS fiscal_year, GROUP_CONCAT(DISTINCT Y.year_id) AS fiscal_year_id FROM
+		            (
+                        SELECT agreement_id, generate_series(effective_begin_year,effective_end_year,1) as fiscal_year
+                        FROM all_agreement_transactions a
+                        LEFT JOIN ref_document_code dc ON a.document_code_id = dc.document_code_id
+                        WHERE a.latest_flag = 'Y' AND dc.document_code in ('MMA1', 'MA1', 'MAR', 'CT1', 'CTR', 'DO1', 'CTA1', 'RCT1')
+                        AND ( '${dataimporter.request.clean}' != 'false'
+                        OR  a.job_id >= ${dataimporter.request.jobID} )
+                    ) X LEFT JOIN ref_year Y ON X.fiscal_year = Y.year_value
+                    GROUP BY 1
+                ) active_fiscal_year ON a.agreement_id = active_fiscal_year.agreement_id
+                LEFT JOIN
+                (
+                    SELECT contract_number as prime_contract_number, tracking_number as prime_tracking_number, brd_awd_no as prime_brd_awd_no
+                    FROM all_agreement_transactions a
+                    JOIN ref_document_code dc ON a.document_code_id = dc.document_code_id
+                    WHERE a.latest_flag = 'Y'
+                    AND dc.document_code in ('MMA1', 'MA1', 'MAR', 'CT1', 'CTR', 'DO1', 'CTA1', 'RCT1')
+                    AND is_prime_or_sub = 'P'
+                    AND ( '${dataimporter.request.clean}' != 'false' OR  a.job_id >= ${dataimporter.request.jobID} )
+                ) prime_vendor on prime_vendor.prime_contract_number = a.contract_number
+                WHERE a.latest_flag = 'Y' AND dc.document_code in ('MMA1', 'MA1', 'MAR', 'CT1', 'CTR', 'DO1', 'CTA1', 'RCT1')
+                and ( '${dataimporter.request.clean}' != 'false' OR  a.job_id >= ${dataimporter.request.jobID} )
       		">
             <field column="id" name="id" />
             <field column="original_agreement_id" name="original_agreement_id" />
@@ -515,6 +532,8 @@
             <field column="effective_end_date_orig" name="end_date_orig" />
             <field column="apt_pin" name="apt_pin" />
             <field column="pin" name="pin" />
+            <field column="prime_apt_pin" name="prime_apt_pin" />
+            <field column="prime_pin" name="prime_pin" />
             <field column="version_number" name="version_number" />
             <field column="registered_date" name="registration_date" />
             <field column="registered_date" name="exp_registration_date" />
@@ -557,6 +576,10 @@
             <field column="contract_original_agreement_id" name="contract_original_agreement_id"/>
             <field column="industry_type_id" name="industry_type_id" />
             <field column="industry_type_name" name="industry_type_name" />
+            <field column="aprv_sta" name="aprv_sta" />
+            <field column="aprv_sta_name" name="aprv_sta_name" />
+            <field column="scntrc_status" name="scntrc_status" />
+            <field column="scntrc_status_name" name="scntrc_status_name" />
         </entity>
         <entity dataSource="db2" name="contracts_oge" transformer="RegexTransformer"
                 pk="id"

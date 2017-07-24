@@ -28,6 +28,7 @@ class DataSourceDatasetQueryRequestPreparer extends AbstractObject {
         $datasourceRequest->addColumns($request->columns);
         $datasourceRequest->addOrderByColumns($request->orderBy);
         $datasourceRequest->setPagination($request->limit, $request->startWith);
+        $datasourceRequest->addLogicalOrColumns($request->logicalOrColumns);
 
         return $datasourceRequest;
     }
@@ -36,6 +37,7 @@ class DataSourceDatasetQueryRequestPreparer extends AbstractObject {
         $datasourceRequest = new DatasetCountRequest($request->datasetName);
 
         $datasourceRequest->addCompositeQueryValues($request->parameters);
+        $datasourceRequest->addLogicalOrColumns($request->logicalOrColumns);
 
         return $datasourceRequest;
     }

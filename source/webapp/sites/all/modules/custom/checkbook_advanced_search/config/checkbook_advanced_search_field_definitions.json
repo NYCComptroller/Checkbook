@@ -269,5 +269,23 @@
             "title":"Industry",
             "options":"$industry_attributes"
         }
+    },
+    "includes_sub_vendors":{
+        "field_type":"select",
+        "field_name":"includes_sub_vendors",
+        "attributes":{
+            "title":"Contract Includes<br/>Sub Vendors",
+            "options": "$includes_sub_vendors",
+            "option_attributes": "$includes_sub_vendors_attributes"
+        }
+    },
+    "sub_vendor_status":{
+        "field_type":"select",
+        "field_name":"sub_vendor_status",
+        "attributes":{
+            "title":"Sub Vendor Status<br/>in PIP",
+            "options":"$sub_vendor_status",
+            "option_attributes":"$sub_vendor_status_attributes"
+        }
     }
 }

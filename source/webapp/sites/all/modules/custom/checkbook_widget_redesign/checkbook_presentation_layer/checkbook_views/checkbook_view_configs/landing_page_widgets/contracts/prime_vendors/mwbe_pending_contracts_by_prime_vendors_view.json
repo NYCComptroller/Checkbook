@@ -1,0 +1,5 @@
+{
+    "defaultConfigKey": "mwbe_revenue_contracts_by_prime_vendors_view",
+    "dataFunc":"GetContractsByPrimeVendors",
+    "defaultParameters":{"type_of_year":"B"}
+}

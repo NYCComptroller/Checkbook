@@ -26,6 +26,18 @@
         $smnid = _getRequestParamValue('smnid');
         if($smnid == 720) $parameters['is_prime_or_sub'] = 'S';
 
+        //fvendor is always mapped to vendor_id incorrectly here
+        $vendor_id = _getRequestParamValue('vendor');
+        $subvendor_id = _getRequestParamValue('subvendor');
+        unset($parameters['prime_vendor_id']);
+        unset($parameters['vendor_id']);
+        if(isset($vendor_id)) {
+            $parameters['prime_vendor_id'] = $vendor_id;
+        }
+        if(isset($subvendor_id)) {
+            $parameters['vendor_id'] = $subvendor_id;
+        }
+
 	    if(function_exists('_checkbook_project_adjustContractParameterFilters')){
 		 _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');
 	    }

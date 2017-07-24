@@ -1,0 +1,141 @@
+
+<statements>
+    <!--GetAgenciesByRevenue-->
+    <statement name="GetAgenciesByRevenue" datasource="checkbook">
+        <param name="year" required ="true" type="int" />
+        <param name="agency" type="int" />
+        <sql>
+          SELECT
+          b.agency_id,
+          b.agency_name,
+          SUM(adopted_amount) AS adopted_budget,
+          SUM(COALESCE(current_modified_amount,0)) AS current_modified_budget,
+          SUM(COALESCE(posting_amount,0)) AS revenue_amount_sum,
+          SUM(COALESCE(current_modified_amount,0)) - SUM(COALESCE(posting_amount,0)) AS remaining_amount
+          FROM aggregateon_revenue_category_funding_class a
+          JOIN ref_agency b ON b.agency_id = a.agency_id
+          <where>
+              <exp op="AND">
+                  <exp op="=" dbField="a.budget_fiscal_year_id" paramName="year" />
+              </exp>
+          </where>
+          GROUP BY b.agency_id, b.agency_name
+        </sql>
+    </statement>
+    <!--GetFundingClassesByRevenue-->
+    <statement name="GetFundingClassesByRevenue" datasource="checkbook">
+        <param name="year" required ="true" type="int" />
+        <param name="agency" type="int" />
+        <sql>
+            SELECT
+            ref.funding_class_id,
+            ref.funding_class_name,
+            ref.funding_class_code,
+            SUM(adopted_amount) AS adopted_budget,
+            SUM(COALESCE(current_modified_amount,0)) AS current_modified_budget,
+            SUM(COALESCE(posting_amount,0)) AS recognized_amount,
+            SUM(COALESCE(current_modified_amount,0)) - SUM(COALESCE(posting_amount,0)) AS remaining_amount
+            FROM aggregateon_revenue_category_funding_class s0
+            JOIN ref_funding_class ref ON ref.funding_class_id = s0.funding_class_id
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="s0.budget_fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="s0.agency_id" paramName="agency" />
+                </exp>
+            </where>
+            GROUP BY ref.funding_class_id, ref.funding_class_name, ref.funding_class_code
+        </sql>
+    </statement>
+    <!--GetRevenueCategoriesByRevenue-->
+    <statement name="GetRevenueCategoriesByRevenue" datasource="checkbook">
+        <param name="year" required ="true" type="int" />
+        <param name="agency" type="int" />
+        <sql>
+            SELECT j1.revenue_category_name,
+                    s0.revenue_category_id,
+                    SUM(adopted_amount) AS adopted_budget,
+                    SUM(COALESCE(current_modified_amount,0)) AS current_modified_budget,
+                    SUM(COALESCE(posting_amount,0)) AS recognized_amount,
+                    SUM(COALESCE(current_modified_amount,0)) - SUM(COALESCE(posting_amount,0)) AS remaining_amount
+            FROM aggregateon_revenue_category_funding_class s0
+            JOIN ref_revenue_category j1 ON j1.revenue_category_id = s0.revenue_category_id
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="s0.budget_fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="s0.agency_id" paramName="agency" />
+                </exp>
+            </where>
+            GROUP BY s0.revenue_category_id, j1.revenue_category_name
+        </sql>
+    </statement>
+    <!--GetAgenciesCrossYearCollectionsByRevenue-->
+    <statement name="GetAgenciesCrossYearCollectionsByRevenue" datasource="checkbook">
+        <param name="year" required ="true" type="int" />
+        <param name="agency" type="int" />
+        <sql>
+            SELECT s0.agency_id,
+                j1.agency_name,
+                SUM(posting_amount_cy) AS current_recognized,
+                SUM(posting_amount_ny) AS recognized_1,
+                SUM(posting_amount_ny_1) AS recognized_2,
+                SUM(other_amount) AS other_years,
+                SUM(remaining_amount) AS remaining_amount
+            FROM aggregateon_revenue_category_funding_by_year s0
+            JOIN ref_agency j1 ON j1.agency_id = s0.agency_id
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="s0.budget_fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="s0.agency_id" paramName="agency" />
+                </exp>
+            </where>
+            GROUP BY s0.agency_id, j1.agency_name
+        </sql>
+    </statement>
+    <!--GetRevenueCategoriesCrossYearCollectionsByRevenue-->
+    <statement name="GetRevenueCategoriesCrossYearCollectionsByRevenue" datasource="checkbook">
+        <param name="year" required ="true" type="int" />
+        <param name="agency" type="int" />
+        <sql>
+            SELECT j1.revenue_category_name,
+                s0.revenue_category_id,
+                SUM(posting_amount_cy) AS current_recognized,
+                SUM(posting_amount_ny) AS recognized_1,
+                SUM(posting_amount_ny_1) AS recognized_2,
+                SUM(other_amount) AS other_years,
+                SUM(remaining_amount) AS remaining_amount
+            FROM aggregateon_revenue_category_funding_by_year s0
+            JOIN ref_revenue_category j1 ON j1.revenue_category_id = s0.revenue_category_id
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="s0.budget_fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="s0.agency_id" paramName="agency" />
+                </exp>
+            </where>
+            GROUP BY s0.revenue_category_id, j1.revenue_category_name
+        </sql>
+    </statement>
+    <!--GetRevenueFundingClassesCrossYearCollectionsByRevenue-->
+    <statement name="GetRevenueFundingClassesCrossYearCollectionsByRevenue" datasource="checkbook">
+        <param name="year" required ="true" type="int" />
+        <param name="agency" type="int" />
+        <sql>
+            SELECT ref.funding_class_id, 
+                ref.funding_class_name, 
+                ref.funding_class_code,
+                SUM(posting_amount_cy) AS current_recognized,
+                SUM(posting_amount_ny) AS recognized_1,
+                SUM(posting_amount_ny_1) AS recognized_2,
+                SUM(other_amount) AS other_years,
+                SUM(remaining_amount) AS remaining_amount
+            FROM aggregateon_revenue_category_funding_by_year s0
+            JOIN ref_funding_class ref ON ref.funding_class_id = s0.funding_class_id
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="s0.budget_fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="s0.agency_id" paramName="agency" />
+                </exp>
+            </where>
+            GROUP BY ref.funding_class_id, ref.funding_class_name, ref.funding_class_code
+        </sql>
+    </statement>
+</statements>

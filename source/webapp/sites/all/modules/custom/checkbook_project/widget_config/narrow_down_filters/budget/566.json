@@ -6,7 +6,7 @@
     "maxSelect":5,
     "columns":["department_name.department_name", "txcount"],
     "orderBy":["-txcount","department_name.department_name"],    
-	"getTotalDataCount":true,    
+    "getTotalDataCount":true,    
     "filterName":"Department",
     "facetPager":true,
     "urlParameterName":"deptnm",
@@ -15,12 +15,13 @@
     "autocompleteID":"fdeptNm", 	
     "autocompleteField":"department_name",
     "adjustParameters":"
-	checkbook_faceted_search_adjust_param($node);
-    if(function_exists('_checkbook_project_applyParameterFilters')){
-        $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
-    }
-    $adjustedParameters['department_name.department_name'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
-    return $adjustedParameters;
+        checkbook_faceted_search_adjust_param($node);
+        $parameters = BudgetUtil::adjustBudgetCodeNameParameter($node, $parameters);
+        if(function_exists('_checkbook_project_applyParameterFilters')){
+            $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+        }
+        $adjustedParameters['department_name.department_name'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+        return $adjustedParameters;
     ",        
     "template":"individual_filter"
 }

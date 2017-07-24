@@ -62,7 +62,9 @@
         }
         echo $rowString . "\n";
    	}
- echo "\n \n" . "Source: Comprehensive Annual Financial Reports of the Comptroller."
-       ."\n" . "Note: In fiscal year 2010, the Fund balance classifications were changed to conform to the requirements of GASB54.";
+
+    echo "\n \n"."Source: Comprehensive Annual Financial Reports of the Comptroller." ."\n".
+        '"' ."Note: In fiscal year 2010, the Fund balance classifications were changed to conform to the requirements of GASB54.".'"';
+
 ?>
 

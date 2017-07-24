@@ -1,0 +1,1 @@
+As functional test mature to regression tests, they will be moved to here.

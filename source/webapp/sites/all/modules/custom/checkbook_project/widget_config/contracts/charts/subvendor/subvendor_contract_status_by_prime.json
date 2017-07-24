@@ -1,0 +1,111 @@
+
+{
+"widgetType": "highcharts",
+"html_class":"pieChartSlide",
+"header":"
+    $header = '<h2 class=\"chart-title\" style=\"display:none;\">' . $node->widgetConfig->chartTitle . '</h2>
+    <p class=\"pieCount\">'. $node->widgetConfig->chartSubTitle .'</p>';
+    return $header;
+",
+"no_results_content":"No Results Found",
+"cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry","mwbe","year","subvendor"],
+"widgetDataLoader":"
+    $parameters = array();
+    foreach($node->widgetConfig->requestParams as $param=>$value){
+        $values_array = explode('~',$value);
+        if(count($values_array) > 1){
+            $parameters[$param] = '(' . implode(',', $values_array) . ')';
+        }else
+            $parameters[$param] = htmlspecialchars_decode(_replace_special_characters_decode($value));
+    }
+
+    $subvendor = _getRequestParamValue('subvendor');
+    $fnName = isset($subvendor) ? 'GetContractsSubvendorStatusByPrimeCountsSubLevel' : 'GetContractsSubvendorStatusByPrimeCounts';
+
+    $service = new ContractsDataService();
+    $data = $service->$fnName($parameters)->getByDataset($parameters);
+
+    $node->data  = $data;    
+",
+"widgetUpdateJSONConfig":"
+	$series_data = array();
+        foreach($node->data as $row){
+            if($row['acco_approved'] > 0){
+                $series_data[] = array('status' => 'ACCO Approved Sub Vendor', 'count' => $row['acco_approved']);
+            }
+            if($row['acco_reviewing'] > 0){
+                $series_data[] = array('status' => 'ACCO Reviewing Sub Vendor', 'count' => $row['acco_reviewing']);
+            }
+            if($row['acco_rejected'] > 0){
+                $series_data[] = array('status' => 'ACCO Rejected Sub Vendor', 'count' => $row['acco_rejected']);
+            }
+            if($row['acco_cancelled'] > 0){
+                $series_data[] = array('status' => 'ACCO Canceled Sub Vendor', 'count' => $row['acco_cancelled']);
+            }
+        }
+	$index = 0;
+        $total_contracts = 0;
+        if(count($series_data) > 0){
+            foreach($series_data as $row){	 								 						
+                $series_new[$index]->y = (int)$row['count'];
+                $series_new[$index]->name = $row['status'];
+                $index += 1;
+                $total_contracts += (int)$row['count'];
+            }
+            $node->widgetConfig->chartConfig->series[0]->data = $series_new;
+        }else{
+           $node->data = null;
+        }
+	$node->widgetConfig->chartConfig->series[0]->data = $series_new;
+    $dashboard= _getRequestParamValue('dashboard');
+    if($dashboard == 'sp' || $dashboard == 'ms'){
+        $node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Sub Vendor Contracts Status by Prime Contracts';
+    }else{
+        $node->widgetConfig->chartTitle =  'Sub Vendor Contracts Status by Prime Contracts';
+    }
+
+        $node->widgetConfig->chartSubTitle =  'Total Number of Sub Vendor Contracts Submitted: '.number_format($total_contracts);
+",
+"chartConfig": {
+        "chart": {
+            "defaultSeriesType": "pie",
+            "plotBackgroundColor": null,
+            "plotBorderWidth": null,
+            "plotShadow": false
+        },
+        "colors": ["#78b5e9", "#f79d60", "#8dea84","#434448"],
+        "tooltip": {
+            "function":"tooltipformatter"
+        },
+        "title": {
+            "text": ""
+        },
+        "plotOptions": {
+            "pie": {
+                        "allowPointSelect": true,
+                        "cursor": "pointer",
+                        "dataLabels": {
+                            "enabled": false
+                        },
+                        "showInLegend": true
+                    }
+        },
+        "legend":{
+            "layout": "vertical",
+            "align": "right",
+            "verticalAlign": "middle",
+            "y":-25,
+            "x":7,
+            "useHTML": true,
+            "itemMarginTop": 3,
+            "itemMarginBottom": 3
+        }
+           
+    }
+}
+<function>
+tooltipformatter^^'formatter' :
+function() {
+    return (this.point.name).replace(' Sub Vendor','<br/>Sub Vendor') + ': <b>'+ (this.point.y).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +'</b>';
+}
+</function>

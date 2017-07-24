@@ -1137,6 +1137,9 @@ function checkbook_datafeeds_process_budget_values($form, $form_state) {
         preg_match($pattern, $values['budget_code'], $bcmatches);
         if ($bcmatches){
             $criteria['value']['budget_code'] = trim($bcmatches[1], '[ ]');
+            $criteria['value']['budget_code_name'] = str_replace($bcmatches[1],"",$values['budget_code']);
+        }else{
+            $criteria['value']['budget_code_name'] = $values['budget_code'];
         }
     }
     if ($values['adoptedfrom'] !== '' || $values['adoptedto'] !== '') {
@@ -1464,6 +1467,10 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
     $agency_options = _agency_options($data_source);
     $contract_type_options = _contract_type_options();
     $award_method_options = _award_method_options();
+    $sub_vendor_status_in_pip_options = _sub_vendor_status_in_pip();
+    $contract_includes_sub_vendors_options = _get_contract_includes_subvendors_data();
+    $contract_includes_sub_vendors_attributes = _get_contract_includes_subvendors_data('attributes');
+
 
     switch ($data_source) {
         case 'checkbook_oge':
@@ -1788,6 +1795,27 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                 '#name' => 'contractno',
                 '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'contractno', $first_time_load, ''),
             );
+            $form['filter']['contract_includes_sub_vendors_id'] = array(
+                '#type' => 'select',
+                '#title' => t('Contract Includes <br />Sub Vendors:'),
+                '#options' => $contract_includes_sub_vendors_options,
+                '#option_attributes' => $contract_includes_sub_vendors_attributes,
+                '#attributes' => array('class' => array('watch')),
+                '#prefix' => '<div class="datafield scntrc_status">',
+                '#suffix' => '</div>',
+                '#id' => 'edit-contract_includes_sub_vendors_id',
+                '#name' => 'contract_includes_sub_vendors_id',
+                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'contract_includes_sub_vendors_id', $first_time_load, 0),
+                '#states' => array(
+                    'disabled' => array(
+                        array(
+                            array('select[name="df_contract_status"]' => array('value' => 'pending')),
+                            'or',
+                            array('select[name="category"]' => array('value' => 'revenue')),
+                        ),
+                    ),
+                )
+            );
             $form['filter']['pin'] = array(
                 '#type' => 'textfield',
                 '#title' => t('PIN:'),
@@ -1887,6 +1915,33 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                 '#id' => 'edit-category',
                 '#name' => 'category',
                 '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'category', $first_time_load, 'expense'),
+            );
+            $form['filter']['sub_vendor_status_in_pip_id'] = array(
+                '#type' => 'select',
+                '#title' => t('Sub Vendor Status <br />in PIP&nbsp;:'),
+                '#options' => $sub_vendor_status_in_pip_options['options'],
+                '#option_attributes' => $sub_vendor_status_in_pip_options['options_attributes'],
+                '#attributes' => array('class' => array('watch')),
+                '#prefix' => '<div class="datafield sub_vendor_status_in_pip_id">',
+                '#suffix' => '</div>',
+                '#id' => 'edit-sub_vendor_status_in_pip_id',
+                '#name' => 'sub_vendor_status_in_pip_id',
+                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'sub_vendor_status_in_pip_id', $first_time_load, 0),
+                '#states' => array(
+                    'disabled' => array(
+                        array(
+                            array('select[name="df_contract_status"]' => array('value' => 'pending')),
+                            'or',
+                            array('select[name="category"]' => array('value' => 'revenue')),
+                            'or',
+                            array('select[name="contract_includes_sub_vendors_id"]' => array('value' => '1')),
+                            'or',
+                            array('select[name="contract_includes_sub_vendors_id"]' => array('value' => '3')),
+                            'or',
+                            array('select[name="contract_includes_sub_vendors_id"]' => array('value' => '4'))
+                        ),
+                    ),
+                )
             );
             $form['filter']['purpose'] = array(
 
@@ -2340,6 +2395,14 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
                 $user_criteria['Contract ID'] = $values['contractno'];
                 $formatted_search_criteria[''] = null;
             }
+            if ($values['contract_includes_sub_vendors_id']) {
+                if ($values['contract_includes_sub_vendors_id'] != 'Select Status') {
+                    $scntrc_status_name = MappingUtil::getscntrc_status_name($values['contract_includes_sub_vendors_id']);
+                    $form['filter']['contract_includes_sub_vendors_id'] = array('#markup' => '<div><strong>Contract Includes Sub Vendors:</strong> ' . $scntrc_status_name . '</div>');
+                    $user_criteria['Contract Includes Sub Vendors'] = $values['contract_includes_sub_vendors_id'];
+                    $formatted_search_criteria['Contract Includes Sub Vendors'] = $scntrc_status_name;
+                }
+            }
             if ($values['pin']) {
                 $form['filter']['pin'] = array(
                     '#markup' => '<div><strong>PIN:</strong> ' . $values['pin'] . '</div>',
@@ -2393,6 +2456,14 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
                 $form['filter']['category'] = array('#markup' => '<div><strong>Category:</strong> ' . $values['category'] . '</div>');
                 $user_criteria['Category'] = $values['category'];
                 $formatted_search_criteria['Category'] = $values['category'];
+            }
+            if ($values['sub_vendor_status_in_pip_id']) {
+                if ($values['sub_vendor_status_in_pip_id'] != 'Select Status') {
+                    $aprv_sta_name = MappingUtil::getaprv_sta_name($values['sub_vendor_status_in_pip_id']);
+                    $form['filter']['sub_vendor_status_in_pip_id'] = array('#markup' => '<div><strong>Sub Vendor Status in PIP&nbsp:</strong> ' . $aprv_sta_name . '</div>');
+                    $user_criteria['Sub Vendor Status in PIP'] = $values['sub_vendor_status_in_pip_id'];
+                    $formatted_search_criteria['Sub Vendor Status in PIP'] = $aprv_sta_name;
+                }
             }
             if ($values['purpose']) {
                 $form['filter']['purpose'] = array(
@@ -2480,8 +2551,58 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
     $criteria['required_columns'] = checkbook_datafeeds_contracts_add_required_columns($response_type, $data_source,$values['df_contract_status'],$values['category'],$values['year']);
     $form_state['step_information']['confirmation']['stored_values']['criteria'] = $criteria;
     $form_state['step_information']['confirmation']['stored_values']['user_criteria'] = $user_criteria;
+
+    //Update Criteria with overridden column order on export only for Active/Registered Expense Contracts
+    if(strtolower($values['df_contract_status']) != 'pending' && strtolower($values['category']) != 'revenue'){
+        $intended_order =  _checkbook_datafeeds_contracts_override_column_options($response_type, $data_source,$values['df_contract_status'],$values['category'],$values['year']);
+        $criteria['responseColumns'] = checkbook_datafeeds_override_column_order($criteria['responseColumns'], $intended_order);
+    }
+    
     $modified_form = checkbook_datafeeds_end_of_confirmation_form($form, $form_state, $criteria, $response_type, 'contracts');
     return $modified_form;
+}
+
+/**
+ * Reads the checkbook api configuration file to get the column order to override on export
+ * @param $response_type
+ * @param $data_source
+ * @param $status
+ * @param $expense_category
+ * @param $year
+ * @return array
+ */
+function _checkbook_datafeeds_contracts_override_column_options($response_type, $data_source, $status, $expense_category, $year)
+{
+    ///Get column configurations
+    $domain = 'contracts';
+    $domain = $data_source == 'checkbook_oge' ? $domain.'_oge' : $domain;
+    $domain_config = ConfigUtil::getDomainConfiguration($domain);
+
+    $domain_filter = $domain;
+    $domain_filter .= $status == 'pending' ? '_pending' : '_active';
+    $domain_filter .= $status == 'pending' ? '' :  '_'.$expense_category;
+    if ($year == 'All Years') $domain_filter .= "_all_years";
+
+    //Get columns which should be required to get but not display
+    $override_columns = $domain_config->$domain_filter->dataset->displayConfiguration->$response_type->overrideColumns;
+
+    return (array)$override_columns;
+}
+
+/**
+ * Sorts selected columns to match intended order for export
+ * @param array $selectedColumns
+ * @param array $intendedOrder
+ * @return array
+ */
+function checkbook_datafeeds_override_column_order(array $selectedColumns, array $intendedOrder) {
+    $ordered = [];
+    foreach ($intendedOrder as $key) {
+        if (in_array($key, $selectedColumns)) {
+            $ordered[$key] = $selectedColumns[$key];
+        }
+    }
+    return $ordered;
 }
 
 /**
@@ -2566,6 +2687,12 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
     }
     if ($values['contractno']) {
         $criteria['value']['contract_id'] = $values['contractno'];
+    }
+    if ($values['contract_includes_sub_vendors_id'] != 'Select Status' && $values['contract_includes_sub_vendors_id'] != 0) {
+        $criteria['value']['contract_includes_sub_vendors_id'] = $values['contract_includes_sub_vendors_id'];
+    }
+    if ($values['sub_vendor_status_in_pip_id'] != 'Select Status' && $values['sub_vendor_status_in_pip_id'] != 0 ) {
+        $criteria['value']['sub_vendor_status_in_pip_id'] = $values['sub_vendor_status_in_pip_id'];
     }
     if ($values['contract_type'] != 'No Contract Type Selected') {
         preg_match($pattern, $values['contract_type'], $ctypematches);
@@ -2698,6 +2825,7 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
     $pending = $form_state['values']['column_select_pending'];
     $pending_all = $form_state['values']['column_select_pending_all'];
     $vendor = $form_state['values']['vendor'];
+
     // Start Date:
     if ($startfrom && !checkDateFormat($startfrom)) {
         form_set_error('startdatefrom', t('Start Date must be a valid date (YYYY-MM-DD).'));
@@ -2996,7 +3124,7 @@ function checkbook_datafeeds_payroll($form, &$form_state) {
         '#title' => t('Year:'),
         '#options' => _year_options(),
         '#attributes' => array('class' => array('watch')),
-        '#default_value' => !empty($form_state['values']['year']) ? $form_state['values']['year'] : 'FY ' . currentFiscalYear(),
+        '#default_value' => !empty($form_state['values']['year']) ? $form_state['values']['year'] : 'CY ' . currentFiscalYear(),
         '#prefix' => '<div class="datafield fiscalyear">',
         '#suffix' => '</div>',
     );
@@ -4578,7 +4706,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
                 '#id' => 'edit-date-filter',
                 '#name' => 'date_filter',
                 '#ajax' => array(
-                    'callback' => 'checkbook_datafeeds_datefilter_ajax',
+                    //'callback' => 'checkbook_datafeeds_datefilter_ajax',
                     'wrapper' => 'datefilter',
                     'progress' => array(
                         'message' => NULL,
@@ -4661,7 +4789,15 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
                 '#default_value' => $dept,
                 '#id' => 'edit-dept',
                 '#name' => 'dept',
-                '#validated' => true
+                '#validated' => true,
+                '#ajax' => array(
+                    'callback' => 'checkbook_datafeeds_dept_ajax',
+                    'wrapper' => 'expense-category',
+                    'progress' => array(
+                        'message' => NULL,
+                        'type' => 'throbber',
+                    ),
+                ),
             );
             $form['filter']['expense_category'] = array(
                 '#type' => 'select',
@@ -4794,7 +4930,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
                 '#id' => 'edit-date-filter',
                 '#name' => 'date_filter',
                 '#ajax' => array(
-                    'callback' => 'checkbook_datafeeds_datefilter_ajax',
+                    //'callback' => 'checkbook_datafeeds_datefilter_ajax',
                     'wrapper' => 'datefilter',
                     'progress' => array(
                         'message' => NULL,
@@ -4917,7 +5053,7 @@ function checkbook_datafeeds_dept_ajax($form, &$form_state) {
  * @return array
  *   Array of ajax commands
  */
-function checkbook_datafeeds_datefilter_ajax($form, &$form_state)
+/*function checkbook_datafeeds_datefilter_ajax($form, &$form_state)
 {
     $value = $form_state['values']['date_filter'];
     if ($value == 0) {
@@ -4951,7 +5087,7 @@ function checkbook_datafeeds_datefilter_ajax($form, &$form_state)
     }
     $commands[] = ajax_command_invoke(NULL, 'refreshMultiSelect');
     return array('#type' => 'ajax', '#commands' => $commands);
-}
+}*/
 
 /**
  * Ajax callback to disable contractno or payee_name fields and column options based on expense category field.
@@ -5281,6 +5417,10 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state)
         $formatted_search_criteria['Department'] = $values['dept'];
     }
     if ($values['expense_category']) {
+        // converts special characters to HTML entities
+        if (preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $values['expense_category'])) {
+            $values['expense_category'] = htmlspecialchars($values['expense_category']);
+        }
         $form['filter']['expense_category'] = array('#markup' => '<div><strong>Expense Category:</strong> ' . $values['expense_category'] . '</div>');
         $user_criteria['Expense Category'] = $values['expense_category'];
         $formatted_search_criteria['Expense Category'] = $values['expense_category'];
@@ -5380,45 +5520,6 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state)
         $user_criteria['Budget Name'] = $values['budget_name'];
         $formatted_search_criteria['Budget Name'] = $values['budget_name'];
     }
-    if (startsWith($values['year'], 'F')) {
-        $form['filter']['year'] = array(
-            '#markup' => '<div><strong>Year:</strong> ' . $values['year'] . '</div>',
-        );
-        $user_criteria['Fiscal Year'] = $values['year'];
-        $formatted_search_criteria['Year'] = $values['year'];
-    }
-    elseif (startsWith($values['year'], 'C')) {
-        $form['filter']['year'] = array(
-            '#markup' => '<div><strong>Year:</strong> ' . $values['year'] . '</div>',
-        );
-        $user_criteria['Calendar Year'] = $values['year'];
-        $formatted_search_criteria['Year'] = $values['year'];
-    }
-    else {
-        $form['filter']['year'] = array(
-            '#markup' => '<div><strong>Year:</strong> All Years</div>',
-        );
-        $formatted_search_criteria['Year'] = $values['year'];
-    }
-    if (startsWith($values['year'], 'F')) {
-        $form['filter']['year'] = array(
-            '#markup' => '<div><strong>Fiscal Year:</strong> ' . ltrim($values['year'], 'FY') . '</div>',
-        );
-        $user_criteria['Fiscal Year'] = ltrim($values['year'], 'FY');
-        $formatted_search_criteria['Year'] = $values['year'];
-    }
-    else {
-        if (startsWith($values['year'], 'C')) {
-            $form['filter']['year'] = array(
-                '#markup' => '<div><strong>Calendar Year:</strong> ' . ltrim($values['year'], 'CY') . '</div>',
-            );
-            $user_criteria['Calendar Year'] = ltrim($values['year'], 'CY');
-            $formatted_search_criteria['Year'] = $values['year'];
-        }
-        else {
-            $formatted_search_criteria['Year'] = 'All Years';
-        }
-    }
     if ($values['issuedfrom'] && $values['issuedto']) {
         $form['filter']['issued_date'] = array(
             '#markup' => '<div><strong>Issue Date:</strong> From: ' . $values['issuedfrom'] . ' To: ' . $values['issuedto'] . '</div>'
@@ -5438,6 +5539,29 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state)
         );
         $user_criteria['Issued Date After'] = $values['issuedfrom'];
         $formatted_search_criteria['Issue Date'] = 'To: ' . $values['issuedfrom'];
+    }
+    // Only adds year if date range is not present.
+    else {
+        if (startsWith($values['year'], 'F')) {
+            $form['filter']['year'] = array(
+                '#markup' => '<div><strong>Year:</strong> ' . $values['year'] . '</div>',
+            );
+            $user_criteria['Fiscal Year'] = $values['year'];
+            $formatted_search_criteria['Year'] = $values['year'];
+        }
+        elseif (startsWith($values['year'], 'C')) {
+            $form['filter']['year'] = array(
+                '#markup' => '<div><strong>Year:</strong> ' . $values['year'] . '</div>',
+            );
+            $user_criteria['Calendar Year'] = $values['year'];
+            $formatted_search_criteria['Year'] = $values['year'];
+        }
+        else {
+            $form['filter']['year'] = array(
+                '#markup' => '<div><strong>Year:</strong> All Years</div>',
+            );
+            $formatted_search_criteria['Year'] = $values['year'];
+        }
     }
 
     //</editor-fold>
@@ -5708,24 +5832,12 @@ function _year_options($yeartype = NULL) {
                         $fiscal_year,
                     ))
                 ), 'year_value', 0);
-                $cydata = $dataController->queryDataset("checkbook:year", array(
-                    'year_value',
-                    'year_id',
-                ), array(
-                    'year_value' => data_controller_get_operator_factory_instance()->initiateHandler(RangeOperatorHandler::$OPERATOR__NAME, array(
-                        2010,
-                        $calendar_year,
-                    ))
-                ), 'year_value', 0);
+                $fydata = array_reverse($fydata, true);
                 $fyarray = array();
-                $cyarray = array();
                 foreach ($fydata as $row) {
                     $fyarray['FY' . $row['year_value']] = 'FY ' . $row['year_value'];
                 }
-                foreach ($cydata as $row) {
-                    $cyarray['CY' . $row['year_value']] = 'CY ' . $row['year_value'];
-                }
-                $results = array_merge(array('ALL' => 'All Years'), $fyarray, $cyarray);
+                $results = array_merge(array('ALL' => 'All Years'), $fyarray);
                 return $results;
             }
             catch (Exception $e) {
@@ -5735,7 +5847,7 @@ function _year_options($yeartype = NULL) {
             break;
 
         case 'budget-fiscal-years':
-            $query = 'SELECT DISTINCT budget_fiscal_year, budget_fiscal_year_id FROM budget WHERE budget_fiscal_year > 2010 ORDER BY budget_fiscal_year_id';
+            $query = 'SELECT DISTINCT budget_fiscal_year, budget_fiscal_year_id FROM budget WHERE budget_fiscal_year > 2010 ORDER BY budget_fiscal_year_id DESC';
             $fy_data = _checkbook_project_execute_sql($query);
             $years = array();
             foreach ($fy_data as $year) {
@@ -5759,6 +5871,7 @@ function _year_options($yeartype = NULL) {
                         $fiscal_year,
                     ))
                 ), 'year_value', 0);
+                $fydata = array_reverse($fydata, true);
                 $cydata = $dataController->queryDataset("checkbook:year", array(
                     'year_value',
                     'year_id',
@@ -5768,6 +5881,7 @@ function _year_options($yeartype = NULL) {
                         $calendar_year,
                     ))
                 ), 'year_value', 0);
+                $cydata = array_reverse($cydata, true);
                 $fyarray = array();
                 $cyarray = array();
                 foreach ($fydata as $row) {
@@ -5776,7 +5890,7 @@ function _year_options($yeartype = NULL) {
                 foreach ($cydata as $row) {
                     $cyarray['CY ' . $row['year_value']] = 'CY ' . $row['year_value'];
                 }
-                $results = array_merge($fyarray, $cyarray);
+                $results = array_merge($cyarray, $fyarray);
                 return $results;
             }
             catch (Exception $e) {
@@ -5882,6 +5996,43 @@ function _checkbook_datafeeds_agency_options($data,$data_source = null) {
     $results['options'] = $menu_options;
     $results['options_attributes'] = $menu_options_attributes;
     return $results;
+}
+
+
+/**
+ * Get Sub Vendor Status in PIP from Data Controller and format into a FAPI select input #options array.
+ *
+ * @return array
+ *   Sub Vendor Status In PIP ids and nammes
+ */
+function _sub_vendor_status_in_pip() {
+    $statuses[0] = 'Select Status';
+    try {
+        $dataController = data_controller_get_instance();
+        $data = $dataController->queryDataset('checkbook:subcontract_approval_status', 
+                                                array('aprv_sta_id', 'aprv_sta_value'),
+                                                NULL, 'sort_order', 0, 10, NULL);
+
+        $menu_options = array('0' => 'Select Status');
+        $title = 'Select Status';
+        $menu_options_attributes = array($title => array('title' => $title));
+
+        foreach ($data as $row) {
+            if ($row['aprv_sta_id'] != "7") {
+                $option = $row['aprv_sta_value'];
+                //Menu options
+                $menu_options[$row['aprv_sta_id']] = (strlen($option) > 20) ? substr($option, 0, 20) . '...' : $option;
+                //Menu option titles
+                $menu_options_attributes[$row['aprv_sta_id']] = array('title' => $option);
+            }
+        }
+        $results['options'] = $menu_options;
+        $results['options_attributes'] = $menu_options_attributes;
+        return $results;
+    }catch (Exception $e) {
+        log_error("Error getting data from controller: \n" . $e->getMessage());
+        return;
+    }
 }
 
 /**
@@ -6471,7 +6622,7 @@ function checkbook_datafeeds_confirmation_download_submit($form, &$form_state) {
 
     $record_count = $checkBookApi->getRecordCount();
     //records <= 100,000
-    if ($record_count <= 100000) {
+    if ($record_count <= 30000) {
         if (isset($checkBookApi)) {
             if ($checkBookApi->validateRequest()) {
                 try {
@@ -6535,13 +6686,29 @@ function checkbook_datafeeds_confirmation_download_submit($form, &$form_state) {
  *   Data Feeds wizard form_state array
  */
 function checkbook_datafeeds_confirmation_queue_submit($form, &$form_state) {
+
+    $response_type = $form_state['step_information']['type']['stored_values']['format'];
     $email = $form_state['values']['email_address'];
     $criteria = $form_state['step_information']['confirmation']['stored_values']['criteria'];
+
+    //Update Criteria with overridden column order on export only
+    $domain = strtolower($criteria['global']['type_of_data']);
+    //Contracts Only
+    if($domain == 'contracts') {
+        $data_source = 'checkbook';
+        $category = $criteria['value']['category'];
+        $status = $criteria['value']['status'];
+        $year = $criteria['value']['fiscal_year'];
+        $intended_order =  _checkbook_datafeeds_contracts_override_column_options($response_type, $data_source,$status,$category,$year);
+        $criteria['responseColumns'] = checkbook_datafeeds_override_column_order($criteria['responseColumns'], $intended_order);
+    }
+
     unset($criteria['global']['max_records']);
-    $responsetype = $form_state['step_information']['type']['stored_values']['format'];
-    $searchCriteria = new QueueCriteria($criteria, $responsetype);
+    $searchCriteria = new QueueCriteria($criteria, $response_type);
     $user_criteria = $form_state['step_information']['confirmation']['stored_values']['user_criteria'];
     $searchCriteria->setUserCriteria($user_criteria);
+
+
     try {
         $checkBookApi = new CheckBookAPI($searchCriteria);
     }
@@ -6728,7 +6895,7 @@ function checkbook_datafeeds_end_of_confirmation_form($form, &$form_state, $crit
     elseif ($recordcount > 0 && $recordcount < 200000) {
         if (isset($checkBookApi)) {
             if ($checkBookApi->validateRequest()) {
-                if ($recordcount <= 100000) {
+                if ($recordcount <= 30000) {
                     $form_state['step_information']['confirmation']['response'] = $checkBookApi->getData();
                 }
                 else {

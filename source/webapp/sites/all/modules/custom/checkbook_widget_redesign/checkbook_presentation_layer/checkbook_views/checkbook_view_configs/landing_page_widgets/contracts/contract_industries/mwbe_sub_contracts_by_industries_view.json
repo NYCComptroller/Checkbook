@@ -1,0 +1,5 @@
+{
+    "defaultConfigKey":"contracts_by_industries_view",
+    "dataFunc":"GetSubContractsByIndustries",
+    "countFunc":"GetCountSubContracts"
+}

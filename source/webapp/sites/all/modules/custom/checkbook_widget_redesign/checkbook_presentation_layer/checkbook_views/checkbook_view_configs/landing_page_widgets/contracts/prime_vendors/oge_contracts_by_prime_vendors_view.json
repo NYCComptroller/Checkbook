@@ -1,0 +1,5 @@
+{
+    "defaultConfigKey":"expense_contracts_by_prime_vendors_view",
+    "dataFunc":"GetOgeContractsByPrimeVendors",
+    "countFunc":"GetCountOgeContractsByPrimeVendors"
+}

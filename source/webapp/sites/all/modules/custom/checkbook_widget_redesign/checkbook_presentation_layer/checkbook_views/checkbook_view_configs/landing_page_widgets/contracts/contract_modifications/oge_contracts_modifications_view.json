@@ -1,0 +1,5 @@
+{
+    "defaultParameters":{"doctype":"'abc'","contract_type":"child_contract"},
+    "defaultConfigKey": "contracts_modifications_view",
+    "dataFunc":"GetOgeContractModifications"
+}

@@ -47,6 +47,7 @@ foreach ($node->results_contract_history as $contract_row) {
         if (!isset($vendor_contract_summary[$contract_row['legal_name']]['minority_type_id'])) {
             $vendor_contract_summary[$contract_row['legal_name']]['minority_type_id'] = $contract_row['minority_type_id'];
         }
+        $vendor_contract_summary[$contract_row['legal_name']]['sub_vendor_id'] =  $contract_row['vendor_id'];
     }
 
 }
@@ -70,13 +71,25 @@ foreach ($node->results_spending as $spending_row) {
 
 //Main table header
 $tbl_spending['header']['title'] = "<h3>SPENDING BY SUB VENDOR</h3>";
-$tbl_spending['header']['columns'] = array(
-    array('value' => WidgetUtil::generateLabelMappingNoDiv("sub_vendor_name"), 'type' => 'text'),
-    array('value' => WidgetUtil::generateLabelMappingNoDiv("mwbe_category"), 'type' => 'text'),
-    array('value' => WidgetUtil::generateLabelMappingNoDiv("current_amount"), 'type' => 'number'),
-    array('value' => WidgetUtil::generateLabelMappingNoDiv("original_amount"), 'type' => 'number'),
-    array('value' => WidgetUtil::generateLabelMappingNoDiv("spent_to_date"), 'type' => 'number')
-);
+
+if(_getRequestParamValue("doctype")=="CT1" || _getRequestParamValue("doctype")=="CTA1"){
+    $tbl_spending['header']['columns'] = array(
+        array('value' => WidgetUtil::generateLabelMappingNoDiv("sub_vendor_name"), 'type' => 'text'),
+        array('value' => WidgetUtil::generateLabelMappingNoDiv("mwbe_category"), 'type' => 'text'),
+        array('value' => WidgetUtil::generateLabelMappingNoDiv("subvendor_status_pip"), 'type' => 'text'),
+        array('value' => WidgetUtil::generateLabelMappingNoDiv("current_amount"), 'type' => 'number'),
+        array('value' => WidgetUtil::generateLabelMappingNoDiv("original_amount"), 'type' => 'number'),
+        array('value' => WidgetUtil::generateLabelMappingNoDiv("spent_to_date"), 'type' => 'number')
+    );
+}else{
+   $tbl_spending['header']['columns'] = array(
+        array('value' => WidgetUtil::generateLabelMappingNoDiv("sub_vendor_name"), 'type' => 'text'),
+        array('value' => WidgetUtil::generateLabelMappingNoDiv("mwbe_category"), 'type' => 'text'),
+        array('value' => WidgetUtil::generateLabelMappingNoDiv("current_amount"), 'type' => 'number'),
+        array('value' => WidgetUtil::generateLabelMappingNoDiv("original_amount"), 'type' => 'number'),
+        array('value' => WidgetUtil::generateLabelMappingNoDiv("spent_to_date"), 'type' => 'number')
+    ); 
+}
 
 $contract_number = $node->results_contract_history[0]['contract_number'];
 
@@ -92,7 +105,6 @@ $res->data = $results4;
 $total_current_amount = $res->data[0]['total_current_amt'];
 $total_original_amount = $res->data[0]['total_original_amt'];
 $total_spent_todate = $res->data[0]['total_spent_todate'];
-
 ?>
 <div class="dollar-amounts">
     <div class="spent-to-date"><?php echo custom_number_formatter_format($total_spent_todate, 2, "$");?>
@@ -113,31 +125,79 @@ $total_spent_todate = $res->data[0]['total_spent_todate'];
 </div>
 <?php
 $index_spending = 0;
-
 foreach ($vendor_contract_summary as $vendor => $vendor_summary) {
-
+    
     $original_amount = $vendor_summary['original_amount'];
     $current_amount = $vendor_summary['current_amount'];
 
     $open = $index_spending == 0 ? '' : 'open';
+    
     //Main table columns
-    $tbl_spending['body']['rows'][$index_spending]['columns'] = array(
-        array('value' => "<a class='showHide " . $open . " expandTwo' ></a>" . $vendor, 'type' => 'text'),
-        array('value' => MappingUtil::getMinorityCategoryById($vendor_summary['minority_type_id']), 'type' => 'text'),
-        array('value' => custom_number_formatter_format($current_amount, 2, '$'), 'type' => 'number'),
-        array('value' => custom_number_formatter_format($original_amount, 2, '$'), 'type' => 'number'),
-        array('value' => custom_number_formatter_format($vendor_summary['check_amount'], 2, '$'), 'type' => 'number')
-    );
+    
+    if(_getRequestParamValue("doctype")=="CT1" || _getRequestParamValue("doctype")=="CTA1"){
+        
+        $querySubVendorStatusInPIP = "SELECT
+                                        c.aprv_sta_id, 
+                                        c.aprv_sta_value AS sub_vendor_status_pip
+                                    FROM sub_agreement_snapshot a
+                                    LEFT JOIN subcontract_approval_status c ON c.aprv_sta_id = COALESCE(a.aprv_sta,6)
+                                    WHERE a.latest_flag = 'Y'
+                                    AND a.contract_number = '". $contract_number 
+                                    ."' AND a.vendor_id = ". $vendor_summary['sub_vendor_id']
+                                    . " ORDER BY c.sort_order ASC LIMIT 1";
+
+        $results5 = _checkbook_project_execute_sql_by_data_source($querySubVendorStatusInPIP,_get_current_datasource());
+        $result->data = $results5;
+        $subVendorStatusInPIP = ($result->data[0]['aprv_sta_id'] == 4 && $vendor_summary['check_amount'] == 0) ? "No Subcontract Payments Submitted" : $result->data[0]['sub_vendor_status_pip'];
+
+        if(count($sub_contract_reference[$vendor]) > 1 && $index_spending == 0){
+            $viewAll = "<a class='subContractViewAll'>Hide All<<</a>";
+        }else{
+            $viewAll = (count($sub_contract_reference[$vendor]) > 1) ? "<a class='subContractViewAll'>View All>></a>" : '';
+        }
+        
+        $tbl_spending['body']['rows'][$index_spending]['columns'] = array(
+            array('value' => "<a class='showHide " . $open . " expandTwo' ></a>" . $vendor, 'type' => 'text'),
+            array('value' => MappingUtil::getMinorityCategoryById($vendor_summary['minority_type_id']), 'type' => 'text'),
+            array('value' => $subVendorStatusInPIP . $viewAll, 'type' => 'text'),
+            array('value' => custom_number_formatter_format($current_amount, 2, '$'), 'type' => 'number'),
+            array('value' => custom_number_formatter_format($original_amount, 2, '$'), 'type' => 'number'),
+            array('value' => custom_number_formatter_format($vendor_summary['check_amount'], 2, '$'), 'type' => 'number')
+        );
+    }else{
+        $tbl_spending['body']['rows'][$index_spending]['columns'] = array(
+            array('value' => "<a class='showHide " . $open . " expandTwo' ></a>" . $vendor, 'type' => 'text'),
+            array('value' => MappingUtil::getMinorityCategoryById($vendor_summary['minority_type_id']), 'type' => 'text'),
+            array('value' => custom_number_formatter_format($current_amount, 2, '$'), 'type' => 'number'),
+            array('value' => custom_number_formatter_format($original_amount, 2, '$'), 'type' => 'number'),
+            array('value' => custom_number_formatter_format($vendor_summary['check_amount'], 2, '$'), 'type' => 'number')
+        );
+    }
 
     /* SUB CONTRACT REFERENCE ID*/
     $index_sub_contract_reference = 0;
     $tbl_subcontract_reference = array();
 
     foreach($sub_contract_reference[$vendor] as $reference_id => $value){
+        $querySubContractStatusInPIP = "SELECT
+                                        c.aprv_sta_id, c.aprv_sta_value AS sub_contract_status_pip
+                                    FROM sub_agreement_snapshot a
+                                    LEFT JOIN subcontract_approval_status c ON c.aprv_sta_id = COALESCE(a.aprv_sta,6)
+                                    WHERE a.latest_flag = 'Y'
+                                    AND a.contract_number = '". $contract_number 
+                                    ."' AND a.vendor_id = ". $vendor_summary['sub_vendor_id']
+                                    ."  AND a.sub_contract_id ='".$reference_id
+                                    . "' ORDER BY c.sort_order ASC LIMIT 1";
+
+        $results6 = _checkbook_project_execute_sql_by_data_source($querySubContractStatusInPIP,_get_current_datasource());
+        $result->data = $results6;
+        $subContractStatusInPIP = ($result->data[0]['aprv_sta_id'] == 4 && $vendor_summary['check_amount'] == 0) ? "No Subcontract Payments Submitted" : $result->data[0]['sub_contract_status_pip'];
+
         $ref_id = $reference_id;
         $open = $index_sub_contract_reference == 0 ? '' : 'open';
         $tbl_subcontract_reference['body']['rows'][$index_sub_contract_reference]['columns'] = array(
-            array('value' => "<a class='showHide " . $open . " expandTwo' ></a>SUB CONTRACT REFERENCE ID: " . $ref_id, 'type' => 'text'),
+            array('value' => "<a class='showHide " . $open . " expandTwo' ></a>SUB CONTRACT REFERENCE ID: " . $ref_id . "<span class='subContractStatus'>".$subContractStatusInPIP."</span>"
+                , 'type' => 'text'),
         );
 
 

@@ -1,0 +1,318 @@
+<statements>
+    <!--GetPendingContracts-->
+    <statement name="GetContracts" datasource="checkbook">
+        <param name="year" required ="true" type="int"/>
+        <param name="yeartype" required ="true" type="string" />
+        <param name="doctype" />
+        <param name="mwbe" />
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
+        <param name="is_modification" />
+        <sql>
+            SELECT DISTINCT to_char(s0.cif_received_date,'mm/dd/yy') AS received_date,
+                s0.vendor_id as vendor_id,
+                s0.vendor_legal_name as vendor_name,
+                s0.description as contract_purpose,
+                s0.contract_number as contract_number,
+                s0.fms_contract_number as pending_contract_number,
+                s1.document_code as document_code,
+                s0.original_agreement_id as original_agreement_id,
+                s0.document_agency_name as agency_name,
+                s0.document_agency_id as agency_id,
+                s0.document_version as document_version,
+                SUM(COALESCE(original_maximum_amount,0)) AS original_amount_sum,
+                SUM(COALESCE(revised_maximum_amount,0)) AS current_amount_sum,
+                SUM(COALESCE(dollar_difference,0)) AS dollar_difference,
+                AVG(percent_difference) AS percent_difference
+            FROM pending_contracts s0
+            JOIN ref_document_code s1 ON s1.document_code_id = s0.document_code_id 
+            <where>
+                <exp op="AND">
+                    <exp op="IN" dbField="s1.document_code" paramName="doctype" />
+                    <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
+                    <exp op="=" dbField="s0.document_agency_id" paramName="agency" />
+                    <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="s0.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="s0.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="s0.industry_type_id" paramName="cindustry" />
+                </exp>
+            </where>
+            <exp op="IF" condition="=" paramName="is_modification" compareValue="true">
+                AND dollar_difference != 0 
+            </exp>
+            GROUP BY s0.cif_received_date, s0.vendor_id, s0.vendor_legal_name, s0.description,
+                    s0.contract_number, s0.fms_contract_number, s1.document_code,s0.original_agreement_id,
+                    s0.document_agency_name, s0.document_agency_id, s0.document_version
+        </sql>
+    </statement>
+    <statement name="GetCountContracts" datasource="checkbook">
+        <param name="year" required ="true" type="int"/>
+        <param name="yeartype" required ="true" type="string" />
+        <param name="status" type="string"/>
+        <param name="category" type="string"/>
+        <param name="doctype" />
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="mwbe" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
+        <param name="is_modification" />
+        <sql>
+            SELECT s0.contract_number as pending_contract_number
+            FROM pending_contracts s0
+            JOIN ref_document_code s1 ON s1.document_code_id = s0.document_code_id
+            <where>
+                <exp op="AND">
+                    <exp op="IN" dbField="s1.document_code" paramName="doctype" />
+                    <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
+                    <exp op="=" dbField="s0.document_agency_id" paramName="agency" />
+                    <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="s0.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="s0.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="s0.industry_type_id" paramName="cindustry" />
+                </exp>
+            </where>
+            <exp op="IF" condition="=" paramName="is_modification" compareValue="true">
+                AND dollar_difference != 0
+            </exp>
+        </sql>
+    </statement>
+    <!--GetPendingContractsByAwardMethods-->
+    <statement name="GetContractsByAwardMethods" datasource="checkbook">
+        <param name="year" required ="true" type="int"/>
+        <param name="yeartype" required ="true" type="string" />
+        <param name="doctype" />
+        <param name="mwbe" />
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
+        <sql>
+            SELECT
+            a.award_method_id,
+            a.award_method_name,
+            SUM(COALESCE(original_maximum_amount,0)) AS original_amount_sum,
+            SUM(COALESCE(revised_maximum_amount,0)) AS current_amount_sum,
+            COUNT(contract_number) AS total_contracts
+            FROM pending_contracts a
+            JOIN ref_document_code b ON a.document_code_id = b.document_code_id
+            <where>
+                <exp op="AND">
+                    <exp op="IN" dbField="b.document_code" paramName="doctype" />
+                    <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
+                    <exp op="=" dbField="a.document_agency_id" paramName="agency" />
+                    <exp op="=" dbField="a.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="a.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
+                </exp>
+            </where>
+            GROUP BY a.award_method_name, a.award_method_id
+        </sql>
+    </statement>
+    <!--GetPendingContractsByIndustries,GetCountPendingContractsByIndustries-->
+    <statement name="GetContractsByIndustries" datasource="checkbook">
+        <param name="doctype" />
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="mwbe" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
+        <sql>
+            SELECT
+            e.industry_type_id,
+            e.industry_type_name,
+            SUM(COALESCE(a.original_maximum_amount,0)) AS original_amount_sum,
+            SUM(COALESCE(a.revised_maximum_amount,0)) AS current_amount_sum,
+            COUNT(contract_number) AS total_contracts
+            FROM pending_contracts a
+            JOIN ref_document_code b ON a.document_code_id = b.document_code_id
+            JOIN ref_agency c on c.agency_id = a.document_agency_id
+            LEFT JOIN vendor d on d.vendor_id = a.vendor_id
+            JOIN ref_industry_type e ON e.industry_type_id = a.industry_type_id
+            <where>
+                <exp op="AND">
+                    <exp op="IN" dbField="b.document_code" paramName="doctype" />
+                    <exp op="=" dbField="c.agency_id" paramName="agency" />
+                    <exp op="=" dbField="d.vendor_id" paramName="vendor" />
+                    <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
+                    <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="a.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
+                </exp>
+            </where>
+            GROUP BY e.industry_type_id,e.industry_type_name
+        </sql>
+    </statement>
+    <!--GetPendingContractsBySize,GetCountPendingContractsBySize-->
+    <statement name="GetContractsBySize" datasource="checkbook">
+        <param name="doctype" />
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="mwbe" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
+        <sql>
+            SELECT
+            e.award_size_id,
+            e.award_size_name,
+            SUM(COALESCE(a.original_maximum_amount,0)) AS original_amount_sum,
+            SUM(COALESCE(a.revised_maximum_amount,0)) AS current_amount_sum,
+            COUNT(contract_number) AS total_contracts
+            FROM pending_contracts a
+            JOIN ref_document_code b ON a.document_code_id = b.document_code_id
+            LEFT JOIN vendor d on d.vendor_id = a.vendor_id
+            JOIN ref_award_size e ON e.award_size_id = a.award_size_id
+            <where>
+                <exp op="AND">
+                    <exp op="IN" dbField="b.document_code" paramName="doctype" />
+                    <exp op="=" dbField="a.document_agency_id" paramName="agency" />
+                    <exp op="=" dbField="d.vendor_id" paramName="vendor" />
+                    <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
+                    <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="a.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
+                </exp>
+            </where>
+            GROUP BY e.award_size_id,e.award_size_name
+        </sql>
+    </statement>
+    <!-- GetPendingContractsByPrimeVendors -->
+    <statement name="GetContractsByPrimeVendors" datasource="checkbook">
+        <param name="year" required ="true" type="int"/>
+        <param name="yeartype" required ="true" type="string" />
+        <param name="status" type="string"/>
+        <param name="doctype" />
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="mwbe" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
+        <sql>
+            SELECT DISTINCT s0.vendor_id,
+            s0.vendor_legal_name AS vendor_name,
+             <exp op="IF" condition="&lt;&gt;" paramName="mwbe" compareValue="">
+                s0.minority_type_id,
+            </exp>
+            SUM(COALESCE(original_maximum_amount,0)) AS original_amount_sum,
+            SUM(COALESCE(revised_maximum_amount,0)) AS current_amount_sum,
+            COUNT(contract_number) AS total_contracts
+            FROM pending_contracts s0
+            JOIN ref_document_code rfd ON rfd.document_code_id = s0.document_code_id
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="s0.document_agency_id" paramName="agency" />
+                    <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
+                    <exp op="IN" dbField="rfd.document_code" paramName="doctype" />
+                    <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="s0.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="s0.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="s0.industry_type_id" paramName="cindustry" />
+                </exp>
+            </where>
+            GROUP BY s0.vendor_id, s0.vendor_legal_name
+            <exp op="IF" condition="&lt;&gt;" paramName="mwbe" compareValue="">
+                ,s0.minority_type_id
+            </exp>        
+        </sql>
+    </statement>
+    <statement name="GetCountContractsByPrimeVendors" datasource="checkbook">
+        <param name="year" required ="true" type="int"/>
+        <param name="yeartype" required ="true" type="string" />
+        <param name="status" type="string"/>
+        <param name="doctype" />
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="mwbe" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
+        <sql>
+            SELECT DISTINCT s0.vendor_id
+            FROM pending_contracts s0
+            JOIN ref_document_code rfd ON rfd.document_code_id = s0.document_code_id
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="s0.document_agency_id" paramName="agency" />
+                    <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
+                    <exp op="IN" dbField="rfd.document_code" paramName="doctype" />
+                    <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
+                    <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="s0.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="s0.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="s0.industry_type_id" paramName="cindustry" />
+                </exp>
+            </where>
+        </sql>
+    </statement>
+    <!---GetPendingContractsByAgencies-->
+    <statement name="GetContractsByAgencies" datasource="checkbook">
+        <param name="year" required ="true" type="int"/>
+        <param name="yeartype" required ="true" type="string" />
+        <param name="status" type="string"/>
+        <param name="doctype" />
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="mwbe" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
+        <sql>
+            SELECT DISTINCT s0.document_agency_name AS agency_name,
+                s0.document_agency_id AS agency_id,
+                SUM(COALESCE(original_maximum_amount,0)) AS original_amount_sum,
+                SUM(COALESCE(revised_maximum_amount,0)) AS current_amount_sum,
+                COUNT(contract_number) AS total_contracts
+            FROM pending_contracts s0
+            JOIN ref_document_code rfd ON rfd.document_code_id = s0.document_code_id 
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="s0.document_agency_id" paramName="agency" />
+                    <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
+                    <exp op="IN" dbField="rfd.document_code" paramName="doctype" />
+                    <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="s0.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="s0.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="s0.industry_type_id" paramName="cindustry" />
+                </exp>
+            </where>
+            GROUP BY s0.document_agency_id, s0.document_agency_name 
+        </sql>
+    </statement>
+    <!--<statement name="GetCountPendingContractsByAgencies" datasource="checkbook">-->
+        <!--<param name="year" required ="true" type="int"/>-->
+        <!--<param name="yeartype" required ="true" type="string" />-->
+        <!--<param name="status" type="string"/>-->
+        <!--<param name="doctype" />-->
+        <!--<param name="agency" type="int" />-->
+        <!--<param name="vendor" type="int" />-->
+        <!--<param name="mwbe" />-->
+        <!--<param name="awdmethod" />-->
+        <!--<param name="csize" />-->
+        <!--<param name="cindustry" />-->
+        <!--<sql>-->
+            <!--SELECT COUNT(DISTINCT s0.document_agency_id) AS record_count-->
+            <!--FROM pending_contracts s0-->
+            <!--JOIN ref_document_code rfd ON rfd.document_code_id = s0.document_code_id -->
+            <!--<where>-->
+                <!--<exp op="AND">-->
+                    <!--<exp op="=" dbField="s0.document_agency_id" paramName="agency" />-->
+                    <!--<exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />-->
+                    <!--<exp op="IN" dbField="rfd.document_code" paramName="doctype" />-->
+                    <!--<exp op="=" dbField="s0.vendor_id" paramName="vendor" />-->
+                    <!--<exp op="=" dbField="s0.award_method_id" paramName="awdmethod" />-->
+                    <!--<exp op="=" dbField="s0.award_size_id" paramName="csize" />-->
+                    <!--<exp op="=" dbField="s0.industry_type_id" paramName="cindustry" />-->
+                <!--</exp>-->
+            <!--</where>-->
+        <!--</sql>-->
+    <!--</statement>-->
+</statements>

@@ -106,6 +106,51 @@
                             "sourceColumnName": "vendor_name"
                         }
                     ]
+                },
+                {
+                    "name": "contract_number",
+                    "levels": [
+                        {
+                            "name": "contract_number",
+                            "sourceColumnName": "contract_number"
+                        }
+                    ]
+                },
+                {
+                    "name": "scntrc_status",
+                    "levels": [
+                        {
+                            "name": "scntrc_status",
+                            "sourceColumnName": "scntrc_status"
+                        }
+                    ]
+                },
+                {
+                    "name": "scntrc_status_name",
+                    "levels": [
+                        {
+                            "name": "scntrc_status_name",
+                            "sourceColumnName": "scntrc_status_name"
+                        }
+                    ]
+                },
+                {
+                    "name": "aprv_sta",
+                    "levels": [
+                        {
+                            "name": "aprv_sta",
+                            "sourceColumnName": "aprv_sta"
+                        }
+                    ]
+                },
+                {
+                    "name": "aprv_sta_name",
+                    "levels": [
+                        {
+                            "name": "aprv_sta_name",
+                            "sourceColumnName": "aprv_sta_name"
+                        }
+                    ]
                 }
 
             ],
@@ -157,6 +202,10 @@
         "all_agreement_transactions__not_null_agreement_values": [
             {"datasetName": "all_agreement_transactions", "columnNames": ["agreement_id"]},
             {"datasetName": "not_null_agreement_values", "columnNames": ["sub_query_agreement_id"]}
+        ],
+        "all_agreement_transactions__subcontract_status": [
+            {"datasetName": "all_agreement_transactions", "columnNames": ["contract_number"]},
+            {"datasetName": "subcontract_status", "columnNames": ["contract_number"]}
         ]
     }
 }

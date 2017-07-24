@@ -52,7 +52,7 @@ foreach($node->data as $key => $value){
     }
 }
 
-$fiscal_year_data_array = array_reverse($fiscal_year_data_array);
+$fiscal_year_data_array = $fiscal_year_data_array;
 
 $year_list = "<select id='year_list'>";
 foreach($fiscal_year_data_array as $key => $value){

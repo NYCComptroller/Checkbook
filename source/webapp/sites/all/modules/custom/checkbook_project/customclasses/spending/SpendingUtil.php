@@ -233,7 +233,6 @@ class SpendingUtil{
         $year_type = isset($calyear) ? "C" : "B";
         $year_id = isset($calyear) ? $calyear : (isset($year) ? $year : _getCurrentYearID());
         $vendor_id = $row["vendor_id"];
-        $agency_id = $row["agency_id"];
         $dashboard = _getRequestParamValue("dashboard");
 
         return $row["is_sub_vendor"] == "No"
@@ -258,10 +257,11 @@ class SpendingUtil{
      * @param $year_id
      * @param $year_type
      * @param $current_dashboard
-     * @param $payee_name
+     * @param bool $payee_name
+     * @param $datasource
      * @return string
      */
-    static function getPrimeVendorLink($vendor_id, $agency_id, $year_id, $year_type, $current_dashboard, $payee_name = false, $datasource = false){
+    static function getPrimeVendorLink($vendor_id, $agency_id, $year_id, $year_type, $current_dashboard, $payee_name = false, $datasource = null){
 
         $override_params = null;
         $latest_certified_minority_type_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id, $year_id, $year_type, "P");
@@ -885,6 +885,9 @@ class SpendingUtil{
         if(is_array($override_params)){
             foreach($override_params as $key => $value){
                 if(isset($value)){
+                    if($key == 'yeartype' && $value == 'C'){
+                        $value = 'B';
+                    }
                     $url .= "/$key";
                     $url .= "/$value";
                 }
@@ -1184,6 +1187,7 @@ class SpendingUtil{
 
         $dashboard_param = _getRequestParamValue('dashboard');
         $smnid = _getRequestParamValue('smnid');
+        $status = _getRequestParamValue('contstatus');
         if($smnid == 720) {
             if($dashboard_param == "ms")
                 $dashboard = "M/WBE";
@@ -1206,6 +1210,37 @@ class SpendingUtil{
         else if($smnid == "subvendor_contracts_visual_1" && $dashboard_param == "sp") {
             $dashboard = MappingUtil::getCurrenEhtnicityName();
         }
+        $bottomNavigation = '';
+        if($status == 'A')
+            $bottomNavigation = "Total Active Sub Vendor Contracts";
+        else
+            $bottomNavigation = "New Sub Vendor Contracts by Fiscal Year";
+
+        if($smnid == 721 || $smnid == 720 || $smnid == 781 || $smnid == 784){
+            $widgetTitle = 'Spending';
+        }
+        if($smnid =='subvendor_contracts_visual_1' && $dashboard_param == 'sp'){
+            return(MappingUtil::getCurrenEhtnicityName() . " Sub Vendors Spending by <br />" .$bottomNavigation);
+        }
+        if($smnid =='subven_mwbe_contracts_visual_2' && $dashboard_param == 'ms'){
+
+            return(MappingUtil::getCurrenEhtnicityName() . " Sub Spending by <br />" .$bottomNavigation);
+        }
+
+        if($dashboard_param == 'ss' || $dashboard_param == 'ms' || $dashboard_param == 'sp') {
+            //Title for Contract Spending Transactions page (Total Spent to Date link under 'Sub Vendor Information' section)
+            if($smnid == 721 && preg_match("/^contract\/spending\/transactions\/contnum/",$_GET['q'])) {
+                return "Total Sub Vendors Spending Transactions";
+            }
+            if($dashboard_param == 'ms' || $dashboard_param == 'sp'){
+                if($status == 'A')
+                    $bottomNavigation = "Total Active M/WBE Sub Vendor Contracts";
+                else
+                    $bottomNavigation = "New M/WBE Sub Vendor Contracts by Fiscal Year";
+            }
+           return($widgetTitle . " by  " . $bottomNavigation . " " . "Transactions");
+        }
+
         return ($dashboard . " " . $widgetTitle . " " . $contractTitle . " Contracts Transactions");
     }
 

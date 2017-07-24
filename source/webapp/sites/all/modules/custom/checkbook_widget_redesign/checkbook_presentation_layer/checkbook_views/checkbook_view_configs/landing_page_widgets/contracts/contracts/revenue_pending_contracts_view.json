@@ -1,0 +1,5 @@
+{
+    "defaultConfigKey":"expense_pending_contracts_view",
+    "dataFunc":"GetContracts",
+    "defaultParameters":{"type_of_year":"B","contract_type":"child_contract"}
+}

@@ -146,9 +146,15 @@ function checkbook_project_menu(){
         'access callback' => true,
         'type'=>MENU_CALLBACK
     );
+    
+    /*$items['new-features'] = array(
+        'page callback' => '_checkbook_get_new_features',
+        'access callback' => true,
+        'type'=>MENU_CALLBACK
+    );*/
    
 
-  	return $items;
+    return $items;
 }
 
 
@@ -478,6 +484,10 @@ function checkbook_project_theme($existing, $type, $theme, $path){
                     'template' => 'php_widgets/contract/contracts_nyc_totals',
                     'arguments' => array('node' => NULL)
         ),
+        'contracts_subvendors_nyc_totals' => array(
+            'template' => 'php_widgets/contract/contracts_subvendors_nyc_totals',
+            'arguments' => array('node' => NULL)
+        ),
         'contracts_mma_details' => array(
                             'template' => 'php_widgets/contract/contracts_mma_details',
                             'arguments' => array('node' => NULL)
@@ -632,7 +642,13 @@ function checkbook_project_theme($existing, $type, $theme, $path){
         'no_records_found' => array(
             'template' => 'php_widgets/no_records_found',
             'arguments' => array('message' => NULL)
-        )
+        ),
+        
+       //---------------List of New Features Template----------------
+        'new_features' => array(
+            'template' => 'templates/new_features',
+            'arguments' => array('new_features' => NULL)
+        ),
     );
 }
 

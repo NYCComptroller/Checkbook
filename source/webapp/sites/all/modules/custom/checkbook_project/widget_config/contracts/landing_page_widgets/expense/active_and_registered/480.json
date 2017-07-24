@@ -92,18 +92,10 @@ $header='<div class=\"tableHeader\"><h2>Top ' . $count . 'Master Agreement Modif
 return $header;
 ",
 "footer":"
-$url = '/panel_html/contract_details/contract/transactions/contcat/expense'. _checkbook_project_get_url_param_string('status','contstatus');
-$url .= _checkbook_project_get_url_param_string('agency');
-$url .= _checkbook_project_get_url_param_string('vendor');
-$url .= _checkbook_project_get_vendor_facet_url_param_string($node);
-$url .= _checkbook_project_get_url_param_string('awdmethod');
-$url .= _checkbook_project_get_url_param_string('csize');
-$url .= _checkbook_project_get_url_param_string('cindustry');
-$url .= _checkbook_project_get_year_url_param_string();
-$url .= _checkbook_append_url_params();
+$url = ContractUtil::expenseContractsFooterUrl();
 $url .= '/smnid/' .  $node->nid;
 $url .= '/doctype/MMA1~MA1';
-$url .= '/modamt/0';
+$url .= '/modamt/0/pmodamt/0';
 $footer = '';
 if($node->totalDataCount > 0)
      $footer = \"<a class='show-details bottomContainerReload' href='$url'>Details >></a>\";
@@ -178,7 +170,7 @@ return $footer;
     { "bSortable": true, "sWidth":"78px","sClass":"number" ,"asSorting": [ "desc","asc"  ]},
     { "bSortable": true, "sWidth":"78px", "sClass":"number" ,"asSorting": [ "desc","asc"  ]},
     { "bSortable": true, "sWidth":"78px", "sClass":"number" ,"asSorting": [ "desc" ,"asc" ]},
-    { "bSortable": false, "sWidth":"15px" }
+    { "bSortable": false, "sWidth":"5px" }
     ] ,
 "bServerSide": true,
 "bFilter": false,
