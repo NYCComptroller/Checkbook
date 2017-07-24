@@ -155,7 +155,8 @@
                     div_checkbook_contracts.contents().show();
                     div_checkbook_contracts_oge.contents().hide();
                     showHidePrimeAndSubFields(div_checkbook_contracts);
-
+                    //Fix the default for category
+                    jQuery("select#edit-checkbook-contracts-category").val("expense");
                     break;
             }
         }
