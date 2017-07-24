@@ -102,19 +102,10 @@ $header='<div class=\"tableHeader\"><h2>Top ' . $count . 'Contract Amount Modifi
 return $header;
 ",
 "footer":"
-$url = '/panel_html/contract_details/contract/transactions/contcat/expense'. _checkbook_project_get_url_param_string('status','contstatus');
-$url .= _checkbook_project_get_url_param_string('agency');
-$url .= _checkbook_project_get_url_param_string('vendor');
-$url .= _checkbook_project_get_vendor_facet_url_param_string($node);
-$url .= _checkbook_project_get_url_param_string('awdmethod');
-$url .= _checkbook_project_get_url_param_string('csize');
-$url .= _checkbook_project_get_url_param_string('cindustry');
-$url .= _checkbook_project_get_url_param_string('subvendor');
-$url .= _checkbook_project_get_year_url_param_string();
-$url .= _checkbook_append_url_params();
+$url = ContractUtil::expenseContractsFooterUrl();
 $url .= '/smnid/' .  $node->nid;
 $url .= '/doctype/CTA1~CT1';
-$url .= '/modamt/0';
+$url .= '/modamt/0/smodamt/0';
 $footer = '';
 if($node->totalDataCount > 0)
 $footer = \"<a class='show-details bottomContainerReload' href='$url'>Details >></a>\";
@@ -125,7 +116,7 @@ return $footer;
 "summaryView":{
     "template":"contract_summary_expense_contract_modification",
     "templateTitle":"Contract Amount Modification Spending Transactions",
-    "preprocess_data":"$node->widgetConfig->summaryView->templateTitle = SpendingUtil::getSpentToDateTitle('Contract Amount Modification Spending');"
+    "preprocess_data":"$node->widgetConfig->summaryView->templateTitle = SpendingUtil::getSpentToDateTitle('Amount Modification Spending');"
 },
 "widgetTitle":"Contract Amount Modifications",
 "table_title":"",

@@ -159,7 +159,12 @@
 	if(preg_match('/pending_rev/',$_GET['q'])){
 		$contract_type = 'Pending Revenue';
 	}
-	$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Sub Spending by ' . $status . ' ' . $contract_type .  ' Contracts';
+    if(_getRequestParamValue('status') == 'A'){
+        $node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Sub Spending by Total Active Sub Vendor Contracts';
+    }else{
+        $node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Sub Spending by New Sub Vendor Contracts by Fiscal Year';
+    }
+
 ",
 "summaryView":{
     "template":"contract_date_summary",

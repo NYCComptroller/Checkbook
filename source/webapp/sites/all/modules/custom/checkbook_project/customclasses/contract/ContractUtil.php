@@ -21,7 +21,7 @@
 namespace { //global
     class ContractUtil{
 
-        static $landingPageParams = array("status"=>"status","awdmethod"=>"awdmethod","cindustry"=>"cindustry","csize"=>"csize","mwbe"=>"mwbe","dashboard"=>"dashboard","agency"=>"agency","vendor"=>"vendor","subvendor"=>"subvendor");
+        static $landingPageParams = array("status"=>"status","bottom_slider"=>"bottom_slider","awdmethod"=>"awdmethod","cindustry"=>"cindustry","csize"=>"csize","mwbe"=>"mwbe","dashboard"=>"dashboard","agency"=>"agency","vendor"=>"vendor","subvendor"=>"subvendor");
 
         /**
          * NYCCHKBK-3573 - Contract ID page notepad icon should be displayed only if there is a difference between OGE
@@ -203,14 +203,20 @@ namespace { //global
         static public function get_contracts_vendor_link_by_mwbe_category($row){
 
             $vendor_id = $row["vendor_vendor"] != null ? $row["vendor_vendor"] : $row["vendor_id"];
+            if($vendor_id == null)
+                $vendor_id = $row["prime_vendor_id"];
+            
             $year_id = _getRequestParamValue("year");
             $year_type = $row["yeartype_yeartype"];
             $is_prime_or_sub = $row["is_prime_or_sub"] != null ? $row["is_prime_or_sub"] : "P";
             $agency_id = null;
+            
             if($row["current_prime_minority_type_id"])
                 $minority_type_id = $row["current_prime_minority_type_id"];
             if($row["minority_type_id"])
                 $minority_type_id = $row["minority_type_id"];
+            if($row["prime_minority_type_id"])
+                $minority_type_id = $row["prime_minority_type_id"];
 
             $smnid = _getRequestParamValue("smnid");
             if($smnid == 720 || $smnid == 784) return self::get_contracts_vendor_link_sub($vendor_id, $year_id, $year_type,$agency_id);
@@ -219,8 +225,10 @@ namespace { //global
             $latest_minority_id = isset($latest_minority_id) ? $latest_minority_id : $minority_type_id;
             $is_mwbe_certified = MappingUtil::isMWBECertified(array($latest_minority_id));
 
-            $url = _checkbook_project_get_url_param_string("agency") .  _checkbook_project_get_url_param_string("contstatus","status") . _checkbook_project_get_year_url_param_string();
-
+            $status = _checkbook_project_get_url_param_string("contstatus","status");
+            $status = isset($status) && $status != "" ? $status : "/status/A";
+            $url = _checkbook_project_get_url_param_string("agency") . $status . _checkbook_project_get_year_url_param_string();
+            
             if($is_mwbe_certified && _getRequestParamValue('dashboard') == 'mp') {
                 $url .= _checkbook_project_get_url_param_string("cindustry")
                     . _checkbook_project_get_url_param_string("csize")
@@ -236,10 +244,14 @@ namespace { //global
             return $url;
         }
 
-        static public function get_contracts_vendor_link($vendor_id, $year_id = null, $year_type = null,$agency_id = null, $is_prime_or_sub = 'P'){
+        static public function get_contracts_vendor_link($vendor_id, $year_id = null, $year_type = null,$agency_id = null, $mwbe_cat = null, $is_prime_or_sub = 'P'){
 
-            $latest_minority_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id, $year_type, $is_prime_or_sub);
-            $url = _checkbook_project_get_url_param_string("agency") .  _checkbook_project_get_url_param_string("contstatus","status") . _checkbook_project_get_year_url_param_string();
+            //For the 3rd menu option on contracts sub vendor, contract status should be set to active for links
+            $contract_status = _checkbook_project_get_url_param_string("contstatus","status");
+            $contract_status = $contract_status == "" ? "/status/A" : $contract_status;
+
+            $latest_minority_id = isset($mwbe_cat) ? $mwbe_cat : self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id, $year_type, $is_prime_or_sub);
+            $url = _checkbook_project_get_url_param_string("agency") . $contract_status . _checkbook_project_get_year_url_param_string();
 
             if(in_array($latest_minority_id, array(2,3,4,5,9)) && _getRequestParamValue('dashboard') == 'mp'){
                 $url .= _checkbook_project_get_url_param_string("cindustry"). _checkbook_project_get_url_param_string("csize")
@@ -256,27 +268,31 @@ namespace { //global
 
         
         
-        static public function get_contracts_vendor_link_sub($vendor_id, $year_id = null, $year_type = null,$agency_id = null){
-        
-        	$latest_minority_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id, $year_type, "S");
-        	$url = _checkbook_project_get_url_param_string("agency") .  _checkbook_project_get_url_param_string("contstatus","status") . _checkbook_project_get_year_url_param_string();
-        
-        	$current_dashboard = _getRequestParamValue("dashboard");
-        	$is_mwbe_certified = isset($latest_minority_id);
-        	 
-        	//if M/WBE certified, go to M/WBE (Sub Vendor) else if NOT M/WBE certified, go to Sub Vendor dashboard
-        	$new_dashboard = $is_mwbe_certified ? "ms" : "ss";
-        	 
-        	if($current_dashboard != $new_dashboard ){
-        		return $url. "/dashboard/" . $new_dashboard . ($is_mwbe_certified ? "/mwbe/2~3~4~5~9" : "" ) . "/subvendor/".$vendor_id;
-        	}else{
-        		$url .= _checkbook_project_get_url_param_string("cindustry"). _checkbook_project_get_url_param_string("csize")
-        		. _checkbook_project_get_url_param_string("awdmethod") ."/dashboard/" . $new_dashboard .
-        		($is_mwbe_certified ? "/mwbe/2~3~4~5~9" : "" ) . "/subvendor/".$vendor_id;
-        		return $url;
-        	}
-        
-        	return '';
+        static public function get_contracts_vendor_link_sub($vendor_id, $year_id = null, $year_type = null,$agency_id = null, $mwbe_cat = null){
+
+            $latest_minority_id = isset($mwbe_cat) ? $mwbe_cat : self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id, $year_type, "S");
+            $url = _checkbook_project_get_url_param_string("agency") .  _checkbook_project_get_url_param_string("contstatus","status") . _checkbook_project_get_year_url_param_string();
+
+            $current_dashboard = _getRequestParamValue("dashboard");
+            $is_mwbe_certified = in_array($latest_minority_id, array(2, 3, 4, 5, 9));
+
+            //if M/WBE certified, go to M/WBE (Sub Vendor) else if NOT M/WBE certified, go to Sub Vendor dashboard
+            $new_dashboard = $is_mwbe_certified ? "ms" : "ss";
+            $status = strlen(_checkbook_project_get_url_param_string("contstatus","status"))== 0 ? "/status/A" : "";
+            
+            //Add bottom_slider parameter for 'Sub Vendor Contracts Status by Prime Vendors' dashboard
+            $url .= _checkbook_project_get_url_param_string("bottom_slider");
+            
+            if($current_dashboard != $new_dashboard ){
+                    return $url . $status . "/dashboard/" . $new_dashboard . ($is_mwbe_certified ? "/mwbe/2~3~4~5~9" : "" ) . "/subvendor/".$vendor_id;
+            }else{
+                    $url .= $status._checkbook_project_get_url_param_string("cindustry"). _checkbook_project_get_url_param_string("csize")
+                    . _checkbook_project_get_url_param_string("awdmethod") ."/dashboard/" . $new_dashboard .
+                    ($is_mwbe_certified ? "/mwbe/2~3~4~5~9" : "" ) . "/subvendor/".$vendor_id;
+                    return $url;
+            }
+
+            return '';
         }
         
         
@@ -554,6 +570,9 @@ namespace { //global
             if(is_array($override_params)){
                 foreach($override_params as $key => $value){
                     if(isset($value)){
+                        if($key == 'yeartype' && $value == 'C'){
+                            $value = 'B';
+                        }
                         $url .= "/$key";
                         $url .= "/$value";
                     }
@@ -583,6 +602,301 @@ namespace { //global
             }
             $parameters .= '/contcat/'.$contract_type;
             return $parameters;
+        }
+
+        /**
+         * Checks the current dashboard and rules for sub vendor data
+         * @return mixed
+         */
+        static public function showSubVendorData() {
+            $dashboard = _getRequestParamValue('dashboard');
+            $smnid = _getRequestParamValue('smnid');
+            return ($dashboard == 'ss' || $dashboard == 'sp' || $dashboard == 'ms') || ($smnid == 720);
+        }
+
+        /**
+         * Checks the current dashboard and rules for Prime M/WBE data
+         * @return mixed
+         */
+        static public function showPrimeMwbeData() {
+            $dashboard = _getRequestParamValue('dashboard');
+            $mwbe = _getRequestParamValue('mwbe');
+            $pmwbe = _getRequestParamValue('pmwbe');
+
+            return (!isset($dashboard) && (isset($mwbe) && isset($pmwbe))) && !self::showSubVendorData();
+        }
+
+        /**
+         * Checks the current dashboard and rules for Sub M/WBE data
+         * @return mixed
+         */
+        static public function showSubMwbeData() {
+            $dashboard = _getRequestParamValue('dashboard');
+            $mwbe = _getRequestParamValue('mwbe');
+            $smwbe = _getRequestParamValue('smwbe');
+
+            return (!isset($dashboard) && (isset($mwbe) && isset($smwbe))) && self::showSubVendorData();
+        }
+
+        /**
+         * Function to handle common facet/transaction page parameters for the page
+         * "Summary of Sub Contract Status by Prime Contract ID Transactions"
+         * @param $node
+         * @param $parameters
+         */
+        static public function adjustSubContractTransactionsCommonParams(&$node, &$parameters) {
+
+            $data_controller_instance = data_controller_get_operator_factory_instance();
+
+            //Handle year parameter mapping
+            $reqYear = _getRequestParamValue('year');
+            if(isset($reqYear)) {
+                $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
+                $leCondition = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
+                $parameters['starting_year_id']= $leCondition;
+                $parameters['ending_year_id']= $geCondition;
+                $parameters['effective_begin_year_id']= $leCondition;
+                $parameters['effective_end_year_id']= $geCondition;
+                unset($parameters['year']);
+            }
+
+            //Handle vendor_code mapping to prime_vendor_code and sub_vendor_code
+            if(isset($parameters['vendor_code']) || (isset($parameters['vendor_code.vendor_code']) && $node->widgetConfig->functionality != 'search')) {
+                $vendor_Code = isset($parameters['vendor_code.vendor_code']) ? $parameters['vendor_code.vendor_code'] : $parameters['vendor_code'];
+                $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, array($vendor_Code));
+                $parameters['prime_vendor_code'] = $condition;
+                $parameters['sub_vendor_code'] = $condition;
+                unset($parameters['vendor_code']);
+            }
+
+            //Handle vendor_type mapping to prime_vendor_type and sub_vendor_type
+            if($node->widgetConfig->filterName != "Vendor Type") {
+                if(isset($parameters['vendor_type'])) {
+                    $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, array($parameters['vendor_type']));
+                    $parameters['prime_vendor_type'] = $condition;
+                    $parameters['sub_vendor_type'] = $condition;
+                    unset($parameters['vendor_type']);
+                }
+            }
+
+            //Handle minority_type_id mapping to prime_minority_type_id and sub_minority_type_id
+            if(isset($parameters['minority_type_id'])) {
+                $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, array($parameters['minority_type_id']));
+                if(!isset($dashboard) && !isset($smnid)){
+                        $node->widgetConfig->logicalOrColumns[] = array("prime_mwbe_adv_search_id","sub_minority_type_id");
+                        $parameters['prime_mwbe_adv_search_id'] = $condition;
+                }else{
+                    $node->widgetConfig->logicalOrColumns[] = array("prime_minority_type_id","sub_minority_type_id");
+                    $parameters['prime_minority_type_id'] = $condition;
+                }
+                $parameters['sub_minority_type_id'] = $condition;
+                unset($parameters['prime_minority_type_id']);
+            }
+
+
+            return $parameters;
+        }
+
+        /**
+         * Function to handle common facet/transaction page parameters for the Active Contracts transactions.
+         * @param $node
+         * @param $parameters
+         */
+        static public function adjustActiveContractCommonParams(&$node, &$parameters) {
+
+            //Handle status and year parameter
+            $contractStatus = _getRequestParamValue('contstatus');
+            $reqYear = _getRequestParamValue('year');
+            $data_controller_instance = data_controller_get_operator_factory_instance();
+            $dashboard = _getRequestParamValue('dashboard');
+            $smnid = _getRequestParamValue('smnid');
+            $vendor_types = isset($parameters['vendor_type']) ? $parameters['vendor_type'] :NULL;
+            
+            if(isset($reqYear)){
+                $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
+                $leCondition = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
+                
+                if(self::showSubVendorData()){
+                    $parameters['sub_starting_year_id']= $leCondition;
+                    $parameters['sub_ending_year_id']= $geCondition;
+                }else if(!isset($dashboard) && !isset($smnid)){
+                    $parameters['starting_year_id']= $leCondition;
+                    $parameters['ending_year_id']= $geCondition;
+                }else{
+                    $parameters['prime_starting_year_id']= $leCondition;
+                    $parameters['prime_ending_year_id']= $geCondition;
+                    $parameters['sub_latest_flag'] = 'Y';
+                }
+                
+                if($contractStatus=='R'){
+                    $parameters['registered_year_id']= array($reqYear);
+                }
+                else if($contractStatus=='A'){
+                    if(self::showSubVendorData()){
+                        $parameters['sub_effective_begin_year_id']= $leCondition;
+                        $parameters['sub_effective_end_year_id']= $geCondition;
+                    }else if(!isset($dashboard) && !isset($smnid)){
+                        $parameters['effective_begin_year_id']= $leCondition;
+                        $parameters['effective_end_year_id']= $geCondition;
+                    }else{
+                        $parameters['prime_effective_begin_year_id']= $leCondition;
+                        $parameters['prime_effective_end_year_id']= $geCondition;
+                        $parameters['sub_latest_flag'] = 'Y';
+                    }
+                }
+            }
+            else {
+                $parameters['latest_flag'] = 'Y';
+            }
+
+            //Handle vendor_code mapping to prime_vendor_code and sub_vendor_code
+            if(isset($parameters['vendor_code']) || (isset($parameters['vendor_code.vendor_code']) && $node->widgetConfig->functionality != 'search')) {
+                $vendor_Code = isset($parameters['vendor_code.vendor_code']) ? $parameters['vendor_code.vendor_code'] : $parameters['vendor_code'];
+                $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, array($vendor_Code));
+                $parameters['prime_vendor_code'] = $condition;
+                $parameters['sub_vendor_code'] = $condition;
+                unset($parameters['vendor_code']);
+            }
+
+            //Handle vendor_name mapping to prime_vendor_name and sub_vendor_name
+            if(isset($parameters['vendor_name'])) {
+                $vendornm_exact = _getRequestParamValue('vendornm_exact');
+                $vendornm = _getRequestParamValue('vendornm');
+                if(isset($vendornm_exact)) {
+                    $vendornm_exact = explode('~',$vendornm_exact);
+                    $vendornm_exact = implode('|',$vendornm_exact);
+                    $vendornm_exact = self::_replaceSlashCharacter($vendornm_exact);
+                    $pattern = "(^" . _checkbook_regex_replace_pattern($vendornm_exact) . "$)";
+                    $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
+                    $parameters['prime_vendor_name'] = $condition;
+                    $parameters['sub_vendor_name'] = $condition;
+                }
+                else if(isset($vendornm)) {
+                    $vendornm = explode('~',$vendornm);
+                    $vendornm = implode('|',$vendornm);
+                    $condition = $data_controller_instance->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME, array($vendornm,FALSE,TRUE));
+                    $parameters['prime_vendor_name'] = $condition;
+                    $parameters['sub_vendor_name'] = $condition;
+                }
+                unset($parameters['vendor_name']);
+            }
+
+            //Handle vendor_type mapping to prime_vendor_type and sub_vendor_type
+            if($node->widgetConfig->filterName != "Vendor Type") {
+                if(isset($parameters['vendor_type'])) {
+                    $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, array($parameters['vendor_type']));
+                    $parameters['prime_vendor_type'] = $condition;
+                    $parameters['sub_vendor_type'] = $condition;
+                    unset($parameters['vendor_type']);
+                }
+            }
+
+            //Vendor Name facet should query both prime/sub always
+            if($node->widgetConfig->filterName != "Vendor") {
+                if(self::showSubVendorData()){
+                    $parameters['vendor_record_type'] = 'Sub Vendor';
+                }
+            }
+
+            //Handle minority_type_id mapping to prime_minority_type_id and sub_minority_type_id
+            if(isset($parameters['minority_type_id'])) {
+                $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, array($parameters['minority_type_id']));
+                if(!isset($dashboard) && !isset($smnid)){
+                        $node->widgetConfig->logicalOrColumns[] = array("prime_mwbe_adv_search_id","sub_minority_type_id");
+                        $parameters['prime_mwbe_adv_search_id'] = $condition;
+                }else{
+                    $node->widgetConfig->logicalOrColumns[] = array("prime_minority_type_id","sub_minority_type_id");
+                    $parameters['prime_minority_type_id'] = $condition;
+                }
+                $parameters['sub_minority_type_id'] = $condition;
+                unset($parameters['minority_type_id']);
+            }
+
+            //if ONLY Prime or ONLY Sub amount selected, need to filter only that type
+            $prime_cur_amt = _getRequestParamValue('pcuramtr');
+            $sub_cur_amt = _getRequestParamValue('scuramtr');
+            if(isset($prime_cur_amt) && !isset($sub_cur_amt)) {
+                $parameters['prime_amount_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
+            }
+            elseif(isset($sub_cur_amt) && !isset($prime_cur_amt)) {
+                $parameters['sub_amount_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
+            }
+
+            unset($parameters['year']);
+            unset($parameters['status_flag']);
+
+            return $parameters;
+        }
+
+        private static function _replaceSlashCharacter($string) {
+            return str_replace('__', '/', $string);
+        }
+
+        static public function expenseContractsFooterUrl($subvendor_widget = false) {
+            $subvendor = _getRequestParamValue('subvendor');
+            $vendor = _getRequestParamValue('vendor');
+            $dashboard = _getRequestParamValue('dashboard');
+            $status = _getRequestParamValue('status');
+            $mwbe = _getRequestParamValue('mwbe');
+            $industry = _getRequestParamValue('cindustry');
+
+            if($subvendor) {
+                $subvendor_code = self::getSubVendorCustomerCode($subvendor);
+            }
+            if($vendor) {
+                $vendor_code = self::getVendorCustomerCode($vendor);
+            }
+            $subvendorURLString = (isset($subvendor) ? '/subvendor/'. $subvendor : '') .(isset($subvendor_code) ? '/vendorcode/'.$subvendor_code  : '');
+            $vendorURLString = (isset($vendor) ? '/vendor/'. $vendor : '') . (isset($vendor_code) ? '/vendorcode/'.$vendor_code : '');
+            $detailsPageURL  = (($dashboard == 'ss' || $dashboard == 'sp' || $dashboard == 'ms') && !isset($status))? 'sub_contracts_transactions' : 'contract_details';
+
+            $mwbe_param = "";
+            //pmwbe & smwbe
+            if(isset($status) && isset($mwbe)) {
+                $mwbe_param = self::showSubVendorData() || $subvendor_widget ? '/smwbe/'.$mwbe : '/pmwbe/'.$mwbe;
+            }
+            if(isset($industry)) {
+                $industry_param = self::showSubVendorData() || $subvendor_widget ? '/scindustry/'.$industry : '/pcindustry/'.$industry;
+            }
+
+            $url = '/panel_html/'. $detailsPageURL .'/contract/transactions/contcat/expense'
+                . _checkbook_project_get_url_param_string('status','contstatus')
+                . _checkbook_append_url_params()
+                . _checkbook_project_get_url_param_string('agency')
+                . _checkbook_project_get_url_param_string('awdmethod')
+                . _checkbook_project_get_url_param_string('csize')
+                . $industry_param
+                . _checkbook_project_get_url_param_string('dashboard')
+                . $mwbe_param
+                . ((!_checkbook_check_isEDCPage())? $subvendorURLString . $vendorURLString : _checkbook_project_get_url_param_string('vendor'))
+                . _checkbook_project_get_year_url_param_string();
+            return $url;
+        }
+        static function getSubVendorCustomerCode($subVendorId){
+            $result = NULL;
+            $query = "SELECT v.vendor_customer_code
+                    FROM subvendor v
+                    JOIN (SELECT vendor_id, MAX(vendor_history_id) AS vendor_history_id FROM subvendor_history GROUP BY 1) vh
+                      ON v.vendor_id = vh.vendor_id
+                    WHERE v.vendor_id = ".$subVendorId;
+
+            $subVendorCustomerCode = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
+            if($subVendorCustomerCode) {
+                return $subVendorCustomerCode[0]['vendor_customer_code'];
+            }
+            else {
+                return null;
+            }
+        }
+
+        static function getVendorCustomerCode($vendorId){
+            $vendor = _checkbook_project_querydataset("checkbook:vendor","vendor_customer_code",array("vendor_id"=>$vendorId));
+            if($vendor[0]) {
+                return $vendor[0]['vendor_customer_code'];
+            }
+            else {
+                return null;
+            }
         }
     }
 }

@@ -1,0 +1,37 @@
+{
+    "serviceName":"SpendingWidgetService",
+    "dataFunc":"GetSubVendorSpendingBySubContracts",
+    "countFunc":"GetCountSubContracts",
+    "headerTitle":"Sub Contracts",
+    "headerSubTitle":"Sub Contracts",
+    "table_columns": [
+        {"labelAlias":"contract_id","column":"document_id","derivedColumn":"contract_number_link"},
+        {"labelAlias":"sub_vendor_name","column":"sub_vendor_name","derivedColumn":"sub_vendor_link","tooltip":36},
+        {"labelAlias":"sub_contract_purpose","column":"sub_contract_purpose","tooltip":40},
+        {"labelAlias":"prime_vendor","column":"prime_vendor_name","derivedColumn":"prime_vendor_link","tooltip":36},
+        {"labelAlias":"ytd_spending","column":"check_amount_sum","derivedColumn":"sub_contracts_ytd_spending_link","format":"dollar"},
+        {"label": "","column": ""}
+    ],
+    "dataTableOptions":{
+        "aoColumns": [
+            {"sClass":"text","sWidth":"200px","bSortable":false},
+            {"sClass":"text","sWidth":"200px","bSortable":false},
+            {"sClass":"text","sWidth":"180px","bSortable":false},
+            {"sClass":"text pad-left","sWidth":"180px","bSortable":false},
+            {"sClass":"number","sWidth":"80px","asSorting":["desc","asc"]},
+            {"sWidth":"15px","bSortable":false}
+        ],
+        "bServerSide": true,
+        "bFilter": false,
+        "bPaginate": false,
+        "bProcessing":true,
+        "bLengthChange": false,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "aaSorting": [[ 4, "desc" ]],
+        "fnServerParams": "##function ( aoData ) {reloadExpandCollapseWidget(this,aoData);}##",
+        "oLanguage":{
+         "sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"
+        }
+    }
+}

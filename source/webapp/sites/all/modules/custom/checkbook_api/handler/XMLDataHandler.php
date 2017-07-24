@@ -107,7 +107,7 @@ class XMLDataHandler extends AbstractDataHandler
     function getDataSetResultFormatter($data_set, $data_records){
         $criteria = $this->requestSearchCriteria->getCriteria();
         $dataSetConfiguredColumns = get_object_vars($data_set->displayConfiguration->xml->elementsColumn);
-        $requestedResponseColumns = isset($criteria['responseColumns']) ? $criteria['responseColumns'] : array_keys($dataSetConfiguredColumns);
+        $requestedResponseColumns = isset($criteria['responseColumns']) && !empty($criteria['responseColumns'])  ? $criteria['responseColumns'] : array_keys($dataSetConfiguredColumns);
 
         return new XMLFormatter($data_records,$requestedResponseColumns,$data_set->displayConfiguration->xml,TRUE);
     }
@@ -167,6 +167,7 @@ class XMLDataHandler extends AbstractDataHandler
         $columnMappings = array_flip($columnMappings);
         $end = strpos($query, 'FROM');
         $select_part = substr($query,0,$end);
+        $where_part = substr($query,$end,strlen($query)-1);
         $select_part = str_replace("SELECT", "", $select_part);
         $sql_parts = explode(",", $select_part);
 
@@ -217,7 +218,7 @@ class XMLDataHandler extends AbstractDataHandler
         }
         $new_select_part .= "||'</".$rowParentElement.">'";
         $new_select_part = "SELECT ".ltrim($new_select_part,"\n||")."\n";
-        $query = substr_replace($query, $new_select_part, 0, $end);
+        $query = $new_select_part;
 
         //open/close tags
         $open_tags = "<?xml version=\"1.0\"?><response><status><result>success</result></status>";
@@ -232,6 +233,7 @@ class XMLDataHandler extends AbstractDataHandler
         $open_tags = str_replace(">","|GT|",$open_tags);
         $close_tags = str_replace("<","|LT|",$close_tags);
         $close_tags = str_replace(">","|GT|",$close_tags);
+        $query .= $where_part;
 
         try{
             $fileDir = _checkbook_project_prepare_data_feeds_file_output_dir();
@@ -245,6 +247,7 @@ class XMLDataHandler extends AbstractDataHandler
             }
 
             $tempOutputFile = $tmpDir .'/'. $filename;
+            $formattedOutputFile = $tmpDir . '/formatted_' . $filename;
             $outputFile = DRUPAL_ROOT . '/' . $fileDir . '/' . $filename;
             $commands = array();
 
@@ -283,7 +286,16 @@ class XMLDataHandler extends AbstractDataHandler
             $command = "sed -i 's/|GT|/>/g' " . $tempOutputFile;
             $commands[] = $command;
 
-            $command = "mv $tempOutputFile $outputFile";
+            //xmllint command to format the xml
+            $command = "xmllint --format $tempOutputFile --output $formattedOutputFile";
+            $commands[] = $command;
+
+            //Move file from tmp to data feeds dir
+            $command = "mv $formattedOutputFile $outputFile";
+            $commands[] = $command;
+
+            //Remove tmp file file from tmp to data feeds dir
+            $command = "rm $tempOutputFile";
             $commands[] = $command;
 
             $this->processCommands($commands);

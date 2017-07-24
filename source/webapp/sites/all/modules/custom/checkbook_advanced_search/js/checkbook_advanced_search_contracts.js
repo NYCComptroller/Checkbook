@@ -21,7 +21,9 @@
                 'received_date_to':'input:text[name="'+data_source+'_contracts_received_date_to[date]"]',
                 'entity_contract_number':'input:text[name='+data_source+'_contracts_entity_contract_number]',
                 'commodity_line':'input:text[name='+data_source+'_contracts_commodity_line]',
-                'budget_name':'input:text[name='+data_source+'_contracts_budget_name]'
+                'budget_name':'input:text[name='+data_source+'_contracts_budget_name]',
+                'includes_sub_vendors':'select[name="'+data_source+'_contracts_includes_sub_vendors"]',
+                'sub_vendor_status':'select[name="'+data_source+'_contracts_sub_vendor_status"]'
             };
 
             this.data_source = data_source;
@@ -51,12 +53,13 @@
         function onChangeDataSource(dataSource) {
 
             /* Reset all the fields for the data source */
-           resetFields(div_checkbook_contracts.contents());
-           resetFields(div_checkbook_contracts_oge.contents());
+            resetFields(div_checkbook_contracts.contents());
+            resetFields(div_checkbook_contracts_oge.contents());
 
             /* Initialize the disabled fields */
             onStatusChange(div_checkbook_contracts);
             onStatusChange(div_checkbook_contracts_oge);
+            onCategoryChange(div_checkbook_contracts);
 
             /* Initialize view by data source */
             switch (dataSource) {
@@ -80,6 +83,12 @@
                     initializeContractsView(div_checkbook_contracts);
                     div_checkbook_contracts.contents().show();
                     div_checkbook_contracts_oge.contents().hide();
+
+                    // div_checkbook_contracts.ele('includes_sub_vendors').html('<option value="0" selected>Select Status</option>' +
+                    //         '<option value="2">Yes</option>' +
+                    //         '<option value="3">No</option>' +
+                    //         '<option value="1">No Data Entered</option>');
+
                     break;
             }
         }
@@ -93,20 +102,27 @@
             var agency = div.ele('agency').val() ? div.ele('agency').val() : 0;
             var award_method = div.ele('award_method').val() ? div.ele('award_method').val() : 0;
             var year = div.ele('year').val() ? div.ele('year').val() : 0;
+            var includes_sub_vendors = div.ele('includes_sub_vendors').val() ? div.ele('includes_sub_vendors').val() : 0;
+            var sub_vendor_status = div.ele('sub_vendor_status').val() ? div.ele('sub_vendor_status').val() : 0;
             var data_source = $('input:radio[name=contracts_advanced_search_domain_filter]:checked').val();
 
             div.ele('vendor_name').autocomplete({
-                source:'/advanced-search/autocomplete/contracts/vendor-name/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + data_source,
+                source:'/advanced-search/autocomplete/contracts/vendor-name/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + includes_sub_vendors+ '/' + sub_vendor_status + '/' + data_source,
                 select: function( event, ui ) {
                     $(this).parent().next().val(ui.item.label) ;
                 }
             });
-            div.ele('contract_id').autocomplete({source:'/advanced-search/autocomplete/contracts/contract-num/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + data_source});
-            div.ele('apt_pin').autocomplete({source:'/advanced-search/autocomplete/contracts/apt-pin/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + data_source});
-            div.ele('pin').autocomplete({source:'/advanced-search/autocomplete/contracts/pin/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + data_source});
-            div.ele('entity_contract_number').autocomplete({source:'/advanced-search/autocomplete/contracts/entity_contract_number/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + data_source});
-            div.ele('commodity_line').autocomplete({source:'/advanced-search/autocomplete/contracts/commodity_line/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + data_source});
-            div.ele('budget_name').autocomplete({source:'/advanced-search/autocomplete/contracts/budget_name/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + data_source});
+            div.ele('contract_id').autocomplete({
+                source:'/advanced-search/autocomplete/contracts/contract-num/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + includes_sub_vendors+ '/' + sub_vendor_status + '/' + data_source,
+                select: function( event, ui ) {
+                    $(this).parent().next().val(ui.item.label) ;
+                }
+            });
+            div.ele('apt_pin').autocomplete({source:'/advanced-search/autocomplete/contracts/apt-pin/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + includes_sub_vendors+ '/' + sub_vendor_status + '/' + data_source});
+            div.ele('pin').autocomplete({source:'/advanced-search/autocomplete/contracts/pin/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + includes_sub_vendors+ '/' + sub_vendor_status + '/' + data_source});
+            div.ele('entity_contract_number').autocomplete({source:'/advanced-search/autocomplete/contracts/entity_contract_number/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + includes_sub_vendors+ '/' + sub_vendor_status + '/' + data_source});
+            div.ele('commodity_line').autocomplete({source:'/advanced-search/autocomplete/contracts/commodity_line/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + includes_sub_vendors+ '/' + sub_vendor_status + '/' + data_source});
+            div.ele('budget_name').autocomplete({source:'/advanced-search/autocomplete/contracts/budget_name/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + includes_sub_vendors+ '/' + sub_vendor_status + '/' + data_source});
         }
 
         function initializeContractsView(div) {
@@ -172,7 +188,94 @@
                 div.ele('received_date_to').val("");
 
             }
+            updateSubVendorFields(div);
+        }
+
+        //On change of "Category"
+        div_checkbook_contracts.ele('category').change(function () {
+            onCategoryChange(div_checkbook_contracts);
+        });
+        function onCategoryChange(div) {
+            updateSubVendorFields(div);
+        }
+
+        function updateSubVendorFields(div) {
+            var contract_status = div.ele('status').val();
+            var contract_category = div.ele('category').val();
+
+            if (contract_status == 'P' || contract_category == 'revenue') {
+                div.ele('includes_sub_vendors').attr("disabled", "disabled");
+                //div.ele('includes_sub_vendors').val('');
+                div.ele('sub_vendor_status').attr("disabled", "disabled");
+                //div.ele('sub_vendor_status').val('');
+            } else {
+                div.ele('includes_sub_vendors').removeAttr("disabled");
+                div.ele('sub_vendor_status').removeAttr("disabled");
+            }
+        }
+
+        //On change of "Contract Includes Sub Vendors" status - NYCCHKBK-6187
+        div_checkbook_contracts.ele('includes_sub_vendors').change(function() {
+            onIncludeSubvendorChange(div_checkbook_contracts);
+        });
+        function onIncludeSubvendorChange(div) {
+            updateSubvendorStatusField(div);
+        }
+
+        function updateSubvendorStatusField(div) {
+            var includes_sub_vendors = div.ele('includes_sub_vendors').val();
+
+            if(includes_sub_vendors == 3 || includes_sub_vendors == 1 || includes_sub_vendors == 4) {
+                div.ele('sub_vendor_status').attr("disabled", "disabled");
+                // div.ele('sub_vendor_status').val('');
+            } else{
+                div.ele('sub_vendor_status').removeAttr("disabled");
+            }
+        }
+
+        //On change of "Sub Vendor Status in PIP" status -  NYCCHKBK-6187
+        div_checkbook_contracts.ele('sub_vendor_status').change(function() {
+            onSubvendorStatusChange(div_checkbook_contracts);
+        });
+
+        function onSubvendorStatusChange(div) {
+            updateIncludeSubvendorsField(div);
+        }
+
+        function updateIncludeSubvendorsField(div) {
+            var sub_vendor_status = div.ele('sub_vendor_status').val();
+            var includes_sub_vendors = div.ele('includes_sub_vendors').val();
+            
+            if(sub_vendor_status == 6 || sub_vendor_status == 1 || sub_vendor_status == 4 || sub_vendor_status == 3 || sub_vendor_status == 2 || sub_vendor_status == 5 ) {
+                if(includes_sub_vendors == 2){
+                    div.ele('includes_sub_vendors').html('<option value="0">Select Status</option>' +
+                        '<option value="2" selected>Yes</option>');
+                } else {
+                    div.ele('includes_sub_vendors').html('<option value="0" selected>Select Status</option>' +
+                        '<option value="2">Yes</option>');
+                }
+            } else {
+                if(includes_sub_vendors == 2){
+                    div.ele('includes_sub_vendors').html('<option value="0">Select Status</option>' +
+                        '<option value="2" selected>Yes</option>' +
+                        '<option value="3">No</option>' +
+                        '<option value="1">No Data Entered</option>' +
+                        '<option value="4">Not Required</option>');
+                } else {
+                    div.ele('includes_sub_vendors').html('<option value="0" selected>Select Status</option>' +
+                        '<option value="2">Yes</option>' +
+                        '<option value="3">No</option>' +
+                        '<option value="1">No Data Entered</option>' +
+                        '<option value="4">Not Required</option>');
+                }
+            }
+            jQuery("#edit-contracts-clear").click(function() {
+                div.ele('includes_sub_vendors').html('<option value="0" selected>Select Status</option>' +
+                    '<option value="2">Yes</option>' +
+                    '<option value="3">No</option>' +
+                    '<option value="1">No Data Entered</option>' +
+                    '<option value="4">Not Required</option>');
+            });
         }
     })
 }(jQuery));
-

@@ -404,14 +404,14 @@ function widget_data_tables_widget_prepare($node){
         if(isset($uniqueSortColumn)) {
             if(is_array($uniqueSortColumn)) {
                 foreach($uniqueSortColumn as $value) {
-                    if($sortDir == 'desc')
+                    if($sortDir == 'desc' && strpos($value, '-') !== 0)
                         $node->widgetConfig->orderBy[]  = '-' . $value;
                     else
-                        $node->widgetConfig->orderBy[] =  $value;
+                        $node->widgetConfig->orderBy[] =  (strpos($value, '-') === 0)? ltrim($value, '-') : $value;
                 }
             }
             else {
-                $node->widgetConfig->orderBy[] = $sortDir == 'desc' ? '-' . $uniqueSortColumn : $uniqueSortColumn;
+                $node->widgetConfig->orderBy[] = ($sortDir == 'desc' && strpos($uniqueSortColumn, '-') !== 0) ? '-' . $uniqueSortColumn : ltrim($uniqueSortColumn, '-');
             }
         }
     }
@@ -544,16 +544,19 @@ function widget_data_tables_widget_view(&$node) {
 		break;
         case "dataTableList" :
             $sAjaxSource = '/dashboard_platform/data_tables_list/ajax_data/node/' . $node->nid;
-
+            $reqParams = array();
+            
             if(is_array($node->widgetConfig->originalRequestParams)){
                 foreach($node->widgetConfig->originalRequestParams as $key=>$value) {
                      $value = str_replace('/','__',$value);
                      $sAjaxSource .= "/$key/$value" ;
+                     $reqParams[$key] = $value;
                 }
             }
             if(is_array($node->widgetConfig->allowRequestParamValues)){
                 foreach($node->widgetConfig->allowRequestParamValues as $paramKey=>$paramValue) {
-                    $sAjaxSource .= "/$paramKey/$paramValue" ;
+                    if(!array_key_exists($paramKey, $reqParams))
+                        $sAjaxSource .= "/$paramKey/$paramValue" ;
                 }
             }
             $sAjaxSource = $sAjaxSource._checkbook_append_url_params($sAjaxSource);

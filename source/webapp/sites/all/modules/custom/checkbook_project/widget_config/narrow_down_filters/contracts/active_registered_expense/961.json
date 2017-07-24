@@ -1,0 +1,31 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":939,
+    "autocomplete":false,
+    "no_results_content":"No Results Found",
+    "limit":10,
+    "startWith":0,
+    "maxSelect":5,
+    "urlParamMap":{
+        "vendortype":"vendor_type_id.vendor_type_id",
+        "psmwbe":"minority_type_id.minority_type_id"
+    },
+    "dataset":"checkbook:all_agreement_transactions_by_prime_sub_vendor_type",
+    "columns":["vendor_type_id.vendor_type_id", "vendor_type_name.vendor_type_name", "txcount"],
+    "orderBy":"-txcount",
+    "getTotalDataCount":true,
+    "facetPager":true,
+    "showAllRecords":true,
+    "allowFacetDeselect":true,
+    "filterName":"Vendor Type",
+    "urlParameterName":"vendortype",
+    "autocompleteID":"fvendorType",
+    "adjustParameters":"
+        $parameters = ContractUtil::adjustActiveContractCommonParams($node, $parameters);
+        if(function_exists('_checkbook_project_applyParameterFilters')){
+            $parameters = _checkbook_project_applyParameterFilters($node,$parameters);
+        }
+        return $parameters;
+    ",
+    "template":"individual_filter"
+}

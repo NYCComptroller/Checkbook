@@ -1,0 +1,236 @@
+{
+    "datasets": {
+        "all_agreement_transactions_by_prime_sub_vendor_datafeeds": {
+            "datasourceName":"main",
+            "source":"all_agreement_transactions_by_prime_sub_vendor"
+        }
+    },
+    "cubes":   {
+        "all_agreement_transactions_by_prime_sub_vendor_datafeeds": {
+            "sourceDatasetName":"all_agreement_transactions_by_prime_sub_vendor_datafeeds",
+            "dimensions": [
+                {
+                    "name":"agency_id",
+                    "levels": [
+                        {
+                            "name":"agency_id",
+                            "sourceColumnName":"agency_id"
+                        }]
+                },
+                {
+                    "name":"agency_name",
+                    "levels": [
+                        {
+                            "name":"agency_name",
+                            "sourceColumnName":"agency_name"
+                        }]
+                },
+                {
+                    "name":"agency_code",
+                    "levels": [
+                        {
+                            "name":"agency_code",
+                            "sourceColumnName":"agency_code"
+                        }]
+                },
+                {
+                    "name":"agreement_type_code",
+                    "levels": [
+                        {
+                            "name":"agreement_type_code",
+                            "sourceColumnName":"agreement_type_code"
+                        }]
+                    },
+                {
+                    "name":"aprv_sta",
+                    "levels": [
+                        {
+                            "name":"aprv_sta",
+                            "sourceColumnName":"aprv_sta"
+                        }]
+                },
+                {
+                    "name":"aprv_sta_name",
+                    "levels": [
+                        {
+                            "name":"aprv_sta_name",
+                            "sourceColumnName":"aprv_sta_name"
+                        }]
+                },
+                {
+                    "name":"contract_number",
+                    "levels": [
+                        {
+                            "name":"contract_number",
+                            "sourceColumnName":"contract_number"
+                        }]
+                },
+                {
+                    "name":"scntrc_status",
+                    "levels": [
+                        {
+                            "name":"scntrc_status",
+                            "sourceColumnName":"scntrc_status"
+                        }]
+                },
+                {
+                    "name":"scntrc_status_name",
+                    "levels": [
+                        {
+                            "name":"scntrc_status_name",
+                            "sourceColumnName":"scntrc_status_name"
+                        }]
+                },
+                {
+                    "name":"industry_type_id",
+                    "levels": [
+                        {
+                            "name":"industry_type_id",
+                            "sourceColumnName":"industry_type_id"
+                        }]
+                },
+                {
+                    "name":"industry_type_name",
+                    "levels": [
+                        {
+                            "name":"industry_type_name",
+                            "sourceColumnName":"industry_type_name"
+                        }]
+                },
+                {
+                    "name":"award_method_id",
+                    "levels": [
+                        {
+                            "name":"award_method_id",
+                            "sourceColumnName":"award_method_id"
+                        }]
+                },
+                {
+                    "name":"award_method_name",
+                    "levels": [
+                        {
+                            "name":"award_method_name",
+                            "sourceColumnName":"award_method_name"
+                        }]
+                },
+                {
+                    "name":"prime_minority_type_id",
+                    "levels": [
+                    {
+                        "name":"prime_minority_type_id",
+                        "sourceColumnName":"prime_minority_type_id"
+                    }]
+                },
+                {
+                    "name":"prime_minority_type_name",
+                    "levels": [
+                    {
+                        "name":"prime_minority_type_name",
+                        "sourceColumnName":"prime_minority_type_name"
+                    }]
+                },
+                {
+                    "name":"sub_minority_type_id",
+                    "levels": [
+                    {
+                        "name":"sub_minority_type_id",
+                        "sourceColumnName":"sub_minority_type_id"
+                    }]
+                },
+                {
+                    "name":"sub_minority_type_name",
+                    "levels": [
+                    {
+                        "name":"sub_minority_type_name",
+                        "sourceColumnName":"sub_minority_type_name"
+                    }]
+                },
+                {
+                    "name":"prime_amount_name",
+                    "levels": [
+                        {
+                            "name":"prime_amount_name",
+                            "sourceColumnName":"prime_amount_name"
+                        }]
+                },
+                {
+                    "name":"prime_amount_id",
+                    "levels": [
+                        {
+                            "name":"prime_amount_id",
+                            "sourceColumnName":"prime_amount_id"
+                        }]
+                },
+                {
+                    "name":"sub_amount_name",
+                    "levels": [
+                        {
+                            "name":"sub_amount_name",
+                            "sourceColumnName":"sub_amount_name"
+                        }]
+                },
+                {
+                    "name":"sub_amount_id",
+                    "levels": [
+                        {
+                            "name":"sub_amount_id",
+                            "sourceColumnName":"sub_amount_id"
+                        }]
+                }
+            ],
+            "measures": {
+                "txcount": {
+                    "function":"COUNT(*)"
+                },
+                "count_prime_mwbe": {
+                    "function":"COUNT(DISTINCT prime_vendor_name||contract_number)"
+                },
+                "count_sub_mwbe": {
+                    "function":"COUNT(DISTINCT sub_vendor_name||contract_number||sub_contract_id)"
+                },
+                "g100m_prime_count": {
+                    "function": "SUM(CASE WHEN COALESCE($COLUMN{prime_maximum_contract_amount},0) > 100000000 THEN 1 ELSE 0 END)"
+                },
+                "g50m_le100m_prime_count": {
+                    "function": "SUM(CASE WHEN COALESCE($COLUMN{prime_maximum_contract_amount},0) > 50000000 AND COALESCE($COLUMN{prime_maximum_contract_amount},0) <= 100000000 THEN 1 ELSE 0 END)"
+                },
+                "g25m_le50m_prime_count": {
+                    "function": "SUM(CASE WHEN COALESCE($COLUMN{prime_maximum_contract_amount},0) > 25000000 AND COALESCE($COLUMN{prime_maximum_contract_amount},0) <= 50000000 THEN 1 ELSE 0 END)"
+                },
+                "g10m_le25m_prime_count": {
+                    "function": "SUM(CASE WHEN COALESCE($COLUMN{prime_maximum_contract_amount},0) > 10000000 AND COALESCE($COLUMN{prime_maximum_contract_amount},0) <= 25000000 THEN 1 ELSE 0 END)"
+                },
+                "ge1m_le10m_prime_count": {
+                    "function": "SUM(CASE WHEN COALESCE($COLUMN{prime_maximum_contract_amount},0) >= 1000000 AND COALESCE($COLUMN{prime_maximum_contract_amount},0) <= 10000000 THEN 1 ELSE 0 END)"
+                },
+                "less1m_prime_count": {
+                    "function": "SUM(CASE WHEN COALESCE($COLUMN{prime_maximum_contract_amount},0) < 1000000 THEN 1 ELSE 0 END)"
+                },
+                "g100m_sub_count": {
+                    "function": "SUM(CASE WHEN COALESCE($COLUMN{sub_maximum_contract_amount},0) > 100000000 THEN 1 ELSE 0 END)"
+                },
+                "g50m_le100m_sub_count": {
+                    "function": "SUM(CASE WHEN COALESCE($COLUMN{sub_maximum_contract_amount},0) > 50000000 AND COALESCE($COLUMN{sub_maximum_contract_amount},0) <= 100000000 THEN 1 ELSE 0 END)"
+                },
+                "g25m_le50m_sub_count": {
+                    "function": "SUM(CASE WHEN COALESCE($COLUMN{sub_maximum_contract_amount},0) > 25000000 AND COALESCE($COLUMN{sub_maximum_contract_amount},0) <= 50000000 THEN 1 ELSE 0 END)"
+                },
+                "g10m_le25m_sub_count": {
+                    "function": "SUM(CASE WHEN COALESCE($COLUMN{sub_maximum_contract_amount},0) > 10000000 AND COALESCE($COLUMN{sub_maximum_contract_amount},0) <= 25000000 THEN 1 ELSE 0 END)"
+                },
+                "ge1m_le10m_sub_count": {
+                    "function": "SUM(CASE WHEN COALESCE($COLUMN{sub_maximum_contract_amount},0) >= 1000000 AND COALESCE($COLUMN{sub_maximum_contract_amount},0) <= 10000000 THEN 1 ELSE 0 END)"
+                },
+                "less1m_sub_count": {
+                    "function": "SUM(CASE WHEN COALESCE($COLUMN{sub_maximum_contract_amount},0) < 1000000 THEN 1 ELSE 0 END)"
+                }
+            }
+        }
+    },
+    "references": {
+        "all_agreement_transactions_by_prime_sub_vendor_datafeeds__aggregateon_all_contracts_cumulative_spending": [
+            {"datasetName": "all_agreement_transactions_by_prime_sub_vendor_datafeeds", "columnNames": ["original_agreement_id"]},
+            {"datasetName": "contracts_coa_aggregates_datafeeds", "columnNames": ["original_agreement_id"]}
+        ]
+    }
+}

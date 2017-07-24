@@ -13,7 +13,6 @@
     <response_columns>
         <column>agency</column>
         <column>associated_prime_vendor</column>
-        <column>calendar_year</column>
         <column>capital_project</column>
         <column>check_amount</column>
         <column>contract_ID</column>

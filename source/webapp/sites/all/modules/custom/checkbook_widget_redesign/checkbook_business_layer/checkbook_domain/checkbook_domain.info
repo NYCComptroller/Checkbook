@@ -1,0 +1,48 @@
+
+; This file is part of the Checkbook NYC financial transparency software.
+;
+; Copyright (C) 2012, 2013 New York City
+;
+; This program is free software: you can redistribute it and/or modify
+; it under the terms of the GNU Affero General Public License as
+; published by the Free Software Foundation, either version 3 of the
+; License, or (at your option) any later version.
+;
+; This program is distributed in the hope that it will be useful,
+; but WITHOUT ANY WARRANTY; without even the implied warranty of
+; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+; GNU Affero General Public License for more details.
+;
+; You should have received a copy of the GNU Affero General Public License
+; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+;  Copyright 2009-2011 United States Government.
+;
+name = "Checkbook Domain"
+description = "Functionality to serve as a domain layer for checkbook"
+package = REI Checkbook Widget Redesign
+core = 7.x
+
+dependencies[] = checkbook_infrastructure_layer
+
+files[] = config/sql/contracts/contracts.xml
+files[] = config/sql/contracts/oge_contracts.xml
+files[] = config/sql/contracts/pending_contracts.xml
+files[] = config/sql/contracts/sub_contracts.xml
+files[] = config/sql/revenue/revenue.xml
+files[] = config/sql/spending/mwbe_spending.xml
+files[] = config/sql/spending/oge_spending.xml
+files[] = config/sql/spending/spending.xml
+files[] = config/sql/spending/sub_vendors_spending.xml
+
+files[] = constants/SqlConfigPath.php
+
+files[] = common/EntityFactory.php
+
+files[] = sql/ISqlEntityRepository.php
+files[] = sql/SqlEntityRepository.php
+files[] = sql/SqlDatasetFactory.php
+files[] = sql/SqlRecordCountFactory.php
+
+files[] = widget/IWidgetRepository.php
+files[] = widget/WidgetRepository.php
+

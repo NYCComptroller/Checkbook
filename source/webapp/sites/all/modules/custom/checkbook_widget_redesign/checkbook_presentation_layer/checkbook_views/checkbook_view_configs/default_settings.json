@@ -1,0 +1,15 @@
+{
+    "widgetType": "data_tables",
+    "widgetSubType": "ajaxSimple",
+    "getTotalDataCount":true,
+    "limit":"5",
+    "noDataInitialLoad":true,
+    "html_class": "",
+    "no_results_content":"No Results Found",
+    "enableExpand":true,
+    "disableViewAll":true,
+    "useList":false,
+    "validUrlParameters":["year","yeartype","status","agency","vendor","subvendor","doctype","mwbe",
+                          "dashboard", "awdmethod", "csize", "cindustry", "category", "industry", 
+                          "dept","agid","magid","bottom_slider","expcategory", "filter_type", "title", "salary"]
+}

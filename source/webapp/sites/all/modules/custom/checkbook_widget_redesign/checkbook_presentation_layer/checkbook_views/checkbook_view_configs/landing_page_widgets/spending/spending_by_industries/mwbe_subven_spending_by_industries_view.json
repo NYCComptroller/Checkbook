@@ -1,0 +1,5 @@
+{
+    "defaultConfigKey": "mwbe_spending_by_industries_view",
+    "serviceName":"SpendingWidgetService",
+    "dataFunc":"GetSubVendorSpendingByIndustries"
+}

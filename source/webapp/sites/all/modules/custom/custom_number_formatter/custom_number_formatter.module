@@ -56,6 +56,17 @@ function custom_number_formatter_format($number, $decimal_digits = 0, $prefix = 
 }
 
 /**
+ * formats the date for display purposes, eg:2016-01-08 will be displayed as 01/08/2016
+ * @param string $date
+ * @return string formattedDate
+ */
+function custom_date_format($date){
+    $raw_date = new DateTime($date);
+    $formattedDate = $raw_date->format('m/d/Y');
+    return $formattedDate;
+}
+
+/**
  * formats the number for display purposes, eg:1000000 will be displayed as 1M
  * @param int,float $number
  * @param int $decimal_digits

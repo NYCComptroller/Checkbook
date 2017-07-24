@@ -2,7 +2,6 @@
     "spending_oge":{
         "searchCriteriaMap":{
             "fiscal_year":"fiscal_year",
-            "calendar_year":"calendar_fiscal_year",
             "payee_name":"vendor_name",
             "other_government_entities_code":"agency_code",
             "department_code":"department_code",
@@ -36,7 +35,6 @@
                     "elementsColumn":{
                         "other_government_entities":"agency_name",
                         "fiscal_year":"fiscal_year",
-                        "calendar_year":"calendar_fiscal_year",
                         "payee_name":"vendor_name",
                         "department":"department_name",
                         "check_amount":"check_amount",
@@ -49,13 +47,12 @@
                         "entity_contract_number":"oge_contract_number@checkbook_oge:oge_contract_oge",
                         "budget_name":"budget_name@checkbook_oge:oge_contract_oge"                        
                     },
-                    "rowElements":["other_government_entities", "fiscal_year", "calendar_year", "payee_name", "department", "check_amount", "expense_category"
+                    "rowElements":["other_government_entities", "fiscal_year",  "payee_name", "department", "check_amount", "expense_category"
                         , "contract_id", "contract_purpose", "capital_project",  "spending_category","entity_contract_number","budget_name","commodity_line"]
                 },
                 "csv":{
                     "elementsColumn":{
                         "Fiscal year":"fiscal_year",
-                        "Calendar year":"calendar_fiscal_year",
                         "Payee Name":"vendor_name",
                         "Other Government Entities":"agency_name",
                         "Department":"department_name",
@@ -74,11 +71,6 @@
         },
         "requestParameters":{
             "fiscal_year":{
-                "valueType":"value",
-                "dataType":"year",
-                "maxLength":"4"
-            },
-            "calendar_year":{
                 "valueType":"value",
                 "dataType":"year",
                 "maxLength":"4"
@@ -153,7 +145,7 @@
                 "criteriaLevel":["value", "range"],
                 "validatorType":"filterName",
                 "validatorTypeConfig":{
-                    "filterNames":["fiscal_year", "calendar_year"]
+                    "filterNames":["fiscal_year"]
                 }
             }
         }

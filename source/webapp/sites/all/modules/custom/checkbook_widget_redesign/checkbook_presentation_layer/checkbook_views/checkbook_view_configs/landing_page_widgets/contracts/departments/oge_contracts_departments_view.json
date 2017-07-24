@@ -1,0 +1,4 @@
+{
+    "defaultConfigKey":"contracts_departments_view",
+    "dataFunc":"GetOgeContractsByDepartments"
+}

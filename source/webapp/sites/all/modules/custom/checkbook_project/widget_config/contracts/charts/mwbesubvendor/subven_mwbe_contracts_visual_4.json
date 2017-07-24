@@ -120,10 +120,18 @@
 		$contract_type = 'Pending Revenue';
 	}
 	$mwbe_filter = _getRequestParamValue('mwbe');
-	if($mwbe_filter =='4~5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){	
-		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Top Ten ' . $status . ' ' . $contract_type .  ' Contracts by Sub Vendors Current Amount';
+	if($mwbe_filter =='4~5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){
+        if(_getRequestParamValue('status') == 'A'){
+            $node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Top Ten Active Sub Vendor Contracts by Current Amount';
+        }else{
+            $node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Top Ten Active New Sub Vendor Contracts by Current Amount';
+        }
 	}else{
-		$node->widgetConfig->chartTitle = 'Top Ten ' . MappingUtil::getCurrenEhtnicityName() . ' ' . $status . ' ' . $contract_type .  ' Contracts by Sub Vendors Current Amount';
+        if(_getRequestParamValue('status') == 'A'){
+            $node->widgetConfig->chartTitle = 'Top Ten ' . MappingUtil::getCurrenEhtnicityName() . ' Active Sub Vendor Contracts by Current Amount';
+        }else{
+            $node->widgetConfig->chartTitle = 'Top Ten ' . MappingUtil::getCurrenEhtnicityName() . ' Active New Sub Vendor Contracts by Current Amount';
+        }
 	}
 ",
 "chartConfig" : {

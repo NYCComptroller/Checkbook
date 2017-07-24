@@ -72,6 +72,40 @@ if($is_payroll_range_filter) {
     }
 }
 
+//Contract Includes Sub Vendors Facet
+//For N/A value, some values are null, this needs to be handled
+if($node->widgetConfig->filterName == 'Contract Includes Sub Vendors') {
+    foreach($unchecked as $key => $value) {
+        if($value[1] == null) {
+            $unchecked[$key][0] = 5;
+            $unchecked[$key][1] = "N/A";
+        }
+    }
+    foreach($checked as $key => $value) {
+        if($value[1] == null) {
+            $checked[$key][0] = 5;
+            $checked[$key][1] = "N/A";
+        }
+    }
+}
+
+//Sub Vendor Status in PIP
+//For N/A value, some values are null, this needs to be handled
+if($node->widgetConfig->filterName == 'Sub Vendor Status in PIP') {
+    foreach($unchecked as $key => $value) {
+        if($value[1] == null) {
+            $unchecked[$key][0] = 0;
+            $unchecked[$key][1] = "N/A";
+        }
+    }
+    foreach($checked as $key => $value) {
+        if($value[1] == null) {
+            $checked[$key][0] = 0;
+            $checked[$key][1] = "N/A";
+        }
+    }
+}
+
 //Payroll Type Filter
 $count = 0;
 if($node->widgetConfig->filterName == 'Payroll Type') {
@@ -120,15 +154,120 @@ if($node->widgetConfig->filterName == 'Revenue Recognized') {
     }
 }
 
+$logicalOrFacet = $node->widgetConfig->logicalOrFacet;
+if(isset($logicalOrFacet) && $logicalOrFacet) {
+    foreach($unchecked as $key => $value){
+        //Remove N/A from facet
+        if($value[1] == null) {
+            unset($unchecked[$key]);
+        }
+    }
+    foreach($checked as $key=>$value){
+        //Remove N/A from facet
+        if($value[1] == null) {
+            unset($checked[$key]);
+        }
+    }
+}
+
+//Remove N/A from Prime/Sub Industry facets
+if($node->widgetConfig->filterName == 'Prime Industry' || $node->widgetConfig->filterName == 'Sub Industry'){
+    foreach($unchecked as $key => $value){
+        if($value[1] == null) {
+            unset($unchecked[$key]);
+        }
+    }
+    foreach($checked as $key=>$value){
+        if($value[1] == null) {
+            unset($checked[$key]);
+        }
+    }
+}
+
+//Checking 'Asian-American' filter in Prime/Sub MWBE Category Facet
+$is_prime_filter = $node->widgetConfig->filterName == 'Prime M/WBE Category';
+$is_sub_filter = $node->widgetConfig->filterName == 'Sub M/WBE Category';
+$is_prime_sub_filter = $node->widgetConfig->filterName == 'M/WBE Category';
+if($is_prime_filter || $is_sub_filter || ($is_prime_sub_filter && $node->widgetConfig->parentNid == 939)){
+
+    $asian_american_count = 0;
+    $show_only_prime_certified = $is_prime_filter && ContractUtil::showPrimeMwbeData();
+    $show_only_sub_certified = $is_sub_filter && ContractUtil::showSubMwbeData();
+
+    foreach($unchecked as $key => $value){
+        $id = $value[0];
+        $name = $value[1];
+        $count = $value[2];
+        if($id == 4 || $id == 5){
+            $asian_american_count = $asian_american_count + $count;
+            unset($unchecked[$key]);
+        }
+        else if($id == 7 || $id == 11){
+            if($show_only_prime_certified || $show_only_sub_certified) {
+                unset($unchecked[$key]);
+            }
+        }
+        else if(!isset($name)) {
+            unset($unchecked[$key]);
+        }
+    }
+    if($asian_american_count > 0) {
+        array_push($unchecked,array("4~5","Asian American",$asian_american_count));
+        usort($unchecked,
+            function($a, $b)
+            {
+                if ($a[2] == $b[2]) {
+                    return 0;
+                }
+                return ($a[2] > $b[2]) ? -1 : 1;
+            }
+        );
+    }
+    $asian_american_count = 0;
+    foreach($checked as $key => $value){
+        $id = $value[0];
+        $name = $value[1];
+        $count = $value[2];
+        if($id == 4 || $id == 5){
+            $asian_american_count = $asian_american_count + $count;
+            unset($checked[$key]);
+        }
+        else if($id == 7 || $id == 11){
+            if($show_only_prime_certified || $show_only_sub_certified) {
+                unset($checked[$key]);
+            }
+        }
+        else if(!isset($name)) {
+            unset($checked[$key]);
+        }
+    }
+    if($asian_american_count > 0) {
+        array_push($checked,array("4~5","Asian American",$asian_american_count));
+        usort($checked,
+            function($a, $b)
+            {
+                if ($a[2] == $b[2]) {
+                    return 0;
+                }
+                return ($a[2] > $b[2]) ? -1 : 1;
+            }
+        );
+    }
+}
+
 //Checking 'Asian-American' filter in MWBE Category Facet
 $count =0;
-if($node->widgetConfig->filterName == 'M/WBE Category'){
+if($node->widgetConfig->filterName == 'M/WBE Category' && $node->widgetConfig->parentNid != 939){
     $dashboard = _getRequestParamValue('dashboard');
     foreach($unchecked as $key => $value){
         if(isset($dashboard) && $dashboard != 'ss'){
             if($value[0] == 7 || $value[0] == 11){
                 unset($unchecked[$key]);
             }
+        }
+        //Remove N/A from facet
+        if($value[1] == null) {
+            unset($unchecked[$key]);
         }
     }
 
@@ -141,17 +280,69 @@ if($node->widgetConfig->filterName == 'M/WBE Category'){
             array_push($checked,array($value[0],MappingUtil::getMinorityCategoryById($value[0]),$value[2]));
             unset($checked[$key]);
         }
+        //Remove N/A from facet
+        if($value[1] == null) {
+            unset($checked[$key]);
+        }
     }
     if($count > 0 )array_push($checked,array($id,'Asian American',$count));
 }
 
 //Data alteration for Vendor Type Facet
+//Vendor Type facet for parentNid == 932/939 is a different implementation and should be ignored
 if($node->widgetConfig->filterName == 'Vendor Type'){
-    $vendor_types = _getRequestParamValue('vendortype');
-    $vendor_type_data = MappingUtil::getVendorTypes($checked, $vendor_types);
-    $vendor_type_data = MappingUtil::getVendorTypes($unchecked, $vendor_types);
-    $checked = $vendor_type_data['checked'];
-    $unchecked = $vendor_type_data['unchecked'];
+    if($node->widgetConfig->parentNid == 932 || $node->widgetConfig->parentNid == 939) {
+        $vendor_counts = array();
+        // To fix the issue with PM counts are getting added twice to PM~SM
+        foreach($checked as $row){
+            $checked_vendor_types[$row[0]] = $row[2];
+        }
+        foreach($checked_vendor_types as $key=>$value){
+            if(in_array($key,array('P'))){
+                $vendor_counts['P~PM'] = $vendor_counts['P~PM']+ $value;
+            }
+            if(in_array($key,array('S'))){
+                $vendor_counts['S~SM'] = $vendor_counts['S~SM']+ $value;
+            }
+            if(in_array($key,array('PM'))){
+                $vendor_counts['PM~SM'] = $vendor_counts['PM~SM']+ $value;
+            }
+            if(in_array($key,array('SM'))){
+                $vendor_counts['PM~SM'] = $vendor_counts['PM~SM']+ $value;
+            }
+        }
+        foreach($unchecked as $row){
+            if(in_array($row[0],array('P'))){
+                $vendor_counts['P~PM'] = $vendor_counts['P~PM']+ $row[2];
+            }
+            if(in_array($row[0],array('S'))){
+                $vendor_counts['S~SM'] = $vendor_counts['S~SM']+ $row[2];
+            }
+            if(in_array($row[0],array('PM'))){
+                $vendor_counts['PM~SM'] = $vendor_counts['PM~SM']+ $row[2];
+            }
+            if(in_array($row[0],array('SM'))){
+                $vendor_counts['PM~SM'] = $vendor_counts['PM~SM']+ $row[2];
+            }
+        }
+        $checked = $unchecked = array();
+        $selected_vendor_types =  _getRequestParamValue('vendortype');
+        foreach($vendor_counts as $key=>$value){
+            if (strpos($selected_vendor_types, $key) !== false) {
+                array_push($checked, array($key, MappingUtil::getMixedVendorTypeNames($key),$value));
+            }
+            else {
+                array_push($unchecked, array($key, MappingUtil::getMixedVendorTypeNames($key),$value));
+            }
+        }
+    }
+    else {
+        $vendor_types = _getRequestParamValue('vendortype');
+        $vendor_type_data = MappingUtil::getVendorTypes($checked, $vendor_types);
+        $vendor_type_data = MappingUtil::getVendorTypes($unchecked, $vendor_types);
+        $checked = $vendor_type_data['checked'];
+        $unchecked = $vendor_type_data['unchecked'];
+    }
 }
 
 if(count($checked) == 0){
@@ -207,7 +398,12 @@ $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
         $id = $id_filter_name."_checked_".$ct;
         echo '<div class="row">';
         echo '<div class="checkbox"><input class="styled" id="'.$id.'" name="' . $autocomplete_id . '" type="checkbox" ' . $disableFacet . 'checked="checked" value="' . urlencode(html_entity_decode($row[0],ENT_QUOTES)) . '" onClick="return applyTableListFilters();"><label for="'.$id.'"></label></div>';
-        echo '<div class="name">' . _break_text_custom2($row[1],15) . '</div>';
+        if($node->widgetConfig->filterName == 'Contract ID') {
+            echo '<div class="name">' . $row[1] . '</div>';
+        }
+        else {
+            echo '<div class="name">' . _break_text_custom2($row[1],15) . '</div>';
+        }
         echo '<div class="number"><span class="active">' . number_format($row[2]) . '</span></div>';
         echo '</div>';
         $ct++;
@@ -224,7 +420,12 @@ $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
         $id = $id_filter_name."_unchecked_".$ct;
         echo '<div class="row">';
         echo '<div class="checkbox"><input class="styled" id="'.$id.'" name="' . $autocomplete_id . '" type="checkbox" '  .  $disabled .  'value="' . urlencode(html_entity_decode($row[0],ENT_QUOTES)) . '" onClick="return applyTableListFilters();"><label for="'.$id.'"></label></div>';
-        echo '<div class="name">' . _break_text_custom2($row[1],15) . '</div>';
+        if($node->widgetConfig->filterName == 'Contract ID') {
+            echo '<div class="name">' . $row[1] . '</div>';
+        }
+        else {
+            echo '<div class="name">' . _break_text_custom2($row[1],15) . '</div>';
+        }
         echo '<div class="number"><span>' . number_format($row[2]) . '</span></div>';
         echo '</div>';
         $ct++;
@@ -245,14 +446,15 @@ $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
             enable:false
         },
         callbacks:{
-            onTotalScroll: function (){   
+            // this function causing disappearing checkbox issue
+            onTotalScroll: function (){
 				var pages = $(this).next().find('input.autocomplete').attr('pages');
 				if(pages == 1) return false;
 				if(page" . $node->nid ."  >= pages ) {
 					return false;
 				}
-				page" . $node->nid ."++;                      
-                paginateScroll(" . $node->nid .", page" . $node->nid .")
+				page" . $node->nid ."++;
+
             },
             onTotalScrollBack: function(){
                 var pages = $(this).next().find('input.autocomplete').attr('pages');
@@ -261,7 +463,7 @@ $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
                     page" . $node->nid ."--;
                     paginateScroll(" . $node->nid .", page" . $node->nid .");
                 }
-                
+
             }
         },
         theme:'dark'

@@ -1,0 +1,61 @@
+{
+    "serviceName": "PayrollWidgetService",
+    "dataFunc": "GetAgenciesByPayroll",
+    "countFunc": "GetCountAgencies",
+    "headerTitle": "Agencies by Payroll",
+    "headerSubTitle": "Agencies",
+    "table_columns": [
+        {
+            "labelAlias":"agency_name",
+            "column":"agency_name",
+            "derivedColumn": "agency_name_link"
+        },
+        {
+            "labelAlias":"no_of_sal_employees",
+            "column":"total_salaried_employees",
+            "format":"number"
+        },
+        {
+            "labelAlias":"no_of_non_sal_employees",
+            "column":"total_non_salaried_employees",
+            "format":"number"
+        },
+        {
+            "labelAlias":"gross_pay_ytd",
+            "column":"total_gross_pay",
+            "derivedColumn": "total_gross_pay_link",
+            "format": "dollar"
+        },
+        {
+            "labelAlias":"other_pay_ytd",
+            "column":"total_other_payments",
+            "format": "dollar"
+        },
+        {
+            "labelAlias": "",
+            "column": ""
+        }
+    ],
+    "dataTableOptions": {
+        "aoColumns": [
+            {"bSortable":false,"sClass":"text","asSorting": [ "asc","desc" ]},
+            {"bSortable":true,"sClass":"number","sWidth":"170px","asSorting": [ "desc","asc"  ]},
+            {"bSortable":true,"sClass":"number","sWidth":"180px","asSorting": [ "desc","asc"  ]},
+            {"bSortable":true,"sClass":"number","sWidth":"130px","asSorting": [ "desc","asc"  ]},
+            {"bSortable":true,"sClass":"number","sWidth":"160px","asSorting": [ "desc","asc"  ]},
+            {"bSortable": false,"sWidth":"15px" }
+        ],
+        "aaSorting": [[3, "desc"]],
+        "bServerSide": true,
+        "bFilter": false,
+        "bPaginate": false,
+        "bProcessing": true,
+        "bLengthChange": false,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "fnServerParams": "##function ( aoData ) { reloadExpandCollapseWidget(this,aoData); }##",
+        "oLanguage": {
+            "sProcessing": "<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"
+        }
+    }
+}

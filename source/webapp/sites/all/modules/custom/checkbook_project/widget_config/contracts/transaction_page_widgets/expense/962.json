@@ -1,0 +1,48 @@
+{
+   "table_columns": [
+        {"label":"Prime Contract ID","column":"contract_number"},
+        {"label":"Contract Includes Sub Vendors","column":"scntrc_status_name"},
+        {"label":"Vendor Record Type","column":"vendor_record_type"},
+        //START PRIME
+        {"label":"Prime Vendor","column":"prime_vendor_name"},
+        {"label":"Prime Vendor M/WBE Category","column":"prime_minority_type_name"},
+        {"label":"Prime Contract Purpose","column":"prime_purpose"},
+        {"label":"Prime Contract Current Amount","column":"prime_maximum_contract_amount"},
+        {"label":"Prime Contract Original Amount","column":"prime_original_contract_amount"},
+        {"label":"Prime Vendor Spend to Date","column":"prime_rfed_amount"},
+        {"label":"Prime Contract Dollar Difference","column":"prime_dollar_difference","visibility_flag":"show_difference"},
+        {"label":"Prime Contract Percent Difference","column":"prime_percent_difference","visibility_flag":"show_difference"},
+        {"label":"Prime Contract Start Date","column":"prime_effective_begin_date"},
+        {"label":"Prime Contract End Date","column":"prime_effective_end_date"},
+        {"label":"Prime Contract Registration Date","column":"registered_date"},
+        //END PRIME
+        {"label":"Prime Contracting Agency","column":"agency_name"},
+        {"label":"Prime Contract Version","column":"prime_document_version"},
+        {"label":"FMS Document/Parent Contract ID","column":"master_contract_number_export"},
+        {"label":"Prime Contract Type","column":"agreement_type_name"},
+        {"label":"Prime Contract Award Method","column":"award_method_name"},
+        {"label":"Prime Contract Expense Category","column":"expenditure_object_names"},
+        {"label":"Prime Contract Industry","column":"prime_industry_type_name"},
+        {"label":"Prime Contract PIN","column":"prime_pin"},
+        {"label":"Prime Contract APT PIN","column":"prime_apt_pin"},
+        //START SUB
+        {"label":"Sub Vendor","column":"sub_vendor_name_export"},
+        {"label":"Sub Vendor M/WBE Category","column":"sub_minority_type_name_export"},
+        {"label":"Sub Contract Purpose","column":"sub_purpose_export"},
+        {"label":"Sub Vendor Status in PIP","column":"aprv_sta_name_export"},
+        {"label":"Sub Contract Industry","column":"sub_industry_type_name_export"},
+        {"label":"Sub Contract Current Amount","column":"sub_maximum_contract_amount"},
+        {"label":"Sub Contract Original Amount","column":"sub_original_contract_amount"},
+        {"label":"Sub Vendor Paid to Date","column":"sub_rfed_amount"},
+        {"label":"Sub Contract Dollar Difference","column":"sub_dollar_difference","visibility_flag":"show_difference"},
+        {"label":"Sub Contract Percent Difference","column":"sub_percent_difference","visibility_flag":"show_difference"},
+        {"label":"Sub Contract Start Date","column":"sub_effective_begin_date_export"},
+        {"label":"Sub Contract End Date","column":"sub_effective_end_date_export"},
+        {"label":"Sub Contract Reference ID","column":"sub_contract_id_export"}
+        //END SUB
+    ],
+    "preProcessConfiguration":"
+        $smnid = $doctype = _getRequestParamValue('smnid');
+        $node->show_difference = ($smnid == 480 || $smnid == 366 || $smnid == 722);
+    "
+}

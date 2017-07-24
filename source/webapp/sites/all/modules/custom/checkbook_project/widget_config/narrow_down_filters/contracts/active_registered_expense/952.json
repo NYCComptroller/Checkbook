@@ -1,0 +1,28 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":939,
+    "autocomplete":false,
+    "no_results_content":"No Results Found",
+    "startWith":0,
+    "maxSelect":5,
+    "columns":["prime_minority_type_id.prime_minority_type_id", "prime_minority_type_name.prime_minority_type_name", "count_prime_mwbe"],
+    "orderBy":"-count_prime_mwbe",
+    "getTotalDataCount":true,
+    "facetPager":true,
+    "filterName":"Prime M/WBE Category",
+    "allowZeroValue":true,
+    "allowFacetDeselect":true,
+    "urlParameterName":"pmwbe",
+    "autocompleteParamName":"mwbe_auto",
+    "autocompleteID":"fPrimeMinorityTypeId",
+    "autocompleteField":"prime_minority_type_name",
+    "adjustParameters":"
+        $parameters = ContractUtil::adjustActiveContractCommonParams($node, $parameters);
+        if(function_exists('_checkbook_project_applyParameterFilters')){
+            $parameters = _checkbook_project_applyParameterFilters($node,$parameters);
+            $parameters['prime_minority_type_id.prime_minority_type_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+        }
+        return $parameters;
+    ",
+    "template":"individual_filter"
+}

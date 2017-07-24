@@ -1,0 +1,5 @@
+{
+    "defaultConfigKey":"spending_by_expense_categories_view",
+    "serviceName":"SpendingWidgetService",
+    "dataFunc":"GetOGESpendingByExpenseCategories"
+}

@@ -1,0 +1,201 @@
+{
+    "citywide":{
+        "landing_page_widgets":{
+            "checks":{
+                "widget_config":"checks_view",
+                "legacy_node_id":502,
+                "visibility_parameters":["-category:2"]
+            },
+            "agencies":{
+               "widget_config":"spending_by_agencies_view",
+               "legacy_node_id":23,
+               "visibility_parameters":["-agency"]
+            },
+            "expense_categories":{
+               "widget_config":"spending_by_expense_categories_view",
+               "legacy_node_id": 22
+            },
+            "departments":{
+               "widget_config":"spending_by_departments_view",
+               "legacy_node_id": 29,
+               "visibility_parameters":["agency"]
+            },
+            "prime_vendors":{
+                "widget_config":"prime_vendors_view",
+                "legacy_node_id": 26,
+                "visibility_parameters":["-category:2", "-vendor"]
+            },
+            "payroll_agencies":{
+                "widget_config":"payroll_agencies_view",
+                "legacy_node_id": 501,
+                "visibility_parameters":["-category", "-vendor", "-agency"]
+            },
+            "contracts":{
+                "widget_config":"spending_by_contracts_view",
+                "legacy_node_id": 20,
+                "visibility_parameters":["-category:2","-category:4"]
+            }
+        }
+    },
+    "mwbe":{
+        "landing_page_widgets":{
+            "checks":{
+                "widget_config":"checks_view",
+                "legacy_node_id":758,
+                "visibility_parameters":["-category:2"]
+            },
+            "agencies":{
+               "widget_config":"mwbe_spending_by_agencies_view",
+               "legacy_node_id": 759,
+               "visibility_parameters":["-agency"]
+            },
+            "expense_categories":{
+               "widget_config":"mwbe_spending_by_expense_categories_view",
+               "legacy_node_id": 761
+            },
+            "departments":{
+               "widget_config":"mwbe_spending_by_departments_view",
+               "legacy_node_id": 760,
+               "visibility_parameters":["agency"]
+            },
+            "prime_vendors":{
+                "widget_config":"mwbe_prime_vendors_view",
+                "legacy_node_id": 762,
+                "visibility_parameters":["-category:2", "-vendor"]
+            },
+            "contracts":{
+                "widget_config":"mwbe_spending_by_contracts_view",
+                "legacy_node_id": 764,
+                "visibility_parameters":["-category:2"]
+            },
+            "mwbe_sub_vendors":{
+                "widget_config":"mwbe_sub_vendors_view",
+                "legacy_node_id": 763,
+                "visibility_parameters":["-category:2","-subvendor"]
+            },
+            "industries":{
+                "widget_config":"mwbe_spending_by_industries_view",
+                "legacy_node_id": 765,
+                "visibility_parameters":["-category:2","-industry"]
+            } 
+        }
+    },
+    "sub_vendors":{
+        "landing_page_widgets":{
+            "checks":{
+                "widget_config":"sub_vendor_checks_view",
+                "legacy_node_id":715,
+                "visibility_parameters":["-category:2"]
+            },
+            "subven_agencies":{
+               "widget_config":"subven_spending_by_agencies_view",
+               "legacy_node_id": 716,
+               "visibility_parameters":["-agency"]
+            },
+            "prime_vendors":{
+                "widget_config":"sub_vendors_prime_vendors_view",
+                "legacy_node_id": 717,
+                "visibility_parameters":["-category:2", "-vendor"]
+                },
+            "sub_vendors":{
+                "widget_config":"sub_vendors_view",
+                "legacy_node_id": 719,
+                "visibility_parameters":["-category:2", "-subvendor"]
+            },
+            "sub_contracts":{
+                "widget_config":"sub_vendors_mwbe_view",
+                "legacy_node_id": 718
+            }
+        }
+    },
+    "sub_vendors_mwbe":{
+        "landing_page_widgets":{
+            "checks":{
+                "widget_config":"sub_vendor_checks_view",
+                "legacy_node_id":715,
+                "visibility_parameters":["-category:2"]
+            },
+            "subven_agencies":{
+               "widget_config":"subven_spending_by_agencies_view",
+               "legacy_node_id": 716,
+               "visibility_parameters":["-agency"]
+            },
+            "prime_vendors":{
+                "widget_config":"sub_vendors_prime_vendors_view",
+                "legacy_node_id": 717,
+                "visibility_parameters":["-category:2", "-vendor"]
+            },
+            "sub_vendors":{
+                "widget_config":"sub_vendors_view",
+                "legacy_node_id": 719,
+                "visibility_parameters":["-category:2", "-subvendor"]
+            },
+            "sub_contracts":{
+                "widget_config":"sub_vendors_mwbe_view",
+                "legacy_node_id": 718
+            }
+        }
+    },
+    "mwbe_sub_vendors":{
+        "landing_page_widgets":{
+            "checks":{
+                "widget_config":"mwbe_sub_vendors_checks_view",
+                "legacy_node_id":745,
+                "visibility_parameters":["-category:2"]
+            },
+            "subven_agencies":{
+               "widget_config":"mwbe_subven_spending_by_agencies_view",
+               "legacy_node_id": 746,
+               "visibility_parameters":["-agency"]
+            },
+            "prime_vendors":{
+                "widget_config":"mwbe_sub_vendors_prime_vendors_view",
+                "legacy_node_id": 747,
+                "visibility_parameters":["-category:2", "-vendor"]
+            },
+            "contracts":{
+                "widget_config":"mwbe_subven_spending_by_contracts_view",
+                "legacy_node_id": 749,
+                "visibility_parameters":["-category:2"]
+            },
+            "mwbe_sub_vendors":{
+                "widget_config":"mwbe_sv_sub_vendors_view",
+                "legacy_node_id": 748,
+                "visibility_parameters":["-subvendor"]
+            },
+            "industries":{
+                "widget_config":"mwbe_subven_spending_by_industries_view",
+                "legacy_node_id": 750,
+                "visibility_parameters":["-category:2","-industry"]
+            } 
+        }
+    },
+    "oge":{
+        "landing_page_widgets":{
+            "checks":{
+                "widget_config":"oge_checks_view",
+                "legacy_node_id":651,
+                "visibility_parameters":["-category:2"]
+            },
+            "expense_categories":{
+               "widget_config":"oge_spending_by_expense_categories_view",
+               "legacy_node_id": 22
+            },
+            "departments":{
+               "widget_config":"oge_spending_by_departments_view",
+               "legacy_node_id": 29,
+               "visibility_parameters":["agency"]
+            },
+            "prime_vendors":{
+                "widget_config":"oge_prime_vendors_view",
+                "legacy_node_id": 26,
+                "visibility_parameters":["-category:2", "-vendor"]
+            },
+            "contracts":{
+                "widget_config":"oge_spending_by_contracts_view",
+                "legacy_node_id": 20,
+                "visibility_parameters":["-category:2"]
+            }
+        }
+    }
+}

@@ -223,3 +223,23 @@ div.filter-content-fdomainName div.options{
     opacity:0.5;
     width: 100%
 }
+
+/* Contract Includes Sub Vendors Facet */
+#node-widget-921 div.name,
+#node-widget-924 div.name,
+#node-widget-926 div.name {
+    max-width: 104px;
+}
+#node-widget-921 div.number,
+#node-widget-924 div.number,
+#node-widget-926 div.number {
+    width: 67px;
+}
+
+/* Contract Id Facet */
+#node-widget-922 div.name {
+    max-width: 119px;
+}
+#node-widget-922 div.number {
+    width: 11px;
+}

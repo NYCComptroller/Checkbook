@@ -1,0 +1,28 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":939,
+    "no_results_content":"No Results Found",
+    "limit":10,
+    "startWith":0,
+    "maxSelect":5,
+    "showAllRecords":true,
+    "columns":["prime_industry_type_id.prime_industry_type_id", "prime_industry_type_name.prime_industry_type_name", "count_prime_records"],
+    "orderBy":"-count_prime_records",
+    "getTotalDataCount":true,
+    "facetPager":true,
+    "filterName":"Prime Industry",
+    "urlParameterName":"pcindustry",
+    "autocompleteParamName":"pcindustry_auto",
+    "autocompleteID":"fPrimeIndustryTypeId",
+    "autocompleteField":"prime_industry_type_name",
+    "adjustParameters":"
+        $parameters = ContractUtil::adjustActiveContractCommonParams($node, $parameters);
+        if(function_exists('_checkbook_project_applyParameterFilters')){
+            $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+            $adjustedParameters['prime_industry_type_id.prime_industry_type_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+            return $adjustedParameters;
+        }
+        return $parameters;
+    ",
+    "template":"individual_filter"
+}

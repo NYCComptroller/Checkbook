@@ -2,7 +2,6 @@
     "spending":{
         "searchCriteriaMap":{
             "fiscal_year":"fiscal_year",
-            "calendar_year":"calendar_fiscal_year",
             "payee_code":"vendor_customer_code",
             "document_id":"disbursement_number",
             "agency_code":"agency_code",
@@ -37,7 +36,6 @@
                     "elementsColumn":{
                         "agency":"agency_name",
                         "associated_prime_vendor":"prime_vendor_name",
-                        "calendar_year":"calendar_fiscal_year",
                         "capital_project":"reporting_code",
                         "check_amount":"check_amount",
                         "contract_ID":"reference_document_number",
@@ -57,7 +55,6 @@
                     "rowElements":[
                         "agency",
                         "associated_prime_vendor",
-                        "calendar_year",
                         "capital_project",
                         "contract_ID",
                         "contract_purpose",
@@ -80,7 +77,6 @@
                 "csv":{
                     "elementsColumn":{
                         "Fiscal year":"fiscal_year",
-                        "Calendar year":"calendar_fiscal_year",
                         "Document ID":"disbursement_number",
                         "Payee Name":"vendor_name",
                         "Industry":"industry_type_name",
@@ -93,7 +89,6 @@
                         "Contract Purpose":"purpose",
                         "Capital Project":"reporting_code",
                         "Spending Category":"spending_category_name",
-                        "M/WBE Category":"minority_type_id",
                         "Sub Contract Reference ID":"sub_contract_id",
                         "Sub Vendor":"vendor_type",
                         "Associated Prime Vendor":"prime_vendor_name",
@@ -108,11 +103,6 @@
         },
         "requestParameters":{
             "fiscal_year":{
-                "valueType":"value",
-                "dataType":"year",
-                "maxLength":"4"
-            },
-            "calendar_year":{
                 "valueType":"value",
                 "dataType":"year",
                 "maxLength":"4"
@@ -187,7 +177,7 @@
                 "criteriaLevel":["value", "range"],
                 "validatorType":"filterName",
                 "validatorTypeConfig":{
-                    "filterNames":["fiscal_year", "calendar_year", "issue_date"]
+                    "filterNames":["fiscal_year", "issue_date"]
                 }
             }
         }

@@ -2,7 +2,6 @@
     "budget":{
         "searchCriteriaMap":{
             "year":"budget_fiscal_year",
-            "budget_code":"budget_code",
             "agency_code":"agency_code",
             "department_code":"department_code",
             "expense_category":"object_class_code",
@@ -12,7 +11,11 @@
             "encumbered":"encumbered_amount",
             "accrued_expense":"accrued_expense_amount",
             "cash_expense":"cash_expense_amount",
-            "post_adjustment":"post_closing_adjustment_amount"
+            "post_adjustment":"post_closing_adjustment_amount",
+            "budget_code_id":"budget_code_id",
+            //logical OR columns
+            "budget_code":"budget_code",
+            "budget_code_name":"budget_code_name"
         },
         "dataset":{
             "sortColumn":["-current_budget_amount","-budget_id"],
@@ -75,7 +78,8 @@
                         "Cash Expense":"cash_expense_amount"
                     }
                 }
-            }
+            },
+            "adjustParameters":"if(function_exists('checkbook_api_adjustBudgetParameterFilters')){checkbook_api_adjustBudgetParameterFilters($data_set,$parameters,$criteria);}"
         },
         "requestParameters":{
             "year":{
@@ -87,6 +91,16 @@
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":4
+            },
+            "budget_code_id":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":6
+            },
+            "budget_code_name":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":100
             },
             "agency_code":{
                 "valueType":"value",

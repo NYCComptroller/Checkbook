@@ -36,9 +36,9 @@ echo eval($node->widgetConfig->header);
     <thead>
     <tr class="first-row">
         <th rowspan="2" class="number"><div class="trendCen" >Fiscal<br>year</div></th>
-        <th rowspan="2" class="number"><div class="trendCen" >Tax Levy<br>(in millions)</div></th>
-        <th colspan="3" class="centrig bb"><div>Percent of Levy through June 30, 2015</div></th>
-        <th rowspan="2" class="number"><div class="trendCen" >Uncollected<br>Balance<br/> June 30, 2015</div></th>
+        <th rowspan="2" class="number"><div class="trendCen" >Tax Levy<br>(in millions)(2)</div></th>
+        <th colspan="3" class="centrig bb"><div>Percent of Levy through June 30, 2016</div></th>
+        <th rowspan="2" class="number"><div class="trendCen" >Uncollected<br>Balance<br/> June 30, 2016</div></th>
     </tr>
     <tr class="second-row">
         <th class="number"><div class="trendCen" >Collections</div></th>
@@ -75,7 +75,7 @@ echo eval($node->widgetConfig->header);
 <div class="footnote">
 <p>(1) Abatements and discounts include SCRIE abatements(Senior Citizen Rent Increase Excemption), J51 Abatements, Section 626 Abatements and other minor discounts offered by the City to property owners.</p>
 <p>(2) The Tax levy amounts are the amount from the City Council Resolution. In 2003, an 18% surcharge was imposed and is included in each year following.</p>
-<p>NOTES: Total uncollected balance at June 30, 2015 less allowance for uncollectible amounts equals net realizable amount (real estate taxes receivable).</p>
+<p>NOTES: Total uncollected balance at June 30, 2016 less allowance for uncollectible amounts equals net realizable amount (real estate taxes receivable).</p>
 <p>Levy may total over 100 percent due to imposed charges that include ICIP deferred charges (Industrial and Commercial Incentive Program), rebilling charges and other additional charges imposed by the Department of Finance (DOF). This information is
 included in the FAIRTAX LEVY report.</p>
 </div>

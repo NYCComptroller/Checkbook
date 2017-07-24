@@ -622,7 +622,7 @@ abstract class AbstractAPISearchCriteria {
 
           if ($status == 'active' || $status == 'registered') {
             $config_key .= "_active_{$category}";
-            if (!isset($this->criteria['value']['fiscal_year']) && !isset($this->criteria['value']['calendar_year'])) {
+            if (!isset($this->criteria['value']['fiscal_year'])) {
               $config_key .= "_all_years";
             }
           }
@@ -646,7 +646,7 @@ abstract class AbstractAPISearchCriteria {
         $status = $this->criteria['value']['status'];
         $this->criteria['value']['is_vendor_flag'] = (isset($this->criteria['value']['vendor_name'])) ? "Y" : "N";
 
-        if(isset($this->criteria['value']['fiscal_year']) || isset($this->criteria['value']['year']) || isset($this->criteria['value']['calendar_year'])){
+        if(isset($this->criteria['value']['fiscal_year']) || isset($this->criteria['value']['year'])){
             $this->criteria['value']['if_for_all_years'] = "N";
         }else{
             $this->criteria['value']['if_for_all_years'] = "Y";
@@ -655,7 +655,7 @@ abstract class AbstractAPISearchCriteria {
 
         if ($status == 'active' || $status == 'registered') {
           $config_key .= "_active_{$category}";
-          if (!isset($this->criteria['value']['fiscal_year']) && !isset($this->criteria['value']['calendar_year'])) {
+          if (!isset($this->criteria['value']['fiscal_year'])) {
             $config_key .= "_all_years";
           }
         }
@@ -693,7 +693,7 @@ abstract class AbstractAPISearchCriteria {
         $status = $this->criteria['value']['status'];
 
         $domain = "$status $domain($category)";
-        if (!isset($this->criteria['value']['fiscal_year']) && !isset($this->criteria['value']['calendar_year'])
+        if (!isset($this->criteria['value']['fiscal_year'])
           && ($status != 'pending')
         ) {
           $domain .= " All Years";

@@ -1,0 +1,310 @@
+<statements>
+    <!--Agencies Methods-->
+    <statement name="GetAgenciesByBudget" datasource="checkbook">
+        <param name="year" type="int" />
+        <param name="agency" type="int" />
+        <param name="dept" type="int" />
+        <param name="filter_type" type="string" />
+        <param name="expcategory" type="int" />
+        <sql>
+            SELECT budget.budget_fiscal_year_id AS year_id,
+            budget.agency_id AS agency_id,
+            budget.agency_name AS agency_name,
+            SUM(adopted_amount) AS adopted_budget,
+            SUM(COALESCE(current_budget_amount,0)) AS current_modified_budget,
+            SUM(total_expenditure_amount) AS committed_budget,
+            SUM(remaining_budget) AS remaining_budget
+            FROM budget
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="budget.budget_fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="budget.object_class_id" paramName="expcategory" />
+                </exp>
+            </where>
+            GROUP BY budget.budget_fiscal_year_id, budget.agency_id, budget.agency_name
+        </sql>
+    </statement>
+    <statement name="GetAgenciesByCommittedExpenseBudget" datasource="checkbook">
+        <param name="year" type="int" />
+        <param name="agency" type="int" />
+        <param name="dept" type="int" />
+        <param name="filter_type" type="string" />
+        <param name="expcategory" type="int" />
+        <sql>
+            SELECT budget.budget_fiscal_year_id AS year_id,
+            budget.agency_id AS agency_id,
+            budget.agency_name AS agency_name,
+            SUM(total_expenditure_amount) AS committed_budget,
+            SUM(pre_encumbered_amount) AS pre_encumbered,
+            SUM(encumbered_amount) AS encumbered,
+            SUM(accrued_expense_amount) AS accrued_expense,
+            SUM(cash_expense_amount) AS cash_payments,
+            SUM(post_closing_adjustment_amount) AS post_adjustments
+            FROM budget
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="budget.budget_fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="budget.object_class_id" paramName="expcategory" />
+                </exp>
+            </where>
+            GROUP BY budget.budget_fiscal_year_id, budget.agency_id, budget.agency_name
+        </sql>
+    </statement>
+    <statement name="GetAgenciesByPercentDifference" datasource="checkbook">
+        <param name="year" type="int" />
+        <param name="agency" type="int" />
+        <param name="dept" type="int" />
+        <param name="filter_type" type="string" />
+        <param name="expcategory" type="int" />
+        <sql>
+            SELECT s0.budget_fiscal_year_id,
+                s0.agency_id,
+                j1.agency_name,
+                SUM(COALESCE(modified_budget_amount,0)) AS current_amount,
+                SUM(COALESCE(modified_budget_amount_py,0)) AS previous_amount,
+                SUM(COALESCE(modified_budget_amount_py_1,0)) AS previous_1_amount,
+                SUM(COALESCE(modified_budget_amount_py_2,0)) AS previous_2_amount,
+                CASE SUM(COALESCE(modified_budget_amount_py,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(modified_budget_amount,0)) - SUM(COALESCE(modified_budget_amount_py,0)))/SUM(COALESCE(modified_budget_amount_py,0)))*100 END AS percent_difference1,
+                CASE SUM(COALESCE(modified_budget_amount_py_1,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(modified_budget_amount,0)) - SUM(COALESCE(modified_budget_amount_py_1,0)))/SUM(COALESCE(modified_budget_amount_py_1,0)))*100 END AS percent_difference2,
+                CASE SUM(COALESCE(modified_budget_amount_py_2,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(modified_budget_amount,0)) - SUM(COALESCE(modified_budget_amount_py_2,0)))/SUM(COALESCE(modified_budget_amount_py_2,0)))*100 END AS percent_difference3
+            FROM aggregateon_budget_by_year s0
+            JOIN ref_agency j1 ON j1.agency_id = s0.agency_id
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="s0.object_class_id" paramName="expcategory" />
+                    <exp op="=" dbField="s0.budget_fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="s0.agency_id " paramName="agency" />
+                    <exp op="=" dbField="s0.department_id " paramName="dept" />
+                    <exp op="=" dbField="s0.filter_type" paramName="filter_type" />
+                </exp>
+            </where>
+            GROUP BY s0.budget_fiscal_year_id, s0.agency_id, j1.agency_name
+        </sql>
+    </statement>
+    <!--Expense Categories Methods-->
+    <statement name="GetExpenseCategoriesByBudget" datasource="checkbook">
+        <param name="year" required ="true" type="int" />
+        <param name="agency" type="int" />
+        <param name="dept" type="int" />
+        <sql>
+            SELECT
+            budget_fiscal_year_id as year_id,
+            object_class_id as expense_category_id,
+            object_class_name as expense_category_name,
+            SUM(adopted_amount) as adopted_budget,
+            SUM(COALESCE(current_budget_amount,0)) as modified_budget,
+            SUM(total_expenditure_amount) as committed_budget,
+            SUM(remaining_budget) as remaining_budget
+            FROM budget
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="budget_fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="agency_id " paramName="agency" />
+                    <exp op="=" dbField="department_id " paramName="dept" />
+                </exp>
+            </where>
+            GROUP BY budget_fiscal_year_id, object_class_id, object_class_name
+        </sql>
+    </statement>
+    <statement name="GetExpenseCategoriesByCommittedExpenseBudget" datasource="checkbook">
+        <param name="year" required ="true" type="int" />
+        <param name="agency" type="int" />
+        <param name="dept" type="int" />
+        <sql>
+            SELECT budget_fiscal_year_id as year_id,
+            object_class_id as expense_category_id,
+            object_class_name as expense_category_name,
+            SUM(total_expenditure_amount) AS committed_budget,
+            SUM(pre_encumbered_amount) AS pre_encumbered,
+            SUM(encumbered_amount) AS encumbered,
+            SUM(accrued_expense_amount) AS accrued_expense,
+            SUM(cash_expense_amount) AS cash_payments,
+            SUM(post_closing_adjustment_amount) AS post_adjustments
+            FROM budget
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="budget_fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="agency_id " paramName="agency" />
+                    <exp op="=" dbField="department_id " paramName="dept" />
+                </exp>
+            </where>
+            GROUP BY budget_fiscal_year_id, object_class_id, object_class_name
+        </sql>
+    </statement>
+    <statement name="GetExpenseCategoriesByPercentDifference" datasource="checkbook">
+        <param name="year" required ="true" type="int" />
+        <param name="agency" type="int" />
+        <param name="expcategory" type="int" />
+        <param name="dept" type="int" />
+        <param name="filter_type" type="string" />
+        <sql>
+            SELECT s0.budget_fiscal_year_id,
+                s0.object_class_id AS expense_category_id,
+                j1.object_class_name AS expense_category_name,
+                SUM(COALESCE(modified_budget_amount,0)) AS current_amount,
+                SUM(COALESCE(modified_budget_amount_py,0)) AS previous_amount,
+                SUM(COALESCE(modified_budget_amount_py_1,0)) AS previous_1_amount,
+                SUM(COALESCE(modified_budget_amount_py_2,0)) AS previous_2_amount,
+                CASE SUM(COALESCE(modified_budget_amount_py,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(modified_budget_amount,0)) - SUM(COALESCE(modified_budget_amount_py,0)))/SUM(COALESCE(modified_budget_amount_py,0)))*100 END AS percent_difference1,
+                CASE SUM(COALESCE(modified_budget_amount_py_1,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(modified_budget_amount,0)) - SUM(COALESCE(modified_budget_amount_py_1,0)))/SUM(COALESCE(modified_budget_amount_py_1,0)))*100 END AS percent_difference2,
+                CASE SUM(COALESCE(modified_budget_amount_py_2,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(modified_budget_amount,0)) - SUM(COALESCE(modified_budget_amount_py_2,0)))/SUM(COALESCE(modified_budget_amount_py_2,0)))*100 END AS percent_difference3
+            FROM aggregateon_budget_by_year s0
+            JOIN ref_object_class j1 ON s0.object_class_id = j1.object_class_id
+                <where>
+                    <exp op="AND">
+                        <exp op="=" dbField="s0.object_class_id" paramName="expcategory" />
+                        <exp op="=" dbField="s0.budget_fiscal_year_id" paramName="year" />
+                        <exp op="=" dbField="s0.agency_id " paramName="agency" />
+                        <exp op="=" dbField="s0.department_id " paramName="dept" />
+                        <exp op="=" dbField="s0.filter_type" paramName="filter_type" />
+                    </exp>
+                </where>
+            GROUP BY s0.budget_fiscal_year_id, s0.object_class_id,j1.object_class_name
+        </sql>
+    </statement>
+    <!--Department Methods-->
+    <statement name="GetDepartmentsByBudget" datasource="checkbook">
+        <param name="year" required ="true" type="int" />
+        <param name="agency" type="int" />
+        <param name="expcategory" type="int" />
+        <param name="dept" type="int" />
+        <param name="filter_type" type="string" />
+        <sql>
+            SELECT s0.budget_fiscal_year_id,
+                s0.department_id,
+                s0.department_name,
+                SUM(adopted_amount) AS budget_adopted,
+                SUM(COALESCE(current_budget_amount,0)) AS budget_current,
+                SUM(total_expenditure_amount) AS budget_committed,
+                SUM(remaining_budget) AS budget_remaining
+            FROM budget s0
+                <where>
+                    <exp op="AND">
+                        <exp op="=" dbField="s0.object_class_id" paramName="expcategory" />
+                        <exp op="=" dbField="s0.budget_fiscal_year_id" paramName="year" />
+                        <exp op="=" dbField="s0.agency_id " paramName="agency" />
+                        <exp op="=" dbField="s0.department_id " paramName="dept" />
+                        <exp op="=" dbField="s0.filter_type" paramName="filter_type" />
+                    </exp>
+                </where>
+            GROUP BY s0.budget_fiscal_year_id, s0.department_id, s0.department_name
+        </sql>
+    </statement>
+    <statement name="GetDepartmentsByCommittedExpenseBudget" datasource="checkbook">
+        <param name="year" required ="true" type="int" />
+        <param name="agency" type="int" />
+        <param name="expcategory" type="int" />
+        <param name="dept" type="int" />
+        <param name="filter_type" type="string" />
+        <sql>
+            SELECT s0.budget_fiscal_year_id,
+                s0.department_id,
+                s0.department_name,
+                SUM(total_expenditure_amount) AS budget_committed,
+                SUM(pre_encumbered_amount) AS pre_encumbered,
+                SUM(encumbered_amount) AS encumbered,
+                SUM(accrued_expense_amount) AS accrued_expense,
+                SUM(cash_expense_amount) AS cash_payments,
+                SUM(post_closing_adjustment_amount) AS post_adjustments
+            FROM budget s0
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="s0.object_class_id" paramName="expcategory" />
+                    <exp op="=" dbField="s0.budget_fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="s0.agency_id " paramName="agency" />
+                    <exp op="=" dbField="s0.department_id " paramName="dept" />
+                    <exp op="=" dbField="s0.filter_type" paramName="filter_type" />
+                </exp>
+            </where>
+            GROUP BY s0.budget_fiscal_year_id, s0.department_id, s0.department_name
+        </sql>
+    </statement>
+    <statement name="GetDepartmentsByPercentDifference" datasource="checkbook">
+        <param name="year" required ="true" type="int" />
+        <param name="agency" type="int" />
+        <param name="expcategory" type="int" />
+        <param name="dept" type="int" />
+        <param name="filter_type" type="string" />
+        <sql>
+            SELECT s0.budget_fiscal_year_id,
+            s0.department_id,
+            d.department_name,
+            SUM(COALESCE(modified_budget_amount,0)) AS current_amount,
+            SUM(COALESCE(modified_budget_amount_py,0)) AS previous_amount,
+            SUM(COALESCE(modified_budget_amount_py_1,0)) AS previous_1_amount,
+            SUM(COALESCE(modified_budget_amount_py_2,0)) AS previous_2_amount,
+            CASE SUM(COALESCE(modified_budget_amount_py,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(modified_budget_amount,0)) - SUM(COALESCE(modified_budget_amount_py,0)))/SUM(COALESCE(modified_budget_amount_py,0)))*100 END AS percent_difference1,
+            CASE SUM(COALESCE(modified_budget_amount_py_1,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(modified_budget_amount,0)) - SUM(COALESCE(modified_budget_amount_py_1,0)))/SUM(COALESCE(modified_budget_amount_py_1,0)))*100 END AS percent_difference2,
+            CASE SUM(COALESCE(modified_budget_amount_py_2,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(modified_budget_amount,0)) - SUM(COALESCE(modified_budget_amount_py_2,0)))/SUM(COALESCE(modified_budget_amount_py_2,0)))*100 END AS percent_difference3
+            FROM aggregateon_budget_by_year s0
+            JOIN ref_department d ON s0.department_id = d.department_id
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="s0.object_class_id" paramName="expcategory" />
+                    <exp op="=" dbField="s0.budget_fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="s0.agency_id " paramName="agency" />
+                    <exp op="=" dbField="s0.department_id " paramName="dept" />
+                    <exp op="=" dbField="s0.filter_type" paramName="filter_type" />
+                </exp>
+            </where>
+            GROUP BY s0.budget_fiscal_year_id, s0.department_id, d.department_name
+        </sql>
+    </statement>
+    <!--Expense Budget Categories Methods-->
+    <statement name="GetExpenseBudgetCategories" datasource="checkbook">
+        <param name="year" required ="true" type="int" />
+        <param name="agency" type="int" />
+        <param name="expcategory" type="int" />
+        <param name="dept" type="int" />
+        <param name="filter_type" type="string" />
+        <sql>
+            SELECT budget.budget_fiscal_year_id AS year_id,
+            budget.budget_code_id AS budget_code,
+            budget.budget_code_name AS budget_code_name,
+            SUM(adopted_amount) AS budget_adopted,
+            SUM(COALESCE(current_budget_amount,0)) AS budget_current,
+            SUM(total_expenditure_amount) AS budget_committed,
+            SUM(remaining_budget) AS budget_remaining
+            FROM budget
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="budget.agency_id" paramName="agency" />
+                    <exp op="=" dbField="budget.budget_fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="budget.object_class_id" paramName="expcategory" />
+                    <exp op="=" dbField="budget.department_id" paramName="dept" />
+                </exp>
+            </where>
+            GROUP BY budget.budget_fiscal_year_id, budget.budget_code_id, budget.budget_code_name
+        </sql>
+    </statement>
+    <statement name="GetExpenseBudgetCategoriesByCommittedExpenseBudget" datasource="checkbook">
+            <param name="year" required ="true" type="int" />
+            <param name="agency" type="int" />
+            <param name="expcategory" type="int" />
+            <param name="dept" type="int" />
+            <param name="filter_type" type="string" />
+        <sql>
+            SELECT s0.budget_fiscal_year_id,
+                s0.budget_code_id,
+                s0.budget_code_name,
+                SUM(total_expenditure_amount) AS budget_committed,
+                SUM(pre_encumbered_amount) AS pre_encumbered,
+                SUM(encumbered_amount) AS encumbered,
+                SUM(accrued_expense_amount) AS accrued_expense,
+                SUM(cash_expense_amount) AS cash_payments,
+                SUM(post_closing_adjustment_amount) AS post_adjustments
+            FROM budget s0
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="s0.object_class_id" paramName="expcategory" />
+                    <exp op="=" dbField="s0.budget_fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="s0.agency_id " paramName="agency" />
+                    <exp op="=" dbField="s0.department_id " paramName="dept" />
+                    <exp op="=" dbField="s0.filter_type" paramName="filter_type" />
+                </exp>
+            </where>
+            GROUP BY s0.budget_fiscal_year_id, s0.budget_code_id, s0.budget_code_name
+        </sql>
+    </statement>
+</statements>
+

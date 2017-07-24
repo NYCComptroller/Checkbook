@@ -1,0 +1,42 @@
+
+{
+  "dataFunc": "GetRevenueCategoriesCrossYearCollectionsByRevenue",
+  "serviceName": "RevenueWidgetService",
+  "headerTitle": "Revenue Categories by Cross Year Collections",
+  "headerSubTitle": "Revenue Categories",
+  "footerUrl":"RevenueUrlService::getCrossYearFooterUrl(_widget_controller_footer_url($node),'/revenue_category_revenue_by_cross_year_collections_details/revenue/revcat_details/')",
+  "table_columns": [
+        {"labelAlias": "revenue_category","column": "revenue_category_name"},
+        {"labelAlias": "recognized_current","column": "current_recognized","derivedColumn":"cross_rev_cat_recognized_amount_link","format": "dollar"},
+        {"labelAlias": "recognized_1","column": "recognized_1","derivedColumn":"cross_rev_cat_recognized_amount_link_1","format": "dollar"},
+        {"labelAlias": "recognized_2","column": "recognized_2","derivedColumn":"cross_rev_cat_recognized_amount_link_2","format": "dollar"},
+        {"labelAlias": "other_years","column": "other_years","format": "dollar"},
+        {"labelAlias": "remaining","column": "remaining_amount","format": "dollar"},
+        {"label": "","column": ""}
+  ],
+  "dataTableOptions": {
+    "aoColumns": [
+        { "bSortable": false,"sWidth":"250px","sClass":"text" },
+        { "bSortable": true,"sWidth":"150px","sClass":"number","asSorting": [ "desc","asc"  ] },
+        { "bSortable": true,"sWidth":"150px","sClass":"number","asSorting": [ "desc","asc"  ] },
+        { "bSortable": true,"sWidth":"150px" ,"sClass":"number","asSorting": [ "desc" ,"asc" ]},
+        { "bSortable": true,"sWidth":"150px","sClass":"number","asSorting": [ "desc","asc"  ] },
+        { "bSortable": true,"sWidth":"150px","sClass":"number","asSorting": [ "desc","asc"  ] },
+        { "bSortable": true,"sWidth":"15px" }
+    ],
+    "aaSorting": [[1, "desc"]],
+    "bServerSide": true,
+    "bFilter": false,
+    "bPaginate": false,
+    "bProcessing": true,
+    "bLengthChange": false,
+    "bInfo": false,
+    "bAutoWidth": false,
+    "fnServerParams": "##function ( aoData ) { reloadExpandCollapseWidget(this,aoData); }##",
+    "oLanguage": {
+      "sProcessing": "<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"
+    }
+  }
+}
+
+

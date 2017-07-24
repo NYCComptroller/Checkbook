@@ -1,0 +1,40 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":714,
+    "no_results_content":"No Results Found",    
+    "allowRequestParams":["contstatus"],
+    "limit":100,
+    "urlParamMap":{
+        "doctype":"document_code.document_code.document_code",
+        "contnum_exact":"pending_contract_number.pending_contract_number"
+    },
+    "columns":["pending_contract_number.pending_contract_number","txcount"],
+    "orderBy":"-txcount"  ,  
+	"getTotalDataCount":true,    
+	"facetPager":true,
+    "filterName":"Contract ID",
+    "urlParameterName":"contnum_exact",
+    "autocompleteParamName":"contnum_exact_auto",
+    "autocompleteID":"fContractNumber",
+    "autocompleteField":"contract_number",
+    "maxSelect":5,
+    "showAllRecords":true,
+    "allowFacetDeselect":true,
+    "adjustParameters":"
+        if(isset($parameters['vendor_type'])){
+            $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
+        }
+        checkbook_faceted_search_adjust_param($node);
+        if(function_exists('_checkbook_project_adjustContractParameterFilters')){
+            _checkbook_project_adjustContractParameterFilters($node,$parameters,'pending');
+        }
+
+        if(function_exists('_checkbook_project_applyParameterFilters')){
+            $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+            $adjustedParameters['pending_contract_number.pending_contract_number'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+            return $adjustedParameters;
+        }
+        return $parameters;
+    ",           
+    "template":"individual_filter"
+}

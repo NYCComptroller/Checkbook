@@ -75,9 +75,9 @@
                         var html = '<option select="selected" value="0" >Select Expense Category</option>';
                         if(data[0]){
                             if(data[0]!= 'No Matches Found'){
-                                for (i = 0; i < data.length; i++) {
-                                    html=html + '<option value="' + data[i] + ' ">' + data[i]  + '</option>';
-                                }
+                                $.each(data, function(key, exp_cat){
+                                    html = html + '<option value="' + exp_cat.code + '">' + exp_cat.name  + '</option>';
+                                });
                             }
                             else { html=html + '<option value="">' + data[0]  + '</option>'; }
                         }
@@ -130,9 +130,9 @@
                     var html = '<option select="selected" value="0" >Select Expense Category</option>';
                     if(data[0]){
                         if(data[0]!= 'No Matches Found'){
-                            for (i = 0; i < data.length; i++) {
-                                html=html + '<option value="' + data[i] + ' ">' + data[i]  + '</option>';
-                            }
+                            $.each(data, function(key, exp_cat){
+                                html = html + '<option value="' + exp_cat.code + '">' + exp_cat.name  + '</option>';
+                            });
                         }
                         else { html=html + '<option value="">' + data[0]  + '</option>'; }
                     }
@@ -179,9 +179,9 @@
                     var html = '<option select="selected" value="0" >Select Expense Category</option>';
                     if(data[0]){
                         if(data[0] != 'No Matches Found'){
-                            for (i = 0; i < data.length; i++) {
-                                html=html + '<option value="' + data[i] + ' ">' + data[i]  + '</option>';
-                            }
+                            $.each(data, function(key, exp_cat){
+                                html = html + '<option value="' + exp_cat.code + '">' + exp_cat.name  + '</option>';
+                            });
                         }
                         else { html=html + '<option value="">' + data[0]  + '</option>'; }
                     }
@@ -232,9 +232,9 @@
                     var html = '<option select="selected" value="0" >Select Expense Category</option>';
                     if(data[0]){
                         if(data[0] != 'No Matches Found'){
-                            for (i = 0; i < data.length; i++) {
-                                html=html + '<option value="' + data[i] + ' ">' + data[i]  + '</option>';
-                            }
+                            $.each(data, function(key, exp_cat){
+                                html = html + '<option value="' + exp_cat.code + '">' + exp_cat.name  + '</option>';
+                            });
                         }
                         else { html=html + '<option value="">' + data[0]  + '</option>'; }
                     }

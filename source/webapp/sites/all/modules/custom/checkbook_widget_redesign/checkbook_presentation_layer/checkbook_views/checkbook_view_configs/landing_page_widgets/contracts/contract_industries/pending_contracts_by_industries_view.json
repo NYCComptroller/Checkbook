@@ -1,0 +1,5 @@
+{
+    "defaultConfigKey":"revenue_contracts_by_industries_view",
+    "dataFunc":"GetContractsByIndustries",
+    "defaultParameters":{"type_of_year":"B"}
+}

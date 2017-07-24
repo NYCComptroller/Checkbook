@@ -37,7 +37,7 @@
     if(_checkbook_check_isEDCPage()){
         print '<div class="transactions-total-amount">$'
                   . custom_number_formatter_format($node->data[0]['total_amount_for_transaction'],2)
-                  .'<div class="amount-title">Total '.$contactStatusLabel.' Current Contract Amount</div></div>';
+                  .'<div class="amount-title">Total '.$contactStatusLabel.' Current Contract Amount12313</div></div>';
 
     }else if(_checkbook_check_is_mwbe_page() || _getRequestParamValue('dashboard')){
         $current_url = explode('/',$_SERVER['REQUEST_URI']);
@@ -47,9 +47,15 @@
             $summaryTitle =  'Total '.RequestUtil::getDashboardTitle()." ";
             $summaryTitle = str_replace('Total Total','Total',$summaryTitle);
         }
-        print '<div class="transactions-total-amount">$'
-            . custom_number_formatter_format($node->data[0]['total_maximum_contract_amount'],2)
-            .'<div class="amount-title">Total '.$contactStatusLabel.' Current Contract Amount</div></div>';
+        if($contactStatus == 'R'){
+            print '<div class="transactions-total-amount">$'
+                . custom_number_formatter_format($node->data[0]['total_maximum_contract_amount'],2)
+                .'<div class="amount-title">Total New Sub Vendor Current Contract Amount</div></div>';
+        }else{
+            print '<div class="transactions-total-amount">$'
+                . custom_number_formatter_format($node->data[0]['total_maximum_contract_amount'],2)
+                .'<div class="amount-title">Total '.$contactStatusLabel.' Current Contract Amount</div></div>';
+        }
     }else{
        print '<div class="transactions-total-amount">$'
           . custom_number_formatter_format($node->data[0]['total_maximum_contract_amount'],2)
