@@ -642,6 +642,14 @@ function checkbook_datafeeds_budget($form, &$form_state) {
         '#prefix' => '<div class="datafield budgetcode">',
         '#suffix' => '</div>',
     );
+    $form['filter']['budget_code_name'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Budget Name:'),
+        '#attributes' => array('class' => array('watch')),
+        '#default_value' => !empty($form_state['values']['budget_code_name']) ? $form_state['values']['budget_code_name'] : '',
+        '#prefix' => '<div class="datafield budgetcodename">',
+        '#suffix' => '</div>',
+    );
     $form['filter']['fiscal_year'] = array(
         '#type' => 'select',
         '#title' => t('Year:'),
@@ -942,6 +950,11 @@ function checkbook_datafeeds_budget_confirmation($form, &$form_state) {
         $user_criteria['Budget Code'] = $values['budget_code'];
         $formatted_search_criteria['Budget Code'] = $values['budget_code'];
     }
+    if ($values['budget_code_name']) {
+        $form['filter']['budget_code_name'] = array('#markup' => '<div><strong>Budget Name:</strong> ' . $values['budget_code_name'] . '</div>');
+        $user_criteria['Budget Name'] = $values['budget_code_name'];
+        $formatted_search_criteria['Budget Name'] = $values['budget_code_name'];
+    }
     if ($values['fiscal_year']) {
         $form['filter']['fiscal_year'] = array('#markup' => '<div><strong>Year:</strong> ' . $values['fiscal_year'] . '</div>');
         $user_criteria['Year'] = $values['fiscal_year'];
@@ -1133,15 +1146,15 @@ function checkbook_datafeeds_process_budget_values($form, $form_state) {
             $criteria['value']['expense_category'] = trim($ecmatches[1], '[ ]');
         }
     }
-    if ($values['budget_code']) {
-        preg_match($pattern, $values['budget_code'], $bcmatches);
-        if ($bcmatches){
-            $criteria['value']['budget_code'] = trim($bcmatches[1], '[ ]');
-            $criteria['value']['budget_code_name'] = str_replace($bcmatches[1],"",$values['budget_code']);
-        }else{
-            $criteria['value']['budget_code_name'] = $values['budget_code'];
-        }
+    
+    if ($values['budget_code'] !== '') {
+        $criteria['value']['budget_code'] = $values['budget_code'];
     }
+    
+    if($values['budget_code_name'] !== ''){
+        $criteria['value']['budget_code_name'] = $values['budget_code_name'];
+    }
+      
     if ($values['adoptedfrom'] !== '' || $values['adoptedto'] !== '') {
         $criteria['range']['adopted'] = array(
             checknull($values['adoptedfrom']),
