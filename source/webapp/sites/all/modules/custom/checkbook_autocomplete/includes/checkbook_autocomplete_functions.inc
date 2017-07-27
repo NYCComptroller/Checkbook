@@ -872,10 +872,11 @@ function _checkbook_autocomplete_budget_expcategory($agency, $budgetcode, $dept,
     }
 }
 
-function _checkbook_autocomplete_budget_budgetcode($agency , $dept , $expcategory, $budgetcode , $year) {
+//Autocomplete functionality for Budget Code field
+function _checkbook_autocomplete_budget_budgetcode($agency , $dept , $expcategory, $budgetcode, $budgetcodename , $year) {
     $search_term = _get_autocomplete_search_term();
     if (!empty($search_term)) {
-        $query = 'select?q=budget_code_name_code_autocomplete:' . $search_term . '&facet=true&facet.field=budget_code_name_code&fq=domain:budget&facet.limit=10&wt=php';
+        $query = 'select?q=budget_code:' . $search_term . '&facet=true&facet.field=budget_code&fq=domain:budget&facet.limit=10&wt=php';
         if ($agency) {
             $query .= '&fq=agency_code:' . $agency;
         }
@@ -888,8 +889,36 @@ function _checkbook_autocomplete_budget_budgetcode($agency , $dept , $expcategor
         if ($year) {
             $query .= '&fq=fiscal_year:' . $year;
         }
+        if ($budgetcodename) {
+            $query .= '&fq=budget_code_name:' . $budgetcodename;
+        }
     }
-    $matches = _checkbook_autocomplete_solr_results($query, 'budget_code_name_code');
+    $matches = _checkbook_autocomplete_solr_results($query, 'budget_code');
+    drupal_json_output($matches);
+}
+
+//Autocomplete functionality for Budget Code Name field
+function _checkbook_autocomplete_budget_budgetcodename($agency , $dept , $expcategory, $budgetcode, $budgetcodename , $year) {
+    $search_term = _get_autocomplete_search_term();
+    if (!empty($search_term)) {
+        $query = 'select?q=budget_code_name_autocomplete:' . $search_term . '&facet=true&facet.field=budget_code_name&fq=domain:budget&facet.limit=10&wt=php';
+        if ($agency) {
+            $query .= '&fq=agency_code:' . $agency;
+        }
+        if ($dept) {
+            $query .= '&fq=department_code:' . $dept;
+        }
+        if ($expcategory) {
+            $query .= '&fq=expenditure_object_code:' . $expcategory;
+        }
+        if ($year) {
+            $query .= '&fq=fiscal_year:' . $year;
+        }
+        if ($budgetcode) {
+            $query .= '&fq=budget_code:' . $budgetcode;
+        }
+    }
+    $matches = _checkbook_autocomplete_solr_results($query, 'budget_code_name');
     drupal_json_output($matches);
 }
 
