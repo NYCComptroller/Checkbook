@@ -624,6 +624,22 @@ class RequestUtil{
         return $fiscalYearId;
     }
     
+    /** Returns Year ID for Payroll domain navigation URLs from Top Navigation 
+     *  @return integer $calYearId 
+     */
+    static function getCalYearIdForTopNavigation(){
+        if(_getRequestParamValue("year") != NULL){
+            $year =  _getRequestParamValue("year");
+        }else if(_getRequestParamValue("calyear") != NULL){
+            $year = _getRequestParamValue("calyear");
+        }
+        $currentCalYear = _getCalendarYearID();
+        if($year > $currentCalYear){
+            $year = $currentCalYear;
+        }
+        return $year;
+    }
+    
     /** Returns top navigation URL */
     static function getTopNavURL($domain){
         $fiscalYearId = self::getFiscalYearIdForTopNavigation();
@@ -651,7 +667,7 @@ class RequestUtil{
                 }
                 break;
             case "payroll":
-                $year = (_getRequestParamValue("year") != NULL) ? _getRequestParamValue("year") : _getCurrentYearID();
+                $year = self::getCalYearIdForTopNavigation();
                 //Payroll is always redirected to the respective Calendar Year irrespective of the 'yeartpe' paramenter in the URL for all the other Domains
                 if(!preg_match('/payroll/',$_SERVER['REQUEST_URI'])){
                     $yeartype = 'C';
