@@ -21,6 +21,9 @@
         if(!preg_match('/payroll/',$_SERVER['REQUEST_URI'])){
             unset($node->widgetConfig->model->series[1]->seriesURLParamMap->yeartype);
         }
+         
+        if(_getRequestParamValue('yeartype') == 'B' && !preg_match('/payroll/',$_SERVER['REQUEST_URI']))
+            unset($node->widgetConfig->model->series[1]->seriesURLParamMap->year);
         
     ",
     
@@ -47,7 +50,12 @@
                 "columns":["total_base_pay","total_overtime_pay","total_gross_pay"],
                 "seriesURLParamMap":{"vendor":"vendor_id","calyear":"year.year","year":"year.year","agency":"agency_id","yeartype":"type_of_year","title":"civil_service_title_code.civil_service_title_code"},
                 "allowedParams":["year.year","agency_id","type_of_year","civil_service_title_code.civil_service_title_code"],
-                "seriesDefaultParameters":{"type_of_year":"C"}
+                "seriesDefaultParameters":{"type_of_year":"C"},
+                "adjustSerieParameters":"
+                    if(_getRequestParamValue('yeartype') == 'B' && !preg_match('/payroll/',$_SERVER['REQUEST_URI']))
+                        $serieParameters['fiscal_year_id'] = RequestUtil::getCalYearIdForTopNavigation();
+                    return $serieParameters;
+                "
             },
             {
                 "dataset":"checkbook:spending_data",
