@@ -4833,18 +4833,6 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
                     ),
                 ),
             );
-            $form['filter']['mwbe_category'] = array(
-                '#type' => 'select',
-                '#title' => t('M/WBE Category:'),
-                '#options' => _mwbe_category_options(),
-                '#prefix' => '<div class="datafield mwbecategory">',
-                '#suffix' => '</div>',
-                '#attributes' => array('class' => array('watch')),
-                '#multiple' => FALSE,
-                '#id' => 'edit-mwbe-category',
-                '#name' => 'mwbe_category',
-                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'mwbe_category', $first_time_load, ''),
-            );
             $form['filter']['industry'] = array(
                 '#type' => 'select',
                 '#title' => t('Industry:'),
@@ -4856,6 +4844,18 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
                 '#id' => 'edit-industry',
                 '#name' => 'industry',
                 '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'industry', $first_time_load, ''),
+            );
+            $form['filter']['mwbe_category'] = array(
+                '#type' => 'select',
+                '#title' => t('M/WBE Category:'),
+                '#options' => _mwbe_category_options(),
+                '#prefix' => '<div class="datafield mwbecategory">',
+                '#suffix' => '</div>',
+                '#attributes' => array('class' => array('watch')),
+                '#multiple' => FALSE,
+                '#id' => 'edit-mwbe-category',
+                '#name' => 'mwbe_category',
+                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'mwbe_category', $first_time_load, ''),
             );
             $form['filter']['payee_name'] = array(
                 '#type' => 'textfield',
