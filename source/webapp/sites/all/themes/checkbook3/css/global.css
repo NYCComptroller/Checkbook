@@ -507,6 +507,12 @@ li.ui-autocomplete-category {
     text-decoration: none;
 }
 
+/* Budget Data Feeds auto complete drop down */
+.page-data-feeds ul.ui-autocomplete {
+    overflow-y: auto;
+    max-height: 200px;
+}
+
 /* bread crumb */
 .breadcrumb {
     font-size: 11px;
