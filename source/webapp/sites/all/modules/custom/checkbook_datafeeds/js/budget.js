@@ -41,9 +41,17 @@
             //var expcategory = ($('#expense-category select',context).attr('disabled')) ? 0 : emptyToZero($('#expense-category select',context).val());
             var budgetcode = ($('#edit-budget-code',context).attr('disabled')) ? 0 : emptyToZero($('#edit-budget-code',context).val());
             var budgetcodename = ($('#edit-budget-code-name',context).attr('disabled')) ? 0 : emptyToZero($('#edit-budget-code-name',context).val());
-
-            $('#edit-budget-code',context).autocomplete({source:'/autocomplete/budget/budgetcode/' + agency + '/' + dept + '/' +expcategory+ '/' + budgetcode + '/' + budgetcodename + '/' + year});
-            $('#edit-budget-code-name',context).autocomplete({source:'/autocomplete/budget/budgetcodename/' + agency + '/' + dept + '/' +expcategory+ '/' + budgetcode + '/' + budgetcodename + '/' + year});
+ 
+            $('#edit-budget-code',context).autocomplete({
+                source:'/autocomplete/budget/budgetcode/' + agency + '/' + dept + '/' +expcategory+ '/' + budgetcode + '/' + budgetcodename + '/' + year,
+                minLength:0
+            }).bind('focus', function(){ $(this).autocomplete("search"); });
+            
+            $('#edit-budget-code-name',context).autocomplete({
+                source:'/autocomplete/budget/budgetcodename/' + agency + '/' + dept + '/' +expcategory+ '/' + budgetcode + '/' + budgetcodename + '/' + year,
+                minLength:0
+            }).bind('focus', function(){ $(this).autocomplete("search"); });
+            
             $('#expense-category select',context).autocomplete({source:'/autocomplete/budget/expcategory/' + agency + '/' + dept + '/' + expcategory + '/' + budgetcode + budgetcodename + '/' + '/' + year});
             $('#department select',context).autocomplete({source:'/autocomplete/budget/department/' + agency + '/' + dept + '/' + expcategory + '/' + budgetcode + '/' + budgetcodename + '/' + year});
             $('.watch:input',context).each(function () {
@@ -56,8 +64,16 @@
                     //expcategory = ($('#expense-category select',context).attr('disabled')) ? 0 : emptyToZero($('#expense-category select',context).val());
                     budgetcode = ($('#edit-budget-code',context).attr('disabled')) ? 0 : emptyToZero($('#edit-budget-code',context).val());
                     budgetcodename = ($('#edit-budget-code-name',context).attr('disabled')) ? 0 : emptyToZero($('#edit-budget-code-name',context).val());
-                    $("#edit-budget-code",context).autocomplete("option", "source", '/autocomplete/budget/budgetcode/' + agency + '/' + dept + '/' + expcategory + '/' + budgetcode + '/' + budgetcodename + '/' + year);
-                    $("#edit-budget-code-name",context).autocomplete("option", "source", '/autocomplete/budget/budgetcodename/' + agency + '/' + dept + '/' + expcategory + '/' + budgetcode + '/' + budgetcodename + '/' + year);
+                    $('#edit-budget-code',context).autocomplete({
+                        source:'/autocomplete/budget/budgetcode/' + agency + '/' + dept + '/' +expcategory+ '/' + budgetcode + '/' + budgetcodename + '/' + year,
+                        minLength:0
+                    }).bind('focus', function(){ $(this).autocomplete("search"); });
+
+                    $('#edit-budget-code-name',context).autocomplete({
+                        source:'/autocomplete/budget/budgetcodename/' + agency + '/' + dept + '/' +expcategory+ '/' + budgetcode + '/' + budgetcodename + '/' + year,
+                        minLength:0
+                    }).bind('focus', function(){ $(this).autocomplete("search"); });
+                    
                     $("#expense-category select",context).autocomplete("option", "source", '/autocomplete/budget/expcategory/' + agency + '/' + dept + '/' + expcategory + '/' + budgetcode + '/' + budgetcodename + '/' + year);
                     $('#department select',context).autocomplete("option", "source", '/autocomplete/budget/department/' + agency + '/' + dept + '/' + expcategory + '/' + budgetcode + '/' + budgetcodename + '/' + year);
                 });
