@@ -201,4 +201,3 @@ function disableInputFields(){
         jQuery('select[name="'+contracts_data_source+'_contracts_sub_vendor_status"]').attr("disabled", "disabled");
     }
 }
-

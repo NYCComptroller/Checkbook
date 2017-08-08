@@ -3649,3 +3649,68 @@ a.new-features-morelink{
 #table_budget_by_departments_view thead tr{
   height: 40px;
 }
+
+/**** Styles for Prime and Sub icon for Contracts***/
+.prime-and-sub,
+.prime-and-sub-datafeeds
+{
+    height: 22px;
+    float: left;
+    padding-right:4px;
+    margin-top: -2px;
+}
+
+
+#contracts-advanced-search .checkbook.column > .form-item > label:first-child,
+.contracts-fieldset .column > .datafield > .form-item > label:first-child,
+.contracts-fieldset .column > .datafield > label:first-child {
+    padding-left: 15px;
+    white-space: nowrap;
+}
+
+#contracts-advanced-search .checkbook.column .asterisk-style > label:first-child,
+.contracts-fieldset .column .asterisk-style > .form-item > label:first-child,
+.contracts-fieldset .column .asterisk-style > label:first-child {
+    padding-left: 0px;
+    white-space: nowrap;
+}
+
+#contracts-advanced-search .checkbook.column-left > .form-item > label:first-child {
+    margin-left: -15px;
+}
+
+#contracts-advanced-search .checkbook.column-left .asterisk-style > label:first-child {
+    margin-left: -15px;
+}
+
+.prime-and-sub-note,
+.prime-and-sub-note-datafeeds p{
+    font-family: Verdana,Geneva,sans-serif;
+    font-size: 11px;
+    font-style: italic;
+    position: relative;
+    text-align: right;
+}
+.prime-and-sub-note{
+    margin-bottom: 20px;
+    margin-top: -15px;  
+}
+.prime-and-sub-note > img,
+.prime-and-sub-note-datafeeds p >img{
+    height: 20px;
+    position: relative;
+}
+.prime-and-sub-note > img{
+    margin-bottom: -4px;
+}
+.prime-and-sub-note-datafeeds p > img{
+    margin-bottom: -2px;
+}
+#checkbook-datafeeds-data-feed-wizard .prime-and-sub-note-datafeeds p{
+    float: left;
+    top: 0;
+}
+
+#checkbook-datafeeds-data-feed-wizard .prime-and-sub-note-datafeeds p >img{
+    top: 0;
+}
