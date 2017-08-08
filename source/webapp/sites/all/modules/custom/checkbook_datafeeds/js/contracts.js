@@ -279,7 +279,10 @@
                 }
             }
             //Set up jQuery datepickers
-            $('.datepicker', context).datepicker({dateFormat:"yy-mm-dd"});
+            $('.datepicker', context).datepicker({dateFormat:"yy-mm-dd",
+                                                changeMonth:true,     
+                                                changeYear:true,
+                                                yearRange:'-3:+3'});
             //Disable Year option for All Years
             if ($('#edit-year', context).val() == 'ALL'){
                 $('#edit-column-select-expense option[value="Year"]',context).attr('disabled','disabled');
