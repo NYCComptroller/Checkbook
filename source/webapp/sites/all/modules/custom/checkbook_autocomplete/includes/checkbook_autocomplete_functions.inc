@@ -1224,11 +1224,10 @@ function _checkbook_autocomplete_escapeSolrValue($string) {
  *   Search term
  */
 function _get_autocomplete_search_term() {
-    $term = trim($_REQUEST['term']);
-    if (strlen($term) > 0) {
-        $autocomplete_text = trim(htmlspecialchars_decode($term, ENT_QUOTES));
+    if (strlen($_REQUEST['term']) > 0) {
+        $autocomplete_text = trim(htmlspecialchars_decode($_REQUEST['term'], ENT_QUOTES));
         $autocomplete_terms = explode(' ', $autocomplete_text);
-        $autocomplete_text = _checkbook_autocomplete_escapeSolrValue(trim(htmlspecialchars_decode($term), ENT_QUOTES));
+        $autocomplete_text = _checkbook_autocomplete_escapeSolrValue(trim(htmlspecialchars_decode($_REQUEST['term']), ENT_QUOTES));
 
         if (count($autocomplete_terms) > 0) {
             $autocomplete_text = "";
@@ -1257,11 +1256,10 @@ function _get_autocomplete_search_term() {
  *   Search term
  */
 function _get_autocomplete_search_term_facet_prefix() {
-    $term = trim($_REQUEST['term']);
-    if (strlen($term) > 0) {
-        $autocomplete_text = trim(htmlspecialchars_decode($term, ENT_QUOTES));
+    if (strlen($_REQUEST['term']) > 0) {
+        $autocomplete_text = trim(htmlspecialchars_decode($_REQUEST['term'], ENT_QUOTES));
         $autocomplete_terms = explode(' ', $autocomplete_text);
-        $autocomplete_text = _checkbook_autocomplete_escapeSolrValue(trim(htmlspecialchars_decode($term), ENT_QUOTES));
+        $autocomplete_text = _checkbook_autocomplete_escapeSolrValue(trim(htmlspecialchars_decode($_REQUEST['term']), ENT_QUOTES));
 
         if (count($autocomplete_terms) > 0) {
             $autocomplete_text = "";

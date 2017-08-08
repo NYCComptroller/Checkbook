@@ -1918,7 +1918,7 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
             );
             $form['filter']['sub_vendor_status_in_pip_id'] = array(
                 '#type' => 'select',
-                '#title' => t('Sub Vendor<br />Status in PIP&nbsp;:'),
+                '#title' => t('Sub Vendor Status <br />in PIP&nbsp;:'),
                 '#options' => $sub_vendor_status_in_pip_options['options'],
                 '#option_attributes' => $sub_vendor_status_in_pip_options['options_attributes'],
                 '#attributes' => array('class' => array('watch')),
