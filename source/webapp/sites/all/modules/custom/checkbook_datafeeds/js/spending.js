@@ -196,7 +196,10 @@
                 $('#edit-column-select', context).multiSelect('deselect_all');
             });
             //Sets up jQuery UI datepickers
-            $('.datepicker', context).datepicker({dateFormat:"yy-mm-dd"});
+            $('.datepicker', context).datepicker({dateFormat:"yy-mm-dd",
+                                                changeMonth:true,     
+                                                changeYear:true,
+                                                yearRange:'-3:+3'});
 
             //Sets up jQuery UI autocompletes and autocomplete filtering functionality
             var year = 0;

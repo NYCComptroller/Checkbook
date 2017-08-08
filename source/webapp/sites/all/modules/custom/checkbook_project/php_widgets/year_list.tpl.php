@@ -86,7 +86,7 @@ if(isset($bottomURL)){
  
 $fiscal_year_data_array = array();
 $calendar_year_data_array = array();
-$current_fy_id = _getFiscalYearID();
+$current_fy_id = _getCurrentYearID();
 $isSelected = false;
     
 
@@ -103,7 +103,12 @@ foreach($node->data as $key => $value){
         $selected_cal_year = '';
         $isSelected =  true;
     }
-    
+    //For Trends and Smart Search, set the default year value to current NYC fiscal year 
+    if($trends || $search){
+        if($value['year_id'] == $current_fy_id){
+            $selected_fiscal_year = 'selected = yes';
+        }
+    }
     /*********  Begining of Fiscal Year Options   ********/
     if($value['year_value'] <= $filter_years['year_value'] && $value['year_value'] != '2010'){
         
