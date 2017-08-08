@@ -4,14 +4,13 @@
         //This is to reset the radio button to citywide if the user refreshes browser
         var data_source = $('input:hidden[name="data_source"]').val();
         var agency_selected = $('#edit-agency').val();
-        showHidePrimeAndSubIcon();
 
         if (data_source == "checkbook_oge" && agency_selected == 'Citywide (All Agencies)') {
             $('input:radio[name="datafeeds-contracts-domain-filter"][value="checkbook_oge"]').removeAttr('checked').button("refresh");
             $('input:radio[name="datafeeds-contracts-domain-filter"][value="checkbook"]').attr('checked', 'checked').button("refresh");
             $('input:hidden[name="data_source"]').val("checkbook");
         }
-        
+
         //On change of "Sub Vendor Status in PIP" status
         $('#edit-sub_vendor_status_in_pip_id').change(function() {
             var sub_vendor_status = $('#edit-sub_vendor_status_in_pip_id').val();
@@ -45,74 +44,8 @@
             }
         });
     });
-    
-    function showHidePrimeAndSubIcon(){
-            var note = jQuery(".prime-and-sub-note-datafeeds");
-            var contract_status = jQuery(".contractstatus");
-            var vendor = jQuery(".vendor");
-            var mwbe_category = jQuery(".mwbecategory");
-            var current_amt_from = jQuery(".currentamt");
-            var category = jQuery(".category");
-            var sub_vendor_status_in_pip = jQuery(".sub_vendor_status_in_pip_id");
-            var purpose = jQuery(".purpose");
-            var industry = jQuery(".industry");
-            var year = jQuery(".year");
 
-            // Remove all asterisk fields & note
-            note.remove();
-            removePrimeAndSubIcon(contract_status);
-            removePrimeAndSubIcon(vendor);
-            removePrimeAndSubIcon(mwbe_category);
-            removePrimeAndSubIcon(current_amt_from);
-            removePrimeAndSubIcon(category);
-            removePrimeAndSubIcon(sub_vendor_status_in_pip);
-            removePrimeAndSubIcon(purpose);
-            removePrimeAndSubIcon(industry);
-            removePrimeAndSubIcon(year);
-
-            var contract_status_val = jQuery("select[name=df_contract_status]").val();
-            var category_val = jQuery("select[name=category]").val();
-        if(jQuery("input[name='datafeeds-contracts-domain-filter']:checked").val() == 'checkbook'){
-            // Add asterisk fields & note
-            if((contract_status_val == 'active' || contract_status_val == 'registered')
-                && (category_val == 'expense' || category_val == 'all')){
-
-                jQuery("<div class='prime-and-sub-note-datafeeds'><p>All Fields are searchable by Prime data, unless designated as Prime & Sub (<img src='/sites/all/themes/checkbook3/images/prime-and-sub.png' />).</p><br/></div>").insertAfter(jQuery("p.required-message"));
-
-                addPrimeAndSubIcon(contract_status);
-                addPrimeAndSubIcon(vendor);
-                addPrimeAndSubIcon(mwbe_category);
-                addPrimeAndSubIcon(current_amt_from);
-                addPrimeAndSubIcon(category);
-                addPrimeAndSubIcon(sub_vendor_status_in_pip);
-                addPrimeAndSubIcon(purpose);
-                addPrimeAndSubIcon(industry);
-                addPrimeAndSubIcon(year);
-            }
-        }
-    }
-
-    /**
-     * Function will remove the asterisk icon css from a field
-     * @param ele
-     */
-    function removePrimeAndSubIcon(ele){
-        ele.find('.prime-and-sub-datafeeds').remove();
-        ele.removeClass('asterisk-style');
-
-    }
-
-    /**
-     * Function will add the asterisk icon css to a field
-     * @param ele
-     */
-    function addPrimeAndSubIcon(ele){
-        var primeAndSubIcon = "<img class='prime-and-sub-datafeeds' src='/sites/all/themes/checkbook3/images/prime-and-sub.png' />";
-        jQuery(ele).find('label').first().prepend(primeAndSubIcon);
-        ele.addClass('asterisk-style');
-    }
-
-        $.fn.onDataSourceChange = function(){
+    $.fn.onDataSourceChange = function(){
         //clear all text fields
         var enclosingDiv = $("#dynamic-filter-data-wrapper").children('#edit-filter').children('div.fieldset-wrapper').children();
         jQuery(enclosingDiv).find(':input').each(function() {
@@ -174,8 +107,6 @@
         $('#ms-edit-column-select-all a.deselect').click(function () {
             $('#edit-column-select-all').multiSelect('deselect_all');
         });
-       
-        showHidePrimeAndSubIcon();
     }
 
     Drupal.behaviors.contractsDataFeeds = {
@@ -191,14 +122,12 @@
                 catval = $('#edit-category', context).val();
                 resetSelectedColumns();
                 hideShow(csval, catval);
-                showHidePrimeAndSubIcon();
             });
             $category.change(function () {
                 csval = $('select[name="df_contract_status"]', context).val();
                 catval = $('#edit-category', context).val();
                 resetSelectedColumns();
                 hideShow(csval, catval);
-                showHidePrimeAndSubIcon();
             });
             function hideShow(csval, catval) {
                 var $expense = $('.form-item-column-select-expense', context);
@@ -278,13 +207,8 @@
 
                 }
             }
-            
             //Set up jQuery datepickers
-            $('.datepicker').datepicker({dateFormat:"yy-mm-dd",
-                                        changeMonth:true,     
-                                        changeYear:true,
-                                        yearRange:'-3:+3'});
-                                    
+            $('.datepicker', context).datepicker({dateFormat:"yy-mm-dd"});
             //Disable Year option for All Years
             if ($('#edit-year', context).val() == 'ALL'){
                 $('#edit-column-select-expense option[value="Year"]',context).attr('disabled','disabled');
@@ -515,6 +439,6 @@
             output = 0;
         }
         return output;
-    } 
+    }
 
 }(jQuery));
