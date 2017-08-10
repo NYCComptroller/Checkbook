@@ -196,10 +196,11 @@
                 $('#edit-column-select', context).multiSelect('deselect_all');
             });
             //Sets up jQuery UI datepickers
+            var currentYear = new Date().getFullYear();
             $('.datepicker', context).datepicker({dateFormat:"yy-mm-dd",
                                                 changeMonth:true,     
                                                 changeYear:true,
-                                                yearRange:'-3:+3'});
+                                                yearRange:'-'+(currentYear-1900)+':+'+(2500-currentYear)});
 
             //Sets up jQuery UI autocompletes and autocomplete filtering functionality
             var year = 0;
