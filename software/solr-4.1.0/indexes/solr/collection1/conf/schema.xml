@@ -114,7 +114,6 @@
         <field name="contract_original_agreement_id" type="string_custom" indexed="true" stored="true"/>
         <field name="domain_ordering" type="string_custom" indexed="true" stored="true"/>
         <field name="date_ordering" type="string_custom" indexed="true" stored="true"/>
-        <field name="vendor_record_type" type="string_custom" indexed="true" stored="true"/>        
         <field name="industry_type_name" type="string_custom" indexed="true" stored="true" />
         <field name="industry_type_name_autocomplete" type="string_autocomplete" indexed="true"/>
         <field name="industry_type_id" type="string_custom" indexed="true" stored="true"/>
@@ -294,6 +293,7 @@
         <field name="original_amount" type="double" indexed="true" stored="true"/>
         <field name="contract_status" type="string_custom" indexed="true" stored="true" />
         <field name="contract_type_id" type="int" indexed="true" stored="true"/>
+        <field name="vendor_record_type" type="string_custom" indexed="true" stored="true"/>        
 
         <field name="latest_flag" type="string_custom" indexed="true" stored="true"/>
         <field name="award_category_code" type="string_custom" indexed="true" stored="true"/>
