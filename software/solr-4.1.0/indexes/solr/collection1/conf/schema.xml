@@ -114,6 +114,7 @@
         <field name="contract_original_agreement_id" type="string_custom" indexed="true" stored="true"/>
         <field name="domain_ordering" type="string_custom" indexed="true" stored="true"/>
         <field name="date_ordering" type="string_custom" indexed="true" stored="true"/>
+        <field name="vendor_record_type" type="string_custom" indexed="true" stored="true"/>        
         <field name="industry_type_name" type="string_custom" indexed="true" stored="true" />
         <field name="industry_type_name_autocomplete" type="string_autocomplete" indexed="true"/>
         <field name="industry_type_id" type="string_custom" indexed="true" stored="true"/>
