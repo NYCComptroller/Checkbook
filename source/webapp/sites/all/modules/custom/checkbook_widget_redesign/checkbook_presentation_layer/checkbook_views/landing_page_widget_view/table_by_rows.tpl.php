@@ -118,10 +118,11 @@ else {
   <?php
     if ($node->widgetConfig->enableExpand == TRUE) {
         if($node->totalDataCount > 5){
-            $simultExpandCollapseNodeIds = array('spending_by_agencies_view', 'spending_by_expense_categories_view',
-                                                 'spending_by_departments_view','oge_spending_by_expense_categories_view',
-                                                 'oge_spending_by_departments_view', 'mwbe_spending_by_agencies_view',
-                                                 'mwe_spending_expense_categories_view', 'mwbe_spending_by_departments_view');
+            $simultExpandCollapseNodeIds = array();
+//            $simultExpandCollapseNodeIds = array('spending_by_agencies_view', 'spending_by_expense_categories_view',
+//                                                 'spending_by_departments_view','oge_spending_by_expense_categories_view',
+//                                                 'oge_spending_by_departments_view', 'mwbe_spending_by_agencies_view',
+//                                                 'mwe_spending_expense_categories_view', 'mwbe_spending_by_departments_view');
             if(in_array($node->nid, $simultExpandCollapseNodeIds)){
                 echo '<a href="#" class="simultExpandCollapseWidget"><img src="/' . drupal_get_path('theme',$GLOBALS['theme']) . '/images/open.png"></a>';
             }else{
