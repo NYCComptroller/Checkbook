@@ -1142,6 +1142,7 @@ function _checkbook_smart_search_domain_export_fields($domain, $IsOge){
                 $parameter_mapping = array(
                     "contract_status"=>"Status",
                     "contract_category_name"=>"Category",
+                    "vendor_record_type"=>"Vendor Record Type",
                     "vendor_name"=>"Vendor",
                     "agency_name_export"=>"Agency",
                     "contract_number"=>"Contract ID",
