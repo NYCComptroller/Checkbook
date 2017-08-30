@@ -563,7 +563,6 @@
             <field column="is_prime_or_sub" name="is_prime_or_sub" />
             <field column="sub_contract_id" name="sub_contract_id" />
             <field column="vendor_type" name="vendor_type" />
-            <field column="vendor_record_type" name="vendor_record_type" />            
             <field column="is_minority_vendor" name="is_minority_vendor" />
             <field column="prime_vendor_name" name="prime_vendor_name" />
             <field column="entity_contract_number" name="contract_entity_contract_number"/>
@@ -576,6 +575,7 @@
             <field column="effective_begin_year" name="effective_begin_year" />
             <field column="effective_begin_year_id" name="effective_begin_year_id" />
             <field column="contract_original_agreement_id" name="contract_original_agreement_id"/>
+            <field column="vendor_record_type" name="vendor_record_type" />            
             <field column="industry_type_id" name="industry_type_id" />
             <field column="industry_type_name" name="industry_type_name" />
             <field column="aprv_sta" name="aprv_sta" />
@@ -781,6 +781,7 @@
                 vendor_id,
                 vendor_customer_code vendor_code,
                 lower(vendor_legal_name) || '[ ' || vendor_customer_code || ' ]' vendor_name_code,
+                'N/A' as prime_vendor_name,
                 contract_number,
                 fms_parent_contract_number parent_contract_number,
                 version_number,
@@ -831,6 +832,7 @@
             <field column="vendor_name" name="vendor_name" />
             <field column="vendor_name_code" name="vendor_name_code" />
             <field column="vendor_code" name="vendor_code" />
+            <field column="prime_vendor_name" name="prime_vendor_name" />
             <field column="contract_number" name="contract_number" />
             <field column="parent_contract_number" name="parent_contract_number" />
             <field column="fms_contract_number" name="fms_pending_contract_number" />
