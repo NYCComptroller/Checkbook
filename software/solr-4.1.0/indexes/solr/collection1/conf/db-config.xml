@@ -795,6 +795,7 @@
                 board_award_number apt_pin,
                 start_date,
                 end_date,
+                CASE WHEN is_prime_or_sub IN ('S') THEN 'Sub Vendor' ELSE 'Prime Vendor' END AS vendor_record_type,                
                 cif_received_date,
                 revised_maximum_amount,
 				cont_type_code,
@@ -843,6 +844,7 @@
             <field column="description" name="contract_purpose" />
             <field column="start_date" name="start_date" />
             <field column="end_date" name="end_date" />
+            <field column="vendor_record_type" name="vendor_record_type" />            
             <field column="apt_pin" name="apt_pin" />
             <field column="pin" name="pin" />
             <field column="version_number" name="version_number" />
