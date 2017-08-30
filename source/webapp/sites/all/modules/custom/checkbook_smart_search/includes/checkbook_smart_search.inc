@@ -1162,7 +1162,6 @@ function _checkbook_smart_search_domain_export_fields($domain, $IsOge){
                     "industry_type_name" => "Industry",
                     "received_date"=>"Received date",
                     "minority_type_name" => "M/WBE Category",
-                    "is_prime_or_sub" => "Sub Vendor",
                     "prime_vendor_name" => "Associated Prime Vendor",
                 );
             }
