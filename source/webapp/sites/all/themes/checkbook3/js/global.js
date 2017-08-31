@@ -1916,7 +1916,8 @@ Drupal.behaviors.hoveOverMWBE = {
                     var reloadURL =  window.location.pathname +"/"+category+ "?expandBottomContURL=" +  hrefURL ;
                 }
             }
-            window.location = reloadURL;
+            //window.location = reloadURL;
+            window.openreloadURL;
 
 
            /* $('.bottomContainer').html("Loading Data");
