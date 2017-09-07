@@ -143,6 +143,42 @@ public class NYCDatabaseUtil {
 
         return "$" + formattedNum + moneyChar;
     }
+    
+    private static String formatNumber2(BigDecimal num) {
+        String formattedNum = null;
+        String moneyChar = null;
+        int count = 0;
+
+        while (num.compareTo(new BigDecimal(999)) >= 0) {
+            num = num.divide(new BigDecimal(1000));
+            count++;
+        }
+
+        switch (count) {
+            case 1:
+                moneyChar = "K";
+                break;
+            case 2:
+                moneyChar = "M";
+                break;
+            case 3:
+                moneyChar = "B";
+                break;
+            case 4:
+                moneyChar = "T";
+                break;
+            case 5:
+                moneyChar = "Q";
+                break;
+            default:
+                moneyChar = "";
+                break;
+        }
+
+        formattedNum = num.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+
+        return "$" + formattedNum + moneyChar;
+    }
 
     public static String getSpendingAmount(int year, char yearTypeVal) throws SQLException {
         query = "SELECT SUM(check_amount) sumSpendingAmt "
@@ -195,6 +231,39 @@ public class NYCDatabaseUtil {
     }
     // Revenue Widgets
     
+    public static String getRevenueAmount(int year, char yearTypeVal) throws SQLException {
+        query = "SELECT SUM(posting_amount) sumRevenueAmt "
+                + "FROM revenue"
+                + " WHERE budget_fiscal_year = " + year;
+
+
+        rs = amountQueryHelper(yearTypeVal);
+
+        BigDecimal totalRevenueAmount = new BigDecimal(0);
+
+        while (rs.next()) {
+            totalRevenueAmount = rs.getBigDecimal("sumRevenueAmt");
+        }
+        return formatNumber(totalRevenueAmount);
+    }
+    
+    public static String getRevenueDetailsAmount(int year, char yearTypeVal) throws SQLException {
+        query = "SELECT SUM(posting_amount) sumRevenueAmt "
+                + "FROM revenue"
+                + " WHERE budget_fiscal_year = " + year;
+
+
+        rs = amountQueryHelper(yearTypeVal);
+
+        BigDecimal totalRevenueAmount = new BigDecimal(0);
+
+        while (rs.next()) {
+            totalRevenueAmount = rs.getBigDecimal("sumRevenueAmt");
+        }
+        return formatNumber2(totalRevenueAmount);
+    }
+    
+    
     public static int getRevenueAgenciesCount(int year, char yearTypeVal) throws SQLException {
         query = "SELECT COUNT(Distinct(agency_id)) aCount " +
                 "FROM  revenue_budget where budget_fiscal_year= " + year ;
@@ -234,6 +303,21 @@ public class NYCDatabaseUtil {
          
             return count;
     }
+        
+        
+        public static int getRevenueDetailsCount(int year, char yearTypeVal) throws SQLException {
+            query = "SELECT COUNT(*) aCount " +
+                    "FROM  revenue where budget_fiscal_year= " + year ;
+
+            rs = amountQueryHelper(yearTypeVal);
+            int count = 0;
+            while (rs.next()) {
+                count = rs.getInt("aCount");
+            }
+         
+            return count;
+            
+        }
         
         //Spending widget counts
         
@@ -366,6 +450,40 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
         return formatNumber(totalBudgetAmount);
         // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
     }
+    
+    public static String getBudgetDetailsAmount(int year, char yearTypeVal) throws SQLException {
+        query = "SELECT SUM(pre_encumbered_amount + encumbered_amount+ accrued_expense_amount + cash_expense_amount + post_closing_adjustment_amount) sumBudgetAmt "
+                + "FROM budget"
+                + " WHERE budget_fiscal_year = " + year;
+
+
+        rs = amountQueryHelper(yearTypeVal);
+
+        BigDecimal totalBudgetAmount = new BigDecimal(0);
+
+        while (rs.next()) {
+            totalBudgetAmount = rs.getBigDecimal("sumBudgetAmt");
+        }
+        return formatNumber2(totalBudgetAmount);
+        // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
+    }
+      
+    
+    
+        public static int getBudgetDetailsCount(int year, char yearTypeVal) throws SQLException {
+            query = "SELECT COUNT(*)  aCount " +
+                    "FROM  budget where budget_fiscal_year= " + year ;
+
+            rs = amountQueryHelper(yearTypeVal);
+            int count = 0;
+            while (rs.next()) {
+                count = rs.getInt("aCount");
+            }
+         
+            return count;
+            
+        }
+    
     
  ///Payroll widget sqls
     

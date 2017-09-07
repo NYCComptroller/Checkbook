@@ -15,33 +15,35 @@ import utilities.NYCBaseTest;
 @SuiteClasses({
 	
 	/* Spending */
-	SpendingWidgetTest.class,
+	//SpendingWidgetTest.class,
 
 	/* Contracts */
-	ActiveExpenseContractsTest.class,
-	ActiveExpenseContractsDetailsTest.class,
-	ActiveRevenueContractsTest.class,
-	ActiveRevenueContractsDetailsTest.class,
-	PendingExpenseContractsTest.class,
-	PendingExpenseContractsDetailsTest.class,
-	PendingRevenueContractsTest.class,
-	PendingRevenueContractsDetailsTest.class,
-	RegisteredExpenseContractsTest.class,
-	RegisteredExpenseContractsDetailsTest.class,
-	RegisteredRevenueContractsTest.class,
-	RegisteredRevenueContractsDetailsTest.class,
+	//ActiveExpenseContractsTest.class,
+	//ActiveExpenseContractsDetailsTest.class,
+//	ActiveRevenueContractsTest.class,
+//	ActiveRevenueContractsDetailsTest.class,
+//	PendingExpenseContractsTest.class,
+//	PendingExpenseContractsDetailsTest.class,
+//	PendingRevenueContractsTest.class,
+//	PendingRevenueContractsDetailsTest.class,
+///	RegisteredExpenseContractsTest.class,
+//	RegisteredExpenseContractsDetailsTest.class,
+//	RegisteredRevenueContractsTest.class,
+//	RegisteredRevenueContractsDetailsTest.class,
 
 	/* Budget */
 	/* Need to fix path to retrieve count */
-	BudgetWidgetTest.class,
+//	BudgetWidgetTest.class,
 
 	/* Revenue */
-	RevenueWidgetTest.class,
+//	RevenueWidgetTest.class,
 
 	/* Payroll */
 	PayrollWidgetTest.class,
-	PayrollTitles.class,
-	PayrollWidgetDetailsTest.class
+	
+	PayrollWidgetDetailsTest.class,
+
+	PayrollTitles.class
 })
 public class FunctionalTest extends NYCBaseTest{	
 	
