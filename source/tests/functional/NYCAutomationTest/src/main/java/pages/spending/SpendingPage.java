@@ -139,11 +139,36 @@ public class SpendingPage {
 		List<WebElement> titleContainers = Driver.Instance.findElements(By.className("tableHeader"));
 		for (WebElement titleContainer : titleContainers) {
 			WebElement titleHeaderContainer = titleContainer.findElement(By.cssSelector("h2"));
-			titles.add(titleHeaderContainer.getText());
+			//titles.add(titleHeaderContainer.getText());
+			titles.add(titleHeaderContainer.getText().substring(0, titleHeaderContainer.getText().indexOf("Number")-1));
 		}	
 		return titles;
-	}	
- 
+	}
+	
+	public static String GetWidgetText() {
+	List<WebElement> panelContainers = Driver.Instance.findElements(By.cssSelector(".bottomContainer > .panel-display > .panel-panel > .inside > .panel-pane"));
+//		List<WebElement> panelContainers = Driver.Instance.findElements(By.cssSelector(".bottomContainer > .panel-display > .panel-panel > div > .panel-pane"));
+		for (WebElement panelContainer : panelContainers) {
+			WebElement header= panelContainer.findElement(By.tagName("h2"));
+			String subTitle = header.getText().substring(0, header.getText().indexOf("Number")-1);
+			return subTitle;
+			}
+		return null;
+	}
+
+	
+	public static ArrayList<String> GetAllWidgetText() {
+		List<WebElement> panelContainers = Driver.Instance.findElements(By.cssSelector(".bottomContainer > .panel-display > .panel-panel > .inside > .panel-pane"));
+//			List<WebElement> panelContainers = Driver.Instance.findElements(By.cssSelector(".bottomContainer > .panel-display > .panel-panel > div > .panel-pane"));
+			for (WebElement panelContainer : panelContainers) {
+				WebElement header= panelContainer.findElement(By.tagName("h2"));
+				ArrayList<String> titles = new ArrayList<String>();
+				titles.add( header.getText().substring(0, header.getText().indexOf("Number")-1));
+				return titles;
+				}
+			return null;
+		}
+
 	
 	
 }

@@ -2,6 +2,8 @@ package FunctionalBudget;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import org.junit.Assert;
+import static org.junit.Assert.*;
 import helpers.Helper;
 
 import java.sql.SQLException;
@@ -11,9 +13,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 import pages.home.HomePage;
+import pages.spending.SpendingPage;
 import pages.budget.BudgetPage;
 import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
+import utilities.TestStatusReport;
+
+//public class BudgetWidgetTitles extends TestStatusReport{
+
 
 public class BudgetWidgetTitles  extends NYCBaseTest{
 	
@@ -29,7 +36,7 @@ public class BudgetWidgetTitles  extends NYCBaseTest{
     public void VerifyBudgetAmount() throws SQLException {
         String TotalBudgetAmtFY2016 = NYCDatabaseUtil.getBudgetAmount(2016, 'B');
         String budgetAmt = BudgetPage.GetBudgetAmount();
-        assertEquals("Spending Amount did not match", budgetAmt, TotalBudgetAmtFY2016);
+        assertEquals("Budget Amount did not match", budgetAmt, TotalBudgetAmtFY2016);
     }
 	
 	@Test
@@ -38,7 +45,8 @@ public class BudgetWidgetTitles  extends NYCBaseTest{
 	    						"Fiscal Year Comparisons", 
 	    						"Top Ten Expense Categories by Expense Budget", 
 	    						"Top Ten Agencies by Expense Budget"};  
-    	assertTrue(Arrays.equals(sliderTitles, BudgetPage.VisualizationTitles().toArray()));
+    	assertTrue(Arrays.equals(sliderTitles, BudgetPage.BudgetVisualizationTitles().toArray()));
+    	//Assert.assertArrayEquals(sliderTitles, BudgetPage.BudgetVisualizationTitles().toArray());
     }
 	 
 	@Test
@@ -50,8 +58,20 @@ public class BudgetWidgetTitles  extends NYCBaseTest{
 	    						"Top 5 Expense Categories by Committed Expense Budget",
 	    						"Top 5 Expense Categories by Percent Difference"};  
     	//HomePage.ShowWidgetDetails();
-    	assertTrue(Arrays.equals(widgetTitles, BudgetPage.WidgetTitles().toArray()));
+    	//assertTrue(Arrays.equals(widgetTitles, BudgetPage.WidgetTitles().toArray()));
     	//assertEquals("Budget Title did not match", widgetTitles,  BudgetPage.WidgetTitles().toArray());
+		assertTrue(Arrays.equals(widgetTitles, SpendingPage.WidgetTitles().toArray()));
+    	
+    	try {
+    		//assertTrue(Arrays.equals(widgetTitles, SpendingPage.GetAllWidgetText().toArray()));
+    		System.out.println( BudgetPage.GetAllWidgetText()); 
+    		System.out.println( BudgetPage.WidgetTitles()); 
+    		assertTrue(Arrays.equals(widgetTitles, SpendingPage.WidgetTitles().toArray()));
+    		 
+    	    System.out.println("no errors in widget titles");
+    	}  catch (Throwable e) {
+            System.out.println("errors in widget titles");
+            } 
 	}
     
 	

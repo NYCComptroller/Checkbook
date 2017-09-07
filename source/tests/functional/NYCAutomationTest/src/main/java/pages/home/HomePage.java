@@ -79,7 +79,7 @@ public class HomePage {
 		if(detailsLinkContainer.getText().contains("Show Details")){
 			detailsLinkContainer.click();
 		}
-		Driver.Instance.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+		Driver.Instance.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 	}
 
 	public static Boolean IsTableNotEmpty(String TableTitle) {
@@ -107,8 +107,8 @@ public class HomePage {
 	}
 	
 	public static String GetWidgetTotalNumberText(String WidgetTitle) {
-//		List<WebElement> panelContainers = Driver.Instance.findElements(By.cssSelector(".bottomContainer > .panel-display > .panel-panel > .inside > .panel-pane"));
-		List<WebElement> panelContainers = Driver.Instance.findElements(By.cssSelector(".bottomContainer > .panel-display > .panel-panel > div > .panel-pane"));
+	List<WebElement> panelContainers = Driver.Instance.findElements(By.cssSelector(".bottomContainer > .panel-display > .panel-panel > .inside > .panel-pane"));
+//		List<WebElement> panelContainers = Driver.Instance.findElements(By.cssSelector(".bottomContainer > .panel-display > .panel-panel > div > .panel-pane"));
 		for (WebElement panelContainer : panelContainers) {
 			WebElement header= panelContainer.findElement(By.tagName("h2"));
 			String subTitle = header.getText().substring(0, header.getText().indexOf("Number")-1);
@@ -122,24 +122,60 @@ public class HomePage {
 		return null;
 		}
 	
-//	public static String GetWidgetTotalNumberText(String WidgetTitle) {
-//		List<WebElement> panelContainers = Driver.Instance.findElements(By.cssSelector(".bottomContainer > .panel-display > .panel-panel > .inside > .panel-pane"));
-//		for (WebElement panelContainer : panelContainers) {
-//			WebElement header= panelContainer.findElement(By.tagName("h2"));
-//			String subTitle = header.getText().substring(0, header.getText().indexOf("Number")-1);
-//			if(subTitle.equalsIgnoreCase(WidgetTitle)) {
-//				WebElement countContainer = panelContainer.findElement(By.className("contentCount"));
-//				String numTotalText = countContainer.getText();
-//		        numTotalText = numTotalText.substring(numTotalText.indexOf(":") + 1).trim();
-//		        return numTotalText;
-//			}
-//		}
-//        return "150";
-//	}
-
+	
+	public static Integer GetWidgetTotalNumber1(String WidgetTitle) {
+		String strTotalNumber = GetWidgetTotalNumberText1(WidgetTitle);
+		return Helper.stringToInt(strTotalNumber);
+	}
+		
+		public static String GetWidgetTotalNumberText1(String WidgetTitle) {
+			//List<WebElement> panelContainers = Driver.Instance.findElements(By.cssSelector(".bottomContainer > .panel-display > .panel-panel > .inside > .panel-pane"));
+			List<WebElement> panelContainers = Driver.Instance.findElements(By.cssSelector(".bottomContainer > .panel-display > .panel-panel > div > .panel-pane"));
+				for (WebElement panelContainer : panelContainers) {
+					WebElement header= panelContainer.findElement(By.tagName("h2"));
+					String subTitle = header.getText().substring(0, header.getText().indexOf("Number")-1);
+					if(subTitle.equalsIgnoreCase(WidgetTitle)){
+						WebElement countContainer = panelContainer.findElement(By.className("contentCount"));
+						String numAgencyText = countContainer.getText();
+				        String numAgency = numAgencyText.substring(numAgencyText.indexOf(":") + 1).trim();
+				        return numAgency;
+					}
+				}
+				return null;
+				}
+			
+	
+	/*public static String GetWidgetTotalNumberText2(String WidgetTitle) {
+		List<WebElement> panelContainers = Driver.Instance.findElements(By.cssSelector(".bottomContainer > .panel-display > .panel-panel > div > .panel-pane"));
+		for (WebElement panelContainer : panelContainers) {
+			WebElement header= panelContainer.findElement(By.tagName("h2"));
+			String subTitle = header.getText().substring(0, header.getText().indexOf("Number")-1);
+			if(subTitle.equalsIgnoreCase(WidgetTitle)) {
+				WebElement countContainer = panelContainer.findElement(By.className("contentCount"));
+				String numTotalText = countContainer.getText();
+		        numTotalText = numTotalText.substring(numTotalText.indexOf(":") + 1).trim();
+		        return numTotalText;
+			}
+		}
+      return "150";	
+      }
+*/
 	
 	public static WebElement GetWidgetDetailsContainer(String WidgetTitle) {
 		List<WebElement> panelContainers = Driver.Instance.findElements(By.cssSelector(".bottomContainer > .panel-display > .panel-panel > .inside > .panel-pane"));
+		for (WebElement panelContainer : panelContainers) {
+			WebElement header= panelContainer.findElement(By.tagName("h2"));
+          //	String headerText = header.getText();
+			String subTitle = header.getText().substring(0, header.getText().indexOf("Number")-1);
+			if(subTitle.equalsIgnoreCase(WidgetTitle)){
+		        return panelContainer;
+			}
+		}
+		return null;
+	}
+	
+	public static WebElement GetWidgetDetailsContainer1(String WidgetTitle) {
+		List<WebElement> panelContainers = Driver.Instance.findElements(By.cssSelector(".bottomContainer > .panel-display > .panel-panel > div > .panel-pane"));
 		for (WebElement panelContainer : panelContainers) {
 			WebElement header= panelContainer.findElement(By.tagName("h2"));
           //	String headerText = header.getText();
@@ -165,5 +201,57 @@ public class HomePage {
 		System.out.println(Helper.billionStringToFloat(count));
 		return Helper.billionStringToFloat(count);
 	}
+	  public static String GetSpendingAmount() {
+          WebElement spendingAmt = Driver.Instance.findElement(By.cssSelector(".top-navigation-left .spending > .expense-container > a"));
+          return spendingAmt.getText().substring((spendingAmt.getText().indexOf("$")));
+      }
+	public static String GetTransactionAmount1() {
+		WebDriverWait wait = new WebDriverWait(Driver.Instance, 10);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("total-spending-amount")));
+		String amount = (Driver.Instance.findElement(By.className("total-spending-amount"))).getText();	
+		//System.out.println(Helper.billionStringToFloat(count));
+		return amount.substring(0,7);
+		//return Helper.billionStringToFloat(count);
+	}
     
+	
+    public static ArrayList<String> BudgetVisualizationTitles() {
+		ArrayList<String> titles = new ArrayList<String>();
+		List<WebElement> titleContainers = Driver.Instance.findElements(By.cssSelector("#nyc-budget > .top-chart > .inside > .panel-pane"));
+		for(int i=0; i < titleContainers.size(); i++){
+			selectBudgetVisualizationSlider(i);
+			WebElement titleClass = titleContainers.get(i).findElement(By.cssSelector(".pane-content .chart-title"));
+			if(titleClass.isDisplayed()){
+				String title = titleClass.getText();
+				titles.add(title);
+			}
+		}	
+		return titles;
+	}
+	
+	public static void selectBudgetVisualizationSlider(int sliderPosition){
+		List<WebElement> sliderContainer = Driver.Instance.findElements(By.cssSelector("#nyc-budget > .top-chart > .slider-pager > a"));
+		sliderContainer.get(sliderPosition).click();
+		Driver.Instance.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+	}
+	
+    public static ArrayList<String> RevenueVisualizationTitles() {
+		ArrayList<String> titles = new ArrayList<String>();
+		List<WebElement> titleContainers = Driver.Instance.findElements(By.cssSelector("#nyc-revenue > .top-chart > .inside > .panel-pane"));
+		for(int i=0; i < titleContainers.size(); i++){
+			selectRevenueVisualizationSlider(i);
+			WebElement titleClass = titleContainers.get(i).findElement(By.cssSelector(".pane-content .chart-title"));
+			if(titleClass.isDisplayed()){
+				String title = titleClass.getText();
+				titles.add(title);
+			}
+		}	
+		return titles;
+	}
+	
+	public static void selectRevenueVisualizationSlider(int sliderPosition){
+		List<WebElement> sliderContainer = Driver.Instance.findElements(By.cssSelector("#nyc-revenue > .top-chart > .slider-pager > a"));
+		sliderContainer.get(sliderPosition).click();
+		Driver.Instance.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+	}
 }
