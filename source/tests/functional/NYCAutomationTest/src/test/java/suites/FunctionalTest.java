@@ -18,7 +18,7 @@ import utilities.NYCBaseTest;
 	//SpendingWidgetTest.class,
 
 	/* Contracts */
-	//ActiveExpenseContractsTest.class,
+	ActiveExpenseContractsTest.class,
 	//ActiveExpenseContractsDetailsTest.class,
 //	ActiveRevenueContractsTest.class,
 //	ActiveRevenueContractsDetailsTest.class,
@@ -41,7 +41,7 @@ import utilities.NYCBaseTest;
 	/* Payroll */
 	PayrollWidgetTest.class,
 	
-	PayrollWidgetDetailsTest.class,
+	//PayrollWidgetDetailsTest.class,
 
 	PayrollTitles.class
 })
