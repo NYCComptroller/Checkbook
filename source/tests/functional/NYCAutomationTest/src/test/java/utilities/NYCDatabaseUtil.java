@@ -389,6 +389,39 @@ public static int getTotalSpendingContractsCount(int year,char yearTypeVal) thro
    return count;
    
 }
+
+
+//Spending  widget Details count
+
+public static int getTotalSpendingDetailsCount(int year,char yearTypeVal) throws SQLException {
+     query = "select(  (select count(*)   from disbursement_line_item_Details  where fiscal_year= 2016 ) + " 
+   +"  (select count(*) from subcontract_spending_Details where fiscal_year = 2016 )  ) aCount";
+    		 
+  rs = amountQueryHelper(yearTypeVal);
+   int count = 0;
+   while (rs.next()) {
+       count = rs.getInt("aCount");
+   }
+
+   return count;
+   
+}    
+
+public static int getTotalSpendingContractsDetailsCount(int year,char yearTypeVal) throws SQLException {
+    query = "select(  (select count(*)   from disbursement_line_item_Details  where fiscal_year= 2016 and contract_document_code in ( 'CT1', 'CTA1', 'POD', 'POC', 'PCC1', 'DO1','MA1','MMA1')) + " 
+  +"  (select count(*) from subcontract_spending_Details where fiscal_year = 2016 and contract_document_code in ( 'CT1', 'CTA1', 'POD', 'POC', 'PCC1', 'DO1','MA1','MMA1'))  ) aCount";
+   		 
+ rs = amountQueryHelper(yearTypeVal);
+  int count = 0;
+  while (rs.next()) {
+      count = rs.getInt("aCount");
+  }
+
+  return count;
+  
+}  
+
+
 // Budget Widgets
 
 
@@ -1181,7 +1214,8 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
                 	    	+"	    ( select  count(*) from sub_agreement_snapshot  where contract_number in "
                 	    	+"	 ( select distinct contract_number  from agreement_snapshot  where "
                 	    	+"	 document_code_id in (1,2) and (2016 between starting_year and ending_year)"
-                	    		+"    and (2016 between effective_begin_year and effective_end_year)) and latest_flag ='Y')) aCount";              rs = amountQueryHelper(yearTypeVal);
+                	    		+"    and (2016 between effective_begin_year and effective_end_year)) and latest_flag ='Y')) aCount";
+                rs = amountQueryHelper(yearTypeVal);
                 rs = amountQueryHelper(yearTypeVal);
                 int count = 0;
                while (rs.next()) {

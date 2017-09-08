@@ -16,8 +16,8 @@ import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
 import utilities.TestStatusReport;
 
-//public class SpendingTest extends TestStatusReport{
-public class SpendingTest extends NYCBaseTest{
+public class SpendingTest extends TestStatusReport{
+//public class SpendingTest extends NYCBaseTest{
 	
 	@Before
     public void GoToPage(){
