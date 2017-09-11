@@ -906,13 +906,13 @@ namespace { //global
                     WHERE l1.type_of_year = 'B' 
                     AND l1.status_flag = 'A' 
                     AND l1.document_code_id IN (1,2,3) "
-                    .(_getRequestParamValue('year')) ? " AND l1.fiscal_year_id = " . _getRequestParamValue('year') : ""
-                    .(_getRequestParamValue('vendor')) ? " AND l1.vendor_id = " . _getRequestParamValue('vendor') : ""
-                    .(_getRequestParamValue('agency')) ? " AND l1.agency_id = " . _getRequestParamValue('agency') : ""
-                    .(_getRequestParamValue('awdmethod')) ? " AND l1.award_method_id = " . _getRequestParamValue('awdmethod') : ""
-                    .(_getRequestParamValue('csize')) ? " AND l1.award_size_id = " . _getRequestParamValue('csize') : ""
-                    .(_getRequestParamValue('cindustry')) ? " AND l1.industry_type_id = " . _getRequestParamValue('cindustry') : ""
-                    .(_getRequestParamValue('mwbe')) ? " AND l1.minority_type_id IN (" . str_replace('~',',',_getRequestParamValue('mwbe') ).")": "";
+                    .((_getRequestParamValue('year')) ? " AND l1.fiscal_year_id = " . _getRequestParamValue('year') : "")
+                    .((_getRequestParamValue('vendor')) ? " AND l1.vendor_id = " . _getRequestParamValue('vendor') : "")
+                    .((_getRequestParamValue('agency')) ? " AND l1.agency_id = " . _getRequestParamValue('agency') : "")
+                    .((_getRequestParamValue('awdmethod')) ? " AND l1.award_method_id = " . _getRequestParamValue('awdmethod') : "")
+                    .((_getRequestParamValue('csize')) ? " AND l1.award_size_id = " . _getRequestParamValue('csize') : "")
+                    .((_getRequestParamValue('cindustry')) ? " AND l1.industry_type_id = " . _getRequestParamValue('cindustry') : "")
+                    .((_getRequestParamValue('mwbe')) ? " AND l1.minority_type_id IN (" . str_replace('~',',',_getRequestParamValue('mwbe') ).")": "");
             $count = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
             if($count[0]['count'] > 0){
                 return true;
