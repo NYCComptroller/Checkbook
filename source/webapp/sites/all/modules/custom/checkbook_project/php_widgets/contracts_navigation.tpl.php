@@ -224,7 +224,7 @@ if($featured_dashboard != null){
 }
 
 if($svendor_amount  == 0 && $svendor_amount_active_inc == 0){
-    if($svendor_amount_active_inc == 0 && preg_match('/contract/',$_GET['q']) && !_checkbook_check_isEDCPage()){
+    if($svendor_amount_active_inc == 0 && preg_match('/contract/',$_GET['q']) && !_checkbook_check_isEDCPage() && ContractUtil::checkStatusOfSubVendorByPrimeCounts()){
         $dashboard = (isset($featured_dashboard) && $featured_dashboard == 'mp')? 'sp': 'ss';
         $svendor_active_domain_link = ContractURLHelper::prepareSubvendorContractsSliderFilter('contracts_landing', $dashboard, TRUE);
         $subvendors_link = l('<div><div class="top-navigation-amount"><span class="nav-title">' .RequestUtil::getDashboardTopNavTitle("subvendor")  .'</span><br>&nbsp;'. custom_number_formatter_format($svendor_amount ,1,'$') . '</div></div>',$svendor_active_domain_link ,$options);	 
