@@ -109,12 +109,20 @@
 
 var to_position = indexOf(short_filename,&apos;.&apos;);
 
-var from_position = to_position - 14;
+var num_positions = 14 ;
+
+if(data_source_code == &apos;ED&apos;)
+num_positions = 19;
+
+var from_position = to_position - num_positions;
 
 var file_timestamp = &quot;&quot;;
 
 if(data_source_code != &apos;PC&apos;)
-file_timestamp = substr(short_filename,from_position,14);
+file_timestamp = substr(short_filename,from_position,num_positions);
+
+if(data_source_code == &apos;ED&apos;)
+file_timestamp = substr(file_timestamp, 6,4)+&quot;&quot;+substr(file_timestamp, 0,2) + &quot;&quot;+ substr(file_timestamp, 3,2) + &quot;&quot; +substr(file_timestamp, 11,2) + &quot;&quot; +substr(file_timestamp, 14,2) + &quot;&quot; + substr(file_timestamp, 17,2);
 
 
 var patterm_match_sql = &quot;SELECT  (CASE WHEN  &apos;original_file_name&apos; SIMILAR TO &apos;pattern_name&apos; = &apos;t&apos; THEN &apos;Y&apos; ELSE &apos;N&apos; END)::varchar(1) as pattern_matched_flag&quot;;
@@ -125,7 +133,7 @@ patterm_match_sql = replace(patterm_match_sql,&quot;original_file_name&quot;,sho
 patterm_match_sql = replace(patterm_match_sql,&quot;pattern_name&quot;,actual_pattern);
 
 
-var file_already_processed_sql = &quot;select count(*) as file_processed_count from etl.etl_data_load_file a , etl.etl_data_load b where  a.load_id = b.load_id and (processed_flag = &apos;Y&apos; OR data_source_code in (&apos;A&apos;,&apos;D&apos;,&apos;E&apos;,&apos;L&apos;,&apos;O&apos;,&apos;RC&apos;,&apos;RY&apos;,&apos;RS&apos;,&apos;BC&apos;,&apos;FC&apos;,&apos;V&apos;)) and file_name = &apos;&quot;+short_filename + &quot;&apos;&quot; + &quot; and b.job_id &lt; &quot; + nextval;
+var file_already_processed_sql = &quot;select count(*) as file_processed_count from etl.etl_data_load_file a , etl.etl_data_load b where  a.load_id = b.load_id and (processed_flag = &apos;Y&apos; OR data_source_code in (&apos;A&apos;,&apos;D&apos;,&apos;E&apos;,&apos;L&apos;,&apos;O&apos;,&apos;RC&apos;,&apos;RY&apos;,&apos;RS&apos;,&apos;BC&apos;,&apos;FC&apos;,&apos;V&apos;, &apos;ED&apos;, &apos;TD&apos;)) and file_name = &apos;&quot;+short_filename + &quot;&apos;&quot; + &quot; and b.job_id &lt; &quot; + nextval;
 
 var not_used_sql = &quot;select count(*) as file_processed_count from etl.etl_data_load_file where  processed_flag = &apos;Y&apos; and file_name = &apos;&quot;+short_filename + &quot;&apos;&quot;;
 
@@ -760,7 +768,7 @@ var processed_flag = &apos;N&apos;;</jsScript_script>
   data_source_code
 , directory_listing_pattern::varchar(50)
 , actual_pattern::varchar(200)
-FROM etl.ref_file_name_pattern 
+FROM etl.ref_file_name_pattern
 </sql>
     <limit>0</limit>
     <lookup/>

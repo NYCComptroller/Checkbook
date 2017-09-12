@@ -15,7 +15,6 @@ V,M,,Invalid minority type,,,min_typ,,public.ref_minority_type,minority_type_id,
 V,M,,Invalid business type status,,,bus_typ_sta,,public.ref_business_type_status,business_type_status_id,,4
 V,M,,Inconsistent minority type,,,,,,,"bus_typ='MNRT' AND bus_typ_sta=2 AND COALESCE(min_typ,0)=0",5
 V,M,,Inconsistent business type,,,,,,,"COALESCE(bus_typ,'')<>'MNRT' AND  COALESCE(min_typ,0) >0",6
-V,M,,Invalid component - business type,,etl.stg_fmsv_business_type,vend_cust_cd,,,,,7
 F,H,,Missing key elements,,,"doc_cd,doc_dept_cd,doc_id,doc_vers_no,doc_bfy,doc_per_dc,chk_eft_iss_dt",,,,,1
 F,H,,Duplicate,,,"doc_cd,doc_dept_cd,doc_id,doc_vers_no",,,,,2
 F,H,,Missing vendor,,etl.stg_fms_vendor,"doc_cd,doc_dept_cd,doc_id,doc_vers_no",,,,,3
