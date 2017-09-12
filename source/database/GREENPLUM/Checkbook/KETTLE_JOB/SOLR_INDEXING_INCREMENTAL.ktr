@@ -135,8 +135,8 @@
         <jsScript_script>&#47;&#47;Script here
 
 
-var title = &quot;Error in solr incremental indexing for job id&quot; + job_id ;
-var body = &quot;Error:\r\n\r\n&quot; + err_recp1 + &quot;\r\n\r\n&quot; + error_recp1 + &quot;\r\n\r\n\r\nThe response for the Solr request:\r\n\r\n&quot; + curl_command + &quot;\r\n\r\nis &quot; + result + &quot;\r\n&quot;;</jsScript_script>
+var title = &quot;Error in solr incremental indexing except contracts for job id&quot; + job_id ;
+var body = &quot;Error:\r\n\r\n&quot; + err_recp1 + &quot;\r\n\r\n&quot; + error_recp1 + &quot;\r\n\r\n\r\n&quot;;</jsScript_script>
       </jsScript>    </jsScripts>    <fields>      <field>        <name>title</name>
         <rename>title</rename>
         <type>String</type>
@@ -281,7 +281,7 @@ curl_command=replace(curl_command,&apos;replace_job_id&apos;,job_id);
     <fields>
       <field>
         <name>solrUrl</name>
-        <variable>${nyc_solr_incr_index_url}</variable>
+        <variable>${nyc_solr_incr_index_all_except_contracts}</variable>
         <type>String</type>
         <format/>
         <currency/>

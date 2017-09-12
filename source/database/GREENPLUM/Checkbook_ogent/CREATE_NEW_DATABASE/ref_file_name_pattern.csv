@@ -19,5 +19,5 @@ FC,_COA_RSFCLS_,AIEC_DLY_COA_RSFCLS_20[0-9][0-9][0-1][0-9][0-3][0-9][0-2][0-9][0
 PC,checkbookpendingcontracts,checkbookpendingcontracts.txt,OAISIS_feed.txt
 RB,_BUD_93L1_,AIE4_DLY_BUD_93L1_20[0-9][0-9][0-1][0-9][0-3][0-9][0-2][0-9][0-5][0-9][0-5][0-9].txt,revenue_budget.txt
 PS,PAYROLL_SUMMARY_A,PAYROLL_SUMMARY_AREI_%_20[0-9][0-9][0-1][0-9][0-3][0-9][0-2][0-9][0-5][0-9][0-5][0-9].txt,PMS_summary_feed.txt
-ED,EDC_CONTRACT_,EDC_CONTRACT_DATA_20[0-9][0-9][0-1][0-9][0-3][0-9][0-2][0-9][0-5][0-9][0-5][0-9].csv,EDC_feed.csv
+ED,NYCEDC_CheckBook_,NYCEDC_CheckBook_[0-1][0-9]_[0-3][0-9]_20[0-9][0-9]_[0-2][0-9]_[0-5][0-9]_[0-5][0-9].csv,EDC_feed.csv
 TD,TDC_CONTRACT_,TDC_CONTRACT_DATA_20[0-9][0-9][0-1][0-9][0-3][0-9][0-2][0-9][0-5][0-9][0-5][0-9].csv,TDC_feed.csv

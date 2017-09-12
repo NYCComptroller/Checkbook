@@ -51,16 +51,16 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>152</xloc>
-      <yloc>242</yloc>
+      <xloc>23</xloc>
+      <yloc>234</yloc>
       </entry>
     <entry>
-      <name>SOLR DELETE PENDING CONTRCATS</name>
+      <name>SOLR DELETE ALLCONTRCATS</name>
       <description/>
       <type>TRANS</type>
       <specification_method>filename</specification_method>
       <trans_object_id/>
-      <filename>${Internal.Job.Filename.Directory}&#47;SOLR_INDEXING_DELETE_PENDING_CONTRCATS.ktr</filename>
+      <filename>${Internal.Job.Filename.Directory}&#47;SOLR_INDEXING_DELETE_ALL_CONTRCATS.ktr</filename>
       <transname/>
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -83,8 +83,8 @@
       </parameters>      <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>645</xloc>
-      <yloc>236</yloc>
+      <xloc>592</xloc>
+      <yloc>102</yloc>
       </entry>
     <entry>
       <name>SOLR DELETE RECORDS</name>
@@ -115,8 +115,8 @@
       </parameters>      <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>870</xloc>
-      <yloc>235</yloc>
+      <xloc>292</xloc>
+      <yloc>102</yloc>
       </entry>
     <entry>
       <name>SOLR INCREMENTAL INDEXING</name>
@@ -147,8 +147,8 @@
       </parameters>      <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>1090</xloc>
-      <yloc>235</yloc>
+      <xloc>1286</xloc>
+      <yloc>412</yloc>
       </entry>
     <entry>
       <name>SOLR FULL INDEXING</name>
@@ -179,8 +179,8 @@
       </parameters>      <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>652</xloc>
-      <yloc>379</yloc>
+      <xloc>476</xloc>
+      <yloc>409</yloc>
       </entry>
     <entry>
       <name>Loop Transformation</name>
@@ -211,8 +211,8 @@
       </parameters>      <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>1097</xloc>
-      <yloc>381</yloc>
+      <xloc>986</xloc>
+      <yloc>412</yloc>
       </entry>
     <entry>
       <name>Check Solr Status</name>
@@ -244,8 +244,8 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>1101</xloc>
-      <yloc>524</yloc>
+      <xloc>988</xloc>
+      <yloc>536</yloc>
       </entry>
     <entry>
       <name>SOLR_STATUS_EMAIL</name>
@@ -276,8 +276,8 @@
       </parameters>      <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>894</xloc>
-      <yloc>784</yloc>
+      <xloc>745</xloc>
+      <yloc>795</yloc>
       </entry>
     <entry>
       <name>Set variables</name>
@@ -288,36 +288,51 @@
       <file_variable_type>JVM</file_variable_type>
       <fields>
         <field>
-          <variable_name>nyc_solr_delete_pc_url</variable_name>
-          <variable_value>${NYC_SOLR_DELETE_PENDING_CONTRACTS}</variable_value>
+          <variable_name>nyc_solr_delete_all_contracts</variable_name>
+          <variable_value>${NYC_SOLR_DELETE_CONTRACTS_CITY_WIDE}</variable_value>
           <variable_type>CURRENT_JOB</variable_type>
         </field>
         <field>
-          <variable_name>nyc_solr_delete_url</variable_name>
-          <variable_value>${NYC_SOLR_DELETE_RECORDS}</variable_value>
+          <variable_name>nyc_solr_delete_cont_and_spending</variable_name>
+          <variable_value>${NYC_SOLR_DELETE_CON_AND_SPENDING_CITY_WIDE}</variable_value>
           <variable_type>CURRENT_JOB</variable_type>
         </field>
         <field>
-          <variable_name>nyc_solr_incr_index_url</variable_name>
-          <variable_value>${NYC_SOLR_INCREMENTAL_INDEXING}</variable_value>
+          <variable_name>nyc_solr_incr_index_all_except_contracts</variable_name>
+          <variable_value>${NYC_SOLR_INC_INDEXING_EXCEPT_CONTRACTS_CITY_WIDE}</variable_value>
           <variable_type>CURRENT_JOB</variable_type>
         </field>
         <field>
-          <variable_name>nyc_solr_full_index_url</variable_name>
-          <variable_value>${NYC_SOLR_FULL_INDEXING}</variable_value>
+          <variable_name>nyc_solr_full_index_contracts</variable_name>
+          <variable_value>${NYC_SOLR_FULL_INDEXING_CONTRACTS_CITY_WIDE}</variable_value>
           <variable_type>CURRENT_JOB</variable_type>
         </field>
         <field>
           <variable_name>nyc_solr_check_url</variable_name>
-          <variable_value>${NYC_SOLR_CHECK_INDEX_STATUS}</variable_value>
+          <variable_value>${NYC_SOLR_CHECK_INDEX_STATUS_CITY_WIDE}</variable_value>
+          <variable_type>CURRENT_JOB</variable_type>
+        </field>
+        <field>
+          <variable_name>nyc_solr_full_index_all</variable_name>
+          <variable_value>${NYC_SOLR_FULL_INDEXING_ALL}</variable_value>
+          <variable_type>CURRENT_JOB</variable_type>
+        </field>
+        <field>
+          <variable_name>nyc_solr_delete_oge</variable_name>
+          <variable_value>${NYC_SOLR_DELETE_RECORDS_OGE}</variable_value>
+          <variable_type>CURRENT_JOB</variable_type>
+        </field>
+        <field>
+          <variable_name>nyc_solr_full_index_oge</variable_name>
+          <variable_value>${NYC_SOLR_FULL_INDEXING_OGE}</variable_value>
           <variable_type>CURRENT_JOB</variable_type>
         </field>
       </fields>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>395</xloc>
-      <yloc>240</yloc>
+      <xloc>298</xloc>
+      <yloc>233</yloc>
       </entry>
     <entry>
       <name>Generate Solr XMLs</name>
@@ -339,50 +354,119 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>1111</xloc>
-      <yloc>785</yloc>
+      <xloc>996</xloc>
+      <yloc>795</yloc>
       </entry>
     <entry>
       <name>Wait for</name>
       <description/>
       <type>DELAY</type>
-      <maximumTimeout>15</maximumTimeout>
+      <maximumTimeout>10</maximumTimeout>
       <scaletime>1</scaletime>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>1105</xloc>
-      <yloc>665</yloc>
+      <xloc>993</xloc>
+      <yloc>658</yloc>
+      </entry>
+    <entry>
+      <name>SOLR INDEX FULL ONLY CONTRACTS</name>
+      <description/>
+      <type>TRANS</type>
+      <specification_method>filename</specification_method>
+      <trans_object_id/>
+      <filename>${Internal.Job.Filename.Directory}&#47;SOLR_INDEXING_FULL_ONLY_CONTRACTS.ktr</filename>
+      <transname/>
+      <arg_from_previous>N</arg_from_previous>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>N</clear_rows>
+      <clear_files>N</clear_files>
+      <set_logfile>N</set_logfile>
+      <logfile/>
+      <logext/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Basic</loglevel>
+      <cluster>N</cluster>
+      <slave_server_name/>
+      <set_append_logfile>N</set_append_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <follow_abort_remote>N</follow_abort_remote>
+      <create_parent_folder>N</create_parent_folder>
+      <parameters>        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>913</xloc>
+      <yloc>101</yloc>
+      </entry>
+    <entry>
+      <name>SOLR_INDEXING_DELETE_RECORDS_OGE</name>
+      <description/>
+      <type>TRANS</type>
+      <specification_method>filename</specification_method>
+      <trans_object_id/>
+      <filename>${Internal.Job.Filename.Directory}&#47;SOLR_INDEXING_DELETE_RECORDS_OGE.ktr</filename>
+      <transname/>
+      <arg_from_previous>N</arg_from_previous>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>N</clear_rows>
+      <clear_files>N</clear_files>
+      <set_logfile>N</set_logfile>
+      <logfile/>
+      <logext/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Basic</loglevel>
+      <cluster>N</cluster>
+      <slave_server_name/>
+      <set_append_logfile>N</set_append_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <follow_abort_remote>N</follow_abort_remote>
+      <create_parent_folder>N</create_parent_folder>
+      <parameters>        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>1288</xloc>
+      <yloc>104</yloc>
+      </entry>
+    <entry>
+      <name>SOLR_INDEXING_FULL_OGE_DATA</name>
+      <description/>
+      <type>TRANS</type>
+      <specification_method>filename</specification_method>
+      <trans_object_id/>
+      <filename>${Internal.Job.Filename.Directory}&#47;SOLR_INDEXING_FULL_OGE_DATA.ktr</filename>
+      <transname/>
+      <arg_from_previous>N</arg_from_previous>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>N</clear_rows>
+      <clear_files>N</clear_files>
+      <set_logfile>N</set_logfile>
+      <logfile/>
+      <logext/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Basic</loglevel>
+      <cluster>N</cluster>
+      <slave_server_name/>
+      <set_append_logfile>N</set_append_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <follow_abort_remote>N</follow_abort_remote>
+      <create_parent_folder>N</create_parent_folder>
+      <parameters>        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>1286</xloc>
+      <yloc>226</yloc>
       </entry>
   </entries>
   <hops>
-    <hop>
-      <from>SOLR DELETE PENDING CONTRCATS</from>
-      <to>SOLR DELETE RECORDS</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>N</unconditional>
-    </hop>
-    <hop>
-      <from>SOLR DELETE RECORDS</from>
-      <to>SOLR INCREMENTAL INDEXING</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>N</unconditional>
-    </hop>
-    <hop>
-      <from>SOLR INCREMENTAL INDEXING</from>
-      <to>Loop Transformation</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>N</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>N</unconditional>
-    </hop>
     <hop>
       <from>Loop Transformation</from>
       <to>Check Solr Status</to>
@@ -412,21 +496,21 @@
     </hop>
     <hop>
       <from>Set variables</from>
-      <to>SOLR DELETE PENDING CONTRCATS</to>
+      <to>SOLR FULL INDEXING</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>N</enabled>
-      <evaluation>Y</evaluation>
+      <evaluation>N</evaluation>
       <unconditional>Y</unconditional>
     </hop>
     <hop>
-      <from>Set variables</from>
-      <to>SOLR FULL INDEXING</to>
+      <from>Generate Solr XMLs</from>
+      <to>SOLR_STATUS_EMAIL</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
       <evaluation>Y</evaluation>
-      <unconditional>Y</unconditional>
+      <unconditional>N</unconditional>
     </hop>
     <hop>
       <from>Check Solr Status</from>
@@ -447,13 +531,67 @@
       <unconditional>N</unconditional>
     </hop>
     <hop>
-      <from>Generate Solr XMLs</from>
-      <to>SOLR_STATUS_EMAIL</to>
+      <from>Set variables</from>
+      <to>SOLR DELETE RECORDS</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
       <evaluation>Y</evaluation>
       <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>SOLR DELETE RECORDS</from>
+      <to>SOLR DELETE ALLCONTRCATS</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>Y</unconditional>
+    </hop>
+    <hop>
+      <from>SOLR DELETE ALLCONTRCATS</from>
+      <to>SOLR INDEX FULL ONLY CONTRACTS</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>Y</unconditional>
+    </hop>
+    <hop>
+      <from>SOLR_INDEXING_DELETE_RECORDS_OGE</from>
+      <to>SOLR_INDEXING_FULL_OGE_DATA</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>Y</unconditional>
+    </hop>
+    <hop>
+      <from>SOLR_INDEXING_FULL_OGE_DATA</from>
+      <to>SOLR INCREMENTAL INDEXING</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>Y</unconditional>
+    </hop>
+    <hop>
+      <from>SOLR INCREMENTAL INDEXING</from>
+      <to>Loop Transformation</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>Y</unconditional>
+    </hop>
+    <hop>
+      <from>SOLR INDEX FULL ONLY CONTRACTS</from>
+      <to>SOLR_INDEXING_DELETE_RECORDS_OGE</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>Y</unconditional>
     </hop>
   </hops>
   <notepads>

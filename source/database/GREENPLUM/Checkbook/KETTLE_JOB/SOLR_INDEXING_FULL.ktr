@@ -95,7 +95,7 @@
     </attributes>
   </connection>
   <order>
-  <hop> <from>Create Solr URL</from><to>solr full indexing</to><enabled>Y</enabled> </hop>  <hop> <from>solr full indexing</from><to>Compose error text</to><enabled>Y</enabled> </hop>  <hop> <from>Compose error text</from><to>Error email for Recipient Solr Indexing</to><enabled>Y</enabled> </hop>  <hop> <from>Get Variables</from><to>Create Solr URL</to><enabled>Y</enabled> </hop>  <hop> <from>solr full indexing</from><to>Blocking Step</to><enabled>Y</enabled> </hop>  <hop> <from>Blocking Step</from><to>Dummy (do nothing)</to><enabled>Y</enabled> </hop>  </order>
+  <hop> <from>Create Solr URL</from><to>solr full indexing</to><enabled>Y</enabled> </hop>  <hop> <from>Compose error text</from><to>Error email for Recipient Solr Indexing</to><enabled>Y</enabled> </hop>  <hop> <from>Get Variables</from><to>Create Solr URL</to><enabled>Y</enabled> </hop>  <hop> <from>solr full indexing</from><to>Blocking Step</to><enabled>Y</enabled> </hop>  <hop> <from>Blocking Step</from><to>Dummy (do nothing)</to><enabled>Y</enabled> </hop>  <hop> <from>solr full indexing</from><to>Compose error text</to><enabled>Y</enabled> </hop>  </order>
   <step>
     <name>Blocking Step</name>
     <type>BlockingStep</type>
@@ -113,7 +113,7 @@
       <compress>Y</compress>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>709</xloc>
+      <xloc>809</xloc>
       <yloc>323</yloc>
       <draw>Y</draw>
       </GUI>
@@ -135,8 +135,8 @@
         <jsScript_script>&#47;&#47;Script here
 
 
-var title = &quot;Error in solr full indexing for job id&quot; + job_id ;
-var body = &quot;Error:\r\n\r\n&quot; + err_recp1 + &quot;\r\n\r\n&quot; + error_recp1 + &quot;\r\n\r\n\r\nThe response for the Solr request:\r\n\r\n&quot; + curl_command + &quot;\r\n\r\nis &quot; + result + &quot;\r\n&quot;;</jsScript_script>
+var title = &quot;Error in solr full OGE indexing for job id&quot; + job_id ;
+var body = &quot;Error:\r\n\r\n&quot; + err_recp1 + &quot;\r\n\r\n&quot; + error_recp1 + &quot;\r\n\r\n\r\nThe response for the Solr request:\r\n\r\n&quot; + curl_command + &quot;\r\n\r\nis  none &quot;;</jsScript_script>
       </jsScript>    </jsScripts>    <fields>      <field>        <name>title</name>
         <rename>title</rename>
         <type>String</type>
@@ -281,7 +281,7 @@ curl_command=replace(curl_command,&apos;replace_job_id&apos;,job_id);
     <fields>
       <field>
         <name>solrUrl</name>
-        <variable>${nyc_solr_full_index_url}</variable>
+        <variable>${nyc_solr_full_index_all}</variable>
         <type>String</type>
         <format/>
         <currency/>
@@ -414,9 +414,9 @@ curl_command=replace(curl_command,&apos;replace_job_id&apos;,job_id);
         <descriptions_valuename>err_recp1</descriptions_valuename>
         <fields_valuename/>
         <codes_valuename>error_recp1</codes_valuename>
-        <max_errors>-1</max_errors>
-        <max_pct_errors>-1</max_pct_errors>
-        <min_pct_rows>-1</min_pct_rows>
+        <max_errors/>
+        <max_pct_errors/>
+        <min_pct_rows/>
       </error>
   </step_error_handling>
    <slave-step-copy-partition-distribution>
