@@ -15,8 +15,10 @@ import pages.spending.SpendingPage.WidgetOption;
 import pages.home.HomePage;
 import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
+import utilities.TestStatusReport;
 
-public class SpendingWidgetTest extends NYCBaseTest {
+//public class TotalSpendingWidgetTest extends NYCBaseTest {
+	public class TotalSpendingWidgetTest extends TestStatusReport{
 
 	@Before
 	public void GoToPage(){

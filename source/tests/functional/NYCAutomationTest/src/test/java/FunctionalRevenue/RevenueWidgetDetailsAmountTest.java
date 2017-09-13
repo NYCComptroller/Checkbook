@@ -20,8 +20,8 @@ import helpers.Driver;
 import helpers.Helper;
 import utilities.TestStatusReport;
 
-//public class RevenueWidgetDetailsTest extends NYCBaseTest {
-	public class RevenueWidgetDetailsTest extends TestStatusReport {
+//public class RevenueWidgetDetailsAmountTest extends NYCBaseTest {
+	public class RevenueWidgetDetailsAmountTest extends TestStatusReport {
 
 	@Before
 	public void GoToPage() {
@@ -31,19 +31,10 @@ import utilities.TestStatusReport;
 		HomePage.ShowWidgetDetails();
 	}
 	
-	/* ***************** Test Widget Transaction Count ****************** */
-	@Test
-	public void VerifyRevenueDetailsTransactionCount() throws SQLException {
-		RevenuePage.GoToTop5DetailsPage(WidgetOption.Top5Agencies);
-		HomePage.ShowWidgetDetails();
-		int NumOfRevenueDetailsCount2016 =  NYCDatabaseUtil.getRevenueDetailsCount(2016,'B');
-		int numOfRevenueDetailsCountapp = RevenuePage.GetTransactionCount();
-		assertEquals("Number of master contracts widget Details page table count did not match", numOfRevenueDetailsCountapp, NumOfRevenueDetailsCount2016); 
-	}
-
+	
 
 	/* ***************** Test Widget Transaction Total Amount ****************** */
-	/*
+	
 	 
 	@Test
 	public void VerifyRevenueTransactionAmount() throws SQLException {
@@ -55,6 +46,6 @@ import utilities.TestStatusReport;
 		String numOfRevenueDetailsAmountapp = HomePage.GetTransactionAmount1();
 	assertEquals("Number ofRevenue widget Details page table count did not match", numOfRevenueDetailsAmountapp, NumOfRevenueDetailsAmount2016); 
 	}
-*/
+
 
 }

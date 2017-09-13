@@ -1,7 +1,9 @@
 package FunctionalBudget;
 
 import static org.junit.Assert.assertEquals;
+
 import helpers.Helper;
+import navigation.TopNavigation.Spending.TotalSpending;
 
 import java.sql.SQLException;
 
@@ -12,14 +14,20 @@ import pages.budget.BudgetPage;
 import pages.budget.BudgetPage.WidgetOption;
 
 import pages.home.HomePage;
+import pages.spending.TotalSpendingPage;
 import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
+import utilities.TestStatusReport;
+public class BudgetAllWidgetDetailsTest extends TestStatusReport{
+//public class BudgetAllWidgetDetailsTest extends NYCBaseTest {
 
-public class BudgetWidgetDetailsTest3 extends NYCBaseTest {
 	
 		@Before
 	    public void GoToPage(){
 			BudgetPage.GoTo();
+			if (!BudgetPage.isAt()){
+				BudgetPage.GoTo();
+			}
 		 
 		   if(!(Helper.getCurrentSelectedYear()).equalsIgnoreCase(NYCBaseTest.prop.getProperty("CurrentYear")))
 			   HomePage.SelectYear(NYCBaseTest.prop.getProperty("CurrentYear"));
@@ -36,19 +44,7 @@ public class BudgetWidgetDetailsTest3 extends NYCBaseTest {
 			//Integer numOfBudgetAgenciesapp = BudgetPage.GetTop5WidgetTotalCount(WidgetOption.Top5Agencies);
 			//assertEquals("Number of Budget Agencies did not match", numOfBudgetAgenciesapp, NumOfBudgetAgencies2016);
 		//}
-		@Test
-		public void VerifyNumOfBudgetAgenciesTransactionCount() throws SQLException {
-			
-			int NumOfBudgetDetailsCount2016 =  NYCDatabaseUtil.getBudgetDetailsCount(2016,'B');
-			int numOfBudgetDetailsCountapp = BudgetPage.GetTransactionCount();
-			assertEquals("Number of transactions for Budget Details page table  did not match", numOfBudgetDetailsCountapp, NumOfBudgetDetailsCount2016); 
-			
-			String NumOfBudgetDetailsAmount2016 =  NYCDatabaseUtil.getBudgetDetailsAmount(2016,'B');
-			String numOfBudgetDetailsAmountapp = HomePage.GetTransactionAmount1();
-		assertEquals("Number ofRevenue widget Details page table count did not match", numOfBudgetDetailsAmountapp, NumOfBudgetDetailsAmount2016); 
-		BudgetPage.GoTo();
-		
-		}
+
 		
 		
 		@Test
@@ -93,19 +89,6 @@ public class BudgetWidgetDetailsTest3 extends NYCBaseTest {
 		}
 	
 		
-		/* ***************** Test Widget Transaction Total Amount ****************** */
 	
-		
-		@Test
-		public void VerifyBudgetTransactionAmount() throws SQLException {
-			//Float transactionAmt = 26.3f;
-			//BudgetPage.GoToTop5DetailsPage(WidgetOption.Top5Agencies);
-			//HomePage.ShowWidgetDetails();
-		//assertTrue(HomePage.GetTransactionAmount1()== transactionAmt);
-			String NumOfBudgetDetailsAmount2016 =  NYCDatabaseUtil.getBudgetDetailsAmount(2016,'B');
-			String numOfBudgetDetailsAmountapp = HomePage.GetTransactionAmount1();
-		assertEquals("Number ofRevenue widget Details page table count did not match", numOfBudgetDetailsAmountapp, NumOfBudgetDetailsAmount2016); 
-		}
-		
 }
 

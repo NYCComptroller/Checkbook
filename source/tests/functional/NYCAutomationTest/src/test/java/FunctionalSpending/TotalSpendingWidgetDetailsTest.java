@@ -15,9 +15,11 @@ import pages.spending.SpendingPage.WidgetOption;
 import pages.home.HomePage;
 import pages.payroll.PayrollPage;
 import utilities.NYCBaseTest;
+import utilities.TestStatusReport;
 import utilities.NYCDatabaseUtil;
 
-public class SpendingWidgetDetailsTest extends NYCBaseTest {
+//public class TotalSpendingWidgetDetailsTest extends NYCBaseTest {
+	public class TotalSpendingWidgetDetailsTest extends TestStatusReport{
 
 	@Before
 	public void GoToPage(){
@@ -50,7 +52,7 @@ public class SpendingWidgetDetailsTest extends NYCBaseTest {
 		Integer totalChecksWidgetCountApp = SpendingPage.GetTransactionCount();
 		assertEquals("Number of Checks  widget count  did not match with the DB",totalChecksWidgetCountApp, totalCheckswidgetCountFY2016);
 	}
-	@Test
+/*	@Test
 	public void VerifyNumOfAgenciesWidgetTransactionCount() throws SQLException {
 		SpendingPage.GoToTop5DetailsPage(WidgetOption.Top5Agencies);
 		int year = 2016;
@@ -65,6 +67,7 @@ public class SpendingWidgetDetailsTest extends NYCBaseTest {
 		Integer totalExpenseCategoriesWidgetCountApp = SpendingPage.GetTransactionCount();
 		assertEquals("Number of Exp categories  widget count  did not match with the DB",totalExpenseCategoriesWidgetCountApp, totalExpenseCategorieswidgetCountFY2016);
 	}
+	
 	@Test
 	public void VerifyNumOfPrimeVendorsWidgetTransactionCount() throws SQLException{
 		SpendingPage.GoToTop5DetailsPage(WidgetOption.Top5PrimeVendors);
@@ -79,6 +82,7 @@ public class SpendingWidgetDetailsTest extends NYCBaseTest {
 		Integer totalContractsWidgetCountApp = SpendingPage.GetTransactionCount();
 		assertEquals("Number of Contracts  widget count  did not match with the DB",totalContractsWidgetCountApp, totalContractswidgetCountFY2016);
 	}
+	*/
 }
 
 
