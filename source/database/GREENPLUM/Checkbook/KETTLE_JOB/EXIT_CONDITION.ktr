@@ -306,7 +306,7 @@ var coa_available_sql = &quot;select count(*) as coa_available_count from etl.et
  <leftvalue>total_available_count</leftvalue>
  <function>&gt;=</function>
  <rightvalue/>
- <value><name>constant</name><type>Integer</type><text>1</text><length>-1</length><precision>0</precision><isnull>N</isnull><mask>#;-#</mask></value> </condition>
+ <value><name>constant</name><type>Integer</type><text>17</text><length>-1</length><precision>0</precision><isnull>N</isnull><mask>#;-#</mask></value> </condition>
     </compare>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
@@ -519,7 +519,7 @@ var coa_available_sql = &quot;select count(*) as coa_available_count from etl.et
       <server>EMAIL_SERVER</server>
       <port>EMAIL_PORT</port>
       <destination>EMAIL_TO</destination>
-      <destinationCc>EMAIL_CC</destinationCc>
+      <destinationCc>EMAIL_FMS_GROUP_CC</destinationCc>
       <destinationBCc/>
       <replyToAddresses/>
       <replyto>EMAIL_FROM</replyto>
@@ -578,7 +578,7 @@ var coa_available_sql = &quot;select count(*) as coa_available_count from etl.et
         <jsScript_script>&#47;&#47;Script here
 
 var title=&apos;NYC CheckBook Master Job &apos;+ nextval+&apos; status&apos;;
-var body=&apos;There are no files available from FMS and PMS. So skipping the ETL process&apos;;</jsScript_script>
+var body=&apos;No Active Transactions Available from FISA and PMS. Skipping the process.&apos;;</jsScript_script>
       </jsScript>    </jsScripts>    <fields>      <field>        <name>title</name>
         <rename>title</rename>
         <type>String</type>
