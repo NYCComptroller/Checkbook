@@ -652,22 +652,22 @@ class RequestUtil{
                 widget_invoke($node, 'widget_prepare');
                 widget_data($node);
                 if($node->data[0]['total_contracts'] > 0 || $node->data[0]['current_amount_sum'] > 0){
-                    $contracts_landing_path = "contracts_landing/status/A/";
+                    $contracts_landing_path = "contracts_landing/status/A";
                 }else if($node->data[1]['total_contracts'] > 0 || $node->data[1]['current_amount_sum'] > 0){
-                    $contracts_landing_path = "contracts_landing/status/R/";
+                    $contracts_landing_path = "contracts_landing/status/R";
                 }else if($node->data[2]['total_contracts'] > 0 || $node->data[2]['current_amount_sum'] > 0){
-                    $contracts_landing_path = "contracts_revenue_landing/status/A/";
+                    $contracts_landing_path = "contracts_revenue_landing/status/A";
                 }else if($node->data[3]['total_contracts'] > 0 || $node->data[3]['current_amount_sum'] > 0){
-                    $contracts_landing_path = "contracts_revenue_landing/status/R/";
+                    $contracts_landing_path = "contracts_revenue_landing/status/R";
                 }else if($node->data[5]['total_contracts'] > 0 || $node->data[5]['current_amount_sum'] > 0){
-                    $contracts_landing_path = "contracts_pending_exp_landing/";
+                    $contracts_landing_path = "contracts_pending_exp_landing";
                 }else if($node->data[6]['total_contracts'] > 0 || $node->data[6]['current_amount_sum'] > 0){
-                    $contracts_landing_path = "contracts_pending_rev_landing/";
+                    $contracts_landing_path = "contracts_pending_rev_landing";
                 }else{
                     return "";
                 }
                 
-                $path = $contracts_landing_path."status/A/yeartype/B/year/".$fiscalYearId._checkbook_append_url_params(null, array(),true);
+                $path = $contracts_landing_path."/yeartype/B/year/".$fiscalYearId._checkbook_append_url_params(null, array(),true);
                 if(_getRequestParamValue("agency") > 0){
                     $path =  $path . "/agency/" . _getRequestParamValue("agency")  ;
                 }else if(_checkbook_check_isEDCPage()){
