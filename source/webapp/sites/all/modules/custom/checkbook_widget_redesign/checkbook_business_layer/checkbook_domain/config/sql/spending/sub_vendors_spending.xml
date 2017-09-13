@@ -436,6 +436,7 @@
             s0.document_id,
             s0.agreement_id,
             s0.document_id AS sub_contract_number,
+            s0.document_code,
             SUM(COALESCE(total_spending_amount,0)) AS check_amount_sum,
             MAX(COALESCE(total_contract_amount,0)) AS total_contract_amount_sum
             FROM aggregateon_subven_spending_contract s0
@@ -459,7 +460,7 @@
                 </exp>
             </where>
             GROUP BY s0.agency_id, s0.year_id, s0.type_of_year, s0.description, s0.document_id, s0.agreement_id, s0.document_id, s0.vendor_id, s0.prime_vendor_id,
-            j1.legal_name,j2.legal_name,j3.agency_name,j4_b.original_agreement_id      
+            j1.legal_name,j2.legal_name,j3.agency_name,j4_b.original_agreement_id, s0.document_code    
         </sql>
     </statement>
     <!--GetCountSubVendorContracts-->
