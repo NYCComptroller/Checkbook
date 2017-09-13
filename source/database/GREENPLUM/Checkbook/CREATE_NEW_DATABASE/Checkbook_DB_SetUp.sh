@@ -17,33 +17,35 @@ psql -d $DB_NAME -f $SCRIPT_DIR/ScriptsForReferenceTables.sql
 
 echo "--------------------Creating Procedures-----------------------------"
 
-psql -d $DB_NAME -f $SCRIPT_DIR/COAScripts.sql 
+psql -d $DB_NAME -f $SCRIPT_DIR/COAScripts.sql
 psql -d $DB_NAME -f $SCRIPT_DIR/FMSVScripts.sql
-psql -d $DB_NAME -f $SCRIPT_DIR/MAGScripts.sql 
-psql -d $DB_NAME -f $SCRIPT_DIR/CONScripts.sql 
+psql -d $DB_NAME -f $SCRIPT_DIR/MAGScripts.sql
+psql -d $DB_NAME -f $SCRIPT_DIR/CONScripts.sql
 psql -d $DB_NAME -f $SCRIPT_DIR/CON-DOScripts.sql
-psql -d $DB_NAME -f $SCRIPT_DIR/CON-POScripts.sql 
-psql -d $DB_NAME -f $SCRIPT_DIR/FMSScripts.sql 
-psql -d $DB_NAME -f $SCRIPT_DIR/BudgetScripts.sql 
-psql -d $DB_NAME -f $SCRIPT_DIR/Scripts.sql 
-psql -d $DB_NAME -f $SCRIPT_DIR/PMSScripts.sql 
-psql -d $DB_NAME -f $SCRIPT_DIR/RevenueScripts.sql 
+psql -d $DB_NAME -f $SCRIPT_DIR/CON-POScripts.sql
+psql -d $DB_NAME -f $SCRIPT_DIR/FMSScripts.sql
+psql -d $DB_NAME -f $SCRIPT_DIR/BudgetScripts.sql
+psql -d $DB_NAME -f $SCRIPT_DIR/Scripts.sql
+psql -d $DB_NAME -f $SCRIPT_DIR/PMSScripts.sql
+psql -d $DB_NAME -f $SCRIPT_DIR/RevenueScripts.sql
 
-psql -d $DB_NAME -f $SCRIPT_DIR/Trends.sql 
+
+psql -d $DB_NAME -f $SCRIPT_DIR/Trends.sql
 echo"---finshed trends"
-psql -d $DB_NAME -f $SCRIPT_DIR/RevenueBudgetScripts.sql 
+psql -d $DB_NAME -f $SCRIPT_DIR/RevenueBudgetScripts.sql
 
 echo "--revenue budget scripts"
-psql -d $DB_NAME -f $ SCRIPT_DIR/PendingContracts.sql  
+psql -d $DB_NAME -f $ SCRIPT_DIR/PendingContracts.sql
 echo "--pendingscripts "
-psql -d $DB_NAME -f $SCRIPT_DIR/VendorScripts.sql 
+psql -d $DB_NAME -f $SCRIPT_DIR/VendorScripts.sql
 
-psql -d $DB_NAME -f $SCRIPT_DIR/CreateOGETransactionsData.sql 
+psql -d $DB_NAME -f $SCRIPT_DIR/CreateOGETransactionsData.sql
 
 
 echo "--subcontract scripts"
-psql -d $DB_NAME -f $SCRIPT_DIR/SubContractStatusScripts.sql 
+psql -d $DB_NAME -f $SCRIPT_DIR/SubContractStatusScripts.sql
 psql -d $DB_NAME -f $SCRIPT_DIR/SubVendorScripts.sql
-psql -d $DB_NAME -f $SCRIPT_DIR/SubFMSScripts.sql 
-psql -d $DB_NAME -f $SCRIPT_DIR/SubContractVendorBusTypeScripts.sql 
+psql -d $DB_NAME -f $SCRIPT_DIR/SubFMSScripts.sql
+psql -d $DB_NAME -f $SCRIPT_DIR/SubContractVendorBusTypeScripts.sql
 psql -d $DB_NAME -f $SCRIPT_DIR/SubCONScripts.sql
+psql -d $DB_NAME -f $SCRIPT_DIR/ViewsForMWBE.sql
