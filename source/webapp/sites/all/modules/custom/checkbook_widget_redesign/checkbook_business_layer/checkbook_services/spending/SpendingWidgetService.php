@@ -153,7 +153,6 @@ class SpendingWidgetService extends WidgetDataService implements IWidgetService 
                 $dynamic_parameter = DocumentCode::isMasterAgreement($row['document_code'])
                     ? '/magid/' . $row['agreement_id'] . '/doctype/' . $row['document_code']
                     : '/agid/' . $row['agreement_id'] . '/doctype/' . $row['document_code'];
-                $dynamic_parameter .= RequestUtilities::getRequestParamValue('vendor') ? "/fvendor/" . $row["prime_vendor_id"]: "";
                 $url = SpendingUrlService::ytdSpendingUrl($dynamic_parameter, $this->getLegacyNodeId());
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
@@ -164,8 +163,6 @@ class SpendingWidgetService extends WidgetDataService implements IWidgetService 
                 $dynamic_parameter = DocumentCode::isMasterAgreement($row['document_code'])
                     ? '/magid/' . $row['agreement_id'] . '/doctype/' . $row['document_code']
                     : '/agid/' . $row['agreement_id'] . '/doctype/' . $row['document_code'];
-                $dynamic_parameter .= "/agency/" . $row["agency_id"];
-                $dynamic_parameter .= "/fvendor/" . $row["sub_vendor_id"];
                 $url = SpendingUrlService::ytdSpendingUrl($dynamic_parameter, $this->getLegacyNodeId());
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
