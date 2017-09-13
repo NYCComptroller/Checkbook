@@ -1,6 +1,7 @@
 package FunctionalBudget;
 
 import static org.junit.Assert.assertEquals;
+
 import helpers.Helper;
 
 import java.sql.SQLException;
@@ -14,8 +15,10 @@ import pages.budget.BudgetPage.WidgetOption;
 import pages.home.HomePage;
 import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
+import utilities.TestStatusReport;
+public class BudgetWidgetDetailsAmountTest extends TestStatusReport{
 
-public class BudgetWidgetDetailsTest2 extends NYCBaseTest {
+//public class BudgetWidgetDetailsAmountTest extends NYCBaseTest {
 	
 		@Before
 	    public void GoToPage(){
@@ -26,24 +29,20 @@ public class BudgetWidgetDetailsTest2 extends NYCBaseTest {
 		   HomePage.ShowWidgetDetails();
 	    }
 		
-		/* ***************** Test Widget Details Counts ****************** */
-		
 
-		@Test
-		public void VerifyNumOfBudgetAgenciesbyCommittedExpenseBudgetTransactionCount() throws SQLException {
-			BudgetPage.GoToTop5DetailsPage(WidgetOption.Top5AgenciesbyCommittedExpenseBudget);
-			HomePage.ShowWidgetDetails();
-			int NumOfBudgetDetailsCount2016 =  NYCDatabaseUtil.getBudgetDetailsCount(2016,'B');
-			int numOfBudgetDetailsCountapp = BudgetPage.GetTransactionCount();
-			assertEquals("Number of transactions for Budget Details page table  did not match", numOfBudgetDetailsCountapp, NumOfBudgetDetailsCount2016); 
+	/* ***************** Test Widget Transaction Total Amount ****************** */
+	
 		
-		String NumOfBudgetDetailsAmount2016 =  NYCDatabaseUtil.getBudgetDetailsAmount(2016,'B');
+		@Test
+		public void VerifyBudgetTransactionAmount() throws SQLException {
+			//Float transactionAmt = 26.3f;
+			BudgetPage.GoToTop5DetailsPage(WidgetOption.Top5Agencies);
+			HomePage.ShowWidgetDetails();
+		//assertTrue(HomePage.GetTransactionAmount1()== transactionAmt);
+			String NumOfBudgetDetailsAmount2016 =  NYCDatabaseUtil.getBudgetDetailsAmount(2016,'B');
 			String numOfBudgetDetailsAmountapp = HomePage.GetTransactionAmount1();
 		assertEquals("Number ofRevenue widget Details page table count did not match", numOfBudgetDetailsAmountapp, NumOfBudgetDetailsAmount2016); 
-		
-		
 		}
-		
 
 }
 

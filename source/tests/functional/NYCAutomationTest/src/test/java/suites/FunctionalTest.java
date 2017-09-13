@@ -11,37 +11,47 @@ import FunctionalRevenue.*;
 import FunctionalPayroll.*;
 import utilities.NYCBaseTest;
 
+
 @RunWith(Suite.class)
 @SuiteClasses({
-	
+
 	/* Spending */
-	//SpendingWidgetTest.class,
-
+	TotalSpendingWidgetTest.class,
+	TotalSpendingWidgetDetailsTest.class,
+	TotalSpendingTitlesTest.class,
+	
 	/* Contracts */
-	ActiveExpenseContractsTest.class,
-	//ActiveExpenseContractsDetailsTest.class,
-//	ActiveRevenueContractsTest.class,
+	//ActiveExpenseContractsTest.class,
+//	ActiveExpenseContractsDetailsTest.class,
+	//ActiveRevenueContractsTest.class,
 //	ActiveRevenueContractsDetailsTest.class,
-//	PendingExpenseContractsTest.class,
+	//PendingExpenseContractsTest.class,
 //	PendingExpenseContractsDetailsTest.class,
-//	PendingRevenueContractsTest.class,
+	//PendingRevenueContractsTest.class,
 //	PendingRevenueContractsDetailsTest.class,
-///	RegisteredExpenseContractsTest.class,
+	//RegisteredExpenseContractsTest.class,
 //	RegisteredExpenseContractsDetailsTest.class,
-//	RegisteredRevenueContractsTest.class,
+	//RegisteredRevenueContractsTest.class,
 //	RegisteredRevenueContractsDetailsTest.class,
-
+ 
 	/* Budget */
 	/* Need to fix path to retrieve count */
-//	BudgetWidgetTest.class,
+	BudgetWidgetDetailsTest.class,
+	BudgetWidgetDetailsAmountTest.class,
+	
+	BudgetWidgetTest.class,
+	BudgetWidgetTitles.class,
 
 	/* Revenue */
-//	RevenueWidgetTest.class,
+	RevenueWidgetTest.class,
+	RevenueWidgetTitles.class,
+	RevenueWidgetDetailsTest.class,
+	RevenueWidgetDetailsAmountTest.class,
 
 	/* Payroll */
 	PayrollWidgetTest.class,
 	
-	//PayrollWidgetDetailsTest.class,
+	PayrollWidgetDetailsTest.class,
 
 	PayrollTitles.class
 })

@@ -125,7 +125,7 @@ public class SpendingPage {
     		}
     		WebElement detailsAnchor = detailsContainer.findElement(By.partialLinkText("Details"));
     		detailsAnchor.click();	
-    		Driver.Instance.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+    		Driver.Instance.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
     	}
     	
       
