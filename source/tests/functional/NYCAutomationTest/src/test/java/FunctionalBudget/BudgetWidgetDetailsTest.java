@@ -1,7 +1,9 @@
 package FunctionalBudget;
 
 import static org.junit.Assert.assertEquals;
+
 import helpers.Helper;
+import navigation.TopNavigation.Contracts.RegisteredRevenueContracts;
 
 import java.sql.SQLException;
 
@@ -10,16 +12,20 @@ import org.junit.Test;
 
 import pages.budget.BudgetPage;
 import pages.budget.BudgetPage.WidgetOption;
-
+import pages.contracts.RegisteredRevenueContractsPage;
 import pages.home.HomePage;
 import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
+import utilities.TestStatusReport;
+public class BudgetWidgetDetailsTest extends TestStatusReport{
 
-public class BudgetWidgetDetailsTest extends NYCBaseTest {
+//public class BudgetWidgetDetailsTest extends NYCBaseTest {
 	
 		@Before
 	    public void GoToPage(){
 			BudgetPage.GoTo();
+			 if (!BudgetPage.isAt())
+				 BudgetPage.GoTo();
 		 
 		   if(!(Helper.getCurrentSelectedYear()).equalsIgnoreCase(NYCBaseTest.prop.getProperty("CurrentYear")))
 			   HomePage.SelectYear(NYCBaseTest.prop.getProperty("CurrentYear"));

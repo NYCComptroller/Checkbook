@@ -20,9 +20,9 @@ import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
 import utilities.TestStatusReport;
 
-//public class PayrollTitles extends NYCBaseTest {
+public class PayrollTitles extends NYCBaseTest {
 	
-	public class PayrollTitles extends TestStatusReport {
+	//public class PayrollTitles extends TestStatusReport {
 	
 	@Before
 	public void GoToPage(){

@@ -1,6 +1,7 @@
 package FunctionalContracts;
 
 import static org.junit.Assert.assertEquals;
+
 import static org.junit.Assert.assertTrue;
 
 import java.sql.SQLException;
@@ -16,8 +17,10 @@ import pages.home.HomePage;
 import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
 import helpers.Helper;
+import utilities.TestStatusReport;
+public class RegisteredExpenseContractsDetailsTest extends TestStatusReport{
 
-public class RegisteredExpenseContractsDetailsTest extends NYCBaseTest {
+//public class RegisteredExpenseContractsDetailsTest extends NYCBaseTest {
 
 	@Before
 	public void GoToPage() {
