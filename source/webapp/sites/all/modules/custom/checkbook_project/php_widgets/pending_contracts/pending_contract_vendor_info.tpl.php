@@ -70,19 +70,14 @@ if($node->data[0]["vendor_id"]){
         $total_cont +=$row['total_contracts_sum'];
     }
 
- $vendor_link = '/contracts_landing/status/A/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
-              .$node->data[0]['vendor_id'].'?expandBottomCont=true';
-
- if($node->data[0]["mwbe_vendor"] == "Yes"){
-       $vendor_link = '/contracts_landing/status/A/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
-            .$node->data[0]['vendor_id'].'/dashboard/mp?expandBottomCont=true';
- }
-}else{
-    $total_cont  = 0;
+    if($node->data[0]["mwbe_vendor"] == "Yes"){
+       $total_cont  = 0;
+       $dashboard = '/dashboard/mp';
+    }
     if($node->data[0]['document_code'] == 'RCT1')
-        $vendor_link = '/contracts_pending_rev_landing/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'.$node->data[0]['vendor_vendor'] .'?expandBottomCont=true';
+        $vendor_link = '/contracts_pending_rev_landing/year/' . _getCurrentYearID() . '/yeartype/B'.$dashboard.'/vendor/'.$node->data[0]['vendor_vendor'] .'?expandBottomCont=true';
     else
-        $vendor_link = '/contracts_pending_exp_landing/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'.$node->data[0]['vendor_vendor'] .'?expandBottomCont=true';
+        $vendor_link = '/contracts_pending_exp_landing/year/' . _getCurrentYearID() . '/yeartype/B'.$dashboard.'/vendor/'.$node->data[0]['vendor_vendor'] .'?expandBottomCont=true';
 }
 
 
