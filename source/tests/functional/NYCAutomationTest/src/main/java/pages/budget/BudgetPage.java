@@ -196,12 +196,15 @@ public static ArrayList<String> BudgetVisualizationTitles() {
 
 
 /////widget  titles   
+
+
 public static ArrayList<String> WidgetTitles() {
 	ArrayList<String> titles = new ArrayList<String>();
 	List<WebElement> titleContainers = Driver.Instance.findElements(By.className("tableHeader"));
 	for (WebElement titleContainer : titleContainers) {
 		WebElement titleHeaderContainer = titleContainer.findElement(By.cssSelector("h2"));
-		titles.add(titleHeaderContainer.getText());
+		//titles.add(titleHeaderContainer.getText());
+		titles.add(titleHeaderContainer.getText().substring(0, titleHeaderContainer.getText().indexOf("Number")-1));
 	}	
 	return titles;
 }
