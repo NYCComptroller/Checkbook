@@ -20,20 +20,15 @@
 ?>
 <?php
 
-  if($node->data[0]['vendor_id']){
-    $vendor_link = '/contracts_landing/status/A/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
-    . $node->data[0]['vendor_id'] . '?expandBottomCont=true';
-  }
-  else{
-      if($node->data[0]['document_code_checkbook_ref_document_code'] == 'RCT1')
-          $vendor_link = '/contracts_pending_rev_landing/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'.$node->data[0]['vendor_vendor'] .'?expandBottomCont=true';
-      else
-          $vendor_link = '/contracts_pending_exp_landing/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'.$node->data[0]['vendor_vendor'] .'?expandBottomCont=true';
 
-  }
-  $agency_link = '/contracts_landing/status/A/year/' . _getCurrentYearID() . '/yeartype/B/agency/'
-    . $node->data[0]['agency_id_checkbook_agency'] . '?expandBottomCont=true';
-
+    if($node->data[0]['document_code_checkbook_ref_document_code'] == 'RCT1'){
+        $agency_link = '/contracts_pending_rev_landing/year/' . _getCurrentYearID() . '/yeartype/B/agency/'. $node->data[0]['agency_id_checkbook_agency'] . '?expandBottomCont=true';
+        $vendor_link = '/contracts_pending_rev_landing/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'.$node->data[0]['vendor_vendor'] .'?expandBottomCont=true';
+    }else{
+        $agency_link = '/contracts_pending_exp_landing/year/' . _getCurrentYearID() . '/yeartype/B/agency/'. $node->data[0]['agency_id_checkbook_agency'] . '?expandBottomCont=true';
+        $vendor_link = '/contracts_pending_exp_landing/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'.$node->data[0]['vendor_vendor'] .'?expandBottomCont=true';
+    }
+  
 if(isset($node->original_master_agreement_id)){
     if(!preg_match("/newwindow/",current_path())){
         $master_link_html = '<span class="master-contract-link">Parent Contract: <a class="bottomContainerReload" href=/panel_html/contract_transactions/contract_details/magid/' .  $node->original_master_agreement_id . '/doctype/' . $node->document_code. $datasource . ' class=\"bottomContainerReload\">' .  $node->contract_number . '</a></span>';
