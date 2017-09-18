@@ -2,6 +2,7 @@ package pages.spending;
 
 import pages.home.HomePage;
 import helpers.Driver;
+import helpers.Helper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +10,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class SpendingPage {	
    
@@ -122,7 +125,7 @@ public class SpendingPage {
     		}
     		WebElement detailsAnchor = detailsContainer.findElement(By.partialLinkText("Details"));
     		detailsAnchor.click();	
-    		Driver.Instance.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+    		Driver.Instance.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
     	}
     	
       
@@ -139,11 +142,52 @@ public class SpendingPage {
 		List<WebElement> titleContainers = Driver.Instance.findElements(By.className("tableHeader"));
 		for (WebElement titleContainer : titleContainers) {
 			WebElement titleHeaderContainer = titleContainer.findElement(By.cssSelector("h2"));
-			titles.add(titleHeaderContainer.getText());
+			//titles.add(titleHeaderContainer.getText());
+			titles.add(titleHeaderContainer.getText().substring(0, titleHeaderContainer.getText().indexOf("Number")-1));
 		}	
 		return titles;
-	}	
- 
+	}
 	
+	public static String GetWidgetText() {
+	List<WebElement> panelContainers = Driver.Instance.findElements(By.cssSelector(".bottomContainer > .panel-display > .panel-panel > .inside > .panel-pane"));
+//		List<WebElement> panelContainers = Driver.Instance.findElements(By.cssSelector(".bottomContainer > .panel-display > .panel-panel > div > .panel-pane"));
+		for (WebElement panelContainer : panelContainers) {
+			WebElement header= panelContainer.findElement(By.tagName("h2"));
+			String subTitle = header.getText().substring(0, header.getText().indexOf("Number")-1);
+			return subTitle;
+			}
+		return null;
+	}
+
+	
+	public static ArrayList<String> GetAllWidgetText() {
+		List<WebElement> panelContainers = Driver.Instance.findElements(By.cssSelector(".bottomContainer > .panel-display > .panel-panel > .inside > .panel-pane"));
+//			List<WebElement> panelContainers = Driver.Instance.findElements(By.cssSelector(".bottomContainer > .panel-display > .panel-panel > div > .panel-pane"));
+			for (WebElement panelContainer : panelContainers) {
+				WebElement header= panelContainer.findElement(By.tagName("h2"));
+				ArrayList<String> titles = new ArrayList<String>();
+				titles.add( header.getText().substring(0, header.getText().indexOf("Number")-1));
+				return titles;
+				}
+			return null;
+		}
+
+	
+	
+	///Transaction count
+
+	public static Integer GetTransactionCount() {
+		WebDriverWait wait = new WebDriverWait(Driver.Instance, 20);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("table_706_info")));
+		String count = (Driver.Instance.findElement(By.id("table_706_info"))).getText();
+		return Helper.GetTotalEntries(count, 9);
+	}
+		public static Integer GetTransactionCount1() {
+			WebDriverWait wait = new WebDriverWait(Driver.Instance, 20);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("table_706_info")));
+			String count = (Driver.Instance.findElement(By.id("table_706_info"))).getText();
+			return Helper.GetTotalEntries(count, 5);
+	}
+
 	
 }

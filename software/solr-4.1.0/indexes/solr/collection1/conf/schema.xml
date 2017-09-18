@@ -293,6 +293,7 @@
         <field name="original_amount" type="double" indexed="true" stored="true"/>
         <field name="contract_status" type="string_custom" indexed="true" stored="true" />
         <field name="contract_type_id" type="int" indexed="true" stored="true"/>
+        <field name="vendor_record_type" type="string_custom" indexed="true" stored="true"/>        
 
         <field name="latest_flag" type="string_custom" indexed="true" stored="true"/>
         <field name="award_category_code" type="string_custom" indexed="true" stored="true"/>

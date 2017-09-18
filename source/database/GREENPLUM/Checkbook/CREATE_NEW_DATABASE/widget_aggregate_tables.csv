@@ -13,18 +13,18 @@ SpendingByCOAEntitiesAndFiscalYear,aggregateon_spending_coa_entities,"CREATE TAB
 	) DISTRIBUTED BY (department_id)  ","SELECT department_id,
 		agency_id,
        	spending_category_id,
-       	expenditure_object_id,   
+       	expenditure_object_id,
        	vendor_id,
        	check_eft_issued_cal_month_id as month_id,
        	check_eft_issued_nyc_year_id as year_id,
        	'B' as type_of_year,
        	sum(check_amount) total_spending_amount,
        	count(*) as total_disbursements
-  FROM disbursement_line_item_details 
+  FROM disbursement_line_item_details
   GROUP BY 1,2,3,4,5,6,7","SELECT 	department_id,
 		agency_id,
        	spending_category_id,
-       	expenditure_object_id,     
+       	expenditure_object_id,
        	vendor_id,
        	check_eft_issued_cal_month_id AS month_id,
         calendar_fiscal_year_id AS year_id,
@@ -39,18 +39,18 @@ SpendingByContractId,aggregateon_spending_contract,"CREATE TABLE aggregateon_spe
     document_code character varying(8),
 	vendor_id integer,
 	agency_id smallint,
-	description character varying(60),	
+	description character varying(60),
 	spending_category_id smallint,
 	year_id smallint,
 	type_of_year char(1),
-	total_spending_amount numeric(16,2), 
+	total_spending_amount numeric(16,2),
 	total_contract_amount numeric(16,2)
-	) DISTRIBUTED BY (agreement_id)","SELECT agreement_id, contract_number, contract_document_code, vendor_id, agency_id, description,  
+	) DISTRIBUTED BY (agreement_id)","SELECT agreement_id, contract_number, contract_document_code, vendor_id, agency_id, description,
 spending_category_id, year_id, type_of_year,
  sum(total_spending_amount) total_spending_amount,
   sum(contract_amount) total_contract_amount
 FROM
-(SELECT COALESCE(master_agreement_id, agreement_id) as agreement_id, 
+(SELECT COALESCE(master_agreement_id, agreement_id) as agreement_id,
        COALESCE(master_contract_number,contract_number) as contract_number,
        COALESCE(master_contract_document_code,contract_document_code) as contract_document_code,
        COALESCE(master_contract_vendor_id,contract_vendor_id) as vendor_id,
@@ -61,11 +61,11 @@ FROM
        'B' as type_of_year,
        sum(check_amount) AS total_spending_amount,
        MIN(COALESCE(maximum_spending_limit,maximum_contract_amount)) AS contract_amount
-  FROM disbursement_line_item_details 
+  FROM disbursement_line_item_details
   WHERE agreement_id IS NOT NULL AND contract_number IS NOT NULL
 GROUP BY 1,2,3,4,5,6,7,8,9
 ) X
-GROUP BY 1,2,3,4,5,6,7,8,9 ","SELECT agreement_id, contract_number, contract_document_code, vendor_id, agency_id, description,  
+GROUP BY 1,2,3,4,5,6,7,8,9 ","SELECT agreement_id, contract_number, contract_document_code, vendor_id, agency_id, description,
  spending_category_id, year_id, type_of_year,
  sum(total_spending_amount) total_spending_amount,
   sum(contract_amount) total_contract_amount
@@ -76,7 +76,7 @@ GROUP BY 1,2,3,4,5,6,7,8,9 ","SELECT agreement_id, contract_number, contract_doc
        COALESCE(master_contract_vendor_id_cy,contract_vendor_id_cy) as vendor_id,
        COALESCE(master_contract_agency_id_cy,contract_agency_id_cy) as agency_id,
        COALESCE(master_purpose_cy,purpose_cy) as description,
-       calendar_fiscal_year_id AS year_id,   
+       calendar_fiscal_year_id AS year_id,
        spending_category_id,
        'C' as type_of_year,
        sum(check_amount) AS total_spending_amount,
@@ -91,10 +91,10 @@ SpendingByVendorId,aggregateon_spending_vendor,"CREATE TABLE aggregateon_spendin
 	spending_category_id smallint,
 	year_id smallint,
 	type_of_year char(1),
-	total_spending_amount numeric(16,2), 
+	total_spending_amount numeric(16,2),
 	total_contract_amount numeric(16,2),
 	is_all_categories char(1)
-	) DISTRIBUTED BY (vendor_id)","SELECT X.vendor_id, X.agency_id, X.spending_category_id,   
+	) DISTRIBUTED BY (vendor_id)","SELECT X.vendor_id, X.agency_id, X.spending_category_id,
        X.year_id,
        X.type_of_year,
        X.total_spending_amount,
@@ -106,35 +106,35 @@ SpendingByVendorId,aggregateon_spending_vendor,"CREATE TABLE aggregateon_spendin
                check_eft_issued_nyc_year_id AS year_id,
                'B' as type_of_year,
                sum(check_amount) AS total_spending_amount
-          FROM    disbursement_line_item_details a 
+          FROM    disbursement_line_item_details a
 		  WHERE  a.spending_category_id <> 2
 GROUP BY 1,2,3,4) X
 LEFT JOIN (SELECT vendor_id, agency_id, spending_category_id, year_id, sum(total_contract_amount) as total_contract_amount
- FROM aggregateon_spending_contract WHERE type_of_year = 'B' 
+ FROM aggregateon_spending_contract WHERE type_of_year = 'B'
  GROUP BY 1,2,3,4) Y
- ON X.vendor_id = Y.vendor_id AND X.agency_id = Y.agency_id AND X.spending_category_id = Y.spending_category_id AND X.year_id = Y.year_id 
+ ON X.vendor_id = Y.vendor_id AND X.agency_id = Y.agency_id AND X.spending_category_id = Y.spending_category_id AND X.year_id = Y.year_id
  UNION ALL
-   SELECT X.vendor_id, X.agency_id, X.spending_category_id::smallint,     
+   SELECT X.vendor_id, X.agency_id, X.spending_category_id::smallint,
        X.year_id,
        X.type_of_year,
        X.total_spending_amount,
        Y.total_contract_amount,
        'Y' as is_all_categories
   FROM (SELECT agency_id,
-               vendor_id,               
+               vendor_id,
                check_eft_issued_nyc_year_id AS year_id,
                NULL as spending_category_id,
                'B' as type_of_year,
                sum(check_amount) AS total_spending_amount
-          FROM    disbursement_line_item_details a 
+          FROM    disbursement_line_item_details a
 		  WHERE  a.spending_category_id <> 2
 GROUP BY 1,2,3) X
 LEFT JOIN (SELECT vendor_id, agency_id, year_id, SUM(total_contract_amount) as total_contract_amount
-FROM 
+FROM
 (SELECT agreement_id, vendor_id, agency_id, year_id, MIN(total_contract_amount) as total_contract_amount
- FROM aggregateon_spending_contract WHERE type_of_year = 'B' 
+ FROM aggregateon_spending_contract WHERE type_of_year = 'B'
  GROUP BY 1,2,3,4) Z GROUP BY 1,2,3) Y
- ON X.vendor_id = Y.vendor_id AND X.agency_id = Y.agency_id AND X.year_id = Y.year_id","SELECT X.vendor_id, X.agency_id, X.spending_category_id, 
+ ON X.vendor_id = Y.vendor_id AND X.agency_id = Y.agency_id AND X.year_id = Y.year_id","SELECT X.vendor_id, X.agency_id, X.spending_category_id,
        X.year_id,
        X.type_of_year,
        X.total_spending_amount,
@@ -146,15 +146,15 @@ FROM
                calendar_fiscal_year_id AS year_id,
                'C' as type_of_year,
                sum(check_amount) AS total_spending_amount
-          FROM    disbursement_line_item_details a 
+          FROM    disbursement_line_item_details a
 		  WHERE  a.spending_category_id <> 2
 GROUP BY 1,2,3,4) X
 LEFT JOIN (SELECT vendor_id, agency_id, spending_category_id, year_id, sum(total_contract_amount) as total_contract_amount
- FROM aggregateon_spending_contract WHERE type_of_year = 'C' 
+ FROM aggregateon_spending_contract WHERE type_of_year = 'C'
  GROUP BY 1,2,3,4) Y
- ON X.vendor_id = Y.vendor_id AND X.agency_id = Y.agency_id AND X.spending_category_id = Y.spending_category_id AND X.year_id = Y.year_id 
+ ON X.vendor_id = Y.vendor_id AND X.agency_id = Y.agency_id AND X.spending_category_id = Y.spending_category_id AND X.year_id = Y.year_id
  UNION ALL
-   SELECT X.vendor_id, X.agency_id, X.spending_category_id::smallint,  
+   SELECT X.vendor_id, X.agency_id, X.spending_category_id::smallint,
        X.year_id,
        X.type_of_year,
        X.total_spending_amount,
@@ -166,13 +166,13 @@ LEFT JOIN (SELECT vendor_id, agency_id, spending_category_id, year_id, sum(total
                NULL as spending_category_id,
                'C' as type_of_year,
                sum(check_amount) AS total_spending_amount
-          FROM    disbursement_line_item_details a 
+          FROM    disbursement_line_item_details a
 		  WHERE  a.spending_category_id <> 2
 GROUP BY 1,2,3) X
 LEFT JOIN (SELECT vendor_id, agency_id, year_id, SUM(total_contract_amount) as total_contract_amount
-FROM 
+FROM
 (SELECT agreement_id, vendor_id, agency_id, year_id, MIN(total_contract_amount) as total_contract_amount
- FROM aggregateon_spending_contract WHERE type_of_year = 'C' 
+ FROM aggregateon_spending_contract WHERE type_of_year = 'C'
  GROUP BY 1,2,3,4) Z GROUP BY 1,2,3) Y
  ON X.vendor_id = Y.vendor_id AND X.agency_id = Y.agency_id AND X.year_id = Y.year_id ",3
 SpendingByVendorExpObject,aggregateon_spending_vendor_exp_object,"CREATE TABLE aggregateon_spending_vendor_exp_object(
@@ -227,9 +227,9 @@ SELECT COALESCE(a.revenue_category_code,a1.revenue_category_code) as revenue_cat
           ON a.revenue_source_id = b.revenue_source_id
                                 LEFT JOIN ref_revenue_category c ON b.revenue_category_id = c.revenue_category_id
                                 LEFT JOIN ref_funding_class d ON b.funding_class_id = d.funding_class_id
-  GROUP BY 1,2,3,4) a1 on a.revenue_category_code = a1.revenue_category_code and a.funding_class_code = a1.funding_class_code 
+  GROUP BY 1,2,3,4) a1 on a.revenue_category_code = a1.revenue_category_code and a.funding_class_code = a1.funding_class_code
   and a.budget_fiscal_year_id = a1.budget_fiscal_year_id and a.agency_id = a1.agency_id
-group by 1,2,3,4 ) b1 left join ref_year y on b1.budget_fiscal_year_id = y.year_id 
+group by 1,2,3,4 ) b1 left join ref_year y on b1.budget_fiscal_year_id = y.year_id
 left join ref_funding_class c on b1.funding_class_code =c.funding_class_code and c.fiscal_year= y.year_value
 left join ref_revenue_category d on b1.revenue_category_code = d.revenue_category_code",,5
 RevenueByCategoryIdAndYear,aggregateon_revenue_category_funding_by_year,"CREATE TABLE aggregateon_revenue_category_funding_by_year(
@@ -250,7 +250,7 @@ DISTRIBUTED BY (agency_id)","SELECT X.revenue_category_code,d.revenue_category_i
                posting_amount_cy, posting_amount_ny, posting_amount_ny_1, posting_amount,other_amount,remaining_amount,current_budget_amount
 FROM
 (
-SELECT revenue_category_code, funding_class_code, agency_id, budget_fiscal_year_id, posting_amount_cy, posting_amount_ny, posting_amount_ny_1, 
+SELECT revenue_category_code, funding_class_code, agency_id, budget_fiscal_year_id, posting_amount_cy, posting_amount_ny, posting_amount_ny_1,
 posting_amount, (posting_amount - (posting_amount_cy + posting_amount_ny + posting_amount_ny_1)) as other_amount, (current_budget_amount - posting_amount) as remaining_amount, current_budget_amount
 FROM
 (
@@ -270,7 +270,7 @@ SELECT a.revenue_category_code as revenue_category_code,
                                                    sum(CASE WHEN x.budget_fiscal_year+1 = x.fiscal_year THEN x.posting_amount ELSE 0 END) AS posting_amount_ny,
                                                    sum(CASE WHEN x.budget_fiscal_year+2 = x.fiscal_year THEN x.posting_amount ELSE 0 END) AS posting_amount_ny_1,
                sum(x.posting_amount) AS posting_amount
-          FROM   revenue_details x                          
+          FROM   revenue_details x
                    GROUP BY 1, 2,3,4) a
           left join
 (SELECT c.revenue_category_code,
@@ -282,84 +282,118 @@ a.budget_fiscal_year_id,
           ON a.revenue_source_id = b.revenue_source_id
                                 LEFT JOIN ref_revenue_category c ON b.revenue_category_id = c.revenue_category_id
                                 LEFT JOIN ref_funding_class d ON b.funding_class_id = d.funding_class_id
-  GROUP BY 1,2,3,4) a1 on a.revenue_category_code = a1.revenue_category_code and a.funding_class_code = a1.funding_class_code 
+  GROUP BY 1,2,3,4) a1 on a.revenue_category_code = a1.revenue_category_code and a.funding_class_code = a1.funding_class_code
   and a.budget_fiscal_year_id = a1.budget_fiscal_year_id and a.agency_id = a1.agency_id
-group by 1,2,3,4) b1 ) X left join ref_year y on X.budget_fiscal_year_id = y.year_id 
+group by 1,2,3,4) b1 ) X left join ref_year y on X.budget_fiscal_year_id = y.year_id
 left join ref_funding_class c on X.funding_class_code =c.funding_class_code and c.fiscal_year= y.year_value
 left join ref_revenue_category d on X.revenue_category_code = d.revenue_category_code",,6
 PayrollByEmployeeAgency,aggregateon_payroll_employee_agency,"CREATE TABLE aggregateon_payroll_employee_agency(
-	employee_id bigint,
+ employee_id bigint,
+ agency_id smallint,
+ fiscal_year_id smallint,
+ type_of_year char(1),
+ pay_frequency varchar,
+ type_of_employment varchar,
+ civil_service_title varchar,
+ employee_number varchar(70),
+ start_date date,
+ pay_date date,
+ annual_salary numeric(16,2),
+ base_pay numeric(16,2),
+ overtime_pay numeric(16,2),
+ other_payments numeric(16,2),
+ gross_pay numeric(16,2) ,
+ positive_overtime_pay numeric(16,2))
+DISTRIBUTED BY (employee_id)","SELECT  employee_id,agency_id,fiscal_year_id,type_of_year,NULL,type_of_employment,civil_service_title,employee_number,agency_start_date,pay_date,annual_salary,base_pay,overtime_pay,other_payments,gross_pay_ytd,positive_overtime_pay
+FROM
+(
+ SELECT e.employee_id,
+ e.agency_id,
+ e.fiscal_year_id,
+ 'B' as type_of_year,
+(CASE WHEN amount_basis_name='ANNUAL' THEN 'Salaried' ELSE 'Non-Salaried' END) as type_of_employment,
+annual_sal_table.civil_service_title,
+min(e.employee_number) as employee_number,
+min(e.agency_start_date) as agency_start_date,
+max(annual_sal_table.pay_date) as pay_date,
+max(annual_sal_table.annual_salary) as annual_salary,
+SUM(base_pay) as base_pay,
+sum(overtime_pay) as overtime_pay,
+sum(other_payments) as other_payments,
+SUM(gross_pay) as gross_pay_ytd,
+SUM(CASE WHEN overtime_pay >0 THEN overtime_pay ELSE 0 END) positive_overtime_pay
+FROM payroll e JOIN
+     (
+      SELECT d.employee_id,d.payroll_number,d.job_sequence_number,d.fiscal_year,d.agency_id, d.amount_basis_id, d.civil_service_title,max(d.pay_date) as pay_date, max(d.annual_salary) as annual_salary
+       FROM
+          (
+            SELECT employee_id,payroll_number,job_sequence_number,fiscal_year,agency_id, amount_basis_id,civil_service_title , max(pay_date) as pay_date
+            FROM payroll a
+            GROUP BY 1,2,3,4,5,6,7
+          ) c JOIN payroll d ON d.employee_id = c.employee_id
+          AND d.payroll_number = c.payroll_number
+          AND d.job_sequence_number = c.job_sequence_number
+          AND d.fiscal_year = c.fiscal_year
+          AND d.agency_id = c.agency_id
+          AND d.pay_date = c.pay_date
+          AND d.amount_basis_id = c.amount_basis_id
+          AND d.civil_service_title = c.civil_service_title
+          GROUP BY 1,2,3,4,5,6,7
+      ) annual_sal_table ON e.employee_id = annual_sal_table.employee_id
+     AND e.payroll_number = annual_sal_table.payroll_number
+     AND e.fiscal_year = annual_sal_table.fiscal_year
+     AND e.job_sequence_number = annual_sal_table.job_sequence_number
+     AND e.agency_id = annual_sal_table.agency_id
+     AND e.amount_basis_id = annual_sal_table.amount_basis_id
+     AND e.civil_service_title = annual_sal_table.civil_service_title
+JOIN ref_amount_basis z ON e.amount_basis_id = z.amount_basis_id
+GROUP BY 1,2,3,4,5,6 ) main","SELECT  employee_id,agency_id,calendar_fiscal_year_id,type_of_year,NULL,type_of_employment,civil_service_title,employee_number,agency_start_date,pay_date,annual_salary,base_pay,overtime_pay,other_payments,gross_pay_ytd,positive_overtime_pay
+FROM
+(
+SELECT
+ e.employee_id,
+ e.agency_id,
+ e.calendar_fiscal_year_id,
+ 'C' as type_of_year,
+ (CASE WHEN amount_basis_name='ANNUAL' THEN 'Salaried' ELSE 'Non-Salaried' END) as type_of_employment,
+ annual_sal_table.civil_service_title,
+ min(e.employee_number) as employee_number,
+ min(e.agency_start_date) as agency_start_date,
+ max(annual_sal_table.pay_date) as pay_date,
+ max(annual_sal_table.annual_salary) as annual_salary,
+ SUM(base_pay) as base_pay,
+ sum(overtime_pay) as overtime_pay,
+ sum(other_payments) as other_payments,
+ SUM(gross_pay) as gross_pay_ytd,
+SUM(CASE WHEN overtime_pay >0 THEN overtime_pay ELSE 0 END) positive_overtime_pay
+  FROM payroll e JOIN
+(
+    SELECT d.employee_id,d.payroll_number,d.job_sequence_number,d.calendar_fiscal_year,d.agency_id,d.amount_basis_id,d.civil_service_title, max(d.pay_date) as pay_date,max(d.annual_salary) as annual_salary
+       FROM (
+                SELECT employee_id,payroll_number,job_sequence_number,calendar_fiscal_year,agency_id, amount_basis_id, civil_service_title, max(pay_date) as pay_date
+                FROM payroll a
+                GROUP BY 1,2,3,4,5,6,7
+             ) c JOIN payroll d ON d.employee_id = c.employee_id
+          AND d.payroll_number = c.payroll_number
+          AND d.job_sequence_number = c.job_sequence_number
+          AND d.calendar_fiscal_year = c.calendar_fiscal_year
+          AND d.agency_id = c.agency_id
+          AND d.pay_date = c.pay_date
+          AND d.amount_basis_id = c.amount_basis_id
+          AND d.civil_service_title = c.civil_service_title
+          GROUP BY 1,2,3,4,5,6,7
+) annual_sal_table ON e.employee_id = annual_sal_table.employee_id
+    AND e.payroll_number = annual_sal_table.payroll_number
+    AND e.calendar_fiscal_year = annual_sal_table.calendar_fiscal_year
+    AND e.job_sequence_number = annual_sal_table.job_sequence_number
+    AND e.agency_id = annual_sal_table.agency_id
+    AND e.amount_basis_id = annual_sal_table.amount_basis_id
+    AND e.civil_service_title = annual_sal_table.civil_service_title
+JOIN ref_amount_basis z ON e.amount_basis_id = z.amount_basis_id
+GROUP BY 1,2,3,4,5,6
+) main",7
+PayrollByAgency,aggregateon_payroll_agency,"CREATE TABLE aggregateon_payroll_agency(
 	agency_id smallint,
-	fiscal_year_id smallint,
-	type_of_year char(1),
-	pay_frequency varchar,
-	type_of_employment varchar,
-	employee_number varchar(70),
-	start_date date,	
-	annual_salary numeric(16,2),
-	base_pay numeric(16,2),
-	overtime_pay numeric(16,2),
-	other_payments numeric(16,2),
-	gross_pay numeric(16,2) )
-DISTRIBUTED BY (employee_id)","SELECT e.employee_id,e.agency_id,e.fiscal_year_id,'B' as type_of_year,
-	e.pay_frequency,
-	(CASE WHEN amount_basis_name='ANNUAL' THEN 'Salaried' ELSE 'Non-Salaried' END) as type_of_employment,
-	min(e.employee_number) as employee_number,
-	min(e.agency_start_date) as agency_start_date,
-	max(annual_sal_table.annual_salary) as annual_salary,
-	SUM(base_pay) as base_pay,
-	sum(overtime_pay) as overtime_pay,
-	sum(other_payments) as other_payments,
-	SUM(gross_pay) as gross_pay_ytd	
-FROM payroll e JOIN (SELECT d.employee_id,d.payroll_number,d.job_sequence_number,d.fiscal_year,d.agency_id, d.amount_basis_id, d.pay_frequency, max(d.annual_salary) as annual_salary
-		     FROM (SELECT employee_id,payroll_number,job_sequence_number,fiscal_year,agency_id, amount_basis_id, pay_frequency,  max(pay_date) as pay_date
-		     	   FROM payroll a 	     	   
-		           GROUP BY 1,2,3,4,5,6,7) c JOIN payroll d ON d.employee_id = c.employee_id
-					     AND d.payroll_number = c.payroll_number 
-					     AND d.job_sequence_number = c.job_sequence_number
-					     AND d.fiscal_year = c.fiscal_year
-						 AND d.agency_id = c.agency_id
-					     AND d.pay_date = c.pay_date 
-					     AND d.amount_basis_id = c.amount_basis_id 
-					     AND d.pay_frequency = c.pay_frequency GROUP BY 1,2,3,4,5,6,7) annual_sal_table ON e.employee_id = annual_sal_table.employee_id
-		     			AND e.payroll_number = annual_sal_table.payroll_number 
-		     			AND e.fiscal_year = annual_sal_table.fiscal_year
-		     			AND e.job_sequence_number = annual_sal_table.job_sequence_number
-						AND e.agency_id = annual_sal_table.agency_id
-						AND e.amount_basis_id = annual_sal_table.amount_basis_id
-						AND e.pay_frequency = annual_sal_table.pay_frequency
-	JOIN ref_amount_basis z ON e.amount_basis_id = z.amount_basis_id
-GROUP BY 1,2,3,4,5,6 ","SELECT e.employee_id,e.agency_id,e.calendar_fiscal_year_id,'C' as type_of_year,
-	e.pay_frequency,
-	(CASE WHEN amount_basis_name='ANNUAL' THEN 'Salaried' ELSE 'Non-Salaried' END) as type_of_employment,	
-	min(e.employee_number) as employee_number,
-	min(e.agency_start_date) as agency_start_date,	
-	max(annual_sal_table.annual_salary) as annual_salary,
-	SUM(base_pay) as base_pay,
-	sum(overtime_pay) as overtime_pay,
-	sum(other_payments) as other_payments,
-	SUM(gross_pay) as gross_pay_ytd	
-FROM payroll e JOIN (SELECT d.employee_id,d.payroll_number,d.job_sequence_number,d.calendar_fiscal_year,d.agency_id,d.amount_basis_id, d.pay_frequency, max(d.annual_salary) as annual_salary
-		     FROM (SELECT employee_id,payroll_number,job_sequence_number,calendar_fiscal_year,agency_id, amount_basis_id, pay_frequency, max(pay_date) as pay_date
-		     	   FROM payroll a 		     	   
-		           GROUP BY 1,2,3,4,5,6,7) c JOIN payroll d ON d.employee_id = c.employee_id
-					     AND d.payroll_number = c.payroll_number 
-					     AND d.job_sequence_number = c.job_sequence_number
-					     AND d.calendar_fiscal_year = c.calendar_fiscal_year
-						 AND d.agency_id = c.agency_id
-					     AND d.pay_date = c.pay_date 
-					     AND d.amount_basis_id = c.amount_basis_id 
-					     AND d.pay_frequency = c.pay_frequency GROUP BY 1,2,3,4,5,6,7) annual_sal_table ON e.employee_id = annual_sal_table.employee_id
-		     			AND e.payroll_number = annual_sal_table.payroll_number 
-		     			AND e.calendar_fiscal_year = annual_sal_table.calendar_fiscal_year
-		     			AND e.job_sequence_number = annual_sal_table.job_sequence_number
-						AND e.agency_id = annual_sal_table.agency_id
-						AND e.amount_basis_id = annual_sal_table.amount_basis_id
-						AND e.pay_frequency = annual_sal_table.pay_frequency
-	JOIN ref_amount_basis z ON e.amount_basis_id = z.amount_basis_id	
-GROUP BY 1,2,3,4,5,6 ",7
-PayrollByAgency,aggregateon_payroll_agency,"CREATE TABLE aggregateon_payroll_agency(	
-	agency_id smallint,	
 	fiscal_year_id smallint,
 	type_of_year char(1),
 	base_pay numeric(16,2),
@@ -382,7 +416,7 @@ DISTRIBUTED BY (agency_id)","SELECT X.agency_id,X.fiscal_year_id, X.type_of_year
 	  MIN(total_overtime_employees) as total_overtime_employees,
 	  SUM(annual_salary) as annual_salary
 FROM
-(SELECT agency_id,fiscal_year_id,'B' as type_of_year, 
+(SELECT agency_id,fiscal_year_id,'B' as type_of_year,
 	SUM(base_pay) as base_pay,
 	SUM(other_payments) as other_payments,
 	SUM(gross_pay) as gross_pay,
@@ -395,7 +429,7 @@ FROM
 FROM payroll a JOIN ref_amount_basis b ON a.amount_basis_id = b.amount_basis_id
 GROUP BY 1,2,3) X
 JOIN (SELECT employee_id, agency_id, fiscal_year_id, type_of_year, max(coalesce(annual_salary,0)) as  annual_salary
-			  FROM aggregateon_payroll_employee_agency 
+			  FROM aggregateon_payroll_employee_agency
 			  WHERE type_of_year = 'B' AND type_of_employment = 'Salaried'
 			  GROUP BY 1,2,3,4) Y ON X.agency_id = Y.agency_id AND X.fiscal_year_id = Y.fiscal_year_id AND X.type_of_year = Y.type_of_year
 GROUP BY 1,2,3 ","SELECT X.agency_id,X.calendar_fiscal_year_id, X.type_of_year,
@@ -409,7 +443,7 @@ GROUP BY 1,2,3 ","SELECT X.agency_id,X.calendar_fiscal_year_id, X.type_of_year,
 	  MIN(total_overtime_employees) as total_overtime_employees,
 	  SUM(annual_salary) as annual_salary
 FROM
-(SELECT agency_id,calendar_fiscal_year_id,'C' as type_of_year, 
+(SELECT agency_id,calendar_fiscal_year_id,'C' as type_of_year,
 	SUM(base_pay) as base_pay,
 	SUM(other_payments) as other_payments,
 	SUM(gross_pay) as gross_pay,
@@ -422,16 +456,16 @@ FROM
 FROM payroll a JOIN ref_amount_basis b ON a.amount_basis_id = b.amount_basis_id
 GROUP BY 1,2,3) X
 JOIN (SELECT employee_id, agency_id, fiscal_year_id, type_of_year, max(coalesce(annual_salary,0)) as  annual_salary
-			  FROM aggregateon_payroll_employee_agency 
+			  FROM aggregateon_payroll_employee_agency
 			  WHERE type_of_year = 'C' AND type_of_employment = 'Salaried'
 			  GROUP BY 1,2,3,4) Y ON X.agency_id = Y.agency_id AND X.calendar_fiscal_year_id = Y.fiscal_year_id AND X.type_of_year = Y.type_of_year
 GROUP BY 1,2,3 ",8
-PayrollByMonth,aggregateon_payroll_coa_month,"CREATE TABLE aggregateon_payroll_coa_month(	
+PayrollByMonth,aggregateon_payroll_coa_month,"CREATE TABLE aggregateon_payroll_coa_month(
 	agency_id smallint,
 	department_id integer,
 	fiscal_year_id smallint,
 	month_id int,
-	type_of_year char(1),	
+	type_of_year char(1),
 	base_pay numeric(16,2),
 	overtime_pay numeric(16,2),
 	other_payments numeric(16,2),
@@ -440,18 +474,18 @@ DISTRIBUTED BY (agency_id) ","SELECT agency_id,department_id,fiscal_year_id,cale
 	SUM(base_pay) as base_pay,
 	SUM(overtime_pay) as overtime_pay,
 	SUM(other_payments) as other_payments,
-	SUM(gross_pay) as gross_pay_ytd	
+	SUM(gross_pay) as gross_pay_ytd
 	FROM payroll a JOIN ref_date b ON a.pay_date_id = b.date_id
 	GROUP BY 1,2,3,4,5 ","SELECT agency_id,department_id,calendar_fiscal_year_id,calendar_month_id,'C' as type_of_year,
 	SUM(base_pay) as base_pay,
 	SUM(overtime_pay) as overtime_pay,
 	SUM(other_payments) as other_payments,
-	SUM(gross_pay) as gross_pay_ytd	
+	SUM(gross_pay) as gross_pay_ytd
 	FROM payroll a JOIN ref_date b ON a.pay_date_id = b.date_id
 	GROUP BY 1,2,3,4,5 ",9
-PayrollByYear,aggregateon_payroll_year,"CREATE TABLE aggregateon_payroll_year(	
+PayrollByYear,aggregateon_payroll_year,"CREATE TABLE aggregateon_payroll_year(
 	fiscal_year_id smallint,
-	type_of_year char(1),	
+	type_of_year char(1),
 	total_employees int,
 	total_salaried_employees int,
 	total_hourly_employees int,
@@ -472,69 +506,119 @@ DISTRIBUTED BY (fiscal_year_id) ","SELECT fiscal_year_id,'B' as type_of_year,
 	FROM payroll a JOIN ref_amount_basis b ON a.amount_basis_id = b.amount_basis_id
 	GROUP BY 1,2 ",10
 PayrollByEmployeeAgencyMonth,aggregateon_payroll_employee_agency_month,"CREATE TABLE aggregateon_payroll_employee_agency_month(
-	employee_id bigint,
+employee_id bigint,
+agency_id smallint,
+fiscal_year_id smallint,
+type_of_year char(1),
+month_id int,
+pay_frequency varchar,
+type_of_employment varchar,
+civil_service_title varchar,
+employee_number varchar(70),
+start_date date,
+pay_date date,
+annual_salary numeric(16,2),
+base_pay numeric(16,2),
+overtime_pay numeric(16,2),
+other_payments numeric(16,2),
+gross_pay numeric(16,2),
+positive_overtime_pay numeric(16,2))
+DISTRIBUTED BY (employee_id) ","select employee_id,agency_id,fiscal_year_id,type_of_year,calendar_month_id,NULL,
+type_of_employment,civil_service_title,employee_number,agency_start_date,pay_date,
+annual_salary,base_pay,overtime_pay,other_payments,gross_pay_ytd,positive_overtime_pay
+FROM
+(
+SELECT
+e.employee_id,
+e.agency_id,
+e.fiscal_year_id,
+'B' as type_of_year,
+b.calendar_month_id,
+(CASE WHEN amount_basis_name='ANNUAL' THEN 'Salaried' ELSE 'Non-Salaried' END) as type_of_employment,
+annual_sal_table.civil_service_title,
+min(e.employee_number) as employee_number,
+min(e.agency_start_date) as agency_start_date,
+max(annual_sal_table.pay_date) as pay_date,
+max(annual_sal_table.annual_salary) as annual_salary,
+SUM(base_pay) as base_pay,
+sum(overtime_pay) as overtime_pay,
+sum(other_payments) as other_payments,
+SUM(gross_pay) as gross_pay_ytd,
+SUM(CASE WHEN overtime_pay >0 THEN overtime_pay ELSE 0 END) positive_overtime_pay
+FROM payroll e JOIN
+(
+SELECT d.employee_id,d.payroll_number,d.job_sequence_number,d.fiscal_year,d.agency_id, d.amount_basis_id, d.civil_service_title,max(d.pay_date) as pay_date, max(d.annual_salary) as annual_salary
+FROM
+  (
+  SELECT employee_id,payroll_number,job_sequence_number,fiscal_year,agency_id, amount_basis_id, civil_service_title, max(pay_date) as pay_date
+    FROM payroll a
+    GROUP BY 1,2,3,4,5,6,7
+  ) c JOIN payroll d ON d.employee_id = c.employee_id
+AND d.payroll_number = c.payroll_number
+AND d.job_sequence_number = c.job_sequence_number
+AND d.fiscal_year = c.fiscal_year
+AND d.agency_id = c.agency_id
+AND d.pay_date = c.pay_date
+AND d.amount_basis_id = c.amount_basis_id
+AND d.civil_service_title = c.civil_service_title
+GROUP BY 1,2,3,4,5,6,7
+ ) annual_sal_table ON e.employee_id = annual_sal_table.employee_id
+AND e.payroll_number = annual_sal_table.payroll_number
+AND e.fiscal_year = annual_sal_table.fiscal_year
+AND e.job_sequence_number = annual_sal_table.job_sequence_number
+AND e.agency_id = annual_sal_table.agency_id
+AND e.amount_basis_id = annual_sal_table.amount_basis_id
+AND e.civil_service_title = annual_sal_table.civil_service_title
+JOIN  ref_date b ON e.pay_date_id = b.date_id
+JOIN ref_amount_basis z ON e.amount_basis_id = z.amount_basis_id
+GROUP BY 1,2,3,4,5,6,7 ) main","select employee_id,agency_id,calendar_month_id,type_of_year,calendar_month_id,NULL,
+type_of_employment,civil_service_title,employee_number,agency_start_date,pay_date,
+annual_salary,base_pay,overtime_pay,other_payments,gross_pay_ytd,positive_overtime_pay
+FROM (
+SELECT
+e.employee_id,
+e.agency_id,e.calendar_fiscal_year_id,'C' as type_of_year,
+ b.calendar_month_id,
+ (CASE WHEN amount_basis_name='ANNUAL' THEN 'Salaried' ELSE 'Non-Salaried' END) as type_of_employment,
+ annual_sal_table.civil_service_title,
+ min(e.employee_number) as employee_number,
+ min(e.agency_start_date) as agency_start_date,
+ max(annual_sal_table.pay_date) as pay_date,
+ max(annual_sal_table.annual_salary) as annual_salary,
+ SUM(base_pay) as base_pay,
+ sum(overtime_pay) as overtime_pay,
+ sum(other_payments) as other_payments,
+ SUM(gross_pay) as gross_pay_ytd,
+ SUM(CASE WHEN overtime_pay >0 THEN overtime_pay ELSE 0 END) positive_overtime_pay
+  FROM payroll e JOIN
+(
+  SELECT d.employee_id,d.payroll_number,d.job_sequence_number,d.calendar_fiscal_year,d.agency_id,d.amount_basis_id,d.civil_service_title, max(d.pay_date) as pay_date,max(d.annual_salary) as annual_salary
+      FROM (
+      SELECT employee_id,payroll_number,job_sequence_number,calendar_fiscal_year,agency_id, amount_basis_id, civil_service_title, max(pay_date) as pay_date
+      FROM payroll a
+      GROUP BY 1,2,3,4,5,6,7
+           ) c JOIN payroll d ON d.employee_id = c.employee_id
+      AND d.payroll_number = c.payroll_number
+      AND d.job_sequence_number = c.job_sequence_number
+      AND d.calendar_fiscal_year = c.calendar_fiscal_year
+      AND d.agency_id = c.agency_id
+      AND d.pay_date = c.pay_date
+      AND d.amount_basis_id = c.amount_basis_id
+      AND d.civil_service_title = c.civil_service_title
+      GROUP BY 1,2,3,4,5,6,7
+) annual_sal_table ON e.employee_id = annual_sal_table.employee_id
+    AND e.payroll_number = annual_sal_table.payroll_number
+    AND e.calendar_fiscal_year = annual_sal_table.calendar_fiscal_year
+    AND e.job_sequence_number = annual_sal_table.job_sequence_number
+    AND e.agency_id = annual_sal_table.agency_id
+    AND e.amount_basis_id = annual_sal_table.amount_basis_id
+    AND e.civil_service_title = annual_sal_table.civil_service_title
+  JOIN  ref_date b ON e.pay_date_id = b.date_id
+JOIN ref_amount_basis z ON e.amount_basis_id = z.amount_basis_id
+GROUP BY 1,2,3,4,5,6,7
+) main",11
+PayrollByAgencyMonth,aggregateon_payroll_agency_month,"CREATE TABLE aggregateon_payroll_agency_month(
 	agency_id smallint,
-	fiscal_year_id smallint,
-	type_of_year char(1),
-	month_id int,
-	pay_frequency varchar,
-	type_of_employment varchar,
-	employee_number varchar(70),
-	start_date date,	
-	annual_salary numeric(16,2),
-	base_pay numeric(16,2),
-	overtime_pay numeric(16,2),
-	other_payments numeric(16,2),
-	gross_pay numeric(16,2) )
-DISTRIBUTED BY (employee_id) ","SELECT e.employee_id,e.agency_id,e.fiscal_year_id,'B' as type_of_year,b.calendar_month_id,
-	e.pay_frequency,
-	(CASE WHEN amount_basis_name='ANNUAL' THEN 'Salaried' ELSE 'Non-Salaried' END) as type_of_employment,	
-	min(e.employee_number) as employee_number,
-	min(e.agency_start_date) as agency_start_date,	
-	max(e.annual_salary) as annual_salary,
-	SUM(base_pay) as base_pay,
-	sum(overtime_pay) as overtime_pay,
-	sum(other_payments) as other_payments,
-	SUM(gross_pay) as gross_pay_ytd	
-FROM payroll e LEFT JOIN (SELECT employee_id,payroll_number,job_sequence_number,fiscal_year,agency_id, calendar_month_id, amount_basis_id, pay_frequency, max(pay_date) as pay_date
-		     	   FROM payroll a 
-		     	   JOIN ref_date b ON a.pay_date_id = b.date_id
-		           GROUP BY 1,2,3,4,5,6,7,8) annual_sal_table  ON e.employee_id = annual_sal_table.employee_id
-		     			AND e.payroll_number = annual_sal_table.payroll_number 
-		     			AND e.fiscal_year = annual_sal_table.fiscal_year
-		     			AND e.job_sequence_number = annual_sal_table.job_sequence_number
-						AND e.agency_id = annual_sal_table.agency_id
-						AND e.amount_basis_id = annual_sal_table.amount_basis_id
-						AND e.pay_date = annual_sal_table.pay_date
-						AND e.pay_frequency = annual_sal_table.pay_frequency
-	JOIN ref_amount_basis z ON e.amount_basis_id = z.amount_basis_id	
-	JOIN ref_date b ON e.pay_date_id = b.date_id
-GROUP BY 1,2,3,4,5,6,7 ","SELECT e.employee_id,e.agency_id,e.calendar_fiscal_year_id,'C' as type_of_year,b.calendar_month_id,
-	e.pay_frequency,
-	(CASE WHEN amount_basis_name='ANNUAL' THEN 'Salaried' ELSE 'Non-Salaried' END) as type_of_employment,	
-	min(e.employee_number) as employee_number,
-	min(e.agency_start_date) as agency_start_date,	
-	max(e.annual_salary) as annual_salary,
-	SUM(base_pay) as base_pay,
-	sum(overtime_pay) as overtime_pay,
-	sum(other_payments) as other_payments,
-	SUM(gross_pay) as gross_pay_ytd	
-FROM payroll e LEFT JOIN (SELECT employee_id,payroll_number,job_sequence_number,calendar_fiscal_year,agency_id, calendar_month_id, amount_basis_id, pay_frequency, max(pay_date) as pay_date
-		     	   FROM payroll a 
-		     	   JOIN ref_date b ON a.pay_date_id = b.date_id
-		           GROUP BY 1,2,3,4,5,6,7,8) annual_sal_table  ON e.employee_id = annual_sal_table.employee_id
-		     			AND e.payroll_number = annual_sal_table.payroll_number 
-		     			AND e.calendar_fiscal_year = annual_sal_table.calendar_fiscal_year
-		     			AND e.job_sequence_number = annual_sal_table.job_sequence_number
-						AND e.agency_id = annual_sal_table.agency_id
-						AND e.amount_basis_id = annual_sal_table.amount_basis_id
-						AND e.pay_date = annual_sal_table.pay_date
-						AND e.pay_frequency = annual_sal_table.pay_frequency
-	JOIN ref_amount_basis z ON e.amount_basis_id = z.amount_basis_id	
-	JOIN ref_date b ON e.pay_date_id = b.date_id
-GROUP BY 1,2,3,4,5,6,7 ",11
-PayrollByAgencyMonth,aggregateon_payroll_agency_month,"CREATE TABLE aggregateon_payroll_agency_month(	
-	agency_id smallint,	
 	fiscal_year_id smallint,
 	type_of_year char(1),
 	month_id int,
@@ -600,13 +684,13 @@ FROM payroll a JOIN ref_amount_basis b ON a.amount_basis_id = b.amount_basis_id
 JOIN ref_date c ON a.pay_date_id = c.date_id
 GROUP BY 1,2,3,4) X
 JOIN (SELECT employee_id, agency_id, fiscal_year_id, type_of_year, month_id as calendar_month_id, max(coalesce(annual_salary,0)) as  annual_salary
-			  FROM aggregateon_payroll_employee_agency_month 
+			  FROM aggregateon_payroll_employee_agency_month
 			  WHERE type_of_year = 'C' AND type_of_employment = 'Salaried'
 			  GROUP BY 1,2,3,4,5) Y ON X.agency_id = Y.agency_id AND X.calendar_fiscal_year_id = Y.fiscal_year_id AND X.type_of_year = Y.type_of_year AND X.calendar_month_id = Y.calendar_month_id
 GROUP BY 1,2,3,4 ",12
-PayrollByYearAndMonth,aggregateon_payroll_year_and_month,"CREATE TABLE aggregateon_payroll_year_and_month(	
+PayrollByYearAndMonth,aggregateon_payroll_year_and_month,"CREATE TABLE aggregateon_payroll_year_and_month(
 	fiscal_year_id smallint,
-	type_of_year char(1),	
+	type_of_year char(1),
 	month_id int,
 	total_employees int,
 	total_salaried_employees int,
@@ -690,7 +774,7 @@ ContractLandingWidgets,aggregateon_contracts_cumulative_spending,"CREATE TABLE a
 	dollar_difference numeric(16,2),
 	percent_difference numeric(16,2),
 	status_flag char(1),
-	type_of_year char(1)	
+	type_of_year char(1)
 ) DISTRIBUTED BY (vendor_id)","SELECT  a.original_agreement_id,
 		a.fiscal_year,
 		ry.year_id,
@@ -712,8 +796,8 @@ ContractLandingWidgets,aggregateon_contracts_cumulative_spending,"CREATE TABLE a
 		MIN(percent_difference),
 		'A' as status_flag,
 		'B' as type_of_year
-	FROM 	agreement_snapshot_expanded a 
-	LEFT JOIN ref_year ry ON a.fiscal_year = ry.year_value 
+	FROM 	agreement_snapshot_expanded a
+	LEFT JOIN ref_year ry ON a.fiscal_year = ry.year_value
 	LEFT JOIN mid_aggregateon_disbursement_spending_year b ON a.original_agreement_id = b.original_agreement_id AND a.fiscal_year >= b.fiscal_year AND b.type_of_year ='B'
 	WHERE  a.status_flag='A'
 	GROUP BY 1,2,3,4,5
@@ -737,11 +821,11 @@ SELECT a.original_agreement_id,
 	SUM(CASE WHEN b.fiscal_year IS NOT NULL AND a.fiscal_year = b.fiscal_year THEN coalesce(b.check_amount,0) ELSE 0 END) as current_year_spending_amount,
 	MIN(dollar_difference),
 	MIN(percent_difference),
-	'R' as status_flag, 
-	'B' as type_of_year	
-	FROM 	agreement_snapshot_expanded a 
-	LEFT JOIN ref_year ry ON a.fiscal_year = ry.year_value 
-	LEFT JOIN mid_aggregateon_disbursement_spending_year b ON a.original_agreement_id = b.original_agreement_id AND a.fiscal_year >= b.fiscal_year AND b.type_of_year ='B' 
+	'R' as status_flag,
+	'B' as type_of_year
+	FROM 	agreement_snapshot_expanded a
+	LEFT JOIN ref_year ry ON a.fiscal_year = ry.year_value
+	LEFT JOIN mid_aggregateon_disbursement_spending_year b ON a.original_agreement_id = b.original_agreement_id AND a.fiscal_year >= b.fiscal_year AND b.type_of_year ='B'
 	WHERE   a.status_flag='R'
 	GROUP BY 1,2,3,4,5","SELECT  a.original_agreement_id,
 		a.fiscal_year,
@@ -764,8 +848,8 @@ SELECT a.original_agreement_id,
 		MIN(percent_difference),
 		'A' as status_flag,
 		'C' as type_of_year
-	FROM 	agreement_snapshot_expanded_cy a 
-	LEFT JOIN ref_year ry ON a.fiscal_year = ry.year_value 
+	FROM 	agreement_snapshot_expanded_cy a
+	LEFT JOIN ref_year ry ON a.fiscal_year = ry.year_value
 	LEFT JOIN mid_aggregateon_disbursement_spending_year b ON a.original_agreement_id = b.original_agreement_id AND a.fiscal_year >= b.fiscal_year AND b.type_of_year ='C'
 	WHERE  a.status_flag='A'
 	GROUP BY 1,2,3,4,5
@@ -789,10 +873,10 @@ SELECT a.original_agreement_id,
 	SUM(CASE WHEN b.fiscal_year IS NOT NULL AND a.fiscal_year = b.fiscal_year THEN coalesce(b.check_amount,0) ELSE 0 END) as current_year_spending_amount,
 	MIN(dollar_difference),
 	MIN(percent_difference),
-	'R' as status_flag, 
-	'C' as type_of_year	
-	FROM 	agreement_snapshot_expanded_cy a 
-	LEFT JOIN ref_year ry ON a.fiscal_year = ry.year_value 
+	'R' as status_flag,
+	'C' as type_of_year
+	FROM 	agreement_snapshot_expanded_cy a
+	LEFT JOIN ref_year ry ON a.fiscal_year = ry.year_value
 	LEFT JOIN mid_aggregateon_disbursement_spending_year b ON a.original_agreement_id = b.original_agreement_id AND a.fiscal_year >= b.fiscal_year AND b.type_of_year ='C'
 	WHERE   a.status_flag='R'
 	GROUP BY 1,2,3,4,5",16
@@ -809,23 +893,23 @@ ContractLandingTopGraph,aggregateon_contracts_spending_by_month,"CREATE TABLE ag
  award_size_id smallint,
  spending_amount numeric(16,2),
  status_flag char(1),
- type_of_year char(1) 
+ type_of_year char(1)
 ) DISTRIBUTED BY (vendor_id)","SELECT  a.original_agreement_id,
 		a.fiscal_year,
 		ry.year_id,
 		document_code_id,
-		b.check_eft_issued_cal_month_id as month_id,		
+		b.check_eft_issued_cal_month_id as month_id,
 		a.vendor_id,
 		a.award_method_id,
 		a.agency_id ,
 		a.industry_type_id,
 		a.award_size_id,
-		SUM(coalesce(b.check_amount,0)),		
+		SUM(coalesce(b.check_amount,0)),
 		'A' as status_flag,
 		'B' as type_of_year
-	FROM 	agreement_snapshot_expanded a 
-	LEFT JOIN ref_year ry ON a.fiscal_year = ry.year_value 
-	LEFT JOIN disbursement_line_item_details b ON a.original_agreement_id = b.agreement_id AND a.fiscal_year = b.fiscal_year 
+	FROM 	agreement_snapshot_expanded a
+	LEFT JOIN ref_year ry ON a.fiscal_year = ry.year_value
+	LEFT JOIN disbursement_line_item_details b ON a.original_agreement_id = b.agreement_id AND a.fiscal_year = b.fiscal_year
 	WHERE  a.status_flag='A' AND a.master_agreement_yn = 'N'
 	GROUP BY 1,2,3,4,5,6,7,8,9,10
 UNION ALL
@@ -833,18 +917,18 @@ SELECT  a.original_agreement_id,
 		a.fiscal_year,
 		ry.year_id,
 		document_code_id,
-		b.check_eft_issued_cal_month_id as month_id,		
+		b.check_eft_issued_cal_month_id as month_id,
 		a.vendor_id,
 		a.award_method_id,
 		a.agency_id ,
 		a.industry_type_id,
 		a.award_size_id,
-		SUM(coalesce(b.check_amount,0)),		
+		SUM(coalesce(b.check_amount,0)),
 		'A' as status_flag,
 		'B' as type_of_year
-	FROM 	agreement_snapshot_expanded a 
-	LEFT JOIN ref_year ry ON a.fiscal_year = ry.year_value 
-	LEFT JOIN disbursement_line_item_details b ON a.original_agreement_id = b.master_agreement_id AND a.fiscal_year = b.fiscal_year 
+	FROM 	agreement_snapshot_expanded a
+	LEFT JOIN ref_year ry ON a.fiscal_year = ry.year_value
+	LEFT JOIN disbursement_line_item_details b ON a.original_agreement_id = b.master_agreement_id AND a.fiscal_year = b.fiscal_year
 	WHERE  a.status_flag='A' AND a.master_agreement_yn = 'Y'
 	GROUP BY 1,2,3,4,5,6,7,8,9,10
 UNION ALL
@@ -852,18 +936,18 @@ SELECT a.original_agreement_id,
 		a.fiscal_year,
 		ry.year_id,
 		document_code_id,
-		b.check_eft_issued_cal_month_id as month_id,		
+		b.check_eft_issued_cal_month_id as month_id,
 		a.vendor_id,
 		a.award_method_id,
-		a.agency_id ,	
+		a.agency_id ,
 		a.industry_type_id,
 		a.award_size_id,
 		SUM(coalesce(b.check_amount,0)),
-		'R' as status_flag, 
-		'B' as type_of_year	
-	FROM 	agreement_snapshot_expanded a 
-	LEFT JOIN ref_year ry ON a.fiscal_year = ry.year_value 
-	LEFT JOIN disbursement_line_item_details b ON a.original_agreement_id = b.agreement_id AND a.fiscal_year = b.fiscal_year 
+		'R' as status_flag,
+		'B' as type_of_year
+	FROM 	agreement_snapshot_expanded a
+	LEFT JOIN ref_year ry ON a.fiscal_year = ry.year_value
+	LEFT JOIN disbursement_line_item_details b ON a.original_agreement_id = b.agreement_id AND a.fiscal_year = b.fiscal_year
 	WHERE   a.status_flag='R' AND a.master_agreement_yn = 'N'
 	GROUP BY 1,2,3,4,5,6,7,8,9,10
 UNION ALL
@@ -871,35 +955,35 @@ SELECT a.original_agreement_id,
 		a.fiscal_year,
 		ry.year_id,
 		document_code_id,
-		b.check_eft_issued_cal_month_id as month_id,		
+		b.check_eft_issued_cal_month_id as month_id,
 		a.vendor_id,
 		a.award_method_id,
-		a.agency_id ,	
+		a.agency_id ,
 		a.industry_type_id,
 		a.award_size_id,
 		SUM(coalesce(b.check_amount,0)),
-		'R' as status_flag, 
-		'B' as type_of_year	
-	FROM 	agreement_snapshot_expanded a 
-	LEFT JOIN ref_year ry ON a.fiscal_year = ry.year_value 
-	LEFT JOIN disbursement_line_item_details b ON a.original_agreement_id = b.master_agreement_id AND a.fiscal_year = b.fiscal_year 
+		'R' as status_flag,
+		'B' as type_of_year
+	FROM 	agreement_snapshot_expanded a
+	LEFT JOIN ref_year ry ON a.fiscal_year = ry.year_value
+	LEFT JOIN disbursement_line_item_details b ON a.original_agreement_id = b.master_agreement_id AND a.fiscal_year = b.fiscal_year
 	WHERE   a.status_flag='R' AND a.master_agreement_yn = 'Y'
 	GROUP BY 1,2,3,4,5,6,7,8,9,10 ","SELECT  a.original_agreement_id,
 		a.fiscal_year,
 		ry.year_id,
 		document_code_id,
-		b.check_eft_issued_cal_month_id as month_id,		
+		b.check_eft_issued_cal_month_id as month_id,
 		a.vendor_id,
 		a.award_method_id,
-		a.agency_id ,	
+		a.agency_id ,
 		a.industry_type_id,
 		a.award_size_id,
 		SUM(coalesce(b.check_amount,0)),
 		'A' as status_flag,
 		'C' as type_of_year
-	FROM 	agreement_snapshot_expanded_cy a 
-	LEFT JOIN ref_year ry ON a.fiscal_year = ry.year_value 
-	LEFT JOIN disbursement_line_item_details b ON a.original_agreement_id = b.agreement_id AND a.fiscal_year = b.calendar_fiscal_year 
+	FROM 	agreement_snapshot_expanded_cy a
+	LEFT JOIN ref_year ry ON a.fiscal_year = ry.year_value
+	LEFT JOIN disbursement_line_item_details b ON a.original_agreement_id = b.agreement_id AND a.fiscal_year = b.calendar_fiscal_year
 	WHERE  a.status_flag='A' AND a.master_agreement_yn = 'N'
 	GROUP BY 1,2,3,4,5,6,7,8,9,10
 UNION ALL
@@ -907,18 +991,18 @@ SELECT  a.original_agreement_id,
 		a.fiscal_year,
 		ry.year_id,
 		document_code_id,
-		b.check_eft_issued_cal_month_id as month_id,		
+		b.check_eft_issued_cal_month_id as month_id,
 		a.vendor_id,
 		a.award_method_id,
-		a.agency_id ,	
+		a.agency_id ,
 		a.industry_type_id,
 		a.award_size_id,
 		SUM(coalesce(b.check_amount,0)),
 		'A' as status_flag,
 		'C' as type_of_year
-	FROM 	agreement_snapshot_expanded_cy a 
-	LEFT JOIN ref_year ry ON a.fiscal_year = ry.year_value 
-	LEFT JOIN disbursement_line_item_details b ON a.original_agreement_id = b.master_agreement_id AND a.fiscal_year = b.calendar_fiscal_year 
+	FROM 	agreement_snapshot_expanded_cy a
+	LEFT JOIN ref_year ry ON a.fiscal_year = ry.year_value
+	LEFT JOIN disbursement_line_item_details b ON a.original_agreement_id = b.master_agreement_id AND a.fiscal_year = b.calendar_fiscal_year
 	WHERE  a.status_flag='A' AND a.master_agreement_yn = 'Y'
 	GROUP BY 1,2,3,4,5,6,7,8,9,10
 UNION ALL
@@ -926,18 +1010,18 @@ SELECT  a.original_agreement_id,
 		a.fiscal_year,
 		ry.year_id,
 		document_code_id,
-		b.check_eft_issued_cal_month_id as month_id,		
+		b.check_eft_issued_cal_month_id as month_id,
 		a.vendor_id,
 		a.award_method_id,
-		a.agency_id ,	
+		a.agency_id ,
 		a.industry_type_id,
 		a.award_size_id,
 		SUM(coalesce(b.check_amount,0)),
-	'R' as status_flag, 
-	'C' as type_of_year	
-	FROM 	agreement_snapshot_expanded_cy a 
-	LEFT JOIN ref_year ry ON a.fiscal_year = ry.year_value 
-	LEFT JOIN disbursement_line_item_details b ON a.original_agreement_id = b.agreement_id AND a.fiscal_year = b.calendar_fiscal_year 
+	'R' as status_flag,
+	'C' as type_of_year
+	FROM 	agreement_snapshot_expanded_cy a
+	LEFT JOIN ref_year ry ON a.fiscal_year = ry.year_value
+	LEFT JOIN disbursement_line_item_details b ON a.original_agreement_id = b.agreement_id AND a.fiscal_year = b.calendar_fiscal_year
 	WHERE   a.status_flag='R' AND a.master_agreement_yn = 'N'
 	GROUP BY 1,2,3,4,5,6,7,8,9,10
 UNION ALL
@@ -945,18 +1029,18 @@ SELECT  a.original_agreement_id,
 		a.fiscal_year,
 		ry.year_id,
 		document_code_id,
-		b.check_eft_issued_cal_month_id as month_id,		
+		b.check_eft_issued_cal_month_id as month_id,
 		a.vendor_id,
 		a.award_method_id,
-		a.agency_id ,	
+		a.agency_id ,
 		a.industry_type_id,
 		a.award_size_id,
 		SUM(coalesce(b.check_amount,0)),
-	'R' as status_flag, 
-	'C' as type_of_year	
-	FROM 	agreement_snapshot_expanded_cy a 
-	LEFT JOIN ref_year ry ON a.fiscal_year = ry.year_value 
-	LEFT JOIN disbursement_line_item_details b ON a.original_agreement_id = b.master_agreement_id AND a.fiscal_year = b.calendar_fiscal_year 
+	'R' as status_flag,
+	'C' as type_of_year
+	FROM 	agreement_snapshot_expanded_cy a
+	LEFT JOIN ref_year ry ON a.fiscal_year = ry.year_value
+	LEFT JOIN disbursement_line_item_details b ON a.original_agreement_id = b.master_agreement_id AND a.fiscal_year = b.calendar_fiscal_year
 	WHERE   a.status_flag='R' AND a.master_agreement_yn = 'Y'
 	GROUP BY 1,2,3,4,5,6,7,8,9,10 ",17
 ContractsForSumAndTotals,aggregateon_total_contracts,"CREATE TABLE aggregateon_total_contracts
@@ -976,11 +1060,11 @@ total_revenue_contracts bigint,
 total_revenue_contracts_amount numeric(16,2),
 total_commited_contracts_amount numeric(16,2),
 total_contracts_amount numeric(16,2),
-total_spending_amount_disb numeric(16,2), 
-total_spending_amount numeric(16,2), 
+total_spending_amount_disb numeric(16,2),
+total_spending_amount numeric(16,2),
 status_flag char(1),
 type_of_year char(1)
-) DISTRIBUTED BY (fiscal_year)","SELECT 	fiscal_year, 
+) DISTRIBUTED BY (fiscal_year)","SELECT 	fiscal_year,
 		fiscal_year_id,
 		vendor_id,
 		award_method_id,
@@ -1034,12 +1118,12 @@ ContractsByAppropriationUnit,aggregateon_contracts_department,"CREATE TABLE aggr
 		'B' as type_of_year
  FROM agreement_snapshot_expanded a JOIN ref_year b ON a.fiscal_year = b.year_value
  JOIN history_agreement_accounting_line c ON a.agreement_id = c.agreement_id
- LEFT JOIN disbursement_line_item_details d ON a.original_agreement_id = d.agreement_id AND c.line_number =  d.agreement_accounting_line_number 
+ LEFT JOIN disbursement_line_item_details d ON a.original_agreement_id = d.agreement_id AND c.line_number =  d.agreement_accounting_line_number
  AND c.commodity_line_number = d.agreement_commodity_line_number AND a.fiscal_year >= d.fiscal_year
  JOIN ref_agency_history e ON e.agency_history_id = c.agency_history_id
  JOIN ref_department_history f ON f.department_history_id = c.department_history_id AND e.agency_id = f.agency_id
- WHERE  a.master_agreement_yn = 'N' AND a.status_flag='A' GROUP BY 1,2,3,4,5,6,7,8,9,10	
- UNION ALL 
+ WHERE  a.master_agreement_yn = 'N' AND a.status_flag='A' GROUP BY 1,2,3,4,5,6,7,8,9,10
+ UNION ALL
  SELECT a.document_code_id,
  		a.agency_id as document_agency_id,
  		e.agency_id as agency_id,
@@ -1057,7 +1141,7 @@ ContractsByAppropriationUnit,aggregateon_contracts_department,"CREATE TABLE aggr
 		'B' as type_of_year
  FROM agreement_snapshot_expanded a JOIN ref_year b ON a.fiscal_year = b.year_value
  JOIN history_agreement_accounting_line c ON a.agreement_id = c.agreement_id
- LEFT JOIN disbursement_line_item_details d ON a.original_agreement_id = d.agreement_id AND c.line_number =  d.agreement_accounting_line_number 
+ LEFT JOIN disbursement_line_item_details d ON a.original_agreement_id = d.agreement_id AND c.line_number =  d.agreement_accounting_line_number
  AND c.commodity_line_number = d.agreement_commodity_line_number AND a.fiscal_year >= d.fiscal_year
  JOIN ref_agency_history e ON e.agency_history_id = c.agency_history_id
  JOIN ref_department_history f ON f.department_history_id = c.department_history_id AND e.agency_id = f.agency_id
@@ -1078,12 +1162,12 @@ ContractsByAppropriationUnit,aggregateon_contracts_department,"CREATE TABLE aggr
 		'C' as type_of_year
  FROM agreement_snapshot_expanded_cy a JOIN ref_year b ON a.fiscal_year = b.year_value
  JOIN history_agreement_accounting_line c ON a.agreement_id = c.agreement_id
- LEFT JOIN disbursement_line_item_details d ON a.original_agreement_id = d.agreement_id AND c.line_number =  d.agreement_accounting_line_number 
+ LEFT JOIN disbursement_line_item_details d ON a.original_agreement_id = d.agreement_id AND c.line_number =  d.agreement_accounting_line_number
  AND c.commodity_line_number = d.agreement_commodity_line_number AND a.fiscal_year >= d.calendar_fiscal_year
  JOIN ref_agency_history e ON e.agency_history_id = c.agency_history_id
  JOIN ref_department_history f ON f.department_history_id = c.department_history_id AND e.agency_id = f.agency_id
- WHERE  a.master_agreement_yn = 'N' AND a.status_flag='A' GROUP BY 1,2,3,4,5,6,7,8,9,10	
- UNION ALL 
+ WHERE  a.master_agreement_yn = 'N' AND a.status_flag='A' GROUP BY 1,2,3,4,5,6,7,8,9,10
+ UNION ALL
  SELECT a.document_code_id,
  		a.agency_id as document_agency_id,
  		e.agency_id as agency_id,
@@ -1101,7 +1185,7 @@ ContractsByAppropriationUnit,aggregateon_contracts_department,"CREATE TABLE aggr
 		'C' as type_of_year
  FROM agreement_snapshot_expanded_cy a JOIN ref_year b ON a.fiscal_year = b.year_value
  JOIN history_agreement_accounting_line c ON a.agreement_id = c.agreement_id
- LEFT JOIN disbursement_line_item_details d ON a.original_agreement_id = d.agreement_id AND c.line_number =  d.agreement_accounting_line_number 
+ LEFT JOIN disbursement_line_item_details d ON a.original_agreement_id = d.agreement_id AND c.line_number =  d.agreement_accounting_line_number
  AND c.commodity_line_number = d.agreement_commodity_line_number AND a.fiscal_year >= d.calendar_fiscal_year
  JOIN ref_agency_history e ON e.agency_history_id = c.agency_history_id
  JOIN ref_department_history f ON f.department_history_id = c.department_history_id AND e.agency_id = f.agency_id
@@ -1143,7 +1227,7 @@ disb_check_eft_issued_cal_month_id integer,
 disb_disbursement_number character varying(40),
 status_flag char(1),
 type_of_year char(1)
-) DISTRIBUTED BY (disbursement_line_item_id)","SELECT 	d.disbursement_line_item_id, 
+) DISTRIBUTED BY (disbursement_line_item_id)","SELECT 	d.disbursement_line_item_id,
 		a.original_agreement_id,
 		a.fiscal_year,
 		b.year_id,
@@ -1179,11 +1263,11 @@ type_of_year char(1)
 		'A' as status_flag,
 		'B' as type_of_year
 FROM   agreement_snapshot_expanded a, ref_year b, disbursement_line_item_details d
-WHERE a.fiscal_year = b.year_value 
+WHERE a.fiscal_year = b.year_value
 AND a.original_agreement_id = d.agreement_id  AND a.fiscal_year >= d.fiscal_year
 AND a.status_flag='A' AND a.master_agreement_yn = 'N'
 UNION ALL
-SELECT 	d.disbursement_line_item_id, 
+SELECT 	d.disbursement_line_item_id,
 		a.original_agreement_id,
 		a.fiscal_year,
 		b.year_id,
@@ -1219,11 +1303,11 @@ SELECT 	d.disbursement_line_item_id,
 		'A' as status_flag,
 		'B' as type_of_year
 FROM   agreement_snapshot_expanded a, ref_year b, disbursement_line_item_details d
-WHERE a.fiscal_year = b.year_value 
+WHERE a.fiscal_year = b.year_value
 AND a.original_agreement_id = d.master_agreement_id  AND a.fiscal_year >= d.fiscal_year
 AND a.status_flag='A' AND a.master_agreement_yn = 'Y'
 UNION ALL
- SELECT d.disbursement_line_item_id, 
+ SELECT d.disbursement_line_item_id,
 		a.original_agreement_id,
 		a.fiscal_year,
 		b.year_id,
@@ -1259,11 +1343,11 @@ UNION ALL
 		'R' as status_flag,
 		'B' as type_of_year
 FROM   agreement_snapshot_expanded a, ref_year b, disbursement_line_item_details d
-WHERE a.fiscal_year = b.year_value 
+WHERE a.fiscal_year = b.year_value
 AND a.original_agreement_id = d.agreement_id  AND a.fiscal_year >= d.fiscal_year
-AND a.status_flag='R' AND a.master_agreement_yn = 'N' 
+AND a.status_flag='R' AND a.master_agreement_yn = 'N'
 UNION ALL
- SELECT d.disbursement_line_item_id, 
+ SELECT d.disbursement_line_item_id,
 		a.original_agreement_id,
 		a.fiscal_year,
 		b.year_id,
@@ -1299,9 +1383,9 @@ UNION ALL
 		'R' as status_flag,
 		'B' as type_of_year
 FROM   agreement_snapshot_expanded a, ref_year b, disbursement_line_item_details d
-WHERE a.fiscal_year = b.year_value 
+WHERE a.fiscal_year = b.year_value
 AND a.original_agreement_id = d.master_agreement_id  AND a.fiscal_year >= d.fiscal_year
-AND a.status_flag='R' AND a.master_agreement_yn = 'Y' ","SELECT d.disbursement_line_item_id, 
+AND a.status_flag='R' AND a.master_agreement_yn = 'Y' ","SELECT d.disbursement_line_item_id,
 		a.original_agreement_id,
 		a.fiscal_year,
 		b.year_id,
@@ -1337,11 +1421,11 @@ AND a.status_flag='R' AND a.master_agreement_yn = 'Y' ","SELECT d.disbursement_l
 		'A' as status_flag,
 		'C' as type_of_year
 FROM   agreement_snapshot_expanded_cy a, ref_year b, disbursement_line_item_details d
-WHERE a.fiscal_year = b.year_value 
+WHERE a.fiscal_year = b.year_value
 AND a.original_agreement_id = d.agreement_id  AND a.fiscal_year >= d.calendar_fiscal_year
-AND a.status_flag='A' AND a.master_agreement_yn = 'N' 
+AND a.status_flag='A' AND a.master_agreement_yn = 'N'
 UNION ALL
- SELECT d.disbursement_line_item_id, 
+ SELECT d.disbursement_line_item_id,
 		a.original_agreement_id,
 		a.fiscal_year,
 		b.year_id,
@@ -1377,11 +1461,11 @@ UNION ALL
 		'A' as status_flag,
 		'C' as type_of_year
 FROM   agreement_snapshot_expanded_cy a, ref_year b, disbursement_line_item_details d
-WHERE a.fiscal_year = b.year_value 
+WHERE a.fiscal_year = b.year_value
 AND a.original_agreement_id = d.master_agreement_id  AND a.fiscal_year >= d.calendar_fiscal_year
-AND a.status_flag='A' AND a.master_agreement_yn = 'Y' 
+AND a.status_flag='A' AND a.master_agreement_yn = 'Y'
 UNION ALL
-SELECT 	d.disbursement_line_item_id, 
+SELECT 	d.disbursement_line_item_id,
 		a.original_agreement_id,
 		a.fiscal_year,
 		b.year_id,
@@ -1417,11 +1501,11 @@ SELECT 	d.disbursement_line_item_id,
 		'R' as status_flag,
 		'C' as type_of_year
 FROM   agreement_snapshot_expanded_cy a, ref_year b, disbursement_line_item_details d
-WHERE a.fiscal_year = b.year_value 
+WHERE a.fiscal_year = b.year_value
 AND a.original_agreement_id = d.agreement_id  AND a.fiscal_year >= d.calendar_fiscal_year
 AND a.status_flag='R' AND a.master_agreement_yn = 'N'
 UNION ALL
-SELECT 	d.disbursement_line_item_id, 
+SELECT 	d.disbursement_line_item_id,
 		a.original_agreement_id,
 		a.fiscal_year,
 		b.year_id,
@@ -1457,7 +1541,7 @@ SELECT 	d.disbursement_line_item_id,
 		'R' as status_flag,
 		'C' as type_of_year
 FROM   agreement_snapshot_expanded_cy a, ref_year b, disbursement_line_item_details d
-WHERE a.fiscal_year = b.year_value 
+WHERE a.fiscal_year = b.year_value
 AND a.original_agreement_id = d.master_agreement_id  AND a.fiscal_year >= d.calendar_fiscal_year
 AND a.status_flag='R' AND a.master_agreement_yn = 'Y' ",20
 ContractsByExpenseCategory,aggregateon_contracts_expense,"CREATE TABLE aggregateon_contracts_expense(
@@ -1468,13 +1552,146 @@ ContractsByExpenseCategory,aggregateon_contracts_expense,"CREATE TABLE aggregate
 	spending_amount_disb numeric(16,2),
 	spending_amount numeric(16,2),
 	is_disbursements_exist char(1)
-) DISTRIBUTED BY (original_agreement_id)","SELECT m.original_agreement_id, m.expenditure_object_code, m.expenditure_object_name, m.encumbered_amount,coalesce(n.spending_amount_disb,0) as spending_amount_disb, m.spending_amount, 
+) DISTRIBUTED BY (original_agreement_id)","SELECT m.original_agreement_id, m.expenditure_object_code, m.expenditure_object_name, m.encumbered_amount,coalesce(n.spending_amount_disb,0) as spending_amount_disb, m.spending_amount,
 (CASE WHEN n.original_agreement_id IS NULL THEN 'N' ELSE 'Y' END) as is_disbursements_exist
 FROM
  (SELECT a.original_agreement_id, d.expenditure_object_code,  d.expenditure_object_name, sum(b.line_amount) as encumbered_amount, sum(b.rfed_line_amount) as spending_amount
- FROM history_agreement a, history_agreement_accounting_line b , ref_expenditure_object_history c, ref_expenditure_object d 
+ FROM history_agreement a, history_agreement_accounting_line b , ref_expenditure_object_history c, ref_expenditure_object d
  WHERE a.agreement_id = b.agreement_id AND a.latest_flag = 'Y' AND b.expenditure_object_history_id = c.expenditure_object_history_id AND  c.expenditure_object_id = d.expenditure_object_id
  GROUP BY 1,2,3) m LEFT JOIN
  (SELECT agreement_id as original_agreement_id, expenditure_object_code, sum(check_amount) as spending_amount_disb
  FROM disbursement_line_item_details
  GROUP BY 1,2) n ON m.original_agreement_id = n.original_agreement_id AND m.expenditure_object_code = n.expenditure_object_code ",,21
+ PayrollByEmployeeAgencyEmployee,aggregateon_payroll_employee_agency_employee,"CREATE TABLE aggregateon_payroll_employee_agency_employee (
+	employee_id bigint,
+	agency_id smallint,
+	fiscal_year_id smallint,
+	type_of_year char(1),
+	type_of_employment varchar,
+	civil_service_title varchar,
+	pay_date date,
+	max_annual_salary numeric(16,2),
+	total_gross_pay numeric(16,2),
+	total_base_salary numeric(16,2),
+	total_other_payments numeric(16,2),
+	total_overtime_amount numeric(16,2)
+) DISTRIBUTED BY (employee_id)","SELECT
+employee_id,
+agency_id,
+fiscal_year_id,
+type_of_year,
+type_of_employment,
+civil_service_title,
+pay_date,
+MAX(annual_salary) AS max_annual_salary,
+SUM(gross_pay) AS total_gross_pay,
+SUM(base_pay) AS total_base_salary,
+SUM(other_payments) AS total_other_payments,
+SUM(overtime_pay) AS total_overtime_amount
+FROM aggregateon_payroll_employee_agency
+GROUP BY agency_id, employee_id, type_of_employment, fiscal_year_id, type_of_year, civil_service_title, pay_date",,22
+PayrollByEmployeeAgencyTitle,aggregateon_payroll_employee_agency_title,"CREATE TABLE aggregateon_payroll_employee_agency_title (
+fiscal_year_id smallint,
+type_of_year char(1),
+type_of_employment varchar,
+agency_id smallint,
+civil_service_title varchar,
+total_annual_salary numeric(16,2),
+total_gross_pay numeric(16,2),
+total_base_salary numeric(16,2),
+total_other_payments numeric(16,2),
+total_overtime_amount numeric(16,2),
+employee_count bigint
+)
+DISTRIBUTED BY (type_of_employment)","SELECT
+fiscal_year_id,
+type_of_year,
+type_of_employment,
+agency_id,
+civil_service_title,
+SUM(annual_salary) AS total_annual_salary,
+SUM(gross_pay) AS total_gross_pay,
+SUM(base_pay) AS total_base_salary,
+SUM(other_payments) AS total_other_payments,
+SUM(overtime_pay) AS total_overtime_amount,
+COUNT(DISTINCT employee_id) AS employee_count
+FROM aggregateon_payroll_employee_agency s0
+GROUP BY s0.type_of_employment, s0.fiscal_year_id, s0.type_of_year,s0.agency_id, s0.civil_service_title
+ORDER BY employee_count DESC",,23
+PayrollByEmployeeTitle,aggregateon_payroll_employee_title,"CREATE TABLE aggregateon_payroll_employee_title (
+fiscal_year_id smallint,
+type_of_year char(1),
+type_of_employment varchar,
+civil_service_title varchar,
+total_annual_salary numeric(16,2),
+total_gross_pay numeric(16,2),
+total_base_salary numeric(16,2),
+total_other_payments numeric(16,2),
+total_overtime_amount numeric(16,2),
+employee_count bigint
+)
+DISTRIBUTED BY (type_of_employment)","SELECT
+fiscal_year_id,
+type_of_year,
+type_of_employment,
+civil_service_title,
+SUM(annual_salary) AS total_annual_salary,
+SUM(gross_pay) AS total_gross_pay,
+SUM(base_pay) AS total_base_salary,
+SUM(other_payments) AS total_other_payments,
+SUM(overtime_pay) AS total_overtime_amount,
+COUNT(DISTINCT employee_id) AS employee_count
+FROM aggregateon_payroll_employee_agency s0
+GROUP BY s0.type_of_employment, s0.fiscal_year_id, s0.type_of_year, s0.civil_service_title
+ORDER BY employee_count DESC",,24
+PayrollByLatestEmployeeTitle,aggregateon_payroll_latest_employee_agency,"CREATE TABLE aggregateon_payroll_latest_employee_agency (
+employee_id bigint,
+agency_id smallint,
+fiscal_year_id smallint,
+type_of_year character(1),
+type_of_employment character varying,
+civil_service_title character varying,
+employee_number character varying,
+start_date date,
+pay_date date,
+annual_salary numeric(16,2),
+base_pay numeric(16,2),
+overtime_pay numeric(16,2),
+other_payments numeric(16,2),
+gross_pay numeric(16,2)
+)
+DISTRIBUTED BY (employee_id)","SELECT
+    emp.employee_id as employee_id,
+    emp.agency_id as agency_id,
+    emp.fiscal_year_id as fiscal_year_id,
+    emp.type_of_year as type_of_year,
+    emp.type_of_employment as type_of_employment,
+    emp.civil_service_title as civil_service_title,
+    emp.employee_number as employee_number,
+    emp.start_date as start_date,
+    emp.pay_date as pay_date,
+    emp.annual_salary as annual_salary,
+    emp.base_pay as base_pay,
+    emp.overtime_pay as overtime_pay,
+    emp.other_payments as other_payments,
+    emp.gross_pay as gross_pay
+    FROM aggregateon_payroll_employee_agency emp JOIN (
+        SELECT
+        max(pay_date) as max_pay_date,
+        employee_id,
+        agency_id,
+        fiscal_year_id,
+        type_of_year,
+        type_of_employment
+        FROM aggregateon_payroll_employee_agency s0
+        GROUP BY employee_id,
+        agency_id,
+        fiscal_year_id,
+        type_of_year,
+        type_of_employment
+        ) latest_emp ON latest_emp.max_pay_date = emp.pay_date
+    AND latest_emp.employee_id = emp.employee_id
+    AND latest_emp.agency_id = emp.agency_id
+    AND latest_emp.fiscal_year_id = emp.fiscal_year_id
+    AND latest_emp.type_of_year = emp.type_of_year
+    AND latest_emp.type_of_employment = emp.type_of_employment",,25

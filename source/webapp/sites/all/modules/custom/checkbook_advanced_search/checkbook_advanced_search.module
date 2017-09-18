@@ -490,13 +490,13 @@ function checkbook_advanced_search_form($form, $form_state)
     $form['payroll']['payroll_pay_date_from'] = array(
         '#type' => 'date_popup',
         '#date_format' => 'Y-m-d',
-        '#date_year_range' => '-3:+3',
+        '#date_year_range' => "'-" . (date("Y") - 1900) . ":+" . (2500 - date("Y")) . "'",
         '#prefix' => '<div class="form-item form-item-payroll-pay-date"><label>Pay Date</label><div class="ranges">',
     );
     $form['payroll']['payroll_pay_date_to'] = array(
         '#type' => 'date_popup',
         '#date_format' => 'Y-m-d',
-        '#date_year_range' => '-3:+3',
+        '#date_year_range' => "'-" . (date("Y") - 1900) . ":+" . (2500 - date("Y")) . "'",
         '#title' => t('TO'),
         '#description' => '',
         '#suffix' => '</div></div></div>',

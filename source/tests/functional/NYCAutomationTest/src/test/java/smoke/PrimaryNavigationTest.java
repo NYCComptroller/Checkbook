@@ -23,7 +23,8 @@ import pages.tools.trends.RevenueCapacityPages;
 import utilities.NYCBaseTest;
 import utilities.TestStatusReport;
 
-public class PrimaryNavigationTest extends TestStatusReport{
+//public class PrimaryNavigationTest extends TestStatusReport{
+	public class PrimaryNavigationTest extends NYCBaseTest{
 	@Before
 	public void GoToPage(){
 		if(!HomePage.IsAtCheckbookNYC())

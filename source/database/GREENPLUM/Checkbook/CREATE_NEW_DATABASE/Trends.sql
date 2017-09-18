@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS trends_gen_fund_revenue_temp;
 CREATE TABLE trends_gen_fund_revenue_temp
 (
   category character varying,
+  fy_2014 numeric(20,2),
   fy_2013 numeric(20,2),
   fy_2012 numeric(20,2),
   fy_2011 numeric(20,2),
@@ -50,13 +51,14 @@ DISTRIBUTED BY (category);
 /*
 1)	Modified the attached source excel by adding display_order,highlight_yn,amount_display_type, indentation_level columns and populating the data in those columns. And also modified the header names.
 2)	Removed commas by formatting the amount fields.
-3)	Created the CSV of modified excel. Removed some special characters (e.g.   — in line 20 Personal Income— (Non-Resident City Employees))
+3)	Created the CSV of modified excel. Removed some special characters (e.g.   ï¿½ in line 20 Personal Income. (Non-Resident City Employees))
 4)	And then ran the below commands to populate the data in  trends_gen_fund_revenue_temp table and public. trends_gen_fund_revenue tables.
 */
 
 COPY  trends_gen_fund_revenue_temp FROM '/home/gpadmin/GREENPLUM/Checkbook/TRENDS_DATA/trends_general_fund_revenues.csv' CSV HEADER QUOTE as '"';
 
 -- 5)	Below are the commands to populate the data from trends_gen_fund_revenue_temp to trends_gen_fund_revenue table.
+INSERT INTO trends_gen_fund_revenue (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2014, fy_2014, display_order, highlight_yn, amount_display_type, indentation_level from trends_gen_fund_revenue_temp;
 INSERT INTO trends_gen_fund_revenue (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2013, fy_2013, display_order, highlight_yn, amount_display_type, indentation_level from trends_gen_fund_revenue_temp;
 INSERT INTO trends_gen_fund_revenue (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2012, fy_2012, display_order, highlight_yn, amount_display_type, indentation_level from trends_gen_fund_revenue_temp;
 INSERT INTO trends_gen_fund_revenue (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2011, fy_2011, display_order, highlight_yn, amount_display_type, indentation_level from trends_gen_fund_revenue_temp;
@@ -93,6 +95,7 @@ DROP TABLE IF EXISTS trends_gen_fund_expenditure_temp;
 CREATE TABLE trends_gen_fund_expenditure_temp
 (
   category character varying,
+  fy_2014 numeric(20,2),
   fy_2013 numeric(20,2),
   fy_2012 numeric(20,2),
   fy_2011 numeric(20,2),
@@ -138,13 +141,13 @@ DISTRIBUTED BY (category);
 /*
 1)            Modified the attached source excel by adding display_order,highlight_yn,amount_display_type, indentation_level columns and populating the data in those columns. And also modified the header names.
 2)            Removed commas by formatting the amount fields.
-3)            Created the CSV of modified excel. Removed some special characters (e.g.   — in line 20 Personal Income— (Non-Resident City Employees))
+3)            Created the CSV of modified excel. Removed some special characters (e.g.   ï¿½ in line 20 Personal Incomeï¿½ (Non-Resident City Employees))
 4)            And then ran the below commands to populate the data in  trends_gen_fund_expenditure_temp table and public. trends_gen_fund_expenditure tables. */
 
 COPY  trends_gen_fund_expenditure_temp FROM '/home/gpadmin/GREENPLUM/Checkbook/TRENDS_DATA/trends_general_fund_expenditures.csv' CSV HEADER QUOTE as '"';
 
  -- 5)            Below are the commands to populate the data from trends_gen_fund_expenditure_temp to trends_gen_fund_expenditure table.
-
+INSERT INTO trends_gen_fund_expenditure (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2014, fy_2014, display_order, highlight_yn, amount_display_type, indentation_level from trends_gen_fund_expenditure_temp;
 INSERT INTO trends_gen_fund_expenditure (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2013, fy_2013, display_order, highlight_yn, amount_display_type, indentation_level from trends_gen_fund_expenditure_temp;
 INSERT INTO trends_gen_fund_expenditure (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2012, fy_2012, display_order, highlight_yn, amount_display_type, indentation_level from trends_gen_fund_expenditure_temp;
 INSERT INTO trends_gen_fund_expenditure (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2011, fy_2011, display_order, highlight_yn, amount_display_type, indentation_level from trends_gen_fund_expenditure_temp;
@@ -180,6 +183,7 @@ DROP TABLE IF EXISTS trends_capital_projects_temp;
 CREATE TABLE trends_capital_projects_temp
 (
   category character varying,
+  fy_2014 numeric(20,2),
   fy_2013 numeric(20,2),
   fy_2012 numeric(20,2),
   fy_2011 numeric(20,2),
@@ -222,16 +226,16 @@ CREATE TABLE trends_capital_projects
 )
 DISTRIBUTED BY (category);
 
-/* 
+/*
 1)            Modified the attached source excel by adding display_order,highlight_yn,amount_display_type, indentation_level columns and populating the data in those columns. And also modified the header names.
 2)            Removed commas by formatting the amount fields.
-3)            Created the CSV of modified excel. Removed some special characters (e.g.   — in line 20 Personal Income— (Non-Resident City Employees))
+3)            Created the CSV of modified excel. Removed some special characters (e.g.  in line 20 Personal Income (Non-Resident City Employees))
 4)            And then ran the below commands to populate the data in  trends_capital_projects_temp table and public. trends_capital_projects tables.  */
 
 COPY  trends_capital_projects_temp FROM '/home/gpadmin/GREENPLUM/Checkbook/TRENDS_DATA/trends_capital_projects.csv' CSV HEADER QUOTE as '"';
 
  -- 5)            Below are the commands to populate the data from trends_capital_projects_temp to trends_capital_projects table.
-
+INSERT INTO trends_capital_projects (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2014, fy_2014, display_order, highlight_yn, amount_display_type, indentation_level from trends_capital_projects_temp;
 INSERT INTO trends_capital_projects (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2013, fy_2013, display_order, highlight_yn, amount_display_type, indentation_level from trends_capital_projects_temp;
 INSERT INTO trends_capital_projects (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2012, fy_2012, display_order, highlight_yn, amount_display_type, indentation_level from trends_capital_projects_temp;
 INSERT INTO trends_capital_projects (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2011, fy_2011, display_order, highlight_yn, amount_display_type, indentation_level from trends_capital_projects_temp;
@@ -311,8 +315,8 @@ DISTRIBUTED BY (fiscal_year);
 /*
 1)            Modified the attached source excel y adding  the header names.
 2)            Removed commas by formatting the amount fields.
-3)            Created the CSV of modified excel. 
-4)            And then ran the below commands to populate the data in trends_ratios_outstanding_debt_temp table 
+3)            Created the CSV of modified excel.
+4)            And then ran the below commands to populate the data in trends_ratios_outstanding_debt_temp table
 
 */
 COPY  trends_ratios_outstanding_debt_temp FROM '/home/gpadmin/GREENPLUM/Checkbook/TRENDS_DATA/trends_ratios_outstanding_debt.csv' CSV HEADER QUOTE as '"';
@@ -368,8 +372,8 @@ DISTRIBUTED BY (fiscal_year);
 /*
 1)            Modified the attached source excel y adding  the header names.
 2)            Removed commas by formatting the amount fields.
-3)            Created the CSV of modified excel. 
-4)            And then ran the below commands to populate the data in trends_property_tax_levies_temp table 
+3)            Created the CSV of modified excel.
+4)            And then ran the below commands to populate the data in trends_property_tax_levies_temp table
 */
 
 COPY  trends_property_tax_levies_temp FROM '/home/gpadmin/GREENPLUM/Checkbook/TRENDS_DATA/trends_property_tax_levies.csv' CSV HEADER QUOTE as '"';
@@ -433,7 +437,7 @@ CREATE TABLE trends_personal_income_temp
   fy_2005 int,
   fy_2006 int,
   fy_2007 int,
-  fy_2008 int,  
+  fy_2008 int,
   fy_2009 int,
   fy_2010 int,
   fy_2011 int,
@@ -464,7 +468,7 @@ DISTRIBUTED BY (fips);
 
 1)            Modified the attached source excel by adding display_order,highlight_yn,amount_display_type, indentation_level columns and populating the data in those columns. And also modified the header names.
 2)            Removed commas by formatting the amount fields.
-3)            Created the CSV of modified excel. 
+3)            Created the CSV of modified excel.
 4)            And then ran the below commands to populate the data in  trends_personal_income_temp table and public. trends_personal_income tables.
 
 */
@@ -557,8 +561,8 @@ Distributed by (fiscal_year);
 /*
 1)            Modified the attached source excel by adding  the header names.
 2)            Removed commas by formatting the amount fields.
-3)            Created the CSV of modified excel. 
-4)            And then ran the below commands to populate the data in trends_collection_cancellation_abatements_temp table 
+3)            Created the CSV of modified excel.
+4)            And then ran the below commands to populate the data in trends_collection_cancellation_abatements_temp table
 */
 
 
@@ -583,7 +587,7 @@ CREATE TABLE trends_employment_status_of_resident_population_temp
 (
 fiscal_year smallint,
 civilian_labor_force_new_york_city_employed numeric(20,2),
-civilian_labor_force_unemployed numeric(20,2),	
+civilian_labor_force_unemployed numeric(20,2),
 unemployment_rate_city_percent	numeric(4,2),
 unemployment_rate_united_states_percent numeric(4,2)
 )
@@ -595,7 +599,7 @@ CREATE TABLE trends_employment_status_of_resident_population
 (
 fiscal_year smallint,
 civilian_labor_force_new_york_city_employed numeric(20,2),
-civilian_labor_force_unemployed numeric(20,2),	
+civilian_labor_force_unemployed numeric(20,2),
 unemployment_rate_city_percent	numeric(4,2),
 unemployment_rate_united_states_percent numeric(4,2),
 display_yn char(1)
@@ -605,8 +609,8 @@ Distributed by (fiscal_year);
 /*
 1)            Modified the attached source excel by adding  the header names.
 2)            Removed commas by formatting the amount fields.
-3)            Created the CSV of modified excel. 
-4)            And then ran the below commands to populate the data in trends_employment_status_of_resident_population_temp table 
+3)            Created the CSV of modified excel.
+4)            And then ran the below commands to populate the data in trends_employment_status_of_resident_population_temp table
 */
 
 
@@ -628,16 +632,17 @@ DROP TABLE IF EXISTS trends_non_agricultural_wage_salary_employement_temp;
 CREATE TABLE trends_non_agricultural_wage_salary_employement_temp
 (
 category character varying,
+fy_2014 numeric(20,2),
 fy_2013 numeric(20,2),
 fy_2012 numeric(20,2),
 fy_2011 numeric(20,2),
 fy_2010 numeric(20,2),
-fy_2009 numeric(20,2),	
+fy_2009 numeric(20,2),
 fy_2008 numeric(20,2),
 fy_2007 numeric(20,2),
 fy_2006 numeric(20,2),
-fy_2005 numeric(20,2),	
-fy_2004 numeric(20,2),	
+fy_2005 numeric(20,2),
+fy_2004 numeric(20,2),
 fy_2003 numeric(20,2),
 fy_2002 numeric(20,2),
 fy_2001 numeric(20,2),
@@ -672,6 +677,7 @@ DISTRIBUTED BY (category);
 
 COPY  trends_non_agricultural_wage_salary_employement_temp FROM '/home/gpadmin/GREENPLUM/Checkbook/TRENDS_DATA/trends_non_agricultural_wage_salary_employement.csv' CSV HEADER QUOTE as '"';
 
+INSERT INTO trends_non_agricultural_wage_salary_employement (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2014, fy_2014, display_order, highlight_yn, amount_display_type, indentation_level from trends_non_agricultural_wage_salary_employement_temp;
 INSERT INTO trends_non_agricultural_wage_salary_employement (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2013, fy_2013, display_order, highlight_yn, amount_display_type, indentation_level from trends_non_agricultural_wage_salary_employement_temp;
 INSERT INTO trends_non_agricultural_wage_salary_employement (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2012, fy_2012, display_order, highlight_yn, amount_display_type, indentation_level from trends_non_agricultural_wage_salary_employement_temp;
 INSERT INTO trends_non_agricultural_wage_salary_employement (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2011, fy_2011, display_order, highlight_yn, amount_display_type, indentation_level from trends_non_agricultural_wage_salary_employement_temp;
@@ -697,7 +703,7 @@ INSERT INTO trends_non_agricultural_wage_salary_employement (category, fiscal_ye
 
 update  trends_non_agricultural_wage_salary_employement set display_yn ='N' where fiscal_year <1997;
 update  trends_non_agricultural_wage_salary_employement set display_yn ='Y' where fiscal_year >=1997;
- 
+
 DROP TABLE trends_non_agricultural_wage_salary_employement_temp;
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- 9)
@@ -706,16 +712,17 @@ DROP TABLE IF EXISTS trends_numberofcityemployees_temp;
 CREATE TABLE trends_numberofcityemployees_temp
 (
 category character varying,
+fy_2014 numeric(20,2),
 fy_2013 numeric(20,2),
 fy_2012 numeric(20,2),
 fy_2011 numeric(20,2),
 fy_2010 numeric(20,2),
-fy_2009 numeric(20,2),	
+fy_2009 numeric(20,2),
 fy_2008 numeric(20,2),
 fy_2007 numeric(20,2),
 fy_2006 numeric(20,2),
-fy_2005 numeric(20,2),	
-fy_2004 numeric(20,2),	
+fy_2005 numeric(20,2),
+fy_2004 numeric(20,2),
 fy_2003 numeric(20,2),
 fy_2002 numeric(20,2),
 fy_2001 numeric(20,2),
@@ -751,6 +758,7 @@ DISTRIBUTED BY (category);
 
 COPY  trends_numberofcityemployees_temp FROM '/home/gpadmin/GREENPLUM/Checkbook/TRENDS_DATA/trends_numberofcityemployees.csv' CSV HEADER QUOTE as '"';
 
+INSERT INTO trends_numberofcityemployees (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2014, fy_2014, display_order, highlight_yn, amount_display_type, indentation_level from trends_numberofcityemployees_temp;
 INSERT INTO trends_numberofcityemployees (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2013, fy_2013, display_order, highlight_yn, amount_display_type, indentation_level from trends_numberofcityemployees_temp;
 INSERT INTO trends_numberofcityemployees (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2012, fy_2012, display_order, highlight_yn, amount_display_type, indentation_level from trends_numberofcityemployees_temp;
 INSERT INTO trends_numberofcityemployees (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2011, fy_2011, display_order, highlight_yn, amount_display_type, indentation_level from trends_numberofcityemployees_temp;
@@ -835,16 +843,17 @@ DROP TABLE IF EXISTS trends_changes_in_fund_balances_temp;
 CREATE TABLE trends_changes_in_fund_balances_temp
 (
 category character varying,
+fy_2014 numeric(20,2),
 fy_2013 numeric(20,2),
 fy_2012 numeric(20,2),
 fy_2011 numeric(20,2),
 fy_2010 numeric(20,2),
-fy_2009 numeric(20,2),	
+fy_2009 numeric(20,2),
 fy_2008 numeric(20,2),
 fy_2007 numeric(20,2),
 fy_2006 numeric(20,2),
-fy_2005 numeric(20,2),	
-fy_2004 numeric(20,2),	
+fy_2005 numeric(20,2),
+fy_2004 numeric(20,2),
 fy_2003 numeric(20,2),
 fy_2002 numeric(20,2),
 fy_2001 numeric(20,2),
@@ -881,7 +890,7 @@ DISTRIBUTED BY (category);
 
 COPY  trends_changes_in_fund_balances_temp FROM '/home/gpadmin/GREENPLUM/Checkbook/TRENDS_DATA/trends_changes_in_fund_balances.csv' CSV HEADER QUOTE as '"';
 
-
+INSERT INTO trends_changes_in_fund_balances (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level,currency_symbol) select trim(category), 2014, fy_2014, display_order, highlight_yn, amount_display_type, indentation_level,currency_symbol from trends_changes_in_fund_balances_temp;
 INSERT INTO trends_changes_in_fund_balances (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level,currency_symbol) select trim(category), 2013, fy_2013, display_order, highlight_yn, amount_display_type, indentation_level,currency_symbol from trends_changes_in_fund_balances_temp;
 INSERT INTO trends_changes_in_fund_balances (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level,currency_symbol) select trim(category), 2012, fy_2012, display_order, highlight_yn, amount_display_type, indentation_level,currency_symbol from trends_changes_in_fund_balances_temp;
 INSERT INTO trends_changes_in_fund_balances (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level,currency_symbol) select trim(category), 2011, fy_2011, display_order, highlight_yn, amount_display_type, indentation_level,currency_symbol from trends_changes_in_fund_balances_temp;
@@ -917,22 +926,23 @@ DROP TABLE IF EXISTS trends_capital_assets_statistics_function_program_temp;
 CREATE TABLE trends_capital_assets_statistics_function_program_temp
 (
 category character varying,
+fy_2014 numeric(20,2),
 fy_2013 numeric(20,2),
 fy_2012 numeric(20,2),
 fy_2011 numeric(20,2),
 fy_2010 numeric(20,2),
-fy_2009 numeric(20,2),	
+fy_2009 numeric(20,2),
 fy_2008 numeric(20,2),
 fy_2007 numeric(20,2),
 fy_2006 numeric(20,2),
-fy_2005 numeric(20,2),	
-fy_2004 numeric(20,2),	
+fy_2005 numeric(20,2),
+fy_2004 numeric(20,2),
 fy_2003 numeric(20,2),
 fy_2002 numeric(20,2),
 fy_2001 numeric(20,2),
 fy_2000 numeric(20,2),
-fy_1999 numeric(20,2),	
-fy_1998 numeric(20,2),	
+fy_1999 numeric(20,2),
+fy_1998 numeric(20,2),
 fy_1997 numeric(20,2),
 fy_1996 numeric(20,2),
 fy_1995 numeric(20,2),
@@ -962,6 +972,7 @@ DISTRIBUTED BY (category);
 
 	COPY  trends_capital_assets_statistics_function_program_temp FROM '/home/gpadmin/GREENPLUM/Checkbook/TRENDS_DATA/trends_capital_assets_statistics_function_program.csv' CSV HEADER QUOTE as '"';
 
+INSERT INTO trends_capital_assets_statistics_function_program (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level,superscript_yn) select trim(category), 2014, fy_2014, display_order, highlight_yn, amount_display_type, indentation_level,superscript_yn from trends_capital_assets_statistics_function_program_temp;
 INSERT INTO trends_capital_assets_statistics_function_program (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level,superscript_yn) select trim(category), 2013, fy_2013, display_order, highlight_yn, amount_display_type, indentation_level,superscript_yn from trends_capital_assets_statistics_function_program_temp;
 INSERT INTO trends_capital_assets_statistics_function_program (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level,superscript_yn) select trim(category), 2012, fy_2012, display_order, highlight_yn, amount_display_type, indentation_level,superscript_yn from trends_capital_assets_statistics_function_program_temp;
 INSERT INTO trends_capital_assets_statistics_function_program (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level,superscript_yn) select trim(category), 2011, fy_2011, display_order, highlight_yn, amount_display_type, indentation_level,superscript_yn from trends_capital_assets_statistics_function_program_temp;
@@ -996,6 +1007,9 @@ DROP TABLE IF EXISTS trends_assesed_valuation_tax_rate_class_temp;
 CREATE TABLE trends_assesed_valuation_tax_rate_class_temp
 (
 category character varying,
+fy2014assesed_value_million numeric(20,2),
+fy2014percentage_taxable_real_estate numeric(20,2),
+fy2014_direct_tax_rate numeric(20,2),
 fy2013assesed_value_million numeric(20,2),
 fy2013percentage_taxable_real_estate numeric(20,2),
 fy2013_direct_tax_rate numeric(20,2),
@@ -1081,6 +1095,7 @@ DISTRIBUTED BY (category);
 
 COPY  trends_assesed_valuation_tax_rate_class_temp FROM '/home/gpadmin/GREENPLUM/Checkbook/TRENDS_DATA/trends_assesed_valuation_tax_rate_class.csv' CSV HEADER QUOTE as '"';
 
+INSERT INTO trends_assesed_valuation_tax_rate_class (category, fiscal_year, assesed_value_million_amount,percentage_taxable_real_estate,direct_tax_rate, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2014,fy2014assesed_value_million,fy2014percentage_taxable_real_estate,fy2014_direct_tax_rate, display_order, highlight_yn, amount_display_type, indentation_level from trends_assesed_valuation_tax_rate_class_temp;
 INSERT INTO trends_assesed_valuation_tax_rate_class (category, fiscal_year, assesed_value_million_amount,percentage_taxable_real_estate,direct_tax_rate, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2013,fy2013assesed_value_million,fy2013percentage_taxable_real_estate,fy2013_direct_tax_rate, display_order, highlight_yn, amount_display_type, indentation_level from trends_assesed_valuation_tax_rate_class_temp;
 INSERT INTO trends_assesed_valuation_tax_rate_class (category, fiscal_year, assesed_value_million_amount,percentage_taxable_real_estate,direct_tax_rate, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2012,fy2012assesed_value_million,fy2012percentage_taxable_real_estate,fy2012_direct_tax_rate, display_order, highlight_yn, amount_display_type, indentation_level from trends_assesed_valuation_tax_rate_class_temp;
 INSERT INTO trends_assesed_valuation_tax_rate_class (category, fiscal_year, assesed_value_million_amount,percentage_taxable_real_estate,direct_tax_rate, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2011,fy2011assesed_value_million,fy2011percentage_taxable_real_estate,fy2011_direct_tax_rate, display_order, highlight_yn, amount_display_type, indentation_level from trends_assesed_valuation_tax_rate_class_temp;
@@ -1155,8 +1170,8 @@ Distributed by (fiscal_year);
 /*
 1)            Modified the attached source excel by adding  the header names.
 2)            Removed commas by formatting the amount fields.
-3)            Created the CSV of modified excel. 
-4)            And then ran the below commands to populate the data in trends_assesed_estimated_actual_taxable_property table 
+3)            Created the CSV of modified excel.
+4)            And then ran the below commands to populate the data in trends_assesed_estimated_actual_taxable_property table
 */
 
 
@@ -1341,7 +1356,8 @@ DROP TABLE trends_pledged_revenue_temp;
 DROP TABLE IF EXISTS trends_uncollected_parking_violation_temp;
 CREATE TABLE trends_uncollected_parking_violation_temp
 (
-category varchar,	
+category varchar,
+fy_2014	numeric(20,2),
 fy_2013	numeric(20,2),
 fy_2012	numeric(20,2),
 fy_2011	numeric(20,2),
@@ -1384,6 +1400,7 @@ DISTRIBUTED BY (category);
 
 COPY  trends_uncollected_parking_violation_temp FROM '/home/gpadmin/GREENPLUM/Checkbook/TRENDS_DATA/trends_uncollected_parking_violation.csv' CSV HEADER QUOTE as '"';
 
+INSERT INTO trends_uncollected_parking_violation (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2014, fy_2014, display_order, highlight_yn, amount_display_type, indentation_level from trends_uncollected_parking_violation_temp;
 INSERT INTO trends_uncollected_parking_violation (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2013, fy_2013, display_order, highlight_yn, amount_display_type, indentation_level from trends_uncollected_parking_violation_temp;
 INSERT INTO trends_uncollected_parking_violation (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2012, fy_2012, display_order, highlight_yn, amount_display_type, indentation_level from trends_uncollected_parking_violation_temp;
 INSERT INTO trends_uncollected_parking_violation (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2011, fy_2011, display_order, highlight_yn, amount_display_type, indentation_level from trends_uncollected_parking_violation_temp;
@@ -1405,7 +1422,7 @@ INSERT INTO trends_uncollected_parking_violation (category, fiscal_year, amount,
 INSERT INTO trends_uncollected_parking_violation (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 1995, fy_1995, display_order, highlight_yn, amount_display_type, indentation_level from trends_uncollected_parking_violation_temp;
 
 --update  trends_uncollected_parking_violation set display_yn ='N' where fiscal_year <1997;
---update  trends_uncollected_parking_violation set display_yn ='Y' where fiscal_year >=1997; 
+--update  trends_uncollected_parking_violation set display_yn ='Y' where fiscal_year >=1997;
 
 update  trends_uncollected_parking_violation set display_yn ='Y';
 
@@ -1417,7 +1434,8 @@ DROP TABLE trends_uncollected_parking_violation_temp;
 DROP TABLE IF EXISTS trends_changes_net_assets_temp;
 CREATE TABLE trends_changes_net_assets_temp
 (
-category varchar,	
+category varchar,
+fy_2014	numeric(20,2),
 fy_2013	numeric(20,2),
 fy_2012	numeric(20,2),
 fy_2011	numeric(20,2),
@@ -1455,6 +1473,7 @@ DISTRIBUTED BY (category);
 
 COPY  trends_changes_net_assets_temp FROM '/home/gpadmin/GREENPLUM/Checkbook/TRENDS_DATA/trends_changes_net_assets.csv' CSV HEADER QUOTE as '"';
 
+INSERT INTO trends_changes_net_assets (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2014, fy_2014, display_order, highlight_yn, amount_display_type, indentation_level from trends_changes_net_assets_temp;
 INSERT INTO trends_changes_net_assets (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2013, fy_2013, display_order, highlight_yn, amount_display_type, indentation_level from trends_changes_net_assets_temp;
 INSERT INTO trends_changes_net_assets (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2012, fy_2012, display_order, highlight_yn, amount_display_type, indentation_level from trends_changes_net_assets_temp;
 INSERT INTO trends_changes_net_assets (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2011, fy_2011, display_order, highlight_yn, amount_display_type, indentation_level from trends_changes_net_assets_temp;
@@ -1484,7 +1503,8 @@ DROP TABLE trends_changes_net_assets_temp;
 DROP TABLE IF EXISTS trends_government_funds_temp;
 CREATE TABLE trends_government_funds_temp
 (
-category varchar,	
+category varchar,
+fy_2014 numeric(20,2),
 fy_2013 numeric(20,2),
 fy_2012 numeric(20,2),
 fy_2011 numeric(20,2),
@@ -1527,6 +1547,7 @@ DISTRIBUTED BY (category);
 
 COPY  trends_government_funds_temp FROM '/home/gpadmin/GREENPLUM/Checkbook/TRENDS_DATA/trends_government_funds.csv' CSV HEADER QUOTE as '"';
 
+INSERT INTO trends_government_funds (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2014, fy_2014, display_order, highlight_yn, amount_display_type, indentation_level from trends_government_funds_temp;
 INSERT INTO trends_government_funds (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2013, fy_2013, display_order, highlight_yn, amount_display_type, indentation_level from trends_government_funds_temp;
 INSERT INTO trends_government_funds (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2012, fy_2012, display_order, highlight_yn, amount_display_type, indentation_level from trends_government_funds_temp;
 INSERT INTO trends_government_funds (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2011, fy_2011, display_order, highlight_yn, amount_display_type, indentation_level from trends_government_funds_temp;
@@ -1619,7 +1640,8 @@ DROP TABLE trends_hudson_yards_infrastructure_temp;
 DROP TABLE IF EXISTS trends_legal_debt_margin_temp;
 CREATE TABLE trends_legal_debt_margin_temp
 (
-category varchar,	
+category varchar,
+fy_2014	numeric(20,2),
 fy_2013	numeric(20,2),
 fy_2012	numeric(20,2),
 fy_2011	numeric(20,2),
@@ -1663,6 +1685,7 @@ DISTRIBUTED BY (category);
 
 COPY  trends_legal_debt_margin_temp FROM '/home/gpadmin/GREENPLUM/Checkbook/TRENDS_DATA/trends_legal_debt_margin.csv' CSV HEADER QUOTE as '"';
 
+INSERT INTO trends_legal_debt_margin (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2014, fy_2014, display_order, highlight_yn, amount_display_type, indentation_level from trends_legal_debt_margin_temp;
 INSERT INTO trends_legal_debt_margin (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2013, fy_2013, display_order, highlight_yn, amount_display_type, indentation_level from trends_legal_debt_margin_temp;
 INSERT INTO trends_legal_debt_margin (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2012, fy_2012, display_order, highlight_yn, amount_display_type, indentation_level from trends_legal_debt_margin_temp;
 INSERT INTO trends_legal_debt_margin (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2011, fy_2011, display_order, highlight_yn, amount_display_type, indentation_level from trends_legal_debt_margin_temp;
@@ -1699,6 +1722,8 @@ DROP TABLE IF EXISTS trends_ratios_general_bonded_debt_outstanding_temp;
 CREATE TABLE trends_ratios_general_bonded_debt_outstanding_temp
 (
 fiscal_year smallint,
+general_bonded_debt numeric(20,2),
+debt_by_revenue_ot_prop_tax numeric(20,2),
 general_obligation_bonds numeric(20,2),
 percentage_atcual_taxable_property numeric(20,2),
 per_capita_general_obligations numeric(20,2)
@@ -1709,6 +1734,8 @@ DROP TABLE IF EXISTS trends_ratios_general_bonded_debt_outstanding;
 CREATE TABLE trends_ratios_general_bonded_debt_outstanding
 (
 fiscal_year smallint,
+general_bonded_debt numeric(20,2),
+debt_by_revenue_ot_prop_tax numeric(20,2),
 general_obligation_bonds numeric(20,2),
 percentage_atcual_taxable_property numeric(20,2),
 per_capita_general_obligations numeric(20,2),
@@ -1735,30 +1762,30 @@ DROP TABLE trends_ratios_general_bonded_debt_outstanding_temp;
 select table_name from information_schema.tables where table_name ilike 'trends_%'
 
 
-SELECT 'trends_gen_fund_revenue' as table_name, count(*) FROM trends_gen_fund_revenue UNION 
-SELECT 'trends_gen_fund_expenditure' as table_name, count(*) FROM trends_gen_fund_expenditure UNION 
-SELECT 'trends_capital_projects' as table_name, count(*) FROM trends_capital_projects UNION 
-SELECT 'trends_ratios_outstanding_debt' as table_name, count(*) FROM trends_ratios_outstanding_debt UNION 
-SELECT 'trends_property_tax_levies' as table_name, count(*) FROM trends_property_tax_levies UNION 
-SELECT 'trends_personal_income' as table_name, count(*) FROM trends_personal_income UNION 
-SELECT 'trends_collection_cancellation_abatements' as table_name, count(*) FROM trends_collection_cancellation_abatements UNION 
-SELECT 'trends_employment_status_of_resident_population' as table_name, count(*) FROM trends_employment_status_of_resident_population UNION 
-SELECT 'trends_non_agricultural_wage_salary_employement' as table_name, count(*) FROM trends_non_agricultural_wage_salary_employement UNION 
-SELECT 'trends_numberofcityemployees' as table_name, count(*) FROM trends_numberofcityemployees UNION 
-SELECT 'trends_new_york_city_educational_construction' as table_name, count(*) FROM trends_new_york_city_educational_construction UNION 
-SELECT 'trends_changes_in_fund_balances' as table_name, count(*) FROM trends_changes_in_fund_balances UNION 
-SELECT 'trends_capital_assets_statistics_function_program' as table_name, count(*) FROM trends_capital_assets_statistics_function_program UNION 
-SELECT 'trends_assesed_valuation_tax_rate_class' as table_name, count(*) FROM trends_assesed_valuation_tax_rate_class UNION 
-SELECT 'trends_assesed_estimated_actual_taxable_property' as table_name, count(*) FROM trends_assesed_estimated_actual_taxable_property UNION 
-SELECT 'trends_nyc_population' as table_name, count(*) FROM trends_nyc_population UNION 
-SELECT 'trends_property_tax' as table_name, count(*) FROM trends_property_tax UNION 
-SELECT 'trends_person_receiving_pubic_assistance' as table_name, count(*) FROM trends_person_receiving_pubic_assistance UNION 
-SELECT 'trends_pledged_revenue' as table_name, count(*) FROM trends_pledged_revenue UNION 
-SELECT 'trends_uncollected_parking_violation' as table_name, count(*) FROM trends_uncollected_parking_violation UNION 
-SELECT 'trends_changes_net_assets' as table_name, count(*) FROM trends_changes_net_assets UNION 
-SELECT 'trends_government_funds' as table_name, count(*) FROM trends_government_funds UNION 
-SELECT 'trends_hudson_yards_infrastructure' as table_name, count(*) FROM trends_hudson_yards_infrastructure UNION 
-SELECT 'trends_legal_debt_margin' as table_name, count(*) FROM trends_legal_debt_margin UNION 
-SELECT 'trends_ratios_general_bonded_debt_outstanding' as table_name, count(*) FROM  trends_ratios_general_bonded_debt_outstanding 
+SELECT 'trends_gen_fund_revenue' as table_name, count(*) FROM trends_gen_fund_revenue UNION
+SELECT 'trends_gen_fund_expenditure' as table_name, count(*) FROM trends_gen_fund_expenditure UNION
+SELECT 'trends_capital_projects' as table_name, count(*) FROM trends_capital_projects UNION
+SELECT 'trends_ratios_outstanding_debt' as table_name, count(*) FROM trends_ratios_outstanding_debt UNION
+SELECT 'trends_property_tax_levies' as table_name, count(*) FROM trends_property_tax_levies UNION
+SELECT 'trends_personal_income' as table_name, count(*) FROM trends_personal_income UNION
+SELECT 'trends_collection_cancellation_abatements' as table_name, count(*) FROM trends_collection_cancellation_abatements UNION
+SELECT 'trends_employment_status_of_resident_population' as table_name, count(*) FROM trends_employment_status_of_resident_population UNION
+SELECT 'trends_non_agricultural_wage_salary_employement' as table_name, count(*) FROM trends_non_agricultural_wage_salary_employement UNION
+SELECT 'trends_numberofcityemployees' as table_name, count(*) FROM trends_numberofcityemployees UNION
+SELECT 'trends_new_york_city_educational_construction' as table_name, count(*) FROM trends_new_york_city_educational_construction UNION
+SELECT 'trends_changes_in_fund_balances' as table_name, count(*) FROM trends_changes_in_fund_balances UNION
+SELECT 'trends_capital_assets_statistics_function_program' as table_name, count(*) FROM trends_capital_assets_statistics_function_program UNION
+SELECT 'trends_assesed_valuation_tax_rate_class' as table_name, count(*) FROM trends_assesed_valuation_tax_rate_class UNION
+SELECT 'trends_assesed_estimated_actual_taxable_property' as table_name, count(*) FROM trends_assesed_estimated_actual_taxable_property UNION
+SELECT 'trends_nyc_population' as table_name, count(*) FROM trends_nyc_population UNION
+SELECT 'trends_property_tax' as table_name, count(*) FROM trends_property_tax UNION
+SELECT 'trends_person_receiving_pubic_assistance' as table_name, count(*) FROM trends_person_receiving_pubic_assistance UNION
+SELECT 'trends_pledged_revenue' as table_name, count(*) FROM trends_pledged_revenue UNION
+SELECT 'trends_uncollected_parking_violation' as table_name, count(*) FROM trends_uncollected_parking_violation UNION
+SELECT 'trends_changes_net_assets' as table_name, count(*) FROM trends_changes_net_assets UNION
+SELECT 'trends_government_funds' as table_name, count(*) FROM trends_government_funds UNION
+SELECT 'trends_hudson_yards_infrastructure' as table_name, count(*) FROM trends_hudson_yards_infrastructure UNION
+SELECT 'trends_legal_debt_margin' as table_name, count(*) FROM trends_legal_debt_margin UNION
+SELECT 'trends_ratios_general_bonded_debt_outstanding' as table_name, count(*) FROM  trends_ratios_general_bonded_debt_outstanding
 
 */
