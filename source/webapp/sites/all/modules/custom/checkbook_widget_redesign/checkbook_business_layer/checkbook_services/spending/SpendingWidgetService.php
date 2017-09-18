@@ -15,9 +15,20 @@ class SpendingWidgetService extends WidgetDataService implements IWidgetService 
         switch($column_name) {
 
             case "contract_number_link":
+                $agreement_id = $row['agreement_id'];
                 $column = $row['document_id'];
                 $class = "new_window";
-                $url = SpendingUrlService::contractIdUrl($row['agreement_id'], $row['document_code']);
+
+                $url = SpendingUrlService::contractIdUrl($agreement_id, $row['document_code']);
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+                break;
+
+            case "sub_contract_number_link":
+                $agreement_id = $row['original_agreement_id'];
+                $column = $row['document_id'];
+                $class = "new_window";
+
+                $url = SpendingUrlService::contractIdUrl($agreement_id, $row['document_code']);
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
 
