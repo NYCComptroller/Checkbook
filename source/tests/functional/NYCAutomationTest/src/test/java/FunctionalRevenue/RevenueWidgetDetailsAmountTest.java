@@ -20,8 +20,8 @@ import helpers.Driver;
 import helpers.Helper;
 import utilities.TestStatusReport;
 
-//public class RevenueWidgetDetailsAmountTest extends NYCBaseTest {
-	public class RevenueWidgetDetailsAmountTest extends TestStatusReport {
+public class RevenueWidgetDetailsAmountTest extends NYCBaseTest {
+	//public class RevenueWidgetDetailsAmountTest extends TestStatusReport {
 
 	@Before
 	public void GoToPage() {
@@ -43,7 +43,8 @@ import utilities.TestStatusReport;
 		HomePage.ShowWidgetDetails();
 	//assertTrue(HomePage.GetTransactionAmount1()== transactionAmt);
 		String NumOfRevenueDetailsAmount2016 =  NYCDatabaseUtil.getRevenueDetailsAmount(2016,'B');
-		String numOfRevenueDetailsAmountapp = HomePage.GetTransactionAmount1();
+		String numOfRevenueDetailsAmountapp = RevenuePage.GetTransactionAmount1();
+		System.out.println( RevenuePage.GetTransactionAmount1()); 
 	assertEquals("Number ofRevenue widget Details page table count did not match", numOfRevenueDetailsAmountapp, NumOfRevenueDetailsAmount2016); 
 	}
 
