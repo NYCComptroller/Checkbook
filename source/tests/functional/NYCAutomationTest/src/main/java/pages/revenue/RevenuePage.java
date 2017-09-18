@@ -119,12 +119,21 @@ public class RevenuePage {
 	// details  page Transaction table  count
 	
 	public static int GetTransactionCount() {
-		WebDriverWait wait = new WebDriverWait(Driver.Instance, 10);
+		WebDriverWait wait = new WebDriverWait(Driver.Instance, 20);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("table_280_info")));
 		String count = (Driver.Instance.findElement(By.id("table_280_info"))).getText();
 		return Helper.GetTotalEntries(count, 9);
 	}
+	// 	/// transaction table amount
 	
+	public static String GetTransactionAmount1() {
+		WebDriverWait wait = new WebDriverWait(Driver.Instance, 20);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("total-spending-amount")));
+		String amount = (Driver.Instance.findElement(By.className("total-spending-amount"))).getText();	
+		//System.out.println(Helper.billionStringToFloat(count));
+		return amount.substring(0,7);
+		//return Helper.billionStringToFloat(count);
+	}
 	
 	///widget visualization titles   
 	public static ArrayList<String> RevenueVisualizationTitles() {
@@ -132,7 +141,7 @@ public class RevenuePage {
 		return HomePage.RevenueVisualizationTitles();
 	}
 
-	
+	//widget tiles
 	public static ArrayList<String> WidgetTitles() {
 		ArrayList<String> titles = new ArrayList<String>();
 		List<WebElement> titleContainers = Driver.Instance.findElements(By.className("tableHeader"));
