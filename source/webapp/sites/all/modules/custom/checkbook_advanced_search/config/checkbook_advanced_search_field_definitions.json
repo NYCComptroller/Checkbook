@@ -78,8 +78,8 @@
         "attributes":{
             "options":{
                 "A":"Active",
-                "P":"Pending",
-                "R":"Registered"
+                "R":"Registered",
+                "P":"Pending"
             },
             "default_value":""
         }

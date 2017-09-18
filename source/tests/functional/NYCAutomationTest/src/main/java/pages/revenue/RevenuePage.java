@@ -1,11 +1,18 @@
 package pages.revenue;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import helpers.Driver;
+import helpers.Helper;
 import pages.home.HomePage;
+
+
 
 public class RevenuePage {	
 
@@ -15,7 +22,13 @@ public class RevenuePage {
 	}
 	public static void GoTo() {
 		navigation.TopNavigation.Revenue.Select();
-    }
+	}
+		
+		   public static String GetRevenueAmount() {
+	            WebElement revenueAmt = Driver.Instance.findElement(By.cssSelector(".top-navigation-left .revenue > .expense-container > a"));
+	            return revenueAmt.getText().substring((revenueAmt.getText().indexOf("$")));
+	        }
+    
 	public static boolean isAt() {
     	WebElement topTitleCont = Driver.Instance.findElement(By.cssSelector(".top-navigation-left > table > tbody > tr .revenue"));
     	Boolean revenueSelected = (topTitleCont.getAttribute("class")).contains("active");	
@@ -101,7 +114,32 @@ public class RevenuePage {
 		}
 		WebElement detailsAnchor = detailsContainer.findElement(By.partialLinkText("Details"));
 		detailsAnchor.click();	
-		Driver.Instance.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+		Driver.Instance.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+	}
+	// details  page Transaction table  count
+	
+	public static int GetTransactionCount() {
+		WebDriverWait wait = new WebDriverWait(Driver.Instance, 10);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("table_280_info")));
+		String count = (Driver.Instance.findElement(By.id("table_280_info"))).getText();
+		return Helper.GetTotalEntries(count, 9);
 	}
 	
+	
+	///widget visualization titles   
+	public static ArrayList<String> RevenueVisualizationTitles() {
+		
+		return HomePage.RevenueVisualizationTitles();
+	}
+
+	//////widget  titles   
+	public static ArrayList<String> WidgetTitles() {
+		ArrayList<String> titles = new ArrayList<String>();
+		List<WebElement> titleContainers = Driver.Instance.findElements(By.className("tableHeader"));
+		for (WebElement titleContainer : titleContainers) {
+			WebElement titleHeaderContainer = titleContainer.findElement(By.cssSelector("h2"));
+			titles.add(titleHeaderContainer.getText());
+		}	
+		return titles;
+	}
 }

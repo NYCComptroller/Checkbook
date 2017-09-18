@@ -6,10 +6,11 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import utilities.NYCBaseTest;
 import FunctionalPayroll.*;
+import smoke.*;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-	PayrollWidgetTest.class
+	SpendingTest.class
 })
 public class SmokeTest extends NYCBaseTest{
 	

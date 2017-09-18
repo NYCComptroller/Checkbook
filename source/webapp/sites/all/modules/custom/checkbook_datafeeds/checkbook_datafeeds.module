@@ -1775,7 +1775,7 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                 '#options' => array(
                     'active' => 'Active',
                     'registered' => 'Registered',
-                    'pending' => 'Pending',
+                    'pending' => 'Pending'
                 ),
                 '#attributes' => array('class' => array('watch')),
                 '#prefix' => '<div class="column column-left"><div class="datafield contractstatus">',

@@ -99,10 +99,7 @@ class SpendingWidgetService extends WidgetDataService implements IWidgetService 
             case "expense_cat_ytd_spending_link":
                 $column = $row['check_amount_sum'];
                 $class = "bottomContainerReload";
-                if($row["expenditure_object_id"] == 4)
-                    $dynamic_parameter = "/expcategorynm/" . strtoupper($row["expenditure_object_name"]);
-                else
-                    $dynamic_parameter = "/expcategory/" . $row["expenditure_object_id"];
+                $dynamic_parameter = "/expcategorycode/". $row["expenditure_object_code"];
                 $url = SpendingUrlService::ytdSpendingUrl($dynamic_parameter, $this->getLegacyNodeId());
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
@@ -156,8 +153,6 @@ class SpendingWidgetService extends WidgetDataService implements IWidgetService 
                 $dynamic_parameter = DocumentCode::isMasterAgreement($row['document_code'])
                     ? '/magid/' . $row['agreement_id'] . '/doctype/' . $row['document_code']
                     : '/agid/' . $row['agreement_id'] . '/doctype/' . $row['document_code'];
-                $dynamic_parameter .= "/agency/" . $row["agency_id"];
-                $dynamic_parameter .= "/fvendor/" . $row["prime_vendor_id"];
                 $url = SpendingUrlService::ytdSpendingUrl($dynamic_parameter, $this->getLegacyNodeId());
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
@@ -168,8 +163,6 @@ class SpendingWidgetService extends WidgetDataService implements IWidgetService 
                 $dynamic_parameter = DocumentCode::isMasterAgreement($row['document_code'])
                     ? '/magid/' . $row['agreement_id'] . '/doctype/' . $row['document_code']
                     : '/agid/' . $row['agreement_id'] . '/doctype/' . $row['document_code'];
-                $dynamic_parameter .= "/agency/" . $row["agency_id"];
-                $dynamic_parameter .= "/fvendor/" . $row["sub_vendor_id"];
                 $url = SpendingUrlService::ytdSpendingUrl($dynamic_parameter, $this->getLegacyNodeId());
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;

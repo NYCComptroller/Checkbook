@@ -624,12 +624,50 @@ class RequestUtil{
         return $fiscalYearId;
     }
     
+    /** Returns Year ID for Payroll domain navigation URLs from Top Navigation 
+     *  @return integer $calYearId 
+     */
+    static function getCalYearIdForTopNavigation(){
+        if(_getRequestParamValue("year") != NULL){
+            $year =  _getRequestParamValue("year");
+        }else if(_getRequestParamValue("calyear") != NULL){
+            $year = _getRequestParamValue("calyear");
+        }
+        $currentCalYear = _getCalendarYearID();
+        if($year > $currentCalYear){
+            $year = $currentCalYear;
+        }
+        return $year;
+    }
+    
     /** Returns top navigation URL */
     static function getTopNavURL($domain){
         $fiscalYearId = self::getFiscalYearIdForTopNavigation();
         switch($domain){
-            case "contracts":            
-                $path ="contracts_landing/status/A/yeartype/B/year/".$fiscalYearId._checkbook_append_url_params(null, array(),true);
+            case "contracts":
+                //Get 'Contracts Bottom Slider' amounts
+                $node = node_load(363);
+                widget_config($node);
+                widget_prepare($node);
+                widget_invoke($node, 'widget_prepare');
+                widget_data($node);
+                if($node->data[0]['total_contracts'] > 0 || $node->data[0]['current_amount_sum'] > 0){
+                    $contracts_landing_path = "contracts_landing/status/A";
+                }else if($node->data[1]['total_contracts'] > 0 || $node->data[1]['current_amount_sum'] > 0){
+                    $contracts_landing_path = "contracts_landing/status/R";
+                }else if($node->data[2]['total_contracts'] > 0 || $node->data[2]['current_amount_sum'] > 0){
+                    $contracts_landing_path = "contracts_revenue_landing/status/A";
+                }else if($node->data[3]['total_contracts'] > 0 || $node->data[3]['current_amount_sum'] > 0){
+                    $contracts_landing_path = "contracts_revenue_landing/status/R";
+                }else if($node->data[5]['total_contracts'] > 0 || $node->data[5]['current_amount_sum'] > 0){
+                    $contracts_landing_path = "contracts_pending_exp_landing";
+                }else if($node->data[6]['total_contracts'] > 0 || $node->data[6]['current_amount_sum'] > 0){
+                    $contracts_landing_path = "contracts_pending_rev_landing";
+                }else{
+                    return "";
+                }
+                
+                $path = $contracts_landing_path."/yeartype/B/year/".$fiscalYearId._checkbook_append_url_params(null, array(),true);
                 if(_getRequestParamValue("agency") > 0){
                     $path =  $path . "/agency/" . _getRequestParamValue("agency")  ;
                 }else if(_checkbook_check_isEDCPage()){
@@ -651,7 +689,7 @@ class RequestUtil{
                 }
                 break;
             case "payroll":
-                $year = (_getRequestParamValue("year") != NULL) ? _getRequestParamValue("year") : _getCurrentYearID();
+                $year = self::getCalYearIdForTopNavigation();
                 //Payroll is always redirected to the respective Calendar Year irrespective of the 'yeartpe' paramenter in the URL for all the other Domains
                 if(!preg_match('/payroll/',$_SERVER['REQUEST_URI'])){
                     $yeartype = 'C';

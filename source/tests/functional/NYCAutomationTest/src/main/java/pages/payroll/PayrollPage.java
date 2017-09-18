@@ -29,7 +29,7 @@ public class PayrollPage {
 		        TopNavigation.Payroll.Select();
 		    }
 			   public static String GetPayrollAmount() {
-		            WebElement PayrollAmt = Driver.Instance.findElement(By.cssSelector(".top-navigation-left .budget > .expense-container > a"));
+		            WebElement PayrollAmt = Driver.Instance.findElement(By.cssSelector(".top-navigation-left .employees > .expense-container > a"));
 		            return PayrollAmt.getText().substring((PayrollAmt.getText().indexOf("$")));
 		        }
 			
@@ -107,17 +107,17 @@ public class PayrollPage {
 			}
 			WebElement detailsAnchor = detailsContainer.findElement(By.partialLinkText("Details"));
 			detailsAnchor.click();	
-			Driver.Instance.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+			Driver.Instance.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 		}
 		
 	
 ///widget visualization titles   
 
-public static ArrayList<String> VisualizationTitles() {
+public static ArrayList<String> PayrollVisualizationTitles() {
 		ArrayList<String> titles = new ArrayList<String>();
 		List<WebElement> titleContainers = Driver.Instance.findElements(By.cssSelector("#nyc-payroll > .top-chart > .inside > .panel-pane"));
 		for(int i=0; i < titleContainers.size(); i++){
-			selectVisualizationSlider(i);
+			selectPayrollVisualizationSlider(i);
 			WebElement titleClass = titleContainers.get(i).findElement(By.cssSelector(".pane-content .chart-title"));
 			if(titleClass.isDisplayed()){
 				String title = titleClass.getText();
@@ -127,7 +127,7 @@ public static ArrayList<String> VisualizationTitles() {
 		return titles;
 	}
 
-public static void selectVisualizationSlider(int sliderPosition){
+public static void selectPayrollVisualizationSlider(int sliderPosition){
 	List<WebElement> sliderContainer = Driver.Instance.findElements(By.cssSelector("#nyc-payroll> .top-chart > .slider-pager > a"));
 	sliderContainer.get(sliderPosition).click();
 	Driver.Instance.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
@@ -139,11 +139,23 @@ public static ArrayList<String> WidgetTitles() {
 	List<WebElement> titleContainers = Driver.Instance.findElements(By.className("tableHeader"));
 	for (WebElement titleContainer : titleContainers) {
 		WebElement titleHeaderContainer = titleContainer.findElement(By.cssSelector("h2"));
-		titles.add(titleHeaderContainer.getText());
+		//String subTitle = titleHeaderContainer.getText().substring(0, titleHeaderContainer.getText().indexOf("Number")-1);
+		//titles.add(titleHeaderContainer.getText());
+		titles.add(titleHeaderContainer.getText().substring(0, titleHeaderContainer.getText().indexOf("Number")-1));
 	}	
 	return titles;
 }
 
+public static String GetWidgetText() {
+	List<WebElement> panelContainers = Driver.Instance.findElements(By.cssSelector(".bottomContainer > .panel-display > .panel-panel > .inside > .panel-pane"));
+	//List<WebElement> panelContainers = Driver.Instance.findElements(By.cssSelector(".bottomContainer > .panel-display > .panel-panel > div > .panel-pane"));
+		for (WebElement panelContainer : panelContainers) {
+			WebElement header= panelContainer.findElement(By.tagName("h2"));
+			String subTitle = header.getText().substring(0, header.getText().indexOf("Number")-1);
+			return subTitle;
+			}
+		return null;
+	}
 
 ///Transaction count
 

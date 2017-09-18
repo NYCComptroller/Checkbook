@@ -47,6 +47,7 @@ TRUNCATE ref_revenue_category CASCADE ;
 TRUNCATE ref_revenue_class CASCADE ;
 TRUNCATE ref_revenue_source CASCADE ;
 TRUNCATE ref_spending_category CASCADE ;
+DELETE FROM ref_subcontract_status;
 DELETE FROM ref_year;
 --TRUNCATE ref_year  CASCADE ;
 -- Transaction tables
