@@ -15,6 +15,7 @@ import org.junit.rules.ErrorCollector;
 
 import pages.revenue.RevenuePage;
 import pages.revenue.RevenuePage.WidgetOption;
+import pages.budget.BudgetPage;
 import pages.home.HomePage;
 
 import utilities.NYCBaseTest;
@@ -51,11 +52,17 @@ import utilities.TestStatusReport;
 			@Test
 		    public void VerifyRevenueWidgetTitles(){
 			    String[] widgetTitles = {"Top 5 Agencies",
+			    		                 "Top 5 Agencies by Cross Year Collections",
 			    						"Top 5 Revenue Categories",
-			    						"Top 5 Revenue by Funding Classes"};  
+			    						"Top 5 Revenue Categories by Cross Year Collections",
+			    						"Revenue by Funding Classes",
+			    						"Revenue by Funding Classes by Cross Year Collections"};  
 		    	//HomePage.ShowWidgetDetails();
-		    	assertTrue(Arrays.equals(widgetTitles, RevenuePage.WidgetTitles().toArray()));
+			    System.out.println( RevenuePage.WidgetTitles()); 
+				    	assertTrue(Arrays.equals(widgetTitles, RevenuePage.WidgetTitles().toArray()));
 		    	//assertEquals("Budget Title did not match", widgetTitles,  RevenuePage.WidgetTitles().toArray());
+		    
+		   		
 			}	    
 			
 			

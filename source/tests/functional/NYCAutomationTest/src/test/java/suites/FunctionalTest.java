@@ -16,9 +16,9 @@ import utilities.NYCBaseTest;
 @SuiteClasses({
 
 	/* Spending */
-	TotalSpendingWidgetTest.class,
-	TotalSpendingWidgetDetailsTest.class,
-	TotalSpendingTitlesTest.class,
+//	TotalSpendingWidgetTest.class,
+//	TotalSpendingWidgetDetailsTest.class,
+//	TotalSpendingTitlesTest.class,
 	
 	/* Contracts */
 	//ActiveExpenseContractsTest.class,
@@ -36,24 +36,24 @@ import utilities.NYCBaseTest;
  
 	/* Budget */
 	/* Need to fix path to retrieve count */
-	BudgetWidgetDetailsTest.class,
-	BudgetWidgetDetailsAmountTest.class,
+	//BudgetWidgetDetailsTest.class,
+	//BudgetWidgetDetailsAmountTest.class,
 	
-	BudgetWidgetTest.class,
-	BudgetWidgetTitles.class,
+	//BudgetWidgetTest.class,
+	//BudgetWidgetTitles.class,
 
 	/* Revenue */
-	RevenueWidgetTest.class,
-	RevenueWidgetTitles.class,
-	RevenueWidgetDetailsTest.class,
-	RevenueWidgetDetailsAmountTest.class,
+//	RevenueWidgetTest.class,
+RevenueWidgetTitles.class,
+	//RevenueWidgetDetailsTest.class,
+	//RevenueWidgetDetailsAmountTest.class,
 
 	/* Payroll */
-	PayrollWidgetTest.class,
+	//PayrollWidgetTest.class,
 	
-	PayrollWidgetDetailsTest.class,
+	//PayrollWidgetDetailsTest.class,
 
-	PayrollTitles.class
+	//PayrollTitles.class
 })
 public class FunctionalTest extends NYCBaseTest{	
 	

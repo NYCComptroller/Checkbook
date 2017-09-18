@@ -18,12 +18,12 @@ import utilities.NYCBaseTest;
 import utilities.TestStatusReport;
 import utilities.NYCDatabaseUtil;
 
-//public class TotalSpendingWidgetDetailsTest extends NYCBaseTest {
-	public class TotalSpendingWidgetDetailsTest extends TestStatusReport{
+public class TotalSpendingWidgetDetailsTest extends NYCBaseTest {
+	//public class TotalSpendingWidgetDetailsTest extends TestStatusReport{
 
 	@Before
 	public void GoToPage(){
-		SpendingPage.GoTo();
+		//SpendingPage.GoTo();
 		if (!TotalSpending.isAt()){
 			TotalSpendingPage.GoTo();
 		}
