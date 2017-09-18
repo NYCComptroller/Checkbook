@@ -2,6 +2,7 @@ package FunctionalContracts;
 
 import static org.junit.Assert.assertEquals;
 
+
 import java.sql.SQLException;
 
 import org.junit.Before;
@@ -15,8 +16,9 @@ import pages.home.HomePage;
 import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
 import helpers.Helper;
-
-public class RegisteredRevenueContractsTest extends NYCBaseTest {
+import utilities.TestStatusReport;
+public class RegisteredRevenueContractsTest  extends TestStatusReport{
+//public class RegisteredRevenueContractsTest extends NYCBaseTest {
 	@Before
     public void GoToPage(){
 	   if (!RegisteredRevenueContracts.isAt())

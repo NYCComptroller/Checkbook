@@ -22,7 +22,8 @@ public class BudgetWidgetDetailsAmountTest extends TestStatusReport{
 	
 		@Before
 	    public void GoToPage(){
-			BudgetPage.GoTo();
+			 if (!BudgetPage.isAt())
+				   BudgetPage.GoTo();
 		 
 		   if(!(Helper.getCurrentSelectedYear()).equalsIgnoreCase(NYCBaseTest.prop.getProperty("CurrentYear")))
 			   HomePage.SelectYear(NYCBaseTest.prop.getProperty("CurrentYear"));
