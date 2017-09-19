@@ -101,13 +101,6 @@
 
     Drupal.behaviors.budgetDataFeeds = {
         attach:function(context,settings){
-            /*$('select[name="budget_code"]',context).chosen({
-                no_results_text: "No matches found",
-            });
-            $('select[name="budget_name"]',context).chosen({
-                no_results_text: "No matches found",
-            });*/
-            
             $.fn.reloadBudgetCode();
             $.fn.reloadBudgetName();
             $('select[name="budget_code"]').chosen({
@@ -142,6 +135,11 @@
                 $.fn.reloadBudgetCode();
             });
             
+            $('#edit-fiscal-year', context).change(function () {
+                $.fn.reloadBudgetCode();
+                $.fn.reloadBudgetName();
+            });
+            
             // Sets up multi-select/option transfer
             //Expense
             $('#edit-column-select-expense',context).multiSelect();
@@ -165,28 +163,26 @@
             });
             //Sets up jQuery UI autocompletes and autocomplete filtering functionality
             $.fn.disableStuff();
-            var year = ($('#edit-fiscal-year',context).val() == 'All Years') ? 0 : $('#edit-fiscal-year',context).val();
-            var agency = emptyToZero($('#edit-agency',context).val());
-            var dept = emptyToZero($('#department select',context).val());
-            var expcategory = emptyToZero($('#expense-category select',context).val());
-            //var dept = ($('#department select',context).attr('disabled')) ? 0 : emptyToZero($('#department select',context).val());
-            //var expcategory = ($('#expense-category select',context).attr('disabled')) ? 0 : emptyToZero($('#expense-category select',context).val());
-            var budgetcode = ($('#edit-budget-code',context).attr('disabled')) ? 0 : emptyToZero($('#edit-budget-code',context).val());
-            $('#edit-budget-code',context).autocomplete({source:'/autocomplete/budget/budgetcode/' + agency + '/' + dept + '/' +expcategory+ '/' + budgetcode + '/' + year});
-            $('#expense-category select',context).autocomplete({source:'/autocomplete/budget/expcategory/' + agency + '/' + dept + '/' + expcategory + '/' + budgetcode + '/' + year});
-            $('#department select',context).autocomplete({source:'/autocomplete/budget/department/' + agency + '/' + dept + '/' + expcategory + '/' + budgetcode + '/' + year});
+            //var year = ($('#edit-fiscal-year',context).val() == 'All Years') ? 0 : $('#edit-fiscal-year',context).val();
+            //var agency = emptyToZero($('#edit-agency',context).val());
+            //var dept = emptyToZero($('#department select',context).val());
+            //var expcategory = emptyToZero($('#expense-category select',context).val());
+           // var budgetcode = ($('#edit-budget-code',context).attr('disabled')) ? 0 : emptyToZero($('#edit-budget-code',context).val());
+            //$('#edit-budget-code',context).autocomplete({source:'/autocomplete/budget/budgetcode/' + agency + '/' + dept + '/' +expcategory+ '/' + budgetcode + '/' + year});
+            //$('#expense-category select',context).autocomplete({source:'/autocomplete/budget/expcategory/' + agency + '/' + dept + '/' + expcategory + '/' + budgetcode + '/' + year});
+            //$('#department select',context).autocomplete({source:'/autocomplete/budget/department/' + agency + '/' + dept + '/' + expcategory + '/' + budgetcode + '/' + year});
             $('.watch:input',context).each(function () {
                 $(this,context).focusin(function () {
                     //set variables for each field's value
-                    year = ($('#edit-fiscal-year',context).val() == 'All Years') ? 0 : $('#edit-fiscal-year',context).val();
-                    var agency = emptyToZero($('#edit-agency',context).val());
-                    var dept = emptyToZero($('#department select',context).val());
-                    var expcategory = emptyToZero($('#expense-category select',context).val());                    //dept = ($('#department select',context).attr('disabled')) ? 0 : emptyToZero($('#department select',context).val());
+                   // year = ($('#edit-fiscal-year',context).val() == 'All Years') ? 0 : $('#edit-fiscal-year',context).val();
+                    //var agency = emptyToZero($('#edit-agency',context).val());
+                   // var dept = emptyToZero($('#department select',context).val());
+                   // var expcategory = emptyToZero($('#expense-category select',context).val());                    //dept = ($('#department select',context).attr('disabled')) ? 0 : emptyToZero($('#department select',context).val());
                     //expcategory = ($('#expense-category select',context).attr('disabled')) ? 0 : emptyToZero($('#expense-category select',context).val());
-                    budgetcode = ($('#edit-budget-code',context).attr('disabled')) ? 0 : emptyToZero($('#edit-budget-code',context).val());
-                    $("#edit-budget-code",context).autocomplete("option", "source", '/autocomplete/budget/budgetcode/' + agency + '/' + dept + '/' + expcategory + '/' + budgetcode + '/' + year);
-                    $("#expense-category select",context).autocomplete("option", "source", '/autocomplete/budget/expcategory/' + agency + '/' + dept + '/' + expcategory + '/' + budgetcode + '/' + year);
-                    $('#department select',context).autocomplete("option", "source", '/autocomplete/budget/department/' + agency + '/' + dept + '/' + expcategory + '/' + budgetcode + '/' + year);
+                    ///budgetcode = ($('#edit-budget-code',context).attr('disabled')) ? 0 : emptyToZero($('#edit-budget-code',context).val());
+                    //$("#edit-budget-code",context).autocomplete("option", "source", '/autocomplete/budget/budgetcode/' + agency + '/' + dept + '/' + expcategory + '/' + budgetcode + '/' + year);
+                    //$("#expense-category select",context).autocomplete("option", "source", '/autocomplete/budget/expcategory/' + agency + '/' + dept + '/' + expcategory + '/' + budgetcode + '/' + year);
+                   // $('#department select',context).autocomplete("option", "source", '/autocomplete/budget/department/' + agency + '/' + dept + '/' + expcategory + '/' + budgetcode + '/' + year);
                 });
             });
             $(':input[name="budgettype"]',context).change(function(){
