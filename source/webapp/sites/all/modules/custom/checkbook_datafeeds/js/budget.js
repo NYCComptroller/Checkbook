@@ -66,13 +66,19 @@
        $.ajax({
             url: '/datafeeds/budget/budgetcode/' + year + '/' + agency + '/' + dept + '/' + expCategory + '/' + budgetName,
             success: function(data) {
-                var html = '<option select="selected" value="" >Select Budget Code</option>';
+                var html = '<option value="" >Select Budget Code</option>';
+                var exists = false;
                 if(data[0]){
                     for (i = 0; i < data.length; i++) {
+                        if(data[i] == budgetCode)
+                            exists = true;
                         html = html + '<option value="' + data[i] + ' ">' + data[i]  + '</option>';
                     }
                 }
                 $('select[name="budget_code"]').html(html);
+                if(exists){
+                    $('select[name="budget_code"]').val(budgetCode);
+                }
                 $('select[name="budget_code"]').trigger("chosen:updated");
             }
         }); 
@@ -88,26 +94,20 @@
        $.ajax({
             url: '/datafeeds/budget/budgetname/' + year + '/' + agency + '/' + dept + '/' + expCategory + '/' + budgetCode,
             success: function(data) {
-                var html = '<option select="selected" value="" >Select Budget Name</option>';
+                var html = '<option value="" >Select Budget Name</option>';
+                var exists = false;
                 if(data[0]){
                     for (i = 0; i < data.length; i++) {
+                        if(data[i] == budgetName)
+                            exists = true;
                         html = html + '<option value="' + data[i] + ' ">' + data[i]  + '</option>';
                     }
                 }
-                
-                var exists = false;
-                $('select[name="budget_name"] option').each(function(){
-                    if (this.value == budgetName) {
-                        exists = true;
-                    }
-                });
+                $('select[name="budget_name"]').html(html);
                 if(exists){
                     $('select[name="budget_name"]').val(budgetName);
                 }
-                $('select[name="budget_name"]').html(html);
                 $('select[name="budget_name"]').trigger("chosen:updated");
-                
-                
             }
         }); 
     }
