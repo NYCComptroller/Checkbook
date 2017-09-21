@@ -249,8 +249,8 @@ public class NYCDatabaseUtil {
     
     public static String getRevenueDetailsAmount(int year, char yearTypeVal) throws SQLException {
         query = "SELECT SUM(posting_amount) sumRevenueAmt "
-                + "FROM revenue"
-                + " WHERE budget_fiscal_year = " + year;
+                + "FROM revenue where fiscal_year = '2018' and "
+                + "  budget_fiscal_year = " + year;
 
 
         rs = amountQueryHelper(yearTypeVal);
@@ -306,6 +306,19 @@ public class NYCDatabaseUtil {
         
         
         public static int getRevenueDetailsCount(int year, char yearTypeVal) throws SQLException {
+            query = "SELECT COUNT(*) aCount " +
+                    "FROM  revenue where budget_fiscal_year= " + year ;
+
+            rs = amountQueryHelper(yearTypeVal);
+            int count = 0;
+            while (rs.next()) {
+                count = rs.getInt("aCount");
+            }
+         
+            return count;
+            
+        }
+        public static int getRevenueCrossYearColectionsDetailsAmount(int year, char yearTypeVal) throws SQLException {
             query = "SELECT COUNT(*) aCount " +
                     "FROM  revenue where budget_fiscal_year= " + year ;
 

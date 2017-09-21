@@ -22,8 +22,8 @@ import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
 import utilities.TestStatusReport;
 
-//public class RevenueWidgetTitles extends NYCBaseTest {
-	public class RevenueWidgetTitles extends TestStatusReport {
+public class RevenueWidgetTitles extends NYCBaseTest {
+	//public class RevenueWidgetTitles extends TestStatusReport {
 		@Before
 	    public void GoToPage() {
 			RevenuePage.GoTo();

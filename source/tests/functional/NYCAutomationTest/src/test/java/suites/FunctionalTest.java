@@ -44,8 +44,8 @@ import utilities.NYCBaseTest;
 
 	/* Revenue */
 //	RevenueWidgetTest.class,
-RevenueWidgetTitles.class,
-	//RevenueWidgetDetailsTest.class,
+//RevenueWidgetTitles.class,
+	RevenueWidgetDetailsTest.class,
 	//RevenueWidgetDetailsAmountTest.class,
 
 	/* Payroll */
