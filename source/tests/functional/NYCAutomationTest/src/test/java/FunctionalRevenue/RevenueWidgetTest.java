@@ -12,8 +12,8 @@ import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
 import utilities.TestStatusReport;
 
-//public class RevenueWidgetTest extends NYCBaseTest {
-	public class RevenueWidgetTest extends TestStatusReport {
+public class RevenueWidgetTest extends NYCBaseTest {
+	//public class RevenueWidgetTest extends TestStatusReport {
 	
 
 		@Before

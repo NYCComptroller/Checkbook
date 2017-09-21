@@ -19,8 +19,8 @@ import utilities.NYCDatabaseUtil;
 import utilities.TestStatusReport;
 import helpers.Helper;
 
-//public class ActiveExpenseContractsTest extends NYCBaseTest {
-	public class ActiveExpenseContractsTest extends TestStatusReport{
+public class ActiveExpenseContractsTest extends NYCBaseTest {
+	//public class ActiveExpenseContractsTest extends TestStatusReport{
 
 	@Before
 	public void GoToPage() {

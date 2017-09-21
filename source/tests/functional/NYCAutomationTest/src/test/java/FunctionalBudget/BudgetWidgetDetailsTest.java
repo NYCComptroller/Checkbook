@@ -17,9 +17,9 @@ import pages.home.HomePage;
 import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
 import utilities.TestStatusReport;
-public class BudgetWidgetDetailsTest extends TestStatusReport{
+//public class BudgetWidgetDetailsTest extends TestStatusReport{
 
-//public class BudgetWidgetDetailsTest extends NYCBaseTest {
+public class BudgetWidgetDetailsTest extends NYCBaseTest {
 	
 		@Before
 	    public void GoToPage(){

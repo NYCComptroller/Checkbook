@@ -18,8 +18,8 @@ import pages.spending.TotalSpendingPage;
 import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
 import utilities.TestStatusReport;
-public class BudgetAllWidgetDetailsTest extends TestStatusReport{
-//public class BudgetAllWidgetDetailsTest extends NYCBaseTest {
+//public class BudgetAllWidgetDetailsTest extends TestStatusReport{
+public class BudgetAllWidgetDetailsTest extends NYCBaseTest {
 
 	
 		@Before
