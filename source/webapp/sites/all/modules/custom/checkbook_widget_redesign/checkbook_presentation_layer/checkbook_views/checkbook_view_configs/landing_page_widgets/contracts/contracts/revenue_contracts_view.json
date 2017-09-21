@@ -6,7 +6,7 @@
     "headerTitle":"Contracts",
     "headerSubTitle":"Stand Alone Contracts",
     "table_columns":[
-        {"labelAlias":"contract_id","column":"contract_number","derivedColumn":"contract_id_link"},
+        {"labelAlias":"contract_id","column":"contract_number","derivedColumn":"master_contract_id_link"},
         {"labelAlias":"contract_purpose","column":"contract_purpose","tooltip":40},
         {"labelAlias":"contract_agency","column":"agency_name","tooltip":50,"derivedColumn":"agency_name_link"},
         {"labelAlias":"prime_vendor","column":"vendor_name","tooltip":44,"derivedColumn":"prime_vendor_link"},
