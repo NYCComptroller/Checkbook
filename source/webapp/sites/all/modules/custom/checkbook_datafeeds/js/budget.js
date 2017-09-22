@@ -1,17 +1,17 @@
 (function ($) {
     $.fn.disableStuff = function(){
-            if ($('#edit-agency').val() == 'Citywide (All Agencies)'){
-                $('select[name="dept"]').val('');
-                $('select[name="dept"]').attr('disabled','disabled');
-                $('select[name="expense_category"]').val('');
-                $('select[name="expense_category"]').attr('disabled','disabled');
-            }
+        if ($('#edit-agency').val() === 'Citywide (All Agencies)'){
+            $('select[name="dept"]').val('');
+            $('select[name="dept"]').attr('disabled','disabled');
+            $('select[name="expense_category"]').val('');
+            $('select[name="expense_category"]').attr('disabled','disabled');
+        }
     }
     
     $.fn.reloadDepartment = function(){
-       var agency = $('#edit-agency').val();
-       var year = ($('#edit-fiscal-year').val() == 'All Years') ? 0 : $('#edit-fiscal-year').val();
-       if(agency != 'Citywide (All Agencies)'){
+       var agency = encodeURIComponent($('#edit-agency').val());
+       var year = ($('#edit-fiscal-year').val() === 'All Years') ? 0 : $('#edit-fiscal-year').val();
+       if($('#edit-agency').val() !== 'Citywide (All Agencies)'){
             $.ajax({
                 url: '/datafeeds/budget/department/' + year + '/' + agency,
                 success: function(data) {
@@ -32,10 +32,10 @@
     }
     
     $.fn.reloadExpenseCategory = function(){
-       var agency = $('#edit-agency').val();
-       var dept = $('#department select').val();
-       var year = ($('#edit-fiscal-year').val() == 'All Years') ? 0 : $('#edit-fiscal-year').val();
-       if(agency != 'Citywide (All Agencies)'){
+       var agency = encodeURIComponent($('#edit-agency').val());
+       var dept = encodeURIComponent($('#edit-dept').val());
+       var year = ($('#edit-fiscal-year').val() === 'All Years') ? 0 : $('#edit-fiscal-year').val();
+       if($('#edit-agency').val() !== 'Citywide (All Agencies)'){
             $.ajax({
                 url: '/datafeeds/budget/expcat/' + year + '/' + agency + '/' + dept,
                 success: function(data) {
@@ -56,57 +56,47 @@
     }
     
     $.fn.reloadBudgetCode = function(){
-       var agency = $('#edit-agency').val();
-       var dept = $('#edit-dept').val();
-       var expCategory = $('#edit-expense-category').val();
-       var budgetName = ($('#edit-budget-name').val() == "") ? 0 : $('#edit-budget-name').val();
-       var budgetCode = ($('#edit-budget-code').val() == "") ? 0 : $('#edit-budget-code').val();
-       var year = ($('#edit-fiscal-year').val() == 'All Years') ? 0 : $('#edit-fiscal-year').val();
+       var agency = encodeURIComponent($('#edit-agency').val());
+       var dept = encodeURIComponent($('#edit-dept').val());
+       var expCategory = encodeURIComponent($('#edit-expense-category').val());
+       var budgetName = encodeURIComponent(($('#edit-budget-name').val() === "") ? 0 : $('#edit-budget-name').val());
+       var budgetCode = ($('#edit-budget-code').val() === "") ? 0 : $('#edit-budget-code').val();
+       var year = ($('#edit-fiscal-year').val() === 'All Years') ? 0 : $('#edit-fiscal-year').val();
        
        $.ajax({
             url: '/datafeeds/budget/budgetcode/' + year + '/' + agency + '/' + dept + '/' + expCategory + '/' + budgetName,
             success: function(data) {
                 var html = '<option value="" >Select Budget Code</option>';
-                var exists = false;
                 if(data[0]){
                     for (i = 0; i < data.length; i++) {
-                        if(data[i] == budgetCode)
-                            exists = true;
                         html = html + '<option value="' + data[i] + ' ">' + data[i]  + '</option>';
                     }
                 }
                 $('select[name="budget_code"]').html(html);
-                if(exists){
-                    $('select[name="budget_code"]').val(budgetCode);
-                }
+                $('select[name="budget_code"]').val(budgetCode);
                 $('select[name="budget_code"]').trigger("chosen:updated");
             }
         }); 
     }
     
     $.fn.reloadBudgetName = function(){
-       var agency = $('#edit-agency').val();
-       var dept = $('#edit-dept').val();
-       var expCategory = $('#edit-expense-category').val();
-       var budgetCode = ($('#edit-budget-code').val() == "") ? 0 : $('#edit-budget-code').val();
-       var budgetName = ($('#edit-budget-name').val() == "") ? 0 : $('#edit-budget-name').val();
-       var year = ($('#edit-fiscal-year').val() == 'All Years') ? 0 : $('#edit-fiscal-year').val();
+       var agency = encodeURIComponent($('#edit-agency').val());
+       var dept = encodeURIComponent($('#edit-dept').val());
+       var expCategory = encodeURIComponent($('#edit-expense-category').val());
+       var budgetCode = ($('#edit-budget-code').val() === "") ? 0 : $('#edit-budget-code').val();
+       var budgetName = ($('#edit-budget-name').val() === "") ? 0 : $('#edit-budget-name').val();
+       var year = ($('#edit-fiscal-year').val() === 'All Years') ? 0 : $('#edit-fiscal-year').val();
        $.ajax({
             url: '/datafeeds/budget/budgetname/' + year + '/' + agency + '/' + dept + '/' + expCategory + '/' + budgetCode,
             success: function(data) {
                 var html = '<option value="" >Select Budget Name</option>';
-                var exists = false;
                 if(data[0]){
                     for (i = 0; i < data.length; i++) {
-                        if(data[i] == budgetName)
-                            exists = true;
                         html = html + '<option value="' + data[i] + ' ">' + data[i]  + '</option>';
                     }
                 }
                 $('select[name="budget_name"]').html(html);
-                if(exists){
-                    $('select[name="budget_name"]').val(budgetName);
-                }
+                $('select[name="budget_name"]').val(budgetName);
                 $('select[name="budget_name"]').trigger("chosen:updated");
             }
         }); 
