@@ -33,7 +33,7 @@
     
     $.fn.reloadExpenseCategory = function(){
        var agency = encodeURIComponent($('#edit-agency').val());
-       var dept = encodeURIComponent($('#edit-dept').val());
+       var dept = ($('#edit-dept').val()) ? encodeURIComponent($('#edit-dept').val()) : 0;
        var year = ($('#edit-fiscal-year').val() === 'All Years') ? 0 : $('#edit-fiscal-year').val();
        if($('#edit-agency').val() !== 'Citywide (All Agencies)'){
             $.ajax({
