@@ -6291,7 +6291,7 @@ function _checkbook_datafeeds_award_method_options($data) {
  *  Department codes and department names filtered by agency, year
  */
 function _budget_dept_options($year, $agency) {
-    $agency = emptyToZero($agency);
+    $agency = emptyToZero(urldecode($agency));
     if($agency){
         $agencystring = " agency_code = '" . $agency . "' ";
         $yearstring = " AND budget_fiscal_year = " . $year . " ";
@@ -6326,8 +6326,8 @@ function _budget_dept_options($year, $agency) {
  *   Expenditure object codes and expenditure object names, filtered by agency, department, year
  */
 function _budget_expcat_options($year, $agency, $dept) {
-    $agency = emptyToZero($agency);
-    $dept = emptyToZero($dept);
+    $agency = emptyToZero(urldecode($agency));
+    $dept = emptyToZero(urldecode($dept));
     if ($agency) {
         $agencystring = " agency_code = '" . $agency . "' ";
         if ($year) {
@@ -6368,9 +6368,9 @@ function _budget_expcat_options($year, $agency, $dept) {
  *   Expenditure object codes and expenditure object names, filtered by agency, department, year
  */
 function _budget_code_options($year, $agency, $dept, $exp_cat, $budget_code_name) {
-    $agency = emptyToZero($agency);
-    $dept = emptyToZero($dept);
-    $exp_cat = emptyToZero($exp_cat);
+    $agency = emptyToZero(urldecode($agency));
+    $dept = emptyToZero(urldecode($dept));
+    $exp_cat = emptyToZero(urldecode($exp_cat));
     if ($agency) {
         $agencystring = "AND agency_code = '" . $agency . "' ";
     }
@@ -6385,7 +6385,7 @@ function _budget_code_options($year, $agency, $dept, $exp_cat, $budget_code_name
         $expstring = " AND object_class_code = '" . $exp_cat . "' ";
     }
     if($budget_code_name){
-        $budget_code_name_string = " AND budget_code_name = '" . addslashes(trim($budget_code_name)) . "' ";
+        $budget_code_name_string = " AND budget_code_name = '" . addslashes(trim(urldecode($budget_code_name))) . "' ";
     }
     $query = "SELECT DISTINCT budget_code FROM budget WHERE"
             . $yearstring .  $agencystring . $deptstring . $expstring . $budget_code_name_string . " ORDER BY budget_code ASC";
@@ -6417,9 +6417,9 @@ function _budget_code_options($year, $agency, $dept, $exp_cat, $budget_code_name
  *   Expenditure object codes and expenditure object names, filtered by agency, department, year
  */
 function _budget_name_options($year, $agency, $dept, $exp_cat, $budget_code) {
-    $agency = emptyToZero($agency);
-    $dept = emptyToZero($dept);
-    $exp_cat = emptyToZero($exp_cat);
+    $agency = emptyToZero(urldecode($agency));
+    $dept = emptyToZero(urldecode($dept));
+    $exp_cat = emptyToZero(urldecode($exp_cat));
     if ($agency) {
         $agencystring = "AND agency_code = '" . $agency . "' ";
     }
