@@ -602,8 +602,6 @@ function checkbook_datafeeds_budget($form, &$form_state) {
     $agency = isset($form_state['values']['agency']) ? $form_state['values']['agency'] : 'Citywide (All Agencies)';
     $dept = !empty($form_state['values']['dept']) ? $form_state['values']['dept'] : '';
     $expcat = !empty($form_state['values']['expense_category']) ? $form_state['values']['expense_category'] : '';
-    $budget_name = !empty($form_state['values']['budget_name']) ? $form_state['values']['budget_name'] : '';
-    $budget_code = !empty($form_state['values']['budget_code']) ? $form_state['values']['budget_code'] : '';
     $year = !empty($form_state['values']['fiscal_year']) ? $form_state['values']['fiscal_year'] : 'FY' . currentFiscalYear();
     $agency_options = _agency_options();
 
@@ -642,37 +640,35 @@ function checkbook_datafeeds_budget($form, &$form_state) {
     $form['filter']['dept'] = array(
         '#type' => 'select',
         '#title' => t('Department:'),
-        '#options' => array('Select Department'),
         '#prefix' => '<div id="department" class="datafield department">',
         '#suffix' => '</div>',
+        '#validated' => TRUE,
         '#default_value' => !empty($form_state['values']['dept']) ? $form_state['values']['dept'] : 'Select Department',
-        '#disabled' => TRUE,
     );
     $form['filter']['expense_category'] = array(
         '#type' => 'select',
         '#title' => t('Expense Category:'),
-        '#options' => array('Select Expense Category'),
         '#prefix' => '<div id="expense-category" class="datafield expensecategory">',
         '#suffix' => '</div>',
+        '#validated' => TRUE,
         '#default_value' => !empty($form_state['values']['expense_category']) ? $form_state['values']['expense_category'] : 'Select Expense Category',
-        '#disabled' => TRUE,
     );
 
     $form['filter']['budget_code'] = array(
         '#type' => 'select',
         '#title' => t('Budget Code:'),
-        '#options' => array('Select Budget Code'),
         '#prefix' => '<div id="budget-code" class="datafield budgetcode">',
         '#suffix' => '</div>',
-        '#default_value' => !empty($form_state['values']['budget_code']) ? $form_state['values']['budget_code'] : '',
+        '#validated' => TRUE,
+        '#default_value' => !empty($form_state['values']['budget_code']) ? $form_state['values']['budget_code'] : 'Select Budget Code',
     );
     $form['filter']['budget_name'] = array(
         '#type' => 'select',
         '#title' => t('Budget Name:'),
-        '#options' => array('Select Budget Name'),
         '#prefix' => '<div id="budget-name" class="datafield budgetname">',
         '#suffix' => '</div>',
-        '#default_value' => !empty($form_state['values']['budget_name']) ? $form_state['values']['budget_name'] : '',
+        '#validated' => TRUE,
+        '#default_value' => !empty($form_state['values']['budget_name']) ? $form_state['values']['budget_name'] : 'Select Budget Name',
     );
     $form['filter']['fiscal_year'] = array(
         '#type' => 'select',
@@ -975,6 +971,13 @@ function checkbook_datafeeds_budget_confirmation($form, &$form_state) {
         $user_criteria['Budget Code'] = $values['budget_code'];
         $formatted_search_criteria['Budget Code'] = $values['budget_code'];
     }
+    
+    if ($values['budget_name']) {
+        $form['filter']['budget_name'] = array('#markup' => '<div><strong>Budget Name:</strong> ' . $values['budget_name'] . '</div>');
+        $user_criteria['Budget Name'] = $values['budget_name'];
+        $formatted_search_criteria['Budget Name'] = $values['budget_name'];
+    }
+    
     if ($values['fiscal_year']) {
         $form['filter']['fiscal_year'] = array('#markup' => '<div><strong>Year:</strong> ' . $values['fiscal_year'] . '</div>');
         $user_criteria['Year'] = $values['fiscal_year'];
@@ -1166,15 +1169,14 @@ function checkbook_datafeeds_process_budget_values($form, $form_state) {
             $criteria['value']['expense_category'] = trim($ecmatches[1], '[ ]');
         }
     }
-    if ($values['budget_code']) {
-        preg_match($pattern, $values['budget_code'], $bcmatches);
-        if ($bcmatches){
-            $criteria['value']['budget_code'] = trim($bcmatches[1], '[ ]');
-            $criteria['value']['budget_code_name'] = str_replace($bcmatches[1],"",$values['budget_code']);
-        }else{
-            $criteria['value']['budget_code_name'] = $values['budget_code'];
-        }
+    if ($values['budget_code'] != 0) {
+        $criteria['value']['budget_code'] = $values['budget_code'];
     }
+    
+    if ($values['budget_name']) {
+        $criteria['value']['budget_name'] = $values['budget_name'];
+    }
+    
     if ($values['adoptedfrom'] !== '' || $values['adoptedto'] !== '') {
         $criteria['range']['adopted'] = array(
             checknull($values['adoptedfrom']),
