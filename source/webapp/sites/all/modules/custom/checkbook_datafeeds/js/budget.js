@@ -75,7 +75,7 @@
        var agency = encodeURIComponent($('#edit-agency').val());
        var dept = encodeURIComponent($('#edit-dept').val());
        var expCategory = encodeURIComponent($('#edit-expense-category').val());
-       var budgetCode = ($('#edit-budget-code').val() === "") ? 0 : $('#edit-budget-code').val();
+       var budgetCode = ($('#edit-budget-code').val()) ? $('#edit-budget-code').val() : 0;
        var budgetName = ($('#edit-budget-name').val() === "") ? 0 : $('#edit-budget-name').val();
        var year = ($('#edit-fiscal-year').val() === 'All Years') ? 0 : $('#edit-fiscal-year').val();
        $.ajax({
