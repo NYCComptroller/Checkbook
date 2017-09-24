@@ -956,12 +956,12 @@ function checkbook_datafeeds_budget_confirmation($form, &$form_state) {
         $user_criteria['Agency'] = $values['agency'];
         $formatted_search_criteria['Agency'] = $values['agency'];
     }
-    if ($values['dept']) {
+    if ($values['dept'] && $values['dept'] != 'Select Department') {
         $form['filter']['department'] = array('#markup' => '<div><strong>Department:</strong> ' . $values['dept'] . '</div>');
         $user_criteria['Department'] = $values['dept'];
         $formatted_search_criteria['Department'] = $values['dept'];
     }
-    if ($values['expense_category']) {
+    if ($values['expense_category'] && $values['expense_category'] != 'Select Expense Category') {
         $form['filter']['expense_category'] = array('#markup' => '<div><strong>Expense Category:</strong> ' . $values['expense_category'] . '</div>');
         $user_criteria['Expense Category'] = $values['expense_category'];
         $formatted_search_criteria['Expense Category'] = $values['expense_category'];
