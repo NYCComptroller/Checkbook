@@ -96,16 +96,18 @@
 
     Drupal.behaviors.budgetDataFeeds = {
         attach:function(context,settings){
-            $.fn.reloadDepartment();
-            $.fn.reloadExpenseCategory();
-            $.fn.reloadBudgetCode();
-            $.fn.reloadBudgetName();
             $('select[name="budget_code"]').chosen({
                 no_results_text: "No matches found",
             });
             $('select[name="budget_name"]').chosen({
                 no_results_text: "No matches found",
             });
+            
+            $.fn.reloadDepartment();
+            $.fn.reloadExpenseCategory();
+            $.fn.reloadBudgetCode();
+            $.fn.reloadBudgetName();
+            
             $('#edit-agency', context).change(function () {
                 $.fn.reloadDepartment();
                 $.fn.reloadExpenseCategory();
