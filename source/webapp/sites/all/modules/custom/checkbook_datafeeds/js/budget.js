@@ -2,6 +2,7 @@
 
     $.fn.reloadDepartment = function(){
        var agency = encodeURIComponent($('#edit-agency').val());
+       var dept_hidden = $('input:hidden[name="dept_hidden"]').val();
        var year = ($('#edit-fiscal-year').val() === 'All Years') ? 0 : $('#edit-fiscal-year').val();
        if($('#edit-agency').val() !== 'Citywide (All Agencies)'){
             $.ajax({
@@ -15,6 +16,9 @@
                     }
                     $('select[name="dept"]').removeAttr('disabled');
                     $('select[name="dept"]').html(html);
+                    if(dept_hidden){
+                        $('select[name="dept"]').val(dept_hidden);
+                    }
                 }
             }); 
         }else{
@@ -27,6 +31,8 @@
        var agency = encodeURIComponent($('#edit-agency').val());
        var dept = ($('#edit-dept').val()) ? encodeURIComponent($('#edit-dept').val()) : 0;
        var year = ($('#edit-fiscal-year').val() === 'All Years') ? 0 : $('#edit-fiscal-year').val();
+       var expense_category_hidden = $('input:hidden[name="expense_category_hidden"]').val();
+       
        if($('#edit-agency').val() !== 'Citywide (All Agencies)'){
             $.ajax({
                 url: '/datafeeds/budget/expcat/' + year + '/' + agency + '/' + dept,
@@ -39,6 +45,9 @@
                     }
                     $('select[name="expense_category"]').removeAttr('disabled');
                     $('select[name="expense_category"]').html(html);
+                    if(expense_category_hidden){
+                        $('select[name="expense_category"]').val(expense_category_hidden);
+                    }
                 }
             }); 
         }else{

@@ -645,6 +645,13 @@ function checkbook_datafeeds_budget($form, &$form_state) {
         '#validated' => TRUE,
         '#default_value' => !empty($form_state['values']['dept']) ? $form_state['values']['dept'] : 'Select Department',
     );
+    
+    $form['dept_hidden'] = array(
+        '#title' =>  'dept_hidden',
+        '#value' => $form_state['values']['dept'],
+        '#type' => 'hidden'
+    );
+    
     $form['filter']['expense_category'] = array(
         '#type' => 'select',
         '#title' => t('Expense Category:'),
@@ -652,6 +659,12 @@ function checkbook_datafeeds_budget($form, &$form_state) {
         '#suffix' => '</div>',
         '#validated' => TRUE,
         '#default_value' => !empty($form_state['values']['expense_category']) ? $form_state['values']['expense_category'] : 'Select Expense Category',
+    );
+    
+    $form['expense_category_hidden'] = array(
+        '#title' =>  'expense_category_hidden',
+        '#value' => $form_state['values']['expense_category'],
+        '#type' => 'hidden'
     );
 
     $form['filter']['budget_code'] = array(
@@ -662,6 +675,13 @@ function checkbook_datafeeds_budget($form, &$form_state) {
         '#validated' => TRUE,
         '#default_value' => !empty($form_state['values']['budget_code']) ? $form_state['values']['budget_code'] : 'Select Budget Code',
     );
+    
+    $form['budget_code_hidden'] = array(
+        '#title' =>  'budget_code_hidden',
+        '#value' => $form_state['values']['budget_code'],
+        '#type' => 'hidden'
+    );
+    
     $form['filter']['budget_name'] = array(
         '#type' => 'select',
         '#title' => t('Budget Name:'),
@@ -670,6 +690,13 @@ function checkbook_datafeeds_budget($form, &$form_state) {
         '#validated' => TRUE,
         '#default_value' => !empty($form_state['values']['budget_name']) ? $form_state['values']['budget_name'] : 'Select Budget Name',
     );
+    
+    $form['budget_name_hidden'] = array(
+        '#title' =>  'budget_name_hidden',
+        '#value' => $form_state['values']['budget_name'],
+        '#type' => 'hidden'
+    );
+    
     $form['filter']['fiscal_year'] = array(
         '#type' => 'select',
         '#title' => t('Year:'),
