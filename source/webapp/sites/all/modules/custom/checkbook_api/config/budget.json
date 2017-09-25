@@ -13,9 +13,8 @@
             "cash_expense":"cash_expense_amount",
             "post_adjustment":"post_closing_adjustment_amount",
             "budget_code_id":"budget_code_id",
-            //logical OR columns
             "budget_code":"budget_code",
-            "budget_code_name":"budget_code_name"
+            "budget_name":"budget_code_name"
         },
         "dataset":{
             "sortColumn":["-current_budget_amount","-budget_id"],
@@ -78,8 +77,7 @@
                         "Cash Expense":"cash_expense_amount"
                     }
                 }
-            },
-            "adjustParameters":"if(function_exists('checkbook_api_adjustBudgetParameterFilters')){checkbook_api_adjustBudgetParameterFilters($data_set,$parameters,$criteria);}"
+            }
         },
         "requestParameters":{
             "year":{
@@ -97,7 +95,7 @@
                 "dataType":"text",
                 "maxLength":6
             },
-            "budget_code_name":{
+            "budget_name":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":100
