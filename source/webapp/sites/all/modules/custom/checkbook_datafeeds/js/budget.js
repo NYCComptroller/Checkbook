@@ -29,7 +29,7 @@
     
     $.fn.reloadExpenseCategory = function(){
        var agency = encodeURIComponent($('#edit-agency').val());
-       var dept = ($('#edit-dept').val()) ? encodeURIComponent($('#edit-dept').val()) : 0;
+       var dept = ($('input:hidden[name="dept_hidden"]').val()) ? encodeURIComponent( $('input:hidden[name="dept_hidden"]').val()) : 0;
        var year = ($('#edit-fiscal-year').val() === 'All Years') ? 0 : $('#edit-fiscal-year').val();
        var expense_category_hidden = $('input:hidden[name="expense_category_hidden"]').val();
        
@@ -58,10 +58,10 @@
     
     $.fn.reloadBudgetCode = function(){
        var agency = encodeURIComponent($('#edit-agency').val());
-       var dept = encodeURIComponent($('#edit-dept').val());
-       var expCategory = encodeURIComponent($('#edit-expense-category').val());
-       var budgetName = ($('#edit-budget-name').val()) ? encodeURIComponent($('#edit-budget-name').val()) : 0;
-       var budgetCode = $('#edit-budget-code').val();
+       var dept = ($('input:hidden[name="dept_hidden"]').val()) ? encodeURIComponent( $('input:hidden[name="dept_hidden"]').val()) : 0;
+       var expCategory = ($('input:hidden[name="expense_category_hidden"]').val()) ? encodeURIComponent( $('input:hidden[name="expense_category_hidden"]').val()) : 0;
+       var budgetName = ($('input:hidden[name="budget_name_hidden"]').val()) ? encodeURIComponent( $('input:hidden[name="budget_name_hidden"]').val()) : 0;
+       var budgetCode = $('input:hidden[name="budget_code_hidden"]').val();
        var year = ($('#edit-fiscal-year').val() === 'All Years') ? 0 : $('#edit-fiscal-year').val();
        
        $.ajax({
@@ -82,10 +82,10 @@
     
     $.fn.reloadBudgetName = function(){
        var agency = encodeURIComponent($('#edit-agency').val());
-       var dept = encodeURIComponent($('#edit-dept').val());
-       var expCategory = encodeURIComponent($('#edit-expense-category').val());
-       var budgetCode = ($('#edit-budget-code').val()) ? $('#edit-budget-code').val() : 0;
-       var budgetName = ($('#edit-budget-name').val() === "") ? 0 : $('#edit-budget-name').val();
+       var dept = ($('input:hidden[name="dept_hidden"]').val()) ? encodeURIComponent( $('input:hidden[name="dept_hidden"]').val()) : 0;
+       var expCategory = ($('input:hidden[name="expense_category_hidden"]').val()) ? encodeURIComponent( $('input:hidden[name="expense_category_hidden"]').val()) : 0;
+       var budgetCode = ($('input:hidden[name="budget_code_hidden"]').val()) ? $('input:hidden[name="budget_code_hidden"]').val() : 0;
+       var budgetName = ($('input:hidden[name="budget_name_hidden"]').val() === "") ? 0 : $('input:hidden[name="budget_name_hidden"]').val();
        var year = ($('#edit-fiscal-year').val() === 'All Years') ? 0 : $('#edit-fiscal-year').val();
        $.ajax({
             url: '/datafeeds/budget/budgetname/' + year + '/' + agency + '/' + dept + '/' + expCategory + '/' + budgetCode,
@@ -118,6 +118,10 @@
             $.fn.reloadBudgetName();
             
             $('#edit-agency', context).change(function () {
+                $('input:hidden[name="dept_hidden"]', context).val("");
+                $('input:hidden[name="expense_category_hidden"]', context).val("");
+                $('input:hidden[name="budget_code_hidden"]', context).val($('#edit-budget-code', context).val());
+                $('input:hidden[name="budget_name_hidden"]', context).val($('#edit-budget-name', context).val());
                 $.fn.reloadDepartment();
                 $.fn.reloadExpenseCategory();
                 $.fn.reloadBudgetCode();
@@ -125,25 +129,38 @@
             });
             
             $('#edit-dept', context).change(function () {
+                $('input:hidden[name="dept_hidden"]', context).val($('#edit-dept', context).val());
+                $('input:hidden[name="expense_category_hidden"]', context).val("");
+                $('input:hidden[name="budget_code_hidden"]', context).val($('#edit-budget-code', context).val());
+                $('input:hidden[name="budget_name_hidden"]', context).val($('#edit-budget-name', context).val());
                 $.fn.reloadExpenseCategory();
                 $.fn.reloadBudgetCode();
                 $.fn.reloadBudgetName();
             });
             
             $('#edit-expense-category', context).change(function () {
+                $('input:hidden[name="expense_category_hidden"]', context).val($('#edit-expense-category', context).val());
+                $('input:hidden[name="budget_code_hidden"]', context).val($('#edit-budget-code', context).val());
+                $('input:hidden[name="budget_name_hidden"]', context).val($('#edit-budget-name', context).val());
                 $.fn.reloadBudgetCode();
                 $.fn.reloadBudgetName();
             });
             
             $('#edit-budget-code', context).change(function () {
+                $('input:hidden[name="budget_code_hidden"]', context).val($('#edit-budget-code', context).val());
+                $('input:hidden[name="budget_name_hidden"]', context).val($('#edit-budget-name', context).val());
                 $.fn.reloadBudgetName();
             });
             
             $('#edit-budget-name', context).change(function () {
+                $('input:hidden[name="budget_name_hidden"]', context).val($('#edit-budget-name', context).val());
+                $('input:hidden[name="budget_name_hidden"]', context).val($('#edit-budget-name', context).val());
                 $.fn.reloadBudgetCode();
             });
             
             $('#edit-fiscal-year', context).change(function () {
+                $('input:hidden[name="budget_code_hidden"]', context).val($('#edit-budget-code', context).val());
+                $('input:hidden[name="budget_name_hidden"]', context).val($('#edit-budget-name', context).val());
                 $.fn.reloadBudgetCode();
                 $.fn.reloadBudgetName();
             });
