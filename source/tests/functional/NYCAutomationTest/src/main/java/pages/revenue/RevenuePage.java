@@ -165,6 +165,15 @@ public class RevenuePage {
 		return amount.substring(0,7);
 		//return Helper.billionStringToFloat(count);
 	}
+	public static String GetTransactionAmount() {
+		WebDriverWait wait = new WebDriverWait(Driver.Instance, 20);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("total-spending-amount")));
+		String amount = (Driver.Instance.findElement(By.className("total-spending-amount"))).getText();	
+		//System.out.println(Helper.billionStringToFloat(count));
+		return amount.substring(0,8);
+		//return Helper.billionStringToFloat(count);
+	}
+
 	
 	///widget visualization titles   
 	public static ArrayList<String> RevenueVisualizationTitles() {

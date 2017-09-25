@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -124,6 +125,7 @@ public class SpendingPage {
     				break;
     		}
     		WebElement detailsAnchor = detailsContainer.findElement(By.partialLinkText("Details"));
+    		((JavascriptExecutor) Driver.Instance).executeScript("arguments[0].scrollIntoView(true);", detailsAnchor);
     		detailsAnchor.click();	
     		Driver.Instance.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
     	}

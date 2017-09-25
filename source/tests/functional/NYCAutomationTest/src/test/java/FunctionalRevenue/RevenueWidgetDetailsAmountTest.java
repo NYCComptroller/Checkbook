@@ -37,12 +37,12 @@ public class RevenueWidgetDetailsAmountTest extends NYCBaseTest {
 	
 	 
 	@Test
-	public void VerifyRevenueTransactionAmount() throws SQLException {
+	public void VerifyRevenueAgenciesTransactionAmount() throws SQLException {
 		//Float transactionAmt = 26.3f;
 		RevenuePage.GoToTop5DetailsPage(WidgetOption.Top5Agencies);
 		HomePage.ShowWidgetDetails();
 	//assertTrue(HomePage.GetTransactionAmount1()== transactionAmt);
-		String NumOfRevenueDetailsAmount2016 =  NYCDatabaseUtil.getRevenueDetailsAmount(2016,'B');
+		String NumOfRevenueDetailsAmount2016 =  NYCDatabaseUtil.getRevenuecrossYearCollectionsDetailsAmount(2016,'B');
 		String numOfRevenueDetailsAmountapp = RevenuePage.GetTransactionAmount1();
 		System.out.println( RevenuePage.GetTransactionAmount1()); 
 	assertEquals("Number ofRevenue widget Details page table count did not match", numOfRevenueDetailsAmountapp, NumOfRevenueDetailsAmount2016); 
@@ -79,7 +79,7 @@ public class RevenueWidgetDetailsAmountTest extends NYCBaseTest {
 		RevenuePage.GoToTop5DetailsPage(WidgetOption.Top5AgenciesbyCrossYearCollections);
 		HomePage.ShowWidgetDetails();
 	//assertTrue(HomePage.GetTransactionAmount1()== transactionAmt);
-		String NumOfRevenueDetailsAmount2016 =  NYCDatabaseUtil.getRevenueDetailsAmount(2016,'B');
+		String NumOfRevenueDetailsAmount2016 =  NYCDatabaseUtil.getRevenuecrossYearCollectionsDetailsAmount(2016,'B');
 		String numOfRevenueDetailsAmountapp = RevenuePage.GetTransactionAmount1();
 		System.out.println( RevenuePage.GetTransactionAmount1()); 
 	assertEquals("Number ofRevenue widget Details page table count did not match", numOfRevenueDetailsAmountapp, NumOfRevenueDetailsAmount2016); 
@@ -91,7 +91,7 @@ public class RevenueWidgetDetailsAmountTest extends NYCBaseTest {
 		RevenuePage.GoToTop5DetailsPage(WidgetOption.Top5RevenueCategoriesbyCrossYearCollections);
 		HomePage.ShowWidgetDetails();
 	//assertTrue(HomePage.GetTransactionAmount1()== transactionAmt);
-		String NumOfRevenueDetailsAmount2016 =  NYCDatabaseUtil.getRevenueDetailsAmount(2016,'B');
+		String NumOfRevenueDetailsAmount2016 =  NYCDatabaseUtil.getRevenuecrossYearCollectionsDetailsAmount(2016,'B');
 		String numOfRevenueDetailsAmountapp = RevenuePage.GetTransactionAmount1();
 		System.out.println( RevenuePage.GetTransactionAmount1()); 
 	assertEquals("Number ofRevenue widget Details page table count did not match", numOfRevenueDetailsAmountapp, NumOfRevenueDetailsAmount2016); 
@@ -99,13 +99,24 @@ public class RevenueWidgetDetailsAmountTest extends NYCBaseTest {
 	
 	@Test
 	public void VerifyRevenueFundingclassesCrossYearCollectionsTransactionAmount() throws SQLException {
-		//Float transactionAmt = 26.3f;
+		String transactionAmt = "-$47.08M";
 		RevenuePage.GoToTop5DetailsPage(WidgetOption.RevenuebyFundingClassesbyCrossYearCollections);
 		HomePage.ShowWidgetDetails();
 	//assertTrue(HomePage.GetTransactionAmount1()== transactionAmt);
-		String NumOfRevenueDetailsAmount2016 =  NYCDatabaseUtil.getRevenueDetailsAmount(2016,'B');
-		String numOfRevenueDetailsAmountapp = RevenuePage.GetTransactionAmount1();
-		System.out.println( RevenuePage.GetTransactionAmount1()); 
-	assertEquals("Number ofRevenue widget Details page table count did not match", numOfRevenueDetailsAmountapp, NumOfRevenueDetailsAmount2016);
-}
+		String NumOfRevenueDetailsAmount2016 =  NYCDatabaseUtil.getRevenuecrossYearCollectionsDetailsAmount(2016,'B');
+		String numOfRevenueDetailsAmountapp = RevenuePage.GetTransactionAmount();
+		System.out.println( RevenuePage.GetTransactionAmount());
+		
+		//System.out.println( withSuffix(NumOfRevenueDetailsAmount2016));
+		assertEquals("Number ofRevenue widget Details page table count did not match", numOfRevenueDetailsAmountapp, NumOfRevenueDetailsAmount2016);
+		//assertEquals("Number ofRevenue widget Details page table count did not match", transactionAmt, numOfRevenueDetailsAmountapp);
+	}
+	
+	public static String withSuffix(long count) {
+	    if (count < 1000) return "" + count;
+	    int exp = (int) (Math.log(count) / Math.log(1000));
+	    return String.format("%.1f %c",
+	                         count / Math.pow(1000, exp),
+	                         "kMGTPE".charAt(exp-1));
+	}
 }

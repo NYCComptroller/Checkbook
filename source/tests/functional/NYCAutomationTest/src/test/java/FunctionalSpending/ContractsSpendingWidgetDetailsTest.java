@@ -8,7 +8,8 @@ import java.sql.SQLException;
 import org.junit.Before;
 import org.junit.Test;
 
-import navigation.TopNavigation.Spending.TotalSpending;
+import navigation.TopNavigation.Spending.ContractSpending;
+import pages.spending.ContractSpendingPage;
 import pages.spending.SpendingPage;
 import pages.spending.TotalSpendingPage;
 import pages.spending.SpendingPage.WidgetOption;
@@ -24,8 +25,8 @@ public class ContractsSpendingWidgetDetailsTest extends NYCBaseTest {
 	@Before
 	public void GoToPage(){
 		//SpendingPage.GoTo();
-		if (!TotalSpending.isAt()){
-			TotalSpendingPage.GoTo();
+		if (!ContractSpending.isAt()){
+			ContractSpendingPage.GoTo();
 		}
 		if(!(Helper.getCurrentSelectedYear()).equalsIgnoreCase(NYCBaseTest.prop.getProperty("CurrentYear")))
 			HomePage.SelectYear(NYCBaseTest.prop.getProperty("CurrentYear"));
@@ -49,7 +50,7 @@ public class ContractsSpendingWidgetDetailsTest extends NYCBaseTest {
 		SpendingPage.GoToTop5DetailsPage(WidgetOption.Top5Checks);
 		int year = 2016;
 		Integer totalCheckswidgetCountFY2016 = NYCDatabaseUtil.getTotalSpendingDetailsCount(year,'B');
-		Integer totalChecksWidgetCountApp = SpendingPage.GetTransactionCount();
+		Integer totalChecksWidgetCountApp = ContractSpendingPage.GetTransactionCount();
 		assertEquals("Number of Checks  widget count  did not match with the DB",totalChecksWidgetCountApp, totalCheckswidgetCountFY2016);
 	}
 /*	@Test

@@ -179,7 +179,7 @@ public class NYCDatabaseUtil {
 
         return "$" + formattedNum + moneyChar;
     }
-
+  
     public static String getSpendingAmount(int year, char yearTypeVal) throws SQLException {
         query = "SELECT SUM(check_amount) sumSpendingAmt "
                 + "FROM disbursement_line_item_details"
@@ -247,10 +247,26 @@ public class NYCDatabaseUtil {
         return formatNumber(totalRevenueAmount);
     }
     
-    public static String getRevenueDetailsAmount(int year, char yearTypeVal) throws SQLException {
+    public static String getRevenuecrossYearCollectionsDetailsAmount(int year, char yearTypeVal) throws SQLException {
         query = "SELECT SUM(posting_amount) sumRevenueAmt "
                 + "FROM revenue where fiscal_year = '2018' and "
                 + "  budget_fiscal_year = " + year;
+
+
+        rs = amountQueryHelper(yearTypeVal);
+
+        BigDecimal totalRevenueAmount = new BigDecimal(0);
+
+        while (rs.next()) {
+            totalRevenueAmount = rs.getBigDecimal("sumRevenueAmt");
+        }
+        return formatNumber2(totalRevenueAmount);
+    }
+    
+    public static String getRevenueDetailsAmount(int year, char yearTypeVal) throws SQLException {
+    	 query = "SELECT SUM(posting_amount) sumRevenueAmt "
+                 + "FROM revenue"
+                 + " WHERE budget_fiscal_year = " + year;
 
 
         rs = amountQueryHelper(yearTypeVal);
@@ -318,7 +334,7 @@ public class NYCDatabaseUtil {
             return count;
             
         }
-        public static int getRevenueCrossYearColectionsDetailsAmount(int year, char yearTypeVal) throws SQLException {
+        public static int getRevenueCrossYearColectionsDetailsCount(int year, char yearTypeVal) throws SQLException {
             query = "SELECT COUNT(*) aCount " +
                     "FROM  revenue where budget_fiscal_year= " + year ;
 
