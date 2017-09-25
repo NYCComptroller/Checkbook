@@ -10,14 +10,14 @@ import navigation.TopNavigation.Spending.ContractSpending;
 import pages.spending.SpendingPage;
 import pages.home.HomePage;
 
-public class ContractSpendingPage {
+public class OtherSpendingPage {
 
     public static void GoTo() {
-    	navigation.TopNavigation.Spending.ContractSpending.Select();
+    	navigation.TopNavigation.Spending.OtherSpending.Select();
     }
     
     public static boolean isAt() {
-        return navigation.TopNavigation.Spending.ContractSpending.isAt();
+        return navigation.TopNavigation.Spending.OtherSpending.isAt();
     }
 
 	public static int GetNumberOfAgencies() {

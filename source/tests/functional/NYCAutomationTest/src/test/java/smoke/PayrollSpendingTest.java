@@ -15,7 +15,8 @@ import pages.spending.PayrollSpendingPage;
 import utilities.NYCBaseTest;
 import utilities.TestStatusReport;
 
-public class PayrollSpendingTest extends TestStatusReport{
+//public class PayrollSpendingTest extends TestStatusReport{
+	public class PayrollSpendingTest extends NYCBaseTest {
 	@Before
     public void GoToPage(){
 	   if (!PayrollSpendingPage.isAt()){

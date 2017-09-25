@@ -3,6 +3,7 @@ package pages.contracts;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import navigation.TopNavigation;
 import pages.home.HomePage;
@@ -127,6 +128,7 @@ public class ContractsPage {
 				break;
 		}
 		WebElement detailsAnchor = detailsContainer.findElement(By.partialLinkText("Details"));
+		((JavascriptExecutor) Driver.Instance).executeScript("arguments[0].scrollIntoView(true);", detailsAnchor);
 		detailsAnchor.click();	
 		Driver.Instance.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 	}

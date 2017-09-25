@@ -8,9 +8,9 @@ import java.sql.SQLException;
 import org.junit.Before;
 import org.junit.Test;
 
-
+import navigation.TopNavigation.Contracts.ActiveExpenseContracts;
 import navigation.TopNavigation.Contracts.PendingExpenseContracts;
-
+import pages.contracts.ActiveExpenseContractsPage;
 import pages.contracts.ContractsPage;
 import pages.contracts.PendingExpenseContractsPage;
 import pages.contracts.PendingRevenueContractsPage;
@@ -20,17 +20,23 @@ import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
 import helpers.Helper;
 import utilities.TestStatusReport;
-public class PendingExpenseContractsTest  extends TestStatusReport{
+//public class PendingExpenseContractsTest  extends TestStatusReport{
 
-//public class PendingExpenseContractsTest extends NYCBaseTest {
+public class PendingExpenseContractsTest extends NYCBaseTest {
 	
+
 	
+
 	@Before
-    public void GoToPage() {
-	   if (!PendingExpenseContracts.isAt())		
-	   PendingExpenseContractsPage.GoTo();
-	   HomePage.ShowWidgetDetails();  
-    }
+	public void GoToPage() {
+			  if (!PendingExpenseContracts.isAt())	{
+			   PendingExpenseContractsPage.GoTo();
+		  }		
+		if (!(Helper.getCurrentSelectedYear())
+				.equalsIgnoreCase(NYCBaseTest.prop.getProperty("CurrentYear")))
+			HomePage.SelectYear(NYCBaseTest.prop.getProperty("CurrentYear"));
+		HomePage.ShowWidgetDetails();
+	}
 	
 	/* ***************** Test Widget Counts ****************** */
 	@Test

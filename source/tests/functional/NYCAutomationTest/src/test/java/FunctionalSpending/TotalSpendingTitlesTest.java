@@ -53,13 +53,7 @@ public class TotalSpendingTitlesTest extends NYCBaseTest{
 	    						"Top 5 Contracts",
 	    						"Top 5 Agencies"}; 
 	    							    						 
-		//System.out.println( SpendingPage.GetAllWidgetText()); 
-	//	 String widgetTitle = "Top 5 Checks";
-//	assertEquals("Top 5 Checks", SpendingPage.GetWidgetText());
-	//System.out.println( SpendingPage.GetAllWidgetText()); 
-	//assertEquals("Top 5 Agencies", SpendingPage.GetWidgetText());
-		//assertEquals(widgetTitles,SpendingPage.GetWidgetText());
-	   System.out.println( SpendingPage.WidgetTitles()); 		
+		   System.out.println( SpendingPage.WidgetTitles()); 		
     	//HomePage.ShowWidgetDetails();
     	assertTrue(Arrays.equals(widgetTitles, SpendingPage.WidgetTitles().toArray()));
     	

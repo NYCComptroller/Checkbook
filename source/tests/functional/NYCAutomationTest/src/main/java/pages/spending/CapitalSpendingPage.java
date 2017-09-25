@@ -6,18 +6,18 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import helpers.Driver;
 import helpers.Helper;
-import navigation.TopNavigation.Spending.ContractSpending;
+import navigation.TopNavigation.Spending.CapitalSpending;
 import pages.spending.SpendingPage;
 import pages.home.HomePage;
 
-public class ContractSpendingPage {
+public class CapitalSpendingPage {
 
     public static void GoTo() {
-    	navigation.TopNavigation.Spending.ContractSpending.Select();
+    	navigation.TopNavigation.Spending.CapitalSpending.Select();
     }
     
     public static boolean isAt() {
-        return navigation.TopNavigation.Spending.ContractSpending.isAt();
+        return navigation.TopNavigation.Spending.CapitalSpending.isAt();
     }
 
 	public static int GetNumberOfAgencies() {
