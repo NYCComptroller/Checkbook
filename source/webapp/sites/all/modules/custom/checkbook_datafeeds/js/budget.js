@@ -56,11 +56,13 @@
         }
     }
     
+    
     $.fn.reloadBudgetCode = function(){
        var agency = encodeURIComponent($('#edit-agency').val());
        var dept = ($('input:hidden[name="dept_hidden"]').val()) ? encodeURIComponent( $('input:hidden[name="dept_hidden"]').val()) : 0;
        var expCategory = ($('input:hidden[name="expense_category_hidden"]').val()) ? encodeURIComponent( $('input:hidden[name="expense_category_hidden"]').val()) : 0;
-       var budgetName = ($('input:hidden[name="budget_name_hidden"]').val()) ? encodeURIComponent( $('input:hidden[name="budget_name_hidden"]').val()) : 0;
+       var budgetName = ($('input:hidden[name="budget_name_hidden"]').val()) ? $('input:hidden[name="budget_name_hidden"]').val() : 0;
+       budgetName =  encodeURIComponent(budgetName.toString().replace(/\//g, '__'));
        var budgetCode = $('input:hidden[name="budget_code_hidden"]').val();
        var year = ($('#edit-fiscal-year').val() === 'All Years') ? 0 : $('#edit-fiscal-year').val();
        
