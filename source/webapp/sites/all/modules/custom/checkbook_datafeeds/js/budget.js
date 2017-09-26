@@ -112,6 +112,9 @@
                 no_results_text: "No matches found",
             });
             
+            $('#edit_budget_code_chosen .chosen-search-input', context).attr("placeholder", "Search Budget Code");
+            $('#edit_budget_name_chosen .chosen-search-input', context).attr("placeholder", "Search Budget Name");
+            
             $.fn.reloadDepartment();
             $.fn.reloadExpenseCategory();
             $.fn.reloadBudgetCode();
