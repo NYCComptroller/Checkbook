@@ -79,7 +79,7 @@
                 $('select[name="budget_code"]').val(budgetCode);
                 $('select[name="budget_code"]').trigger("chosen:updated");
             }
-        }); 
+        });
     }
     
     $.fn.reloadBudgetName = function(){
@@ -93,16 +93,24 @@
             url: '/datafeeds/budget/budgetname/' + year + '/' + agency + '/' + dept + '/' + expCategory + '/' + budgetCode,
             success: function(data) {
                 var html = '<option value="" >Select Budget Name</option>';
+                var exists = false;
                 if(data[0]){
                     for (i = 0; i < data.length; i++) {
+                        if(budgetName == data[i])
+                            exists = true;
                         html = html + '<option value="' + data[i] + ' ">' + data[i]  + '</option>';
                     }
                 }
                 $('select[name="budget_name"]').html(html);
                 $('select[name="budget_name"]').val(budgetName);
                 $('select[name="budget_name"]').trigger("chosen:updated");
+                
+                if(!exists){
+                    $('input:hidden[name="budget_name_hidden"]').val('');
+                    $.fn.reloadBudgetCode();
+                }
             }
-        }); 
+        });
     }
 
     Drupal.behaviors.budgetDataFeeds = {
@@ -158,7 +166,7 @@
             });
             
             $('#edit-budget-name', context).change(function () {
-                $('input:hidden[name="budget_name_hidden"]', context).val($('#edit-budget-name', context).val());
+                $('input:hidden[name="budget_code_hidden"]', context).val($('#edit-budgetcode', context).val());
                 $('input:hidden[name="budget_name_hidden"]', context).val($('#edit-budget-name', context).val());
                 $.fn.reloadBudgetCode();
             });
