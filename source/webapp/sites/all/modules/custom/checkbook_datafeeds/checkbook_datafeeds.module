@@ -6414,6 +6414,7 @@ function _budget_code_options($year, $agency, $dept, $exp_cat, $budget_code_name
         $expstring = " AND object_class_code = '" . $exp_cat . "' ";
     }
     if($budget_code_name){
+        $budget_code_name = str_replace('__','/',$budget_code_name);
         $budget_code_name_string = " AND budget_code_name = '" . addslashes(trim(urldecode($budget_code_name))) . "' ";
     }
     $query = "SELECT DISTINCT budget_code FROM budget WHERE"
