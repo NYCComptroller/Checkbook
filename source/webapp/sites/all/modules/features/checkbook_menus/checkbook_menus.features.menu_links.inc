@@ -10,10 +10,10 @@
 function checkbook_menus_menu_default_menu_links() {
   $menu_links = array();
 
-  // Exported menu link: menu-bureaus:http://www.comptroller.nyc.gov/bureaus/
-  $menu_links['menu-bureaus:http://www.comptroller.nyc.gov/bureaus/'] = array(
+  // Exported menu link: menu-bureaus:https://comptroller.nyc.gov/bureaus/
+  $menu_links['menu-bureaus:https://comptroller.nyc.gov/bureaus/'] = array(
     'menu_name' => 'menu-bureaus',
-    'link_path' => 'http://www.comptroller.nyc.gov/bureaus/',
+    'link_path' => 'https://comptroller.nyc.gov/bureaus/',
     'router_path' => '',
     'link_title' => 'Bureaus',
     'options' => array(
@@ -28,10 +28,10 @@ function checkbook_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-50',
   );
-  // Exported menu link: menu-bureaus:http://www.comptroller.nyc.gov/bureaus/acc/
-  $menu_links['menu-bureaus:http://www.comptroller.nyc.gov/bureaus/acc/'] = array(
+  // Exported menu link: menu-bureaus:https://comptroller.nyc.gov/bureaus/acc/
+  $menu_links['menu-bureaus:https://comptroller.nyc.gov/bureaus/acc/'] = array(
     'menu_name' => 'menu-bureaus',
-    'link_path' => 'http://www.comptroller.nyc.gov/bureaus/acc/',
+    'link_path' => 'https://comptroller.nyc.gov/bureaus/acc/',
     'router_path' => '',
     'link_title' => 'Accountancy',
     'options' => array(
@@ -46,10 +46,10 @@ function checkbook_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-49',
   );
-  // Exported menu link: menu-bureaus:http://www.comptroller.nyc.gov/bureaus/adm/
-  $menu_links['menu-bureaus:http://www.comptroller.nyc.gov/bureaus/adm/'] = array(
+  // Exported menu link: menu-bureaus:https://comptroller.nyc.gov/bureaus/adm/
+  $menu_links['menu-bureaus:https://comptroller.nyc.gov/bureaus/adm/'] = array(
     'menu_name' => 'menu-bureaus',
-    'link_path' => 'http://www.comptroller.nyc.gov/bureaus/adm/',
+    'link_path' => 'https://comptroller.nyc.gov/bureaus/adm/',
     'router_path' => '',
     'link_title' => 'Administration',
     'options' => array(
@@ -64,10 +64,10 @@ function checkbook_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-48',
   );
-  // Exported menu link: menu-bureaus:http://www.comptroller.nyc.gov/bureaus/audit/
-  $menu_links['menu-bureaus:http://www.comptroller.nyc.gov/bureaus/audit/'] = array(
+  // Exported menu link: menu-bureaus:https://comptroller.nyc.gov/bureaus/audit/
+  $menu_links['menu-bureaus:https://comptroller.nyc.gov/bureaus/audit/'] = array(
     'menu_name' => 'menu-bureaus',
-    'link_path' => 'http://www.comptroller.nyc.gov/bureaus/audit/',
+    'link_path' => 'https://comptroller.nyc.gov/bureaus/audit/',
     'router_path' => '',
     'link_title' => 'Audit',
     'options' => array(
@@ -82,10 +82,10 @@ function checkbook_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-46',
   );
-  // Exported menu link: menu-bureaus:http://www.comptroller.nyc.gov/bureaus/bam/
-  $menu_links['menu-bureaus:http://www.comptroller.nyc.gov/bureaus/bam/'] = array(
+  // Exported menu link: menu-bureaus:https://comptroller.nyc.gov/bureaus/bam/
+  $menu_links['menu-bureaus:https://comptroller.nyc.gov/bureaus/bam/'] = array(
     'menu_name' => 'menu-bureaus',
-    'link_path' => 'http://www.comptroller.nyc.gov/bureaus/bam/',
+    'link_path' => 'https://comptroller.nyc.gov/bureaus/bam/',
     'router_path' => '',
     'link_title' => 'Asset Management',
     'options' => array(
@@ -100,10 +100,10 @@ function checkbook_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-47',
   );
-  // Exported menu link: menu-bureaus:http://www.comptroller.nyc.gov/bureaus/bis/
-  $menu_links['menu-bureaus:http://www.comptroller.nyc.gov/bureaus/bis/'] = array(
+  // Exported menu link: menu-bureaus:https://comptroller.nyc.gov/bureaus/bis/
+  $menu_links['menu-bureaus:https://comptroller.nyc.gov/bureaus/bis/'] = array(
     'menu_name' => 'menu-bureaus',
-    'link_path' => 'http://www.comptroller.nyc.gov/bureaus/bis/',
+    'link_path' => 'https://comptroller.nyc.gov/bureaus/bis/',
     'router_path' => '',
     'link_title' => 'Information Systems',
     'options' => array(
@@ -118,10 +118,10 @@ function checkbook_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-39',
   );
-  // Exported menu link: menu-bureaus:http://www.comptroller.nyc.gov/bureaus/bla/
-  $menu_links['menu-bureaus:http://www.comptroller.nyc.gov/bureaus/bla/'] = array(
+  // Exported menu link: menu-bureaus:https://comptroller.nyc.gov/bureaus/bla/
+  $menu_links['menu-bureaus:https://comptroller.nyc.gov/bureaus/bla/'] = array(
     'menu_name' => 'menu-bureaus',
-    'link_path' => 'http://www.comptroller.nyc.gov/bureaus/bla/',
+    'link_path' => 'https://comptroller.nyc.gov/bureaus/bla/',
     'router_path' => '',
     'link_title' => 'Law & Adjustment',
     'options' => array(
@@ -136,10 +136,10 @@ function checkbook_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-36',
   );
-  // Exported menu link: menu-bureaus:http://www.comptroller.nyc.gov/bureaus/bll/
-  $menu_links['menu-bureaus:http://www.comptroller.nyc.gov/bureaus/bll/'] = array(
+  // Exported menu link: menu-bureaus:https://comptroller.nyc.gov/bureaus/bll/
+  $menu_links['menu-bureaus:https://comptroller.nyc.gov/bureaus/bll/'] = array(
     'menu_name' => 'menu-bureaus',
-    'link_path' => 'http://www.comptroller.nyc.gov/bureaus/bll/',
+    'link_path' => 'https://comptroller.nyc.gov/bureaus/bll/',
     'router_path' => '',
     'link_title' => 'Labor Law',
     'options' => array(
@@ -154,10 +154,10 @@ function checkbook_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-37',
   );
-  // Exported menu link: menu-bureaus:http://www.comptroller.nyc.gov/bureaus/bud/
-  $menu_links['menu-bureaus:http://www.comptroller.nyc.gov/bureaus/bud/'] = array(
+  // Exported menu link: menu-bureaus:https://comptroller.nyc.gov/bureaus/bud/
+  $menu_links['menu-bureaus:https://comptroller.nyc.gov/bureaus/bud/'] = array(
     'menu_name' => 'menu-bureaus',
-    'link_path' => 'http://www.comptroller.nyc.gov/bureaus/bud/',
+    'link_path' => 'https://comptroller.nyc.gov/bureaus/bud/',
     'router_path' => '',
     'link_title' => 'Budget',
     'options' => array(
@@ -172,10 +172,10 @@ function checkbook_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-45',
   );
-  // Exported menu link: menu-bureaus:http://www.comptroller.nyc.gov/bureaus/cac/
-  $menu_links['menu-bureaus:http://www.comptroller.nyc.gov/bureaus/cac/'] = array(
+  // Exported menu link: menu-bureaus:https://comptroller.nyc.gov/bureaus/cac/
+  $menu_links['menu-bureaus:https://comptroller.nyc.gov/bureaus/cac/'] = array(
     'menu_name' => 'menu-bureaus',
-    'link_path' => 'http://www.comptroller.nyc.gov/bureaus/cac/',
+    'link_path' => 'https://comptroller.nyc.gov/bureaus/cac/',
     'router_path' => '',
     'link_title' => 'Community Action Center',
     'options' => array(
@@ -190,10 +190,10 @@ function checkbook_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-43',
   );
-  // Exported menu link: menu-bureaus:http://www.comptroller.nyc.gov/bureaus/cb/
-  $menu_links['menu-bureaus:http://www.comptroller.nyc.gov/bureaus/cb/'] = array(
+  // Exported menu link: menu-bureaus:https://comptroller.nyc.gov/bureaus/cb/
+  $menu_links['menu-bureaus:https://comptroller.nyc.gov/bureaus/cb/'] = array(
     'menu_name' => 'menu-bureaus',
-    'link_path' => 'http://www.comptroller.nyc.gov/bureaus/cb/',
+    'link_path' => 'https://comptroller.nyc.gov/bureaus/cb/',
     'router_path' => '',
     'link_title' => 'Commercial Banking',
     'options' => array(
@@ -208,10 +208,10 @@ function checkbook_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-44',
   );
-  // Exported menu link: menu-bureaus:http://www.comptroller.nyc.gov/bureaus/eng/
-  $menu_links['menu-bureaus:http://www.comptroller.nyc.gov/bureaus/eng/'] = array(
+  // Exported menu link: menu-bureaus:https://comptroller.nyc.gov/bureaus/eng/
+  $menu_links['menu-bureaus:https://comptroller.nyc.gov/bureaus/eng/'] = array(
     'menu_name' => 'menu-bureaus',
-    'link_path' => 'http://www.comptroller.nyc.gov/bureaus/eng/',
+    'link_path' => 'https://comptroller.nyc.gov/bureaus/eng/',
     'router_path' => '',
     'link_title' => 'Engineering',
     'options' => array(
@@ -226,10 +226,10 @@ function checkbook_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-40',
   );
-  // Exported menu link: menu-bureaus:http://www.comptroller.nyc.gov/bureaus/igr/
-  $menu_links['menu-bureaus:http://www.comptroller.nyc.gov/bureaus/igr/'] = array(
+  // Exported menu link: menu-bureaus:https://comptroller.nyc.gov/bureaus/igr/
+  $menu_links['menu-bureaus:https://comptroller.nyc.gov/bureaus/igr/'] = array(
     'menu_name' => 'menu-bureaus',
-    'link_path' => 'http://www.comptroller.nyc.gov/bureaus/igr/',
+    'link_path' => 'https://comptroller.nyc.gov/bureaus/igr/',
     'router_path' => '',
     'link_title' => 'Intergovernmental Relations',
     'options' => array(
@@ -244,10 +244,10 @@ function checkbook_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-38',
   );
-  // Exported menu link: menu-bureaus:http://www.comptroller.nyc.gov/bureaus/oca/
-  $menu_links['menu-bureaus:http://www.comptroller.nyc.gov/bureaus/oca/'] = array(
+  // Exported menu link: menu-bureaus:https://comptroller.nyc.gov/bureaus/oca/
+  $menu_links['menu-bureaus:https://comptroller.nyc.gov/bureaus/oca/'] = array(
     'menu_name' => 'menu-bureaus',
-    'link_path' => 'http://www.comptroller.nyc.gov/bureaus/oca/',
+    'link_path' => 'https://comptroller.nyc.gov/bureaus/oca/',
     'router_path' => '',
     'link_title' => 'Contract Administration',
     'options' => array(
@@ -262,10 +262,10 @@ function checkbook_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-41',
   );
-  // Exported menu link: menu-bureaus:http://www.comptroller.nyc.gov/bureaus/ocr/
-  $menu_links['menu-bureaus:http://www.comptroller.nyc.gov/bureaus/ocr/'] = array(
+  // Exported menu link: menu-bureaus:https://comptroller.nyc.gov/bureaus/ocr/
+  $menu_links['menu-bureaus:https://comptroller.nyc.gov/bureaus/ocr/'] = array(
     'menu_name' => 'menu-bureaus',
-    'link_path' => 'http://www.comptroller.nyc.gov/bureaus/ocr/',
+    'link_path' => 'https://comptroller.nyc.gov/bureaus/ocr/',
     'router_path' => '',
     'link_title' => 'Community Relations',
     'options' => array(
@@ -280,10 +280,10 @@ function checkbook_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-42',
   );
-  // Exported menu link: menu-bureaus:http://www.comptroller.nyc.gov/bureaus/opm/
-  $menu_links['menu-bureaus:http://www.comptroller.nyc.gov/bureaus/opm/'] = array(
+  // Exported menu link: menu-bureaus:https://comptroller.nyc.gov/bureaus/opm/
+  $menu_links['menu-bureaus:https://comptroller.nyc.gov/bureaus/opm/'] = array(
     'menu_name' => 'menu-bureaus',
-    'link_path' => 'http://www.comptroller.nyc.gov/bureaus/opm/',
+    'link_path' => 'https://comptroller.nyc.gov/bureaus/opm/',
     'router_path' => '',
     'link_title' => 'Policy Management',
     'options' => array(
@@ -298,10 +298,10 @@ function checkbook_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-34',
   );
-  // Exported menu link: menu-bureaus:http://www.comptroller.nyc.gov/bureaus/pf/
-  $menu_links['menu-bureaus:http://www.comptroller.nyc.gov/bureaus/pf/'] = array(
+  // Exported menu link: menu-bureaus:https://comptroller.nyc.gov/bureaus/pf/
+  $menu_links['menu-bureaus:https://comptroller.nyc.gov/bureaus/pf/'] = array(
     'menu_name' => 'menu-bureaus',
-    'link_path' => 'http://www.comptroller.nyc.gov/bureaus/pf/',
+    'link_path' => 'https://comptroller.nyc.gov/bureaus/pf/',
     'router_path' => '',
     'link_title' => 'Public Finance',
     'options' => array(
@@ -316,10 +316,10 @@ function checkbook_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-32',
   );
-  // Exported menu link: menu-bureaus:http://www.comptroller.nyc.gov/bureaus/pla/events.shtm
-  $menu_links['menu-bureaus:http://www.comptroller.nyc.gov/bureaus/pla/events.shtm'] = array(
+  // Exported menu link: menu-bureaus:https://comptroller.nyc.gov/bureaus/pla/events.shtm
+  $menu_links['menu-bureaus:https://comptroller.nyc.gov/bureaus/pla/events.shtm'] = array(
     'menu_name' => 'menu-bureaus',
-    'link_path' => 'http://www.comptroller.nyc.gov/bureaus/pla/events.shtm',
+    'link_path' => 'https://comptroller.nyc.gov/bureaus/pla/events.shtm',
     'router_path' => '',
     'link_title' => 'Planning',
     'options' => array(
@@ -334,10 +334,10 @@ function checkbook_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-35',
   );
-  // Exported menu link: menu-bureaus:http://www.comptroller.nyc.gov/press/
-  $menu_links['menu-bureaus:http://www.comptroller.nyc.gov/press/'] = array(
+  // Exported menu link: menu-bureaus:https://comptroller.nyc.gov/press/
+  $menu_links['menu-bureaus:https://comptroller.nyc.gov/press/'] = array(
     'menu_name' => 'menu-bureaus',
-    'link_path' => 'http://www.comptroller.nyc.gov/press/',
+    'link_path' => 'https://comptroller.nyc.gov/press/',
     'router_path' => '',
     'link_title' => 'Press Office',
     'options' => array(
@@ -352,10 +352,10 @@ function checkbook_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-33',
   );
-  // Exported menu link: menu-employment:http://www.comptroller.nyc.gov/bureaus/adm/jobs.shtm
-  $menu_links['menu-employment:http://www.comptroller.nyc.gov/bureaus/adm/jobs.shtm'] = array(
+  // Exported menu link: menu-employment:https://comptroller.nyc.gov/bureaus/adm/jobs.shtm
+  $menu_links['menu-employment:https://comptroller.nyc.gov/bureaus/adm/jobs.shtm'] = array(
     'menu_name' => 'menu-employment',
-    'link_path' => 'http://www.comptroller.nyc.gov/bureaus/adm/jobs.shtm',
+    'link_path' => 'https://comptroller.nyc.gov/bureaus/adm/jobs.shtm',
     'router_path' => '',
     'link_title' => 'Employment',
     'options' => array(
@@ -370,10 +370,10 @@ function checkbook_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '0',
   );
-  // Exported menu link: menu-news-room:http://www.comptroller.nyc.gov/press/
-  $menu_links['menu-news-room:http://www.comptroller.nyc.gov/press/'] = array(
+  // Exported menu link: menu-news-room:https://comptroller.nyc.gov/press/
+  $menu_links['menu-news-room:https://comptroller.nyc.gov/press/'] = array(
     'menu_name' => 'menu-news-room',
-    'link_path' => 'http://www.comptroller.nyc.gov/press/',
+    'link_path' => 'https://comptroller.nyc.gov/press/',
     'router_path' => '',
     'link_title' => 'News Room',
     'options' => array(
@@ -388,10 +388,10 @@ function checkbook_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-50',
   );
-  // Exported menu link: menu-news-room:http://www.comptroller.nyc.gov/press/event_photos.shtm
-  $menu_links['menu-news-room:http://www.comptroller.nyc.gov/press/event_photos.shtm'] = array(
+  // Exported menu link: menu-news-room:https://comptroller.nyc.gov/press/event_photos.shtm
+  $menu_links['menu-news-room:https://comptroller.nyc.gov/press/event_photos.shtm'] = array(
     'menu_name' => 'menu-news-room',
-    'link_path' => 'http://www.comptroller.nyc.gov/press/event_photos.shtm',
+    'link_path' => 'https://comptroller.nyc.gov/press/event_photos.shtm',
     'router_path' => '',
     'link_title' => 'Photos',
     'options' => array(
@@ -406,10 +406,10 @@ function checkbook_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-49',
   );
-  // Exported menu link: menu-news-room:http://www.comptroller.nyc.gov/press/pr_current.shtm
-  $menu_links['menu-news-room:http://www.comptroller.nyc.gov/press/pr_current.shtm'] = array(
+  // Exported menu link: menu-news-room:https://comptroller.nyc.gov/press/pr_current.shtm
+  $menu_links['menu-news-room:https://comptroller.nyc.gov/press/pr_current.shtm'] = array(
     'menu_name' => 'menu-news-room',
-    'link_path' => 'http://www.comptroller.nyc.gov/press/pr_current.shtm',
+    'link_path' => 'https://comptroller.nyc.gov/press/pr_current.shtm',
     'router_path' => '',
     'link_title' => 'Press Releases',
     'options' => array(
@@ -424,10 +424,10 @@ function checkbook_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-48',
   );
-  // Exported menu link: menu-reports:http://www.comptroller.nyc.gov/bureaus/acc/CAFR2009_Ins.shtm
-  $menu_links['menu-reports:http://www.comptroller.nyc.gov/bureaus/acc/CAFR2009_Ins.shtm'] = array(
+  // Exported menu link: menu-reports:https://comptroller.nyc.gov/bureaus/acc/CAFR2009_Ins.shtm
+  $menu_links['menu-reports:https://comptroller.nyc.gov/bureaus/acc/CAFR2009_Ins.shtm'] = array(
     'menu_name' => 'menu-reports',
-    'link_path' => 'http://www.comptroller.nyc.gov/bureaus/acc/CAFR2009_Ins.shtm',
+    'link_path' => 'https://comptroller.nyc.gov/bureaus/acc/CAFR2009_Ins.shtm',
     'router_path' => '',
     'link_title' => 'Accountancy',
     'options' => array(
@@ -442,10 +442,10 @@ function checkbook_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-49',
   );
-  // Exported menu link: menu-reports:http://www.comptroller.nyc.gov/bureaus/audit/yearlyview.asp
-  $menu_links['menu-reports:http://www.comptroller.nyc.gov/bureaus/audit/yearlyview.asp'] = array(
+  // Exported menu link: menu-reports:https://comptroller.nyc.gov/bureaus/audit/yearlyview.asp
+  $menu_links['menu-reports:https://comptroller.nyc.gov/bureaus/audit/yearlyview.asp'] = array(
     'menu_name' => 'menu-reports',
-    'link_path' => 'http://www.comptroller.nyc.gov/bureaus/audit/yearlyview.asp',
+    'link_path' => 'https://comptroller.nyc.gov/bureaus/audit/yearlyview.asp',
     'router_path' => '',
     'link_title' => 'Audits',
     'options' => array(
@@ -460,10 +460,10 @@ function checkbook_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-48',
   );
-  // Exported menu link: menu-reports:http://www.comptroller.nyc.gov/bureaus/bla/annual_report.shtm
-  $menu_links['menu-reports:http://www.comptroller.nyc.gov/bureaus/bla/annual_report.shtm'] = array(
+  // Exported menu link: menu-reports:https://comptroller.nyc.gov/bureaus/bla/annual_report.shtm
+  $menu_links['menu-reports:https://comptroller.nyc.gov/bureaus/bla/annual_report.shtm'] = array(
     'menu_name' => 'menu-reports',
-    'link_path' => 'http://www.comptroller.nyc.gov/bureaus/bla/annual_report.shtm',
+    'link_path' => 'https://comptroller.nyc.gov/bureaus/bla/annual_report.shtm',
     'router_path' => '',
     'link_title' => 'Law and Adjustment',
     'options' => array(
@@ -478,10 +478,10 @@ function checkbook_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-44',
   );
-  // Exported menu link: menu-reports:http://www.comptroller.nyc.gov/bureaus/bud/all_budget_reports.shtm
-  $menu_links['menu-reports:http://www.comptroller.nyc.gov/bureaus/bud/all_budget_reports.shtm'] = array(
+  // Exported menu link: menu-reports:https://comptroller.nyc.gov/bureaus/bud/all_budget_reports.shtm
+  $menu_links['menu-reports:https://comptroller.nyc.gov/bureaus/bud/all_budget_reports.shtm'] = array(
     'menu_name' => 'menu-reports',
-    'link_path' => 'http://www.comptroller.nyc.gov/bureaus/bud/all_budget_reports.shtm',
+    'link_path' => 'https://comptroller.nyc.gov/bureaus/bud/all_budget_reports.shtm',
     'router_path' => '',
     'link_title' => 'Budget',
     'options' => array(
@@ -496,10 +496,10 @@ function checkbook_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-47',
   );
-  // Exported menu link: menu-reports:http://www.comptroller.nyc.gov/bureaus/eng/reports.shtm
-  $menu_links['menu-reports:http://www.comptroller.nyc.gov/bureaus/eng/reports.shtm'] = array(
+  // Exported menu link: menu-reports:https://comptroller.nyc.gov/bureaus/eng/reports.shtm
+  $menu_links['menu-reports:https://comptroller.nyc.gov/bureaus/eng/reports.shtm'] = array(
     'menu_name' => 'menu-reports',
-    'link_path' => 'http://www.comptroller.nyc.gov/bureaus/eng/reports.shtm',
+    'link_path' => 'https://comptroller.nyc.gov/bureaus/eng/reports.shtm',
     'router_path' => '',
     'link_title' => 'Engineering',
     'options' => array(
@@ -514,10 +514,10 @@ function checkbook_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-45',
   );
-  // Exported menu link: menu-reports:http://www.comptroller.nyc.gov/bureaus/oca/reports.shtm
-  $menu_links['menu-reports:http://www.comptroller.nyc.gov/bureaus/oca/reports.shtm'] = array(
+  // Exported menu link: menu-reports:https://comptroller.nyc.gov/bureaus/oca/reports.shtm
+  $menu_links['menu-reports:https://comptroller.nyc.gov/bureaus/oca/reports.shtm'] = array(
     'menu_name' => 'menu-reports',
-    'link_path' => 'http://www.comptroller.nyc.gov/bureaus/oca/reports.shtm',
+    'link_path' => 'https://comptroller.nyc.gov/bureaus/oca/reports.shtm',
     'router_path' => '',
     'link_title' => 'Contract Administration',
     'options' => array(
@@ -532,10 +532,10 @@ function checkbook_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-46',
   );
-  // Exported menu link: menu-reports:http://www.comptroller.nyc.gov/bureaus/opm/reports.shtm
-  $menu_links['menu-reports:http://www.comptroller.nyc.gov/bureaus/opm/reports.shtm'] = array(
+  // Exported menu link: menu-reports:https://comptroller.nyc.gov/bureaus/opm/reports.shtm
+  $menu_links['menu-reports:https://comptroller.nyc.gov/bureaus/opm/reports.shtm'] = array(
     'menu_name' => 'menu-reports',
-    'link_path' => 'http://www.comptroller.nyc.gov/bureaus/opm/reports.shtm',
+    'link_path' => 'https://comptroller.nyc.gov/bureaus/opm/reports.shtm',
     'router_path' => '',
     'link_title' => 'Policy',
     'options' => array(
@@ -550,10 +550,10 @@ function checkbook_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-43',
   );
-  // Exported menu link: menu-reports:http://www.comptroller.nyc.gov/reports.shtm
-  $menu_links['menu-reports:http://www.comptroller.nyc.gov/reports.shtm'] = array(
+  // Exported menu link: menu-reports:https://comptroller.nyc.gov/reports.shtm
+  $menu_links['menu-reports:https://comptroller.nyc.gov/reports.shtm'] = array(
     'menu_name' => 'menu-reports',
-    'link_path' => 'http://www.comptroller.nyc.gov/reports.shtm',
+    'link_path' => 'https://comptroller.nyc.gov/reports.shtm',
     'router_path' => '',
     'link_title' => 'Reports',
     'options' => array(
@@ -604,10 +604,10 @@ function checkbook_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-48',
   );
-  // Exported menu link: menu-the-administration:http://www.comptroller.nyc.gov/administration.asp
-  $menu_links['menu-the-administration:http://www.comptroller.nyc.gov/administration.asp'] = array(
+  // Exported menu link: menu-the-administration:https://comptroller.nyc.gov/administration.asp
+  $menu_links['menu-the-administration:https://comptroller.nyc.gov/administration.asp'] = array(
     'menu_name' => 'menu-the-administration',
-    'link_path' => 'http://www.comptroller.nyc.gov/administration.asp',
+    'link_path' => 'https://comptroller.nyc.gov/administration.asp',
     'router_path' => '',
     'link_title' => 'The Administration',
     'options' => array(
@@ -622,10 +622,10 @@ function checkbook_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-50',
   );
-  // Exported menu link: menu-the-administration:http://www.comptroller.nyc.gov/administration.asp#Carol-Kostik
-  $menu_links['menu-the-administration:http://www.comptroller.nyc.gov/administration.asp#Carol-Kostik'] = array(
+  // Exported menu link: menu-the-administration:https://comptroller.nyc.gov/administration.asp#Carol-Kostik
+  $menu_links['menu-the-administration:https://comptroller.nyc.gov/administration.asp#Carol-Kostik'] = array(
     'menu_name' => 'menu-the-administration',
-    'link_path' => 'http://www.comptroller.nyc.gov/administration.asp#Carol-Kostik',
+    'link_path' => 'https://comptroller.nyc.gov/administration.asp#Carol-Kostik',
     'router_path' => '',
     'link_title' => 'Carol S. Kostik',
     'options' => array(
@@ -640,10 +640,10 @@ function checkbook_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-44',
   );
-  // Exported menu link: menu-the-administration:http://www.comptroller.nyc.gov/administration.asp#Geneith-Turnbull
-  $menu_links['menu-the-administration:http://www.comptroller.nyc.gov/administration.asp#Geneith-Turnbull'] = array(
+  // Exported menu link: menu-the-administration:https://comptroller.nyc.gov/administration.asp#Geneith-Turnbull
+  $menu_links['menu-the-administration:https://comptroller.nyc.gov/administration.asp#Geneith-Turnbull'] = array(
     'menu_name' => 'menu-the-administration',
-    'link_path' => 'http://www.comptroller.nyc.gov/administration.asp#Geneith-Turnbull',
+    'link_path' => 'https://comptroller.nyc.gov/administration.asp#Geneith-Turnbull',
     'router_path' => '',
     'link_title' => 'Geneith Turnbull',
     'options' => array(
@@ -658,10 +658,10 @@ function checkbook_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-42',
   );
-  // Exported menu link: menu-the-administration:http://www.comptroller.nyc.gov/administration.asp#Lawrence-Schloss
-  $menu_links['menu-the-administration:http://www.comptroller.nyc.gov/administration.asp#Lawrence-Schloss'] = array(
+  // Exported menu link: menu-the-administration:https://comptroller.nyc.gov/administration.asp#Lawrence-Schloss
+  $menu_links['menu-the-administration:https://comptroller.nyc.gov/administration.asp#Lawrence-Schloss'] = array(
     'menu_name' => 'menu-the-administration',
-    'link_path' => 'http://www.comptroller.nyc.gov/administration.asp#Lawrence-Schloss',
+    'link_path' => 'https://comptroller.nyc.gov/administration.asp#Lawrence-Schloss',
     'router_path' => '',
     'link_title' => 'Lawrence M. Schloss',
     'options' => array(
@@ -676,10 +676,10 @@ function checkbook_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-43',
   );
-  // Exported menu link: menu-the-administration:http://www.comptroller.nyc.gov/administration.asp#Ricardo-Morales
-  $menu_links['menu-the-administration:http://www.comptroller.nyc.gov/administration.asp#Ricardo-Morales'] = array(
+  // Exported menu link: menu-the-administration:https://comptroller.nyc.gov/administration.asp#Ricardo-Morales
+  $menu_links['menu-the-administration:https://comptroller.nyc.gov/administration.asp#Ricardo-Morales'] = array(
     'menu_name' => 'menu-the-administration',
-    'link_path' => 'http://www.comptroller.nyc.gov/administration.asp#Ricardo-Morales',
+    'link_path' => 'https://comptroller.nyc.gov/administration.asp#Ricardo-Morales',
     'router_path' => '',
     'link_title' => 'Ricardo E. Morales',
     'options' => array(
@@ -694,10 +694,10 @@ function checkbook_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-49',
   );
-  // Exported menu link: menu-the-administration:http://www.comptroller.nyc.gov/administration.asp#Simcha-Felder
-  $menu_links['menu-the-administration:http://www.comptroller.nyc.gov/administration.asp#Simcha-Felder'] = array(
+  // Exported menu link: menu-the-administration:https://comptroller.nyc.gov/administration.asp#Simcha-Felder
+  $menu_links['menu-the-administration:https://comptroller.nyc.gov/administration.asp#Simcha-Felder'] = array(
     'menu_name' => 'menu-the-administration',
-    'link_path' => 'http://www.comptroller.nyc.gov/administration.asp#Simcha-Felder',
+    'link_path' => 'https://comptroller.nyc.gov/administration.asp#Simcha-Felder',
     'router_path' => '',
     'link_title' => 'Simcha Felder',
     'options' => array(
@@ -712,10 +712,10 @@ function checkbook_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-47',
   );
-  // Exported menu link: menu-the-administration:http://www.comptroller.nyc.gov/administration.asp#Tina-Kim
-  $menu_links['menu-the-administration:http://www.comptroller.nyc.gov/administration.asp#Tina-Kim'] = array(
+  // Exported menu link: menu-the-administration:https://comptroller.nyc.gov/administration.asp#Tina-Kim
+  $menu_links['menu-the-administration:https://comptroller.nyc.gov/administration.asp#Tina-Kim'] = array(
     'menu_name' => 'menu-the-administration',
-    'link_path' => 'http://www.comptroller.nyc.gov/administration.asp#Tina-Kim',
+    'link_path' => 'https://comptroller.nyc.gov/administration.asp#Tina-Kim',
     'router_path' => '',
     'link_title' => 'H. Tina Kim',
     'options' => array(
@@ -730,10 +730,10 @@ function checkbook_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-45',
   );
-  // Exported menu link: menu-the-comptroller:http://www.comptroller.nyc.gov/comptroller/
-  $menu_links['menu-the-comptroller:http://www.comptroller.nyc.gov/comptroller/'] = array(
+  // Exported menu link: menu-the-comptroller:https://comptroller.nyc.gov/comptroller/
+  $menu_links['menu-the-comptroller:https://comptroller.nyc.gov/comptroller/'] = array(
     'menu_name' => 'menu-the-comptroller',
-    'link_path' => 'http://www.comptroller.nyc.gov/comptroller/',
+    'link_path' => 'https://comptroller.nyc.gov/comptroller/',
     'router_path' => '',
     'link_title' => 'The Comptroller',
     'options' => array(
@@ -748,10 +748,10 @@ function checkbook_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-50',
   );
-  // Exported menu link: menu-the-comptroller:http://www.comptroller.nyc.gov/comptroller/bio.shtm
-  $menu_links['menu-the-comptroller:http://www.comptroller.nyc.gov/comptroller/bio.shtm'] = array(
+  // Exported menu link: menu-the-comptroller:https://comptroller.nyc.gov/comptroller/bio.shtm
+  $menu_links['menu-the-comptroller:https://comptroller.nyc.gov/comptroller/bio.shtm'] = array(
     'menu_name' => 'menu-the-comptroller',
-    'link_path' => 'http://www.comptroller.nyc.gov/comptroller/bio.shtm',
+    'link_path' => 'https://comptroller.nyc.gov/comptroller/bio.shtm',
     'router_path' => '',
     'link_title' => 'About John C. Liu',
     'options' => array(
@@ -766,10 +766,10 @@ function checkbook_menus_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-48',
   );
-  // Exported menu link: menu-the-comptroller:http://www.comptroller.nyc.gov/comptroller/inauguration.shtm
-  $menu_links['menu-the-comptroller:http://www.comptroller.nyc.gov/comptroller/inauguration.shtm'] = array(
+  // Exported menu link: menu-the-comptroller:https://comptroller.nyc.gov/comptroller/inauguration.shtm
+  $menu_links['menu-the-comptroller:https://comptroller.nyc.gov/comptroller/inauguration.shtm'] = array(
     'menu_name' => 'menu-the-comptroller',
-    'link_path' => 'http://www.comptroller.nyc.gov/comptroller/inauguration.shtm',
+    'link_path' => 'https://comptroller.nyc.gov/comptroller/inauguration.shtm',
     'router_path' => '',
     'link_title' => 'Inaugural Address',
     'options' => array(
