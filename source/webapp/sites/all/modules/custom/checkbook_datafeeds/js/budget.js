@@ -77,6 +77,10 @@
                 $('select[name="budget_code"]').html(html);
                 $('select[name="budget_code"]').val(budgetCode);
                 $('select[name="budget_code"]').trigger("chosen:updated");
+                if(budgetCode !== $('select[name="budget_code"]').val()){
+                    $('input:hidden[name="budget_code_hidden"]').val($('select[name="budget_code"]').val());
+                    $.fn.reloadBudgetName();
+                }
             }
         });
     }
@@ -100,7 +104,7 @@
                 $('select[name="budget_name"]').html(html);
                 $('select[name="budget_name"]').val(budgetName);
                 $('select[name="budget_name"]').trigger("chosen:updated");
-                if(budgetName != $('select[name="budget_name"]').val()){
+                if(budgetName !== $('select[name="budget_name"]').val()){
                     $('input:hidden[name="budget_name_hidden"]').val($('select[name="budget_name"]').val());
                     $.fn.reloadBudgetCode();
                 }
