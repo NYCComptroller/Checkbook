@@ -6,7 +6,7 @@
         <?php print $linked_logo_img; ?>
       </div>
       <div class="comptroller">
-        <a class="logo" href="http://www.comptroller.nyc.gov/"><img src="<?php print base_path(); ?>sites/all/themes/checkbook/images/nyc-comptroller.png" alt="New York City Comptroller - John C. Liu" /></a>
+        <a class="logo" href="https://comptroller.nyc.gov/"><img src="<?php print base_path(); ?>sites/all/themes/checkbook/images/nyc-comptroller.png" alt="New York City Comptroller - John C. Liu" /></a>
       </div>
       <?php endif; ?>
       <?php if ($site_name || $site_slogan): ?>
