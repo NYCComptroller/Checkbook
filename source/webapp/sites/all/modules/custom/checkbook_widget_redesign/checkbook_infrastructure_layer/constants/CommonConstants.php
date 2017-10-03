@@ -34,30 +34,53 @@ abstract class CheckbookDomain {
     const PAYROLL = "payroll";
 
     static public function getCurrent() {
-        $urlPath = $_GET['q'];
-        $ajaxPath = $_SERVER['HTTP_REFERER'];
+
+        $urlPath = '//' . $_GET['q'];
+
+        if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+            // that's AJAX
+            $urlPath = '//' . $_SERVER['HTTP_REFERER'];
+        }
 
         $domain = null;
-        if(preg_match('/contracts_landing/',$urlPath) || preg_match('/contracts_landing/',$ajaxPath) ||
-            preg_match('/contracts_revenue_landing/',$urlPath) || preg_match('/contracts_revenue_landing/',$ajaxPath) ||
-            preg_match('/contracts_pending/',$urlPath) || preg_match('/contracts_pending/',$urlPath) ||
-            preg_match('/contract\/all\/transactions/',$urlPath) || preg_match('/contract\/all\/transactions/',$ajaxPath) ||
-            preg_match('/contract\/search\/transactions/',$urlPath) || preg_match('/contract\/search\/transactions/',$ajaxPath)) {
-            $domain = self::CONTRACTS;
+        $contracts_endpoints = array(
+            '/contracts_landing/',
+            '/contracts_revenue_landing/',
+            '/contracts_pending/',
+            '/contracts_pending_exp_landing/',
+            '/contract\/all\/transactions/',
+            '/contract\/search\/transactions/',
+        );
+        foreach ($contracts_endpoints as $endpoint) {
+            if (stripos($urlPath, $endpoint)) {
+                $domain = self::CONTRACTS;
+            }
         }
-        else if(preg_match('/spending_landing/',$urlPath) || preg_match('/spending_landing/',$ajaxPath) ||
-            preg_match('/spending\/transactions/',$urlPath) || preg_match('/spending\/transactions/',$ajaxPath)) {
-            $domain = self::SPENDING;
+
+        if (!$domain) {
+            $spending_endpoints = array(
+                '/spending_landing/',
+                '/spending\/transactions/',
+            );
+            foreach ($spending_endpoints as $endpoint) {
+                if (stripos($urlPath, $endpoint)) {
+                    $domain = self::SPENDING;
+                }
+            }
         }
-        else if(preg_match('/revenue/',$urlPath) || preg_match('/revenue/',$ajaxPath)) {
+
+        if (!$domain && stripos($urlPath, '/revenue/')) {
             $domain = self::REVENUE;
         }
-        else if(preg_match('/budget/',$urlPath) || preg_match('/budget/',$ajaxPath)) {
+
+        if (!$domain && stripos($urlPath, '/budget/')) {
             $domain = self::BUDGET;
         }
-        else if(preg_match('/payroll/',$urlPath) || preg_match('/payroll/', $ajaxPath)) {
+
+        if (!$domain && stripos($urlPath, '/payroll/')) {
             $domain = self::PAYROLL;
         }
+
         return $domain;
     }
 }
