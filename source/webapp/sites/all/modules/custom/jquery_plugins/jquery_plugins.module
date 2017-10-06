@@ -68,14 +68,17 @@ function jquery_plugins_library() {
     )
   );
   $libraries['chosen'] = array(
-    'title' => 'chosen',
-    'website' => 'http://harvesthq.github.com/chosen/',
-    'version' => '0.9.11',
+    'title' => 'jquery.searchabledropdown.js',
+    'website' => 'https://sourceforge.net/projects/jsearchdropdown/',
+    'version' => '1.0.8',
     'js' => array(
-      drupal_get_path('module', 'jquery_plugins') . '/chosen.jquery.min.js' => $options,
+        drupal_get_path('module', 'jquery_plugins') . '/jquery.searchabledropdown/chosen.jquery.js' => array(),
     ),
     'css' => array(
-      drupal_get_path('module', 'jquery_plugins') . '/chosen.css' => array(),
+        drupal_get_path('module', 'jquery_plugins') . '/jquery.searchabledropdown/chosen.css' => array(
+            'type' => 'file',
+            'media' => 'all',
+        ),
     ),
     'dependencies'=>array(
       array('system','jquery')

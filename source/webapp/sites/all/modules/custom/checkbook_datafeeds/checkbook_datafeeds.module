@@ -100,14 +100,8 @@ function checkbook_datafeeds_library() {
         ),
     );
     $libraries['jquery_searchabledropdown'] = array(
-        'title' => 'jquery.searchabledropdown.js',
-        'website' => 'https://sourceforge.net/projects/jsearchdropdown/',
-        'version' => '1.0.8',
-        'js' => array(
-            drupal_get_path('module', 'checkbook_datafeeds') . '/js/jquery.searchabledropdown/chosen.jquery.js' => array(),
-        ),
         'css' => array(
-            drupal_get_path('module', 'checkbook_datafeeds') . '/js/jquery.searchabledropdown/chosen.css' => array(
+            drupal_get_path('module', 'checkbook_datafeeds') . '/css/budget_code_chosen.css' => array(
                 'type' => 'file',
                 'media' => 'all',
             ),
