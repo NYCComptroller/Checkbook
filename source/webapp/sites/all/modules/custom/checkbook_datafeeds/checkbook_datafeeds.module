@@ -101,7 +101,7 @@ function checkbook_datafeeds_library() {
     );
     $libraries['jquery_searchabledropdown'] = array(
         'css' => array(
-            drupal_get_path('module', 'checkbook_datafeeds') . '/css/budget_code_chosen.css' => array(
+            drupal_get_path('module', 'checkbook_datafeeds') . '/css/chosen.css' => array(
                 'type' => 'file',
                 'media' => 'all',
             ),
