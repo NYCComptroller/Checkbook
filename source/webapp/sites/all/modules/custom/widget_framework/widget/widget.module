@@ -816,7 +816,7 @@ function load_widget_data($node, $resultFormatter) {
           }
           
           
-          if ($config->totalAggregateColumns) {
+          if (property_exists($config, 'totalAggregateColumns') && $config->totalAggregateColumns) {
           	foreach($config->totalAggregateColumns as $aggregateColumn){
                 $params = $parameters;
                 $ds = $datasetName;
@@ -963,7 +963,8 @@ function widget_data(&$node) {
 	if (isset($node->widgetConfig->derivedColumns)) {
 
 		foreach ($node->widgetConfig->derivedColumns as $derivedColumnName => $derivedColumnDefinition) {
-			$visibility_flag = check_node_flag_visibilty($derivedColumnDefinition->visibility_flag, $node);
+		    $flag = property_exists($derivedColumnDefinition, 'visibility_flag') ? $derivedColumnDefinition->visibility_flag : null;
+			$visibility_flag = check_node_flag_visibilty($flag, $node);
 			if (isset($node->data) && is_array($node->data) && $visibility_flag) {
                 log_debug($node->data);
 				foreach ($node->data as $rowKey => $row) {

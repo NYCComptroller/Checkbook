@@ -28,14 +28,14 @@ class ContractURLHelper{
 
         $link = NULL;
         if(isset($row['contract_original_agreement_id'])) $row['original_agreement_id'] = $row['contract_original_agreement_id'];
-        $row['original_agreement_id'] = ($original_agreement_id)? $original_agreement_id : $row['original_agreement_id'];
+        $row['original_agreement_id'] = ($original_agreement_id)? $original_agreement_id : (isset($row['original_agreement_id']) ? $row['original_agreement_id'] : null);
 
         if($parent && strlen($row['master_contract_number']) > 0){
             $agrParamName = 'magid';
             $docTypeStr = substr($row['master_contract_number'],0,3);
             $docType = ($docTypeStr == 'MA1') ? 'MA1' : 'MMA1';
-            $row['original_agreement_id'] = $row['master_agreement_id'];
-            $row['contract_number'] = $row['master_contract_number'];
+            $row['original_agreement_id'] = isset($row['master_agreement_id']) ? $row['master_agreement_id'] : null;
+            $row['contract_number'] = isset($row['master_contract_number']) ? $row['master_contract_number'] : null;
         }else if($parent && strlen($row['master_contract_number']) == 0){
             return "N/A";
         }else{
@@ -54,7 +54,7 @@ class ContractURLHelper{
                             ( $row['type_of_year@checkbook:contracts_coa_aggregates'] == 'B' ? ('/yeartype/B/year/'. $row['fiscal_year_id@checkbook:contracts_coa_aggregates']) : ('/yeartype/C/calyear/'.$row['fiscal_year_id@checkbook:contracts_coa_aggregates']) )
                             : (_checkbook_project_get_year_url_param_string())
                  )
-              . ((_checkbook_check_isEDCPage()) ? '/agency/' . $row['agency_id'] :'')
+              . ((_checkbook_check_isEDCPage()) ? '/agency/' . (isset($row['agency_id'])?$row['agency_id']:null) :'')
               . '?expandBottomContURL=/panel_html/contract_transactions/contract_details/' .$agrParamName . '/' . $row['original_agreement_id'] .  '/doctype/' . $docType . _checkbook_append_url_params()
               .  ' >'. $row['contract_number'] . '</a>';
         }
@@ -312,8 +312,8 @@ class ContractURLHelper{
     }
 
     function _prepare_oge_spent_to_date_url($row, $node){
-        $oge_agency_name = $row['agency_name_checkbook_oge_agency'];
-        $oge_vendor_name = $row['legal_name_checkbook_oge_vendor'];
+        $oge_agency_name = isset($row['agency_name_checkbook_oge_agency']) ? $row['agency_name_checkbook_oge_agency'] : null;
+        $oge_vendor_name = isset($row['legal_name_checkbook_oge_vendor']) ? $row['legal_name_checkbook_oge_vendor'] : null;
 
         $vendor_url = $year_url = '';
         if(strtolower($oge_agency_name) != strtolower($oge_vendor_name)){
@@ -326,10 +326,11 @@ class ContractURLHelper{
             $year_url = $row['type_of_year'] == 'B' ? ('/year/'. $row['fiscal_year_id'].'/syear/'. $row['fiscal_year_id']) : ('/calyear/'.$row['fiscal_year_id']. '/scalyear/'.$row['fiscal_year_id']);
         }
 
+        $master_agreement_yn = isset($row['master_agreement_yn']) ? $row['master_agreement_yn'] : null;
         $url = "<a href='/spending/transactions"
-            .  ($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['original_agreement_id']
-            .  ($row['master_agreement_yn'] == 'Y' ? $vendor_url : '/svendor/' . $row['vendor_id'])
-            .  ($row['master_agreement_yn'] == 'Y' ? '' : ('/scomline/'.$row['fms_commodity_line']))
+            .  ($master_agreement_yn == 'Y' ? '/magid/' : '/agid/') . (isset($row['original_agreement_id']) ? $row['original_agreement_id'] : nul)
+            .  ($master_agreement_yn == 'Y' ? $vendor_url : '/svendor/' . (isset($row['vendor_id']) ? $row['vendor_id'] : null))
+            .  ($master_agreement_yn == 'Y' ? '' : ('/scomline/'.(isset($row['fms_commodity_line']) ? $row['fms_commodity_line'] : null)))
             .  $year_url
             . _checkbook_project_get_url_param_string('vendor')
             . _checkbook_append_url_params()

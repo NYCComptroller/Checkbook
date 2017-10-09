@@ -311,7 +311,7 @@ function _checkbook_export_transactions(){
             $i = 0;
             $rowData = NULL;
             foreach($columns as $column){
-                if($column->export === FALSE){
+                if(property_exists($column, 'export') && $column->export === FALSE){
                     continue;
                 }
 
