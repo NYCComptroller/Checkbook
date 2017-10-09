@@ -68,10 +68,10 @@
        $.ajax({
             url: '/datafeeds/budget/budgetcode/' + year + '/' + agency + '/' + dept + '/' + expCategory + '/' + budgetName,
             success: function(data) {
-                var html = '<option value="0" >Select Budget Code</option>';
+                var html = '<option value="0" title="" >Select Budget Code</option>';
                 if(data[0]){
                     for (i = 0; i < data.length; i++) {
-                        html = html + '<option value="' + data[i] + ' ">' + data[i]  + '</option>';
+                        html = html + '<option title = "' + data[i] + '" value="' + data[i] + ' ">' + data[i]  + '</option>';
                     }
                 }
                 $('select[name="budget_code"]').html(html);
@@ -95,11 +95,11 @@
        $.ajax({
             url: '/datafeeds/budget/budgetname/' + year + '/' + agency + '/' + dept + '/' + expCategory + '/' + budgetCode,
             success: function(data) {
-                var html = '<option value="" >Select Budget Name</option>';
-                if(data[0]){
-                    for (i = 0; i < data.length; i++) {
-                        html = html + '<option value="' + data[i] + ' ">' + data[i]  + '</option>';
-                    }
+                var html = '<option value="" title="" >Select Budget Name</option>';
+                if(data){
+                    $.each( data, function( index, value ){
+                        html = html + '<option value="' + index + ' "' + 'title="' + value['title'] + ' ">' + value['text']  + '</option>';
+                    });
                 }
                 $('select[name="budget_name"]').html(html);
                 $('select[name="budget_name"]').val(budgetName);

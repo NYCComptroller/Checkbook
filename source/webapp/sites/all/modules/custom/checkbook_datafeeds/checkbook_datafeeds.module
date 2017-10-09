@@ -6447,7 +6447,7 @@ function _budget_code_options($year, $agency, $dept, $exp_cat, $budget_code_name
  *   Expenditure object codes and expenditure object names, filtered by agency, department, year
  */
 function _budget_name_options($year, $agency, $dept, $exp_cat, $budget_code) {
-    $agency = emptyToZero(urldecode($agency));
+     $agency = emptyToZero(urldecode($agency));
     $dept = emptyToZero(urldecode($dept));
     $exp_cat = emptyToZero(urldecode($exp_cat));
     if ($agency) {
@@ -6470,14 +6470,14 @@ function _budget_name_options($year, $agency, $dept, $exp_cat, $budget_code) {
             . $yearstring .  $agencystring . $deptstring . $expstring . $budget_code_string . " ORDER BY budget_code_name ASC";
     $results = _checkbook_project_execute_sql($query);
     if(count($results) > 0){
+        $option_attribute = "";
         foreach ($results as $result) {
-            $options[$result['budget_code_name']] = $result['budget_code_name'];
+            $option = $result['budget_code_name'];
+            $option_attribute = (strlen($option) > 15) ? substr($option, 0, 15) . '...' : $option;
+            $options[$option] = array('title' => htmlentities($option), 'text' => $option_attribute);
         }
     }
-    $matches = array();
-    foreach($options as $key => $value)
-        $matches[] = htmlentities($value);
-    drupal_json_output($matches);
+    drupal_json_output($options);
 }
 
 /**
