@@ -304,20 +304,22 @@ function _widget_data_tables_list_ajaxdata($node){
         foreach ($node->data as $datarow) {
             $rowarray = array();
             foreach ($node->widgetConfig->table_columns as $row) {
-                if(check_node_flag_visibilty($row->visibility_flag, $node)){
+                $flag = property_exists($row, 'visibility_flag') ? $row->visibility_flag : null;
+                if(check_node_flag_visibilty($flag, $node)){
+//                if(property_exists($row, 'visibility_flag') && check_node_flag_visibilty($row->visibility_flag, $node)){
                     if (!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == _getRequestParamValue('datasource')))) {
-                        if ($node->customDataPaddings[$row->column] > 0) {
+                        if (isset($node->customDataPaddings[$row->column]) && $node->customDataPaddings[$row->column] > 0) {
                             $style = "style='margin-right:" . $node->customDataPaddings[$row->column] * 8 . "px'";
                         } else {
                             $style = "";
                         }
-                        if ($node->maxColumnDataLength[$row->column] > 0) {
+                        if (isset($node->maxColumnDataLength[$row->column]) && $node->maxColumnDataLength[$row->column] > 0) {
                             $style = "style='text-align: center;'";
                             $value = str_pad($datarow[$row->column], $node->maxColumnDataLength[$row->column], " ", STR_PAD_LEFT);
                             $value = str_replace(" ", "&nbsp;", $value);
                             $rowarray[] = '<div ' . $style . '>' . $value . '</div>';
                         } else {
-                            $rowarray[] = '<div ' . $style . '>' . $datarow[$row->column] . '</div>';
+                            $rowarray[] = '<div ' . $style . '>' . (isset($datarow[$row->column]) ? $datarow[$row->column] : '') . '</div>';
                         }
                     }
                 }
