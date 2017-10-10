@@ -421,7 +421,7 @@ Steps to install:
 
             // update the command for psql.
             $conf['check_book']['data_feeds']['command'] = \
-            'PGPASSWORD=<password> psql -h <postgres-db-ip> -U <postgres-db-user> <postgresdb-name>'
+            'PGPASSWORD=<password> psql -h <postgres-db-ip> -U <postgres-db-user>'
 
      If you're just running PostgreSQL on the same server, you can
      either specify `-h localhost` or remove the `-h` option and
