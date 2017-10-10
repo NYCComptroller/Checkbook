@@ -19,7 +19,7 @@
 */
 
 
-global $conf;
+global $conf, $databases;
 
 $success = 1;
 $failure = -1;
@@ -78,8 +78,9 @@ if (!file_prepare_directory($dir, FILE_CREATE_DIRECTORY)) {
 
 foreach ($ref_data_queries as $file_name => $ref_data_query) {
   $file = DRUPAL_ROOT . '/' . $dir . '/' . $file_name . '.csv';
-  $command = $conf['check_book']['data_feeds']['command']
-    . " -c \"\\\\COPY (" . $ref_data_query . ") TO '"
+  $command = $conf['check_book']['data_feeds']['command'];
+  $command .= ' ' . $databases['checkbook']['main']['database'] . ' ';
+  $command .= " -c \"\\\\COPY (" . $ref_data_query . ") TO '"
     . $file
     . "'  WITH DELIMITER ',' CSV HEADER QUOTE '\\\"' ESCAPE '\\\"' \" ";
 

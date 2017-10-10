@@ -362,7 +362,7 @@ function _checkbook_export_download_file($fileName){
 
 /** Function to handle generate export file */
 function _checkbook_export_generateExportFile($node,$headers, $exportConfigNode = NULL){
-    global $conf;
+    global $conf, $databases;
 
     try{
         $fileDir = _checkbook_export_prepareFileOutputDir();
@@ -446,11 +446,13 @@ function _checkbook_export_generateExportFile($node,$headers, $exportConfigNode 
             $node->data = checkbook_export_remove_non_export_columns($node);
         }
 
+        $command = $conf['check_book']['data_feeds']['command'];
+
         $data_source = _getRequestParamValue('datasource');
-        if ('checkbook_oge' == $data_source && isset($conf['check_book']['data_feeds']['command_oge'])) {
-            $command = $conf['check_book']['data_feeds']['command_oge'];
+        if ('checkbook_oge' == $data_source) {
+            $command .= ' ' . $databases['checkbook_oge']['main']['database'] . ' ';
         } else {
-            $command = $conf['check_book']['data_feeds']['command'];
+            $command .= ' ' . $databases['checkbook']['main']['database'] . ' ';
         }
 
         $command .=
