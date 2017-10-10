@@ -233,15 +233,6 @@ h4 {
     color: #fff;
 }
 
-/**Styles for 'New Features' in the main menu **/
-#nice-menu-1 li.menu-path-node-975 a{
-    color:#389be2;
-}
-#nice-menu-1 li.menu-path-node-975 a:hover,
-#nice-menu-1 li.menu-path-node-975 a.active{
-    color: #2A639A;
-}
-
 /********************************
 ***   REGION FILTERS STYLES   ***
 ********************************/
@@ -3574,8 +3565,24 @@ p.pieCount {
     padding-left: 10px;
 }
 
-/* Styles for New Features */
+/*******************************
+     Styles for New Features 
+********************************/
 
+/** Styles for 'New Features' in the main menu **/
+#nice-menu-1 li.menu-path-node-975 a.enabled{
+    color:#389be2;
+}
+
+#nice-menu-1 li.menu-path-node-975 a.disabled{
+    color:#808080;
+}
+#nice-menu-1 li.menu-path-node-975 a:hover,
+#nice-menu-1 li.menu-path-node-975 a.active{
+    color: #2A639A;
+}
+
+/** Styles for 'New Features' page content ***/
 .page-node-975 .logo,
 .page-node-975 .logo-img{
     pointer-events: none;
@@ -3648,6 +3655,8 @@ a.new-features-morelink{
     margin-left: 10px;
     font-size: 13px;
 }
+
+/********** End of 'New Features' styles **********/
 
 /* Fix height for headers with single line labels */
 #table_revenue_by_agencies_view thead tr,
