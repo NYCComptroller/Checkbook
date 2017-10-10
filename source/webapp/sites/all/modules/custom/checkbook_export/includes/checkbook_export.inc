@@ -226,8 +226,6 @@ function _checkbook_export_transactions(){
     $node = _checkbook_export_get_node_config();
     $limit = $node->widgetConfig->limit;
 
-    
-
     //TODO - see if we have to check count again
     $node->widgetConfig->getTotalDataCount = false;
     $node->widgetConfig->getData = true;
@@ -448,11 +446,18 @@ function _checkbook_export_generateExportFile($node,$headers, $exportConfigNode 
             $node->data = checkbook_export_remove_non_export_columns($node);
         }
 
-        $command = $conf['check_book']['data_feeds']['command']
-                . " -c \"\\\\COPY (" . str_replace('\\\\','\\\\\\',$node->data) . ") TO '"
+        $data_source = _getRequestParamValue('datasource');
+        if ('checkbook_oge' == $data_source && isset($conf['check_book']['data_feeds']['command_oge'])) {
+            $command = $conf['check_book']['data_feeds']['command_oge'];
+        } else {
+            $command = $conf['check_book']['data_feeds']['command'];
+        }
+
+        $command .=
+                " -c \"\\\\COPY (" . str_replace('\\\\','\\\\\\',$node->data) . ") TO '"
                 . $tempOutputFile
                 . "'  WITH DELIMITER ',' CSV QUOTE '\\\"' ESCAPE '\\\"' \" ";
-        
+
         log_error($command);
         
         shell_exec($command);
