@@ -19,6 +19,7 @@ import helpers.Helper;
 import utilities.TestStatusReport;
 //public class RegisteredRevenueContractsTest  extends TestStatusReport{
 public class RegisteredRevenueContractsTest extends NYCBaseTest {
+	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
     public void GoToPage(){
 	   if (!RegisteredRevenueContracts.isAt())

@@ -15,9 +15,9 @@ import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
 import utilities.TestStatusReport;
 
-//public class PayrollWidgetTest extends NYCBaseTest {
-	public class PayrollWidgetTest extends TestStatusReport{
-
+//public class PayrollWidgetCountsTest extends NYCBaseTest {
+	public class PayrollWidgetCountsTest extends TestStatusReport{
+		int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	public void GoToPage(){
 		PayrollPage.GoTo();
@@ -30,32 +30,31 @@ import utilities.TestStatusReport;
 	/* ***************** Test Widget Counts ****************** */
 	@Test
 	public void VerifyNumOfAgenciesbyPayroll() throws SQLException {
-		Integer NumOfPayrollAgencies2016 =  NYCDatabaseUtil.getPayrollAgenciesCount(2016,'B');
-		Integer numOfPayrollAgenciesapp = PayrollPage.GetTop5WidgetTotalCount(WidgetOption.Top5AgenciesbyPayroll);
-		assertEquals("Number of Payroll Agenies did not match", numOfPayrollAgenciesapp, NumOfPayrollAgencies2016);
-	}
-	
+		Integer WidgetCountDB =  NYCDatabaseUtil.getPayrollAgenciesCount(year,'B');
+		Integer WidgetCountApp = PayrollPage.GetTop5WidgetTotalCount(WidgetOption.Top5AgenciesbyPayroll);
+		assertEquals("Payroll Agencies widget count did not match with DB", WidgetCountApp, WidgetCountDB);
+	}	
 	
 	@Test
 	public void VerifyNumOfAgenciesbyOvertime() throws SQLException {
-		Integer NumOfPayrollAgencies2016 =  NYCDatabaseUtil.getPayrollAgenciesCount(2016,'B');
-		Integer numOfPayrollAgenciesapp = PayrollPage.GetTop5WidgetTotalCount(WidgetOption.Top5AgenciesbyOvertime);
-		assertEquals("Number of Payroll Agenies did not match", numOfPayrollAgenciesapp, NumOfPayrollAgencies2016);
+		Integer WidgetCountDB =  NYCDatabaseUtil.getPayrollAgenciesCount(year,'B');
+		Integer WidgetCountApp = PayrollPage.GetTop5WidgetTotalCount(WidgetOption.Top5AgenciesbyOvertime);
+		assertEquals("Payroll Agencies by Overtime widget count did not match with DB", WidgetCountApp, WidgetCountDB);
 	}
 	@Test
 	public void VerifyNumOfPayrollAnnualSalaries() throws SQLException {
-		Integer NumOfPayrollSalCount2016 =  NYCDatabaseUtil.getPayrollSalCount(2016,'B');
-		Integer numOfPayrolleSalCountapp = PayrollPage.GetTop5WidgetTotalCount(WidgetOption.Top5AnnualSalaries);
-		assertEquals("Number of Payroll salaried employees did not match", numOfPayrolleSalCountapp, NumOfPayrollSalCount2016);
+		Integer WidgetCountDB =  NYCDatabaseUtil.getPayrollSalCount(year,'B');
+		Integer WidgetCountApp = PayrollPage.GetTop5WidgetTotalCount(WidgetOption.Top5AnnualSalaries);
+		assertEquals("Payroll Agencies by Annual Salaries widget count did not match with DB",WidgetCountApp, WidgetCountDB);
 	}
 	
 	/* issue with widget option
 		@Test
 		public void VerifyNumOfPayrollTitlesbyNumberofEmployees() throws SQLException {
-		 	//Integer NumOfPayrollSalCount2016 =  NYCDatabaseUtil.getPayrollSalCount(2016,'B');
-			Integer NumOfPayrollSalCount2016 =  322765;
-		       Integer numOfPayrolleSalCountapp = PayrollPage.GetTop5WidgetTotalCount(WidgetOption.Top5TitlesbyNumberofEmployees);
-			        assertEquals("Number of Payroll salaried employees did not match", numOfPayrolleSalCountapp, NumOfPayrollSalCount2016);
+		 	Integer WidgetCountDB =  NYCDatabaseUtil.getPayrollSalCount(year,'B');
+			//Integer NumOfPayrollSalCount2016 =  322765;
+		       Integer WidgetCountApp = PayrollPage.GetTop5WidgetTotalCount(WidgetOption.Top5TitlesbyNumberofEmployees);
+			        assertEquals("Number of Payroll salaried employees did not match", WidgetCountApp, WidgetCountDB);
 		}
 	 */
 }

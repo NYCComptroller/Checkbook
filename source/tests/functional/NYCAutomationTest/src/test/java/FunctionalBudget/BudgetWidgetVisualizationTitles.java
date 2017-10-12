@@ -21,21 +21,14 @@ import utilities.NYCDatabaseUtil;
 import utilities.TestStatusReport;
 
 //public class BudgetWidgetTitles extends TestStatusReport{
-public class BudgetWidgetTitles  extends NYCBaseTest{
-	
+public class BudgetWidgetVisualizationTitles  extends NYCBaseTest{
+	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
     public void GoToPage(){
 	   if (!BudgetPage.isAt())
 		   BudgetPage.GoTo();
 	   if(!(Helper.getCurrentSelectedYear()).equalsIgnoreCase(NYCBaseTest.prop.getProperty("CurrentYear")))
 		   HomePage.SelectYear(NYCBaseTest.prop.getProperty("CurrentYear"));
-    }
-
-	@Test
-    public void VerifyBudgetAmount() throws SQLException {
-        String TotalBudgetAmtFY2016 = NYCDatabaseUtil.getBudgetAmount(2016, 'B');
-        String budgetAmt = BudgetPage.GetBudgetAmount();
-        assertEquals("Budget Amount did not match", budgetAmt, TotalBudgetAmtFY2016);
     }
 	
 	@Test

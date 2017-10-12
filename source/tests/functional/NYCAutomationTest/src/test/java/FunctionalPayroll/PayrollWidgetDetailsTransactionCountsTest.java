@@ -10,16 +10,17 @@ import org.junit.Test;
 
 import pages.payroll.PayrollPage;
 import pages.payroll.PayrollPage.WidgetOption;
+import pages.contracts.ContractsPage;
 import pages.home.HomePage;
 import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
 import utilities.TestStatusReport;
 
 
-//public class PayrollWidgetDetailsTest extends NYCBaseTest {
-	public class PayrollWidgetDetailsTest extends TestStatusReport {
+public class PayrollWidgetDetailsTransactionCountsTest extends NYCBaseTest {
+	//public class PayrollWidgetDetailsTest extends TestStatusReport {
 	
-
+	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	public void GoToPage(){
 		PayrollPage.GoTo();
@@ -58,4 +59,14 @@ import utilities.TestStatusReport;
 	}
 	
 	*/
+	
+	@Test
+	public void VerifyPayrollTransactionTitle() throws SQLException {
+			PayrollPage.GoToTop5DetailsPage(WidgetOption.Top5AgenciesbyPayroll);
+		HomePage.ShowWidgetDetails();
+	//assertTrue(HomePage.GetTransactionAmount1()== transactionAmt);
+		String AgenciesTitle =  "Payroll Summary by Agency Title";
+		String RevenueAgenciesTitleApp = HomePage.DetailsPagetitle();
+	assertEquals("Payroll Agencies Widget details page title did not match", AgenciesTitle, RevenueAgenciesTitleApp); 
+	}
 }

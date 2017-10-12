@@ -20,7 +20,7 @@ import utilities.TestStatusReport;
 public class PendingRevenueContractsDetailsTest extends TestStatusReport{
 
 //public class PendingRevenueContractsDetailsTest extends NYCBaseTest {
-
+	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	public void GoToPage() {
 		if(!(Helper.getCurrentSelectedYear()).equalsIgnoreCase(NYCBaseTest.prop.getProperty("CurrentYear")))

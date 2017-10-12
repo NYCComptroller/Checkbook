@@ -10,6 +10,8 @@ import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 
+import pages.budget.BudgetPage;
+import pages.budget.BudgetPage.WidgetOption;
 import pages.home.HomePage;
 import pages.spending.SpendingPage;
 import utilities.NYCBaseTest;
@@ -18,7 +20,7 @@ import utilities.TestStatusReport;
 
 //public class TotalSpendingTitlesTest extends TestStatusReport{
 public class TotalSpendingTitlesTest extends NYCBaseTest{
-	
+	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
     public void GoToPage(){
 	   if (!SpendingPage.isAt())
@@ -71,5 +73,9 @@ public class TotalSpendingTitlesTest extends NYCBaseTest{
             } 
       */	
     }  
+	
+	
+
+	
 	
 }

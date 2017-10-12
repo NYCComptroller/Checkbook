@@ -15,7 +15,7 @@ import utilities.TestStatusReport;
 public class RevenueWidgetTest extends NYCBaseTest {
 	//public class RevenueWidgetTest extends TestStatusReport {
 	
-
+	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 		@Before
 	    public void GoToPage() {
 			RevenuePage.GoTo();

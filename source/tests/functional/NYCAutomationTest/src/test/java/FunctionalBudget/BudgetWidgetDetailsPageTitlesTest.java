@@ -16,13 +16,13 @@ import pages.home.HomePage;
 import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
 import utilities.TestStatusReport;
-//public class BudgetWidgetDetailsAmountTest extends TestStatusReport{
+public class BudgetWidgetDetailsPageTitlesTest extends TestStatusReport{
 
-public class BudgetWidgetDetailsAmountTest extends NYCBaseTest {
-	
+	//public class BudgetWidgetDetailsPageTitlesTest extends NYCBaseTest {
+	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 		@Before
 	    public void GoToPage(){
-			 if (!BudgetPage.isAt())
+			// if (!BudgetPage.isAt())
 				   BudgetPage.GoTo();
 		 
 		   if(!(Helper.getCurrentSelectedYear()).equalsIgnoreCase(NYCBaseTest.prop.getProperty("CurrentYear")))
@@ -35,15 +35,54 @@ public class BudgetWidgetDetailsAmountTest extends NYCBaseTest {
 	
 		
 		@Test
-		public void VerifyBudgetTransactionAmount() throws SQLException {
-			//Float transactionAmt = 26.3f;
+		public void VerifyTitleofBudgetAgenciesTransaction() throws SQLException {
 			BudgetPage.GoToTop5DetailsPage(WidgetOption.Top5Agencies);
 			HomePage.ShowWidgetDetails();
-		//assertTrue(HomePage.GetTransactionAmount1()== transactionAmt);
-			String NumOfBudgetDetailsAmount2016 =  NYCDatabaseUtil.getBudgetDetailsAmount(2016,'B');
-			String numOfBudgetDetailsAmountapp = HomePage.GetTransactionAmount1();
-		assertEquals("Number ofRevenue widget Details page table count did not match", numOfBudgetDetailsAmountapp, NumOfBudgetDetailsAmount2016); 
+	     	String WidgetDetailsPageTitle =  "Agencies Expense Budget Transactions";
+			String WidgetDetailsPageApp = HomePage.DetailsPagetitle();
+		assertEquals("Budget Domain Agencies Widget Transaction Title did not match", WidgetDetailsPageTitle, WidgetDetailsPageApp); 
 		}
-
+		
+		@Test
+		public void VerifyTitleofBudgetAgenciesbyCommittedExpenseBudgetTransaction() throws SQLException {
+			BudgetPage.GoToTop5DetailsPage(WidgetOption.Top5AgenciesbyCommittedExpenseBudget);
+			HomePage.ShowWidgetDetails();
+			String WidgetDetailsPageTitle =  "Agencies by Committed Expense Budget Transactions";
+			String WidgetDetailsPageApp = HomePage.DetailsPagetitle();
+			assertEquals("Budget Domain Agencies by Committed Expense Budget Widget Transaction Title did not match", WidgetDetailsPageTitle, WidgetDetailsPageApp); 
+		}
+		@Test
+		public void VerifyTitleofBudgetAgenciesbyPercentDifferenceTransaction() throws SQLException {
+			BudgetPage.GoToTop5DetailsPage(WidgetOption.Top5AgenciesbyPercentDifference);
+			HomePage.ShowWidgetDetails();
+			String WidgetDetailsPageTitle =  "Agencies by Percent Difference Expense Budget Transactions";
+			String WidgetDetailsPageApp = HomePage.DetailsPagetitle();
+			assertEquals("Budget Domain Agencies by Percent Difference Widget Transaction Title did not match",WidgetDetailsPageTitle, WidgetDetailsPageApp); 
+		}
+		@Test
+		public void VerifyTitleofExpenseCategoriesTransaction() throws SQLException {
+			BudgetPage.GoToTop5DetailsPage(WidgetOption.Top5ExpenseCategories);
+			HomePage.ShowWidgetDetails();
+			String WidgetDetailsPageTitle =  "Expense Categories Expense Budget Transactions";
+			String WidgetDetailsPageApp = HomePage.DetailsPagetitle();
+			assertEquals("Budget Domain Expense Categoriess Widget Transaction Title did not match", WidgetDetailsPageTitle, WidgetDetailsPageApp); 
+		}
+		@Test
+		public void VerifyTitleOfExpenseCategoriesbyCommittedExpenseBudgetTransaction() throws SQLException {
+			BudgetPage.GoToTop5DetailsPage(WidgetOption.Top5ExpenseCategoriesbyCommittedExpenseBudget);
+			HomePage.ShowWidgetDetails();
+			String WidgetDetailsPageTitle =  "Expense Categories by Committed Expense Budget Transactions";
+			String WidgetDetailsPageApp = HomePage.DetailsPagetitle();
+			assertEquals("Budget Domain Expense Categories by Committed Expense Budget Widget Transaction Title did not match", WidgetDetailsPageTitle, WidgetDetailsPageApp); 
+		}
+		@Test
+		public void VerifyTitleOfExpenseCategoriesbyPercentDifferenceTransaction() throws SQLException {			
+			BudgetPage.GoToTop5DetailsPage(WidgetOption.Top5ExpenseCategoriesbyPercentDifference);
+			HomePage.ShowWidgetDetails();
+			String WidgetDetailsPageTitle =  "Expense Categories by Percent Difference Expense Budget Transactions";
+			String WidgetDetailsPageApp = HomePage.DetailsPagetitle();
+			assertEquals("Budget Domain Expense Categories by Percent Difference Widget Transaction Title did not match", WidgetDetailsPageTitle, WidgetDetailsPageApp); 
+		}
+	
 }
 

@@ -19,9 +19,9 @@ import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
 import utilities.TestStatusReport;
 //public class BudgetAllWidgetDetailsTest extends TestStatusReport{
-public class BudgetAllWidgetDetailsTest extends NYCBaseTest {
+public class BudgetWidgetDetailsTransactionCountsTest extends NYCBaseTest {
 
-	
+	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 		@Before
 	    public void GoToPage(){
 			BudgetPage.GoTo();
@@ -38,54 +38,54 @@ public class BudgetAllWidgetDetailsTest extends NYCBaseTest {
 	    }
 		
 		/* ***************** Test Widget Details Counts ****************** */
-		
-		//public void VerifyNumOfBudgetAgencies() throws SQLException { 
-			//Integer NumOfBudgetAgencies2016 =  NYCDatabaseUtil.getBudgetAgenciesCount(2016,'B');
-			//Integer numOfBudgetAgenciesapp = BudgetPage.GetTop5WidgetTotalCount(WidgetOption.Top5Agencies);
-			//assertEquals("Number of Budget Agencies did not match", numOfBudgetAgenciesapp, NumOfBudgetAgencies2016);
-		//}
-
-		
+		@Test
+		public void VerifyNumOfBudgetAgencies() throws SQLException { 
+			BudgetPage.GoToTop5DetailsPage(WidgetOption.Top5Agencies);
+			HomePage.ShowWidgetDetails();
+			int NumOfBudgetDetailsCountDB =  NYCDatabaseUtil.getBudgetDetailsCount(year,'B');
+			int numOfBudgetDetailsCountapp = BudgetPage.GetTransactionCount();
+			assertEquals("Number of transactions for Budget Details page table  did not match", numOfBudgetDetailsCountapp, NumOfBudgetDetailsCountDB); 
+		}	
 		
 		@Test
 		public void VerifyNumOfBudgetAgenciesbyCommittedExpenseBudgetTransactionCount() throws SQLException {
 			BudgetPage.GoToTop5DetailsPage(WidgetOption.Top5AgenciesbyCommittedExpenseBudget);
 			HomePage.ShowWidgetDetails();
-			int NumOfBudgetDetailsCount2016 =  NYCDatabaseUtil.getBudgetDetailsCount(2016,'B');
+			int NumOfBudgetDetailsCountDB =  NYCDatabaseUtil.getBudgetDetailsCount(year,'B');
 			int numOfBudgetDetailsCountapp = BudgetPage.GetTransactionCount();
-			assertEquals("Number of transactions for Budget Details page table  did not match", numOfBudgetDetailsCountapp, NumOfBudgetDetailsCount2016); 
+			assertEquals("Number of transactions for Budget Details page table  did not match", numOfBudgetDetailsCountapp, NumOfBudgetDetailsCountDB); 
 		}
 		@Test
 		public void VerifyNumOfBudgetAgenciesbyPercentDifference() throws SQLException {
 			BudgetPage.GoToTop5DetailsPage(WidgetOption.Top5AgenciesbyPercentDifference);
 			HomePage.ShowWidgetDetails();
-			int NumOfBudgetDetailsCount2016 =  NYCDatabaseUtil.getBudgetDetailsCount(2016,'B');
+			int NumOfBudgetDetailsCountDB =  NYCDatabaseUtil.getBudgetDetailsCount(year,'B');
 			int numOfBudgetDetailsCountapp = BudgetPage.GetTransactionCount();
-			assertEquals("Number of transactions for Budget Details page table  did not match", numOfBudgetDetailsCountapp, NumOfBudgetDetailsCount2016); 
+			assertEquals("Number of transactions for Budget Details page table  did not match", numOfBudgetDetailsCountapp, NumOfBudgetDetailsCountDB); 
 		}
 		@Test
 		public void VerifyNumOfExpenseCategories() throws SQLException {
 			BudgetPage.GoToTop5DetailsPage(WidgetOption.Top5ExpenseCategories);
 			HomePage.ShowWidgetDetails();
-			int NumOfBudgetDetailsCount2016 =  NYCDatabaseUtil.getBudgetDetailsCount(2016,'B');
+			int NumOfBudgetDetailsCountDB =  NYCDatabaseUtil.getBudgetDetailsCount(year,'B');
 			int numOfBudgetDetailsCountapp = BudgetPage.GetTransactionCount();
-			assertEquals("Number of transactions for Budget Details page table  did not match", numOfBudgetDetailsCountapp, NumOfBudgetDetailsCount2016); 
+			assertEquals("Number of transactions for Budget Details page table  did not match", numOfBudgetDetailsCountapp, NumOfBudgetDetailsCountDB); 
 		}
 		@Test
 		public void VerifyNumOfExpenseCategoriesbyCommittedExpenseBudget() throws SQLException {
 			BudgetPage.GoToTop5DetailsPage(WidgetOption.Top5ExpenseCategoriesbyCommittedExpenseBudget);
 			HomePage.ShowWidgetDetails();
-			int NumOfBudgetDetailsCount2016 =  NYCDatabaseUtil.getBudgetDetailsCount(2016,'B');
+			int NumOfBudgetDetailsCountDB =  NYCDatabaseUtil.getBudgetDetailsCount(year,'B');
 			int numOfBudgetDetailsCountapp = BudgetPage.GetTransactionCount();
-			assertEquals("Number of transactions for Budget Details page table  did not match", numOfBudgetDetailsCountapp, NumOfBudgetDetailsCount2016); 
+			assertEquals("Number of transactions for Budget Details page table  did not match", numOfBudgetDetailsCountapp, NumOfBudgetDetailsCountDB); 
 		}
 		@Test
 		public void VerifyNumOfExpenseCategoriesbyPercentDifference() throws SQLException {			
 			BudgetPage.GoToTop5DetailsPage(WidgetOption.Top5ExpenseCategoriesbyPercentDifference);
 			HomePage.ShowWidgetDetails();
-			int NumOfBudgetDetailsCount2016 =  NYCDatabaseUtil.getBudgetDetailsCount(2016,'B');
+			int NumOfBudgetDetailsCountDB =  NYCDatabaseUtil.getBudgetDetailsCount(year,'B');
 			int numOfBudgetDetailsCountapp = BudgetPage.GetTransactionCount();
-			assertEquals("Number of transactions for Budget Details page table  did not match", numOfBudgetDetailsCountapp, NumOfBudgetDetailsCount2016); 
+			assertEquals("Number of transactions for Budget Details page table  did not match", numOfBudgetDetailsCountapp, NumOfBudgetDetailsCountDB); 
 		}
 	
 		

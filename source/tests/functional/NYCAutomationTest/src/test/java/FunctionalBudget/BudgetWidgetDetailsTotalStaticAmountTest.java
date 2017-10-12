@@ -17,10 +17,10 @@ import pages.home.HomePage;
 import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
 import utilities.TestStatusReport;
-//public class BudgetWidgetDetailsTest extends TestStatusReport{
+//public class BudgetWidgetDetailsTotalStaticAmountTest extends TestStatusReport{
 
-public class BudgetWidgetDetailsTest extends NYCBaseTest {
-	
+public class BudgetWidgetDetailsTotalStaticAmountTest extends NYCBaseTest {
+	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 		@Before
 	    public void GoToPage(){
 			BudgetPage.GoTo();
@@ -39,78 +39,79 @@ public class BudgetWidgetDetailsTest extends NYCBaseTest {
 			//Integer numOfBudgetAgenciesapp = BudgetPage.GetTop5WidgetTotalCount(WidgetOption.Top5Agencies);
 			//assertEquals("Number of Budget Agencies did not match", numOfBudgetAgenciesapp, NumOfBudgetAgencies2016);
 		//}
+		
+		@Test
+	    public void VerifyBudgetTopNavigationAmount() throws SQLException {
+	        String TopNavBudgetAmtDB = NYCDatabaseUtil.getBudgetAmount(year, 'B');
+	        String TopNavBudgetAmtApp = BudgetPage.GetBudgetAmount();
+	        assertEquals("Budget Top Navigation Amount did not match", TopNavBudgetAmtApp, TopNavBudgetAmtDB);
+	    }
 		@Test
 		public void VerifyNumOfBudgetAgenciesTransactionCount() throws SQLException {
 			BudgetPage.GoToTop5DetailsPage(WidgetOption.Top5Agencies);
 			HomePage.ShowWidgetDetails();
 			
-			int NumOfBudgetDetailsCount2016 =  NYCDatabaseUtil.getBudgetDetailsCount(2016,'B');
-			int numOfBudgetDetailsCountapp = BudgetPage.GetTransactionCount();
-			assertEquals("Number of transactions for Budget Details page table  did not match", numOfBudgetDetailsCountapp, NumOfBudgetDetailsCount2016); 
-			
 			String NumOfBudgetDetailsAmount2016 =  NYCDatabaseUtil.getBudgetDetailsAmount(2016,'B');
 			String numOfBudgetDetailsAmountapp = HomePage.GetTransactionAmount1();
-		assertEquals("Number ofRevenue widget Details page table count did not match", numOfBudgetDetailsAmountapp, NumOfBudgetDetailsAmount2016); 
-		
+		    assertEquals("Number ofRevenue widget Details page table count did not match", numOfBudgetDetailsAmountapp, NumOfBudgetDetailsAmount2016); 
 		
 		}
 		
-		/*
+		
+		@Test
+		public void VerifyBudgetAgenciesTransactionAmount() throws SQLException {
+			BudgetPage.GoToTop5DetailsPage(WidgetOption.Top5Agencies);
+			HomePage.ShowWidgetDetails();
+			String NumOfBudgetDetailsAmountDB =  NYCDatabaseUtil.getBudgetDetailsAmount(year,'B');
+			String numOfBudgetDetailsAmountapp = HomePage.GetTransactionAmount1();
+		assertEquals("Budget Domain widget Details page Total Modified amount did not match with DB", numOfBudgetDetailsAmountapp, NumOfBudgetDetailsAmountDB); 
+		}
+		
+		
 		@Test
 		public void VerifyNumOfBudgetAgenciesbyCommittedExpenseBudgetTransactionCount() throws SQLException {
 			BudgetPage.GoToTop5DetailsPage(WidgetOption.Top5AgenciesbyCommittedExpenseBudget);
 			HomePage.ShowWidgetDetails();
-			int NumOfBudgetDetailsCount2016 =  NYCDatabaseUtil.getBudgetDetailsCount(2016,'B');
-			int numOfBudgetDetailsCountapp = BudgetPage.GetTransactionCount();
-			assertEquals("Number of transactions for Budget Details page table  did not match", numOfBudgetDetailsCountapp, NumOfBudgetDetailsCount2016); 
+			String NumOfBudgetDetailsAmountDB =  NYCDatabaseUtil.getBudgetDetailsAmount(year,'B');
+			String numOfBudgetDetailsAmountapp = HomePage.GetTransactionAmount1();
+		assertEquals("Budget Domain widget Details page Total Modified amount did not match with DB", numOfBudgetDetailsAmountapp, NumOfBudgetDetailsAmountDB); 
 		}
 		@Test
 		public void VerifyNumOfBudgetAgenciesbyPercentDifference() throws SQLException {
 			BudgetPage.GoToTop5DetailsPage(WidgetOption.Top5AgenciesbyPercentDifference);
 			HomePage.ShowWidgetDetails();
-			int NumOfBudgetDetailsCount2016 =  NYCDatabaseUtil.getBudgetDetailsCount(2016,'B');
-			int numOfBudgetDetailsCountapp = BudgetPage.GetTransactionCount();
-			assertEquals("Number of transactions for Budget Details page table  did not match", numOfBudgetDetailsCountapp, NumOfBudgetDetailsCount2016); 
+			String NumOfBudgetDetailsAmountDB =  NYCDatabaseUtil.getBudgetDetailsAmount(year,'B');
+			String numOfBudgetDetailsAmountapp = HomePage.GetTransactionAmount1();
+		assertEquals("Budget Domain widget Details page Total Modified amount did not match with DB", numOfBudgetDetailsAmountapp, NumOfBudgetDetailsAmountDB); 
 		}
 		@Test
 		public void VerifyNumOfExpenseCategories() throws SQLException {
 			BudgetPage.GoToTop5DetailsPage(WidgetOption.Top5ExpenseCategories);
 			HomePage.ShowWidgetDetails();
-			int NumOfBudgetDetailsCount2016 =  NYCDatabaseUtil.getBudgetDetailsCount(2016,'B');
-			int numOfBudgetDetailsCountapp = BudgetPage.GetTransactionCount();
-			assertEquals("Number of transactions for Budget Details page table  did not match", numOfBudgetDetailsCountapp, NumOfBudgetDetailsCount2016); 
+			String NumOfBudgetDetailsAmountDB =  NYCDatabaseUtil.getBudgetDetailsAmount(year,'B');
+			String numOfBudgetDetailsAmountapp = HomePage.GetTransactionAmount1();
+		assertEquals("Budget Domain widget Details page Total Modified amount did not match with DB", numOfBudgetDetailsAmountapp, NumOfBudgetDetailsAmountDB); 
 		}
 		@Test
 		public void VerifyNumOfExpenseCategoriesbyCommittedExpenseBudget() throws SQLException {
 			BudgetPage.GoToTop5DetailsPage(WidgetOption.Top5ExpenseCategoriesbyCommittedExpenseBudget);
 			HomePage.ShowWidgetDetails();
-			int NumOfBudgetDetailsCount2016 =  NYCDatabaseUtil.getBudgetDetailsCount(2016,'B');
-			int numOfBudgetDetailsCountapp = BudgetPage.GetTransactionCount();
-			assertEquals("Number of transactions for Budget Details page table  did not match", numOfBudgetDetailsCountapp, NumOfBudgetDetailsCount2016); 
+			String NumOfBudgetDetailsAmountDB =  NYCDatabaseUtil.getBudgetDetailsAmount(year,'B');
+			String numOfBudgetDetailsAmountapp = HomePage.GetTransactionAmount1();
+		assertEquals("Budget Domain widget Details page Total Modified amount did not match with DB", numOfBudgetDetailsAmountapp, NumOfBudgetDetailsAmountDB); 
 		}
 		@Test
 		public void VerifyNumOfExpenseCategoriesbyPercentDifference() throws SQLException {			
 			BudgetPage.GoToTop5DetailsPage(WidgetOption.Top5ExpenseCategoriesbyPercentDifference);
 			HomePage.ShowWidgetDetails();
-			int NumOfBudgetDetailsCount2016 =  NYCDatabaseUtil.getBudgetDetailsCount(2016,'B');
-			int numOfBudgetDetailsCountapp = BudgetPage.GetTransactionCount();
-			assertEquals("Number of transactions for Budget Details page table  did not match", numOfBudgetDetailsCountapp, NumOfBudgetDetailsCount2016); 
+			String NumOfBudgetDetailsAmountDB =  NYCDatabaseUtil.getBudgetDetailsAmount(year,'B');
+			String numOfBudgetDetailsAmountapp = HomePage.GetTransactionAmount1();
+		assertEquals("Budget Domain widget Details page Total Modified amount did not match with DB", numOfBudgetDetailsAmountapp, NumOfBudgetDetailsAmountDB); 
 		}
 	
-		*/
+		
 		/* ***************** Test Widget Transaction Total Amount ****************** */
 	
-		/* 
-		@Test
-		public void VerifyBudgetTransactionAmount() throws SQLException {
-			//Float transactionAmt = 26.3f;
-			BudgetPage.GoToTop5DetailsPage(WidgetOption.Top5Agencies);
-			HomePage.ShowWidgetDetails();
-		//assertTrue(HomePage.GetTransactionAmount1()== transactionAmt);
-			String NumOfBudgetDetailsAmount2016 =  NYCDatabaseUtil.getBudgetDetailsAmount(2016,'B');
-			String numOfBudgetDetailsAmountapp = HomePage.GetTransactionAmount1();
-		assertEquals("Number ofRevenue widget Details page table count did not match", numOfBudgetDetailsAmountapp, NumOfBudgetDetailsAmount2016); 
-		}
-		*/
+	
 }
 

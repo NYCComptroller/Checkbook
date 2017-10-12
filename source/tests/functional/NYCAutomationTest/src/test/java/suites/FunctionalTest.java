@@ -19,6 +19,12 @@ import utilities.NYCBaseTest;
 //	TotalSpendingWidgetTest.class,
 //	TotalSpendingWidgetDetailsTest.class,
 //	TotalSpendingTitlesTest.class,
+	//TotalSpendingWidgetDetailsTest.class,
+	//PayrollSpendingWidgetDetailsTest.class,
+	//CapitalSpendingWidgetDetailsTest.class,
+	//ContractsSpendingWidgetDetailsTest.class,
+	//TrustAgencySpendingWidgetDetailsTest.class,
+	//OtherSpendingWidgetDetailsTest.class
 	
 	/* Contracts */
 	//ActiveExpenseContractsTest.class,
@@ -41,12 +47,14 @@ import utilities.NYCBaseTest;
 	
 	//BudgetWidgetTest.class,
 	//BudgetWidgetTitles.class,
+	//BudgetWidgetDetailsPageTitlesTest.class,
 
 	/* Revenue */
 //	RevenueWidgetTest.class,
 //RevenueWidgetTitles.class,
-	RevenueWidgetDetailsTest.class,
+	//RevenueWidgetDetailsTest.class,
 	//RevenueWidgetDetailsAmountTest.class,
+	RevenueWidgetDetailsPageTitlesTest.class,
 
 	/* Payroll */
 	//PayrollWidgetTest.class,
@@ -54,6 +62,7 @@ import utilities.NYCBaseTest;
 	//PayrollWidgetDetailsTest.class,
 
 	//PayrollTitles.class
+	//PayrollWidgetDetailsPageTitlesTest.class,
 })
 public class FunctionalTest extends NYCBaseTest{	
 	

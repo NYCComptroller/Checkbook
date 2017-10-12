@@ -314,7 +314,111 @@ public class NYCDatabaseUtil {
         return formatNumber(totalSpendingAmount);
         // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
     }
+    
+    
+    //Spending details amounts
+    
+    public static String getTotalSpendingDetailsAmount(int year, char yearTypeVal) throws SQLException {
+        query = "SELECT SUM(check_amount) sumSpendingAmt "
+                + "FROM disbursement_line_item_details"
+                + " WHERE fiscal_year = " + year;
+        rs = amountQueryHelper(yearTypeVal);
 
+        BigDecimal totalSpendingAmount = new BigDecimal(0);
+
+        while (rs.next()) {
+            totalSpendingAmount = rs.getBigDecimal("sumSpendingAmt");
+        }
+        return formatNumber(totalSpendingAmount);
+        // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
+    }
+    
+	public static String getPayrollSpendingDetailsAmount(int year, char yearTypeVal) throws SQLException {
+		// TODO Auto-generated method stub
+		 query = "SELECT SUM(check_amount) sumSpendingAmt "
+	                + "FROM disbursement_line_item_details "
+	                + " WHERE spending_category_id='2' and  fiscal_year = " + year;
+
+	         rs = amountQueryHelper(yearTypeVal);
+
+	        BigDecimal totalSpendingAmount = new BigDecimal(0);
+
+	        while (rs.next()) {
+	            totalSpendingAmount = rs.getBigDecimal("sumSpendingAmt");
+	        }
+	        return formatNumber2(totalSpendingAmount);
+	        // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
+	    }
+	
+	public static String getContractsSpendingDetailsAmount(int year, char yearTypeVal) throws SQLException {
+		// TODO Auto-generated method stub
+		 query = "SELECT SUM(check_amount) sumSpendingAmt "
+	                + "FROM disbursement_line_item_details "
+	                + " WHERE spending_category_id='1' and  fiscal_year = " + year;
+
+	          rs = amountQueryHelper(yearTypeVal);
+
+	        BigDecimal totalSpendingAmount = new BigDecimal(0);
+
+	        while (rs.next()) {
+	            totalSpendingAmount = rs.getBigDecimal("sumSpendingAmt");
+	        }
+	        return formatNumber2(totalSpendingAmount);
+	        // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
+	    }
+
+	
+	
+	public static String getCapitalContractsSpendingDetailsAmount(int year, char yearTypeVal) throws SQLException {
+		// TODO Auto-generated method stub
+		 query = "SELECT SUM(check_amount) sumSpendingAmt "
+	                + "FROM disbursement_line_item_details "
+	                + " WHERE spending_category_id='3' and  fiscal_year = " + year;
+
+	          rs = amountQueryHelper(yearTypeVal);
+
+	        BigDecimal totalSpendingAmount = new BigDecimal(0);
+
+	        while (rs.next()) {
+	            totalSpendingAmount = rs.getBigDecimal("sumSpendingAmt");
+	        }
+	        return formatNumber2(totalSpendingAmount);
+	        // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
+	    }
+	
+	public static String getTrustAgencySpendingDetailsAmount(int year, char yearTypeVal) throws SQLException {
+		// TODO Auto-generated method stub
+		 query = "SELECT SUM(check_amount) sumSpendingAmt "
+	                + "FROM disbursement_line_item_details "
+	                + " WHERE spending_category_id='5' and  fiscal_year = " + year;
+
+	          rs = amountQueryHelper(yearTypeVal);
+
+	        BigDecimal totalSpendingAmount = new BigDecimal(0);
+
+	        while (rs.next()) {
+	            totalSpendingAmount = rs.getBigDecimal("sumSpendingAmt");
+	        }
+	        return formatNumber2(totalSpendingAmount);
+	        // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
+	    }
+	
+	public static String getOtherSpendingDetailsAmount(int year, char yearTypeVal) throws SQLException {
+		// TODO Auto-generated method stub
+		 query = "SELECT SUM(check_amount) sumSpendingAmt "
+	                + "FROM disbursement_line_item_details "
+	                + " WHERE spending_category_id='4' and  fiscal_year = " + year;
+
+	          rs = amountQueryHelper(yearTypeVal);
+
+	        BigDecimal totalSpendingAmount = new BigDecimal(0);
+
+	        while (rs.next()) {
+	            totalSpendingAmount = rs.getBigDecimal("sumSpendingAmt");
+	        }
+	        return formatNumber2(totalSpendingAmount);
+	        // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
+	    }
        //Spending widget counts
         
         public static int getTotalSpendingAgenciesCount(int year,char yearTypeVal) throws SQLException {
@@ -449,6 +553,24 @@ public static String getRevenuecrossYearCollectionsDetailsAmount(int year, char 
         totalRevenueAmount = rs.getBigDecimal("sumRevenueAmt");
     }
     return formatNumber2(totalRevenueAmount);
+}
+public static String getRevenuecrossYearCollectionsDetailsAmount1(int year, char yearTypeVal) throws SQLException {
+    query = "SELECT SUM(posting_amount) sumRevenueAmt "
+            + "FROM revenue where fiscal_year = '2016' and "
+            + "  budget_fiscal_year = " + year;
+
+
+    rs = amountQueryHelper(yearTypeVal);
+
+    BigDecimal totalRevenueAmount = new BigDecimal(0);
+
+    while (rs.next()) {
+        totalRevenueAmount = rs.getBigDecimal("sumRevenueAmt");
+    }
+
+    return formatNumber2(totalRevenueAmount);
+   
+
 }
 
 public static String getRevenueDetailsAmount(int year, char yearTypeVal) throws SQLException {
@@ -1588,4 +1710,6 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
                }
                return count;
             }
+
+		
 }

@@ -20,15 +20,13 @@ public class CapitalSpendingPage {
         return navigation.TopNavigation.Spending.CapitalSpending.isAt();
     }
 
-	public static int GetNumberOfAgencies() {
-		return HomePage.GetWidgetTotalNumber("Top 5 Agencies");
-	}
+
 
 		
 		public static int GetTransactionCount() {
 			WebDriverWait wait = new WebDriverWait(Driver.Instance, 20);
 			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("table_706_info")));
 			String count = (Driver.Instance.findElement(By.id("table_706_info"))).getText();
-			return Helper.GetTotalEntries(count, 9);
+			return Helper.GetTotalEntries(count, 5);
 		}
 }

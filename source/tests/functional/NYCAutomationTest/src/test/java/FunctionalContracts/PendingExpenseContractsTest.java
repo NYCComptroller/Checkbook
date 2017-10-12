@@ -24,9 +24,7 @@ import utilities.TestStatusReport;
 
 public class PendingExpenseContractsTest extends NYCBaseTest {
 	
-
-	
-
+	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	public void GoToPage() {
 			  if (!PendingExpenseContracts.isAt())	{

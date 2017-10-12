@@ -115,42 +115,43 @@ public class RevenuePage {
 				break;
 		}
 		
-	   WebElement detailsAnchor = detailsContainer.findElement(By.linkText("Details >>"));
+	 //  WebElement detailsAnchor = detailsContainer.findElement(By.linkText("Details >>"));
 		
 		//Actions plan = new Actions(Driver.Instance);
 	
 		//int numberOfPixelsToDragTheScrollbarDown = 5000;
 		//plan.moveToElement(detailsAnchor).clickAndHold().moveByOffset(0,numberOfPixelsToDragTheScrollbarDown).release().perform();
-		
+		WebElement detailsAnchor = detailsContainer.findElement(By.partialLinkText("Details"));
 		((JavascriptExecutor) Driver.Instance).executeScript("arguments[0].scrollIntoView(true);", detailsAnchor);
-		detailsAnchor.click();
-		Driver.Instance.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+		detailsAnchor.click();	
+		Driver.Instance.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+		
 		
 	}
-	// details  page Transaction table  count
+		
 	
 	public static int GetTransactionCount() {
-		WebDriverWait wait = new WebDriverWait(Driver.Instance, 20);
+		WebDriverWait wait = new WebDriverWait(Driver.Instance, 30);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("table_280_info")));
 		String count = (Driver.Instance.findElement(By.id("table_280_info"))).getText();
 		return Helper.GetTotalEntries(count, 9);
 	}
 	public static int GetTransactionCount1() {
-		WebDriverWait wait = new WebDriverWait(Driver.Instance, 20);
+		WebDriverWait wait = new WebDriverWait(Driver.Instance, 30);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("table_595_info")));
 		String count = (Driver.Instance.findElement(By.id("table_595_info"))).getText();
 		return Helper.GetTotalEntries(count, 5);
 	}
 	
 	public static int GetTransactionCount2() {
-		WebDriverWait wait = new WebDriverWait(Driver.Instance, 20);
+		WebDriverWait wait = new WebDriverWait(Driver.Instance, 30);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("table_597_info")));
 		String count = (Driver.Instance.findElement(By.id("table_597_info"))).getText();
 		return Helper.GetTotalEntries(count, 5);
 	}
 	
 	public static int GetTransactionCount3() {
-		WebDriverWait wait = new WebDriverWait(Driver.Instance, 20);
+		WebDriverWait wait = new WebDriverWait(Driver.Instance, 30);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("table_596_info")));
 		String count = (Driver.Instance.findElement(By.id("table_596_info"))).getText();
 		return Helper.GetTotalEntries(count, 5);
@@ -158,7 +159,7 @@ public class RevenuePage {
 	// 	/// transaction table amount
 	
 	public static String GetTransactionAmount1() {
-		WebDriverWait wait = new WebDriverWait(Driver.Instance, 20);
+		WebDriverWait wait = new WebDriverWait(Driver.Instance, 30);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("total-spending-amount")));
 		String amount = (Driver.Instance.findElement(By.className("total-spending-amount"))).getText();	
 		//System.out.println(Helper.billionStringToFloat(count));
@@ -166,13 +167,14 @@ public class RevenuePage {
 		//return Helper.billionStringToFloat(count);
 	}
 	public static String GetTransactionAmount() {
-		WebDriverWait wait = new WebDriverWait(Driver.Instance, 20);
+		WebDriverWait wait = new WebDriverWait(Driver.Instance, 30);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("total-spending-amount")));
 		String amount = (Driver.Instance.findElement(By.className("total-spending-amount"))).getText();	
 		//System.out.println(Helper.billionStringToFloat(count));
 		return amount.substring(0,8);
 		//return Helper.billionStringToFloat(count);
 	}
+	
 
 	
 	///widget visualization titles   

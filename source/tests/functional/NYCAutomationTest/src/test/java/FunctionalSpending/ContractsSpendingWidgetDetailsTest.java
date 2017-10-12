@@ -18,17 +18,16 @@ import pages.payroll.PayrollPage;
 import utilities.NYCBaseTest;
 import utilities.TestStatusReport;
 import utilities.NYCDatabaseUtil;
-import utilities.NYCDatabaseUtilSpending;
+
 
 public class ContractsSpendingWidgetDetailsTest extends NYCBaseTest {
-	//public class TotalSpendingWidgetDetailsTest extends TestStatusReport{
-
+	//public class ContractsSpendingWidgetDetailsTest extends TestStatusReport{
+	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
-	public void GoToPage(){
-		
-		if (!ContractSpending.isAt()){
+	public void GoToPage(){		
+	
 			ContractSpendingPage.GoTo();
-		}
+	
 		if(!(Helper.getCurrentSelectedYear()).equalsIgnoreCase(NYCBaseTest.prop.getProperty("CurrentYear")))
 			HomePage.SelectYear(NYCBaseTest.prop.getProperty("CurrentYear"));
 		HomePage.ShowWidgetDetails();
@@ -49,42 +48,90 @@ public class ContractsSpendingWidgetDetailsTest extends NYCBaseTest {
 	@Test
 	public void VerifyNumOfchecksWidgetTransactionCount() throws SQLException {
 		SpendingPage.GoToTop5DetailsPage(WidgetOption.Top5Checks);
-		int year = 2016;
-		Integer totalCheckswidgetCountFY2016 = NYCDatabaseUtil.getContractSpendingDetailsCount(year,'B');
-		Integer totalChecksWidgetCountApp = ContractSpendingPage.GetTransactionCount();
-		assertEquals("Number of Checks  widget count  did not match with the DB",totalChecksWidgetCountApp, totalCheckswidgetCountFY2016);
+	
+		Integer totalChecksWidgetDetailsCountDB = NYCDatabaseUtil.getContractSpendingDetailsCount(year,'B');
+		Integer totalChecksWidgetDetailsCountApp = ContractSpendingPage.GetTransactionCount();
+		assertEquals("Contracts Spending Checks  widget Details count  did not match with the DB",totalChecksWidgetDetailsCountApp, totalChecksWidgetDetailsCountDB);
+		
+		String WidgetDetailsTitle =  "Checks Contracts Spending Transactions";
+		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
+	    assertEquals("Contracts Spending Checks  widget Details title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
+	    
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getContractsSpendingDetailsAmount(2016,'B');
+			String WidgetDetailsAmountApp = HomePage.GetTransactionAmount1();
+		    assertEquals("Contracts Spending Checks  widget Details page Total spending amount did not match", WidgetDetailsAmountApp, WidgetDetailsAmountDB);
+
 	}
-/*	@Test
+	@Test
 	public void VerifyNumOfAgenciesWidgetTransactionCount() throws SQLException {
 		SpendingPage.GoToTop5DetailsPage(WidgetOption.Top5Agencies);
-		int year = 2016;
-		Integer totalAgencieswidgetCountFY2016 = NYCDatabaseUtil.getContractSpendingDetailsCount(year,'B');
-		Integer totalAgenciesWidgetCountApp = SpendingPage.GetTransactionCount();
-		assertEquals("Number of agencies widget count  did not match with the DB",totalAgenciesWidgetCountApp, totalAgencieswidgetCountFY2016);
+	
+		Integer totalAgenciesWidgetDetailsCountDB = NYCDatabaseUtil.getContractSpendingDetailsCount(year,'B');
+		Integer totalAgenciesWidgetDetailsCountApp = SpendingPage.GetTransactionCount();
+		assertEquals("Contracts Spending Agencies widget Details count did not match with the DB",totalAgenciesWidgetDetailsCountApp, totalAgenciesWidgetDetailsCountDB);
+		
+		String WidgetDetailsTitle =  "Agencies Contracts Spending Transactions";
+		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
+	    assertEquals("Contracts Spending Agencies widget Details title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
+	    
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getContractsSpendingDetailsAmount(2016,'B');
+			String WidgetDetailsAmountApp = HomePage.GetTransactionAmount1();
+		    assertEquals("Contracts Spending Agencies widget Details page Total Spending Amount did not match", WidgetDetailsAmountApp, WidgetDetailsAmountDB);
+
 	}
 	@Test
 	public void VerifyNumOfExpenseCategoriesWidgetTransactionCount() throws SQLException{
 		SpendingPage.GoToTop5DetailsPage(WidgetOption.Top5ExpenseCategories);
-		Integer totalExpenseCategorieswidgetCountFY2016 = NYCDatabaseUtil.getContractSpendingDetailsCount(2016,'B');
-		Integer totalExpenseCategoriesWidgetCountApp = SpendingPage.GetTransactionCount();
-		assertEquals("Number of Exp categories  widget count  did not match with the DB",totalExpenseCategoriesWidgetCountApp, totalExpenseCategorieswidgetCountFY2016);
+		
+		Integer totalExpenseCategoriesWidgetDetailsCountDB = NYCDatabaseUtil.getContractSpendingDetailsCount(year,'B');
+		Integer totalExpenseCategoriesWidgetDetailsCountApp = SpendingPage.GetTransactionCount();
+		assertEquals("Contracts Spending Exp Categories widget Details count  did not match with the DB",totalExpenseCategoriesWidgetDetailsCountApp, totalExpenseCategoriesWidgetDetailsCountDB);
+		
+		String WidgetDetailsTitle =  "Expense Categories Contracts Spending Transactions";
+		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
+	    assertEquals("Contracts Spending Exp Categories widget Details title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
+	    
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getContractsSpendingDetailsAmount(2016,'B');
+			String WidgetDetailsAmountApp = HomePage.GetTransactionAmount1();
+		    assertEquals("Contracts Spending Exp Categories widget Detailspage Total Spending Amount did not match", WidgetDetailsAmountApp, WidgetDetailsAmountDB);
+
 	}
 	
 	@Test
 	public void VerifyNumOfPrimeVendorsWidgetTransactionCount() throws SQLException{
 		SpendingPage.GoToTop5DetailsPage(WidgetOption.Top5PrimeVendors);
-		Integer totalPrimeVendorswidgetCountFY2016 = NYCDatabaseUtil.getContractSpendingDetailsCount(2016,'B');
-		Integer totalPrimeVendorsWidgetCountApp = SpendingPage.GetTransactionCount();
-		assertEquals("Number of Prime Vendor  widget count  did not match with the DB",totalPrimeVendorsWidgetCountApp, totalPrimeVendorswidgetCountFY2016);
+		
+		Integer totalPrimeVendorsWidgetDetailsCountDB = NYCDatabaseUtil.getContractSpendingDetailsCount(year,'B');
+		Integer totalPrimeVendorsWidgetDetailsCountApp = SpendingPage.GetTransactionCount();
+		assertEquals("Contracts Spending Prime Vendor widget Details count  did not match with the DB",totalPrimeVendorsWidgetDetailsCountApp, totalPrimeVendorsWidgetDetailsCountDB);
+		
+		String WidgetDetailsTitle =  "Prime Vendors Contracts Spending Transactions";
+		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
+	    assertEquals("Contracts Spending Prime Vendor widget Details title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp);
+	    
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getContractsSpendingDetailsAmount(2016,'B');
+			String WidgetDetailsAmountApp = HomePage.GetTransactionAmount1();
+		    assertEquals("Contracts Spending Prime Vendor widget Details page Total Spending Amount did not match", WidgetDetailsAmountApp, WidgetDetailsAmountDB);
+
 	}
 	@Test
 	public void VerifyNumOfContractsWidgetTransactionCount() throws SQLException{
 		SpendingPage.GoToTop5DetailsPage(WidgetOption.Top5Contracts);
-		Integer totalContractswidgetCountFY2016 = NYCDatabaseUtil.getContractSpendingContractsDetailsCount(2016,'B');
-		Integer totalContractsWidgetCountApp = SpendingPage.GetTransactionCount();
-		assertEquals("Number of Contracts  widget count  did not match with the DB",totalContractsWidgetCountApp, totalContractswidgetCountFY2016);
+		
+		Integer totalContractsWidgetDetailsCountDB = NYCDatabaseUtil.getContractSpendingContractsDetailsCount(year,'B');
+		Integer totalContractsWidgetDetailsCountApp = SpendingPage.GetTransactionCount();
+		assertEquals("Contracts Spending Contracts widget Details count  did not match with the DB",totalContractsWidgetDetailsCountApp, totalContractsWidgetDetailsCountDB);
+		
+		String WidgetDetailsTitle =  "Contracts Contracts Spending Transactions";
+		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
+	    assertEquals("Contracts Spending Contracts widget Details title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
+	    
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getContractsSpendingDetailsAmount(2016,'B');
+			String WidgetDetailsAmountApp = HomePage.GetTransactionAmount1();
+		    assertEquals("Contracts Spending Contracts widget Details page Total Spending Amount did not match", WidgetDetailsAmountApp, WidgetDetailsAmountDB);
+
 	}
-	*/
+	
 }
 
 
