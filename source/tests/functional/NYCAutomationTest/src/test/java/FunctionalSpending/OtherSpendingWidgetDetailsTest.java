@@ -20,7 +20,7 @@ import utilities.TestStatusReport;
 import utilities.NYCDatabaseUtil;
 
 //public class OtherSpendingWidgetDetailsTest extends NYCBaseTest {
-	public class OtherSpendingWidgetDetailsTest extends TestStatusReport{
+public class OtherSpendingWidgetDetailsTest extends TestStatusReport{
 		int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	public void GoToPage(){
@@ -39,77 +39,77 @@ import utilities.NYCDatabaseUtil;
 
 	
 	@Test
-	public void VerifyNumOfchecksWidgetTransactionCount() throws SQLException {
+	public void VerifychecksWidgetTransactionPage() throws SQLException {
 		SpendingPage.GoToTop5DetailsPage(WidgetOption.Top5Checks);
 	
 		Integer totalChecksWidgetDetailsCountDB = NYCDatabaseUtil.getOtherSpendingDetailsCount(year,'B');
 		Integer totalChecksWidgetDetailsCountApp = SpendingPage.GetTransactionCount();
-		assertEquals("Number of Checks  widget count  did not match with the DB",totalChecksWidgetDetailsCountApp, totalChecksWidgetDetailsCountDB);
+		assertEquals("Other Spending Checks  widget count  did not match with the DB",totalChecksWidgetDetailsCountApp, totalChecksWidgetDetailsCountDB);
 		
 		String WidgetDetailsTitle =  "Checks Other Spending Transactions";
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
-	    assertEquals("Total Spending Agencies Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
+	    assertEquals("Other Spending Checks Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
-	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getOtherSpendingDetailsAmount(2016,'B');
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getOtherSpendingDetailsAmount(year,'B');
 			String WidgetDetailsAmountapp = HomePage.GetTransactionAmount1();
-		    assertEquals("Number ofRevenue widget Details page table count did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
+		    assertEquals("Other Spending Checks widget Details page Total spending Amount did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
 	}
 	
 	@Test
-	public void VerifyNumOfAgenciesWidgetTransactionCount() throws SQLException {
+	public void VerifyAgenciesWidgetTransactionPage() throws SQLException {
 		SpendingPage.GoToTop5DetailsPage(WidgetOption.Top5Agencies);
-		int year = 2016;
+		
 		Integer totalAgenciesWidgetDetailsCountDB = NYCDatabaseUtil.getOtherSpendingDetailsCount(year,'B');
 		Integer totalAgenciesWidgetDetailsCountApp = SpendingPage.GetTransactionCount();
-		assertEquals("Number of agencies widget count  did not match with the DB",totalAgenciesWidgetDetailsCountApp, totalAgenciesWidgetDetailsCountDB);
+		assertEquals("Other Spending agencies widget count  did not match with the DB",totalAgenciesWidgetDetailsCountApp, totalAgenciesWidgetDetailsCountDB);
 		
 		String WidgetDetailsTitle =  "Agencies Other Spending Transactions";
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
-	    assertEquals("Total Spending Agencies Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
+	    assertEquals("Other Spending Agencies Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
-	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getOtherSpendingDetailsAmount(2016,'B');
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getOtherSpendingDetailsAmount(year,'B');
 			String WidgetDetailsAmountapp = HomePage.GetTransactionAmount1();
-		    assertEquals("Number ofRevenue widget Details page table count did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
+		    assertEquals("Other Spending Agencies widget Details page Total spending Amount did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
 	}
 	@Test
-	public void VerifyNumOfExpenseCategoriesWidgetTransactionCount() throws SQLException{
+	public void VerifyExpenseCategoriesWidgetTransactionPage() throws SQLException{
 		SpendingPage.GoToTop5DetailsPage(WidgetOption.Top5ExpenseCategories);
 		
-		Integer totalExpenseCategoriesWidgetDetailsCountDB = NYCDatabaseUtil.getOtherSpendingDetailsCount(2016,'B');
+		Integer totalExpenseCategoriesWidgetDetailsCountDB = NYCDatabaseUtil.getOtherSpendingDetailsCount(year,'B');
 		Integer totalExpenseCategoriesWidgetDetailsCountApp = SpendingPage.GetTransactionCount();
-		assertEquals("Number of Exp categories  widget count  did not match with the DB",totalExpenseCategoriesWidgetDetailsCountApp, totalExpenseCategoriesWidgetDetailsCountDB);
+		assertEquals("Other Spending Exp categories  widget count  did not match with the DB",totalExpenseCategoriesWidgetDetailsCountApp, totalExpenseCategoriesWidgetDetailsCountDB);
 		
 		String WidgetDetailsTitle =  "Expense Categories Other Spending Transactions";
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
-	    assertEquals("Total Spending Agencies Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
+	    assertEquals("Other Spending Agencies Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
-	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getOtherSpendingDetailsAmount(2016,'B');
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getOtherSpendingDetailsAmount(year,'B');
 		String WidgetDetailsAmountapp = HomePage.GetTransactionAmount1();
-		assertEquals("Number ofRevenue widget Details page table count did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
+		assertEquals("Other Spending Expense Categories widget Details page Total spending Amount did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
 	}
 	
 	@Test
-	public void VerifyNumOfPrimeVendorsWidgetTransactionCount() throws SQLException{
+	public void VerifyPrimeVendorsWidgetTransactionPage() throws SQLException{
 		SpendingPage.GoToTop5DetailsPage(WidgetOption.Top5PrimeVendors);
 		
-		Integer totalPrimeVendorsWidgetDetailsCountDB = NYCDatabaseUtil.getOtherSpendingDetailsCount(2016,'B');
+		Integer totalPrimeVendorsWidgetDetailsCountDB = NYCDatabaseUtil.getOtherSpendingDetailsCount(year,'B');
 		Integer totalPrimeVendorsWidgetDetailsCountApp = SpendingPage.GetTransactionCount();
-		assertEquals("Number of Prime Vendor  widget count  did not match with the DB",totalPrimeVendorsWidgetDetailsCountApp, totalPrimeVendorsWidgetDetailsCountDB);
+		assertEquals("Other Spending Prime Vendor  widget count  did not match with the DB",totalPrimeVendorsWidgetDetailsCountApp, totalPrimeVendorsWidgetDetailsCountDB);
 		
 		String WidgetDetailsTitle =  "Prime Vendors Other Spending Transactions";
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
-	    assertEquals("Total Spending Agencies Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp);
+	    assertEquals("Other Spending Prime Vendors Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp);
 	    
-	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getOtherSpendingDetailsAmount(2016,'B');
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getOtherSpendingDetailsAmount(year,'B');
 		String WidgetDetailsAmountapp = HomePage.GetTransactionAmount1();
-		assertEquals("Number ofRevenue widget Details page table count did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
+		assertEquals("Other Spending Prime Vendors widget Details page Total spending Amount did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
 	}
 	//No widget@Test
 	/*public void VerifyNumOfContractsWidgetTransactionCount() throws SQLException{
 		SpendingPage.GoToTop5DetailsPage(WidgetOption.Top5Contracts);
-		Integer totalContractsWidgetDetailsCountDB = NYCDatabaseUtil.getOtherSpendingContractsDetailsCount(2016,'B');
+		Integer totalContractsWidgetDetailsCountDB = NYCDatabaseUtil.getOtherSpendingContractsDetailsCount(year,'B');
 		Integer totalContractsWidgetDetailsCountApp = SpendingPage.GetTransactionCount();
-		assertEquals("Number of Contracts  widget count  did not match with the DB",totalContractsWidgetDetailsCountApp, totalContractsWidgetDetailsCountDB);
+		assertEquals("Other Spending Contracts  widget count  did not match with the DB",totalContractsWidgetDetailsCountApp, totalContractsWidgetDetailsCountDB);
 	}*/
 	
 }

@@ -37,7 +37,12 @@ public class RegisteredExpenseContractsDetailsTest extends TestStatusReport{
 		HomePage.ShowWidgetDetails();
 		int NumOfREContractsDetailsCount2016 = NYCDatabaseUtil.getREContractsMasterDetailsCount(2016,'B');
 		int numOfREContractsDetailsCountapp = RegisteredExpenseContractsPage.GetTransactionCount();
-		assertEquals("Number of Registered Expense master contracts widget Details page table count did not match", numOfREContractsDetailsCountapp, NumOfREContractsDetailsCount2016); 
+		assertEquals("Number of Registered Expense master contracts widget Details page table count did not match", numOfREContractsDetailsCountapp, NumOfREContractsDetailsCount2016);
+		
+		String WidgetDetailsTitle =  "Master Agreement Active Expense Contracts Transactions";
+		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
+	    assertEquals("Active Expense Contracts Master Agreement Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
+	    
 	}
 	@Test
 	public void VerifyTop5MasterAgreementModificationsTransactionCount() throws SQLException {
@@ -45,7 +50,12 @@ public class RegisteredExpenseContractsDetailsTest extends TestStatusReport{
 		HomePage.ShowWidgetDetails();
 		int NumOfREContractsDetailsCount2016 = NYCDatabaseUtil.getREContractsMasterModificationsDetailsCount(2016,'B');
 		int numOfREContractsDetailsCountapp = ActiveExpenseContractsPage.GetTransactionCount();
-		assertEquals("Number of Registered Expense master Contracts modification widget Details page table count did not match", numOfREContractsDetailsCountapp, NumOfREContractsDetailsCount2016); 
+		assertEquals("Number of Registered Expense master Contracts modification widget Details page table count did not match", numOfREContractsDetailsCountapp, NumOfREContractsDetailsCount2016);
+		
+		 String WidgetDetailsTitle =  "Master Agreement Modifications Active Expense Contracts Transactions";
+		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
+		assertEquals("Active Expense Contracts Master Agreement Modifications Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
+		    
 	}
 	@Test
 	public void VerifyTop5ContractsTransactionCount() throws SQLException {
@@ -54,6 +64,11 @@ public class RegisteredExpenseContractsDetailsTest extends TestStatusReport{
 		int NumOfREContractsDetailsCount2016 = NYCDatabaseUtil.getREContractsDetailsCount(2016,'B');
 		int numOfREContractsDetailsCountapp = RegisteredExpenseContractsPage.GetTransactionCount();
 		assertEquals("Number of Registered Expense Contracts  widget Details page table count did not match", numOfREContractsDetailsCountapp, NumOfREContractsDetailsCount2016); 
+		
+		String WidgetDetailsTitle =  "Active Expense Contracts Transactions";
+		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
+	    assertEquals("Active Expense Contracts contracts Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
+	    
 	}
 	@Test
 	public void VerifyTop5ContractAmountModificationsTransactionCount() throws SQLException {
@@ -62,6 +77,11 @@ public class RegisteredExpenseContractsDetailsTest extends TestStatusReport{
 		int NumOfREContractsDetailsCount2016 = NYCDatabaseUtil.getREContractsModificationsDetailsCount(2016,'B');
 		int numOfREContractsDetailsCountapp = RegisteredExpenseContractsPage.GetTransactionCount();
 		assertEquals("Number of REgistered Expense Contracts modification widget Details page table count did not match", numOfREContractsDetailsCountapp, NumOfREContractsDetailsCount2016); 
+		
+		String WidgetDetailsTitle =  "Active Expense Contracts Modifications Transactions";
+		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
+	    assertEquals("Active Expense Contracts Modifications Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
+	    
 	}
 	@Test
 	public void VerifyTop5PrimeVendorsTransactionCount() throws SQLException {
@@ -70,6 +90,11 @@ public class RegisteredExpenseContractsDetailsTest extends TestStatusReport{
 		int NumOfREContractsDetailsCount2016 =  NYCDatabaseUtil.getREContractsDetailsCount(2016,'B');
 		int numOfREContractsDetailsCountapp = RegisteredExpenseContractsPage.GetTransactionCount();
 		assertEquals("Number of Registered Expense Contracts Prime Vendors widget Details page table count did not match", numOfREContractsDetailsCountapp, NumOfREContractsDetailsCount2016); 
+		
+		String WidgetDetailsTitle =  "Prime Vendors Active Expense Contracts Transactions";
+		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
+	    assertEquals("Active Expense Contracts Prime Vendors Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
+	    
 	}
 	@Test
 	public void VerifyTop5AwardMethodsTransactionCount() throws SQLException {
@@ -78,6 +103,11 @@ public class RegisteredExpenseContractsDetailsTest extends TestStatusReport{
 		int NumOfREContractsDetailsCount2016 =  NYCDatabaseUtil.getREContractsDetailsCount(2016,'B');
 		int numOfREContractsDetailsCountapp = RegisteredExpenseContractsPage.GetTransactionCount();
 		assertEquals("Number of Registered Expense Contracts Award Method widget Details page table count did not match", numOfREContractsDetailsCountapp, NumOfREContractsDetailsCount2016); 
+		
+		String WidgetDetailsTitle =  "AWard Methods Active Expense Contracts Transactions";
+		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
+	    assertEquals("Active Expense Contracts AWard Method Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
+	    
 	}
 	@Test
 	public void VerifyTop5AgenciesTransactionCount() throws SQLException {
@@ -86,7 +116,13 @@ public class RegisteredExpenseContractsDetailsTest extends TestStatusReport{
 		int NumOfREContractsDetailsCount2016 =  NYCDatabaseUtil.getREContractsDetailsCount(2016,'B');
 		int numOfREContractsDetailsCountapp = RegisteredExpenseContractsPage.GetTransactionCount();
 		assertEquals("Number of  Registered Expense Contracts Agencies widget Details page table count did not match", numOfREContractsDetailsCountapp, NumOfREContractsDetailsCount2016); 
+		
+		String WidgetDetailsTitle =  "Agencies Active Expense Contracts Transactions";
+		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
+	    assertEquals("Active Expense Contracts Agencies Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
+	    
 	}
+	
 	@Test
 	public void VerifyContractsByIndustriesTransactionCount() throws SQLException {
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.ContractsByIndustries);
@@ -94,6 +130,11 @@ public class RegisteredExpenseContractsDetailsTest extends TestStatusReport{
 		int NumOfREContractsDetailsCount2016 =  NYCDatabaseUtil.getREContractsDetailsCount(2016,'B');
 		int numOfREContractsDetailsCountapp = RegisteredExpenseContractsPage.GetTransactionCount();
 		assertEquals("Number of  Registered Expense Contracts by Industies widget Details page table count did not match", numOfREContractsDetailsCountapp, NumOfREContractsDetailsCount2016); 
+		
+		String WidgetDetailsTitle =  "Contracts by Industries Active Expense Contracts Transactions";
+		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
+	    assertEquals("Active Expense Contracts Industries Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
+	    
 	}
 	@Test
 	public void VerifyContractsBySizeTransactionCount() throws SQLException {
@@ -102,6 +143,11 @@ public class RegisteredExpenseContractsDetailsTest extends TestStatusReport{
 		int NumOfREContractsDetailsCount2016 =  NYCDatabaseUtil.getREContractsDetailsCount(2016,'B');
 		int numOfREContractsDetailsCountapp = RegisteredExpenseContractsPage.GetTransactionCount();
 		assertEquals("Number of Registered Expense Contracts by size  widget Details page table count did not match", numOfREContractsDetailsCountapp, NumOfREContractsDetailsCount2016); 
+		
+		String WidgetDetailsTitle =  "Contracts by Size Active Expense Contracts Transactions";
+		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
+	    assertEquals("Active Expense Contracts Contracts by Sizes Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
+	    
 	}
 
 	/* ***************** Test Widget Transaction Count ****************** */

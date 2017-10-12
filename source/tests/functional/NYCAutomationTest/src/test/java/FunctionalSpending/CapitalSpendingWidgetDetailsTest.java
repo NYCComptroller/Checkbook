@@ -22,8 +22,8 @@ import utilities.NYCDatabaseUtil;
 
 
 
-public class CapitalSpendingWidgetDetailsTest extends NYCBaseTest {
-	//public class CapitalSpendingWidgetDetailsTest extends TestStatusReport{
+//public class CapitalSpendingWidgetDetailsTest extends NYCBaseTest {
+	public class CapitalSpendingWidgetDetailsTest extends TestStatusReport{
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	public void GoToPage(){
@@ -40,7 +40,7 @@ public class CapitalSpendingWidgetDetailsTest extends NYCBaseTest {
 	/* ***************** Test Widget Transaction Count ****************** */
 	
 	@Test
-	public void VerifyNumOfchecksWidgetTransactionCount() throws SQLException {
+	public void VerifyNumOfchecksWidgetTransactionPage() throws SQLException {
 		
 		SpendingPage.GoToTop5DetailsPage(WidgetOption.Top5Checks);
 		
@@ -56,14 +56,12 @@ public class CapitalSpendingWidgetDetailsTest extends NYCBaseTest {
 	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getCapitalContractsSpendingDetailsAmount(year,'B');
 		String WidgetDetailsAmountApp = HomePage.GetTransactionAmount1();
 	    assertEquals("Capital Spending checks Widget Details page total spending amount did not match", WidgetDetailsAmountApp, WidgetDetailsAmountDB); 
-	  
-
-	}
+	  	}
 	
 
 
 	@Test
-	public void VerifyNumOfAgenciesWidgetTransactionCount() throws SQLException {
+	public void VerifyAgenciesWidgetTransactionPage() throws SQLException {
 		SpendingPage.GoToTop5DetailsPage(WidgetOption.Top5Agencies);
 		
 		Integer totalAgenciesWidgetDetailsCountDB = NYCDatabaseUtil.getCapitalSpendingDetailsCount(year,'B');
@@ -79,7 +77,7 @@ public class CapitalSpendingWidgetDetailsTest extends NYCBaseTest {
 		assertEquals("Capital Spending Agencies Widget Details page total spending amount did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
 	}
 	@Test
-	public void VerifyNumOfExpenseCategoriesWidgetTransactionCount() throws SQLException{
+	public void VerifyExpenseCategoriesWidgetTransactionPage() throws SQLException{
 		SpendingPage.GoToTop5DetailsPage(WidgetOption.Top5ExpenseCategories);
 		
 		Integer totalExpenseCategoriesWidgetDetailsCountDB = NYCDatabaseUtil.getCapitalSpendingDetailsCount(year,'B');
@@ -96,7 +94,7 @@ public class CapitalSpendingWidgetDetailsTest extends NYCBaseTest {
 	}
 	
 	@Test
-	public void VerifyNumOfPrimeVendorsWidgetTransactionCount() throws SQLException{
+	public void VerifyPrimeVendorsWidgetTransactionPage() throws SQLException{
 		SpendingPage.GoToTop5DetailsPage(WidgetOption.Top5PrimeVendors);
 		
 		Integer totalPrimeVendorsWidgetDetailsCountDB = NYCDatabaseUtil.getCapitalSpendingDetailsCount(year,'B');
@@ -112,7 +110,7 @@ public class CapitalSpendingWidgetDetailsTest extends NYCBaseTest {
 		assertEquals("Capital Spending Prime Vendor  widget details total spending amount did not match", WidgetDetailsAmountApp, WidgetDetailsAmountDB);
 	}
 	@Test
-	public void VerifyNumOfContractsWidgetTransactionCount() throws SQLException{
+	public void VerifyContractsWidgetTransactionPage() throws SQLException{
 		SpendingPage.GoToTop5DetailsPage(WidgetOption.Top5Contracts);
 		
 		Integer totalContractsWidgetDetailsCountDB = NYCDatabaseUtil.getCapitalSpendingContractsDetailsCount(year,'B');
