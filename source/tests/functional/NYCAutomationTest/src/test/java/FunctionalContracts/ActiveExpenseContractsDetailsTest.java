@@ -31,22 +31,7 @@ public class ActiveExpenseContractsDetailsTest extends NYCBaseTest {
 		HomePage.ShowWidgetDetails();
 	}
 	
-	@After
-	public void EndProgram()
-	{
-		Driver.Instance.quit();
-	}
-	
-	@Test
-	public void VerifyContractsTransactionTitle() throws SQLException {
-			ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5Agencies);
-		HomePage.ShowWidgetDetails();
-	//assertTrue(HomePage.GetTransactionAmount1()== transactionAmt);
-		String AgenciesTitle =  "Agencies Active Expense Contracts Transactions";
-		String RevenueAgenciesTitleApp = HomePage.DetailsPagetitle();
-	assertEquals("Revenue Agencies Widget details page title did not match", AgenciesTitle, RevenueAgenciesTitleApp); 
-	}
-	
+		
 	/* ***************** Test Widget Transaction Count ****************** */
 	@Test
 	public void VerifyTop5MasterAgreementsTransactionCount() throws SQLException {
@@ -56,7 +41,7 @@ public class ActiveExpenseContractsDetailsTest extends NYCBaseTest {
 		int numOfAEContractsDetailsCountapp = ActiveExpenseContractsPage.GetTransactionCount();
 		assertEquals("Active Expense Contracts master contracts widget Details page table count did not match", numOfAEContractsDetailsCountapp, NumOfAEContractsDetailsCountyear); 
 		
-		String WidgetDetailsTitle =  "Master Agreement Active Expense Contracts Transactions";
+		String WidgetDetailsTitle =  "Master Agreements Active Expense Contracts Transactions";
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
 	    assertEquals("Active Expense Contracts Master Agreement Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
@@ -83,7 +68,7 @@ public class ActiveExpenseContractsDetailsTest extends NYCBaseTest {
 		int numOfAEContractsDetailsCountapp = ActiveExpenseContractsPage.GetTransactionCount();
 		assertEquals("Active Expense Contracts contracts widget Details page table count did not match", numOfAEContractsDetailsCountapp, NumOfAEContractsDetailsCountyear); 
 		
-		String WidgetDetailsTitle =  "Active Expense Contracts Transactions";
+		String WidgetDetailsTitle =  "Contracts Active Expense Contracts Transactions";
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
 	    assertEquals("Active Expense Contracts contracts Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
@@ -96,7 +81,7 @@ public class ActiveExpenseContractsDetailsTest extends NYCBaseTest {
 		int numOfAEContractsDetailsCountapp = ActiveExpenseContractsPage.GetTransactionCount();
 		assertEquals("Active Expense Contracts master Contracts modification widget Details page table count did not match", numOfAEContractsDetailsCountapp, NumOfAEContractsDetailsCountyear); 
 		
-		String WidgetDetailsTitle =  "Active Expense Contracts Modifications Transactions";
+		String WidgetDetailsTitle =  "Contract Amount Modifications Active Expense Contracts Transactions";
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
 	    assertEquals("Active Expense Contracts Modifications Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
@@ -105,7 +90,7 @@ public class ActiveExpenseContractsDetailsTest extends NYCBaseTest {
 	public void VerifyTop5PrimeVendorsTransactionCount() throws SQLException {
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5PrimeVendors);
 	
-		int NumOfAEContractsDetailsCountyear =  NYCDatabaseUtil.getAEContractsDetailsCount(year,'B');
+		int NumOfAEContractsDetailsCountyear =  NYCDatabaseUtil.getAEAllContractsDetailsCount(year,'B');
 		int numOfAEContractsDetailsCountapp = ActiveExpenseContractsPage.GetTransactionCount();
 		assertEquals("Active Expense Contracts master Contracts Prime Vendors widget Details page table count did not match", numOfAEContractsDetailsCountapp, NumOfAEContractsDetailsCountyear);
 		
@@ -118,11 +103,11 @@ public class ActiveExpenseContractsDetailsTest extends NYCBaseTest {
 	public void VerifyTop5AwardMethodsTransactionCount() throws SQLException {
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5AwardMethods);
 		HomePage.ShowWidgetDetails();
-		int NumOfAEContractsDetailsCountyear =  NYCDatabaseUtil.getAEContractsDetailsCount(year,'B');
+		int NumOfAEContractsDetailsCountyear =  NYCDatabaseUtil.getAEAllContractsDetailsCount(year,'B');
 		int numOfAEContractsDetailsCountapp = ActiveExpenseContractsPage.GetTransactionCount();
-		assertEquals("Active Expense Contracts master Contracts Award Method widget Details page table count did not match", numOfAEContractsDetailsCountapp, NumOfAEContractsDetailsCountyear);
+		assertEquals("Active Expense Contracts  Award Method widget Details page table count did not match", numOfAEContractsDetailsCountapp, NumOfAEContractsDetailsCountyear);
 
-		String WidgetDetailsTitle =  "AWard Methods Active Expense Contracts Transactions";
+		String WidgetDetailsTitle =  "Award Methods Active Expense Contracts Transactions";
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
 	    assertEquals("Active Expense Contracts AWard Method Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
@@ -132,7 +117,7 @@ public class ActiveExpenseContractsDetailsTest extends NYCBaseTest {
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5Agencies);
 		HomePage.ShowWidgetDetails();
 		
-		int NumOfAEContractsDetailsCountyear =  NYCDatabaseUtil.getAEContractsDetailsCount(year,'B');
+		int NumOfAEContractsDetailsCountyear =  NYCDatabaseUtil.getAEAllContractsDetailsCount(year,'B');
 		int numOfAEContractsDetailsCountapp = ActiveExpenseContractsPage.GetTransactionCount();
 		assertEquals("Active Expense Contracts  Agencies widget Details page table count did not match", numOfAEContractsDetailsCountapp, NumOfAEContractsDetailsCountyear); 
 		
@@ -145,7 +130,7 @@ public class ActiveExpenseContractsDetailsTest extends NYCBaseTest {
 	public void VerifyContractsByIndustriesTransactionCount() throws SQLException {
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.ContractsByIndustries);
 		HomePage.ShowWidgetDetails();
-		int NumOfAEContractsDetailsCountyear =  NYCDatabaseUtil.getAEContractsDetailsCount(year,'B');
+		int NumOfAEContractsDetailsCountyear =  NYCDatabaseUtil.getAEAllContractsDetailsCount(year,'B');
 		int numOfAEContractsDetailsCountapp = ActiveExpenseContractsPage.GetTransactionCount();
 		assertEquals("Active Expense Contracts  Contracts by Industies widget Details page table count did not match", numOfAEContractsDetailsCountapp, NumOfAEContractsDetailsCountyear); 
 		
@@ -158,7 +143,7 @@ public class ActiveExpenseContractsDetailsTest extends NYCBaseTest {
 	public void VerifyContractsBySizeTransactionCount() throws SQLException {
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.ContractsBySize);
 	
-		int NumOfAEContractsDetailsCountyear =  NYCDatabaseUtil.getAEContractsDetailsCount(year,'B');
+		int NumOfAEContractsDetailsCountyear =  NYCDatabaseUtil.getAEAllContractsDetailsCount(year,'B');
 		int numOfAEContractsDetailsCountapp = ActiveExpenseContractsPage.GetTransactionCount();
 		assertEquals("Active Expense Contracts Contracts by size  widget Details page table count did not match", numOfAEContractsDetailsCountapp, NumOfAEContractsDetailsCountyear);
 		
@@ -169,6 +154,8 @@ public class ActiveExpenseContractsDetailsTest extends NYCBaseTest {
 	}
 
 	/* ***************** Test Widget Transaction Total Amount ****************** */
+	
+	/*
 	@Test
 	public void VerifyTop5MasterAgreementsTransactionAmount(){
 		Float transactionAmt = 26.3f;
@@ -176,4 +163,21 @@ public class ActiveExpenseContractsDetailsTest extends NYCBaseTest {
 		HomePage.ShowWidgetDetails();
 		assertTrue(HomePage.GetTransactionAmount()>= transactionAmt);
 	}
+		@Test
+	public void VerifyContractsTransactionTitle() throws SQLException {
+			ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5Agencies);
+		HomePage.ShowWidgetDetails();
+	//assertTrue(HomePage.GetTransactionAmount1()== transactionAmt);
+		String AgenciesTitle =  "Agencies Active Expense Contracts Transactions";
+		String RevenueAgenciesTitleApp = HomePage.DetailsPagetitle();
+	assertEquals("Revenue Agencies Widget details page title did not match", AgenciesTitle, RevenueAgenciesTitleApp); 
+	}
+	
+	@After
+	public void EndProgram()
+	{
+		Driver.Instance.quit();
+	}
+	
+	*/
 }

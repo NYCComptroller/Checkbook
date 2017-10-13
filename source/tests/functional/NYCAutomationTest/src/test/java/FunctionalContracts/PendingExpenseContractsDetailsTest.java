@@ -15,9 +15,9 @@ import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
 import helpers.Helper;
 import utilities.TestStatusReport;
-//public class PendingExpenseContractsDetailsTest extends TestStatusReport{
+public class PendingExpenseContractsDetailsTest extends TestStatusReport{
 
-public class PendingExpenseContractsDetailsTest extends NYCBaseTest {
+//public class PendingExpenseContractsDetailsTest extends NYCBaseTest {
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	public void GoToPage(){
@@ -29,25 +29,25 @@ public class PendingExpenseContractsDetailsTest extends NYCBaseTest {
 
 	/* ***************** Test Widget Transaction Count ****************** */
 	@Test
-	public void VerifyTop5MasterAgreementsTransactionCount() throws SQLException {
+	public void VerifyTop5MasterAgreementsTransactionPage() throws SQLException {
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5MasterAgreements);
 		HomePage.ShowWidgetDetails();
-		int NumOfPEContractsDetailsCount2016 =  NYCDatabaseUtil.getPEContractsMasterDetailsCount(2016,'B');
+		int NumOfPEContractsDetailsCountDB =  NYCDatabaseUtil.getPEContractsMasterDetailsCount(year,'B');
 		int numOfPEContractsDetailsCountapp = PendingExpenseContractsPage.GetTransactionCount();
-		assertEquals(" Pending Expense  master contracts widget Details page table count did not match", numOfPEContractsDetailsCountapp, NumOfPEContractsDetailsCount2016); 
+		assertEquals(" Pending Expense  master contracts widget Details page table count did not match", numOfPEContractsDetailsCountapp, NumOfPEContractsDetailsCountDB); 
 		
-		String WidgetDetailsTitle =  "Master Agreement Pending Expense Contracts Transactions";
+		String WidgetDetailsTitle =  "Master Agreements Pending Expense Contracts Transactions";
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
 	    assertEquals("Pending Expense Contracts Master Agreement Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
 	}
 	@Test
-	public void VerifyTop5MasterAgreementModificationsTransactionCount() throws SQLException {
+	public void VerifyTop5MasterAgreementModificationsTransactionPage() throws SQLException {
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5MasterAgreementModifications);
 		HomePage.ShowWidgetDetails();
-		int NumOfPEContractsDetailsCount2016 =  NYCDatabaseUtil.getPEContractsMasterModificationsDetailsCount(2016,'B');
+		int NumOfPEContractsDetailsCountDB =  NYCDatabaseUtil.getPEContractsMasterModificationsDetailsCount(year,'B');
 		int numOfPEContractsDetailsCountapp = PendingExpenseContractsPage.GetTransactionCount();
-		assertEquals(" Pending Expense master contracts modification widget Details page table count did not match", numOfPEContractsDetailsCountapp, NumOfPEContractsDetailsCount2016);
+		assertEquals(" Pending Expense master contracts modification widget Details page table count did not match", numOfPEContractsDetailsCountapp, NumOfPEContractsDetailsCountDB);
 		
 		String WidgetDetailsTitle =  "Master Agreement Modifications Pending Expense Contracts Transactions";
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
@@ -55,39 +55,39 @@ public class PendingExpenseContractsDetailsTest extends NYCBaseTest {
 	    
 	}
 	@Test
-	public void VerifyTop5ContractsTransactionCount() throws SQLException {
+	public void VerifyTop5ContractsTransactionPage() throws SQLException {
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5Contracts);
 		HomePage.ShowWidgetDetails();
-		int NumOfPEContractsDetailsCount2016 =  NYCDatabaseUtil.getPEContractsDetailsCount(2016,'B');
+		int NumOfPEContractsDetailsCountDB =  NYCDatabaseUtil.getPEContractsDetailsCount(year,'B');
 		int numOfPEContractsDetailsCountapp = PendingExpenseContractsPage.GetTransactionCount();
-		assertEquals("Pending Expense contracts widget Details page table count did not match", numOfPEContractsDetailsCountapp, NumOfPEContractsDetailsCount2016); 
+		assertEquals("Pending Expense contracts widget Details page table count did not match", numOfPEContractsDetailsCountapp, NumOfPEContractsDetailsCountDB); 
 		
-		String WidgetDetailsTitle =  "Pending Expense Contracts Transactions";
+		String WidgetDetailsTitle =  "Contracts Pending Expense Contracts Transactions";
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
 	    assertEquals("Pending Expense Contracts contracts Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
 	}
 	@Test
-	public void VerifyTop5ContractAmountModificationsTransactionCount() throws SQLException {
-		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5ContractsAmountModifications);
+	public void VerifyTop5ContractAmountModificationsTransactionPage() throws SQLException {
+		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5ContractAmountModifications);
 		HomePage.ShowWidgetDetails();
-		int NumOfPEContractsDetailsCount2016 =  NYCDatabaseUtil.getPEContractsModificationsDetailsCount(2016,'B');
+		int NumOfPEContractsDetailsCountDB =  NYCDatabaseUtil.getPEContractsModificationsDetailsCount(year,'B');
 		int numOfPEContractsDetailsCountapp = PendingExpenseContractsPage.GetTransactionCount();
-		assertEquals(" Pending Expense contracts widget Details page table count did not match", numOfPEContractsDetailsCountapp, NumOfPEContractsDetailsCount2016); 
+		assertEquals(" Pending Expense contracts widget Details page table count did not match", numOfPEContractsDetailsCountapp, NumOfPEContractsDetailsCountDB); 
 		
 
-		String WidgetDetailsTitle =  "Pending Expense Contracts Modifications Transactions";
+		String WidgetDetailsTitle =  "Contract Amount Modifications Pending Expense Contracts Transactions";
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
 	    assertEquals("Pending Expense Contracts Modifications Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
 	}
 	@Test
-	public void VerifyTop5PrimeVendorsTransactionCount() throws SQLException {
+	public void VerifyTop5PrimeVendorsTransactionPage() throws SQLException {
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5PrimeVendors);
 		HomePage.ShowWidgetDetails();
-		int NumOfPEContractsDetailsCount2016 =  NYCDatabaseUtil.getPEContractsDetailsCount(2016,'B');
+		int NumOfPEContractsDetailsCountDB =  NYCDatabaseUtil.getPEAllContractsDetailsCount(year,'B');
 		int numOfPEContractsDetailsCountapp = PendingExpenseContractsPage.GetTransactionCount();
-		assertEquals(" Pending Expense contracts Prime Vendor widget Details page table count did not match", numOfPEContractsDetailsCountapp, NumOfPEContractsDetailsCount2016); 
+		assertEquals(" Pending Expense contracts Prime Vendor widget Details page table count did not match", numOfPEContractsDetailsCountapp, NumOfPEContractsDetailsCountDB); 
 		
 		String WidgetDetailsTitle =  "Prime Vendors Pending Expense Contracts Transactions";
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
@@ -95,26 +95,26 @@ public class PendingExpenseContractsDetailsTest extends NYCBaseTest {
 	    
 	}
 	@Test
-	public void VerifyTop5AwardMethodsTransactionCount() throws SQLException {
+	public void VerifyTop5AwardMethodsTransactionPage() throws SQLException {
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5AwardMethods);
 		HomePage.ShowWidgetDetails();
-		int NumOfPEContractsDetailsCount2016 =  NYCDatabaseUtil.getPEContractsDetailsCount(2016,'B');
+		int NumOfPEContractsDetailsCountDB =  NYCDatabaseUtil.getPEAllContractsDetailsCount(year,'B');
 		int numOfPEContractsDetailsCountapp = PendingExpenseContractsPage.GetTransactionCount();
-		assertEquals(" PendingExpense  contracts Award Method widget Details page table count did not match", numOfPEContractsDetailsCountapp, NumOfPEContractsDetailsCount2016); 
+		assertEquals(" PendingExpense  contracts Award Method widget Details page table count did not match", numOfPEContractsDetailsCountapp, NumOfPEContractsDetailsCountDB); 
 		
 
-		String WidgetDetailsTitle =  "AWard Methods Pending Expense Contracts Transactions";
+		String WidgetDetailsTitle =  "Award Methods Pending Expense Contracts Transactions";
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
 	    assertEquals("Pending Expense Contracts AWard Method Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
 	}
 	@Test
-	public void VerifyTop5AgenciesTransactionCount() throws SQLException {
+	public void VerifyTop5AgenciesTransactionPage() throws SQLException {
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5Agencies);
 		HomePage.ShowWidgetDetails();
-		int NumOfPEContractsDetailsCount2016 =  NYCDatabaseUtil.getPEContractsDetailsCount(2016,'B');
+		int NumOfPEContractsDetailsCountDB =  NYCDatabaseUtil.getPEAllContractsDetailsCount(year,'B');
 		int numOfPEContractsDetailsCountapp = PendingExpenseContractsPage.GetTransactionCount();
-		assertEquals(" Pending Expense contracts Agencies widget Details page table count did not match", numOfPEContractsDetailsCountapp, NumOfPEContractsDetailsCount2016); 
+		assertEquals(" Pending Expense contracts Agencies widget Details page table count did not match", numOfPEContractsDetailsCountapp, NumOfPEContractsDetailsCountDB); 
 		
 		String WidgetDetailsTitle =  "Agencies Pending Expense Contracts Transactions";
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
@@ -122,12 +122,12 @@ public class PendingExpenseContractsDetailsTest extends NYCBaseTest {
 	    
 	}
 	@Test
-	public void VerifyContractsByIndustriesTransactionCount() throws SQLException {
+	public void VerifyContractsByIndustriesTransactionPage() throws SQLException {
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.ContractsByIndustries);
 		HomePage.ShowWidgetDetails();
-		int NumOfPEContractsDetailsCount2016 =  NYCDatabaseUtil.getPEContractsDetailsCount(2016,'B');
+		int NumOfPEContractsDetailsCountDB =  NYCDatabaseUtil.getPEAllContractsDetailsCount(year,'B');
 		int numOfPEContractsDetailsCountapp = PendingExpenseContractsPage.GetTransactionCount();
-		assertEquals("Pending Expense contracts Industries widget Details page table count did not match", numOfPEContractsDetailsCountapp, NumOfPEContractsDetailsCount2016);
+		assertEquals("Pending Expense contracts Industries widget Details page table count did not match", numOfPEContractsDetailsCountapp, NumOfPEContractsDetailsCountDB);
 		
 		String WidgetDetailsTitle =  "Contracts by Industries Pending Expense Contracts Transactions";
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
@@ -135,12 +135,12 @@ public class PendingExpenseContractsDetailsTest extends NYCBaseTest {
 	    
 	}
 	@Test
-	public void VerifyContractsBySizeTransactionCount() throws SQLException {
+	public void VerifyContractsBySizeTransactionPage() throws SQLException {
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.ContractsBySize);
 		HomePage.ShowWidgetDetails();
-		int NumOfPEContractsDetailsCount2016 =  NYCDatabaseUtil.getPEContractsDetailsCount(2016,'B');
+		int NumOfPEContractsDetailsCountDB =  NYCDatabaseUtil.getPEAllContractsDetailsCount(year,'B');
 		int numOfPEContractsDetailsCountapp = PendingExpenseContractsPage.GetTransactionCount();
-		assertEquals(" Pending Expense contracts by size widget Details page table count did not match", numOfPEContractsDetailsCountapp, NumOfPEContractsDetailsCount2016); 
+		assertEquals(" Pending Expense contracts by size widget Details page table count did not match", numOfPEContractsDetailsCountapp, NumOfPEContractsDetailsCountDB); 
 		
 		String WidgetDetailsTitle =  "Contracts by Size Pending Expense Contracts Transactions";
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
