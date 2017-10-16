@@ -21,6 +21,7 @@ import utilities.NYCBaseTest;
 //	TotalSpendingTitlesTest.class,
 	//TotalSpendingWidgetDetailsTest.class,
 	//PayrollSpendingWidgetDetailsTest.class,
+	PayrollSpendingWidgetTest.class
 	//CapitalSpendingWidgetDetailsTest.class,
 	//ContractsSpendingWidgetDetailsTest.class,
 	//TrustAgencySpendingWidgetDetailsTest.class,
@@ -32,7 +33,7 @@ import utilities.NYCBaseTest;
 	//ActiveRevenueContractsTest.class,
 //	ActiveRevenueContractsDetailsTest.class,
 	//PendingExpenseContractsTest.class,
-PendingExpenseContractsDetailsTest.class,
+//PendingExpenseContractsDetailsTest.class,
 	//PendingRevenueContractsTest.class,
 //	PendingRevenueContractsDetailsTest.class,
 	//RegisteredExpenseContractsTest.class,

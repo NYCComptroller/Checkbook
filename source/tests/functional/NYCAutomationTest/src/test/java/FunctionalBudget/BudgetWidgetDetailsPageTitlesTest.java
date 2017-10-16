@@ -16,9 +16,9 @@ import pages.home.HomePage;
 import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
 import utilities.TestStatusReport;
-public class BudgetWidgetDetailsPageTitlesTest extends TestStatusReport{
+//public class BudgetWidgetDetailsPageTitlesTest extends TestStatusReport{
 
-	//public class BudgetWidgetDetailsPageTitlesTest extends NYCBaseTest {
+	public class BudgetWidgetDetailsPageTitlesTest extends NYCBaseTest {
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 		@Before
 	    public void GoToPage(){

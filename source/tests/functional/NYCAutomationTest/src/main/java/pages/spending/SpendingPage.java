@@ -30,6 +30,14 @@ public class SpendingPage {
             WebElement spendingAmt = Driver.Instance.findElement(By.cssSelector(".top-navigation-left .spending > .expense-container > a"));
             return spendingAmt.getText().substring((spendingAmt.getText().indexOf("$")));
         }
+        
+
+		
+		 public static String GetBottomNavSpendingAmount() {
+	            WebElement spendingAmt = Driver.Instance.findElement(By.cssSelector(".nyc_totals_links .active > .positioning > a .dollars"));
+	            return spendingAmt.getText().substring((spendingAmt.getText().indexOf("$")));
+	        }
+		
 
         public static boolean isAt() {
         	WebElement topTitleCont = Driver.Instance.findElement(By.cssSelector(".top-navigation-left > table > tbody > tr .spending"));

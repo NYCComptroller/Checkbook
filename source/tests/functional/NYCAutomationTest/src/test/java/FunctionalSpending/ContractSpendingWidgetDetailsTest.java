@@ -20,8 +20,8 @@ import utilities.TestStatusReport;
 import utilities.NYCDatabaseUtil;
 
 
-//public class ContractsSpendingWidgetDetailsTest extends NYCBaseTest {
-	public class ContractsSpendingWidgetDetailsTest extends TestStatusReport{
+//public class ContractSpendingWidgetDetailsTest extends NYCBaseTest {
+	public class ContractSpendingWidgetDetailsTest extends TestStatusReport{
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	public void GoToPage(){		
@@ -35,15 +35,8 @@ import utilities.NYCDatabaseUtil;
 
 
 
-	/* ***************** Test Widget Transaction Count ****************** */
-	//@Test
-	//public void VerifyTop5AgenciesbyPayrollTransactionCount() throws SQLException{
-	//	PayrollPage.GoToTop5DetailsPage(WidgetOption.Top5AgenciesbyPayroll);
-		////HomePage.ShowWidgetDetails();
-		//Integer NumOfPayrollDetailsCountyear = NYCDatabaseUtil.getPayrollDetailsCount(year,'B');
-		//Integer numOfPayrollDetailsCountapp = PayrollPage.GetTransactionCount();
-		//assertEquals("Number of Payroll salaried employees did not match", numOfPayrollDetailsCountapp, NumOfPayrollDetailsCountyear); 
-	//}
+	/* ***************** Test Widget Transaction Count / title /Total amount ****************** */
+
 	
 	@Test
 	public void VerifyNumOfchecksWidgetTransactionCount() throws SQLException {
@@ -132,6 +125,15 @@ import utilities.NYCDatabaseUtil;
 
 	}
 	
+	
+	//@Test
+	//public void VerifyTop5AgenciesbyPayrollTransactionCount() throws SQLException{
+	//	PayrollPage.GoToTop5DetailsPage(WidgetOption.Top5AgenciesbyPayroll);
+		////HomePage.ShowWidgetDetails();
+		//Integer NumOfPayrollDetailsCountyear = NYCDatabaseUtil.getPayrollDetailsCount(year,'B');
+		//Integer numOfPayrollDetailsCountapp = PayrollPage.GetTransactionCount();
+		//assertEquals("Number of Payroll salaried employees did not match", numOfPayrollDetailsCountapp, NumOfPayrollDetailsCountyear); 
+	//}
 }
 
 
