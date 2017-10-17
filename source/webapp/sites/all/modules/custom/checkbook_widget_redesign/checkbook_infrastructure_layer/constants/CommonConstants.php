@@ -48,6 +48,7 @@ abstract class CheckbookDomain {
             '/contracts_revenue_landing/',
             '/contracts_pending/',
             '/contracts_pending_exp_landing/',
+            '/contracts_pending_rev_landing/',
             '/contract\/all\/transactions/',
             '/contract\/search\/transactions/',
         );
