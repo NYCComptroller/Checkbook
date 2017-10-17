@@ -1,8 +1,8 @@
 /FunctionalBudget/
-/FunctionalSpending/
-/FunctionalRevenue/
 /FunctionalContracts/
 /FunctionalPayroll/
+/FunctionalRevenue/
+/FunctionalSpending/
+/smoke/
 /suites/
 /utilities/
-/smoke/

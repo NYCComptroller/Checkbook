@@ -21,12 +21,15 @@ import utilities.NYCBaseTest;
 //	TotalSpendingTitlesTest.class,
 	//TotalSpendingWidgetDetailsTest.class,
 	//PayrollSpendingWidgetDetailsTest.class,
-	PayrollSpendingWidgetTest.class
+	PayrollSpendingWidgetTest.class,
 	//CapitalSpendingWidgetDetailsTest.class,
-	//ContractsSpendingWidgetDetailsTest.class,
+	CapitalSpendingWidgetTest.class,
+	//ContractSpendingWidgetDetailsTest.class,
+	ContractSpendingWidgetTest.class,
 	//TrustAgencySpendingWidgetDetailsTest.class,
+	TrustAgencySpendingWidgetTest.class,
 	//OtherSpendingWidgetDetailsTest.class
-	
+	OtherSpendingWidgetTest.class
 	/* Contracts */
 	//ActiveExpenseContractsTest.class,
 //	ActiveExpenseContractsDetailsTest.class,
