@@ -43,6 +43,7 @@ function checkbook_trends_block_view_alter(&$data, $block){
  * @return multitype:multitype:string multitype:unknown   multitype:string multitype:NULL   
  */
 function checkbook_trends_theme($existing, $type, $theme, $path){
+    $node = 'undefined';
     return array(
         'trends_general_fund_revenue_other_fin_sources' => array(
             'template' => 'templates/financial_trends/general_fund_revenue_other_fin_sources',
