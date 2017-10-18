@@ -54,6 +54,18 @@ function checkbook_datafeeds_menu() {
         'access callback' => TRUE,
         'type' => MENU_CALLBACK,
     );
+    $items['datafeeds/budget/department/%/%'] = array(
+        'page callback' => '_budget_dept_options',
+        'page arguments' => array(3, 4),
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK
+    );
+    $items['datafeeds/budget/expcat/%/%/%'] = array(
+        'page callback' => '_budget_expcat_options',
+        'page arguments' => array(3, 4, 5),
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK
+    );
     return $items;
 }
 
@@ -563,6 +575,7 @@ function checkbook_datafeeds_budget($form, &$form_state) {
     $format = $form_state['step_information']['type']['stored_values']['format'];
     $agency = isset($form_state['values']['agency']) ? $form_state['values']['agency'] : 'Citywide (All Agencies)';
     $dept = !empty($form_state['values']['dept']) ? $form_state['values']['dept'] : '';
+    $expcat = !empty($form_state['values']['expense_category']) ? $form_state['values']['expense_category'] : '';
     $year = !empty($form_state['values']['fiscal_year']) ? $form_state['values']['fiscal_year'] : 'FY' . currentFiscalYear();
     $agency_options = _agency_options();
 
@@ -597,43 +610,37 @@ function checkbook_datafeeds_budget($form, &$form_state) {
         '#prefix' => '<div class="datafield agency">',
         '#suffix' => '</div>',
         '#default_value' => !empty($form_state['values']['agency']) ? $form_state['values']['agency'] : 'Citywide (All Agencies)',
-        '#ajax' => array(
-            'callback' => 'checkbook_datafeeds_agency_ajax',
-            'wrapper' => 'dynamic-fields',
-            'progress' => array(
-                'message' => NULL,
-                'type' => 'throbber',
-            ),
-        ),
     );
     $form['filter']['dept'] = array(
         '#type' => 'select',
         '#title' => t('Department:'),
-        '#options' => _budget_dept_options($agency, $year),
-        '#prefix' => '<div id="dynamic-fields"><div id="department" class="datafield department">',
+        '#prefix' => '<div id="department" class="datafield department">',
         '#suffix' => '</div>',
-        '#attributes' => array('class' => array('watch')),
-        '#multiple' => FALSE,
-        '#default_value' => $dept,
-        '#ajax' => array(
-            'callback' => 'checkbook_datafeeds_dept_ajax',
-            'wrapper' => 'expense-category',
-            'progress' => array(
-                'message' => NULL,
-                'type' => 'throbber',
-            ),
-        ),
+        '#validated' => TRUE,
+        '#default_value' => !empty($form_state['values']['dept']) ? $form_state['values']['dept'] : 'Select Department',
     );
+    
+    $form['dept_hidden'] = array(
+        '#title' =>  'dept_hidden',
+        '#value' => $form_state['values']['dept'],
+        '#type' => 'hidden'
+    );
+    
     $form['filter']['expense_category'] = array(
         '#type' => 'select',
         '#title' => t('Expense Category:'),
-        '#options' => _budget_expcat_options($agency, $dept, $year),
-        '#prefix' => '<div id="expense-category"><div class="datafield expensecategory">',
-        '#suffix' => '</div></div></div>',
-        '#attributes' => array('class' => array('watch')),
-        '#multiple' => FALSE,
-        '#default_value' => !empty($form_state['values']['expense_category']) ? $form_state['values']['expense_category'] : '',
+        '#prefix' => '<div id="expense-category" class="datafield expensecategory">',
+        '#suffix' => '</div>',
+        '#validated' => TRUE,
+        '#default_value' => !empty($form_state['values']['expense_category']) ? $form_state['values']['expense_category'] : 'Select Expense Category',
     );
+    
+    $form['expense_category_hidden'] = array(
+        '#title' =>  'expense_category_hidden',
+        '#value' => $form_state['values']['expense_category'],
+        '#type' => 'hidden'
+    );
+
     $form['filter']['budget_code'] = array(
         '#type' => 'textfield',
         '#title' => t('Budget Code:'),
@@ -927,12 +934,12 @@ function checkbook_datafeeds_budget_confirmation($form, &$form_state) {
         $user_criteria['Agency'] = $values['agency'];
         $formatted_search_criteria['Agency'] = $values['agency'];
     }
-    if ($values['dept']) {
+    if ($values['dept'] && $values['dept'] != 'Select Department'){
         $form['filter']['department'] = array('#markup' => '<div><strong>Department:</strong> ' . $values['dept'] . '</div>');
         $user_criteria['Department'] = $values['dept'];
         $formatted_search_criteria['Department'] = $values['dept'];
     }
-    if ($values['expense_category']) {
+    if ($values['expense_category'] && $values['expense_category'] != 'Select Expense Category') {
         $form['filter']['expense_category'] = array('#markup' => '<div><strong>Expense Category:</strong> ' . $values['expense_category'] . '</div>');
         $user_criteria['Expense Category'] = $values['expense_category'];
         $formatted_search_criteria['Expense Category'] = $values['expense_category'];
@@ -1287,6 +1294,9 @@ function checkbook_datafeeds_budget_validate($form, &$form_state) {
     if (!$expensecolumns) {
         form_set_error('column_select_expense', t('You must select at least one column.'));
     }
+    //Set the hidden filed values on Budget form
+    $form_state['complete form']['dept_hidden']['#value'] = $form_state['values']['dept'];
+    $form_state['complete form']['expense_category_hidden']['#value'] = $form_state['values']['expense_category'];
 }
 
 //</editor-fold>
@@ -1742,7 +1752,7 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                 '#options' => array(
                     'active' => 'Active',
                     'registered' => 'Registered',
-                    'pending' => 'Pending',
+                    'pending' => 'Pending'
                 ),
                 '#attributes' => array('class' => array('watch')),
                 '#prefix' => '<div class="column column-left"><div class="datafield contractstatus">',
@@ -4833,18 +4843,6 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
                     ),
                 ),
             );
-            $form['filter']['mwbe_category'] = array(
-                '#type' => 'select',
-                '#title' => t('M/WBE Category:'),
-                '#options' => _mwbe_category_options(),
-                '#prefix' => '<div class="datafield mwbecategory">',
-                '#suffix' => '</div>',
-                '#attributes' => array('class' => array('watch')),
-                '#multiple' => FALSE,
-                '#id' => 'edit-mwbe-category',
-                '#name' => 'mwbe_category',
-                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'mwbe_category', $first_time_load, ''),
-            );
             $form['filter']['industry'] = array(
                 '#type' => 'select',
                 '#title' => t('Industry:'),
@@ -4856,6 +4854,18 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
                 '#id' => 'edit-industry',
                 '#name' => 'industry',
                 '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'industry', $first_time_load, ''),
+            );
+            $form['filter']['mwbe_category'] = array(
+                '#type' => 'select',
+                '#title' => t('M/WBE Category:'),
+                '#options' => _mwbe_category_options(),
+                '#prefix' => '<div class="datafield mwbecategory">',
+                '#suffix' => '</div>',
+                '#attributes' => array('class' => array('watch')),
+                '#multiple' => FALSE,
+                '#id' => 'edit-mwbe-category',
+                '#name' => 'mwbe_category',
+                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'mwbe_category', $first_time_load, ''),
             );
             $form['filter']['payee_name'] = array(
                 '#type' => 'textfield',
@@ -6304,25 +6314,24 @@ function _checkbook_datafeeds_award_method_options($data) {
  * @return array
  *  Department codes and department names filtered by agency, year
  */
-function _budget_dept_options($agency, $year) {
-    $agency = emptyToZero($agency);
+function _budget_dept_options($year, $agency) {
+    $agency = emptyToZero(urldecode($agency));
     if($agency){
         $agencystring = " agency_code = '" . $agency . "' ";
-        if ($year) {
-            $year = ltrim($year, 'FY');
             $yearstring = " AND budget_fiscal_year = " . $year . " ";
-        }
         $query = "SELECT DISTINCT department_name || ' [' || department_code || ']' department_name FROM budget WHERE"
             . $agencystring . $yearstring  . "ORDER BY department_name ASC";
         $results = _checkbook_project_execute_sql($query);
-        $output[''] = "Select Department";
+        if(count($results) > 0){
         foreach ($results as $result) {
-            $output[$result['department_name']] = $result['department_name'];
+                $options[$result['department_name']] = $result['department_name'];
         }
-    }else{
-        $output[''] = "Select Department";
     }
-    return $output;
+        $matches = array();
+        foreach($options as $key => $value)
+            $matches[] = htmlentities($value);
+        drupal_json_output($matches);
+}
 }
 
 /**
@@ -6340,9 +6349,9 @@ function _budget_dept_options($agency, $year) {
  * @return array
  *   Expenditure object codes and expenditure object names, filtered by agency, department, year
  */
-function _budget_expcat_options($agency, $dept, $year) {
-    $agency = emptyToZero($agency);
-    $dept = emptyToZero($dept);
+function _budget_expcat_options($year, $agency, $dept) {
+    $agency = emptyToZero(urldecode($agency));
+    $dept = emptyToZero(urldecode($dept));
     if ($agency) {
         $agencystring = " agency_code = '" . $agency . "' ";
         if ($year) {
@@ -6352,17 +6361,19 @@ function _budget_expcat_options($agency, $dept, $year) {
         if ($dept) {
             $deptstring = " AND department_code = '" . $dept . "' ";
         }
-        $query = "SELECT DISTINCT object_class_name || '[' || object_class_code || ']' expenditure_object_code  FROM budget WHERE"
+        $query = "SELECT DISTINCT object_class_name || ' [' || object_class_code || ']' expenditure_object_code  FROM budget WHERE"
             . $agencystring . $yearstring  . $deptstring . "ORDER BY expenditure_object_code ASC";
         $results = _checkbook_project_execute_sql($query);
-        $output[''] = "Select Expense Category";
+        if(count($results) > 0){
         foreach ($results as $result) {
-            $output[$result['expenditure_object_code']] = $result['expenditure_object_code'];
+                $options[$result['expenditure_object_code']] = $result['expenditure_object_code'];
         }
-    }else{
-        $output[''] = "Select Expense Category";
     }
-    return $output;
+        $matches = array();
+        foreach($options as $key => $value)
+            $matches[] = htmlentities($value);
+        drupal_json_output($matches);
+}
 }
 
 
