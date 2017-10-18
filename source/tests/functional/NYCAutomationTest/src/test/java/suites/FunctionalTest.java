@@ -10,6 +10,7 @@ import FunctionalBudget.*;
 import FunctionalRevenue.*;
 import FunctionalPayroll.*;
 import utilities.NYCBaseTest;
+import utilities.TestStatusReport;
 
 
 @RunWith(Suite.class)
@@ -18,18 +19,18 @@ import utilities.NYCBaseTest;
 	/* Spending */
 //	TotalSpendingWidgetTest.class,
 //	TotalSpendingWidgetDetailsTest.class,
-//	TotalSpendingTitlesTest.class,
+//TotalSpendingTitlesTest.class,
 	//TotalSpendingWidgetDetailsTest.class,
 	//PayrollSpendingWidgetDetailsTest.class,
 	PayrollSpendingWidgetTest.class,
 	//CapitalSpendingWidgetDetailsTest.class,
-	CapitalSpendingWidgetTest.class,
+    CapitalSpendingWidgetTest.class,
 	//ContractSpendingWidgetDetailsTest.class,
 	ContractSpendingWidgetTest.class,
 	//TrustAgencySpendingWidgetDetailsTest.class,
 	TrustAgencySpendingWidgetTest.class,
 	//OtherSpendingWidgetDetailsTest.class
-	OtherSpendingWidgetTest.class
+	OtherSpendingWidgetTest.class,
 	/* Contracts */
 	//ActiveExpenseContractsTest.class,
 //	ActiveExpenseContractsDetailsTest.class,
@@ -68,6 +69,9 @@ import utilities.NYCBaseTest;
 	//PayrollTitles.class
 	//PayrollWidgetDetailsPageTitlesTest.class,
 })
-public class FunctionalTest extends NYCBaseTest{	
+public class FunctionalTest extends NYCBaseTest
+//public class FunctionalTest extends TestStatusReport
+
+{	
 	
 }
