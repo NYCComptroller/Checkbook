@@ -18,6 +18,7 @@
                 s0.description as contract_purpose,
                 s0.contract_number as contract_number,
                 s0.fms_contract_number as pending_contract_number,
+                s0.minority_type_id as minority_type_id,
                 s1.document_code as document_code,
                 s0.original_agreement_id as original_agreement_id,
                 s0.document_agency_name as agency_name,
@@ -45,7 +46,7 @@
             </exp>
             GROUP BY s0.cif_received_date, s0.vendor_id, s0.vendor_legal_name, s0.description,
                     s0.contract_number, s0.fms_contract_number, s1.document_code,s0.original_agreement_id,
-                    s0.document_agency_name, s0.document_agency_id, s0.document_version
+                    s0.document_agency_name, s0.document_agency_id, s0.document_version, s0.minority_type_id
         </sql>
     </statement>
     <statement name="GetCountContracts" datasource="checkbook">
