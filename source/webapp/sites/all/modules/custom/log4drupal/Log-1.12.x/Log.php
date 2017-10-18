@@ -254,7 +254,7 @@ class Log
      * Abstract implementation of the log() method.
      * @since Log 1.0
      */
-    function log($message, $priority = null)
+    private function log_msg($message, $priority = null)
     {
         return false;
     }
@@ -273,7 +273,7 @@ class Log
      */
     function emerg($message)
     {
-        return $this->log($message, PEAR_LOG_EMERG);
+        return $this->log_msg($message, PEAR_LOG_EMERG);
     }
 
     /**
@@ -290,7 +290,7 @@ class Log
      */
     function alert($message)
     {
-        return $this->log($message, PEAR_LOG_ALERT);
+        return $this->log_msg($message, PEAR_LOG_ALERT);
     }
 
     /**
@@ -307,7 +307,7 @@ class Log
      */
     function crit($message)
     {
-        return $this->log($message, PEAR_LOG_CRIT);
+        return $this->log_msg($message, PEAR_LOG_CRIT);
     }
 
     /**
@@ -324,7 +324,7 @@ class Log
      */
     function err($message)
     {
-        return $this->log($message, PEAR_LOG_ERR);
+        return $this->log_msg($message, PEAR_LOG_ERR);
     }
 
     /**
@@ -341,7 +341,7 @@ class Log
      */
     function warning($message)
     {
-        return $this->log($message, PEAR_LOG_WARNING);
+        return $this->log_msg($message, PEAR_LOG_WARNING);
     }
 
     /**
@@ -358,7 +358,7 @@ class Log
      */
     function notice($message)
     {
-        return $this->log($message, PEAR_LOG_NOTICE);
+        return $this->log_msg($message, PEAR_LOG_NOTICE);
     }
 
     /**
@@ -375,7 +375,7 @@ class Log
      */
     function info($message)
     {
-        return $this->log($message, PEAR_LOG_INFO);
+        return $this->log_msg($message, PEAR_LOG_INFO);
     }
 
     /**
@@ -392,7 +392,7 @@ class Log
      */
     function debug($message)
     {
-        return $this->log($message, PEAR_LOG_DEBUG);
+        return $this->log_msg($message, PEAR_LOG_DEBUG);
     }
 
     /**

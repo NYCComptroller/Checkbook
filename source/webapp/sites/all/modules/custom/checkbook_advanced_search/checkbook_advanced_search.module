@@ -67,7 +67,11 @@ function checkbook_advanced_search_form($form, $form_state)
     $agency_attributes = _checkbook_advanced_search_get_agency_attributes();
     $fund_class = _checkbook_advanced_search_get_fund_class_and_id();
     $year_range = "'-" . (date("Y") - 1900) . ":+" . (2500 - date("Y")) . "'";
-    $revenue_fys = array(0 => "All Fiscal Years") + _checkbook_advanced_search_get_year('revenue');
+    $revenue_fys = array(0 => "All Fiscal Years");
+    $revenue_arr = _checkbook_advanced_search_get_year('revenue');
+    if (is_array($revenue_arr)) {
+        $revenue_fys = array_merge($revenue_fys, $revenue_arr);
+    }
     $form['rotator'] = array(
         '#type' => 'markup',
         '#markup' => '<div id="advanced-search-rotator"> </div>',
