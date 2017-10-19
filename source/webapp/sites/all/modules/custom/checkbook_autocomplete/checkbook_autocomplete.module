@@ -48,12 +48,6 @@ function checkbook_autocomplete_menu()
         'file' => '/includes/checkbook_autocomplete_functions.inc',
         'type' => MENU_CALLBACK
     );
-    $items['autocomplete/budget/budgetcodename'] = array(
-        'page callback' => '_checkbook_autocomplete_budget_budgetcodename',
-        'access callback' => TRUE,
-        'file' => '/includes/checkbook_autocomplete_functions.inc',
-        'type' => MENU_CALLBACK
-    );
     $items['autocomplete/budget/fundingsrc'] = array(
         'page callback' => '_checkbook_autocomplete_budget_fundingsrc',
         'access callback' => TRUE,
