@@ -376,10 +376,9 @@ class ContractsUrlService {
      * @param $vendor_id
      * @param $year_id
      * @param $current
-     * @param $extra
      * @return string
      */
-    static function primeVendorUrl($vendor_id, $year_id = null, $current = true, $extra = null) {
+    static function primeVendorUrl($vendor_id, $year_id = null, $current = true) {
 
         $url = RequestUtilities::_getUrlParamString("agency")
             . RequestUtilities::_getUrlParamString("contstatus","status")
@@ -391,13 +390,9 @@ class ContractsUrlService {
         $year_type = _getRequestParamValue("yeartype");
         $agency_id = _getRequestParamValue("agency");
 
-        if (is_null($year_id) && is_array($extra) && isset($extra['minority_type_id']) && $extra['minority_type_id']) {
-            $latest_minority_id = $extra['minority_type_id'];
-        } else {
-            $latest_minority_id = !isset($year_id)
-                ? PrimeVendorService::getLatestMinorityType($vendor_id, $agency_id)
-                : PrimeVendorService::getLatestMinorityTypeByYear($vendor_id, $year_id, $year_type);
-        }
+        $latest_minority_id = $year_id
+            ? PrimeVendorService::getLatestMinorityTypeByYear($vendor_id, $year_id, $year_type)
+            : PrimeVendorService::getLatestMinorityType($vendor_id, $agency_id);
 
         $is_mwbe_certified = MinorityTypeService::isMWBECertified($latest_minority_id);
 
