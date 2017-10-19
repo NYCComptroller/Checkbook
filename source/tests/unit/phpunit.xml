@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="vendor/autoload.php"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         stopOnFailure="true"
+         verbose="true">
+    <testsuites>
+        <testsuite name="NYC Checkbook Unit Tests">
+            <directory suffix='.php'>tests</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist addUncoveredFilesFromWhitelist="false">
+            <directory suffix=".php">../../webapp/sites/all/modules/custom</directory>
+        </whitelist>
+    </filter>
+</phpunit>
