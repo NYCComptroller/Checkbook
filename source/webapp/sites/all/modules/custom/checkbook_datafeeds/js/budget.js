@@ -55,126 +55,43 @@
             $('select[name="expense_category"]').attr('disabled','disabled');
         }
     }
-    
-    
-    $.fn.reloadBudgetCode = function(){
-       var agency = encodeURIComponent($('#edit-agency').val());
-       var dept = ($('input:hidden[name="dept_hidden"]').val()) ? encodeURIComponent( $('input:hidden[name="dept_hidden"]').val()) : 0;
-       var expCategory = ($('input:hidden[name="expense_category_hidden"]').val()) ? encodeURIComponent( $('input:hidden[name="expense_category_hidden"]').val()) : 0;
-       var budgetName = ($('input:hidden[name="budget_name_hidden"]').val()) ? $('input:hidden[name="budget_name_hidden"]').val() : 0;
-       budgetName =  encodeURIComponent(budgetName.toString().replace(/\//g, '__'));
-       var budgetCode = $('input:hidden[name="budget_code_hidden"]').val();
-       var year = ($('#edit-fiscal-year').val() === 'All Years') ? 0 : $('#edit-fiscal-year').val();
-       $.ajax({
-            url: '/datafeeds/budget/budgetcode/' + year + '/' + agency + '/' + dept + '/' + expCategory + '/' + budgetName,
-            success: function(data) {
-                var html = '<option value="0" title="" >Select Budget Code</option>';
-                if(data[0]){
-                    for (i = 0; i < data.length; i++) {
-                        html = html + '<option title = "' + data[i] + '" value="' + data[i] + ' ">' + data[i]  + '</option>';
-                    }
-                }
-                $('select[name="budget_code"]').html(html);
-                $('select[name="budget_code"]').val(budgetCode);
-                $('select[name="budget_code"]').trigger("chosen:updated");
-                if(budgetCode !== $('select[name="budget_code"]').val()){
-                    $('input:hidden[name="budget_code_hidden"]').val($('select[name="budget_code"]').val());
-                    $.fn.reloadBudgetName();
-                }
-            }
-        });
-    }
-    
-    $.fn.reloadBudgetName = function(){
-       var agency = encodeURIComponent($('#edit-agency').val());
-       var dept = ($('input:hidden[name="dept_hidden"]').val()) ? encodeURIComponent( $('input:hidden[name="dept_hidden"]').val()) : 0;
-       var expCategory = ($('input:hidden[name="expense_category_hidden"]').val()) ? encodeURIComponent( $('input:hidden[name="expense_category_hidden"]').val()) : 0;
-       var budgetCode = ($('input:hidden[name="budget_code_hidden"]').val()) ? $('input:hidden[name="budget_code_hidden"]').val() : 0;
-       var budgetName = ($('input:hidden[name="budget_name_hidden"]').val() === "") ? 0 : $('input:hidden[name="budget_name_hidden"]').val();
-       var year = ($('#edit-fiscal-year').val() === 'All Years') ? 0 : $('#edit-fiscal-year').val();
-       $.ajax({
-            url: '/datafeeds/budget/budgetname/' + year + '/' + agency + '/' + dept + '/' + expCategory + '/' + budgetCode,
-            success: function(data) {
-                var html = '<option value="" title="" >Select Budget Name</option>';
-                if(data){
-                    $.each( data, function( index, value ){
-                        html = html + '<option value="' + index + ' "' + 'title="' + value['title'] + ' ">' + value['text']  + '</option>';
-                    });
-                }
-                $('select[name="budget_name"]').html(html);
-                $('select[name="budget_name"]').val(budgetName);
-                $('select[name="budget_name"]').trigger("chosen:updated");
-                if(budgetName !== $('select[name="budget_name"]').val()){
-                    $('input:hidden[name="budget_name_hidden"]').val($('select[name="budget_name"]').val());
-                    $.fn.reloadBudgetCode();
-                }
-            }
-        });
-    }
-
+   
     Drupal.behaviors.budgetDataFeeds = {
         attach:function(context,settings){
-            $('select[name="budget_code"]').chosen({
-                no_results_text: "No matches found",
-            });
-            $('select[name="budget_name"]').chosen({
-                no_results_text: "No matches found",
-            });
-            
-            $('#edit_budget_code_chosen .chosen-search-input', context).attr("placeholder", "Search Budget Code");
-            $('#edit_budget_name_chosen .chosen-search-input', context).attr("placeholder", "Search Budget Name");
-            
             $.fn.reloadDepartment();
             $.fn.reloadExpenseCategory();
-            $.fn.reloadBudgetCode();
-            $.fn.reloadBudgetName();
             
             $('#edit-agency', context).change(function () {
                 $('input:hidden[name="dept_hidden"]', context).val("");
                 $('input:hidden[name="expense_category_hidden"]', context).val("");
-                $('input:hidden[name="budget_code_hidden"]', context).val($('#edit-budget-code', context).val());
-                $('input:hidden[name="budget_name_hidden"]', context).val($('#edit-budget-name', context).val());
                 $.fn.reloadDepartment();
                 $.fn.reloadExpenseCategory();
-                $.fn.reloadBudgetCode();
-                $.fn.reloadBudgetName();
             });
             
             $('#edit-dept', context).change(function () {
                 $('input:hidden[name="dept_hidden"]', context).val($('#edit-dept', context).val());
                 $('input:hidden[name="expense_category_hidden"]', context).val("");
-                $('input:hidden[name="budget_code_hidden"]', context).val($('#edit-budget-code', context).val());
-                $('input:hidden[name="budget_name_hidden"]', context).val($('#edit-budget-name', context).val());
                 $.fn.reloadExpenseCategory();
-                $.fn.reloadBudgetCode();
-                $.fn.reloadBudgetName();
             });
             
-            $('#edit-expense-category', context).change(function () {
-                $('input:hidden[name="expense_category_hidden"]', context).val($('#edit-expense-category', context).val());
-                $('input:hidden[name="budget_code_hidden"]', context).val($('#edit-budget-code', context).val());
-                $('input:hidden[name="budget_name_hidden"]', context).val($('#edit-budget-name', context).val());
-                $.fn.reloadBudgetCode();
-                $.fn.reloadBudgetName();
-            });
+            //Sets up jQuery UI autocompletes and autocomplete filtering functionality
+            var year = ($('#edit-fiscal-year',context).val() == 'All Years') ? 0 : $('#edit-fiscal-year',context).val();
+            var agency = emptyToZero($('#edit-agency',context).val());
+            var dept = ($('#edit-dept',context).val()) ? $('#edit-dept',context).val() : 0;
+            var expcategory = ($('#edit-expense-category',context).val()) ? $('#edit-expense-category',context).val() : 0;
+            var budgetcode = ($('#edit-budget-code',context).attr('disabled')) ? 0 : emptyToZero($('#edit-budget-code',context).val());
             
-            $('#edit-budget-code', context).change(function () {
-                $('input:hidden[name="budget_code_hidden"]', context).val($('#edit-budget-code', context).val());
-                $('input:hidden[name="budget_name_hidden"]', context).val($('#edit-budget-name', context).val());
-                $.fn.reloadBudgetName();
-            });
-            
-            $('#edit-budget-name', context).change(function () {
-                $('input:hidden[name="budget_code_hidden"]', context).val($('#edit-budget-code', context).val());
-                $('input:hidden[name="budget_name_hidden"]', context).val($('#edit-budget-name', context).val());
-                $.fn.reloadBudgetCode();
-            });
-            
-            $('#edit-fiscal-year', context).change(function () {
-                $('input:hidden[name="budget_code_hidden"]', context).val($('#edit-budget-code', context).val());
-                $('input:hidden[name="budget_name_hidden"]', context).val($('#edit-budget-name', context).val());
-                $.fn.reloadBudgetCode();
-                $.fn.reloadBudgetName();
+            $('#edit-budget-code',context).autocomplete({source:'/autocomplete/budget/budgetcode/' + agency + '/' + dept + '/' +expcategory+ '/' + budgetcode + '/' + year});
+            $('.watch:input',context).each(function () {
+                $(this,context).focus(function () {
+                    //set variables for each field's value
+                    year = ($('#edit-fiscal-year',context).val() == 'All Years') ? 0 : $('#edit-fiscal-year',context).val();
+                    var agency = emptyToZero($('#edit-agency',context).val());
+                    var dept = ($('#edit-dept',context).val()) ? $('#edit-dept',context).val() : 0;
+                    var expcategory = ($('#edit-expense-category',context).val()) ? $('#edit-expense-category',context).val() : 0;
+                    budgetcode = ($('#edit-budget-code',context).attr('disabled')) ? 0 : emptyToZero($('#edit-budget-code',context).val());
+                    $('#edit-budget-code',context).autocomplete({source:'/autocomplete/budget/budgetcode/' + agency + '/' + dept + '/' +expcategory+ '/' + budgetcode + '/' + year});
+                });
             });
             
             // Sets up multi-select/option transfer
@@ -192,5 +109,18 @@
                 $('#edit-column-select-expense',context).multiSelect('deselect_all');
             });
         }
-    }  
+    }
+    
+    //Function to retrieve values enclosed in brackets or return zero if none
+    function emptyToZero(input) {
+        var p = /\[(.*?)\]$/;
+        var inputval, output;
+        inputval = p.exec(input);
+        if (inputval) {
+            output = inputval[1];
+        } else {
+            output = 0;
+        }
+        return output;
+    }
 }(jQuery));
