@@ -142,28 +142,28 @@
         <param name="mwbe"/>
         <sql>
             SELECT
-            s0.expenditure_object_code,
+            CASE WHEN s0.spending_category_id = 2 THEN 4 ELSE s0.expenditure_object_id END as expenditure_object_id,
             s1.original_expenditure_object_name AS expenditure_object_name,
             SUM(total_spending_amount) AS check_amount_sum,
             SUM(total_spending_amount)/MAX(total.check_amount)*100 as percent_spending
             FROM aggregateon_mwbe_spending_coa_entities s0
-            JOIN ref_expenditure_object s1 ON s1.expenditure_object_code = s0.expenditure_object_code AND s1.expenditure_object_id = s0.expenditure_object_id
+            JOIN ref_expenditure_object s1 ON s1.expenditure_object_id = (CASE WHEN s0.spending_category_id = 2 THEN 4 ELSE s0.expenditure_object_id END)
             JOIN
             (
-                SELECT SUM(total_spending_amount) AS check_amount
-                FROM aggregateon_mwbe_spending_coa_entities
-                <where>
-                    <exp op="AND">
-                        <exp op="=" dbField="year_id" paramName="year" />
-                        <exp op="=" dbField="type_of_year" paramName="yeartype" />
-                        <exp op="=" dbField="vendor_id" paramName="vendor" />
-                        <exp op="=" dbField="vendor_id" paramName="fvendor" />
-                        <exp op="=" dbField="agency_id" paramName="agency" />
-                        <exp op="=" dbField="spending_category_id" paramName="category" />
-                        <exp op="=" dbField="industry_type_id" paramName="industry" />
-                        <exp op="IN" dbField="minority_type_id" paramName="mwbe" />
-                    </exp>
-                </where>
+            SELECT SUM(total_spending_amount) AS check_amount
+            FROM aggregateon_mwbe_spending_coa_entities
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="year_id" paramName="year" />
+                    <exp op="=" dbField="type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="vendor_id" paramName="fvendor" />
+                    <exp op="=" dbField="agency_id" paramName="agency" />
+                    <exp op="=" dbField="spending_category_id" paramName="category" />
+                    <exp op="=" dbField="industry_type_id" paramName="industry" />
+                    <exp op="IN" dbField="minority_type_id" paramName="mwbe" />
+                </exp>
+            </where>
             ) total on 1 = 1
             <where>
                 <exp op="AND">
@@ -177,7 +177,7 @@
                     <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
                 </exp>
             </where>
-            GROUP BY s1.original_expenditure_object_name, s0.expenditure_object_code
+            GROUP BY s1.original_expenditure_object_name, CASE WHEN s0.spending_category_id = 2 THEN 4 ELSE s0.expenditure_object_id END
         </sql>
     </statement>
     <!--GetSpendingByDepartments-->
@@ -201,20 +201,20 @@
             JOIN ref_department d ON d.department_id = s0.department_id
             JOIN
             (
-                SELECT SUM(total_spending_amount) AS check_amount
-                FROM aggregateon_mwbe_spending_coa_entities
-                <where>
-                    <exp op="AND">
-                        <exp op="=" dbField="year_id" paramName="year" />
-                        <exp op="=" dbField="type_of_year" paramName="yeartype" />
-                        <exp op="=" dbField="vendor_id" paramName="vendor" />
-                        <exp op="=" dbField="vendor_id" paramName="fvendor" />
-                        <exp op="=" dbField="agency_id" paramName="agency" />
-                        <exp op="=" dbField="spending_category_id" paramName="category" />
-                        <exp op="=" dbField="industry_type_id" paramName="industry" />
-                        <exp op="IN" dbField="minority_type_id" paramName="mwbe" />
-                    </exp>
-                </where>
+            SELECT SUM(total_spending_amount) AS check_amount
+            FROM aggregateon_mwbe_spending_coa_entities
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="year_id" paramName="year" />
+                    <exp op="=" dbField="type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="vendor_id" paramName="fvendor" />
+                    <exp op="=" dbField="agency_id" paramName="agency" />
+                    <exp op="=" dbField="spending_category_id" paramName="category" />
+                    <exp op="=" dbField="industry_type_id" paramName="industry" />
+                    <exp op="IN" dbField="minority_type_id" paramName="mwbe" />
+                </exp>
+            </where>
             ) total on 1 = 1
             <where>
                 <exp op="AND">
@@ -263,21 +263,21 @@
             JOIN vendor b ON b.vendor_id = a.vendor_id
             JOIN
             (
-                SELECT SUM(total_spending_amount) AS check_amount
-                FROM aggregateon_mwbe_spending_vendor
-                <where>
-                    <exp op="AND">
-                        <exp op="=" dbField="year_id" paramName="year" />
-                        <exp op="=" dbField="type_of_year" paramName="yeartype" />
-                        <exp op="=" dbField="vendor_id" paramName="vendor" />
-                        <exp op="=" dbField="vendor_id" paramName="fvendor" />
-                        <exp op="=" dbField="agency_id" paramName="agency" />
-                        <exp op="=" dbField="spending_category_id" paramName="category" />
-                        <exp op="=" dbField="industry_type_id" paramName="industry" />
-                        <exp op="IN" dbField="minority_type_id" paramName="mwbe" />
-                        <exp op="=" dbField="is_all_categories" paramName="is_all_categories" />
-                    </exp>
-                </where>
+            SELECT SUM(total_spending_amount) AS check_amount
+            FROM aggregateon_mwbe_spending_vendor
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="year_id" paramName="year" />
+                    <exp op="=" dbField="type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="vendor_id" paramName="fvendor" />
+                    <exp op="=" dbField="agency_id" paramName="agency" />
+                    <exp op="=" dbField="spending_category_id" paramName="category" />
+                    <exp op="=" dbField="industry_type_id" paramName="industry" />
+                    <exp op="IN" dbField="minority_type_id" paramName="mwbe" />
+                    <exp op="=" dbField="is_all_categories" paramName="is_all_categories" />
+                </exp>
+            </where>
             ) total on 1 = 1
             <where>
                 <exp op="AND">
