@@ -20,8 +20,8 @@ import utilities.TestStatusReport;
 import utilities.NYCDatabaseUtil;
 
 
-//public class ContractSpendingWidgetDetailsTest extends NYCBaseTest {
-	public class ContractSpendingWidgetDetailsTest extends TestStatusReport{
+public class ContractSpendingWidgetDetailsTest extends NYCBaseTest {
+	//public class ContractSpendingWidgetDetailsTest extends TestStatusReport{
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	public void GoToPage(){		
@@ -46,7 +46,7 @@ import utilities.NYCDatabaseUtil;
 		Integer totalChecksWidgetDetailsCountApp = ContractSpendingPage.GetTransactionCount();
 		assertEquals("Contracts Spending Checks  widget Details count  did not match with the DB",totalChecksWidgetDetailsCountApp, totalChecksWidgetDetailsCountDB);
 		
-		String WidgetDetailsTitle =  "Checks Contracts Spending Transactions";
+		String WidgetDetailsTitle =  "Checks Contract Spending Transactions";
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
 	    assertEquals("Contracts Spending Checks  widget Details title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
@@ -63,7 +63,7 @@ import utilities.NYCDatabaseUtil;
 		Integer totalAgenciesWidgetDetailsCountApp = SpendingPage.GetTransactionCount();
 		assertEquals("Contracts Spending Agencies widget Details count did not match with the DB",totalAgenciesWidgetDetailsCountApp, totalAgenciesWidgetDetailsCountDB);
 		
-		String WidgetDetailsTitle =  "Agencies Contracts Spending Transactions";
+		String WidgetDetailsTitle =  "Agencies Contract Spending Transactions";
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
 	    assertEquals("Contracts Spending Agencies widget Details title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
@@ -80,7 +80,7 @@ import utilities.NYCDatabaseUtil;
 		Integer totalExpenseCategoriesWidgetDetailsCountApp = SpendingPage.GetTransactionCount();
 		assertEquals("Contracts Spending Exp Categories widget Details count  did not match with the DB",totalExpenseCategoriesWidgetDetailsCountApp, totalExpenseCategoriesWidgetDetailsCountDB);
 		
-		String WidgetDetailsTitle =  "Expense Categories Contracts Spending Transactions";
+		String WidgetDetailsTitle =  "Expense Categories Contract Spending Transactions";
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
 	    assertEquals("Contracts Spending Exp Categories widget Details title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
@@ -98,7 +98,7 @@ import utilities.NYCDatabaseUtil;
 		Integer totalPrimeVendorsWidgetDetailsCountApp = SpendingPage.GetTransactionCount();
 		assertEquals("Contracts Spending Prime Vendor widget Details count  did not match with the DB",totalPrimeVendorsWidgetDetailsCountApp, totalPrimeVendorsWidgetDetailsCountDB);
 		
-		String WidgetDetailsTitle =  "Prime Vendors Contracts Spending Transactions";
+		String WidgetDetailsTitle =  "Prime Vendors Contract Spending Transactions";
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
 	    assertEquals("Contracts Spending Prime Vendor widget Details title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp);
 	    
@@ -115,7 +115,7 @@ import utilities.NYCDatabaseUtil;
 		Integer totalContractsWidgetDetailsCountApp = SpendingPage.GetTransactionCount();
 		assertEquals("Contracts Spending Contracts widget Details count  did not match with the DB",totalContractsWidgetDetailsCountApp, totalContractsWidgetDetailsCountDB);
 		
-		String WidgetDetailsTitle =  "Contracts Contracts Spending Transactions";
+		String WidgetDetailsTitle =  "Contracts Spending Transactions";
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
 	    assertEquals("Contracts Spending Contracts widget Details title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    

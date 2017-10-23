@@ -180,6 +180,20 @@ public class BudgetPage {
 			String count = (Driver.Instance.findElement(By.id("table_277_info"))).getText();
 			return Helper.GetTotalEntries(count, 5);
 		}
+		
+		public static int GetTransactionCount1() {
+			WebDriverWait wait = new WebDriverWait(Driver.Instance, 20);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("table_576_info")));
+			String count = (Driver.Instance.findElement(By.id("table_576_info"))).getText();
+			return Helper.GetTotalEntries(count, 5);
+		}
+		
+		public static int GetTransactionCount2() {
+			WebDriverWait wait = new WebDriverWait(Driver.Instance, 20);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("table_575_info")));
+			String count = (Driver.Instance.findElement(By.id("table_575_info"))).getText();
+			return Helper.GetTotalEntries(count, 5);
+		}
 	/// transaction table amount
 		
 		public static String GetTransactionAmount1() {

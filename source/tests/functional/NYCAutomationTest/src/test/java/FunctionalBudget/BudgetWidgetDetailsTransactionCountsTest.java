@@ -29,10 +29,9 @@ public class BudgetWidgetDetailsTransactionCountsTest extends NYCBaseTest {
 				BudgetPage.GoTo();
 			}
 		 
-		   if(!(Helper.getCurrentSelectedYear()).equalsIgnoreCase(NYCBaseTest.prop.getProperty("CurrentYear")))
-			   HomePage.SelectYear(NYCBaseTest.prop.getProperty("CurrentYear"));
-		   BudgetPage.GoToTop5DetailsPage(WidgetOption.Top5Agencies);
-			HomePage.ShowWidgetDetails();
+			   if(!(Helper.getCurrentSelectedYear()).equalsIgnoreCase(NYCBaseTest.prop.getProperty("CurrentYear")))
+				   HomePage.SelectYear(NYCBaseTest.prop.getProperty("CurrentYear"));
+			   HomePage.ShowWidgetDetails();
 			
 		 
 	    }
@@ -60,7 +59,7 @@ public class BudgetWidgetDetailsTransactionCountsTest extends NYCBaseTest {
 			BudgetPage.GoToTop5DetailsPage(WidgetOption.Top5AgenciesbyPercentDifference);
 			HomePage.ShowWidgetDetails();
 			int NumOfBudgetDetailsCountDB =  NYCDatabaseUtil.getBudgetDetailsCount(year,'B');
-			int numOfBudgetDetailsCountapp = BudgetPage.GetTransactionCount();
+			int numOfBudgetDetailsCountapp = BudgetPage.GetTransactionCount2();
 			assertEquals("Number of transactions for Budget Details page table  did not match", numOfBudgetDetailsCountapp, NumOfBudgetDetailsCountDB); 
 		}
 		@Test
@@ -84,7 +83,7 @@ public class BudgetWidgetDetailsTransactionCountsTest extends NYCBaseTest {
 			BudgetPage.GoToTop5DetailsPage(WidgetOption.Top5ExpenseCategoriesbyPercentDifference);
 			HomePage.ShowWidgetDetails();
 			int NumOfBudgetDetailsCountDB =  NYCDatabaseUtil.getBudgetDetailsCount(year,'B');
-			int numOfBudgetDetailsCountapp = BudgetPage.GetTransactionCount();
+			int numOfBudgetDetailsCountapp = BudgetPage.GetTransactionCount1();
 			assertEquals("Number of transactions for Budget Details page table  did not match", numOfBudgetDetailsCountapp, NumOfBudgetDetailsCountDB); 
 		}
 	

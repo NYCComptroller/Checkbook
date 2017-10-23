@@ -534,7 +534,7 @@ public class NYCDatabaseUtil {
         
         public static int getTotalSpendingPrimeVendorsCount(int year,char yearTypeVal) throws SQLException {
             query = "SELECT COUNT(distinct vendor_id) aCount from disbursement_line_item_details where fiscal_year =" + year ;
-           // query2 = "SELECT COUNT(*) aCount from disbursement_line_item_details where fiscal_year =" + year ;  
+  
            rs = amountQueryHelper(yearTypeVal);
            int count = 0;
            while (rs.next()) {
@@ -544,9 +544,9 @@ public class NYCDatabaseUtil {
         }        
 
 		public static int getTotalSpendingExpCategoriesCount(int year, char yearTypeVal)  throws SQLException {
-			// TODO Auto-generated method stub
+			
 		       query = "SELECT COUNT(distinct expenditure_object_id) aCount from disbursement_line_item_details where fiscal_year =" + year ;
-	           // query2 = "SELECT COUNT(*) aCount from disbursement_line_item_details where fiscal_year =" + year ;  
+	           // query = "SELECT COUNT(distinct expenditure_object_code) aCount from disbursement_line_item_details where fiscal_year =" + year ;
 	           rs = amountQueryHelper(yearTypeVal);
 	           int count = 0;
 	           while (rs.next()) {
@@ -557,7 +557,7 @@ public class NYCDatabaseUtil {
         
 public static int getTotalSpendingContractsCount(int year,char yearTypeVal) throws SQLException {
 	query =   " SELECT count( distinct ( COALESCE(master_contract_number,contract_number)  )) aCount FROM disbursement_line_item_details" 
-	         +    " WHERE  contract_document_code in ( 'CT1', 'CTA1', 'POD', 'POC', 'PCC1', 'DO1','MA1','MMA1') and  spending_category_id='1'  and fiscal_year = "+ year;
+	         +    " WHERE  contract_document_code in ( 'CT1', 'CTA1', 'POD', 'POC', 'PCC1', 'DO1','MA1','MMA1')   and fiscal_year = "+ year;
     rs = amountQueryHelper(yearTypeVal);
    int count = 0;
    while (rs.next()) {
@@ -629,8 +629,8 @@ public static int getCapitalSpendingPrimeVendorsCount(int year,char yearTypeVal)
 }        
 
 public static int getCapitalSpendingExpCategoriesCount(int year, char yearTypeVal)  throws SQLException {
-	   //  query = "SELECT COUNT(distinct expenditure_object_id) aCount from disbursement_line_item_details where spending_category_id='3' and fiscal_year =" + year ;
-        query = "SELECT COUNT(distinct expenditure_object_code) aCount from disbursement_line_item_details where spending_category_id='3' and fiscal_year =" + year ;
+	    query = "SELECT COUNT(distinct expenditure_object_id) aCount from disbursement_line_item_details where spending_category_id='3' and fiscal_year =" + year ;
+     // query = "SELECT COUNT(distinct expenditure_object_code) aCount from disbursement_line_item_details where spending_category_id='3' and fiscal_year =" + year ;
        rs = amountQueryHelper(yearTypeVal);
        int count = 0;
        while (rs.next()) {
@@ -687,8 +687,8 @@ public static int getContractSpendingAgenciesCount(int year,char yearTypeVal) th
    } 
 
    public static int getContractSpendingExpCategoriesCount(int year, char yearTypeVal)  throws SQLException {
- // query = "SELECT COUNT(distinct expenditure_object_id) aCount from disbursement_line_item_details where spending_category_id='1' and fiscal_year =" + year ;
- query=  "SELECT COUNT(distinct expenditure_object_code) aCount from disbursement_line_item_details where spending_category_id='1' and fiscal_year =" + year ; 
+ query = "SELECT COUNT(distinct expenditure_object_id) aCount from disbursement_line_item_details where spending_category_id='1' and fiscal_year =" + year ;
+ //query=  "SELECT COUNT(distinct expenditure_object_code) aCount from disbursement_line_item_details where spending_category_id='1' and fiscal_year =" + year ; 
 rs = amountQueryHelper(yearTypeVal);
 int count = 0;
 while (rs.next()) {
