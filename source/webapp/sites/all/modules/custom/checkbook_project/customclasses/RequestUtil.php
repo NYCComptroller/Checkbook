@@ -18,7 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace CheckbookProject\CustomClasses;
+//namespace CheckbookProject\CustomClasses;
 
 require_once(__DIR__ . '/constants/Constants.php');
 
@@ -1204,8 +1204,10 @@ class RequestUtil
             }
         }
 
-        foreach ($default_params as $param => $value) {
+        if (is_array($default_params)) {
+          foreach ($default_params as $param => $value) {
             $where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
+          }
         }
 
         if (count($where_filters) > 0) {
