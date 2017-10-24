@@ -24,8 +24,8 @@ import helpers.Driver;
 import helpers.Helper;
 import utilities.TestStatusReport;
 
-public class RevenueWidgetDetailsTest extends NYCBaseTest {
-	//public class RevenueWidgetDetailsTest extends TestStatusReport {
+//public class RevenueWidgetDetailsTest extends NYCBaseTest {
+	public class RevenueWidgetDetailsTest extends TestStatusReport {
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	public  void GoToPage() {

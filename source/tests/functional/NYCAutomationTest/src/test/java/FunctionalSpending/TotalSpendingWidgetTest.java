@@ -17,8 +17,8 @@ import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
 import utilities.TestStatusReport;
 
-public class TotalSpendingWidgetTest extends NYCBaseTest {
-	//public class TotalSpendingWidgetTest extends TestStatusReport{
+//public class TotalSpendingWidgetTest extends NYCBaseTest {
+	public class TotalSpendingWidgetTest extends TestStatusReport{
 		int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	public void GoToPage(){

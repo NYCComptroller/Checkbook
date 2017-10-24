@@ -18,7 +18,7 @@ import utilities.TestStatusReport;
 
 
 public class PayrollWidgetDetailsTransactionCountsTest extends NYCBaseTest {
-	//public class PayrollWidgetDetailsTest extends TestStatusReport {
+	//public class PayrollWidgetDetailsTransactionCountsTest extends TestStatusReport {
 	
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
@@ -40,7 +40,7 @@ public class PayrollWidgetDetailsTransactionCountsTest extends NYCBaseTest {
 		assertEquals("Number of Payroll salaried employees did not match", numOfPayrollDetailsCountapp, NumOfPayrollDetailsCount2016); 
 	}
 	
-	/*
+	
 	@Test
 	public void VerifyTop5AgenciesbyOvertimeTransactionCount() throws SQLException{
 		PayrollPage.GoToTop5DetailsPage(WidgetOption.Top5AgenciesbyOvertime);
@@ -58,7 +58,7 @@ public class PayrollWidgetDetailsTransactionCountsTest extends NYCBaseTest {
 		assertEquals("Number of Payroll salaried employees did not match", numOfPayrollDetailsCountapp, NumOfPayrollDetailsCount2016); 
 	}
 	
-	*/
+	/*
 	
 	@Test
 	public void VerifyPayrollTransactionTitle() throws SQLException {
@@ -69,4 +69,6 @@ public class PayrollWidgetDetailsTransactionCountsTest extends NYCBaseTest {
 		String RevenueAgenciesTitleApp = HomePage.DetailsPagetitle();
 	assertEquals("Payroll Agencies Widget details page title did not match", AgenciesTitle, RevenueAgenciesTitleApp); 
 	}
+	
+	*/
 }

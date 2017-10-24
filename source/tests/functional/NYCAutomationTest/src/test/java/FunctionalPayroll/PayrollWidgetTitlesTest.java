@@ -20,9 +20,9 @@ import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
 import utilities.TestStatusReport;
 
-public class PayrollWidgetVisualizationTitles extends NYCBaseTest {
+//public class PayrollWidgetTitlesTest extends NYCBaseTest {
 	
-	//public class PayrollTitles extends TestStatusReport {
+public class PayrollWidgetTitlesTest extends TestStatusReport {
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	public void GoToPage(){
