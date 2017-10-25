@@ -80,14 +80,11 @@ $current_dashboard = _getRequestParamValue("dashboard");
 if($contract_amount == 0){
   //Check if there are any Active contracts when the registered amount is zero to enable 'Contracts' domain
   if($node->data[14]['total_contracts'] > 0){
-    if(in_array($current_dashboard, array('sp','ss', 'ms'))){
-        $contracts_url = ContractURLHelper::prepareSubvendorContractsSliderFilter('contracts_landing', $dashboard, FALSE);
-    }else{
-        $contracts_url =  RequestUtil::getTopNavURL("contracts");
-    }
+    $contracts_url =  RequestUtil::getTopNavURL("contracts");
     $contracts_link = l('<span class="nav-title">Contracts</span><br>'.custom_number_formatter_format(0, 1,'$'),$contracts_url,$options); 
   }else{
-    $contracts_link =  l('<span class="nav-title">Contracts</span><br>'. custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
+    $contracts_url =  RequestUtil::getTopNavURL("contracts");
+    $contracts_link =  ($contracts_url) ? l('<span class="nav-title">Contracts</span><br>'.custom_number_formatter_format(0, 1,'$'),$contracts_url,$options) :l('<span class="nav-title">Contracts</span><br>'. custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
   }
 }else{
     $contracts_link = l('<span class="nav-title">Contracts</span><br>'.custom_number_formatter_format($contract_amount, 1,'$'),RequestUtil::getTopNavURL("contracts"),$options);
@@ -223,7 +220,7 @@ if($featured_dashboard != null){
 }
 
 if($svendor_amount  == 0 && $svendor_amount_active_inc == 0){
-    if($svendor_amount_active_inc == 0 && preg_match('/contract/',$_GET['q']) && !_checkbook_check_isEDCPage()){
+    if($svendor_amount_active_inc == 0 && preg_match('/contract/',$_GET['q']) && !_checkbook_check_isEDCPage() && ContractUtil::checkStatusOfSubVendorByPrimeCounts()){
         $dashboard = (isset($featured_dashboard) && $featured_dashboard == 'mp')? 'sp': 'ss';
         $svendor_active_domain_link = ContractURLHelper::prepareSubvendorContractsSliderFilter('contracts_landing', $dashboard, TRUE);
         $subvendors_link = l('<div><div class="top-navigation-amount"><span class="nav-title">' .RequestUtil::getDashboardTopNavTitle("subvendor")  .'</span><br>&nbsp;'. custom_number_formatter_format($svendor_amount ,1,'$') . '</div></div>',$svendor_active_domain_link ,$options);	 

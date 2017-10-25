@@ -15,7 +15,8 @@ import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
 import utilities.TestStatusReport;
 
-public class PayrollWidgetTest extends NYCBaseTest {
+//public class PayrollWidgetTest extends NYCBaseTest {
+	public class PayrollWidgetTest extends TestStatusReport{
 
 	@Before
 	public void GoToPage(){
@@ -33,6 +34,8 @@ public class PayrollWidgetTest extends NYCBaseTest {
 		Integer numOfPayrollAgenciesapp = PayrollPage.GetTop5WidgetTotalCount(WidgetOption.Top5AgenciesbyPayroll);
 		assertEquals("Number of Payroll Agenies did not match", numOfPayrollAgenciesapp, NumOfPayrollAgencies2016);
 	}
+	
+	
 	@Test
 	public void VerifyNumOfAgenciesbyOvertime() throws SQLException {
 		Integer NumOfPayrollAgencies2016 =  NYCDatabaseUtil.getPayrollAgenciesCount(2016,'B');
@@ -45,6 +48,7 @@ public class PayrollWidgetTest extends NYCBaseTest {
 		Integer numOfPayrolleSalCountapp = PayrollPage.GetTop5WidgetTotalCount(WidgetOption.Top5AnnualSalaries);
 		assertEquals("Number of Payroll salaried employees did not match", numOfPayrolleSalCountapp, NumOfPayrollSalCount2016);
 	}
+	
 	/* issue with widget option
 		@Test
 		public void VerifyNumOfPayrollTitlesbyNumberofEmployees() throws SQLException {

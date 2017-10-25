@@ -1,10 +1,12 @@
 package FunctionalContracts;
 
 import static org.junit.Assert.assertEquals;
+
 import static org.junit.Assert.assertTrue;
 
 import java.sql.SQLException;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,8 +16,10 @@ import pages.contracts.ContractsPage.WidgetOption;
 import pages.home.HomePage;
 import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
+import helpers.Driver;
 import helpers.Helper;
-
+import utilities.TestStatusReport;
+//public class ActiveExpenseContractsDetailsTest extends TestStatusReport{
 public class ActiveExpenseContractsDetailsTest extends NYCBaseTest {
 
 	@Before
@@ -25,6 +29,14 @@ public class ActiveExpenseContractsDetailsTest extends NYCBaseTest {
 			HomePage.SelectYear(NYCBaseTest.prop.getProperty("CurrentYear"));
 		HomePage.ShowWidgetDetails();
 	}
+	
+	@After
+	public void EndProgram()
+	{
+		Driver.Instance.quit();
+	}
+	
+	
 	
 	/* ***************** Test Widget Transaction Count ****************** */
 	@Test

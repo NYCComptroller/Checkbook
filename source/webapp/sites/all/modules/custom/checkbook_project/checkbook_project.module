@@ -147,11 +147,19 @@ function checkbook_project_menu(){
         'type'=>MENU_CALLBACK
     );
     
-    /*$items['new-features'] = array(
-        'page callback' => '_checkbook_get_new_features',
+    $items['publish-new-features'] = array(
+        'page callback' => '_checkbook_publish_new_features',
         'access callback' => true,
+        'page arguments' => array(),
         'type'=>MENU_CALLBACK
-    );*/
+    );
+    
+    $items['new-features/%'] = array(
+        'page callback' => '_checkbook_publish_new_features',
+        'access callback' => true,
+        'page arguments' => array(1),
+        'type'=>MENU_CALLBACK
+    );
    
 
     return $items;
@@ -644,10 +652,10 @@ function checkbook_project_theme($existing, $type, $theme, $path){
             'arguments' => array('message' => NULL)
         ),
         
-       //---------------List of New Features Template----------------
-        'new_features' => array(
-            'template' => 'templates/new_features',
-            'arguments' => array('new_features' => NULL)
+       //---------------Template for publishing New Features page----------------
+        'publish_new_features' => array(
+            'template' => 'templates/publish_new_features',
+            'arguments' => array('access' => NULL)
         ),
     );
 }
@@ -891,6 +899,22 @@ function checkbook_project_debt_color($value){
 function startsWith($haystack, $needle) {
   $length = strlen($needle);
   return (substr($haystack, 0, $length) === $needle);
+}
+
+function _checkbook_publish_new_features($status = null){
+    if(!isset($status)){
+        global $user;
+        if ($user->uid === "1") {
+            return theme('publish_new_features',array('access'=>TRUE));
+        }else{
+            return theme('publish_new_features',array('access'=>FALSE));
+        }
+    }else{
+        if($status != 'get_status'){
+            variable_set('new_features_status',$status);
+        }
+        drupal_json_output(variable_get('new_features_status'));
+    }
 }
 
 

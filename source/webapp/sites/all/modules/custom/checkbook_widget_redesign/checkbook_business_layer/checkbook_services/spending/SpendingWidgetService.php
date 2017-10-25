@@ -1,23 +1,29 @@
 <?php
 
-class SpendingWidgetService extends WidgetDataService implements IWidgetService {
+class SpendingWidgetService extends WidgetDataService implements IWidgetService
+{
 
     /**
      * Function to allow the client to initialize the data service
      * @return mixed
      */
-    public function initializeDataService() {
+    public function initializeDataService()
+    {
         return new SpendingDataService();
     }
 
-    public function implementDerivedColumn($column_name,$row) {
+    public function implementDerivedColumn($column_name, $row)
+    {
         $value = null;
-        switch($column_name) {
+        switch ($column_name) {
 
             case "contract_number_link":
+                // using 'original_agreement_id' if it's a sub contract
+                $agreement_id = isset($row['original_agreement_id']) ? $row['original_agreement_id'] : $row['agreement_id'];
                 $column = $row['document_id'];
                 $class = "new_window";
-                $url = SpendingUrlService::contractIdUrl($row['agreement_id'], $row['document_code']);
+
+                $url = SpendingUrlService::contractIdUrl($agreement_id, $row['document_code']);
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
 
@@ -61,11 +67,11 @@ class SpendingWidgetService extends WidgetDataService implements IWidgetService 
             /* M/WBE Category Links */
             case "prime_mwbe_category_link":
                 $minority_type_id = $row['prime_minority_type_id'];
-                $mwbe_category_name =  MinorityTypeService::getMinorityCategoryById($minority_type_id);
+                $mwbe_category_name = MinorityTypeService::getMinorityCategoryById($minority_type_id);
                 $is_pop_up = RequestUtilities::isNewWindow();
 
                 // We do not add links to popup windows
-                if(!$is_pop_up) {
+                if (!$is_pop_up) {
                     $url = SpendingUrlService::PrimeMwbeCategoryUrl($minority_type_id);
                 }
                 $value = isset($url)
@@ -75,11 +81,11 @@ class SpendingWidgetService extends WidgetDataService implements IWidgetService 
 
             case "sub_mwbe_category_link":
                 $minority_type_id = $row['sub_minority_type_id'];
-                $mwbe_category_name =  MinorityTypeService::getMinorityCategoryById($minority_type_id);
+                $mwbe_category_name = MinorityTypeService::getMinorityCategoryById($minority_type_id);
                 $is_pop_up = RequestUtilities::isNewWindow();
 
                 // We do not add links to popup windows
-                if(!$is_pop_up) {
+                if (!$is_pop_up) {
                     $url = SpendingUrlService::SubMwbeCategoryUrl($minority_type_id);
                 }
                 $value = isset($url)
@@ -137,7 +143,7 @@ class SpendingWidgetService extends WidgetDataService implements IWidgetService 
             case "payroll_agency_ytd_spending_link":
                 $column = $row['check_amount_sum'];
                 $class = "bottomContainerReload";
-                $dynamic_parameter = "/agency/" . $row["agency_id"]."/category/2";
+                $dynamic_parameter = "/agency/" . $row["agency_id"] . "/category/2";
                 $url = SpendingUrlService::ytdSpendingUrl($dynamic_parameter, $this->getLegacyNodeId());
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
@@ -151,44 +157,34 @@ class SpendingWidgetService extends WidgetDataService implements IWidgetService 
                 break;
 
             case "contracts_ytd_spending_link":
-                $column = $row['check_amount_sum'];
-                $class = "bottomContainerReload";
-                $dynamic_parameter = DocumentCode::isMasterAgreement($row['document_code'])
-                    ? '/magid/' . $row['agreement_id'] . '/doctype/' . $row['document_code']
-                    : '/agid/' . $row['agreement_id'] . '/doctype/' . $row['document_code'];
-                $dynamic_parameter .= "/agency/" . $row["agency_id"];
-                $dynamic_parameter .= "/fvendor/" . $row["prime_vendor_id"];
-                $url = SpendingUrlService::ytdSpendingUrl($dynamic_parameter, $this->getLegacyNodeId());
-                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
-                break;
-
             case "sub_contracts_ytd_spending_link":
                 $column = $row['check_amount_sum'];
                 $class = "bottomContainerReload";
                 $dynamic_parameter = DocumentCode::isMasterAgreement($row['document_code'])
                     ? '/magid/' . $row['agreement_id'] . '/doctype/' . $row['document_code']
                     : '/agid/' . $row['agreement_id'] . '/doctype/' . $row['document_code'];
-                $dynamic_parameter .= "/agency/" . $row["agency_id"];
-                $dynamic_parameter .= "/fvendor/" . $row["sub_vendor_id"];
                 $url = SpendingUrlService::ytdSpendingUrl($dynamic_parameter, $this->getLegacyNodeId());
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
+
         }
 
-        if(isset($value)) {
+        if (isset($value)) {
             return $value;
         }
         return $value;
     }
-    
-    public function getWidgetFooterUrl($parameters) {
-        return SpendingUrlService::getFooterUrl($parameters,$this->getLegacyNodeId());
+
+    public function getWidgetFooterUrl($parameters)
+    {
+        return SpendingUrlService::getFooterUrl($parameters, $this->getLegacyNodeId());
     }
-    
-    public function adjustParameters($parameters, $urlPath) {
+
+    public function adjustParameters($parameters, $urlPath)
+    {
 
         $category = SpendingCategory::getCurrent();
-        if($category == SpendingCategory::TOTAL) {
+        if ($category == SpendingCategory::TOTAL) {
             $parameters['is_all_categories'] = 'Y';
         }
         return $parameters;

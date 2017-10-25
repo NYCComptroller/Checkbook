@@ -107,7 +107,7 @@ class Field
 
     public function getDropDownDefault()
     {
-        if (!(is_null($this->options[0])))
+        if (isset($this->options[0]) && !(is_null($this->options[0])))
             return $this->options[0];
         else
             return 'Select ' . $this->getFieldTitle();

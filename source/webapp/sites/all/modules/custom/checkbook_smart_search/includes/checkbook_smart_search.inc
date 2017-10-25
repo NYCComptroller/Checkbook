@@ -1024,7 +1024,6 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge){
                 "industry_type_name" => "Industry",
                 "received_date"=>"Received date",
                 "minority_type_name" => "M/WBE Category",
-                "is_prime_or_sub" => "Sub Vendor",
                 "prime_vendor_name" => "Associated Prime Vendor",
                 "" => "");
         }
@@ -1143,6 +1142,7 @@ function _checkbook_smart_search_domain_export_fields($domain, $IsOge){
                 $parameter_mapping = array(
                     "contract_status"=>"Status",
                     "contract_category_name"=>"Category",
+                    "vendor_record_type"=>"Vendor Record Type",
                     "vendor_name"=>"Vendor",
                     "agency_name_export"=>"Agency",
                     "contract_number"=>"Contract ID",
@@ -1162,7 +1162,6 @@ function _checkbook_smart_search_domain_export_fields($domain, $IsOge){
                     "industry_type_name" => "Industry",
                     "received_date"=>"Received date",
                     "minority_type_name" => "M/WBE Category",
-                    "is_prime_or_sub" => "Sub Vendor",
                     "prime_vendor_name" => "Associated Prime Vendor",
                 );
             }

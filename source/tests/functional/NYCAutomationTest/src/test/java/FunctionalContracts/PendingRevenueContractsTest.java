@@ -17,8 +17,9 @@ import pages.home.HomePage;
 import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
 import helpers.Helper;
-
-public class PendingRevenueContractsTest extends NYCBaseTest {
+import utilities.TestStatusReport;
+public class PendingRevenueContractsTest  extends TestStatusReport{
+//public class PendingRevenueContractsTest extends NYCBaseTest {
 	@Before
     public void GoToPage() {
 	   if (!PendingRevenueContracts.isAt())

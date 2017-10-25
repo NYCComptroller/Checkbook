@@ -375,6 +375,7 @@ class ContractsUrlService {
      * Returns Contracts Prime Vendor Landing page URL for the given prime vendor id, year and year type
      * @param $vendor_id
      * @param $year_id
+     * @param $current
      * @return string
      */
     static function primeVendorUrl($vendor_id, $year_id = null, $current = true) {
@@ -384,16 +385,15 @@ class ContractsUrlService {
             . RequestUtilities::_getUrlParamString("cindustry")
             . RequestUtilities::_getUrlParamString("csize")
             . RequestUtilities::_getUrlParamString("awdmethod")
-            //.RequestUtilities::_getUrlParamString('bottom_slider')
             . _checkbook_project_get_year_url_param_string();
 
         $year_type = _getRequestParamValue("yeartype");
         $agency_id = _getRequestParamValue("agency");
-        $dashboard = _getRequestParamValue("dashboard");
 
-        $latest_minority_id = !isset($year_id)
-            ? PrimeVendorService::getLatestMinorityType($vendor_id, $agency_id)
-            : PrimeVendorService::getLatestMinorityTypeByYear($vendor_id, $year_id, $year_type);
+        $latest_minority_id = $year_id
+            ? PrimeVendorService::getLatestMinorityTypeByYear($vendor_id, $year_id, $year_type)
+            : PrimeVendorService::getLatestMinorityType($vendor_id, $agency_id);
+
         $is_mwbe_certified = MinorityTypeService::isMWBECertified($latest_minority_id);
 
         $urlPath = drupal_get_path_alias($_GET['q']);
@@ -403,13 +403,9 @@ class ContractsUrlService {
             }
         }
 
-        if($is_mwbe_certified && $dashboard == 'mp') {
+        if($is_mwbe_certified) {
             $url .= "/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
-        }
-        else if($is_mwbe_certified && $dashboard != 'mp') {
-            $url .= "/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
-        }
-        else {
+        } else {
             $url .= RequestUtilities::_getUrlParamString("datasource")."/vendor/".$vendor_id;
         }
         $currentUrl = RequestUtilities::_getCurrentPage();
