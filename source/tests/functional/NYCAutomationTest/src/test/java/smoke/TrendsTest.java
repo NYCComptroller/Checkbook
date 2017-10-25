@@ -8,8 +8,10 @@ import org.junit.Test;
 import navigation.PrimaryMenuNavigation;
 import pages.tools.trends.AllTrendsPage;
 import utilities.TestStatusReport;
+import utilities.NYCBaseTest;
 
-public class TrendsTest extends TestStatusReport{
+//public class TrendsTest extends TestStatusReport{
+	public class TrendsTest extends NYCBaseTest{
 	
 	 @Test
     public void goToChangesInNetAssetsThroughAllTrendsPage() {

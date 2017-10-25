@@ -880,10 +880,10 @@ function _checkbook_autocomplete_budget_budgetcode($agency , $dept , $expcategor
             $query .= '&fq=agency_code:' . $agency;
         }
         if ($dept) {
-            $query .= '&fq=department_code:' . $dept;
+            $query .= '&fq=department_code:' . _emptyToZero($dept);
         }
         if ($expcategory) {
-            $query .= '&fq=expenditure_object_code:' . $expcategory;
+            $query .= '&fq=expenditure_object_code:' . _emptyToZero($expcategory);
         }
         if ($year) {
             $query .= '&fq=fiscal_year:' . $year;
@@ -891,6 +891,19 @@ function _checkbook_autocomplete_budget_budgetcode($agency , $dept , $expcategor
     }
     $matches = _checkbook_autocomplete_solr_results($query, 'budget_code_name_code');
     drupal_json_output($matches);
+}
+
+function _emptyToZero($input) {
+    $p = "/.*?(\\[.*?\\])/is";
+    $matches = array();
+    if ($input) {
+        $inputval = preg_match($p, $input, $matches);
+        $output = trim($matches[1], '[ ]');
+    }
+    else {
+        $output = 0;
+    }
+    return $output;
 }
 
 function _checkbook_autocomplete_budget_fundingsrc($agency, $budgetcode, $dept, $expcategory, $fiscal_year, $revcat, $revsrc, $type) {

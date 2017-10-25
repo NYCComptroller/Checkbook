@@ -226,8 +226,6 @@ function _checkbook_export_transactions(){
     $node = _checkbook_export_get_node_config();
     $limit = $node->widgetConfig->limit;
 
-    
-
     //TODO - see if we have to check count again
     $node->widgetConfig->getTotalDataCount = false;
     $node->widgetConfig->getData = true;
@@ -311,7 +309,7 @@ function _checkbook_export_transactions(){
             $i = 0;
             $rowData = NULL;
             foreach($columns as $column){
-                if($column->export === FALSE){
+                if(property_exists($column, 'export') && $column->export === FALSE){
                     continue;
                 }
 
@@ -364,7 +362,7 @@ function _checkbook_export_download_file($fileName){
 
 /** Function to handle generate export file */
 function _checkbook_export_generateExportFile($node,$headers, $exportConfigNode = NULL){
-    global $conf;
+    global $conf, $databases;
 
     try{
         $fileDir = _checkbook_export_prepareFileOutputDir();
@@ -448,11 +446,20 @@ function _checkbook_export_generateExportFile($node,$headers, $exportConfigNode 
             $node->data = checkbook_export_remove_non_export_columns($node);
         }
 
-        $command = $conf['check_book']['data_feeds']['command']
-                . " -c \"\\\\COPY (" . str_replace('\\\\','\\\\\\',$node->data) . ") TO '"
+        $command = $conf['check_book']['data_feeds']['command'];
+
+        $data_source = _getRequestParamValue('datasource');
+        if ('checkbook_oge' == $data_source) {
+            $command .= ' ' . $databases['checkbook_oge']['main']['database'] . ' ';
+        } else {
+            $command .= ' ' . $databases['checkbook']['main']['database'] . ' ';
+        }
+
+        $command .=
+                " -c \"\\\\COPY (" . str_replace('\\\\','\\\\\\',$node->data) . ") TO '"
                 . $tempOutputFile
                 . "'  WITH DELIMITER ',' CSV QUOTE '\\\"' ESCAPE '\\\"' \" ";
-        
+
         log_error($command);
         
         shell_exec($command);

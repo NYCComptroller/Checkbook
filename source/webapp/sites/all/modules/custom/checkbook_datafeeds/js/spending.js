@@ -10,20 +10,6 @@
             $('input:radio[name="datafeeds-spending-domain-filter"][value="checkbook"]').attr('checked', 'checked').button("refresh");
             $('input:hidden[name="data_source"]').val("checkbook");
         }
-        
-        //On Date Filter change
-        $("#edit-date-filter input[name='date_filter']").click(function(){
-            if($('input:radio[name=date_filter]:checked').val() == 0){
-                $('select[name="year"]').removeAttr("disabled");
-                $('input[name="issuedfrom"]').attr('disabled', 'disabled');
-                $('input[name="issuedto"]').attr('disabled', 'disabled');
-            } else if ($('input:radio[name=date_filter]:checked').val() == 1) {
-                $('select[name="year"]').attr('disabled', 'disabled');
-                $('input[name="issuedfrom"]').removeAttr("disabled");
-                $('input[name="issuedto"]').removeAttr("disabled");
-            }
-        });
-
         //On change of "Year"
         $('#edit-year').change(function () {
             var agency = emptyToZero($('#edit-agency').val());
@@ -195,11 +181,26 @@
             $('a.deselect', context).click(function () {
                 $('#edit-column-select', context).multiSelect('deselect_all');
             });
+            
+            //On Date Filter change
+            $("#edit-date-filter input[name='date_filter']", context).click(function(){
+                if($('input:radio[name=date_filter]:checked', context).val() == 0){
+                    $('select[name="year"]', context).removeAttr("disabled");
+                    $('input[name="issuedfrom"]', context).attr('disabled', 'disabled');
+                    $('input[name="issuedto"]', context).attr('disabled', 'disabled');
+                } else if ($('input:radio[name=date_filter]:checked', context).val() == 1) {
+                    $('select[name="year"]', context).attr('disabled', 'disabled');
+                    $('input[name="issuedfrom"]', context).removeAttr("disabled");
+                    $('input[name="issuedto"]', context).removeAttr("disabled");
+                }
+            });
+            
             //Sets up jQuery UI datepickers
+            var currentYear = new Date().getFullYear();
             $('.datepicker', context).datepicker({dateFormat:"yy-mm-dd",
                                                 changeMonth:true,     
                                                 changeYear:true,
-                                                yearRange:'-3:+3'});
+                                                yearRange:'-'+(currentYear-1900)+':+'+(2500-currentYear)});
 
             //Sets up jQuery UI autocompletes and autocomplete filtering functionality
             var year = 0;

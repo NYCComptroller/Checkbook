@@ -266,6 +266,7 @@ class Form
                 $form[$domain][$domain_field]['#type'] = FieldType::DatePopup;
                 $form[$domain][$domain_field]['#date_format'] = 'Y-m-d';
                 $form[$domain][$domain_field]['#title'] = t('TO');
+                $form[$domain][$domain_field]['#date_year_range'] = $year_range;
                 if(!(is_null($field->suffix)))
                     $form[$domain][$domain_field]['#suffix'] = '</div></div>' . $field->suffix;
                 else

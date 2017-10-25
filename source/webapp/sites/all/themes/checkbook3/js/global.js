@@ -1,7 +1,38 @@
 jQuery(document).ready(function ($) {
     //New Features Menu
-    jQuery('#nice-menu-1 li.menu-path-node-975 a').addClass('btn-new-features gridpopup');
-
+    $('#nice-menu-1 li.menu-path-node-975 a').addClass('gridpopup');
+    $.ajax({
+        url: '/new-features/get_status',
+        success: function(data) {
+            setNewFeaturesMenuColor(data.toString());
+        }
+    }); 
+    $("#new_features").click(function(){
+        var status = '';
+        if($("#new_features").val() === 'Enable New Features Link')
+            status = 'enable';
+        else
+            status = 'disable';
+        $.ajax({
+            url: '/new-features/'+status,
+            success: function(data) {
+                setNewFeaturesMenuColor(data.toString());
+            }
+        }); 
+    });
+    
+    function setNewFeaturesMenuColor(status){
+        if(status === 'enable'){
+            $('#nice-menu-1 li.menu-path-node-975 a').removeClass('disabled');
+            $('#nice-menu-1 li.menu-path-node-975 a').addClass('enabled');
+            $("#new_features").val('Disable New Features Link');
+        }else{
+            $('#nice-menu-1 li.menu-path-node-975 a').removeClass('enabled');
+            $('#nice-menu-1 li.menu-path-node-975 a').addClass('disabled');
+            $("#new_features").val('Enable New Features Link');
+        }
+    }
+    
     //Altering CSS for slider pager for pie charts on contracts page
     if(jQuery(".slider-pager a").length == 2){
         jQuery("div.slider-pager").addClass('pieSlider');
@@ -1908,17 +1939,15 @@ Drupal.behaviors.hoveOverMWBE = {
             event.preventDefault();
 
             var hrefURL = this.getAttribute("href");
-            var hrefarr = hrefURL.split('/');
+            // var hrefarr = hrefURL.split('/');
             reloadURL =  window.location.pathname + "?expandBottomContURL=" +  hrefURL ;
-            for(var i=0; i< hrefarr.length; i++){
-                if(hrefarr[i] == 'category'){
-                    var category = hrefarr[i] + "/" + hrefarr[i+1];
-                    var reloadURL =  window.location.pathname +"/"+category+ "?expandBottomContURL=" +  hrefURL ;
-                }
-            }
+            // for(var i=0; i< hrefarr.length; i++){
+            //     if(hrefarr[i] == 'category'){
+            //         var category = hrefarr[i] + "/" + hrefarr[i+1];
+            //         var reloadURL =  window.location.pathname +"/"+category+ "?expandBottomContURL=" +  hrefURL ;
+            //     }
+            // }
             window.location = reloadURL;
-
-
            /* $('.bottomContainer').html("Loading Data");
             $.ajax({
                 url:callBackURL,

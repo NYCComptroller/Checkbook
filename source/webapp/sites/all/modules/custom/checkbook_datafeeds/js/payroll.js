@@ -10,13 +10,12 @@
             $('#ms-edit-column-select a.deselect',context).click(function(){
                 $('#edit-column-select',context).multiSelect('deselect_all');
             });
-            
             //Sets up jQuery UI datepickers
-            $('.datepicker').datepicker({dateFormat:"yy-mm-dd",
-                                        changeMonth:true,     
-                                        changeYear:true,
-                                        yearRange:'-3:+3'});
-                                    
+            var currentYear = new Date().getFullYear();
+            $('.datepicker', context).datepicker({dateFormat:"yy-mm-dd",
+                                                changeMonth:true,     
+                                                changeYear:true,
+                                                yearRange:'-'+(currentYear-1900)+':+'+(2500-currentYear)});
             //Sets up autocompletes
             var year = $('#edit-year', context).val();
             var agency = ($('#edit-agency', context).val() == 'Citywide (All Agencies)') ? 0 : encodeURIComponent($('#edit-agency', context).val()) ;

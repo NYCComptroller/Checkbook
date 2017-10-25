@@ -95,7 +95,7 @@ class CSVDataHandler extends AbstractDataHandler {
      * @return string
      */
     function getJobCommand($query) {
-        global $conf;
+        global $conf, $databases;
 
         //map csv headers
         $columnMappings = $this->requestDataSet->displayConfiguration->csv->elementsColumn;
@@ -173,6 +173,7 @@ class CSVDataHandler extends AbstractDataHandler {
             $filename = _checkbook_project_generate_uuid(). '.csv';
             $tmpDir =  (isset($conf['check_book']['tmpdir']) && is_dir($conf['check_book']['tmpdir'])) ? rtrim($conf['check_book']['tmpdir'],'/') : '/tmp';
             $command = $conf['check_book']['data_feeds']['command'];
+            $command .= ' ' . $databases['checkbook']['main']['database'] . ' ';
 
             if(!is_writable($tmpDir)){
                 LogHelper::log_error("$tmpDir is not writable. Please make sure this is writable to generate export file.");

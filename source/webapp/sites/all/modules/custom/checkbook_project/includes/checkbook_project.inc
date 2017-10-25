@@ -228,7 +228,7 @@ function _break_text_custom($text, $length = 20, $no_of_lines = 2){
   }
   else{
     foreach($text_array as $key=>$value){
-      if($first_line){
+      if(isset($first_line) && $first_line){
         if(strlen($value) >= $remaining && $index ==0){
           $first_line = false;
           $second_line = true;
@@ -247,7 +247,7 @@ function _break_text_custom($text, $length = 20, $no_of_lines = 2){
           }
         }
       }
-      if($second_line){
+      if(isset($second_line) && $second_line){
         $prev_remaining = $remaining;
         $remaining = $remaining - (strlen($value)+1)  ;
         if($remaining >= 0){

@@ -1,19 +1,19 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -50,8 +50,8 @@ function widget_menu(){
       'access callback' => true,
       'type'=>MENU_CALLBACK
   );
-  
-  
+
+
   $items['widget/%'] = array(
   		'page callback' => '_widget_node_view_page',
   		'page arguments' => array(1),
@@ -71,7 +71,7 @@ function widget_load($key){
 	if($node == null){
 		$node = _widget_node_load_file($key);
 	}
-	
+
 	return $node;
 }
 
@@ -118,18 +118,18 @@ function widget_perm() {
 }
 
 function _widget_node_load($key, $type='node'){
-	
+
 	if(preg_match("/^admin/",$_GET['q'])){
 		return "";
 	}
-		
+
 	switch ($type) {
 		case 'node':
 			return node_load($key);;
 		case 'file':
 			return _widget_node_load_file($key);
-			
-	}	
+
+	}
 }
 
 function _widget_node_view_page($key){
@@ -150,29 +150,29 @@ function _widget_node_load_file($key){
 	$node->type = "widget";
 	$files = file_scan_directory( drupal_get_path('module','checkbook_project') , '/^'.$key.'\.json$/');
       if(count($files) > 0){
-        $file_names = array_keys($files); 
+        $file_names = array_keys($files);
         $json = file_get_contents($file_names[0]);
         $node->widget_json =  $json;
       }
     if($node->nid == null){
     	$node->nid = $key;
-    }  
-    return $node;  
+    }
+    return $node;
 }
 
 
 
 
-function widget_node_load($nodes,$types){  
+function widget_node_load($nodes,$types){
 	if(preg_match("/^admin/",$_GET['q'])){
 		return "";
 	}
-	
+
   foreach($nodes as $nid => $node ){
     if( $node->type == "widget"){
       $files = file_scan_directory( drupal_get_path('module','checkbook_project') , '/^'.$nid.'\.json$/');
       if(count($files) > 0){
-        $file_names = array_keys($files); 
+        $file_names = array_keys($files);
         $json = file_get_contents($file_names[0]);
         $node->widget_json =  $json;
       }else{
@@ -180,7 +180,7 @@ function widget_node_load($nodes,$types){
       }
     }
   }
-  
+
 }
 
 function widget_form(&$node) {
@@ -234,7 +234,7 @@ function widget_node_view($node, $nodata = true) {
 
 	if($node->type != 'widget')
 		return ;
-	
+
 //	log_debug("Request to view widget " . $node->nid . " teaser " . $teaser . " page " . $page);
 
 	//make sure configuration is loaded
@@ -244,9 +244,9 @@ function widget_node_view($node, $nodata = true) {
 	widget_prepare($node);
 
 	//invoke widget specific prepare
-	
+
 	widget_invoke($node, 'widget_prepare');
-	
+
 	//load data
 	if(($node->widgetConfig->noDataInitialLoad == null || !$node->widgetConfig->noDataInitialLoad) || !$nodata ){
 	    widget_data($node);
@@ -270,15 +270,15 @@ function widget_node_view($node, $nodata = true) {
 	}
 		//invoke widget specific post-load function
 	if(isset($node->widgetConfig->widgetUpdateJSONConfig)){
-		
+
 		if($node->widgetConfig->widgetType == 'highcharts'){
 			$node->widgetConfig->chartConfig->chart->renderTo = 'node-chart-' . widget_unique_identifier($node);
-			$node->widgetConfig->chartConfig->credits->enabled = false;				
+			$node->widgetConfig->chartConfig->credits->enabled = false;
 		}
-		
-		
+
+
 		eval($node->widgetConfig->widgetUpdateJSONConfig);
-	}else{	
+	}else{
 		widget_invoke($node, 'widget_data');
 	}
 
@@ -321,7 +321,7 @@ function _widget_ajax_wrapper($node){
 function widget_ajax_get_node($node){
   $node = widget_node_view($node,false);
   echo $node->content['body']['#markup'];
- 
+
 }
 
 /***************************************/
@@ -412,11 +412,11 @@ function widget_prepare(&$node) {
 	if (isset($_REQUEST['data'])) {
 		$node->widgetConfig->dataOnly = TRUE;
 	}
-	
+
 	if(isset($node->widgetConfig->widgetPreprocessJSON)){
 		$parameters =  eval($node->widgetConfig->widgetPreprocessJSON);
 	}
-	
+
 	//copy request params and apply default and additional params
 	//$node->widgetConfig->requestParams = $_REQUEST;
 	if (isset($node->widgetConfig->cleanURLParameters)) {
@@ -460,7 +460,7 @@ function widget_prepare(&$node) {
     if(isset($node->widgetConfig->preProcessConfiguration)){
     	$parameters =  eval($node->widgetConfig->preProcessConfiguration);
     }
-    
+
     foreach ($node->widgetConfig->model->series as $series) {
         if(isset($series->preProcessConfiguration)){
             $parameters =  eval($series->preProcessConfiguration);
@@ -513,15 +513,15 @@ function prepare_dataset_parameters(&$requestParameters, $configuration,$widgetC
               else
               {
                 if (in_array($value, $configuration->allowedParams) || !isset($configuration->allowedParams)) {
-                  $requestParameters[$value] = $widgetConfig->originalRequestParams[$key]; 
+                  $requestParameters[$value] = $widgetConfig->originalRequestParams[$key];
                   unset($requestParameters[$key]);
-                }                
+                }
               }
 
         }
-    }   
+    }
     // log_debug("Parameters (inside)");
-    
+
 }
 
 function load_widget_data($node, $resultFormatter) {
@@ -547,9 +547,9 @@ function load_widget_data($node, $resultFormatter) {
                 $parameters[$key] = explode("~",$value);
             }
         }
-        
+
         //update
-        
+
         if(isset($config->adjustParameters)){
            $parameters =  eval($config->adjustParameters);
         }
@@ -662,7 +662,7 @@ function load_widget_data($node, $resultFormatter) {
                     : $columns;
                 $serieParameters = $parameters;
                 prepare_dataset_parameters($serieParameters, $serie,$node->widgetConfig);
-                
+
                 if(isset($serie->seriesDefaultParameters)){
                   foreach($serie->seriesDefaultParameters as $key => $value){
                     if (!isset($serieParameters[$key])) {
@@ -707,7 +707,7 @@ function load_widget_data($node, $resultFormatter) {
                         $serieStartWith, $serieLimit,
                         $resultFormatter);
                 $node->nodeAdjustedParamaterConfig[] = $parameters;
-                
+
                 // post-processing records
                 if (isset($records) && (isset($serie->columnPrefix) || isset($serie->columnSuffix))) {
                     foreach ($records as &$record) {
@@ -814,9 +814,9 @@ function load_widget_data($node, $resultFormatter) {
                   $node->nodeAdjustedParamaterConfig = $parameters;
               }
           }
-          
-          
-          if ($config->totalAggregateColumns) {
+
+
+          if (property_exists($config, 'totalAggregateColumns') && $config->totalAggregateColumns) {
           	foreach($config->totalAggregateColumns as $aggregateColumn){
                 $params = $parameters;
                 $ds = $datasetName;
@@ -963,7 +963,8 @@ function widget_data(&$node) {
 	if (isset($node->widgetConfig->derivedColumns)) {
 
 		foreach ($node->widgetConfig->derivedColumns as $derivedColumnName => $derivedColumnDefinition) {
-			$visibility_flag = check_node_flag_visibilty($derivedColumnDefinition->visibility_flag, $node);
+		    $flag = property_exists($derivedColumnDefinition, 'visibility_flag') ? $derivedColumnDefinition->visibility_flag : null;
+			$visibility_flag = check_node_flag_visibilty($flag, $node);
 			if (isset($node->data) && is_array($node->data) && $visibility_flag) {
                 log_debug($node->data);
 				foreach ($node->data as $rowKey => $row) {
@@ -1272,10 +1273,10 @@ function widget_merge_parent_node_config($node){
     return widget_merge_config($parent_node->widgetConfig, $node->widgetConfig);
   }else{
     return $node->widgetConfig;
-  }  
+  }
 }
 
-function widget_merge_config($parent_config, $child_config){ 
+function widget_merge_config($parent_config, $child_config){
   $child_config->cleanURLParameters = $parent_config->cleanURLParameters;
   $child_config->cleanURLParameters[] = $child_config->autocompleteParamName;
   $child_config->paramTypeConfig = $parent_config->paramTypeConfig;
@@ -1477,7 +1478,7 @@ function _replaceSpecialCharactersDecode($string){
 function _update_dataset_datasource($datasetName,$keepOriginalDatasource = false){
 	if($keepOriginalDatasource == true){
 		return $datasetName;
-	}	
+	}
     $database = _getRequestParamValue('datasource');
     if(isset($database)){
         $database = str_replace("checkbook:", "checkbook_oge:",$datasetName);
@@ -1490,7 +1491,7 @@ function _update_dataset_datasource($datasetName,$keepOriginalDatasource = false
 function _update_node_data($data,$keepOriginalDatasource = false){
 	if($keepOriginalDatasource == true){
 		return $data;
-	}	
+	}
     $returnData = array();
     foreach($data as $key=>$value){
          $arrayValues = array();
@@ -1504,25 +1505,28 @@ function _update_node_data($data,$keepOriginalDatasource = false){
     return $returnData;
 }
 
-function _update_columns_by_datasource($node_columns, $datasource_mapping = null, $keepOriginalDatasource= false){	
+function _update_columns_by_datasource($node_columns, $datasource_mapping = null, $keepOriginalDatasource= false){
 	if($keepOriginalDatasource == true){
 		return $node_columns;
 	}
     $columns = array();
     $database = _getRequestParamValue('datasource');
     $datasource_mapping = ($datasource_mapping != null) ? get_object_vars($datasource_mapping) : null;
-    foreach($node_columns as $column){
-        if($datasource_mapping == null){
-            array_push($columns, _update_dataset_datasource($column));
-        }else{
-            if(!array_key_exists($column, $datasource_mapping)){
+    if (is_array($node_columns)) {
+        foreach($node_columns as $column){
+            if($datasource_mapping == null){
                 array_push($columns, _update_dataset_datasource($column));
-            }
-            else if(array_key_exists($column, $datasource_mapping) && $datasource_mapping[$column] == $database){
-                array_push($columns, _update_dataset_datasource($column));
+            }else{
+                if(!array_key_exists($column, $datasource_mapping)){
+                    array_push($columns, _update_dataset_datasource($column));
+                }
+                else if(array_key_exists($column, $datasource_mapping) && $datasource_mapping[$column] == $database){
+                    array_push($columns, _update_dataset_datasource($column));
+                }
             }
         }
     }
+
     return $columns;
 }
 
@@ -1551,7 +1555,7 @@ function _widget_build_sql_condition($column, $value){
 	}else{
 		return  $column . '=' . '\'' . $value . '\'';
 	}
-	
+
 }
 
 
@@ -1569,11 +1573,11 @@ function _widget_join_merge_data($array1,$array2, $keys = array()){
 					}
 				}
 			}
-			
+
 		}
-	}	
+	}
 	return $array1;
-	
+
 }
 
 
