@@ -17,7 +17,7 @@ import utilities.TestStatusReport;
 @SuiteClasses({
 
 	/* Spending */
-	/*TotalSpendingWidgetTest.class,
+	TotalSpendingWidgetTest.class,
 	TotalSpendingTitlesTest.class,
 	TotalSpendingWidgetDetailsTest.class,
 	
@@ -36,7 +36,7 @@ import utilities.TestStatusReport;
 	OtherSpendingWidgetDetailsTest.class,
 	OtherSpendingWidgetTest.class,
 	/* Contracts */
-	/*
+	
 	ActiveExpenseContractsTest.class,
 	ActiveExpenseContractsDetailsTest.class,
 	ActiveRevenueContractsTest.class,
@@ -49,7 +49,7 @@ import utilities.TestStatusReport;
 	RegisteredExpenseContractsDetailsTest.class,
 	RegisteredRevenueContractsTest.class,
 	RegisteredRevenueContractsDetailsTest.class,
- */
+ 
 	/* Budget */
 	BudgetWidgetDetailsPageTitlesTest.class,
 	BudgetWidgetDetailsTransactionCountsTest.class,
