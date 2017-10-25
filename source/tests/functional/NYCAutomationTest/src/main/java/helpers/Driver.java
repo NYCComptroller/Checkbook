@@ -100,21 +100,7 @@ public class Driver {
     public static void GoTo(String URL) {
         Instance.get(URL);
       
-        		
-     //   WebDriverWait wait = new WebDriverWait(Driver.Instance, 20);
-		// String username = "nyc-guest";
-      //   String password = "Checkb00k$123";
-		//Alert alert = wait.until(ExpectedConditions.alertIsPresent());     
-		//alert.authenticateUsing(new UserAndPassword(username, password)); 
-		
-	//	SendKeys("nyc-guest");
-	//	SendKeys("{TAB}");
-		//SendKeys(password);
-	//	SendKeys("~"); 
-		
-      //  Instance.findElement(By.id("auth_login")).sendKeys("nyc-guest");
-      //  Instance.findElement(By.id("auth_login_password")).sendKeys("Checkb00k$123");
-        
+
         Instance.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
     }
     private static void GetDriverPath() {
