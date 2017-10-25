@@ -10,15 +10,17 @@ import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 
+import pages.budget.BudgetPage;
+import pages.budget.BudgetPage.WidgetOption;
 import pages.home.HomePage;
 import pages.spending.SpendingPage;
 import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
 import utilities.TestStatusReport;
 
-//public class TotalSpendingTitlesTest extends TestStatusReport{
-public class TotalSpendingTitlesTest extends NYCBaseTest{
-	
+public class TotalSpendingTitlesTest extends TestStatusReport{
+	//public class TotalSpendingTitlesTest extends NYCBaseTest{
+	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
     public void GoToPage(){
 	   if (!SpendingPage.isAt())
@@ -28,14 +30,23 @@ public class TotalSpendingTitlesTest extends NYCBaseTest{
     }
 
 	@Test
-    public void VerifySpendingAmount() throws SQLException {
+    public void VerifyTopNavSpendingAmount() throws SQLException {
         String TotalSpendingAmtFY2016 = NYCDatabaseUtil.getSpendingAmount(2016, 'B');
         String spendingAmt = SpendingPage.GetSpendingAmount();
         assertEquals("Spending Amount did not match", spendingAmt, TotalSpendingAmtFY2016);
     }
 	
 	@Test
-    public void VerifySpendingDomainVisualizationsTitles(){
+    public void VerifyBottomNavTotalSpendingAmount() throws SQLException {
+        String TotalSpendingAmtDB = NYCDatabaseUtil.getSpendingAmount(year, 'B');
+        String spendingAmt = SpendingPage.GetBottomNavSpendingAmount();
+    	System.out.println(spendingAmt); 
+        assertEquals("Spending Amount did not match", spendingAmt, TotalSpendingAmtDB);
+            
+    }
+	
+	@Test
+    public void VerifyTotalSpendingVisualizationsTitles(){
 	    String[] sliderTitles= {"Total Spending", 
 	    						"Top Ten Agencies by Disbursement Amount", 
 	    						"Top Ten Contracts by Disbursement Amount", 
@@ -45,7 +56,7 @@ public class TotalSpendingTitlesTest extends NYCBaseTest{
     }
 	 
 	@Test
-    public void VerifySpendingWidgetTitles(){
+    public void VerifyTotalSpendingWidgetTitles(){
 	   String[] widgetTitles = {"Top 5 Checks",
 	    						"Top 5 Agencies",
 	    						"Top Expense Categories",
@@ -53,13 +64,7 @@ public class TotalSpendingTitlesTest extends NYCBaseTest{
 	    						"Top 5 Contracts",
 	    						"Top 5 Agencies"}; 
 	    							    						 
-		//System.out.println( SpendingPage.GetAllWidgetText()); 
-	//	 String widgetTitle = "Top 5 Checks";
-//	assertEquals("Top 5 Checks", SpendingPage.GetWidgetText());
-	//System.out.println( SpendingPage.GetAllWidgetText()); 
-	//assertEquals("Top 5 Agencies", SpendingPage.GetWidgetText());
-		//assertEquals(widgetTitles,SpendingPage.GetWidgetText());
-	   System.out.println( SpendingPage.WidgetTitles()); 		
+		   System.out.println( SpendingPage.WidgetTitles()); 		
     	//HomePage.ShowWidgetDetails();
     	assertTrue(Arrays.equals(widgetTitles, SpendingPage.WidgetTitles().toArray()));
     	
@@ -77,5 +82,9 @@ public class TotalSpendingTitlesTest extends NYCBaseTest{
             } 
       */	
     }  
+	
+	
+
+	
 	
 }
