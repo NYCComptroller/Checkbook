@@ -84,6 +84,11 @@ if(_getRequestParamValue("status")){
 }else{
     $status = '/status/A';
 }
+
+if (isset($node->data[0]['mwbe_vendor']) && 'yes' == strtolower($node->data[0]['mwbe_vendor'])) {
+  $status .= '/dashboard/mp';
+}
+
 //log_error($_SERVER);
 foreach($results2 as $row){
     $total_cont +=$row['total_contracts_sum'];
