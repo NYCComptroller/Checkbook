@@ -109,10 +109,16 @@ function checkbook_advanced_search_form($form, $form_state)
         '#disabled' => TRUE,
     );
     $form['budget']['budget_budget_code'] = array(
-        '#type' => 'textfield',
+        '#type' => 'select',
         '#title' => t('Budget Code'),
-        '#size' => 30,
-        '#maxlength' => 100
+        '#default_value' => t('Select Budget Code'),
+        '#options' => array("Select Budget Code"),
+    );
+    $form['budget']['budget_budget_name'] = array(
+        '#type' => 'select',
+        '#title' => t('Budget Name'),
+        '#default_value' => t('Select Budget Name'),
+        '#options' => array("Select Budget Name"),
     );
     $form['budget']['budget_fiscal_year'] = array(
         '#type' => 'select',
@@ -568,6 +574,11 @@ function checkbook_advanced_search_form($form, $form_state)
         'library' => array(
             array('system', 'ui.accordion', FALSE),
             array('system', 'ui.autocomplete', FALSE),
+        ),
+        'css' => array(
+            drupal_get_path('module', 'checkbook_advanced_search') . '/css/chosen.css' => array(
+                'type' => 'file','media' => 'all',
+            ),
         ),
         'js' => array(
             array(
