@@ -63,6 +63,9 @@
                 $('#edit-budget-budget-code').html(html);
                 $('#edit-budget-budget-code').val(budget_code);
                 $('#edit-budget-budget-code').trigger("chosen:updated");
+                if(budget_name !== $('#edit-budget-budget-name').val()){
+                    $.fn.reloadBudgetCode();
+                }
             }
         });                    
     };
@@ -89,6 +92,9 @@
                 $('#edit-budget-budget-name').html(html);
                 $('#edit-budget-budget-name').val(budget_name);
                 $('#edit-budget-budget-name').trigger("chosen:updated");
+                if(budget_code !== $('#edit-budget-budget-code').val()){
+                    $.fn.reloadBudgetName();
+                }
             }
         });                    
     };
@@ -96,16 +102,18 @@
     Drupal.behaviors.budgetDataFeeds = {
         attach:function(context, settings){
 
-            if($('#budget-advanced-search').hasClass('ui-accordion-content-active')){
-                $('select[name="budget_budget_code"]', context).chosen({
-                    no_results_text: "No matches found"
-                });
-                $('select[name="budget_budget_name"]', context).chosen({
-                    no_results_text: "No matches found"
-                });
-                $.fn.reloadBudgetCode();
-                $.fn.reloadBudgetName();
-            }
+            $('#edit-budget-budget-code', context).chosen({
+                no_results_text: "No matches found"
+            });
+            $('#edit_budget_budget_code_chosen .chosen-search-input', context).attr("placeholder", "Search Budget Code");
+
+            $('#edit-budget-budget-name', context).chosen({
+                no_results_text: "No matches found"
+            });
+            $('#edit_budget_budget_name_chosen .chosen-search-input', context).attr("placeholder", "Search Budget Name");
+
+            $.fn.reloadBudgetCode();
+            $.fn.reloadBudgetName();
             
             $('#edit-budget-agencies', context).change(function(){
                 if($('#edit-budget-agencies', context).val() === 0){
