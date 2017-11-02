@@ -1,5 +1,7 @@
 package pages.contracts;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
@@ -8,6 +10,7 @@ import org.openqa.selenium.WebElement;
 import navigation.TopNavigation;
 import pages.home.HomePage;
 import helpers.Driver;
+import helpers.Helper;
 
 public class ContractsPage {
 	public enum WidgetOption{
@@ -17,6 +20,55 @@ public class ContractsPage {
 	public static void GoTo() {
         TopNavigation.Contracts.Select();
     }
+	
+	  public static String GetContractsAmount() {
+          WebElement spendingAmt = Driver.Instance.findElement(By.cssSelector(".top-navigation-left .contracts > .expense-container > a"));
+          return spendingAmt.getText().substring((spendingAmt.getText().indexOf("$")));
+      }
+	
+	 public static String GetBottomNavContractAmount() {
+           WebElement contractAmt = Driver.Instance.findElement(By.cssSelector(".nyc_totals_links .active > .positioning > a .dollars"));
+           return contractAmt.getText().substring((contractAmt.getText().indexOf("$")));
+       }
+	 
+	 public static int GetBottomNavContractCount() {
+         WebElement contractCount = Driver.Instance.findElement(By.cssSelector(".nyc_totals_links .active > .positioning > a .count"));
+         return Helper.stringToInt(contractCount.getText());
+     }
+	 
+	 
+	
+	   
+	    public static ArrayList<String> VisualizationTitles() {
+			ArrayList<String> titles = new ArrayList<String>();
+			List<WebElement> titleContainers = Driver.Instance.findElements(By.cssSelector("#nyc-contracts > .top-chart > .inside > .panel-pane"));
+			for(int i=0; i < titleContainers.size(); i++){
+				selectVisualizationSlider(i);
+				WebElement titleClass = titleContainers.get(i).findElement(By.cssSelector(".pane-content .chart-title"));
+				if(titleClass.isDisplayed()){
+					String title = titleClass.getText();
+					titles.add(title);
+				}
+			}	
+			return titles;
+		}
+		
+		public static void selectVisualizationSlider(int sliderPosition){
+			List<WebElement> sliderContainer = Driver.Instance.findElements(By.cssSelector("#nyc-contracts > .top-chart > .slider-pager > a"));
+			sliderContainer.get(sliderPosition).click();
+			Driver.Instance.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+		}
+		
+		public static ArrayList<String> WidgetTitles() {
+			ArrayList<String> titles = new ArrayList<String>();
+			List<WebElement> titleContainers = Driver.Instance.findElements(By.className("tableHeader"));
+			for (WebElement titleContainer : titleContainers) {
+				WebElement titleHeaderContainer = titleContainer.findElement(By.cssSelector("h2"));
+				//titles.add(titleHeaderContainer.getText());
+				titles.add(titleHeaderContainer.getText().substring(0, titleHeaderContainer.getText().indexOf("Number")-1));
+			}	
+			return titles;
+		}
 	public static boolean isAt() {
     	WebElement topTitleCont = Driver.Instance.findElement(By.cssSelector(".top-navigation-left > table > tbody > tr .contracts"));
     	Boolean contractsSelected = (topTitleCont.getAttribute("class")).contains("active");	

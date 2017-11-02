@@ -43,9 +43,14 @@ public class ActiveExpenseContractsDetailsTest extends TestStatusReport{
 		
 		String WidgetDetailsTitle =  "Master Agreements Active Expense Contracts Transactions";
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
-	    assertEquals("Active Expense Contracts Master Agreement Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
+	    assertEquals("Active Expense Contracts Master Agreement Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp);
 	    
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getCapitalContractsSpendingDetailsAmount(year,'B');
+		String WidgetDetailsAmountapp = HomePage.GetTransactionAmount1();
+		assertEquals("Capital Spending Agencies Widget Details page total spending amount did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
 	}
+	       
+	
 	@Test
 	public void VerifyTop5MasterAgreementModificationsTransactionCount() throws SQLException {
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5MasterAgreementModifications);

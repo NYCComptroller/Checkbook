@@ -1,9 +1,10 @@
 package FunctionalContracts;
 
 import static org.junit.Assert.assertEquals;
-
+import static org.junit.Assert.assertTrue;
 
 import java.sql.SQLException;
+import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -71,4 +72,60 @@ public class RegisteredRevenueContractsTest extends NYCBaseTest {
         Integer numOfContractsBySize = ContractsPage.GetTop5WidgetTotalCount(WidgetOption.ContractsBySize);
         assertEquals("Number of Contracts By Size in the Registered Revenue Contracts did not match", numOfContractsBySize, numOfContractsBySizeFY2016);
 	}
+	/// titles
+	@Test
+    public void VerifyTopNavRegisteredRevenueContractAmount() throws SQLException {
+        String TotalContractAmtDB = NYCDatabaseUtil.getContractsTopAmount(year, 'B');
+        String TotalContractAmtApp = ContractsPage.GetContractsAmount();
+        System.out.println(TotalContractAmtApp); 
+        assertEquals("Registered Revenue Contracts Top navigation amount did not match", TotalContractAmtApp, TotalContractAmtDB);
+    }
+	
+	@Test
+    public void VerifyBottomNavRegisteredRevenueAmount() throws SQLException {
+        String TotalContractAmtDB = NYCDatabaseUtil.getARContractsAmount(year, 'B');
+        String TotalContractAmtApp = ContractsPage.GetBottomNavContractAmount();
+    	System.out.println(TotalContractAmtApp); 
+    	 assertEquals("Registered Revenue Contracts Bottom navigation Amount did not match", TotalContractAmtApp, TotalContractAmtDB);
+      
+    }
+	@Test
+    public void VerifyBottomNavRegisteredRevenueCount() throws SQLException {
+		Integer TotalContractCountDB = NYCDatabaseUtil.getContractsARCount(year, 'B');
+		Integer TotalContractCountApp = ContractsPage.GetBottomNavContractCount();
+    	System.out.println(TotalContractCountApp); 
+    	 assertEquals("Registered Revenue Contracts Bottom navigation count did not match", TotalContractCountApp, TotalContractCountDB);
+	}
+ 	 
+    
+	
+	@Test
+    public void VerifyRegisteredRevenueContractsVisualizationsTitles(){
+	    String[] sliderTitles= {"Spending by Active Expense Contracts", 
+	    						"Top Ten Agencies by Active Revenue Contracts", 
+	    						"Top Ten Active Revenue Contracts by Current Amount", 
+	    						"Top Ten Prime Vendors by Active Revenue Contracts"};
+	    System.out.println( ContractsPage.VisualizationTitles()); 
+    	assertTrue(Arrays.equals(sliderTitles, ContractsPage.VisualizationTitles().toArray()));
+    	System.out.println( ContractsPage.VisualizationTitles()); 
+    }
+	 
+	@Test
+    public void VerifyRegisteredRevenueContractsSpendingWidgetTitles(){
+	   String[] widgetTitles = {"Top 5 Master Agreements",
+	    						"Top 5 Master Agreement Modifications",
+	    						"Top 5 Contracts",
+	    						"Top 5 Contract Amount Modifications",
+	    						"Top 5 Prime Vendors",
+	    						"Top 5 Award Methods",
+	    						"Top 5 Agencies",
+	    						"Contracts by Industries",
+	    						"Contracts by Size"
+	    						};	    						
+	    							    						 
+		   System.out.println( ContractsPage.WidgetTitles()); 		
+    
+    	assertTrue(Arrays.equals(widgetTitles, ContractsPage.WidgetTitles().toArray()));
+    	
+     }  
 }
