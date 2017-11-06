@@ -89,8 +89,8 @@ abstract class VendorService {
                                     FROM aggregateon_mwbe_contracts_cumulative_spending
                                     WHERE vendor_id = ".$vendor_id."
                                     AND fiscal_year_id = ". $year_id ."
-                                    AND status_flag = '" . $status . "'".
-                                    "AND AND type_of_year = 'B'";
+                                    AND status_flag = '" . $status . "' 
+                                    AND type_of_year = 'B'";
                 break;
         }
         $minority_types = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
