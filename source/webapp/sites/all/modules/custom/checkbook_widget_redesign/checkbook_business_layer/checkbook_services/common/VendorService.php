@@ -65,4 +65,38 @@ abstract class VendorService {
         }
         return !empty($vendors) ? $vendors : null;
     }
+    
+    /**
+     * Given the vendor name, returns an array of sub and prime vendor ids
+     * @param $domain
+     * @param $vendor_id
+     * @param $year_id
+     * @param $status
+     * @return $minority_types
+     */
+    public static function getAllVendorMinorityTypesByYear($domain, $vendor_id, $year_id, $status = 'A') {
+        $minority_type_ids  = array();
+        switch($domain){
+            case Domain::$SPENDING:
+                        $query = "SELECT DISTINCT minority_type_id
+                                    FROM aggregateon_mwbe_spending_coa_entities
+                                    WHERE vendor_id = ".$vendor_id."
+                                    AND year_id = ". $year_id ."
+                                    AND type_of_year = 'B'";
+                break;
+            case Domain::$CONTRACTS:
+                        $query = "SELECT DISTINCT minority_type_id
+                                    FROM aggregateon_mwbe_contracts_cumulative_spending
+                                    WHERE vendor_id = ".$vendor_id."
+                                    AND fiscal_year_id = ". $year_id ."
+                                    AND status_flag = '" . $status . "'".
+                                    "AND AND type_of_year = 'B'";
+                break;
+        }
+        $minority_types = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
+        foreach($minority_types as $minority_type_id){
+            $minority_type_ids[] = $minority_type_id['minority_type_id'];
+        }
+        return $minority_type_ids;
+    }
 }
