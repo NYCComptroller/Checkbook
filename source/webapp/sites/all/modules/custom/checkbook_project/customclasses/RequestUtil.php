@@ -643,6 +643,7 @@ class RequestUtil{
     /** Returns top navigation URL */
     static function getTopNavURL($domain){
         $fiscalYearId = self::getFiscalYearIdForTopNavigation();
+        $non_minority_type_ids = array(7, 11);
         switch($domain){
             case "contracts":
                 //Get 'Contracts Bottom Slider' amounts
@@ -685,7 +686,13 @@ class RequestUtil{
                     $path =  $path . "/agency/9000";
                 }
                 if(_getRequestParamValue("vendor") > 0){
-                    $path =  $path . "/vendor/" . _getRequestParamValue("vendor")  ;
+                    
+                    $vendor_minority_type_ids = VendorService::getAllVendorMinorityTypesByYear($domain, _getRequestParamValue("vendor"), $fiscalYearId);
+                    if(count(array_intersect($non_minority_type_ids ,$vendor_minority_type_ids)) > 0){
+                        $path = preg_replace('/\/dashboard\/[^\/]*/','',$path);
+                        $path = preg_replace('/\/mwbe\/[^\/]*/','',$path);
+                    }
+                    $path =  $path . "/vendor/" . _getRequestParamValue("vendor");
                 }
                 break;
             case "payroll":
