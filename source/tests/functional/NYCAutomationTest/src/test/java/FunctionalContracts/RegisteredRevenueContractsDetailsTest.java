@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import org.junit.Before;
 import org.junit.Test;
 
+import pages.contracts.ActiveExpenseContractsPage;
 import pages.contracts.ContractsPage;
 import pages.contracts.ContractsPage.WidgetOption;
 import pages.contracts.RegisteredRevenueContractsPage;
@@ -34,6 +35,7 @@ public class RegisteredRevenueContractsDetailsTest extends TestStatusReport{
 	public void VerifyTop5ContractsTransactionCount() throws SQLException {
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5Contracts);
 		HomePage.ShowWidgetDetails();
+		
 		Integer NumOfRRContractsDetailsCountDB =  NYCDatabaseUtil.getRRContractsDetailsCount(year,'B');
 		Integer numOfRRContractsDetailsCountapp = RegisteredRevenueContractsPage.GetTransactionCount();
 		assertEquals(" Registered Revenue Contracts  widget Details page table count did not match", numOfRRContractsDetailsCountapp, NumOfRRContractsDetailsCountDB); 
@@ -42,6 +44,11 @@ public class RegisteredRevenueContractsDetailsTest extends TestStatusReport{
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
 	    assertEquals("Registered Revenue Contracts contracts Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
+	    
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getRRContractsDetailsAmount(year,'B');
+		String WidgetDetailsAmountapp = ContractsPage.GetTransactionAmount();
+		assertEquals("Active Revenue Contracts Contracts  Widget Details page total Contract amount did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
+	     
 	}
 	@Test
 	public void VerifyTop5ContractAmountModificationsTransactionCount() throws SQLException {
@@ -56,6 +63,10 @@ public class RegisteredRevenueContractsDetailsTest extends TestStatusReport{
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
 	    assertEquals("Registered Revenue Contracts Modifications Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getRRContractsDetailsAmount(year,'B');
+		String WidgetDetailsAmountapp = ContractsPage.GetTransactionAmount();
+		assertEquals("Active Revenue Contracts ContractsModifications  Widget Details page total Contract amount did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
+	     
 	}
 	@Test
 	public void VerifyTop5PrimeVendorsTransactionCount() throws SQLException {
@@ -70,6 +81,10 @@ public class RegisteredRevenueContractsDetailsTest extends TestStatusReport{
 	    assertEquals("Registered Revenue Contracts Prime Vendors Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 		
 	    
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getRRContractsDetailsAmount(year,'B');
+		String WidgetDetailsAmountapp = ContractsPage.GetTransactionAmount();
+		assertEquals("Active Revenue Contracts PrimeVendors  Widget Details page total Contract amount did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
+	     
 	}
 	@Test
 	public void VerifyTop5AwardMethodsTransactionCount() throws SQLException {
@@ -82,6 +97,11 @@ public class RegisteredRevenueContractsDetailsTest extends TestStatusReport{
 		String WidgetDetailsTitle =  "AWard Methods Registered Revenue Contracts Transactions";
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
 	    assertEquals("Registered Revenue Contracts AWard Method Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
+	    
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getRRContractsDetailsAmount(year,'B');
+		String WidgetDetailsAmountapp = ContractsPage.GetTransactionAmount();
+		assertEquals("Active Revenue Contracts AwardMethods Widget Details page total Contract amount did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
+	     
 	}
 	@Test
 	public void VerifyTop5AgenciesTransactionCount() throws SQLException {
@@ -95,6 +115,10 @@ public class RegisteredRevenueContractsDetailsTest extends TestStatusReport{
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
 	    assertEquals("Registered Revenue Contracts Agencies Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getRRContractsDetailsAmount(year,'B');
+		String WidgetDetailsAmountapp = ContractsPage.GetTransactionAmount();
+		assertEquals("Active Revenue Contracts Agencie  Widget Details page total Contract amount did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
+	     
 	}
 	@Test
 	public void VerifyContractsByIndustriesTransactionCount() throws SQLException {
@@ -108,6 +132,10 @@ public class RegisteredRevenueContractsDetailsTest extends TestStatusReport{
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
 	    assertEquals("Registered Revenue Contracts Industries Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getRRContractsDetailsAmount(year,'B');
+		String WidgetDetailsAmountapp = ContractsPage.GetTransactionAmount();
+		assertEquals("Active Revenue Contracts ContractsByIndustries  Widget Details page total Contract amount did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
+	     
 	}
 	@Test
 	public void VerifyContractsBySizeTransactionCount() throws SQLException {
@@ -120,6 +148,11 @@ public class RegisteredRevenueContractsDetailsTest extends TestStatusReport{
 		String WidgetDetailsTitle =  "Contracts by Size Registered Revenue Contracts Transactions";
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
 	    assertEquals("Registered Revenue Contracts Contracts by Sizes Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
+	   
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getRRContractsDetailsAmount(year,'B');
+		String WidgetDetailsAmountapp = ContractsPage.GetTransactionAmount();
+		assertEquals("Active Revenue Contracts ContractsBySize  Widget Details page total Contract amount did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
+	     
 	}
 
 	/* ***************** Test Widget Transaction Total Amount ****************** 

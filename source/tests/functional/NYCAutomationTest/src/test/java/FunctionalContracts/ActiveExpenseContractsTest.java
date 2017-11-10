@@ -21,8 +21,8 @@ import utilities.NYCDatabaseUtil;
 import utilities.TestStatusReport;
 import helpers.Helper;
 
-public class ActiveExpenseContractsTest extends NYCBaseTest {
-	//public class ActiveExpenseContractsTest extends TestStatusReport{
+//public class ActiveExpenseContractsTest extends NYCBaseTest {
+	public class ActiveExpenseContractsTest extends TestStatusReport{
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	public void GoToPage() {
@@ -107,8 +107,7 @@ public class ActiveExpenseContractsTest extends NYCBaseTest {
         String TotalContractAmtApp = ContractsPage.GetBottomNavContractAmount();
     	System.out.println(TotalContractAmtApp); 
     	 assertEquals("Active Expense Contracts Bottom navigation Amount did not match", TotalContractAmtApp, TotalContractAmtDB);
-        
-     
+           
     }
 	
 	@Test
