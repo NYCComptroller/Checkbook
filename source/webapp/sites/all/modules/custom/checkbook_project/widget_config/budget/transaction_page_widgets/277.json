@@ -104,14 +104,6 @@
       "type": "expression2",
       "expression": "_get_tooltip_markup($row[object_class_name], 28)"
     },
-    "export_budget_code": {
-      "type": "expression2",
-      "expression": "$row[budget_code]"
-    },
-    "export_budget_name": {
-      "type": "expression2",
-      "expression": "_get_tooltip_markup($row[budget_code_name], 40)"
-    },
     "agency_name_link": {
       "type": "expression2",
       "expression": "'<a href=/budget' ._checkbook_project_get_url_param_string('year')  . '/agency/' . $row[agency_id] . ' >' .  $row[agency_name_formatted] . '</a>'"
