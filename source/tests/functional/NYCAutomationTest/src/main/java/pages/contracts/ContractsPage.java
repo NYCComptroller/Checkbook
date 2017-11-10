@@ -7,6 +7,9 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import navigation.TopNavigation;
 import pages.home.HomePage;
 import helpers.Driver;
@@ -22,8 +25,8 @@ public class ContractsPage {
     }
 	
 	  public static String GetContractsAmount() {
-          WebElement spendingAmt = Driver.Instance.findElement(By.cssSelector(".top-navigation-left .contracts > .expense-container > a"));
-          return spendingAmt.getText().substring((spendingAmt.getText().indexOf("$")));
+          WebElement contractsAmt = Driver.Instance.findElement(By.cssSelector(".top-navigation-left .contracts > .expense-container > a"));
+          return contractsAmt.getText().substring((contractsAmt.getText().indexOf("$")));
       }
 	
 	 public static String GetBottomNavContractAmount() {
@@ -35,6 +38,17 @@ public class ContractsPage {
          WebElement contractCount = Driver.Instance.findElement(By.cssSelector(".nyc_totals_links .active > .positioning > a .count"));
          return Helper.stringToInt(contractCount.getText());
      }
+	 
+		public static String GetTransactionAmount() {
+			WebDriverWait wait = new WebDriverWait(Driver.Instance, 20);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("transactions-total-amount")));
+			String amount = (Driver.Instance.findElement(By.className("transactions-total-amount"))).getText();	
+			//System.out.println(Helper.billionStringToFloat(count));
+			//return amount.substring(0,8);		
+			   return amount.substring(0,(amount.indexOf("T")-1));		
+			//return amount;
+			//return Helper.billionStringToFloat(count);
+		}
 	 
 	 
 	
