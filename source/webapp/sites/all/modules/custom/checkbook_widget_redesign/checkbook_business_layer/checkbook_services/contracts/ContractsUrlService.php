@@ -393,7 +393,6 @@ class ContractsUrlService {
         $latest_minority_id = $year_id
             ? PrimeVendorService::getLatestMinorityTypeByYear($vendor_id, $year_id, $year_type)
             : PrimeVendorService::getLatestMinorityType($vendor_id, $agency_id);
-
         $is_mwbe_certified = MinorityTypeService::isMWBECertified($latest_minority_id);
 
         $urlPath = drupal_get_path_alias($_GET['q']);
