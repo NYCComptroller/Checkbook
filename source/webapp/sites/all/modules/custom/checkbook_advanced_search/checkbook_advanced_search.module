@@ -575,11 +575,6 @@ function checkbook_advanced_search_form($form, $form_state)
             array('system', 'ui.accordion', FALSE),
             array('system', 'ui.autocomplete', FALSE),
         ),
-        'css' => array(
-            drupal_get_path('module', 'checkbook_advanced_search') . '/css/chosen.css' => array(
-                'type' => 'file','media' => 'all',
-            ),
-        ),
         'js' => array(
             array(
                 'type' => 'file',
