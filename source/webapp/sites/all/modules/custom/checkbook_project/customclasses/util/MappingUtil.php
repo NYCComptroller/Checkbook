@@ -479,7 +479,7 @@ class MappingUtil {
                         ." AND type_of_year = '" . _getRequestParamValue('yeartype') . "'"
                         ." AND year_id = ". _getRequestParamValue('year')
                         ." AND latest_mwbe_flag = 'Y'"
-                        ." LIMIT 1 "
+                        ." LIMIT 1 ";
                         
                     $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
                     if($results)
