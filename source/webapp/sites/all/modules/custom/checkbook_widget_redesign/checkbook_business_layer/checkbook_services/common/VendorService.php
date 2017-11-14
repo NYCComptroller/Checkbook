@@ -36,17 +36,29 @@ abstract class VendorService {
      * @return bool
      */
     static protected function getLatestMinorityTypeByYear($vendor_id, $year_id, $type_of_year, $vendor_type, $domain = null) {
-
-        $data_set = $domain == Domain::$SPENDING ? "spending_vendor_latest_mwbe_category" : "contract_vendor_latest_mwbe_category";
-        $query = "SELECT minority_type_id
-                  FROM ".$data_set."
-                  WHERE minority_type_id IN (2,3,4,5,9)
-                  AND vendor_id = ".$vendor_id."
-                  AND year_id = ".$year_id."
-                  AND type_of_year = '".$type_of_year."'
-                  AND is_prime_or_sub = '".$vendor_type."' LIMIT 1";
-
-        $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
+        switch ($domain){
+            case Domain::$SPENDING : 
+                $query = "SELECT minority_type_id
+                            FROM spending_vendor_latest_mwbe_category
+                            WHERE minority_type_id IN (2,3,4,5,9)
+                            AND vendor_id = ".$vendor_id."
+                            AND year_id = ".$year_id."
+                            AND type_of_year = '".$type_of_year."'
+                            AND is_prime_or_sub = '".$vendor_type."' LIMIT 1";
+                
+                $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
+                break;
+            default : 
+                $query = "SELECT DISTINCT minority_type_id, latest_minority_flag, latest_mwbe_flag
+                            FROM contract_vendor_latest_mwbe_category
+                            WHERE minority_type_id IN (2,3,4,5,9)
+                            AND vendor_id = ".$vendor_id."
+                            AND year_id = ".$year_id."
+                            AND type_of_year = 'B'
+                            AND latest_minority_flag = 'Y'
+                            AND is_prime_or_sub = '".$vendor_type."'";
+                $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
+        }
         $minority_type_id = $results[0]['minority_type_id'];
         return $minority_type_id != '' ? $minority_type_id : false;
     }
