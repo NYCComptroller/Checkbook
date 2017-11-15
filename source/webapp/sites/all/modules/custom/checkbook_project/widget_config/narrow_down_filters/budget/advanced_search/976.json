@@ -1,0 +1,19 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":277,
+    "startWith":0,
+    "limit":100,
+    "maxSelect":5,
+    "showAllRecords":true,
+    "allowFacetDeselect":true,
+    "columns":["budget_code_name.budget_code_name", "txcount"],
+    "orderBy":"-txcount",    
+    "filterName":"Budget Name",
+    "urlParameterName":"bdgcodenm",
+    "autocompleteParamName":"bdgname_auto",
+    "getTotalDataCount":true,    
+    "facetPager":true,
+    "autocompleteID":"fbdgcodeName",
+    "autocompleteField":"budget_code_name",
+    "template":"individual_filter"
+}
