@@ -742,14 +742,21 @@ class RequestUtil{
             break;
         }
         
-        if(_getRequestParamValue("vendor") > 0){
+        if(_getRequestParamValue("vendor") > 0 && in_array($domain, array('contracts','spending'))){
             $non_minority_type_ids = array(7, 11);
             $vendor_minority_type_ids = VendorService::getAllVendorMinorityTypesByYear($domain, _getRequestParamValue("vendor"), $fiscalYearId);
             $vendor_non_minority_type_ids = array_intersect($non_minority_type_ids ,$vendor_minority_type_ids);
-
+            
             if(count($vendor_non_minority_type_ids) > 0){
                 $path = preg_replace('/\/dashboard\/[^\/]*/','',$path);
                 $path = preg_replace('/\/mwbe\/[^\/]*/','',$path);
+            }else{
+                if(!preg_match('/mwbe/',$path) && _getRequestParamValue("mwbe")){
+                   $path = $path."/mwbe/". _getRequestParamValue("mwbe");
+                }
+                if(!preg_match('/dashboard/',$path) && _getRequestParamValue("dashboard")){
+                   $path = $path."/dashboard/". _getRequestParamValue("dashboard");
+                }
             }
         }
         return $path;
