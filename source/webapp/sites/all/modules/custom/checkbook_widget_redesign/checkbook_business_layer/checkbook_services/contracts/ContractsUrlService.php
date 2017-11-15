@@ -389,11 +389,19 @@ class ContractsUrlService {
 
         $year_type = _getRequestParamValue("yeartype");
         $agency_id = _getRequestParamValue("agency");
-
+        
+        $current_url = $_SERVER['HTTP_REFERER'];
+        if(preg_match("/contract\/search\/transactions/",$current_url) || preg_match("/contract\/all\/transactions/", $current_url)) {
+            $advanced_search = true;
+        }
+        // For advanced search, if the year value is not set, get the latest minority type category for current Fiscal Year
+        if($advanced_search){
+            $year_id = ($year_id == null) ? _getCurrentYearID() : $year_id;
+        }
+        
         $latest_minority_id = $year_id
             ? PrimeVendorService::getLatestMinorityTypeByYear($vendor_id, $year_id, $year_type)
             : PrimeVendorService::getLatestMinorityType($vendor_id, $agency_id);
-
         $is_mwbe_certified = MinorityTypeService::isMWBECertified($latest_minority_id);
 
         $urlPath = drupal_get_path_alias($_GET['q']);
