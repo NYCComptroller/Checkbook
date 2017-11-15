@@ -880,7 +880,7 @@ function _checkbook_advanced_search_autocomplete_budget_expcategory($fiscal_year
 
 /** @return options for budget code based on selected agency, department, expense category, year and budget name */
 function _checkbook_advanced_search_autocomplete_budget_budgetcode($fiscal_year, $agency, $dept, $expcategory, $budget_name) {
-    error_log('code');log_error('code');
+   
     $params =  array("budget_fiscal_year_id"=>$fiscal_year);
     if($agency != '0' ) {
         $params["agency_id"] = $agency;
