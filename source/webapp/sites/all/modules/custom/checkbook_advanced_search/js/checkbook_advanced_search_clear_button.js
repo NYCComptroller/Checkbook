@@ -76,6 +76,14 @@ function clearInputFields(enclosingDiv,domain){
         case 'budget':
             jQuery('#edit-budget-expense-category').attr("disabled", "disabled");
             jQuery('#edit-budget-department').attr("disabled", "disabled");
+            
+            jQuery('#edit-budget-budget-code').val("0");
+            jQuery('#edit-budget-budget-code').trigger("chosen:updated");
+            jQuery('#edit-budget-budget-name').val("0");
+            jQuery('#edit-budget-budget-name').trigger("chosen:updated");
+            jQuery.fn.reloadBudgetCode();
+            jQuery.fn.reloadBudgetName();
+            
             break;
     }
 }
