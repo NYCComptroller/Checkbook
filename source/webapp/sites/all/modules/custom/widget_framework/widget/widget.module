@@ -550,15 +550,28 @@ function load_widget_data($node, $resultFormatter) {
 
         //update
 
+        $ajaxRequest = _getRequestParamValue('ajax');
+
         if(isset($config->adjustParameters)){
            $parameters =  eval($config->adjustParameters);
+        } elseif (isset($config->autocompleteField) && ('autocomplete' == $ajaxRequest)
+          && isset($parameters[$config->autocompleteField]) && $parameters[$config->autocompleteField]) {
+          /**
+           * AUTOCOMPLETE
+           */
+          $autocomplete_value = $parameters[$config->autocompleteField][0];
+          $parameters[$config->autocompleteField] = data_controller_get_operator_factory_instance()->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME, [
+            $autocomplete_value,
+            FALSE,
+            TRUE,
+          ]);
         }
 
         if(isset($config->adjustColumns)){
             $config->columns =  eval($config->adjustColumns);
         }
 
-        $updatedParameters = array();
+      $updatedParameters = array();
         foreach($parameters as $key=>$value){
             $key = _update_dataset_datasource($key,$node->widgetConfig->keepOriginalDatasource);
             $updatedParameters[$key] = $value;
