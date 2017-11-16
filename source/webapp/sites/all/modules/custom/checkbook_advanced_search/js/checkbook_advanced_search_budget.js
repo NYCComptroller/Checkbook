@@ -85,7 +85,7 @@
                 if(data[0]){
                     if(data[0]['label'] !== 'No Matches Found'){
                         for (i = 0; i < data.length; i++) {
-                            html=html + '<option value="' + data[i] + ' ">' + data[i]  + '</option>';
+                            html=html + '<option value="' + data[i]['value'] + ' ">' + data[i]['label']  + '</option>';
                         }
                     }
                 }
