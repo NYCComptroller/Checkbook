@@ -926,7 +926,9 @@ function _checkbook_advanced_search_autocomplete_budget_budgetname($fiscal_year,
     if (count($results ) > 0) {
         $matches = array();
         foreach ($results as $key=>$value) {
-            $matches[] = $value['budget_code_name.budget_code_name'];
+            $budget_name_value = $value['budget_code_name.budget_code_name'];
+            $budget_name_text = (strlen($budget_name_value) > 18) ? substr($budget_name_value, 0, 18) . '...' : $budget_name_value;
+            $matches[] = array('label'=> $budget_name_text,'value' => $budget_name_value);
         }
         drupal_json_output($matches);
     }
