@@ -99,7 +99,7 @@
         });                    
     };
     
-    Drupal.behaviors.budgetDataFeeds = {
+    Drupal.behaviors.checkbook_advanced_search = {
         attach:function(context, settings){
 
             $('#edit-budget-budget-code', context).chosen({
