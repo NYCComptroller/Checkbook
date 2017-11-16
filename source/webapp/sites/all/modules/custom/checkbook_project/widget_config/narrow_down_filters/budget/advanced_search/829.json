@@ -13,7 +13,14 @@
     "autocompleteParamName":"bdgcode_auto",
     "getTotalDataCount":true,
     "facetPager":true,
-    "autocompleteID":"fbdgcodeId",
+    "autocompleteID":"fbdgcode",
     "autocompleteField":"budget_code",
+    "adjustParameters":"
+        if(function_exists('_checkbook_project_applyParameterFilters')){
+            $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+        }
+        $adjustedParameters['budget_code_code.budget_code_code'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+        return $adjustedParameters;
+    ", 
     "template":"individual_filter"
 }

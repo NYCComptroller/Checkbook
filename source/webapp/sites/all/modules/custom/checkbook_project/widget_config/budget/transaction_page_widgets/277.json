@@ -56,7 +56,7 @@
     "acramt": "range",
     "curamtr": "rangeid",
     "deptnm": "eqignorecase",
-    "bdgcodenm": "like",
+    "bdgcodenm": "eqignorecase",
     "expcategorynm": "eqignorecase",
     "bdgcodenm_exact": "eqignorecase"
   },
@@ -235,7 +235,6 @@
     }
   ],
   "adjustParameters":"
-      $parameters = BudgetUtil::adjustBudgetCodeNameParameter($node, $parameters);
       if(function_exists('_checkbook_project_applyParameterFilters')){
           $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
       }
@@ -310,8 +309,8 @@
       var oExpCategoryNms = getNamedFilterCriteria('fExpCategoryNm');
       var oExpCategoryIds = getNamedFilterCriteria('fExpCategory');
       var oCurAmount = getNamedFilterCriteria('fCurAmount');
-      var obudgetCode = getNamedFilterCriteria('fbdgcodeId');
-      var obudgetCodeExact = getNamedFilterCriteria('fbdgcodeexactId');
+      var obudgetCode = getNamedFilterCriteria('fbdgcode');
+      var obudgetCodeName = getNamedFilterCriteria('fbdgcodenm');
 
       var  cUrl = oTable.fnSettings().sAjaxSource;
       cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
@@ -322,7 +321,7 @@
 
       cUrl = adjustUrlParameter(cUrl,'curamtr',oCurAmount);
       cUrl = adjustUrlParameter(cUrl,'bdgcode',obudgetCode);
-      cUrl = adjustUrlParameter(cUrl,'bdgcodenm_exact',obudgetCodeExact);
+      cUrl = adjustUrlParameter(cUrl,'bdgcodenm',obudgetCodeName);
 
       return cUrl;
   }"
