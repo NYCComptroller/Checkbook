@@ -9,11 +9,11 @@
     "columns":["budget_code_code.budget_code_code", "txcount"],
     "orderBy":"-txcount",
     "filterName":"Budget Code",
-    "urlParameterName":"bdgcode",
-    "autocompleteParamName":"bdgcode_auto",
+    "urlParameterName":"bdgcode_code",
+    "autocompleteParamName":"bdgcode_code_auto",
     "getTotalDataCount":true,
     "facetPager":true,
-    "autocompleteID":"fbdgcode",
+    "autocompleteID":"fbdgcode_code",
     "autocompleteField":"budget_code",
     "adjustParameters":"
         if(function_exists('_checkbook_project_applyParameterFilters')){
