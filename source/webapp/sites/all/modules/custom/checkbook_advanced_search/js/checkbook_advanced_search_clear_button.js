@@ -76,16 +76,73 @@ function clearInputFields(enclosingDiv,domain){
         case 'budget':
             jQuery('#edit-budget-expense-category').attr("disabled", "disabled");
             jQuery('#edit-budget-department').attr("disabled", "disabled");
-            
             jQuery('#edit-budget-budget-code').val("0");
             jQuery('#edit-budget-budget-code').trigger("chosen:updated");
             jQuery('#edit-budget-budget-name').val("0");
             jQuery('#edit-budget-budget-name').trigger("chosen:updated");
-            jQuery.fn.reloadBudgetCode();
-            jQuery.fn.reloadBudgetName();
+            reloadBudgetCode();
+            reloadBudgetName();
             
             break;
     }
+}
+
+function reloadBudgetCode(){
+    var fiscal_year = (jQuery('#edit-budget-fiscal-year').val()) ? jQuery('#edit-budget-fiscal-year').val() : 0;
+    var agency = (jQuery('#edit-budget-agencies').val()) ? jQuery('#edit-budget-agencies').val() : 0;
+    var dept = (jQuery('#edit-budget-department').val()) ? (jQuery('#edit-budget-department').val()) : 0;
+    var exp_cat = (jQuery('#edit-budget-expense-category').val()) ? (jQuery('#edit-budget-expense-category').val()) : 0;
+    var budget_code = (jQuery('#edit-budget-budget-code').val()) ? jQuery('#edit-budget-budget-code').val() : 0;
+    var budget_name = (jQuery('#edit-budget-budget-name').val()) ? jQuery('#edit-budget-budget-name').val() : 0;
+
+    jQuery.ajax({
+        url: '/advanced-search/autocomplete/budget/budgetcode/' + fiscal_year + '/' + agency + '/' + dept.replace(/\//g,"__") + '/' + exp_cat.replace(/\//g,"__") + '/' + budget_name.replace(/\//g,"__"),
+        success: function(data) {
+            var html = '<option select="selected" value="0" title="">Select Budget Code</option>';
+            if(data[0]){
+                if(data[0]['label'] !== 'No Matches Found'){
+                    for (i = 0; i < data.length; i++) {
+                        html=html + '<option title="' + data[i] + '" value="' + data[i] + ' ">' + data[i]  + '</option>';
+                    }
+                }
+            }
+            jQuery('#edit-budget-budget-code').html(html);
+            jQuery('#edit-budget-budget-code').val(budget_code);
+            jQuery('#edit-budget-budget-code').trigger("chosen:updated");
+            if(budget_name !== jQuery('#edit-budget-budget-name').val()){
+                reloadBudgetCode();
+            }
+        }
+    });
+}
+
+function reloadBudgetName(){
+    var fiscal_year = (jQuery('#edit-budget-fiscal-year').val()) ? jQuery('#edit-budget-fiscal-year').val() : 0;
+    var agency = (jQuery('#edit-budget-agencies').val()) ? jQuery('#edit-budget-agencies').val() : 0;
+    var dept = (jQuery('#edit-budget-department').val()) ? (jQuery('#edit-budget-department').val()) : 0;
+    var exp_cat = (jQuery('#edit-budget-expense-category').val()) ? (jQuery('#edit-budget-expense-category').val()) : 0;
+    var budget_code = (jQuery('#edit-budget-budget-code').val()) ? jQuery('#edit-budget-budget-code').val() : 0;
+    var budget_name = (jQuery('#edit-budget-budget-name').val()) ? jQuery('#edit-budget-budget-name').val() : 0;
+
+    jQuery.ajax({
+        url: '/advanced-search/autocomplete/budget/budgetname/' + fiscal_year + '/' + agency + '/' + dept.replace(/\//g,"__") + '/' + exp_cat.replace(/\//g,"__") + '/' + budget_code,
+        success: function(data) {
+            var html = '<option select="selected" value="0" title="">Select Budget Name</option>';
+            if(data[0]){
+                if(data[0]['label'] !== 'No Matches Found'){
+                    for (i = 0; i < data.length; i++) {
+                        html=html + '<option title="'+ data[i]['value'] +'" value="' + data[i]['value'] + ' ">' + data[i]['label']  + '</option>';
+                    }
+                }
+            }
+            jQuery('#edit-budget-budget-name').html(html);
+            jQuery('#edit-budget-budget-name').val(budget_name);
+            jQuery('#edit-budget-budget-name').trigger("chosen:updated");
+            if(budget_code !== jQuery('#edit-budget-budget-code').val()){
+                reloadBudgetName();
+            }
+        }
+    });
 }
 
 function clearInputFieldByDataSource(enclosingDiv,domain,dataSource){
