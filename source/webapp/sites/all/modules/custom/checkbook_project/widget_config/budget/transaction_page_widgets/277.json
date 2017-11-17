@@ -36,7 +36,7 @@
     "deptnm": "department_name",
     "expcategory": "object_class_id",
     "expcategorynm": "object_class_name",
-    "bdgcode_code": "budget_code_id",
+    "bdgcode_code": "budget_code",
     "bdgcode": "budget_code_id",
     "bdgcodenm": "budget_code_name",
     "adpamt": "adopted_amount",
