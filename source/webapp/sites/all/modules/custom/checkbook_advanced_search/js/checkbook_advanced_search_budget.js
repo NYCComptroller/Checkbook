@@ -52,11 +52,11 @@
         $.ajax({
             url: '/advanced-search/autocomplete/budget/budgetcode/' + fiscal_year + '/' + agency + '/' + dept.replace(/\//g,"__") + '/' + exp_cat.replace(/\//g,"__") + '/' + budget_name.replace(/\//g,"__"),
             success: function(data) {
-                var html = '<option select="selected" value="0" >Select Budget Code</option>';
+                var html = '<option select="selected" value="0" title="">Select Budget Code</option>';
                 if(data[0]){
                     if(data[0]['label'] !== 'No Matches Found'){
                         for (i = 0; i < data.length; i++) {
-                            html=html + '<option value="' + data[i] + ' ">' + data[i]  + '</option>';
+                            html=html + '<option title="' + data[i] + '" value="' + data[i] + ' ">' + data[i]  + '</option>';
                         }
                     }
                 }
@@ -81,11 +81,11 @@
         $.ajax({
             url: '/advanced-search/autocomplete/budget/budgetname/' + fiscal_year + '/' + agency + '/' + dept.replace(/\//g,"__") + '/' + exp_cat.replace(/\//g,"__") + '/' + budget_code,
             success: function(data) {
-                var html = '<option select="selected" value="0" >Select Budget Name</option>';
+                var html = '<option select="selected" value="0" title="">Select Budget Name</option>';
                 if(data[0]){
                     if(data[0]['label'] !== 'No Matches Found'){
                         for (i = 0; i < data.length; i++) {
-                            html=html + '<option value="' + data[i]['value'] + ' ">' + data[i]['label']  + '</option>';
+                            html=html + '<option title="'+ data[i]['value'] +'" value="' + data[i]['value'] + ' ">' + data[i]['label']  + '</option>';
                         }
                     }
                 }
