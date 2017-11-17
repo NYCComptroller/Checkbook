@@ -40,4 +40,23 @@ class BudgetUtil{
         return $results[0]['budget_code_id'];
     }
     
+    /**
+        * Function to get Budget Code and Budget Code Name for the combination of Budget Code ID, Agency Id and Year ID
+        * @param $budget_code_id
+        * @param $agency_id
+        * @param $year
+    */
+    static public function getBudgetCodeNameAndBudgetCode($budget_code_id, $agency_id, $year){
+        $query = "SELECT DISTINCT budget_code, budget_code_name FROM budget
+                  WHERE budget_code_id = ". $budget_code_id
+                ." AND agency_id = ". $agency_id
+                ." AND budget_fiscal_year_id = ". $year;
+        $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
+        if(count($results) > 0){
+            return array('budget_code' => $results[0]['budget_code'], 'budget_code_name' => $results[0]['budget_code_name']);
+        }else{
+            return null;
+        }
+    }
+    
 }
