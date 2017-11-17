@@ -1099,7 +1099,7 @@ function _checkbook_advanced_search_budget_submit($form, &$form_state)
         $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_department, 'deptnm');
     }
     if (!empty($budget_budget_code)) {
-            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_budget_code, 'bdgcode');
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_budget_code, 'bdgcode_code');
     } 
     if (!empty($budget_budget_name)) {
             $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_budget_name, 'bdgcodenm');

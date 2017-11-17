@@ -13,6 +13,7 @@
     "expcategory",
     "expcategorynm",
     "bdgcode",
+    "bdgcode_code",
     "bdgcodenm",
     "adpamt",
     "preamt",
@@ -35,7 +36,8 @@
     "deptnm": "department_name",
     "expcategory": "object_class_id",
     "expcategorynm": "object_class_name",
-    "bdgcode": "budget_code",
+    "bdgcode_code": "budget_code_id",
+    "bdgcode": "budget_code_id",
     "bdgcodenm": "budget_code_name",
     "adpamt": "adopted_amount",
     "preamt": "pre_encumbered_amount",
@@ -309,8 +311,9 @@
       var oExpCategoryNms = getNamedFilterCriteria('fExpCategoryNm');
       var oExpCategoryIds = getNamedFilterCriteria('fExpCategory');
       var oCurAmount = getNamedFilterCriteria('fCurAmount');
-      var obudgetCode = getNamedFilterCriteria('fbdgcode');
+      var obudgetCodeId = getNamedFilterCriteria('fbdgcode');
       var obudgetCodeName = getNamedFilterCriteria('fbdgcodenm');
+      var obudgetCode = getNamedFilterCriteria('fbdgcode_code');
 
       var  cUrl = oTable.fnSettings().sAjaxSource;
       cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
@@ -320,8 +323,9 @@
       cUrl = adjustUrlParameter(cUrl,'expcategory',oExpCategoryIds);
 
       cUrl = adjustUrlParameter(cUrl,'curamtr',oCurAmount);
-      cUrl = adjustUrlParameter(cUrl,'bdgcode',obudgetCode);
+      cUrl = adjustUrlParameter(cUrl,'bdgcode',obudgetCodeId);
       cUrl = adjustUrlParameter(cUrl,'bdgcodenm',obudgetCodeName);
+      cUrl = adjustUrlParameter(cUrl,'bdgcode_code',obudgetCode);
 
       return cUrl;
   }"

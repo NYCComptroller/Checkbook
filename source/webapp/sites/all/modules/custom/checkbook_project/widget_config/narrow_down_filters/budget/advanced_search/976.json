@@ -15,7 +15,6 @@
     "facetPager":true,
     "autocompleteID":"fbdgcodenm",
     "autocompleteField":"budget_code_name",
-    "autocompleteField":"budget_code",
     "adjustParameters":"
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
