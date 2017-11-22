@@ -1730,14 +1730,15 @@ function _checkbook_project_delete_file_if_stale($uri) {
  */
 function _checkbook_project_execute_sql($sql, $db_name = "main", $data_source = 'checkbook')
 {
+    global $databases;
+    LogHelper::log_notice("Querying database \$databases['$data_source']['$db_name'] (".$databases[$data_source][$db_name]['host'].')');
+    LogHelper::log_notice($sql);
     $query_cid = md5($data_source.$db_name.$sql);
     $cached = cache_get($query_cid, 'cache_field');
     if (!$cached) {
 
       $connection = get_datafeed_connection($db_name, $data_source);
       $results = null;
-
-      LogHelper::log_info($sql);
 
       try {
         $results = $connection->query($sql);
