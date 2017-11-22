@@ -12,6 +12,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import pages.revenue.RevenuePage.WidgetOption;
+import pages.spending.SpendingPage;
 import pages.home.HomePage;
 import pages.revenue.RevenuePage;
 import utilities.NYCBaseTest;
@@ -20,9 +21,9 @@ import helpers.Driver;
 import helpers.Helper;
 import utilities.TestStatusReport;
 
-public class RevenueWidgetDetailsAmountTest extends NYCBaseTest {
-	//public class RevenueWidgetDetailsAmountTest extends TestStatusReport {
-
+//public class RevenueWidgetDetailsAmountTest extends NYCBaseTest {
+	public class RevenueWidgetDetailsAmountTest extends TestStatusReport {
+	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	public void GoToPage() {
 		RevenuePage.GoTo();
@@ -37,7 +38,7 @@ public class RevenueWidgetDetailsAmountTest extends NYCBaseTest {
 	
 	 
 	@Test
-	public void VerifyRevenueTransactionAmount() throws SQLException {
+	public void VerifyRevenueAgenciesTransactionAmount() throws SQLException {
 		//Float transactionAmt = 26.3f;
 		RevenuePage.GoToTop5DetailsPage(WidgetOption.Top5Agencies);
 		HomePage.ShowWidgetDetails();
@@ -79,11 +80,14 @@ public class RevenueWidgetDetailsAmountTest extends NYCBaseTest {
 		RevenuePage.GoToTop5DetailsPage(WidgetOption.Top5AgenciesbyCrossYearCollections);
 		HomePage.ShowWidgetDetails();
 	//assertTrue(HomePage.GetTransactionAmount1()== transactionAmt);
-		String NumOfRevenueDetailsAmount2016 =  NYCDatabaseUtil.getRevenueDetailsAmount(2016,'B');
+		String NumOfRevenueDetailsAmount2016 =  NYCDatabaseUtil.getRevenuecrossYearCollectionsDetailsAmount(2016,'B');
 		String numOfRevenueDetailsAmountapp = RevenuePage.GetTransactionAmount1();
 		System.out.println( RevenuePage.GetTransactionAmount1()); 
 	assertEquals("Number ofRevenue widget Details page table count did not match", numOfRevenueDetailsAmountapp, NumOfRevenueDetailsAmount2016); 
 	}
+
+	
+
 
 	@Test
 	public void VerifyRevenueCategoriesCrossYearCollectionsTransactionAmount() throws SQLException {
@@ -91,7 +95,7 @@ public class RevenueWidgetDetailsAmountTest extends NYCBaseTest {
 		RevenuePage.GoToTop5DetailsPage(WidgetOption.Top5RevenueCategoriesbyCrossYearCollections);
 		HomePage.ShowWidgetDetails();
 	//assertTrue(HomePage.GetTransactionAmount1()== transactionAmt);
-		String NumOfRevenueDetailsAmount2016 =  NYCDatabaseUtil.getRevenueDetailsAmount(2016,'B');
+		String NumOfRevenueDetailsAmount2016 =  NYCDatabaseUtil.getRevenuecrossYearCollectionsDetailsAmount(2016,'B');
 		String numOfRevenueDetailsAmountapp = RevenuePage.GetTransactionAmount1();
 		System.out.println( RevenuePage.GetTransactionAmount1()); 
 	assertEquals("Number ofRevenue widget Details page table count did not match", numOfRevenueDetailsAmountapp, NumOfRevenueDetailsAmount2016); 
@@ -99,13 +103,38 @@ public class RevenueWidgetDetailsAmountTest extends NYCBaseTest {
 	
 	@Test
 	public void VerifyRevenueFundingclassesCrossYearCollectionsTransactionAmount() throws SQLException {
-		//Float transactionAmt = 26.3f;
+		//String transactionAmt = "-$47.08M";
 		RevenuePage.GoToTop5DetailsPage(WidgetOption.RevenuebyFundingClassesbyCrossYearCollections);
 		HomePage.ShowWidgetDetails();
 	//assertTrue(HomePage.GetTransactionAmount1()== transactionAmt);
-		String NumOfRevenueDetailsAmount2016 =  NYCDatabaseUtil.getRevenueDetailsAmount(2016,'B');
+		String NumOfRevenueDetailsAmount2016 =  NYCDatabaseUtil.getRevenuecrossYearCollectionsDetailsAmount(2016,'B');
 		String numOfRevenueDetailsAmountapp = RevenuePage.GetTransactionAmount1();
-		System.out.println( RevenuePage.GetTransactionAmount1()); 
-	assertEquals("Number ofRevenue widget Details page table count did not match", numOfRevenueDetailsAmountapp, NumOfRevenueDetailsAmount2016);
-}
+		System.out.println( RevenuePage.GetTransactionAmount());
+		
+		//System.out.println( withSuffix(NumOfRevenueDetailsAmount2016));
+		assertEquals("Number ofRevenue widget Details page table count did not match", numOfRevenueDetailsAmountapp, NumOfRevenueDetailsAmount2016);
+		//assertEquals("Number ofRevenue widget Details page table count did not match", transactionAmt, numOfRevenueDetailsAmountapp);
+	}
+	
+	/*public static String withSuffix(long count) {
+	    if (count < 1000) return "" + count;
+	    int exp = (int) (Math.log(count) / Math.log(1000));
+	    return String.format("%.1f %c",
+	                         count / Math.pow(1000, exp),
+	                         "kMGTPE".charAt(exp-1));
+	                         (long)Math.floor(a + 0.5d));
+	}
+	
+	*/
+	
+	@Test
+	public void VerifyRevenueTransactionTitle() throws SQLException {
+			RevenuePage.GoToTop5DetailsPage(WidgetOption.Top5Agencies);
+		HomePage.ShowWidgetDetails();
+	//assertTrue(HomePage.GetTransactionAmount1()== transactionAmt);
+		String AgenciesTitle =  "Agencies Revenue Transactions";
+		String RevenueAgenciesTitleApp = HomePage.DetailsPagetitle();
+	assertEquals("Revenue Agencies Widget details page title did not match", AgenciesTitle, RevenueAgenciesTitleApp); 
+	}
+	
 }

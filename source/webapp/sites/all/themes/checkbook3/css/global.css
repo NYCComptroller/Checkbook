@@ -1336,6 +1336,10 @@ div.bottomContainer{
     margin: 0px;
 }
 
+div#budget-advanced-search {
+    overflow: visible !important;
+}
+
 #budget-advanced-search .budget-submit .form-submit,
 #revenue-advanced-search .revenue-submit .form-submit,
 #spending-advanced-search .spending-submit .form-submit,
