@@ -4,7 +4,7 @@
     "cleanURLParameters":["year","calyear","agency","yeartype","awdmethod","vendor","csize","cindustry","magid","mwbe","subvendor","title"],
     "widgetPreprocessJSON":"
         if(!preg_match('/smnid/',$_GET['q']) && ( preg_match('/spending\\/transactions/',$_GET['q'])
-                || preg_match('/contract\/all\\/transactions/',$_GET['q'])
+                || preg_match('/contract\\/all\\/transactions/',$_GET['q'])
                 || preg_match('/contract\\/search\\/transactions/',$_GET['q'])) 
         ){
             unset($node->widgetConfig->model->series[5]->seriesURLParamMap->mwbe);

@@ -42,8 +42,9 @@ class Field
 
 
 
-        if (array_key_exists('id', $attributes))
-            $this->id = str_replace('{domain}',$this->domain_name,$attributes['id']);
+        if (is_array($attributes) && array_key_exists('id', $attributes)) {
+          $this->id = str_replace('{domain}',$this->domain_name,$attributes['id']);
+        }
 
         if (!(is_null($attributes))) {
 

@@ -1228,11 +1228,13 @@ class RequestUtil{
     			$where_filters[] = _widget_build_sql_condition(' a1.' . $value, _getRequestParamValue($param));
     		}
     	}
-    	
-    	foreach($default_params as $param=>$value){    		
-    			$where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
-    	}
-    	
+
+    	if (is_array($default_params)) {
+        foreach($default_params as $param=>$value){
+          $where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
+        }
+      }
+
     	if(count($where_filters) > 0){
     		$where_filter = ' where ' . implode(' and ' , $where_filters) ;
     	}
