@@ -858,7 +858,7 @@ function load_widget_data($node, $resultFormatter) {
      $node->data = _update_node_data($node->data,$node->widgetConfig->keepOriginalDatasource);
 
   	if(isset($node->widgetConfig->transformationPHP)){
-  		@$node->data = eval($node->widgetConfig->transformationPHP);
+  		$node->data = eval($node->widgetConfig->transformationPHP);
   	}
     } catch(Exception $e) {
         // FIXME Commented out printing of $e because it generates 100+ KBs in a log file
