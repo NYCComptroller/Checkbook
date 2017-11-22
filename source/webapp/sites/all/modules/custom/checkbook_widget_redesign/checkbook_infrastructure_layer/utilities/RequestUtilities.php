@@ -88,7 +88,7 @@ class RequestUtilities {
      * Adds mwbe, subvendor and datasource parameters to url.  Precedence ,$source > $overidden_params > requestparam
      * @return string
      */
-    function _appendMWBESubVendorDatasourceUrlParams($source = null,$overidden_params = array(),$top_nav = false){
+    static function _appendMWBESubVendorDatasourceUrlParams($source = null,$overidden_params = array(),$top_nav = false){
         $datasource = (isset($overidden_params['datasource'])) ? $overidden_params['datasource'] :_getRequestParamValue('datasource');
         $mwbe = (isset($overidden_params['mwbe'])) ? $overidden_params['mwbe'] : _getRequestParamValue('mwbe');
         $dashboard = (isset($overidden_params['dashboard'])) ? $overidden_params['dashboard'] : _getRequestParamValue('dashboard');
