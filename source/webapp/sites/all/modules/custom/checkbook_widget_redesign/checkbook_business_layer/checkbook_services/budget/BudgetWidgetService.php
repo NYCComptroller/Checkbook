@@ -65,7 +65,7 @@ class BudgetWidgetService extends WidgetDataService implements IWidgetService {
                 $dynamic_parameter = "/bdgcode/" . $row["budget_code_id"];
                 $budget_code_values = BudgetUtil::getBudgetCodeNameAndBudgetCode($row['budget_code_id'],RequestUtilities::getRequestParamValue('agency'),RequestUtilities::getRequestParamValue('year'));
                 $dynamic_parameter .= isset($budget_code_values['budget_code']) ? "/bdgcode_code/" . $budget_code_values["budget_code"] : '';
-                $dynamic_parameter .= isset($budget_code_values['budget_code_name']) ? "/bdgcodenm/" . _checkbook_advanced_search_replaceSlash($budget_code_values["budget_code_name"]) : '';
+                $dynamic_parameter .= isset($budget_code_values['budget_code_name']) ? "/bdgcodenm/" . urlencode(_checkbook_advanced_search_replaceSlash($budget_code_values["budget_code_name"])) : '';
                 
                 $url = BudgetUrlService::committedBudgetUrl($dynamic_parameter, $this->getLegacyNodeId(), $row);
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
