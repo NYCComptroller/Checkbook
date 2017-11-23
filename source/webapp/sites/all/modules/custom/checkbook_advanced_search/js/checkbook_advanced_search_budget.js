@@ -133,6 +133,11 @@
             reloadBudgetCode();
             reloadBudgetName();
         });
+        
+        $('#edit-budget-expense-category').change(function(){
+            reloadBudgetCode();
+            reloadBudgetName();
+        });
 
         $('#edit-budget-budget-code').change(function(){
             reloadBudgetName();
