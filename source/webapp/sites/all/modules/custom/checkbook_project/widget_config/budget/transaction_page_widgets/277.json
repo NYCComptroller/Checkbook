@@ -108,7 +108,7 @@
     },
     "budget_code_name_formatted": {
       "type": "expression2",
-      "expression": "_get_tooltip_markup($row[object_class_name], 36)"
+      "expression": "_get_tooltip_markup($row[budget_code_name], 36)"
     },
     "agency_name_link": {
       "type": "expression2",
