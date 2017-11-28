@@ -10,51 +10,72 @@ import FunctionalBudget.*;
 import FunctionalRevenue.*;
 import FunctionalPayroll.*;
 import utilities.NYCBaseTest;
+import utilities.TestStatusReport;
 
 
 @RunWith(Suite.class)
 @SuiteClasses({
 
 	/* Spending */
-//	TotalSpendingWidgetTest.class,
-//	TotalSpendingWidgetDetailsTest.class,
-//	TotalSpendingTitlesTest.class,
+	TotalSpendingWidgetTest.class,
+	TotalSpendingTitlesTest.class,
+	TotalSpendingWidgetDetailsTest.class,
 	
+	PayrollSpendingWidgetDetailsTest.class,
+	PayrollSpendingWidgetTest.class,
+	
+	CapitalSpendingWidgetDetailsTest.class,
+    CapitalSpendingWidgetTest.class,
+    
+	ContractSpendingWidgetDetailsTest.class,
+	ContractSpendingWidgetTest.class,
+	
+	TrustAgencySpendingWidgetDetailsTest.class,
+	TrustAgencySpendingWidgetTest.class,
+	
+	OtherSpendingWidgetDetailsTest.class,
+	OtherSpendingWidgetTest.class,
 	/* Contracts */
-	//ActiveExpenseContractsTest.class,
-//	ActiveExpenseContractsDetailsTest.class,
-	//ActiveRevenueContractsTest.class,
-//	ActiveRevenueContractsDetailsTest.class,
-	//PendingExpenseContractsTest.class,
-//	PendingExpenseContractsDetailsTest.class,
-	//PendingRevenueContractsTest.class,
-//	PendingRevenueContractsDetailsTest.class,
-	//RegisteredExpenseContractsTest.class,
-//	RegisteredExpenseContractsDetailsTest.class,
-	//RegisteredRevenueContractsTest.class,
-//	RegisteredRevenueContractsDetailsTest.class,
+	
+	ActiveExpenseContractsTest.class,
+	ActiveExpenseContractsDetailsTest.class,
+	ActiveRevenueContractsTest.class,
+	ActiveRevenueContractsDetailsTest.class,
+	PendingExpenseContractsTest.class,
+    PendingExpenseContractsDetailsTest.class,
+	PendingRevenueContractsTest.class,
+	PendingRevenueContractsDetailsTest.class,
+	RegisteredExpenseContractsTest.class,
+	RegisteredExpenseContractsDetailsTest.class,
+	RegisteredRevenueContractsTest.class,
+	RegisteredRevenueContractsDetailsTest.class,
  
 	/* Budget */
-	/* Need to fix path to retrieve count */
-	//BudgetWidgetDetailsTest.class,
-	//BudgetWidgetDetailsAmountTest.class,
+	BudgetWidgetDetailsPageTitlesTest.class,
+	BudgetWidgetDetailsTransactionCountsTest.class,
+	BudgetWidgetDetailsTotalStaticAmountTest.class,
 	
-	//BudgetWidgetTest.class,
-	//BudgetWidgetTitles.class,
+	BudgetWidgetCountsTest.class,
+	BudgetWidgetTitlesTest.class,
+	
 
 	/* Revenue */
-//	RevenueWidgetTest.class,
-//RevenueWidgetTitles.class,
+	RevenueWidgetTest.class,
+    RevenueWidgetTitles.class,
 	RevenueWidgetDetailsTest.class,
-	//RevenueWidgetDetailsAmountTest.class,
+	RevenueWidgetDetailsAmountTest.class,
+	RevenueWidgetDetailsPageTitlesTest.class,
 
 	/* Payroll */
-	//PayrollWidgetTest.class,
+	PayrollWidgetCountsTest.class,
+	PayrollWidgetTitlesTest.class,
+	PayrollWidgetDetailsPageTitlesTest.class,	
+	PayrollWidgetDetailsTransactionCountsTest.class,
 	
-	//PayrollWidgetDetailsTest.class,
-
-	//PayrollTitles.class
 })
-public class FunctionalTest extends NYCBaseTest{	
+public class FunctionalTest extends NYCBaseTest
+//public class FunctionalTest extends TestStatusReport
+
+{	
 	
 }
