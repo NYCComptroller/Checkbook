@@ -47,8 +47,14 @@ public class Helper {
 	    return Driver.Instance.findElements(by).size() > 0;
 	 }
 	 
-	 public static String getCurrentSelectedYear(){
+	/* public static String getCurrentSelectedYear(){
 		 WebElement yearSelected = Driver.Instance.findElement(By.cssSelector("#year_list_chzn > .chzn-single > span"));
+		 String[] year = (yearSelected.getText()).split(" ");
+		 return year[0]+year[1];
+	 }
+	 */
+	 public static String getCurrentSelectedYear(){
+		 WebElement yearSelected = Driver.Instance.findElement(By.cssSelector("#year_list_chosen > .chosen-single > span"));
 		 String[] year = (yearSelected.getText()).split(" ");
 		 return year[0]+year[1];
 	 }
