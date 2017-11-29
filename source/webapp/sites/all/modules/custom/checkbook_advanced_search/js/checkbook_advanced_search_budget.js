@@ -78,6 +78,7 @@
             var exp_cat = ($('#edit-budget-expense-category').val()) ? ($('#edit-budget-expense-category').val()) : 0;
             var budget_code = ($('#edit-budget-budget-code').val()) ? $('#edit-budget-budget-code').val() : 0;
             var budget_name = ($('#edit-budget-budget-name').val()) ? $('#edit-budget-budget-name').val() : 0;
+            var exists = false;
 
             $.ajax({
                 url: '/advanced-search/autocomplete/budget/budgetname/' + fiscal_year + '/' + agency + '/' + dept.replace(/\//g,"__") + '/' + exp_cat.replace(/\//g,"__") + '/' + budget_code,
@@ -86,6 +87,9 @@
                     if(data[0]){
                         if(data[0]['label'] !== 'No Matches Found'){
                             for (i = 0; i < data.length; i++) {
+                                if(budget_code == data[i]['code']){
+                                    exists = true;
+                                }
                                 html=html + '<option title="'+ data[i]['value'] +'" value="' + data[i]['value'] + ' ">' + data[i]['label']  + '</option>';
                             }
                         }
@@ -93,7 +97,7 @@
                     $('#edit-budget-budget-name').html(html);
                     $('#edit-budget-budget-name').val(budget_name);
                     $('#edit-budget-budget-name').trigger("chosen:updated");
-                    if(budget_code !== $('#edit-budget-budget-code').val()){
+                    if(!exists){
                         reloadBudgetName();
                     }
                 }
