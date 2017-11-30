@@ -63,7 +63,7 @@ public class PendingExpenseContractsTest  extends TestStatusReport{
 	public void VerifyNumOfPrimeVendorsContracts() throws SQLException {
 	 	Integer numOfPrimeVendorsContractsDB = NYCDatabaseUtil.getPEContractsPrimeVendorsCount(year,'B');
         Integer numOfPrimeVendorsContractsApp = ContractsPage.GetTop5WidgetTotalCount(WidgetOption.Top5PrimeVendors);
-        assertEquals("Number of Prime Vendors Contracts By Industries in the Pending Expense Contracts did not match", numOfPrimeVendorsContractsApp, numOfPrimeVendorsContractsDB);
+        assertEquals("Number of Prime Vendors Contracts in the Pending Expense Contracts did not match", numOfPrimeVendorsContractsApp, numOfPrimeVendorsContractsDB);
 	}
 	@Test
 	public void VerifyNumOfAwardMethodsContracts() throws SQLException {
@@ -102,7 +102,7 @@ public class PendingExpenseContractsTest  extends TestStatusReport{
 	
 	@Test
     public void VerifyBottomNavPendingExpenseAmount() throws SQLException {
-        String TotalContractAmtDB = NYCDatabaseUtil.getAEContractsAmount(year, 'B');
+        String TotalContractAmtDB = NYCDatabaseUtil.getPEContractsAmount(year, 'B');
         String TotalContractAmtApp = ContractsPage.GetBottomNavContractAmount();
     	System.out.println(TotalContractAmtApp); 
     	 assertEquals("Pending Expense Contracts Bottom navigation Amount did not match", TotalContractAmtApp, TotalContractAmtDB);
@@ -112,7 +112,7 @@ public class PendingExpenseContractsTest  extends TestStatusReport{
 	
 	@Test
     public void VerifyBottomNavPendingExpenseCount() throws SQLException {
-		Integer TotalContractCountDB = NYCDatabaseUtil.getContractsAECount(year, 'B');
+		Integer TotalContractCountDB = NYCDatabaseUtil.getContractsPECount(year, 'B');
 		Integer TotalContractCountApp = ContractsPage.GetBottomNavContractCount();
     	System.out.println(TotalContractCountApp); 
     	 assertEquals("Pending Expense Contracts Bottom navigation count did not match", TotalContractCountApp, TotalContractCountDB);
@@ -120,9 +120,8 @@ public class PendingExpenseContractsTest  extends TestStatusReport{
 	
 	@Test
     public void VerifyPendingExpenseContractsVisualizationsTitles(){
-	    String[] sliderTitles= {"Spending by Active Expense Contracts", 
-	    						"Top Ten Agencies by Pending Expense Contracts", 
-	    						"Top Ten Pending Expense Contracts by Current Amount", 
+	    String[] sliderTitles= {"Top Ten Pending Expense Contracts by Current Amount", 
+	    						"Top Ten Agencies by Pending Expense Contracts",	    						
 	    						"Top Ten Prime Vendors by Pending Expense Contracts"};
 	    System.out.println( ContractsPage.VisualizationTitles()); 
     	assertTrue(Arrays.equals(sliderTitles, ContractsPage.VisualizationTitles().toArray()));

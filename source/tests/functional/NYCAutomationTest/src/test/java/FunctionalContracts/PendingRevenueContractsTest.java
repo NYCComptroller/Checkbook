@@ -87,7 +87,7 @@ public class PendingRevenueContractsTest  extends TestStatusReport{
 	
 	@Test
     public void VerifyBottomNavPendingRevenueAmount() throws SQLException {
-        String TotalContractAmtDB = NYCDatabaseUtil.getARContractsAmount(year, 'B');
+        String TotalContractAmtDB = NYCDatabaseUtil.getPRContractsAmount(year, 'B');
         String TotalContractAmtApp = ContractsPage.GetBottomNavContractAmount();
     	System.out.println(TotalContractAmtApp); 
     	 assertEquals("Pending Revenue Contracts Bottom navigation Amount did not match", TotalContractAmtApp, TotalContractAmtDB);
@@ -95,7 +95,7 @@ public class PendingRevenueContractsTest  extends TestStatusReport{
     }
 	@Test
     public void VerifyBottomNavActiveRevenueCount() throws SQLException {
-		Integer TotalContractCountDB = NYCDatabaseUtil.getContractsARCount(year, 'B');
+		Integer TotalContractCountDB = NYCDatabaseUtil.getContractsPRCount(year, 'B');
 		Integer TotalContractCountApp = ContractsPage.GetBottomNavContractCount();
     	System.out.println(TotalContractCountApp); 
     	 assertEquals("Pending Revenue Contracts Bottom navigation count did not match", TotalContractCountApp, TotalContractCountDB);
@@ -105,9 +105,8 @@ public class PendingRevenueContractsTest  extends TestStatusReport{
 	
 	@Test
     public void VerifyPendingRevenueContractsVisualizationsTitles(){
-	    String[] sliderTitles= {"Spending by Pending Expense Contracts", 
-	    						"Top Ten Agencies by Pending Revenue Contracts", 
-	    						"Top Ten Pending Revenue Contracts by Current Amount", 
+	    String[] sliderTitles= {"Top Ten Pending Revenue Contracts by Current Amount", 
+	    		                "Top Ten Agencies by Pending Revenue Contracts", 	    						
 	    						"Top Ten Prime Vendors by Pending Revenue Contracts"};
 	    System.out.println( ContractsPage.VisualizationTitles()); 
     	assertTrue(Arrays.equals(sliderTitles, ContractsPage.VisualizationTitles().toArray()));
@@ -115,14 +114,12 @@ public class PendingRevenueContractsTest  extends TestStatusReport{
     }
 	 
 	@Test
-    public void VerifyPendingRevenueContractsSpendingWidgetTitles(){
-	   String[] widgetTitles = {"Top 5 Master Agreements",
-	    						"Top 5 Master Agreement Modifications",
-	    						"Top 5 Contracts",
-	    						"Top 5 Contract Amount Modifications",
+    public void VerifyPendingRevenueContractsWidgetTitles(){
+	   String[] widgetTitles = {"Top 5 Contracts",
+	    						"Top Contract Amount Modifications",
 	    						"Top 5 Prime Vendors",
 	    						"Top 5 Award Methods",
-	    						"Top 5 Agencies",
+	    						"Top Agencies",
 	    						"Contracts by Industries",
 	    						"Contracts by Size"
 	    						};	    						

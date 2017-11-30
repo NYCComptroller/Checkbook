@@ -1352,7 +1352,7 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
                 while (rs.next()) {
                     totalContractAmount = rs.getBigDecimal("ARSum");
                 }
-                return formatNumber(totalContractAmount);
+                return formatNumber2(totalContractAmount);
                 // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
             } 
             
@@ -1370,9 +1370,27 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
                 while (rs.next()) {
                     totalContractAmount = rs.getBigDecimal("ARSum");
                 }
-                return formatNumber(totalContractAmount);
+                return formatNumber2(totalContractAmount);
                 // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
             } 
+            
+            public static String getRRContractsModificationDetailsAmount(int year, char yearTypeVal) throws SQLException {
+                query = "SELECT SUM(maximum_contract_amount) ARSum " +
+                        "FROM agreement_snapshot WHERE document_code_id IN (7)" +
+                        "and maximum_contract_amount <> original_contract_amount" +
+                        "AND (registered_year =" + year + ")"+                      
+                        "AND(" + year + " BETWEEN starting_year AND ending_year)";
+                rs = amountQueryHelper(yearTypeVal);
+
+                BigDecimal totalContractAmount = new BigDecimal(0);
+
+                while (rs.next()) {
+                    totalContractAmount = rs.getBigDecimal("ARSum");
+                }
+                return formatNumber2(totalContractAmount);
+               
+            } 
+   
    
    
             
@@ -2227,11 +2245,16 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
                return count;
             }
             public static int getAEContractsModificationDetailsCount(int year,char yearTypeVal) throws SQLException {
-                query = "select  count(distinct contract_number ) aCount  from agreement_snapshot"
+                query = "select (( select  count(distinct contract_number )from agreement_snapshot"
                 		+ "   where  document_code_id in (1,2) "
-                		+ "and (2016 between effective_begin_year and effective_end_year)"
                 		+ "and (2016 between starting_year and ending_year)"
-                		+ "and maximum_contract_amount <> original_contract_amount";
+                		+ "and maximum_contract_amount <> original_contract_amount"
+                		+"	    and (2016 between effective_begin_year and effective_end_year)) +"
+            	    	+"	    ( select  count(*) from sub_agreement_snapshot  where contract_number in "
+            	    	+"	 ( select distinct contract_number  from agreement_snapshot  where "
+            	    	+"	 document_code_id in (1,2) and (2016 between starting_year and ending_year)"
+            	    	+ "and maximum_contract_amount <> original_contract_amount"
+            	    		+"    and (2016 between effective_begin_year and effective_end_year)) and latest_flag ='Y')) aCount";
                rs = amountQueryHelper(yearTypeVal);
                int count = 0;
                while (rs.next()) {
@@ -2389,11 +2412,17 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
                return count;
             }
             public static int getREContractsModificationsDetailsCount(int year,char yearTypeVal) throws SQLException {
-                query = "select  count(distinct contract_number ) aCount  from agreement_snapshot"
-                		+ "   where  document_code_id in (1,2) "
-                		+ "and registered_year = 2016"
-                		+ "and (2016 between starting_year and ending_year)"
-                		+ "and maximum_contract_amount <> original_contract_amount";
+                              		
+                		 query = "select (( select  count(distinct contract_number )from agreement_snapshot"
+                         		+ "   where  document_code_id in (1,2) "
+                         		+ "and (2016 between starting_year and ending_year)"
+                         		+ "and maximum_contract_amount <> original_contract_amount"
+                         		+" and( registered_year = 2016)  +"
+                     	    	+"	    ( select  count(*) from sub_agreement_snapshot  where contract_number in "
+                     	    	+"	 ( select distinct contract_number  from agreement_snapshot  where "
+                     	    	+"	 document_code_id in (1,2) and (2016 between starting_year and ending_year)"
+                     	    	+ "and maximum_contract_amount <> original_contract_amount"
+                     	    		+"    and ( registered_year = 2016)) and latest_flag ='Y')) aCount";
                rs = amountQueryHelper(yearTypeVal);
                int count = 0;
                while (rs.next()) {
@@ -2403,10 +2432,14 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
             }
         
             public static int getREAllContractsDetailsCount(int year,char yearTypeVal) throws SQLException {
-                query = "select  count(distinct contract_number ) aCount  from agreement_snapshot"
-                		+ "   where  document_code_id in (1,2) "
-                		+ "and registered_year = 2016"
-                		+ "and (2016 between starting_year and ending_year)";
+                query = "select ((select  count(distinct contract_number ) aCount  from agreement_snapshot"
+                		+ "   where  document_code_id in (1,2) "                		
+                		+ "and (2016 between starting_year and ending_year)"
+                		+ "and (registered_year = 2016)) +"
+                		+"	    ( select  count(*) from sub_agreement_snapshot  where contract_number in "
+            	    	+"	 ( select distinct contract_number  from agreement_snapshot  where "
+            	    	+"	 document_code_id in (1,2) and (2016 between starting_year and ending_year)"
+            	    		+"    and (registered_year = 2016)) and latest_flag ='Y')) aCount";;
                rs = amountQueryHelper(yearTypeVal);
                int count = 0;
                while (rs.next()) {
@@ -2417,7 +2450,7 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
             public static int getREAll1ContractsDetailsCount(int year,char yearTypeVal) throws SQLException {
                 query =    " select  ((select  count(*) from agreement_snapshot  where "
                 	    	+"	 document_code_id in (1,2,5) and (2016 between starting_year and ending_year)"
-                	    	+"	    and (registered_year = 2016) +"
+                	    	+"	    and (registered_year = 2016)) +"
                 	    	+"	    ( select  count(*) from sub_agreement_snapshot  where contract_number in "
                 	    	+"	 ( select distinct contract_number  from agreement_snapshot  where "
                 	    	+"	 document_code_id in (1,2,5) and (2016 between starting_year and ending_year)"
