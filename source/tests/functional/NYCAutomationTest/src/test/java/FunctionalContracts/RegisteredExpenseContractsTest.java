@@ -20,7 +20,7 @@ import helpers.Helper;
 	import utilities.TestStatusReport;
 	public class RegisteredExpenseContractsTest  extends TestStatusReport{
 		
-//public class RegisteredExpenseContractsTest extends NYCBaseTest {
+		//public class RegisteredExpenseContractsTest extends NYCBaseTest {
 		
 		int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
@@ -104,7 +104,7 @@ import helpers.Helper;
 	
 	@Test
   public void VerifyBottomNavRegisteredExpenseAmount() throws SQLException {
-      String TotalContractAmtDB = NYCDatabaseUtil.getAEContractsAmount(year, 'B');
+      String TotalContractAmtDB = NYCDatabaseUtil.getREContractsAmount(year, 'B');
       String TotalContractAmtApp = ContractsPage.GetBottomNavContractAmount();
   	System.out.println(TotalContractAmtApp); 
   	 assertEquals("Registered Expense Contracts Bottom navigation Amount did not match", TotalContractAmtApp, TotalContractAmtDB);
@@ -114,7 +114,7 @@ import helpers.Helper;
 	
 	@Test
   public void VerifyBottomNavRegisteredExpenseCount() throws SQLException {
-		Integer TotalContractCountDB = NYCDatabaseUtil.getContractsAECount(year, 'B');
+		Integer TotalContractCountDB = NYCDatabaseUtil.getContractsRECount(year, 'B');
 		Integer TotalContractCountApp = ContractsPage.GetBottomNavContractCount();
   	System.out.println(TotalContractCountApp); 
   	 assertEquals("Registered Expense Contracts Bottom navigation count did not match", TotalContractCountApp, TotalContractCountDB);
@@ -122,10 +122,10 @@ import helpers.Helper;
 	
 	@Test
   public void VerifyRegisteredExpenseContractsVisualizationsTitles(){
-	    String[] sliderTitles= {"Spending by Active Expense Contracts", 
-	    						"Top Ten Agencies by Active Expense Contracts", 
-	    						"Top Ten Active Expense Contracts by Current Amount", 
-	    						"Top Ten Prime Vendors by Active Expense Contracts"};
+	    String[] sliderTitles= {"Spending by Registered Expense Contracts", 
+	    						"Top Ten Agencies by Registered Expense Contracts", 
+	    						"Top Ten Registered Expense Contracts by Current Amount", 
+	    						"Top Ten Prime Vendors by Registered Expense Contracts"};
 	    System.out.println( ContractsPage.VisualizationTitles()); 
   	assertTrue(Arrays.equals(sliderTitles, ContractsPage.VisualizationTitles().toArray()));
   	System.out.println( ContractsPage.VisualizationTitles()); 

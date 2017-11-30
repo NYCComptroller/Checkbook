@@ -20,7 +20,7 @@ import helpers.Helper;
 import utilities.TestStatusReport;
 public class RegisteredRevenueContractsDetailsTest extends TestStatusReport{
 
-//public class RegisteredRevenueContractsDetailsTest extends NYCBaseTest{
+	//public class RegisteredRevenueContractsDetailsTest extends NYCBaseTest{
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	public void GoToPage(){
@@ -63,7 +63,7 @@ public class RegisteredRevenueContractsDetailsTest extends TestStatusReport{
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
 	    assertEquals("Registered Revenue Contracts Modifications Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
-	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getRRContractsDetailsAmount(year,'B');
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getRRContractsModificationDetailsAmount(year,'B');
 		String WidgetDetailsAmountapp = ContractsPage.GetTransactionAmount();
 		assertEquals("Active Revenue Contracts ContractsModifications  Widget Details page total Contract amount did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
 	     
@@ -94,7 +94,7 @@ public class RegisteredRevenueContractsDetailsTest extends TestStatusReport{
 		Integer numOfRRContractsDetailsCountapp = RegisteredRevenueContractsPage.GetTransactionCount();
 		assertEquals(" Registered Revenue Contracts Award Method  widget Details page table count did not match", numOfRRContractsDetailsCountapp, NumOfRRContractsDetailsCountDB);
 		
-		String WidgetDetailsTitle =  "AWard Methods Registered Revenue Contracts Transactions";
+		String WidgetDetailsTitle =  "Award Methods Registered Revenue Contracts Transactions";
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
 	    assertEquals("Registered Revenue Contracts AWard Method Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    

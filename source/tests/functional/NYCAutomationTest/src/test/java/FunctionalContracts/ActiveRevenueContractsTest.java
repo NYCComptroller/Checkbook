@@ -108,9 +108,8 @@ import helpers.Helper;
 	
 	@Test
     public void VerifyActiveRevenueContractsVisualizationsTitles(){
-	    String[] sliderTitles= {"Spending by Active Expense Contracts", 
-	    						"Top Ten Agencies by Active Revenue Contracts", 
-	    						"Top Ten Active Revenue Contracts by Current Amount", 
+	    String[] sliderTitles= {"Top Ten Active Revenue Contracts by Current Amount", 
+	    		                 "Top Ten Agencies by Active Revenue Contracts", 	    						
 	    						"Top Ten Prime Vendors by Active Revenue Contracts"};
 	    System.out.println( ContractsPage.VisualizationTitles()); 
     	assertTrue(Arrays.equals(sliderTitles, ContractsPage.VisualizationTitles().toArray()));
@@ -119,9 +118,7 @@ import helpers.Helper;
 	 
 	@Test
     public void VerifyActiveRevenueContractsSpendingWidgetTitles(){
-	   String[] widgetTitles = {"Top 5 Master Agreements",
-	    						"Top 5 Master Agreement Modifications",
-	    						"Top 5 Contracts",
+	   String[] widgetTitles = {"Top 5 Contracts",
 	    						"Top 5 Contract Amount Modifications",
 	    						"Top 5 Prime Vendors",
 	    						"Top 5 Award Methods",

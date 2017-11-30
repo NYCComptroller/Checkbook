@@ -83,7 +83,7 @@ public class RegisteredRevenueContractsTest  extends TestStatusReport{
 	
 	@Test
     public void VerifyBottomNavRegisteredRevenueAmount() throws SQLException {
-        String TotalContractAmtDB = NYCDatabaseUtil.getARContractsAmount(year, 'B');
+        String TotalContractAmtDB = NYCDatabaseUtil.getRRContractsAmount(year, 'B');
         String TotalContractAmtApp = ContractsPage.GetBottomNavContractAmount();
     	System.out.println(TotalContractAmtApp); 
     	 assertEquals("Registered Revenue Contracts Bottom navigation Amount did not match", TotalContractAmtApp, TotalContractAmtDB);
@@ -91,7 +91,7 @@ public class RegisteredRevenueContractsTest  extends TestStatusReport{
     }
 	@Test
     public void VerifyBottomNavRegisteredRevenueCount() throws SQLException {
-		Integer TotalContractCountDB = NYCDatabaseUtil.getContractsARCount(year, 'B');
+		Integer TotalContractCountDB = NYCDatabaseUtil.getContractsRRCount(year, 'B');
 		Integer TotalContractCountApp = ContractsPage.GetBottomNavContractCount();
     	System.out.println(TotalContractCountApp); 
     	 assertEquals("Registered Revenue Contracts Bottom navigation count did not match", TotalContractCountApp, TotalContractCountDB);
@@ -101,20 +101,17 @@ public class RegisteredRevenueContractsTest  extends TestStatusReport{
 	
 	@Test
     public void VerifyRegisteredRevenueContractsVisualizationsTitles(){
-	    String[] sliderTitles= {"Spending by Active Expense Contracts", 
-	    						"Top Ten Agencies by Active Revenue Contracts", 
-	    						"Top Ten Active Revenue Contracts by Current Amount", 
-	    						"Top Ten Prime Vendors by Active Revenue Contracts"};
+	    String[] sliderTitles= {"Top Ten Registered Revenue Contracts by Current Amount",
+	    						"Top Ten Agencies by Registered Revenue Contracts",	    						 
+	    						"Top Ten Prime Vendors by Registered Revenue Contracts"};
 	    System.out.println( ContractsPage.VisualizationTitles()); 
     	assertTrue(Arrays.equals(sliderTitles, ContractsPage.VisualizationTitles().toArray()));
     	System.out.println( ContractsPage.VisualizationTitles()); 
     }
 	 
 	@Test
-    public void VerifyRegisteredRevenueContractsSpendingWidgetTitles(){
-	   String[] widgetTitles = {"Top 5 Master Agreements",
-	    						"Top 5 Master Agreement Modifications",
-	    						"Top 5 Contracts",
+    public void VerifyRegisteredRevenueContractsWidgetTitles(){
+	   String[] widgetTitles = {"Top 5 Contracts",
 	    						"Top 5 Contract Amount Modifications",
 	    						"Top 5 Prime Vendors",
 	    						"Top 5 Award Methods",
