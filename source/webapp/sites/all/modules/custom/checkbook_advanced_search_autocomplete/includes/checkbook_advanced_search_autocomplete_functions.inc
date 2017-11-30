@@ -895,6 +895,10 @@ function _checkbook_advanced_search_autocomplete_budget_budgetcode($fiscal_year,
         $params["budget_code_name"] = str_replace('__','/',$budget_name);
     }
     $results = get_db_results(false, 'checkbook:budget', array("budget_code_code.budget_code_code"), $params,"budget_code_code.budget_code_code");
+    if(count($results) == 0 && $agency != '0'){
+        unset($params["budget_code_name"]);
+        $results = get_db_results(false, 'checkbook:budget', array("budget_code_code.budget_code_code"), $params,"budget_code_code.budget_code_code");
+    }
     if (count($results ) > 0) {
         $matches = array();
         foreach ($results as $key=>$value) {
@@ -923,7 +927,11 @@ function _checkbook_advanced_search_autocomplete_budget_budgetname($fiscal_year,
         $params["budget_code"] = $budget_code;
     }
     $results = get_db_results(false, 'checkbook:budget', array("budget_code_name.budget_code_name", "budget_code_code.budget_code_code"), $params,"budget_code_name.budget_code_name");
-    if (count($results ) > 0) {
+    if(count($results) == 0 && $agency != '0'){
+        unset($params["budget_code"]);
+        $results = get_db_results(false, 'checkbook:budget', array("budget_code_name.budget_code_name", "budget_code_code.budget_code_code"), $params,"budget_code_name.budget_code_name");
+    }
+    if (count($results) > 0) {
         $matches = array();
         foreach ($results as $key=>$value) {
             $budget_name_value = $value['budget_code_name.budget_code_name'];
