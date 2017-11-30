@@ -21,7 +21,7 @@ import helpers.Driver;
 import helpers.Helper;
 import utilities.TestStatusReport;
 public class ActiveExpenseContractsDetailsTest extends TestStatusReport{
-//public class ActiveExpenseContractsDetailsTest extends NYCBaseTest {
+	//public class ActiveExpenseContractsDetailsTest extends NYCBaseTest {
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	public void GoToPage() {
@@ -38,14 +38,19 @@ public class ActiveExpenseContractsDetailsTest extends TestStatusReport{
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5MasterAgreements);
 		HomePage.ShowWidgetDetails();
 		int NumOfAEContractsDetailsCountyear =  NYCDatabaseUtil.getAEMasterContractsDetailsCount(year,'B');
-		int numOfAEContractsDetailsCountapp = ActiveExpenseContractsPage.GetTransactionCount();
+        int numOfAEContractsDetailsCountapp = ActiveExpenseContractsPage.GetTransactionCount();
 		assertEquals("Active Expense Contracts master contracts widget Details page table count did not match", numOfAEContractsDetailsCountapp, NumOfAEContractsDetailsCountyear); 
 		
 		String WidgetDetailsTitle =  "Master Agreements Active Expense Contracts Transactions";
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
-	    assertEquals("Active Expense Contracts Master Agreement Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
+	  assertEquals("Active Expense Contracts Master Agreement Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp);
 	    
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getAEContractsMasterContractsDetailsAmount(year,'B');
+		String WidgetDetailsAmountapp = ActiveExpenseContractsPage.GetTransactionAmount1();
+		assertEquals("Active Expense Contracts Master Agreement  Widget Details page total Contract amount did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
 	}
+	       
+	
 	@Test
 	public void VerifyTop5MasterAgreementModificationsTransactionCount() throws SQLException {
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5MasterAgreementModifications);
@@ -59,6 +64,9 @@ public class ActiveExpenseContractsDetailsTest extends TestStatusReport{
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
 	    assertEquals("Active Expense Contracts Master Agreement Modifications Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getAEContractsMasterModificationDetailsAmount(year,'B');
+		String WidgetDetailsAmountapp = ActiveExpenseContractsPage.GetTransactionAmount1();
+		assertEquals("Active Expense Contracts Master Agreement modifications  Widget Details page total Contract amount did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
 	}
 	@Test
 	public void VerifyTop5ContractsTransactionCount() throws SQLException {
@@ -72,6 +80,9 @@ public class ActiveExpenseContractsDetailsTest extends TestStatusReport{
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
 	    assertEquals("Active Expense Contracts contracts Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getAEContractsDetailsAmount(year,'B');
+		String WidgetDetailsAmountapp = ActiveExpenseContractsPage.GetTransactionAmount1();
+		assertEquals("Active Expense Contracts contracts  Widget Details page total Contract amount did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
 	}
 	@Test
 	public void VerifyTop5ContractAmountModificationsTransactionCount() throws SQLException {
@@ -83,8 +94,12 @@ public class ActiveExpenseContractsDetailsTest extends TestStatusReport{
 		
 		String WidgetDetailsTitle =  "Contract Amount Modifications Active Expense Contracts Transactions";
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
-	    assertEquals("Active Expense Contracts Modifications Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
+	   assertEquals("Active Expense Contracts Modifications Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
+
+	   String WidgetDetailsAmountDB =  NYCDatabaseUtil.getAEContractsModificationDetailsAmount(year,'B');
+		String WidgetDetailsAmountapp = ActiveExpenseContractsPage.GetTransactionAmount1();
+		assertEquals("Active Expense Contracts ContractAmountModifications  Widget Details page total Contract amount did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
 	}
 	@Test
 	public void VerifyTop5PrimeVendorsTransactionCount() throws SQLException {
@@ -98,6 +113,10 @@ public class ActiveExpenseContractsDetailsTest extends TestStatusReport{
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
 	    assertEquals("Active Expense Contracts Prime Vendors Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
+
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getAEContractsAllDetailsAmount(year,'B');
+		String WidgetDetailsAmountapp = ActiveExpenseContractsPage.GetTransactionAmount1();
+		assertEquals("Active Expense Contracts PrimeVendors  Widget Details page total Contract amount did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
 	}
 	@Test
 	public void VerifyTop5AwardMethodsTransactionCount() throws SQLException {
@@ -111,6 +130,10 @@ public class ActiveExpenseContractsDetailsTest extends TestStatusReport{
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
 	    assertEquals("Active Expense Contracts AWard Method Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
+
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getAEContractsAllDetailsAmount(year,'B');
+		String WidgetDetailsAmountapp = ActiveExpenseContractsPage.GetTransactionAmount1();
+		assertEquals("Active Expense Contracts AwardMethods Widget Details page total Contract amount did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
 	}
 	@Test
 	public void VerifyTop5AgenciesTransactionCount() throws SQLException {
@@ -125,6 +148,10 @@ public class ActiveExpenseContractsDetailsTest extends TestStatusReport{
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
 	    assertEquals("Active Expense Contracts Agencies Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
+
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getAEContractsAllDetailsAmount(year,'B');
+		String WidgetDetailsAmountapp = ActiveExpenseContractsPage.GetTransactionAmount1();
+		assertEquals("Active Expense Contracts Agencies  Widget Details page total Contract amount did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
 	}
 	@Test
 	public void VerifyContractsByIndustriesTransactionCount() throws SQLException {
@@ -138,6 +165,10 @@ public class ActiveExpenseContractsDetailsTest extends TestStatusReport{
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
 	    assertEquals("Active Expense Contracts Industries Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
+
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getAEContractsAllDetailsAmount(year,'B');
+		String WidgetDetailsAmountapp = ActiveExpenseContractsPage.GetTransactionAmount1();
+		assertEquals("Active Expense Contracts ContractsByIndustries  Widget Details page total Contract amount did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
 	}
 	@Test
 	public void VerifyContractsBySizeTransactionCount() throws SQLException {
@@ -151,6 +182,10 @@ public class ActiveExpenseContractsDetailsTest extends TestStatusReport{
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
 	    assertEquals("Active Expense Contracts Contracts by Sizes Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
+
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getAEContractsAllDetailsAmount(year,'B');
+		String WidgetDetailsAmountapp = ActiveExpenseContractsPage.GetTransactionAmount1();
+		assertEquals("Active Expense Contracts ContractsBySize  Widget Details page total Contract amount did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
 	}
 
 	/* ***************** Test Widget Transaction Total Amount ****************** */

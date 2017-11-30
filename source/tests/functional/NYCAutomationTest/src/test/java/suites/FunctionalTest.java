@@ -35,7 +35,10 @@ import utilities.TestStatusReport;
 	
 	OtherSpendingWidgetDetailsTest.class,
 	OtherSpendingWidgetTest.class,
-	/* Contracts */
+	
+	
+	
+	/*Contracts */
 	
 	ActiveExpenseContractsTest.class,
 	ActiveExpenseContractsDetailsTest.class,
@@ -51,6 +54,8 @@ import utilities.TestStatusReport;
 	RegisteredRevenueContractsDetailsTest.class,
  
 	/* Budget */
+	
+	
 	BudgetWidgetDetailsPageTitlesTest.class,
 	BudgetWidgetDetailsTransactionCountsTest.class,
 	BudgetWidgetDetailsTotalStaticAmountTest.class,
@@ -66,11 +71,12 @@ import utilities.TestStatusReport;
 	RevenueWidgetDetailsAmountTest.class,
 	RevenueWidgetDetailsPageTitlesTest.class,
 
-	/* Payroll */
+	/* Payroll*/
 	PayrollWidgetCountsTest.class,
 	PayrollWidgetTitlesTest.class,
 	PayrollWidgetDetailsPageTitlesTest.class,	
 	PayrollWidgetDetailsTransactionCountsTest.class,
+	
 	
 })
 public class FunctionalTest extends NYCBaseTest
