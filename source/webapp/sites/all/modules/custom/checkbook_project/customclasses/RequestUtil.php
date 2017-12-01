@@ -365,7 +365,7 @@ class RequestUtil{
             }
         }
         $minority_type_ids = explode('~',$minority_type_id);
-        $minority_category = MappingUtil::getCurrenEhtnicityName($minority_type_ids);
+        $minority_category = MappingUtil::getCurrenEthnicityName($minority_type_ids);
         $MWBE_certified = MappingUtil::isMWBECertified($minority_type_ids);
         $title = $MWBE_certified
             ? '<p class="sub-chart-title">M/WBE Category: '.$minority_category.'</p>'
