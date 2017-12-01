@@ -85,9 +85,9 @@ if(_getRequestParamValue("status")){
     $status = '/status/A';
 }
 
-if (isset($node->data[0]['mwbe_vendor']) && 'yes' == strtolower($node->data[0]['mwbe_vendor'])) {
-  $status .= '/dashboard/mp';
-}
+//if (isset($node->data[0]['mwbe_vendor']) && 'yes' == strtolower($node->data[0]['mwbe_vendor'])) {
+// $status .= '/dashboard/mp';
+//}
 
 //log_error($_SERVER);
 foreach($results2 as $row){
@@ -98,7 +98,8 @@ if(_getRequestParamValue("doctype")=="RCT1"){
                  . $node->data[0]['vendor_id'] . '?expandBottomCont=true';
 }
 else{
-   if($node->data[0]["mwbe_vendor"] == 'Yes'){
+   $vendor_latest_mwbe_category = PrimeVendorService::getLatestMinorityTypeByYear($node->data[0]['vendor_id'], _getCurrentYearID(), 'B');
+   if($vendor_latest_mwbe_category){
        $vendor_link = '/contracts_landing'.$status.'/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
         .$node->data[0]['vendor_id'].'/dashboard/mp?expandBottomCont=true';
    }
