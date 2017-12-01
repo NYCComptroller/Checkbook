@@ -142,15 +142,10 @@ public class TopNavigation {
 		}
 	}
 	
-	public static class SubVendors{
-		public static void Select() {
-			PrimaryTabSelector.Select("employees");
-		}
-	}
 	
 		
 	public enum TopNavTabs{
-		Spending, Revenue, Budget, Contracts, Payroll
+		Spending, Revenue, Budget, Contracts, Payroll,MWBE ,SubVendors
 	}
 
 }
