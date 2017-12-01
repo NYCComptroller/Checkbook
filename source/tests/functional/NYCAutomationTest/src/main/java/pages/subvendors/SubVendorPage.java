@@ -5,32 +5,32 @@ import java.util.ArrayList;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import navigation.MWBECategory.MWBECategoryOption;
-import navigation.MWBECategory;
+import navigation.SubVendorCategory.SubVendorCategoryOption;
+import navigation.SubVendorCategory;
 import navigation.TopNavigation;
 import pages.home.HomePage;
 import helpers.Driver;
 
-public class MWBEPage {
+public class SubVendorPage {
 
 	public static boolean IsAt() {
 		WebElement spendingCont = Driver.Instance.findElement(By.cssSelector(".top-navigation-left > table > tbody > tr .spending"));
     	Boolean spendingSelected = (spendingCont.getAttribute("class")).contains("active");	
     	WebElement contractsCont = Driver.Instance.findElement(By.cssSelector(".top-navigation-left > table > tbody > tr .contracts"));
     	Boolean contractsSelected = (contractsCont.getAttribute("class")).contains("active");	
-        WebElement mwbeCont = Driver.Instance.findElement(By.cssSelector(".top-navigation-right .mwbe"));
+        WebElement mwbeCont = Driver.Instance.findElement(By.cssSelector(".top-navigation-right .mwbe.subvendors"));
         Boolean mwbeSelected = (mwbeCont.getAttribute("class")).contains("active");	   
         return (spendingSelected || contractsSelected) && mwbeSelected;
 	}
 
-	public static void GoTo(String domain, MWBECategoryOption category) {
+	public static void GoTo(String domain, SubVendorCategoryOption category) {
 		if(domain.equals("Spending"))
 			TopNavigation.Spending.Select();
-		MWBECategory.select(category);		
+		SubVendorCategory.select(category);		
 	}
 
-	public static String GetMWBEAmount() {
-		WebElement mwbeAmt = Driver.Instance.findElement(By.cssSelector(".top-navigation-right .mwbe .top-navigation-amount"));
+	public static String GetSubVendorSpendingAmount() {
+		WebElement mwbeAmt = Driver.Instance.findElement(By.cssSelector(".top-navigation-right .mwbe.subvendors .top-navigation-amount"));
 		return mwbeAmt.getText().substring((mwbeAmt.getText().indexOf("$")));
 	}
 
