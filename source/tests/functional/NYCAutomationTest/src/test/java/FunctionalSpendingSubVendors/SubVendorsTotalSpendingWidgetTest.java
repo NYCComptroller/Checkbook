@@ -8,8 +8,8 @@ import java.sql.SQLException;
 import org.junit.Before;
 import org.junit.Test;
 
-import navigation.MWBECategory;
-import navigation.MWBECategory.MWBECategoryOption;
+
+import navigation.SubVendorCategory.SubVendorCategoryOption;
 import pages.home.HomePage;
 import pages.mwbe.MWBEPage;
 
@@ -18,24 +18,24 @@ import navigation.TopNavigation.Spending.TotalSpending;
 import pages.spending.SpendingPage;
 import pages.spending.TotalSpendingPage;
 import pages.spending.SpendingPage.WidgetOption;
-
+import pages.subvendors.SubVendorsPage;
 import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
 import utilities.TestStatusReport;
 
-public class TotalSpendingWidgetTest extends NYCBaseTest {
+public class SubVendorsTotalSpendingWidgetTest extends NYCBaseTest {
 	//public class TotalSpendingWidgetTest extends TestStatusReport{
 		int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 
 	
-	public void GoToPage(){
-		if(!MWBEPage.IsAt()){
-			MWBEPage.GoTo("Spending", MWBECategoryOption.MWBEHome);		
-		}
-		if(!(Helper.getCurrentSelectedYear()).equalsIgnoreCase(NYCBaseTest.prop.getProperty("CurrentYear")))
-			   HomePage.SelectYear(NYCBaseTest.prop.getProperty("CurrentYear"));
-	}
+    public void GoToPage(){
+	   if (!SubVendorsPage.IsAt())
+			SubVendorsPage.GoTo("Spending", SubVendorCategoryOption.SubVendorsHome);
+		   if(!(Helper.getCurrentSelectedYear()).equalsIgnoreCase(NYCBaseTest.prop.getProperty("CurrentYear")))
+		   HomePage.SelectYear(NYCBaseTest.prop.getProperty("CurrentYear"));
+    }
+
 
 	/* ***************** Test Widget Counts ****************** */
 	@Test
@@ -51,7 +51,7 @@ public class TotalSpendingWidgetTest extends NYCBaseTest {
 		assertEquals("Total Spending  agencies widget count  did not match with the DB",totalAgenciesWidgetCountApp, totalAgencieswidgetCountDB);
 	}
 	@Test
-	public void VerifyNumOfExpenseCategoriesWidget() throws SQLException{
+	public void VerifyNumOfSubVendorsWidget() throws SQLException{
 		Integer totalExpenseCategorieswidgetCountDB = NYCDatabaseUtil.getTotalSpendingExpCategoriesCount(year,'B');
 		Integer totalExpenseCategoriesWidgetCountApp = SpendingPage.GetTop5WidgetTotalCount(WidgetOption.Top5ExpenseCategories);
 		assertEquals("Total Spending  Exp categories  widget count  did not match with the DB",totalExpenseCategoriesWidgetCountApp, totalExpenseCategorieswidgetCountDB);

@@ -837,6 +837,69 @@ public static int getTotalSpendingContractsDetailsCount(int year,char yearTypeVa
   return count;  
 }  
 
+//Sub Vendors Spending
+
+
+// Total Spending widget counts
+
+public static int getSubVendorsTotalSpendingAgenciesCount(int year,char yearTypeVal) throws SQLException {
+    query = "SELECT COUNT(distinct agency_id) aCount from subcontract_spending_details where fiscal_year =" + year ;
+  
+   rs = amountQueryHelper(yearTypeVal);
+   int count = 0;
+   while (rs.next()) {
+       count = rs.getInt("aCount");
+   }
+   return count;   
+   }        
+   
+public static int getSubVendorsTotalSpendingChecksCount(int year,char yearTypeVal) throws SQLException {
+    query = "SELECT COUNT(*) aCount from subcontract_spending_details where fiscal_year =" + year ;
+   // query2 = "SELECT COUNT(*) aCount from disbursement_line_item_details where fiscal_year =" + year ;  
+
+   rs = amountQueryHelper(yearTypeVal);
+   int count = 0;
+   while (rs.next()) {
+       count = rs.getInt("aCount");
+   }        
+   return count;           
+}        
+
+public static int getSubVendorsTotalSpendingPrimeVendorsCount(int year,char yearTypeVal) throws SQLException {
+    query = "SELECT COUNT(distinct prime_vendor_id) aCount from subcontract_spending_details where fiscal_year =" + year ;
+
+   rs = amountQueryHelper(yearTypeVal);
+   int count = 0;
+   while (rs.next()) {
+       count = rs.getInt("aCount");
+   }
+ return count;           
+}        
+
+public static int getSubVendorsTotalSpendingSubVendorsCount(int year, char yearTypeVal)  throws SQLException {
+	
+       query = "SELECT COUNT(distinct vendor_id) aCount from subcontract_spending_details where fiscal_year =" + year ;
+       // query = "SELECT COUNT(distinct expenditure_object_code) aCount from disbursement_line_item_details where fiscal_year =" + year ;
+       rs = amountQueryHelper(yearTypeVal);
+       int count = 0;
+       while (rs.next()) {
+           count = rs.getInt("aCount");
+       }
+      return count;	           
+   		}  		
+
+public static int getSubVendorsTotalSpendingSubContractsCount(int year,char yearTypeVal) throws SQLException {
+query =   " SELECT count( distinct ( COALESCE(master_contract_number,contract_number)  )) aCount FROM subcontract_spending_details" 
+     +    " WHERE  contract_document_code in ( 'CT1', 'CTA1', 'POD', 'POC', 'PCC1', 'DO1','MA1','MMA1')   and fiscal_year = "+ year;
+rs = amountQueryHelper(yearTypeVal);
+int count = 0;
+while (rs.next()) {
+count = rs.getInt("aCount");
+}
+return count;
+}
+
+
 //Revenue Widgets
 
 public static String getRevenueAmount(int year, char yearTypeVal) throws SQLException {
@@ -1305,7 +1368,7 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
                 // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
             }
             public static String getREContractsModificationDetailsAmount(int year, char yearTypeVal) throws SQLException {
-                query = "SELECT SUM(maximum_contract_amount) aeSum " +
+                query = "SELECT SUM(maximum_contract_amount) AESum " +
                         "FROM agreement_snapshot WHERE document_code_id IN (1,2)" +
                         "AND (registered_year =" + year + ")"+
                         "AND(" + year + " BETWEEN starting_year AND ending_year)" +
@@ -1375,11 +1438,12 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
             } 
             
             public static String getRRContractsModificationDetailsAmount(int year, char yearTypeVal) throws SQLException {
+                       
                 query = "SELECT SUM(maximum_contract_amount) ARSum " +
                         "FROM agreement_snapshot WHERE document_code_id IN (7)" +
-                        "and maximum_contract_amount <> original_contract_amount" +
-                        "AND (registered_year =" + year + ")"+                      
-                        "AND(" + year + " BETWEEN starting_year AND ending_year)";
+                        "AND (registered_year =" + year + ")"+
+                        "AND(" + year + " BETWEEN starting_year AND ending_year)" +
+                         "and maximum_contract_amount <> original_contract_amount";
                 rs = amountQueryHelper(yearTypeVal);
 
                 BigDecimal totalContractAmount = new BigDecimal(0);
@@ -1387,12 +1451,10 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
                 while (rs.next()) {
                     totalContractAmount = rs.getBigDecimal("ARSum");
                 }
-                return formatNumber2(totalContractAmount);
+               return formatNumber2(totalContractAmount);
+               // return totalContractAmount.toString();
                
-            } 
-   
-   
-   
+            }  
             
             
     //Active Expense contracts widget counts
