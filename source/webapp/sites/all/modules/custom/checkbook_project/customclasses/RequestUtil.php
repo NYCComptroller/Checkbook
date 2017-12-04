@@ -1217,10 +1217,10 @@ class RequestUtil{
     				_checkbook_project_get_url_param_string("agency")
     			. _checkbook_project_get_url_param_string("vendor")  ;
     }
-    
-    
-    
-    function get_top_nav_records_count($urlParamMap, $default_params,$table){
+
+
+
+    private static function get_top_nav_records_count($urlParamMap, $default_params,$table){
     	$where_filters = array();
     	
     	foreach($urlParamMap as $param=>$value){
