@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.sql.SQLException;
+import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,6 +15,7 @@ import pages.contracts.ActiveExpenseContractsPage;
 import pages.contracts.ContractsPage;
 import pages.contracts.ContractsPage.WidgetOption;
 import pages.home.HomePage;
+import pages.spending.SpendingPage;
 import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
 import utilities.TestStatusReport;
@@ -89,4 +91,61 @@ import helpers.Helper;
 		Integer numOfContractsBySize = ContractsPage.GetTop5WidgetTotalCount(WidgetOption.ContractsBySize);
 		assertEquals("Number of Contracts in the  Active Expense Contracts by Size widget did not match",numOfContractsBySize,activeExpenseContractsNumOfContractsBySizeDB);
 	}
+	/////// amounts and titles
+	
+	@Test
+    public void VerifyTopNavContractAmount() throws SQLException {
+        String TotalContractAmtDB = NYCDatabaseUtil.getContractsTopAmount(year, 'B');
+        String TotalContractAmtApp = ContractsPage.GetContractsAmount();
+        System.out.println(TotalContractAmtApp); 
+        assertEquals("Active Expense Contracts Top navigation amount did not match", TotalContractAmtApp, TotalContractAmtDB);
+    }
+	
+	@Test
+    public void VerifyBottomNavActiveExpenseAmount() throws SQLException {
+        String TotalContractAmtDB = NYCDatabaseUtil.getAEContractsAmount(year, 'B');
+        String TotalContractAmtApp = ContractsPage.GetBottomNavContractAmount();
+    	System.out.println(TotalContractAmtApp); 
+    	 assertEquals("Active Expense Contracts Bottom navigation Amount did not match", TotalContractAmtApp, TotalContractAmtDB);
+           
+    }
+	
+	@Test
+    public void VerifyBottomNavActiveExpenseCount() throws SQLException {
+		Integer TotalContractCountDB = NYCDatabaseUtil.getContractsAECount(year, 'B');
+		Integer TotalContractCountApp = ContractsPage.GetBottomNavContractCount();
+    	System.out.println(TotalContractCountApp); 
+    	 assertEquals("Active Expense Contracts Bottom navigation count did not match", TotalContractCountApp, TotalContractCountDB);
+	}
+	
+	@Test
+    public void VerifyActiveExpenseContractsVisualizationsTitles(){
+	    String[] sliderTitles= {"Spending by Active Expense Contracts", 
+	    						"Top Ten Agencies by Active Expense Contracts", 
+	    						"Top Ten Active Expense Contracts by Current Amount", 
+	    						"Top Ten Prime Vendors by Active Expense Contracts"};
+	    System.out.println( ContractsPage.VisualizationTitles()); 
+    	assertTrue(Arrays.equals(sliderTitles, ContractsPage.VisualizationTitles().toArray()));
+    	System.out.println( ContractsPage.VisualizationTitles()); 
+    }
+	 
+	@Test
+    public void VerifyActiveExpenseContractsSpendingWidgetTitles(){
+	   String[] widgetTitles = {"Top 5 Master Agreements",
+	    						"Top 5 Master Agreement Modifications",
+	    						"Top 5 Contracts",
+	    						"Top 5 Contract Amount Modifications",
+	    						"Top 5 Prime Vendors",
+	    						"Top 5 Award Methods",
+	    						"Top 5 Agencies",
+	    						"Contracts by Industries",
+	    						"Contracts by Size"
+	    						};	    						
+	    							    						 
+		   System.out.println( ContractsPage.WidgetTitles()); 		
+    
+    	assertTrue(Arrays.equals(widgetTitles, ContractsPage.WidgetTitles().toArray()));
+    	
+     }  
+	
 }

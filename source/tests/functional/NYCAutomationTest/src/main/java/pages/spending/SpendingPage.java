@@ -135,7 +135,7 @@ public class SpendingPage {
     		WebElement detailsAnchor = detailsContainer.findElement(By.partialLinkText("Details"));
     		((JavascriptExecutor) Driver.Instance).executeScript("arguments[0].scrollIntoView(true);", detailsAnchor);
     		detailsAnchor.click();	
-    		Driver.Instance.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+    		Driver.Instance.manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
     	}
     	
       
@@ -187,13 +187,13 @@ public class SpendingPage {
 	///Transaction count
 
 	public static Integer GetTransactionCount() {
-		WebDriverWait wait = new WebDriverWait(Driver.Instance, 30);
+		WebDriverWait wait = new WebDriverWait(Driver.Instance, 50);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("table_706_info")));
 		String count = (Driver.Instance.findElement(By.id("table_706_info"))).getText();
 		return Helper.GetTotalEntries(count, 9);
 	}
 		public static Integer GetTransactionCount1() {
-			WebDriverWait wait = new WebDriverWait(Driver.Instance, 30);
+			WebDriverWait wait = new WebDriverWait(Driver.Instance, 50);
 			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("table_706_info")));
 			String count = (Driver.Instance.findElement(By.id("table_706_info"))).getText();
 			return Helper.GetTotalEntries(count, 5);

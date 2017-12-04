@@ -135,7 +135,7 @@
             }
         }
         else $spend_cat = 'Total Spending';
-        $node->widgetConfig->chartTitle =  'Sub Vendors ' .MappingUtil::getCurrenEhtnicityName() .' '.  $spend_cat;
+        $node->widgetConfig->chartTitle =  'Sub Vendors ' .MappingUtil::getCurrenEthnicityName() .' '.  $spend_cat;
         if($year == 2010){
             foreach($node->data as $row){
                 if($row['previous_check_amount_sum'] = null);

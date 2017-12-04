@@ -64,9 +64,9 @@
                     $('#edit-budget-budget-code').html(html);
                     $('#edit-budget-budget-code').val(budget_code);
                     $('#edit-budget-budget-code').trigger("chosen:updated");
-                    if(budget_name !== $('#edit-budget-budget-name').val()){
-                        reloadBudgetCode();
-                    }
+                    //if(budget_name !== $('#edit-budget-budget-name').val()){
+                    //    reloadBudgetCode();
+                    //}
                 }
             });
         }
@@ -93,9 +93,9 @@
                     $('#edit-budget-budget-name').html(html);
                     $('#edit-budget-budget-name').val(budget_name);
                     $('#edit-budget-budget-name').trigger("chosen:updated");
-                    if(budget_code !== $('#edit-budget-budget-code').val()){
-                        reloadBudgetName();
-                    }
+                    //if(budget_code !== $('#edit-budget-budget-code').val()){
+                    //    reloadBudgetName();
+                    //}
                 }
             });
         }
@@ -130,6 +130,11 @@
             
         $('#edit-budget-department').change(function(){
             reloadExpenseCategory();
+            reloadBudgetCode();
+            reloadBudgetName();
+        });
+        
+        $('#edit-budget-expense-category').change(function(){
             reloadBudgetCode();
             reloadBudgetName();
         });
