@@ -555,7 +555,7 @@ function load_widget_data($node, $resultFormatter) {
         $ajaxRequest = _getRequestParamValue('ajax');
 
         if(isset($config->adjustParameters)){
-           @$parameters =  eval($config->adjustParameters);
+           $parameters =  eval($config->adjustParameters);
         } elseif (isset($config->autocompleteField) && ('autocomplete' == $ajaxRequest)
           && isset($parameters[$config->autocompleteField]) && $parameters[$config->autocompleteField]) {
           /**
