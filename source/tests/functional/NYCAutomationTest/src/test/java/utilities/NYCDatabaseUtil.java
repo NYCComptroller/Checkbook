@@ -296,6 +296,11 @@ public class NYCDatabaseUtil {
 
   } 
   
+ 
+  
+
+  
+  
 
   // Spending Amount
     public static String getSpendingAmount(int year, char yearTypeVal) throws SQLException {
@@ -889,14 +894,101 @@ public static int getSubVendorsTotalSpendingSubVendorsCount(int year, char yearT
    		}  		
 
 public static int getSubVendorsTotalSpendingSubContractsCount(int year,char yearTypeVal) throws SQLException {
-query =   " SELECT count( distinct ( COALESCE(master_contract_number,contract_number)  )) aCount FROM subcontract_spending_details" 
-     +    " WHERE  contract_document_code in ( 'CT1', 'CTA1', 'POD', 'POC', 'PCC1', 'DO1','MA1','MMA1')   and fiscal_year = "+ year;
+query =   " SELECT count(*) aCount from (select  distinct reference_document_number,contract_number ,Sub_contract_id FROM subcontract_spending_details" 
+     +    " WHERE  contract_document_code in ( 'CT1', 'CTA1', 'POD', 'POC', 'PCC1', 'DO1','MA1','MMA1')   and fiscal_year = "+ year +") a";
 rs = amountQueryHelper(yearTypeVal);
 int count = 0;
 while (rs.next()) {
 count = rs.getInt("aCount");
 }
 return count;
+}
+
+public static int getSubVendorsTotalSpendingSubContractsdetailsCount(int year,char yearTypeVal) throws SQLException {
+query =   " select count(*) aCount from subcontract_spending_details where "
+		+ " contract_document_code in ( 'CT1', 'CTA1', 'POD', 'POC', 'PCC1', 'DO1','MA1','MMA1')"
+		+ "fiscal_year = "+ year ;
+rs = amountQueryHelper(yearTypeVal);
+int count = 0;
+while (rs.next()) {
+count = rs.getInt("aCount");
+}
+return count;
+}
+
+// Spending Amount
+public static String getSubVendorsSpendingAmount(int year, char yearTypeVal) throws SQLException {
+    query = "SELECT SUM(check_amount) sumSpendingAmt "
+            + "FROM subcontract_spending_details"
+            + " WHERE fiscal_year = " + year;
+
+
+    rs = amountQueryHelper(yearTypeVal);
+
+    BigDecimal totalSpendingAmount = new BigDecimal(0);
+
+    while (rs.next()) {
+        totalSpendingAmount = rs.getBigDecimal("sumSpendingAmt");
+    }
+    return formatNumber(totalSpendingAmount);
+    // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
+}
+
+public static String getSubVendorsTotalSpendingDetailsAmount(int year, char yearTypeVal) throws SQLException {
+    query = "SELECT SUM(check_amount) sumSpendingAmt "
+            + "FROM subcontract_spending_details"
+            + " WHERE fiscal_year = " + year;
+
+
+    rs = amountQueryHelper(yearTypeVal);
+
+    BigDecimal totalSpendingAmount = new BigDecimal(0);
+
+    while (rs.next()) {
+        totalSpendingAmount = rs.getBigDecimal("sumSpendingAmt");
+    }
+    return formatNumber2(totalSpendingAmount);
+    // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
+}
+
+// Sub Vendors Spending Amount
+public static String getSubVendorsContractsSpendingDetailsAmount(int year, char yearTypeVal) throws SQLException {
+    query = "SELECT SUM(check_amount) sumSpendingAmt "
+            + "FROM subcontract_spending_details"
+            + " WHERE fiscal_year = " + year;
+
+
+    rs = amountQueryHelper(yearTypeVal);
+
+    BigDecimal totalSpendingAmount = new BigDecimal(0);
+
+    while (rs.next()) {
+        totalSpendingAmount = rs.getBigDecimal("sumSpendingAmt");
+    }
+    return formatNumber2(totalSpendingAmount);
+    // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
+}
+//Sub vendors Spending details
+public static int getSubVendorsTotalSpendingDetailsCount(int year,char yearTypeVal) throws SQLException {
+    query = " select count(*) aCount from subcontract_spending_Details where fiscal_year = " + year;
+   		 
+ rs = amountQueryHelper(yearTypeVal);
+  int count = 0;
+  while (rs.next()) {
+      count = rs.getInt("aCount");
+  }
+  return count;   
+}    
+
+public static int getSubVendorsTotalSpendingSubContractsDetailsCount(int year,char yearTypeVal) throws SQLException {
+   query = " select count(*) aCount from subcontract_spending_Details where contract_document_code in ( 'CT1', 'CTA1', 'POD', 'POC', 'PCC1', 'DO1','MA1','MMA1') and fiscal_year = " + year;
+  		 
+rs = amountQueryHelper(yearTypeVal);
+ int count = 0;
+ while (rs.next()) {
+     count = rs.getInt("aCount");
+ }
+ return count;  
 }
 
 

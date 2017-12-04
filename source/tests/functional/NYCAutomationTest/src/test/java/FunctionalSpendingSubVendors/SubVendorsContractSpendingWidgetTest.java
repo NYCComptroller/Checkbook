@@ -2,83 +2,79 @@ package FunctionalSpendingSubVendors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
-import helpers.Helper;
-
-import java.sql.SQLException;
 import java.util.Arrays;
-
+import helpers.Helper;
+import java.sql.SQLException;
 import org.junit.Before;
 import org.junit.Test;
 
-import navigation.TopNavigation.Spending.TotalSpending;
-import pages.spending.CapitalSpendingPage;
-import pages.spending.SpendingPage;
-import pages.spending.TotalSpendingPage;
-import pages.spending.SpendingPage.WidgetOption;
+import navigation.SubVendorCategory.SubVendorCategoryOption;
 import pages.home.HomePage;
+import navigation.TopNavigation.Spending.TotalSpending;
+import pages.subvendors.SubVendorsPage;
+import pages.subvendors.SubVendorsPage.WidgetOption;
 import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
 import utilities.TestStatusReport;
 
-//public class CapitalSpendingWidgetTest extends NYCBaseTest {
-	public class CapitalSpendingWidgetTest extends TestStatusReport{
+public class SubVendorsContractSpendingWidgetTest extends NYCBaseTest {
+	//public class SubVendorsContractSpendingWidgetTest extends TestStatusReport{
 		int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
-	public void GoToPage(){
-		CapitalSpendingPage.GoTo();
-		if (!CapitalSpendingPage.isAt()){
-			CapitalSpendingPage.GoTo();
-		}
-		if(!(Helper.getCurrentSelectedYear()).equalsIgnoreCase(NYCBaseTest.prop.getProperty("CurrentYear")))
-			HomePage.SelectYear(NYCBaseTest.prop.getProperty("CurrentYear"));
-		HomePage.ShowWidgetDetails();
-	}
+	
+    public void GoToPage(){
+	   if (!SubVendorsPage.IsAt())
+			SubVendorsPage.GoTo("Spending", SubVendorCategoryOption.SubVendorsHome);
+	 
+		   if(!(Helper.getCurrentSelectedYear()).equalsIgnoreCase(NYCBaseTest.prop.getProperty("CurrentYear")))
+		   HomePage.SelectYear(NYCBaseTest.prop.getProperty("CurrentYear"));
+    }
+
 
 	/* ***************** Test Widget Counts ****************** */
 	@Test
 	public void VerifyNumOfchecksWidget() throws SQLException {
-		Integer totalCheckswidgetCountDB = NYCDatabaseUtil.getCapitalSpendingChecksCount(year,'B');
-		Integer totalChecksWidgetCountApp = SpendingPage.GetTop5WidgetTotalCount(WidgetOption.Top5Checks);
-		assertEquals("Capital Spending  Checks  widget count  did not match with the DB",totalChecksWidgetCountApp, totalCheckswidgetCountDB);
+		Integer totalCheckswidgetCountDB = NYCDatabaseUtil.getContractSpendingChecksCount(year,'B');
+		Integer totalChecksWidgetCountApp = SubVendorsPage.GetTop5WidgetTotalCount(WidgetOption.Top5Checks);
+		assertEquals("Contract Spending  Checks  widget count  did not match with the DB",totalChecksWidgetCountApp, totalCheckswidgetCountDB);
 	}
 	@Test
 	public void VerifyNumOfAgenciesWidget() throws SQLException {
-		Integer totalAgencieswidgetCountDB = NYCDatabaseUtil.getCapitalSpendingAgenciesCount(year,'B');
-		Integer totalAgenciesWidgetCountApp = SpendingPage.GetTop5WidgetTotalCount(WidgetOption.Top5Agencies);
-		assertEquals("Capital Spending  agencies widget count  did not match with the DB",totalAgenciesWidgetCountApp, totalAgencieswidgetCountDB);
+		Integer totalAgencieswidgetCountDB = NYCDatabaseUtil.getContractSpendingAgenciesCount(year,'B');
+		Integer totalAgenciesWidgetCountApp = SubVendorsPage.GetTop5WidgetTotalCount(WidgetOption.Top5Agencies);
+		assertEquals("Contract Spending  agencies widget count  did not match with the DB",totalAgenciesWidgetCountApp, totalAgencieswidgetCountDB);
 	}
 	@Test
 	public void VerifyNumOfExpenseCategoriesWidget() throws SQLException{
-		Integer totalExpenseCategorieswidgetCountDB = NYCDatabaseUtil.getCapitalSpendingExpCategoriesCount(year,'B');
-		Integer totalExpenseCategoriesWidgetCountApp = SpendingPage.GetTop5WidgetTotalCount(WidgetOption.Top5ExpenseCategories);
-		assertEquals("Capital Spending  Exp categories  widget count  did not match with the DB",totalExpenseCategoriesWidgetCountApp, totalExpenseCategorieswidgetCountDB);
+		Integer totalExpenseCategorieswidgetCountDB = NYCDatabaseUtil.getContractSpendingExpCategoriesCount(year,'B');
+		Integer totalExpenseCategoriesWidgetCountApp = SubVendorsPage.GetTop5WidgetTotalCount(WidgetOption.Top5SubVendors);
+		assertEquals("Contract Spending  Exp categories  widget count  did not match with the DB",totalExpenseCategoriesWidgetCountApp, totalExpenseCategorieswidgetCountDB);
 	}
 	@Test
 	public void VerifyNumOfPrimeVendorsWidget() throws SQLException{
-		Integer totalPrimeVendorswidgetCountDB = NYCDatabaseUtil.getCapitalSpendingPrimeVendorsCount(year,'B');
-		Integer totalPrimeVendorsWidgetCountApp = SpendingPage.GetTop5WidgetTotalCount(WidgetOption.Top5PrimeVendors);
-		assertEquals("Capital Spending  Prime Vendor  widget count  did not match with the DB",totalPrimeVendorsWidgetCountApp, totalPrimeVendorswidgetCountDB);
+		Integer totalPrimeVendorswidgetCountDB = NYCDatabaseUtil.getContractSpendingPrimeVendorsCount(year,'B');
+		Integer totalPrimeVendorsWidgetCountApp = SubVendorsPage.GetTop5WidgetTotalCount(WidgetOption.Top5PrimeVendors);
+		assertEquals("Contract Spending  Prime Vendor  widget count  did not match with the DB",totalPrimeVendorsWidgetCountApp, totalPrimeVendorswidgetCountDB);
 	}
 	@Test
 	public void VerifyNumOfContractsWidget() throws SQLException{
-		Integer totalContractswidgetCountDB = NYCDatabaseUtil.getCapitalSpendingContractsCount(year,'B');
-		Integer totalContractsWidgetCountApp = SpendingPage.GetTop5WidgetTotalCount(WidgetOption.Top5Contracts);
-		assertEquals("Capital Spending  Contracts  widget count  did not match with the DB",totalContractsWidgetCountApp, totalContractswidgetCountDB);
+		Integer totalContractswidgetCountDB = NYCDatabaseUtil.getContractSpendingContractsCount(year,'B');
+		Integer totalContractsWidgetCountApp = SubVendorsPage.GetTop5WidgetTotalCount(WidgetOption.Top5SubContracts);
+		assertEquals("Contract Spending  Contracts  widget count  did not match with the DB",totalContractsWidgetCountApp, totalContractswidgetCountDB);
 	}
 	
 
 	@Test
     public void VerifyTopNavSpendingAmount() throws SQLException {
         String TotalSpendingAmtDB = NYCDatabaseUtil.getSpendingAmount(year, 'B');
-        String spendingAmt = SpendingPage.GetSpendingAmount();
+        String spendingAmt = SubVendorsPage.GetSubVendorSpendingAmount();
         assertEquals("Spending Amount did not match", spendingAmt, TotalSpendingAmtDB);
     }
 	
 	@Test
-    public void VerifyBottomNavCapitalSpendingAmount() throws SQLException {
-        String TotalSpendingAmtDB = NYCDatabaseUtil.getCapitalSpendingAmount(year, 'B');
-        String spendingAmt = SpendingPage.GetBottomNavSpendingAmount();
+    public void VerifyBottomNavContractSpendingAmount() throws SQLException {
+        String TotalSpendingAmtDB = NYCDatabaseUtil.getContractSpendingAmount(year, 'B');
+        String spendingAmt = SubVendorsPage.GetBottomNavSpendingAmount();
     	System.out.println(spendingAmt); 
         assertEquals("Spending Amount did not match", spendingAmt, TotalSpendingAmtDB);
         
@@ -86,26 +82,28 @@ import utilities.TestStatusReport;
     }
 	
 	@Test
-    public void VerifyCapitalSpendingVisualizationsTitles(){
-	    String[] sliderTitles= {"Capital Spending", 
-	    						"Top Ten Agencies by Disbursement Amount", 
-	    						"Top Ten Contracts by Disbursement Amount", 
-	    						"Top Ten Prime Vendors by Disbursement Amount"};  
-    	assertTrue(Arrays.equals(sliderTitles, SpendingPage.VisualizationTitles().toArray()));
-    	System.out.println( SpendingPage.VisualizationTitles()); 
+    public void VerifyContractSpendingVisualizationsTitles(){
+	    String[] sliderTitles= {"Sub Vendors Contract Spending", 
+	    		"Top Ten Agencies by Sub Vendors Disbursement Amount", 
+				"Top Ten Contracts by Sub Vendors Disbursement Amount", 
+				"Top Ten Prime Vendors by Sub Vendors Disbursement Amount",
+				"Top Ten Sub Vendors by Disbursement Amount"};   
+    	assertTrue(Arrays.equals(sliderTitles, SubVendorsPage.VisualizationTitles().toArray()));
+    	System.out.println( SubVendorsPage.VisualizationTitles()); 
     }
 	 
 	@Test
-    public void VerifyCapitalSpendingWidgetTitles(){
+    public void VerifyContractSpendingWidgetTitles(){
 	   String[] widgetTitles = {"Top 5 Checks",
-	    						"Top 5 Agencies",
-	    						"Top 5 Expense Categories",
-	    						"Top 5 Prime Vendors",
-	    						"Top 5 Contracts"};	    						
+			   "Top 5 Agencies",
+				"Top 5 Sub Vendors",
+				"Top 5 Prime Vendors",
+				"Top 5 Sub Contracts"}; 
+					    					   						
 	    							    						 
-		   System.out.println( SpendingPage.WidgetTitles()); 		
+		   System.out.println( SubVendorsPage.WidgetTitles()); 		
     
-    	assertTrue(Arrays.equals(widgetTitles, SpendingPage.WidgetTitles().toArray()));
+    	assertTrue(Arrays.equals(widgetTitles, SubVendorsPage.WidgetTitles().toArray()));
     	
      }  
 	

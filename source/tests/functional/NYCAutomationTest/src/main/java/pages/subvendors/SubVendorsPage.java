@@ -3,6 +3,7 @@ package pages.subvendors;
 import pages.home.HomePage;
 import helpers.Driver;
 import helpers.Helper;
+
 import navigation.SubVendorCategory;
 import navigation.TopNavigation;
 import navigation.SubVendorCategory.SubVendorCategoryOption;
@@ -32,7 +33,7 @@ public class SubVendorsPage {
            // WebElement mwbeCont = Driver.Instance.findElement(By.cssSelector(".top-navigation-right .a[class='mwbe subvendors']"));
         	// WebElement mwbeCont = Driver.Instance.findElement(By.cssSelector(".top-navigation-right .input[class='mwbe subvendors']"));
           //  WebElement mwbeCont = Driver.Instance.findElement(By.cssSelector(".top-navigation-right > table > tbody > tr > td.mwbe.subvendors"));
-        	    WebElement mwbeCont = Driver.Instance.findElement(By.cssSelector(".top-navigation-right .mwbe"));
+        	    WebElement mwbeCont = Driver.Instance.findElement(By.cssSelector(".top-navigation-right .mwbe.subvendors"));
             Boolean mwbeSelected = (mwbeCont.getAttribute("class")).contains("active");	   
             return (spendingSelected || contractsSelected) && mwbeSelected;
     	}
@@ -41,17 +42,21 @@ public class SubVendorsPage {
     		if(domain.equals("Spending"))
     			TopNavigation.Spending.Select();
     		SubVendorCategory.select(category);		
-    	}
+    	} 
+     	public static void GoToBottomNaV(String domain, SubVendorCategoryOption category) {
+    		if(domain.equals("Spending"))
+    			navigation.TopNavigation.Spending.ContractSpending.Select();
+    		SubVendorCategory.select(category);	
+    	  			
+    	}  
+
+
 
     	public static String GetSubVendorSpendingAmount() {
     		WebElement mwbeAmt = Driver.Instance.findElement(By.cssSelector(".top-navigation-right .mwbe.subvendors .top-navigation-amount"));
     		return mwbeAmt.getText().substring((mwbeAmt.getText().indexOf("$")));
     	}
-    	public static String GetSpendingSubVendorAmount() {
-            WebElement spendingAmt = Driver.Instance.findElement(By.cssSelector(".top-navigation-right .mwbe.subvendors .top-navigation-amount"));
-            return spendingAmt.getText().substring((spendingAmt.getText().indexOf("$")));
-           }
-    		
+        		
 		 public static String GetBottomNavSpendingAmount() {
 	            WebElement spendingAmt = Driver.Instance.findElement(By.cssSelector(".nyc_totals_links .active > .positioning > a .dollars"));
 	            return spendingAmt.getText().substring((spendingAmt.getText().indexOf("$")));
@@ -74,6 +79,10 @@ public class SubVendorsPage {
     			return HomePage.GetWidgetTotalNumber("Top 5 Prime Vendors");
     		case TopPrimeVendors:
     			return HomePage.GetWidgetTotalNumber("Top Prime Vendors");
+    		case Top5SubVendors:
+    			return HomePage.GetWidgetTotalNumber("Top 5 Sub Vendors");
+    		case TopSubVendors:
+    			return HomePage.GetWidgetTotalNumber("Top Sub Vendors");
     	    case Top5Agencies:
     			return HomePage.GetWidgetTotalNumber("Top 5 Agencies");
     		case TopAgencies:
@@ -96,11 +105,20 @@ public class SubVendorsPage {
     				break;
     			case Top5SubContracts:
     				if(!HomePage.IsAtTop5DetailsPage("Top 5 Sub Contracts"))
-    					detailsContainer = HomePage.GetWidgetDetailsContainer("Top 5 Contracts");
+    					detailsContainer = HomePage.GetWidgetDetailsContainer("Top 5 Sub Contracts");
     				break;
     			case TopSubContracts:
     				if(!HomePage.IsAtTop5DetailsPage("Top Sub Contracts"))
-    					detailsContainer = HomePage.GetWidgetDetailsContainer("Top Contracts");
+    					detailsContainer = HomePage.GetWidgetDetailsContainer("Top Sub Contracts");
+    				break;
+    				
+    			case Top5SubVendors:
+    				if(!HomePage.IsAtTop5DetailsPage("Top 5 Sub Vendors"))
+    					detailsContainer = HomePage.GetWidgetDetailsContainer("Top 5 Sub Vendors");
+    				break;
+    			case TopSubVendors:
+    				if(!HomePage.IsAtTop5DetailsPage("Top Sub Vendors"))
+    					detailsContainer = HomePage.GetWidgetDetailsContainer("Top Sub Vendors");
     				break;
     		
     			case Top5PrimeVendors:
@@ -179,14 +197,14 @@ public class SubVendorsPage {
 
 	public static Integer GetTransactionCount() {
 		WebDriverWait wait = new WebDriverWait(Driver.Instance, 30);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("table_706_info")));
-		String count = (Driver.Instance.findElement(By.id("table_706_info"))).getText();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("table_723_info")));
+		String count = (Driver.Instance.findElement(By.id("table_723_info"))).getText();
 		return Helper.GetTotalEntries(count, 9);
 	}
 		public static Integer GetTransactionCount1() {
 			WebDriverWait wait = new WebDriverWait(Driver.Instance, 30);
-			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("table_706_info")));
-			String count = (Driver.Instance.findElement(By.id("table_706_info"))).getText();
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("table_723_info")));
+			String count = (Driver.Instance.findElement(By.id("table_723_info"))).getText();
 			return Helper.GetTotalEntries(count, 5);
 	}
 
