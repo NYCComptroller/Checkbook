@@ -837,6 +837,69 @@ public static int getTotalSpendingContractsDetailsCount(int year,char yearTypeVa
   return count;  
 }  
 
+//Sub Vendors Spending
+
+
+// Total Spending widget counts
+
+public static int getSubVendorsTotalSpendingAgenciesCount(int year,char yearTypeVal) throws SQLException {
+    query = "SELECT COUNT(distinct agency_id) aCount from subcontract_spending_details where fiscal_year =" + year ;
+  
+   rs = amountQueryHelper(yearTypeVal);
+   int count = 0;
+   while (rs.next()) {
+       count = rs.getInt("aCount");
+   }
+   return count;   
+   }        
+   
+public static int getSubVendorsTotalSpendingChecksCount(int year,char yearTypeVal) throws SQLException {
+    query = "SELECT COUNT(*) aCount from subcontract_spending_details where fiscal_year =" + year ;
+   // query2 = "SELECT COUNT(*) aCount from disbursement_line_item_details where fiscal_year =" + year ;  
+
+   rs = amountQueryHelper(yearTypeVal);
+   int count = 0;
+   while (rs.next()) {
+       count = rs.getInt("aCount");
+   }        
+   return count;           
+}        
+
+public static int getSubVendorsTotalSpendingPrimeVendorsCount(int year,char yearTypeVal) throws SQLException {
+    query = "SELECT COUNT(distinct prime_vendor_id) aCount from subcontract_spending_details where fiscal_year =" + year ;
+
+   rs = amountQueryHelper(yearTypeVal);
+   int count = 0;
+   while (rs.next()) {
+       count = rs.getInt("aCount");
+   }
+ return count;           
+}        
+
+public static int getSubVendorsTotalSpendingSubVendorsCount(int year, char yearTypeVal)  throws SQLException {
+	
+       query = "SELECT COUNT(distinct vendor_id) aCount from subcontract_spending_details where fiscal_year =" + year ;
+       // query = "SELECT COUNT(distinct expenditure_object_code) aCount from disbursement_line_item_details where fiscal_year =" + year ;
+       rs = amountQueryHelper(yearTypeVal);
+       int count = 0;
+       while (rs.next()) {
+           count = rs.getInt("aCount");
+       }
+      return count;	           
+   		}  		
+
+public static int getSubVendorsTotalSpendingSubContractsCount(int year,char yearTypeVal) throws SQLException {
+query =   " SELECT count( distinct ( COALESCE(master_contract_number,contract_number)  )) aCount FROM subcontract_spending_details" 
+     +    " WHERE  contract_document_code in ( 'CT1', 'CTA1', 'POD', 'POC', 'PCC1', 'DO1','MA1','MMA1')   and fiscal_year = "+ year;
+rs = amountQueryHelper(yearTypeVal);
+int count = 0;
+while (rs.next()) {
+count = rs.getInt("aCount");
+}
+return count;
+}
+
+
 //Revenue Widgets
 
 public static String getRevenueAmount(int year, char yearTypeVal) throws SQLException {
@@ -1150,37 +1213,283 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
                 return count;
     }
             
-          //contracts
-            public static int getAEAmount(int year, char yearTypeVal) throws SQLException {
+         
+            
+              
+   //top navigation amounts contracts
+            
+            public static String getContractsTopAmount(int year, char yearTypeVal) throws SQLException {
+                query = "SELECT SUM(maximum_contract_amount) aeSum " +
+                        "FROM agreement_snapshot WHERE document_code_id IN (1,2,5,7)" +
+                        "AND (registered_year =" + year + ")"+
+                        "AND(" + year + " BETWEEN starting_year AND ending_year)";
+                rs = amountQueryHelper(yearTypeVal);
+
+                BigDecimal totalContractAmount = new BigDecimal(0);
+
+                while (rs.next()) {
+                    totalContractAmount = rs.getBigDecimal("AESum");
+                }
+                return formatNumber(totalContractAmount);
+                // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
+            }   
+            
+            // Active expense contracts details amounts
+            public static String getAEContractsMasterContractsDetailsAmount(int year, char yearTypeVal) throws SQLException {
+                query = "SELECT SUM(maximum_contract_amount) aeSum " +
+                        "FROM agreement_snapshot WHERE document_code_id IN (5,6)" +
+                        "AND(" + year + " BETWEEN effective_begin_year AND effective_end_year) " +
+                        "AND(" + year + " BETWEEN starting_year AND ending_year)";
+                rs = amountQueryHelper(yearTypeVal);
+
+                BigDecimal totalContractAmount = new BigDecimal(0);
+
+                while (rs.next()) {
+                    totalContractAmount = rs.getBigDecimal("AESum");
+                }
+                return formatNumber2(totalContractAmount);
+                // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
+            }  
+            
+            public static String getAEContractsMasterModificationDetailsAmount(int year, char yearTypeVal) throws SQLException {
+                query = "SELECT SUM(maximum_contract_amount) aeSum " +
+                        "FROM agreement_snapshot WHERE document_code_id IN (5,6)" +
+                        "AND(" + year + " BETWEEN effective_begin_year AND effective_end_year) " +
+                        "AND(" + year + " BETWEEN starting_year AND ending_year)" +
+                        "and maximum_contract_amount <> original_contract_amount";
+                rs = amountQueryHelper(yearTypeVal);
+
+                BigDecimal totalContractAmount = new BigDecimal(0);
+
+                while (rs.next()) {
+                    totalContractAmount = rs.getBigDecimal("AESum");
+                }
+                return formatNumber2(totalContractAmount);
+                // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
+            }  
+            
+            public static String getAEContractsDetailsAmount(int year, char yearTypeVal) throws SQLException {
+                query = "SELECT SUM(maximum_contract_amount) aeSum " +
+                        "FROM agreement_snapshot WHERE document_code_id IN (1,2)" +
+                        "AND(" + year + " BETWEEN effective_begin_year AND effective_end_year) " +
+                        "AND(" + year + " BETWEEN starting_year AND ending_year)";
+                rs = amountQueryHelper(yearTypeVal);
+
+                BigDecimal totalContractAmount = new BigDecimal(0);
+
+                while (rs.next()) {
+                    totalContractAmount = rs.getBigDecimal("AESum");
+                }
+                return formatNumber2(totalContractAmount);
+                // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
+            }
+            public static String getAEContractsModificationDetailsAmount(int year, char yearTypeVal) throws SQLException {
+                query = "SELECT SUM(maximum_contract_amount) aeSum " +
+                        "FROM agreement_snapshot WHERE document_code_id IN (1,2)" +
+                        "AND(" + year + " BETWEEN effective_begin_year AND effective_end_year) " +
+                        "AND(" + year + " BETWEEN starting_year AND ending_year)" +
+                         "and maximum_contract_amount <> original_contract_amount";
+                rs = amountQueryHelper(yearTypeVal);
+
+                BigDecimal totalContractAmount = new BigDecimal(0);
+
+                while (rs.next()) {
+                    totalContractAmount = rs.getBigDecimal("AESum");
+                }
+                return formatNumber2(totalContractAmount);
+                // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
+            }
+            
+            public static String getAEContractsAllDetailsAmount(int year, char yearTypeVal) throws SQLException {
+                query = "SELECT SUM(maximum_contract_amount) aeSum " +
+                        "FROM agreement_snapshot WHERE document_code_id IN (1,2,5)" +
+                        "AND(" + year + " BETWEEN effective_begin_year AND effective_end_year) " +
+                        "AND(" + year + " BETWEEN starting_year AND ending_year)";
+                rs = amountQueryHelper(yearTypeVal);
+
+                BigDecimal totalContractAmount = new BigDecimal(0);
+
+                while (rs.next()) {
+                    totalContractAmount = rs.getBigDecimal("AESum");
+                }
+                return formatNumber2(totalContractAmount);
+                // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
+            }  
+            
+            //Registered Expense Contracts Details amounts
+            
+            // Active expense contracts details amounts
+            public static String getREContractsMasterContractsDetailsAmount(int year, char yearTypeVal) throws SQLException {
+                query = "SELECT SUM(maximum_contract_amount) aeSum " +
+                        "FROM agreement_snapshot WHERE document_code_id IN (5,6)" +
+                        "AND (registered_year =" + year + ")"+
+                        "AND(" + year + " BETWEEN starting_year AND ending_year)";
+                rs = amountQueryHelper(yearTypeVal);
+
+                BigDecimal totalContractAmount = new BigDecimal(0);
+
+                while (rs.next()) {
+                    totalContractAmount = rs.getBigDecimal("AESum");
+                }
+                return formatNumber2(totalContractAmount);
+                // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
+            }  
+            
+            public static String getREContractsMasterModificationDetailsAmount(int year, char yearTypeVal) throws SQLException {
+                query = "SELECT SUM(maximum_contract_amount) aeSum " +
+                        "FROM agreement_snapshot WHERE document_code_id IN (5,6)" +
+                        "AND (registered_year =" + year + ")"+
+                        "AND(" + year + " BETWEEN starting_year AND ending_year)" +
+                        "and maximum_contract_amount <> original_contract_amount";
+                rs = amountQueryHelper(yearTypeVal);
+
+                BigDecimal totalContractAmount = new BigDecimal(0);
+
+                while (rs.next()) {
+                    totalContractAmount = rs.getBigDecimal("AESum");
+                }
+                return formatNumber2(totalContractAmount);
+                // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
+            }  
+            
+            public static String getREContractsDetailsAmount(int year, char yearTypeVal) throws SQLException {
+                query = "SELECT SUM(maximum_contract_amount) aeSum " +
+                        "FROM agreement_snapshot WHERE document_code_id IN (1,2)" +
+                        "AND (registered_year =" + year + ")"+
+                        "AND(" + year + " BETWEEN starting_year AND ending_year)";
+                rs = amountQueryHelper(yearTypeVal);
+
+                BigDecimal totalContractAmount = new BigDecimal(0);
+
+                while (rs.next()) {
+                    totalContractAmount = rs.getBigDecimal("AESum");
+                }
+                return formatNumber2(totalContractAmount);
+                // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
+            }
+            public static String getREContractsModificationDetailsAmount(int year, char yearTypeVal) throws SQLException {
+                query = "SELECT SUM(maximum_contract_amount) AESum " +
+                        "FROM agreement_snapshot WHERE document_code_id IN (1,2)" +
+                        "AND (registered_year =" + year + ")"+
+                        "AND(" + year + " BETWEEN starting_year AND ending_year)" +
+                         "and maximum_contract_amount <> original_contract_amount";
+                rs = amountQueryHelper(yearTypeVal);
+
+                BigDecimal totalContractAmount = new BigDecimal(0);
+
+                while (rs.next()) {
+                    totalContractAmount = rs.getBigDecimal("AESum");
+                }
+                return formatNumber2(totalContractAmount);
+                // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
+            }
+            
+            public static String getREContractsAllDetailsAmount(int year, char yearTypeVal) throws SQLException {
+                query = "SELECT SUM(maximum_contract_amount) aeSum " +
+                        "FROM agreement_snapshot WHERE document_code_id IN (1,2,5)" +
+                        "AND (registered_year =" + year + ")"+
+                        "AND(" + year + " BETWEEN starting_year AND ending_year)";
+                rs = amountQueryHelper(yearTypeVal);
+
+                BigDecimal totalContractAmount = new BigDecimal(0);
+
+                while (rs.next()) {
+                    totalContractAmount = rs.getBigDecimal("AESum");
+                }
+                return formatNumber2(totalContractAmount);
+                // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
+            }  
+            
+            
+            
+            // Active REvenue contracts details amounts  
+            public static String getARContractsDetailsAmount(int year, char yearTypeVal) throws SQLException {
+                query = "SELECT SUM(maximum_contract_amount) ARSum " +
+                        "FROM agreement_snapshot WHERE document_code_id IN (7)" +
+                        "AND(" + year + " BETWEEN effective_begin_year AND effective_end_year) " +
+                        "AND(" + year + " BETWEEN starting_year AND ending_year)";
+                rs = amountQueryHelper(yearTypeVal);
+
+                BigDecimal totalContractAmount = new BigDecimal(0);
+
+                while (rs.next()) {
+                    totalContractAmount = rs.getBigDecimal("ARSum");
+                }
+                return formatNumber2(totalContractAmount);
+                // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
+            } 
+            
+            
+            // Registered Revenue  contracts details amounts  
+            public static String getRRContractsDetailsAmount(int year, char yearTypeVal) throws SQLException {
+                query = "SELECT SUM(maximum_contract_amount) ARSum " +
+                        "FROM agreement_snapshot WHERE document_code_id IN (7)" +
+                        "AND (registered_year =" + year + ")"+
+                        "AND(" + year + " BETWEEN starting_year AND ending_year)";
+                rs = amountQueryHelper(yearTypeVal);
+
+                BigDecimal totalContractAmount = new BigDecimal(0);
+
+                while (rs.next()) {
+                    totalContractAmount = rs.getBigDecimal("ARSum");
+                }
+                return formatNumber2(totalContractAmount);
+                // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
+            } 
+            
+            public static String getRRContractsModificationDetailsAmount(int year, char yearTypeVal) throws SQLException {
+                       
+                query = "SELECT SUM(maximum_contract_amount) ARSum " +
+                        "FROM agreement_snapshot WHERE document_code_id IN (7)" +
+                        "AND (registered_year =" + year + ")"+
+                        "AND(" + year + " BETWEEN starting_year AND ending_year)" +
+                         "and maximum_contract_amount <> original_contract_amount";
+                rs = amountQueryHelper(yearTypeVal);
+
+                BigDecimal totalContractAmount = new BigDecimal(0);
+
+                while (rs.next()) {
+                    totalContractAmount = rs.getBigDecimal("ARSum");
+                }
+               return formatNumber2(totalContractAmount);
+               // return totalContractAmount.toString();
+               
+            }  
+            
+            
+    //Active Expense contracts widget counts
+            
+            public static String getAEContractsAmount(int year, char yearTypeVal) throws SQLException {
                 query = "SELECT SUM(maximum_contract_amount) AESum " +
                         "FROM agreement_snapshot WHERE document_code_id IN (1, 2, 5)" +
                         "AND(" + year + " BETWEEN effective_begin_year AND effective_end_year) " +
                         "AND(" + year + " BETWEEN starting_year AND ending_year)";
 
-                query2 = "SELECT SUM(maximum_contract_amount) AESum " +
-                        "FROM agreement_snapshot_cy WHERE document_code_id IN (1, 2, 5)" +
-                        "AND(" + year + " BETWEEN effective_begin_year AND effective_end_year) " +
-                        "AND(" + year + " BETWEEN starting_year AND ending_year)";
-
                 rs = amountQueryHelper(yearTypeVal);
-                return rs.getInt("AESum");
-            }
 
-            public static int getAECount(int year, char yearTypeVal) throws SQLException {
-                query = "SELECT COUNT(*) AECount " +
+                BigDecimal totalContractAmount = new BigDecimal(0);
+
+                while (rs.next()) {
+                    totalContractAmount = rs.getBigDecimal("AESum");
+                }
+                return formatNumber(totalContractAmount);
+                // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
+            } 
+            
+
+            public static int getContractsAECount(int year, char yearTypeVal) throws SQLException {
+                query = "SELECT COUNT(*) aCount " +
                         "FROM agreement_snapshot WHERE document_code_id IN (1, 2, 5)" +
                         "AND(" + year + " BETWEEN effective_begin_year AND effective_end_year) " +
                         "AND(" + year + " BETWEEN starting_year AND ending_year)";
-
-                query2 = "SELECT SUM(maximum_contract_amount) AESum " +
-                        "FROM agreement_snapshot_cy WHERE document_code_id IN (1, 2, 5)" +
-                        "AND(" + year + " BETWEEN effective_begin_year AND effective_end_year) " +
-                        "AND(" + year + " BETWEEN starting_year AND ending_year)";
-
                 rs = amountQueryHelper(yearTypeVal);
-                return rs.getInt("AECount");
-            }
-    //Active Expense contracts widget counts
+                int count = 0;
+                while (rs.next()) {
+                    count = rs.getInt("aCount");
+                }
+                return count;
+                }    
+            
             
             
                
@@ -1299,6 +1608,37 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
             
           //Registered Expense contracts widget counts
             
+            public static String getREContractsAmount(int year, char yearTypeVal) throws SQLException {
+                query = "SELECT SUM(maximum_contract_amount) AESum " +
+                        "FROM agreement_snapshot WHERE document_code_id IN (1, 2, 5)" +
+                        "and (registered_year = " + year + ")" +
+                        "AND(" + year + " BETWEEN starting_year AND ending_year)";
+
+                rs = amountQueryHelper(yearTypeVal);
+
+                BigDecimal totalContractAmount = new BigDecimal(0);
+
+                while (rs.next()) {
+                    totalContractAmount = rs.getBigDecimal("AESum");
+                }
+                return formatNumber(totalContractAmount);
+                // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
+            } 
+            
+
+            public static int getContractsRECount(int year, char yearTypeVal) throws SQLException {
+                query = "SELECT COUNT(*) aCount " +
+                        "FROM agreement_snapshot WHERE document_code_id IN (1, 2, 5)" +
+                      "and (registered_year = " + year + ")" +
+                        "AND(" + year + " BETWEEN starting_year AND ending_year)";
+                rs = amountQueryHelper(yearTypeVal);
+                int count = 0;
+                while (rs.next()) {
+                    count = rs.getInt("aCount");
+                }
+                return count;
+                }  
+            
             
             
             public static int getREContractsAgenciesCount(int year,char yearTypeVal) throws SQLException {
@@ -1416,6 +1756,37 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
             
  //Registered Revenue contracts widget counts
             
+            public static String getRRContractsAmount(int year, char yearTypeVal) throws SQLException {
+                query = "SELECT SUM(maximum_contract_amount) AESum " +
+                        "FROM agreement_snapshot WHERE document_code_id IN (7)" +
+                        "and (registered_year = " + year + ")" +
+                        "AND(" + year + " BETWEEN starting_year AND ending_year)";
+
+                rs = amountQueryHelper(yearTypeVal);
+
+                BigDecimal totalContractAmount = new BigDecimal(0);
+
+                while (rs.next()) {
+                    totalContractAmount = rs.getBigDecimal("AESum");
+                }
+                return formatNumber(totalContractAmount);
+                // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
+            } 
+            
+
+            public static int getContractsRRCount(int year, char yearTypeVal) throws SQLException {
+                query = "SELECT COUNT(*) aCount " +
+                        "FROM agreement_snapshot WHERE document_code_id IN (7)" +
+                      "and (registered_year = " + year + ")" +
+                        "AND(" + year + " BETWEEN starting_year AND ending_year)";
+                rs = amountQueryHelper(yearTypeVal);
+                int count = 0;
+                while (rs.next()) {
+                    count = rs.getInt("aCount");
+                }
+                return count;
+                }  
+            
             
             
             public static int getRRContractsAgenciesCount(int year,char yearTypeVal) throws SQLException {
@@ -1508,6 +1879,38 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
             }
             
             //Active Revenue contracts widget counts
+
+            
+            public static String getARContractsAmount(int year, char yearTypeVal) throws SQLException {
+                query = "SELECT SUM(maximum_contract_amount) AESum " +
+                        "FROM agreement_snapshot WHERE document_code_id IN (7)" +
+                        "AND(" + year + " BETWEEN effective_begin_year AND effective_end_year) " +
+                        "AND(" + year + " BETWEEN starting_year AND ending_year)";
+
+                rs = amountQueryHelper(yearTypeVal);
+
+                BigDecimal totalContractAmount = new BigDecimal(0);
+
+                while (rs.next()) {
+                    totalContractAmount = rs.getBigDecimal("AESum");
+                }
+                return formatNumber(totalContractAmount);
+                // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
+            } 
+            
+
+            public static int getContractsARCount(int year, char yearTypeVal) throws SQLException {
+                query = "SELECT  count(distinct contract_number ) aCount " +
+                        "FROM agreement_snapshot WHERE document_code_id IN (7)" +
+                        "AND(" + year + " BETWEEN effective_begin_year AND effective_end_year) " +
+                        "AND(" + year + " BETWEEN starting_year AND ending_year)";
+                rs = amountQueryHelper(yearTypeVal);
+                int count = 0;
+                while (rs.next()) {
+                    count = rs.getInt("aCount");
+                }
+                return count;
+                }  
             
             
             
@@ -1602,6 +2005,34 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
             
  //PendingRevenue contracts widget counts
             
+            public static String getPRContractsAmount(int year, char yearTypeVal) throws SQLException {
+                query = "SELECT SUM(maximum_contract_amount) AESum " +
+                        "FROM pending_contracts WHERE document_code_id IN (7)" ;
+                        
+
+                rs = amountQueryHelper(yearTypeVal);
+
+                BigDecimal totalContractAmount = new BigDecimal(0);
+
+                while (rs.next()) {
+                    totalContractAmount = rs.getBigDecimal("AESum");
+                }
+                return formatNumber(totalContractAmount);
+                // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
+            } 
+            
+
+            public static int getContractsPRCount(int year, char yearTypeVal) throws SQLException {
+                query = "SELECT  count(distinct contract_number ) aCount " +
+                        "FROM pending_contracts WHERE document_code_id IN (7)";
+                rs = amountQueryHelper(yearTypeVal);
+                int count = 0;
+                while (rs.next()) {
+                    count = rs.getInt("aCount");
+                }
+                return count;
+                }  
+            
             
             
             public static int getPRContractsAgenciesCount(int year,char yearTypeVal) throws SQLException {
@@ -1682,6 +2113,34 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
             }
             
 //Pending Expense contracts widget counts
+            
+            public static String getPEContractsAmount(int year, char yearTypeVal) throws SQLException {
+                query = "SELECT SUM(maximum_contract_amount) AESum " +
+                        "FROM pending_contracts WHERE document_code_id IN (1,2,5,6,19,20)" ;
+                        
+
+                rs = amountQueryHelper(yearTypeVal);
+
+                BigDecimal totalContractAmount = new BigDecimal(0);
+
+                while (rs.next()) {
+                    totalContractAmount = rs.getBigDecimal("AESum");
+                }
+                return formatNumber(totalContractAmount);
+                // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
+            } 
+            
+
+            public static int getContractsPECount(int year, char yearTypeVal) throws SQLException {
+                query = "SELECT  count(distinct contract_number ) aCount " +
+                        "FROM pending_contracts WHERE document_code_id IN (1,2,5,6,19,20)";
+                rs = amountQueryHelper(yearTypeVal);
+                int count = 0;
+                while (rs.next()) {
+                    count = rs.getInt("aCount");
+                }
+                return count;
+                }  
             
             
             
@@ -1848,11 +2307,16 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
                return count;
             }
             public static int getAEContractsModificationDetailsCount(int year,char yearTypeVal) throws SQLException {
-                query = "select  count(distinct contract_number ) aCount  from agreement_snapshot"
+                query = "select (( select  count(distinct contract_number )from agreement_snapshot"
                 		+ "   where  document_code_id in (1,2) "
-                		+ "and (2016 between effective_begin_year and effective_end_year)"
                 		+ "and (2016 between starting_year and ending_year)"
-                		+ "and maximum_contract_amount <> original_contract_amount";
+                		+ "and maximum_contract_amount <> original_contract_amount"
+                		+"	    and (2016 between effective_begin_year and effective_end_year)) +"
+            	    	+"	    ( select  count(*) from sub_agreement_snapshot  where contract_number in "
+            	    	+"	 ( select distinct contract_number  from agreement_snapshot  where "
+            	    	+"	 document_code_id in (1,2) and (2016 between starting_year and ending_year)"
+            	    	+ "and maximum_contract_amount <> original_contract_amount"
+            	    		+"    and (2016 between effective_begin_year and effective_end_year)) and latest_flag ='Y')) aCount";
                rs = amountQueryHelper(yearTypeVal);
                int count = 0;
                while (rs.next()) {
@@ -2010,11 +2474,17 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
                return count;
             }
             public static int getREContractsModificationsDetailsCount(int year,char yearTypeVal) throws SQLException {
-                query = "select  count(distinct contract_number ) aCount  from agreement_snapshot"
-                		+ "   where  document_code_id in (1,2) "
-                		+ "and registered_year = 2016"
-                		+ "and (2016 between starting_year and ending_year)"
-                		+ "and maximum_contract_amount <> original_contract_amount";
+                              		
+                		 query = "select (( select  count(distinct contract_number )from agreement_snapshot"
+                         		+ "   where  document_code_id in (1,2) "
+                         		+ "and (2016 between starting_year and ending_year)"
+                         		+ "and maximum_contract_amount <> original_contract_amount"
+                         		+" and( registered_year = 2016)  +"
+                     	    	+"	    ( select  count(*) from sub_agreement_snapshot  where contract_number in "
+                     	    	+"	 ( select distinct contract_number  from agreement_snapshot  where "
+                     	    	+"	 document_code_id in (1,2) and (2016 between starting_year and ending_year)"
+                     	    	+ "and maximum_contract_amount <> original_contract_amount"
+                     	    		+"    and ( registered_year = 2016)) and latest_flag ='Y')) aCount";
                rs = amountQueryHelper(yearTypeVal);
                int count = 0;
                while (rs.next()) {
@@ -2024,10 +2494,14 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
             }
         
             public static int getREAllContractsDetailsCount(int year,char yearTypeVal) throws SQLException {
-                query = "select  count(distinct contract_number ) aCount  from agreement_snapshot"
-                		+ "   where  document_code_id in (1,2) "
-                		+ "and registered_year = 2016"
-                		+ "and (2016 between starting_year and ending_year)";
+                query = "select ((select  count(distinct contract_number ) aCount  from agreement_snapshot"
+                		+ "   where  document_code_id in (1,2) "                		
+                		+ "and (2016 between starting_year and ending_year)"
+                		+ "and (registered_year = 2016)) +"
+                		+"	    ( select  count(*) from sub_agreement_snapshot  where contract_number in "
+            	    	+"	 ( select distinct contract_number  from agreement_snapshot  where "
+            	    	+"	 document_code_id in (1,2) and (2016 between starting_year and ending_year)"
+            	    		+"    and (registered_year = 2016)) and latest_flag ='Y')) aCount";;
                rs = amountQueryHelper(yearTypeVal);
                int count = 0;
                while (rs.next()) {
@@ -2038,7 +2512,7 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
             public static int getREAll1ContractsDetailsCount(int year,char yearTypeVal) throws SQLException {
                 query =    " select  ((select  count(*) from agreement_snapshot  where "
                 	    	+"	 document_code_id in (1,2,5) and (2016 between starting_year and ending_year)"
-                	    	+"	    and (registered_year = 2016) +"
+                	    	+"	    and (registered_year = 2016)) +"
                 	    	+"	    ( select  count(*) from sub_agreement_snapshot  where contract_number in "
                 	    	+"	 ( select distinct contract_number  from agreement_snapshot  where "
                 	    	+"	 document_code_id in (1,2,5) and (2016 between starting_year and ending_year)"

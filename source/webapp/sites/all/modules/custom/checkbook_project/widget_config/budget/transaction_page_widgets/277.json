@@ -108,7 +108,7 @@
     },
     "budget_code_name_formatted": {
       "type": "expression2",
-      "expression": "_get_tooltip_markup($row[object_class_name], 36)"
+      "expression": "_get_tooltip_markup($row[budget_code_name], 36)"
     },
     "agency_name_link": {
       "type": "expression2",
@@ -259,10 +259,10 @@
           $is_committed_expense = ($nid == 558) || ($nid == 559) || ($nid == 568) || ($nid == 571);
       }
       if($is_committed_expense) {
-          $node->widgetConfig->dataTableOptions->aaSorting[0][0] = 7;
+          $node->widgetConfig->dataTableOptions->aaSorting[0][0] = 8;
       }
       else if($is_remaining_expense) {
-          $node->widgetConfig->dataTableOptions->aaSorting[0][0] = 13;
+          $node->widgetConfig->dataTableOptions->aaSorting[0][0] = 14;
       }
   ",
   "dataTableOptions":{
@@ -285,7 +285,7 @@
           {"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
           {"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
           {"sClass":"number pad-left","sWidth":"135px","asSorting": [ "desc","asc" ]},
-          {"sClass":"text pad-left", "sWidth":"90px","asSorting": [ "asc","desc" ]},
+          {"sClass":"text pad-left", "sWidth":"135px","asSorting": [ "asc","desc" ]},
           {"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
           {"sClass":"text pad-left", "sWidth":"165px","asSorting": [ "asc","desc" ]},
           {"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},

@@ -16,7 +16,8 @@ import pages.mwbe.MWBEPage;
 import utilities.NYCBaseTest;
 import utilities.TestStatusReport;
 
-public class MWBESpendingTest extends TestStatusReport{
+//public class MWBESpendingTest extends TestStatusReport{
+	public class MWBESpendingTest extends NYCBaseTest{
 	@Before
 	public void GoToPage(){
 		if(!MWBEPage.IsAt()){
