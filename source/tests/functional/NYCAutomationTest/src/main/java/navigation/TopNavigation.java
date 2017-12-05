@@ -30,11 +30,17 @@ public class TopNavigation {
 			public static void Select() {
 				SecondaryTabSelector.Select("Capital Spending");	
 			}
+			public static boolean isAt() {
+				return SecondaryTabSelector.isAt("Capital Spending");	
+			}
 		}
 		
 		public static class ContractSpending{
 			public static void Select() {
 				SecondaryTabSelector.Select("Contract Spending");	
+			}
+			public static boolean isAt() {
+				return SecondaryTabSelector.isAt("Contract Spending");	
 			}
 		}
 		
@@ -42,11 +48,17 @@ public class TopNavigation {
 			public static void Select() {
 				SecondaryTabSelector.Select("Trust & Agency Spending");	
 			}
+			public static boolean isAt() {
+				return SecondaryTabSelector.isAt("Trust & Agency Spending");	
+			}
 		}
 		
 		public static class OtherSpending{
 			public static void Select() {
 				SecondaryTabSelector.Select("Other Spending");	
+			}
+			public static boolean isAt() {
+				return SecondaryTabSelector.isAt("Other Spending");	
 			}
 		}
 	}
@@ -130,9 +142,10 @@ public class TopNavigation {
 		}
 	}
 	
+	
 		
 	public enum TopNavTabs{
-		Spending, Revenue, Budget, Contracts, Payroll
+		Spending, Revenue, Budget, Contracts, Payroll,MWBE ,SubVendors
 	}
 
 }

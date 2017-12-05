@@ -592,7 +592,7 @@
         "pending_revenue":{
             "landing_page_widgets":{
                 "contracts":{
-                    "widget_config":"pending_contracts_view",
+                    "widget_config":"revenue_pending_contracts_view",
                     "legacy_node_id":446
                 },
                 "contracts_modifications":{

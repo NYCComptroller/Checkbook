@@ -122,15 +122,15 @@
 	$mwbe_filter = _getRequestParamValue('mwbe');
 	if($mwbe_filter =='4~5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){
         if(_getRequestParamValue('status') == 'A'){
-            $node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Top Ten Active Sub Vendor Contracts by Current Amount';
+            $node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName() . ' Top Ten Active Sub Vendor Contracts by Current Amount';
         }else{
-            $node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Top Ten Active New Sub Vendor Contracts by Current Amount';
+            $node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName() . ' Top Ten Active New Sub Vendor Contracts by Current Amount';
         }
 	}else{
         if(_getRequestParamValue('status') == 'A'){
-            $node->widgetConfig->chartTitle = 'Top Ten ' . MappingUtil::getCurrenEhtnicityName() . ' Active Sub Vendor Contracts by Current Amount';
+            $node->widgetConfig->chartTitle = 'Top Ten ' . MappingUtil::getCurrenEthnicityName() . ' Active Sub Vendor Contracts by Current Amount';
         }else{
-            $node->widgetConfig->chartTitle = 'Top Ten ' . MappingUtil::getCurrenEhtnicityName() . ' Active New Sub Vendor Contracts by Current Amount';
+            $node->widgetConfig->chartTitle = 'Top Ten ' . MappingUtil::getCurrenEthnicityName() . ' Active New Sub Vendor Contracts by Current Amount';
         }
 	}
 ",

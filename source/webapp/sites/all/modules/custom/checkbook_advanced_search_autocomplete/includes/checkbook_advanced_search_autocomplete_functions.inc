@@ -878,25 +878,70 @@ function _checkbook_advanced_search_autocomplete_budget_expcategory($fiscal_year
     }
 }
 
-/** @return autosuggestions for budget code based on selected agency, department, expense category and year */
-function _checkbook_advanced_search_autocomplete_budget_budgetcode($fiscal_year, $agency, $dept, $expcategory) {
-    $searchTerm = _get_autocomplete_search_term();
-    if (!empty($searchTerm)) {
-        $query = 'select?q=budget_code_name_code_autocomplete:' . $searchTerm . '&facet=true&facet.field=budget_code_name_code&fq=domain:budget&facet.limit=10&wt=php';
-        if ($fiscal_year) {
-            $query .= '&fq=fiscal_year_id:' . $fiscal_year;
+/** @return options for budget code based on selected agency, department, expense category, year and budget name */
+function _checkbook_advanced_search_autocomplete_budget_budgetcode($fiscal_year, $agency, $dept, $expcategory, $budget_name) {
+   
+    $params =  array("budget_fiscal_year_id"=>$fiscal_year);
+    if($agency != '0' ) {
+        $params["agency_id"] = $agency;
+    }
+    if($dept != '0' ) {
+        $params["department_name"] = str_replace('__','/',$dept);
+    }
+    if($expcategory != '0' ) {
+        $params["object_class_name"] = str_replace('__','/',$expcategory);
+    }
+    if($budget_name != '0' ) {
+        $params["budget_code_name"] = str_replace('__','/',$budget_name);
+    }
+    $results = get_db_results(false, 'checkbook:budget', array("budget_code_code.budget_code_code"), $params,"budget_code_code.budget_code_code");
+    if(count($results) == 0 && $agency != '0'){
+        unset($params["budget_code_name"]);
+        $results = get_db_results(false, 'checkbook:budget', array("budget_code_code.budget_code_code"), $params,"budget_code_code.budget_code_code");
+    }
+    if (count($results ) > 0) {
+        $matches = array();
+        foreach ($results as $key=>$value) {
+            $matches[] = $value['budget_code_code.budget_code_code'];
         }
-        if ($agency) {
-            $query .= '&fq=agency_id:' . $agency;
-        }
-        if ($dept) {
-            $query .= '&fq=department_name:"' . _checkbook_autocomplete_escapeSolrValue(trim($dept)) .'"';
-        }
-        if ($expcategory) {
-            $query .= '&fq=expenditure_object_name:"' . _checkbook_autocomplete_escapeSolrValue(trim($expcategory)) .'"';
-        }
-        $matches = _checkbook_autocomplete_solr_results($query, 'budget_code_name_code');
         drupal_json_output($matches);
+    }
+    else {
+        drupal_json_output(array(array('label'=>'No Matches Found','value'=>'')));
+    }
+}
+
+/** @return options for budget name based on selected agency, department, expense category, year and budget code */
+function _checkbook_advanced_search_autocomplete_budget_budgetname($fiscal_year, $agency, $dept, $expcategory, $budget_code) {
+    $params =  array("budget_fiscal_year_id"=>$fiscal_year);
+    if($agency != '0' ) {
+        $params["agency_id"] = $agency;
+    }
+    if($dept != '0' ) {
+        $params["department_name"] = str_replace('__','/',$dept);
+    }
+    if($expcategory != '0' ) {
+        $params["object_class_name"] = str_replace('__','/',$expcategory);
+    }
+    if($budget_code != '0' ) {
+        $params["budget_code"] = $budget_code;
+    }
+    $results = get_db_results(false, 'checkbook:budget', array("budget_code_name.budget_code_name", "budget_code_code.budget_code_code"), $params,"budget_code_name.budget_code_name");
+    if(count($results) == 0 && $agency != '0'){
+        unset($params["budget_code"]);
+        $results = get_db_results(false, 'checkbook:budget', array("budget_code_name.budget_code_name", "budget_code_code.budget_code_code"), $params,"budget_code_name.budget_code_name");
+    }
+    if (count($results) > 0) {
+        $matches = array();
+        foreach ($results as $key=>$value) {
+            $budget_name_value = $value['budget_code_name.budget_code_name'];
+            $budget_name_text = (strlen($budget_name_value) > 18) ? substr($budget_name_value, 0, 18) . '...' : $budget_name_value;
+            $matches[] = array('label'=> $budget_name_text,'value' => $budget_name_value, 'code' => $value["budget_code_code.budget_code_code"]);
+        }
+        drupal_json_output($matches);
+    }
+    else {
+        drupal_json_output(array(array('label'=>'No Matches Found','value'=>'')));
     }
 }
 

@@ -10,8 +10,11 @@ import pages.contracts.ContractsPage;
 import pages.home.HomePage;
 import pages.spending.SpendingPage;
 import utilities.NYCBaseTest;
+import utilities.TestStatusReport;
 
-public class ContractsTest extends NYCBaseTest{
+public class ContractsTest extends TestStatusReport{
+
+//public class ContractsTest extends NYCBaseTest{
 	@Before
     public void GoToPage(){
 	   if (!ContractsPage.isAt())
