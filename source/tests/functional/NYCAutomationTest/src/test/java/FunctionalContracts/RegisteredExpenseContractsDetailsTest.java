@@ -19,9 +19,8 @@ import utilities.NYCDatabaseUtil;
 import helpers.Helper;
 import utilities.TestStatusReport;
 public class RegisteredExpenseContractsDetailsTest extends TestStatusReport{
-
-//public class RegisteredExpenseContractsDetailsTest extends NYCBaseTest {
-
+	//public class RegisteredExpenseContractsDetailsTest extends NYCBaseTest {
+	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	public void GoToPage() {
 		RegisteredExpenseContractsPage.GoTo();
@@ -35,194 +34,167 @@ public class RegisteredExpenseContractsDetailsTest extends TestStatusReport{
 	public void VerifyTop5MasterAgreementsTransactionCount() throws SQLException {
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5MasterAgreements);
 		HomePage.ShowWidgetDetails();
-		int NumOfREContractsDetailsCount2016 = NYCDatabaseUtil.getREContractsMasterDetailsCount(2016,'B');
+		int NumOfREContractsDetailsCountDB = NYCDatabaseUtil.getREContractsMasterDetailsCount(year,'B');
 		int numOfREContractsDetailsCountapp = RegisteredExpenseContractsPage.GetTransactionCount();
-		assertEquals("Number of Registered Expense master contracts widget Details page table count did not match", numOfREContractsDetailsCountapp, NumOfREContractsDetailsCount2016); 
+		assertEquals(" Registered Expense master contracts widget Details page table count did not match", numOfREContractsDetailsCountapp, NumOfREContractsDetailsCountDB);
+		
+		String WidgetDetailsTitle =  "Master Agreements Registered Expense Contracts Transactions";
+		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
+	    assertEquals("Registered Expense Contracts Master Agreement Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
+	    
+	    
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getREContractsMasterContractsDetailsAmount(year,'B');
+		String WidgetDetailsAmountapp = ActiveExpenseContractsPage.GetTransactionAmount1();
+		assertEquals("Registered  Expense Contracts Master Agreement  Widget Details page total Contract amount did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
 	}
+	     
 	@Test
 	public void VerifyTop5MasterAgreementModificationsTransactionCount() throws SQLException {
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5MasterAgreementModifications);
 		HomePage.ShowWidgetDetails();
-		int NumOfREContractsDetailsCount2016 = NYCDatabaseUtil.getREContractsMasterModificationsDetailsCount(2016,'B');
+		int NumOfREContractsDetailsCountDB = NYCDatabaseUtil.getREContractsMasterModificationsDetailsCount(year,'B');
 		int numOfREContractsDetailsCountapp = ActiveExpenseContractsPage.GetTransactionCount();
-		assertEquals("Number of Registered Expense master Contracts modification widget Details page table count did not match", numOfREContractsDetailsCountapp, NumOfREContractsDetailsCount2016); 
-	}
+		assertEquals(" Registered Expense master Contracts modification widget Details page table count did not match", numOfREContractsDetailsCountapp, NumOfREContractsDetailsCountDB);
+		
+		String WidgetDetailsTitle =  "Master Agreement Modifications Registered Expense Contracts Transactions";
+		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
+		assertEquals("Registered Expense Contracts Master Agreement Modifications Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
+		    
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getREContractsMasterModificationDetailsAmount(year,'B');
+		String WidgetDetailsAmountapp = ActiveExpenseContractsPage.GetTransactionAmount1();
+		assertEquals("Registered  Expense Contracts Master Agreement Modifications  Widget Details page total Contract amount did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
+		}
 	@Test
 	public void VerifyTop5ContractsTransactionCount() throws SQLException {
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5Contracts);
 		HomePage.ShowWidgetDetails();
-		int NumOfREContractsDetailsCount2016 = NYCDatabaseUtil.getREContractsDetailsCount(2016,'B');
+		int NumOfREContractsDetailsCountDB = NYCDatabaseUtil.getREAllContractsDetailsCount(year,'B');
 		int numOfREContractsDetailsCountapp = RegisteredExpenseContractsPage.GetTransactionCount();
-		assertEquals("Number of Registered Expense Contracts  widget Details page table count did not match", numOfREContractsDetailsCountapp, NumOfREContractsDetailsCount2016); 
-	}
+		assertEquals(" Registered Expense Contracts  widget Details page table count did not match", numOfREContractsDetailsCountapp, NumOfREContractsDetailsCountDB); 
+		
+		String WidgetDetailsTitle =  "Contracts Registered Expense Contracts Transactions";
+		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
+	    assertEquals("Registered Expense Contracts contracts Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
+	    
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getREContractsDetailsAmount(year,'B');
+		String WidgetDetailsAmountapp = ActiveExpenseContractsPage.GetTransactionAmount1();
+		assertEquals("Registered  Expense Contracts Contracts  Widget Details page total Contract amount did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
+		}
 	@Test
 	public void VerifyTop5ContractAmountModificationsTransactionCount() throws SQLException {
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5ContractAmountModifications);
 		HomePage.ShowWidgetDetails();
-		int NumOfREContractsDetailsCount2016 = NYCDatabaseUtil.getREContractsModificationsDetailsCount(2016,'B');
+		int NumOfREContractsDetailsCountDB = NYCDatabaseUtil.getREContractsModificationsDetailsCount(year,'B');
 		int numOfREContractsDetailsCountapp = RegisteredExpenseContractsPage.GetTransactionCount();
-		assertEquals("Number of REgistered Expense Contracts modification widget Details page table count did not match", numOfREContractsDetailsCountapp, NumOfREContractsDetailsCount2016); 
-	}
+		assertEquals(" REgistered Expense Contracts modification widget Details page table count did not match", numOfREContractsDetailsCountapp, NumOfREContractsDetailsCountDB); 
+		
+		String WidgetDetailsTitle =  "Contract Amount Modifications Registered Expense Contracts Transactions";
+		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
+	    assertEquals("Registered Expense Contracts Modifications Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
+	    
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getREContractsModificationDetailsAmount(year,'B');
+		String WidgetDetailsAmountapp = ActiveExpenseContractsPage.GetTransactionAmount1();
+		assertEquals("Registered Expense Contracts ContractAmountModifications  Widget Details page total Contract amount did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
+		}
 	@Test
 	public void VerifyTop5PrimeVendorsTransactionCount() throws SQLException {
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5PrimeVendors);
 		HomePage.ShowWidgetDetails();
-		int NumOfREContractsDetailsCount2016 =  NYCDatabaseUtil.getREContractsDetailsCount(2016,'B');
+		int NumOfREContractsDetailsCountDB =  NYCDatabaseUtil.getREAll1ContractsDetailsCount(year,'B');
 		int numOfREContractsDetailsCountapp = RegisteredExpenseContractsPage.GetTransactionCount();
-		assertEquals("Number of Registered Expense Contracts Prime Vendors widget Details page table count did not match", numOfREContractsDetailsCountapp, NumOfREContractsDetailsCount2016); 
-	}
+		assertEquals(" Registered Expense Contracts Prime Vendors widget Details page table count did not match", numOfREContractsDetailsCountapp, NumOfREContractsDetailsCountDB); 
+		
+		String WidgetDetailsTitle =  "Prime Vendors Registered Expense Contracts Transactions";
+		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
+	    assertEquals("Registered Expense Contracts Prime Vendors Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
+	    
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getREContractsAllDetailsAmount(year,'B');
+		String WidgetDetailsAmountapp = ActiveExpenseContractsPage.GetTransactionAmount1();
+		assertEquals("Registered Expense Contracts PrimeVendors  Widget Details page total Contract amount did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
+		}
 	@Test
 	public void VerifyTop5AwardMethodsTransactionCount() throws SQLException {
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5AwardMethods);
 		HomePage.ShowWidgetDetails();
-		int NumOfREContractsDetailsCount2016 =  NYCDatabaseUtil.getREContractsDetailsCount(2016,'B');
+		int NumOfREContractsDetailsCountDB =  NYCDatabaseUtil.getREAll1ContractsDetailsCount(year,'B');
 		int numOfREContractsDetailsCountapp = RegisteredExpenseContractsPage.GetTransactionCount();
-		assertEquals("Number of Registered Expense Contracts Award Method widget Details page table count did not match", numOfREContractsDetailsCountapp, NumOfREContractsDetailsCount2016); 
-	}
+		assertEquals(" Registered Expense Contracts Award Method widget Details page table count did not match", numOfREContractsDetailsCountapp, NumOfREContractsDetailsCountDB); 
+		
+		String WidgetDetailsTitle =  "Award Methods Registered Expense Contracts Transactions";
+		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
+	    assertEquals("Registered Expense Contracts AWard Method Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
+	    
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getREContractsAllDetailsAmount(year,'B');
+		String WidgetDetailsAmountapp = ActiveExpenseContractsPage.GetTransactionAmount1();
+		assertEquals("Registered  Expense Contracts AwardMethods  Widget Details page total Contract amount did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
+		}
 	@Test
 	public void VerifyTop5AgenciesTransactionCount() throws SQLException {
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5Agencies);
 		HomePage.ShowWidgetDetails();
-		int NumOfREContractsDetailsCount2016 =  NYCDatabaseUtil.getREContractsDetailsCount(2016,'B');
+		int NumOfREContractsDetailsCountDB =  NYCDatabaseUtil.getREAll1ContractsDetailsCount(year,'B');
 		int numOfREContractsDetailsCountapp = RegisteredExpenseContractsPage.GetTransactionCount();
-		assertEquals("Number of  Registered Expense Contracts Agencies widget Details page table count did not match", numOfREContractsDetailsCountapp, NumOfREContractsDetailsCount2016); 
-	}
+		assertEquals("  Registered Expense Contracts Agencies widget Details page table count did not match", numOfREContractsDetailsCountapp, NumOfREContractsDetailsCountDB); 
+		
+		String WidgetDetailsTitle =  "Agencies Registered Expense Contracts Transactions";
+		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
+	    assertEquals("Registered Expense Contracts Agencies Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
+	    
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getREContractsAllDetailsAmount(year,'B');
+		String WidgetDetailsAmountapp = ActiveExpenseContractsPage.GetTransactionAmount1();
+		assertEquals("Registered  Expense Contracts Agencies  Widget Details page total Contract amount did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
+		}
 	@Test
 	public void VerifyContractsByIndustriesTransactionCount() throws SQLException {
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.ContractsByIndustries);
 		HomePage.ShowWidgetDetails();
-		int NumOfREContractsDetailsCount2016 =  NYCDatabaseUtil.getREContractsDetailsCount(2016,'B');
+		int NumOfREContractsDetailsCountDB =  NYCDatabaseUtil.getREAll1ContractsDetailsCount(year,'B');
 		int numOfREContractsDetailsCountapp = RegisteredExpenseContractsPage.GetTransactionCount();
-		assertEquals("Number of  Registered Expense Contracts by Industies widget Details page table count did not match", numOfREContractsDetailsCountapp, NumOfREContractsDetailsCount2016); 
-	}
+		assertEquals("  Registered Expense Contracts by Industies widget Details page table count did not match", numOfREContractsDetailsCountapp, NumOfREContractsDetailsCountDB); 
+		
+		String WidgetDetailsTitle =  "Contracts by Industries Registered Expense Contracts Transactions";
+		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
+	    assertEquals("Registered Expense Contracts Industries Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
+	    
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getREContractsAllDetailsAmount(year,'B');
+		String WidgetDetailsAmountapp = ActiveExpenseContractsPage.GetTransactionAmount1();
+		assertEquals("Registered  Expense Contracts ContractsByIndustries  Widget Details page total Contract amount did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
+		}
 	@Test
 	public void VerifyContractsBySizeTransactionCount() throws SQLException {
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.ContractsBySize);
 		HomePage.ShowWidgetDetails();
-		int NumOfREContractsDetailsCount2016 =  NYCDatabaseUtil.getREContractsDetailsCount(2016,'B');
+		int NumOfREContractsDetailsCountDB =  NYCDatabaseUtil.getREAll1ContractsDetailsCount(year,'B');
 		int numOfREContractsDetailsCountapp = RegisteredExpenseContractsPage.GetTransactionCount();
-		assertEquals("Number of Registered Expense Contracts by size  widget Details page table count did not match", numOfREContractsDetailsCountapp, NumOfREContractsDetailsCount2016); 
-	}
+		assertEquals(" Registered Expense Contracts by size  widget Details page table count did not match", numOfREContractsDetailsCountapp, NumOfREContractsDetailsCountDB); 
+		
+		String WidgetDetailsTitle =  "Contracts by Size Registered Expense Contracts Transactions";
+		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
+	    assertEquals("Registered Expense Contracts Contracts by Sizes Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
+	    
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getREContractsAllDetailsAmount(year,'B');
+		String WidgetDetailsAmountapp = ActiveExpenseContractsPage.GetTransactionAmount1();
+		assertEquals("Registered  Expense Contracts ContractsBySize  Widget Details page total Contract amount did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
+		}
 
 	/* ***************** Test Widget Transaction Count ****************** */
 	/*
-	 @Test
-    public void VerifyTop5MasterAgreementsTransactionCount(){
-		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5MasterAgreements);
-		HomePage.ShowWidgetDetails();
-	   assertTrue(RegisteredExpenseContractsPage.GetTransactionCount() >= 847); 
-    }
-	@Test
-    public void VerifyTop5MasterAgreementModificationsTransactionCount(){
-		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5MasterAgreementModifications);
-		HomePage.ShowWidgetDetails();
-	   assertTrue(RegisteredExpenseContractsPage.GetTransactionCount() >= 25); 
-    }
-	@Test
-    public void VerifyTop5ContractsTransactionCount(){
-		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5Contracts);
-		HomePage.ShowWidgetDetails();
-	   assertTrue(RegisteredExpenseContractsPage.GetTransactionCount() >= 12681); 
-    }
-	@Test
-    public void VerifyTop5ContractAmountModificationsTransactionCount(){
-		ContractsPage.GoToTop5DetailsPage(WidgetOption.TopContractAmountModifications);
-		HomePage.ShowWidgetDetails();
-	   assertTrue(RegisteredExpenseContractsPage.GetTransactionCount() >= 1246); 
-    }
-	@Test
-    public void VerifyTop5PrimeVendorsTransactionCount(){
-		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5PrimeVendors);
-		HomePage.ShowWidgetDetails();
-	   assertTrue(RegisteredExpenseContractsPage.GetTransactionCount() >= 13339); 
-    }
-	@Test
-    public void VerifyTop5AwardMethodsTransactionCount(){
-		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5AwardMethods);
-		HomePage.ShowWidgetDetails();
-	   assertTrue(RegisteredExpenseContractsPage.GetTransactionCount() >= 13339); 
-    }
-	@Test
-    public void VerifyTop5AgenciesTransactionCount(){
-		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5Agencies);
-		HomePage.ShowWidgetDetails();
-	   assertTrue(RegisteredExpenseContractsPage.GetTransactionCount() >= 13339); 
-    }
-	@Test
-    public void VerifyContractsByIndustriesTransactionCount(){
-		ContractsPage.GoToTop5DetailsPage(WidgetOption.ContractsByIndustries);
-		HomePage.ShowWidgetDetails();
-	   assertTrue(RegisteredExpenseContractsPage.GetTransactionCount() >= 13339); 
-    }
+	 
     @Test
     public void VerifyContractsBySizeTransactionCount(){
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.ContractsBySize);
 		HomePage.ShowWidgetDetails();
 	   assertTrue(RegisteredExpenseContractsPage.GetTransactionCount() >= 13339); 
-    }*/
+    }
 
-	/* ***************** Test Widget Transaction Amount ****************** */ 
+	/* ***************** Test Widget Transaction Amount *************** 
 	@Test
 	public void VerifyTop5MasterAgreementsTransactionAmount(){
 		Float transactionAmt = 6.16f;
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5MasterAgreements);
 		HomePage.ShowWidgetDetails();
-		assertTrue(HomePage.GetTransactionAmount()>= transactionAmt);
-	}
-	@Test
-	public void VerifyTop5MasterAgreementModificationsTransactionAmount(){
-		Float transactionAmt = 52.28f;
-		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5MasterAgreementModifications);
-		HomePage.ShowWidgetDetails();
-		assertTrue(HomePage.GetTransactionAmount()>= transactionAmt);
-	}
-	@Test
-	public void VerifyTop5ContractsTransactionAmount(){
-		Float transactionAmt = 14.09f;
-		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5Contracts);
-		HomePage.ShowWidgetDetails();
-		assertTrue(HomePage.GetTransactionAmount()>= transactionAmt);
-	}
-	@Test
-	public void VerifyTop5ContractAmountModificationsTransactionAmount(){
-		Float transactionAmt = 2.1f;
-		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5ContractAmountModifications);
-		HomePage.ShowWidgetDetails();
-		assertTrue(HomePage.GetTransactionAmount()>= transactionAmt);
-	}
-	@Test
-	public void VerifyTop5PrimeVendorsTransactionAmount(){
-		Float transactionAmt = 16.71f;
-		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5PrimeVendors);
-		HomePage.ShowWidgetDetails();
-		assertTrue(HomePage.GetTransactionAmount()>= transactionAmt);
-	}
-	@Test
-	public void VerifyTop5AwardMethodsTransactionAmount(){
-		Float transactionAmt = 16.71f;
-		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5AwardMethods);
-		HomePage.ShowWidgetDetails();
-		assertTrue(HomePage.GetTransactionAmount()>= transactionAmt);
-	}
-	@Test
-	public void VerifyTop5AgenciesTransactionAmount(){
-		Float transactionAmt = 16.71f;
-		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5Agencies);
-		HomePage.ShowWidgetDetails();
-		assertTrue(HomePage.GetTransactionAmount()>= transactionAmt);
-	}
-	@Test
-	public void VerifyContractsByIndustriesTransactionAmount(){
-		Float transactionAmt = 16.71f;
-		ContractsPage.GoToTop5DetailsPage(WidgetOption.ContractsByIndustries);
-		HomePage.ShowWidgetDetails();
-		assertTrue(HomePage.GetTransactionAmount()>= transactionAmt); 
-	}
-	@Test
-	public void VerifyContractsBySizeTransactionAmount(){
-		Float transactionAmt = 16.71f;
-		ContractsPage.GoToTop5DetailsPage(WidgetOption.ContractsBySize);
-		HomePage.ShowWidgetDetails();
-		assertTrue(HomePage.GetTransactionAmount()>= transactionAmt);
-	}
+		assertTrue(HomePage.GetTransactionAmount()>= transactionAmt);}
+
+	*/
+
 }

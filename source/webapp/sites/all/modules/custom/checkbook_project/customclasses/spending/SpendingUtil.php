@@ -408,6 +408,51 @@ class SpendingUtil{
         return $latest_minority_type_id;
     }
 
+    /**
+     * Returns latest M/WBE category Name for the given vendor id in the given year and year type
+     *
+     * @param $vendor_id
+     * @param $year_id
+     * @param $year_type
+     * @param string $is_prime_or_sub
+     * @return null
+     */
+    static public function getLatestMwbeCategoryTitleByVendor($vendor_id, $year_id = NULL, $year_type = NULL, $is_prime_or_sub = "P"){
+        if($year_id == null){
+            $year_id =  _getRequestParamValue('year');
+        }
+
+        if($year_type == null){
+            $year_type =  _getRequestParamValue('yeartype');
+        }
+        $query = "SELECT minority_type_id FROM(
+            SELECT a.*, row_number() OVER (PARTITION BY a.vendor_id, a.year_id, a.type_of_year ORDER BY chk_date DESC) AS flag FROM(
+                SELECT a.vendor_id, 
+                    a.year_id, 
+                    a.type_of_year,
+                    CASE WHEN a.minority_type_id IS NULL OR a.minority_type_id = 11 THEN 7 ELSE a.minority_type_id END minority_type_id,
+                    MAX(d.check_eft_issued_date ) AS chk_date
+                FROM aggregateon_mwbe_spending_coa_entities a
+                JOIN disbursement_line_item_details d ON a.vendor_id = d.vendor_id AND a.agency_id = d.agency_id 
+                        AND a.minority_type_id = d.minority_type_id AND a.year_id = d.check_eft_issued_nyc_year_id
+                WHERE a.vendor_id = ".$vendor_id." AND a.year_id = ".$year_id." AND a.type_of_year = '".$year_type."' 
+                GROUP BY CASE WHEN a.minority_type_id IS NULL OR a.minority_type_id = 11 THEN 7 ELSE a.minority_type_id END, 
+                a.vendor_id, a.year_id, a.type_of_year ) a ) a WHERE flag = 2 AND a.minority_type_id IN (2,3,4,5,9)
+            UNION 
+            SELECT DISTINCT minority_type_id 
+            FROM spending_vendor_latest_mwbe_category 
+            WHERE vendor_id = ".$vendor_id." AND is_prime_or_sub = '".$is_prime_or_sub."' AND type_of_year = '".$year_type."' 
+                  AND year_id = ".$year_id." AND minority_type_id <> 7 ";
+        
+        $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
+        if($results[0]['minority_type_id'] != ''){
+            return $results[0]['minority_type_id'];
+        }
+        else{
+            return false;
+        }
+    }
+    
     static public function getLatestMwbeCategoryByVendorByTransactionYear($vendor_id, $year_id = null, $year_type = null){
 
         if($year_id == null){
@@ -1144,7 +1189,7 @@ class SpendingUtil{
 
         //Sub Vendors Exception
         if(($widgetTitle == "Sub Vendors" || $widgetTitle == "Sub Vendor") && $dashboard == "ss") {
-            $dashboard_title = MappingUtil::getCurrenEhtnicityName();
+            $dashboard_title = MappingUtil::getCurrenEthnicityName();
         }
         //Contract Exception
         else if(($widgetTitle == "Contracts" || $widgetTitle == "Contract") && $category == 1) {
@@ -1152,12 +1197,12 @@ class SpendingUtil{
         }
         //Visualization - Sub Vendors (M/WBE) "Ethnicity" Exception
         else if($smnid == "723" && $dashboard == "sp") {
-            $dashboard_title = MappingUtil::getCurrenEhtnicityName();
+            $dashboard_title = MappingUtil::getCurrenEthnicityName();
             return $widgetTitle . " " . $dashboard_title . " " . $catName . " Transactions";
         }
         //Visualization - Sub Vendors (M/WBE) "Ethnicity" Exception
         else if($smnid == "723" && $dashboard == "ss") {
-            $dashboard_title = MappingUtil::getCurrenEhtnicityName();
+            $dashboard_title = MappingUtil::getCurrenEthnicityName();
         }
 
 
@@ -1196,19 +1241,19 @@ class SpendingUtil{
         }
         //Visualization - M/WBE (Sub Vendors) Exception
         else if($smnid == "subven_mwbe_contracts_visual_2" && $dashboard_param == "ms") {
-            $dashboard = MappingUtil::getCurrenEhtnicityName();
+            $dashboard = MappingUtil::getCurrenEthnicityName();
         }
         //Visualization - "Ethnicity" Spending by Active Expense Contracts Transactions Exception
         else if($smnid == "mwbe_contracts_visual_2") {
-            $dashboard = MappingUtil::getCurrenEhtnicityName();
+            $dashboard = MappingUtil::getCurrenEthnicityName();
         }
         //Visualization - Sub Vendors (M/WBE) Exception
         else if($smnid == "subvendor_contracts_visual_1" && $dashboard_param == "ss") {
-            $dashboard = MappingUtil::getCurrenEhtnicityName();
+            $dashboard = MappingUtil::getCurrenEthnicityName();
         }
         //Visualization - Sub Vendors (M/WBE) Exception
         else if($smnid == "subvendor_contracts_visual_1" && $dashboard_param == "sp") {
-            $dashboard = MappingUtil::getCurrenEhtnicityName();
+            $dashboard = MappingUtil::getCurrenEthnicityName();
         }
         $bottomNavigation = '';
         if($status == 'A')
@@ -1220,11 +1265,11 @@ class SpendingUtil{
             $widgetTitle = 'Spending';
         }
         if($smnid =='subvendor_contracts_visual_1' && $dashboard_param == 'sp'){
-            return(MappingUtil::getCurrenEhtnicityName() . " Sub Vendors Spending by <br />" .$bottomNavigation);
+            return(MappingUtil::getCurrenEthnicityName() . " Sub Vendors Spending by <br />" .$bottomNavigation);
         }
         if($smnid =='subven_mwbe_contracts_visual_2' && $dashboard_param == 'ms'){
 
-            return(MappingUtil::getCurrenEhtnicityName() . " Sub Spending by <br />" .$bottomNavigation);
+            return(MappingUtil::getCurrenEthnicityName() . " Sub Spending by <br />" .$bottomNavigation);
         }
 
         if($dashboard_param == 'ss' || $dashboard_param == 'ms' || $dashboard_param == 'sp') {

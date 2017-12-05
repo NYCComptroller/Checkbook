@@ -2,24 +2,22 @@
     "widgetType":"phpparser",
     "parentNid":277,
     "startWith":0,
-    "maxSelect":5,
     "limit":100,
-    "columns":["budget_code.budget_code", "budget_code_name_code_display.budget_code_name_code_display", "txcount"],
+    "maxSelect":5,
+    "columns":["budget_code_name.budget_code_name", "txcount"],
     "orderBy":"-txcount",    
-    "filterName":"Expense Budget Code",
-    "urlParameterName":"bdgcode",
-    "autocompleteParamName":"bdgcode_auto", 
-    "getTotalDataCount":true,    
+    "filterName":"Budget Name",
+    "urlParameterName":"bdgcodenm",
+    "autocompleteParamName":"bdgname_auto",
     "facetPager":true,
-    "urlParameterNameType":"eqtext",    
-    "autocompleteID":"fbdgcodeId",
-    "autocompleteField":"budget_code_name_code_display",
+    "autocompleteID":"fbdgcodenm",
+    "autocompleteField":"budget_code_name",
     "adjustParameters":"
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
         }
-        $adjustedParameters['budget_code_name_code_display.budget_code_name_code_display'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+        $adjustedParameters['budget_code_name.budget_code_name'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
         return $adjustedParameters;
-    ",   
+    ", 
     "template":"individual_filter"
 }

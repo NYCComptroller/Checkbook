@@ -6,7 +6,7 @@
     {"labelAlias":"budget_code_category","column":"budget_code_name"},
     {"labelAlias":"adopted","column":"budget_adopted","format":"dollar"},
     {"labelAlias":"modified","column":"budget_current","format":"dollar"},
-    {"labelAlias":"committed","column":"budget_committed","format":"dollar","derivedColumn":"expense_budget_committed_budget"},
+    {"labelAlias":"committed","column":"budget_committed","format":"dollar","derivedColumn":"expense_bdg_cat_committed_budget_link"},
     {"labelAlias":"remaining","column":"budget_remaining","format":"dollar"},
     {"label":"","column":""}
   ],

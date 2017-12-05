@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 import pages.home.HomePage;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -165,6 +166,8 @@ public class BudgetPage {
 					break;
 			}
 			WebElement detailsAnchor = detailsContainer.findElement(By.partialLinkText("Details"));
+			
+			((JavascriptExecutor) Driver.Instance).executeScript("arguments[0].scrollIntoView(true);", detailsAnchor);
 			detailsAnchor.click();	
 			Driver.Instance.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 		}
@@ -175,6 +178,20 @@ public class BudgetPage {
 			WebDriverWait wait = new WebDriverWait(Driver.Instance, 20);
 			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("table_277_info")));
 			String count = (Driver.Instance.findElement(By.id("table_277_info"))).getText();
+			return Helper.GetTotalEntries(count, 5);
+		}
+		
+		public static int GetTransactionCount1() {
+			WebDriverWait wait = new WebDriverWait(Driver.Instance, 20);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("table_576_info")));
+			String count = (Driver.Instance.findElement(By.id("table_576_info"))).getText();
+			return Helper.GetTotalEntries(count, 5);
+		}
+		
+		public static int GetTransactionCount2() {
+			WebDriverWait wait = new WebDriverWait(Driver.Instance, 20);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("table_575_info")));
+			String count = (Driver.Instance.findElement(By.id("table_575_info"))).getText();
 			return Helper.GetTotalEntries(count, 5);
 		}
 	/// transaction table amount

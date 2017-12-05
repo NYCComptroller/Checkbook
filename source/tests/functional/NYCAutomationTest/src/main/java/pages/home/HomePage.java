@@ -18,7 +18,7 @@ public class HomePage {
         Driver.GoTo(url);
     }
 
-    public static void SelectYear(String year) {
+  /*  public static void SelectYear(String year) {
         String yearRequired = YearType.getCurrentYear(year);
         WebElement yearSelected = Driver.Instance.findElement(By.cssSelector("#year_list_chzn > .chzn-single > span"));
         if (!(yearSelected.getText()).equals(yearRequired)) {
@@ -37,7 +37,29 @@ public class HomePage {
             selectedYear.click();
         }
     }
-
+*/
+    
+    public static void SelectYear(String year) {
+        String yearRequired = YearType.getCurrentYear(year);
+        WebElement yearSelected = Driver.Instance.findElement(By.cssSelector("#year_list_chosen > .chosen-single > span"));
+        if (!(yearSelected.getText()).equals(yearRequired)) {
+            WebElement dropdownContainer = Driver.Instance.findElement(By.cssSelector("#year_list_chosen > .chosen-single"));
+            dropdownContainer.click();
+            WebElement dropdown = Driver.Instance.findElement(By.cssSelector("#year_list_chosen > .chosen-drop > .chosen-results"));
+            List<WebElement> options = dropdown.findElements(By.tagName("li"));
+            WebElement selectedYear = null;
+            for (WebElement option : options) {
+                String optionYear = option.getText();
+                if (optionYear.equals(yearRequired)) {
+                    selectedYear = options.get(options.indexOf(option));
+                    break;
+                }
+            }
+            selectedYear.click();
+        }
+    }
+    
+    
     public static void createAlert() {
         Driver.Instance.findElement(
                 By.xpath("//*[@id=\"block-block-7\"]/div/div/span[contains(text(),'Create Alert')]"))
@@ -194,8 +216,16 @@ public class HomePage {
 			return false;
 	}
 	
+	public static String DetailsPagetitle() {
+		   WebDriverWait wait = new WebDriverWait(Driver.Instance, 30);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("contract-title")));
+			String title = (Driver.Instance.findElement(By.className("contract-title"))).getText();	
+			System.out.println(title);
+			return title;
+	}
+	
 	public static Float GetTransactionAmount() {
-		WebDriverWait wait = new WebDriverWait(Driver.Instance, 20);
+		WebDriverWait wait = new WebDriverWait(Driver.Instance, 30);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("transactions-total-amount")));
 		String count = (Driver.Instance.findElement(By.className("transactions-total-amount"))).getText();	
 		System.out.println(Helper.billionStringToFloat(count));
@@ -206,7 +236,7 @@ public class HomePage {
           return spendingAmt.getText().substring((spendingAmt.getText().indexOf("$")));
       }
 	public static String GetTransactionAmount1() {
-		WebDriverWait wait = new WebDriverWait(Driver.Instance, 20);
+		WebDriverWait wait = new WebDriverWait(Driver.Instance, 30);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("total-spending-amount")));
 		String amount = (Driver.Instance.findElement(By.className("total-spending-amount"))).getText();	
 		//System.out.println(Helper.billionStringToFloat(count));

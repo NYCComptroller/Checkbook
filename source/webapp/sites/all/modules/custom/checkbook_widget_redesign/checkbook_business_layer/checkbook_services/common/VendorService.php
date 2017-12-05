@@ -36,17 +36,29 @@ abstract class VendorService {
      * @return bool
      */
     static protected function getLatestMinorityTypeByYear($vendor_id, $year_id, $type_of_year, $vendor_type, $domain = null) {
-
-        $data_set = $domain == Domain::$SPENDING ? "spending_vendor_latest_mwbe_category" : "contract_vendor_latest_mwbe_category";
-        $query = "SELECT minority_type_id
-                  FROM ".$data_set."
-                  WHERE minority_type_id IN (2,3,4,5,9)
-                  AND vendor_id = ".$vendor_id."
-                  AND year_id = ".$year_id."
-                  AND type_of_year = '".$type_of_year."'
-                  AND is_prime_or_sub = '".$vendor_type."' LIMIT 1";
-
-        $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
+        switch ($domain){
+            case Domain::$SPENDING : 
+                $query = "SELECT minority_type_id
+                            FROM spending_vendor_latest_mwbe_category
+                            WHERE minority_type_id IN (2,3,4,5,9)
+                            AND vendor_id = ".$vendor_id."
+                            AND year_id = ".$year_id."
+                            AND type_of_year = '".$type_of_year."'
+                            AND is_prime_or_sub = '".$vendor_type."' LIMIT 1";
+                
+                $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
+                break;
+            default : 
+                $query = "SELECT DISTINCT minority_type_id, latest_minority_flag, latest_mwbe_flag
+                            FROM contract_vendor_latest_mwbe_category
+                            WHERE minority_type_id IN (2,3,4,5,9)
+                            AND vendor_id = ".$vendor_id."
+                            AND year_id = ".$year_id."
+                            AND type_of_year = 'B'
+                            AND latest_minority_flag = 'Y'
+                            AND is_prime_or_sub = '".$vendor_type."'";
+                $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
+        }
         $minority_type_id = $results[0]['minority_type_id'];
         return $minority_type_id != '' ? $minority_type_id : false;
     }
@@ -64,5 +76,39 @@ abstract class VendorService {
             $vendors = array_filter($vendors);
         }
         return !empty($vendors) ? $vendors : null;
+    }
+    
+    /**
+     * Given the vendor name, returns an array of sub and prime vendor ids
+     * @param $domain
+     * @param $vendor_id
+     * @param $year_id
+     * @param $status
+     * @return $minority_types
+     */
+    public static function getAllVendorMinorityTypesByYear($domain, $vendor_id, $year_id, $status = 'A') {
+        $minority_type_ids  = array();
+        switch($domain){
+            case Domain::$SPENDING:
+                        $query = "SELECT DISTINCT minority_type_id
+                                    FROM aggregateon_mwbe_spending_coa_entities
+                                    WHERE vendor_id = ".$vendor_id."
+                                    AND year_id = ". $year_id ."
+                                    AND type_of_year = 'B'";
+                break;
+            case Domain::$CONTRACTS:
+                        $query = "SELECT DISTINCT minority_type_id
+                                    FROM aggregateon_mwbe_contracts_cumulative_spending
+                                    WHERE vendor_id = ".$vendor_id."
+                                    AND fiscal_year_id = ". $year_id ."
+                                    AND status_flag = '" . $status . "' 
+                                    AND type_of_year = 'B'";
+                break;
+        }
+        $minority_types = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
+        foreach($minority_types as $minority_type_id){
+            $minority_type_ids[] = $minority_type_id['minority_type_id'];
+        }
+        return $minority_type_ids;
     }
 }
