@@ -164,7 +164,7 @@
 	 						; 
 			
 			//$link= CustomURLHelper::prepareUrl('spending_landing', SpendingUtil::$landingPageParams, array('expandBottomCont'=>'true'), array('subvendor'=>$row['vendor_id']) );
-			//$link = RequestUtil::replaceParamFromString($link,'dashboard',RequestUtil::getNextSubvendorDashboardStateParam());
+			//$link = CheckbookProject\CustomClasses\RequestUtil::replaceParamFromString($link,'dashboard',RequestUtil::getNextSubvendorDashboardStateParam());
 			
 			$link = SpendingUtil::getSubVendorNameLinkUrl($node, $row);	 
 			$series_new[$index]->url = substr($link,1);

@@ -138,7 +138,7 @@ class MappingUtil {
             $applicable_minority_types = self::getCurrentPrimeMWBEApplicableFilters($domain);
         }
 
-        $mwbe_featured_dashboard_param = RequestUtil::getNextMWBEDashboardState();
+        $mwbe_featured_dashboard_param = CheckbookProject\CustomClasses\RequestUtil::getNextMWBEDashboardState();
         $active_domain_link =  preg_replace('/\/mwbe\/[^\/]*/','',$active_domain_link);
 
         $filters_html =  "<div class='main-nav-drop-down' style='display:none'>
@@ -159,17 +159,17 @@ class MappingUtil {
             $filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/3'>Hispanic American</a></li>";
         }
 
-        $total_mwbe_link = RequestUtil::getTotalMWBELink();
+        $total_mwbe_link = CheckbookProject\CustomClasses\RequestUtil::getTotalMWBELink();
         if($total_mwbe_link !=  null && $total_mwbe_link != ""){
             $mwbe_total_link_html  ="<li class='no-click'><a href='" . $total_mwbe_link."'>Total M/WBE</a></li>";
         }
 
         //Set year value to 2011 for CY2010
-        $year = RequestUtil::getFiscalYearIdForTopNavigation();
+        $year = CheckbookProject\CustomClasses\RequestUtil::getFiscalYearIdForTopNavigation();
         $yearType = 'B';
         $filters_html .=  "
   			 " . $mwbe_total_link_html . "
-			<li class='no-click'><a href='/" . RequestUtil::getLandingPageUrl($domain,$year,$yearType) . "/mwbe/" . MappingUtil::$total_mwbe_cats ."/dashboard/mp'>M/WBE Home</a></li>
+			<li class='no-click'><a href='/" . CheckbookProject\CustomClasses\RequestUtil::getLandingPageUrl($domain,$year,$yearType) . "/mwbe/" . MappingUtil::$total_mwbe_cats ."/dashboard/mp'>M/WBE Home</a></li>
   				</ul>
   		</div>";
 
@@ -214,13 +214,13 @@ class MappingUtil {
         }
 
         //Sub vendors home link
-        $year = RequestUtil::getFiscalYearIdForTopNavigation();
+        $year = CheckbookProject\CustomClasses\RequestUtil::getFiscalYearIdForTopNavigation();
         $yearType = 'B';
-        $sub_vendors_home_link = RequestUtil::getLandingPageUrl($domain,$year,$yearType);
+        $sub_vendors_home_link = CheckbookProject\CustomClasses\RequestUtil::getLandingPageUrl($domain,$year,$yearType);
         $home_link_html = "<li class='no-click'><a href='/" . $sub_vendors_home_link . "/dashboard/ss'>Sub Vendors Home</a></li>";
 
         //Sub vendors total link
-        $total_subven_link = RequestUtil::getTotalSubvendorsLink();
+        $total_subven_link = CheckbookProject\CustomClasses\RequestUtil::getTotalSubvendorsLink();
         $total_link_html = $total_subven_link !=  null && $total_subven_link != ""
             ? "<li class='no-click'><a href='" . $total_subven_link . "'>Total Sub Vendors</a></li>"
             : "";

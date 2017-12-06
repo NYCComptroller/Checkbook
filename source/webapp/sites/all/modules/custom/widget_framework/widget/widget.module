@@ -585,7 +585,7 @@ function load_widget_data($node, $resultFormatter) {
 
         //if % (single or repeating) is passed as a parameter,
         //this field needs to be ignored in an ilike/like
-        if(RequestUtil::isAdvancedSearchPage()) {
+        if(CheckbookProject\CustomClasses\RequestUtil::isAdvancedSearchPage()) {
             foreach($parameters as $param_key => $param_value){
                 if(!is_array($param_value)) continue;
                 $operator_handler_class = get_class($param_value[0]);

@@ -132,7 +132,7 @@ foreach($node->data as $key => $value){
                 $link_parts = explode("?expandBottomContURL=",$link);
                 $url = $link_parts[0];
                 $bottom_url = preg_replace("/\/calyear\//","/year/" ,$link_parts[1]);
-                $bottom_url_year_id = RequestUtil::getRequestKeyValueFromURL("year",$bottom_url);
+                $bottom_url_year_id = CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("year",$bottom_url);
                 $bottom_url = preg_replace('/\/year\/'.$bottom_url_year_id.'/','/year/'.$value['year_id'],$bottom_url);
                 $link = $url . '?expandBottomContURL='. $bottom_url;
             }
@@ -140,7 +140,7 @@ foreach($node->data as $key => $value){
         
         //For the charts with the months links, need to persist the month param for the newly selected year
         if(isset($bottomURL) && preg_match('/month/',$bottomURL)){
-            $old_month_id = RequestUtil::getRequestKeyValueFromURL("month",$bottomURL);
+            $old_month_id = CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("month",$bottomURL);
             $year_id = $value['year_id'];
             if(isset($old_month_id) && isset($year_id)) {
                 $new_month_id = _translateMonthIdByYear($old_month_id,$year_id);
@@ -174,14 +174,14 @@ foreach($node->data as $key => $value){
                 $link_parts = explode("?expandBottomContURL=",$link);
                 $url = $link_parts[0];
                 $bottom_url = preg_replace("/\/year\//","/calyear/" ,$link_parts[1]);
-                $bottom_url_year_id = RequestUtil::getRequestKeyValueFromURL("calyear",$bottom_url);
+                $bottom_url_year_id = CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("calyear",$bottom_url);
                 $bottom_url = preg_replace('/\/calyear\/'.$bottom_url_year_id.'/','/calyear/'.$value['year_id'],$bottom_url);
                 $link = $url . '?expandBottomContURL='. $bottom_url;
             }
             
             //For the charts with the months links, need to persist the month param for the newly selected year
             if(isset($bottomURL) && preg_match('/month/',$bottomURL)){
-                $old_month_id = RequestUtil::getRequestKeyValueFromURL("month",$bottomURL);
+                $old_month_id = CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("month",$bottomURL);
                 $year_id = $value['year_id'];
                 if(isset($old_month_id) && isset($year_id)) {
                     $new_month_id = _translateMonthIdByYear($old_month_id,$year_id,"C");

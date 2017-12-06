@@ -1182,7 +1182,7 @@ class SpendingUtil{
 
     static function getTransactionPageTitle($widgetTitle){
         $catName = self::getTransactionPageCategoryName();
-        $dashboard_title = RequestUtil::getDashboardTitle();
+        $dashboard_title = CheckbookProject\CustomClasses\RequestUtil::getDashboardTitle();
         $dashboard = _getRequestParamValue('dashboard');
         $category = _getRequestParamValue('category');
         $smnid = _getRequestParamValue('smnid');
@@ -1227,7 +1227,7 @@ class SpendingUtil{
     }
 
     static function getSpentToDateTitle($widgetTitle){
-        $dashboard = RequestUtil::getDashboardTitle();
+        $dashboard = CheckbookProject\CustomClasses\RequestUtil::getDashboardTitle();
         $contractTitle = self::getContractTitle();
 
         $dashboard_param = _getRequestParamValue('dashboard');

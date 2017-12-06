@@ -18,7 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-//namespace CheckbookProject\CustomClasses;
+namespace CheckbookProject\CustomClasses;
 
 require_once(__DIR__ . '/constants/Constants.php');
 
@@ -119,20 +119,20 @@ class RequestUtil
         $title = '';
         $bottomURL = $_REQUEST['expandBottomContURL'];
         if (preg_match('/magid/', $bottomURL)) {
-            $magid = RequestUtil::getRequestKeyValueFromURL("magid", $bottomURL);
+            $magid = CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("magid", $bottomURL);
             $contract_number = _get_master_agreement_details($magid);
             return $contract_number['contract_number'];
 
         } elseif (preg_match('/agid/', $bottomURL)) {
-            $agid = RequestUtil::getRequestKeyValueFromURL("agid", $bottomURL);
+            $agid = CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("agid", $bottomURL);
             $contract_number = _get_child_agreement_details($agid);
             return $contract_number['contract_number'];
         } elseif (preg_match('/contract/', $bottomURL) && preg_match('/pending_contract_transactions/', $bottomURL)) {
-            $contract_number = RequestUtil::getRequestKeyValueFromURL("contract", $bottomURL);
+            $contract_number = CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("contract", $bottomURL);
             return $contract_number;
         } else if (isset($bottomURL) && preg_match('/transactions/', $bottomURL)) {
-            $smnid = RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL);
-            $dashboard = RequestUtil::getRequestKeyValueFromURL("dashboard", $bottomURL);
+            $smnid = CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL);
+            $dashboard = CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("dashboard", $bottomURL);
             $title = NodeSummaryUtil::getInitNodeSummaryTitle($smnid);
             if ($smnid == 720 && $dashboard != 'mp') {
                 $title = '';
@@ -164,7 +164,7 @@ class RequestUtil
                     $title = $title . " " . $bottomNavigation . " Transactions";
 
                 } else {
-                    $title = RequestUtil::getDashboardTitle() . ' ' . $title . ' ' . ' Active Expense Contracts Transactions';
+                    $title = CheckbookProject\CustomClasses\RequestUtil::getDashboardTitle() . ' ' . $title . ' ' . ' Active Expense Contracts Transactions';
                 }
             } elseif (preg_match('/^contracts_landing/', current_path()) && preg_match('/status\/R/', current_path())) {
                 if (preg_match('/dashboard\/ss/', current_path()) || preg_match('/dashboard\/ms/', current_path()) || preg_match('/dashboard\/sp/', current_path())) {
@@ -174,7 +174,7 @@ class RequestUtil
                     $title = $title . " " . $bottomNavigation . " Transactions";
 
                 } else {
-                    $title = RequestUtil::getDashboardTitle() . ' ' . $title . ' ' . ' Registered Expense Contracts Transactions';
+                    $title = CheckbookProject\CustomClasses\RequestUtil::getDashboardTitle() . ' ' . $title . ' ' . ' Registered Expense Contracts Transactions';
                 }
 
             } elseif (preg_match('/^contracts_landing/', current_path()) && !preg_match('/status\/', current_path())) {
@@ -185,39 +185,39 @@ class RequestUtil
                     $title = 'M/WBE Sub Contract Status by Prime Contract ID';
                 }
             } elseif (preg_match('/^contracts_revenue_landing/', current_path()) && preg_match('/status\/A/', current_path())) {
-                $title = RequestUtil::getDashboardTitle() . ' ' . $title . ' ' . ' Active Revenue Contracts Transactions';
+                $title = CheckbookProject\CustomClasses\RequestUtil::getDashboardTitle() . ' ' . $title . ' ' . ' Active Revenue Contracts Transactions';
             } elseif (preg_match('/^contracts_revenue_landing/', current_path()) && preg_match('/status\/R/', current_path())) {
-                $title = RequestUtil::getDashboardTitle() . ' ' . $title . ' ' . ' Registered Revenue Contracts Transactions';
+                $title = CheckbookProject\CustomClasses\RequestUtil::getDashboardTitle() . ' ' . $title . ' ' . ' Registered Revenue Contracts Transactions';
             } elseif (preg_match('/^contracts_pending_exp_landing/', current_path())) {
-                $title = RequestUtil::getDashboardTitle() . ' ' . $title . ' ' . ' Pending Expense Contracts Transactions';
+                $title = CheckbookProject\CustomClasses\RequestUtil::getDashboardTitle() . ' ' . $title . ' ' . ' Pending Expense Contracts Transactions';
             } elseif (preg_match('/^contracts_pending_rev_landing/', current_path())) {
-                $title = RequestUtil::getDashboardTitle() . ' ' . $title . ' ' . ' Pending Revenue Contracts Transactions';
+                $title = CheckbookProject\CustomClasses\RequestUtil::getDashboardTitle() . ' ' . $title . ' ' . ' Pending Revenue Contracts Transactions';
             }
         } elseif (preg_match('/^contracts_landing/', current_path()) && preg_match('/status\/A/', current_path())) {
             if (preg_match('/dashboard\/ss/', current_path()) || preg_match('/dashboard\/ms/', current_path()) || preg_match('/dashboard\/sp/', current_path())) {
                 $title = _get_contracts_breadcrumb_title_drilldown(false) . ' ' . ' Total Active Sub Vendor Contracts';
             } else {
-                $title = _get_contracts_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() . ' Active Expense Contracts';
+                $title = _get_contracts_breadcrumb_title_drilldown(false) . ' ' . CheckbookProject\CustomClasses\RequestUtil::getDashboardTitle() . ' Active Expense Contracts';
             }
 
         } elseif (preg_match('/^contracts_landing/', current_path()) && preg_match('/status\/R/', current_path())) {
             if (preg_match('/dashboard\/ss/', current_path()) || preg_match('/dashboard\/ms/', current_path()) || preg_match('/dashboard\/sp/', current_path())) {
                 $title = _get_contracts_breadcrumb_title_drilldown(false) . ' ' . ' New Sub Vendor Contracts by Fiscal Year';
             } else {
-                $title = _get_contracts_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() . ' Registered Expense Contracts';
+                $title = _get_contracts_breadcrumb_title_drilldown(false) . ' ' . CheckbookProject\CustomClasses\RequestUtil::getDashboardTitle() . ' Registered Expense Contracts';
             }
         } elseif (preg_match('/^contracts_landing/', current_path()) && !preg_match('/status\/', current_path())) {
             if (preg_match('/dashboard\/ss/', current_path()) || preg_match('/dashboard\/ms/', current_path()) || preg_match('/dashboard\/sp/', current_path())) {
                 $title = _get_contracts_breadcrumb_title_drilldown(false) . ' ' . ' Status of Sub Vendor Contracts by Prime Vendor';
             }
         } elseif (preg_match('/^contracts_revenue_landing/', current_path()) && preg_match('/status\/A/', current_path())) {
-            $title = _get_contracts_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() . ' Active Revenue Contracts';
+            $title = _get_contracts_breadcrumb_title_drilldown(false) . ' ' . CheckbookProject\CustomClasses\RequestUtil::getDashboardTitle() . ' Active Revenue Contracts';
         } elseif (preg_match('/^contracts_revenue_landing/', current_path()) && preg_match('/status\/R/', current_path())) {
-            $title = _get_contracts_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() . ' Registered Revenue Contracts';
+            $title = _get_contracts_breadcrumb_title_drilldown(false) . ' ' . CheckbookProject\CustomClasses\RequestUtil::getDashboardTitle() . ' Registered Revenue Contracts';
         } elseif (preg_match('/^contracts_pending_exp_landing/', current_path())) {
-            $title = _get_pending_contracts_breadcrumb_title_drilldown() . ' ' . RequestUtil::getDashboardTitle() . ' Pending Expense Contracts';
+            $title = _get_pending_contracts_breadcrumb_title_drilldown() . ' ' . CheckbookProject\CustomClasses\RequestUtil::getDashboardTitle() . ' Pending Expense Contracts';
         } elseif (preg_match('/^contracts_pending_rev_landing/', current_path())) {
-            $title = _get_pending_contracts_breadcrumb_title_drilldown() . ' ' . RequestUtil::getDashboardTitle() . ' Pending Revenue Contracts';
+            $title = _get_pending_contracts_breadcrumb_title_drilldown() . ' ' . CheckbookProject\CustomClasses\RequestUtil::getDashboardTitle() . ' Pending Revenue Contracts';
         } else {
             GLOBAL $checkbook_breadcrumb_title;
             $title = $checkbook_breadcrumb_title;
@@ -269,22 +269,22 @@ class RequestUtil
         $title = '';
         $bottomURL = $_REQUEST['expandBottomContURL'];
         if (isset($bottomURL) && preg_match('/payroll_agencytransactions/', $bottomURL)) {
-            $smnid = RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL);
-            $dtsmnid = RequestUtil::getRequestKeyValueFromURL("dtsmnid", $bottomURL);
+            $smnid = CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL);
+            $dtsmnid = CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("dtsmnid", $bottomURL);
             if ($dtsmnid > 0) {
                 $title = NodeSummaryUtil::getInitNodeSummaryTitle($dtsmnid);
             } else if ($smnid > 0) {
                 $title = NodeSummaryUtil::getInitNodeSummaryTitle($smnid);
             } else {
-                $title = _checkbook_project_get_name_for_argument("agency_id", RequestUtil::getRequestKeyValueFromURL("agency", $bottomURL)) . ' Payroll Transactions';
+                $title = _checkbook_project_get_name_for_argument("agency_id", CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("agency", $bottomURL)) . ' Payroll Transactions';
             }
         } else if (isset($bottomURL) && preg_match('/payroll_employee_transactions/', $bottomURL)) {
             $title = "Individual Employee Payroll Transactions";
         } else if (isset($bottomURL) && preg_match('/payroll_title_transactions/', $bottomURL)) {
             $title = "Payroll Summary by Employee Title";
         } else if (isset($bottomURL) && preg_match('/payroll_nyc_transactions/', $bottomURL)) {
-            $smnid = RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL);
-            $dtsmnid = RequestUtil::getRequestKeyValueFromURL("dtsmnid", $bottomURL);
+            $smnid = CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL);
+            $dtsmnid = CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("dtsmnid", $bottomURL);
             if ($dtsmnid > 0) {
                 $title = NodeSummaryUtil::getInitNodeSummaryTitle($dtsmnid);
             }
@@ -292,12 +292,12 @@ class RequestUtil
                 $title = NodeSummaryUtil::getInitNodeSummaryTitle($smnid);
             }
         } else if (isset($bottomURL) && preg_match('/payroll_nyc_title_transactions/', $bottomURL)) {
-            $smnid = RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL);
+            $smnid = CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL);
             if ($smnid > 0) {
                 $title = NodeSummaryUtil::getInitNodeSummaryTitle($smnid);
             }
         } else if (isset($bottomURL) && preg_match('/payroll_by_month_nyc_transactions/', $bottomURL)) {
-            $smnid = RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL);
+            $smnid = CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL);
             if ($smnid == '491' || $smnid == '492') {
                 $customTitle = "Overtime Payments by Month Transactions";
             } else {
@@ -305,7 +305,7 @@ class RequestUtil
             }
             $title = $customTitle;
         } else if (isset($bottomURL) && preg_match('/payroll_agency_by_month_transactions/', $bottomURL)) {
-            $smnid = RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL);
+            $smnid = CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL);
             if ($smnid == '491') {
                 $customTitle = "Overtime Payments by Month Transactions";
             } else {
@@ -315,9 +315,9 @@ class RequestUtil
         } elseif (preg_match('/^payroll\/search\/transactions/', current_path())) {
             $title = "Payroll Transactions";
         } elseif (preg_match('/^payroll/', current_path()) && preg_match('/agency_landing/', current_path())) {
-            $title = _checkbook_project_get_name_for_argument("agency_id", RequestUtil::getRequestKeyValueFromURL("agency", current_path())) . ' Payroll';
+            $title = _checkbook_project_get_name_for_argument("agency_id", CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("agency", current_path())) . ' Payroll';
         } elseif (preg_match('/^payroll/', current_path()) && preg_match('/title_landing/', current_path())) {
-            $title_code = RequestUtil::getRequestKeyValueFromURL("title", current_path());
+            $title_code = CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("title", current_path());
             $title = PayrollUtil::getTitleByCode($title_code) . ' Payroll';
             $title = mb_convert_case($title, MB_CASE_TITLE, "UTF-8");
         } elseif (preg_match('/^payroll/', current_path()) && !preg_match('/transactions/', current_path())) {
@@ -387,7 +387,7 @@ class RequestUtil
         $title = $MWBE_certified
             ? '<p class="sub-chart-title">M/WBE Category: ' . $minority_category . '</p>'
             : $minority_category . ' ';
-        $title .= RequestUtil::getSpendingCategoryName($defaultTitle);
+        $title .= CheckbookProject\CustomClasses\RequestUtil::getSpendingCategoryName($defaultTitle);
 
         return html_entity_decode($title);
     }
@@ -450,8 +450,8 @@ class RequestUtil
         if (preg_match('/transactions/', current_path())) {
             $title = SpendingUtil::getSpendingTransactionsTitle();
         } elseif (isset($bottomURL) && preg_match('/transactions/', $bottomURL)) {
-            $dtsmnid = RequestUtil::getRequestKeyValueFromURL("dtsmnid", $bottomURL);
-            $smnid = RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL);
+            $dtsmnid = CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("dtsmnid", $bottomURL);
+            $smnid = CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL);
             if ($dtsmnid > 0) {
                 $title = NodeSummaryUtil::getInitNodeSummaryTitle($dtsmnid);
             } else if ($smnid > 0) {
@@ -459,44 +459,44 @@ class RequestUtil
             } else {
                 $last_id = _getLastRequestParamValue($bottomURL);
                 if ($last_id['vendor'] > 0) {
-                    $title = _checkbook_project_get_name_for_argument("vendor_id", RequestUtil::getRequestKeyValueFromURL("vendor", $bottomURL));
+                    $title = _checkbook_project_get_name_for_argument("vendor_id", CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("vendor", $bottomURL));
                 } elseif ($last_id["agency"] > 0) {
-                    $title = _checkbook_project_get_name_for_argument("agency_id", RequestUtil::getRequestKeyValueFromURL("agency", $bottomURL));
+                    $title = _checkbook_project_get_name_for_argument("agency_id", CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("agency", $bottomURL));
                 } elseif ($last_id["expcategory"] > 0) {
-                    $title = _checkbook_project_get_name_for_argument("expenditure_object_id", RequestUtil::getRequestKeyValueFromURL("expcategory", $bottomURL));
+                    $title = _checkbook_project_get_name_for_argument("expenditure_object_id", CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("expcategory", $bottomURL));
                 } elseif ($last_id["dept"] > 0) {
-                    $title = _checkbook_project_get_name_for_argument("department_id", RequestUtil::getRequestKeyValueFromURL("dept", $bottomURL));
+                    $title = _checkbook_project_get_name_for_argument("department_id", CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("dept", $bottomURL));
                 } elseif (preg_match("/\/agid/", $bottomURL)) {
-                    $title = _checkbook_project_get_name_for_argument("agreement_id", RequestUtil::getRequestKeyValueFromURL("agid", $bottomURL));
+                    $title = _checkbook_project_get_name_for_argument("agreement_id", CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("agid", $bottomURL));
                 } elseif (preg_match("/\/magid/", $bottomURL)) {
-                    $title = _checkbook_project_get_name_for_argument("master_agreement_id", RequestUtil::getRequestKeyValueFromURL("magid", $bottomURL));
+                    $title = _checkbook_project_get_name_for_argument("master_agreement_id", CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("magid", $bottomURL));
                 }
                 if (preg_match('/\/category\/1/', $bottomURL)) {
-                    $title = $title . ' ' . RequestUtil::getDashboardTitle() . ' Contract Spending Transactions';
+                    $title = $title . ' ' . CheckbookProject\CustomClasses\RequestUtil::getDashboardTitle() . ' Contract Spending Transactions';
                 } elseif (preg_match('/\/category\/2/', $bottomURL)) {
-                    $title = $title . ' ' . RequestUtil::getDashboardTitle() . ' Payroll Spending Transactions';
+                    $title = $title . ' ' . CheckbookProject\CustomClasses\RequestUtil::getDashboardTitle() . ' Payroll Spending Transactions';
                 } elseif (preg_match('/\/category\/3/', $bottomURL)) {
-                    $title = $title . ' ' . RequestUtil::getDashboardTitle() . ' Capital Contracts Spending Transactions';
+                    $title = $title . ' ' . CheckbookProject\CustomClasses\RequestUtil::getDashboardTitle() . ' Capital Contracts Spending Transactions';
                 } elseif (preg_match('/\/category\/4/', $bottomURL)) {
-                    $title = $title . ' ' . RequestUtil::getDashboardTitle() . ' Others Spending Transactions';
+                    $title = $title . ' ' . CheckbookProject\CustomClasses\RequestUtil::getDashboardTitle() . ' Others Spending Transactions';
                 } elseif (preg_match('/\/category\/5/', $bottomURL)) {
-                    $title = $title . ' ' . RequestUtil::getDashboardTitle() . ' Trust & Agency Spending Transactions';
+                    $title = $title . ' ' . CheckbookProject\CustomClasses\RequestUtil::getDashboardTitle() . ' Trust & Agency Spending Transactions';
                 } else {
-                    $title = $title . ' ' . RequestUtil::getDashboardTitle() . ' Total Spending Transactions';
+                    $title = $title . ' ' . CheckbookProject\CustomClasses\RequestUtil::getDashboardTitle() . ' Total Spending Transactions';
                 }
             }
         } elseif (preg_match('/\/category\/1/', current_path())) {
-            $title = _get_spending_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() . ' Contract Spending';
+            $title = _get_spending_breadcrumb_title_drilldown(false) . ' ' . CheckbookProject\CustomClasses\RequestUtil::getDashboardTitle() . ' Contract Spending';
         } elseif (preg_match('/\/category\/2/', current_path())) {
-            $title = _get_spending_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() . ' Payroll Spending';
+            $title = _get_spending_breadcrumb_title_drilldown(false) . ' ' . CheckbookProject\CustomClasses\RequestUtil::getDashboardTitle() . ' Payroll Spending';
         } elseif (preg_match('/\/category\/3/', current_path())) {
-            $title = _get_spending_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() . ' Capital Contracts Spending';
+            $title = _get_spending_breadcrumb_title_drilldown(false) . ' ' . CheckbookProject\CustomClasses\RequestUtil::getDashboardTitle() . ' Capital Contracts Spending';
         } elseif (preg_match('/\/category\/4/', current_path())) {
-            $title = _get_spending_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() . ' Others Spending';
+            $title = _get_spending_breadcrumb_title_drilldown(false) . ' ' . CheckbookProject\CustomClasses\RequestUtil::getDashboardTitle() . ' Others Spending';
         } elseif (preg_match('/\/category\/5/', current_path())) {
-            $title = _get_spending_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() . ' Trust & Agency Spending';
+            $title = _get_spending_breadcrumb_title_drilldown(false) . ' ' . CheckbookProject\CustomClasses\RequestUtil::getDashboardTitle() . ' Trust & Agency Spending';
         } else {
-            $title = _get_spending_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() . ' Total Spending';
+            $title = _get_spending_breadcrumb_title_drilldown(false) . ' ' . CheckbookProject\CustomClasses\RequestUtil::getDashboardTitle() . ' Total Spending';
         }
 
         return html_entity_decode($title);
@@ -536,8 +536,8 @@ class RequestUtil
             || stripos($find, 'deppartment_budget_details')
             || stripos($find, 'expense_category_budget_details')
         ) {
-            $dtsmnid = (isset($bottomURL)) ? RequestUtil::getRequestKeyValueFromURL("dtsmnid", $bottomURL) : RequestUtil::getRequestKeyValueFromURL("dtsmnid", current_path());
-            $smnid = (isset($bottomURL)) ? RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL) : RequestUtil::getRequestKeyValueFromURL("smnid", current_path());
+            $dtsmnid = (isset($bottomURL)) ? CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("dtsmnid", $bottomURL) : CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("dtsmnid", current_path());
+            $smnid = (isset($bottomURL)) ? CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL) : CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("smnid", current_path());
             if (isset($dtsmnid)) {
                 $title = NodeSummaryUtil::getInitNodeSummaryTitle($dtsmnid);
             } else if (isset($smnid)) {
@@ -566,8 +566,8 @@ class RequestUtil
             || stripos($find, 'funding_class_revenue_by_cross_year_collections_details')
             || stripos('_' . current_path(), 'revenue_transactions')
         ) {
-            $dtsmnid = (isset($bottomURL)) ? RequestUtil::getRequestKeyValueFromURL("dtsmnid", $bottomURL) : RequestUtil::getRequestKeyValueFromURL("dtsmnid", current_path());
-            $smnid = (isset($bottomURL)) ? RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL) : RequestUtil::getRequestKeyValueFromURL("smnid", current_path());
+            $dtsmnid = (isset($bottomURL)) ? CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("dtsmnid", $bottomURL) : CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("dtsmnid", current_path());
+            $smnid = (isset($bottomURL)) ? CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL) : CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("smnid", current_path());
             if (isset($dtsmnid)) {
                 $title = NodeSummaryUtil::getInitNodeSummaryTitle($dtsmnid);
             } else if (isset($smnid)) {
@@ -599,8 +599,8 @@ class RequestUtil
             || stripos($find, 'funding_class_revenue_by_cross_year_collections_details')
             || stripos('_' . current_path(), 'revenue_transactions')
         ) {
-            $smnid = ($bottomURL) ? RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL) : RequestUtil::getRequestKeyValueFromURL("smnid", current_path());
-            $dtsmnid = ($bottomURL) ? RequestUtil::getRequestKeyValueFromURL("dtsmnid", $bottomURL) : RequestUtil::getRequestKeyValueFromURL("dtsmnid", current_path());
+            $smnid = ($bottomURL) ? CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL) : CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("smnid", current_path());
+            $dtsmnid = ($bottomURL) ? CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("dtsmnid", $bottomURL) : CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("dtsmnid", current_path());
             if ($smnid > 0 || $dtsmnid > 0) {
                 if ($dtsmnid > 0) {
                     $title = "There are no records to be displayed.";
@@ -608,11 +608,11 @@ class RequestUtil
                     $bottomURL = ($bottomURL) ? $bottomURL : current_path();
                     $last_id = _getLastRequestParamValue($bottomURL);
                     if ($last_id["agency"] > 0) {
-                        $title = _checkbook_project_get_name_for_argument("agency_id", RequestUtil::getRequestKeyValueFromURL("agency", $bottomURL));
+                        $title = _checkbook_project_get_name_for_argument("agency_id", CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("agency", $bottomURL));
                     } elseif ($last_id["revcat"] > 0) {
-                        $title = _checkbook_project_get_name_for_argument("revenue_category_id", RequestUtil::getRequestKeyValueFromURL("revcat", $bottomURL));
+                        $title = _checkbook_project_get_name_for_argument("revenue_category_id", CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("revcat", $bottomURL));
                     } elseif (isset($last_id["fundsrccode"])) {
-                        $title = _checkbook_project_get_name_for_argument("funding_class_code", RequestUtil::getRequestKeyValueFromURL("fundsrccode", $bottomURL));
+                        $title = _checkbook_project_get_name_for_argument("funding_class_code", CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("fundsrccode", $bottomURL));
                     }
                     $title = 'There are no records to be displayed for ' . $title . '.';
                 }
@@ -1155,13 +1155,13 @@ class RequestUtil
             case "spending":
                 $table = "aggregateon_subven_spending_coa_entities";
                 $urlParamMap = array("year" => "year_id", "yeartype" => "type_of_year", "agency" => "agency_id", "vendor" => "prime_vendor_id");
-                $sub_vendors_total_link = RequestUtil::getLandingPageUrl("spending", _getRequestParamValue("year"), 'B');
+                $sub_vendors_total_link = CheckbookProject\CustomClasses\RequestUtil::getLandingPageUrl("spending", _getRequestParamValue("year"), 'B');
                 break;
             case "contracts":
                 $table = "aggregateon_subven_contracts_cumulative_spending";
                 $urlParamMap = array("year" => "fiscal_year_id", "agency" => "agency_id", "yeartype" => "type_of_year", "vendor" => "prime_vendor_id");
                 $default_params = array("status_flag" => "A");
-                $sub_vendors_total_link = RequestUtil::getLandingPageUrl("contracts", _getRequestParamValue("year"), 'B');
+                $sub_vendors_total_link = CheckbookProject\CustomClasses\RequestUtil::getLandingPageUrl("contracts", _getRequestParamValue("year"), 'B');
                 break;
         }
         if (self::get_top_nav_records_count($urlParamMap, $default_params, $table) > 0) {
@@ -1276,7 +1276,7 @@ class RequestUtil
         } else {
             return "";
         }
-        return '/' . RequestUtil::getLandingPageUrl($domain, self::getFiscalYearIdForTopNavigation(), 'B') . "/mwbe/" . MappingUtil::$total_mwbe_cats
+        return '/' . CheckbookProject\CustomClasses\RequestUtil::getLandingPageUrl($domain, self::getFiscalYearIdForTopNavigation(), 'B') . "/mwbe/" . MappingUtil::$total_mwbe_cats
             . "/dashboard/" . $dashboard .
             _checkbook_project_get_url_param_string("agency")
             . _checkbook_project_get_url_param_string("vendor");

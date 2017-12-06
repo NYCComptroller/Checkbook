@@ -1,0 +1,7 @@
+{
+    "autoload": {
+        "psr-4": {
+            "CheckbookProject\\CustomClasses\\": "sites/all/modules/custom/checkbook_project/customclasses"
+        }
+    }
+}
