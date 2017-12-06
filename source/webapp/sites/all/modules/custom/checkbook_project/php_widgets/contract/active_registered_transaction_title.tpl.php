@@ -53,7 +53,7 @@ $current_url = explode('/',$_SERVER['REQUEST_URI']);
 if($current_url[1] == 'contract' && ($current_url[2] == 'search' || $current_url[2] == 'all')&& $current_url[3] == 'transactions'){
     $summaryTitle = "";
 }else if(_checkbook_check_is_mwbe_page() || $dashboard){
-    $summaryTitle = RequestUtil::getDashboardTitle()." ";
+    $summaryTitle = CheckbookProject\CustomClasses\RequestUtil::getDashboardTitle()." ";
 }
 //Handle Sub Vendor widget to not repeat 'Sub Vendor' in title in certain dashboards
 $suppress_widget_title = ($dashboard == "ss" && $smnid == 720) || //Sub Vendors

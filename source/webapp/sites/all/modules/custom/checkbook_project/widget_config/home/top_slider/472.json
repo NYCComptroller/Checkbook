@@ -41,7 +41,7 @@
                 "adjustSerieParameters":"
                     //Calculate amount for all years on 'All Years' advanced search results page
                     if(_getRequestParamValue('year') || _getRequestParamValue('calyear'))
-                        $serieParameters['fiscal_year_id'] = RequestUtil::getFiscalYearIdForTopNavigation();
+                        $serieParameters['fiscal_year_id'] = CheckbookProject\CustomClasses\RequestUtil::getFiscalYearIdForTopNavigation();
                     return $serieParameters;
                 "
             },
@@ -53,7 +53,7 @@
                 "seriesDefaultParameters":{"type_of_year":"C"},
                 "adjustSerieParameters":"
                     if(_getRequestParamValue('yeartype') == 'B' && !preg_match('/payroll/',$_SERVER['REQUEST_URI']))
-                        $serieParameters['fiscal_year_id'] = RequestUtil::getCalYearIdForTopNavigation();
+                        $serieParameters['fiscal_year_id'] = CheckbookProject\CustomClasses\RequestUtil::getCalYearIdForTopNavigation();
                     return $serieParameters;
                 "
             },
@@ -66,7 +66,7 @@
                 "adjustSerieParameters":"
                     //Calculate amount for all years on 'All Years' advanced search results page
                     if(_getRequestParamValue('year') || _getRequestParamValue('calyear'))
-                        $serieParameters['year.year'] = RequestUtil::getFiscalYearIdForTopNavigation();
+                        $serieParameters['year.year'] = CheckbookProject\CustomClasses\RequestUtil::getFiscalYearIdForTopNavigation();
                     return $serieParameters;
                 "
             },
@@ -78,7 +78,7 @@
                 "adjustSerieParameters":"
                     //Calculate amount for all years on 'All Years' advanced search results page
                     if(_getRequestParamValue('year') || _getRequestParamValue('calyear'))
-                        $serieParameters['budget_fiscal_year_id'] = RequestUtil::getFiscalYearIdForTopNavigation();
+                        $serieParameters['budget_fiscal_year_id'] = CheckbookProject\CustomClasses\RequestUtil::getFiscalYearIdForTopNavigation();
                     return $serieParameters;
                 "
             },
@@ -90,7 +90,7 @@
                 "adjustSerieParameters":"
                     //Calculate amount for all years on 'All Years' advanced search results page
                     if(_getRequestParamValue('year') || _getRequestParamValue('calyear'))
-                        $serieParameters['year.year'] = RequestUtil::getFiscalYearIdForTopNavigation();
+                        $serieParameters['year.year'] = CheckbookProject\CustomClasses\RequestUtil::getFiscalYearIdForTopNavigation();
                     return $serieParameters;
                 "
             },
@@ -103,7 +103,7 @@
                 "adjustSerieParameters":"
                     //Calculate amount for all years on 'All Years' advanced search results page
                     if(_getRequestParamValue('year') || _getRequestParamValue('calyear'))
-                        $serieParameters['year.year'] = RequestUtil::getFiscalYearIdForTopNavigation();
+                        $serieParameters['year.year'] = CheckbookProject\CustomClasses\RequestUtil::getFiscalYearIdForTopNavigation();
                     return $serieParameters;
                 "
             },
@@ -124,7 +124,7 @@
                 "adjustSerieParameters":"
                     //Calculate amount for all years on 'All Years' advanced search results page
                     if(_getRequestParamValue('year') || _getRequestParamValue('calyear'))
-                        $serieParameters['year.year'] = RequestUtil::getFiscalYearIdForTopNavigation();
+                        $serieParameters['year.year'] = CheckbookProject\CustomClasses\RequestUtil::getFiscalYearIdForTopNavigation();
                     return $serieParameters;
                 "
             },
@@ -144,7 +144,7 @@
                 "adjustSerieParameters":"
                     //Calculate amount for all years on 'All Years' advanced search results page
                     if(_getRequestParamValue('year') || _getRequestParamValue('calyear'))
-                        $serieParameters['year.year'] = RequestUtil::getFiscalYearIdForTopNavigation();
+                        $serieParameters['year.year'] = CheckbookProject\CustomClasses\RequestUtil::getFiscalYearIdForTopNavigation();
                     return $serieParameters;
                 "
             },

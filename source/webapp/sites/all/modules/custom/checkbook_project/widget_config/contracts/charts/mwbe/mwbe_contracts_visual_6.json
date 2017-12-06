@@ -77,7 +77,7 @@
 	 						; 
 			//$link= CustomURLHelper::prepareUrl(strstr($_GET['q'],'\/',true), ContractURLHelper::$landingPageParams, array('expandBottomCont'=>'true'), 
 			//			array('subvendor'=>$row['vendor_id']) );
-			//$link = RequestUtil::replaceParamFromString($link,'dashboard',RequestUtil::getNextSubvendorDashboardStateParam());
+			//$link = CheckbookProject\CustomClasses\RequestUtil::replaceParamFromString($link,'dashboard',RequestUtil::getNextSubvendorDashboardStateParam());
 			$link = strstr($_GET['q'],'/',true) .  ContractUtil::get_contracts_vendor_link_sub($row['vendor_id'],_getRequestParamValue('year'),
 				_getRequestParamValue('yeartype'), _getRequestParamValue('agency')) .  
 				'?expandBottomCont=true';	
