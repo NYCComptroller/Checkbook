@@ -169,7 +169,7 @@ public class BudgetPage {
 			
 			((JavascriptExecutor) Driver.Instance).executeScript("arguments[0].scrollIntoView(true);", detailsAnchor);
 			detailsAnchor.click();	
-			Driver.Instance.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+			Driver.Instance.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 		}
 		
 		// details  page Transaction table  count

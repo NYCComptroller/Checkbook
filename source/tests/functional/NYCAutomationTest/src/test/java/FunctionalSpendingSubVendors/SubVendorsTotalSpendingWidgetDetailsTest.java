@@ -15,8 +15,8 @@ import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
 import utilities.TestStatusReport;
 
-public class SubVendorsTotalSpendingWidgetDetailsTest extends NYCBaseTest {
-	//public class SubVendorsTotalSpendingWidgetDetailsTest extends TestStatusReport{
+//public class SubVendorsTotalSpendingWidgetDetailsTest extends NYCBaseTest {
+	public class SubVendorsTotalSpendingWidgetDetailsTest extends TestStatusReport{
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before	
 	
@@ -45,7 +45,7 @@ public class SubVendorsTotalSpendingWidgetDetailsTest extends NYCBaseTest {
 	    assertEquals("Sub Vendors Total Spending Checks Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
 	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getSubVendorsTotalSpendingDetailsAmount(year,'B');
-		String WidgetDetailsAmountApp = HomePage.GetTransactionAmount1();
+		String WidgetDetailsAmountApp = HomePage.GetTransactionAmount2();
 	    assertEquals("Sub Vendors Total Spending checks Widget Details page total spending amount did not match", WidgetDetailsAmountApp, WidgetDetailsAmountDB); 
 	  
 
@@ -63,7 +63,7 @@ public class SubVendorsTotalSpendingWidgetDetailsTest extends NYCBaseTest {
 	    assertEquals("Sub Vendors Total Spending Agencies Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
 	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getSubVendorsTotalSpendingDetailsAmount(year,'B');
-		String WidgetDetailsAmountapp = HomePage.GetTransactionAmount1();
+		String WidgetDetailsAmountapp = HomePage.GetTransactionAmount2();
 		assertEquals("Sub Vendors Total Spending Agencies Widget Details page total spending amount did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
 	}
 	
@@ -80,7 +80,7 @@ public class SubVendorsTotalSpendingWidgetDetailsTest extends NYCBaseTest {
 	    
 	    
 	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getSubVendorsTotalSpendingDetailsAmount(year,'B');
-		String WidgetDetailsAmountApp = HomePage.GetTransactionAmount1();
+		String WidgetDetailsAmountApp = HomePage.GetTransactionAmount2();
 		assertEquals("Sub Vendors Total Spending Sub Vendors  widget details  page total spening amount did not match", WidgetDetailsAmountApp, WidgetDetailsAmountDB);
 	}
 	
@@ -97,7 +97,7 @@ public class SubVendorsTotalSpendingWidgetDetailsTest extends NYCBaseTest {
 	    assertEquals("Sub Vendors Total Spending Prime Vendors Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
 	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getSubVendorsTotalSpendingDetailsAmount(year,'B');
-	    String WidgetDetailsAmountApp = HomePage.GetTransactionAmount1();
+	    String WidgetDetailsAmountApp = HomePage.GetTransactionAmount2();
 		assertEquals("Sub Vendors Total Spending Prime Vendor  widget details total spending amount did not match", WidgetDetailsAmountApp, WidgetDetailsAmountDB);
 	}
 	
@@ -115,7 +115,7 @@ public class SubVendorsTotalSpendingWidgetDetailsTest extends NYCBaseTest {
 	    
 	    
 	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getSubVendorsTotalSpendingDetailsAmount(year, 'B');
-		String WidgetDetailsAmountApp = HomePage.GetTransactionAmount1();
+		String WidgetDetailsAmountApp = HomePage.GetTransactionAmount2();
 	    assertEquals("Sub Vendors Total Spending  Sub Contracts widget details  page total spending amount did not match", WidgetDetailsAmountApp, WidgetDetailsAmountDB);
 }
 	

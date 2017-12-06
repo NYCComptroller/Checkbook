@@ -422,7 +422,7 @@ public class NYCDatabaseUtil {
         while (rs.next()) {
             totalSpendingAmount = rs.getBigDecimal("sumSpendingAmt");
         }
-        return formatNumber(totalSpendingAmount);
+        return formatNumber2(totalSpendingAmount);
         // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
     }
     

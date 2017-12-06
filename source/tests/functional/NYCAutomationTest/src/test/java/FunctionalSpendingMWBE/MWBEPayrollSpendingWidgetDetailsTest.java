@@ -21,7 +21,7 @@ import utilities.TestStatusReport;
 import utilities.NYCDatabaseUtil;
 
 //public class PayrollSpendingWidgetDetailsTest extends NYCBaseTest {
-public class PayrollSpendingWidgetDetailsTest extends TestStatusReport{
+public class MWBEPayrollSpendingWidgetDetailsTest extends TestStatusReport{
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	public void GoToPage(){

@@ -4,6 +4,9 @@ import pages.home.HomePage;
 import helpers.Driver;
 import helpers.Helper;
 
+import org.openqa.selenium.interactions.Actions;
+
+
 import navigation.SubVendorCategory;
 import navigation.TopNavigation;
 import navigation.SubVendorCategory.SubVendorCategoryOption;
@@ -41,15 +44,51 @@ public class SubVendorsPage {
     	public static void GoTo(String domain, SubVendorCategoryOption category) {
     		if(domain.equals("Spending"))
     			TopNavigation.Spending.Select();
-    		SubVendorCategory.select(category);		
+    		SubVendorCategory.select(category);
+    		//navigation.TopNavigation.Spending.ContractSpending.Select(); 
     	} 
      	public static void GoToBottomNaV(String domain, SubVendorCategoryOption category) {
     		if(domain.equals("Spending"))
-    			navigation.TopNavigation.Spending.ContractSpending.Select();
-    		SubVendorCategory.select(category);	
+    			navigation.TopNavigation.Spending.ContractSpending.Select();   		
     	  			
     	}  
-
+     	
+     	public static void GoToBottomNavSpendinglink() {
+	          //  WebElement tab = Driver.Instance.findElement(By.cssSelector(".nyc_totals_links. td"));
+	        // WebElement tabAnchor = tab.findElement(By.tagName("a"));
+	           // WebElement tabAnchor = tab.findElement(By.linkText("Contract Spending"));
+	          //  WebElement tabAnchor = tab.findElement(By.className("dollars"));
+	            
+	            WebElement tabAnchor =Driver.Instance.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div/div/div/div[1]/div/div/div/div[4]/div/div[1]/div/div/div[1]/div/table/tbody/tr/td[4]/div[1]/a"));
+	                        
+	           // driver.findElement(By.linkText("App Configuration")).click();
+	            ((JavascriptExecutor) Driver.Instance).executeScript("arguments[0].scrollIntoView(true);", tabAnchor);
+                tabAnchor.click();
+	        }
+     	
+        public static void GoToBottomNavSpendinglink1(String secondaryTabName) {
+            WebElement secTabContainer = Driver.Instance.findElement(By.cssSelector(".nyc_totals_links")); // .active > .positioning"));
+            List<WebElement> tabs = secTabContainer.findElements(By.tagName("td"));
+            for (WebElement tab : tabs) {
+            	
+                WebElement tabAnchor = tab.findElement(By.tagName("a"));
+                String tabValue = tabAnchor.getText();
+                String tabName;
+                String subStr = tabValue.substring(tabValue.indexOf("\n")+1, tabValue.lastIndexOf("\n"));
+                if(subStr.contains("\n"))
+                	tabName = tabValue.substring(tabValue.indexOf("\n")+1, tabValue.lastIndexOf("\n")).replace("\n", " ");
+                else
+                	tabName = tabValue.substring(0, tabValue.lastIndexOf("\n")).replace("\n", " ");
+                if (tabName.equals(secondaryTabName)) {
+                    /*if (tab.getAttribute("class").equals("active")) {
+                        break;
+                    } else { */
+                	((JavascriptExecutor) Driver.Instance).executeScript("arguments[0].scrollIntoView(true);", tabAnchor);
+                        tabAnchor.click();
+                        //WebElement tabAnchor = tabAnchor.findElement(By.partialLinkText("Details"));
+                    
+                        break;
+                }}}
 
 
     	public static String GetSubVendorSpendingAmount() {

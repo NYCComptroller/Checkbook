@@ -22,7 +22,7 @@ import utilities.NYCDatabaseUtil;
 
 
 //public class CapitalSpendingWidgetDetailsTest extends NYCBaseTest {
-	public class CapitalSpendingWidgetDetailsTest extends TestStatusReport{
+	public class MWBECapitalSpendingWidgetDetailsTest extends TestStatusReport{
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	public void GoToPage(){

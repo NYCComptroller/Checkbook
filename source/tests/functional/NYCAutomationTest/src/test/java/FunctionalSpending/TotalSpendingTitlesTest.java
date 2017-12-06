@@ -33,7 +33,7 @@ public class TotalSpendingTitlesTest extends TestStatusReport{
     public void VerifyTopNavSpendingAmount() throws SQLException {
         String TotalSpendingAmtFY2016 = NYCDatabaseUtil.getSpendingAmount(2016, 'B');
         String spendingAmt = SpendingPage.GetSpendingAmount();
-        assertEquals("Spending Amount did not match", spendingAmt, TotalSpendingAmtFY2016);
+        assertEquals("Total Spending Top navigation Amount did not match", spendingAmt, TotalSpendingAmtFY2016);
     }
 	
 	@Test
@@ -41,7 +41,7 @@ public class TotalSpendingTitlesTest extends TestStatusReport{
         String TotalSpendingAmtDB = NYCDatabaseUtil.getSpendingAmount(year, 'B');
         String spendingAmt = SpendingPage.GetBottomNavSpendingAmount();
     	System.out.println(spendingAmt); 
-        assertEquals("Spending Amount did not match", spendingAmt, TotalSpendingAmtDB);
+        assertEquals("Total Spending bottom navigation Amount did not match", spendingAmt, TotalSpendingAmtDB);
             
     }
 	
@@ -59,7 +59,7 @@ public class TotalSpendingTitlesTest extends TestStatusReport{
     public void VerifyTotalSpendingWidgetTitles(){
 	   String[] widgetTitles = {"Top 5 Checks",
 	    						"Top 5 Agencies",
-	    						"Top Expense Categories",
+	    						"Top 5 Expense Categories",
 	    						"Top 5 Prime Vendors",
 	    						"Top 5 Contracts",
 	    						"Top 5 Agencies"}; 

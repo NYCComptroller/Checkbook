@@ -21,7 +21,7 @@ import utilities.NYCDatabaseUtil;
 import utilities.TestStatusReport;
 
 //public class TotalSpendingTitlesTest extends TestStatusReport{
-	public class TotalSpendingTitlesTest extends NYCBaseTest{
+	public class MWBETotalSpendingTitlesTest extends NYCBaseTest{
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	public void GoToPage(){
