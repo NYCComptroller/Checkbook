@@ -1282,6 +1282,36 @@ class RequestUtil
             . _checkbook_project_get_url_param_string("vendor");
     }
 
+
+
+    private static function get_top_nav_records_count($urlParamMap, $default_params,$table){
+    	$where_filters = array();
+
+    	foreach($urlParamMap as $param=>$value){
+    		if(_getRequestParamValue($param) != null){
+    			$where_filters[] = _widget_build_sql_condition(' a1.' . $value, _getRequestParamValue($param));
+    		}
+    	}
+
+    	if (is_array($default_params)) {
+        foreach($default_params as $param=>$value){
+          $where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
+        }
+      }
+
+    	if(count($where_filters) > 0){
+    		$where_filter = ' where ' . implode(' and ' , $where_filters) ;
+    	}
+    	
+    	$sql = 'select count(*) count
+				    from ' . $table. ' a1
+				   ' . $where_filter
+    					   	
+    					   ;
+		$data = _checkbook_project_execute_sql($sql);
+    	return $data[0]['count'];
+    }
+
     /**
      * Function will derive whether this is an advanced search transaction page based on the query string
      * @return bool|int

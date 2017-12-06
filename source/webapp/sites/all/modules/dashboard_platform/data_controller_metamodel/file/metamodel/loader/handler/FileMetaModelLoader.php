@@ -24,7 +24,7 @@
 class FileMetaModelLoader extends AbstractFileMetaModelLoader {
 
     public function load(AbstractMetaModelFactory $factory, AbstractMetaModel $metamodel, array $filters = NULL, $finalAttempt) {
-        LogHelper::log_notice(t('Loading Meta Model from configuration files ...'));
+        LogHelper::log_info(t('Loading Meta Model from configuration files ...'));
 
         return parent::load($factory, $metamodel, $filters, $finalAttempt);
     }

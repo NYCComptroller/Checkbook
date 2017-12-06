@@ -1770,40 +1770,40 @@ function _checkbook_project_delete_file_if_stale($uri)
  */
 function _checkbook_project_execute_sql($sql, $db_name = "main", $data_source = 'checkbook')
 {
+    global $databases;
+    LogHelper::log_notice("Querying database \$databases['$data_source']['$db_name'] (".$databases[$data_source][$db_name]['host'].')');
+    LogHelper::log_notice($sql);
+    $query_cid = md5($data_source.$db_name.$sql);
+    $cached = cache_get($query_cid, 'cache_field');
+    if (!$cached) {
 
-    $connection = get_datafeed_connection($db_name, $data_source);
-    $results = null;
+      $connection = get_datafeed_connection($db_name, $data_source);
+      $results = null;
 
-    try {
+      try {
         $results = $connection->query($sql);
-    } catch (Exception $e) {
+      } catch (Exception $e) {
         LogHelper::log_error("Erorr executing DB query for generating: " . $sql . ". Exception is: " . $e);
+      }
+
+      $output = array();
+      foreach ($results as $row) {
+        $output[] = get_object_vars($row);
+      }
+
+      LogHelper::log_info('setting cache '.$query_cid);
+      cache_set($query_cid, $output, 'cache_field');
+    } else {
+      LogHelper::log_info('cache found! '.$query_cid);
+      $output = $cached->data;
     }
 
-    $output = array();
-    foreach ($results as $row) {
-        $output[] = get_object_vars($row);
-    }
     return $output;
 }
 
 function _checkbook_project_execute_sql_by_data_source($sql, $data_source = 'checkbook')
 {
-    $db_name = "main";
-    $connection = get_datafeed_connection($db_name, $data_source);
-    $results = null;
-
-    try {
-        $results = $connection->query($sql);
-    } catch (Exception $e) {
-        LogHelper::log_error("Erorr executing DB query for generating: " . $sql . ". Exception is: " . $e);
-    }
-
-    $output = array();
-    foreach ($results as $row) {
-        $output[] = get_object_vars($row);
-    }
-    return $output;
+  return _checkbook_project_execute_sql($sql, 'main', $data_source);
 }
 
 /**
@@ -2029,9 +2029,10 @@ function _checkbook_max_data_year()
 {
     $query = "select type_of_year, max(year) year_value , max(year_id) year_id from {transactions_data_by_year} t join ref_year y on t.year = y.year_value group by type_of_year
   order by type_of_year ";
-    $result = _checkbook_project_execute_sql($query);
-    return array("year_value" => $result[0]['year_value'], "year_id" => $result[0]['year_id'],
-        "cal_year_value" => $result[1]['year_value'], "cal_year_id" => $result[1]['year_id']);
+  $result = _checkbook_project_execute_sql($query);
+  return array("year_value"=>$result[0]['year_value'], "year_id"=>$result[0]['year_id'],
+    "cal_year_value"=>$result[1]['year_value'], "cal_year_id"=>$result[1]['year_id']);
+
 }
 
 /*

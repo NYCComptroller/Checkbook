@@ -151,7 +151,11 @@ function widget_highcharts_widget_data(&$node) {
     if (isset($node->widgetConfig->chartConfig->title->text->ds)) {
     	$node->widgetConfig->chartConfig->title->text = $results[$node->widgetConfig->chartConfig->title->text->ds]; 
     } 
-    
+
+    if (!isset($node->widgetConfig->chartConfig->chart)) {
+      $node->widgetConfig->chartConfig->chart = new stdClass();
+    }
+
     //removed zoomtype
     if (!isset($node->widgetConfig->chartConfig->chart->zoomType)) {
         $node->widgetConfig->chartConfig->chart->zoomType = '';
@@ -198,6 +202,9 @@ function widget_highcharts_widget_data(&$node) {
     }
 //    dsm($results);	
     $node->widgetConfig->chartConfig->chart->renderTo = 'node-chart-' . widget_unique_identifier($node);
+    if (!isset($node->widgetConfig->chartConfig->credits)) {
+      $node->widgetConfig->chartConfig->credits = new stdClass();
+    }
     $node->widgetConfig->chartConfig->credits->enabled = false;
 
     log_debug(json_encode($node->widgetConfig->chartConfig));

@@ -75,12 +75,14 @@ function _checkbook_advanced_search_get_year($domain = null, $form = null, $data
                 }
             }
         }
-        arsort($fiscal_year_array);
-        arsort($calendar_year_array);
 
-        if ($domain == 'payroll') {
+        $fiscal_year_array && arsort($fiscal_year_array);
+        $calendar_year_array && arsort($calendar_year_array);
+
+        if ($domain == 'payroll' && $calendar_year_array) {
             $fiscal_year_array = array_merge($calendar_year_array, $fiscal_year_array);
         }
+
         if ($domain == 'contracts' || $domain == 'spending') {
             $fiscal_year_array = array_reverse($fiscal_year_array, true);
             $fiscal_year_array['fy~all'] = 'All Years';
