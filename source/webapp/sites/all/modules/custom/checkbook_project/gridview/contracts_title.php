@@ -21,10 +21,10 @@
 
 $refURL =$_GET['refURL'];
 
-if(CheckbookProject\CustomClasses\RequestUtil::isExpenseContractPath($refURL) || CheckbookProject\CustomClasses\RequestUtil::isRevenueContractPath($refURL)){
+if(RequestUtil::isExpenseContractPath($refURL) || RequestUtil::isRevenueContractPath($refURL)){
    $title = _get_contracts_breadcrumb_title_drilldown();
 }
-if(CheckbookProject\CustomClasses\RequestUtil::isPendingExpenseContractPath($refURL) || CheckbookProject\CustomClasses\RequestUtil::isPendingRevenueContractPath($refURL)){
+if(RequestUtil::isPendingExpenseContractPath($refURL) || RequestUtil::isPendingRevenueContractPath($refURL)){
    $title =  _get_pending_contracts_breadcrumb_title_drilldown();
 }
 

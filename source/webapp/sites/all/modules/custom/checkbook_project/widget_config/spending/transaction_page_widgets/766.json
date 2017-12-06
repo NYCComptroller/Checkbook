@@ -114,7 +114,7 @@
         },
         "agency_name_link": {
             "type": "expression2",
-            "expression": " CheckbookProject\CustomClasses\RequestUtil::isNewWindow() ? $row[agency_name_formatted]  : ('<a href=/spending_landing' . _checkbook_project_get_year_url_param_string(false,false,false,true) . SpendingUtil::getDataSourceParams()  . _checkbook_project_get_url_param_string('category') . '/agency/'. $row[agency_id]. '?expandBottomCont=true>'. $row[agency_name_formatted] .'</a>') "
+            "expression": " RequestUtil::isNewWindow() ? $row[agency_name_formatted]  : ('<a href=/spending_landing' . _checkbook_project_get_year_url_param_string(false,false,false,true) . SpendingUtil::getDataSourceParams()  . _checkbook_project_get_url_param_string('category') . '/agency/'. $row[agency_id]. '?expandBottomCont=true>'. $row[agency_name_formatted] .'</a>') "
         },
         "payee_name_formatted":{
             "type": "expression2",
@@ -126,7 +126,7 @@
         },
         "payee_name_link": {
             "type": "expression2",
-            "expression": " CheckbookProject\CustomClasses\RequestUtil::isNewWindow() ||  $row[spending_category_id]==2 ?  $row[payee_name_formatted] : ('<a href=\"' . SpendingUtil::getPayeeNameLinkUrl($node,$row) . '?expandBottomCont=true' . '\">'. $row[payee_name_formatted] .'</a>') "
+            "expression": " RequestUtil::isNewWindow() ||  $row[spending_category_id]==2 ?  $row[payee_name_formatted] : ('<a href=\"' . SpendingUtil::getPayeeNameLinkUrl($node,$row) . '?expandBottomCont=true' . '\">'. $row[payee_name_formatted] .'</a>') "
         },
         "issue_date_formatted":{
             "type": "expression2",
@@ -182,7 +182,7 @@
         },
         "mwbe_category_name": {
             "type": "expression2",
-            "expression": " CheckbookProject\CustomClasses\RequestUtil::isNewWindow() || !MappingUtil::isMWBECertified(array($row['minority_type_id'])) ? $row['mwbe_category_name_formatted']  : ('<a href=' . SpendingUtil::getAdvancedSearchMWBECategoryLinkUrl($node, $row) . '>'. $row[mwbe_category_name_formatted] .'</a>') "
+            "expression": " RequestUtil::isNewWindow() || !MappingUtil::isMWBECertified(array($row['minority_type_id'])) ? $row['mwbe_category_name_formatted']  : ('<a href=' . SpendingUtil::getAdvancedSearchMWBECategoryLinkUrl($node, $row) . '>'. $row[mwbe_category_name_formatted] .'</a>') "
         },
         "industry_name_formatted": {
             "type": "expression2",

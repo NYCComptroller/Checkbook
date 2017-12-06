@@ -24,7 +24,7 @@
 
 <?php
 $refURL =$_GET['refURL'];
-if(!(CheckbookProject\CustomClasses\RequestUtil::isPendingExpenseContractPath($refURL) || CheckbookProject\CustomClasses\RequestUtil::isPendingRevenueContractPath($refURL))){
+if(!(RequestUtil::isPendingExpenseContractPath($refURL) || RequestUtil::isPendingRevenueContractPath($refURL))){
    echo '<h3 class="grid_year_title">' .  (isset($domain) ? ($domain .' '._getFullYearString()) : _getFullYearString()) . '</h3>';
 }else{
     //For UI alignment purpose
