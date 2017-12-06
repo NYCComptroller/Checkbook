@@ -132,7 +132,7 @@ class MappingUtil {
      * @return string
      */
     static function getCurrentMWBETopNavFilters($active_domain_link, $domain){
-        if(RequestUtil::isDashboardFlowSubvendor()){
+        if(CheckbookProject\CustomClasses\RequestUtil::isDashboardFlowSubvendor()){
             $applicable_minority_types = self::getCurrentSubMWBEApplicableFilters($domain);
         }else{
             $applicable_minority_types = self::getCurrentPrimeMWBEApplicableFilters($domain);
@@ -191,7 +191,7 @@ class MappingUtil {
         $tm_wbe = _getRequestParamValue('tm_wbe');
 
         //M/WBE filters should be included in mp and sp dashboards
-        if(RequestUtil::isDashboardFlowPrimevendor() || $tm_wbe == "Y") {
+        if(CheckbookProject\CustomClasses\RequestUtil::isDashboardFlowPrimevendor() || $tm_wbe == "Y") {
             $applicable_minority_types = self::getCurrentSubMWBEApplicableFilters($domain);
             $active_domain_link =  preg_replace('/\/mwbe\/[^\/]*/','',$active_domain_link);
 

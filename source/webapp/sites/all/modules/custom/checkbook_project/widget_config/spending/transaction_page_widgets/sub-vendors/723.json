@@ -137,7 +137,7 @@
         },
         "reference_document_number_link":{
             "type":"expression2",
-            "expression": "($row[spending_category_name] == 'Payroll' ||  $row[spending_category_name] == 'Others') ? 'N/A' : (RequestUtil::isNewWindow() ? $row[reference_document_number] : '<a class=\"new_window\" href=\"' . SpendingUtil::getSubContractNumberLinkUrl($node,$row) . '\">'  . $row[reference_document_number] . '</a>')"
+            "expression": "($row[spending_category_name] == 'Payroll' ||  $row[spending_category_name] == 'Others') ? 'N/A' : (CheckbookProject\CustomClasses\RequestUtil::isNewWindow() ? $row[reference_document_number] : '<a class=\"new_window\" href=\"' . SpendingUtil::getSubContractNumberLinkUrl($node,$row) . '\">'  . $row[reference_document_number] . '</a>')"
         },
         "purpose_formatted":{
             "type": "expression2",
