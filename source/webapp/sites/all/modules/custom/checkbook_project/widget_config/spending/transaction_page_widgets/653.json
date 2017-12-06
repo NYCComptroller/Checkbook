@@ -50,7 +50,7 @@ return $header;
 },
 "agency_name_link": {
 "type": "expression2",
-"expression": " CheckbookProject\CustomClasses\RequestUtil::isNewWindow() ? $row[agency_name_formatted]  : ('<a href=/spending_landing' . _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() . _checkbook_project_get_url_param_string('category') . '/agency/'. $row[disb_agency_id]. '?expandBottomCont=true>'. $row[agency_name_formatted] .'</a>') "
+"expression": " RequestUtil::isNewWindow() ? $row[agency_name_formatted]  : ('<a href=/spending_landing' . _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() . _checkbook_project_get_url_param_string('category') . '/agency/'. $row[disb_agency_id]. '?expandBottomCont=true>'. $row[agency_name_formatted] .'</a>') "
 
 },
 "vendor_name_formatted":{
@@ -63,7 +63,7 @@ return $header;
 },
 "vendor_name_link": {
 "type": "expression2",
-"expression": " CheckbookProject\CustomClasses\RequestUtil::isNewWindow() ?  $row[vendor_name_formatted] : ('<a href=/spending_landing' . _checkbook_project_get_year_url_param_string() . $row['agency_param'] . _checkbook_append_url_params() . _checkbook_project_get_url_param_string('category') . '/vendor/'. $row[vendor_id] . '?expandBottomCont=true>'. $row[vendor_name_formatted] .'</a>') "
+"expression": " RequestUtil::isNewWindow() ?  $row[vendor_name_formatted] : ('<a href=/spending_landing' . _checkbook_project_get_year_url_param_string() . $row['agency_param'] . _checkbook_append_url_params() . _checkbook_project_get_url_param_string('category') . '/vendor/'. $row[vendor_id] . '?expandBottomCont=true>'. $row[vendor_name_formatted] .'</a>') "
 } ,
 "formatted_check_amount": {
 "type": "expression2",

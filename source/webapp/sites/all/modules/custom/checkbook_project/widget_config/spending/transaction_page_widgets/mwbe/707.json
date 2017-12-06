@@ -78,7 +78,7 @@
         },
         "agency_name_link": {
             "type":"expression2",
-            "expression":" CheckbookProject\CustomClasses\RequestUtil::isNewWindow() ? $row[agency_name_formatted]  : ('<a href=/spending_landing' . _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() . _checkbook_project_get_url_param_string('category') . '/agency/'. $row[disb_agency_id]. '?expandBottomCont=true>'. $row[agency_name_formatted] .'</a>') "
+            "expression":" RequestUtil::isNewWindow() ? $row[agency_name_formatted]  : ('<a href=/spending_landing' . _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() . _checkbook_project_get_url_param_string('category') . '/agency/'. $row[disb_agency_id]. '?expandBottomCont=true>'. $row[agency_name_formatted] .'</a>') "
         },
         "agency_param":{
             "type":"expression2",
@@ -94,7 +94,7 @@
         },
         "payee_name_link": {
             "type": "expression2",
-            "expression": " CheckbookProject\CustomClasses\RequestUtil::isNewWindow() ||  $row[disb_spending_category_id]==2 ?  $row[payee_name_formatted] : ('<a href=\"' . SpendingUtil::getPrimeVendorNameLinkUrl($node,$row) . '?expandBottomCont=true' . '\">'. $row[payee_name_formatted] .'</a>') "
+            "expression": " RequestUtil::isNewWindow() ||  $row[disb_spending_category_id]==2 ?  $row[payee_name_formatted] : ('<a href=\"' . SpendingUtil::getPrimeVendorNameLinkUrl($node,$row) . '?expandBottomCont=true' . '\">'. $row[payee_name_formatted] .'</a>') "
         },
         "formatted_check_amount": {
             "type":"expression2",

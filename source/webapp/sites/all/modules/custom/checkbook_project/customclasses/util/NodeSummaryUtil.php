@@ -54,7 +54,7 @@ class NodeSummaryUtil
 
     static function getInitNodeSummaryTitle($nid = null){
         $bottomURL = $_REQUEST['expandBottomContURL'];
-        $smnid = CheckbookProject\CustomClasses\RequestUtil::getRequestKeyValueFromURL("smnid",$bottomURL);
+        $smnid = RequestUtil::getRequestKeyValueFromURL("smnid",$bottomURL);
 
         if($nid == null)
           $nid = self::getNodeId();

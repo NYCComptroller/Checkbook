@@ -486,16 +486,16 @@ function _checkbook_custom_breadcrumnb_add_breadcrumb_title(){
   }
   
    else if(preg_match('/^contract/',current_path())){
-     $checkbook_breadcrumb_title = CheckbookProject\CustomClasses\RequestUtil::getContractBreadcrumbTitle();
+     $checkbook_breadcrumb_title = RequestUtil::getContractBreadcrumbTitle();
    }
    elseif(preg_match('/^payroll/',current_path())){
-     $checkbook_breadcrumb_title = CheckbookProject\CustomClasses\RequestUtil::getPayrollBreadcrumbTitle();
+     $checkbook_breadcrumb_title = RequestUtil::getPayrollBreadcrumbTitle();
    }elseif(preg_match('/^spending/',current_path())){
-     $checkbook_breadcrumb_title = CheckbookProject\CustomClasses\RequestUtil::getSpendingBreadcrumbTitle();
+     $checkbook_breadcrumb_title = RequestUtil::getSpendingBreadcrumbTitle();
    }elseif(preg_match('/^budget/',current_path())){
-     $checkbook_breadcrumb_title = CheckbookProject\CustomClasses\RequestUtil::getBudgetBreadcrumbTitle();
+     $checkbook_breadcrumb_title = RequestUtil::getBudgetBreadcrumbTitle();
    }elseif(preg_match('/^revenue/',current_path())){
-      $checkbook_breadcrumb_title = CheckbookProject\CustomClasses\RequestUtil::getRevenueBreadcrumbTitle();
+      $checkbook_breadcrumb_title = RequestUtil::getRevenueBreadcrumbTitle();
    }elseif(preg_match('/smart_search/',current_path())){
      $links = array(l(t('Home'), ''),'Search Results');
      drupal_set_breadcrumb($links);

@@ -102,7 +102,7 @@
             }
     },
     "WidgetTitleEval":"
-        $catName = CheckbookProject\CustomClasses\RequestUtil::getSpendingCategoryName();
+        $catName = RequestUtil::getSpendingCategoryName();
         $title = _checkbook_check_is_sub_vendor_page() ? 'Sub Vendors ' : '';
         return ($title . 'Checks ' . $catName . ' Transactions');
     ",

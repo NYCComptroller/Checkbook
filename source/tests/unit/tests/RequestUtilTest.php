@@ -2,8 +2,9 @@
 
 //use CheckbookProject\CustomClasses\RequestUtil;
 
-namespace CheckbookProject\CustomClasses;
+//namespace CheckbookProject\CustomClasses;
 
+include_once '../../webapp/sites/all/modules/custom/checkbook_project/customclasses/RequestUtil.php';
 
 use PHPUnit\Framework\TestCase;
 
