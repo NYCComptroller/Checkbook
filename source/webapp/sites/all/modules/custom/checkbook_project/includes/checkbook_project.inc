@@ -2271,6 +2271,77 @@ function _get_contract_includes_subvendors_data($attributes = NULL)
     }
 }
 
+
+/**
+ * @param $node
+ *
+ * @return string
+ */
+function _checkbook_vendor_link($node){
+
+  $status = '/status/' . (_getRequestParamValue("status") ?: 'A');
+
+  if (_getRequestParamValue("doctype") == "RCT1") {
+    $vendor_link = '/contracts_revenue_landing'.$status.'/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
+      . $node->data[0]['vendor_id_checkbook_vendor_history'] . '?expandBottomCont=true';
+  } else {
+
+    $dashboard = '/contracts_landing';
+    $url = '  '.RequestUtil::getCurrentPageUrl();
+    if (stripos($url, 'contracts_pending_exp_landing')) {
+      $dashboard = '/contracts_pending_exp_landing';
+    } elseif (stripos($url, 'contracts_pending_rev_landing')) {
+      $dashboard = '/contracts_pending_rev_landing';
+    } elseif (stripos($url, 'contracts_revenue_landing')) {
+      $dashboard = '/contracts_revenue_landing';
+    }
+
+    if(_is_mwbe_vendor(_getRequestParamValue("agid"))){
+      $vendor_link = $dashboard.$status.'/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
+        . $node->data[0]['vendor_id_checkbook_vendor_history'] . '/dashboard/mp?expandBottomCont=true';
+    } else{
+      $vendor_link = $dashboard.$status.'/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
+        . $node->data[0]['vendor_id_checkbook_vendor_history'] . '?expandBottomCont=true';
+    }
+  }
+  return $vendor_link;
+}
+
+
+/**
+ * @param $node
+ *
+ * @return string
+ */
+function _checkbook_agency_link($node){
+
+  $status = '/status/' . (_getRequestParamValue("status") ?: 'A');
+
+  $datasource = '';
+  if ('checkbook_oge' == _getRequestParamValue("datasource")) {
+    $datasource = "/datasource/checkbook_oge";
+  }
+
+  if (_getRequestParamValue("doctype") == "RCT1") {
+    $agency_link = '/contracts_revenue_landing'.$status.'/year/' . _getCurrentYearID() . $datasource. '/yeartype/B/agency/'
+      . $node->data[0]['agency_id_checkbook_agency'] . '?expandBottomCont=true';
+  } else {
+    $dashboard = '/contracts_landing';
+    $url = '  '.RequestUtil::getCurrentPageUrl();
+    if (stripos($url, 'contracts_pending_exp_landing')) {
+      $dashboard = '/contracts_pending_exp_landing';
+    } elseif (stripos($url, 'contracts_pending_rev_landing')) {
+      $dashboard = '/contracts_pending_rev_landing';
+    } elseif (stripos($url, 'contracts_revenue_landing')) {
+      $dashboard = '/contracts_revenue_landing';
+    }
+
+    $agency_link = $dashboard.$status.'/year/' . _getCurrentYearID() . $datasource. '/yeartype/B/agency/'
+      . $node->data[0]['agency_id_checkbook_agency'] . '?expandBottomCont=true';
+  }
+  return $agency_link;
+}
+
 //Returns new features from Drupal database
 /*function _checkbook_get_new_features(){
     $query = new EntityFieldQuery();

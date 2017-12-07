@@ -1335,7 +1335,13 @@ class RequestUtil
         return null;
     }
 
-    static function getContractLink(){
-
+    static function getCurrentPageUrl()
+    {
+      $url = $_GET['q'];
+      if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+        // that's AJAX
+        $url = '//' . $_SERVER['HTTP_REFERER'];
+      }
+      return $url;
     }
 }
