@@ -272,12 +272,20 @@ function widget_node_view($node, $nodata = true) {
 	if(isset($node->widgetConfig->widgetUpdateJSONConfig)){
 
 		if($node->widgetConfig->widgetType == 'highcharts'){
+		  if (!isset($node->widgetConfig->chartConfig->chart)) {
+        $node->widgetConfig->chartConfig->chart = new stdClass();
+      }
+
+      if (!isset($node->widgetConfig->chartConfig->credits)) {
+        $node->widgetConfig->chartConfig->credits = new stdClass();
+      }
+
 			$node->widgetConfig->chartConfig->chart->renderTo = 'node-chart-' . widget_unique_identifier($node);
 			$node->widgetConfig->chartConfig->credits->enabled = false;
 		}
 
 
-		eval($node->widgetConfig->widgetUpdateJSONConfig);
+		@eval($node->widgetConfig->widgetUpdateJSONConfig);
 	}else{
 		widget_invoke($node, 'widget_data');
 	}
@@ -555,7 +563,7 @@ function load_widget_data($node, $resultFormatter) {
         $ajaxRequest = _getRequestParamValue('ajax');
 
         if(isset($config->adjustParameters)){
-           $parameters =  eval($config->adjustParameters);
+           @$parameters =  eval($config->adjustParameters);
         } elseif (isset($config->autocompleteField) && ('autocomplete' == $ajaxRequest)
           && isset($parameters[$config->autocompleteField]) && $parameters[$config->autocompleteField]) {
           /**
@@ -858,7 +866,7 @@ function load_widget_data($node, $resultFormatter) {
      $node->data = _update_node_data($node->data,$node->widgetConfig->keepOriginalDatasource);
 
   	if(isset($node->widgetConfig->transformationPHP)){
-  		$node->data = eval($node->widgetConfig->transformationPHP);
+  		@$node->data = eval($node->widgetConfig->transformationPHP);
   	}
     } catch(Exception $e) {
         // FIXME Commented out printing of $e because it generates 100+ KBs in a log file
@@ -1510,14 +1518,16 @@ function _update_node_data($data,$keepOriginalDatasource = false){
 		return $data;
 	}
     $returnData = array();
-    foreach($data as $key=>$value){
-         $arrayValues = array();
-         foreach($value as $a=>$b){
-             $a = str_replace('@checkbook_oge:',"@checkbook:",$a);
-             $arrayValues[$a] = $b;
-         }
+	  if ($data){
+      foreach($data as $key=>$value){
+        $arrayValues = array();
+        foreach($value as $a=>$b){
+          $a = str_replace('@checkbook_oge:',"@checkbook:",$a);
+          $arrayValues[$a] = $b;
+        }
         $returnData[$key] = $arrayValues;
-     }
+      }
+    }
 
     return $returnData;
 }

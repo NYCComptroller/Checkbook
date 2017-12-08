@@ -391,6 +391,12 @@ function _checkbook_project_grid_view_popup($node)
 }
 
 
+/**
+ * @param $node
+ *
+ * @return string
+ * @throws \Exception
+ */
 function _checkbook_project_grid_view_widget_popup($node)
 {
     $url = $_GET['q'];
@@ -787,6 +793,12 @@ function _checkbook_project_adjustContractParameterFilters(&$node, &$parameters,
 
 }
 
+/**
+ * @param $node
+ * @param $parameters
+ *
+ * @return mixed
+ */
 function _checkbook_project_adjust_spending_parameter_filters(&$node, &$parameters)
 {
     $cat = $parameters['spending_category_id'];
@@ -1615,6 +1627,12 @@ function _get_contract_type($contnum)
     }
 }
 
+/**
+ * @param $contnum
+ * @param $agreement_id
+ *
+ * @return string
+ */
 function _checkbook_project_get_contract_url($contnum, $agreement_id)
 {
     $contract_type = _get_contract_type($contnum);
@@ -1625,6 +1643,16 @@ function _checkbook_project_get_contract_url($contnum, $agreement_id)
     }
 }
 
+/**
+ * @param $contract_number
+ * @param $original_agreement_id
+ * @param $doctype
+ * @param null $pending_contract_number
+ * @param null $version
+ * @param null $linktype
+ *
+ * @return string
+ */
 function _pending_contracts_link_contract_details($contract_number, $original_agreement_id, $doctype, $pending_contract_number = null, $version = null, $linktype = null)
 {
     $lower_doctype = strtolower($doctype);
@@ -1671,6 +1699,11 @@ function _pending_contracts_link_contract_details($contract_number, $original_ag
     }
 }
 
+/**
+ * @param $doctype
+ *
+ * @return string
+ */
 function _get_contract_cat($doctype)
 {
 
@@ -1749,6 +1782,9 @@ function _checkbook_project_prepare_data_feeds_dir($dir)
     }
 }
 
+/**
+ * @param $uri
+ */
 function _checkbook_project_clean_files($uri)
 {
     file_scan_directory($uri, '/.*/', array('callback' => '_checkbook_project_delete_file_if_stale'));
@@ -1801,6 +1837,12 @@ function _checkbook_project_execute_sql($sql, $db_name = "main", $data_source = 
     return $output;
 }
 
+/**
+ * @param $sql
+ * @param string $data_source
+ *
+ * @return array
+ */
 function _checkbook_project_execute_sql_by_data_source($sql, $data_source = 'checkbook')
 {
   return _checkbook_project_execute_sql($sql, 'main', $data_source);
@@ -1900,6 +1942,14 @@ function _checkbook_project_recordCount($node)
     return $recordCount;
 }
 
+/**
+ * @param $domain
+ * @param $subTitle
+ * @param null $by
+ * @param null $chart
+ *
+ * @return string
+ */
 function _checkbook_project_getChartTitle($domain, $subTitle, $by = null, $chart = null)
 {
 
@@ -1938,6 +1988,11 @@ function _checkbook_project_getChartTitle($domain, $subTitle, $by = null, $chart
     }
 }
 
+/**
+ * @param $string
+ *
+ * @return false|string
+ */
 function format_string_to_date($string)
 {
 
@@ -1984,6 +2039,11 @@ function _getLastRequestParamValue($url = null, $param = null)
 }
 
 
+/**
+ * @param $string
+ *
+ * @return mixed
+ */
 function _checkbook_regex_replace_pattern($string)
 {
     $string = str_replace(".", "\\.", $string);
@@ -2000,6 +2060,9 @@ function _checkbook_regex_replace_pattern($string)
 }
 
 
+/**
+ * @return bool
+ */
 function _checkbook_project_ma1_mma1_exist()
 {
     $url = $_GET['q'];
@@ -2019,12 +2082,20 @@ function _checkbook_project_ma1_mma1_exist()
     return false;
 }
 
+/**
+ * @param $string
+ *
+ * @return int
+ */
 function _get_num_from_string($string)
 {
     return (int)preg_replace('/[^\-\d]*(\-?\d*).*/', '$1', $string);
 }
 
 
+/**
+ * @return array
+ */
 function _checkbook_max_data_year()
 {
     $query = "select type_of_year, max(year) year_value , max(year_id) year_id from {transactions_data_by_year} t join ref_year y on t.year = y.year_value group by type_of_year
@@ -2039,6 +2110,13 @@ function _checkbook_max_data_year()
  * Will add mwbe, subvendor and datasource parameters to url.  Precedence ,$source > $overidden_params > requestparam 
  */
 
+/**
+ * @param null $source
+ * @param array $overidden_params
+ * @param bool $top_nav
+ *
+ * @return string
+ */
 function _checkbook_append_url_params($source = null, $overidden_params = array(), $top_nav = false)
 {
     $datasource = (isset($overidden_params['datasource'])) ? $overidden_params['datasource'] : _getRequestParamValue('datasource');
@@ -2078,6 +2156,9 @@ function _checkbook_append_url_params($source = null, $overidden_params = array(
     return $url;
 }
 
+/**
+ * @return bool
+ */
 function _checkbook_check_isEDCPage()
 {
     $database = _getRequestParamValue('datasource');
@@ -2123,6 +2204,11 @@ function _checkbook_check_is_sub_vendor_ethnicity_page()
     return _checkbook_check_is_sub_vendor_page() && _checkbook_check_is_mwbe_page();
 }
 
+/**
+ * @param $cont_num
+ *
+ * @return bool
+ */
 function _checkbook_is_oge_contract($cont_num)
 {
     $rows = _checkbook_project_querydataset('checkbook_oge:oge_contract', array('fms_contract_number'), array('fms_contract_number' => $cont_num));
@@ -2133,6 +2219,11 @@ function _checkbook_is_oge_contract($cont_num)
     }
 }
 
+/**
+ * @param $cont_num
+ *
+ * @return bool
+ */
 function _checkbook_is_oge_parent_contract($cont_num)
 {
     $rows = _checkbook_project_querydataset('checkbook_oge:agreement_snapshot', array('master_contract_number'), array('master_contract_number' => $cont_num));
@@ -2144,6 +2235,11 @@ function _checkbook_is_oge_parent_contract($cont_num)
 }
 
 
+/**
+ * @param $vendor_id
+ *
+ * @return string
+ */
 function _checkbook_get_oge_agency_id($vendor_id)
 {
     $vendors = _checkbook_project_querydataset('checkbook:vendor', array('vendor_id', 'legal_name'), array('vendor_id' => $vendor_id));
@@ -2152,6 +2248,11 @@ function _checkbook_get_oge_agency_id($vendor_id)
     return htmlentities($agencies[0]['agency_id']);
 }
 
+/**
+ * @param $agency_id
+ *
+ * @return string
+ */
 function _checkbook_get_toggle_vendor_id($agency_id)
 {
     $agencies = _checkbook_project_querydataset('checkbook_oge:agency', array('agency_id', 'agency_name'), array('agency_id' => $agency_id, 'is_oge_agency' => 'Y'));
@@ -2161,6 +2262,9 @@ function _checkbook_get_toggle_vendor_id($agency_id)
     return $vendor_id;
 }
 
+/**
+ * @return array|null
+ */
 function _get_toggle_view_links()
 {
     $q = $_SERVER['REQUEST_URI'];
@@ -2188,12 +2292,18 @@ function _get_toggle_view_links()
     return null;
 }
 
-function _is_mwbe_vendor($ag_id)
+
+/**
+ * @param $agreement_id
+ *
+ * @return bool
+ */
+function _is_mwbe_vendor($agreement_id)
 {
     $query1 = "SELECT (CASE WHEN fa.minority_type_id IN (2,3,4,5,9)  THEN 'Yes' ELSE 'NO' END) AS mwbe_vendor,
 	                 (CASE WHEN fa.minority_type_id in (4,5) then 'Asian American' ELSE fa.minority_type_name END)AS ethnicity
               FROM {agreement_snapshot} fa
-	          WHERE fa.latest_flag = 'Y' and fa.original_agreement_id = " . $ag_id . " limit 1";
+	          WHERE fa.latest_flag = 'Y' and fa.original_agreement_id = " . $agreement_id . " limit 1";
     //$query1="SELECT minority_type_id FROM contract_vendor_latest_mwbe_category WHERE vendor_id =".$vendor_id." AND agency_id IS NULL AND year_id = ".$year_id." AND type_of_year = '".$yeartype."' AND minority_type_id NOT IN (7,11) LIMIT 1";
     $results1 = _checkbook_project_execute_sql_by_data_source($query1, _get_default_datasource());
     $res = $results1;
@@ -2205,6 +2315,9 @@ function _is_mwbe_vendor($ag_id)
 }
 
 
+/**
+ * @param $node
+ */
 function _getAnnualSalariedEmployeeCount($node)
 {
     $agency_id = _getRequestParamValue('agency');
@@ -2225,6 +2338,9 @@ function _getAnnualSalariedEmployeeCount($node)
 }
 
 
+/**
+ * @return bool
+ */
 function isAdvancedSearchResultsPage()
 {
     $current_url = $_SERVER['HTTP_REFERER'];
@@ -2239,6 +2355,11 @@ function isAdvancedSearchResultsPage()
     return false;
 }
 
+/**
+ * @param null $attributes
+ *
+ * @return array|void
+ */
 function _get_contract_includes_subvendors_data($attributes = NULL)
 {
     try {
@@ -2273,47 +2394,58 @@ function _get_contract_includes_subvendors_data($attributes = NULL)
 
 
 /**
- * @param $node
+ * @param $vendor_id
+ * @param bool $prime
  *
  * @return string
  */
-function _checkbook_vendor_link($node){
+function _checkbook_vendor_link($vendor_id, $prime = FALSE) {
 
   $status = '/status/' . (_getRequestParamValue("status") ?: 'A');
 
   if (_getRequestParamValue("doctype") == "RCT1") {
-    $vendor_link = '/contracts_revenue_landing'.$status.'/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
-      . $node->data[0]['vendor_id_checkbook_vendor_history'] . '?expandBottomCont=true';
-  } else {
+    $page = '/contracts_revenue_landing';
+    $mwbe = '';
 
-    $dashboard = '/contracts_landing';
-    $url = '  '.RequestUtil::getCurrentPageUrl();
+  }
+  else {
+
+    $page = '/contracts_landing';
+    $url = '  ' . RequestUtil::getCurrentPageUrl();
     if (stripos($url, 'contracts_pending_exp_landing')) {
-      $dashboard = '/contracts_pending_exp_landing';
-    } elseif (stripos($url, 'contracts_pending_rev_landing')) {
-      $dashboard = '/contracts_pending_rev_landing';
-    } elseif (stripos($url, 'contracts_revenue_landing')) {
-      $dashboard = '/contracts_revenue_landing';
+      $page = '/contracts_pending_exp_landing';
+    }
+    elseif (stripos($url, 'contracts_pending_rev_landing')) {
+      $page = '/contracts_pending_rev_landing';
+    }
+    elseif (stripos($url, 'contracts_revenue_landing')) {
+      $page = '/contracts_revenue_landing';
     }
 
-    if(_is_mwbe_vendor(_getRequestParamValue("agid"))){
-      $vendor_link = $dashboard.$status.'/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
-        . $node->data[0]['vendor_id_checkbook_vendor_history'] . '/dashboard/mp?expandBottomCont=true';
-    } else{
-      $vendor_link = $dashboard.$status.'/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
-        . $node->data[0]['vendor_id_checkbook_vendor_history'] . '?expandBottomCont=true';
+    if ($prime) {
+      $is_mwbe = PrimeVendorService::getLatestMinorityTypeByYear($vendor_id, _getCurrentYearID(), 'B');
+    }
+    else {
+      $is_mwbe = _is_mwbe_vendor(_getRequestParamValue("agid"));
+    }
+
+    if ($is_mwbe) {
+      $mwbe = '/dashboard/mp';
     }
   }
+
+  $vendor_link = $page . $status . '/year/' . _getCurrentYearID() . '/yeartype/B/vendor/' . $vendor_id . $mwbe . '?expandBottomCont=true';
+
   return $vendor_link;
 }
 
 
 /**
- * @param $node
+ * @param $agency_id
  *
  * @return string
  */
-function _checkbook_agency_link($node){
+function _checkbook_agency_link($agency_id){
 
   $status = '/status/' . (_getRequestParamValue("status") ?: 'A');
 
@@ -2324,7 +2456,7 @@ function _checkbook_agency_link($node){
 
   if (_getRequestParamValue("doctype") == "RCT1") {
     $agency_link = '/contracts_revenue_landing'.$status.'/year/' . _getCurrentYearID() . $datasource. '/yeartype/B/agency/'
-      . $node->data[0]['agency_id_checkbook_agency'] . '?expandBottomCont=true';
+      . $agency_id . '?expandBottomCont=true';
   } else {
     $dashboard = '/contracts_landing';
     $url = '  '.RequestUtil::getCurrentPageUrl();
@@ -2337,7 +2469,7 @@ function _checkbook_agency_link($node){
     }
 
     $agency_link = $dashboard.$status.'/year/' . _getCurrentYearID() . $datasource. '/yeartype/B/agency/'
-      . $node->data[0]['agency_id_checkbook_agency'] . '?expandBottomCont=true';
+      . $agency_id . '?expandBottomCont=true';
   }
   return $agency_link;
 }

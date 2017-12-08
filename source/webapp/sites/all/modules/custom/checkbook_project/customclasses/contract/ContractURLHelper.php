@@ -164,7 +164,7 @@ class ContractURLHelper{
         return $link;
     }
     
-    public function prepareActRegContractsSliderFilter($page, $status){
+    public static function prepareActRegContractsSliderFilter($page, $status){
         
         $pathParams = explode('/',drupal_get_path_alias($_GET['q']));
         $url = $page;
@@ -191,7 +191,7 @@ class ContractURLHelper{
 
     }
 
-    public function prepareSubvendorContractsSliderFilter($page, $dashboard=NULL, $third_bottom_slider = FALSE){
+    public static function prepareSubvendorContractsSliderFilter($page, $dashboard=NULL, $third_bottom_slider = FALSE){
 
         $pathParams = explode('/',drupal_get_path_alias($_GET['q']));
         $url = $page;
@@ -232,7 +232,7 @@ class ContractURLHelper{
 
     }
 
-    public function preparePendingContractsSliderFilter($page){
+    public static function preparePendingContractsSliderFilter($page){
 
         $pathParams = explode('/',drupal_get_path_alias($_GET['q']));
         $url = $page;

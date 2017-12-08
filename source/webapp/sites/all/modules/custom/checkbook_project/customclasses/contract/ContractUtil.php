@@ -244,7 +244,7 @@ namespace { //global
             return $url;
         }
 
-        static public function get_contracts_vendor_link($vendor_id, $year_id = null, $year_type = null,$agency_id = null, $mwbe_cat = null, $is_prime_or_sub = 'P'){
+        static public function get_contracts_vendor_link($vendor_id, $year_id = null, $year_type = null, $agency_id = null, $mwbe_cat = null, $is_prime_or_sub = 'P'){
 
             //For the 3rd menu option on contracts sub vendor, contract status should be set to active for links
             $contract_status = _checkbook_project_get_url_param_string("contstatus","status");
