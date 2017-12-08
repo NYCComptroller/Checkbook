@@ -1321,7 +1321,7 @@ class SpendingUtil{
         return $title;
     }
     
-    function _show_mwbe_custom_legend(){
+    static function _show_mwbe_custom_legend(){
     	$mwbe_cats = _getRequestParamValue('mwbe');
     	if(	($mwbe_cats =='4~5' || $mwbe_cats =='4' || $mwbe_cats =='5' || $mwbe_cats =='2' || $mwbe_cats =='3' || $mwbe_cats =='9' ) && !(_getRequestParamValue('vendor') > 0 ) ){
     		return true;

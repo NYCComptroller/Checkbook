@@ -26,8 +26,8 @@ if (_getRequestParamValue("datasource") == "checkbook_oge") {
   $oge_class = "cb-ca-details";
 }
 
-$vendor_link = _checkbook_vendor_link($node);
-$agency_link = _checkbook_agency_link($node);
+$vendor_link = _checkbook_vendor_link($node->data[0]['vendor_id_checkbook_vendor_history']);
+$agency_link = _checkbook_agency_link($node->data[0]['agency_id_checkbook_agency']);
 
 $datasource = '';
 if ('checkbook_oge' == _getRequestParamValue("datasource")) {
