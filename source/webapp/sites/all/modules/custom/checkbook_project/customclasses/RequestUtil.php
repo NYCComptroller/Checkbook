@@ -529,15 +529,15 @@ class RequestUtil
     /** Returns Budget page title and Breadcrumb */
     static function getBudgetBreadcrumbTitle()
     {
-        $bottomURL = isset($_REQUEST['expandBottomContURL']) ? $_REQUEST['expandBottomContURL'] : '';
+        $bottomURL = isset($_REQUEST['expandBottomContURL']) ? $_REQUEST['expandBottomContURL'] : FALSE;
         $find = '_' . $bottomURL . current_path();
         if (
             stripos($find, 'transactions')
             || stripos($find, 'deppartment_budget_details')
             || stripos($find, 'expense_category_budget_details')
         ) {
-            $dtsmnid = (isset($bottomURL)) ? RequestUtil::getRequestKeyValueFromURL("dtsmnid", $bottomURL) : RequestUtil::getRequestKeyValueFromURL("dtsmnid", current_path());
-            $smnid = (isset($bottomURL)) ? RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL) : RequestUtil::getRequestKeyValueFromURL("smnid", current_path());
+            $dtsmnid = $bottomURL ? RequestUtil::getRequestKeyValueFromURL("dtsmnid", $bottomURL) : RequestUtil::getRequestKeyValueFromURL("dtsmnid", current_path());
+            $smnid = $bottomURL ? RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL) : RequestUtil::getRequestKeyValueFromURL("smnid", current_path());
             if (isset($dtsmnid)) {
                 $title = NodeSummaryUtil::getInitNodeSummaryTitle($dtsmnid);
             } else if (isset($smnid)) {
@@ -557,7 +557,7 @@ class RequestUtil
     /** Returns Revenue page title and Breadcrumb */
     static function getRevenueBreadcrumbTitle()
     {
-        $bottomURL = isset($_REQUEST['expandBottomContURL']) ? $_REQUEST['expandBottomContURL'] : '';
+        $bottomURL = isset($_REQUEST['expandBottomContURL']) ? $_REQUEST['expandBottomContURL'] : FALSE;
         $find = '_' . $bottomURL . current_path();
         if (
             stripos($bottomURL, 'transactions')
@@ -566,8 +566,8 @@ class RequestUtil
             || stripos($find, 'funding_class_revenue_by_cross_year_collections_details')
             || stripos('_' . current_path(), 'revenue_transactions')
         ) {
-            $dtsmnid = (isset($bottomURL)) ? RequestUtil::getRequestKeyValueFromURL("dtsmnid", $bottomURL) : RequestUtil::getRequestKeyValueFromURL("dtsmnid", current_path());
-            $smnid = (isset($bottomURL)) ? RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL) : RequestUtil::getRequestKeyValueFromURL("smnid", current_path());
+            $dtsmnid = $bottomURL ? RequestUtil::getRequestKeyValueFromURL("dtsmnid", $bottomURL) : RequestUtil::getRequestKeyValueFromURL("dtsmnid", current_path());
+            $smnid = $bottomURL ? RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL) : RequestUtil::getRequestKeyValueFromURL("smnid", current_path());
             if (isset($dtsmnid)) {
                 $title = NodeSummaryUtil::getInitNodeSummaryTitle($dtsmnid);
             } else if (isset($smnid)) {
@@ -590,7 +590,7 @@ class RequestUtil
     static function getRevenueNoRecordsMsg()
     {
         $title = '';
-        $bottomURL = isset($_REQUEST['expandBottomContURL']) ? $_REQUEST['expandBottomContURL'] : '';
+        $bottomURL = isset($_REQUEST['expandBottomContURL']) ? $_REQUEST['expandBottomContURL'] : FALSE;
         $find = '_' . $bottomURL . current_path();
         if (
             stripos($bottomURL, 'transactions')
@@ -599,13 +599,13 @@ class RequestUtil
             || stripos($find, 'funding_class_revenue_by_cross_year_collections_details')
             || stripos('_' . current_path(), 'revenue_transactions')
         ) {
-            $smnid = ($bottomURL) ? RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL) : RequestUtil::getRequestKeyValueFromURL("smnid", current_path());
-            $dtsmnid = ($bottomURL) ? RequestUtil::getRequestKeyValueFromURL("dtsmnid", $bottomURL) : RequestUtil::getRequestKeyValueFromURL("dtsmnid", current_path());
+            $smnid = $bottomURL ? RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL) : RequestUtil::getRequestKeyValueFromURL("smnid", current_path());
+            $dtsmnid = $bottomURL ? RequestUtil::getRequestKeyValueFromURL("dtsmnid", $bottomURL) : RequestUtil::getRequestKeyValueFromURL("dtsmnid", current_path());
             if ($smnid > 0 || $dtsmnid > 0) {
                 if ($dtsmnid > 0) {
                     $title = "There are no records to be displayed.";
                 } else {
-                    $bottomURL = ($bottomURL) ? $bottomURL : current_path();
+                    $bottomURL = $bottomURL ?: current_path();
                     $last_id = _getLastRequestParamValue($bottomURL);
                     if ($last_id["agency"] > 0) {
                         $title = _checkbook_project_get_name_for_argument("agency_id", RequestUtil::getRequestKeyValueFromURL("agency", $bottomURL));
