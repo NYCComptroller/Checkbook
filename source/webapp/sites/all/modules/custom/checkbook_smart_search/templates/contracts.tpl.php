@@ -201,7 +201,10 @@ foreach ($contracts_parameter_mapping as $key => $title){
   if(is_array($value)){
   	$value = implode(', ' , $value);
   }
-  $temp = substr($value, strpos(strtoupper($value), strtoupper($SearchTerm)),strlen($SearchTerm));
+  $temp = '';
+  if ($SearchTerm) {
+    $temp = substr($value, strpos(strtoupper($value), strtoupper($SearchTerm)),strlen($SearchTerm));
+  }
   if($key =="contract_number"){
     $value = "<a href='".$contract_Id_link ."'>".$contracts_results['contract_number']."</a>";
   }else if($key =="parent_contract_number"){
