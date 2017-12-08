@@ -420,7 +420,7 @@ function _checkbook_project_grid_view_widget_popup($node)
     widget_data($node);
 
     if (isset($node->widgetConfig->widgetUpdateJSONConfig)) {
-        eval($node->widgetConfig->widgetUpdateJSONConfig);
+        @eval($node->widgetConfig->widgetUpdateJSONConfig);
     }
 
     $themekey = $node->widgetConfig->gridConfig->template;
