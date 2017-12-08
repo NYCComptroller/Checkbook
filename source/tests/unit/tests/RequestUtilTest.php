@@ -4,7 +4,7 @@
 
 //namespace CheckbookProject\CustomClasses;
 
-include_once '../../webapp/sites/all/modules/custom/checkbook_project/customclasses/RequestUtil.php';
+include_once __DIR__.'/../../../webapp/sites/all/modules/custom/checkbook_project/customclasses/RequestUtil.php';
 
 use PHPUnit\Framework\TestCase;
 
@@ -13,6 +13,27 @@ $mock_current_path = null;
 function current_path(){
     global $mock_current_path;
     return $mock_current_path;
+}
+
+/**
+ * Class NodeSummaryUtil
+ * MOCKED
+ */
+class NodeSummaryUtil{
+  static function getInitNodeSummaryTitle($a)
+  {
+    return 'getInitNodeSummaryTitle :: '.$a;
+  }
+  static function getInitNodeSummaryTemplateTitle($b)
+  {
+    return 'getInitNodeSummaryTemplateTitle :: '.$b;
+  }
+}
+
+class LogHelper{
+  static function log_warn($text){
+    echo $text;
+  }
 }
 
 class RequestUtilTest extends TestCase {
@@ -78,5 +99,29 @@ class RequestUtilTest extends TestCase {
 
         $mock_current_path = 'unknown/budget';
         $this->assertNull(RequestUtil::getDomain());
+    }
+
+    public function testGetBudgetBreadcrumbTitle()
+    {
+      global $mock_current_path;
+
+      function _get_budget_breadcrumb_title_drilldown($a=3){
+        return '5'.$a;
+      }
+
+      function filter_xss($text)
+      {
+        return $text;
+      }
+
+      $mock_current_path = '/panel_html/budget_agency_perecent_difference_transactions/budget/agency_details/dtsmnid/560/yeartype/B/year/119';
+      $_REQUEST['expandBottomContURL'] = 'budget/yeartype/B/year/119';
+
+      $this->assertEquals('53 Expense Budget', RequestUtil::getBudgetBreadcrumbTitle());
+
+      $mock_current_path = 'panel_html/budget_agency_perecent_difference_transactions/budget/agency_details/dtsmnid/560/yeartype/B/year/119';
+      unset($_REQUEST['expandBottomContURL']);
+
+      $this->assertEquals('getInitNodeSummaryTitle :: 560', RequestUtil::getBudgetBreadcrumbTitle());
     }
 }
