@@ -23,7 +23,7 @@ public class CapitalSpendingPage {
         return navigation.TopNavigation.Spending.CapitalSpending.isAt();
     }		
 		public static int GetTransactionCount() {
-			WebDriverWait wait = new WebDriverWait(Driver.Instance, 20);
+			WebDriverWait wait = new WebDriverWait(Driver.Instance, 40);
 			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("table_706_info")));
 			String count = (Driver.Instance.findElement(By.id("table_706_info"))).getText();
 			return Helper.GetTotalEntries(count, 5);

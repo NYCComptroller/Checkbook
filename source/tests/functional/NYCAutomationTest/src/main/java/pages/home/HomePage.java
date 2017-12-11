@@ -252,7 +252,14 @@ public class HomePage {
 		return amount.substring(0,8);
 		//return Helper.billionStringToFloat(count);
 	}
-    
+	public static String GetTransactionAmount3() {
+		WebDriverWait wait = new WebDriverWait(Driver.Instance, 30);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("total-spending-amount")));
+		String amount = (Driver.Instance.findElement(By.className("total-spending-amount"))).getText();	
+		//System.out.println(Helper.billionStringToFloat(count));
+		return amount.substring(0,6);
+		//return Helper.billionStringToFloat(count);
+	}
     
 	
     public static ArrayList<String> BudgetVisualizationTitles() {

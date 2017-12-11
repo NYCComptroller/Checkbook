@@ -35,10 +35,10 @@ import utilities.TestStatusReport;
 		}
 			
 				@Test
-		    public void VerifyRevnueAmount() throws SQLException {
+		    public void VerifyRevnueTopNavAmount() throws SQLException {
 		        String TotalRevenueAmtFY2016 = NYCDatabaseUtil.getRevenueAmount(2016, 'B');
 		        String revenueAmt = RevenuePage.GetRevenueAmount();
-		        assertEquals("Revenue Amount did not match", revenueAmt, TotalRevenueAmtFY2016);
+		        assertEquals("Revenue Domain Top Navigation Amount did not match with DB", revenueAmt, TotalRevenueAmtFY2016);
 		    }
 			
 			@Test

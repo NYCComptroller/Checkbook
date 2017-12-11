@@ -23,7 +23,7 @@ import helpers.Helper;
 import utilities.TestStatusReport;
 public class PendingExpenseContractsTest  extends TestStatusReport{
 
-//public class PendingExpenseContractsTest extends NYCBaseTest {
+	//public class PendingExpenseContractsTest extends NYCBaseTest {
 	
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
@@ -94,7 +94,7 @@ public class PendingExpenseContractsTest  extends TestStatusReport{
 	
 	@Test
     public void VerifyTopNavPendingExpenseContractAmount() throws SQLException {
-        String TotalContractAmtDB = NYCDatabaseUtil.getContractsTopAmount(year, 'B');
+        String TotalContractAmtDB = NYCDatabaseUtil.getContractsCurrentFYTopAmount(year, 'B');
         String TotalContractAmtApp = ContractsPage.GetContractsAmount();
         System.out.println(TotalContractAmtApp); 
         assertEquals("Pending Expense Contracts Top navigation amount did not match", TotalContractAmtApp, TotalContractAmtDB);
@@ -112,7 +112,7 @@ public class PendingExpenseContractsTest  extends TestStatusReport{
 	
 	@Test
     public void VerifyBottomNavPendingExpenseCount() throws SQLException {
-		Integer TotalContractCountDB = NYCDatabaseUtil.getContractsPECount(year, 'B');
+		Integer TotalContractCountDB = NYCDatabaseUtil.getContractsBottomnNavPECount(year, 'B');
 		Integer TotalContractCountApp = ContractsPage.GetBottomNavContractCount();
     	System.out.println(TotalContractCountApp); 
     	 assertEquals("Pending Expense Contracts Bottom navigation count did not match", TotalContractCountApp, TotalContractCountDB);
@@ -123,9 +123,9 @@ public class PendingExpenseContractsTest  extends TestStatusReport{
 	    String[] sliderTitles= {"Top Ten Pending Expense Contracts by Current Amount", 
 	    						"Top Ten Agencies by Pending Expense Contracts",	    						
 	    						"Top Ten Prime Vendors by Pending Expense Contracts"};
-	    System.out.println( ContractsPage.VisualizationTitles()); 
-    	assertTrue(Arrays.equals(sliderTitles, ContractsPage.VisualizationTitles().toArray()));
-    	System.out.println( ContractsPage.VisualizationTitles()); 
+	    System.out.println( ContractsPage.VisualizationTitles2()); 
+    	assertTrue(Arrays.equals(sliderTitles, ContractsPage.VisualizationTitles2().toArray()));
+    	System.out.println( ContractsPage.VisualizationTitles2()); 
     }
 	 
 	@Test

@@ -73,6 +73,47 @@ public class ContractsPage {
 			Driver.Instance.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
 		}
 		
+		
+	    public static ArrayList<String> VisualizationTitles2() {
+				ArrayList<String> titles = new ArrayList<String>();
+				List<WebElement> titleContainers = Driver.Instance.findElements(By.cssSelector("#nyc-expense-pending-contracts > .top-chart > .inside > .panel-pane"));
+				for(int i=0; i < titleContainers.size(); i++){
+					selectVisualizationSlider2(i);
+					WebElement titleClass = titleContainers.get(i).findElement(By.cssSelector(".pane-content .chart-title"));
+					if(titleClass.isDisplayed()){
+						String title = titleClass.getText();
+						titles.add(title);
+					}
+				}	
+				return titles;
+			}
+			
+			public static void selectVisualizationSlider2(int sliderPosition){
+				List<WebElement> sliderContainer = Driver.Instance.findElements(By.cssSelector("#nyc-expense-pending-contracts > .top-chart > .slider-pager > a"));
+				sliderContainer.get(sliderPosition).click();
+				Driver.Instance.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+			}
+			
+			 public static ArrayList<String> VisualizationTitles3() {
+					ArrayList<String> titles = new ArrayList<String>();
+					List<WebElement> titleContainers = Driver.Instance.findElements(By.cssSelector("#nyc-revenue-pending-contracts > .top-chart > .inside > .panel-pane"));
+					for(int i=0; i < titleContainers.size(); i++){
+						selectVisualizationSlider3(i);
+						WebElement titleClass = titleContainers.get(i).findElement(By.cssSelector(".pane-content .chart-title"));
+						if(titleClass.isDisplayed()){
+							String title = titleClass.getText();
+							titles.add(title);
+						}
+					}	
+					return titles;
+				}
+				
+				public static void selectVisualizationSlider3(int sliderPosition){
+					List<WebElement> sliderContainer = Driver.Instance.findElements(By.cssSelector("#nyc-revenue-pending-contracts > .top-chart > .slider-pager > a"));
+					sliderContainer.get(sliderPosition).click();
+					Driver.Instance.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+				}
+		
 		public static ArrayList<String> WidgetTitles() {
 			ArrayList<String> titles = new ArrayList<String>();
 			List<WebElement> titleContainers = Driver.Instance.findElements(By.className("tableHeader"));

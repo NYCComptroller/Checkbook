@@ -21,7 +21,7 @@ import utilities.NYCDatabaseUtil;
 import helpers.Helper;
 import utilities.TestStatusReport;
 public class PendingRevenueContractsTest  extends TestStatusReport{
-//public class PendingRevenueContractsTest extends NYCBaseTest {
+	//public class PendingRevenueContractsTest extends NYCBaseTest {
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
     public void GoToPage() {
@@ -79,7 +79,7 @@ public class PendingRevenueContractsTest  extends TestStatusReport{
 	
 	@Test
     public void VerifyTopNavPendingRevenueContractAmount() throws SQLException {
-        String TotalContractAmtDB = NYCDatabaseUtil.getContractsTopAmount(year, 'B');
+        String TotalContractAmtDB = NYCDatabaseUtil.getContractsCurrentFYTopAmount(year, 'B');
         String TotalContractAmtApp = ContractsPage.GetContractsAmount();
         System.out.println(TotalContractAmtApp); 
         assertEquals("Active Revenue Contracts Top navigation amount did not match", TotalContractAmtApp, TotalContractAmtDB);

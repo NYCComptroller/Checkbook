@@ -117,7 +117,7 @@ import utilities.NYCDatabaseUtil;
 	    assertEquals("Total Spending Contracts Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
 	    
-	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getTotalSpendingDetailsAmount(year, 'B');
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getTotalSpendingContractsDetailsAmount(year, 'B');
 		String WidgetDetailsAmountApp = HomePage.GetTransactionAmount1();
 	    assertEquals("Total Spending  Contracts  widget details  page total spending amount did not match", WidgetDetailsAmountApp, WidgetDetailsAmountDB);
 }

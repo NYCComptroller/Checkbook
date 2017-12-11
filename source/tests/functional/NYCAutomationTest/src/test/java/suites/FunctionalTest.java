@@ -20,7 +20,7 @@ import utilities.TestStatusReport;
 @RunWith(Suite.class)
 @SuiteClasses({
 
-	/* Spending */
+	/* Spending 	*/
 	TotalSpendingWidgetTest.class,
 	TotalSpendingTitlesTest.class,
 	TotalSpendingWidgetDetailsTest.class,
@@ -42,7 +42,7 @@ import utilities.TestStatusReport;
 	
 	
 	
-	/*Contracts*/ 
+	/*Contracts	*/ 
 	
 	ActiveExpenseContractsTest.class,
 	ActiveExpenseContractsDetailsTest.class,
@@ -66,6 +66,7 @@ import utilities.TestStatusReport;
 	
 	BudgetWidgetCountsTest.class,
 	BudgetWidgetTitlesTest.class,
+
 	
 
 	/* Revenue */

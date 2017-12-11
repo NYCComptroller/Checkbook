@@ -466,7 +466,7 @@ public class NYCDatabaseUtil {
 		// TODO Auto-generated method stub
 		 query = "SELECT SUM(check_amount) sumSpendingAmt "
 	                + "FROM disbursement_line_item_details "
-	                + " WHERE spending_category_id='3' and  fiscal_year = " + year;
+	                + " WHERE spending_category_id='3' and   fiscal_year = " + year;
 
 	          rs = amountQueryHelper(yearTypeVal);
 
@@ -512,6 +512,81 @@ public class NYCDatabaseUtil {
 	        return formatNumber2(totalSpendingAmount);
 	        // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
 	    }
+	
+	//Spending Widget Contracts widget details amounts
+	
+    public static String getTotalSpendingContractsDetailsAmount(int year, char yearTypeVal) throws SQLException {
+        query = "SELECT SUM(check_amount) sumSpendingAmt "
+                + "FROM disbursement_line_item_details"
+                + " WHERE   contract_document_code in( 'CT1', 'CTA1', 'POD', 'POC', 'PCC1', 'DO1','MA1','MMA1') and fiscal_year = " + year;
+        rs = amountQueryHelper(yearTypeVal);
+
+        BigDecimal totalSpendingAmount = new BigDecimal(0);
+
+        while (rs.next()) {
+            totalSpendingAmount = rs.getBigDecimal("sumSpendingAmt");
+        }
+        return formatNumber2(totalSpendingAmount);
+        // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
+    }
+    
+	
+	
+	public static String getContractsSpendingContractsDetailsAmount(int year, char yearTypeVal) throws SQLException {
+		// TODO Auto-generated method stub
+		 query = "SELECT SUM(check_amount) sumSpendingAmt "
+	                + "FROM disbursement_line_item_details "
+	                + " WHERE spending_category_id='1'  and contract_document_code in( 'CT1', 'CTA1', 'POD', 'POC', 'PCC1', 'DO1','MA1','MMA1') and  fiscal_year = " + year;
+
+	          rs = amountQueryHelper(yearTypeVal);
+
+	        BigDecimal totalSpendingAmount = new BigDecimal(0);
+
+	        while (rs.next()) {
+	            totalSpendingAmount = rs.getBigDecimal("sumSpendingAmt");
+	        }
+	        return formatNumber2(totalSpendingAmount);
+	        // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
+	    }
+
+	
+	
+	public static String getCapitalContractsSpendingContractsDetailsAmount(int year, char yearTypeVal) throws SQLException {
+		// TODO Auto-generated method stub
+		 query = "SELECT SUM(check_amount) sumSpendingAmt "
+	                + "FROM disbursement_line_item_details "
+	                + " WHERE spending_category_id='3' and  contract_document_code in( 'CT1', 'CTA1', 'POD', 'POC', 'PCC1', 'DO1','MA1','MMA1') and  fiscal_year = " + year;
+
+	          rs = amountQueryHelper(yearTypeVal);
+
+	        BigDecimal totalSpendingAmount = new BigDecimal(0);
+
+	        while (rs.next()) {
+	            totalSpendingAmount = rs.getBigDecimal("sumSpendingAmt");
+	        }
+	        return formatNumber2(totalSpendingAmount);
+	        // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
+	    }
+	
+	public static String getTrustAgencySpendingContractsDetailsAmount(int year, char yearTypeVal) throws SQLException {
+		// TODO Auto-generated method stub
+		 query = "SELECT SUM(check_amount) sumSpendingAmt "
+	                + "FROM disbursement_line_item_details "
+	                + " WHERE spending_category_id='5' andcontract_document_code in( 'CT1', 'CTA1', 'POD', 'POC', 'PCC1', 'DO1','MA1','MMA1') and   fiscal_year = " + year;
+
+	          rs = amountQueryHelper(yearTypeVal);
+
+	        BigDecimal totalSpendingAmount = new BigDecimal(0);
+
+	        while (rs.next()) {
+	            totalSpendingAmount = rs.getBigDecimal("sumSpendingAmt");
+	        }
+	        return formatNumber2(totalSpendingAmount);
+	        // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
+	    }
+	
+
+	
        // Total Spending widget counts
         
         public static int getTotalSpendingAgenciesCount(int year,char yearTypeVal) throws SQLException {
@@ -749,8 +824,8 @@ public static int getTrustAgencySpendingAgenciesCount(int year,char yearTypeVal)
  } 
 
 public static int getTrustAgencySpendingExpCategoriesCount(int year, char yearTypeVal)  throws SQLException {
-//query = "SELECT COUNT(distinct expenditure_object_id) aCount from disbursement_line_item_details where spending_category_id='5' and fiscal_year =" + year ;
-query = "SELECT COUNT(distinct expenditure_object_code) aCount from disbursement_line_item_details where spending_category_id='5' and fiscal_year =" + year ; 
+query = "SELECT COUNT(distinct expenditure_object_id) aCount from disbursement_line_item_details where spending_category_id='5' and fiscal_year =" + year ;
+//query = "SELECT COUNT(distinct expenditure_object_code) aCount from disbursement_line_item_details where spending_category_id='5' and fiscal_year =" + year ; 
 rs = amountQueryHelper(yearTypeVal);
 int count = 0;
 while (rs.next()) {
@@ -760,7 +835,12 @@ return count;
 	}  		
 
 public static int getTrustAgencySpendingContractsCount(int year,char yearTypeVal) throws SQLException {
-query =   "SELECT count(DISTINCT document_id) as aCount FROM aggregateon_mwbe_spending_contract WHERE type_of_year = 'B' AND spending_category_id='5' and year_id = "+ year;
+//query =   "SELECT count(DISTINCT document_id) as aCount FROM"
+	//	+ " aggregateon_mwbe_spending_contract WHERE type_of_year = 'B' AND spending_category_id='5' and year_id = "+ year;
+
+query =   " SELECT count( distinct ( COALESCE(master_contract_number,contract_number)  )) aCount FROM disbursement_line_item_details" 
+        +    " WHERE  contract_document_code in ( 'CT1', 'CTA1', 'POD', 'POC', 'PCC1', 'DO1','MA1','MMA1') and  spending_category_id='5'  and fiscal_year = "+ year;
+
 rs = amountQueryHelper(yearTypeVal);
 int count = 0;
 while (rs.next()) {
@@ -805,8 +885,8 @@ public static int getOtherSpendingAgenciesCount(int year,char yearTypeVal) throw
  } 
 
 public static int getOtherSpendingExpCategoriesCount(int year, char yearTypeVal)  throws SQLException {
-//query = "SELECT COUNT(distinct expenditure_object_id) aCount from disbursement_line_item_details where spending_category_id='4' and fiscal_year =" + year ;
-query = "SELECT COUNT(distinct expenditure_object_code) aCount from disbursement_line_item_details where spending_category_id='4' and fiscal_year =" + year ; 
+query = "SELECT COUNT(distinct expenditure_object_id) aCount from disbursement_line_item_details where spending_category_id='4' and fiscal_year =" + year ;
+//query = "SELECT COUNT(distinct expenditure_object_code) aCount from disbursement_line_item_details where spending_category_id='4' and fiscal_year =" + year ; 
 rs = amountQueryHelper(yearTypeVal);
 int count = 0;
 while (rs.next()) {
@@ -996,7 +1076,7 @@ rs = amountQueryHelper(yearTypeVal);
 
 public static String getRevenueAmount(int year, char yearTypeVal) throws SQLException {
     query = "SELECT SUM(posting_amount) sumRevenueAmt "
-            + "FROM revenue"
+            + "FROM revenue_details"
             + " WHERE budget_fiscal_year = " + year;
     rs = amountQueryHelper(yearTypeVal);
     BigDecimal totalRevenueAmount = new BigDecimal(0);
@@ -1008,7 +1088,7 @@ public static String getRevenueAmount(int year, char yearTypeVal) throws SQLExce
 
 public static String getRevenuecrossYearCollectionsDetailsAmount(int year, char yearTypeVal) throws SQLException {
     query = "SELECT SUM(posting_amount) sumRevenueAmt "
-            + "FROM revenue where fiscal_year = '2018' and "
+            + "FROM revenue_details where fiscal_year = '2018' and "
             + "  budget_fiscal_year = " + year;
 
     rs = amountQueryHelper(yearTypeVal);
@@ -1022,7 +1102,7 @@ public static String getRevenuecrossYearCollectionsDetailsAmount(int year, char 
 }
 public static String getRevenuecrossYearCollectionsDetailsAmount1(int year, char yearTypeVal) throws SQLException {
     query = "SELECT SUM(posting_amount) sumRevenueAmt "
-            + "FROM revenue where fiscal_year = '2016' and "
+            + "FROM revenue_details where fiscal_year = '2016' and "
             + "  budget_fiscal_year = " + year;
 
 
@@ -1041,7 +1121,7 @@ public static String getRevenuecrossYearCollectionsDetailsAmount1(int year, char
 
 public static String getRevenueDetailsAmount(int year, char yearTypeVal) throws SQLException {
 	 query = "SELECT SUM(posting_amount) sumRevenueAmt "
-             + "FROM revenue"
+             + "FROM revenue_details"
              + " WHERE budget_fiscal_year = " + year;
 
 
@@ -1099,7 +1179,7 @@ public static int getRevenueAgenciesCount(int year, char yearTypeVal) throws SQL
     
     public static int getRevenueDetailsCount(int year, char yearTypeVal) throws SQLException {
         query = "SELECT COUNT(*) aCount " +
-                "FROM  revenue where budget_fiscal_year= " + year ;
+                "FROM  revenue_details where budget_fiscal_year= " + year ;
 
         rs = amountQueryHelper(yearTypeVal);
         int count = 0;
@@ -1110,9 +1190,40 @@ public static int getRevenueAgenciesCount(int year, char yearTypeVal) throws SQL
         return count;
         
     }
-    public static int getRevenueCrossYearColectionsDetailsCount(int year, char yearTypeVal) throws SQLException {
-        query = "SELECT COUNT(*) aCount " +
-                "FROM  revenue where budget_fiscal_year= " + year ;
+    public static int getRevenueAgenciesCrossYearColectionsDetailsCount(int year, char yearTypeVal) throws SQLException {
+        query = "SELECT count(distinct agency_id) aCount " +
+                "FROM  revenue_details where fiscal_year= '2016' and " + 
+               "  budget_fiscal_year = " + year;
+
+        rs = amountQueryHelper(yearTypeVal);
+        int count = 0;
+        while (rs.next()) {
+            count = rs.getInt("aCount");
+        }
+     
+        return count;
+        
+    }
+    public static int getRevenueFundingClassesCrossYearColectionsDetailsCount(int year, char yearTypeVal) throws SQLException {
+        query = "SELECT count(distinct funding_class_code) aCount " +
+                "FROM  revenue_details where fiscal_year= '2016' and " + 
+               "  budget_fiscal_year = " + year;
+
+        rs = amountQueryHelper(yearTypeVal);
+        int count = 0;
+        while (rs.next()) {
+            count = rs.getInt("aCount");
+        }
+     
+        return count;
+        
+    }
+    public static int getRevenueCategoriesCrossYearColectionsDetailsCount(int year, char yearTypeVal) throws SQLException {
+        query = "SELECT count(distinct revenue_category_id) aCount " +
+                "FROM  revenue_details where fiscal_year= '2016' and " + 
+               "  budget_fiscal_year = " + year;
+        
+    
 
         rs = amountQueryHelper(yearTypeVal);
         int count = 0;
@@ -1324,7 +1435,23 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
                 }
                 return formatNumber(totalContractAmount);
                 // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
-            }   
+            } 
+            
+            public static String getContractsCurrentFYTopAmount(int year, char yearTypeVal) throws SQLException {
+                query = "SELECT SUM(maximum_contract_amount) aeSum " +
+                        "FROM agreement_snapshot WHERE document_code_id IN (1,2,5,7)" +
+                        "AND (registered_year = '2018')"+
+                        "AND('2018' BETWEEN starting_year AND ending_year)";
+                rs = amountQueryHelper(yearTypeVal);
+
+                BigDecimal totalContractAmount = new BigDecimal(0);
+
+                while (rs.next()) {
+                    totalContractAmount = rs.getBigDecimal("AESum");
+                }
+                return formatNumber(totalContractAmount);
+                // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
+            }  
             
             // Active expense contracts details amounts
             public static String getAEContractsMasterContractsDetailsAmount(int year, char yearTypeVal) throws SQLException {
@@ -2098,7 +2225,7 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
  //PendingRevenue contracts widget counts
             
             public static String getPRContractsAmount(int year, char yearTypeVal) throws SQLException {
-                query = "SELECT SUM(maximum_contract_amount) AESum " +
+                query = "SELECT SUM(original_maximum_amount) AESum " +
                         "FROM pending_contracts WHERE document_code_id IN (7)" ;
                         
 
@@ -2207,7 +2334,7 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
 //Pending Expense contracts widget counts
             
             public static String getPEContractsAmount(int year, char yearTypeVal) throws SQLException {
-                query = "SELECT SUM(maximum_contract_amount) AESum " +
+                query = "SELECT SUM(original_maximum_amount) AESum " +
                         "FROM pending_contracts WHERE document_code_id IN (1,2,5,6,19,20)" ;
                         
 
@@ -2223,8 +2350,19 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
             } 
             
 
+            public static int getContractsBottomnNavPECount(int year, char yearTypeVal) throws SQLException {
+                query = "SELECT  count(contract_number ) aCount " +
+                        "FROM pending_contracts WHERE document_code_id IN (1,2,5,6,19,20)";
+                rs = amountQueryHelper(yearTypeVal);
+                int count = 0;
+                while (rs.next()) {
+                    count = rs.getInt("aCount");
+                }
+                return count;
+                } 
+            
             public static int getContractsPECount(int year, char yearTypeVal) throws SQLException {
-                query = "SELECT  count(distinct contract_number ) aCount " +
+                query = "SELECT  count(Distinct contract_number ) aCount " +
                         "FROM pending_contracts WHERE document_code_id IN (1,2,5,6,19,20)";
                 rs = amountQueryHelper(yearTypeVal);
                 int count = 0;
@@ -2233,6 +2371,7 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
                 }
                 return count;
                 }  
+            
             
             
             
