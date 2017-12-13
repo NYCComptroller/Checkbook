@@ -1638,6 +1638,25 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
                 // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
             } 
             
+            public static String getARContractsModificationDetailsAmount(int year, char yearTypeVal) throws SQLException {
+                
+                query = "SELECT SUM(maximum_contract_amount) ARSum " +
+                        "FROM agreement_snapshot WHERE document_code_id IN (7)" +
+                        "AND(" + year + " BETWEEN effective_begin_year AND effective_end_year) " +
+                        "AND(" + year + " BETWEEN starting_year AND ending_year)" +
+                         "and maximum_contract_amount <> original_contract_amount";
+                rs = amountQueryHelper(yearTypeVal);
+
+                BigDecimal totalContractAmount = new BigDecimal(0);
+
+                while (rs.next()) {
+                    totalContractAmount = rs.getBigDecimal("ARSum");
+                }
+               return formatNumber2(totalContractAmount);
+               // return totalContractAmount.toString();
+               
+            }  
+            
             
             // Registered Revenue  contracts details amounts  
             public static String getRRContractsDetailsAmount(int year, char yearTypeVal) throws SQLException {
@@ -2225,10 +2244,18 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
  //PendingRevenue contracts widget counts
             
             public static String getPRContractsAmount(int year, char yearTypeVal) throws SQLException {
-                query = "SELECT SUM(original_maximum_amount) AESum " +
-                        "FROM pending_contracts WHERE document_code_id IN (7)" ;
+               // query = "SELECT SUM(original_maximum_amount) AESum " +
+                 //       "FROM pending_contracts WHERE document_code_id IN (7)" ;
                         
-
+            	query =   "select sum(a.cmcount+b.cmcount) AESum from (select sum(revised_maximum_amount ) cmcount from pending_contracts a ,"+
+                        "(select contract_number, max(document_version) as document_version  from pending_contracts  group by 1)" +
+                         "b where a.contract_number = b.contract_number  and a.document_version = b.document_version" +
+                          "  and  latest_flag ='Y' and original_or_modified = 'N'  and document_code_id in  (7))a ," +
+                        "(select sum(revised_maximum_amount - registered_contract_max_amount ) cmcount from pending_contracts a ," +
+                         "(select contract_number, max(document_version) as document_version  from pending_contracts  group by 1) b " +
+                         "where a.contract_number = b.contract_number  and a.document_version = b.document_version  and  latest_flag ='Y' and" +
+                        " original_or_modified = 'M' and document_code_id in  (7))b";
+                        
                 rs = amountQueryHelper(yearTypeVal);
 
                 BigDecimal totalContractAmount = new BigDecimal(0);
@@ -2334,8 +2361,17 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
 //Pending Expense contracts widget counts
             
             public static String getPEContractsAmount(int year, char yearTypeVal) throws SQLException {
-                query = "SELECT SUM(original_maximum_amount) AESum " +
-                        "FROM pending_contracts WHERE document_code_id IN (1,2,5,6,19,20)" ;
+               // query = "SELECT SUM(original_maximum_amount) AESum " +
+                      //  "FROM pending_contracts WHERE document_code_id IN (1,2,5,6,19,20)" ;
+                
+                query =   "select sum(a.cmcount+b.cmcount) AESum from (select sum(revised_maximum_amount ) cmcount from pending_contracts a ,"+
+                        "(select contract_number, max(document_version) as document_version  from pending_contracts  group by 1)" +
+                         "b where a.contract_number = b.contract_number  and a.document_version = b.document_version" +
+                          "  and  latest_flag ='Y' and original_or_modified = 'N'  and document_code_id in  (1,2,20,5,6,19))a ," +
+                        "(select sum(revised_maximum_amount - registered_contract_max_amount ) cmcount from pending_contracts a ," +
+                         "(select contract_number, max(document_version) as document_version  from pending_contracts  group by 1) b " +
+                         "where a.contract_number = b.contract_number  and a.document_version = b.document_version  and  latest_flag ='Y' and" +
+                        " original_or_modified = 'M' and document_code_id in  (1,2,20,5,6,19))b";
                         
 
                 rs = amountQueryHelper(yearTypeVal);

@@ -240,8 +240,8 @@ public class HomePage {
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("total-spending-amount")));
 		String amount = (Driver.Instance.findElement(By.className("total-spending-amount"))).getText();	
 		System.out.println(amount);
-		//return amount.substring(0,8);
-		return  amount.substring(0,7);
+		//return amount.substring(0,8).replaceAll("\\s", "");
+		return  amount.substring(0,7).replaceAll("\\s", "");
 		//return Helper.billionStringToFloat(count);
 	}
 	public static String GetTransactionAmount2() {
