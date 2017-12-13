@@ -82,7 +82,7 @@ else
     $footer = \"<a class='show-details bottomContainerReload' href='$url' style='display:none;'>Details >></a>\";
 return $footer;
 ",
-"widgetTitle":"Contracts Amount Modifications",
+"widgetTitle":"Contract Amount Modifications",
 "getTotalDataCount":true,
 "header":"
 $node->widgetConfig->getData=false;
