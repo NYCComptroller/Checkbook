@@ -40,31 +40,31 @@ public class MWBETotalSpendingWidgetTest extends NYCBaseTest {
 	/* ***************** Test Widget Counts ****************** */
 	@Test
 	public void VerifyNumOfchecksWidget() throws SQLException {
-		Integer totalCheckswidgetCountDB = NYCDatabaseUtil.getTotalSpendingChecksCount(year,'B');
+		Integer totalCheckswidgetCountDB = NYCDatabaseUtil.getTotalSpendingMWBEChecksCount(year,'B');
 		Integer totalChecksWidgetCountApp = SpendingPage.GetTop5WidgetTotalCount(WidgetOption.Top5Checks);
 		assertEquals("Total Spending  Checks  widget count  did not match with the DB",totalChecksWidgetCountApp, totalCheckswidgetCountDB);
 	}
 	@Test
 	public void VerifyNumOfAgenciesWidget() throws SQLException {
-		Integer totalAgencieswidgetCountDB = NYCDatabaseUtil.getTotalSpendingAgenciesCount(year,'B');
+		Integer totalAgencieswidgetCountDB = NYCDatabaseUtil.getTotalSpendingMWBEAgenciesCount(year,'B');
 		Integer totalAgenciesWidgetCountApp = SpendingPage.GetTop5WidgetTotalCount(WidgetOption.Top5Agencies);
 		assertEquals("Total Spending  agencies widget count  did not match with the DB",totalAgenciesWidgetCountApp, totalAgencieswidgetCountDB);
 	}
 	@Test
 	public void VerifyNumOfExpenseCategoriesWidget() throws SQLException{
-		Integer totalExpenseCategorieswidgetCountDB = NYCDatabaseUtil.getTotalSpendingExpCategoriesCount(year,'B');
+		Integer totalExpenseCategorieswidgetCountDB = NYCDatabaseUtil.getTotalSpendingMWBEExpCategoriesCount(year,'B');
 		Integer totalExpenseCategoriesWidgetCountApp = SpendingPage.GetTop5WidgetTotalCount(WidgetOption.Top5ExpenseCategories);
 		assertEquals("Total Spending  Exp categories  widget count  did not match with the DB",totalExpenseCategoriesWidgetCountApp, totalExpenseCategorieswidgetCountDB);
 	}
 	@Test
 	public void VerifyNumOfPrimeVendorsWidget() throws SQLException{
-		Integer totalPrimeVendorswidgetCountDB = NYCDatabaseUtil.getTotalSpendingPrimeVendorsCount(year,'B');
+		Integer totalPrimeVendorswidgetCountDB = NYCDatabaseUtil.getTotalSpendingMWBEPrimeVendorsCount(year,'B');
 		Integer totalPrimeVendorsWidgetCountApp = SpendingPage.GetTop5WidgetTotalCount(WidgetOption.Top5PrimeVendors);
 		assertEquals("Total Spending  Prime Vendor  widget count  did not match with the DB",totalPrimeVendorsWidgetCountApp, totalPrimeVendorswidgetCountDB);
 	}
 	@Test
 	public void VerifyNumOfContractsWidget() throws SQLException{
-		Integer totalContractswidgetCountDB = NYCDatabaseUtil.getTotalSpendingContractsCount(year,'B');
+		Integer totalContractswidgetCountDB = NYCDatabaseUtil.getTotalSpendingMWBEContractsCount(year,'B');
 		Integer totalContractsWidgetCountApp = SpendingPage.GetTop5WidgetTotalCount(WidgetOption.Top5Contracts);
 		assertEquals("Total Spending  Contracts  widget count  did not match with the DB",totalContractsWidgetCountApp, totalContractswidgetCountDB);
 	}

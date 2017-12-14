@@ -20,7 +20,7 @@ import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
 import utilities.TestStatusReport;
 
-//public class TotalSpendingTitlesTest extends TestStatusReport{
+//public class MWBETotalSpendingTitlesTest  extends TestStatusReport{
 	public class MWBETotalSpendingTitlesTest extends NYCBaseTest{
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
@@ -42,7 +42,7 @@ import utilities.TestStatusReport;
 	
 	@Test
     public void VerifyBottomNavTotalSpendingAmount() throws SQLException {
-        String TotalSpendingAmtDB = NYCDatabaseUtil.getSpendingAmount(year, 'B');
+        String TotalSpendingAmtDB = NYCDatabaseUtil.getSpendingMWBEAmount(year, 'B');
         String spendingAmt = SpendingPage.GetBottomNavSpendingAmount();
     	System.out.println(spendingAmt); 
         assertEquals("Spending Amount did not match", spendingAmt, TotalSpendingAmtDB);
@@ -51,10 +51,14 @@ import utilities.TestStatusReport;
 	
 	@Test
     public void VerifyTotalSpendingVisualizationsTitles(){
-	    String[] sliderTitles= {"Total Spending", 
-	    						"Top Ten Agencies by Disbursement Amount", 
-	    						"Top Ten Contracts by Disbursement Amount", 
-	    						"Top Ten Prime Vendors by Disbursement Amount"};  
+	    String[] sliderTitles= {"Prime Spending by M/WBE Share",
+	    		"M/WBE Total Prime Spending Share",
+	    		"Analysis by Prime M/WBE Share",
+	    		"Top Ten Agencies by M/WBE Spending",
+	    		"Top Ten Prime Vendors by M/WBE Spending",
+	    		"Top Ten Contracts by M/WBE Spending",
+	    		"Top Ten Sub Vendors by M/WBE Spending"
+	    					};  
     	assertTrue(Arrays.equals(sliderTitles, SpendingPage.VisualizationTitles().toArray()));
     	System.out.println( SpendingPage.VisualizationTitles()); 
     }
@@ -63,10 +67,12 @@ import utilities.TestStatusReport;
     public void VerifyTotalSpendingWidgetTitles(){
 	   String[] widgetTitles = {"Top 5 Checks",
 	    						"Top 5 Agencies",
-	    						"Top Expense Categories",
-	    						"Top 5 Prime Vendors",
+	    						"Top 5 Expense Categories",
+	    						"Top 5 Prime Vendors",	    						
+	    						"Top 5 Sub Vendors",
 	    						"Top 5 Contracts",
-	    						"Top 5 Agencies"}; 
+	    						"Spending by Industries"
+	    						}; 
 	    							    						 
 		   System.out.println( SpendingPage.WidgetTitles()); 		
     	//HomePage.ShowWidgetDetails();
