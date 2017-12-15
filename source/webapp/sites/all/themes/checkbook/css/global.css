@@ -3346,3 +3346,10 @@ a.logo,
 .logo-img a{
     cursor: pointer;
 }
+td.text div{
+  padding-left: 2px;
+  padding-right: 1px;
+}
+.text{
+  padding-left:1px;
+}
