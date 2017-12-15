@@ -94,7 +94,8 @@ public class PendingExpenseContractsTest  extends TestStatusReport{
 	
 	@Test
     public void VerifyTopNavPendingExpenseContractAmount() throws SQLException {
-        String TotalContractAmtDB = NYCDatabaseUtil.getContractsCurrentFYTopAmount(year, 'B');
+       // String TotalContractAmtDB = NYCDatabaseUtil.getContractsCurrentFYTopAmount(year, 'B');
+		 String TotalContractAmtDB = NYCDatabaseUtil.getContractsTopAmount(year, 'B');
         String TotalContractAmtApp = ContractsPage.GetContractsAmount();
         System.out.println(TotalContractAmtApp); 
         assertEquals("Pending Expense Contracts Top navigation amount did not match", TotalContractAmtApp, TotalContractAmtDB);

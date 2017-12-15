@@ -3366,7 +3366,7 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
                          		+ "   where  document_code_id in (1,2) "
                          		+ "and (2016 between starting_year and ending_year)"
                          		+ "and maximum_contract_amount <> original_contract_amount"
-                         		+" and( registered_year = 2016)  +"
+                         		+" and( registered_year = 2016) ) +"
                      	    	+"	    ( select  count(*) from sub_agreement_snapshot  where contract_number in "
                      	    	+"	 ( select distinct contract_number  from agreement_snapshot  where "
                      	    	+"	 document_code_id in (1,2) and (2016 between starting_year and ending_year)"

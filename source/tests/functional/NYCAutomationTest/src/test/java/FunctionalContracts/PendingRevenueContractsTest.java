@@ -79,7 +79,8 @@ public class PendingRevenueContractsTest  extends TestStatusReport{
 	
 	@Test
     public void VerifyTopNavPendingRevenueContractAmount() throws SQLException {
-        String TotalContractAmtDB = NYCDatabaseUtil.getContractsCurrentFYTopAmount(year, 'B');
+       // String TotalContractAmtDB = NYCDatabaseUtil.getContractsCurrentFYTopAmount(year, 'B');
+		String TotalContractAmtDB = NYCDatabaseUtil.getContractsTopAmount(year, 'B');
         String TotalContractAmtApp = ContractsPage.GetContractsAmount();
         System.out.println(TotalContractAmtApp); 
         assertEquals("Active Revenue Contracts Top navigation amount did not match", TotalContractAmtApp, TotalContractAmtDB);
@@ -119,7 +120,7 @@ public class PendingRevenueContractsTest  extends TestStatusReport{
 	    						"Top Contract Amount Modifications",
 	    						"Top 5 Prime Vendors",
 	    						"Top 5 Award Methods",
-	    						"Top Agencies",
+	    						"Top 5 Agencies",
 	    						"Contracts by Industries",
 	    						"Contracts by Size"
 	    						};	    						
