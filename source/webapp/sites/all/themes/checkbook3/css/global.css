@@ -1927,7 +1927,7 @@ td.pad-left div{
     padding-right: 10px;
 }
 .dataTable td div {
-    margin: 13px 0px 13px 0px;
+    margin: 13px 1px 13px 0px;
 }
 
 .contracts-oge-spending-bottom {
@@ -1937,6 +1937,9 @@ td.pad-left div{
 td.text div {
     float: left;
     text-align: left;
+}
+td.text{
+    padding :0px 1px 1px 0px;
 }
 
 td.number div {
