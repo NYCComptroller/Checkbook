@@ -18,7 +18,7 @@
     ],
     "skipCustomPadding":true,
     "dataTableOptions":{
-        "aoColumns":[
+       /* "aoColumns":[
             { "bSortable": false, "sWidth":"150px","sClass":"text" },
             { "bSortable": false, "sWidth":"127px","sClass":"text"  },
             { "bSortable": false, "sWidth":"129px","sClass":"text"  },
@@ -28,7 +28,19 @@
             { "bSortable": true, "sWidth":"78px", "sClass":"number" ,"asSorting": [ "desc","asc"  ]},
             { "bSortable": true, "sWidth":"78px", "sClass":"number" ,"asSorting": [ "desc" ,"asc" ]},
             { "bSortable": false, "sWidth":"15px" }
-        ],
+            
+        ]*/
+      "aoColumns": [
+    { "bSortable": false,"sClass":"text", "sWidth":"150px" },
+    { "bSortable": false,"sClass":"text", "sWidth":"167px" },
+    { "bSortable": false,"sClass":"text", "sWidth":"153px" },
+    { "bSortable": false,"sClass":"text", "sWidth":"110px" },
+    { "bSortable": true,"sClass":"number","asSorting": [ "desc","asc" ], "sWidth":"79px" },
+    { "bSortable": true,"sClass":"number","asSorting": [ "desc","asc" ], "sWidth":"78px" },
+    { "bSortable": true,"sClass":"number","asSorting": [ "desc","asc" ], "sWidth":"83px" },
+    { "bSortable": true,"sClass":"number","asSorting": [ "desc","asc" ], "sWidth":"83px" },
+    { "bSortable": false,"sWidth":"15px" }
+],
         "bServerSide":true,
         "bFilter":false,
         "bPaginate":false,
