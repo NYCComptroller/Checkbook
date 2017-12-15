@@ -81,7 +81,7 @@ table th.sorting_desc span{
 }*/
 th,
 td {
-    padding: 10px;
+    padding: 12px;
 }
 /* makes sure that borders are only applied on the center column. */
 table tbody{
