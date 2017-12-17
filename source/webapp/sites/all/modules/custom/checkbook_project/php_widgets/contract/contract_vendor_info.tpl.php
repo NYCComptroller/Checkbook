@@ -32,10 +32,10 @@ if(_getRequestParamValue("magid") != ""){
 }
 
 if(_get_current_datasource() != "checkbook_oge"){
-  $queryVendorDetails = "SELECT fa.minority_type_id, fa.contract_number, rb.business_type_code, fa.agreement_id,fa.original_agreement_id, 
+  $queryVendorDetails = "SELECT cvlmc.minority_type_id, fa.contract_number, rb.business_type_code, fa.agreement_id,fa.original_agreement_id, 
                                 fa.vendor_id, va.address_id, ve.legal_name AS vendor_name, a.address_line_1, a.address_line_2, a.city, a.state, a.zip, a.country,
-	                            (CASE WHEN fa.minority_type_id IN (2,3,4,5,9)  THEN 'Yes' ELSE 'NO' END) AS mwbe_vendor,
-	                            (CASE WHEN fa.minority_type_id IN (4,5) then 'Asian American' ELSE fa.minority_type_name END)AS ethnicity
+                                (CASE WHEN cvlmc.minority_type_id IN (2,3,4,5,9) THEN 'Yes' ELSE 'NO' END) AS mwbe_vendor, 
+                                (CASE WHEN cvlmc.minority_type_id IN (4,5) then 'Asian American' ELSE rm.minority_type_name END) AS ethnicity 
 	                        FROM agreement_snapshot fa
 	                            LEFT JOIN vendor_history vh ON fa.vendor_history_id = vh.vendor_history_id
 	                            LEFT JOIN vendor as ve ON ve.vendor_id = vh.vendor_id
@@ -44,8 +44,10 @@ if(_get_current_datasource() != "checkbook_oge"){
 	                            LEFT JOIN ref_address_type ra ON va.address_type_id = ra.address_type_id
 	                            LEFT JOIN vendor_business_type vb ON vh.vendor_history_id = vb.vendor_history_id
 	                            LEFT JOIN ref_business_type rb ON vb.business_type_id = rb.business_type_id
-	                            LEFT JOIN ref_minority_type rm ON vb.minority_type_id = rm.minority_type_id
-	                        WHERE ra.address_type_code = 'PR' AND fa.latest_flag = 'Y' AND fa.original_agreement_id = " . $ag_id. "LIMIT 1";
+	                            LEFT JOIN contract_vendor_latest_mwbe_category cvlmc ON cvlmc.vendor_id = fa.vendor_id
+                                LEFT JOIN ref_minority_type rm ON cvlmc.minority_type_id = rm.minority_type_id
+	                        WHERE ra.address_type_code = 'PR' AND fa.latest_flag = 'Y' AND fa.original_agreement_id = " . $ag_id. " 
+	                        ORDER BY cvlmc.year_id DESC LIMIT 1";
 }else{
   $queryVendorDetails = "SELECT  fa.contract_number, rb.business_type_code, fa.agreement_id,fa.original_agreement_id,
                                   fa.vendor_id, va.address_id, ve.legal_name AS vendor_name, a.address_line_1, a.address_line_2, a.city, a.state, a.zip, a.country
@@ -71,12 +73,6 @@ $queryVendorCount = " select count(*) total_contracts_sum from {agreement_snapsh
 $results1 = _checkbook_project_execute_sql_by_data_source($queryVendorDetails,_get_current_datasource());
 $node->data = $results1;
 
-
-//foreach($node->data as $key => $value){
-//    if($value['business_type_code'] == "MNRT" || $value['business_type_code'] == "WMNO"){
-//        $node->data[0]["mwbe_vendor"] = "Yes";
-//    }
-//}
 $total_cont  = 0;
 $results2 = _checkbook_project_execute_sql_by_data_source($queryVendorCount,_get_current_datasource());
 if(_getRequestParamValue("status")){
@@ -85,11 +81,6 @@ if(_getRequestParamValue("status")){
     $status = '/status/A';
 }
 
-//if (isset($node->data[0]['mwbe_vendor']) && 'yes' == strtolower($node->data[0]['mwbe_vendor'])) {
-// $status .= '/dashboard/mp';
-//}
-
-//log_error($_SERVER);
 foreach($results2 as $row){
     $total_cont +=$row['total_contracts_sum'];
 }
@@ -97,14 +88,7 @@ foreach($results2 as $row){
 $vendor_link = _checkbook_vendor_link($node->data[0]['vendor_id'], TRUE);
 
 $contract_number = $node->data[0]['contract_number'];
-//$querySubVendorCount = "SELECT  COUNT(DISTINCT vendor_id) AS sub_vendor_count  FROM sub_agreement_snapshot
-//                        WHERE contract_number = '". $contract_number . "'
-//                        AND latest_flag = 'Y'
-//                        LIMIT 1";
-//
-//$results3 = _checkbook_project_execute_sql_by_data_source($querySubVendorCount,_get_current_datasource());
-//$res->data = $results3;
-//$total_subvendor_count = $res->data[0]['sub_vendor_count'];
+
 ?>
   <ul class="left">
   <?php if( _get_current_datasource() == "checkbook" && !preg_match('/newwindow/',$_GET['q'])){?>
