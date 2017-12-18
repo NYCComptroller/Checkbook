@@ -160,11 +160,10 @@
 		$contract_type = 'Pending Revenue';
 	}
     if(_getRequestParamValue('status') == 'A'){
-        $node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Sub Spending by Total Active Sub Vendor Contracts';
+        $node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName() . ' Sub Spending by Total Active Sub Vendor Contracts';
     }else{
-        $node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Sub Spending by New Sub Vendor Contracts by Fiscal Year';
+        $node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName() . ' Sub Spending by New Sub Vendor Contracts by Fiscal Year';
     }
-
 ",
 "summaryView":{
     "template":"contract_date_summary",

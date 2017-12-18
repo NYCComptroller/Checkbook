@@ -804,7 +804,7 @@ function locale_get_plural($count, $langcode = NULL) {
     if (!empty($plural_formulas[$langcode])) {
       // $n is used inside the expression in the eval().
       $n = $count;
-      $plural_indexes[$langcode][$count] = @eval('return intval(' . $plural_formulas[$langcode] . ');');
+      $plural_indexes[$langcode][$count] = eval('return intval(' . $plural_formulas[$langcode] . ');');
     }
     // In case there is no plural formula for English (no imported translation
     // for English), use a default formula.

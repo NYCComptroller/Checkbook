@@ -68,7 +68,7 @@
       if (_getRequestParamValue("category") == 3) {
         $class = ' class="active"';
       }
-      $link = RequestUtil::preparePayrollBottomNavFilter("spending_landing",3);      
+      $link = RequestUtil::preparePayrollBottomNavFilter("spending_landing",3);
       $dollars = "<span class='dollars'>" . custom_number_formatter_format($dollars_by_cat[3],1,'$') . "</span>";
       
       ?>
@@ -106,7 +106,7 @@
       if (_getRequestParamValue("category") == 5) {
         $class = ' class="active"';
       }
-      $link = RequestUtil::preparePayrollBottomNavFilter("spending_landing",5);      
+      $link = RequestUtil::preparePayrollBottomNavFilter("spending_landing",5);
       $dollars = "<span class='dollars'>" . custom_number_formatter_format($dollars_by_cat[5],1,'$') . "</span>";
       
       ?>

@@ -170,7 +170,7 @@ abstract class AbstractMetaModelFactory extends AbstractFactory {
     protected function loadMetaModel(AbstractMetaModel $metamodel) {
         $metaModelName = $this->getMetaModelName();
 
-        LogHelper::log_notice(t('Loading @metamodelName ...', array('@metamodelName' => $metaModelName)));
+        LogHelper::log_info(t('Loading @metamodelName ...', array('@metamodelName' => $metaModelName)));
 
         $metamodelTimeStart = microtime(TRUE);
         $metamodelMemoryUsage = memory_get_usage();

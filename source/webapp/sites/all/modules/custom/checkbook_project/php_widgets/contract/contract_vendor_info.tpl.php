@@ -85,28 +85,17 @@ if(_getRequestParamValue("status")){
     $status = '/status/A';
 }
 
-if (isset($node->data[0]['mwbe_vendor']) && 'yes' == strtolower($node->data[0]['mwbe_vendor'])) {
-  $status .= '/dashboard/mp';
-}
+//if (isset($node->data[0]['mwbe_vendor']) && 'yes' == strtolower($node->data[0]['mwbe_vendor'])) {
+// $status .= '/dashboard/mp';
+//}
 
 //log_error($_SERVER);
 foreach($results2 as $row){
     $total_cont +=$row['total_contracts_sum'];
 }
-if(_getRequestParamValue("doctype")=="RCT1"){
-  $vendor_link = '/contracts_revenue_landing'.$status.'/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
-                 . $node->data[0]['vendor_id'] . '?expandBottomCont=true';
-}
-else{
-   if($node->data[0]["mwbe_vendor"] == 'Yes'){
-       $vendor_link = '/contracts_landing'.$status.'/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
-        .$node->data[0]['vendor_id'].'/dashboard/mp?expandBottomCont=true';
-   }
-    else{
-        $vendor_link = '/contracts_landing'.$status.'/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
-            .$node->data[0]['vendor_id'].'?expandBottomCont=true';
-    }
-}
+
+$vendor_link = _checkbook_vendor_link($node->data[0]['vendor_id'], TRUE);
+
 $contract_number = $node->data[0]['contract_number'];
 //$querySubVendorCount = "SELECT  COUNT(DISTINCT vendor_id) AS sub_vendor_count  FROM sub_agreement_snapshot
 //                        WHERE contract_number = '". $contract_number . "'

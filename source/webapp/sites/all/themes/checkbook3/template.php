@@ -328,32 +328,35 @@ function checkbook3_form_select_options($element,$choices=NULL){
   $value_valid = isset($element['#value']) || array_key_exists('#value', $element);
   $value_is_array = $value_valid && is_array($element['#value']);
   $options = '';
-  foreach ($choices as $key => $choice) {
-    if (is_array($choice)) {
-      $options .= '<optgroup label="' . $key . '">';
-      $options .= checkbook3_form_select_options($element, $choice);
-      $options .= '</optgroup>';
-    }
-    elseif (is_object($choice)) {
-      $options .= checkbook3_form_select_options($element, $choice->option);
-    }
-    else {
-      $key = (string) $key;
-      if ($value_valid && (!$value_is_array && (string) $element['#value'] === $key || ($value_is_array && in_array($key, $element['#value'])))) {
-        $selected = ' selected="selected"';
+  if (is_array($choices)) {
+    foreach ($choices as $key => $choice) {
+      if (is_array($choice)) {
+        $options .= '<optgroup label="' . $key . '">';
+        $options .= checkbook3_form_select_options($element, $choice);
+        $options .= '</optgroup>';
+      }
+      elseif (is_object($choice)) {
+        $options .= checkbook3_form_select_options($element, $choice->option);
       }
       else {
-        $selected = '';
+        $key = (string) $key;
+        if ($value_valid && (!$value_is_array && (string) $element['#value'] === $key || ($value_is_array && in_array($key, $element['#value'])))) {
+          $selected = ' selected="selected"';
+        }
+        else {
+          $selected = '';
+        }
+        //custom section that allows addition of other attributes to <option> tags
+        if ($option_att && is_array($option_att) && array_key_exists($key,$option_att)){
+          $attributes = drupal_attributes($option_att[$key]);
+        } else {
+          $attributes = '';
+        }
+        $options .= '<option value="' . check_plain($key) . '"' . $selected . $attributes . '>' . check_plain($choice) . '</option>';
       }
-      //custom section that allows addition of other attributes to <option> tags
-      if ($option_att && is_array($option_att) && array_key_exists($key,$option_att)){
-        $attributes = drupal_attributes($option_att[$key]);
-      } else {
-        $attributes = '';
-      }
-      $options .= '<option value="' . check_plain($key) . '"' . $selected . $attributes . '>' . check_plain($choice) . '</option>';
     }
   }
+
   return $options;
 }
 

@@ -3849,3 +3849,22 @@ function drupal_clear_opcode_cache($filepath) {
     @apc_delete_file($filepath);
   }
 }
+
+function checkbook_timer($event = '')
+{
+  if (!defined('LOCAL_VSL4')) {
+    return;
+  }
+  static $start;
+
+  if (!$start) {
+    $start = time();
+  }
+
+  $now = time();
+
+  $minutes_spent = floor((($now - $start) / 60));
+  $seconds_spent = (($now - $start) % 60);
+  LogHelper::log_warn("$event Time: $minutes_spent min $seconds_spent secs");
+//  log_warn("$event Time: $minutes_spent min $seconds_spent secs");
+}

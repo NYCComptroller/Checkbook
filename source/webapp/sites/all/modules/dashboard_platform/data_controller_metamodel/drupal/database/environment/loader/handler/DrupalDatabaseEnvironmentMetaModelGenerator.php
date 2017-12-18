@@ -24,7 +24,7 @@ class DrupalDatabaseEnvironmentMetaModelGenerator extends AbstractMetaModelLoade
     public static $DATASOURCE_NAME__DEFAULT = 'default:default';
 
     public function load(AbstractMetaModelFactory $factory, AbstractMetaModel $environment_metamodel, array $filters = NULL, $finalAttempt) {
-        LogHelper::log_notice(t('Generating Environment Meta Model for Drupal database connections ...'));
+        LogHelper::log_info(t('Generating Environment Meta Model for Drupal database connections ...'));
 
         global $databases;
 

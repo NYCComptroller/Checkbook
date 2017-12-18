@@ -272,12 +272,20 @@ function widget_node_view($node, $nodata = true) {
 	if(isset($node->widgetConfig->widgetUpdateJSONConfig)){
 
 		if($node->widgetConfig->widgetType == 'highcharts'){
+		  if (!isset($node->widgetConfig->chartConfig->chart)) {
+        $node->widgetConfig->chartConfig->chart = new stdClass();
+      }
+
+      if (!isset($node->widgetConfig->chartConfig->credits)) {
+        $node->widgetConfig->chartConfig->credits = new stdClass();
+      }
+
 			$node->widgetConfig->chartConfig->chart->renderTo = 'node-chart-' . widget_unique_identifier($node);
 			$node->widgetConfig->chartConfig->credits->enabled = false;
 		}
 
 
-		eval($node->widgetConfig->widgetUpdateJSONConfig);
+		@eval($node->widgetConfig->widgetUpdateJSONConfig);
 	}else{
 		widget_invoke($node, 'widget_data');
 	}
@@ -414,7 +422,7 @@ function widget_prepare(&$node) {
 	}
 
 	if(isset($node->widgetConfig->widgetPreprocessJSON)){
-		$parameters =  eval($node->widgetConfig->widgetPreprocessJSON);
+		eval($node->widgetConfig->widgetPreprocessJSON);
 	}
 
 	//copy request params and apply default and additional params
@@ -461,10 +469,12 @@ function widget_prepare(&$node) {
     	$parameters =  eval($node->widgetConfig->preProcessConfiguration);
     }
 
-    foreach ($node->widgetConfig->model->series as $series) {
+    if (is_array($node->widgetConfig->model->series)) {
+      foreach ($node->widgetConfig->model->series as $series) {
         if(isset($series->preProcessConfiguration)){
-            $parameters =  eval($series->preProcessConfiguration);
+          $parameters =  eval($series->preProcessConfiguration);
         }
+      }
     }
 
 }
@@ -550,8 +560,21 @@ function load_widget_data($node, $resultFormatter) {
 
         //update
 
+        $ajaxRequest = _getRequestParamValue('ajax');
+
         if(isset($config->adjustParameters)){
-           $parameters =  eval($config->adjustParameters);
+           @$parameters =  eval($config->adjustParameters);
+        } elseif (isset($config->autocompleteField) && ('autocomplete' == $ajaxRequest)
+          && isset($parameters[$config->autocompleteField]) && $parameters[$config->autocompleteField]) {
+          /**
+           * AUTOCOMPLETE
+           */
+          $autocomplete_value = $parameters[$config->autocompleteField][0];
+          $parameters[$config->autocompleteField] = data_controller_get_operator_factory_instance()->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME, [
+            $autocomplete_value,
+            FALSE,
+            TRUE,
+          ]);
         }
 
         if(isset($config->adjustColumns)){
@@ -559,9 +582,11 @@ function load_widget_data($node, $resultFormatter) {
         }
 
         $updatedParameters = array();
-        foreach($parameters as $key=>$value){
+        if (is_array($parameters)) {
+          foreach($parameters as $key=>$value){
             $key = _update_dataset_datasource($key,$node->widgetConfig->keepOriginalDatasource);
             $updatedParameters[$key] = $value;
+          }
         }
         $parameters = $updatedParameters;
 
@@ -575,7 +600,7 @@ function load_widget_data($node, $resultFormatter) {
         if(RequestUtil::isAdvancedSearchPage()) {
             foreach($parameters as $param_key => $param_value){
                 if(!is_array($param_value)) continue;
-                $operator_handler_class = get_class($param_value[0]);
+                $operator_handler_class = is_object($param_value[0]) ? get_class($param_value[0]) : null;
                 if($operator_handler_class == "WildcardOperatorHandler") {
                     foreach($param_value[0] as $key => $value) {
                         if($key == "wildcard" && preg_match("/^%*$/",$value)) {
@@ -841,7 +866,7 @@ function load_widget_data($node, $resultFormatter) {
      $node->data = _update_node_data($node->data,$node->widgetConfig->keepOriginalDatasource);
 
   	if(isset($node->widgetConfig->transformationPHP)){
-  		$node->data = eval($node->widgetConfig->transformationPHP);
+  		@$node->data = eval($node->widgetConfig->transformationPHP);
   	}
     } catch(Exception $e) {
         // FIXME Commented out printing of $e because it generates 100+ KBs in a log file
@@ -1493,14 +1518,16 @@ function _update_node_data($data,$keepOriginalDatasource = false){
 		return $data;
 	}
     $returnData = array();
-    foreach($data as $key=>$value){
-         $arrayValues = array();
-         foreach($value as $a=>$b){
-             $a = str_replace('@checkbook_oge:',"@checkbook:",$a);
-             $arrayValues[$a] = $b;
-         }
+	  if ($data){
+      foreach($data as $key=>$value){
+        $arrayValues = array();
+        foreach($value as $a=>$b){
+          $a = str_replace('@checkbook_oge:',"@checkbook:",$a);
+          $arrayValues[$a] = $b;
+        }
         $returnData[$key] = $arrayValues;
-     }
+      }
+    }
 
     return $returnData;
 }
