@@ -140,5 +140,6 @@ tooltipformatter^^"formatter" : function() {
               "<br/>Contracting Agency: " + "<span style='text-wrap:unrestricted'>" + this.point.agency + '</span>' +
               "<br/>Amount: " + abbrNum(this.y, 2, "$") + "</div>";
 }
-##clickEvent^^"click": function(){location.href = Drupal.settings.basePath+this.url; }
+##
+clickEvent^^"click": function(){location.href = Drupal.settings.basePath+this.url; }
 </function>

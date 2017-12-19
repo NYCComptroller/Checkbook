@@ -19,7 +19,7 @@
 }
 
 /* data table */
-.fy-ait td {FILTER: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#48759d', endColorstr = '#3f668f', GradientType = 0);}
+.fy-ait td {-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr = '#48759d', endColorstr = '#3f668f', GradientType = 0)";}
 
 /* 351 */
 #table_351_wrapper .DTFC_LeftHeadWrapper tr > th .trendCen {margin-right:30px;}

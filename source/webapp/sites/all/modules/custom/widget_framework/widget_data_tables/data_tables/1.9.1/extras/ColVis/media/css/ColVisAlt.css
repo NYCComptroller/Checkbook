@@ -17,7 +17,6 @@
 	width: 100%;
 	border-left-width: 0;
 	cursor: pointer;
-	*cursor: hand;
 	background: url('../images/button.png') no-repeat top left;
 }
 
@@ -52,7 +51,6 @@ div.ColVis_collection button.ColVis_Button {
 	margin-bottom: 2px;
 	padding: 3px 5px;
 	cursor: pointer;
-	*cursor: hand;
 	text-align: left;
 }
 

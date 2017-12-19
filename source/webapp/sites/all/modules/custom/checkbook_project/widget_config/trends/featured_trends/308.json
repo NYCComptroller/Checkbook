@@ -103,7 +103,6 @@
             }
         },
         "title": {
-            //"text": "Personal Income",
             "style": {
                 "fontSize": "16px"
             },
