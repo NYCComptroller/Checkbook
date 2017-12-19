@@ -13,7 +13,7 @@ table.dataTable {
 table.dataTable thead th {
 	padding: 3px 0px 3px 10px;
 	cursor: pointer;
-	*cursor: hand;
+
 }
 
 table.dataTable tfoot th {
@@ -98,7 +98,7 @@ table.dataTable tr.even td.sorting_3 { background-color: #F9F9FF; }
 .paging_two_button .ui-button {
 	float: left;
 	cursor: pointer;
-	* cursor: hand;
+
 }
 
 .paging_full_numbers .ui-button {

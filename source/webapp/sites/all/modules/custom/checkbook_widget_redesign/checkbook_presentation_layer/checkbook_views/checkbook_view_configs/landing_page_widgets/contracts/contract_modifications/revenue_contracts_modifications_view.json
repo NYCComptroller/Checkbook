@@ -18,18 +18,6 @@
     ],
     "skipCustomPadding":true,
     "dataTableOptions":{
-       /* "aoColumns":[
-            { "bSortable": false, "sWidth":"150px","sClass":"text" },
-            { "bSortable": false, "sWidth":"127px","sClass":"text"  },
-            { "bSortable": false, "sWidth":"129px","sClass":"text"  },
-            { "bSortable": false, "sWidth":"129px","sClass":"text" },
-            { "bSortable": true, "sWidth":"78px", "sClass":"number" ,"asSorting": [ "desc" ,"asc" ] },
-            { "bSortable": true, "sWidth":"78px", "sClass":"number" ,"asSorting": [ "desc","asc"  ] },
-            { "bSortable": true, "sWidth":"78px", "sClass":"number" ,"asSorting": [ "desc","asc"  ]},
-            { "bSortable": true, "sWidth":"78px", "sClass":"number" ,"asSorting": [ "desc" ,"asc" ]},
-            { "bSortable": false, "sWidth":"15px" }
-            
-        ]*/
       "aoColumns": [
     { "bSortable": false,"sClass":"text", "sWidth":"150px" },
     { "bSortable": false,"sClass":"text", "sWidth":"167px" },

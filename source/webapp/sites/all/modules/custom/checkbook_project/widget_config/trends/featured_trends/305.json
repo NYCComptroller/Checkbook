@@ -97,7 +97,6 @@ jQuery('#property-tax-filter .chartdateto').val(Highcharts.dateFormat('%Y',axis.
 ],
 "chartConfig": {
         "title": {
-            //"text": "Property Tax Levies and Collections",
             "style": {
                 "fontSize": "16px"
             },

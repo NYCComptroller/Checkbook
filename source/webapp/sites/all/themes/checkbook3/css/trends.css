@@ -172,7 +172,7 @@ body.page-featuredtrends .dataTables_scrollHead{
     background: -o-linear-gradient(top, #48759d 0%, #3f668f 100%); /* Opera 11.10+ */
     background: -ms-linear-gradient(top, #48759d 0%, #3f668f 100%); /* IE10+ */
     background: linear-gradient(to bottom, #48759d 0%, #3f668f 100%); /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#48759d', endColorstr = '#3f668f', GradientType = 0); /* IE6-9 */
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr = '#48759d', endColorstr = '#3f668f', GradientType = 0)"; /* IE6-9 */
 }
 body.page-trends .node-widget h3,
 body.page-trends-landing .node-widget h3,

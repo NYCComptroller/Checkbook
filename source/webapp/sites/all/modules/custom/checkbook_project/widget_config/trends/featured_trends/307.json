@@ -86,7 +86,6 @@ jQuery('#capital-projects-filter .chartdateto').val(Highcharts.dateFormat('%Y',a
 ],
 "chartConfig": {
         "title": {
-            //"text": "Capital Projects Fund Aid Revenues",
             "style": {
                 "fontSize": "16px"
             },

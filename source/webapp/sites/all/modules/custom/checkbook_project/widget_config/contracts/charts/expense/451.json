@@ -96,7 +96,8 @@
     "title":{"text":""}
 }
 }
-<function>yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
+<function>
+yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
 budgetTooltip^^"formatter": function(){return 'Prime Vendor: '+this.point.name  + '<br/>' + 'Number of Contracts: '+Highcharts.numberFormat(this.point.totalcontracts,0)+'<br/>'+'Amount: '+abbrNum(this.y,2,'$')}##
 clickEvent^^"click": function(){location.href = Drupal.settings.basePath+this.url; }
 </function>
