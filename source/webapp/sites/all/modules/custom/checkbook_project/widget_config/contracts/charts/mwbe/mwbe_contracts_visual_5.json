@@ -186,6 +186,6 @@
 yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
 tooltipformatter^^'formatter' :
 function() {return this.point.tooltip_label ;
-}
-##clickEvent^^"click": function(){location.href = Drupal.settings.basePath+this.url; }
+}##
+clickEvent^^"click": function(){location.href = Drupal.settings.basePath+this.url; }
 </function>

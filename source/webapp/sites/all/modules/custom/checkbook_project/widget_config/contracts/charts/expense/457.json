@@ -124,7 +124,8 @@
     "title":{"text":""}
 }
 }
-<function>yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
+<function>
+yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
 agencyTooltip^^"formatter": function(){
     return 'Contracting Agency: '+ this.point.name+'<br>Number of Contracts: '+Highcharts.numberFormat(this.point.total_contracts,0)+'<br/>Amount: '+abbrNum(this.y,2,'$')}##
 clickEvent^^"click": function(){

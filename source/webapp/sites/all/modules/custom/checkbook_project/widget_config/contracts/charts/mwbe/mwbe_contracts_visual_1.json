@@ -223,6 +223,5 @@
 <function>
 yAxisFormatter^^'formatter' : function(){return this.value + '%';}##
 tooltipformatter^^'formatter' :
-function() {return this.point.tooltip_label ;
-}
+function() {return this.point.tooltip_label ;}
 </function>

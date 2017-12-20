@@ -34,7 +34,7 @@
 .paging_two_button .ui-button {
 	float: left;
 	cursor: pointer;
-	* cursor: hand;
+
 }
 
 .paging_full_numbers .ui-button {
