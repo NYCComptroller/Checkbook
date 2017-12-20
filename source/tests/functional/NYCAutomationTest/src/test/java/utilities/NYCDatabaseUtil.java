@@ -474,11 +474,6 @@ public class NYCDatabaseUtil {
 	
 
   
- 
-  
-
-  
-  
 
   // Spending Amount
     public static String getSpendingAmount(int year, char yearTypeVal) throws SQLException {
@@ -750,7 +745,7 @@ public class NYCDatabaseUtil {
 		// TODO Auto-generated method stub
 		 query = "SELECT SUM(check_amount) sumSpendingAmt "
 	                + "FROM disbursement_line_item_details "
-	                + " WHERE spending_category_id='5' andcontract_document_code in( 'CT1', 'CTA1', 'POD', 'POC', 'PCC1', 'DO1','MA1','MMA1') and   fiscal_year = " + year;
+	                + " WHERE spending_category_id='5' and contract_document_code in( 'CT1', 'CTA1', 'POD', 'POC', 'PCC1', 'DO1','MA1','MMA1') and   fiscal_year = " + year;
 
 	          rs = amountQueryHelper(yearTypeVal);
 

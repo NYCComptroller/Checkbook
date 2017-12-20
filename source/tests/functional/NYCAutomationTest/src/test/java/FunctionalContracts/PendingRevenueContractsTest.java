@@ -21,7 +21,7 @@ import utilities.NYCDatabaseUtil;
 import helpers.Helper;
 import utilities.TestStatusReport;
 public class PendingRevenueContractsTest  extends TestStatusReport{
-	//public class PendingRevenueContractsTest extends NYCBaseTest {
+	//	public class PendingRevenueContractsTest extends NYCBaseTest {
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
     public void GoToPage() {
@@ -109,9 +109,9 @@ public class PendingRevenueContractsTest  extends TestStatusReport{
 	    String[] sliderTitles= {"Top Ten Pending Revenue Contracts by Current Amount", 
 	    		                "Top Ten Agencies by Pending Revenue Contracts", 	    						
 	    						"Top Ten Prime Vendors by Pending Revenue Contracts"};
-	    System.out.println( ContractsPage.VisualizationTitles()); 
-    	assertTrue(Arrays.equals(sliderTitles, ContractsPage.VisualizationTitles().toArray()));
-    	System.out.println( ContractsPage.VisualizationTitles()); 
+	    System.out.println( ContractsPage.VisualizationTitles3()); 
+    	assertTrue(Arrays.equals(sliderTitles, ContractsPage.VisualizationTitles3().toArray()));
+    	System.out.println( ContractsPage.VisualizationTitles3()); 
     }
 	 
 	@Test

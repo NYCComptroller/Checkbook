@@ -11,10 +11,9 @@ import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 
-import navigation.TopNavigation.Spending.TotalSpending;
+//import navigation.TopNavigation.Spending.TotalSpending;
 import pages.spending.ContractSpendingPage;
 import pages.spending.SpendingPage;
-import pages.spending.TotalSpendingPage;
 import pages.spending.SpendingPage.WidgetOption;
 import pages.home.HomePage;
 import utilities.NYCBaseTest;

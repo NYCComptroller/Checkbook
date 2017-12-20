@@ -19,9 +19,9 @@ import org.openqa.selenium.WebElement;
 import helpers.Driver;
 
 
-//public class BudgetWidgetCountsTest extends TestStatusReport{
+public class BudgetWidgetCountsTest extends TestStatusReport{
 
-	public class BudgetWidgetCountsTest  extends NYCBaseTest {
+	//public class BudgetWidgetCountsTest  extends NYCBaseTest {
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 		@Before
 	    public void GoToPage(){

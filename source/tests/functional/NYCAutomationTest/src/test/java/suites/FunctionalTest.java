@@ -6,8 +6,6 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import FunctionalContracts.*;
 import FunctionalSpending.*;
-import FunctionalSpending.TotalSpendingTitlesTest;
-import FunctionalSpending.TotalSpendingWidgetTest;
 import FunctionalBudget.*;
 import FunctionalRevenue.*;
 import FunctionalPayroll.*;
@@ -20,7 +18,7 @@ import utilities.TestStatusReport;
 @RunWith(Suite.class)
 @SuiteClasses({
 
-	/* Spending  */	
+	/* Spending */
 	TotalSpendingWidgetTest.class,
 	TotalSpendingTitlesTest.class,
 	TotalSpendingWidgetDetailsTest.class,
@@ -30,7 +28,7 @@ import utilities.TestStatusReport;
 	
 	CapitalSpendingWidgetDetailsTest.class,
     CapitalSpendingWidgetTest.class,
-    
+   
 	ContractSpendingWidgetDetailsTest.class,
 	ContractSpendingWidgetTest.class,
 	
@@ -42,7 +40,7 @@ import utilities.TestStatusReport;
 	
 	
 	
-	/*Contracts
+	/*Contracts */
 	
 	ActiveExpenseContractsTest.class,
 	ActiveExpenseContractsDetailsTest.class,
@@ -57,7 +55,7 @@ import utilities.TestStatusReport;
 	RegisteredRevenueContractsTest.class,
 	RegisteredRevenueContractsDetailsTest.class,
  
-	/* Budget
+	/* Budget */
 	
 	
 	BudgetWidgetDetailsPageTitlesTest.class,
@@ -69,28 +67,28 @@ import utilities.TestStatusReport;
 
 	
 
-	/* Revenue
+	/* Revenue */
 	RevenueWidgetTest.class,
     RevenueWidgetTitles.class,
 	RevenueWidgetDetailsTest.class,
 	RevenueWidgetDetailsAmountTest.class,
 	RevenueWidgetDetailsPageTitlesTest.class,
 
-	/* Payroll
+	/* Payroll */
 	PayrollWidgetCountsTest.class,
 	PayrollWidgetTitlesTest.class,
 	PayrollWidgetDetailsPageTitlesTest.class,	
 	PayrollWidgetDetailsTransactionCountsTest.class,
 	
 	
-	/* Sub Vendors Spending
+	/* Sub Vendors Spending */
 	SubVendorsTotalSpendingWidgetTest.class,
 	SubVendorsTotalSpendingWidgetDetailsTest.class,
 	SubvendorsTotalSpendingTitlesTest.class,
 	SubVendorsContractSpendingWidgetDetailsTest.class,
 	SubVendorsContractSpendingWidgetTest.class,
 	
-*/
+
 })
 public class FunctionalTest extends NYCBaseTest
 //public class FunctionalTest extends TestStatusReport
