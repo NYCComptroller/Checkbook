@@ -107,6 +107,6 @@
 
 <function>
 yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
-tooltipformatter^^'formatter' : function() {return  'Contract ID: ' + this.point.contractnum + '<br/>' + 'Prime Vendor: ' + this.point.vendor  + '<br/>' + 'Contracting Agency: ' + this.point.agency + '<br/>' + 'Amount: ' + abbrNum(this.y, 2, '$') ;}
-##clickEvent^^"click": function(){  if(this.url.length > 0) location.href = Drupal.settings.basePath+this.url;   }
+tooltipformatter^^'formatter' : function() {return  'Contract ID: ' + this.point.contractnum + '<br/>' + 'Prime Vendor: ' + this.point.vendor  + '<br/>' + 'Contracting Agency: ' + this.point.agency + '<br/>' + 'Amount: ' + abbrNum(this.y, 2, '$') ;}##
+clickEvent^^"click": function(){  if(this.url.length > 0) location.href = Drupal.settings.basePath+this.url;   }
 </function>

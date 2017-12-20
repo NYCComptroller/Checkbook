@@ -6,7 +6,7 @@
         var agency_selected = $('#edit-agency').val();
         showHidePrimeAndSubIcon();
 
-        if (data_source == "checkbook_oge" && agency_selected == 'Citywide (All Agencies)') {
+        if (data_source === "checkbook_oge" && agency_selected === 'Citywide (All Agencies)') {
             $('input:radio[name="datafeeds-contracts-domain-filter"][value="checkbook_oge"]').removeAttr('checked').button("refresh");
             $('input:radio[name="datafeeds-contracts-domain-filter"][value="checkbook"]').attr('checked', 'checked').button("refresh");
             $('input:hidden[name="data_source"]').val("checkbook");
@@ -19,7 +19,7 @@
             var valid_status = [6,1,4,3,2,5];
 
             if($.inArray(sub_vendor_status, valid_status)) {
-                if(includes_sub_vendors == 2){
+                if(includes_sub_vendors === 2){
                     $('#edit-contract_includes_sub_vendors_id').html('<option value="0">Select Status</option>' +
                         '<option value="2" selected>Yes</option>');
                 } else {
@@ -28,8 +28,8 @@
                 }
             }
 
-            if(sub_vendor_status == 0) {
-                if(includes_sub_vendors == 2){
+            if(sub_vendor_status === 0) {
+                if(includes_sub_vendors === 2){
                     $('#edit-contract_includes_sub_vendors_id').html('<option value="0">Select Status</option>' +
                         '<option value="2" selected>Yes</option>' +
                         '<option value="3">No</option>' +
@@ -116,7 +116,7 @@
         //clear all text fields
         var enclosingDiv = $("#dynamic-filter-data-wrapper").children('#edit-filter').children('div.fieldset-wrapper').children();
         jQuery(enclosingDiv).find(':input').each(function() {
-            if(this.type == 'text') {
+            if(this.type === 'text') {
                 jQuery(this).val('');
             }
         });
@@ -206,15 +206,15 @@
                 var $pending = $('.form-item-column-select-pending', context);
                 var $all = $('.form-item-column-select-all', context);
                 var $pending_all = $('.form-item-column-select-pending-all', context);
-                if (csval == 'active') {
-                    if (catval == 'expense') {
+                if (csval === 'active') {
+                    if (catval === 'expense') {
                         $('.form-item-column-select-expense label').html('Columns (Active Expense)<span class="form-required">*</span>');
                         $expense.show();
                         $revenue.hide();
                         $pending.hide();
                         $all.hide();
                         $pending_all.hide();
-                    } else if(catval == 'revenue') {
+                    } else if(catval === 'revenue') {
                         $('.form-item-column-select-revenue label').html('Columns (Active Revenue)<span class="form-required">*</span>');
                         $expense.hide();
                         $revenue.show();
@@ -229,15 +229,15 @@
                         $pending.hide();
                         $pending_all.hide();
                     }
-                } else if (csval == 'registered'){
-                    if (catval == 'expense'){
+                } else if (csval === 'registered'){
+                    if (catval === 'expense'){
                         $('.form-item-column-select-expense label').html('Columns (Registered Expense)<span class="form-required">*</span>');
                         $expense.show();
                         $revenue.hide();
                         $pending.hide();
                         $all.hide();
                         $pending_all.hide();
-                    } else if (catval == 'revenue'){
+                    } else if (catval === 'revenue'){
                         $('.form-item-column-select-revenue label').html('Columns (Registered Revenue)<span class="form-required">*</span>');
                         $expense.hide();
                         $revenue.show();
@@ -253,14 +253,14 @@
                         $pending_all.hide();
                     }
                 } else {
-                    if(catval == 'expense'){
+                    if(catval === 'expense'){
                         $('.form-item-column-select-pending label').html('Columns (Pending Expense)<span class="form-required">*</span>');
                         $expense.hide();
                         $revenue.hide();
                         $pending.show();
                         $all.hide();
                         $pending_all.hide();
-                    } else if (catval == 'revenue') {
+                    } else if (catval === 'revenue') {
                         $('.form-item-column-select-pending label').html('Columns (Pending Revenue)<span class="form-required">*</span>');
                         $expense.hide();
                         $revenue.hide();
@@ -285,7 +285,7 @@
                                                 changeYear:true,
                                                 yearRange:'-'+(currentYear-1900)+':+'+(2500-currentYear)});
             //Disable Year option for All Years
-            if ($('#edit-year', context).val() == 'ALL'){
+            if ($('#edit-year', context).val() === 'ALL'){
                 $('#edit-column-select-expense option[value="Year"]',context).attr('disabled','disabled');
                 $('#edit-column-select-expense option[value="year"]',context).attr('disabled','disabled');
                 $('#edit-column-select-revenue option[value="Year"]',context).attr('disabled','disabled');
@@ -399,7 +399,7 @@
                 });
             });
             $('#edit-year',context).change(function(){
-               if ($(this).val() == 'ALL'){
+               if ($(this).val() === 'ALL'){
                    $('#edit-column-select-expense option[value="Year"]',context).attr('disabled','disabled');
                    $('#edit-column-select-expense option[value="year"]',context).attr('disabled','disabled');
                    $('#edit-column-select-expense', context).multiSelect('refresh');

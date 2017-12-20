@@ -140,7 +140,7 @@ a {
 a:hover {
 	text-decoration: underline;
 	cursor: pointer;
-	*cursor: hand;
+
 }
 
 div.fw_content ul {

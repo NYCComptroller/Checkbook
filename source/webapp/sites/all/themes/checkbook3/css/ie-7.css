@@ -333,7 +333,7 @@ ul li.leaf {
 }
 
 .fy-ait td {
-    FILTER: progid: DXImageTransform . Microsoft . gradient(startColorstr = '#48759d', endColorstr = '#3f668f', GradientType = 0);
+    -ms-filter: "progid: DXImageTransform . Microsoft . gradient(startColorstr = '#48759d', endColorstr = '#3f668f', GradientType = 0)"ie8;
 }
 
 /* 351 */

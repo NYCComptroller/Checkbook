@@ -356,7 +356,7 @@ function _checkbook_advanced_search_autocomplete_spending_expcategory($year, $ag
  * @return array
  *   Results from Solr
  ***/
-function _checkbook_advanced_search_autocomplete_spending_entitycontractnum($year, $agency, $expcategory, $dept, $exptype = 0, $mwbe_category, $industry, $data_source = 'checkbook') {
+function _checkbook_advanced_search_autocomplete_spending_entitycontractnum($year, $agency, $expcategory, $dept, $exptype = 0,  $mwbe_category, $industry, $data_source = 'checkbook') {
     $searchTerm = _get_autocomplete_search_term();
     if (!empty($searchTerm)) {
         $query = 'select/?q=spending_entity_contract_number:' . $searchTerm . '&facet=true&facet.field=spending_entity_contract_number&fq=domain:spending&facet.limit=10&wt=php';
@@ -391,7 +391,7 @@ function _checkbook_advanced_search_autocomplete_spending_entitycontractnum($yea
  * @return array
  *   Results from Solr
  ***/
-function _checkbook_advanced_search_autocomplete_spending_commodityline($year, $agency, $expcategory, $dept, $exptype = 0, $mwbe_category, $industry, $data_source = 'checkbook') {
+function _checkbook_advanced_search_autocomplete_spending_commodityline($year, $agency, $expcategory, $dept, $exptype = 0,  $mwbe_category, $industry, $data_source = 'checkbook') {
     $searchTerm = _get_autocomplete_search_term();
     if(strlen($searchTerm) > 0){
         $query = 'select/?q=spending_commodity_line:'. $searchTerm .'&facet=true&facet.field=spending_commodity_line&fq=domain:spending&facet.limit=10&wt=php';
@@ -426,7 +426,7 @@ function _checkbook_advanced_search_autocomplete_spending_commodityline($year, $
  * @return array
  *   Results from Solr
  ***/
-function _checkbook_advanced_search_autocomplete_spending_budgetname($year, $agency, $expcategory, $dept, $exptype = 0, $mwbe_category, $industry, $data_source = 'checkbook') {
+function _checkbook_advanced_search_autocomplete_spending_budgetname($year, $agency, $expcategory, $dept, $exptype = 0,  $mwbe_category, $industry, $data_source = 'checkbook') {
     $searchTerm = _get_autocomplete_search_term();
     if(strlen($searchTerm) > 0){
         $query = 'select/?q=spending_budget_name_autocomplete:'. $searchTerm .'&facet=true&facet.field=spending_budget_name&fq=domain:spending&facet.limit=10&wt=php';
@@ -552,9 +552,9 @@ function _get_contracts_advanced_search_autocomplete_results($facet, $query, $st
     if ($industry) {
         $query .= '&fq=industry_type_id:'.$industry;
     }
-    if($status != 'P' && $category != 'revenue') {
+   /* if($status != 'P' && $category != 'revenue') {
 
-    }
+    }*/
     if ($includes_sub_vendors) {
         $query .= '&fq=scntrc_status:'.$includes_sub_vendors;
     }

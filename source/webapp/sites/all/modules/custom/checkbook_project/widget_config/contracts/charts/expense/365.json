@@ -199,7 +199,6 @@
 
 <function>
 yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
-tooltipformatter^^'formatter' :
-function() {return 'Month: ' + this.x + '<br/>Amount: ' + abbrNum(this.y, 2, '$') ;}
-##clickEvent^^"click": function(){  window.open(Drupal.settings.basePath+this.options.url, '_blank', 'menubar=no,toolbar=no,location=no,resizable=yes,scrollbars=yes,personalbar=no,chrome=yes,height=700,width=980');}
+tooltipformatter^^'formatter' : function() {return 'Month: ' + this.x + '<br/>Amount: ' + abbrNum(this.y, 2, '$');}##
+clickEvent^^"click": function(){  window.open(Drupal.settings.basePath+this.options.url, '_blank', 'menubar=no,toolbar=no,location=no,resizable=yes,scrollbars=yes,personalbar=no,chrome=yes,height=700,width=980');}
 </function>

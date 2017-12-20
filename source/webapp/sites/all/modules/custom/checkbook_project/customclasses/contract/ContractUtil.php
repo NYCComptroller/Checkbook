@@ -391,9 +391,8 @@ namespace { //global
 
                if($is_prime_or_sub == "P" && in_array($minority_type_id, array(2,3,4,5,9))){
                    return "/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
-               }else if($is_prime_or_sub == "P" && in_array($minority_type_id, array(2,3,4,5,9))){
-                   return "/vendor/".$vendor_id;
                }
+               return "/vendor/".$vendor_id;
         }
 
         /* Returns M/WBE category of a vendor id in citywide pending contracts*/

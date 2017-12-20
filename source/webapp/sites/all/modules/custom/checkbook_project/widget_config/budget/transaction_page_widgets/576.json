@@ -22,7 +22,7 @@
             "percent_difference1","percent_difference2","percent_difference3"],
 "limit":35,
 "adjustDataTableOptions":"
-      $adjustDataTableOptions = $node->widgetConfig->dataTableOptions;
+  $adjustDataTableOptions = $node->widgetConfig->dataTableOptions;
       $year = _getYearValueFromID(_getRequestParamValue('year'));
 
    	  foreach($node->widgetConfig->table_columns as $key => $table_column){
@@ -167,7 +167,6 @@
   ],
 "dataTableOptions":{
     "aoColumns": [
-        /*{ "bSortable": true,"sWidth":"250px","sClass":"text" },*/
         { "bSortable": true,"sWidth":"250px","sClass":"text" },
         { "bSortable": true,"sWidth":"160px","sClass":"number","asSorting": [ "desc","asc"  ] },
         { "bSortable": true,"sWidth":"160px" ,"sClass":"number","asSorting": [ "desc" ,"asc" ]},

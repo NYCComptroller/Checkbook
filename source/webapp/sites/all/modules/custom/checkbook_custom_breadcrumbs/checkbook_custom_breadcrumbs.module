@@ -510,7 +510,8 @@ function _checkbook_custom_breadcrumb_is_hierarchical(){
   }
   else if(preg_match('/(contract)|(payroll)|(spending)|(budget)|(revenue)|(newwindow)/',current_path())){
     return false;
-  }else{
+  }
+  else{
     return true;
   }
   
