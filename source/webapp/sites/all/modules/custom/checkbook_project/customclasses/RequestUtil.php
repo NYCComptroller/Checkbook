@@ -877,17 +877,14 @@ class RequestUtil
 
         switch ($current_state) {
             case "mp" :
-                return "mp";
-                break;
             case "sp" :
                 return "mp";
                 break;
             case "ms" :
-                return "ms";
-                break;
             case "ss" :
                 return "ms";
                 break;
+
         }
         return "mp";
 
@@ -930,14 +927,10 @@ class RequestUtil
 
         switch ($current_state) {
             case "mp" :
-                return "sp";
-                break;
             case "sp" :
                 return "sp";
                 break;
             case "ms" :
-                return "ss";
-                break;
             case "ss" :
                 return "ss";
                 break;
@@ -963,9 +956,9 @@ class RequestUtil
 
         switch ($current_state) {
             case "sp" :
-                return true;
             case "ss" :
                 return true;
+
         }
 
         return false;
