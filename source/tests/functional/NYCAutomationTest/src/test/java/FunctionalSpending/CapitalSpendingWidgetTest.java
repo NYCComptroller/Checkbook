@@ -27,9 +27,9 @@ import utilities.TestStatusReport;
 	@Before
 	public void GoToPage(){
 		CapitalSpendingPage.GoTo();
-		if (!CapitalSpendingPage.isAt()){
-			CapitalSpendingPage.GoTo();
-		}
+		//if (!CapitalSpendingPage.isAt()){
+			//CapitalSpendingPage.GoTo();}
+		
 		if(!(Helper.getCurrentSelectedYear()).equalsIgnoreCase(NYCBaseTest.prop.getProperty("CurrentYear")))
 			HomePage.SelectYear(NYCBaseTest.prop.getProperty("CurrentYear"));
 		HomePage.ShowWidgetDetails();

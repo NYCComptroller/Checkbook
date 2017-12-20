@@ -23,7 +23,9 @@ public class TotalSpendingTitlesTest extends TestStatusReport{
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
     public void GoToPage(){
-	   if (!SpendingPage.isAt())
+		
+		   SpendingPage.GoTo();
+	  if (!SpendingPage.isAt())
 		   SpendingPage.GoTo();
 	   if(!(Helper.getCurrentSelectedYear()).equalsIgnoreCase(NYCBaseTest.prop.getProperty("CurrentYear")))
 		   HomePage.SelectYear(NYCBaseTest.prop.getProperty("CurrentYear"));

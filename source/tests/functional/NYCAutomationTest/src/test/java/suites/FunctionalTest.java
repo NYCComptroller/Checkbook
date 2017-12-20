@@ -21,22 +21,22 @@ import utilities.TestStatusReport;
 	/* Spending */
 	TotalSpendingWidgetTest.class,
 	TotalSpendingTitlesTest.class,
-	TotalSpendingWidgetDetailsTest.class,
+	TotalSpendingWidgetDetailsTest.class,	
 	
-	PayrollSpendingWidgetDetailsTest.class,
 	PayrollSpendingWidgetTest.class,
+	PayrollSpendingWidgetDetailsTest.class,	
 	
-	CapitalSpendingWidgetDetailsTest.class,
     CapitalSpendingWidgetTest.class,
-   
-	ContractSpendingWidgetDetailsTest.class,
+    CapitalSpendingWidgetDetailsTest.class,   
+
 	ContractSpendingWidgetTest.class,
+	ContractSpendingWidgetDetailsTest.class,
 	
-	TrustAgencySpendingWidgetDetailsTest.class,
 	TrustAgencySpendingWidgetTest.class,
-	
-	OtherSpendingWidgetDetailsTest.class,
+	TrustAgencySpendingWidgetDetailsTest.class,	
+
 	OtherSpendingWidgetTest.class,
+	OtherSpendingWidgetDetailsTest.class,
 	
 	
 	
@@ -59,13 +59,10 @@ import utilities.TestStatusReport;
 	
 	
 	BudgetWidgetDetailsPageTitlesTest.class,
-	BudgetWidgetDetailsTransactionCountsTest.class,
-	BudgetWidgetDetailsTotalStaticAmountTest.class,
-	
 	BudgetWidgetCountsTest.class,
 	BudgetWidgetTitlesTest.class,
-
-	
+	BudgetWidgetDetailsTransactionCountsTest.class,
+	BudgetWidgetDetailsTotalStaticAmountTest.class,		
 
 	/* Revenue */
 	RevenueWidgetTest.class,
@@ -83,10 +80,12 @@ import utilities.TestStatusReport;
 	
 	/* Sub Vendors Spending */
 	SubVendorsTotalSpendingWidgetTest.class,
+	SubvendorsTotalSpendingTitlesTest.class,		
 	SubVendorsTotalSpendingWidgetDetailsTest.class,
-	SubvendorsTotalSpendingTitlesTest.class,
-	SubVendorsContractSpendingWidgetDetailsTest.class,
+	
 	SubVendorsContractSpendingWidgetTest.class,
+	SubVendorsContractSpendingWidgetDetailsTest.class,
+
 	
 
 })

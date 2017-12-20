@@ -25,7 +25,7 @@ public class BudgetWidgetCountsTest extends TestStatusReport{
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 		@Before
 	    public void GoToPage(){
-			 if (!BudgetPage.isAt())
+			// if (!BudgetPage.isAt())
 				   BudgetPage.GoTo();
 		 
 		   if(!(Helper.getCurrentSelectedYear()).equalsIgnoreCase(NYCBaseTest.prop.getProperty("CurrentYear")))

@@ -169,27 +169,27 @@ public class BudgetPage {
 			
 			((JavascriptExecutor) Driver.Instance).executeScript("arguments[0].scrollIntoView(true);", detailsAnchor);
 			detailsAnchor.click();	
-			Driver.Instance.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			Driver.Instance.manage().timeouts().implicitlyWait(40, TimeUnit.SECONDS);
 		}
 		
 		// details  page Transaction table  count
 		
 		public static int GetTransactionCount() {
-			WebDriverWait wait = new WebDriverWait(Driver.Instance, 20);
+			WebDriverWait wait = new WebDriverWait(Driver.Instance, 30);
 			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("table_277_info")));
 			String count = (Driver.Instance.findElement(By.id("table_277_info"))).getText();
 			return Helper.GetTotalEntries(count, 5);
 		}
 		
 		public static int GetTransactionCount1() {
-			WebDriverWait wait = new WebDriverWait(Driver.Instance, 20);
+			WebDriverWait wait = new WebDriverWait(Driver.Instance, 30);
 			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("table_576_info")));
 			String count = (Driver.Instance.findElement(By.id("table_576_info"))).getText();
 			return Helper.GetTotalEntries(count, 5);
 		}
 		
 		public static int GetTransactionCount2() {
-			WebDriverWait wait = new WebDriverWait(Driver.Instance, 20);
+			WebDriverWait wait = new WebDriverWait(Driver.Instance, 30);
 			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("table_575_info")));
 			String count = (Driver.Instance.findElement(By.id("table_575_info"))).getText();
 			return Helper.GetTotalEntries(count, 5);
@@ -197,7 +197,7 @@ public class BudgetPage {
 	/// transaction table amount
 		
 		public static String GetTransactionAmount1() {
-			WebDriverWait wait = new WebDriverWait(Driver.Instance, 20);
+			WebDriverWait wait = new WebDriverWait(Driver.Instance, 30);
 			wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("total-spending-amount")));
 			String amount = (Driver.Instance.findElement(By.className("total-spending-amount"))).getText();	
 			//System.out.println(Helper.billionStringToFloat(count));
