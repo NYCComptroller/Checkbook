@@ -1100,7 +1100,7 @@ public static int getTotalSpendingContractsDetailsCount(int year,char yearTypeVa
 // Total Spending widget counts
 
 public static int getTotalSpendingMWBEAgenciesCount(int year,char yearTypeVal) throws SQLException {
-    query = "SELECT COUNT(distinct agency_id) aCount from disbursement_line_item_details where minority_type_id in (2,3,4,5,9)  fiscal_year =" + year ;
+    query = "SELECT COUNT(distinct agency_id) aCount from disbursement_line_item_details where minority_type_id in (2,3,4,5,9) and  fiscal_year =" + year ;
   
    rs = amountQueryHelper(yearTypeVal);
    int count = 0;
@@ -1409,10 +1409,10 @@ return count;
 //Spending  widget Details count
 
 public static int getTotalSpendingMWBEDetailsCount(int year,char yearTypeVal) throws SQLException {
-query = "select(  (select count(*)   from disbursement_line_item_Details  where minority_type_id in (2,3,4,5,9)  and  fiscal_year= 2016 ) + " 
-+"  (select count(*) from subcontract_spending_Details where minority_type_id in (2,3,4,5,9)  and  fiscal_year = 2016 )  ) aCount";
-	 
-rs = amountQueryHelper(yearTypeVal);
+//query = "select(  (select count(*)   from disbursement_line_item_Details  where minority_type_id in (2,3,4,5,9)  and  fiscal_year= 2016 ) + " 
+//+"  (select count(*) from subcontract_spending_Details where minority_type_id in (2,3,4,5,9)  and  fiscal_year = 2016 )  ) aCount";
+	query =  "select count(*) aCount  from disbursement_line_item_Details  where minority_type_id in (2,3,4,5,9)  and  fiscal_year= " + year ; 
+rs = amountQueryHelper(yearTypeVal); 
 int count = 0;
 while (rs.next()) {
 count = rs.getInt("aCount");
@@ -1421,9 +1421,9 @@ return count;
 }    
 
 public static int getTotalSpendingMWBEContractsDetailsCount(int year,char yearTypeVal) throws SQLException {
-query = "select(  (select count(*)   from disbursement_line_item_Details  where  minority_type_id in (2,3,4,5,9)  and fiscal_year= 2016 and contract_document_code in ( 'CT1', 'CTA1', 'POD', 'POC', 'PCC1', 'DO1','MA1','MMA1')) + " 
-+"  (select count(*) from subcontract_spending_Details where  minority_type_id in (2,3,4,5,9)  and fiscal_year = 2016 and contract_document_code in ( 'CT1', 'CTA1', 'POD', 'POC', 'PCC1', 'DO1','MA1','MMA1'))  ) aCount";
-	 
+//query = "select(  (select count(*)   from disbursement_line_item_Details  where  minority_type_id in (2,3,4,5,9)  and fiscal_year= 2016 and contract_document_code in ( 'CT1', 'CTA1', 'POD', 'POC', 'PCC1', 'DO1','MA1','MMA1')) + " 
+//+"  (select count(*) from subcontract_spending_Details where  minority_type_id in (2,3,4,5,9)  and fiscal_year = 2016 and contract_document_code in ( 'CT1', 'CTA1', 'POD', 'POC', 'PCC1', 'DO1','MA1','MMA1'))  ) aCount";
+	query = "select count(*)   from disbursement_line_item_Details  where  minority_type_id in (2,3,4,5,9)  and contract_document_code in ( 'CT1', 'CTA1', 'POD', 'POC', 'PCC1', 'DO1','MA1','MMA1'))   and  fiscal_year =" + year; 
 rs = amountQueryHelper(yearTypeVal);
 int count = 0;
 while (rs.next()) {

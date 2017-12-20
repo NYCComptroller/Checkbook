@@ -9,7 +9,7 @@ import FunctionalSpending.*;
 import FunctionalBudget.*;
 import FunctionalRevenue.*;
 import FunctionalPayroll.*;
-//import FunctionalSpendingMWBE.*;
+import FunctionalSpendingMWBE.*;
 import FunctionalSpendingSubVendors.*;
 import utilities.NYCBaseTest;
 import utilities.TestStatusReport;
@@ -85,7 +85,11 @@ import utilities.TestStatusReport;
 	
 	SubVendorsContractSpendingWidgetTest.class,
 	SubVendorsContractSpendingWidgetDetailsTest.class,
-
+	
+	/* MWBE Spending */
+	MWBETotalSpendingWidgetTest.class,
+	MWBETotalSpendingTitlesTest.class,
+	//MWBETotalSpendingWidgetDetailsTest.class,
 	
 
 })
