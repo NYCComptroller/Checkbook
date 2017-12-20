@@ -11,10 +11,10 @@
             $('#edit-column-select').multiSelect('deselect_all');
         });
         //Sets up autocompletes and autocomplete filtering functionality
-        var year = ($('#edit-fiscal-year').val() == 'All Years') ? 0 : $('#edit-fiscal-year').val();
+        var year = ($('#edit-fiscal-year').val() === 'All Years') ? 0 : $('#edit-fiscal-year').val();
         var fundclass = emptyToZero($('#edit-fund-class').val());
         var agency = emptyToZero($('#edit-agency').val());
-        var budgetyear = ($('#edit-budget-fiscal-year').val() == 'All Years') ? 0 : $('#edit-budget-fiscal-year').val();
+        var budgetyear = ($('#edit-budget-fiscal-year').val() === 'All Years') ? 0 : $('#edit-budget-fiscal-year').val();
         var revcat = emptyToZero($('#edit-revenue-category').val());
         var revclass = emptyToZero($('#edit-revenue-class').val());
         var revsrc = emptyToZero($('#edit-revenue-source').val());
@@ -23,10 +23,10 @@
         $('#edit-revenue-source').autocomplete({source:'/autocomplete/revenue/revenuesource/' + year + '/' + fundclass + '/' + agency + '/' + budgetyear + '/' + revcat + '/' + revclass + '/' + fundingsrc});
         $('.watch:input').each(function () {
             $(this).focusin(function () {
-                year = ($('#edit-fiscal-year').val() == 'All Years') ? 0 : $('#edit-fiscal-year').val();
+                year = ($('#edit-fiscal-year').val() === 'All Years') ? 0 : $('#edit-fiscal-year').val();
                 fundclass = emptyToZero($('#edit-fund-class').val());
                 agency = emptyToZero($('#edit-agency').val());
-                budgetyear = ($('#edit-budget-fiscal-year').val() == 'All Years') ? 0 : $('#edit-budget-fiscal-year').val();
+                budgetyear = ($('#edit-budget-fiscal-year').val() === 'All Years') ? 0 : $('#edit-budget-fiscal-year').val();
                 revcat = emptyToZero($('#edit-revenue-category').val());
                 revclass = emptyToZero($('#edit-revenue-class').val());
                 revsrc = emptyToZero($('#edit-revenue-source').val());
