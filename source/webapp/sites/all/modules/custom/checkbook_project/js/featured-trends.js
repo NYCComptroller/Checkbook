@@ -6,14 +6,14 @@
             var minraw = $(parentID + ' .chartdatefrom').val();
             var maxraw = $(parentID + ' .chartdateto').val();
             if (minraw.length > 0 || maxraw.length > 0) {
-                if (chartNumber == 3) {
+                if (chartNumber === 3) {
                     validateInput(minraw, maxraw, chartNumber, 1980,2012)
-                } else if(chartNumber == 0 || chartNumber == 2) {
+                } else if(chartNumber === 0 || chartNumber === 2) {
                     validateInput(minraw, maxraw, chartNumber, 1994,2016)
-                } else if(chartNumber == 1 || chartNumber == 4) {
+                } else if(chartNumber === 1 || chartNumber === 4) {
                     validateInput(minraw, maxraw, chartNumber, 1995,2016)
                 }
-            } else if (minraw.length == 0 && maxraw.length == 0) {
+            } else if (minraw.length === 0 && maxraw.length === 0) {
                 var today = new Date().getFullYear();
                 var lastYear = today - 1;
                 var tenYears = today - 10;
@@ -26,16 +26,16 @@
         $('body.page-featured-trends #block-system-main').after('<div id="featured-trends-thumbnails"></div>');
 
         var slide = getParameterByName("slide");
-        if(slide == '') slide = 0;
-        if(slide == 0)
+        if(slide === '') slide = 0;
+        if(slide === 0)
     		$('#breadcrumb span.last').text("General Fund Revenues and General Fund Expenditures");
-        else if(slide == 1)
+        else if(slide === 1)
         	$('#breadcrumb span.last').text("Property Tax Levies and Collections");
-        else if(slide == 2)
+        else if(slide === 2)
         	$('#breadcrumb span.last').text("Capital Projects Fund Aid Revenues");
-        else if(slide == 3)
+        else if(slide === 3)
         	$('#breadcrumb span.last').text("Personal Income");
-        else if(slide == 4)
+        else if(slide === 4)
         	$('#breadcrumb span.last').text("Ratios of Outstanding Debt by Type");
         
         $('body.page-featured-trends #featured-trends .inside').cycle(
@@ -73,15 +73,15 @@
     
     
     $('#featured-trends-thumbnails div.navigation').live("click",function (e) {
-        if(this.id == 'general-fund')
+        if(this.id === 'general-fund')
     		$('#breadcrumb span.last').text("General Fund Revenues and General Fund Expenditures");
-        else if(this.id == 'property-tax')
+        else if(this.id === 'property-tax')
         	$('#breadcrumb span.last').text("Property Tax Levies and Collections");
-        else if(this.id == 'capital-projects')
+        else if(this.id === 'capital-projects')
         	$('#breadcrumb span.last').text("Capital Projects Fund Aid Revenues");
-        else if(this.id == 'personal-income')
+        else if(this.id === 'personal-income')
         	$('#breadcrumb span.last').text("Personal Income");
-        else if(this.id == 'debt-ratio')
+        else if(this.id === 'debt-ratio')
         	$('#breadcrumb span.last').text("Ratios of Outstanding Debt by Type");
 
         return true;

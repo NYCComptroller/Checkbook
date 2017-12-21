@@ -198,7 +198,6 @@
     "navigator": {
                 "enabled": true,
                 "xAxis": {
-                   // "range": 6302436001000,
                     "labels":{"enabled":true}
     },
     "margin": 0
