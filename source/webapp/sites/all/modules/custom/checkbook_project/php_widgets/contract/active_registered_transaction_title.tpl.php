@@ -67,6 +67,7 @@ global $checkbook_breadcrumb_title;
 
 if($dashboard == 'ss' || $dashboard == 'sp'){
     switch($smnid){
+        case '720':
         case '721':
             print "<h2 class='contract-title' class='title'>{$bottomNavigation} Transactions</h2>";
             $checkbook_breadcrumb_title =  "$bottomNavigation Transactions";
@@ -74,10 +75,6 @@ if($dashboard == 'ss' || $dashboard == 'sp'){
         case '722':
             print "<h2 class='contract-title' class='title'>Amount Modifications by {$bottomNavigation} Transactions</h2>";
             $checkbook_breadcrumb_title =  "Amount Modifications by $bottomNavigation Transactions";
-            break;
-        case '720':
-            print "<h2 class='contract-title' class='title'>{$bottomNavigation} Transactions</h2>";
-            $checkbook_breadcrumb_title =  "$bottomNavigation Transactions";
             break;
         case '725':
             print "<h2 class='contract-title' class='title'>Prime Vendors with {$bottomNavigation} Transactions</h2>";
@@ -103,6 +100,7 @@ if($dashboard == 'ss' || $dashboard == 'sp'){
 }elseif($dashboard == 'ms'){
     switch($smnid){
         case '781':
+        case '784':
             print "<h2 class='contract-title' class='title'>{$bottomNavigation} Transactions</h2>";
             $checkbook_breadcrumb_title =  "$bottomNavigation Transactions";
             break;
@@ -113,10 +111,6 @@ if($dashboard == 'ss' || $dashboard == 'sp'){
         case '783':
             print "<h2 class='contract-title' class='title'>Prime Vendors with {$bottomNavigation} Transactions</h2>";
             $checkbook_breadcrumb_title =  "Prime Vendors with $bottomNavigation Transactions";
-            break;
-        case '784':
-            print "<h2 class='contract-title' class='title'>{$bottomNavigation} Transactions</h2>";
-            $checkbook_breadcrumb_title =  "$bottomNavigation Transactions";
             break;
         case '785':
             print "<h2 class='contract-title' class='title'>Award Methods by {$bottomNavigation} Transactions</h2>";

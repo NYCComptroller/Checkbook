@@ -864,10 +864,7 @@ class SpendingUtil{
         if($dashboard == "mp") {
             $facet_vendor_param = _getRequestParamValue("vendor");
         }
-        else if($dashboard == "ss") {
-            $facet_vendor_param = _getRequestParamValue("subvendor");
-        }
-        else if($dashboard == "ms") {
+        else if($dashboard == "ss" || $dashboard == "ms") {
             $facet_vendor_param = _getRequestParamValue("subvendor");
         }
         return $facet_vendor_param;
@@ -1092,23 +1089,18 @@ class SpendingUtil{
     	foreach($prime_spending_rows as $row){
     		switch($row['minority_type_id']){
     			case '2':
-    				$mwbe_spending_prime += $row['total_spending'];
+                case '3':
+                case '4':
+                case '5':
+                case '9':
+                    $mwbe_spending_prime += $row['total_spending'];
     				break;
-    			case '3':
-    				$mwbe_spending_prime += $row['total_spending'];
-    				break;
-    			case '4':
-    				$mwbe_spending_prime += $row['total_spending'];
-    				break;
-    			case '5':
-    				$mwbe_spending_prime += $row['total_spending'];
-    				break;
+
+
     			case '7':
     				$non_mwbe_spending_prime += $row['total_spending'];
     				break;
-    			case '9':
-    				$mwbe_spending_prime += $row['total_spending'];
-    				break;
+
     		}
     	}
     	$mwbe_share = custom_number_formatter_format(($mwbe_spending_prime )/($non_mwbe_spending_prime + $mwbe_spending_prime) *100,1,null,'%') ;
@@ -1146,23 +1138,17 @@ class SpendingUtil{
         foreach($spending_rows as $row){
             switch($row['minority_type_id']){
                 case '2':
-                    $mwbe_spending_sub += $row['total_spending'];
-                    break;
                 case '3':
-                    $mwbe_spending_sub += $row['total_spending'];
-                    break;
                 case '4':
-                    $mwbe_spending_sub += $row['total_spending'];
-                    break;
                 case '5':
-                    $mwbe_spending_sub += $row['total_spending'];
-                    break;
-                case '7':
-                    $non_mwbe_spending_sub += $row['total_spending'];
-                    break;
                 case '9':
                     $mwbe_spending_sub += $row['total_spending'];
                     break;
+
+                case '7':
+                    $non_mwbe_spending_sub += $row['total_spending'];
+                    break;
+
             }
         }
         $mwbe_share = custom_number_formatter_format(($mwbe_spending_sub )/($non_mwbe_spending_sub + $mwbe_spending_sub) *100,1,null,'%') ;
@@ -1240,21 +1226,10 @@ class SpendingUtil{
                 $dashboard = "";
         }
         //Visualization - M/WBE (Sub Vendors) Exception
-        else if($smnid == "subven_mwbe_contracts_visual_2" && $dashboard_param == "ms") {
+        else if($smnid == "subven_mwbe_contracts_visual_2" && $dashboard_param == "ms" || $smnid == "mwbe_contracts_visual_2" || $smnid == "subvendor_contracts_visual_1" && $dashboard_param == "ss" || $smnid == "subvendor_contracts_visual_1" && $dashboard_param == "sp") {
             $dashboard = MappingUtil::getCurrenEthnicityName();
         }
         //Visualization - "Ethnicity" Spending by Active Expense Contracts Transactions Exception
-        else if($smnid == "mwbe_contracts_visual_2") {
-            $dashboard = MappingUtil::getCurrenEthnicityName();
-        }
-        //Visualization - Sub Vendors (M/WBE) Exception
-        else if($smnid == "subvendor_contracts_visual_1" && $dashboard_param == "ss") {
-            $dashboard = MappingUtil::getCurrenEthnicityName();
-        }
-        //Visualization - Sub Vendors (M/WBE) Exception
-        else if($smnid == "subvendor_contracts_visual_1" && $dashboard_param == "sp") {
-            $dashboard = MappingUtil::getCurrenEthnicityName();
-        }
         $bottomNavigation = '';
         if($status == 'A')
             $bottomNavigation = "Total Active Sub Vendor Contracts";

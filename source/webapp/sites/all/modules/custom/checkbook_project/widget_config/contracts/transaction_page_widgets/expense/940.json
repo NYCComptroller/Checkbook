@@ -238,7 +238,6 @@
         {"label": "&nbsp;","column": "child_contrats_link"},
         {"labelAlias":"contract_id","column":"contract_link"},
         {"labelAlias":"contract_includes_sub","column":"contract_includes_sub"},
-        //START PRIME
         {"labelAlias":"prime_vendor","column":"prime_vendor_name_link"},
         {"labelAlias":"prime_mwbe_category","column":"prime_minority_type_name"},
         {"labelAlias":"contract_purpose","column":"prime_purpose_formatted"},
@@ -250,7 +249,6 @@
         {"labelAlias":"start_date","column":"prime_effective_begin_date"},
         {"labelAlias":"end_date","column":"prime_effective_end_date"},
         {"labelAlias":"reg_date","column":"registered_date"},
-        //END PRIME
         {"labelAlias":"contract_agency","column":"agency_name_link"},
         {"labelAlias":"version","column":"prime_document_version"},
         {"labelAlias":"fms_doc_id","column":"parent_contract_link"},
@@ -260,7 +258,6 @@
         {"labelAlias":"prime_contract_industry","column":"prime_industry_name_formatted"},
         {"labelAlias":"pin","column":"tracking_number"},
         {"labelAlias":"apt_pin","column":"brd_awd_no"},
-        //START SUB
         {"labelAlias":"sub_vendor_name","column":"subvendor_name"},
         {"labelAlias":"sub_mwbe_category","column":"sub_mwbe_category_name"},
         {"labelAlias":"contract_purpose","column":"sub_purpose_formatted"},
@@ -274,6 +271,5 @@
         {"labelAlias":"start_date","column":"formatted_sub_effective_begin_date"},
         {"labelAlias":"end_date","column":"formatted_sub_effective_end_date"},
         {"labelAlias":"sub_contract_reference_id","column":"sub_contract_reference_id"}
-        //END SUB
     ]
 }

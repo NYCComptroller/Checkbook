@@ -158,7 +158,7 @@
             }
 
             var index = getIndexOf(selectedLi.attr('ms-value'));
-            if (index == 0)
+            if (index === 0)
               selectedUl.prepend(selectedLi);
             else {
               for (i = index - 1; i >= 0; i--){

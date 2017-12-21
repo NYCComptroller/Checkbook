@@ -68,7 +68,7 @@
 table.display thead th {
 	padding: 3px 0px 3px 10px;
 	cursor: pointer;
-	* cursor: hand;
+
 }
 
 div.dataTables_wrapper .ui-widget-header {
