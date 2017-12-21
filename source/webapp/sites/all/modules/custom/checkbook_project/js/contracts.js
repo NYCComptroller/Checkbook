@@ -47,7 +47,7 @@
                 });
                        
 	    $('#master_assoc_cta_expand').live( 'click', function () {
-	        var nTr = this.parentNode.parentNode;
+	       // var nTr = this.parentNode.parentNode;
 	        if ( jQuery(this).attr('class').match('loader') ){
 	           //ignore
 	           return;
@@ -118,9 +118,9 @@
 	        success: function(results) {
 	        	var $container = jQuery(expander).parent().next();
                 jQuery($container).html(results);
-	            if(eval(results['aaData']) && results['aaData'].length > 0){
+	         /*  if(eval(results['aaData']) && results['aaData'].length > 0){
 	                
-	            }
+	            }*/
 	            jQuery(expander).removeClass('loader').addClass('expanded');
                 contractsAddPadding($container);
 	        }

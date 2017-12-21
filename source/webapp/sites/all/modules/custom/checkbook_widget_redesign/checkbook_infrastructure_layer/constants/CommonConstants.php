@@ -228,10 +228,10 @@ abstract class PageType {
     }
 
     static public function isSpendingAdvancedSearch() {
-        return self::getCurrent() == self::ADVANCED_SEARCH_PAGE && CheckbookDomain::getCurrent() == CheckbookDomain::SPENDING;
+        return static::getCurrent() == self::ADVANCED_SEARCH_PAGE && CheckbookDomain::getCurrent() == CheckbookDomain::SPENDING;
     }
 
     static public function isContractsAdvancedSearch() {
-        return self::getCurrent() == self::ADVANCED_SEARCH_PAGE && CheckbookDomain::getCurrent() == CheckbookDomain::CONTRACTS;
+        return static::getCurrent() == self::ADVANCED_SEARCH_PAGE && CheckbookDomain::getCurrent() == CheckbookDomain::CONTRACTS;
     }
 }

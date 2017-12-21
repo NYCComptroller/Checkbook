@@ -903,11 +903,9 @@ function _checkbook_project_adjust_mwbe_spending_parameter_filters(&$node, &$par
             default:
                 if (_getRequestParamValue('dashboard') == null) {
                     //Static Amount for Citywide = Prime Only
-                    if ($current_node_nid == 775)
+                    if ($current_node_nid == 775 || ($current_node_nid == 706 && isset($month)))
                         $parameters['is_prime_or_sub'] = array('P');
                     //Static Amount for Citywide from the month visualization = Prime Only
-                    else if ($current_node_nid == 706 && isset($month))
-                        $parameters['is_prime_or_sub'] = array('P');
                     else
                         $parameters['is_prime_or_sub'] = array('P', 'S');
                 } else {
@@ -1476,9 +1474,7 @@ function _checkbook_project_get_url_param_string($key, $key_alias = null, $ajaxP
     $pathParams = explode('/', $urlPath);
     $keyIndex = NULL;
     foreach ($pathParams as $index => $value) {
-        if ($key == $value) {
-            $keyIndex = $index;
-        } else if ($key_alias != null && $key_alias == $value && $value != null) {
+        if ($key == $value || ($key_alias != null && $key_alias == $value && $value != nul)) {
             $keyIndex = $index;
         }
     }

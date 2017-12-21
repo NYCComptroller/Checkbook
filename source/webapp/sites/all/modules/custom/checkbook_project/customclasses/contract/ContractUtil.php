@@ -75,13 +75,12 @@ namespace { //global
         }
 
         static public function getCurrentPageDocumentIds(){
-        	if(preg_match('/revenue/',$_GET['q'])){
+        	if(preg_match('/revenue/',$_GET['q']) || preg_match('/pending_rev/',$_GET['q'])){
         		$document_codes = "'RCT1'" ;
         	}else if(preg_match('/pending_exp/',$_GET['q'])){
         		$document_codes ="'MA1','CT1','CTA1'";
-        	}else if(preg_match('/pending_rev/',$_GET['q'])){
-        		$document_codes = "'RCT1'" ;
-        	}else{
+        	}
+        	else{
         		$document_codes = "'MA1','CT1','CTA1'";
         	}
         	return $document_codes;
@@ -591,14 +590,11 @@ namespace { //global
             $contract_status = _getRequestParamValue('status');
             $contract_type = 'expense';
 
-            if(preg_match('/revenue/',$url)){
+            if(preg_match('/revenue/',$url) || preg_match('/pending_rev/',$url)){
                 $contract_type = 'revenue';
             }
             else if(preg_match('/pending_exp/',$url)){
                 $contract_type = 'expense';
-            }
-            else if(preg_match('/pending_rev/',$url)){
-                $contract_type = 'revenue';
             }
             if(isset($contract_status)) {
                 $parameters = '/contstatus/'.$contract_status;

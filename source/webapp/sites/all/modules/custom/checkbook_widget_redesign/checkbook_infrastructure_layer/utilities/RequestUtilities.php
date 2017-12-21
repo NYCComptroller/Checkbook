@@ -66,9 +66,7 @@ class RequestUtilities {
         $pathParams = explode('/', $urlPath);
         $keyIndex = NULL;
         foreach($pathParams as $index => $value){
-            if($key == $value){
-                $keyIndex = $index;
-            }else if($key_alias != null && $key_alias == $value && $value != null){
+            if($key == $value || ($key_alias != null && $key_alias == $value && $value != null)){
                 $keyIndex = $index;
             }
         }

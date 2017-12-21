@@ -220,7 +220,7 @@
             var agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
 
             //Don't update drop downs if no agency is selected
-            if(agency == 0) return;
+            if(agency === 0) return;
 
             var dept = (div.ele('dept').val()) ? (div.ele('dept').val()) : 0;
             dept = dept.replace(/\//g,"__");

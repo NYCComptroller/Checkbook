@@ -34,10 +34,10 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
    $start_date = date("c", strtotime($contracts_results['start_date']));
    $end_date = date("c", strtotime($contracts_results['end_date']));
 
-    if($contract_status == 'Active'){
+    /*if($contract_status == 'Active'){
            $contracts_results['contract_status'] = 'Active';
            $status = "A";
-   }else if($contract_status == 'Registered'){
+   }*/ if($contract_status == 'Registered'){
            $contracts_results['contract_status'] =  'Registered';
            $status = "R";
    }else{
