@@ -150,7 +150,7 @@ h4 {
     background: -o-linear-gradient(top,  #ffffff 0%,#e1e1e1 100%); /* Opera 11.10+ */
     background: -ms-linear-gradient(top,  #ffffff 0%,#e1e1e1 100%); /* IE10+ */
     background: linear-gradient(to bottom,  #ffffff 0%,#e1e1e1 100%); /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e1e1e1',GradientType=0 ); /* IE6-9 */
+ -ms-filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e1e1e1',GradientType=0 )"; /* IE6-9 */
 }
 
 #social-media {
@@ -163,7 +163,7 @@ h4 {
     background: -o-linear-gradient(top,  #ffffff 0%,#e1e1e1 100%); /* Opera 11.10+ */
     background: -ms-linear-gradient(top,  #ffffff 0%,#e1e1e1 100%); /* IE10+ */
     background: linear-gradient(to bottom,  #ffffff 0%,#e1e1e1 100%); /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e1e1e1',GradientType=0 ); /* IE6-9 */
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e1e1e1',GradientType=0 )"; /* IE6-9 */
 }
 .addthis_toolbox{
     float:right;
@@ -1807,7 +1807,7 @@ input[type="url"], input[type="week"] {
     background: -o-linear-gradient(top, #48759d 0%, #3f668f 100%); /* Opera 11.10+ */
     background: -ms-linear-gradient(top, #48759d 0%, #3f668f 100%); /* IE10+ */
     background: linear-gradient(to bottom, #48759d 0%, #3f668f 100%); /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#48759d', endColorstr = '#3f668f', GradientType = 0); /* IE6-9 */
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr = '#48759d', endColorstr = '#3f668f', GradientType = 0)"; /* IE6-9 */
     color: #ffffff;
     font-weight: bold;
     text-transform: uppercase;
@@ -2579,7 +2579,7 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 .sub-table{width:100%; table-layout: fixed;}
 .sub-table th{
     background: transparent;
-    filter: progid:DXImageTransform.Microsoft.gradient(enabled = false); /* ie7 */
+   -ms-filter: "progid:DXImageTransform.Microsoft.gradient(enabled = false)"; /* ie7 */
     color: #336699;
     font-size: 12px;
     line-height: 13px;
@@ -2588,7 +2588,7 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 }
 .sub-table th div{
     background: transparent;
-    filter: progid:DXImageTransform.Microsoft.gradient(enabled = false); /* ie7 */
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(enabled = false)"; /* ie7 */
     color: #336699;
     font-size: 12px;
     line-height:13px;
@@ -3189,7 +3189,7 @@ body.context-resources #zone-footer{padding:60px 2% 0px 2%;}
     float: right;
     position: relative;
     top: 135px;
-    padding-right: 2-px;
+    padding-right: 2px;
 }
 
 .chart-nyc-legend .legend-title
@@ -3296,7 +3296,7 @@ body.page-mwbe-agency-grading #page-title{
 	text-transform: none;
 }
 .spending_by_expense_category th{
-    widows: 33%;
+    widows: 3;
 }
 .spending_by_expense_category th span,
 .spending_by_expense_category td span{
@@ -3438,7 +3438,7 @@ input[type=radio]:checked:enabled.radio-blue + label:before {
     background:-o-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
     background:-ms-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
     background:linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f6f6f6',GradientType=0);
+    -ms-filter:"progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f6f6f6',GradientType=0)";
     background-color:#ffffff;
     -moz-border-radius:6px;
     -webkit-border-radius:6px;
@@ -3461,7 +3461,7 @@ input[type=radio]:checked:enabled.radio-blue + label:before {
     background:-o-linear-gradient(top, #f6f6f6 5%, #ffffff 100%);
     background:-ms-linear-gradient(top, #f6f6f6 5%, #ffffff 100%);
     background:linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ffffff',GradientType=0);
+    -ms-filter:"progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ffffff',GradientType=0)";
     background-color:#f6f6f6;
 }
 #rotator,

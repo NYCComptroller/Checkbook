@@ -77,7 +77,7 @@
             "useList":true,
             "columns": ["ending_year_id","document_code@checkbook:ref_document_code","has_children","contract_original_agreement_id","contract_number","master_agreement_id","master_contract_number","description","document_version","original_contract_amount","maximum_contract_amount","rfed_amount","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name","expenditure_object_names","effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number","master_agreement_yn","industry_type_name","dollar_difference","percent_difference","scntrc_status_name","aprv_sta_name"],
             "orderBy":"-maximum_contract_amount",
-            "seriesDefaultParameters":{"master_agreement_id":-1},//default master_agreement_id to avoid load
+            "seriesDefaultParameters":{"master_agreement_id":-1},
             "adjustSerieParameters":"
                 $year = _getRequestParamValue('year');
                 $calYear = _getRequestParamValue('calyear');

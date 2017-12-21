@@ -30,7 +30,7 @@ class MinorityTypeService {
     static $mwbe_prefix = "M/WBE" ;
     
     static public function isMWBECertified($mwbe_cat){ 	
-        if(in_array($mwbe_cat, self::$minority_type_category_map_multi_chart['M/WBE'])){
+        if(in_array($mwbe_cat, static::$minority_type_category_map_multi_chart['M/WBE'])){
             return true;
     	}else{
             return false;
@@ -43,7 +43,7 @@ class MinorityTypeService {
      * @return mixed
      */
     static public function getMinorityCategoryById($minority_type_id) {
-        return self::$minority_type_category_map[$minority_type_id];
+        return static::$minority_type_category_map[$minority_type_id];
     }
 
     /**

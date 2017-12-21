@@ -23,7 +23,7 @@ jQuery(document).ready(function(){
 
 function redirect_on_selection(parameters, current_url_array){
     var parameters_size = parameters.length;
-    var new_url_array = new Array();
+    var new_url_array = [];
     for(var i = 0; i < parameters_size; i++){
         new_url_array = year_list_generate_url(parameters[i].param, parameters[i].value, current_url_array)
     }
@@ -35,7 +35,7 @@ function redirect_on_selection(parameters, current_url_array){
 
 
 function year_list_generate_url(parameter, value, current_url_array){
-    if(jQuery.inArray(parameter,current_url_array) == -1){
+    if(jQuery.inArray(parameter,current_url_array) === -1){
         current_url_array.push(parameter);
         current_url_array.push(value);
     }else{

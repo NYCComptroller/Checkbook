@@ -630,7 +630,7 @@ class RequestUtil
     static function getTopNavURL($domain)
     {
         $path = '';
-        $fiscalYearId = self::getFiscalYearIdForTopNavigation();
+        $fiscalYearId = static::getFiscalYearIdForTopNavigation();
         switch ($domain) {
             case "contracts":
                 //Get 'Contracts Bottom Slider' amounts
@@ -677,7 +677,7 @@ class RequestUtil
                 }
                 break;
             case "payroll":
-                $year = self::getCalYearIdForTopNavigation();
+                $year = static::getCalYearIdForTopNavigation();
                 //Payroll is always redirected to the respective Calendar Year irrespective of the 'yeartpe' paramenter in the URL for all the other Domains
                 if (!preg_match('/payroll/', $_SERVER['REQUEST_URI'])) {
                     $yeartype = 'C';
@@ -1057,7 +1057,7 @@ class RequestUtil
         foreach ($reqParams as $key => $value) {
             $value = _getRequestParamValue($key);
             if ($key == "year") {
-                $value = self::getFiscalYearIdForTopNavigation();
+                $value = static::getFiscalYearIdForTopNavigation();
             }
             if ($key == "yeartype") {
                 $value = 'B';
@@ -1269,7 +1269,7 @@ class RequestUtil
         } else {
             return "";
         }
-        return '/' . RequestUtil::getLandingPageUrl($domain, self::getFiscalYearIdForTopNavigation(), 'B') . "/mwbe/" . MappingUtil::$total_mwbe_cats
+        return '/' . RequestUtil::getLandingPageUrl($domain, static::getFiscalYearIdForTopNavigation(), 'B') . "/mwbe/" . MappingUtil::$total_mwbe_cats
             . "/dashboard/" . $dashboard .
             _checkbook_project_get_url_param_string("agency")
             . _checkbook_project_get_url_param_string("vendor");
