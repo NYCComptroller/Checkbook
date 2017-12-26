@@ -19,7 +19,7 @@
 */
 ?>
 <?php
-echo eval($node->widgetConfig->header);
+echo $node->widgetConfig->header;
 ?>
 <table id="table_<?php echo widget_unique_identifier($node) ?>" class="<?php echo $node->widgetConfig->html_class ?>">
   <?php

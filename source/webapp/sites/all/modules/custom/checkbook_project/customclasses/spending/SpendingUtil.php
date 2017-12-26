@@ -876,7 +876,7 @@ class SpendingUtil{
      * @param array $override_params
      * @return string
      */
-    static function getLandingPageWidgetUrl($override_params = array()) {
+   public static function getLandingPageWidgetUrl($override_params = array()) {
         $url = self::getSpendingUrl('spending_landing',$override_params);
         return str_replace("calyear","year",$url);
     }
@@ -887,7 +887,7 @@ class SpendingUtil{
      * @param array $override_params
      * @return string
      */
-    static function getSpendingTransactionPageUrl($override_params = array()) {
+  public static function getSpendingTransactionPageUrl($override_params = array()) {
         return self::getSpendingUrl('panel_html/spending_transactions/spending/transactions',$override_params);
     }
 
@@ -897,7 +897,7 @@ class SpendingUtil{
      * @param array $override_params
      * @return string
      */
-    static function getSpendingContractDetailsPageUrl($override_params = array()) {
+   public static function getSpendingContractDetailsPageUrl($override_params = array()) {
         return self::getSpendingUrl('contract_details',$override_params);
     }
 
@@ -909,7 +909,7 @@ class SpendingUtil{
      * @param array $override_params
      * @return string
      */
-    static function getSpendingUrl($path, $override_params = array()) {
+    public static function getSpendingUrl($path, $override_params = array()) {
 
         $url =  $path . _checkbook_project_get_year_url_param_string();
 
@@ -949,7 +949,7 @@ class SpendingUtil{
      * @param $node
      * @return string
      */
-    static function getVendorTypeUrlParam($node){
+    public static function getVendorTypeUrlParam($node){
         $dashboard = _getRequestParamValue('dashboard');
         $vendortype = null;
         $nid = $node->nid;
@@ -985,7 +985,7 @@ class SpendingUtil{
      * @param $row
      * @return string
      */
-    static function getSubVendorsPercentPaid($row){
+   public static function getSubVendorsPercentPaid($row){
         return self::calculatePercent($row['ytd_spending_sub_vendors'], $row['check_amount_sum_no_payroll@checkbook:spending_data']);
     }
 
@@ -998,7 +998,7 @@ class SpendingUtil{
      * @param $denominator
      * @return string
      */
-    static function calculatePercent($numerator, $denominator){
+   public static function calculatePercent($numerator, $denominator){
         $results = $numerator/$denominator*100;
         $results = $results < 0 ? 0.00 : $results;
         return custom_number_formatter_format($results,2,'','%');
@@ -1008,7 +1008,7 @@ class SpendingUtil{
      * Checks to see if this is from the Advanced search page,
      * if so, need to append the data source but not the m/wbe parameter.
      */
-    static function getDataSourceParams(){
+   public static function getDataSourceParams(){
         if(self::isAdvancedSearchResults()) {
             $data_source = _getRequestParamValue("datasource");
             return isset($data_source) ? "/datasource/checkbook_oge" : "";
@@ -1029,14 +1029,14 @@ class SpendingUtil{
     /**
      * Returns true if this is from spending advanced search
      */
-    static function isAdvancedSearchResults() {
+  public static function isAdvancedSearchResults() {
         return !self::isSpendingLanding();
     }
 
     /**
      * Returns true if this is the spending landing page
      */
-    static function isSpendingLanding() {
+    public static function isSpendingLanding() {
         $url_ref = $_SERVER['HTTP_REFERER'];
         $match_landing = '"/spending_landing/"';
         return preg_match($match_landing,$url_ref);
@@ -1046,14 +1046,14 @@ class SpendingUtil{
      * Spending transaction page should be shown for citywide, oge
      * @return bool
      */
-    static function showSpendingTransactionPage(){
+  public static function showSpendingTransactionPage(){
         $subvendor_exist = _checkbook_check_is_sub_vendor_page();
         $ma1_mma1_contracts_exist = _checkbook_project_ma1_mma1_exist();
         $edc_records_exist = _checkbook_check_isEDCPage() && _checkbook_project_recordsExists(6);
         $mwbe_records_exist = _checkbook_check_is_mwbe_page() && !$subvendor_exist && _checkbook_project_recordsExists(706);
         $citywide_exist =  !$subvendor_exist && !$mwbe_records_exist && !$edc_records_exist && _checkbook_project_recordsExists(6);
 
-        if($ma1_mma1_contracts_exist || $subvendor_exist) return false;
+        if($ma1_mma1_contracts_exist || $subvendor_exist) {return false;}
 
         return ($edc_records_exist || $mwbe_records_exist || $citywide_exist);
     }
@@ -1069,13 +1069,15 @@ class SpendingUtil{
         $mwbe_records_exist = _checkbook_check_is_mwbe_page() && !$subvendor_exist && _checkbook_project_recordsExists(706);
         $citywide_exist =  !$subvendor_exist && !$mwbe_records_exist && !$edc_records_exist && _checkbook_project_recordsExists(6);
 
-        if($ma1_mma1_contracts_exist || $subvendor_exist) return false;
+        if($ma1_mma1_contracts_exist || $subvendor_exist){
+            return false;
+        }
 
         return $subvendor_exist || $ma1_mma1_contracts_exist || $edc_records_exist;
     }
     
     
-    static function getMWBENYCLegend($year, $yeartype){
+    static function getMWBENYCLegend($year, $yeartype, $non_mwbe_spending_prime, $mwbe_spending_prime){
 
     	$where_filter =  "where year_id = $year and type_of_year = '$yeartype' ";
 
@@ -1103,7 +1105,7 @@ class SpendingUtil{
 
     		}
     	}
-    	$mwbe_share = custom_number_formatter_format(($mwbe_spending_prime )/($non_mwbe_spending_prime + $mwbe_spending_prime) *100,1,null,'%') ;
+    	$mwbe_share = custom_number_formatter_format(($mwbe_spending_prime )/($non_mwbe_spending_prime + $mwbe_spending_prime) *100,1,null,'%');
     	$mwbe_spending = custom_number_formatter_format($mwbe_spending_prime,2,'$');
     	$non_mwbe = custom_number_formatter_format($non_mwbe_spending_prime,2,'$');
     	
@@ -1124,7 +1126,7 @@ class SpendingUtil{
      * @param $yeartype
      * @return string
      */
-    static function getSubMWBENYCLegend($year, $yeartype){
+    public static function getSubMWBENYCLegend($year, $yeartype){
 
         $where_filter =  "where year_id = $year and type_of_year = '$yeartype' ";
 
@@ -1166,7 +1168,7 @@ class SpendingUtil{
 
     }
 
-    static function getTransactionPageTitle($widgetTitle){
+  public static function getTransactionPageTitle($widgetTitle){
         $catName = self::getTransactionPageCategoryName();
         $dashboard_title = RequestUtil::getDashboardTitle();
         $dashboard = _getRequestParamValue('dashboard');
@@ -1178,16 +1180,16 @@ class SpendingUtil{
             $dashboard_title = MappingUtil::getCurrenEthnicityName();
         }
         //Contract Exception
-        else if(($widgetTitle == "Contracts" || $widgetTitle == "Contract") && $category == 1) {
+        elseif(($widgetTitle == "Contracts" || $widgetTitle == "Contract") && $category == 1) {
             $catName = "Spending";
         }
         //Visualization - Sub Vendors (M/WBE) "Ethnicity" Exception
-        else if($smnid == "723" && $dashboard == "sp") {
+        elseif($smnid == "723" && $dashboard == "sp") {
             $dashboard_title = MappingUtil::getCurrenEthnicityName();
             return $widgetTitle . " " . $dashboard_title . " " . $catName . " Transactions";
         }
         //Visualization - Sub Vendors (M/WBE) "Ethnicity" Exception
-        else if($smnid == "723" && $dashboard == "ss") {
+        elseif($smnid == "723" && $dashboard == "ss") {
             $dashboard_title = MappingUtil::getCurrenEthnicityName();
         }
 
@@ -1196,7 +1198,7 @@ class SpendingUtil{
     }
 
     /** Returns Spending Category based on 'category' value from current path */
-    static function getTransactionPageCategoryName($defaultName = 'Total Spending'){
+    public static function getTransactionPageCategoryName($defaultName = 'Total Spending'){
         $categoryId = _getRequestParamValue('category');
         $dtsmnid = _getRequestParamValue('dtsmnid');
         $smnid = _getRequestParamValue('smnid');
@@ -1212,7 +1214,7 @@ class SpendingUtil{
         return $category_name;
     }
 
-    static function getSpentToDateTitle($widgetTitle){
+  public static function getSpentToDateTitle($widgetTitle){
         $dashboard = RequestUtil::getDashboardTitle();
         $contractTitle = self::getContractTitle();
 
@@ -1220,31 +1222,35 @@ class SpendingUtil{
         $smnid = _getRequestParamValue('smnid');
         $status = _getRequestParamValue('contstatus');
         if($smnid == 720) {
-            if($dashboard_param == "ms")
-                $dashboard = "M/WBE";
-            else if($dashboard_param == "ss")
+            if ($dashboard_param == "ms") {
+            $dashboard = "M/WBE";
+            }
+            elseif($dashboard_param == "ss") {
                 $dashboard = "";
+            }
         }
         //Visualization - M/WBE (Sub Vendors) Exception
-        else if($smnid == "subven_mwbe_contracts_visual_2" && $dashboard_param == "ms" || $smnid == "mwbe_contracts_visual_2" || $smnid == "subvendor_contracts_visual_1" && $dashboard_param == "ss" || $smnid == "subvendor_contracts_visual_1" && $dashboard_param == "sp") {
+        elseif($smnid == "subven_mwbe_contracts_visual_2" && $dashboard_param == "ms" || $smnid == "mwbe_contracts_visual_2" || $smnid == "subvendor_contracts_visual_1" && $dashboard_param == "ss" || $smnid == "subvendor_contracts_visual_1" && $dashboard_param == "sp") {
             $dashboard = MappingUtil::getCurrenEthnicityName();
         }
         //Visualization - "Ethnicity" Spending by Active Expense Contracts Transactions Exception
         $bottomNavigation = '';
-        if($status == 'A')
+        if($status == 'A') {
             $bottomNavigation = "Total Active Sub Vendor Contracts";
-        else
+        }
+        else {
             $bottomNavigation = "New Sub Vendor Contracts by Fiscal Year";
+        }
 
         if($smnid == 721 || $smnid == 720 || $smnid == 781 || $smnid == 784){
             $widgetTitle = 'Spending';
         }
         if($smnid =='subvendor_contracts_visual_1' && $dashboard_param == 'sp'){
-            return(MappingUtil::getCurrenEthnicityName() . " Sub Vendors Spending by <br />" .$bottomNavigation);
+            return (MappingUtil::getCurrenEthnicityName() . " Sub Vendors Spending by <br />" .$bottomNavigation);
         }
         if($smnid =='subven_mwbe_contracts_visual_2' && $dashboard_param == 'ms'){
 
-            return(MappingUtil::getCurrenEthnicityName() . " Sub Spending by <br />" .$bottomNavigation);
+            return (MappingUtil::getCurrenEthnicityName() . " Sub Spending by <br />" .$bottomNavigation);
         }
 
         if($dashboard_param == 'ss' || $dashboard_param == 'ms' || $dashboard_param == 'sp') {
@@ -1253,18 +1259,20 @@ class SpendingUtil{
                 return "Total Sub Vendors Spending Transactions";
             }
             if($dashboard_param == 'ms' || $dashboard_param == 'sp'){
-                if($status == 'A')
+                if($status == 'A') {
                     $bottomNavigation = "Total Active M/WBE Sub Vendor Contracts";
-                else
+                }
+                else {
                     $bottomNavigation = "New M/WBE Sub Vendor Contracts by Fiscal Year";
+                }
             }
-           return($widgetTitle . " by  " . $bottomNavigation . " " . "Transactions");
+           return ($widgetTitle . " by  " . $bottomNavigation . " " . "Transactions");
         }
 
         return ($dashboard . " " . $widgetTitle . " " . $contractTitle . " Contracts Transactions");
     }
 
-    static public function getContractTitle(){
+     public static function getContractTitle(){
         if(_getRequestParamValue('contstatus')){
             $contract_status = _getRequestParamValue('contstatus');
         }
@@ -1296,7 +1304,7 @@ class SpendingUtil{
         return $title;
     }
     
-    static function _show_mwbe_custom_legend(){
+    public static function _show_mwbe_custom_legend(){
     	$mwbe_cats = _getRequestParamValue('mwbe');
     	if(	($mwbe_cats =='4~5' || $mwbe_cats =='4' || $mwbe_cats =='5' || $mwbe_cats =='2' || $mwbe_cats =='3' || $mwbe_cats =='9' ) && !(_getRequestParamValue('vendor') > 0 ) ){
     		return true;
@@ -1305,7 +1313,6 @@ class SpendingUtil{
     	if(	!(_getRequestParamValue('vendor') > 0 ) && ( _getRequestParamValue('agency') > 0 || _getRequestParamValue('industry') > 0 ) ){
     		return true;
     	}
-    	
     	return false;
     }
     
