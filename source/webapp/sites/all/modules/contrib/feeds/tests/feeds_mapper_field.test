@@ -9,7 +9,7 @@
  * Class for testing Feeds field mapper.
  */
 class FeedsMapperFieldTestCase extends FeedsMapperTestCase {
-  public static function getInfo() {
+ public static function getInfo() {
     return array(
       'name' => 'Mapper: Fields',
       'description' => 'Test Feeds Mapper support for fields.',

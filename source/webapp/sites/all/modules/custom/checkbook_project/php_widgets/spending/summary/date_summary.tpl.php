@@ -19,7 +19,7 @@
  */
 ?>
 <?php
-    $title = eval($node->widgetConfig->summaryView->templateTitleEval);
+    $title = $node->widgetConfig->summaryView->templateTitleEval;
     $month = '';
     $yearType = _getRequestParamValue('yeartype');
     $year = _getRequestParamValue('calyear');

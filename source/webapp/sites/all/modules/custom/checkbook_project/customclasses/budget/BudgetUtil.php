@@ -13,7 +13,7 @@ class BudgetUtil{
         * @param $node
         * @param $parameters
     */
-    static public function adjustBudgetCodeNameParameter(&$node, &$parameters){
+    public static function adjustBudgetCodeNameParameter(&$node, &$parameters){
         if(isset($parameters['budget_code_name'])){
             $data_controller_instance = data_controller_get_operator_factory_instance();
             $budget_code = $parameters['budget_code_name'][0];
@@ -30,7 +30,7 @@ class BudgetUtil{
         * @param $budget_code
         * @param $year
     */
-    static public function getBudgetCodeId($budget_code_name, $budget_code, $year){
+    public static function getBudgetCodeId($budget_code_name, $budget_code, $year){
         $query = "SELECT DISTINCT budget_code_id FROM budget
                   WHERE budget_code = '". trim($budget_code). "'"
                 ." AND budget_code_name ILIKE '". addslashes(trim($budget_code_name)) . "'"
@@ -46,7 +46,7 @@ class BudgetUtil{
         * @param $agency_id
         * @param $year
     */
-    static public function getBudgetCodeNameAndBudgetCode($budget_code_id, $agency_id, $year){
+    public static function getBudgetCodeNameAndBudgetCode($budget_code_id, $agency_id, $year){
         $query = "SELECT DISTINCT budget_code, budget_code_name FROM budget
                   WHERE budget_code_id = ". $budget_code_id
                 ." AND agency_id = ". $agency_id
