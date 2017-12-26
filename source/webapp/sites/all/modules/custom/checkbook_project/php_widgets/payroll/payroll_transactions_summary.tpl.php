@@ -21,12 +21,11 @@
 <?php
 $title = $node->widgetConfig->summaryView->templateTitle;
 $label = $node->widgetConfig->summaryView->templateLabel;
-$value = strtoupper(eval($node->widgetConfig->summaryView->templateLabelEval));
+$value = strtoupper($node->widgetConfig->summaryView->templateLabelEval);
 
 $summaryContent =  <<<EOD
 <h2 class="contract-title">{$title}</h2>
 EOD;
-
 print $summaryContent;
 
 
