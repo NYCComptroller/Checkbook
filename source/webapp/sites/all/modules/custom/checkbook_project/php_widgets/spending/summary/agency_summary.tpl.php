@@ -23,7 +23,7 @@ $records = $node->data;
 
 if(is_array($records)){
     $row = $records[0];
-    $title = eval($node->widgetConfig->summaryView->templateTitleEval);
+    $title = $node->widgetConfig->summaryView->templateTitleEval;
     $label = $node->widgetConfig->summaryView->templateLabel;
     $value = strtoupper($node->widgetConfig->summaryView->templateLabelEval);
 

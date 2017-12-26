@@ -2,7 +2,7 @@
 
 abstract class BudgetConstants{
     const BASE_YEAR_ID = 112;
-    static public function getCurrent() {
+     public static function getCurrent() {
         return self::BASE_YEAR_ID;
     }
 }
@@ -13,7 +13,7 @@ abstract class BudgetAgencyPercentWidgetViews {
     const AGENCIES_PERCENT_DIFF_PREVIOUS_1 = "percent_difference_by_agencies_previous_1";
     const AGENCIES_PERCENT_DIFF_PREVIOUS_2 = "percent_difference_by_agencies_previous_2";
     
-    static public function getCurrent() {
+     public static function getCurrent() {
         $base_year = BudgetConstants::getCurrent();
         $year = RequestUtilities::getRequestParamValue(UrlParameter::YEAR);
 
@@ -34,7 +34,7 @@ abstract class BudgetDepartmentPercentWidgetViews {
     const DEPT_PERCENT_DIFF_PREVIOUS_1 = "percent_difference_by_departments_previous_1";
     const DEPT_PERCENT_DIFF_PREVIOUS_2 = "percent_difference_by_departments_previous_2";
     
-    static public function getCurrent() {
+     public static function getCurrent() {
         $base_year = BudgetConstants::getCurrent();
         $year = RequestUtilities::getRequestParamValue(UrlParameter::YEAR);
 
@@ -56,7 +56,7 @@ abstract class BudgetCatExpensePercentWidgetViews {
     const EXPCAT_PERCENT_DIFF_PREVIOUS_1 = "percent_difference_by_expense_categories_previous_1";
     const EXPCAT_PERCENT_DIFF_PREVIOUS_2 = "percent_difference_by_expense_categories_previous_2";
     
-    static public function getCurrent() {
+     public static function getCurrent() {
         $base_year = BudgetConstants::getCurrent();
         $year = RequestUtilities::getRequestParamValue(UrlParameter::YEAR);
 

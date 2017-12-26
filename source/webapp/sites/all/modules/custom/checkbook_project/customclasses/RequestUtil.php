@@ -507,7 +507,7 @@ class RequestUtil
      * @param $category
      * @return string
      */
-    static public function preparePayrollBottomNavFilter($page, $category)
+    public static function preparePayrollBottomNavFilter($page, $category)
     {
         $pathParams = explode('/', drupal_get_path_alias($_GET['q']));
         $url = $page;
