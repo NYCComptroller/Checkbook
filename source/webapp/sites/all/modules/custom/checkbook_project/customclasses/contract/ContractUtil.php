@@ -179,7 +179,7 @@ namespace { //global
 
         /* Returns M/WBE category for the given vendor id in the given year and year type for city-wide Active/Registered Contracts Transactions Pages*/
 
-         static public function get_contract_vendor_minority_category($vendor_id, $year_id = null, $year_type = null,$agency_id = null, $is_prime_or_sub = 'P'){
+        static public function get_contract_vendor_minority_category($vendor_id, $year_id = null, $year_type = null,$agency_id = null, $is_prime_or_sub = 'P'){
 
             $latest_minority_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id, $year_type, $is_prime_or_sub);
             if($is_prime_or_sub == 'P'){
