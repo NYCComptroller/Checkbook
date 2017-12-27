@@ -6,7 +6,7 @@ abstract class PayrollLandingPage {
     const AGENCY_LEVEL = "agency_landing";
     const TITLE_LEVEL = "title_landing";
 
-    static public function getCurrent() {
+    public static function getCurrent() {
 
         $urlPath = $_GET['q'];
         $ajaxPath = $_SERVER['HTTP_REFERER'];

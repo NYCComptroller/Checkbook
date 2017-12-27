@@ -9,7 +9,7 @@ abstract class SpendingCategory {
     const TRUST_AGENCY = "trust_and_agency_spending";
     const OTHER = "other_spending";
 
-    static public function getCurrent() {
+    public static function getCurrent() {
         $parameter = SpendingCategoryParameter::getCurrent();
 
         switch($parameter) {
@@ -31,7 +31,7 @@ abstract class SpendingCategoryParameter {
     const OTHER = 4;
     const TRUST_AGENCY = 5;
 
-    static public function getCurrent() {
+    public static function getCurrent() {
         return RequestUtilities::getRequestParamValue(UrlParameter::SPENDING_CATEGORY);
     }
 }

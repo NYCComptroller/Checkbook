@@ -16,7 +16,7 @@ class ApacheSolrFacetapiDate extends FacetapiQueryTypeDate implements FacetapiQu
    * @return string
    *   The query type.
    */
-  static public function getType() {
+  public static  function getType() {
     return 'date';
   }
 

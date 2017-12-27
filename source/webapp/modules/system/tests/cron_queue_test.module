@@ -20,7 +20,7 @@ function cron_queue_test_exception($item) {
 
 class CronQueueTestCallbackClass {
 
-  static public function foo() {
+  public static function foo() {
     // Do nothing.
   }
 
