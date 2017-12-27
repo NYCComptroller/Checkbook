@@ -3852,8 +3852,6 @@ function drupal_clear_opcode_cache($filepath) {
 
 function checkbook_timer($event = '')
 {
-    $now = time();
-    $a = $now;
   if (!defined('LOCAL_VSL4')) {
     return;
   }
