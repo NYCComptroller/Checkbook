@@ -68,7 +68,7 @@ include_once('export_link.php');
   </tbody>
 </table>
 <?php
-echo  $node->widgetConfig->gridConfig->footer;
+echo eval($node->widgetConfig->gridConfig->footer);
     $dataTableOptions ='
                     {
                         "bFilter":false,

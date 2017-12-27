@@ -22,7 +22,7 @@
 $records = $node->data;
 if(is_array($records)){
     $row = $records[0];
-    $title = $node->widgetConfig->summaryView->templateTitleEval;
+    $title = eval($node->widgetConfig->summaryView->templateTitleEval);
     $ytdspending = WidgetUtil::getLabel("ytd_spending");
     $cid = WidgetUtil::getLabel("contract_id");
     $sub_contract_purpose = WidgetUtil::getLabel("sub_contract_purpose");
