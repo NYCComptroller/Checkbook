@@ -22,9 +22,9 @@
 $records = $node->data;
 if(is_array($records)){
     $row = $records[0];
-    $title = $node->widgetConfig->summaryView->templateTitleEval;
+    $title = eval($node->widgetConfig->summaryView->templateTitleEval);
     $label = $node->widgetConfig->summaryView->templateLabel;
-    $value = strtoupper($node->widgetConfig->summaryView->templateLabelEval);
+    $value = strtoupper(eval($node->widgetConfig->summaryView->templateLabelEval));
     $ytdspending = WidgetUtil::getLabel("ytd_spending");
     $percent_spending = WidgetUtil::getLabel("percent_spending");
 $summaryContent =  <<<EOD

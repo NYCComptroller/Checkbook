@@ -70,7 +70,7 @@ class NodeSummaryUtil
         $title = NULL;
             if($smnid){
                 if(isset($node->widgetConfig->summaryView->templateTitleEval)){
-                    $title = $node->widgetConfig->summaryView->templateTitleEval;
+                    $title = eval($node->widgetConfig->summaryView->templateTitleEval);
                 }
                 else if(isset($node->widgetConfig->widgetTitle)){
                     $title = $node->widgetConfig->widgetTitle;

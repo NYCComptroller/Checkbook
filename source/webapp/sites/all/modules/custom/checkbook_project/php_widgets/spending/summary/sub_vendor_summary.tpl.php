@@ -24,7 +24,7 @@ $records = $node->data;
 
 if(is_array($records)){
     $row = $records[0];
-    $title = $node->widgetConfig->summaryView->templateTitleEval;
+    $title = eval($node->widgetConfig->summaryView->templateTitleEval);
     $label = $node->widgetConfig->summaryView->templateLabel;
     $value = eval($node->widgetConfig->summaryView->templateLabelEval);
     $totcontamnt = WidgetUtil::getLabel("total_contract_amount");
