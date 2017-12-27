@@ -16,7 +16,7 @@ class ApacheSolrFacetapiTerm extends FacetapiQueryType implements FacetapiQueryT
    * @return string
    *   The query type.
    */
-  static public function getType() {
+  public static function getType() {
     return 'term';
   }
 

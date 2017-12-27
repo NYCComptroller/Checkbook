@@ -84,7 +84,7 @@ class Drupal_Sniffs_NamingConventions_ValidVariableNameSniff
             return;
         }
 
-        // If it is a static public variable of a class, then its ok.
+        // If it is a public static variable of a class, then its ok.
         if ($tokens[($stackPtr - 1)]['code'] === T_DOUBLE_COLON) {
             return;
         }

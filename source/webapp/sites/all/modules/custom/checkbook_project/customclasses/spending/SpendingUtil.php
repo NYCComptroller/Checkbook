@@ -56,7 +56,7 @@ class SpendingUtil{
       return $title ;
     }
 
-    static public function getDepartmentIds(){
+    public static function getDepartmentIds(){
         $bottomURL = $_REQUEST['expandBottomContURL'];
         $deptId = NULL;$deptIds = array();
 
@@ -88,7 +88,7 @@ class SpendingUtil{
 
     }
 
-    static public function getExpenseCatIds(){
+    public static function getExpenseCatIds(){
         $bottomURL = $_REQUEST['expandBottomContURL'];
         $expCatId = NULL;$expCatIds = array();
 
@@ -364,7 +364,7 @@ class SpendingUtil{
      * @param string $is_prime_or_sub
      * @return null
      */
-    static public function getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id = null, $year_type = null, $is_prime_or_sub = "P"){
+    public static function getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id = null, $year_type = null, $is_prime_or_sub = "P"){
         STATIC $spending_vendor_latest_mwbe_category;
 
         if($agency_id == null){
@@ -417,7 +417,7 @@ class SpendingUtil{
      * @param string $is_prime_or_sub
      * @return null
      */
-    static public function getLatestMwbeCategoryTitleByVendor($vendor_id, $year_id = NULL, $year_type = NULL, $is_prime_or_sub = "P"){
+    public static function getLatestMwbeCategoryTitleByVendor($vendor_id, $year_id = NULL, $year_type = NULL, $is_prime_or_sub = "P"){
         if($year_id == null){
             $year_id =  _getRequestParamValue('year');
         }
@@ -453,7 +453,7 @@ class SpendingUtil{
         }
     }
     
-    static public function getLatestMwbeCategoryByVendorByTransactionYear($vendor_id, $year_id = null, $year_type = null){
+    public static function getLatestMwbeCategoryByVendorByTransactionYear($vendor_id, $year_id = null, $year_type = null){
 
         if($year_id == null){
             $year_id =  _getRequestParamValue('year');
@@ -482,7 +482,7 @@ class SpendingUtil{
     }
 
 
-    static public function getLatestMwbeCategoryBySpendingVendorByTransactionYear($vendor_id, $year_id = null, $year_type = null){
+    public static function getLatestMwbeCategoryBySpendingVendorByTransactionYear($vendor_id, $year_id = null, $year_type = null){
 
         if($year_id == null){
             $year_id =  _getRequestParamValue('year');
@@ -1264,7 +1264,7 @@ class SpendingUtil{
         return ($dashboard . " " . $widgetTitle . " " . $contractTitle . " Contracts Transactions");
     }
 
-    static public function getContractTitle(){
+    public static function getContractTitle(){
         if(_getRequestParamValue('contstatus')){
             $contract_status = _getRequestParamValue('contstatus');
         }

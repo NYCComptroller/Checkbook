@@ -28,7 +28,7 @@ abstract class SqlOperator {
      * @param $string
      * @return bool
      */
-    static public function isComparisonOperator($string) {
+    public static function isComparisonOperator($string) {
         switch($string) {
             case self::_AND_:
             case self::_OR_:
@@ -42,7 +42,7 @@ abstract class SqlOperator {
      * @param $string
      * @return bool
      */
-    static public function isLogicOperator($string) {
+    public static function isLogicOperator($string) {
         switch($string) {
             case self::_AND_:
             case self::_OR_:
@@ -55,7 +55,7 @@ abstract class SqlOperator {
      * @param $string
      * @return bool
      */
-    static public function isConditionOperator($string) {
+    public static function isConditionOperator($string) {
         switch($string) {
             case self::_IF_:
                 return true;

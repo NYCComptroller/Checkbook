@@ -32,7 +32,7 @@ class views_handler_filter_in_operator extends views_handler_filter {
   /**
    * Child classes should be used to override this function and set the
    * 'value options', unless 'options callback' is defined as a valid function
-   * or static public method to generate these values.
+   * or public static method to generate these values.
    *
    * This can use a guard to be used to reduce database hits as much as
    * possible.

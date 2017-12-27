@@ -23,7 +23,7 @@
  * Class for messages provided by API
  */
 class Messages {
-  static public $message = array(
+  public static $message = array(
     1 => "The request is a success but there are no results found for given search criteria.",
     // Global validations  1000 - 1100:
     1000 => "Required parameter(s) '@paramName' is not provided.",

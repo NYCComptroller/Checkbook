@@ -12,7 +12,7 @@ class RequestUtilities {
      * Checks if the page is Checkbook or Checkbook OGE (EDC)
      * @return True if the page is EDC
      */
-    static public function isEDCPage(){
+    public static function isEDCPage(){
         $database = _getRequestParamValue('datasource');
         if(isset($database)){
             return true;
@@ -26,7 +26,7 @@ class RequestUtilities {
      * @param string $paramName
      * @return request parameter value
      */
-    static public function getRequestParamValue($paramName, $fromRequestPath = TRUE){
+    public static function getRequestParamValue($paramName, $fromRequestPath = TRUE){
         if(empty($paramName)){
             return NULL;
         }
@@ -50,7 +50,7 @@ class RequestUtilities {
     }
 
     //Returns the path of the current page
-    static public function _getCurrentPage() {
+    public static function _getCurrentPage() {
         $currentUrl = explode('/',$_SERVER['HTTP_REFERER']);
         return '/'.$currentUrl[3];
     }
