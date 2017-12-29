@@ -11,7 +11,7 @@ $(document).ready( function () {
 		null,
 		function () { return oSettings.oLanguage.sInfoPostFix == ""; }
 	);
-	
+    /*jshint -W089 */
 	oTest.fnTest( 
 		"Width no post fix, the basic info shows",
 		null,

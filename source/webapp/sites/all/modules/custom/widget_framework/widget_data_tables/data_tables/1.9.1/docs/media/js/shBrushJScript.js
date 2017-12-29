@@ -17,6 +17,7 @@
 ;(function()
 {
 	// CommonJS
+    /* jshint expr: true */
 	typeof(require) != 'undefined' ? SyntaxHighlighter = require('shCore').SyntaxHighlighter : null;
 
 	function Brush()
@@ -40,7 +41,7 @@
 			];
 	
 		this.forHtmlScript(r.scriptScriptTags);
-	};
+	}
 
 	Brush.prototype	= new SyntaxHighlighter.Highlighter();
 	Brush.aliases	= ['js', 'jscript', 'javascript'];
@@ -48,5 +49,6 @@
 	SyntaxHighlighter.brushes.JScript = Brush;
 
 	// CommonJS
+    /* jshint expr: true */
 	typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
 })();

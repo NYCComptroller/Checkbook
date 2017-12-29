@@ -582,7 +582,7 @@ function getFacetAutocompleteUrl(category, value){
     var newUrl = '?search_term=';
     var count = 0;
 
-    if(searchString["search_term"]){
+    if(searchString.search_term){
         var searchTerms = searchString.search_term.split("*|*");
         newUrl += searchTerms[0];
 
