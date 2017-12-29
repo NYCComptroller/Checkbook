@@ -12,7 +12,7 @@ $(document).ready( function () {
 				"mDataProp": "browser",
 				"fnRender": function (a) {
 					mTmp++;
-					return a.aData['browser'];
+					return a.aData.browser;
 				}
 			},
 			{ "mDataProp": "platform" },
@@ -45,7 +45,7 @@ $(document).ready( function () {
 							{
 								mTmp = false;
 							}
-							return a.aData['browser'];
+							return a.aData.browser;
 						},
 						"mDataProp": "browser"
 					},
@@ -74,7 +74,7 @@ $(document).ready( function () {
 							{
 								mTmp = false;
 							}
-							return a.aData['browser'];
+							return a.aData.browser;
 						}
 					},
 					{ "mDataProp": "platform" },
@@ -102,7 +102,7 @@ $(document).ready( function () {
 							{
 								mTmp = false;
 							}
-							return a.aData['browser'];
+							return a.aData.browser;
 						}
 					},
 					{ "mDataProp": "platform" },

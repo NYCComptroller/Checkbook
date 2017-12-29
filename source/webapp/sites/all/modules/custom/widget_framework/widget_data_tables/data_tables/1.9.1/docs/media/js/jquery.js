@@ -2035,6 +2035,7 @@ jQuery.extend({
 
 			// Safari mis-reports the default selected property of an option
 			// Accessing the parent's selectedIndex property fixes it
+            /*jshint -W030 */
 			if ( name === "selected" && !jQuery.support.optSelected ) {
 				var parent = elem.parentNode;
 				if ( parent ) {
@@ -3894,6 +3895,7 @@ var Expr = Sizzle.selectors = {
 		selected: function( elem ) {
 			// Accessing this property makes selected-by-default
 			// options in Safari work properly
+            /*jshint -W030 */
 			if ( elem.parentNode ) {
 				elem.parentNode.selectedIndex;
 			}

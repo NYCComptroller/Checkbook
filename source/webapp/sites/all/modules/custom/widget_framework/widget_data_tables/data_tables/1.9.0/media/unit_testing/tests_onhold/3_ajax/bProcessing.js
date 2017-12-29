@@ -6,6 +6,7 @@ oTest.fnStart( "bProcessing" );
  * better to test this than here - so we just the interal functions to enable it and check
  * that it is available
  */
+/* jshint -W034 */
 
 $(document).ready( function () {
 	/* Check the default */
@@ -70,7 +71,7 @@ $(document).ready( function () {
 		function () { oTable.oApi._fnProcessingDisplay( oSettings, true ); },
 		function () { return document.getElementById('example_processing').style.visibility = "visible"; }
 	);
-	
+    /* jshint -W034 */
 	oTest.fnWaitTest( 
 		"Processing div can be hidden",
 		function () { oTable.oApi._fnProcessingDisplay( oSettings, false ); },

@@ -100,7 +100,7 @@ function reloadBudgetCode(){
         success: function(data) {
             var html = '<option select="selected" value="0" title="">Select Budget Code</option>';
             if(data[0]){
-                if(data[0]['label'] !== 'No Matches Found'){
+                if(data[0].label !== 'No Matches Found'){
                     for (i = 0; i < data.length; i++) {
                         html=html + '<option title="' + data[i] + '" value="' + data[i] + ' ">' + data[i]  + '</option>';
                     }
@@ -129,9 +129,9 @@ function reloadBudgetName(){
         success: function(data) {
             var html = '<option select="selected" value="0" title="">Select Budget Name</option>';
             if(data[0]){
-                if(data[0]['label'] !== 'No Matches Found'){
+                if(data[0].label !== 'No Matches Found'){
                     for (i = 0; i < data.length; i++) {
-                        html=html + '<option title="'+ data[i]['value'] +'" value="' + data[i]['value'] + ' ">' + data[i]['label']  + '</option>';
+                        html=html + '<option title="'+ data[i].value +'" value="' + data[i].value + ' ">' + data[i].label  + '</option>';
                     }
                 }
             }
