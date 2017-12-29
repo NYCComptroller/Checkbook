@@ -5,13 +5,13 @@ $(document).ready( function () {
 	/* Check the default */
 	var oTable = $('#example').dataTable();
 	var oSettings = oTable.fnSettings();
-	
+    /* jshint -W034 */
 	oTest.fnTest( 
 		"Info language is 'Showing _START_ to _END_ of _TOTAL_ entries' by default",
 		null,
 		function () { return oSettings.oLanguage.sInfo == "Showing _START_ to _END_ of _TOTAL_ entries"; }
 	);
-	
+ 
 	oTest.fnTest( 
 		"Info language default is in the DOM",
 		null,
