@@ -205,6 +205,10 @@
  <rule ref="Squiz.WhiteSpace.OperatorSpacing" />
  <rule ref="Squiz.WhiteSpace.SemicolonSpacing" />
  <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace" />
+ <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace.EmptyLines">
+  <severity>0</severity>
+ </rule>
+
 
  <!-- Ignore various version control directories. -->
  <exclude-pattern>*/.git/*</exclude-pattern>
