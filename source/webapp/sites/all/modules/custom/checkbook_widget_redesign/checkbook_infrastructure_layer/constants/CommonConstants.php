@@ -133,7 +133,7 @@ abstract class Dashboard {
                 default: return Datasource::isOGE() ? self::OGE : self::CITYWIDE;
             }
         }
-    }
+     }
 
     public static function isOGE() {
         return self::getCurrent() == self::OGE;
@@ -142,17 +142,17 @@ abstract class Dashboard {
      public static function isMWBE() {
         $dashboard = self::getCurrent();
         return $dashboard == self::MWBE || $dashboard == self::SUB_VENDORS_MWBE || $dashboard == self::MWBE_SUB_VENDORS;
-    }
+     }
 
      public static function isSubDashboard() {
         $dashboard = self::getCurrent();
         return $dashboard == self::SUB_VENDORS || $dashboard == self::SUB_VENDORS_MWBE || $dashboard == self::MWBE_SUB_VENDORS;
-    }
+     }
 
       public static function isPrimeDashboard() {
         $dashboard = self::getCurrent();
         return $dashboard == self::MWBE || $dashboard == self::CITYWIDE || $dashboard == self::OGE;
-    }
+      }
 }
 
 abstract class DashboardParameter {
@@ -232,5 +232,5 @@ abstract class PageType {
 
      public static function isContractsAdvancedSearch() {
         return static::getCurrent() == self::ADVANCED_SEARCH_PAGE && CheckbookDomain::getCurrent() == CheckbookDomain::CONTRACTS;
-    }
+     }
 }
