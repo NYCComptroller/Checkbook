@@ -1,19 +1,19 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -370,7 +370,7 @@ class SpendingUtil{
         if($agency_id == null){
         	$agency_id =  _getRequestParamValue('agency');
         }
-        
+
         if($year_id == null){
         	$year_id =  _getRequestParamValue('year');
         }
@@ -382,7 +382,7 @@ class SpendingUtil{
         if($year_type == null){
         	$year_type =  _getRequestParamValue('yeartype');
         }
-        
+
         $latest_minority_type_id = null;
         if(!isset($spending_vendor_latest_mwbe_category)){
             $query = "SELECT vendor_id, agency_id, year_id, type_of_year, minority_type_id, is_prime_or_sub
@@ -443,7 +443,7 @@ class SpendingUtil{
             FROM spending_vendor_latest_mwbe_category 
             WHERE vendor_id = ".$vendor_id." AND is_prime_or_sub = '".$is_prime_or_sub."' AND type_of_year = '".$year_type."' 
                   AND year_id = ".$year_id." AND minority_type_id <> 7 ";
-        
+
         $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
         if($results[0]['minority_type_id'] != ''){
             return $results[0]['minority_type_id'];
@@ -452,7 +452,7 @@ class SpendingUtil{
             return false;
         }
     }
-    
+
     public static function getLatestMwbeCategoryByVendorByTransactionYear($vendor_id, $year_id = null, $year_type = null){
 
         if($year_id == null){
@@ -879,7 +879,7 @@ class SpendingUtil{
    public static function getLandingPageWidgetUrl($override_params = array()) {
         $url = self::getSpendingUrl('spending_landing',$override_params);
         return str_replace("calyear","year",$url);
-    }
+   }
 
     /**
      *  Returns a spending transaction page Url with custom parameters appended but instead of persisted
@@ -889,7 +889,7 @@ class SpendingUtil{
      */
   public static function getSpendingTransactionPageUrl($override_params = array()) {
         return self::getSpendingUrl('panel_html/spending_transactions/spending/transactions',$override_params);
-    }
+  }
 
     /**
      *  Returns a spending contract details page Url with custom parameters appended but instead of persisted
@@ -899,7 +899,7 @@ class SpendingUtil{
      */
    public static function getSpendingContractDetailsPageUrl($override_params = array()) {
         return self::getSpendingUrl('contract_details',$override_params);
-    }
+   }
 
     /**
      * Function build the url using the path and the current Spending URL parameters.
@@ -987,7 +987,7 @@ class SpendingUtil{
      */
    public static function getSubVendorsPercentPaid($row){
         return self::calculatePercent($row['ytd_spending_sub_vendors'], $row['check_amount_sum_no_payroll@checkbook:spending_data']);
-    }
+   }
 
     /**
      * Given a numerator and denominator, calculates the percent.
@@ -1002,13 +1002,13 @@ class SpendingUtil{
         $results = $numerator/$denominator*100;
         $results = $results < 0 ? 0.00 : $results;
         return custom_number_formatter_format($results,2,'','%');
-    }
+   }
 
     /**
      * Checks to see if this is from the Advanced search page,
      * if so, need to append the data source but not the m/wbe parameter.
      */
-   public static function getDataSourceParams(){
+    public static function getDataSourceParams(){
         if(self::isAdvancedSearchResults()) {
             $data_source = _getRequestParamValue("datasource");
             return isset($data_source) ? "/datasource/checkbook_oge" : "";
@@ -1020,7 +1020,7 @@ class SpendingUtil{
      * Returns true if this is from spending advanced search for citywide
      OR if this is from the transaction page for M/WBE.
      */
-    static function showMwbeFields() {
+    public static function showMwbeFields() {
         $is_mwbe = _checkbook_check_is_mwbe_page();
         $is_mwbe = $is_mwbe || (!_checkbook_check_isEDCPage() && self::isAdvancedSearchResults());
         return $is_mwbe;
@@ -1029,7 +1029,7 @@ class SpendingUtil{
     /**
      * Returns true if this is from spending advanced search
      */
-  public static function isAdvancedSearchResults() {
+    public static function isAdvancedSearchResults() {
         return !self::isSpendingLanding();
     }
 
@@ -1046,7 +1046,7 @@ class SpendingUtil{
      * Spending transaction page should be shown for citywide, oge
      * @return bool
      */
-  public static function showSpendingTransactionPage(){
+    public static function showSpendingTransactionPage(){
         $subvendor_exist = _checkbook_check_is_sub_vendor_page();
         $ma1_mma1_contracts_exist = _checkbook_project_ma1_mma1_exist();
         $edc_records_exist = _checkbook_check_isEDCPage() && _checkbook_project_recordsExists(6);
@@ -1062,7 +1062,7 @@ class SpendingUtil{
      * Spending transaction no results page should be shown for citywide, oge
      * @return bool
      */
-    static function showNoSpendingTransactionPage(){
+    public static function showNoSpendingTransactionPage(){
         $subvendor_exist = _checkbook_check_is_sub_vendor_page();
         $ma1_mma1_contracts_exist = _checkbook_project_ma1_mma1_exist();
         $edc_records_exist = _checkbook_check_isEDCPage() && _checkbook_project_recordsExists(6);
@@ -1075,9 +1075,9 @@ class SpendingUtil{
 
         return $subvendor_exist || $ma1_mma1_contracts_exist || $edc_records_exist;
     }
-    
-    
-    static function getMWBENYCLegend($year, $yeartype, $non_mwbe_spending_prime, $mwbe_spending_prime){
+
+
+    public static function getMWBENYCLegend($year, $yeartype, $non_mwbe_spending_prime, $mwbe_spending_prime){
 
     	$where_filter =  "where year_id = $year and type_of_year = '$yeartype' ";
 
@@ -1086,7 +1086,7 @@ class SpendingUtil{
 	    join ref_minority_type rm on rm.minority_type_id = a1.minority_type_id
 	   ' . $where_filter . '
 	    group by rm.minority_type_id, rm.minority_type_name  ';
-    	
+
     	$prime_spending_rows = _checkbook_project_execute_sql($prime_sql);
     	foreach($prime_spending_rows as $row){
     		switch($row['minority_type_id']){
@@ -1108,7 +1108,7 @@ class SpendingUtil{
     	$mwbe_share = custom_number_formatter_format(($mwbe_spending_prime )/($non_mwbe_spending_prime + $mwbe_spending_prime) *100,1,null,'%');
     	$mwbe_spending = custom_number_formatter_format($mwbe_spending_prime,2,'$');
     	$non_mwbe = custom_number_formatter_format($non_mwbe_spending_prime,2,'$');
-    	
+
     	return '<div class="chart-nyc-legend">
     			<div class="legend-title"><span>NYC Total M/WBE</span></div>
     			<div class="legend-item"><span>M/WBE Share: ' . $mwbe_share . ' </span></div>
@@ -1116,8 +1116,7 @@ class SpendingUtil{
     			<div class="legend-item"><span>Non M/WBE: ' . $non_mwbe . '</span></div>    			
     			</div>
     			';
-    	
-    	
+
     }
 
     /**
@@ -1303,20 +1302,20 @@ class SpendingUtil{
         }
         return $title;
     }
-    
+
     public static function _show_mwbe_custom_legend(){
     	$mwbe_cats = _getRequestParamValue('mwbe');
     	if(	($mwbe_cats =='4~5' || $mwbe_cats =='4' || $mwbe_cats =='5' || $mwbe_cats =='2' || $mwbe_cats =='3' || $mwbe_cats =='9' ) && !(_getRequestParamValue('vendor') > 0 ) ){
     		return true;
     	}
-    	
+
     	if(	!(_getRequestParamValue('vendor') > 0 ) && ( _getRequestParamValue('agency') > 0 || _getRequestParamValue('industry') > 0 ) ){
     		return true;
     	}
     	return false;
     }
-    
-    
+
+
     function _mwbe_spending_use_subvendor(){
     	if(_getRequestParamValue('vendor') > 0 || _getRequestParamValue('mwbe') == '7' || _getRequestParamValue('mwbe') == '11')
     	{
