@@ -32,7 +32,7 @@ class RequestUtil
     /**
      * @var array
      */
-    static $landing_links = array(
+    public static $landing_links = array(
         "contracts_landing",
         "contracts_revenue_landing",
         "contracts_pending_rev_landing",
@@ -42,7 +42,7 @@ class RequestUtil
     /**
      * @var array
      */
-    static $contracts_spending_landing_links = array(
+    public static $contracts_spending_landing_links = array(
         "spending_landing",
         "contracts_landing",
         "contracts_revenue_landing",
@@ -53,10 +53,10 @@ class RequestUtil
     /**
      * @var null
      */
-    static $is_prime_mwbe_amount_zero_sub_mwbe_not_zero = null;
+    public static $is_prime_mwbe_amount_zero_sub_mwbe_not_zero = null;
 
     /** Checks if the page bottom container is expanded */
-    static function isExpandBottomContainer()
+    public static function isExpandBottomContainer()
     {
         $referer = $_SERVER['HTTP_REFERER'];
 
@@ -70,7 +70,7 @@ class RequestUtil
     }
 
     /** Checks if the current URL is opened in a new window */
-    static function isNewWindow()
+    public static function isNewWindow()
     {
         $referer = $_SERVER['HTTP_REFERER'];
 
@@ -81,7 +81,7 @@ class RequestUtil
      * @param $path
      * @return bool
      */
-    static function isPendingExpenseContractPath($path)
+    public static function isPendingExpenseContractPath($path)
     {
         return 0 === stripos($path, 'contracts_pending_exp_landing');
     }
@@ -90,7 +90,7 @@ class RequestUtil
      * @param $path
      * @return bool
      */
-    static function isPendingRevenueContractPath($path)
+    public static function isPendingRevenueContractPath($path)
     {
         return 0 === stripos($path, 'contracts_pending_rev_landing');
     }
@@ -99,7 +99,7 @@ class RequestUtil
      * @param $path
      * @return bool
      */
-    static function isExpenseContractPath($path)
+    public static function isExpenseContractPath($path)
     {
         return 0 === stripos($path, 'contracts_landing');
     }
@@ -108,13 +108,13 @@ class RequestUtil
      * @param $path
      * @return bool
      */
-    static function isRevenueContractPath($path)
+    public static function isRevenueContractPath($path)
     {
         return 0 === stripos($path, 'contracts_revenue_landing');
     }
 
     /** Returns Contracts page title and Breadcrumb */
-    static function getContractBreadcrumbTitle()
+    public static function getContractBreadcrumbTitle()
     {
         $title = '';
         $bottomURL = $_REQUEST['expandBottomContURL'];
@@ -230,7 +230,7 @@ class RequestUtil
      * @param $urlPath
      * @return mixed|null|string
      */
-    static function getRequestKeyValueFromURL($key, $urlPath)
+    public static function getRequestKeyValueFromURL($key, $urlPath)
     {
         $value = NULL;
         $pathParams = explode('/', $urlPath);
@@ -245,7 +245,7 @@ class RequestUtil
      * @param null $dashboard
      * @return string
      */
-    static function getDashboardTitle($dashboard = null)
+    public static function getDashboardTitle($dashboard = null)
     {
         if ($dashboard == null) {
             $dashboard = _getRequestParamValue('dashboard');
@@ -264,7 +264,7 @@ class RequestUtil
     }
 
     /** Returns Payroll page title and Breadcrumb */
-    static function getPayrollBreadcrumbTitle()
+    public static function getPayrollBreadcrumbTitle()
     {
         $title = '';
         $bottomURL = $_REQUEST['expandBottomContURL'];
@@ -333,7 +333,7 @@ class RequestUtil
      * @param string $defaultName
      * @return string
      */
-    static function getSpendingTransactionTitle($defaultName = 'Total Spending')
+    public static function getSpendingTransactionTitle($defaultName = 'Total Spending')
     {
         $categoryId = _getRequestParamValue('category');
         if (isset($categoryId)) {
@@ -361,7 +361,7 @@ class RequestUtil
      * @param string $defaultTitle
      * @return string
      */
-    static function getTitleByVendorType($domain, $defaultTitle = 'Total Spending')
+    public static function getTitleByVendorType($domain, $defaultTitle = 'Total Spending')
     {
         if (_checkbook_check_is_mwbe_page()) {
             $minority_type_id = _getRequestParamValue('mwbe');
@@ -400,7 +400,7 @@ class RequestUtil
      * @param $vendor_type
      * @return mixed
      */
-    static function getLatestMinorityTypeByVendorType($domain, $vendor_id, $vendor_type)
+    public static function getLatestMinorityTypeByVendorType($domain, $vendor_id, $vendor_type)
     {
         $year_id = _getRequestParamValue('year');
         $type_of_year = 'B';
@@ -429,7 +429,7 @@ class RequestUtil
      * @param string $defaultName
      * @return string
      */
-    static function getSpendingCategoryName($defaultName = 'Total Spending')
+    public static function getSpendingCategoryName($defaultName = 'Total Spending')
     {
         $categoryId = _getRequestParamValue('category');
         if (isset($categoryId)) {
@@ -443,7 +443,7 @@ class RequestUtil
     }
 
     /** Returns Spending page title and Breadcrumb */
-    static function getSpendingBreadcrumbTitle()
+    public static function getSpendingBreadcrumbTitle()
     {
         $title = '';
         $bottomURL = $_REQUEST['expandBottomContURL'];
@@ -527,7 +527,7 @@ class RequestUtil
     }
 
     /** Returns Budget page title and Breadcrumb */
-    static function getBudgetBreadcrumbTitle()
+    public static function getBudgetBreadcrumbTitle()
     {
         $bottomURL = isset($_REQUEST['expandBottomContURL']) ? $_REQUEST['expandBottomContURL'] : FALSE;
         $find = '_' . $bottomURL . current_path();
@@ -555,7 +555,7 @@ class RequestUtil
     }
 
     /** Returns Revenue page title and Breadcrumb */
-    static function getRevenueBreadcrumbTitle()
+    public static function getRevenueBreadcrumbTitle()
     {
         $bottomURL = isset($_REQUEST['expandBottomContURL']) ? $_REQUEST['expandBottomContURL'] : FALSE;
         $find = '_' . $bottomURL . current_path();
@@ -587,7 +587,7 @@ class RequestUtil
     /**
      * @return string
      */
-    static function getRevenueNoRecordsMsg()
+    public static function getRevenueNoRecordsMsg()
     {
         $title = '';
         $bottomURL = isset($_REQUEST['expandBottomContURL']) ? $_REQUEST['expandBottomContURL'] : FALSE;
@@ -627,7 +627,7 @@ class RequestUtil
      * @param $domain
      * @return string
      */
-    static function getTopNavURL($domain)
+    public static function getTopNavURL($domain)
     {
         $path = '';
         $fiscalYearId = static::getFiscalYearIdForTopNavigation();
@@ -749,7 +749,7 @@ class RequestUtil
     /** Returns Year ID for Spending, Contracts, Budget and Revenue domains navigation URLs from Top Navigation
      * @return integer $fiscalYearId
      */
-    static function getFiscalYearIdForTopNavigation()
+    public static function getFiscalYearIdForTopNavigation()
     {
         if (_getRequestParamValue("year") != NULL) {
             $year = _getRequestParamValue("year");
@@ -766,7 +766,7 @@ class RequestUtil
     /** Returns Year ID for Payroll domain navigation URLs from Top Navigation
      * @return integer $calYearId
      */
-    static function getCalYearIdForTopNavigation()
+    public static function getCalYearIdForTopNavigation()
     {
         $year = null;
         if (_getRequestParamValue("year") != NULL) {
@@ -782,7 +782,7 @@ class RequestUtil
     }
 
     /** Checks if the current page is NYC level*/
-    static function isNYCLevelPage()
+    public static function isNYCLevelPage()
     {
         self::isEDCPage();
         $landingPages = array("contracts_landing", "contracts_revenue_landing",
@@ -806,7 +806,7 @@ class RequestUtil
     /**
      * @return bool
      */
-    static function isEDCPage()
+    public static function isEDCPage()
     {
         $vendor_id = _getRequestParamValue('vendor');
         if ($vendor_id != null) {
@@ -825,7 +825,7 @@ class RequestUtil
     /**
      * @return string
      */
-    static function getEDCURL()
+    public static function getEDCURL()
     {
         $vendor = _checkbook_project_querydataset("checkbook:vendor", "vendor_id", array("vendor_customer_code" => "0000776804"));
         $url = "contracts_landing/status/A/yeartype/B/year/" . _getCurrentYearID() . "/vendor/" . $vendor[0]['vendor_id'];
@@ -835,7 +835,7 @@ class RequestUtil
     /**
      * @return string
      */
-    static function getSpendingEDCURL()
+    public static function getSpendingEDCURL()
     {
         $vendor = _checkbook_project_querydataset("checkbook:vendor", "vendor_id", array("vendor_customer_code" => "0000776804"));
         $url = "spending_landing/yeartype/B/year/" . _getCurrentYearID() . "/vendor/" . $vendor[0]['vendor_id'];
@@ -846,7 +846,7 @@ class RequestUtil
      * @param null $current_state
      * @return string
      */
-    static function getNextMWBEDashboardState($current_state = null)
+    public static function getNextMWBEDashboardState($current_state = null)
     {
         if ($current_state == null) {
             $current_state = _getRequestParamValue('dashboard');
@@ -859,7 +859,7 @@ class RequestUtil
      * @param null $current_state
      * @return string
      */
-    static function getNextMWBEDashboardStateParam($current_state = null)
+    public static function getNextMWBEDashboardStateParam($current_state = null)
     {
         $current_state = $current_state?:_getRequestParamValue('dashboard');
 
@@ -902,7 +902,7 @@ class RequestUtil
      * @param null $current_state
      * @return string
      */
-    static function getNextSubvendorDashboardState($current_state = null)
+    public static function getNextSubvendorDashboardState($current_state = null)
     {
         $current_state = $current_state ?: _getRequestParamValue('dashboard');
 
@@ -921,7 +921,7 @@ class RequestUtil
      * @param null $current_state
      * @return string
      */
-    static function getNextSubvendorDashboardStateParam($current_state = null)
+    public static function getNextSubvendorDashboardStateParam($current_state = null)
     {
         $current_state = $current_state ?: _getRequestParamValue('dashboard');
 
@@ -940,17 +940,17 @@ class RequestUtil
 
 
     /*
-     * 
-     * 
+     *
+     *
      * If subvendor is clicked first the flow becomes subvendor flow
-     * 
+     *
      */
 
     /**
      * @param null $current_state
      * @return bool
      */
-    static function isDashboardSubvendor($current_state = null)
+    public static function isDashboardSubvendor($current_state = null)
     {
         $current_state = $current_state ?: _getRequestParamValue('dashboard');
 
@@ -968,7 +968,7 @@ class RequestUtil
      * @param $dashboard_filter
      * @return mixed|string
      */
-    static function getDashboardTopNavURL($dashboard_filter)
+    public static function getDashboardTopNavURL($dashboard_filter)
     {
 
         if (self::isContractsSpendingLandingPage()) {
@@ -1032,7 +1032,7 @@ class RequestUtil
     /**
      * @return bool
      */
-    static function isContractsSpendingLandingPage()
+    public static function isContractsSpendingLandingPage()
     {
         $first_part = preg_replace('/\/.*/', '', $_GET['q']);
         if (in_array($first_part, self::$contracts_spending_landing_links)) {
@@ -1044,7 +1044,7 @@ class RequestUtil
     /**
      * @return string
      */
-    static function getCurrentDomainURLFromParams()
+    public static function getCurrentDomainURLFromParams()
     {
         if (stripos('_'.current_path(), 'contract')) {
             $reqParams = MappingUtil::$contractsMWBEParamMap;
@@ -1057,7 +1057,7 @@ class RequestUtil
         foreach ($reqParams as $key => $value) {
             $value = _getRequestParamValue($key);
             if ($key == "year") {
-                $value = static::getFiscalYearIdForTopNavigation();
+                $value =  static::getFiscalYearIdForTopNavigation();
             }
             if ($key == "yeartype") {
                 $value = 'B';
@@ -1076,7 +1076,7 @@ class RequestUtil
      * @param $dashboard_filter
      * @return string
      */
-    static function getDashboardTopNavTitle($dashboard_filter)
+    public static function getDashboardTopNavTitle($dashboard_filter)
     {
         switch ($dashboard_filter) {
             case "mwbe":
@@ -1098,7 +1098,7 @@ class RequestUtil
      * @param null $current_state
      * @return bool
      */
-    static function isDashboardFlowSubvendor($current_state = null)
+    public static function isDashboardFlowSubvendor($current_state = null)
     {
 
         if (self::$is_prime_mwbe_amount_zero_sub_mwbe_not_zero) {
@@ -1114,7 +1114,7 @@ class RequestUtil
      * @param null $current_state
      * @return bool
      */
-    static function isDashboardFlowPrimevendor($current_state = null)
+    public static function isDashboardFlowPrimevendor($current_state = null)
     {
         $current_state = $current_state ?: _getRequestParamValue('dashboard');
 
@@ -1127,7 +1127,7 @@ class RequestUtil
      * @param $value
      * @return mixed
      */
-    static function replaceParamFromString($string, $param, $value)
+    public static function replaceParamFromString($string, $param, $value)
     {
         return preg_replace('/\/' . $param . '\/[^\/]*/', '/' . $param . '/' . $value, $string);
     }
@@ -1135,7 +1135,7 @@ class RequestUtil
     /**
      * @return string
      */
-    static function getTotalSubvendorsLink()
+    public static function getTotalSubvendorsLink()
     {
         $urlParamMap = $table = $default_params = $sub_vendors_total_link = null;
         if (stripos('_'.current_path(), 'contract')) {
@@ -1171,7 +1171,7 @@ class RequestUtil
      * @param null $yearType
      * @return null|string
      */
-    static function getLandingPageUrl($domain, $year = null, $yearType = null)
+    public static function getLandingPageUrl($domain, $year = null, $yearType = null)
     {
         $path = null;
         $year = $year ?: _getCurrentYearID();
@@ -1204,7 +1204,7 @@ class RequestUtil
      * @param $table
      * @return mixed
      */
-    static function get_top_nav_records_count($urlParamMap, $default_params, $table)
+    public static function get_top_nav_records_count($urlParamMap, $default_params, $table)
     {
         $where_filters = array();
         $where_filter = null;
@@ -1235,7 +1235,7 @@ class RequestUtil
     /**
      * @return string
      */
-    static function getTotalMWBELink()
+    public static function getTotalMWBELink()
     {
         $urlParamMap = $default_params = $table_subven = $table = $urlParamMapSubven = null;
 
@@ -1279,7 +1279,7 @@ class RequestUtil
      * Function will derive whether this is an advanced search transaction page based on the query string
      * @return bool|int
      */
-    static function isAdvancedSearchPage()
+    public static function isAdvancedSearchPage()
     {
         $bottomURL = $_REQUEST['expandBottomContURL'];
         $domain = self::getDomain();
@@ -1315,7 +1315,7 @@ class RequestUtil
     /**
      * @return null|string
      */
-    static function getDomain()
+    public static function getDomain()
     {
         $currentPath = current_path();
         switch(true){
@@ -1328,7 +1328,7 @@ class RequestUtil
         return null;
     }
 
-    static function getCurrentPageUrl()
+    public static function getCurrentPageUrl()
     {
       $url = $_GET['q'];
       if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
