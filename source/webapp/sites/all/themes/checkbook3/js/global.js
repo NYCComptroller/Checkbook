@@ -4,7 +4,8 @@ jQuery(document).ready(function ($) {
     $.ajax({
         url: '/new-features/get_status',
         success: function(data) {
-            setNewFeaturesMenuColor(data.toString());
+            if(data !== null)
+                setNewFeaturesMenuColor(data.toString());
         }
     }); 
     $("#new_features").click(function(){
@@ -16,7 +17,8 @@ jQuery(document).ready(function ($) {
         $.ajax({
             url: '/new-features/'+status,
             success: function(data) {
-                setNewFeaturesMenuColor(data.toString());
+                if(data !== null)
+                    setNewFeaturesMenuColor(data.toString());
             }
         }); 
     });

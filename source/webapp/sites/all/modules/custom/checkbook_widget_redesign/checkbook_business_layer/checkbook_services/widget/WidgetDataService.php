@@ -61,7 +61,8 @@ abstract class WidgetDataService extends WidgetService {
         }
         else {
             LogHelper::log_error("Error in AbstractWidgetDataService invalid type, expected ISqlDataService");
-            throw new Exception("Error in AbstractWidgetDataService invalid type, expected ISqlDataService");
+
+            throw new InvalidArgumentException("Error in AbstractWidgetDataService invalid type, expected ISqlDataService");
         }
     }
 }

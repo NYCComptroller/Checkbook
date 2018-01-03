@@ -24,6 +24,9 @@ class CustomURLHelper
 
     static function get_url_param($pathParams,$key,$key_alias =  null){
 
+        if (!is_array($pathParams)) {
+          return NULL;
+        }
         $keyIndex = array_search($key,$pathParams);
         if($keyIndex){
             if($key_alias == null){

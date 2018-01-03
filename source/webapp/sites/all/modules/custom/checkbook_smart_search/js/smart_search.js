@@ -33,13 +33,13 @@
 				currentCategory = "";
 			$.each( items, function( index, item ) {
 
-                if(item.value == 'No matches found'){
+                if(item.value === 'No matches found'){
                     $( "<li class='ui-menu-item'></li>" ).data( "item.autocomplete", item )
                                     .append(item.label)
                                     .appendTo( ul );
                 }
                 else{
-                    if ( item.category != currentCategory) {
+                    if ( item.category !== currentCategory) {
 					    ul.append( "<li class='ui-autocomplete-category'>" + item.category + "</li>" );
 					    currentCategory = item.category;
 				    }
@@ -52,7 +52,7 @@
 			});
 		}
         $("#edit-search-box").keypress(function(e) {
-            if(e.which == 13) {
+            if(e.which === 13) {
                 $("#edit-search-box").autocomplete("off");
                 $("#edit-search-box").autocomplete("close");
             }
@@ -75,14 +75,14 @@
                 $('span.exportSmartSearch').live("click", function () {
 
                     var dialog = $("#dialog");
-                    if ($("#dialog").length == 0) {
+                    if ($("#dialog").length === 0) {
                         dialog = $('<div id="dialog" style="display:none"></div>');
                     }
                     var domains = '';
                     $.each($('input[name=fdomainName]:checked'),function(){
                     	domains = domains + "~" + this.value;
                     });
-                    if(domains == '' ){
+                    if(domains === '' ){
                     	$.each($('input[name=fdomainName]'),function(){
                             domains = domains + "~" + this.value;
                         });
@@ -92,11 +92,11 @@
 
                     var checked_domains = '';
                     $.each($('input[name=fdomainName]:checked'),function(){
-                        checked_domains = checked_domains == '' ? this.value : checked_domains + "~" + this.value;
+                        checked_domains = checked_domains === '' ? this.value : checked_domains + "~" + this.value;
                     });
-                    if(checked_domains == '' ){
+                    if(checked_domains === '' ){
                         $.each($('input[name=fdomainName]'),function(){
-                            checked_domains = checked_domains == '' ? this.value : checked_domains + "~" + this.value;
+                            checked_domains = checked_domains === '' ? this.value : checked_domains + "~" + this.value;
                         });
                     }
                     var array_domains = checked_domains.split('~');
@@ -199,16 +199,17 @@
                                 var selectedDomain = $('input[name=domain]:checked').val();
                                 $.each(arrayDomainCounts,function(i, val) {
                                     var domainCount = val.split('|');
-                                    if(selectedDomain == domainCount[0])
+                                    if(selectedDomain === domainCount[0])
                                         selectedRecords = domainCount[1];
                                     totalRecords += parseInt(domainCount[1]);
                                 });
+                                var message ='';
                                 if(selectedRecords <= 200000){
-                                    var message = addCommas(selectedRecords) +" "+ selectedDomain +" records available for download. " +
+                                     message = addCommas(selectedRecords) +" "+ selectedDomain +" records available for download. " +
                                         "The report will be in Comma Delimited format. Only one domain can be selected at a time to download the data.";
                                 }
                                 else{
-                                    var message = "Maximum of 200,000 records available for download from "+addCommas(selectedRecords)+" available "+selectedDomain+" records. " +
+                                     message = "Maximum of 200,000 records available for download from "+addCommas(selectedRecords)+" available "+selectedDomain+" records. " +
                                         "The report will be in Comma Delimited format. Only one domain can be selected at a time to download the data.";
                                 }
 
@@ -221,21 +222,21 @@
 
                 function getCheckboxAttributes(domain,array_domains) {
                     var checked_domain = array_domains[0];
-                    return (checked_domain == domain ? ' checked' : '') + ($.inArray(domain,array_domains) > -1 ? '' : ' disabled');
+                    return (checked_domain === domain ? ' checked' : '') + ($.inArray(domain,array_domains) > -1 ? '' : ' disabled');
                 }
 
             }
         };       
         
      Drupal.behaviors.narrowDownFilters = {
-        attach:function (context, settings) {
+        attach: function (context, settings) {
             var search_term ="";
             search_term  = window.location.href.toString().split(window.location.host)[1];
             //Sets up jQuery UI autocompletes and autocomplete filtering functionality for agency name facet
             $('#autocomplete_fagencyName',context).autocomplete({
-                source:"/smart_search/autocomplete/agency/" + search_term,
+                source: "/smart_search/autocomplete/agency/" + search_term,
                 focus: function (event, ui) {
-                            if(ui.item.label.toLowerCase() == 'no matches found'){
+                            if(ui.item.label.toLowerCase() === 'no matches found'){
                                 return false;
                             }else{
                                 $(event.target).val(ui.item.label);
@@ -243,7 +244,7 @@
                             }
                         },
                 select: function (event, ui) {
-                        if(ui.item.label.toLowerCase() == 'no matches found'){
+                        if(ui.item.label.toLowerCase() === 'no matches found'){
                             return false;
                         }else{
                             var url = getFacetAutocompleteUrl("agency_names",encodeURIComponent(ui.item.value));
@@ -255,9 +256,9 @@
             })
 
             $('#autocomplete_fogeName',context).autocomplete({
-                source:"/smart_search/autocomplete/oge/" + search_term,
+                source: "/smart_search/autocomplete/oge/" + search_term,
                 focus: function (event, ui) {
-                    if(ui.item.label.toLowerCase() == 'no matches found'){
+                    if(ui.item.label.toLowerCase() === 'no matches found'){
                         return false;
                     }else{
                         $(event.target).val(ui.item.label);
@@ -265,7 +266,7 @@
                     }
                 },
                 select: function (event, ui) {
-                    if(ui.item.label.toLowerCase() == 'no matches found'){
+                    if(ui.item.label.toLowerCase() === 'no matches found'){
                         return false;
                     }else{
                         var url = getFacetAutocompleteUrl("oge_agency_names",encodeURIComponent(ui.item.value));
@@ -277,9 +278,9 @@
             })
             
             $('#autocomplete_fvendorName',context).autocomplete({
-                source:"/smart_search/autocomplete/vendor" + search_term,
+                source: "/smart_search/autocomplete/vendor" + search_term,
                 focus: function (event, ui) {
-                            if(ui.item.label.toLowerCase() == 'no matches found'){
+                            if(ui.item.label.toLowerCase() === 'no matches found'){
                                 return false;
                             }else{
                                 $(event.target).val(ui.item.label);
@@ -287,7 +288,7 @@
                             }
                         },
                 select: function (event, ui) {
-                            if(ui.item.label.toLowerCase() == 'no matches found'){
+                            if(ui.item.label.toLowerCase() === 'no matches found'){
                                 return false;
                             }else{
                                 var url = getFacetAutocompleteUrl("vendor_names",encodeURIComponent(ui.item.value));
@@ -300,7 +301,7 @@
             $('#autocomplete_fexpenseCategoryName',context).autocomplete({
                 source:"/smart_search/autocomplete/expensecategory" + search_term,
                 focus: function (event, ui) {
-                            if(ui.item.label.toLowerCase() == 'no matches found'){
+                            if(ui.item.label.toLowerCase() === 'no matches found'){
                                 return false;
                             }else{
                                 $(event.target).val(ui.item.label);
@@ -308,7 +309,7 @@
                             }
                         },
                 select: function (event, ui) {
-                        if(ui.item.label.toLowerCase() == 'no matches found'){
+                        if(ui.item.label.toLowerCase() === 'no matches found'){
                             return false;
                         }else{
                                 var url = getFacetAutocompleteUrl("expense_categories",encodeURIComponent(ui.item.value));
@@ -319,9 +320,9 @@
                     }
             });
             $('#autocomplete_fyear',context).autocomplete({
-                source:"/smart_search/autocomplete/fiscalyear" + search_term,
+                source: "/smart_search/autocomplete/fiscalyear" + search_term,
                 focus: function (event, ui) {
-                            if(ui.item.label.toLowerCase() == 'no matches found'){
+                            if(ui.item.label.toLowerCase() === 'no matches found'){
                                 return false;
                             }else{
                                 $(event.target).val(ui.item.label);
@@ -329,7 +330,7 @@
                             }
                         },
                 select: function (event, ui) {
-                        if(ui.item.label.toLowerCase() == 'no matches found'){
+                        if(ui.item.label.toLowerCase() === 'no matches found'){
                             return false;
                         }else{
                                 var url = getFacetAutocompleteUrl("fiscal_years",encodeURIComponent(ui.item.value));
@@ -340,9 +341,9 @@
                      }
             });
             $('#autocomplete_regfyear',context).autocomplete({
-                source:"/smart_search/autocomplete/regfiscalyear" + search_term,
+                source: "/smart_search/autocomplete/regfiscalyear" + search_term,
                 focus: function (event, ui) {
-                    if(ui.item.label.toLowerCase() == 'no matches found'){
+                    if(ui.item.label.toLowerCase() === 'no matches found'){
                         return false;
                     }else{
                         $(event.target).val(ui.item.label);
@@ -350,7 +351,7 @@
                     }
                 },
                 select: function (event, ui) {
-                    if(ui.item.label.toLowerCase() == 'no matches found'){
+                    if(ui.item.label.toLowerCase() === 'no matches found'){
                         return false;
                     }else{
                         var url = getFacetAutocompleteUrl("registered_fiscal_years",encodeURIComponent(ui.item.value));
@@ -361,9 +362,9 @@
                 }
             });
             $('#autocomplete_findustryTypeName',context).autocomplete({
-                source:"/smart_search/autocomplete/industrytype" + search_term,
+                source: "/smart_search/autocomplete/industrytype" + search_term,
                 focus: function (event, ui) {
-                    if(ui.item.label.toLowerCase() == 'no matches found'){
+                    if(ui.item.label.toLowerCase() === 'no matches found'){
                         return false;
                     }else{
                         $(event.target).val(ui.item.label);
@@ -371,7 +372,7 @@
                     }
                 },
                 select: function (event, ui) {
-                    if(ui.item.label.toLowerCase() == 'no matches found'){
+                    if(ui.item.label.toLowerCase() === 'no matches found'){
                         return false;
                     }else{
                         var url = getFacetAutocompleteUrl("industry_type_name",encodeURIComponent(ui.item.value));
@@ -386,8 +387,8 @@
     Drupal.behaviors.clear_search = {
 		  attach: function(context) {    		    
 
-		    $('#edit-search-box', context).focus(function(){  
-      		    if(this.value == this.defaultValue){
+		    $('#edit-search-box', context).focus(function() {
+      		    if(this.value === this.defaultValue){
   		          $(this).val("");
   		        }
   		    });
@@ -399,8 +400,8 @@
     }
 // Filter Results Paginations
     Drupal.behaviors.smartSearchResults = {
-        attach:function (context, settings) {
-            $('.item-list ul.pager li a').live('click', function(e){
+        attach: function (context, settings) {
+            $('.item-list ul.pager li a').live('click', function(e) {
                 e.preventDefault();
                 var search_string = jQuery(this).attr('href').split("?")[1];
                 var search_term = search_string.split("*|*");
@@ -408,15 +409,15 @@
                 newURL = search_term[0];
                 for(var i=1; i<search_term.length; i++){
                     var search_filter = search_term[i].split("=");
-                    value = encodeURIComponent(search_filter[1]);
+                    var value = encodeURIComponent(search_filter[1]);
                     newURL = newURL +'*|*'+search_filter[0]+'='+value;
                 }
                 var curl = '/smart_search/ajax/results?'+ newURL;
                 var progress = jQuery('.smart-search-left .loading');
                 jQuery.ajax({
-                    url:curl,
+                    url: curl,
                     type: "GET",
-                    beforeSend:function () {
+                    beforeSend: function () {
                         progress.show();
                     },
                     success: function(data) {
@@ -472,7 +473,7 @@
         if(!qsParm){
             searchTerm = ""
         }else if(qsParm["search_term"]){
-            var searchTerms = qsParm["search_term"].split("*|*");
+            var searchTerms = qsParm.search_term.split("*|*");
             searchTerm = searchTerms[0];
         }
 
@@ -493,10 +494,10 @@
         if(vendorType){
             cUrl += "vendor_type=" + encodeURIComponent(vendorType) + '*|*';
         }
-        if((fiscalYears  && !contractStatus) || (fiscalYears  && contractStatus=="active") || (regfiscalYears && contractStatus=="active")){
+        if((fiscalYears && !contractStatus) || (fiscalYears && contractStatus==="active") || (regfiscalYears && contractStatus==="active")){
             cUrl += "fiscal_years=" + encodeURIComponent((fiscalYears) ? fiscalYears : regfiscalYears) + '*|*';
         }
-        if((regfiscalYears && !contractStatus && domainNames == 'contracts') || (regfiscalYears && contractStatus=="registered" && domainNames == 'contracts' ) || (fiscalYears && contractStatus=="registered" && domainNames == 'contracts')){
+        if((regfiscalYears && !contractStatus && domainNames === 'contracts') || (regfiscalYears && contractStatus==="registered" && domainNames === 'contracts' ) || (fiscalYears && contractStatus==="registered" && domainNames === 'contracts')){
             cUrl += "registered_fiscal_years=" + encodeURIComponent((regfiscalYears) ? regfiscalYears : fiscalYears) + '*|*';
         }
         if(expenseCategories){
@@ -535,9 +536,11 @@
  *  Returns the selected filter parameters on the form
  * @param filterName
  */
+/*jshint evil:true */
     function getSearchFilterCriteria(filterName){
         var filterId = '';
         var oFilterIds = document.getElementsByName(filterName);
+        /*jshint evil:true */
         if(!eval(oFilterIds)){
             return filterId;
         }
@@ -560,7 +563,7 @@
  *
  */
 function getQuerystringValues() {
-    var qsParm = new Array();
+    var qsParm = [];
     var query = window.location.search.substring(1);
     var parms = query.split('&');
     for (var i=0; i<parms.length; i++) {
@@ -570,7 +573,7 @@ function getQuerystringValues() {
             var val = parms[i].substring(pos+1);
             qsParm[key] = val;
         }
-    };
+    }
     return qsParm;
 }
 
@@ -579,13 +582,13 @@ function getFacetAutocompleteUrl(category, value){
     var newUrl = '?search_term=';
     var count = 0;
 
-    if(searchString["search_term"]){
-        var searchTerms = searchString["search_term"].split("*|*");
+    if(searchString.search_term){
+        var searchTerms = searchString.search_term.split("*|*");
         newUrl += searchTerms[0];
 
         for (var i=1; i<searchTerms.length; i++) {
             var params = searchTerms[i].split('=');
-            if(params[0] == category){
+            if(params[0] === category){
                 count++;
                 params[1] = params[1] + '~' + value;
             }

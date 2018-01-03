@@ -3,7 +3,6 @@
         {"label":"Prime Contract ID","column":"contract_number"},
         {"label":"Contract Includes Sub Vendors","column":"scntrc_status_name"},
         {"label":"Vendor Record Type","column":"vendor_record_type"},
-        //START PRIME
         {"label":"Prime Vendor","column":"prime_vendor_name"},
         {"label":"Prime Vendor M/WBE Category","column":"prime_minority_type_name"},
         {"label":"Prime Contract Purpose","column":"prime_purpose"},
@@ -15,7 +14,6 @@
         {"label":"Prime Contract Start Date","column":"prime_effective_begin_date"},
         {"label":"Prime Contract End Date","column":"prime_effective_end_date"},
         {"label":"Prime Contract Registration Date","column":"registered_date"},
-        //END PRIME
         {"label":"Prime Contracting Agency","column":"agency_name"},
         {"label":"Prime Contract Version","column":"prime_document_version"},
         {"label":"FMS Document/Parent Contract ID","column":"master_contract_number_export"},
@@ -25,7 +23,6 @@
         {"label":"Prime Contract Industry","column":"prime_industry_type_name"},
         {"label":"Prime Contract PIN","column":"prime_pin"},
         {"label":"Prime Contract APT PIN","column":"prime_apt_pin"},
-        //START SUB
         {"label":"Sub Vendor","column":"sub_vendor_name_export"},
         {"label":"Sub Vendor M/WBE Category","column":"sub_minority_type_name_export"},
         {"label":"Sub Contract Purpose","column":"sub_purpose_export"},
@@ -39,7 +36,6 @@
         {"label":"Sub Contract Start Date","column":"sub_effective_begin_date_export"},
         {"label":"Sub Contract End Date","column":"sub_effective_end_date_export"},
         {"label":"Sub Contract Reference ID","column":"sub_contract_id_export"}
-        //END SUB
     ],
     "preProcessConfiguration":"
         $smnid = $doctype = _getRequestParamValue('smnid');

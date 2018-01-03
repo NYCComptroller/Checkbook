@@ -217,7 +217,7 @@ public class HomePage {
 	}
 	
 	public static String DetailsPagetitle() {
-		   WebDriverWait wait = new WebDriverWait(Driver.Instance, 20);
+		   WebDriverWait wait = new WebDriverWait(Driver.Instance, 30);
 			wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("contract-title")));
 			String title = (Driver.Instance.findElement(By.className("contract-title"))).getText();	
 			System.out.println(title);
@@ -225,7 +225,7 @@ public class HomePage {
 	}
 	
 	public static Float GetTransactionAmount() {
-		WebDriverWait wait = new WebDriverWait(Driver.Instance, 20);
+		WebDriverWait wait = new WebDriverWait(Driver.Instance, 30);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("transactions-total-amount")));
 		String count = (Driver.Instance.findElement(By.className("transactions-total-amount"))).getText();	
 		System.out.println(Helper.billionStringToFloat(count));
@@ -236,7 +236,7 @@ public class HomePage {
           return spendingAmt.getText().substring((spendingAmt.getText().indexOf("$")));
       }
 	public static String GetTransactionAmount1() {
-		WebDriverWait wait = new WebDriverWait(Driver.Instance, 20);
+		WebDriverWait wait = new WebDriverWait(Driver.Instance, 30);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("total-spending-amount")));
 		String amount = (Driver.Instance.findElement(By.className("total-spending-amount"))).getText();	
 		//System.out.println(Helper.billionStringToFloat(count));

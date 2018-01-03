@@ -12,7 +12,7 @@ class RequestUtilities {
      * Checks if the page is Checkbook or Checkbook OGE (EDC)
      * @return True if the page is EDC
      */
-    static public function isEDCPage(){
+    public static function isEDCPage(){
         $database = _getRequestParamValue('datasource');
         if(isset($database)){
             return true;
@@ -26,7 +26,7 @@ class RequestUtilities {
      * @param string $paramName
      * @return request parameter value
      */
-    static public function getRequestParamValue($paramName, $fromRequestPath = TRUE){
+    public static function getRequestParamValue($paramName, $fromRequestPath = TRUE){
         if(empty($paramName)){
             return NULL;
         }
@@ -50,7 +50,7 @@ class RequestUtilities {
     }
 
     //Returns the path of the current page
-    static public function _getCurrentPage() {
+    public static function _getCurrentPage() {
         $currentUrl = explode('/',$_SERVER['HTTP_REFERER']);
         return '/'.$currentUrl[3];
     }
@@ -66,9 +66,7 @@ class RequestUtilities {
         $pathParams = explode('/', $urlPath);
         $keyIndex = NULL;
         foreach($pathParams as $index => $value){
-            if($key == $value){
-                $keyIndex = $index;
-            }else if($key_alias != null && $key_alias == $value && $value != null){
+            if($key == $value || ($key_alias != null && $key_alias == $value && $value != null)){
                 $keyIndex = $index;
             }
         }
@@ -88,7 +86,7 @@ class RequestUtilities {
      * Adds mwbe, subvendor and datasource parameters to url.  Precedence ,$source > $overidden_params > requestparam
      * @return string
      */
-    function _appendMWBESubVendorDatasourceUrlParams($source = null,$overidden_params = array(),$top_nav = false){
+   public static function _appendMWBESubVendorDatasourceUrlParams($source = null,$overidden_params = array(),$top_nav = false){
         $datasource = (isset($overidden_params['datasource'])) ? $overidden_params['datasource'] :_getRequestParamValue('datasource');
         $mwbe = (isset($overidden_params['mwbe'])) ? $overidden_params['mwbe'] : _getRequestParamValue('mwbe');
         $dashboard = (isset($overidden_params['dashboard'])) ? $overidden_params['dashboard'] : _getRequestParamValue('dashboard');
@@ -113,7 +111,7 @@ class RequestUtilities {
                     }
                 }
                 else {
-                    if(!$top_nav ||  ( isset($mwbe) && _getRequestParamValue('vendor') > 0 && _getRequestParamValue('dashboard') != "ms" )){
+                    if(!$top_nav || ( isset($mwbe) && _getRequestParamValue('vendor') > 0 && _getRequestParamValue('dashboard') != "ms" )){
                         $url = isset($mwbe) ? "/mwbe/".$mwbe : "";
                         $url .= isset($dashboard) ? "/dashboard/".$dashboard : "";
                     }
@@ -124,13 +122,13 @@ class RequestUtilities {
     }
 
     /** Checks if the current URL is opened in a new window */
-    static function isNewWindow(){
+    public static function isNewWindow(){
         $referer = $_SERVER['HTTP_REFERER'];
 
         return preg_match('/newwindow/i',$referer);
     }
 
-    function _checkbook_check_isEDCPage(){
+    public function _checkbook_check_isEDCPage(){
         $database = self::getRequestParamValue('datasource');
         if(isset($database)){
             return true;
@@ -139,7 +137,7 @@ class RequestUtilities {
         }
     }
 
-    static function get_url_param($pathParams,$key,$key_alias =  null){
+     public static function get_url_param($pathParams,$key,$key_alias =  null){
 
         $keyIndex = array_search($key,$pathParams);
         if($keyIndex){
@@ -158,7 +156,7 @@ class RequestUtilities {
      * This function returns the current NYC year  ...
      * @return year_id
      */
-    static function getCurrentYearID(){
+   public static function getCurrentYearID(){
         STATIC $currentNYCYear;
         if(!isset($currentNYCYear)){
             if(variable_get('current_fiscal_year_id')){
@@ -166,8 +164,9 @@ class RequestUtilities {
             }else{
                 $currentNYCYear=date("Y");
                 $currentMonth=date("m");
-                if($currentMonth > 6 )
-                    $currentNYCYear +=1;
+                if($currentMonth > 6 ) {
+                    $currentNYCYear += 1;
+                }
                 $currentNYCYear = _getYearIDFromValue($currentNYCYear);
             }
         }

@@ -20,7 +20,6 @@
             "sub_vendor":"sub_vendor_name",
             "sub_vendor_status_in_pip_id" :"aprv_sta",
             "contract_includes_sub_vendors_id":"scntrc_status",
-            //logical OR columns
             "vendor_code":"vendor_code",
             "purpose":"purpose",
             "mwbe_category":"minority_type_id",
@@ -302,7 +301,6 @@
             "industry_type_id":"industry_type_id",
             "sub_vendor_status_in_pip_id" :"aprv_sta",
             "contract_includes_sub_vendors_id":"scntrc_status",
-            //logical OR columns
             "vendor_code":"vendor_code",
             "purpose":"purpose",
             "mwbe_category":"minority_type_id",

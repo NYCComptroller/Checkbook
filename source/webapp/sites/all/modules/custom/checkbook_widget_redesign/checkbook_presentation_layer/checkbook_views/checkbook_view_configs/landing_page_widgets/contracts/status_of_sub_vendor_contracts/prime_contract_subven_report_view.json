@@ -1,7 +1,7 @@
 {
     "serviceName":"ContractsWidgetService",
     "dataFunc":"GetContractsSubvendorReporting",
-    "countFunc":"GetCountContractsReported", //2nd
+    "countFunc":"GetCountContractsReported",
     "defaultParameters":{"doctype":"'CTA1'~'CT1'~'CT2'","status_flag":"A"},
     "table_title":"Summary of Prime Contract Sub Vendor Reporting",
     "headerSubTitle":"Contracts",

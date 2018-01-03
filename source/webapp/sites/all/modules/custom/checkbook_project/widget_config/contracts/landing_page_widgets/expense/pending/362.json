@@ -86,13 +86,13 @@ else
       $footer = \"<a class='show-details bottomContainerReload' href='$url' style='display:none;'>Details >></a>\";
 return $footer;
 ",
-"widgetTitle":"Contracts Amount Modifications",
+"widgetTitle":"Contract Amount Modifications",
 "getTotalDataCount":true,
 "header":"
 $node->widgetConfig->getData=false;
 load_widget_data($node);
 if($node->totalDataCount > 4) $count = '<span class=\"hideOnExpand\">5 </span>';
-$header='<div class=\"tableHeader\"><h2>Top '.$count.'Contracts Amount Modifications</h2><span class=\"contCount\"> Number of Contract Modifications:  ' . number_format($node->totalDataCount) . '</span></div>';
+$header='<div class=\"tableHeader\"><h2>Top '.$count.'Contract Amount Modifications</h2><span class=\"contCount\"> Number of Contract Modifications:  ' . number_format($node->totalDataCount) . '</span></div>';
 return $header;
 ",
 "table_title":"",

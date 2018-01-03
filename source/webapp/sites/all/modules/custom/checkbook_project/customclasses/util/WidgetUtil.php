@@ -196,6 +196,7 @@ class WidgetUtil
         "other_years"=>"Other<br/>Years",
         "year"=>"Year",
         "budget_name"=>"Budget<br/>Name",
+        "budget_code"=>"Budget<br/>Code",
         "commodity_line"=>"Commodity<br/>Line",
         "entity_contact_num"=>"Entity<br/>Contract # ",
     	"prime_vendor_name"=>"Prime Vendor<br/>Name",

@@ -477,6 +477,7 @@ function _checkbook_faceted_search_update_data_range3_filter($node){
             switch($node->nid)
             {
                 case 871:
+                case 902:
                     $initial[0] = array(5, 'Greater than 250K', $data[0]['gross_pay_ytd_g250k_count']);
                     $initial[1] = array(4, '101K-250K', $data[0]['gross_pay_ytd_g101k_le250k_count']);
                     $initial[2] = array(3, '51K-100K', $data[0]['gross_pay_ytd_g51k_le100k_count']);
@@ -484,6 +485,7 @@ function _checkbook_faceted_search_update_data_range3_filter($node){
                     $initial[4] = array(1, 'Less than 20K', $data[0]['gross_pay_ytd_less20k_count']);
                     break;
                 case 877:
+                case 909:
                     $initial[0] = array(5, 'Greater than 250K', $data[0]['gross_pay_cytd_g250k_count']);
                     $initial[1] = array(4, '101K-250K', $data[0]['gross_pay_cytd_g101k_le250k_count']);
                     $initial[2] = array(3, '51K-100K', $data[0]['gross_pay_cytd_g51k_le100k_count']);
@@ -497,20 +499,22 @@ function _checkbook_faceted_search_update_data_range3_filter($node){
                     $initial[3] = array(2, '20K-50K', $data[0]['gross_pay_ge20k_le50k_count_title']);
                     $initial[4] = array(1, 'Less than 20K', $data[0]['gross_pay_less20k_count_title']);
                     break;
-                case 902:
+               /* case 902:
                     $initial[0] = array(5, 'Greater than 250K', $data[0]['gross_pay_ytd_g250k_count']);
                     $initial[1] = array(4, '101K-250K', $data[0]['gross_pay_ytd_g101k_le250k_count']);
                     $initial[2] = array(3, '51K-100K', $data[0]['gross_pay_ytd_g51k_le100k_count']);
                     $initial[3] = array(2, '20K-50K', $data[0]['gross_pay_ytd_ge20k_le50k_count']);
                     $initial[4] = array(1, 'Less than 20K', $data[0]['gross_pay_ytd_less20k_count']);
                     break;
-                case 909:
+               */
+               /* case 909:
                     $initial[0] = array(5, 'Greater than 250K', $data[0]['gross_pay_cytd_g250k_count']);
                     $initial[1] = array(4, '101K-250K', $data[0]['gross_pay_cytd_g101k_le250k_count']);
                     $initial[2] = array(3, '51K-100K', $data[0]['gross_pay_cytd_g51k_le100k_count']);
                     $initial[3] = array(2, '20K-50K', $data[0]['gross_pay_cytd_ge20k_le50k_count']);
                     $initial[4] = array(1, 'Less than 20K', $data[0]['gross_pay_cytd_less20k_count']);
                     break;
+               */
                 default:
                     $initial[0] = array(5, 'Greater than 250K', $data[0]['gross_pay_g250k_count']);
                     $initial[1] = array(4, '101K-250K', $data[0]['gross_pay_g101k_le250k_count']);
@@ -806,10 +810,12 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
       }
     }
     $output['Citywide Agency']['name'] = 'fagencyName';
-    foreach($reqAgencies[0] as $key => $value){
+    if (is_array($reqAgencies[0])) {
+      foreach($reqAgencies[0] as $key => $value){
         if(!in_array($value['name'], array_values_recursive($output['Citywide Agency']['checked'])) && strlen($value['name']) > 0){
-            $output['Citywide Agency']['checked'][] = array(urlencode($value['name']), $value['name'], $value['count']);
+          $output['Citywide Agency']['checked'][] = array(urlencode($value['name']), $value['name'], $value['count']);
         }
+      }
     }
   }
     if (count($ogeAgencies) > 0) {
@@ -848,10 +854,12 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
       }
     }
     $output['Vendor']['name'] = 'fvendorName';
-    foreach($reqVendors[0] as $key => $value){
+    if (isset($reqVendors[0])){
+      foreach($reqVendors[0] as $key => $value){
         if(!in_array($value['name'], array_values_recursive($output['Vendor']['checked']))){
-            $output['Vendor']['checked'][] = array(urlencode($value['name']), $value['name'], $value['count']);
+          $output['Vendor']['checked'][] = array(urlencode($value['name']), $value['name'], $value['count']);
         }
+      }
     }
   }
 
@@ -975,10 +983,12 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
             }
         }
         $output['Industry']['name'] = 'findustryTypeName';
-        foreach($reqIndustryType[0] as $key => $value){
+        if (is_array($reqIndustryType[0])){
+          foreach($reqIndustryType[0] as $key => $value){
             if(!in_array($value['name'], array_values_recursive($output['Industry']['checked']))){
-                $output['Industry']['checked'][] = array(urlencode($value['name']), $value['name'], $value['count']);
+              $output['Industry']['checked'][] = array(urlencode($value['name']), $value['name'], $value['count']);
             }
+          }
         }
 
     }

@@ -158,9 +158,9 @@
 	}
 	$mwbe_filter = _getRequestParamValue('mwbe');
 	if($mwbe_filter =='4~5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){	
-		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Top Ten ' . $status . ' ' . $contract_type .  ' Contracts  by Current Amount';
+		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName() . ' Top Ten ' . $status . ' ' . $contract_type .  ' Contracts  by Current Amount';
 	}else{
-		$node->widgetConfig->chartTitle = 'Top Ten ' . MappingUtil::getCurrenEhtnicityName() . ' ' . $status . ' ' . $contract_type .  ' Contracts  by Current Amount';
+		$node->widgetConfig->chartTitle = 'Top Ten ' . MappingUtil::getCurrenEthnicityName() . ' ' . $status . ' ' . $contract_type .  ' Contracts  by Current Amount';
 	}
 ",
 "chartConfig" : {
@@ -208,5 +208,6 @@ yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
 tooltipformatter^^'formatter' :
 function() {return this.point.tooltip_label ;
 }
-##clickEvent^^"click": function(){location.href = Drupal.settings.basePath+this.url; }
+##
+clickEvent^^"click": function(){location.href = Drupal.settings.basePath+this.url; }
 </function>

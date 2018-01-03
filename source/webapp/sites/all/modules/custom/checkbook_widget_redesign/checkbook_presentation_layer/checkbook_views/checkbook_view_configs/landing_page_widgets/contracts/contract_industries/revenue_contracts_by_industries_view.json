@@ -12,12 +12,12 @@
         {"label":"","column":""}
     ],
     "dataTableOptions":{
-        "aoColumns":[
-            {"sClass":"text","sWidth":"249px","bSortable":false},
-            {"sClass":"number","sWidth":"120px","asSorting":["desc","asc"]},
-            {"sClass":"number","sWidth":"177px","asSorting":["desc","asc"]},
-            {"sClass":"number","sWidth":"217px","asSorting":["desc","asc"]},
-            {"sWidth":"15px","bSortable":false}
+        "aoColumns": [
+            { "bSortable": false,"sClass":"text", "sWidth":"405px"},
+            {"sClass":"number","asSorting": [ "desc","asc" ], "sWidth":"90px"},
+            {"sClass":"number","asSorting": [ "desc","asc" ], "sWidth":"214px"},
+            {"sClass":"number last","asSorting": [ "desc","asc" ], "sWidth":"214px"},
+            { "bSortable": false,"sWidth":"15px" }
         ],
         "bServerSide":true,
         "bFilter":false,

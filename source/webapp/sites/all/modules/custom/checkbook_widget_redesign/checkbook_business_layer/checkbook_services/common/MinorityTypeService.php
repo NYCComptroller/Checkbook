@@ -29,8 +29,8 @@ class MinorityTypeService {
     
     static $mwbe_prefix = "M/WBE" ;
     
-    static public function isMWBECertified($mwbe_cat){ 	
-        if(in_array($mwbe_cat, self::$minority_type_category_map_multi_chart['M/WBE'])){
+       public static  function isMWBECertified($mwbe_cat){
+        if(in_array($mwbe_cat, static::$minority_type_category_map_multi_chart['M/WBE'])){
             return true;
     	}else{
             return false;
@@ -42,8 +42,8 @@ class MinorityTypeService {
      * @param $minority_type_id
      * @return mixed
      */
-    static public function getMinorityCategoryById($minority_type_id) {
-        return self::$minority_type_category_map[$minority_type_id];
+      public static  function getMinorityCategoryById($minority_type_id) {
+        return static::$minority_type_category_map[$minority_type_id];
     }
 
     /**
@@ -53,7 +53,7 @@ class MinorityTypeService {
      * @param $domain
      * @return array
      */
-    static public function getAllVendorMinorityTypes($type_of_year, $year_id, $domain) {
+    public static function getAllVendorMinorityTypes($type_of_year, $year_id, $domain) {
         STATIC $spending_vendor_latest_mwbe_category;
         STATIC $contract_vendor_latest_mwbe_category;
         STATIC $contract_pending_vendor_latest_mwbe_category;

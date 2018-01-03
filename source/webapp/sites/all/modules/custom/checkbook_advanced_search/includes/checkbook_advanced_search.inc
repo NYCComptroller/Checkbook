@@ -75,12 +75,14 @@ function _checkbook_advanced_search_get_year($domain = null, $form = null, $data
                 }
             }
         }
-        arsort($fiscal_year_array);
-        arsort($calendar_year_array);
 
-        if ($domain == 'payroll') {
+        $fiscal_year_array && arsort($fiscal_year_array);
+        $calendar_year_array && arsort($calendar_year_array);
+
+        if ($domain == 'payroll' && $calendar_year_array) {
             $fiscal_year_array = array_merge($calendar_year_array, $fiscal_year_array);
         }
+
         if ($domain == 'contracts' || $domain == 'spending') {
             $fiscal_year_array = array_reverse($fiscal_year_array, true);
             $fiscal_year_array['fy~all'] = 'All Years';
@@ -1065,12 +1067,11 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_s
  */
 function _checkbook_advanced_search_budget_submit($form, &$form_state)
 {
-
     $budget_agency = trim($form['budget']['budget_agencies']['#value']);
     $budget_department = trim($form_state['input']['budget_department']);
     $budget_expense_category = trim($form_state['input']['budget_expense_category']);
     $budget_budget_code = trim($form['budget']['budget_budget_code']['#value']);
-    $budget_budget_code_exact = trim($form['budget']['budget_budget_code_exact']['#value']);
+    $budget_budget_name = trim($form['budget']['budget_budget_name']['#value']);
     $budget_fiscal_year = trim($form['budget']['budget_fiscal_year']['#value']);
     $budget_adopted_budget_from = trim($form['budget']['budget_adopted_budget_from']['#value']);
     $budget_adopted_budget_to = trim($form['budget']['budget_adopted_budget_to']['#value']);
@@ -1100,20 +1101,12 @@ function _checkbook_advanced_search_budget_submit($form, &$form_state)
         $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_department, 'deptnm');
     }
     if (!empty($budget_budget_code)) {
-        $input = $budget_budget_code;
-        $start = "[";
-        $end = "]";
-        $budget_code = substr($input, strlen($start) + strpos($input, $start), (strlen($input) - strpos($input, $end)) * (-1));
-        if ($budget_code) {
-            $budget_budget_code = str_replace($budget_code, "", $budget_budget_code);
-            $budget_budget_code = str_replace("[", "", $budget_budget_code);
-            $budget_budget_code = str_replace("]", "", $budget_budget_code);
-            $budget_code_id = BudgetUtil::getBudgetCodeId($budget_budget_code, $budget_code, $budget_fiscal_year);
-            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_code_id, 'bdgcode');
-        } else {
-            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_budget_code, 'bdgcodenm');
-        }
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_budget_code, 'bdgcode_code');
+    } 
+    if (!empty($budget_budget_name)) {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_budget_name, 'bdgcodenm');
     }
+    
 
     //URL for ranges
     $budget_adopted_budget_range_array = array('from' => $budget_adopted_budget_from, 'to' => $budget_adopted_budget_to, 'type' => 'amount');

@@ -5,7 +5,7 @@
         var data_source = $('input:hidden[name="data_source"]').val();
         var agency_selected = $('#edit-agency').val();
 
-        if (data_source == "checkbook_oge" && agency_selected == 'Citywide (All Agencies)') {
+        if (data_source === "checkbook_oge" && agency_selected === 'Citywide (All Agencies)') {
             $('input:radio[name="datafeeds-spending-domain-filter"][value="checkbook_oge"]').removeAttr('checked').button("refresh");
             $('input:radio[name="datafeeds-spending-domain-filter"][value="checkbook"]').attr('checked', 'checked').button("refresh");
             $('input:hidden[name="data_source"]').val("checkbook");
@@ -13,12 +13,12 @@
         //On change of "Year"
         $('#edit-year').change(function () {
             var agency = emptyToZero($('#edit-agency').val());
-            if(agency != 0)
+            if(agency !== 0)
                 onYearChange();
         });
         function onYearChange() {
             var year = 0;
-            if($('input:radio[name=date_filter]:checked').val() == 0){
+            if($('input:radio[name=date_filter]:checked').val() === 0){
                 year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
             }
             //var dept = emptyToZero($('#edit-dept').val());
@@ -30,7 +30,7 @@
                 ,success: function(data) {
                     var html = '<option select="selected" value="0" >Select Department</option>';
                     if(data[0]){
-                        if(data[0]!= 'No Matches Found'){
+                        if(data[0]!== 'No Matches Found'){
                             for (var i = 0; i < data.length; i++) {
                                 html=html + '<option value="' + data[i] + ' ">' + data[i]  + '</option>';
                             }
@@ -45,7 +45,7 @@
 
         function onDeptChange() {
             var year = 0;
-            if($('input:radio[name=date_filter]:checked').val() == 0){
+            if($('input:radio[name=date_filter]:checked').val() === 0){
                 year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
             }
             //var expense_cat = emptyToZero($('#edit-expense-category').val());
@@ -59,7 +59,7 @@
                 ,success: function(data) {
                     var html = '<option select="selected" value="0" >Select Expense Category</option>';
                     if(data[0]){
-                        if(data[0]!= 'No Matches Found'){
+                        if(data[0]!== 'No Matches Found'){
                             for (var i = 0; i < data.length; i++) {
                                 html=html + '<option value="' + data[i] + ' ">' + data[i]  + '</option>';
                             }
@@ -73,23 +73,23 @@
     });
 
     $.fn.disableStuff = function () {
-        if ($('#edit-agency').val() == 'Citywide (All Agencies)') {
+        if ($('#edit-agency').val() === 'Citywide (All Agencies)' || $('#edit-agency').val() === 'Select One') {
             $('select[name="dept"]').val('');
             $('select[name="dept"]').attr('disabled', 'disabled');
             $('select[name="expense_category"]').val('');
             $('select[name="expense_category"]').attr('disabled', 'disabled');
         }
-        else if ($('#edit-agency').val() == 'Select One') {
+        /*else if ($('#edit-agency').val() === 'Select One') {
             $('select[name="dept"]').val('');
             $('select[name="dept"]').attr('disabled', 'disabled');
             $('select[name="expense_category"]').val('');
             $('select[name="expense_category"]').attr('disabled', 'disabled');
-        }
+        }*/
 
         var dataSource = $('input:radio[name=datafeeds-spending-domain-filter]:checked').val();
 
         //Issue Date is disabled for oge
-        if(dataSource == 'checkbook_oge') {
+        if(dataSource === 'checkbook_oge') {
             $('input:radio[name=date_filter][value=1]').attr('disabled', 'disabled');
         }
     };
@@ -99,7 +99,7 @@
         //clear all text fields
         var enclosingDiv = $("#dynamic-filter-data-wrapper").children('#edit-filter').children('div.fieldset-wrapper').children();
         jQuery(enclosingDiv).find(':input').each(function () {
-            if (this.type == 'text') {
+            if (this.type === 'text') {
                 jQuery(this).val('');
             }
         });
@@ -146,20 +146,20 @@
             var datefilter = $('input[name="date_filter"]:checked').val();
             var exptypeval = $('select[name="expense_type"]').val();
             $.fn.disableStuff();
-            if (datefilter == 0) {
+            if (datefilter === 0) {
                 $('input[name="issuedfrom"]').attr('disabled', 'disabled');
                 $('input[name="issuedto"]').attr('disabled', 'disabled');
-            } else if (datefilter == 1) {
+            } else if (datefilter === 1) {
                 $('select[name="year"]').attr('disabled', 'disabled');
             }
-            if (exptypeval == 'Payroll Spending [p]') {
+            if (exptypeval === 'Payroll Spending [p]') {
                 $('input[name="contractno"]').attr('disabled', 'disabled');
                 $('input[name="payee_name"]').attr('disabled', 'disabled');
                 $('option[value="Payee Name"]').attr('disabled', 'disabled');
                 $('option[value="payee_name"]').attr('disabled', 'disabled');
                 $('option[value="Contract ID"]').attr('disabled', 'disabled');
                 $('option[value="contract_ID"]').attr('disabled', 'disabled');
-            } else if (exptypeval == 'Other Spending [o]') {
+            } else if (exptypeval === 'Other Spending [o]') {
                 $('input[name="contractno"]').attr('disabled', 'disabled');
                 $('input[name="payee_name"]').removeAttr('disabled');
                 $('option[value="Contract ID"]').attr('disabled', 'disabled');
@@ -204,7 +204,7 @@
 
             //Sets up jQuery UI autocompletes and autocomplete filtering functionality
             var year = 0;
-            if ($('input:radio[name=date_filter]:checked').val() == 0) {
+            if ($('input:radio[name=date_filter]:checked').val() === 0) {
                 year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
             }
             var dept = emptyToZero($('#edit-dept',context).val());
@@ -227,7 +227,7 @@
                 $(this).focusin(function () {
                     //set variables for each field's value
                     year = 0;
-                    if($('input:radio[name=date_filter]:checked').val() == 0){
+                    if($('input:radio[name=date_filter]:checked').val() === 0){
                         year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
                     }
                     dept = emptyToZero($('#edit-dept',context).val());

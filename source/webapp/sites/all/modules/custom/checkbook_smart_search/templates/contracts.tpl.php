@@ -34,10 +34,10 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
    $start_date = date("c", strtotime($contracts_results['start_date']));
    $end_date = date("c", strtotime($contracts_results['end_date']));
 
-    if($contract_status == 'Active'){
+    /*if($contract_status == 'Active'){
            $contracts_results['contract_status'] = 'Active';
            $status = "A";
-   }else if($contract_status == 'Registered'){
+   }*/ if($contract_status == 'Registered'){
            $contracts_results['contract_status'] =  'Registered';
            $status = "R";
    }else{
@@ -201,7 +201,10 @@ foreach ($contracts_parameter_mapping as $key => $title){
   if(is_array($value)){
   	$value = implode(', ' , $value);
   }
-  $temp = substr($value, strpos(strtoupper($value), strtoupper($SearchTerm)),strlen($SearchTerm));
+  $temp = '';
+  if ($SearchTerm) {
+    $temp = substr($value, strpos(strtoupper($value), strtoupper($SearchTerm)),strlen($SearchTerm));
+  }
   if($key =="contract_number"){
     $value = "<a href='".$contract_Id_link ."'>".$contracts_results['contract_number']."</a>";
   }else if($key =="parent_contract_number"){

@@ -5,8 +5,8 @@
 				var MaximumNumberOfLinks = 7;
 				var CookieName = "checkbookHistoryLinks";
 				var CookieDomainName = "checkbookHistoryDomain";
-				var HistoryLink = new Array();
-				var HistoryTitle = new Array();
+				var HistoryLink = [];
+				var HistoryTitle = [];
 				
 				function GetCookie() {
 					var cookiecontent = '';
@@ -27,11 +27,11 @@
 				function PutCookie() {
 					if( HistoryLink.length < 1 ) { return; }
 					var len = HistoryLink.length;
-					var pairs = new Array();
+					var pairs = [];
 					var breadcrumbHTML = '<a href=\'/\' class=\'homeLink\' >Home</a>';
-					for( var i = 0; i < HistoryLink.length; i++ ) {
+					for( var i = 0; i < len; i++ ) {
 						pairs.push(encodeURI(HistoryLink[i])+'::'+HistoryTitle[i]);
-						if(i == HistoryLink.length -1 ){
+						if(i == len -1 ){
 							breadcrumbHTML =  breadcrumbHTML + ' >> <span class=\'inline\'>' + HistoryTitle[i] + '<span>' ;
 						}else{
 							breadcrumbHTML =  breadcrumbHTML + ' >> <span class=\'inline\'><a href=\'' + encodeURI(HistoryLink[i]) +  '\'>'  + HistoryTitle[i] + '</a></span>' ;
@@ -49,8 +49,8 @@
 					var len = HistoryLink.length;
 					
 					link = link + window.location.search;
-					if(HistoryLink[len -1] != link){	
-						if( HistoryLink.length == MaximumNumberOfLinks ) {
+					if(HistoryLink[len -1] !== link){
+						if( HistoryLink.length === MaximumNumberOfLinks ) {
 							HistoryLink[MaximumNumberOfLinks - 1 ] = link ;
 							HistoryTitle[MaximumNumberOfLinks - 1 ] = title ;
 						}else{
@@ -61,34 +61,34 @@
 					}
 				}
 				var link = window.location.pathname;
-				if((link.match(/contract/) == 'contract')||(link.match(/payroll/) == 'payroll')||(link.match(/spending/) == 'spending')||(link.match(/budget/) == 'budget')||(link.match(/revenue/) == 'revenue')){
-					if(link.match(/gridview/) != "gridview" && link.match(/createalert/) != "createalert" && link.match(/newwindow/) != "newwindow" && link.match(/admin/) != "admin" && link.match(/-api/) != "-api" ){
-						if(link.match(/contract/) == 'contract' && link.match(/datasource/) != 'datasource' && link.match(/checkbook_oge/) != 'checkbook_oge'){
-							if($.cookie(CookieDomainName) != 'contract')
+				if((link.match(/contract/) === 'contract')||(link.match(/payroll/) === 'payroll')||(link.match(/spending/) === 'spending')||(link.match(/budget/) === 'budget')||(link.match(/revenue/) === 'revenue')){
+					if(link.match(/gridview/) !== "gridview" && link.match(/createalert/) !== "createalert" && link.match(/newwindow/) !== "newwindow" && link.match(/admin/) !== "admin" && link.match(/-api/) !== "-api" ){
+						if(link.match(/contract/) === 'contract' && link.match(/datasource/) !== 'datasource' && link.match(/checkbook_oge/) !== 'checkbook_oge'){
+							if($.cookie(CookieDomainName) !== 'contract')
 								$.cookie(CookieName,null,{ path: '/' });
 							$.cookie(CookieDomainName,'contract',{ path: '/' });
-						}else if(link.match(/payroll/) == 'payroll'){
-							if($.cookie(CookieDomainName) != 'payroll')
+						}else if(link.match(/payroll/) === 'payroll'){
+							if($.cookie(CookieDomainName) !== 'payroll')
 								$.cookie(CookieName,null,{ path: '/' });
 							$.cookie(CookieDomainName,'payroll',{ path: '/' });
-						}else if(link.match(/spending/) == 'spending' && link.match(/datasource/) != 'datasource' && link.match(/checkbook_oge/) != 'checkbook_oge'){
-							if($.cookie(CookieDomainName) != 'spending')
+						}else if(link.match(/spending/) === 'spending' && link.match(/datasource/) !== 'datasource' && link.match(/checkbook_oge/) !== 'checkbook_oge'){
+							if($.cookie(CookieDomainName) !== 'spending')
 								$.cookie(CookieName,null,{ path: '/' });
 							$.cookie(CookieDomainName,'spending',{ path: '/' });
-						}else if(link.match(/budget/) == 'budget'){
-                            if($.cookie(CookieDomainName) != 'budget')
+						}else if(link.match(/budget/) === 'budget'){
+                            if($.cookie(CookieDomainName) !== 'budget')
                                 $.cookie(CookieName,null,{ path: '/' });
                             $.cookie(CookieDomainName,'budget',{ path: '/' });
-                        }else if(link.match(/revenue/) == 'revenue'){
-                            if($.cookie(CookieDomainName) != 'revenue')
+                        }else if(link.match(/revenue/) === 'revenue'){
+                            if($.cookie(CookieDomainName) !== 'revenue')
                                 $.cookie(CookieName,null,{ path: '/' });
                             $.cookie(CookieDomainName,'revenue',{ path: '/' });
-                        }else if(link.match(/spending/) == 'spending' && link.match(/datasource/) == 'datasource' && link.match(/checkbook_oge/) == 'checkbook_oge'){
-                            if($.cookie(CookieDomainName) != 'oge_spending')
+                        }else if(link.match(/spending/) === 'spending' && link.match(/datasource/) === 'datasource' && link.match(/checkbook_oge/) === 'checkbook_oge'){
+                            if($.cookie(CookieDomainName) !== 'oge_spending')
                                 $.cookie(CookieName,null,{ path: '/' });
                             $.cookie(CookieDomainName,'oge_spending',{ path: '/' });
-                        }else if(link.match(/contract/) == 'contract' && link.match(/datasource/) == 'datasource' && link.match(/checkbook_oge/) == 'checkbook_oge'){
-                            if($.cookie(CookieDomainName) != 'oge_contract')
+                        }else if(link.match(/contract/) === 'contract' && link.match(/datasource/) === 'datasource' && link.match(/checkbook_oge/) === 'checkbook_oge'){
+                            if($.cookie(CookieDomainName) !== 'oge_contract')
                                 $.cookie(CookieName,null,{ path: '/' });
                             $.cookie(CookieDomainName,'oge_contract',{ path: '/' });
                         }

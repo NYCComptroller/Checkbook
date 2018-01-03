@@ -13,14 +13,12 @@ $(document).ready( function () {
 		null,
 		function () { return oSettings.oLanguage.sProcessing == "Processing..."; }
 	);
-	
+    /*jshint -W089 */
 	oTest.fnTest( 
 		"Processing language default is in the DOM",
 		null,
 		function () { return document.getElementById('example_processing').innerHTML = "Processing..."; }
 	);
-	
-	
 	oTest.fnTest( 
 		"Processing language can be defined",
 		function () {
@@ -35,13 +33,10 @@ $(document).ready( function () {
 		},
 		function () { return oSettings.oLanguage.sProcessing == "unit test"; }
 	);
-	
 	oTest.fnTest( 
 		"Processing language definition is in the DOM",
 		null,
 		function () { return document.getElementById('example_processing').innerHTML = "unit test"; }
 	);
-	
-	
 	oTest.fnComplete();
 } );

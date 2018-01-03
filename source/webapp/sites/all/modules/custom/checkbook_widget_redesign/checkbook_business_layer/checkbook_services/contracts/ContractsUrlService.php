@@ -139,7 +139,7 @@ class ContractsUrlService {
      * @param $minority_type_id
      * @return string
      */
-    static public function subMinorityTypeUrl($minority_type_id){
+     public static function subMinorityTypeUrl($minority_type_id){
 
         $showLink = Dashboard::isSubDashboard() && MinorityTypeService::isMWBECertified($minority_type_id);
         $dashboard = DashboardParameter::getCurrent();

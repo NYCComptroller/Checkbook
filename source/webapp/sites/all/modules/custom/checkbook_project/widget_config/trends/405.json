@@ -18,8 +18,6 @@
          "sScrollY":"400",
          "bScrollCollapse": true,
          "sScrollX": "100%",
-//         "sScrollXInner": "1215px",
-//         "bAutoWidth": false,
         "fnPreDrawCallback":"##function( oSettings ) {
             jQuery('.trendsShowOnLoad').show();
             return true;

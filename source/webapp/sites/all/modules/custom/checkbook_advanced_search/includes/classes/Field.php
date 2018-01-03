@@ -41,11 +41,10 @@ class Field
         $this->disabled = $disabled;
 
 
-
-        if (array_key_exists('id', $attributes))
-            $this->id = str_replace('{domain}',$this->domain_name,$attributes['id']);
-
         if (!(is_null($attributes))) {
+
+            if (array_key_exists('id', $attributes))
+              $this->id = str_replace('{domain}',$this->domain_name,$attributes['id']);
 
             if (array_key_exists('attributes', $attributes))
                 $this->attributes = $attributes['attributes'];
