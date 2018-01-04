@@ -1143,6 +1143,7 @@ class SpendingUtil{
                 case '4':
                 case '5':
                 case '9':
+
                     $mwbe_spending_sub += $row['total_spending'];
                     break;
 

@@ -43,72 +43,93 @@ class Field
 
         if (!(is_null($attributes))) {
 
-            if (array_key_exists('id', $attributes))
-              $this->id = str_replace('{domain}',$this->domain_name,$attributes['id']);
+            if (array_key_exists('id', $attributes)) {
+                $this->id = str_replace('{domain}', $this->domain_name, $attributes['id']);
+            }
 
-            if (array_key_exists('attributes', $attributes))
+            if (array_key_exists('attributes', $attributes)) {
                 $this->attributes = $attributes['attributes'];
+            }
 
-            if (array_key_exists('data_source', $attributes))
+            if (array_key_exists('data_source', $attributes)){
                 $this->data_source = $attributes['data_source'];
+            }
 
-            if (array_key_exists('default_value', $attributes))
+
+            if (array_key_exists('default_value', $attributes)) {
                 $this->default_value = $attributes['default_value'];
+            }
 
-            if (array_key_exists('domain_name', $attributes))
+            if (array_key_exists('domain_name', $attributes)) {
                 $this->domain_name = $attributes['domain_name'];
+            }
 
-            if (array_key_exists('field_name', $attributes))
+            if (array_key_exists('field_name', $attributes)) {
                 $this->field_name = $attributes['field_name'];
+            }
 
-            if (array_key_exists('maxlength', $attributes))
+            if (array_key_exists('maxlength', $attributes)) {
                 $this->maxlength = $attributes['maxlength'];
+            }
 
-            if (array_key_exists('option_attributes', $attributes))
+            if (array_key_exists('option_attributes', $attributes)) {
                 $this->option_attributes = $attributes['option_attributes'];
+            }
 
-            if (array_key_exists('options', $attributes))
+            if (array_key_exists('options', $attributes)) {
                 $this->options = $attributes['options'];
+            }
 
-            if (array_key_exists('required', $attributes))
+            if (array_key_exists('required', $attributes)) {
                 $this->required = $attributes['required'];
+            }
 
-            if (array_key_exists('size', $attributes))
+            if (array_key_exists('size', $attributes)) {
                 $this->size = $attributes['size'];
+            }
 
-            if (array_key_exists('title', $attributes))
+            if (array_key_exists('title', $attributes)) {
                 $this->title = $attributes['title'];
+            }
 
-            if (array_key_exists('value', $attributes))
+            if (array_key_exists('value', $attributes)) {
                 $this->value = $attributes['value'];
+            }
 
-            if (array_key_exists('ajax', $attributes))
+            if (array_key_exists('ajax', $attributes)) {
                 $this->ajax = $attributes['ajax'];
+            }
         }
     }
 
     public function getFieldTitle()
     {
-        if (!(is_null($this->title)))
+        if (!(is_null($this->title))) {
             $field_title = $this->title;
-        else
+        }
+        else {
             $field_title = ucwords(str_replace('_', ' ', $this->field_name));
+        }
         return str_replace(' Id', ' ID', $field_title);
     }
 
     public function getDropDownOptions()
     {
-        if (!(is_null($this->options)))
+        if (!(is_null($this->options))) {
             return $this->options;
-        else
+        }
+        else {
             return array('Select ' . $this->getFieldTitle());
+        }
     }
 
     public function getDropDownDefault()
     {
-        if (isset($this->options[0]) && !(is_null($this->options[0])))
+        if (isset($this->options[0]) && !(is_null($this->options[0]))) {
             return $this->options[0];
-        else
+        }
+        else {
             return 'Select ' . $this->getFieldTitle();
+        }
     }
 }
