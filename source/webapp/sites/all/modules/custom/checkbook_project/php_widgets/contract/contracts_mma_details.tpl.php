@@ -34,10 +34,19 @@ if(_getRequestParamValue("status")){
 
 
 if (_getRequestParamValue("doctype") == "RCT1") {
-    $vendor_link = '/contracts_revenue_landing'.$status.'/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
-        . $node->data[0]['vendor_id_checkbook_vendor_history'] . '?expandBottomCont=true';
-    $agency_link = '/contracts_revenue_landing'.$status.'/year/' . _getCurrentYearID() . '/yeartype/B/agency/'
-        . $node->data[0]['agency_id_checkbook_agency'] . '?expandBottomCont=true';
+    if(_is_mwbe_vendor(_getRequestParamValue("magid"))){
+        $vendor_link = '/contracts_revenue_landing'.$status.'/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
+            . $node->data[0]['vendor_id_checkbook_vendor_history'] . '/dashboard/mp?expandBottomCont=true';
+        $agency_link = '/contracts_revenue_landing'.$status.'/year/' . _getCurrentYearID() . '/yeartype/B/agency/'
+            . $node->data[0]['agency_id_checkbook_agency'] . '/dashboard/mp?expandBottomCont=true';
+
+    }
+    else {
+        $vendor_link = '/contracts_revenue_landing' . $status . '/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
+            . $node->data[0]['vendor_id_checkbook_vendor_history'] . '?expandBottomCont=true';
+        $agency_link = '/contracts_revenue_landing' . $status . '/year/' . _getCurrentYearID() . '/yeartype/B/agency/'
+            . $node->data[0]['agency_id_checkbook_agency'] . '?expandBottomCont=true';
+    }
 }
 else {
     if(_is_mwbe_vendor(_getRequestParamValue("magid"))){
@@ -68,6 +77,8 @@ if (_getRequestParamValue("datasource") != "checkbook_oge") {
                             LIMIT 1";
 
     $results3 = _checkbook_project_execute_sql_by_data_source($querySubVendorCount,_get_current_datasource());
+    if (!isset($res))
+        $res = new stdClass();
     $res->data = $results3;
     $total_subvendor_count = $res->data[0]['sub_vendor_count'];
 }
