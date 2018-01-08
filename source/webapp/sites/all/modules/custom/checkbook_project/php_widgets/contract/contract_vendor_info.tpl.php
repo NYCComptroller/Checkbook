@@ -124,9 +124,13 @@ $contract_number = $node->data[0]['contract_number'];
 <?php if( _get_current_datasource() == "checkbook" ){?>
     <!-- Total Number of Sub Vendors -->
     <li><span class="gi-list-item">M/WBE Vendor:</span> <?php echo $node->data[0]['mwbe_vendor'] ;?></li>
-<?php if(!preg_match('/newwindow/',$_GET['q']) && $node->data[0]["mwbe_vendor"] == 'Yes'){ ?>
-    <li><span class="gi-list-item">M/WBE Category:</span> <a href="/contracts_landing<?php echo $status;?>/yeartype/B/year/<?php echo _getFiscalYearID();?>/mwbe/<?php echo $minority_type_id; ?>/dashboard/mp"><?php echo $ethnicity ;?></a></li>
-<?php } else { ?>
+
+
+<?php if(!preg_match('/newwindow/',$_GET['q']) && $node->data[0]["mwbe_vendor"] == 'Yes' && _getRequestParamValue("doctype") == "RCT1") { ?>
+        <li><span class="gi-list-item">M/WBE Category:</span> <a href="/contracts_revenue_landing<?php echo $status;?>/yeartype/B/year/<?php echo _getFiscalYearID();?>/mwbe/<?php echo $minority_type_id; ?>/dashboard/mp"><?php echo $ethnicity ;?></a></li>
+<?php } elseif(!preg_match('/newwindow/',$_GET['q']) && $node->data[0]["mwbe_vendor"] == 'Yes'){ ?>
+        <li><span class="gi-list-item">M/WBE Category:</span> <a href="/contracts_landing<?php echo $status;?>/yeartype/B/year/<?php echo _getFiscalYearID();?>/mwbe/<?php echo $minority_type_id; ?>/dashboard/mp"><?php echo $ethnicity ;?></a></li>
+    <?php } else  { ?>
 <li><span class="gi-list-item">M/WBE Category: </span><?php echo  $ethnicity ;?></li>
      <?php }
 } ?>
@@ -141,6 +145,9 @@ if (_getRequestParamValue("datasource") != "checkbook_oge") {
     LIMIT 1";
 
     $results4 = _checkbook_project_execute_sql_by_data_source($querySubVendorinfo,_get_current_datasource());
+    if (!isset($res)) {
+        $res = new stdClass();
+    }
     $res->data = $results4;
 
     $total_current_amount = $res->data[0]['total_current_amt'];

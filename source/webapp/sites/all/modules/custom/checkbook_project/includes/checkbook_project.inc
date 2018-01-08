@@ -2103,7 +2103,7 @@ function _checkbook_max_data_year()
 }
 
 /*
- * Will add mwbe, subvendor and datasource parameters to url.  Precedence ,$source > $overidden_params > requestparam 
+ * Will add mwbe, subvendor and datasource parameters to url.  Precedence ,$source > $overidden_params > requestparam
  */
 
 /**
@@ -2401,7 +2401,14 @@ function _checkbook_vendor_link($vendor_id, $prime = FALSE) {
 
   if (_getRequestParamValue("doctype") == "RCT1") {
     $page = '/contracts_revenue_landing';
-    $mwbe = '';
+      $is_mwbe = _is_mwbe_vendor(_getRequestParamValue("magid"));
+      if ($is_mwbe) {
+          $mwbe = '/dashboard/mp';
+      }
+      else{
+          $mwbe='';
+      }
+
 
   }
   else {
@@ -2475,7 +2482,7 @@ function _checkbook_agency_link($agency_id){
     $query = new EntityFieldQuery();
     $per_page = 5;
     $start_index = ($_REQUEST['page'])? $_REQUEST['page']*$per_page:0;
-    
+
     //Results per page query
     $result = $query->entityCondition('entity_type', 'node')
                 ->entityCondition('bundle', 'new_feature')
@@ -2484,7 +2491,7 @@ function _checkbook_agency_link($agency_id){
                 ->range($start_index, $per_page)
                 ->execute();
     $new_features = node_load_multiple(array_keys($result['node']));
-    
+
     //Total count query
     $countQuery = new EntityFieldQuery();
     $count = $countQuery->entityCondition('entity_type', 'node')
@@ -2492,7 +2499,7 @@ function _checkbook_agency_link($agency_id){
                 ->fieldCondition('field_display', 'value', 1)
                 ->count()
                 ->execute();
-    
+
     $html = theme('new_features',array('new_features'=>$new_features, 'total_count' => $count));
     return $html;
 }*/
