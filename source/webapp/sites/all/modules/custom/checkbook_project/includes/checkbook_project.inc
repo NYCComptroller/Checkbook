@@ -2403,7 +2403,8 @@ function _checkbook_vendor_link($vendor_id, $prime = FALSE) {
     $page = '/contracts_revenue_landing';
       $is_mwbe = _is_mwbe_vendor(_getRequestParamValue("magid"));
       if ($is_mwbe) {
-          $mwbe = '/dashboard/mp';
+         $mwbe = '/dashboard/mp';
+
       }
       else{
           $mwbe='';
@@ -2437,7 +2438,7 @@ function _checkbook_vendor_link($vendor_id, $prime = FALSE) {
     }
   }
 
-  $vendor_link = $page . $status . '/year/' . _getCurrentYearID() . '/yeartype/B/vendor/' . $vendor_id . $mwbe . '?expandBottomCont=true';
+  $vendor_link = $page . $status . '/year/' . _getCurrentYearID() . '/yeartype/B/vendor/' . $vendor_id . $mwbe .'?expandBottomCont=true';
 
   return $vendor_link;
 }
@@ -2448,7 +2449,7 @@ function _checkbook_vendor_link($vendor_id, $prime = FALSE) {
  *
  * @return string
  */
-function _checkbook_agency_link($agency_id){
+function _checkbook_agency_link($agency_id, $prime = FALSE){
 
   $status = '/status/' . (_getRequestParamValue("status") ?: 'A');
 
@@ -2458,8 +2459,15 @@ function _checkbook_agency_link($agency_id){
   }
 
   if (_getRequestParamValue("doctype") == "RCT1") {
-    $agency_link = '/contracts_revenue_landing'.$status.'/year/' . _getCurrentYearID() . $datasource. '/yeartype/B/agency/'
-      . $agency_id . '?expandBottomCont=true';
+      $is_mwbe = _is_mwbe_vendor(_getRequestParamValue("magid"));
+      if ($is_mwbe) {
+          $mwbe = RequestUtilities::_appendMWBESubVendorDatasourceUrlParams();
+      }
+      else{
+          $mwbe='';
+      }
+    $agency_link = '/contracts_revenue_landing'. $status . $mwbe .'/year/' . _getCurrentYearID() . $datasource. '/yeartype/B/agency/'
+      . $agency_id .'?expandBottomCont=true';
   } else {
     $dashboard = '/contracts_landing';
     $url = '  '.RequestUtil::getCurrentPageUrl();
@@ -2470,9 +2478,16 @@ function _checkbook_agency_link($agency_id){
     } elseif (stripos($url, 'contracts_revenue_landing')) {
       $dashboard = '/contracts_revenue_landing';
     }
+      if ($prime) {
+          $is_mwbe = _is_mwbe_vendor(_getRequestParamValue("agid"));
+      }
+
+      if ($is_mwbe) {
+          $mwbe = '/dashboard/mp';
+      }
 
     $agency_link = $dashboard.$status.'/year/' . _getCurrentYearID() . $datasource. '/yeartype/B/agency/'
-      . $agency_id . '?expandBottomCont=true';
+      . $agency_id .$mwbe. '?expandBottomCont=true';
   }
   return $agency_link;
 }
