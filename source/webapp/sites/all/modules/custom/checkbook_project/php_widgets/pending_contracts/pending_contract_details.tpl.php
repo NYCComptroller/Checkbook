@@ -26,16 +26,7 @@ $url = '  ' . RequestUtil::getCurrentPageUrl();
         $agency_link = '/contracts_pending_rev_landing/year/' . _getCurrentYearID() . '/yeartype/B/agency/'. $node->data[0]['agency_id_checkbook_agency'] . '?expandBottomCont=true';
         $vendor_link = '/contracts_pending_rev_landing/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'.$node->data[0]['vendor_vendor'] .'?expandBottomCont=true';
     }else{
-        if (PrimeVendorService::getLatestMinorityTypeByYear($vendor_id, _getCurrentYearID(), 'B')) {
-            $mwbe = '/dashboard/mp';
-        }
-        elseif(_is_mwbe_vendor(_getRequestParamValue("agid"))) {
-            $mwbe = '/dashboard/mp';
-        }
-        elseif(stripos($url,'/dashboard/mp')){
-            $mwbe = '/dashboard/mp';
-        }
-        elseif(_is_mwbe_vendor(_getRequestParamValue("magid"))){
+        if ((PrimeVendorService::getLatestMinorityTypeByYear($vendor_id, _getCurrentYearID(), 'B'))||_is_mwbe_vendor(_getRequestParamValue("agid")) || _is_mwbe_vendor(_getRequestParamValue("magid")) || stripos($url,'/dashboard/mp')) {
             $mwbe = '/dashboard/mp';
         }
         else{
