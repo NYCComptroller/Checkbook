@@ -2434,7 +2434,7 @@ function _checkbook_vendor_link($vendor_id, $prime = FALSE) {
    if ($prime) {
       $is_mwbe = PrimeVendorService::getLatestMinorityTypeByYear($vendor_id, _getCurrentYearID(), 'B');
     }
-   else if(_is_mwbe_vendor(_getRequestParamValue("agid"))) {
+   elseif(_is_mwbe_vendor(_getRequestParamValue("agid"))) {
        $mwbe = '/dashboard/mp';
     }
 
