@@ -2437,6 +2437,9 @@ function _checkbook_vendor_link($vendor_id, $prime = FALSE) {
    elseif(_is_mwbe_vendor(_getRequestParamValue("agid"))) {
        $mwbe = '/dashboard/mp';
     }
+    elseif(_is_mwbe_vendor(_getRequestParamValue("magid"))){
+        $mwbe = '/dashboard/mp';
+    }
 
     if ($is_mwbe) {
       $mwbe = '/dashboard/mp';
