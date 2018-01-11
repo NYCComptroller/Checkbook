@@ -1819,8 +1819,10 @@ function _checkbook_project_execute_sql($sql, $db_name = "main", $data_source = 
       }
 
       $output = array();
-      foreach ($results as $row) {
-        $output[] = get_object_vars($row);
+      if ($results && is_array($results)) {
+          foreach ($results as $row) {
+              $output[] = get_object_vars($row);
+          }
       }
 
       LogHelper::log_info('setting cache '.$query_cid);

@@ -63,7 +63,7 @@ class BudgetWidgetService extends WidgetDataService implements IWidgetService {
                 $class = "bottomContainerReload";
                 
                 $dynamic_parameter = "/bdgcode/" . $row["budget_code_id"];
-                $budget_code_values = BudgetUtil::getBudgetCodeNameAndBudgetCode($row['budget_code_id'],RequestUtilities::getRequestParamValue('agency'),RequestUtilities::getRequestParamValue('year'));
+                $budget_code_values = BudgetUtil::getBudgetCodeNameAndBudgetCode($row['budget_code_id'],_getRequestParamValue('agency'),_getRequestParamValue('year'));
                 $dynamic_parameter .= isset($budget_code_values['budget_code']) ? "/bdgcode_code/" . $budget_code_values["budget_code"] : '';
                 $dynamic_parameter .= isset($budget_code_values['budget_code_name']) ? "/bdgcodenm/" . urlencode(_checkbook_advanced_search_replaceSlash($budget_code_values["budget_code_name"])) : '';
                 
@@ -82,9 +82,9 @@ class BudgetWidgetService extends WidgetDataService implements IWidgetService {
         //'filter_type' is used for 'Percent Difference' widgets
         if(isset($parameters['filter_type'])){
             $type_filter = array();
-            $agency = RequestUtilities::getRequestParamValue('agency');
-            $dept = RequestUtilities::getRequestParamValue('dept');
-            $expcategory = RequestUtilities::getRequestParamValue('expcategory');
+            $agency = _getRequestParamValue('agency');
+            $dept = _getRequestParamValue('dept');
+            $expcategory = _getRequestParamValue('expcategory');
 
             if($agency || $parameters['filter_type'] == 'A'){ 
                 $type_filter[] = 'A';
