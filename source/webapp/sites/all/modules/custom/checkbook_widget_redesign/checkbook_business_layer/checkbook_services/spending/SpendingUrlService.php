@@ -299,8 +299,8 @@ class SpendingUrlService {
     static function getVendorFacetParameter() {
 
         $facet_vendor_id = Dashboard::isSubDashboard()
-            ? RequestUtilities::getRequestParamValue("subvendor")
-            : RequestUtilities::getRequestParamValue("vendor");
+            ? _getRequestParamValue("subvendor")
+            : _getRequestParamValue("vendor");
 
         $facet_vendor_id = isset($facet_vendor_id) ? "/fvendor/" . $facet_vendor_id : '';
 
