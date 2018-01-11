@@ -75,12 +75,14 @@ if($is_payroll_range_filter) {
 //Contract Includes Sub Vendors Facet
 //For N/A value, some values are null, this needs to be handled
 if($node->widgetConfig->filterName == 'Contract Includes Sub Vendors') {
+    if (isset($unchecked) && is_array($unchecked))
     foreach($unchecked as $key => $value) {
         if($value[1] == null) {
             $unchecked[$key][0] = 5;
             $unchecked[$key][1] = "N/A";
         }
     }
+    if (isset($checked) && is_array($checked))
     foreach($checked as $key => $value) {
         if($value[1] == null) {
             $checked[$key][0] = 5;
@@ -92,12 +94,14 @@ if($node->widgetConfig->filterName == 'Contract Includes Sub Vendors') {
 //Sub Vendor Status in PIP
 //For N/A value, some values are null, this needs to be handled
 if($node->widgetConfig->filterName == 'Sub Vendor Status in PIP') {
+    if ($unchecked && is_array($unchecked))
     foreach($unchecked as $key => $value) {
         if($value[1] == null) {
             $unchecked[$key][0] = 0;
             $unchecked[$key][1] = "N/A";
         }
     }
+    if ($checked && is_array($checked))
     foreach($checked as $key => $value) {
         if($value[1] == null) {
             $checked[$key][0] = 0;
@@ -114,6 +118,7 @@ if($node->widgetConfig->filterName == 'Payroll Type') {
         case 898:
         case 899:
         //Advanced Search Payroll Type Facets
+        if ($checked && is_array($checked))
         foreach($checked as $key => $value) {
             if($value[0] == 2 || $value[0] == 3) {
                 $count = $count + $value[2];
@@ -211,6 +216,7 @@ if($is_prime_filter || $is_sub_filter || ($is_prime_sub_filter && $node->widgetC
             unset($unchecked[$key]);
         }
     }
+
     if($asian_american_count > 0) {
         array_push($unchecked,array("4~5","Asian American",$asian_american_count));
         usort($unchecked,
@@ -224,6 +230,9 @@ if($is_prime_filter || $is_sub_filter || ($is_prime_sub_filter && $node->widgetC
         );
     }
     $asian_american_count = 0;
+
+
+    if (isset($checked) && is_array($checked))
     foreach($checked as $key => $value){
         $id = $value[0];
         $name = $value[1];
@@ -241,6 +250,7 @@ if($is_prime_filter || $is_sub_filter || ($is_prime_sub_filter && $node->widgetC
             unset($checked[$key]);
         }
     }
+
     if($asian_american_count > 0) {
         array_push($checked,array("4~5","Asian American",$asian_american_count));
         usort($checked,
@@ -379,7 +389,8 @@ $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
   <div class="filter-title" <?php print $tooltip ?>><span class="<?php print $span;?>">By <?php print $filter_name;?></span></div>
   <div class="facet-content" style="display:<?php echo $display_facet; ?>">
   <div class="progress"></div>
-  <?php  
+  <?php
+  $node->widgetConfig->limit = $node->widgetConfig->limit ?: 50;
     $pages = ceil($node->totalDataCount/$node->widgetConfig->limit);   
     if((isset($checked) && $node->widgetConfig->maxSelect == count($checked)) || count($checked) + count($unchecked) == 0 || $disableFacet){
       $disabled = " DISABLED='true' " ;
@@ -400,28 +411,32 @@ $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
     $disableFacet = $disableFacet ? " DISABLED='true' " : "";
 
     $ct = 0;
-    foreach ($checked as $row) {
+    if ($checked && is_array($checked)) {
+      foreach ($checked as $row) {
         $row[0] = str_replace('__','/', $row[0]);
         $row[1] = str_replace('__','/', $row[1]);
         $id = $id_filter_name."_checked_".$ct;
         echo '<div class="row">';
         echo '<div class="checkbox"><input class="styled" id="'.$id.'" name="' . $autocomplete_id . '" type="checkbox" ' . $disableFacet . 'checked="checked" value="' . urlencode(html_entity_decode($row[0],ENT_QUOTES)) . '" onClick="return applyTableListFilters();"><label for="'.$id.'"></label></div>';
         if($node->widgetConfig->filterName == 'Contract ID') {
-            echo '<div class="name">' . $row[1] . '</div>';
+          echo '<div class="name">' . $row[1] . '</div>';
         }
         else {
-            echo '<div class="name">' . _break_text_custom2($row[1],15) . '</div>';
+          echo '<div class="name">' . _break_text_custom2($row[1],15) . '</div>';
         }
         echo '<div class="number"><span class="active">' . number_format($row[2]) . '</span></div>';
         echo '</div>';
         $ct++;
+      }
     }
+
     ?>
   </div>
   <div class="options">
     <div class="rows">
     <?php
     $ct = 0;
+    if (isset($unchecked) && is_array($unchecked))
     foreach ($unchecked as $row) {
         $row[0] = str_replace('__','/', $row[0]);
         $row[1] = str_replace('__','/', $row[1]);

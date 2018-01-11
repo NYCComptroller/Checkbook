@@ -1319,9 +1319,12 @@ function widget_merge_config($parent_config, $child_config){
         $child_config->paramTypeConfig->$urlParameterName = "ne";
     }
 
-  foreach($child_config->urlParamMap  as $key=>$value){
-    $parent_config->urlParamMap->$key = $value;
-  }
+    if (is_array($child_config->urlParamMap)) {
+      foreach($child_config->urlParamMap  as $key=>$value){
+        $parent_config->urlParamMap->$key = $value;
+      }
+    }
+
   $child_config->urlParamMap = $parent_config->urlParamMap;
   $autocompleteParamName = $child_config->autocompleteParamName;
   if(isset($autocompleteParamName)){
@@ -1518,7 +1521,7 @@ function _update_node_data($data,$keepOriginalDatasource = false){
 		return $data;
 	}
     $returnData = array();
-	  if ($data){
+	  if ($data && is_array($data)){
       foreach($data as $key=>$value){
         $arrayValues = array();
         foreach($value as $a=>$b){
