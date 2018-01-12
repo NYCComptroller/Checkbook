@@ -2416,7 +2416,6 @@ function _checkbook_vendor_link($vendor_id, $prime = FALSE) {
 
     $page = '/contracts_landing';
     $url = '  ' . RequestUtil::getCurrentPageUrl();
-    $mwbeurl=' '.RequestUtilities::_appendMWBESubVendorDatasourceUrlParams();
 
     if (stripos($url, 'contracts_pending_exp_landing') && $status === '/status/A') {
       $page = '/contracts_landing';
@@ -2431,16 +2430,15 @@ function _checkbook_vendor_link($vendor_id, $prime = FALSE) {
       $page = '/contracts_revenue_landing';
     }
 
-   if ($prime) {
-      $is_mwbe = PrimeVendorService::getLatestMinorityTypeByYear($vendor_id, _getCurrentYearID(), 'B');
-    }
-   elseif(_is_mwbe_vendor(_getRequestParamValue("agid"))) {
+
+   if(_is_mwbe_vendor(_getRequestParamValue("agid")) || _is_mwbe_vendor(_getRequestParamValue("magid")) || PrimeVendorService::getLatestMinorityTypeByYear($vendor_id, _getCurrentYearID(), 'B')) {
        $mwbe = '/dashboard/mp';
     }
 
-    if ($is_mwbe) {
-      $mwbe = '/dashboard/mp';
-    }
+    else{
+            $mwbe='';
+        }
+
   }
 
   $vendor_link = $page . $status . '/year/' . _getCurrentYearID() . '/yeartype/B/vendor/' . $vendor_id . $mwbe .'?expandBottomCont=true';
