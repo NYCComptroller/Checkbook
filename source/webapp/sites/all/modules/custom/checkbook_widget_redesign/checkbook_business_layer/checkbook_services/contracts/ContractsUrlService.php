@@ -400,13 +400,6 @@ class ContractsUrlService {
             $year_id = ($year_id == null) ? _getCurrentYearID() : $year_id;
         }
 
-//        if (!$year_id) {
-//            $url_year_id = _getRequestParamValue('year');
-//            if ($url_year_id) {
-//                $year_id = $url_year_id;
-//            }
-//        }
-        
         $latest_minority_id = $year_id
             ? PrimeVendorService::getLatestMinorityTypeByYear($vendor_id, $year_id, $year_type)
             : PrimeVendorService::getLatestMinorityType($vendor_id, $agency_id);
