@@ -75,14 +75,16 @@ if($is_payroll_range_filter) {
 //Contract Includes Sub Vendors Facet
 //For N/A value, some values are null, this needs to be handled
 if($node->widgetConfig->filterName == 'Contract Includes Sub Vendors') {
-    if (isset($unchecked) && is_array($unchecked))
+//    if (isset($unchecked) && is_array($unchecked))
+    if (isset($unchecked) && $unchecked)
     foreach($unchecked as $key => $value) {
         if($value[1] == null) {
             $unchecked[$key][0] = 5;
             $unchecked[$key][1] = "N/A";
         }
     }
-    if (isset($checked) && is_array($checked))
+//    if (isset($checked) && is_array($checked))
+    if (isset($checked) && $checked)
     foreach($checked as $key => $value) {
         if($value[1] == null) {
             $checked[$key][0] = 5;
@@ -94,14 +96,16 @@ if($node->widgetConfig->filterName == 'Contract Includes Sub Vendors') {
 //Sub Vendor Status in PIP
 //For N/A value, some values are null, this needs to be handled
 if($node->widgetConfig->filterName == 'Sub Vendor Status in PIP') {
-    if ($unchecked && is_array($unchecked))
+//    if ($unchecked && is_array($unchecked))
+    if ($unchecked && $unchecked)
     foreach($unchecked as $key => $value) {
         if($value[1] == null) {
             $unchecked[$key][0] = 0;
             $unchecked[$key][1] = "N/A";
         }
     }
-    if ($checked && is_array($checked))
+//    if ($checked && is_array($checked))
+    if (isset($checked) && $checked)
     foreach($checked as $key => $value) {
         if($value[1] == null) {
             $checked[$key][0] = 0;
@@ -118,7 +122,8 @@ if($node->widgetConfig->filterName == 'Payroll Type') {
         case 898:
         case 899:
         //Advanced Search Payroll Type Facets
-        if ($checked && is_array($checked))
+//        if ($checked && is_array($checked))
+        if (isset($checked) && $checked)
         foreach($checked as $key => $value) {
             if($value[0] == 2 || $value[0] == 3) {
                 $count = $count + $value[2];
@@ -232,7 +237,8 @@ if($is_prime_filter || $is_sub_filter || ($is_prime_sub_filter && $node->widgetC
     $asian_american_count = 0;
 
 
-    if (isset($checked) && is_array($checked))
+//    if (isset($checked) && is_array($checked))
+    if (isset($checked) && $checked)
     foreach($checked as $key => $value){
         $id = $value[0];
         $name = $value[1];
@@ -304,12 +310,14 @@ if($node->widgetConfig->filterName == 'Vendor Type'){
     if($node->widgetConfig->parentNid == 932 || $node->widgetConfig->parentNid == 939) {
         $vendor_counts = array();
         // To fix the issue with PM counts are getting added twice to PM~SM
-      if (is_array($checked)) {
+//      if (is_array($checked)) {
+      if (isset($checked) && $checked) {
         foreach($checked as $row){
           $checked_vendor_types[$row[0]] = $row[2];
         }
       }
-        if (is_array($checked_vendor_types)) {
+//        if (is_array($checked_vendor_types)) {
+        if (isset($checked_vendor_types) && $checked_vendor_types) {
           foreach($checked_vendor_types as $key=>$value){
             if(in_array($key,array('P'))){
               $vendor_counts['P~PM'] = $vendor_counts['P~PM']+ $value;
@@ -325,7 +333,8 @@ if($node->widgetConfig->filterName == 'Vendor Type'){
             }
           }
         }
-        if (is_array($unchecked)) {
+//        if (is_array($unchecked)) {
+        if (isset($unchecked) && $unchecked) {
           foreach($unchecked as $row){
             if(in_array($row[0],array('P'))){
               $vendor_counts['P~PM'] = $vendor_counts['P~PM']+ $row[2];
@@ -343,7 +352,8 @@ if($node->widgetConfig->filterName == 'Vendor Type'){
         }
         $checked = $unchecked = array();
         $selected_vendor_types =  _getRequestParamValue('vendortype');
-        if (is_array($vendor_counts)) {
+//        if (is_array($vendor_counts)) {
+        if (isset($vendor_counts) && $vendor_counts) {
           foreach($vendor_counts as $key=>$value){
             if (strpos($selected_vendor_types, $key) !== false) {
               array_push($checked, array($key, MappingUtil::getMixedVendorTypeNames($key),$value));
@@ -411,7 +421,8 @@ $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
     $disableFacet = $disableFacet ? " DISABLED='true' " : "";
 
     $ct = 0;
-    if ($checked && is_array($checked)) {
+//    if ($checked && is_array($checked)) {
+    if (isset($checked) && $checked) {
       foreach ($checked as $row) {
         $row[0] = str_replace('__','/', $row[0]);
         $row[1] = str_replace('__','/', $row[1]);
@@ -436,7 +447,8 @@ $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
     <div class="rows">
     <?php
     $ct = 0;
-    if (isset($unchecked) && is_array($unchecked))
+//    if (isset($unchecked) && is_array($unchecked))
+    if (isset($unchecked) && $unchecked)
     foreach ($unchecked as $row) {
         $row[0] = str_replace('__','/', $row[0]);
         $row[1] = str_replace('__','/', $row[1]);
