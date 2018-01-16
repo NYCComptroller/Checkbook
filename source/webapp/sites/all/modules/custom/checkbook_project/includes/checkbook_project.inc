@@ -2432,7 +2432,7 @@ function _checkbook_vendor_link($vendor_id, $prime = FALSE) {
 
 
    if(_is_mwbe_vendor(_getRequestParamValue("agid")) || _is_mwbe_vendor(_getRequestParamValue("magid")) || PrimeVendorService::getLatestMinorityTypeByYear($vendor_id, _getCurrentYearID(), 'B')) {
-       $mwbe = '/dashboard/mp';
+       $mwbe = RequestUtilities::_appendMWBESubVendorDatasourceUrlParams();
     }
 
     else{
