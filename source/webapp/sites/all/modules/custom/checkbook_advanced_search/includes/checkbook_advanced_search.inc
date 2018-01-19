@@ -58,6 +58,7 @@ function _checkbook_advanced_search_get_year($domain = null, $form = null, $data
 
         $current_fy_id = _getFiscalYearID();
         $max_years = _checkbook_max_data_year();
+        $fiscal_year_array = [];
         foreach ($data as $row) {
             if ($domain != 'revenue' && $domain != 'budget') {
                 if ($row['year_value'] <= $max_years['year_value'] && $row['year_value'] != 2010) {
