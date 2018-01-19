@@ -110,6 +110,8 @@ class SqlModelFactory {
         $sql = $query.$orderBy.$limit;
         $sqlStatementModel->query = htmlspecialchars_decode($sql, ENT_NOQUOTES);
 
+        LogHelper::log_notice($query);
+
         //count query
         $sqlCount = "SELECT COUNT(*) as record_count FROM ( {$query} ) sub_query";
         $sqlStatementModel->countQuery = htmlspecialchars_decode($sqlCount, ENT_NOQUOTES);
