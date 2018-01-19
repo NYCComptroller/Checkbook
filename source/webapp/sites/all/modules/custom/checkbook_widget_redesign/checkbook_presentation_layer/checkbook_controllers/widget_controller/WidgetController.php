@@ -121,16 +121,16 @@ class WidgetController {
                         if(substr($value, 0, 1 ) == "-") {
                             $value = ltrim($value, "-");
                             $param_value = explode(':', $value);
-                            if((count($param_value) == 1 && RequestUtilities::getRequestParamValue($param_value[0])) || 
-                               (count($param_value) == 2 && $param_value[1] == RequestUtilities::getRequestParamValue($param_value[0]))){
+                            if((count($param_value) == 1 && _getRequestParamValue($param_value[0])) ||
+                               (count($param_value) == 2 && $param_value[1] == _getRequestParamValue($param_value[0]))){
                                 return null;
                             }
                         }
                         //Don't show the widget if this parameter is not in the URL
                         else{
                             $param_value = explode(':', $value);
-                            if(!((count($param_value) == 1 && RequestUtilities::getRequestParamValue($param_value[0])) || 
-                               (count($param_value) == 2 && $param_value[1] == RequestUtilities::getRequestParamValue($param_value[0]))))
+                            if(!((count($param_value) == 1 && _getRequestParamValue($param_value[0])) ||
+                               (count($param_value) == 2 && $param_value[1] == _getRequestParamValue($param_value[0]))))
                                 return null;
                         }
                     }

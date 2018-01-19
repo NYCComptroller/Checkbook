@@ -75,14 +75,14 @@ abstract class DataService implements IDataService {
         $limit = isset($limit) ? $limit : $this->limit;
         $orderBy = isset($orderBy) ? $orderBy : $this->orderBy;
         $fnData = $this->fnData;
-//        log_error("Get By DataSet: \n\n".$fnData."\n\n");
+        LogHelper::log_notice("Get By DataSet: \n\n".$fnData."\n\n");
         return $this->getRepository()->getByDataset($parameters, $limit, $orderBy, $fnData);
     }
 
     public function getByDatasetRowCount($parameters = null) {
         $parameters = isset($parameters) ? $parameters : $this->parameters;
         $fnData = $this->fnData;
-//        log_error("Get By RecordCount: \n\n".$fnData."\n\n");
+        LogHelper::log_notice("Get By RecordCount: \n\n".$fnData."\n\n");
         return $this->getRepository()->getByDatasetRowCount($parameters, $fnData);
     }
 

@@ -1319,9 +1319,11 @@ function widget_merge_config($parent_config, $child_config){
         $child_config->paramTypeConfig->$urlParameterName = "ne";
     }
 
-  foreach($child_config->urlParamMap  as $key=>$value){
-    $parent_config->urlParamMap->$key = $value;
-  }
+    if (isset($child_config->urlParamMap) && $child_config->urlParamMap)
+    foreach($child_config->urlParamMap as $key=>$value){
+        $parent_config->urlParamMap->$key = $value;
+    }
+
   $child_config->urlParamMap = $parent_config->urlParamMap;
   $autocompleteParamName = $child_config->autocompleteParamName;
   if(isset($autocompleteParamName)){
@@ -1519,9 +1521,9 @@ function _update_node_data($data,$keepOriginalDatasource = false){
 	}
     $returnData = array();
 	  if ($data){
-      foreach($data as $key=>$value){
+      foreach((Array)$data as $key=>$value){
         $arrayValues = array();
-        foreach($value as $a=>$b){
+        foreach((Array)$value as $a=>$b){
           $a = str_replace('@checkbook_oge:',"@checkbook:",$a);
           $arrayValues[$a] = $b;
         }
@@ -1539,7 +1541,7 @@ function _update_columns_by_datasource($node_columns, $datasource_mapping = null
     $columns = array();
     $database = _getRequestParamValue('datasource');
     $datasource_mapping = ($datasource_mapping != null) ? get_object_vars($datasource_mapping) : null;
-    if (is_array($node_columns)) {
+    if (isset($node_columns) && $node_columns) {
         foreach($node_columns as $column){
             if($datasource_mapping == null){
                 array_push($columns, _update_dataset_datasource($column));

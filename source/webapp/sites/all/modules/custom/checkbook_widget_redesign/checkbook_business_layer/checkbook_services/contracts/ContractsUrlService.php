@@ -251,10 +251,10 @@ class ContractsUrlService {
      */
     static function getFooterUrl($parameters,$legacy_node_id = null) {
 
-        $subvendor = RequestUtilities::getRequestParamValue('subvendor');
-        $vendor = RequestUtilities::getRequestParamValue('vendor');
-        $mwbe = RequestUtilities::getRequestParamValue('mwbe');
-        $industry = RequestUtilities::getRequestParamValue('cindustry');
+        $subvendor = _getRequestParamValue('subvendor');
+        $vendor = _getRequestParamValue('vendor');
+        $mwbe = _getRequestParamValue('mwbe');
+        $industry = _getRequestParamValue('cindustry');
         $category = ContractCategory::getCurrent();
 
         $subvendor_code = $subvendor ? SubVendorService::getVendorCode($subvendor) : null;
@@ -270,7 +270,7 @@ class ContractsUrlService {
             $industry_param = isset($industry) ? (Dashboard::isSubDashboard() ||  $legacy_node_id == 720 ? '/scindustry/'.$industry : '/pcindustry/'.$industry) : '';
         }
         //Handle 3rd bottom navigation
-        $bottom_slider = RequestUtilities::getRequestParamValue('bottom_slider');
+        $bottom_slider = _getRequestParamValue('bottom_slider');
         if($bottom_slider == "sub_vendor") {
             $mwbe_param = isset($mwbe) ? '/pmwbe/'.$mwbe : "";
         }
@@ -389,6 +389,7 @@ class ContractsUrlService {
 
         $year_type = _getRequestParamValue("yeartype");
         $agency_id = _getRequestParamValue("agency");
+        $advanced_search = false;
 
         $current_url = $_SERVER['HTTP_REFERER'];
         if(preg_match("/contract\/search\/transactions/",$current_url) || preg_match("/contract\/all\/transactions/", $current_url)) {
@@ -406,7 +407,7 @@ class ContractsUrlService {
 
         $urlPath = drupal_get_path_alias($_GET['q']);
         if(!preg_match('/pending/',$urlPath)){
-            if(!RequestUtilities::getRequestParamValue('status')){
+            if(!_getRequestParamValue('status')){
                 $url .= "/status/A";
             }
         }
@@ -442,7 +443,7 @@ class ContractsUrlService {
 
         $url = RequestUtilities::_getUrlParamString("agency") .  RequestUtilities::_getUrlParamString("contstatus","status") . _checkbook_project_get_year_url_param_string();
 
-        $current_dashboard = RequestUtilities::getRequestParamValue("dashboard");
+        $current_dashboard = _getRequestParamValue("dashboard");
         $is_mwbe_certified = in_array($latest_minority_id, array(2, 3, 4, 5, 9));
 
         //if M/WBE certified, go to M/WBE (Sub Vendor) else if NOT M/WBE certified, go to Sub Vendor dashboard
