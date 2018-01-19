@@ -21,7 +21,8 @@
 
 class TextLogMessageTrimmer extends AbstractLogMessageListener {
 
-    public static $LOGGED_TEXT_LENGTH__MAXIMUM = 512; // NULL - logging string
+//    public static $LOGGED_TEXT_LENGTH__MAXIMUM = 512; // NULL - logging string
+    public static $LOGGED_TEXT_LENGTH__MAXIMUM = NULL; // NULL - logging string
 
     public function log($level, &$message) {
         if (is_string($message) && isset(self::$LOGGED_TEXT_LENGTH__MAXIMUM)) {
