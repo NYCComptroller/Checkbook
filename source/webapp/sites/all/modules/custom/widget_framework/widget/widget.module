@@ -1521,9 +1521,9 @@ function _update_node_data($data,$keepOriginalDatasource = false){
 	}
     $returnData = array();
 	  if ($data){
-      foreach($data as $key=>$value){
+      foreach((Array)$data as $key=>$value){
         $arrayValues = array();
-        foreach($value as $a=>$b){
+        foreach((Array)$value as $a=>$b){
           $a = str_replace('@checkbook_oge:',"@checkbook:",$a);
           $arrayValues[$a] = $b;
         }
