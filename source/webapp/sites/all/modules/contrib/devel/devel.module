@@ -1142,7 +1142,7 @@ function devel_shutdown_real() {
       }
     }
 
-    if (isset($user) && user_access('access devel information')) {
+    if (isset($user) && user_access('access devel information') && !is_ajax()) {
       $queries = (devel_query_enabled() ? Database::getLog('devel', 'default') : NULL);
       $output .= devel_shutdown_summary($queries);
       $output .= devel_shutdown_query($queries);
