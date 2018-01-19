@@ -1820,7 +1820,7 @@ function _checkbook_project_execute_sql($sql, $db_name = "main", $data_source = 
 
       $output = array();
       if ($results)
-      foreach ((Array)$results as $row) {
+      foreach ($results as $row) {
         $output[] = get_object_vars($row);
       }
 
