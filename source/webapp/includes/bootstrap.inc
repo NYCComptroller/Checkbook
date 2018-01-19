@@ -3913,6 +3913,10 @@ function drupal_clear_opcode_cache($filepath)
     }
 }
 
+function is_ajax() {
+    return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && 'xmlhttprequest' == strtolower($_SERVER['HTTP_X_REQUESTED_WITH']);
+}
+
 function checkbook_timer($event = '')
 {
     if (!defined('LOCAL_VSL4')) {
