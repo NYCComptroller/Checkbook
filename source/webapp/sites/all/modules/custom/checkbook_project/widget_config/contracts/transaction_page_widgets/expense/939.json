@@ -261,8 +261,8 @@
         },
         "prime_vendor_name_link": {
             "type": "expression2",
-            "expression": " '<a href=\"/contracts_revenue_landing'
-            . ContractsUrlService::primeVendorUrl($row['prime_vendor_id'],_getRequestParamValue('year'), false)
+            "expression": " '<a href=\"/contracts_landing'
+            . ContractsUrlService::primeVendorUrl($row['prime_vendor_id'],_getRequestParamValue('year'), false,isset($row['scntrc_status_name']))
             .  '?expandBottomCont=true\">'. $row['prime_vendor_name_formatted'] . '</a>'  "
         },
         "subvendor_name_formatted": {
