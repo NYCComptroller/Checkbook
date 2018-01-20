@@ -262,7 +262,7 @@
         "prime_vendor_name_link": {
             "type": "expression2",
             "expression": " '<a href=\"/contracts_landing'
-            . ContractsUrlService::primeVendorUrl($row['prime_vendor_id'],_getRequestParamValue('year'), false)
+            . ContractsUrlService::primeVendorUrl($row['prime_vendor_id'],_getRequestParamValue('year'), false,isset($row['scntrc_status_name']))
             .  '?expandBottomCont=true\">'. $row['prime_vendor_name_formatted'] . '</a>'  "
         },
         "subvendor_name_formatted": {
@@ -521,9 +521,7 @@
 
                         for(i=0;i<dataLen;i++){
                             var row = data[i];
-
                             sOut += '<tr>';
-                            
                             sOut += '<td class=\"text\" style=\"width:130px\">'+ (row[1] == null ? '': row[1])+'</td>';
                             sOut += '<td class=\"sub-cont-status\"  style=\"width:180px\">'+ (row[2] == null ? '': row[2])+'</td>';
                             sOut += '<td style=\"width:30px\"></td>';
