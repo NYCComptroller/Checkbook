@@ -52,7 +52,7 @@
             onAgencyChange(div_checkbook_spending_oge);
         });
         function onAgencyChange(div) {
-            if (div.ele('agency').val() === 0) {
+            if (div.ele('agency').val() == 0) {
                 div.ele('dept').val('0');
                 div.ele('exp_category').val('0');
                 div.ele('dept').attr("disabled", "disabled");
@@ -61,7 +61,7 @@
             else
             {
                 var year = 0;
-                if(div.ele('date_filter_checked').val() === 0){
+                if(div.ele('date_filter_checked').val() == 0){
                     year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
                 }
                 var agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
@@ -74,7 +74,7 @@
                     ,success: function(data) {
                         var html = '<option select="selected" value="0" >Select Expense Category</option>';
                         if(data[0]){
-                            if(data[0]!== 'No Matches Found'){
+                            if(data[0]!=='No Matches Found'){
                                 $.each(data, function(key, exp_cat){
                                     html = html + '<option value="' + exp_cat.code + '">' + exp_cat.name  + '</option>';
                                 });
@@ -89,7 +89,7 @@
                     ,success: function(data) {
                         var html = '<option select="selected" value="0" >Select Department</option>';
                         if(data[0]){
-                            if(data[0]!== 'No Matches Found'){
+                            if(data[0]!=='No Matches Found'){
                                 for (i = 0; i < data.length; i++) {
                                     html=html + '<option value="' + data[i] + ' ">' + data[i]  + '</option>';
                                 }
@@ -115,7 +115,7 @@
         });
         function onDeptChange(div) {
             year = 0;
-            if(div.ele('date_filter_checked').val() === 0){
+            if(div.ele('date_filter_checked').val() == 0){
                 year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
             }
             var agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
@@ -129,7 +129,7 @@
                 ,success: function(data) {
                     var html = '<option select="selected" value="0" >Select Expense Category</option>';
                     if(data[0]){
-                        if(data[0]!== 'No Matches Found'){
+                        if(data[0]!=='No Matches Found'){
                             $.each(data, function(key, exp_cat){
                                 html = html + '<option value="' + exp_cat.code + '">' + exp_cat.name  + '</option>';
                             });
@@ -149,13 +149,13 @@
             onExpenseTypeChange(div_checkbook_spending_oge);
         });
         function onExpenseTypeChange(div) {
-            if (div.ele('spending_category').val() === 2) {
+            if (div.ele('spending_category').val() == 2) {
                 div.ele('contract_id').attr("disabled", "disabled");
                 div.ele('contract_id').val("");
                 div.ele('payee_name').attr("disabled", "disabled");
                 div.ele('payee_name').val("");
             }
-            else if (div.ele('spending_category').val() === 4) {
+            else if (div.ele('spending_category').val() == 4) {
                 div.ele('contract_id').attr("disabled", "disabled");
                 div.ele('contract_id').val("");
             }
@@ -165,7 +165,7 @@
             }
 
             year = 0;
-            if(div.ele('date_filter_checked').val() === 0){
+            if(div.ele('date_filter_checked').val() ==0){
                 year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
             }
             var agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
@@ -193,7 +193,7 @@
                 ,success: function(data) {
                     var html = '<option select="selected" value="0" >Select Department</option>';
                     if(data[0]){
-                        if(data[0] !== 'No Matches Found'){
+                        if(data[0] != 'No Matches Found'){
                             for (i = 0; i < data.length; i++) {
                                 html=html + '<option value="' + data[i] + ' ">' + data[i]  + '</option>';
                             }
@@ -220,7 +220,7 @@
             var agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
 
             //Don't update drop downs if no agency is selected
-            if(agency === 0) return;
+            if(agency == 0) return;
 
             var dept = (div.ele('dept').val()) ? (div.ele('dept').val()) : 0;
             dept = dept.replace(/\//g,"__");
@@ -275,13 +275,13 @@
             div.ele('date_filter_issue_date').removeAttr('checked');
 
             //reset Expense Type
-            if (div.ele('spending_category').val() === 2) {
+            if (div.ele('spending_category').val() == 2) {
                 div.ele('contract_id').attr("disabled", "disabled");
                 div.ele('contract_id').val("");
                 div.ele('payee_name').attr("disabled", "disabled");
                 div.ele('payee_name').val("");
             }
-            else if (div.ele('spending_category').val() === 4) {
+            else if (div.ele('spending_category').val() == 4) {
                 div.ele('contract_id').attr("disabled", "disabled");
                 div.ele('contract_id').val("");
             }
@@ -292,11 +292,11 @@
 
             //reset Date Filter
             var value = div.ele('date_filter_checked').val();
-            if (value === 0) {
+            if (value == 0) {
                 div.ele('fiscal_year').attr('disabled', '');
                 div.ele('issue_date_from').attr('disabled', 'disabled');
                 div.ele('issue_date_to').attr('disabled', 'disabled');
-            } else if (value === 1) {
+            } else if (value == 1) {
                 div.ele('fiscal_year').attr('disabled', 'disabled');
                 div.ele('issue_date_from').removeAttr("disabled");
                 div.ele('issue_date_to').removeAttr("disabled");
@@ -312,11 +312,11 @@
         });
         function onDateFilterClick(div) {
             var value = div.ele('date_filter_checked').val();
-            if (value === 0) {
+            if (value == 0) {
                 div.ele('fiscal_year').attr('disabled', '');
                 div.ele('issue_date_from').attr('disabled', 'disabled');
                 div.ele('issue_date_to').attr('disabled', 'disabled');
-            } else if (value === 1) {
+            } else if (value == 1) {
                 div.ele('fiscal_year').attr('disabled', 'disabled');
                 div.ele('issue_date_from').removeAttr("disabled");
                 div.ele('issue_date_to').removeAttr("disabled");
@@ -358,7 +358,7 @@
         //Initialize the field elements in the view based on data source selected
         function initializeSpendingView(div, dataSource) {
 
-            if(dataSource === "checkbook_oge") {
+            if(dataSource == "checkbook_oge") {
                 div.ele('date_filter_issue_date').attr('disabled', 'disabled');
             }
 
@@ -367,7 +367,7 @@
             div.ele('exp_category').attr("disabled", "disabled");
 
             year = 0;
-            if (div.ele('date_filter_checked').val() === 0) {
+            if (div.ele('date_filter_checked').val() == 0) {
                 year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
             }
             agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
@@ -425,7 +425,7 @@
             div_spending_main.each(function () {
                 $(this).focusout(function () {
                     year = 0;
-                    if (div.ele('date_filter_checked').val() === 0) {
+                    if (div.ele('date_filter_checked').val() == 0) {
                         year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
                     }
                     agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
@@ -446,7 +446,7 @@
                     div.ele('entity_contract_number').autocomplete({source:'/advanced-search/autocomplete/spending/entitycontractnum/'  + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype + '/' + mwbecat + '/' + industry + '/' + datasource});
                 });
             });
-            if (div.ele('date_filter_checked').val() === 0) {
+            if (div.ele('date_filter_checked').val() == 0) {
                 div.ele('issue_date_from').attr('disabled', 'disabled');
                 div.ele('issue_date_to').attr('disabled', 'disabled');
             }
@@ -458,10 +458,10 @@
         //Reset fields to default values
         function resetFields(divWrapper) {
             jQuery(divWrapper.children()).find(':input').each(function () {
-                if (this.type === 'text') {
+                if (this.type == 'text') {
                     jQuery(this).val('');
                 }
-                if (this.type === 'select-one') {
+                if (this.type == 'select-one') {
                     var default_option = jQuery(this).attr('default_selected_value');
                     if(default_option == null)
                         jQuery(this).find('option:first').attr("selected", "selected");
