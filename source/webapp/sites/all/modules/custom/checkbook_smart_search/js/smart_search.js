@@ -33,13 +33,13 @@
 				currentCategory = "";
 			$.each( items, function( index, item ) {
 
-                if(item.value === 'No matches found'){
+                if(item.value == 'No matches found'){
                     $( "<li class='ui-menu-item'></li>" ).data( "item.autocomplete", item )
                                     .append(item.label)
                                     .appendTo( ul );
                 }
                 else{
-                    if ( item.category !== currentCategory) {
+                    if ( item.category !=currentCategory) {
 					    ul.append( "<li class='ui-autocomplete-category'>" + item.category + "</li>" );
 					    currentCategory = item.category;
 				    }
@@ -52,7 +52,7 @@
 			});
 		}
         $("#edit-search-box").keypress(function(e) {
-            if(e.which === 13) {
+            if(e.which == 13) {
                 $("#edit-search-box").autocomplete("off");
                 $("#edit-search-box").autocomplete("close");
             }
@@ -75,14 +75,14 @@
                 $('span.exportSmartSearch').live("click", function () {
 
                     var dialog = $("#dialog");
-                    if ($("#dialog").length === 0) {
+                    if ($("#dialog").length == 0) {
                         dialog = $('<div id="dialog" style="display:none"></div>');
                     }
                     var domains = '';
                     $.each($('input[name=fdomainName]:checked'),function(){
                     	domains = domains + "~" + this.value;
                     });
-                    if(domains === '' ){
+                    if(domains == '' ){
                     	$.each($('input[name=fdomainName]'),function(){
                             domains = domains + "~" + this.value;
                         });
@@ -92,11 +92,11 @@
 
                     var checked_domains = '';
                     $.each($('input[name=fdomainName]:checked'),function(){
-                        checked_domains = checked_domains === '' ? this.value : checked_domains + "~" + this.value;
+                        checked_domains = checked_domains == '' ? this.value : checked_domains + "~" + this.value;
                     });
-                    if(checked_domains === '' ){
+                    if(checked_domains == '' ){
                         $.each($('input[name=fdomainName]'),function(){
-                            checked_domains = checked_domains === '' ? this.value : checked_domains + "~" + this.value;
+                            checked_domains = checked_domains == '' ? this.value : checked_domains + "~" + this.value;
                         });
                     }
                     var array_domains = checked_domains.split('~');
@@ -199,7 +199,7 @@
                                 var selectedDomain = $('input[name=domain]:checked').val();
                                 $.each(arrayDomainCounts,function(i, val) {
                                     var domainCount = val.split('|');
-                                    if(selectedDomain === domainCount[0])
+                                    if(selectedDomain == domainCount[0])
                                         selectedRecords = domainCount[1];
                                     totalRecords += parseInt(domainCount[1]);
                                 });
@@ -222,12 +222,12 @@
 
                 function getCheckboxAttributes(domain,array_domains) {
                     var checked_domain = array_domains[0];
-                    return (checked_domain === domain ? ' checked' : '') + ($.inArray(domain,array_domains) > -1 ? '' : ' disabled');
+                    return (checked_domain == domain ? ' checked' : '') + ($.inArray(domain,array_domains) > -1 ? '' : ' disabled');
                 }
 
             }
-        };       
-        
+        };
+
      Drupal.behaviors.narrowDownFilters = {
         attach: function (context, settings) {
             var search_term ="";
@@ -236,7 +236,7 @@
             $('#autocomplete_fagencyName',context).autocomplete({
                 source: "/smart_search/autocomplete/agency/" + search_term,
                 focus: function (event, ui) {
-                            if(ui.item.label.toLowerCase() === 'no matches found'){
+                            if(ui.item.label.toLowerCase() == 'no matches found'){
                                 return false;
                             }else{
                                 $(event.target).val(ui.item.label);
@@ -244,7 +244,7 @@
                             }
                         },
                 select: function (event, ui) {
-                        if(ui.item.label.toLowerCase() === 'no matches found'){
+                        if(ui.item.label.toLowerCase() == 'no matches found'){
                             return false;
                         }else{
                             var url = getFacetAutocompleteUrl("agency_names",encodeURIComponent(ui.item.value));
@@ -258,7 +258,7 @@
             $('#autocomplete_fogeName',context).autocomplete({
                 source: "/smart_search/autocomplete/oge/" + search_term,
                 focus: function (event, ui) {
-                    if(ui.item.label.toLowerCase() === 'no matches found'){
+                    if(ui.item.label.toLowerCase() == 'no matches found'){
                         return false;
                     }else{
                         $(event.target).val(ui.item.label);
@@ -266,7 +266,7 @@
                     }
                 },
                 select: function (event, ui) {
-                    if(ui.item.label.toLowerCase() === 'no matches found'){
+                    if(ui.item.label.toLowerCase() == 'no matches found'){
                         return false;
                     }else{
                         var url = getFacetAutocompleteUrl("oge_agency_names",encodeURIComponent(ui.item.value));
@@ -276,11 +276,11 @@
                     }
                 }
             })
-            
+
             $('#autocomplete_fvendorName',context).autocomplete({
                 source: "/smart_search/autocomplete/vendor" + search_term,
                 focus: function (event, ui) {
-                            if(ui.item.label.toLowerCase() === 'no matches found'){
+                            if(ui.item.label.toLowerCase() == 'no matches found'){
                                 return false;
                             }else{
                                 $(event.target).val(ui.item.label);
@@ -288,7 +288,7 @@
                             }
                         },
                 select: function (event, ui) {
-                            if(ui.item.label.toLowerCase() === 'no matches found'){
+                            if(ui.item.label.toLowerCase() == 'no matches found'){
                                 return false;
                             }else{
                                 var url = getFacetAutocompleteUrl("vendor_names",encodeURIComponent(ui.item.value));
@@ -301,7 +301,7 @@
             $('#autocomplete_fexpenseCategoryName',context).autocomplete({
                 source:"/smart_search/autocomplete/expensecategory" + search_term,
                 focus: function (event, ui) {
-                            if(ui.item.label.toLowerCase() === 'no matches found'){
+                            if(ui.item.label.toLowerCase() == 'no matches found'){
                                 return false;
                             }else{
                                 $(event.target).val(ui.item.label);
@@ -309,7 +309,7 @@
                             }
                         },
                 select: function (event, ui) {
-                        if(ui.item.label.toLowerCase() === 'no matches found'){
+                        if(ui.item.label.toLowerCase() == 'no matches found'){
                             return false;
                         }else{
                                 var url = getFacetAutocompleteUrl("expense_categories",encodeURIComponent(ui.item.value));
@@ -322,7 +322,7 @@
             $('#autocomplete_fyear',context).autocomplete({
                 source: "/smart_search/autocomplete/fiscalyear" + search_term,
                 focus: function (event, ui) {
-                            if(ui.item.label.toLowerCase() === 'no matches found'){
+                            if(ui.item.label.toLowerCase() == 'no matches found'){
                                 return false;
                             }else{
                                 $(event.target).val(ui.item.label);
@@ -330,7 +330,7 @@
                             }
                         },
                 select: function (event, ui) {
-                        if(ui.item.label.toLowerCase() === 'no matches found'){
+                        if(ui.item.label.toLowerCase() == 'no matches found'){
                             return false;
                         }else{
                                 var url = getFacetAutocompleteUrl("fiscal_years",encodeURIComponent(ui.item.value));
@@ -343,7 +343,7 @@
             $('#autocomplete_regfyear',context).autocomplete({
                 source: "/smart_search/autocomplete/regfiscalyear" + search_term,
                 focus: function (event, ui) {
-                    if(ui.item.label.toLowerCase() === 'no matches found'){
+                    if(ui.item.label.toLowerCase() == 'no matches found'){
                         return false;
                     }else{
                         $(event.target).val(ui.item.label);
@@ -351,7 +351,7 @@
                     }
                 },
                 select: function (event, ui) {
-                    if(ui.item.label.toLowerCase() === 'no matches found'){
+                    if(ui.item.label.toLowerCase() == 'no matches found'){
                         return false;
                     }else{
                         var url = getFacetAutocompleteUrl("registered_fiscal_years",encodeURIComponent(ui.item.value));
@@ -364,7 +364,7 @@
             $('#autocomplete_findustryTypeName',context).autocomplete({
                 source: "/smart_search/autocomplete/industrytype" + search_term,
                 focus: function (event, ui) {
-                    if(ui.item.label.toLowerCase() === 'no matches found'){
+                    if(ui.item.label.toLowerCase() == 'no matches found'){
                         return false;
                     }else{
                         $(event.target).val(ui.item.label);
@@ -372,7 +372,7 @@
                     }
                 },
                 select: function (event, ui) {
-                    if(ui.item.label.toLowerCase() === 'no matches found'){
+                    if(ui.item.label.toLowerCase() == 'no matches found'){
                         return false;
                     }else{
                         var url = getFacetAutocompleteUrl("industry_type_name",encodeURIComponent(ui.item.value));
@@ -385,10 +385,10 @@
         }
     }
     Drupal.behaviors.clear_search = {
-		  attach: function(context) {    		    
+		  attach: function(context) {
 
 		    $('#edit-search-box', context).focus(function() {
-      		    if(this.value === this.defaultValue){
+      		    if(this.value ==this.defaultValue){
   		          $(this).val("");
   		        }
   		    });
@@ -588,7 +588,7 @@ function getFacetAutocompleteUrl(category, value){
 
         for (var i=1; i<searchTerms.length; i++) {
             var params = searchTerms[i].split('=');
-            if(params[0] === category){
+            if(params[0] == category){
                 count++;
                 params[1] = params[1] + '~' + value;
             }
