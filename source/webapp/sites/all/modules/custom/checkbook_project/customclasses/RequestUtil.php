@@ -775,7 +775,7 @@ class RequestUtil
             $year = _getRequestParamValue("calyear");
         }
         $currentCalYear = _getCalendarYearID();
-        if ($year > $currentCalYear) {
+        if (is_null($year) || $year > $currentCalYear) {
             $year = $currentCalYear;
         }
         return $year;
