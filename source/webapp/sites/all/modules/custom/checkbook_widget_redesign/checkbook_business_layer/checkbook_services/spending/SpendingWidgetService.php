@@ -29,7 +29,7 @@ class SpendingWidgetService extends WidgetDataService implements IWidgetService
 
             case "contract_purpose_formatted":
                 $column = $row['contract_purpose'];
-                $value = (strlen($column) > 0) ? _get_tooltip_markup($column, 40) : 'N/A';
+                $value = (strlen($column) > 0) ? _get_tooltip_markup($column, 40) : '';
                 break;
 
             /* Name Links */
