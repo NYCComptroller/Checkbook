@@ -160,11 +160,11 @@
         },
         "contract_purpose_text":{
             "type": "expression2",
-            "expression": "($row[spending_category_name] == 'Payroll' ||  $row[spending_category_name] == 'Others' || !isset($row[purpose])) ? 'N/A' : $row[purpose_formatted]"
+            "expression": "($row[spending_category_name] == 'Payroll' ||  $row[spending_category_name] == 'Others' || !isset($row[purpose])) ? '' : $row[purpose_formatted]"
         },
         "contract_purpose_export":{
             "type": "expression2",
-            "expression": "($row[spending_category_name] == 'Payroll' ||  $row[spending_category_name] == 'Others' || !isset($row[purpose])) ? 'N/A' : $row[purpose]"
+            "expression": "($row[spending_category_name] == 'Payroll' ||  $row[spending_category_name] == 'Others' || !isset($row[purpose])) ? '' : $row[purpose]"
         },
         "expense_cat_formatted":{
             "type": "expression2",
