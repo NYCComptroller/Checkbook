@@ -472,4 +472,14 @@ class ContractsUrlService {
     static function applyVendorParameter($vendor_id, $year_id = null) {
         $vendornm_exact = _getRequestParamValue("vendornm_exact");
     }
+    static function applyLandingParameter($docType){
+        if($docType=="RCT1"){
+            $page="/contracts_revenue_landing";
+        }
+        else{
+            $page="/contracts_landing";
+        }
+        return $page;
+
+    }
 }
