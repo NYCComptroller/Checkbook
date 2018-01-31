@@ -200,7 +200,7 @@
         "agency_name_link": {
             "type":"expression2",
             "expression":" '<a href=\"'
-             .'/contracts_revenue_landing'
+             .ContractsUrlService::applyLandingParameter($row['document_code'])
              ._checkbook_append_url_params()
             .  '/year/'._getFiscalYearID()
             .  '/yeartype/B'
