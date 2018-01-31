@@ -378,9 +378,15 @@ class ContractsUrlService {
      * @param $current
      * @return string
      */
-    static function primeVendorUrl($vendor_id, $year_id = null, $current = true,$status=false) {
+    static function primeVendorUrl($vendor_id, $year_id = null, $current = true,$status=false,$contractCode) {
+        if ($contractCode == "RCT1") {
+            $page = '/contracts_revenue_landing';
+        }
+        else {
+            $page='/contracts_landing';
+        }
 
-        $url = RequestUtilities::_getUrlParamString("agency")
+        $url = $page.RequestUtilities::_getUrlParamString("agency")
             . RequestUtilities::_getUrlParamString("contstatus","status")
             . RequestUtilities::_getUrlParamString("cindustry")
             . RequestUtilities::_getUrlParamString("csize")
@@ -403,6 +409,7 @@ class ContractsUrlService {
         $latest_minority_id = $year_id
             ? PrimeVendorService::getLatestMinorityTypeByYear($vendor_id, $year_id, $year_type)
             : PrimeVendorService::getLatestMinorityType($vendor_id, $agency_id);
+
         $is_mwbe_certified = MinorityTypeService::isMWBECertified($latest_minority_id);
 
         $urlPath = drupal_get_path_alias($_GET['q']);
@@ -416,7 +423,8 @@ class ContractsUrlService {
         }
         elseif($is_mwbe_certified) {
             $url .= "/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
-        } else {
+        }
+        else {
             $url .= RequestUtilities::_getUrlParamString("datasource")."/vendor/".$vendor_id;
         }
         $currentUrl = RequestUtilities::_getCurrentPage();
