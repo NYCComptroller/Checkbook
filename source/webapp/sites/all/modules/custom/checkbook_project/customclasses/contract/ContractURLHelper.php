@@ -1,19 +1,19 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -66,15 +66,23 @@ class ContractURLHelper{
     static function prepareRevenueContractLink($row, $node) {
 
         $link = NULL;
-        $docType = $row['document_code@checkbook:ref_document_code'];
+       /* $docType = $row['document_code@checkbook:ref_document_code'];*/
+        $docType = $row['document_code'];
+        if($docType=="RCT1"){
+            $page="/contracts_revenue_landing";
+        }
+        else{
+            $page="/contracts_landing";
+        }
+
         $agrParamName = 'magid';//in_array($docType, array('MMA1','MA1')) ? 'magid' : 'agid';
         $agid = isset($row['original_agreement_id']) ? $row['original_agreement_id'] : $row['contract_original_agreement_id'];
 
         if( RequestUtil::isExpandBottomContainer() ){
           $link = '<a href=/panel_html/contract_transactions/' .$agrParamName . '/' . $agid .  '/doctype/' . $docType .  ' class=bottomContainerReload>'. $row['contract_number'] . '</a>';
         } else {
-          $link = '<a href=/contracts_revenue_landing'
-              . _checkbook_project_get_url_param_string('contstatus','status')
+          $link = '<a href='
+              .$page._checkbook_project_get_url_param_string('contstatus','status')
               .  (
                   isset($row['type_of_year@checkbook:contracts_coa_aggregates']) ?
                       ( $row['type_of_year@checkbook:contracts_coa_aggregates'] == 'B' ? ('/yeartype/B/year/'. $row['fiscal_year_id@checkbook:contracts_coa_aggregates']) : ('/yeartype/C/calyear/'.$row['fiscal_year_id@checkbook:contracts_coa_aggregates']) )
@@ -126,7 +134,7 @@ class ContractURLHelper{
 
         $link = NULL;
         $docType = $row['reference_document_code'];
-    
+
         if( RequestUtil::isExpandBottomContainer() ){
             $link = '<a href=/panel_html/contract_transactions/contract_details/agid/' . $row['agreement_id'] .  '/doctype/' . $docType .  _checkbook_append_url_params() . ' class=bottomContainerReload>'. $row['reference_document_number'] . '</a>';
         }else if( RequestUtil::isNewWindow() ){
@@ -163,9 +171,9 @@ class ContractURLHelper{
 
         return $link;
     }
-    
+
     public static function prepareActRegContractsSliderFilter($page, $status){
-        
+
         $pathParams = explode('/',drupal_get_path_alias($_GET['q']));
         $url = $page;
         if(strlen($status) > 0){
@@ -204,10 +212,10 @@ class ContractURLHelper{
             $allowedFilters =  array("year","calyear","agency","yeartype","awdmethod","vendor","csize","cindustry","agid","subvendor","mwbe","status");
             //Add new parameter for bottom slider
             $dashboard = isset($dashboard)? $dashboard : _getRequestParamValue("dashboard");
-            
+
             //Remove dashboard parameter before appending the new value
             $url = preg_replace("/\/dashboard\/../","",$url);
-            $url .= (($third_bottom_slider)?"/bottom_slider/sub_vendor":"")."/status/A"        
+            $url .= (($third_bottom_slider)?"/bottom_slider/sub_vendor":"")."/status/A"
                  .(isset($dashboard)? '/dashboard/'.$dashboard :"");
         }
         for($i=1;$i < count($pathParams);$i++){
@@ -218,7 +226,7 @@ class ContractURLHelper{
             }
             $i++;
         }
-        
+
         //Persist the last parameter in the current page URL as the last param only to fix the title issues
         $lastReqParam = _getLastRequestParamValue();
         if($lastReqParam != _getLastRequestParamValue($url)){
@@ -227,7 +235,7 @@ class ContractURLHelper{
                 $url .= "/".$key."/".$value;
             }
         }
-        
+
         return $url;
 
     }
@@ -238,19 +246,19 @@ class ContractURLHelper{
         $url = $page;
         if( preg_match("/^contracts_pending/", drupal_get_path_alias($_GET['q'])) ){
           $allowedFilters =  array("year","calyear","agency","yeartype","awrdmthd","awdmethod","vendor","csize","cindustry","mwbe","dashboard");
-               
+
         }
         else{
           $allowedFilters =  array("year","calyear","agency","yeartype","awdmethod","vendor","csize","cindustry","mwbe","dashboard");
-        }  
+        }
         for($i=1;$i < count($pathParams);$i++){
-        
+
           if(in_array($pathParams[$i] ,$allowedFilters) ){
               $newPathParams = explode('/', $url);
               $url .= (!in_array($pathParams[$i] ,$newPathParams)) ? '/'.$pathParams[$i].'/'.$pathParams[($i+1)] : '';
           }
           $i++;
-        }     
+        }
         return $url;
 
     }
@@ -398,11 +406,19 @@ class ContractURLHelper{
             $docType = $row['document_code'];
             $agrParamName = in_array($docType, array('MMA1','MA1')) ? 'magid' : 'agid';
         }
+        if($docType=="RCT1"){
+            $page="/contracts_revenue_landing";
+        }
+        else{
+            $page="/contracts_landing";
+        }
+
 
         if( RequestUtil::isExpandBottomContainer() ){
             $link = '<a href=/panel_html/contract_transactions/contract_details/' .$agrParamName . '/' . $row['original_agreement_id'] .  '/doctype/' . $docType .  _checkbook_append_url_params() . ' class=bottomContainerReload>'. $row['contract_number'] . '</a>';
         } else {
-            $link = '<a href=/contracts_landing'
+            $link = '<a href='
+                .$page
                 . _checkbook_project_get_url_param_string('contstatus','status')
                 . _checkbook_append_url_params()
                 . _checkbook_project_get_year_url_param_string()
