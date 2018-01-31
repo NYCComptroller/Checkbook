@@ -199,9 +199,9 @@
         },
         "agency_name_link": {
             "type":"expression2",
-            "expression":" '<a href=\'
-            ."/contracts_revenue_landing"
-            ._checkbook_append_url_params()
+            "expression":" '<a href=\"'
+             .'/contracts_revenue_landing'
+             ._checkbook_append_url_params()
             .  '/year/'._getFiscalYearID()
             .  '/yeartype/B'
             .  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
