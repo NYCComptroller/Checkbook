@@ -5737,7 +5737,7 @@ function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_
  *   Data Feeds wizard form_state array
  */
 function checkbook_datafeeds_spending_validate($form, &$form_state) {
-    
+
     $data_source = $form_state['input']['datafeeds-spending-domain-filter'];
     $agency = $form_state['values']['agency'];
     $agency_code = emptyToZero($agency);
@@ -5953,6 +5953,11 @@ function currentCalendarYear() {
  */
 function _agency_options($data_source = null) {
     try {
+        $cache_key = 'agency_options_'.$data_source;
+        if ($cache = cache_get($cache_key)) {
+            LogHelper::log_info(t('cache found! @cacheID', array('@cacheID' => $cache_key)));
+            return $cache->data;
+        }
         $dataController = data_controller_get_instance();
         switch($data_source)
         {
@@ -5970,6 +5975,8 @@ function _agency_options($data_source = null) {
                 break;
         }
         $results = _checkbook_datafeeds_agency_options($data,$data_source);
+        LogHelper::log_info(t('setting cache @cacheID', array('@cacheID' => $cache_key)));
+        cache_set($cache_key, $results);
         return $results;
     }
     catch (Exception $e) {
@@ -6632,7 +6639,7 @@ function checkbook_datafeeds_confirmation_download_submit($form, &$form_state) {
     }
 
     $record_count = $checkBookApi->getRecordCount();
-    //records <= 100,000
+    //records <= 30,000
     if ($record_count <= 30000) {
         if (isset($checkBookApi)) {
             if ($checkBookApi->validateRequest()) {
@@ -6904,17 +6911,20 @@ function checkbook_datafeeds_end_of_confirmation_form($form, &$form_state, $crit
         );
     }
     elseif ($recordcount > 0 && $recordcount < 200000) {
+        /**
+         * see docs
+            http://wiki.reisys.com:8080/display/USASv2/Data+Feeds+Documentation
+         */
         if (isset($checkBookApi)) {
             if ($checkBookApi->validateRequest()) {
                 if ($recordcount <= 30000) {
                     $form_state['step_information']['confirmation']['response'] = $checkBookApi->getData();
-                }
-                else {
+                } else {    // 30,000 .. 200,000
                     $filename = $checkBookApi->generateFile();
                     $form_state['step_information']['confirmation']['filename'] = $filename;
                 }
             }
-            else {
+            else {  // invalid request
                 $form_state['step_information']['confirmation']['response'] = $checkBookApi->getErrorResponse();
             }
         }
@@ -6938,7 +6948,7 @@ function checkbook_datafeeds_end_of_confirmation_form($form, &$form_state, $crit
             '#value' => t('Cancel'),
         );
     }
-    else {
+    else {  // > 200,000
         $form_state['step_information']['confirmation']['stored_values']['user_criteria']['Record Count'] = $recordcount;
         $form['count'] = array(
             '#type' => 'fieldset',

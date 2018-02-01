@@ -177,7 +177,7 @@ class QueueJob {
         $response_columns = is_array($request_criteria['responseColumns']) ? $request_criteria['responseColumns'] : array_keys($configured_response_columns);
         $csv_headers = '"' . implode('","', $response_columns) . '"';
         $file = $this->getFullPathToFile($filename,$this->tmpFileOutputDir);
-        $command = "sed -i 1i'" . $csv_headers . "' " . $file;
+        $command = "sed -i.old '1s;^;" . $csv_headers . "\\".PHP_EOL.";' " . $file;
         return $command;
     }
 
