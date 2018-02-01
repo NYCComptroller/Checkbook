@@ -2488,10 +2488,10 @@ function _checkbook_agency_link($agency_id, $prime = FALSE){
 
 
       if (_is_mwbe_vendor(_getRequestParamValue("magid"))) {
-          $mwbe = '/dashboard/mp';
+          $mwbe = RequestUtilities::_appendMWBESubVendorDatasourceUrlParams();
       }
       else if(_is_mwbe_vendor(_getRequestParamValue("agid"))){
-          $mwbe = '/dashboard/mp';
+          $mwbe = RequestUtilities::_appendMWBESubVendorDatasourceUrlParams();
       }
     $agency_link = $dashboard.$status.'/year/' . _getCurrentYearID() . $datasource. '/yeartype/B/agency/'
       . $agency_id .$mwbe. '?expandBottomCont=true';
