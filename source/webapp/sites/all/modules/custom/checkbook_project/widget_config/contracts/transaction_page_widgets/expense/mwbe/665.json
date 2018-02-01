@@ -2,7 +2,7 @@
     "widgetType": "data_tables",
     "cleanURLParameters":["magid","contstatus","year","yeartype"],
     "urlParamMap":{"magid":"master_agreement_id","year":"fiscal_year_id@checkbook:all_contracts_coa_aggregates","contstatus":"status_flag@checkbook:all_contracts_coa_aggregates","yeartype":"type_of_year@checkbook:all_contracts_coa_aggregates"},
-    "defaultParameters":{"master_agreement_id":-1},//default master_agreement_id to avoid load
+    "defaultParameters":{"master_agreement_id":-1},
     "useList":true,
     "getTotalDataCount":false,
     "dataset": "checkbook:all_agreement_transactions",

@@ -35,7 +35,7 @@ abstract class WidgetService implements IWidgetService {
      * @return mixed
      */
     public function getLegacyNodeId() {
-        return $this->legacy_node_id ?: RequestUtilities::getRequestParamValue("legacy_node_id");
+        return $this->legacy_node_id ?: _getRequestParamValue("legacy_node_id");
     }
 
     /**

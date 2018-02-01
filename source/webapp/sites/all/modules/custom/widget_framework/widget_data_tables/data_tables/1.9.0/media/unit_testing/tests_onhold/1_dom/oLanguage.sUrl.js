@@ -48,6 +48,7 @@ $(document).ready( function () {
 	);
 	
 	/* One DOM check just to ensure that they go into the DOM */
+    /* jshint -W034 */
 	oTest.fnTest(
 		"Loaded language goes into the DOM",
 		null,

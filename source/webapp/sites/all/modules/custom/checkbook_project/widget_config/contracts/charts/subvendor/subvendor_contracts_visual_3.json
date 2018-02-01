@@ -106,9 +106,9 @@
 		$node->widgetConfig->chartTitle =  'Sub Vendor Top Ten '  .  ContractUtil::getCurrentContractStatusandType() .  ' Sub Vendors Contracts  by Current Amount';
 	}else{
         if(_getRequestParamValue('status') == 'A'){
-		    $node->widgetConfig->chartTitle =  MappingUtil::getCurrenEhtnicityName() . ' Top Ten Active Sub Vendor Contracts by Current Amount';
+		    $node->widgetConfig->chartTitle =  MappingUtil::getCurrenEthnicityName() . ' Top Ten Active Sub Vendor Contracts by Current Amount';
         }else{
-            $node->widgetConfig->chartTitle =  MappingUtil::getCurrenEhtnicityName() . ' Top Ten Active New Sub Vendor Contracts by Current Amount';
+            $node->widgetConfig->chartTitle =  MappingUtil::getCurrenEthnicityName() . ' Top Ten Active New Sub Vendor Contracts by Current Amount';
         }
 	}
 ",

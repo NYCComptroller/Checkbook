@@ -32,28 +32,8 @@ if(_getRequestParamValue("status")){
     $status = '/status/A';
 }
 
-
-if (_getRequestParamValue("doctype") == "RCT1") {
-    $vendor_link = '/contracts_revenue_landing'.$status.'/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
-        . $node->data[0]['vendor_id_checkbook_vendor_history'] . '?expandBottomCont=true';
-    $agency_link = '/contracts_revenue_landing'.$status.'/year/' . _getCurrentYearID() . '/yeartype/B/agency/'
-        . $node->data[0]['agency_id_checkbook_agency'] . '?expandBottomCont=true';
-}
-else {
-    if(_is_mwbe_vendor(_getRequestParamValue("magid"))){
-        $vendor_link = '/contracts_landing'.$status.'/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
-            . $node->data[0]['vendor_id_checkbook_vendor_history'] . '/dashboard/mp?expandBottomCont=true';
-        $agency_link = '/contracts_landing'.$status.'/year/' . _getCurrentYearID() . '/yeartype/B/agency/'
-            . $node->data[0]['agency_id_checkbook_agency'] . '/dashboard/mp?expandBottomCont=true';
-    }
-    else{
-        $vendor_link = '/contracts_landing'.$status.'/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
-            . $node->data[0]['vendor_id_checkbook_vendor_history'] . '?expandBottomCont=true';
-        $agency_link = '/contracts_landing'.$status.'/year/' . _getCurrentYearID() . '/yeartype/B/agency/'
-            . $node->data[0]['agency_id_checkbook_agency'] . '?expandBottomCont=true';
-    }
-
-}
+$vendor_link = _checkbook_vendor_link($node->data[0]['vendor_id_checkbook_vendor_history'],TRUE);
+$agency_link = _checkbook_agency_link($node->data[0]['agency_id_checkbook_agency'],TRUE);
 
 $spending_link = "/spending/transactions/magid/" . _getRequestParamValue("magid") . $datasource . "/newwindow";
 if(!preg_match("/newwindow/",current_path())){
@@ -68,6 +48,8 @@ if (_getRequestParamValue("datasource") != "checkbook_oge") {
                             LIMIT 1";
 
     $results3 = _checkbook_project_execute_sql_by_data_source($querySubVendorCount,_get_current_datasource());
+    if (!isset($res))
+        $res = new stdClass();
     $res->data = $results3;
     $total_subvendor_count = $res->data[0]['sub_vendor_count'];
 }

@@ -169,7 +169,7 @@
 	if(preg_match('/pending_rev/',$_GET['q'])){
 		$contract_type = 'Pending Revenue';
 	}
-	$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Spending by ' . $status . ' ' . $contract_type .  ' Contracts';
+	$node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName() . ' Spending by ' . $status . ' ' . $contract_type .  ' Contracts';
 ",
 "summaryView":{
     "template":"contract_date_summary",
@@ -210,5 +210,6 @@ yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
 tooltipformatter^^'formatter' :
 function() {return this.point.tooltip_label ;
 }
-##clickEvent^^"click": function(){  window.open(Drupal.settings.basePath+this.options.url, '_blank', 'menubar=no,toolbar=no,location=no,resizable=yes,scrollbars=yes,personalbar=no,chrome=yes,height=700,width=980');}
+##
+clickEvent^^"click": function(){  window.open(Drupal.settings.basePath+this.options.url, '_blank', 'menubar=no,toolbar=no,location=no,resizable=yes,scrollbars=yes,personalbar=no,chrome=yes,height=700,width=980');}
 </function>

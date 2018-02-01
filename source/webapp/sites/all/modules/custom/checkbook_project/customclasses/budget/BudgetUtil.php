@@ -13,7 +13,7 @@ class BudgetUtil{
         * @param $node
         * @param $parameters
     */
-    static public function adjustBudgetCodeNameParameter(&$node, &$parameters){
+    public static function adjustBudgetCodeNameParameter(&$node, &$parameters){
         if(isset($parameters['budget_code_name'])){
             $data_controller_instance = data_controller_get_operator_factory_instance();
             $budget_code = $parameters['budget_code_name'][0];
@@ -30,7 +30,7 @@ class BudgetUtil{
         * @param $budget_code
         * @param $year
     */
-    static public function getBudgetCodeId($budget_code_name, $budget_code, $year){
+    public static function getBudgetCodeId($budget_code_name, $budget_code, $year){
         $query = "SELECT DISTINCT budget_code_id FROM budget
                   WHERE budget_code = '". trim($budget_code). "'"
                 ." AND budget_code_name ILIKE '". addslashes(trim($budget_code_name)) . "'"
@@ -38,6 +38,25 @@ class BudgetUtil{
 
         $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
         return $results[0]['budget_code_id'];
+    }
+    
+    /**
+        * Function to get Budget Code and Budget Code Name for the combination of Budget Code ID, Agency Id and Year ID
+        * @param $budget_code_id
+        * @param $agency_id
+        * @param $year
+    */
+    public static function getBudgetCodeNameAndBudgetCode($budget_code_id, $agency_id, $year){
+        $query = "SELECT DISTINCT budget_code, budget_code_name FROM budget
+                  WHERE budget_code_id = ". $budget_code_id
+                ." AND agency_id = ". $agency_id
+                ." AND budget_fiscal_year_id = ". $year;
+        $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
+        if(count($results) > 0){
+            return array('budget_code' => $results[0]['budget_code'], 'budget_code_name' => $results[0]['budget_code_name']);
+        }else{
+            return null;
+        }
     }
     
 }

@@ -86,7 +86,6 @@ jQuery('#capital-projects-filter .chartdateto').val(Highcharts.dateFormat('%Y',a
 ],
 "chartConfig": {
         "title": {
-            //"text": "Capital Projects Fund Aid Revenues",
             "style": {
                 "fontSize": "16px"
             },
@@ -136,7 +135,6 @@ jQuery('#capital-projects-filter .chartdateto').val(Highcharts.dateFormat('%Y',a
 },
 "xAxis": {
             "range1": 284018400000,
-             //"range": 315360000000,
             "range": 279936000000,
             "minRange": 31536000000,
             "tickInterval": 31536000000,

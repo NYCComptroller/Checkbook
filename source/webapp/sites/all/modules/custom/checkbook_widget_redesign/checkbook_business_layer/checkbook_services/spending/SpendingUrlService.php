@@ -200,7 +200,7 @@ class SpendingUrlService {
         }
 
         $dashboard = _getRequestParamValue("dashboard") ?: "mp";
-        $url = self::mwbeUrl($minority_type_id,$dashboard);
+        $url = static::mwbeUrl($minority_type_id,$dashboard);
 
         return $url;
     }
@@ -221,7 +221,7 @@ class SpendingUrlService {
             return null;
         }
         $dashboard = "sp";
-        $url = self::mwbeUrl($minority_type_id,$dashboard);
+        $url = static::mwbeUrl($minority_type_id,$dashboard);
 
         return $url;
     }
@@ -259,7 +259,7 @@ class SpendingUrlService {
 
         $url = '/panel_html/spending_transactions/spending/transactions'
             . RequestUtilities::_getUrlParamString('vendor')
-            . self::getVendorFacetParameter()
+            . static::getVendorFacetParameter()
             . RequestUtilities::_getUrlParamString('agency')
             . RequestUtilities::_getUrlParamString('category')
             . RequestUtilities::_getUrlParamString('industry')
@@ -281,7 +281,7 @@ class SpendingUrlService {
         $legacy_node_id = isset($legacy_node_id) ? '/dtsmnid/'.$legacy_node_id : '';
         $url = '/panel_html/spending_transactions/spending/transactions'
             . RequestUtilities::_getUrlParamString('vendor')
-            . self::getVendorFacetParameter()
+            . static::getVendorFacetParameter()
             . RequestUtilities::_getUrlParamString('agency')
             . RequestUtilities::_getUrlParamString('category')
             . RequestUtilities::_getUrlParamString('industry')
@@ -299,8 +299,8 @@ class SpendingUrlService {
     static function getVendorFacetParameter() {
 
         $facet_vendor_id = Dashboard::isSubDashboard()
-            ? RequestUtilities::getRequestParamValue("subvendor")
-            : RequestUtilities::getRequestParamValue("vendor");
+            ? _getRequestParamValue("subvendor")
+            : _getRequestParamValue("vendor");
 
         $facet_vendor_id = isset($facet_vendor_id) ? "/fvendor/" . $facet_vendor_id : '';
 

@@ -139,7 +139,7 @@ class ContractsUrlService {
      * @param $minority_type_id
      * @return string
      */
-    static public function subMinorityTypeUrl($minority_type_id){
+     public static function subMinorityTypeUrl($minority_type_id){
 
         $showLink = Dashboard::isSubDashboard() && MinorityTypeService::isMWBECertified($minority_type_id);
         $dashboard = DashboardParameter::getCurrent();
@@ -251,10 +251,10 @@ class ContractsUrlService {
      */
     static function getFooterUrl($parameters,$legacy_node_id = null) {
 
-        $subvendor = RequestUtilities::getRequestParamValue('subvendor');
-        $vendor = RequestUtilities::getRequestParamValue('vendor');
-        $mwbe = RequestUtilities::getRequestParamValue('mwbe');
-        $industry = RequestUtilities::getRequestParamValue('cindustry');
+        $subvendor = _getRequestParamValue('subvendor');
+        $vendor = _getRequestParamValue('vendor');
+        $mwbe = _getRequestParamValue('mwbe');
+        $industry = _getRequestParamValue('cindustry');
         $category = ContractCategory::getCurrent();
 
         $subvendor_code = $subvendor ? SubVendorService::getVendorCode($subvendor) : null;
@@ -270,7 +270,7 @@ class ContractsUrlService {
             $industry_param = isset($industry) ? (Dashboard::isSubDashboard() ||  $legacy_node_id == 720 ? '/scindustry/'.$industry : '/pcindustry/'.$industry) : '';
         }
         //Handle 3rd bottom navigation
-        $bottom_slider = RequestUtilities::getRequestParamValue('bottom_slider');
+        $bottom_slider = _getRequestParamValue('bottom_slider');
         if($bottom_slider == "sub_vendor") {
             $mwbe_param = isset($mwbe) ? '/pmwbe/'.$mwbe : "";
         }
@@ -327,7 +327,7 @@ class ContractsUrlService {
                                 $doc_type = "MMA1~MA1~MAR";
                             else if($parameters['contract_type'] == 'child_contract')
                                 $doc_type = "CT1~CTA1~CTR";
-                            else 
+                            else
                                 $doc_type = "MMA1~MA1~MAR~CT1~CTA1~CTR";
                             break;
                     }
@@ -351,19 +351,19 @@ class ContractsUrlService {
 
     /**
      * @param $blnIsMasterAgreement
-     * @param $primeOrSub - Used to set prime or sub dollar difference parameter for 
+     * @param $primeOrSub - Used to set prime or sub dollar difference parameter for
      *        Active/Registered Expense Contracts Modifications details links
      * @return string
      */
     static function getAmtModificationUrlString($blnIsMasterAgreement = false, $primeOrSub = NULL) {
-        
+
         // Set modification parameter for Active/Registered Expense Contracts Modifications details links
         if($primeOrSub == 'P'){
             return '/modamt/0/pmodamt/0';
         }else if($primeOrSub == 'S'){
-           return '/modamt/0/smodamt/0'; 
+           return '/modamt/0/smodamt/0';
         }
-        
+
         if($blnIsMasterAgreement)
             $url = "/modamt/0".(ContractUtil::showSubVendorData() ? '/smodamt/0' : '/pmodamt/0');
         else
@@ -378,9 +378,15 @@ class ContractsUrlService {
      * @param $current
      * @return string
      */
-    static function primeVendorUrl($vendor_id, $year_id = null, $current = true) {
+    static function primeVendorUrl($vendor_id, $year_id = null, $current = true,$status=false,$contractCode) {
+        if ($contractCode == "RCT1") {
+            $page = '/contracts_revenue_landing';
+        }
+        else {
+            $page='/contracts_landing';
+        }
 
-        $url = RequestUtilities::_getUrlParamString("agency")
+        $url = $page.RequestUtilities::_getUrlParamString("agency")
             . RequestUtilities::_getUrlParamString("contstatus","status")
             . RequestUtilities::_getUrlParamString("cindustry")
             . RequestUtilities::_getUrlParamString("csize")
@@ -389,7 +395,8 @@ class ContractsUrlService {
 
         $year_type = _getRequestParamValue("yeartype");
         $agency_id = _getRequestParamValue("agency");
-        
+        $advanced_search = false;
+
         $current_url = $_SERVER['HTTP_REFERER'];
         if(preg_match("/contract\/search\/transactions/",$current_url) || preg_match("/contract\/all\/transactions/", $current_url)) {
             $advanced_search = true;
@@ -398,22 +405,26 @@ class ContractsUrlService {
         if($advanced_search){
             $year_id = ($year_id == null) ? _getCurrentYearID() : $year_id;
         }
-        
+
         $latest_minority_id = $year_id
             ? PrimeVendorService::getLatestMinorityTypeByYear($vendor_id, $year_id, $year_type)
             : PrimeVendorService::getLatestMinorityType($vendor_id, $agency_id);
+
         $is_mwbe_certified = MinorityTypeService::isMWBECertified($latest_minority_id);
 
         $urlPath = drupal_get_path_alias($_GET['q']);
         if(!preg_match('/pending/',$urlPath)){
-            if(!RequestUtilities::getRequestParamValue('status')){
+            if(!_getRequestParamValue('status')){
                 $url .= "/status/A";
             }
         }
-
-        if($is_mwbe_certified) {
+        if($is_mwbe_certified && $status){
+            $url .= "/dashboard/ms/mwbe/2~3~4~5~9/vendor/".$vendor_id;
+        }
+        elseif($is_mwbe_certified) {
             $url .= "/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
-        } else {
+        }
+        else {
             $url .= RequestUtilities::_getUrlParamString("datasource")."/vendor/".$vendor_id;
         }
         $currentUrl = RequestUtilities::_getCurrentPage();
@@ -440,7 +451,7 @@ class ContractsUrlService {
 
         $url = RequestUtilities::_getUrlParamString("agency") .  RequestUtilities::_getUrlParamString("contstatus","status") . _checkbook_project_get_year_url_param_string();
 
-        $current_dashboard = RequestUtilities::getRequestParamValue("dashboard");
+        $current_dashboard = _getRequestParamValue("dashboard");
         $is_mwbe_certified = in_array($latest_minority_id, array(2, 3, 4, 5, 9));
 
         //if M/WBE certified, go to M/WBE (Sub Vendor) else if NOT M/WBE certified, go to Sub Vendor dashboard
@@ -460,5 +471,15 @@ class ContractsUrlService {
 
     static function applyVendorParameter($vendor_id, $year_id = null) {
         $vendornm_exact = _getRequestParamValue("vendornm_exact");
+    }
+    static function applyLandingParameter($docType){
+        if($docType=="RCT1"){
+            $page="/contracts_revenue_landing";
+        }
+        else{
+            $page="/contracts_landing";
+        }
+        return $page;
+
     }
 }

@@ -143,7 +143,7 @@
         },
         "contract_link": {
             "type":"expression2",
-            "expression":"ContractURLHelper::expenseContractsLink($row, $node, false, $row['contract_original_agreement_id'])"
+            "expression":"ContractURLHelper::prepareRevenueContractLink($row, $node)"
         },
         "parent_contract_link": {
             "type":"expression2",
@@ -199,8 +199,9 @@
         },
         "agency_name_link": {
             "type":"expression2",
-            "expression":" '<a href=\"/contracts_landing'
-            ._checkbook_append_url_params()
+            "expression":" '<a href=\"'
+             .ContractsUrlService::applyLandingParameter($row['document_code'])
+             ._checkbook_append_url_params()
             .  '/year/'._getFiscalYearID()
             .  '/yeartype/B'
             .  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
@@ -261,8 +262,8 @@
         },
         "prime_vendor_name_link": {
             "type": "expression2",
-            "expression": " '<a href=\"/contracts_landing'
-            . ContractsUrlService::primeVendorUrl($row['prime_vendor_id'],_getRequestParamValue('year'), false)
+            "expression": " '<a href=\"'
+            . ContractsUrlService::primeVendorUrl($row['prime_vendor_id'],_getRequestParamValue('year'), false,isset($row['scntrc_status_name']),$row['document_code'])
             .  '?expandBottomCont=true\">'. $row['prime_vendor_name_formatted'] . '</a>'  "
         },
         "subvendor_name_formatted": {
@@ -297,7 +298,6 @@
         {"labelAlias":"contract_id","column":"contract_link","sortSourceColumn":"contract_number"},
         {"labelAlias":"contract_includes_sub","column":"contract_includes_sub","sortSourceColumn":"scntrc_status_name"},
         {"label":"","column":""},
-        //START PRIME
         {"labelAlias":"prime_vendor","column":"prime_vendor_name_link","sortSourceColumn":"prime_vendor_name"},
         {"labelAlias":"prime_mwbe_category","column":"prime_minority_type_name","sortSourceColumn":"prime_minority_type_name"},
         {"labelAlias":"contract_purpose","column":"prime_purpose_formatted","sortSourceColumn":"prime_purpose"},
@@ -522,9 +522,7 @@
 
                         for(i=0;i<dataLen;i++){
                             var row = data[i];
-
                             sOut += '<tr>';
-                            
                             sOut += '<td class=\"text\" style=\"width:130px\">'+ (row[1] == null ? '': row[1])+'</td>';
                             sOut += '<td class=\"sub-cont-status\"  style=\"width:180px\">'+ (row[2] == null ? '': row[2])+'</td>';
                             sOut += '<td style=\"width:30px\"></td>';

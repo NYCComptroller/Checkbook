@@ -26,7 +26,6 @@ $value = strtoupper(eval($node->widgetConfig->summaryView->templateLabelEval));
 $summaryContent =  <<<EOD
 <h2 class="contract-title">{$title}</h2>
 EOD;
-
 print $summaryContent;
 
 

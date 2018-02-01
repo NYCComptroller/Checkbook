@@ -16,7 +16,7 @@
 	background-color: #fff;
 	border: 1px solid #d0d0d0;
 	cursor: pointer;
-	*cursor: hand;
+
 }
 
 button.ColVis_Button::-moz-focus-inner { 

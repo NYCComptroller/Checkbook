@@ -164,9 +164,9 @@ order by all_spending.total_spending_amount desc limit 10 \n
 
 	$mwbe_filter = _getRequestParamValue('mwbe');
 	if($mwbe_filter =='4~5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){
-		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName()  . ' Top Ten Prime Vendors Sub Spending';
+		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName()  . ' Top Ten Prime Vendors Sub Spending';
 	}else{
-		$node->widgetConfig->chartTitle = 'Top Ten Prime Vendors by ' . MappingUtil::getCurrenEhtnicityName() .' Sub Spending';
+		$node->widgetConfig->chartTitle = 'Top Ten Prime Vendors by ' . MappingUtil::getCurrenEthnicityName() .' Sub Spending';
 	}
 	$index = 0;
 	foreach($node->data as $row){

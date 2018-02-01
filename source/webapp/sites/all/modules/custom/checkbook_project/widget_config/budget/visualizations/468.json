@@ -104,5 +104,5 @@
 <function>
 yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
 budgetTooltip^^"formatter" : function() {return 'Department: '+this.point.name + '<br>Amount: ' + abbrNum(this.y, 2, '$')}##
-clickEvent^^"click": function(){location.href = this.options.url}##
+clickEvent^^"click": function(){location.href = this.options.url}
 </function>

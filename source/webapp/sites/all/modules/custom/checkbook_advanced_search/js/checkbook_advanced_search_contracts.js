@@ -217,10 +217,10 @@
 
         function resetFields(divWrapper) {
             jQuery(divWrapper.children()).find(':input').each(function () {
-                if (this.type == 'text') {
+                if (this.type === 'text') {
                     jQuery(this).val('');
                 }
-                if (this.type == 'select-one') {
+                if (this.type === 'select-one') {
                     jQuery(this).val('');
                 }
             });
@@ -237,8 +237,8 @@
         function onStatusChange(div) {
             var data_source = $('input[name=contracts_advanced_search_domain_filter]:checked').val();
             var contract_status = div.ele('status').val();
-            if (contract_status == 'P') {
-                if(data_source == 'checkbook') {
+            if (contract_status === 'P') {
+                if(data_source === 'checkbook') {
                     div.ele('registration_date_from').val('').attr("disabled", "disabled");
                     div.ele('registration_date_to').val('').attr("disabled", "disabled");
                 }
@@ -246,7 +246,7 @@
                 div.ele('received_date_from').removeAttr("disabled");
                 div.ele('received_date_to').removeAttr("disabled");
             } else {
-                if(data_source == 'checkbook') {
+                if(data_source === 'checkbook') {
                     div.ele('registration_date_from').removeAttr("disabled");
                     div.ele('registration_date_to').removeAttr("disabled");
                 }
@@ -273,7 +273,7 @@
             var contract_status = div.ele('status').val();
             var contract_category = div.ele('category').val();
 
-            if (contract_status == 'P' || contract_category == 'revenue') {
+            if (contract_status === 'P' || contract_category === 'revenue') {
                 div.ele('includes_sub_vendors').attr("disabled", "disabled");
                 //div.ele('includes_sub_vendors').val('');
                 div.ele('sub_vendor_status').attr("disabled", "disabled");
@@ -295,7 +295,7 @@
         function updateSubvendorStatusField(div) {
             var includes_sub_vendors = div.ele('includes_sub_vendors').val();
 
-            if(includes_sub_vendors == 3 || includes_sub_vendors == 1 || includes_sub_vendors == 4) {
+            if(includes_sub_vendors === 3 || includes_sub_vendors === 1 || includes_sub_vendors === 4) {
                 div.ele('sub_vendor_status').attr("disabled", "disabled");
                 // div.ele('sub_vendor_status').val('');
             } else{
@@ -316,8 +316,8 @@
             var sub_vendor_status = div.ele('sub_vendor_status').val();
             var includes_sub_vendors = div.ele('includes_sub_vendors').val();
             
-            if(sub_vendor_status == 6 || sub_vendor_status == 1 || sub_vendor_status == 4 || sub_vendor_status == 3 || sub_vendor_status == 2 || sub_vendor_status == 5 ) {
-                if(includes_sub_vendors == 2){
+            if(sub_vendor_status === 6 || sub_vendor_status === 1 || sub_vendor_status === 4 || sub_vendor_status === 3 || sub_vendor_status === 2 || sub_vendor_status === 5 ) {
+                if(includes_sub_vendors === 2){
                     div.ele('includes_sub_vendors').html('<option value="0">Select Status</option>' +
                         '<option value="2" selected>Yes</option>');
                 } else {
@@ -325,7 +325,7 @@
                         '<option value="2">Yes</option>');
                 }
             } else {
-                if(includes_sub_vendors == 2){
+                if(includes_sub_vendors === 2){
                     div.ele('includes_sub_vendors').html('<option value="0">Select Status</option>' +
                         '<option value="2" selected>Yes</option>' +
                         '<option value="3">No</option>' +
