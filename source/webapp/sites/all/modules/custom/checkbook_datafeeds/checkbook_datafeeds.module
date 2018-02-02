@@ -5953,11 +5953,6 @@ function currentCalendarYear() {
  */
 function _agency_options($data_source = null) {
     try {
-        $cache_key = 'agency_options_'.$data_source;
-        if ($cache = cache_get($cache_key)) {
-            LogHelper::log_info(t('cache found! @cacheID', array('@cacheID' => $cache_key)));
-            return $cache->data;
-        }
         $dataController = data_controller_get_instance();
         switch($data_source)
         {
@@ -5974,10 +5969,7 @@ function _agency_options($data_source = null) {
                 ), array("is_display" => "Y"), 'agency_name');
                 break;
         }
-        $results = _checkbook_datafeeds_agency_options($data,$data_source);
-        LogHelper::log_info(t('setting cache @cacheID', array('@cacheID' => $cache_key)));
-        cache_set($cache_key, $results);
-        return $results;
+        return _checkbook_datafeeds_agency_options($data,$data_source);
     }
     catch (Exception $e) {
         log_error("Error getting data from controller: \n" . $e->getMessage());

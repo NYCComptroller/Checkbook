@@ -114,24 +114,16 @@ function _checkbook_advanced_search_get_agencyname_and_id($data_source = 'checkb
                 $parameters = array("is_display" => "Y");
                 break;
         }
-        $cache_key = 'nyc_agencies_key_val_'.md5($data_source.serialize($parameters));
-        if (false && $cache = cache_get($cache_key)) {
-            LogHelper::log_info(t('cache found! @cacheID', array('@cacheID' => $cache_key)));
-            return $cache->data;
-        } else {
-            $dataController = data_controller_get_instance();
-            $nyc_agencies = $dataController->queryDataset($data_source.':agency', array('agency_name', 'agency_id'), $parameters, 'agency_name', 0, NULL, NULL);
-            $nyc_agencies_key_val = array($title);
-            foreach ($nyc_agencies as $value) {
-                if (strlen($value['agency_name']) > 20)
-                    $nyc_agencies_key_val[$value['agency_id']] = substr($value['agency_name'], 0, 20) . '...';
-                else
-                    $nyc_agencies_key_val[$value['agency_id']] = $value['agency_name'];
-            }
-            LogHelper::log_info(t('setting cache @cacheID', array('@cacheID' => $cache_key)));
-            cache_set($cache_key, $nyc_agencies_key_val);
-            return $nyc_agencies_key_val;
+        $dataController = data_controller_get_instance();
+        $nyc_agencies = $dataController->queryDataset($data_source.':agency', array('agency_name', 'agency_id'), $parameters, 'agency_name', 0, NULL, NULL);
+        $nyc_agencies_key_val = array($title);
+        foreach ($nyc_agencies as $value) {
+            if (strlen($value['agency_name']) > 20)
+                $nyc_agencies_key_val[$value['agency_id']] = substr($value['agency_name'], 0, 20) . '...';
+            else
+                $nyc_agencies_key_val[$value['agency_id']] = $value['agency_name'];
         }
+        return $nyc_agencies_key_val;
     } catch (Exception $e) {
         log_error("Error getting data from controller: \n" . $e->getMessage());
         return;

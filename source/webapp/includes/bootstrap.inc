@@ -3919,7 +3919,7 @@ function is_ajax() {
 
 function checkbook_timer($event = '')
 {
-    if (!defined('LOCAL_VSL4')) {
+    if (!dev_env()) {
         return;
     }
     static $start;
@@ -3934,4 +3934,28 @@ function checkbook_timer($event = '')
     $seconds_spent = (($now - $start) % 60);
     LogHelper::log_warn("$event Time: $minutes_spent min $seconds_spent secs");
 //  log_warn("$event Time: $minutes_spent min $seconds_spent secs");
+}
+
+function dev_env() {
+    return defined('CHECKBOOK_DEV') && CHECKBOOK_DEV;
+}
+
+function dev_cache_set($key, $value, $bin = 'cache') {
+    if (!dev_env()) {
+        return;
+    }
+    LogHelper::log_info(t('setting cache @cacheID', array('@cacheID' => $key)));
+    cache_set($key, $value, $bin);
+}
+
+function dev_cache_get($key, $bin = 'cache') {
+    if (!dev_env()) {
+        return;
+    }
+    $cache = cache_get($key, $bin);
+    if ($cache) {
+        LogHelper::log_info(t('cache found! @cacheID', array('@cacheID' => $key)));
+    }
+    return $cache;
+
 }

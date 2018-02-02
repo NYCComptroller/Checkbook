@@ -1805,31 +1805,22 @@ function _checkbook_project_execute_sql($sql, $db_name = "main", $data_source = 
     global $databases;
     LogHelper::log_notice("Querying database \$databases['$data_source']['$db_name'] (".$databases[$data_source][$db_name]['host'].')');
     LogHelper::log_notice($sql);
-    $query_cid = md5($data_source.$db_name.$sql);
-    $cached = cache_get($query_cid, 'cache_field');
-    if (!$cached) {
 
-      $connection = get_datafeed_connection($db_name, $data_source);
-      $results = null;
+    $connection = get_datafeed_connection($db_name, $data_source);
+    $results = null;
 
-      try {
-        $results = $connection->query($sql);
-      } catch (Exception $e) {
-        LogHelper::log_error("Erorr executing DB query for generating: " . $sql . ". Exception is: " . $e);
-      }
-
-      $output = array();
-      if ($results)
-      foreach ($results as $row) {
-        $output[] = get_object_vars($row);
-      }
-
-      LogHelper::log_info('setting cache '.$query_cid);
-      cache_set($query_cid, $output, 'cache_field');
-    } else {
-      LogHelper::log_info('cache found! '.$query_cid);
-      $output = $cached->data;
+    try {
+    $results = $connection->query($sql);
+    } catch (Exception $e) {
+    LogHelper::log_error("Erorr executing DB query for generating: " . $sql . ". Exception is: " . $e);
     }
+
+    $output = array();
+    if ($results)
+    foreach ($results as $row) {
+    $output[] = get_object_vars($row);
+    }
+
 
     return $output;
 }
