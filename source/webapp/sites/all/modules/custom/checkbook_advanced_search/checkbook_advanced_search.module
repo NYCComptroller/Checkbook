@@ -778,13 +778,7 @@ function checkbook_advanced_search_block_view($delta = '')
     $block = array();
     switch ($delta) {
         case 'checkbook_advanced_search_form':
-            $cache_key = $delta . '_view';
-            if ($cache = dev_cache_get($cache_key)) {
-                $block['content'] = $cache->data;
-            } else {
-                $block['content'] = drupal_get_form('checkbook_advanced_search_form');
-                dev_cache_set($cache_key, $block['content']);
-            }
+            $block['content'] = drupal_get_form('checkbook_advanced_search_form');
             break;
     }
     return $block;
