@@ -775,17 +775,10 @@ function checkbook_advanced_search_block_info()
  */
 function checkbook_advanced_search_block_view($delta = '')
 {
+    $block = array();
     switch ($delta) {
         case 'checkbook_advanced_search_form':
-            $cache_key = $delta . '_view';
-            if ($cache = cache_get($cache_key)) {
-                LogHelper::log_info(t('cache found! @cacheID', array('@cacheID' => $cache_key)));
-                $block['content'] = $cache->data;
-            } else {
-                $block['content'] = drupal_get_form('checkbook_advanced_search_form');
-                LogHelper::log_info(t('setting cache @cacheID', array('@cacheID' => $cache_key)));
-                cache_set($cache_key, $block['content']);
-            }
+            $block['content'] = drupal_get_form('checkbook_advanced_search_form');
             break;
     }
     return $block;
