@@ -1806,9 +1806,10 @@ function _checkbook_project_execute_sql($sql, $db_name = "main", $data_source = 
     LogHelper::log_notice("Querying database \$databases['$data_source']['$db_name'] (".$databases[$data_source][$db_name]['host'].')');
     LogHelper::log_notice($sql);
     $query_cid = md5($data_source.$db_name.$sql);
-    $cached = cache_get($query_cid, 'cache_field');
-    if (!$cached) {
-
+    $cached = dev_cache_get($query_cid, 'cache_field');
+    if ($cached) {
+        $output = $cached->data;
+    } else {
       $connection = get_datafeed_connection($db_name, $data_source);
       $results = null;
 
@@ -1824,11 +1825,7 @@ function _checkbook_project_execute_sql($sql, $db_name = "main", $data_source = 
         $output[] = get_object_vars($row);
       }
 
-      LogHelper::log_info('setting cache '.$query_cid);
-      cache_set($query_cid, $output, 'cache_field');
-    } else {
-      LogHelper::log_info('cache found! '.$query_cid);
-      $output = $cached->data;
+      dev_cache_set($query_cid, $output, 'cache_field');
     }
 
     return $output;
