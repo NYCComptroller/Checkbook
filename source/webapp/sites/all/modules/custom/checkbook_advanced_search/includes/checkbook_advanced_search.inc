@@ -115,8 +115,7 @@ function _checkbook_advanced_search_get_agencyname_and_id($data_source = 'checkb
                 break;
         }
         $cache_key = 'nyc_agencies_key_val_'.md5($data_source.serialize($parameters));
-        if (false && $cache = cache_get($cache_key)) {
-            LogHelper::log_info(t('cache found! @cacheID', array('@cacheID' => $cache_key)));
+        if ($cache = dev_cache_get($cache_key)) {
             return $cache->data;
         } else {
             $dataController = data_controller_get_instance();
@@ -128,8 +127,7 @@ function _checkbook_advanced_search_get_agencyname_and_id($data_source = 'checkb
                 else
                     $nyc_agencies_key_val[$value['agency_id']] = $value['agency_name'];
             }
-            LogHelper::log_info(t('setting cache @cacheID', array('@cacheID' => $cache_key)));
-            cache_set($cache_key, $nyc_agencies_key_val);
+            dev_cache_set($cache_key, $nyc_agencies_key_val);
             return $nyc_agencies_key_val;
         }
     } catch (Exception $e) {
