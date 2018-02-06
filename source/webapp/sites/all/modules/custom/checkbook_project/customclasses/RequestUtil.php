@@ -1047,6 +1047,7 @@ class RequestUtil
     public static function getCurrentDomainURLFromParams()
     {
         if (stripos('_'.current_path(), 'contract')) {
+
             $reqParams = MappingUtil::$contractsMWBEParamMap;
             $prefix = 'contracts_landing';
         } else {

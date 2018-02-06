@@ -58,7 +58,7 @@ namespace { //global
 
             return $data_source_amounts_differ;
         }
-        
+
         public static function getCurrentPageDocumentIdsArray(){
         	if(preg_match('/revenue/',$_GET['q']) || preg_match('/pending_rev/',$_GET['q']) ){
         		$document_codes = array('RCT1') ;
@@ -85,7 +85,7 @@ namespace { //global
         	}
         	return $document_codes;
         }
-        
+
         public static function getSubvendorDashboard(){
             $dashboard = _getRequestParamValue('dashboard');
             if($dashboard == 'mp')
@@ -95,14 +95,14 @@ namespace { //global
             else
                 return '/dashboard/'.$dashboard;
         }
-        
+
         public static function getCurrentContractStatusandType(){
         	if(_getRequestParamValue('status') == 'A'){
 				$status = 'Active';
 			}else if(_getRequestParamValue('status') == 'R'){
 				$status = 'Registered';
 			}
-			
+
 			$contract_type = 'Expense';
 			if(preg_match('/revenue/',$_GET['q'])){
 				$contract_type = 'Revenue';
@@ -206,12 +206,12 @@ namespace { //global
             $vendor_id = $row["vendor_vendor"] != null ? $row["vendor_vendor"] : $row["vendor_id"];
             if($vendor_id == null)
                 $vendor_id = $row["prime_vendor_id"];
-            
+
             $year_id = _getRequestParamValue("year");
             $year_type = $row["yeartype_yeartype"];
             $is_prime_or_sub = $row["is_prime_or_sub"] != null ? $row["is_prime_or_sub"] : "P";
             $agency_id = null;
-            
+
             if($row["current_prime_minority_type_id"])
                 $minority_type_id = $row["current_prime_minority_type_id"];
             if($row["minority_type_id"])
@@ -229,7 +229,7 @@ namespace { //global
             $status = _checkbook_project_get_url_param_string("contstatus","status");
             $status = isset($status) && $status != "" ? $status : "/status/A";
             $url = _checkbook_project_get_url_param_string("agency") . $status . _checkbook_project_get_year_url_param_string();
-            
+
             if($is_mwbe_certified && _getRequestParamValue('dashboard') == 'mp') {
                 $url .= _checkbook_project_get_url_param_string("cindustry")
                     . _checkbook_project_get_url_param_string("csize")
@@ -267,8 +267,8 @@ namespace { //global
             return '';
         }
 
-        
-        
+
+
         public static function get_contracts_vendor_link_sub($vendor_id, $year_id = null, $year_type = null,$agency_id = null, $mwbe_cat = null){
 
             $latest_minority_id = isset($mwbe_cat) ? $mwbe_cat : self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id, $year_type, "S");
@@ -280,10 +280,10 @@ namespace { //global
             //if M/WBE certified, go to M/WBE (Sub Vendor) else if NOT M/WBE certified, go to Sub Vendor dashboard
             $new_dashboard = $is_mwbe_certified ? "ms" : "ss";
             $status = strlen(_checkbook_project_get_url_param_string("contstatus","status"))== 0 ? "/status/A" : "";
-            
+
             //Add bottom_slider parameter for 'Sub Vendor Contracts Status by Prime Vendors' dashboard
             $url .= _checkbook_project_get_url_param_string("bottom_slider");
-            
+
             if($current_dashboard != $new_dashboard ){
                     return $url . $status . "/dashboard/" . $new_dashboard . ($is_mwbe_certified ? "/mwbe/2~3~4~5~9" : "" ) . "/subvendor/".$vendor_id;
             }else{
@@ -295,8 +295,8 @@ namespace { //global
 
             return '';
         }
-        
-        
+
+
 
         static public function getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id = null, $year_type = null, $is_prime_or_sub = "P"){
 
@@ -341,7 +341,7 @@ namespace { //global
         			else{
         				$contract_vendor_latest_mwbe_category[$row['vendor_id']][$row['is_prime_or_sub']]['minority_type_id'] = $row['minority_type_id'];
         			}
-        
+
         		}
         	}
 
@@ -543,7 +543,28 @@ namespace { //global
          * @return string
          */
         static function getLandingPageWidgetUrl($override_params = array()) {
-            return self::getContractUrl('contracts_landing',$override_params);
+            $node =  node_load(363);
+            widget_config($node);
+            widget_prepare($node);
+            widget_invoke($node, 'widget_prepare');
+            widget_data($node);
+            if($node->data[0]['total_contracts'] > 0 || $node->data[0]['current_amount_sum'] > 0){
+                $contracts_landing_path = "contracts_landing/status/A";
+            }else if($node->data[1]['total_contracts'] > 0 || $node->data[1]['current_amount_sum'] > 0){
+                $contracts_landing_path = "contracts_landing/status/R";
+            }else if($node->data[2]['total_contracts'] > 0 || $node->data[2]['current_amount_sum'] > 0){
+                $contracts_landing_path = "contracts_revenue_landing/status/A";
+            }else if($node->data[3]['total_contracts'] > 0 || $node->data[3]['current_amount_sum'] > 0){
+                $contracts_landing_path = "contracts_revenue_landing/status/R";
+            }
+            else if($node->data[5]['total_contracts'] > 0 || $node->data[5]['current_amount_sum'] > 0){
+                $contracts_landing_path = "contracts_pending_exp_landing/";
+            }
+            else if($node->data[6]['total_contracts'] > 0 || $node->data[6]['current_amount_sum'] > 0){
+                $contracts_landing_path = "contracts_pending_rev_landing/";
+            }
+
+            return self::getContractUrl($contracts_landing_path,$override_params);
         }
 
         /**
@@ -555,6 +576,7 @@ namespace { //global
          * @return string
          */
         static function getContractUrl($path, $override_params = array()) {
+
 
             $url =  $path . _checkbook_project_get_year_url_param_string();
 
@@ -710,11 +732,11 @@ namespace { //global
             $dashboard = _getRequestParamValue('dashboard');
             $smnid = _getRequestParamValue('smnid');
             $vendor_types = isset($parameters['vendor_type']) ? $parameters['vendor_type'] :NULL;
-            
+
             if(isset($reqYear)){
                 $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
                 $leCondition = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
-                
+
                 if(self::showSubVendorData()){
                     $parameters['sub_starting_year_id']= $leCondition;
                     $parameters['sub_ending_year_id']= $geCondition;
@@ -726,7 +748,7 @@ namespace { //global
                     $parameters['prime_ending_year_id']= $geCondition;
                     $parameters['sub_latest_flag'] = 'Y';
                 }
-                
+
                 if($contractStatus=='R'){
                     $parameters['registered_year_id']= array($reqYear);
                 }
@@ -897,7 +919,7 @@ namespace { //global
                 return null;
             }
         }
-        
+
         static function checkStatusOfSubVendorByPrimeCounts(){
             $count = null;
             $query = "SELECT count(*) AS count
@@ -916,7 +938,7 @@ namespace { //global
             if($count[0]['count'] > 0){
                 return true;
             }else{
-               return false; 
+               return false;
             }
         }
     }
