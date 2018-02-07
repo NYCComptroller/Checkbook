@@ -378,7 +378,7 @@ class ContractsUrlService {
      * @param $current
      * @return string
      */
-    static function primeVendorUrl($vendor_id, $year_id = null, $current = true,$status=false,$contractCode) {
+    static function primeVendorUrl($vendor_id, $year_id = null, $current = true,$contractCode) {
         if ($contractCode == "RCT1") {
             $page = '/contracts_revenue_landing';
         }
@@ -418,10 +418,10 @@ class ContractsUrlService {
                 $url .= "/status/A";
             }
         }
-        if($is_mwbe_certified && $status){
+        /*if($is_mwbe_certified && $status){
             $url .= "/dashboard/ms/mwbe/2~3~4~5~9/vendor/".$vendor_id;
-        }
-        elseif($is_mwbe_certified) {
+        }*/
+        if($is_mwbe_certified) {
             $url .= "/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
         }
         else {
