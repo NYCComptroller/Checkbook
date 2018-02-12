@@ -46,7 +46,7 @@
                         "fiscal_year":"fiscal_year",
                         "industry":"industry_type_name",
                         "issue_date":"check_eft_issued_date",
-                        "mwbe_category":"minority_type_name",
+                        "mwbe_category":"mwbe_category_ui",
                         "payee_name":"vendor_name",
                         "spending_category":"spending_category_name",
                         "sub_contract_reference_id":"sub_contract_id",
@@ -92,7 +92,7 @@
                         "Sub Contract Reference ID":"sub_contract_id",
                         "Sub Vendor":"vendor_type",
                         "Associated Prime Vendor":"prime_vendor_name",
-                        "M/WBE Category":"minority_type_name"
+                        "M/WBE Category":"mwbe_category_ui"
                     },
                     "required_non_display_columns":["vendor_type"]
                 }
