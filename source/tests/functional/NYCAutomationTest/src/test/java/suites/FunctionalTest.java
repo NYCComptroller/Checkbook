@@ -89,7 +89,19 @@ import utilities.TestStatusReport;
 	/* MWBE Spending */
 	MWBETotalSpendingWidgetTest.class,
 	MWBETotalSpendingTitlesTest.class,
-	//MWBETotalSpendingWidgetDetailsTest.class,
+	MWBETotalSpendingWidgetDetailsTest.class,
+	
+	MWBECapitalSpendingWidgetTest.class,
+	MWBECapitalSpendingWidgetDetailsTest.class,   
+
+	MWBEContractSpendingWidgetTest.class,
+	MWBEContractSpendingWidgetDetailsTest.class,
+	
+	MWBETrustAgencySpendingWidgetTest.class,
+	MWBETrustAgencySpendingWidgetDetailsTest.class,	
+
+	MWBEOtherSpendingWidgetTest.class,
+	MWBEOtherSpendingWidgetDetailsTest.class,
 	
 
 })

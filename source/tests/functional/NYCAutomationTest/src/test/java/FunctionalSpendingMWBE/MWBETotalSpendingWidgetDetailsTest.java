@@ -20,8 +20,8 @@ import utilities.NYCBaseTest;
 import utilities.TestStatusReport;
 import utilities.NYCDatabaseUtil;
 
-public class MWBETotalSpendingWidgetDetailsTest extends NYCBaseTest {
-	//public class MWBETotalSpendingWidgetDetailsTest extends TestStatusReport{
+//public class MWBETotalSpendingWidgetDetailsTest extends NYCBaseTest {
+	public class MWBETotalSpendingWidgetDetailsTest extends TestStatusReport{
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	public void GoToPage(){
@@ -38,7 +38,7 @@ public class MWBETotalSpendingWidgetDetailsTest extends NYCBaseTest {
 
 	
 	@Test
-	public void VerifyNumOfchecksWidgetTransactionCount() throws SQLException {
+	public void VerifyNumOfchecksWidgetTransactionPage() throws SQLException {
 		SpendingPage.GoToTop5DetailsPage(WidgetOption.Top5Checks);
 		
 		Integer totalCheckswidgetCountDB = NYCDatabaseUtil.getTotalSpendingMWBEDetailsCount(year,'B');
@@ -50,13 +50,13 @@ public class MWBETotalSpendingWidgetDetailsTest extends NYCBaseTest {
 	    assertEquals("M/WBE Total Spending Agencies Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
 	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getTotalSpendingMWBEDetailsAmount(year,'B');
-		String WidgetDetailsAmountApp = HomePage.GetTransactionAmount1();
+		String WidgetDetailsAmountApp = HomePage.GetTransactionAmount2();
 	    assertEquals("M/WBE Total Spending checks Widget Details page total spending amount did not match", WidgetDetailsAmountApp, WidgetDetailsAmountDB); 
 	  
 
 	}
 	@Test
-	public void VerifyNumOfAgenciesWidgetTransactionCount() throws SQLException {
+	public void VerifyNumOfAgenciesWidgetTransactionPage() throws SQLException {
 		SpendingPage.GoToTop5DetailsPage(WidgetOption.Top5Agencies);
 	
 		Integer totalAgencieswidgetCountDB = NYCDatabaseUtil.getTotalSpendingMWBEDetailsCount(year,'B');
@@ -68,12 +68,12 @@ public class MWBETotalSpendingWidgetDetailsTest extends NYCBaseTest {
 	    assertEquals("M/WBE Total Spending Agencies Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
 	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getTotalSpendingMWBEDetailsAmount(year,'B');
-		String WidgetDetailsAmountapp = HomePage.GetTransactionAmount1();
+		String WidgetDetailsAmountapp = HomePage.GetTransactionAmount2();
 		assertEquals("M/WBE Total Spending Agencies Widget Details page total spending amount did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
 	}
 	
 	@Test
-	public void VerifyNumOfExpenseCategoriesWidgetTransactionCount() throws SQLException{
+	public void VerifyNumOfExpenseCategoriesWidgetTransactionPage() throws SQLException{
 		SpendingPage.GoToTop5DetailsPage(WidgetOption.Top5ExpenseCategories);
 		Integer totalExpenseCategorieswidgetCountDB = NYCDatabaseUtil.getTotalSpendingMWBEDetailsCount(2016,'B');
 		Integer totalExpenseCategoriesWidgetCountApp = SpendingPage.GetTransactionCount1();
@@ -85,13 +85,13 @@ public class MWBETotalSpendingWidgetDetailsTest extends NYCBaseTest {
 	    
 	    
 	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getTotalSpendingMWBEDetailsAmount(year,'B');
-		String WidgetDetailsAmountApp = HomePage.GetTransactionAmount1();
+		String WidgetDetailsAmountApp = HomePage.GetTransactionAmount2();
 		assertEquals("M/WBE Total Spending Exp categories  widget details  page total spening amount did not match", WidgetDetailsAmountApp, WidgetDetailsAmountDB);
 	}
 	
 	
 	@Test
-	public void VerifyNumOfPrimeVendorsWidgetTransactionCount() throws SQLException{
+	public void VerifyNumOfPrimeVendorsWidgetTransactionPage() throws SQLException{
 		SpendingPage.GoToTop5DetailsPage(WidgetOption.Top5PrimeVendors);
 		Integer totalPrimeVendorswidgetCountDB = NYCDatabaseUtil.getTotalSpendingMWBEDetailsCount(2016,'B');
 		Integer totalPrimeVendorsWidgetCountApp = SpendingPage.GetTransactionCount1();
@@ -102,12 +102,12 @@ public class MWBETotalSpendingWidgetDetailsTest extends NYCBaseTest {
 	    assertEquals("M/WBE Total Spending Agencies Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
 	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getTotalSpendingMWBEDetailsAmount(year,'B');
-	    String WidgetDetailsAmountApp = HomePage.GetTransactionAmount1();
+	    String WidgetDetailsAmountApp = HomePage.GetTransactionAmount2();
 		assertEquals("M/WBE Total Spending Prime Vendor  widget details total spending amount did not match", WidgetDetailsAmountApp, WidgetDetailsAmountDB);
 	}
 	
 	@Test
-	public void VerifyNumOfContractsWidgetTransactionCount() throws SQLException{
+	public void VerifyNumOfContractsWidgetTransactionPage() throws SQLException{
 		SpendingPage.GoToTop5DetailsPage(WidgetOption.Top5Contracts);
 		
 		Integer totalContractswidgetCountDB = NYCDatabaseUtil.getTotalSpendingMWBEContractsDetailsCount(2016,'B');
@@ -120,8 +120,44 @@ public class MWBETotalSpendingWidgetDetailsTest extends NYCBaseTest {
 	    
 	    
 	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getTotalSpendingMWBEDetailsAmount(year, 'B');
-		String WidgetDetailsAmountApp = HomePage.GetTransactionAmount1();
+		String WidgetDetailsAmountApp = HomePage.GetTransactionAmount2();
 	    assertEquals("M/WBE Total Spending  Contracts  widget details  page total spending amount did not match", WidgetDetailsAmountApp, WidgetDetailsAmountDB);
+}
+	
+	@Test
+	public void VerifyNumOfSubVendorsWidgetTransactionPage() throws SQLException{
+		SpendingPage.GoToTop5DetailsPage(WidgetOption.Top5SubVendors);
+		
+		Integer totalContractswidgetCountDB = NYCDatabaseUtil.getTotalSpendingMWBESubVendorsDetailsCount(2016,'B');
+		Integer totalContractsWidgetCountApp = SpendingPage.GetTransactionCount1();
+		assertEquals(" M/WBE Total Spending Sub Vendors widget count  did not match with the DB",totalContractsWidgetCountApp, totalContractswidgetCountDB);
+		
+		String WidgetDetailsTitle =  "M/WBE Sub Vendors Total Spending Transactions";
+		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
+	    assertEquals(" M/WBE Total Spending Sub Vendors Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
+	    
+	    
+	   String WidgetDetailsAmountDB =  NYCDatabaseUtil.getTotalSpendingMWBESubVendorsDetailsAmount(year, 'B');
+		String WidgetDetailsAmountApp = HomePage.GetTransactionAmount2();
+	    assertEquals("M/WBE Total Spending  Sub Vendors  widget details  page total spending amount did not match", WidgetDetailsAmountApp, WidgetDetailsAmountDB);
+}
+	
+	@Test
+	public void VerifyNumOfSpendingByIndustriesWidgetTransactionPage() throws SQLException{
+		SpendingPage.GoToTop5DetailsPage(WidgetOption.SpendingByIndustries);
+		
+		Integer totalContractswidgetCountDB = NYCDatabaseUtil.getTotalSpendingMWBEDetailsCount(2016,'B');
+		Integer totalContractsWidgetCountApp = SpendingPage.GetTransactionCount1();
+		assertEquals(" M/WBE Total Spending Industries  widget count  did not match with the DB",totalContractsWidgetCountApp, totalContractswidgetCountDB);
+		
+		String WidgetDetailsTitle =  "M/WBE Spending by Industries Total Spending Transactions";
+		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
+	    assertEquals(" M/WBE Total Spending Agencies Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
+	    
+	    
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getTotalSpendingMWBEDetailsAmount(year, 'B');
+		String WidgetDetailsAmountApp = HomePage.GetTransactionAmount2();
+	    assertEquals("M/WBE Total Spending  Industries widget details  page total spending amount did not match", WidgetDetailsAmountApp, WidgetDetailsAmountDB);
 }
 	
 	//@Test

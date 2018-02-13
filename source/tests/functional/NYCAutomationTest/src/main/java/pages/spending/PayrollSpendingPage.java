@@ -1,6 +1,8 @@
 package pages.spending;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -28,5 +30,21 @@ public class PayrollSpendingPage {
 		String count = (Driver.Instance.findElement(By.id("table_706_info"))).getText();
 		return Helper.GetTotalEntries(count, 9);
 	}
+	
+	public static void GoToBottomNavSpendinglink() {
+        //  WebElement tab = Driver.Instance.findElement(By.cssSelector(".nyc_totals_links. td"));
+      // WebElement tabAnchor = tab.findElement(By.tagName("a"));
+         // WebElement tabAnchor = tab.findElement(By.linkText("Contract Spending"));
+        //  WebElement tabAnchor = tab.findElement(By.className("dollars"));
+          
+          WebElement tabAnchor =Driver.Instance.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div/div/div/div[1]/div/div/div/div[4]/div/div[1]/div/div/div[1]/div/table/tbody/tr/td[2]/div[1]/a"));
+                      
+         // driver.findElement(By.linkText("App Configuration")).click();
+          ((JavascriptExecutor) Driver.Instance).executeScript("arguments[0].scrollIntoView(true);", tabAnchor);
+        tabAnchor.click();
+      }
+	
+	
+	
 
 }

@@ -16,8 +16,8 @@ import pages.mwbe.MWBEPage;
 import utilities.NYCBaseTest;
 import utilities.TestStatusReport;
 
-//public class MWBESpendingTest extends TestStatusReport{
-	public class MWBEMWBESpendingTest extends NYCBaseTest{
+public class MWBEMWBESpendingTest extends TestStatusReport{
+	//public class MWBEMWBESpendingTest extends NYCBaseTest{
 	@Before
 	public void GoToPage(){
 		if(!MWBEPage.IsAt()){
@@ -26,7 +26,7 @@ import utilities.TestStatusReport;
 		if(!(Helper.getCurrentSelectedYear()).equalsIgnoreCase(NYCBaseTest.prop.getProperty("CurrentYear")))
 			   HomePage.SelectYear(NYCBaseTest.prop.getProperty("CurrentYear"));
 	}
-	
+	/*
 	@Test
 	public void VerifyTotalMWBEAmountForAsianAmerican(){
 		String TotalMWBEAmtFY = "$481.1M";
@@ -46,5 +46,5 @@ import utilities.TestStatusReport;
 	    						"Asian American Top Ten Sub Vendors Spending"};  
     	assertTrue(Arrays.equals(sliderTitles, MWBEPage.VisualizationTitles().toArray()));
     }
-
+*/
 }

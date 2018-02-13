@@ -68,6 +68,19 @@ import utilities.TestStatusReport;
 		Integer totalContractsWidgetCountApp = SpendingPage.GetTop5WidgetTotalCount(WidgetOption.Top5Contracts);
 		assertEquals("Total Spending  Contracts  widget count  did not match with the DB",totalContractsWidgetCountApp, totalContractswidgetCountDB);
 	}
+	
+	@Test
+	public void VerifyNumOfSubVendorsWidget() throws SQLException{
+		Integer totalContractswidgetCountDB = NYCDatabaseUtil.getTotalSpendingMWBESubVendorsCount(year,'B');
+		Integer totalContractsWidgetCountApp = SpendingPage.GetTop5WidgetTotalCount(WidgetOption.Top5SubVendors);
+		assertEquals("Total Spending  SubVendor widget count  did not match with the DB",totalContractsWidgetCountApp, totalContractswidgetCountDB);
+	}
+	@Test
+	public void VerifyNumOfSpendingByIndustriesWidget() throws SQLException{
+		Integer totalContractswidgetCountDB = NYCDatabaseUtil.getTotalSpendingMWBEIndustriesCount(year,'B');
+		Integer totalContractsWidgetCountApp = SpendingPage.GetTop5WidgetTotalCount(WidgetOption.SpendingByIndustries);
+		assertEquals("Total Spending  Industries  widget count  did not match with the DB",totalContractsWidgetCountApp, totalContractswidgetCountDB);
+	}
 }
 
 
