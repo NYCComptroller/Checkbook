@@ -339,5 +339,5 @@
             {"datasetName": "contracts_spending", "columnNames": ["agency_id"]},
             {"datasetName": "agency", "columnNames": ["agency_id"]}
         ]
-    }        
+    }
 }
