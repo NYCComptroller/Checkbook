@@ -50,7 +50,7 @@
         },
         "formatted_expense_category": {
             "type": "expression2",
-            "expression": "_get_tooltip_markup($row['expenditure_object_expenditure_object_original_expenditure_object_name'],40)"
+            "expression": "_get_tooltip_markup($row['expenditure_object_name'],40)"
         }
 	},
     "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Expense Categories');",
