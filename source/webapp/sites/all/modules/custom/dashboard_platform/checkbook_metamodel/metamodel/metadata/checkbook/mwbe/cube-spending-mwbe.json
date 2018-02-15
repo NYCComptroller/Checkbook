@@ -107,7 +107,7 @@
                         {
                             "name": "expenditure_object",
                             "datasetName": "expenditure_object",
-                            "sourceColumnName": "expenditure_object_id"
+                            "sourceColumnName": "expenditure_object_code"
                         }
                     ]
                 },
@@ -404,5 +404,5 @@
             {"datasetName": "contracts_mwbe_vendor_spending", "columnNames": ["industry_type_id"]},
             {"datasetName": "industry_type", "columnNames": ["industry_type_id"]}
         ]
-    }        
+    }
 }
