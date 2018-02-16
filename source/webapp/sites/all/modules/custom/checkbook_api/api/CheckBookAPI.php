@@ -203,6 +203,8 @@ class CheckBookAPI {
       return NULL;
     }
 
+    $token = trim($token);
+
     $job_details = QueueUtil::getRequestDetailsByToken($token);
 
     if (isset($job_details['file_name'])) {

@@ -139,7 +139,7 @@ function checkbook_datafeeds_tracking_form() {
         '#title' => t('Tracking Number:'),
         '#type' => 'textfield',
         '#size' => 30,
-        '#maxlength' => 10
+        '#maxlength' => 15
     );
     $form['go'] = array(
         '#value' => t('Go'),
@@ -150,7 +150,7 @@ function checkbook_datafeeds_tracking_form() {
 }
 
 function checkbook_datafeeds_tracking_form_submit($form, &$form_state) {
-    $code = $form_state['values']['tracking_number'];
+    $code = trim($form_state['values']['tracking_number']);
     $form_state['redirect'] = array(
         'track-data-feed',
         array('query' => array('code' => $code,'tn' => '1'))
