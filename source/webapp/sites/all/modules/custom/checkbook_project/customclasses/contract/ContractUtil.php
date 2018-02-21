@@ -548,6 +548,7 @@ namespace { //global
             widget_prepare($node);
             widget_invoke($node, 'widget_prepare');
             widget_data($node);
+
             if($node->data[0]['total_contracts'] > 0 || $node->data[0]['current_amount_sum'] > 0){
                 $contracts_landing_path = "contracts_landing/status/A";
             }else if($node->data[1]['total_contracts'] > 0 || $node->data[1]['current_amount_sum'] > 0){
@@ -565,6 +566,29 @@ namespace { //global
             }
 
             return self::getContractUrl($contracts_landing_path,$override_params);
+        }
+        static function getRevenueLandingPageUrl($vendor_id,$year_id=null,$type=null){
+            if($year_id == null){
+                $year_id =  _getRequestParamValue('year');
+            }
+
+            if($type == null){
+                $type =  _getRequestParamValue('yeartype');
+            }
+            $sql= "SELECT COUNT(l1.contract_number) total_contracts
+            FROM aggregateon_mwbe_contracts_cumulative_spending l1
+            JOIN ref_document_code l2 ON l2.document_code_id = l1.document_code_id
+            WHERE l1.fiscal_year_id = ".$year_id." AND l1.type_of_year = ".$type." AND l1.status_flag = 'R' AND l2.document_code IN ('RCT1') AND l1.vendor_id = ".$vendor_id."";
+
+     $result = _checkbook_project_execute_sql_by_data_source($sql,'checkbook');
+     if($result['total_contracts']==0){
+         $contracts_landing_path="/contracts_revenue_landing/status/A";
+     }
+     else
+     {
+         $contracts_landing_path="/contracts_revenue_landing/status/R";
+     }
+     return $contracts_landing_path;
         }
 
         /**

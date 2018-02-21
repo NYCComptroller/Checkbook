@@ -68,7 +68,8 @@ return $header;
 },
 "vendor_name_link": {
 "type": "expression2",
-"expression": " '<a href=\"/contracts_revenue_landing'
+"expression": " '<a href=\"'
+ .ContractUtil::getRevenueLandingPageUrl($row['vendor_id'])
 . ContractUtil::get_contracts_vendor_link_by_mwbe_category($row)
 .  '?expandBottomCont=true\">'. $row['vendor_formatted'] . '</a>'  "
 },
