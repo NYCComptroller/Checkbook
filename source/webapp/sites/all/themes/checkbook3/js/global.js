@@ -1101,73 +1101,6 @@ Drupal.behaviors.hoveOverMWBE = {
             }
         };
 
-    //Uncomment budget and revenue case and change indexes when enabling budget and revenue
-    //Also see changes in checkbook_advanced_search.module and checkbook_datafeeds.module
-    Drupal.behaviors.advancedSearchAccordions = {
-        attach:function (context, settings) {
-
-            $('a.advanced-search').click(function () {
-
-                var href = window.location.href.replace(/(http|https):\/\//, '');
-                var n = href.indexOf('?');
-                href = href.substring(0, n != -1 ? n : href.length);
-                var data_source = (href.indexOf('datasource/checkbook_oge') !== -1) ? "checkbook_oge" : "checkbook";
-                var page_clicked_from = this.id ? this.id : href.split('/')[1];
-                var active_accordion_window = initializeActiveAccordionWindow(page_clicked_from, data_source);
-
-
-                //Initialize Attributes and styling
-                initializeAccordionAttributes('advanced_search');
-
-                $('#block-checkbook-advanced-search-checkbook-advanced-search-form').dialog({
-                    title:"Advanced Search",
-                    position:['center', 'center'],
-                    width:800,
-                    modal:true,
-                    autoResize:true,
-                    resizable: false,
-                    dragStart: function(){
-                        $(".ui-autocomplete-input").autocomplete("close")
-                    },
-                    open: function(){
-                    },
-                    close: function(){
-                        $(".ui-autocomplete-input").autocomplete("close")
-                        $('input[name="budget_submit"]').css('display','none');
-                        $('input[name="revenue_submit"]').css('display','none');
-                        $('input[name="spending_submit"]').css('display','none');
-                        $('input[name="contracts_submit"]').css('display','none');
-                        $('input[name="payroll_submit"]').css('display','none');
-                    }
-                });
-                /* Correct min-height for IE9, causes hover event to add spaces */
-                $('#block-checkbook-advanced-search-checkbook-advanced-search-form').css('min-height','0%');
-
-                $('.advanced-search-accordion').accordion({
-                    autoHeight: false,
-                    active: active_accordion_window
-                });
-
-                /* For oge, Budget, Revenue & Payroll are not applicable and are disabled */
-                disableAccordionSections(data_source);
-                
-                clearInputFields("#payroll-advanced-search",'payroll');
-                clearInputFieldByDataSource("#contracts-advanced-search",'contracts',data_source);
-                clearInputFieldByDataSource("#spending-advanced-search",'spending',data_source);
-                clearInputFields("#budget-advanced-search",'budget');
-                clearInputFields("#revenue-advanced-search",'revenue');
-
-                clearInputFields("#payroll-advanced-search",'payroll');
-                clearInputFieldByDataSource("#contracts-advanced-search",'contracts',data_source);
-                clearInputFieldByDataSource("#spending-advanced-search",'spending',data_source);
-                clearInputFields("#budget-advanced-search",'budget');
-                clearInputFields("#revenue-advanced-search",'revenue');
-
-                return false;
-            });
-        }
-    };
-
     /*
      * This code is used to determine which window in the accordion should be open when users click the "Advanced Search" link, based on the page
      * from where the link has been clicked
@@ -1262,7 +1195,6 @@ Drupal.behaviors.hoveOverMWBE = {
                 break;
         }
     }
-
 
     /* Function will apply disable the click of the accordian section and apply an attribute for future processing */
     function disableAccordionSection(name) {
