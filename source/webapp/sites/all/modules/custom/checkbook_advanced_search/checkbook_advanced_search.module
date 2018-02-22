@@ -49,18 +49,6 @@ function checkbook_advanced_search_menu()
         'access callback' => TRUE,
         'type' => MENU_CALLBACK,
     );
-
-    $items['myProject/form/%'] = array(
-        'title' => t('Get a form'),
-        'description' => 'Get form',
-        'access callback' => 'user_access',
-        'page callback' => '_get_form',
-        'page arguments' => array(2),
-        'access arguments' => array('access content'),
-        'type' => MENU_CALLBACK,
-    );
-
-
     $items['advanced-search/autocomplete'] = array(
         'page callback' => '_checkbook_advanced_search_autocomplete_get_agencyname_and_id',
         'access callback' => TRUE,
