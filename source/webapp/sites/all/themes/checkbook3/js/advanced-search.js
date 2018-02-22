@@ -13,6 +13,9 @@ jQuery(document).ready(function ($) {
     });
 
     function advanced_search_bootstrap() {
+
+        $('#checkbook-advanced-search-form').attr('action', document.location.pathname);
+
         advanced_search_bootstrap_domains();
 
         var href = window.location.href.replace(/(http|https):\/\//, '');
@@ -135,7 +138,7 @@ jQuery(document).ready(function ($) {
             var budget_name = ($('#edit-budget-budget-name').val()) ? $('#edit-budget-budget-name').val() : 0;
 
             $.ajax({
-                url: '/advanced-search/autocomplete/budget/budgetcode/' + fiscal_year + '/' + agency + '/' + dept.toString().replace(/\//g, "__") + '/' + exp_cat.replace(/\//g, "__") + '/' + budget_name.replace(/\//g, "__"),
+                url: '/advanced-search/autocomplete/budget/budgetcode/' + fiscal_year + '/' + agency + '/' + dept.toString().replace(/\//g, "__") + '/' + exp_cat.toString().replace(/\//g, "__") + '/' + budget_name.toString().replace(/\//g, "__"),
                 success: function (data) {
                     var html = '<option select="selected" value="0" title="">Select Budget Code</option>';
                     if (data[0]) {
@@ -164,7 +167,7 @@ jQuery(document).ready(function ($) {
             var budget_name = ($('#edit-budget-budget-name').val()) ? $('#edit-budget-budget-name').val() : 0;
 
             $.ajax({
-                url: '/advanced-search/autocomplete/budget/budgetname/' + fiscal_year + '/' + agency + '/' + dept.toString().replace(/\//g, "__") + '/' + exp_cat.replace(/\//g, "__") + '/' + budget_code,
+                url: '/advanced-search/autocomplete/budget/budgetname/' + fiscal_year + '/' + agency + '/' + dept.toString().replace(/\//g, "__") + '/' + exp_cat.toString().replace(/\//g, "__") + '/' + budget_code,
                 success: function (data) {
                     var html = '<option select="selected" value="0" title="">Select Budget Name</option>';
                     if (data[0]) {
@@ -297,7 +300,7 @@ jQuery(document).ready(function ($) {
         var budget_name = (jQuery('#edit-budget-budget-name').val()) ? jQuery('#edit-budget-budget-name').val() : 0;
 
         jQuery.ajax({
-            url: '/advanced-search/autocomplete/budget/budgetcode/' + fiscal_year + '/' + agency + '/' + dept.toString().replace(/\//g, "__") + '/' + exp_cat.replace(/\//g, "__") + '/' + budget_name.replace(/\//g, "__"),
+            url: '/advanced-search/autocomplete/budget/budgetcode/' + fiscal_year + '/' + agency + '/' + dept.toString().replace(/\//g, "__") + '/' + exp_cat.toString().replace(/\//g, "__") + '/' + budget_name.toString().replace(/\//g, "__"),
             success: function (data) {
                 var html = '<option select="selected" value="0" title="">Select Budget Code</option>';
                 if (data[0]) {
@@ -326,7 +329,7 @@ jQuery(document).ready(function ($) {
         var budget_name = (jQuery('#edit-budget-budget-name').val()) ? jQuery('#edit-budget-budget-name').val() : 0;
 
         jQuery.ajax({
-            url: '/advanced-search/autocomplete/budget/budgetname/' + fiscal_year + '/' + agency + '/' + dept.toString().replace(/\//g, "__") + '/' + exp_cat.replace(/\//g, "__") + '/' + budget_code,
+            url: '/advanced-search/autocomplete/budget/budgetname/' + fiscal_year + '/' + agency + '/' + dept.toString().replace(/\//g, "__") + '/' + exp_cat.toString().replace(/\//g, "__") + '/' + budget_code,
             success: function (data) {
                 var html = '<option select="selected" value="0" title="">Select Budget Name</option>';
                 if (data[0]) {
