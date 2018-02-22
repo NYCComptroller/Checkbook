@@ -1,20 +1,19 @@
 jQuery(document).ready(function ($) {
     $('a.advanced-search').click(function () {
-        // var content = $(this).html();
-        // $(this).html('<div class="ajax-progress"><div class="throbber"></div></div>');
+        // var prev = $('a.advanced-search').html();
+        // $('a.advanced-search').after('<div class="ajax-progress"><div class="throbber"></div></div>');
 
         if ($('#checkbook-advanced-search-form').length) {
             advanced_search_bootstrap();
         } else {
             $('.block-checkbook-advanced-search .content').load('/advanced-search-ajax', advanced_search_bootstrap);
         }
-
-        // $(this).html(content);
+        // $('.ajax-progress').html(prev);
     });
 
     function advanced_search_bootstrap() {
 
-        $('#checkbook-advanced-search-form').attr('action', document.location.pathname);
+        $('#checkbook-advanced-search-form').attr('action', '/advanced-search');
 
         advanced_search_bootstrap_domains();
 
