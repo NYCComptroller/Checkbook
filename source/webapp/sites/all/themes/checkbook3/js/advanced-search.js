@@ -1,11 +1,4 @@
 jQuery(document).ready(function ($) {
-    //
-    // Drupal.behaviors.createAlerts = {
-    //     attach: function(context, settings) {
-    //
-    //     }
-    // };
-
     Drupal.behaviors.advancedSearchAndAlerts = {
         attach: function (context, settings) {
 
@@ -39,7 +32,16 @@ jQuery(document).ready(function ($) {
             function common_run_after_ajax_once(callback) {
 
                 bind_enter_keyboard_keypress();
+
+                $('input[name="budget_submit"], input[name="revenue_submit"], input[name="spending_submit"],' +
+                    'input[name="contracts_submit"], input[name="payroll_submit"]').addClass('adv-search-submit-btn');
+
+                $('input[name="budget_next"], input[name="revenue_next"], input[name="spending_next"],' +
+                    'input[name="contracts_next"], input[name="payroll_next"]').addClass('create-alert-next-btn');
+
                 bind_create_alert_buttons();
+
+
 
                 callback();
             }
@@ -69,11 +71,7 @@ jQuery(document).ready(function ($) {
                     },
                     close: function () {
                         $(".ui-autocomplete-input").autocomplete("close");
-                        $('input[name="budget_submit"]').css('display', 'none');
-                        $('input[name="revenue_submit"]').css('display', 'none');
-                        $('input[name="spending_submit"]').css('display', 'none');
-                        $('input[name="contracts_submit"]').css('display', 'none');
-                        $('input[name="payroll_submit"]').css('display', 'none');
+                        $('.adv-search-submit-btn').css('display', 'none');
                     }
                 }).css('min-height', '0%');
                 /* Correct min-height for IE9, causes hover event to add spaces */
@@ -108,13 +106,11 @@ jQuery(document).ready(function ($) {
 
             function bootstrap_complete() {
                 $('.as-loading').remove();
-                $('a.advanced-search').show();
-                $('.advanced-search-create-alert').show();
+                $('a.advanced-search, .advanced-search-create-alert').show();
 
                 function formfreeze_advancedsearch(e) {
                     setTimeout(function () {
-                        $(".ui-dialog-titlebar").addClass('transparent');
-                        $(".ui-dialog-titlebar").addClass('disable_me');
+                        $(".ui-dialog-titlebar").addClass('transparent').addClass('disable_me');
                         $("#spending-advanced-search").addClass('transparent');
                         $("#revenue-advanced-search").addClass('transparent');
                         $("#budget-advanced-search").addClass('transparent');
@@ -129,86 +125,33 @@ jQuery(document).ready(function ($) {
 
                 function gif_rotator(e) {
                     setTimeout(function () {
-                        $("#advanced-search-rotator").css('display', 'block');
-                        $("#advanced-search-rotator").addClass('loading_bigger_gif');
+                        $("#advanced-search-rotator").css('display', 'block').addClass('loading_bigger_gif');
                     }, 1);
                 }
 
                 // Disable form
-                $("#edit-spending-submit").click(formfreeze_advancedsearch);
-                $("#edit-spending-submit--2").click(formfreeze_advancedsearch);
-                $("#edit-revenue-submit").click(formfreeze_advancedsearch);
-                $("#edit-budget-submit").click(formfreeze_advancedsearch);
-                $("#edit-contracts-submit").click(formfreeze_advancedsearch);
-                $("#edit-contracts-submit--2").click(formfreeze_advancedsearch);
-                $("#edit-payroll-submit").click(formfreeze_advancedsearch);
+                $('.adv-search-submit-btn').click(formfreeze_advancedsearch);
                 //create alerts
-                $("#edit-revenue-next").click(formfreeze_advancedsearch);
-                $("#edit-payroll-next").click(formfreeze_advancedsearch);
-                $("#edit-spending-next").click(formfreeze_advancedsearch);
-                $("#edit-spending-next--2").click(formfreeze_advancedsearch);
-                $("#edit-spending-next--3").click(formfreeze_advancedsearch);
-                $("#edit-contract-next").click(formfreeze_advancedsearch);
-                $("#edit-contract-next--2").click(formfreeze_advancedsearch);
-                $("#edit-budget-next").click(formfreeze_advancedsearch);
+                $('.create-alert-next-btn').click(formfreeze_advancedsearch);
 
                 // Loading gif
-                $("#edit-spending-submit").click(gif_rotator);
-                $("#edit-spending-submit--2").click(gif_rotator);
-                $("#edit-revenue-submit").click(gif_rotator);
-                $("#edit-budget-submit").click(gif_rotator);
-                $("#edit-contracts-submit").click(gif_rotator);
-                $("#edit-contracts-submit--2").click(gif_rotator);
-                $("#edit-payroll-submit").click(gif_rotator);
+                $('.adv-search-submit-btn').click(gif_rotator);
                 //create alerts
-                $("#edit-revenue-next").click(gif_rotator);
-                $("#edit-payroll-next").click(gif_rotator);
-                $("#edit-spending-next").click(gif_rotator);
-                $("#edit-spending-next--2").click(gif_rotator);
-                $("#edit-spending-next--3").click(gif_rotator);
-                $("#edit-contract-next").click(gif_rotator);
-                $("#edit-contract-next--2").click(gif_rotator);
-                $("#edit-budget-next").click(gif_rotator);
+                $('.create-alert-next-btn').click(gif_rotator);
 
                 $(document).bind("ajaxSend", function () {
                     setTimeout(function () {
                         //Advanced search
-                        $("#edit-spending-submit").attr("disabled", "true");
-                        $("#edit-spending-submit--2").attr("disabled", "true");
-                        $("#edit-revenue-submit").attr("disabled", "true");
-                        $("#edit-budget-submit").attr("disabled", "true");
-                        $("#edit-contracts-submit").attr("disabled", "true");
-                        $("#edit-contracts-submit--2").attr("disabled", "true");
-                        $("#edit-payroll-submit").attr("disabled", "true");
+                        $('.adv-search-submit-btn').attr("disabled", "true");
                         //create alert
-                        $("#edit-revenue-next").attr("disabled", "true");
-                        $("#edit-payroll-next").attr("disabled", "true");
-                        $("#edit-spending-next").attr("disabled", "true");
-                        $("#edit-spending-next--2").attr("disabled", "true");
-                        $("#edit-spending-next--3").attr("disabled", "true");
-                        $("#edit-contract-next").attr("disabled", "true");
-                        $("#edit-contract-next--2").attr("disabled", "true");
-                        $("#edit-budget-next").attr("disabled", "true");
+                        $('.create-alert-next-btn').attr("disabled", "true");
                     }, 1);
                 }).bind("ajaxComplete", function () {
                     setTimeout(function () {
                         //Advanced search
-                        $("#edit-spending-submit").removeAttr('disabled');
-                        $("#edit-spending-submit--2").removeAttr('disabled');
-                        $("#edit-revenue-submit").removeAttr('disabled');
-                        $("#edit-budget-submit").removeAttr('disabled');
-                        $("#edit-contracts-submit").removeAttr('disabled');
-                        $("#edit-contracts-submit--2").removeAttr('disabled');
-                        $("#edit-payroll-submit").removeAttr('disabled');
+                        $('.adv-search-submit-btn').removeAttr('disabled');
                         //Create alert
-                        $("#edit-revenue-next").removeAttr('disabled');
-                        $("#edit-payroll-next").removeAttr('disabled');
-                        $("#edit-spending-next").removeAttr('disabled');
-                        $("#edit-spending-next--2").removeAttr('disabled');
-                        $("#edit-spending-next--3").removeAttr('disabled');
-                        $("#edit-contract-next").removeAttr('disabled');
-                        $("#edit-contract-next--2").removeAttr('disabled');
-                        $("#edit-budget-next").removeAttr('disabled');
+                        $('.create-alert-next-btn').removeAttr('disabled');
                     }, 1);
                 });
             }
@@ -432,9 +375,7 @@ jQuery(document).ready(function ($) {
                                 }
                             }
                         }
-                        $('#edit-budget-budget-name').html(html);
-                        $('#edit-budget-budget-name').val(budget_name);
-                        $('#edit-budget-budget-name').trigger("chosen:updated");
+                        $('#edit-budget-budget-name').html(html).val(budget_name).trigger("chosen:updated");
                         if (budget_code !== $('#edit-budget-budget-code').val()) {
                             reloadBudgetName();
                         }
@@ -1505,32 +1446,16 @@ jQuery(document).ready(function ($) {
                 switch (accordion_type) {
                     case 'advanced_search':
                         $('.create-alert-view').css('display', 'none');
-                        $('input[name="budget_submit"]').css('display', 'inline');
-                        $('input[name="revenue_submit"]').css('display', 'inline');
-                        $('input[name="spending_submit"]').css('display', 'inline');
-                        $('input[name="contracts_submit"]').css('display', 'inline');
-                        $('input[name="payroll_submit"]').css('display', 'inline');
-                        $('input[name="budget_next"]').css('display', 'none');
-                        $('input[name="revenue_next"]').css('display', 'none');
-                        $('input[name="spending_next"]').css('display', 'none');
-                        $('input[name="contracts_next"]').css('display', 'none');
-                        $('input[name="payroll_next"]').css('display', 'none');
+                        $('.adv-search-submit-btn').css('display', 'inline');
+                        $('.create-alert-next-btn').css('display', 'none');
                         $('.advanced-search-accordion').css('display', 'inline');
                         break;
 
                     case 'advanced_search_create_alerts':
                         $('.create-alert-view').css('display', 'inline');
                         $('div.create-alert-submit #edit-next-submit').val('Next');
-                        $('input[name="budget_submit"]').css('display', 'none');
-                        $('input[name="revenue_submit"]').css('display', 'none');
-                        $('input[name="spending_submit"]').css('display', 'none');
-                        $('input[name="contracts_submit"]').css('display', 'none');
-                        $('input[name="payroll_submit"]').css('display', 'none');
-                        $('input[name="budget_next"]').css('display', 'inline');
-                        $('input[name="revenue_next"]').css('display', 'inline');
-                        $('input[name="spending_next"]').css('display', 'inline');
-                        $('input[name="contracts_next"]').css('display', 'inline');
-                        $('input[name="payroll_next"]').css('display', 'inline');
+                        $('.adv-search-submit-btn').css('display', 'none');
+                        $('.create-alert-next-btn').css('display', 'inline');
                         $('.advanced-search-accordion').css('display', 'inline');
                         break;
                 }
@@ -1592,11 +1517,7 @@ jQuery(document).ready(function ($) {
                     },
                     close: function () {
                         $(".ui-autocomplete-input").autocomplete("close");
-                        $('input[name="budget_next"]').css('display', 'none');
-                        $('input[name="revenue_next"]').css('display', 'none');
-                        $('input[name="spending_next"]').css('display', 'none');
-                        $('input[name="contracts_next"]').css('display', 'none');
-                        $('input[name="payroll_next"]').css('display', 'none');
+                        $('.create-alert-next-btn').css('display', 'none');
 
                         var createAlertsDiv = "<div class='create-alert-view'></div>";
                         $('.create-alert-view').replaceWith(createAlertsDiv);
@@ -2139,8 +2060,7 @@ jQuery(document).ready(function ($) {
             // Since we load this form via AJAX, Drupal does not bind callbacks from php #ajax form settings here,
             // so let's do that manually
             function bind_create_alert_buttons(){
-                $('#edit-budget-next, #edit-revenue-next, #edit-spending-next, #edit-spending-next--2, ' +
-                    '#edit-contracts-next, #edit-contracts-next--2, #edit-payroll-next').each(function(){
+                $('.create-alert-next-btn').each(function(){
                     $(this).click(function (event) {
                         $('a.ui-dialog-titlebar-close').hide();
                         $(".ui-autocomplete-input").autocomplete("close");
