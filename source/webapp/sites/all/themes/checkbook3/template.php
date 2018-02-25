@@ -18,6 +18,8 @@ function checkbook3_preprocess_html(&$vars) {
 	drupal_add_library('system', 'ui');
 	drupal_add_library('system', 'ui.accordion');
 	drupal_add_library('system', 'ui.autocomplete');
+	drupal_add_library('system', 'drupal.ajax');
+    drupal_add_library('system', 'jquery.form');
     drupal_add_css(path_to_theme().'/css/ie-7.css',array('group'=>CSS_THEME,'weight' => 997,'browsers'=>array('IE'=>'IE 7','!IE'=>FALSE)));
     drupal_add_css(path_to_theme().'/css/ie-8.css',array('group'=>CSS_THEME,'weight' => 998,'browsers'=>array('IE'=>'IE 8','!IE'=>FALSE)));
     drupal_add_css(path_to_theme().'/css/ie-9.css',array('group'=>CSS_THEME,'weight' => 999,'browsers'=>array('IE'=>'IE 9','!IE'=>FALSE)));
