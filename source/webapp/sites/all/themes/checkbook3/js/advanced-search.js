@@ -42,7 +42,6 @@ jQuery(document).ready(function ($) {
                 bind_create_alert_buttons();
 
 
-
                 callback();
             }
 
@@ -1486,7 +1485,7 @@ jQuery(document).ready(function ($) {
             function create_alert_bootstrap() {
                 var href = window.location.href.replace(/(http|https):\/\//, '');
                 var n = href.indexOf('?');
-                href = href.substring(0, n != -1 ? n : href.length);
+                href = href.substring(0, n !== -1 ? n : href.length);
                 var data_source = (href.indexOf('datasource/checkbook_oge') !== -1) ? "checkbook_oge" : "checkbook";
                 var page_clicked_from = this.id ? this.id : href.split('/')[1];
                 var active_accordion_window = initializeActiveAccordionWindow(page_clicked_from, data_source);
@@ -1585,11 +1584,11 @@ jQuery(document).ready(function ($) {
             $(document).ajaxComplete(function () {
                 /* Do not enable next buttons for results page here */
                 var step = $('input:hidden[name="step"]').val();
-                if (step == 'select_criteria') {
+                if (step === 'select_criteria') {
                     $('#edit-next-submit').attr('disabled', true);
                     $('#edit-back-submit').attr('disabled', true);
                 }
-                else if (step == 'schedule_alert') {
+                else if (step === 'schedule_alert') {
                     $('#edit-next-submit').attr('disabled', false);
                     $('#edit-back-submit').attr('disabled', false);
                     $('a.ui-dialog-titlebar-close').show();
@@ -1815,7 +1814,7 @@ jQuery(document).ready(function ($) {
 
                 /* Update hidden field for new step */
                 $('input:hidden[name="step"]').val(previous_step);
-            }
+            };
 
             /*------------------------------------------------------------------------------------------------------------*/
 
@@ -1843,14 +1842,14 @@ jQuery(document).ready(function ($) {
                         });
                     }
                 });
-            }
+            };
 
             $.fn.onScheduleAlertConfirmClick = function (ajaxReferralUrl, serverName) {
 
                 /* Add hidden field for ajax user Url */
                 var ajaxUserUrl = $('#checkbook_advanced_search_result_iframe').attr('src');
                 $('input:hidden[name="ajax_user_url"]').val(ajaxUserUrl);
-                ajaxUserUrl = serverName + ajaxUserUrl
+                ajaxUserUrl = serverName + ajaxUserUrl;
 
                 var validateEmail = function (email) {
                     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -1861,11 +1860,11 @@ jQuery(document).ready(function ($) {
                     if ((undefined === value) || (null === value)) {
                         return false;
                     }
-                    if (typeof value == 'number') {
+                    if (typeof value === 'number') {
                         return true;
                     }
                     return !isNaN(value - 0);
-                }
+                };
 
                 var alertDiv = $('.create-alert-schedule-alert');
                 var alertLabel = $(alertDiv).find('input[name=alert_label]').val();
@@ -1891,7 +1890,7 @@ jQuery(document).ready(function ($) {
                     alertMsgs.push("Alert frequency is not valid.");
                 }
                 var selectedDate = $("input[name='alert_end[date]']").datepicker('getDate');
-                if ((alertEnd.length > 1 && alertEnd.length != 10) || (alertEnd.length > 1 && !alertEnd.match(dateRegEx))) {
+                if ((alertEnd.length > 1 && alertEnd.length !== 10) || (alertEnd.length > 1 && !alertEnd.match(dateRegEx))) {
                     alertMsgs.push("Expiration Date is not valid.");
                 }
                 else if (selectedDate != null && selectedDate < new Date()) {
@@ -1922,8 +1921,8 @@ jQuery(document).ready(function ($) {
                         alert_end: alertEnd,
                         userURL: ajaxUserUrl,
                         alert_theme_file: 'checkbook_alerts_advanced_search_confirm_theme'
-                    }
-                    $this = $(this);
+                    };
+                    // $this = $(this);
 
                     $.get(url, data, function (data) {
                         data = JSON.parse(data);
@@ -1932,7 +1931,7 @@ jQuery(document).ready(function ($) {
                             $this.dialog('close');
                             $('#block-checkbook-advanced-search-checkbook-advanced-search-form').dialog('close');
                             var dialog = $("#dialog");
-                            if ($("#dialog").length == 0)
+                            if ($("#dialog").length === 0)
                                 dialog = $('<div id="dialog" style="display:none"></div>');
                             else
                                 $(dialog).replaceWith('<div id="dialog" style="display:none"></div>');
@@ -1965,7 +1964,7 @@ jQuery(document).ready(function ($) {
 
             $(window).load(function () {
                 if (inIframe() && document.URL.indexOf("/createalert") >= 0) {
-                    if ($('.create-alert-customize-results', window.parent.document).css('display') == 'none') {
+                    if ($('.create-alert-customize-results', window.parent.document).css('display') === 'none') {
                         return;
                     }
                     //No results
@@ -1990,7 +1989,7 @@ jQuery(document).ready(function ($) {
                     /* On parent back button click, need to re-stick the header */
                     $('#edit-back-submit', window.parent.document).click(function (event) {
                         var step = $('input:hidden[name="step"]').val();
-                        if (step == 'schedule_alert' || 'customize_results') {
+                        if (step === 'schedule_alert' || 'customize_results') {
                             setTimeout(function () {
                                 fnCustomInitCompleteReload();
                             }, 250);
@@ -1999,7 +1998,7 @@ jQuery(document).ready(function ($) {
 
                     $(document).ajaxComplete(function () {
 
-                        if ($('.create-alert-customize-results', window.parent.document).css('display') == 'none') {
+                        if ($('.create-alert-customize-results', window.parent.document).css('display') === 'none') {
                             return;
                         }
 
@@ -2019,7 +2018,7 @@ jQuery(document).ready(function ($) {
                         });
 
                         //Fix content formatting
-                        var body = $(this).find('html body')
+                        var body = $(this).find('html body');
                         $(body).css('background', '#ffffff');
                         $(body).css('overflow-x', 'hidden');
                         $(body).css('overflow-y', 'auto');
@@ -2040,7 +2039,7 @@ jQuery(document).ready(function ($) {
                     });
                 }
                 //No results
-                if ($('#no-records').css('display') == 'block') {
+                if ($('#no-records').css('display') === 'block') {
                     $('#edit-back-submit', window.parent.document).attr('disabled', false);
                 }
             });
@@ -2059,8 +2058,8 @@ jQuery(document).ready(function ($) {
 
             // Since we load this form via AJAX, Drupal does not bind callbacks from php #ajax form settings here,
             // so let's do that manually
-            function bind_create_alert_buttons(){
-                $('.create-alert-next-btn').each(function(){
+            function bind_create_alert_buttons() {
+                $('.create-alert-next-btn').each(function () {
                     $(this).click(function (event) {
                         $('a.ui-dialog-titlebar-close').hide();
                         $(".ui-autocomplete-input").autocomplete("close");
@@ -2101,7 +2100,7 @@ jQuery(document).ready(function ($) {
                 });
             }
 
-            function show_loading_spinner(){
+            function show_loading_spinner() {
                 $('a.advanced-search').after("<span class='as-loading'>" +
                     "<img style='float:right' src='/sites/all/themes/checkbook/images/loading_large.gif' title='Loading Data...' />" +
                     "Loading...</span>").hide();
@@ -2112,7 +2111,7 @@ jQuery(document).ready(function ($) {
 
     function bind_enter_keyboard_keypress() {
         $("#block-checkbook-advanced-search-checkbook-advanced-search-form input").bind("keypress", function (e) {
-            if (e.keyCode == 13) {
+            if (e.keyCode === 13) {
                 e.preventDefault();
                 var id = this.id;
                 if (id.match(/contract/g) != null) {
