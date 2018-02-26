@@ -1922,13 +1922,13 @@ jQuery(document).ready(function ($) {
                         userURL: ajaxUserUrl,
                         alert_theme_file: 'checkbook_alerts_advanced_search_confirm_theme'
                     };
-                    // $this = $(this);
+                    var thisForm = $(this);
 
                     $.get(url, data, function (data) {
                         data = JSON.parse(data);
                         if (data.success) {
                             $('a.ui-dialog-titlebar-close').show();
-                            $this.dialog('close');
+                            thisForm.dialog('close');
                             $('#block-checkbook-advanced-search-checkbook-advanced-search-form').dialog('close');
                             var dialog = $("#dialog");
                             if ($("#dialog").length === 0)
