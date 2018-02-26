@@ -3736,3 +3736,10 @@ a.new-features-morelink{
 #checkbook-datafeeds-data-feed-wizard .prime-and-sub-note-datafeeds p >img{
     top: 0;
 }
+
+.as-loading{
+    float:right;
+    margin-top:2px;
+    position:absolute;
+    right:110px;
+}

@@ -43,6 +43,12 @@ function checkbook_advanced_search_menu()
         'access callback' => TRUE,
         'type' => MENU_CALLBACK,
     );
+    $items['advanced-search-ajax'] = array(
+        'title' => 'Checkbook Advanced Search',
+        'page callback' => 'checkbook_advanced_search_display_ajax',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
     $items['advanced-search/autocomplete'] = array(
         'page callback' => '_checkbook_advanced_search_autocomplete_get_agencyname_and_id',
         'access callback' => TRUE,
@@ -54,6 +60,18 @@ function checkbook_advanced_search_menu()
 function checkbook_advanced_search_display()
 {
     return drupal_get_form('checkbook_advanced_search_form');
+}
+
+function checkbook_advanced_search_display_ajax()
+{
+    if ($cached = cache_get('advanced_search_form')) {
+        echo $cached->data;
+    } else {
+        $html = render(drupal_get_form('checkbook_advanced_search_form'));
+        cache_set('advanced_search_form', $html);
+        echo $html;
+    }
+    exit;
 }
 
 
@@ -81,7 +99,7 @@ function checkbook_advanced_search_form($form, $form_state)
         '#markup' => $create_alert_view.'<div class = "advanced-search-accordion">',
     );
 
-
+    $form['#action'] = '/advanced-search';
 
     //<editor-fold desc="Budget">
 
@@ -572,38 +590,38 @@ function checkbook_advanced_search_form($form, $form_state)
 
     //</editor-fold>
 
-    $form['#attached'] = array(
-        'library' => array(
-            array('system', 'ui.accordion', FALSE),
-            array('system', 'ui.autocomplete', FALSE),
-        ),
-        'js' => array(
-            array(
-                'type' => 'file',
-                'data' => drupal_get_path('module', 'checkbook_advanced_search') . '/js/checkbook_advanced_search_clear_button.js',
-            ),
-            array(
-                'type' => 'file',
-                'data' => drupal_get_path('module', 'checkbook_advanced_search') . '/js/checkbook_advanced_search_spending.js',
-            ),
-            array(
-                'type' => 'file',
-                'data' => drupal_get_path('module', 'checkbook_advanced_search') . '/js/checkbook_advanced_search_budget.js',
-            ),
-            array(
-                'type' => 'file',
-                'data' => drupal_get_path('module', 'checkbook_advanced_search') . '/js/checkbook_advanced_search_revenue.js',
-            ),
-            array(
-                'type' => 'file',
-                'data' => drupal_get_path('module', 'checkbook_advanced_search') . '/js/checkbook_advanced_search_payroll.js',
-            ),
-            array(
-                'type' => 'file',
-                'data' => drupal_get_path('module', 'checkbook_advanced_search') . '/js/checkbook_advanced_search_contracts.js',
-            ),
-        ),
-    );
+//    $form['#attached'] = array(
+//        'library' => array(
+//            array('system', 'ui.accordion', FALSE),
+//            array('system', 'ui.autocomplete', FALSE),
+//        ),
+//        'js' => array(
+//            array(
+//                'type' => 'file',
+//                'data' => drupal_get_path('module', 'checkbook_advanced_search') . '/js/checkbook_advanced_search_clear_button.js',
+//            ),
+//            array(
+//                'type' => 'file',
+//                'data' => drupal_get_path('module', 'checkbook_advanced_search') . '/js/checkbook_advanced_search_spending.js',
+//            ),
+//            array(
+//                'type' => 'file',
+//                'data' => drupal_get_path('module', 'checkbook_advanced_search') . '/js/checkbook_advanced_search_budget.js',
+//            ),
+//            array(
+//                'type' => 'file',
+//                'data' => drupal_get_path('module', 'checkbook_advanced_search') . '/js/checkbook_advanced_search_revenue.js',
+//            ),
+//            array(
+//                'type' => 'file',
+//                'data' => drupal_get_path('module', 'checkbook_advanced_search') . '/js/checkbook_advanced_search_payroll.js',
+//            ),
+//            array(
+//                'type' => 'file',
+//                'data' => drupal_get_path('module', 'checkbook_advanced_search') . '/js/checkbook_advanced_search_contracts.js',
+//            ),
+//        ),
+//    );
 
 
     return $form;
@@ -759,6 +777,7 @@ function advanced_search_contracts_filter_ajax($form, $form_state) {
 
 /**
  * Implements hook_block_info().
+ * @return mixed
  */
 function checkbook_advanced_search_block_info()
 {
@@ -772,13 +791,16 @@ function checkbook_advanced_search_block_info()
 
 /**
  * Implements hook_block_view().
+ * @param string $delta
+ * @return array
  */
 function checkbook_advanced_search_block_view($delta = '')
 {
     $block = array();
     switch ($delta) {
         case 'checkbook_advanced_search_form':
-            $block['content'] = drupal_get_form('checkbook_advanced_search_form');
+            $block['content'] = '<!-- ajax form goes here -->';
+//            $block['content'] = drupal_get_form('checkbook_advanced_search_form');
             break;
     }
     return $block;
