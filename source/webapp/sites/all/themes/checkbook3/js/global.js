@@ -3,45 +3,45 @@ jQuery(document).ready(function ($) {
     $('#nice-menu-1 li.menu-path-node-975 a').addClass('gridpopup');
     $.ajax({
         url: '/new-features/get_status',
-        success: function(data) {
-            if(data !== null)
+        success: function (data) {
+            if (data !== null)
                 setNewFeaturesMenuColor(data.toString());
         }
-    }); 
-    $("#new_features").click(function(){
+    });
+    $("#new_features").click(function () {
         var status = '';
-        if($("#new_features").val() === 'Enable New Features Link')
+        if ($("#new_features").val() === 'Enable New Features Link')
             status = 'enable';
         else
             status = 'disable';
         $.ajax({
-            url: '/new-features/'+status,
-            success: function(data) {
-                if(data !== null)
+            url: '/new-features/' + status,
+            success: function (data) {
+                if (data !== null)
                     setNewFeaturesMenuColor(data.toString());
             }
-        }); 
+        });
     });
-    
-    function setNewFeaturesMenuColor(status){
-        if(status === 'enable'){
+
+    function setNewFeaturesMenuColor(status) {
+        if (status === 'enable') {
             $('#nice-menu-1 li.menu-path-node-975 a').removeClass('disabled');
             $('#nice-menu-1 li.menu-path-node-975 a').addClass('enabled');
             $("#new_features").val('Disable New Features Link');
-        }else{
+        } else {
             $('#nice-menu-1 li.menu-path-node-975 a').removeClass('enabled');
             $('#nice-menu-1 li.menu-path-node-975 a').addClass('disabled');
             $("#new_features").val('Enable New Features Link');
         }
     }
-    
+
     //Altering CSS for slider pager for pie charts on contracts page
-    if(jQuery(".slider-pager a").length == 2){
+    if (jQuery(".slider-pager a").length == 2) {
         jQuery("div.slider-pager").addClass('pieSlider');
-    }else{
+    } else {
         jQuery("div.slider-pager").removeClass('pieSlider');
     }
-        
+
     if (!getParameterByName("expandBottomCont") && !getParameterByName("expandBottomContURL")) {
         jQuery('.bottomContainerToggle').click();
         jQuery('.bottomContainer').show();
@@ -53,18 +53,19 @@ jQuery(document).ready(function ($) {
     }
 
     //create tool tops for featured dashboard title
-    var featureddashboard = function(){
+    var featureddashboard = function () {
         // add processed class to all anchors after ajax
-        $(".featured-dashboard-title a").each(function(){
+        $(".featured-dashboard-title a").each(function () {
             if (!$(this).hasClass('processed')) {
                 $('<div class="toolTip">' + $(this).attr('alt') + '<div class="bottom"></div></div>').insertBefore(this);
                 $(this).addClass('processed');
             }
         });
         $('.featured-dashboard-title').hover(
-            function(){
-                $(this).find('.toolTip').css('display', 'block')},
-            function(){
+            function () {
+                $(this).find('.toolTip').css('display', 'block')
+            },
+            function () {
                 $(this).find('.toolTip').css('display', 'none');
             }
         );
@@ -73,199 +74,44 @@ jQuery(document).ready(function ($) {
 
     //check if ajax is being fired on the page or not
     if ($.active > 0) {
-        $( document ).ajaxComplete(function() {
-          featureddashboard();
+        $(document).ajaxComplete(function () {
+            featureddashboard();
         });
     }
     else {
-         featureddashboard();
+        featureddashboard();
     }
 });
-
-
-function getParameterByName(name) {
-    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-    var regexS = "[\\?&]" + name + "=([^&#]*)";
-    var regex = new RegExp(regexS);
-    var results = regex.exec(window.location.search);
-    if (results == null)
-        return "";
-    else
-        return decodeURIComponent(results[1].replace(/\+/g, " "));
-}
-
-
-//Line Splitter Function
-//copyright Stephen Chapman, 19th April 2006
-//you may copy this code but please keep the copyright notice as well
-function splitLine(st,n) {var b = ''; var s = st;while (s.length > n) {var c = s.substring(0,n);var d = c.lastIndexOf(' ');var e =c.lastIndexOf('\n');if (e != -1) d = e; if (d == -1) d = n; b +=       c.substring(0,d) + '\n';s = s.substring(d+1);}return b+s;}
-
-
-
-
-function fasterSplit(str,len){
-	  var ret=[],strlen=str.length,off=0,rem=len
-	  do {
-		//if()  
-	    ret.push(str.substr(off,len)); 
-	 off+=len
-	  } while (off<strlen)
-	  return ret
-	  }
-
-function addPaddingToDataCells(table){
-	(function ($) {
-	$(table).find("th").each(function(i,val){
-		if($(this).hasClass("number")){
-			var colwidth = $(this).find("span").width();
-			var maxDataWidth = 0;
-			$(table).find("tr td:nth-child(" + (i+1) + ")").each(
-			     function(){
-			    	 if( maxDataWidth <  $(this).find("div").width()){
-			    		 maxDataWidth = $(this).find("div").width();
-			    	 }
-			     }
-			 );
-			if((colwidth - maxDataWidth)/2 > 1){
-				$(table).find("tr td:nth-child(" + (i+1) + ") div").css("margin-right",Math.floor((colwidth - maxDataWidth)/2) + "px");
-			}
-		}
-	}
-	);
-    $(".DTFC_LeftHeadWrapper table").find("th").each(function(i,val){
-            if($(this).hasClass("number")){
-                var colwidth = $(this).find("div").width();
-                var maxDataWidth = 0;
-                $(".DTFC_LeftBodyWrapper table").find("tr td:nth-child(" + (i+1) + ")").each(
-                    function(){
-                        if( maxDataWidth <  $(this).find("div").width()){
-                            maxDataWidth = $(this).find("div").width();
-                        }
-                    }
-                );
-                if((colwidth - maxDataWidth)/2 > 1){
-                    $(".DTFC_LeftBodyWrapper table").find("tr td:nth-child(" + (i+1) + ") div").css("margin-right",Math.floor((colwidth - maxDataWidth)/2) + "px");
-                }
-            }
-        }
-    );
-    $(".dataTables_scrollHeadInner table").find("th").each(function(i,val){
-            if($(this).hasClass("number")){
-                var colwidth = $(this).find("div").width();
-                var maxDataWidth = 0;
-                $(".dataTables_scrollBody table").find("tr td:nth-child(" + (i+1) + ")").each(
-                    function(){
-                        if( maxDataWidth <  $(this).find("div").width()){
-                            maxDataWidth = $(this).find("div").width();
-                        }
-                    }
-                );
-                if((colwidth - maxDataWidth)/2 > 1){
-                    $(".dataTables_scrollBody table").find("tr td:nth-child(" + (i+1) + ") div").css("margin-right",Math.floor((colwidth - maxDataWidth)/2) + "px");
-                }
-            }
-        }
-    );
-	}(jQuery));
-}
-
 
 
 (function ($) {
 
 //hover show/hide list for mwbe menu item
-Drupal.behaviors.hoveOverMWBE = {
-    attach: function(context, settings){
-	        $(".drop-down-menu-triangle").hover(function(){
-	            $(this).closest(".mwbe").addClass("hover");
-	            $(this).closest(".mwbe").find('.main-nav-drop-down').css('display', 'block');
-	
-	        }, function(){
+    Drupal.behaviors.hoveOverMWBE = {
+        attach: function (context, settings) {
+            $(".drop-down-menu-triangle").hover(function () {
+                $(this).closest(".mwbe").addClass("hover");
+                $(this).closest(".mwbe").find('.main-nav-drop-down').css('display', 'block');
+
+            }, function () {
                 $(this).closest(".mwbe").removeClass("hover");
                 $(this).closest(".mwbe").find('.main-nav-drop-down').css('display', 'none');
-        });
-    }
-}
-	
-// trendsCenPad Start
-	window.trendsCenPad = function(settings){
-/*
-		//setTimeout("redraw()", 0);
-		//setTimeout("redraw()", 600);
-		
-		var table = settings.selector+'_wrapper';
+            });
+        }
+    };
 
-		if(settings.oInstance){
-			table = settings.oInstance.selector+'_wrapper';
-		}
-		//redraw = function(){
-		// Loops through all divs with a class of trendCen and subtracts its width from its parent TH width.
-		//	Then divides by two, in order to add padding to the right of the div.
 
-		$(table).find(".trendCen").each(function(i,val){
-			var $oThis = $(this),
-				$oTableRows = $(table + " tr"),
-				colwidth = $oThis.parent().width(),
-				textwidth = $oThis.width(),
-				maxDataWidth = 0,
-				currentWidth = 0,
-				padding;
-
-				//grabs TH width and its child div width, subtracts child from parent, then divides by two to get right margin.
-				if((colwidth - textwidth)/2 > 1){
-					console.log(colwidth);
-					console.log(textwidth);
-					padding = Math.floor((colwidth - textwidth)/2);
-					$oThis.css("margin-right", padding);
-
-					//goes through current column trying to find the widest div width in the column
-					for(var j = 0; $oTableRows.length > j; j++){
-						$oThis = $($oTableRows[j]);
-						currentWidth = $oThis.find(".tdCen").eq(i).width();
-			        	if( currentWidth >  maxDataWidth){
-			        		var maxDataWidth = currentWidth;
-			        	}
-					}
-					
-					// check widest td div width against TH div width, to see which is wider. If th div is wider, then td div gets its own center margin. Otherwise it uses TH div margin.
-					if(textwidth > maxDataWidth){
-			        	padding = (colwidth - maxDataWidth)/2;
-			        }
-					for(var j = 0; $oTableRows.length > j; j++){
-						$oThis = $($oTableRows[j]);
-						$oThis.find(".tdCen").eq(i).css("margin-right", padding);
-			        };
-			        
-			        // checks to see if column contains an ending item, such as a % or a suptag. If it contains one, the entire columns margin is subtracted by that items width
-					var endItems = $oTableRows.find('.endItem');
-			        for(var j = 0; endItems.length > j; j++){
-						$oThis = $(endItems[j]);
-						var endItemWidth = $oThis.width();
-						var oDiv = $oThis.parent();
-						if(endItemWidth < padding){
-							oDiv.css('margin-right', (padding - endItemWidth));
-						}
-					};
-				}
-			});
-		//}
-*/
-	}
-
-	// trendsCenPad End
-
-	
     //set classes for sortable columns in DataTables
     var newclasses = {
-        'sSortAsc':'ui-state-default sorting_asc',
-        'sSortDesc':'ui-state-default sorting_desc',
-        'sSortable':'ui-state-default sortable',
-        'sSortJUI':'css_right ui-icon ui-icon-triangle-2-n-s'
-    }
+        'sSortAsc': 'ui-state-default sorting_asc',
+        'sSortDesc': 'ui-state-default sorting_desc',
+        'sSortable': 'ui-state-default sortable',
+        'sSortJUI': 'css_right ui-icon ui-icon-triangle-2-n-s'
+    };
 
-    $.fn.dataTableExt.oJUIClasses = $.extend({},$.fn.dataTableExt.oJUIClasses,newclasses);
+    $.fn.dataTableExt.oJUIClasses = $.extend({}, $.fn.dataTableExt.oJUIClasses, newclasses);
 
-    jQuery.fn.toggleText = function (value1, value2) {
+    $.fn.toggleText = function (value1, value2) {
         return this.each(function () {
             var $this = $(this),
                 text = $this.text();
@@ -278,7 +124,7 @@ Drupal.behaviors.hoveOverMWBE = {
 
     // Projects & Actions Table Styling
     Drupal.behaviors.styleOverrides = {
-        attach:function (context, settings) {
+        attach: function (context, settings) {
 
             // Add active class to current menu item
             if ($('.block-nice-menus li a').hasClass('active')) {
@@ -288,10 +134,10 @@ Drupal.behaviors.hoveOverMWBE = {
             $('#block-menu-menu-news-room li:nth-child(4)').css('font-weight', 'bold');
 
             // Year Dropdown
-            $('#year_list').chosen({disable_search_threshold:50});
+            $('#year_list').chosen({disable_search_threshold: 50});
 
             // Fiscal Year Dropdown
-            $('#fiscal_year_list').chosen({disable_search_threshold:50});
+            $('#fiscal_year_list').chosen({disable_search_threshold: 50});
 
             // Column Widths
             $('#node-widget-15 th:first, #node-widget-16 th:first, #node-widget-22 th:first, #node-widget-23 th:first, #node-widget-24 th:first, #node-widget-29 th:first, #node-widget-30 th:first, #node-widget-31 th:first').css('width', '77%');
@@ -331,34 +177,34 @@ Drupal.behaviors.hoveOverMWBE = {
                 $(highSlides).filter(":first")
                     .once('styleOverrides')
                     .cycle({
-                        slideExpr:'.slider-pane',
-                        fx:'fade',
-                        timeout:45000,
-                        height:'315px',
-                        width:'100%',
-                        fit:1,
-                        pause:true,
-                        pager:'.slider-pager'
+                        slideExpr: '.slider-pane',
+                        fx: 'fade',
+                        timeout: 45000,
+                        height: '315px',
+                        width: '100%',
+                        fit: 1,
+                        pause: true,
+                        pager: '.slider-pager'
                     });
             }
 
-            $('.chart-title').css("display","block");
+            $('.chart-title').css("display", "block");
 
             //Spotlight Videos
-            if($('#video-list-pager').children().length == 0)
+            if ($('#video-list-pager').children().length == 0)
                 if ($('#allVideoList').length > 0) {
                     $('#allVideoList')
                         .after('<div id="video-list-pager" class="spotlight-video-pager"></div>')
                         .cycle({
-                            fx:'fade',
-                            timeout:45000,
-                            height:'315px',
-                            width:'100%',
-                            fit:1,
-                            speed:1000,
-                            pager:'#video-list-pager',
-                            prev:'#prev1',
-                            next:'#next1'
+                            fx: 'fade',
+                            timeout: 45000,
+                            height: '315px',
+                            width: '100%',
+                            fit: 1,
+                            speed: 1000,
+                            pager: '#video-list-pager',
+                            prev: '#prev1',
+                            next: '#next1'
                         });
                 }
 
@@ -367,35 +213,35 @@ Drupal.behaviors.hoveOverMWBE = {
 
                     //if the current iframe is hovered, flag it as blurred and pause the slider
                     if ($('#allVideoList div.mouseenter').length > 0) {
-                        jQuery(window).focus();
+                        $(window).focus();
                         $('#allVideoList div.mouseenter').each(function () {
                             $(this).removeClass('mouseenter');
                             $(this).addClass('blur');
                             $('#allVideoList').cycle('pause');
                         });
-                        jQuery(window).blur();
+                        $(window).blur();
                     }
                 };
-                jQuery(window).focus();
-                jQuery('div.video-container iframe').mouseenter(function(){
+                $(window).focus();
+                $('div.video-container iframe').mouseenter(function () {
 
                     //if the current iframe is not blurred, flag it as mouseenter and pause the slider
-                    if(!$(this).closest('div.video-container').hasClass('blur')) {
+                    if (!$(this).closest('div.video-container').hasClass('blur')) {
                         $(this).closest('div.video-container').removeClass('mouseleave');
                         $(this).closest('div.video-container').addClass('mouseenter');
                         $('#allVideoList').cycle('pause');
                     }
                 });
-                jQuery('div.video-container iframe').mouseleave(function(){
+                $('div.video-container iframe').mouseleave(function () {
 
                     //if the current iframe is not blurred, flag it as mouseleave and resume the slider
-                    if(!$(this).closest('div.video-container').hasClass('blur')) {
+                    if (!$(this).closest('div.video-container').hasClass('blur')) {
                         $(this).closest('div.video-container').removeClass('mouseenter');
                         $(this).closest('div.video-container').addClass('mouseleave');
                         $('#allVideoList').cycle('resume');
                     }
                 });
-              jQuery(window).blur(function () {
+                $(window).blur(function () {
                     windowLostBlur();
                 });
             };
@@ -407,7 +253,7 @@ Drupal.behaviors.hoveOverMWBE = {
                 $('div.video-container').each(function () {
                     $(this).removeClass('mouseenter');
                     $(this).removeClass('mouseleave');
-                    if($(this).hasClass('blur')) {
+                    if ($(this).hasClass('blur')) {
                         $(this).removeClass('blur');
                         var video = $(this).find('iframe');
                         resetVideo(video);
@@ -418,10 +264,10 @@ Drupal.behaviors.hoveOverMWBE = {
             /*
              Given an iframe with a video, this function will reset the video by resetting the src
              */
-            var resetVideo = function(video) {
+            var resetVideo = function (video) {
                 var video_source = $(video).attr("src");
-                $(video).attr("src","");
-                $(video).attr("src",video_source);
+                $(video).attr("src", "");
+                $(video).attr("src", video_source);
             };
 
             // NYC Budget Total Expenditure
@@ -452,7 +298,12 @@ Drupal.behaviors.hoveOverMWBE = {
             });
 
             // jQuery Dialog
-            var $dialog = $('div.status-codes').dialog({autoOpen:false, title:'Status Codes and Messages', width:800, modal:true});
+            var $dialog = $('div.status-codes').dialog({
+                autoOpen: false,
+                title: 'Status Codes and Messages',
+                width: 800,
+                modal: true
+            });
             $('a.status-codes').click(function (e) {
                 $dialog.dialog('open');
                 // prevent the default action, e.g., following a link
@@ -503,7 +354,7 @@ Drupal.behaviors.hoveOverMWBE = {
      * @see toggleSeries()
      */
     Drupal.behaviors.agencyPage = {
-        attach:function (context, settings) {
+        attach: function (context, settings) {
             $('.togglecheckboxes input').each(function () {
                 $(this).click(function () {
                     var input = $(this);
@@ -515,14 +366,14 @@ Drupal.behaviors.hoveOverMWBE = {
 
     // Agencies Drop Down
     Drupal.behaviors.agenciesDropDown = {
-        attach:function (context, settings) {
+        attach: function (context, settings) {
             $('.agency-list-open span, .agency-list-open div b').once('agenciesListOpen').click(function () {
-            	if($(this).attr("id")== "other-agency-list-open"){
-            		$('.all-agency-list-content').slideUp(300);            		
-            	}else{
-            		$('.other-agency-list-content').slideUp(300);
-            	}
-            	$(this).parent().parent().find('.agency-list-content').slideToggle(300);
+                if ($(this).attr("id") == "other-agency-list-open") {
+                    $('.all-agency-list-content').slideUp(300);
+                } else {
+                    $('.other-agency-list-content').slideUp(300);
+                }
+                $(this).parent().parent().find('.agency-list-content').slideToggle(300);
                 $(this).toggleClass('open');
                 $(this).parent().find(' div b').toggleClass('open');
             });
@@ -532,35 +383,35 @@ Drupal.behaviors.hoveOverMWBE = {
                 $('.agency-list-open div b').removeClass('open');
             });
 
-            if($('#agency-list-pager1').children().length == 0)
+            if ($('#agency-list-pager1').children().length == 0)
                 if ($('#allAgenciesList').length > 0) {
                     $('#allAgenciesList')
                         .after('<div id="agency-list-pager1" class="agency-list-pager"></div>')
                         .cycle({
-                            fx:'none',
-                            speed:1000,
-                            timeout:0,
-                            pause:true,
-                            pauseOnPagerHover:0,
-                            pager:'#agency-list-pager1',
-                            prev:'#prev1',
-                            next:'#next1'
+                            fx: 'none',
+                            speed: 1000,
+                            timeout: 0,
+                            pause: true,
+                            pauseOnPagerHover: 0,
+                            pager: '#agency-list-pager1',
+                            prev: '#prev1',
+                            next: '#next1'
                         });
                 }
 
-            if($('#agency-list-pager2').children().length == 0)
+            if ($('#agency-list-pager2').children().length == 0)
                 if ($('#otherAgenciesList').length > 0) {
                     $('#otherAgenciesList')
                         .after('<div id="agency-list-pager2" class="agency-list-pager"></div>')
                         .cycle({
-                            fx:'none',
-                            speed:1000,
-                            timeout:0,
-                            pause:true,
-                            pauseOnPagerHover:0,
-                            pager:'#agency-list-pager2',
-                            prev:'#prev2',
-                            next:'#next2'
+                            fx: 'none',
+                            speed: 1000,
+                            timeout: 0,
+                            pause: true,
+                            pauseOnPagerHover: 0,
+                            pager: '#agency-list-pager2',
+                            prev: '#prev2',
+                            next: '#next2'
                         });
                 }
         }
@@ -568,33 +419,33 @@ Drupal.behaviors.hoveOverMWBE = {
 
     // Employee Payroll Transactions scrolling window
     Drupal.behaviors.employeePayrollTransactions = {
-        attach:function (context, settings) {
+        attach: function (context, settings) {
             if ($('#payroll-emp-trans-table > tbody').length > 0) {
                 $('#payroll-emp-trans-table > tbody')
                     .cycle({
-                        fx:'none',
-                        speed:1000,
-                        timeout:0,
-                        pause:true,
-                        pauseOnPagerHover:0,
-                        pager:'#payroll-emp-trans-table-pager',
-                        prev:'#payroll-emp-trans-table-up',
-                        next:'#payroll-emp-trans-table-down'
+                        fx: 'none',
+                        speed: 1000,
+                        timeout: 0,
+                        pause: true,
+                        pauseOnPagerHover: 0,
+                        pager: '#payroll-emp-trans-table-pager',
+                        prev: '#payroll-emp-trans-table-up',
+                        next: '#payroll-emp-trans-table-down'
                     });
             }
         }
     };
 
     Drupal.behaviors.custompager = {
-        attach:function (context, settings) {
-            $('.customPager ul li a').live("click",function (e) {
+        attach: function (context, settings) {
+            $('.customPager ul li a').live("click", function (e) {
                 e.preventDefault();
                 var input = $(this);
                 urlLink = input.attr('href');
-                if(urlLink != undefined){
+                if (urlLink != undefined) {
                     $.ajax({
                         url: urlLink,
-                        success: function(data) {
+                        success: function (data) {
                             $('#contListContainerNew').html('');
                             $('#contListContainerNew').html(data);
                         }
@@ -608,7 +459,7 @@ Drupal.behaviors.hoveOverMWBE = {
     }
 
     Drupal.behaviors.viewAllPopup = {
-        attach:function (context, settings) {
+        attach: function (context, settings) {
             $('a.popup').click(function (event) {
                 event.preventDefault();
                 var url = $(this).attr('href');
@@ -626,10 +477,10 @@ Drupal.behaviors.hoveOverMWBE = {
                     {},
                     function (responseText, textStatus, XMLHttpRequest) {
                         dialog.dialog({
-                            position:"top",
-                            width:parentWidth,
-                            modal:true,
-                            open:function (event, ui) { //If there are DataTables with deferredRender = TRUE, render them on open
+                            position: "top",
+                            width: parentWidth,
+                            modal: true,
+                            open: function (event, ui) { //If there are DataTables with deferredRender = TRUE, render them on open
                                 if (Drupal.settings.deferredRender) {
                                     var i = 0;
                                     var deferredRender = Drupal.settings.deferredRender;
@@ -644,7 +495,7 @@ Drupal.behaviors.hoveOverMWBE = {
                                     }
                                 }
                             },
-                            close:function (event, ui) { //Destroy a deferredRender table if it exists and remove any script tags created by movescripts()
+                            close: function (event, ui) { //Destroy a deferredRender table if it exists and remove any script tags created by movescripts()
                                 if (oTablePopup) {
                                     oTablePopup.fnDestroy();
                                     $('[id^="movescript"]').remove();
@@ -658,9 +509,10 @@ Drupal.behaviors.hoveOverMWBE = {
     };
 
     Drupal.behaviors.gridViewAllPopup = {
-        attach:function (context, settings) {
+        attach: function (context, settings) {
             newWindow('a.gridpopup');
             newWindow('a.new_window');
+
             function newWindow(selector) {
                 $('body', context).delegate(selector, 'click', function () {
                     var source = $(this).attr('href');
@@ -672,10 +524,10 @@ Drupal.behaviors.hoveOverMWBE = {
     };
 
     Drupal.behaviors.disableClicks = {
-        attach: function(context,settings){
-            if ($('body').hasClass('gridview') || ($('body').hasClass('newwindow') && !($('body').hasClass('page-new-features')))){
+        attach: function (context, settings) {
+            if ($('body').hasClass('gridview') || ($('body').hasClass('newwindow') && !($('body').hasClass('page-new-features')))) {
                 $('body').delegate('a', 'click', function () {
-                    if($(this).hasClass('subContractViewAll') || $(this).hasClass('showHide') || $(this).hasClass('logo') || $(this).attr('rel') == 'home' || $(this).hasClass('enable-link'))
+                    if ($(this).hasClass('subContractViewAll') || $(this).hasClass('showHide') || $(this).hasClass('logo') || $(this).attr('rel') == 'home' || $(this).hasClass('enable-link'))
                         return true;
                     else
                         return false;
@@ -685,7 +537,7 @@ Drupal.behaviors.hoveOverMWBE = {
     }
 
     Drupal.behaviors.helpPopup = {
-        attach:function (context, settings) {
+        attach: function (context, settings) {
             $('ul#site-overview a', context).click(function () {
                 var source = $(this).attr('href');
                 var newWindow = window.open(source, '_blank', 'menubar=yes,toolbar=yes,location=yes,resizable=yes,scrollbars=yes,personalbar=no,chrome=yes,height=700,width=980');
@@ -703,123 +555,147 @@ Drupal.behaviors.hoveOverMWBE = {
         }
     }
 
-    Drupal.behaviors.alertTransactions = {
-        attach:function (context, settings) {
-        // The span.alert is the object in Drupal to which you link the click button, I don�t know how it is actually named for the alert
-            $('span.alerts').die().live("click", function () {
+    Drupal.behaviors.exportTransactions = {
+        attach: function (context, settings) {
+            $('span.export').die().live("click", function () {
+
                 var dialog = $("#dialog");
                 if ($("#dialog").length == 0) {
                     dialog = $('<div id="dialog" style="display:none"></div>');
                 }
 
-                // This is where you add the alerted table to which you link the output data from '/alert/transactions/form�
-                var oSettings = $('#table_'+$(this).attr('alertsid')).dataTable().fnSettings();
 
-                // This is the part where we get the data from to show in the dialogue we open, I don�t know if you process the following parameters  maxPages , record and so on but it won�t hurt if it stayed here
-                var dialogUrl = '/alert/transactions/form';
+                var oSettings = $('#table_' + $(this).attr('exportid')).dataTable().fnSettings();
+                var iRecordsTotal = oSettings.fnRecordsTotal();
+                var iRecordsDisplay = oSettings.fnRecordsDisplay();
+                var iDisplayLength = oSettings._iDisplayLength;
+                var iDisplayStart = oSettings._iDisplayStart;
 
-                var validateEmail=function(email) {
-                    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                    return re.test(email);
-                };
-                var isNumber=function(value) {
-                    if ((undefined === value) || (null === value)) {
-                        return false;
-                    }
-                    if (typeof value == 'number') {
-                        return true;
-                    }
-                    return !isNaN(value - 0);
-                }
+                var maxPages = Math.ceil(iRecordsDisplay / iDisplayLength);
+                // var defStartRecord = iDisplayStart;
+                //var defRecordLimit = iDisplayLength;
+
+
+                var dialogUrl = '/export/transactions/form?maxPages=' + maxPages + '&iRecordsTotal=' + iRecordsTotal + '&iRecordsDisplay=' + iRecordsDisplay;
 
                 // load remote content
                 dialog.load(
                     dialogUrl,
                     {},
                     function (responseText, textStatus, XMLHttpRequest) {
-                        dialog.dialog({position:"center",
-                            modal:true,
-                            title:'Alert',
-                            dialogClass:"alert",
-                            width:700,
-                            open:function(){
-                            $("input[name='alert_end[date]']").datepicker({"changeMonth":true,"changeYear":true,"autoPopUp":"focus","closeAtTop":false,"speed":"immediate","firstDay":0,"dateFormat":"yy-mm-dd","yearRange":"-113:+487","fromTo":false,"defaultDate":"0y"});
-                                                        },
-                            buttons:{
-                                "Create Alert":function () {
-                                    var alertLabel = $('input[name=alert_label]').val();
-                                    var alertEmail = $('input[name=alert_email]').val();
-                                    var alertMinimumResults = $('input[name=alert_minimum_results]').val();
-                                    var alertMinimumDays = $('select[name=alert_minimum_days]').val();
-                                    var alertEnd = $("input[name='alert_end[date]']").val();
-                                    var dateRegEx = '[0-9]{4,4}-[0-1][0-9]-[0-3][0-9]';
+                        dialog.dialog({
+                            position: "center",
+                            modal: true,
+                            title: 'Download Transactions Data',
+                            dialogClass: "export",
+                            width: 700,
+                            resizable: false,
+                            buttons: {
+                                "Download Data": function () {
+                                    //current page
+                                    var startRecord = iDisplayStart;
+                                    var recordLimit = iDisplayLength;
 
                                     var alertMsgs = [];
-                                    if(alertLabel.length<1){
-                                      alertMsgs.push("No Description has been set.");
-                                    }
-                                    if(alertEmail.length<1 || !validateEmail(alertEmail)){
-                                      alertMsgs.push("No email is entered.");
-                                    }
-                                    if(!isNumber(alertMinimumResults) || alertMinimumResults<1){
-                                      alertMsgs.push("Minimum results is not a valid number.");
-                                    }
-                                    if(!isNumber(alertMinimumDays) || alertMinimumDays<1){
-                                      alertMsgs.push("Alert frequency is not valid.");
-                                    }
-                                    var selectedDate = $("input[name='alert_end[date]']").datepicker('getDate');
-                                    if((alertEnd.length > 1 && alertEnd.length != 10) || (alertEnd.length > 1 && !alertEnd.match(dateRegEx))){
-                                        alertMsgs.push("Expiration Date is not valid.");
-                                    }
-                                    else if(selectedDate != null && selectedDate < new Date()) {
-                                        alertMsgs.push("Expiration date should be greater than current date.");
+                                    var dcfilter = $('input[name=dc]:checked').val();
+                                    if (dcfilter == null) {
+                                        alertMsgs.push("One of 'Data Selection' option must be selected.");
                                     }
 
+
+                                    if (dcfilter == 'all') {
+                                        startRecord = 0;
+                                        recordLimit = iRecordsDisplay;
+                                    }
+
+                                    if (dcfilter == 'range') {
+                                        var rangefrom = $('input[name=rangefrom]').val();
+                                        var rangeto = $('input[name=rangeto]').val();
+
+                                        var validFrom = ((String(rangefrom).search(/^\s*(\+|-)?\d+\s*$/) != -1) && (parseFloat(rangefrom) == parseInt(rangefrom)) && parseInt(rangefrom) >= 1 && parseInt(rangefrom) <= maxPages);
+                                        var validTo = ((String(rangeto).search(/^\s*(\+|-)?\d+\s*$/) != -1) && (parseFloat(rangeto) == parseInt(rangeto)) && parseInt(rangeto) >= 1 && parseInt(rangeto) <= maxPages);
+
+                                        if (!validFrom && !validTo) {
+                                            alertMsgs.push('If "Pages" option is selected, page numbers must be integer values between 1 and ' + maxPages);
+                                        } else if (rangefrom.length > 0 && !validFrom) {
+                                            alertMsgs.push('From page number must be integer value between 1 and ' + maxPages);
+                                        } else if (rangeto.length > 0 && !validTo) {
+                                            alertMsgs.push('To page number must be integer value between 1 and ' + maxPages);
+                                        } else {
+                                            rangefrom = !validFrom ? 1 : parseInt(rangefrom);
+                                            rangeto = !validTo ? maxPages : parseInt(rangeto);
+                                            if (rangefrom > rangeto) {
+                                                alertMsgs.push('From page number(' + rangefrom + ') must be less than or equal to ' + rangeto);
+                                            } else {
+                                                startRecord = (rangefrom - 1) * iDisplayLength;
+                                                recordLimit = (rangeto - rangefrom + 1) * iDisplayLength;
+                                                if ((startRecord + recordLimit) > iRecordsDisplay) {
+                                                    recordLimit = recordLimit - (startRecord + recordLimit - iRecordsDisplay);
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        $('input[name=rangefrom]').val(null);
+                                        $('input[name=rangeto]').val(null);
+                                    }
+
+
+                                    var frmtfilter = $('input[name=frmt]:checked').val();
+                                    if (frmtfilter == null) {
+                                        alertMsgs.push('Format must be selected');
+                                    }
+
+
                                     if (alertMsgs.length > 0) {
-                                        $('#errorMessages').html('Below errors must be corrected:<div class="error-message"><ul>' + '<li>' + alertMsgs.join('</li><li>') + '</li></ul></div>');
+                                        $('#errorMessages').html('Below errors must be corrected:<div class="error-message"><ul>' + '<li>' + alertMsgs.join('<li/>') + '</ul></div>');
                                     } else {
                                         $('#errorMessages').html('');
 
-                                        var url = '/alert/transactions';
-                                        var data = {
-                                          refURL:oSettings.sAjaxSource,
-                                          alert_label:alertLabel,
-                                          alert_email:alertEmail,
-                                          alert_minimum_results:alertMinimumResults,
-                                          alert_minimum_days:alertMinimumDays,
-                                          alert_end:alertEnd,
-                                          userURL:window.location.href
-                                        }
-                                        $this=$(this);
-                                        $.get(url,data,function(data){
-                                          data=JSON.parse(data);
-                                          if(data.success){
-                                            $this.dialog('close');
+                                        var url = '/export/transactions';
+                                        var inputs = "<input type='hidden' name='refURL' value='" + oSettings.sAjaxSource + "'/>"
+                                            + "<input type='hidden' name='iDisplayStart' value='" + startRecord + "'/>"
+                                            + "<input type='hidden' name='iDisplayLength' value='" + recordLimit + "'/>"
+                                        ;
 
-                                              var dialog = $("#dialog_schedule_confirm");
-                                              if ($("#dialog_schedule_confirm").length == 0) {
-                                                  dialog = $('<div id="dialog_schedule_confirm" style="display:none"></div>');
-                                              }
-                                              dialog.html(data.html);
-                                              dialog.dialog({position:['center', 'center'],
-                                                  modal:true,
-                                                  width:550,
-                                                  height:80,
-                                                  autoResize:true,
-                                                  resizable: false,
-                                                  dialogClass:'noTitleDialog',
-                                                  close: function(){
-                                                      var dialog = $("#dialog_schedule_confirm");
-                                                      $(dialog).replaceWith('<div id="dialog_schedule_confirm" style="display:none"></div>');
-                                                  }
-                                              });
-                                          }else{
-                                            $('#errorMessages').html('Below errors must be corrected:<div class="error-message"><ul><li>'+data.errors.join('<li/>')+'</ul></div>');
-                                          }
-                                        });
+                                        if (oSettings.oFeatures.bSort !== false) {
+                                            var iCounter = 0;
+
+                                            aaSort = (oSettings.aaSortingFixed !== null) ?
+                                                oSettings.aaSortingFixed.concat(oSettings.aaSorting) :
+                                                oSettings.aaSorting.slice();
+
+                                            for (i = 0; i < aaSort.length; i++) {
+                                                aDataSort = oSettings.aoColumns[aaSort[i][0]].aDataSort;
+
+                                                for (j = 0; j < aDataSort.length; j++) {
+                                                    inputs = inputs + "<input type='hidden' name='iSortCol_" + iCounter + "' value='" + aDataSort[j] + "'/>";
+                                                    inputs = inputs + "<input type='hidden' name='sSortDir_" + iCounter + "' value='" + aaSort[i][1] + "'/>";
+                                                    iCounter++;
+                                                }
+                                            }
+                                            inputs = inputs + "<input type='hidden' name='iSortingCols' value='" + iCounter + "'/>";
+                                        }
+
+                                        $('<form action="' + url + '" method="get">' + inputs + '</form>').appendTo('body').submit().remove();
+
+                                        $('#dialog #export-message').addClass('disable_me');
+                                        $('.ui-dialog-titlebar').addClass('disable_me');
+                                        $('.ui-dialog-buttonset').addClass('disable_me');
+                                        $('#dialog #dialog').addClass('disable_me');
+                                        $('#loading_gif').show();
+                                        $('#loading_gif').addClass('loading_bigger_gif');
+
+                                        setTimeout(function () {
+                                            $('#dialog #export-message').removeClass('disable_me');
+                                            $('.ui-widget-header').removeClass('disable_me');
+                                            $('.ui-dialog-buttonset').removeClass('disable_me');
+                                            $('#dialog #dialog').removeClass('disable_me');
+                                            $('#loading_gif').hide();
+                                            $('#loading_gif').removeClass('loading_bigger_gif');
+                                        }, 3000);
                                     }
                                 },
-                                "Cancel":function () {
+                                "Cancel": function () {
                                     $(this).dialog('close');
                                 }
                             }
@@ -831,196 +707,38 @@ Drupal.behaviors.hoveOverMWBE = {
         }
     };
 
-    Drupal.behaviors.exportTransactions = {
-        attach:function (context, settings) {
-            $('span.export').die().live("click", function () {
-
-                    var dialog = $("#dialog");
-                    if ($("#dialog").length == 0) {
-                        dialog = $('<div id="dialog" style="display:none"></div>');
-                    }
-
-
-                    var oSettings = $('#table_'+$(this).attr('exportid')).dataTable().fnSettings();
-                    var iRecordsTotal = oSettings.fnRecordsTotal();
-                    var iRecordsDisplay = oSettings.fnRecordsDisplay();
-                    var iDisplayLength = oSettings._iDisplayLength;
-                    var iDisplayStart = oSettings._iDisplayStart;
-
-                    var maxPages = Math.ceil(iRecordsDisplay / iDisplayLength);
-                    // var defStartRecord = iDisplayStart;
-                    //var defRecordLimit = iDisplayLength;
-
-
-                    var dialogUrl = '/export/transactions/form?maxPages=' + maxPages + '&iRecordsTotal=' + iRecordsTotal + '&iRecordsDisplay=' + iRecordsDisplay;
-
-                    // load remote content
-                    dialog.load(
-                        dialogUrl,
-                        {},
-                        function (responseText, textStatus, XMLHttpRequest) {
-                            dialog.dialog({position:"center",
-                                modal:true,
-                                title:'Download Transactions Data',
-                                dialogClass:"export",
-                                width:700,
-                                resizable:false,
-                                buttons:{
-                                    "Download Data":function () {
-                                        //current page
-                                        var startRecord = iDisplayStart;
-                                        var recordLimit = iDisplayLength;
-
-                                        var alertMsgs = [];
-                                        var dcfilter = $('input[name=dc]:checked').val();
-                                        if (dcfilter == null) {
-                                            alertMsgs.push("One of 'Data Selection' option must be selected.");
-                                        }
-
-
-                                        if (dcfilter == 'all') {
-                                            startRecord = 0;
-                                            recordLimit = iRecordsDisplay;
-                                        }
-
-                                        if (dcfilter == 'range') {
-                                            var rangefrom = $('input[name=rangefrom]').val();
-                                            var rangeto = $('input[name=rangeto]').val();
-
-                                            var validFrom = ((String(rangefrom).search(/^\s*(\+|-)?\d+\s*$/) != -1 ) && (parseFloat(rangefrom) == parseInt(rangefrom)) && parseInt(rangefrom) >= 1 && parseInt(rangefrom) <= maxPages);
-                                            var validTo = ((String(rangeto).search(/^\s*(\+|-)?\d+\s*$/) != -1 ) && (parseFloat(rangeto) == parseInt(rangeto)) && parseInt(rangeto) >= 1 && parseInt(rangeto) <= maxPages);
-
-                                            if (!validFrom && !validTo) {
-                                                alertMsgs.push('If "Pages" option is selected, page numbers must be integer values between 1 and ' + maxPages);
-                                            } else if (rangefrom.length > 0 && !validFrom) {
-                                                alertMsgs.push('From page number must be integer value between 1 and ' + maxPages);
-                                            } else if (rangeto.length > 0 && !validTo) {
-                                                alertMsgs.push('To page number must be integer value between 1 and ' + maxPages);
-                                            } else {
-                                                rangefrom = !validFrom ? 1 : parseInt(rangefrom);
-                                                rangeto = !validTo ? maxPages : parseInt(rangeto);
-                                                if (rangefrom > rangeto) {
-                                                    alertMsgs.push('From page number(' + rangefrom + ') must be less than or equal to ' + rangeto);
-                                                } else {
-                                                    startRecord = (rangefrom - 1) * iDisplayLength;
-                                                    recordLimit = (rangeto - rangefrom + 1) * iDisplayLength;
-                                                    if ((startRecord + recordLimit) > iRecordsDisplay) {
-                                                        recordLimit = recordLimit - (startRecord + recordLimit - iRecordsDisplay);
-                                                    }
-                                                }
-                                            }
-                                        } else {
-                                            $('input[name=rangefrom]').val(null);
-                                            $('input[name=rangeto]').val(null);
-                                        }
-
-
-                                        var frmtfilter = $('input[name=frmt]:checked').val();
-                                        if (frmtfilter == null) {
-                                            alertMsgs.push('Format must be selected');
-                                        }
-
-
-
-                                        if (alertMsgs.length > 0) {
-                                            $('#errorMessages').html('Below errors must be corrected:<div class="error-message"><ul>' + '<li>' + alertMsgs.join('<li/>') + '</ul></div>');
-                                        } else {
-                                            $('#errorMessages').html('');
-
-                                            var url = '/export/transactions';
-                                            var inputs = "<input type='hidden' name='refURL' value='" + oSettings.sAjaxSource + "'/>"
-                                                    + "<input type='hidden' name='iDisplayStart' value='" + startRecord + "'/>"
-                                                    + "<input type='hidden' name='iDisplayLength' value='" + recordLimit + "'/>"
-                                                ;
-
-                                            if ( oSettings.oFeatures.bSort !== false )
-                                            {
-                                                var iCounter = 0;
-
-                                                aaSort = ( oSettings.aaSortingFixed !== null ) ?
-                                                    oSettings.aaSortingFixed.concat( oSettings.aaSorting ) :
-                                                    oSettings.aaSorting.slice();
-
-                                                for ( i=0 ; i<aaSort.length ; i++ )
-                                                {
-                                                    aDataSort = oSettings.aoColumns[ aaSort[i][0] ].aDataSort;
-
-                                                    for ( j=0 ; j<aDataSort.length ; j++ )
-                                                    {
-                                                        inputs = inputs + "<input type='hidden' name='iSortCol_"+ iCounter + "' value='" + aDataSort[j] + "'/>";
-                                                        inputs = inputs + "<input type='hidden' name='sSortDir_"+ iCounter + "' value='" + aaSort[i][1] + "'/>";
-                                                        iCounter++;
-                                                    }
-                                                }
-                                                inputs = inputs + "<input type='hidden' name='iSortingCols' value='" + iCounter + "'/>";
-                                            }
-
-                                            $('<form action="' + url + '" method="get">' + inputs + '</form>').appendTo('body').submit().remove();
-
-                                            $('#dialog #export-message').addClass('disable_me');
-                                            $('.ui-dialog-titlebar').addClass('disable_me');
-                                            $('.ui-dialog-buttonset').addClass('disable_me');
-                                            $('#dialog #dialog').addClass('disable_me');
-                                            $('#loading_gif').show();
-                                            $('#loading_gif').addClass('loading_bigger_gif');
-
-                                            setTimeout(function(){
-                                                $('#dialog #export-message').removeClass('disable_me');
-                                                $('.ui-widget-header').removeClass('disable_me');
-                                                $('.ui-dialog-buttonset').removeClass('disable_me');
-                                                $('#dialog #dialog').removeClass('disable_me');
-                                                $('#loading_gif').hide();
-                                                $('#loading_gif').removeClass('loading_bigger_gif');
-                                            }, 3000);
-                                        }
-                                    },
-                                    "Cancel":function () {
-                                        $(this).dialog('close');
-                                    }
-                                }
-                            });
-                        }
-                    );
-                    return false;
-                });
-        }
-    };
-
     Drupal.behaviors.exportGridTransactions = {
-        attach:function (context, settings) {
+        attach: function (context, settings) {
             $('span.grid_export').die().live("click", function () {
                 var nodeId = $(this).attr('exportid');
-                var oSettings = jQuery('#table_'+nodeId).dataTable().fnSettings();
+                var oSettings = $('#table_' + nodeId).dataTable().fnSettings();
 
                 var url = '/export/grid/transactions';
-                var inputs = "<input type='hidden' name='refURL' value='"+ (oSettings.sAjaxSource != null ? oSettings.sAjaxSource : oSettings.oInit.sAltAjaxSource) +"'/>"
-                        + "<input type='hidden' name='iDisplayStart' value='"+ oSettings._iDisplayStart +"'/>"
-                        + "<input type='hidden' name='iDisplayLength' value='"+ oSettings._iDisplayLength +"'/>"
-                        + "<input type='hidden' name='node' value='" + nodeId + "'/>"
-                    ;
+                var inputs = "<input type='hidden' name='refURL' value='" + (oSettings.sAjaxSource != null ? oSettings.sAjaxSource : oSettings.oInit.sAltAjaxSource) + "'/>"
+                    + "<input type='hidden' name='iDisplayStart' value='" + oSettings._iDisplayStart + "'/>"
+                    + "<input type='hidden' name='iDisplayLength' value='" + oSettings._iDisplayLength + "'/>"
+                    + "<input type='hidden' name='node' value='" + nodeId + "'/>"
+                ;
 
-                if ( oSettings.oFeatures.bSort !== false )
-                {
+                if (oSettings.oFeatures.bSort !== false) {
                     var iCounter = 0;
 
-                    aaSort = ( oSettings.aaSortingFixed !== null ) ?
-                        oSettings.aaSortingFixed.concat( oSettings.aaSorting ) :
+                    aaSort = (oSettings.aaSortingFixed !== null) ?
+                        oSettings.aaSortingFixed.concat(oSettings.aaSorting) :
                         oSettings.aaSorting.slice();
 
-                    for ( i=0 ; i<aaSort.length ; i++ )
-                    {
-                        aDataSort = oSettings.aoColumns[ aaSort[i][0] ].aDataSort;
+                    for (i = 0; i < aaSort.length; i++) {
+                        aDataSort = oSettings.aoColumns[aaSort[i][0]].aDataSort;
 
-                        for ( j=0 ; j<aDataSort.length ; j++ )
-                        {
-                            inputs = inputs + "<input type='hidden' name='iSortCol_"+ iCounter + "' value='" + aDataSort[j] + "'/>";
-                            inputs = inputs + "<input type='hidden' name='sSortDir_"+ iCounter + "' value='" + aaSort[i][1] + "'/>";
+                        for (j = 0; j < aDataSort.length; j++) {
+                            inputs = inputs + "<input type='hidden' name='iSortCol_" + iCounter + "' value='" + aDataSort[j] + "'/>";
+                            inputs = inputs + "<input type='hidden' name='sSortDir_" + iCounter + "' value='" + aaSort[i][1] + "'/>";
                             iCounter++;
                         }
                     }
                     inputs = inputs + "<input type='hidden' name='iSortingCols' value='" + iCounter + "'/>";
                 }
-                jQuery('<form action="' + url + '" method="get">' + inputs + '</form>').appendTo('body').submit().remove();
+                $('<form action="' + url + '" method="get">' + inputs + '</form>').appendTo('body').submit().remove();
 
             });
         }
@@ -1028,867 +746,51 @@ Drupal.behaviors.hoveOverMWBE = {
 
     // MWBE Agency Summary export sorting
     Drupal.behaviors.exportmwbeAgencySummary = {
-        attach:function (context, settings) {
+        attach: function (context, settings) {
             $('span.summary_export').die().live("click", function () {
 
-            var oSettings = jQuery('#grading_table').dataTable().fnSettings();
-            var url ='';
-            var url_path = location.pathname.split("/");
-            for(var i=0; i<url_path.length; i++){
-                if(url_path[i] == 'mwbe_agency_grading'){
-                    url += 'mwbe_agency_grading_csv/';
+                var oSettings = $('#grading_table').dataTable().fnSettings();
+                var url = '';
+                var url_path = location.pathname.split("/");
+                for (var i = 0; i < url_path.length; i++) {
+                    if (url_path[i] == 'mwbe_agency_grading') {
+                        url += 'mwbe_agency_grading_csv/';
+                    }
+                    else {
+                        url += url_path[i] + '/';
+                    }
                 }
-                else{
-                    url += url_path[i]+'/';
-                }
-            }
 
-            var inputs = "<input type='hidden' name='iDisplayStart' value='"+ oSettings._iDisplayStart +"'/>"
-                    + "<input type='hidden' name='iDisplayLength' value='"+ oSettings._iDisplayLength +"'/>"
+                var inputs = "<input type='hidden' name='iDisplayStart' value='" + oSettings._iDisplayStart + "'/>"
+                    + "<input type='hidden' name='iDisplayLength' value='" + oSettings._iDisplayLength + "'/>"
                 ;
 
-            if ( oSettings.oFeatures.bSort !== false )
-            {
-                var iCounter = 0;
+                if (oSettings.oFeatures.bSort !== false) {
+                    var iCounter = 0;
 
-                aaSort = ( oSettings.aaSortingFixed !== null ) ?
-                    oSettings.aaSortingFixed.concat( oSettings.aaSorting ) :
-                    oSettings.aaSorting.slice();
+                    aaSort = (oSettings.aaSortingFixed !== null) ?
+                        oSettings.aaSortingFixed.concat(oSettings.aaSorting) :
+                        oSettings.aaSorting.slice();
 
-                for ( i=0 ; i<aaSort.length ; i++ )
-                {
-                    aDataSort = oSettings.aoColumns[ aaSort[i][0] ].aDataSort;
+                    for (i = 0; i < aaSort.length; i++) {
+                        aDataSort = oSettings.aoColumns[aaSort[i][0]].aDataSort;
 
-                    for ( j=0 ; j<aDataSort.length ; j++ )
-                    {
-                        inputs = inputs + "<input type='hidden' name='iSortCol_"+ iCounter + "' value='" + aDataSort[j] + "'/>";
-                        inputs = inputs + "<input type='hidden' name='sSortDir_"+ iCounter + "' value='" + aaSort[i][1] + "'/>";
-                        iCounter++;
+                        for (j = 0; j < aDataSort.length; j++) {
+                            inputs = inputs + "<input type='hidden' name='iSortCol_" + iCounter + "' value='" + aDataSort[j] + "'/>";
+                            inputs = inputs + "<input type='hidden' name='sSortDir_" + iCounter + "' value='" + aaSort[i][1] + "'/>";
+                            iCounter++;
+                        }
                     }
+                    inputs = inputs + "<input type='hidden' name='iSortingCols' value='" + iCounter + "'/>";
                 }
-                inputs = inputs + "<input type='hidden' name='iSortingCols' value='" + iCounter + "'/>";
-            }
-            jQuery('<form action="' + url + '" method="get">' + inputs + '</form>').appendTo('body').submit().remove();
+                $('<form action="' + url + '" method="get">' + inputs + '</form>').appendTo('body').submit().remove();
 
-        });
-    }
-    };
-
-    Drupal.behaviors.advancedSearchEnterKeyPress = {
-            attach:function (context, settings) {
-            	$("#block-checkbook-advanced-search-checkbook-advanced-search-form input").bind("keypress", function(e) {
-                    if (e.keyCode == 13) {
-                    	e.preventDefault();
-                    	var id = this.id;
-                    	if(id.match(/contract/g) != null){
-                    		$('#edit-contracts-submit').click();                    		
-                    	}
-                    	else if(id.match(/payroll/g) != null){
-                    		$('#edit-payroll-submit').click();                    		
-                    	}
-                    	else if(id.match(/budget/g) != null){
-                    		$('#edit-budget-submit').click();
-                    	}
-                    	else if(id.match(/revenue/g) != null){
-                    		$('#edit-revenue-submit').click();
-                    	}
-                    	else if(id.match(/spending/g) != null){
-                    		$('#edit-spending-submit').click();
-                    	}
-                    }
-                    else return true;
-              });
-            }
-        };
-
-    //Uncomment budget and revenue case and change indexes when enabling budget and revenue
-    //Also see changes in checkbook_advanced_search.module and checkbook_datafeeds.module
-    Drupal.behaviors.advancedSearchAccordions = {
-        attach:function (context, settings) {
-
-            $('a.advanced-search').click(function () {
-
-                var href = window.location.href.replace(/(http|https):\/\//, '');
-                var n = href.indexOf('?');
-                href = href.substring(0, n != -1 ? n : href.length);
-                var data_source = (href.indexOf('datasource/checkbook_oge') !== -1) ? "checkbook_oge" : "checkbook";
-                var page_clicked_from = this.id ? this.id : href.split('/')[1];
-                var active_accordion_window = initializeActiveAccordionWindow(page_clicked_from, data_source);
-
-
-                //Initialize Attributes and styling
-                initializeAccordionAttributes('advanced_search');
-
-                $('#block-checkbook-advanced-search-checkbook-advanced-search-form').dialog({
-                    title:"Advanced Search",
-                    position:['center', 'center'],
-                    width:800,
-                    modal:true,
-                    autoResize:true,
-                    resizable: false,
-                    dragStart: function(){
-                        $(".ui-autocomplete-input").autocomplete("close")
-                    },
-                    open: function(){
-                    },
-                    close: function(){
-                        $(".ui-autocomplete-input").autocomplete("close")
-                        $('input[name="budget_submit"]').css('display','none');
-                        $('input[name="revenue_submit"]').css('display','none');
-                        $('input[name="spending_submit"]').css('display','none');
-                        $('input[name="contracts_submit"]').css('display','none');
-                        $('input[name="payroll_submit"]').css('display','none');
-                    }
-                });
-                /* Correct min-height for IE9, causes hover event to add spaces */
-                $('#block-checkbook-advanced-search-checkbook-advanced-search-form').css('min-height','0%');
-
-                $('.advanced-search-accordion').accordion({
-                    autoHeight: false,
-                    active: active_accordion_window
-                });
-
-                /* For oge, Budget, Revenue & Payroll are not applicable and are disabled */
-                disableAccordionSections(data_source);
-                
-                clearInputFields("#payroll-advanced-search",'payroll');
-                clearInputFieldByDataSource("#contracts-advanced-search",'contracts',data_source);
-                clearInputFieldByDataSource("#spending-advanced-search",'spending',data_source);
-                clearInputFields("#budget-advanced-search",'budget');
-                clearInputFields("#revenue-advanced-search",'revenue');
-
-                clearInputFields("#payroll-advanced-search",'payroll');
-                clearInputFieldByDataSource("#contracts-advanced-search",'contracts',data_source);
-                clearInputFieldByDataSource("#spending-advanced-search",'spending',data_source);
-                clearInputFields("#budget-advanced-search",'budget');
-                clearInputFields("#revenue-advanced-search",'revenue');
-
-                return false;
             });
         }
     };
 
-    /*
-     * This code is used to determine which window in the accordion should be open when users click the "Advanced Search" link, based on the page
-     * from where the link has been clicked
-     * Eg: if the "Advanced Search" link from spending page is clicked, the URL would be http://checkbook/SPENDING/transactions.....
-     * if the "Advanced Search" link from budget page is clicked, the URL would be http://checkbook/BUDGET/transactions.....
-     * based on the url param in the caps above, we have to keep the specific window in the accordion open
-     * check the code in checkbook_advanced_search.module where we generate the form
-     */
-    function initializeActiveAccordionWindow(page_clicked_from, data_source) {
-        var active_accordion_window = 2;
-        switch (page_clicked_from) {
-            case "budget":
-                active_accordion_window = 0;
-                break;
-            case "revenue":
-                active_accordion_window = 1;
-                break;
-            case "contracts_revenue_landing":
-            case "contracts_landing":
-            case "contracts_pending_rev_landing":
-            case "contracts_pending_exp_landing":
-            case "contracts_pending_landing":
-            case "contract":
-                active_accordion_window = 3;
-                break;
-            case "payroll":
-                active_accordion_window = 4;
-                break;
-            default: //spending
-                active_accordion_window = 2;
-                break;
-        }
-
-        clearInputFields("#payroll-advanced-search",'payroll');
-        clearInputFieldByDataSource("#contracts-advanced-search",'contracts',data_source);
-        clearInputFieldByDataSource("#spending-advanced-search",'spending',data_source);
-        clearInputFields("#budget-advanced-search",'budget');
-        clearInputFields("#revenue-advanced-search",'revenue');
-
-        return active_accordion_window;
-    }
-
-    /* For oge, Budget, Revenue & Payroll are not applicable and are disabled */
-    function disableAccordionSections(data_source) {
-        if(data_source == "checkbook_oge") {
-            disableAccordionSection('Budget');
-            disableAccordionSection('Revenue');
-            disableAccordionSection('Payroll');
-        }
-    }
-
-    function initializeAccordionAttributes(accordion_type) {
-        $('#advanced-search-rotator').css('display', 'none');
-        $("#block-checkbook-advanced-search-checkbook-advanced-search-form :input").removeAttr("disabled");
-        $('.create-alert-customize-results').css('display','none');
-        $('.create-alert-schedule-alert').css('display','none');
-        $('.create-alert-confirmation').css('display','none');
-        $('#edit-next-submit').attr('disabled', true);
-        $('#edit-back-submit').attr('disabled', true);
-        $('.create-alert-submit').css('display','none');
-        $('div.ui-dialog-titlebar').css('width', 'auto');
-        switch(accordion_type) {
-            case 'advanced_search':
-                $('.create-alert-view').css('display','none');
-                $('input[name="budget_submit"]').css('display','inline');
-                $('input[name="revenue_submit"]').css('display','inline');
-                $('input[name="spending_submit"]').css('display','inline');
-                $('input[name="contracts_submit"]').css('display','inline');
-                $('input[name="payroll_submit"]').css('display','inline');
-                $('input[name="budget_next"]').css('display','none');
-                $('input[name="revenue_next"]').css('display','none');
-                $('input[name="spending_next"]').css('display','none');
-                $('input[name="contracts_next"]').css('display','none');
-                $('input[name="payroll_next"]').css('display','none');
-                $('.advanced-search-accordion').css('display','inline');
-                break;
-
-            case 'advanced_search_create_alerts':
-                $('.create-alert-view').css('display','inline');
-                $('div.create-alert-submit #edit-next-submit').val('Next');
-                $('input[name="budget_submit"]').css('display','none');
-                $('input[name="revenue_submit"]').css('display','none');
-                $('input[name="spending_submit"]').css('display','none');
-                $('input[name="contracts_submit"]').css('display','none');
-                $('input[name="payroll_submit"]').css('display','none');
-                $('input[name="budget_next"]').css('display','inline');
-                $('input[name="revenue_next"]').css('display','inline');
-                $('input[name="spending_next"]').css('display','inline');
-                $('input[name="contracts_next"]').css('display','inline');
-                $('input[name="payroll_next"]').css('display','inline');
-                $('.advanced-search-accordion').css('display','inline');
-                break;
-        }
-    }
-
-
-    /* Function will apply disable the click of the accordian section and apply an attribute for future processing */
-    function disableAccordionSection(name) {
-        var accordion_section = $("a:contains("+name+")").closest("h3");
-        accordion_section.attr("data-enabled","false");
-        accordion_section.addClass('ui-state-section-disabled');
-        accordion_section.unbind("click");
-    }
-
-    Drupal.behaviors.createAlerts = {
-        attach:function (context, settings) {
-
-            $('span.advanced-search-create-alert').click(function () {
-                var href = window.location.href.replace(/(http|https):\/\//, '');
-                var n = href.indexOf('?');
-                href = href.substring(0, n != -1 ? n : href.length);
-                var data_source = (href.indexOf('datasource/checkbook_oge') !== -1) ? "checkbook_oge" : "checkbook";
-                var page_clicked_from = this.id ? this.id : href.split('/')[1];
-                var active_accordion_window = initializeActiveAccordionWindow(page_clicked_from, data_source);
-
-
-                var createAlertsDiv = "<span class='create-alert-instructions'>Follow the three step process to schedule alert.<ul><li>Please select one of the following domains and also select the desired filters.<\/li><li>Click 'Next' button to view and customize the results.<\/li><li>Click 'Clear All' to clear out the filters applied.<\/li><\/ul><\/br></span>";
-                createAlertsDiv += "<span style='visibility: hidden;display: none;' class='create-alert-results-loading'><div id='loading-icon'><img src='/sites/all/themes/checkbook/images/loading_large.gif'></div></span>";
-                createAlertsDiv += "<div class='create-alert-customize-results' style='display: none'><br/><br/><br/></div>";
-                createAlertsDiv += "<div class='create-alert-schedule-alert' style='display: none'>&nbsp;<br/><br/></div>";
-                createAlertsDiv = "<div class='create-alert-view'>"+createAlertsDiv+"</div>";
-                $('.create-alert-view').replaceWith(createAlertsDiv);
-
-                //Initialize Attributes and styling
-                initializeAccordionAttributes('advanced_search_create_alerts');
-
-                $('#block-checkbook-advanced-search-checkbook-advanced-search-form').dialog({
-                    title:"<span class='create-alert-header'><span class='active'>1. Select Criteria</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>2. Customize Results</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>3. Schedule Alert</span></span>",
-                    position:['center', 'center'],
-                    width:800,
-                    modal:true,
-                    autoResize:true,
-                    resizable: false,
-                    dragStart: function(){
-                        $(".ui-autocomplete-input").autocomplete("close")
-                    },
-                    open: function(){
-
-                    },
-                    close: function(){
-                        $(".ui-autocomplete-input").autocomplete("close");
-                        $('input[name="budget_next"]').css('display','none');
-                        $('input[name="revenue_next"]').css('display','none');
-                        $('input[name="spending_next"]').css('display','none');
-                        $('input[name="contracts_next"]').css('display','none');
-                        $('input[name="payroll_next"]').css('display','none');
-
-                        var createAlertsDiv = "<div class='create-alert-view'></div>";
-                        $('.create-alert-view').replaceWith(createAlertsDiv);
-                    }
-                });
-                /* Correct min-height for IE9, causes hover event to add spaces */
-                $('#block-checkbook-advanced-search-checkbook-advanced-search-form').css('min-height','0%');
-
-                $('.advanced-search-accordion').accordion({
-                    autoHeight: false,
-                    active: active_accordion_window
-                });
-
-                /* For oge, Budget, Revenue & Payroll are not applicable and are disabled */
-                disableAccordionSections(data_source);
-                
-                clearInputFields("#payroll-advanced-search",'payroll');
-                clearInputFieldByDataSource("#contracts-advanced-search",'contracts',data_source);
-                clearInputFieldByDataSource("#spending-advanced-search",'spending',data_source);
-                clearInputFields("#budget-advanced-search",'budget');
-                clearInputFields("#revenue-advanced-search",'revenue');
-
-                clearInputFields("#payroll-advanced-search",'payroll');
-                clearInputFieldByDataSource("#contracts-advanced-search",'contracts',data_source);
-                clearInputFieldByDataSource("#spending-advanced-search",'spending',data_source);
-                clearInputFields("#budget-advanced-search",'budget');
-                clearInputFields("#revenue-advanced-search",'revenue');
-
-                return false;
-            });
-            $("#checkbook_advanced_search_result_iframe").load(function() {
-                $('.create-alert-submit').css('display','block');
-            });
-
-            function create_alert_loading(e){
-                $("#advanced-search-rotator").css('display', 'block');
-                $("#advanced-search-rotator").addClass('loading_bigger_gif');
-            }
-
-            function create_alert_form_disable(e){
-                $(".ui-dialog-titlebar").addClass('transparent');
-                $(".ui-dialog-titlebar").addClass('disable_me');
-                $("#spending-advanced-search").addClass('transparent');
-                $("#revenue-advanced-search").addClass('transparent');
-                $("#budget-advanced-search").addClass('transparent');
-                $("#contracts-advanced-search").addClass('transparent');
-                $("#payroll-advanced-search").addClass('transparent');
-                $(".advanced-search-accordion").addClass('transparent');
-                $("#block-checkbook-advanced-search-checkbook-advanced-search-form").addClass('disable_me');
-                $('.create-alert-instructions').addClass('transparent');
-            }
-
-            function create_alert_form_enable(e){
-                $(".ui-dialog-titlebar").removeClass('transparent');
-                $(".ui-dialog-titlebar").removeClass('disable_me');
-                $("#spending-advanced-search").removeClass('transparent');
-                $("#revenue-advanced-search").removeClass('transparent');
-                $("#budget-advanced-search").removeClass('transparent');
-                $("#contracts-advanced-search").removeClass('transparent');
-                $("#payroll-advanced-search").removeClass('transparent');
-                $(".advanced-search-accordion").removeClass('transparent');
-                $("#block-checkbook-advanced-search-checkbook-advanced-search-form").removeClass('disable_me');
-                $('.create-alert-instructions').removeClass('transparent');
-            }
-
-            $(document).ajaxComplete(function() {
-                /* Do not enable next buttons for results page here */
-                var step = $('input:hidden[name="step"]').val();
-                if(step == 'select_criteria') {
-                    $('#edit-next-submit').attr('disabled', true);
-                    $('#edit-back-submit').attr('disabled', true);
-                }
-                else if(step == 'schedule_alert') {
-                    $('#edit-next-submit').attr('disabled', false);
-                    $('#edit-back-submit').attr('disabled', false);
-                    $('a.ui-dialog-titlebar-close').show();
-                    $('#advanced-search-rotator').css('display', 'none');
-
-                    /* hide loading icon */
-                    $('.create-alert-results-loading').css('visibility', 'hidden');
-                    $('.create-alert-results-loading').css('display', 'none');
-                }
-                else {
-                    $('#edit-back-submit').attr('disabled', true);
-                }
-                
-                jQuery('.tableHeader').each(function( i ) {
-                   if(jQuery(this).find('.contCount').length > 0){
-                        jQuery(this).find('h2').append("<span class='contentCount'>"+jQuery('span.contCount').html()+'</span>');
-                        jQuery(this).find('.contCount').remove();
-                    }
-                });
-                
-            });
-
-            /*------------------------------------------------------------------------------------------------------------*/
-            $('input[name="budget_next"]').once('createAlertBudget').click(function (event) {
-                $('a.ui-dialog-titlebar-close').hide();
-                $(".ui-autocomplete-input").autocomplete("close");
-                create_alert_loading();
-                create_alert_form_disable();
-                event.preventDefault();
-            });
-            $('input[name="revenue_next"]').once('createAlertRevenue').click(function (event) {
-                $('a.ui-dialog-titlebar-close').hide();
-                $(".ui-autocomplete-input").autocomplete("close");
-                create_alert_loading();
-                create_alert_form_disable();
-                event.preventDefault();
-            });
-            $('input[name="spending_next"]').once('createAlertSpending').click(function (event) {
-                $('a.ui-dialog-titlebar-close').hide();
-                $(".ui-autocomplete-input").autocomplete("close");
-                create_alert_loading();
-                create_alert_form_disable();
-                event.preventDefault();
-            });
-            $('input[name="contracts_next"]').once('createAlertContracts').click(function (event) {
-                $('a.ui-dialog-titlebar-close').hide();
-                $(".ui-autocomplete-input").autocomplete("close");
-                create_alert_loading();
-                create_alert_form_disable();
-                event.preventDefault();
-            });
-            $('input[name="payroll_next"]').once('createAlertPayroll').click(function (event) {
-                $('a.ui-dialog-titlebar-close').hide();
-                $(".ui-autocomplete-input").autocomplete("close");
-                create_alert_loading();
-                create_alert_form_disable();
-                event.preventDefault();
-            });
-            $('#edit-next-submit').once('createAlertNextSubmit').click(function (event) {
-                $('#edit-back-submit').attr('disabled', true);
-                $.fn.onScheduleAlertNextClick($('input:hidden[name="step"]').val());
-                event.preventDefault();
-            });
-            $('#edit-back-submit').once('createAlertBackSubmit').click(function (event) {
-                $('#edit-next-submit').attr('disabled', true);
-                $.fn.onScheduleAlertBackClick($('input:hidden[name="step"]').val());
-                create_alert_form_enable();
-                event.preventDefault();
-            });
-
-            $.fn.onScheduleAlertNextClick = function (step) {
-                var next_step = '';
-                var header = '';
-                var instructions = '';
-
-                /* Clear auto-completes */
-                $(".ui-autocomplete-input").autocomplete("close");
-
-                switch(step) {
-                    case 'select_criteria':
-                        next_step = 'customize_results';
-
-                        /* Hide the rotator */
-                        $('#advanced-search-rotator').css('display', 'none');
-                        create_alert_form_enable();
-
-                        /* Hide the iFrame */
-                        $('#checkbook_advanced_search_result_iframe').css('visibility','hidden');
-
-                        /* Show loading icon */
-                        $('.create-alert-results-loading').css('visibility', 'visible');
-                        $('.create-alert-results-loading').css('display', 'block');
-
-                        /* Show the results page */
-                        $('.create-alert-customize-results').css('display','block');
-
-                        /* Update width of dialog dimension */
-                        $('div.ui-dialog-titlebar').css('width', 994);
-                        $('div.ui-dialog').css('width', 1023);
-                        $('div.ui-dialog').css('height','385px');
-
-                        /* Update header */
-                        header = "<span class='create-alert-header'><span class='inactive'>1. Select Criteria</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='active'>2. Customize Results</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>3. Schedule Alert</span></span>";
-                        $('.create-alert-header').replaceWith(header);
-
-                        /* Update wizard instructions */
-                        instructions = "<span class='create-alert-instructions'>Further narrow down the results using the 'Narrow down your search' functionality.<ul><li>Click 'Export' button to download the results into excel.<\/li><li>Click 'Back' to go back to Step1: Select Criteria.<\/li><li>Click 'Next' button to Schedule Alert.<\/li><\/ul><\/br></span>";
-                        $('.create-alert-instructions').replaceWith(instructions);
-
-                        /* Hide the accordion */
-                        $('.advanced-search-accordion').css('display','none');
-
-                        /* Buttons */
-                        $('#edit-next-submit').css('display','inline');
-                        $('#edit-back-submit').css('display','inline');
-
-                        /* Update hidden field for new step */
-                        $('input:hidden[name="step"]').val(next_step);
-
-                        break;
-
-                    case 'customize_results':
-                        next_step = 'schedule_alert';
-
-                        /* Update width of dialog dimension */
-                        $('div.ui-dialog-titlebar').css('width', 'auto');
-                        $('div.ui-dialog').css('height','auto');
-                        $('div.ui-dialog').css('width','800px');
-
-                        /* Update header */
-                        header = "<span class='create-alert-header'><span class='inactive'>1. Select Criteria</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>2. Customize Results</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='active'>3. Schedule Alert</span></span>";
-                        $('.create-alert-header').replaceWith(header);
-
-                        /* Update wizard instructions */
-                        instructions = "<span class='create-alert-instructions'><ul><li>Checkbook alerts will notify you by email when new results matching your current search criteria are available. Use options below for alert settings.<\/li><li>Provide email address, in order to receive alerts. Emails will be sent based on the frequency selected and only after the minimum number of additional results entered has been reached since the last alert.<\/li><li>Click 'Back' to go back to Step2: Customize Results.<\/li><li>Click 'Schedule Alert' to schedule the alert.<\/li><li>The user shall receive email confirmation once the alert is scheduled.<\/li><\/ul></span>";
-                        $('.create-alert-instructions').replaceWith(instructions);
-
-                        /* Hide close button */
-                        $('a.ui-dialog-titlebar-close').hide();
-
-                        /* Buttons */
-                        $('div.create-alert-submit #edit-next-submit').val('Schedule Alert');
-                        $('#edit-next-submit').attr('disabled', true);
-                        $('#edit-back-submit').attr('disabled', true);
-                        $('#edit-next-submit').css('display','inline');
-                        $('#edit-back-submit').css('display','inline');
-
-                        /* Hide the results page */
-                        $('.create-alert-customize-results').css('display','none');
-
-                        /* Show loading icon */
-                        $('.create-alert-results-loading').css('visibility', 'visible');
-                        $('.create-alert-results-loading').css('display', 'block');
-
-
-                        /* Show the schedule alert page */
-                        $('.create-alert-schedule-alert').css('display','block');
-
-                        /* Load Schedule Alert Form */
-                        $.fn.onScheduleAlertClick();
-
-                        /* Update hidden field for new step */
-                        $('input:hidden[name="step"]').val(next_step);
-
-                        /* Remove focus scedule alerts button */
-                        $('#edit-next-submit').blur();
-
-                        break;
-
-                    case 'schedule_alert':
-                        next_step = 'confirmation';
-
-                        /* Update hidden field for new step */
-                        $('input:hidden[name="step"]').val(next_step);
-
-                        /* Schedule Alert */
-                        var ajax_referral_url = $('input:hidden[name="ajax_referral_url"]').val();
-                        var base_url = window.location.protocol+'//'+window.location.host;
-                        $.fn.onScheduleAlertConfirmClick(ajax_referral_url,base_url);
-
-                        break;
-                }
-            }
-
-            $.fn.onScheduleAlertBackClick = function (step) {
-                var previous_step = '';
-                var header = '';
-                var instructions = '';
-
-                /* Clear auto-completes */
-                $(".ui-autocomplete-input").autocomplete("close");
-
-                switch(step) {
-                    case 'customize_results':
-                        previous_step = 'select_criteria';
-
-                        //enable form
-                        $("#block-checkbook-advanced-search-checkbook-advanced-search-form :input").removeAttr("disabled");
-
-                        /* Update width of dialog dimension */
-                        $('div.ui-dialog-titlebar').css('width', 'auto');
-                        $('div.ui-dialog').css('height','auto');
-                        $('div.ui-dialog').css('width','800px');
-                        
-                        /* Update header */
-                        header = "<span class='create-alert-header'><span class='active'>1. Select Criteria</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>2. Customize Results</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>3. Schedule Alert</span></span>";
-                        $('.create-alert-header').replaceWith(header);
-
-                        /* Update wizard instructions */
-                        instructions = "<span class='create-alert-instructions'>Follow the three step process to schedule alert.<ul><li>Please select one of the following domains and also select the desired filters.<\/li><li>Click 'Next' button to view and customize the results.<\/li><li>Click 'Clear All' to clear out the filters applied.<\/li><\/ul><\/br></span>";
-                        $('.create-alert-instructions').replaceWith(instructions);
-
-                        /* Hide the results page */
-                        $('.create-alert-customize-results').css('display','none');
-
-                        /* Hide results buttons */
-                        $('.create-alert-submit').css('display','none');
-
-                        /* Buttons */
-                        $('#edit-next-submit').css('display','none');
-                        $('#edit-back-submit').css('display','none');
-
-                        /* Show the accordion and disable the input fields based on the selection criteria */
-                        $('.advanced-search-accordion').css('display','block');
-                        disableInputFields();
-
-                        break;
-
-                    case 'schedule_alert':
-                        previous_step = 'customize_results';
-
-                        /* Update width of dialog dimension */
-                        $('div.ui-dialog-titlebar').css('width', 994);
-                        $('div.ui-dialog').css('width', 1023);
-                        $('div.ui-dialog').css('height','auto');
-
-                        /* Update header */
-                        header = "<span class='create-alert-header'><span class='inactive'>1. Select Criteria</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='active'>2. Customize Results</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>3. Schedule Alert</span></span>";
-                        $('.create-alert-header').replaceWith(header);
-
-                        /* Update wizard instructions */
-                        instructions = "<span class='create-alert-instructions'>Further narrow down the results using the 'Narrow down your search' functionality.<ul><li>Click 'Export' button to download the results into excel.<\/li><li>Click 'Back' to go back to Step1: Select Criteria.<\/li><li>Click 'Next' button to Schedule Alert.<\/li><\/ul><\/br></span>";
-                        $('.create-alert-instructions').replaceWith(instructions);
-
-                        /* Hide the schedule alert page */
-                        $('.create-alert-schedule-alert').replaceWith("<div class='create-alert-schedule-alert'>&nbsp;<br/><br/></div>");
-                        $('.create-alert-schedule-alert').css('display','none');
-
-                        /* Show the results page */
-                        $('.create-alert-customize-results').css('display','block');
-
-                        /* Update button text */
-                        $('div.create-alert-submit #edit-next-submit').val('Next');
-
-                        /* Remove focus from back */
-                        $('#edit-back-submit').blur();
-
-                        /* Show results buttons */
-                        $('.create-alert-submit').css('display','block');
-
-                        /* Buttons */
-                        $('#edit-next-submit').css('display','inline');
-                        $('#edit-back-submit').css('display','inline');
-
-                        /* Enable Next button on back to results page  */
-                        $('#edit-next-submit').attr('disabled',false);
-
-                        break;
-
-                }
-
-                /* Update hidden field for new step */
-                $('input:hidden[name="step"]').val(previous_step);
-            }
-
-            /*------------------------------------------------------------------------------------------------------------*/
-
-            $.fn.onScheduleAlertClick = function () {
-
-                var scheduleAlertDiv = $(".create-alert-schedule-alert");
-                var scheduleAlertUrl = '/alert/transactions/advanced/search/form';
-
-                /* Load */
-                $.ajax({
-                    url: scheduleAlertUrl,
-                    success: function(data) {
-                        $(scheduleAlertDiv).replaceWith("<div class='create-alert-schedule-alert'>"+data+"</div>");
-                        $("input[name='alert_end[date]']").datepicker({"changeMonth":true,"changeYear":true,"autoPopUp":"focus","closeAtTop":false,"speed":"immediate","firstDay":0,"dateFormat":"yy-mm-dd","yearRange":"-113:+487","fromTo":false,"defaultDate":"0y"});
-                    }
-                });
-            }
-
-            $.fn.onScheduleAlertConfirmClick = function (ajaxReferralUrl,serverName) {
-
-                /* Add hidden field for ajax user Url */
-                var ajaxUserUrl = $('#checkbook_advanced_search_result_iframe').attr('src');
-                $('input:hidden[name="ajax_user_url"]').val(ajaxUserUrl);
-                ajaxUserUrl = serverName+ajaxUserUrl
-
-                var validateEmail=function(email) {
-                    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                    return re.test(email);
-                };
-
-                var isNumber=function(value) {
-                    if ((undefined === value) || (null === value)) {
-                        return false;
-                    }
-                    if (typeof value == 'number') {
-                        return true;
-                    }
-                    return !isNaN(value - 0);
-                }
-
-                var alertDiv = $('.create-alert-schedule-alert');
-                var alertLabel = $(alertDiv).find('input[name=alert_label]').val();
-                var alertEmail = $(alertDiv).find('input[name=alert_email]').val();
-                var alertMinimumResults = $(alertDiv).find('input[name=alert_minimum_results]').val();
-                var alertMinimumDays = $(alertDiv).find('select[name=alert_minimum_days]').val();
-                var alertEnd = $(alertDiv).find("input[name='alert_end[date]']").val();
-                var dateRegEx = '[0-9]{4,4}-[0-1][0-9]-[0-3][0-9]';
-
-                var alertMsgs = [];
-                if(alertLabel.length<1){
-                    alertMsgs.push("No Description has been set.");
-                }
-                if(alertEmail.length<1){
-                    alertMsgs.push("No email is entered.");
-                } else if(!validateEmail(alertEmail)){
-                    alertMsgs.push("Email is not valid.");
-                }
-                if(!isNumber(alertMinimumResults) || alertMinimumResults<1){
-                    alertMsgs.push("Minimum results is not a valid number.");
-                }
-                if(!isNumber(alertMinimumDays) || alertMinimumDays<1){
-                    alertMsgs.push("Alert frequency is not valid.");
-                }
-                var selectedDate = $("input[name='alert_end[date]']").datepicker('getDate');
-                if((alertEnd.length > 1 && alertEnd.length != 10) || (alertEnd.length > 1 && !alertEnd.match(dateRegEx))){
-                    alertMsgs.push("Expiration Date is not valid.");
-                }
-                else if(selectedDate != null && selectedDate < new Date()) {
-                    alertMsgs.push("Expiration date should be greater than current date.");
-                }
-
-                if (alertMsgs.length > 0) {
-                    $(alertDiv).find('#errorMessages').html('Below errors must be corrected:<div class="error-message"><ul>' + '<li>' + alertMsgs.join('</li><li>') + '</li></ul></div>');
-                    /* back button needs to be enabled*/
-                    $('#edit-back-submit').attr('disabled', false);
-                    /* Update hidden field for new step */
-                    $('input:hidden[name="step"]').val('schedule_alert');
-                } else {
-                    $('a.ui-dialog-titlebar-close').hide();
-                    $('#edit-next-submit').attr('disabled', true);
-                    create_alert_loading();
-                    $(".create-alert-view").addClass('transparent');
-                    $(".create-alert-view").addClass('disable_me');
-                    $(alertDiv).find('#errorMessages').html('');
-
-                    var url = '/alert/transactions';
-                    var data = {
-                        refURL:ajaxReferralUrl,
-                        alert_label:alertLabel,
-                        alert_email:alertEmail,
-                        alert_minimum_results:alertMinimumResults,
-                        alert_minimum_days:alertMinimumDays,
-                        alert_end:alertEnd,
-                        userURL:ajaxUserUrl,
-                        alert_theme_file:'checkbook_alerts_advanced_search_confirm_theme'
-                    }
-                    $this=$(this);
-
-                    $.get(url,data,function(data){
-                        data=JSON.parse(data);
-                        if(data.success){
-                            $('a.ui-dialog-titlebar-close').show();
-                            $this.dialog('close');
-                            $('#block-checkbook-advanced-search-checkbook-advanced-search-form').dialog('close');
-                            var dialog = $("#dialog");
-                            if ($("#dialog").length == 0)
-                                dialog = $('<div id="dialog" style="display:none"></div>');
-                            else
-                                $(dialog).replaceWith('<div id="dialog" style="display:none"></div>');
-
-                            dialog.html(data.html);
-                            dialog.dialog({position:['center', 'center'],
-                                modal:true,
-                                width:550,
-                                height:80,
-                                autoResize:true,
-                                resizable: false,
-                                dialogClass:'noTitleDialog',
-                                close: function(){
-                                    var dialog = $("#dialog");
-                                    $(dialog).replaceWith('<div id="dialog" style="display:none"></div>');
-                                }
-                            });
-                        } else{
-                            /* back button needs to be enabled*/
-                            $('#edit-back-submit').attr('disabled', false);
-                            /* Update hidden field for new step */
-                            $('input:hidden[name="step"]').val('schedule_alert');
-
-                            $(alertDiv).find('#errorMessages').html('Below errors must be corrected:<div class="error-message"><ul><li>'+data.errors.join('<li/>')+'</ul></div>');
-                        }
-                    });
-                }
-            }
-
-            $(window).load(function() {
-                if (inIframe() && document.URL.indexOf("/createalert") >= 0) {
-                    if($('.create-alert-customize-results', window.parent.document).css('display') == 'none') {
-                        return;
-                    }
-                    //No results
-                    $('#checkbook_advanced_search_result_iframe', window.parent.document).css('height', '100%');
-                    $('#checkbook_advanced_search_result_iframe', window.parent.document).attr('scrolling', 'no');
-                    $('#checkbook_advanced_search_result_iframe', window.parent.document).attr('scroll', 'no');
-                    $('#checkbook_advanced_search_result_iframe', window.parent.document).css('padding-left', '10px');
-
-                    //Fix content formatting
-                    var body = $(document).find('html body');
-                    $(body).css('background', '#ffffff');
-                    $(body).css('overflow', 'hidden');
-
-                    var bodyInner = $(document).find('html body #body-inner');
-                    $(bodyInner).css('box-shadow', 'none');
-
-                    $('.create-alert-results-loading', window.parent.document).css('display', 'none');
-                    $('.create-alert-results-loading', window.parent.document).css('visibility', 'hidden');
-                    $('#checkbook_advanced_search_result_iframe', window.parent.document).css('visibility', 'visible');
-                    $('a.ui-dialog-titlebar-close', window.parent.document).show();
-
-                    /* On parent back button click, need to re-stick the header */
-                    $('#edit-back-submit', window.parent.document).click(function (event) {
-                        var step = $('input:hidden[name="step"]').val();
-                        if(step == 'schedule_alert' || 'customize_results') {
-                            setTimeout(function() { fnCustomInitCompleteReload(); }, 250);
-                        }
-                    });
-
-                    $(document).ajaxComplete(function() {
-
-                        if($('.create-alert-customize-results', window.parent.document).css('display') == 'none') {
-                            return;
-                        }
-
-                        $('#checkbook_advanced_search_result_iframe', window.parent.document).css('height', 600);
-                        $('#checkbook_advanced_search_result_iframe', window.parent.document).attr('scrolling', 'yes');
-                        $('#checkbook_advanced_search_result_iframe', window.parent.document).attr('scroll', 'yes');
-                        $('#checkbook_advanced_search_result_iframe', window.parent.document).css('overflow-x', 'hidden');
-                        $('#checkbook_advanced_search_result_iframe', window.parent.document).css('overflow-y', 'scroll');
-                        $('#checkbook_advanced_search_result_iframe', window.parent.document).css('padding-left', '0px');
-                        $('div.ui-dialog', window.parent.document).css('height', 835);
-                        //Links should be disable in the iframe
-                        $(this).find('.dataTable tbody tr td div a').each(function() {
-                            $(this).addClass('disableLinks');
-                            $(this).click(function() { return false; });
-                        });
-
-                        //Fix content formatting
-                        var body = $(this).find('html body')
-                        $(body).css('background', '#ffffff');
-                        $(body).css('overflow-x', 'hidden');
-                        $(body).css('overflow-y', 'auto');
-
-                        var bodyInner = $(this).find('html body #body-inner');
-                        $(bodyInner).css('box-shadow', 'unset');
-                        $(bodyInner).css('padding-bottom', '0px');
-                        $(bodyInner).css('margin-bottom', '0px');
-
-                        /* Add hidden field for ajax referral Url to parent*/
-                        var alertsid = $(this).find('span.alerts').attr('alertsid');
-                        var refUrl = $('#table_'+alertsid).dataTable().fnSettings().sAjaxSource;
-                        $('input:hidden[name="ajax_referral_url"]', window.parent.document).val(refUrl);
-
-                        /* Enable button for results page after ajax loads */
-                        $('#edit-next-submit', window.parent.document).attr('disabled', false);
-                        $('#edit-back-submit', window.parent.document).attr('disabled', false);
-                    });
-                }
-                //No results
-                if($('#no-records').css('display') == 'block'){
-                    $('#edit-back-submit', window.parent.document).attr('disabled', false);
-                }
-            });
-        }
-    };
-
-    /*
-    * Function to tell if the current window is inside an iFrame
-    * Returns true if the window is in an iFrame, else false
-    */
-    function inIframe () {
-        try {
-            return window.self !== window.top;
-        } catch (e) {
-            return true;
-        }
-    }
     Drupal.behaviors.bottomContainerShowHide = {
-        attach:function (context, settings) {
+        attach: function (context, settings) {
 
             $('.bottomContainerToggle', context).toggle(
                 function (event) {
@@ -1896,9 +798,9 @@ Drupal.behaviors.hoveOverMWBE = {
                     if ($('.bottomContainer').html().length <= 10) {
                         var callBackURL = '';
                         var expandBottomContURL = getParameterByName("expandBottomContURL");
-                        if (expandBottomContURL){
+                        if (expandBottomContURL) {
                             callBackURL = expandBottomContURL + "?appendScripts=true";
-                        } else{
+                        } else {
                             callBackURL = this.href + window.location.pathname + "?appendScripts=true";
                         }
 
@@ -1906,10 +808,10 @@ Drupal.behaviors.hoveOverMWBE = {
                         $('.bottomContainer').html("<img style='float:right' src='/sites/all/themes/checkbook/images/loading_large.gif' title='Loading Data...'/>");
                         $('.bottomContainerToggle').toggle();
                         $.ajax({
-                            url:callBackURL,
-                            success:function (data) {
+                            url: callBackURL,
+                            success: function (data) {
                                 $('.bottomContainer').html(data);
-                               // $('.bottomContainerToggle').html("Hide Details &#171;");
+                                // $('.bottomContainerToggle').html("Hide Details &#171;");
                                 $('.bottomContainerToggle').html("");
                                 $('.bottomContainerToggle').toggle();
                                 $('.first-item').trigger('click');
@@ -1917,19 +819,18 @@ Drupal.behaviors.hoveOverMWBE = {
                         });
                     } else {
                         $('.bottomContainer').toggle();
-                       // $('.bottomContainerToggle').html("Hide Details &#171;");
+                        // $('.bottomContainerToggle').html("Hide Details &#171;");
                         $('.bottomContainerToggle').html("");
                     }
                 },
                 function (event) {
                     event.preventDefault();
                     $('.bottomContainer').toggle();
-                  //  $('.bottomContainerToggle').html("Show Details &#187;");
+                    //  $('.bottomContainerToggle').html("Show Details &#187;");
                     $('.bottomContainerToggle').html("");
                 }
-
             );
-            if (getParameterByName("expandBottomCont") ||getParameterByName("expandBottomContURL")) {
+            if (getParameterByName("expandBottomCont") || getParameterByName("expandBottomContURL")) {
                 $('.bottomContainerToggle', context).click();
             }
 
@@ -1942,7 +843,7 @@ Drupal.behaviors.hoveOverMWBE = {
 
             var hrefURL = this.getAttribute("href");
             // var hrefarr = hrefURL.split('/');
-            reloadURL =  window.location.pathname + "?expandBottomContURL=" +  hrefURL ;
+            reloadURL = window.location.pathname + "?expandBottomContURL=" + hrefURL;
             // for(var i=0; i< hrefarr.length; i++){
             //     if(hrefarr[i] == 'category'){
             //         var category = hrefarr[i] + "/" + hrefarr[i+1];
@@ -1950,20 +851,20 @@ Drupal.behaviors.hoveOverMWBE = {
             //     }
             // }
             window.location = reloadURL;
-           /* $('.bottomContainer').html("Loading Data");
-            $.ajax({
-                url:callBackURL,
-                success:function (data) {
-                    $('.bottomContainer').html(data);
-                    $(".clickOnLoad").click();
-                }
-            });
-*/
+            /* $('.bottomContainer').html("Loading Data");
+             $.ajax({
+                 url:callBackURL,
+                 success:function (data) {
+                     $('.bottomContainer').html(data);
+                     $(".clickOnLoad").click();
+                 }
+             });
+ */
         }
     );
 
     Drupal.behaviors.loadParentWindow = {
-        attach:function (context, settings) {
+        attach: function (context, settings) {
             if (!$('body').hasClass('newwindow')) {
                 $('span.loadParentWindow').live("click", function () {
                     var url = $(this).attr('href');
@@ -1983,7 +884,7 @@ Drupal.behaviors.hoveOverMWBE = {
     }
 
     Drupal.behaviors.viewHide = {
-        attach:function (context, settings) {
+        attach: function (context, settings) {
             $('.bottom-section').hide();
             var deferredRender = settings.deferredRender;
             $('.toggle-visibility', context).click(function (event) {
@@ -2036,99 +937,159 @@ Drupal.behaviors.hoveOverMWBE = {
                 }
             });
         }
-    }
-    
-/* prevent click on new window links in header area */
-$(".newwindow .contract-details-heading a").click(function (e) {
-    e.preventDefault();
-});
+    };
 
-$('.expandCollapseWidget').live("click",
-       function (event) {
-           var toggled = $(this).data('toggled');
-           $(this).data('toggled', !toggled);
+//Disable if zero in
+    Drupal.behaviors.disableClickTopNav = {
+        attach: function (context, settings) {
+            $('a.noclick').click(function () {
+                return false;
+            });
 
-           event.preventDefault();
-           oTable = $(this).parent().prev().find('.dataTable').dataTable();
-           var text ="";
-           if (!toggled) {
+        }
+    };
+
+// end of disabling code
+
+
+//Datafeeds form freeze while loading
+    Drupal.behaviors.datafeedspagefreeze = {
+        attach: function (context, settings) {
+            function formfreeze_datafeeds(e) {
+                setTimeout(function () {
+                    $("#checkbook-datafeeds-data-feed-wizard").addClass('transparent');
+                    $(".data-feeds-sidebar").addClass('transparent');
+                    $("#checkbook-datafeeds-data-feed-wizard").addClass('disable_me');
+                    $("#checkbook-datafeeds-tracking-form").addClass('disable_me');
+                    $('.data-feeds-wizard a').addClass('disable_me');
+                    $('.data-feeds-wizard li').addClass('disable_me');
+                    $("#checkbook-datafeeds-data-feed-wizard :input").attr("disabled", "disabled");
+                    $("#checkbook-datafeeds-tracking-form :input").attr("disabled", "disabled");
+                }, 1);
+            }
+
+            function gif_rotator(e) {
+                setTimeout(function () {
+                    $("#rotator").css('display', 'block');
+                    $("#rotator").addClass('loading_bigger_gif');
+                }, 1);
+            }
+
+            // Datafeeds form disable
+            $("#edit-type-next").click(formfreeze_datafeeds);
+            $("#edit-prev").click(formfreeze_datafeeds);
+            $("#edit-feeds-revenue-next").click(formfreeze_datafeeds);
+            $("#edit-feeds-payroll-next").click(formfreeze_datafeeds);
+            $("#edit-feeds-spending-next").click(formfreeze_datafeeds);
+            $("#edit-feeds-contract-next").click(formfreeze_datafeeds);
+            $("#edit-feeds-budget-next").click(formfreeze_datafeeds);
+            $("#edit-confirm").click(formfreeze_datafeeds);
+            $("#edit-cancel").click(formfreeze_datafeeds);
+
+            //loading gif
+            $("#edit-type-next").click(gif_rotator);
+            $("#edit-prev").click(gif_rotator);
+            $("#edit-feeds-revenue-next").click(gif_rotator);
+            $("#edit-feeds-payroll-next").click(gif_rotator);
+            $("#edit-feeds-spending-next").click(gif_rotator);
+            $("#edit-feeds-contract-next").click(gif_rotator);
+            $("#edit-feeds-budget-next").click(gif_rotator);
+            $("#edit-confirm").click(gif_rotator);
+        }
+    };
+
+
+    /* prevent click on new window links in header area */
+    $(".newwindow .contract-details-heading a").click(function (e) {
+        e.preventDefault();
+    });
+
+    $('.expandCollapseWidget').live("click",
+        function (event) {
+            var toggled = $(this).data('toggled');
+            $(this).data('toggled', !toggled);
+
+            event.preventDefault();
+            oTable = $(this).parent().prev().find('.dataTable').dataTable();
+            var text = "";
+            if (!toggled) {
                 oTable.fnSettings().oInit.expandto150 = true;
                 oTable.fnSettings().oInit.expandto5 = false;
                 text = "<img src='/sites/all/themes/checkbook/images/close.png'>";
                 $(this).parent().parent().find('.hideOnExpand').hide();
 
-           }else{
+            } else {
                 oTable.fnSettings().oInit.expandto5 = true;
                 oTable.fnSettings().oInit.expandto150 = false;
                 text = "<img src='/sites/all/themes/checkbook/images/open.png'>";
-                var place = $('#'+oTable.fnSettings().sInstance + '_wrapper').parent().parent().attr('id');
+                var place = $('#' + oTable.fnSettings().sInstance + '_wrapper').parent().parent().attr('id');
                 document.getElementById(place).scrollIntoView();
                 $(this).parent().parent().find('.hideOnExpand').show();
-           }
+            }
             oTable.fnDraw();
             $(this).html(text);
-       }
-   );
+        }
+    );
 
-$('.simultExpandCollapseWidget').live("click",
-    function (event) {
-        var toggled = $(this).data('toggled');
-        var nodes = ['node-widget-spending_by_expense_categories_view','node-widget-spending_by_agencies_view',
-                     'node-widget-spending_by_departments_view', 'node-widget-oge_spending_by_expense_categories_view', 
-                     'node-widget-oge_spending_by_departments_view', 'node-widget-mwbe_spending_by_agencies_view',
-                     'node-widget-mwe_spending_expense_categories_view','node-widget-mwbe_spending_by_departments_view'];
-        jQuery.each(nodes, function (index, value) {
-            var oTable = null;
-            var oElement = null;
-            var nodeId = '#'+ value +' a.simultExpandCollapseWidget';
+    $('.simultExpandCollapseWidget').live("click",
+        function (event) {
+            var toggled = $(this).data('toggled');
+            var nodes = ['node-widget-spending_by_expense_categories_view', 'node-widget-spending_by_agencies_view',
+                'node-widget-spending_by_departments_view', 'node-widget-oge_spending_by_expense_categories_view',
+                'node-widget-oge_spending_by_departments_view', 'node-widget-mwbe_spending_by_agencies_view',
+                'node-widget-mwe_spending_expense_categories_view', 'node-widget-mwbe_spending_by_departments_view'];
+            $.each(nodes, function (index, value) {
+                var oTable = null;
+                var oElement = null;
+                var nodeId = '#' + value + ' a.simultExpandCollapseWidget';
 
-            if(jQuery(nodeId).parent().prev().find('.dataTable') != null){
-                oTable = jQuery(nodeId).parent().prev().find('.dataTable').dataTable() ;
-                oElement = jQuery(nodeId);
-                oElement.data('toggled', !toggled);
-            
-                event.preventDefault();
-                var text ="";
+                if ($(nodeId).parent().prev().find('.dataTable') != null) {
+                    oTable = $(nodeId).parent().prev().find('.dataTable').dataTable();
+                    oElement = $(nodeId);
+                    oElement.data('toggled', !toggled);
 
-                if (!toggled) {
-                    if(oTable.size() > 0){
-                        oTable.fnSettings().oInit.expandto150 = true;
-                        oTable.fnSettings().oInit.expandto5 = false;
+                    event.preventDefault();
+                    var text = "";
+
+                    if (!toggled) {
+                        if (oTable.size() > 0) {
+                            oTable.fnSettings().oInit.expandto150 = true;
+                            oTable.fnSettings().oInit.expandto5 = false;
+                        }
+
+                        text = "<img src='/sites/all/themes/checkbook/images/close.png'>";
+                        if (oElement != null) {
+                            oElement.parent().parent().find('.hideOnExpand').hide();
+                        }
+                    } else {
+                        if (oTable.size() > 0) {
+                            oTable.fnSettings().oInit.expandto5 = true;
+                            oTable.fnSettings().oInit.expandto150 = false;
+                            var placeTable = $('#' + oTable.fnSettings().sInstance + '_wrapper').parent().parent().attr('id');
+                            document.getElementById(placeTable).scrollIntoView();
+                        }
+
+                        text = "<img src='/sites/all/themes/checkbook/images/open.png'>";
+                        if (oElement != null) {
+                            oElement.parent().parent().find('.hideOnExpand').show();
+                        }
                     }
 
-                    text = "<img src='/sites/all/themes/checkbook/images/close.png'>";
-                    if(oElement != null){
-                        oElement.parent().parent().find('.hideOnExpand').hide();
-                    }
-                }else{
-                    if(oTable.size() > 0){
-                        oTable.fnSettings().oInit.expandto5 = true;
-                        oTable.fnSettings().oInit.expandto150 = false;
-                        var placeTable = $('#'+oTable.fnSettings().sInstance + '_wrapper').parent().parent().attr('id');
-                        document.getElementById(placeTable).scrollIntoView();
-                    }
-
-                    text = "<img src='/sites/all/themes/checkbook/images/open.png'>";
-                    if(oElement != null){
-                        oElement.parent().parent().find('.hideOnExpand').show();
+                    if (oTable.size() > 0) {
+                        oTable.fnDraw();
+                        oElement.html(text);
                     }
                 }
-
-                if(oTable.size() > 0){
-                    oTable.fnDraw();
-                    oElement.html(text);
-                }
-            }
-        });
-    }
- );
+            });
+        }
+    );
 
     //Instructional Videos
     var instructionalVideos = '.instructional-video-toggle, .instructional-video-filter-highlight';
     $(instructionalVideos).live("click",
         function (event) {
             $(this).parent().parent().find('.instructional-video-content').slideUp(300);
-            if(!$(this).parent().find('.instructional-video-toggle').hasClass('open')) {
+            if (!$(this).parent().find('.instructional-video-toggle').hasClass('open')) {
                 $(this).parent().parent().find('.instructional-video-content').slideToggle(300);
             }
             $(this).parent().find('.instructional-video-toggle').toggleClass('open');
@@ -2180,9 +1141,9 @@ function changeLinkText(divId, divText) {
 function adjustUrlParameter(cUrl, name, value) {
     var cUrlArray = cUrl.split('/');
     var nameIndex = jQuery.inArray(name, cUrlArray);
-    value = replaceAllOccurrences("/","__", value);
-    value = replaceAllOccurrences("%2F",encodeURIComponent("__"), value);
-    
+    value = replaceAllOccurrences("/", "__", value);
+    value = replaceAllOccurrences("%2F", encodeURIComponent("__"), value);
+
     if (nameIndex == -1) {//add
         if (value != null && value.length > 0) {
             cUrlArray.splice((cUrlArray.length + 1), 2, name, value);
@@ -2245,7 +1206,7 @@ function custom_number_format(number) {
     return (number < 0) ? ('-' + formattedNumber) : formattedNumber;
 }
 
-function addCommas(nStr){
+function addCommas(nStr) {
     nStr += '';
     c = nStr.split(',');
     nStr = c.join('');
@@ -2259,189 +1220,117 @@ function addCommas(nStr){
     return x1 + x2;
 }
 
-function reloadExpandCollapseWidget(context,aoData){
+function reloadExpandCollapseWidget(context, aoData) {
     $length = null;
-    if(context.fnSettings().oInit.expandto150){
+    if (context.fnSettings().oInit.expandto150) {
         $length = 150;
-    }else if(context.fnSettings().oInit.expandto5){
+    } else if (context.fnSettings().oInit.expandto5) {
         $length = 5;
     }
 
-    if($length){
-        for (var i=0; i<aoData.length; i++) {
+    if ($length) {
+        for (var i = 0; i < aoData.length; i++) {
             if (aoData[i].name == "iDisplayLength") {
-                aoData[i].value = $length;break;
+                aoData[i].value = $length;
+                break;
             }
         }
     }
 }
 
-//Disable if zero in 
-
-Drupal.behaviors.disableClickTopNav = {
-    attach: function(context, settings){
-        jQuery('a.noclick').click(function(){
-            return false;
-        });
-       
-    }
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+    var regexS = "[\\?&]" + name + "=([^&#]*)";
+    var regex = new RegExp(regexS);
+    var results = regex.exec(window.location.search);
+    if (results == null)
+        return "";
+    else
+        return decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
-// end of disabling code
 
-
-//Datafeeds form freeze while loading
-Drupal.behaviors.datafeedspagefreeze = {
-    attach:function (context, settings) {
-        function formfreeze_datafeeds(e){
-            setTimeout(function(){
-                jQuery("#checkbook-datafeeds-data-feed-wizard").addClass('transparent');
-                jQuery(".data-feeds-sidebar").addClass('transparent');
-                jQuery("#checkbook-datafeeds-data-feed-wizard").addClass('disable_me');
-                jQuery("#checkbook-datafeeds-tracking-form").addClass('disable_me');
-                jQuery('.data-feeds-wizard a').addClass('disable_me');
-                jQuery('.data-feeds-wizard li').addClass('disable_me');
-                jQuery("#checkbook-datafeeds-data-feed-wizard :input").attr("disabled", "disabled");
-                jQuery("#checkbook-datafeeds-tracking-form :input").attr("disabled", "disabled");
-            }, 1);
-        }
-
-        function gif_rotator(e){
-            setTimeout(function(){
-            jQuery("#rotator").css('display', 'block');
-            jQuery("#rotator").addClass('loading_bigger_gif');
-            }, 1);
-        }
-
-        // Datafeeds form disable
-        jQuery("#edit-type-next").click(formfreeze_datafeeds);
-        jQuery("#edit-prev").click(formfreeze_datafeeds);
-        jQuery("#edit-feeds-revenue-next").click(formfreeze_datafeeds);
-        jQuery("#edit-feeds-payroll-next").click(formfreeze_datafeeds);
-        jQuery("#edit-feeds-spending-next").click(formfreeze_datafeeds);
-        jQuery("#edit-feeds-contract-next").click(formfreeze_datafeeds);
-        jQuery("#edit-feeds-budget-next").click(formfreeze_datafeeds);
-        jQuery("#edit-confirm").click(formfreeze_datafeeds);
-        jQuery("#edit-cancel").click(formfreeze_datafeeds);
-
-        //loading gif
-        jQuery("#edit-type-next").click(gif_rotator);
-        jQuery("#edit-prev").click(gif_rotator);
-        jQuery("#edit-feeds-revenue-next").click(gif_rotator);
-        jQuery("#edit-feeds-payroll-next").click(gif_rotator);
-        jQuery("#edit-feeds-spending-next").click(gif_rotator);
-        jQuery("#edit-feeds-contract-next").click(gif_rotator);
-        jQuery("#edit-feeds-budget-next").click(gif_rotator);
-        jQuery("#edit-confirm").click(gif_rotator);
+//Line Splitter Function
+//copyright Stephen Chapman, 19th April 2006
+//you may copy this code but please keep the copyright notice as well
+function splitLine(st, n) {
+    var b = '';
+    var s = st;
+    while (s.length > n) {
+        var c = s.substring(0, n);
+        var d = c.lastIndexOf(' ');
+        var e = c.lastIndexOf('\n');
+        if (e != -1) d = e;
+        if (d == -1) d = n;
+        b += c.substring(0, d) + '\n';
+        s = s.substring(d + 1);
     }
-};
+    return b + s;
+}
 
 
-//Advanced search form freeze while loading
-Drupal.behaviors.advancedsearchfreeze = {
-    attach:function (context, settings) {
-        function formfreeze_advancedsearch(e){
-            setTimeout(function(){
-                jQuery(".ui-dialog-titlebar").addClass('transparent');
-                jQuery(".ui-dialog-titlebar").addClass('disable_me');
-                jQuery("#spending-advanced-search").addClass('transparent');
-                jQuery("#revenue-advanced-search").addClass('transparent');
-                jQuery("#budget-advanced-search").addClass('transparent');
-                jQuery("#contracts-advanced-search").addClass('transparent');
-                jQuery("#payroll-advanced-search").addClass('transparent');
-                jQuery(".advanced-search-accordion").addClass('transparent');
-                jQuery("#block-checkbook-advanced-search-checkbook-advanced-search-form").addClass('disable_me');
-                jQuery("#block-checkbook-advanced-search-checkbook-advanced-search-form :input").attr("disabled", "disabled");
-            }, 1);
-        }
+function fasterSplit(str, len) {
+    var ret = [], strlen = str.length, off = 0, rem = len
+    do {
+        //if()  
+        ret.push(str.substr(off, len));
+        off += len
+    } while (off < strlen)
+    return ret
+}
 
-
-        function gif_rotator(e){
-            setTimeout(function(){
-                jQuery("#advanced-search-rotator").css('display', 'block');
-                jQuery("#advanced-search-rotator").addClass('loading_bigger_gif');
-            }, 1);
-        }
-
-        // Disable form
-        jQuery("#edit-spending-submit").click(formfreeze_advancedsearch);
-        jQuery("#edit-spending-submit--2").click(formfreeze_advancedsearch);
-        jQuery("#edit-revenue-submit").click(formfreeze_advancedsearch);
-        jQuery("#edit-budget-submit").click(formfreeze_advancedsearch);
-        jQuery("#edit-contracts-submit").click(formfreeze_advancedsearch);
-        jQuery("#edit-contracts-submit--2").click(formfreeze_advancedsearch);
-        jQuery("#edit-payroll-submit").click(formfreeze_advancedsearch);
-        //create alerts
-        jQuery("#edit-revenue-next").click(formfreeze_advancedsearch);
-        jQuery("#edit-payroll-next").click(formfreeze_advancedsearch);
-        jQuery("#edit-spending-next").click(formfreeze_advancedsearch);
-        jQuery("#edit-spending-next--2").click(formfreeze_advancedsearch);
-        jQuery("#edit-spending-next--3").click(formfreeze_advancedsearch);
-        jQuery("#edit-contract-next").click(formfreeze_advancedsearch);
-        jQuery("#edit-contract-next--2").click(formfreeze_advancedsearch);
-        jQuery("#edit-budget-next").click(formfreeze_advancedsearch);
-
-        // Loading gif
-        jQuery("#edit-spending-submit").click(gif_rotator);
-        jQuery("#edit-spending-submit--2").click(gif_rotator);
-        jQuery("#edit-revenue-submit").click(gif_rotator);
-        jQuery("#edit-budget-submit").click(gif_rotator);
-        jQuery("#edit-contracts-submit").click(gif_rotator);
-        jQuery("#edit-contracts-submit--2").click(gif_rotator);
-        jQuery("#edit-payroll-submit").click(gif_rotator);
-        //create alerts
-        jQuery("#edit-revenue-next").click(gif_rotator);
-        jQuery("#edit-payroll-next").click(gif_rotator);
-        jQuery("#edit-spending-next").click(gif_rotator);
-        jQuery("#edit-spending-next--2").click(gif_rotator);
-        jQuery("#edit-spending-next--3").click(gif_rotator);
-        jQuery("#edit-contract-next").click(gif_rotator);
-        jQuery("#edit-contract-next--2").click(gif_rotator);
-        jQuery("#edit-budget-next").click(gif_rotator);
-
-        jQuery(document).bind("ajaxSend", function(){
-            setTimeout(function(){
-                //Advanced search
-                jQuery("#edit-spending-submit").attr("disabled", "true");
-                jQuery("#edit-spending-submit--2").attr("disabled", "true");
-                jQuery("#edit-revenue-submit").attr("disabled", "true");
-                jQuery("#edit-budget-submit").attr("disabled", "true");
-                jQuery("#edit-contracts-submit").attr("disabled", "true");
-                jQuery("#edit-contracts-submit--2").attr("disabled", "true");
-                jQuery("#edit-payroll-submit").attr("disabled", "true");
-                //create alert
-                jQuery("#edit-revenue-next").attr("disabled", "true");
-                jQuery("#edit-payroll-next").attr("disabled", "true");
-                jQuery("#edit-spending-next").attr("disabled", "true");
-                jQuery("#edit-spending-next--2").attr("disabled", "true");
-                jQuery("#edit-spending-next--3").attr("disabled", "true");
-                jQuery("#edit-contract-next").attr("disabled", "true");
-                jQuery("#edit-contract-next--2").attr("disabled", "true");
-                jQuery("#edit-budget-next").attr("disabled", "true");
-            }, 1);
-        }).bind("ajaxComplete", function(){
-            setTimeout(function(){
-                //Advanced search
-                jQuery("#edit-spending-submit").removeAttr('disabled');
-                jQuery("#edit-spending-submit--2").removeAttr('disabled');
-                jQuery("#edit-revenue-submit").removeAttr('disabled');
-                jQuery("#edit-budget-submit").removeAttr('disabled');
-                jQuery("#edit-contracts-submit").removeAttr('disabled');
-                jQuery("#edit-contracts-submit--2").removeAttr('disabled');
-                jQuery("#edit-payroll-submit").removeAttr('disabled');
-                //Create alert
-                jQuery("#edit-revenue-next").removeAttr('disabled');
-                jQuery("#edit-payroll-next").removeAttr('disabled');
-                jQuery("#edit-spending-next").removeAttr('disabled');
-                jQuery("#edit-spending-next--2").removeAttr('disabled');
-                jQuery("#edit-spending-next--3").removeAttr('disabled');
-                jQuery("#edit-contract-next").removeAttr('disabled');
-                jQuery("#edit-contract-next--2").removeAttr('disabled');
-                jQuery("#edit-budget-next").removeAttr('disabled');
-            }, 1);
-        });
-    }
-
-};
-
-
+function addPaddingToDataCells(table) {
+    (function ($) {
+        $(table).find("th").each(function (i, val) {
+                if ($(this).hasClass("number")) {
+                    var colwidth = $(this).find("span").width();
+                    var maxDataWidth = 0;
+                    $(table).find("tr td:nth-child(" + (i + 1) + ")").each(
+                        function () {
+                            if (maxDataWidth < $(this).find("div").width()) {
+                                maxDataWidth = $(this).find("div").width();
+                            }
+                        }
+                    );
+                    if ((colwidth - maxDataWidth) / 2 > 1) {
+                        $(table).find("tr td:nth-child(" + (i + 1) + ") div").css("margin-right", Math.floor((colwidth - maxDataWidth) / 2) + "px");
+                    }
+                }
+            }
+        );
+        $(".DTFC_LeftHeadWrapper table").find("th").each(function (i, val) {
+                if ($(this).hasClass("number")) {
+                    var colwidth = $(this).find("div").width();
+                    var maxDataWidth = 0;
+                    $(".DTFC_LeftBodyWrapper table").find("tr td:nth-child(" + (i + 1) + ")").each(
+                        function () {
+                            if (maxDataWidth < $(this).find("div").width()) {
+                                maxDataWidth = $(this).find("div").width();
+                            }
+                        }
+                    );
+                    if ((colwidth - maxDataWidth) / 2 > 1) {
+                        $(".DTFC_LeftBodyWrapper table").find("tr td:nth-child(" + (i + 1) + ") div").css("margin-right", Math.floor((colwidth - maxDataWidth) / 2) + "px");
+                    }
+                }
+            }
+        );
+        $(".dataTables_scrollHeadInner table").find("th").each(function (i, val) {
+                if ($(this).hasClass("number")) {
+                    var colwidth = $(this).find("div").width();
+                    var maxDataWidth = 0;
+                    $(".dataTables_scrollBody table").find("tr td:nth-child(" + (i + 1) + ")").each(
+                        function () {
+                            if (maxDataWidth < $(this).find("div").width()) {
+                                maxDataWidth = $(this).find("div").width();
+                            }
+                        }
+                    );
+                    if ((colwidth - maxDataWidth) / 2 > 1) {
+                        $(".dataTables_scrollBody table").find("tr td:nth-child(" + (i + 1) + ") div").css("margin-right", Math.floor((colwidth - maxDataWidth) / 2) + "px");
+                    }
+                }
+            }
+        );
+    }(jQuery));
+}
