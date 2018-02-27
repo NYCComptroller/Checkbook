@@ -27,7 +27,7 @@ $plugin = array(
  * Render the node content.
  */
 function ctools_node_content_content_type_render($subtype, $conf, $panel_args, $context) {
-  if (!empty($context) && empty($context->data)) {
+  if (!empty($context) && ( empty($context->data) || empty($context->data->nid)) ){
     return;
   }
 

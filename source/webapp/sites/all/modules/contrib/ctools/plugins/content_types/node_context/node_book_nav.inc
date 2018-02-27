@@ -8,7 +8,7 @@ if (module_exists('book')) {
   $plugin = array(
     'single' => TRUE,
     'title' => t('Book navigation pager'),
-    'icon' => '../block/icon_core_booknavigation.png',
+    'icon' => drupal_get_path('module', 'ctools') . '/plugins/content_types/block/icon_core_booknavigation.png',
     'description' => t('The navigational pager and sub pages of the current book node.'),
     'required context' => new ctools_context_required(t('Node'), 'node'),
     'category' => t('Node'),

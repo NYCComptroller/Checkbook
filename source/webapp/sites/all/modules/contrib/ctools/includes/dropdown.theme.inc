@@ -57,7 +57,7 @@ function ctools_dropdown_theme(&$items) {
  *   to style a single dropdown however you like without interfering with
  *   other dropdowns.
  */
-function theme_ctools_dropdown($vars) { 
+function theme_ctools_dropdown($vars) {
   // Provide a unique identifier for every dropdown on the page.
   static $id = 0;
   $id++;

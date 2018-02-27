@@ -8,7 +8,7 @@ if (module_exists('book')) {
   $plugin = array(
     'single' => TRUE,
     'title' => t('Book navigation menu'),
-    'icon' => '../block/icon_core_block_menu.png',
+    'icon' => drupal_get_path('module', 'ctools') . '/plugins/content_types/block/icon_core_block_menu.png',
     'description' => t('The book menu belonging to the current book node.'),
     'required context' => new ctools_context_required(t('Node'), 'node'),
     'category' => t('Node'),
@@ -16,7 +16,7 @@ if (module_exists('book')) {
 }
 
 function ctools_node_book_menu_content_type_render($subtype, $conf, $panel_args, $context) {
-  $node = isset($context->data) ? clone($context->data) : NULL;
+  $node = isset($context->data) ? clone $context->data : NULL;
   $block = new stdClass();
   $block->module = 'book_menu';
 

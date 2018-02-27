@@ -469,10 +469,8 @@ function ctools_wizard_get_path($form_info, $step) {
     if (!isset($path[1]) || !is_array($path[1])) {
       $path[1] = array();
     }
-    // Ensure that the query part of options is an array.
-    $path[1] += array('query' => array());
     // Add the destination parameter, if not set already.
-    $path[1]['query'] += drupal_get_destination();
+    $path[1] += drupal_get_destination();
   }
 
   return $path;
