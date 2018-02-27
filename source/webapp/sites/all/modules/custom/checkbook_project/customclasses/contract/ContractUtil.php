@@ -567,7 +567,7 @@ namespace { //global
 
             return self::getContractUrl($contracts_landing_path,$override_params);
         }
-        static function getRevenueLandingPageUrl($vendor_id,$year_id=null,$type=null){
+        static function getRevenueLandingPageUrl($vendor_id,$row,$year_id=null,$type=null){
             if($year_id == null){
                 $year_id =  _getRequestParamValue('year');
             }
@@ -580,15 +580,53 @@ namespace { //global
             JOIN ref_document_code l2 ON l2.document_code_id = l1.document_code_id
             WHERE l1.fiscal_year_id = ".$year_id." AND l1.type_of_year = ".$type." AND l1.status_flag = 'R' AND l2.document_code IN ('RCT1') AND l1.vendor_id = ".$vendor_id."";
 
-     $result = _checkbook_project_execute_sql_by_data_source($sql,'checkbook');
-     if($result['total_contracts']==0){
-         $contracts_landing_path="/contracts_revenue_landing/status/A";
-     }
-     else
-     {
-         $contracts_landing_path="/contracts_revenue_landing/status/R";
-     }
-     return $contracts_landing_path;
+          $result = _checkbook_project_execute_sql_by_data_source($sql,'checkbook');
+           if($result['total_contracts']==0){
+            $contracts_landing_page="/contracts_revenue_landing/";
+            $status = "status/A";
+           }
+           else{
+             $contracts_landing_page="/contracts_revenue_landing/";
+             $status="status/R";
+           }
+            $vendor_id = $row["vendor_vendor"] != null ? $row["vendor_vendor"] : $row["vendor_id"];
+            if($vendor_id == null)
+                $vendor_id = $row["prime_vendor_id"];
+
+            $year_id = _getRequestParamValue("year");
+            $year_type = $row["yeartype_yeartype"];
+            $is_prime_or_sub = $row["is_prime_or_sub"] != null ? $row["is_prime_or_sub"] : "P";
+            $agency_id = null;
+
+            if($row["current_prime_minority_type_id"])
+                $minority_type_id = $row["current_prime_minority_type_id"];
+            if($row["minority_type_id"])
+                $minority_type_id = $row["minority_type_id"];
+            if($row["prime_minority_type_id"])
+                $minority_type_id = $row["prime_minority_type_id"];
+
+            $smnid = _getRequestParamValue("smnid");
+            if($smnid == 720 || $smnid == 784) return self::get_contracts_vendor_link_sub($vendor_id, $year_id, $year_type,$agency_id);
+
+            $latest_minority_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id, $year_type, $is_prime_or_sub);
+            $latest_minority_id = isset($latest_minority_id) ? $latest_minority_id : $minority_type_id;
+            $is_mwbe_certified = MappingUtil::isMWBECertified(array($latest_minority_id));
+            $url = $contracts_landing_page._checkbook_project_get_url_param_string("agency") . $status . _checkbook_project_get_year_url_param_string();
+
+            if($is_mwbe_certified && _getRequestParamValue('dashboard') == 'mp') {
+                $url .= _checkbook_project_get_url_param_string("cindustry")
+                    . _checkbook_project_get_url_param_string("csize")
+                    . _checkbook_project_get_url_param_string("awdmethod")
+                    . "/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
+            }
+            else if($is_mwbe_certified && _getRequestParamValue('dashboard') != 'mp') {
+                $url .= "/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
+            }
+            else {
+                $url .= _checkbook_project_get_url_param_string("datasource")."/vendor/".$vendor_id;
+            }
+            return $url;
+
         }
 
         /**
