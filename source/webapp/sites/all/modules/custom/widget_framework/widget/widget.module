@@ -150,12 +150,19 @@ function _widget_node_view($key){
 function _widget_node_load_file($key){
 	$node =  new stdClass();
 	$node->type = "widget";
-	$files = file_scan_directory( drupal_get_path('module','checkbook_project') , '/^'.$key.'\.json$/');
-      if(count($files) > 0){
-        $file_names = array_keys($files);
-        $json = file_get_contents($file_names[0]);
-        $node->widget_json =  $json;
-      }
+
+	if (!($cached = dev_cache_get($cache_key = 'node_load_file_'.$key))) {
+        $files = file_scan_directory( drupal_get_path('module','checkbook_project') , '/^'.$key.'\.json$/');
+        if(count($files) > 0){
+            $file_names = array_keys($files);
+            $json = file_get_contents($file_names[0]);
+            dev_cache_set($cache_key, $json);
+            $node->widget_json =  $json;
+        }
+    } else {
+	    $node->widget_json = $cached->data;
+    }
+
     if($node->nid == null){
     	$node->nid = $key;
     }
@@ -172,14 +179,19 @@ function widget_node_load($nodes,$types){
 
   foreach($nodes as $nid => $node ){
     if( $node->type == "widget"){
-      $files = file_scan_directory( drupal_get_path('module','checkbook_project') , '/^'.$nid.'\.json$/');
-      if(count($files) > 0){
-        $file_names = array_keys($files);
-        $json = file_get_contents($file_names[0]);
-        $node->widget_json =  $json;
-      }else{
-        $node->widget_json = $node->body['und'][0]['value'] ;
-      }
+        if (!($cached = dev_cache_get($cache_key = 'node_load_'.$nid))) {
+            $files = file_scan_directory(drupal_get_path('module', 'checkbook_project'), '/^' . $nid . '\.json$/');
+            if (count($files) > 0) {
+                $file_names = array_keys($files);
+                $json = file_get_contents($file_names[0]);
+                dev_cache_set($cache_key, $json);
+                $node->widget_json = $json;
+            } else {
+                $node->widget_json = $node->body['und'][0]['value'];
+            }
+        } else {
+            $node->widget_json = $cached->data;
+        }
     }
   }
 

@@ -1,0 +1,55 @@
+<?php
+
+/**
+ * Test the UUID handling when the UUID module is present.
+ */
+class CtoolsUUIDWithUUID extends DrupalWebTestCase {
+
+  /**
+   * {@inheritDoc}
+   */
+  public static function getInfo() {
+    return array(
+      'name' => 'UUID handing, with UUID module',
+      'description' => 'Check that the CTools UUID functions behave correctly when the UUID module is installed.',
+      'group' => 'ctools',
+      'dependencies' => array('ctools'),
+      // 'dependencies' => array('ctools', 'uuid'),
+    );
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  function setUp(array $modules = array()) {
+    $modules[] = 'ctools';
+    // @todo Add UUID as a test dependency and then add comment out this line.
+    // $modules[] = 'uuid';
+    parent::setUp($modules);
+  }
+
+  /**
+   * Check we can get a UUID.
+   *
+   * NB: This test will use one (and only one) of the mechanisms available
+   * from pear,
+   *
+   * @todo Fix this so testbot doesn't fail.
+   */
+  public function DISABLED_testMakeNewUUID() {
+    // drupal_get_filename will report even if the module is disabled.
+    if (drupal_get_filename('module', 'uuid') && !module_exists('uuid')) {
+      module_enable(array('uuid'));
+    }
+    // if we now have uuid module, use it.
+    if (module_exists('uuid')) {
+      $uuid = ctools_uuid_generate();
+      $this->assertTrue(ctools_uuid_is_valid($uuid), 'UUID generated (uuid): ' . $uuid);
+    }
+    else {
+      // otherwise say we can't...
+      $this->verbose('uuid module not present');
+    }
+  }
+
+}

@@ -23,6 +23,8 @@ $plugin = array(
     '#type' => 'textfield',
     '#description' => t('Enter the ID of an entity for this context.'),
   ),
+  // Tell ctools_context_get_context_from_context() how to interpret its $argument.
+  'placeholder name' => 'entity_id',
   'get child' => 'ctools_context_entity_get_child',
   'get children' => 'ctools_context_entity_get_children',
 );
