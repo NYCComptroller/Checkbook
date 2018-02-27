@@ -1591,7 +1591,7 @@ div.create-alert-schedule-alert select{
 .datafield.year{
     float:left;
 }
-#spending-advanced-search div.year,
+#spending-advanced-search div.year
 {
     clear: none;
     float: left;
@@ -2620,7 +2620,7 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 #contract-details > div:nth-child(1),
 #nyc-payroll > div:nth-child(1),
 #budget-transactions > div:nth-child(1),
-#revenue-transactions > div:nth-child(1),
+#revenue-transactions > div:nth-child(1)
 {
     margin:18px 10px 5px 10px;
 }

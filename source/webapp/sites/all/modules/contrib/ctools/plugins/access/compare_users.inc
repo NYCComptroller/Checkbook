@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Ctools access plugin to provide access/visiblity if two user contexts are equal.
+ * CTools access plugin to provide access/visiblity if two user contexts are equal.
  */
 
 /**

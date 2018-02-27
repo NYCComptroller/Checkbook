@@ -43,6 +43,22 @@ function ctools_terms_from_node_context($context, $conf) {
         }
       }
     }
+    elseif ($field_info['type'] == 'entityreference' && $field_info['settings']['target_type'] == 'taxonomy_term') {
+      $items = field_get_items('node', $node, $name);
+      if (is_array($items)) {
+        $tids = array();
+        foreach ($items AS $item) {
+          $tids[] = $item['target_id'];
+        }
+
+        $term_objects = taxonomy_term_load_multiple($tids);
+        foreach ($term_objects as $term) {
+          if (empty($conf['vocabulary']) || in_array($term->vocabulary_machine_name, $conf['vocabulary'])) {
+            $terms[] = $term->tid;
+          }
+        }
+      }
+    }
   }
   
   if (!empty($terms)) {

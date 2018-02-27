@@ -12,13 +12,22 @@ files[] = tests/context.test
 files[] = tests/css.test
 files[] = tests/css_cache.test
 files[] = tests/ctools.plugins.test
+files[] = tests/ctools.test
 files[] = tests/math_expression.test
 files[] = tests/math_expression_stack.test
 files[] = tests/object_cache.test
+files[] = tests/object_cache_unit.test
+files[] = tests/page_tokens.test
+files[] = tests/uuid_with_uuid.test
+files[] = tests/uuid_without_uuid.test
 
-; Information added by Drupal.org packaging script on 2016-11-22
-version = "7.x-1.12"
+; Dependencies that are only used for the tests.
+; @see tests/uuid_with_uuid.test
+test_dependencies[] = uuid
+
+; Information added by Drupal.org packaging script on 2018-02-04
+version = "7.x-1.13"
 core = "7.x"
 project = "ctools"
-datestamp = "1479787162"
+datestamp = "1517704095"
 

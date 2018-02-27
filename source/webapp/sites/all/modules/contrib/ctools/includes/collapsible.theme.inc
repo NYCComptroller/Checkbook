@@ -76,4 +76,3 @@ function theme_ctools_collapsible_remembered($vars) {
 
   return $output;
 }
-

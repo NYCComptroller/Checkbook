@@ -23,7 +23,7 @@ $plugin = array(
  * Render the custom content type.
  */
 function ctools_node_title_content_type_render($subtype, $conf, $panel_args, $context) {
-  if (empty($context) || empty($context->data)) {
+  if (!empty($context) && ( empty($context->data) || empty($context->data->nid)) ){
     return;
   }
 
