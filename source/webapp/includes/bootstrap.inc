@@ -3932,8 +3932,16 @@ function checkbook_timer($event = '')
 
     $minutes_spent = floor((($now - $start) / 60));
     $seconds_spent = (($now - $start) % 60);
-    LogHelper::log_warn("$event Time: $minutes_spent min $seconds_spent secs");
-//  log_warn("$event Time: $minutes_spent min $seconds_spent secs");
+
+    $event .= is_ajax() ? " (ajax) " : " (http) ";
+
+    dev_warn("$event Time: $minutes_spent min $seconds_spent secs");
+}
+
+function dev_warn($msg) {
+    if (dev_env()) {
+        LogHelper::log_warn(' (dev) '.$msg);
+    }
 }
 
 function dev_env() {
@@ -3944,17 +3952,18 @@ function dev_cache_set($key, $value, $bin = 'cache') {
     if (!dev_env()) {
         return;
     }
-    LogHelper::log_info(t('setting cache @cacheID', array('@cacheID' => $key)));
+    dev_warn(t('setting cache @cacheID', array('@cacheID' => $key)));
     cache_set($key, $value, $bin);
 }
 
 function dev_cache_get($key, $bin = 'cache') {
+    return false;
     if (!dev_env()) {
-        return;
+        return false;
     }
     $cache = cache_get($key, $bin);
     if ($cache) {
-        LogHelper::log_info(t('cache found! @cacheID', array('@cacheID' => $key)));
+        dev_warn(t('cache found! @cacheID', array('@cacheID' => $key)));
     }
     return $cache;
 
