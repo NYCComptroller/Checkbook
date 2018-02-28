@@ -10,7 +10,7 @@
         "year":"check_eft_issued_nyc_year_id","calyear":"calendar_fiscal_year_id","agency":"agency_id",
         "mcagency":"master_child_contract_agency_id","agencyh":"agency_history_id","vendor":"prime_vendor_id",
         "mcvendor":"master_child_contract_vendor_id","expcategory":"expenditure_object_id",
-        "checkamtr":"check_amount","dept":"department_id","contnum":"reference_document_number",
+        "checkamtr":"check_amount","dept":"department_code","contnum":"reference_document_number",
         "checkamt":"check_amount","chkdate":"check_eft_issued_date","fundcls":"fund_class_id",
         "bdgcodenm":"budget_name","captprj":"reporting_code","category":"spending_category_id",
         "expdoc":"disbursement_number","vendornm":"vendor_name","deptnm":"department_name",
