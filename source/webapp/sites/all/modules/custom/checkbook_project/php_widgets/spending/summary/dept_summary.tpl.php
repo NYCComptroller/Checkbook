@@ -39,7 +39,7 @@ if(is_array($records)){
         $deptcode = _getRequestParamValue('dept');
         $dept = "'".$deptcode."'";
     }
-       $query = "SELECT  j.agency_agency, j.department_department,j1.department_name AS department_department_department_name
+          $query = "SELECT  j.agency_agency, j.department_department,j1.department_name AS department_department_department_name
                   FROM (SELECT s0.agency_id AS agency_agency,s0.department_code AS department_department
                         FROM aggregateon_spending_coa_entities s0
                         WHERE s0.agency_id = ".$agency_id."
@@ -47,10 +47,10 @@ if(is_array($records)){
                         GROUP BY s0.agency_id, s0.department_code, s0.year_id) j
                  LEFT OUTER JOIN ref_department j1 ON j1.department_code = j.department_department and j1.agency_id = j.agency_agency
                   LIMIT 1";
-        $result = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
+    $result = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
 
 
-   $value = $result[0]['department_department_department_name'].$result['agency_agency'];
+   $value = $result[0]['department_department_department_name'];
 
 $summaryContent =  <<<EOD
 <div class="contract-details-heading">
