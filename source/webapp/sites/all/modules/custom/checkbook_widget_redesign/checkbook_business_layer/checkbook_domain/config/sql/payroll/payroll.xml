@@ -32,6 +32,7 @@
                         <exp op="AND">
                             <exp op="=" dbField="fiscal_year_id" paramName="year" />
                             <exp op="=" dbField="type_of_year" paramName="yeartype" />
+                            <exp op="=" dbField="agency_id" paramName="agency"/>
                         </exp>
                     </where>
                     GROUP BY employee_number,fiscal_year_id,type_of_year
@@ -45,6 +46,7 @@
                         <exp op="=" dbField="emp.fiscal_year_id" paramName="year" />
                         <exp op="=" dbField="emp.type_of_year" paramName="yeartype" />
                         <exp op="=" dbField="emp.civil_service_title_code" paramName="title" />
+                        <exp op="=" dbField="emp.agency_id" paramName="agency"/>
                     </exp>
                 </where>
             ) emp_type ON emp_type.employee_number_1 = emp.employee_number
@@ -60,6 +62,7 @@
                     <exp op="AND">
                         <exp op="=" dbField="fiscal_year_id" paramName="year" />
                         <exp op="=" dbField="type_of_year" paramName="yeartype" />
+                        <exp op="=" dbField="agency_id" paramName="agency"/>
                     </exp>
                 </where>
                 GROUP BY employee_number,fiscal_year_id,type_of_year
@@ -72,6 +75,7 @@
                     <exp op="=" dbField="emp.fiscal_year_id" paramName="year" />
                     <exp op="=" dbField="emp.type_of_year" paramName="yeartype" />
                     <exp op="=" dbField="emp.civil_service_title_code" paramName="title" />
+                    <exp op="=" dbField="emp.agency_id" paramName="agency"/>
                 </exp>
             </where>
             GROUP BY agency.agency_id, agency.agency_name
@@ -96,6 +100,7 @@
                     <exp op="=" dbField="agg.type_of_year" paramName="yeartype" />
                     <exp op="=" dbField="agg.fiscal_year_id" paramName="year" />
                     <exp op="=" dbField="agg.civil_service_title_code" paramName="title" />
+                    <exp op="=" dbField="agg.agency_id" paramName="agency"/>
                 </exp>
             </where>
             GROUP BY agg.agency_id, ref_agency.agency_name
