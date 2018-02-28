@@ -148,7 +148,7 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
 
         $sql = "SELECT dp_get_next_sequence_id('$request->sequenceName', $request->quantity) AS $PROPERTY_NAME__SEQUENCE";
 
-        LogHelper::log_notice(new StatementLogMessage('sequence', $sql));
+        LogHelper::log_notice(new StatementLogMessage('sequence'.PHP_EOL, $sql));
         $result = $this->executeQuery($callcontext, $datasource, $sql, new PassthroughResultFormatter());
 
         $lastSequentialId = $result[0][$PROPERTY_NAME__SEQUENCE];
@@ -271,7 +271,7 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
         // applying pagination
         $this->applyPagination($request, $sql);
 
-        LogHelper::log_notice(new StatementLogMessage('dataset.query', $sql));
+        LogHelper::log_notice(new StatementLogMessage('dataset.query'.PHP_EOL, $sql));
         return $this->executeQuery($callcontext, $datasource, $sql, $resultFormatter);
     }
 
@@ -476,7 +476,7 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
         $this->applyPagination($request, $sql);
 
         // processing prepared sql and returning data
-        LogHelper::log_notice(new StatementLogMessage('cube.query', $sql));
+        LogHelper::log_notice(new StatementLogMessage('cube.query'.PHP_EOL, $sql));
         return $this->executeQuery($callcontext, $datasource, $sql, $resultFormatter);
     }
 
@@ -547,7 +547,7 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
                 . ") $tableAlias";
         }
 
-        LogHelper::log_notice(new StatementLogMessage('*.count', $sql));
+        LogHelper::log_notice(new StatementLogMessage('*.count'.PHP_EOL, $sql));
         $records = $this->executeQuery($callcontext, $datasource, $sql, new PassthroughResultFormatter());
 
         return $records[0][$countIdentifier];
