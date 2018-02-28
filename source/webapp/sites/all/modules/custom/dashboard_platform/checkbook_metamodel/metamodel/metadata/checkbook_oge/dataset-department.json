@@ -5,7 +5,7 @@
             "source":"ref_department",
             "columns":[
                 {
-                    "name":"department_id",
+                    "name":"department_code",
                     "key":true
                 }
             ]
