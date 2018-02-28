@@ -193,12 +193,12 @@
         <sql>
             SELECT s0.year_id,
             s0.agency_id,
-            s0.department_id,
+            s0.department_code,
             SUM(total_spending_amount) AS check_amount_sum,
             d.department_name,
             SUM(total_spending_amount)/MAX(total.check_amount)*100 as percent_spending
             FROM aggregateon_mwbe_spending_coa_entities s0
-            JOIN ref_department d ON d.department_id = s0.department_id
+            JOIN ref_department d ON d.department_code=s0.department_code AND d.department_id = s0.department_id
             JOIN
             (
             SELECT SUM(total_spending_amount) AS check_amount
@@ -228,7 +228,7 @@
                     <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
                 </exp>
             </where>
-            GROUP BY s0.agency_id, s0.department_id, s0.year_id, d.department_name
+            GROUP BY s0.agency_id, s0.department_code, s0.year_id, d.department_name
         </sql>
     </statement>
     <!--GetSpendingByPrimeVendors-->
