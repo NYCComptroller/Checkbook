@@ -382,44 +382,6 @@
                 });
             }
 
-            function clearInputFieldByDataSource(enclosingDiv, domain, dataSource) {
-                $(enclosingDiv).find(':input').each(function () {
-                    switch (this.type) {
-                        case 'select-one':
-                            $("select#edit-checkbook-contracts-category").val("expense");
-                            //$('#edit-spending-fiscal-year').removeAttr("disabled");
-                            var defaultoption = $(this).attr('default_selected_value');
-                            if (defaultoption == null)
-                                $(this).find('option:first').attr("selected", "selected");
-                            else
-                                $(this).find('option[value=' + defaultoption + ']').attr("selected", "selected");
-                            break;
-                        case 'text':
-                            $(this).val('');
-                            break;
-                        case 'select-multiple':
-                        case 'password':
-                        case 'textarea':
-                            $(this).val('');
-                            break;
-                        case 'checkbox':
-                        case 'radio':
-                            switch (domain) {
-                                case 'payroll':
-                                    $('#edit-payroll-amount-type-0').attr('checked', 'checked');
-                                    break;
-                                case 'spending':
-                                    $(':radio[name="spending_advanced_search_domain_filter"][value="' + dataSource + '"]').click();
-                                    break;
-                                case 'contracts':
-                                    $(':radio[name="contracts_advanced_search_domain_filter"][value="' + dataSource + '"]').click();
-                                    break;
-                            }
-                            break;
-                    }
-                })
-            }
-
 // advanced-search-contracts
             function advanced_search_contracts_init() {
 
@@ -2099,13 +2061,6 @@
                     event.preventDefault();
                 });
             }
-
-            function show_loading_spinner() {
-                $('a.advanced-search').after("<span class='as-loading'>" +
-                    "<img style='float:right' src='/sites/all/themes/checkbook/images/loading_large.gif' title='Loading Data...' />" +
-                    "Loading...</span>").hide();
-                $('.advanced-search-create-alert').hide();
-            }
         }
     };
 
@@ -2275,4 +2230,133 @@
         });
     }
 
+    function clearInputFieldByDataSource(enclosingDiv, domain, dataSource) {
+        $(enclosingDiv).find(':input').each(function () {
+            switch (this.type) {
+                case 'select-one':
+                    $("select#edit-checkbook-contracts-category").val("expense");
+                    //$('#edit-spending-fiscal-year').removeAttr("disabled");
+                    var defaultoption = $(this).attr('default_selected_value');
+                    if (defaultoption == null)
+                        $(this).find('option:first').attr("selected", "selected");
+                    else
+                        $(this).find('option[value=' + defaultoption + ']').attr("selected", "selected");
+                    break;
+                case 'text':
+                    $(this).val('');
+                    break;
+                case 'select-multiple':
+                case 'password':
+                case 'textarea':
+                    $(this).val('');
+                    break;
+                case 'checkbox':
+                case 'radio':
+                    switch (domain) {
+                        case 'payroll':
+                            $('#edit-payroll-amount-type-0').attr('checked', 'checked');
+                            break;
+                        case 'spending':
+                            $(':radio[name="spending_advanced_search_domain_filter"][value="' + dataSource + '"]').click();
+                            break;
+                        case 'contracts':
+                            $(':radio[name="contracts_advanced_search_domain_filter"][value="' + dataSource + '"]').click();
+                            break;
+                    }
+                    break;
+            }
+        })
+    }
+
+//Disable Advanced Search Form Fields based on the selection criteria
+    function disableInputFields(){
+        /****************disabling Budget fields*****************/
+        if($('#edit-budget-agencies').val() == 0){
+            $('#edit-budget-department').attr("disabled", "disabled");
+            $('#edit-budget-expense-category').attr("disabled", "disabled");
+        }
+        if($('#edit-budget-department').val() == 0){
+            $('#edit-budget-expense-category').attr("disabled", "disabled");
+        }
+
+        /****************disabling Spending fields*****************/
+            //Agency, Department and Expense Category
+        var spending_data_source = $('input:radio[name=spending_advanced_search_domain_filter]:checked').val();
+        if ($('select[name='+spending_data_source+'_spending_agency]').val() == 0) {
+            $('select[name='+spending_data_source+'_spending_department]').attr("disabled", "disabled");
+            $('select[name='+spending_data_source+'_spending_expense_category]').attr("disabled", "disabled");
+        }
+        if($('select[name='+spending_data_source+'_spending_department]').val() == 0){
+            $('select[name='+spending_data_source+'_spending_expense_category]').attr("disabled", "disabled");
+        }
+
+        //Spending Category, Contract ID and Payee Name
+        if ($('select[name='+spending_data_source+'_spending_expense_type]').val() == 2) {
+            $('input:text[name='+spending_data_source+'_spending_contract_num]').attr("disabled", "disabled");
+            $('input:text[name='+spending_data_source+'_spending_contract_num]').val("");
+            $('input:text[name='+spending_data_source+'_spending_payee_name]').attr("disabled", "disabled");
+            $('input:text[name='+spending_data_source+'_spending_payee_name]').val("");
+        }
+        else if ($('select[name='+spending_data_source+'_spending_expense_type]').val() == 4) {
+            $('input:text[name='+spending_data_source+'_spending_contract_num]').attr("disabled", "disabled");
+            $('input:text[name='+spending_data_source+'_spending_contract_num]').val("");
+        }
+
+        //Date Filter
+        var value = $('input:radio[name='+spending_data_source+'_spending_date_filter]:checked').val();
+        if (value == 0) {
+            $('select[name="'+spending_data_source+'_spending_fiscal_year"]').attr('disabled', '');
+            $('input:text[name="'+spending_data_source+'_spending_issue_date_from[date]"]').attr('disabled', 'disabled');
+            $('input:text[name="'+spending_data_source+'_spending_issue_date_to[date]"]').attr('disabled', 'disabled');
+        } else if (value == 1) {
+            $('select[name="'+spending_data_source+'_spending_fiscal_year"]').attr('disabled', 'disabled');
+        }
+
+        /****************disabling Contracts fields*****************/
+        var contracts_data_source = $('input:radio[name=contracts_advanced_search_domain_filter]:checked').val();
+
+        //If the datasource is 'OGE'
+        if(contracts_data_source == 'checkbook_oge'){
+            $('input:text[name='+contracts_data_source+'_contracts_apt_pin]').attr('disabled','disabled');
+            $('input:text[name="'+contracts_data_source+'_contracts_received_date_from[date]"]').attr('disabled','disabled');
+            $('input:text[name="'+contracts_data_source+'_contracts_received_date_to[date]"]').attr('disabled','disabled');
+            $('input:text[name="'+contracts_data_source+'_contracts_registration_date_from[date]"]').attr('disabled','disabled');
+            $('input:text[name="'+contracts_data_source+'_contracts_registration_date_to[date]"]').attr('disabled','disabled');
+        }
+
+        //upon 'Status' change
+        var contract_status = $('select[name='+contracts_data_source+'_contracts_status]').val();
+        if (contract_status == 'P') {
+            if(contracts_data_source == 'checkbook') {
+                $('input:text[name="'+contracts_data_source+'_contracts_registration_date_from[date]"]').attr('disabled','disabled');
+                $('input:text[name="'+contracts_data_source+'_contracts_registration_date_to[date]"]').attr('disabled','disabled');
+            }
+            $('select[name="'+contracts_data_source+'_contracts_year"]').attr("disabled", "disabled");
+        } else {
+            $('input:text[name="'+contracts_data_source+'_contracts_received_date_from[date]"]').attr('disabled','disabled');
+            $('input:text[name="'+contracts_data_source+'_contracts_received_date_to[date]"]').attr('disabled','disabled');
+        }
+
+        //upon 'Incudes Sub Vendor' change
+        var includes_sub_vendors = $('select[name="'+contracts_data_source+'_contracts_includes_sub_vendors"]').val();
+        if(includes_sub_vendors == 3 || includes_sub_vendors == 1) {
+            $('select[name="'+contracts_data_source+'_contracts_sub_vendor_status"]').attr("disabled", "disabled");
+        }
+
+        //upon 'Category' change
+        var contract_category = $('select[name='+contracts_data_source+'_contracts_category]').val();
+        if (contract_status == 'P' || contract_category == 'revenue') {
+            $('select[name="'+contracts_data_source+'_contracts_includes_sub_vendors"]').attr("disabled", "disabled");
+            $('select[name="'+contracts_data_source+'_contracts_sub_vendor_status"]').attr("disabled", "disabled");
+        }
+    }
+
+    function show_loading_spinner() {
+        $('a.advanced-search').after("<span class='as-loading'>" +
+            "<img style='float:right' src='/sites/all/themes/checkbook/images/loading_large.gif' title='Loading Data...' />" +
+            "Loading...</span>").hide();
+        $('.advanced-search-create-alert').hide();
+    }
+    
 }(jQuery));
+
