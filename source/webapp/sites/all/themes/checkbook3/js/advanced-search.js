@@ -1,4 +1,4 @@
-jQuery(document).ready(function ($) {
+(function ($) {
     Drupal.behaviors.advancedSearchAndAlerts = {
         attach: function (context, settings) {
 
@@ -2275,4 +2275,4 @@ jQuery(document).ready(function ($) {
         });
     }
 
-});
+}(jQuery));
