@@ -47,7 +47,7 @@
                         {
                             "name": "department",
                             "datasetName": "department",
-                            "sourceColumnName": "department_id"
+                            "sourceColumnName": "department_code"
                         }
                     ]
                 },

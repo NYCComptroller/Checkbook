@@ -47,7 +47,7 @@
                         {
                             "name": "department",
                             "datasetName": "department",
-                            "sourceColumnName": "department_id"
+                            "sourceColumnName": "department_code"
                         }
                     ]
                 },
@@ -352,5 +352,5 @@
             {"datasetName": "contracts_spending", "columnNames": ["agency_id"]},
             {"datasetName": "agency", "columnNames": ["agency_id"]}
         ]
-    }        
+    }
 }
