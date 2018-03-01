@@ -421,8 +421,9 @@ $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
     $disableFacet = $disableFacet ? " DISABLED='true' " : "";
 
     $ct = 0;
-//    if ($checked && is_array($checked)) {
-    if($node->widgetConfig->parentNid == 706) {
+    $smnid = _getRequestParamValue('smnid');
+
+    if($node->widgetConfig->parentNid == 706 && $smnid=='29') {
         $agency_id = _getRequestParamValue('agency');
         $type_of_year = _getRequestParamValue('yeartype');
         $year_id = _getRequestParamValue('year');
@@ -466,6 +467,7 @@ $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
         }
     }
     else {
+
         if (isset($checked) && $checked) {
             foreach ($checked as $row) {
                 $row[0] = str_replace('__', '/', $row[0]);
