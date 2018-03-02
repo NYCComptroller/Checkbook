@@ -1,19 +1,19 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-*
+* 
 * Copyright (C) 2012, 2013 New York City
-*
+* 
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-*
+* 
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-*
+* 
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -401,14 +401,14 @@ $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
   <div class="progress"></div>
   <?php
   $node->widgetConfig->limit = $node->widgetConfig->limit ?: 50;
-    $pages = ceil($node->totalDataCount/$node->widgetConfig->limit);
+    $pages = ceil($node->totalDataCount/$node->widgetConfig->limit);   
     if((isset($checked) && $node->widgetConfig->maxSelect == count($checked)) || count($checked) + count($unchecked) == 0 || $disableFacet){
       $disabled = " DISABLED='true' " ;
     }else{
       $disabled = "" ;
-    }
+    }   
     if( !isset($node->widgetConfig->autocomplete) || $node->widgetConfig->autocomplete == true  ){ ?>
-  <div class="autocomplete"><input class="autocomplete" <?php print $disabled; ?> pages="<?php print $pages ?>" type="text" name="<?php print $autocomplete_field_name ?>"
+  <div class="autocomplete"><input class="autocomplete" <?php print $disabled; ?> pages="<?php print $pages ?>" type="text" name="<?php print $autocomplete_field_name ?>" 
             autocomplete_param_name="<?php print $autocomplete_param_name ?>" nodeid="<?php print $node->nid ;?>" id="<?php print $autocomplete_id ?>"></div>
         <?php } ?>
   <div class="checked-items">
@@ -421,70 +421,24 @@ $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
     $disableFacet = $disableFacet ? " DISABLED='true' " : "";
 
     $ct = 0;
-    $smnid = _getRequestParamValue('smnid');
-
-    if($node->widgetConfig->parentNid == 706 && $smnid=='29') {
-        $agency_id = _getRequestParamValue('agency');
-        $type_of_year = _getRequestParamValue('yeartype');
-        $year_id = _getRequestParamValue('year');
-        $deptcode = _getRequestParamValue('dept');
-        $dept = "'".$deptcode."'";
-
-        $query = "SELECT  j.agency_agency, j.department_department,j1.department_name AS department_department_department_name
-                  FROM (SELECT s0.agency_id AS agency_agency,s0.department_code AS department_department,s0.department_id
-                        FROM aggregateon_spending_coa_entities s0
-                        WHERE s0.agency_id = ".$agency_id."
-                        AND s0.year_id = ".$year_id."AND s0.department_code = ".$dept."
-                        GROUP BY s0.agency_id, s0.department_code, s0.year_id,s0.department_id) j
-                 LEFT OUTER JOIN ref_department j1 ON j1.department_code = j.department_department and j1.department_id = j.department_id
-                  LIMIT 1";
-        $result = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
-
-
-        $value = $result[0]['department_department_department_name'];
-
-
-        if (isset($checked) && $checked) {
-            foreach ($checked as $row) {
-                $row[0] = $value;
-                $row[1] = str_replace('__', '/', $row[1]);
-                $id = $id_filter_name . "_checked_" . $ct;
-                echo '<div class="row">';
-                echo '<div class="checkbox"><input class="styled" id="' . $id . '" name="' . $autocomplete_id . '" type="checkbox" ' . $disableFacet . 'checked="checked" value="' . urlencode(html_entity_decode($row[0], ENT_QUOTES)) . '" onClick="return applyTableListFilters();"><label for="' . $id . '"></label></div>';
-                if ($node->widgetConfig->filterName == 'Contract ID') {
-                    echo '<div class="name">' . $row[1] . '</div>';
-                } elseif ($node->widgetConfig->filterName == 'Department') {
-                    echo '<div class="name">' . _break_text_custom2($value, 15) . '</div>';
-                }
-                else{
-                    echo '<div class="name">' . _break_text_custom2($row[1], 15) . '</div>';
-                }
-                echo '<div class="number"><span class="active">' . number_format($row[2]) . '</span></div>';
-                echo '</div>';
-                $ct++;
-            }
-
+//    if ($checked && is_array($checked)) {
+    if (isset($checked) && $checked) {
+      foreach ($checked as $row) {
+        $row[0] = str_replace('__','/', $row[0]);
+        $row[1] = str_replace('__','/', $row[1]);
+        $id = $id_filter_name."_checked_".$ct;
+        echo '<div class="row">';
+        echo '<div class="checkbox"><input class="styled" id="'.$id.'" name="' . $autocomplete_id . '" type="checkbox" ' . $disableFacet . 'checked="checked" value="' . urlencode(html_entity_decode($row[0],ENT_QUOTES)) . '" onClick="return applyTableListFilters();"><label for="'.$id.'"></label></div>';
+        if($node->widgetConfig->filterName == 'Contract ID') {
+          echo '<div class="name">' . $row[1] . '</div>';
         }
-    }
-    else {
-
-        if (isset($checked) && $checked) {
-            foreach ($checked as $row) {
-                $row[0] = str_replace('__', '/', $row[0]);
-                $row[1] = str_replace('__', '/', $row[1]);
-                $id = $id_filter_name . "_checked_" . $ct;
-                echo '<div class="row">';
-                echo '<div class="checkbox"><input class="styled" id="' . $id . '" name="' . $autocomplete_id . '" type="checkbox" ' . $disableFacet . 'checked="checked" value="' . urlencode(html_entity_decode($row[0], ENT_QUOTES)) . '" onClick="return applyTableListFilters();"><label for="' . $id . '"></label></div>';
-                if ($node->widgetConfig->filterName == 'Contract ID') {
-                    echo '<div class="name">' . $row[1] . '</div>';
-                } else {
-                    echo '<div class="name">' . _break_text_custom2($row[1], 15) . '</div>';
-                }
-                echo '<div class="number"><span class="active">' . number_format($row[2]) . '</span></div>';
-                echo '</div>';
-                $ct++;
-            }
+        else {
+          echo '<div class="name">' . _break_text_custom2($row[1],15) . '</div>';
         }
+        echo '<div class="number"><span class="active">' . number_format($row[2]) . '</span></div>';
+        echo '</div>';
+        $ct++;
+      }
     }
 
     ?>
@@ -494,7 +448,6 @@ $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
     <?php
     $ct = 0;
 //    if (isset($unchecked) && is_array($unchecked))
-
     if (isset($unchecked) && $unchecked)
     foreach ($unchecked as $row) {
         $row[0] = str_replace('__','/', $row[0]);
@@ -550,7 +503,7 @@ $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
         },
         theme:'dark'
     });";
-
+    
   }elseif($node->widgetConfig->facetNoPager == true){
     $scroll_facet = "
         $(this).next().find('.options').mCustomScrollbar('destroy');
