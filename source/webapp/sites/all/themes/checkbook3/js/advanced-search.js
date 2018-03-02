@@ -1,14 +1,35 @@
 (function ($) {
+
+    var advancedSearchFormLoading = false;
+
+    function show_loading_spinner() {
+        $('a.advanced-search').before("<span class='as-loading'>" +
+            "<img style='float:right' src='/sites/all/themes/checkbook/images/loading_large.gif' title='Loading Data...' />" +
+            "</span>");
+        advancedSearchFormLoading = true;
+    }
+
+    function hide_loading_spinner() {
+        $('.as-loading').remove();
+        advancedSearchFormLoading = false;
+    }
+
     Drupal.behaviors.advancedSearchAndAlerts = {
         attach: function (context, settings) {
 
             // Advanced Search link once
-            $('a.advanced-search').once('AdvancedSearchLink').attr('href', 'javascript:void(0)').click(function () {
+            $('a.advanced-search').attr('href', 'javascript:void(0)').click(function () {
+                if (advancedSearchFormLoading) {
+                    return;
+                }
                 show_advanced_search_form(advanced_search_bootstrap);
             });
 
             // Create Alert link once
-            $('span.advanced-search-create-alert').once('CreateAlertLink').click(function () {
+            $('span.advanced-search-create-alert').click(function () {
+                if (advancedSearchFormLoading) {
+                    return;
+                }
                 show_advanced_search_form(create_alert_bootstrap);
             });
 
@@ -107,8 +128,7 @@
             }
 
             function bootstrap_complete() {
-                $('.as-loading').remove();
-                $('a.advanced-search, .advanced-search-create-alert').show();
+                hide_loading_spinner();
 
                 function formfreeze_advancedsearch(e) {
                     setTimeout(function () {
@@ -2353,13 +2373,5 @@
             $('select[name="'+contracts_data_source+'_contracts_sub_vendor_status"]').attr("disabled", "disabled");
         }
     }
-
-    function show_loading_spinner() {
-        $('a.advanced-search').after("<span class='as-loading'>" +
-            "<img style='float:right' src='/sites/all/themes/checkbook/images/loading_large.gif' title='Loading Data...' />" +
-            "Loading...</span>").hide();
-        $('.advanced-search-create-alert').hide();
-    }
-    
 }(jQuery));
 
