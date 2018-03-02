@@ -43,7 +43,7 @@ if(is_array($records)){
                   FROM (SELECT s0.agency_id AS agency_agency,s0.department_code AS department_department,s0.department_id
                         FROM aggregateon_spending_coa_entities s0
                         WHERE s0.agency_id = ".$agency_id."
-                        AND s0.year_id = ".$year_id."AND s0.department_code = ".$deptcode."
+                        AND s0.year_id = ".$year_id."AND s0.department_code = ".$dept."
                         GROUP BY s0.agency_id, s0.department_code, s0.year_id,s0.department_id) j
                  LEFT OUTER JOIN ref_department j1 ON j1.department_code = j.department_department and j1.department_id = j.department_id
                   LIMIT 1";
