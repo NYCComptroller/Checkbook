@@ -3428,7 +3428,7 @@ input[type=radio]:checked:enabled.radio-blue + label:before {
     border-radius: 7px;
 }
 
-#edit-submit {
+#edit-submit, input.chartfilter {
     -moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
     -webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
     box-shadow:inset 0px 1px 0px 0px #ffffff;
@@ -3454,7 +3454,12 @@ input[type=radio]:checked:enabled.radio-blue + label:before {
     text-decoration:none;
     text-shadow:0px 1px 0px #ffffff;
 }
-#edit-submit:hover {
+
+.featured-trends-filter input.chartfilter {
+    padding: 13px 20px;
+}
+
+#edit-submit:hover, input.chartfilter:hover {
     background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #f6f6f6), color-stop(1, #ffffff));
     background:-moz-linear-gradient(top, #f6f6f6 5%, #ffffff 100%);
     background:-webkit-linear-gradient(top, #f6f6f6 5%, #ffffff 100%);
