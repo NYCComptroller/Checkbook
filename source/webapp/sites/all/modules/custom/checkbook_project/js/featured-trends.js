@@ -6,11 +6,11 @@
             var minraw = $(parentID + ' .chartdatefrom').val();
             var maxraw = $(parentID + ' .chartdateto').val();
             if (minraw.length > 0 || maxraw.length > 0) {
-                if (chartNumber === 3) {
+                if (chartNumber === '3') {
                     validateInput(minraw, maxraw, chartNumber, 1980,2012)
-                } else if(chartNumber === 0 || chartNumber === 2) {
+                } else if(chartNumber === '0' || chartNumber === '2') {
                     validateInput(minraw, maxraw, chartNumber, 1994,2016)
-                } else if(chartNumber === 1 || chartNumber === 4) {
+                } else if(chartNumber === '1' || chartNumber === '4') {
                     validateInput(minraw, maxraw, chartNumber, 1995,2016)
                 }
             } else if (minraw.length === 0 && maxraw.length === 0) {
@@ -26,18 +26,25 @@
         $('body.page-featured-trends #block-system-main').after('<div id="featured-trends-thumbnails"></div>');
 
         var slide = getParameterByName("slide");
-        if(slide === '') slide = 0;
-        if(slide === 0)
-    		$('#breadcrumb span.last').text("General Fund Revenues and General Fund Expenditures");
-        else if(slide === 1)
-        	$('#breadcrumb span.last').text("Property Tax Levies and Collections");
-        else if(slide === 2)
-        	$('#breadcrumb span.last').text("Capital Projects Fund Aid Revenues");
-        else if(slide === 3)
-        	$('#breadcrumb span.last').text("Personal Income");
-        else if(slide === 4)
-        	$('#breadcrumb span.last').text("Ratios of Outstanding Debt by Type");
-        
+        if(slide === '') slide = '0';
+        switch(slide){
+            case '1':
+                $('#breadcrumb span.last').text("Property Tax Levies and Collections");
+                break;
+            case '2':
+                $('#breadcrumb span.last').text("Capital Projects Fund Aid Revenues");
+                break;
+            case '3':
+                $('#breadcrumb span.last').text("Personal Income");
+                break;
+            case '4':
+                $('#breadcrumb span.last').text("Ratios of Outstanding Debt by Type");
+                break;
+            case '0':
+            default:
+                $('#breadcrumb span.last').text("General Fund Revenues and General Fund Expenditures");
+        }
+
         $('body.page-featured-trends #featured-trends .inside').cycle(
             {
                 slideExpr:'.pane-node',
@@ -50,19 +57,19 @@
                 startingSlide: slide,
                 pagerAnchorBuilder:function (i, DOMElement) {
                     switch (i) {
-                        case 0:
+                        case '0':
                             return '<div id="general-fund" class="first navigation">General Fund Revenues and<br>General Fund Expenditures</div>';
                             break;
-                        case 1:
+                        case '1':
                             return '<div id="property-tax" class="navigation">Property Tax Levies<br>and Collections</div>';
                             break;
-                        case 2:
+                        case '2':
                             return '<div id="capital-projects" class="navigation">Capital Projects Fund<br>Aid Revenues</div>';
                             break;
-                        case 3:
+                        case '3':
                             return '<div id="personal-income" class="navigation">Personal Income</div>';
                             break;
-                        case 4:
+                        case '4':
                             return '<div id="debt-ratio" class="last navigation">Ratios of Outstanding Debt<br>by Type</div>';
                             break;
                     }
@@ -83,7 +90,6 @@
         	$('#breadcrumb span.last').text("Personal Income");
         else if(this.id === 'debt-ratio')
         	$('#breadcrumb span.last').text("Ratios of Outstanding Debt by Type");
-
         return true;
 
     })    
@@ -103,7 +109,6 @@ function validateInput(min, max, chartno, floor, ceiling) {
     var mindate = Date.UTC(min, 1, 31);
     var maxdate = Date.UTC(max, 1, 31);
     var floorDate = Date.UTC(floor, 1, 31);
-    //var ceiling = new Date().getFullYear() - 1;
     var ceilingDate = Date.UTC(ceiling, 1, 31);
     if (min <= max) {
         if (isValidYear(min, floor) && isValidYear(max, floor)) {
