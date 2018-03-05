@@ -9,7 +9,7 @@
 <input type=\"text\" class=\"chartdatefrom\" maxlength=\"4\" size=\"4\">
 <label> to </label>
 <input type=\"text\" class=\"chartdateto\" maxlength=\"4\" size=\"4\"></div>
-<img src=\"/sites/all/themes/checkbook/images/featured-filter.png\" class=\"chartfilter\" name=\"4\">
+  <input type=\"submit\" value=\"Filter\" class=\"chartfilter\" name=\"4\" />
 </div>';",
 "footer":"print '<div class=\"detail-page-links\">
 <a class=\"show-detail-link\" href=\"/featuredtrends/node/355\">Show Details for Ratios of Outstanding Debt by Type</a>
