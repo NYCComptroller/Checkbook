@@ -32,9 +32,9 @@
 "urlParamMap":{"calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year","title":"civil_service_title_code"},
 "adjustParameters":"
         $year = 'year_id';
-        $config->model->series[0]->additionalParameters->$year = $parameters[fiscal_year_id][0]  ;
-        $config->model->series[1]->additionalParameters->fiscal_year_id = $parameters[fiscal_year_id][0] -1 ;
-        $config->model->series[2]->additionalParameters->fiscal_year_id = $parameters[fiscal_year_id][0];
+        $config->model->series[0]->additionalParameters->$year = $parameters['fiscal_year_id'][0]  ;
+        $config->model->series[1]->additionalParameters->fiscal_year_id = $parameters['fiscal_year_id'][0] -1 ;
+        $config->model->series[2]->additionalParameters->fiscal_year_id = $parameters['fiscal_year_id'][0];
         $adjustedParameters = $parameters;
         if(function_exists('_checkbook_project_applyParameterFilters')){
                 $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);

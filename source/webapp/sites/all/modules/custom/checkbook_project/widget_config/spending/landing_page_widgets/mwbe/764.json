@@ -52,7 +52,7 @@
         },
         "agency_name_link": {
             "type": "expression2",
-            "expression": "'<a href=\"' . SpendingUtil::getAgencyNameLinkUrl($node,$row) . '\">' . $row[agency_name_formatted] . '</a>'"
+            "expression": "'<a href=\"' . SpendingUtil::getAgencyNameLinkUrl($node,$row) . '\">' . $row['agency_name_formatted'] . '</a>'"
         },
         "vendor_name_formatted": {
             "type": "expression2",
@@ -60,7 +60,7 @@
         },
         "vendor_name_link": {
             "type": "expression2",
-            "expression": "'<a href=\"' . SpendingUtil::getPrimeVendorNameLinkUrl($node,$row) . '\">' . $row[vendor_name_formatted] . '</a>'"
+            "expression": "'<a href=\"' . SpendingUtil::getPrimeVendorNameLinkUrl($node,$row) . '\">' . $row['vendor_name_formatted'] . '</a>'"
         } ,
         "formatted_check_amount_sum": {
             "type": "expression2",
@@ -76,7 +76,7 @@
         },
         "contract_number_link":{
             "type":"expression2",
-            "expression":"'<a class=\"new_window\" href=\"' . SpendingUtil::getContractNumberLinkUrl($node,$row) . '\">'  . $row[document_id_document_id] . '</a>'"
+            "expression":"'<a class=\"new_window\" href=\"' . SpendingUtil::getContractNumberLinkUrl($node,$row) . '\">'  . $row['document_id_document_id'] . '</a>'"
         }
     },
     "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Contracts');",

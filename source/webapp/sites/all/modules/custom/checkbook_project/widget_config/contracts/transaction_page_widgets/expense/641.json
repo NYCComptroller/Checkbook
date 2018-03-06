@@ -237,7 +237,7 @@ if(isset($config->model) && is_array($node->data)){
     },
 "budget_name_formatted":{
                 "type": "expression2",
-                "expression": "_get_tooltip_markup($row[budget_name], 36)"
+                "expression": "_get_tooltip_markup($row['budget_name'], 36)"
        }
 },
 "table_columns": [

@@ -35,7 +35,7 @@
 		},
 		"formatted_check_amount_sum_link":{
 			"type": "expression2",
-                         "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/spending_transactions/spending/transactions' .  _checkbook_project_get_year_url_param_string(false,false,true) . _checkbook_append_url_params() ._checkbook_project_get_url_param_string(\"vendor\",\"fvendor\") . _checkbook_project_get_url_param_string(\"category\")  . '/smnid/' . $node->nid . _checkbook_project_get_url_param_string(\"agency\") . '/expcategory/' .  $row[expenditure_object_expenditure_object] .   '\">' . $row['formatted_check_amount_sum'] . '</a>'"
+                         "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/spending_transactions/spending/transactions' .  _checkbook_project_get_year_url_param_string(false,false,true) . _checkbook_append_url_params() ._checkbook_project_get_url_param_string(\"vendor\",\"fvendor\") . _checkbook_project_get_url_param_string(\"category\")  . '/smnid/' . $node->nid . _checkbook_project_get_url_param_string(\"agency\") . '/expcategory/' .  $row['expenditure_object_expenditure_object'] .   '\">' . $row['formatted_check_amount_sum'] . '</a>'"
 		}
 	},
     "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Expense Categories');",

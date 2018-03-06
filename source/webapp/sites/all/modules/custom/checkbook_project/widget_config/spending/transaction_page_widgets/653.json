@@ -46,16 +46,16 @@ return $header;
 "derivedColumns": {
 "agency_name_formatted":{
 "type": "expression2",
-"expression": "_get_tooltip_markup($row[disb_agency_name], 30)"
+"expression": "_get_tooltip_markup($row['disb_agency_name'], 30)"
 },
 "agency_name_link": {
 "type": "expression2",
-"expression": " RequestUtil::isNewWindow() ? $row[agency_name_formatted]  : ('<a href=/spending_landing' . _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() . _checkbook_project_get_url_param_string('category') . '/agency/'. $row[disb_agency_id]. '?expandBottomCont=true>'. $row[agency_name_formatted] .'</a>') "
+"expression": " RequestUtil::isNewWindow() ? $row['agency_name_formatted']  : ('<a href=/spending_landing' . _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() . _checkbook_project_get_url_param_string('category') . '/agency/'. $row['disb_agency_id']. '?expandBottomCont=true>'. $row['agency_name_formatted'] .'</a>') "
 
 },
 "vendor_name_formatted":{
 "type": "expression2",
-"expression": "_get_tooltip_markup($row[disb_vendor_name], 30)"
+"expression": "_get_tooltip_markup($row['disb_vendor_name'], 30)"
 },
 "agency_param":{
 "type": "expression2",
@@ -63,7 +63,7 @@ return $header;
 },
 "vendor_name_link": {
 "type": "expression2",
-"expression": " RequestUtil::isNewWindow() ?  $row[vendor_name_formatted] : ('<a href=/spending_landing' . _checkbook_project_get_year_url_param_string() . $row['agency_param'] . _checkbook_append_url_params() . _checkbook_project_get_url_param_string('category') . '/vendor/'. $row[vendor_id] . '?expandBottomCont=true>'. $row[vendor_name_formatted] .'</a>') "
+"expression": " RequestUtil::isNewWindow() ?  $row['vendor_name_formatted'] : ('<a href=/spending_landing' . _checkbook_project_get_year_url_param_string() . $row['agency_param'] . _checkbook_append_url_params() . _checkbook_project_get_url_param_string('category') . '/vendor/'. $row['vendor_id'] . '?expandBottomCont=true>'. $row['vendor_name_formatted'] .'</a>') "
 } ,
 "formatted_check_amount": {
 "type": "expression2",
@@ -71,7 +71,7 @@ return $header;
 },
 "contract_number_link_actual": {
 "type": "expression2",
-"expression": "($row[disb_spending_category_name] == 'Payroll' ||  $row[disb_spending_category_name] == 'Others') ? 'n/a' : $row[disb_contract_number]"
+"expression": "($row['disb_spending_category_name'] == 'Payroll' ||  $row['disb_spending_category_name'] == 'Others') ? 'n/a' : $row['disb_contract_number']"
 } ,
 
 "contract_number_link": {
@@ -81,23 +81,23 @@ return $header;
 
 "fms_document_link": {
 "type": "expression2",
-"expression": "($row[disb_spending_category_name] == 'Payroll' ||  $row[disb_spending_category_name] == 'Others') ? 'n/a' : '' "
+"expression": "($row['disb_spending_category_name'] == 'Payroll' ||  $row['disb_spending_category_name'] == 'Others') ? 'n/a' : '' "
 },
 "purpose_formatted":{
 "type": "expression2",
-"expression": "_get_tooltip_markup($row[disb_purpose], 30)"
+"expression": "_get_tooltip_markup($row['disb_purpose'], 30)"
 },
 "contract_purpose_text":{
 "type": "expression2",
-"expression": "($row[disb_spending_category_name] == 'Payroll' ||  $row[disb_spending_category_name] == 'Others') ? 'n/a' : $row[purpose_formatted]"
+"expression": "($row['disb_spending_category_name'] == 'Payroll' ||  $row['disb_spending_category_name'] == 'Others') ? 'n/a' : $row['purpose_formatted']"
 },
 "budget_name_formatted":{
 "type": "expression2",
-"expression": "_get_tooltip_markup($row[oge_budget_name], 36)"
+"expression": "_get_tooltip_markup($row['oge_budget_name'], 36)"
 },
 "issue_date_formatted":{
 "type": "expression2",
-"expression": "(_checkbook_check_isEDCPage()? 'N/A' : $row[disb_check_eft_issued_date])"
+"expression": "(_checkbook_check_isEDCPage()? 'N/A' : $row['disb_check_eft_issued_date'])"
 }
 },
 "table_columns": [

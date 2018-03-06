@@ -35,7 +35,7 @@
     },
     "agency_name_link": {
       "type": "expression2",
-      "expression": "'<a href=\"/contracts_revenue_landing'  .  _checkbook_project_get_url_param_string(\"vendor\") .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\")  . _checkbook_project_get_url_param_string(\"awdmethod\") . _checkbook_project_get_url_param_string(\"status\")  .   _checkbook_project_get_year_url_param_string() .  '/agency/'.$row[agency_agency].'?expandBottomCont=true\">' .$row[agency_name_formatted]. '</a>'"
+      "expression": "'<a href=\"/contracts_revenue_landing'  .  _checkbook_project_get_url_param_string(\"vendor\") .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\")  . _checkbook_project_get_url_param_string(\"awdmethod\") . _checkbook_project_get_url_param_string(\"status\")  .   _checkbook_project_get_year_url_param_string() .  '/agency/'.$row['agency_agency'].'?expandBottomCont=true\">' .$row['agency_name_formatted']. '</a>'"
     },
 "current_prime_minority_type_id": {
       "type": "expression2",
@@ -43,15 +43,15 @@
     },
 "vendor_name_link": {
       "type": "expression2",
-      "expression": "'<a href=\"/contracts_revenue_landing' . ContractUtil::get_contracts_vendor_link_by_mwbe_category($row) . '?expandBottomCont=true\">' .$row[vendor_name_formatted]. '</a>'"
+      "expression": "'<a href=\"/contracts_revenue_landing' . ContractUtil::get_contracts_vendor_link_by_mwbe_category($row) . '?expandBottomCont=true\">' .$row['vendor_name_formatted']. '</a>'"
     } ,
 "contract_link": {
       "type": "expression2",
-      "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/contract_transactions/magid/' .$row[original_agreement_original_agreement]  .  '/doctype/'   . $row[document_code_document_code_document_code]    . '\">' . $row['contract_number_contract_number'] . '</a>'"
+      "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/contract_transactions/magid/' .$row['original_agreement_original_agreement']  .  '/doctype/'   . $row['document_code_document_code_document_code']    . '\">' . $row['contract_number_contract_number'] . '</a>'"
     } ,
 "spent_amount_link": {
       "type": "expression2",
-      "expression": "'<a href=\"/contracts/vendor/' .$row[vendor_vendor]  .   _checkbook_project_get_year_url_param_string() .  '\">' . '$ ' . custom_number_formatter_format($row['spending_amount_sum'],2). '</a>'"
+      "expression": "'<a href=\"/contracts/vendor/' .$row['vendor_vendor']  .   _checkbook_project_get_year_url_param_string() .  '\">' . '$ ' . custom_number_formatter_format($row['spending_amount_sum'],2). '</a>'"
     } ,
 "formatted_original_amount_sum": {
       "type": "expression2",
