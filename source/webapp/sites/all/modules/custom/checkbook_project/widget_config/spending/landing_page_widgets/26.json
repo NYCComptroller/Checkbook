@@ -44,11 +44,11 @@ return $footer;
     },
 "citywide_vendor_name_link": {
     "type": "expression2",
-    "expression": "'<a href=\"' . SpendingUtil::getPrimeVendorNameLinkUrl($node,$row) . '\">' . $row[vendor_vendor_legal_name] . '</a>'"
+    "expression": "'<a href=\"' . SpendingUtil::getPrimeVendorNameLinkUrl($node,$row) . '\">' . $row['vendor_vendor_legal_name'] . '</a>'"
     },
 "oge_vendor_name_link": {
     "type": "expression2",
-    "expression": "'<a href=\"/spending_landing' .  _checkbook_project_get_url_param_string(\"agency\") ._checkbook_project_get_url_param_string(\"category\") . _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() . '/vendor/'. $row[vendor_vendor] .'\">' . $row[vendor_vendor_legal_name] . '</a>'"
+    "expression": "'<a href=\"/spending_landing' .  _checkbook_project_get_url_param_string(\"agency\") ._checkbook_project_get_url_param_string(\"category\") . _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() . '/vendor/'. $row['vendor_vendor'] .'\">' . $row['vendor_vendor_legal_name'] . '</a>'"
     },
 "vendor_name_link": {
     "type": "expression2",
@@ -56,7 +56,7 @@ return $footer;
     },
    "vendor_amount_link":{
     "type":"expression2",
-   "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/spending_transactions/spending/transactions' . _checkbook_project_get_year_url_param_string(false,false,true) . _checkbook_append_url_params() ._checkbook_project_get_url_param_string(\"agency\")  . '/smnid/' . $node->nid . _checkbook_project_get_url_param_string(\"category\") . '/fvendor/'. $row[vendor_vendor] . '\">' . $row['formatted_check_amount_sum'] . '</a>'"
+   "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/spending_transactions/spending/transactions' . _checkbook_project_get_year_url_param_string(false,false,true) . _checkbook_append_url_params() ._checkbook_project_get_url_param_string(\"agency\")  . '/smnid/' . $node->nid . _checkbook_project_get_url_param_string(\"category\") . '/fvendor/'. $row['vendor_vendor'] . '\">' . $row['formatted_check_amount_sum'] . '</a>'"
   }},
 "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Prime Vendors');",
 "summaryView":{

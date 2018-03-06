@@ -47,7 +47,7 @@ return $footer;
 "derivedColumns": {
    "agency_name_link": {
      "type": "expression2",
-     "expression": "'<a href=/payroll/agency_landing' . _checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string(\"title\")   . '/agency/' . $row[agency_agency] . '>'. $row[agency_agency_agency_name] .'</a>'"
+     "expression": "'<a href=/payroll/agency_landing' . _checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string(\"title\")   . '/agency/' . $row['agency_agency'] . '>'. $row['agency_agency_agency_name'] .'</a>'"
   },
   "total_gross_pay_formatted":{
      "type":"expression2",
@@ -55,7 +55,7 @@ return $footer;
    },
  "total_gross_pay_link":{
      "type":"expression2",
-     "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/payroll_agencytransactions/payroll/agencywide/transactions' ._checkbook_project_get_year_url_param_string() .'/agency/' .  $row[agency_agency] . _checkbook_project_get_url_param_string(\"title\") . '/smnid/322\">' . $row['total_gross_pay_formatted'] . '</a>'"
+     "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/payroll_agencytransactions/payroll/agencywide/transactions' ._checkbook_project_get_year_url_param_string() .'/agency/' .  $row['agency_agency'] . _checkbook_project_get_url_param_string(\"title\") . '/smnid/322\">' . $row['total_gross_pay_formatted'] . '</a>'"
    },
   "total_overtime_expense_formatted":{
      "type":"expression2",
@@ -63,7 +63,7 @@ return $footer;
    },
   "total_overtime_expense_link":{
      "type":"expression2",
-    "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/payroll_agencytransactions/payroll/agencywide/transactions' ._checkbook_project_get_year_url_param_string() . '/agency/' .  $row[agency_agency] . _checkbook_project_get_url_param_string(\"title\") . '/smnid/322\">' . $row['total_overtime_expense_formatted'] . '</a>'"
+    "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/payroll_agencytransactions/payroll/agencywide/transactions' ._checkbook_project_get_year_url_param_string() . '/agency/' .  $row['agency_agency'] . _checkbook_project_get_url_param_string(\"title\") . '/smnid/322\">' . $row['total_overtime_expense_formatted'] . '</a>'"
    },
   "total_overtime_employees_formatted":{
      "type":"expression2",

@@ -11,7 +11,7 @@
 "derivedColumns": {       
 	"amount": {
 	      "type": "expression",
-	      "expression": "$row[income_or_population]"
+	      "expression": "$row['income_or_population']"
 	}
 },
 	"table_title":"",

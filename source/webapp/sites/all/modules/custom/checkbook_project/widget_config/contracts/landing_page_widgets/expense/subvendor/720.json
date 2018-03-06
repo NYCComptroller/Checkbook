@@ -35,7 +35,7 @@
 },
 "subvendor_name_link": {
 "type": "expression2",
-"expression": "'<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row[subvendor_subvendor],_getRequestParamValue('year'),$row[yeartype_yeartype]).  '?expandBottomCont=true\">' .$row[subvendor_name_formatted]. '</a>'"
+"expression": "'<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row['subvendor_subvendor'],_getRequestParamValue('year'),$row['yeartype_yeartype']).  '?expandBottomCont=true\">' .$row['subvendor_name_formatted']. '</a>'"
 } ,
 "spent_amount_no_link": {
 "type": "expression2",

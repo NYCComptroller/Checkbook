@@ -2288,18 +2288,19 @@ function _get_toggle_view_links()
  */
 function _is_mwbe_vendor($agreement_id)
 {
+    if (!($agreement_id = intval($agreement_id))) {
+        return false;
+    }
     $query1 = "SELECT (CASE WHEN fa.minority_type_id IN (2,3,4,5,9)  THEN 'Yes' ELSE 'NO' END) AS mwbe_vendor,
 	                 (CASE WHEN fa.minority_type_id in (4,5) then 'Asian American' ELSE fa.minority_type_name END)AS ethnicity
               FROM {agreement_snapshot} fa
 	          WHERE fa.latest_flag = 'Y' and fa.original_agreement_id = " . $agreement_id . " limit 1";
-    //$query1="SELECT minority_type_id FROM contract_vendor_latest_mwbe_category WHERE vendor_id =".$vendor_id." AND agency_id IS NULL AND year_id = ".$year_id." AND type_of_year = '".$yeartype."' AND minority_type_id NOT IN (7,11) LIMIT 1";
     $results1 = _checkbook_project_execute_sql_by_data_source($query1, _get_default_datasource());
     $res = $results1;
     if ($res[0]['mwbe_vendor'] == 'Yes') {
         return true;
-    } else {
-        return false;
     }
+    return false;
 }
 
 

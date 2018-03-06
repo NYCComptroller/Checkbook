@@ -40,19 +40,19 @@
 "derivedColumns": {
 "status": {
       "type": "expression2",
-      "expression": "isset($row[cif_received_date])?\"Pending\":\"Registered\""
+      "expression": "isset($row['cif_received_date'])?\"Pending\":\"Registered\""
     } ,
 "start_date": {
       "type": "expression2",
-      "expression": "isset($row[\"date@checkbook:date_id/effective_begin_date_id@checkbook:history_agreement\"])?$row[\"date@checkbook:date_id/effective_begin_date_id@checkbook:history_agreement\"]:$row[start_date]"
+      "expression": "isset($row[\"date@checkbook:date_id/effective_begin_date_id@checkbook:history_agreement\"])?$row[\"date@checkbook:date_id/effective_begin_date_id@checkbook:history_agreement\"]:$row['start_date']"
     } ,
 "end_date": {
       "type": "expression2",
-      "expression": "isset($row[\"date@checkbook:date_id/effective_end_date_id@checkbook:history_agreement\"])?$row[\"date@checkbook:date_id/effective_end_date_id@checkbook:history_agreement\"]:$row[end_date]"
+      "expression": "isset($row[\"date@checkbook:date_id/effective_end_date_id@checkbook:history_agreement\"])?$row[\"date@checkbook:date_id/effective_end_date_id@checkbook:history_agreement\"]:$row['end_date']"
     } ,
 "source_updated_fiscal_year": {
       "type": "expression2",
-      "expression": "isset($row[source_updated_fiscal_year])?$row[source_updated_fiscal_year]:$row[\"year_value@checkbook:ref_year/nyc_year_id@checkbook:date_id/cif_received_date_id@checkbook:pending_contracts\"]"
+      "expression": "isset($row['source_updated_fiscal_year'])?$row['source_updated_fiscal_year']:$row[\"year_value@checkbook:ref_year/nyc_year_id@checkbook:date_id/cif_received_date_id@checkbook:pending_contracts\"]"
     } ,
 "updated_date": {
       "type": "expression2",

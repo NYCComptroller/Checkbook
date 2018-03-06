@@ -64,7 +64,7 @@
     "derivedColumns": {
         "industry_name_link": {
             "type": "expression2",
-            "expression": "'<a href=\"' . SpendingUtil::getIndustryNameLinkUrl($node,$row) . '\">' . $row[industry_type_industry_type_industry_type_name] . '</a>'"
+            "expression": "'<a href=\"' . SpendingUtil::getIndustryNameLinkUrl($node,$row) . '\">' . $row['industry_type_industry_type_industry_type_name'] . '</a>'"
         },
         "formatted_check_amount_sum": {
             "type": "expression2",

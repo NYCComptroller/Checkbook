@@ -100,19 +100,19 @@
   "derivedColumns": {
     "agency_name_formatted": {
       "type": "expression2",
-      "expression": "_get_tooltip_markup($row[agency_name], 30)"
+      "expression": "_get_tooltip_markup($row['agency_name'], 30)"
     },
     "formatted_expense_category": {
       "type": "expression2",
-      "expression": "_get_tooltip_markup($row[object_class_name], 28)"
+      "expression": "_get_tooltip_markup($row['object_class_name'], 28)"
     },
     "budget_code_name_formatted": {
       "type": "expression2",
-      "expression": "_get_tooltip_markup($row[budget_code_name], 36)"
+      "expression": "_get_tooltip_markup($row['budget_code_name'], 36)"
     },
     "agency_name_link": {
       "type": "expression2",
-      "expression": "'<a href=/budget' ._checkbook_project_get_url_param_string('year')  . '/agency/' . $row[agency_id] . ' >' .  $row[agency_name_formatted] . '</a>'"
+      "expression": "'<a href=/budget' ._checkbook_project_get_url_param_string('year')  . '/agency/' . $row['agency_id'] . ' >' .  $row['agency_name_formatted'] . '</a>'"
     },
     "formatted_current_budget_amount": {
       "type": "expression2",

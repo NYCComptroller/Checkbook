@@ -57,7 +57,7 @@
     "derivedColumns": {
         "contract_number_link":{
             "type":"expression2",
-            "expression":"'<a class=\"new_window\" href=\"' . SpendingUtil::getSubContractNumberLinkUrl($node,$row) . '\">'  . $row[document_id_document_id] . '</a>'"
+            "expression":"'<a class=\"new_window\" href=\"' . SpendingUtil::getSubContractNumberLinkUrl($node,$row) . '\">'  . $row['document_id_document_id'] . '</a>'"
         },
         "sub_vendor_name_formatted": {
             "type":"expression2",
@@ -69,7 +69,7 @@
         },
         "sub_vendor_name_link2": {
             "type":"expression2",
-            "expression":"($row[sub_vendor_sub_vendor] == null )?$row['sub_vendor_sub_vendor_legal_name']:$row[sub_vendor_name_link]"
+            "expression":"($row['sub_vendor_sub_vendor'] == null )?$row['sub_vendor_sub_vendor_legal_name']:$row['sub_vendor_name_link']"
         },
         "prime_vendor_name_formatted": {
             "type":"expression2",
@@ -77,11 +77,11 @@
         },
         "prime_vendor_name_link": {
             "type":"expression2",
-            "expression":"'<a href=\"' . SpendingUtil::getPrimeVendorNameLinkUrl($node,$row) . '\">' . $row[prime_vendor_name_formatted] . '</a>'"
+            "expression":"'<a href=\"' . SpendingUtil::getPrimeVendorNameLinkUrl($node,$row) . '\">' . $row['prime_vendor_name_formatted'] . '</a>'"
         },
         "prime_vendor_name_link2": {
             "type":"expression2",
-            "expression":"($row[prime_vendor_prime_vendor] == null )?$row['prime_vendor_prime_vendor_legal_name']:$row[prime_vendor_name_link]"
+            "expression":"($row['prime_vendor_prime_vendor'] == null )?$row['prime_vendor_prime_vendor_legal_name']:$row['prime_vendor_name_link']"
         },
         "sub_contract_purpose_formatted": {
             "type": "expression2",

@@ -43,7 +43,7 @@ return $footer;
     },
     "agency_name_link": {
         "type": "expression2",
-        "expression": "'<a href=\"/spending_landing' .  _checkbook_project_get_url_param_string(\"vendor\") ._checkbook_project_get_url_param_string(\"category\") . _checkbook_project_get_year_url_param_string() . '/agency/'. $row[agency_agency] .'\">' . $row['agency_name_formatted'] . '</a>'"
+        "expression": "'<a href=\"/spending_landing' .  _checkbook_project_get_url_param_string(\"vendor\") ._checkbook_project_get_url_param_string(\"category\") . _checkbook_project_get_year_url_param_string() . '/agency/'. $row['agency_agency'] .'\">' . $row['agency_name_formatted'] . '</a>'"
     },
     "formatted_check_amount_sum": {
         "type": "expression2",
@@ -51,7 +51,7 @@ return $footer;
     },
     "agency_amount_link":{
         "type":"expression2",
-        "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/spending_transactions/spending/transactions' . _checkbook_project_get_year_url_param_string(false,false,true)  ._checkbook_project_get_url_param_string(\"vendor\",\"fvendor\") . '/smnid/' . $node->nid .  _checkbook_project_get_url_param_string(\"category\") . '/agency/'. $row[agency_agency] . '\">' . $row['formatted_check_amount_sum'] . '</a>'"
+        "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/spending_transactions/spending/transactions' . _checkbook_project_get_year_url_param_string(false,false,true)  ._checkbook_project_get_url_param_string(\"vendor\",\"fvendor\") . '/smnid/' . $node->nid .  _checkbook_project_get_url_param_string(\"category\") . '/agency/'. $row['agency_agency'] . '\">' . $row['formatted_check_amount_sum'] . '</a>'"
     },
     "percent_spending":{
         "type":"expression2",

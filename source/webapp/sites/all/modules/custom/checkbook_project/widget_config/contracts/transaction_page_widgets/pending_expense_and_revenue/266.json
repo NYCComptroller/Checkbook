@@ -45,7 +45,7 @@
             },
 "contract_link": {
     "type": "expression2",
-    "expression": "_pending_contracts_link_contract_details($row[fms_contract_number],$row[original_agreement_id],$row['document_code@checkbook:ref_document_code'],$row[contract_number],$row[document_version])"
+    "expression": "_pending_contracts_link_contract_details($row['fms_contract_number'],$row['original_agreement_id'],$row['document_code@checkbook:ref_document_code'],$row['contract_number'],$row['document_version'])"
 },
 "award_method_formatted": {
       "type": "expression2",

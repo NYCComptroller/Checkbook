@@ -43,7 +43,7 @@ return $adjustedParameters;
 },
 "subvendor_name_link": {
 "type": "expression2",
-"expression": "'<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row[subvendor_subvendor],_getRequestParamValue('year'),$row[yeartype_yeartype]) .  '?expandBottomCont=true\">' .$row[subvendor_name_formatted]. '</a>'"
+"expression": "'<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row['subvendor_subvendor'],_getRequestParamValue('year'),$row['yeartype_yeartype']) .  '?expandBottomCont=true\">' .$row['subvendor_name_formatted']. '</a>'"
 } ,
 "spent_amount_no_link": {
 "type": "expression2",
@@ -51,7 +51,7 @@ return $adjustedParameters;
 } ,
 "spent_amount_link": {
 "type": "expression2",
-"expression": "'<a class=\"new_window\" href=\"/contract/spending/transactions/csubvendor/' .$row[subvendor_subvendor] . _checkbook_append_url_params() .  _checkbook_project_get_url_param_string(\"status\") . _checkbook_project_get_url_param_string(\"agency\",\"cagency\")   ._checkbook_project_get_url_param_string(\"awdmethod\") .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\")  .  ((_getRequestParamValue(\"dashboard\") == \"ss\" || _getRequestParamValue(\"dashboard\") == \"ms\") ? '/doctype/CT1~CTA1' : '/doctype/CT1~CTA1~MA1').ContractURLHelper::_checkbook_project_spending_get_year_url_param_string()  . '/smnid/' . $node->nid . ContractUtil::getSpentToDateParams() . _checkbook_project_get_url_param_string(\"subvendor\") .  '/newwindow\">' . custom_number_formatter_format($row['spending_amount_sum'],2,'$'). '</a>'"
+"expression": "'<a class=\"new_window\" href=\"/contract/spending/transactions/csubvendor/' .$row['subvendor_subvendor'] . _checkbook_append_url_params() .  _checkbook_project_get_url_param_string(\"status\") . _checkbook_project_get_url_param_string(\"agency\",\"cagency\")   ._checkbook_project_get_url_param_string(\"awdmethod\") .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\")  .  ((_getRequestParamValue(\"dashboard\") == \"ss\" || _getRequestParamValue(\"dashboard\") == \"ms\") ? '/doctype/CT1~CTA1' : '/doctype/CT1~CTA1~MA1').ContractURLHelper::_checkbook_project_spending_get_year_url_param_string()  . '/smnid/' . $node->nid . ContractUtil::getSpentToDateParams() . _checkbook_project_get_url_param_string(\"subvendor\") .  '/newwindow\">' . custom_number_formatter_format($row['spending_amount_sum'],2,'$'). '</a>'"
 } ,
 "formatted_original_amount_sum": {
 "type": "expression2",
