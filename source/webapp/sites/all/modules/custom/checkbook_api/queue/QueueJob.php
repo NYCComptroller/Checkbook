@@ -351,7 +351,7 @@ class QueueJob {
      * @return null|string
      */
     private function getFullPathToFile($filename,$directory, $format = '') {
-        $format = $format || $this->responseFormat;
+        $format = $format ?: $this->responseFormat;
         switch($directory) {
             case $this->fileOutputDir:
                 return DRUPAL_ROOT . '/' . $this->fileOutputDir . '/' . $filename . '.' . $format;
