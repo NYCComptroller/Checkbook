@@ -68,7 +68,7 @@ echo eval($node->widgetConfig->header);
     </tbody>
 </table>
     <div class="footnote">
-         <p>*Amounts as of March 24, 2016</p>
+         <p>Source: U.S Department of Commerce, Bureau of Economic Analysis. US Census Bureau and American Fact Finder.</p>
     </div>
 <?php 
 	widget_data_tables_add_js($node);

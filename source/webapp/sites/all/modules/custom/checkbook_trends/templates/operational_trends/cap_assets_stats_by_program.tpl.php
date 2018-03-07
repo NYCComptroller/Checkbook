@@ -17,9 +17,8 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php  
-echo eval($node->widgetConfig->header);  
+
+echo eval($node->widgetConfig->header);
 $table_rows = array();
 $years = array();
 foreach( $node->data as $row){	
@@ -129,9 +128,7 @@ rsort($years);
 </table>
 <div class="footnote">
     <p>(1) FY 2010 includes various other facilities with active enrollment relating to primary, intermediate and high school. This includes minischools, transportables and leased space. Also, multiple district schools may be operated in a single school building. </p>
-    <p>(2) The FY 2007 decrease in transfer stations and increase in piers and bulkheads were due to reclassifications of facilities that year.</p>
   <p>Sources: Various City Agencies</p>
 </div>
 <?php 
 	widget_data_tables_add_js($node);
-?>

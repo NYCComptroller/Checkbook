@@ -66,15 +66,14 @@
         $count++;
    	}
 
-    echo "\n".'"'."HYIC first DIB collection was on September 21, 2005 and issued its first bonds on December 21, 2006.".'"'
+    echo "\n".'"'."HYIC issued its first bonds on December 21, 2006".'"'
         ."\n".'"'."(1) District Improvement Bonuses (DIB)".'"'
         ."\n".'"'."(2) Property Tax Equivalency Payments (TEP)".'"'
         ."\n".'"'."(3) Interest Support Payments (ISP)".'"'
         ."\n".'"'."(4) Payments in Lieu of the Mortgage Recording Tax (PILOMRT)".'"'
-        ."\n".'"'."(5) Payments in Lieu of Real Estate Taxes (PILOT)".'"'
+        ."\n".'"'."(5) Payments in Lieu of Real Estate Tax (PILOT)".'"'
         ."\n".'"'."(6) Grant from City".'"'
         ."\n".'"'."(7) ISPs are to be made by the City under the terms of Support and Development Agreement, which obligates the City to pay HYIC, subject to annual appropriation, an ISP amount equal to the difference between the amount of funds available to HYIC to pay interest on its current outstanding bonds and the amount of interest due on such bonds.".'"'
-        ."\n".'"'."(8) Debt service payments are funded from excess prior years' revenues and from current year revenues.".'"'
+        ."\n".'"'."(8) Debt service payments are funded from excess prior years’ revenues and from current year revenues.".'"'
         ."\n".'"'."(9) In December 2011, HYIC was obligated to make an arbitrage rebate payment to United States Treasury for $8.8M ".'"'
         ."\n\n".'"'."Source: Hudson Yards Infrastructure Corporation".'"';
-?>
