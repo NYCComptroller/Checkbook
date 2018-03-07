@@ -60,7 +60,15 @@
                 $('input[name="budget_next"], input[name="revenue_next"], input[name="spending_next"],' +
                     'input[name="contracts_next"], input[name="payroll_next"]').addClass('create-alert-next-btn');
 
-                $('.ranges input[id*=datepicker]:not(.hasDatepicker)').datepicker();
+                $('.ranges input[id*=datepicker]:not(.hasDatepicker)').datepicker({
+                    dateFormat: 'yy-mm-dd',
+                    changeMonth: true,
+                    changeYear: true,
+                    autoPopUp: 'focus',
+                    closeAtTop: false,
+                    speed: 'immediate',
+                    yearRange: '-25:+1'
+                });
 
                 disableInputFields();
 
