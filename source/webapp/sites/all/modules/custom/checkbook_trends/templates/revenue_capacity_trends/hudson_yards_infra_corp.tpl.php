@@ -99,13 +99,13 @@ echo eval($node->widgetConfig->header);
     <p>(2) Property Tax Equivalency Payments (TEP)</p>
     <p>(3) Interest Support Payments (ISP)</p>
     <p>(4) Payments in Lieu of the Mortgage Recording Tax (PILOMRT)</p>
-    <p>(5) Payments in Lieu of Real Estate Taxes (PILOT)</p>
+    <p>(5) Payments in Lieu of Real Estate Tax (PILOT)</p>
     <p>(6) Grant from City</p>
-    <p>(7) ISPs are to be made by the City under the terms of Support and Development Agreement, which obligates the City to pay HYIC, subject to annual appropriation, an ISP amount equal to the difference between the amount of funds available to HYIC to pay interest on its current outstanding bonds and the amount of interest due on such bonds.</p>
+    <p>(7) ISPs are to be made by the City under the terms of Support and Development Agreement, which obligates the City to pay HYIC, subject to annual appropriation, an ISP amount equal to the
+        difference between the amount of funds available to HYIC to pay interest on its current outstanding bonds and the amount of interest due on such bonds.</p>
     <p>(8) Debt service payments are funded from excess prior years’ revenues and from current year revenues.</p>
     <p>(9) In December 2011, HYIC was obligated to make an arbitrage rebate payment to United States Treasury for $8.8M </p>
     <p>Source: Hudson Yards Infrastructure Corporation</p>
 </div>
-<?php 
+<?php
 	widget_data_tables_add_js($node);
-?>

@@ -27,7 +27,7 @@
     $header .=  ",Sales Tax Revenue(2)"  ;
     $header .=  ",Total Receipt"  ;
     $header .=  ",Other(3)"  ;
-    $header .=  ",Investment Earnings"  ;
+    $header .=  ",Investment Earnings(4)"  ;
     $header .=  ",Total Revenue"  ;
     $header .=  ",Future Tax Secured Bonds Debt Service - Interest"  ;
     $header .=  ",Future Tax Secured Bonds Debt Service - Principal"  ;
