@@ -66,10 +66,10 @@
          "All other residential property not in Class One, except hotels and motels.  Mixed-use property with four or more units, provided 50 percent or more of the space is used for residential  purposes.".'"'.
          "\n"."   Class Three -  ,". '"'."Utility real property owned by utility corporations, except land and buildings.".'"'.
          "\n"."   Class Four -  ,". '"'."All other real property.".'"'.
-         "\n\n"."Classes One to Four amounts include Tax Exempt Property.".
+         "\n\n".
          "\n\n"."Property in New York City is reassessed every year. The City assesses property at approximately 40 percent of Market Value for
 commercial and industrial property and 20 percent of Market Value for residential property.".
-         "\n\n"."Sources: Resolutions of the City Council and The Annual Report of The New York City Property Tax Fiscal Year 2016.";
+         "\n\n"."Sources: Resolutions of the City Council and The Annual Report of The New York City Property Tax Fiscal Year 2017.";
 
 ?>
 

@@ -42,7 +42,7 @@ echo eval($node->widgetConfig->header);
         <th rowspan="2" class="number"><div class="trendCen">Sales Tax<br>Revenue<sup>(2)</sup></div></th>
         <th rowspan="2" class="number"><div class="trendCen">Total<br>Receipt</div></th>
         <th rowspan="2" class="number"><div class="trendCen">Other<sup>(3)</sup></div></th>
-        <th rowspan="2" class="number"><div class="trendCen">Investment<br>Earnings</div></th>
+        <th rowspan="2" class="number"><div class="trendCen">Investment<br>Earnings<sup>(4)</sup></div></th>
         <th rowspan="2" class="number"><div class="trendCen">Total<br>Revenue</div></th>
         <th colspan="3" class="centrig"><div class="trendCen">Future Tax Secured<br>Bonds Debt Service</div></th>
         <th rowspan="2" class="number"><div class="trendCen">Operating<br>Expenses</div></th>
@@ -92,5 +92,3 @@ echo eval($node->widgetConfig->header);
 </div>
 <?php 
   widget_data_tables_add_js($node);
-
-?>
