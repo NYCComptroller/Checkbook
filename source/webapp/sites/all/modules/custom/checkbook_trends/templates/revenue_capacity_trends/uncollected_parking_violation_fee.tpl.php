@@ -17,9 +17,8 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php  
-echo eval($node->widgetConfig->header);  
+
+echo eval($node->widgetConfig->header);
 $table_rows = array();
 $years = array();
 foreach( $node->data as $row){	
@@ -125,12 +124,11 @@ rsort($years);
     </tbody>
 </table>
 <div class="footnote">
-     <p>(a) The summonses issued by various City agencies for parking violations are adjudicated and collected by the Parking Violations Bureau (PVB) of the City’s Department of Finance.</p>
-     <p>(b) Proposed “write-offs” are in accordance with a write-off policy implemented by PVB for summonses determined to be legally uncollectible/unprocessable or for which all prescribed collection efforts are unsuccessful.</p>
-     <p>(c) The Allowance for Uncollectible Amounts is calculated as follows: summonses which are over three years old are fully (100%) reserved and 35% of summonses less than three years old are reserved.</p>
+     <p>(a) 	The summonses issued by various City agencies for parking violations are adjudicated and collected by the Parking Violations Bureau (PVB) of the City’s Department of Finance.</p>
+     <p>(b) 	Proposed “write-offs” are in accordance with a write-off policy implemented by PVB for summonses determined to be legally uncollectible/unprocessable or for which all prescribed collection efforts are unsuccessful.</p>
+     <p>(c) 	The Allowance for Uncollectible Amounts is calculated as follows: summonses which are over three years old are fully (100%) reserved and 35% of summonses less than three years old are reserved.</p>
      <p>Note: Data does not include interest reflected on the books of PVB.</p>
      <p>Source: The City of New York, Department of Finance, Parking Violations Bureau.</p>
 </div>
 <?php 
 	widget_data_tables_add_js($node);
-?>

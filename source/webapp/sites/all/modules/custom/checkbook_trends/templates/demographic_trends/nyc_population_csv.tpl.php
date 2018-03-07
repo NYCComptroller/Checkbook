@@ -42,7 +42,5 @@
         $count++;
    	}
 
-   echo "\n\n"."*Amounts as of March 24 2016\n\n";
-
-?>
+   echo "\n\n"."Source: U.S Department of Commerce, Bureau of Economic Analysis. US Census Bureau and American Fact Finder.\n\n";
 
