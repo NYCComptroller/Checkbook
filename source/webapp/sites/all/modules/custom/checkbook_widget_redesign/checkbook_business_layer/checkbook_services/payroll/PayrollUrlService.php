@@ -12,6 +12,7 @@ class PayrollUrlService
     {
 
         $agency = RequestUtilities::_getUrlParamString('agency');
+        $title = RequestUtilities::_getUrlParamString('title');
         $legacy_node_id = isset($legacy_node_id) ? '/smnid/'.$legacy_node_id : '';
 
         if ($agency != '') {
@@ -19,7 +20,7 @@ class PayrollUrlService
                 . RequestUtilities::_getUrlParamString('yeartype')
                 . RequestUtilities::_getUrlParamString('year')
                 . $legacy_node_id
-                . $agency;
+                . $agency.$title;
         }
         else {
             $url = '/panel_html/payroll_nyc_transactions/payroll/transactions'
