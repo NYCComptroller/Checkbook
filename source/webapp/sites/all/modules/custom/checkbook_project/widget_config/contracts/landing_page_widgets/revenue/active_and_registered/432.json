@@ -24,7 +24,7 @@ if($node->is_mwbe) $node->widgetConfig->dataset = 'checkbook:mwbe_contracts_coa_
 "derivedColumns": {
 "award_method_name_link": {
       "type": "expression2",
-      "expression": "'<a href=\"/contracts_revenue_landing' . _checkbook_project_get_url_param_string(\"mwbe\")  . _checkbook_project_get_url_param_string(\"agency\")   .   _checkbook_project_get_url_param_string(\"vendor\")  .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\") .  _checkbook_project_get_url_param_string(\"status\") .   _checkbook_project_get_year_url_param_string() . '/awdmethod/' .$row[award_method_award_method] .  '?expandBottomCont=true\">' .$row[award_method_award_method_award_method_name]. '</a>'"
+      "expression": "'<a href=\"/contracts_revenue_landing' . _checkbook_project_get_url_param_string(\"mwbe\")  . _checkbook_project_get_url_param_string(\"agency\")   .   _checkbook_project_get_url_param_string(\"vendor\")  .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\") .  _checkbook_project_get_url_param_string(\"status\") .   _checkbook_project_get_year_url_param_string() . '/awdmethod/' .$row['award_method_award_method'] .  '?expandBottomCont=true\">' .$row['award_method_award_method_award_method_name']. '</a>'"
     } ,
 "formatted_original_amount_sum": {
       "type": "expression2",

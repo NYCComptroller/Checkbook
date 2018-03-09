@@ -52,7 +52,7 @@
         },
         "mwbe_category_name_link": {
             "type": "expression2",
-            "expression": " RequestUtil::isNewWindow() || !MappingUtil::isMWBECertified(array($row['minority_type_minority_type'])) ? $row['mwbe_category_name']  : ('<a href=' . SpendingUtil::getMWBECategoryLinkUrl($node, $row) . '>'. $row[mwbe_category_name] .'</a>') "
+            "expression": " RequestUtil::isNewWindow() || !MappingUtil::isMWBECertified(array($row['minority_type_minority_type'])) ? $row['mwbe_category_name']  : ('<a href=' . SpendingUtil::getMWBECategoryLinkUrl($node, $row) . '>'. $row['mwbe_category_name'] .'</a>') "
         },
         "formatted_check_amount_sum": {
             "type": "expression2",
@@ -68,7 +68,7 @@
         },
         "vendor_name_link": {
             "type": "expression2",
-            "expression": "'<a href=\"' . SpendingUtil::getPrimeVendorNameLinkUrl($node,$row) . '\">' . $row[vendor_name_formatted] . '</a>'"
+            "expression": "'<a href=\"' . SpendingUtil::getPrimeVendorNameLinkUrl($node,$row) . '\">' . $row['vendor_name_formatted'] . '</a>'"
         } ,
         "vendor_amount_link":{
             "type":"expression2",

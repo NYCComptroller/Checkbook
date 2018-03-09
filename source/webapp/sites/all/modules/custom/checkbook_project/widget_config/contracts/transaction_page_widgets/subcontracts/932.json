@@ -108,7 +108,7 @@
         },
         "subvendor_name": {
             "type": "expression2",
-            "expression": "$row['sub_vendor_name'] == NULL ? 'NOT PROVIDED' : '<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row[sub_vendor_id],_getRequestParamValue('year'),_getRequestParamValue('yeartype'), null, $row[sub_minority_type_id]) .  '?expandBottomCont=true\">' .$row[subvendor_name_formatted]. '</a>'"
+            "expression": "$row['sub_vendor_name'] == NULL ? 'NOT PROVIDED' : '<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row['sub_vendor_id'],_getRequestParamValue('year'),_getRequestParamValue('yeartype'), null, $row['sub_minority_type_id']) .  '?expandBottomCont=true\">' .$row['subvendor_name_formatted']. '</a>'"
         },
         "subvendor_name_export": {
             "type": "expression2",

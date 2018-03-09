@@ -66,7 +66,7 @@
         },
         "agency_name_link": {
             "type": "expression2",
-            "expression": "'<a href=\"' . SpendingUtil::getAgencyNameLinkUrl($node,$row) . '\">' . (!$node->is_mwbe ? $row[agency_agency_agency_name] : $row[agency_name_formatted]) . '</a>'"
+            "expression": "'<a href=\"' . SpendingUtil::getAgencyNameLinkUrl($node,$row) . '\">' . (!$node->is_mwbe ? $row['agency_agency_agency_name'] : $row['agency_name_formatted']) . '</a>'"
         },
         "ytd_spending_sub_vendors_link":{
             "type":"expression2",

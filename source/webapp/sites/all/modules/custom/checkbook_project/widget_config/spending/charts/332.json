@@ -33,9 +33,9 @@
                "vendor":"vendor_id","category":"spending_category_id"},
 "adjustParameters":"
         $year = 'year_id';
-        $config->model->series[0]->additionalParameters->$year = $parameters[year_id][0]  ;
-        $config->model->series[1]->additionalParameters->$year = $parameters[year_id][0] -1 ;
-        $config->model->series[2]->additionalParameters->$year = $parameters[year_id][0];
+        $config->model->series[0]->additionalParameters->$year = $parameters['year_id'][0]  ;
+        $config->model->series[1]->additionalParameters->$year = $parameters['year_id'][0] -1 ;
+        $config->model->series[2]->additionalParameters->$year = $parameters['year_id'][0];
         return $parameters;
 ",
 "model": {

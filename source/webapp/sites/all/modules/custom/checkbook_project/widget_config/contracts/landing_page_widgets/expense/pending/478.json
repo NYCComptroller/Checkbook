@@ -24,7 +24,7 @@ $parameters['minority_type_id'] = 1000;
 "derivedColumns": {
 "industry_name_link": {
       "type": "expression2",
-      "expression": "'<a href=\"/contracts_pending_exp_landing' ._checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string('dashboard') . _checkbook_project_get_url_param_string(\"mwbe\") ._checkbook_project_get_url_param_string(\"vendor\")  .  _checkbook_project_get_url_param_string(\"agency\")  .  _checkbook_project_get_url_param_string(\"csize\") .    _checkbook_project_get_url_param_string(\"awdmethod\") .  _checkbook_project_get_url_param_string(\"status\") .'/cindustry/' . $row[industry_industry]. '?expandBottomCont=true\">' .$row[industry_industry_industry_type_name]. '</a>'"
+      "expression": "'<a href=\"/contracts_pending_exp_landing' ._checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string('dashboard') . _checkbook_project_get_url_param_string(\"mwbe\") ._checkbook_project_get_url_param_string(\"vendor\")  .  _checkbook_project_get_url_param_string(\"agency\")  .  _checkbook_project_get_url_param_string(\"csize\") .    _checkbook_project_get_url_param_string(\"awdmethod\") .  _checkbook_project_get_url_param_string(\"status\") .'/cindustry/' . $row['industry_industry']. '?expandBottomCont=true\">' .$row['industry_industry_industry_type_name']. '</a>'"
     } ,
 "formatted_original_amount_sum": {
       "type": "expression2",

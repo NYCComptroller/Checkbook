@@ -84,7 +84,7 @@
     "derivedColumns": {
             "agency_name_link": {
                 "type":"expression2",
-                "expression":"'<a href=\"' . SpendingUtil::getAgencyNameLinkUrl($node,$row) . '\">' . $row[agency_name] . '</a>'"
+                "expression":"'<a href=\"' . SpendingUtil::getAgencyNameLinkUrl($node,$row) . '\">' . $row['agency_name'] . '</a>'"
             },
             "sub_vendor_name_formatted": {
                 "type":"expression2",
@@ -96,7 +96,7 @@
             },
             "sub_vendor_name_link2": {
                 "type":"expression2",
-                "expression":"($row[vendor_id] == null )?$row['legal_name@checkbook:sub_vendor']:$row[sub_vendor_name_link]"
+                "expression":"($row['vendor_id'] == null )?$row['legal_name@checkbook:sub_vendor']:$row['sub_vendor_name_link']"
             },
             "prime_vendor_name_formatted": {
                 "type":"expression2",
@@ -104,11 +104,11 @@
             },
             "prime_vendor_name_link": {
                 "type":"expression2",
-                "expression":"'<a href=\"' . SpendingUtil::getPrimeVendorNameLinkUrl($node,$row) . '\">' . $row[prime_vendor_name_formatted] . '</a>'"
+                "expression":"'<a href=\"' . SpendingUtil::getPrimeVendorNameLinkUrl($node,$row) . '\">' . $row['prime_vendor_name_formatted'] . '</a>'"
             },
             "prime_vendor_name_link2": {
                 "type":"expression2",
-                "expression":"($row[prime_vendor_id] == null )?$row['legal_name@checkbook:prime_vendor']:$row[prime_vendor_name_link]"
+                "expression":"($row['prime_vendor_id'] == null )?$row['legal_name@checkbook:prime_vendor']:$row['prime_vendor_name_link']"
             },
             "formatted_check_amount": {
                 "type":"expression2",

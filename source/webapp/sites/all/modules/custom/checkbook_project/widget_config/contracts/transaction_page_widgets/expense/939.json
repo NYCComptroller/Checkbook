@@ -272,11 +272,11 @@
         },
         "subvendor_name": {
             "type":"expression2",
-            "expression":"(in_array(strtoupper($row['sub_vendor_name']), array('NOT PROVIDED', 'N/A', '', NULL))) ? (isset($row['sub_vendor_name']) ? $row['sub_vendor_name']: 'N/A' ) : '<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row[sub_vendor_id],_getRequestParamValue('year'),_getRequestParamValue('yeartype'), null, $row[sub_minority_type_id]) .  '?expandBottomCont=true\">' .$row[subvendor_name_formatted]. '</a>'"
+            "expression":"(in_array(strtoupper($row['sub_vendor_name']), array('NOT PROVIDED', 'N/A', '', NULL))) ? (isset($row['sub_vendor_name']) ? $row['sub_vendor_name']: 'N/A' ) : '<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row['sub_vendor_id'],_getRequestParamValue('year'),_getRequestParamValue('yeartype'), null, $row['sub_minority_type_id']) .  '?expandBottomCont=true\">' .$row['subvendor_name_formatted']. '</a>'"
         },
         "sub_mwbe_category_name": {
             "type":"expression2",
-            "expression":"(in_array(strtoupper($row['sub_minority_type_name']), array('NOT PROVIDED', 'N/A', '', NULL))) ? (isset($row['sub_minority_type_name']) ? $row['sub_minority_type_name']: 'N/A' ) : $row[sub_minority_type_name]"
+            "expression":"(in_array(strtoupper($row['sub_minority_type_name']), array('NOT PROVIDED', 'N/A', '', NULL))) ? (isset($row['sub_minority_type_name']) ? $row['sub_minority_type_name']: 'N/A' ) : $row['sub_minority_type_name']"
         },
         "contract_includes_sub":{
             "type":"expression2",

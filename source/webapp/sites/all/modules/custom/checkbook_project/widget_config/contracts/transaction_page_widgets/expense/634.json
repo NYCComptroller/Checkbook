@@ -174,7 +174,7 @@
             "type": "expression2",
             "expression": "($row['has_children'] != 'Y') ? ('<a href=\"/contracts_landing'
             . _checkbook_append_url_params()
-            .(_checkbook_check_isEDCPage() ? ('/agency/'. $row[agency_id]) :'')
+            .(_checkbook_check_isEDCPage() ? ('/agency/'. $row['agency_id']) :'')
             . _checkbook_project_get_url_param_string('agency')
             .  (isset($row['fiscal_year_id']) ? '/year/'.$row['fiscal_year_id'] : '')
             .  (isset($row['type_of_year']) ? '/yeartype/'.$row['type_of_year'] : '')
@@ -226,7 +226,7 @@
         },
         "budget_name_formatted":{
             "type": "expression2",
-            "expression": "_get_tooltip_markup($row[budget_name], 36)"
+            "expression": "_get_tooltip_markup($row['budget_name'], 36)"
         },
         "reg_date":{
             "type": "expression2",

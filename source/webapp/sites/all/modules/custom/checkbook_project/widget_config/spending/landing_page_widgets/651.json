@@ -52,7 +52,7 @@ return $footer;
 "derivedColumns": {
 "agency_name_link": {
 "type": "expression2",
-"expression": "'<a href=\"/spending_landing' .  _checkbook_project_get_url_param_string(\"vendor\") ._checkbook_project_get_url_param_string(\"category\") . _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() . '/agency/'. $row[agency_id] .'\">' . $row[agency_name] . '</a>'"
+"expression": "'<a href=\"/spending_landing' .  _checkbook_project_get_url_param_string(\"vendor\") ._checkbook_project_get_url_param_string(\"category\") . _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() . '/agency/'. $row['agency_id'] .'\">' . $row['agency_name'] . '</a>'"
 },
 "vendor_name_formatted": {
 "type": "expression2",
@@ -60,11 +60,11 @@ return $footer;
 },
 "vendor_name_link": {
 "type": "expression2",
-"expression": "'<a href=\"/spending_landing' .  _checkbook_project_get_url_param_string(\"agency\") ._checkbook_project_get_url_param_string(\"category\") . _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() . '/vendor/'. $row[vendor_id] .'\">' . $row[vendor_name_formatted] . '</a>'"
+"expression": "'<a href=\"/spending_landing' .  _checkbook_project_get_url_param_string(\"agency\") ._checkbook_project_get_url_param_string(\"category\") . _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() . '/vendor/'. $row['vendor_id'] .'\">' . $row['vendor_name_formatted'] . '</a>'"
 },
 "vendor_name_link2": {
 "type": "expression2",
-"expression": "($row[vendor_id] == null )?$row['vendor_name']:$row[vendor_name_link]"
+"expression": "($row['vendor_id'] == null )?$row['vendor_name']:$row['vendor_name_link']"
 },
 "formatted_check_amount": {
 "type": "expression2",
