@@ -9,9 +9,9 @@
                 if (chartNumber === '3') {
                     validateInput(minraw, maxraw, chartNumber, 1980,2012)
                 } else if(chartNumber === '0' || chartNumber === '2') {
-                    validateInput(minraw, maxraw, chartNumber, 1994,2016)
+                    validateInput(minraw, maxraw, chartNumber, 1994,2017)
                 } else if(chartNumber === '1' || chartNumber === '4') {
-                    validateInput(minraw, maxraw, chartNumber, 1995,2016)
+                    validateInput(minraw, maxraw, chartNumber, 1995,2017)
                 }
             } else if (minraw.length === 0 && maxraw.length === 0) {
                 var today = new Date().getFullYear();
