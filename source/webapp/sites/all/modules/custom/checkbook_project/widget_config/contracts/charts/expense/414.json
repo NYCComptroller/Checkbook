@@ -52,7 +52,7 @@
     },
     "column_link":{
         "type":"expression2",
-        "expression":"_pending_contracts_link_contract_details($row[contract_number_contract_number],$row[original_agreement_id_original_agreement_id],$row[document_code_document_code_document_code],$row[pending_contract_number_pending_contract_number],$row[document_version_document_version],'bar')"
+        "expression":"_pending_contracts_link_contract_details($row['contract_number_contract_number'],$row['original_agreement_id_original_agreement_id'],$row['document_code_document_code_document_code'],$row['pending_contract_number_pending_contract_number'],$row['document_version_document_version'],'bar')"
     }
 },
 "limit": "10",

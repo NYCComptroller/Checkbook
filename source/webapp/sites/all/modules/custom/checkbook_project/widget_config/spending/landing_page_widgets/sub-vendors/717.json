@@ -69,11 +69,11 @@
         },
         "prime_vendor_name_link": {
             "type":"expression2",
-            "expression":"'<a href=\"' . SpendingUtil::getPrimeVendorNameLinkUrl($node,$row) . '\">' . $row[prime_vendor_name_formatted] . '</a>'"
+            "expression":"'<a href=\"' . SpendingUtil::getPrimeVendorNameLinkUrl($node,$row) . '\">' . $row['prime_vendor_name_formatted'] . '</a>'"
         },
         "prime_vendor_name_link2": {
             "type":"expression2",
-            "expression":"($row[prime_vendor_prime_vendor] == null )?$row['prime_vendor_prime_vendor_legal_name']:$row[prime_vendor_name_link]"
+            "expression":"($row['prime_vendor_prime_vendor'] == null )?$row['prime_vendor_prime_vendor_legal_name']:$row['prime_vendor_name_link']"
         },
         "prime_vendor_amount_link":{
             "type":"expression2",

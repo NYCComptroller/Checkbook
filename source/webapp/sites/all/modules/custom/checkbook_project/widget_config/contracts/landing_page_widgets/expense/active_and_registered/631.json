@@ -25,7 +25,7 @@
     },
 "department_name_link": {
       "type": "expression2",
-      "expression": "'<a href=\"/contracts_landing/vendor/' .$row[department_department] .  _checkbook_project_get_url_param_string(\"status\") .   _checkbook_project_get_year_url_param_string() .  '\">' .$row[dept_name_formatted]. '</a>'"
+      "expression": "'<a href=\"/contracts_landing/vendor/' .$row['department_department'] .  _checkbook_project_get_url_param_string(\"status\") .   _checkbook_project_get_year_url_param_string() .  '\">' .$row['dept_name_formatted']. '</a>'"
     } ,
  "agency_name_formatted": {
       "type": "expression2",
@@ -33,11 +33,11 @@
     },
     "agency_name_link": {
       "type": "expression2",
-      "expression": "$row[agency_name_formatted]"
+      "expression": "$row['agency_name_formatted']"
     },
 "spent_amount_link": {
       "type": "expression2",
-      "expression": "'<a href=\"/contracts_landing/vendor/' .$row[agency_agency] .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\") .   _checkbook_project_get_year_url_param_string() .  '\">' . '$ ' . custom_number_formatter_format($row['spending_amount_sum'],2). '</a>'"
+      "expression": "'<a href=\"/contracts_landing/vendor/' .$row['agency_agency'] .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\") .   _checkbook_project_get_year_url_param_string() .  '\">' . '$ ' . custom_number_formatter_format($row['spending_amount_sum'],2). '</a>'"
     } ,
 "spent_amount_no_link": {
       "type": "expression2",

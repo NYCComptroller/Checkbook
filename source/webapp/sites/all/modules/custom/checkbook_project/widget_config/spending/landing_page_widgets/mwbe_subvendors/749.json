@@ -71,7 +71,7 @@
         },
         "agency_name_link": {
             "type": "expression2",
-            "expression": "'<a href=\"' . SpendingUtil::getAgencyNameLinkUrl($node,$row) . '\">' . $row[agency_name_formatted] . '</a>'"
+            "expression": "'<a href=\"' . SpendingUtil::getAgencyNameLinkUrl($node,$row) . '\">' . $row['agency_name_formatted'] . '</a>'"
         },
         "prime_vendor_name_formatted": {
             "type":"expression2",
@@ -79,11 +79,11 @@
         },
         "prime_vendor_name_link": {
             "type":"expression2",
-            "expression":"'<a href=\"' . SpendingUtil::getPrimeVendorNameLinkUrl($node,$row) . '\">' . $row[prime_vendor_name_formatted] . '</a>'"
+            "expression":"'<a href=\"' . SpendingUtil::getPrimeVendorNameLinkUrl($node,$row) . '\">' . $row['prime_vendor_name_formatted'] . '</a>'"
         },
         "prime_vendor_name": {
             "type":"expression2",
-            "expression":"($row[prime_vendor_prime_vendor] == null )?$row['prime_vendor_prime_vendor_legal_name']:$row[prime_vendor_name_link]"
+            "expression":"($row['prime_vendor_prime_vendor'] == null )?$row['prime_vendor_prime_vendor_legal_name']:$row['prime_vendor_name_link']"
         },
         "formatted_check_amount_sum": {
             "type": "expression2",
@@ -99,7 +99,7 @@
         },
         "contract_number_link":{
             "type":"expression2",
-            "expression":"'<a class=\"new_window\" href=\"' . SpendingUtil::getSubContractNumberLinkUrl($node,$row) . '\">'  . $row[document_id_document_id] . '</a>'"
+            "expression":"'<a class=\"new_window\" href=\"' . SpendingUtil::getSubContractNumberLinkUrl($node,$row) . '\">'  . $row['document_id_document_id'] . '</a>'"
         }
     },
     "summaryView":{

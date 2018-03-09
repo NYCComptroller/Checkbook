@@ -30,19 +30,19 @@
     },
     "agency_name_link": {
       "type": "expression2",
-      "expression": "$row[agency_name_formatted]"
+      "expression": "$row['agency_name_formatted']"
     },
 "vendor_name_link": {
       "type": "expression2",
-      "expression": "$row[vendor_name_formatted]"
+      "expression": "$row['vendor_name_formatted']"
     } ,
 "spent_amount_link": {
       "type": "expression2",
-      "expression": "'<a class=\"new_window\" href=\"/spending/transactions/magid/' .$row[original_agreement_original_agreement] . _checkbook_project_get_url_param_string('vendor') . ContractURLHelper:: _checkbook_project_spending_get_year_url_param_string() . _checkbook_append_url_params() . '/smnid/' . $node->nid.ContractUtil::getSpentToDateParams(). '/newwindow\">' . '$' . custom_number_formatter_format($row['spending_amount_sum'],2). '</a>'"
+      "expression": "'<a class=\"new_window\" href=\"/spending/transactions/magid/' .$row['original_agreement_original_agreement'] . _checkbook_project_get_url_param_string('vendor') . ContractURLHelper:: _checkbook_project_spending_get_year_url_param_string() . _checkbook_append_url_params() . '/smnid/' . $node->nid.ContractUtil::getSpentToDateParams(). '/newwindow\">' . '$' . custom_number_formatter_format($row['spending_amount_sum'],2). '</a>'"
     } ,
 "contract_link": {
       "type": "expression2",
-      "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/contract_transactions/contract_details/magid/' .$row[original_agreement_original_agreement]  .  '/doctype/'   . $row[document_code_document_code_document_code] . _checkbook_append_url_params()   . '\">' . $row['contract_number_contract_number'] . '</a>'"
+      "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/contract_transactions/contract_details/magid/' .$row['original_agreement_original_agreement']  .  '/doctype/'   . $row['document_code_document_code_document_code'] . _checkbook_append_url_params()   . '\">' . $row['contract_number_contract_number'] . '</a>'"
     } ,
 "formatted_original_amount_sum": {
       "type": "expression2",

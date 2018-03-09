@@ -36,9 +36,9 @@
     "urlParamMap":{"subvendor":"sub_vendor.sub_vendor","year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"prime_vendor.prime_vendor","category":"spending_category_id","mwbe":"minority_type_id"},
     "adjustParameters":"
         $year = 'year_id';
-        $config->model->series[0]->additionalParameters->$year = $parameters[year_id][0]  ;
-        $config->model->series[1]->additionalParameters->$year = $parameters[year_id][0] -1 ;
-        $config->model->series[2]->additionalParameters->$year = $parameters[year_id][0];
+        $config->model->series[0]->additionalParameters->$year = $parameters['year_id'][0]  ;
+        $config->model->series[1]->additionalParameters->$year = $parameters['year_id'][0] -1 ;
+        $config->model->series[2]->additionalParameters->$year = $parameters['year_id'][0];
         return $parameters;
     ",
     "model": {
