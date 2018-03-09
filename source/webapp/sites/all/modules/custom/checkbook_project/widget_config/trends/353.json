@@ -10,7 +10,7 @@
        "orderBy":"display_order",
 "derivedColumns": {       
 	"amount": {
-	      "type": "expression",
+	      "type": "expression2",
 	      "expression": "$row['income_or_population']"
 	}
 },
@@ -31,54 +31,9 @@
             jQuery('.trendsShowOnLoad').show();
             return true;
         }##",
-          "aoColumns": [
-        null,
-        null,
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},                                                                                        
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"120px"},
-        {"sWidth":"25px"}
+        "aoColumnDefs": [
+                {"sWidth": "120px", "aTargets": ["_all"]},
+                {"sWidth": "25px", "aTargets": [-1]}
         ]
        },
       "customJS":"new FixedColumns( oTable, {

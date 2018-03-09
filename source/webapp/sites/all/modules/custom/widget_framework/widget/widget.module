@@ -1058,7 +1058,6 @@ function calculateDerivedCell($row, $fulldata, $derivedColumnDefinition,$node) {
 			return $allRowsAreNull;
 			break;
 		case "expression":
-			$var = 3;
 			$expression = $derivedColumnDefinition->expression;
 			eval("\$result = \"$expression\";");
 			return $result;
