@@ -12,7 +12,7 @@
 	"dataTableOptions":{
         "bFilter": false,
         "bPaginate": false,
-        "bLengthChange": false,        
+        "bLengthChange": false,
         "bInfo": false,
         "bSort":false,
        	"sScrollY": 400,
@@ -23,10 +23,8 @@
          	jQuery('.trendsShowOnLoad').show();
 		      return true;
 		      }##",
-         "bAutoWidth": false,
          "aoColumnDefs": [
             {"sWidth": "100px", "aTargets": ["number"]},
-            {"sWidth": "30px", "aTargets": ["_all"]},
             {"sWidth": "25px", "aTargets": [-1]}
          ]
        },
