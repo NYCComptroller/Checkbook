@@ -10,26 +10,25 @@
 "defaultParameters":{"display_yn":"Y"},
 	"table_title":"",
 "dataTableOptions":{
- 
+
         "bFilter": false,
         "bPaginate": false,
-        "bLengthChange": false,        
+        "bLengthChange": false,
         "bInfo": false,
        "bSort":false,
        	"sScrollY": "440px",
- 	"bScrollCollapse": true,     
+        "aoColumnDefs": [
+          {"sWidth": "150px", "aTargets": ["number"]}
+        ],
+        "autoWidth": false,
+ 	"bScrollCollapse": true,
         "sScrollX": "100%",
          "sScrollXInner": "2250px",
          "bAutoWidth": false,
         "fnPreDrawCallback":"##function( oSettings ) {
             jQuery('.trendsShowOnLoad').show();
             return true;
-        }##",
-       "aoColumnDefs": [
-        {"sWidth": "30px", "aTargets": "_all"},
-        {"sWidth": "115px", "aTargets": "number"},
-        {"sWidth": "25px", "aTargets": [-1]}
-       ]
+        }##"
        },
  "customJS":"new FixedColumns( oTable, {
  		\"iLeftColumns\": 1,

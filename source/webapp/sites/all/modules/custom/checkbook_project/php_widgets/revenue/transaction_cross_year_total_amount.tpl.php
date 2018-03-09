@@ -17,8 +17,7 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php
+
     $year1 = _getYearValueFromID(_getRequestParamValue('year'));
     $year2 = _getYearValueFromID(_getRequestParamValue('year')+1);
     $year3 = _getYearValueFromID(_getRequestParamValue('year')+2);

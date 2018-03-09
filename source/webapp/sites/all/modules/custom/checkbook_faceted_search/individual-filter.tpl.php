@@ -17,8 +17,6 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php
 /**
  * Created by JetBrains PhpStorm.
  * User: jrobertson
@@ -548,4 +546,3 @@ $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
   if ($node->widgetConfig->addJS1) {
     echo '<script type="text/javascript">' . $node->widgetConfig->addJS . '</script>';
   }
-?>

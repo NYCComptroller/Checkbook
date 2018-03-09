@@ -17,8 +17,7 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php
+
 $searchTerms = explode('*|*', $_REQUEST['search_term']);
 $filterCriteria = NULL;
 $theme_path =  drupal_get_path('theme',$GLOBALS['theme']);

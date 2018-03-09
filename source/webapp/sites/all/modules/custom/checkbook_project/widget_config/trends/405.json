@@ -7,12 +7,12 @@
 	"dataset": "checkbook:trends_capital_assets_statistics_function_program",
 	"columns": ["category","amount", "amount_display_type", "fiscal_year","highlight_yn","indentation_level","display_order"],
        "orderBy":"display_order",
-	"table_title":"",	
+	"table_title":"",
 	"dataTableOptions":{
-         
+
         "bFilter": false,
         "bPaginate": false,
-        "bLengthChange": false,        
+        "bLengthChange": false,
         "bInfo": false,
          "bSort":false,
          "sScrollY":"400",
@@ -23,9 +23,9 @@
             return true;
         }##",
         "aoColumnDefs": [
-          {"sWidth": "30px", "aTargets": "_all"},
-          {"sWidth": "55px", "aTargets": "number"},
-          {"sWidth": "25px", "aTargets": [-1]}
+            {"sWidth": "55px", "aTargets": ["number"]},
+            {"sWidth": "30px", "aTargets": ["_all"]},
+            {"sWidth": "25px", "aTargets": [-1]}
         ]
        },
       "customJS":"new FixedColumns( oTable, {

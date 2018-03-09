@@ -18,7 +18,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 ?>
-<div class="activeExpenseContractNote toolTip">Includes all multiyear contracts whose end date is greater than today’s date or completed in the current fiscal year</div>
+<div class="activeExpenseContractNote toolTip">Includes all multiyear contracts whose end date is greater than today's date or completed in the current fiscal year</div>
 <div class="nyc_totals_links">
   <table>
     <tbody>

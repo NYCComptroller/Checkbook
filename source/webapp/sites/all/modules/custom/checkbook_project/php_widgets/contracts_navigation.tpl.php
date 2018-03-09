@@ -17,8 +17,7 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php
+
 
 $options = array('html'=>true);
 $options_disabled = array('html'=>true,"attributes"=>array("class"=>"noclick"));
@@ -324,7 +323,7 @@ if(_checkbook_check_isEDCPage()) {
                 </td>
                 <td class="mwbe subvendors<?php if($svclass){print $svclass;}?>">
                     <div class="<?php print $fdexpclass;?>">
-                        <?php print $subvendors_link ?><?php print '<div class="drop-down-menu-triangle">'  . $svendor_filters .'</div>' ?>
+                        <?php print $subvendors_link; print '<div class="drop-down-menu-triangle">'  . $svendor_filters .'</div>' ?>
                     </div>
                     <?php if($featured_dashboard == "sp" ||$featured_dashboard == "ss"){?>
                         <div class='indicator'></div>

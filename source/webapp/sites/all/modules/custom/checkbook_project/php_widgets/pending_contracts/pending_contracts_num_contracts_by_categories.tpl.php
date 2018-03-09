@@ -17,8 +17,7 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php
+
 $output = '<h2>Number of Contracts</h2>';
 $output .= '<table id="pending-contracts-num-contracts-categories">';
 $output .= '<thead><th>Total Number of Contracts</th><th>Master Agreement Contracts</th><th>Standalone Contracts</th></thead>';

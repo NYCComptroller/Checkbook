@@ -17,8 +17,7 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php
+
 $max_records = 200000;
 $search_terms = explode('*|*', $_REQUEST['searchTerm']);
 $domains = explode("~", $_REQUEST['resultsdomains'] );
