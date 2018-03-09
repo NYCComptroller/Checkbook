@@ -24,7 +24,7 @@ return $adjustedParameters;
 },
 "current_prime_minority_type_id": {
     "type": "expression2",
-    "expression": "$row[minority_type_minority_type]"
+    "expression": "$row['minority_type_minority_type']"
 },
 "vendor_name_link": {
     "type": "expression2",
