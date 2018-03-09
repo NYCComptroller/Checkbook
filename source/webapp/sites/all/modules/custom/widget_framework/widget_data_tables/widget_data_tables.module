@@ -366,9 +366,11 @@ function widget_data_tables_widget_prepare($node){
     }
     //Remove any columns with visibility = false from sorting
     $sort_columns = array();
-    foreach($node->widgetConfig->table_columns as $column) {
-        if(check_node_flag_visibilty($column->visibility_flag, $node)) {
-            array_push($sort_columns, $column);
+    if (property_exists($node->widgetConfig, 'table_columns')) {
+        foreach($node->widgetConfig->table_columns as $column) {
+            if(check_node_flag_visibilty($column->visibility_flag, $node)) {
+                array_push($sort_columns, $column);
+            }
         }
     }
 
@@ -671,24 +673,28 @@ function widget_data_tables_add_js($node){
 	                     "sZeroRecords"=>"<div class='clearfix' id='no-records-datatable'><span>No Matching Records Found</span></div>");
 
     $oldDataTableOptions = get_object_vars($node->widgetConfig->dataTableOptions);
-    $newAolcols = array();
-    foreach($oldDataTableOptions['aoColumns'] as $key=>$value){
-        $aoCols = get_object_vars($value);
-        
-        $visibility_flag = check_node_flag_visibilty($aoCols['visibility_flag'],$node);
-        if($visibility_flag && ((isset($aoCols['datasource']) && _getRequestParamValue('datasource') == isset($aoCols['datasource'])))){
-            array_push($newAolcols, $value);
-        }else if((!isset($aoCols['datasource'])) && $visibility_flag){
-        	array_push($newAolcols, $value);
+    if(isset($oldDataTableOptions['aoColumns'])) {
+
+        $newAolcols = [];
+
+        foreach($oldDataTableOptions['aoColumns'] as $key=>$value) {
+            if (is_null($value)) {
+                $newAolcols[] = $value;
+                continue;
+            }
+            $aoCols = get_object_vars($value);
+
+            $visibility_flag = check_node_flag_visibilty($aoCols['visibility_flag'], $node);
+            if ($visibility_flag && ((isset($aoCols['datasource']) && _getRequestParamValue('datasource') == isset($aoCols['datasource'])))) {
+                $newAolcols[] = $value;
+            } else if ((!isset($aoCols['datasource'])) && $visibility_flag) {
+                $newAolcols[] = $value;
+            }
         }
-        
-        
-        
-        
-        
-    }
-    if(count($newAolcols)){
-    	$oldDataTableOptions['aoColumns'] = $newAolcols;
+
+        if(count($newAolcols)){
+            $oldDataTableOptions['aoColumns'] = $newAolcols;
+        }
     }
 
 if(isset($node->widgetConfig->stickyHeader)){
