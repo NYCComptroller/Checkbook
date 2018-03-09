@@ -17,8 +17,7 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php
+
     echo "\n".",,".'"'."Percent of Levy through June 30, 2016".'"'."\n";
     $header = 'Fiscal year';
     $header .=  ",Tax Levy (in millions)(2)" ;
@@ -45,20 +44,20 @@
         $count++;
    	}
 
-   echo "\n"."\n"."(1) Abatements and Discounts include SCRIE Abatements (Senior citizen rent increase exemption), J-51 Abatements,
-     Section 626 Abatements and other minor discounts offered by the City to property owners.";
-   echo "\n"."\n"."(2) The Tax Levy amounts are the amount from the City Council Resolution. In 2005 an 18% surcharge was imposed
-and is included in each year following.";
-   echo "\n"."\n"."Notes: Total uncollected balance at June 30, 2017 less allowance for uncollectible amounts equals net realizable amount
-(real estate taxes receivable).
-Levy may total over 100 percent due to imposed charges that include ICIP deferred charges (Industrial and Commercial
-    Incentive Program), rebilling charges and other additional charges imposed by The Department of Finance(DOF). This  
-    information is included in the FAIRTAX LEVY report.".'"';
+?>
 
+"(1) Abatements and Discounts include SCRIE Abatements (Senior citizen rent increase exemption), J-51 Abatements,
+Section 626 Abatements and other minor discounts offered by the City to property owners."
 
+"(2) The Tax Levy amounts are the amount from the City Council Resolution. In 2005 an 18% surcharge was imposed
+and is included in each year following."
 
+"Notes: Total uncollected balance at June 30, 2017 less allowance for uncollectible amounts equals net realizable amount
+(real estate taxes receivable)."
 
-
+"Levy may total over 100 percent due to imposed charges that include ICIP deferred charges (Industrial and Commercial
+Incentive Program), rebilling charges and other additional charges imposed by The Department of Finance(DOF). This
+information is included in the FAIRTAX LEVY report."
 
 
 

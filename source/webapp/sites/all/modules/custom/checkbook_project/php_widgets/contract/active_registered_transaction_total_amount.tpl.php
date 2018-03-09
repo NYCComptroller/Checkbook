@@ -17,8 +17,7 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php
+
     $http_ref = $_SERVER['HTTP_REFERER'];
     $current_url = $_GET['q'];
 

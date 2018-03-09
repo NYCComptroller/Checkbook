@@ -51,6 +51,8 @@
         }
         echo $rowString . "\n";
    	}
+?>
 
-echo "\n"."\n".'"'."(1) FY 2010 includes various other facilities with active enrollment relating to primary, intermediate and high school. This includes minischools, transportables and leased space. Also, multiple district schools may be operated in a single school building.".'"'
-     ."\n".'"'."Sources: Various City Agencies".'"';
+"(1) FY 2010 includes various other facilities with active enrollment relating to primary, intermediate and high school. This includes minischools, transportables and leased space. Also, multiple district schools may be operated in a single school building."
+
+"Sources: Various City Agencies"

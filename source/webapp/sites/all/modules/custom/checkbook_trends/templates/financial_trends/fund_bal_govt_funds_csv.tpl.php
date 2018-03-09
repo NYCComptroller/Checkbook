@@ -17,8 +17,7 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php
+
 	$table_rows = array();
 	$years = array();
 	foreach( $node->data as $row){
@@ -62,9 +61,8 @@
         }
         echo $rowString . "\n";
    	}
-
-    echo "\n \n"."Source: Comprehensive Annual Financial Reports of the Comptroller." ."\n".
-        '"' ."Note: In fiscal year 2010, the Fund balance classifications were changed to conform to the requirements of GASB54.".'"';
-
 ?>
 
+"Source: Comprehensive Annual Financial Reports of the Comptroller."
+
+"Note: In fiscal year 2010, the Fund balance classifications were changed to conform to the requirements of GASB54."

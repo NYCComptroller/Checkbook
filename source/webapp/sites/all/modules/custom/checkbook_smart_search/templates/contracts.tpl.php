@@ -5,8 +5,7 @@
 * This software is licensed under the GNU AGPL Version 3
 * 	(see the file LICENSE for details)
 */
-?>
-<?php
+
 
 
 $contracts_parameter_mapping = _checkbook_smart_search_domain_fields('contracts', $IsOge);

@@ -36,7 +36,7 @@ echo eval($node->widgetConfig->header);
     <thead>
     <tr>
     	<th rowspan="3" class="number"><div class="trendCen">Year</div></th>
-    	<th class="centrig bb" colspan="5"><div>1994-2015</div></th>
+    	<th class="centrig bb" colspan="5"><div>1994-2016</div></th>
     </tr>
     <tr>
 
