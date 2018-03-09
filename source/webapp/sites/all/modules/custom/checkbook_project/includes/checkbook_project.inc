@@ -914,6 +914,11 @@ function _checkbook_project_adjust_mwbe_spending_parameter_filters(&$node, &$par
                 break;
         }
     }
+    
+    if($dtsmnid == 764){
+        $parameters['contract_document_code'] = array( 'CT1', 'CTA1', 'POD', 'POC', 'PCC1', 'DO1','MA1','MMA1');
+    }
+
     return $parameters;
 }
 
