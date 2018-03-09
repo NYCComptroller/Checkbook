@@ -17,9 +17,8 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php
-    $header = ",,,1994-2015,,,"."\n";
+
+    $header = ",,,1994-2016,,,"."\n";
     $header .= 'year';
 
     $header .=  ",New York City Employed - Civilian Labor Force (in thousands)" ;
@@ -41,7 +40,10 @@
         echo $rowString . "\n";
         $count++;
    	}
+?>
 
-echo "\n" .'"'."(a)  Unemployed persons are all civilians who had no employment during the survey week, were available for work, except for temporary illness, and had made efforts to find employment some time during the prior four weeks. This includes persons who were waiting to be recalled to a job from which they were laid off or were waiting to report to a new job within 30 days.".'"'."\n".
-     "\n" .'"'."Note: Employment and unemployment information is not seasonally adjusted.".'"'."\n".
-     "\n" .'"'."Sources: U.S. Department of Labor, Bureau of Labor Statistics, and Office of the Comptroller, Fiscal and Budget Studies.".'"'."\n";
+"(a)  Unemployed persons are all civilians who had no employment during the survey week, were available for work, except for temporary illness, and had made efforts to find employment some time during the prior four weeks. This includes persons who were waiting to be recalled to a job from which they were laid off or were waiting to report to a new job within 30 days."
+
+"Note: Employment and unemployment information is not seasonally adjusted."
+
+"Sources: U.S. Department of Labor, Bureau of Labor Statistics, and Office of the Comptroller, Fiscal and Budget Studies."

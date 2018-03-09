@@ -26,8 +26,8 @@
             "sScrollXInner":"1975px",
             "sScrollY":"400px",
             "aoColumnDefs": [
-              {"sWidth": "30px", "aTargets": "_all"},
-              {"sWidth": "100px", "aTargets": "number"},
+              {"sWidth": "100px", "aTargets": ["number"]},
+              {"sWidth": "30px", "aTargets": ["_all"]},
               {"sWidth": "25px", "aTargets": [-1]}
             ]
        },

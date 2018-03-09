@@ -17,8 +17,7 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php
+
 	$table_rows = array();
 	$years = array();
 	foreach( $node->data as $row){
@@ -31,7 +30,7 @@
 	}
 	rsort($years);
 	$header = '';
-    $header .= ',,,,,,1997-2016,,,,,'."\n";
+    $header .= ',,,,,,1997-2017,,,,,'."\n";
     $header .= ',,,,,,(average annual employment in thousands),,,,,'."\n";
 
     foreach ($years as $year){

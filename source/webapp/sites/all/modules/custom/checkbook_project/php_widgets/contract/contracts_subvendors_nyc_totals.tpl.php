@@ -17,8 +17,7 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php
+
     $is_active_expense_contracts = (preg_match("/^contracts_landing/", $_GET['q']) && _getRequestParamValue("status") == "A" 
                                     && _getRequestParamValue("bottom_slider") != "sub_vendor")? true:false;
     $td_class1 = ($is_active_expense_contracts)?'  class="active"':"";
@@ -26,7 +25,7 @@
     $count = "<span class='count'>" . number_format($node->data[0]['total_contracts']) . "</span>";
     $dollars = "<span class='dollars'>" . custom_number_formatter_format($node->data[0]['current_amount_sum'],1,'$') . "</span>";      
 ?>
-<div class="activeExpenseContractNote toolTip">Includes all multiyear contracts whose end date is greater than today’s date or completed in the current fiscal year</div>
+<div class="activeExpenseContractNote toolTip">Includes all multiyear contracts whose end date is greater than today's date or completed in the current fiscal year</div>
 <div class="nyc_subvendors_totals_links">
     <table>
     <tbody>

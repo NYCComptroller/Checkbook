@@ -17,8 +17,7 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php
+
 
 $output = '';
  $output .= '<table><tr><th>Detailed Expense Category</th><th>Current Amount</th><th>Amount spent to Date</th></tr>';

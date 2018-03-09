@@ -17,8 +17,7 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php
+
 $output = '';
 $urlPath = drupal_get_path_alias($_GET['q']);
 $pathParams = explode('/', $urlPath);

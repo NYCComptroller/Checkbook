@@ -25,9 +25,9 @@
             return true;
         }##",
         "aoColumnDefs": [
-         {"sWidth": "30px", "aTargets": "_all"},
-         {"sWidth": "55px", "aTargets": "number"},
-         {"sWidth": "25px", "aTargets": [-1]}
+            {"sWidth": "55px", "aTargets": ["number"]},
+            {"sWidth": "30px", "aTargets": ["_all"]},
+            {"sWidth": "25px", "aTargets": [-1]}
         ]
        },
       "customJS":"new FixedColumns( oTable, {
