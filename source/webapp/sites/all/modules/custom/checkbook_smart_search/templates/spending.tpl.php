@@ -17,8 +17,6 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php
 
 $spending_parameter_mapping = _checkbook_smart_search_domain_fields('spending', $IsOge);
 if($spending_results['fiscal_year_id'] != ''){

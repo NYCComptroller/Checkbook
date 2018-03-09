@@ -36,7 +36,7 @@ echo eval($node->widgetConfig->header);
     <thead>
     <tr>
     	<th>&nbsp;</th>
-    	<th colspan="4" class="centrig bb"><div>2002-2015<sup>*</sup></div></th>
+    	<th colspan="4" class="centrig bb"><div>2000-2016<sup>*</sup></div></th>
     </tr>
 	<tr>
         <th class="number" ><div class="trendCen">Year</div></th>
@@ -68,6 +68,7 @@ echo eval($node->widgetConfig->header);
     </tbody>
 </table>
     <div class="footnote">
+         <p>*Amounts as of March 28, 2017</p>
          <p>Source: U.S Department of Commerce, Bureau of Economic Analysis. US Census Bureau and American Fact Finder.</p>
     </div>
 <?php 
@@ -76,4 +77,3 @@ echo eval($node->widgetConfig->header);
     if (isset($node->widgetConfig->table_footnote)) {
 	    echo $node->widgetConfig->table_footnote;
 	}
-?>

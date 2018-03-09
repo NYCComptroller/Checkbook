@@ -17,8 +17,7 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php
+
 include_once('spending_title.php');
 include_once('page_title.php');
 include_once('export_link.php');

@@ -17,8 +17,7 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php
+
     print '<div class="dollar-amounts">';
     print '<div class="total-spending-amount">' . custom_number_formatter_format($node->data[0]['revenue_amount_sum'],2,'$')."<div class='amount-title'>Total Revenue<br />Recognized</div>".'</div>';
     print '<div class="total-spending-amount">' . custom_number_formatter_format($node->data[0]['current_modified_budget'],2,'$')."<div class='amount-title'>Total Modified<br />Budget</div>".'</div>';

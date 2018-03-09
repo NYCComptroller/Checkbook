@@ -17,8 +17,7 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php
+
 
 $filter_years = _checkbook_max_data_year();
 $q = $_SERVER['REQUEST_URI'];

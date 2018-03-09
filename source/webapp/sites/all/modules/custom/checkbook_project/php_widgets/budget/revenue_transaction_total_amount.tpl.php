@@ -17,8 +17,7 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php
+
     print "<span>Total current modified amount: $" . custom_number_formatter_format($node->data[0]['total_current_modified_budget_amount'],2)."</span><br/>";
     print "<span>Total adopted budget amount: $" . custom_number_formatter_format($node->data[0]['total_adopted_amount'],2)."</span>";
 ?>

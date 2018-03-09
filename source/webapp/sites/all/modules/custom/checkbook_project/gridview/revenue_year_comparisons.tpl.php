@@ -5,8 +5,7 @@
 * This software is licensed under the GNU AGPL Version 3
 * 	(see the file LICENSE for details)
 */
-?>
-<?php
+
 
 
 include_once('revenue_title.php');
