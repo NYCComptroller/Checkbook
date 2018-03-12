@@ -3748,3 +3748,7 @@ a.new-features-morelink{
     position:absolute;
     right:110px;
 }
+
+.html sup{
+    vertical-align: super;
+}
