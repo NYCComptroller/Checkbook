@@ -41,6 +41,8 @@ echo eval($node->widgetConfig->header);
 
         <th rowspan="2" class="number"><div class="trendCen" >Interest<br>Revenue</div></th>
 
+        <th rowspan="2" class="number"><div class="trendCen" >Other<br>Income</div></th>
+
         <th rowspan="2" class="number"><div class="trendCen" >Total<br>Revenue</div></th>
         <th colspan="3" class="centrig bb"><div>Debt Service</div></th>
 
@@ -70,6 +72,7 @@ echo eval($node->widgetConfig->header);
             echo "<td class='number'><div class='tdCen'>" . $row['fiscal_year'] . "</div></td>";
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['rental_revenue']) . "</div></td>";
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['interest_revenue']) . "</div></td>";
+            echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . ($row['other_income']?number_format($row['other_income']):'-') . "</div></td>";
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['total_revenue']) . "</div></td>";
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['interest']) . "</div></td>";
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['pricipal']) . "</div></td>";
