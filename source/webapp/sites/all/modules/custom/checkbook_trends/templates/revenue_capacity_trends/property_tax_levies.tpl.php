@@ -47,7 +47,7 @@ if(preg_match('/featuredtrends/',$_GET['q'])){
         <th colspan="3" class="centrig bb"><div class="trendCen" >Collected Within the<br>Fiscal Year of the Levy</div></th>
         <th rowspan="2" class="number"><div class="trendCen" >Non-Cash<br>Liquidations<br>and Adjustments<br>to Levy<sup>(1)</sup></div></th>
         <th colspan="2" class="centrig bb"><div>Total Collections<br>and Adjustments to Date</div></th>
-        <th rowspan="2" class="number"><div class="trendCen" >Remaining<br>Uncollected<br>July 1, 2016</div></th>
+        <th rowspan="2" class="number"><div class="trendCen" >Remaining<br>Uncollected<br>JUNE 30, 2017</div></th>
         <th rowspan="2">&nbsp;</th>
     </tr>
     <tr>
