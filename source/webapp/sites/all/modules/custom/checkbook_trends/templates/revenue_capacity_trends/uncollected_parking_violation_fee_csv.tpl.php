@@ -47,9 +47,18 @@
         echo $rowString . "\n";
         $count++;
    	}
+?>
 
-    echo "\n".'"'."(a) 	The summonses issued by various City agencies for parking violations are adjudicated and collected by the Parking Violations Bureau (PVB) of the City's Department of Finance.".'"'
-        ."\n".'"'."(b) 	Proposed “write-offs” are in accordance with a write-off policy implemented by PVB for summonses determined to be legally uncollectible/unprocessable or for which all prescribed collection efforts are unsuccessful.".'"'
-        ."\n".'"'."(c) 	The Allowance for Uncollectible Amounts is calculated as follows: summonses which are over three years old are fully (100%) reserved and 35% of summonses less than three years old are reserved.".'"'
-        ."\n".'"'."Note: Data does not include interest reflected on the books of PVB.".'"'
-        ."\n".'"'."Source: The City of New York, Department of Finance, Parking Violations Bureau.".'"';
+"(a) 	The summonses issued by various City agencies for parking violations are adjudicated and collected by the "
+"       Parking Violations Bureau (PVB) of the City's Department of Finance."
+
+"(b) 	Proposed ''write-offs'' are in accordance with a write-off policy implemented by PVB for summonses determined "
+"       to be legally uncollectible/unprocessable or for which all prescribed collection efforts are unsuccessful."
+
+"(c) 	The Allowance for Uncollectible Amounts is calculated as follows: summonses which are over three years old are "
+"       fully (100%) reserved and 35% of summonses less than three years old are reserved."
+
+"Note: Data does not include interest reflected on the books of PVB."
+
+"Source: The City of New York, Department of Finance, Parking Violations Bureau."
+    

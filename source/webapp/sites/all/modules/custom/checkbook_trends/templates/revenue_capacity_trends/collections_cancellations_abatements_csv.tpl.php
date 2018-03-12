@@ -18,13 +18,13 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-    echo "\n".",,".'"'."Percent of Levy through June 30, 2016".'"'."\n";
+    echo "\n".",,".'"'."Percent of Levy through June 30, 2017".'"'."\n";
     $header = 'Fiscal year';
     $header .=  ",Tax Levy (in millions)(2)" ;
     $header .=  ",Collections,";
     $header .=  ",Cancellations,";
     $header .=  ",Abatements and Discounts(1),";
-    $header .=  ",".'"'."Uncollected Balance June 30, 2016".'"'.',';
+    $header .=  ",".'"'."Uncollected Balance June 30, 2017".'"'.',';
 
 	echo $header . "\n";
 
@@ -46,18 +46,18 @@
 
 ?>
 
-"(1) Abatements and Discounts include SCRIE Abatements (Senior citizen rent increase exemption), J-51 Abatements,
-Section 626 Abatements and other minor discounts offered by the City to property owners."
+"(1) Abatements and Discounts include SCRIE Abatements (Senior citizen rent increase exemption), J-51 Abatements,"
+"Section 626 Abatements and other minor discounts offered by the City to property owners."
 
-"(2) The Tax Levy amounts are the amount from the City Council Resolution. In 2005 an 18% surcharge was imposed
-and is included in each year following."
+"(2) The Tax Levy amounts are the amount from the City Council Resolution. In 2005 an 18% surcharge was imposed"
+"and is included in each year following."
 
-"Notes: Total uncollected balance at June 30, 2017 less allowance for uncollectible amounts equals net realizable amount
-(real estate taxes receivable)."
+"Notes: Total uncollected balance at June 30, 2017 less allowance for uncollectible amounts equals net realizable amount"
+"(real estate taxes receivable)."
 
-"Levy may total over 100 percent due to imposed charges that include ICIP deferred charges (Industrial and Commercial
-Incentive Program), rebilling charges and other additional charges imposed by The Department of Finance(DOF). This
-information is included in the FAIRTAX LEVY report."
+"Levy may total over 100 percent due to imposed charges that include ICIP deferred charges (Industrial and Commercial"
+"Incentive Program), rebilling charges and other additional charges imposed by The Department of Finance(DOF). This"
+"information is included in the FAIRTAX LEVY report."
 
 
 
