@@ -26,7 +26,7 @@
     $header .=  ",Non-Cash Liquidations and Adjustments to Levy(1)"  ;
     $header .=  ",Total Collections and Adjustments to Date - Amount"  ;
     $header .=  ",Total Collections and Adjustments to Date - Percentage of Levy,"  ;
-    $header .=  ",".'"'."Remaining Uncollected July 1, 2016".'"'  ;
+    $header .=  ",".'"'."Remaining Uncollected JUNE 30, 2017".'"'  ;
 	echo $header . "\n";
 
     $count = 1;
