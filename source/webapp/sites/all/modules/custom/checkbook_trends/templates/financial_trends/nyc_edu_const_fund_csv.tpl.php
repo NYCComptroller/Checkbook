@@ -22,6 +22,7 @@
 
     $header .=  ",Rental Revenue" ;
     $header .=  ",Interest Revenue" ;
+    $header .=  ",Other Income";
     $header .=  ",Total Revenue";
 
     $header .=  ",Debt Service - Interest";
@@ -40,6 +41,7 @@
         $rowString = $row['fiscal_year'] ;
         $rowString .= ',"' . number_format($row['rental_revenue']).'"';
         $rowString .= ',"' . number_format($row['interest_revenue']).'"';
+        $rowString .= ',"' . ($row['other_income']?number_format($row['other_income']):'-').'"';
         $rowString .= ',"' . number_format($row['total_revenue']).'"';
         $rowString .= ',"' . number_format($row['interest']).'"';
         $rowString .= ',"' . number_format($row['pricipal']).'"';

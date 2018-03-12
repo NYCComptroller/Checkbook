@@ -5,8 +5,20 @@
         "useList":true,
 	"no_results_content":"No Results Found",
 	"dataset": "checkbook:trends_new_york_city_educational_construction",
-	"columns": ["fiscal_year","rental_revenue","interest_revenue","total_revenue","interest","pricipal","total","operating_expenses","total_to_be_covered","coverage_ratio"],
-       "orderBy":"fiscal_year",
+    "columns": [
+      "fiscal_year",
+      "rental_revenue",
+      "interest_revenue",
+      "other_income",
+      "total_revenue",
+      "interest",
+      "pricipal",
+      "total",
+      "operating_expenses",
+      "total_to_be_covered",
+      "coverage_ratio"
+    ],
+    "orderBy":"fiscal_year",
 	"table_title":"",	
 	"dataTableOptions":{
         "bJQueryUI": false,
