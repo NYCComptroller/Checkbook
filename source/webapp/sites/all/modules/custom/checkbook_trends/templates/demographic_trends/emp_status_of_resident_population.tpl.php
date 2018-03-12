@@ -73,18 +73,13 @@ echo eval($node->widgetConfig->header);
     </tbody>
 </table>
 <div class="footnote">
-  <table>
-    <tbody>
-    <tr>
-      <td>(a)</td>
-      <td>Unemployed persons are all civilians who had no employment during the survey week, were available for work,
-          except for temporary illness, and had made efforts to find employment some time during the prior four weeks.
-          This includes persons who were waiting to be recalled to a job from which they were laid off or were
-          waiting to report to a new job within 30 days.</td>
-    </tr>
-    </tbody>
-  </table>
+    <p>(a) Unemployed persons are all civilians who had no employment during the survey week, were available for work,
+        except for temporary illness, and had made efforts to find employment some time during the prior four weeks.
+        This includes persons who were waiting to be recalled to a job from which they were laid off or were
+        waiting to report to a new job within 30 days.</p>
+    <br />
 <p>Note: Employment and unemployment information is not seasonally adjusted.</p>
+    <br />
 <p>Sources: U.S. Department of Labor, Bureau of Labor Statistics, and Office of the Comptroller, Fiscal and Budget Studies.</p>
 </div>
 <?php
