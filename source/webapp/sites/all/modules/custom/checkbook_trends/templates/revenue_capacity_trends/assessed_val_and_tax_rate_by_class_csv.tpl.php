@@ -97,7 +97,13 @@ rsort($years);
 
 
 "(1) Represents the weighted average of the four classes of real property."
+
 "(2) Property tax rate based on every $100 assessed valuation."
-"(3) In fiscal year 2014 The Annual Report, the New York City Property Tax Fiscal Year 2014, reported various classifications of condos as class four real property for the first time."
-"Note: Property in New York City is reassessed once a year. The City assesses property at approximately 40 percent of Market Value for commercial and industrial property and 20 percent of Market Value for residential property."
+
+"(3) In fiscal year 2014 The Annual Report, the New York City Property Tax Fiscal Year 2014, reported various "
+"    classifications of condos as class four real property for the first time."
+
+"Note: Property in New York City is reassessed once a year. The City assesses property at approximately 40 percent of "
+"      Market Value for commercial and industrial property and 20 percent of Market Value for residential property."
+
 "Sources: Resolutions of the City Council and The Annual Report, The New York City Property Tax Fiscal Year 2016. "
