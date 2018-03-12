@@ -59,7 +59,7 @@
         //$rowString .= ',' .(($row['operating_expenses']>0)?('"'.number_format($row['operating_expenses']).'"'):'-');
         $rowString .= ',' .(($row['operating_expenses']>0)?('"'.number_format($row['operating_expenses']).'"'):'-') . ((  $row['fiscal_year'] == '2012')? '(9)':'');
         $rowString .= ',' .(($row['total_to_be_covered']>0)?('"'.number_format($row['total_to_be_covered']).'"'):'-');
-        $rowString .= ',' . $row['coverage_on_total_revenue_5'];
+        $rowString .= ',' . $row['coverage_on_total_revenue_5'].(in_array($row['fiscal_year'], ['2009','2010','2011','2012'])? '(6)':'');
 
         echo $rowString . "\n";
         $count++;
@@ -68,6 +68,7 @@
 
 
 "HYIC issued its first bonds on December 21, 2006"
+
 "(1) District Improvement Bonuses (DIB)"
 "(2) Property Tax Equivalency Payments (TEP)"
 "(3) Interest Support Payments (ISP)"

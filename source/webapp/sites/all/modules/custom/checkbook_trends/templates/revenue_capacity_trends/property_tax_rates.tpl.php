@@ -35,7 +35,7 @@ echo eval($node->widgetConfig->header);
     <thead>
         <tr>
             <th class="number"><div class="trendCen" >Fiscal<br>Year</div></th>
-            <th class="number"><div class="trendCen" >Basic<br>Rate<sub>(1)</sub></div></th>
+            <th class="number"><div class="trendCen" >Basic<br>Rate<sup>(1)</sup></div></th>
             <th class="number"><div class="trendCen" >Obligation<br>Debt</div></th>
             <th class="number"><div class="trendCen" >Total<br>Direct</div></th>
         </tr>
