@@ -35,11 +35,11 @@ echo eval($node->widgetConfig->header);
     <thead>
 	<tr>
         <th class="number"><div class="trendCen" >Fiscal<br>Year</div></th>
-        <th class="number"><div class="trendCen" >General<br>Bonded<br>Debt<br>(1)</div></th>
-        <th class="number"><div class="trendCen" >Debt Secure<br>by Revenue<br>other than<br>property tax <br>(2) (3)</div></th>
+        <th class="number"><div class="trendCen" >General<br>Bonded<br>Debt<sup>(1)</sup></div></th>
+        <th class="number"><div class="trendCen" >Debt Secure<br>by Revenue<br>other than<br>property tax <sup>(2) (3)</sup></div></th>
         <th class="number"><div class="trendCen" >City Net<br />General<br />Obligation<br />Bonded Debt</div></th>
-        <th class="number"><div class="trendCen" >City Net General<br />Obligation Bonded<br />Debt as a<br />Percentage of<br />Assessed Taxable<br />Value of Property<br />(4)</div></th>
-        <th class="number"><div class="trendCen" >Per Capita <br>(5)</div></th>
+        <th class="number"><div class="trendCen" >City Net General<br />Obligation Bonded<br />Debt as a<br />Percentage of<br />Assessed Taxable<br />Value of Property<sup>(4)</sup></div></th>
+        <th class="number"><div class="trendCen" >Per Capita <sup>(5)</sup></div></th>
         <th class="number"><div class="trendCen" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></th>
     </tr>
     </thead>
