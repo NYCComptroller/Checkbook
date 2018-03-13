@@ -3751,4 +3751,5 @@ a.new-features-morelink{
 
 .html sup{
     vertical-align: super;
+    font-size: smaller;
 }

@@ -34,7 +34,7 @@ echo eval($node->widgetConfig->header);
     <thead>
     <tr class="first-row">
         <th rowspan="2" class="number"><div class="trendCen" >Fiscal<br>year</div></th>
-        <th rowspan="2" class="number"><div class="trendCen" >Tax Levy<br>(in millions)(2)</div></th>
+        <th rowspan="2" class="number"><div class="trendCen" >Tax Levy<br>(in millions)<sup>(2)</sup></div></th>
         <th colspan="3" class="centrig bb"><div>Percent of Levy through June 30, 2017</div></th>
         <th rowspan="2" class="number"><div class="trendCen" >Uncollected<br>Balance<br/> June 30, 2017</div></th>
     </tr>
