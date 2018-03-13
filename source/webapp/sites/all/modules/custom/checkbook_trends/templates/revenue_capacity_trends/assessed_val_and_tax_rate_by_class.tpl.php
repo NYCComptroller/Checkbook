@@ -60,7 +60,7 @@ rsort($years);
             <?php
             foreach ($years as $year){
                 if($year == 2014){
-                    echo "<th rowspan='2'><div></div></th><th colspan=\"5\" class=\"centrig bb\"><div>Fiscal Year " . $year . " (3)</div></th>";
+                    echo "<th rowspan='2'><div></div></th><th colspan=\"5\" class=\"centrig bb\"><div>Fiscal Year " . $year . " <sup>(3)</sup></div></th>";
                 }
                 else{
                     echo "<th rowspan='2'><div></div></th><th colspan=\"5\" class=\"centrig bb\"><div>Fiscal Year " . $year."</div></th>";
@@ -75,7 +75,7 @@ rsort($years);
             <?php foreach($years as $year){ ?>
                 <th class="number"><div class="trendCen thAssess" >Assessed<br/>Value<br/>(in millions)</div></th>
                 <th><div>&nbsp;</div></th><th class="number "><div class="trendCen thPercent" >Percentage<br>of Taxable<br>Real Estate</div></th>
-                <th><div>&nbsp;</div></th><th class="number "><div class="trendCen thDirect" >Direct<br>Tax<br>Rate (2)</div></th>
+                <th><div>&nbsp;</div></th><th class="number "><div class="trendCen thDirect" >Direct<br>Tax<br>Rate <sup>(2)</sup></div></th>
            <?php }?>
         </tr>
     </thead>
