@@ -65,6 +65,7 @@ rsort($years);
                 else{
                     echo "<th rowspan='2'><div></div></th><th colspan=\"5\" class=\"centrig bb\"><div>Fiscal Year " . $year."</div></th>";
                 }
+                echo PHP_EOL;
             }
             ?>
             <th rowspan="2" >&nbsp;</th>
@@ -133,7 +134,7 @@ rsort($years);
 
 			        echo "<td><div>&nbsp;</div></td>"."<td class='" . $amount_class . " ' >". $dollar_sign . "<div class='tdCen assess'>" . $row[$year]['assesed_value_million_amount'] . "</div></td>";
 			        echo "<td><div>&nbsp;</div></td>"."<td class='" . $amount_class . " ' ><div class='tdCen percent'>". $row[$year]['percentage_taxable_real_estate'] .$percent_sign_1."</div></td>";
-			        echo "<td><div>&nbsp;</div></td>"."<td class='number' ><div class='tdCen direct'>" . $row[$year]['direct_tax_rate'] . $sup_script2 ."</div></td>";
+			        echo "<td><div>&nbsp;</div></td>"."<td class='number $amount_class' ><div class='tdCen direct'>" . $row[$year]['direct_tax_rate'] . $sup_script2 ."</div></td>";
                 }
                 echo "<td>&nbsp;</td>";
 			    echo "</tr>";
@@ -159,6 +160,6 @@ rsort($years);
     condos as class four real property for the first time.</p>
     <p>Note: Property in New York City is reassessed once a year. The City assesses property at approximately 40
 percent of Market Value for commercial and industrial property and 20 percent of Market Value for residential property.</p>
-<p>Sources: Resolutions of the City Council and The Annual Report, The New York City Property Tax Fiscal Year 2016. </p>
+<p>Sources: Resolutions of the City Council and The Annual Report, The New York City Property Tax Fiscal Year 2017. </p>
 </div>
 
