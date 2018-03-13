@@ -54,9 +54,16 @@
         $count++;
    	}
 
-echo "\n".'(*),"' ."Interest of 8,919,000 was capitalized during Fiscal Year 2013 construction for year 2011 and 2010 bonds.". '"' ."\n".
-     '"' ."In Fiscal Year 2014 ECF received $7 million in income for option for E. 57th development to extend lease beyond 99 years.".'"' ."\n".
-     '"' ."Operating Expenses exclude Post Employment Benefits accrual.".'"' ."\n".
-     '"' ."Principal in Fiscal Year 2016 does not include the redemption amount  of the 2005 bonds on October 1, 2015.".'"' ."\n".
-     '"' ."In FY 2017 ECF received a $10 million Participation payment from E57th Street initial condo sales by the developer.".'"' ."\n".
-     '"' ."Source: New York City Educational Construction Fund".'"';
+?>
+
+"(*) Interest of 8,919,000 was capitalized during Fiscal Year 2013 construction for year 2011 and 2010 bonds."
+
+"In Fiscal Year 2014 ECF received $7 million in income for option for E. 57th development to extend lease beyond 99 years."
+
+"Operating Expenses exclude Post Employment Benefits accrual."
+
+"Principal in Fiscal Year 2016 does not include the redemption amount  of the 2005 bonds on October 1, 2015."
+
+"In FY 2017 ECF received a $10 million Participation payment from E57th Street initial condo sales by the developer."
+
+"Source: New York City Educational Construction Fund"
