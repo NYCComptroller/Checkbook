@@ -25,7 +25,7 @@ $url = '/panel_html/spending_transactions/spending/transactions'. '/dtsmnid/' . 
            . _checkbook_project_get_year_url_param_string(false,false,true)
            . _checkbook_append_url_params()
            . _checkbook_project_get_url_param_string('vendor','fvendor')
-           . _checkbook_project_get_url_param_string('category') 
+           . _checkbook_project_get_url_param_string('category')
            . _checkbook_project_get_url_param_string('agency');
 $footer = '';
 if($node->totalDataCount > 0)
@@ -130,7 +130,7 @@ return $footer;
     }
   ],
 "dataTableOptions":{
-"aoColumns": [ 
+"aoColumns": [
         { "bSortable": false,"sClass":"text","sWidth":"130px"},
         { "bSortable": false,"sClass":"text","sWidth":"140px"},
         { "bSortable": false,"sClass":"text pad-left","sWidth":"140px"},
