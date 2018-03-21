@@ -40,12 +40,12 @@
                         "check_amount":"check_amount",
                         "expense_category":"expenditure_object_name",
                         "contract_id":"reference_document_number",
-                        "contract_purpose":"purpose",
+                        "purpose":"purpose",
                         "capital_project":"reporting_code",
                         "spending_category":"spending_category_name",
                         "commodity_line":"agreement_commodity_line_number",
                         "entity_contract_number":"oge_contract_number@checkbook_oge:oge_contract_oge",
-                        "budget_name":"budget_name@checkbook_oge:oge_contract_oge"                        
+                        "budget_name":"budget_name@checkbook_oge:oge_contract_oge"
                     },
                     "rowElements":["other_government_entities", "fiscal_year",  "payee_name", "department", "check_amount", "expense_category"
                         , "contract_id", "contract_purpose", "capital_project",  "spending_category","entity_contract_number","budget_name","commodity_line"]
@@ -59,12 +59,12 @@
                         "Check Amount":"check_amount",
                         "Expense Category":"expenditure_object_name",
                         "Contract ID":"reference_document_number",
-                        "Contract Purpose":"purpose",
+                        "Purpose":"purpose",
                         "Capital Project":"reporting_code",
                         "Spending Category":"spending_category_name",
                         "Commodity Line":"agreement_commodity_line_number",
                         "Entity Contract #":"oge_contract_number@checkbook_oge:oge_contract_oge",
-                        "Budget Name":"budget_name@checkbook_oge:oge_contract_oge"                         
+                        "Budget Name":"budget_name@checkbook_oge:oge_contract_oge"
                     }
                 }
             }
@@ -134,7 +134,7 @@
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"3"
-            } 
+            }
         }
     },
     "validators":[
