@@ -137,6 +137,9 @@
         {"labelAlias": "apt_pin","column":"board_award_number"}
     ],
     "adjustParameters":"
+        if(isset($parameters['cont_type_code'][0])){
+            $parameters['cont_type_code'] = (int)$parameters['cont_type_code'][0];
+        }
         if(isset($parameters['vendor_type'])){
             $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
         }
@@ -148,6 +151,7 @@
             $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
             return $adjustedParameters;
         }
+        
         return $parameters;
     ",
     "adjustDataTableOptions":"
