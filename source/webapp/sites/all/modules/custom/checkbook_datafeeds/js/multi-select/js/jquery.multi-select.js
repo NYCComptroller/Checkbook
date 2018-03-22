@@ -26,7 +26,7 @@
       multiSelects.each(function(){
         var ms = $(this);
 
-        if (ms.next('.ms-container').length === 0){
+        if (ms.next('.ms-container').length == 0){
           ms.attr('id', ms.attr('id') ? ms.attr('id') : 'ms-'+Math.ceil(Math.random()*1000));
           var container = $('<div id="ms-'+ms.attr('id')+'" class="ms-container"></div>'),
               selectableContainer = $('<div class="ms-selectable"></div>'),
@@ -35,7 +35,7 @@
               selectedUl = $('<ul class="ms-list"></ul>');
 
           if (multiSelects.settings.emptyArray){
-            if (ms.find("option[value='']").length === 0){
+            if (ms.find("option[value='']").length == 0){
               ms.prepend("<option value='' selected='selected'></option>");
             } else {
               ms.find("option[value='']").attr('selected', 'selected');
@@ -137,7 +137,7 @@
 
           var parentOptgroup = selectableLi.parent('.ms-optgroup');
           if (parentOptgroup.length > 0)
-            if (parentOptgroup.children('.ms-elem-selectable:not(:hidden)').length === 1)
+            if (parentOptgroup.children('.ms-elem-selectable:not(:hidden)').length == 1)
               parentOptgroup.children('.ms-optgroup-label').hide();
           selectableLi.addClass('ms-selected');
           selectableLi.hide();
@@ -158,14 +158,14 @@
             }
 
             var index = getIndexOf(selectedLi.attr('ms-value'));
-            if (index === 0)
+            if (index == 0)
               selectedUl.prepend(selectedLi);
             else {
               for (i = index - 1; i >= 0; i--){
                 if (selectedUlLis[i] && getIndexOf($(selectedUlLis[i]).attr('ms-value')) < index) {
                   $(selectedUlLis[i]).after(selectedLi);
                   break;
-                } else if (i === 0) {
+                } else if (i == 0) {
                   $(selectedUlLis[i]).before(selectedLi);
                 }
               }

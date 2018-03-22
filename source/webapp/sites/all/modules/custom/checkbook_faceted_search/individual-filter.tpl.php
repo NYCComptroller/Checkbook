@@ -1,19 +1,19 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -284,19 +284,20 @@ if($node->widgetConfig->filterName == 'M/WBE Category' && $node->widgetConfig->p
             unset($unchecked[$key]);
         }
     }
-
-    foreach($checked as $key=>$value){
-        if($value[0] == 4 || $value[0] == 5){
-            $count = $count + $value[2];
-            $id = "4~5";
-            unset($checked[$key]);
-        }else{
-            array_push($checked,array($value[0],MappingUtil::getMinorityCategoryById($value[0]),$value[2]));
-            unset($checked[$key]);
-        }
-        //Remove N/A from facet
-        if($value[1] == null) {
-            unset($checked[$key]);
+    if(isset($checked) && $checked) {
+        foreach ($checked as $key => $value) {
+            if ($value[0] == 4 || $value[0] == 5) {
+                $count = $count + $value[2];
+                $id = "4~5";
+                unset($checked[$key]);
+            } else {
+                array_push($checked, array($value[0], MappingUtil::getMinorityCategoryById($value[0]), $value[2]));
+                unset($checked[$key]);
+            }
+            //Remove N/A from facet
+            if ($value[1] == null) {
+                unset($checked[$key]);
+            }
         }
     }
     if($count > 0 )array_push($checked,array($id,'Asian American',$count));
@@ -399,14 +400,14 @@ $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
   <div class="progress"></div>
   <?php
   $node->widgetConfig->limit = $node->widgetConfig->limit ?: 50;
-    $pages = ceil($node->totalDataCount/$node->widgetConfig->limit);   
+    $pages = ceil($node->totalDataCount/$node->widgetConfig->limit);
     if((isset($checked) && $node->widgetConfig->maxSelect == count($checked)) || count($checked) + count($unchecked) == 0 || $disableFacet){
       $disabled = " DISABLED='true' " ;
     }else{
       $disabled = "" ;
-    }   
+    }
     if( !isset($node->widgetConfig->autocomplete) || $node->widgetConfig->autocomplete == true  ){ ?>
-  <div class="autocomplete"><input class="autocomplete" <?php print $disabled; ?> pages="<?php print $pages ?>" type="text" name="<?php print $autocomplete_field_name ?>" 
+  <div class="autocomplete"><input class="autocomplete" <?php print $disabled; ?> pages="<?php print $pages ?>" type="text" name="<?php print $autocomplete_field_name ?>"
             autocomplete_param_name="<?php print $autocomplete_param_name ?>" nodeid="<?php print $node->nid ;?>" id="<?php print $autocomplete_id ?>"></div>
         <?php } ?>
   <div class="checked-items">
@@ -501,7 +502,7 @@ $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
         },
         theme:'dark'
     });";
-    
+
   }elseif($node->widgetConfig->facetNoPager == true){
     $scroll_facet = "
         $(this).next().find('.options').mCustomScrollbar('destroy');
