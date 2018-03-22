@@ -11,7 +11,7 @@
             "check_amount":"check_amount",
             "expense_category":"expenditure_object_code",
             "contract_ID":"reference_document_number",
-            "contract_purpose":"purpose",
+            "purpose":"purpose",
             "capital_project_code":"reporting_code",
             "spending_category":"spending_category_code@checkbook:spending_category_subven",
             "mwbe_category":"minority_type_id",
