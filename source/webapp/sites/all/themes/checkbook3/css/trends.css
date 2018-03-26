@@ -274,7 +274,8 @@ a.trends-export {
 }
 
 /* dollar styles */
-td.number div.dollarItem {float:left; margin-left:12px;}
+/*td.number div.dollarItem {float:left; margin-left:12px;}*/
+td.number div.dollarItem {float:left; margin:0 3px 0 0 !important;}
 /*body.page-trends-landing-trends td.number div.dollarItem, body.page-trends-node td.number div.dollarItem {float:left; margin-left:0;}
 #table_353_wrapper td.number div.dollarItem {margin-left:20px;}*/
 /*#table_353_wrapper td.number div.dollarItem,*/
@@ -487,9 +488,7 @@ body.page-trends-landing-trends-node-395 #zone-content{
 #table_400_wrapper tr:nth-child(2) > th .thAssess {margin-right:11px;}
 #table_400_wrapper tr:nth-child(2) > th .thPercent {margin-right:13px;}
 #table_400_wrapper tr:nth-child(2) > th .thDirect {margin-right:30px;}
-#table_400_wrapper tr > td .tdCen {margin-right:23px;}
-#table_400_wrapper tr > td .tdCen {margin-right:40px;}
-#table_400_wrapper tr > td .tdCen {margin-right:32px;}
+#table_400_wrapper tr > td .tdCen {margin-right:13px;}
 
 /* 404 */
 body.page-trends-landing-trends-node-404 #page-title {
