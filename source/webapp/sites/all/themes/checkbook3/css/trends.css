@@ -327,7 +327,7 @@ td.number div.dollarItem {float:left;}
 #table_353_wrapper td.text div{
     margin-left:10px
 }
-#node-widget-353 td.dollarItem{
+#node-widget-353 div.dollarItem{
     margin-left: 20px !important;
 }
 
