@@ -66,7 +66,7 @@
         <column>check_amount</column>
         <column>expense_category</column>
         <column>contract_ID</column>
-        <column>contract_purpose</column>
+        <column>purpose</column>
         <column>capital_project</column>
         <column>issue_date</column>
         <column>spending_category</column>
