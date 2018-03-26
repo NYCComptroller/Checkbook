@@ -190,7 +190,10 @@ body.page-featuredtrends .footnote{
 }
 body.page-trends .amount-L,
 body.page-trends-landing .amount-L,
-body.page-featuredtrends .amount-L{
+body.page-featuredtrends .amount-L,
+body.page-trends .amount-S,
+body.page-trends-landing .amount-S,
+body.page-featuredtrends .amount-S{
     border-bottom: 1px solid #676767;
 }
 body.page-trends .amount-G,
