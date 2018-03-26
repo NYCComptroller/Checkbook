@@ -327,6 +327,9 @@ td.number div.dollarItem {float:left;}
 #table_353_wrapper td.text div{
     margin-left:10px
 }
+#node-widget-353 td.dollarItem{
+    margin-left: 20px !important;
+}
 
 /* 355 */
 #node-widget-355 a.trends-export{top:10px;}
