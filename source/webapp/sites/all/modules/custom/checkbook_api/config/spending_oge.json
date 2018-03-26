@@ -8,7 +8,7 @@
             "check_amount":"check_amount",
             "expense_category":"expenditure_object_code",
             "contract_id":"reference_document_number",
-            "contract_purpose":"purpose",
+            "purpose":"purpose",
             "capital_project_code":"reporting_code",
             "spending_category":"spending_category_code@checkbook_oge:spending_category_oge",
             "commodity_line":"agreement_commodity_line_number",
@@ -48,7 +48,7 @@
                         "budget_name":"budget_name@checkbook_oge:oge_contract_oge"
                     },
                     "rowElements":["other_government_entities", "fiscal_year",  "payee_name", "department", "check_amount", "expense_category"
-                        , "contract_id", "contract_purpose", "capital_project",  "spending_category","entity_contract_number","budget_name","commodity_line"]
+                        , "contract_id", "purpose", "capital_project",  "spending_category","entity_contract_number","budget_name","commodity_line"]
                 },
                 "csv":{
                     "elementsColumn":{
