@@ -32,7 +32,6 @@
     "sScrollX": "100%",
     "sScrollXInner": "6175px",
     "aoColumnDefs": [
-      {"sWidth": "250px", "aTargets": [2]},
       {"sWidth": "25px", "aTargets": [-1]}
     ],
     "fnPreDrawCallback":"##function( oSettings ) {
