@@ -3,8 +3,13 @@
 #
 
 # Protect files and directories from prying eyes.
-<FilesMatch "\.(engine|inc|info|install|make|module|profile|test|po|sh|.*sql|theme|tpl(\.php)?|xtmpl)(|~|\.sw[op]|\.bak|\.orig|\.save)?$|^(\..*|Entries.*|Repository|Root|Tag|Template)$|^#.*#$|\.php(~|\.sw[op]|\.bak|\.orig\.save)$">
-  Order allow,deny
+<FilesMatch "\.(engine|inc|info|install|make|module|profile|test|po|sh|.*sql|theme|tpl(\.php)?|xtmpl)(~|\.sw[op]|\.bak|\.orig|\.save)?$|^(\.(?!well-known).*|Entries.*|Repository|Root|Tag|Template|composer\.(json|lock))$|^#.*#$|\.php(~|\.sw[op]|\.bak|\.orig\.save)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+  </IfModule>
 </FilesMatch>
 
 # Don't show directory listings for URLs which map to a directory.
@@ -63,6 +68,10 @@ DirectoryIndex index.php index.html index.htm
   RewriteCond %{HTTPS} on
   RewriteRule ^ - [E=protossl:s]
 
+  # Make sure Authorization HTTP header is available to PHP
+  # even when running as CGI or FastCGI.
+  RewriteRule ^ - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
   # Block access to "hidden" directories whose names begin with a period. This
   # includes directories used by version control systems such as Subversion or
   # Git to store control files. Files whose names begin with a period, as well
@@ -76,15 +85,7 @@ DirectoryIndex index.php index.html index.htm
   # If you do not have mod_rewrite installed, you should remove these
   # directories from your webroot or otherwise protect them from being
   # downloaded.
-  RewriteRule "(^|/)\." - [F]
-  RewriteCond %{REQUEST_URI} !=/robots.txt
-  RewriteRule "\.(engine|inc|old|bak|info|install|cgi|txt|asp|jsp|pl|aspx|make|module|profile|test|po|sh|.*sql|theme|tpl(\.php)?|xtmpl)$|^(\..*|Entries.*|Repository|Root|Tag|Template)$" - [F]
-  RewriteRule "/test\.(cgi|txt|asp|jsp|pl|aspx|html)$" - [F]
-  RewriteRule "cgi-bin$" - [F]  
-  RewriteRule "<script>" - [F]
-  RewriteRule "%3Cscript%3E" - [F] 
-  RewriteRule "((\%3C)|<)[^\n]+((\%3E)|>)" - [F] 
-
+  RewriteRule "/\.|^\.(?!well-known/)" - [F]
 
   # If your site can be accessed both with and without the 'www.' prefix, you
   # can use one of the following settings to redirect users to your preferred
@@ -143,6 +144,11 @@ DirectoryIndex index.php index.html index.htm
       # Force proxies to cache gzipped & non-gzipped css/js files separately.
       Header append Vary Accept-Encoding
     </FilesMatch>
-     Header always append X-Frame-Options SAMEORIGIN
   </IfModule>
+</IfModule>
+
+# Add headers to all responses.
+<IfModule mod_headers.c>
+  # Disable content sniffing, since it's an attack vector.
+  Header always set X-Content-Type-Options nosniff
 </IfModule>
