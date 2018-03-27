@@ -17,7 +17,7 @@
         <column>department</column>
         <column>check_amount</column>
         <column>expense_category</column>
-        <column>purpose</column>
+        <column>contract_purpose</column>
         <column>capital_project</column>
         <column>spending_category</column>
         <column>entity_contract_number</column>
