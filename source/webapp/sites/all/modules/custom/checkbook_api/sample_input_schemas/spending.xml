@@ -16,7 +16,7 @@
         <column>capital_project</column>
         <column>check_amount</column>
         <column>contract_ID</column>
-        <column>purpose</column>
+        <column>contract_purpose</column>
         <column>expense_category</column>
         <column>department</column>
         <column>document_id</column>
