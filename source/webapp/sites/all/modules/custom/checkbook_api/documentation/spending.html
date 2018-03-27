@@ -417,7 +417,7 @@
                 </tr>
                 <tr>
                     <td>document_id</td>
-                    <td>purpose</td>
+                    <td>contract_purpose</td>
                 </tr>
                 <tr>
                     <td>payee_name</td>
@@ -457,7 +457,7 @@
                 </tr>
                 <tr>
                     <td>spending_category</td>
-                    <td>purpose</td>
+                    <td>contract_purpose</td>
                 </tr>
                 <tr>
                     <td>check_amount</td>
@@ -487,7 +487,7 @@
 <a href="#top" class="float-right">Back to the top</a>
 <a name="predefined-xml-entities"></a>
 <h3>Predefined Entities in XML</h3>
-<p>The user has to encode the names using the predefined entities list embedded below, while searching using names (payee_name, budget_name, vendor_name, and purpose). The table below lists the five XML predefined entities. The "Name" column mentions the entity's name. The "Character" column shows the character. To render the character, the format &name; is used; for example, &amp;amp; renders as &.</p>
+<p>The user has to encode the names using the predefined entities list embedded below, while searching using names (payee_name, budget_name, vendor_name, and contract_purpose). The table below lists the five XML predefined entities. The "Name" column mentions the entity's name. The "Character" column shows the character. To render the character, the format &name; is used; for example, &amp;amp; renders as &.</p>
 <table class="api-table">
     <tbody>
     <tr>
@@ -616,6 +616,7 @@
         &lt;column&gt;contract_ID&lt;/column&gt;
         &lt;column&gt;capital_project&lt;/column&gt;
         &lt;column&gt;industry&lt;/column&gt;
+        &lt;column&gt;contract_purpose&lt;/column&gt;
         &lt;column&gt;issue_date&lt;/column&gt;
         &lt;column&gt;spending_category&lt;/column&gt;
         &lt;column&gt;mwbe_category&lt;/column&gt;
@@ -701,6 +702,7 @@
                 &lt;column&gt;spending_category&lt;/column&gt;
                 &lt;column&gt;mwbe_category&lt;/column&gt;
                 &lt;column&gt;sub_vendor&lt;/column&gt;
+                &lt;column&gt;contract_purpose&lt;/column&gt;
                 &lt;column&gt;associated_prime_vendor&lt;/column&gt;
                 &lt;column&gt;sub_contract_reference_id&lt;/column&gt;
             &lt;/response_columns&gt;
@@ -718,6 +720,7 @@
                 &lt;check_amount&gt;1144.07&lt;/check_amount&gt;
                 &lt;expense_category&gt;FED SEC 8 RENT SUBSIDY&lt;/expense_category&gt;
                 &lt;contract_ID/&gt;
+                &lt;contract_purpose/&gt;
                 &lt;capital_project/&gt;
                 &lt;industry/&gt;
                 &lt;issue_date&gt;2012-10-01&lt;/issue_date&gt;
@@ -738,6 +741,7 @@
                 &lt;spending_category&gt;Others&lt;/spending_category&gt;
                 &lt;mwbe_category&gt;Hispanic American&lt;/mwbe_category&gt;
                 &lt;sub_vendor&gt;No&lt;/sub_vendor&gt;
+                &lt;contract_purpose/&gt;
                 &lt;associated_prime_vendor&gt;N/A&lt;/associated_prime_vendor&gt;
                 &lt;sub_contract_reference_id/&gt;
             &lt;/transaction&gt;
