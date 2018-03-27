@@ -18,16 +18,10 @@ files[] = tests/math_expression_stack.test
 files[] = tests/object_cache.test
 files[] = tests/object_cache_unit.test
 files[] = tests/page_tokens.test
-files[] = tests/uuid_with_uuid.test
-files[] = tests/uuid_without_uuid.test
 
-; Dependencies that are only used for the tests.
-; @see tests/uuid_with_uuid.test
-test_dependencies[] = uuid
-
-; Information added by Drupal.org packaging script on 2018-02-04
-version = "7.x-1.13"
+; Information added by Drupal.org packaging script on 2018-02-24
+version = "7.x-1.14"
 core = "7.x"
 project = "ctools"
-datestamp = "1517704095"
+datestamp = "1519455788"
 

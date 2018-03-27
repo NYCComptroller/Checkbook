@@ -12,24 +12,25 @@
 function ctools_requirements($phase) {
   $requirements = array();
   if ($phase == 'runtime') {
+    $t = get_t();
     $requirements['ctools_css_cache'] = array(
-      'title' => t('CTools CSS Cache'),
+      'title' => $t('CTools CSS Cache'),
       'severity' => REQUIREMENT_OK,
-      'value' => t('Exists'),
+      'value' => $t('Exists'),
     );
 
     $path = 'public://ctools/css';
     if (!file_prepare_directory($path, FILE_CREATE_DIRECTORY)) {
-      $requirements['ctools_css_cache']['description'] = t('The CTools CSS cache directory, %path could not be created due to a misconfigured files directory. Please ensure that the files directory is correctly configured and that the webserver has permission to create directories.', array('%path' => file_uri_target($path)));
+      $requirements['ctools_css_cache']['description'] = $t('The CTools CSS cache directory, %path could not be created due to a misconfigured files directory. Please ensure that the files directory is correctly configured and that the webserver has permission to create directories.', array('%path' => file_uri_target($path)));
       $requirements['ctools_css_cache']['severity'] = REQUIREMENT_ERROR;
-      $requirements['ctools_css_cache']['value'] = t('Unable to create');
+      $requirements['ctools_css_cache']['value'] = $t('Unable to create');
     }
 
     if (!function_exists('error_get_last')) {
-      $requirements['ctools_php_52']['title'] = t('CTools PHP requirements');
-      $requirements['ctools_php_52']['description'] = t('CTools requires certain features only available in PHP 5.2.0 or higher.');
+      $requirements['ctools_php_52']['title'] = $t('CTools PHP requirements');
+      $requirements['ctools_php_52']['description'] = $t('CTools requires certain features only available in PHP 5.2.0 or higher.');
       $requirements['ctools_php_52']['severity'] = REQUIREMENT_WARNING;
-      $requirements['ctools_php_52']['value'] = t('PHP !version', array('!version' => phpversion()));
+      $requirements['ctools_php_52']['value'] = $t('PHP !version', array('!version' => phpversion()));
     }
   }
 
@@ -49,8 +50,8 @@ function ctools_schema() {
 function ctools_schema_4() {
   $schema = ctools_schema_3();
 
-  // Update the 'name' field to be 255 bytes long:
-  $schema['ctools_object_cache']['fields']['name']['length'] = 255;
+  // Removed due to alternative database configuration issues.
+  // @see https://www.drupal.org/project/ctools/issues/2941920
 
   return $schema;
 }
@@ -280,9 +281,19 @@ function ctools_update_7001() {
  * Increase the length of the ctools_object_cache.name column to 255.
  */
 function ctools_update_7002() {
+  // Removed due to alternative database configuration issues.
+  // @see https://www.drupal.org/project/ctools/issues/2941920
+}
+
+/**
+ * Revert the length of the ctools_object_cache.name column back to 128.
+ */
+function ctools_update_7003() {
+  db_delete('ctools_object_cache')->execute();
   db_change_field('ctools_object_cache', 'name', 'name', array(
     'type' => 'varchar',
-    'length' => '255',
+    'length' => '128',
     'not null' => TRUE,
+    'description' => 'The name of the object this cache is attached to.',
   ));
 }

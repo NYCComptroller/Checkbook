@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @file
+ */
+
 if (module_exists('comment')) {
   /**
    * Plugins are described by creating a $plugin array which will be used
@@ -23,7 +27,7 @@ function ctools_node_comment_form_content_type_render($subtype, $conf, $panel_ar
   $node = clone $context->data;
   $block = new stdClass();
   $block->module = 'comments';
-  $block->delta  = $node->nid;
+  $block->delta = $node->nid;
   $block->title = t('Add comment');
 
   if ($node->comment == COMMENT_NODE_OPEN) {
@@ -42,7 +46,7 @@ function ctools_node_comment_form_content_type_render($subtype, $conf, $panel_ar
       );
       $block->content = drupal_build_form('comment_node_' . $node->type . '_form', $form_state);
     }
-    else if (!empty($conf['anon_links'])) {
+    elseif (!empty($conf['anon_links'])) {
       $block->content = theme('comment_post_forbidden', array('node' => $node));
     }
   }
@@ -75,4 +79,3 @@ function ctools_node_comment_form_content_type_edit_form_submit($form, &$form_st
     $form_state['conf'][$key] = $form_state['values'][$key];
   }
 }
-

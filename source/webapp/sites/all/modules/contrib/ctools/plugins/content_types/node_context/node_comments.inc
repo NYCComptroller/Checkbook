@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @file
+ */
+
 if (module_exists('comment')) {
   /**
    * Plugins are described by creating a $plugin array which will be used
@@ -26,7 +30,7 @@ function ctools_node_comments_content_type_render($subtype, $conf, $panel_args, 
   $node = clone $context->data;
   $block = new stdClass();
   $block->module = 'comments';
-  $block->delta  = $node->nid;
+  $block->delta = $node->nid;
   $block->title = t('Comments');
 
   if ($node->comment) {
@@ -48,7 +52,8 @@ function ctools_node_comments_content_type_edit_form($form, &$form_state) {
   foreach (_comment_per_page() as $i) {
     $options[$i] = t('!a comments per page', array('!a' => $i));
   }
-  $form['comments_per_page'] = array('#type' => 'select',
+  $form['comments_per_page'] = array(
+    '#type' => 'select',
     '#title' => t('Pager'),
     '#default_value' => $conf['comments_per_page'],
     '#options' => $options,
