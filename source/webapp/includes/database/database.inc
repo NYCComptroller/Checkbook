@@ -2497,7 +2497,7 @@ function db_insert($table, array $options = array()) {
  * @return MergeQuery
  *   A new MergeQuery object for this connection.
  */
-function db_merge($table,array $options = array()) {
+function db_merge($table, array $options = array()) {
   if (empty($options['target']) || $options['target'] == 'slave') {
     $options['target'] = 'default';
   }
