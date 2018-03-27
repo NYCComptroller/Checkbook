@@ -6,7 +6,7 @@
 class CtoolsUnitObjectCachePlugins extends DrupalWebTestCase {
 
   /**
-   * {@inheritDoc}
+   * {@inheritdoc}
    */
   public static function getInfo() {
     return array(
@@ -18,9 +18,9 @@ class CtoolsUnitObjectCachePlugins extends DrupalWebTestCase {
   }
 
   /**
-   * {@inheritDoc}
+   * {@inheritdoc}
    */
-  function setUp(array $modules = array()) {
+  public function setUp(array $modules = array()) {
     $modules[] = 'ctools';
     parent::setUp($modules);
   }
@@ -34,7 +34,6 @@ class CtoolsUnitObjectCachePlugins extends DrupalWebTestCase {
    *   Prefix of the assertion message.
    */
   public function assertValidCachePlugin($p, $msg) {
-    //$this->pass(var_export($p, TRUE));
     $this->assertTrue(is_array($p), $msg . ': plugin is an array');
 
     $this->assertEqual($p['plugin type'], 'cache', $msg . ': type is cache');
@@ -53,7 +52,6 @@ class CtoolsUnitObjectCachePlugins extends DrupalWebTestCase {
     // solved.
     // $this->assertTrue(array_key_exists('cache clear', $p), $msg . ': has a clear function');
     // $this->assertTrue(is_callable($p['cache clear']), $msg . ': clear is executable');
-
     // @todo Break is optional acc'd to spec but does anything implement it?
     $this->assertTrue(!array_key_exists('cache break', $p) || is_callable($p['cache break']), $msg . ': break is executable');
 
@@ -64,11 +62,12 @@ class CtoolsUnitObjectCachePlugins extends DrupalWebTestCase {
   /**
    * Check the return value of the ctools_cache_find_plugin function.
    *
-   * @param mixed $p the value to check.
-   * @param string $msg prefix of the assertion message.
+   * @param mixed $p
+   *   The value to check.
+   * @param string $msg
+   *   Prefix of the assertion message.
    */
   public function assertPluginNotFound($p, $msg) {
-    //$this->pass(var_export($p, TRUE));
     $this->assertTrue(is_array($p), $msg . ': is an array');
     $plugin = array_shift($p);
     $this->assertNull($plugin, $msg . ': no plugin info');
@@ -80,11 +79,12 @@ class CtoolsUnitObjectCachePlugins extends DrupalWebTestCase {
   /**
    * Check the return value of the ctools_cache_find_plugin function.
    *
-   * @param mixed $p the value to check.
-   * @param string $msg prefix of the assertion message.
+   * @param mixed $p
+   *   The value to check.
+   * @param string $msg
+   *   Prefix of the assertion message.
    */
   public function assertPluginFound($p, $msg) {
-    //$this->pass(var_export($p, TRUE));
     $this->assertTrue(is_array($p), $msg . ': is an array');
     $plugin = array_shift($p);
     $this->assertTrue(is_array($plugin), $msg . ': has plugin data');

@@ -6,7 +6,7 @@
  */
 
 $plugin = array(
-  // cache plugins are the rare plugin types that have no real UI but
+  // Cache plugins are the rare plugin types that have no real UI but
   // we're providing a title just in case.
   'title' => t('Export UI wizard cache'),
   'cache get' => 'ctools_cache_export_ui_cache_get',
@@ -14,10 +14,6 @@ $plugin = array(
   // Some operations use a 'finalize' but that really just means set
   // for us, since we're not using temporary storage for subsystems.
   'cache finalize' => 'ctools_cache_export_ui_cache_set',
-  // @todo The API specifications say that a 'cache clear' callback is required,
-  // but there is none provided?
-  // @see cache.inc
-  // 'cache clear' => ???
 );
 
 function ctools_cache_export_ui_cache_get($plugin_name, $key) {
