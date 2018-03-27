@@ -16,9 +16,6 @@
  */
 define('DRUPAL_ROOT', getcwd());
 
-
 require_once DRUPAL_ROOT . '/includes/bootstrap.inc';
-checkbook_timer('start');
 drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
 menu_execute_active_handler();
-checkbook_timer('finish');
