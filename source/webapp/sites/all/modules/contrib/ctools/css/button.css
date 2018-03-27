@@ -16,8 +16,7 @@
 
 .ctools-no-js .ctools-content ul,
 .ctools-button-processed .ctools-content ul {
-  list-style-image: none;
-  list-style-type: none;
+  list-style: none none;
   margin-left: 0;
 }
 

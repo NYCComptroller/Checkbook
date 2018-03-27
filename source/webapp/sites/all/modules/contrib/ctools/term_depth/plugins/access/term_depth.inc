@@ -69,7 +69,6 @@ function _term_depth_convert_config_vid_to_vocabulary_name(&$conf) {
 
 /**
  * Submit function for the access plugins settings.
- *
  */
 function term_depth_term_depth_ctools_access_settings_submit($form, $form_state) {
   $form_state['conf']['depth'] = (integer) $form_state['values']['settings']['depth'];

@@ -1,14 +1,16 @@
 <?php
 
 /**
+ * @file
  * Tests for different parts of the ctools object caching system.
  *
  * Needs to be a WebTest because need access to database tables.
  */
+
 class CtoolsPageTokens extends DrupalWebTestCase {
 
   /**
-   * {@inheritDoc}
+   * {@inheritdoc}
    */
   public static function getInfo() {
     return array(
@@ -20,9 +22,9 @@ class CtoolsPageTokens extends DrupalWebTestCase {
   }
 
   /**
-   * {@inheritDoc}
+   * {@inheritdoc}
    */
-  function setUp(array $modules = array()) {
+  public function setUp(array $modules = array()) {
     $modules[] = 'ctools';
     parent::setUp($modules);
 

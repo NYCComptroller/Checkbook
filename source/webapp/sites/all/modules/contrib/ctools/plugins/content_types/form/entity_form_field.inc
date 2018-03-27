@@ -75,7 +75,7 @@ function ctools_entity_form_field_content_type_content_types() {
             }
             $content_types[$entity_type . ':' . $group_name]['types'][$type] = $bundle['label'];
           }
-      }
+        }
       }
     }
   }
@@ -93,8 +93,8 @@ function ctools_entity_form_field_content_type_content_types() {
 }
 
 /**
-* Render the custom content type.
-*/
+ * Render the custom content type.
+ */
 function ctools_entity_form_field_content_type_render($subtype, $conf, $panel_args, $context) {
   if (empty($context) || empty($context->data)) {
     return;
@@ -149,8 +149,8 @@ function ctools_entity_form_field_content_type_render($subtype, $conf, $panel_ar
 }
 
 /**
-* Returns the administrative title for a type.
-*/
+ * Returns the administrative title for a type.
+ */
 function ctools_entity_form_field_content_type_admin_title($subtype, $conf, $context) {
   list($entity_type, $field_name) = explode(':', $subtype, 2);
 
@@ -165,6 +165,6 @@ function ctools_entity_form_field_content_type_admin_title($subtype, $conf, $con
 }
 
 function ctools_entity_form_field_content_type_edit_form($form, &$form_state) {
-  // provide a blank form so we have a place to have context setting.
+  // Provide a blank form so we have a place to have context setting.
   return $form;
 }
