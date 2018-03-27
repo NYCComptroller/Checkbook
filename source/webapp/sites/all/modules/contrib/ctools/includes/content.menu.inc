@@ -91,13 +91,13 @@ function _ctools_buildQuery($entity_type, $entity_info, $match = NULL, $match_op
   if ($entity_type == 'comment') {
     // Adding the 'comment_access' tag is sadly insufficient for comments: core 
     // requires us to also know about the concept of 'published' and 
-    // 'unpublished'. 
+    // 'unpublished'.
     if (!user_access('administer comments')) {
       $query->condition('comment.status', COMMENT_PUBLISHED);
     }
 
     // Join to a node if the user does not have node access bypass permissions 
-    // to obey node published permissions 
+    // to obey node published permissions.
     if (!user_access('bypass node access')) {
       $node_alias = $query->innerJoin('node', 'n', '%alias.nid = comment.nid');
       $query->condition($node_alias . '.status', NODE_PUBLISHED);

@@ -1,12 +1,14 @@
 <?php
 
 /**
+ * @file
  * Test the keyword substitution functionality.
  */
+
 class CtoolsContextIDTestCase extends DrupalWebTestCase {
 
   /**
-   * {@inheritDoc}
+   * {@inheritdoc}
    */
   public static function getInfo() {
     return array(
@@ -18,7 +20,7 @@ class CtoolsContextIDTestCase extends DrupalWebTestCase {
   }
 
   /**
-   * {@inheritDoc}
+   * {@inheritdoc}
    */
   protected function setUp(array $modules = array()) {
     $modules[] = 'ctools';
@@ -160,7 +162,7 @@ class CtoolsContextIDTestCase extends DrupalWebTestCase {
     $expected = 2;
     $this->assertEqual($value, $expected, 'Foo\'s objects have next id ' . $expected);
 
-    // Another expected case: there are multiple numeric IDs
+    // Another expected case: there are multiple numeric IDs.
     $value = ctools_context_next_id($test_objects, 'bar');
     $expected = 100;
     $this->assertEqual($value, $expected, 'Bar\'s objects have next id ' . $expected);
@@ -175,7 +177,7 @@ class CtoolsContextIDTestCase extends DrupalWebTestCase {
 class CtoolsContextKeywordsSubstitutionTestCase extends DrupalWebTestCase {
 
   /**
-   * {@inheritDoc}
+   * {@inheritdoc}
    */
   public static function getInfo() {
     return array(
@@ -187,7 +189,7 @@ class CtoolsContextKeywordsSubstitutionTestCase extends DrupalWebTestCase {
   }
 
   /**
-   * {@inheritDoc}
+   * {@inheritdoc}
    */
   protected function setUp(array $modules = array()) {
     $modules[] = 'ctools';
@@ -337,7 +339,7 @@ class CtoolsContextKeywordsSubstitutionTestCase extends DrupalWebTestCase {
 class CtoolsContextUnitTestCase extends DrupalUnitTestCase {
 
   /**
-   * {@inheritDoc}
+   * {@inheritdoc}
    */
   public static function getInfo() {
     return array(
@@ -349,7 +351,7 @@ class CtoolsContextUnitTestCase extends DrupalUnitTestCase {
   }
 
   /**
-   * {@inheritDoc}
+   * {@inheritdoc}
    */
   protected function setUp() {
     parent::setUp();

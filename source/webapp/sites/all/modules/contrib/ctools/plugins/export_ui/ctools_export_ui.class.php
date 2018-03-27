@@ -122,14 +122,19 @@ class ctools_export_ui {
     switch ($op) {
       case 'import':
         return user_access('use ctools import');
+
       case 'revert':
         return ($item->export_type & EXPORT_IN_DATABASE) && ($item->export_type & EXPORT_IN_CODE);
+
       case 'delete':
         return ($item->export_type & EXPORT_IN_DATABASE) && !($item->export_type & EXPORT_IN_CODE);
+
       case 'disable':
         return empty($item->disabled);
+
       case 'enable':
         return !empty($item->disabled);
+
       default:
         return TRUE;
     }
@@ -154,7 +159,7 @@ class ctools_export_ui {
       if (!$js) {
         drupal_goto($_GET['q']);
       }
-      // clear everything but form id, form build id and form token:
+      // Clear everything but form id, form build id and form token.
       $keys = array_keys($input);
       foreach ($keys as $id) {
         if (!in_array($id, array('form_id', 'form_build_id', 'form_token'))) {
@@ -901,7 +906,7 @@ class ctools_export_ui {
     if (!empty($form_state['complete'])) {
       $this->edit_save_form($form_state);
     }
-    else if ($output && !empty($form_state['item']->export_ui_item_is_cached)) {
+    elseif ($output && !empty($form_state['item']->export_ui_item_is_cached)) {
       // @todo this should be in the plugin strings
       drupal_set_message(t('You have unsaved changes. These changes will not be made permanent until you click <em>Save</em>.'), 'warning');
     }

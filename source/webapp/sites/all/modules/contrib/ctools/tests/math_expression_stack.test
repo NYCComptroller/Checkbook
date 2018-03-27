@@ -6,7 +6,7 @@
 class CtoolsMathExpressionStackTestCase extends DrupalWebTestCase {
 
   /**
-   * {@inheritDoc}
+   * {@inheritdoc}
    */
   public static function getInfo() {
     return array(
@@ -18,9 +18,9 @@ class CtoolsMathExpressionStackTestCase extends DrupalWebTestCase {
   }
 
   /**
-   * {@inheritDoc}
+   * {@inheritdoc}
    */
-  function setUp(array $modules = array()) {
+  public function setUp(array $modules = array()) {
     $modules[] = 'ctools';
     $modules[] = 'ctools_plugin_test';
     parent::setUp($modules);

@@ -96,8 +96,8 @@ function ctools_entity_field_content_type_content_types() {
 }
 
 /**
-* Render the custom content type.
-*/
+ * Render the custom content type.
+ */
 function ctools_entity_field_content_type_render($subtype, $conf, $panel_args, $context) {
   if (empty($context) || empty($context->data)) {
     return;
@@ -167,7 +167,7 @@ function ctools_entity_field_content_type_render($subtype, $conf, $panel_args, $
 
   // Build the content type block.
   $block = new stdClass();
-  $block->module  = 'entity_field';
+  $block->module = 'entity_field';
   if ($conf['label'] == 'title' && isset($field_output['#title'])) {
     $block->title = $field_output['#title'];
   }
@@ -186,8 +186,8 @@ function ctools_entity_field_content_type_substitute_keywords($markup, array $el
 }
 
 /**
-* Returns an edit form for custom type settings.
-*/
+ * Returns an edit form for custom type settings.
+ */
 function ctools_entity_field_content_type_formatter_options($form, &$form_state) {
   if (empty($form_state['conf']['formatter_settings'])) {
     $form_state['conf']['formatter_settings'] = array();

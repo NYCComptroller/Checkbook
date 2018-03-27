@@ -548,7 +548,6 @@ function ctools_plugin_get_directories($info) {
  *   the active theme placed last.
  */
 function _ctools_list_themes() {
-  // @TODO: Use drupal_static() here?
   static $themes;
   if (is_null($themes)) {
     $current = variable_get('theme_default', FALSE);

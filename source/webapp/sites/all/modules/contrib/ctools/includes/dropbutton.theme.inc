@@ -133,12 +133,11 @@ function theme_links__ctools_dropbutton($vars) {
 
     // Call theme_links to render the list of links.
     $output .= theme_links(array('links' => $vars['links'], 'attributes' => $vars['attributes'], 'heading' => ''));
-    $output .= '</div>'; // ctools-content
-    $output .= '</div>'; // ctools-dropbutton
+    $output .= '</div>'; // ctools-content.
+    $output .= '</div>'; // ctools-dropbutton.
     return $output;
   }
   else {
     return '';
   }
 }
-

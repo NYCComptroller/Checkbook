@@ -43,8 +43,11 @@ function ctools_object_cache_get($obj, $name, $skip_cache = FALSE, $sid = NULL) 
   }
 
   if (!array_key_exists($key, $cache)) {
-    $data = db_query('SELECT * FROM {ctools_object_cache} WHERE sid = :session_id AND obj = :object AND name = :name', array(':session_id' => $sid, ':object' => $obj, ':name' => $name))
-      ->fetchObject();
+    $data = db_query('SELECT * FROM {ctools_object_cache} WHERE sid = :session_id AND obj = :object AND name = :name', array(
+      ':session_id' => $sid,
+      ':object' => $obj,
+      ':name' => md5($name),
+    ))->fetchObject();
     if ($data) {
       $cache[$key] = unserialize($data->data);
     }
@@ -84,7 +87,7 @@ function ctools_object_cache_set($obj, $name, $cache, $sid = NULL) {
     ->fields(array(
       'sid' => $sid,
       'obj' => $obj,
-      'name' => $name,
+      'name' => md5($name),
       'data' => serialize($cache),
       'updated' => REQUEST_TIME,
     ))
@@ -104,7 +107,6 @@ function ctools_object_cache_set($obj, $name, $cache, $sid = NULL) {
  *   defaults to session_id().
  */
 function ctools_object_cache_clear($obj, $name, $sid = NULL) {
-
   if (!$sid) {
     $sid = session_id();
   }
@@ -112,7 +114,7 @@ function ctools_object_cache_clear($obj, $name, $sid = NULL) {
   db_delete('ctools_object_cache')
     ->condition('sid', $sid)
     ->condition('obj', $obj)
-    ->condition('name', $name)
+    ->condition('name', md5($name))
     ->execute();
   // Ensure the static cache is emptied of this obj:name set.
   drupal_static_reset('ctools_object_cache_get');
@@ -142,8 +144,11 @@ function ctools_object_cache_test($obj, $name, $sid = NULL) {
     $sid = session_id();
   }
 
-  return db_query('SELECT s.uid, c.updated FROM {ctools_object_cache} c INNER JOIN {sessions} s ON c.sid = s.sid WHERE s.sid <> :session_id AND c.obj = :obj AND c.name = :name ORDER BY c.updated ASC', array(':session_id' => $sid, ':obj' => $obj, ':name' => $name))
-    ->fetchObject();
+  return db_query('SELECT s.uid, c.updated FROM {ctools_object_cache} c INNER JOIN {sessions} s ON c.sid = s.sid WHERE s.sid <> :session_id AND c.obj = :obj AND c.name = :name ORDER BY c.updated ASC', array(
+    ':session_id' => $sid,
+    ':obj' => $obj,
+    ':name' => md5($name),
+  ))->fetchObject();
 }
 
 /**
@@ -162,6 +167,7 @@ function ctools_object_cache_test($obj, $name, $sid = NULL) {
  *   An array of objects containing the UID and updated date for each name found.
  */
 function ctools_object_cache_test_objects($obj, $names) {
+  array_walk($names, 'md5');
   return db_query("SELECT c.name, s.uid, c.updated FROM {ctools_object_cache} c INNER JOIN {sessions} s ON c.sid = s.sid WHERE c.obj = :obj AND c.name IN (:names) ORDER BY c.updated ASC", array(':obj' => $obj, ':names' => $names))
     ->fetchAllAssoc('name');
 }
@@ -180,7 +186,7 @@ function ctools_object_cache_test_objects($obj, $names) {
 function ctools_object_cache_clear_all($obj, $name) {
   db_delete('ctools_object_cache')
     ->condition('obj', $obj)
-    ->condition('name', $name)
+    ->condition('name', md5($name))
     ->execute();
   // Ensure the static cache is emptied of this obj:name set.
   $cache = &drupal_static('ctools_object_cache_get', array());
