@@ -3,7 +3,7 @@
     "parentNid":706,
     "limit":100,
     "maxSelect":5,
-    "columns":["dept.dept", "dept.dept.department_name", "txcount"],
+    "columns":["dept.dept", "deptname.deptname", "txcount"],
     "orderBy":["-txcount" , "department_name"],
 	"getTotalDataCount":true,
 	"facetPager":true,
@@ -11,7 +11,7 @@
     "urlParameterName":"dept",
     "autocompleteParamName":"dept_auto",
     "autocompleteID":"fdeptId",
-    "autocompleteField":"department_name",
+    "autocompleteField":"deptname_deptname",
     "adjustParameters":"
         if(function_exists('_checkbook_project_adjust_mwbe_spending_parameter_filters')){
             $parameters = _checkbook_project_adjust_mwbe_spending_parameter_filters($node, $parameters);
