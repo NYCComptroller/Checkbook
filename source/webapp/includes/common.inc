@@ -2236,8 +2236,11 @@ function url($path = NULL, array $options = array()) {
     'prefix' => ''
   );
 
+  // Determine whether this is an external link, but ensure that the current
+  // path is always treated as internal by default (to prevent external link
+  // injection vulnerabilities).
   if (!isset($options['external'])) {
-    $options['external'] = url_is_external($path);
+    $options['external'] = $path === $_GET['q'] ? FALSE : url_is_external($path);
   }
 
   // Preserve the original path before altering or aliasing.
@@ -5093,7 +5096,7 @@ function drupal_build_js_cache($files) {
   if (empty($uri) || !file_exists($uri)) {
     // Build aggregate JS file.
     foreach ($files as $path => $info) {
-      if ($info['preprocess'] && is_file($path)) {
+      if ($info['preprocess']) {
         // Append a ';' and a newline after each JS file to prevent them from running together.
         $contents .= file_get_contents($path) . ";\n";
       }

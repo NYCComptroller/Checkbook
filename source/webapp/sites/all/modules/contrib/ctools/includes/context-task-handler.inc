@@ -4,9 +4,9 @@
  * @file
  * Support for creating 'context' type task handlers.
  *
- * Context task handlers expect the task to provide 0 or more contexts. The
- * task handler should use those contexts as selection rules, as well as
- * rendering with them.
+ * Context task handlers expect the task to provide 0 or more contexts. The task
+ * handler should use those contexts as selection rules, as well as rendering
+ * with them.
  *
  * The functions and forms in this file should be common to every context type
  * task handler made.
@@ -226,7 +226,7 @@ function ctools_context_handler_render_handler($task, $subtask, $handler, $conte
 }
 
 /**
- * Default function to provide contextual link for a task as defined by the handler.
+ * Provides contextual link for a task as defined by the handler.
  *
  * This provides a simple link to th main content operation and is suitable
  * for most normal handlers. Setting 'contextual link' to a function overrides
@@ -274,12 +274,12 @@ function ctools_context_handler_pre_render($handler, $contexts, $args) {
 /**
  * Compare arguments to contexts for selection purposes.
  *
- * @param $handler
+ * @param object $handler
  *   The handler in question.
- * @param $contexts
+ * @param object $contexts
  *   The context objects provided by the task.
  *
- * @return
+ * @return bool
  *   TRUE if these contexts match the selection rules. NULL or FALSE
  *   otherwise.
  */
@@ -298,12 +298,15 @@ function ctools_context_handler_select($handler, $contexts) {
  * These summary strings are used to communicate to the user what
  * arguments the task handlers are selecting.
  *
- * @param $task
+ * @param object $task
  *   The loaded task plugin.
- * @param $subtask
+ * @param object $subtask
  *   The subtask id.
- * @param $handler
+ * @param object $handler
  *   The handler to be checked.
+ *
+ * @return array
+ *   Returns array of summary strings for arguments selected by task handlers.
  */
 function ctools_context_handler_summary($task, $subtask, $handler) {
   if (empty($handler->conf['access']['plugins'])) {

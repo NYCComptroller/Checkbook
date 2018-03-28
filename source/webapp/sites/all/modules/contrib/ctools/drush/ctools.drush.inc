@@ -994,7 +994,7 @@ class shellColours {
   );
 
   /**
-   *
+   * shellColours constructor.
    */
   private function __construct() {}
 
