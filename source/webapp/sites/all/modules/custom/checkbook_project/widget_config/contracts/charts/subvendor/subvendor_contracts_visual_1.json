@@ -149,11 +149,10 @@
 		$node->widgetConfig->chartTitle = 'Prime Vendor Sub Vendors Spending by ' . ContractUtil::getCurrentContractStatusandType() . ' Contracts';
 	}else{
         if(_getRequestParamValue('status') == 'A'){
-            $node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Sub Vendors Spending by Total Active Sub Vendor Contracts';
+            $node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName() . ' Sub Vendors Spending by Total Active Sub Vendor Contracts';
         }else{
-            $node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Sub Vendors Spending by New Sub Vendor Contracts by Fiscal Year';
+            $node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName() . ' Sub Vendors Spending by New Sub Vendor Contracts by Fiscal Year';
         }
-
 	}
 ",
 "summaryView":{

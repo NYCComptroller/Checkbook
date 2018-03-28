@@ -6,11 +6,12 @@ class PrimeVendorService extends VendorService {
      * Returns the Latest Minority Type for the given Vendor and the current selected year
      * @param $vendor_id
      * @param null $agency_id
+     * @param string $vendor_type
      * @param string $domain
      * @return mixed
      */
-    public static function getLatestMinorityType($vendor_id, $agency_id = null, $domain = null) {
-        return parent::getLatestMinorityType($vendor_id, $agency_id, 'P', $domain);
+    public static function getLatestMinorityType($vendor_id, $agency_id = null, $vendor_type = 'P', $domain = null) {
+        return parent::getLatestMinorityType($vendor_id, $agency_id, $vendor_type, $domain);
     }
 
     /**
@@ -18,11 +19,12 @@ class PrimeVendorService extends VendorService {
      * @param $vendor_id
      * @param $year_id
      * @param $type_of_year
+     * @param string $vendor_type
      * @param string $domain
      * @return bool
      */
-    public static function getLatestMinorityTypeByYear($vendor_id, $year_id, $type_of_year, $domain = null) {
-        return parent::getLatestMinorityTypeByYear($vendor_id, $year_id, $type_of_year,'P',$domain);
+    public static function getLatestMinorityTypeByYear($vendor_id, $year_id, $type_of_year, $vendor_type = 'P', $domain = null) {
+        return parent::getLatestMinorityTypeByYear($vendor_id, $year_id, $type_of_year, $vendor_type, $domain);
     }
 
     /**

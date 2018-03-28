@@ -162,6 +162,12 @@ function checkbook_advanced_search_autocomplete_menu()
         'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
         'type' => MENU_CALLBACK
     );
+    $items['advanced-search/autocomplete/budget/budgetname'] = array(
+        'page callback' => '_checkbook_advanced_search_autocomplete_budget_budgetname',
+        'access callback' => TRUE,
+        'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
+        'type' => MENU_CALLBACK
+    );
     $items['advanced-search/autocomplete/budget/fundingsrc'] = array(
         'page callback' => '_checkbook_advanced_search_autocomplete_budget_fundingsrc',
         'access callback' => TRUE,

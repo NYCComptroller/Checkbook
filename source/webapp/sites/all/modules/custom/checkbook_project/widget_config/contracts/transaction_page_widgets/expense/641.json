@@ -62,7 +62,7 @@
                              "effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number",
                              "master_agreement_yn","industry_type_name","dollar_difference","percent_difference"],
                  "orderBy":"-maximum_contract_amount",
-                 "seriesDefaultParameters":{"master_agreement_id":-1},//default master_agreement_id to avoid load
+                 "seriesDefaultParameters":{"master_agreement_id":-1},
                  "adjustSerieParameters":"
                             $year = _getRequestParamValue('year');
                             $calYear = _getRequestParamValue('calyear');

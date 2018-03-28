@@ -213,7 +213,7 @@ along with this program.  If not, see http://www.gnu.org/licenses/.
 						}else{
 							var mCSB_containerNewSize=mCSB_container.outerHeight();
 						}
-						if(mCSB_containerNewSize!=mCSB_containerOldSize){
+						if(mCSB_containerNewSize!==mCSB_containerOldSize){
 							$this.mCustomScrollbar("update");
 							mCSB_containerOldSize=mCSB_containerNewSize;
 						}

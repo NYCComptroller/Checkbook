@@ -54,14 +54,8 @@ include_once('export_link.php');
               echo "<tr>";
               $index = 0;
               while($index < count($node->widgetConfig->gridConfig->table_columns)){
-				if($node->widgetConfig->gridConfig->table_columns[$index]->formatType == "amount"){
-					echo "<td>".$datarow[$index]."</td>";
-				}elseif($node->widgetConfig->gridConfig->table_columns[$index]->formatType == "number"){
-					echo "<td>".$datarow[$index]."</td>";
-				}elseif($node->widgetConfig->gridConfig->table_columns[$index]->formatType == "month"){
-					echo "<td>".$datarow[$index]."</td>";
-				}
-				elseif($node->widgetConfig->gridConfig->table_columns[$index]->formatType == "monthfy"){
+				if($node->widgetConfig->gridConfig->table_columns[$index]->formatType == "amount" || $node->widgetConfig->gridConfig->table_columns[$index]->formatType == "number"
+                || $node->widgetConfig->gridConfig->table_columns[$index]->formatType == "month" ||$node->widgetConfig->gridConfig->table_columns[$index]->formatType == "monthfy"){
 					echo "<td>".$datarow[$index]."</td>";
 				}
 				else{

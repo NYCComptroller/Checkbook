@@ -33,7 +33,7 @@ abstract class CheckbookDomain {
     const BUDGET = "budget";
     const PAYROLL = "payroll";
 
-    static public function getCurrent() {
+    public static function getCurrent() {
 
         $urlPath = '//' . $_GET['q'];
 
@@ -91,15 +91,14 @@ abstract class Datasource {
     const CITYWIDE = "checkbook";
     const OGE = "checkbook_oge";
 
-    static public function getCurrent() {
-        $datasource = RequestUtilities::getRequestParamValue(UrlParameter::DATASOURCE);
+     public static function getCurrent() {
+        $datasource = _getRequestParamValue(UrlParameter::DATASOURCE);
         switch($datasource) {
             case self::OGE: return self::OGE;
             default: return self::CITYWIDE;
         }
     }
-
-    static public function isOGE() {
+    public static function isOGE() {
         return self::getCurrent() == Datasource::OGE;
     }
 }
@@ -115,9 +114,9 @@ abstract class Dashboard {
     const CURRENT = "current_year";
     const PREVIOUS = "previous_year";
 
-    static public function getCurrent() {
+     public static function getCurrent() {
         $domain = CheckbookDomain::getCurrent();
-        $year = RequestUtilities::getRequestParamValue(UrlParameter::YEAR);
+        $year = _getRequestParamValue(UrlParameter::YEAR);
 
         if($domain == CheckbookDomain::REVENUE){
             if($year >= RequestUtilities::getCurrentYearID())
@@ -134,26 +133,26 @@ abstract class Dashboard {
                 default: return Datasource::isOGE() ? self::OGE : self::CITYWIDE;
             }
         }
-    }
+     }
 
-    static public function isOGE() {
+    public static function isOGE() {
         return self::getCurrent() == self::OGE;
     }
 
-    static public function isMWBE() {
+     public static function isMWBE() {
         $dashboard = self::getCurrent();
         return $dashboard == self::MWBE || $dashboard == self::SUB_VENDORS_MWBE || $dashboard == self::MWBE_SUB_VENDORS;
-    }
+     }
 
-    static public function isSubDashboard() {
+     public static function isSubDashboard() {
         $dashboard = self::getCurrent();
         return $dashboard == self::SUB_VENDORS || $dashboard == self::SUB_VENDORS_MWBE || $dashboard == self::MWBE_SUB_VENDORS;
-    }
+     }
 
-    static public function isPrimeDashboard() {
+      public static function isPrimeDashboard() {
         $dashboard = self::getCurrent();
         return $dashboard == self::MWBE || $dashboard == self::CITYWIDE || $dashboard == self::OGE;
-    }
+      }
 }
 
 abstract class DashboardParameter {
@@ -163,8 +162,8 @@ abstract class DashboardParameter {
     const SUB_VENDORS_MWBE = "sp";
     const MWBE_SUB_VENDORS = "ms";
 
-    static public function getCurrent() {
-        return RequestUtilities::getRequestParamValue(UrlParameter::DASHBOARD);
+     public static function getCurrent() {
+        return _getRequestParamValue(UrlParameter::DASHBOARD);
     }
 }
 
@@ -174,7 +173,7 @@ abstract class PageType {
     const TRANSACTION_PAGE = "transaction_page";
     const ADVANCED_SEARCH_PAGE = "advanced_search_page";
 
-    static public function getCurrent() {
+    public static function getCurrent() {
         $urlPath = $_GET['q'];
         $ajaxPath = $_SERVER['HTTP_REFERER'];
 
@@ -227,11 +226,11 @@ abstract class PageType {
         return $pageType;
     }
 
-    static public function isSpendingAdvancedSearch() {
-        return self::getCurrent() == self::ADVANCED_SEARCH_PAGE && CheckbookDomain::getCurrent() == CheckbookDomain::SPENDING;
+    public static function isSpendingAdvancedSearch() {
+        return static::getCurrent() == self::ADVANCED_SEARCH_PAGE && CheckbookDomain::getCurrent() == CheckbookDomain::SPENDING;
     }
 
-    static public function isContractsAdvancedSearch() {
-        return self::getCurrent() == self::ADVANCED_SEARCH_PAGE && CheckbookDomain::getCurrent() == CheckbookDomain::CONTRACTS;
-    }
+     public static function isContractsAdvancedSearch() {
+        return static::getCurrent() == self::ADVANCED_SEARCH_PAGE && CheckbookDomain::getCurrent() == CheckbookDomain::CONTRACTS;
+     }
 }

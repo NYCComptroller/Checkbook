@@ -79,7 +79,6 @@
 	height: 19px;
 	float: left;
 	cursor: pointer;
-	*cursor: hand;
 	color: #111 !important;
 }
 .paginate_disabled_previous:hover, .paginate_enabled_previous:hover,
@@ -154,7 +153,7 @@ table.display thead th {
 	border-bottom: 1px solid black;
 	font-weight: bold;
 	cursor: pointer;
-	* cursor: hand;
+
 }
 
 table.display tfoot th {
@@ -334,7 +333,6 @@ td.details {
 	padding: 2px 5px;
 	margin: 0 3px;
 	cursor: pointer;
-	*cursor: hand;
 	color: #333 !important;
 }
 

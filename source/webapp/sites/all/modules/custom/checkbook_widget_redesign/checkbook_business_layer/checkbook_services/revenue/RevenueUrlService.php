@@ -55,7 +55,7 @@ class RevenueUrlService {
         $url .= RequestUtilities::_getUrlParamString('revcat');
         $url .= RequestUtilities::_getUrlParamString('fundsrccode');
         $url .= _checkbook_project_get_year_url_param_string();
-        $url .= isset($crorss_year) ? '/fiscal_year/'.(RequestUtilities::getRequestParamValue('year')+$crorss_year) : "";
+        $url .= isset($crorss_year) ? '/fiscal_year/'.(_getRequestParamValue('year')+$crorss_year) : "";
         $url .= '/'.$param.'/'.$value;
         return $url;
     }

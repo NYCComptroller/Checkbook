@@ -59,7 +59,7 @@
 	$node->widgetConfig->chartConfig->series[0]->data = $series_new;
     $dashboard= _getRequestParamValue('dashboard');
     if($dashboard == 'sp' || $dashboard == 'ms'){
-        $node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Sub Vendor Contracts Status by Prime Contracts';
+        $node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName() . ' Sub Vendor Contracts Status by Prime Contracts';
     }else{
         $node->widgetConfig->chartTitle =  'Sub Vendor Contracts Status by Prime Contracts';
     }

@@ -74,9 +74,9 @@ echo '<div class=\"chart-right\">
 
 	$mwbe_filter = _getRequestParamValue('mwbe');
 	if($mwbe_filter =='4~5' || $mwbe_filter =='4' || $mwbe_filter =='5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){
-		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName()  . ' Prime Spending';
+		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName()  . ' Prime Spending';
 	}else{
-		$node->widgetConfig->chartTitle = 'Prime Spending by ' . MappingUtil::getCurrenEhtnicityName() .' Share';
+		$node->widgetConfig->chartTitle = 'Prime Spending by ' . MappingUtil::getCurrenEthnicityName() .' Share';
 	}
 	$mwbe_data = array();
 	 foreach ($node->data as $row){

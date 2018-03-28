@@ -142,9 +142,10 @@ public class TopNavigation {
 		}
 	}
 	
+	
 		
 	public enum TopNavTabs{
-		Spending, Revenue, Budget, Contracts, Payroll
+		Spending, Revenue, Budget, Contracts, Payroll,MWBE ,SubVendors
 	}
 
 }

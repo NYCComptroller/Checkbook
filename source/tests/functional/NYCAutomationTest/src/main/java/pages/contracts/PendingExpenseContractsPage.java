@@ -16,7 +16,7 @@ public class PendingExpenseContractsPage {
 	}
 	
 	public static int GetTransactionCount() {
-		WebDriverWait wait = new WebDriverWait(Driver.Instance, 10);
+		WebDriverWait wait = new WebDriverWait(Driver.Instance, 30);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("table_714_info")));
 		String count = (Driver.Instance.findElement(By.id("table_714_info"))).getText();
 		return Helper.GetTotalEntries(count, 5);

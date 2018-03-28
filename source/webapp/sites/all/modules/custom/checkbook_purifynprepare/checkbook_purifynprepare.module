@@ -36,8 +36,8 @@ function checkbook_purifynprepare_init() {
 
 function checkbook_purifynprepare_access_denied($value){
 
-  if(preg_match("/((\%3C)|<|(\%2b)|(\+))[^\n]+((\%3E)|>|(\%2b))|(\+)/", $value)){
-    //TODO
-     //drupal_goto("");
-  }
+//  if(preg_match("/((\%3C)|<|(\%2b)|(\+))[^\n]+((\%3E)|>|(\%2b))|(\+)/", $value)){
+//    //TODO
+//     //drupal_goto("");
+//  }
 }

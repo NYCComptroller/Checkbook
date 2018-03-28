@@ -77,7 +77,7 @@ public class PendingRevenueContractsDetailsTest extends TestStatusReport{
 		int numOfPRContractsDetailsCountapp = PendingExpenseContractsPage.GetTransactionCount();
 		assertEquals(" Pending Revenue contracts Award Method widget Details page table count did not match", numOfPRContractsDetailsCountapp, NumOfPRContractsDetailsCountDB); 
 		
-		String WidgetDetailsTitle =  "AWard Methods Pending Revenue Contracts Transactions";
+		String WidgetDetailsTitle =  "Award Methods Pending Revenue Contracts Transactions";
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
 	    assertEquals("Pending Revenue Contracts AWard Method Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	}

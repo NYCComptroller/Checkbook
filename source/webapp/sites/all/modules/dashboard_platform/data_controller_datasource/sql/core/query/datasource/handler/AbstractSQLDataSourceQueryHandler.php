@@ -148,7 +148,7 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
 
         $sql = "SELECT dp_get_next_sequence_id('$request->sequenceName', $request->quantity) AS $PROPERTY_NAME__SEQUENCE";
 
-        LogHelper::log_info(new StatementLogMessage('sequence', $sql));
+        LogHelper::log_notice(new StatementLogMessage('sequence', $sql));
         $result = $this->executeQuery($callcontext, $datasource, $sql, new PassthroughResultFormatter());
 
         $lastSequentialId = $result[0][$PROPERTY_NAME__SEQUENCE];
@@ -271,7 +271,7 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
         // applying pagination
         $this->applyPagination($request, $sql);
 
-        LogHelper::log_info(new StatementLogMessage('dataset.query', $sql));
+        LogHelper::log_notice(new StatementLogMessage('dataset.query', $sql));
         return $this->executeQuery($callcontext, $datasource, $sql, $resultFormatter);
     }
 
@@ -476,7 +476,7 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
         $this->applyPagination($request, $sql);
 
         // processing prepared sql and returning data
-        LogHelper::log_info(new StatementLogMessage('cube.query', $sql));
+        LogHelper::log_notice(new StatementLogMessage('cube.query', $sql));
         return $this->executeQuery($callcontext, $datasource, $sql, $resultFormatter);
     }
 
@@ -487,7 +487,7 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
      */
     public function countCubeRecords(DataControllerCallContext $callcontext, CubeQueryRequest $request, ResultFormatter $resultFormatter) {
         $cubeName = $request->getCubeName();
-        LogHelper::log_notice(t('Counting SQL-based cube records: @cubeName', array('@cubeName' => $cubeName)));
+        LogHelper::log_info(t('Counting SQL-based cube records: @cubeName', array('@cubeName' => $cubeName)));
 
         $environment_metamodel = data_controller_get_environment_metamodel();
         $metamodel = data_controller_get_metamodel();
@@ -547,7 +547,7 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
                 . ") $tableAlias";
         }
 
-        LogHelper::log_info(new StatementLogMessage('*.count', $sql));
+        LogHelper::log_notice(new StatementLogMessage('*.count', $sql));
         $records = $this->executeQuery($callcontext, $datasource, $sql, new PassthroughResultFormatter());
 
         return $records[0][$countIdentifier];
@@ -803,10 +803,10 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
         $records = $this->executeQueryStatement(
             $callcontext, $datasource, $sql,
             new __SQLDataSourceHandler__QueryExecutionCallbackProxy($this->prepareQueryStatementExecutionCallbackInstance(), $resultFormatter));
-        LogHelper::log_info(t('Database execution time: !executionTime', array('!executionTime' => ExecutionPerformanceHelper::formatExecutionTime($timeStart))));
+        LogHelper::log_notice(t('Database execution time: !executionTime', array('!executionTime' => ExecutionPerformanceHelper::formatExecutionTime($timeStart))));
 
         $count = count($records);
-        LogHelper::log_info(t('Processed @count record(s)', array('@count' => $count)));
+        LogHelper::log_notice(t('Processed @count record(s)', array('@count' => $count)));
         LogHelper::log_debug($records);
 
         return $records;

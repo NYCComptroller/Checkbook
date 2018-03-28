@@ -74,7 +74,7 @@
                     ,success: function(data) {
                         var html = '<option select="selected" value="0" >Select Expense Category</option>';
                         if(data[0]){
-                            if(data[0]!= 'No Matches Found'){
+                            if(data[0]!=='No Matches Found'){
                                 $.each(data, function(key, exp_cat){
                                     html = html + '<option value="' + exp_cat.code + '">' + exp_cat.name  + '</option>';
                                 });
@@ -89,7 +89,7 @@
                     ,success: function(data) {
                         var html = '<option select="selected" value="0" >Select Department</option>';
                         if(data[0]){
-                            if(data[0]!= 'No Matches Found'){
+                            if(data[0]!=='No Matches Found'){
                                 for (i = 0; i < data.length; i++) {
                                     html=html + '<option value="' + data[i] + ' ">' + data[i]  + '</option>';
                                 }
@@ -129,7 +129,7 @@
                 ,success: function(data) {
                     var html = '<option select="selected" value="0" >Select Expense Category</option>';
                     if(data[0]){
-                        if(data[0]!= 'No Matches Found'){
+                        if(data[0]!=='No Matches Found'){
                             $.each(data, function(key, exp_cat){
                                 html = html + '<option value="' + exp_cat.code + '">' + exp_cat.name  + '</option>';
                             });
@@ -165,7 +165,7 @@
             }
 
             year = 0;
-            if(div.ele('date_filter_checked').val() == 0){
+            if(div.ele('date_filter_checked').val() ==0){
                 year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
             }
             var agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
@@ -178,7 +178,7 @@
                 ,success: function(data) {
                     var html = '<option select="selected" value="0" >Select Expense Category</option>';
                     if(data[0]){
-                        if(data[0] != 'No Matches Found'){
+                        if(data[0] !== 'No Matches Found'){
                             $.each(data, function(key, exp_cat){
                                 html = html + '<option value="' + exp_cat.code + '">' + exp_cat.name  + '</option>';
                             });
@@ -214,7 +214,7 @@
         });
         function onFiscalYearChange(div) {
             year = 0;
-            if(div.ele('date_filter_checked').val() == 0){
+            if(div.ele('date_filter_checked').val() === 0){
                 year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
             }
             var agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
@@ -231,7 +231,7 @@
                 ,success: function(data) {
                     var html = '<option select="selected" value="0" >Select Expense Category</option>';
                     if(data[0]){
-                        if(data[0] != 'No Matches Found'){
+                        if(data[0] !== 'No Matches Found'){
                             $.each(data, function(key, exp_cat){
                                 html = html + '<option value="' + exp_cat.code + '">' + exp_cat.name  + '</option>';
                             });
@@ -246,7 +246,7 @@
                 ,success: function(data) {
                     var html = '<option select="selected" value="0" >Select Department</option>';
                     if(data[0]){
-                        if(data[0] != 'No Matches Found'){
+                        if(data[0] !== 'No Matches Found'){
                             for (i = 0; i < data.length; i++) {
                                 html=html + '<option value="' + data[i] + ' ">' + data[i]  + '</option>';
                             }

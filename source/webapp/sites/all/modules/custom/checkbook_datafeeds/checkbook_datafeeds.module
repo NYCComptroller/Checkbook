@@ -619,13 +619,13 @@ function checkbook_datafeeds_budget($form, &$form_state) {
         '#validated' => TRUE,
         '#default_value' => !empty($form_state['values']['dept']) ? $form_state['values']['dept'] : 'Select Department',
     );
-    
+
     $form['dept_hidden'] = array(
         '#title' =>  'dept_hidden',
         '#value' => $form_state['values']['dept'],
         '#type' => 'hidden'
     );
-    
+
     $form['filter']['expense_category'] = array(
         '#type' => 'select',
         '#title' => t('Expense Category:'),
@@ -634,7 +634,7 @@ function checkbook_datafeeds_budget($form, &$form_state) {
         '#validated' => TRUE,
         '#default_value' => !empty($form_state['values']['expense_category']) ? $form_state['values']['expense_category'] : 'Select Expense Category',
     );
-    
+
     $form['expense_category_hidden'] = array(
         '#title' =>  'expense_category_hidden',
         '#value' => $form_state['values']['expense_category'],
@@ -2387,9 +2387,9 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
                 $formatted_search_criteria['Vendor'] = $values['vendor'];
             }
             if ($values['mwbe_category']) {
-                $form['filter']['mwbe_category'] = array('#markup' => '<div><strong>M/WBE Category:</strong> ' . MappingUtil::getCurrenEhtnicityName(explode('~',$values['mwbe_category'])) . '</div>');
+                $form['filter']['mwbe_category'] = array('#markup' => '<div><strong>M/WBE Category:</strong> ' . MappingUtil::getCurrenEthnicityName(explode('~',$values['mwbe_category'])) . '</div>');
                 $user_criteria['M/WBE Category'] = $values['mwbe_category'];
-                $formatted_search_criteria['M/WBE Category'] = MappingUtil::getCurrenEhtnicityName(explode('~',$values['mwbe_category']));
+                $formatted_search_criteria['M/WBE Category'] = MappingUtil::getCurrenEthnicityName(explode('~',$values['mwbe_category']));
             }
             if ($values['contract_type']) {
                 if ($values['contract_type'] != 'No Contract Type Selected') {
@@ -2567,7 +2567,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
         $intended_order =  _checkbook_datafeeds_contracts_override_column_options($response_type, $data_source,$values['df_contract_status'],$values['category'],$values['year']);
         $criteria['responseColumns'] = checkbook_datafeeds_override_column_order($criteria['responseColumns'], $intended_order);
     }
-    
+
     $modified_form = checkbook_datafeeds_end_of_confirmation_form($form, $form_state, $criteria, $response_type, 'contracts');
     return $modified_form;
 }
@@ -5447,9 +5447,9 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state)
         $formatted_search_criteria['Spending Category'] = 'Total Spending';
     }
     if ($values['mwbe_category']) {
-        $form['filter']['mwbe_category'] = array('#markup' => '<div><strong>M/WBE Category:</strong> ' . MappingUtil::getCurrenEhtnicityName(explode('~',$values['mwbe_category'])) . '</div>');
+        $form['filter']['mwbe_category'] = array('#markup' => '<div><strong>M/WBE Category:</strong> ' . MappingUtil::getCurrenEthnicityName(explode('~',$values['mwbe_category'])) . '</div>');
         $user_criteria['M/WBE Category'] = $values['mwbe_category'];
-        $formatted_search_criteria['M/WBE Category'] = MappingUtil::getCurrenEhtnicityName(explode('~',$values['mwbe_category']));
+        $formatted_search_criteria['M/WBE Category'] = MappingUtil::getCurrenEthnicityName(explode('~',$values['mwbe_category']));
     }
     if ($values['industry']) {
         preg_match("/.*?(\\[.*?\\])/is", $values['industry'], $matches);
@@ -5737,7 +5737,7 @@ function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_
  *   Data Feeds wizard form_state array
  */
 function checkbook_datafeeds_spending_validate($form, &$form_state) {
-    
+
     $data_source = $form_state['input']['datafeeds-spending-domain-filter'];
     $agency = $form_state['values']['agency'];
     $agency_code = emptyToZero($agency);
@@ -5969,8 +5969,7 @@ function _agency_options($data_source = null) {
                 ), array("is_display" => "Y"), 'agency_name');
                 break;
         }
-        $results = _checkbook_datafeeds_agency_options($data,$data_source);
-        return $results;
+        return _checkbook_datafeeds_agency_options($data,$data_source);
     }
     catch (Exception $e) {
         log_error("Error getting data from controller: \n" . $e->getMessage());
@@ -6019,7 +6018,7 @@ function _sub_vendor_status_in_pip() {
     $statuses[0] = 'Select Status';
     try {
         $dataController = data_controller_get_instance();
-        $data = $dataController->queryDataset('checkbook:subcontract_approval_status', 
+        $data = $dataController->queryDataset('checkbook:subcontract_approval_status',
                                                 array('aprv_sta_id', 'aprv_sta_value'),
                                                 NULL, 'sort_order', 0, 10, NULL);
 
@@ -6632,7 +6631,7 @@ function checkbook_datafeeds_confirmation_download_submit($form, &$form_state) {
     }
 
     $record_count = $checkBookApi->getRecordCount();
-    //records <= 100,000
+    //records <= 30,000
     if ($record_count <= 30000) {
         if (isset($checkBookApi)) {
             if ($checkBookApi->validateRequest()) {
@@ -6904,17 +6903,20 @@ function checkbook_datafeeds_end_of_confirmation_form($form, &$form_state, $crit
         );
     }
     elseif ($recordcount > 0 && $recordcount < 200000) {
+        /**
+         * see docs
+            http://wiki.reisys.com:8080/display/USASv2/Data+Feeds+Documentation
+         */
         if (isset($checkBookApi)) {
             if ($checkBookApi->validateRequest()) {
                 if ($recordcount <= 30000) {
                     $form_state['step_information']['confirmation']['response'] = $checkBookApi->getData();
-                }
-                else {
+                } else {    // 30,000 .. 200,000
                     $filename = $checkBookApi->generateFile();
                     $form_state['step_information']['confirmation']['filename'] = $filename;
                 }
             }
-            else {
+            else {  // invalid request
                 $form_state['step_information']['confirmation']['response'] = $checkBookApi->getErrorResponse();
             }
         }
@@ -6938,7 +6940,7 @@ function checkbook_datafeeds_end_of_confirmation_form($form, &$form_state, $crit
             '#value' => t('Cancel'),
         );
     }
-    else {
+    else {  // > 200,000
         $form_state['step_information']['confirmation']['stored_values']['user_criteria']['Record Count'] = $recordcount;
         $form['count'] = array(
             '#type' => 'fieldset',

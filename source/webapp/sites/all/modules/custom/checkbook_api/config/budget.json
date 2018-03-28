@@ -13,7 +13,6 @@
             "cash_expense":"cash_expense_amount",
             "post_adjustment":"post_closing_adjustment_amount",
             "budget_code_id":"budget_code_id",
-            //logical OR columns
             "budget_code":"budget_code",
             "budget_code_name":"budget_code_name"
         },

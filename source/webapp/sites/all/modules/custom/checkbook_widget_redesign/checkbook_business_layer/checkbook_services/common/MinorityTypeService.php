@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -16,7 +16,7 @@ class MinorityTypeService {
         9 => 'Women',
         11 => 'Individuals and Others',
     );
-    
+
     public static $minority_type_category_map_multi_chart = array(
         'Black American' => array(2),
         'Hispanic American' => array(3),
@@ -26,10 +26,10 @@ class MinorityTypeService {
         'Individuals and Others' => array(11),
         'M/WBE' => array(2,3,4,5,9),
     );
-    
+
     static $mwbe_prefix = "M/WBE" ;
-    
-    static public function isMWBECertified($mwbe_cat){ 	
+
+       public static  function isMWBECertified($mwbe_cat){
         if(in_array($mwbe_cat, self::$minority_type_category_map_multi_chart['M/WBE'])){
             return true;
     	}else{
@@ -42,8 +42,8 @@ class MinorityTypeService {
      * @param $minority_type_id
      * @return mixed
      */
-    static public function getMinorityCategoryById($minority_type_id) {
-        return self::$minority_type_category_map[$minority_type_id];
+      public static  function getMinorityCategoryById($minority_type_id) {
+        return static::$minority_type_category_map[$minority_type_id];
     }
 
     /**
@@ -53,7 +53,7 @@ class MinorityTypeService {
      * @param $domain
      * @return array
      */
-    static public function getAllVendorMinorityTypes($type_of_year, $year_id, $domain) {
+    public static function getAllVendorMinorityTypes($type_of_year, $year_id, $domain) {
         STATIC $spending_vendor_latest_mwbe_category;
         STATIC $contract_vendor_latest_mwbe_category;
         STATIC $contract_pending_vendor_latest_mwbe_category;
@@ -75,9 +75,7 @@ class MinorityTypeService {
                         if(isset($row['agency_id'])) {
                             $spending_vendor_latest_mwbe_category[$row['vendor_id']][$row['agency_id']][$row['is_prime_or_sub']]['minority_type_id'] = $row['minority_type_id'];
                         }
-                        else {
-                            $spending_vendor_latest_mwbe_category[$row['vendor_id']][$row['is_prime_or_sub']]['minority_type_id'] = $row['minority_type_id'];
-                        }
+                        $spending_vendor_latest_mwbe_category[$row['vendor_id']][$row['is_prime_or_sub']]['minority_type_id'] = $row['minority_type_id'];
                     }
                 }
                 return $spending_vendor_latest_mwbe_category;
@@ -123,9 +121,7 @@ class MinorityTypeService {
                         if(isset($row['agency_id'])) {
                             $contract_vendor_latest_mwbe_category[$row['vendor_id']][$row['agency_id']][$row['is_prime_or_sub']]['minority_type_id'] = $row['minority_type_id'];
                         }
-                        else {
-                            $contract_vendor_latest_mwbe_category[$row['vendor_id']][$row['is_prime_or_sub']]['minority_type_id'] = $row['minority_type_id'];
-                        }
+                        $contract_vendor_latest_mwbe_category[$row['vendor_id']][$row['is_prime_or_sub']]['minority_type_id'] = $row['minority_type_id'];
                     }
                 }
                 return $contract_vendor_latest_mwbe_category;

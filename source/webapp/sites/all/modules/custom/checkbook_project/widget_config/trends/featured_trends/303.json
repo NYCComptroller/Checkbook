@@ -133,7 +133,6 @@
     ],
     "chartConfig": {
             "title": {
-                //"text": "General Fund Revenues and General Fund Expenditures ",
                 "style": {
                     "fontSize": "15px",
                     "fontWeight": "bold"
@@ -199,7 +198,6 @@
     "navigator": {
                 "enabled": true,
                 "xAxis": {
-                   // "range": 6302436001000,
                     "labels":{"enabled":true}
     },
     "margin": 0

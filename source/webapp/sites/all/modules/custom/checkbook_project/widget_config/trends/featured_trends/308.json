@@ -103,7 +103,6 @@
             }
         },
         "title": {
-            //"text": "Personal Income",
             "style": {
                 "fontSize": "16px"
             },
@@ -111,7 +110,6 @@
         },
         "xAxis": {
             "tickInterval": 31557600000,
-            //"range": 284018400000,
             "range": 279936000000,
             "minRange": 31557600000,
             "labels": {

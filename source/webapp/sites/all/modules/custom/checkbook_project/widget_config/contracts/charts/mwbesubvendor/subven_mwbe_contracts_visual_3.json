@@ -126,15 +126,15 @@
 	$mwbe_filter = _getRequestParamValue('mwbe');
 	if($mwbe_filter =='4~5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){
         if(_getRequestParamValue('status') == 'A'){
-            $node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Top Ten Agencies by Sub Vendors Total Active Sub Vendor Contracts';
+            $node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName() . ' Top Ten Agencies by Sub Vendors Total Active Sub Vendor Contracts';
         }else{
-            $node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Top Ten Agencies by New Sub Vendor Contracts by Fiscal Year';
+            $node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName() . ' Top Ten Agencies by New Sub Vendor Contracts by Fiscal Year';
         }
 	}else{
         if(_getRequestParamValue('status') == 'A'){
-            $node->widgetConfig->chartTitle =  'Top Ten Agencies by '. MappingUtil::getCurrenEhtnicityName() .' Sub Vendors Total Active Sub Vendor Contracts';
+            $node->widgetConfig->chartTitle =  'Top Ten Agencies by '. MappingUtil::getCurrenEthnicityName() .' Sub Vendors Total Active Sub Vendor Contracts';
         }else{
-            $node->widgetConfig->chartTitle =  'Top Ten Agencies by '. MappingUtil::getCurrenEhtnicityName() .' New Sub Vendor Contracts by Fiscal Year';
+            $node->widgetConfig->chartTitle =  'Top Ten Agencies by '. MappingUtil::getCurrenEthnicityName() .' New Sub Vendor Contracts by Fiscal Year';
         }
 	}
 ",

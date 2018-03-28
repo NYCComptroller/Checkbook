@@ -136,9 +136,9 @@
 	}
 	$mwbe_filter = _getRequestParamValue('mwbe');
 	if($mwbe_filter =='4~5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){		
-		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Top Ten Prime Vendors by ' . $status . ' ' . $contract_type .  ' Contracts';
+		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName() . ' Top Ten Prime Vendors by ' . $status . ' ' . $contract_type .  ' Contracts';
 	}else{
-		$node->widgetConfig->chartTitle =  'Top Ten ' .  MappingUtil::getCurrenEhtnicityName() . ' Prime Vendors by '  .$status . ' ' . $contract_type .  ' Contracts';
+		$node->widgetConfig->chartTitle =  'Top Ten ' .  MappingUtil::getCurrenEthnicityName() . ' Prime Vendors by '  .$status . ' ' . $contract_type .  ' Contracts';
 	}  
 	
 ",
@@ -186,6 +186,6 @@
 yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
 tooltipformatter^^'formatter' :
 function() {return this.point.tooltip_label ;
-}
-##clickEvent^^"click": function(){location.href = Drupal.settings.basePath+this.url; }
+}##
+clickEvent^^"click": function(){location.href = Drupal.settings.basePath+this.url; }
 </function>

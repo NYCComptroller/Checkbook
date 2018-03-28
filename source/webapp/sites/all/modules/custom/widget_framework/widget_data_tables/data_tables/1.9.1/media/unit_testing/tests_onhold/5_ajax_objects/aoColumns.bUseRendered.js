@@ -20,7 +20,7 @@ $(document).ready( function () {
 						mTmp++;
 						return "aaa";
 					} else
-						return a.aData['browser'];
+						return a.aData.browser;
 				}
 			},
 			{ "mDataProp": "platform" },
@@ -53,7 +53,7 @@ $(document).ready( function () {
 								mTmp++;
 								return "aaa";
 							} else {
-								return a.aData['browser'];
+								return a.aData.browser;
 							}
 						}
 					},
@@ -86,7 +86,7 @@ $(document).ready( function () {
 								mTmp++;
 								return "aaa1";
 							} else {
-								return a.aData['engine'];
+								return a.aData.engine;
 							}
 						}
 					},
@@ -98,7 +98,7 @@ $(document).ready( function () {
 								mTmp2++;
 								return "aaa2";
 							} else {
-								return a.aData['browser'];
+								return a.aData.browser;
 							}
 						}
 					},
@@ -109,7 +109,7 @@ $(document).ready( function () {
 								mTmp3++;
 								return "zzz3";
 							} else {
-								return a.aData['platform'];
+								return a.aData.platform;
 							}
 						}
 					},
