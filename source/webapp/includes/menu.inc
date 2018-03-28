@@ -517,7 +517,6 @@ function menu_execute_active_handler($path = NULL, $deliver = TRUE) {
   $read_only_path = !empty($path) ? $path : $_GET['q'];
   drupal_alter('menu_site_status', $page_callback_result, $read_only_path);
 
-  checkbook_timer('including files');
   // Only continue if the site status is not set.
   if ($page_callback_result == MENU_SITE_ONLINE) {
     if ($router_item = menu_get_item($path)) {
@@ -535,7 +534,6 @@ function menu_execute_active_handler($path = NULL, $deliver = TRUE) {
       $page_callback_result = MENU_NOT_FOUND;
     }
   }
-  checkbook_timer('included files');
 
   // Deliver the result of the page callback to the browser, or if requested,
   // return it raw, so calling code can do more processing.

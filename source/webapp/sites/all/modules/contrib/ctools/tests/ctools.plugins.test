@@ -6,7 +6,7 @@
 class CtoolsPluginsGetInfoTestCase extends DrupalWebTestCase {
 
   /**
-   * {@inheritDoc}
+   * {@inheritdoc}
    */
   public static function getInfo() {
     return array(
@@ -18,9 +18,9 @@ class CtoolsPluginsGetInfoTestCase extends DrupalWebTestCase {
   }
 
   /**
-   * {@inheritDoc}
+   * {@inheritdoc}
    */
-  function setUp(array $modules = array()) {
+  public function setUp(array $modules = array()) {
     $modules[] = 'ctools';
     $modules[] = 'ctools_plugin_test';
     parent::setUp($modules);
@@ -119,7 +119,7 @@ class CtoolsPluginsGetInfoTestCase extends DrupalWebTestCase {
   /**
    * Test that plugins are loaded correctly.
    */
-  function testPluginLoading() {
+  public function testPluginLoading() {
     ctools_include('plugins');
     $module = 'ctools_plugin_test';
     $type = 'not_cached';

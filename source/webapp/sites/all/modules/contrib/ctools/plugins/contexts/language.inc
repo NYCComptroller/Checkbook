@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Ctools context type plugin to hold the current language context.
@@ -40,8 +41,8 @@ $plugin = array(
  * @return array
  *   Array with all available settings.
  */
-function ctools_context_language_conf_defaults( $conf = array()) {
-  if ( ! is_array($conf) ) {
+function ctools_context_language_conf_defaults($conf = array()) {
+  if (!is_array($conf)) {
     $conf = array(
       'preset_langcode' => (string) $conf,
     );
@@ -136,7 +137,7 @@ function ctools_context_language_settings_form($form, &$form_state) {
   );
 
   // Prepare language type options.
-  $language_type_options = drupal_map_assoc( language_types() );
+  $language_type_options = drupal_map_assoc(language_types());
   $language_type_options['preset'] = t('Custom');
 
   $form['language_type'] = array(

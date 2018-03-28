@@ -2,7 +2,6 @@
 
 /**
  * @file
- *
  * Plugin to provide a node context. A node context is a node wrapped in a
  * context object that can be utilized by anything that accepts contexts.
  */
@@ -90,9 +89,9 @@ function ctools_context_create_entity($empty, $data = NULL, $conf = FALSE, $plug
   }
 
   if (!empty($data)) {
-    $context->data     = $data;
+    $context->data = $data;
     if (!empty($entity['entity keys']['label'])) {
-      $context->title    = $data->{$entity['entity keys']['label']};
+      $context->title = $data->{$entity['entity keys']['label']};
     }
     $context->argument = $id;
 
@@ -161,7 +160,7 @@ function ctools_context_entity_settings_form($form, &$form_state) {
  * Validate a node.
  */
 function ctools_context_entity_settings_form_validate($form, &$form_state) {
-  // Validate the autocomplete
+  // Validate the autocomplete.
   if (empty($form_state['values']['entity_id']) && empty($form_state['values']['entity'])) {
     form_error($form['entity'], t('You must select an entity.'));
     return;
@@ -171,7 +170,7 @@ function ctools_context_entity_settings_form_validate($form, &$form_state) {
     return;
   }
 
-  $id          = $form_state['values']['entity'];
+  $id           = $form_state['values']['entity'];
   $preg_matches = array();
   $match        = preg_match('/\[id: (\d+)\]/', $id, $preg_matches);
   if (!$match) {
