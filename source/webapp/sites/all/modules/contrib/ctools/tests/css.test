@@ -6,7 +6,7 @@
 class CtoolsCssTestCase extends DrupalWebTestCase {
 
   /**
-   * {@inheritDoc}
+   * {@inheritdoc}
    */
   public static function getInfo() {
     return array(
@@ -18,9 +18,9 @@ class CtoolsCssTestCase extends DrupalWebTestCase {
   }
 
   /**
-   * {@inheritDoc}
+   * {@inheritdoc}
    */
-  function setUp(array $modules = array()) {
+  public function setUp(array $modules = array()) {
     $modules[] = 'ctools';
     parent::setUp($modules);
     ctools_include('css');
@@ -51,10 +51,6 @@ class CtoolsCssTestCase extends DrupalWebTestCase {
   }
 
   /**
-   * @todo Test  db-row-exist but file-not-exist case in ctools_css_retrieve().
-   */
-
-  /**
    * Test that Stored CSS snippets can be correctly overwritten.
    */
   public function testCssStoreOverwrite() {
@@ -67,7 +63,6 @@ class CtoolsCssTestCase extends DrupalWebTestCase {
     ctools_css_store('filtered-css-test', $css1, TRUE);
 
     // Now overwrite the first css with the second version.
-
     $filename3 = ctools_css_store('unfiltered-css-test', $css2, FALSE);
     $filename4 = ctools_css_store('filtered-css-test', $css2, TRUE);
 

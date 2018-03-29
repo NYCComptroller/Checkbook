@@ -446,7 +446,7 @@ class MappingUtil {
                       FROM contract_vendor_latest_mwbe_category
                       WHERE  vendor_id = ".$vendor_id
                             ." AND is_prime_or_sub = '" . $is_prime_or_sub . "'"
-                            ." ORDER BY year_id DESC "
+                            ." ORDER BY year_id DESC " 
                             ." LIMIT 1 ";
                         $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
                         if($results)

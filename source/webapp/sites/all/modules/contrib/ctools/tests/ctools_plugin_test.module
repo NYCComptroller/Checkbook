@@ -21,7 +21,7 @@ function ctools_plugin_test_ctools_plugin_type() {
   return array(
     'extra_defaults' => array(
       'defaults' => array(
-        'bool' => true,
+        'bool' => TRUE,
         'string' => 'string',
         'array' => array('some value'),
       ),
@@ -88,11 +88,13 @@ function ctools_plugin_test_ctools_plugin_test_big_hook_not_cached() {
  *
  * @see ctools_plugin_test_ctools_plugin_test_big_hook_cached
  */
-function ctools_plugin_test_hook_cached_test() {}
+function ctools_plugin_test_hook_cached_test() {
+}
 
 /**
  * Callback for the big_hook_not_cached plugin.
  *
  * @see ctools_plugin_test_ctools_plugin_test_big_hook_not_cached()
  */
-function ctools_plugin_test_hook_not_cached_test() {}
+function ctools_plugin_test_hook_not_cached_test() {
+}

@@ -190,7 +190,10 @@ body.page-featuredtrends .footnote{
 }
 body.page-trends .amount-L,
 body.page-trends-landing .amount-L,
-body.page-featuredtrends .amount-L{
+body.page-featuredtrends .amount-L,
+body.page-trends .amount-S,
+body.page-trends-landing .amount-S,
+body.page-featuredtrends .amount-S{
     border-bottom: 1px solid #676767;
 }
 body.page-trends .amount-G,
@@ -271,7 +274,8 @@ a.trends-export {
 }
 
 /* dollar styles */
-td.number div.dollarItem {float:left; margin-left:12px;}
+/*td.number div.dollarItem {float:left; margin-left:12px;}*/
+td.number div.dollarItem {float:left;}
 /*body.page-trends-landing-trends td.number div.dollarItem, body.page-trends-node td.number div.dollarItem {float:left; margin-left:0;}
 #table_353_wrapper td.number div.dollarItem {margin-left:20px;}*/
 /*#table_353_wrapper td.number div.dollarItem,*/
@@ -322,6 +326,9 @@ td.number div.dollarItem {float:left; margin-left:12px;}
 #table_353_wrapper .DTFC_LeftBodyWrapper tr > td:nth-child(3) div  {margin-right:52px;}
 #table_353_wrapper td.text div{
     margin-left:10px
+}
+#node-widget-353 div.dollarItem{
+    margin-left: 20px !important;
 }
 
 /* 355 */
@@ -484,9 +491,7 @@ body.page-trends-landing-trends-node-395 #zone-content{
 #table_400_wrapper tr:nth-child(2) > th .thAssess {margin-right:11px;}
 #table_400_wrapper tr:nth-child(2) > th .thPercent {margin-right:13px;}
 #table_400_wrapper tr:nth-child(2) > th .thDirect {margin-right:30px;}
-#table_400_wrapper tr > td .tdCen {margin-right:23px;}
-#table_400_wrapper tr > td .tdCen {margin-right:40px;}
-#table_400_wrapper tr > td .tdCen {margin-right:32px;}
+#table_400_wrapper tr > td .tdCen {margin-right:29px;}
 
 /* 404 */
 body.page-trends-landing-trends-node-404 #page-title {

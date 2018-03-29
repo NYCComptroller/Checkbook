@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file Test classes for code in the CTools module file.
  */
@@ -9,7 +10,7 @@
 class CtoolsModuleTestCase extends DrupalWebTestCase {
 
   /**
-   * {@inheritDoc}
+   * {@inheritdoc}
    */
   public static function getInfo() {
     return array(
@@ -21,9 +22,9 @@ class CtoolsModuleTestCase extends DrupalWebTestCase {
   }
 
   /**
-   * {@inheritDoc}
+   * {@inheritdoc}
    */
-  function setUp(array $modules = array()) {
+  public function setUp(array $modules = array()) {
     $modules[] = 'ctools';
     parent::setUp($modules);
   }
@@ -32,30 +33,30 @@ class CtoolsModuleTestCase extends DrupalWebTestCase {
    * Test that the break phrase function behaves as expected.
    */
   public function testBreakPhrase() {
-    $tests = [
-      NULL => ['value' => []],
-      '' => ['value' => []],
-      '1' => ['operator' => 'and', 'value' => [1]],
-      '99' => ['operator' => 'and', 'value' => [99]],
-      '+1' => ['invalid_input' => TRUE, 'value' => [-1]],
-      ' 1' => ['invalid_input' => TRUE, 'value' => [-1]],
-      '1 ' => ['invalid_input' => TRUE, 'value' => [-1]],
-      '-1' => ['invalid_input' => TRUE, 'value' => [-1]],
-      '-99' => ['invalid_input' => TRUE, 'value' => [-1]],
-      '1,2' => ['operator' => 'and', 'value' => [1, 2]],
-      '1 2' => ['operator' => 'or', 'value' => [1, 2]],
-      '1+2' => ['operator' => 'or', 'value' => [1, 2]],
-      '1,2,3' => ['operator' => 'and', 'value' => [1, 2, 3]],
-      '1 2 3' => ['operator' => 'or', 'value' => [1, 2, 3]],
-      '1+2+3' => ['operator' => 'or', 'value' => [1, 2, 3]],
-      '1 , 2 , 3' => ['invalid_input' => TRUE, 'value' => [-1]],
-      '1 + 2 + 3' => ['invalid_input' => TRUE, 'value' => [-1]],
-      '1,2,3,4,5,6,7,8,9' => [
+    $tests = array(
+      NULL => array('value' => array()),
+      '' => array('value' => array()),
+      '1' => array('operator' => 'and', 'value' => array(1)),
+      '99' => array('operator' => 'and', 'value' => array(99)),
+      '+1' => array('invalid_input' => TRUE, 'value' => array(-1)),
+      ' 1' => array('invalid_input' => TRUE, 'value' => array(-1)),
+      '1 ' => array('invalid_input' => TRUE, 'value' => array(-1)),
+      '-1' => array('invalid_input' => TRUE, 'value' => array(-1)),
+      '-99' => array('invalid_input' => TRUE, 'value' => array(-1)),
+      '1,2' => array('operator' => 'and', 'value' => array(1, 2)),
+      '1 2' => array('operator' => 'or', 'value' => array(1, 2)),
+      '1+2' => array('operator' => 'or', 'value' => array(1, 2)),
+      '1,2,3' => array('operator' => 'and', 'value' => array(1, 2, 3)),
+      '1 2 3' => array('operator' => 'or', 'value' => array(1, 2, 3)),
+      '1+2+3' => array('operator' => 'or', 'value' => array(1, 2, 3)),
+      '1 , 2 , 3' => array('invalid_input' => TRUE, 'value' => array(-1)),
+      '1 + 2 + 3' => array('invalid_input' => TRUE, 'value' => array(-1)),
+      '1,2,3,4,5,6,7,8,9' => array(
         'operator' => 'and',
-        'value' => [1, 2, 3, 4, 5, 6, 7, 8, 9]
-      ],
-      '1 2,3,4 5 6 7 8 9' => ['invalid_input' => TRUE, 'value' => [-1]],
-    ];
+        'value' => array(1, 2, 3, 4, 5, 6, 7, 8, 9),
+      ),
+      '1 2,3,4 5 6 7 8 9' => array('invalid_input' => TRUE, 'value' => array(-1)),
+    );
 
     foreach ($tests as $string => $expected) {
       $result = ctools_break_phrase($string);
@@ -142,13 +143,13 @@ class CtoolsModuleTestCase extends DrupalWebTestCase {
     $ok = ctools_api_version('10.0');
     $this->assertFalse($ok, 'Check API version 10.0 is not ok');
 
-    // We are (currently) between version 1.1 and version 4.0
+    // We are (currently) between version 1.1 and version 4.0.
     $ok = ctools_api_version('1.1', '4.0');
     $this->assertTrue($ok, 'Check API is between 1 and 4');
   }
 
   /**
-   * Test that the ctools_classs_add works
+   * Test that the ctools_classs_add works.
    */
   public function testClassesAdd() {
     ctools_class_reset();
@@ -160,22 +161,22 @@ class CtoolsModuleTestCase extends DrupalWebTestCase {
     $this->assertEqual(count($classes), 1, 'Classes array has one element');
     $this->assertEqual(count($classes['html']), 1, 'Classes array has element: html');
     $this->assertTrue(isset($classes['html']['add']), 'Classes array has element: html/add');
-    $this->assertEqual($classes['html']['add'], ['testclass'], 'Classes array has expected value');
+    $this->assertEqual($classes['html']['add'], array('testclass'), 'Classes array has expected value');
 
     ctools_class_add('class2 class3');
 
     $classes = ctools_get_classes();
     $this->assertEqual(is_array($classes), 1, 'Classes should be an array');
     $this->assertEqual(count($classes['html']), 1, 'Classes array has element: html');
-    // TODO: An undesirable result: ['testclass', 'class2', 'class3'] is better.
-    $this->assertEqual($classes['html']['add'], [
+    // TODO: An undesirable result: array('testclass', 'class2', 'class3') is better.
+    $this->assertEqual($classes['html']['add'], array(
       'testclass',
-      'class2 class3'
-    ], 'Classes array has expected value');
+      'class2 class3',
+    ), 'Classes array has expected value');
   }
 
   /**
-   * Test that the ctools_classs_remove works
+   * Test that the ctools_classs_remove works.
    */
   public function testClassesRemove() {
     ctools_class_reset();
@@ -187,18 +188,18 @@ class CtoolsModuleTestCase extends DrupalWebTestCase {
     $this->assertEqual(count($classes), 1, 'Classes array has one element');
     $this->assertEqual(count($classes['html']), 1, 'Classes array has element: html');
     $this->assertTrue(isset($classes['html']['remove']), 'Classes array has element: html/remove');
-    $this->assertEqual($classes['html']['remove'], ['testclass'], 'Classes array has expected value');
+    $this->assertEqual($classes['html']['remove'], array('testclass'), 'Classes array has expected value');
 
     ctools_class_remove('class2 class3');
 
     $classes = ctools_get_classes();
     $this->assertEqual(count($classes), 1, 'Classes array has one element');
     $this->assertEqual(count($classes['html']), 1, 'Classes array has element: html');
-    // This is an undesirable result, is ['testclass', 'class2', 'class3'] better.
-    $this->assertEqual($classes['html']['remove'], [
+    // This is an undesirable result, is array('testclass', 'class2', 'class3') better.
+    $this->assertEqual($classes['html']['remove'], array(
       'testclass',
-      'class2 class3'
-    ], 'Classes array has expected value');
+      'class2 class3',
+    ), 'Classes array has expected value');
   }
 
   /**
@@ -212,10 +213,10 @@ class CtoolsModuleTestCase extends DrupalWebTestCase {
 
     $classes = ctools_get_classes();
     $this->assertTrue(isset($classes['html']['add']), 'Classes array has an add set');
-    $this->assertEqual($classes['html']['add'], ['testclass'], 'testclass is in the add set');
+    $this->assertEqual($classes['html']['add'], array('testclass'), 'testclass is in the add set');
     $this->assertTrue(isset($classes['html']['remove']), 'Classes array has a remove set');
     // TODO: Is it really good to let this happen?
-    $this->assertEqual($classes['html']['remove'], ['testclass'], 'testclass is in the remove set');
+    $this->assertEqual($classes['html']['remove'], array('testclass'), 'testclass is in the remove set');
   }
 
   /**
@@ -229,10 +230,10 @@ class CtoolsModuleTestCase extends DrupalWebTestCase {
 
     $classes = ctools_get_classes();
     $this->assertTrue(isset($classes['html']['add']), 'Classes array has an add set');
-    $this->assertEqual($classes['html']['add'], ['class2 class3'], 'Added class2 class3 is in add set');
+    $this->assertEqual($classes['html']['add'], array('class2 class3'), 'Added class2 class3 is in add set');
     $this->assertTrue(isset($classes['html']['remove']), 'Classes array has a remove set');
     // TODO: Is it really good to let this happen?
-    $this->assertEqual($classes['html']['remove'], ['class3'], 'class3 in remove set');
+    $this->assertEqual($classes['html']['remove'], array('class3'), 'class3 in remove set');
   }
 
 }

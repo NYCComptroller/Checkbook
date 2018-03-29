@@ -233,6 +233,7 @@ class SpendingUtil{
         $year_type = isset($calyear) ? "C" : "B";
         $year_id = isset($calyear) ? $calyear : (isset($year) ? $year : _getCurrentYearID());
         $vendor_id = $row["vendor_id"];
+
         $dashboard = _getRequestParamValue("dashboard");
 
         return $row["is_sub_vendor"] == "No"
@@ -387,7 +388,7 @@ class SpendingUtil{
         if(!isset($spending_vendor_latest_mwbe_category)){
             $query = "SELECT vendor_id, agency_id, year_id, type_of_year, minority_type_id, is_prime_or_sub
                       FROM spending_vendor_latest_mwbe_category
-                      WHERE minority_type_id IN (2,3,4,5,9) AND year_id = '".$year_id."' AND type_of_year = '".$year_type."'
+                      WHERE minority_type_id IN (2,3,4,5,9) AND year_id = '".$year_id."' AND type_of_year = '".$year_type."' AND vendor_id='".$vendor_id."'
                       GROUP BY vendor_id, agency_id, year_id, type_of_year, minority_type_id, is_prime_or_sub";
 
             $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
@@ -425,7 +426,7 @@ class SpendingUtil{
         if($year_type == null){
             $year_type =  _getRequestParamValue('yeartype');
         }
-        $query = "SELECT minority_type_id FROM(
+        $query = "SELECT DISTINCT minority_type_id FROM(
             SELECT a.*, row_number() OVER (PARTITION BY a.vendor_id, a.year_id, a.type_of_year ORDER BY chk_date DESC) AS flag FROM(
                 SELECT a.vendor_id, 
                     a.year_id, 
@@ -442,7 +443,7 @@ class SpendingUtil{
             SELECT DISTINCT minority_type_id 
             FROM spending_vendor_latest_mwbe_category 
             WHERE vendor_id = ".$vendor_id." AND is_prime_or_sub = '".$is_prime_or_sub."' AND type_of_year = '".$year_type."' 
-                  AND year_id = ".$year_id." AND minority_type_id <> 7 ";
+                  AND year_id = ".$year_id." AND minority_type_id <> 7 LIMIT 1";
 
         $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
         if($results[0]['minority_type_id'] != ''){
