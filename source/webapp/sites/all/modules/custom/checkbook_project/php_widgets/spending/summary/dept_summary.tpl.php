@@ -37,6 +37,8 @@ if(is_array($records)){
         $year_id = _getRequestParamValue('year');
         $deptcode = _getRequestParamValue('dept');
         $dept = "'".$deptcode."'";
+        $datasource = _getRequestParamValue('datasource');
+
     }
           $query = "SELECT  j.agency_agency, j.department_department,j1.department_name AS department_department_department_name
                   FROM (SELECT s0.agency_id AS agency_agency,s0.department_code AS department_department,s0.department_id
@@ -47,7 +49,12 @@ if(is_array($records)){
                  LEFT OUTER JOIN ref_department j1 ON j1.department_code = j.department_department and j1.department_id = j.department_id
                   LIMIT 1";
 
-    $result = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
+    if($datasource=='checkbook_oge'){
+        $result = _checkbook_project_execute_sql_by_data_source($query, 'checkbook_oge');
+    }
+    else {
+        $result = _checkbook_project_execute_sql_by_data_source($query, 'checkbook');
+    }
 
 
    $value = $result[0]['department_department_department_name'];
