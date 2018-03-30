@@ -426,15 +426,20 @@ class SpendingUtil{
             $year_type =  _getRequestParamValue('yeartype');
         }
 
+
         $query = "SELECT  sa.minority_type_id
-                      FROM spending_vendor_latest_mwbe_category sa
-                         JOIN contract_vendor_latest_mwbe_category ca
-                      ON ca.vendor_id=sa.vendor_id and ca.agency_id=sa.agency_id
-                   where sa.minority_type_id IN (2,3,4,5,9) AND ca.latest_mwbe_flag='Y'
-         AND  sa.vendor_id = ".$vendor_id."
-         AND  sa.is_prime_or_sub = ".$is_prime_or_sub."
-         AND sa.type_of_year = ".$year_type."
-         AND sa.year_id = ".$year_id."";
+                                       FROM spending_vendor_latest_mwbe_category sa 
+                                          JOIN contract_vendor_latest_mwbe_category ca 
+                                       ON ca.vendor_id=sa.vendor_id and ca.agency_id=sa.agency_id 
+                                    where ca.latest_mwbe_flag='Y' 
+                                          and   sa.vendor_id = ".$vendor_id." 
+                                          and  sa.is_prime_or_sub = '".$is_prime_or_sub."' 
+                                          AND sa.type_of_year = '".$year_type."' 
+                                          AND sa.year_id = ".$year_id."";
+
+
+
+
 
         $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
         if($results[0]['minority_type_id'] != ''){
