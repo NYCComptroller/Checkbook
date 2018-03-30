@@ -117,7 +117,7 @@
                    SUM(total_spending_amount) AS check_amount_sum,
                    d.department_name
             FROM aggregateon_spending_coa_entities s0
-            JOIN ref_department d ON d.department_code = s0.department_code
+            JOIN ref_department d ON d.department_code = s0.department_code and d.department_id=s0.department_id
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="s0.year_id" paramName="year" />
