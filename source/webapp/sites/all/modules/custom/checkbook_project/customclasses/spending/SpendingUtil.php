@@ -433,7 +433,7 @@ class SpendingUtil{
                                        ON ca.vendor_id=sa.vendor_id and ca.agency_id=sa.agency_id 
                                     where ca.latest_mwbe_flag='Y' 
                                           and   sa.vendor_id = ".$vendor_id." 
-                                          and  sa.is_prime_or_sub = 'P' 
+                                          and  sa.is_prime_or_sub = '".$is_prime_or_sub."' 
                                           AND sa.type_of_year = '".$year_type."' 
                                           AND sa.year_id = ".$year_id."";
 
