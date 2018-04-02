@@ -112,8 +112,8 @@ class PayrollUrlService
     static function titleAgencyUrl($agency, $title) {
         $agency = isset($agency) ? '/agency/' . $agency : '';
         $title = isset($title) ? '/title/' . $title : '';
-        $year=_getRequestParamValue('year');
-        $yearType = _getRequestParamValue('yeartype');
+        $year=RequestUtilities::getRequestParamValue('year');
+        $yearType = RequestUtilities::getRequestParamValue('yeartype');
         if($yearType=='C'){
             $url = '/payroll/title_landing/yeartype/C/year/'.$year
                 .$agency

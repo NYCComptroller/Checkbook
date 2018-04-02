@@ -87,7 +87,7 @@ namespace { //global
         }
 
         public static function getSubvendorDashboard(){
-            $dashboard = _getRequestParamValue('dashboard');
+            $dashboard = RequestUtilities::getRequestParamValue('dashboard');
             if($dashboard == 'mp')
                 return '/dashboard/sp';
             else if($dashboard == 'ms')
@@ -97,9 +97,9 @@ namespace { //global
         }
 
         public static function getCurrentContractStatusandType(){
-        	if(_getRequestParamValue('status') == 'A'){
+        	if(RequestUtilities::getRequestParamValue('status') == 'A'){
 				$status = 'Active';
-			}else if(_getRequestParamValue('status') == 'R'){
+			}else if(RequestUtilities::getRequestParamValue('status') == 'R'){
 				$status = 'Registered';
 			}
 
@@ -137,9 +137,9 @@ namespace { //global
                 : $row["minority_type_minority_type"];
             $minority_category = MappingUtil::getMinorityCategoryById($minority_type_id);
             $is_mwbe_certified = MappingUtil::isMWBECertified(array($minority_type_id));
-            $dtsmnid = _getRequestParamValue("dtsmnid");
-            $smnid = _getRequestParamValue("smnid");
-            $dashboard = _getRequestParamValue("dashboard");
+            $dtsmnid = RequestUtilities::getRequestParamValue("dtsmnid");
+            $smnid = RequestUtilities::getRequestParamValue("smnid");
+            $dashboard = RequestUtilities::getRequestParamValue("dashboard");
 
             if($dtsmnid != null) $nid = $dtsmnid;
             else if($smnid != null) $nid = $smnid;
@@ -207,7 +207,7 @@ namespace { //global
             if($vendor_id == null)
                 $vendor_id = $row["prime_vendor_id"];
 
-            $year_id = _getRequestParamValue("year");
+            $year_id = RequestUtilities::getRequestParamValue("year");
             $year_type = $row["yeartype_yeartype"];
             $is_prime_or_sub = $row["is_prime_or_sub"] != null ? $row["is_prime_or_sub"] : "P";
             $agency_id = null;
@@ -219,7 +219,7 @@ namespace { //global
             if($row["prime_minority_type_id"])
                 $minority_type_id = $row["prime_minority_type_id"];
 
-            $smnid = _getRequestParamValue("smnid");
+            $smnid = RequestUtilities::getRequestParamValue("smnid");
             if($smnid == 720 || $smnid == 784) return self::get_contracts_vendor_link_sub($vendor_id, $year_id, $year_type,$agency_id);
 
             $latest_minority_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id, $year_type, $is_prime_or_sub);
@@ -230,13 +230,13 @@ namespace { //global
             $status = isset($status) && $status != "" ? $status : "/status/A";
             $url = _checkbook_project_get_url_param_string("agency") . $status . _checkbook_project_get_year_url_param_string();
 
-            if($is_mwbe_certified && _getRequestParamValue('dashboard') == 'mp') {
+            if($is_mwbe_certified && RequestUtilities::getRequestParamValue('dashboard') == 'mp') {
                 $url .= _checkbook_project_get_url_param_string("cindustry")
                     . _checkbook_project_get_url_param_string("csize")
                     . _checkbook_project_get_url_param_string("awdmethod")
                     . "/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
             }
-            else if($is_mwbe_certified && _getRequestParamValue('dashboard') != 'mp') {
+            else if($is_mwbe_certified && RequestUtilities::getRequestParamValue('dashboard') != 'mp') {
                 $url .= "/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
             }
             else {
@@ -254,11 +254,11 @@ namespace { //global
             $latest_minority_id = isset($mwbe_cat) ? $mwbe_cat : self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id, $year_type, $is_prime_or_sub);
             $url = _checkbook_project_get_url_param_string("agency") . $contract_status . _checkbook_project_get_year_url_param_string();
 
-            if(in_array($latest_minority_id, array(2,3,4,5,9)) && _getRequestParamValue('dashboard') == 'mp'){
+            if(in_array($latest_minority_id, array(2,3,4,5,9)) && RequestUtilities::getRequestParamValue('dashboard') == 'mp'){
                 $url .= _checkbook_project_get_url_param_string("cindustry"). _checkbook_project_get_url_param_string("csize")
                       . _checkbook_project_get_url_param_string("awdmethod") ."/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
                 return $url;
-            }else if(in_array($latest_minority_id, array(2,3,4,5,9)) && _getRequestParamValue('dashboard') != 'mp'){
+            }else if(in_array($latest_minority_id, array(2,3,4,5,9)) && RequestUtilities::getRequestParamValue('dashboard') != 'mp'){
                 return $url ."/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
             }else{
                 return $url. "/vendor/".$vendor_id;
@@ -274,7 +274,7 @@ namespace { //global
             $latest_minority_id = isset($mwbe_cat) ? $mwbe_cat : self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id, $year_type, "S");
             $url = _checkbook_project_get_url_param_string("agency") .  _checkbook_project_get_url_param_string("contstatus","status") . _checkbook_project_get_year_url_param_string();
 
-            $current_dashboard = _getRequestParamValue("dashboard");
+            $current_dashboard = RequestUtilities::getRequestParamValue("dashboard");
             $is_mwbe_certified = in_array($latest_minority_id, array(2, 3, 4, 5, 9));
 
             //if M/WBE certified, go to M/WBE (Sub Vendor) else if NOT M/WBE certified, go to Sub Vendor dashboard
@@ -303,16 +303,16 @@ namespace { //global
           STATIC $contract_vendor_latest_mwbe_category = array();
 
         	if($agency_id == null){
-        		$agency_id =  _getRequestParamValue('agency');
+        		$agency_id =  RequestUtilities::getRequestParamValue('agency');
         	}
             if($year_type == null){
-                $year_type =  _getRequestParamValue('yeartype');
+                $year_type =  RequestUtilities::getRequestParamValue('yeartype');
             }
         	if($year_id == null){
-        		$year_id =  _getRequestParamValue('year');
+        		$year_id =  RequestUtilities::getRequestParamValue('year');
         	}
             if($year_id == null){
-                $year_id =  _getRequestParamValue('calyear');
+                $year_id =  RequestUtilities::getRequestParamValue('calyear');
             }
             if($year_id == null){
                 $year_type = "B";
@@ -355,11 +355,11 @@ namespace { //global
         public static function getLatestMwbeCategoryByVendorByTransactionYear($vendor_id, $year_id = null, $year_type = null){
 
             if($year_id == null){
-                $year_id =  _getRequestParamValue('year');
+                $year_id =  RequestUtilities::getRequestParamValue('year');
             }
 
             if($year_type == null){
-                $year_type =  _getRequestParamValue('yeartype');
+                $year_type =  RequestUtilities::getRequestParamValue('yeartype');
             }
 
                 $query = "SELECT vendor_id, agency_id, year_id, type_of_year, minority_type_id, is_prime_or_sub
@@ -400,7 +400,7 @@ namespace { //global
 
         public static function get_pending_contract_vendor_minority_category($vendor_id){
             STATIC $mwbe_vendors;
-            $agency_id =  _getRequestParamValue('agency');
+            $agency_id =  RequestUtilities::getRequestParamValue('agency');
             $agency_query = isset($agency_id) ? " AND awarding_agency_id = " . $agency_id : " ";
 
             if(!isset($mwbe_vendors)){
@@ -424,9 +424,9 @@ namespace { //global
 
             /* Begin update for NYCCHKBK-4676 */
             $minority_type_category_name = MappingUtil::getMinorityCategoryById($minority_type_category_id);
-            $dtsmnid = _getRequestParamValue("dtsmnid");
-            $smnid = _getRequestParamValue("smnid");
-            $dashboard = _getRequestParamValue("dashboard");
+            $dtsmnid = RequestUtilities::getRequestParamValue("dtsmnid");
+            $smnid = RequestUtilities::getRequestParamValue("smnid");
+            $dashboard = RequestUtilities::getRequestParamValue("dashboard");
 
             if($dtsmnid != null) $nid = $dtsmnid;
             else if($smnid != null) $nid = $smnid;
@@ -513,7 +513,7 @@ namespace { //global
          * @return string
          */
         public static function getSubVendorSpentToDateLinkUrl($node,$row){
-            $dashboard = _getRequestParamValue("dashboard");
+            $dashboard = RequestUtilities::getRequestParamValue("dashboard");
             $url = "/contract/spending/transactions/csubvendor/" . $row["subvendor_subvendor"]
                 . _checkbook_append_url_params()
                 . _checkbook_project_get_url_param_string("status")
@@ -569,11 +569,11 @@ namespace { //global
         }
         static function getRevenueLandingPageUrl($vendor_id,$row,$year_id=null,$type=null){
             if($year_id == null){
-                $year_id =  _getRequestParamValue('year');
+                $year_id =  RequestUtilities::getRequestParamValue('year');
             }
 
             if($type == null){
-                $type =  _getRequestParamValue('yeartype');
+                $type =  RequestUtilities::getRequestParamValue('yeartype');
             }
             $sql= "SELECT COUNT(l1.contract_number) total_contracts
             FROM aggregateon_mwbe_contracts_cumulative_spending l1
@@ -593,7 +593,7 @@ namespace { //global
             if($vendor_id == null)
                 $vendor_id = $row["prime_vendor_id"];
 
-            $year_id = _getRequestParamValue("year");
+            $year_id = RequestUtilities::getRequestParamValue("year");
             $year_type = $row["yeartype_yeartype"];
             $is_prime_or_sub = $row["is_prime_or_sub"] != null ? $row["is_prime_or_sub"] : "P";
             $agency_id = null;
@@ -605,7 +605,7 @@ namespace { //global
             if($row["prime_minority_type_id"])
                 $minority_type_id = $row["prime_minority_type_id"];
 
-            $smnid = _getRequestParamValue("smnid");
+            $smnid = RequestUtilities::getRequestParamValue("smnid");
             if($smnid == 720 || $smnid == 784) return self::get_contracts_vendor_link_sub($vendor_id, $year_id, $year_type,$agency_id);
 
             $latest_minority_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id, $year_type, $is_prime_or_sub);
@@ -613,13 +613,13 @@ namespace { //global
             $is_mwbe_certified = MappingUtil::isMWBECertified(array($latest_minority_id));
             $url = $contracts_landing_page._checkbook_project_get_url_param_string("agency") . $status . _checkbook_project_get_year_url_param_string();
 
-            if($is_mwbe_certified && _getRequestParamValue('dashboard') == 'mp') {
+            if($is_mwbe_certified && RequestUtilities::getRequestParamValue('dashboard') == 'mp') {
                 $url .= _checkbook_project_get_url_param_string("cindustry")
                     . _checkbook_project_get_url_param_string("csize")
                     . _checkbook_project_get_url_param_string("awdmethod")
                     . "/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
             }
-            else if($is_mwbe_certified && _getRequestParamValue('dashboard') != 'mp') {
+            else if($is_mwbe_certified && RequestUtilities::getRequestParamValue('dashboard') != 'mp') {
                 $url .= "/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
             }
             else {
@@ -671,7 +671,7 @@ namespace { //global
         public static function getSpentToDateParams(){
             $url = $_GET['q'];
             $parameters = '';
-            $contract_status = _getRequestParamValue('status');
+            $contract_status = RequestUtilities::getRequestParamValue('status');
             $contract_type = 'expense';
 
             if(preg_match('/revenue/',$url) || preg_match('/pending_rev/',$url)){
@@ -692,8 +692,8 @@ namespace { //global
          * @return mixed
          */
         public static function showSubVendorData() {
-            $dashboard = _getRequestParamValue('dashboard');
-            $smnid = _getRequestParamValue('smnid');
+            $dashboard = RequestUtilities::getRequestParamValue('dashboard');
+            $smnid = RequestUtilities::getRequestParamValue('smnid');
             return ($dashboard == 'ss' || $dashboard == 'sp' || $dashboard == 'ms') || ($smnid == 720);
         }
 
@@ -702,9 +702,9 @@ namespace { //global
          * @return mixed
          */
         public static function showPrimeMwbeData() {
-            $dashboard = _getRequestParamValue('dashboard');
-            $mwbe = _getRequestParamValue('mwbe');
-            $pmwbe = _getRequestParamValue('pmwbe');
+            $dashboard = RequestUtilities::getRequestParamValue('dashboard');
+            $mwbe = RequestUtilities::getRequestParamValue('mwbe');
+            $pmwbe = RequestUtilities::getRequestParamValue('pmwbe');
 
             return (!isset($dashboard) && (isset($mwbe) && isset($pmwbe))) && !self::showSubVendorData();
         }
@@ -714,9 +714,9 @@ namespace { //global
          * @return mixed
          */
         public static function showSubMwbeData() {
-            $dashboard = _getRequestParamValue('dashboard');
-            $mwbe = _getRequestParamValue('mwbe');
-            $smwbe = _getRequestParamValue('smwbe');
+            $dashboard = RequestUtilities::getRequestParamValue('dashboard');
+            $mwbe = RequestUtilities::getRequestParamValue('mwbe');
+            $smwbe = RequestUtilities::getRequestParamValue('smwbe');
 
             return (!isset($dashboard) && (isset($mwbe) && isset($smwbe))) && self::showSubVendorData();
         }
@@ -732,7 +732,7 @@ namespace { //global
             $data_controller_instance = data_controller_get_operator_factory_instance();
 
             //Handle year parameter mapping
-            $reqYear = _getRequestParamValue('year');
+            $reqYear = RequestUtilities::getRequestParamValue('year');
             if(isset($reqYear)) {
                 $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
                 $leCondition = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
@@ -788,11 +788,11 @@ namespace { //global
         public static function adjustActiveContractCommonParams(&$node, &$parameters) {
 
             //Handle status and year parameter
-            $contractStatus = _getRequestParamValue('contstatus');
-            $reqYear = _getRequestParamValue('year');
+            $contractStatus = RequestUtilities::getRequestParamValue('contstatus');
+            $reqYear = RequestUtilities::getRequestParamValue('year');
             $data_controller_instance = data_controller_get_operator_factory_instance();
-            $dashboard = _getRequestParamValue('dashboard');
-            $smnid = _getRequestParamValue('smnid');
+            $dashboard = RequestUtilities::getRequestParamValue('dashboard');
+            $smnid = RequestUtilities::getRequestParamValue('smnid');
             $vendor_types = isset($parameters['vendor_type']) ? $parameters['vendor_type'] :NULL;
 
             if(isset($reqYear)){
@@ -843,8 +843,8 @@ namespace { //global
 
             //Handle vendor_name mapping to prime_vendor_name and sub_vendor_name
             if(isset($parameters['vendor_name'])) {
-                $vendornm_exact = _getRequestParamValue('vendornm_exact');
-                $vendornm = _getRequestParamValue('vendornm');
+                $vendornm_exact = RequestUtilities::getRequestParamValue('vendornm_exact');
+                $vendornm = RequestUtilities::getRequestParamValue('vendornm');
                 if(isset($vendornm_exact)) {
                     $vendornm_exact = explode('~',$vendornm_exact);
                     $vendornm_exact = implode('|',$vendornm_exact);
@@ -896,8 +896,8 @@ namespace { //global
             }
 
             //if ONLY Prime or ONLY Sub amount selected, need to filter only that type
-            $prime_cur_amt = _getRequestParamValue('pcuramtr');
-            $sub_cur_amt = _getRequestParamValue('scuramtr');
+            $prime_cur_amt = RequestUtilities::getRequestParamValue('pcuramtr');
+            $sub_cur_amt = RequestUtilities::getRequestParamValue('scuramtr');
             if(isset($prime_cur_amt) && !isset($sub_cur_amt)) {
                 $parameters['prime_amount_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
             }
@@ -916,12 +916,12 @@ namespace { //global
         }
 
         public static function expenseContractsFooterUrl($subvendor_widget = false) {
-            $subvendor = _getRequestParamValue('subvendor');
-            $vendor = _getRequestParamValue('vendor');
-            $dashboard = _getRequestParamValue('dashboard');
-            $status = _getRequestParamValue('status');
-            $mwbe = _getRequestParamValue('mwbe');
-            $industry = _getRequestParamValue('cindustry');
+            $subvendor = RequestUtilities::getRequestParamValue('subvendor');
+            $vendor = RequestUtilities::getRequestParamValue('vendor');
+            $dashboard = RequestUtilities::getRequestParamValue('dashboard');
+            $status = RequestUtilities::getRequestParamValue('status');
+            $mwbe = RequestUtilities::getRequestParamValue('mwbe');
+            $industry = RequestUtilities::getRequestParamValue('cindustry');
 
             if($subvendor) {
                 $subvendor_code = self::getSubVendorCustomerCode($subvendor);
@@ -989,13 +989,13 @@ namespace { //global
                     WHERE l1.type_of_year = 'B' 
                     AND l1.status_flag = 'A' 
                     AND l1.document_code_id IN (1,2,3) "
-                    .((_getRequestParamValue('year')) ? " AND l1.fiscal_year_id = " . _getRequestParamValue('year') : "")
-                    .((_getRequestParamValue('vendor')) ? " AND l1.vendor_id = " . _getRequestParamValue('vendor') : "")
-                    .((_getRequestParamValue('agency')) ? " AND l1.agency_id = " . _getRequestParamValue('agency') : "")
-                    .((_getRequestParamValue('awdmethod')) ? " AND l1.award_method_id = " . _getRequestParamValue('awdmethod') : "")
-                    .((_getRequestParamValue('csize')) ? " AND l1.award_size_id = " . _getRequestParamValue('csize') : "")
-                    .((_getRequestParamValue('cindustry')) ? " AND l1.industry_type_id = " . _getRequestParamValue('cindustry') : "")
-                    .((_getRequestParamValue('mwbe')) ? " AND l1.minority_type_id IN (" . str_replace('~',',',_getRequestParamValue('mwbe') ).")": "");
+                    .((RequestUtilities::getRequestParamValue('year')) ? " AND l1.fiscal_year_id = " . RequestUtilities::getRequestParamValue('year') : "")
+                    .((RequestUtilities::getRequestParamValue('vendor')) ? " AND l1.vendor_id = " . RequestUtilities::getRequestParamValue('vendor') : "")
+                    .((RequestUtilities::getRequestParamValue('agency')) ? " AND l1.agency_id = " . RequestUtilities::getRequestParamValue('agency') : "")
+                    .((RequestUtilities::getRequestParamValue('awdmethod')) ? " AND l1.award_method_id = " . RequestUtilities::getRequestParamValue('awdmethod') : "")
+                    .((RequestUtilities::getRequestParamValue('csize')) ? " AND l1.award_size_id = " . RequestUtilities::getRequestParamValue('csize') : "")
+                    .((RequestUtilities::getRequestParamValue('cindustry')) ? " AND l1.industry_type_id = " . RequestUtilities::getRequestParamValue('cindustry') : "")
+                    .((RequestUtilities::getRequestParamValue('mwbe')) ? " AND l1.minority_type_id IN (" . str_replace('~',',',RequestUtilities::getRequestParamValue('mwbe') ).")": "");
             $count = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
             if($count[0]['count'] > 0){
                 return true;

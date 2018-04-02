@@ -83,7 +83,7 @@
             {"label": "","column": ""}
           ],
     "adjustDataTableOptions":"
-            $smnid = _getRequestParamValue('smnid');
+            $smnid = RequestUtilities::getRequestParamValue('smnid');
             if(isset($smnid)){
                 switch($smnid){
                     case 322:
@@ -109,7 +109,7 @@
                     array_unshift($config->orderBy, 'employment_type.employment_type');
                 }
 
-               $monthId = _getRequestParamValue('month');
+               $monthId = RequestUtilities::getRequestParamValue('month');
                 if( isset($monthId)){
                    $node->widgetConfig->dataset = 'checkbook:payroll_employee_agency_month';
                 }

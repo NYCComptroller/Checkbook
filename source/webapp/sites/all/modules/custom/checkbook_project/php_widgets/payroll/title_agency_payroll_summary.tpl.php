@@ -44,8 +44,8 @@ if($results){
                         <span class='payroll-label'>Title: </span>
                         <span class='payroll-value'>{$title_url}</span>
                     </div>";
-    if(_getRequestParamValue('agency')){
-        $agencyId = _getRequestParamValue('agency');
+    if(RequestUtilities::getRequestParamValue('agency')){
+        $agencyId = RequestUtilities::getRequestParamValue('agency');
     }
     else{
         $agencyId = null;

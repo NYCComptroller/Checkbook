@@ -75,7 +75,7 @@
     "template":"revenue_transactions_summary",
     "templateTitle":"Revenue Details",
     "templateLabel":"Year",
-    "templateLabelEval":"return 'FY '._getYearValueFromID(_getRequestParamValue('year'));"
+    "templateLabelEval":"return 'FY '._getYearValueFromID(RequestUtilities::getRequestParamValue('year'));"
   },
   "chartConfig":{
     "chart":{

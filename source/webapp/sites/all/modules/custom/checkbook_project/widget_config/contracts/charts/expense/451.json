@@ -43,12 +43,12 @@
     $data = array();$categories=array();
     foreach ($node->data as $row){
         //$link= CustomURLHelper::prepareUrl('contracts_landing', ContractURLHelper::$landingPageParams, array('expandBottomCont'=>'true'), array('vendor'=>$row['vendor_vendor']) );
-        $dashboard_param =  ContractUtil::get_contract_vendor_minority_category($row['vendor_vendor'],_getRequestParamValue('year'),_getRequestParamValue('yeartype'),_getRequestParamValue('agency')) ;
+        $dashboard_param =  ContractUtil::get_contract_vendor_minority_category($row['vendor_vendor'],RequestUtilities::getRequestParamValue('year'),RequestUtilities::getRequestParamValue('yeartype'),RequestUtilities::getRequestParamValue('agency')) ;
         $additional_params = array('vendor'=>$row['vendor_vendor']) ;
         if($dashboard_param != null ){
         	$additional_params[substr($dashboard_param,1)] = null;
-        }        
-        
+        }
+
         $link= CustomURLHelper::prepareUrl('contracts_landing', ContractURLHelper::$landingPageParams, array('expandBottomCont'=>'true'),$additional_params);
         $categories[]=html_entity_decode($row['vendor_vendor_legal_name'],ENT_QUOTES);
         $data[] = (object)array('totalcontracts'=>$row['total_contracts'],'year'=>$row['fiscal_year_id'],'y'=>$row['current_amount_sum'],'url'=>$link,'name'=>strtoupper(html_entity_decode($row['vendor_vendor_legal_name'],ENT_QUOTES)));

@@ -1,19 +1,19 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -61,7 +61,7 @@ function checkbook_faceted_search_theme($existing, $type, $theme, $path) {
     'pagination' => array(
       'template' => 'pagination',
       'arguments' => array('node'=>NULL)
-    )     
+    )
   );
 }
 
@@ -85,7 +85,7 @@ function _checkbook_faceted_search_node_pagination($nid){
 }
 
 function _checkbook_faceted_search_node_autocomplete(){
-  $nid = _getRequestParamValue('node');
+  $nid = RequestUtilities::getRequestParamValue('node');
   $node = node_load($nid);
   widget_config($node);
   widget_prepare($node);
@@ -97,7 +97,7 @@ function _checkbook_faceted_search_node_autocomplete(){
     return drupal_json_output(array("No Matches Found"));
   }
   $output = array();
-  
+
   foreach( $node->data['unchecked'] as $row ){
     if(isset($row[1]))
       $output[] =  array("value"=>urlencode(html_entity_decode($row[0],ENT_QUOTES)), 'label'=>html_entity_decode($row[1],ENT_QUOTES) . " (" . $row[2] . ")" );
@@ -109,7 +109,7 @@ function _checkbook_faceted_search_update_data($node) {
     $data = $node->data;
     $output = array();
     $output['filter_name'] = $node->widgetConfig->filterName;
-    $params = explode('~', _getRequestParamValue($node->widgetConfig->urlParameterName));
+    $params = explode('~', RequestUtilities::getRequestParamValue($node->widgetConfig->urlParameterName));
 
     //The value in this facet can be 0
     if($node->widgetConfig->allowZeroValue == true) {
@@ -245,7 +245,7 @@ function _checkbook_faceted_search_update_data_range_filter($node){
     $rangeColumnNameVariant = $node->widgetConfig->rangeColumnNameVariant;
     $output = array();
     $output['filter_name'] = $node->widgetConfig->filterName;
-    $params = explode('~',_getRequestParamValue($node->widgetConfig->urlParameterName));
+    $params = explode('~',RequestUtilities::getRequestParamValue($node->widgetConfig->urlParameterName));
     if(!is_array($data[0])){
       $data = array(0=>array());
     }
@@ -266,7 +266,7 @@ function _checkbook_faceted_search_update_data_range_filter($node){
             return ($a[2] > $b[2]) ? -1 : 1;
         }
     );*/
-    
+
     for ($i = 0; $i < 6; $i++){
       $checked = false;
       foreach ($params as $param){
@@ -290,7 +290,7 @@ function _checkbook_faceted_search_update_data_logical_or_filter($node){
     $data = $node->data;
     $output = array();
     $output['filter_name'] = $node->widgetConfig->filterName;
-    $params = explode('~',_getRequestParamValue($node->widgetConfig->urlParameterName));
+    $params = explode('~',RequestUtilities::getRequestParamValue($node->widgetConfig->urlParameterName));
     if(!is_array($data[0])){
         $data = array(0=>array());
     }
@@ -335,7 +335,7 @@ function _checkbook_faceted_search_update_data_union_or_filter($node){
     $data = $node->data;
     $output = array();
     $output['filter_name'] = $node->widgetConfig->filterName;
-    $params = explode('~',_getRequestParamValue($node->widgetConfig->urlParameterName));
+    $params = explode('~',RequestUtilities::getRequestParamValue($node->widgetConfig->urlParameterName));
 
     if(!is_array($data[0])){
         $data = array(0=>array());
@@ -398,11 +398,11 @@ function _checkbook_faceted_search_update_data_range2_filter($node){
   $data = $node->data;
   $output = array();
   $output['filter_name'] = $node->widgetConfig->filterName;
-  $params = explode('~',_getRequestParamValue($node->widgetConfig->urlParameterName));
+  $params = explode('~',RequestUtilities::getRequestParamValue($node->widgetConfig->urlParameterName));
   if(!is_array($data[0])){
     $data = array(0=>array());
   }
-  
+
   $initial[0] = array(6, 'Greater than $5B', $data[0]['g5b_count']);
   $initial[1] = array(5, '$4B - $5B', $data[0]['g4b_le5b_count']);
   $initial[2] = array(4, '$3B - $4B', $data[0]['g3b_le4b_count']);
@@ -432,7 +432,7 @@ function _checkbook_faceted_search_update_data_range3_filter($node){
     $data = $node->data;
     $output = array();
     $output['filter_name'] = $node->widgetConfig->filterName;
-    $params = explode('~',_getRequestParamValue($node->widgetConfig->urlParameterName));
+    $params = explode('~',RequestUtilities::getRequestParamValue($node->widgetConfig->urlParameterName));
     if(!is_array($data[0])){
         $data = array(0=>array());
     }
@@ -618,7 +618,7 @@ function checkbook_faceted_search_preprocess_pagination(&$variables){
     else {
         $data = _checkbook_faceted_search_update_data($node);
     }
-  
+
     $variables['filter_name'] = $data['filter_name'];
     $variables['checked'] = $data['checked'];
     $variables['unchecked'] = $data['unchecked'];

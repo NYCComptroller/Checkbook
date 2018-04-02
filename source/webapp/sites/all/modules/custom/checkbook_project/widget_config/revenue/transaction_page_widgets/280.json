@@ -99,7 +99,7 @@
         return $adjustedParameters;
     ",
     "adjustDataTableOptions":"
-        $revenuetype = _getRequestParamValue('revenuetype');
+        $revenuetype = RequestUtilities::getRequestParamValue('revenuetype');
         if(isset($revenuetype) && $revenuetype == 'remaining') {
             $node->widgetConfig->dataTableOptions->aaSorting[0][0] = 3;
         }

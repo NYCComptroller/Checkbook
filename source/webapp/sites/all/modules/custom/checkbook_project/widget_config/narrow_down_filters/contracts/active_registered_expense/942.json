@@ -29,10 +29,10 @@
             $parameters = _checkbook_project_applyParameterFilters($node,$parameters);
             $parameters['vendor_name.vendor_name'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
 
-            if(_getRequestParamValue('dashboard') == 'ss'){
+            if(RequestUtilities::getRequestParamValue('dashboard') == 'ss'){
                 $parameters['vendor_record_type'] = 'Sub Vendor';
             }
-            if(!_getRequestParamValue('dashboard')) {
+            if(!RequestUtilities::getRequestParamValue('dashboard')) {
                     unset($parameters['prime_vendor_code']);
                     unset($parameters['sub_vendor_code']);
             }

@@ -105,7 +105,7 @@
             {"labelAlias": "payroll_type","column": "payroll_type_formatted","sortSourceColumn": "payroll_type"}
           ],
     "adjustParameters":"
-                $empId = _getRequestParamValue('xyz');
+                $empId = RequestUtilities::getRequestParamValue('xyz');
                 if(isset($empId)){
                     $empNoData = _checkbook_project_querydataset('checkbook:employee',array('employee_number'), array('employee_id'=>$empId));
                     $parameters['employee_number'] = $empNoData[0]['employee_number'];

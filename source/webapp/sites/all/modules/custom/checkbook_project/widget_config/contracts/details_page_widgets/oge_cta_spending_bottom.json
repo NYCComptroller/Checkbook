@@ -3,8 +3,8 @@
 "template":"contracts_oge_cta_spending_bottom",
 "noDataInitialLoad":true,
 "phpcode":"
-$ag_id = _getRequestParamValue('agid');
- $q1 =    'select 
+$ag_id = RequestUtilities::getRequestParamValue('agid');
+ $q1 =    'select
         og.fms_contract_number
         ,og.vendor_id
         ,og.vendor_name
@@ -26,16 +26,16 @@ $ag_id = _getRequestParamValue('agid');
             from oge_contract og2 join history_agreement hm2 ON og2.fms_contract_number = hm2.contract_number
             where hm2.original_agreement_id = hm.original_agreement_id
             group by  og2.vendor_id, hm2.document_fiscal_year
-            
+
         )
         order by og.vendor_id, hm.document_fiscal_year desc, og.fms_commodity_line desc
         ';
-        
+
         $results_contract_history = _checkbook_project_execute_sql_by_data_source($q1,'checkbook_oge');
         $node->results_contract_history = $results_contract_history;
-        
-        
-        
+
+
+
 $q2 = 'select
         og.vendor_id
         ,og.vendor_name
@@ -49,10 +49,10 @@ $q2 = 'select
         from disbursement_line_item_details dlid join oge_contract_vendor_level og  on
         og.fms_contract_number = dlid.contract_number AND og.vendor_id = dlid.vendor_id
         join ref_date rd1 on rd1.date_id = check_eft_issued_date_id
-        where dlid.agreement_id = ' . $ag_id . 
+        where dlid.agreement_id = ' . $ag_id .
         'order by og.vendor_id, dlid.fiscal_year desc , rd1.date desc , dlid.check_amount desc' ;
-        
-        
+
+
         $results_spending = _checkbook_project_execute_sql_by_data_source($q2,'checkbook_oge');
         $node->results_spending = $results_spending;
         $template = $node->widgetConfig->template;

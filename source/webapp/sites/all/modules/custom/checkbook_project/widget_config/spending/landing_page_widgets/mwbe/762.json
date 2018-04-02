@@ -9,7 +9,7 @@
     "noDataInitialLoad":true,
     "totalAggregateColumns":["check_amount_sum"],
     "adjustTotalAggregateColumnsParameters":"
-        if(_getRequestParamValue('smnid') == 762) {
+        if(RequestUtilities::getRequestParamValue('smnid') == 762) {
             unset($parameters['vendor_id']);
         }
         return $parameters;

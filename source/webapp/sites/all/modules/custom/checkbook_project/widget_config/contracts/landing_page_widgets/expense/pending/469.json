@@ -9,7 +9,7 @@
 "noDataInitialLoad":true,
 "columns": ["award_size.award_size","award_size.award_size.award_size_name","original_amount_sum","current_amount_sum","total_contracts"],
 "adjustParameters":"
-    $dashboard = _getRequestParamValue('dashboard');
+    $dashboard = RequestUtilities::getRequestParamValue('dashboard');
 if($dashboard == 'ss' || $dashboard == 'sp' || $dashboard == 'ms'){
 $parameters['minority_type_id'] = 1000;
 }

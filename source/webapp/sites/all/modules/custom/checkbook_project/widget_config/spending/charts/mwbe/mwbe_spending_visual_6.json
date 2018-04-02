@@ -19,7 +19,7 @@
              {
                   "labelAlias": "Amount",
                   "columnType": "number",
-                  "formatType": "amount"             
+                  "formatType": "amount"
              },
              {
                   "labelAlias": "Prime Vendor",
@@ -29,7 +29,7 @@
                   "labelAlias": "Contracting Agency",
                   "columnType": "text number-left"
              }
-             
+
         ]
 },
 "no_results_content":"No Results Found",
@@ -38,69 +38,69 @@
 "urlParamMap":{"mwbe":"minority_type_id","year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"vendor_id","category":"spending_category_id","industry":"industry_type_id"},
 "chartTitle":"Top Ten Contracts by M/WBE Spending",
 "widgetDataLoader":"
-    
+
     $where_filters = array();
     foreach($node->widgetConfig->requestParams as $param=>$value){
         $where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
     }
-    
+
     if(count($where_filters) > 0){
         $where_filter = ' where ' . implode(' and ' , $where_filters);
     }
-    
+
     $sql = ' select
 		sum(total_spending_amount) total_spending_amount,
 		agency_name,
 		document_id,
 		document_code,
 		agreement_id,
-		legal_name		
-	from {aggregateon_mwbe_spending_contract} a1     
+		legal_name
+	from {aggregateon_mwbe_spending_contract} a1
     join {vendor} v on v.vendor_id =  a1.vendor_id
     join {ref_agency} ra on ra.agency_id =  a1.agency_id
-   ' . $where_filter . '    
+   ' . $where_filter . '
    group by    agency_name,
 		document_id,
 		document_code,
-		agreement_id,		
+		agreement_id,
 		legal_name
     order by 1 desc limit 10';
 
-    
+
     $node->data  = _checkbook_project_execute_sql($sql);
-    
+
 ",
 "widgetUpdateJSONConfig":"
-	
+
 	$series_new = array();
-	$mwbe_filter = _getRequestParamValue('mwbe');
-	if($mwbe_filter =='4~5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){			
+	$mwbe_filter = RequestUtilities::getRequestParamValue('mwbe');
+	if($mwbe_filter =='4~5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){
 		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName()  . ' Top Ten Contracts Spending';
 	}else{
-		$node->widgetConfig->chartTitle = 'Top Ten Contracts by ' . MappingUtil::getCurrenEthnicityName() .' Spending';		
+		$node->widgetConfig->chartTitle = 'Top Ten Contracts by ' . MappingUtil::getCurrenEthnicityName() .' Spending';
 	}
-	
+
 	$index = 0;
 	foreach($node->data as $row){
-	 		$tooltip_label = 
+	 		$tooltip_label =
 	 						'Contract ID: ' . $row['document_id'].  '<br/>' .
 	 						'Amount: ' . custom_number_formatter_format($row['total_spending_amount'] ,2, '$').  '<br/>' .
 	 						'Prime Vendor: ' . $row['legal_name'] .  '<br/>' .
-	 						'Contracting Agency: ' . $row['agency_name'] .  '<br/>' 
-	 						; 
-	 						
+	 						'Contracting Agency: ' . $row['agency_name'] .  '<br/>'
+	 						;
+
 			$link = 'contract_details'
                        . ( in_array($row['document_code'], array('MMA1','MA1')) ? '/magid/' : '/agid/' )
-                       .  $row['agreement_id'] .  _checkbook_append_url_params() . '/doctype/' . $row['document_code'] . '/newwindow';	 						
+                       .  $row['agreement_id'] .  _checkbook_append_url_params() . '/doctype/' . $row['document_code'] . '/newwindow';
 	 		$series_new[$index]->url = $link;
-	 						
+
 			$series_new[$index]->y = (float)$row['total_spending_amount'];
 			$series_new[$index]->tooltip_label = $tooltip_label;
 			$node->widgetConfig->gridConfig->data[] = array($row['document_id'],
 														$row['total_spending_amount'],
 														 $row['legal_name'] ,
 														 $row['agency_name']
-														);			
+														);
 			$index += 1;
 	}
 
@@ -108,7 +108,7 @@
 	$node->widgetConfig->chartConfig->series[0]->type = 'column';
 	$node->widgetConfig->chartConfig->series[0]->pointWidth = 30;
 	$node->widgetConfig->chartConfig->series[0]->data = $series_new;
-	
+
 ",
 "chartConfig" : {
 	"colors":["#7DB7E5"],
@@ -120,7 +120,7 @@
                 "dataLabels": {
                     "enabled": false
                 } ,
-              	"point": {"events": {"function": "clickEvent"}}                            
+              	"point": {"events": {"function": "clickEvent"}}
             }
     },
     "xAxis": {
@@ -138,13 +138,13 @@
     "title": {"text": ""},
     "yAxis": {
      	"min":0,
-     	"minRange": 0.1,    
+     	"minRange": 0.1,
         "startOnTick":true,
         "title": {"text": ""},
         "labels":{"rotation": 0,"function":"yAxisFormatter"}
     } ,
     "legend": {
-        "enabled": false       
+        "enabled": false
     },
     "tooltip":{"function":"tooltipformatter"}
     }

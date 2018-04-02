@@ -6,7 +6,7 @@
         return $header;
     ",
     "preProcessConfiguration":"
-        $yeartype = _getRequestParamValue('yeartype');
+        $yeartype = RequestUtilities::getRequestParamValue('yeartype');
         $node->widgetConfig->model->series[0]->orderBy = $yeartype == 'B' ? 'display_order' : 'month_value';
     ",
     "gridConfig":{
@@ -127,7 +127,7 @@
         $node->widgetConfig->chartConfig->xAxis->categories = $categories;
 
 
-        $categoryId = _getRequestParamValue('category');
+        $categoryId = RequestUtilities::getRequestParamValue('category');
         if(isset($categoryId)){
             $categoryDetails = SpendingUtil::getSpendingCategoryDetails($categoryId,'display_name');
             if(is_array($categoryDetails)){

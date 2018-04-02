@@ -1,19 +1,19 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -100,8 +100,8 @@ function widget_controller_menu(){
       'access callback' => true,
       'type'=>MENU_CALLBACK
   );
-  
-  
+
+
   $items['widget_controller/%'] = array(
   		'page callback' => '_widget_controller_node_view_page',
   		'page arguments' => array(1),
@@ -118,7 +118,7 @@ function widget_controller_load($key){
 	if($node == null){
 		$node = _widget_controller_node_load_file($key);
 	}
-	
+
 	return $node;
 }
 
@@ -215,14 +215,14 @@ function _widget_controller_node_load_file($key){
 	$node->type = "widget_controller";
     $files = file_scan_directory( drupal_get_path('module','checkbook_view_configs') , '/^'.$key.'\.json$/');
       if(count($files) > 0){
-        $file_names = array_keys($files); 
+        $file_names = array_keys($files);
         $json = file_get_contents($file_names[0]);
         $node->widget_json =  $json;
       }
     if($node->nid == null){
     	$node->nid = $key;
-    }  
-    return $node;  
+    }
+    return $node;
 }
 
 function widget_controller_form(&$node) {
@@ -272,7 +272,7 @@ function widget_controller_node_view($node, $nodata = true) {
 
 	//invoke widget specific prepare
 	widget_controller_invoke($node, 'widget_controller_prepare');
-	
+
 	//load data
 	if(($node->widgetConfig->noDataInitialLoad == null || !$node->widgetConfig->noDataInitialLoad) || !$nodata ){
 	    widget_controller_data($node);
@@ -331,7 +331,7 @@ function _widget_controller_ajax_wrapper($node){
 function widget_controller_ajax_get_node($node){
   $node = widget_controller_node_view($node,false);
   echo $node->content['body']['#markup'];
- 
+
 }
 
 /***************************************/
@@ -865,8 +865,8 @@ function _replace_special_characters_decode($string){
 function widget_controller_update_dataset_datasource($datasetName,$keepOriginalDatasource = false){
 	if($keepOriginalDatasource == true){
 		return $datasetName;
-	}	
-    $database = _getRequestParamValue('datasource');
+	}
+    $database = RequestUtilities::getRequestParamValue('datasource');
     if(isset($database)){
         $database = str_replace("checkbook:", "checkbook_oge:",$datasetName);
     }else{
@@ -878,7 +878,7 @@ function widget_controller_update_dataset_datasource($datasetName,$keepOriginalD
 function widget_controller_update_node_data($data,$keepOriginalDatasource = false){
 	if($keepOriginalDatasource == true){
 		return $data;
-	}	
+	}
     $returnData = array();
     foreach($data as $key=>$value){
          $arrayValues = array();
@@ -897,7 +897,7 @@ function widget_controller_update_columns_by_datasource($node_columns, $datasour
 		return $node_columns;
 	}
     $columns = array();
-    $database = _getRequestParamValue('datasource');
+    $database = RequestUtilities::getRequestParamValue('datasource');
     $datasource_mapping = ($datasource_mapping != null) ? get_object_vars($datasource_mapping) : null;
     foreach($node_columns as $column){
         if($datasource_mapping == null){
@@ -916,7 +916,7 @@ function widget_controller_update_columns_by_datasource($node_columns, $datasour
 
 
 function widget_controller_get_current_datasource(){
-	$datasource = _getRequestParamValue('datasource');
+	$datasource = RequestUtilities::getRequestParamValue('datasource');
 	if(isset($datasource)){
 		return $datasource;
 	}else{
@@ -939,7 +939,7 @@ function _widget_controller_build_sql_condition($column, $value){
 	}else{
 		return  $column . '=' . '\'' . $value . '\'';
 	}
-	
+
 }
 
 
@@ -957,11 +957,11 @@ function _widget_controller_join_merge_data($array1,$array2, $keys = array()){
 					}
 				}
 			}
-			
+
 		}
-	}	
+	}
 	return $array1;
-	
+
 }
 
 

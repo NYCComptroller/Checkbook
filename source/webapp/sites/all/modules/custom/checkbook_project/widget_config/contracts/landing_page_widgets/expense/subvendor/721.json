@@ -20,7 +20,7 @@
             "yeartype.yeartype","spending_amount_sum","original_agreement.original_agreement",
             "document_code.document_code.document_code","agency.agency.agency_name","prime_minority_type.prime_minority_type"],
 "adjustParameters":"
-    if(_getRequestParamValue('dashboard') == 'ss'){
+    if(RequestUtilities::getRequestParamValue('dashboard') == 'ss'){
         unset($parameters['minority_type_id']);
     }
     $adjustedParameters = $parameters;
@@ -30,7 +30,7 @@
     return $adjustedParameters;
 ",
 "preProcessConfiguration":"
-if(_getRequestParamValue('contnum') == null)
+if(RequestUtilities::getRequestParamValue('contnum') == null)
     $node->widgetConfig->summaryView->template = 'sub_contract_summary_expense_contract';
 ",
 "limit":5,
@@ -66,7 +66,7 @@ if(_getRequestParamValue('contnum') == null)
     },
     "subvendor_name_link": {
         "type": "expression2",
-        "expression": "'<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row['subvendor_subvendor'],_getRequestParamValue('year'),$row['yeartype_yeartype']) .  '?expandBottomCont=true\">' .$row['subvendor_name_formatted']. '</a>'"
+        "expression": "'<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row['subvendor_subvendor'],RequestUtilities::getRequestParamValue('year'),$row['yeartype_yeartype']) .  '?expandBottomCont=true\">' .$row['subvendor_name_formatted']. '</a>'"
     },
     "spent_amount_link": {
         "type": "expression2",

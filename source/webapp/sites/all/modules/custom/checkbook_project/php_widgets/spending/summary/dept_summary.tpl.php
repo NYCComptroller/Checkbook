@@ -28,16 +28,16 @@ if(is_array($records)){
     $dept = WidgetUtil::getLabel("dept_name");
     $percent_spending = WidgetUtil::getLabel("percent_spending");
     $percent_spending_value = $row['percent_spending'];
-    if(_getRequestParamValue('smnid') == 29) {
+    if(RequestUtilities::getRequestParamValue('smnid') == 29) {
         $percent_spending = '';
         $percent_spending_value = '';
 
-        $agency_id = _getRequestParamValue('agency');
-        $type_of_year = _getRequestParamValue('yeartype');
-        $year_id = _getRequestParamValue('year');
-        $deptcode = _getRequestParamValue('dept');
+        $agency_id = RequestUtilities::getRequestParamValue('agency');
+        $type_of_year = RequestUtilities::getRequestParamValue('yeartype');
+        $year_id = RequestUtilities::getRequestParamValue('year');
+        $deptcode = RequestUtilities::getRequestParamValue('dept');
         $dept = "'".$deptcode."'";
-        $datasource = _getRequestParamValue('datasource');
+        $datasource = RequestUtilities::getRequestParamValue('datasource');
 
     }
           $query = "SELECT  j.agency_agency, j.department_department,j1.department_name AS department_department_department_name

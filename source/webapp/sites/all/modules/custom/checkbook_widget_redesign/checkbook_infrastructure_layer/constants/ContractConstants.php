@@ -50,7 +50,7 @@ abstract class ContractStatusParameter {
     const PENDING = "P";
 
     public static function getCurrent() {
-        return _getRequestParamValue(UrlParameter::CONTRACT_STATUS);
+        return RequestUtilities::getRequestParamValue(UrlParameter::CONTRACT_STATUS);
     }
 }
 

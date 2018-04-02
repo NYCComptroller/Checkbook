@@ -3,7 +3,7 @@
 "template":"contracts_cta_spending_top",
 "noDataInitialLoad":true,
 "phpcode":"
-$agid = _getRequestParamValue('agid');
+$agid = RequestUtilities::getRequestParamValue('agid');
 
 $q0 = 'SELECT contract_number FROM agreement_snapshot WHERE original_agreement_id = '. $agid .' LIMIT 1';
 
