@@ -247,14 +247,14 @@
       return $adjustedParameters;
   ",
   "adjustDataTableOptions":"
-      $budgettype = _getRequestParamValue('budgettype');
+      $budgettype = RequestUtilities::getRequestParamValue('budgettype');
       if(isset($budgettype)) {
           $is_committed_expense = ($budgettype == 'committed');
           $is_remaining_expense = ($budgettype == 'remaining');
       }
       else {
-          $dtsmnid = _getRequestParamValue('dtsmnid');
-          $smnid = _getRequestParamValue('smnid');
+          $dtsmnid = RequestUtilities::getRequestParamValue('dtsmnid');
+          $smnid = RequestUtilities::getRequestParamValue('smnid');
           $nid = isset($dtsmnid) ? $dtsmnid : $smnid;
           $is_committed_expense = ($nid == 558) || ($nid == 559) || ($nid == 568) || ($nid == 571);
       }

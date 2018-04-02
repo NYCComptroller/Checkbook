@@ -7,7 +7,7 @@
  "urlParamMap":{"year":"year_id","agency":"agency_id","yeartype":"type_of_year","calyear":"year_id","category":"spending_category_id","fvendor":"vendor_id","vendor":"vendor_id","mwbe":"minority_type_id"},
 "dataset": "checkbook:spending_data",
 "preProcessConfiguration":"
-    $mwbe = _getRequestParamValue('mwbe');
+    $mwbe = RequestUtilities::getRequestParamValue('mwbe');
     $node->is_mwbe = ($mwbe != null ) ?  true: false;
     if($node->is_mwbe){
         $node->widgetConfig->dataset = 'checkbook:spending_mwbe_data';
@@ -93,7 +93,7 @@ return $footer;
     }
   ],
 "dataTableOptions":{
-"aoColumns": [ 
+"aoColumns": [
     { "bSortable": false,"sClass":"text"},
     {"sClass":"number","sWidth":"150px","asSorting": [ "desc","asc"  ],"visibility_flag": "-is_mwbe"},
     {"sClass":"number","sWidth":"75px","asSorting": [ "desc","asc"  ],"visibility_flag": "is_mwbe"},

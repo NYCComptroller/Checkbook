@@ -244,7 +244,7 @@ $parameters['type_of_year@checkbook:contracts_spending_transactions'] = 'C';
 }
 }
 
-$dtsmnid = _getRequestParamValue('dtsmnid');
+$dtsmnid = RequestUtilities::getRequestParamValue('dtsmnid');
 if($dtsmnid == 20){//From spending landing page
 $data_controller_instance = data_controller_get_operator_factory_instance();
 $parameters['agreement_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
@@ -273,8 +273,8 @@ return $adjustedParameters;
 "adjustDataTableOptions":"
 $adjustDataTableOptions = $node->widgetConfig->dataTableOptions;
 
-$dtsmnid = (_getRequestParamValue('dtsmnid') || _getRequestParamValue('smnid'));
-$calYear = _getRequestParamValue('calyear');
+$dtsmnid = (RequestUtilities::getRequestParamValue('dtsmnid') || RequestUtilities::getRequestParamValue('smnid'));
+$calYear = RequestUtilities::getRequestParamValue('calyear');
 if($dtsmnid == 20){//From spending landing page
 foreach($node->widgetConfig->table_columns as $key => $table_column){
 if($table_column->labelAlias == 'contract_purpose' && isset($calYear)){

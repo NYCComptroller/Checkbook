@@ -26,12 +26,12 @@
         "total_gross_pay"
     ],
     "adjustParameters":"
-        $yearType = _getRequestParamValue('yeartype');
-        if(_getRequestParamValue('calyear')){
-            $year_id = _getRequestParamValue('calyear');
+        $yearType = RequestUtilities::getRequestParamValue('yeartype');
+        if(RequestUtilities::getRequestParamValue('calyear')){
+            $year_id = RequestUtilities::getRequestParamValue('calyear');
         }
-        if(_getRequestParamValue('year')){
-            $year_id = _getRequestParamValue('year');
+        if(RequestUtilities::getRequestParamValue('year')){
+            $year_id = RequestUtilities::getRequestParamValue('year');
         }
         if(isset($yearType)) {
             if($yearType == 'B') {
@@ -53,12 +53,12 @@
         return $adjustedParameters;
     ",
     "transformationPHP":"
-        $year = _getRequestParamValue('calyear') ? _getRequestParamValue('calyear') : _getRequestParamValue('year');
-        $year_type = _getRequestParamValue('yeartype');
-        $month = _getRequestParamValue('month');
-        $agency = _getRequestParamValue('agency');
-        $title = _getRequestParamValue('title');
-        $employee_id = _getRequestParamValue('abc') ? _getRequestParamValue('abc') : _getRequestParamValue('xyz');
+        $year = RequestUtilities::getRequestParamValue('calyear') ? RequestUtilities::getRequestParamValue('calyear') : RequestUtilities::getRequestParamValue('year');
+        $year_type = RequestUtilities::getRequestParamValue('yeartype');
+        $month = RequestUtilities::getRequestParamValue('month');
+        $agency = RequestUtilities::getRequestParamValue('agency');
+        $title = RequestUtilities::getRequestParamValue('title');
+        $employee_id = RequestUtilities::getRequestParamValue('abc') ? RequestUtilities::getRequestParamValue('abc') : RequestUtilities::getRequestParamValue('xyz');
 
         $max_annual_salary = payrollDetails::getMaxAnnualSalaryByPayFrequency($year, $year_type, $month, $agency, $title, $employee_id);
         $max_hourly_rate = payrollDetails::getMaxHourlyRateByPayFrequency($year, $year_type, $month, $agency, $title, $employee_id);

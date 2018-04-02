@@ -192,8 +192,8 @@
         if(isset($year)){
             $parameters['fiscal_year_id'] = $year;
         }
-        if(_getRequestParamValue('dashboard') == null) {
-            if(isset($parameters['disb_vendor_id']) && _getRequestParamValue('fvendor') == null) {
+        if(RequestUtilities::getRequestParamValue('dashboard') == null) {
+            if(isset($parameters['disb_vendor_id']) && RequestUtilities::getRequestParamValue('fvendor') == null) {
                 $parameters['prime_vendor_id'] = $parameters['disb_vendor_id'];
                 unset($parameters['disb_vendor_id']);
             }
@@ -211,7 +211,7 @@
     "adjustDataTableOptions":"
               $adjustDataTableOptions = $node->widgetConfig->dataTableOptions;
 
-              $rpp = _getRequestParamValue('rpp');
+              $rpp = RequestUtilities::getRequestParamValue('rpp');
                  if(is_numeric($rpp) ){
                         $adjustDataTableOptions->iDisplayLength = (int)$rpp;
                  }

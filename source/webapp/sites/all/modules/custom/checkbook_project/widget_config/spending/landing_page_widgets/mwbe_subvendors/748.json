@@ -35,7 +35,7 @@
     "dataset":"checkbook:contracts_subven_vendor_spending",
     "totalAggregateColumns":["check_amount_sum"],
     "adjustTotalAggregateColumnsParameters":"
-        if(_getRequestParamValue('smnid') == 748) {
+        if(RequestUtilities::getRequestParamValue('smnid') == 748) {
             unset($parameters['sub_vendor.sub_vendor']);
         }
         return $parameters;

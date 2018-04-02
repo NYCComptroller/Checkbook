@@ -18,10 +18,10 @@ class ContractsWidgetService extends WidgetDataService implements IWidgetService
                 $column = $row['contract_number'];
                 $class = "bottomContainerReload";
                 if(ContractStatus::getCurrent() == ContractStatus::PENDING)
-                    $url = ContractsUrlService::pendingContractIdLink($row['original_agreement_id'],$row['document_code'],$row['pending_contract_number'],$row['contract_number'],$row['document_version']); 
+                    $url = ContractsUrlService::pendingContractIdLink($row['original_agreement_id'],$row['document_code'],$row['pending_contract_number'],$row['contract_number'],$row['document_version']);
                 else
                     $url = ContractsUrlService::contractIdUrl($row['original_agreement_id'],$row['document_code']);
-                
+
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
 
@@ -29,7 +29,7 @@ class ContractsWidgetService extends WidgetDataService implements IWidgetService
                 $column = $row['contract_number'];
                 $class = "bottomContainerReload";
                 if(ContractStatus::getCurrent() == ContractStatus::PENDING)
-                    $url = ContractsUrlService::pendingMasterContractIdUrl($row['original_agreement_id'],$row['document_code'],$row['pending_contract_number'],$row['contract_number'],$row['document_version']); 
+                    $url = ContractsUrlService::pendingMasterContractIdUrl($row['original_agreement_id'],$row['document_code'],$row['pending_contract_number'],$row['contract_number'],$row['document_version']);
                 else
                     $url = ContractsUrlService::masterContractIdUrl($row['original_agreement_id'],$row['document_code']);
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
@@ -66,7 +66,7 @@ class ContractsWidgetService extends WidgetDataService implements IWidgetService
                 break;
 
             case "master_agreements_agency_landing_link":
-                $datasource = _getRequestParamValue('datasource');
+                $datasource = RequestUtilities::getRequestParamValue('datasource');
                 $column = $row['agency_name'];
                 if($datasource == 'checkbook_oge'){
                     return $column;
@@ -76,7 +76,7 @@ class ContractsWidgetService extends WidgetDataService implements IWidgetService
                 break;
 
             case "master_agreements_vendor_name_link":
-                $datasource = _getRequestParamValue('datasource');
+                $datasource = RequestUtilities::getRequestParamValue('datasource');
                 $column = $row['vendor_name'];
                 if($datasource == 'checkbook_oge'){
                     return $column;

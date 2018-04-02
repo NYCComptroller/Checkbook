@@ -126,14 +126,14 @@
         ["prime_dollar_difference","sub_dollar_difference"]
     ],
     "preProcessConfiguration":"
-        $doctype = _getRequestParamValue('doctype');
+        $doctype = RequestUtilities::getRequestParamValue('doctype');
         $doctypes = isset($doctype) ? explode('~', $doctype) : array();
         $is_master_agreement = in_array('MA1', $doctypes) || in_array('MMA1', $doctypes);
         $node->is_master_agreement = $is_master_agreement;
-        $smnid = $doctype = _getRequestParamValue('smnid');
+        $smnid = $doctype = RequestUtilities::getRequestParamValue('smnid');
         $node->show_difference = ($smnid == 480 || $smnid == 366 || $smnid == 722);
-        $node->dashboard = _getRequestParamValue('dashboard');
-        $node->dashboard = _getRequestParamValue('dashboard');
+        $node->dashboard = RequestUtilities::getRequestParamValue('dashboard');
+        $node->dashboard = RequestUtilities::getRequestParamValue('dashboard');
     ",
     "caption":"",
     "derivedColumns": {
@@ -263,7 +263,7 @@
         "prime_vendor_name_link": {
             "type": "expression2",
             "expression": " '<a href=\"'
-            . ContractsUrlService::primeVendorUrl($row['prime_vendor_id'],_getRequestParamValue('year'), false,$row['document_code'])
+            . ContractsUrlService::primeVendorUrl($row['prime_vendor_id'],RequestUtilities::getRequestParamValue('year'), false,$row['document_code'])
             .  '?expandBottomCont=true\">'. $row['prime_vendor_name_formatted'] . '</a>'  "
         },
         "subvendor_name_formatted": {
@@ -272,7 +272,7 @@
         },
         "subvendor_name": {
             "type":"expression2",
-            "expression":"(in_array(strtoupper($row['sub_vendor_name']), array('NOT PROVIDED', 'N/A', '', NULL))) ? (isset($row['sub_vendor_name']) ? $row['sub_vendor_name']: 'N/A' ) : '<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row['sub_vendor_id'],_getRequestParamValue('year'),_getRequestParamValue('yeartype'), null, $row['sub_minority_type_id']) .  '?expandBottomCont=true\">' .$row['subvendor_name_formatted']. '</a>'"
+            "expression":"(in_array(strtoupper($row['sub_vendor_name']), array('NOT PROVIDED', 'N/A', '', NULL))) ? (isset($row['sub_vendor_name']) ? $row['sub_vendor_name']: 'N/A' ) : '<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row['sub_vendor_id'],RequestUtilities::getRequestParamValue('year'),RequestUtilities::getRequestParamValue('yeartype'), null, $row['sub_minority_type_id']) .  '?expandBottomCont=true\">' .$row['subvendor_name_formatted']. '</a>'"
         },
         "sub_mwbe_category_name": {
             "type":"expression2",

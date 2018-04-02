@@ -5,28 +5,28 @@
     "widgetPreprocessJSON":"
         if(!preg_match('/smnid/',$_GET['q']) && ( preg_match('/spending\\/transactions/',$_GET['q'])
                 || preg_match('/contract\\/all\\/transactions/',$_GET['q'])
-                || preg_match('/contract\\/search\\/transactions/',$_GET['q'])) 
+                || preg_match('/contract\\/search\\/transactions/',$_GET['q']))
         ){
             unset($node->widgetConfig->model->series[5]->seriesURLParamMap->mwbe);
             unset($node->widgetConfig->model->series[6]->seriesURLParamMap->mwbe);
         }
 
-        if((_getRequestParamValue('dashboard') == 'ss' || _getRequestParamValue('dashboard') == 'ms')
-                && _getRequestParamValue('mwbe') == '2~3~4~5~9' ){
+        if((RequestUtilities::getRequestParamValue('dashboard') == 'ss' || RequestUtilities::getRequestParamValue('dashboard') == 'ms')
+                && RequestUtilities::getRequestParamValue('mwbe') == '2~3~4~5~9' ){
                 unset($node->widgetConfig->model->series[7]->seriesURLParamMap->mwbe);
                 unset($node->widgetConfig->model->series[8]->seriesURLParamMap->mwbe);
-        } 
-        
+        }
+
         // Payroll amount should be calculated for 'Calendar Year' always for all the other domains
         if(!preg_match('/payroll/',$_SERVER['REQUEST_URI'])){
             unset($node->widgetConfig->model->series[1]->seriesURLParamMap->yeartype);
         }
-         
-        if(_getRequestParamValue('yeartype') == 'B' && !preg_match('/payroll/',$_SERVER['REQUEST_URI']))
+
+        if(RequestUtilities::getRequestParamValue('yeartype') == 'B' && !preg_match('/payroll/',$_SERVER['REQUEST_URI']))
             unset($node->widgetConfig->model->series[1]->seriesURLParamMap->year);
-        
+
     ",
-    
+
     "model": {
         "join": {
             "method": "Union"
@@ -40,7 +40,7 @@
                 "seriesDefaultParameters":{"document_code.document_code.document_code":"CT1~CTA1~RCT1~MA1","contract_status.contract_status":"R","type_of_year":"B"},
                 "adjustSerieParameters":"
                     //Calculate amount for all years on 'All Years' advanced search results page
-                    if(_getRequestParamValue('year') || _getRequestParamValue('calyear'))
+                    if(RequestUtilities::getRequestParamValue('year') || RequestUtilities::getRequestParamValue('calyear'))
                         $serieParameters['fiscal_year_id'] = RequestUtil::getFiscalYearIdForTopNavigation();
                     return $serieParameters;
                 "
@@ -52,7 +52,7 @@
                 "allowedParams":["year.year","agency_id","type_of_year","civil_service_title_code.civil_service_title_code"],
                 "seriesDefaultParameters":{"type_of_year":"C"},
                 "adjustSerieParameters":"
-                    if(_getRequestParamValue('yeartype') == 'B' && !preg_match('/payroll/',$_SERVER['REQUEST_URI']))
+                    if(RequestUtilities::getRequestParamValue('yeartype') == 'B' && !preg_match('/payroll/',$_SERVER['REQUEST_URI']))
                         $serieParameters['fiscal_year_id'] = RequestUtil::getCalYearIdForTopNavigation();
                     return $serieParameters;
                 "
@@ -65,7 +65,7 @@
                 "seriesDefaultParameters":{"type_of_year":"B"},
                 "adjustSerieParameters":"
                     //Calculate amount for all years on 'All Years' advanced search results page
-                    if(_getRequestParamValue('year') || _getRequestParamValue('calyear'))
+                    if(RequestUtilities::getRequestParamValue('year') || RequestUtilities::getRequestParamValue('calyear'))
                         $serieParameters['year.year'] = RequestUtil::getFiscalYearIdForTopNavigation();
                     return $serieParameters;
                 "
@@ -77,7 +77,7 @@
                 "allowedParams":["budget_fiscal_year_id","agency_id","calyear"],
                 "adjustSerieParameters":"
                     //Calculate amount for all years on 'All Years' advanced search results page
-                    if(_getRequestParamValue('year') || _getRequestParamValue('calyear'))
+                    if(RequestUtilities::getRequestParamValue('year') || RequestUtilities::getRequestParamValue('calyear'))
                         $serieParameters['budget_fiscal_year_id'] = RequestUtil::getFiscalYearIdForTopNavigation();
                     return $serieParameters;
                 "
@@ -89,7 +89,7 @@
                 "allowedParams":["year.year","agency_id","calyear"],
                 "adjustSerieParameters":"
                     //Calculate amount for all years on 'All Years' advanced search results page
-                    if(_getRequestParamValue('year') || _getRequestParamValue('calyear'))
+                    if(RequestUtilities::getRequestParamValue('year') || RequestUtilities::getRequestParamValue('calyear'))
                         $serieParameters['year.year'] = RequestUtil::getFiscalYearIdForTopNavigation();
                     return $serieParameters;
                 "
@@ -102,7 +102,7 @@
                 "seriesDefaultParameters":{"type_of_year":"B","minority_type_id":"2~3~4~5~9"},
                 "adjustSerieParameters":"
                     //Calculate amount for all years on 'All Years' advanced search results page
-                    if(_getRequestParamValue('year') || _getRequestParamValue('calyear'))
+                    if(RequestUtilities::getRequestParamValue('year') || RequestUtilities::getRequestParamValue('calyear'))
                         $serieParameters['year.year'] = RequestUtil::getFiscalYearIdForTopNavigation();
                     return $serieParameters;
                 "
@@ -123,7 +123,7 @@
                 "seriesDefaultParameters":{"type_of_year":"B"},
                 "adjustSerieParameters":"
                     //Calculate amount for all years on 'All Years' advanced search results page
-                    if(_getRequestParamValue('year') || _getRequestParamValue('calyear'))
+                    if(RequestUtilities::getRequestParamValue('year') || RequestUtilities::getRequestParamValue('calyear'))
                         $serieParameters['year.year'] = RequestUtil::getFiscalYearIdForTopNavigation();
                     return $serieParameters;
                 "
@@ -143,7 +143,7 @@
                 "seriesDefaultParameters":{"type_of_year":"B","minority_type_id":"2~3~4~5~9"},
                 "adjustSerieParameters":"
                     //Calculate amount for all years on 'All Years' advanced search results page
-                    if(_getRequestParamValue('year') || _getRequestParamValue('calyear'))
+                    if(RequestUtilities::getRequestParamValue('year') || RequestUtilities::getRequestParamValue('calyear'))
                         $serieParameters['year.year'] = RequestUtil::getFiscalYearIdForTopNavigation();
                     return $serieParameters;
                 "

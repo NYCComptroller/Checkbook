@@ -106,11 +106,11 @@ function _getYearValueFromID($year_id)
 function _getFullYearString()
 {
 
-    $year_id = _getRequestParamValue('year');
+    $year_id = RequestUtilities::getRequestParamValue('year');
     if (empty($year_id)) {
-        $year_id = _getRequestParamValue('calyear');
+        $year_id = RequestUtilities::getRequestParamValue('calyear');
     }
-    $yearType = _getRequestParamValue('yeartype');
+    $yearType = RequestUtilities::getRequestParamValue('yeartype');
     if (empty($yearType)) {
         $yearType = 'B';
     }
@@ -306,26 +306,7 @@ function _break_text_custom2($text, $length = 18)
  */
 function _getRequestParamValue($paramName, $fromRequestPath = True)
 {
-    if (empty($paramName)) {
-        return NULL;
-    }
-    $value = NULL;
-    if ($fromRequestPath) {
-        $urlPath = drupal_get_path_alias($_GET['q']);
-        $pathParams = explode('/', $urlPath);
-        $index = array_search($paramName, $pathParams);
-        if ($index !== FALSE) {
-            $value = filter_xss($pathParams[($index + 1)]);
-        }
-        if (trim($value) == "") {
-            return NULL;
-        }
-        if (isset($value) || $fromRequestPath) {
-            return htmlspecialchars_decode($value, ENT_QUOTES);
-        }
-    } else {
-        return filter_xss(htmlspecialchars_decode($_GET[$paramName], ENT_QUOTES));
-    }
+    return RequestUtilities::getRequestParamValue($paramName, $fromRequestPath);
 }
 
 /**
@@ -448,7 +429,7 @@ function _checkbook_project_view_all_popup($node)
     $node->widgetConfig->dataTableOptions->sDom = "<pir><t><p>";
     $node->widgetConfig->disableViewAll = true;
     $node->widgetConfig->ajaxDataPopup = true;
-    if (_getRequestParamValue('gridview')) {
+    if (RequestUtilities::getRequestParamValue('gridview')) {
         $node->widgetConfig->displayType = 'gridview';
         $node->widgetConfig->dataTableOptions->fnDrawCallback = NULL;
         $nodeHTML = widget_invoke($node, 'widget_view');
@@ -479,7 +460,7 @@ function _checkbook_project_view_all_popup_data($node)
     widget_invoke($node, 'widget_prepare');
     $node->widgetConfig->limit = $limitPerPage;
     $node->widgetConfig->getTotalDataCount = true;
-    if (_getRequestParamValue('gridview')) {
+    if (RequestUtilities::getRequestParamValue('gridview')) {
         $node->widgetConfig->displayType = 'gridview';
     }
     //load data
@@ -779,7 +760,7 @@ function _checkbook_project_adjustContractParameterFilters(&$node, &$parameters,
         break;*/
 
         case "active_registered_all":
-            /*if(_getRequestParamValue($contractStatusParam) =='A'){
+            /*if(RequestUtilities::getRequestParamValue($contractStatusParam) =='A'){
                 $data_controller_instance = data_controller_get_operator_factory_instance();
                 $leCondition = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, array(date('Y-m-d')));
                 $parameters['effective_begin_date'] = $leCondition;
@@ -813,7 +794,7 @@ function _checkbook_project_adjust_spending_parameter_filters(&$node, &$paramete
             $parameters['ctx.ctx.type_of_year'] = 'C';
         }
     }
-    $dtsmnid = _getRequestParamValue('dtsmnid');
+    $dtsmnid = RequestUtilities::getRequestParamValue('dtsmnid');
     if ($dtsmnid == 20) {//From spending landing page
         $data_controller_instance = data_controller_get_operator_factory_instance();
         $parameters['agreement_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
@@ -860,13 +841,13 @@ function _checkbook_project_adjust_date_spending_parameter_filters(&$node, &$par
 function _checkbook_project_adjust_mwbe_spending_parameter_filters(&$node, &$parameters)
 {
 
-    $dtsmnid = _getRequestParamValue('dtsmnid');
-    $smnid = _getRequestParamValue('smnid');
-    $month = _getRequestParamValue('month');
+    $dtsmnid = RequestUtilities::getRequestParamValue('dtsmnid');
+    $smnid = RequestUtilities::getRequestParamValue('smnid');
+    $month = RequestUtilities::getRequestParamValue('month');
     $nid = isset($dtsmnid) ? $dtsmnid : $smnid;
     $current_node_nid = $node->nid;
 
-    $magid = _getRequestParamValue('magid');
+    $magid = RequestUtilities::getRequestParamValue('magid');
     if ($smnid == 764 && $magid != null) {
         $parameters['master_contract_industry_type_id'] = $parameters['industry_type_id'];
         unset($parameters['industry_type_id']);
@@ -901,7 +882,7 @@ function _checkbook_project_adjust_mwbe_spending_parameter_filters(&$node, &$par
                 $parameters['is_prime_or_sub'] = array('S');
                 break;
             default:
-                if (_getRequestParamValue('dashboard') == null) {
+                if (RequestUtilities::getRequestParamValue('dashboard') == null) {
                     //Static Amount for Citywide = Prime Only
                     if ($current_node_nid == 775 || ($current_node_nid == 706 && isset($month)))
                         $parameters['is_prime_or_sub'] = array('P');
@@ -914,7 +895,7 @@ function _checkbook_project_adjust_mwbe_spending_parameter_filters(&$node, &$par
                 break;
         }
     }
-    
+
     if($dtsmnid == 764){
         $parameters['contract_document_code'] = array( 'CT1', 'CTA1', 'POD', 'POC', 'PCC1', 'DO1','MA1','MMA1');
     }
@@ -1505,8 +1486,8 @@ function _checkbook_project_get_url_param_string($key, $key_alias = null, $ajaxP
 function _checkbook_project_get_vendor_facet_url_param_string($node = null)
 {
     $fvendor = null;
-    $vendor = _getRequestParamValue('vendor');
-    $subvendor = _getRequestParamValue('subvendor');
+    $vendor = RequestUtilities::getRequestParamValue('vendor');
+    $subvendor = RequestUtilities::getRequestParamValue('subvendor');
     $nid = $node != null ? $node->nid : null;
 
     switch ($nid) {
@@ -1560,7 +1541,7 @@ function _get_document_codes()
  */
 function _get_master_agreement_id()
 {
-    $agid = (_getRequestParamValue('agid') == null) ? 1 : _getRequestParamValue('agid');
+    $agid = (RequestUtilities::getRequestParamValue('agid') == null) ? 1 : RequestUtilities::getRequestParamValue('agid');
     $results = get_db_results(true, 'checkbook:history_agreement', array("master_agreement_id"), array("original_agreement_id" => $agid), NULL, 0, 1);
     $magid = ($results[0]['master_agreement_id'] == null) ? 0 : $results[0]['master_agreement_id'];
     return $magid;
@@ -1669,7 +1650,7 @@ function _pending_contracts_link_contract_details($contract_number, $original_ag
     }
 
     //Don't persist M/WBE parameter if there is no dashboard (this could be an advanced search parameter)
-    $mwbe_parameter = _getRequestParamValue('dashboard') != null ? _checkbook_project_get_url_param_string("mwbe") : '';
+    $mwbe_parameter = RequestUtilities::getRequestParamValue('dashboard') != null ? _checkbook_project_get_url_param_string("mwbe") : '';
     $url .= $mwbe_parameter;
 
     if ($linktype == 'bar') {
@@ -1853,10 +1834,10 @@ function _checkbook_project_adjustTableColumnLabel($label)
     /*static $isCurrentYear;
 
     if(!isset($isCurrentYear)){
-        $reqYearType = _getRequestParamValue('yeartype');
-        $reqYear = _getRequestParamValue('year');
+        $reqYearType = RequestUtilities::getRequestParamValue('yeartype');
+        $reqYear = RequestUtilities::getRequestParamValue('year');
         if(!isset($reqYear)){
-            $reqYear = _getRequestParamValue('calyear');
+            $reqYear = RequestUtilities::getRequestParamValue('calyear');
         }
 
         if(!isset($reqYear)){
@@ -1953,15 +1934,15 @@ function _checkbook_project_getChartTitle($domain, $subTitle, $by = null, $chart
     switch (strtolower($domain)) {
         case "contracts":
             if (preg_match("/^contracts_landing/", $url)) {
-                if (_getRequestParamValue("status") == "A") {
+                if (RequestUtilities::getRequestParamValue("status") == "A") {
                     $title = 'Active Expense Contracts';
-                } else if (_getRequestParamValue("status") == "R") {
+                } else if (RequestUtilities::getRequestParamValue("status") == "R") {
                     $title = 'Registered Expense Contracts';
                 }
             } else if (preg_match("/^contracts_revenue_landing/", $url)) {
-                if (_getRequestParamValue("status") == "A") {
+                if (RequestUtilities::getRequestParamValue("status") == "A") {
                     $title = 'Active Revenue Contracts';
-                } else if (_getRequestParamValue("status") == "R") {
+                } else if (RequestUtilities::getRequestParamValue("status") == "R") {
                     $title = 'Registered Revenue Contracts';
                 }
             } else if (preg_match("/^contracts_pending_rev_landing/", $url)) {
@@ -2112,10 +2093,10 @@ function _checkbook_max_data_year()
  */
 function _checkbook_append_url_params($source = null, $overidden_params = array(), $top_nav = false)
 {
-    $datasource = (isset($overidden_params['datasource'])) ? $overidden_params['datasource'] : _getRequestParamValue('datasource');
-    $mwbe = (isset($overidden_params['mwbe'])) ? $overidden_params['mwbe'] : _getRequestParamValue('mwbe');
-    //$svendor = (isset($overidden_params['subvendor'])) ? $overidden_params['subvendor'] : _getRequestParamValue('subvendor');
-    $dashboard = (isset($overidden_params['dashboard'])) ? $overidden_params['dashboard'] : _getRequestParamValue('dashboard');
+    $datasource = (isset($overidden_params['datasource'])) ? $overidden_params['datasource'] : RequestUtilities::getRequestParamValue('datasource');
+    $mwbe = (isset($overidden_params['mwbe'])) ? $overidden_params['mwbe'] : RequestUtilities::getRequestParamValue('mwbe');
+    //$svendor = (isset($overidden_params['subvendor'])) ? $overidden_params['subvendor'] : RequestUtilities::getRequestParamValue('subvendor');
+    $dashboard = (isset($overidden_params['dashboard'])) ? $overidden_params['dashboard'] : RequestUtilities::getRequestParamValue('dashboard');
 
     $url = "";
     if (isset($datasource)) {
@@ -2138,7 +2119,7 @@ function _checkbook_append_url_params($source = null, $overidden_params = array(
                     $url = isset($dashboard) ? "/dashboard/" . $dashboard : "";
                 }
             } else {
-                if (!$top_nav || (isset($mwbe) && _getRequestParamValue('vendor') > 0 && _getRequestParamValue('dashboard') != "ms")) {
+                if (!$top_nav || (isset($mwbe) && RequestUtilities::getRequestParamValue('vendor') > 0 && RequestUtilities::getRequestParamValue('dashboard') != "ms")) {
                     $url = isset($mwbe) ? "/mwbe/" . $mwbe : "";
                     // $url .= isset($svendor) ? "/subvendor/".$svendor : "";
                     $url .= isset($dashboard) ? "/dashboard/" . $dashboard : "";
@@ -2154,7 +2135,7 @@ function _checkbook_append_url_params($source = null, $overidden_params = array(
  */
 function _checkbook_check_isEDCPage()
 {
-    $database = _getRequestParamValue('datasource');
+    $database = RequestUtilities::getRequestParamValue('datasource');
     if (isset($database)) {
         return true;
     } else {
@@ -2165,7 +2146,7 @@ function _checkbook_check_isEDCPage()
 /** Returns Boolean if this is an mwbe page */
 function _checkbook_check_is_mwbe_page()
 {
-    return null != _getRequestParamValue('mwbe');
+    return null != RequestUtilities::getRequestParamValue('mwbe');
 }
 
 /** Returns Boolean if this is a sub vendor page */
@@ -2184,7 +2165,7 @@ function _checkbook_check_is_sub_vendor_page()
  */
 function _checkbook_check_is_sub_vendor_level_page()
 {
-    return _checkbook_check_is_sub_vendor_page() && _getRequestParamValue("subvendor") != "all";
+    return _checkbook_check_is_sub_vendor_page() && RequestUtilities::getRequestParamValue("subvendor") != "all";
 }
 
 /**
@@ -2266,15 +2247,15 @@ function _get_toggle_view_links()
     $year_string = _checkbook_project_get_year_url_param_string();
     $link = $oge_agency_id = $vendor_id = null;
 
-    if (!_checkbook_check_isEDCPage() && _getRequestParamValue('vendor')) {
-        $oge_agency_id = _checkbook_get_oge_agency_id(_getRequestParamValue('vendor'));
+    if (!_checkbook_check_isEDCPage() && RequestUtilities::getRequestParamValue('vendor')) {
+        $oge_agency_id = _checkbook_get_oge_agency_id(RequestUtilities::getRequestParamValue('vendor'));
         if ($oge_agency_id > 0)
             $link = '/' . $array_q[1] . $year_string . '/datasource/checkbook_oge/agency/' . $oge_agency_id;
 
         if (strlen($link) > 0)
             return array('vendor', $link);
     } else if (_checkbook_check_isEDCPage()) {
-        $vendor_id = _checkbook_get_toggle_vendor_id(_getRequestParamValue('agency'));
+        $vendor_id = _checkbook_get_toggle_vendor_id(RequestUtilities::getRequestParamValue('agency'));
         if ($vendor_id > 0)
             $link = '/' . $array_q[1] . $year_string . '/vendor/' . $vendor_id;
         if (strlen($link) > 0)
@@ -2314,9 +2295,9 @@ function _is_mwbe_vendor($agreement_id)
  */
 function _getAnnualSalariedEmployeeCount($node)
 {
-    $agency_id = _getRequestParamValue('agency');
-    $yeartype = _getRequestParamValue('yeartype');
-    $yearid = _getRequestParamValue('year');
+    $agency_id = RequestUtilities::getRequestParamValue('agency');
+    $yeartype = RequestUtilities::getRequestParamValue('yeartype');
+    $yearid = RequestUtilities::getRequestParamValue('year');
 
     $where_filter = " WHERE type_of_year = '" . $yeartype . "' AND type_of_employment = 'Salaried' AND fiscal_year_id = " . $yearid;
     if ($agency_id) {
@@ -2395,11 +2376,11 @@ function _get_contract_includes_subvendors_data($attributes = NULL)
  */
 function _checkbook_vendor_link($vendor_id, $prime = FALSE) {
 
-  $status = '/status/' . (_getRequestParamValue("status") ?: 'A');
+  $status = '/status/' . (RequestUtilities::getRequestParamValue("status") ?: 'A');
 
-  if (_getRequestParamValue("doctype") == "RCT1") {
+  if (RequestUtilities::getRequestParamValue("doctype") == "RCT1") {
     $page = '/contracts_revenue_landing';
-      $is_mwbe = _is_mwbe_vendor(_getRequestParamValue("magid"));
+      $is_mwbe = _is_mwbe_vendor(RequestUtilities::getRequestParamValue("magid"));
       if ($is_mwbe) {
          $mwbe = '/dashboard/mp';
 
@@ -2429,7 +2410,7 @@ function _checkbook_vendor_link($vendor_id, $prime = FALSE) {
     }
 
 
-   if(_is_mwbe_vendor(_getRequestParamValue("agid")) || _is_mwbe_vendor(_getRequestParamValue("magid")) || PrimeVendorService::getLatestMinorityTypeByYear($vendor_id, _getCurrentYearID(), 'B')) {
+   if(_is_mwbe_vendor(RequestUtilities::getRequestParamValue("agid")) || _is_mwbe_vendor(RequestUtilities::getRequestParamValue("magid")) || PrimeVendorService::getLatestMinorityTypeByYear($vendor_id, _getCurrentYearID(), 'B')) {
        $mwbe = RequestUtilities::_appendMWBESubVendorDatasourceUrlParams();
     }
 
@@ -2452,15 +2433,15 @@ function _checkbook_vendor_link($vendor_id, $prime = FALSE) {
  */
 function _checkbook_agency_link($agency_id, $prime = FALSE){
 
-  $status = '/status/' . (_getRequestParamValue("status") ?: 'A');
+  $status = '/status/' . (RequestUtilities::getRequestParamValue("status") ?: 'A');
 
   $datasource = '';
-  if ('checkbook_oge' == _getRequestParamValue("datasource")) {
+  if ('checkbook_oge' == RequestUtilities::getRequestParamValue("datasource")) {
     $datasource = "/datasource/checkbook_oge";
   }
 
-  if (_getRequestParamValue("doctype") == "RCT1") {
-      $is_mwbe = _is_mwbe_vendor(_getRequestParamValue("magid"));
+  if (RequestUtilities::getRequestParamValue("doctype") == "RCT1") {
+      $is_mwbe = _is_mwbe_vendor(RequestUtilities::getRequestParamValue("magid"));
       if ($is_mwbe) {
           $mwbe = RequestUtilities::_appendMWBESubVendorDatasourceUrlParams();
       }
@@ -2484,10 +2465,10 @@ function _checkbook_agency_link($agency_id, $prime = FALSE){
     }
 
 
-      if (_is_mwbe_vendor(_getRequestParamValue("magid"))) {
+      if (_is_mwbe_vendor(RequestUtilities::getRequestParamValue("magid"))) {
           $mwbe = RequestUtilities::_appendMWBESubVendorDatasourceUrlParams();
       }
-      else if(_is_mwbe_vendor(_getRequestParamValue("agid"))){
+      else if(_is_mwbe_vendor(RequestUtilities::getRequestParamValue("agid"))){
           $mwbe = RequestUtilities::_appendMWBESubVendorDatasourceUrlParams();
       }
     $agency_link = $dashboard.$status.'/year/' . _getCurrentYearID() . $datasource. '/yeartype/B/agency/'

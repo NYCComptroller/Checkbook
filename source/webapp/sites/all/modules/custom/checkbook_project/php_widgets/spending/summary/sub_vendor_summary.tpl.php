@@ -1,19 +1,19 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -32,11 +32,11 @@ if(is_array($records)){
     $mwbe_category = strtoupper(MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']));
     $totcontamnt_value = $row['formatted_total_contract_amount_sum'];
 
-    if(_getRequestParamValue('smnid') == 759 ){
+    if(RequestUtilities::getRequestParamValue('smnid') == 759 ){
         $percent_spending_value = $row['percent_spending'];
         $percent_spending = WidgetUtil::getLabel("percent_spending");
     }
-    if(_getRequestParamValue('smnid') == 719){
+    if(RequestUtilities::getRequestParamValue('smnid') == 719){
         $percent_spending_value = '';
         $percent_spending = '';
         $associated_prime_vendor_value = $row['prime_vendor_prime_vendor_legal_name'];
@@ -48,14 +48,14 @@ if(is_array($records)){
         $totcontamnt = '';
 
     }
-    if(_getRequestParamValue('smnid') == 763 || _getRequestParamValue('smnid') == 748){
+    if(RequestUtilities::getRequestParamValue('smnid') == 763 || RequestUtilities::getRequestParamValue('smnid') == 748){
         $percent_spending_value = $row['percent_spending'];
         $percent_spending = WidgetUtil::getLabel("percent_spending");
         $no_of_subcontracts_value = $row['total_sub_contracts'];
         $no_of_subcontracts =  WidgetUtil::getLabel("num_sub_contracts");
     }
 
-    
+
 $summaryContent =  <<<EOD
 <div class="contract-details-heading">
 	<div class="contract-id">

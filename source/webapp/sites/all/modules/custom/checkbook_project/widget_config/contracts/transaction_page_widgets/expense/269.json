@@ -19,16 +19,16 @@
 "dataset": "checkbook:all_agreement_transactions",
 "columns": ["total_maximum_contract_amount"],
 "adjustParameters":"
-        $dashboard = _getRequestParamValue('dashboard');
+        $dashboard = RequestUtilities::getRequestParamValue('dashboard');
         if($dashboard == 'ss' || $dashboard == 'sp' || $dashboard == 'ms') $parameters['is_prime_or_sub'] = 'S';
         else if($dashboard == 'mp' || $dashboard == null) $parameters['is_prime_or_sub'] = 'P';
 
-        $smnid = _getRequestParamValue('smnid');
+        $smnid = RequestUtilities::getRequestParamValue('smnid');
         if($smnid == 720) $parameters['is_prime_or_sub'] = 'S';
 
         //fvendor is always mapped to vendor_id incorrectly here
-        $vendor_id = _getRequestParamValue('vendor');
-        $subvendor_id = _getRequestParamValue('subvendor');
+        $vendor_id = RequestUtilities::getRequestParamValue('vendor');
+        $subvendor_id = RequestUtilities::getRequestParamValue('subvendor');
         unset($parameters['prime_vendor_id']);
         unset($parameters['vendor_id']);
         if(isset($vendor_id)) {

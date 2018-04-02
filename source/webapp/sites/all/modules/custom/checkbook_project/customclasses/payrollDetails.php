@@ -10,15 +10,15 @@ class payrollDetails {
 
     public function getData(&$node){
 
-        $year_type = _getRequestParamValue("yeartype");
-        $year = _getRequestParamValue("year");
-        $title = _getRequestParamValue("title");
-        $agency = _getRequestParamValue("agency");
-        $month = _getRequestParamValue("month");
-        $smnid = _getRequestParamValue("smnid");
+        $year_type = RequestUtilities::getRequestParamValue("yeartype");
+        $year = RequestUtilities::getRequestParamValue("year");
+        $title = RequestUtilities::getRequestParamValue("title");
+        $agency = RequestUtilities::getRequestParamValue("agency");
+        $month = RequestUtilities::getRequestParamValue("month");
+        $smnid = RequestUtilities::getRequestParamValue("smnid");
 
         if($year_type == 'C' && !isset($year)) {
-            $year = _getRequestParamValue("calyear");
+            $year = RequestUtilities::getRequestParamValue("calyear");
         }
 
         $dataset = 'aggregateon_payroll_employee_agency';

@@ -15,19 +15,19 @@
 		</tr>
 	</thead>
 	<tbody class="hidden_body" style="display:none" >
-		<?php 
+		<?php
 			$id = 0;
 			foreach($left_agencies_data as $row){
 				$agency = $row['agency_name'];
 				$chart = theme('mwbe_agency_grading_row_chart',array('id'=>$id, 'data_row'=>$row['data_row']));
 				if( $row['spending_amount'] > 0){
                     if($is_prime == 'sub_vendor_data'){
-                        $link = "/spending_landing/year/" . _getRequestParamValue("year") .
-                            "/yeartype/" .  _getRequestParamValue("yeartype") . "/agency/" .  $row["agency_id"] . "/dashboard/sp/mwbe/" . MappingUtil::$total_mwbe_cats;
+                        $link = "/spending_landing/year/" . RequestUtilities::getRequestParamValue("year") .
+                            "/yeartype/" .  RequestUtilities::getRequestParamValue("yeartype") . "/agency/" .  $row["agency_id"] . "/dashboard/sp/mwbe/" . MappingUtil::$total_mwbe_cats;
                     }
                     else{
-                        $link = "/spending_landing/year/" . _getRequestParamValue("year") .
-                            "/yeartype/" .  _getRequestParamValue("yeartype") . "/agency/" .  $row["agency_id"] . "/dashboard/mp/mwbe/" . MappingUtil::$total_mwbe_cats;
+                        $link = "/spending_landing/year/" . RequestUtilities::getRequestParamValue("year") .
+                            "/yeartype/" .  RequestUtilities::getRequestParamValue("yeartype") . "/agency/" .  $row["agency_id"] . "/dashboard/mp/mwbe/" . MappingUtil::$total_mwbe_cats;
                     }
 
 					echo "<tr>
@@ -38,12 +38,12 @@
 						</tr>	
 					"	;
 				}
-				
+
 				$id +=1;
-			}		
+			}
 		?>
 	</tbody>
-	
+
 </table>
 </div>
 
@@ -69,8 +69,8 @@
         	        },
         	        "bInfo": true,
         	        "aaSorting":[[2,"desc"]],
-        	        "fnInitComplete":function () { fnCustomInitComplete();},  
-        	        "sScrollX": "100%",      	        
+        	        "fnInitComplete":function () { fnCustomInitComplete();},
+        	        "sScrollX": "100%",
         	        "aoColumnDefs": [
         	                         {
      		                        	"aTargets": [0],
@@ -95,7 +95,7 @@
 	      		      						return source.total_contracts_display;
 	      		      					}
 	      		      					return source.total_contracts;
-	      		      					}	      		      						      		      					
+	      		      					}
       		                         }
         	                        ]
         		}
@@ -113,7 +113,7 @@
         var bottomSpacing = docHeight - (tableOffsetTop + tableHeight) ;
         jQuery('.dataTables_scrollHead').sticky({ getWidthFrom:'#scroll_wrapper_head',topSpacing: <?php echo "topSpacing"; ?>, bottomSpacing: <?php echo "bottomSpacing"; ?>});
 
-    }	
+    }
 </script>
 
 

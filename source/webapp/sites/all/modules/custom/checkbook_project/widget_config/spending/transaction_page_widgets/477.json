@@ -23,7 +23,7 @@
 "header":"
 	$header = NULL;
 	$header .= widget_data_tables_export_link($node);
-	return $header; 
+	return $header;
 ",
 "useList":true,
 "stickyHeader":true,
@@ -98,38 +98,38 @@
 },
 "table_columns": [
 	   {
-	   	  "labelAlias": "document_id",		   
+	   	  "labelAlias": "document_id",
 	      "column": "disb_disbursement_number"
 	    },
 	    {
-	   	  "labelAlias": "payee_name",		    
+	   	  "labelAlias": "payee_name",
 	      "column": "vendor_name_link",
 	      "sortSourceColumn":"disb_vendor_name"
 	    },
 	    {
-	   	  "labelAlias": "issue_date",		    
+	   	  "labelAlias": "issue_date",
 	      "column": "disb_check_eft_issued_date"
 	    },
 	    {
-	   	  "labelAlias": "agency_name",		    
+	   	  "labelAlias": "agency_name",
 	      "column": "agency_name_link",
 	      "sortSourceColumn":"disb_agency_name"
 	    },
 	    {
-	   	  "labelAlias": "dept_name",		    
+	   	  "labelAlias": "dept_name",
 	      "column": "disb_department_short_name"
 	    },
 	    {
-	   	  "labelAlias": "check_amount",		    
+	   	  "labelAlias": "check_amount",
 	      "column": "formatted_check_amount",
 	      "sortSourceColumn":"disb_check_amount"
 	    },
 	    {
-	   	  "labelAlias": "expense_category",		    
+	   	  "labelAlias": "expense_category",
 	      "column": "disb_expenditure_object_name"
 	    },
 	    {
-	   	  "labelAlias": "contract_id",		    
+	   	  "labelAlias": "contract_id",
 	      "column": "contract_number_link",
 	      "sortSourceColumn":"disb_contract_number"
 	    },
@@ -139,16 +139,16 @@
             "column": "disb_agreement_commodity_line_number"
         },
         {
-	   	  "labelAlias": "contract_purpose",		    
+	   	  "labelAlias": "contract_purpose",
 	      "column": "contract_purpose_text",
            "sortSourceColumn":"disb_purpose"
 	    },
 	    {
-	   	  "labelAlias": "capital_project",		    
+	   	  "labelAlias": "capital_project",
 	      "column": "disb_reporting_code"
 	    },
 	    {
-	   	  "labelAlias": "spending_category",		    
+	   	  "labelAlias": "spending_category",
 	      "column": "disb_spending_category_name"
 	    },
         {
@@ -179,7 +179,7 @@
 "adjustDataTableOptions":"
           $adjustDataTableOptions = $node->widgetConfig->dataTableOptions;
 
-          $rpp = _getRequestParamValue('rpp');
+          $rpp = RequestUtilities::getRequestParamValue('rpp');
              if(is_numeric($rpp) ){
                     $adjustDataTableOptions->iDisplayLength = (int)$rpp;
              }
@@ -242,7 +242,7 @@
            cUrl = adjustUrlParameter(cUrl,'category',oSpendCategoryIds );
            cUrl = adjustUrlParameter(cUrl,'checkamtr',oCheckAmount);
            cUrl = adjustUrlParameter(cUrl,'deptnm',oDeptIds);
-       
+
          //remove advance search param if narrow down search is present for amount
          //if(oCheckAmount != null && oCheckAmount.length > 0 ){
          //     cUrl = adjustUrlParameter(cUrl,'checkamt','');

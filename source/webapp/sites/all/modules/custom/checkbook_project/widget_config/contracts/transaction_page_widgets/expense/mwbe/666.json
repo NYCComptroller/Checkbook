@@ -14,17 +14,17 @@
             $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
         }
 
-        $dashboard = _getRequestParamValue('dashboard');
-        $subvendor = _getRequestParamValue('subvendor');
-        $mwbe = _getRequestParamValue('mwbe');
+        $dashboard = RequestUtilities::getRequestParamValue('dashboard');
+        $subvendor = RequestUtilities::getRequestParamValue('subvendor');
+        $mwbe = RequestUtilities::getRequestParamValue('mwbe');
         if($subvendor) $parameters['is_prime_or_sub'] = 'S';
         else if($mwbe || $dashboard == null) $parameters['is_prime_or_sub'] = 'P';
 
-        $smnid = _getRequestParamValue('smnid');
+        $smnid = RequestUtilities::getRequestParamValue('smnid');
         if($smnid == 720) $parameters['is_prime_or_sub'] = 'S';
 
-        $year = _getRequestParamValue('year');
-        $calYear = _getRequestParamValue('calyear');
+        $year = RequestUtilities::getRequestParamValue('year');
+        $calYear = RequestUtilities::getRequestParamValue('calyear');
         if(!isset($year) && isset($calYear)){
             $year = $calYear;
         }
@@ -34,7 +34,7 @@
             $parameters['latest_flag'] = 'Y';
         }
 
-        $yearType = _getRequestParamValue('yeartype');
+        $yearType = RequestUtilities::getRequestParamValue('yeartype');
         if($yearType == 'C' || isset($calYear) ){
             $config->dataset = 'checkbook:all_agreement_transactions_cy';
         }
@@ -52,8 +52,8 @@
             "orderBy":"-maximum_contract_amount",
             "seriesDefaultParameters":{"master_agreement_id":-1},//default master_agreement_id to avoid load
             "adjustSerieParameters":"
-                $year = _getRequestParamValue('year');
-                $calYear = _getRequestParamValue('calyear');
+                $year = RequestUtilities::getRequestParamValue('year');
+                $calYear = RequestUtilities::getRequestParamValue('calyear');
                 if(!isset($year) && isset($calYear)){
                     $year = $calYear;
                 }
@@ -63,7 +63,7 @@
                     $serieParameters['starting_year_id'] = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, $year);
                     $serieParameters['ending_year_id'] = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, $year);
 
-                    $yearType = _getRequestParamValue('yeartype');
+                    $yearType = RequestUtilities::getRequestParamValue('yeartype');
                     if($yearType == 'C' || isset($calYear) ){
                         $serieDatasetName = 'checkbook:all_agreement_transactions_cy';
                     }
@@ -79,8 +79,8 @@
             "orderBy":"-maximum_contract_amount",
             "seriesDefaultParameters":{"master_agreement_id":-1},
             "adjustSerieParameters":"
-                $year = _getRequestParamValue('year');
-                $calYear = _getRequestParamValue('calyear');
+                $year = RequestUtilities::getRequestParamValue('year');
+                $calYear = RequestUtilities::getRequestParamValue('calyear');
                 if(!isset($year) && isset($calYear)){
                     $year = $calYear;
                 }
@@ -90,7 +90,7 @@
                     $serieParameters['latest_flag'] = 'Y';
                     $serieParameters['ending_year_id'] = $data_controller_instance->initiateHandler(LessThanOperatorHandler::$OPERATOR__NAME, $year);
 
-                    $yearType = _getRequestParamValue('yeartype');
+                    $yearType = RequestUtilities::getRequestParamValue('yeartype');
                         if($yearType == 'C' || isset($calYear) ){
                         $serieDatasetName = 'checkbook:all_agreement_transactions_cy';
                     }
@@ -136,8 +136,8 @@
             "type": "expression2",
             "expression": " '<a href=\"/spending/transactions'
             .  ($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['contract_original_agreement_id']
-            .  ( _getRequestParamValue('yeartype') == 'B' ? ('/year/'. _getRequestParamValue('year').'/syear/'. _getRequestParamValue('year')) :
-            (_getRequestParamValue('yeartype') == 'C' ? ('/calyear/'. _getRequestParamValue('year').'/scalyear/'. _getRequestParamValue('year')) :
+            .  ( RequestUtilities::getRequestParamValue('yeartype') == 'B' ? ('/year/'. RequestUtilities::getRequestParamValue('year').'/syear/'. RequestUtilities::getRequestParamValue('year')) :
+            (RequestUtilities::getRequestParamValue('yeartype') == 'C' ? ('/calyear/'. RequestUtilities::getRequestParamValue('year').'/scalyear/'. RequestUtilities::getRequestParamValue('year')) :
             ('/year/'.$row['ending_year_id']. '/syear/'.$row['ending_year_id']) )
             ).  _checkbook_project_get_url_param_string(\"dashboard\") . _checkbook_project_get_url_param_string(\"mwbe\")
             .  '/newwindow\" class=\"new_window\">'. custom_number_formatter_basic_format($row['rfed_amount']) . '</a>'

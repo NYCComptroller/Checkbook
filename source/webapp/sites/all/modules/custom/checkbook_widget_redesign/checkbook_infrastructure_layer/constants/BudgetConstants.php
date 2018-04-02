@@ -15,7 +15,7 @@ abstract class BudgetAgencyPercentWidgetViews {
 
      public static function getCurrent() {
         $base_year = BudgetConstants::getCurrent();
-        $year = _getRequestParamValue(UrlParameter::YEAR);
+        $year = RequestUtilities::getRequestParamValue(UrlParameter::YEAR);
 
         if($year == $base_year + 1) {
             return self::AGENCIES_PERCENT_DIFF_PREVIOUS_1;
@@ -36,7 +36,7 @@ abstract class BudgetDepartmentPercentWidgetViews {
 
      public static function getCurrent() {
         $base_year = BudgetConstants::getCurrent();
-        $year = _getRequestParamValue(UrlParameter::YEAR);
+        $year = RequestUtilities::getRequestParamValue(UrlParameter::YEAR);
 
         if($year == $base_year + 1) {
             return self::DEPT_PERCENT_DIFF_PREVIOUS_1;
@@ -58,7 +58,7 @@ abstract class BudgetCatExpensePercentWidgetViews {
 
      public static function getCurrent() {
         $base_year = BudgetConstants::getCurrent();
-        $year = _getRequestParamValue(UrlParameter::YEAR);
+        $year = RequestUtilities::getRequestParamValue(UrlParameter::YEAR);
 
         if($year == $base_year + 1) {
             return self::EXPCAT_PERCENT_DIFF_PREVIOUS_1;

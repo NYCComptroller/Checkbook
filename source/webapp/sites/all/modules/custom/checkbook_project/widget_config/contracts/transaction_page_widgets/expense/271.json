@@ -74,7 +74,7 @@
               "expression": " '<a href=\"/contracts_landing'
                                     .  (isset($row['fiscal_year_id@checkbook:contracts_coa_aggregates']) ? ('/year/'.$row['fiscal_year_id@checkbook:contracts_coa_aggregates'] . '/yeartype/'.$row['type_of_year@checkbook:contracts_coa_aggregates']) : _checkbook_project_get_year_url_param_string())
                                     .  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
-                                    .  ContractUtil::get_contract_vendor_minority_category($row['vendor_id'], _getRequestParamValue('year'), _getRequestParamValue('yeartype'))
+                                    .  ContractUtil::get_contract_vendor_minority_category($row['vendor_id'], RequestUtilities::getRequestParamValue('year'), RequestUtilities::getRequestParamValue('yeartype'))
                                     .  '/vendor/' . $row['vendor_id']
                                     .  '?expandBottomCont=true\">'. $row['vendor_formatted'] . '</a>'  "
 	    },

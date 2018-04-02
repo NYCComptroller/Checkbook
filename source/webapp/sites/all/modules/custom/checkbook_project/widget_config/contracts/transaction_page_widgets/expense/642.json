@@ -27,12 +27,12 @@
                 $config->dataset = 'checkbook:agreement_snapshot_oge';
             }
 
-            if(_getRequestParamValue('vendor') || _getRequestParamValue('vendornm')){
+            if(RequestUtilities::getRequestParamValue('vendor') || RequestUtilities::getRequestParamValue('vendornm')){
                 $parameters['is_vendor_flag'] = 'Y';
             }else{
                 $parameters['is_vendor_flag'] = 'N';
             }
-            if(!(_getRequestParamValue('year') || _getRequestParamValue('calyear'))){
+            if(!(RequestUtilities::getRequestParamValue('year') || RequestUtilities::getRequestParamValue('calyear'))){
                 $parameters['latest_flag'] = 'Y';
                 $parameters['if_for_all_years'] = 'Y';
             }else{

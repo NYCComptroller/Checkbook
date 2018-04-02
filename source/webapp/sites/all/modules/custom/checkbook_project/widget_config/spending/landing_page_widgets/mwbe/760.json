@@ -9,7 +9,7 @@
     "noDataInitialLoad":true,
     "totalAggregateColumns":["check_amount_sum"],
     "adjustTotalAggregateColumnsParameters":"
-        if(_getRequestParamValue('smnid') == 760) {
+        if(RequestUtilities::getRequestParamValue('smnid') == 760) {
             unset($parameters['department.department']);
         }
         return $parameters;

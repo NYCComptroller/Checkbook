@@ -111,10 +111,10 @@ function checkbook_contracts_default_page_manager_pages() {
           'name' => 'php',
           'settings' => array(
             'description' => 'Active/Registered Expense Contracts Condition',
-            'php' => '$contSatus = _getRequestParamValue(\'contstatus\');
-$contCategory = _getRequestParamValue(\'contcat\');
+            'php' => '$contSatus = RequestUtilities::getRequestParamValue(\'contstatus\');
+$contCategory = RequestUtilities::getRequestParamValue(\'contcat\');
 $isEDCPage = _checkbook_check_isEDCPage();
-$vendor = _getRequestParamValue(\'vendor\');
+$vendor = RequestUtilities::getRequestParamValue(\'vendor\');
 
 if( $contCategory != \'revenue\' &&  $contSatus != \'P\' && (!$isEDCPage)){
      if(_checkbook_project_recordsExists(267)){
@@ -473,7 +473,7 @@ return FALSE;',
           'name' => 'php',
           'settings' => array(
             'description' => 'Pending Contracts Condition',
-            'php' => '$contSatus = _getRequestParamValue(\'contstatus\');
+            'php' => '$contSatus = RequestUtilities::getRequestParamValue(\'contstatus\');
 if($contSatus == \'P\'){
      if(_checkbook_project_recordsExists(266)){
               return TRUE;
@@ -826,8 +826,8 @@ return FALSE;',
           'name' => 'php',
           'settings' => array(
             'description' => 'Active/Registered Revenue Contracts Condition',
-            'php' => '$contSatus = _getRequestParamValue(\'contstatus\');
-$contCategory = _getRequestParamValue(\'contcat\');
+            'php' => '$contSatus = RequestUtilities::getRequestParamValue(\'contstatus\');
+$contCategory = RequestUtilities::getRequestParamValue(\'contcat\');
 if( $contCategory == \'revenue\' &&  $contSatus != \'P\'){
      if(_checkbook_project_recordsExists(411)){
               return TRUE;
@@ -1182,8 +1182,8 @@ return FALSE;',
           'name' => 'php',
           'settings' => array(
             'description' => 'No Active/Registered Expense Contracts Condition',
-            'php' => '$contSatus = _getRequestParamValue(\'contstatus\');
-$contCategory = _getRequestParamValue(\'contcat\');
+            'php' => '$contSatus = RequestUtilities::getRequestParamValue(\'contstatus\');
+$contCategory = RequestUtilities::getRequestParamValue(\'contcat\');
 $isEDCPage = _checkbook_check_isEDCPage();
 
 if( $contCategory != \'revenue\' &&  $contSatus != \'P\' && !$isEDCPage){
@@ -1265,7 +1265,7 @@ return FALSE;',
       'admin_title' => '',
       'title' => '',
       'body' => '<?php
-            $contactStatus = _getRequestParamValue(\'contstatus\');
+            $contactStatus = RequestUtilities::getRequestParamValue(\'contstatus\');
             $contactStatusLabel = \'active\';
             if($contactStatus == \'R\'){
                    $contactStatusLabel = \'registered\';
@@ -1313,7 +1313,7 @@ return FALSE;',
           'name' => 'php',
           'settings' => array(
             'description' => 'No Pending Contracts Condition',
-            'php' => '$contSatus = _getRequestParamValue(\'contstatus\');
+            'php' => '$contSatus = RequestUtilities::getRequestParamValue(\'contstatus\');
 if($contSatus == \'P\'){
      if(!_checkbook_project_recordsExists(266)){
               return TRUE;
@@ -1382,7 +1382,7 @@ return FALSE;',
       'title' => '',
       'body' => '<?php
 
-            if(_getRequestParamValue(\'contcat\') == \'revenue\'){
+            if(RequestUtilities::getRequestParamValue(\'contcat\') == \'revenue\'){
                 //echo "<h2 class=\'contract-title\' class=\'title\'>Pending revenue contracts Transactions</h2>";
                   $message = "There are no pending revenue contract transactions.";
             }else{
@@ -1431,8 +1431,8 @@ return FALSE;',
           'name' => 'php',
           'settings' => array(
             'description' => 'No Active/Registered Revenue Contracts Condition',
-            'php' => '$contSatus = _getRequestParamValue(\'contstatus\');
-$contCategory = _getRequestParamValue(\'contcat\');
+            'php' => '$contSatus = RequestUtilities::getRequestParamValue(\'contstatus\');
+$contCategory = RequestUtilities::getRequestParamValue(\'contcat\');
 if( $contCategory == \'revenue\' &&  $contSatus != \'P\'){
      if(!_checkbook_project_recordsExists(411)){
               return TRUE;
@@ -1512,7 +1512,7 @@ return FALSE;',
       'admin_title' => '',
       'title' => '',
       'body' => '<?php
-            $contactStatus = _getRequestParamValue(\'contstatus\');
+            $contactStatus = RequestUtilities::getRequestParamValue(\'contstatus\');
             $contactStatusLabel = \'active\';
             if($contactStatus == \'R\'){
                    $contactStatusLabel = \'registered\';
@@ -1560,11 +1560,11 @@ return FALSE;',
           'name' => 'php',
           'settings' => array(
             'description' => 'Active/Registered Expense Contracts Condition',
-            'php' => '$contSatus = _getRequestParamValue(\'contstatus\');
-$contCategory = _getRequestParamValue(\'contcat\');
+            'php' => '$contSatus = RequestUtilities::getRequestParamValue(\'contstatus\');
+$contCategory = RequestUtilities::getRequestParamValue(\'contcat\');
 $isEDCPage = _checkbook_check_isEDCPage();
-$vendor = _getRequestParamValue(\'vendor\');
-$doc_type = _getRequestParamValue(\'doctype\');
+$vendor = RequestUtilities::getRequestParamValue(\'vendor\');
+$doc_type = RequestUtilities::getRequestParamValue(\'doctype\');
 
 if( $contCategory != \'revenue\' &&  $contSatus != \'P\' && ($isEDCPage && !($doc_type==\'MMA1~MA1\' && $vendor))){
      if(_checkbook_project_recordsExists(634)){
@@ -1920,11 +1920,11 @@ return FALSE;',
           'name' => 'php',
           'settings' => array(
             'description' => 'Active/Registered Expense Contracts Condition',
-            'php' => '$contSatus = _getRequestParamValue(\'contstatus\');
-$contCategory = _getRequestParamValue(\'contcat\');
+            'php' => '$contSatus = RequestUtilities::getRequestParamValue(\'contstatus\');
+$contCategory = RequestUtilities::getRequestParamValue(\'contcat\');
 $isEDCPage = _checkbook_check_isEDCPage();
-$vendor = _getRequestParamValue(\'vendor\');
-$doc_type = _getRequestParamValue(\'doctype\');
+$vendor = RequestUtilities::getRequestParamValue(\'vendor\');
+$doc_type = RequestUtilities::getRequestParamValue(\'doctype\');
 
 if( $contCategory != \'revenue\' &&  $contSatus != \'P\' && ($isEDCPage && ($doc_type==\'MMA1~MA1\' && $vendor))){
      if(_checkbook_project_recordsExists(643)){
@@ -2280,11 +2280,11 @@ return FALSE;',
           'name' => 'php',
           'settings' => array(
             'description' => 'No Active/Registered Expense Contracts Condition',
-            'php' => '$contSatus = _getRequestParamValue(\'contstatus\');
-$contCategory = _getRequestParamValue(\'contcat\');
+            'php' => '$contSatus = RequestUtilities::getRequestParamValue(\'contstatus\');
+$contCategory = RequestUtilities::getRequestParamValue(\'contcat\');
 $isEDCPage = _checkbook_check_isEDCPage();
-$vendor = _getRequestParamValue(\'vendor\');
-$doc_type = _getRequestParamValue(\'doctype\');
+$vendor = RequestUtilities::getRequestParamValue(\'vendor\');
+$doc_type = RequestUtilities::getRequestParamValue(\'doctype\');
 
 if( $contCategory != \'revenue\' &&  $contSatus != \'P\' && ($isEDCPage && !($doc_type==\'MMA1~MA1\' && $vendor))){
      if(!_checkbook_project_recordsExists(634)){
@@ -2365,7 +2365,7 @@ return FALSE;',
       'admin_title' => '',
       'title' => '',
       'body' => '<?php
-            $contactStatus = _getRequestParamValue(\'contstatus\');
+            $contactStatus = RequestUtilities::getRequestParamValue(\'contstatus\');
             $contactStatusLabel = \'active\';
             if($contactStatus == \'R\'){
                    $contactStatusLabel = \'registered\';
@@ -2413,11 +2413,11 @@ return FALSE;',
           'name' => 'php',
           'settings' => array(
             'description' => 'No Active/Registered Expense Contracts Condition',
-            'php' => '$contSatus = _getRequestParamValue(\'contstatus\');
-$contCategory = _getRequestParamValue(\'contcat\');
+            'php' => '$contSatus = RequestUtilities::getRequestParamValue(\'contstatus\');
+$contCategory = RequestUtilities::getRequestParamValue(\'contcat\');
 $isEDCPage = _checkbook_check_isEDCPage();
-$vendor = _getRequestParamValue(\'vendor\');
-$doc_type = _getRequestParamValue(\'doctype\');
+$vendor = RequestUtilities::getRequestParamValue(\'vendor\');
+$doc_type = RequestUtilities::getRequestParamValue(\'doctype\');
 
 if( $contCategory != \'revenue\' &&  $contSatus != \'P\' && ($isEDCPage && !($doc_type==\'MMA1~MA1\' && $vendor))){
      if(!_checkbook_project_recordsExists(643)){
@@ -2498,7 +2498,7 @@ return FALSE;',
       'admin_title' => '',
       'title' => '',
       'body' => '<?php
-            $contactStatus = _getRequestParamValue(\'contstatus\');
+            $contactStatus = RequestUtilities::getRequestParamValue(\'contstatus\');
             $contactStatusLabel = \'active\';
             if($contactStatus == \'R\'){
                    $contactStatusLabel = \'registered\';
@@ -3059,7 +3059,7 @@ return FALSE;',
           'name' => 'php',
           'settings' => array(
             'description' => 'EDC No Vendor rule',
-            'php' => 'if(_checkbook_check_isEDCPage() && _getRequestParamValue(\'vendor\')){
+            'php' => 'if(_checkbook_check_isEDCPage() && RequestUtilities::getRequestParamValue(\'vendor\')){
    return TRUE;
 }else if(_checkbook_check_isEDCPage()){
   return FALSE;
@@ -3106,7 +3106,7 @@ return FALSE;',
           'name' => 'php',
           'settings' => array(
             'description' => 'EDC No Vendor rule',
-            'php' => 'if(_checkbook_check_isEDCPage() && _getRequestParamValue(\'vendor\')){
+            'php' => 'if(_checkbook_check_isEDCPage() && RequestUtilities::getRequestParamValue(\'vendor\')){
    return FALSE;
 }else if(_checkbook_check_isEDCPage()){
   return TRUE;

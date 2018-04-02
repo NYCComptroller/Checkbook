@@ -101,7 +101,7 @@
 
     $node->widgetConfig->chartConfig->series[0]->name = $SeriesPreviousYearLabel;
     $node->widgetConfig->chartConfig->series[1]->name = $SeriesCurrentYearLabel;
-    $data_source = _getRequestParamValue('datasource');
+    $data_source = RequestUtilities::getRequestParamValue('datasource');
     $smnid = (isset($data_source) && $data_source == 'checkbook_oge') ? '/smnid/652' : '/smnid/706';
     $urlParams = CustomURLHelper::get_url_param($pathParams, 'datasource');
     $categories=array();
