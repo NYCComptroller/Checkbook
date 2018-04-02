@@ -18,7 +18,7 @@
     "header":"
     $node->widgetConfig->getData=false;
     load_widget_data($node);
-    $node->totalDataCount = PayrollUtil::getSalariedEmployeeCount(_getRequestParamValue('year'), _getRequestParamValue('yeartype'), _getRequestParamValue('agency'), _getRequestParamValue('title'));
+    $node->totalDataCount = PayrollUtil::getSalariedEmployeeCount(RequestUtilities::getRequestParamValue('year'), RequestUtilities::getRequestParamValue('yeartype'), RequestUtilities::getRequestParamValue('agency'), RequestUtilities::getRequestParamValue('title'));
     if($node->totalDataCount > 4) $count = '<span class=\"hideOnExpand\">5 </span>';
     $header='<div class=\"tableHeader\"><h2>Top ' .  $count . 'Titles by Number of Employees</h2><span class=\"contCount\"> Number of Salaried Employees:  ' . number_format($node->totalDataCount) . '</span></div>';
     return $header;

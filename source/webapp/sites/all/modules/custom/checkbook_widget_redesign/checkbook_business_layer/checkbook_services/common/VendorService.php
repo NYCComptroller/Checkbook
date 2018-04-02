@@ -14,8 +14,8 @@ abstract class VendorService {
 
         $latest_minority_types = null;
         $type_of_year = 'B';
-        $year_id = _getRequestParamValue('year') ?:  _getCurrentYearID();
-        $agency_id = $agency_id ?: _getRequestParamValue('agency');
+        $year_id = RequestUtilities::getRequestParamValue('year') ?:  _getCurrentYearID();
+        $agency_id = $agency_id ?: RequestUtilities::getRequestParamValue('agency');
         $domain = $domain ?: CheckbookDomain::getCurrent();
 
         $latest_minority_types = MinorityTypeService::getAllVendorMinorityTypes($type_of_year, $year_id, $domain);
@@ -37,7 +37,7 @@ abstract class VendorService {
      */
     static protected function getLatestMinorityTypeByYear($vendor_id, $year_id, $type_of_year, $vendor_type, $domain = null) {
         switch ($domain){
-            case Domain::$SPENDING : 
+            case Domain::$SPENDING :
                 $query = "SELECT minority_type_id
                             FROM spending_vendor_latest_mwbe_category
                             WHERE minority_type_id IN (2,3,4,5,9)
@@ -45,10 +45,10 @@ abstract class VendorService {
                             AND year_id = ".$year_id."
                             AND type_of_year = '".$type_of_year."'
                             AND is_prime_or_sub = '".$vendor_type."' LIMIT 1";
-                
+
                 $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
                 break;
-            default : 
+            default :
                 $query = "SELECT DISTINCT minority_type_id, latest_minority_flag, latest_mwbe_flag
                             FROM contract_vendor_latest_mwbe_category
                             WHERE minority_type_id IN (2,3,4,5,9)
@@ -77,7 +77,7 @@ abstract class VendorService {
         }
         return !empty($vendors) ? $vendors : null;
     }
-    
+
     /**
      * Given the vendor name, returns an array of sub and prime vendor ids
      * @param $domain

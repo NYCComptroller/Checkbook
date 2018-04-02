@@ -32,8 +32,8 @@
             $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
         }
 
-        $dashboard = _getRequestParamValue('dashboard');
-        $smnid = _getRequestParamValue('smnid');
+        $dashboard = RequestUtilities::getRequestParamValue('dashboard');
+        $smnid = RequestUtilities::getRequestParamValue('smnid');
 
         if($dashboard == 'ss' || $dashboard == 'sp' || $dashboard == 'ms') $parameters['is_prime_or_sub'] = 'S';
         else if($dashboard == 'mp' || ($dashboard == null && $smnid != null)) $parameters['is_prime_or_sub'] = 'P';

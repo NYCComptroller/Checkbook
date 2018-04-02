@@ -59,7 +59,7 @@
 		    }
 	    }
 
-        $dtsmnid = _getRequestParamValue('dtsmnid');
+        $dtsmnid = RequestUtilities::getRequestParamValue('dtsmnid');
         if($dtsmnid == 20){//From spending landing page
             $data_controller_instance = data_controller_get_operator_factory_instance();
             $parameters['agreement_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);

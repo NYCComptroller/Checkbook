@@ -74,7 +74,7 @@ if($spending_amount  == 0){
     $spending_link =  l('<span class="nav-title">Spending</span><br>'. custom_number_formatter_format($spending_amount ,1,'$'),RequestUtil::getTopNavURL("spending"),$options);
 }
 
-$current_dashboard = _getRequestParamValue("dashboard");
+$current_dashboard = RequestUtilities::getRequestParamValue("dashboard");
 
 if($contract_amount == 0){
   //Check if there are any Active contracts when the registered amount is zero to enable 'Contracts' domain
@@ -183,7 +183,7 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
     }
 }
 // tm_wbe is an exception case for total MWBE link. When prime data is not present but sub data is present for the agency vendor combination.
-if(_getRequestParamValue("tm_wbe") == 'Y'){
+if(RequestUtilities::getRequestParamValue("tm_wbe") == 'Y'){
     $svendor_amount = $mwbe_amount;
 }
 
@@ -199,7 +199,7 @@ if(!preg_match('/smnid/',$_GET['q']) && (preg_match('/spending\/transactions/',$
 	$mwbeclass = ' ';
 }
 
-$featured_dashboard = _getRequestParamValue("dashboard");
+$featured_dashboard = RequestUtilities::getRequestParamValue("dashboard");
 
 if($mwbe_amount  == 0 && $mwbe_amount_active_inc == 0){
     $mwbe_link = l('<div><div class="top-navigation-amount"><span class="nav-title">' . RequestUtil::getDashboardTopNavTitle("mwbe") . '</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') . '</div></div>','',$options_disabled);

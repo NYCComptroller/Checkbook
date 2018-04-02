@@ -29,7 +29,7 @@
   <?php
   $count = 0;
   $clickClass = "clickOnLoad";
-  if ( _getRequestParamValue("datasource") == "checkbook_oge") {
+  if ( RequestUtilities::getRequestParamValue("datasource") == "checkbook_oge") {
   	$datasource ="/datasource/checkbook_oge";
   }
   foreach ($node->data as $contract) {
@@ -51,7 +51,7 @@
         <a href="/panel_html/contract_transactions/contract_details/agid/<?php echo $contract['original_agreement_id'].  $datasource; ?>/doctype/CTA1"
           class="bottomContainerReload"><?php echo $contract['contract_number']; ?></a></div>
 		<?php
-        if ( _getRequestParamValue("datasource") == "checkbook_oge" && !preg_match('/newwindow/',$_GET['q']) && $contract['data_source_amounts_differ']){
+        if ( RequestUtilities::getRequestParamValue("datasource") == "checkbook_oge" && !preg_match('/newwindow/',$_GET['q']) && $contract['data_source_amounts_differ']){
 			$alt_txt = "This contract agreement has information as a prime vendor.<br><br> Click this icon to view this contract as a prime vendor. ";
 			$url="/contract_details/agid/" .  $contract['original_agreement_id'] . "/doctype/CTA1/newwindow";
 			echo "<div class='contractLinkNote'><a class='new_window' href='". $url ."' alt='" . $alt_txt . "' target='_blank' >Open in New Window</a></div>"; 
@@ -112,4 +112,3 @@
 </script>
 
 
-  

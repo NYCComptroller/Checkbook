@@ -17,9 +17,9 @@
         "annualsalary":"annual_salary",
         "overtimepayment":"overtime_pay"
     },
-    "orderBy":"",    
+    "orderBy":"",
     "adjustParameters":"
-        $monthId = _getRequestParamValue('month');
+        $monthId = RequestUtilities::getRequestParamValue('month');
         if(isset($monthId)){
             $node->widgetConfig->dataset = 'checkbook:payroll_month_ranged_data';
         }
@@ -27,6 +27,6 @@
             $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
         }
         return $adjustedParameters;
-    ",   
+    ",
     "template":"individual_filter"
 }

@@ -15,19 +15,19 @@
             $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
         }
 
-        $dashboard = _getRequestParamValue('dashboard');
-        $subvendor = _getRequestParamValue('subvendor');
-        $mwbe = _getRequestParamValue('mwbe');
+        $dashboard = RequestUtilities::getRequestParamValue('dashboard');
+        $subvendor = RequestUtilities::getRequestParamValue('subvendor');
+        $mwbe = RequestUtilities::getRequestParamValue('mwbe');
         if($subvendor) $parameters['is_prime_or_sub'] = 'S';
         else if($mwbe || $dashboard == null) $parameters['is_prime_or_sub'] = 'P';
 
-        $smnid = _getRequestParamValue('smnid');
+        $smnid = RequestUtilities::getRequestParamValue('smnid');
         if($smnid == 720) $parameters['is_prime_or_sub'] = 'S';
 
         $parameters['latest_flag'] = 'Y';
 
-        $year = !(_getRequestParamValue('year')) ? _getCurrentYearID() : _getRequestParamValue('year');
-        $year_type = !(_getRequestParamValue('yeartype')) ? 'B' : _getRequestParamValue('yeartype');
+        $year = !(RequestUtilities::getRequestParamValue('year')) ? _getCurrentYearID() : RequestUtilities::getRequestParamValue('year');
+        $year_type = !(RequestUtilities::getRequestParamValue('yeartype')) ? 'B' : RequestUtilities::getRequestParamValue('yeartype');
         $node->year = $year;
         $node->year_type = $year_type;
 

@@ -74,8 +74,8 @@
     "caption":"",
     "adjustParameters":"
 
-        $year = !(_getRequestParamValue('year')) ? _getCurrentYearID() : _getRequestParamValue('year');
-        $year_type = !(_getRequestParamValue('yeartype')) ? 'B' : _getRequestParamValue('yeartype');
+        $year = !(RequestUtilities::getRequestParamValue('year')) ? _getCurrentYearID() : RequestUtilities::getRequestParamValue('year');
+        $year_type = !(RequestUtilities::getRequestParamValue('yeartype')) ? 'B' : RequestUtilities::getRequestParamValue('yeartype');
 
         $node->year = $year;
         $node->year_type = $year_type;
@@ -209,7 +209,7 @@
         },
         "subvendor_name": {
             "type":"expression2",
-            "expression":"(in_array(strtoupper($row['sub_vendor_name']), array('NOT PROVIDED', 'N/A', '', NULL))) ? (isset($row['sub_vendor_name']) ? $row['sub_vendor_name']: 'N/A' ) : '<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row['sub_vendor_id'],_getRequestParamValue('year'),_getRequestParamValue('yeartype'), null, $row['sub_minority_type_id']) .  '?expandBottomCont=true\">' .$row['subvendor_name_formatted']. '</a>'"
+            "expression":"(in_array(strtoupper($row['sub_vendor_name']), array('NOT PROVIDED', 'N/A', '', NULL))) ? (isset($row['sub_vendor_name']) ? $row['sub_vendor_name']: 'N/A' ) : '<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row['sub_vendor_id'],RequestUtilities::getRequestParamValue('year'),RequestUtilities::getRequestParamValue('yeartype'), null, $row['sub_minority_type_id']) .  '?expandBottomCont=true\">' .$row['subvendor_name_formatted']. '</a>'"
         },
         "sub_mwbe_category_name": {
             "type":"expression2",
@@ -231,7 +231,7 @@
             "type":"expression2",
             "expression":"(strtolower($row['vendor_record_type']) == 'sub vendor')? $row['sub_effective_end_date'] : 'N/A'"
         }
-        
+
     },
     "skipCustomPadding":true,
     "table_columns": [

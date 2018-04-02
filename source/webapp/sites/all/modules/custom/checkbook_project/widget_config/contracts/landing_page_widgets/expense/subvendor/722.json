@@ -19,7 +19,7 @@
             "agency.agency.agency_name","subvendor.subvendor"],
 "defaultParamTypeConfig":{"dollar_difference":"ne"},
 "adjustParameters":"
-    if(_getRequestParamValue('dashboard') == 'ss'){
+    if(RequestUtilities::getRequestParamValue('dashboard') == 'ss'){
         unset($parameters['minority_type_id']);
     }
     $adjustedParameters = $parameters;
@@ -52,7 +52,7 @@
     },
     "subvendor_name_link": {
         "type": "expression2",
-        "expression": "'<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row['subvendor_subvendor'],_getRequestParamValue('year'),$row['yeartype_yeartype']) .  '?expandBottomCont=true\">' .$row['subvendor_name_formatted']. '</a>'"
+        "expression": "'<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row['subvendor_subvendor'],RequestUtilities::getRequestParamValue('year'),$row['yeartype_yeartype']) .  '?expandBottomCont=true\">' .$row['subvendor_name_formatted']. '</a>'"
     } ,
     "contract_link": {
         "type": "expression2",

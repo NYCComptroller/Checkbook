@@ -26,13 +26,13 @@ foreach($node->data as $data){
 
     $amount_basis_id = $data['amount_basis_id_amount_basis_id'];
     $employment_type = $amount_basis_id == 1 ? PayrollType::$SALARIED : PayrollType::$NON_SALARIED;
-    if(_getRequestParamValue('year') > 0){
-        $year = _getRequestParamValue('year');
+    if(RequestUtilities::getRequestParamValue('year') > 0){
+        $year = RequestUtilities::getRequestParamValue('year');
     }
-    if(_getRequestParamValue('calyear') > 0){
-        $year = _getRequestParamValue('calyear');
+    if(RequestUtilities::getRequestParamValue('calyear') > 0){
+        $year = RequestUtilities::getRequestParamValue('calyear');
     }
-    $year_type = _getRequestParamValue('yeartype');
+    $year_type = RequestUtilities::getRequestParamValue('yeartype');
     $original_title = $data['civil_service_title_civil_service_title'];
     $title = mb_convert_case(strtolower($original_title), MB_CASE_TITLE, "UTF-8");
     $agency_name = _shorten_word_with_tooltip(strtoupper($data['agency_name_agency_name']),25);
@@ -76,7 +76,7 @@ $non_salaried_count = count($all_data[PayrollType::$NON_SALARIED]);
 
 //Default view based on salamttype in url
 $default_view = $salaried_count > 0 ? PayrollType::$SALARIED : PayrollType::$NON_SALARIED;
-$salamttype = _getRequestParamValue('salamttype');
+$salamttype = RequestUtilities::getRequestParamValue('salamttype');
 if(isset($salamttype)) {
     $salamttype = explode('~',$salamttype);
     if (!in_array(1, $salamttype)) {

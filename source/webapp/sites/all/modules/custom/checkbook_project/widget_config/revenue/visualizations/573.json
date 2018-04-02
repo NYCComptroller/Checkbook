@@ -70,7 +70,7 @@
     "template":"revenue_transactions_summary",
     "templateTitle":"Revenue Details",
     "templateLabel":"Revenue Category",
-    "templateLabelEval":"return _checkbook_project_get_name_for_argument('revenue_category_id',_getRequestParamValue('revcat'));"
+    "templateLabelEval":"return _checkbook_project_get_name_for_argument('revenue_category_id',RequestUtilities::getRequestParamValue('revcat'));"
   },
   "chartConfig":{
     "chart":{

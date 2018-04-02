@@ -9,7 +9,7 @@
 	"noDataInitialLoad":true,
     "totalAggregateColumns":["check_amount_sum"],
     "adjustTotalAggregateColumnsParameters":"
-        if(_getRequestParamValue('smnid') == 761) {
+        if(RequestUtilities::getRequestParamValue('smnid') == 761) {
             unset($parameters['expenditure_object.expenditure_object']);
         }
         return $parameters;

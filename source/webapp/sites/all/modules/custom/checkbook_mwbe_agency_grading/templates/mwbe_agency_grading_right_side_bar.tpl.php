@@ -1,11 +1,11 @@
-<?php 
+<?php
 $mwbe_cats =  _mwbe_agency_grading_current_cats();
 ?>
 <div class="checkbook-grading-right">
 			<div class="legend">
 				<div class="title">M/WBE Category Spending</div>
 		    	<form action="" name="mglegend">
-					<div class="checkbox-grading-legend">	
+					<div class="checkbox-grading-legend">
 					<table>
 					<tbody><tr class="legend_entry">
 						<td><!-- <span name="lengend_checkbox"></span> --><input id="chk_aa_mwbe" type="checkbox" <?php echo (in_array('aa_mwbe',$mwbe_cats))?  'checked=""':'';?>
@@ -46,23 +46,23 @@ $mwbe_cats =  _mwbe_agency_grading_current_cats();
 		          <label class="label"> Number of Agencies:</label>
 		          <span class="value"><?php print $nyc_data['agencies']; ?></span>
 	 			</div>
-	 			
+
 	 			<div>
 		          <label class=label> M/WBE Share:</label>
 		          <span class="value"><?php print $nyc_data['mwbe_share']; ?></span>
 	 			</div>
-	 			
+
 	 			<div>
 		          <label class="label"> M/WBE Spending:</label>
 		          <span class="value"><?php print $nyc_data['total_mwbe']; ?></span>
 	 			</div>
-	 			
+
 	 			<div class="last">
 		          <label class="label"> Non-M/WBE: </label>
 		          <span class="value"><?php print $nyc_data['total_non_mwbe']; ?></span>
 	 			</div>
  			</div>
- 			
+
 </div>
 <script>
 
@@ -71,14 +71,14 @@ $mwbe_cats =  _mwbe_agency_grading_current_cats();
 	//hover show/hide list for mwbe menu item
 	    Drupal.behaviors.agency_grading = {
 	            attach:function (context, settings) {
-	            	$(".checkbox-grading-legend .legend_entry").click(function () {                    
+	            	$(".checkbox-grading-legend .legend_entry").click(function () {
 	                    var filter = getNamedFilterCriteria("mwbe_right_filter");
-                        <?php if(_getRequestParamValue('mwbe_agency_grading') == 'sub_vendor_data'){
+                        <?php if(RequestUtilities::getRequestParamValue('mwbe_agency_grading') == 'sub_vendor_data'){
                         ?>
-                        window.location = "/mwbe_agency_grading/sub_vendor_data/year/<?php echo _getRequestParamValue('year'); ?>/yeartype/<?php echo _getRequestParamValue('yeartype'); ?>/mwbe_filter/" + filter;
+                        window.location = "/mwbe_agency_grading/sub_vendor_data/year/<?php echo RequestUtilities::getRequestParamValue('year'); ?>/yeartype/<?php echo RequestUtilities::getRequestParamValue('yeartype'); ?>/mwbe_filter/" + filter;
                         <?php
                         } else{?>
-                        window.location = "/mwbe_agency_grading/year/<?php echo _getRequestParamValue('year'); ?>/yeartype/<?php echo _getRequestParamValue('yeartype'); ?>/mwbe_filter/" + filter;
+                        window.location = "/mwbe_agency_grading/year/<?php echo RequestUtilities::getRequestParamValue('year'); ?>/yeartype/<?php echo RequestUtilities::getRequestParamValue('yeartype'); ?>/mwbe_filter/" + filter;
                         <?php
                         }?>
 
@@ -86,8 +86,8 @@ $mwbe_cats =  _mwbe_agency_grading_current_cats();
 
 	            }
 	        };
-	    
-	    
-	}(jQuery));    
+
+
+	}(jQuery));
 
 </script>

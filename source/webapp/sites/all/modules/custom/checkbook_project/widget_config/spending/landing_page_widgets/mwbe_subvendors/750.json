@@ -19,7 +19,7 @@
     "noDataInitialLoad":true,
     "totalAggregateColumns":["check_amount_sum"],
     "adjustTotalAggregateColumnsParameters":"
-        if(_getRequestParamValue('smnid') == 750) {
+        if(RequestUtilities::getRequestParamValue('smnid') == 750) {
             unset($parameters['industry_type_id']);
             $data_controller_instance = data_controller_get_operator_factory_instance();
             $parameters['industry_type_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
@@ -34,7 +34,7 @@
         "industry_type.industry_type.industry_type_name"
     ],
     "adjustParameters":"
-        if(null != _getRequestParamValue('industry')) return $parameters;
+        if(null != RequestUtilities::getRequestParamValue('industry')) return $parameters;
 
         $data_controller_instance = data_controller_get_operator_factory_instance();
         $parameters['industry_type_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);

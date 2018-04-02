@@ -28,7 +28,7 @@
     $advanced_search_page = $advanced_search_page || preg_match("/contract\/all\/transactions/",$http_ref);
     if($advanced_search_page) return;
 
-    $contactStatus = _getRequestParamValue('contstatus');
+    $contactStatus = RequestUtilities::getRequestParamValue('contstatus');
     $contactStatusLabel = 'Active';
     if($contactStatus == 'R'){
         $contactStatusLabel = 'Registered';
@@ -38,7 +38,7 @@
                   . custom_number_formatter_format($node->data[0]['total_amount_for_transaction'],2)
                   .'<div class="amount-title">Total '.$contactStatusLabel.' Current Contract Amount12313</div></div>';
 
-    }else if(_checkbook_check_is_mwbe_page() || _getRequestParamValue('dashboard')){
+    }else if(_checkbook_check_is_mwbe_page() || RequestUtilities::getRequestParamValue('dashboard')){
         $current_url = explode('/',$_SERVER['REQUEST_URI']);
         if($current_url[1] == 'contract' && ($current_url[2] == 'search' || $current_url[2] == 'all')&& $current_url[3] == 'transactions'){
             $summaryTitle = "";

@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -13,7 +13,7 @@ class RequestUtilities {
      * @return True if the page is EDC
      */
     public static function isEDCPage(){
-        $database = _getRequestParamValue('datasource');
+        $database = RequestUtilities::getRequestParamValue('datasource');
         if(isset($database)){
             return true;
         }else{
@@ -55,13 +55,43 @@ class RequestUtilities {
     }
 
     /**
+     * returns request parameter value from URL($_REQUEST['q'])
+     * @param string $paramName
+     * @param boolean $fromRequestPath
+     * @return string request
+     */
+    public static function getRequestParamValue($paramName, $fromRequestPath = True)
+    {
+      if (empty($paramName)) {
+        return NULL;
+      }
+      $value = NULL;
+      if ($fromRequestPath) {
+        $urlPath = drupal_get_path_alias($_GET['q']);
+        $pathParams = explode('/', $urlPath);
+        $index = array_search($paramName, $pathParams);
+        if ($index !== FALSE) {
+          $value = filter_xss($pathParams[($index + 1)]);
+        }
+        if (trim($value) == "") {
+          return NULL;
+        }
+        if (isset($value) || $fromRequestPath) {
+          return htmlspecialchars_decode($value, ENT_QUOTES);
+        }
+      } else {
+        return filter_xss(htmlspecialchars_decode($_GET[$paramName], ENT_QUOTES));
+      }
+    }
+
+    /**
      * Adds mwbe, subvendor and datasource parameters to url.  Precedence ,$source > $overidden_params > requestparam
      * @return string
      */
    public static function _appendMWBESubVendorDatasourceUrlParams($source = null,$overidden_params = array(),$top_nav = false){
-        $datasource = (isset($overidden_params['datasource'])) ? $overidden_params['datasource'] :_getRequestParamValue('datasource');
-        $mwbe = (isset($overidden_params['mwbe'])) ? $overidden_params['mwbe'] : _getRequestParamValue('mwbe');
-        $dashboard = (isset($overidden_params['dashboard'])) ? $overidden_params['dashboard'] : _getRequestParamValue('dashboard');
+        $datasource = (isset($overidden_params['datasource'])) ? $overidden_params['datasource'] : RequestUtilities::getRequestParamValue('datasource');
+        $mwbe = (isset($overidden_params['mwbe'])) ? $overidden_params['mwbe'] : RequestUtilities::getRequestParamValue('mwbe');
+        $dashboard = (isset($overidden_params['dashboard'])) ? $overidden_params['dashboard'] : RequestUtilities::getRequestParamValue('dashboard');
 
         $url = "";
         if(isset($datasource)) {
@@ -83,7 +113,7 @@ class RequestUtilities {
                     }
                 }
                 else {
-                    if(!$top_nav || ( isset($mwbe) && _getRequestParamValue('vendor') > 0 && _getRequestParamValue('dashboard') != "ms" )){
+                    if(!$top_nav || ( isset($mwbe) && RequestUtilities::getRequestParamValue('vendor') > 0 && RequestUtilities::getRequestParamValue('dashboard') != "ms" )){
                         $url = isset($mwbe) ? "/mwbe/".$mwbe : "";
                         $url .= isset($dashboard) ? "/dashboard/".$dashboard : "";
                     }
@@ -101,7 +131,7 @@ class RequestUtilities {
     }
 
     public function _checkbook_check_isEDCPage(){
-        $database = _getRequestParamValue('datasource');
+        $database = RequestUtilities::getRequestParamValue('datasource');
         if(isset($database)){
             return true;
         }else{

@@ -9,7 +9,7 @@
 "noDataInitialLoad":true,
 "columns": ["document_agency_name.document_agency_name","original_amount_sum","current_amount_sum","total_contracts","document_agency_id.document_agency_id"],
 "adjustParameters":"
-    $dashboard = _getRequestParamValue('dashboard');
+    $dashboard = RequestUtilities::getRequestParamValue('dashboard');
 if($dashboard == 'ss' || $dashboard == 'sp' || $dashboard == 'ms'){
 $parameters['minority_type_id'] = 1000;
 }

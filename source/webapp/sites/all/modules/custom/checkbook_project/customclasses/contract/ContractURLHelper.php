@@ -211,7 +211,7 @@ class ContractURLHelper{
         else{
             $allowedFilters =  array("year","calyear","agency","yeartype","awdmethod","vendor","csize","cindustry","agid","subvendor","mwbe","status");
             //Add new parameter for bottom slider
-            $dashboard = isset($dashboard)? $dashboard : _getRequestParamValue("dashboard");
+            $dashboard = isset($dashboard)? $dashboard : RequestUtilities::getRequestParamValue("dashboard");
 
             //Remove dashboard parameter before appending the new value
             $url = preg_replace("/\/dashboard\/../","",$url);
@@ -301,7 +301,7 @@ class ContractURLHelper{
        }
 
        $year_url = '';
-       if((!(_getRequestParamValue('year') || _getRequestParamValue('calyear')))){
+       if((!(RequestUtilities::getRequestParamValue('year') || RequestUtilities::getRequestParamValue('calyear')))){
            $year_url = '/yeartype/B/year/' . _getFiscalYearID() . '/syear/'. _getFiscalYearID();
        }else{
            $year_url = $row['type_of_year'] == 'B' ? ('/year/'. $row['fiscal_year_id'].'/syear/'. $row['fiscal_year_id']) : ('/calyear/'.$row['fiscal_year_id']. '/scalyear/'.$row['fiscal_year_id']);
@@ -327,7 +327,7 @@ class ContractURLHelper{
         if(strtolower($oge_agency_name) != strtolower($oge_vendor_name)){
             $vendor_url = '/svendor/' . $row['vendor_id'];
         }
-        if((!(_getRequestParamValue('year') || _getRequestParamValue('calyear')))){
+        if((!(RequestUtilities::getRequestParamValue('year') || RequestUtilities::getRequestParamValue('calyear')))){
             $year_url = '/yeartype/B/year/' . _getFiscalYearID() . '/syear/'. _getFiscalYearID();
         }
         else{
@@ -358,10 +358,10 @@ class ContractURLHelper{
         $year_type = !$year_type ? 'B' : $year_type;
 
         $link = ($show_expander) ? '<span id=dtl_expand class="toggler collapsed"  magid="' . ((isset($row['contract_original_agreement_id']))?$row['contract_original_agreement_id'] : $row['original_agreement_id']) . '" '
-            . ( _getRequestParamValue('dashboard') != '' ?  ('dashboard="' . _getRequestParamValue('dashboard') . '" ' ) : '')
-            . ( _getRequestParamValue('mwbe') != '' ?  ('mwbe="' . _getRequestParamValue('mwbe') . '" ' ) : '')
-            . ( _getRequestParamValue('smnid') != '' ?  ('smnid="' . _getRequestParamValue('smnid') . '" ' ) : '')
-            . ( _getRequestParamValue('contstatus') != '' ?  ('contstatus="' . _getRequestParamValue('contstatus') . '" ' ) : '')
+            . ( RequestUtilities::getRequestParamValue('dashboard') != '' ?  ('dashboard="' . RequestUtilities::getRequestParamValue('dashboard') . '" ' ) : '')
+            . ( RequestUtilities::getRequestParamValue('mwbe') != '' ?  ('mwbe="' . RequestUtilities::getRequestParamValue('mwbe') . '" ' ) : '')
+            . ( RequestUtilities::getRequestParamValue('smnid') != '' ?  ('smnid="' . RequestUtilities::getRequestParamValue('smnid') . '" ' ) : '')
+            . ( RequestUtilities::getRequestParamValue('contstatus') != '' ?  ('contstatus="' . RequestUtilities::getRequestParamValue('contstatus') . '" ' ) : '')
             . 'year="' . $year . '" '
             . 'yeartype="' . $year_type . '" '
             . ('mastercode="' . $row['document_code@checkbook:ref_document_code'] . '"' )
@@ -377,10 +377,10 @@ class ContractURLHelper{
         $show_expander = ($row[$flag] == 'Y') ? true : false;
 
         $link = ($show_expander) ? '<span id=dtl_expand class="toggler collapsed"  magid="' . ((isset($row['contract_original_agreement_id']))?$row['contract_original_agreement_id'] : $row['original_agreement_id']) . '" '
-            . ( _getRequestParamValue('dashboard') != '' ?  ('dashboard="' . _getRequestParamValue('dashboard') . '" ' ) : '')
-            . ( _getRequestParamValue('mwbe') != '' ?  ('mwbe="' . _getRequestParamValue('mwbe') . '" ' ) : '')
-            . ( _getRequestParamValue('smnid') != '' ?  ('smnid="' . _getRequestParamValue('smnid') . '" ' ) : '')
-            . ( _getRequestParamValue('contstatus') != '' ?  ('contstatus="' . _getRequestParamValue('contstatus') . '" ' ) : '')
+            . ( RequestUtilities::getRequestParamValue('dashboard') != '' ?  ('dashboard="' . RequestUtilities::getRequestParamValue('dashboard') . '" ' ) : '')
+            . ( RequestUtilities::getRequestParamValue('mwbe') != '' ?  ('mwbe="' . RequestUtilities::getRequestParamValue('mwbe') . '" ' ) : '')
+            . ( RequestUtilities::getRequestParamValue('smnid') != '' ?  ('smnid="' . RequestUtilities::getRequestParamValue('smnid') . '" ' ) : '')
+            . ( RequestUtilities::getRequestParamValue('contstatus') != '' ?  ('contstatus="' . RequestUtilities::getRequestParamValue('contstatus') . '" ' ) : '')
             . _checkbook_project_get_year_url_param_string()
             . ('mastercode="' . $row['document_code'] . '"' )
             . '></span>' : '';

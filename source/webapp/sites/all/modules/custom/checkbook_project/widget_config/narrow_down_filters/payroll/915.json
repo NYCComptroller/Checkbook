@@ -17,7 +17,7 @@
     "autocompleteID":"ftitle",
     "autocompleteField":"civil_service_title.civil_service_title",
     "adjustParameters":"
-        $monthId = _getRequestParamValue('month');
+        $monthId = RequestUtilities::getRequestParamValue('month');
         if(isset($monthId)){
             $node->widgetConfig->dataset = 'checkbook:payroll_employee_agency_month';
         }

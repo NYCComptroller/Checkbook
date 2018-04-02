@@ -115,7 +115,7 @@ include_once('export_link.php');
 					"asSorting": [ "desc", "asc" ]
 					},
 				';
-		}elseif($column->formatType == 'month' && _getRequestParamValue('yeartype') == 'C'){
+		}elseif($column->formatType == 'month' && RequestUtilities::getRequestParamValue('yeartype') == 'C'){
 
 			$aoColumnDefs .= '	{
 				"aTargets": [' . $index.'],
@@ -138,7 +138,7 @@ include_once('export_link.php');
 					"asSorting": [ "desc", "asc" ]
 					},
 				';
-		}elseif(($column->formatType == 'monthfy' || $column->formatType == 'month') && _getRequestParamValue('yeartype') == 'B'){
+		}elseif(($column->formatType == 'monthfy' || $column->formatType == 'month') && RequestUtilities::getRequestParamValue('yeartype') == 'B'){
 
 			$aoColumnDefs .= '	{
 				"aTargets": [' . $index.'],

@@ -1,19 +1,19 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -47,7 +47,7 @@ $non_salaried_count = count($all_data[PayrollType::$NON_SALARIED]);
 
 //Default view based on salamttype in url
 $default_view = $salaried_count > 0 ? PayrollType::$SALARIED : PayrollType::$NON_SALARIED;
-$salamttype = _getRequestParamValue('salamttype');
+$salamttype = RequestUtilities::getRequestParamValue('salamttype');
 if(isset($salamttype)) {
     $salamttype = explode('~',$salamttype);
     if (!in_array(1, $salamttype)) {
@@ -145,9 +145,9 @@ foreach($all_data as $employment_type => $employment_data) {
         $lbl_overtime_pay_ytd = WidgetUtil::getLabel('combined_overtime_pay_ytd');
 
         //Details link from the agency landing page - don't display agency name
-        $show_agency = !(_getRequestParamValue('dtsmnid') == 325);
+        $show_agency = !(RequestUtilities::getRequestParamValue('dtsmnid') == 325);
 
-        if(_getRequestParamValue('smnid') == 322){
+        if(RequestUtilities::getRequestParamValue('smnid') == 322){
             $total_overtime_employees_label = WidgetUtil::getLabel('total_no_of_ot_employees').':';
             $total_overtime_employees = number_format($data['total_overtime_employees']);
         }
