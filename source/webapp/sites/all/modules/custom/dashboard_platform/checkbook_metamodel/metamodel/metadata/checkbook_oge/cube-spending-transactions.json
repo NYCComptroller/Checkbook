@@ -49,7 +49,7 @@
                                     "sourceColumnName": "vendor_name"
                                     }
                         ]
-                    },                    
+                    },
                     {
                         "name": "expenditure_object",
                         "levels": [
@@ -64,7 +64,7 @@
                         "name": "expobjectname",
                         "levels": [
                                     {
-                                    "name": "expobjectname",                                   
+                                    "name": "expobjectname",
                                     "sourceColumnName": "expenditure_object_name"
                                     }
                         ]
@@ -73,7 +73,7 @@
                         "name": "expobjectcode",
                         "levels": [
                                     {
-                                    "name": "expobjectcode",                                   
+                                    "name": "expobjectcode",
                                     "sourceColumnName": "expenditure_object_code"
                                     }
                         ]
@@ -84,7 +84,7 @@
                                     {
                                     "name": "dept",
                                     "datasetName": "department",
-                                    "sourceColumnName": "department_id"
+                                    "sourceColumnName": "department_code"
                                     }
                         ]
                     },
@@ -105,7 +105,7 @@
                                     "sourceColumnName": "department_name"
                                     }
                         ]
-                    },                    
+                    },
                     {
                         "name": "category",
                         "levels": [
@@ -163,7 +163,7 @@
         "disbursement_line_item_details__spending_category_oge": [
             {"datasetName": "fact_disbursement_line_item1", "columnNames": ["spending_category_id"]},
             {"datasetName": "spending_category_oge", "columnNames": ["spending_category_id"]}
-        ],        
+        ],
         "disbursement_line_item_details__contracts_spending_transactions": [
             {"datasetName": "fact_disbursement_line_item", "columnNames": ["disbursement_line_item_id","agreement_commodity_line_number"]},
             {"datasetName": "contracts_spending_transactions", "columnNames": ["disbursement_line_item_id","disb_agreement_commodity_line_number"]}
