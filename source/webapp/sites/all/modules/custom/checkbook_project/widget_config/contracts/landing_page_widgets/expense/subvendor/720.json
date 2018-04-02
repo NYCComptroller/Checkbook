@@ -12,8 +12,8 @@
 "columns": ["subvendor.subvendor","subvendor.subvendor.legal_name","minority_type.minority_type.minority_type_name","minority_type.minority_type",
             "total_contracts","original_amount_sum","current_amount_sum","yeartype.yeartype","spending_amount_sum"],
 "adjustParameters":"
-    $dashboard = _getRequestParamValue('dashboard');
-    if(($dashboard == 'ss' || $dashboard == 'sp') && !_getRequestParamValue('mwbe')){
+    $dashboard = RequestUtilities::getRequestParamValue('dashboard');
+    if(($dashboard == 'ss' || $dashboard == 'sp') && !RequestUtilities::getRequestParamValue('mwbe')){
         unset($parameters['minority_type_id']);
     }
     $adjustedParameters = $parameters;
@@ -35,7 +35,7 @@
 },
 "subvendor_name_link": {
 "type": "expression2",
-"expression": "'<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row['subvendor_subvendor'],_getRequestParamValue('year'),$row['yeartype_yeartype']).  '?expandBottomCont=true\">' .$row['subvendor_name_formatted']. '</a>'"
+"expression": "'<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row['subvendor_subvendor'],RequestUtilities::getRequestParamValue('year'),$row['yeartype_yeartype']).  '?expandBottomCont=true\">' .$row['subvendor_name_formatted']. '</a>'"
 } ,
 "spent_amount_no_link": {
 "type": "expression2",

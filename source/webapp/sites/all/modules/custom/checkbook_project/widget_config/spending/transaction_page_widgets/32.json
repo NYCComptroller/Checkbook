@@ -54,7 +54,7 @@
 		    }
 	   }
 
-        $dtsmnid = _getRequestParamValue('dtsmnid');
+        $dtsmnid = RequestUtilities::getRequestParamValue('dtsmnid');
         if($dtsmnid == 20){//From spending landing page
             $data_controller_instance = data_controller_get_operator_factory_instance();
             $parameters['agreement_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
@@ -85,8 +85,8 @@
 
         //Sub vendor page, need to use prime_vendor_id
         if($node->is_subvendor) {
-            $sub_vendor = _getRequestParamValue('subvendor');
-            $vendor = _getRequestParamValue('vendor');
+            $sub_vendor = RequestUtilities::getRequestParamValue('subvendor');
+            $vendor = RequestUtilities::getRequestParamValue('vendor');
             if(isset($vendor)) {
                 $adjustedParameters['prime_vendor_id'] = $vendor;
             }

@@ -24,7 +24,7 @@
 "header":"
 	$header = NULL;
 	$header .= widget_data_tables_export_link($node);
-	return $header; 
+	return $header;
 ",
 "useList":true,
 "stickyHeader":true,
@@ -180,7 +180,7 @@
 "adjustDataTableOptions":"
           $adjustDataTableOptions = $node->widgetConfig->dataTableOptions;
 
-          $rpp = _getRequestParamValue('rpp');
+          $rpp = RequestUtilities::getRequestParamValue('rpp');
              if(is_numeric($rpp) ){
                     $adjustDataTableOptions->iDisplayLength = (int)$rpp;
              }

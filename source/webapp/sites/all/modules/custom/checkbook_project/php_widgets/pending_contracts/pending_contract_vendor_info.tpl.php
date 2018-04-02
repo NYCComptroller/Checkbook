@@ -25,8 +25,8 @@ Prime Vendor Information
 
 
 //TODO temp fix move bottom code to separate custom preprocess function
-    $contract_num = _getRequestParamValue("contract");
-    $version_num = _getRequestParamValue("version");
+    $contract_num = RequestUtilities::getRequestParamValue("contract");
+    $version_num = RequestUtilities::getRequestParamValue("version");
 
 $queryVendorDetails = "SELECT
        vh.vendor_id,

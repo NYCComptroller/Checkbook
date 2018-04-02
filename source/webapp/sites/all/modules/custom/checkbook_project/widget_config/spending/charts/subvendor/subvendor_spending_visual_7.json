@@ -30,7 +30,7 @@
 "urlParamMapSubVendor":{"yeartype":"type_of_year","agency":"agency_id","vendor":"prime_vendor_id","category":"spending_category_id","industry":"industry_type_id"},
 "chartTitle":"M/WBE Total Sub Spending Share",
 "widgetDataLoader":"
-    
+
     $where_filters = array();
     foreach($node->widgetConfig->requestParams as $param=>$value){
         $where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
@@ -54,9 +54,9 @@
 
 	$series =  array();
 	$non_mwbe_data = array();
-	$year_id = _getRequestParamValue('year');
+	$year_id = RequestUtilities::getRequestParamValue('year');
 
-    $mwbe_param = _getRequestParamValue('mwbe');
+    $mwbe_param = RequestUtilities::getRequestParamValue('mwbe');
     $mwbe_page_cats = $mwbe_param != null
         ? explode('~',$mwbe_param)
         : explode('~',MappingUtil::$total_mwbe_cats);
@@ -111,7 +111,7 @@
 
 	foreach($series as $key=>$row){
 		if($key <= $year && $key >= $year - 4){
-			if(_getRequestParamValue('yeartype') == 'C'){
+			if(RequestUtilities::getRequestParamValue('yeartype') == 'C'){
 				 $year_display = 'CY ' . $key;
 			}else{
 				$year_display = 'FY ' . $key;
@@ -131,7 +131,7 @@
     if(empty($series_new)) {
         $node->data = array();
     }
-    $categoryId = _getRequestParamValue('category');
+    $categoryId = RequestUtilities::getRequestParamValue('category');
     if(isset($categoryId)){
         $categoryDetails = SpendingUtil::getSpendingCategoryDetails($categoryId,'display_name');
         if(is_array($categoryDetails)){
@@ -153,7 +153,7 @@
 	"colors":["#7DB7E5"],
     "plotOptions": {
             "series": {
-                "minPointLength":40 ,                
+                "minPointLength":40 ,
                 "stacking": "normal",
                 "dataLabels": {
                     "enabled": true,
@@ -162,7 +162,7 @@
                 		"color": "#FFFFFF",
                 		"fontSize": "24px"
             		}
-                }             
+                }
             }
     },
     "xAxis": {
@@ -181,13 +181,13 @@
     "title": {"text": ""},
     "yAxis": {
      	"min":0,
-     	"minRange": 0.1,    
+     	"minRange": 0.1,
         "startOnTick":true,
         "title": {"text": ""},
         "labels":{"rotation": 0,"function":"yAxisFormatter"}
     } ,
     "legend": {
-        "enabled": false       
+        "enabled": false
     },
     "tooltip":{"function":"tooltipformatter"}
     }

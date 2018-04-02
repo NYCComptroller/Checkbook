@@ -32,6 +32,6 @@ abstract class SpendingCategoryParameter {
     const TRUST_AGENCY = 5;
 
     public static function getCurrent() {
-        return _getRequestParamValue(UrlParameter::SPENDING_CATEGORY);
+        return RequestUtilities::getRequestParamValue(UrlParameter::SPENDING_CATEGORY);
     }
 }

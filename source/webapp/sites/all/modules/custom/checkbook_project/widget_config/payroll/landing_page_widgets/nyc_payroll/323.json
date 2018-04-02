@@ -37,7 +37,7 @@
     return $footer;
     ",
     "transformationPHP":"
-        $employee_totals = PayrollUtil::getAgencyEmployeeCountByType(_getRequestParamValue('year'), _getRequestParamValue('yeartype'), _getRequestParamValue('title'));
+        $employee_totals = PayrollUtil::getAgencyEmployeeCountByType(RequestUtilities::getRequestParamValue('year'), RequestUtilities::getRequestParamValue('yeartype'), RequestUtilities::getRequestParamValue('title'));
         foreach($node->data as &$row) {
             $agency_id = $row['agency_agency'];
             $row['total_salaried_employees'] = $employee_totals[$row['agency_agency']]['total_salaried_employees'];

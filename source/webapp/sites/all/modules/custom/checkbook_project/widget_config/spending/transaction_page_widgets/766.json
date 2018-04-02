@@ -238,8 +238,8 @@
         }
     ],
     "adjustParameters":"
-        $subvendor = _getRequestParamValue('subvendor');
-        $mwbe = _getRequestParamValue('mwbe');
+        $subvendor = RequestUtilities::getRequestParamValue('subvendor');
+        $mwbe = RequestUtilities::getRequestParamValue('mwbe');
         if(isset($subvendor)) {
             $data_controller_instance = data_controller_get_operator_factory_instance();
             $parameters['prime_vendor_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);

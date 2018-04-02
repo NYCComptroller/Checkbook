@@ -15,7 +15,7 @@ function _checkbook_export_form(){
 /** Function to render export data for grid view */
 function _checkbook_export_grid_transactions(){
 
-    $nodeId = _getRequestParamValue('node',false);
+    $nodeId = RequestUtilities::getRequestParamValue('node',false);
     $node = node_load($nodeId);
     if($node ==null ){
     	$node = widget_load($nodeId);
@@ -151,7 +151,7 @@ function _checkbook_export_grid_sort($node, $order = null){
                {
                    $index = $a['sort_column'];
 
-                   if(($a['formatType'] == "monthfy" || $a['formatType'] == "month") && _getRequestParamValue('yeartype') == 'B'){
+                   if(($a['formatType'] == "monthfy" || $a['formatType'] == "month") && RequestUtilities::getRequestParamValue('yeartype') == 'B'){
                        $months =  array("July"=> 1, "August"=>  2, "September"=>  3, "October"=>  4, "November"=>  5, "December"=>  6,
                            "January"=>  7, "February"=>  8, "March"=>  9, "April"=>  10, "May"=> 11, "June"=> 12);
 
@@ -160,7 +160,7 @@ function _checkbook_export_grid_sort($node, $order = null){
                        }
                        return ($months[$a[$index]] > $months[$b[$index]]) ? -1 : 1;
                    }
-                   else if($a['formatType'] == "month" && _getRequestParamValue('yeartype') == 'C') {
+                   else if($a['formatType'] == "month" && RequestUtilities::getRequestParamValue('yeartype') == 'C') {
                        $months =  array("January"=> 1, "February"=>  2, "March"=>  3, "April"=>  4, "May"=>  5, "June"=>  6,
                            "July"=>  7, "August"=>  8, "September"=>  9, "October"=>  10, "November"=> 11, "December"=> 12);
 
@@ -184,7 +184,7 @@ function _checkbook_export_grid_sort($node, $order = null){
                 {
                     $index = $a['sort_column'];
 
-                    if(($a['formatType'] == "monthfy" || $a['formatType'] == "month") && _getRequestParamValue('yeartype') == 'B'){
+                    if(($a['formatType'] == "monthfy" || $a['formatType'] == "month") && RequestUtilities::getRequestParamValue('yeartype') == 'B'){
                         $months =  array("July"=> 1, "August"=>  2, "September"=>  3, "October"=>  4, "November"=>  5, "December"=>  6,
                             "January"=>  7, "February"=>  8, "March"=>  9, "April"=>  10, "May"=> 11, "June"=> 12);
 
@@ -193,7 +193,7 @@ function _checkbook_export_grid_sort($node, $order = null){
                         }
                         return ($months[$a[$index]] < $months[$b[$index]]) ? -1 : 1;
                     }
-                    else if($a['formatType'] == "month" && _getRequestParamValue('yeartype') == 'C') {
+                    else if($a['formatType'] == "month" && RequestUtilities::getRequestParamValue('yeartype') == 'C') {
                         $months =  array("January"=> 1, "February"=>  2, "March"=>  3, "April"=>  4, "May"=>  5, "June"=>  6,
                             "July"=>  7, "August"=>  8, "September"=>  9, "October"=>  10, "November"=> 11, "December"=> 12);
 
@@ -233,7 +233,7 @@ function _checkbook_export_transactions(){
     $isList = $node->widgetConfig->useList;
     $data = NULL;
     $i = 0;
-    
+
     //Get Export column Configuration
     $exportConfigNid = isset($node->widgetConfig->exportConfigNid)? $node->widgetConfig->exportConfigNid: null;
     if(isset($exportConfigNid)){
@@ -242,14 +242,14 @@ function _checkbook_export_transactions(){
     }else{
         $exportColumns = $node->widgetConfig->table_columns;
     }
-    
+
     if($limit > $exportMemoryRecordLimit || isset($exportConfigNid)){
         $node->widgetConfig->generateDBQuery = true;
     }
 
     $columns = array();
     foreach($exportColumns as $column){
-        if(!isset($column->datasource) || (isset($column->datasource) && ($column->datasource == _getRequestParamValue('datasource')))){
+        if(!isset($column->datasource) || (isset($column->datasource) && ($column->datasource == RequestUtilities::getRequestParamValue('datasource')))){
             if(check_node_flag_visibilty($column->visibility_flag, $node))
                 array_push($columns, $column);
         }
@@ -285,10 +285,10 @@ function _checkbook_export_transactions(){
     if($isList){//Selecting only required columns.
         $node->widgetConfig->columns = $columnsConfig;
     }
-    
+
     //load data
     widget_data($node);
-  
+
     if(($limit > $exportMemoryRecordLimit) || isset($exportConfigNid)){
         try{
             $fileName = _checkbook_export_generateExportFile($node,$data, $exportConfigNode);
@@ -376,25 +376,25 @@ function _checkbook_export_generateExportFile($node,$headers, $exportConfigNode 
 
         $tempOutputFile = $tmpDir .'/'. $filename;
         $outputFile = DRUPAL_ROOT . '/' . $fileDir . '/' . $filename;
-        
+
         $columns = isset($exportConfigNode) ? $exportConfigNode->widgetConfig->table_columns : $node->widgetConfig->table_columns;
         $columnsConfig = array();
         foreach($columns as $column){
           $columnsConfig[] = (isset($column->sortSourceColumn)) ? str_replace('.','_',$column->sortSourceColumn) : str_replace('.','_',$column->column);
         }
-        
+
         $input = $node->data;$start = "SELECT ";$end = " FROM (";
         $selectQuery = substr($input, strlen($start)+strpos($input, $start), (strlen($input) - strpos($input, $end))*(-1));
         $selectColumns = explode(",",$selectQuery);
         $exportColumns = array();
-        
+
         foreach($selectColumns as $key =>$value){
           $selectColumn = (strpos($value,' AS ')) ? str_replace('AS ','',substr($value, strpos($value,' AS ')+1)) : substr($value, strpos($value,'.')+1);
           if(in_array(trim($selectColumn),$columnsConfig)){
             $exportColumns[trim($selectColumn)] = $value;
           }
         }
-        
+
         $newQuery = null;
         foreach($columnsConfig as $key => $value){
           $newQuery .= $exportColumns[$value] . ',';
@@ -407,7 +407,7 @@ function _checkbook_export_generateExportFile($node,$headers, $exportConfigNode 
          * Columns that are derived do not get selected, this allows us to override the
          * select value of the column sql directly.
          * */
-        
+
         $sqlOverride = isset($exportConfigNode) ? $exportConfigNode->widgetConfig->exportColumnSqlOverride : $node->widgetConfig->exportColumnSqlOverride;
         if(isset($sqlOverride)) {
             $override_sql = null;
@@ -448,7 +448,7 @@ function _checkbook_export_generateExportFile($node,$headers, $exportConfigNode 
 
         $command = $conf['check_book']['data_feeds']['command'];
 
-        $data_source = _getRequestParamValue('datasource');
+        $data_source = RequestUtilities::getRequestParamValue('datasource');
         if ('checkbook_oge' == $data_source) {
             $command .= ' ' . $databases['checkbook_oge']['main']['database'] . ' ';
         } else {
@@ -461,7 +461,7 @@ function _checkbook_export_generateExportFile($node,$headers, $exportConfigNode 
                 . "'  WITH DELIMITER ',' CSV QUOTE '\\\"' ESCAPE '\\\"' \" ";
 
         log_error($command);
-        
+
         shell_exec($command);
 
         $cmd = "sed -i 1i'" . $headers . "' " . $tempOutputFile;
@@ -613,7 +613,7 @@ function _checkbook_export_get_node_config($nodeId=NULL){
 
     $_GET['q'] = urldecode(check_plain($_GET['refURL']));
 
-    $nodeId = isset($nodeId) ? $nodeId :_getRequestParamValue('node');
+    $nodeId = isset($nodeId) ? $nodeId : RequestUtilities::getRequestParamValue('node');
 
     $node = node_load($nodeId);
     //widget_set_uid($node,"export");

@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -13,22 +13,22 @@ class ContractsWidgetVisibilityService {
      * @return view name to be displayed
      */
     static function getWidgetVisibility($widget) {
-        $dashboard = _getRequestParamValue('dashboard');
+        $dashboard = RequestUtilities::getRequestParamValue('dashboard');
         $category = ContractsParameters::getContractCategory();
         $view = NULL;
-        
+
         switch($widget){
             case 'departments':
             case 'departments_vendor':
-                if(_getRequestParamValue('agency')) {
+                if(RequestUtilities::getRequestParamValue('agency')) {
                     if($category === 'expense'){
                         if(RequestUtilities::isEDCPage()){
-                            if(_getRequestParamValue('vendor'))
+                            if(RequestUtilities::getRequestParamValue('vendor'))
                                 $view = 'contracts_departments_view';
                             else
                                 $view = 'oge_contracts_departments_view';
                         }else{
-                            if(($dashboard == NULL || $dashboard == 'mp') && _getRequestParamValue('agency')){
+                            if(($dashboard == NULL || $dashboard == 'mp') && RequestUtilities::getRequestParamValue('agency')){
                                 $view = 'contracts_departments_view';
                             }
                         }
@@ -90,7 +90,7 @@ class ContractsWidgetVisibilityService {
                 }
                 break;
             case 'industries':
-                if(!_getRequestParamValue('cindustry')){
+                if(!RequestUtilities::getRequestParamValue('cindustry')){
                     switch($category) {
                         case "expense":
                             switch($dashboard) {
@@ -119,7 +119,7 @@ class ContractsWidgetVisibilityService {
                 }
                 break;
             case 'size':
-                if(!_getRequestParamValue('csize')){
+                if(!RequestUtilities::getRequestParamValue('csize')){
                     switch($category) {
                         case "expense":
                             switch($dashboard) {
@@ -148,7 +148,7 @@ class ContractsWidgetVisibilityService {
                 }
                 break;
             case 'award_methods':
-                if(!_getRequestParamValue('awdmethod')){
+                if(!RequestUtilities::getRequestParamValue('awdmethod')){
                     switch($category) {
                         case "expense":
                             switch($dashboard) {
@@ -225,7 +225,7 @@ class ContractsWidgetVisibilityService {
                 }
                 break;
             case 'vendors':
-                if(!_getRequestParamValue('vendor')){
+                if(!RequestUtilities::getRequestParamValue('vendor')){
                     switch($category) {
                         case "expense":
                             switch($dashboard) {
@@ -271,7 +271,7 @@ class ContractsWidgetVisibilityService {
                 }
                 break;
             case 'sub_vendors':
-                if(!_getRequestParamValue('subvendor')){
+                if(!RequestUtilities::getRequestParamValue('subvendor')){
                     switch($dashboard) {
                         case "ss":
                         case "sp":
@@ -285,7 +285,7 @@ class ContractsWidgetVisibilityService {
                 }
                 break;
             case 'agencies':
-                if(!_getRequestParamValue('agency')){
+                if(!RequestUtilities::getRequestParamValue('agency')){
                     switch($category) {
                         case "expense":
                             switch($dashboard) {
@@ -302,12 +302,12 @@ class ContractsWidgetVisibilityService {
                             }
                             break;
                         case "revenue":
-                            $view = 'revenue_contracts_by_agencies_view';        
+                            $view = 'revenue_contracts_by_agencies_view';
                             break;
                         case "pending expense":
                         case "pending revenue":
                             $view = 'pending_contracts_by_agencies_view';
-                            break;      
+                            break;
                     }
                 }
                 break;
@@ -317,5 +317,5 @@ class ContractsWidgetVisibilityService {
         }
 
         return $view == '' ? null : $view;
-    } 
+    }
 }

@@ -43,7 +43,7 @@
     return $adjustedParameters;
   ",
   "transformationPHP":"
-  $transactions_page = '/' . current_path()  . '?expandBottomContURL=/panel_html/revenue_transactions';  
+  $transactions_page = '/' . current_path()  . '?expandBottomContURL=/panel_html/revenue_transactions';
   $year = _checkbook_project_get_url_param_string('year');
   $agency = ($node->widgetConfig->requestParams['agency.agency']) ? '/agency/' . $node->widgetConfig->requestParams['agency.agency'] : '';
   $smnid = '/smnid/284';
@@ -67,7 +67,7 @@
     "template":"revenue_transactions_summary",
     "templateTitle":"Revenue Transactions",
     "templateLabel":"Year",
-    "templateLabelEval":"return 'FY '._getYearValueFromID(_getRequestParamValue('year'));"
+    "templateLabelEval":"return 'FY '._getYearValueFromID(RequestUtilities::getRequestParamValue('year'));"
   },
   "chartConfig":{
     "chart":{

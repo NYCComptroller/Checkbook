@@ -10,7 +10,7 @@
 "columns": ["pending_contract_number.pending_contract_number","document_version.document_version","pending_contract_purpose.pending_contract_purpose","contract_number.contract_number","document_agency_name.document_agency_name","document_agency_id.document_agency_id","vendor_legal_name.vendor_legal_name","vendor.vendor","original_amount_sum","current_amount_sum","dollar_difference.dollar_difference","percent_difference.percent_difference","document_code.document_code.document_code","original_agreement_id.original_agreement_id"],
 "defaultParamTypeConfig":{"dollar_difference":"ne"},
 "adjustParameters":"
-    $dashboard = _getRequestParamValue('dashboard');
+    $dashboard = RequestUtilities::getRequestParamValue('dashboard');
 if($dashboard == 'ss' || $dashboard == 'sp' || $dashboard == 'ms'){
 $parameters['minority_type_id'] = 1000;
 }

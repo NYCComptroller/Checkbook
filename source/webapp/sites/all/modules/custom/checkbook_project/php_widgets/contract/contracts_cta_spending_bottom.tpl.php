@@ -72,7 +72,7 @@ foreach ($node->results_spending as $spending_row) {
 //Main table header
 $tbl_spending['header']['title'] = "<h3>SPENDING BY SUB VENDOR</h3>";
 
-if(_getRequestParamValue("doctype")=="CT1" || _getRequestParamValue("doctype")=="CTA1"){
+if(RequestUtilities::getRequestParamValue("doctype")=="CT1" || RequestUtilities::getRequestParamValue("doctype")=="CTA1"){
     $tbl_spending['header']['columns'] = array(
         array('value' => WidgetUtil::generateLabelMappingNoDiv("sub_vendor_name"), 'type' => 'text'),
         array('value' => WidgetUtil::generateLabelMappingNoDiv("mwbe_category"), 'type' => 'text'),
@@ -88,7 +88,7 @@ if(_getRequestParamValue("doctype")=="CT1" || _getRequestParamValue("doctype")==
         array('value' => WidgetUtil::generateLabelMappingNoDiv("current_amount"), 'type' => 'number'),
         array('value' => WidgetUtil::generateLabelMappingNoDiv("original_amount"), 'type' => 'number'),
         array('value' => WidgetUtil::generateLabelMappingNoDiv("spent_to_date"), 'type' => 'number')
-    ); 
+    );
 }
 
 $contract_number = $node->results_contract_history[0]['contract_number'];
@@ -126,23 +126,23 @@ $total_spent_todate = $res->data[0]['total_spent_todate'];
 <?php
 $index_spending = 0;
 foreach ($vendor_contract_summary as $vendor => $vendor_summary) {
-    
+
     $original_amount = $vendor_summary['original_amount'];
     $current_amount = $vendor_summary['current_amount'];
 
     $open = $index_spending == 0 ? '' : 'open';
-    
+
     //Main table columns
-    
-    if(_getRequestParamValue("doctype")=="CT1" || _getRequestParamValue("doctype")=="CTA1"){
-        
+
+    if(RequestUtilities::getRequestParamValue("doctype")=="CT1" || RequestUtilities::getRequestParamValue("doctype")=="CTA1"){
+
         $querySubVendorStatusInPIP = "SELECT
                                         c.aprv_sta_id, 
                                         c.aprv_sta_value AS sub_vendor_status_pip
                                     FROM sub_agreement_snapshot a
                                     LEFT JOIN subcontract_approval_status c ON c.aprv_sta_id = COALESCE(a.aprv_sta,6)
                                     WHERE a.latest_flag = 'Y'
-                                    AND a.contract_number = '". $contract_number 
+                                    AND a.contract_number = '". $contract_number
                                     ."' AND a.vendor_id = ". $vendor_summary['sub_vendor_id']
                                     . " ORDER BY c.sort_order ASC LIMIT 1";
 
@@ -155,7 +155,7 @@ foreach ($vendor_contract_summary as $vendor => $vendor_summary) {
         }else{
             $viewAll = (count($sub_contract_reference[$vendor]) > 1) ? "<a class='subContractViewAll'>View All>></a>" : '';
         }
-        
+
         $tbl_spending['body']['rows'][$index_spending]['columns'] = array(
             array('value' => "<a class='showHide " . $open . " expandTwo' ></a>" . $vendor, 'type' => 'text'),
             array('value' => MappingUtil::getMinorityCategoryById($vendor_summary['minority_type_id']), 'type' => 'text'),
@@ -184,7 +184,7 @@ foreach ($vendor_contract_summary as $vendor => $vendor_summary) {
                                     FROM sub_agreement_snapshot a
                                     LEFT JOIN subcontract_approval_status c ON c.aprv_sta_id = COALESCE(a.aprv_sta,6)
                                     WHERE a.latest_flag = 'Y'
-                                    AND a.contract_number = '". $contract_number 
+                                    AND a.contract_number = '". $contract_number
                                     ."' AND a.vendor_id = ". $vendor_summary['sub_vendor_id']
                                     ."  AND a.sub_contract_id ='".$reference_id
                                     . "' ORDER BY c.sort_order ASC LIMIT 1";

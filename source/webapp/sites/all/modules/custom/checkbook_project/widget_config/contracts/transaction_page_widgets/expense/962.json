@@ -38,7 +38,7 @@
         {"label":"Sub Contract Reference ID","column":"sub_contract_id_export"}
     ],
     "preProcessConfiguration":"
-        $smnid = $doctype = _getRequestParamValue('smnid');
+        $smnid = $doctype = RequestUtilities::getRequestParamValue('smnid');
         $node->show_difference = ($smnid == 480 || $smnid == 366 || $smnid == 722);
     "
 }

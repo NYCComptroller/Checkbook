@@ -15,27 +15,27 @@
         "sortColumn":0,
         "sortOrder":"desc",
         "table_columns": [
-            
+
  			 {
                   "labelAlias": "Month",
                   "columnType": "text",
                   "formatType": "month"
-             },             
+             },
              {
                   "labelAlias": "Asian American",
                   "columnType": "number",
                   "formatType": "amount"
-             },             
+             },
              {
                   "labelAlias": "Black American",
                   "columnType": "number",
                   "formatType": "amount"
-             },             
+             },
              {
                   "labelAlias": "Women",
                   "columnType": "number",
                   "formatType": "amount"
-             },             
+             },
              {
                   "labelAlias": "Hispanic American",
                   "columnType": "number",
@@ -50,24 +50,24 @@
 "urlParamMapSubVendor":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"prime_vendor_id","category":"spending_category_id","industry":"industry_type_id"},
 "chartTitle":"Analysis by Prime M/WBE Share",
 "widgetDataLoader":"
-    
+
     $where_filters = array();
     foreach($node->widgetConfig->requestParams as $param=>$value){
         $where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
     }
-    
+
     if(count($where_filters) > 0){
         $where_filter = ' where ' . implode(' and ' , $where_filters);
     }
-    
+
     $sql = 'select rm.minority_type_id, rm.minority_type_name , month_value,month_name,year_value, sum(total_spending_amount) total_spending
-    from aggregateon_mwbe_spending_coa_entities a1 
+    from aggregateon_mwbe_spending_coa_entities a1
     join ref_minority_type rm on rm.minority_type_id = a1.minority_type_id
     join ref_month rmo on rmo.month_id =  a1.month_id
-    join ref_year ry on a1.year_id = ry.year_id       
+    join ref_year ry on a1.year_id = ry.year_id
    ' . $where_filter . '
     group by rm.minority_type_id, rm.minority_type_name, month_value,month_name,year_value  ';
-    
+
     $node->data  = _checkbook_project_execute_sql($sql);
     $node->data_sub_ven  = array();
 ",
@@ -78,43 +78,43 @@
 	$series_w =  array();
 	$series_aa =  array();
 	$series_e =  array();
-	
+
 	 $year = '';
 	 foreach ($node->data as $row){
-	 
+
 	 	switch($row['minority_type_id']){
 	 		case '2':
-	 		$series_ba[$row['month_value'] - 1]->y += $row['total_spending']; 
+	 		$series_ba[$row['month_value'] - 1]->y += $row['total_spending'];
 	 		break;
 	 		case '3':
-	 		$series_ha[$row['month_value'] - 1]->y += $row['total_spending']; 
+	 		$series_ha[$row['month_value'] - 1]->y += $row['total_spending'];
 	 		break;
 	 		case '4':
-	 		$series_aa[$row['month_value'] - 1]->y += $row['total_spending']; 
+	 		$series_aa[$row['month_value'] - 1]->y += $row['total_spending'];
 	 		break;
 	 		case '5':
-	 		$series_aa[$row['month_value'] - 1]->y += $row['total_spending']; 
+	 		$series_aa[$row['month_value'] - 1]->y += $row['total_spending'];
 	 		break;
 	 		case '9':
-	 		$series_w[$row['month_value'] - 1]->y += $row['total_spending']; 
+	 		$series_w[$row['month_value'] - 1]->y += $row['total_spending'];
 	 		break;
 	 		case '7':
-	 		$non_mwbe_data[$row['month_value'] - 1] = $row['total_spending']; 
+	 		$non_mwbe_data[$row['month_value'] - 1] = $row['total_spending'];
 	 		break;
-	 	}	 
+	 	}
 	 	$year = $row['year_value'];
 	 }
 
 	 $months = array('January','February','March','April','May','June','July','August','September','October','November','December');
-	if(_getRequestParamValue('yeartype') == 'C'){
-		 $year = 'CY ' . $year;		 
+	if(RequestUtilities::getRequestParamValue('yeartype') == 'C'){
+		 $year = 'CY ' . $year;
 		$months_pos = array(0,1,2,3,4,5,6,7,8,9,10,11);
 	}else{
 		$year = 'FY ' . $year;
 		$node->widgetConfig->gridConfig->table_columns[0]->formatType = 'monthfy';
 		$months_pos = array(6,7,8,9,10,11,0,1,2,3,4,5);
 	}
-	
+
 
 	$i = 0;
 	while($i <=11){
@@ -126,16 +126,16 @@
 	 	$series_aa[$i]->y = $series_aa[$i]->y/$non_mwbe_data[$i]*100;
 		$series_w[$i]->total =  $series_w[$i]->y;
 	 	$series_w[$i]->y = $series_w[$i]->y/$non_mwbe_data[$i]*100;
-	 	$tooltip_label = 	'Year: ' . $year. '<br/>' .  						
-	 						'Month: '. $months[$i] . '<br/>' . 
-							'Asian American: ' . custom_number_formatter_format($series_aa[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_aa[$i]->y,1,null,'%') . ')' .  '<br/>' 
-							. 'Black American: ' . custom_number_formatter_format($series_ba[$i]->total,2,'$')  . ' (' .custom_number_formatter_format($series_ba[$i]->y,1,null,'%') . ')' . '<br/>' 
-							. 'Women: ' . custom_number_formatter_format($series_w[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_w[$i]->y,1,null,'%') . ')' . '<br/>' 
-							. 'Hispanic American: ' . custom_number_formatter_format($series_ha[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_ha[$i]->y,1,null,'%') . ')' . '<br/>'; 
+	 	$tooltip_label = 	'Year: ' . $year. '<br/>' .
+	 						'Month: '. $months[$i] . '<br/>' .
+							'Asian American: ' . custom_number_formatter_format($series_aa[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_aa[$i]->y,1,null,'%') . ')' .  '<br/>'
+							. 'Black American: ' . custom_number_formatter_format($series_ba[$i]->total,2,'$')  . ' (' .custom_number_formatter_format($series_ba[$i]->y,1,null,'%') . ')' . '<br/>'
+							. 'Women: ' . custom_number_formatter_format($series_w[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_w[$i]->y,1,null,'%') . ')' . '<br/>'
+							. 'Hispanic American: ' . custom_number_formatter_format($series_ha[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_ha[$i]->y,1,null,'%') . ')' . '<br/>';
 		$series_ba[$i]->tooltip_label = $tooltip_label;
 		$series_ha[$i]->tooltip_label = $tooltip_label;
 		$series_aa[$i]->tooltip_label = $tooltip_label;
-		$series_w[$i]->tooltip_label = $tooltip_label; 		
+		$series_w[$i]->tooltip_label = $tooltip_label;
 		$index = array_search($months[$i],$months_os);
 		$node->widgetConfig->gridConfig->data[] = array(
 														$months[$i],
@@ -144,11 +144,11 @@
 														$series_w[$i]->total,
 														$series_ha[$i]->total
 														 );
-		 	
+
 		$i +=1;
 	}
-	
-	
+
+
 	foreach($months_pos as $index){
 		$series_w_points[] = $series_w[$index];
 		$series_aa_points[] = $series_aa[$index];
@@ -160,24 +160,24 @@
 	$node->widgetConfig->chartConfig->series[0]->name = 'Women';
 	$node->widgetConfig->chartConfig->series[0]->type = 'column';
 	$node->widgetConfig->chartConfig->series[0]->pointWidth = 30;
-	$node->widgetConfig->chartConfig->series[0]->data = $series_w_points; 
+	$node->widgetConfig->chartConfig->series[0]->data = $series_w_points;
 
 	$node->widgetConfig->chartConfig->series[1]->name = 'Asian American';
 	$node->widgetConfig->chartConfig->series[1]->type = 'column';
 	$node->widgetConfig->chartConfig->series[1]->pointWidth = 30;
 	$node->widgetConfig->chartConfig->series[1]->data = $series_aa_points;
-	
+
 	$node->widgetConfig->chartConfig->series[2]->name = 'Black American';
 	$node->widgetConfig->chartConfig->series[2]->type = 'column';
 	$node->widgetConfig->chartConfig->series[2]->pointWidth = 30;
-	$node->widgetConfig->chartConfig->series[2]->data = $series_ba_points;  
+	$node->widgetConfig->chartConfig->series[2]->data = $series_ba_points;
 
 	$node->widgetConfig->chartConfig->series[3]->name = 'Hispanic American';
 	$node->widgetConfig->chartConfig->series[3]->type = 'column';
 	$node->widgetConfig->chartConfig->series[3]->pointWidth = 30;
-	$node->widgetConfig->chartConfig->series[3]->data = $series_ha_points;  
+	$node->widgetConfig->chartConfig->series[3]->data = $series_ha_points;
 
-																		 
+
 ",
 "chartConfig" : {
     "plotOptions": {
@@ -186,7 +186,7 @@
                 "dataLabels": {
                     "enabled": true,
                     "format": "{point.custom_label}"
-                }             
+                }
             }
     },
     "colors":["#EB8E27","#B8D8ED","#99B473","#7DB8E1"],
@@ -213,7 +213,7 @@
     "title": {"text": ""},
     "yAxis": {
      	"min":0,
-     	"minRange": 0.1,    
+     	"minRange": 0.1,
         "startOnTick":true,
         "title": {"text": ""},
         "labels":{"rotation": 0,"function":"yAxisFormatter"}

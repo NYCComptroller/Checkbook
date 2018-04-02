@@ -182,7 +182,7 @@ return $adjustedParameters;
 "adjustDataTableOptions":"
 $adjustDataTableOptions = $node->widgetConfig->dataTableOptions;
 
-$rpp = _getRequestParamValue('rpp');
+$rpp = RequestUtilities::getRequestParamValue('rpp');
 if(is_numeric($rpp) ){
 $adjustDataTableOptions->iDisplayLength = (int)$rpp;
 }

@@ -112,9 +112,9 @@
           ],
     "adjustDataTableOptions":"
 
-            $nid = _getRequestParamValue('smnid');
+            $nid = RequestUtilities::getRequestParamValue('smnid');
             if(!isset($nid)) {
-                $nid = !isset($nid) ? _getRequestParamValue('dtsmnid') : $nid;
+                $nid = !isset($nid) ? RequestUtilities::getRequestParamValue('dtsmnid') : $nid;
             }
             if(isset($nid)){
                 switch($nid){
@@ -143,7 +143,7 @@
             array_unshift($config->orderBy, 'employment_type.employment_type');
         }
 
-        $monthId = _getRequestParamValue('month');
+        $monthId = RequestUtilities::getRequestParamValue('month');
         if( isset($monthId)){
             $node->widgetConfig->dataset = 'checkbook:payroll_employee_agency_month';
         }
