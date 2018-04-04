@@ -46,11 +46,11 @@
         <sql>
         SELECT s0.type_of_year,
             s0.year_id,
-            s0.expenditure_object_id,
+            s0.expenditure_object_code,
             j1.original_expenditure_object_name AS expenditure_object_name,
             SUM(total_spending_amount) AS check_amount_sum
         FROM aggregateon_spending_coa_entities s0
-        JOIN ref_expenditure_object j1 ON j1.expenditure_object_id = s0.expenditure_object_id
+        JOIN ref_expenditure_object j1 ON j1.expenditure_object_code = s0.expenditure_object_code and j1.expenditure_object_id = s0.expenditure_object_id
         <where>
             <exp op="AND">
                 <exp op="=" dbField="s0.year_id" paramName="year" />
@@ -63,7 +63,7 @@
                 <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
             </exp>
         </where>
-        GROUP BY s0.year_id, s0.type_of_year, s0.expenditure_object_id, j1.original_expenditure_object_name
+        GROUP BY s0.year_id, s0.type_of_year, s0.expenditure_object_code, j1.original_expenditure_object_name
         </sql>
     </statement>
     <!--GetOGESpendingByPrimeVendors-->
