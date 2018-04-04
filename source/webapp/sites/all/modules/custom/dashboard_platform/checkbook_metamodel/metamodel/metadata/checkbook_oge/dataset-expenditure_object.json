@@ -5,7 +5,7 @@
             "source": "ref_expenditure_object",
             "columns": [
                 {
-                    "name": "expenditure_object_id",
+                    "name": "expenditure_object_code",
                     "key": true
                 }
             ]
