@@ -11,7 +11,7 @@
     "urlParameterName":"dept",
     "autocompleteParamName":"dept_auto",
     "autocompleteID":"fdeptId",
-    "autocompleteField":"deptname.deptname",
+    "autocompleteField":"deptname_deptname",
     "adjustParameters":"
 	checkbook_faceted_search_adjust_param($node);
     if(function_exists('_checkbook_project_adjust_spending_parameter_filters')){
