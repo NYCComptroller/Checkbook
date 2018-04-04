@@ -468,7 +468,7 @@ class MappingUtil {
                 case "spending":
                     $ethnicity_id = SpendingUtil::getLatestMwbeCategoryTitleByVendor($vendor_id, null, null, $is_prime_or_sub);
                     if($ethnicity_id > 0){
-                        $title = " <br/><span class=\"second-line\">M/WBE Category:" . MappingUtil::getMinorityCategoryById($ethnicity_id). "</span>";
+                        $title = " <br/><span class=\"second-line\">M/WBE Category: " . MappingUtil::getMinorityCategoryById($ethnicity_id). "</span>";
                     }
                     break;
                 case "contracts":
