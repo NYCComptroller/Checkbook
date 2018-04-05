@@ -109,7 +109,7 @@ $contract_number = $node->data[0]['contract_number'];
       $ethnicities = array();
       foreach($node->data as $row){
         if($row['ethnicity'] != null and trim($row['ethnicity']) != '' ){
-          $ethnicities[] =MappingUtil::getMinorityCategoryById($minority_type_id);
+          $ethnicities[] = MappingUtil::getMinorityCategoryById($minority_type_id);
         }
       }
       $ethnicity = implode(',',$ethnicities);
