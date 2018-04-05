@@ -46,7 +46,7 @@ if(_get_current_datasource() != "checkbook_oge"){
 	                            LEFT JOIN ref_business_type rb ON vb.business_type_id = rb.business_type_id
 	                            LEFT JOIN contract_vendor_latest_mwbe_category cvlmc ON cvlmc.vendor_id = fa.vendor_id
                                 LEFT JOIN ref_minority_type rm ON cvlmc.minority_type_id = rm.minority_type_id
-	                        WHERE ra.address_type_code = 'PR' AND fa.latest_flag = 'Y' AND cvlmc.latest_minority_flag = 'Y' AND fa.original_agreement_id = " . $ag_id. " 
+	                        WHERE ra.address_type_code = 'PR' AND fa.latest_flag = 'Y' AND cvlmc.latest_minority_flag ='Y' AND fa.original_agreement_id = " . $ag_id. " 
 	                        ORDER BY cvlmc.year_id DESC LIMIT 1";
 }else{
   $queryVendorDetails = "SELECT  fa.contract_number, rb.business_type_code, fa.agreement_id,fa.original_agreement_id,
