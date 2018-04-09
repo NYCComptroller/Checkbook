@@ -129,7 +129,7 @@ function checkbook_datafeeds_tracking_form() {
     $form['#attached'] = array(
         'js' => array(
             'type' => 'file',
-            'data' => drupal_get_path('module', 'checkbook_datafeeds') . '/js/common.js',
+            'data' => drupal_get_path('module', 'checkbook_datafeeds') . '/js/datafeeds.js',
         )
     );
     $form['text'] = array(
