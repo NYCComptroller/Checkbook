@@ -1,19 +1,19 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -31,6 +31,14 @@ use checkbook_api\ResponseStatus as ResponseStatus;
  * Implements hook_menu().
  */
 function checkbook_api_menu() {
+
+  $items['api/v2'] = array(
+    'title' => 'Checkbook API v2',
+    'page callback' => 'checkbook_json_api',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
   $items['api'] = array(
     'title' => 'Checkbook API',
     'page callback' => 'checkbook_api',
@@ -54,6 +62,10 @@ function checkbook_api_menu() {
   );
 
   return $items;
+}
+
+function checkbook_json_api() {
+  echo 'hi';
 }
 
 /**
@@ -151,7 +163,7 @@ function checkbook_api_adjustBudgetParameterFilters(&$data_set, &$parameters, $c
     }else if(isset($parameters['budget_code_name'])){
         $parameters['budget_code_name'] = $data_controller_instance->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME, array($parameters['budget_code_name'], false, true));
     }
-    
+
     if(count($logicalOrColumns) > 0) {
         $parameters['logicalOrColumns'] = $logicalOrColumns;
     }
@@ -403,7 +415,7 @@ function checkbook_api_adjustContractDataSetResults(&$data_records) {
         if(isset($data_record['minority_type_name'])) {
             $data_records[$key]['minority_type_name'] = MappingUtil::getMinorityCategoryByName($data_record['minority_type_name']);
         }
-        
+
         //Derive sub vendor column from vendor type
         if(isset($data_record['vendor_type'])) {
             $data_records[$key]['vendor_type'] = (preg_match('/S/', $data_record['vendor_type'])) ? 'Yes' : 'No';
@@ -464,7 +476,7 @@ function checkbook_api_adjustSpendingParameterFilters(&$data_set, &$parameters, 
         unset($parameters['vendor_customer_code']);
         $parameters['vendor_name'] = "N/A (PRIVACY/SECURITY)";
     }
-    
+
 }
 /**
  * Used to adjust columns in the data set after sql call.

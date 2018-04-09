@@ -24,6 +24,7 @@ class CheckbookAPIRepository {
 
     /**
      * Function to select records from the checkbook_api table
+     * (API requests statistics table)
      *
      * @param $api_id
      * @return mixed
@@ -31,21 +32,21 @@ class CheckbookAPIRepository {
     public function getCheckbookAPI($api_id){
         $api = db_query(
             "SELECT
-            api_id,
-            domain,
-            request_xml,
-            response_status,
-            response_log,
-            client_ip,
-            city,
-            state,
-            country,
-            country_code,
-            continent,
-            continent_code,
-            created_date
+            `api_id`,
+            `domain`,
+            `request_xml`,
+            `response_status`,
+            `response_log`,
+            `client_ip`,
+            `city`,
+            `state`,
+            `country`,
+            `country_code`,
+            `continent`,
+            `continent_code`,
+            `created_date`
             FROM {checkbook_api}
-            WHERE api_id = :api_id", array(':api_id' => $api_id));
+            WHERE `api_id` = :api_id", array(':api_id' => $api_id));
 
         $api_results = $api->fetchObject();
         return $api_results;
@@ -58,6 +59,7 @@ class CheckbookAPIRepository {
      *
      * @param CheckbookAPIEntity $checkbookAPI
      * @return mixed
+     * @throws
      */
     public function insertCheckbookAPI(CheckbookAPIEntity $checkbookAPI) {
         // Remove any null properties
