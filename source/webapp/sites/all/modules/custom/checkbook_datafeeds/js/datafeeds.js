@@ -21,7 +21,7 @@
                 var code = $('#edit-tracking-number').val().trim();
                 var codeRegexp = /[a-z1-9]{10}/gi;
 
-                if (code && codeRegexp.test(code)) {
+                if (code && (10 == code.length) && codeRegexp.test(code)) {
                   // tracking code is valid
                   return;
                 }
