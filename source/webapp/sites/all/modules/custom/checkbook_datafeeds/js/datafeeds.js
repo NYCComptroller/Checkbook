@@ -16,32 +16,34 @@
                 return false;
             });
 
-            $('#checkbook-datafeeds-tracking-form').submit(function(event) {
-              var code = $('#edit-tracking-number').val().trim();
-              var codeRegexp = /[a-z1-9]{10}/gi;
+            if ($('#checkbook-datafeeds-tracking-form').length) {
+              $('#checkbook-datafeeds-tracking-form').submit(function(event) {
+                var code = $('#edit-tracking-number').val().trim();
+                var codeRegexp = /[a-z1-9]{10}/gi;
 
-              if (code && codeRegexp.test(code)) {
-                // tracking code is valid
-                return;
+                if (code && codeRegexp.test(code)) {
+                  // tracking code is valid
+                  return;
+                }
+
+                // tracking code is invalid
+                tracking_invalid();
+                event.preventDefault();
+              });
+
+              function tracking_invalid(){
+                $('#edit-tracking-number').css('border', '1px solid red');
+                $('#edit-go').after('<p class="datafeeds-invalid-code" style="color:red"><em>Invalid tracking code</em></p>');
               }
 
-              // tracking code is invalid
-              tracking_invalid();
-              event.preventDefault();
-            });
+              function tracking_clear() {
+                $('.datafeeds-invalid-code').remove();
+                $('#edit-tracking-number').css('border', '');
+              }
 
-            function tracking_invalid(){
-              $('#edit-tracking-number').css('border', '1px solid red');
-              $('#edit-go').after('<p class="datafeeds-invalid-code" style="color:red"><em>Invalid tracking code</em></p>');
+              $('#edit-tracking-number').change(tracking_clear);
+              $('#edit-tracking-number').keyup(tracking_clear);
             }
-
-            function tracking_clear() {
-              $('.datafeeds-invalid-code').remove();
-              $('#edit-tracking-number').css('border', '');
-            }
-
-            $('#edit-tracking-number').change(tracking_clear);
-            $('#edit-tracking-number').keyup(tracking_clear);
         }
     }
 }(jQuery));
