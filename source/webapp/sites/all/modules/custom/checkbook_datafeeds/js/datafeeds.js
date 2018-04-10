@@ -32,6 +32,9 @@
               });
 
               function tracking_invalid(){
+                if ($('.datafeeds-invalid-code').length) {
+                  return;
+                }
                 $('#edit-tracking-number').css('border', '1px solid red');
                 $('#edit-go').after('<p class="datafeeds-invalid-code" style="color:red"><em>Invalid tracking code</em></p>');
               }
