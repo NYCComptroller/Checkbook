@@ -1202,7 +1202,7 @@
                             initializeSpendingView(div_checkbook_spending, dataSource);
                             div_checkbook_spending.contents().show();
                             div_checkbook_spending_oge.contents().hide();
-                            div_checkbook_spending_oge.ele('agency')[0].selectedIndex = 1;
+                            //div_checkbook_spending_oge.ele('agency')[0].selectedIndex = 0;
                             break;
                     }
                 }
