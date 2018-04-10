@@ -23,17 +23,19 @@ module_load_include('php', 'checkbook_api', 'api/CheckbookAPI');
 module_load_include('php', 'checkbook_api', 'api/CheckbookAPIEntity');
 module_load_include('php', 'checkbook_api', 'api/CheckbookAPIRepository');
 module_load_include('php', 'checkbook_api', 'api/CheckbookAPIService');
+module_load_include('php', 'checkbook_api', 'json_api/CheckBookJsonApi');
 
 use checkbook_api\CheckbookAPIService as CheckbookAPIService;
 use checkbook_api\ResponseStatus as ResponseStatus;
+use checkbook_json_api\CheckBookJsonApi as CheckBookJsonApi;
 
 /**
  * Implements hook_menu().
  */
 function checkbook_api_menu() {
 
-  $items['api/v2'] = array(
-    'title' => 'Checkbook API v2',
+  $items['json_api'] = array(
+    'title' => 'Checkbook json API',
     'page callback' => 'checkbook_json_api',
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
@@ -65,7 +67,30 @@ function checkbook_api_menu() {
 }
 
 function checkbook_json_api() {
-  echo 'hi';
+
+  $args = func_get_args();
+  $endpoint = isset($args[0]) ? $args[0] : 'index';
+  $json_api = new CheckBookJsonApi($args);
+
+  header('Content-Type: application/json');
+  if ('index' == $endpoint) {
+    $methods = get_class_methods($json_api);
+    array_shift($methods);
+    echo json_encode($methods);
+    return;
+  }
+  try{
+    if (method_exists($json_api, $endpoint)) {
+      echo json_encode($json_api->$endpoint());
+    } else {
+      throw new Exception('not implemented');
+    }
+  } catch (Exception $exception) {
+    echo json_encode([
+      'success' => false,
+      'message' => $exception->getMessage()
+    ]);
+  }
 }
 
 /**
