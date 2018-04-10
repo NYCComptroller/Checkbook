@@ -10,8 +10,6 @@
  */
 define('VERSION', '7.58');
 
-//phpinfo();die();
-
 /**
  * Core API compatibility.
  */
