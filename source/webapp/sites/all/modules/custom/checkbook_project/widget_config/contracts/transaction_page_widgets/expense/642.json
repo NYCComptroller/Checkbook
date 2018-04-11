@@ -6,6 +6,7 @@
                "contstatus":"status_flag",
                "yeartype":"type_of_year"},
 "defaultParameters":{"master_agreement_id":-1},
+"useList":true,
 "getTotalDataCount":false,
 "dataset": "checkbook:agreement_snapshot_oge",
 "orderBy":"-maximum_contract_amount",
