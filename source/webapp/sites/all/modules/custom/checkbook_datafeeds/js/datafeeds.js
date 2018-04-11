@@ -39,7 +39,11 @@
                 $('#edit-go').after('<p class="datafeeds-invalid-code" style="color:red"><em>Invalid tracking code</em></p>');
               }
 
-              function tracking_clear() {
+              function tracking_clear(event) {
+                if(13 == event.keyCode) {
+                  // do not remove error mgs if Enter is pressed
+                  return;
+                }
                 $('.datafeeds-invalid-code').remove();
                 $('#edit-tracking-number').css('border', '');
               }
