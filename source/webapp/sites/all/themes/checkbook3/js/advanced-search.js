@@ -1193,16 +1193,29 @@
                     /* Initialize view by data source */
                     switch (dataSource) {
                         case "checkbook_oge":
+                            resetFields(div_checkbook_spending.contents());
                             initializeSpendingView(div_checkbook_spending_oge, dataSource);
                             div_checkbook_spending.contents().hide();
                             div_checkbook_spending_oge.contents().show();
+                            div_checkbook_spending.ele('agency')[0].selectedIndex = 0;
+                            div_checkbook_spending.ele('dept')[0].selectedIndex = 0;
+                            div_checkbook_spending.ele('exp_category')[0].selectedIndex = 0;
+                            div_checkbook_spending.ele('spending_category')[0].selectedIndex = 0;
+                            div_checkbook_spending.ele('industry')[0].selectedIndex = 0;
+                            div_checkbook_spending.ele('mwbe_category')[0].selectedIndex = 0;
+
                             break;
 
                         default:
+                            resetFields(div_checkbook_spending_oge.contents());
                             initializeSpendingView(div_checkbook_spending, dataSource);
                             div_checkbook_spending.contents().show();
                             div_checkbook_spending_oge.contents().hide();
                             div_checkbook_spending_oge.ele('agency')[0].selectedIndex = 0;
+                            div_checkbook_spending_oge.ele('dept')[0].selectedIndex = 0;
+                            div_checkbook_spending_oge.ele('exp_category')[0].selectedIndex = 0;
+                            div_checkbook_spending_oge.ele('spending_category')[0].selectedIndex = 0;
+
                             break;
                     }
                 }
