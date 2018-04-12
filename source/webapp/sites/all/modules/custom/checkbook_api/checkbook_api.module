@@ -66,20 +66,21 @@ function checkbook_api_menu() {
   return $items;
 }
 
-function checkbook_json_api() {
-
-  $args = func_get_args();
-  $endpoint = isset($args[0]) ? $args[0] : 'index';
-  $json_api = new CheckBookJsonApi($args);
-
+function checkbook_json_api()
+{
   header('Content-Type: application/json');
-  if ('index' == $endpoint) {
-    $methods = get_class_methods($json_api);
-    array_shift($methods);
-    echo json_encode($methods);
-    return;
-  }
-  try{
+  try {
+    $args = func_get_args();
+    $endpoint = isset($args[0]) ? $args[0] : 'index';
+    $json_api = new CheckBookJsonApi($args);
+
+    if ('index' == $endpoint) {
+      $methods = get_class_methods($json_api);
+      array_shift($methods);
+      echo json_encode($methods);
+      return;
+    }
+
     if (method_exists($json_api, $endpoint)) {
       echo json_encode($json_api->$endpoint());
     } else {
