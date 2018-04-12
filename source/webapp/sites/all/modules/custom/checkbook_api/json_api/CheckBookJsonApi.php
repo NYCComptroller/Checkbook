@@ -14,24 +14,28 @@
 
 namespace checkbook_json_api;
 
+/**
+ * Class CheckBookJsonApi
+ * @package checkbook_json_api
+ */
+/**
+ * Class CheckBookJsonApi
+ * @package checkbook_json_api
+ */
 class CheckBookJsonApi
 {
+  /**
+   * @var
+   */
   private $args;
 
+  /**
+   * CheckBookJsonApi constructor.
+   * @param $args
+   */
   public function __construct($args)
   {
     $this->args = $args;
-  }
-
-  /**
-   * @SWG\Get(
-   *     path="/json_api/expense_category",
-   *     @SWG\Response(response="200", description="expense_category resource")
-   * )
-   */
-  public function expense_category()
-  {
-
   }
 
   /**
@@ -72,20 +76,23 @@ class CheckBookJsonApi
    */
   public function active_subcontracts()
   {
-    $year = $this->args[1];
-    $year = $year ?: date('Y');
+    $year = $this->filter_year($this->args[1]);
     $year_type = $this->args[2] ?: 'fiscal';
     if (!in_array($year_type, ['calendar', 'fiscal'])) {
       $year_type = 'fiscal';
     }
-    $message = 'Active subcontracts for ' . $year_type . ' year ' . $year;
     $success = true;
-    $data = 9285;
-    if (!is_numeric($year) || $year > date('Y') || $year < 2000) {
-      $success = false;
-      $message = 'invalid year';
-      $data = null;
+    $query = "SELECT SUM(total_contracts) as total from aggregateon_subven_total_contracts
+                WHERE fiscal_year='{$year}' AND status_flag='A' AND type_of_year='B'";
+    $response = _checkbook_project_execute_sql($query);
+
+    $data = 0;
+    if (sizeof($response)) {
+      $data = $response[0]['total'];
     }
+
+    $message = 'There are ' . $data . ' active subcontracts for ' . $year_type . ' year ' . $year;
+
     return [
       'success' => $success,
       'data' => $data,
@@ -96,8 +103,16 @@ class CheckBookJsonApi
   }
 
   /**
+   * @param $year
+   * @return false|int|string
+   */
+  private function filter_year($year) {
+    return ($year && is_numeric($year) && $year > 2000 && $year < date('Y')) ? $year : date('Y');
+  }
+
+  /**
    * @SWG\Get(
-   *     path="/json_api/approved_subcontracts",
+   *     path=" / json_api / approved_subcontracts",
    *     @SWG\Response(response="200", description="approved_subcontracts")
    * )
    */
@@ -128,7 +143,7 @@ class CheckBookJsonApi
 
   /**
    * @SWG\Get(
-   *     path="/json_api/total_payroll",
+   *     path=" / json_api / total_payroll",
    *     @SWG\Response(response="200", description="total_payroll")
    * )
    */
@@ -159,7 +174,7 @@ class CheckBookJsonApi
 
   /**
    * @SWG\Get(
-   *     path="/json_api/subcontracts_cancelled",
+   *     path=" / json_api / subcontracts_cancelled",
    *     @SWG\Response(response="200", description="subcontracts_cancelled")
    * )
    */
