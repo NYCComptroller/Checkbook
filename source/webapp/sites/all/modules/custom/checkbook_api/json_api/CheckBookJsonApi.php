@@ -46,22 +46,27 @@ class CheckBookJsonApi
    */
   public function active_expense_contracts()
   {
+    $success = true;
+    $data = 0;
     $year = $this->filter_year($this->args[1]);
     $year_type = $this->args[2] ?: 'fiscal';
-    if (!in_array($year_type, ['calendar', 'fiscal'])) {
-      $year_type = 'fiscal';
-    }
-    $message = 'Active expense contracts for ' . $year_type . ' year ' . $year;
-    $success = true;
-    $query = "SELECT SUM(total_contracts) as total from aggregateon_total_contracts
-                WHERE fiscal_year='{$year}' AND status_flag='A' AND type_of_year='B'";
-    $response = _checkbook_project_execute_sql($query);
 
-    $data = 0;
-    if (sizeof($response) && $response[0]['total']) {
-      $data = $response[0]['total'];
+    if (!$year) {
+      $success = false;
+      $message = 'invalid year';
+    }  else {
+      if (!in_array($year_type, ['calendar', 'fiscal'])) {
+        $year_type = 'fiscal';
+      }
+      $message = 'Active expense contracts for ' . $year_type . ' year ' . $year;
+      $query = "SELECT SUM(total_contracts) as total from aggregateon_total_contracts
+                WHERE fiscal_year='{$year}' AND status_flag='A' AND type_of_year='B'";
+      $response = _checkbook_project_execute_sql($query);
+
+      if (sizeof($response) && $response[0]['total']) {
+        $data = $response[0]['total'];
+      }
     }
-//    $data = 21801;
 
     return [
       'success' => $success,
@@ -80,22 +85,28 @@ class CheckBookJsonApi
    */
   public function active_subcontracts()
   {
-    $year = $this->filter_year($this->args[1]);
-    $year_type = $this->args[2] ?: 'fiscal';
-    if (!in_array($year_type, ['calendar', 'fiscal'])) {
-      $year_type = 'fiscal';
-    }
     $success = true;
-    $query = "SELECT SUM(total_contracts) as total from aggregateon_subven_total_contracts
-                WHERE fiscal_year='{$year}' AND status_flag='A' AND type_of_year='B'";
-    $response = _checkbook_project_execute_sql($query);
-
     $data = 0;
-    if (sizeof($response) && $response[0]['total']) {
-      $data = $response[0]['total'];
-    }
+    $year = $this->filter_year($this->args[1]);
 
-    $message = 'There are ' . $data . ' active subcontracts for ' . $year_type . ' year ' . $year;
+    if (!$year) {
+      $success = false;
+      $message = 'invalid year';
+    }  else {
+      $year_type = $this->args[2] ?: 'fiscal';
+      if (!in_array($year_type, ['calendar', 'fiscal'])) {
+        $year_type = 'fiscal';
+      }
+      $query = "SELECT SUM(total_contracts) as total from aggregateon_subven_total_contracts
+                WHERE fiscal_year='{$year}' AND status_flag='A' AND type_of_year='B'";
+      $response = _checkbook_project_execute_sql($query);
+
+      if (sizeof($response) && $response[0]['total']) {
+        $data = $response[0]['total'];
+      }
+
+      $message = 'There are ' . $data . ' active subcontracts for ' . $year_type . ' year ' . $year;
+    }
 
     return [
       'success' => $success,
@@ -111,7 +122,8 @@ class CheckBookJsonApi
    * @return false|int|string
    */
   private function filter_year($year) {
-    return ($year && is_numeric($year) && $year > 2000 && $year < date('Y')) ? $year : date('Y');
+    $year = $year ?: date('Y');
+    return (is_numeric($year) && $year > 2009 && $year <= (int)date('Y')) ? $year : false;
   }
 
   /**
