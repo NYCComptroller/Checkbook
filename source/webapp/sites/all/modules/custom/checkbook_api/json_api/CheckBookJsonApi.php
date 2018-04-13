@@ -46,19 +46,23 @@ class CheckBookJsonApi
    */
   public function active_expense_contracts()
   {
-    $year = $this->args[1] ?: date('Y');
+    $year = $this->filter_year($this->args[1]);
     $year_type = $this->args[2] ?: 'fiscal';
     if (!in_array($year_type, ['calendar', 'fiscal'])) {
       $year_type = 'fiscal';
     }
     $message = 'Active expense contracts for ' . $year_type . ' year ' . $year;
     $success = true;
-    $data = 21801;
-    if (!is_numeric($year) || $year > date('Y') || $year < 2000) {
-      $success = false;
-      $message = 'invalid year';
-      $data = null;
+    $query = "SELECT SUM(total_contracts) as total from aggregateon_total_contracts
+                WHERE fiscal_year='{$year}' AND status_flag='A' AND type_of_year='B'";
+    $response = _checkbook_project_execute_sql($query);
+
+    $data = 0;
+    if (sizeof($response) && $response[0]['total']) {
+      $data = $response[0]['total'];
     }
+//    $data = 21801;
+
     return [
       'success' => $success,
       'data' => $data,
@@ -87,7 +91,7 @@ class CheckBookJsonApi
     $response = _checkbook_project_execute_sql($query);
 
     $data = 0;
-    if (sizeof($response)) {
+    if (sizeof($response) && $response[0]['total']) {
       $data = $response[0]['total'];
     }
 
