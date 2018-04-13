@@ -1199,13 +1199,6 @@
                             initializeSpendingView(div_checkbook_spending_oge, dataSource);
                             div_checkbook_spending.contents().hide();
                             div_checkbook_spending_oge.contents().show();
-                            div_checkbook_spending.ele('agency')[0].selectedIndex = 0;
-                            div_checkbook_spending.ele('dept')[0].selectedIndex = 0;
-                            div_checkbook_spending.ele('exp_category')[0].selectedIndex = 0;
-                            div_checkbook_spending.ele('spending_category')[0].selectedIndex = 0;
-                            div_checkbook_spending.ele('industry')[0].selectedIndex = 0;
-                            div_checkbook_spending.ele('mwbe_category')[0].selectedIndex = 0;
-
                             break;
 
                         default:
@@ -1213,11 +1206,6 @@
                             initializeSpendingView(div_checkbook_spending, dataSource);
                             div_checkbook_spending.contents().show();
                             div_checkbook_spending_oge.contents().hide();
-                            div_checkbook_spending_oge.ele('agency')[0].selectedIndex = 0;
-                            div_checkbook_spending_oge.ele('dept')[0].selectedIndex = 0;
-                            div_checkbook_spending_oge.ele('exp_category')[0].selectedIndex = 0;
-                            div_checkbook_spending_oge.ele('spending_category')[0].selectedIndex = 0;
-
                             break;
                     }
                 }
@@ -1325,10 +1313,10 @@
                 //Reset fields to default values
                 function resetFields(divWrapper) {
                     $(divWrapper.children()).find(':input').each(function () {
-                        if (this.type === 'text') {
+                        if (this.type == 'text') {
                             $(this).val('');
                         }
-                        if (this.type === 'select-one') {
+                        if (this.type == 'select-one') {
                             var default_option = $(this).attr('default_selected_value');
                             if (!default_option)
                                 $(this).find('option:first').attr("selected", "selected");
