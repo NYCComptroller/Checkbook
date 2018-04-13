@@ -300,11 +300,13 @@
                 $(enclosingDiv).find(':input').each(function () {
                     switch (this.type) {
                         case 'select-one':
-                            var defaultoption = $(this).attr('default_selected_value');
-                            if (defaultoption === null)
-                                $(this).find('option:first').attr("selected", "selected");
-                            else
-                                $(this).find('option[value=' + defaultoption + ']').attr("selected", "selected");
+                            var default_option = $(this).attr('default_selected_value');
+                            if (default_option) {
+                              $(this).find('option[value=' + default_option + ']').attr("selected", "selected");
+                            } else {
+                              $(this).find('option:first').attr("selected", "selected");
+                            }
+
                             break;
                         case 'text':
                             $(this).val('');
@@ -1328,7 +1330,7 @@
                         }
                         if (this.type === 'select-one') {
                             var default_option = $(this).attr('default_selected_value');
-                            if (default_option === null)
+                            if (!default_option)
                                 $(this).find('option:first').attr("selected", "selected");
                             else
                                 $(this).find('option[value=' + default_option + ']').attr("selected", "selected");
@@ -2281,10 +2283,12 @@
                     $("select#edit-checkbook-contracts-category").val("expense");
                     //$('#edit-spending-fiscal-year').removeAttr("disabled");
                     var defaultoption = $(this).attr('default_selected_value');
-                    if (defaultoption === null)
-                        $(this).find('option:first').attr("selected", "selected");
-                    else
-                        $(this).find('option[value=' + defaultoption + ']').attr("selected", "selected");
+                    if (defaultoption) {
+                      $(this).find('option[value=' + defaultoption + ']').attr("selected", "selected");
+                    } else {
+                      $(this).find('option:first').attr("selected", "selected");
+                    }
+
                     break;
                 case 'text':
                     $(this).val('');
