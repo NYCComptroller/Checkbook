@@ -301,8 +301,8 @@ class CheckBookJsonApi
 
   /**
    * @SWG\Get(
-   *     path=" / json_api / cancelled_subcontracts",
-   *     @SWG\Response(response="200", description="cancelled_subcontracts")
+   *     path=" / json_api / canceled_subcontracts",
+   *     @SWG\Response(response="200", description="canceled_subcontracts")
    * )
    */
   public function canceled_subcontracts()
