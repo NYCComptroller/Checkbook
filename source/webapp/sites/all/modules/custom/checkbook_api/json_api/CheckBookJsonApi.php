@@ -217,11 +217,11 @@ class CheckBookJsonApi
 
   /**
    * @SWG\Get(
-   *     path=" / json_api / subcontracts_cancelled",
-   *     @SWG\Response(response="200", description="subcontracts_cancelled")
+   *     path=" / json_api / subcontracts_canceled",
+   *     @SWG\Response(response="200", description="subcontracts_canceled")
    * )
    */
-  public function subcontracts_cancelled()
+  public function subcontracts_canceled()
   {
     return $this->get_subcontracts_by_status('cancelled');
   }
