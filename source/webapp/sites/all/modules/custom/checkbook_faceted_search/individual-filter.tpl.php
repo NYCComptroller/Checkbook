@@ -73,7 +73,6 @@ if($is_payroll_range_filter) {
 //Contract Includes Sub Vendors Facet
 //For N/A value, some values are null, this needs to be handled
 if($node->widgetConfig->filterName == 'Contract Includes Sub Vendors') {
-//    if (isset($unchecked) && is_array($unchecked))
     if (isset($unchecked) && $unchecked)
     foreach($unchecked as $key => $value) {
         if($value[1] == null) {
@@ -81,7 +80,6 @@ if($node->widgetConfig->filterName == 'Contract Includes Sub Vendors') {
             $unchecked[$key][1] = "N/A";
         }
     }
-//    if (isset($checked) && is_array($checked))
     if (isset($checked) && $checked)
     foreach($checked as $key => $value) {
         if($value[1] == null) {
@@ -94,7 +92,6 @@ if($node->widgetConfig->filterName == 'Contract Includes Sub Vendors') {
 //Sub Vendor Status in PIP
 //For N/A value, some values are null, this needs to be handled
 if($node->widgetConfig->filterName == 'Sub Vendor Status in PIP') {
-//    if ($unchecked && is_array($unchecked))
     if ($unchecked && $unchecked)
     foreach($unchecked as $key => $value) {
         if($value[1] == null) {
@@ -102,7 +99,6 @@ if($node->widgetConfig->filterName == 'Sub Vendor Status in PIP') {
             $unchecked[$key][1] = "N/A";
         }
     }
-//    if ($checked && is_array($checked))
     if (isset($checked) && $checked)
     foreach($checked as $key => $value) {
         if($value[1] == null) {
@@ -111,6 +107,9 @@ if($node->widgetConfig->filterName == 'Sub Vendor Status in PIP') {
         }
     }
 }
+
+$checkedCount = (isset($checked) && $checked) ? sizeof($checked) : 0;
+$uncheckedCount = (isset($unchecked) && $unchecked) ? sizeof($unchecked) : 0;
 
 //Payroll Type Filter
 $count = 0;
@@ -372,7 +371,7 @@ if($node->widgetConfig->filterName == 'Vendor Type'){
     }
 }
 
-if(count($checked) == 0){
+if(!$checked){
     $display_facet ="none";
     $span = "";
 }else{
@@ -401,7 +400,7 @@ $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
   <?php
   $node->widgetConfig->limit = $node->widgetConfig->limit ?: 50;
     $pages = ceil($node->totalDataCount/$node->widgetConfig->limit);
-    if((isset($checked) && $node->widgetConfig->maxSelect == count($checked)) || count($checked) + count($unchecked) == 0 || $disableFacet){
+    if((isset($checked) && $node->widgetConfig->maxSelect == $checkedCount) || $checkedCount + $uncheckedCount == 0 || $disableFacet){
       $disabled = " DISABLED='true' " ;
     }else{
       $disabled = "" ;
@@ -412,7 +411,7 @@ $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
         <?php } ?>
   <div class="checked-items">
     <?php
-    if((isset($checked) && $node->widgetConfig->maxSelect == count($checked)) || count($checked) + count($unchecked) == 0 ){
+    if((isset($checked) && $node->widgetConfig->maxSelect == $checkedCount) || $checkedCount + $uncheckedCount == 0 ){
         $disabled = " DISABLED='true' " ;
     }else{
         $disabled = "" ;

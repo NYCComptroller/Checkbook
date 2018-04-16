@@ -746,10 +746,10 @@ if(isset($node->widgetConfig->stickyHeader)){
         var docHeight = jQuery(document).height();
         var bottomSpacing = docHeight - (tableOffsetTop + tableHeight);
 
-        jQuery('.dataTables_scrollHead').sticky({ topSpacing: ".topSpacing.", bottomSpacing: ".bottomSpacing.", getWidthFrom:'.dataTables_scroll' });
+        jQuery('.dataTables_scrollHead').sticky({ topSpacing: topSpacing, bottomSpacing: bottomSpacing, getWidthFrom:'.dataTables_scroll' });
 
         if( jQuery('.DTFC_ScrollWrapper') && jQuery('.DTFC_ScrollWrapper').offset()) {
-            jQuery('.DTFC_LeftHeadWrapper').sticky({ topSpacing: ".topSpacing.", bottomSpacing: ".bottomSpacing.", getWidthFrom:'.DTFC_LeftWrapper' });
+            jQuery('.DTFC_LeftHeadWrapper').sticky({ topSpacing: topSpacing, bottomSpacing: bottomSpacing, getWidthFrom:'.DTFC_LeftWrapper' });
         }
     }";
     //</editor-fold desc="Sticky Headers">
