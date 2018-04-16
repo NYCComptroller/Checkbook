@@ -82,19 +82,20 @@ class CheckBookJsonApi
 
   /**
    * @param $year_type
+   * @param $default
    * @return string
    */
-  private function validate_year_type($year_type)
+  private function validate_year_type($year_type, $default = 'B')
   {
     switch (strtolower($year_type)) {
       case 'c':
       case 'calendar':
         return 'C';
-        break;
       case 'b':
       case 'fiscal':
-      default:
         return 'B';
+      default:
+        return $default;
     }
   }
 
@@ -207,44 +208,44 @@ class CheckBookJsonApi
 
   /**
    * @SWG\Get(
-   *     path=" / json_api / approved_subcontracts",
-   *     @SWG\Response(response="200", description="approved_subcontracts")
+   *     path=" / json_api / subcontracts_approved",
+   *     @SWG\Response(response="200", description="subcontracts_approved")
    * )
    */
-  public function approved_subcontracts()
+  public function subcontracts_approved()
   {
     return $this->get_subcontracts_by_status('approved');
   }
 
   /**
    * @SWG\Get(
-   *     path=" / json_api / reviewing_subcontracts",
-   *     @SWG\Response(response="200", description="reviewing_subcontracts")
+   *     path=" / json_api / subcontracts_reviewing",
+   *     @SWG\Response(response="200", description="subcontracts_reviewing")
    * )
    */
-  public function reviewing_subcontracts()
+  public function subcontracts_reviewing()
   {
     return $this->get_subcontracts_by_status('reviewing');
   }
 
   /**
    * @SWG\Get(
-   *     path=" / json_api / cancelled_subcontracts",
-   *     @SWG\Response(response="200", description="cancelled_subcontracts")
+   *     path=" / json_api / subcontracts_cancelled",
+   *     @SWG\Response(response="200", description="subcontracts_cancelled")
    * )
    */
-  public function cancelled_subcontracts()
+  public function subcontracts_cancelled()
   {
     return $this->get_subcontracts_by_status('cancelled');
   }
 
   /**
    * @SWG\Get(
-   *     path=" / json_api / rejected_subcontracts",
-   *     @SWG\Response(response="200", description="rejected_subcontracts")
+   *     path=" / json_api / subcontracts_rejected",
+   *     @SWG\Response(response="200", description="subcontracts_rejected")
    * )
    */
-  public function rejected_subcontracts()
+  public function subcontracts_rejected()
   {
     return $this->get_subcontracts_by_status('rejected');
   }
@@ -257,57 +258,35 @@ class CheckBookJsonApi
    */
   public function total_payroll()
   {
-    $year = $this->args[1];
-    $year = $year ?: date('Y');
-    $year_type = $this->args[2] ?: 'fiscal';
-    if (!in_array($year_type, ['calendar', 'fiscal'])) {
-      $year_type = 'calendar';
+    $year = $this->validate_year($this->args[1]);
+    $year_type = $this->validate_year_type($this->args[2], 'C');
+
+    if ($this->success) {
+      $year_id = 100 + ($year - 2000) + 1;
+      $query = "SELECT
+                  SUM(gross_pay) AS total_gross_pay,
+                  SUM(base_pay) AS total_base_pay,
+                  SUM(overtime_pay) AS total_overtime_pay
+                FROM aggregateon_payroll_employee_agency s0
+                WHERE s0.type_of_year = '{$year_type}' AND s0.fiscal_year_id = '{$year_id}'";
+      $response = _checkbook_project_execute_sql($query);
+
+      if (sizeof($response) && $response[0]['total_gross_pay']) {
+        $this->data = $response[0]['total_gross_pay'];
+        $this->data = round($this->data, -6);
+        $this->data = money_format('%i', $this->data);
+      }
+
+      $this->message = 'Total payroll for ' . $this->year_type_string($year_type) .
+        ' year ' . $year . ' is ' . $this->data;
     }
-    $message = 'Total payroll for ' . $this->year_type_string($year_type) . ' year ' . $year;
-    $success = true;
-    $data = '$7.0B';
-    if (!is_numeric($year) || $year > date('Y') || $year < 2000) {
-      $this->success = false;
-      $this->message = 'invalid year';
-      $data = null;
-    }
+
     return [
       'success' => $this->success,
       'data' => $this->data,
       'message' => $this->message,
       'info' => 'usage: /json_api/total_payroll/2018/calendar , can be used without extra params, ' .
         'like /json_api/total_payroll ; current year will be used and default type is "calendar"'
-    ];
-  }
-
-  /**
-   * @SWG\Get(
-   *     path=" / json_api / subcontracts_cancelled",
-   *     @SWG\Response(response="200", description="subcontracts_cancelled")
-   * )
-   */
-  public function subcontracts_cancelled()
-  {
-    $year = $this->args[1];
-    $year = $year ?: date('Y');
-    $year_type = $this->args[2] ?: 'fiscal';
-    if (!in_array($year_type, ['calendar', 'fiscal'])) {
-      $year_type = 'fiscal';
-    }
-    $message = 'Subcontracts cancelled for ' . $this->year_type_string($year_type) . ' year ' . $year;
-    $success = true;
-    $data = '124';
-    if (!is_numeric($year) || $year > date('Y') || $year < 2000) {
-      $this->success = false;
-      $this->message = 'invalid year';
-      $data = null;
-    }
-    return [
-      'success' => $this->success,
-      'data' => $this->data,
-      'message' => $this->message,
-      'info' => 'usage: /json_api/subcontracts_cancelled/2018/fiscal , can be used without extra params, ' .
-        'like /json_api/subcontracts_cancelled ; current year will be used and default type is "fiscal"'
     ];
   }
 }
