@@ -77,6 +77,9 @@ function checkbook_json_api()
     if ('index' == $endpoint) {
       $methods = get_class_methods($json_api);
       array_shift($methods);
+//      foreach ($methods as &$method) {
+//        $method = '/json_api/'.$method.'/';
+//      }
       echo json_encode($methods);
       return;
     }
