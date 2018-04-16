@@ -2672,7 +2672,7 @@ h1.no-spending-transactions {width: 500px}
 }
 .budget_agency_perecent_difference_transactions .inside .panel-pane.pane-custom.pane-1,
 .expense_category_budget_details .inside .panel-pane.pane-custom.pane-1,
-.deppartment_budget_details .inside .panel-pane.pane-custom.pane-1{
+.department_budget_details .inside .panel-pane.pane-custom.pane-1{
     float:left !important;
     width:50% !important;
 }
@@ -3578,7 +3578,7 @@ p.pieCount {
 }
 
 /*******************************
-     Styles for New Features 
+     Styles for New Features
 ********************************/
 
 /** Styles for 'New Features' in the main menu **/
@@ -3720,7 +3720,7 @@ a.new-features-morelink{
 }
 .prime-and-sub-note{
     margin-bottom: 20px;
-    margin-top: -15px;  
+    margin-top: -15px;
 }
 .prime-and-sub-note > img,
 .prime-and-sub-note-datafeeds p >img{
