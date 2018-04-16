@@ -532,9 +532,10 @@ class RequestUtil
         $bottomURL = isset($_REQUEST['expandBottomContURL']) ? $_REQUEST['expandBottomContURL'] : FALSE;
         $find = '_' . $bottomURL . current_path();
         if (
-            stripos($find, 'transactions')
-            || stripos($find, 'deppartment_budget_details')
+            stripos($bottomURL, 'transactions')
+            || stripos($find, 'department_budget_details')
             || stripos($find, 'expense_category_budget_details')
+            || stripos('_'.current_path(), 'revenue_transactions')
         ) {
             $dtsmnid = $bottomURL ? RequestUtil::getRequestKeyValueFromURL("dtsmnid", $bottomURL) : RequestUtil::getRequestKeyValueFromURL("dtsmnid", current_path());
             $smnid = $bottomURL ? RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL) : RequestUtil::getRequestKeyValueFromURL("smnid", current_path());
@@ -545,7 +546,7 @@ class RequestUtil
             } else {
                 $title = _get_budget_breadcrumb_title_drilldown() . ' Expense Budget';
             }
-        } else if (!$bottomURL && preg_match('/^budget\/transactions/', current_path())) {
+        } else if (!$bottomURL && stripos('_'.current_path(),'budget/transactions/')) {
             $title = "Expense Budget Transactions";
         } else {
             $title = _get_budget_breadcrumb_title_drilldown() . ' Expense Budget';
@@ -575,7 +576,7 @@ class RequestUtil
             } else {
                 $title = _get_budget_breadcrumb_title_drilldown() . ' Revenue';
             }
-        } else if (!$bottomURL && preg_match('/^revenue\/transactions/', current_path())) {
+        } else if (!$bottomURL && stripos('_'.current_path(), 'revenue/transactions/')) {
             $title = "Revenue Transactions";
         } else {
             $title = _get_budget_breadcrumb_title_drilldown() . ' Revenue';
