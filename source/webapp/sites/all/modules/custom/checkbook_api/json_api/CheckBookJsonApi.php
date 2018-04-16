@@ -1,26 +1,13 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: alexandr.perfilov
- * Date: 4/9/18
- * Time: 5:50 PM
- */
-
-/**
- * swagger  -o ../json_api_docs/
- *
- * @SWG\Info(title="Checkbook JSON API", version="0.1")
- */
 
 namespace checkbook_json_api;
 
 /**
  * Class CheckBookJsonApi
  * @package checkbook_json_api
- */
-/**
- * Class CheckBookJsonApi
- * @package checkbook_json_api
+ * swagger  -o ../json_api_docs/
+ *
+ * @SWG\Info(title="Checkbook JSON API", version="0.1")
  */
 class CheckBookJsonApi
 {
