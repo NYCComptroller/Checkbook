@@ -276,4 +276,37 @@ class CheckBookJsonApi
         'like /json_api/total_payroll ; current year will be used and default type is "calendar"'
     ];
   }
+
+  /**
+   * @SWG\Get(
+   *     path=" / json_api / subcontracts_canceled",
+   *     @SWG\Response(response="200", description="subcontracts_canceled")
+   * )
+   */
+  public function subcontracts_canceled()
+  {
+    return $this->get_subcontracts_by_status('cancelled');
+  }
+
+  /**
+   * @SWG\Get(
+   *     path=" / json_api / cancelled_subcontracts",
+   *     @SWG\Response(response="200", description="cancelled_subcontracts")
+   * )
+   */
+  public function cancelled_subcontracts()
+  {
+    return $this->get_subcontracts_by_status('cancelled');
+  }
+
+  /**
+   * @SWG\Get(
+   *     path=" / json_api / cancelled_subcontracts",
+   *     @SWG\Response(response="200", description="cancelled_subcontracts")
+   * )
+   */
+  public function canceled_subcontracts()
+  {
+    return $this->get_subcontracts_by_status('cancelled');
+  }
 }
