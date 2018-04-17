@@ -207,11 +207,11 @@ class CheckBookJsonApi
 
   /**
    * @SWG\Get(
-   *     path="/json_api/subcontracts_reviewing",
-   *     @SWG\Response(response="200", description="subcontracts_reviewing")
+   *     path="/json_api/subcontracts_under_review",
+   *     @SWG\Response(response="200", description="subcontracts_under_review")
    * )
    */
-  public function subcontracts_reviewing()
+  public function subcontracts_under_review()
   {
     return $this->get_subcontracts_by_status('reviewing');
   }
