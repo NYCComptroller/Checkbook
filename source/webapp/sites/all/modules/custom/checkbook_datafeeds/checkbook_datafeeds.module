@@ -6263,7 +6263,7 @@ function _award_method_options() {
     try {
         $dataController = data_controller_get_instance();
         $data = $dataController->queryDataset('checkbook:award_method', array(
-            'award_method_id',
+            'award_method_code',
             'award_method_name',
         ), NULL, 'award_method_name');
         $results = _checkbook_datafeeds_award_method_options($data);
@@ -6289,7 +6289,7 @@ function _checkbook_datafeeds_award_method_options($data) {
     $menu_options_attributes = array($title => array('title' => $title));
 
     foreach ($data as $row) {
-        $option = $row['award_method_name'] . ' [' . $row['award_method_id'] . ']';
+        $option = $row['award_method_name'] . ' [' . $row['award_method_code'] . ']';
         //Menu options
         $menu_options[$option] = (strlen($option) > 18) ? substr($option, 0, 18) . '...' : $option;
         //Menu option titles
