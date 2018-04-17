@@ -533,7 +533,7 @@ class RequestUtil
         $find = '_' . $bottomURL . current_path();
         if (
             stripos($find, 'transactions')
-            || stripos($find, 'deppartment_budget_details')
+            || stripos($find, 'department_budget_details')
             || stripos($find, 'expense_category_budget_details')
         ) {
             $dtsmnid = $bottomURL ? RequestUtil::getRequestKeyValueFromURL("dtsmnid", $bottomURL) : RequestUtil::getRequestKeyValueFromURL("dtsmnid", current_path());
