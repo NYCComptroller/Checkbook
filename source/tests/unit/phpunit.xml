@@ -17,6 +17,8 @@
         </whitelist>
     </filter>
     <logging>
-        <log type="coverage-clover" target="./coverage.xml"/>
+        <log type="junit" target="./reports/junit.xml"/>
+        <log type="coverage-clover" target="./reports/coverage.xml"/>
+        <log type="coverage-html" target="./reports/coverage-html" lowUpperBound="35" highLowerBound="70"/>
     </logging>
 </phpunit>
