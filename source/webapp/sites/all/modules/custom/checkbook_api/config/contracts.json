@@ -4,7 +4,7 @@
             "fiscal_year":"fiscal_year@checkbook:contracts_coa_aggregates_datafeeds",
             "agency_code":"agency_code",
             "spent_to_date":"prime_rfed_amount",
-            "award_method":"award_method_id",
+            "award_method":"award_method_code",
             "expense_category":"expenditure_object_codes",
             "contract_id":"contract_number",
             "contract_type":"agreement_type_code",
@@ -18,8 +18,8 @@
             "associated_prime_vendor":"prime_vendor_name",
             "sub_contract_reference_id":"sub_contract_id",
             "sub_vendor":"sub_vendor_name",
-            "sub_vendor_status_in_pip" :"aprv_sta",
-            "contract_includes_sub_vendors":"scntrc_status",
+            "sub_vendor_status_in_pip_id" :"aprv_sta",
+            "contract_includes_sub_vendors_id":"scntrc_status",
             "vendor_code":"vendor_code",
             "purpose":"purpose",
             "mwbe_category":"minority_type_id",
@@ -272,12 +272,12 @@
                 "dataType":"text",
                 "maxLength":"2"
             },
-            "sub_vendor_status_in_pip":{
+            "sub_vendor_status_in_pip_id":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"2"
             },
-            "contract_includes_sub_vendors":{
+            "contract_includes_sub_vendors_id":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"2"
@@ -288,7 +288,7 @@
         "searchCriteriaMap":{
             "agency_code":"agency_code",
             "spent_to_date":"prime_rfed_amount",
-            "award_method":"award_method_id",
+            "award_method":"award_method_code",
             "expense_category":"expenditure_object_codes",
             "contract_id":"contract_number",
             "contract_type":"agreement_type_code",
@@ -299,8 +299,8 @@
             "pin":"prime_pin",
             "apt_pin":"prime_apt_pin",
             "industry_type_id":"industry_type_id",
-            "sub_vendor_status_in_pip" :"aprv_sta",
-            "contract_includes_sub_vendors":"scntrc_status",
+            "sub_vendor_status_in_pip_id" :"aprv_sta",
+            "contract_includes_sub_vendors_id":"scntrc_status",
             "vendor_code":"vendor_code",
             "purpose":"purpose",
             "mwbe_category":"minority_type_id",
@@ -594,12 +594,12 @@
                 "dataType":"text",
                 "maxLength":"2"
             },
-            "sub_vendor_status_in_pip":{
+            "sub_vendor_status_in_pip_id":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"2"
             },
-            "contract_includes_sub_vendors":{
+            "contract_includes_sub_vendors_id":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"2"
@@ -612,7 +612,7 @@
             "agency_code":"agency_code",
             "vendor_code":"vendor_code",
             "current_amount":"maximum_contract_amount",
-            "award_method":"award_method_id",
+            "award_method":"award_method_code",
             "contract_id":"contract_number",
             "contract_type":"agreement_type_code",
             "start_date":"effective_begin_date",
@@ -791,12 +791,12 @@
                 "dataType":"text",
                 "maxLength":"2"
             },
-            "contract_includes_sub_vendors":{
+            "contract_includes_sub_vendors_id":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"2"
             },
-            "sub_vendor_status_in_pip":{
+            "sub_vendor_status_in_pip_id":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"2"
@@ -808,7 +808,7 @@
             "agency_code":"agency_code",
             "vendor_code":"vendor_code",
             "current_amount":"maximum_contract_amount",
-            "award_method":"award_method_id",
+            "award_method":"award_method_code",
             "contract_id":"contract_number",
             "contract_type":"agreement_type_code",
             "start_date":"effective_begin_date",
@@ -986,7 +986,7 @@
             "fiscal_year":"fiscal_year@checkbook:contracts_coa_aggregates_datafeeds",
             "agency_code":"agency_code",
             "spent_to_date":"prime_rfed_amount",
-            "award_method":"award_method_id",
+            "award_method":"award_method_code",
             "expense_category":"expenditure_object_codes",
             "contract_id":"contract_number",
             "contract_type":"agreement_type_code",
@@ -1000,8 +1000,8 @@
             "associated_prime_vendor":"prime_vendor_name",
             "sub_contract_reference_id":"sub_contract_id",
             "sub_vendor":"sub_vendor_name",
-            "sub_vendor_status_in_pip" :"aprv_sta",
-            "contract_includes_sub_vendors":"scntrc_status",
+            "sub_vendor_status_in_pip_id" :"aprv_sta",
+            "contract_includes_sub_vendors_id":"scntrc_status",
             //logical OR columns
             "vendor_code":"vendor_code",
             "purpose":"purpose",
@@ -1255,12 +1255,12 @@
                 "dataType":"text",
                 "maxLength":"2"
             },
-            "sub_vendor_status_in_pip":{
+            "sub_vendor_status_in_pip_id":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"2"
             },
-            "contract_includes_sub_vendors":{
+            "contract_includes_sub_vendors_id":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"2"
@@ -1271,7 +1271,7 @@
         "searchCriteriaMap":{
             "agency_code":"agency_code",
             "spent_to_date":"prime_rfed_amount",
-            "award_method":"award_method_id",
+            "award_method":"award_method_code",
             "expense_category":"expenditure_object_codes",
             "contract_id":"contract_number",
             "contract_type":"agreement_type_code",
@@ -1283,8 +1283,8 @@
             "apt_pin":"prime_apt_pin",
             "industry_type_id":"industry_type_id",
             "associated_prime_vendor":"prime_vendor_name",
-            "sub_vendor_status_in_pip" :"aprv_sta",
-            "contract_includes_sub_vendors":"scntrc_status",
+            "sub_vendor_status_in_pip_id" :"aprv_sta",
+            "contract_includes_sub_vendors_id":"scntrc_status",
             //logical OR columns
             "vendor_code":"vendor_code",
             "purpose":"purpose",
@@ -1578,12 +1578,12 @@
                 "dataType":"text",
                 "maxLength":"2"
             },
-            "sub_vendor_status_in_pip":{
+            "sub_vendor_status_in_pip_id":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"2"
             },
-            "contract_includes_sub_vendors":{
+            "contract_includes_sub_vendors_id":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"2"
@@ -1595,7 +1595,7 @@
             "agency_code":"document_agency_code",
             "vendor_code":"vendor_customer_code",
             "current_amount":"revised_maximum_amount",
-            "award_method":"award_method_id",
+            "award_method":"award_method_code",
             "contract_id":"contract_number",
             "contract_type":"cont_type_code",
             "start_date":"start_date",
