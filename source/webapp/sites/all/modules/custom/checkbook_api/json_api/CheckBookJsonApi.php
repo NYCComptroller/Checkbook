@@ -97,10 +97,11 @@ class CheckBookJsonApi
 
     if ($this->success) {
       $query = "SELECT
+                  SUM(CASE WHEN aprv_sta=2 THEN 1 ELSE 0 END) AS acco_rejected,
                   SUM(CASE WHEN aprv_sta=3 THEN 1 ELSE 0 END) AS acco_reviewing,
                   SUM(CASE WHEN aprv_sta=4 THEN 1 ELSE 0 END) AS acco_approved,
-                  SUM(CASE WHEN aprv_sta=2 THEN 1 ELSE 0 END) AS acco_rejected,
-                  SUM(CASE WHEN aprv_sta=5 THEN 1 ELSE 0 END) AS acco_cancelled
+                  SUM(CASE WHEN aprv_sta=5 THEN 1 ELSE 0 END) AS acco_cancelled,
+                  SUM(CASE WHEN aprv_sta>1 AND aprv_sta<6 THEN 1 ELSE 0 END) AS acco_submitted
                 FROM aggregateon_mwbe_contracts_cumulative_spending a
                   LEFT JOIN (SELECT contract_number, aprv_sta FROM subcontract_details WHERE latest_flag='Y') sd ON a.contract_number=sd.contract_number
                   LEFT JOIN ref_document_code c ON a.document_code_id=c.document_code_id
@@ -195,7 +196,7 @@ class CheckBookJsonApi
 
   /**
    * @SWG\Get(
-   *     path=" / json_api / subcontracts_approved",
+   *     path="/json_api/subcontracts_approved",
    *     @SWG\Response(response="200", description="subcontracts_approved")
    * )
    */
@@ -206,18 +207,29 @@ class CheckBookJsonApi
 
   /**
    * @SWG\Get(
-   *     path=" / json_api / subcontracts_reviewing",
-   *     @SWG\Response(response="200", description="subcontracts_reviewing")
+   *     path="/json_api/subcontracts_under_review",
+   *     @SWG\Response(response="200", description="subcontracts_under_review")
    * )
    */
-  public function subcontracts_reviewing()
+  public function subcontracts_under_review()
   {
     return $this->get_subcontracts_by_status('reviewing');
   }
 
   /**
    * @SWG\Get(
-   *     path=" / json_api / subcontracts_canceled",
+   *     path="/json_api/subcontracts_submitted",
+   *     @SWG\Response(response="200", description="subcontracts_submitted")
+   * )
+   */
+  public function subcontracts_submitted()
+  {
+    return $this->get_subcontracts_by_status('submitted');
+  }
+
+  /**
+   * @SWG\Get(
+   *     path="/json_api/subcontracts_canceled",
    *     @SWG\Response(response="200", description="subcontracts_canceled")
    * )
    */
@@ -228,7 +240,7 @@ class CheckBookJsonApi
 
   /**
    * @SWG\Get(
-   *     path=" / json_api / subcontracts_rejected",
+   *     path="/json_api/subcontracts_rejected",
    *     @SWG\Response(response="200", description="subcontracts_rejected")
    * )
    */
@@ -239,7 +251,7 @@ class CheckBookJsonApi
 
   /**
    * @SWG\Get(
-   *     path=" / json_api / total_payroll",
+   *     path="/json_api/total_payroll",
    *     @SWG\Response(response="200", description="total_payroll")
    * )
    */
