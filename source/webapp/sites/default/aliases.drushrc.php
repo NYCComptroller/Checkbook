@@ -1,5 +1,4 @@
-
-<?php 
+<?php
 
 
 $aliases['checkbook-os-qa'] = array(
