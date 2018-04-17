@@ -288,4 +288,111 @@ class CheckBookJsonApi
         'like /json_api/total_payroll ; current year will be used and default type is "calendar"'
     ];
   }
+
+  /**
+   * @SWG\Get(
+   *     path="/json_api/total_spending",
+   *     @SWG\Response(response="200", description="total_spending")
+   * )
+   */
+  public function total_spending()
+  {
+    $year = $this->validate_year($this->args[1]);
+    $year_type = $this->validate_year_type($this->args[2]);
+
+    if ($this->success) {
+      $year_id = 100 + ($year - 2000) + 1;
+      $query = "SELECT SUM(total_spending_amount) AS total
+                  FROM aggregateon_mwbe_spending_coa_entities s0
+                WHERE s0.type_of_year = '{$year_type}'
+                      AND s0.minority_type_id IN (2, 3, 4, 5, 9)
+                      AND s0.year_id = '{$year_id}'";
+      $response = _checkbook_project_execute_sql($query);
+
+      if (sizeof($response) && $response[0]['total']) {
+        $this->data = $response[0]['total'];
+        $this->data = round($this->data, -6);
+        $this->data = money_format('%i', $this->data);
+      }
+
+      $this->message = 'Total spending for ' . $this->year_type_string($year_type) .
+        ' year ' . $year . ' is ' . $this->data;
+    }
+
+    return [
+      'success' => $this->success,
+      'data' => $this->data,
+      'message' => $this->message,
+      'info' => 'usage: /json_api/total_spending/2018/calendar , can be used without extra params, ' .
+        'like /json_api/total_spending ; current year will be used and default type is "calendar"'
+    ];
+  }
+
+  /**
+   * @SWG\Get(
+   *     path="/json_api/total_budget",
+   *     @SWG\Response(response="200", description="total_budget")
+   * )
+   */
+  public function total_budget()
+  {
+    $year = $this->validate_year($this->args[1]);
+
+    if ($this->success) {
+      $query = "SELECT SUM(COALESCE(current_budget_amount,0)) AS total
+                  FROM budget s0
+                WHERE s0.budget_fiscal_year = '{$year}'";
+      $response = _checkbook_project_execute_sql($query);
+
+      if (sizeof($response) && $response[0]['total']) {
+        $this->data = $response[0]['total'];
+        $this->data = round($this->data, -6);
+        $this->data = money_format('%i', $this->data);
+      }
+
+      $this->message = 'Total budget for year ' . $year . ' is ' . $this->data;
+    }
+
+    return [
+      'success' => $this->success,
+      'data' => $this->data,
+      'message' => $this->message,
+      'info' => 'usage: /json_api/total_budget/2018 , can be used without extra params, ' .
+        'like /json_api/total_budget ; current year will be used'
+    ];
+  }
+
+  /**
+   * @SWG\Get(
+   *     path="/json_api/total_revenue",
+   *     @SWG\Response(response="200", description="total_revenue")
+   * )
+   */
+  public function total_revenue()
+  {
+    $year = $this->validate_year($this->args[1]);
+
+    if ($this->success) {
+      $query = "SELECT SUM(COALESCE(posting_amount,0)) AS total
+                  FROM revenue_details s0
+                WHERE s0.budget_fiscal_year = '{$year}'";
+      $response = _checkbook_project_execute_sql($query);
+
+      if (sizeof($response) && $response[0]['total']) {
+        $this->data = $response[0]['total'];
+        $this->data = round($this->data, -6);
+        $this->data = money_format('%i', $this->data);
+      }
+
+      $this->message = 'Total revenue for year ' . $year . ' is ' . $this->data;
+    }
+
+    return [
+      'success' => $this->success,
+      'data' => $this->data,
+      'message' => $this->message,
+      'info' => 'usage: /json_api/total_revenue/2018 , can be used without extra params, ' .
+        'like /json_api/total_revenue ; current year will be used'
+    ];
+  }
 }
