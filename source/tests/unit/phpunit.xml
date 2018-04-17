@@ -16,4 +16,7 @@
             <directory suffix=".php">../../webapp/sites/all/modules/custom</directory>
         </whitelist>
     </filter>
+    <logging>
+        <log type="coverage-clover" target="./coverage.xml"/>
+    </logging>
 </phpunit>
