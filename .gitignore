@@ -7,3 +7,4 @@ source/webapp/.settings/org.eclipse.php.debug.core.Debug_Process_Preferences.pre
 source/webapp/.settings/org.eclipse.wst.jsdt.ui.superType.container
 source/webapp/.settings/org.eclipse.wst.jsdt.ui.superType.name
 source/webapp/sites/all/modules/custom/checkbook_advanced_search/includes/ConfigUtility.php
+source/tests/unit/reports
