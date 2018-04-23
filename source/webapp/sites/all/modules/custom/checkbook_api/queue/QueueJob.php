@@ -60,14 +60,9 @@ class QueueJob {
                 case "csv":
                     if($this->recordCount > $this->fileLimit) {
                         $commands = $this->getCSVCommands();
-                        $file_names = (array_keys($commands));
                         $compressed_filename  = $this->prepareFileName();
-                        $commands[$compressed_filename][] = $this->getCompressFilesCommand($file_names,$compressed_filename);
-                        $this->responseFormat = "zip";
-                        $commands[$compressed_filename][] = $this->getMoveCommand($compressed_filename);
+                        $commands[$compressed_filename][] = $this->getMoveCommand($compressed_filename, 'zip');
                         $this->processCommands($commands);
-                        $this->responseFormat = "csv";
-                        $this->deleteOrphanFiles($file_names);
                     }
                     else {
                         $filename = $this->prepareFileName();
@@ -123,17 +118,20 @@ class QueueJob {
         $num_files = ceil($this->recordCount/$this->fileLimit);
         $commands = array();
 
+        $compressed_filename  = $this->prepareFileName();
+
         for($i=0;$i<$num_files;$i++) {
             $offset = $i*$this->fileLimit;
             $filename = $this->prepareFileName().'_part_'.$i;
 
             //sql command
-            $command = $this->getCSVJobCommand($filename, $this->fileLimit, $offset);
-            $commands[$filename][] = $command;
+            $commands[$filename][] = $this->getCSVJobCommand($filename, $this->fileLimit, $offset);
 
             //append header command
-            $command = $this->getCSVHeaderCommand($filename);
-            $commands[$filename][] = $command;
+            $commands[$filename][] = $this->getCSVHeaderCommand($filename);
+
+            //append file to zip and delete the file
+            $commands[$filename][] = $this->getAppendToZipAndRemoveCommand($filename, $compressed_filename);
         }
         return $commands;
     }
@@ -177,7 +175,7 @@ class QueueJob {
         $response_columns = is_array($request_criteria['responseColumns']) ? $request_criteria['responseColumns'] : array_keys($configured_response_columns);
         $csv_headers = '"' . implode('","', $response_columns) . '"';
         $file = $this->getFullPathToFile($filename,$this->tmpFileOutputDir);
-        $command = "sed -i 1i'" . $csv_headers . "' " . $file;
+        $command = "sed -i '1s;^;" . $csv_headers . "\\".PHP_EOL.";' " . $file;
         return $command;
     }
 
@@ -292,28 +290,35 @@ class QueueJob {
      * Function to get the command that moves the file from tmp directory
      * to the data feeds directory.
      * @param $filename
+     * @param $format
      * @return mixed
      */
-    private function getMoveCommand($filename) {
-        $tmp_file = $this->getFullPathToFile($filename,$this->tmpFileOutputDir);
-        $file = $this->getFullPathToFile($filename,$this->fileOutputDir);
+    private function getMoveCommand($filename, $format = '') {
+        $tmp_file = $this->getFullPathToFile($filename,$this->tmpFileOutputDir, $format);
+        $file = $this->getFullPathToFile($filename,$this->fileOutputDir, $format);
         $command = "mv $tmp_file $file";
         return $command;
     }
 
     /**
-     * Build the command to compress multiple files into a single zip
-     * @param $file_names
+     * Build the command to append file into a zip
+     * @param $file_name
      * @param $compressed_filename
      * @return string
      */
-    private function getCompressFilesCommand($file_names,$compressed_filename) {
-        $output_file = "";
-        foreach($file_names as $file_name) {
-            $output_file .= ' ' . $this->getFullPathToFile($file_name,$this->tmpFileOutputDir);
-        }
+    private function getAppendToZipAndRemoveCommand($file_name, $compressed_filename) {
+
+        $output_file = ' '.$this->getFullPathToFile($file_name, $this->tmpFileOutputDir);
+
         $compressed_file = $this->tmpFileOutputDir . '/' . $compressed_filename . '.zip';
-        $command = "zip -j $compressed_file $output_file";
+        /**
+         * -j
+         * Store just the name of a saved file (junk the path), and do not store directory names.
+         * By default, zip will store the full path (relative to the current directory).
+         *
+         */
+
+        $command = "zip -j $compressed_file $output_file; rm -f $output_file";
         return $command;
     }
 
@@ -339,37 +344,19 @@ class QueueJob {
     }
 
     /**
-     * Need to delete the orphan files once they have been zipped
-     *
-     * @param $file_names
-     * @throws JobRecoveryException
-     */
-    private function deleteOrphanFiles($file_names) {
-        try {
-            foreach($file_names as $file_name) {
-                $file = $this->getFullPathToFile($file_name,$this->tmpFileOutputDir);
-                file_unmanaged_delete($file);
-                LogHelper::log_debug("{$this->logId}: Executing command for job {$this->jobDetails['job_id']}:'Deleting $file'");
-            }
-        }
-        catch (Exception $e) {
-            LogHelper::log_error("{$this->logId}: Exception occurred while processing job '{$this->jobDetails['job_id']}' Exception is: " . $e);
-            throw new JobRecoveryException("{$this->logId}: Exception occurred while processing job '{$this->jobDetails['job_id']}' Exception is :" . $e->getMessage(), $e->getCode(), $e);
-        }
-    }
-
-    /**
      * Function to get full path to the output file
      * @param $filename
      * @param $directory
+     * @param $format
      * @return null|string
      */
-    private function getFullPathToFile($filename,$directory) {
+    private function getFullPathToFile($filename,$directory, $format = '') {
+        $format = $format ?: $this->responseFormat;
         switch($directory) {
             case $this->fileOutputDir:
-                return DRUPAL_ROOT . '/' . $this->fileOutputDir . '/' . $filename . '.' . $this->responseFormat;
+                return DRUPAL_ROOT . '/' . $this->fileOutputDir . '/' . $filename . '.' . $format;
             case $this->tmpFileOutputDir:
-                return $this->tmpFileOutputDir .'/'. $filename . '.' . $this->responseFormat;
+                return $this->tmpFileOutputDir .'/'. $filename . '.' . $format;
             default:
                 return null;
         }

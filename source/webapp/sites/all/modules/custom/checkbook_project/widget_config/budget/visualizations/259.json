@@ -73,7 +73,7 @@
     "template":"budget_expense_transactions_summary",
     "templateTitle":"Expense Budget Transactions",
     "templateLabel":"Year",
-    "templateLabelEval":"return 'FY '._getYearValueFromID(_getRequestParamValue('year'));"
+    "templateLabelEval":"return 'FY '._getYearValueFromID(RequestUtilities::getRequestParamValue('year'));"
   },
   "chartConfig":{
     "chart":{

@@ -10,7 +10,7 @@
     <input type=\"text\" class=\"chartdatefrom \" maxlength=\"4\" size=\"4\">
     <label> to </label>
     <input type=\"text\" class=\"chartdateto\" maxlength=\"4\" size=\"4\"></div>
-    <img src=\"/sites/all/themes/checkbook/images/featured-filter.png\" class=\"chartfilter\" name=\"0\">
+    <input type=\"submit\" value=\"Filter\" class=\"chartfilter\" name=\"0\" />
     </div>';",
     "footer":"print '<div class=\"detail-page-links\">
     <a class=\"show-detail-link\" href=\"/featuredtrends/node/347\">Show Details for General Fund Expenditures and Other Financing Uses</a>
@@ -133,7 +133,6 @@
     ],
     "chartConfig": {
             "title": {
-                //"text": "General Fund Revenues and General Fund Expenditures ",
                 "style": {
                     "fontSize": "15px",
                     "fontWeight": "bold"
@@ -199,7 +198,6 @@
     "navigator": {
                 "enabled": true,
                 "xAxis": {
-                   // "range": 6302436001000,
                     "labels":{"enabled":true}
     },
     "margin": 0

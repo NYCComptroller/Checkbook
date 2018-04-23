@@ -9,7 +9,7 @@
 <input type=\"text\" class=\"chartdatefrom\" maxlength=\"4\" size=\"4\">
 <label> to </label>
 <input type=\"text\" class=\"chartdateto\" maxlength=\"4\" size=\"4\"></div>
-<img src=\"/sites/all/themes/checkbook/images/featured-filter.png\" class=\"chartfilter\" name=\"2\">
+<input type=\"submit\" value=\"Filter\" class=\"chartfilter\" name=\"2\" />
 </div>';",
 "footer":"print '<div class=\"detail-page-links\">
 <a class=\"show-detail-link\" href=\"/featuredtrends/node/354\">Show Details for Capital Projects Fund Aid Revenues</a>
@@ -86,7 +86,6 @@ jQuery('#capital-projects-filter .chartdateto').val(Highcharts.dateFormat('%Y',a
 ],
 "chartConfig": {
         "title": {
-            //"text": "Capital Projects Fund Aid Revenues",
             "style": {
                 "fontSize": "16px"
             },
@@ -136,7 +135,6 @@ jQuery('#capital-projects-filter .chartdateto').val(Highcharts.dateFormat('%Y',a
 },
 "xAxis": {
             "range1": 284018400000,
-             //"range": 315360000000,
             "range": 279936000000,
             "minRange": 31536000000,
             "tickInterval": 31536000000,

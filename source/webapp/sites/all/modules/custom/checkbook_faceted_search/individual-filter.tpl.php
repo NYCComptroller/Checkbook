@@ -1,24 +1,22 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php
 /**
  * Created by JetBrains PhpStorm.
  * User: jrobertson
@@ -50,7 +48,7 @@ $tooltip = "";
 if($node->widgetConfig->filterName == 'Amount') {
     $showAllRecords = isset($node->widgetConfig->showAllRecords) ? $node->widgetConfig->showAllRecords : false;
     if(!$showAllRecords) {
-        $params = explode('~', _getRequestParamValue($node->widgetConfig->urlParameterName));
+        $params = explode('~', RequestUtilities::getRequestParamValue($node->widgetConfig->urlParameterName));
         if($params[0]) {
             $unchecked = null;
         }
@@ -65,7 +63,7 @@ $is_payroll_range_filter =
 if($is_payroll_range_filter) {
     $showAllRecords = isset($node->widgetConfig->showAllRecords) ? $node->widgetConfig->showAllRecords : false;
     if(!$showAllRecords) {
-        $params = explode('~', _getRequestParamValue($node->widgetConfig->urlParameterName));
+        $params = explode('~', RequestUtilities::getRequestParamValue($node->widgetConfig->urlParameterName));
         if($params[0]) {
             $unchecked = null;
         }
@@ -75,12 +73,14 @@ if($is_payroll_range_filter) {
 //Contract Includes Sub Vendors Facet
 //For N/A value, some values are null, this needs to be handled
 if($node->widgetConfig->filterName == 'Contract Includes Sub Vendors') {
+    if (isset($unchecked) && $unchecked)
     foreach($unchecked as $key => $value) {
         if($value[1] == null) {
             $unchecked[$key][0] = 5;
             $unchecked[$key][1] = "N/A";
         }
     }
+    if (isset($checked) && $checked)
     foreach($checked as $key => $value) {
         if($value[1] == null) {
             $checked[$key][0] = 5;
@@ -92,12 +92,14 @@ if($node->widgetConfig->filterName == 'Contract Includes Sub Vendors') {
 //Sub Vendor Status in PIP
 //For N/A value, some values are null, this needs to be handled
 if($node->widgetConfig->filterName == 'Sub Vendor Status in PIP') {
+    if ($unchecked && $unchecked)
     foreach($unchecked as $key => $value) {
         if($value[1] == null) {
             $unchecked[$key][0] = 0;
             $unchecked[$key][1] = "N/A";
         }
     }
+    if (isset($checked) && $checked)
     foreach($checked as $key => $value) {
         if($value[1] == null) {
             $checked[$key][0] = 0;
@@ -105,6 +107,9 @@ if($node->widgetConfig->filterName == 'Sub Vendor Status in PIP') {
         }
     }
 }
+
+$checkedCount = (isset($checked) && $checked) ? sizeof($checked) : 0;
+$uncheckedCount = (isset($unchecked) && $unchecked) ? sizeof($unchecked) : 0;
 
 //Payroll Type Filter
 $count = 0;
@@ -114,6 +119,8 @@ if($node->widgetConfig->filterName == 'Payroll Type') {
         case 898:
         case 899:
         //Advanced Search Payroll Type Facets
+//        if ($checked && is_array($checked))
+        if (isset($checked) && $checked)
         foreach($checked as $key => $value) {
             if($value[0] == 2 || $value[0] == 3) {
                 $count = $count + $value[2];
@@ -136,7 +143,7 @@ if($node->widgetConfig->filterName == 'Payroll Type') {
 if($node->widgetConfig->filterName == 'Modified Expense Budget') {
     $showAllRecords = isset($node->widgetConfig->showAllRecords) ? $node->widgetConfig->showAllRecords : false;
     if(!$showAllRecords) {
-        $params = explode('~', _getRequestParamValue($node->widgetConfig->urlParameterName));
+        $params = explode('~', RequestUtilities::getRequestParamValue($node->widgetConfig->urlParameterName));
         if($params[0]) {
             $unchecked = null;
         }
@@ -147,7 +154,7 @@ if($node->widgetConfig->filterName == 'Modified Expense Budget') {
 if($node->widgetConfig->filterName == 'Revenue Recognized') {
     $showAllRecords = isset($node->widgetConfig->showAllRecords) ? $node->widgetConfig->showAllRecords : false;
     if(!$showAllRecords) {
-        $params = explode('~', _getRequestParamValue($node->widgetConfig->urlParameterName));
+        $params = explode('~', RequestUtilities::getRequestParamValue($node->widgetConfig->urlParameterName));
         if($params[0]) {
             $unchecked = null;
         }
@@ -211,6 +218,7 @@ if($is_prime_filter || $is_sub_filter || ($is_prime_sub_filter && $node->widgetC
             unset($unchecked[$key]);
         }
     }
+
     if($asian_american_count > 0) {
         array_push($unchecked,array("4~5","Asian American",$asian_american_count));
         usort($unchecked,
@@ -224,6 +232,10 @@ if($is_prime_filter || $is_sub_filter || ($is_prime_sub_filter && $node->widgetC
         );
     }
     $asian_american_count = 0;
+
+
+//    if (isset($checked) && is_array($checked))
+    if (isset($checked) && $checked)
     foreach($checked as $key => $value){
         $id = $value[0];
         $name = $value[1];
@@ -241,6 +253,7 @@ if($is_prime_filter || $is_sub_filter || ($is_prime_sub_filter && $node->widgetC
             unset($checked[$key]);
         }
     }
+
     if($asian_american_count > 0) {
         array_push($checked,array("4~5","Asian American",$asian_american_count));
         usort($checked,
@@ -258,7 +271,7 @@ if($is_prime_filter || $is_sub_filter || ($is_prime_sub_filter && $node->widgetC
 //Checking 'Asian-American' filter in MWBE Category Facet
 $count =0;
 if($node->widgetConfig->filterName == 'M/WBE Category' && $node->widgetConfig->parentNid != 939){
-    $dashboard = _getRequestParamValue('dashboard');
+    $dashboard = RequestUtilities::getRequestParamValue('dashboard');
     foreach($unchecked as $key => $value){
         if(isset($dashboard) && $dashboard != 'ss'){
             if($value[0] == 7 || $value[0] == 11){
@@ -270,19 +283,20 @@ if($node->widgetConfig->filterName == 'M/WBE Category' && $node->widgetConfig->p
             unset($unchecked[$key]);
         }
     }
-
-    foreach($checked as $key=>$value){
-        if($value[0] == 4 || $value[0] == 5){
-            $count = $count + $value[2];
-            $id = "4~5";
-            unset($checked[$key]);
-        }else{
-            array_push($checked,array($value[0],MappingUtil::getMinorityCategoryById($value[0]),$value[2]));
-            unset($checked[$key]);
-        }
-        //Remove N/A from facet
-        if($value[1] == null) {
-            unset($checked[$key]);
+    if(isset($checked) && $checked) {
+        foreach ($checked as $key => $value) {
+            if ($value[0] == 4 || $value[0] == 5) {
+                $count = $count + $value[2];
+                $id = "4~5";
+                unset($checked[$key]);
+            } else {
+                array_push($checked, array($value[0], MappingUtil::getMinorityCategoryById($value[0]), $value[2]));
+                unset($checked[$key]);
+            }
+            //Remove N/A from facet
+            if ($value[1] == null) {
+                unset($checked[$key]);
+            }
         }
     }
     if($count > 0 )array_push($checked,array($id,'Asian American',$count));
@@ -294,50 +308,62 @@ if($node->widgetConfig->filterName == 'Vendor Type'){
     if($node->widgetConfig->parentNid == 932 || $node->widgetConfig->parentNid == 939) {
         $vendor_counts = array();
         // To fix the issue with PM counts are getting added twice to PM~SM
+//      if (is_array($checked)) {
+      if (isset($checked) && $checked) {
         foreach($checked as $row){
-            $checked_vendor_types[$row[0]] = $row[2];
+          $checked_vendor_types[$row[0]] = $row[2];
         }
-        foreach($checked_vendor_types as $key=>$value){
+      }
+//        if (is_array($checked_vendor_types)) {
+        if (isset($checked_vendor_types) && $checked_vendor_types) {
+          foreach($checked_vendor_types as $key=>$value){
             if(in_array($key,array('P'))){
-                $vendor_counts['P~PM'] = $vendor_counts['P~PM']+ $value;
+              $vendor_counts['P~PM'] = $vendor_counts['P~PM']+ $value;
             }
             if(in_array($key,array('S'))){
-                $vendor_counts['S~SM'] = $vendor_counts['S~SM']+ $value;
+              $vendor_counts['S~SM'] = $vendor_counts['S~SM']+ $value;
             }
             if(in_array($key,array('PM'))){
-                $vendor_counts['PM~SM'] = $vendor_counts['PM~SM']+ $value;
+              $vendor_counts['PM~SM'] = $vendor_counts['PM~SM']+ $value;
             }
             if(in_array($key,array('SM'))){
-                $vendor_counts['PM~SM'] = $vendor_counts['PM~SM']+ $value;
+              $vendor_counts['PM~SM'] = $vendor_counts['PM~SM']+ $value;
             }
+          }
         }
-        foreach($unchecked as $row){
+//        if (is_array($unchecked)) {
+        if (isset($unchecked) && $unchecked) {
+          foreach($unchecked as $row){
             if(in_array($row[0],array('P'))){
-                $vendor_counts['P~PM'] = $vendor_counts['P~PM']+ $row[2];
+              $vendor_counts['P~PM'] = $vendor_counts['P~PM']+ $row[2];
             }
             if(in_array($row[0],array('S'))){
-                $vendor_counts['S~SM'] = $vendor_counts['S~SM']+ $row[2];
+              $vendor_counts['S~SM'] = $vendor_counts['S~SM']+ $row[2];
             }
             if(in_array($row[0],array('PM'))){
-                $vendor_counts['PM~SM'] = $vendor_counts['PM~SM']+ $row[2];
+              $vendor_counts['PM~SM'] = $vendor_counts['PM~SM']+ $row[2];
             }
             if(in_array($row[0],array('SM'))){
-                $vendor_counts['PM~SM'] = $vendor_counts['PM~SM']+ $row[2];
+              $vendor_counts['PM~SM'] = $vendor_counts['PM~SM']+ $row[2];
             }
+          }
         }
         $checked = $unchecked = array();
-        $selected_vendor_types =  _getRequestParamValue('vendortype');
-        foreach($vendor_counts as $key=>$value){
+        $selected_vendor_types =  RequestUtilities::getRequestParamValue('vendortype');
+//        if (is_array($vendor_counts)) {
+        if (isset($vendor_counts) && $vendor_counts) {
+          foreach($vendor_counts as $key=>$value){
             if (strpos($selected_vendor_types, $key) !== false) {
-                array_push($checked, array($key, MappingUtil::getMixedVendorTypeNames($key),$value));
+              array_push($checked, array($key, MappingUtil::getMixedVendorTypeNames($key),$value));
             }
             else {
-                array_push($unchecked, array($key, MappingUtil::getMixedVendorTypeNames($key),$value));
+              array_push($unchecked, array($key, MappingUtil::getMixedVendorTypeNames($key),$value));
             }
+          }
         }
     }
     else {
-        $vendor_types = _getRequestParamValue('vendortype');
+        $vendor_types = RequestUtilities::getRequestParamValue('vendortype');
         $vendor_type_data = MappingUtil::getVendorTypes($checked, $vendor_types);
         $vendor_type_data = MappingUtil::getVendorTypes($unchecked, $vendor_types);
         $checked = $vendor_type_data['checked'];
@@ -345,7 +371,7 @@ if($node->widgetConfig->filterName == 'Vendor Type'){
     }
 }
 
-if(count($checked) == 0){
+if(!$checked){
     $display_facet ="none";
     $span = "";
 }else{
@@ -371,20 +397,21 @@ $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
   <div class="filter-title" <?php print $tooltip ?>><span class="<?php print $span;?>">By <?php print $filter_name;?></span></div>
   <div class="facet-content" style="display:<?php echo $display_facet; ?>">
   <div class="progress"></div>
-  <?php  
-    $pages = ceil($node->totalDataCount/$node->widgetConfig->limit);   
-    if((isset($checked) && $node->widgetConfig->maxSelect == count($checked)) || count($checked) + count($unchecked) == 0 || $disableFacet){
+  <?php
+  $node->widgetConfig->limit = $node->widgetConfig->limit ?: 50;
+    $pages = ceil($node->totalDataCount/$node->widgetConfig->limit);
+    if((isset($checked) && $node->widgetConfig->maxSelect == $checkedCount) || $checkedCount + $uncheckedCount == 0 || $disableFacet){
       $disabled = " DISABLED='true' " ;
     }else{
       $disabled = "" ;
-    }   
+    }
     if( !isset($node->widgetConfig->autocomplete) || $node->widgetConfig->autocomplete == true  ){ ?>
-  <div class="autocomplete"><input class="autocomplete" <?php print $disabled; ?> pages="<?php print $pages ?>" type="text" name="<?php print $autocomplete_field_name ?>" 
+  <div class="autocomplete"><input class="autocomplete" <?php print $disabled; ?> pages="<?php print $pages ?>" type="text" name="<?php print $autocomplete_field_name ?>"
             autocomplete_param_name="<?php print $autocomplete_param_name ?>" nodeid="<?php print $node->nid ;?>" id="<?php print $autocomplete_id ?>"></div>
         <?php } ?>
   <div class="checked-items">
     <?php
-    if((isset($checked) && $node->widgetConfig->maxSelect == count($checked)) || count($checked) + count($unchecked) == 0 ){
+    if((isset($checked) && $node->widgetConfig->maxSelect == $checkedCount) || $checkedCount + $uncheckedCount == 0 ){
         $disabled = " DISABLED='true' " ;
     }else{
         $disabled = "" ;
@@ -392,28 +419,34 @@ $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
     $disableFacet = $disableFacet ? " DISABLED='true' " : "";
 
     $ct = 0;
-    foreach ($checked as $row) {
+//    if ($checked && is_array($checked)) {
+    if (isset($checked) && $checked) {
+      foreach ($checked as $row) {
         $row[0] = str_replace('__','/', $row[0]);
         $row[1] = str_replace('__','/', $row[1]);
         $id = $id_filter_name."_checked_".$ct;
         echo '<div class="row">';
         echo '<div class="checkbox"><input class="styled" id="'.$id.'" name="' . $autocomplete_id . '" type="checkbox" ' . $disableFacet . 'checked="checked" value="' . urlencode(html_entity_decode($row[0],ENT_QUOTES)) . '" onClick="return applyTableListFilters();"><label for="'.$id.'"></label></div>';
         if($node->widgetConfig->filterName == 'Contract ID') {
-            echo '<div class="name">' . $row[1] . '</div>';
+          echo '<div class="name">' . $row[1] . '</div>';
         }
         else {
-            echo '<div class="name">' . _break_text_custom2($row[1],15) . '</div>';
+          echo '<div class="name">' . _break_text_custom2($row[1],15) . '</div>';
         }
         echo '<div class="number"><span class="active">' . number_format($row[2]) . '</span></div>';
         echo '</div>';
         $ct++;
+      }
     }
+
     ?>
   </div>
   <div class="options">
     <div class="rows">
     <?php
     $ct = 0;
+//    if (isset($unchecked) && is_array($unchecked))
+    if (isset($unchecked) && $unchecked)
     foreach ($unchecked as $row) {
         $row[0] = str_replace('__','/', $row[0]);
         $row[1] = str_replace('__','/', $row[1]);
@@ -468,7 +501,7 @@ $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
         },
         theme:'dark'
     });";
-    
+
   }elseif($node->widgetConfig->facetNoPager == true){
     $scroll_facet = "
         $(this).next().find('.options').mCustomScrollbar('destroy');
@@ -513,4 +546,3 @@ $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
   if ($node->widgetConfig->addJS1) {
     echo '<script type="text/javascript">' . $node->widgetConfig->addJS . '</script>';
   }
-?>

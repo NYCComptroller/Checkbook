@@ -17,6 +17,5 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php
+
     print '<div class="dollar-amounts"><div class="total-spending-amount">$' . custom_number_formatter_format($node->data[0]['check_amount_sum'],2).'<div class="amount-title">Total Spending Amount</div></div></div>';

@@ -19,22 +19,24 @@
 */
 
 
-require_once(realpath(drupal_get_path('module', 'data_controller')) . '/common/pattern/AbstractObject.php');
-require_once(realpath(drupal_get_path('module', 'data_controller')) . '/common/object/comparator/Comparator.php');
-require_once(realpath(drupal_get_path('module', 'data_controller')) . '/common/object/comparator/handler/AbstractComparator.php');
-require_once(realpath(drupal_get_path('module', 'data_controller')) . '/common/object/comparator/handler/AbstractValueComparator.php');
-require_once(realpath(drupal_get_path('module', 'data_controller')) . '/common/object/comparator/handler/PropertyBasedComparator.php');
-require_once(realpath(drupal_get_path('module', 'data_controller')) . '/common/object/comparator/handler/DefaultPropertyBasedComparator.php');
-require_once(realpath(drupal_get_path('module', 'data_controller')) . '/common/object/exception/UnsupportedOperationException.php');
-require_once(realpath(drupal_get_path('module', 'data_controller')) . '/datasource/formatter/ResultFormatter.php');
-require_once(realpath(drupal_get_path('module', 'data_controller')) . '/datasource/formatter/handler/SpecialCharacterResultFormatter.php');
+$module_data_controller_path = realpath(drupal_get_path('module', 'data_controller'));
 
-require_once(realpath(drupal_get_path('module', 'data_controller')) .'/common/object/converter/DataConverter.php');
-require_once(realpath(drupal_get_path('module', 'data_controller')) .'/common/object/converter/handler/AbstractDataConverter.php');
-require_once(realpath(drupal_get_path('module', 'data_controller')) .'/common/object/converter/handler/AbstractJson2PHP.php');
-require_once(realpath(drupal_get_path('module', 'data_controller')) .'/common/object/converter/handler/PHP2Json.php');
-require_once(realpath(drupal_get_path('module', 'data_controller')) .'/common/object/converter/handler/AbstractJson2PHP.php');
-require_once(realpath(drupal_get_path('module', 'data_controller')) .'/common/object/converter/handler/Json2PHP.php');
+require_once($module_data_controller_path . '/common/pattern/AbstractObject.php');
+require_once($module_data_controller_path . '/common/object/comparator/Comparator.php');
+require_once($module_data_controller_path . '/common/object/comparator/handler/AbstractComparator.php');
+require_once($module_data_controller_path . '/common/object/comparator/handler/AbstractValueComparator.php');
+require_once($module_data_controller_path . '/common/object/comparator/handler/PropertyBasedComparator.php');
+require_once($module_data_controller_path . '/common/object/comparator/handler/DefaultPropertyBasedComparator.php');
+require_once($module_data_controller_path . '/common/object/exception/UnsupportedOperationException.php');
+require_once($module_data_controller_path . '/datasource/formatter/ResultFormatter.php');
+require_once($module_data_controller_path . '/datasource/formatter/handler/SpecialCharacterResultFormatter.php');
+
+require_once($module_data_controller_path .'/common/object/converter/DataConverter.php');
+require_once($module_data_controller_path .'/common/object/converter/handler/AbstractDataConverter.php');
+require_once($module_data_controller_path .'/common/object/converter/handler/AbstractJson2PHP.php');
+require_once($module_data_controller_path .'/common/object/converter/handler/PHP2Json.php');
+require_once($module_data_controller_path .'/common/object/converter/handler/AbstractJson2PHP.php');
+require_once($module_data_controller_path .'/common/object/converter/handler/Json2PHP.php');
 
 
 
@@ -148,16 +150,18 @@ function _widget_node_view($key){
 function _widget_node_load_file($key){
 	$node =  new stdClass();
 	$node->type = "widget";
-	$files = file_scan_directory( drupal_get_path('module','checkbook_project') , '/^'.$key.'\.json$/');
-      if(count($files) > 0){
-        $file_names = array_keys($files);
-        $json = file_get_contents($file_names[0]);
-        $node->widget_json =  $json;
-      }
-    if($node->nid == null){
-    	$node->nid = $key;
-    }
-    return $node;
+
+  $files = file_scan_directory( drupal_get_path('module','checkbook_project') , '/^'.$key.'\.json$/');
+  if(count($files) > 0){
+    $file_names = array_keys($files);
+    $json = file_get_contents($file_names[0]);
+    $node->widget_json =  $json;
+  }
+
+  if($node->nid == null){
+    $node->nid = $key;
+  }
+  return $node;
 }
 
 
@@ -170,17 +174,16 @@ function widget_node_load($nodes,$types){
 
   foreach($nodes as $nid => $node ){
     if( $node->type == "widget"){
-      $files = file_scan_directory( drupal_get_path('module','checkbook_project') , '/^'.$nid.'\.json$/');
-      if(count($files) > 0){
+      $files = file_scan_directory(drupal_get_path('module', 'checkbook_project'), '/^' . $nid . '\.json$/');
+      if (count($files) > 0) {
         $file_names = array_keys($files);
         $json = file_get_contents($file_names[0]);
-        $node->widget_json =  $json;
-      }else{
-        $node->widget_json = $node->body['und'][0]['value'] ;
+        $node->widget_json = $json;
+      } else {
+        $node->widget_json = $node->body['und'][0]['value'];
       }
     }
   }
-
 }
 
 function widget_form(&$node) {
@@ -272,12 +275,20 @@ function widget_node_view($node, $nodata = true) {
 	if(isset($node->widgetConfig->widgetUpdateJSONConfig)){
 
 		if($node->widgetConfig->widgetType == 'highcharts'){
+		  if (!isset($node->widgetConfig->chartConfig->chart)) {
+        $node->widgetConfig->chartConfig->chart = new stdClass();
+      }
+
+      if (!isset($node->widgetConfig->chartConfig->credits)) {
+        $node->widgetConfig->chartConfig->credits = new stdClass();
+      }
+
 			$node->widgetConfig->chartConfig->chart->renderTo = 'node-chart-' . widget_unique_identifier($node);
 			$node->widgetConfig->chartConfig->credits->enabled = false;
 		}
 
 
-		eval($node->widgetConfig->widgetUpdateJSONConfig);
+		@eval($node->widgetConfig->widgetUpdateJSONConfig);
 	}else{
 		widget_invoke($node, 'widget_data');
 	}
@@ -414,7 +425,7 @@ function widget_prepare(&$node) {
 	}
 
 	if(isset($node->widgetConfig->widgetPreprocessJSON)){
-		$parameters =  eval($node->widgetConfig->widgetPreprocessJSON);
+		eval($node->widgetConfig->widgetPreprocessJSON);
 	}
 
 	//copy request params and apply default and additional params
@@ -461,10 +472,12 @@ function widget_prepare(&$node) {
     	$parameters =  eval($node->widgetConfig->preProcessConfiguration);
     }
 
-    foreach ($node->widgetConfig->model->series as $series) {
+    if (is_array($node->widgetConfig->model->series)) {
+      foreach ($node->widgetConfig->model->series as $series) {
         if(isset($series->preProcessConfiguration)){
-            $parameters =  eval($series->preProcessConfiguration);
+          $parameters =  eval($series->preProcessConfiguration);
         }
+      }
     }
 
 }
@@ -550,8 +563,21 @@ function load_widget_data($node, $resultFormatter) {
 
         //update
 
+        $ajaxRequest = RequestUtilities::getRequestParamValue('ajax');
+
         if(isset($config->adjustParameters)){
-           $parameters =  eval($config->adjustParameters);
+           @$parameters =  eval($config->adjustParameters);
+        } elseif (isset($config->autocompleteField) && ('autocomplete' == $ajaxRequest)
+          && isset($parameters[$config->autocompleteField]) && $parameters[$config->autocompleteField]) {
+          /**
+           * AUTOCOMPLETE
+           */
+          $autocomplete_value = $parameters[$config->autocompleteField][0];
+          $parameters[$config->autocompleteField] = data_controller_get_operator_factory_instance()->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME, [
+            $autocomplete_value,
+            FALSE,
+            TRUE,
+          ]);
         }
 
         if(isset($config->adjustColumns)){
@@ -559,9 +585,11 @@ function load_widget_data($node, $resultFormatter) {
         }
 
         $updatedParameters = array();
-        foreach($parameters as $key=>$value){
+        if (is_array($parameters)) {
+          foreach($parameters as $key=>$value){
             $key = _update_dataset_datasource($key,$node->widgetConfig->keepOriginalDatasource);
             $updatedParameters[$key] = $value;
+          }
         }
         $parameters = $updatedParameters;
 
@@ -575,7 +603,7 @@ function load_widget_data($node, $resultFormatter) {
         if(RequestUtil::isAdvancedSearchPage()) {
             foreach($parameters as $param_key => $param_value){
                 if(!is_array($param_value)) continue;
-                $operator_handler_class = get_class($param_value[0]);
+                $operator_handler_class = is_object($param_value[0]) ? get_class($param_value[0]) : null;
                 if($operator_handler_class == "WildcardOperatorHandler") {
                     foreach($param_value[0] as $key => $value) {
                         if($key == "wildcard" && preg_match("/^%*$/",$value)) {
@@ -841,7 +869,7 @@ function load_widget_data($node, $resultFormatter) {
      $node->data = _update_node_data($node->data,$node->widgetConfig->keepOriginalDatasource);
 
   	if(isset($node->widgetConfig->transformationPHP)){
-  		$node->data = eval($node->widgetConfig->transformationPHP);
+  		@$node->data = eval($node->widgetConfig->transformationPHP);
   	}
     } catch(Exception $e) {
         // FIXME Commented out printing of $e because it generates 100+ KBs in a log file
@@ -1019,7 +1047,6 @@ function calculateDerivedCell($row, $fulldata, $derivedColumnDefinition,$node) {
 			return $allRowsAreNull;
 			break;
 		case "expression":
-			$var = 3;
 			$expression = $derivedColumnDefinition->expression;
 			eval("\$result = \"$expression\";");
 			return $result;
@@ -1294,9 +1321,11 @@ function widget_merge_config($parent_config, $child_config){
         $child_config->paramTypeConfig->$urlParameterName = "ne";
     }
 
-  foreach($child_config->urlParamMap  as $key=>$value){
-    $parent_config->urlParamMap->$key = $value;
-  }
+    if (isset($child_config->urlParamMap) && $child_config->urlParamMap)
+    foreach($child_config->urlParamMap as $key=>$value){
+        $parent_config->urlParamMap->$key = $value;
+    }
+
   $child_config->urlParamMap = $parent_config->urlParamMap;
   $autocompleteParamName = $child_config->autocompleteParamName;
   if(isset($autocompleteParamName)){
@@ -1479,7 +1508,7 @@ function _update_dataset_datasource($datasetName,$keepOriginalDatasource = false
 	if($keepOriginalDatasource == true){
 		return $datasetName;
 	}
-    $database = _getRequestParamValue('datasource');
+    $database = RequestUtilities::getRequestParamValue('datasource');
     if(isset($database)){
         $database = str_replace("checkbook:", "checkbook_oge:",$datasetName);
     }else{
@@ -1493,14 +1522,16 @@ function _update_node_data($data,$keepOriginalDatasource = false){
 		return $data;
 	}
     $returnData = array();
-    foreach($data as $key=>$value){
-         $arrayValues = array();
-         foreach($value as $a=>$b){
-             $a = str_replace('@checkbook_oge:',"@checkbook:",$a);
-             $arrayValues[$a] = $b;
-         }
+	  if ($data){
+      foreach((Array)$data as $key=>$value){
+        $arrayValues = array();
+        foreach((Array)$value as $a=>$b){
+          $a = str_replace('@checkbook_oge:',"@checkbook:",$a);
+          $arrayValues[$a] = $b;
+        }
         $returnData[$key] = $arrayValues;
-     }
+      }
+    }
 
     return $returnData;
 }
@@ -1510,9 +1541,9 @@ function _update_columns_by_datasource($node_columns, $datasource_mapping = null
 		return $node_columns;
 	}
     $columns = array();
-    $database = _getRequestParamValue('datasource');
+    $database = RequestUtilities::getRequestParamValue('datasource');
     $datasource_mapping = ($datasource_mapping != null) ? get_object_vars($datasource_mapping) : null;
-    if (is_array($node_columns)) {
+    if (isset($node_columns) && $node_columns) {
         foreach($node_columns as $column){
             if($datasource_mapping == null){
                 array_push($columns, _update_dataset_datasource($column));
@@ -1532,7 +1563,7 @@ function _update_columns_by_datasource($node_columns, $datasource_mapping = null
 
 
 function _get_current_datasource(){
-	$datasource = _getRequestParamValue('datasource');
+	$datasource = RequestUtilities::getRequestParamValue('datasource');
 	if(isset($datasource)){
 		return $datasource;
 	}else{

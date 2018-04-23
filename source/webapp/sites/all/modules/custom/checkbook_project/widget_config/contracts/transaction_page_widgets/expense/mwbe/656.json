@@ -106,7 +106,7 @@
     "preProcessConfiguration":"
         $doctype = $node->widgetConfig->requestParams['document_code@checkbook:ref_document_code'];
         $doctypes = isset($doctype) ? explode('~', $doctype) : array();
-        $smnid = _getRequestParamValue('smnid');
+        $smnid = RequestUtilities::getRequestParamValue('smnid');
 
         $is_master_agreement = in_array('MA1', $doctypes) || in_array('MMA1', $doctypes);
         $is_contract_modification = $smnid == 480 || $smnid == 366 || $smnid == 722;
@@ -123,8 +123,8 @@
         $node->show_expense_category = $show_expense_category;
         $node->show_dollar_difference = $show_dollar_difference;
         $node->show_percent_difference = $show_percent_difference;
-        
-        $dash_board = _getRequestParamValue('dashboard');
+
+        $dash_board = RequestUtilities::getRequestParamValue('dashboard');
         $node->show_column = $dash_board == 'ss' || $dash_board == 'sp' || $dash_board == 'ms';
         $node->show_subvendor = false;
 
@@ -350,8 +350,8 @@
             $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
         }
 
-        $dashboard = _getRequestParamValue('dashboard');
-        $smnid = _getRequestParamValue('smnid');
+        $dashboard = RequestUtilities::getRequestParamValue('dashboard');
+        $smnid = RequestUtilities::getRequestParamValue('smnid');
 
         if($dashboard == 'ss' || $dashboard == 'sp' || $dashboard == 'ms') $parameters['is_prime_or_sub'] = 'S';
         else if($dashboard == 'mp' || ($dashboard == null && $smnid != null)) $parameters['is_prime_or_sub'] = 'P';

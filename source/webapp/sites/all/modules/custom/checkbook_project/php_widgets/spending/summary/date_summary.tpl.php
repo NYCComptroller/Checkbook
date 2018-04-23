@@ -17,21 +17,20 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-?>
-<?php
+
     $title = eval($node->widgetConfig->summaryView->templateTitleEval);
     $month = '';
-    $yearType = _getRequestParamValue('yeartype');
-    $year = _getRequestParamValue('calyear');
+    $yearType = RequestUtilities::getRequestParamValue('yeartype');
+    $year = RequestUtilities::getRequestParamValue('calyear');
     $yearLabel = $yearType == 'C' ? 'CY' : 'FY';
     $year = isset($year)
-        ? _getYearValueFromID(_getRequestParamValue('calyear'))
-        : _getYearValueFromID(_getRequestParamValue('year'));
+        ? _getYearValueFromID(RequestUtilities::getRequestParamValue('calyear'))
+        : _getYearValueFromID(RequestUtilities::getRequestParamValue('year'));
     $year = $yearLabel.$year;
     $amount = _checkbook_project_pre_process_aggregation($node,'check_amount_sum');
     $amount = custom_number_formatter_format($amount,2,'$');
     $catname = RequestUtil::getSpendingTransactionTitle();
-    $monthDetails = CheckbookDateUtil::getMonthDetails(_getRequestParamValue('month'));
+    $monthDetails = CheckbookDateUtil::getMonthDetails(RequestUtilities::getRequestParamValue('month'));
     if(isset($monthDetails)){
         $month = strtoupper($monthDetails[0]['month_name']);
     }

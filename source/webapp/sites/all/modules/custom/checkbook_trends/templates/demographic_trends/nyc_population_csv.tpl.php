@@ -17,10 +17,9 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php
 
-    $header .= ",,,2002-2015*,,,"."\n";
+
+    $header .= ",,,2000-2016*,,,"."\n";
     $header .= 'Year';
     $header .=  ",United States" ;
     $header .=  ",Percentage Change from Prior Period," ;
@@ -41,8 +40,8 @@
         echo $rowString . "\n";
         $count++;
    	}
-
-   echo "\n\n"."*Amounts as of March 24 2016\n\n";
-
 ?>
 
+"*Amounts as of March 28, 2017"
+
+"Source: U.S Department of Commerce, Bureau of Economic Analysis. US Census Bureau and American Fact Finder."

@@ -1,19 +1,19 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -21,10 +21,10 @@
 require_once(realpath(drupal_get_path('module', 'checkbook_project')) .'/customclasses/contract/ContractUtil.php');
 
 class childAgreementDetails {
-  
+
   public function getData(&$node){
-    
-    $ag_id = _getRequestParamValue("agid");
+
+    $ag_id = RequestUtilities::getRequestParamValue("agid");
 
     $query1 = "SELECT l1.contract_number, a.master_contract_number,
            l2.vendor_id AS vendor_id_checkbook_vendor_history,
@@ -61,9 +61,9 @@ class childAgreementDetails {
        AND l1.latest_flag = 'Y'
     ";
     $query2 = "select rfed_amount from history_agreement where original_agreement_id = " .$ag_id . " and latest_flag = 'Y' limit 1";
-    
-    
-    
+
+
+
     $results1 = _checkbook_project_execute_sql_by_data_source($query1,_get_current_datasource());
     $node->data = $results1;
     $magid = _get_master_agreement_id();
@@ -80,13 +80,13 @@ class childAgreementDetails {
 	      $spent_amount +=$row["rfed_amount"];
 	    }
 	    $node->spent_amount = $spent_amount ;
-	    
-	    
+
+
 	    $query3 = "SELECT COUNT(*) AS total_child_contracts
 	    FROM {history_agreement}
 	   WHERE master_agreement_id = " . $magid . "
 	     AND latest_flag = 'Y'";
-	  
+
 	    $results3 = _checkbook_project_execute_sql($query3);
 	    $total_child_contracts = 0;
 	    foreach($results3 as $row){
@@ -101,7 +101,7 @@ class childAgreementDetails {
 				ON a.fms_contract_number = b.contract_number
 				LEFT JOIN (SELECT sum(check_amount) as check_amount, contract_number, vendor_id FROM {disbursement_line_item_details} group by 2,3) c
 				ON b.contract_number = c.contract_number AND a.vendor_id = c.vendor_id limit 1"  ;
-    	 
+
     	$results2 = _checkbook_project_execute_sql_by_data_source($query2,_get_current_datasource());
     	foreach ($results2 as $row) {
     		$node->spent_amount = $row['spent_amount'] ;
@@ -113,5 +113,5 @@ class childAgreementDetails {
         $node->data_source_amounts_differ = ContractUtil::childAgreementAmountsDiffer($ag_id);
     }
   }
-  
+
 }

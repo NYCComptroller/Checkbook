@@ -50,7 +50,7 @@
                                        ._checkbook_project_get_url_param_string(\"agency\")
                                        ._checkbook_project_get_url_param_string(\"fundsrccode\")
                                        ._checkbook_project_get_url_param_string(\"revcat\")
-                                       .'/fiscal_year/'.(_getRequestParamValue(\"year\"))
+                                       .'/fiscal_year/'.(RequestUtilities::getRequestParamValue(\"year\"))
                                        .'/revcat/'.$row['category_category']
                                        .'\">'.custom_number_formatter_format($row['current_recognized'],2,'$').'</a>'"
     },
@@ -62,7 +62,7 @@
                                        ._checkbook_project_get_url_param_string(\"agency\")
                                        ._checkbook_project_get_url_param_string(\"fundsrccode\")
                                        ._checkbook_project_get_url_param_string(\"revcat\")
-                                       .'/fiscal_year/'.(_getRequestParamValue(\"year\")+1)
+                                       .'/fiscal_year/'.(RequestUtilities::getRequestParamValue(\"year\")+1)
                                        .'/revcat/'.$row['category_category']
                                        .'\">'.custom_number_formatter_format($row['recognized_1'],2,'$').'</a>'"
     },
@@ -74,7 +74,7 @@
                                        ._checkbook_project_get_url_param_string(\"agency\")
                                        ._checkbook_project_get_url_param_string(\"fundsrccode\")
                                        ._checkbook_project_get_url_param_string(\"revcat\")
-                                       .'/fiscal_year/'.(_getRequestParamValue(\"year\")+2)
+                                       .'/fiscal_year/'.(RequestUtilities::getRequestParamValue(\"year\")+2)
                                        .'/revcat/'.$row['category_category']
                                        .'\">'.custom_number_formatter_format($row['recognized_2'],2,'$').'</a>'"
     },

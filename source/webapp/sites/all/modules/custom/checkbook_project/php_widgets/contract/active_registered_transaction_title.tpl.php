@@ -1,27 +1,25 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php
-$smnid = _getRequestParamValue('smnid');
-$dashboard= _getRequestParamValue('dashboard');
-$contactStatus = _getRequestParamValue('contstatus');
+$smnid = RequestUtilities::getRequestParamValue('smnid');
+$dashboard= RequestUtilities::getRequestParamValue('dashboard');
+$contactStatus = RequestUtilities::getRequestParamValue('contstatus');
 $bottomNavigation = "";
 if ($contactStatus == 'A') {
     $contactStatusLabel = 'Active';
@@ -41,7 +39,7 @@ if($dashboard == 'ms' || $dashboard == 'sp'){
     else
      $bottomNavigation = "New M/WBE Sub Vendor Contracts by Fiscal Year";
 }
-$contactCategory = _getRequestParamValue('contcat');
+$contactCategory = RequestUtilities::getRequestParamValue('contcat');
 $contactCategoryLabel = 'Expense';
 if ($contactCategory == 'revenue') {
   $contactCategoryLabel = 'Revenue';
@@ -67,6 +65,7 @@ global $checkbook_breadcrumb_title;
 
 if($dashboard == 'ss' || $dashboard == 'sp'){
     switch($smnid){
+        case '720':
         case '721':
             print "<h2 class='contract-title' class='title'>{$bottomNavigation} Transactions</h2>";
             $checkbook_breadcrumb_title =  "$bottomNavigation Transactions";
@@ -74,10 +73,6 @@ if($dashboard == 'ss' || $dashboard == 'sp'){
         case '722':
             print "<h2 class='contract-title' class='title'>Amount Modifications by {$bottomNavigation} Transactions</h2>";
             $checkbook_breadcrumb_title =  "Amount Modifications by $bottomNavigation Transactions";
-            break;
-        case '720':
-            print "<h2 class='contract-title' class='title'>{$bottomNavigation} Transactions</h2>";
-            $checkbook_breadcrumb_title =  "$bottomNavigation Transactions";
             break;
         case '725':
             print "<h2 class='contract-title' class='title'>Prime Vendors with {$bottomNavigation} Transactions</h2>";
@@ -103,6 +98,7 @@ if($dashboard == 'ss' || $dashboard == 'sp'){
 }elseif($dashboard == 'ms'){
     switch($smnid){
         case '781':
+        case '784':
             print "<h2 class='contract-title' class='title'>{$bottomNavigation} Transactions</h2>";
             $checkbook_breadcrumb_title =  "$bottomNavigation Transactions";
             break;
@@ -113,10 +109,6 @@ if($dashboard == 'ss' || $dashboard == 'sp'){
         case '783':
             print "<h2 class='contract-title' class='title'>Prime Vendors with {$bottomNavigation} Transactions</h2>";
             $checkbook_breadcrumb_title =  "Prime Vendors with $bottomNavigation Transactions";
-            break;
-        case '784':
-            print "<h2 class='contract-title' class='title'>{$bottomNavigation} Transactions</h2>";
-            $checkbook_breadcrumb_title =  "$bottomNavigation Transactions";
             break;
         case '785':
             print "<h2 class='contract-title' class='title'>Award Methods by {$bottomNavigation} Transactions</h2>";

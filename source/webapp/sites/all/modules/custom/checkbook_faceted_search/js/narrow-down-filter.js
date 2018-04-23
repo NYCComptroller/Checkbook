@@ -22,7 +22,7 @@ if (typeof Drupal != "undefined") {
 		    	            
 		    	            
 		    	            var request_term = $.trim(request.term);
-		    	            if(request_term == ''){
+		    	            if(request_term === ''){
 		    	            	respone(["No Matches Found"]);
 		    	            	return true;
 		    	            }
@@ -47,7 +47,7 @@ if (typeof Drupal != "undefined") {
 		                        },
 	
 		                select: function (event, ui) {
-					                	if(ui.item.value == 'No Matches Found'){
+					                	if(ui.item.value === 'No Matches Found'){
 					                		$(event.target).val("");
 					                		return false;
 					                	}else{

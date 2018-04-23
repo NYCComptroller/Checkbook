@@ -17,8 +17,7 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php
+
 $records = $node->data;
 if(is_array($records)){
     $row = $records[0];
@@ -38,7 +37,7 @@ if(is_array($records)){
     $agency = WidgetUtil::getLabel("contract_agency");
     $vendor= WidgetUtil::getLabel("vendor_name");
     $vendor_value = $row['vendor_vendor_legal_name'];
-    $smnid = _getRequestParamValue('smnid');
+    $smnid = RequestUtilities::getRequestParamValue('smnid');
 
     if($smnid == 722){
         $purpose = WidgetUtil::getLabel("sub_contract_purpose");

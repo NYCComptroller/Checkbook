@@ -40,7 +40,7 @@
             if(function_exists('_checkbook_project_applyParameterFilters')){
                   $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
             }
-            if(_getRequestParamValue('vendor')){
+            if(RequestUtilities::getRequestParamValue('vendor')){
                 $adjustedParameters['is_vendor_page'] = 'Y';
             }
 
@@ -140,5 +140,6 @@ tooltipformatter^^"formatter" : function() {
               "<br/>Contracting Agency: " + "<span style='text-wrap:unrestricted'>" + this.point.agency + '</span>' +
               "<br/>Amount: " + abbrNum(this.y, 2, "$") + "</div>";
 }
-##clickEvent^^"click": function(){location.href = Drupal.settings.basePath+this.url; }
+##
+clickEvent^^"click": function(){location.href = Drupal.settings.basePath+this.url; }
 </function>

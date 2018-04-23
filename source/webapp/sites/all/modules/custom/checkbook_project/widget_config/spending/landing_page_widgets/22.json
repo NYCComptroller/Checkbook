@@ -2,8 +2,8 @@
 	"widgetType": "data_tables",
 	"widgetSubType":"ajaxSimple",
 	"no_results_content":"No Results Found",
-	"cleanURLParameters":["vendor","year","yeartype","calyear","category","vendor","expcategory","agency","fvendor"],
-	"urlParamMap":{"year":"year.year","yeartype":"type_of_year","calyear":"year_id","category":"spending_category_id","fvendor":"vendor_id","vendor":"vendor_id","expcategory":"expenditure_object.expenditure_object","agency":"agency_id"},
+	"cleanURLParameters":["vendor","year","yeartype","calyear","category","vendor","expcategorycode","agency","fvendor"],
+	"urlParamMap":{"year":"year.year","yeartype":"type_of_year","calyear":"year_id","category":"spending_category_id","fvendor":"vendor_id","vendor":"vendor_id","expcategorycode":"expenditure_object.expenditure_object","agency":"agency_id"},
 	"defaultParameters":{"year.year":22,"type_of_year":"B"},
 	"dataset": "checkbook:spending_data",
 	"noDataInitialLoad":true,
@@ -27,7 +27,7 @@
               $footer = \"<a class='show-details bottomContainerReload' href='$url' style='display:none;'>Details >></a>\";
         return $footer;
     ",
-	"derivedColumns": 
+	"derivedColumns":
 	{
 		"formatted_check_amount_sum": {
 			"type": "expression2",
@@ -35,7 +35,7 @@
 		},
 		"formatted_check_amount_sum_link":{
 			"type": "expression2",
-                         "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/spending_transactions/spending/transactions' .  _checkbook_project_get_year_url_param_string(false,false,true) . _checkbook_append_url_params() ._checkbook_project_get_url_param_string(\"vendor\",\"fvendor\") . _checkbook_project_get_url_param_string(\"category\")  . '/smnid/' . $node->nid . _checkbook_project_get_url_param_string(\"agency\") . '/expcategory/' .  $row[expenditure_object_expenditure_object] .   '\">' . $row['formatted_check_amount_sum'] . '</a>'"
+                         "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/spending_transactions/spending/transactions' .  _checkbook_project_get_year_url_param_string(false,false,true) . _checkbook_append_url_params() ._checkbook_project_get_url_param_string(\"vendor\",\"fvendor\") . _checkbook_project_get_url_param_string(\"category\")  . '/smnid/' . $node->nid . _checkbook_project_get_url_param_string(\"agency\") . '/expcategory/' .  $row['expenditure_object_expenditure_object'] .   '\">' . $row['formatted_check_amount_sum'] . '</a>'"
 		}
 	},
     "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Expense Categories');",
@@ -64,7 +64,7 @@
     }
 	],
 	"dataTableOptions":{
-                "aoColumns": [ 
+                "aoColumns": [
                   { "sClass":"text","bSortable": false},
                   { "sWidth":"143px","sClass":"number" ,"asSorting": [ "desc" ,"asc" ]},
                   { "bSortable": false,"sWidth":"15px" } ],

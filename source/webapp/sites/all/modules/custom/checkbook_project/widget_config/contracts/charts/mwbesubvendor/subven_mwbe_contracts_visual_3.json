@@ -37,8 +37,8 @@
 "cleanURLParametersPending":["agency","awdmethod","vendor","status","csize","cindustry","mwbe","subvendor"],
 "urlParamMap":{"year":"fiscal_year_id","mwbe":"minority_type_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id",
 	"vendor":"prime_vendor_id","subvendor":"vendor_id",
-	"status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},	
-"urlParamMapPending":{"mwbe":"minority_type_id","agency":"document_agency_id","vendor":"vendor_id",			
+	"status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},
+"urlParamMapPending":{"mwbe":"minority_type_id","agency":"document_agency_id","vendor":"vendor_id",
 			"awdmethod":"award_method_id",
 			"csize":"award_size_id","cindustry":"industry_type_id"},
 "widgetPreprocessJSON":"
@@ -47,56 +47,56 @@
 		$node->widgetConfig->defaultParameters = $node->widgetConfig->defaultParametersPending;
 		$node->widgetConfig->cleanURLParameters = $node->widgetConfig->cleanURLParametersPending;
 	}
-	
-",				
+
+",
 "chartTitle":"Top Ten Agencies by Active Expense Contracts",
 
 "widgetDataLoader":"
-    
+
     $where_filters = array();
     foreach($node->widgetConfig->requestParams as $param=>$value){
         $where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
     }
-    
+
     if(count($where_filters) > 0){
         $where_filter = ' where ' . implode(' and ' , $where_filters);
     }
 
  	$where_filter .= ' and rd.document_code in (' . ContractUtil::getCurrentPageDocumentIds() . ') ';
-    
-    
-    
-  
+
+
+
+
     $sql = ' select
 		ra.agency_name,a1.agency_id
 		, sum(maximum_contract_amount) current_amount_sum
 		, count(contract_number) total_contracts
-		from {aggregateon_subven_contracts_cumulative_spending} a1     
+		from {aggregateon_subven_contracts_cumulative_spending} a1
     	join {ref_agency} ra on ra.agency_id =  a1.agency_id
    	 	join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
-   		' . $where_filter . '     
+   		' . $where_filter . '
    		group by ra.agency_name  ,a1.agency_id
     	order by 3 desc limit 10';
     $node->data  = _checkbook_project_execute_sql($sql);
-    
+
 ",
 "widgetUpdateJSONConfig":"
-	
+
 	$series_new = array();
-	
-	
+
+
 	$index = 0;
 	foreach($node->data as $row){
 	 		$tooltip_label =
 	 						'Contracting Agency: ' . $row['agency_name'] .  '<br/>' .
 	 						'Number of M/WBE Contracts: ' . $row['total_contracts'].  '<br/>' .
-	 						'Amount: ' . custom_number_formatter_format($row['current_amount_sum'] ,2, '$').  '<br/>' 
-	 						; 
-	 						
-			$link= CustomURLHelper::prepareUrl(strstr($_GET['q'],'\/',true), ContractURLHelper::$landingPageParams, array('expandBottomCont'=>'true'), 
+	 						'Amount: ' . custom_number_formatter_format($row['current_amount_sum'] ,2, '$').  '<br/>'
+	 						;
+
+			$link= CustomURLHelper::prepareUrl(strstr($_GET['q'],'\/',true), ContractURLHelper::$landingPageParams, array('expandBottomCont'=>'true'),
 						array('agency'=>$row['agency_id']) );
-			$series_new[$index]->url = 	$link;					
-							 						
+			$series_new[$index]->url = 	$link;
+
 			$series_new[$index]->y = (float)$row['current_amount_sum'];
 			$series_new[$index]->tooltip_label = $tooltip_label;
 			$node->widgetConfig->gridConfig->data[] = array($row['agency_name'],$row['total_contracts'],$row['current_amount_sum'] );
@@ -107,9 +107,9 @@
 	$node->widgetConfig->chartConfig->series[0]->type = 'column';
 	$node->widgetConfig->chartConfig->series[0]->pointWidth = 30;
 	$node->widgetConfig->chartConfig->series[0]->data = $series_new;
-	if(_getRequestParamValue('status') == 'A'){
+	if(RequestUtilities::getRequestParamValue('status') == 'A'){
 		$status = 'Active';
-	}else if(_getRequestParamValue('status') == 'R'){
+	}else if(RequestUtilities::getRequestParamValue('status') == 'R'){
 		$status = 'Registered';
 	}
 	$contract_type = 'Expense';
@@ -122,19 +122,19 @@
 	if(preg_match('/pending_rev/',$_GET['q'])){
 		$contract_type = 'Pending Revenue';
 	}
-	
-	$mwbe_filter = _getRequestParamValue('mwbe');
+
+	$mwbe_filter = RequestUtilities::getRequestParamValue('mwbe');
 	if($mwbe_filter =='4~5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){
-        if(_getRequestParamValue('status') == 'A'){
-            $node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Top Ten Agencies by Sub Vendors Total Active Sub Vendor Contracts';
+        if(RequestUtilities::getRequestParamValue('status') == 'A'){
+            $node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName() . ' Top Ten Agencies by Sub Vendors Total Active Sub Vendor Contracts';
         }else{
-            $node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Top Ten Agencies by New Sub Vendor Contracts by Fiscal Year';
+            $node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName() . ' Top Ten Agencies by New Sub Vendor Contracts by Fiscal Year';
         }
 	}else{
-        if(_getRequestParamValue('status') == 'A'){
-            $node->widgetConfig->chartTitle =  'Top Ten Agencies by '. MappingUtil::getCurrenEhtnicityName() .' Sub Vendors Total Active Sub Vendor Contracts';
+        if(RequestUtilities::getRequestParamValue('status') == 'A'){
+            $node->widgetConfig->chartTitle =  'Top Ten Agencies by '. MappingUtil::getCurrenEthnicityName() .' Sub Vendors Total Active Sub Vendor Contracts';
         }else{
-            $node->widgetConfig->chartTitle =  'Top Ten Agencies by '. MappingUtil::getCurrenEhtnicityName() .' New Sub Vendor Contracts by Fiscal Year';
+            $node->widgetConfig->chartTitle =  'Top Ten Agencies by '. MappingUtil::getCurrenEthnicityName() .' New Sub Vendor Contracts by Fiscal Year';
         }
 	}
 ",
@@ -147,7 +147,7 @@
                 "dataLabels": {
                     "enabled": false
                 } ,
-                "point": {"events": {"function": "clickEvent"}}            
+                "point": {"events": {"function": "clickEvent"}}
             }
     },
     "xAxis": {
@@ -165,13 +165,13 @@
     "title": {"text": ""},
     "yAxis": {
      	"min":0,
-     	"minRange": 0.1,    
+     	"minRange": 0.1,
         "startOnTick":true,
         "title": {"text": ""},
         "labels":{"rotation": 0,"function":"yAxisFormatter"}
     } ,
     "legend": {
-        "enabled": false       
+        "enabled": false
     },
     "tooltip":{"function":"tooltipformatter"}
     }

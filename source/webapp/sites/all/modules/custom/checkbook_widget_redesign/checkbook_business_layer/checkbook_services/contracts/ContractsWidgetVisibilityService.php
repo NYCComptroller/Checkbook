@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -16,7 +16,7 @@ class ContractsWidgetVisibilityService {
         $dashboard = RequestUtilities::getRequestParamValue('dashboard');
         $category = ContractsParameters::getContractCategory();
         $view = NULL;
-        
+
         switch($widget){
             case 'departments':
             case 'departments_vendor':
@@ -302,12 +302,12 @@ class ContractsWidgetVisibilityService {
                             }
                             break;
                         case "revenue":
-                            $view = 'revenue_contracts_by_agencies_view';        
+                            $view = 'revenue_contracts_by_agencies_view';
                             break;
                         case "pending expense":
                         case "pending revenue":
                             $view = 'pending_contracts_by_agencies_view';
-                            break;      
+                            break;
                     }
                 }
                 break;
@@ -317,5 +317,5 @@ class ContractsWidgetVisibilityService {
         }
 
         return $view == '' ? null : $view;
-    } 
+    }
 }

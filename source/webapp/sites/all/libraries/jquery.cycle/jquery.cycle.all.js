@@ -12,7 +12,7 @@
 var ver = '2.9999.3';
 
 // if $.support is not defined (pre jQuery 1.3) add what I need
-if ($.support == undefined) {
+if ($.support === undefined) {
 	$.support = {
 		opacity: !($.browser.msie)
 	};
@@ -43,7 +43,7 @@ $.fn.cycle = function(options, arg2) {
 	var o = { s: this.selector, c: this.context };
 
 	// in 1.3+ we can fix mistakes with the ready state
-	if (this.length === 0 && options != 'stop') {
+	if (this.length === 0 && options !== 'stop') {
 		if (!$.isReady && o.s) {
 			log('DOM not ready, queuing slideshow');
 			$(function() {
@@ -106,11 +106,11 @@ function triggerPause(cont, byHover, onPager) {
 
 // process the args that were passed to the plugin fn
 function handleArguments(cont, options, arg2) {
-	if (cont.cycleStop == undefined)
+	if (cont.cycleStop === undefined)
 		cont.cycleStop = 0;
 	if (options === undefined || options === null)
 		options = {};
-	if (options.constructor == String) {
+	if (options.constructor === String) {
 		switch(options) {
 		case 'destroy':
 		case 'stop':
@@ -123,7 +123,7 @@ function handleArguments(cont, options, arg2) {
 			cont.cycleTimeout = 0;
 			opts.elements && $(opts.elements).stop();
 			$(cont).removeData('cycle.opts');
-			if (options == 'destroy')
+			if (options === 'destroy')
 				destroy(cont, opts);
 			return false;
 		case 'toggle':
@@ -154,7 +154,7 @@ function handleArguments(cont, options, arg2) {
 		};
 		return options;
 	}
-	else if (options.constructor == Number) {
+	else if (options.constructor === Number) {
 		// go to the requested slide
 		var num = options;
 		options = $(cont).data('cycle.opts');
@@ -250,14 +250,14 @@ function buildOptions($cont, $slides, els, options, o) {
 		clearTypeFix($slides);
 
 	// container requires non-static position so that slides can be position within
-	if ($cont.css('position') == 'static')
+	if ($cont.css('position') === 'static')
 		$cont.css('position', 'relative');
 	if (opts.width)
 		$cont.width(opts.width);
-	if (opts.height && opts.height != 'auto')
+	if (opts.height && opts.height !== 'auto')
 		$cont.height(opts.height);
 
-	if (opts.startingSlide != undefined) {
+	if (opts.startingSlide !== undefined) {
 		opts.startingSlide = parseInt(opts.startingSlide,10);
 		if (opts.startingSlide >= els.length || opts.startSlide < 0)
 			opts.startingSlide = 0; // catch bogus input
@@ -278,7 +278,7 @@ function buildOptions($cont, $slides, els, options, o) {
 		if (startingSlideSpecified) {
 			// try to find the specified starting slide and if found set start slide index in the map accordingly
 			for ( var cnt = 0; cnt < els.length; cnt++ ) {
-				if ( opts.startingSlide == opts.randomMap[cnt] ) {
+				if ( opts.startingSlide === opts.randomMap[cnt] ) {
 					opts.randomIndex = cnt;
 				}
 			}
@@ -312,13 +312,13 @@ function buildOptions($cont, $slides, els, options, o) {
 		if (!opts.aspect) {
 	        if (opts.width)
 	            $slides.width(opts.width);
-	        if (opts.height && opts.height != 'auto')
+	        if (opts.height && opts.height !== 'auto')
 	            $slides.height(opts.height);
 		} else {
 			$slides.each(function(){
 				var $slide = $(this);
 				var ratio = (opts.aspect === true) ? $slide.width()/$slide.height() : opts.aspect;
-				if( opts.width && $slide.width() != opts.width ) {
+				if( opts.width && $slide.width() !== opts.width ) {
 					$slide.width( opts.width );
 					$slide.height( opts.width / ratio );
 				}
@@ -398,10 +398,10 @@ function buildOptions($cont, $slides, els, options, o) {
 			// sigh..  sniffing, hacking, shrugging...  this crappy hack tries to account for what browsers do when
 			// an image is being downloaded and the markup did not include sizing info (height/width attributes);
 			// there seems to be some "default" sizes used in this situation
-			var loadingIE	= ($.browser.msie  && this.cycleW == 28 && this.cycleH == 30 && !this.complete);
-			var loadingFF	= ($.browser.mozilla && this.cycleW == 34 && this.cycleH == 19 && !this.complete);
-			var loadingOp	= ($.browser.opera && ((this.cycleW == 42 && this.cycleH == 19) || (this.cycleW == 37 && this.cycleH == 17)) && !this.complete);
-			var loadingOther = (this.cycleH == 0 && this.cycleW == 0 && !this.complete);
+			var loadingIE	= ($.browser.msie  && this.cycleW === 28 && this.cycleH === 30 && !this.complete);
+			var loadingFF	= ($.browser.mozilla && this.cycleW === 34 && this.cycleH === 19 && !this.complete);
+			var loadingOp	= ($.browser.opera && ((this.cycleW === 42 && this.cycleH === 19) || (this.cycleW === 37 && this.cycleH === 17)) && !this.complete);
+			var loadingOther = (this.cycleH === 0 && this.cycleW === 0 && !this.complete);
 			// don't requeue for images that are still loading but have a valid size
 			if (loadingIE || loadingFF || loadingOp || loadingOther) {
 				if (o.s && opts.requeueOnImageNotLoaded && ++options.requeueAttempts < 100) { // track retry count so we don't loop forever
@@ -433,12 +433,12 @@ function buildOptions($cont, $slides, els, options, o) {
 	if (opts.timeout) {
 		opts.timeout = parseInt(opts.timeout,10);
 		// ensure that timeout and speed settings are sane
-		if (opts.speed.constructor == String)
+		if (opts.speed.constructor === String)
 			opts.speed = $.fx.speeds[opts.speed] || parseInt(opts.speed,10);
 		if (!opts.sync)
 			opts.speed = opts.speed / 2;
 		
-		var buffer = opts.fx == 'none' ? 0 : opts.fx == 'shuffle' ? 500 : 250;
+		var buffer = opts.fx === 'none' ? 0 : opts.fx === 'shuffle' ? 500 : 250;
 		while((opts.timeout - opts.speed) < buffer) // sanitize timeout
 			opts.timeout += opts.speed;
 	}
@@ -452,12 +452,12 @@ function buildOptions($cont, $slides, els, options, o) {
 	opts.slideCount = els.length;
 	opts.currSlide = opts.lastSlide = first;
 	if (opts.random) {
-		if (++opts.randomIndex == els.length)
+		if (++opts.randomIndex === els.length)
 			opts.randomIndex = 0;
 		opts.nextSlide = opts.randomMap[opts.randomIndex];
 	}
 	else if (opts.backwards)
-		opts.nextSlide = opts.startingSlide == 0 ? (els.length-1) : opts.startingSlide-1;
+		opts.nextSlide = opts.startingSlide === 0 ? (els.length-1) : opts.startingSlide-1;
 	else
 		opts.nextSlide = opts.startingSlide >= (els.length-1) ? 0 : opts.startingSlide+1;
 
@@ -466,7 +466,7 @@ function buildOptions($cont, $slides, els, options, o) {
 		var init = $.fn.cycle.transitions[opts.fx];
 		if ($.isFunction(init))
 			init($cont, $slides, opts);
-		else if (opts.fx != 'custom' && !opts.multiFx) {
+		else if (opts.fx !== 'custom' && !opts.multiFx) {
 			log('unknown transition: ' + opts.fx,'; slideshow terminating');
 			return false;
 		}
@@ -525,7 +525,7 @@ function supportMultiTransitions(opts) {
 			return false;
 		}
 	}
-	else if (opts.fx == 'all') {  // auto-gen the list of transitions
+	else if (opts.fx === 'all') {  // auto-gen the list of transitions
 		opts.multiFx = true;
 		opts.fxs = [];
 		for (p in txs) {
@@ -576,7 +576,7 @@ function exposeAddSlide(opts, els) {
 
 		if (opts.fit && opts.width)
 			$s.width(opts.width);
-		if (opts.fit && opts.height && opts.height != 'auto')
+		if (opts.fit && opts.height && opts.height !== 'auto')
 			$s.height(opts.height);
 		s.cycleH = (opts.fit && opts.height) ? opts.height : $s.height();
 		s.cycleW = (opts.fit && opts.width) ? opts.width : $s.width();
@@ -632,7 +632,7 @@ function go(els, opts, manual, fwd) {
 
 
 	// stop cycling if we have an outstanding stop request
-	if (p.cycleStop != opts.stopCount || p.cycleTimeout === 0 && !manual)
+	if (p.cycleStop !== opts.stopCount || p.cycleTimeout === 0 && !manual)
 		return;
 
 	// check to see if we should stop cycling based on autostop options
@@ -646,7 +646,7 @@ function go(els, opts, manual, fwd) {
 
 	// if slideshow is paused, only transition on a manual trigger
 	var changed = false;
-	if ((manual || !p.cyclePause) && (opts.nextSlide != opts.currSlide)) {
+	if ((manual || !p.cyclePause) && (opts.nextSlide !== opts.currSlide)) {
 		changed = true;
 		var fx = opts.fx;
 		// keep trying to get the slide size if we don't have it yet
@@ -657,9 +657,9 @@ function go(els, opts, manual, fwd) {
 
 		// support multiple transition types
 		if (opts.multiFx) {
-			if (fwd && (opts.lastFx == undefined || ++opts.lastFx >= opts.fxs.length))
+			if (fwd && (opts.lastFx === undefined || ++opts.lastFx >= opts.fxs.length))
 				opts.lastFx = 0;
-			else if (!fwd && (opts.lastFx == undefined || --opts.lastFx < 0))
+			else if (!fwd && (opts.lastFx === undefined || --opts.lastFx < 0))
 				opts.lastFx = opts.fxs.length - 1;
 			fx = opts.fxs[opts.lastFx];
 		}
@@ -675,7 +675,7 @@ function go(els, opts, manual, fwd) {
 		// run the before callbacks
 		if (opts.before.length)
 			$.each(opts.before, function(i,o) {
-				if (p.cycleStop != opts.stopCount) return;
+				if (p.cycleStop !== opts.stopCount) return;
 				o.apply(next, [curr, next, opts, fwd]);
 			});
 
@@ -683,7 +683,7 @@ function go(els, opts, manual, fwd) {
 		var after = function() {
 			opts.busy = 0;
 			$.each(opts.after, function(i,o) {
-				if (p.cycleStop != opts.stopCount) return;
+				if (p.cycleStop !== opts.stopCount) return;
 				o.apply(next, [curr, next, opts, fwd]);
 			});
 			if (!p.cycleStop) {
@@ -707,18 +707,18 @@ function go(els, opts, manual, fwd) {
 		queueNext();
 	}
 
-	if (changed || opts.nextSlide == opts.currSlide) {
+	if (changed || opts.nextSlide === opts.currSlide) {
 		// calculate the next slide
 		opts.lastSlide = opts.currSlide;
 		if (opts.random) {
 			opts.currSlide = opts.nextSlide;
-			if (++opts.randomIndex == els.length) {
+			if (++opts.randomIndex === els.length) {
 				opts.randomIndex = 0;
 				opts.randomMap.sort(function(a,b) {return Math.random() - 0.5;});
 			}
 			opts.nextSlide = opts.randomMap[opts.randomIndex];
-			if (opts.nextSlide == opts.currSlide)
-				opts.nextSlide = (opts.currSlide == opts.slideCount - 1) ? 0 : opts.currSlide + 1;
+			if (opts.nextSlide === opts.currSlide)
+				opts.nextSlide = (opts.currSlide === opts.slideCount - 1) ? 0 : opts.currSlide + 1;
 		}
 		else if (opts.backwards) {
 			var roll = (opts.nextSlide - 1) < 0;
@@ -733,7 +733,7 @@ function go(els, opts, manual, fwd) {
 			}
 		}
 		else { // sequence
-			var roll = (opts.nextSlide + 1) == els.length;
+			var roll = (opts.nextSlide + 1) === els.length;
 			if (roll && opts.bounce) {
 				opts.backwards = !opts.backwards;
 				opts.nextSlide = els.length-2;
@@ -753,7 +753,7 @@ function go(els, opts, manual, fwd) {
 		var ms = 0, timeout = opts.timeout;
 		if (opts.timeout && !opts.continuous) {
 			ms = getTimeout(els[opts.currSlide], els[opts.nextSlide], opts, fwd);
-         if (opts.fx == 'shuffle')
+         if (opts.fx === 'shuffle')
             ms -= opts.speedOut;
       }
 		else if (opts.continuous && p.cyclePause) // continuous shows work off an after callback, not this timer logic
@@ -775,7 +775,7 @@ function getTimeout(curr, next, opts, fwd) {
 	if (opts.timeoutFn) {
 		// call user provided calc fn
 		var t = opts.timeoutFn.call(curr,curr,next,opts,fwd);
-		while (opts.fx != 'none' && (t - opts.speed) < 250) // sanitize timeout
+		while (opts.fx !== 'none' && (t - opts.speed) < 250) // sanitize timeout
 			t += opts.speed;
 		debug('calculated timeout: ' + t + '; speed: ' + opts.speed);
 		if (t !== false)
@@ -800,9 +800,9 @@ function advance(opts, moveForward) {
 	if (opts.random && val < 0) {
 		// move back to the previously display slide
 		opts.randomIndex--;
-		if (--opts.randomIndex == -2)
+		if (--opts.randomIndex === -2)
 			opts.randomIndex = els.length-2;
-		else if (opts.randomIndex == -1)
+		else if (opts.randomIndex === -1)
 			opts.randomIndex = els.length-1;
 		opts.nextSlide = opts.randomMap[opts.randomIndex];
 	}
@@ -927,7 +927,7 @@ function clearTypeFix($slides) {
 		return s.length < 2 ? '0'+s : s;
 	};
 	function getBg(e) {
-		for ( ; e && e.nodeName.toLowerCase() != 'html'; e = e.parentNode) {
+		for ( ; e && e.nodeName.toLowerCase() !== 'html'; e = e.parentNode) {
 			var v = $.css(e,'background-color');
 			if (v && v.indexOf('rgb') >= 0 ) {
 				var rgb = v.match(/\d+/g);
@@ -944,7 +944,7 @@ function clearTypeFix($slides) {
 // reset common props before the next transition
 $.fn.cycle.commonReset = function(curr,next,opts,w,h,rev) {
 	$(opts.elements).not(curr).hide();
-	if (typeof opts.cssBefore.opacity == 'undefined')
+	if (typeof opts.cssBefore.opacity === 'undefined')
 		opts.cssBefore.opacity = 1;
 	opts.cssBefore.display = 'block';
 	if (opts.slideResize && w !== false && next.cycleW > 0)
@@ -963,7 +963,7 @@ $.fn.cycle.custom = function(curr, next, opts, cb, fwd, speedOverride) {
 	var speedIn = opts.speedIn, speedOut = opts.speedOut, easeIn = opts.easeIn, easeOut = opts.easeOut;
 	$n.css(opts.cssBefore);
 	if (speedOverride) {
-		if (typeof speedOverride == 'number')
+		if (typeof speedOverride === 'number')
 			speedIn = speedOut = speedOverride;
 		else
 			speedIn = speedOut = 1;
@@ -1425,11 +1425,11 @@ $.fn.cycle.transitions.cover = function($cont, $slides, opts) {
 	var h = $cont.height();
 	opts.before.push(function(curr, next, opts) {
 		$.fn.cycle.commonReset(curr,next,opts);
-		if (d == 'right')
+		if (d === 'right')
 			opts.cssBefore.left = -w;
-		else if (d == 'up')
+		else if (d === 'up')
 			opts.cssBefore.top = h;
-		else if (d == 'down')
+		else if (d === 'down')
 			opts.cssBefore.top = -h;
 		else
 			opts.cssBefore.left = w;
@@ -1447,11 +1447,11 @@ $.fn.cycle.transitions.uncover = function($cont, $slides, opts) {
 	var h = $cont.height();
 	opts.before.push(function(curr, next, opts) {
 		$.fn.cycle.commonReset(curr,next,opts,true,true,true);
-		if (d == 'right')
+		if (d ==='right')
 			opts.animOut.left = w;
-		else if (d == 'up')
+		else if (d === 'up')
 			opts.animOut.top = -h;
-		else if (d == 'down')
+		else if (d === 'down')
 			opts.animOut.top = h;
 		else
 			opts.animOut.left = -w;
@@ -1507,7 +1507,7 @@ $.fn.cycle.transitions.wipe = function($cont, $slides, opts) {
 	var t = parseInt(d[0],10), r = parseInt(d[1],10), b = parseInt(d[2],10), l = parseInt(d[3],10);
 
 	opts.before.push(function(curr, next, opts) {
-		if (curr == next) return;
+		if (curr === next) return;
 		var $curr = $(curr), $next = $(next);
 		$.fn.cycle.commonReset(curr,next,opts,true,true,false);
 		opts.cssAfter.display = 'block';

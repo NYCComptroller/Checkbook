@@ -55,7 +55,7 @@ abstract class WidgetSqlService extends WidgetService {
         }
         else {
             LogHelper::log_error("Error in AbstractWidgetSqlService invalid type, expected IWidgetRepository");
-            throw new Exception("Error in AbstractWidgetSqlService invalid type, expected IWidgetRepository");
+            throw new InvalidArgumentException("Error in AbstractWidgetSqlService invalid type, expected IWidgetRepository");
         }
     }
 }

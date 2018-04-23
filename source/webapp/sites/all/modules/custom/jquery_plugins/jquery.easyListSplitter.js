@@ -44,7 +44,7 @@ var j = 1;
 		
 		for (i=1;i<=settings.colNumber;i++)
 		{	
-			if(i==1){
+			if(i===1){
 				jQuery(this).addClass('listCol1').wrap('<div class="listContainer'+j+'"></div>');
 			} else if(jQuery(this).is('ul')){ // Check whether the list is ordered or unordered
 				jQuery(this).parents('.listContainer'+j).append('<ul class="listCol'+i+'"></ul>');
@@ -58,7 +58,7 @@ var j = 1;
 		var k = 1;
 		var l = 0;	
 		
-		if(settings.direction == 'vertical'){ // -------- Append List Elements to the respective listCol  - Vertical -------------------------------
+		if(settings.direction === 'vertical'){ // -------- Append List Elements to the respective listCol  - Vertical -------------------------------
 			
 			jQuery(this).children('li').each(function(){
 				listItem = listItem+1;
@@ -77,7 +77,7 @@ var j = 1;
 			});
 			
 			jQuery('.listContainer'+j).find('ol,ul').each(function(){
-				if(jQuery(this).children().size() == 0) {
+				if(jQuery(this).children().size() === 0) {
 				jQuery(this).remove();
 				}
 			});	

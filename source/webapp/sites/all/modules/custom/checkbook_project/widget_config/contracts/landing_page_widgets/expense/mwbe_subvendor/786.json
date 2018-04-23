@@ -26,7 +26,7 @@ return $adjustedParameters;
 },
 "agency_name_link": {
 "type": "expression2",
-"expression": "'<a href=\"/contracts_landing' . _checkbook_append_url_params() .  _checkbook_project_get_url_param_string(\"status\") . _checkbook_project_get_url_param_string(\"subvendor\") .  _checkbook_project_get_url_param_string(\"awdmethod\")   ._checkbook_project_get_url_param_string(\"vendor\")  .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\") .  _checkbook_project_get_year_url_param_string() . '/agency/'.$row[agency_agency] . '?expandBottomCont=true\">' .$row[agency_name_formatted]. '</a>'"
+"expression": "'<a href=\"/contracts_landing' . _checkbook_append_url_params() .  _checkbook_project_get_url_param_string(\"status\") . _checkbook_project_get_url_param_string(\"subvendor\") .  _checkbook_project_get_url_param_string(\"awdmethod\")   ._checkbook_project_get_url_param_string(\"vendor\")  .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\") .  _checkbook_project_get_year_url_param_string() . '/agency/'.$row['agency_agency'] . '?expandBottomCont=true\">' .$row['agency_name_formatted']. '</a>'"
 } ,
 "spent_amount_no_link": {
 "type": "expression2",
@@ -34,7 +34,7 @@ return $adjustedParameters;
 } ,
 "spent_amount_link": {
 "type": "expression2",
-"expression": "'<a class=\"new_window\" href=\"/contract/spending/transactions/cagency/' .$row[agency_agency] . _checkbook_append_url_params() .  _checkbook_project_get_url_param_string(\"status\") . _checkbook_project_get_url_param_string(\"awdmethod\")   ._checkbook_project_get_url_param_string(\"vendor\",\"cvendor\")  .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\") .  ((_getRequestParamValue(\"dashboard\") == \"ss\" || _getRequestParamValue(\"dashboard\") == \"ms\") ? '/doctype/CT1~CTA1' : '/doctype/CT1~CTA1~MA1').  ContractURLHelper::_checkbook_project_spending_get_year_url_param_string() . '/smnid/' . $node->nid . ContractUtil::getSpentToDateParams() . _checkbook_project_get_url_param_string(\"subvendor\") . '/newwindow\">' . custom_number_formatter_format($row['spending_amount_sum'],2,'$'). '</a>'"
+"expression": "'<a class=\"new_window\" href=\"/contract/spending/transactions/cagency/' .$row['agency_agency'] . _checkbook_append_url_params() .  _checkbook_project_get_url_param_string(\"status\") . _checkbook_project_get_url_param_string(\"awdmethod\")   ._checkbook_project_get_url_param_string(\"vendor\",\"cvendor\")  .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\") .  ((RequestUtilities::getRequestParamValue(\"dashboard\") == \"ss\" || RequestUtilities::getRequestParamValue(\"dashboard\") == \"ms\") ? '/doctype/CT1~CTA1' : '/doctype/CT1~CTA1~MA1').  ContractURLHelper::_checkbook_project_spending_get_year_url_param_string() . '/smnid/' . $node->nid . ContractUtil::getSpentToDateParams() . _checkbook_project_get_url_param_string(\"subvendor\") . '/newwindow\">' . custom_number_formatter_format($row['spending_amount_sum'],2,'$'). '</a>'"
 } ,
 "formatted_original_amount_sum": {
 "type": "expression2",
@@ -62,7 +62,7 @@ return $header;
 "footer":"
 $url = ContractUtil::expenseContractsFooterUrl();
 $url .= '/smnid/' .  $node->nid;
-if(_getRequestParamValue('dashboard') == 'ss' || _getRequestParamValue('dashboard') == 'ms'){
+if(RequestUtilities::getRequestParamValue('dashboard') == 'ss' || RequestUtilities::getRequestParamValue('dashboard') == 'ms'){
 $url .= '/doctype/CTA1~CT1';
 }else{
 $url .= '/doctype/MA1~CTA1~CT1';

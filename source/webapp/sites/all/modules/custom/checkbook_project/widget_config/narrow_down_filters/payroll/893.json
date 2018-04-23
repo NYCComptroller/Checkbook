@@ -12,7 +12,7 @@
     "columns":["gross_pay_g250k_count", "gross_pay_g101k_le250k_count", "gross_pay_g51k_le100k_count", "gross_pay_ge20k_le50k_count", "gross_pay_less20k_count"],
     "orderBy":"",
     "adjustParameters":"
-        $monthId = _getRequestParamValue('month');
+        $monthId = RequestUtilities::getRequestParamValue('month');
         if(isset($monthId)){
             $node->widgetConfig->dataset = 'checkbook:payroll_employee_agency_month';
         }
@@ -20,6 +20,6 @@
             $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
         }
         return $adjustedParameters;
-    ",        
+    ",
     "template":"individual_filter"
 }

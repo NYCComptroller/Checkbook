@@ -12,6 +12,7 @@ class PayrollUrlService
     {
 
         $agency = RequestUtilities::_getUrlParamString('agency');
+        $title = RequestUtilities::_getUrlParamString('title');
         $legacy_node_id = isset($legacy_node_id) ? '/smnid/'.$legacy_node_id : '';
 
         if ($agency != '') {
@@ -19,7 +20,7 @@ class PayrollUrlService
                 . RequestUtilities::_getUrlParamString('yeartype')
                 . RequestUtilities::_getUrlParamString('year')
                 . $legacy_node_id
-                . $agency;
+                . $agency.$title;
         }
         else {
             $url = '/panel_html/payroll_nyc_transactions/payroll/transactions'
@@ -111,10 +112,18 @@ class PayrollUrlService
     static function titleAgencyUrl($agency, $title) {
         $agency = isset($agency) ? '/agency/' . $agency : '';
         $title = isset($title) ? '/title/' . $title : '';
-
-        $url = '/payroll/title_landing/yeartype/B/year/118'
-            .$agency
-            .$title;
+        $year=RequestUtilities::getRequestParamValue('year');
+        $yearType = RequestUtilities::getRequestParamValue('yeartype');
+        if($yearType=='C'){
+            $url = '/payroll/title_landing/yeartype/C/year/'.$year
+                .$agency
+                .$title;
+        }
+        else {
+            $url = '/payroll/title_landing/yeartype/B/year/118'
+                . $agency
+                . $title;
+        }
         return $url;
     }
 

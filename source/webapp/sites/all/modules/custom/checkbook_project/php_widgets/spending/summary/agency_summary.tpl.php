@@ -17,8 +17,7 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php
+
 $records = $node->data;
 
 if(is_array($records)){
@@ -30,11 +29,11 @@ if(is_array($records)){
     $agency_name = WidgetUtil::getLabel("agency_name");
     $ytdspending = WidgetUtil::getLabel("ytd_spending");
 
-    if(_getRequestParamValue('smnid') == 759 || _getRequestParamValue('smnid') == 746 || _getRequestParamValue('smnid') == 780){
+    if(RequestUtilities::getRequestParamValue('smnid') == 759 || RequestUtilities::getRequestParamValue('smnid') == 746 || RequestUtilities::getRequestParamValue('smnid') == 780){
         $percent_spending_value = $row['percent_spending'];
         $percent_spending = WidgetUtil::getLabel("percent_spending");
     }
-    if(_getRequestParamValue('smnid') == 716){
+    if(RequestUtilities::getRequestParamValue('smnid') == 716){
         $percent_spending_value = '';
         $percent_spending = '';
         $ytdspending = WidgetUtil::getLabel("ytd_spending_sub_vendors");

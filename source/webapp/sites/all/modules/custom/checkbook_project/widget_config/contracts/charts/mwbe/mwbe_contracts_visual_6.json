@@ -33,55 +33,55 @@
 
 "cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry","mwbe","year"],
 "urlParamMap":{"year":"fiscal_year_id","mwbe":"minority_type_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"prime_vendor_id",
-	"status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},	
+	"status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},
 "chartTitle":"Top Ten Sub Vendors by Active Expense Contracts",
 "widgetDataLoader":"
-    
+
     $where_filters = array();
     foreach($node->widgetConfig->requestParams as $param=>$value){
         $where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
     }
-    
+
     if(count($where_filters) > 0){
         $where_filter = ' where ' . implode(' and ' , $where_filters);
     }
- 
+
  	$where_filter .= ' and rd.document_code in (' . ContractUtil::getCurrentPageDocumentIds() . ') ';
 
-    
+
     	$sql = ' select
 			v.legal_name ,a1.vendor_id
 			, sum(maximum_contract_amount) current_amount_sum
-			, count(contract_number) total_contracts		
-		from {aggregateon_subven_contracts_cumulative_spending} a1     
+			, count(contract_number) total_contracts
+		from {aggregateon_subven_contracts_cumulative_spending} a1
 	    join {subvendor} v on v.vendor_id =  a1.vendor_id
 	    join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
-   		' . $where_filter . '     
+   		' . $where_filter . '
    		group by v.legal_name  ,a1.vendor_id
     	order by 3 desc limit 10';
     $node->data  = _checkbook_project_execute_sql($sql);
-	  
-	  
+
+
 ",
 "widgetUpdateJSONConfig":"
-	
+
 	$series_new = array();
-	
-	
+
+
 	$index = 0;
 	foreach($node->data as $row){
 	 		$tooltip_label =
 	 						'Sub Vendor: ' . $row['legal_name'] .  '<br/>' .
 	 						'Number of M/WBE Contracts: ' . $row['total_contracts'].  '<br/>' .
-	 						'Amount: ' . custom_number_formatter_format($row['current_amount_sum'] ,2, '$').  '<br/>' 
-	 						; 
-			//$link= CustomURLHelper::prepareUrl(strstr($_GET['q'],'\/',true), ContractURLHelper::$landingPageParams, array('expandBottomCont'=>'true'), 
+	 						'Amount: ' . custom_number_formatter_format($row['current_amount_sum'] ,2, '$').  '<br/>'
+	 						;
+			//$link= CustomURLHelper::prepareUrl(strstr($_GET['q'],'\/',true), ContractURLHelper::$landingPageParams, array('expandBottomCont'=>'true'),
 			//			array('subvendor'=>$row['vendor_id']) );
 			//$link = RequestUtil::replaceParamFromString($link,'dashboard',RequestUtil::getNextSubvendorDashboardStateParam());
-			$link = strstr($_GET['q'],'/',true) .  ContractUtil::get_contracts_vendor_link_sub($row['vendor_id'],_getRequestParamValue('year'),
-				_getRequestParamValue('yeartype'), _getRequestParamValue('agency')) .  
-				'?expandBottomCont=true';	
-			$series_new[$index]->url = 	$link;					
+			$link = strstr($_GET['q'],'/',true) .  ContractUtil::get_contracts_vendor_link_sub($row['vendor_id'],RequestUtilities::getRequestParamValue('year'),
+				RequestUtilities::getRequestParamValue('yeartype'), RequestUtilities::getRequestParamValue('agency')) .
+				'?expandBottomCont=true';
+			$series_new[$index]->url = 	$link;
 
 			$series_new[$index]->y = (float)$row['current_amount_sum'];
 			$series_new[$index]->tooltip_label = $tooltip_label;
@@ -93,12 +93,12 @@
 	$node->widgetConfig->chartConfig->series[0]->type = 'column';
 	$node->widgetConfig->chartConfig->series[0]->pointWidth = 30;
 	$node->widgetConfig->chartConfig->series[0]->data = $series_new;
-	if(_getRequestParamValue('status') == 'A'){
+	if(RequestUtilities::getRequestParamValue('status') == 'A'){
 		$status = 'Active';
-	}else if(_getRequestParamValue('status') == 'R'){
+	}else if(RequestUtilities::getRequestParamValue('status') == 'R'){
 		$status = 'Registered';
 	}
-	
+
 	$contract_type = 'Expense';
 	if(preg_match('/revenue/',$_GET['q'])){
 		$contract_type = 'Revenue';
@@ -109,13 +109,13 @@
 	if(preg_match('/pending_rev/',$_GET['q'])){
 		$contract_type = 'Pending Revenue';
 	}
-	$mwbe_filter = _getRequestParamValue('mwbe');
-	if($mwbe_filter =='4~5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){		
-		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Top Ten Sub Vendors by ' . $status . ' ' . $contract_type .  ' Contracts';
+	$mwbe_filter = RequestUtilities::getRequestParamValue('mwbe');
+	if($mwbe_filter =='4~5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){
+		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName() . ' Top Ten Sub Vendors by ' . $status . ' ' . $contract_type .  ' Contracts';
 	}else{
-		$node->widgetConfig->chartTitle =  'Top Ten ' .  MappingUtil::getCurrenEhtnicityName() . ' Sub Vendors by '  .$status . ' ' . $contract_type .  ' Contracts';
-	}  
-	
+		$node->widgetConfig->chartTitle =  'Top Ten ' .  MappingUtil::getCurrenEthnicityName() . ' Sub Vendors by '  .$status . ' ' . $contract_type .  ' Contracts';
+	}
+
 ",
 "chartConfig" : {
 	"colors":["#7DB7E5"],
@@ -126,7 +126,7 @@
                 "dataLabels": {
                     "enabled": false
                 }  ,
-                "point": {"events": {"function": "clickEvent"}}           
+                "point": {"events": {"function": "clickEvent"}}
             }
     },
     "xAxis": {
@@ -144,13 +144,13 @@
     "title": {"text": ""},
     "yAxis": {
      	"min":0,
-     	"minRange": 0.1,    
+     	"minRange": 0.1,
         "startOnTick":true,
         "title": {"text": ""},
         "labels":{"rotation": 0,"function":"yAxisFormatter"}
     } ,
     "legend": {
-        "enabled": false       
+        "enabled": false
     },
     "tooltip":{"function":"tooltipformatter"}
     }
@@ -162,5 +162,6 @@ yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
 tooltipformatter^^'formatter' :
 function() {return this.point.tooltip_label ;
 }
-##clickEvent^^"click": function(){location.href = Drupal.settings.basePath+this.url; }
+##
+clickEvent^^"click": function(){location.href = Drupal.settings.basePath+this.url; }
 </function>

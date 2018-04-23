@@ -1,207 +1,336 @@
 {
-    "widgetType": "data_tables",
-    "widgetSubType": "dataTableList",
-    "cleanURLParameters":["bdgcodenm_exact","deptnm_facet","expcategorynm_facet","agency","agencyh","year","dept","deptnm","expcategory","expcategorynm","bdgcode","bdgcodenm","adpamt","preamt","encamt","cshamt","postamt","acramt","curamt","curamtr"],
-    "urlParamMap":{
-        "deptnm_facet":"department_name","expcategorynm_facet":"expenditure_object_name",
-        "vendor_facet":"vendor_name","bdgcodenm_exact":"budget_code_name",
-        "agency":"agency_id","agencyh":"agency_history_id","year":"budget_fiscal_year_id",
-        "dept":"department_id","deptnm":"department_name","expcategory":"object_class_id",
-        "expcategorynm":"object_class_name","bdgcode":"budget_code_id","bdgcodenm":"budget_code_name",
-        "adpamt":"adopted_amount","preamt":"pre_encumbered_amount","encamt":"encumbered_amount",
-        "cshamt":"cash_expense_amount","postamt":"post_closing_adjustment_amount",
-        "acramt":"accrued_expense_amount","curamt":"current_budget_amount",
-        "curamtr":"current_budget_amount"},
-    "paramTypeConfig":{"curamt":"range","adpamt":"range","preamt":"range","encamt":"range","cshamt":"range","postamt":"range","acramt":"range","curamtr":"rangeid","deptnm":"eqignorecase","bdgcodenm":"like",
-    "expcategorynm":"eqignorecase", "bdgcodenm_exact":"eqignorecase"},
-    "header":"
-        $header = NULL;
-        $header .= widget_data_tables_export_link($node);
-        return $header; 
-    ",
+  "widgetType": "data_tables",
+  "widgetSubType": "dataTableList",
+  "cleanURLParameters": [
+    "bdgcodenm_exact",
+    "deptnm_facet",
+    "expcategorynm_facet",
+    "agency",
+    "agencyh",
+    "year",
+    "dept",
+    "deptnm",
+    "expcategory",
+    "expcategorynm",
+    "bdgcode",
+    "bdgcode_code",
+    "bdgcodenm",
+    "adpamt",
+    "preamt",
+    "encamt",
+    "cshamt",
+    "postamt",
+    "acramt",
+    "curamt",
+    "curamtr"
+  ],
+  "urlParamMap": {
+    "deptnm_facet": "department_name",
+    "expcategorynm_facet": "expenditure_object_name",
+    "vendor_facet": "vendor_name",
+    "bdgcodenm_exact": "budget_code_name",
+    "agency": "agency_id",
+    "agencyh": "agency_history_id",
+    "year": "budget_fiscal_year_id",
+    "dept": "department_id",
+    "deptnm": "department_name",
+    "expcategory": "object_class_id",
+    "expcategorynm": "object_class_name",
+    "bdgcode_code": "budget_code",
+    "bdgcode": "budget_code_id",
+    "bdgcodenm": "budget_code_name",
+    "adpamt": "adopted_amount",
+    "preamt": "pre_encumbered_amount",
+    "encamt": "encumbered_amount",
+    "cshamt": "cash_expense_amount",
+    "postamt": "post_closing_adjustment_amount",
+    "acramt": "accrued_expense_amount",
+    "curamt": "current_budget_amount",
+    "curamtr": "current_budget_amount"
+  },
+  "paramTypeConfig": {
+    "curamt": "range",
+    "adpamt": "range",
+    "preamt": "range",
+    "encamt": "range",
+    "cshamt": "range",
+    "postamt": "range",
+    "acramt": "range",
+    "curamtr": "rangeid",
+    "deptnm": "eqignorecase",
+    "bdgcodenm": "eqignorecase",
+    "expcategorynm": "eqignorecase",
+    "bdgcodenm_exact": "eqignorecase"
+  },
+  "header":"
+      $header = NULL;
+      $header .= widget_data_tables_export_link($node);
+      return $header;
+  ",
     "useList":true,
-    "getTotalDataCount":true,
-    "limit":"35",
-    "stickyHeader":true,
-    "noDataInitialLoad":true,
-    "html_class": "initiative-table",
-    "no_results_content":"No Results Found",
-    "dataset": "checkbook:budget",
-    "uniqueSortColumn":"budget_id",
-    "columns": ["agency_id","budget_fiscal_year_id","agency_short_name","department_name","budget_code","budget_code_name","object_class_name","budget_fiscal_year","current_budget_amount","adopted_amount","pre_encumbered_amount","encumbered_amount","cash_expense_amount","post_closing_adjustment_amount","accrued_expense_amount","agency_name","total_expenditure_amount","remaining_budget"],
-    "caption":"",
-    "derivedColumns": {
-        "agency_name_formatted":{
-            "type": "expression2",
-            "expression": "_get_tooltip_markup($row[agency_name], 30)"
-        },
-        "formatted_expense_category": {
-            "type": "expression2",
-            "expression": "_get_tooltip_markup($row[object_class_name], 28)"
-        },
-        "formatted_budget_code": {
-            "type": "expression2",
-            "expression": "_get_tooltip_markup($row[budget_code].'('.$row[budget_code_name].')',40)"
-        },
-        "export_budget_code": {
-            "type": "expression2",
-            "expression": "$row[budget_code].'('.$row[budget_code_name].')'"
-        },
-        "agency_name_link": {
-            "type": "expression2",
-            "expression": "'<a href=/budget' ._checkbook_project_get_url_param_string('year')  . '/agency/' . $row[agency_id] . ' >' .  $row[agency_name_formatted] . '</a>'"
-        },
-        "formatted_current_budget_amount": {
-            "type": "expression2",
-            "expression": "custom_number_formatter_basic_format($row['current_budget_amount'])"
-            },
-        "formatted_adopted_amount": {
-            "type": "expression2",
-            "expression": "custom_number_formatter_basic_format($row['adopted_amount'])"
-            },
-        "formatted_pre_encumbered_amount": {
-            "type": "expression2",
-            "expression": "custom_number_formatter_basic_format($row['pre_encumbered_amount'])"
-        },
-        "formatted_encumbered_amount": {
-            "type": "expression2",
-            "expression": "custom_number_formatter_basic_format($row['encumbered_amount'])"
-        },
-        "formatted_cash_expense_amount": {
-            "type": "expression2",
-            "expression": "custom_number_formatter_basic_format($row['cash_expense_amount'])"
-        },
-        "formatted_post_closing_adjustment_amount": {
-            "type": "expression2",
-            "expression": "custom_number_formatter_basic_format($row['post_closing_adjustment_amount'])"
-        },
-        "formatted_accrued_expense_amount": {
-            "type": "expression2",
-            "expression": "custom_number_formatter_basic_format($row['accrued_expense_amount'])"
-        },
-        "formatted_remaining_amount": {
-            "type": "expression2",
-            "expression": "custom_number_formatter_basic_format($row['remaining_budget'])"
-        },
-        "formatted_committed_amount": {
-            "type": "expression2",
-            "expression": "custom_number_formatter_basic_format($row['total_expenditure_amount'])"
-        }
+  "getTotalDataCount": true,
+  "limit": "35",
+  "stickyHeader": true,
+  "noDataInitialLoad": true,
+  "html_class": "initiative-table",
+  "no_results_content": "No Results Found",
+  "dataset": "checkbook:budget",
+  "uniqueSortColumn": "budget_id",
+  "columns": [
+    "agency_id",
+    "budget_fiscal_year_id",
+    "agency_short_name",
+    "department_name",
+    "budget_code",
+    "budget_code_name",
+    "object_class_name",
+    "budget_fiscal_year",
+    "current_budget_amount",
+    "adopted_amount",
+    "pre_encumbered_amount",
+    "encumbered_amount",
+    "cash_expense_amount",
+    "post_closing_adjustment_amount",
+    "accrued_expense_amount",
+    "agency_name",
+    "total_expenditure_amount",
+    "remaining_budget"
+  ],
+  "caption": "",
+  "derivedColumns": {
+    "agency_name_formatted": {
+      "type": "expression2",
+      "expression": "_get_tooltip_markup($row['agency_name'], 30)"
     },
-    "table_columns": [
-        {"labelAlias":"agency_name","column": "agency_name_link","sortSourceColumn":"agency_name"},
-        {"labelAlias":"dept_name","column": "department_name"},
-        {"labelAlias":"adopted","column": "formatted_adopted_amount","sortSourceColumn":"adopted_amount"},
-        {"labelAlias":"modified","column": "formatted_current_budget_amount","sortSourceColumn":"current_budget_amount"},
-        {"labelAlias":"fiscal_year","column": "budget_fiscal_year"},
-        {"labelAlias":"expense_category","column":"formatted_expense_category","sortSourceColumn": "object_class_name"},
-        {"labelAlias":"budget_code_code","column": "formatted_budget_code","sortSourceColumn":"budget_code","exportColumn":"export_budget_code"},
-        {"labelAlias":"committed","column": "formatted_committed_amount","sortSourceColumn":"total_expenditure_amount"},
-        {"labelAlias":"pre_encumbered","column": "formatted_pre_encumbered_amount","sortSourceColumn":"pre_encumbered_amount"},
-        {"labelAlias":"encumbered","column": "formatted_encumbered_amount","sortSourceColumn":"encumbered_amount"},
-        {"labelAlias":"accrued_expense","column": "formatted_accrued_expense_amount","sortSourceColumn":"accrued_expense_amount"},	    
-        {"labelAlias":"cash_payments","column": "formatted_cash_expense_amount","sortSourceColumn":"cash_expense_amount"},
-        {"labelAlias":"post_adjustments","column": "formatted_post_closing_adjustment_amount","sortSourceColumn":"post_closing_adjustment_amount"},
-        {"labelAlias":"remaining","column": "formatted_remaining_amount","sortSourceColumn":"remaining_budget"},
-        {"label": "","column": ""}
-    ],
-    "export_columns":["budget_code_name"],
-    "exportColumnSqlOverride":[
-        {
-            "column":"formatted_budget_code",
-            "sourceColumn":"budget_code",
-            "sql":"budget_code||'('||budget_code_name||')'"
-        }
-    ],
-    "adjustParameters":"
-        $parameters = BudgetUtil::adjustBudgetCodeNameParameter($node, $parameters);
-        if(function_exists('_checkbook_project_applyParameterFilters')){
-            $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
-        }
-        return $adjustedParameters;
-    ",
-    "adjustDataTableOptions":"
-        $budgettype = _getRequestParamValue('budgettype');
-        if(isset($budgettype)) {
-            $is_committed_expense = ($budgettype == 'committed');
-            $is_remaining_expense = ($budgettype == 'remaining');
-        }
-        else {
-            $dtsmnid = _getRequestParamValue('dtsmnid');
-            $smnid = _getRequestParamValue('smnid');
-            $nid = isset($dtsmnid) ? $dtsmnid : $smnid;
-            $is_committed_expense = ($nid == 558) || ($nid == 559) || ($nid == 568) || ($nid == 571);
-        }
-        if($is_committed_expense) {
-            $node->widgetConfig->dataTableOptions->aaSorting[0][0] = 7;
-        }
-        else if($is_remaining_expense) {
-            $node->widgetConfig->dataTableOptions->aaSorting[0][0] = 13;
-        }
-    ",
-    "dataTableOptions":{
-        "bRetrieve": true,
-        "bServerSide": true,
-        "bProcessing":true,
-        "bFilter": false,
-        "iDisplayLength":35,
-        "bPaginate": true,
-        "sPaginationType":"full_numbers",
-        "bLengthChange": false,
-        "sDom":"<pr><t><ip>",
-        "oLanguage": {
-            "sInfo": "Displaying transactions _START_ - _END_ of _TOTAL_"
-        },
-        "bInfo": true,
-        "aoColumns":[
-            {"sClass":"text", "sWidth":"196px","asSorting": [ "asc","desc" ]},
-            {"sClass":"text","sWidth":"229px","asSorting": [ "asc","desc" ]},
-            {"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
-            {"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
-            {"sClass":"number pad-left","sWidth":"135px","asSorting": [ "desc","asc" ]},
-            {"sClass":"text pad-left", "sWidth":"90px","asSorting": [ "asc","desc" ]},
-            {"sClass":"text pad-left", "sWidth":"165px","asSorting": [ "asc","desc" ]},
-            {"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
-            {"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
-            {"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
-            {"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
-            {"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
-            {"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
-            {"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
-            {"bSortable": true,"sWidth":"15px" }
-        ],        
-        "aaSorting":[[3,"desc"]],
-        "sScrollX": "100%",
-        "bScrollCollapse": false,
-        "fnInitComplete": "##function () { new FixedColumns( oTable, {
-        \"iLeftColumns\": 1,
-        \"iLeftWidth\": 196
-        } );}##"
+    "formatted_expense_category": {
+      "type": "expression2",
+      "expression": "_get_tooltip_markup($row['object_class_name'], 28)"
     },
-    "customExternalJS":"function prepareTableListFilterUrl(){
-        var agencyIds = getNamedFilterCriteria('fagencyId');
-        if(agencyIds.length==0 && eval(document.getElementById('fHideAgencyId'))){
-             agencyIds = document.getElementById('fHideAgencyId').value;
-        }
-        var oDeptNms = getNamedFilterCriteria('fdeptNm');
-        var oDeptIds = getNamedFilterCriteria('fdeptid');
-        var oExpCategoryNms = getNamedFilterCriteria('fExpCategoryNm');
-        var oExpCategoryIds = getNamedFilterCriteria('fExpCategory');
-        var oCurAmount = getNamedFilterCriteria('fCurAmount');
-        var obudgetCode = getNamedFilterCriteria('fbdgcodeId');
-        var obudgetCodeExact = getNamedFilterCriteria('fbdgcodeexactId');
+    "budget_code_name_formatted": {
+      "type": "expression2",
+      "expression": "_get_tooltip_markup($row['budget_code_name'], 36)"
+    },
+    "agency_name_link": {
+      "type": "expression2",
+      "expression": "'<a href=/budget' ._checkbook_project_get_url_param_string('year')  . '/agency/' . $row['agency_id'] . ' >' .  $row['agency_name_formatted'] . '</a>'"
+    },
+    "formatted_current_budget_amount": {
+      "type": "expression2",
+      "expression": "custom_number_formatter_basic_format($row['current_budget_amount'])"
+    },
+    "formatted_adopted_amount": {
+      "type": "expression2",
+      "expression": "custom_number_formatter_basic_format($row['adopted_amount'])"
+    },
+    "formatted_pre_encumbered_amount": {
+      "type": "expression2",
+      "expression": "custom_number_formatter_basic_format($row['pre_encumbered_amount'])"
+    },
+    "formatted_encumbered_amount": {
+      "type": "expression2",
+      "expression": "custom_number_formatter_basic_format($row['encumbered_amount'])"
+    },
+    "formatted_cash_expense_amount": {
+      "type": "expression2",
+      "expression": "custom_number_formatter_basic_format($row['cash_expense_amount'])"
+    },
+    "formatted_post_closing_adjustment_amount": {
+      "type": "expression2",
+      "expression": "custom_number_formatter_basic_format($row['post_closing_adjustment_amount'])"
+    },
+    "formatted_accrued_expense_amount": {
+      "type": "expression2",
+      "expression": "custom_number_formatter_basic_format($row['accrued_expense_amount'])"
+    },
+    "formatted_remaining_amount": {
+      "type": "expression2",
+      "expression": "custom_number_formatter_basic_format($row['remaining_budget'])"
+    },
+    "formatted_committed_amount": {
+      "type": "expression2",
+      "expression": "custom_number_formatter_basic_format($row['total_expenditure_amount'])"
+    }
+  },
+  "table_columns": [
+    {
+      "labelAlias": "agency_name",
+      "column": "agency_name_link",
+      "sortSourceColumn": "agency_name"
+    },
+    {
+      "labelAlias": "dept_name",
+      "column": "department_name"
+    },
+    {
+      "labelAlias": "adopted",
+      "column": "formatted_adopted_amount",
+      "sortSourceColumn": "adopted_amount"
+    },
+    {
+      "labelAlias": "modified",
+      "column": "formatted_current_budget_amount",
+      "sortSourceColumn": "current_budget_amount"
+    },
+    {
+      "labelAlias": "fiscal_year",
+      "column": "budget_fiscal_year"
+    },
+    {
+      "labelAlias": "expense_category",
+      "column": "formatted_expense_category",
+      "sortSourceColumn": "object_class_name"
+    },
+    {
+      "labelAlias": "budget_code",
+      "column": "budget_code",
+      "sortSourceColumn": "budget_code"
+    },
+    {
+      "labelAlias": "budget_name",
+      "column": "budget_code_name_formatted",
+      "sortSourceColumn": "budget_code_name"
+    },
+    {
+      "labelAlias": "committed",
+      "column": "formatted_committed_amount",
+      "sortSourceColumn": "total_expenditure_amount"
+    },
+    {
+      "labelAlias": "pre_encumbered",
+      "column": "formatted_pre_encumbered_amount",
+      "sortSourceColumn": "pre_encumbered_amount"
+    },
+    {
+      "labelAlias": "encumbered",
+      "column": "formatted_encumbered_amount",
+      "sortSourceColumn": "encumbered_amount"
+    },
+    {
+      "labelAlias": "accrued_expense",
+      "column": "formatted_accrued_expense_amount",
+      "sortSourceColumn": "accrued_expense_amount"
+    },
+    {
+      "labelAlias": "cash_payments",
+      "column": "formatted_cash_expense_amount",
+      "sortSourceColumn": "cash_expense_amount"
+    },
+    {
+      "labelAlias": "post_adjustments",
+      "column": "formatted_post_closing_adjustment_amount",
+      "sortSourceColumn": "post_closing_adjustment_amount"
+    },
+    {
+      "labelAlias": "remaining",
+      "column": "formatted_remaining_amount",
+      "sortSourceColumn": "remaining_budget"
+    },
+    {
+      "label": "",
+      "column": ""
+    }
+  ],
+  "export_columns": [
+    "budget_code_name"
+  ],
+  "exportColumnSqlOverride": [
+    {
+      "column": "formatted_budget_code",
+      "sourceColumn": "budget_code",
+      "sql": "budget_code||'('||budget_code_name||')'"
+    }
+  ],
+  "adjustParameters":"
+      if(function_exists('_checkbook_project_applyParameterFilters')){
+          $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+      }
+      return $adjustedParameters;
+  ",
+  "adjustDataTableOptions":"
+      $budgettype = RequestUtilities::getRequestParamValue('budgettype');
+      if(isset($budgettype)) {
+          $is_committed_expense = ($budgettype == 'committed');
+          $is_remaining_expense = ($budgettype == 'remaining');
+      }
+      else {
+          $dtsmnid = RequestUtilities::getRequestParamValue('dtsmnid');
+          $smnid = RequestUtilities::getRequestParamValue('smnid');
+          $nid = isset($dtsmnid) ? $dtsmnid : $smnid;
+          $is_committed_expense = ($nid == 558) || ($nid == 559) || ($nid == 568) || ($nid == 571);
+      }
+      if($is_committed_expense) {
+          $node->widgetConfig->dataTableOptions->aaSorting[0][0] = 8;
+      }
+      else if($is_remaining_expense) {
+          $node->widgetConfig->dataTableOptions->aaSorting[0][0] = 14;
+      }
+  ",
+  "dataTableOptions":{
+      "bRetrieve": true,
+      "bServerSide": true,
+      "bProcessing":true,
+      "bFilter": false,
+      "iDisplayLength":35,
+      "bPaginate": true,
+      "sPaginationType":"full_numbers",
+      "bLengthChange": false,
+      "sDom":"<pr><t><ip>",
+      "oLanguage": {
+          "sInfo": "Displaying transactions _START_ - _END_ of _TOTAL_"
+      },
+      "bInfo": true,
+      "aoColumns":[
+          {"sClass":"text", "sWidth":"196px","asSorting": [ "asc","desc" ]},
+          {"sClass":"text","sWidth":"229px","asSorting": [ "asc","desc" ]},
+          {"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
+          {"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
+          {"sClass":"number pad-left","sWidth":"135px","asSorting": [ "desc","asc" ]},
+          {"sClass":"text pad-left", "sWidth":"135px","asSorting": [ "asc","desc" ]},
+          {"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
+          {"sClass":"text pad-left", "sWidth":"165px","asSorting": [ "asc","desc" ]},
+          {"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
+          {"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
+          {"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
+          {"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
+          {"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
+          {"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
+          {"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
+          {"bSortable": true,"sWidth":"15px" }
+      ],
+      "aaSorting":[[3,"desc"]],
+      "sScrollX": "100%",
+      "bScrollCollapse": false,
+      "fnInitComplete": "##function () { new FixedColumns( oTable, {
+      \"iLeftColumns\": 1,
+      \"iLeftWidth\": 196
+      } );}##"
+  },
+  "customExternalJS":"function prepareTableListFilterUrl(){
+      var agencyIds = getNamedFilterCriteria('fagencyId');
+      if(agencyIds.length==0 && eval(document.getElementById('fHideAgencyId'))){
+           agencyIds = document.getElementById('fHideAgencyId').value;
+      }
+      var oDeptNms = getNamedFilterCriteria('fdeptNm');
+      var oDeptIds = getNamedFilterCriteria('fdeptid');
+      var oExpCategoryNms = getNamedFilterCriteria('fExpCategoryNm');
+      var oExpCategoryIds = getNamedFilterCriteria('fExpCategory');
+      var oCurAmount = getNamedFilterCriteria('fCurAmount');
+      var obudgetCodeId = getNamedFilterCriteria('fbdgcode');
+      var obudgetCodeName = getNamedFilterCriteria('fbdgcodenm');
+      var obudgetCode = getNamedFilterCriteria('fbdgcode_code');
 
-        var  cUrl = oTable.fnSettings().sAjaxSource;
-        cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
-        cUrl = adjustUrlParameter(cUrl,'dept',oDeptIds);
-        cUrl = adjustUrlParameter(cUrl,'deptnm',oDeptNms);
-        cUrl = adjustUrlParameter(cUrl,'expcategorynm',oExpCategoryNms);
-        cUrl = adjustUrlParameter(cUrl,'expcategory',oExpCategoryIds);
+      var  cUrl = oTable.fnSettings().sAjaxSource;
+      cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
+      cUrl = adjustUrlParameter(cUrl,'dept',oDeptIds);
+      cUrl = adjustUrlParameter(cUrl,'deptnm',oDeptNms);
+      cUrl = adjustUrlParameter(cUrl,'expcategorynm',oExpCategoryNms);
+      cUrl = adjustUrlParameter(cUrl,'expcategory',oExpCategoryIds);
 
-        cUrl = adjustUrlParameter(cUrl,'curamtr',oCurAmount);
-        cUrl = adjustUrlParameter(cUrl,'bdgcode',obudgetCode);
-        cUrl = adjustUrlParameter(cUrl,'bdgcodenm_exact',obudgetCodeExact);
+      cUrl = adjustUrlParameter(cUrl,'curamtr',oCurAmount);
+      cUrl = adjustUrlParameter(cUrl,'bdgcode',obudgetCodeId);
+      cUrl = adjustUrlParameter(cUrl,'bdgcodenm',obudgetCodeName);
+      cUrl = adjustUrlParameter(cUrl,'bdgcode_code',obudgetCode);
 
-        return cUrl;
-    }"
+      return cUrl;
+  }"
 }

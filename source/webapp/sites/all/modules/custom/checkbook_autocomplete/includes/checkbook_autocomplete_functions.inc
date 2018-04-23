@@ -89,9 +89,9 @@ function _get_contracts_datafeeds_autocomplete_results($facet, $query, $status =
         $query .= '&fq=industry_type_id:'.$industry;
     }
     
-    if($status != 'P' && $category != 'revenue') {
+    //if($status != 'P' && $category != 'revenue') {
 
-    }
+    //}
     if ($includes_sub_vendors) {
         $query .= '&fq=scntrc_status:'.$includes_sub_vendors;
     }
@@ -1309,6 +1309,7 @@ function _get_autocomplete_search_term_facet_prefix() {
  */
 function _checkbook_autocomplete_solr_results($query, $facet = NULL) {
     global $conf;
+    $results = array();
     if ($conf['check_book']['solr']['url']) {
         $solr_server_url = $conf['check_book']['solr']['url'];
     }

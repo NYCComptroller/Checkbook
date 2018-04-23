@@ -1,19 +1,19 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -30,7 +30,7 @@ class WidgetUtil
                                  "percent_spending", "ytd_spending_sub_vendors", "sub_vendors_percent_paid",
                                  "num_sub_vendors", "ytd_spending_agency");
         if(in_array($labelAlias,$dynamic_labelAlias)){
-            $year = _getYearValueFromID(_getRequestParamValue('year'));
+            $year = _getYearValueFromID(RequestUtilities::getRequestParamValue('year'));
             $dynamic_labels = array("current_modified" => "Modified<br/>".$year,
                                     "previous_modified" => "Modified<br/>".($year-1),
                                     "previous_1_modified" => "Modified<br/>".($year-2),
@@ -52,7 +52,7 @@ class WidgetUtil
         $dynamic_labelAlias = array("current_modified","previous_modified","previous_1_modified","previous_2_modified",
                                     "recognized_current","recognized_1","recognized_2","recognized_3");
         if(in_array($labelAlias,$dynamic_labelAlias)){
-            $year = _getYearValueFromID(_getRequestParamValue('year'));
+            $year = _getYearValueFromID(RequestUtilities::getRequestParamValue('year'));
             $dynamic_labels = array("current_modified" => "Modified<br/>".$year,
                                     "previous_modified" => "Modified<br/>".($year-1),
                                     "previous_1_modified" => "Modified<br/>".($year-2),
@@ -196,6 +196,7 @@ class WidgetUtil
         "other_years"=>"Other<br/>Years",
         "year"=>"Year",
         "budget_name"=>"Budget<br/>Name",
+        "budget_code"=>"Budget<br/>Code",
         "commodity_line"=>"Commodity<br/>Line",
         "entity_contact_num"=>"Entity<br/>Contract # ",
     	"prime_vendor_name"=>"Prime Vendor<br/>Name",
@@ -299,7 +300,7 @@ class WidgetUtil
                 $alternating_row_count = 0;
                 $inner_tbl_count = 0;
                 $outer_table_count = 0;
-                for ($row_index = 0; $row_index < count($table_rows); $row_index++) {                	
+                for ($row_index = 0; $row_index < count($table_rows); $row_index++) {
                     if(isset($table_rows[$row_index]['columns'])) {
                         if ($alternating_row_count % 2 == 0)
                             $class = "even outer";
@@ -308,7 +309,7 @@ class WidgetUtil
                         $alternating_row_count++;
                         WidgetUtil::populateMaxColumnLength($table_rows);
 //                        $html .= "<tr class='".$class."' style='border: 1px solid black !important;'>";
-                        $html .= "<tr class='".$class."' >";                       
+                        $html .= "<tr class='".$class."' >";
                         $html .= WidgetUtil::generateColumns($table_rows[$row_index]['columns']);
                         $html .= "</tr>";
                     }
@@ -320,7 +321,7 @@ class WidgetUtil
                         $html .= "<td colspan='".$col_span."'>";
                         $html .= "<div>";
                         for ($tbl_index = 0; $tbl_index < count($table_rows[$row_index]['child_tables']); $tbl_index++) {
-//                            $html .= "<tr class='showHide' style='border: 1px solid black !important;'>";                            
+//                            $html .= "<tr class='showHide' style='border: 1px solid black !important;'>";
                         	$html .=  WidgetUtil::generateTable($table_rows[$row_index]['child_tables'][$tbl_index]);
                         }
                         $html .= "</div>";
@@ -349,7 +350,7 @@ class WidgetUtil
 //                        $html .= "<tr class='showHide' style='".$display." border: 1px solid black !important;'>";
                         $html .= "<tr class='showHide' style='".$display."'>";
                         $html .= "<td colspan='".$col_span."'>";
-                        $html .= "<div class='scroll'>";                       
+                        $html .= "<div class='scroll'>";
                         $html .=  WidgetUtil::generateTable($table_rows[$row_index]['inner_table'],false);
                         $html .= "</div>";
                         $html .= "</td>";
@@ -460,7 +461,7 @@ class WidgetUtil
         $dynamic_labelAlias = array("current_modified","previous_modified","previous_1_modified","previous_2_modified",
             "recognized_current","recognized_1","recognized_2","recognized_3");
         if(in_array($labelAlias,$dynamic_labelAlias)){
-            $year = _getYearValueFromID(_getRequestParamValue('year'));
+            $year = _getYearValueFromID(RequestUtilities::getRequestParamValue('year'));
             $dynamic_labels = array("current_modified" => "Modified<br/>".$year,
                 "previous_modified" => "Modified<br/>".($year-1),
                 "previous_1_modified" => "Modified<br/>".($year-2),

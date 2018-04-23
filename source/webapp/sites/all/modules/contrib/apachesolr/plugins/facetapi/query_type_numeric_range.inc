@@ -17,7 +17,7 @@ class ApacheSolrFacetapiNumericRange extends FacetapiQueryType implements Faceta
    * @return string
    *   The query type.
    */
-  static public function getType() {
+   public static function getType() {
     return 'numeric_range';
   }
 

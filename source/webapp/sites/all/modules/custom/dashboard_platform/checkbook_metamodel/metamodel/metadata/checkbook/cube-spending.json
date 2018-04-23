@@ -47,7 +47,7 @@
                         {
                             "name": "department",
                             "datasetName": "department",
-                            "sourceColumnName": "department_id"
+                            "sourceColumnName": "department_code"
                         }
                     ]
                 },
@@ -107,7 +107,7 @@
                         {
                             "name": "expenditure_object",
                             "datasetName": "expenditure_object",
-                            "sourceColumnName": "expenditure_object_id"
+                            "sourceColumnName": "expenditure_object_code"
                         }
                     ]
                 }
@@ -326,7 +326,7 @@
                         {
                             "name": "expenditure_object",
                             "datasetName": "expenditure_object",
-                            "sourceColumnName": "expenditure_object_id"
+                            "sourceColumnName": "expenditure_object_code"
                         }
                     ]
                 }
@@ -352,5 +352,5 @@
             {"datasetName": "contracts_spending", "columnNames": ["agency_id"]},
             {"datasetName": "agency", "columnNames": ["agency_id"]}
         ]
-    }        
+    }
 }

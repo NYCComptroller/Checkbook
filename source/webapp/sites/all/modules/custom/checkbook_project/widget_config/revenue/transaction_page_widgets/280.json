@@ -65,11 +65,11 @@
         },
         "agency_name_formatted":{
             "type": "expression2",
-            "expression": "_get_tooltip_markup($row[agency_name], 50)"
+            "expression": "_get_tooltip_markup($row['agency_name'], 50)"
         },
         "agency_name_link": {
             "type": "expression2",
-            "expression": " '<a href=/revenue/year/' . $row[budget_fiscal_year_id] . '/agency/' . $row[agency_id] .'>' . $row[agency_name_formatted] .'</a>'"
+            "expression": " '<a href=/revenue/year/' . $row['budget_fiscal_year_id'] . '/agency/' . $row['agency_id'] .'>' . $row['agency_name_formatted'] .'</a>'"
         }
     },
     "table_columns": [
@@ -99,7 +99,7 @@
         return $adjustedParameters;
     ",
     "adjustDataTableOptions":"
-        $revenuetype = _getRequestParamValue('revenuetype');
+        $revenuetype = RequestUtilities::getRequestParamValue('revenuetype');
         if(isset($revenuetype) && $revenuetype == 'remaining') {
             $node->widgetConfig->dataTableOptions->aaSorting[0][0] = 3;
         }

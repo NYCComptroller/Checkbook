@@ -1,19 +1,19 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -152,7 +152,7 @@ function _get_spending_breadcrumb_title_drilldown($ethinicty = true){
                 break;
             case 'vendor':
                 $title = _checkbook_project_get_name_for_argument("vendor_id",$value);
-                if($ethinicty){                
+                if($ethinicty){
                 	$title .= MappingUtil::getPrimeVendorEthinictyTitle($value,"spending");
                 }
                 break;
@@ -249,10 +249,10 @@ function _get_payroll_breadcrumb_title_drilldown()
         $title = null;
     }else{
         if (preg_match('/agency_landing/', current_path())) {
-            $value = _getRequestParamValue('agency');
+            $value = RequestUtilities::getRequestParamValue('agency');
             $title = _checkbook_project_get_name_for_argument("agency_id", $value);
         } else if (preg_match('/title_landing/', current_path())) {
-            $value = _getRequestParamValue('title');
+            $value = RequestUtilities::getRequestParamValue('title');
             $title = _checkbook_project_get_name_for_argument("title", $value);
         }
         else {
@@ -315,14 +315,14 @@ function _get_pending_contracts_breadcrumb_title_drilldown($ethinicty = true){
 * Custom function to set breadcrumbs and title for contracts landing pages
 */
 function _set_contracts_breadcrumb_title(){
-  $agency_id = _getRequestParamValue("agency", true);
-  $vendor_id = _getRequestParamValue("vendor", true);
-  $year_id = _getRequestParamValue("year", true);
-  $award_method_id = _getRequestParamValue("awdmethod", true);
-  $award_size_id = _getRequestParamValue("csize", true);
-  $industry_type_id = _getRequestParamValue("cindustry", true);
+  $agency_id = RequestUtilities::getRequestParamValue("agency", true);
+  $vendor_id = RequestUtilities::getRequestParamValue("vendor", true);
+  $year_id = RequestUtilities::getRequestParamValue("year", true);
+  $award_method_id = RequestUtilities::getRequestParamValue("awdmethod", true);
+  $award_size_id = RequestUtilities::getRequestParamValue("csize", true);
+  $industry_type_id = RequestUtilities::getRequestParamValue("cindustry", true);
 
-  $year_type = _getRequestParamValue("yeartype", true);
+  $year_type = RequestUtilities::getRequestParamValue("yeartype", true);
   $values['agency_id'] = (isset($agency_id))? _checkbook_project_get_name_for_argument("agency_id",$agency_id):"";
   $values['vendor_id'] = (isset($vendor_id))?_checkbook_project_get_name_for_argument("vendor_id",$vendor_id):"";
   $values['award_method'] =(isset($award_method_id))? _checkbook_project_get_name_for_argument("award_method_id",$award_method_id):"";
@@ -392,13 +392,13 @@ function _set_contracts_breadcrumb_title(){
 * Custom function to set breadcrumbs and title for pending contracts landing pages
 */
 function _set_pending_contracts_breadcrumb_title(){
-    $pending_contracts_agency_id = _getRequestParamValue("agency", true);
-    $pending_contracts_vendor_code = _getRequestParamValue("vendor", true);
-    $pending_contracts_year_id = _getRequestParamValue("year", true);
-    $pending_contracts_award_method_code = _getRequestParamValue("awrdmthd", true);
-    $pending_contracts_award_size_id = _getRequestParamValue("csize", true);
-    $pending_contracts_industry_type_id = _getRequestParamValue("cindustry", true);
-    $pending_contracts_year_type = _getRequestParamValue("yeartype", true);
+    $pending_contracts_agency_id = RequestUtilities::getRequestParamValue("agency", true);
+    $pending_contracts_vendor_code = RequestUtilities::getRequestParamValue("vendor", true);
+    $pending_contracts_year_id = RequestUtilities::getRequestParamValue("year", true);
+    $pending_contracts_award_method_code = RequestUtilities::getRequestParamValue("awrdmthd", true);
+    $pending_contracts_award_size_id = RequestUtilities::getRequestParamValue("csize", true);
+    $pending_contracts_industry_type_id = RequestUtilities::getRequestParamValue("cindustry", true);
+    $pending_contracts_year_type = RequestUtilities::getRequestParamValue("yeartype", true);
 
     $values['pending_contracts_agency_id'] = (isset($pending_contracts_agency_id))? _checkbook_project_get_name_for_argument("agency_id",$pending_contracts_agency_id):"";
     $values['pending_contracts_vendor_code'] = (isset($pending_contracts_vendor_code))?_checkbook_project_get_name_for_argument("pending_contracts_vendor_code",$pending_contracts_vendor_code):"";
@@ -484,18 +484,18 @@ function _checkbook_custom_breadcrumnb_add_breadcrumb_title(){
     $links = array(l(t('Home'), ''),l(t('API'), 'data-feeds/api'),'Revenue API');
      drupal_set_breadcrumb($links);
   }
-  
+
    else if(preg_match('/^contract/',current_path())){
-     $checkbook_breadcrumb_title = requestUtil::getContractBreadcrumbTitle();
+     $checkbook_breadcrumb_title = RequestUtil::getContractBreadcrumbTitle();
    }
    elseif(preg_match('/^payroll/',current_path())){
-     $checkbook_breadcrumb_title = requestUtil::getPayrollBreadcrumbTitle();
+     $checkbook_breadcrumb_title = RequestUtil::getPayrollBreadcrumbTitle();
    }elseif(preg_match('/^spending/',current_path())){
-     $checkbook_breadcrumb_title = requestUtil::getSpendingBreadcrumbTitle();
+     $checkbook_breadcrumb_title = RequestUtil::getSpendingBreadcrumbTitle();
    }elseif(preg_match('/^budget/',current_path())){
-     $checkbook_breadcrumb_title = requestUtil::getBudgetBreadcrumbTitle();
+     $checkbook_breadcrumb_title = RequestUtil::getBudgetBreadcrumbTitle();
    }elseif(preg_match('/^revenue/',current_path())){
-      $checkbook_breadcrumb_title = requestUtil::getRevenueBreadcrumbTitle();
+      $checkbook_breadcrumb_title = RequestUtil::getRevenueBreadcrumbTitle();
    }elseif(preg_match('/smart_search/',current_path())){
      $links = array(l(t('Home'), ''),'Search Results');
      drupal_set_breadcrumb($links);
@@ -510,10 +510,10 @@ function _checkbook_custom_breadcrumb_is_hierarchical(){
   }
   else if(preg_match('/(contract)|(payroll)|(spending)|(budget)|(revenue)|(newwindow)/',current_path())){
     return false;
-  }else{
-    return true;
   }
-  
+
+  return true;
+
 }
 
 

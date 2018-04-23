@@ -27,7 +27,7 @@
 } else {?>
   <script type="text/javascript">
     jQuery(document).ready(function() {
-        var chart = new Highcharts.StockChart(<?php print widget_mergeJSFunctions($node, $node->widgetConfig->chartConfig); ?><?php if ($node->widgetConfig->callback){ print ',function(chart){'.$node->widgetConfig->callback.'}';}?>);
+        var chart = new Highcharts.StockChart(<?php print widget_mergeJSFunctions($node, $node->widgetConfig->chartConfig); if ($node->widgetConfig->callback){ print ',function(chart){'.$node->widgetConfig->callback.'}';}?>);
         Highcharts.chartarray.push(chart); //array defined in highcharts-globals.js
     });
 </script>

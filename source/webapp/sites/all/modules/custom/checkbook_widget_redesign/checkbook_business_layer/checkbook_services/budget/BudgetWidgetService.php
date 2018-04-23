@@ -61,15 +61,13 @@ class BudgetWidgetService extends WidgetDataService implements IWidgetService {
             case "expense_bdg_cat_committed_budget_link":
                 $column = $row['budget_committed'];
                 $class = "bottomContainerReload";
+
                 $dynamic_parameter = "/bdgcode/" . $row["budget_code_id"];
-                $url = BudgetUrlService::committedBudgetUrl($dynamic_parameter, $this->getLegacyNodeId());
-                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
-                break;
-            case "expense_budget_committed_budget":
-                $column = $row['budget_committed'];
-                $class = "bottomContainerReload";
-                $dynamic_parameter = "/bdgcode/" . $row["budget_code"];
-                $url = BudgetUrlService::committedBudgetUrl($dynamic_parameter, $this->getLegacyNodeId());
+                $budget_code_values = BudgetUtil::getBudgetCodeNameAndBudgetCode($row['budget_code_id'],RequestUtilities::getRequestParamValue('agency'),RequestUtilities::getRequestParamValue('year'));
+                $dynamic_parameter .= isset($budget_code_values['budget_code']) ? "/bdgcode_code/" . $budget_code_values["budget_code"] : '';
+                $dynamic_parameter .= isset($budget_code_values['budget_code_name']) ? "/bdgcodenm/" . urlencode(_checkbook_advanced_search_replaceSlash($budget_code_values["budget_code_name"])) : '';
+
+                $url = BudgetUrlService::committedBudgetUrl($dynamic_parameter, $this->getLegacyNodeId(), $row);
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
         }
@@ -88,18 +86,18 @@ class BudgetWidgetService extends WidgetDataService implements IWidgetService {
             $dept = RequestUtilities::getRequestParamValue('dept');
             $expcategory = RequestUtilities::getRequestParamValue('expcategory');
 
-            if($agency || $parameters['filter_type'] == 'A'){ 
+            if($agency || $parameters['filter_type'] == 'A'){
                 $type_filter[] = 'A';
             }
-            if($dept || $parameters['filter_type'] == 'D'){ 
+            if($dept || $parameters['filter_type'] == 'D'){
                 $type_filter[] = 'D';
             }
             if($expcategory || $parameters['filter_type'] == 'O'){
                 $type_filter[] = 'O';
-            }        
+            }
             $parameters['filter_type'] = implode("", $type_filter);
         }
-        
+
         return $parameters;
     }
 

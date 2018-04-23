@@ -17,11 +17,10 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php
-    $year1 = _getYearValueFromID(_getRequestParamValue('year'));
-    $year2 = _getYearValueFromID(_getRequestParamValue('year')+1);
-    $year3 = _getYearValueFromID(_getRequestParamValue('year')+2);
+
+    $year1 = _getYearValueFromID(RequestUtilities::getRequestParamValue('year'));
+    $year2 = _getYearValueFromID(RequestUtilities::getRequestParamValue('year')+1);
+    $year3 = _getYearValueFromID(RequestUtilities::getRequestParamValue('year')+2);
     $total_revenue_recognized_yr1 = custom_number_formatter_format($node->data[0]['current_recognized'],2,'$');
     $total_revenue_recognized_yr2 = custom_number_formatter_format($node->data[0]['recognized_1'],2,'$');
     $total_revenue_recognized_yr3 = custom_number_formatter_format($node->data[0]['recognized_2'],2,'$');

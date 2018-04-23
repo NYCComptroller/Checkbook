@@ -4,8 +4,8 @@
 "noDataInitialLoad":true,
 "phpcode":"
 $is_sub = 'S';
-if(_getRequestParamValue('agid')){
-  $agid = _getRequestParamValue('agid');
+if(RequestUtilities::getRequestParamValue('agid')){
+  $agid = RequestUtilities::getRequestParamValue('agid');
 }
 
 $q0 = 'select contract_number from agreement_snapshot where original_agreement_id = '. $agid .' limit 1';

@@ -28,53 +28,53 @@
 
 "cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry","mwbe","year","subvendor"],
 "urlParamMap":{"subvendor":"vendor_id","year":"fiscal_year_id","mwbe":"minority_type_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id",
-			"vendor":"prime_vendor_id","status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},	
+			"vendor":"prime_vendor_id","status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},
 "chartTitle":"Top Ten Prime Vendors by Sub Vendors Active Expense Contracts",
 "widgetDataLoader":"
-    
+
     $where_filters = array();
     foreach($node->widgetConfig->requestParams as $param=>$value){
         $where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
     }
-    
+
     if(count($where_filters) > 0){
         $where_filter = ' where ' . implode(' and ' , $where_filters);
     }
- 
+
  	$where_filter .= ' and rd.document_code in (' . ContractUtil::getCurrentPageDocumentIds() . ') ';
 
-   
+
     	$sql = ' select
 			pv.legal_name ,a1.prime_vendor_id vendor_id
 			, sum(maximum_contract_amount) current_amount_sum
-			, count(contract_number) total_contracts		
-		from {aggregateon_subven_contracts_cumulative_spending} a1     
+			, count(contract_number) total_contracts
+		from {aggregateon_subven_contracts_cumulative_spending} a1
 	    join {vendor} pv on pv.vendor_id =  a1.prime_vendor_id
 	    join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
-   		' . $where_filter . '     
+   		' . $where_filter . '
    		group by pv.legal_name  ,a1.prime_vendor_id
     	order by 3 desc limit 10';
 
     $node->data  = _checkbook_project_execute_sql($sql);
-	  
+
 ",
 "widgetUpdateJSONConfig":"
-	
+
 	$series_new = array();
-	
-	
+
+
 	$index = 0;
 	foreach($node->data as $row){
 	 		$tooltip_label =
 	 						'Prime Vendor: ' . $row['legal_name'] .  '<br/>' .
-	 						'Amount: ' . custom_number_formatter_format($row['current_amount_sum'] ,2, '$').  '<br/>' 
+	 						'Amount: ' . custom_number_formatter_format($row['current_amount_sum'] ,2, '$').  '<br/>'
 	 						;
 
-			$link = strstr($_GET['q'],'/',true) .  ContractUtil::get_contracts_vendor_link($row['vendor_id'],_getRequestParamValue('year'),
-				_getRequestParamValue('yeartype'), _getRequestParamValue('agency')) .  
+			$link = strstr($_GET['q'],'/',true) .  ContractUtil::get_contracts_vendor_link($row['vendor_id'],RequestUtilities::getRequestParamValue('year'),
+				RequestUtilities::getRequestParamValue('yeartype'), RequestUtilities::getRequestParamValue('agency')) .
 				'?expandBottomCont=true';
-			$series_new[$index]->url = 	$link;	
-			
+			$series_new[$index]->url = 	$link;
+
 			$series_new[$index]->y = (float)$row['current_amount_sum'];
 			$series_new[$index]->tooltip_label = $tooltip_label;
 			$node->widgetConfig->gridConfig->data[] = array($row['legal_name'],$row['current_amount_sum'] );
@@ -91,13 +91,13 @@
 	}elseif($last_param =='subvendor'){
 		$node->widgetConfig->chartTitle =   'Sub Vendor Top Ten Prime Vendors by Sub Vendors '  . ContractUtil::getCurrentContractStatusandType() . ' Contracts' ;
 	}else{
-        if(_getRequestParamValue('status') == 'A'){
-            $node->widgetConfig->chartTitle =   MappingUtil::getCurrenEhtnicityName() . ' Top Ten Prime Vendors by Total Active Sub Vendor Contracts' ;
+        if(RequestUtilities::getRequestParamValue('status') == 'A'){
+            $node->widgetConfig->chartTitle =   MappingUtil::getCurrenEthnicityName() . ' Top Ten Prime Vendors by Total Active Sub Vendor Contracts' ;
         }else{
-            $node->widgetConfig->chartTitle =   MappingUtil::getCurrenEhtnicityName() . ' Top Ten Prime Vendors by New Sub Vendor Contracts by Fiscal Year' ;
+            $node->widgetConfig->chartTitle =   MappingUtil::getCurrenEthnicityName() . ' Top Ten Prime Vendors by New Sub Vendor Contracts by Fiscal Year' ;
         }
 	}
-	
+
 ",
 "chartConfig" : {
 	"colors":["#7DB7E5"],
@@ -108,7 +108,7 @@
                 "dataLabels": {
                     "enabled": false
                 }  ,
-                "point": {"events": {"function": "clickEvent"}}           
+                "point": {"events": {"function": "clickEvent"}}
             }
     },
     "xAxis": {
@@ -126,13 +126,13 @@
     "title": {"text": ""},
     "yAxis": {
      	"min":0,
-     	"minRange": 0.1,    
+     	"minRange": 0.1,
         "startOnTick":true,
         "title": {"text": ""},
         "labels":{"rotation": 0,"function":"yAxisFormatter"}
     } ,
     "legend": {
-        "enabled": false       
+        "enabled": false
     },
     "tooltip":{"function":"tooltipformatter"}
     }

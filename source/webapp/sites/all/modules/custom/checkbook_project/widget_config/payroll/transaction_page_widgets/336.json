@@ -39,11 +39,11 @@
         },
         "employee_name_link": {
             "type": "expression2",
-            "expression": "'<a href=/payroll/title_landing/yeartype/C/year/' . $row[calendar_fiscal_year_id] . '/title/' . urlencode($row['civil_service_title']) . '>'. $row[employee_name_formatted] .'</a>'"
+            "expression": "'<a href=/payroll/title_landing/yeartype/C/year/' . $row['calendar_fiscal_year_id'] . '/title/' . urlencode($row['civil_service_title']) . '>'. $row['employee_name_formatted'] .'</a>'"
         },
         "agency_name_link": {
             "type": "expression2",
-            "expression": "'<a href=/payroll/agency_landing/agency/'. $row[agency_id] . '/yeartype/C/year/' . $row[calendar_fiscal_year_id] . '>'. $row[agency_name_formatted] .'</a>'"
+            "expression": "'<a href=/payroll/agency_landing/agency/'. $row['agency_id'] . '/yeartype/C/year/' . $row['calendar_fiscal_year_id'] . '>'. $row['agency_name_formatted'] .'</a>'"
         },
         "formatted_salary_amount": {
             "type": "expression2",
@@ -51,7 +51,7 @@
         },
         "annual_salary_link": {
             "type": "expression2",
-            "expression": " $row['amount_basis_id'] === 1 ? '<a href=/payroll/yeartype/C/year/' . $row[calendar_fiscal_year_id] . '?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/' . $row[agency_id] . '/yeartype/C/year/' . $row[calendar_fiscal_year_id] . '/salamttype/' . $row[amount_basis_id] . '/abc/' . $row[employee_id] . '>'. $row[formatted_salary_amount] .'</a>' : '-'"
+            "expression": " $row['amount_basis_id'] === 1 ? '<a href=/payroll/yeartype/C/year/' . $row['calendar_fiscal_year_id'] . '?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/' . $row['agency_id'] . '/yeartype/C/year/' . $row['calendar_fiscal_year_id'] . '/salamttype/' . $row['amount_basis_id'] . '/abc/' . $row['employee_id'] . '>'. $row['formatted_salary_amount'] .'</a>' : '-'"
         },
         "formatted_non_salary_amount": {
             "type": "expression2",
@@ -59,7 +59,7 @@
         },
         "non_salary_link": {
             "type": "expression2",
-            "expression": " $row['amount_basis_id'] === 1 ? '-' : '<a href=/payroll/yeartype/C/year/' . $row[calendar_fiscal_year_id] . '?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/' . $row[agency_id] . '/yeartype/C/year/' . $row[calendar_fiscal_year_id] . '/salamttype/' . $row[amount_basis_id] . '/abc/' . $row[employee_id] . '>'. $row[formatted_non_salary_amount] .'</a>'"
+            "expression": " $row['amount_basis_id'] === 1 ? '-' : '<a href=/payroll/yeartype/C/year/' . $row['calendar_fiscal_year_id'] . '?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/' . $row['agency_id'] . '/yeartype/C/year/' . $row['calendar_fiscal_year_id'] . '/salamttype/' . $row['amount_basis_id'] . '/abc/' . $row['employee_id'] . '>'. $row['formatted_non_salary_amount'] .'</a>'"
         },
         "export_salary_amount": {
             "type": "expression2",

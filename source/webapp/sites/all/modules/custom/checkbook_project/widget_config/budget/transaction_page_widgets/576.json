@@ -22,8 +22,8 @@
             "percent_difference1","percent_difference2","percent_difference3"],
 "limit":35,
 "adjustDataTableOptions":"
-      $adjustDataTableOptions = $node->widgetConfig->dataTableOptions;
-      $year = _getYearValueFromID(_getRequestParamValue('year'));
+  $adjustDataTableOptions = $node->widgetConfig->dataTableOptions;
+      $year = _getYearValueFromID(RequestUtilities::getRequestParamValue('year'));
 
    	  foreach($node->widgetConfig->table_columns as $key => $table_column){
                if($year == 2012 && ($table_column->column == 'percent_difference2_formatted' || $table_column->column == 'percent_difference3_formatted')){
@@ -56,9 +56,9 @@
 ",
 "adjustParameters":"
     $type_filter = NULL;
-    $agency = _getRequestParamValue('agency');
-    $dept = _getRequestParamValue('dept');
-    $expcategory = _getRequestParamValue('expcategory');
+    $agency = RequestUtilities::getRequestParamValue('agency');
+    $dept = RequestUtilities::getRequestParamValue('dept');
+    $expcategory = RequestUtilities::getRequestParamValue('expcategory');
 
     if($agency) $type_filter .= 'A';
     if($dept) $type_filter .= 'D';
@@ -167,7 +167,6 @@
   ],
 "dataTableOptions":{
     "aoColumns": [
-        /*{ "bSortable": true,"sWidth":"250px","sClass":"text" },*/
         { "bSortable": true,"sWidth":"250px","sClass":"text" },
         { "bSortable": true,"sWidth":"160px","sClass":"number","asSorting": [ "desc","asc"  ] },
         { "bSortable": true,"sWidth":"160px" ,"sClass":"number","asSorting": [ "desc" ,"asc" ]},

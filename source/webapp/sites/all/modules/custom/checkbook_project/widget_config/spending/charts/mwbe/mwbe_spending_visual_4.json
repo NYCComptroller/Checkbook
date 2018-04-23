@@ -39,17 +39,17 @@
 "urlParamMapSubVendor":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"prime_vendor_id","category":"spending_category_id","industry":"industry_type_id"},
 "chartTitle":"Top Ten Agencies by M/WBE Spending",
 "widgetDataLoader":"
-    
+
     $where_filters = array();
     foreach($node->widgetConfig->requestParams as $param=>$value){
         $where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
     }
-    
+
     if(count($where_filters) > 0){
         $where_filter = ' where ' . implode(' and ' , $where_filters);
     }
-    
-    $mwbe_filter = _getRequestParamValue('mwbe');
+
+    $mwbe_filter = RequestUtilities::getRequestParamValue('mwbe');
     $sort_column = 8;
 	switch($mwbe_filter){
 		case '4~5' :
@@ -81,23 +81,23 @@
 			$sort_column = 9;
 			$ethinicty_case = ' WHEN minority_type_id = 7 THEN total_spending_amount
             				 ';
-			break;	
+			break;
 		case '2~3~4~5~9' :
 			$sort_column = 9;
 			$ethinicty_case = ' WHEN minority_type_id = 2 THEN total_spending_amount
            						 WHEN minority_type_id = 3 THEN total_spending_amount
             					 WHEN minority_type_id = 4 THEN total_spending_amount
             					 WHEN minority_type_id = 5 THEN total_spending_amount
-             					 WHEN minority_type_id = 9 THEN total_spending_amount 
+             					 WHEN minority_type_id = 9 THEN total_spending_amount
             				 ';
-			break;			
-		
+			break;
+
 	}
-    
+
     $sql = 'select  agency_name , a1.agency_id,
     SUM(
-       CASE 
-            ' . $ethinicty_case . '        
+       CASE
+            ' . $ethinicty_case . '
             ELSE 0
 	END) ethinicty_mwbe,
 	SUM(
@@ -109,38 +109,38 @@
             ELSE 0
 	END) total_mwbe,
 		SUM(
-       CASE 
+       CASE
              WHEN minority_type_id = 7 THEN total_spending_amount
             ELSE 0
 	END) total_non_mwbe
-	from {aggregateon_mwbe_spending_coa_entities} a1     
-    join {ref_agency} ra on ra.agency_id =  a1.agency_id  
+	from {aggregateon_mwbe_spending_coa_entities} a1
+    join {ref_agency} ra on ra.agency_id =  a1.agency_id
    ' . $where_filter . '
         group by  agency_name,a1.agency_id order by agency_name
     ';
-    
-    
+
+
     $node->data  = _checkbook_project_execute_sql($sql);
 
     $node->data_sub_ven = array();
 	$merged_array = array();
 
 	foreach($node->data as $row1){
-		
+
 		foreach($node->data_sub_ven as $row2){
 			if($row1['agency_id'] == $row2['agency_id']){
 				$row1['ethinicty_mwbe'] = $row1['ethinicty_mwbe'] + $row2['ethinicty_mwbe'];
 				$row1['total_mwbe'] = $row1['total_mwbe'] + $row2['total_mwbe'];
 				$row1['total_subven_non_mwbe'] =  $row2['total_mwbe'];
-				 
+
 			}
-			
+
 		}
 		$merged_array[] = $row1;
-		
+
 	}
-	
-	
+
+
 	usort($merged_array,
 			function($a, $b)
 			{
@@ -150,31 +150,31 @@
 				return ($a['ethinicty_mwbe'] > $b['ethinicty_mwbe']) ? -1 : 1;
 			}
 	);
-	
-	
+
+
 	$node->data_merged =  $merged_array;
-	
-	
+
+
 ",
 "widgetUpdateJSONConfig":"
-	
+
 	$series_new = array();
-	
-	
-	$mwbe_filter = _getRequestParamValue('mwbe');
-	
+
+
+	$mwbe_filter = RequestUtilities::getRequestParamValue('mwbe');
+
 	$amount_column = 'ethinicty_mwbe';
-	
-	$mwbe_filter = _getRequestParamValue('mwbe');
-	if($mwbe_filter =='4~5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){	
-		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName()  . ' Spending';
-		
-		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName()  . ' Top Ten Agencies Spending';
+
+	$mwbe_filter = RequestUtilities::getRequestParamValue('mwbe');
+	if($mwbe_filter =='4~5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){
+		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName()  . ' Spending';
+
+		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName()  . ' Top Ten Agencies Spending';
 	}else{
-		$node->widgetConfig->chartTitle = 'Top Ten Agencies by ' . MappingUtil::getCurrenEhtnicityName() .' Spending';
-		
+		$node->widgetConfig->chartTitle = 'Top Ten Agencies by ' . MappingUtil::getCurrenEthnicityName() .' Spending';
+
 	}
-	
+
 	$index = 0;
 	if(SpendingUtil::_mwbe_spending_use_subvendor()){
 		unset($node->widgetConfig->gridConfig->table_columns[3]);
@@ -183,32 +183,32 @@
 	}
 	foreach($node->data_merged as $row){
 			if(SpendingUtil::_mwbe_spending_use_subvendor()){
-	 			$tooltip_label = 
+	 			$tooltip_label =
 	 						'Agency: ' . $row['agency_name'].  '<br/>' .
-	 						'M/WBE Spending: ' . custom_number_formatter_format( $row[$amount_column],2,'$').  '<br/>' 	 			 
+	 						'M/WBE Spending: ' . custom_number_formatter_format( $row[$amount_column],2,'$').  '<br/>'
 	 						;
-	 			$node->widgetConfig->gridConfig->data[] = array($row['agency_name'],									
-									(float)$row[$amount_column] );	
-				$node->widgetConfig->gridConfig->sortColumn =  1;				
-	 						
+	 			$node->widgetConfig->gridConfig->data[] = array($row['agency_name'],
+									(float)$row[$amount_column] );
+				$node->widgetConfig->gridConfig->sortColumn =  1;
+
 	 		}else{
-	 			$tooltip_label = 
+	 			$tooltip_label =
 	 						'Agency: ' . $row['agency_name'].  '<br/>' .
 	 						 'M/WBE Share: ' . custom_number_formatter_format($row[$amount_column]/($row['total_mwbe'] + $row['total_non_mwbe'] ) *100 ,1,null, '%').  '<br/>' .
 	 						 'M/WBE Spending: ' . custom_number_formatter_format( $row[$amount_column],2,'$').  '<br/>' .
-	 						'Non-M/WBE: ' . custom_number_formatter_format( $row['total_non_mwbe'] - $row['total_subven_non_mwbe']  ,2,'$').  '<br/>' 
-	 						;	 	
+	 						'Non-M/WBE: ' . custom_number_formatter_format( $row['total_non_mwbe'] - $row['total_subven_non_mwbe']  ,2,'$').  '<br/>'
+	 						;
 	 			$node->widgetConfig->gridConfig->data[] = array($row['agency_name'],
 									custom_number_formatter_format($row[$amount_column]/($row['total_mwbe'] + $row['total_non_mwbe'] ) *100 ,1,null, '%'),
 									(float)$row[$amount_column] ,
-									(float)$row['total_non_mwbe']);					
-	 		} 
-			$link= CustomURLHelper::prepareUrl('spending_landing', SpendingUtil::$landingPageParams, array('expandBottomCont'=>'true'), array('agency'=>$row['agency_id']) );	 						
+									(float)$row['total_non_mwbe']);
+	 		}
+			$link= CustomURLHelper::prepareUrl('spending_landing', SpendingUtil::$landingPageParams, array('expandBottomCont'=>'true'), array('agency'=>$row['agency_id']) );
 			$series_new[$index]->url = $link;
-	 						
+
 			$series_new[$index]->y = (float)$row[$amount_column];
 			$series_new[$index]->tooltip_label = $tooltip_label;
-			
+
 			$index += 1;
 			if($index == 10){
 				break;
@@ -219,23 +219,23 @@
 	$node->widgetConfig->chartConfig->series[0]->type = 'column';
 	$node->widgetConfig->chartConfig->series[0]->pointWidth = 30;
 	$node->widgetConfig->chartConfig->series[0]->data = $series_new;
-	
-    
-	
-	
+
+
+
+
 ",
 "chartConfig" : {
 	"colors":["#7DB7E5"],
 	"chart" : {"width":750},
     "plotOptions": {
             "series": {
-                "cursor": "pointer"   ,            
+                "cursor": "pointer"   ,
                 "stacking": "normal",
                 "dataLabels": {
                     "enabled": false
                 },
                 "minPointLength":3    ,
-                "point": {"events": {"function": "clickEvent"}}         
+                "point": {"events": {"function": "clickEvent"}}
             }
     },
     "xAxis": {
@@ -259,7 +259,7 @@
         "labels":{"rotation": 0,"function":"yAxisFormatter"}
     } ,
     "legend": {
-        "enabled": false       
+        "enabled": false
     },
     "tooltip":{"function":"tooltipformatter"}
     }

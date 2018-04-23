@@ -97,12 +97,12 @@ class SpendingUrlService {
             return null;
         }
 
-        $year_type = _getRequestParamValue("yeartype");
-        $industry = _getRequestParamValue("industry");
-        $agency_id = _getRequestParamValue("agency");
-        $category = _getRequestParamValue("category");
-        $dashboard = _getRequestParamValue("dashboard");
-        $datasource = _getRequestParamValue("datasource");
+        $year_type = RequestUtilities::getRequestParamValue("yeartype");
+        $industry = RequestUtilities::getRequestParamValue("industry");
+        $agency_id = RequestUtilities::getRequestParamValue("agency");
+        $category = RequestUtilities::getRequestParamValue("category");
+        $dashboard = RequestUtilities::getRequestParamValue("dashboard");
+        $datasource = RequestUtilities::getRequestParamValue("datasource");
 
         $latest_minority_id = !isset($year_id)
             ? PrimeVendorService::getLatestMinorityType($vendor_id, $agency_id)
@@ -149,11 +149,11 @@ class SpendingUrlService {
      */
     static function subVendorUrl($vendor_id, $year_id = null) {
 
-        $year_type = _getRequestParamValue("yeartype");
-        $agency_id = _getRequestParamValue("agency");
-        $industry = _getRequestParamValue("industry");
-        $dashboard = _getRequestParamValue("dashboard");
-        $datasource = _getRequestParamValue("datasource");
+        $year_type = RequestUtilities::getRequestParamValue("yeartype");
+        $agency_id = RequestUtilities::getRequestParamValue("agency");
+        $industry = RequestUtilities::getRequestParamValue("industry");
+        $dashboard = RequestUtilities::getRequestParamValue("dashboard");
+        $datasource = RequestUtilities::getRequestParamValue("datasource");
 
         $latest_minority_id = !isset($year_id)
             ? SubVendorService::getLatestMinorityType($vendor_id, $agency_id)
@@ -199,8 +199,8 @@ class SpendingUrlService {
             return null;
         }
 
-        $dashboard = _getRequestParamValue("dashboard") ?: "mp";
-        $url = self::mwbeUrl($minority_type_id,$dashboard);
+        $dashboard = RequestUtilities::getRequestParamValue("dashboard") ?: "mp";
+        $url = static::mwbeUrl($minority_type_id,$dashboard);
 
         return $url;
     }
@@ -221,7 +221,7 @@ class SpendingUrlService {
             return null;
         }
         $dashboard = "sp";
-        $url = self::mwbeUrl($minority_type_id,$dashboard);
+        $url = static::mwbeUrl($minority_type_id,$dashboard);
 
         return $url;
     }
@@ -259,7 +259,7 @@ class SpendingUrlService {
 
         $url = '/panel_html/spending_transactions/spending/transactions'
             . RequestUtilities::_getUrlParamString('vendor')
-            . self::getVendorFacetParameter()
+            . static::getVendorFacetParameter()
             . RequestUtilities::_getUrlParamString('agency')
             . RequestUtilities::_getUrlParamString('category')
             . RequestUtilities::_getUrlParamString('industry')
@@ -281,7 +281,7 @@ class SpendingUrlService {
         $legacy_node_id = isset($legacy_node_id) ? '/dtsmnid/'.$legacy_node_id : '';
         $url = '/panel_html/spending_transactions/spending/transactions'
             . RequestUtilities::_getUrlParamString('vendor')
-            . self::getVendorFacetParameter()
+            . static::getVendorFacetParameter()
             . RequestUtilities::_getUrlParamString('agency')
             . RequestUtilities::_getUrlParamString('category')
             . RequestUtilities::_getUrlParamString('industry')

@@ -19,7 +19,7 @@
             "agency.agency.agency_name","subvendor.subvendor"],
 "defaultParamTypeConfig":{"dollar_difference":"ne"},
 "adjustParameters":"
-    if(_getRequestParamValue('dashboard') == 'ss'){
+    if(RequestUtilities::getRequestParamValue('dashboard') == 'ss'){
         unset($parameters['minority_type_id']);
     }
     $adjustedParameters = $parameters;
@@ -48,19 +48,19 @@
     },
     "agency_name_link": {
         "type": "expression2",
-        "expression": "'<a href=\"/contracts_landing' .  _checkbook_project_get_url_param_string(\"status\")  .   _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() .'/agency/' . $row[agency_agency] .  '?expandBottomCont=true\">' .$row[agency_name_formatted]. '</a>'"
+        "expression": "'<a href=\"/contracts_landing' .  _checkbook_project_get_url_param_string(\"status\")  .   _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() .'/agency/' . $row['agency_agency'] .  '?expandBottomCont=true\">' .$row['agency_name_formatted']. '</a>'"
     },
     "subvendor_name_link": {
         "type": "expression2",
-        "expression": "'<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row[subvendor_subvendor],_getRequestParamValue('year'),$row[yeartype_yeartype]) .  '?expandBottomCont=true\">' .$row[subvendor_name_formatted]. '</a>'"
+        "expression": "'<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row['subvendor_subvendor'],RequestUtilities::getRequestParamValue('year'),$row['yeartype_yeartype']) .  '?expandBottomCont=true\">' .$row['subvendor_name_formatted']. '</a>'"
     } ,
     "contract_link": {
         "type": "expression2",
-        "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/contract_transactions/contract_details/agid/' .$row[sub_contract_number_sub_contract_number_original_agreement_id]  .  _checkbook_project_get_url_param_string(\"status\")  .  '/doctype/'   . $row[document_code_document_code_document_code]  . _checkbook_append_url_params()  . '\">' . $row['contract_number_contract_number'] . '</a>'"
+        "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/contract_transactions/contract_details/agid/' .$row['sub_contract_number_sub_contract_number_original_agreement_id']  .  _checkbook_project_get_url_param_string(\"status\")  .  '/doctype/'   . $row['document_code_document_code_document_code']  . _checkbook_append_url_params()  . '\">' . $row['contract_number_contract_number'] . '</a>'"
     } ,
     "spent_amount_link": {
         "type": "expression2",
-        "expression": "'<a class=\"new_window\" href=\"/contract/spending/transactions/agid/' .$row[original_agreement_original_agreement] .   _checkbook_project_get_url_param_string(\"status\") .  ContractURLHelper::_checkbook_project_spending_get_year_url_param_string()  . _checkbook_append_url_params() . '/smnid/' . $node->nid . ContractUtil::getSpentToDateParams() . '/newwindow\">' . '$' . custom_number_formatter_format($row['spending_amount_sum'],2). '</a>'"
+        "expression": "'<a class=\"new_window\" href=\"/contract/spending/transactions/agid/' .$row['original_agreement_original_agreement'] .   _checkbook_project_get_url_param_string(\"status\") .  ContractURLHelper::_checkbook_project_spending_get_year_url_param_string()  . _checkbook_append_url_params() . '/smnid/' . $node->nid . ContractUtil::getSpentToDateParams() . '/newwindow\">' . '$' . custom_number_formatter_format($row['spending_amount_sum'],2). '</a>'"
     } ,
     "formatted_original_amount_sum": {
         "type": "expression2",

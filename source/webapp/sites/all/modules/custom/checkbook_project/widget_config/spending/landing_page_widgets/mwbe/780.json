@@ -9,7 +9,7 @@
     "noDataInitialLoad":true,
     "totalAggregateColumns":["check_amount_sum"],
     "adjustTotalAggregateColumnsParameters":"
-    if(_getRequestParamValue('smnid') == 780) {
+    if(RequestUtilities::getRequestParamValue('smnid') == 780) {
         unset($parameters['agency_id']);
     }
     return $parameters;
@@ -49,7 +49,7 @@
         },
         "agency_name_link": {
             "type": "expression2",
-            "expression": "'<a href=\"' . SpendingUtil::getAgencyNameLinkUrl($node,$row) . '\">' . $row[agency_name_formatted] . '</a>'"
+            "expression": "'<a href=\"' . SpendingUtil::getAgencyNameLinkUrl($node,$row) . '\">' . $row['agency_name_formatted'] . '</a>'"
         },
         "formatted_check_amount_sum": {
             "type": "expression2",

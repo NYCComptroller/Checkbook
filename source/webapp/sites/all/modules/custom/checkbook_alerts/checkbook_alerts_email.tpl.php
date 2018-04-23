@@ -1,8 +1,7 @@
 
 Below are the results of the triggered alert(s) from checkbooknyc.com:
 
-<?php global $conf; ?>
-<?php
+<?php global $conf; 
 foreach($alerts as $alert)
 {
     $description = $alert->label;

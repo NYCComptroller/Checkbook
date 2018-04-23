@@ -110,6 +110,8 @@ class SqlModelFactory {
         $sql = $query.$orderBy.$limit;
         $sqlStatementModel->query = htmlspecialchars_decode($sql, ENT_NOQUOTES);
 
+        LogHelper::log_notice($query);
+
         //count query
         $sqlCount = "SELECT COUNT(*) as record_count FROM ( {$query} ) sub_query";
         $sqlStatementModel->countQuery = htmlspecialchars_decode($sqlCount, ENT_NOQUOTES);
@@ -227,42 +229,26 @@ class SqlModelFactory {
         }
         switch($operator) {
             case SqlOperator::EQUAL:
-                $where = "{$name} $operator {$value}";
-                break;
             case SqlOperator::NOT_EQUAL:
-                $where = "{$name} $operator {$value}";
-                break;
             case SqlOperator::GREATER_THAN:
-                $where = "{$name} $operator {$value}";
-                break;
             case SqlOperator::LESS_THAN:
-                $where = "{$name} $operator {$value}";
-                break;
             case SqlOperator::GREATER_THAN_EQ:
-                $where = "{$name} $operator {$value}";
-                break;
             case SqlOperator::LESS_THAN_EQ:
+            case SqlOperator::NOT_IN:
+            case SqlOperator::LIKE:
+            case SqlOperator::ILIKE:
+            case SqlOperator::IS:
+            case SqlOperator::IS_NOT:
                 $where = "{$name} $operator {$value}";
                 break;
+
             case SqlOperator::IN:
                 $value = (substr($value, 0, 1) != "(" && substr($value, -1, 1) != ")") ? "(".$value.")" : $value;
                 $where = "{$name} $operator {$value}";
                 break;
-            case SqlOperator::NOT_IN:
-                $where = "{$name} $operator {$value}";
-                break;
-            case SqlOperator::LIKE:
-                $where = "{$name} $operator {$value}";
-                break;
-            case SqlOperator::ILIKE:
-                $where = "{$name} $operator {$value}";
-                break;
-            case SqlOperator::IS:
-                $where = "{$name} $operator {$value}";
-                break;
-            case SqlOperator::IS_NOT:
-                $where = "{$name} $operator {$value}";
-                break;
+
+
+
         }
         return $where;
     }

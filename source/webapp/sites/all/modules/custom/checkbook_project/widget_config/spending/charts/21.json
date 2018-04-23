@@ -32,9 +32,9 @@
 "urlParamMap":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"vendor_id","category":"spending_category_id"},
 "adjustParameters":"
         $year = 'year_id';
-        $config->model->series[0]->additionalParameters->$year = $parameters[year_id][0]  ;
-        $config->model->series[1]->additionalParameters->$year = $parameters[year_id][0] -1 ;
-        $config->model->series[2]->additionalParameters->$year = $parameters[year_id][0];
+        $config->model->series[0]->additionalParameters->$year = $parameters['year_id'][0]  ;
+        $config->model->series[1]->additionalParameters->$year = $parameters['year_id'][0] -1 ;
+        $config->model->series[2]->additionalParameters->$year = $parameters['year_id'][0];
         return $parameters;
 ",
 "model": {
@@ -101,7 +101,7 @@
 
     $node->widgetConfig->chartConfig->series[0]->name = $SeriesPreviousYearLabel;
     $node->widgetConfig->chartConfig->series[1]->name = $SeriesCurrentYearLabel;
-    $data_source = _getRequestParamValue('datasource');
+    $data_source = RequestUtilities::getRequestParamValue('datasource');
     $smnid = (isset($data_source) && $data_source == 'checkbook_oge') ? '/smnid/652' : '/smnid/706';
     $urlParams = CustomURLHelper::get_url_param($pathParams, 'datasource');
     $categories=array();

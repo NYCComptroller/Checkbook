@@ -29,94 +29,94 @@
 "urlParamMapSubVendor":{"yeartype":"type_of_year","agency":"agency_id","vendor":"prime_vendor_id","category":"spending_category_id","industry":"industry_type_id"},
 "chartTitle":"M/WBE Total Prime Spending Share",
 "widgetDataLoader":"
-    
+
     $where_filters = array();
     foreach($node->widgetConfig->requestParams as $param=>$value){
         $where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
     }
-    
+
     if(count($where_filters) > 0){
         $where_filter = ' where ' . implode(' and ' , $where_filters);
     }
-    
+
     $sql = 'select rm.minority_type_id, rm.minority_type_name ,year_value, sum(total_spending_amount) total_spending
-    from {aggregateon_mwbe_spending_coa_entities} a1 
+    from {aggregateon_mwbe_spending_coa_entities} a1
     join {ref_minority_type} rm on rm.minority_type_id = a1.minority_type_id
-    join {ref_year} ry on a1.year_id = ry.year_id       
+    join {ref_year} ry on a1.year_id = ry.year_id
    ' . $where_filter . '
     group by rm.minority_type_id, rm.minority_type_name,year_value  ';
-    
+
     $node->data  = _checkbook_project_execute_sql($sql);
 ",
 "widgetUpdateJSONConfig":"
 
 	$series =  array();
 	$non_mwbe_data = array();
-	$year_id = _getRequestParamValue('year');
-	$mwbe_page_cats = explode('~',_getRequestParamValue('mwbe'));
+	$year_id = RequestUtilities::getRequestParamValue('year');
+	$mwbe_page_cats = explode('~',RequestUtilities::getRequestParamValue('mwbe'));
 	$year = _getYearValueFromID($year_id);
 	 foreach ($node->data as $row){
-	 
+
 	 	switch($row['minority_type_id']){
 	 		case '2':
 	 		if(in_array(2,$mwbe_page_cats))
 	 			$series[$row['year_value']]->y += $row['total_spending'];
-	 		$series[$row['year_value']]->mwbe_total += $row['total_spending']; 
+	 		$series[$row['year_value']]->mwbe_total += $row['total_spending'];
 	 		break;
 	 		case '3':
 	 		if(in_array(3,$mwbe_page_cats))
-	 			$series[$row['year_value']]->y += $row['total_spending']; 
+	 			$series[$row['year_value']]->y += $row['total_spending'];
 	 		$series[$row['year_value']]->mwbe_total += $row['total_spending'];
 	 		break;
 	 		case '4':
 	 		if(in_array(4,$mwbe_page_cats))
-	 			$series[$row['year_value']]->y += $row['total_spending']; 
+	 			$series[$row['year_value']]->y += $row['total_spending'];
 	 		$series[$row['year_value']]->mwbe_total += $row['total_spending'];
 	 		break;
 	 		case '5':
 	 		if(in_array(5,$mwbe_page_cats))
-	 			$series[$row['year_value']]->y += $row['total_spending']; 
+	 			$series[$row['year_value']]->y += $row['total_spending'];
 	 		$series[$row['year_value']]->mwbe_total += $row['total_spending'];
 	 		break;
 	 		case '9':
 	 		if(in_array(9,$mwbe_page_cats))
-	 			$series[$row['year_value']]->y += $row['total_spending']; 
+	 			$series[$row['year_value']]->y += $row['total_spending'];
 	 		$series[$row['year_value']]->mwbe_total += $row['total_spending'];
 	 		break;
 	 		case '7':
-	 		$non_mwbe_data[$row['year_value']] = $row['total_spending']; 
+	 		$non_mwbe_data[$row['year_value']] = $row['total_spending'];
 	 		break;
-	 	}	
+	 	}
 	 }
-	
+
 	$i = 0;
 	$categories = array();
 	ksort($series);
-	
+
 	$series_new = array();
 	$index = 0;
-		
+
 	foreach($series as $key=>$row){
 		if($key <= $year && $key >= $year - 4){
-			if(_getRequestParamValue('yeartype') == 'C'){
+			if(RequestUtilities::getRequestParamValue('yeartype') == 'C'){
 				 $year_display = 'CY ' . $key;
 			}else{
 				$year_display = 'FY ' . $key;
 			}
-	 		$tooltip_label = 
+	 		$tooltip_label =
 	 						'Year: ' . $year_display.  '<br/>' .
-	 						'Amount: '. custom_number_formatter_format($series[$key]->y,2,'$')   . '<br/>' ; 
-		
+	 						'Amount: '. custom_number_formatter_format($series[$key]->y,2,'$')   . '<br/>' ;
+
 			$series_new[$index]->y = $series[$key]->y/($series[$key]->mwbe_total + $non_mwbe_data[$key] ) * 100;
 			$series_new[$index]->tooltip_label = $tooltip_label;
-			$series_new[$index]->custom_label = custom_number_formatter_format($series[$key]->y/($series[$key]->mwbe_total + $non_mwbe_data[$key] ) *100,1,null,'%') ; 
+			$series_new[$index]->custom_label = custom_number_formatter_format($series[$key]->y/($series[$key]->mwbe_total + $non_mwbe_data[$key] ) *100,1,null,'%') ;
 			$categories[] = $key ;
 			$node->widgetConfig->gridConfig->data[] = array($year_display,$series[$key]->y );
-			$index += 1; 	
-		}	
+			$index += 1;
+		}
 	}
 
-    $categoryId = _getRequestParamValue('category');
+    $categoryId = RequestUtilities::getRequestParamValue('category');
     if(isset($categoryId)){
         $categoryDetails = SpendingUtil::getSpendingCategoryDetails($categoryId,'display_name');
         if(is_array($categoryDetails)){
@@ -125,20 +125,20 @@
         }
     }
     else $spend_cat = 'Total Prime Spending';
-	$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' ' . $spend_cat . ' Share';
+	$node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName() . ' ' . $spend_cat . ' Share';
 	$node->widgetConfig->chartConfig->series[0]->name = 'Fiscal Years';
 	$node->widgetConfig->chartConfig->series[0]->type = 'column';
 	$node->widgetConfig->chartConfig->series[0]->pointWidth = 80;
 	$node->widgetConfig->chartConfig->series[0]->data = $series_new;
 	$node->widgetConfig->chartConfig->xAxis->categories = $categories;
 
-																		 
+
 ",
 "chartConfig" : {
 	"colors":["#7DB7E5"],
     "plotOptions": {
             "series": {
-                "minPointLength":40 ,                
+                "minPointLength":40 ,
                 "stacking": "normal",
                 "dataLabels": {
                     "enabled": true,
@@ -147,7 +147,7 @@
                 		"color": "#FFFFFF",
                 		"fontSize": "24px"
             		}
-                }             
+                }
             }
     },
     "xAxis": {
@@ -166,13 +166,13 @@
     "title": {"text": ""},
     "yAxis": {
      	"min":0,
-     	"minRange": 0.1,    
+     	"minRange": 0.1,
         "startOnTick":true,
         "title": {"text": ""},
         "labels":{"rotation": 0,"function":"yAxisFormatter"}
     } ,
     "legend": {
-        "enabled": false       
+        "enabled": false
     },
     "tooltip":{"function":"tooltipformatter"}
     }

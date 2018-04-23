@@ -6,12 +6,12 @@
         var agency_selected = $('#edit-agency').val();
         showHidePrimeAndSubIcon();
 
-        if (data_source == "checkbook_oge" && agency_selected == 'Citywide (All Agencies)') {
+        if (data_source === "checkbook_oge" && agency_selected ==='Citywide (All Agencies)') {
             $('input:radio[name="datafeeds-contracts-domain-filter"][value="checkbook_oge"]').removeAttr('checked').button("refresh");
             $('input:radio[name="datafeeds-contracts-domain-filter"][value="checkbook"]').attr('checked', 'checked').button("refresh");
             $('input:hidden[name="data_source"]').val("checkbook");
         }
-        
+
         //On change of "Sub Vendor Status in PIP" status
         $('#edit-sub_vendor_status_in_pip_id').change(function() {
             var sub_vendor_status = $('#edit-sub_vendor_status_in_pip_id').val();
@@ -45,7 +45,7 @@
             }
         });
     });
-    
+
     function showHidePrimeAndSubIcon(){
             var note = jQuery(".prime-and-sub-note-datafeeds");
             var contract_status = jQuery(".contractstatus");
@@ -174,7 +174,7 @@
         $('#ms-edit-column-select-all a.deselect').click(function () {
             $('#edit-column-select-all').multiSelect('deselect_all');
         });
-       
+
         showHidePrimeAndSubIcon();
     }
 
@@ -281,7 +281,7 @@
             //Set up jQuery datepickers
             var currentYear = new Date().getFullYear();
             $('.datepicker', context).datepicker({dateFormat:"yy-mm-dd",
-                                                changeMonth:true,     
+                                                changeMonth:true,
                                                 changeYear:true,
                                                 yearRange:'-'+(currentYear-1900)+':+'+(2500-currentYear)});
             //Disable Year option for All Years
@@ -514,6 +514,6 @@
             output = 0;
         }
         return output;
-    } 
+    }
 
 }(jQuery));

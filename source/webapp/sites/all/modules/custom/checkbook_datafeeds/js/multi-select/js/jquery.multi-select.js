@@ -33,7 +33,7 @@
               selectedContainer = $('<div class="ms-selection"></div>'),
               selectableUl = $('<ul class="ms-list"></ul>'),
               selectedUl = $('<ul class="ms-list"></ul>');
-          
+
           if (multiSelects.settings.emptyArray){
             if (ms.find("option[value='']").length == 0){
               ms.prepend("<option value='' selected='selected'></option>");
@@ -58,7 +58,7 @@
             if ($(this).is("option:not(option[value=''])")){
               var klass = $(this).attr('class') ? ' '+$(this).attr('class') : '';
               var selectableLi = $('<li class="ms-elem-selectable'+klass+'" ms-value="'+$(this).val()+'">'+$(this).text()+'</li>');
-            
+
               if ($(this).attr('title'))
                 selectableLi.attr('title', $(this).attr('title'));
               if ($(this).attr('disabled') || ms.attr('disabled')){
@@ -89,7 +89,7 @@
           var hiddenField = $('input[name="hidden_multiple_value"]');
           var hiddenValue = hiddenField.val();
 
-          if(hiddenValue != '') {
+          if(hiddenValue !== '') {
               //String the padding off the hidden string and put in array.
               //i.e value = '|a||b||c|' array = {'a','b','c'}
               hiddenValue = hiddenValue.substr(1);
@@ -121,10 +121,10 @@
         var selectedLi = $('<li class="ms-elem-selected'+(klass ? ' '+klass : '')+'" ms-value="'+value+'">'+text+'</li>'),
             selectableUl = $('#ms-'+ms.attr('id')+' .ms-selectable ul'),
             selectedUl = $('#ms-'+ms.attr('id')+' .ms-selection ul'),
-            selectableLi = selectableUl.children('li[ms-value="'+value+'"]'),        
+            selectableLi = selectableUl.children('li[ms-value="'+value+'"]'),
             haveToSelect =  !selectableLi.hasClass(ms.data('settings').disabledClass) && value != '' &&
                             ((method == 'init' && selectedOption.attr('selected')) ||
-                              (method != 'init' && !selectedOption.attr('selected')))
+                              (method !== 'init' && !selectedOption.attr('selected')))
 
         if (haveToSelect ){
         //For tracking order, use hidden field
@@ -150,13 +150,13 @@
           });
 
           var selectedUlLis = selectedUl.children('.ms-elem-selected');
-          if (method != 'init' && ms.data('settings').keepOrder && selectedUlLis.length > 0) {
+          if (method !== 'init' && ms.data('settings').keepOrder && selectedUlLis.length > 0) {
 
             var getIndexOf = function(value) {
               elems = selectableUl.children('.ms-elem-selectable');
               return(elems.index(elems.closest('[ms-value="'+value+'"]')));
             }
-            
+
             var index = getIndexOf(selectedLi.attr('ms-value'));
             if (index == 0)
               selectedUl.prepend(selectedLi);
@@ -177,14 +177,14 @@
           if (ms.find("option[value='']")){
             ms.find("option[value='']").removeAttr('selected');
           }
-          if (method == "select_all" && parentOptgroup.children('.ms-elem-selectable').length > 0){
+          if (method === "select_all" && parentOptgroup.children('.ms-elem-selectable').length > 0){
             parentOptgroup.children('.ms-optgroup-label').hide();
           }
-          if(method != 'init' || ms.data('settings').callbackOnInit){
+          if(method !== 'init' || ms.data('settings').callbackOnInit){
             selectedUl.trigger('change');
             selectableUl.trigger('change');
             if (typeof ms.data('settings').afterSelect == 'function' &&
-                (method != 'init' || ms.data('settings').callbackOnInit)) {
+                (method !== 'init' || ms.data('settings').callbackOnInit)) {
               ms.data('settings').afterSelect.call(this, value, text);
             }
         }
@@ -201,13 +201,13 @@
         var hiddenValue = hiddenField.val();
         var newValue = hiddenValue.replace('|'+value+'|', "");
         hiddenField.val(newValue);
-      
+
       if(selectedLi){
         var selectableUl = $('#ms-'+ms.attr('id')+' .ms-selectable ul'),
             selectedUl = $('#ms-'+ms.attr('id')+' .ms-selection ul'),
             selectableLi = selectableUl.children('li[ms-value="'+value+'"]'),
             selectedLi = selectedUl.children('li[ms-value="'+value+'"]');
-       
+
         var parentOptgroup = selectableLi.parent('.ms-optgroup');
         if (parentOptgroup.length > 0){
           parentOptgroup.children('.ms-optgroup-label').addClass('collapse').show();
@@ -217,7 +217,7 @@
         selectableLi.show();
         selectableLi.removeClass('ms-selected');
         selectedLi.remove();
-        if (ms.data('settings').emptyArray && selectedUl.children('li').length == 0){
+        if (ms.data('settings').emptyArray && selectedUl.children('li').length === 0){
           if (ms.find("option[value='']")){
             ms.find("option[value='']").attr('selected', 'selected');
           }

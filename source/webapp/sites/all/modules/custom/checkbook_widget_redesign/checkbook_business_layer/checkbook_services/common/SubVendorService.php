@@ -18,11 +18,12 @@ class SubVendorService extends VendorService {
      * @param $vendor_id
      * @param $year_id
      * @param $type_of_year
+     * @param $vendor_type
      * @param string $domain
      * @return bool
      */
-    public static function getLatestMinorityTypeByYear($vendor_id, $year_id, $type_of_year, $domain = null) {
-        return parent::getLatestMinorityTypeByYear($vendor_id, $year_id, $type_of_year,'S',$domain);
+    public static function getLatestMinorityTypeByYear($vendor_id, $year_id, $type_of_year, $vendor_type = 'S', $domain = null) {
+        return parent::getLatestMinorityTypeByYear($vendor_id, $year_id, $type_of_year,$vendor_type, $domain);
     }
 
     /**

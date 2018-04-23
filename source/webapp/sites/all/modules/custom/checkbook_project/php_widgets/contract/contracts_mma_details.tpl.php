@@ -17,50 +17,29 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-?>
-<?php
 
-if ( _getRequestParamValue("datasource") == "checkbook_oge") {
+
+if ( RequestUtilities::getRequestParamValue("datasource") == "checkbook_oge") {
     $datasource ="/datasource/checkbook_oge";
     $oge_class = "oge-ma-details";
 }else{
     $oge_class = "cb-ma-details";
 }
-if(_getRequestParamValue("status")){
-    $status = '/status/'._getRequestParamValue("status");
+if(RequestUtilities::getRequestParamValue("status")){
+    $status = '/status/'.RequestUtilities::getRequestParamValue("status");
 }else{
     $status = '/status/A';
 }
 
+$vendor_link = _checkbook_vendor_link($node->data[0]['vendor_id_checkbook_vendor_history'],TRUE);
+$agency_link = _checkbook_agency_link($node->data[0]['agency_id_checkbook_agency'],TRUE);
 
-if (_getRequestParamValue("doctype") == "RCT1") {
-    $vendor_link = '/contracts_revenue_landing'.$status.'/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
-        . $node->data[0]['vendor_id_checkbook_vendor_history'] . '?expandBottomCont=true';
-    $agency_link = '/contracts_revenue_landing'.$status.'/year/' . _getCurrentYearID() . '/yeartype/B/agency/'
-        . $node->data[0]['agency_id_checkbook_agency'] . '?expandBottomCont=true';
-}
-else {
-    if(_is_mwbe_vendor(_getRequestParamValue("magid"))){
-        $vendor_link = '/contracts_landing'.$status.'/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
-            . $node->data[0]['vendor_id_checkbook_vendor_history'] . '/dashboard/mp?expandBottomCont=true';
-        $agency_link = '/contracts_landing'.$status.'/year/' . _getCurrentYearID() . '/yeartype/B/agency/'
-            . $node->data[0]['agency_id_checkbook_agency'] . '/dashboard/mp?expandBottomCont=true';
-    }
-    else{
-        $vendor_link = '/contracts_landing'.$status.'/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
-            . $node->data[0]['vendor_id_checkbook_vendor_history'] . '?expandBottomCont=true';
-        $agency_link = '/contracts_landing'.$status.'/year/' . _getCurrentYearID() . '/yeartype/B/agency/'
-            . $node->data[0]['agency_id_checkbook_agency'] . '?expandBottomCont=true';
-    }
-
-}
-
-$spending_link = "/spending/transactions/magid/" . _getRequestParamValue("magid") . $datasource . "/newwindow";
+$spending_link = "/spending/transactions/magid/" . RequestUtilities::getRequestParamValue("magid") . $datasource . "/newwindow";
 if(!preg_match("/newwindow/",current_path())){
     $newwindowclass= 'class="new_window"';
 }
 
-if (_getRequestParamValue("datasource") != "checkbook_oge") {
+if (RequestUtilities::getRequestParamValue("datasource") != "checkbook_oge") {
     $contract_number = $node->data[0]['contract_number'];
     $querySubVendorCount = "SELECT  COUNT(DISTINCT vendor_id) AS sub_vendor_count  FROM sub_agreement_snapshot
                             WHERE contract_number = '". $contract_number . "'
@@ -68,6 +47,8 @@ if (_getRequestParamValue("datasource") != "checkbook_oge") {
                             LIMIT 1";
 
     $results3 = _checkbook_project_execute_sql_by_data_source($querySubVendorCount,_get_current_datasource());
+    if (!isset($res))
+        $res = new stdClass();
     $res->data = $results3;
     $total_subvendor_count = $res->data[0]['sub_vendor_count'];
 }
@@ -81,13 +62,13 @@ if (_getRequestParamValue("datasource") != "checkbook_oge") {
 
 
 
-        if ( _getRequestParamValue("datasource") == "checkbook_oge" && !preg_match('/newwindow/',$_GET['q']) && $node->data_source_amounts_differ) {
+        if ( RequestUtilities::getRequestParamValue("datasource") == "checkbook_oge" && !preg_match('/newwindow/',$_GET['q']) && $node->data_source_amounts_differ) {
             $alt_txt = "This master agreement has additional information as a prime vendor.<br><br> Click this icon to view this contract as a prime vendor. ";
-            $url="/contract_details/magid/" .  _getRequestParamValue("magid") . "/doctype/MMA1/newwindow";
+            $url="/contract_details/magid/" .  RequestUtilities::getRequestParamValue("magid") . "/doctype/MMA1/newwindow";
             echo "<div class='contractLinkNote'><a class='new_window' href='". $url ."' alt='" . $alt_txt . "' >Open in New Window</a></div>";
         }elseif( !preg_match('/newwindow/',$_GET['q']) && _checkbook_is_oge_parent_contract($node->data[0]['contract_number'])  && $node->data_source_amounts_differ){
             $alt_txt = "This master agreement has additional information as an agency <br><br> Click this icon to view this contract as an agency ";
-            $url="/contract_details/magid/" .  _getRequestParamValue("magid") . "/doctype/MMA1/datasource/checkbook_oge/newwindow";
+            $url="/contract_details/magid/" .  RequestUtilities::getRequestParamValue("magid") . "/doctype/MMA1/datasource/checkbook_oge/newwindow";
             echo "<div class='contractLinkNote'><a class='new_window' href='". $url ."' alt='" . $alt_txt . "' >Open in New Window</a></div>";
         }
         ?>
@@ -138,7 +119,7 @@ if (_getRequestParamValue("datasource") != "checkbook_oge") {
                         class="gi-list-item">Award Method:</span> <?php echo $node->data[0]['award_method_name_checkbook_award_method'];?>
                 </li>
                 <?php
-                if ( _getRequestParamValue("datasource") != "checkbook_oge") {
+                if ( RequestUtilities::getRequestParamValue("datasource") != "checkbook_oge") {
                     ?>
                     <li><span class="gi-list-item">Version Number:</span> <?php echo $node->data[0]['document_version'];?></li>
                 <?php
@@ -148,7 +129,7 @@ if (_getRequestParamValue("datasource") != "checkbook_oge") {
                         class="gi-list-item">FMS Document:</span> <?php echo $node->data[0]['document_code_checkbook_ref_document_code'];?>
                 </li>
                 <?php
-                if ( _getRequestParamValue("datasource") != "checkbook_oge") {
+                if ( RequestUtilities::getRequestParamValue("datasource") != "checkbook_oge") {
                     ?>
                     <li><span class="gi-list-item">Total Number of Sub Vendors:</span> <?php if($total_subvendor_count > 0) { echo $total_subvendor_count; } else { echo 'N/A'; } ?>
                     </li>
@@ -168,7 +149,7 @@ if (_getRequestParamValue("datasource") != "checkbook_oge") {
                         class="gi-list-item">End Date:</span> <?php echo format_string_to_date($node->data[0]['date_chckbk_date_id_effctv_end_dat_id_chckbk_hstr_mstr_agrmnt_1']);?>
                 </li>
                 <?php
-                if ( _getRequestParamValue("datasource") != "checkbook_oge") {
+                if ( RequestUtilities::getRequestParamValue("datasource") != "checkbook_oge") {
                     ?>
                     <li><span
                             class="gi-list-item">Registration Date:</span> <?php echo format_string_to_date($node->data[0]['date_chckbk_date_id_rgstrd_date_id_chckbk_histr_master_agrmnt_2']);?></span>

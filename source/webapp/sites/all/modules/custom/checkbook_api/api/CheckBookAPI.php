@@ -1,19 +1,19 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -35,7 +35,7 @@ class CheckBookAPI {
    * @param array $request_criteria
    *   Request criteria
    */
-  function __construct($request_criteria) {
+public  function __construct($request_criteria) {
     // Increasing to handle memory limits when exporting.
     ini_set('memory_limit', '512M');
 
@@ -75,7 +75,7 @@ class CheckBookAPI {
    * @return array
    *   Data
    */
-  function getData() {
+public  function getData() {
     return $this->request_handler->execute();
   }
 
@@ -85,7 +85,7 @@ class CheckBookAPI {
    * @return int
    *   Record Count
    */
-  function getRecordCount() {
+ public function getRecordCount() {
     return $this->request_handler->getRecordCount();
   }
 
@@ -101,7 +101,7 @@ class CheckBookAPI {
     * @throws Exception
     *   Throws Exception if invalid email is provided.
     */
-    function queueRequest($email) {
+   public function queueRequest($email) {
         //Validate email
         $email = empty($email) ? null : $email;
         if (isset($email) && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -135,7 +135,7 @@ class CheckBookAPI {
      * @param $params
      * @throws Exception
      */
-    function sendConfirmationEmail($token,$email,$params) {
+    public function sendConfirmationEmail($token,$email,$params) {
         $response = drupal_mail('checkbook_datafeeds', "confirmation_notification", $email, null, $params);
         if(!$response['result']) {
             $msg = "Error sending email in class CheckBookAPI, function sendConfirmationEmail()";
@@ -160,7 +160,7 @@ class CheckBookAPI {
      *   Token for tracking purpose.
      *
      */
-    function queueImmediateRequest() {
+   public function queueImmediateRequest() {
         $token = $this->request_handler->queueImmediateRequest();
         return self::getRequestDetailsByToken($token);
     }
@@ -171,7 +171,7 @@ class CheckBookAPI {
    * @return bool
    *   true indicates no validation errors else false.
    */
-  function validateRequest() {
+  public function validateRequest() {
     return $this->request_handler->validateRequest();
   }
 
@@ -202,6 +202,8 @@ class CheckBookAPI {
     if (empty($token)) {
       return NULL;
     }
+
+    $token = trim($token);
 
     $job_details = QueueUtil::getRequestDetailsByToken($token);
 

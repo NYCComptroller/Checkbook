@@ -19,13 +19,13 @@
             $parameters[$param] = htmlspecialchars_decode(_replace_special_characters_decode($value));
     }
 
-    $subvendor = _getRequestParamValue('subvendor');
+    $subvendor = RequestUtilities::getRequestParamValue('subvendor');
     $fnName = isset($subvendor) ? 'GetContractsSubvendorStatusByPrimeCountsSubLevel' : 'GetContractsSubvendorStatusByPrimeCounts';
 
     $service = new ContractsDataService();
     $data = $service->$fnName($parameters)->getByDataset($parameters);
 
-    $node->data  = $data;    
+    $node->data  = $data;
 ",
 "widgetUpdateJSONConfig":"
 	$series_data = array();
@@ -46,7 +46,7 @@
 	$index = 0;
         $total_contracts = 0;
         if(count($series_data) > 0){
-            foreach($series_data as $row){	 								 						
+            foreach($series_data as $row){
                 $series_new[$index]->y = (int)$row['count'];
                 $series_new[$index]->name = $row['status'];
                 $index += 1;
@@ -57,9 +57,9 @@
            $node->data = null;
         }
 	$node->widgetConfig->chartConfig->series[0]->data = $series_new;
-    $dashboard= _getRequestParamValue('dashboard');
+    $dashboard= RequestUtilities::getRequestParamValue('dashboard');
     if($dashboard == 'sp' || $dashboard == 'ms'){
-        $node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Sub Vendor Contracts Status by Prime Contracts';
+        $node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName() . ' Sub Vendor Contracts Status by Prime Contracts';
     }else{
         $node->widgetConfig->chartTitle =  'Sub Vendor Contracts Status by Prime Contracts';
     }
@@ -100,7 +100,7 @@
             "itemMarginTop": 3,
             "itemMarginBottom": 3
         }
-           
+
     }
 }
 <function>

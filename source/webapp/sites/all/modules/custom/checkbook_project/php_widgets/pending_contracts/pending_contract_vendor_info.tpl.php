@@ -1,19 +1,19 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -25,8 +25,8 @@ Prime Vendor Information
 
 
 //TODO temp fix move bottom code to separate custom preprocess function
-    $contract_num = _getRequestParamValue("contract");
-    $version_num = _getRequestParamValue("version");
+    $contract_num = RequestUtilities::getRequestParamValue("contract");
+    $version_num = RequestUtilities::getRequestParamValue("version");
 
 $queryVendorDetails = "SELECT
        vh.vendor_id,
@@ -72,7 +72,7 @@ if($node->data[0]["vendor_id"]){
 
     if($node->data[0]["mwbe_vendor"] == "Yes"){
        $total_cont  = 0;
-       $dashboard = '/dashboard/mp';
+       $dashboard = RequestUtilities::_appendMWBESubVendorDatasourceUrlParams().'/dashboard/mp';
     }
     if($node->data[0]['document_code'] == 'RCT1')
         $vendor_link = '/contracts_pending_rev_landing/year/' . _getCurrentYearID() . '/yeartype/B'.$dashboard.'/vendor/'.$node->data[0]['vendor_vendor'] .'?expandBottomCont=true';

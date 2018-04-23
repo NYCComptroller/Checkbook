@@ -40,7 +40,7 @@ class PostgreSQLMetaModelLoader extends AbstractSystemTableMetaModelLoader {
              . "   AND ns.nspname = '$datasource->schema'"
              . '   AND a.attnum > 0';
 
-        LogHelper::log_info(new StatementLogMessage('metadata.dataset.systemTable', $sql));
+        LogHelper::log_notice(new StatementLogMessage('metadata.dataset.systemTable'.PHP_EOL, $sql));
 
         return $datasourceHandler->executeQuery(new DataControllerCallContext(), $datasource, $sql, new PassthroughResultFormatter());
     }

@@ -126,14 +126,14 @@
         ["prime_dollar_difference","sub_dollar_difference"]
     ],
     "preProcessConfiguration":"
-        $doctype = _getRequestParamValue('doctype');
+        $doctype = RequestUtilities::getRequestParamValue('doctype');
         $doctypes = isset($doctype) ? explode('~', $doctype) : array();
         $is_master_agreement = in_array('MA1', $doctypes) || in_array('MMA1', $doctypes);
         $node->is_master_agreement = $is_master_agreement;
-        $smnid = $doctype = _getRequestParamValue('smnid');
+        $smnid = $doctype = RequestUtilities::getRequestParamValue('smnid');
         $node->show_difference = ($smnid == 480 || $smnid == 366 || $smnid == 722);
-        $node->dashboard = _getRequestParamValue('dashboard');
-        $node->dashboard = _getRequestParamValue('dashboard');
+        $node->dashboard = RequestUtilities::getRequestParamValue('dashboard');
+        $node->dashboard = RequestUtilities::getRequestParamValue('dashboard');
     ",
     "caption":"",
     "derivedColumns": {
@@ -143,7 +143,7 @@
         },
         "contract_link": {
             "type":"expression2",
-            "expression":"ContractURLHelper::expenseContractsLink($row, $node, false, $row['contract_original_agreement_id'])"
+            "expression":" (($row['document_code']=='RCT1')? ContractURLHelper::prepareRevenueContractLink($row, $node) : ContractURLHelper::expenseContractsLink($row, $node, false, $row['contract_original_agreement_id']))"
         },
         "parent_contract_link": {
             "type":"expression2",
@@ -199,8 +199,9 @@
         },
         "agency_name_link": {
             "type":"expression2",
-            "expression":" '<a href=\"/contracts_landing'
-            ._checkbook_append_url_params()
+            "expression":" '<a href=\"'
+             .ContractsUrlService::applyLandingParameter($row['document_code'])
+             ._checkbook_append_url_params()
             .  '/year/'._getFiscalYearID()
             .  '/yeartype/B'
             .  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
@@ -261,8 +262,8 @@
         },
         "prime_vendor_name_link": {
             "type": "expression2",
-            "expression": " '<a href=\"/contracts_landing'
-            . ContractsUrlService::primeVendorUrl($row['prime_vendor_id'],_getRequestParamValue('year'), false)
+            "expression": " '<a href=\"'
+            . ContractsUrlService::primeVendorUrl($row['prime_vendor_id'],RequestUtilities::getRequestParamValue('year'), false,$row['document_code'])
             .  '?expandBottomCont=true\">'. $row['prime_vendor_name_formatted'] . '</a>'  "
         },
         "subvendor_name_formatted": {
@@ -271,11 +272,11 @@
         },
         "subvendor_name": {
             "type":"expression2",
-            "expression":"(in_array(strtoupper($row['sub_vendor_name']), array('NOT PROVIDED', 'N/A', '', NULL))) ? (isset($row['sub_vendor_name']) ? $row['sub_vendor_name']: 'N/A' ) : '<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row[sub_vendor_id],_getRequestParamValue('year'),_getRequestParamValue('yeartype'), null, $row[sub_minority_type_id]) .  '?expandBottomCont=true\">' .$row[subvendor_name_formatted]. '</a>'"
+            "expression":"(in_array(strtoupper($row['sub_vendor_name']), array('NOT PROVIDED', 'N/A', '', NULL))) ? (isset($row['sub_vendor_name']) ? $row['sub_vendor_name']: 'N/A' ) : '<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row['sub_vendor_id'],RequestUtilities::getRequestParamValue('year'),RequestUtilities::getRequestParamValue('yeartype'), null, $row['sub_minority_type_id']) .  '?expandBottomCont=true\">' .$row['subvendor_name_formatted']. '</a>'"
         },
         "sub_mwbe_category_name": {
             "type":"expression2",
-            "expression":"(in_array(strtoupper($row['sub_minority_type_name']), array('NOT PROVIDED', 'N/A', '', NULL))) ? (isset($row['sub_minority_type_name']) ? $row['sub_minority_type_name']: 'N/A' ) : $row[sub_minority_type_name]"
+            "expression":"(in_array(strtoupper($row['sub_minority_type_name']), array('NOT PROVIDED', 'N/A', '', NULL))) ? (isset($row['sub_minority_type_name']) ? $row['sub_minority_type_name']: 'N/A' ) : $row['sub_minority_type_name']"
         },
         "contract_includes_sub":{
             "type":"expression2",
@@ -297,7 +298,6 @@
         {"labelAlias":"contract_id","column":"contract_link","sortSourceColumn":"contract_number"},
         {"labelAlias":"contract_includes_sub","column":"contract_includes_sub","sortSourceColumn":"scntrc_status_name"},
         {"label":"","column":""},
-        //START PRIME
         {"labelAlias":"prime_vendor","column":"prime_vendor_name_link","sortSourceColumn":"prime_vendor_name"},
         {"labelAlias":"prime_mwbe_category","column":"prime_minority_type_name","sortSourceColumn":"prime_minority_type_name"},
         {"labelAlias":"contract_purpose","column":"prime_purpose_formatted","sortSourceColumn":"prime_purpose"},
@@ -522,9 +522,7 @@
 
                         for(i=0;i<dataLen;i++){
                             var row = data[i];
-
                             sOut += '<tr>';
-                            
                             sOut += '<td class=\"text\" style=\"width:130px\">'+ (row[1] == null ? '': row[1])+'</td>';
                             sOut += '<td class=\"sub-cont-status\"  style=\"width:180px\">'+ (row[2] == null ? '': row[2])+'</td>';
                             sOut += '<td style=\"width:30px\"></td>';

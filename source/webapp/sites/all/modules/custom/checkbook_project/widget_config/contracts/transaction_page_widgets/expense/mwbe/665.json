@@ -2,7 +2,7 @@
     "widgetType": "data_tables",
     "cleanURLParameters":["magid","contstatus","year","yeartype"],
     "urlParamMap":{"magid":"master_agreement_id","year":"fiscal_year_id@checkbook:all_contracts_coa_aggregates","contstatus":"status_flag@checkbook:all_contracts_coa_aggregates","yeartype":"type_of_year@checkbook:all_contracts_coa_aggregates"},
-    "defaultParameters":{"master_agreement_id":-1},//default master_agreement_id to avoid load
+    "defaultParameters":{"master_agreement_id":-1},
     "useList":true,
     "getTotalDataCount":false,
     "dataset": "checkbook:all_agreement_transactions",
@@ -15,19 +15,19 @@
             $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
         }
 
-        $dashboard = _getRequestParamValue('dashboard');
-        $subvendor = _getRequestParamValue('subvendor');
-        $mwbe = _getRequestParamValue('mwbe');
+        $dashboard = RequestUtilities::getRequestParamValue('dashboard');
+        $subvendor = RequestUtilities::getRequestParamValue('subvendor');
+        $mwbe = RequestUtilities::getRequestParamValue('mwbe');
         if($subvendor) $parameters['is_prime_or_sub'] = 'S';
         else if($mwbe || $dashboard == null) $parameters['is_prime_or_sub'] = 'P';
 
-        $smnid = _getRequestParamValue('smnid');
+        $smnid = RequestUtilities::getRequestParamValue('smnid');
         if($smnid == 720) $parameters['is_prime_or_sub'] = 'S';
 
         $parameters['latest_flag'] = 'Y';
 
-        $year = !(_getRequestParamValue('year')) ? _getCurrentYearID() : _getRequestParamValue('year');
-        $year_type = !(_getRequestParamValue('yeartype')) ? 'B' : _getRequestParamValue('yeartype');
+        $year = !(RequestUtilities::getRequestParamValue('year')) ? _getCurrentYearID() : RequestUtilities::getRequestParamValue('year');
+        $year_type = !(RequestUtilities::getRequestParamValue('yeartype')) ? 'B' : RequestUtilities::getRequestParamValue('yeartype');
         $node->year = $year;
         $node->year_type = $year_type;
 

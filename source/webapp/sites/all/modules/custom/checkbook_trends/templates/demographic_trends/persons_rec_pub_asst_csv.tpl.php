@@ -17,9 +17,8 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php
-	echo "\n".'2002-2016 (Average Annual Recipients)'."\n"."\n";
+
+	echo "\n".'2002-2017 (Average Annual Recipients)'."\n"."\n";
     $header = 'Year';
     $header .=  ",Public Assistance (in thousands)" ;
     $header .=  ",SSI(a)" ;
@@ -38,5 +37,3 @@
     echo "\n"."(a) The SSI data is for December of each year."."\n"."\n".
            "NA: Not Available."."\n"."\n".
            '"'. "Sources: The City of New York, Human Resources Administration and the U.S. Social Security Administration.".'"';
-?>
-

@@ -1,0 +1,64 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Checkbook JSON API",
+        "version": "0.1"
+    },
+    "paths": {
+        "/json_api/expense_category": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "expense_category resource"
+                    }
+                }
+            }
+        },
+        "/json_api/active_expense_contracts": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "active_expense_contracts"
+                    }
+                }
+            }
+        },
+        "/json_api/active_subcontracts": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "active_subcontracts"
+                    }
+                }
+            }
+        },
+        "/json_api/approved_subcontracts": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "approved_subcontracts"
+                    }
+                }
+            }
+        },
+        "/json_api/total_payroll": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "total_payroll"
+                    }
+                }
+            }
+        },
+        "/json_api/subcontracts_cancelled": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "subcontracts_cancelled"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {}
+}

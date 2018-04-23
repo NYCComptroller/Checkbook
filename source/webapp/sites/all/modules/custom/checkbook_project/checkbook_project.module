@@ -38,30 +38,20 @@ function checkbook_project_url_outbound_alter(&$path, &$options, $original_path)
 	}
 	
 
-	if( 	
-			($path == 'spending_landing')  ||
-			($path == 'spending/agencies')  ||
-			($path == 'spending/vendors') ||
-			($path == 'mwbe_agency_grading') ||
-            ($path == 'mwbe_agency_grading/sub_vendor_data')
-		){
+	if(($path == 'spending_landing')  || ($path == 'spending/agencies')
+        || ($path == 'spending/vendors') || ($path == 'mwbe_agency_grading')
+        || ($path == 'mwbe_agency_grading/sub_vendor_data') || ($path == 'payroll')  || ($path == 'payroll/agency/%')){
 
         $path .="/yeartype/B/year/"._getCurrentYearID();
 		return true;
 	}
-	elseif(
-	    ($path == 'payroll')  ||
-	    ($path == 'payroll/agency/%')  
-	){
+	/*elseif(($path == 'payroll')  || ($path == 'payroll/agency/%')){
 	
 	  //$path .="/yeartype/C/year/"._getCalendarYearID();
 	  $path .="/yeartype/B/year/"._getCurrentYearID();
 	  return true;
-	}
-	elseif( 	
-			($path == 'budget') ||
-			($path == 'revenue')
-		){
+	}*/
+	elseif(($path == 'budget') || ($path == 'revenue')){
 		$path .="/year/"._getCurrentYearID();
 	}
 	elseif($path == 'contracts_landing'){

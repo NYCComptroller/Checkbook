@@ -35,7 +35,7 @@
             <?php $count +=1; }
 
         $origUrl = $_GET['q'];
-        $_GET['q']='nodedisplay/node/'.widget_unique_identifier($node).'/magid/'._getRequestParamValue('magid');
+        $_GET['q']='nodedisplay/node/'.widget_unique_identifier($node).'/magid/'.RequestUtilities::getRequestParamValue('magid');
         pager_default_initialize($node->totalDataCount, 10);
         $output = theme('pager', array('quantity' => 5));
         print "<div class='customPager'>". $output . "</div>";

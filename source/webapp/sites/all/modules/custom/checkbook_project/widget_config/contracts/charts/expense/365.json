@@ -33,9 +33,9 @@
 "defaultParamTypeConfig":{"spending_amount_sum":"ne"},
 "adjustParameters":"
     $year = 'year_id';
-    $config->model->series[0]->additionalParameters->$year = $parameters[fiscal_year_id][0]  ;
-    $config->model->series[1]->additionalParameters->fiscal_year_id = $parameters[fiscal_year_id][0] -1 ;
-    $config->model->series[2]->additionalParameters->fiscal_year_id = $parameters[fiscal_year_id][0];
+    $config->model->series[0]->additionalParameters->$year = $parameters['fiscal_year_id'][0]  ;
+    $config->model->series[1]->additionalParameters->fiscal_year_id = $parameters['fiscal_year_id'][0] -1 ;
+    $config->model->series[2]->additionalParameters->fiscal_year_id = $parameters['fiscal_year_id'][0];
     $adjustedParameters = $parameters;
     if(function_exists('_checkbook_project_applyParameterFilters')){
           $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
@@ -199,7 +199,6 @@
 
 <function>
 yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
-tooltipformatter^^'formatter' :
-function() {return 'Month: ' + this.x + '<br/>Amount: ' + abbrNum(this.y, 2, '$') ;}
-##clickEvent^^"click": function(){  window.open(Drupal.settings.basePath+this.options.url, '_blank', 'menubar=no,toolbar=no,location=no,resizable=yes,scrollbars=yes,personalbar=no,chrome=yes,height=700,width=980');}
+tooltipformatter^^'formatter' : function() {return 'Month: ' + this.x + '<br/>Amount: ' + abbrNum(this.y, 2, '$');}##
+clickEvent^^"click": function(){  window.open(Drupal.settings.basePath+this.options.url, '_blank', 'menubar=no,toolbar=no,location=no,resizable=yes,scrollbars=yes,personalbar=no,chrome=yes,height=700,width=980');}
 </function>

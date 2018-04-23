@@ -52,7 +52,7 @@
     },
     "column_link":{
         "type":"expression2",
-        "expression":"_pending_contracts_link_contract_details($row[contract_number_contract_number],$row[original_agreement_id_original_agreement_id],$row[document_code_document_code_document_code],$row[pending_contract_number_pending_contract_number],$row[document_version_document_version],'bar')"
+        "expression":"_pending_contracts_link_contract_details($row['contract_number_contract_number'],$row['original_agreement_id_original_agreement_id'],$row['document_code_document_code_document_code'],$row['pending_contract_number_pending_contract_number'],$row['document_version_document_version'],'bar')"
     }
 },
 "limit": "10",
@@ -107,6 +107,6 @@
 
 <function>
 yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
-tooltipformatter^^'formatter' : function() {return  'Contract ID: ' + this.point.contractnum + '<br/>' + 'Prime Vendor: ' + this.point.vendor  + '<br/>' + 'Contracting Agency: ' + this.point.agency + '<br/>' + 'Amount: ' + abbrNum(this.y, 2, '$') ;}
-##clickEvent^^"click": function(){  if(this.url.length > 0) location.href = Drupal.settings.basePath+this.url;   }
+tooltipformatter^^'formatter' : function() {return  'Contract ID: ' + this.point.contractnum + '<br/>' + 'Prime Vendor: ' + this.point.vendor  + '<br/>' + 'Contracting Agency: ' + this.point.agency + '<br/>' + 'Amount: ' + abbrNum(this.y, 2, '$') ;}##
+clickEvent^^"click": function(){  if(this.url.length > 0) location.href = Drupal.settings.basePath+this.url;   }
 </function>
