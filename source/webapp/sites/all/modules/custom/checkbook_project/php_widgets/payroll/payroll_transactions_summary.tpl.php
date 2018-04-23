@@ -17,8 +17,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-?>
-<?php
+
 $title = $node->widgetConfig->summaryView->templateTitle;
 $label = $node->widgetConfig->summaryView->templateLabel;
 $value = strtoupper(eval($node->widgetConfig->summaryView->templateLabelEval));
@@ -26,7 +25,6 @@ $value = strtoupper(eval($node->widgetConfig->summaryView->templateLabelEval));
 $summaryContent =  <<<EOD
 <h2 class="contract-title">{$title}</h2>
 EOD;
-
 print $summaryContent;
 
 

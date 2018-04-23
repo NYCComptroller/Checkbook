@@ -1,34 +1,40 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php
 
+
+$url = '  ' . RequestUtil::getCurrentPageUrl();
 
     if($node->data[0]['document_code_checkbook_ref_document_code'] == 'RCT1'){
         $agency_link = '/contracts_pending_rev_landing/year/' . _getCurrentYearID() . '/yeartype/B/agency/'. $node->data[0]['agency_id_checkbook_agency'] . '?expandBottomCont=true';
         $vendor_link = '/contracts_pending_rev_landing/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'.$node->data[0]['vendor_vendor'] .'?expandBottomCont=true';
     }else{
-        $agency_link = '/contracts_pending_exp_landing/year/' . _getCurrentYearID() . '/yeartype/B/agency/'. $node->data[0]['agency_id_checkbook_agency'] . '?expandBottomCont=true';
-        $vendor_link = '/contracts_pending_exp_landing/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'.$node->data[0]['vendor_vendor'] .'?expandBottomCont=true';
+        if (_is_mwbe_vendor(RequestUtilities::getRequestParamValue("agid")) || _is_mwbe_vendor(RequestUtilities::getRequestParamValue("magid")) || stripos($url,'/dashboard/mp')) {
+            $mwbe = RequestUtilities::_appendMWBESubVendorDatasourceUrlParams().'/dashboard/mp';
+        }
+        else{
+            $mwbe='';
+        }
+        $agency_link = '/contracts_pending_exp_landing/year/' . _getCurrentYearID() . '/yeartype/B/agency/'. $node->data[0]['agency_id_checkbook_agency'] .$mwbe. '?expandBottomCont=true';
+        $vendor_link = '/contracts_pending_exp_landing/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'.$node->data[0]['vendor_vendor'] .$mwbe.'?expandBottomCont=true';
     }
-  
+
 if(isset($node->original_master_agreement_id)){
     if(!preg_match("/newwindow/",current_path())){
         $master_link_html = '<span class="master-contract-link">Parent Contract: <a class="bottomContainerReload" href=/panel_html/contract_transactions/contract_details/magid/' .  $node->original_master_agreement_id . '/doctype/' . $node->document_code. $datasource . ' class=\"bottomContainerReload\">' .  $node->contract_number . '</a></span>';

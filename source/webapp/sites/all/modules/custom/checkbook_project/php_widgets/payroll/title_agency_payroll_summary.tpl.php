@@ -17,8 +17,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-?>
-<?php
+
 
 $results = $node->data[0];
 if($results){
@@ -45,8 +44,8 @@ if($results){
                         <span class='payroll-label'>Title: </span>
                         <span class='payroll-value'>{$title_url}</span>
                     </div>";
-    if(_getRequestParamValue('agency')){
-        $agencyId = _getRequestParamValue('agency');
+    if(RequestUtilities::getRequestParamValue('agency')){
+        $agencyId = RequestUtilities::getRequestParamValue('agency');
     }
     else{
         $agencyId = null;

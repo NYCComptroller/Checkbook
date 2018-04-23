@@ -17,8 +17,7 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php
+
 $records = $node->data;
 if(is_array($records)){
     $row = $records[0];
@@ -32,7 +31,7 @@ if(is_array($records)){
     $camnt = WidgetUtil::getLabel("current_amount");
     $purpose = WidgetUtil::getLabel("contract_purpose");
     $agency = WidgetUtil::getLabel("contract_agency");
-    $smnid = _getRequestParamValue('smnid');
+    $smnid = RequestUtilities::getRequestParamValue('smnid');
 
     $dynamicLabel = $node->widgetConfig->summaryView->entityColumnLabel;
     $dynamicValue = strtoupper($row[$node->widgetConfig->summaryView->entityColumnName]);

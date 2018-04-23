@@ -37,33 +37,33 @@
 	"status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},
 "chartTitle":"M/WBE Spending by Active Expense Contracts",
 "widgetDataLoader":"
-    
+
     $where_filters = array();
     foreach($node->widgetConfig->requestParams as $param=>$value){
         $where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
     }
-    
+
     if(count($where_filters) > 0){
         $where_filter = ' where ' . implode(' and ' , $where_filters);
     }
 
-    
+
     $where_filter .= ' and rd.document_code in (' . ContractUtil::getCurrentPageDocumentIds() . ') ';
     $node->document_codes = ContractUtil::getCurrentPageDocumentIds();
-    
-    $year_id = _getRequestParamValue('year');
+
+    $year_id = RequestUtilities::getRequestParamValue('year');
 	$where_filter .= ' and a1.fiscal_year_id in (' . $year_id . ','.  ($year_id -1) . ')';
     $sql = 'select rmo.month_name ,a1.month_id,year_value, sum(spending_amount) spending_amount_sum
-    from {aggregateon_mwbe_contracts_spending_by_month} a1 
+    from {aggregateon_mwbe_contracts_spending_by_month} a1
     join {ref_minority_type} rm on rm.minority_type_id = a1.minority_type_id
     join {ref_month} rmo on a1.month_id = rmo.month_id
-    join {ref_year} ry on a1.fiscal_year_id = ry.year_id  
-    join {ref_document_code} rd on a1.document_code_id = rd.document_code_id     
+    join {ref_year} ry on a1.fiscal_year_id = ry.year_id
+    join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
    ' . $where_filter . '
     group by year_value, rmo.month_value ,rmo.month_name,a1.month_id
     order by year_value,  rmo.month_value
      ';
-    
+
     $node->data  = _checkbook_project_execute_sql($sql);
 
 
@@ -72,13 +72,13 @@
 
 	$series =  array();
 	$non_mwbe_data = array();
-	$year_id = _getRequestParamValue('year');
+	$year_id = RequestUtilities::getRequestParamValue('year');
 	$year = _getYearValueFromID($year_id);
     $contract_status_params = ContractUtil::getSpentToDateParams();
-	
+
 	$series_current_temp = array();
 	$series_prev_temp = array();
-	if( _getRequestParamValue('yeartype') == 'C' ){
+	if( RequestUtilities::getRequestParamValue('yeartype') == 'C' ){
 		$categories = array('January','February','March','April','May','June','July','August','September','October','November','December');
 	}else{
 		$categories = array('July','August','September','October','November','December','January','February','March','April','May','June');
@@ -87,55 +87,55 @@
 	}
 
 	foreach($node->data as $row){
-	
-		$tooltip_label = 
+
+		$tooltip_label =
 	 						'Month: ' . $row['month_name'].  '<br/>' .
-	 						'Amount: '. custom_number_formatter_format($row['spending_amount_sum'],2,'$')   . '<br/>' ; 
+	 						'Amount: '. custom_number_formatter_format($row['spending_amount_sum'],2,'$')   . '<br/>' ;
 		$item = new stdClass();
 		$item->y = (float)$row['spending_amount_sum'];
 		$item->month = $row['month_name'];
 		$item->tooltip_label = $tooltip_label;
 		$item->custom_label = custom_number_formatter_format($series[$key]->y/($series[$key]->y + $non_mwbe_data[$key] ) *100,1,null,'%') ;
-		
+
 	    if($row['year_value'] == $year){
 	    	 $series_current_temp[trim($row['month_name'])] = $item;
 	        $link_url = CustomURLHelper::prepareUrl('contract/spending/transactions'.$contract_status_params,  ContractURLHelper::$transactionPageParams, NULL,
        			array('doctype' => $node->document_codes, 'month' => $row['month_id'],'amt'=>$row['spending_amount_sum'], 'smnid'=>'mwbe_contracts_visual_2','newwindow'=>NULL));
-			$item->url =  $link_url;		
-	    	 
+			$item->url =  $link_url;
+
 	    }else{
 	    	$series_previous_temp[trim($row['month_name'])] = $item;
 	    	        $link_url = CustomURLHelper::prepareUrl('contract/spending/transactions'.$contract_status_params,  ContractURLHelper::$transactionPageParams, NULL,
        			array('doctype' => $node->document_codes, 'month' => $row['month_id'],'amt'=>$row['spending_amount_sum'],'smnid'=>'mwbe_contracts_visual_2','newwindow'=>NULL),true);
-			$item->url =  $link_url;			    	
+			$item->url =  $link_url;
 	    }
-	    
+
 	}
-	
-	
+
+
 
 	$series_current = array();
 	$series_previous = array();
-	
+
 	foreach($categories as $category){
 		$series_current[] = $series_current_temp[$category];
-		if(_getRequestParamValue('year') > 111){
+		if(RequestUtilities::getRequestParamValue('year') > 111){
 			$series_previous[] = $series_previous_temp[$category] ;
-		} 
+		}
 	}
-	if(_getRequestParamValue('yeartype') == 'C'){
+	if(RequestUtilities::getRequestParamValue('yeartype') == 'C'){
 				 $year_display = 'CY ';
 	}else{
 				$year_display = 'FY ' ;
-	}	
+	}
 	$index = 0;
 	$node->widgetConfig->gridConfig->table_columns[1]->labelAlias = $year_display . ' ' .  ($year - 1);
-	
+
 	while($index <= 11){
 	    $node->widgetConfig->gridConfig->data[] = array($categories[$index],$series_previous[$index]->y,$series_current[$index]->y );
 		$index +=1;
 	}
-	
+
 
 	if(count($series_previous) > 0){
 		$prev_series_obj = new stdClass();
@@ -143,22 +143,22 @@
 		$prev_series_obj->type = 'column';
 		$prev_series_obj->pointWidth = 15;
 		$prev_series_obj->data = $series_previous;
-		$node->widgetConfig->chartConfig->series[] = $prev_series_obj;		
+		$node->widgetConfig->chartConfig->series[] = $prev_series_obj;
 		$node->widgetConfig->gridConfig->table_columns[2]->labelAlias =  $year_display . ' ' . ($year);
 	}
 	$curr_series_obj = new stdClass();
 	$curr_series_obj->name = $year_display . ' ' . $year;
 	$curr_series_obj->type = 'column';
 	$curr_series_obj->pointWidth = 15;
-	$curr_series_obj->data = $series_current;		
+	$curr_series_obj->data = $series_current;
 	$node->widgetConfig->chartConfig->series[] = $curr_series_obj;
-	
-	if(_getRequestParamValue('status') == 'A'){
+
+	if(RequestUtilities::getRequestParamValue('status') == 'A'){
 		$status = 'Active';
-	}else if(_getRequestParamValue('status') == 'R'){
+	}else if(RequestUtilities::getRequestParamValue('status') == 'R'){
 		$status = 'Registered';
 	}
-	
+
 	$contract_type = 'Expense';
 	if(preg_match('/revenue/',$_GET['q'])){
 		$contract_type = 'Revenue';
@@ -169,7 +169,7 @@
 	if(preg_match('/pending_rev/',$_GET['q'])){
 		$contract_type = 'Pending Revenue';
 	}
-	$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Spending by ' . $status . ' ' . $contract_type .  ' Contracts';
+	$node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName() . ' Spending by ' . $status . ' ' . $contract_type .  ' Contracts';
 ",
 "summaryView":{
     "template":"contract_date_summary",
@@ -186,19 +186,19 @@
         "categories": ["January","February","March","April","May","June","July","August","September","October","November","December"],
         "labels": {"enabled": false}
     },
-    "series": [        
+    "series": [
     ],
     "title": {"text": ""},
     "yAxis": {
      	"min":0,
-     	"minRange": 0.1,    
+     	"minRange": 0.1,
         "startOnTick":true,
         "title": {"text": ""},
         "labels":{"rotation": 0,"function":"yAxisFormatter"}
     } ,
     "legend": {
-        "enabled": true,   
-        "align":"left"    
+        "enabled": true,
+        "align":"left"
     },
     "tooltip":{"function":"tooltipformatter"}
     }
@@ -210,5 +210,6 @@ yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
 tooltipformatter^^'formatter' :
 function() {return this.point.tooltip_label ;
 }
-##clickEvent^^"click": function(){  window.open(Drupal.settings.basePath+this.options.url, '_blank', 'menubar=no,toolbar=no,location=no,resizable=yes,scrollbars=yes,personalbar=no,chrome=yes,height=700,width=980');}
+##
+clickEvent^^"click": function(){  window.open(Drupal.settings.basePath+this.options.url, '_blank', 'menubar=no,toolbar=no,location=no,resizable=yes,scrollbars=yes,personalbar=no,chrome=yes,height=700,width=980');}
 </function>

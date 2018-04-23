@@ -117,7 +117,7 @@
                                 {
                                 "name": "dept",
                                 "datasetName": "department",
-                                "sourceColumnName": "department_id"
+                                "sourceColumnName": "department_code"
                                 }
                     ]
                 },

@@ -1114,6 +1114,14 @@ function devel_ajax_render_alter() {
   $GLOBALS['devel_shutdown'] = FALSE;
 }
 
+
+/**
+ * @return bool
+ */
+function is_ajax() {
+  return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && 'xmlhttprequest' == strtolower($_SERVER['HTTP_X_REQUESTED_WITH']);
+}
+
 /**
  * Runs on shutdown to display developer information in the footer.
  *
@@ -1142,7 +1150,7 @@ function devel_shutdown_real() {
       }
     }
 
-    if (isset($user) && user_access('access devel information')) {
+    if (isset($user) && user_access('access devel information') && !is_ajax()) {
       $queries = (devel_query_enabled() ? Database::getLog('devel', 'default') : NULL);
       $output .= devel_shutdown_summary($queries);
       $output .= devel_shutdown_query($queries);

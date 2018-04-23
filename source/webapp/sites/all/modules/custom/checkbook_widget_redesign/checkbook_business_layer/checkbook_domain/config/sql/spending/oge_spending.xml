@@ -46,11 +46,11 @@
         <sql>
         SELECT s0.type_of_year,
             s0.year_id,
-            s0.expenditure_object_id,
+            s0.expenditure_object_code,
             j1.original_expenditure_object_name AS expenditure_object_name,
             SUM(total_spending_amount) AS check_amount_sum
         FROM aggregateon_spending_coa_entities s0
-        JOIN ref_expenditure_object j1 ON j1.expenditure_object_id = s0.expenditure_object_id
+        JOIN ref_expenditure_object j1 ON j1.expenditure_object_code = s0.expenditure_object_code and j1.expenditure_object_id = s0.expenditure_object_id
         <where>
             <exp op="AND">
                 <exp op="=" dbField="s0.year_id" paramName="year" />
@@ -63,7 +63,7 @@
                 <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
             </exp>
         </where>
-        GROUP BY s0.year_id, s0.type_of_year, s0.expenditure_object_id, j1.original_expenditure_object_name
+        GROUP BY s0.year_id, s0.type_of_year, s0.expenditure_object_code, j1.original_expenditure_object_name
         </sql>
     </statement>
     <!--GetOGESpendingByPrimeVendors-->
@@ -113,11 +113,11 @@
         <sql>
             SELECT s0.year_id,
                    s0.agency_id,
-                   s0.department_id,
+                   s0.department_code,
                    SUM(total_spending_amount) AS check_amount_sum,
                    d.department_name
             FROM aggregateon_spending_coa_entities s0
-            JOIN ref_department d ON d.department_id = s0.department_id
+            JOIN ref_department d ON d.department_code = s0.department_code and d.department_id=s0.department_id
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="s0.year_id" paramName="year" />
@@ -130,7 +130,7 @@
                     <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
                 </exp>
             </where>
-            GROUP BY s0.agency_id, s0.department_id, s0.year_id, d.department_name
+            GROUP BY s0.agency_id, s0.department_code, s0.year_id, d.department_name
         </sql>
     </statement>
     <!--GetOGESpendingByContracts-->
@@ -155,7 +155,7 @@
                    s0.description as contract_purpose,
                    s0.document_id,
                    s0.document_code,
-                   s0.agreement_id, 
+                   s0.agreement_id,
                    SUM(COALESCE(total_spending_amount,0)) AS check_amount_sum,
                    MAX(COALESCE(total_contract_amount,0)) AS total_contract_amount_sum
             FROM aggregateon_spending_contract s0
@@ -175,7 +175,7 @@
                 </exp>
             </where>
             GROUP BY s0.agency_id, s0.year_id, s0.type_of_year, s0.vendor_id, s0.description, s0.document_id, s0.agreement_id,
-            a.agency_name, v.legal_name, s0.document_code        
+            a.agency_name, v.legal_name, s0.document_code
         </sql>
     </statement>
     <!--GetCountOGEContracts-->

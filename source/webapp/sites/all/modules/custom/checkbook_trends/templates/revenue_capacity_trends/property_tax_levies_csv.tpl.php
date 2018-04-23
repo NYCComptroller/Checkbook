@@ -17,8 +17,7 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php
+
 	$header = 'Fiscal year';
     $header .=  ",Taxes Levied for the Fiscal Year"  ;
     $header .=  ",Collected Within the Fiscal Year of the Levy - Amount"  ;
@@ -27,7 +26,7 @@
     $header .=  ",Non-Cash Liquidations and Adjustments to Levy(1)"  ;
     $header .=  ",Total Collections and Adjustments to Date - Amount"  ;
     $header .=  ",Total Collections and Adjustments to Date - Percentage of Levy,"  ;
-    $header .=  ",".'"'."Remaining Uncollected July 1, 2016".'"'  ;
+    $header .=  ",".'"'."Remaining Uncollected JUNE 30, 2017".'"'  ;
 	echo $header . "\n";
 
     $count = 1;

@@ -10,7 +10,7 @@
 "header":"
 	$header = NULL;
 	$header .= widget_data_tables_export_link($node);
-	return $header; 
+	return $header;
 ",
 "useList":true,
 "getTotalDataCount":true,
@@ -26,10 +26,10 @@
          "child_contrats_link":{
 	      "type": "expression2",
               "expression": " ($row['has_children'] == 'Y') ? '<span id=dtl_expand class=\"toggler collapsed\"  magid=\"' . $row['original_agreement_id'] . '\" '
-                                . ( _getRequestParamValue('contstatus') != '' ?  ('contstatus=\"' . _getRequestParamValue('contstatus') . '\"' ) : '')
+                                . ( RequestUtilities::getRequestParamValue('contstatus') != '' ?  ('contstatus=\"' . RequestUtilities::getRequestParamValue('contstatus') . '\"' ) : '')
                                 . (' mastercode=\"' . $row['document_code@checkbook:ref_document_code'] . '\"' )
                                 . '></span>' : '' "
-            },         
+            },
            "contract_link": {
 	      "type": "expression2",
                "expression": " '<a href=/contracts_landing'
@@ -56,7 +56,7 @@
 	    },
        "formatted_spent_to_date": {
 	      "type": "expression2",
-                "expression": " 
+                "expression": "
                                            '<a href=\"/spending/transactions'
                                           .  (($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['original_agreement_id'])
                                           .  _checkbook_project_get_year_url_param_string(true)
@@ -124,7 +124,7 @@
 	    {"labelAlias": "expense_category","column": "expense_cat_formatted","sortSourceColumn":"expenditure_object_names"},
         {"labelAlias": "contract_industry","column": "industry_name_formatted","sortSourceColumn":"industry_type_name"},
 	    {"labelAlias": "start_date","column": "effective_begin_date"},
-	    {"labelAlias": "end_date","column": "effective_end_date"},	    
+	    {"labelAlias": "end_date","column": "effective_end_date"},
 	    {"labelAlias": "reg_date","column": "registered_date"},
 	    {"labelAlias": "pin","column": "tracking_number"},
 	    {"labelAlias": "apt_pin","column": "brd_awd_no"}
@@ -133,7 +133,7 @@
            if(function_exists('_checkbook_project_adjustContractParameterFilters')){
                   _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered_all');
             }
-             
+
             if(function_exists('_checkbook_project_applyParameterFilters')){
                   $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
                   return $adjustedParameters;
@@ -155,7 +155,7 @@
                 "sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"
         },
         "bInfo": true,
-       "aoColumns": [ 
+       "aoColumns": [
         {"sClass":"expander","bSortable": false,"sWidth":"30px"},
 		{"sClass":"text", "sWidth":"170px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text", "sWidth":"175px","asSorting": [ "asc","desc" ]},
@@ -244,7 +244,7 @@ jQuery.ajax({
                     var sOut = '<div class=\"sub-table-wrapper\"><table>';
                     for(i=0;i<dataLen;i++){
                         var row = data[i];
-                        
+
                         sOut += '<tr>';
 			sOut += '<td  style=\"width:30px\">'+ '&nbsp;'+'</td>';
 			sOut += '<td class=\"text\" style=\"width:170px\">'+ (row[1] == null ? '': row[1])+'</td>';

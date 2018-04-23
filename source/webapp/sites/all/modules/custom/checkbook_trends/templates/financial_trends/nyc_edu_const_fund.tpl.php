@@ -41,6 +41,8 @@ echo eval($node->widgetConfig->header);
 
         <th rowspan="2" class="number"><div class="trendCen" >Interest<br>Revenue</div></th>
 
+        <th rowspan="2" class="number"><div class="trendCen" >Other<br>Income</div></th>
+
         <th rowspan="2" class="number"><div class="trendCen" >Total<br>Revenue</div></th>
         <th colspan="3" class="centrig bb"><div>Debt Service</div></th>
 
@@ -70,6 +72,7 @@ echo eval($node->widgetConfig->header);
             echo "<td class='number'><div class='tdCen'>" . $row['fiscal_year'] . "</div></td>";
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['rental_revenue']) . "</div></td>";
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['interest_revenue']) . "</div></td>";
+            echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . ($row['other_income']?number_format($row['other_income']):'-') . "</div></td>";
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['total_revenue']) . "</div></td>";
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['interest']) . "</div></td>";
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['pricipal']) . "</div></td>";
@@ -88,9 +91,9 @@ echo eval($node->widgetConfig->header);
     <p>In Fiscal Year 2014 ECF received $7 million in income for option for E. 57th development to extend lease beyond 99 years.</p>
     <p>Operating Expenses exclude Post Employment Benefits accrual.</p>
     <p>Principal in Fiscal Year 2016 does not include the redemption amount  of the 2005 bonds on October 1, 2015.</p>
+    <p>In FY 2017 ECF received a $10 million Participation payment from E57th Street initial condo sales by the developer.</p>
     <br/>
     <p>Source: New York City Educational Construction Fund</p>
 </div>
-<?php 
+<?php
 	widget_data_tables_add_js($node);
-?>

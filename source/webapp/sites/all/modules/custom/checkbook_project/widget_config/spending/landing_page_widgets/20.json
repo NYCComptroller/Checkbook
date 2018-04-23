@@ -25,7 +25,7 @@ $url = '/panel_html/spending_transactions/spending/transactions'. '/dtsmnid/' . 
            . _checkbook_project_get_year_url_param_string(false,false,true)
            . _checkbook_append_url_params()
            . _checkbook_project_get_url_param_string('vendor','fvendor')
-           . _checkbook_project_get_url_param_string('category') 
+           . _checkbook_project_get_url_param_string('category')
            . _checkbook_project_get_url_param_string('agency');
 $footer = '';
 if($node->totalDataCount > 0)
@@ -45,7 +45,7 @@ return $footer;
     },
     "agency_name_link": {
       "type": "expression2",
-     "expression": "'<a href=\"/spending_landing' .  _checkbook_append_url_params() . _checkbook_project_get_url_param_string(\"vendor\") ._checkbook_project_get_url_param_string(\"category\") . _checkbook_project_get_year_url_param_string() . '/agency/'. $row[agency_agency] .'\">' . $row[agency_name_formatted] . '</a>'"
+     "expression": "'<a href=\"/spending_landing' .  _checkbook_append_url_params() . _checkbook_project_get_url_param_string(\"vendor\") ._checkbook_project_get_url_param_string(\"category\") . _checkbook_project_get_year_url_param_string() . '/agency/'. $row['agency_agency'] .'\">' . $row['agency_name_formatted'] . '</a>'"
     },
 "vendor_name_formatted": {
       "type": "expression2",
@@ -53,11 +53,11 @@ return $footer;
     },
 "citywide_vendor_name_link": {
         "type": "expression2",
-        "expression": "'<a href=\"' . SpendingUtil::getPrimeVendorNameLinkUrl($node,$row) . '\">' . $row[vendor_name_formatted] . '</a>'"
+        "expression": "'<a href=\"' . SpendingUtil::getPrimeVendorNameLinkUrl($node,$row) . '\">' . $row['vendor_name_formatted'] . '</a>'"
     },
 "oge_vendor_name_link": {
     "type": "expression2",
-    "expression": "'<a href=\"/spending_landing' . _checkbook_append_url_params() .  _checkbook_project_get_url_param_string(\"agency\") ._checkbook_project_get_url_param_string(\"category\") . _checkbook_project_get_year_url_param_string() . '/vendor/'. $row[vendor_vendor] .'\">' . $row[vendor_name_formatted] . '</a>'"
+    "expression": "'<a href=\"/spending_landing' . _checkbook_append_url_params() .  _checkbook_project_get_url_param_string(\"agency\") ._checkbook_project_get_url_param_string(\"category\") . _checkbook_project_get_year_url_param_string() . '/vendor/'. $row['vendor_vendor'] .'\">' . $row['vendor_name_formatted'] . '</a>'"
     } ,
 "vendor_name_link": {
     "type": "expression2",
@@ -74,7 +74,7 @@ return $footer;
 "contract_amount_link":{
     "type":"expression2",
      "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/spending_transactions/spending/transactions'
-                                                                                                 .  _checkbook_project_get_contract_url($row[document_id_document_id], $row[agreement_id_agreement_id]) 
+                                                                                                 .  _checkbook_project_get_contract_url($row['document_id_document_id'], $row['agreement_id_agreement_id'])
                                                                                                  . '/smnid/' . $node->nid
                                                                                                  . _checkbook_append_url_params()
                                                                                                  . _checkbook_project_get_url_param_string('category')
@@ -84,7 +84,7 @@ return $footer;
 	},
 "contract_number_link":{
 	"type":"expression2",
-         "expression":"'<a class=\"new_window\" href=\"/contract_details'  . _checkbook_project_get_contract_url($row[document_id_document_id], $row[agreement_id_agreement_id]) . _checkbook_append_url_params()  .'/newwindow\">'  . $row[document_id_document_id] . '</a>'"
+         "expression":"'<a class=\"new_window\" href=\"/contract_details'  . _checkbook_project_get_contract_url($row['document_id_document_id'], $row['agreement_id_agreement_id']) . _checkbook_append_url_params()  .'/newwindow\">'  . $row['document_id_document_id'] . '</a>'"
 	}
 },
 "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Contracts');",
@@ -130,7 +130,7 @@ return $footer;
     }
   ],
 "dataTableOptions":{
-"aoColumns": [ 
+"aoColumns": [
         { "bSortable": false,"sClass":"text","sWidth":"130px"},
         { "bSortable": false,"sClass":"text","sWidth":"140px"},
         { "bSortable": false,"sClass":"text pad-left","sWidth":"140px"},

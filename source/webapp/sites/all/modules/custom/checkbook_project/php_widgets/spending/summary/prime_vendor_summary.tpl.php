@@ -1,24 +1,23 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php
+
 
 $records = $node->data;
 if(is_array($records)){
@@ -31,14 +30,14 @@ if(is_array($records)){
     $totcontamnt = WidgetUtil::getLabel("total_contract_amount");
     $mwbe_category = "";
 
-    if(_getRequestParamValue('smnid') == 717){
+    if(RequestUtilities::getRequestParamValue('smnid') == 717){
         $no_of_subvendor_value = $row['sub_vendor_count'];
         $no_of_subvendor = WidgetUtil::getLabel("num_sub_vendors");
         $mwbe_category_label = WidgetUtil::getLabel("mwbe_category");
         $mwbe_category = strtoupper(MappingUtil::getMinorityCategoryById($row['prime_minority_type_prime_minority_type']));
         $mwbe_category = '<br><b>'.$mwbe_category_label .':</b> '.$mwbe_category ;
     }
-    if(_getRequestParamValue('smnid') == 747){
+    if(RequestUtilities::getRequestParamValue('smnid') == 747){
         $percent_spending_value = $row['percent_spending'];
         $percent_spending = WidgetUtil::getLabel("percent_spending");
         $mwbe_category_label = WidgetUtil::getLabel("mwbe_category");
@@ -46,7 +45,7 @@ if(is_array($records)){
         $mwbe_category = '<br><b>'.$mwbe_category_label .':</b> '.$mwbe_category ;
     }
 
-    
+
 $summaryContent =  <<<EOD
 <div class="contract-details-heading">
 	<div class="contract-id">

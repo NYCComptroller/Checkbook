@@ -20,18 +20,18 @@ class BudgetUrlService {
 
         return $url;
     }
-    
+
     /**
      * Function to build the footer url for the budget widgets
      * @param $footerUrl
-     * @param $widget 
+     * @param $widget
      * @return string
      */
     static function getPercentDiffFooterUrl($footerUrl, $widget){
         $url = null;
         switch($widget){
             case "departments":
-                $url = "/panel_html/deppartment_budget_details/budget/dept_details";
+                $url = "/panel_html/department_budget_details/budget/dept_details";
                 break;
             case "agencies":
                 $url = "/panel_html/budget_agency_perecent_difference_transactions/budget/agency_details";

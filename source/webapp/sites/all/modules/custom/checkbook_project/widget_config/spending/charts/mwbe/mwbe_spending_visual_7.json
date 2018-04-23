@@ -29,17 +29,17 @@
 "urlParamMap":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"prime_vendor_id","category":"spending_category_id","industry":"industry_type_id"},
 "chartTitle":"Top Ten Sub Vendors by M/WBE Spending",
 "widgetDataLoader":"
-    
+
     $where_filters = array();
     foreach($node->widgetConfig->requestParams as $param=>$value){
         $where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
     }
-    
+
     if(count($where_filters) > 0){
         $where_filter = ' where ' . implode(' and ' , $where_filters);
     }
- 
-	$mwbe_filter = _getRequestParamValue('mwbe');
+
+	$mwbe_filter = RequestUtilities::getRequestParamValue('mwbe');
     $sort_column = 8;
 	switch($mwbe_filter){
 		case '4~5' :
@@ -59,38 +59,38 @@
 			break;
 		case '7' :
 			$sort_column = 9;
-			break;		
-		
+			break;
+
 	}
-     
-    
+
+
     $sql = 'select legal_name , a1.vendor_id,
  	SUM(
-       CASE 
+       CASE
             WHEN minority_type_id = 4 THEN total_spending_amount
-            WHEN minority_type_id = 5 THEN total_spending_amount            
+            WHEN minority_type_id = 5 THEN total_spending_amount
             ELSE 0
 	END) aa_mwbe,
 	SUM(
-       CASE 
-            WHEN minority_type_id = 2 THEN total_spending_amount            
+       CASE
+            WHEN minority_type_id = 2 THEN total_spending_amount
             ELSE 0
 	END) ba_mwbe,
 	SUM(
-       CASE 
-            WHEN minority_type_id = 9 THEN total_spending_amount            
+       CASE
+            WHEN minority_type_id = 9 THEN total_spending_amount
             ELSE 0
-	END) w_mwbe,	
+	END) w_mwbe,
 	SUM(
-       CASE 
-            WHEN minority_type_id = 3 THEN total_spending_amount            
+       CASE
+            WHEN minority_type_id = 3 THEN total_spending_amount
             ELSE 0
-	END) ha_mwbe,  
+	END) ha_mwbe,
 	SUM(
-       CASE 
-            WHEN minority_type_id = 11 THEN total_spending_amount            
+       CASE
+            WHEN minority_type_id = 11 THEN total_spending_amount
             ELSE 0
-	END) io_nonmwbe,	  
+	END) io_nonmwbe,
 	SUM(
        CASE WHEN minority_type_id = 2 THEN total_spending_amount
             WHEN minority_type_id = 3 THEN total_spending_amount
@@ -100,26 +100,26 @@
             ELSE 0
 	END) total_mwbe,
 		SUM(
-       CASE 
+       CASE
              WHEN minority_type_id = 7 THEN total_spending_amount
             ELSE 0
 	END) total_non_mwbe
-	from aggregateon_subven_spending_coa_entities a1     
-    join subvendor ra on ra.vendor_id =  a1.vendor_id  
+	from aggregateon_subven_spending_coa_entities a1
+    join subvendor ra on ra.vendor_id =  a1.vendor_id
    ' . $where_filter . '
         group by  legal_name, a1.vendor_id
     order by ' . $sort_column . ' desc limit 10';
-    
-   
+
+
     $node->data  = _checkbook_project_execute_sql($sql);
-    
+
 ",
 "widgetUpdateJSONConfig":"
-	
+
 	$series_new = array();
-	
-	$mwbe_filter = _getRequestParamValue('mwbe');
-	
+
+	$mwbe_filter = RequestUtilities::getRequestParamValue('mwbe');
+
 	$amount_column = 'total_mwbe';
 	switch($mwbe_filter){
 		case '4~5' :
@@ -136,49 +136,49 @@
 			break;
 		case '11' :
 			$amount_column = 'io_nonmwbe';
-			break;	
+			break;
 		case '7' :
 			$amount_column = 'total_non_mwbe';
-			break;			
+			break;
 	}
-	
-	$mwbe_filter = _getRequestParamValue('mwbe');
-	if($mwbe_filter =='4~5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){			
-		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName()  . ' Top Ten Sub Vendors Spending';
+
+	$mwbe_filter = RequestUtilities::getRequestParamValue('mwbe');
+	if($mwbe_filter =='4~5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){
+		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName()  . ' Top Ten Sub Vendors Spending';
 	}else{
-		$node->widgetConfig->chartTitle = 'Top Ten Sub Vendors by ' . MappingUtil::getCurrenEhtnicityName() .' Spending';		
+		$node->widgetConfig->chartTitle = 'Top Ten Sub Vendors by ' . MappingUtil::getCurrenEthnicityName() .' Spending';
 	}
-	
+
 	if(SpendingUtil::_mwbe_spending_use_subvendor()){
 		unset($node->widgetConfig->gridConfig->table_columns[3]);
 		unset($node->widgetConfig->gridConfig->table_columns[1]);
 		$node->widgetConfig->gridConfig->table_columns = array_values($node->widgetConfig->gridConfig->table_columns);
-	}		
-	
+	}
+
 	$index = 0;
 	foreach($node->data as $row){
-			
-				$tooltip_label = 
-	 						'Sub Vendor: ' . $row['legal_name'].  '<br/>' .	 						
-	 						'M/WBE Spending: ' . custom_number_formatter_format( $row[$amount_column],2,'$').  '<br/>'  
-	 						; 
-			
+
+				$tooltip_label =
+	 						'Sub Vendor: ' . $row['legal_name'].  '<br/>' .
+	 						'M/WBE Spending: ' . custom_number_formatter_format( $row[$amount_column],2,'$').  '<br/>'
+	 						;
+
 			//$link= CustomURLHelper::prepareUrl('spending_landing', SpendingUtil::$landingPageParams, array('expandBottomCont'=>'true'), array('subvendor'=>$row['vendor_id']) );
 			//$link = RequestUtil::replaceParamFromString($link,'dashboard',RequestUtil::getNextSubvendorDashboardStateParam());
-			
-			$link = SpendingUtil::getSubVendorNameLinkUrl($node, $row);	 
+
+			$link = SpendingUtil::getSubVendorNameLinkUrl($node, $row);
 			$series_new[$index]->url = substr($link,1);
 
 
 			$series_new[$index]->y = (float)$row[$amount_column];
 			$series_new[$index]->tooltip_label = $tooltip_label;
 			if(SpendingUtil::_mwbe_spending_use_subvendor()){
-				$node->widgetConfig->gridConfig->data[] = array($row['legal_name'],														
+				$node->widgetConfig->gridConfig->data[] = array($row['legal_name'],
 														 $row[$amount_column]
 														);
-				$node->widgetConfig->gridConfig->sortColumn =  1;														
+				$node->widgetConfig->gridConfig->sortColumn =  1;
 			}else{
-				$node->widgetConfig->gridConfig->data[] = array($row['legal_name'],														
+				$node->widgetConfig->gridConfig->data[] = array($row['legal_name'],
 														 $row[$amount_column]
 														);
                 $node->widgetConfig->gridConfig->sortColumn =  1;
@@ -190,19 +190,19 @@
 	$node->widgetConfig->chartConfig->series[0]->type = 'column';
 	$node->widgetConfig->chartConfig->series[0]->pointWidth = 30;
 	$node->widgetConfig->chartConfig->series[0]->data = $series_new;
-	
+
 ",
 "chartConfig" : {
 	"colors":["#7DB7E5"],
 	"chart" : {"width":750},
     "plotOptions": {
             "series": {
-                "cursor": "pointer"   ,            
+                "cursor": "pointer"   ,
                 "stacking": "normal",
                 "dataLabels": {
                     "enabled": false
                 },
-                "point": {"events": {"function": "clickEvent"}}                             
+                "point": {"events": {"function": "clickEvent"}}
             }
     },
     "xAxis": {
@@ -220,13 +220,13 @@
     "title": {"text": ""},
     "yAxis": {
      	"min":0,
-     	"minRange": 0.1,    
+     	"minRange": 0.1,
         "startOnTick":true,
         "title": {"text": ""},
         "labels":{"rotation": 0,"function":"yAxisFormatter"}
     } ,
     "legend": {
-        "enabled": false       
+        "enabled": false
     },
     "tooltip":{"function":"tooltipformatter"}
     }

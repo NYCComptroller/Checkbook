@@ -90,7 +90,7 @@
     "template":"budget_expense_transactions_summary",
     "templateTitle":"Expense Budget Details",
     "templateLabel":"Year",
-    "templateLabelEval":"return 'FY '._getYearValueFromID(_getRequestParamValue('year'));"
+    "templateLabelEval":"return 'FY '._getYearValueFromID(RequestUtilities::getRequestParamValue('year'));"
   },
   "chartConfig":{
     "chart":{
@@ -134,8 +134,8 @@
     }
   }
 }
-<function>
-yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
+<function>yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
+
 budgetTooltip^^"formatter" : function() {return 'Year: '+this.point.name + '<br>Amount: ' + abbrNum(this.y, 2, '$')}##
-clickEvent^^"click": function(){location.href = this.url;}##
+clickEvent^^"click": function(){location.href = this.url;}
 </function>

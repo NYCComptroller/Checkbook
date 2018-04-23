@@ -73,18 +73,18 @@
     });
 
     $.fn.disableStuff = function () {
-        if ($('#edit-agency').val() == 'Citywide (All Agencies)') {
+        if ($('#edit-agency').val() == 'Citywide (All Agencies)' || $('#edit-agency').val() == 'Select One') {
             $('select[name="dept"]').val('');
             $('select[name="dept"]').attr('disabled', 'disabled');
             $('select[name="expense_category"]').val('');
             $('select[name="expense_category"]').attr('disabled', 'disabled');
         }
-        else if ($('#edit-agency').val() == 'Select One') {
+        /*else if ($('#edit-agency').val() === 'Select One') {
             $('select[name="dept"]').val('');
             $('select[name="dept"]').attr('disabled', 'disabled');
             $('select[name="expense_category"]').val('');
             $('select[name="expense_category"]').attr('disabled', 'disabled');
-        }
+        }*/
 
         var dataSource = $('input:radio[name=datafeeds-spending-domain-filter]:checked').val();
 
@@ -137,7 +137,7 @@
             $('#edit-column-select').multiSelect('deselect_all');
         });
     };
-    
+
     Drupal.behaviors.spendingDataFeeds = {
         attach:function (context, settings) {
             var p = /\[(.*?)\]$/;
@@ -181,7 +181,7 @@
             $('a.deselect', context).click(function () {
                 $('#edit-column-select', context).multiSelect('deselect_all');
             });
-            
+
             //On Date Filter change
             $("#edit-date-filter input[name='date_filter']", context).click(function(){
                 if($('input:radio[name=date_filter]:checked', context).val() == 0){
@@ -194,11 +194,11 @@
                     $('input[name="issuedto"]', context).removeAttr("disabled");
                 }
             });
-            
+
             //Sets up jQuery UI datepickers
             var currentYear = new Date().getFullYear();
             $('.datepicker', context).datepicker({dateFormat:"yy-mm-dd",
-                                                changeMonth:true,     
+                                                changeMonth:true,
                                                 changeYear:true,
                                                 yearRange:'-'+(currentYear-1900)+':+'+(2500-currentYear)});
 

@@ -1321,12 +1321,12 @@ function get_vendor_type_mapping($reqParams){
 
 function get_contract_status_mapping($reqParams){
     switch($reqParams){
-        case 'registered': return 'registered';
+        case 'registered':
+        case 'active':return 'registered';
                            break;
         case 'pending': return 'pending';
                         break;
-        case 'active': return 'registered';
-                       break;
+
     }
 }
 

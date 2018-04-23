@@ -24,6 +24,10 @@
  */
 set_time_limit(0);
 
+if (!defined('DRUPAL_ROOT')) {
+    define('DRUPAL_ROOT', dirname(__DIR__, 6));
+}
+
 require_once DRUPAL_ROOT . '/includes/bootstrap.inc';
 drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
 //_drush_bootstrap_drupal_full();
@@ -116,8 +120,7 @@ if (!QueueUtil::isJobsInProgress()) {
     LogHelper::log_notice("$log_id: No requests are found for processing. Sleep until next job is available.");
   }
 
-}
-else {
+} else {
   LogHelper::log_notice("$log_id: Currently a job is in progress. Skipping processing next job until current job is finished.");
 }
 

@@ -51,7 +51,7 @@
                     } else {
                         newTop = s.topSpacing;
                     }
-                    if (s.currentTop != newTop) {
+                    if (s.currentTop !== newTop) {
                         s.stickyElement
                             .css('position', 'fixed')
                             .css('top', newTop);
@@ -85,7 +85,7 @@
                         stickyElement.parent().css({width:stickyElement.outerWidth(),marginLeft:"auto",marginRight:"auto"});
                     }
 
-                    if (stickyElement.css("float") == "right") {
+                    if (stickyElement.css("float") === "right") {
                         stickyElement.css({"float":"none"}).parent().css({"float":"right"});
                     }
 
@@ -110,12 +110,12 @@
                     removeIdx = -1;
                     for (var i = 0; i < sticked.length; i++)
                     {
-                        if (sticked[i].stickyElement.get(0) == unstickyElement.get(0))
+                        if (sticked[i].stickyElement.get(0) === unstickyElement.get(0))
                         {
                             removeIdx = i;
                         }
                     }
-                    if(removeIdx != -1)
+                    if(removeIdx !== -1)
                     {
                         sticked.splice(removeIdx,1);
                         unstickyElement.unwrap();

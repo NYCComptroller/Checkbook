@@ -36,11 +36,11 @@ class MappingUtilities {
 
     /** Returns the M/WBE category name based on the minority_type_id mapping */
     static function getMinorityCategoryById($minority_type_id) {
-        return self::$minority_type_category_map[$minority_type_id];
+        return static::$minority_type_category_map[$minority_type_id];
     }
 
     static function isMWBECertified($mwbe_cats){
-        if(count(array_intersect($mwbe_cats, self::$minority_type_category_map_multi_chart[self::$mwbe_prefix])) > 0){
+        if(count(array_intersect($mwbe_cats, static::$minority_type_category_map_multi_chart[static::$mwbe_prefix])) > 0){
             return true;
         }else{
             return false;

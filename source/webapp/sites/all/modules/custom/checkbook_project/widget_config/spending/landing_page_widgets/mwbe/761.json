@@ -9,7 +9,7 @@
 	"noDataInitialLoad":true,
     "totalAggregateColumns":["check_amount_sum"],
     "adjustTotalAggregateColumnsParameters":"
-        if(_getRequestParamValue('smnid') == 761) {
+        if(RequestUtilities::getRequestParamValue('smnid') == 761) {
             unset($parameters['expenditure_object.expenditure_object']);
         }
         return $parameters;
@@ -50,7 +50,7 @@
         },
         "formatted_expense_category": {
             "type": "expression2",
-            "expression": "_get_tooltip_markup($row['expenditure_object_expenditure_object_original_expenditure_object_name'],40)"
+            "expression": "_get_tooltip_markup($row['expenditure_object_name'],40)"
         }
 	},
     "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Expense Categories');",

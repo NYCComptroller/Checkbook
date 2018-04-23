@@ -17,15 +17,12 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php
 	$header = 'Fiscal Year';
     $header .=  ",General Bonded Debt (1)" ;
     $header .=  ",Debt Secure by Revenue other than property tax (2) (3)" ;
-    $header .=  ",General Obligation Bonds" ;
-    $header .=  ",Percentage of Actual Taxable Value of Property (4)," ;
+    $header .=  ",City Net General Obligation Bonded Debt" ;
+    $header .=  ",City Net General Obligation Bonded Debt as a Percentage of  Assessed Taxable Value of Property (4)" ;
     $header .=  ",Per Capita (5)";
-
 	echo $header . "\n";
 
     $count = 1;
@@ -43,15 +40,17 @@
         echo $rowString . "\n";
         $count++;
    	}
-echo "\n"."SOURCES: Comprehensive Annual Financial Reports of the Comptroller" ."\n".
-'"' ."(1) See Notes to Financial Statements (Note D.5), 'Changes in Long Term Liabilities'- Bonds and Notes Payable net of".'"' ."\n".
-'"' ."premium and discount.".'"' ."\n".
-'"' ."(2) Includes ECF, FSC, HYIC, IDA, STAR, TFA, NYCTLTs and TSASC.".'"' ."\n".
-'"' ."(3) See Exhibit 'Pledged- Revenue Coverage', Part III-Statistical Information, CAFR".'"'."\n".
-'"' ."(4) See Exhibit 'Assessed Value and Estimated Actual Value of Taxable Property-Ten Year Trend', Part III-Statistical".'"'."\n".
-'"' ."Information, CAFR".'"'."\n".
-'"' ."(5) See Exhibit 'Population-Ten Year Trend', Part III-Statistical Information, CAFR".'"';
-
-
 ?>
+
+
+"(1)		See Notes to Financial Statements (Note D.5), 'Changes in Long Term Liabilities' - Bonds and Notes Payable net of premium and discount."
+"(2)		Includes ECF, FSC, HYIC, IDA, STAR, TFA , NYCTLTs and TSASC."
+"(3)		See Exhibit 'Pledged-Revenue Coverage', Part III- Statistical Information, CAFR"
+"(4)		See Exhibit 'Assessed Value and Estimated Actual Value of Taxable Property - Ten Year Trend',  Part III- Statistical Information, CAFR"
+"(5)		See Exhibit 'Population - Ten Year Trend', Part III- Statistical Information, CAFR"
+
+"SOURCES: Comprehensive Annual Financial Reports of the Comptroller"
+
+
+
 

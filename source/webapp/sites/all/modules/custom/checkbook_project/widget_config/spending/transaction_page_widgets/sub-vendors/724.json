@@ -24,7 +24,7 @@
 "header":"
 	$header = NULL;
 	$header .= widget_data_tables_export_link($node);
-	return $header; 
+	return $header;
 ",
 "useList":true,
 "stickyHeader":true,
@@ -70,19 +70,19 @@
     },
     "vendor_type_calculated": {
         "type":"expression2",
-        "expression":"(preg_match('/S/', $row[disb_vendor_type])) ? 'Yes' : 'No'"
+        "expression":"(preg_match('/S/', $row['disb_vendor_type'])) ? 'Yes' : 'No'"
     },
     "is_sub_vendor": {
         "type":"expression2",
-        "expression":"(preg_match('/S/', $row[disb_vendor_type])) ? 'Yes' : 'No'"
+        "expression":"(preg_match('/S/', $row['disb_vendor_type'])) ? 'Yes' : 'No'"
     },
     "agency_name_formatted":{
         "type":"expression2",
-        "expression":"_get_tooltip_markup($row[disb_agency_name], 30)"
+        "expression":"_get_tooltip_markup($row['disb_agency_name'], 30)"
     },
     "agency_name_link": {
         "type":"expression2",
-        "expression":" RequestUtil::isNewWindow() ? $row[agency_name_formatted]  : ('<a href=/spending_landing' . _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() . _checkbook_project_get_url_param_string('category') . '/agency/'. $row[disb_agency_id]. '?expandBottomCont=true>'. $row[agency_name_formatted] .'</a>') "
+        "expression":" RequestUtil::isNewWindow() ? $row['agency_name_formatted']  : ('<a href=/spending_landing' . _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() . _checkbook_project_get_url_param_string('category') . '/agency/'. $row['disb_agency_id']. '?expandBottomCont=true>'. $row['agency_name_formatted'] .'</a>') "
     },
     "agency_param":{
         "type":"expression2",
@@ -90,7 +90,7 @@
     },
     "payee_name_formatted":{
         "type": "expression2",
-        "expression":" _get_tooltip_markup($row[disb_vendor_name], 30)"
+        "expression":" _get_tooltip_markup($row['disb_vendor_name'], 30)"
     },
     "payee_name_export":{
         "type": "expression2",
@@ -98,7 +98,7 @@
     },
     "payee_name_link": {
         "type": "expression2",
-        "expression": " RequestUtil::isNewWindow() ||  $row[disb_spending_category_id]==2 ?  $row[payee_name_formatted] : ('<a href=\"' . SpendingUtil::getPrimeVendorNameLinkUrl($node,$row) . '?expandBottomCont=true' . '\">'. $row[payee_name_formatted] .'</a>') "
+        "expression": " RequestUtil::isNewWindow() ||  $row['disb_spending_category_id']==2 ?  $row['payee_name_formatted'] : ('<a href=\"' . SpendingUtil::getPrimeVendorNameLinkUrl($node,$row) . '?expandBottomCont=true' . '\">'. $row['payee_name_formatted'] .'</a>') "
     },
     "formatted_check_amount": {
         "type":"expression2",
@@ -106,7 +106,7 @@
     },
     "contract_number_link_actual": {
         "type":"expression2",
-        "expression":"($row[disb_spending_category_name] == 'Payroll' ||  $row[disb_spending_category_name] == 'Others') ? 'n/a' : $row[disb_contract_number]"
+        "expression":"($row['disb_spending_category_name'] == 'Payroll' ||  $row['disb_spending_category_name'] == 'Others') ? 'n/a' : $row['disb_contract_number']"
     },
     "contract_number_link": {
         "type":"expression2",
@@ -114,15 +114,15 @@
     },
     "purpose_formatted":{
         "type":"expression2",
-        "expression":"_get_tooltip_markup($row[disb_purpose], 30)"
+        "expression":"_get_tooltip_markup($row['disb_purpose'], 30)"
     },
     "contract_purpose_text":{
         "type":"expression2",
-        "expression":"($row[spending_category_name] == 'Payroll' ||  $row[disb_spending_category_name] == 'Others') ? 'n/a' : $row[purpose_formatted]"
+        "expression":"($row['spending_category_name'] == 'Payroll' ||  $row['disb_spending_category_name'] == 'Others') ? 'n/a' : $row['purpose_formatted']"
     },
     "mwbe_category_name": {
         "type":"expression2",
-        "expression":"MappingUtil::getMinorityCategoryById($row[disb_minority_type_id])"
+        "expression":"MappingUtil::getMinorityCategoryById($row['disb_minority_type_id'])"
     },
     "industry_name_formatted": {
         "type": "expression2",
@@ -180,7 +180,7 @@
 "adjustDataTableOptions":"
           $adjustDataTableOptions = $node->widgetConfig->dataTableOptions;
 
-          $rpp = _getRequestParamValue('rpp');
+          $rpp = RequestUtilities::getRequestParamValue('rpp');
              if(is_numeric($rpp) ){
                     $adjustDataTableOptions->iDisplayLength = (int)$rpp;
              }

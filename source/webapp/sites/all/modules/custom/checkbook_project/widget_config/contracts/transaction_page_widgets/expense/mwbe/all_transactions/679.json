@@ -78,7 +78,7 @@
         "child_contrats_link":{
             "type": "expression2",
             "expression": " ($row['has_children'] == 'Y') ? '<span id=dtl_expand class=\"toggler collapsed\"  magid=\"' . $row['contract_original_agreement_id'] . '\" '
-            . ( _getRequestParamValue('contstatus') != '' ?  ('contstatus=\"' . _getRequestParamValue('contstatus') . '\"' ) : '')
+            . ( RequestUtilities::getRequestParamValue('contstatus') != '' ?  ('contstatus=\"' . RequestUtilities::getRequestParamValue('contstatus') . '\"' ) : '')
             . (' mastercode=\"' . $row['document_code@checkbook:ref_document_code'] . '\"' )
             . '></span>' : '' "
         },

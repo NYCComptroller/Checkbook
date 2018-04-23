@@ -17,9 +17,8 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php  
-echo eval($node->widgetConfig->header);  
+
+echo eval($node->widgetConfig->header);
 ?>
 
 <a class="trends-export" href="/export/download/trends_property_tax_rates_csv?dataUrl=/node/<?php echo $node->nid ?>"
@@ -36,7 +35,7 @@ echo eval($node->widgetConfig->header);
     <thead>
         <tr>
             <th class="number"><div class="trendCen" >Fiscal<br>Year</div></th>
-            <th class="number"><div class="trendCen" >Basic<br>Rate</div></th>
+            <th class="number"><div class="trendCen" >Basic<br>Rate<sup>(1)</sup></div></th>
             <th class="number"><div class="trendCen" >Obligation<br>Debt</div></th>
             <th class="number"><div class="trendCen" >Total<br>Direct</div></th>
         </tr>
@@ -61,9 +60,8 @@ echo eval($node->widgetConfig->header);
 </table>
 <div class="footnote">
     <p>SOURCE: Resolutions of the City Council.</p>
-    <p>Note: Property tax rate based on every $100 of assessed valuations.</p>
+    <p>Note: (1) Property tax rate based on every $100 of assessed valuations.</p>
 
 </div>
 <?php 
 	widget_data_tables_add_js($node);
-?>

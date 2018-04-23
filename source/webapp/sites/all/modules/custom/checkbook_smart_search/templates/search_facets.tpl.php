@@ -17,8 +17,7 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php
+
     drupal_add_js(drupal_get_path('module', 'checkbook_smart_search') .'/js/smart_search.js');
     $output = NULL;
     $oge=$agencies = $vendors = $expenseCategories = $revenueCategories

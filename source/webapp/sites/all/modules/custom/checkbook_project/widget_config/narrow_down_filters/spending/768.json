@@ -14,7 +14,6 @@
     "autocompleteID":"fdeptNm", 	
     "autocompleteField":"department_name",
     "maxSelect":5,
-//    "widgetPreprocessJSON":"_checkbook_project_adjust_vendor_facet_json($node);",
     "showAllRecords":true,
     "allowFacetDeselect":true,
     "adjustParameters":"

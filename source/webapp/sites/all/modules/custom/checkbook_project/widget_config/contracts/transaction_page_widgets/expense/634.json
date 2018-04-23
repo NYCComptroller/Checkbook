@@ -114,7 +114,7 @@
     "preProcessConfiguration":"
         $doctype = $node->widgetConfig->requestParams['document_code@checkbook:ref_document_code'];
         $doctypes = isset($doctype) ? explode('~', $doctype) : array();
-        $smnid = _getRequestParamValue('smnid');
+        $smnid = RequestUtilities::getRequestParamValue('smnid');
 
         $is_master_agreement = in_array('MA1', $doctypes) || in_array('MMA1', $doctypes);
         $is_contract_modification = $smnid == 480 || $smnid == 366;
@@ -133,12 +133,12 @@
         "child_contrats_link":{
             "type": "expression2",
             "expression": " ($row['has_children'] == 'Y') ? '<span id=dtl_expand class=\"toggler collapsed\"  magid=\"' . $row['original_agreement_id'] . '\" '
-            . ( _getRequestParamValue('datasource') != '' ?  ('datasource=\"' . _getRequestParamValue('datasource') . '\"' ) : '')
-            . ( _getRequestParamValue('smnid') != '' ?  ('smnid=\"' . _getRequestParamValue('smnid') . '\"' ) : '')
-            . ( _getRequestParamValue('year') != '' ?  ('year=\"' . _getRequestParamValue('year') . '\"' ) : '')
-            . ( _getRequestParamValue('calyear') != '' ?  ('calyear=\"' . _getRequestParamValue('calyear') . '\"' ) : '')
-            . ( _getRequestParamValue('yeartype') != '' ?  ('yeartype=\"' . _getRequestParamValue('yeartype') . '\"' ) : '')
-            . ( _getRequestParamValue('contstatus') != '' ?  ('contstatus=\"' . _getRequestParamValue('contstatus') . '\"' ) : '')
+            . ( RequestUtilities::getRequestParamValue('datasource') != '' ?  ('datasource=\"' . RequestUtilities::getRequestParamValue('datasource') . '\"' ) : '')
+            . ( RequestUtilities::getRequestParamValue('smnid') != '' ?  ('smnid=\"' . RequestUtilities::getRequestParamValue('smnid') . '\"' ) : '')
+            . ( RequestUtilities::getRequestParamValue('year') != '' ?  ('year=\"' . RequestUtilities::getRequestParamValue('year') . '\"' ) : '')
+            . ( RequestUtilities::getRequestParamValue('calyear') != '' ?  ('calyear=\"' . RequestUtilities::getRequestParamValue('calyear') . '\"' ) : '')
+            . ( RequestUtilities::getRequestParamValue('yeartype') != '' ?  ('yeartype=\"' . RequestUtilities::getRequestParamValue('yeartype') . '\"' ) : '')
+            . ( RequestUtilities::getRequestParamValue('contstatus') != '' ?  ('contstatus=\"' . RequestUtilities::getRequestParamValue('contstatus') . '\"' ) : '')
             . ('mastercode=\"' . $row['document_code@checkbook:ref_document_code'] . '\"' )
             . '></span>' : '' "
         },
@@ -174,7 +174,7 @@
             "type": "expression2",
             "expression": "($row['has_children'] != 'Y') ? ('<a href=\"/contracts_landing'
             . _checkbook_append_url_params()
-            .(_checkbook_check_isEDCPage() ? ('/agency/'. $row[agency_id]) :'')
+            .(_checkbook_check_isEDCPage() ? ('/agency/'. $row['agency_id']) :'')
             . _checkbook_project_get_url_param_string('agency')
             .  (isset($row['fiscal_year_id']) ? '/year/'.$row['fiscal_year_id'] : '')
             .  (isset($row['type_of_year']) ? '/yeartype/'.$row['type_of_year'] : '')
@@ -226,7 +226,7 @@
         },
         "budget_name_formatted":{
             "type": "expression2",
-            "expression": "_get_tooltip_markup($row[budget_name], 36)"
+            "expression": "_get_tooltip_markup($row['budget_name'], 36)"
         },
         "reg_date":{
             "type": "expression2",
@@ -268,10 +268,10 @@
         if(function_exists('_checkbook_project_adjustContractParameterFilters')){
             _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');
         }
-        if(_getRequestParamValue('vendor') || _getRequestParamValue('vendornm')){
+        if(RequestUtilities::getRequestParamValue('vendor') || RequestUtilities::getRequestParamValue('vendornm')){
             $parameters['is_vendor_flag'] = 'Y';
         }
-        if(!(_getRequestParamValue('year') || _getRequestParamValue('calyear'))){
+        if(!(RequestUtilities::getRequestParamValue('year') || RequestUtilities::getRequestParamValue('calyear'))){
             $parameters['latest_flag'] = 'Y';
             $parameters['if_for_all_years'] = 'Y';
         }

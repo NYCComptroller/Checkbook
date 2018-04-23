@@ -25,17 +25,17 @@ Prime Vendor Information
 
 
 //TODO temp fix move bottom code to separate custom preprocess function
-if(_getRequestParamValue("magid") != ""){
-  $ag_id = _getRequestParamValue("magid");
+if(RequestUtilities::getRequestParamValue("magid") != ""){
+  $ag_id = RequestUtilities::getRequestParamValue("magid");
 }else{
-  $ag_id = _getRequestParamValue("agid");
+  $ag_id = RequestUtilities::getRequestParamValue("agid");
 }
 
 if(_get_current_datasource() != "checkbook_oge"){
-  $queryVendorDetails = "SELECT fa.minority_type_id, fa.contract_number, rb.business_type_code, fa.agreement_id,fa.original_agreement_id, 
+  $queryVendorDetails = "SELECT cvlmc.minority_type_id, fa.contract_number, rb.business_type_code, fa.agreement_id,fa.original_agreement_id, 
                                 fa.vendor_id, va.address_id, ve.legal_name AS vendor_name, a.address_line_1, a.address_line_2, a.city, a.state, a.zip, a.country,
-	                            (CASE WHEN fa.minority_type_id IN (2,3,4,5,9)  THEN 'Yes' ELSE 'NO' END) AS mwbe_vendor,
-	                            (CASE WHEN fa.minority_type_id IN (4,5) then 'Asian American' ELSE fa.minority_type_name END)AS ethnicity
+                                (CASE WHEN cvlmc.minority_type_id IN (2,3,4,5,9) THEN 'Yes' ELSE 'NO' END) AS mwbe_vendor, 
+                                (CASE WHEN cvlmc.minority_type_id IN (4,5) then 'Asian American' ELSE rm.minority_type_name END) AS ethnicity 
 	                        FROM agreement_snapshot fa
 	                            LEFT JOIN vendor_history vh ON fa.vendor_history_id = vh.vendor_history_id
 	                            LEFT JOIN vendor as ve ON ve.vendor_id = vh.vendor_id
@@ -44,8 +44,10 @@ if(_get_current_datasource() != "checkbook_oge"){
 	                            LEFT JOIN ref_address_type ra ON va.address_type_id = ra.address_type_id
 	                            LEFT JOIN vendor_business_type vb ON vh.vendor_history_id = vb.vendor_history_id
 	                            LEFT JOIN ref_business_type rb ON vb.business_type_id = rb.business_type_id
-	                            LEFT JOIN ref_minority_type rm ON vb.minority_type_id = rm.minority_type_id
-	                        WHERE ra.address_type_code = 'PR' AND fa.latest_flag = 'Y' AND fa.original_agreement_id = " . $ag_id. "LIMIT 1";
+	                            LEFT JOIN contract_vendor_latest_mwbe_category cvlmc ON cvlmc.vendor_id = fa.vendor_id
+                                LEFT JOIN ref_minority_type rm ON cvlmc.minority_type_id = rm.minority_type_id
+	                        WHERE ra.address_type_code = 'PR' AND fa.latest_flag = 'Y' AND cvlmc.latest_minority_flag ='Y' AND fa.original_agreement_id = " . $ag_id. " 
+	                        ORDER BY cvlmc.year_id DESC LIMIT 1";
 }else{
   $queryVendorDetails = "SELECT  fa.contract_number, rb.business_type_code, fa.agreement_id,fa.original_agreement_id,
                                   fa.vendor_id, va.address_id, ve.legal_name AS vendor_name, a.address_line_1, a.address_line_2, a.city, a.state, a.zip, a.country
@@ -71,51 +73,22 @@ $queryVendorCount = " select count(*) total_contracts_sum from {agreement_snapsh
 $results1 = _checkbook_project_execute_sql_by_data_source($queryVendorDetails,_get_current_datasource());
 $node->data = $results1;
 
-
-//foreach($node->data as $key => $value){
-//    if($value['business_type_code'] == "MNRT" || $value['business_type_code'] == "WMNO"){
-//        $node->data[0]["mwbe_vendor"] = "Yes";
-//    }
-//}
 $total_cont  = 0;
 $results2 = _checkbook_project_execute_sql_by_data_source($queryVendorCount,_get_current_datasource());
-if(_getRequestParamValue("status")){
-    $status = '/status/'._getRequestParamValue("status");
+if(RequestUtilities::getRequestParamValue("status")){
+    $status = '/status/'.RequestUtilities::getRequestParamValue("status");
 }else{
     $status = '/status/A';
 }
 
-if (isset($node->data[0]['mwbe_vendor']) && 'yes' == strtolower($node->data[0]['mwbe_vendor'])) {
-  $status .= '/dashboard/mp';
-}
-
-//log_error($_SERVER);
 foreach($results2 as $row){
     $total_cont +=$row['total_contracts_sum'];
 }
-if(_getRequestParamValue("doctype")=="RCT1"){
-  $vendor_link = '/contracts_revenue_landing'.$status.'/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
-                 . $node->data[0]['vendor_id'] . '?expandBottomCont=true';
-}
-else{
-   if($node->data[0]["mwbe_vendor"] == 'Yes'){
-       $vendor_link = '/contracts_landing'.$status.'/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
-        .$node->data[0]['vendor_id'].'/dashboard/mp?expandBottomCont=true';
-   }
-    else{
-        $vendor_link = '/contracts_landing'.$status.'/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
-            .$node->data[0]['vendor_id'].'?expandBottomCont=true';
-    }
-}
+
+$vendor_link = _checkbook_vendor_link($node->data[0]['vendor_id'], TRUE);
+
 $contract_number = $node->data[0]['contract_number'];
-//$querySubVendorCount = "SELECT  COUNT(DISTINCT vendor_id) AS sub_vendor_count  FROM sub_agreement_snapshot
-//                        WHERE contract_number = '". $contract_number . "'
-//                        AND latest_flag = 'Y'
-//                        LIMIT 1";
-//
-//$results3 = _checkbook_project_execute_sql_by_data_source($querySubVendorCount,_get_current_datasource());
-//$res->data = $results3;
-//$total_subvendor_count = $res->data[0]['sub_vendor_count'];
+
 ?>
   <ul class="left">
   <?php if( _get_current_datasource() == "checkbook" && !preg_match('/newwindow/',$_GET['q'])){?>
@@ -151,16 +124,20 @@ $contract_number = $node->data[0]['contract_number'];
 <?php if( _get_current_datasource() == "checkbook" ){?>
     <!-- Total Number of Sub Vendors -->
     <li><span class="gi-list-item">M/WBE Vendor:</span> <?php echo $node->data[0]['mwbe_vendor'] ;?></li>
-<?php if(!preg_match('/newwindow/',$_GET['q']) && $node->data[0]["mwbe_vendor"] == 'Yes'){ ?>
-    <li><span class="gi-list-item">M/WBE Category:</span> <a href="/contracts_landing<?php echo $status;?>/yeartype/B/year/<?php echo _getFiscalYearID();?>/mwbe/<?php echo $minority_type_id; ?>/dashboard/mp"><?php echo $ethnicity ;?></a></li>
-<?php } else { ?>
+
+
+<?php if(!preg_match('/newwindow/',$_GET['q']) && $node->data[0]["mwbe_vendor"] == 'Yes' && RequestUtilities::getRequestParamValue("doctype") == "RCT1") { ?>
+        <li><span class="gi-list-item">M/WBE Category:</span> <a href="/contracts_revenue_landing<?php echo $status;?>/yeartype/B/year/<?php echo _getFiscalYearID();?>/mwbe/<?php echo $minority_type_id; ?>/dashboard/mp"><?php echo $ethnicity ;?></a></li>
+<?php } elseif(!preg_match('/newwindow/',$_GET['q']) && $node->data[0]["mwbe_vendor"] == 'Yes'){ ?>
+        <li><span class="gi-list-item">M/WBE Category:</span> <a href="/contracts_landing<?php echo $status;?>/yeartype/B/year/<?php echo _getFiscalYearID();?>/mwbe/<?php echo $minority_type_id; ?>/dashboard/mp"><?php echo $ethnicity ;?></a></li>
+    <?php } else  { ?>
 <li><span class="gi-list-item">M/WBE Category: </span><?php echo  $ethnicity ;?></li>
      <?php }
 } ?>
 </ul>
 <?php
 
-if (_getRequestParamValue("datasource") != "checkbook_oge") {
+if (RequestUtilities::getRequestParamValue("datasource") != "checkbook_oge") {
     $querySubVendorinfo = "SELECT SUM(maximum_contract_amount) AS total_current_amt, SUM(original_contract_amount) AS total_original_amt, SUM(rfed_amount) AS total_spent_todate
     FROM {subcontract_details}
     WHERE contract_number = '". $contract_number . "'
@@ -168,6 +145,9 @@ if (_getRequestParamValue("datasource") != "checkbook_oge") {
     LIMIT 1";
 
     $results4 = _checkbook_project_execute_sql_by_data_source($querySubVendorinfo,_get_current_datasource());
+    if (!isset($res)) {
+        $res = new stdClass();
+    }
     $res->data = $results4;
 
     $total_current_amount = $res->data[0]['total_current_amt'];
@@ -195,20 +175,20 @@ if (_getRequestParamValue("datasource") != "checkbook_oge") {
 
 }
 ?>
-<?php if(!_getRequestParamValue("datasource") == "checkbook_oge"){?>
+<?php if(!RequestUtilities::getRequestParamValue("datasource") == "checkbook_oge"){?>
 <div class="dollar-amounts">
     <h4>
         Sub Vendor Information
     </h4>
     <?php
-    if(_getRequestParamValue("doctype")=="CTA1" || _getRequestParamValue("doctype")=="CT1"){
+    if(RequestUtilities::getRequestParamValue("doctype")=="CTA1" || RequestUtilities::getRequestParamValue("doctype")=="CT1"){
         echo '<ul class="left"><li><span class="gi-list-item">Contract Includes Sub Vendors: </span>'.strtoupper($subVendorStatus).'</li>';
         echo  '<li><span class="gi-list-item">Total Number of Sub Vendors: </span>'.$total_subvendor_count .'</li></ul>';
     }
      ?>
     <div class="spent-to-date">
         <?php if(!preg_match('/newwindow/',$_GET['q'])){ ?>
-        <a class="new_window" href="/contract/spending/transactions/contnum/<?php echo $contract_number; ?><?php echo $status;?>/dashboard/ss/yeartype/B/year/<?php echo _getCurrentYearID();?>/syear/<?php echo _getCurrentYearID();?>/smnid/721/newwindow"><?php echo custom_number_formatter_format($total_spent_todate, 2, "$");?></a>
+        <a class="new_window" href="/contract/spending/transactions/contnum/<?php echo $contract_number; echo $status;?>/dashboard/ss/yeartype/B/year/<?php echo _getCurrentYearID();?>/syear/<?php echo _getCurrentYearID();?>/smnid/721/newwindow"><?php echo custom_number_formatter_format($total_spent_todate, 2, "$");?></a>
         <?php } else {
             echo custom_number_formatter_format($total_spent_todate, 2, "$");?>
         <?php } ?>

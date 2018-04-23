@@ -9,7 +9,7 @@
     <input type=\"text\" class=\"chartdatefrom\" maxlength=\"4\" size=\"4\">
     <label> to </label>
     <input type=\"text\" class=\"chartdateto\" maxlength=\"4\" size=\"4\"></div>
-    <img src=\"/sites/all/themes/checkbook/images/featured-filter.png\" class=\"chartfilter\" name=\"3\">
+    <input type=\"submit\" value=\"Filter\" class=\"chartfilter\" name=\"3\" />
     </div>';",
     "footer":"print '<div class=\"detail-page-links\">
     <a class=\"show-detail-link\" href=\"/featuredtrends/node/353\">Show Details for Personal Income</a>
@@ -103,7 +103,6 @@
             }
         },
         "title": {
-            //"text": "Personal Income",
             "style": {
                 "fontSize": "16px"
             },
@@ -111,7 +110,6 @@
         },
         "xAxis": {
             "tickInterval": 31557600000,
-            //"range": 284018400000,
             "range": 279936000000,
             "minRange": 31557600000,
             "labels": {

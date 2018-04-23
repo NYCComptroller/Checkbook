@@ -43,7 +43,7 @@
     foreach($node->widgetConfig->requestParams as $param=>$value){
         $where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
     }
-    $mwbe_filter = _getRequestParamValue('mwbe');
+    $mwbe_filter = RequestUtilities::getRequestParamValue('mwbe');
     $where_filters_mwbe = $where_filters;
     $where_filters_mwbe[] = _widget_build_sql_condition('minority_type_id', $mwbe_filter);
 
@@ -140,29 +140,29 @@
 	$node->data_merged =  $node->data;
 ",
 "widgetUpdateJSONConfig":"
-	
+
 	$series_new = array();
-	
-	
-	$mwbe_filter = _getRequestParamValue('mwbe');
+
+
+	$mwbe_filter = RequestUtilities::getRequestParamValue('mwbe');
 	$amount_column = $mwbe_filter != null ? 'ethinicty_mwbe' : 'total_mwbe';
-	
-	$mwbe_filter = _getRequestParamValue('mwbe');
+
+	$mwbe_filter = RequestUtilities::getRequestParamValue('mwbe');
 	if($mwbe_filter =='4~5' || $mwbe_filter =='4' || $mwbe_filter =='5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){
-		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName()  . ' Sub Spending';
-		
-		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName()  . ' Top Ten Agencies Sub Spending';
+		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName()  . ' Sub Spending';
+
+		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName()  . ' Top Ten Agencies Sub Spending';
 	}else{
-		$node->widgetConfig->chartTitle = 'Top Ten Agencies by ' . MappingUtil::getCurrenEhtnicityName() .' Sub Spending';
-		
+		$node->widgetConfig->chartTitle = 'Top Ten Agencies by ' . MappingUtil::getCurrenEthnicityName() .' Sub Spending';
+
 	}
 
 	$index = 0;
 	foreach($node->data_merged as $row){
         $tooltip_label =
         'Agency: ' . $row['agency_name'].  '<br/>' .
-        MappingUtil::getCurrenEhtnicityName() . ' Share: ' . custom_number_formatter_format($row[$amount_column]/($row['total_mwbe'] + $row['total_non_mwbe'] ) *100 ,1,null, '%').  '<br/>' .
-        MappingUtil::getCurrenEhtnicityName() . ' Spending: ' . custom_number_formatter_format( $row[$amount_column],2,'$').  '<br/>' .
+        MappingUtil::getCurrenEthnicityName() . ' Share: ' . custom_number_formatter_format($row[$amount_column]/($row['total_mwbe'] + $row['total_non_mwbe'] ) *100 ,1,null, '%').  '<br/>' .
+        MappingUtil::getCurrenEthnicityName() . ' Spending: ' . custom_number_formatter_format( $row[$amount_column],2,'$').  '<br/>' .
         'Non-M/WBE: ' . custom_number_formatter_format( $row['total_non_mwbe']  ,2,'$').  '<br/>';
 
         $node->widgetConfig->gridConfig->data[] = array($row['agency_name'],
@@ -172,10 +172,10 @@
 
         $link= CustomURLHelper::prepareUrl('spending_landing', SpendingUtil::$landingPageParams, array('expandBottomCont'=>'true'), array('agency'=>$row['agency_id']) );
 			$series_new[$index]->url = $link;
-	 						
+
 			$series_new[$index]->y = (float)$row[$amount_column];
 			$series_new[$index]->tooltip_label = $tooltip_label;
-			
+
 			$index += 1;
 			if($index == 10){
 				break;
@@ -186,21 +186,21 @@
 	$node->widgetConfig->chartConfig->series[0]->type = 'column';
 	$node->widgetConfig->chartConfig->series[0]->pointWidth = 30;
 	$node->widgetConfig->chartConfig->series[0]->data = $series_new;
-	
-	
+
+
 ",
 "chartConfig" : {
 	"colors":["#7DB7E5"],
 	"chart" : {"width":750},
     "plotOptions": {
             "series": {
-                "cursor": "pointer"   ,            
+                "cursor": "pointer"   ,
                 "stacking": "normal",
                 "dataLabels": {
                     "enabled": false
                 },
                 "minPointLength":3    ,
-                "point": {"events": {"function": "clickEvent"}}         
+                "point": {"events": {"function": "clickEvent"}}
             }
     },
     "xAxis": {
@@ -224,7 +224,7 @@
         "labels":{"rotation": 0,"function":"yAxisFormatter"}
     } ,
     "legend": {
-        "enabled": false       
+        "enabled": false
     },
     "tooltip":{"function":"tooltipformatter"}
     }

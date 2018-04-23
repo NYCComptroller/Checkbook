@@ -29,7 +29,7 @@ class Form
 
     public function generate_form($form)
     {
-        $form->domain_name=$this->domain_name;
+//        $form['domain_name'] = $this->domain_name;
         $form = $this->generate_header($form);
         //$form = $this->generate_filter($form);
         return $this->generate_content($form);

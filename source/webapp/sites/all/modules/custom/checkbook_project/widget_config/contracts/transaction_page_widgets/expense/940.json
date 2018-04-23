@@ -74,8 +74,8 @@
     "caption":"",
     "adjustParameters":"
 
-        $year = !(_getRequestParamValue('year')) ? _getCurrentYearID() : _getRequestParamValue('year');
-        $year_type = !(_getRequestParamValue('yeartype')) ? 'B' : _getRequestParamValue('yeartype');
+        $year = !(RequestUtilities::getRequestParamValue('year')) ? _getCurrentYearID() : RequestUtilities::getRequestParamValue('year');
+        $year_type = !(RequestUtilities::getRequestParamValue('yeartype')) ? 'B' : RequestUtilities::getRequestParamValue('yeartype');
 
         $node->year = $year;
         $node->year_type = $year_type;
@@ -209,11 +209,11 @@
         },
         "subvendor_name": {
             "type":"expression2",
-            "expression":"(in_array(strtoupper($row['sub_vendor_name']), array('NOT PROVIDED', 'N/A', '', NULL))) ? (isset($row['sub_vendor_name']) ? $row['sub_vendor_name']: 'N/A' ) : '<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row[sub_vendor_id],_getRequestParamValue('year'),_getRequestParamValue('yeartype'), null, $row[sub_minority_type_id]) .  '?expandBottomCont=true\">' .$row[subvendor_name_formatted]. '</a>'"
+            "expression":"(in_array(strtoupper($row['sub_vendor_name']), array('NOT PROVIDED', 'N/A', '', NULL))) ? (isset($row['sub_vendor_name']) ? $row['sub_vendor_name']: 'N/A' ) : '<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row['sub_vendor_id'],RequestUtilities::getRequestParamValue('year'),RequestUtilities::getRequestParamValue('yeartype'), null, $row['sub_minority_type_id']) .  '?expandBottomCont=true\">' .$row['subvendor_name_formatted']. '</a>'"
         },
         "sub_mwbe_category_name": {
             "type":"expression2",
-            "expression":"(in_array(strtoupper($row['sub_minority_type_name']), array('NOT PROVIDED', 'N/A', '', NULL))) ? (isset($row['sub_minority_type_name']) ? $row['sub_minority_type_name']: 'N/A' ) : $row[sub_minority_type_name]"
+            "expression":"(in_array(strtoupper($row['sub_minority_type_name']), array('NOT PROVIDED', 'N/A', '', NULL))) ? (isset($row['sub_minority_type_name']) ? $row['sub_minority_type_name']: 'N/A' ) : $row['sub_minority_type_name']"
         },
         "contract_includes_sub":{
             "type":"expression2",
@@ -231,14 +231,13 @@
             "type":"expression2",
             "expression":"(strtolower($row['vendor_record_type']) == 'sub vendor')? $row['sub_effective_end_date'] : 'N/A'"
         }
-        
+
     },
     "skipCustomPadding":true,
     "table_columns": [
         {"label": "&nbsp;","column": "child_contrats_link"},
         {"labelAlias":"contract_id","column":"contract_link"},
         {"labelAlias":"contract_includes_sub","column":"contract_includes_sub"},
-        //START PRIME
         {"labelAlias":"prime_vendor","column":"prime_vendor_name_link"},
         {"labelAlias":"prime_mwbe_category","column":"prime_minority_type_name"},
         {"labelAlias":"contract_purpose","column":"prime_purpose_formatted"},
@@ -250,7 +249,6 @@
         {"labelAlias":"start_date","column":"prime_effective_begin_date"},
         {"labelAlias":"end_date","column":"prime_effective_end_date"},
         {"labelAlias":"reg_date","column":"registered_date"},
-        //END PRIME
         {"labelAlias":"contract_agency","column":"agency_name_link"},
         {"labelAlias":"version","column":"prime_document_version"},
         {"labelAlias":"fms_doc_id","column":"parent_contract_link"},
@@ -260,7 +258,6 @@
         {"labelAlias":"prime_contract_industry","column":"prime_industry_name_formatted"},
         {"labelAlias":"pin","column":"tracking_number"},
         {"labelAlias":"apt_pin","column":"brd_awd_no"},
-        //START SUB
         {"labelAlias":"sub_vendor_name","column":"subvendor_name"},
         {"labelAlias":"sub_mwbe_category","column":"sub_mwbe_category_name"},
         {"labelAlias":"contract_purpose","column":"sub_purpose_formatted"},
@@ -274,6 +271,5 @@
         {"labelAlias":"start_date","column":"formatted_sub_effective_begin_date"},
         {"labelAlias":"end_date","column":"formatted_sub_effective_end_date"},
         {"labelAlias":"sub_contract_reference_id","column":"sub_contract_reference_id"}
-        //END SUB
     ]
 }

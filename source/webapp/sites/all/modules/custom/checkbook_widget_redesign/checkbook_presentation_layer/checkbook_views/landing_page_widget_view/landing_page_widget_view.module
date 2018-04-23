@@ -1,19 +1,19 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -51,7 +51,7 @@ function landing_page_widget_view_widget_controller_data(&$node) {
 
 /**
  * Implementation of hook_menu
- * @return multitype:string boolean multitype:number  
+ * @return multitype:string boolean multitype:number
  */
 function landing_page_widget_view_menu(){
     $items['checkbook_views/data_tables/ajax_data/node/%widget_controller/%'] = array(
@@ -84,7 +84,7 @@ function landing_page_widget_view_menu(){
         'access callback' => true,
         'type'=>MENU_CALLBACK
     );
-  	 	
+
   	return $items;
 }
 
@@ -93,7 +93,7 @@ function landing_page_widget_view_menu(){
  * @param $node
  */
 function _landing_page_widget_view_ajaxdata($node){
-  
+
 	if($node->nid ==  null){
 		$node = _widget_controller_node_load_file($node);
 	}
@@ -109,7 +109,7 @@ function __landing_page_widget_add_padding_data($node){
   $paddings = array();
   $columns_max_length = array();
   foreach ($node->widgetConfig->table_columns as $row){
-      if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == _getRequestParamValue('datasource')))){
+      if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == RequestUtilities::getRequestParamValue('datasource')))){
           $colDataTableOptions = $node->widgetConfig->dataTableOptions->aoColumns[$index];
           if(!isset($colDataTableOptions)){
               $colDataTableOptions->sClass = $row->type;
@@ -165,7 +165,7 @@ function _landing_page_widget_view_ajaxdata_json($node){
             $rowarray = array();
             if(is_array($node->widgetConfig->table_columns)){
                 foreach ($node->widgetConfig->table_columns as $row){
-                    if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == _getRequestParamValue('datasource')))){
+                    if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == RequestUtilities::getRequestParamValue('datasource')))){
                         if ($node->customDataPaddings[$row->column] > 0) {
                             $style = "style='margin-right:" . $node->customDataPaddings[$row->column] * 8 . "px'";
                         } else {
@@ -220,7 +220,7 @@ function _landing_page_widget_view_list_wt_prepare_json($node){
         foreach ($node->data as $datarow) {
             $rowarray = array();
             foreach ($node->widgetConfig->table_columns as $row){
-                if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == _getRequestParamValue('datasource')))){
+                if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == RequestUtilities::getRequestParamValue('datasource')))){
                     if ($row->isWidget){
                         $widgetnode = node_load($row->widgetNid);
                         widget_set_uid($widgetnode,$i . '-' . uniqid());
@@ -289,7 +289,7 @@ function _landing_page_widget_view_list_ajaxdata($node){
         foreach ($node->data as $datarow) {
             $rowarray = array();
             foreach ($node->widgetConfig->table_columns as $row) {
-                if (!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == _getRequestParamValue('datasource')))) {
+                if (!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == RequestUtilities::getRequestParamValue('datasource')))) {
                     if ($node->customDataPaddings[$row->column] > 0) {
                         $style = "style='margin-right:" . $node->customDataPaddings[$row->column] * 8 . "px'";
                     } else {
@@ -312,7 +312,7 @@ function _landing_page_widget_view_list_ajaxdata($node){
 }
 
 /**
- * gets the data from the data controller based 
+ * gets the data from the data controller based
  * @param  $node
  * @return updated node data
  */
@@ -480,7 +480,7 @@ function landing_page_widget_view_widget_controller_view(&$node) {
 		  $node->widgetConfig->dataTableOptions->sAjaxSource =  _escape_special_characters(html_entity_decode($sAjaxSource,ENT_QUOTES));
 
             return theme($node->widgetConfig->template, array('node'=> $node));
-		  break;		
+		  break;
 		case "ajaxSimple" :
             $sAjaxSource = '/checkbook_views/data_tables/ajax_data/node/' .$node->nid;
             $sAjaxSource .= isset($node->legacy_node_id) ? '/legacy_node_id/'.$node->legacy_node_id : "";
@@ -498,7 +498,7 @@ function landing_page_widget_view_widget_controller_view(&$node) {
 			    'data': aoData,
 			    'success': fnCallback
 			  } );
-			}##";			
+			}##";
 
 				return theme('landing_page_widget_view_by_rows_theme', array('node'=> $node));
 
@@ -534,14 +534,14 @@ function landing_page_widget_view_widget_controller_view(&$node) {
             } );
             }##";
                 return theme('landing_page_widget_view_list_by_rows_theme', array('node'=> $node));
-        break;        
+        break;
         case "dataTableWidgets" :
             $node->widgetConfig->dataTableOptions->sAjaxSource .= '/checkbook_views/data_tables_list_wt/ajax_data/node/' .$node->nid;
-			if(is_array($node->widgetConfig->requestParams))  { 
+			if(is_array($node->widgetConfig->requestParams))  {
 				if(isset($node->widgetConfig->urlParamMap))
 				$urlParamMap = array_flip(get_object_vars($node->widgetConfig->urlParamMap));
 		    	foreach($node->widgetConfig->requestParams as $key=>$value) {
-		    		 $key = isset($urlParamMap[$key]) ? $urlParamMap[$key] : $key;	
+		    		 $key = isset($urlParamMap[$key]) ? $urlParamMap[$key] : $key;
 					    $node->widgetConfig->dataTableOptions->sAjaxSource .= "/$key/$value"._checkbook_append_url_params();
 	    		}
 			}
@@ -556,7 +556,7 @@ function landing_page_widget_view_widget_controller_view(&$node) {
                 $cls = new stdClass();
                 $cls->bSortable = false;
                 foreach ($tableColumns as $tableColumn){
-                    if(!isset($tableColumn->datasource) || (isset($tableColumn->datasource) && ($tableColumn->datasource == _getRequestParamValue('datasource')))){
+                    if(!isset($tableColumn->datasource) || (isset($tableColumn->datasource) && ($tableColumn->datasource == RequestUtilities::getRequestParamValue('datasource')))){
                         if(isset($tableColumn->isWidget) && $tableColumn->isWidget){
                             foreach($tableColumn->gridViewColumns as $gridViewColumn){
                                 $updatedaoColumns[] = $cls;
@@ -575,9 +575,9 @@ function landing_page_widget_view_widget_controller_view(&$node) {
         break;
 		default :
 			return theme('landing_page_widget_view_default_theme', array('node'=> $node));
-		break;	
-		
-	}	
+		break;
+
+	}
 }
 
 
@@ -592,16 +592,16 @@ function landing_page_widget_view_add_js($node){
     $newAolcols = array();
     foreach($oldDataTableOptions['aoColumns'] as $key=>$value){
         $aoCols = get_object_vars($value);
-        if(((isset($aoCols['datasource']) && _getRequestParamValue('datasource') == isset($aoCols['datasource'])))){
+        if(((isset($aoCols['datasource']) && RequestUtilities::getRequestParamValue('datasource') == isset($aoCols['datasource'])))){
             array_push($newAolcols, $value);
         }else if((!isset($aoCols['datasource']))){
         	array_push($newAolcols, $value);
         }
-        
-        
-        
-        
-        
+
+
+
+
+
     }
     if(count($newAolcols)){
     	$oldDataTableOptions['aoColumns'] = $newAolcols;
@@ -685,7 +685,7 @@ if(isset($node->widgetConfig->stickyHeader)){
         (isset($sticky_header_js) ? $sticky_header_js : '') . //append sticky headers js
         "} );" .
         stripcslashes($node->widgetConfig->customExternalJS);
-	
+
 	if($node->widgetConfig->ajaxDataPopup || $_REQUEST['appendScripts']){
 		echo "<script type='text/javascript'>" . $js . "</script>";
 	}

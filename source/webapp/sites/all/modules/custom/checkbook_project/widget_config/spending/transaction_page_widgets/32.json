@@ -10,7 +10,7 @@
         "year":"check_eft_issued_nyc_year_id","calyear":"calendar_fiscal_year_id","agency":"agency_id",
         "mcagency":"master_child_contract_agency_id","agencyh":"agency_history_id","vendor":"vendor_id","fvendor":"vendor_id",
         "mcvendor":"master_child_contract_vendor_id","expcategory":"expenditure_object_id",
-        "checkamtr":"check_amount","dept":"department_id","contnum":"reference_document_number",
+        "checkamtr":"check_amount","dept":"department_code","contnum":"reference_document_number",
         "checkamt":"check_amount","chkdate":"check_eft_issued_date","fundcls":"fund_class_id",
         "bdgcodenm":"budget_name","captprj":"reporting_code","category":"spending_category_id",
         "expdoc":"disbursement_number","vendornm":"vendor_name","deptnm":"department_name",
@@ -54,7 +54,7 @@
 		    }
 	   }
 
-        $dtsmnid = _getRequestParamValue('dtsmnid');
+        $dtsmnid = RequestUtilities::getRequestParamValue('dtsmnid');
         if($dtsmnid == 20){//From spending landing page
             $data_controller_instance = data_controller_get_operator_factory_instance();
             $parameters['agreement_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
@@ -85,8 +85,8 @@
 
         //Sub vendor page, need to use prime_vendor_id
         if($node->is_subvendor) {
-            $sub_vendor = _getRequestParamValue('subvendor');
-            $vendor = _getRequestParamValue('vendor');
+            $sub_vendor = RequestUtilities::getRequestParamValue('subvendor');
+            $vendor = RequestUtilities::getRequestParamValue('vendor');
             if(isset($vendor)) {
                 $adjustedParameters['prime_vendor_id'] = $vendor;
             }

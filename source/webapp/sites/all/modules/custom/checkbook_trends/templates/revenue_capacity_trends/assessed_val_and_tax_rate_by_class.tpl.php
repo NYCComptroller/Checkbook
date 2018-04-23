@@ -60,11 +60,12 @@ rsort($years);
             <?php
             foreach ($years as $year){
                 if($year == 2014){
-                    echo "<th rowspan='2'><div></div></th><th colspan=\"5\" class=\"centrig bb\"><div>Fiscal Year " . $year . " (3)</div></th>";
+                    echo "<th rowspan='2'><div></div></th><th colspan=\"5\" class=\"centrig bb\"><div>Fiscal Year " . $year . " <sup>(3)</sup></div></th>";
                 }
                 else{
                     echo "<th rowspan='2'><div></div></th><th colspan=\"5\" class=\"centrig bb\"><div>Fiscal Year " . $year."</div></th>";
                 }
+                echo PHP_EOL;
             }
             ?>
             <th rowspan="2" >&nbsp;</th>
@@ -74,7 +75,7 @@ rsort($years);
             <?php foreach($years as $year){ ?>
                 <th class="number"><div class="trendCen thAssess" >Assessed<br/>Value<br/>(in millions)</div></th>
                 <th><div>&nbsp;</div></th><th class="number "><div class="trendCen thPercent" >Percentage<br>of Taxable<br>Real Estate</div></th>
-                <th><div>&nbsp;</div></th><th class="number "><div class="trendCen thDirect" >Direct<br>Tax<br>Rate (2)</div></th>
+                <th><div>&nbsp;</div></th><th class="number "><div class="trendCen thDirect" >Direct<br>Tax<br>Rate <sup>(2)</sup></div></th>
            <?php }?>
         </tr>
     </thead>
@@ -131,9 +132,9 @@ rsort($years);
 
                     $sup_script2 = $sup_script;
 
-			        echo "<td><div>&nbsp;</div></td>"."<td class='" . $amount_class . " ' >". $dollar_sign . "<div class='tdCen assess'>" . $row[$year]['assesed_value_million_amount'] . "</div></td>";
+			        echo "<td>$dollar_sign</td>"."<td class='" . $amount_class . " ' ><div class='tdCen assess'>" . $row[$year]['assesed_value_million_amount'] . "</div></td>";
 			        echo "<td><div>&nbsp;</div></td>"."<td class='" . $amount_class . " ' ><div class='tdCen percent'>". $row[$year]['percentage_taxable_real_estate'] .$percent_sign_1."</div></td>";
-			        echo "<td><div>&nbsp;</div></td>"."<td class='number' ><div class='tdCen direct'>" . $row[$year]['direct_tax_rate'] . $sup_script2 ."</div></td>";
+			        echo "<td><div>&nbsp;</div></td>"."<td class='number $amount_class' ><div class='tdCen direct'>" . $row[$year]['direct_tax_rate'] . $sup_script2 ."</div></td>";
                 }
                 echo "<td>&nbsp;</td>";
 			    echo "</tr>";
@@ -159,6 +160,6 @@ rsort($years);
     condos as class four real property for the first time.</p>
     <p>Note: Property in New York City is reassessed once a year. The City assesses property at approximately 40
 percent of Market Value for commercial and industrial property and 20 percent of Market Value for residential property.</p>
-<p>Sources: Resolutions of the City Council and The Annual Report, The New York City Property Tax Fiscal Year 2016. </p>
+<p>Sources: Resolutions of the City Council and The Annual Report, The New York City Property Tax Fiscal Year 2017. </p>
 </div>
 

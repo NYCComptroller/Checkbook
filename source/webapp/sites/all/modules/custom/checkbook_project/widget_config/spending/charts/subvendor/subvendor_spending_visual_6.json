@@ -3,21 +3,21 @@
 "widgetDatahandler": "highcharts",
 "html_class":"chart-left",
 "footer":"
-	
+
 
 if(SpendingUtil::_show_mwbe_custom_legend()){
-	$nyc_legend_html = 	SpendingUtil::getSubMWBENYCLegend(_getRequestParamValue('year'), _getRequestParamValue('yeartype'));
-}	
-	 
-	
+	$nyc_legend_html = 	SpendingUtil::getSubMWBENYCLegend(RequestUtilities::getRequestParamValue('year'), RequestUtilities::getRequestParamValue('yeartype'));
+}
+
+
 echo '<div class=\"chart-right\">
         <div class=\"wrap\">
     		<div class=\"number\"><span>' . $node->mwbe_share_percent . '</span></div>
     		<div class=\"text\"><span>M/WBE Share</span></div>
         </div>'
-      . $nyc_legend_html .  
+      . $nyc_legend_html .
 	 '</div>';
-	 
+
 ",
 "header":"
        $header = '<h2 class=\"chart-title\" style=\"display:none;\">'. $node->widgetConfig->chartTitle . '</h2>';
@@ -52,65 +52,65 @@ echo '<div class=\"chart-right\">
 "urlParamMapSubVendor":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"prime_vendor_id","category":"spending_category_id","industry":"industry_type_id"},
 "chartTitle":"Sub Spending by M/WBE Share",
 "widgetDataLoader":"
-    
+
     $where_filters = array();
     foreach($node->widgetConfig->requestParams as $param=>$value){
         $where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
     }
-    
+
     if(count($where_filters) > 0){
         $where_filter = ' where ' . implode(' and ' , $where_filters);
     }
-    
+
     $sql = 'select rm.minority_type_id, rm.minority_type_name , sum(total_spending_amount) total_spending
     from aggregateon_subven_spending_coa_entities a1
-    join ref_minority_type rm on rm.minority_type_id = a1.minority_type_id     
+    join ref_minority_type rm on rm.minority_type_id = a1.minority_type_id
    ' . $where_filter . '
     group by rm.minority_type_id, rm.minority_type_name  ';
     $node->data  = _checkbook_project_execute_sql($sql);
 ",
 "widgetUpdateJSONConfig":"
 
-	$mwbe_filter = _getRequestParamValue('mwbe');
+	$mwbe_filter = RequestUtilities::getRequestParamValue('mwbe');
 	if($mwbe_filter =='4~5' || $mwbe_filter =='4' || $mwbe_filter =='5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){
-		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName()  . ' Sub Spending';
+		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName()  . ' Sub Spending';
 	}else{
-		$node->widgetConfig->chartTitle = 'Sub Spending by ' . MappingUtil::getCurrenEhtnicityName() .' Share';
+		$node->widgetConfig->chartTitle = 'Sub Spending by ' . MappingUtil::getCurrenEthnicityName() .' Share';
 	}
 	$mwbe_data = array();
 	 foreach ($node->data as $row){
-	 
+
 	 	switch($row['minority_type_id']){
 	 		case '2':
-	 		$mwbe_data['ba'] += $row['total_spending']; 
+	 		$mwbe_data['ba'] += $row['total_spending'];
 	 		break;
 	 		case '3':
-	 		$mwbe_data['ha'] += $row['total_spending']; 
+	 		$mwbe_data['ha'] += $row['total_spending'];
 	 		break;
 	 		case '4':
-	 		$mwbe_data['aa'] += $row['total_spending']; 
+	 		$mwbe_data['aa'] += $row['total_spending'];
 	 		break;
 	 		case '5':
-	 		$mwbe_data['aa'] += $row['total_spending']; 
+	 		$mwbe_data['aa'] += $row['total_spending'];
 	 		break;
 	 		case '7':
-	 		$mwbe_data['nm'] += $row['total_spending']; 
+	 		$mwbe_data['nm'] += $row['total_spending'];
 	 		break;
 	 		case '9':
-	 		$mwbe_data['w'] += $row['total_spending']; 
+	 		$mwbe_data['w'] += $row['total_spending'];
 	 		break;
 	 		case '11':
-	 		$mwbe_data['io'] += $row['total_spending']; 
+	 		$mwbe_data['io'] += $row['total_spending'];
 	 		break;
-	 	}	 
+	 	}
 	 }
-	 
-	 
+
+
 	$total_mwbe = $mwbe_data['ba'] + $mwbe_data['ha'] + $mwbe_data['aa'] + $mwbe_data['w'] ;
 	$toal_non_mwbe = $mwbe_data['nm'];
-	
-	$mwbe_filter = _getRequestParamValue('mwbe');
-	
+
+	$mwbe_filter = RequestUtilities::getRequestParamValue('mwbe');
+
 	$amount_column = 'total_mwbe';
     switch($mwbe_filter){
         case '4~5' :
@@ -146,11 +146,11 @@ echo '<div class=\"chart-right\">
         custom_number_formatter_format(($mwbe_data['ha'])/($total_mwbe + $toal_non_mwbe)*100,1,null,'%') . ')' . '<br/>'
         ;
 	$node->widgetConfig->chartConfig->series[0]->data[1]->y = $toal_non_mwbe;
-																			 
+
 	$node->widgetConfig->chartConfig->series[0]->data[1]->custom_label = custom_number_formatter_format($toal_non_mwbe,2,'$') . ' (' .
 																		 custom_number_formatter_format($toal_non_mwbe/($total_mwbe + $toal_non_mwbe) *100,1,null,'%') . ')';
-																		 
-																		 
+
+
 	$node->widgetConfig->gridConfig->data[] = array('Asian American',$mwbe_data['aa'] ,
 										custom_number_formatter_format($mwbe_data['aa']/($total_mwbe + $toal_non_mwbe)*100,1,null,'%'));
 	$node->widgetConfig->gridConfig->data[] = array('Black American',$mwbe_data['ba'] ,
@@ -161,7 +161,7 @@ echo '<div class=\"chart-right\">
 										custom_number_formatter_format($mwbe_data['ha']/($total_mwbe + $toal_non_mwbe)*100,1,null,'%'));
 	$node->widgetConfig->gridConfig->data[] = array('Non-M/WBE',$toal_non_mwbe,
 										custom_number_formatter_format(($toal_non_mwbe)/($total_mwbe + $toal_non_mwbe)*100,1,null,'%'));
-																	 
+
 ",
 "chartConfig" : {
 	"colors":["#7DB7E5"],
@@ -199,19 +199,19 @@ echo '<div class=\"chart-right\">
             			"name": "Point 1",
             			"y":100,
             			"custom_label":"",
-            			"tooltip_label":""            			         			
+            			"tooltip_label":""
             		},
             		{
             			"name": "Point 2",
             			"y":200,
             			"custom_label":"",
-            			"tooltip_label":""	
+            			"tooltip_label":""
             		}]
         }
     ],
     "title": {"text": ""},
     "yAxis": {
-     	"minRange": 0.1,    
+     	"minRange": 0.1,
         "startOnTick":true,
         "title": {"text": ""},
         "lineWidth": 0,
@@ -220,7 +220,7 @@ echo '<div class=\"chart-right\">
         "labels": {"enabled":false}
     } ,
     "legend": {
-        "enabled": false       
+        "enabled": false
     },
     "tooltip":{"function":"tooltipformatter"}
     }

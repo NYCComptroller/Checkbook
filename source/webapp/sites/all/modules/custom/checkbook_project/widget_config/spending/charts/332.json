@@ -33,9 +33,9 @@
                "vendor":"vendor_id","category":"spending_category_id"},
 "adjustParameters":"
         $year = 'year_id';
-        $config->model->series[0]->additionalParameters->$year = $parameters[year_id][0]  ;
-        $config->model->series[1]->additionalParameters->$year = $parameters[year_id][0] -1 ;
-        $config->model->series[2]->additionalParameters->$year = $parameters[year_id][0];
+        $config->model->series[0]->additionalParameters->$year = $parameters['year_id'][0]  ;
+        $config->model->series[1]->additionalParameters->$year = $parameters['year_id'][0] -1 ;
+        $config->model->series[2]->additionalParameters->$year = $parameters['year_id'][0];
         return $parameters;
 ",
 "model": {
@@ -110,7 +110,7 @@
     $urlParams = CustomURLHelper::get_url_param($pathParams, 'datasource') . CustomURLHelper::get_url_param($pathParams, 'agency') . CustomURLHelper::get_url_param($pathParams, 'vendor') . CustomURLHelper::get_url_param($pathParams, 'category');
     $bottomNavUrl = '?expandBottomContURL=/panel_html/spending_transactions/spending/transactions';
     $current_path  = current_path();
-    $data_source = _getRequestParamValue('datasource');
+    $data_source = RequestUtilities::getRequestParamValue('datasource');
     $smnid = (isset($data_source) && $data_source == 'checkbook_oge') ? '/smnid/652' : '/smnid/706';
 
     foreach ($node->data as $row){

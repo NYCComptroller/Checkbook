@@ -30,9 +30,9 @@
                 unset($serieParameters['yeartype']);
                 unset($serieParameters['year']);
 
-                $dashboard = _getRequestParamValue('dashboard');
-                $vendor = _getRequestParamValue('vendor');
-                $subvendor = _getRequestParamValue('subvendor');
+                $dashboard = RequestUtilities::getRequestParamValue('dashboard');
+                $vendor = RequestUtilities::getRequestParamValue('vendor');
+                $subvendor = RequestUtilities::getRequestParamValue('subvendor');
 
                 if(isset($dashboard)) {
                     if($dashboard == 'mp') {

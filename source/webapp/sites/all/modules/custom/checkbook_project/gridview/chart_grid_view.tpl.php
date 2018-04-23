@@ -17,8 +17,7 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php
+
 switch($node->widgetConfig->gridConfig->domain){
  
 	case "spending":
@@ -54,14 +53,8 @@ include_once('export_link.php');
               echo "<tr>";
               $index = 0;
               while($index < count($node->widgetConfig->gridConfig->table_columns)){
-				if($node->widgetConfig->gridConfig->table_columns[$index]->formatType == "amount"){
-					echo "<td>".$datarow[$index]."</td>";
-				}elseif($node->widgetConfig->gridConfig->table_columns[$index]->formatType == "number"){
-					echo "<td>".$datarow[$index]."</td>";
-				}elseif($node->widgetConfig->gridConfig->table_columns[$index]->formatType == "month"){
-					echo "<td>".$datarow[$index]."</td>";
-				}
-				elseif($node->widgetConfig->gridConfig->table_columns[$index]->formatType == "monthfy"){
+				if($node->widgetConfig->gridConfig->table_columns[$index]->formatType == "amount" || $node->widgetConfig->gridConfig->table_columns[$index]->formatType == "number"
+                || $node->widgetConfig->gridConfig->table_columns[$index]->formatType == "month" ||$node->widgetConfig->gridConfig->table_columns[$index]->formatType == "monthfy"){
 					echo "<td>".$datarow[$index]."</td>";
 				}
 				else{
@@ -122,7 +115,7 @@ include_once('export_link.php');
 					"asSorting": [ "desc", "asc" ]
 					},
 				';
-		}elseif($column->formatType == 'month' && _getRequestParamValue('yeartype') == 'C'){
+		}elseif($column->formatType == 'month' && RequestUtilities::getRequestParamValue('yeartype') == 'C'){
 
 			$aoColumnDefs .= '	{
 				"aTargets": [' . $index.'],
@@ -145,7 +138,7 @@ include_once('export_link.php');
 					"asSorting": [ "desc", "asc" ]
 					},
 				';
-		}elseif(($column->formatType == 'monthfy' || $column->formatType == 'month') && _getRequestParamValue('yeartype') == 'B'){
+		}elseif(($column->formatType == 'monthfy' || $column->formatType == 'month') && RequestUtilities::getRequestParamValue('yeartype') == 'B'){
 
 			$aoColumnDefs .= '	{
 				"aTargets": [' . $index.'],

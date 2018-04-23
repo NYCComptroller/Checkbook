@@ -340,7 +340,7 @@ function checkbook_spending_default_page_manager_pages() {
       'admin_title' => 'Payroll Header',
       'title' => 'Payroll',
       'body' => '<?php
-$agency_id = _getRequestParamValue("agency");
+$agency_id = RequestUtilities::getRequestParamValue("agency");
 echo "<a href=\'/payroll/agencywide/transactions/agency/" . $agency_id   . _checkbook_project_get_year_url_param_string() . "\'>View Payroll Transactions</a>";
 echo "<a id=\\"payroll\\" class=\\"advanced-search\\" href=\'#\'>Search Payroll</a>";
 

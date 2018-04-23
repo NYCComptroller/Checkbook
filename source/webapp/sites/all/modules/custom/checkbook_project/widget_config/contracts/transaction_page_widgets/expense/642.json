@@ -5,7 +5,7 @@
                "calyear":"fiscal_year_id",
                "contstatus":"status_flag",
                "yeartype":"type_of_year"},
-"defaultParameters":{"master_agreement_id":-1},//default master_agreement_id to avoid load
+"defaultParameters":{"master_agreement_id":-1},
 "useList":true,
 "getTotalDataCount":false,
 "dataset": "checkbook:agreement_snapshot_oge",
@@ -28,12 +28,12 @@
                 $config->dataset = 'checkbook:agreement_snapshot_oge';
             }
 
-            if(_getRequestParamValue('vendor') || _getRequestParamValue('vendornm')){
+            if(RequestUtilities::getRequestParamValue('vendor') || RequestUtilities::getRequestParamValue('vendornm')){
                 $parameters['is_vendor_flag'] = 'Y';
             }else{
                 $parameters['is_vendor_flag'] = 'N';
             }
-            if(!(_getRequestParamValue('year') || _getRequestParamValue('calyear'))){
+            if(!(RequestUtilities::getRequestParamValue('year') || RequestUtilities::getRequestParamValue('calyear'))){
                 $parameters['latest_flag'] = 'Y';
                 $parameters['if_for_all_years'] = 'Y';
             }else{
@@ -154,7 +154,7 @@
     },
 "budget_name_formatted":{
                 "type": "expression2",
-                "expression": "_get_tooltip_markup($row[budget_name], 36)"
+                "expression": "_get_tooltip_markup($row['budget_name'], 36)"
        }
 },
 "table_columns": [

@@ -83,7 +83,8 @@ echo eval($node->widgetConfig->header);
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['operating_expenses']>0)?number_format($row['operating_expenses']):'-') . ((  $row['fiscal_year'] == '2012')? "<sup class='endItem'>(9)</sup>":"<sup class='endItem' style='visibility: hidden;'>(9)</sup>"). "</td>";
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['total_to_be_covered']>0)?number_format($row['total_to_be_covered']):'-') . "</td>";
             //echo "<td class='number ' ><div class='tdCen'>" . $row['coverage_on_total_revenue_5'] . (($row['fiscal_year'] == '2009' || $row['fiscal_year'] == '2010' || $row['fiscal_year'] == '2011' || $row['fiscal_year'] == '2012')? "<sup class='endItem'>(7)</sup>":"<sup class='endItem' style='visibility: hidden;'>(7)</sup>") . "</div></td>";
-            echo "<td class='number ' ><div class='tdCen'>" . $row['coverage_on_total_revenue_5'] . "</td>";
+            echo "<td class='number ' ><div class='tdCen'>" . $row['coverage_on_total_revenue_5'] . (in_array($row['fiscal_year'], ['2009','2010', '2011','2012'])? "<sup class='endItem'>(6)</sup>":"<sup class='endItem' style='visibility: hidden;'>(6)</sup>") . "</div></td>";
+//            echo "<td class='number ' ><div class='tdCen'>" . $row['coverage_on_total_revenue_5'] . "</td>";
             echo "<td>&nbsp;</td>";
             echo "</tr>";
             $count++;
@@ -95,17 +96,19 @@ echo eval($node->widgetConfig->header);
 </div>
 <div class="footnote"><!-- p>(*) Date of inception of Hudson Yards Infrastructure Corporation was August 19, 2004.</p -->
     <p>HYIC issued its first bonds on December 21, 2006.</p>
+    <br />
     <p>(1) District Improvement Bonuses (DIB)</p>
     <p>(2) Property Tax Equivalency Payments (TEP)</p>
     <p>(3) Interest Support Payments (ISP)</p>
     <p>(4) Payments in Lieu of the Mortgage Recording Tax (PILOMRT)</p>
-    <p>(5) Payments in Lieu of Real Estate Taxes (PILOT)</p>
+    <p>(5) Payments in Lieu of Real Estate Tax (PILOT)</p>
     <p>(6) Grant from City</p>
-    <p>(7) ISPs are to be made by the City under the terms of Support and Development Agreement, which obligates the City to pay HYIC, subject to annual appropriation, an ISP amount equal to the difference between the amount of funds available to HYIC to pay interest on its current outstanding bonds and the amount of interest due on such bonds.</p>
-    <p>(8) Debt service payments are funded from excess prior years’ revenues and from current year revenues.</p>
+    <p>(7) ISPs are to be made by the City under the terms of Support and Development Agreement, which obligates the City to pay HYIC, subject to annual appropriation, an ISP amount equal to the
+        difference between the amount of funds available to HYIC to pay interest on its current outstanding bonds and the amount of interest due on such bonds.</p>
+    <p>(8) Debt service payments are funded from excess prior years' revenues and from current year revenues.</p>
     <p>(9) In December 2011, HYIC was obligated to make an arbitrage rebate payment to United States Treasury for $8.8M </p>
+    <br />
     <p>Source: Hudson Yards Infrastructure Corporation</p>
 </div>
-<?php 
+<?php
 	widget_data_tables_add_js($node);
-?>

@@ -17,8 +17,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-?>
-<?php
+
 
 $js = "";
 
@@ -36,7 +35,7 @@ foreach($node->data as $data){
 
 //Default view based on salamttype in url
 $default_view = $salaried_count > 0 ? PayrollType::$SALARIED : PayrollType::$NON_SALARIED;
-$salamttype = _getRequestParamValue('salamttype');
+$salamttype = RequestUtilities::getRequestParamValue('salamttype');
 if(isset($salamttype)) {
     $salamttype = explode('~',$salamttype);
     if (!in_array(1, $salamttype)) {

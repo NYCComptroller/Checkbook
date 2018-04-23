@@ -11,7 +11,7 @@
 "noDataInitialLoad":true,
 "columns": ["total_contracts","agency.agency","agency.agency.agency_short_name","original_amount_sum","current_amount_sum","yeartype.yeartype","spending_amount_sum","agency.agency.agency_name"],
 "adjustParameters":"
-if(_getRequestParamValue('dashboard') == 'ss'){
+if(RequestUtilities::getRequestParamValue('dashboard') == 'ss'){
     unset($parameters['minority_type_id']);
 }
     $adjustedParameters = $parameters;
@@ -29,7 +29,7 @@ if(_getRequestParamValue('dashboard') == 'ss'){
 },
 "agency_name_link": {
 "type": "expression2",
-"expression": "'<a href=\"/contracts_landing' . _checkbook_append_url_params() .  _checkbook_project_get_url_param_string(\"status\") ._checkbook_project_get_url_param_string(\"subvendor\") .  _checkbook_project_get_url_param_string(\"awdmethod\")   ._checkbook_project_get_url_param_string(\"vendor\")  .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\") .  _checkbook_project_get_year_url_param_string() . '/agency/'.$row[agency_agency] . '?expandBottomCont=true\">' .$row[agency_name_formatted]. '</a>'"
+"expression": "'<a href=\"/contracts_landing' . _checkbook_append_url_params() .  _checkbook_project_get_url_param_string(\"status\") ._checkbook_project_get_url_param_string(\"subvendor\") .  _checkbook_project_get_url_param_string(\"awdmethod\")   ._checkbook_project_get_url_param_string(\"vendor\")  .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\") .  _checkbook_project_get_year_url_param_string() . '/agency/'.$row['agency_agency'] . '?expandBottomCont=true\">' .$row['agency_name_formatted']. '</a>'"
 } ,
 "spent_amount_no_link": {
 "type": "expression2",
@@ -37,7 +37,7 @@ if(_getRequestParamValue('dashboard') == 'ss'){
 } ,
 "spent_amount_link": {
 "type": "expression2",
-"expression": "'<a class=\"new_window\" href=\"/contract/spending/transactions/cagency/' .$row[agency_agency] . _checkbook_append_url_params() .  _checkbook_project_get_url_param_string(\"status\") . _checkbook_project_get_url_param_string(\"awdmethod\")   ._checkbook_project_get_url_param_string(\"vendor\",\"cvendor\")  .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\") .  ((_getRequestParamValue(\"dashboard\") == \"ss\" || _getRequestParamValue(\"dashboard\") == \"ms\" || _getRequestParamValue(\"dashboard\") == \"sp\") ? '/doctype/CT1~CTA1' : '/doctype/CT1~CTA1~MA1').  ContractURLHelper::_checkbook_project_spending_get_year_url_param_string() . '/smnid/' . $node->nid . ContractUtil::getSpentToDateParams() . '/newwindow\">' . custom_number_formatter_format($row['spending_amount_sum'],2,'$'). '</a>'"
+"expression": "'<a class=\"new_window\" href=\"/contract/spending/transactions/cagency/' .$row['agency_agency'] . _checkbook_append_url_params() .  _checkbook_project_get_url_param_string(\"status\") . _checkbook_project_get_url_param_string(\"awdmethod\")   ._checkbook_project_get_url_param_string(\"vendor\",\"cvendor\")  .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\") .  ((RequestUtilities::getRequestParamValue(\"dashboard\") == \"ss\" || RequestUtilities::getRequestParamValue(\"dashboard\") == \"ms\" || RequestUtilities::getRequestParamValue(\"dashboard\") == \"sp\") ? '/doctype/CT1~CTA1' : '/doctype/CT1~CTA1~MA1').  ContractURLHelper::_checkbook_project_spending_get_year_url_param_string() . '/smnid/' . $node->nid . ContractUtil::getSpentToDateParams() . '/newwindow\">' . custom_number_formatter_format($row['spending_amount_sum'],2,'$'). '</a>'"
 } ,
 "formatted_original_amount_sum": {
 "type": "expression2",
@@ -65,7 +65,7 @@ return $header;
 "footer":"
 $url = ContractUtil::expenseContractsFooterUrl();
 $url .= '/smnid/' .  $node->nid;
-if(_getRequestParamValue('dashboard') == 'ss' || _getRequestParamValue('dashboard') == 'ms' || _getRequestParamValue('dashboard') == 'sp'){
+if(RequestUtilities::getRequestParamValue('dashboard') == 'ss' || RequestUtilities::getRequestParamValue('dashboard') == 'ms' || RequestUtilities::getRequestParamValue('dashboard') == 'sp'){
 $url .= '/doctype/CTA1~CT1';
 }else{
 $url .= '/doctype/MA1~CTA1~CT1';

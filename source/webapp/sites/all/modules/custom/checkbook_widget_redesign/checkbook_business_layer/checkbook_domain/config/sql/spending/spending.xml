@@ -142,12 +142,12 @@
         <param name="mwbe"/>
         <sql>
             SELECT
-            CASE WHEN s0.spending_category_id = 2 THEN 4 ELSE s0.expenditure_object_id END as expenditure_object_id,
+            s0.expenditure_object_code,
             s1.original_expenditure_object_name AS expenditure_object_name,
             SUM(total_spending_amount) AS check_amount_sum,
             SUM(total_spending_amount)/MAX(total.check_amount)*100 as percent_spending
             FROM aggregateon_mwbe_spending_coa_entities s0
-            JOIN ref_expenditure_object s1 ON s1.expenditure_object_id = (CASE WHEN s0.spending_category_id = 2 THEN 4 ELSE s0.expenditure_object_id END)
+            JOIN ref_expenditure_object s1 ON s1.expenditure_object_code = s0.expenditure_object_code AND s1.expenditure_object_id= s0.expenditure_object_id
             JOIN
             (
             SELECT SUM(total_spending_amount) AS check_amount
@@ -177,7 +177,7 @@
                     <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
                 </exp>
             </where>
-            GROUP BY s1.original_expenditure_object_name, CASE WHEN s0.spending_category_id = 2 THEN 4 ELSE s0.expenditure_object_id END
+            GROUP BY s1.original_expenditure_object_name, s0.expenditure_object_code
         </sql>
     </statement>
     <!--GetSpendingByDepartments-->
@@ -193,12 +193,12 @@
         <sql>
             SELECT s0.year_id,
             s0.agency_id,
-            s0.department_id,
+            s0.department_code,
             SUM(total_spending_amount) AS check_amount_sum,
             d.department_name,
             SUM(total_spending_amount)/MAX(total.check_amount)*100 as percent_spending
             FROM aggregateon_mwbe_spending_coa_entities s0
-            JOIN ref_department d ON d.department_id = s0.department_id
+            JOIN ref_department d ON d.department_code=s0.department_code AND d.department_id = s0.department_id
             JOIN
             (
             SELECT SUM(total_spending_amount) AS check_amount
@@ -228,7 +228,7 @@
                     <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
                 </exp>
             </where>
-            GROUP BY s0.agency_id, s0.department_id, s0.year_id, d.department_name
+            GROUP BY s0.agency_id, s0.department_code, s0.year_id, d.department_name
         </sql>
     </statement>
     <!--GetSpendingByPrimeVendors-->

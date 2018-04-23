@@ -43,7 +43,7 @@
     },
     "agency_name_link": {
       "type": "expression2",
-      "expression": "'<a href=\"/contracts_landing' .  _checkbook_project_get_url_param_string(\"status\")  .   _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() .'/agency/' . $row[agency_agency] .  '?expandBottomCont=true\">' .$row[agency_name_formatted]. '</a>'"
+      "expression": "'<a href=\"/contracts_landing' .  _checkbook_project_get_url_param_string(\"status\")  .   _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() .'/agency/' . $row['agency_agency'] .  '?expandBottomCont=true\">' .$row['agency_name_formatted']. '</a>'"
     },
     "current_prime_minority_type_id": {
         "type": "expression2",
@@ -51,15 +51,15 @@
     },
     "vendor_name_link": {
         "type": "expression2",
-        "expression": "'<a href=\"/contracts_landing' .  ContractUtil::get_contracts_vendor_link_by_mwbe_category($row) .  '?expandBottomCont=true\">' .$row[vendor_name_formatted]. '</a>'"
+        "expression": "'<a href=\"/contracts_landing' .  ContractUtil::get_contracts_vendor_link_by_mwbe_category($row) .  '?expandBottomCont=true\">' .$row['vendor_name_formatted']. '</a>'"
     },
     "contract_link": {
         "type": "expression2",
-        "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/contract_transactions/contract_details/agid/' .$row[original_agreement_original_agreement]  .  '/doctype/'   . $row[document_code_document_code_document_code]  . _checkbook_append_url_params()  . '\">' . $row['contract_number_contract_number'] . '</a>'"
+        "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/contract_transactions/contract_details/agid/' .$row['original_agreement_original_agreement']  .  '/doctype/'   . $row['document_code_document_code_document_code']  . _checkbook_append_url_params()  . '\">' . $row['contract_number_contract_number'] . '</a>'"
     } ,
     "spent_amount_link": {
         "type": "expression2",
-        "expression": "'<a class=\"new_window\" href=\"/contract/spending/transactions' . (_checkbook_check_isEDCPage() ? ('/agid/' .$row[original_agreement_original_agreement].'/svendor/' .$row[vendor_vendor]) :'/contnum/' .$row[contract_number_contract_number] ) .   _checkbook_project_get_url_param_string(\"status\") .  ContractURLHelper::_checkbook_project_spending_get_year_url_param_string()  . _checkbook_append_url_params() . ContractUtil::getSpentToDateParams() . '/smnid/' . $node->nid .  '/newwindow\">' . '$' . custom_number_formatter_format($row['spending_amount_sum'],2). '</a>'"
+        "expression": "'<a class=\"new_window\" href=\"/contract/spending/transactions' . (_checkbook_check_isEDCPage() ? ('/agid/' .$row['original_agreement_original_agreement'].'/svendor/' .$row['vendor_vendor']) :'/contnum/' .$row['contract_number_contract_number'] ) .   _checkbook_project_get_url_param_string(\"status\") .  ContractURLHelper::_checkbook_project_spending_get_year_url_param_string()  . _checkbook_append_url_params() . ContractUtil::getSpentToDateParams() . '/smnid/' . $node->nid .  '/newwindow\">' . '$' . custom_number_formatter_format($row['spending_amount_sum'],2). '</a>'"
     } ,
     "formatted_original_amount_sum": {
         "type": "expression2",

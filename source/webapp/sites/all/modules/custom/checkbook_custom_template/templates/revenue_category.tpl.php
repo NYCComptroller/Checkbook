@@ -17,8 +17,8 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php require_once(realpath(drupal_get_path('module', 'data_controller')) .'/common/object/converter/handler/PHP2Json.php');
+
+require_once(realpath(drupal_get_path('module', 'data_controller')) .'/common/object/converter/handler/PHP2Json.php');
 if (module_exists('widget_highcharts')){
     drupal_add_js(drupal_get_path('module', 'widget_highcharts') .'/highcharts/2.1.0/js/highcharts.src.js', array('group'=>JS_LIBRARY,'weight'=>-1));
     drupal_add_js(drupal_get_path('module', 'widget_highcharts') .'/highcharts-globals.js',array('group'=>JS_LIBRARY,'weight'=>0));

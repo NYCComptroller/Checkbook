@@ -17,10 +17,9 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php
+
     $header = 'Fiscal year';
-    $header .=  ",Basic Rate" ;
+    $header .=  ",Basic Rate (1)" ;
     $header .=  ",Obligation Debt" ;
     $header .=  ",Total Direct";
     
@@ -40,7 +39,6 @@
 
   
 
-   echo "\n"."\n"."SOURCE: Resolutions of the City Council.";
-echo "\n"."\n"."Note: Property tax rate based on every $100 of assessed valuations.";
-?>
+echo "\n"."\n"."SOURCE: Resolutions of the City Council.";
+echo "\n"."\n"."Note: (1) Property tax rate based on every $100 of assessed valuations.";
 

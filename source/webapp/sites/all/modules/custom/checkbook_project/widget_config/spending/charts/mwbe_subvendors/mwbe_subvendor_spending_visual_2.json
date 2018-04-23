@@ -20,7 +20,7 @@
                   "labelAlias": "M/WBE Spending",
                   "columnType": "number",
                   "formatType": "amount"
-             }         
+             }
         ]
 },
 "no_results_content":"No Results Found",
@@ -29,7 +29,7 @@
 "urlParamMap":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"prime_vendor_id","subvendor":"vendor_id","category":"spending_category_id","industry":"industry_type_id","mwbe":"minority_type_id"},
 "chartTitle":"Top Ten Prime Vendors by M/WBE Sub Spending",
 "widgetDataLoader":"
-    
+
     $where_filters = array();
     foreach($node->widgetConfig->requestParams as $param=>$value){
         $where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
@@ -39,7 +39,7 @@
         $where_filter = ' where ' . implode(' and ' , $where_filters);
     }
 
-	$mwbe_filter = _getRequestParamValue('mwbe');
+	$mwbe_filter = RequestUtilities::getRequestParamValue('mwbe');
     $sort_column = 8;
 	switch($mwbe_filter){
 		case '4~5' :
@@ -162,11 +162,11 @@ order by all_spending.total_spending_amount desc limit 10 \n
 
     $amount_column = 'total_spending_amount';
 
-	$mwbe_filter = _getRequestParamValue('mwbe');
+	$mwbe_filter = RequestUtilities::getRequestParamValue('mwbe');
 	if($mwbe_filter =='4~5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){
-		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName()  . ' Top Ten Prime Vendors Sub Spending';
+		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName()  . ' Top Ten Prime Vendors Sub Spending';
 	}else{
-		$node->widgetConfig->chartTitle = 'Top Ten Prime Vendors by ' . MappingUtil::getCurrenEhtnicityName() .' Sub Spending';
+		$node->widgetConfig->chartTitle = 'Top Ten Prime Vendors by ' . MappingUtil::getCurrenEthnicityName() .' Sub Spending';
 	}
 	$index = 0;
 	foreach($node->data as $row){
@@ -199,12 +199,12 @@ order by all_spending.total_spending_amount desc limit 10 \n
 	"chart" : {"width":750},
     "plotOptions": {
             "series": {
-                "cursor": "pointer"   ,            
+                "cursor": "pointer"   ,
                 "stacking": "normal",
                 "dataLabels": {
                     "enabled": false
                 },
-                "point": {"events": {"function": "clickEvent"}}                             
+                "point": {"events": {"function": "clickEvent"}}
             }
     },
     "xAxis": {
@@ -222,13 +222,13 @@ order by all_spending.total_spending_amount desc limit 10 \n
     "title": {"text": ""},
     "yAxis": {
      	"min":0,
-     	"minRange": 0.1,    
+     	"minRange": 0.1,
         "startOnTick":true,
         "title": {"text": ""},
         "labels":{"rotation": 0,"function":"yAxisFormatter"}
     } ,
     "legend": {
-        "enabled": false       
+        "enabled": false
     },
     "tooltip":{"function":"tooltipformatter"}
     }

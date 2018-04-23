@@ -9,7 +9,7 @@
 <input type=\"text\" class=\"chartdatefrom\" maxlength=\"4\" size=\"4\">
 <label> to </label>
 <input type=\"text\" class=\"chartdateto\" maxlength=\"4\" size=\"4\"></div>
-<img src=\"/sites/all/themes/checkbook/images/featured-filter.png\" class=\"chartfilter\" name=\"1\">
+  <input type=\"submit\" value=\"Filter\" class=\"chartfilter\" name=\"1\" />
 </div>';",
 "footer":"print '<div class=\"detail-page-links\">
 <a class=\"show-detail-link\" href=\"/featuredtrends/node/351\">Show Details for Property Tax Levies and Collections</a>
@@ -97,7 +97,6 @@ jQuery('#property-tax-filter .chartdateto').val(Highcharts.dateFormat('%Y',axis.
 ],
 "chartConfig": {
         "title": {
-            //"text": "Property Tax Levies and Collections",
             "style": {
                 "fontSize": "16px"
             },
@@ -133,7 +132,6 @@ jQuery('#property-tax-filter .chartdateto').val(Highcharts.dateFormat('%Y',axis.
             "enabled": true,
             "margin": 0,
             "xAxis": {
-                //"range": 6302436001000,
                 "labels":{"enabled":true}
 }
 },

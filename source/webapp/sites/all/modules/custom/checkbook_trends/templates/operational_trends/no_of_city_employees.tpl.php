@@ -114,7 +114,7 @@ rsort($years);
     </tbody>
 </table>
 <div class="footnote">
-    <p>Sources: Financial Management System (FMS), Mayor’s Office of Management and Budget, and Mayor’s Office of Operations.</p>
+    <p>Sources: Financial Management System (FMS), Mayor's Office of Management and Budget, and Mayor's Office of Operations.</p>
 </div>
 <?php
 	widget_data_tables_add_js($node);

@@ -27,10 +27,10 @@
     if(function_exists('_checkbook_project_adjustContractParameterFilters')){
         _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');
     }
-    if(_getRequestParamValue('vendor') || _getRequestParamValue('vendornm')){
+    if(RequestUtilities::getRequestParamValue('vendor') || RequestUtilities::getRequestParamValue('vendornm')){
         $parameters['is_vendor_flag'] = 'Y';
     }
-    if(!(_getRequestParamValue('year') || _getRequestParamValue('calyear'))){
+    if(!(RequestUtilities::getRequestParamValue('year') || RequestUtilities::getRequestParamValue('calyear'))){
         $parameters['latest_flag'] = 'Y';
         $parameters['if_for_all_years'] = 'Y';
     }

@@ -22,7 +22,7 @@
     "header":"
         $node->widgetConfig->getData=false;
         load_widget_data($node);
-        $node->totalDataCount = PayrollUtil::getSalariedEmployeeCount(_getRequestParamValue('year'), _getRequestParamValue('yeartype'), _getRequestParamValue('agency'), _getRequestParamValue('title'));
+        $node->totalDataCount = PayrollUtil::getSalariedEmployeeCount(RequestUtilities::getRequestParamValue('year'), RequestUtilities::getRequestParamValue('yeartype'), RequestUtilities::getRequestParamValue('agency'), RequestUtilities::getRequestParamValue('title'));
         if($node->totalDataCount > 4) $count = '<span class=\"hideOnExpand\">5 </span>';
         $header='<div class=\"tableHeader\"><h2>Top ' .  $count . 'Annual Salaries</h2><span class=\"contCount\"> Number of Salaried Employees:  ' . number_format($node->totalDataCount) . '</span></div>';
         return $header;
@@ -47,11 +47,11 @@
     "derivedColumns": {
             "agency_name_formatted":{
             "type": "expression2",
-            "expression": "_get_tooltip_markup($row[agency_agency_agency_name],50)"
+            "expression": "_get_tooltip_markup($row['agency_agency_agency_name'],50)"
         },
             "agency_name_link": {
             "type": "expression2",
-            "expression": "'<a href=/payroll/agency_landing' . _checkbook_project_get_year_url_param_string() . '/agency/' . $row[agency_agency] . '>'. $row['agency_name_formatted'] .'</a>'"
+            "expression": "'<a href=/payroll/agency_landing' . _checkbook_project_get_year_url_param_string() . '/agency/' . $row['agency_agency'] . '>'. $row['agency_name_formatted'] .'</a>'"
         },
             "employee_name_formatted": {
             "type": "expression2",
@@ -83,7 +83,7 @@
         },
             "annual_salary_link":{
             "type":"expression2",
-            "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/'. $row[agency_agency]  ._checkbook_project_get_year_url_param_string() .'/salamttype/1/abc/' .  $row[employee_employee] . '\">' . $row['annual_salary_formatted'] . '</a>'"
+            "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/'. $row['agency_agency']  ._checkbook_project_get_year_url_param_string() .'/salamttype/1/abc/' .  $row['employee_employee'] . '\">' . $row['annual_salary_formatted'] . '</a>'"
         }
     },
     "table_columns": [

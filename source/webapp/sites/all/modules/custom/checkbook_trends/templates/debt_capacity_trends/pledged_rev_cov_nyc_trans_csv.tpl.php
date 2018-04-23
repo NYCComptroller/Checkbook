@@ -17,8 +17,7 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php
+
    echo ",,,,,,New york City Transitional Finance Authority". "\n";
    echo ",,,,,,(AMOUNTS IN THOUSANDS)". "\n";
 
@@ -27,7 +26,7 @@
     $header .=  ",Sales Tax Revenue(2)"  ;
     $header .=  ",Total Receipt"  ;
     $header .=  ",Other(3)"  ;
-    $header .=  ",Investment Earnings"  ;
+    $header .=  ",Investment Earnings(4)"  ;
     $header .=  ",Total Revenue"  ;
     $header .=  ",Future Tax Secured Bonds Debt Service - Interest"  ;
     $header .=  ",Future Tax Secured Bonds Debt Service - Principal"  ;

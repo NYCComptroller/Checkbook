@@ -259,7 +259,7 @@
         <param name="filter_type" type="string" />
         <sql>
             SELECT budget.budget_fiscal_year_id AS year_id,
-            budget.budget_code_id AS budget_code,
+            budget.budget_code_id AS budget_code_id,
             budget.budget_code_name AS budget_code_name,
             SUM(adopted_amount) AS budget_adopted,
             SUM(COALESCE(current_budget_amount,0)) AS budget_current,

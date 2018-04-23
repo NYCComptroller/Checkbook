@@ -46,12 +46,12 @@
          "child_contrats_link":{
 	      "type": "expression2",
               "expression": " ($row['has_children'] == 'Y') ? '<span id=dtl_expand class=\"toggler collapsed\"  magid=\"' . $row['original_agreement_id'] . '\" '
-                                . ( _getRequestParamValue('datasource') != '' ?  ('datasource=\"' . _getRequestParamValue('datasource') . '\"' ) : '')
-                                . ( _getRequestParamValue('smnid') != '' ?  ('smnid=\"' . _getRequestParamValue('smnid') . '\"' ) : '')
-                                . ( _getRequestParamValue('year') != '' ?  ('year=\"' . _getRequestParamValue('year') . '\"' ) : '')
-                                . ( _getRequestParamValue('calyear') != '' ?  ('calyear=\"' . _getRequestParamValue('calyear') . '\"' ) : '')
-                                . ( _getRequestParamValue('yeartype') != '' ?  ('yeartype=\"' . _getRequestParamValue('yeartype') . '\"' ) : '')
-                                . ( _getRequestParamValue('contstatus') != '' ?  ('contstatus=\"' . _getRequestParamValue('contstatus') . '\"' ) : '')
+                                . ( RequestUtilities::getRequestParamValue('datasource') != '' ?  ('datasource=\"' . RequestUtilities::getRequestParamValue('datasource') . '\"' ) : '')
+                                . ( RequestUtilities::getRequestParamValue('smnid') != '' ?  ('smnid=\"' . RequestUtilities::getRequestParamValue('smnid') . '\"' ) : '')
+                                . ( RequestUtilities::getRequestParamValue('year') != '' ?  ('year=\"' . RequestUtilities::getRequestParamValue('year') . '\"' ) : '')
+                                . ( RequestUtilities::getRequestParamValue('calyear') != '' ?  ('calyear=\"' . RequestUtilities::getRequestParamValue('calyear') . '\"' ) : '')
+                                . ( RequestUtilities::getRequestParamValue('yeartype') != '' ?  ('yeartype=\"' . RequestUtilities::getRequestParamValue('yeartype') . '\"' ) : '')
+                                . ( RequestUtilities::getRequestParamValue('contstatus') != '' ?  ('contstatus=\"' . RequestUtilities::getRequestParamValue('contstatus') . '\"' ) : '')
                                 . ('mastercode=\"' . $row['document_code@checkbook:ref_document_code'] . '\"' )
                                 . '></span>' : '' "
             },
@@ -129,7 +129,7 @@
     },
     "budget_name_formatted":{
             "type": "expression2",
-            "expression": "_get_tooltip_markup($row[budget_name], 36)"
+            "expression": "_get_tooltip_markup($row['budget_name'], 36)"
    }
 },
 "table_columns": [
@@ -184,7 +184,7 @@
 "adjustDataTableOptions":"
           $adjustDataTableOptions = $node->widgetConfig->dataTableOptions;
 
-          $rpp = _getRequestParamValue('rpp');
+          $rpp = RequestUtilities::getRequestParamValue('rpp');
              if(is_numeric($rpp) ){
                     $adjustDataTableOptions->iDisplayLength = (int)$rpp;
              }
@@ -200,7 +200,7 @@
 		   }
 	    }
 
-	      $smnid = _getRequestParamValue('smnid');
+	      $smnid = RequestUtilities::getRequestParamValue('smnid');
 	      if(  !($smnid == 480 || $smnid == 366) ){
 		      foreach($node->widgetConfig->table_columns as $key => $table_column){
 			if($table_column->labelAlias == 'dollar_diff' || $table_column->labelAlias == 'percent_diff'){

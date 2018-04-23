@@ -63,7 +63,7 @@ class ContractsUrlService {
         }
 
         //Don't persist M/WBE parameter if there is no dashboard (this could be an advanced search parameter)
-        $mwbe_parameter = _getRequestParamValue('dashboard') != null ? RequestUtilities::_getUrlParamString("mwbe") : '';
+        $mwbe_parameter = RequestUtilities::getRequestParamValue('dashboard') != null ? RequestUtilities::_getUrlParamString("mwbe") : '';
         $url .= $mwbe_parameter;
 
         return $url;
@@ -139,7 +139,7 @@ class ContractsUrlService {
      * @param $minority_type_id
      * @return string
      */
-    static public function subMinorityTypeUrl($minority_type_id){
+     public static function subMinorityTypeUrl($minority_type_id){
 
         $showLink = Dashboard::isSubDashboard() && MinorityTypeService::isMWBECertified($minority_type_id);
         $dashboard = DashboardParameter::getCurrent();
@@ -327,7 +327,7 @@ class ContractsUrlService {
                                 $doc_type = "MMA1~MA1~MAR";
                             else if($parameters['contract_type'] == 'child_contract')
                                 $doc_type = "CT1~CTA1~CTR";
-                            else 
+                            else
                                 $doc_type = "MMA1~MA1~MAR~CT1~CTA1~CTR";
                             break;
                     }
@@ -351,19 +351,19 @@ class ContractsUrlService {
 
     /**
      * @param $blnIsMasterAgreement
-     * @param $primeOrSub - Used to set prime or sub dollar difference parameter for 
+     * @param $primeOrSub - Used to set prime or sub dollar difference parameter for
      *        Active/Registered Expense Contracts Modifications details links
      * @return string
      */
     static function getAmtModificationUrlString($blnIsMasterAgreement = false, $primeOrSub = NULL) {
-        
+
         // Set modification parameter for Active/Registered Expense Contracts Modifications details links
         if($primeOrSub == 'P'){
             return '/modamt/0/pmodamt/0';
         }else if($primeOrSub == 'S'){
-           return '/modamt/0/smodamt/0'; 
+           return '/modamt/0/smodamt/0';
         }
-        
+
         if($blnIsMasterAgreement)
             $url = "/modamt/0".(ContractUtil::showSubVendorData() ? '/smodamt/0' : '/pmodamt/0');
         else
@@ -378,18 +378,25 @@ class ContractsUrlService {
      * @param $current
      * @return string
      */
-    static function primeVendorUrl($vendor_id, $year_id = null, $current = true) {
+    static function primeVendorUrl($vendor_id, $year_id = null, $current = true,$contractCode = null) {
+        if ($contractCode == "RCT1") {
+            $page = '/contracts_revenue_landing';
+        }
+        else {
+            $page='/contracts_landing';
+        }
 
-        $url = RequestUtilities::_getUrlParamString("agency")
+        $url = $page.RequestUtilities::_getUrlParamString("agency")
             . RequestUtilities::_getUrlParamString("contstatus","status")
             . RequestUtilities::_getUrlParamString("cindustry")
             . RequestUtilities::_getUrlParamString("csize")
             . RequestUtilities::_getUrlParamString("awdmethod")
             . _checkbook_project_get_year_url_param_string();
 
-        $year_type = _getRequestParamValue("yeartype");
-        $agency_id = _getRequestParamValue("agency");
-        
+        $year_type = RequestUtilities::getRequestParamValue("yeartype");
+        $agency_id = RequestUtilities::getRequestParamValue("agency");
+        $advanced_search = false;
+
         $current_url = $_SERVER['HTTP_REFERER'];
         if(preg_match("/contract\/search\/transactions/",$current_url) || preg_match("/contract\/all\/transactions/", $current_url)) {
             $advanced_search = true;
@@ -398,10 +405,11 @@ class ContractsUrlService {
         if($advanced_search){
             $year_id = ($year_id == null) ? _getCurrentYearID() : $year_id;
         }
-        
+
         $latest_minority_id = $year_id
             ? PrimeVendorService::getLatestMinorityTypeByYear($vendor_id, $year_id, $year_type)
             : PrimeVendorService::getLatestMinorityType($vendor_id, $agency_id);
+
         $is_mwbe_certified = MinorityTypeService::isMWBECertified($latest_minority_id);
 
         $urlPath = drupal_get_path_alias($_GET['q']);
@@ -410,10 +418,13 @@ class ContractsUrlService {
                 $url .= "/status/A";
             }
         }
-
+        /*if($is_mwbe_certified && $status){
+            $url .= "/dashboard/ms/mwbe/2~3~4~5~9/vendor/".$vendor_id;
+        }*/
         if($is_mwbe_certified) {
             $url .= "/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
-        } else {
+        }
+        else {
             $url .= RequestUtilities::_getUrlParamString("datasource")."/vendor/".$vendor_id;
         }
         $currentUrl = RequestUtilities::_getCurrentPage();
@@ -430,8 +441,8 @@ class ContractsUrlService {
      */
     static function subVendorUrl($vendor_id, $year_id = null) {
 
-        $year_type = _getRequestParamValue("yeartype");
-        $agency_id = _getRequestParamValue("agency");
+        $year_type = RequestUtilities::getRequestParamValue("yeartype");
+        $agency_id = RequestUtilities::getRequestParamValue("agency");
         $currentUrl = RequestUtilities::_getCurrentPage();
 
         $latest_minority_id = !(isset($year_id))
@@ -459,6 +470,16 @@ class ContractsUrlService {
     }
 
     static function applyVendorParameter($vendor_id, $year_id = null) {
-        $vendornm_exact = _getRequestParamValue("vendornm_exact");
+        $vendornm_exact = RequestUtilities::getRequestParamValue("vendornm_exact");
+    }
+    static function applyLandingParameter($docType){
+        if($docType=="RCT1"){
+            $page="/contracts_revenue_landing";
+        }
+        else{
+            $page="/contracts_landing";
+        }
+        return $page;
+
     }
 }

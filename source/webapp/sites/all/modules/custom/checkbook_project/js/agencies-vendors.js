@@ -77,7 +77,7 @@ function toggleSeries(input, chartArray) {
         var name = jQuery(input).attr('name');
         for (i = 0; i < chartArray.length; i++) {
             for (j = 0; j < chartArray[i].series.length; j++) {
-                if (chartArray[i].series[j].name == name)
+                if (chartArray[i].series[j].name === name)
                     chartArray[i].series[j].setVisible(true, false);
             }
         }
@@ -86,7 +86,7 @@ function toggleSeries(input, chartArray) {
         var name = jQuery(input).attr('name');
         for (i = 0; i < chartArray.length; i++) {
             for (j = 0; j < chartArray[i].series.length; j++) {
-                if (chartArray[i].series[j].name == name)
+                if (chartArray[i].series[j].name === name)
                     chartArray[i].series[j].setVisible(false, false);
             }
         }

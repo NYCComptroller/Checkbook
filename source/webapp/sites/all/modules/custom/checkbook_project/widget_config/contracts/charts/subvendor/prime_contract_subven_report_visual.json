@@ -18,16 +18,16 @@
             $parameters[$param] = htmlspecialchars_decode(_replace_special_characters_decode($value));
     }
 
-    $subvendor = _getRequestParamValue('subvendor');
+    $subvendor = RequestUtilities::getRequestParamValue('subvendor');
     $fnName = isset($subvendor) ? 'GetContractsSubvendorReportingCountsSubLevel' : 'GetContractsSubvendorReportingCounts';
 
     $service = new ContractsDataService();
     $data = $service->$fnName($parameters)->getByDataset($parameters);
-    $node->data  = $data;  
-    
+    $node->data  = $data;
+
 ",
 "widgetUpdateJSONConfig":"
-	
+
 	$series_data = array();
         $legend_order = array(1 => 'Contracts with No Response by Prime',
                         4 => 'Contracts with Response Not Required by Prime',
@@ -36,7 +36,7 @@
                         );
 	$index = 0;
         $total_contracts = 0;
-       
+
         if(count($node->data) > 0){
             foreach($node->data as $row){
                 $data[$row['scntrc_status']] = (int)$row['total_contracts'];
@@ -53,7 +53,7 @@
         }else{
             $node->data = null;
         }
-        $node->widgetConfig->chartTitle =  MappingUtil::getCurrenEhtnicityName() . ' Sub Vendor Reporting by Prime Contracts';
+        $node->widgetConfig->chartTitle =  MappingUtil::getCurrenEthnicityName() . ' Sub Vendor Reporting by Prime Contracts';
         $node->widgetConfig->chartSubTitle =  'Total Number of Contracts: '.number_format($total_contracts);
 ",
 "chartConfig": {
@@ -90,7 +90,7 @@
             "itemMarginTop": 3,
             "itemMarginBottom": 3
         }
-           
+
     }
 }
 <function>

@@ -60,6 +60,7 @@ stylesheets[print][] = 'css/print.css'
 
 ; SCRIPTS
 scripts[] = 'js/global.js'
+scripts[] = 'js/advanced-search.js'
 
 ; THEME SETTINGS
 settings[toggle_logo] = '1'

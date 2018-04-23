@@ -1,19 +1,19 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -23,14 +23,24 @@ module_load_include('php', 'checkbook_api', 'api/CheckbookAPI');
 module_load_include('php', 'checkbook_api', 'api/CheckbookAPIEntity');
 module_load_include('php', 'checkbook_api', 'api/CheckbookAPIRepository');
 module_load_include('php', 'checkbook_api', 'api/CheckbookAPIService');
+module_load_include('php', 'checkbook_api', 'json_api/CheckBookJsonApi');
 
 use checkbook_api\CheckbookAPIService as CheckbookAPIService;
 use checkbook_api\ResponseStatus as ResponseStatus;
+use checkbook_json_api\CheckBookJsonApi as CheckBookJsonApi;
 
 /**
  * Implements hook_menu().
  */
 function checkbook_api_menu() {
+
+  $items['json_api'] = array(
+    'title' => 'Checkbook json API',
+    'page callback' => 'checkbook_json_api',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
   $items['api'] = array(
     'title' => 'Checkbook API',
     'page callback' => 'checkbook_api',
@@ -54,6 +64,37 @@ function checkbook_api_menu() {
   );
 
   return $items;
+}
+
+function checkbook_json_api()
+{
+  header('Content-Type: application/json');
+  try {
+    $args = func_get_args();
+    $endpoint = isset($args[0]) ? $args[0] : 'index';
+    $json_api = new CheckBookJsonApi($args);
+
+    if ('index' == $endpoint) {
+      $methods = get_class_methods($json_api);
+      array_shift($methods);
+//      foreach ($methods as &$method) {
+//        $method = '/json_api/'.$method.'/';
+//      }
+      echo json_encode($methods);
+      return;
+    }
+
+    if (method_exists($json_api, $endpoint)) {
+      echo json_encode($json_api->$endpoint());
+    } else {
+      throw new Exception('not implemented');
+    }
+  } catch (Exception $exception) {
+    echo json_encode([
+      'success' => false,
+      'message' => $exception->getMessage()
+    ]);
+  }
 }
 
 /**
@@ -151,7 +192,7 @@ function checkbook_api_adjustBudgetParameterFilters(&$data_set, &$parameters, $c
     }else if(isset($parameters['budget_code_name'])){
         $parameters['budget_code_name'] = $data_controller_instance->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME, array($parameters['budget_code_name'], false, true));
     }
-    
+
     if(count($logicalOrColumns) > 0) {
         $parameters['logicalOrColumns'] = $logicalOrColumns;
     }
@@ -286,6 +327,17 @@ function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, 
         }
         if(isset($parameters['minority_type_id']))
             $parameters['minority_type_id'] = explode('~',$parameters['minority_type_id']);
+        
+        if(isset($parameters['agency_code@checkbook_oge:oge_agency'])){
+            $agency_id = _checkbook_project_querydataset('checkbook_oge:agency', array('agency_id'), array('agency_code' => $parameters['agency_code@checkbook_oge:oge_agency']));
+            $parameters['agency_id'] = $agency_id[0]['agency_id'];
+            unset($parameters['agency_code@checkbook_oge:oge_agency']);
+        }
+        if(isset($parameters['award_method_code@checkbook_oge:award_method'])){
+           $award_method_id = _checkbook_project_querydataset('checkbook_oge:award_method', array('award_method_id'), array('award_method_code' => $parameters['award_method_code@checkbook_oge:award_method']));
+           $parameters['award_method_id'] = $award_method_id[0]['award_method_id'];
+           unset($parameters['award_method_code@checkbook_oge:award_method']);
+        }
     }
 }
 
@@ -403,7 +455,7 @@ function checkbook_api_adjustContractDataSetResults(&$data_records) {
         if(isset($data_record['minority_type_name'])) {
             $data_records[$key]['minority_type_name'] = MappingUtil::getMinorityCategoryByName($data_record['minority_type_name']);
         }
-        
+
         //Derive sub vendor column from vendor type
         if(isset($data_record['vendor_type'])) {
             $data_records[$key]['vendor_type'] = (preg_match('/S/', $data_record['vendor_type'])) ? 'Yes' : 'No';
@@ -464,7 +516,7 @@ function checkbook_api_adjustSpendingParameterFilters(&$data_set, &$parameters, 
         unset($parameters['vendor_customer_code']);
         $parameters['vendor_name'] = "N/A (PRIVACY/SECURITY)";
     }
-    
+
 }
 /**
  * Used to adjust columns in the data set after sql call.
@@ -499,22 +551,39 @@ function checkbook_api_adjustSpendingDataSetResults(&$data_records) {
 }
 
 function checkbook_api_adjustSpendingSql(&$sql_query) {
+    $alias = '';
     if (strpos($sql_query,'l1.') !== false) {
-        $sql_query =  str_replace("l1.prime_vendor_name", "CASE WHEN l1.is_prime_or_sub = 'S' THEN l1.prime_vendor_name ELSE 'N/A' END AS prime_vendor_name",$sql_query);
-        $sql_query =  str_replace("l1.vendor_type", "CASE WHEN l1.is_prime_or_sub = 'P' THEN 'No' ELSE 'Yes' END AS vendor_type",$sql_query);
-        $sql_query =  str_replace("l1.reporting_code", "CASE WHEN l1.is_prime_or_sub = 'P' THEN l1.reporting_code ELSE 'N/A' END AS reporting_code",$sql_query);
-        $sql_query =  str_replace("l1.department_name", "CASE WHEN l1.is_prime_or_sub = 'P' THEN l1.department_name ELSE 'N/A' END AS department_name",$sql_query);
-        $sql_query =  str_replace("l1.disbursement_number", "CASE WHEN l1.is_prime_or_sub = 'P' THEN l1.disbursement_number ELSE 'N/A' END AS disbursement_number",$sql_query);
-        $sql_query =  str_replace("l1.expenditure_object_name", "CASE WHEN l1.is_prime_or_sub = 'P' THEN l1.expenditure_object_name ELSE 'N/A' END AS expenditure_object_name",$sql_query);
+        $alias = 'l1.';
     }
-    else {
-        $sql_query =  str_replace("prime_vendor_name", "CASE WHEN is_prime_or_sub = 'S' THEN prime_vendor_name ELSE 'N/A' END AS prime_vendor_name",$sql_query);
-        $sql_query =  str_replace("vendor_type", "CASE WHEN is_prime_or_sub = 'P' THEN 'No' ELSE 'Yes' END AS vendor_type",$sql_query);
-        $sql_query =  str_replace("reporting_code", "CASE WHEN is_prime_or_sub = 'P' THEN reporting_code ELSE 'N/A' END AS reporting_code",$sql_query);
-        $sql_query =  str_replace("department_name", "CASE WHEN is_prime_or_sub = 'P' THEN department_name ELSE 'N/A' END AS department_name",$sql_query);
-        $sql_query =  str_replace("disbursement_number", "CASE WHEN is_prime_or_sub = 'P' THEN disbursement_number ELSE 'N/A' END AS disbursement_number",$sql_query);
-        $sql_query =  str_replace("expenditure_object_name", "CASE WHEN is_prime_or_sub = 'P' THEN expenditure_object_name ELSE 'N/A' END AS expenditure_object_name",$sql_query);
-    }
+    $sql_query =  str_replace("{$alias}prime_vendor_name", "CASE WHEN {$alias}is_prime_or_sub = 'S' THEN {$alias}prime_vendor_name ELSE 'N/A' END AS prime_vendor_name",$sql_query);
+    $sql_query =  str_replace("{$alias}vendor_type", "CASE WHEN {$alias}is_prime_or_sub = 'P' THEN 'No' ELSE 'Yes' END AS vendor_type",$sql_query);
+    $sql_query =  str_replace("{$alias}reporting_code", "CASE WHEN {$alias}is_prime_or_sub = 'P' THEN {$alias}reporting_code ELSE 'N/A' END AS reporting_code",$sql_query);
+    $sql_query =  str_replace("{$alias}department_name", "CASE WHEN {$alias}is_prime_or_sub = 'P' THEN {$alias}department_name ELSE 'N/A' END AS department_name",$sql_query);
+    $sql_query =  str_replace("{$alias}disbursement_number", "CASE WHEN {$alias}is_prime_or_sub = 'P' THEN {$alias}disbursement_number ELSE 'N/A' END AS disbursement_number",$sql_query);
+    $sql_query =  str_replace("{$alias}expenditure_object_name", "CASE WHEN {$alias}is_prime_or_sub = 'P' THEN {$alias}expenditure_object_name ELSE 'N/A' END AS expenditure_object_name",$sql_query);
+
+    $column = 'minority_type_name';
+    $minority_check = <<<END
+    CASE
+        WHEN {$alias}{$column}= 2 THEN 'Black American' 
+        WHEN {$alias}{$column}= 3 THEN 'Hispanic American' 
+        WHEN {$alias}{$column}= 4 THEN 'Asian American' 
+        WHEN {$alias}{$column}= 5 THEN 'Asian American' 
+        WHEN {$alias}{$column}= 7 THEN 'Non-M/WBE' 
+        WHEN {$alias}{$column}= 9 THEN 'Women' 
+        WHEN {$alias}{$column}= 11 THEN 'Individuals and Others' 
+        WHEN {$alias}{$column}= 'African American' THEN 'Black American' 
+        WHEN {$alias}{$column}= 'Hispanic American' THEN 'Hispanic American' 
+        WHEN {$alias}{$column}= 'Asian-Pacific' THEN 'Asian American' 
+        WHEN {$alias}{$column}= 'Asian-Indian' THEN 'Asian American' 
+        WHEN {$alias}{$column}= 'Non-Minority' THEN 'Non-M/WBE' 
+        WHEN {$alias}{$column}= 'Caucasian Woman' THEN 'Women' 
+        WHEN {$alias}{$column}= 'Individuals & Others' THEN 'Individuals and Others'
+    END 
+END;
+    $sql_query = str_replace("{$alias}minority_type_name", $minority_check . " AS minority_type_name", $sql_query);
+    return $sql_query;
+
 }
 
 function checkbook_api_adjustContractSql(&$sql_query) {

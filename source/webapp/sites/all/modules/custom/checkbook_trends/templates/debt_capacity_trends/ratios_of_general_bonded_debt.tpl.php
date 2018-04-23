@@ -17,9 +17,8 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php  
-echo eval($node->widgetConfig->header);  
+
+echo eval($node->widgetConfig->header);
 ?>
 
 <a class="trends-export" href="/export/download/trends_ratios_of_general_bonded_debt_csv?dataUrl=/node/<?php echo $node->nid ?>">Export</a>
@@ -36,13 +35,12 @@ echo eval($node->widgetConfig->header);
     <thead>
 	<tr>
         <th class="number"><div class="trendCen" >Fiscal<br>Year</div></th>
-        <th class="number"><div class="trendCen" >General<br>Bonded<br>Debt<br>(1)</div></th>
-        <th class="number"><div class="trendCen" >Debt Secure<br>by Revenue<br>other than<br>property tax <br>(2) (3)</div></th>
-        <th class="number"><div class="trendCen" >General<br>Obligation<br>Bonds</div></th>
-        <th class="number"><div class="trendCen" >Percentage of<br>Actual Taxable<br>Value of Property <br>(4)</div></th>
-        <th class="number"><div class="trendCen" >Per Capita <br>(5)</div></th>
+        <th class="number"><div class="trendCen" >General<br>Bonded<br>Debt<sup>(1)</sup></div></th>
+        <th class="number"><div class="trendCen" >Debt Secure<br>by Revenue<br>other than<br>property tax <sup>(2) (3)</sup></div></th>
+        <th class="number"><div class="trendCen" >City Net<br />General<br />Obligation<br />Bonded Debt</div></th>
+        <th class="number"><div class="trendCen" >City Net General<br />Obligation Bonded<br />Debt as a<br />Percentage of<br />Assessed Taxable<br />Value of Property<sup>(4)</sup></div></th>
+        <th class="number"><div class="trendCen" >Per Capita <sup>(5)</sup></div></th>
         <th class="number"><div class="trendCen" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></th>
-
     </tr>
     </thead>
 
@@ -68,13 +66,13 @@ echo eval($node->widgetConfig->header);
     </tbody>
 </table>
     <div class='footnote'>
+        <p>(1) See Notes to Financial Statements (Note D.5), "Changes in Long Term Liabilities" - Bonds and Notes Payable net of premium and discount.</p>
+        <p>(2) Includes ECF, FSC, HYIC, IDA, STAR, TFA , NYCTLTs and TSASC.</p>
+        <p>(3) See Exhibit "Pledged-Revenue Coverage", Part III- Statistical Information, CAFR</p>
+        <p>(4) See Exhibit "Assessed Value and Estimated Actual Value of Taxable Property - Ten Year Trend",  Part III- Statistical Information, CAFR</p>
+        <p>(5) See Exhibit "Population - Ten Year Trend", Part III- Statistical Information, CAFR</p>
+        <br />
         <p>Sources: Comprehensive Annual Financial Reports of the Comptroller</p>
-        <p>(1) See Notes to Financial Statements (Note D.5), “Changes in Long Term Liabilities”—Bonds and Notes Payable net of premium and discount.</p>
-        <p>(2) Includes ECF, FSC, HYIC, IDA, STAR, TFA, NYCTLTs and TSASC.</p>
-        <p>(3) See Exhibit “Pledged- Revenue Coverage”, Part III—Statistical Information, CAFR</p>
-        <p>(4) See Exhibit “Assessed Value and Estimated Actual Value of Taxable Property—Ten Year Trend”, Part III—Statistical Information, CAFR</p>
-        <p>(5) See Exhibit “Population—Ten Year Trend”, Part III—Statistical Information, CAFR</p>
     </div>
 <?php 
 	widget_data_tables_add_js($node);
-?>

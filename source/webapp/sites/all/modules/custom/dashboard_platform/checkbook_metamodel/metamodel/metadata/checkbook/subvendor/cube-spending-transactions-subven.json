@@ -10,10 +10,10 @@
         },
         "spending_category_subven": {
             "datasourceName": "main",
-            "source": "ref_spending_category"        
+            "source": "ref_spending_category"
         }
-        
-        
+
+
     },
     "cubes":   {
         "subcontract_spending_details": {
@@ -303,7 +303,7 @@
                         {
                             "name": "dept",
                             "datasetName": "department",
-                            "sourceColumnName": "department_id"
+                            "sourceColumnName": "department_code"
                         }
                     ]
                 },

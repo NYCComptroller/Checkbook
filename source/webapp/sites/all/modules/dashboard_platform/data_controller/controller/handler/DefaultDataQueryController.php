@@ -148,10 +148,10 @@ class DefaultDataQueryController extends AbstractDataQueryController {
         $datasetResultFormatter = isset($request->resultFormatter) ? $request->resultFormatter : $this->getDefaultResultFormatter();
         $datasetResultFormatter->adjustDatasetQueryRequest($callcontext, $datasetQueryRequest);
 
-        LogHelper::log_debug($datasetQueryRequest);
+        LogHelper::log_notice($datasetQueryRequest);
 
         $datasetName = $datasetQueryRequest->getDatasetName();
-        LogHelper::log_debug(t(
+        LogHelper::log_notice(t(
         	"Using '!formattingPath' to format result of the dataset: @datasetName",
             array('!formattingPath' => $datasetResultFormatter->printFormattingPath(), '@datasetName' => $datasetName)));
 

@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -12,8 +12,8 @@ class RequestUtilities {
      * Checks if the page is Checkbook or Checkbook OGE (EDC)
      * @return True if the page is EDC
      */
-    static public function isEDCPage(){
-        $database = _getRequestParamValue('datasource');
+    public static function isEDCPage(){
+        $database = RequestUtilities::getRequestParamValue('datasource');
         if(isset($database)){
             return true;
         }else{
@@ -21,36 +21,8 @@ class RequestUtilities {
         }
     }
 
-    /**
-     * returns request parameter value from URL($_REQUEST['q'])
-     * @param string $paramName
-     * @return request parameter value
-     */
-    static public function getRequestParamValue($paramName, $fromRequestPath = TRUE){
-        if(empty($paramName)){
-            return NULL;
-        }
-        $value = NULL;
-        if($fromRequestPath){
-            $urlPath = drupal_get_path_alias($_GET['q']);
-            $pathParams = explode('/', $urlPath);
-            $index = array_search($paramName,$pathParams);
-            if($index !== FALSE){
-                $value =  filter_xss($pathParams[($index+1)]);
-            }
-            if(trim($value) == ""){
-                return NULL;
-            }
-            if(isset($value) || $fromRequestPath){
-                return htmlspecialchars_decode($value,ENT_QUOTES);
-            }
-        }else{
-            return filter_xss(htmlspecialchars_decode($_GET[$paramName],ENT_QUOTES));
-        }
-    }
-
     //Returns the path of the current page
-    static public function _getCurrentPage() {
+    public static function _getCurrentPage() {
         $currentUrl = explode('/',$_SERVER['HTTP_REFERER']);
         return '/'.$currentUrl[3];
     }
@@ -66,9 +38,7 @@ class RequestUtilities {
         $pathParams = explode('/', $urlPath);
         $keyIndex = NULL;
         foreach($pathParams as $index => $value){
-            if($key == $value){
-                $keyIndex = $index;
-            }else if($key_alias != null && $key_alias == $value && $value != null){
+            if($key == $value || ($key_alias != null && $key_alias == $value && $value != null)){
                 $keyIndex = $index;
             }
         }
@@ -85,13 +55,43 @@ class RequestUtilities {
     }
 
     /**
+     * returns request parameter value from URL($_REQUEST['q'])
+     * @param string $paramName
+     * @param boolean $fromRequestPath
+     * @return string request
+     */
+    public static function getRequestParamValue($paramName, $fromRequestPath = True)
+    {
+      if (empty($paramName)) {
+        return NULL;
+      }
+      $value = NULL;
+      if ($fromRequestPath) {
+        $urlPath = drupal_get_path_alias($_GET['q']);
+        $pathParams = explode('/', $urlPath);
+        $index = array_search($paramName, $pathParams);
+        if ($index !== FALSE) {
+          $value = filter_xss($pathParams[($index + 1)]);
+        }
+        if (trim($value) == "") {
+          return NULL;
+        }
+        if (isset($value) || $fromRequestPath) {
+          return htmlspecialchars_decode($value, ENT_QUOTES);
+        }
+      } else {
+        return filter_xss(htmlspecialchars_decode($_GET[$paramName], ENT_QUOTES));
+      }
+    }
+
+    /**
      * Adds mwbe, subvendor and datasource parameters to url.  Precedence ,$source > $overidden_params > requestparam
      * @return string
      */
-    function _appendMWBESubVendorDatasourceUrlParams($source = null,$overidden_params = array(),$top_nav = false){
-        $datasource = (isset($overidden_params['datasource'])) ? $overidden_params['datasource'] :_getRequestParamValue('datasource');
-        $mwbe = (isset($overidden_params['mwbe'])) ? $overidden_params['mwbe'] : _getRequestParamValue('mwbe');
-        $dashboard = (isset($overidden_params['dashboard'])) ? $overidden_params['dashboard'] : _getRequestParamValue('dashboard');
+   public static function _appendMWBESubVendorDatasourceUrlParams($source = null,$overidden_params = array(),$top_nav = false){
+        $datasource = (isset($overidden_params['datasource'])) ? $overidden_params['datasource'] : RequestUtilities::getRequestParamValue('datasource');
+        $mwbe = (isset($overidden_params['mwbe'])) ? $overidden_params['mwbe'] : RequestUtilities::getRequestParamValue('mwbe');
+        $dashboard = (isset($overidden_params['dashboard'])) ? $overidden_params['dashboard'] : RequestUtilities::getRequestParamValue('dashboard');
 
         $url = "";
         if(isset($datasource)) {
@@ -113,7 +113,7 @@ class RequestUtilities {
                     }
                 }
                 else {
-                    if(!$top_nav ||  ( isset($mwbe) && _getRequestParamValue('vendor') > 0 && _getRequestParamValue('dashboard') != "ms" )){
+                    if(!$top_nav || ( isset($mwbe) && RequestUtilities::getRequestParamValue('vendor') > 0 && RequestUtilities::getRequestParamValue('dashboard') != "ms" )){
                         $url = isset($mwbe) ? "/mwbe/".$mwbe : "";
                         $url .= isset($dashboard) ? "/dashboard/".$dashboard : "";
                     }
@@ -124,14 +124,14 @@ class RequestUtilities {
     }
 
     /** Checks if the current URL is opened in a new window */
-    static function isNewWindow(){
+    public static function isNewWindow(){
         $referer = $_SERVER['HTTP_REFERER'];
 
         return preg_match('/newwindow/i',$referer);
     }
 
-    function _checkbook_check_isEDCPage(){
-        $database = self::getRequestParamValue('datasource');
+    public function _checkbook_check_isEDCPage(){
+        $database = RequestUtilities::getRequestParamValue('datasource');
         if(isset($database)){
             return true;
         }else{
@@ -139,7 +139,7 @@ class RequestUtilities {
         }
     }
 
-    static function get_url_param($pathParams,$key,$key_alias =  null){
+     public static function get_url_param($pathParams,$key,$key_alias =  null){
 
         $keyIndex = array_search($key,$pathParams);
         if($keyIndex){
@@ -158,7 +158,7 @@ class RequestUtilities {
      * This function returns the current NYC year  ...
      * @return year_id
      */
-    static function getCurrentYearID(){
+   public static function getCurrentYearID(){
         STATIC $currentNYCYear;
         if(!isset($currentNYCYear)){
             if(variable_get('current_fiscal_year_id')){
@@ -166,8 +166,9 @@ class RequestUtilities {
             }else{
                 $currentNYCYear=date("Y");
                 $currentMonth=date("m");
-                if($currentMonth > 6 )
-                    $currentNYCYear +=1;
+                if($currentMonth > 6 ) {
+                    $currentNYCYear += 1;
+                }
                 $currentNYCYear = _getYearIDFromValue($currentNYCYear);
             }
         }
