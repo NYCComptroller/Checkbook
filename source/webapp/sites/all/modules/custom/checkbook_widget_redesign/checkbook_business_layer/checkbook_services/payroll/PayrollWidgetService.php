@@ -24,12 +24,12 @@ class PayrollWidgetService extends WidgetDataService implements IWidgetService {
                 break;
             case "total_gross_pay_link":
                 $column = $row['total_gross_pay'];
-                $url = PayrollUrlService::payUrl($row['agency'], $this->getLegacyNodeId());
+                $url = PayrollUrlService::payUrl($row['agency'], $legacy_node_id);
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
             case "total_overtime_pay_link":
                 $column = $row['total_overtime_pay'];
-                $url = PayrollUrlService::payUrl($row['agency']);
+                $url = PayrollUrlService::payUrl($row['agency'], $legacy_node_id);
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
             case "max_annual_salary_link":
