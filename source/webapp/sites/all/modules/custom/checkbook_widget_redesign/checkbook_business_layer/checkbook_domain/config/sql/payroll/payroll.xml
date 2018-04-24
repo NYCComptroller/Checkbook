@@ -171,8 +171,10 @@
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="fiscal_year_id" paramName="year" />
-                    <exp op="=" dbField="type_of_year" paramName="yeartype" />
-                    <exp op="=" dbField="agency_id" paramName="agency" />
+                    <exp op="=" dbField="type_of_year" paramName= "yeartype" />
+                    <exp op="=" dbField="agency_id" paramName= "agency" />
+                    <exp op="=" dbField="civil_service_title_code" paramName="title" />
+
                 </exp>
             </where>
             AND type_of_employment = 'Salaried'
