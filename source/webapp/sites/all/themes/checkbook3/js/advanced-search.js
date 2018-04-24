@@ -497,7 +497,7 @@
                     var contract_status_val = div.ele('status').val();
                     var category_val = div.ele('category').val();
 
-                    if ((contract_status_val == 'A' || contract_status_val == 'R') && (category_val == 'expense' || category_val == 'all')) {
+                    if ((contract_status_val === 'A' || contract_status_val === 'R') && (category_val === 'expense' || category_val === 'all')) {
                         $("<div class='prime-and-sub-note'>All Fields are searchable by Prime data, unless designated as Prime & Sub (<img src='/sites/all/themes/checkbook3/images/prime-and-sub.png' />).</div>").insertBefore($("#edit-contracts-advanced-search-domain-filter"));
                         addPrimeAndSubIcon(contract_status);
                         addPrimeAndSubIcon(vendor);
@@ -565,21 +565,19 @@
                             break;
 
                         default:
-                            //Fix the default for category
-                            $("select#edit-checkbook-contracts-category").val("expense");
                             initializeContractsView(div_checkbook_contracts);
                             div_checkbook_contracts.contents().show();
                             div_checkbook_contracts_oge.contents().hide();
                             showHidePrimeAndSubFields(div_checkbook_contracts);
-
-
+                            //Fix the default for category
+                            $("select#edit-checkbook-contracts-category").val("expense");
                             break;
                     }
                 }
 
                 function autoCompletes(div) {
                     var status = div.ele('status').val() || 0;
-                    var category = div.ele('category').val() ? div.ele('category').val() : 0;
+                    var category = div.ele('category').val() || 0;
                     var mwbe_category = div.ele('mwbe_category').val() || 0;
                     var industry = div.ele('industry').val() || 0;
                     var contract_type = div.ele('contract_type').val() || 0;
@@ -613,10 +611,8 @@
 
                     autoCompletes(div);
 
-
                     $('#contracts-advanced-search').each(function () {
                         $(this).focusout(function () {
-
                             autoCompletes(div);
                         });
                     });
