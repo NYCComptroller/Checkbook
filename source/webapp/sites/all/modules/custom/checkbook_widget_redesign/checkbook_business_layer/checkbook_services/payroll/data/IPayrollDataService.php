@@ -20,5 +20,6 @@ interface IPayrollDataService {
 
     /* Count Methods */
     function GetCountAgencies($parameters);
+    function GetCountAgenciesByOvertime($parameters);
     function GetCountSalariedEmployees($parameters);
 }
