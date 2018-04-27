@@ -29,7 +29,11 @@ class PayrollDataService extends DataService implements IPayrollDataService {
     function GetCountAgencies($parameters) {
         return $this->configureCitywide(__FUNCTION__, $parameters);
     }
-
+    
+    function GetCountAgenciesByOvertime($parameters) {
+        return $this->configureCitywide(__FUNCTION__, $parameters);
+    }
+    
     function GetCountSalariedEmployees($parameters) {
         return $this->configureCitywide(__FUNCTION__, $parameters);
     }
