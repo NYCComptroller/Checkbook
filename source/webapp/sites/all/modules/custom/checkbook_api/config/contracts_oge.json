@@ -5,7 +5,7 @@
             "purpose":"description",
             "other_government_entities_code":"agency_code@checkbook_oge:oge_agency",
             "other_government_entities":"agency_name@checkbook_oge:agency",
-            "vendor_name":"legal_name@checkbook_oge:vendor",
+            "prime_vendor":"vendor_name",
             "current_amount":"maximum_contract_amount",
             "spent_to_date":"spending_amount_disb",
             "award_method":"award_method_code@checkbook_oge:award_method",
@@ -38,7 +38,8 @@
             "name":"checkbook_oge:agreement_snapshot_oge",
             "columnTypes":{
                 "contract_number":"like",
-                "legal_name@checkbook_oge:vendor":"like",
+                "vendor_name":"like",
+                "prime_vendor":"like",
                 "commodity_line":"like",
                 "entity_contract_number":"like",
                 "budget_name":"contains",
@@ -134,7 +135,7 @@
         "searchCriteriaMap":{
             "other_government_entities_code":"agency_code@checkbook_oge:oge_agency",
             "other_government_entities":"agency_name@checkbook_oge:agency",
-            "vendor_name":"legal_name@checkbook_oge:vendor",
+            "prime_vendor":"vendor_name",
             "purpose":"description",
             "current_amount":"maximum_contract_amount",
             "spent_to_date":"spending_amount_disb",
@@ -169,7 +170,8 @@
             "columnTypes":{
                 "expenditure_object_codes":"trueLike",
                 "contract_number":"like",
-                "legal_name@checkbook_oge:vendor":"like",
+                "vendor_name":"like",
+                "prime_vendor":"like",
                 "commodity_line":"like",
                 "entity_contract_number":"like",
                 "budget_name":"contains",
