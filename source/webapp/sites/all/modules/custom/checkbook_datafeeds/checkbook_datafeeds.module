@@ -2770,10 +2770,8 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
                 preg_match($pattern, $values['vendor'], $vmatches);
                 if ($vmatches) {
                     $criteria['value']['prime_vendor'] = trim($vmatches[1], '[ ]');
-                    $criteria['value']['vendor'] = trim($vmatches[1], '[ ]');
                 } else {
                     $criteria['value']['prime_vendor'] = $values['vendor'];
-                    $criteria['value']['vendor'] = $values['vendor'];
                 }
             }
             break;
