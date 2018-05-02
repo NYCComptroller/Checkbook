@@ -11,7 +11,7 @@
         "vendornm_exact":"display_vendor.display_vendor.legal_name",
         "vendor":"vendor.vendor"
     },
-    "defaultParameters":{"status_flag":"A","is_vendor_flag":"Y","type_of_year":"B","if_for_all_years":"N"},
+    "defaultParameters":{"status_flag":"A","type_of_year":"B","if_for_all_years":"N"},
     "columns":["display_vendor.display_vendor", "display_vendor.display_vendor.legal_name", "txcount"],
     "orderBy":"-txcount",
     "getTotalDataCount":true,
@@ -19,41 +19,32 @@
     "filterName":"Vendor",
     "urlParameterName":"vendor",
     "urlParameterNameType":"eqtext",
-    "autocompleteParamName":"vendor_auto",
-    "autocompleteID":"fvendorId",
+    "autocompleteParamName":"vendor_auto", 
+   "autocompleteID":"fvendorId",
     "autocompleteField":"vendor_name",
     "adjustParameters":"
-	checkbook_faceted_search_adjust_param($node);
-    if(function_exists('_checkbook_project_adjustContractParameterFilters')){
-        _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');
-    }
-    if(RequestUtilities::getRequestParamValue('vendor') || RequestUtilities::getRequestParamValue('vendornm')){
-        $parameters['is_vendor_flag'] = 'Y';
-    }
-    if(!(RequestUtilities::getRequestParamValue('year') || RequestUtilities::getRequestParamValue('calyear'))){
-        $parameters['latest_flag'] = 'Y';
-        $parameters['if_for_all_years'] = 'Y';
-    }
-    
-    //For Master agreement details page vendor facet should only display Master agreement Prime vendors
-    if(isset($parameters['document_code.document_code.document_code']) && count(array_intersect($parameters['document_code.document_code.document_code'], array('MA1', 'MMA1')))){
-        $parameters['is_vendor_flag'] = 'N';
-        if(isset($parameters['vendor.vendor'])){
-            $parameters['display_vendor.display_vendor'] = $parameters['vendor.vendor'];
-            unset($parameters['vendor.vendor']);
+        checkbook_faceted_search_adjust_param($node);
+        if(function_exists('_checkbook_project_adjustContractParameterFilters')){
+            _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');
         }
-        if(isset($parameters['vendor_id'])){
-            $parameters['display_vendor_id'] = $parameters['vendor_id'];
-            unset($parameters['vendor_id']);
+        
+        if(RequestUtilities::getRequestParamValue('vendor') && RequestUtilities::getRequestParamValue('fvendor'))
+            $parameters['is_vendor_flag'] = 'Y';
+        else{
+           $parameters['is_vendor_flag'] = 'N';
         }
-    }
-    if(function_exists('_checkbook_project_applyParameterFilters')){
-        $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
-        $adjustedParameters['vendor.vendor'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
-        //log_error($adjustedParameters);
-        return $adjustedParameters;
-    }
-    return $parameters;
+        //log_error($parameters);
+           
+        if(!(RequestUtilities::getRequestParamValue('year') || RequestUtilities::getRequestParamValue('calyear'))){
+            $parameters['latest_flag'] = 'Y';
+            $parameters['if_for_all_years'] = 'Y';
+        }
+        if(function_exists('_checkbook_project_applyParameterFilters')){
+            $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+            $adjustedParameters['display_vendor.display_vendor'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+            return $adjustedParameters;
+        }
+        return $parameters;
     ",
     "template":"individual_filter"
 }
