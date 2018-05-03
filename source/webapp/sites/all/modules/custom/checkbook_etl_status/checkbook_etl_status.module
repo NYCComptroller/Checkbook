@@ -30,7 +30,7 @@ function checkbook_etl_status_mail_send(){
 
   $to = $conf['etl_status_recipients'];
   $response = drupal_mail('checkbook_etl_status', "send-status", $to,
-    null, [], 'ETL-STATUS', TRUE);
+    null, [], 'checkbook@reisys.com', TRUE);
   LogHelper::log_notice($response);
 }
 
@@ -41,9 +41,22 @@ function checkbook_etl_status_mail_send(){
  */
 function checkbook_etl_status_mail($key, &$message, $params)
 {
+  $local_api = new \checkbook_json_api\CheckBookJsonApi();
+  $local_status = $local_api->etl_status();
+  $uat_result = '<span style="color:red">FAIL</span>';
+  $today_date = date('Y-m-d');
+  if ((true == $local_status->success) && ($today_date == $local_status->data)) {
+    $uat_result = '<span style="color:green">SUCCESS</span> (ran today '.$today_date.')';
+  }
+  $prod_status = '<span style="color:orange">UNKNOWN</span>';
+
   $message['subject'] .= str_replace(array(
     "\r",
     "\n",
   ), '', 'ETL Status Report');
-  $message['body'][] = 'Great success';
+  $message['body'][] = <<<EOM
+UAT ETL STATUS:\t\t{$uat_result}<br />
+PROD ETL STATUS:\t{$prod_status}<br />
+STAGING ETL STATUS:\t{$prod_status}<br />
+EOM;
 }
