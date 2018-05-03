@@ -35,7 +35,7 @@ class CheckBookJsonApi
    * CheckBookJsonApi constructor.
    * @param $args
    */
-  public function __construct($args)
+  public function __construct($args = [])
   {
     $this->args = $args;
   }
