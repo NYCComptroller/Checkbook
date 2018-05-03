@@ -45,8 +45,10 @@ function checkbook_etl_status_mail($key, &$message, $params)
   $local_status = $local_api->etl_status();
   $uat_result = '<span style="color:red">FAIL</span>';
   $today_date = date('Y-m-d');
-  if ((true == $local_status->success) && ($today_date == $local_status->data)) {
+  if ((true == $local_status['success']) && ($today_date == $local_status['data'])) {
     $uat_result = '<span style="color:green">SUCCESS</span> (ran today '.$today_date.')';
+  } elseif (isset($local_status['data'])) {
+    $uat_result = '<span style="color:red">FAIL</span> (last successful run '.$local_status['data'].')';
   }
   $prod_status = '<span style="color:orange">UNKNOWN</span>';
 
