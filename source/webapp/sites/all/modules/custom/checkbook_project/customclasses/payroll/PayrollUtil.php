@@ -223,6 +223,7 @@ class PayrollUtil {
     }
 
     static function getDataByPayFrequency($pay_frequency, $array) {
+
         foreach($array as $data) {
             if($data['pay_frequency'] == $pay_frequency) {
                 return $data;
@@ -230,4 +231,34 @@ class PayrollUtil {
         }
         return null;
     }
-} 
+    static function getTitleByEmployeeId($employeeId,$agency_id,$year_type,$year){
+        $where = "WHERE fiscal_year_id = $year AND type_of_year = '$year_type'";
+        $where .= isset($agency_id) ? " AND agency_id = $agency_id" : "";
+        $where .= isset($employeeId) ? " AND employee_id = $employeeId" : "";
+        $query="select s1.pay_date,
+          s1.civil_service_title_code,
+          s1.civil_service_title 
+        from aggregateon_payroll_employee_agency s1
+        inner join
+        (
+          select max(pay_date) pay_date,
+          employee_id
+          from aggregateon_payroll_employee_agency 
+            {$where}
+          group by employee_id
+        ) s2
+          on s1.employee_id = s2.employee_id
+          and s1.pay_date= s2.pay_date";
+        try {
+            $result = _checkbook_project_execute_sql_by_data_source($query,_get_default_datasource());
+            $title = $result[0]['civil_service_title'];
+
+           return $title;
+        }
+        catch (Exception $e) {
+            log_error("Error in function getEmployeeCount() \nError getting data from controller: \n" . $e->getMessage());
+        }
+
+
+    }
+}
