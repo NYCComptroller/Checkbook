@@ -1,0 +1,49 @@
+<?php
+
+/**
+ * Implements hook_cron()
+ */
+function checkbook_etl_status_cron()
+{
+  global $conf;
+  global $base_url;
+
+  if (!isset($conf['etl_status_recipients']) || ('uat-checkbook-nyc.reisys.com' !== parse_url($base_url, PHP_URL_HOST))) {
+    return;
+  }
+
+  date_default_timezone_set('America/New_York');
+  $variable_name = 'checkbook_etl_status_last_run';
+  $today = date('Y-m-d');
+  $current_hour = (int)date('H');
+  if (variable_get($variable_name) == $today || $current_hour < 7) {
+    // done already or too early (must run after 7am)
+    return;
+  }
+
+  checkbook_etl_status_mail_send();
+  variable_set($variable_name, $today);
+}
+
+function checkbook_etl_status_mail_send(){
+  global $conf;
+
+  $to = $conf['etl_status_recipients'];
+  $response = drupal_mail('checkbook_etl_status', "send-status", $to,
+    null, [], 'ETL-STATUS', TRUE);
+  LogHelper::log_notice($response);
+}
+
+/**
+ * @param $key
+ * @param $message
+ * @param $params
+ */
+function checkbook_etl_status_mail($key, &$message, $params)
+{
+  $message['subject'] .= str_replace(array(
+    "\r",
+    "\n",
+  ), '', 'ETL Status Report');
+  $message['body'][] = 'Great success';
+}

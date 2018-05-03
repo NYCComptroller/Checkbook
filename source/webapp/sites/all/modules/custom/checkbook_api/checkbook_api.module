@@ -325,14 +325,16 @@ function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, 
                 );
             }
         }
-        if(isset($parameters['minority_type_id']))
-            $parameters['minority_type_id'] = explode('~',$parameters['minority_type_id']);
-        
+        if(isset($parameters['minority_type_id'])) {
+          $parameters['minority_type_id'] = explode('~',$parameters['minority_type_id']);
+        }
+
         if(isset($parameters['agency_code@checkbook_oge:oge_agency'])){
             $agency_id = _checkbook_project_querydataset('checkbook_oge:agency', array('agency_id'), array('agency_code' => $parameters['agency_code@checkbook_oge:oge_agency']));
             $parameters['agency_id'] = $agency_id[0]['agency_id'];
             unset($parameters['agency_code@checkbook_oge:oge_agency']);
         }
+
         if(isset($parameters['award_method_code@checkbook_oge:award_method'])){
            $award_method_id = _checkbook_project_querydataset('checkbook_oge:award_method', array('award_method_id'), array('award_method_code' => $parameters['award_method_code@checkbook_oge:award_method']));
            $parameters['award_method_id'] = $award_method_id[0]['award_method_id'];
