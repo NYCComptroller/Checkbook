@@ -21,8 +21,7 @@
         "total_base_salary",
         "total_overtime_amount",
         "total_other_payments",
-        "total_gross_pay",
-        "total_gross_pay_ytd"
+        "total_gross_pay"
     ],
     "adjustParameters":"
         $yearType = RequestUtilities::getRequestParamValue('yeartype');
