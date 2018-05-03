@@ -6,7 +6,8 @@
  * Time: 4:55 PM
  */
 
-require_once(realpath(drupal_get_path('module', 'checkbook_project')) .'/customclasses/constants/Constants.php');
+include_once __DIR__ . '/../../../webapp/sites/all/modules/custom/checkbook_project/customclasses/constants/Constants.php';
+
 
 
 class PayrollUtil {
