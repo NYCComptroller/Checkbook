@@ -6,9 +6,7 @@
  * Time: 4:55 PM
  */
 
-include_once __DIR__ . '/../../../webapp/sites/all/modules/custom/checkbook_project/customclasses/constants/Constants.php';
-
-
+require_once(__DIR__ . '/../constants/Constants.php');
 
 class PayrollUtil {
 
