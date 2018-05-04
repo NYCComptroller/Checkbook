@@ -152,6 +152,7 @@ UAT  ETL STATUS:\t\tSUCCESS (ran today {$this->fakeToday})
 PROD ETL STATUS:\tUNKNOWN
 EOM;
 
+        $this->assertEquals('ETL Status Report', $message['subject']);
         $this->assertEquals($expected, $message['body'][0]);
     }
 
