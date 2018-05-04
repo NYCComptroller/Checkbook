@@ -1,37 +1,14 @@
 <?php
 
+include_once 'includes/CheckbookEtlStatus.class.php';
+
 /**
  * Implements hook_cron()
  */
 function checkbook_etl_status_cron()
 {
-  global $conf;
-  global $base_url;
-
-  if (!isset($conf['etl_status_recipients']) || ('uat-checkbook-nyc.reisys.com' !== parse_url($base_url, PHP_URL_HOST))) {
-    return;
-  }
-
-  date_default_timezone_set('America/New_York');
-  $variable_name = 'checkbook_etl_status_last_run';
-  $today = date('Y-m-d');
-  $current_hour = (int)date('H');
-  if (variable_get($variable_name) == $today || $current_hour < 7) {
-    // done already or too early (must run after 7am)
-    return;
-  }
-
-  checkbook_etl_status_mail_send();
-  variable_set($variable_name, $today);
-}
-
-function checkbook_etl_status_mail_send(){
-  global $conf;
-
-  $to = $conf['etl_status_recipients'];
-  $response = drupal_mail('checkbook_etl_status', "send-status", $to,
-    null, [], 'checkbook@reisys.com', TRUE);
-  LogHelper::log_notice($response);
+  $CES = new CheckbookEtlStatus();
+  return $CES->run_cron();
 }
 
 /**
@@ -41,24 +18,7 @@ function checkbook_etl_status_mail_send(){
  */
 function checkbook_etl_status_mail($key, &$message, $params)
 {
-  $local_api = new \checkbook_json_api\CheckBookJsonApi();
-  $local_status = $local_api->etl_status();
-  $uat_result = '<span style="color:red">FAIL</span>';
-  $today_date = date('Y-m-d');
-  if ((true == $local_status['success']) && ($today_date == $local_status['data'])) {
-    $uat_result = '<span style="color:green">SUCCESS</span> (ran today '.$today_date.')';
-  } elseif (isset($local_status['data'])) {
-    $uat_result = '<span style="color:red">FAIL</span> (last successful run '.$local_status['data'].')';
-  }
-  $prod_status = '<span style="color:orange">UNKNOWN</span>';
-
-  $message['subject'] .= str_replace(array(
-    "\r",
-    "\n",
-  ), '', 'ETL Status Report');
-  $message['body'][] = <<<EOM
-UAT ETL STATUS:\t\t{$uat_result}<br />
-PROD ETL STATUS:\t{$prod_status}<br />
-STAGING ETL STATUS:\t{$prod_status}<br />
-EOM;
+  $CES = new CheckbookEtlStatus();
+  $CES->mail($message);
 }
+
