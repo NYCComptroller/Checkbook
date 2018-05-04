@@ -52,9 +52,11 @@ foreach ($render_array as $title => $value) {
     if ($title == 'Type of Data' || $title == 'Spending Category' || $title == 'Category' || $title == 'Status'){
         $count =0;
         foreach ($value as $v) {
-            if(in_array('checked', $v))
-                $count++;
+            if(is_array($v) && in_array('checked', $v)) {
+              $count++;
+            }
         }
+
         if($count == 0){
             $display_facet = "none";
             $span = "";
@@ -63,7 +65,7 @@ foreach ($render_array as $title => $value) {
             $span = "open";
         }
     }else{
-        if(count($value['checked']) > 0 ){
+        if(!empty($value['checked'])){
             $display_facet = "block";
             $span = "open";
         }else{
@@ -71,13 +73,16 @@ foreach ($render_array as $title => $value) {
             $span = "";
         }
     }
+
     echo '<div class="filter-content-' . $value['name'] . ' filter-content">';
     echo '<div class="filter-title"><span class="'.$span.'">By ' . $title . '</span></div>';
     echo '<div class="facet-content" style="display:'.$display_facet.'" ><div class="progress"></div>';
+
     if ($title == 'Type of Data' || $title == 'Spending Category' || $title == 'Category' || $title == 'Status') {
         echo '<div class="options">';
         echo '<div class="rows">';
         $index = 0;
+
         foreach ($value as $v) {
             $name = $value['name'];
             $id = $id_title.$index;
@@ -93,7 +98,7 @@ foreach ($render_array as $title => $value) {
                 echo '<label for="'.$id.'"></label></div>';
                 echo '<div class="name">' . htmlentities($v[1]) . '</div>';
                 echo '<div class="number"><span' . $active . '>' . number_format($v[2]) . '</span></div>';
-                if (count($sub_cat_array[$v[1]]) > 0) {
+                if ($sub_cat_array && count($sub_cat_array[$v[1]]) > 0) {
                     $sub_index = 0;
                     foreach ($sub_cat_array[$v[1]] as $a => $b) {
                         $sub_id_title = str_replace(" ", "_", $a);
@@ -288,7 +293,7 @@ foreach ($render_array as $title => $value) {
             $autocomplete_id = "autocomplete_" . $value['name'];
             $disabled = ($value['checked'] && count($value['checked']) >= 5) ? "disabled" : '';
             if($title != 'M/WBE Category' && $title != 'Vendor Type' && $title != 'Payroll Type'){
-                if((!count($value['checked']) && !count($value['unchecked']))){
+                if(empty($value['checked']) && empty($value['unchecked'])){
                     echo '<div class="disable_autocomplete"><input type="text" disabled="disabled"></div>';
                 }else{
                     echo '<div class="autocomplete"><input id="' . $autocomplete_id . '" ' . $disabled . ' type="text"></div>';
