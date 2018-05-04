@@ -1,7 +1,7 @@
 {
     "serviceName": "PayrollWidgetService",
     "dataFunc": "GetAgenciesByOvertime",
-    "countFunc": "GetCountAgenciesByOvertime",
+    "countFunc": "GetCountAgencies",
     "headerTitle": "Agencies by Overtime",
     "headerSubTitle": "Agencies",
     "table_columns": [
