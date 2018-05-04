@@ -121,19 +121,77 @@ class EtlStatusModuleTest extends TestCase
         $this->assertEquals('777', $CheckbookEtlStatus->run_cron());
     }
 
-    /**
-     *
-     */
-    public function test_mail_format_success()
+    public function test_format_status_yesterday_date()
     {
         $CheckbookEtlStatus =
             $this->getMockBuilder('CheckbookEtlStatus')
-                ->setMethods(['date', 'getUatStatus'])
+                ->setMethods(['date'])
+                ->getMock();
+
+        $CheckbookEtlStatus->expects($this->once())
+            ->method('date')
+            ->with($this->equalTo('Y-m-d'))
+            ->will($this->returnValue($this->fakeToday));
+
+        $sampleData = [
+            'success' => true,
+            'data' => $this->fakeYesterday
+        ];
+
+        $this->assertEquals("FAIL (last successful run $this->fakeYesterday)", $CheckbookEtlStatus->formatStatus($sampleData));
+    }
+
+    public function test_format_status_success()
+    {
+        $CheckbookEtlStatus =
+            $this->getMockBuilder('CheckbookEtlStatus')
+                ->setMethods(['date'])
+                ->getMock();
+
+        $CheckbookEtlStatus->expects($this->once())
+            ->method('date')
+            ->with($this->equalTo('Y-m-d'))
+            ->will($this->returnValue($this->fakeToday));
+
+        $sampleData = [
+            'success' => true,
+            'data' => $this->fakeToday
+        ];
+
+        $this->assertEquals("SUCCESS (ran today $this->fakeToday)", $CheckbookEtlStatus->formatStatus($sampleData));
+    }
+
+    public function test_format_status_fail()
+    {
+        $CheckbookEtlStatus =
+            $this->getMockBuilder('CheckbookEtlStatus')
+                ->setMethods(['date'])
+                ->getMock();
+
+        $CheckbookEtlStatus->expects($this->once())
+            ->method('date')
+            ->with($this->equalTo('Y-m-d'))
+            ->will($this->returnValue($this->fakeToday));
+
+        $sampleData = [
+        ];
+
+        $this->assertEquals("FAIL (unknown)", $CheckbookEtlStatus->formatStatus($sampleData));
+    }
+
+    /**
+     *
+     */
+    public function test_mail_success_uat()
+    {
+        $CheckbookEtlStatus =
+            $this->getMockBuilder('CheckbookEtlStatus')
+                ->setMethods(['date', 'getUatStatus', 'getProdStatus'])
                 ->getMock();
 
         $message = null;
 
-        $CheckbookEtlStatus->expects($this->at(0))
+        $CheckbookEtlStatus->expects($this->any())
             ->method('date')
             ->with($this->equalTo('Y-m-d'))
             ->will($this->returnValue($this->fakeToday));
@@ -145,11 +203,18 @@ class EtlStatusModuleTest extends TestCase
                 'data' => $this->fakeToday
             ]));
 
+        $CheckbookEtlStatus->expects($this->once())
+            ->method('getProdStatus')
+            ->will($this->returnValue([
+                'success' => true,
+                'data' => $this->fakeYesterday
+            ]));
+
         $CheckbookEtlStatus->mail($message);
 
         $expected = <<<EOM
-UAT  ETL STATUS:\t\tSUCCESS (ran today {$this->fakeToday})
-PROD ETL STATUS:\tUNKNOWN
+UAT  ETL STATUS:\tSUCCESS (ran today {$this->fakeToday})
+PROD ETL STATUS:\tFAIL (last successful run {$this->fakeYesterday})
 EOM;
 
         $this->assertEquals('ETL Status Report', $message['subject']);
@@ -159,16 +224,16 @@ EOM;
     /**
      *
      */
-    public function test_mail_format_fail()
+    public function test_mail_success_prod()
     {
         $CheckbookEtlStatus =
             $this->getMockBuilder('CheckbookEtlStatus')
-                ->setMethods(['date', 'getUatStatus'])
+                ->setMethods(['date', 'getUatStatus', 'getProdStatus'])
                 ->getMock();
 
         $message = null;
 
-        $CheckbookEtlStatus->expects($this->at(0))
+        $CheckbookEtlStatus->expects($this->any())
             ->method('date')
             ->with($this->equalTo('Y-m-d'))
             ->will($this->returnValue($this->fakeToday));
@@ -180,11 +245,18 @@ EOM;
                 'data' => $this->fakeYesterday
             ]));
 
+        $CheckbookEtlStatus->expects($this->once())
+            ->method('getProdStatus')
+            ->will($this->returnValue([
+                'success' => true,
+                'data' => $this->fakeToday
+            ]));
+
         $CheckbookEtlStatus->mail($message);
 
         $expected = <<<EOM
-UAT  ETL STATUS:\t\tFAIL (last successful run {$this->fakeYesterday})
-PROD ETL STATUS:\tUNKNOWN
+UAT  ETL STATUS:\tFAIL (last successful run {$this->fakeYesterday})
+PROD ETL STATUS:\tSUCCESS (ran today {$this->fakeToday})
 EOM;
 
         $this->assertEquals($expected, $message['body'][0]);

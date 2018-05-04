@@ -60,9 +60,8 @@ class CheckbookEtlStatus
     global $conf;
 
     $to = $conf['etl_status_recipients'];
-    $response = drupal_mail('checkbook_etl_status', "send-status", $to,
+    drupal_mail('checkbook_etl_status', "send-status", $to,
       null, [], 'checkbook@reisys.com', TRUE);
-    //error_log($response);
     return true;
   }
 
@@ -75,26 +74,44 @@ class CheckbookEtlStatus
     return $local_api->etl_status();
   }
 
+  public function getProdStatus()
+  {
+    try {
+      $prod_json_status = file_get_contents('https://www.checkbooknyc.com/json_api/etl_status');
+      $prod_status = json_decode($prod_json_status, true);
+      return $prod_status;
+    } catch (Exception $e) {
+      error_log($e->getMessage());
+    }
+    return false;
+  }
+
+  public function formatStatus($data)
+  {
+    $result = 'FAIL (unknown)';
+    $today_date = $this->date('Y-m-d');
+    if (!empty($data['success']) && true == $data['success']) {
+      if ($today_date == $data['data']) {
+        $result = 'SUCCESS (ran today ' . $today_date . ')';
+      } else {
+        $result = 'FAIL (last successful run ' . $data['data'] . ')';
+      }
+    }
+    return $result;
+  }
+
   /**
    * @param $message
    * @return bool
    */
   public function mail(&$message)
   {
-
-    $uat_result = '<span style="color:red">FAIL</span>';
-    $today_date = $this->date('Y-m-d');
-    $uat_status = $this->getUatStatus();
-    if ((true == $uat_status['success']) && ($today_date == $uat_status['data'])) {
-      $uat_result = 'SUCCESS (ran today ' . $today_date . ')';
-    } elseif (isset($uat_status['data'])) {
-      $uat_result = 'FAIL (last successful run ' . $uat_status['data'] . ')';
-    }
-    $prod_status = 'UNKNOWN';
+    $uat_result = $this->formatStatus($this->getUatStatus());
+    $prod_status = $this->formatStatus($this->getProdStatus());
 
     $message['subject'] = 'ETL Status Report';
     $message['body'][] = <<<EOM
-UAT  ETL STATUS:\t\t{$uat_result}
+UAT  ETL STATUS:\t{$uat_result}
 PROD ETL STATUS:\t{$prod_status}
 EOM;
     return true;

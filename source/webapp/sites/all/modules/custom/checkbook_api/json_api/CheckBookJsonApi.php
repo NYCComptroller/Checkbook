@@ -1,6 +1,7 @@
 <?php
 
 namespace checkbook_json_api;
+use PHPUnit\Runner\Exception;
 
 /**
  * Class CheckBookJsonApi
@@ -405,24 +406,27 @@ class CheckBookJsonApi
   public function etl_status()
   {
     drupal_page_is_cacheable(FALSE);
-    if ($this->success) {
-      $query = "SELECT DISTINCT 
-                  MAX(refresh_end_date :: DATE) AS last_successful_run
-                FROM etl.refresh_shards_status
-                WHERE latest_flag = 1
-                GROUP BY refresh_end_date :: DATE";
 
-      try {
-        $response = _checkbook_project_execute_sql($query, 'etl');
-      } catch (Exception $e) {
-        $this->success = false;
-        $this->message = $e->getMessage();
-      }
+    global $base_url, $conf;
 
-      if (!empty($response) && $response[0]['last_successful_run']) {
-        $this->data = $response[0]['last_successful_run'];
-      }
-//      $this->message = 'Total revenue for year ' . $year . ' is ' . $this->data;
+    if ('uat-checkbook-nyc.reisys.com' == parse_url($base_url, PHP_URL_HOST)) {
+      return $this->getUatEtlStatus();
+    } elseif (!empty($conf['etl-status-path'])) {
+      return $this->getProdEtlStatus();
+    }
+    throw new Exception('available only at UAT and PROD');
+  }
+
+  private function getProdEtlStatus()
+  {
+    global $conf;
+
+    try {
+      $data = file_get_contents($conf['etl-status-path']);
+      list(,$date) = explode(',', $data);
+      $this->data = trim($date);
+    } catch (Exception $e) {
+      $this->message = $e->getMessage();
     }
 
     return [
@@ -432,4 +436,32 @@ class CheckBookJsonApi
       'info' => 'Last successful ETL run date'
     ];
   }
+
+  private function getUatEtlStatus()
+  {
+    $query = "SELECT DISTINCT 
+                  MAX(refresh_end_date :: DATE) AS last_successful_run
+                FROM etl.refresh_shards_status
+                WHERE latest_flag = 1
+                GROUP BY refresh_end_date :: DATE";
+
+    try {
+      $response = _checkbook_project_execute_sql($query, 'etl');
+    } catch (Exception $e) {
+      $this->success = false;
+      $this->message = $e->getMessage();
+    }
+
+    if (!empty($response) && $response[0]['last_successful_run']) {
+      $this->data = $response[0]['last_successful_run'];
+    }
+
+    return [
+      'success' => $this->success,
+      'data' => $this->data,
+      'message' => $this->message,
+      'info' => 'Last successful ETL run date'
+    ];
+  }
+
 }
