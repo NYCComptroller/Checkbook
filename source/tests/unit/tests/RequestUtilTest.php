@@ -8,17 +8,6 @@ include_once __DIR__ . '/../../../webapp/sites/all/modules/custom/checkbook_proj
 
 use PHPUnit\Framework\TestCase;
 
-$mock_current_path = null;
-
-/**
- * @return null
- */
-function current_path()
-{
-    global $mock_current_path;
-    return $mock_current_path;
-}
-
 /**
  * Class NodeSummaryUtil
  * MOCKED

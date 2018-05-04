@@ -102,7 +102,7 @@ function _checkbook_alerts_transactions(){
   $message=drupal_mail($module,$key,$_GET['alert_email'],language_default(),array(),"",false);
 
   $message['subject']="Checkbook NYC Alert Activation";
-  $message['body'][] = $msg;
+  $message['body'] = [$msg];
 
   $system=drupal_mail_system($module,$key);
   $message=$system->format($message);
@@ -171,7 +171,7 @@ function _checkbook_alerts_process_email($alerts){
     $message = drupal_mail($module,$key,$alerts[0]->recipient,language_default(),array(),"",false);
 
     $message['subject'] = "Checkbook NYC Alert";
-    $message['body'][] = $msg;
+    $message['body'] = [$msg];
 
     $system = drupal_mail_system($module,$key);
     $message = $system->format($message);

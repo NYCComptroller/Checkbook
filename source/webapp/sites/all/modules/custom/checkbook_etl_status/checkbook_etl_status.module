@@ -1,0 +1,24 @@
+<?php
+
+include_once 'includes/CheckbookEtlStatus.class.php';
+
+/**
+ * Implements hook_cron()
+ */
+function checkbook_etl_status_cron()
+{
+  $CES = new CheckbookEtlStatus();
+  return $CES->run_cron();
+}
+
+/**
+ * @param $key
+ * @param $message
+ * @param $params
+ */
+function checkbook_etl_status_mail($key, &$message, $params)
+{
+  $CES = new CheckbookEtlStatus();
+  $CES->mail($message);
+}
+
