@@ -1,16 +1,23 @@
 {
     "widgetType": "data_tables",
     "widgetSubType": "dataTableList",
-    "cleanURLParameters":["revsrcnm_exact","revclsnm_exact","clsname","agency","agencyh","year","fiscal_year","revcat","fundsrc","fundsrcnm","fundsrccode","fundcls","fy","by","revcls","revclsnm","revsrc","revsrcnm","amt","amtr"],
+    "cleanURLParameters":["revsrcnm_exact","revclsnm_exact","clsname","agency","agencyh","year","fiscal_year","revcat","fundsrc",
+                          "fundsrcnm","fundsrccode","fundcls","fy","by","revcls","revclsnm","revsrc","revsrcnm","amt","amtr",
+                          "adoptedamt"],
     "urlParamMap":{
-    "revsrcnm_exact":"revenue_source_name",
-    "revclsnm_exact":"revenue_class_name",
-    "clsname":"closing_classification_name","agency":"agency_id","agencyh":"agency_history_id","year":"budget_fiscal_year_id","fiscal_year":"fiscal_year_id","revcat":"revenue_category_id","fundsrc":"funding_class_id","fundsrcnm":"funding_class_name","fundsrccode":"funding_class_code","fundcls":"fund_class_id","fy":"fiscal_year_id","by":"budget_fiscal_year_id","revcls":"revenue_class_id","revclsnm":"revenue_class_name","revsrc":"revenue_source_id","revsrcnm":"revenue_source_name","amt":"posting_amount","amtr":"posting_amount"},
-    "paramTypeConfig":{"revsrcnm_exact":"eqignorecase","revclsnm_exact":"eqignorecase","amt":"range","amtr":"rangeid2","revclsnm":"like","revsrcnm":"like","fundsrcnm":"like"},
+        "revsrcnm_exact":"revenue_source_name",
+        "revclsnm_exact":"revenue_class_name",
+        "clsname":"closing_classification_name","agency":"agency_id","agencyh":"agency_history_id","year":"budget_fiscal_year_id",
+        "fiscal_year":"fiscal_year_id","revcat":"revenue_category_id","fundsrc":"funding_class_id","fundsrcnm":"funding_class_name",
+        "fundsrccode":"funding_class_code","fundcls":"fund_class_id","fy":"fiscal_year_id","by":"budget_fiscal_year_id",
+        "revcls":"revenue_class_id","revclsnm":"revenue_class_name","revsrc":"revenue_source_id","revsrcnm":"revenue_source_name",
+        "amt":"posting_amount","amtr":"posting_amount", "adoptedamt": "posting_amount"},
+    "paramTypeConfig":{"revsrcnm_exact":"eqignorecase","revclsnm_exact":"eqignorecase","amt":"range","amtr":"rangeid2",
+                        "revclsnm":"like","revsrcnm":"like","fundsrcnm":"like", "adoptedamt":"range"},
     "header":"
-    $header = NULL;
-    $header .= widget_data_tables_export_link($node);
-    return $header;
+        $header = NULL;
+        $header .= widget_data_tables_export_link($node);
+        return $header;
     ",
     "useList":true,
     "getTotalDataCount":true,
