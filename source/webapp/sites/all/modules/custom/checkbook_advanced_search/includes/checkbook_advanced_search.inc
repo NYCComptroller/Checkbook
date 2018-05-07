@@ -1150,8 +1150,12 @@ function _checkbook_advanced_search_revenue_submit($form, &$form_state, $button 
     $revenue_revenue_source = trim($form['revenue']['revenue_revenue_source']['#value']);
     $revenue_revenue_source_exact = trim($form['revenue']['revenue_revenue_source_exact']['#value']);
     $revenue_funding_source = trim($form['revenue']['revenue_funding_source']['#value']);
-    $revenue_revenue_amount_from = trim($form['revenue']['revenue_amount_from']['#value']);
-    $revenue_revenue_amount_to = trim($form['revenue']['revenue_amount_to']['#value']);
+    $revenue_adopted_from = trim($form['revenue']['revenue_adopted_from']['#value']);
+    $revenue_adopted_to = trim($form['revenue']['revenue_adopted_to']['#value']);
+    $revenue_recognized_from = trim($form['revenue']['revenue_recognized_from']['#value']);
+    $revenue_recognized_to = trim($form['revenue']['revenue_recognized_to']['#value']);
+    $revenue_modified_from = trim($form['revenue']['revenue_modified_from']['#value']);
+    $revenue_modified_to = trim($form['revenue']['revenue_modified_to']['#value']);
 
     $redirect_url = "revenue/transactions";
 
@@ -1191,8 +1195,15 @@ function _checkbook_advanced_search_revenue_submit($form, &$form_state, $button 
     }
 
     //URL for ranges
-    $revenue_revenue_amount_range_array = array('from' => $revenue_revenue_amount_from, 'to' => $revenue_revenue_amount_to, 'type' => 'amount');
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($revenue_revenue_amount_range_array, 'amt', TRUE);
+    $revenue_adopted_range_array = array('from' => $revenue_adopted_from, 'to' => $revenue_adopted_to, 'type' => 'amount');
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($revenue_adopted_range_array, 'adopted_amt', TRUE);
+    
+    $revenue_recognized_range_array = array('from' => $revenue_recognized_from, 'to' => $revenue_recognized_to, 'type' => 'amount');
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($revenue_recognized_range_array, 'amt', TRUE);
+    
+    $revenue_modified_range_array = array('from' => $revenue_modified_from, 'to' => $revenue_modified_to, 'type' => 'amount');
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($revenue_modified_range_array, 'modified_amt', TRUE);
+
 
     return $redirect_url;
 }
