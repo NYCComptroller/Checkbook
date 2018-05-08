@@ -1789,6 +1789,11 @@ function _checkbook_project_delete_file_if_stale($uri)
 function _checkbook_project_execute_sql($sql, $db_name = "main", $data_source = 'checkbook')
 {
     global $databases;
+
+    if (!isset($databases[$data_source][$db_name])) {
+      throw new Exception("No DB configuration found for: \$databases['$data_source']['$db_name']");
+    }
+
     LogHelper::log_notice("Querying database \$databases['$data_source']['$db_name'] (".$databases[$data_source][$db_name]['host'].')');
     LogHelper::log_notice($sql);
 
@@ -1796,17 +1801,17 @@ function _checkbook_project_execute_sql($sql, $db_name = "main", $data_source = 
     $results = null;
 
     try {
-    $results = $connection->query($sql);
+      $results = $connection->query($sql);
     } catch (Exception $e) {
-    LogHelper::log_error("Erorr executing DB query for generating: " . $sql . ". Exception is: " . $e);
+      LogHelper::log_error("Erorr executing DB query for generating: " . $sql . ". Exception is: " . $e);
     }
 
     $output = array();
-    if ($results)
-    foreach ($results as $row) {
-    $output[] = get_object_vars($row);
+    if ($results) {
+      foreach ($results as $row) {
+        $output[] = get_object_vars($row);
+      }
     }
-
 
     return $output;
 }

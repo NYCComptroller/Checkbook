@@ -72,11 +72,15 @@
     });
     Drupal.behaviors.exportSmartSearchTransactions = {
             attach:function (context, settings) {
+//                $('span.exportSmartSearch').unbind("click");
                 $('span.exportSmartSearch').live("click", function () {
 
                     var dialog = $("#dialog");
                     if ($("#dialog").length == 0) {
                         dialog = $('<div id="dialog" style="display:none"></div>');
+//                        console.log('new dialog.init');
+                    } else {
+//                      console.log('$("#dialog").length = '+$("#dialog").length);
                     }
                     var domains = '';
                     $.each($('input[name=fdomainName]:checked'),function(){
