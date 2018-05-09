@@ -328,6 +328,9 @@ function _checkbook_smart_search_solr_results($query){
     $url = $solr_server_url . $query;
     $contents = file_get_contents($url);
     $contents = utf8_encode($contents);
+
+//    LogHelper::log_notice("Solr response: ".var_export($contents, true));
+
     if($contents){
         eval("\$results = " . $contents . ";");
     }
@@ -878,9 +881,9 @@ function _checkbook_smart_search_export_download(){
 /** Exports the smart search export data */
 function _checkbook_smart_search_export_data(){
   $search_terms = explode('*|*', $_REQUEST['search_term']);
-  $search_terms[0] = urldecode($search_terms[0]); //"Education"  
+  $search_terms[0] = urldecode($search_terms[0]); //"Education"
   $search_terms[0] = ($search_terms[0] == "") ? "*:*" : ucwords(strtolower(_checkbook_smart_search_escapeSolrValue($search_terms[0])));
-  
+
   $index = 0;
   $isoge = 0;
   foreach($search_terms as $search_term){
@@ -915,7 +918,7 @@ function _checkbook_smart_search_export_data(){
             $statusflag = false;
         }
     }
-  
+
   while($remaining > 0 ){
     $results = _checkbook_smart_search_get_results_csv($search_terms, $page_num , $page_size,$fl, true);
     $page_num += 1 ;
@@ -951,7 +954,7 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge){
           "vendor_name" => "Payee Name",
           "expenditure_object_name" => "Expense Category",
           "contract_number" => "Contract ID",
-          "spending_commodity_line" => "Commodity Line",          		
+          "spending_commodity_line" => "Commodity Line",
           "check_amount" => "Check Amount",
           "check_eft_issued_date" => "Issue Date",
           "spending_entity_contract_number" => "Entity Contract#",
@@ -984,12 +987,12 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge){
               "vendor_name"=>"Prime Vendor",
               "oge_contracting_agency_name"=>"Agency",
               "contract_number"=>"Contract ID",
-          	  "contract_commodity_line" => "Commodity Line",              
+          	  "contract_commodity_line" => "Commodity Line",
               "contract_purpose"=>"Purpose",
               "parent_contract_number"=>"Parent Contract ID",
               "award_method_name"=>"Award Method",
               "contract_type"=>"Contract type",
-          	  "current_amount"=>"Current Amount",          		
+          	  "current_amount"=>"Current Amount",
           	  "original_amount"=>"Original Amount",
               "start_date_orig"=>"Start date",
               "end_date_orig"=>"End Date",
@@ -997,7 +1000,7 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge){
               "apt_pin"=>"APT PIN",
               "expense_category_name"=>"Expense Category",
               "contract_entity_contract_number" => "Entity Contract#",
-              "contract_budget_name" => "Budget Name",              
+              "contract_budget_name" => "Budget Name",
           	  "" => ""
           );
         }
