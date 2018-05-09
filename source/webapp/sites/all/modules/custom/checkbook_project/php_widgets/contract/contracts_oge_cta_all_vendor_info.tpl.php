@@ -37,9 +37,11 @@ foreach($node->vendor_contracts_count as $vendor_cont){
 $count = 0;
 if(count($node->vendors_list) > 0){
     foreach($node->vendors_list as $vendor){
-
-        $spending_link = "/spending/transactions/vendor/" . $vendor['vendor_id'] . "/datasource/checkbook_oge/newwindow";
-
+        
+        if(isset($vendor['vendor_id'])){
+            $spending_link = "/spending/transactions/vendor/" . $vendor['vendor_id'] . "/fvendor/" . $vendor['vendor_id'] . "/datasource/checkbook_oge/newwindow";
+        }
+         
         if(preg_match("/newwindow/",$_GET['q'])) {
             $vendor_name = $vendor['vendor_name'];
         }
