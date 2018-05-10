@@ -63,7 +63,7 @@ if(count($node->vendors_list) > 0){
             array('value' => $vendor_name, 'type' => 'text'),
             array('value' => $vendor_cont_count[$vendor['vendor_id']]['count'], 'type' => 'number'),
             array('value' => $spent_to_date_value, 'type' => 'number_link', 'link_value' => $spent_to_date_link),
-            array('value' => $vendor['address'], 'type' => 'text')
+            array('value' => (strlen($vendor['address']) > 0) ? $vendor['address']: 'N/A', 'type' => 'text')
         );
         $count++;
     }
