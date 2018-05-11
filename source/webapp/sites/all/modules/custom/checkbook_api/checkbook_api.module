@@ -166,7 +166,7 @@ function checkbook_api_load_ref_data($code_list_name) {
     echo $data;
   }
   else {
-    echo "Data is not generated. Please contact support team.";
+    echo "Data is not generated.. Please contact support team.";
   }
 }
 
