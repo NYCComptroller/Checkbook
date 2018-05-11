@@ -356,7 +356,7 @@ function _checkbook_export_download_file($fileName){
         drupal_add_http_header("Content-Length",strlen($data));
         echo $data;
     }else{
-        echo "Data is not generated. Please contact support team.";
+        echo "Data is not generated! Please contact support team.";
     }
 }
 

@@ -5576,7 +5576,7 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state)
 
     $user_criteria['Formatted'] = $formatted_search_criteria;
     $criteria = checkbook_datafeeds_process_spending_values($form, $form_state, $data_source);
-    $criteria['required_columns'] = checkbook_datafeeds_spending_add_required_columns($response_type, $data_source);
+//    $criteria['required_columns'] = checkbook_datafeeds_spending_add_required_columns($response_type, $data_source);
     $form_state['step_information']['confirmation']['stored_values']['criteria'] = $criteria;
     $form_state['step_information']['confirmation']['stored_values']['user_criteria'] = $user_criteria;
     $modified_form = checkbook_datafeeds_end_of_confirmation_form($form, $form_state, $criteria, $response_type, 'spending');
@@ -6631,6 +6631,7 @@ function checkbook_datafeeds_confirmation_download_submit($form, &$form_state) {
     $record_count = $checkBookApi->getRecordCount();
     //records <= 30,000
     if ($record_count <= 30000) {
+        LogHelper::log_notice("DataFeeds :: <=30,000");
         if (isset($checkBookApi)) {
             if ($checkBookApi->validateRequest()) {
                 try {
@@ -6660,13 +6661,12 @@ function checkbook_datafeeds_confirmation_download_submit($form, &$form_state) {
             module_invoke_all('exit');
             exit;
         }
-    }
-    //100,000 >= records <= 200,000
-    else {
+    } else {
+        LogHelper::log_notice("DataFeeds :: >30,000");
         if (isset($checkBookApi)) {
             if ($checkBookApi->validateRequest()) {
                 try {
-                    //Generate file from sql command
+                    // Output file
                     $filename = $form_state['step_information']['confirmation']['filename'];
                     if($filename) {
                         $checkBookApi->outputFile($filename);
@@ -6679,6 +6679,8 @@ function checkbook_datafeeds_confirmation_download_submit($form, &$form_state) {
             else {
                 log_error($checkBookApi->getErrorResponse());
             }
+        } else {
+          LogHelper::log_notice("DataFeeds :: >30,000 :: \$checkBookApi not set");
         }
         module_invoke_all('exit');
         exit;
@@ -6908,13 +6910,14 @@ function checkbook_datafeeds_end_of_confirmation_form($form, &$form_state, $crit
         if (isset($checkBookApi)) {
             if ($checkBookApi->validateRequest()) {
                 if ($recordcount <= 30000) {
+                    LogHelper::log_notice("DataFeeds :: <=30,000 :: generatingData()");
                     $form_state['step_information']['confirmation']['response'] = $checkBookApi->getData();
                 } else {    // 30,000 .. 200,000
+                    LogHelper::log_notice("DataFeeds :: >30,000 :: generatingFile()");
                     $filename = $checkBookApi->generateFile();
                     $form_state['step_information']['confirmation']['filename'] = $filename;
                 }
-            }
-            else {  // invalid request
+            } else {  // invalid request
                 $form_state['step_information']['confirmation']['response'] = $checkBookApi->getErrorResponse();
             }
         }
