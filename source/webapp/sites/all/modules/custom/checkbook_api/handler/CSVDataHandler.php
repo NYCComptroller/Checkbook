@@ -1,19 +1,19 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -97,6 +97,8 @@ class CSVDataHandler extends AbstractDataHandler {
     function getJobCommand($query) {
         global $conf, $databases;
 
+        LogHelper::log_notice("DataFeeds :: csv::getJobCommand()");
+
         //map csv headers
         $columnMappings = $this->requestDataSet->displayConfiguration->csv->elementsColumn;
         $columnMappings =  (array)$columnMappings;
@@ -172,6 +174,7 @@ class CSVDataHandler extends AbstractDataHandler {
             $fileDir = _checkbook_project_prepare_data_feeds_file_output_dir();
             $filename = _checkbook_project_generate_uuid(). '.csv';
             $tmpDir =  (isset($conf['check_book']['tmpdir']) && is_dir($conf['check_book']['tmpdir'])) ? rtrim($conf['check_book']['tmpdir'],'/') : '/tmp';
+            LogHelper::log_notice("DataFeeds :: csv::getJobCommand() tmp dir: ".$tmpDir);
             $command = $conf['check_book']['data_feeds']['command'];
             $command .= ' ' . $databases['checkbook']['main']['database'] . ' ';
 
@@ -186,11 +189,17 @@ class CSVDataHandler extends AbstractDataHandler {
             $cmd = $command
                 . " -c \"\\\\COPY (" . $query . ") TO '"
                 . $tempOutputFile
-                . "'  WITH DELIMITER ',' CSV HEADER \" ";
-            shell_exec($cmd);
+                . "'  WITH DELIMITER ',' CSV HEADER \" 2>&1";
+            LogHelper::log_notice("DataFeeds :: csv::getJobCommand() cmd: ".$cmd);
+            $out = shell_exec($cmd);
+            LogHelper::log_notice("DataFeeds :: csv::getJobCommand() cmd out: ".var_export($out, true));
 
-            $move_cmd = "mv $tempOutputFile $outputFile";
-            shell_exec($move_cmd);
+//            sleep(30);
+
+            $move_cmd = "mv $tempOutputFile $outputFile 2>&1";
+            LogHelper::log_notice("DataFeeds :: csv::getJobCommand() mv_cmd: ".$move_cmd);
+            $out = shell_exec($move_cmd);
+            LogHelper::log_notice("DataFeeds :: csv::getJobCommand() mv_cmd out: ".var_export($out, true));
 
         }
         catch (Exception $e){
@@ -231,12 +240,11 @@ class CSVDataHandler extends AbstractDataHandler {
         drupal_add_http_header("Expires", "-1");
 
         if(is_file($file)) {
-            $data = file_get_contents($file);
-            drupal_add_http_header("Content-Length",strlen($data));
-            echo $data;
-        }
-        else {
-            echo "Data is not generated. Please contact support team.";
+          $data = file_get_contents($file);
+          drupal_add_http_header("Content-Length",strlen($data));
+          echo $data;
+        } else {
+            echo "Data is not generated... Please contact support team.";
         }
     }
 }
