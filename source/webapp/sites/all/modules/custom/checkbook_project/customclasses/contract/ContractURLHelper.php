@@ -128,8 +128,8 @@ class ContractURLHelper{
           return 'N/A';
         }
 
-        if(empty($row[agreement_id])){
-            return $row[reference_document_number];
+        if(empty($row['agreement_id'])){
+            return $row['reference_document_number'];
         }
 
         $link = NULL;
@@ -144,7 +144,7 @@ class ContractURLHelper{
                 . '?expandBottomContURL=/panel_html/contract_transactions/contract_details/agid/' . $row['agreement_id'] .  '/doctype/' . $docType . _checkbook_append_url_params()
                 .  ' class=loadParentWindow>'. $row['reference_document_number'] . '</span>';
         }else {
-            $link = "<a class='new_window' href='/contract_details" . _checkbook_append_url_params() . _checkbook_project_get_contract_url($row[reference_document_number], $row[agreement_id])  ."/newwindow'>"  . $row[reference_document_number] . "</a>";
+            $link = "<a class='new_window' href='/contract_details" . _checkbook_append_url_params() . _checkbook_project_get_contract_url($row['reference_document_number'], $row['agreement_id'])  ."/newwindow'>"  . $row['reference_document_number'] . "</a>";
         }
 
         return $link;
