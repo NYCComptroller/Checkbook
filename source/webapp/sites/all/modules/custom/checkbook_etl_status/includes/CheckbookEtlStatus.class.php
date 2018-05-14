@@ -13,7 +13,7 @@ class CheckbookEtlStatus
   /**
    *
    */
-  const MONDAY_WARNING = "ETL is configured to run on Mondays. FAILs must not surprise you.";
+  const MONDAY_NOTICE = "ETL is configured to run on Mondays. FAILs must not surprise you.";
 
   /**
    * @param $format
@@ -132,8 +132,8 @@ class CheckbookEtlStatus
   {
     $comment = '';
 
-    if ('Mon' == date('D', $this->timeNow())) {
-      $comment .= "\n" . self::MONDAY_WARNING;
+    if ('Tue' == date('D', $this->timeNow())) {
+      $comment .= "\n" . self::MONDAY_NOTICE;
     }
 
     return $comment;
