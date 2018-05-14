@@ -11,6 +11,11 @@ class CheckbookEtlStatus
   const LAST_RUN_SUCCESS_PERIOD = 60 * 60 * 12;
 
   /**
+   *
+   */
+  const MONDAY_WARNING = "ETL is configured to run on Mondays. FAILs must not surprise you.";
+
+  /**
    * @param $format
    * @return false|string
    */
@@ -121,6 +126,20 @@ class CheckbookEtlStatus
   }
 
   /**
+   * @return string
+   */
+  public function comment()
+  {
+    $comment = '';
+
+    if ('Mon' == date('D', $this->timeNow())) {
+      $comment .= "\n" . self::MONDAY_WARNING;
+    }
+
+    return $comment;
+  }
+
+  /**
    * @param $message
    * @return bool
    */
@@ -128,11 +147,13 @@ class CheckbookEtlStatus
   {
     $uat_result = $this->formatStatus($this->getUatStatus());
     $prod_status = $this->formatStatus($this->getProdStatus());
+    $comment = $this->comment();
 
     $message['subject'] = 'ETL Status Report';
     $message['body'][] = <<<EOM
 UAT  ETL STATUS:\t{$uat_result}
 PROD ETL STATUS:\t{$prod_status}
+{$comment}
 EOM;
     return true;
   }
