@@ -112,5 +112,5 @@ if($node->data[0]["vendor_id"]){
     <li><span class="gi-list-item">Total Number of NYC Contracts:</span> <?php echo $total_cont;?></li>
     <li><span class="gi-list-item">M/WBE Vendor:</span> <?php echo $node->data[0]['mwbe_vendor'] ;?></li>
 
-    <li><span class="gi-list-item">Ethnicity:</span> <?php echo $ethnicity ;?></li>
+    <li><span class="gi-list-item">M/WBE Category:</span> <?php echo $ethnicity ;?></li>
 </ul>
