@@ -38,10 +38,21 @@ public class SubVendorsPage {
     	}
     	
     	public static void GoTo(String domain, SubVendorCategoryOption category) {
-    		if(domain.equals("Spending"))
-    			TopNavigation.Spending.Select();
-    		SubVendorCategory.select(category);		
+    		switch(domain) {
+    		case "Spending":
+    				TopNavigation.Spending.Select();
+        		SubVendorCategory.select(category);
+        		break;
+    		case "Contracts":
+    			TopNavigation.Contracts.Select();
+    			SubVendorCategory.select(category);	
+    			break;
+    			
+    		}
+    	
+    		
     	}
+    
 
     	public static String GetSubVendorSpendingAmount() {
     		WebElement mwbeAmt = Driver.Instance.findElement(By.cssSelector(".top-navigation-right .mwbe.subvendors .top-navigation-amount"));
