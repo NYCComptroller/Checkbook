@@ -18,7 +18,8 @@ import helpers.Helper;
 public class ContractsPage {
 	public enum WidgetOption{
 		Top5MasterAgreements, Top5MasterAgreementModifications, Top5Contracts, Top5ContractAmountModifications, Top5ContractsAmountModifications, Top5PrimeVendors, 
-		Top5AwardMethods, Top5Agencies, ContractsByIndustries, ContractsBySize, TopContractAmountModifications, TopContractsAmountModifications, TopPrimeVendors, TopAwardMethods, TopAgencies
+		Top5AwardMethods, Top5Agencies,ContractsByIndustries, ContractsBySize, TopContractAmountModifications, TopContractsAmountModifications, TopPrimeVendors, TopAwardMethods, TopAgencies, Top5SubContracts,
+		Top5SubContractAmountModifications,Top5SubVendors
 	}
 	public static void GoTo() {
         TopNavigation.Contracts.Select();
@@ -33,6 +34,11 @@ public class ContractsPage {
            WebElement contractAmt = Driver.Instance.findElement(By.cssSelector(".nyc_totals_links .active > .positioning > a .dollars"));
            return contractAmt.getText().substring((contractAmt.getText().indexOf("$")));
        }
+	 public static int GetActiveSubVendorContractAmount() {
+		 WebElement contractAmt = Driver.Instance.findElement(By.cssSelector(".nyc_subvendors_totals_links > table > tbody > tr > td.active > div.positioning > a > span.count"));
+         return Helper.stringToInt(contractAmt.getText());
+		 
+	 }
 	 
 	 public static int GetBottomNavContractCount() {
          WebElement contractCount = Driver.Instance.findElement(By.cssSelector(".nyc_totals_links .active > .positioning > a .count"));
@@ -49,29 +55,42 @@ public class ContractsPage {
 			//return amount;
 			//return Helper.billionStringToFloat(count);
 		}
-	 
-	 
+		 public static ArrayList<String> VisualizationTitles() {
+				ArrayList<String> titles = new ArrayList<String>();
+				List<WebElement> titleContainers = Driver.Instance.findElements(By.cssSelector("#nyc-spending > .top-chart > .inside > .panel-pane"));
+
+				for(int i=0; i < titleContainers.size(); i++){
+					selectVisualizationSlider(i);
+					WebElement titleClass = titleContainers.get(i).findElement(By.cssSelector(".pane-content .chart-title"));
+					if(titleClass.isDisplayed()){
+						String title = titleClass.getText();
+						titles.add(title);
+					}
+				}	
+				return titles;
+			}
+			
 	
-	   
-	    public static ArrayList<String> VisualizationTitles() {
-			ArrayList<String> titles = new ArrayList<String>();
-			List<WebElement> titleContainers = Driver.Instance.findElements(By.cssSelector("#nyc-contracts > .top-chart > .inside > .panel-pane"));
-			for(int i=0; i < titleContainers.size(); i++){
-				selectVisualizationSlider(i);
-				WebElement titleClass = titleContainers.get(i).findElement(By.cssSelector(".pane-content .chart-title"));
-				if(titleClass.isDisplayed()){
-					String title = titleClass.getText();
-					titles.add(title);
-				}
-			}	
-			return titles;
-		}
-		
-		public static void selectVisualizationSlider(int sliderPosition){
-			List<WebElement> sliderContainer = Driver.Instance.findElements(By.cssSelector("#nyc-contracts > .top-chart > .slider-pager > a"));
-			sliderContainer.get(sliderPosition).click();
-			Driver.Instance.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
-		}
+		  public static ArrayList<String> SubVendorVisualizationTitles() {
+				ArrayList<String> titles = new ArrayList<String>();
+				List<WebElement> titleContainers = Driver.Instance.findElements(By.cssSelector("#mini-panel-subven_contract_vis > div > div > div.panel-pane"));
+
+				for(int i=0; i < titleContainers.size(); i++){
+					selectVisualizationSlider(i);
+					WebElement titleClass = titleContainers.get(i).findElement(By.cssSelector(".pane-content >.chart-title"));
+					if(titleClass.isDisplayed()){
+						String title = titleClass.getText();
+						titles.add(title);
+					}
+				}	
+				return titles;
+			}
+			
+			public static void selectVisualizationSlider(int sliderPosition){
+				List<WebElement> sliderContainer = Driver.Instance.findElements(By.cssSelector("#nyc-contracts > .top-chart > .slider-pager > a"));
+				sliderContainer.get(sliderPosition).click();
+				Driver.Instance.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+			}
 		
 		public static ArrayList<String> WidgetTitles() {
 			ArrayList<String> titles = new ArrayList<String>();
@@ -122,6 +141,12 @@ public class ContractsPage {
 				return HomePage.GetWidgetTotalNumber("Contracts by Industries");
 			case ContractsBySize:
 				return HomePage.GetWidgetTotalNumber("Contracts by Size");	
+			case Top5SubContracts:
+				return HomePage.GetWidgetTotalNumber("Top 5 Sub Contracts");	
+			case Top5SubContractAmountModifications:
+				return HomePage.GetWidgetTotalNumber("Top 5 Sub Contract Amount Modifications");	
+			case Top5SubVendors:
+			return HomePage.GetWidgetTotalNumber("Top 5 Sub Vendors");	
 			default:
 				return null;
 		}

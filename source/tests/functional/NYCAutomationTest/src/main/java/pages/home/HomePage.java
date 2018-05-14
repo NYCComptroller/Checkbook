@@ -79,6 +79,7 @@ public class HomePage {
     public static ArrayList<String> VisualizationTitles() {
 		ArrayList<String> titles = new ArrayList<String>();
 		List<WebElement> titleContainers = Driver.Instance.findElements(By.cssSelector("#nyc-spending > .top-chart > .inside > .panel-pane"));
+
 		for(int i=0; i < titleContainers.size(); i++){
 			selectVisualizationSlider(i);
 			WebElement titleClass = titleContainers.get(i).findElement(By.cssSelector(".pane-content .chart-title"));
