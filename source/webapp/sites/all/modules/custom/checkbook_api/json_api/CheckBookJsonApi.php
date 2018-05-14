@@ -90,6 +90,7 @@ class CheckBookJsonApi
   /**
    * @param string $status
    * @return array
+   * @throws \Exception
    */
   private function get_subcontracts_by_status($status = '')
   {
@@ -417,6 +418,9 @@ class CheckBookJsonApi
     throw new Exception('available only at UAT and PROD');
   }
 
+  /**
+   * @return array
+   */
   private function getProdEtlStatus()
   {
     global $conf;
@@ -437,13 +441,16 @@ class CheckBookJsonApi
     ];
   }
 
+  /**
+   * @return array
+   * @throws \Exception
+   */
   private function getUatEtlStatus()
   {
     $query = "SELECT DISTINCT 
-                  MAX(refresh_end_date :: DATE) AS last_successful_run
+                  MAX(refresh_end_date :: TIMESTAMP) AS last_successful_run
                 FROM etl.refresh_shards_status
-                WHERE latest_flag = 1
-                GROUP BY refresh_end_date :: DATE";
+                WHERE latest_flag = 1";
 
     try {
       $response = _checkbook_project_execute_sql($query, 'etl');

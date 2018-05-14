@@ -6,12 +6,25 @@
 class CheckbookEtlStatus
 {
   /**
+   * Last ETL must successfully finish within last 12 hours
+   */
+  const LAST_RUN_SUCCESS_PERIOD = 60 * 60 * 12;
+
+  /**
    * @param $format
    * @return false|string
    */
   public function date($format)
   {
     return date($format);
+  }
+
+  /**
+   * @return int
+   */
+  public function timeNow()
+  {
+    return time();
   }
 
   /**
@@ -74,6 +87,9 @@ class CheckbookEtlStatus
     return $local_api->etl_status();
   }
 
+  /**
+   * @return bool|mixed
+   */
   public function getProdStatus()
   {
     try {
@@ -86,13 +102,17 @@ class CheckbookEtlStatus
     return false;
   }
 
+  /**
+   * @param $data
+   * @return string
+   */
   public function formatStatus($data)
   {
     $result = 'FAIL (unknown)';
-    $today_date = $this->date('Y-m-d');
+    $now = $this->timeNow();
     if (!empty($data['success']) && true == $data['success']) {
-      if ($today_date == $data['data']) {
-        $result = 'SUCCESS (ran today ' . $today_date . ')';
+      if (self::LAST_RUN_SUCCESS_PERIOD > ($now - strtotime($data['data']))) {
+        $result = 'SUCCESS (ran within last 12 hours :: ' . $data['data'] . ')';
       } else {
         $result = 'FAIL (last successful run ' . $data['data'] . ')';
       }
