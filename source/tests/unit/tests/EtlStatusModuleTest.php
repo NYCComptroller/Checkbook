@@ -26,6 +26,11 @@ class EtlStatusModuleTest extends TestCase
     private $fakeYesterday = '2222-11-21';
 
     /**
+     * @var int
+     */
+    private $fakeMonday = 7980710460;
+
+    /**
      *
      */
     public function test_checkbook_etl_status_cron_empty_recepients_list()
@@ -226,6 +231,7 @@ class EtlStatusModuleTest extends TestCase
         $expected = <<<EOM
 UAT  ETL STATUS:\tSUCCESS (ran within last 12 hours :: {$this->fakeToday})
 PROD ETL STATUS:\tFAIL (last successful run {$this->fakeYesterday})
+
 EOM;
 
         $this->assertEquals('ETL Status Report', $message['subject']);
@@ -267,6 +273,7 @@ EOM;
         $expected = <<<EOM
 UAT  ETL STATUS:\tFAIL (last successful run {$this->fakeYesterday})
 PROD ETL STATUS:\tSUCCESS (ran within last 12 hours :: {$this->fakeToday})
+
 EOM;
 
         $this->assertEquals($expected, $message['body'][0]);
@@ -288,5 +295,27 @@ EOM;
     {
         $CES = new CheckbookEtlStatus();
         $this->assertEquals(date("Y-m-d"), $CES->date("Y-m-d"));
+    }
+
+    /**
+     *
+     */
+    public function test_monday()
+    {
+        $CheckbookEtlStatus =
+            $this->getMockBuilder('CheckbookEtlStatus')
+                ->setMethods(['timeNow', 'getUatStatus', 'getProdStatus'])
+                ->getMock();
+
+        $message = null;
+
+        $CheckbookEtlStatus->expects($this->any())
+            ->method('timeNow')
+            ->will($this->returnValue($this->fakeMonday));
+
+        $expectedWarning = "\n".CheckbookEtlStatus::MONDAY_WARNING;
+
+        $this->assertEquals($expectedWarning,
+            $CheckbookEtlStatus->comment());
     }
 }
