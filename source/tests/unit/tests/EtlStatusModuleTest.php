@@ -27,6 +27,7 @@ class EtlStatusModuleTest extends TestCase
 
     /**
      * @var int
+     * 2222-11-25 08:01:00  == Monday !
      */
     private $fakeMonday = 7980710460;
 
