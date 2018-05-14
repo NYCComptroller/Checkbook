@@ -27,9 +27,9 @@ class EtlStatusModuleTest extends TestCase
 
     /**
      * @var int
-     * 2222-11-25 08:01:00  == Monday !
+     * 2222-11-26 08:01:00  == Tuesday Morning !
      */
-    private $fakeMonday = 7980710460;
+    private $fakeTuesday = 7980796860;
 
     /**
      *
@@ -312,9 +312,9 @@ EOM;
 
         $CheckbookEtlStatus->expects($this->any())
             ->method('timeNow')
-            ->will($this->returnValue($this->fakeMonday));
+            ->will($this->returnValue($this->fakeTuesday));
 
-        $expectedWarning = "\n".CheckbookEtlStatus::MONDAY_WARNING;
+        $expectedWarning = "\n".CheckbookEtlStatus::MONDAY_NOTICE;
 
         $this->assertEquals($expectedWarning,
             $CheckbookEtlStatus->comment());
