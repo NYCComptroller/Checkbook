@@ -34,7 +34,7 @@ public class TotalActiveSubVendorContractsTest extends NYCBaseTest {
 			   HomePage.SelectYear(NYCBaseTest.prop.getProperty("CurrentYear"));
 	    }
 
-	
+
 
 	/* ***************** Test Widget Counts ****************** */
 	@Test
@@ -55,7 +55,7 @@ public class TotalActiveSubVendorContractsTest extends NYCBaseTest {
 		Integer numOfSubVendorsApp = ContractsPage.GetTop5WidgetTotalCount(WidgetOption.Top5SubVendors);
 		assertEquals("Number of Contracts in the Active Expense Contracts did not match",numOfSubVendorsApp, numOfSubVendorsDB);
 	}
-	
+
 	@Test
 	public void VerifyNumOfPrimeVendorsContracts() throws SQLException {
 		Integer NumOfPrimeVendorsContractsDB = NYCDatabaseUtil. getTotalPrimeVendorCount(year, 'B');
@@ -87,12 +87,12 @@ public class TotalActiveSubVendorContractsTest extends NYCBaseTest {
 		assertEquals("Number of Contracts in the  Active Expense Contracts by Size widget did not match",numOfContractsBySize,activeExpenseContractsNumOfContractsBySizeDB);
 	}
 	/////// amounts and titles
-	
+
 	@Test
     public void VerifyTopNavContractAmount() throws SQLException {
         String TotalContractAmtDB = NYCDatabaseUtil.getContractsTopAmount(year, 'B');
         String TotalContractAmtApp = ContractsPage.GetContractsAmount();
-        System.out.println(TotalContractAmtApp); 
+        System.out.println(TotalContractAmtApp);
         assertEquals("Active Expense Contracts Top navigation amount did not match", TotalContractAmtApp, TotalContractAmtDB);
     }
 
@@ -100,24 +100,24 @@ public class TotalActiveSubVendorContractsTest extends NYCBaseTest {
     public void VerifyCountForActiveSubVendorContracts() throws SQLException {
         Integer TotalContractAmtDB = NYCDatabaseUtil.getTotalSubVendorContracts(year, 'B');
         Integer TotalContractAmtApp = ContractsPage. GetActiveSubVendorContractAmount();
-    	System.out.println(TotalContractAmtApp); 
-    	 assertEquals("Active Expense Contracts Bottom navigation Amount did not match", TotalContractAmtApp, TotalContractAmtDB);
-           
+    	System.out.println(TotalContractAmtApp);
+    	 assertEquals("Active Expense Contracts Bottom navigation Count did not match", TotalContractAmtApp, TotalContractAmtDB);
+
     }
-	
+
 	@Test
     public void VerifyContractsVisualizationsTitles(){
-	    String[] sliderTitles= {"Sub Vendors Spending by Total Active Sub Vendor Contracts", 
-	    						"Top Ten Agencies by Total Active Sub Vendor Contracts", 
-	    						"Top Ten Active Sub Vendor Contracts by Current Amount", 
+	    String[] sliderTitles= {"Sub Vendors Spending by Total Active Sub Vendor Contracts",
+	    						"Top Ten Agencies by Total Active Sub Vendor Contracts",
+	    						"Top Ten Active Sub Vendor Contracts by Current Amount",
 	    						"Top Ten Prime Vendors by Total Active Sub Vendor Contracts",
 	    						"Top Ten Sub Vendors by Total Active Sub Vendor Contracts"
 	    						};
-	 //  System.out.println( ContractsPage.VisualizationTitles()); 
+	 //  System.out.println( ContractsPage.VisualizationTitles());
     	assertTrue(Arrays.equals(sliderTitles, ContractsPage.SubVendorVisualizationTitles().toArray()));
-    	System.out.println( ContractsPage.SubVendorVisualizationTitles()); 
+    	System.out.println( ContractsPage.SubVendorVisualizationTitles());
     }
-	 
+
 	@Test
     public void VerifySubVendorContractsSpendingWidgetTitles(){
 	   String[] widgetTitles = {"Top 5 Sub Contracts",
@@ -128,12 +128,12 @@ public class TotalActiveSubVendorContractsTest extends NYCBaseTest {
 	    						"Top 5 Agencies",
 	    						"Contracts by Industries",
 	    						"Contracts by Size"
-	    						};	    						
-	    							    						 
-		   System.out.println( ContractsPage.WidgetTitles()); 		
-    
+	    						};
+
+		   System.out.println( ContractsPage.WidgetTitles());
+
     	assertTrue(Arrays.equals(widgetTitles, ContractsPage.WidgetTitles().toArray()));
-    	
-     }  
-	
+
+     }
+
 }
