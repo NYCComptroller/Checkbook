@@ -13,7 +13,7 @@ class CheckbookEtlStatus
   /**
    *
    */
-  const MONDAY_NOTICE = "ETL is configured to run on Mondays. FAILs must not surprise you.";
+  const MONDAY_NOTICE = "ETL is not configured to run on Monday night, so expect FAILs each Tuesday morning.";
 
   /**
    * @param $format
@@ -108,6 +108,15 @@ class CheckbookEtlStatus
   }
 
   /**
+   * @param $date
+   * @return false|string
+   */
+  public function formatDisplayDate($date)
+  {
+    return date('Y-m-d H:i', strtotime($date));
+  }
+
+  /**
    * @param $data
    * @return string
    */
@@ -115,11 +124,15 @@ class CheckbookEtlStatus
   {
     $result = 'FAIL (unknown)';
     $now = $this->timeNow();
+
     if (!empty($data['success']) && true == $data['success']) {
+
+      $displayData = $this->formatDisplayDate($data['data']);
+
       if (self::LAST_RUN_SUCCESS_PERIOD > ($now - strtotime($data['data']))) {
-        $result = 'SUCCESS (ran within last 12 hours :: ' . $data['data'] . ')';
+        $result = 'SUCCESS (ran within last 12 hours :: ' . $displayData . ')';
       } else {
-        $result = 'FAIL (last successful run ' . $data['data'] . ')';
+        $result = 'FAIL (last successful run ' . $displayData . ')';
       }
     }
     return $result;

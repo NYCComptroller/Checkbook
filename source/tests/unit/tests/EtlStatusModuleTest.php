@@ -13,7 +13,7 @@ class EtlStatusModuleTest extends TestCase
     /**
      * @var string
      */
-    private $fakeToday = '2222-11-22';
+    private $fakeToday = '2222-11-22 03:39:54.635115';
 
     /**
      * @var int
@@ -23,13 +23,27 @@ class EtlStatusModuleTest extends TestCase
     /**
      * @var string
      */
-    private $fakeYesterday = '2222-11-21';
+    private $fakeYesterday = '2222-11-21 03:39:54.635115';
 
     /**
      * @var int
      * 2222-11-26 08:01:00  == Tuesday Morning !
      */
     private $fakeTuesday = 7980796860;
+
+    /**
+     * @var /CheckbookEtlStatus
+     */
+    private $CES;
+
+    /**
+     *
+     */
+    public function setUp()
+    {
+        parent::setUp();
+        $this->CES = new CheckbookEtlStatus();
+    }
 
     /**
      *
@@ -40,8 +54,7 @@ class EtlStatusModuleTest extends TestCase
         if (isset($conf['etl_status_recipients'])) {
             unset($conf['etl_status_recipients']);
         }
-        $CES = new CheckbookEtlStatus();
-        $this->assertFalse($CES->run_cron());
+        $this->assertFalse($this->CES->run_cron());
     }
 
     /**
@@ -53,8 +66,7 @@ class EtlStatusModuleTest extends TestCase
         global $base_url;
         $conf['etl_status_recipients'] = true;
         $base_url = 'wrong.domain';
-        $CES = new CheckbookEtlStatus();
-        $this->assertFalse($CES->run_cron());
+        $this->assertFalse($this->CES->run_cron());
     }
 
     /**
@@ -71,8 +83,7 @@ class EtlStatusModuleTest extends TestCase
         global $mocked_date;
         $mocked_variable['checkbook_etl_status_last_run'] = $mocked_date['Y-m-d'] = $this->fakeToday;
 
-        $CES = new CheckbookEtlStatus();
-        $this->assertFalse($CES->run_cron());
+        $this->assertFalse($this->CES->run_cron());
     }
 
     /**
@@ -152,7 +163,9 @@ class EtlStatusModuleTest extends TestCase
             'data' => $this->fakeYesterday
         ];
 
-        $this->assertEquals("FAIL (last successful run $this->fakeYesterday)", $CheckbookEtlStatus->formatStatus($sampleData));
+        $this->assertEquals("FAIL (last successful run " .
+            $this->CES->formatDisplayDate($this->fakeYesterday) . ")",
+            $CheckbookEtlStatus->formatStatus($sampleData));
     }
 
     /**
@@ -174,7 +187,9 @@ class EtlStatusModuleTest extends TestCase
             'data' => $this->fakeToday
         ];
 
-        $this->assertEquals("SUCCESS (ran within last 12 hours :: $this->fakeToday)", $CheckbookEtlStatus->formatStatus($sampleData));
+        $this->assertEquals("SUCCESS (ran within last 12 hours :: " .
+            $this->CES->formatDisplayDate($this->fakeToday) . ")",
+            $CheckbookEtlStatus->formatStatus($sampleData));
     }
 
     /**
@@ -230,8 +245,8 @@ class EtlStatusModuleTest extends TestCase
         $CheckbookEtlStatus->mail($message);
 
         $expected = <<<EOM
-UAT  ETL STATUS:\tSUCCESS (ran within last 12 hours :: {$this->fakeToday})
-PROD ETL STATUS:\tFAIL (last successful run {$this->fakeYesterday})
+UAT  ETL STATUS:\tSUCCESS (ran within last 12 hours :: {$this->CES->formatDisplayDate($this->fakeToday)})
+PROD ETL STATUS:\tFAIL (last successful run {$this->CES->formatDisplayDate($this->fakeYesterday)})
 
 EOM;
 
@@ -272,8 +287,8 @@ EOM;
         $CheckbookEtlStatus->mail($message);
 
         $expected = <<<EOM
-UAT  ETL STATUS:\tFAIL (last successful run {$this->fakeYesterday})
-PROD ETL STATUS:\tSUCCESS (ran within last 12 hours :: {$this->fakeToday})
+UAT  ETL STATUS:\tFAIL (last successful run {$this->CES->formatDisplayDate($this->fakeYesterday)})
+PROD ETL STATUS:\tSUCCESS (ran within last 12 hours :: {$this->CES->formatDisplayDate($this->fakeToday)})
 
 EOM;
 
@@ -283,10 +298,18 @@ EOM;
     /**
      *
      */
+    public function test_format_display_date()
+    {
+        $testDate = '2099-12-11 01:02:03.456789';
+        $this->assertEquals('2099-12-11 01:02', $this->CES->formatDisplayDate($testDate));
+    }
+
+    /**
+     *
+     */
     public function test_time_now()
     {
-        $CES = new CheckbookEtlStatus();
-        $this->assertEquals(time(), $CES->timeNow());
+        $this->assertEquals(time(), $this->CES->timeNow());
     }
 
     /**
@@ -294,8 +317,7 @@ EOM;
      */
     public function test_date_now()
     {
-        $CES = new CheckbookEtlStatus();
-        $this->assertEquals(date("Y-m-d"), $CES->date("Y-m-d"));
+        $this->assertEquals(date("Y-m-d"), $this->CES->date("Y-m-d"));
     }
 
     /**
@@ -314,7 +336,7 @@ EOM;
             ->method('timeNow')
             ->will($this->returnValue($this->fakeTuesday));
 
-        $expectedWarning = "\n".CheckbookEtlStatus::MONDAY_NOTICE;
+        $expectedWarning = "\n" . CheckbookEtlStatus::MONDAY_NOTICE;
 
         $this->assertEquals($expectedWarning,
             $CheckbookEtlStatus->comment());
