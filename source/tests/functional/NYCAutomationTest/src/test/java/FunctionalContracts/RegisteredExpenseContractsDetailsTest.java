@@ -8,6 +8,7 @@ import java.sql.SQLException;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.After;
 
 import pages.contracts.ActiveExpenseContractsPage;
 import pages.contracts.ContractsPage;
@@ -18,8 +19,8 @@ import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
 import helpers.Helper;
 import utilities.TestStatusReport;
-public class RegisteredExpenseContractsDetailsTest extends TestStatusReport{
-	//public class RegisteredExpenseContractsDetailsTest extends NYCBaseTest {
+//public class RegisteredExpenseContractsDetailsTest extends TestStatusReport{
+	public class RegisteredExpenseContractsDetailsTest extends NYCBaseTest {
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	public void GoToPage() {

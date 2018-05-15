@@ -81,7 +81,7 @@ public class HomePage {
 		List<WebElement> titleContainers = Driver.Instance.findElements(By.cssSelector("#nyc-spending > .top-chart > .inside > .panel-pane"));
 		for(int i=0; i < titleContainers.size(); i++){
 			selectVisualizationSlider(i);
-			WebElement titleClass = titleContainers.get(i).findElement(By.cssSelector(".pane-content .chart-title"));
+			WebElement titleClass = titleContainers.get(i).findElement(By.cssSelector("pane-content .chart-title"));
 			if(titleClass.isDisplayed()){
 				String title = titleClass.getText();
 				titles.add(title);

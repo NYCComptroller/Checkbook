@@ -14,14 +14,12 @@ import pages.contracts.ActiveExpenseContractsPage;
 import pages.contracts.ContractsPage;
 import pages.contracts.ContractsPage.WidgetOption;
 import pages.home.HomePage;
-import pages.revenue.RevenuePage;
 import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
-import helpers.Driver;
 import helpers.Helper;
 import utilities.TestStatusReport;
-public class ActiveExpenseContractsDetailsTest extends TestStatusReport{
-	//public class ActiveExpenseContractsDetailsTest extends NYCBaseTest {
+//public class ActiveExpenseContractsDetailsTest extends TestStatusReport{
+	public class ActiveExpenseContractsDetailsTest extends NYCBaseTest {
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	public void GoToPage() {

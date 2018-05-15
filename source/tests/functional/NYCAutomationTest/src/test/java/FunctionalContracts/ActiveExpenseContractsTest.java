@@ -126,7 +126,7 @@ import helpers.Helper;
 	    						"Top Ten Prime Vendors by Active Expense Contracts"};
 	    System.out.println( ContractsPage.VisualizationTitles()); 
     	assertTrue(Arrays.equals(sliderTitles, ContractsPage.VisualizationTitles().toArray()));
-    	System.out.println( ContractsPage.VisualizationTitles()); 
+    	//System.out.println( ContractsPage.VisualizationTitles()); 
     }
 	 
 	@Test

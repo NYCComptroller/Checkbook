@@ -14,21 +14,28 @@ import pages.contracts.ActiveRevenueContractsPage;
 import pages.contracts.ContractsPage;
 import pages.contracts.ContractsPage.WidgetOption;
 import pages.home.HomePage;
+import pages.mwbe.MWBEPage;
 import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
 import helpers.Helper;
+import navigation.MWBECategory.MWBECategoryOption;
 import utilities.TestStatusReport;
-public class ActiveRevenueContractsDetailsTest extends TestStatusReport{
+//public class ActiveRevenueContractsDetailsTest extends TestStatusReport{
 
-	//public class ActiveRevenueContractsDetailsTest extends NYCBaseTest{
+	public class ActiveRevenueContractsDetailsTest extends NYCBaseTest{
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
-	public void GoToPage() {
-		ActiveRevenueContractsPage.GoTo();
+
+	
+	public void GoToPage(){
+		if(!MWBEPage.IsAt()){
+			MWBEPage.GoTo("Contracts", MWBECategoryOption.MWBEHome);
+			ActiveRevenueContractsPage.GoTo();
+		}
 		if(!(Helper.getCurrentSelectedYear()).equalsIgnoreCase(NYCBaseTest.prop.getProperty("CurrentYear")))
-			HomePage.SelectYear(NYCBaseTest.prop.getProperty("CurrentYear"));
-		HomePage.ShowWidgetDetails();
+			   HomePage.SelectYear(NYCBaseTest.prop.getProperty("CurrentYear"));
 	}
+
 
 	/* ***************** Test Widget Transaction Count ****************** */
 	@Test

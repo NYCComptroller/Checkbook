@@ -9,28 +9,31 @@ import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 
+import navigation.MWBECategory.MWBECategoryOption;
 import navigation.TopNavigation.Contracts.ActiveRevenueContracts;
 import pages.contracts.ActiveRevenueContractsPage;
 import pages.contracts.ContractsPage;
 import pages.contracts.ContractsPage.WidgetOption;
 import pages.home.HomePage;
+import pages.mwbe.MWBEPage;
 import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
 import utilities.TestStatusReport;
 import helpers.Helper;
 
-//public class ActiveRevenueContractsTest extends NYCBaseTest {
-	public class ActiveRevenueContractsTest extends TestStatusReport{
+public class ActiveRevenueContractsTest extends NYCBaseTest {
+	//public class ActiveRevenueContractsTest extends TestStatusReport{
 		int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	public void GoToPage(){
-		if (!ActiveRevenueContracts.isAt()){
-			ActiveRevenueContractsPage.GoTo();
+		if(!MWBEPage.IsAt()){
+			MWBEPage.GoTo("Contracts", MWBECategoryOption.MWBEHome);
+			navigation.TopNavigation.Contracts.ActiveRevenueContracts.Select();	
 		}
 		if(!(Helper.getCurrentSelectedYear()).equalsIgnoreCase(NYCBaseTest.prop.getProperty("CurrentYear")))
-			HomePage.SelectYear(NYCBaseTest.prop.getProperty("CurrentYear"));
-		HomePage.ShowWidgetDetails();
+			   HomePage.SelectYear(NYCBaseTest.prop.getProperty("CurrentYear"));
 	}
+	
 	
 	/* ***************** Test Widget Counts ****************** */
 	@Test
