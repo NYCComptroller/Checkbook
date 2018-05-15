@@ -124,7 +124,7 @@ class WidgetUtil
         "other_pay_1_ytd" => "Other<br/>Payment YTD",
         "other_pays" => "Other<br/>Payments",
         "other_pay" => "Other<br/>Payment",
-        "overtime_pay_ytd" => "Overtime<br/>Payments YTD",
+        "overtime_pay_ytd" =>"Combined Overtime<br/>Payments YTD",
         "combined_overtime_pay_ytd" => "Combined Overtime<br/>Payments YTD",
         "combined_overtime_pay" => "Combined Overtime<br/>Payments",
         "total_combined_overtime_pay_ytd" => "Total Combined Overtime<br/>Payments YTD",
