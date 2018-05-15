@@ -75,9 +75,9 @@
 //                $('span.exportSmartSearch').unbind("click");
                 $('span.exportSmartSearch').live("click", function () {
 
-                    var dialog = $("#dialog");
-                    if ($("#dialog").length == 0) {
-                        dialog = $('<div id="dialog" style="display:none"></div>');
+                    var dialog = $("#dialogss");
+                    if ($("#dialogss").length == 0) {
+                        dialog = $('<div id="dialogss" style="display:none"></div>');
 //                        console.log('new dialog.init');
                     } else {
 //                      console.log('$("#dialog").length = '+$("#dialog").length);
@@ -115,7 +115,7 @@
 
                     var dialog_html = '';
                     dialog_html += '<div id="loading_gif" style="display:none"></div>';
-                    dialog_html += '<div id="errorMessages"></div>';
+                    dialog_html += '<div id="errorMessagesss"></div>';
                     dialog_html += '<p>Type of Data:</p>';
                     dialog_html += '<table>';
                     dialog_html += '<tr>';
