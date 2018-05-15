@@ -36,7 +36,7 @@ public class Driver {
     public static void Initialize(String BrowswerSelection) {
        Driver.Initialize(BrowswerSelection, null);
     }
-    
+
     public static void Initialize(String BrowswerSelection, String Platform) {
     	if (Driver.DriverPath == null) {
 			Driver.GetDriverPath();
@@ -44,7 +44,7 @@ public class Driver {
     	String driver;
 
         switch (BrowswerSelection.replace(" ", "").toUpperCase()) {
-        
+
             case "FIREFOX":
             	Platform = Platform != null ? Platform.replace(" ", "").toUpperCase() : "";
             	switch (Platform.replace(" ", "").toUpperCase()) {
@@ -99,7 +99,7 @@ public class Driver {
 
     public static void GoTo(String URL) {
         Instance.get(URL);
-      
+
 
         Instance.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
     }
@@ -110,7 +110,7 @@ public class Driver {
 
         Driver.DriverPath = frameworkProjectPath;
     }
-    
+
    /* public void login(String username, String password){
         WebDriver driver = getDriver();
         String URL = "http:// + username + ":" + password + "@" + "link";
