@@ -14,16 +14,16 @@
     "showAllRecords":true,
     "allowFacetDeselect":true,
     "adjustParameters":"
-        if(isset($parameters['vendor_type'])){
-            $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
-        }
-        if(function_exists('_checkbook_project_adjust_spending_parameter_filters')){
-            $parameters = _checkbook_project_adjust_spending_parameter_filters($node, $parameters);
-        }
-        if(function_exists('_checkbook_project_applyParameterFilters')){
-            $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
-        }
-        return $adjustedParameters;
+    if(isset($parameters['vendor_type'])){
+        $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
+    }
+    if(function_exists('_checkbook_project_adjust_spending_parameter_filters')){
+    	$parameters = _checkbook_project_adjust_spending_parameter_filters($node, $parameters);
+    }
+    if(function_exists('_checkbook_project_applyParameterFilters')){
+        $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+    }
+    return $adjustedParameters;
     ",   
     "template":"individual_filter"
 }
