@@ -164,7 +164,7 @@ class EtlStatusModuleTest extends TestCase
         ];
 
         $this->assertEquals("FAIL (last successful run " .
-            $this->CES->formatDisplayDate($this->fakeYesterday) . ")",
+            $this->CES->niceDisplayDate($this->fakeYesterday) . ")",
             $CheckbookEtlStatus->formatStatus($sampleData));
     }
 
@@ -188,7 +188,7 @@ class EtlStatusModuleTest extends TestCase
         ];
 
         $this->assertEquals("SUCCESS (ran within last 12 hours :: " .
-            $this->CES->formatDisplayDate($this->fakeToday) . ")",
+            $this->CES->niceDisplayDate($this->fakeToday) . ")",
             $CheckbookEtlStatus->formatStatus($sampleData));
     }
 
@@ -245,8 +245,8 @@ class EtlStatusModuleTest extends TestCase
         $CheckbookEtlStatus->mail($message);
 
         $expected = <<<EOM
-UAT  ETL STATUS:\tSUCCESS (ran within last 12 hours :: {$this->CES->formatDisplayDate($this->fakeToday)})
-PROD ETL STATUS:\tFAIL (last successful run {$this->CES->formatDisplayDate($this->fakeYesterday)})
+UAT  ETL STATUS:\tSUCCESS (ran within last 12 hours :: {$this->CES->niceDisplayDate($this->fakeToday)})
+PROD ETL STATUS:\tFAIL (last successful run {$this->CES->niceDisplayDate($this->fakeYesterday)})
 
 EOM;
 
@@ -287,8 +287,8 @@ EOM;
         $CheckbookEtlStatus->mail($message);
 
         $expected = <<<EOM
-UAT  ETL STATUS:\tFAIL (last successful run {$this->CES->formatDisplayDate($this->fakeYesterday)})
-PROD ETL STATUS:\tSUCCESS (ran within last 12 hours :: {$this->CES->formatDisplayDate($this->fakeToday)})
+UAT  ETL STATUS:\tFAIL (last successful run {$this->CES->niceDisplayDate($this->fakeYesterday)})
+PROD ETL STATUS:\tSUCCESS (ran within last 12 hours :: {$this->CES->niceDisplayDate($this->fakeToday)})
 
 EOM;
 
@@ -301,7 +301,7 @@ EOM;
     public function test_format_display_date()
     {
         $testDate = '2099-12-11 01:02:03.456789';
-        $this->assertEquals('2099-12-11 01:02', $this->CES->formatDisplayDate($testDate));
+        $this->assertEquals('2099-12-11 01:02AM', $this->CES->niceDisplayDate($testDate));
     }
 
     /**
