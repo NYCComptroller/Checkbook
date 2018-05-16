@@ -102,7 +102,7 @@ class ContractsUrlService {
             . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
             . RequestUtilities::_getUrlParamString("status","contstatus")
             . (!Datasource::isOGE() ? RequestUtilities::_getUrlParamString("agency","cagency") : "")
-            . RequestUtilities::_getUrlParamString("vendor","cvendor")
+            . (!Datasource::isOGE() ? RequestUtilities::_getUrlParamString("cvendor","vendor") : RequestUtilities::_getUrlParamString("vendor"))
             . RequestUtilities::_getUrlParamString("awdmethod")
             . RequestUtilities::_getUrlParamString("cindustry")
             . RequestUtilities::_getUrlParamString("csize")
