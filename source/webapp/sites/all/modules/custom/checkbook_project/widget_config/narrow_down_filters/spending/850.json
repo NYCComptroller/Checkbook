@@ -7,8 +7,8 @@
     "allowFacetDeselect":true,
     "columns":["deptname.deptname", "txcount"],
     "orderBy":["-txcount","deptname.deptname"],    
-    "getTotalDataCount":true,    
-    "facetPager":true,
+	"getTotalDataCount":true,    
+	"facetPager":true,
     "filterName":"Department",
     "urlParameterName":"deptnm",
     "urlParameterNameType":"eqtext",
@@ -17,23 +17,23 @@
     "autocompleteField":"department_name",
     "adjustParameters":"
 	checkbook_faceted_search_adjust_param($node);
-        if(function_exists('_checkbook_project_adjust_spending_parameter_filters')){
-            $parameters = _checkbook_project_adjust_spending_parameter_filters($node, $parameters);
-        }
-        if(function_exists('_checkbook_project_applyParameterFilters')){
-            $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
-        }
-        $adjustedParameters['deptname.deptname'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
-        //Using child_contract_agency_id column in OGE domainO
-        if(_checkbook_check_isEDCPage()){
-            foreach($adjustedParameters as $key=>$value){
-                if($key == 'master_child_contract_agency_id'){
-                   $adjustedParameters['contract_agency_id'] = $value;
-                   unset($adjustedParameters[$key]);
-                }
+    if(function_exists('_checkbook_project_adjust_spending_parameter_filters')){
+    	$parameters = _checkbook_project_adjust_spending_parameter_filters($node, $parameters);
+    }
+    if(function_exists('_checkbook_project_applyParameterFilters')){
+        $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+    }
+    $adjustedParameters['deptname.deptname'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+    //Using child_contract_agency_id column in OGE domainO
+    if(_checkbook_check_isEDCPage()){
+        foreach($adjustedParameters as $key=>$value){
+            if($key == 'master_child_contract_agency_id'){
+               $adjustedParameters['contract_agency_id'] = $value;
+               unset($adjustedParameters[$key]);
             }
         }
-        return $adjustedParameters;
+    }
+    return $adjustedParameters;
     ",        
     "template":"individual_filter"
 }
