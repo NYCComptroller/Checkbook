@@ -111,9 +111,9 @@ class CheckbookEtlStatus
    * @param $date
    * @return false|string
    */
-  public function formatDisplayDate($date)
+  public function niceDisplayDate($date)
   {
-    return date('Y-m-d H:i', strtotime($date));
+    return date('Y-m-d h:iA', strtotime($date));
   }
 
   /**
@@ -127,7 +127,7 @@ class CheckbookEtlStatus
 
     if (!empty($data['success']) && true == $data['success']) {
 
-      $displayData = $this->formatDisplayDate($data['data']);
+      $displayData = $this->niceDisplayDate($data['data']);
 
       if (self::LAST_RUN_SUCCESS_PERIOD > ($now - strtotime($data['data']))) {
         $result = 'SUCCESS (ran within last 12 hours :: ' . $displayData . ')';
