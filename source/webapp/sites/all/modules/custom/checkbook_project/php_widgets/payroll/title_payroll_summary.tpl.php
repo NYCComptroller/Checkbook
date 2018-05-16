@@ -159,7 +159,7 @@ foreach($all_data as $employment_type => $employment_data) {
             }
             $table .= "
                 <tr>
-                    <td><strong>". WidgetUtil::getLabel('overtime_pay_ytd') ."</strong>: {$total_overtime_pay}</td>
+                    <td><strong>". WidgetUtil::getLabel('combined_overtime_pay_ytd') ."</strong>: {$total_overtime_pay}</td>
                     <td></td>
                 </tr>";
         }
