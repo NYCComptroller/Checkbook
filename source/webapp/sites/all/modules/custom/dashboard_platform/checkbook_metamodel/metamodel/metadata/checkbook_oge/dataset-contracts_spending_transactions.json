@@ -1,8 +1,14 @@
 {
     "datasets": {
-            "contracts_spending_transactions": {
+		"contracts_spending_transactions": {
             "datasourceName": "main",
-            "source": "contracts_spending_transactions"
+            "source": "contracts_spending_transactions",
+            "columns":[
+                {
+                    "name":"disbursement_line_item_id",
+                    "key":true
+                }
+            ]
         },
         "oge_spending_contract": {
             "datasourceName": "main",
