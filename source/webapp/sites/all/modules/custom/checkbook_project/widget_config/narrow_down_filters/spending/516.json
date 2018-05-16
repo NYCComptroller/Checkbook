@@ -1,39 +1,39 @@
 {
-    "widgetType":"phpparser",
-    "parentNid":652,
-    "startWith":0,
-    "limit":100,
-    "maxSelect":5,
-    "columns":["agency.agency", "agency.agency.agency_name", "txcount"],
-	"orderBy":"-txcount",    
-    "facetNoPager":true,
-    "filterName":"Agency",
-    "urlParameterName":"agency",
-    "autocompleteParamName":"agency_auto",    
-    "autocompleteID":"fagencyId",
-    "autocompleteField":"agency_name",
-    "adjustParameters":"
-    if(function_exists('_checkbook_project_adjust_spending_parameter_filters')){
-    	$parameters = _checkbook_project_adjust_spending_parameter_filters($node, $parameters);
-    }
-    if(function_exists('_checkbook_project_applyParameterFilters')){
-        $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
-    }
-    $adjustedParameters['agency.agency'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);    
-     //Using child_contract_agency_id column in OGE domainO
-    if(_checkbook_check_isEDCPage()){
-        foreach($adjustedParameters as $key=>$value){
-            if($key == 'master_child_contract_agency_id'){
-               $adjustedParameters['contract_agency_id'] = $value;
-               unset($adjustedParameters[$key]);
-            }
-            if($key == 'master_child_contract_vendor_id'){
-               $adjustedParameters['contract_vendor_id'] = $value;
-               unset($adjustedParameters[$key]);
+    "widgetType": "phpparser",
+    "parentNid": 652,
+    "startWith": 0,
+    "limit": 100,
+    "maxSelect": 5,
+    "columns": ["agency.agency", "agency.agency.agency_name", "txcount"],
+    "orderBy": "-txcount",    
+    "facetNoPager": true,
+    "filterName": "Agency",
+    "urlParameterName": "agency",
+    "autocompleteParamName": "agency_auto",    
+    "autocompleteID": "fagencyId",
+    "autocompleteField": "agency_name",
+    "adjustParameters": "
+        if(function_exists('_checkbook_project_adjust_spending_parameter_filters')){
+            $parameters = _checkbook_project_adjust_spending_parameter_filters($node, $parameters);
+        }
+        if(function_exists('_checkbook_project_applyParameterFilters')){
+            $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+        }
+        $adjustedParameters['agency.agency'][] = data_controller_get_operator_factory_instance() - >initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);    
+        //Using child_contract_agency_id column in OGE domainO
+        if(_checkbook_check_isEDCPage()){
+            foreach($adjustedParameters as $key=>$value){
+                if($key == 'master_child_contract_agency_id'){
+                    $adjustedParameters['contract_agency_id'] = $value;
+                    unset($adjustedParameters[$key]);
+                }
+                if($key == 'master_child_contract_vendor_id'){
+                    $adjustedParameters['contract_vendor_id'] = $value;
+                    unset($adjustedParameters[$key]);
+                }
             }
         }
-    }
-    return $adjustedParameters;
-    ",   
-    "template":"individual_filter"
+        return $adjustedParameters;
+        ",   
+        "template":"individual_filter"
 }
