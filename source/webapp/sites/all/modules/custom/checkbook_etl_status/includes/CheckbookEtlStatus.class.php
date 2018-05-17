@@ -135,10 +135,10 @@ class CheckbookEtlStatus
       $displayData = $this->niceDisplayDate($data['data']);
 
       if (self::LAST_RUN_SUCCESS_PERIOD > ($now - strtotime($data['data']))) {
-        $result = '<em style="color:darkgreen">SUCCESS</em> (finished: ' . $displayData . ')';
+        $result = '<strong style="color:darkgreen">SUCCESS</strong> (finished: ' . $displayData . ')';
       } else {
         $this->success = 'Fail';
-        $result = '<em style="color:red">FAIL</em> (last success: ' . $displayData . ')';
+        $result = '<strong style="color:red">FAIL</strong> (last success: ' . $displayData . ')';
       }
     }
     return $result;
