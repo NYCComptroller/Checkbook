@@ -1447,15 +1447,25 @@ function _checkbook_project_get_year_url_param_string($applySpendingYear = false
 }
 
 /**
- * returns keyvalue pair string is present in URL
+ * @return bool
+ */
+function _checkbook_current_request_is_ajax()
+{
+  return (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
+}
+
+/**
+ * returns key-value pair string is present in URL
+ * detects ajax automatically
  * @return string
  */
 function _checkbook_project_get_url_param_string($key, $key_alias = null, $ajaxPath = FALSE)
 {
 
     $urlPath = drupal_get_path_alias($_GET['q']);
-    if ($ajaxPath)
-        $urlPath = $_SERVER['HTTP_REFERER'];
+    if (_checkbook_current_request_is_ajax()) {
+      $urlPath = $_SERVER['HTTP_REFERER'];
+    }
 
     $pathParams = explode('/', $urlPath);
     $keyIndex = NULL;
