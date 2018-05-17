@@ -12,6 +12,8 @@ function checkbook_etl_status_cron()
 }
 
 /**
+ * Implements hook_mail().
+ *
  * @param $key
  * @param $message
  * @param $params
@@ -22,3 +24,26 @@ function checkbook_etl_status_mail($key, &$message, $params)
   $CES->mail($message);
 }
 
+/**
+ * Implements hook_mail_alter().
+ *
+ * Adds priority headers to messages passing condition.
+ */
+function checkbook_etl_status_mail_alter(&$message) {
+  if (stripos($message['subject'], 'Fail')) {
+    $message['headers']['X-Priority'] = '1 (Highest)';
+    $message['headers']['X-MSMail-Priority'] = 'High';
+    $message['headers']['Importance'] = 'High';
+  }
+  $message['headers']['Content-Type'] = 'text/html; charset="UTF-8"';
+  $replace_from = [
+    "\tSuccess",
+    "\tFail"
+  ];
+  $replace_to = [
+    "\t<em>Success</em>",
+    "\t<strong>Fail</strong>",
+  ];
+  $message['body'] = str_replace('\tSuccess','<strong>Success</strong>', $message['body']);
+
+}

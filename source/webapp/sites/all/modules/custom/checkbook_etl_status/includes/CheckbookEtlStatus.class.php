@@ -16,6 +16,11 @@ class CheckbookEtlStatus
   const MONDAY_NOTICE = "ETL is not configured to run on Monday night, so expect FAILs each Tuesday morning.";
 
   /**
+   * @var string
+   */
+  public $success = 'Success';
+
+  /**
    * @param $format
    * @return false|string
    */
@@ -132,6 +137,7 @@ class CheckbookEtlStatus
       if (self::LAST_RUN_SUCCESS_PERIOD > ($now - strtotime($data['data']))) {
         $result = 'SUCCESS (ran within last 12 hours :: ' . $displayData . ')';
       } else {
+        $this->success = 'Fail';
         $result = 'FAIL (last successful run ' . $displayData . ')';
       }
     }
@@ -162,12 +168,15 @@ class CheckbookEtlStatus
     $prod_status = $this->formatStatus($this->getProdStatus());
     $comment = $this->comment();
 
-    $message['subject'] = 'ETL Status Report';
     $message['body'][] = <<<EOM
 UAT  ETL STATUS:\t{$uat_result}
 PROD ETL STATUS:\t{$prod_status}
 {$comment}
 EOM;
+    $date = $this->date('Y-m-d');
+
+    $message['subject'] = 'ETL Status: '.$this->success." ($date)";
+
     return true;
   }
 }
