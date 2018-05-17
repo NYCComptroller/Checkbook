@@ -1,7 +1,7 @@
 <?php
 
 include_once 'includes/CheckbookEtlStatus.class.php';
-include_once 'includes/CheckbookEtlStatus.class.php';
+include_once 'includes/CheckbookMailSystem.class.php';
 
 /**
  * Implements hook_cron()
@@ -40,11 +40,11 @@ function checkbook_etl_status_mail_alter(&$message)
   $message['headers']['Content-Type'] = 'text/html; charset=UTF-8; format=flowed; delsp=yes';
   $replace_from = [
     "\tSUCCESS",
-    "\tFAIL"
+    "\tFAIL",
   ];
   $replace_to = [
-    "\t<em>SUCCESS</em>",
-    "\t<strong>FAIL</strong>",
+    "\t<em style='color:green'>SUCCESS</em>",
+    "\t<em style='color: red'>FAIL</em>",
   ];
   $message['body'] = str_replace($replace_from, $replace_to, $message['body']);
 
