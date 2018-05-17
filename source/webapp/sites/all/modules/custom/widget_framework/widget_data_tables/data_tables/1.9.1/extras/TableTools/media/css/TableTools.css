@@ -41,7 +41,7 @@ div.DTTT_button {
 	padding: 3px 8px;
 	border: 1px solid #999;
 	cursor: pointer;
-	*cursor: hand;
+
 
 	-webkit-border-radius: 2px;
 	   -moz-border-radius: 2px;
@@ -62,7 +62,7 @@ div.DTTT_button {
 	background:     -ms-linear-gradient(top, #ffffff 0%,#f3f3f3 89%,#f9f9f9 100%); /* IE10+ */
 	background:      -o-linear-gradient(top, #ffffff 0%,#f3f3f3 89%,#f9f9f9 100%); /* Opera 11.10+ */
 	background:         linear-gradient(top, #ffffff 0%,#f3f3f3 89%,#f9f9f9 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f9f9f9',GradientType=0 ); /* IE6-9 */
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f9f9f9',GradientType=0 )"; /* IE6-9 */
 }
 
 button.DTTT_button::-moz-focus-inner { 
@@ -87,7 +87,7 @@ div.DTTT_button_hover {
 	background:     -ms-linear-gradient(top, #f3f3f3 0%,#e2e2e2 89%,#f4f4f4 100%); /* IE10+ */
 	background:      -o-linear-gradient(top, #f3f3f3 0%,#e2e2e2 89%,#f4f4f4 100%); /* Opera 11.10+ */
 	background:         linear-gradient(top, #f3f3f3 0%,#e2e2e2 89%,#f4f4f4 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f3f3f3', endColorstr='#f4f4f4',GradientType=0 ); /* IE6-9 */
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#f3f3f3', endColorstr='#f4f4f4',GradientType=0 )"; /* IE6-9 */
 }
 
 button.DTTT_disabled,
@@ -101,7 +101,7 @@ div.DTTT_disabled {
 	background:     -ms-linear-gradient(top, #ffffff 0%,#f9f9f9 89%,#fafafa 100%); /* IE10+ */
 	background:      -o-linear-gradient(top, #ffffff 0%,#f9f9f9 89%,#fafafa 100%); /* Opera 11.10+ */
 	background:         linear-gradient(top, #ffffff 0%,#f9f9f9 89%,#fafafa 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#fafafa',GradientType=0 ); /* IE6-9 */
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#fafafa',GradientType=0 )"; /* IE6-9 */
 }
 
 
@@ -166,7 +166,7 @@ button.DTTT_button_collection_hover span {
  */
 table.DTTT_selectable tbody tr {
 	cursor: pointer;
-	*cursor: hand;
+
 }
 
 table.dataTable tr.DTTT_selected.odd {
