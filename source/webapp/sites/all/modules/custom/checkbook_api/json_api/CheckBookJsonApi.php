@@ -111,7 +111,7 @@ class CheckBookJsonApi
                 WHERE (a.fiscal_year = '{$year}' AND a.type_of_year = '{$year_type}' AND a.status_flag = 'A' AND c.document_code IN ('CTA1','CT1','CT2') AND a.scntrc_status = 2)";
       $response = _checkbook_project_execute_sql($query);
 
-      if (!empty($response) && $response[0]['acco_' . $status]) {
+      if (!empty($response) && !empty($response[0]['acco_' . $status])) {
         $this->data = $response[0]['acco_' . $status];
       }
       $this->message = 'There are ' . $this->data . ' subcontracts ' . $status . ' in ' . $this->year_type_string($year_type) . ' year ' . $year;
