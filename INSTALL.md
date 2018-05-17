@@ -623,3 +623,14 @@ and once we've figured out the solution we'll list it here too.
     `service httpd restart` 
 
     `./bin/shutdown.sh` (from within the apache-tomcat directory)
+
+
+Continuous integration:
+----------------------
+
+To set up continuous integration for a fork of this repository, follow
+the instructions at
+[Travis](https://docs.travis-ci.com/user/getting-started/).  We've
+already added the .travis.yml file to this repo, so all you need to do
+is turn on CI for your fork, as described on that page.
+
