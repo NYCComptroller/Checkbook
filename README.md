@@ -1,3 +1,6 @@
+![Build
+status](https://travis-ci.org/NYCComptroller/Checkbook.svg?branch=develop)
+
 Checkbook NYC
 =============
 
