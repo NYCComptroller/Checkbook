@@ -70,7 +70,7 @@ class CheckbookApiModuleTest extends TestCase {
             checkbook_api_adjustSpendingSql($query));
 
         $query = 'minority_type_name';
-        $this->assertEquals(<<<END
+        $this->assertEquals(<<<SQLEND
     CASE
         WHEN minority_type_name= 2 THEN 'Black American' 
         WHEN minority_type_name= 3 THEN 'Hispanic American' 
@@ -87,7 +87,7 @@ class CheckbookApiModuleTest extends TestCase {
         WHEN minority_type_name= 'Caucasian Woman' THEN 'Women' 
         WHEN minority_type_name= 'Individuals & Others' THEN 'Individuals and Others'
     END  AS minority_type_name
-END
+SQLEND
         ,checkbook_api_adjustSpendingSql($query));
 
     }
