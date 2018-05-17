@@ -565,7 +565,7 @@ function checkbook_api_adjustSpendingSql(&$sql_query) {
     $sql_query =  str_replace("{$alias}expenditure_object_name", "CASE WHEN {$alias}is_prime_or_sub = 'P' THEN {$alias}expenditure_object_name ELSE 'N/A' END AS expenditure_object_name",$sql_query);
 
     $column = 'minority_type_name';
-    $minority_check = <<<END
+    $minority_check = <<<SQLEND
     CASE
         WHEN {$alias}{$column}= 2 THEN 'Black American' 
         WHEN {$alias}{$column}= 3 THEN 'Hispanic American' 
@@ -582,7 +582,7 @@ function checkbook_api_adjustSpendingSql(&$sql_query) {
         WHEN {$alias}{$column}= 'Caucasian Woman' THEN 'Women' 
         WHEN {$alias}{$column}= 'Individuals & Others' THEN 'Individuals and Others'
     END 
-END;
+SQLEND;
     $sql_query = str_replace("{$alias}minority_type_name", $minority_check . " AS minority_type_name", $sql_query);
     return $sql_query;
 
