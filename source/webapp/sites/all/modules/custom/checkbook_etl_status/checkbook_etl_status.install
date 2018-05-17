@@ -2,12 +2,12 @@
 
 function checkbook_etl_status_enable() {
   $current = variable_get('mail_system', array('default-system' => 'DefaultMailSystem'));
-  $addition = array('mymodule' => 'CheckbookMailSystem');
+  $addition = array('checkbook_etl_status' => 'CheckbookMailSystem');
   variable_set('mail_system', array_merge($current, $addition));
 }
 
 function checkbook_etl_status_disable() {
   $mail_system = variable_get('mail_system', array('default-system' => 'DefaultMailSystem'));
-  unset($mail_system['mymodule']);
+  unset($mail_system['checkbook_etl_status']);
   variable_set('mail_system', $mail_system);
 }

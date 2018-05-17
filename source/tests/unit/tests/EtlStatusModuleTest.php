@@ -1,5 +1,8 @@
 <?php
 
+class DefaultMailSystem{
+}
+
 include_once __DIR__ . '/../../../webapp/sites/all/modules/custom/checkbook_etl_status/checkbook_etl_status.module';
 
 use PHPUnit\Framework\TestCase;
@@ -163,7 +166,7 @@ class EtlStatusModuleTest extends TestCase
             'data' => $this->fakeYesterday
         ];
 
-        $this->assertEquals("FAIL (last successful run " .
+        $this->assertEquals('<em style="color:red">FAIL</em> (last success: ' .
             $this->CES->niceDisplayDate($this->fakeYesterday) . ")",
             $CheckbookEtlStatus->formatStatus($sampleData));
     }
@@ -187,7 +190,7 @@ class EtlStatusModuleTest extends TestCase
             'data' => $this->fakeToday
         ];
 
-        $this->assertEquals("SUCCESS (ran within last 12 hours :: " .
+        $this->assertEquals('<em style="color:darkgreen">SUCCESS</em> (finished: ' .
             $this->CES->niceDisplayDate($this->fakeToday) . ")",
             $CheckbookEtlStatus->formatStatus($sampleData));
     }
@@ -249,8 +252,8 @@ class EtlStatusModuleTest extends TestCase
         $CheckbookEtlStatus->mail($message);
 
         $expected = <<<EOM
-UAT  ETL STATUS:\tSUCCESS (ran within last 12 hours :: {$this->CES->niceDisplayDate($this->fakeToday)})
-PROD ETL STATUS:\tFAIL (last successful run {$this->CES->niceDisplayDate($this->fakeYesterday)})
+UAT  ETL STATUS:\t<em style="color:darkgreen">SUCCESS</em> (finished: {$this->CES->niceDisplayDate($this->fakeToday)})<br /><br />
+PROD ETL STATUS:\t<em style="color:red">FAIL</em> (last success: {$this->CES->niceDisplayDate($this->fakeYesterday)})
 
 EOM;
 
@@ -291,8 +294,8 @@ EOM;
         $CheckbookEtlStatus->mail($message);
 
         $expected = <<<EOM
-UAT  ETL STATUS:\tFAIL (last successful run {$this->CES->niceDisplayDate($this->fakeYesterday)})
-PROD ETL STATUS:\tSUCCESS (ran within last 12 hours :: {$this->CES->niceDisplayDate($this->fakeToday)})
+UAT  ETL STATUS:\t<em style="color:red">FAIL</em> (last success: {$this->CES->niceDisplayDate($this->fakeYesterday)})<br /><br />
+PROD ETL STATUS:\t<em style="color:darkgreen">SUCCESS</em> (finished: {$this->CES->niceDisplayDate($this->fakeToday)})
 
 EOM;
 

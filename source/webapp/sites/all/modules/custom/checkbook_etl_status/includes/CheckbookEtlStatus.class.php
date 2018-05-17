@@ -135,10 +135,10 @@ class CheckbookEtlStatus
       $displayData = $this->niceDisplayDate($data['data']);
 
       if (self::LAST_RUN_SUCCESS_PERIOD > ($now - strtotime($data['data']))) {
-        $result = 'SUCCESS (ran within last 12 hours :: ' . $displayData . ')';
+        $result = '<em style="color:darkgreen">SUCCESS</em> (finished: ' . $displayData . ')';
       } else {
         $this->success = 'Fail';
-        $result = 'FAIL (last successful run ' . $displayData . ')';
+        $result = '<em style="color:red">FAIL</em> (last success: ' . $displayData . ')';
       }
     }
     return $result;
@@ -169,7 +169,7 @@ class CheckbookEtlStatus
     $comment = $this->comment();
 
     $message['body'][] = <<<EOM
-UAT  ETL STATUS:\t{$uat_result}
+UAT  ETL STATUS:\t{$uat_result}<br /><br />
 PROD ETL STATUS:\t{$prod_status}
 {$comment}
 EOM;
