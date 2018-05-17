@@ -229,6 +229,10 @@ class EtlStatusModuleTest extends TestCase
             ->will($this->returnValue($this->fakeTimeToday));
 
         $CheckbookEtlStatus->expects($this->once())
+            ->method('date')
+            ->will($this->returnValue($this->fakeToday));
+
+        $CheckbookEtlStatus->expects($this->once())
             ->method('getUatStatus')
             ->will($this->returnValue([
                 'success' => true,
@@ -250,7 +254,7 @@ PROD ETL STATUS:\tFAIL (last successful run {$this->CES->niceDisplayDate($this->
 
 EOM;
 
-        $this->assertEquals('ETL Status Report', $message['subject']);
+        $this->assertEquals('ETL Status: Fail ('.$this->fakeToday.')', $message['subject']);
         $this->assertEquals($expected, $message['body'][0]);
     }
 
