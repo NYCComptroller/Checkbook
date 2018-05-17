@@ -166,7 +166,7 @@ class EtlStatusModuleTest extends TestCase
             'data' => $this->fakeYesterday
         ];
 
-        $this->assertEquals('<em style="color:red">FAIL</em> (last success: ' .
+        $this->assertEquals('<strong style="color:red">FAIL</strong> (last success: ' .
             $this->CES->niceDisplayDate($this->fakeYesterday) . ")",
             $CheckbookEtlStatus->formatStatus($sampleData));
     }
@@ -190,7 +190,7 @@ class EtlStatusModuleTest extends TestCase
             'data' => $this->fakeToday
         ];
 
-        $this->assertEquals('<em style="color:darkgreen">SUCCESS</em> (finished: ' .
+        $this->assertEquals('<strong style="color:darkgreen">SUCCESS</strong> (finished: ' .
             $this->CES->niceDisplayDate($this->fakeToday) . ")",
             $CheckbookEtlStatus->formatStatus($sampleData));
     }
@@ -252,8 +252,8 @@ class EtlStatusModuleTest extends TestCase
         $CheckbookEtlStatus->mail($message);
 
         $expected = <<<EOM
-UAT  ETL STATUS:\t<em style="color:darkgreen">SUCCESS</em> (finished: {$this->CES->niceDisplayDate($this->fakeToday)})<br /><br />
-PROD ETL STATUS:\t<em style="color:red">FAIL</em> (last success: {$this->CES->niceDisplayDate($this->fakeYesterday)})
+UAT  ETL STATUS:\t<strong style="color:darkgreen">SUCCESS</strong> (finished: {$this->CES->niceDisplayDate($this->fakeToday)})<br /><br />
+PROD ETL STATUS:\t<strong style="color:red">FAIL</strong> (last success: {$this->CES->niceDisplayDate($this->fakeYesterday)})
 
 EOM;
 
@@ -294,8 +294,8 @@ EOM;
         $CheckbookEtlStatus->mail($message);
 
         $expected = <<<EOM
-UAT  ETL STATUS:\t<em style="color:red">FAIL</em> (last success: {$this->CES->niceDisplayDate($this->fakeYesterday)})<br /><br />
-PROD ETL STATUS:\t<em style="color:darkgreen">SUCCESS</em> (finished: {$this->CES->niceDisplayDate($this->fakeToday)})
+UAT  ETL STATUS:\t<strong style="color:red">FAIL</strong> (last success: {$this->CES->niceDisplayDate($this->fakeYesterday)})<br /><br />
+PROD ETL STATUS:\t<strong style="color:darkgreen">SUCCESS</strong> (finished: {$this->CES->niceDisplayDate($this->fakeToday)})
 
 EOM;
 

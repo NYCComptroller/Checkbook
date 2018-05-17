@@ -43,8 +43,8 @@ function checkbook_etl_status_mail_alter(&$message)
     "\tFAIL",
   ];
   $replace_to = [
-    "\t<em style='color:green'>SUCCESS</em>",
-    "\t<em style='color: red'>FAIL</em>",
+    "\t<strong style='color:green'>SUCCESS</strong>",
+    "\t<strong style='color: red'>FAIL</strong>",
   ];
   $message['body'] = str_replace($replace_from, $replace_to, $message['body']);
 
