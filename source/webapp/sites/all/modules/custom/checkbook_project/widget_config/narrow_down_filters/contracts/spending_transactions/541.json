@@ -4,29 +4,29 @@
     "columns":["vendor.vendor", "vendor.vendor.legal_name", "txcount"],
     "orderBy":"-txcount",
     "limit":100,
-	"getTotalDataCount":true,    
-	"facetPager":true,
+    "getTotalDataCount":true,    
+    "facetPager":true,
     "filterName":"Payee",
     "urlParameterName":"vendor",
     "autocompleteParamName":"vendor_auto",    
     "autocompleteID":"fvendorId", 	
     "autocompleteField":"vendor.vendor.legal_name",
-    "maxSelect":5,
+    "maxSelect":1,
     "urlParamMap":{
-				"doctype":"document_code.document_code.document_code"
-			  }  ,    
+        "doctype":"document_code.document_code.document_code"
+    },    
     "adjustParameters":"
 	checkbook_faceted_search_adjust_param($node);
-    $year = $parameters['disb_fiscal_year_id'];
-    if(isset($year)){
-        $parameters['fiscal_year_id'] = $year;
-    }
-    $adjustedParameters = $parameters;
-    if(function_exists('_checkbook_project_applyParameterFilters')){
-        $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
-    }
-    $adjustedParameters['vendor.vendor'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
-    return $adjustedParameters;
+        $year = $parameters['disb_fiscal_year_id'];
+        if(isset($year)){
+            $parameters['fiscal_year_id'] = $year;
+        }
+        $adjustedParameters = $parameters;
+        if(function_exists('_checkbook_project_applyParameterFilters')){
+            $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+        }
+        $adjustedParameters['vendor.vendor'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+        return $adjustedParameters;
     ",    
     "template":"individual_filter"
 }
