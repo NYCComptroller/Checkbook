@@ -1,6 +1,7 @@
 <?php
 
 include_once 'includes/CheckbookEtlStatus.class.php';
+include_once 'includes/CheckbookEtlStatus.class.php';
 
 /**
  * Implements hook_cron()
@@ -29,21 +30,22 @@ function checkbook_etl_status_mail($key, &$message, $params)
  *
  * Adds priority headers to messages passing condition.
  */
-function checkbook_etl_status_mail_alter(&$message) {
+function checkbook_etl_status_mail_alter(&$message)
+{
   if (stripos($message['subject'], 'Fail')) {
     $message['headers']['X-Priority'] = '1 (Highest)';
     $message['headers']['X-MSMail-Priority'] = 'High';
     $message['headers']['Importance'] = 'High';
   }
-  $message['headers']['Content-Type'] = 'text/html; charset="UTF-8"';
+  $message['headers']['Content-Type'] = 'text/html; charset=UTF-8; format=flowed; delsp=yes';
   $replace_from = [
-    "\tSuccess",
-    "\tFail"
+    "\tSUCCESS",
+    "\tFAIL"
   ];
   $replace_to = [
-    "\t<em>Success</em>",
-    "\t<strong>Fail</strong>",
+    "\t<em>SUCCESS</em>",
+    "\t<strong>FAIL</strong>",
   ];
-  $message['body'] = str_replace('\tSuccess','<strong>Success</strong>', $message['body']);
+  $message['body'] = str_replace($replace_from, $replace_to, $message['body']);
 
 }
