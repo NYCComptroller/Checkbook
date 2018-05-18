@@ -6,18 +6,20 @@
 "cleanURLParameters":["mwbe","year","calyear","agency","yeartype","vendor","status","cagency","cvendor","csize","cindustry","awdmethod"],
 "urlParamMap":{"mwbe":"minority_type_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year","vendor":"vendor_id","status":"status_flag","cagency":"agency_id","cvendor":"vendor_id","csize":"award_size_id","cindustry":"industry_type_id","awdmethod":"award_method_id"},
 "preProcessConfiguration":"
-    $node->is_mwbe = _checkbook_check_is_mwbe_page();
-if($node->is_mwbe) $node->widgetConfig->dataset = 'checkbook:mwbe_contracts_coa_aggregates';
+    //$node->is_mwbe = _checkbook_check_is_mwbe_page();
+    //if($node->is_mwbe) $node->widgetConfig->dataset = 'checkbook:mwbe_contracts_coa_aggregates';
+    if(RequestUtilities::getRequestParamValue('vendor') || RequestUtilities::getRequestParamValue('cvendor') || RequestUtilities::getRequestParamValue('svendor'))
+      $node->widgetConfig->dataset = 'checkbook:edc_mag_contracts_coa_aggregates';
 ",
 "dataset": "checkbook:edc_contracts_coa_aggregates_no_vendor",
 "noDataInitialLoad":true,
 "columns": ["total_contracts","award_method.award_method","award_method.award_method.award_method_name","original_amount_sum","current_amount_sum","yeartype.yeartype","spending_amount_sum"],
 "adjustParameters":"
-            $adjustedParameters = $parameters;
-            if(function_exists('_checkbook_project_applyParameterFilters')){
-                  $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
-            }
-            return $adjustedParameters;
+      $adjustedParameters = $parameters;
+      if(function_exists('_checkbook_project_applyParameterFilters')){
+            $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+      }
+      return $adjustedParameters;
 ",
 "limit":5,
 "enableExpand":true,
@@ -55,10 +57,10 @@ if($node->is_mwbe) $node->widgetConfig->dataset = 'checkbook:mwbe_contracts_coa_
 "disableViewAll":true,
 "getTotalDataCount":true,
 "header":"
-$node->widgetConfig->getData=false;
-load_widget_data($node);
-if($node->totalDataCount > 4) $count = '<span class=\"hideOnExpand\">5 </span>';
-$header='<div class=\"tableHeader\"><h2>Top ' . $count .'Award Methods</h2><span class=\"contCount\"> Number of Award Methods:  ' . number_format($node->totalDataCount) . '</span></div>';
+//$node->widgetConfig->getData=false;
+//load_widget_data($node);
+//if($node->totalDataCount > 4) $count = '<span class=\"hideOnExpand\">5 </span>';
+//$header='<div class=\"tableHeader\"><h2>Top ' . $count .'Award Methods</h2><span class=\"contCount\"> Number of Award Methods:  ' . number_format($node->totalDataCount) . '</span></div>';
 return $header;
 ",
 "footer":"
