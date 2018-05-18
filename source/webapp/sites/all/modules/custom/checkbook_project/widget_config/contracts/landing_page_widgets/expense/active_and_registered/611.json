@@ -4,10 +4,12 @@
 "no_results_content":"No Results Found",
 "defaultParameters":{"type_of_year":"B","document_code.document_code.document_code":"MA1~CTA1~CT1","status_flag":"A"},
 "cleanURLParameters":["mwbe","year","calyear","agency","yeartype","vendor","status","cagency","cvendor","csize","cindustry","awdmethod"],
- "urlParamMap":{"mwbe":"minority_type_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"vendor_id","status":"status_flag","cagency":"agency_id","cvendor":"vendor_id","csize":"award_size_id","cindustry":"industry_type_id","awdmethod":"award_method_id"},
+"urlParamMap":{"mwbe":"minority_type_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"vendor_id","status":"status_flag","cagency":"agency_id","cvendor":"vendor_id","csize":"award_size_id","cindustry":"industry_type_id","awdmethod":"award_method_id"},
 "preProcessConfiguration":"
-    $node->is_mwbe = _checkbook_check_is_mwbe_page();
-if($node->is_mwbe) $node->widgetConfig->dataset = 'checkbook:mwbe_contracts_coa_aggregates';
+  //$node->is_mwbe = _checkbook_check_is_mwbe_page();
+  //if($node->is_mwbe) $node->widgetConfig->dataset = 'checkbook:mwbe_contracts_coa_aggregates';
+  if(RequestUtilities::getRequestParamValue('vendor') || RequestUtilities::getRequestParamValue('cvendor') || RequestUtilities::getRequestParamValue('svendor'))
+  $node->widgetConfig->dataset = 'checkbook:edc_mag_contracts_coa_aggregates';
 ",
 "dataset": "checkbook:edc_contracts_coa_aggregates_no_vendor",
 "noDataInitialLoad":true,
@@ -47,16 +49,16 @@ if($node->is_mwbe) $node->widgetConfig->dataset = 'checkbook:mwbe_contracts_coa_
 "disableViewAll":true,
 "getTotalDataCount":true,
 "header":"
-$node->widgetConfig->getData=true;
-unset($node->widgetConfig->limit);
-load_widget_data($node);
-$total = 0;
-foreach($node->data as $key=>$row){
-     $total += $row['total_contracts'];
-}
-$header='<div class=\"tableHeader\"><h2>Contracts by Industries</h2>
-<span class=\"contCount\"> Number of Contracts:  ' . number_format($total) . '</span>
-</div>';
+//$node->widgetConfig->getData=true;
+//unset($node->widgetConfig->limit);
+//load_widget_data($node);
+//$total = 0;
+//foreach($node->data as $key=>$row){
+//     $total += $row['total_contracts'];
+//}
+//$header='<div class=\"tableHeader\"><h2>Contracts by Industries</h2>
+//<span class=\"contCount\"> Number of Contracts:  ' . number_format($total) . '</span>
+//</div>';
 return $header;
 ",
 "footer":"
