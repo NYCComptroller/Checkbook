@@ -1,5 +1,8 @@
 <?php
 
+class DefaultMailSystem{
+}
+
 include_once __DIR__ . '/../../../webapp/sites/all/modules/custom/checkbook_etl_status/checkbook_etl_status.module';
 
 use PHPUnit\Framework\TestCase;
@@ -163,8 +166,8 @@ class EtlStatusModuleTest extends TestCase
             'data' => $this->fakeYesterday
         ];
 
-        $this->assertEquals("FAIL (last successful run " .
-            $this->CES->formatDisplayDate($this->fakeYesterday) . ")",
+        $this->assertEquals('<strong style="color:red">FAIL</strong> (last success: ' .
+            $this->CES->niceDisplayDate($this->fakeYesterday) . ")",
             $CheckbookEtlStatus->formatStatus($sampleData));
     }
 
@@ -187,8 +190,8 @@ class EtlStatusModuleTest extends TestCase
             'data' => $this->fakeToday
         ];
 
-        $this->assertEquals("SUCCESS (ran within last 12 hours :: " .
-            $this->CES->formatDisplayDate($this->fakeToday) . ")",
+        $this->assertEquals('<strong style="color:darkgreen">SUCCESS</strong> (finished: ' .
+            $this->CES->niceDisplayDate($this->fakeToday) . ")",
             $CheckbookEtlStatus->formatStatus($sampleData));
     }
 
@@ -229,6 +232,10 @@ class EtlStatusModuleTest extends TestCase
             ->will($this->returnValue($this->fakeTimeToday));
 
         $CheckbookEtlStatus->expects($this->once())
+            ->method('date')
+            ->will($this->returnValue($this->fakeToday));
+
+        $CheckbookEtlStatus->expects($this->once())
             ->method('getUatStatus')
             ->will($this->returnValue([
                 'success' => true,
@@ -245,12 +252,12 @@ class EtlStatusModuleTest extends TestCase
         $CheckbookEtlStatus->mail($message);
 
         $expected = <<<EOM
-UAT  ETL STATUS:\tSUCCESS (ran within last 12 hours :: {$this->CES->formatDisplayDate($this->fakeToday)})
-PROD ETL STATUS:\tFAIL (last successful run {$this->CES->formatDisplayDate($this->fakeYesterday)})
+UAT  ETL STATUS:\t<strong style="color:darkgreen">SUCCESS</strong> (finished: {$this->CES->niceDisplayDate($this->fakeToday)})<br /><br />
+PROD ETL STATUS:\t<strong style="color:red">FAIL</strong> (last success: {$this->CES->niceDisplayDate($this->fakeYesterday)})
 
 EOM;
 
-        $this->assertEquals('ETL Status Report', $message['subject']);
+        $this->assertEquals('ETL Status: Fail ('.$this->fakeToday.')', $message['subject']);
         $this->assertEquals($expected, $message['body'][0]);
     }
 
@@ -287,8 +294,8 @@ EOM;
         $CheckbookEtlStatus->mail($message);
 
         $expected = <<<EOM
-UAT  ETL STATUS:\tFAIL (last successful run {$this->CES->formatDisplayDate($this->fakeYesterday)})
-PROD ETL STATUS:\tSUCCESS (ran within last 12 hours :: {$this->CES->formatDisplayDate($this->fakeToday)})
+UAT  ETL STATUS:\t<strong style="color:red">FAIL</strong> (last success: {$this->CES->niceDisplayDate($this->fakeYesterday)})<br /><br />
+PROD ETL STATUS:\t<strong style="color:darkgreen">SUCCESS</strong> (finished: {$this->CES->niceDisplayDate($this->fakeToday)})
 
 EOM;
 
@@ -301,7 +308,7 @@ EOM;
     public function test_format_display_date()
     {
         $testDate = '2099-12-11 01:02:03.456789';
-        $this->assertEquals('2099-12-11 01:02', $this->CES->formatDisplayDate($testDate));
+        $this->assertEquals('2099-12-11 01:02AM', $this->CES->niceDisplayDate($testDate));
     }
 
     /**
