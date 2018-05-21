@@ -73,157 +73,162 @@
     Drupal.behaviors.exportSmartSearchTransactions = {
             attach:function (context, settings) {
 //                $('span.exportSmartSearch').unbind("click");
-                $('span.exportSmartSearch').live("click", function () {
+                $('span.exportSmartSearch').once('exportSmartSearch', function() {
+                  $('span.exportSmartSearch').live("click", function () {
 
-                    var dialog = $("#dialogss");
-                    if ($("#dialogss").length == 0) {
-                        dialog = $('<div id="dialogss" style="display:none"></div>');
-//                        console.log('new dialog.init');
+                    var dialog = $("#dialog");
+                    if ($("#dialog").length == 0) {
+                      dialog = $('<div id="dialog" style="display:none"></div>');
+  //                        console.log('new dialog.init');
                     } else {
-//                      console.log('$("#dialog").length = '+$("#dialog").length);
+  //                      console.log('$("#dialog").length = '+$("#dialog").length);
                     }
                     var domains = '';
-                    $.each($('input[name=fdomainName]:checked'),function(){
-                    	domains = domains + "~" + this.value;
+                    $.each($('input[name=fdomainName]:checked'), function () {
+                      domains = domains + "~" + this.value;
                     });
-                    if(domains == '' ){
-                    	$.each($('input[name=fdomainName]'),function(){
-                            domains = domains + "~" + this.value;
-                        });
+                    if (domains == '') {
+                      $.each($('input[name=fdomainName]'), function () {
+                        domains = domains + "~" + this.value;
+                      });
                     }
                     var dialogUrl = '/exportSmartSearch/form?search_term=' + getParameterByName("search_term") + '&totalRecords=' + $(this).attr("value")
-                    					+ '&resultsdomains=' + domains;
+                      + '&resultsdomains=' + domains;
 
                     var checked_domains = '';
-                    $.each($('input[name=fdomainName]:checked'),function(){
-                        checked_domains = checked_domains == '' ? this.value : checked_domains + "~" + this.value;
+                    $.each($('input[name=fdomainName]:checked'), function () {
+                      checked_domains = checked_domains == '' ? this.value : checked_domains + "~" + this.value;
                     });
-                    if(checked_domains == '' ){
-                        $.each($('input[name=fdomainName]'),function(){
-                            checked_domains = checked_domains == '' ? this.value : checked_domains + "~" + this.value;
-                        });
+                    if (checked_domains == '') {
+                      $.each($('input[name=fdomainName]'), function () {
+                        checked_domains = checked_domains == '' ? this.value : checked_domains + "~" + this.value;
+                      });
                     }
                     var array_domains = checked_domains.split('~');
 
                     //Re-order checked priority as doesn't match the facet order
                     var array_checked_domains = [];
-                    if($.inArray('spending',array_domains) > -1) array_checked_domains.push('spending');
-                    if($.inArray('payroll',array_domains) > -1) array_checked_domains.push('payroll');
-                    if($.inArray('contracts',array_domains) > -1) array_checked_domains.push('contracts');
-                    if($.inArray('budget',array_domains) > -1) array_checked_domains.push('budget');
-                    if($.inArray('revenue',array_domains) > -1) array_checked_domains.push('revenue');
+                    if ($.inArray('spending', array_domains) > -1) array_checked_domains.push('spending');
+                    if ($.inArray('payroll', array_domains) > -1) array_checked_domains.push('payroll');
+                    if ($.inArray('contracts', array_domains) > -1) array_checked_domains.push('contracts');
+                    if ($.inArray('budget', array_domains) > -1) array_checked_domains.push('budget');
+                    if ($.inArray('revenue', array_domains) > -1) array_checked_domains.push('revenue');
 
                     var dialog_html = '';
                     dialog_html += '<div id="loading_gif" style="display:none"></div>';
-                    dialog_html += '<div id="errorMessagesss"></div>';
+                    dialog_html += '<div id="errorMessages"></div>';
                     dialog_html += '<p>Type of Data:</p>';
                     dialog_html += '<table>';
                     dialog_html += '<tr>';
-                    dialog_html += '<td><input type="radio" name="domain" value="spending"' + getCheckboxAttributes('spending',array_checked_domains) + ' />&nbsp;Spending</td>';
-                    dialog_html += '<td><input type="radio" name="domain" value="payroll"' + getCheckboxAttributes('payroll',array_checked_domains) + ' />&nbsp;Payroll</td>';
-                    dialog_html += '<td><input type="radio" name="domain" value="contracts"' + getCheckboxAttributes('contracts',array_checked_domains) + ' />&nbsp;Contracts</td>';
+                    dialog_html += '<td><input type="radio" name="domain" value="spending"' + getCheckboxAttributes('spending', array_checked_domains) + ' />&nbsp;Spending</td>';
+                    dialog_html += '<td><input type="radio" name="domain" value="payroll"' + getCheckboxAttributes('payroll', array_checked_domains) + ' />&nbsp;Payroll</td>';
+                    dialog_html += '<td><input type="radio" name="domain" value="contracts"' + getCheckboxAttributes('contracts', array_checked_domains) + ' />&nbsp;Contracts</td>';
                     dialog_html += '</tr>';
                     dialog_html += '<tr>';
-                    dialog_html += '<td><input type="radio" name="domain" value="budget"' + getCheckboxAttributes('budget',array_checked_domains) + ' />&nbsp;Budget</td>';
-                    dialog_html += '<td><input type="radio" name="domain" value="revenue"' + getCheckboxAttributes('revenue',array_checked_domains) + ' />&nbsp;Revenue</td>';
+                    dialog_html += '<td><input type="radio" name="domain" value="budget"' + getCheckboxAttributes('budget', array_checked_domains) + ' />&nbsp;Budget</td>';
+                    dialog_html += '<td><input type="radio" name="domain" value="revenue"' + getCheckboxAttributes('revenue', array_checked_domains) + ' />&nbsp;Revenue</td>';
                     dialog_html += '</tr>';
                     dialog_html += '</table>';
                     dialog_html += '<span id="export-message"></span>';
 
                     // load remote content
                     dialog.load(
-                        dialogUrl,
-                        {},
-                        function (responseText, textStatus, XMLHttpRequest) {
-                            dialog.dialog({position:"center",
-                                modal:true,
-                                title:'Download Search Results',
-                                dialogClass:"export",
-                                resizable:false,
-                                width:700,
-                                open:function(){
-                                    $("#dialog").html(dialog_html);
+                      dialogUrl,
+                      {},
+                      function (responseText, textStatus, XMLHttpRequest) {
+                        dialog.dialog({
+                          position: "center",
+                          modal: true,
+                          title: 'Download Search Results',
+                          dialogClass: "export",
+                          resizable: false,
+                          width: 700,
+                          open: function () {
+                            $("#dialog").html(dialog_html);
+                          },
+                          buttons: {
+                            "Download Data": function () {
+                              var inputs = "<input type='hidden' name='search_term' value='" + getParameterByName("search_term") + "'/>"
+                                + "<input type='hidden' name='domain' value='" + $('input[name=domain]:checked').val() + "'/>";
+                              var url = '/exportSmartSearch/download';
+                              $('<form id="downloadForm" action="' + url + '" method="get">' + inputs + '</form>')
+                                .appendTo('body')
+                                .submit()
+                                .remove();
+
+                              $('#dialog #export-message').addClass('disable_me');
+                              $('.ui-dialog-titlebar').addClass('disable_me');
+                              $('.ui-dialog-buttonpane').addClass('disable_me');
+                              $('#dialog').addClass('disable_me');
+                              $('#loading_gif').show();
+                              $('#loading_gif').addClass('loading_bigger_gif');
+
+                              $.ajax({
+                                url: $('#downloadForm').attr('action'),
+                                data: {
+                                  search_term: getParameterByName("search_term"),
+                                  domain: $('input[name=domain]:checked').val()
                                 },
-                                buttons:{
-                                    "Download Data":function () {
-                                        var inputs = "<input type='hidden' name='search_term' value='" +  getParameterByName("search_term") + "'/>"
-                                        + "<input type='hidden' name='domain' value='" + $('input[name=domain]:checked').val() + "'/>";
-                                    	var url = '/exportSmartSearch/download';
-                                        $('<form id="downloadForm" action="' + url + '" method="get">' + inputs + '</form>')
-                                            .appendTo('body')
-                                            .submit()
-                                            .remove();
-
-                                        $('#dialog #export-message').addClass('disable_me');
-                                        $('.ui-dialog-titlebar').addClass('disable_me');
-                                        $('.ui-dialog-buttonpane').addClass('disable_me');
-                                        $('#dialog').addClass('disable_me');
-                                        $('#loading_gif').show();
-                                        $('#loading_gif').addClass('loading_bigger_gif');
-
-                                        $.ajax({
-                                            url: $('#downloadForm').attr('action'),
-                                            data: {search_term: getParameterByName("search_term"), domain: $('input[name=domain]:checked').val()},
-                                            success:function(){
-                                                    $('#dialog #export-message').removeClass('disable_me');
-                                                    $('.ui-dialog-titlebar').removeClass('disable_me');
-                                                    $('.ui-dialog-buttonpane').removeClass('disable_me');
-                                                    $('#dialog').removeClass('disable_me');
-                                                    $('#loading_gif').hide();
-                                                    $('#loading_gif').removeClass('loading_bigger_gif');
-                                            },
-                                            error:function(){
-                                                    $('#dialog #export-message').removeClass('disable_me');
-                                                    $('.ui-dialog-titlebar').removeClass('disable_me');
-                                                    $('.ui-dialog-buttonpane').removeClass('disable_me');
-                                                    $('#dialog').removeClass('disable_me');
-                                                    $('#loading_gif').hide();
-                                                    $('#loading_gif').removeClass('loading_bigger_gif');
-                                            }
-                                        });
-                                    },
-                                    "Cancel":function () {
-                                        $(this).dialog('close');
-                                    }
+                                success: function () {
+                                  $('#dialog #export-message').removeClass('disable_me');
+                                  $('.ui-dialog-titlebar').removeClass('disable_me');
+                                  $('.ui-dialog-buttonpane').removeClass('disable_me');
+                                  $('#dialog').removeClass('disable_me');
+                                  $('#loading_gif').hide();
+                                  $('#loading_gif').removeClass('loading_bigger_gif');
+                                },
+                                error: function () {
+                                  $('#dialog #export-message').removeClass('disable_me');
+                                  $('.ui-dialog-titlebar').removeClass('disable_me');
+                                  $('.ui-dialog-buttonpane').removeClass('disable_me');
+                                  $('#dialog').removeClass('disable_me');
+                                  $('#loading_gif').hide();
+                                  $('#loading_gif').removeClass('loading_bigger_gif');
                                 }
-                            });
-                            //$('.ui-dialog-buttonpane').append('<div class="exportDialogMessage">*Required Field</div>');
-                            onChangeDomain('spending');
-
-                            //On change of domain
-                            $('input:radio[name=domain]').change(function () {
-                                onChangeDomain($('input[name=domain]:checked').val());
-                            });
-
-                            function onChangeDomain(domain) {
-                                var totalRecords = 0;
-                                var selectedRecords = 0;
-                                var domainCounts = $('.exportSmartSearch').attr("value");
-                                var arrayDomainCounts = domainCounts.split('~');
-                                var selectedDomain = $('input[name=domain]:checked').val();
-                                $.each(arrayDomainCounts,function(i, val) {
-                                    var domainCount = val.split('|');
-                                    if(selectedDomain == domainCount[0])
-                                        selectedRecords = domainCount[1];
-                                    totalRecords += parseInt(domainCount[1]);
-                                });
-                                var message ='';
-                                if(selectedRecords <= 200000){
-                                     message = addCommas(selectedRecords) +" "+ selectedDomain +" records available for download. " +
-                                        "The report will be in Comma Delimited format. Only one domain can be selected at a time to download the data.";
-                                }
-                                else{
-                                     message = "Maximum of 200,000 records available for download from "+addCommas(selectedRecords)+" available "+selectedDomain+" records. " +
-                                        "The report will be in Comma Delimited format. Only one domain can be selected at a time to download the data.";
-                                }
-
-                                $('#export-message').html(message);
+                              });
+                            },
+                            "Cancel": function () {
+                              $(this).dialog('close');
                             }
+                          }
+                        });
+                        //$('.ui-dialog-buttonpane').append('<div class="exportDialogMessage">*Required Field</div>');
+                        onChangeDomain('spending');
+
+                        //On change of domain
+                        $('input:radio[name=domain]').change(function () {
+                          onChangeDomain($('input[name=domain]:checked').val());
+                        });
+
+                        function onChangeDomain(domain) {
+                          var totalRecords = 0;
+                          var selectedRecords = 0;
+                          var domainCounts = $('.exportSmartSearch').attr("value");
+                          var arrayDomainCounts = domainCounts.split('~');
+                          var selectedDomain = $('input[name=domain]:checked').val();
+                          $.each(arrayDomainCounts, function (i, val) {
+                            var domainCount = val.split('|');
+                            if (selectedDomain == domainCount[0])
+                              selectedRecords = domainCount[1];
+                            totalRecords += parseInt(domainCount[1]);
+                          });
+                          var message = '';
+                          if (selectedRecords <= 200000) {
+                            message = addCommas(selectedRecords) + " " + selectedDomain + " records available for download. " +
+                              "The report will be in Comma Delimited format. Only one domain can be selected at a time to download the data.";
+                          }
+                          else {
+                            message = "Maximum of 200,000 records available for download from " + addCommas(selectedRecords) + " available " + selectedDomain + " records. " +
+                              "The report will be in Comma Delimited format. Only one domain can be selected at a time to download the data.";
+                          }
+
+                          $('#export-message').html(message);
                         }
+                      }
                     );
                     return false;
+                  });
                 });
-
                 function getCheckboxAttributes(domain,array_domains) {
                     var checked_domain = array_domains[0];
                     return (checked_domain == domain ? ' checked' : '') + ($.inArray(domain,array_domains) > -1 ? '' : ' disabled');
