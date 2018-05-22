@@ -15,7 +15,7 @@
   "autocompleteParamName": "vendor_auto",
   "autocompleteID": "fvendorId",
   "autocompleteField": "vendor.vendor.legal_name",
-  "maxSelect": 1,
+  "maxSelect": 5,
   "urlParamMap": {
     "doctype": "document_code.document_code.document_code"
   },
@@ -26,7 +26,7 @@
       $parameters['fiscal_year_id'] = $year;
     }
     //Set spending vendor id for vendor spending transactions
-    if(isset($parameters['vendor_id'])){
+    if(RequestUtilities::getRequestParamValue('vendor') || RequestUtilities::getRequestParamValue('cvendor')){
       $parameters['disb_vendor_id'] = $parameters['vendor_id'];
     }
     $adjustedParameters = $parameters;
