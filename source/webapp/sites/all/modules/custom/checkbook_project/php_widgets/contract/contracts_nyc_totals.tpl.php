@@ -45,7 +45,7 @@
           ?>
         <div<?php echo $class; ?>>
       <?php if($node->data[0]['total_contracts'] > 0 ){?>
-          <a href="/<?php echo $active_link; ?>?expandBottomCont=true"><?php echo $count; ?><br>Active<br>Expense Contracts<br><?php echo $dollars; ?></a>
+          <a href="/<?php echo $active_link; ?>"><?php echo $count; ?><br>Active<br>Expense Contracts<br><?php echo $dollars; ?></a>
         <?php }else{?>
         <?php echo $count; ?><br>Active<br>Expense Contracts<br><?php echo $dollars; ?>
         <?php }?>
@@ -64,7 +64,7 @@
       <td<?php echo $class; ?>>
         <div class="positioning">
       <?php if($node->data[1]['total_contracts'] > 0 ){?>
-        <a href="/<?php echo $reg_link; ?>?expandBottomCont=true"><?php echo $count; ?><br>Registered<br>Expense Contracts<br><?php echo $dollars; ?></a>
+        <a href="/<?php echo $reg_link; ?>"><?php echo $count; ?><br>Registered<br>Expense Contracts<br><?php echo $dollars; ?></a>
         <?php }else{?>
         <?php echo $count; ?><br>Registered<br>Expense Contracts<br><?php echo $dollars; ?>
         <?php }?>
@@ -84,7 +84,7 @@
       <td<?php echo $class; ?>>
         <div class="positioning">
         <?php if($node->data[2]['total_contracts'] > 0 ){?>
-          <a href="/<?php echo $active_link; ?>?expandBottomCont=true"><?php echo $count; ?><br>Active<br>Revenue Contracts<br><?php echo $dollars; ?></a>
+          <a href="/<?php echo $active_link; ?>"><?php echo $count; ?><br>Active<br>Revenue Contracts<br><?php echo $dollars; ?></a>
         <?php }else{?>
         <?php echo $count; ?><br>Active<br>Revenue Contracts<br><?php echo $dollars; ?>
         <?php }?>
@@ -104,7 +104,7 @@
       <td<?php echo $class; ?>>
         <div class="positioning">
       <?php if($node->data[3]['total_contracts'] > 0 ){?>
-          <a href="/<?php echo $reg_link; ?>?expandBottomCont=true"><?php echo $count; ?><br>Registered<br>Revenue Contracts<br><?php echo $dollars; ?></a>
+          <a href="/<?php echo $reg_link; ?>"><?php echo $count; ?><br>Registered<br>Revenue Contracts<br><?php echo $dollars; ?></a>
         <?php }else{?>
         <?php echo $count; ?><br>Registered<br>Revenue Contracts<br><?php echo $dollars; ?>
         <?php }?>
@@ -123,7 +123,7 @@
       <td<?php echo $class;?>>
         <div class="positioning">
       <?php if($node->data[5]['total_contracts'] > 0 ){?>
-          <a href="/<?php echo $pending_exp_link; ?>?expandBottomCont=true"><?php echo $count; ?><br>Pending<br>Expense Contracts<br><?php echo $dollars; ?></a>
+          <a href="/<?php echo $pending_exp_link; ?>"><?php echo $count; ?><br>Pending<br>Expense Contracts<br><?php echo $dollars; ?></a>
         <?php }else{?>
         <?php echo $count; ?><br>Pending<br>Expense Contracts<br><?php echo $dollars; ?>
         <?php }?>
@@ -143,7 +143,7 @@
       <td class="last<?php echo $class;?>">
         <div class="positioning">
         <?php if($node->data[7]['total_contracts'] > 0 ){?>
-          <a href="/<?php echo $pending_rev_link; ?>?expandBottomCont=true"><?php echo $count; ?><br>Pending<br>Revenue Contracts<br><?php echo $dollars; ?></a>
+          <a href="/<?php echo $pending_rev_link; ?>"><?php echo $count; ?><br>Pending<br>Revenue Contracts<br><?php echo $dollars; ?></a>
         <?php }else{?>
         <?php echo $count; ?><br>Pending<br>Revenue Contracts<br><?php echo $dollars; ?>
         <?php }?>
