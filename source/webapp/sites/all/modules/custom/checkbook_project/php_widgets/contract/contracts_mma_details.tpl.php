@@ -65,11 +65,11 @@ if (RequestUtilities::getRequestParamValue("datasource") != "checkbook_oge") {
         if ( RequestUtilities::getRequestParamValue("datasource") == "checkbook_oge" && !preg_match('/newwindow/',$_GET['q']) && $node->data_source_amounts_differ) {
             $alt_txt = "This master agreement has additional information as a prime vendor.<br><br> Click this icon to view this contract as a prime vendor. ";
             $url="/contract_details/magid/" .  RequestUtilities::getRequestParamValue("magid") . "/doctype/MMA1/newwindow";
-            echo "<div class='contractLinkNote'><a class='new_window' href='". $url ."' alt='" . $alt_txt . "' >Open in New Window</a></div>";
+            echo "<div class='contractLinkNote contractIcon'><a class='new_window' href='". $url ."' alt='" . $alt_txt . "' >Open in New Window</a></div>";
         }elseif( !preg_match('/newwindow/',$_GET['q']) && _checkbook_is_oge_parent_contract($node->data[0]['contract_number'])  && $node->data_source_amounts_differ){
             $alt_txt = "This master agreement has additional information as an agency <br><br> Click this icon to view this contract as an agency ";
             $url="/contract_details/magid/" .  RequestUtilities::getRequestParamValue("magid") . "/doctype/MMA1/datasource/checkbook_oge/newwindow";
-            echo "<div class='contractLinkNote'><a class='new_window' href='". $url ."' alt='" . $alt_txt . "' >Open in New Window</a></div>";
+            echo "<div class='contractLinkNote contractIcon'><a class='new_window' href='". $url ."' alt='" . $alt_txt . "' >Open in New Window</a></div>";
         }
         ?>
     </div>
