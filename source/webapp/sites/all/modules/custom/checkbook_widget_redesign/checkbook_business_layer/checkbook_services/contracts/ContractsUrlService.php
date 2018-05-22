@@ -379,14 +379,8 @@ class ContractsUrlService {
      * @return string
      */
     static function primeVendorUrl($vendor_id, $year_id = null, $current = true,$contractCode = null) {
-        if ($contractCode == "RCT1") {
-            $page = '/contracts_revenue_landing';
-        }
-        else {
-            $page='/contracts_landing';
-        }
 
-        $url = $page.RequestUtilities::_getUrlParamString("agency")
+        $url = RequestUtilities::_getUrlParamString("agency")
             . RequestUtilities::_getUrlParamString("contstatus","status")
             . RequestUtilities::_getUrlParamString("cindustry")
             . RequestUtilities::_getUrlParamString("csize")
