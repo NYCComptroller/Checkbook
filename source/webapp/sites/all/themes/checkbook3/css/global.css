@@ -849,7 +849,6 @@ td.active div.indicator {
     margin-bottom: -17px;
     position: relative;
     top: 1px;
-    z-index: 10;
 }
 /********************
 *** CHART STYLING ***
