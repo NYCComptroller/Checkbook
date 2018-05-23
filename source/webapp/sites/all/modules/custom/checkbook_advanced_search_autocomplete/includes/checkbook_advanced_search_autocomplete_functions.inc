@@ -38,7 +38,10 @@ function _get_spending_advanced_search_autocomplete_results($facet, $query, $yea
         $query .= '&fq=agency_id:' . $agency;
     }
     if ($expcategory) {
-        $query .= '&fq=expenditure_object_name:' . '"'._checkbook_autocomplete_escapeSolrValue(trim($expcategory)).'"';
+        if($data_source == 'checkbook_oge')
+            $query .= '&fq=expenditure_object_code:' . '"'._checkbook_autocomplete_escapeSolrValue(trim($expcategory)).'"';
+        else
+            $query .= '&fq=expenditure_object_name:' . '"'._checkbook_autocomplete_escapeSolrValue(trim($expcategory)).'"';
     }
     if($exptype){
         $query .= '&fq=spending_category_id:'.$exptype;
