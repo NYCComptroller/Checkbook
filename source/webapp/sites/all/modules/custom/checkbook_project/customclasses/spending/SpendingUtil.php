@@ -913,7 +913,13 @@ class SpendingUtil{
 
         $url =  $path . _checkbook_project_get_year_url_param_string();
 
-        $pathParams = explode('/',drupal_get_path_alias($_GET['q']));
+        $q = drupal_get_path_alias($_GET['q']);
+        if (_checkbook_current_request_is_ajax()) {
+          $q = $_SERVER['HTTP_REFERER'];
+        }
+
+        $pathParams = explode('/', $q);
+
         $url_params = self::$landingPageParams;
         $exclude_params = array_keys($override_params);
         if(is_array($url_params)){
