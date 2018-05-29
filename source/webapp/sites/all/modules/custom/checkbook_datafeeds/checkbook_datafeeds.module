@@ -1523,6 +1523,7 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
             $form['filter']['contractno'] = array(
                 '#type' => 'textfield',
                 '#title' => t('Contract ID:'),
+                '#maxlength'=>32,
                 '#attributes' => array('class' => array('watch')),
                 '#prefix' => '<div class="datafield contractno">',
                 '#suffix' => '</div>',
@@ -1801,6 +1802,7 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                 '#attributes' => array('class' => array('watch')),
                 '#prefix' => '<div class="datafield contractno">',
                 '#suffix' => '</div>',
+                '#maxlength' => 32,
                 '#id' => 'edit-contractno',
                 '#name' => 'contractno',
                 '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'contractno', $first_time_load, ''),
@@ -4657,6 +4659,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
                 '#suffix' => '</div>',
                 '#attributes' => array('class' => array('watch')),
                 '#id' => 'edit-contractno',
+                '#maxlength'=>32,
                 '#name' => 'contractno',
                 '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'contractno', $first_time_load, ''),
             );
@@ -4899,6 +4902,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
                 '#title' => t('Contract ID:'),
                 '#prefix' => '<div class="datafield contractno">',
                 '#suffix' => '</div>',
+                '#maxlength'=>32,
                 '#attributes' => array('class' => array('watch')),
                 '#id' => 'edit-contractno',
                 '#name' => 'contractno',
