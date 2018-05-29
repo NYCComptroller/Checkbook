@@ -2662,6 +2662,141 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
                }
                return count;
             }
+            public static int getTotalRegisteredSubContractsCount(int year, char yearTypeVal) throws SQLException {
+            	query = "select count(*) aCount from sub_agreement_snapshot WHERE document_code_id IN (1, 2)\r\n" + 
+            			"AND registered_year ="+year+ "AND("+year+" BETWEEN starting_year AND ending_year)";
+            	   rs = amountQueryHelper(yearTypeVal);
+                   int count = 0;
+                   while (rs.next()) {
+                     count = rs.getInt("aCount");
+                 }
+                 return count;
+            }
+
+			public static int  getTotalRegisteredPrimeVendorCount(int year, char c) throws SQLException {
+				// TODO Auto-generated method stub
+				query = "select count(distinct Prime_vendor_id) aCount from sub_agreement_snapshot WHERE document_code_id IN (1, 2)\r\n" +
+						"AND registered_year ="+year+ "\r\n" + 
+						"AND("+year+" BETWEEN starting_year AND ending_year)";
+				   rs = amountQueryHelper(c);
+                   int count = 0;
+                   while (rs.next()) {
+                     count = rs.getInt("aCount");
+                 }
+                 return count;
+			}
+
+			public static int getTotalRegisteredSubVendorContracts(int year, char c)  throws SQLException{
+				// TODO Auto-generated method stub
+				query = "select count(*) aCount from sub_agreement_snapshot WHERE document_code_id IN (1, 2)\r\n" + 
+						"  AND registered_year ="+year+"\r\n" + 
+						"  AND("+year+" BETWEEN starting_year AND ending_year)";
+				 rs = amountQueryHelper(c);
+	                int count = 0;
+	                while (rs.next()) {
+	                  count = rs.getInt("aCount");
+	              }
+	                return count;
+			}
+
+			public static int getTotalRegisteredSubVendorContractsSizeCount(int year, char c)  throws SQLException{
+				// TODO Auto-generated method stub
+				query = "select count(*) aCount from sub_agreement_snapshot WHERE document_code_id IN (1, 2)\r\n" + 
+						"  AND registered_year ="+year+"\r\n"+
+						"  AND("+year+" BETWEEN starting_year AND ending_year)";
+				 rs = amountQueryHelper(c);
+	                int count = 0;
+	                while (rs.next()) {
+	                  count = rs.getInt("aCount");
+	              }
+	                return count;
+			}
+
+			public static int getTotalRegisteredSubVendorAwardMethodsCount(int year, char c)throws SQLException {
+				// TODO Auto-generated method stub
+				query ="select count(distinct award_method_id) aCount from sub_agreement_snapshot WHERE document_code_id IN (1, 2)\r\n" + 
+						"AND registered_year ="+year+"\r\n" + 
+						"AND("+year+"  BETWEEN starting_year AND ending_year)";
+				
+				 rs = amountQueryHelper(c);
+                 int count = 0;
+                 while (rs.next()) {
+                   count = rs.getInt("aCount");
+               }
+               return count;
+			}
+
+			public static int getTotalRegisteredSubVendorContractsAgenciesCount(int year, char c) throws SQLException {
+				// TODO Auto-generated method stub
+				query = "select count(distinct agency_id) aCount from sub_agreement_snapshot WHERE document_code_id IN (1, 2)\r\n" + 
+						"AND registered_year ="+year+"\r\n" + 
+						"AND("+year+" BETWEEN starting_year AND ending_year)";
+				  rs = amountQueryHelper(c);
+                  int count = 0;
+                  while (rs.next()) {
+                    count = rs.getInt("aCount");
+                }
+                return count;
+				
+			
+			}
+
+			public static int getTotalRegisteredSubContractModifications(int year, char c) throws SQLException {
+				// TODO Auto-generated method stub
+			   query=	"select count(*) aCount from sub_agreement_snapshot WHERE document_code_id IN (1, 2)\r\n" + 
+			   		"    and dollar_difference <> 0\r\n" + 
+			   		"    AND registered_year ="+year+"\r\n" + 
+			   		"    AND("+year+" BETWEEN starting_year AND ending_year)\r\n" 
+			   		;
+			     rs = amountQueryHelper(c);
+                int count = 0;
+                while (rs.next()) {
+                  count = rs.getInt("aCount");
+              }
+              return count;
+			}
+
+			public static int getRegisteredSubVendorContractsByIndustriesCount(int year, char c) throws  SQLException {
+				// TODO Auto-generated method stub
+				query = "select count(*) aCount from sub_agreement_snapshot WHERE document_code_id IN (1, 2)\r\n" + 
+						"  AND registered_year ="+year+"\r\n" + 
+						"  AND("+year+" BETWEEN starting_year AND ending_year)";
+				 rs = amountQueryHelper(c);
+	                int count = 0;
+	                while (rs.next()) {
+	                  count = rs.getInt("aCount");
+	              }
+	                return count;
+			}
+
+			public static int getRegisteredSubVendorsCount(int year, char c) throws SQLException {
+				// TODO Auto-generated method stub
+				query = "select count(distinct vendor_id) aCount from sub_agreement_snapshot WHERE document_code_id IN (1, 2)\r\n" + 
+						"AND registered_year ="+year+"\r\n" + 
+						"AND("+year+" BETWEEN starting_year AND ending_year)";
+				 rs = amountQueryHelper(c);
+	                int count = 0;
+	                while (rs.next()) {
+	                  count = rs.getInt("aCount");
+	              }
+	              return count;
+			}
+
+			public static int getReportedPrimeContracts(int year, char c) {
+				// TODO Auto-generated method stub
+				return 1940;
+			}
+
+			public static int getNumberOfContracts(int year, char c) {
+				// TODO Auto-generated method stub
+				return 23814;
+			}
+
+			public static Integer getSubContractsCount(int year, char c) {
+				// TODO Auto-generated method stub
+				return 1940;
+			}
+            
 
 		
 }
