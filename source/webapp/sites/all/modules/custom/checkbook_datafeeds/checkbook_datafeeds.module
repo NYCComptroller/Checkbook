@@ -5750,6 +5750,11 @@ function checkbook_datafeeds_spending_validate($form, &$form_state) {
     $dateto = $form_state['values']['issuedto'];
     $vendor = $form_state['values']['payee_name'];
     $contract_id = $form_state['values']['contractno'];
+    if ('checkbook_oge' == $data_source) {
+      if (!empty($form_state['values']['commodity_line']) && !is_numeric($form_state['values']['commodity_line'])) {
+        form_set_error('commodity_line', t('Commodity Line must be a number.'));
+      }
+    }
     if ($checkfrom && !is_numeric($checkfrom)) {
         form_set_error('checkamtfrom', t('Check Amount must be a number.'));
     }
