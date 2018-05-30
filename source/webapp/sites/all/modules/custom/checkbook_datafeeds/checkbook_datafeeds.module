@@ -2896,14 +2896,15 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
                 switch($data_source) {
                     case 'checkbook_oge':
 
-                        $query = "SELECT DISTINCT vendor_name ";
-                        $query .= "FROM disbursement_line_item_details dld ";
-                        $query .= "JOIN ref_spending_category rsc on rsc.spending_category_id = dld.spending_category_id ";
-                        $query .= "JOIN ref_agency ra on ra.agency_code = dld.agency_code ";
-                        $query .= "WHERE ra.is_display = 'Y' " ;
-                        $query .= "AND vendor_name ilike '".$vendor."'";
-                        if($agency_code) $query .= "AND dld.agency_code = '".$agency_code."'";
-
+                        $query = "SELECT DISTINCT display_vendor_name 
+                                    FROM contracts_detailed_transactions dld 
+                                    WHERE is_vendor_flag = 'Y'
+                                    AND if_for_all_years = 'Y'
+                                    AND latest_flag = 'Y'
+                                    AND type_of_year = 'B'
+                                    AND status_flag = 'A' 
+                                    AND display_vendor_name ILIKE '".$vendor."'";
+                        if($agency_code) $query .= "AND agency_code = '".$agency_code."'";
                         $results = _checkbook_project_execute_sql($query, "main", $data_source);
 
                         break;
