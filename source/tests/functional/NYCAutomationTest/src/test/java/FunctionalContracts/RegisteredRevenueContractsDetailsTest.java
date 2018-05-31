@@ -20,7 +20,7 @@ import helpers.Helper;
 import utilities.TestStatusReport;
 public class RegisteredRevenueContractsDetailsTest extends TestStatusReport{
 
-//	public class RegisteredRevenueContractsDetailsTest extends NYCBaseTest{
+	//public class RegisteredRevenueContractsDetailsTest extends NYCBaseTest{
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	public void GoToPage(){

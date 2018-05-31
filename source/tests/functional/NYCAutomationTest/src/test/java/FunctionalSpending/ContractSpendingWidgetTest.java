@@ -11,10 +11,9 @@ import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 
-import navigation.TopNavigation.Spending.TotalSpending;
+//import navigation.TopNavigation.Spending.TotalSpending;
 import pages.spending.ContractSpendingPage;
 import pages.spending.SpendingPage;
-import pages.spending.TotalSpendingPage;
 import pages.spending.SpendingPage.WidgetOption;
 import pages.home.HomePage;
 import utilities.NYCBaseTest;
@@ -26,9 +25,11 @@ import utilities.TestStatusReport;
 		int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	public void GoToPage(){
-		if (!ContractSpendingPage.isAt()){
-			ContractSpendingPage.GoTo();
-		}
+		
+		ContractSpendingPage.GoTo();
+		//if (!ContractSpendingPage.isAt()){
+		//	ContractSpendingPage.GoTo();
+	//	}
 		if(!(Helper.getCurrentSelectedYear()).equalsIgnoreCase(NYCBaseTest.prop.getProperty("CurrentYear")))
 			HomePage.SelectYear(NYCBaseTest.prop.getProperty("CurrentYear"));
 		HomePage.ShowWidgetDetails();
