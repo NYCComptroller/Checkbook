@@ -25,8 +25,10 @@ public class MWBEPage {
 
 	public static void GoTo(String domain, MWBECategoryOption category) {
 		if(domain.equals("Spending"))
-			TopNavigation.Spending.Select();
-		MWBECategory.select(category);		
+			{TopNavigation.Spending.Select();}
+		else
+			{TopNavigation.Contracts.Select();}
+					MWBECategory.select(category);		
 	}
 
 	public static String GetMWBEAmount() {

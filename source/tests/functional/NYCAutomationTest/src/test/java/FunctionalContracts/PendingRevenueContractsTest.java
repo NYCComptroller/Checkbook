@@ -21,7 +21,7 @@ import utilities.NYCDatabaseUtil;
 import helpers.Helper;
 import utilities.TestStatusReport;
 public class PendingRevenueContractsTest  extends TestStatusReport{
-//public class PendingRevenueContractsTest extends NYCBaseTest {
+	//	public class PendingRevenueContractsTest extends NYCBaseTest {
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
     public void GoToPage() {
@@ -79,7 +79,8 @@ public class PendingRevenueContractsTest  extends TestStatusReport{
 	
 	@Test
     public void VerifyTopNavPendingRevenueContractAmount() throws SQLException {
-        String TotalContractAmtDB = NYCDatabaseUtil.getContractsTopAmount(year, 'B');
+       // String TotalContractAmtDB = NYCDatabaseUtil.getContractsCurrentFYTopAmount(year, 'B');
+		String TotalContractAmtDB = NYCDatabaseUtil.getContractsTopAmount(year, 'B');
         String TotalContractAmtApp = ContractsPage.GetContractsAmount();
         System.out.println(TotalContractAmtApp); 
         assertEquals("Active Revenue Contracts Top navigation amount did not match", TotalContractAmtApp, TotalContractAmtDB);
@@ -108,9 +109,9 @@ public class PendingRevenueContractsTest  extends TestStatusReport{
 	    String[] sliderTitles= {"Top Ten Pending Revenue Contracts by Current Amount", 
 	    		                "Top Ten Agencies by Pending Revenue Contracts", 	    						
 	    						"Top Ten Prime Vendors by Pending Revenue Contracts"};
-	    System.out.println( ContractsPage.VisualizationTitles()); 
-    	assertTrue(Arrays.equals(sliderTitles, ContractsPage.VisualizationTitles().toArray()));
-    	System.out.println( ContractsPage.VisualizationTitles()); 
+	    System.out.println( ContractsPage.VisualizationTitles3()); 
+    	assertTrue(Arrays.equals(sliderTitles, ContractsPage.VisualizationTitles3().toArray()));
+    	System.out.println( ContractsPage.VisualizationTitles3()); 
     }
 	 
 	@Test
@@ -119,7 +120,7 @@ public class PendingRevenueContractsTest  extends TestStatusReport{
 	    						"Top Contract Amount Modifications",
 	    						"Top 5 Prime Vendors",
 	    						"Top 5 Award Methods",
-	    						"Top Agencies",
+	    						"Top 5 Agencies",
 	    						"Contracts by Industries",
 	    						"Contracts by Size"
 	    						};	    						

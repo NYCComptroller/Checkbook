@@ -17,7 +17,7 @@ import helpers.Helper;
 import utilities.TestStatusReport;
 public class PendingExpenseContractsDetailsTest extends TestStatusReport{
 
-//public class PendingExpenseContractsDetailsTest extends NYCBaseTest {
+	//public class PendingExpenseContractsDetailsTest extends NYCBaseTest {
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	public void GoToPage(){

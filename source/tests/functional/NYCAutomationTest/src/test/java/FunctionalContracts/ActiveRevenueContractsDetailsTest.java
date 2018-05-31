@@ -62,7 +62,7 @@ public class ActiveRevenueContractsDetailsTest extends TestStatusReport{
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
 	    assertEquals("Active Revenue Contracts Modifications Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
-	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getARContractsDetailsAmount(year,'B');
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getARContractsModificationDetailsAmount(year,'B');
 		String WidgetDetailsAmountapp = ActiveExpenseContractsPage.GetTransactionAmount1();
 		assertEquals("Active Revenue Contracts Contracts  Widget Details page total Contract amount did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
 	     
