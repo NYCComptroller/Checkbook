@@ -27,10 +27,10 @@ import utilities.TestStatusReport;
 		int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	public void GoToPage(){
-	
-		if (!TrustAgencySpending.isAt()){
-			TrustAgencySpendingPage.GoTo();
-		}
+		TrustAgencySpendingPage.GoTo();
+		//if (!TrustAgencySpending.isAt()){
+		//	TrustAgencySpendingPage.GoTo();
+		//}
 		if(!(Helper.getCurrentSelectedYear()).equalsIgnoreCase(NYCBaseTest.prop.getProperty("CurrentYear")))
 			HomePage.SelectYear(NYCBaseTest.prop.getProperty("CurrentYear"));
 		HomePage.ShowWidgetDetails();

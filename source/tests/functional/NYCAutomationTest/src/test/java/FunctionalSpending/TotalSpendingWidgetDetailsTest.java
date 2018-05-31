@@ -45,7 +45,7 @@ import utilities.NYCDatabaseUtil;
 		
 		String WidgetDetailsTitle =  "Checks Total Spending Transactions";
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
-	    assertEquals("Total Spending Agencies Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
+	    assertEquals("Total Spending Checks Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
 	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getTotalSpendingDetailsAmount(year,'B');
 		String WidgetDetailsAmountApp = HomePage.GetTransactionAmount1();
@@ -79,7 +79,7 @@ import utilities.NYCDatabaseUtil;
 		
 		String WidgetDetailsTitle =  "Expense Categories Total Spending Transactions";
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
-	    assertEquals("Total Spending Agencies Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
+	    assertEquals("Total Spending Exp categories Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
 	    
 	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getTotalSpendingDetailsAmount(year,'B');
@@ -97,7 +97,7 @@ import utilities.NYCDatabaseUtil;
 		
 		String WidgetDetailsTitle =  "Prime Vendors Total Spending Transactions";
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
-	    assertEquals("Total Spending Agencies Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
+	    assertEquals("Total Spending Prime Vendor Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
 	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getTotalSpendingDetailsAmount(year,'B');
 	    String WidgetDetailsAmountApp = HomePage.GetTransactionAmount1();
@@ -114,10 +114,10 @@ import utilities.NYCDatabaseUtil;
 		
 		String WidgetDetailsTitle =  "Contracts Total Spending Transactions";
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
-	    assertEquals("Total Spending Agencies Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
+	    assertEquals("Total Spending Contracts Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
 	    
-	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getTotalSpendingDetailsAmount(year, 'B');
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getTotalSpendingContractsDetailsAmount(year, 'B');
 		String WidgetDetailsAmountApp = HomePage.GetTransactionAmount1();
 	    assertEquals("Total Spending  Contracts  widget details  page total spending amount did not match", WidgetDetailsAmountApp, WidgetDetailsAmountDB);
 }

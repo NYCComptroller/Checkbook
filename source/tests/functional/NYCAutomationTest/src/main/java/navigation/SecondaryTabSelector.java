@@ -6,9 +6,9 @@ import org.openqa.selenium.WebElement;
 import helpers.Driver;
 import java.util.List;
 
- public class SecondaryTabSelector {
+ class SecondaryTabSelector {
 
-   public static void Select(String secondaryTabName) {
+    static void Select(String secondaryTabName) {
         WebElement secTabContainer = Driver.Instance.findElement(By.cssSelector(".nyc_totals_links tr"));
         List<WebElement> tabs = secTabContainer.findElements(By.tagName("td"));
         for (WebElement tab : tabs) {

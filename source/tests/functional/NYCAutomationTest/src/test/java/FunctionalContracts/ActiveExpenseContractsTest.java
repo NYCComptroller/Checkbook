@@ -15,7 +15,6 @@ import pages.contracts.ActiveExpenseContractsPage;
 import pages.contracts.ContractsPage;
 import pages.contracts.ContractsPage.WidgetOption;
 import pages.home.HomePage;
-import pages.spending.SpendingPage;
 import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
 import utilities.TestStatusReport;
@@ -126,7 +125,7 @@ import helpers.Helper;
 	    						"Top Ten Prime Vendors by Active Expense Contracts"};
 	    System.out.println( ContractsPage.VisualizationTitles()); 
     	assertTrue(Arrays.equals(sliderTitles, ContractsPage.VisualizationTitles().toArray()));
-    	System.out.println( ContractsPage.VisualizationTitles()); 
+    	//System.out.println( ContractsPage.VisualizationTitles()); 
     }
 	 
 	@Test

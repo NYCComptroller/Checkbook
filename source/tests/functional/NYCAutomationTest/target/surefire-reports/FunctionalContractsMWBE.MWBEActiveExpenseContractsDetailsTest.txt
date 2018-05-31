@@ -1,0 +1,8 @@
+-------------------------------------------------------------------------------
+Test set: FunctionalContractsMWBE.MWBEActiveExpenseContractsDetailsTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 73.832 sec <<< FAILURE! - in FunctionalContractsMWBE.MWBEActiveExpenseContractsDetailsTest
+VerifyTop5MasterAgreementsTransactionCount(FunctionalContractsMWBE.MWBEActiveExpenseContractsDetailsTest)  Time elapsed: 64.567 sec  <<< FAILURE!
+java.lang.AssertionError: Active Expense Contracts master contracts widget Details page table count did not match expected:<265> but was:<3788>
+	at FunctionalContractsMWBE.MWBEActiveExpenseContractsDetailsTest.VerifyTop5MasterAgreementsTransactionCount(MWBEActiveExpenseContractsDetailsTest.java:45)
+
