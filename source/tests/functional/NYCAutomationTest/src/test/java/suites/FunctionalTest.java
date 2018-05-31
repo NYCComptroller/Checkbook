@@ -9,36 +9,41 @@ import FunctionalSpending.*;
 import FunctionalBudget.*;
 import FunctionalRevenue.*;
 import FunctionalPayroll.*;
+import FunctionalSpendingMWBE.*;
+import FunctionalSpendingSubVendors.*;
 import utilities.NYCBaseTest;
 import utilities.TestStatusReport;
 
-
+/**
+ *
+ * @author sproddutur
+ */
 @RunWith(Suite.class)
 @SuiteClasses({
 
 	/* Spending */
 	TotalSpendingWidgetTest.class,
 	TotalSpendingTitlesTest.class,
-	TotalSpendingWidgetDetailsTest.class,
+	TotalSpendingWidgetDetailsTest.class,	
 	
-	PayrollSpendingWidgetDetailsTest.class,
 	PayrollSpendingWidgetTest.class,
+	PayrollSpendingWidgetDetailsTest.class,	
 	
-	CapitalSpendingWidgetDetailsTest.class,
     CapitalSpendingWidgetTest.class,
-    
-	ContractSpendingWidgetDetailsTest.class,
+    CapitalSpendingWidgetDetailsTest.class,   
+
 	ContractSpendingWidgetTest.class,
+	ContractSpendingWidgetDetailsTest.class,
 	
-	TrustAgencySpendingWidgetDetailsTest.class,
 	TrustAgencySpendingWidgetTest.class,
-	
-	OtherSpendingWidgetDetailsTest.class,
+	TrustAgencySpendingWidgetDetailsTest.class,	
+
 	OtherSpendingWidgetTest.class,
+	OtherSpendingWidgetDetailsTest.class,
 	
 	
 	
-	/*Contracts 
+	/*Contracts */
 	
 	ActiveExpenseContractsTest.class,
 	ActiveExpenseContractsDetailsTest.class,
@@ -53,31 +58,55 @@ import utilities.TestStatusReport;
 	RegisteredRevenueContractsTest.class,
 	RegisteredRevenueContractsDetailsTest.class,
  
-	/* Budget 
+	/* Budget */
 	
 	
 	BudgetWidgetDetailsPageTitlesTest.class,
-	BudgetWidgetDetailsTransactionCountsTest.class,
-	BudgetWidgetDetailsTotalStaticAmountTest.class,
-	
 	BudgetWidgetCountsTest.class,
 	BudgetWidgetTitlesTest.class,
-	
+	BudgetWidgetDetailsTransactionCountsTest.class,
+	BudgetWidgetDetailsTotalStaticAmountTest.class,		
 
-	/* Revenue 
+	/* Revenue */
 	RevenueWidgetTest.class,
     RevenueWidgetTitles.class,
 	RevenueWidgetDetailsTest.class,
 	RevenueWidgetDetailsAmountTest.class,
 	RevenueWidgetDetailsPageTitlesTest.class,
 
-	/* Payroll
+	/* Payroll */
 	PayrollWidgetCountsTest.class,
 	PayrollWidgetTitlesTest.class,
 	PayrollWidgetDetailsPageTitlesTest.class,	
 	PayrollWidgetDetailsTransactionCountsTest.class,
-	*/
 	
+	
+	/* Sub Vendors Spending */
+	SubVendorsTotalSpendingWidgetTest.class,
+	SubvendorsTotalSpendingTitlesTest.class,		
+	SubVendorsTotalSpendingWidgetDetailsTest.class,
+	
+	SubVendorsContractSpendingWidgetTest.class,
+	SubVendorsContractSpendingWidgetDetailsTest.class,
+	
+	/* MWBE Spending */
+	MWBETotalSpendingWidgetTest.class,
+	MWBETotalSpendingTitlesTest.class,
+	MWBETotalSpendingWidgetDetailsTest.class,
+	
+	MWBECapitalSpendingWidgetTest.class,
+	MWBECapitalSpendingWidgetDetailsTest.class,   
+
+	MWBEContractSpendingWidgetTest.class,
+	MWBEContractSpendingWidgetDetailsTest.class,
+	
+	MWBETrustAgencySpendingWidgetTest.class,
+	MWBETrustAgencySpendingWidgetDetailsTest.class,	
+
+	MWBEOtherSpendingWidgetTest.class,
+	MWBEOtherSpendingWidgetDetailsTest.class
+	
+
 })
 public class FunctionalTest extends NYCBaseTest
 //public class FunctionalTest extends TestStatusReport

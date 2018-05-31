@@ -122,10 +122,7 @@ public class TopNavigation {
 				return SecondaryTabSelector.isAt("Pending Revenue Contracts");	
 			}
 		}
-		
-		
 	}
-	
 	
 	public static class Budget{
 		public static void Select() {
@@ -144,28 +141,7 @@ public class TopNavigation {
 			PrimaryTabSelector.Select("employees");
 		}
 	}
-	public static  class SubVendors{
-		
-		public static void Select() {
-			PrimaryTabSelector.SelectTopRightNavigation("subvendors");
-		}	
-		public static class RegisteredSubVendors{
-			public static void Select() {
-				 SecondarySubVendorTabSelector.Select("New Sub Vendor Contracts by Fiscal Year");	
-			}
-			public static boolean isAt() {
-				return  SecondarySubVendorTabSelector.isAt("New Sub Vendor Contracts by Fiscal Year");	
-			}
-		}
-		public static class StatusSubVendors{
-			public static void Select() {
-				StatusSubVendorTabSelector.Select("Status of Sub Vendor Contracts by Prime Vendor");
-			}
-			public static boolean isAt() {
-				return  StatusSubVendorTabSelector.isAt("Status of Sub Vendor Contracts by Prime Vendor");	
-			}
-		}
-	}
+	
 	
 		
 	public enum TopNavTabs{
