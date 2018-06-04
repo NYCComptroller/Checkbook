@@ -2767,14 +2767,7 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
                 $criteria['value']['budget_name'] = $values['budget_name'];
             }
             if ($values['vendor']) {
-                preg_match($pattern, $values['vendor'], $vmatches);
-                if ($vmatches) {
-                    $criteria['value']['prime_vendor'] = trim($vmatches[1], '[ ]');
-                    $criteria['value']['vendor'] = trim($vmatches[1], '[ ]');
-                } else {
-                    $criteria['value']['prime_vendor'] = $values['vendor'];
-                    $criteria['value']['vendor'] = $values['vendor'];
-                }
+                $criteria['value']['prime_vendor'] = $values['vendor'];
             }
             break;
 
