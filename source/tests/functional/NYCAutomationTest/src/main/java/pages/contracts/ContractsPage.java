@@ -18,7 +18,8 @@ import helpers.Helper;
 public class ContractsPage {
 	public enum WidgetOption{
 		Top5MasterAgreements, Top5MasterAgreementModifications, Top5Contracts, Top5ContractAmountModifications, Top5ContractsAmountModifications, Top5PrimeVendors, 
-		Top5AwardMethods, Top5Agencies, ContractsByIndustries, ContractsBySize, TopContractAmountModifications, TopContractsAmountModifications, TopPrimeVendors, TopAwardMethods, TopAgencies
+		Top5AwardMethods, Top5Agencies,ContractsByIndustries, ContractsBySize, TopContractAmountModifications, TopContractsAmountModifications, TopPrimeVendors, TopAwardMethods, Top5SubContracts,
+		Top5SubContractAmountModifications,Top5SubVendors,SubContractStatus,SummaryOfPrimeVendor,SummaryOfSubVendorContracts,TopAgencies
 	}
 	public static void GoTo() {
         TopNavigation.Contracts.Select();
@@ -54,6 +55,27 @@ public class ContractsPage {
 			//return amount;
 			//return Helper.billionStringToFloat(count);
 		}
+		public static int GetActiveSubVendorContractAmount() {
+					 WebElement contractAmt = Driver.Instance.findElement(By.cssSelector(".nyc_subvendors_totals_links > table > tbody > tr > td.active > div.positioning > a > span.count"));
+			        return Helper.stringToInt(contractAmt.getText());
+					 
+				 }
+		 public static ArrayList<String> SubVendorVisualizationTitles() {
+			 			ArrayList<String> titles = new ArrayList<String>();
+			 				List<WebElement> titleContainers = Driver.Instance.findElements(By.cssSelector("#mini-panel-subven_contract_vis > div > div > div.panel-pane"));
+			 
+			 				for(int i=0; i < titleContainers.size(); i++){
+			 					selectVisualizationSlider(i);
+			 					WebElement titleClass = titleContainers.get(i).findElement(By.cssSelector(".pane-content >.chart-title"));
+			 					if(titleClass.isDisplayed()){
+			 						String title = titleClass.getText();
+			 						titles.add(title);
+			 				}
+			 			}	
+			 				return titles;
+			 			}
+			 		
+			 			
 	 
 	 
 	
@@ -189,6 +211,18 @@ public class ContractsPage {
 				return HomePage.GetWidgetTotalNumber("Contracts by Industries");
 			case ContractsBySize:
 				return HomePage.GetWidgetTotalNumber("Contracts by Size");	
+			case SubContractStatus:
+						return HomePage.GetWidgetTotalNumber("Sub Contract Status by Prime Contract ID");
+			case SummaryOfPrimeVendor:
+								return HomePage.GetWidgetTotalNumber("Summary of Prime Contract Sub Vendor Reporting");
+			case SummaryOfSubVendorContracts:
+								return HomePage.GetWidgetTotalNumber("Summary of Sub Vendor Contracts by Prime Contracts");
+			case Top5SubContracts:
+							return HomePage.GetWidgetTotalNumber("Top 5 Sub Contracts");	
+			case Top5SubContractAmountModifications:
+								return HomePage.GetWidgetTotalNumber("Top 5 Sub Contract Amount Modifications");	
+			case Top5SubVendors:
+						return HomePage.GetWidgetTotalNumber("Top 5 Sub Vendors");
 			default:
 				return null;
 		}
