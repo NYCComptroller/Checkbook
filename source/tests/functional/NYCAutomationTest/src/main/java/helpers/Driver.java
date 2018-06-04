@@ -80,7 +80,7 @@ public class Driver {
 	              	  driver = "chromedriver.exe";
 	                    break;
 	            }
-                System.setProperty("webdriver.chrome.driver", Driver.DriverPath + driver);
+                System.setProperty("webdriver.chrome.driver", Driver.DriverPath + driver );
                 Instance = new ChromeDriver();
                 break;
 
