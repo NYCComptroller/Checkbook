@@ -1524,6 +1524,7 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                 '#type' => 'textfield',
                 '#title' => t('Contract ID:'),
                 '#attributes' => array('class' => array('watch')),
+                '#maxlength'=>32,
                 '#prefix' => '<div class="datafield contractno">',
                 '#suffix' => '</div>',
                 '#id' => 'edit-contractno',
@@ -1803,6 +1804,7 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                 '#suffix' => '</div>',
                 '#id' => 'edit-contractno',
                 '#name' => 'contractno',
+                '#maxlength'=>32,
                 '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'contractno', $first_time_load, ''),
             );
             $form['filter']['contract_includes_sub_vendors_id'] = array(
