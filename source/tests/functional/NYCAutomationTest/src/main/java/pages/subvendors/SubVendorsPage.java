@@ -42,10 +42,18 @@ public class SubVendorsPage {
     	}
     	
     	public static void GoTo(String domain, SubVendorCategoryOption category) {
-    		if(domain.equals("Spending"))
-    			TopNavigation.Spending.Select();
-    		SubVendorCategory.select(category);
-    		//navigation.TopNavigation.Spending.ContractSpending.Select(); 
+    		switch(domain) {
+    		case "Spending":
+    				TopNavigation.Spending.Select();
+        		SubVendorCategory.select(category);
+        		break;
+    		case "Contracts":
+    			TopNavigation.Contracts.Select();
+    			SubVendorCategory.select(category);	
+    			break;
+    			
+    		}
+    	
     	} 
      	public static void GoToBottomNaV(String domain, SubVendorCategoryOption category) {
     		if(domain.equals("Spending"))
