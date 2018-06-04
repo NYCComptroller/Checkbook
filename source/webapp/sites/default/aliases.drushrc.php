@@ -1,6 +1,5 @@
 <?php
 
-
 $aliases['checkbook-os-qa'] = array(
   'uri' => 'qa.checkbook.nyc.reisys.com',
   'root' => '/var/www/html',
@@ -37,7 +36,6 @@ $aliases['checkbook-os-uat'] = array(
     '%dump' => '/var/tmp/drupal.sql', // Arbitrary location for temp files
    ),
 );
-
 
 $aliases['checkbook-os-uat2'] = array(
     'uri' => 'uat.checkbook3.nyc.reisys.com',
