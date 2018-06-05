@@ -2892,12 +2892,17 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
                     case 'checkbook_oge':
 
                         $query = "SELECT DISTINCT display_vendor_name 
-                                    FROM contracts_detailed_transactions dld 
+                                    FROM contracts_detailed_transactions
                                     WHERE status_flag = 'A' 
                                     AND display_vendor_name ILIKE '".$vendor."'";
-                        if($agency_code)
-                            $query .= "AND agency_code = '".$agency_code."'";
-
+                        if($agency_code){
+                            $query = "SELECT DISTINCT cd.display_vendor_name 
+                                    FROM contracts_detailed_transactions cd
+                                    LEFT JOIN ref_agency a ON cd.agency_id = a.agency_id
+                                    WHERE cd.status_flag = 'A' 
+                                    AND agency_code = '".$agency_code."'
+                                    AND display_vendor_name ILIKE '".$vendor."'";
+                        }
                         $results = _checkbook_project_execute_sql($query, "main", $data_source);
 
                         break;
