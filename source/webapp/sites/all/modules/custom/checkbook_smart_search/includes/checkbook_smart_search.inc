@@ -1267,7 +1267,7 @@ function _checkbook_smart_search_vendor_facet($page){
       $offset = ( $page - 1 ) * $limit;
     }
     $results = _checkbook_smart_search_get_facet_results($search_terms, "vendor_names", $offset, $double_limit, TRUE, TRUE);
-    print theme('facet_results', array('results'=> $results['facet_counts']['facet_fields']['vendor_name'], 'name'=> 'fvendorName'));
+    print theme('facet_results', array('results'=> $results['facet_counts']['facet_fields']['vendor_name'], 'name'=> 'fvendorName', 'page' => $page));
 }
 
 /** Returns theme for Expense Category facet */
@@ -1287,7 +1287,7 @@ function _checkbook_smart_search_expensecategory_facet($page){
       $offset = ( $page - 1 ) * $limit;
     }
     $results = _checkbook_smart_search_get_facet_results($search_terms, "expense_categories", $offset, $double_limit, TRUE, TRUE);
-    print theme('facet_results', array('results'=>$results['facet_counts']['facet_fields']['expenditure_object_name'], 'name'=> 'fexpenseCategoryName'));
+    print theme('facet_results', array('results'=>$results['facet_counts']['facet_fields']['expenditure_object_name'], 'name'=> 'fexpenseCategoryName', 'page' => $page));
 }
 
 function _checkbook_smart_search_ajax_results(){
