@@ -247,11 +247,7 @@ function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, 
                         $parameters[checkbook_api_change_datasource($datasource,'type_of_year')] = 'B';
 
                         //Set vendor flag for OGE
-                        if(isset($parameters['display_vendor_name'])){
-                            $parameters['is_vendor_flag'] = 'Y';
-                        }else{
-                            $parameters['is_vendor_flag'] = 'N';
-                        }
+                        $parameters['is_vendor_flag'] = 'N';
                     }
                     else{
                         // Adjust year and year type for Citywide
