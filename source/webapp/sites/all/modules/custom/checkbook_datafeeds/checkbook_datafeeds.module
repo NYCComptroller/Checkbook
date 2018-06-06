@@ -1536,6 +1536,7 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                 '#title' => t('Commodity Line:'),
                 '#prefix' => '<div class="datafield commodityline">',
                 '#suffix' => '</div>',
+                '#maxlength'=> 3,
                 '#attributes' => array('class' => array('watch')),
                 '#id' => 'edit-commodity-line',
                 '#name' => 'commodity_line',
@@ -2840,8 +2841,8 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
     //Commodity Line
     if ('checkbook_oge' == $data_source) {
         $commodity_line = $form_state['values']['commodity_line'];
-        if($commodity_line && (!is_int($commodity_line) || strlen($commodity_line) > 3)){
-            form_set_error('commodity_line', t('Commodity Line must be an integer which is less than 1000.'));
+        if($commodity_line && !is_numeric($commodity_line)){
+            form_set_error('commodity_line', t('Commodity Line must be a number'));
         }
     }
 
@@ -4679,6 +4680,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
             $form['filter']['commodity_line'] = array(
                 '#type' => 'textfield',
                 '#title' => t('Commodity Line:'),
+                '#maxlength'=>3,
                 '#prefix' => '<div class="datafield commodityline">',
                 '#suffix' => '</div>',
                 '#attributes' => array('class' => array('watch')),
@@ -5765,8 +5767,8 @@ function checkbook_datafeeds_spending_validate($form, &$form_state) {
 
     if ('checkbook_oge' == $data_source) {
         $commodity_line = $form_state['values']['commodity_line'];
-        if($commodity_line && (!is_int($commodity_line) || strlen($commodity_line) > 3)){
-            form_set_error('commodity_line', t('Commodity Line must be an integer which is less than 1000.'));
+        if($commodity_line && !is_numeric($commodity_line)){
+            form_set_error('commodity_line', t('Commodity Line must be a number.'));
         }
     }
     if ($checkfrom && !is_numeric($checkfrom)) {
