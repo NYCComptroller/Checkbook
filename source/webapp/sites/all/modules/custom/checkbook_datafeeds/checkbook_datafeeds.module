@@ -2840,7 +2840,7 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
     //Commodity Line
     if ('checkbook_oge' == $data_source) {
         $commodity_line = $form_state['values']['commodity_line'];
-        if($commodity_line && (!is_int($commodity_line) || strlen($commodity_line) > 3)){
+        if($commodity_line && (!is_numeric($commodity_line) || strlen($commodity_line) > 3)){
             form_set_error('commodity_line', t('Commodity Line must be an integer which is less than 1000.'));
         }
     }
@@ -5765,7 +5765,7 @@ function checkbook_datafeeds_spending_validate($form, &$form_state) {
 
     if ('checkbook_oge' == $data_source) {
         $commodity_line = $form_state['values']['commodity_line'];
-        if($commodity_line && (!is_int($commodity_line) || strlen($commodity_line) > 3)){
+        if($commodity_line && (!is_numeric($commodity_line) || strlen($commodity_line) > 3)){
             form_set_error('commodity_line', t('Commodity Line must be an integer which is less than 1000.'));
         }
     }
