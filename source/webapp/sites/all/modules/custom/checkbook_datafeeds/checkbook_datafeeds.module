@@ -2829,7 +2829,6 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
     $pending_all = $form_state['values']['column_select_pending_all'];
     $vendor = $form_state['values']['vendor'];
     $contract_id = $form_state['values']['contractno'];
-    $commodity_line_no = $form_state['values']['commodity_line'];
 
     //Contract Id
     if($contract_id && strlen($contract_id) > 32){
@@ -2837,8 +2836,11 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
     }
 
     //Commodity Line
-    if($commodity_line_no && strlen($commodity_line_no) > 3){
-        form_set_error('commodity_line', t('Commodity Line must be less than or equal to 3 characters'));
+    if ('checkbook_oge' == $data_source) {
+        $commodity_line = $form_state['values']['commodity_line'];
+        if($commodity_line && (!is_int($commodity_line) || strlen($commodity_line) > 3)){
+            form_set_error('commodity_line', t('Commodity Line must be an integer which is less than 1000.'));
+        }
     }
 
     // Start Date:
@@ -5761,8 +5763,8 @@ function checkbook_datafeeds_spending_validate($form, &$form_state) {
 
     if ('checkbook_oge' == $data_source) {
         $commodity_line = $form_state['values']['commodity_line'];
-        if ($commodity_line && strlen($commodity_line) > 3) {
-            form_set_error('commodity_line', t('Commodity Line must be less than or equal to 3 characters.'));
+        if($commodity_line && (!is_int($commodity_line) || strlen($commodity_line) > 3)){
+            form_set_error('commodity_line', t('Commodity Line must be an integer which is less than 1000.'));
         }
     }
     if ($checkfrom && !is_numeric($checkfrom)) {
