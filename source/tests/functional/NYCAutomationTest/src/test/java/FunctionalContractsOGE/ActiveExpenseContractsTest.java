@@ -25,7 +25,7 @@ import helpers.Helper;
 	public class ActiveExpenseContractsTest extends TestStatusReport{
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
-	public void GoToPage() {
+	public void GoToPage()  {
 		ContractsPage.GoTo();
 		if (!ActiveExpenseContracts.isAt()) {
 			ActiveExpenseContractsPage.GoTo();
