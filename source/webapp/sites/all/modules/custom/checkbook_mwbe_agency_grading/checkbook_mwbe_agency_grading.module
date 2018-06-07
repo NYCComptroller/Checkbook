@@ -26,7 +26,6 @@ function checkbook_mwbe_agency_grading_menu() {
     $items = array();
     $items['mwbe_agency_grading'] = array(
         'page callback' => '_checkbook_mwbe_agency_grading',
-        'page arguments' => array(3),
         'access callback' => TRUE,
         'type' => MENU_NORMAL_ITEM,
     );
@@ -39,14 +38,13 @@ function checkbook_mwbe_agency_grading_menu() {
         'title' => 'Sub Vendor Data',
         'page callback' => '_checkbook_mwbe_agency_grading',
         'access callback' => TRUE,
-        'page arguments' => array(3),
+        'page arguments' => array(1),
         'type' => MENU_LOCAL_TASK,
         'weight' => 1,
     );
     $items['mwbe_agency_grading_csv']  = array(
         'type' => MENU_CALLBACK,
         'page callback' => '_checkbook_mwbe_agency_grading_csv',
-        'page arguments' => array(3),
         'access callback' => TRUE
   		);
     return($items);
@@ -77,20 +75,19 @@ function checkbook_mwbe_agency_grading_theme($existing, $type, $theme, $path) {
 	);
 }
 
-function _checkbook_mwbe_agency_grading(){
+function _checkbook_mwbe_agency_grading($data_type = 'prime_vendor_data'){
 
 	$agencies_data =  _checkbook_mwbe_agency_grading_getdata();
-	$left_content =  _checkbook_mwbe_agency_grading_left($agencies_data);
+	$left_content =  _checkbook_mwbe_agency_grading_left($agencies_data, $data_type);
 	$right_content = _checkbook_mwbe_agency_grading_right($agencies_data);
 	$links = array(l(t('Home'), ''),'M/WBE Agency Summary');
 	drupal_set_breadcrumb($links);
 	drupal_set_title("M/WBE Agency Summary");
-	
-	
+
 	return theme('mwbe_agency_grading_main',array('left_content'=>$left_content,'right_content'=>$right_content));
 }
 
-function _checkbook_mwbe_agency_grading_left($agencies_data){	
+function _checkbook_mwbe_agency_grading_left($agencies_data, $data_type){
 	
 	$left_content_agencies = array();
 	$mwbe_cats = _mwbe_agency_grading_current_cats();
@@ -104,7 +101,7 @@ function _checkbook_mwbe_agency_grading_left($agencies_data){
 		$left_content_agencies[] = array('spending_amount'=>$spending_amount,'agency_id'=>$row['agency_id'],'agency_name'=>$row['agency_name'],'data_row'=>$data_row);
 	}	
 	usort($left_content_agencies,'_checkbook_agency_grading_comp');
-	return theme('mwbe_agency_grading_left_table',array('left_agencies_data' => $left_content_agencies));	
+	return theme('mwbe_agency_grading_left_table',array('left_agencies_data' => $left_content_agencies, 'data_type' => $data_type));
 	
 }
 
