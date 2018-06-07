@@ -28,7 +28,7 @@ abstract class AbstractDataQueryControllerRequest extends AbstractObject {
     public $startWith = 0;
     public $limit = NULL;
     public $logicalOrColumns = NULL;
-    public $customName=NULL;
+    public $sortSourceByNull=NULL;
     /**
      * @var ResultFormatter
      */
@@ -42,8 +42,8 @@ abstract class AbstractDataQueryControllerRequest extends AbstractObject {
                     unset($parameters[$name]);
                 }
 
-               elseif ($name=="customName"){
-                    $this->customName=$value;
+               elseif ($name=="sortSourceByNull"){
+                    $this->sortSourceByNull=$value;
                     unset($parameters[$name]);
                 }
             }

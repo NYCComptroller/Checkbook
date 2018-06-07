@@ -53,7 +53,7 @@
     "getTotalDataCount":true,
     "limit":"35",
     "noDataInitialLoad":true,
-    "customName":"purpose",
+    "sortSourceByNull":"purpose",
     "html_class": "initiative-table transaction-table",
     "no_results_content":"No Results Found",
     "dataset": "checkbook:spending_transactions_all",
