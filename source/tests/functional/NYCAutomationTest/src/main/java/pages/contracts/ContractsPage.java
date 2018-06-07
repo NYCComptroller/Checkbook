@@ -18,7 +18,7 @@ import helpers.Helper;
 public class ContractsPage {
 	public enum WidgetOption{
 		Top5MasterAgreements, Top5MasterAgreementModifications, Top5Contracts, Top5ContractAmountModifications, Top5ContractsAmountModifications, Top5PrimeVendors, 
-		Top5AwardMethods, Top5Agencies,ContractsByIndustries, ContractsBySize, TopContractAmountModifications, TopContractsAmountModifications, TopPrimeVendors, TopAwardMethods, Top5SubContracts,
+		Top5AwardMethods, Top5Agencies,ContractsByIndustries, ContractsBySize, TopContractAmountModifications, TopContracts, TopContractsAmountModifications, TopPrimeVendors, TopAwardMethods, Top5SubContracts,
 		Top5SubContractAmountModifications,Top5SubVendors,SubContractStatus,SummaryOfPrimeVendor,SummaryOfSubVendorContracts,TopAgencies
 	}
 	public static void GoTo() {
@@ -58,12 +58,12 @@ public class ContractsPage {
 		public static int GetActiveSubVendorContractAmount() {
 					 WebElement contractAmt = Driver.Instance.findElement(By.cssSelector(".nyc_subvendors_totals_links > table > tbody > tr > td.active > div.positioning > a > span.count"));
 			        return Helper.stringToInt(contractAmt.getText());
-					 
+
 				 }
 		 public static ArrayList<String> SubVendorVisualizationTitles() {
 			 			ArrayList<String> titles = new ArrayList<String>();
 			 				List<WebElement> titleContainers = Driver.Instance.findElements(By.cssSelector("#mini-panel-subven_contract_vis > div > div > div.panel-pane"));
-			 
+
 			 				for(int i=0; i < titleContainers.size(); i++){
 			 					selectVisualizationSlider(i);
 			 					WebElement titleClass = titleContainers.get(i).findElement(By.cssSelector(".pane-content >.chart-title"));
@@ -71,12 +71,12 @@ public class ContractsPage {
 			 						String title = titleClass.getText();
 			 						titles.add(title);
 			 				}
-			 			}	
+			 			}
 			 				return titles;
 			 			}
-			 		
-			 			
-	 
+
+
+
 	 
 	
 	   
@@ -187,6 +187,8 @@ public class ContractsPage {
 				return HomePage.GetWidgetTotalNumber("Top 5 Master Agreement Modifications");
 			case Top5Contracts:
 				return HomePage.GetWidgetTotalNumber("Top 5 Contracts");
+			case TopContracts:
+				return HomePage.GetWidgetTotalNumber("Top Contracts");
 			case Top5ContractAmountModifications:
 				return HomePage.GetWidgetTotalNumber("Top 5 Contract Amount Modifications");
 			case Top5ContractsAmountModifications:
@@ -218,9 +220,9 @@ public class ContractsPage {
 			case SummaryOfSubVendorContracts:
 								return HomePage.GetWidgetTotalNumber("Summary of Sub Vendor Contracts by Prime Contracts");
 			case Top5SubContracts:
-							return HomePage.GetWidgetTotalNumber("Top 5 Sub Contracts");	
+							return HomePage.GetWidgetTotalNumber("Top 5 Sub Contracts");
 			case Top5SubContractAmountModifications:
-								return HomePage.GetWidgetTotalNumber("Top 5 Sub Contract Amount Modifications");	
+								return HomePage.GetWidgetTotalNumber("Top 5 Sub Contract Amount Modifications");
 			case Top5SubVendors:
 						return HomePage.GetWidgetTotalNumber("Top 5 Sub Vendors");
 			default:
@@ -242,6 +244,10 @@ public class ContractsPage {
 			case Top5Contracts:
 				if(!HomePage.IsAtTop5DetailsPage("Top 5 Contracts"))
 					detailsContainer = HomePage.GetWidgetDetailsContainer("Top 5 Contracts");
+				break;
+			case TopContracts:
+				if(!HomePage.IsAtTop5DetailsPage("Top Contracts"))
+					detailsContainer = HomePage.GetWidgetDetailsContainer("Top Contracts");
 				break;
 			case Top5ContractAmountModifications:
 				if(!HomePage.IsAtTop5DetailsPage("Top 5 Contract Amount Modifications"))

@@ -12,3 +12,5 @@ source/tests/functional/NYCAutomationTest\ExampleExcel20180515104306.xls
 source/tests/functional/NYCAutomationTest\ExampleExcel20180515104808.xls
 source/tests/functional/NYCAutomationTest\ExampleExcel20180515115755.xls
 *.xls
+.metadata/.lock
+.metadata/
