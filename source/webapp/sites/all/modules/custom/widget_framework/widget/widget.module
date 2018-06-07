@@ -597,6 +597,9 @@ function load_widget_data($node, $resultFormatter) {
         if(isset($config->logicalOrColumns)) {
             $parameters["logicalOrColumns"] = $config->logicalOrColumns;
         }
+        if(isset($config->customName)){
+            $parameters["customName"]= $config->customName;
+        }
 
         //if % (single or repeating) is passed as a parameter,
         //this field needs to be ignored in an ilike/like
@@ -1343,6 +1346,9 @@ function widget_merge_config($parent_config, $child_config){
   if(!isset($child_config->logicalOrColumns)){
     $child_config->logicalOrColumns = $parent_config->logicalOrColumns;
   }
+    if(!isset($child_config->customName)){
+        $child_config->customName = $parent_config->customName;
+    }
   return (object) $child_config;
 }
 
