@@ -26,7 +26,7 @@ class DataSourceDatasetQueryRequestPreparer extends AbstractObject {
 
         $datasourceRequest->addCompositeQueryValues($request->parameters);
         $datasourceRequest->addColumns($request->columns);
-        $datasourceRequest->addOrderByColumns($request->orderBy,$request->customName);
+        $datasourceRequest->addOrderByColumns($request->orderBy,$request->sortSourceByNull);
         $datasourceRequest->setPagination($request->limit, $request->startWith);
         $datasourceRequest->addLogicalOrColumns($request->logicalOrColumns);
 

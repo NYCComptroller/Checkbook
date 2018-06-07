@@ -74,14 +74,14 @@ abstract class __PropertyBasedComparator_AbstractSortingConfiguration extends Ab
 
     public $propertyName = NULL;
     public $isSortAscending = NULL;
-    public $customName = NULL;
+    public $sortSourceByNull = NULL;
     public $sql=NULL;
 
-    public function __construct($propertyName, $isSortAscending = TRUE,$customName=NULL) {
+    public function __construct($propertyName, $isSortAscending = TRUE,$sortSourceByNull=NULL) {
         parent::__construct();
         $this->propertyName = $propertyName;
         $this->isSortAscending = $isSortAscending;
-        $this->sql = $customName;
+        $this->sql = $sortSourceByNull;
 
         $this->checkPropertyName();
     }
@@ -90,14 +90,14 @@ abstract class __PropertyBasedComparator_AbstractSortingConfiguration extends Ab
 
     abstract public function formatPropertyNameAsDatabaseColumnName($maximumLength);
 
-    public static function parseDirectionalPropertyName($directionalPropertyName,$customName=NULL) {
+    public static function parseDirectionalPropertyName($directionalPropertyName,$sortSourceByNull=NULL) {
         $isSortAscending = TRUE;
 
         $propertyName = $directionalPropertyName;
         if ($directionalPropertyName{0} == self::$SORT_DIRECTION_DELIMITER__DESCENDING) {
             $isSortAscending = FALSE;
             $propertyName = substr($propertyName, 1);
-            if(isset($customName) && $customName == $propertyName ){
+            if(isset($sortSourceByNull) && $sortSourceByNull == $propertyName ){
                 $sql=$propertyName." "."IS NULL";
             }
         }

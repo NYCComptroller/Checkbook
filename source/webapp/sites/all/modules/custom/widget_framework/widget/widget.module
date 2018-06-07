@@ -597,8 +597,8 @@ function load_widget_data($node, $resultFormatter) {
         if(isset($config->logicalOrColumns)) {
             $parameters["logicalOrColumns"] = $config->logicalOrColumns;
         }
-        if(isset($config->customName)){
-            $parameters["customName"]= $config->customName;
+        if(isset($config->sortSourceByNull)){
+            $parameters["sortSourceByNull"]= $config->sortSourceByNull;
         }
 
         //if % (single or repeating) is passed as a parameter,
@@ -1346,8 +1346,8 @@ function widget_merge_config($parent_config, $child_config){
   if(!isset($child_config->logicalOrColumns)){
     $child_config->logicalOrColumns = $parent_config->logicalOrColumns;
   }
-    if(!isset($child_config->customName)){
-        $child_config->customName = $parent_config->customName;
+    if(!isset($child_config->sortSourceByNull)){
+        $child_config->sortSourceByNull= $parent_config->sortSourceByNull;
     }
   return (object) $child_config;
 }

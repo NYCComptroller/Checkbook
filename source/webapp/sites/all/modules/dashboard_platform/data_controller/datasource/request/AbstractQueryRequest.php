@@ -70,20 +70,20 @@ abstract class AbstractQueryRequest extends AbstractRequest {
         }
     }
 
-    public function addOrderByColumn($directionalColumnName,$customColumn) {
-        list($columnName, $isSortAscending,$sql) = PropertyBasedComparator_DefaultSortingConfiguration::parseDirectionalPropertyName($directionalColumnName,$customColumn);
+    public function addOrderByColumn($directionalColumnName,$sortSourceByNull) {
+        list($columnName, $isSortAscending,$sql) = PropertyBasedComparator_DefaultSortingConfiguration::parseDirectionalPropertyName($directionalColumnName,$sortSourceByNull);
         $this->addSortingConfiguration($this->initiateSortingConfiguration($columnName, $isSortAscending,$sql));
     }
 
-    public function addOrderByColumns($directionalColumnNames,$customColumn=Null) {
+    public function addOrderByColumns($directionalColumnNames,$sortSourceByNull=Null) {
         if (isset($directionalColumnNames)) {
             if (is_array($directionalColumnNames)) {
                 foreach ($directionalColumnNames as $directionalColumnName) {
-                    $this->addOrderByColumn($directionalColumnName,$customColumn);
+                    $this->addOrderByColumn($directionalColumnName,$sortSourceByNull);
                 }
             }
             else {
-                $this->addOrderByColumn($directionalColumnNames,$customColumn);
+                $this->addOrderByColumn($directionalColumnNames,$sortSourceByNull);
             }
         }
     }
