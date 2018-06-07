@@ -9,6 +9,7 @@ import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 
+import navigation.MWBECategory.MWBECategoryOption;
 import navigation.TopNavigation.Contracts.ActiveExpenseContracts;
 import navigation.TopNavigation.Contracts.PendingExpenseContracts;
 import pages.contracts.ActiveExpenseContractsPage;
@@ -17,21 +18,22 @@ import pages.contracts.PendingExpenseContractsPage;
 import pages.contracts.PendingRevenueContractsPage;
 import pages.contracts.ContractsPage.WidgetOption;
 import pages.home.HomePage;
+import pages.mwbe.MWBEPage;
 import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
 import helpers.Helper;
 import utilities.TestStatusReport;
-public class PendingExpenseContractsTest  extends TestStatusReport{
+public class MWBEPendingExpenseContractsTest  extends TestStatusReport{
 
-	//public class PendingExpenseContractsTest extends NYCBaseTest {
+	//public class MWBEPendingExpenseContractsTest extends NYCBaseTest {
 	
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	public void GoToPage() {
-			  if (!PendingExpenseContracts.isAt())	{
-			   PendingExpenseContractsPage.GoTo();
-		  }		
-	
+		if(!MWBEPage.IsAt()){	
+				MWBEPage.GoTo("Contracts", MWBECategoryOption.MWBEHome);
+				navigation.TopNavigation.Contracts.PendingExpenseContracts.Select();
+		}
 	}
 	
 	/* ***************** Test Widget Counts ****************** */
