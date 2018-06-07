@@ -276,7 +276,7 @@ function widget_node_view($node, $nodata = true) {
 
 		if($node->widgetConfig->widgetType == 'highcharts'){
 		  if (!isset($node->widgetConfig->chartConfig->chart)) {
-		      $node->widgetConfig->chartConfig->chart = new stdClass();
+              $node->widgetConfig->chartConfig->chart = new stdClass();
       }
 
       if (!isset($node->widgetConfig->chartConfig->credits)) {
