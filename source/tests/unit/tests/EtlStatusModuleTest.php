@@ -1,11 +1,5 @@
 <?php
 
-/**
- * Class DefaultMailSystem
- */
-class DefaultMailSystem{
-}
-
 include_once __DIR__ . '/../../../webapp/sites/all/modules/custom/checkbook_etl_status/checkbook_etl_status.module';
 
 use PHPUnit\Framework\TestCase;
