@@ -124,3 +124,12 @@ function drupal_get_form($a=1)
 {
     return [$a];
 }
+
+/**
+ * @param array $a
+ * @return array
+ */
+function drupal_map_assoc($a=[])
+{
+    return $a;
+}
