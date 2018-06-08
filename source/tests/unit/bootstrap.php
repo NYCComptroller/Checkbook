@@ -1,6 +1,7 @@
 <?php
 
 include_once 'vendor/autoload.php';
+include __DIR__.'/../../webapp/sites/all/modules/custom/checkbook_project/customclasses/util/MappingUtil.php';
 
 /**
  * @param string $name
@@ -133,3 +134,24 @@ function drupal_map_assoc($a=[])
 {
     return $a;
 }
+
+class FakeDataController{
+    public function queryDataset(){}
+}
+
+/**
+ * @param int $a
+ * @return int
+ */
+function data_controller_get_instance($a = 1)
+{
+    return new FakeDataController();
+}
+
+function log_error(){}
+
+function _get_contract_includes_subvendors_data(){}
+
+function _checkbook_max_data_year(){}
+
+function data_controller_get_operator_factory_instance(){}
