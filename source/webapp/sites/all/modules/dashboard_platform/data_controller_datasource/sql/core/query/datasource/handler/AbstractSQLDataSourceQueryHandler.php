@@ -769,17 +769,17 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
                 $adjustedColumn = $sortingConfiguration->formatPropertyNameAsDatabaseColumnName($this->getMaximumEntityNameLength());
                 // adjusting direction of the sorting
                 if (!$sortingConfiguration->isSortAscending) {
-                   /* if($adjustedColumn=="purpose"){
-                        $adjustedColumn = 'purpose IS NULL'. ' ,'.$adjustedColumn.' Desc';
 
-                    }
-                    else {*/
                    if(isset($sortingConfiguration->sql)){
                        $adjustedColumn = $sortingConfiguration->sql.','.$adjustedColumn . ' DESC';
                    }
                    else {
                        $adjustedColumn = $adjustedColumn . ' DESC';
                    }
+                }
+
+                   elseif($sortingConfiguration->isSortAscending && isset($sortingConfiguration->sql)){
+                    $adjustedColumn=$sortingConfiguration->sql.','.$adjustedColumn;
                    }
                 $adjustedColumns[] = $adjustedColumn;
                 }
