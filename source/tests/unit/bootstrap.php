@@ -30,3 +30,18 @@ function current_path()
     global $mock_current_path;
     return $mock_current_path;
 }
+
+/**
+ * @param $a
+ * @param $b
+ * @param $c
+ * @param $d
+ * @param $e
+ * @param int $f
+ * @param int $g
+ * @param int $h
+ * @return bool
+ */
+function drupal_mail($a, $b, $c, $d, $e, $f=1, $g=2, $h=3) {
+    return true;
+}

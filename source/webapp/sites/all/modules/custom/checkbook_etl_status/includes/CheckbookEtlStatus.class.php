@@ -30,6 +30,15 @@ class CheckbookEtlStatus
   }
 
   /**
+   * @param $url
+   * @return bool|string
+   */
+  public function get_contents($url)
+  {
+    return file_get_contents($url);
+  }
+
+  /**
    * @return int
    */
   public function timeNow()
@@ -103,7 +112,7 @@ class CheckbookEtlStatus
   public function getProdStatus()
   {
     try {
-      $prod_json_status = file_get_contents('https://www.checkbooknyc.com/json_api/etl_status');
+      $prod_json_status = $this->get_contents('https://www.checkbooknyc.com/json_api/etl_status');
       $prod_status = json_decode($prod_json_status, true);
       return $prod_status;
     } catch (Exception $e) {
