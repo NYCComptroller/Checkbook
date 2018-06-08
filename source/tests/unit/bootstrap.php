@@ -45,3 +45,82 @@ function current_path()
 function drupal_mail($a, $b, $c, $d, $e, $f=1, $g=2, $h=3) {
     return true;
 }
+
+/**
+ * @param int $a
+ * @param int $b
+ * @param int $c
+ * @return bool
+ */
+function module_load_include($a=0, $b=1, $c=2)
+{
+    return true;
+}
+
+/**
+ * Class DefaultMailSystem
+ */
+class DefaultMailSystem{}
+
+/**
+ *
+ */
+define('MENU_NORMAL_ITEM', true);
+/**
+ *
+ */
+define('MENU_DEFAULT_LOCAL_TASK', true);
+/**
+ *
+ */
+define('MENU_LOCAL_TASK', true);
+/**
+ *
+ */
+define('MENU_CALLBACK', true);
+
+/**
+ * @param int $a
+ * @param int $b
+ * @return bool
+ */
+function drupal_get_path($a=1, $b=2)
+{
+    return true;
+}
+
+/**
+ * @param int $a
+ * @return bool
+ */
+function node_load($a=1)
+{
+    return true;
+}
+
+/**
+ * @param int $a
+ * @return bool
+ */
+function node_view($a=1)
+{
+    return true;
+}
+
+/**
+ * @param int $a
+ * @return int
+ */
+function t($a=1)
+{
+    return $a;
+}
+
+/**
+ * @param int $a
+ * @return int
+ */
+function drupal_get_form($a=1)
+{
+    return [$a];
+}
