@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class DefaultMailSystem
+ */
 class DefaultMailSystem{
 }
 
@@ -17,6 +20,10 @@ class EtlStatusModuleTest extends TestCase
      * @var string
      */
     private $fakeToday = '2222-11-22 03:39:54.635115';
+    /**
+     * @var string
+     */
+    private $fakeTodayYMD = '2222-11-22';
 
     /**
      * @var int
@@ -80,13 +87,23 @@ class EtlStatusModuleTest extends TestCase
         global $conf;
         global $base_url;
         $conf['etl_status_recipients'] = true;
-        $base_url = 'uat-checkbook-nyc.reisys.com';
+        $base_url = 'http://uat-checkbook-nyc.reisys.com/asdf';
 
         global $mocked_variable;
         global $mocked_date;
-        $mocked_variable['checkbook_etl_status_last_run'] = $mocked_date['Y-m-d'] = $this->fakeToday;
 
-        $this->assertFalse($this->CES->run_cron());
+        $CheckbookEtlStatus =
+            $this->getMockBuilder('CheckbookEtlStatus')
+                ->setMethods(['date'])
+                ->getMock();
+        $CheckbookEtlStatus->expects($this->at(0))
+            ->method('date')
+            ->with($this->equalTo('Y-m-d'))
+            ->will($this->returnValue($this->fakeTodayYMD));
+
+        $mocked_variable['checkbook_etl_status_last_run'] = $mocked_date['Y-m-d'] = $this->fakeTodayYMD;
+
+        $this->assertFalse($CheckbookEtlStatus->run_cron());
     }
 
     /**
@@ -108,7 +125,7 @@ class EtlStatusModuleTest extends TestCase
         $CheckbookEtlStatus->expects($this->at(0))
             ->method('date')
             ->with($this->equalTo('Y-m-d'))
-            ->will($this->returnValue($this->fakeToday));
+            ->will($this->returnValue($this->fakeTodayYMD));
         $CheckbookEtlStatus->expects($this->at(1))
             ->method('date')
             ->with($this->equalTo('H'))
@@ -135,7 +152,7 @@ class EtlStatusModuleTest extends TestCase
         $CheckbookEtlStatus->expects($this->at(0))
             ->method('date')
             ->with($this->equalTo('Y-m-d'))
-            ->will($this->returnValue($this->fakeToday));
+            ->will($this->returnValue($this->fakeTodayYMD));
         $CheckbookEtlStatus->expects($this->at(1))
             ->method('date')
             ->with($this->equalTo('H'))
@@ -193,6 +210,30 @@ class EtlStatusModuleTest extends TestCase
         $this->assertEquals('<strong style="color:darkgreen">SUCCESS</strong> (finished: ' .
             $this->CES->niceDisplayDate($this->fakeToday) . ")",
             $CheckbookEtlStatus->formatStatus($sampleData));
+    }
+
+    /**
+     *
+     */
+    public function test_sendmail()
+    {
+        $this->assertTrue($this->CES->sendmail());
+    }
+
+    public function test_getProdStatus()
+    {
+        $CheckbookEtlStatus =
+            $this->getMockBuilder('CheckbookEtlStatus')
+                ->setMethods(['get_contents'])
+                ->getMock();
+        $CheckbookEtlStatus->expects($this->once())
+            ->method('get_contents')
+            ->will($this->returnValue('{"success":true}'));
+
+        $expected = ['success' => true];
+
+        $this->assertEquals($expected, $CheckbookEtlStatus->getProdStatus());
+
     }
 
     /**
