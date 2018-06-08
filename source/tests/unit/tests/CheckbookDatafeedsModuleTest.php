@@ -17,6 +17,9 @@ class CheckbookDatafeedsModuleTest extends TestCase
         parent::setUp();
     }
 
+    /**
+     *
+     */
     public function test_checkbook_datafeeds_menu()
     {
         $items = checkbook_datafeeds_menu();
@@ -31,6 +34,9 @@ class CheckbookDatafeedsModuleTest extends TestCase
         $this->assertEquals(4, sizeof($items['datafeeds/budget/expcat/%/%/%']));
     }
 
+    /**
+     *
+     */
     public function test_checkbook_datafeeds_library()
     {
         $libs = checkbook_datafeeds_library();
@@ -38,6 +44,9 @@ class CheckbookDatafeedsModuleTest extends TestCase
         $this->assertEquals(5, sizeof($libs['jquery_multiselect']));
     }
 
+    /**
+     *
+     */
     public function test_checkbook_datafeeds_theme()
     {
         $hooks = checkbook_datafeeds_theme(1,2,3,4);
@@ -45,11 +54,17 @@ class CheckbookDatafeedsModuleTest extends TestCase
         $this->assertEquals('array', gettype($hooks));
     }
 
+    /**
+     *
+     */
     public function checkbook_datafeeds_api_page()
     {
         $this->assertTrue(checkbook_datafeeds_api_page());
     }
 
+    /**
+     *
+     */
     public function test_checkbook_datafeeds_tracking_form()
     {
         $form = checkbook_datafeeds_tracking_form();
@@ -60,6 +75,9 @@ class CheckbookDatafeedsModuleTest extends TestCase
         $this->assertEquals(3, sizeof($form['go']));
     }
 
+    /**
+     *
+     */
     public function test_checkbook_datafeeds_tracking_form_submit()
     {
         $test_form_state = [
@@ -71,6 +89,9 @@ class CheckbookDatafeedsModuleTest extends TestCase
         $this->assertEquals(2, sizeof($test_form_state['redirect']));
     }
 
+    /**
+     *
+     */
     public function test_checkbook_datafeeds_tracking_results_page()
     {
         $page = checkbook_datafeeds_tracking_results_page();
@@ -85,6 +106,9 @@ class CheckbookDatafeedsModuleTest extends TestCase
         $this->assertEquals(1, sizeof($page['markupend']));
     }
 
+    /**
+     *
+     */
     public function test_theme_user_criteria()
     {
         $test_vars = [
@@ -98,6 +122,9 @@ class CheckbookDatafeedsModuleTest extends TestCase
         $this->assertEquals('<div><strong>Something else</strong>: c</div>', $out);
     }
 
+    /**
+     *
+     */
     public function test_checkbook_datafeeds_data_feeds_page()
     {
         $page = checkbook_datafeeds_data_feeds_page();
@@ -111,6 +138,9 @@ class CheckbookDatafeedsModuleTest extends TestCase
         $this->assertEquals(1, sizeof($page['rotator']));
     }
 
+    /**
+     *
+     */
     public function test_checkbook_datafeeds_data_feed_wizard()
     {
         $test_form_state = [
@@ -123,5 +153,48 @@ class CheckbookDatafeedsModuleTest extends TestCase
         $this->assertEquals(4, sizeof($form['format']));
         $this->assertEquals(5, sizeof($form['type_next']));
         $this->assertEquals(1, sizeof($form['#attributes']));
+    }
+
+    public function test_checkbook_datafeeds_budget_column_options_csv()
+    {
+        $out = _checkbook_datafeeds_budget_column_options('csv');
+        $this->assertEquals('array', gettype($out));
+        $this->assertEquals('Accrued Expense', $out[0]);
+        $this->assertEquals(13, sizeof($out));
+    }
+
+    public function test_checkbook_datafeeds_budget_column_options_xml()
+    {
+        $out = _checkbook_datafeeds_budget_column_options('xml');
+        $this->assertEquals('array', gettype($out));
+        $this->assertEquals('accrued_expense', $out[0]);
+        $this->assertEquals(13, sizeof($out));
+    }
+
+    public function test_checkbook_datafeeds_budget_next_submit()
+    {
+        $test_form_state = [
+            'step' => 'forward',
+            'step_information' => [
+                'forward' => [
+                    'stored_values' => ['none']
+                ]
+            ],
+            'values' => ['some']
+        ];
+        checkbook_datafeeds_budget_next_submit([], $test_form_state);
+        $this->assertEquals([], $test_form_state['values']);
+        $this->assertEquals(true, $test_form_state['rebuild']);
+
+        $test_form_state['step_information']['budget_confirmation']['stored_values'] = 777;
+        $test_form_state['values'] = 888;
+        checkbook_datafeeds_budget_next_submit([], $test_form_state);
+        $this->assertEquals(888, $test_form_state['values']);
+
+        $test_form_state['step'] = 'backward';
+        $test_form_state['step_information']['budget_confirmation']['stored_values'] = 777;
+        $test_form_state['values'] = 888;
+        checkbook_datafeeds_budget_next_submit([], $test_form_state);
+        $this->assertEquals(777, $test_form_state['values']);
     }
 }
