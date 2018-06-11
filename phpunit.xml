@@ -14,6 +14,8 @@
     <filter>
         <whitelist addUncoveredFilesFromWhitelist="false">
             <directory suffix=".php">source/webapp/sites/all/modules/custom</directory>
+            <directory suffix=".module">source/webapp/sites/all/modules/custom</directory>
+            <directory suffix=".inc">source/webapp/sites/all/modules/custom</directory>
         </whitelist>
     </filter>
     <logging>

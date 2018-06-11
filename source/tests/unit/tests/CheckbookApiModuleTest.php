@@ -5,13 +5,6 @@ include_once __DIR__.'/../../../webapp/sites/all/modules/custom/checkbook_api/ch
 use PHPUnit\Framework\TestCase;
 
 /**
- * @param $a
- * @param $b
- * @param $c
- */
-function module_load_include($a, $b, $c){}
-
-/**
  * Class CheckbookApiModuleTest
  */
 class CheckbookApiModuleTest extends TestCase {
