@@ -35,43 +35,43 @@ import utilities.TestStatusReport;
 	/* ***************** Test Widget Counts ****************** */
 	@Test
 	public void VerifyNumOfContracts() throws SQLException {
-	 	Integer numOfContractsDB = NYCDatabaseUtil.getPRContractsCount(year,'B');
+	 	Integer numOfContractsDB = NYCDatabaseUtil.getMWBEPRContractsCount(year,'B');
         Integer numOfContractsApp = ContractsPage.GetTop5WidgetTotalCount(WidgetOption.Top5Contracts);
         assertEquals("Number of Contracts in the Pending Revenue Contracts did not match", numOfContractsApp, numOfContractsDB);
 	}
 	@Test
 	public void VerifyNumOfContractAmountModificationsContracts() throws SQLException {
-	 	Integer numOfContractsAmountModificationsContractsDB =NYCDatabaseUtil.getPRContractsModificationsCount(year,'B');
+	 	Integer numOfContractsAmountModificationsContractsDB =NYCDatabaseUtil.getMWBEPRContractsModificationsCount(year,'B');
         Integer numOfContractsAmountModificationsContractsApp = ContractsPage.GetTop5WidgetTotalCount(WidgetOption.TopContractAmountModifications);
         assertEquals("Number of Contracts Amount Modifications Contracts in the Pending Revenue Contracts did not match", numOfContractsAmountModificationsContractsApp, numOfContractsAmountModificationsContractsDB);
 	}
 	@Test
 	public void VerifyNumOfPrimeVendorsContracts() throws SQLException {
-	 	Integer numOfPrimeVendorsContractsDB = NYCDatabaseUtil.getPRContractsPrimeVendorsCount(year,'B');
+	 	Integer numOfPrimeVendorsContractsDB = NYCDatabaseUtil.getMWBEPRContractsPrimeVendorsCount(year,'B');
         Integer numOfPrimeVendorsContractsApp = ContractsPage.GetTop5WidgetTotalCount(WidgetOption.Top5PrimeVendors);
         assertEquals("Number of Prime Vendors Contracts By Industries in the Pending Revenue Contracts did not match", numOfPrimeVendorsContractsApp, numOfPrimeVendorsContractsDB);
 	}
 	@Test
 	public void VerifyNumOfAwardMethodsContracts() throws SQLException {
-	 	Integer numOfAwardMethodsContractsDB = NYCDatabaseUtil.getPRContractsAwardMethodsCount(year,'B');
+	 	Integer numOfAwardMethodsContractsDB = NYCDatabaseUtil.getMWBEPRContractsAwardMethodsCount(year,'B');
         Integer numOfAwardMethodsContractsApp = ContractsPage.GetTop5WidgetTotalCount(WidgetOption.Top5AwardMethods);
         assertEquals("Number of Award Methods Contracts in the Pending Revenue Contracts did not match", numOfAwardMethodsContractsApp, numOfAwardMethodsContractsDB);
 	}
 	@Test
 	public void VerifyNumOfAgenciesContracts() throws SQLException {
-	 	Integer numOfAgenciesContractsDB = NYCDatabaseUtil.getPRContractsAgenciesCount(year,'B');
+	 	Integer numOfAgenciesContractsDB = NYCDatabaseUtil.getMWBEPRContractsAgenciesCount(year,'B');
         Integer numOfAgenciesContractsApp = ContractsPage.GetTop5WidgetTotalCount(WidgetOption.Top5Agencies);
         assertEquals("Number of Agencies Contracts in the Pending Revenue Contracts did not match", numOfAgenciesContractsApp, numOfAgenciesContractsDB);
 	}
 	@Test
 	public void VerifyNumOfContractsByIndustries() throws SQLException {
-	 	Integer numOfContractsByIndustriesDB = NYCDatabaseUtil.getPRContractsIndustriesCount(year,'B');
+	 	Integer numOfContractsByIndustriesDB = NYCDatabaseUtil.getMWBEPRContractsIndustriesCount(year,'B');
         Integer numOfContractsByIndustriesApp = ContractsPage.GetTop5WidgetTotalCount(WidgetOption.ContractsByIndustries);
         assertEquals("Number of Contracts By Industries in the Pending Revenue Contracts did not match", numOfContractsByIndustriesApp, numOfContractsByIndustriesDB);
 	}	
 	@Test
 	public void VerifyNumOfContractsBySize() throws SQLException {
-	 	Integer numOfContractsBySizeDB = NYCDatabaseUtil.getPRContractsSizeCount(year,'B');
+	 	Integer numOfContractsBySizeDB = NYCDatabaseUtil.getMWBEPRContractsSizeCount(year,'B');
         Integer numOfContractsBySizeApp = ContractsPage.GetTop5WidgetTotalCount(WidgetOption.ContractsBySize);
         assertEquals("Number of Contracts By Size in the Pending Revenue Contracts did not match", numOfContractsBySizeApp, numOfContractsBySizeDB);
 	}
@@ -81,7 +81,7 @@ import utilities.TestStatusReport;
 	
 	@Test
     public void VerifyTopNavPendingRevenueContractAmount() throws SQLException {
-        String TotalContractAmtDB = NYCDatabaseUtil.getContractsCurrentFYTopAmount(year, 'B');
+        String TotalContractAmtDB = NYCDatabaseUtil.getMWBEContractsCurrentFYTopAmount(year, 'B');
         String TotalContractAmtApp = ContractsPage.GetContractsAmount();
         System.out.println(TotalContractAmtApp); 
         assertEquals("Active Revenue Contracts Top navigation amount did not match", TotalContractAmtApp, TotalContractAmtDB);
@@ -89,7 +89,7 @@ import utilities.TestStatusReport;
 	
 	@Test
     public void VerifyBottomNavPendingRevenueAmount() throws SQLException {
-        String TotalContractAmtDB = NYCDatabaseUtil.getPRContractsAmount(year, 'B');
+        String TotalContractAmtDB = NYCDatabaseUtil.getMWBEPRContractsAmount(year, 'B');
         String TotalContractAmtApp = ContractsPage.GetBottomNavContractAmount();
     	System.out.println(TotalContractAmtApp); 
     	 assertEquals("Pending Revenue Contracts Bottom navigation Amount did not match", TotalContractAmtApp, TotalContractAmtDB);
@@ -97,7 +97,7 @@ import utilities.TestStatusReport;
     }
 	@Test
     public void VerifyBottomNavActiveRevenueCount() throws SQLException {
-		Integer TotalContractCountDB = NYCDatabaseUtil.getContractsPRCount(year, 'B');
+		Integer TotalContractCountDB = NYCDatabaseUtil.getMWBEContractsPRCount(year, 'B');
 		Integer TotalContractCountApp = ContractsPage.GetBottomNavContractCount();
     	System.out.println(TotalContractCountApp); 
     	 assertEquals("Pending Revenue Contracts Bottom navigation count did not match", TotalContractCountApp, TotalContractCountDB);
