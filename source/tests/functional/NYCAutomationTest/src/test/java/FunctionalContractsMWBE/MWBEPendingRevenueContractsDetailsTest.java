@@ -35,7 +35,7 @@ public class MWBEPendingRevenueContractsDetailsTest extends TestStatusReport{
 	public void VerifyTop5ContractsTransactionPage() throws SQLException {
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5Contracts);
 		HomePage.ShowWidgetDetails();
-		int NumOfPRContractsDetailsCountDB = NYCDatabaseUtil.getPRContractsDetailsCount(year,'B');
+		int NumOfPRContractsDetailsCountDB = NYCDatabaseUtil.getMWBEPRContractsDetailsCount(year,'B');
 		int numOfPRContractsDetailsCountapp = PendingExpenseContractsPage.GetTransactionCount();
 		assertEquals(" Pending Revenue contracts widget Details page table count did not match", numOfPRContractsDetailsCountapp, NumOfPRContractsDetailsCountDB);
 		
@@ -48,7 +48,7 @@ public class MWBEPendingRevenueContractsDetailsTest extends TestStatusReport{
 	public void VerifyTop5ContractAmountModificationsTransactionPage() throws SQLException{
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.TopContractAmountModifications);
 		HomePage.ShowWidgetDetails();
-		int NumOfPRContractsDetailsCountDB = NYCDatabaseUtil.getPRContractsModificationsDetailsCount(year,'B');
+		int NumOfPRContractsDetailsCountDB = NYCDatabaseUtil.getMWBEPRContractsModificationsDetailsCount(year,'B');
 		int numOfPRContractsDetailsCountapp = PendingExpenseContractsPage.GetTransactionCount();
 		assertEquals(" Pending Revenue contracts Modifications widget Details page table count did not match", numOfPRContractsDetailsCountapp, NumOfPRContractsDetailsCountDB);
 		
@@ -62,7 +62,7 @@ public class MWBEPendingRevenueContractsDetailsTest extends TestStatusReport{
 	public void VerifyTop5PrimeVendorsTransactionPage() throws SQLException {
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5PrimeVendors);
 		HomePage.ShowWidgetDetails();
-		int NumOfPRContractsDetailsCountDB = NYCDatabaseUtil.getPRContractsDetailsCount(year,'B');
+		int NumOfPRContractsDetailsCountDB = NYCDatabaseUtil.getMWBEPRContractsDetailsCount(year,'B');
 		int numOfPRContractsDetailsCountapp = PendingExpenseContractsPage.GetTransactionCount();
 		assertEquals(" Pending Revenue Prime Vendors widget Details page table count did not match", numOfPRContractsDetailsCountapp, NumOfPRContractsDetailsCountDB); 
 		
@@ -74,7 +74,7 @@ public class MWBEPendingRevenueContractsDetailsTest extends TestStatusReport{
 	public void VerifyTop5AwardMethodsTransactionPage() throws SQLException{
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5AwardMethods);
 		HomePage.ShowWidgetDetails();
-		int NumOfPRContractsDetailsCountDB = NYCDatabaseUtil.getPRContractsDetailsCount(year,'B');
+		int NumOfPRContractsDetailsCountDB = NYCDatabaseUtil.getMWBEPRContractsDetailsCount(year,'B');
 		int numOfPRContractsDetailsCountapp = PendingExpenseContractsPage.GetTransactionCount();
 		assertEquals(" Pending Revenue contracts Award Method widget Details page table count did not match", numOfPRContractsDetailsCountapp, NumOfPRContractsDetailsCountDB); 
 		
@@ -86,7 +86,7 @@ public class MWBEPendingRevenueContractsDetailsTest extends TestStatusReport{
 	public void VerifyTop5AgenciesTransactionPage() throws SQLException{
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5Agencies);
 		HomePage.ShowWidgetDetails();
-		int NumOfPRContractsDetailsCountDB = NYCDatabaseUtil.getPRContractsDetailsCount(year,'B');
+		int NumOfPRContractsDetailsCountDB = NYCDatabaseUtil.getMWBEPRContractsDetailsCount(year,'B');
 		int numOfPRContractsDetailsCountapp = PendingExpenseContractsPage.GetTransactionCount();
 		assertEquals(" Pending Revenue contracts Agencies widget Details page table count did not match", numOfPRContractsDetailsCountapp, NumOfPRContractsDetailsCountDB); 
 		
@@ -100,7 +100,7 @@ public class MWBEPendingRevenueContractsDetailsTest extends TestStatusReport{
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.ContractsByIndustries);
 		HomePage.ShowWidgetDetails();
 		
-		int NumOfPRContractsDetailsCountDB = NYCDatabaseUtil.getPRContractsDetailsCount(year,'B');
+		int NumOfPRContractsDetailsCountDB = NYCDatabaseUtil.getMWBEPRContractsDetailsCount(year,'B');
 		int numOfPRContractsDetailsCountapp = PendingExpenseContractsPage.GetTransactionCount();
 		assertEquals(" Pending Revenue contracts by Industries widget Details page table count did not match", numOfPRContractsDetailsCountapp, NumOfPRContractsDetailsCountDB);
 		
@@ -114,7 +114,7 @@ public class MWBEPendingRevenueContractsDetailsTest extends TestStatusReport{
 	public void VerifyContractsBySizeTransactionPage() throws SQLException{
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.ContractsBySize);
 		HomePage.ShowWidgetDetails();
-		int NumOfPRContractsDetailsCountDB = NYCDatabaseUtil.getPRContractsDetailsCount(year,'B');
+		int NumOfPRContractsDetailsCountDB = NYCDatabaseUtil.getMWBEPRContractsDetailsCount(year,'B');
 		int numOfPRContractsDetailsCountapp = PendingExpenseContractsPage.GetTransactionCount();
 		assertEquals(" Pending Revenue contracts by size widget Details page table count did not match", numOfPRContractsDetailsCountapp, NumOfPRContractsDetailsCountDB);
 		
