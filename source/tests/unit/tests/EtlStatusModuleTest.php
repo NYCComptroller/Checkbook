@@ -378,7 +378,7 @@ EOM;
             ->method('timeNow')
             ->will($this->returnValue($this->fakeTuesday));
 
-        $expectedWarning = "\n" . CheckbookEtlStatus::MONDAY_NOTICE;
+        $expectedWarning = "\n<br /><br />" . CheckbookEtlStatus::MONDAY_NOTICE;
 
         $this->assertEquals($expectedWarning,
             $CheckbookEtlStatus->comment());

@@ -22,6 +22,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
         $msg = [
             'subject' => 'Amazing Success',
             'body' => "Great\tSUCCESS",
+            'module' => 'checkbook_etl_status',
             'headers' => []
         ];
         checkbook_etl_status_mail_alter($msg);
@@ -37,6 +38,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
         $msg = [
             'subject' => 'Big Fail',
             'body' => "Huge\tFAIL",
+            'module' => 'checkbook_etl_status',
             'headers' => []
         ];
         checkbook_etl_status_mail_alter($msg);

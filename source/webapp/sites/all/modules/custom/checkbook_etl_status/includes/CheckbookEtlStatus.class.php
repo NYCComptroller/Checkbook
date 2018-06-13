@@ -13,7 +13,7 @@ class CheckbookEtlStatus
   /**
    *
    */
-  const MONDAY_NOTICE = "ETL is not configured to run on Monday night, so expect FAILs each Tuesday morning.";
+  const MONDAY_NOTICE = "<small>ETL is not configured to run on Monday night, so expect FAILs each Tuesday morning.";
 
   /**
    * @var string
@@ -161,7 +161,7 @@ class CheckbookEtlStatus
     $comment = '';
 
     if ('Tue' == date('D', $this->timeNow())) {
-      $comment .= "\n" . self::MONDAY_NOTICE;
+      $comment .= "\n<br /><br />" . self::MONDAY_NOTICE;
     }
 
     return $comment;
