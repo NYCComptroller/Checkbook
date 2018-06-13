@@ -1928,7 +1928,7 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                 '#suffix' => '</div>',
                 '#id' => 'edit-category',
                 '#name' => 'category',
-                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'category', $first_time_load, 'expense'),
+                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'category', $first_time_load, 'all'),
             );
             $form['filter']['sub_vendor_status_in_pip_id'] = array(
                 '#type' => 'select',
