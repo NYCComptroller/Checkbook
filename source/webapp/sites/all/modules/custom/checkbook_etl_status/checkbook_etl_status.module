@@ -32,6 +32,10 @@ function checkbook_etl_status_mail($key, &$message, $params)
  */
 function checkbook_etl_status_mail_alter(&$message)
 {
+  // Apply this hook only for `checkbook_etl_status` module
+  if ('checkbook_etl_status' !== $message['module']) {
+    return;
+  }
   if (stripos($message['subject'], 'Fail')) {
     $message['headers']['X-Priority'] = '1 (Highest)';
     $message['headers']['X-MSMail-Priority'] = 'High';
@@ -47,5 +51,4 @@ function checkbook_etl_status_mail_alter(&$message)
     "\t<strong style='color: red'>FAIL</strong>",
   ];
   $message['body'] = str_replace($replace_from, $replace_to, $message['body']);
-
 }
