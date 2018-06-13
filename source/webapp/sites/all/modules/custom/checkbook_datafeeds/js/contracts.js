@@ -124,7 +124,7 @@
         //reset the drop-downs
         $('select[name="df_contract_status"]').val('active');
         $('select[name="contract_type"]').val('');
-        $('select[name="category"]').val('expense');
+        $('select[name="category"]').val('all');
         $('select[name="award_method"]').val('');
         $('select[name="year"]').val('');
 
