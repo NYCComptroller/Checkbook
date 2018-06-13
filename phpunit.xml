@@ -22,5 +22,6 @@
         <log type="junit" target="/tmp/reports/junit.xml"/>
         <log type="coverage-clover" target="/tmp/reports/coverage.xml"/>
         <log type="coverage-html" target="/tmp/reports/coverage-html" lowUpperBound="35" highLowerBound="70"/>
+        <log type="coverage-text" target="php://stdout" showUncoveredFiles="true"/>
     </logging>
 </phpunit>
