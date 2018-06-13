@@ -566,7 +566,7 @@
 
                         default:
                             //Fix the default for category
-                            $("select#edit-checkbook-contracts-category").val("expense");
+                            $("select#edit-checkbook-contracts-category").val("all");
                             initializeContractsView(div_checkbook_contracts);
                             div_checkbook_contracts.contents().show();
                             div_checkbook_contracts_oge.contents().hide();
@@ -2272,7 +2272,7 @@
         $(enclosingDiv).find(':input').each(function () {
             switch (this.type) {
                 case 'select-one':
-                    $("select#edit-checkbook-contracts-category").val("expense");
+                    $("select#edit-checkbook-contracts-category").val("all");
                     //$('#edit-spending-fiscal-year').removeAttr("disabled");
                     var defaultoption = $(this).attr('default_selected_value');
                     if (defaultoption) {
