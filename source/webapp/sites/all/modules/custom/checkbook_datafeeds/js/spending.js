@@ -5,11 +5,11 @@
         var data_source = $('input:hidden[name="data_source"]').val();
         var agency_selected = $('#edit-agency').val();
 
-        if (data_source == "checkbook_oge" && agency_selected == 'Citywide (All Agencies)') {
+        /*if (data_source == "checkbook_oge" && agency_selected == 'Citywide (All Agencies)') {
             $('input:radio[name="datafeeds-spending-domain-filter"][value="checkbook_oge"]').removeAttr('checked').button("refresh");
             $('input:radio[name="datafeeds-spending-domain-filter"][value="checkbook"]').attr('checked', 'checked').button("refresh");
             $('input:hidden[name="data_source"]').val("checkbook");
-        }
+        }*/
         //On change of "Year"
         $('#edit-year').change(function () {
             var agency = emptyToZero($('#edit-agency').val());
@@ -79,12 +79,6 @@
             $('select[name="expense_category"]').val('');
             $('select[name="expense_category"]').attr('disabled', 'disabled');
         }
-        /*else if ($('#edit-agency').val() === 'Select One') {
-            $('select[name="dept"]').val('');
-            $('select[name="dept"]').attr('disabled', 'disabled');
-            $('select[name="expense_category"]').val('');
-            $('select[name="expense_category"]').attr('disabled', 'disabled');
-        }*/
 
         var dataSource = $('input:radio[name=datafeeds-spending-domain-filter]:checked').val();
 
