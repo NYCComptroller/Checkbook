@@ -1,8 +1,10 @@
 {
     "widgetType": "highcharts",
     "header":"
-    $header = '<h2 class=\"chart-title\" style=\"display:none;\">' . $node->widgetConfig->chartTitle . '</h2>';
+     $header = '<div style=\"position:relative;\">';
+    $header .= '<h2 class=\"chart-title\" style=\"display:none;\">' . $node->widgetConfig->chartTitle . '</h2>';
 $header .= ChartUtil::generateWidgetGridViewLink($node);
+  $header.='</div>';
 return $header;
 ",
 "footer":" $footer =''; return $footer; ",
