@@ -43,6 +43,7 @@ public class NYCBaseTest{
 
         //connect to data base
         NYCDatabaseUtil.connectToDatabase();
+     
 
         String browserSelection = NYCBaseTest.prop.getProperty("BrowserSelection");
         String platform = NYCBaseTest.prop.getProperty("Platform");

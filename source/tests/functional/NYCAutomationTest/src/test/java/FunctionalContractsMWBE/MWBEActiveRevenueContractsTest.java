@@ -112,12 +112,11 @@ public class MWBEActiveRevenueContractsTest extends NYCBaseTest {
 	@Test
     public void VerifyActiveRevenueContractsVisualizationsTitles(){
 	    String[] sliderTitles= {"Top Ten Agencies by M/WBE Active Revenue Contracts", 
-	    		                 "Top Ten M/WBE Active Revenue Contracts by Current Amount", 
-	    		                  						
+	    		                 "Top Ten M/WBE Active Revenue Contracts by Current Amount",	    		                  						
 	    						"Top Ten M/WBE Prime Vendors by Active Revenue Contracts"};
-	    System.out.println( ContractsPage.VisualizationTitles()); 
+	    System.out.println( ContractsPage.MWBEVisualizationTitles()); 
     	assertTrue(Arrays.equals(sliderTitles, ContractsPage.MWBEVisualizationTitles().toArray()));
-    	System.out.println( ContractsPage.VisualizationTitles()); 
+    	System.out.println( ContractsPage.MWBEVisualizationTitles()); 
     }
 	 
 	@Test

@@ -32,9 +32,9 @@ public class ContractSpendingPage {
          // WebElement tabAnchor = tab.findElement(By.linkText("Contract Spending"));
         //  WebElement tabAnchor = tab.findElement(By.className("dollars"));
           
-          WebElement tabAnchor =Driver.Instance.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div/div/div/div/div[1]/div/div/div/div[4]/div/div[1]/div/div/div[1]/div/table/tbody/tr/td[4]/div[1]/a"));
-                      
-         // driver.findElement(By.linkText("App Configuration")).click();
+          WebElement tabAnchor =Driver.Instance.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div[1]/div/div/div/div[1]/div/div/div/div[4]/div/div[3]/div/div/div[1]/div/table/tbody/tr/td[4]/div[1]/a"));
+       
+           // driver.findElement(By.linkText("App Configuration")).click();
           ((JavascriptExecutor) Driver.Instance).executeScript("arguments[0].scrollIntoView(true);", tabAnchor);
         tabAnchor.click();
       }

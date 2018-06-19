@@ -39,57 +39,57 @@ import helpers.Helper;
 	/* ***************** Test Widget Counts ****************** */
 	@Test
 	public void VerifyNumOfMasterAgreementsContracts() throws SQLException {
-		Integer numOfMasterAgreementContractsFY2016 = NYCDatabaseUtil.getMWBEREContractsMasterCount(2016,'B');	 	
+		Integer numOfMasterAgreementContractsFYyear = NYCDatabaseUtil.getMWBEREContractsMasterCount(year,'B');	 	
 		Integer numOfMasterAgreementContracts = ContractsPage.GetTop5WidgetTotalCount(WidgetOption.Top5MasterAgreements);
-		assertEquals("Number of Master Agreement Contracts in the Registered Expense Contracts did not match", numOfMasterAgreementContracts, numOfMasterAgreementContractsFY2016);
+		assertEquals("Number of Master Agreement Contracts in the Registered Expense Contracts did not match", numOfMasterAgreementContracts, numOfMasterAgreementContractsFYyear);
 	}
 	@Test
 	public void VerifyNumOfMasterAgreementModificationsContracts() throws SQLException {
-		Integer numOfMasterAgreementModificationsContractsFY2016 = NYCDatabaseUtil.getMWBEREContractsMasterModificationsCount(2016,'B');	
+		Integer numOfMasterAgreementModificationsContractsFYyear = NYCDatabaseUtil.getMWBEREContractsMasterModificationsCount(year,'B');	
 		Integer numOfMasterAgreementModificationsContracts = ContractsPage.GetTop5WidgetTotalCount(WidgetOption.Top5MasterAgreementModifications);
-		assertEquals("Number of Contract Amount Modifications Contracts in the Registered Expense Contracts did not match", numOfMasterAgreementModificationsContracts, numOfMasterAgreementModificationsContractsFY2016);
+		assertEquals("Number of Contract Amount Modifications Contracts in the Registered Expense Contracts did not match", numOfMasterAgreementModificationsContracts, numOfMasterAgreementModificationsContractsFYyear);
 	}
 	@Test
 	public void VerifyNumOfContracts() throws SQLException {
-		Integer numOfContractsFY2016 = NYCDatabaseUtil.getREContractsCount(2016,'B');	
+		Integer numOfContractsFYyear = NYCDatabaseUtil.getMWBEREContractsCount(year,'B');	
 		Integer numOfContracts = ContractsPage.GetTop5WidgetTotalCount(WidgetOption.Top5Contracts);
-		assertEquals("Number of Contracts in the Registered Expense Contracts did not match", numOfContracts, numOfContractsFY2016);
+		assertEquals("Number of Contracts in the Registered Expense Contracts did not match", numOfContracts, numOfContractsFYyear);
 	}
 	@Test
 	public void VerifyNumOfContractsAmountModificationsContracts() throws SQLException {
-		Integer numOfContractsAmountModificationsContractsFY2016 = NYCDatabaseUtil.getMWBEREContractsModificationsCount(2016,'B');	
+		Integer numOfContractsAmountModificationsContractsFYyear = NYCDatabaseUtil.getMWBEREContractsModificationsCount(year,'B');	
 		Integer numOfContractsAmountModificationsContracts = ContractsPage.GetTop5WidgetTotalCount(WidgetOption.Top5ContractAmountModifications);
-		assertEquals("Number of Contracts Amount Modifications Contracts in the Registered Expense Contracts did not match", numOfContractsAmountModificationsContracts, numOfContractsAmountModificationsContractsFY2016);
+		assertEquals("Number of Contracts Amount Modifications Contracts in the Registered Expense Contracts did not match", numOfContractsAmountModificationsContracts, numOfContractsAmountModificationsContractsFYyear);
 	}
 	@Test
 	public void VerifyNumOfPrimeVendorsContracts() throws SQLException {
-		Integer numOfPrimeVendorsContractsFY2016 = NYCDatabaseUtil.getMWBEREContractsPrimeVendorsCount(2016,'B');	
+		Integer numOfPrimeVendorsContractsFYyear = NYCDatabaseUtil.getMWBEREContractsPrimeVendorsCount(year,'B');	
 		Integer numOfPrimeVendorsContracts = ContractsPage.GetTop5WidgetTotalCount(WidgetOption.Top5PrimeVendors);
-		assertEquals("Number of Prime Vendors Contracts By Industries in the Registered Expense Contracts did not match", numOfPrimeVendorsContracts, numOfPrimeVendorsContractsFY2016);
+		assertEquals("Number of Prime Vendors Contracts By Industries in the Registered Expense Contracts did not match", numOfPrimeVendorsContracts, numOfPrimeVendorsContractsFYyear);
 	}
 	@Test
 	public void VerifyNumOfAwardMethodsContracts() throws SQLException {
-		Integer numOfAwardMethodsContractsFY2016 = NYCDatabaseUtil.getMWBEREContractsAwardMethodsCount(2016,'B');	
+		Integer numOfAwardMethodsContractsFYyear = NYCDatabaseUtil.getMWBEREContractsAwardMethodsCount(year,'B');	
 		Integer numOfAwardMethodsContracts = ContractsPage.GetTop5WidgetTotalCount(WidgetOption.Top5AwardMethods);
-		assertEquals("Number of Award Methods Contracts in the Registered Expense Contracts did not match", numOfAwardMethodsContracts, numOfAwardMethodsContractsFY2016);
+		assertEquals("Number of Award Methods Contracts in the Registered Expense Contracts did not match", numOfAwardMethodsContracts, numOfAwardMethodsContractsFYyear);
 	}
 	@Test
 	public void VerifyNumOfAgenciesContracts() throws SQLException {
-		Integer numOfAgenciesContractsFY2016 = NYCDatabaseUtil.getMWBEREContractsAgenciesCount(2016,'B');	
+		Integer numOfAgenciesContractsFYyear = NYCDatabaseUtil.getMWBEREContractsAgenciesCount(year,'B');	
 		Integer numOfAgenciesContracts = ContractsPage.GetTop5WidgetTotalCount(WidgetOption.Top5Agencies);
-		assertEquals("Number of Agencies Contracts in the Registered Expense Contracts did not match", numOfAgenciesContracts, numOfAgenciesContractsFY2016);
+		assertEquals("Number of Agencies Contracts in the Registered Expense Contracts did not match", numOfAgenciesContracts, numOfAgenciesContractsFYyear);
 	}
 	@Test
 	public void VerifyNumOfContractsByIndustries() throws SQLException {
-		Integer numOfContractsByIndustriesFY2016 = NYCDatabaseUtil.getMWBEREContractsIndustriesCount(2016,'B');	
+		Integer numOfContractsByIndustriesFYyear = NYCDatabaseUtil.getMWBEREContractsIndustriesCount(year,'B');	
 		Integer numOfContractsByIndustries = ContractsPage.GetTop5WidgetTotalCount(WidgetOption.ContractsByIndustries);
-		assertEquals("Number of Contracts By Industries in the Registered Expense Contracts did not match", numOfContractsByIndustries, numOfContractsByIndustriesFY2016);
+		assertEquals("Number of Contracts By Industries in the Registered Expense Contracts did not match", numOfContractsByIndustries, numOfContractsByIndustriesFYyear);
 	}
 	@Test
 	public void VerifyNumOfContractsBySize() throws SQLException {
-		Integer numOfContractsBySizeFY2016 = NYCDatabaseUtil.getMWBEREContractsSizeCount(2016,'B');	
+		Integer numOfContractsBySizeFYyear = NYCDatabaseUtil.getMWBEREContractsSizeCount(year,'B');	
 		Integer numOfContractsBySize = ContractsPage.GetTop5WidgetTotalCount(WidgetOption.ContractsBySize);
-		assertEquals("Number of Contracts By Size in the Registered Expense Contracts did not match", numOfContractsBySize, numOfContractsBySizeFY2016);
+		assertEquals("Number of Contracts By Size in the Registered Expense Contracts did not match", numOfContractsBySize, numOfContractsBySizeFYyear);
 	}
 
 	
@@ -131,7 +131,7 @@ import helpers.Helper;
 	    						"Top Ten M/WBE Registered Expense Contracts by Current Amount", 
 	    						"Top Ten M/WBE Prime Vendors by Registered Expense Contracts",
 	    						"Top Ten M/WBE Sub Vendors by Registered Expense Contracts"};
-	    System.out.println( ContractsPage.VisualizationTitles()); 
+	    System.out.println( ContractsPage.MWBEVisualizationTitles()); 
   	assertTrue(Arrays.equals(sliderTitles, ContractsPage.MWBEVisualizationTitles().toArray()));
   	System.out.println( ContractsPage.VisualizationTitles()); 
   }
