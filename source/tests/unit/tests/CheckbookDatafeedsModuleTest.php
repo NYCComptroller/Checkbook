@@ -32,6 +32,7 @@ class CheckbookDatafeedsModuleTest extends TestCase
         $this->assertEquals(4, sizeof($items['data-feeds/download']));
         $this->assertEquals(4, sizeof($items['datafeeds/budget/department/%/%']));
         $this->assertEquals(4, sizeof($items['datafeeds/budget/expcat/%/%/%']));
+        $this->assertEquals(4, sizeof($items['datafeeds/spending/agency/%/%']));
     }
 
     /**
