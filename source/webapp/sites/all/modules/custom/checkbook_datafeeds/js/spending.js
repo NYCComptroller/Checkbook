@@ -2,11 +2,12 @@
     //On Data Source Change
     $.fn.onDataSourceChange = function (data_source) {
         //Change the Agency drop-down label
-        $('#edit-agency')
-        if(data_source == 'checkbook')
-            $("label[for = agency]").text("Agency:");
-        else if(data_source == 'checkbook_oge')
-            $("label[for = agency]").text("Other Government Entity:");
+        if(data_source == 'checkbook') {
+            $("label[for = edit-agency]").text("Agency:");
+        }else if(data_source == 'checkbook_oge') {
+            $("label[for = edit-agency]").text("Other Government Entity:");
+        }
+
         //Reload Agency drop-down options
         $.ajax({
             url: '/datafeeds/spending/agency/' + data_source + '/1'
@@ -23,8 +24,11 @@
             }
         });
 
-        //disable fields
-        $.fn.disableFields(data_source);
+        //Disable Department and Expense Category drop-downs
+        $.fn.disableDeptExpCat();
+
+        //Show Hide fields
+        $.fn.showHideFields(data_source);
 
         //Clear all text fields
         var enclosingDiv = $("#dynamic-filter-data-wrapper").children('#edit-filter').children('div.fieldset-wrapper').children();
@@ -34,69 +38,97 @@
             }
         });
 
-        //Reset the date filter
-        $('input:radio[name=date_filter][value=0]').attr('checked', 'checked').button("refresh");
-        $('select[name="year"]').removeAttr('disabled');
-        $('input[name="issuedfrom"]').attr('disabled', 'disabled');
-        $('input[name="issuedto"]').attr('disabled', 'disabled');
-
         //Reset the Spending Category
-        $('select[name="expense_type"]').val('Total Spending [ts]');
-        $('input[name="payee_name"]').removeAttr('disabled');
-        $('option[value="Payee Name"]').removeAttr('disabled');
-        $('option[value="payee_name"]').removeAttr('disabled');
-        $('input[name="contractno"]').removeAttr('disabled');
-        $('option[value="Contract ID"]').removeAttr('disabled');
-        $('option[value="contract_ID"]').removeAttr('disabled');
+        //$('select[name="expense_type"]').val('Total Spending [ts]');
+        //$('input[name="payee_name"]').removeAttr('disabled');
+        //$('option[value="Payee Name"]').removeAttr('disabled');
+        //$('option[value="payee_name"]').removeAttr('disabled');
+        //$('input[name="contractno"]').removeAttr('disabled');
+        //$('option[value="Contract ID"]').removeAttr('disabled');
+        //$('option[value="contract_ID"]').removeAttr('disabled');
 
         //reset the selected columns
         $('#edit-column-select').multiSelect('deselect_all');
+
     };
 
-    //Disabling fields based on selected data source
-    $.fn.disableFields = function (data_source) {
+    //ShowHide fields based on selected data source
+    $.fn.showHideFields = function (data_source) {
+        $.fn.disableDeptExpCat();
+        switch (data_source){
+            case 'checkbook_oge':
+                $('.datafield.industry').hide();
+                $('.datafield.mwbecategory').hide();
+                $('.datafield.expenseid').hide();
+
+                $('.datafield.commadityline').show();
+                $('.datafield.entity_contract_number').show();
+                $('.datafield.budgetname').show();
+
+                $('input:radio[name=date_filter]')[0].checked = true;
+                $('select[name="year"]').removeAttr('disabled');
+                $('input:radio[name=date_filter][value="1"]').attr('disabled', 'disabled');
+                $('input[name="issuedfrom"]').attr('disabled', 'disabled');
+                $('input[name="issuedto"]').attr('disabled', 'disabled');
+                break;
+            default:
+                $('.datafield.industry').show();
+                $('.datafield.mwbecategory').show();
+                $('.datafield.expenseid').show();
+
+                $('.datafield.commodityline').hide();
+                $('.datafield.entity_contract_number').hide();
+                $('.datafield.budgetname').hide();
+
+                $('input:radio[name=date_filter]')[0].checked = true;
+                $('input:radio[name=date_filter][value="1"]').removeAttr('disabled')
+        }
+    };
+
+    $.fn.disableDeptExpCat = function(){
         if ($('#edit-agency').val() == 'Citywide (All Agencies)' || $('#edit-agency').val() == 'Select One') {
             $('select[name="dept"]').val('');
             $('select[name="dept"]').attr('disabled', 'disabled');
             $('select[name="expense_category"]').val('');
             $('select[name="expense_category"]').attr('disabled', 'disabled');
-        }
-
-        switch (data_source){
-            case 'checkbook_oge':
-                $('input:radio[name=date_filter][value="1"]').attr('disabled', 'disabled');
-                break;
-            default:
+        }else{
+            $('select[name="dept"]').removeAttr('disabled');
+            $('select[name="expense_category"]').removeAttr('disabled');
         }
     };
 
-    // When Agency Filter is changed reload Department and Expense category Drop-downs
+    // When Agency Filter is changed reload Department and Expense Category drop-downs
     $.fn.onAgencyChange = function onAgencyChange() {
-        var year = 0;
-        if($('input:radio[name=date_filter]:checked').val() == 0){
-            year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
-        }
-        var agency = emptyToZero($('#edit-agency').val());
-        var spending_cat = emptyToZero($('#edit-expense-type').val());
-        var data_source = $('input:radio[name=datafeeds-spending-domain-filter]:checked').val();
-        $.ajax({
-            url: '/autocomplete/spending/dept/' + year + '/' + agency + '/' + spending_cat + '/' + data_source
-            ,success: function(data) {
-                var html = '<option select="selected" value="0" >Select Department</option>';
-                if(data[0]){
-                    if(data[0]!= 'No Matches Found'){
-                        for (var i = 0; i < data.length; i++) {
-                            html=html + '<option value="' + data[i] + ' ">' + data[i]  + '</option>';
+        $.fn.disableDeptExpCat();
+        if ($('#edit-agency').val() != 'Citywide (All Agencies)' || $('#edit-agency').val() != 'Select One') {
+            var year = 0;
+            if ($('input:radio[name=date_filter]:checked').val() == 0) {
+                year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
+            }
+            var agency = emptyToZero($('#edit-agency').val());
+            var spending_cat = emptyToZero($('#edit-expense-type').val());
+            var data_source = $('input:radio[name=datafeeds-spending-domain-filter]:checked').val();
+            $.ajax({
+                url: '/autocomplete/spending/dept/' + year + '/' + agency + '/' + spending_cat + '/' + data_source
+                , success: function (data) {
+                    var html = '<option select="selected" value="0" >Select Department</option>';
+                    if (data[0]) {
+                        if (data[0] != 'No Matches Found') {
+                            for (var i = 0; i < data.length; i++) {
+                                html = html + '<option value="' + data[i] + ' ">' + data[i] + '</option>';
+                            }
+                        }
+                        else {
+                            html = html + '<option value="">' + data[0] + '</option>';
                         }
                     }
-                    else { html=html + '<option value="">' + data[0]  + '</option>'; }
+                    //Reload Department Drop-down
+                    $('#edit-dept').html(html);
+                    //Reload Expense Category Drop-down
+                    $.fn.onDeptChange();
                 }
-                //Reload Department Drop-down
-                $('#edit-dept').html(html);
-                //Reload Expense Category Drop-down
-                $.fn.onDeptChange();
-            }
-        });
+            });
+        }
     }
 
     // When Department Filter is changed reload Expense category Drop-down
@@ -146,9 +178,21 @@
             var dataSource = $('input:radio[name=datafeeds-spending-domain-filter]:checked', context).val();
             var datefilter = $('input[name="date_filter"]:checked', context).val();
             var exptypeval = $('select[name="expense_type"]', context).val();
-            $.fn.disableFields(dataSource);
+            $.fn.showHideFields(dataSource);
+
+            //Data Source change event
             $('input:radio[name=datafeeds-spending-domain-filter]', context).change(function (){
                 $.fn.onDataSourceChange($(this, context).val());
+            });
+
+            //Agency drop-down change event
+            $('select[name="agency"]', context).change(function (){
+                $.fn.onAgencyChange();
+            });
+
+            //Department drop-down change event
+            $('select[name="dept"]', context).change(function (){
+                $.fn.onDeptChange();
             });
 
             if (datefilter == 0) {
@@ -157,7 +201,7 @@
             } else if (datefilter == 1) {
                 $('select[name="year"]', context).attr('disabled', 'disabled');
             }
-            if (exptypeval == 'Payroll Spending [p]', context) {
+           /* if (exptypeval == 'Payroll Spending [p]', context) {
                 $('input[name="contractno"]', context).attr('disabled', 'disabled');
                 $('input[name="payee_name"]', context).attr('disabled', 'disabled');
                 $('option[value="Payee Name"]', context).attr('disabled', 'disabled');
@@ -171,7 +215,7 @@
                 $('option[value="contract_ID"]', context).attr('disabled', 'disabled');
                 $('option[value="Payee Name"]', context).removeAttr('disabled');
                 $('option[value="payee_name"]', context).removeAttr('disabled');
-            }
+            }*/
             // Sets up multi-select/option transfer
             $('#edit-column-select', context).multiSelect();
 
