@@ -4586,6 +4586,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
         '#default_value' => $agency_default,
         '#id' => 'edit-agency',
         '#name' => 'agency',
+        '#validated' => true,
         /*'#ajax' => array(
             'callback' => 'checkbook_datafeeds_agency_ajax',
             'wrapper' => 'dynamic-fields',
@@ -4689,11 +4690,6 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
         '#id' => 'edit-industry',
         '#name' => 'industry',
         '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'industry', $first_time_load, ''),
-        '#states' => array(
-            'disabled' => array(
-                'radio[name="datafeeds-spending-domain-filter"]' => array('value' => 'checkbook_oge')
-            )
-        )
     );
     $form['filter']['mwbe_category'] = array(
         '#type' => 'select',
@@ -4706,11 +4702,6 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
         '#id' => 'edit-mwbe-category',
         '#name' => 'mwbe_category',
         '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'mwbe_category', $first_time_load, ''),
-        '#states' => array(
-            'disabled' => array(
-                'radio[name="datafeeds-spending-domain-filter"]' => array('value' => 'checkbook_oge')
-            )
-        )
     );
     $form['filter']['payee_name'] = array(
         '#type' => 'textfield',
@@ -4752,6 +4743,27 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
         '#name' => 'contractno',
         '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'contractno', $first_time_load, ''),
     );
+    $form['filter']['commodity_line'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Commodity Line:'),
+        '#maxlength'=>3,
+        '#prefix' => '<div class="datafield commodityline">',
+        '#suffix' => '</div>',
+        '#attributes' => array('class' => array('watch')),
+        '#id' => 'edit-commodity-line',
+        '#name' => 'commodity_line',
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'commodity_line', $first_time_load, ''),
+    );
+    $form['filter']['entity_contract_number'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Entity Contract #:'),
+        '#prefix' => '<div class="datafield entity_contract_number">',
+        '#suffix' => '</div>',
+        '#attributes' => array('class' => array('watch')),
+        '#id' => 'edit-entity-contract-number',
+        '#name' => 'entity_contract_number',
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'entity_contract_number', $first_time_load, ''),
+    );
     $form['filter']['document_id'] = array(
         '#type' => 'textfield',
         '#title' => t('Document ID:'),
@@ -4772,6 +4784,16 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
         '#name' => 'capital_project',
         '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'capital_project', $first_time_load, ''),
     );
+    $form['filter']['budget_name'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Budget Name:'),
+        '#prefix' => '<div class="datafield budgetname">',
+        '#suffix' => '</div>',
+        '#attributes' => array('class' => array('watch')),
+        '#id' => 'edit-budget-name',
+        '#name' => 'budget_name',
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'budget_name', $first_time_load, ''),
+    );
     $form['filter']['date_filter'] = array(
         '#type' => 'radios',
         '#title' => t('Date Filter:'),
@@ -4785,19 +4807,14 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
         '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'date_filter', $first_time_load, 0),
         '#id' => 'edit-date-filter',
         '#name' => 'date_filter',
-        '#ajax' => array(
+        /*'#ajax' => array(
             //'callback' => 'checkbook_datafeeds_datefilter_ajax',
             'wrapper' => 'datefilter',
             'progress' => array(
                 'message' => NULL,
                 'type' => 'throbber',
             ),
-        ),
-        '#states' => array(
-            'disabled' => array(
-                'radio[name="datafeeds-spending-domain-filter"]' => array('value' => 'checkbook_oge')
-            )
-        )
+        ),*/
     );
     $form['filter']['year_filter_start'] = array(
         '#markup' => '<div class="datafield year-filters last-item">',
