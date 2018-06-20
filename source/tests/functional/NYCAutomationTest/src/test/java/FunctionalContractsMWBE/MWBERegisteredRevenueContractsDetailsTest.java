@@ -54,7 +54,7 @@ import utilities.TestStatusReport;
 		assertEquals("Active Revenue Contracts Contracts  Widget Details page total Contract amount did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
 	     
 	}
-	@Test
+	/*@Test
 	public void VerifyTop5ContractAmountModificationsTransactionCount() throws SQLException {
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.TopContractAmountModifications);
 		HomePage.ShowWidgetDetails();
@@ -71,7 +71,7 @@ import utilities.TestStatusReport;
 		String WidgetDetailsAmountapp = ContractsPage.GetTransactionAmount();
 		assertEquals("Active Revenue Contracts ContractsModifications  Widget Details page total Contract amount did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
 	     
-	}
+	}*/
 	@Test
 	public void VerifyTop5PrimeVendorsTransactionCount() throws SQLException {
 		ContractsPage.GoToTop5DetailsPage(WidgetOption.TopPrimeVendors);

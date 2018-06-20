@@ -12,7 +12,9 @@ import pages.spending.SpendingPage;
 import utilities.NYCBaseTest;
 import utilities.TestStatusReport;
 
-public class OGESpendingTest extends TestStatusReport{
+//public class OGESpendingTest extends TestStatusReport{
+	
+	public class OGESpendingTest extends NYCBaseTest{
 
 	@Before
 	public void GoToPage(){
