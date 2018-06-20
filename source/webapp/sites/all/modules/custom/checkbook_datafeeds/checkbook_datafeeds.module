@@ -66,6 +66,13 @@ function checkbook_datafeeds_menu() {
         'access callback' => TRUE,
         'type' => MENU_CALLBACK
     );
+
+    $items['datafeeds/spending/agency/%/%'] = array(
+        'page callback' => '_agency_options',
+        'page arguments' => array(3, 4),
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK
+    );
     return $items;
 }
 
@@ -4411,15 +4418,15 @@ function checkbook_datafeeds_spending($form, &$form_state)
         '#type' => 'radios',
         '#options' => array('checkbook' => 'Citywide Agencies', 'checkbook_oge' => 'Other Government Entities'),
         '#default_value' => !isset($data_source) ? 'checkbook' : $data_source,
-        '#prefix' => '<div id="div_data_source">',
-        '#suffix' => '</div><br/><br/>',
-        '#parents' => array('datafeeds-spending-domain-filter'),
-        '#ajax' => array(
+        //'#prefix' => '<div id="div_data_source">',
+        //'#suffix' => '</div><br/><br/>',
+        //'#parents' => array('datafeeds-spending-domain-filter'),
+        /*'#ajax' => array(
             'event' => 'change',
             'callback' => 'checkbook_datafeeds_spending_filter_ajax',
             'method' => 'replace',
             'parameters' => array('data_source_changed' => true, 'new_data_source' => $data_source),
-        )
+        )*/
     );
 
     $form['filter'] = array(
@@ -4566,78 +4573,321 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     $expcat_options = _expcat_options($agency, $dept, $sc, $year, $data_source);
     $expense_type_options =  _expense_type_options($data_source);
 
-    switch ($data_source) {
-        case 'checkbook_oge':
-            $form['filter']['agency'] = array(
-                '#type' => 'select',
-                '#title' => t('Other Government<br/> Entities:'),
-                '#options' => $agency_options['options'],
-                '#option_attributes' => $agency_options['options_attributes'],
-                '#prefix' => '<div class="column column-left"><div class="datafield agency">',
-                '#suffix' => '</div>',
-                '#attributes' => array('class' => array('watch')),
-                '#default_value' => $agency,
-                '#id' => 'edit-agency',
-                '#name' => 'agency',
-                '#ajax' => array(
-                    'callback' => 'checkbook_datafeeds_agency_ajax',
-                    'wrapper' => 'dynamic-fields',
-                    'progress' => array(
-                        'message' => NULL,
-                        'type' => 'throbber',
-                    ),
-                    'parameters' => array('data_source' => $data_source),
-                ),
-            );
-            $form['filter']['dept'] = array(
-                '#type' => 'select',
-                '#title' => t('Department:'),
-                '#options' => $dept_options['options'],
-                '#option_attributes' => $dept_options['options_attributes'],
-                '#prefix' => '<div id="dynamic-fields"><div class="datafield department">',
-                '#suffix' => '</div>',
-                '#attributes' => array('class' => array('watch')),
-                '#multiple' => FALSE,
-                '#default_value' => $dept,
-                '#id' => 'edit-dept',
-                '#name' => 'dept',
-                '#validated' => true
-            );
-            $form['filter']['expense_category'] = array(
-                '#type' => 'select',
-                '#title' => t('Expense Category:'),
-                '#options' => $expcat_options['options'],
-                '#option_attributes' => $expcat_options['options_attributes'],
-                '#prefix' => '<div id="expense-category"><div class="datafield expensecategory">',
-                '#suffix' => '</div></div></div>',
-                '#attributes' => array('class' => array('watch')),
-                '#multiple' => FALSE,
-                '#id' => 'edit-expense-category',
-                '#name' => 'expense_category',
-                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'expense_category', $first_time_load, ''),
-                '#validated' => true
-            );
-            $form['filter']['expense_type'] = array(
-                '#type' => 'select',
-                '#title' => t('Spending Category:'),
-                '#options' => $expense_type_options['options'],
-                '#option_attributes' => $expense_type_options['options_attributes'],
-                '#prefix' => '<div class="datafield expensetype">',
-                '#suffix' => '</div>',
-                '#attributes' => array('class' => array('watch')),
-                '#default_value' => $sc,
-                '#id' => 'edit-expense-type',
-                '#name' => 'expense_type',
-                '#ajax' => array(
-                    'callback' => 'checkbook_datafeeds_exptype_ajax',
-                    'wrapper' => 'dynamic-fields',
-                    'progress' => array(
-                        'message' => NULL,
-                        'type' => 'throbber',
-                    ),
-                    'parameters' => array('data_source' => $data_source),
-                ),
-            );
+    ///switch ($data_source) {
+       // case 'checkbook_oge':
+    $form['filter']['agency'] = array(
+        '#type' => 'select',
+        '#title' => t('Agency:'),
+        '#options' => $agency_options['options'],
+        '#option_attributes' => $agency_options['options_attributes'],
+        '#prefix' => '<div class="column column-left"><div class="datafield agency">',
+        '#suffix' => '</div>',
+        '#attributes' => array('class' => array('watch')),
+        '#default_value' => $agency_default,
+        '#id' => 'edit-agency',
+        '#name' => 'agency',
+        /*'#ajax' => array(
+            'callback' => 'checkbook_datafeeds_agency_ajax',
+            'wrapper' => 'dynamic-fields',
+            'progress' => array(
+                'message' => NULL,
+                'type' => 'throbber',
+            ),
+            'parameters' => array('data_source' => $data_source),
+        )*/
+    );
+    /*$form['filter']['agency'] = array(
+        '#type' => 'select',
+        '#title' => t('Other Government<br/> Entities:'),
+        '#options' => $agency_options['options'],
+        '#option_attributes' => $agency_options['options_attributes'],
+        '#prefix' => '<div class="column column-left"><div class="datafield agency">',
+        '#suffix' => '</div>',
+        '#attributes' => array('class' => array('watch')),
+        '#default_value' => $agency,
+        '#id' => 'edit-agency',
+        '#name' => 'agency',
+        '#ajax' => array(
+            'callback' => 'checkbook_datafeeds_agency_ajax',
+            'wrapper' => 'dynamic-fields',
+            'progress' => array(
+                'message' => NULL,
+                'type' => 'throbber',
+            ),
+            'parameters' => array('data_source' => $data_source),
+        ),
+        '#states' => array(
+            'disabled' => array(
+                'radio[name="datafeeds-spending-domain-filter"]' => array('value' => 'checkbook')
+            )
+        )
+    );*/
+    $form['filter']['dept'] = array(
+        '#type' => 'select',
+        '#title' => t('Department:'),
+        '#options' => $dept_options['options'],
+        '#option_attributes' => $dept_options['options_attributes'],
+        '#prefix' => '<div id="dynamic-fields"><div class="datafield department">',
+        '#suffix' => '</div>',
+        '#attributes' => array('class' => array('watch')),
+        '#multiple' => FALSE,
+        '#default_value' => $dept,
+        '#id' => 'edit-dept',
+        '#name' => 'dept',
+        '#validated' => true,
+        /*'#ajax' => array(
+            'callback' => 'checkbook_datafeeds_dept_ajax',
+            'wrapper' => 'expense-category',
+            'progress' => array(
+                'message' => NULL,
+                'type' => 'throbber',
+            ),
+        ),*/
+    );
+    $form['filter']['expense_category'] = array(
+        '#type' => 'select',
+        '#title' => t('Expense Category:'),
+        '#options' => $expcat_options['options'],
+        '#option_attributes' => $expcat_options['options_attributes'],
+        '#prefix' => '<div id="expense-category"><div class="datafield expensecategory">',
+        '#suffix' => '</div></div></div>',
+        '#attributes' => array('class' => array('watch')),
+        '#multiple' => FALSE,
+        '#id' => 'edit-expense-category',
+        '#name' => 'expense_category',
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'expense_category', $first_time_load, ''),
+        '#validated' => true
+    );
+    $form['filter']['expense_type'] = array(
+        '#type' => 'select',
+        '#title' => t('Spending Category:'),
+        '#options' => $expense_type_options['options'],
+        '#option_attributes' => $expense_type_options['options_attributes'],
+        '#prefix' => '<div class="datafield expensetype">',
+        '#suffix' => '</div>',
+        '#attributes' => array('class' => array('watch')),
+        '#default_value' => $sc,
+        '#id' => 'edit-expense-type',
+        '#name' => 'expense_type',
+        '#ajax' => array(
+            'callback' => 'checkbook_datafeeds_exptype_ajax',
+            'wrapper' => 'dynamic-fields',
+            'progress' => array(
+                'message' => NULL,
+                'type' => 'throbber',
+            ),
+        ),
+    );
+    $form['filter']['industry'] = array(
+        '#type' => 'select',
+        '#title' => t('Industry:'),
+        '#options' => _industry_options(),
+        '#prefix' => '<div class="datafield industry">',
+        '#suffix' => '</div>',
+        '#attributes' => array('class' => array('watch')),
+        '#multiple' => FALSE,
+        '#id' => 'edit-industry',
+        '#name' => 'industry',
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'industry', $first_time_load, ''),
+        '#states' => array(
+            'disabled' => array(
+                'radio[name="datafeeds-spending-domain-filter"]' => array('value' => 'checkbook_oge')
+            )
+        )
+    );
+    $form['filter']['mwbe_category'] = array(
+        '#type' => 'select',
+        '#title' => t('M/WBE Category:'),
+        '#options' => _mwbe_category_options(),
+        '#prefix' => '<div class="datafield mwbecategory">',
+        '#suffix' => '</div>',
+        '#attributes' => array('class' => array('watch')),
+        '#multiple' => FALSE,
+        '#id' => 'edit-mwbe-category',
+        '#name' => 'mwbe_category',
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'mwbe_category', $first_time_load, ''),
+        '#states' => array(
+            'disabled' => array(
+                'radio[name="datafeeds-spending-domain-filter"]' => array('value' => 'checkbook_oge')
+            )
+        )
+    );
+    $form['filter']['payee_name'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Payee Name:'),
+        '#prefix' => '<div class="datafield payeename last-item">',
+        '#suffix' => '</div></div>',
+        '#attributes' => array('class' => array('watch')),
+        '#id' => 'edit-payee-name',
+        '#name' => 'payee_name',
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'payee_name', $first_time_load, ''),
+    );
+    $form['filter']['checkamtfrom'] = array(
+        '#type' => 'textfield',
+        '#size' => 15,
+        '#maxlength' => 15,
+        '#prefix' => '<div class="column column-right '.str_replace('_','-',$data_source).'"><div class="datafield datarange checkamount"><label>Check Amount:</label><div class="ranges">',
+        '#id' => 'edit-checkamtfrom',
+        '#name' => 'checkamtfrom',
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'checkamtfrom', $first_time_load, ''),
+    );
+    $form['filter']['checkamtto'] = array(
+        '#type' => 'textfield',
+        '#title' => t('to'),
+        '#size' => 15,
+        '#maxlength' => 15,
+        '#suffix' => '</div></div>',
+        '#id' => 'edit-checkamtto',
+        '#name' => 'checkamtto',
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'checkamtto', $first_time_load, ''),
+    );
+    $form['filter']['contractno'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Contract ID:'),
+        '#prefix' => '<div class="datafield contractno">',
+        '#suffix' => '</div>',
+        '#maxlength'=>32,
+        '#attributes' => array('class' => array('watch')),
+        '#id' => 'edit-contractno',
+        '#name' => 'contractno',
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'contractno', $first_time_load, ''),
+    );
+    $form['filter']['document_id'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Document ID:'),
+        '#prefix' => '<div class="datafield expenseid">',
+        '#suffix' => '</div>',
+        '#attributes' => array('class' => array('watch')),
+        '#id' => 'edit-document-id',
+        '#name' => 'document_id',
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'document_id', $first_time_load, ''),
+    );
+    $form['filter']['capital_project'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Capital Project:'),
+        '#prefix' => '<div class="datafield capitalproject">',
+        '#suffix' => '</div>',
+        '#attributes' => array('class' => array('watch')),
+        '#id' => 'edit-capital-project',
+        '#name' => 'capital_project',
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'capital_project', $first_time_load, ''),
+    );
+    $form['filter']['date_filter'] = array(
+        '#type' => 'radios',
+        '#title' => t('Date Filter:'),
+        '#options' => array(
+            'Year',
+            'Issue Date',
+        ),
+        '#prefix' => '<div id="datefilter"><div class="datafield datefilter clearfix">',
+        '#suffix' => '</div></div>',
+        '#attributes' => array('class' => array('watch')),
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'date_filter', $first_time_load, 0),
+        '#id' => 'edit-date-filter',
+        '#name' => 'date_filter',
+        '#ajax' => array(
+            //'callback' => 'checkbook_datafeeds_datefilter_ajax',
+            'wrapper' => 'datefilter',
+            'progress' => array(
+                'message' => NULL,
+                'type' => 'throbber',
+            ),
+        ),
+        '#states' => array(
+            'disabled' => array(
+                'radio[name="datafeeds-spending-domain-filter"]' => array('value' => 'checkbook_oge')
+            )
+        )
+    );
+    $form['filter']['year_filter_start'] = array(
+        '#markup' => '<div class="datafield year-filters last-item">',
+    );
+    $form['filter']['year'] = array(
+        '#type' => 'select',
+        '#options' => _year_options('all-years'),
+        '#attributes' => array('class' => array('watch')),
+        '#default_value' => $year,
+        '#prefix' => '<div id="year"><div class="datafield year">',
+        '#suffix' => '</div></div>',
+        '#id' => 'edit-year',
+        '#name' => 'year',
+    );
+    $form['filter']['issuedfrom'] = array(
+        '#type' => 'textfield',
+        '#size' => 10,
+        '#maxlength' => 10,
+        '#description' => t('E.g., ' . date('Y-m-d')),
+        '#attributes' => array('class' => array('datepicker')),
+        '#prefix' => '<div class="datafield datarange issueddate"><div class="ranges">',
+        '#id' => 'edit-issuedfrom',
+        '#name' => 'issuedfrom',
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'issuedfrom', $first_time_load, ''),
+    );
+    $form['filter']['issuedto'] = array(
+        '#type' => 'textfield',
+        '#title' => t('to'),
+        '#size' => 10,
+        '#maxlength' => 10,
+        '#description' => t('E.g., ' . date('Y-m-d')),
+        '#attributes' => array('class' => array('datepicker')),
+        '#suffix' => '</div></div>',
+        '#id' => 'edit-issuedto',
+        '#name' => 'issuedto',
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'issuedto', $first_time_load, ''),
+    );
+    $form['filter']['year_filter_end'] = array(
+        '#markup' => '</div>',
+    );
+
+    /*$form['filter']['dept'] = array(
+        '#type' => 'select',
+        '#title' => t('Department:'),
+        '#options' => $dept_options['options'],
+        '#option_attributes' => $dept_options['options_attributes'],
+        '#prefix' => '<div id="dynamic-fields"><div class="datafield department">',
+        '#suffix' => '</div>',
+        '#attributes' => array('class' => array('watch')),
+        '#multiple' => FALSE,
+        '#default_value' => $dept,
+        '#id' => 'edit-dept',
+        '#name' => 'dept',
+        '#validated' => true
+    );
+    $form['filter']['expense_category'] = array(
+        '#type' => 'select',
+        '#title' => t('Expense Category:'),
+        '#options' => $expcat_options['options'],
+        '#option_attributes' => $expcat_options['options_attributes'],
+        '#prefix' => '<div id="expense-category"><div class="datafield expensecategory">',
+        '#suffix' => '</div></div></div>',
+        '#attributes' => array('class' => array('watch')),
+        '#multiple' => FALSE,
+        '#id' => 'edit-expense-category',
+        '#name' => 'expense_category',
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'expense_category', $first_time_load, ''),
+        '#validated' => true
+    );
+    $form['filter']['expense_type'] = array(
+        '#type' => 'select',
+        '#title' => t('Spending Category:'),
+        '#options' => $expense_type_options['options'],
+        '#option_attributes' => $expense_type_options['options_attributes'],
+        '#prefix' => '<div class="datafield expensetype">',
+        '#suffix' => '</div>',
+        '#attributes' => array('class' => array('watch')),
+        '#default_value' => $sc,
+        '#id' => 'edit-expense-type',
+        '#name' => 'expense_type',
+        '#ajax' => array(
+            'callback' => 'checkbook_datafeeds_exptype_ajax',
+            'wrapper' => 'dynamic-fields',
+            'progress' => array(
+                'message' => NULL,
+                'type' => 'throbber',
+            ),
+            'parameters' => array('data_source' => $data_source),
+        ),
+    );
             $form['filter']['payee_name'] = array(
                 '#type' => 'textfield',
                 '#title' => t('Payee Name:'),
@@ -4779,234 +5029,13 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
             );
             $form['filter']['year_filter_end'] = array(
                 '#markup' => '</div>',
-            );
-            break;
+            );*/
+           // break;
 
-        default:
-            $form['filter']['agency'] = array(
-                '#type' => 'select',
-                '#title' => t('Agency:'),
-                '#options' => $agency_options['options'],
-                '#option_attributes' => $agency_options['options_attributes'],
-                '#prefix' => '<div class="column column-left"><div class="datafield agency">',
-                '#suffix' => '</div>',
-                '#attributes' => array('class' => array('watch')),
-                '#default_value' => $agency,
-                '#id' => 'edit-agency',
-                '#name' => 'agency',
-                '#ajax' => array(
-                    'callback' => 'checkbook_datafeeds_agency_ajax',
-                    'wrapper' => 'dynamic-fields',
-                    'progress' => array(
-                        'message' => NULL,
-                        'type' => 'throbber',
-                    ),
-                    'parameters' => array('data_source' => $data_source),
-                ),
-            );
-            $form['filter']['dept'] = array(
-                '#type' => 'select',
-                '#title' => t('Department:'),
-                '#options' => $dept_options['options'],
-                '#option_attributes' => $dept_options['options_attributes'],
-                '#prefix' => '<div id="dynamic-fields"><div class="datafield department">',
-                '#suffix' => '</div>',
-                '#attributes' => array('class' => array('watch')),
-                '#multiple' => FALSE,
-                '#default_value' => $dept,
-                '#id' => 'edit-dept',
-                '#name' => 'dept',
-                '#validated' => true,
-                '#ajax' => array(
-                    'callback' => 'checkbook_datafeeds_dept_ajax',
-                    'wrapper' => 'expense-category',
-                    'progress' => array(
-                        'message' => NULL,
-                        'type' => 'throbber',
-                    ),
-                ),
-            );
-            $form['filter']['expense_category'] = array(
-                '#type' => 'select',
-                '#title' => t('Expense Category:'),
-                '#options' => $expcat_options['options'],
-                '#option_attributes' => $expcat_options['options_attributes'],
-                '#prefix' => '<div id="expense-category"><div class="datafield expensecategory">',
-                '#suffix' => '</div></div></div>',
-                '#attributes' => array('class' => array('watch')),
-                '#multiple' => FALSE,
-                '#id' => 'edit-expense-category',
-                '#name' => 'expense_category',
-                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'expense_category', $first_time_load, ''),
-                '#validated' => true
-            );
-            $form['filter']['expense_type'] = array(
-                '#type' => 'select',
-                '#title' => t('Spending Category:'),
-                '#options' => $expense_type_options['options'],
-                '#option_attributes' => $expense_type_options['options_attributes'],
-                '#prefix' => '<div class="datafield expensetype">',
-                '#suffix' => '</div>',
-                '#attributes' => array('class' => array('watch')),
-                '#default_value' => $sc,
-                '#id' => 'edit-expense-type',
-                '#name' => 'expense_type',
-                '#ajax' => array(
-                    'callback' => 'checkbook_datafeeds_exptype_ajax',
-                    'wrapper' => 'dynamic-fields',
-                    'progress' => array(
-                        'message' => NULL,
-                        'type' => 'throbber',
-                    ),
-                ),
-            );
-            $form['filter']['industry'] = array(
-                '#type' => 'select',
-                '#title' => t('Industry:'),
-                '#options' => _industry_options(),
-                '#prefix' => '<div class="datafield industry">',
-                '#suffix' => '</div>',
-                '#attributes' => array('class' => array('watch')),
-                '#multiple' => FALSE,
-                '#id' => 'edit-industry',
-                '#name' => 'industry',
-                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'industry', $first_time_load, ''),
-            );
-            $form['filter']['mwbe_category'] = array(
-                '#type' => 'select',
-                '#title' => t('M/WBE Category:'),
-                '#options' => _mwbe_category_options(),
-                '#prefix' => '<div class="datafield mwbecategory">',
-                '#suffix' => '</div>',
-                '#attributes' => array('class' => array('watch')),
-                '#multiple' => FALSE,
-                '#id' => 'edit-mwbe-category',
-                '#name' => 'mwbe_category',
-                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'mwbe_category', $first_time_load, ''),
-            );
-            $form['filter']['payee_name'] = array(
-                '#type' => 'textfield',
-                '#title' => t('Payee Name:'),
-                '#prefix' => '<div class="datafield payeename last-item">',
-                '#suffix' => '</div></div>',
-                '#attributes' => array('class' => array('watch')),
-                '#id' => 'edit-payee-name',
-                '#name' => 'payee_name',
-                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'payee_name', $first_time_load, ''),
-            );
-            $form['filter']['checkamtfrom'] = array(
-                '#type' => 'textfield',
-                '#size' => 15,
-                '#maxlength' => 15,
-                '#prefix' => '<div class="column column-right '.str_replace('_','-',$data_source).'"><div class="datafield datarange checkamount"><label>Check Amount:</label><div class="ranges">',
-                '#id' => 'edit-checkamtfrom',
-                '#name' => 'checkamtfrom',
-                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'checkamtfrom', $first_time_load, ''),
-            );
-            $form['filter']['checkamtto'] = array(
-                '#type' => 'textfield',
-                '#title' => t('to'),
-                '#size' => 15,
-                '#maxlength' => 15,
-                '#suffix' => '</div></div>',
-                '#id' => 'edit-checkamtto',
-                '#name' => 'checkamtto',
-                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'checkamtto', $first_time_load, ''),
-            );
-            $form['filter']['contractno'] = array(
-                '#type' => 'textfield',
-                '#title' => t('Contract ID:'),
-                '#prefix' => '<div class="datafield contractno">',
-                '#suffix' => '</div>',
-                '#maxlength'=>32,
-                '#attributes' => array('class' => array('watch')),
-                '#id' => 'edit-contractno',
-                '#name' => 'contractno',
-                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'contractno', $first_time_load, ''),
-            );
-            $form['filter']['document_id'] = array(
-                '#type' => 'textfield',
-                '#title' => t('Document ID:'),
-                '#prefix' => '<div class="datafield expenseid">',
-                '#suffix' => '</div>',
-                '#attributes' => array('class' => array('watch')),
-                '#id' => 'edit-document-id',
-                '#name' => 'document_id',
-                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'document_id', $first_time_load, ''),
-            );
-            $form['filter']['capital_project'] = array(
-                '#type' => 'textfield',
-                '#title' => t('Capital Project:'),
-                '#prefix' => '<div class="datafield capitalproject">',
-                '#suffix' => '</div>',
-                '#attributes' => array('class' => array('watch')),
-                '#id' => 'edit-capital-project',
-                '#name' => 'capital_project',
-                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'capital_project', $first_time_load, ''),
-            );
-            $form['filter']['date_filter'] = array(
-                '#type' => 'radios',
-                '#title' => t('Date Filter:'),
-                '#options' => array(
-                    'Year',
-                    'Issue Date',
-                ),
-                '#prefix' => '<div id="datefilter"><div class="datafield datefilter clearfix">',
-                '#suffix' => '</div></div>',
-                '#attributes' => array('class' => array('watch')),
-                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'date_filter', $first_time_load, 0),
-                '#id' => 'edit-date-filter',
-                '#name' => 'date_filter',
-                '#ajax' => array(
-                    //'callback' => 'checkbook_datafeeds_datefilter_ajax',
-                    'wrapper' => 'datefilter',
-                    'progress' => array(
-                        'message' => NULL,
-                        'type' => 'throbber',
-                    ),
-                ),
-            );
-            $form['filter']['year_filter_start'] = array(
-                '#markup' => '<div class="datafield year-filters last-item">',
-            );
-            $form['filter']['year'] = array(
-                '#type' => 'select',
-                '#options' => _year_options('all-years'),
-                '#attributes' => array('class' => array('watch')),
-                '#default_value' => $year,
-                '#prefix' => '<div id="year"><div class="datafield year">',
-                '#suffix' => '</div></div>',
-                '#id' => 'edit-year',
-                '#name' => 'year',
-            );
-            $form['filter']['issuedfrom'] = array(
-                '#type' => 'textfield',
-                '#size' => 10,
-                '#maxlength' => 10,
-                '#description' => t('E.g., ' . date('Y-m-d')),
-                '#attributes' => array('class' => array('datepicker')),
-                '#prefix' => '<div class="datafield datarange issueddate"><div class="ranges">',
-                '#id' => 'edit-issuedfrom',
-                '#name' => 'issuedfrom',
-                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'issuedfrom', $first_time_load, ''),
-            );
-            $form['filter']['issuedto'] = array(
-                '#type' => 'textfield',
-                '#title' => t('to'),
-                '#size' => 10,
-                '#maxlength' => 10,
-                '#description' => t('E.g., ' . date('Y-m-d')),
-                '#attributes' => array('class' => array('datepicker')),
-                '#suffix' => '</div></div>',
-                '#id' => 'edit-issuedto',
-                '#name' => 'issuedto',
-                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'issuedto', $first_time_load, ''),
-            );
-            $form['filter']['year_filter_end'] = array(
-                '#markup' => '</div>',
-            );
-            break;
-    }
+        //default:
+
+           // break;
+    //}
 
     return $form;
 }
@@ -5016,7 +5045,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
  *
  * Updates the form to point to correct data source
  */
-function checkbook_datafeeds_spending_filter_ajax($form, $form_state) {
+/*function checkbook_datafeeds_spending_filter_ajax($form, $form_state) {
 
     $new_data_source = $form['datafeeds-spending-domain-filter']['#ajax']['parameters']['new_data_source'];
 
@@ -5028,7 +5057,7 @@ function checkbook_datafeeds_spending_filter_ajax($form, $form_state) {
     $commands[] = ajax_command_invoke('input:hidden[name="data_source"]', 'val', array($new_data_source));
 
     return array('#type' => 'ajax', '#commands' => $commands);
-}
+}*/
 
 /**
  * Ajax callback to update department and expenditure category fields depending on agency selected.
@@ -5041,7 +5070,7 @@ function checkbook_datafeeds_spending_filter_ajax($form, $form_state) {
  * @return array
  *   Array of ajax commands
  */
-function checkbook_datafeeds_agency_ajax($form, &$form_state) {
+/*function checkbook_datafeeds_agency_ajax($form, &$form_state) {
 
     $html = array($form['filter']['dept'], $form['filter']['expense_category']);
     $html = drupal_render($html);
@@ -5050,7 +5079,7 @@ function checkbook_datafeeds_agency_ajax($form, &$form_state) {
     $commands[] = ajax_command_replace('#dynamic-fields', $html, $settings);
     $commands[] = ajax_command_invoke('window', 'disableStuff');
     return array('#type' => 'ajax', '#commands' => $commands);
-}
+}*/
 
 /**
  * Ajax callback to update expenditure category field based on department category selected.
@@ -5061,14 +5090,14 @@ function checkbook_datafeeds_agency_ajax($form, &$form_state) {
  * @return array
  *   Array of ajax commands
  */
-function checkbook_datafeeds_dept_ajax($form, &$form_state) {
+/*function checkbook_datafeeds_dept_ajax($form, &$form_state) {
 
     $html = array($form['filter']['expense_category']);
     $html = drupal_render($html);
     $commands[] = ajax_command_replace('#expense-category', $html);
     $commands[] = ajax_command_invoke('window', 'disableStuff');
     return array('#type' => 'ajax', '#commands' => $commands);
-}
+}*/
 
 /**
  * Ajax callback to disable year and issued date fields depending on date filter field.
@@ -5976,7 +6005,7 @@ function currentCalendarYear() {
  * @return array
  *   Agency names and codes
  */
-function _agency_options($data_source = null) {
+function _agency_options($data_source = null, $json_output = false) {
     try {
         $dataController = data_controller_get_instance();
         switch($data_source)
@@ -5994,7 +6023,7 @@ function _agency_options($data_source = null) {
                 ), array("is_display" => "Y"), 'agency_name');
                 break;
         }
-        return _checkbook_datafeeds_agency_options($data,$data_source);
+        return _checkbook_datafeeds_agency_options($data,$data_source, $json_output);
     }
     catch (Exception $e) {
         log_error("Error getting data from controller: \n" . $e->getMessage());
@@ -6008,12 +6037,16 @@ function _agency_options($data_source = null) {
  * @param null $data_source
  * @return mixed
  */
-function _checkbook_datafeeds_agency_options($data,$data_source = null) {
+function _checkbook_datafeeds_agency_options($data,$data_source = null, $json_output = false) {
 
     //IE8 - handle drop down width issue
-    $menu_options = $data_source == 'checkbook_oge'
-        ? array('Select One' => 'Select One')
-        : array('Citywide (All Agencies)' => 'Citywide (All Agencies)');
+    if($data_source == 'checkbook_oge'){
+        $menu_options = array('Select One' => 'Select One');
+        $json_menu_options[] = array('label'=> 'Select One','value' => 'Select One', 'code' => '');
+    }else{
+        $menu_options = array('Citywide (All Agencies)' => 'Citywide (All Agencies)');
+        $json_menu_options[] = array('label'=> 'Citywide (All Agencies)','value' => 'Citywide (All Agencies)', 'code' => '');
+    }
 
     $title = $data_source == 'checkbook_oge'
         ? 'Select One'
@@ -6024,12 +6057,17 @@ function _checkbook_datafeeds_agency_options($data,$data_source = null) {
         $option = $row['agency_name'] . ' [' . $row['agency_code'] . ']';
         //Menu options
         $menu_options[$option] = (strlen($option) > 20) ? substr($option, 0, 20) . '...' : $option;
+        $json_menu_options[] = array('label'=> $menu_options[$option],'value' => $option, 'code' => $option);
         //Menu option titles
         $menu_options_attributes[$option] = array('title' => $option);
     }
     $results['options'] = $menu_options;
     $results['options_attributes'] = $menu_options_attributes;
-    return $results;
+    if($json_output){
+        drupal_json_output($json_menu_options);
+    }else {
+        return $results;
+    }
 }
 
 
