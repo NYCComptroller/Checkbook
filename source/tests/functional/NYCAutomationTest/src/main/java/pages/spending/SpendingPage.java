@@ -80,6 +80,11 @@ public class SpendingPage {
     			return HomePage.GetWidgetTotalNumber("Top 5 Agencies");
     		case TopAgencies:
     			return HomePage.GetWidgetTotalNumber("Top Agencies");
+    			
+    		case Top5Departments:
+    			return HomePage.GetWidgetTotalNumber("Top 5 Departments");
+    		case TopDepartments:
+    			return HomePage.GetWidgetTotalNumber("Top Departments");
     		default:
     			return null;
     		}
@@ -126,13 +131,14 @@ public class SpendingPage {
     				if(!HomePage.IsAtTop5DetailsPage("Spending By Industries"))
     					detailsContainer = HomePage.GetWidgetDetailsContainer("Spending By Industries");
     				break;
+    				
     			case Top5Departments:
     				if(!HomePage.IsAtTop5DetailsPage("Top 5 Departments"))
     					detailsContainer = HomePage.GetWidgetDetailsContainer("Top 5 Departmetns");
     				break;
     			case TopDepartments:
     				if(!HomePage.IsAtTop5DetailsPage("Top Departments"))
-    					detailsContainer = HomePage.GetWidgetDetailsContainer("Top Departmetns");
+    					detailsContainer = HomePage.GetWidgetDetailsContainer("Top Departments");
     				break;
     			case Top5ExpenseCategories:
     				if(!HomePage.IsAtTop5DetailsPage("Top 5 Expense Categories"))
@@ -150,6 +156,8 @@ public class SpendingPage {
     				if(!HomePage.IsAtTop5DetailsPage("Top Agencies"))
     					detailsContainer = HomePage.GetWidgetDetailsContainer("Top Agencies");
     				break;
+    			
+    				
     			default:
     				break;
     		}
@@ -249,6 +257,12 @@ public class SpendingPage {
 			String count = (Driver.Instance.findElement(By.id("table_706_info"))).getText();
 			return Helper.GetTotalEntries(count, 5);
 	}
+		
+		public static Integer GetOGETransactionCount1() {
+			WebDriverWait wait = new WebDriverWait(Driver.Instance, 50);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("table_652_info")));
+			String count = (Driver.Instance.findElement(By.id("table_652_info"))).getText();
+			return Helper.GetTotalEntries(count, 5);
 
-	
+		}
 }
