@@ -4456,13 +4456,24 @@ function checkbook_datafeeds_spending($form, &$form_state)
     $form['columns']['column_select'] = array(
         '#type' => 'select',
         '#title' => t('Columns'),
-        '#options' => _checkbook_datafeeds_spending_column_options($data_source, $datatype),
+        '#options' => _checkbook_datafeeds_spending_column_options('checkbook', $datatype),
         '#multiple' => TRUE,
         '#default_value' => !empty($form_state['values']['column_select']) ? $form_state['values']['column_select'] : '',
         '#id' => 'edit-column-select',
         '#name' => 'column_select',
         '#required' => TRUE,
     );
+
+    $form['columns']['oge_column_select'] = array(
+        '#type' => 'select',
+        '#title' => t('Columns'),
+        '#options' => _checkbook_datafeeds_spending_column_options('checkbook_oge', $datatype),
+        '#multiple' => TRUE,
+        '#default_value' => !empty($form_state['values']['column_select']) ? $form_state['values']['column_select'] : '',
+        '#id' => 'edit-oge-column-select',
+        '#required' => TRUE,
+    );
+
     //Hidden Field for multi-select
     $form['columns']['hidden_multiple_value'] = array(
         '#value' => isset($form_state['values']['column_select']) ? '|'.implode('||',$form_state['values']['column_select']).'|' : '',
@@ -5231,7 +5242,7 @@ function checkbook_datafeeds_exptype_ajax($form, &$form_state)
             $commands[] = ajax_command_invoke('option[value="contract_ID"]', 'removeAttr', array('disabled'));
         }
     }
-    $commands[] = ajax_command_invoke(NULL, 'refreshMultiSelect');
+    //$commands[] = ajax_command_invoke(NULL, 'refreshMultiSelect');
     return array('#type' => 'ajax', '#commands' => $commands);
 }
 

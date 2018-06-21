@@ -49,6 +49,15 @@
 
         //reset the selected columns
         $('#edit-column-select').multiSelect('deselect_all');
+        $('#edit-oge-column-select').multiSelect('deselect_all');
+
+        if(data_source == 'checkbook_oge'){
+            $('.form-item-oge-column-select').show();
+            $('.form-item-column-select').hide();
+        }else{
+            $('.form-item-oge-column-select').hide();
+            $('.form-item-column-select').show();
+        }
 
     };
 
@@ -159,18 +168,6 @@
         });
     }
 
-    $.fn.refreshMultiSelect = function () {
-        $('#edit-column-select').multiSelect('refresh');
-        $('.ms-selection').after('<a class="deselect">Remove All</a>');
-        $('.ms-selection').after('<a class="select">Add All</a>');
-        $('a.select').click(function () {
-            $('#edit-column-select').multiSelect('select_all');
-        });
-        $('a.deselect').click(function () {
-            $('#edit-column-select').multiSelect('deselect_all');
-        });
-    };
-
     Drupal.behaviors.spendingDataFeeds = {
         attach:function (context, settings) {
             var p = /\[(.*?)\]$/;
@@ -195,6 +192,7 @@
                 $.fn.onDeptChange();
             });
 
+            //Date Filter
             if (datefilter == 0) {
                 $('input[name="issuedfrom"]', context).attr('disabled', 'disabled');
                 $('input[name="issuedto"]', context).attr('disabled', 'disabled');
@@ -216,20 +214,36 @@
                 $('option[value="Payee Name"]', context).removeAttr('disabled');
                 $('option[value="payee_name"]', context).removeAttr('disabled');
             }*/
-            // Sets up multi-select/option transfer
-            $('#edit-column-select', context).multiSelect();
 
-            //Only add the anchors if they don't exist
-            if(!$('.ms-selection', context).next().is("a")){
-                $('.ms-selection', context).after('<a class="deselect">Remove All</a>');
-                $('.ms-selection', context).after('<a class="select">Add All</a>');
+            // Sets up multi-select/option transfer for CityWide
+            $('#edit-column-select', context).multiSelect();
+            if(!$('#ms-edit-column-select .ms-selection', context).next().is("a")){
+                $('#ms-edit-column-select .ms-selection', context).after('<a class="deselect">Remove All</a>');
+                $('#ms-edit-column-select .ms-selection', context).after('<a class="select">Add All</a>');
             }
-            $('a.select', context).click(function () {
+            $('#ms-edit-column-select a.select', context).click(function () {
                 $('#edit-column-select', context).multiSelect('select_all');
             });
-            $('a.deselect', context).click(function () {
+            $('#ms-edit-column-select a.deselect', context).click(function () {
                 $('#edit-column-select', context).multiSelect('deselect_all');
             });
+
+            // Sets up multi-select/option transfer for OGE
+            $('#edit-oge-column-select', context).multiSelect();
+            if(!$('#ms-edit-oge-column-select .ms-selection', context).next().is("a")){
+                $('#ms-edit-oge-column-select .ms-selection', context).after('<a class="deselect">Remove All</a>');
+                $('#ms-edit-oge-column-select .ms-selection', context).after('<a class="select">Add All</a>');
+            }
+            $('#ms-edit-oge-column-select a.select', context).click(function () {
+                $('#edit-oge-column-select', context).multiSelect('select_all');
+            });
+            $('#ms-edit-oge-column-select a.deselect', context).click(function () {
+                $('#edit-oge-column-select', context).multiSelect('deselect_all');
+            });
+
+            //Show CityWide multi-select by default and hide OGE multi-select
+            $('.form-item-oge-column-select', context).hide();
+            $('.form-item-column-select', context).show();
 
             //On Date Filter change
             $("#edit-date-filter input[name='date_filter']", context).click(function(){
