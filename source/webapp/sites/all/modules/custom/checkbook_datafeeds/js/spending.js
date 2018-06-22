@@ -39,13 +39,9 @@
         });
 
         //Reset the Spending Category
-        //$('select[name="expense_type"]').val('Total Spending [ts]');
-        //$('input[name="payee_name"]').removeAttr('disabled');
-        //$('option[value="Payee Name"]').removeAttr('disabled');
-        //$('option[value="payee_name"]').removeAttr('disabled');
-        //$('input[name="contractno"]').removeAttr('disabled');
-        //$('option[value="Contract ID"]').removeAttr('disabled');
-        //$('option[value="contract_ID"]').removeAttr('disabled');
+        $('select[name="expense_type"]').val('Total Spending [ts]');
+        $('input[name="payee_name"]').removeAttr('disabled');
+        $('input[name="contractno"]').removeAttr('disabled');
 
         //reset the selected columns
         $('#edit-column-select').multiSelect('deselect_all');
@@ -168,6 +164,33 @@
         });
     }
 
+    $.fn.onSpendingCategoryChange = function onSpendingCategoryChange(){
+
+        $('input[name="contractno"]').removeAttr('disabled');
+        $('input[name="payee_name"]').removeAttr('disabled');
+        $('option[value="Payee Name"]').removeAttr('disabled');
+        $('option[value="payee_name"]').removeAttr('disabled');
+        $('option[value="Contract ID"]').removeAttr('disabled');
+        $('option[value="contract_ID"]').removeAttr('disabled');
+
+        var exptypeval = $('select[name="expense_type"]').val();
+        if (exptypeval == 'Payroll [p]') {
+             //Disable Payee Name and ContractID fields for Payroll Spending Category
+             $('input[name="contractno"]').attr('disabled', 'disabled');
+             $('input[name="payee_name"]').attr('disabled', 'disabled');
+             $('option[value="Payee Name"]').attr('disabled', 'disabled');
+             $('option[value="payee_name"]').attr('disabled', 'disabled');
+             $('option[value="Contract ID"]').attr('disabled', 'disabled');
+             $('option[value="contract_ID"]').attr('disabled', 'disabled');
+        }
+        if (exptypeval == 'Others [o]') {
+            //Disable ContractID field for Others Spending Category
+             $('input[name="contractno"]').attr('disabled', 'disabled');
+             $('option[value="Contract ID"]').attr('disabled', 'disabled');
+             $('option[value="contract_ID"]').attr('disabled', 'disabled');
+        }
+    }
+
     Drupal.behaviors.spendingDataFeeds = {
         attach:function (context, settings) {
             var p = /\[(.*?)\]$/;
@@ -192,6 +215,11 @@
                 $.fn.onDeptChange();
             });
 
+            //Spending Category change event
+            $('select[name="expense_type"]', context).change(function (){
+                $.fn.onSpendingCategoryChange();
+            });
+
             //Date Filter
             if (datefilter == 0) {
                 $('input[name="issuedfrom"]', context).attr('disabled', 'disabled');
@@ -199,21 +227,6 @@
             } else if (datefilter == 1) {
                 $('select[name="year"]', context).attr('disabled', 'disabled');
             }
-           /* if (exptypeval == 'Payroll Spending [p]', context) {
-                $('input[name="contractno"]', context).attr('disabled', 'disabled');
-                $('input[name="payee_name"]', context).attr('disabled', 'disabled');
-                $('option[value="Payee Name"]', context).attr('disabled', 'disabled');
-                $('option[value="payee_name"]', context).attr('disabled', 'disabled');
-                $('option[value="Contract ID"]', context).attr('disabled', 'disabled');
-                $('option[value="contract_ID"]', context).attr('disabled', 'disabled');
-            } else if (exptypeval == 'Other Spending [o]', context) {
-                $('input[name="contractno"]', context).attr('disabled', 'disabled');
-                $('input[name="payee_name"]', context).removeAttr('disabled');
-                $('option[value="Contract ID"]', context).attr('disabled', 'disabled');
-                $('option[value="contract_ID"]', context).attr('disabled', 'disabled');
-                $('option[value="Payee Name"]', context).removeAttr('disabled');
-                $('option[value="payee_name"]', context).removeAttr('disabled');
-            }*/
 
             // Sets up multi-select/option transfer for CityWide
             $('#edit-column-select', context).multiSelect();
