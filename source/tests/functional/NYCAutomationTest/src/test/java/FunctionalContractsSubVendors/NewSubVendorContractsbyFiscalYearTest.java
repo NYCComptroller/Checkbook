@@ -32,7 +32,7 @@ import helpers.Driver;
 import helpers.Helper;
 
 //public class  NewSubVendorContractsDetailsTest extends NYCBaseTest {
-public class NewSubVendorContractsDetailsTest extends TestStatusReport{
+public class NewSubVendorContractsbyFiscalYearTest extends TestStatusReport{
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	 public void GoToPage(){

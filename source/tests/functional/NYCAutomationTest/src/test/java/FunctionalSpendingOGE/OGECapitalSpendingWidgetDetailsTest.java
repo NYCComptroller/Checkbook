@@ -18,7 +18,7 @@ import utilities.OGENYCDatabaseUtil;
 import utilities.OGENYCBaseTest;
 
 
-public class CapitalSpendingWidgetDetailsTest extends OGENYCBaseTest {
+public class OGECapitalSpendingWidgetDetailsTest extends OGENYCBaseTest {
 	//public class CapitalSpendingWidgetDetailsTest extends TestStatusReport{
 	int year =  Integer.parseInt(OGENYCBaseTest.prop.getProperty("year"));
 		
