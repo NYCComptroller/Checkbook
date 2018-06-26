@@ -29,7 +29,7 @@ import utilities.TestStatusReport;
 import helpers.Helper;
 
 //public class  StatusOfSubVendorContracts extends NYCBaseTest {
-public class StatusOfSubVendorContracts extends TestStatusReport{
+public class StatusofSubVendorContractsbyPrimeVendorWidgetTest extends TestStatusReport{
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	 public void GoToPage(){

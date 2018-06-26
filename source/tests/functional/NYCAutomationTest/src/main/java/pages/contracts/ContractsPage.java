@@ -209,7 +209,7 @@ public class ContractsPage {
 			case Top5ContractAmountModifications:
 				return HomePage.GetWidgetTotalNumber("Top 5 Contract Amount Modifications");			
 			case TopContractAmountModifications:
-				return HomePage.GetWidgetTotalNumber("Top Contract Amount Modifications");
+				return HomePage.GetWidgetTotalNumber("Top Contract Amount Modifications");				
 			case Top5PrimeVendors:
 				return HomePage.GetWidgetTotalNumber("Top 5 Prime Vendors");
 			case TopPrimeVendors:
