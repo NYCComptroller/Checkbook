@@ -31,7 +31,7 @@ import utilities.TestStatusReport;
 import helpers.Driver;
 import helpers.Helper;
 
-//public class  NewSubVendorContractsDetailsTest extends NYCBaseTest {
+//public class  NewSubVendorContractsbyFiscalYearTest extends NYCBaseTest {
 public class NewSubVendorContractsbyFiscalYearTest extends TestStatusReport{
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
