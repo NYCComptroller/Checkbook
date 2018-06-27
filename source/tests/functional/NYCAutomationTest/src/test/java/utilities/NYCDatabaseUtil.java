@@ -1093,8 +1093,8 @@ public static int getContractSpendingAgenciesCount(int year,char yearTypeVal) th
    } 
 
    public static int getContractSpendingExpCategoriesCount(int year, char yearTypeVal)  throws SQLException {
- query = "SELECT COUNT(distinct expenditure_object_id) aCount from disbursement_line_item_details where spending_category_id='1' and fiscal_year =" + year ;
- //query=  "SELECT COUNT(distinct expenditure_object_code) aCount from disbursement_line_item_details where spending_category_id='1' and fiscal_year =" + year ; 
+ //query = "SELECT COUNT(distinct expenditure_object_id) aCount from disbursement_line_item_details where spending_category_id='1' and fiscal_year =" + year ;
+ query=  "SELECT COUNT(distinct expenditure_object_code) aCount from disbursement_line_item_details where spending_category_id='1' and fiscal_year =" + year ; 
 rs = amountQueryHelper(yearTypeVal);
 int count = 0;
 while (rs.next()) {
@@ -1287,8 +1287,8 @@ public static int getTotalSpendingMWBEPrimeVendorsCount(int year,char yearTypeVa
 
 public static int getTotalSpendingMWBEExpCategoriesCount(int year, char yearTypeVal)  throws SQLException {
 	
-       query = "SELECT COUNT(distinct expenditure_object_id) aCount from disbursement_line_item_details where minority_type_id in (2,3,4,5,9)  and  fiscal_year =" + year ;
-       // query = "SELECT COUNT(distinct expenditure_object_code) aCount from disbursement_line_item_details where fiscal_year =" + year ;
+     //  query = "SELECT COUNT(distinct expenditure_object_id) aCount from disbursement_line_item_details where minority_type_id in (2,3,4,5,9)  and  fiscal_year =" + year ;
+        query = "SELECT COUNT(distinct expenditure_object_code) aCount from disbursement_line_item_details where fiscal_year =" + year ;
        rs = amountQueryHelper(yearTypeVal);
        int count = 0;
        while (rs.next()) {
