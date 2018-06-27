@@ -17,9 +17,9 @@ import utilities.NYCDatabaseUtil;
 import helpers.Helper;
 import navigation.MWBECategory.MWBECategoryOption;
 import utilities.TestStatusReport;
-//public class MWBEPendingExpenseContractsDetailsTest extends TestStatusReport{
+public class MWBEPendingExpenseContractsDetailsTest extends TestStatusReport{
 
-public class MWBEPendingExpenseContractsDetailsTest extends NYCBaseTest {
+	//public class MWBEPendingExpenseContractsDetailsTest extends NYCBaseTest {
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	public void GoToPage() {

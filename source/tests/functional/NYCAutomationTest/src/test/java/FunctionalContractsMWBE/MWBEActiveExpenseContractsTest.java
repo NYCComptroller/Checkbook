@@ -23,8 +23,8 @@ import utilities.NYCDatabaseUtil;
 import utilities.TestStatusReport;
 import helpers.Helper;
 
-public class MWBEActiveExpenseContractsTest extends NYCBaseTest {
-	//public class MWBEActiveExpenseContractsTest extends TestStatusReport{
+//public class MWBEActiveExpenseContractsTest extends NYCBaseTest {
+	public class MWBEActiveExpenseContractsTest extends TestStatusReport{
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	/*public void GoToPage() {
