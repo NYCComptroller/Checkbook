@@ -4582,7 +4582,11 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
         '#name' => 'agency',
         '#validated' => true,
     );
-
+    $form['agency_hidden'] = array(
+        '#title' =>  'agency_hidden',
+        '#value' => $form_state['values']['agency'],
+        '#type' => 'hidden'
+    );
     $form['filter']['dept'] = array(
         '#type' => 'select',
         '#title' => t('Department:'),
@@ -5377,7 +5381,7 @@ function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_
  */
 function checkbook_datafeeds_spending_validate($form, &$form_state) {
 
-    $data_source = $form_state['input']['datafeeds-spending-domain-filter'];
+    $data_source = $form_state['input']['data_source'];
     $agency = $form_state['values']['agency'];
     $agency_code = emptyToZero($agency);
     $checkfrom = $form_state['values']['checkamtfrom'];
@@ -5464,12 +5468,13 @@ function checkbook_datafeeds_spending_validate($form, &$form_state) {
     //Validate response columns
     if('checkbook_oge' == $data_source && !$oge_response_columns){
         form_set_error('oge_column_select', t('You must select at least one OGE column.'));
-    }else if (!$response_columns) {
+    }else if ('checkbook' == $data_source && !$response_columns) {
         form_set_error('column_select', t('You must select at least one CityWide column.'));
     }
 
     //Set the hidden filed values on Spending form
     $form_state['complete form']['data_source']['#value'] = $data_source;
+    $form_state['complete form']['agency_hidden']['#value'] = $form_state['values']['agency'];
     $form_state['complete form']['dept_hidden']['#value'] = $form_state['values']['dept'];
     $form_state['complete form']['expense_category_hidden']['#value'] = $form_state['values']['expense_category'];
 }

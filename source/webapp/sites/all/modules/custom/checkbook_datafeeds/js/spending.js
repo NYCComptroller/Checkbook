@@ -82,7 +82,7 @@
         }else{
             $("label[for = edit-agency]").text("Agency:");
         }
-
+        var agency_hidden = $('input:hidden[name="agency_hidden"]').val();
         $.ajax({
             url: '/datafeeds/spending/agency/' + dataSource + '/1'
             ,success: function(data) {
@@ -95,6 +95,9 @@
                     }
                 }
                 $('#edit-agency').html(html);
+                if(agency_hidden){
+                    $('#edit-dept').val(agency_hidden);
+                }
             }
         });
         $.fn.reloadDepartments();
@@ -108,7 +111,7 @@
             if ($('input:radio[name=date_filter]:checked').val() == 0) {
                 year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
             }
-            var agency = emptyToZero($('#edit-agency').val());
+            var agency = emptyToZero($('input:hidden[name="agency_hidden"]').val());
             var spending_cat = emptyToZero($('#edit-expense-type').val());
             var data_source = $('input:hidden[name="data_source"]').val();
             var dept_hidden = $('input:hidden[name="dept_hidden"]').val();
@@ -150,7 +153,7 @@
             if ($('input:radio[name=date_filter]:checked').val() == 0) {
                 year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
             }
-            var agency = emptyToZero($('#edit-agency').val());
+            var agency = emptyToZero($('input:hidden[name="agency_hidden"]').val());
             var dept = encodeURIComponent($('input:hidden[name="dept_hidden"]').val());
             var spending_cat = emptyToZero($('#edit-expense-type').val());
             var data_source = $('input:hidden[name="data_source"]').val();
@@ -258,11 +261,13 @@
             //Data Source change event
             $('input:radio[name=datafeeds-spending-domain-filter]', context).change(function (){
                 $('input:hidden[name="data_source"]').val($(this, context).val());
+                $('input:hidden[name="agency_hidden"]', context).val("");
                 $.fn.onDataSourceChange($(this, context).val());
             });
 
             //Agency drop-down change event
             $('select[name="agency"]', context).change(function (){
+                $('input:hidden[name="agency_hidden"]', context).val($('#edit-agency', context).val());
                 $('input:hidden[name="dept_hidden"]', context).val("");
                 $('input:hidden[name="expense_category_hidden"]', context).val("");
                 $.fn.reloadDepartments();
