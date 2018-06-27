@@ -4561,19 +4561,19 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
 
     $agency_default = $data_source == 'checkbook' ? 'Citywide (All Agencies)' : 'Select One';
     $agency = checkbook_datafeeds_filter_get_default_value($form_state, 'agency', $first_time_load, $agency_default);
-    $dept = checkbook_datafeeds_filter_get_default_value($form_state, 'dept', $first_time_load, '');
-    $sc = checkbook_datafeeds_filter_get_default_value($form_state, 'expense_type', $first_time_load, '');
+    //$dept = checkbook_datafeeds_filter_get_default_value($form_state, 'dept', $first_time_load, 'Select Department');
+    $sc = checkbook_datafeeds_filter_get_default_value($form_state, 'expense_type', $first_time_load, 'Select Expense Category');
     $year = !$first_time_load ? (!empty($form_state['values']['year']) ? $form_state['values']['year'] : 'FY' . currentFiscalYear()) : 'FY' . currentFiscalYear();
-    $agency_options = _agency_options($data_source);
-    $dept_options = _dept_options($agency, $sc, $year, $data_source);
-    $expcat_options = _expcat_options($agency, $dept, $sc, $year, $data_source);
+    //$agency_options = _agency_options($data_source);
+    //$dept_options = _dept_options($agency, $sc, $year, $data_source);
+    //$expcat_options = _expcat_options($agency, $dept, $sc, $year, $data_source);
     $expense_type_options =  _expense_type_options($data_source);
 
     $form['filter']['agency'] = array(
         '#type' => 'select',
         '#title' => t('Agency:'),
-        '#options' => $agency_options['options'],
-        '#option_attributes' => $agency_options['options_attributes'],
+        //'#options' => $agency_options['options'],
+        //'#option_attributes' => $agency_options['options_attributes'],
         '#prefix' => '<div class="column column-left"><div class="datafield agency">',
         '#suffix' => '</div>',
         '#attributes' => array('class' => array('watch')),
@@ -4586,13 +4586,13 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     $form['filter']['dept'] = array(
         '#type' => 'select',
         '#title' => t('Department:'),
-        '#options' => $dept_options['options'],
-        '#option_attributes' => $dept_options['options_attributes'],
+        //'#options' => $dept_options['options'],
+        //'#option_attributes' => $dept_options['options_attributes'],
         '#prefix' => '<div id="dynamic-fields"><div class="datafield department">',
         '#suffix' => '</div>',
         '#attributes' => array('class' => array('watch')),
-        '#multiple' => FALSE,
-        '#default_value' => $dept,
+        //'#multiple' => FALSE,
+        '#default_value' => !empty($form_state['values']['dept']) ? $form_state['values']['dept'] : 'Select Department',
         '#id' => 'edit-dept',
         '#name' => 'dept',
         '#validated' => true,
@@ -4605,15 +4605,15 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     $form['filter']['expense_category'] = array(
         '#type' => 'select',
         '#title' => t('Expense Category:'),
-        '#options' => $expcat_options['options'],
-        '#option_attributes' => $expcat_options['options_attributes'],
+        //'#options' => $expcat_options['options'],
+        //'#option_attributes' => $expcat_options['options_attributes'],
         '#prefix' => '<div id="expense-category"><div class="datafield expensecategory">',
         '#suffix' => '</div></div></div>',
         '#attributes' => array('class' => array('watch')),
-        '#multiple' => FALSE,
+        //'#multiple' => FALSE,
         '#id' => 'edit-expense-category',
         '#name' => 'expense_category',
-        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'expense_category', $first_time_load, ''),
+        '#default_value' => !empty($form_state['values']['expense_category']) ? $form_state['values']['expense_category'] : 'Select Expense Category',
         '#validated' => true
     );
     $form['expense_category_hidden'] = array(
