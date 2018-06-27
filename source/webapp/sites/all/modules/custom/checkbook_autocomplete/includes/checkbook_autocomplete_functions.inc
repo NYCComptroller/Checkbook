@@ -706,7 +706,7 @@ function _checkbook_autocomplete_spending_expcategory($agency, $dept, $spending_
         $year_string = " AND disbursement_line_item_details.calendar_fiscal_year = " . $year . " ";
     }
     if ($agency) {
-        $agency_string = " AND disbursement_line_item_details.agency_code = " . $agency . " ";
+        $agency_string = " AND disbursement_line_item_details.agency_code = '" . $agency . "' ";
     }
 
     $spending_cat_string = ($spending_cat)
