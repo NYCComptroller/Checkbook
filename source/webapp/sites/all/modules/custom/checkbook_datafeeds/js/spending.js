@@ -48,9 +48,13 @@
                 $('.datafield.budgetname').show();
 
                 $('input:radio[name=date_filter]')[0].checked = true;
+                $('select[name="year"]').val($('input:hidden[name="current_year_hidden"]').val());
                 $('select[name="year"]').removeAttr('disabled');
+                //Disable Issue date
                 $('input:radio[name=date_filter][value="1"]').attr('disabled', 'disabled');
+                $('input[name="issuedfrom"]').val("");
                 $('input[name="issuedfrom"]').attr('disabled', 'disabled');
+                $('input[name="issuedto"]').val();
                 $('input[name="issuedto"]').attr('disabled', 'disabled');
 
                 $('.form-item-oge-column-select').show();
@@ -65,8 +69,18 @@
                 $('.datafield.entity_contract_number').hide();
                 $('.datafield.budgetname').hide();
 
-                $('input:radio[name=date_filter]')[0].checked = true;
-                $('input:radio[name=date_filter][value="1"]').removeAttr('disabled')
+                //Date Filter
+                var datefilter = $('input:hidden[name="date_filter_hidden"]').val();
+                if (datefilter == 0) {
+                    $('input[name="issuedfrom"]').val("");
+                    $('input[name="issuedfrom"]').attr('disabled', 'disabled');
+                    $('input[name="issuedto"]').val("");
+                    $('input[name="issuedto"]').attr('disabled', 'disabled');
+                }else{
+                    $('input:radio[name=date_filter]')[1].checked = true;
+                    $('select[name="year"]').val($('input:hidden[name="current_year_hidden"]').val());
+                    $('select[name="year"]').attr('disabled', 'disabled');
+                }
 
                 $('.form-item-oge-column-select').hide();
                 $('.form-item-column-select').show();
@@ -96,7 +110,7 @@
                 }
                 $('#edit-agency').html(html);
                 if(agency_hidden){
-                    $('#edit-dept').val(agency_hidden);
+                    $('#edit-agency').val(agency_hidden);
                 }
             }
         });
@@ -106,7 +120,8 @@
 
     // When Agency Filter is changed reload Department and Expense Category drop-downs
     $.fn.reloadDepartments = function reloadDepartments() {
-        if ($('#edit-agency').val() != 'Citywide (All Agencies)' && $('#edit-agency').val() != 'Select One' && $('#edit-agency').val() != null) {
+        var agency_hidden = $('input:hidden[name="agency_hidden"]').val();
+        if ($.inArray(agency_hidden, ["", null, 'Select One', 'Citywide (All Agencies)']) == -1) {
             var year = 0;
             if ($('input:radio[name=date_filter]:checked').val() == 0) {
                 year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
@@ -148,7 +163,8 @@
 
     // When Department Filter is changed reload Expense category Drop-down
     $.fn.reloadExpenseCategories = function reloadExpenseCategories() {
-        if ($('#edit-agency').val() != 'Citywide (All Agencies)' && $('#edit-agency').val() != 'Select One' && $('#edit-agency').val() != null) {
+        var agency_hidden = $('input:hidden[name="agency_hidden"]').val();
+        if ($.inArray(agency_hidden, ["", null, 'Select One', 'Citywide (All Agencies)']) == -1) {
             var year = 0;
             if ($('input:radio[name=date_filter]:checked').val() == 0) {
                 year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
@@ -217,18 +233,8 @@
     Drupal.behaviors.spendingDataFeeds = {
         attach:function (context, settings) {
             var dataSource = $('input:hidden[name="data_source"]', context).val();
-            var datefilter = $('input[name="date_filter"]:checked', context).val();
-
             //Agency drop-down options
             $.fn.reloadAgencies(dataSource);
-
-            //Date Filter
-            if (datefilter == 0) {
-                $('input[name="issuedfrom"]', context).attr('disabled', 'disabled');
-                $('input[name="issuedto"]', context).attr('disabled', 'disabled');
-            } else if (datefilter == 1) {
-                $('select[name="year"]', context).attr('disabled', 'disabled');
-            }
 
             // Sets up multi-select/option transfer for CityWide
             $('#edit-column-select', context).multiSelect();
@@ -295,12 +301,16 @@
             });
 
             //On Date Filter change
-            $("#edit-date-filter input[name='date_filter']", context).click(function(){
+            $("#edit-date-filter", context).change(function(){
+                $('input:hidden[name="date_filter_hidden"]', context).val($(this, context).val());
                 if($('input:radio[name=date_filter]:checked', context).val() == 0){
                     $('select[name="year"]', context).removeAttr("disabled");
+                    $('input[name="issuedfrom"]', context).val("");
                     $('input[name="issuedfrom"]', context).attr('disabled', 'disabled');
+                    $('input[name="issuedto"]', context).val("");
                     $('input[name="issuedto"]', context).attr('disabled', 'disabled');
                 } else if ($('input:radio[name=date_filter]:checked', context).val() == 1) {
+                    $('select[name="year"]', context).val($('input:hidden[name="current_year_hidden"]', context).val());
                     $('select[name="year"]', context).attr('disabled', 'disabled');
                     $('input[name="issuedfrom"]', context).removeAttr("disabled");
                     $('input[name="issuedto"]', context).removeAttr("disabled");
