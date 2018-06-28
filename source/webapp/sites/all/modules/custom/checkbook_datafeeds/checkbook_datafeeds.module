@@ -4861,15 +4861,6 @@ function _checkbook_datafeeds_spending_column_options($data_source, $data_type)
  */
 function checkbook_datafeeds_spending_next_submit($form, &$form_state)
 {
-    /*if ($form_state['values']['date_filter'] == '0') {
-        unset($form_state['values']['issuedfrom']);
-        unset($form_state['values']['issuedto']);
-    } else {
-        if ($form_state['values']['date_filter'] == '1') {
-            unset($form_state['values']['year']);
-        }
-    }*/
-
     $current_step = & $form_state['step'];
     $form_state['step_information'][$current_step]['stored_values'] = $form_state['values'];
     $current_step = 'spending_confirmation';
@@ -5072,7 +5063,7 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state)
         $user_criteria['Department'] = $values['dept'];
         $formatted_search_criteria['Department'] = $values['dept'];
     }
-    if ($values['expense_category'] && $values['dept'] != 'Select Expense Category') {
+    if ($values['expense_category'] && $values['expense_category'] != 'Select Expense Category') {
         // converts special characters to HTML entities
         if (preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $values['expense_category'])) {
             $values['expense_category'] = htmlspecialchars($values['expense_category']);
