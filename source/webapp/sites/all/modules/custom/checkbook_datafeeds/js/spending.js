@@ -59,6 +59,9 @@
 
                 $('.form-item-oge-column-select').show();
                 $('.form-item-column-select').hide();
+
+                //Move Issue Date fields to left column for OGE
+                $('.datafield.datarange.checkamount').appendTo($(".column.column-left"));
                 break;
             default:
                 $('.datafield.industry').show();
@@ -86,6 +89,9 @@
 
                 $('.form-item-oge-column-select').hide();
                 $('.form-item-column-select').show();
+
+                //Move Issue Date fields to left column for Citywide
+                $('.datafield.datarange.checkamount').prependTo($(".column.column-right"));
         }
 
     };
@@ -271,7 +277,11 @@
                  }));
              }
 
+            //Display or hide fields based on data source selection
             $.fn.showHideFields(dataSource);
+
+            //Preserve field dsplay configuration based on Spending category value
+            $.fn.onSpendingCategoryChange();
 
             //Data Source change event
             $('input:radio[name=datafeeds-spending-domain-filter]', context).change(function (){
