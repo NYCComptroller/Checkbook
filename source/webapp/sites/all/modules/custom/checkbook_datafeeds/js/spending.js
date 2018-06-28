@@ -256,12 +256,20 @@
                 $('#edit-oge-column-select', context).multiSelect('deselect_all');
             });
 
+            //Set OGE multi-select default values
+             if(dataSource == 'checkbook_oge' && $('input:hidden[name="hidden_multiple_value"]', context).val().split('|').length > 2) {
+                 $('#edit-oge-column-select', context).multiSelect('select', $('input:hidden[name="hidden_multiple_value"]', context).val().split('|').filter(function (v) {
+                 return v !== ''
+                 }));
+             }
+
             $.fn.showHideFields(dataSource);
 
             //Data Source change event
             $('input:radio[name=datafeeds-spending-domain-filter]', context).change(function (){
-                $('input:hidden[name="data_source"]').val($(this, context).val());
+                $('input:hidden[name="data_source"]', context).val($(this, context).val());
                 $('input:hidden[name="agency_hidden"]', context).val("");
+                $('input:hidden[name="hidden_multiple_value"]', context).val("");
                 $.fn.onDataSourceChange($(this, context).val());
             });
 
