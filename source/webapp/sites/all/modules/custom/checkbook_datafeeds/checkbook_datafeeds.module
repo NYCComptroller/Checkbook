@@ -4462,7 +4462,6 @@ function checkbook_datafeeds_spending($form, &$form_state)
     //Hidden Field for multi-select
     if($data_source == 'checkbook_oge') {
         $multi_select_hidden = isset($form_state['values']['oge_column_select']) ? '|' . implode('||', $form_state['values']['oge_column_select']) . '|' : '';
-        log_error($multi_select_hidden);
     }else {
         $multi_select_hidden = isset($form_state['values']['column_select']) ? '|' . implode('||', $form_state['values']['column_select']) . '|' : '';
     }
@@ -4759,6 +4758,16 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
         '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'date_filter', $first_time_load, 0),
         '#id' => 'edit-date-filter',
         '#name' => 'date_filter',
+    );
+    $form['date_filter_hidden'] = array(
+        '#title' =>  'date_filter_hidden',
+        '#value' => $form_state['values']['date_filter'],
+        '#type' => 'hidden'
+    );
+    $form['current_year_hidden'] = array(
+        '#title' =>  'current_year_hidden',
+        '#value' => 'FY' . currentFiscalYear(),
+        '#type' => 'hidden'
     );
     $form['filter']['year_filter_start'] = array(
         '#markup' => '<div class="datafield year-filters last-item">',
@@ -5471,13 +5480,14 @@ function checkbook_datafeeds_spending_validate($form, &$form_state) {
     $form_state['complete form']['agency_hidden']['#value'] = $form_state['values']['agency'];
     $form_state['complete form']['dept_hidden']['#value'] = $form_state['values']['dept'];
     $form_state['complete form']['expense_category_hidden']['#value'] = $form_state['values']['expense_category'];
+    $form_state['complete form']['date_filter_hidden']['#value'] = $form_state['values']['date_filter'];
     //Hidden Field for multi-select
     if($data_source == 'checkbook_oge') {
         $multi_select_hidden = isset($form_state['values']['oge_column_select']) ? '|' . implode('||', $form_state['values']['oge_column_select']) . '|' : '';
     }else {
         $multi_select_hidden = isset($form_state['values']['column_select']) ? '|' . implode('||', $form_state['values']['column_select']) . '|' : '';
     }
-    $form_state['complete form']['hidden_multiple_value']['#value'] = $multi_select_hidden;log_error($form_state['complete form']['hidden_multiple_value']['#value']);
+    $form_state['complete form']['hidden_multiple_value']['#value'] = $multi_select_hidden;
 }
 
 //</editor-fold>
