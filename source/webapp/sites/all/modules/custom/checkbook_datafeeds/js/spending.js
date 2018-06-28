@@ -54,7 +54,7 @@
                 $('input:radio[name=date_filter][value="1"]').attr('disabled', 'disabled');
                 $('input[name="issuedfrom"]').val("");
                 $('input[name="issuedfrom"]').attr('disabled', 'disabled');
-                $('input[name="issuedto"]').val();
+                $('input[name="issuedto"]').val("");
                 $('input[name="issuedto"]').attr('disabled', 'disabled');
 
                 $('.form-item-oge-column-select').show();
@@ -71,6 +71,8 @@
 
                 //Date Filter
                 var datefilter = $('input:hidden[name="date_filter_hidden"]').val();
+                $('input:radio[name=date_filter][value="1"]').removeAttr('disabled');
+
                 if (datefilter == 0) {
                     $('input[name="issuedfrom"]').val("");
                     $('input[name="issuedfrom"]').attr('disabled', 'disabled');
@@ -276,6 +278,7 @@
                 $('input:hidden[name="data_source"]', context).val($(this, context).val());
                 $('input:hidden[name="agency_hidden"]', context).val("");
                 $('input:hidden[name="hidden_multiple_value"]', context).val("");
+                $('input:hidden[name="date_filter_hidden"]', context).val("");
                 $.fn.onDataSourceChange($(this, context).val());
             });
 
