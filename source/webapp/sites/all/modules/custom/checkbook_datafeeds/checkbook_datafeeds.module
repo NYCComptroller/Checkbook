@@ -5067,12 +5067,12 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state)
         $user_criteria['Agency'] = $values['agency'];
         $formatted_search_criteria[$agency_label] = $agency;
     }
-    if ($values['dept']) {
+    if ($values['dept'] && $values['dept'] != 'Select Department') {
         $form['filter']['department'] = array('#markup' => '<div><strong>Department:</strong> ' . $values['dept'] . '</div>');
         $user_criteria['Department'] = $values['dept'];
         $formatted_search_criteria['Department'] = $values['dept'];
     }
-    if ($values['expense_category']) {
+    if ($values['expense_category'] && $values['dept'] != 'Select Expense Category') {
         // converts special characters to HTML entities
         if (preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $values['expense_category'])) {
             $values['expense_category'] = htmlspecialchars($values['expense_category']);
@@ -5176,28 +5176,33 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state)
         $user_criteria['Budget Name'] = $values['budget_name'];
         $formatted_search_criteria['Budget Name'] = $values['budget_name'];
     }
-    if ($values['issuedfrom'] && $values['issuedto']) {
-        $form['filter']['issued_date'] = array(
-            '#markup' => '<div><strong>Issue Date:</strong> From: ' . $values['issuedfrom'] . ' To: ' . $values['issuedto'] . '</div>'
-        );
-        $user_criteria['Issued Date After'] = $values['issuedfrom'];
-        $user_criteria['Issued Date Before'] = $values['issuedto'];
-        $formatted_search_criteria['Issue Date'] = 'From: ' . $values['issuedfrom'] . ' To: ' . $values['issuedto'];
-    } elseif (!$values['issuedfrom'] && $values['issuedto']) {
-        $form['filter']['issued_date'] = array(
-            '#markup' => '<div><strong>Issue Date:</strong> From: ' . $values['issuedto'] . '</div>',
-        );
-        $user_criteria['Issued Date Before'] = $values['issuedto'];
-        $formatted_search_criteria['Issue Date'] = 'From: ' . $values['issuedto'];
-    } elseif ($values['issuedfrom'] && !$values['issuedto']) {
-        $form['filter']['issued_date'] = array(
-            '#markup' => '<div><strong>Issue Date:</strong> To: ' . $values['issuedfrom'] . '</div>',
-        );
-        $user_criteria['Issued Date After'] = $values['issuedfrom'];
-        $formatted_search_criteria['Issue Date'] = 'To: ' . $values['issuedfrom'];
+
+    //Issued Date
+    if($values['date_filter'] == 1) {
+        if ($values['issuedfrom'] && $values['issuedto']) {
+            $form['filter']['issued_date'] = array(
+                '#markup' => '<div><strong>Issue Date:</strong> From: ' . $values['issuedfrom'] . ' To: ' . $values['issuedto'] . '</div>'
+            );
+            $user_criteria['Issued Date After'] = $values['issuedfrom'];
+            $user_criteria['Issued Date Before'] = $values['issuedto'];
+            $formatted_search_criteria['Issue Date'] = 'From: ' . $values['issuedfrom'] . ' To: ' . $values['issuedto'];
+        } elseif (!$values['issuedfrom'] && $values['issuedto']) {
+            $form['filter']['issued_date'] = array(
+                '#markup' => '<div><strong>Issue Date:</strong> From: ' . $values['issuedto'] . '</div>',
+            );
+            $user_criteria['Issued Date Before'] = $values['issuedto'];
+            $formatted_search_criteria['Issue Date'] = 'From: ' . $values['issuedto'];
+        } elseif ($values['issuedfrom'] && !$values['issuedto']) {
+            $form['filter']['issued_date'] = array(
+                '#markup' => '<div><strong>Issue Date:</strong> To: ' . $values['issuedfrom'] . '</div>',
+            );
+            $user_criteria['Issued Date After'] = $values['issuedfrom'];
+            $formatted_search_criteria['Issue Date'] = 'To: ' . $values['issuedfrom'];
+        }
     }
-    // Only adds year if date range is not present.
-    else {
+
+    //Year Filter
+    if($values['date_filter'] == 0){
         if (startsWith($values['year'], 'F')) {
             $form['filter']['year'] = array(
                 '#markup' => '<div><strong>Year:</strong> ' . $values['year'] . '</div>',
