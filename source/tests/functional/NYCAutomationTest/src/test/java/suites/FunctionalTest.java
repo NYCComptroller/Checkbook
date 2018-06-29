@@ -5,12 +5,15 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import FunctionalContracts.*;
+import FunctionalContractsMWBE.*;
+import FunctionalContractsSubVendors.*;
 import FunctionalSpending.*;
 import FunctionalBudget.*;
 import FunctionalRevenue.*;
 import FunctionalPayroll.*;
 import FunctionalSpendingMWBE.*;
 import FunctionalSpendingSubVendors.*;
+import FunctionalSpendingOGE.*;
 import utilities.NYCBaseTest;
 import utilities.TestStatusReport;
 
@@ -57,6 +60,28 @@ import utilities.TestStatusReport;
 	RegisteredExpenseContractsDetailsTest.class,
 	RegisteredRevenueContractsTest.class,
 	RegisteredRevenueContractsDetailsTest.class,
+	
+	
+/*MWBE Contracts */
+	
+	MWBEActiveExpenseContractsTest.class,
+	MWBEActiveExpenseContractsDetailsTest.class,
+	MWBEActiveRevenueContractsTest.class,
+	MWBEActiveRevenueContractsDetailsTest.class,
+	MWBEPendingExpenseContractsTest.class,
+	MWBEPendingExpenseContractsDetailsTest.class,
+	/*MWBEPendingRevenueContractsTest.class,
+	MWBEPendingRevenueContractsDetailsTest.class,*/
+	MWBERegisteredExpenseContractsTest.class,
+	MWBERegisteredExpenseContractsDetailsTest.class,
+	MWBERegisteredRevenueContractsTest.class,
+	MWBERegisteredRevenueContractsDetailsTest.class,
+	
+	/* Sub vendors Contracts */
+	
+	NewSubVendorContractsbyFiscalYearTest.class,
+	StatusofSubVendorContractsbyPrimeVendorWidgetTest.class,
+	TotalActiveSubVendorContractsWidgetTest.class,
  
 	/* Budget */
 	
@@ -104,8 +129,19 @@ import utilities.TestStatusReport;
 	MWBETrustAgencySpendingWidgetDetailsTest.class,	
 
 	MWBEOtherSpendingWidgetTest.class,
-	MWBEOtherSpendingWidgetDetailsTest.class
+	MWBEOtherSpendingWidgetDetailsTest.class,
 	
+	/* OGE Spending */
+	OGETotalSpendingWidgetTest.class,	
+	OGETotalSpendingWidgetDetailsTest.class,
+	
+	OGECapitalSpendingWidgetTest.class,
+	OGECapitalSpendingWidgetDetailsTest.class,   
+
+	OGEContractSpendingWidgetTest.class,
+	OGEContractSpendingWidgetDetailsTest.class,
+	
+
 
 })
 public class FunctionalTest extends NYCBaseTest
