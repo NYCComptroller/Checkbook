@@ -292,6 +292,10 @@ function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, 
                 break;
 
             case "pending":
+                //FIX ME: Hard coded the contract type code for 'Construction' for now since it is not matching with reference table value
+                if(isset($parameters['cont_type_code']) && $parameters['cont_type_code'] == "05"){
+                    $parameters['cont_type_code'] = "5";
+                }
                 break;
 
             default:
