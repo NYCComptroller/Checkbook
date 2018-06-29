@@ -7,19 +7,11 @@
         "all_agreement_transactions_by_prime_sub_vendor_name":{
             "datasourceName":"main",
             "source":"
-            SELECT   'P'   AS Vendor_Type_Code,1  AS Sort_Order, v.vendor_id  AS Prime_Vendor_Id,t.prime_vendor_code AS vendor_code, v.legal_name,
-            t.contract_number,t.sub_contract_id,t.prime_effective_end_year_id,t.prime_effective_begin_year_id, t.prime_starting_year_id,t.prime_ending_year_id,t.document_code,
-            t.sub_latest_flag,t.prime_vendor_name as vendor_name
-            FROM vendor v JOIN all_agreement_transactions_by_prime_sub_vendor t ON v.vendor_customer_code = t.prime_vendor_code
-            WHERE  t.prime_vendor_name IS NOT NULL AND t.sub_vendor_name IS NOT NULL
-            UNION ALL
-            SELECT 'S'         AS Vendor_Type_Code, 2           AS Sort_Order, v.vendor_id AS Prime_Vendor_Id,	 t.sub_vendor_code, t.sub_vendor_name,t.contract_number,
-            t.sub_contract_id, t.prime_effective_end_year_id, t.prime_effective_begin_year_id,t.prime_starting_year_id, t.prime_ending_year_id ,t.document_code ,t.sub_latest_flag,t.prime_vendor_name as vendor_name
-            FROM vendor v
-            JOIN all_agreement_transactions_by_prime_sub_vendor t	 ON v.vendor_customer_code = t.prime_vendor_code
-            WHERE t.prime_vendor_name IS NOT NULl AND t.sub_vendor_name IS NOT NULL	 AND t.sub_vendor_type IN ('S', 'SM')
-            AND t.sub_latest_flag = 'Y'
-
+                SELECT prime_vendor_code as vendor_code, prime_vendor_name as vendor_name, prime_vendor_type as vendor_type, prime_minority_type_id as minority_type_id, prime_minority_type_name as minority_type_name,  * FROM all_agreement_transactions_by_prime_sub_vendor WHERE prime_vendor_type IN ('P','PM')
+                UNION ALL
+                SELECT sub_vendor_code as vendor_code, sub_vendor_name as vendor_name, sub_vendor_type as vendor_type, sub_minority_type_id as minority_type_id, sub_minority_type_name as minority_type_name,* FROM all_agreement_transactions_by_prime_sub_vendor WHERE sub_vendor_type IN ('S','SM')
+                UNION ALL
+                SELECT prime_vendor_code as vendor_code, prime_vendor_name as vendor_name, sub_vendor_type as vendor_type, NULL as minority_type_id,NULL as minority_type_name,* FROM all_agreement_transactions_by_prime_sub_vendor WHERE sub_vendor_type IN ('S','SM')
             "
         },
         "all_agreement_transactions_by_prime_sub_vendor_type":{
@@ -417,20 +409,11 @@
                                 "sourceColumnName":"minority_type_name"
                             }
                     ]
-                },
-                {
-                    "name":"legal_name",
-                    "levels":[
-                        {
-                            "name":"legal_name",
-                            "sourceColumnName":"legal_name"
-                        }
-                    ]
                 }
             ],
             "measures": {
                 "txcount": {
-                    "function":" COUNT(DISTINCT legal_name||contract_number||sub_contract_id  )"
+                    "function":"COUNT(DISTINCT (CASE WHEN vendor_type IN ('P','PM') THEN vendor_name||contract_number ELSE vendor_name||contract_number||sub_contract_id END )) "
                 }
             }
         },
