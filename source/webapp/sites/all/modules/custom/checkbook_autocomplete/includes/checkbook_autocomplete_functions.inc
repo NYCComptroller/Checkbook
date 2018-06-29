@@ -443,6 +443,9 @@ function _get_spending_datafeeds_autocomplete_results($facet, $query, $year = NU
  */
 function _checkbook_autocomplete_spending_payee($year, $agency, $expcategory, $dept, $exptype = 0, $mwbe_category = 0, $industry, $data_source = 'checkbook') {
     $search_term = _get_autocomplete_search_term();
+    $dept = _emptyToZero(urldecode($dept));
+    $expcategory = _emptyToZero(urldecode($expcategory));
+
     if (!empty($search_term)) {
         switch($data_source)
         {
@@ -483,6 +486,8 @@ function _checkbook_autocomplete_spending_payee($year, $agency, $expcategory, $d
  */
 function _checkbook_autocomplete_spending_contractno($year, $agency, $expcategory, $dept, $exptype = 0, $mwbe_category = 0, $industry, $data_source = 'checkbook') {
     $search_term = _get_autocomplete_search_term();
+    $dept = _emptyToZero(urldecode($dept));
+    $expcategory = _emptyToZero(urldecode($expcategory));
     if (!empty($search_term)) {
         $query = 'select/?q=contract_number:' . $search_term . '&facet=true&facet.field=contract_number&fq=domain:spending&facet.limit=10&wt=php';
         $query .= $data_source == 'checkbook_oge' ? '&fq=agency_type:oge' : '&fq=-agency_type:oge';
@@ -513,6 +518,8 @@ function _checkbook_autocomplete_spending_contractno($year, $agency, $expcategor
  */
 function _checkbook_autocomplete_spending_capitalproject($year, $agency, $expcategory, $dept, $exptype = 0, $mwbe_category = 0, $industry, $data_source = 'checkbook') {
     $search_term = _get_autocomplete_search_term();
+    $dept = _emptyToZero(urldecode($dept));
+    $expcategory = _emptyToZero(urldecode($expcategory));
     if (!empty($search_term)) {
         $query = 'select/?q=reporting_code_autocomplete:' . $search_term . '&facet=true&facet.field=reporting_code&fq=domain:spending&facet.limit=10&wt=php';
         if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
@@ -543,6 +550,8 @@ function _checkbook_autocomplete_spending_capitalproject($year, $agency, $expcat
  */
 function _checkbook_autocomplete_spending_documentid($year, $agency, $expcategory, $dept, $exptype = 0, $mwbe_category = 0, $industry, $data_source = 'checkbook') {
     $search_term = _get_autocomplete_search_term();
+    $dept = _emptyToZero(urldecode($dept));
+    $expcategory = _emptyToZero(urldecode($expcategory));
     if (!empty($search_term)) {
         $query = 'select/?q=expense_id:' . $search_term . '&facet=true&facet.field=expense_id&fq=domain:spending&facet.limit=10&wt=php';
         if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
@@ -573,6 +582,8 @@ function _checkbook_autocomplete_spending_documentid($year, $agency, $expcategor
  */
 function _checkbook_autocomplete_spending_entitycontractnum($year, $agency, $expcategory, $dept, $exptype = 0, $mwbe_category = 0, $industry, $data_source = 'checkbook') {
     $search_term = _get_autocomplete_search_term();
+    $dept = _emptyToZero(urldecode($dept));
+    $expcategory = _emptyToZero(urldecode($expcategory));
     if (!empty($search_term)) {
         $query = 'select/?q=spending_entity_contract_number:' . $search_term . '&facet=true&facet.field=spending_entity_contract_number&fq=domain:spending&facet.limit=10&wt=php';
         if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
@@ -603,6 +614,8 @@ function _checkbook_autocomplete_spending_entitycontractnum($year, $agency, $exp
  */
 function _checkbook_autocomplete_spending_commodityline($year, $agency, $expcategory, $dept, $exptype = 0, $mwbe_category = 0, $industry, $data_source = 'checkbook') {
     $search_term = _get_autocomplete_search_term();
+    $dept = _emptyToZero(urldecode($dept));
+    $expcategory = _emptyToZero(urldecode($expcategory));
     if (!empty($search_term)) {
         $query = 'select/?q=spending_commodity_line:' . $search_term . '&facet=true&facet.field=spending_commodity_line&fq=domain:spending&facet.limit=10&wt=php';
         if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
@@ -633,6 +646,8 @@ function _checkbook_autocomplete_spending_commodityline($year, $agency, $expcate
  */
 function _checkbook_autocomplete_spending_budgetname($year, $agency, $expcategory, $dept, $exptype = 0, $mwbe_category = 0, $industry, $data_source = 'checkbook') {
     $search_term = _get_autocomplete_search_term();
+    $dept = _emptyToZero(urldecode($dept));
+    $expcategory = _emptyToZero(urldecode($expcategory));
     if (!empty($search_term)) {
         $query = 'select/?q=spending_budget_name_autocomplete:' . $search_term . '&facet=true&facet.field=spending_budget_name&fq=domain:spending&facet.limit=10&wt=php';
         if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
@@ -681,7 +696,7 @@ function _checkbook_autocomplete_spending_dept($year, $agency, $spending_cat, $d
 
 function _checkbook_autocomplete_spending_expcategory($agency, $dept, $spending_cat, $year, $data_source = 'checkbook') {
     $options = $year_type = $year_value = $year_string = $agency_string = $dept_string = null;
-
+    $dept = _emptyToZero(urldecode($dept));
     if ($year && startsWith($year, 'F')) {
         $year = ltrim($year, 'FY');
         $year_string = " AND disbursement_line_item_details.fiscal_year = " . $year . " ";
@@ -691,7 +706,7 @@ function _checkbook_autocomplete_spending_expcategory($agency, $dept, $spending_
         $year_string = " AND disbursement_line_item_details.calendar_fiscal_year = " . $year . " ";
     }
     if ($agency) {
-        $agency_string = " AND disbursement_line_item_details.agency_code = " . $agency . " ";
+        $agency_string = " AND disbursement_line_item_details.agency_code = '" . $agency . "' ";
     }
 
     $spending_cat_string = ($spending_cat)
@@ -699,7 +714,7 @@ function _checkbook_autocomplete_spending_expcategory($agency, $dept, $spending_
         : " ref_spending_category.spending_category_id IN (1,2,3,4,5)";
 
     if ($dept){
-        $dept_string = " AND disbursement_line_item_details.department_code = " . $dept . " ";
+        $dept_string = " AND disbursement_line_item_details.department_code = '" . $dept . "' ";
     }
     $query = "SELECT DISTINCT expenditure_object_name|| '[' || expenditure_object_code || ']' expenditure_object_code
               FROM disbursement_line_item_details, ref_spending_category
