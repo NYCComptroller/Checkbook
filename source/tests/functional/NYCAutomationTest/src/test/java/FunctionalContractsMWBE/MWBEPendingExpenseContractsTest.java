@@ -23,9 +23,9 @@ import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
 import helpers.Helper;
 import utilities.TestStatusReport;
-//public class MWBEPendingExpenseContractsTest  extends TestStatusReport{
+public class MWBEPendingExpenseContractsTest  extends TestStatusReport{
 
-	public class MWBEPendingExpenseContractsTest extends NYCBaseTest {
+	//	public class MWBEPendingExpenseContractsTest extends NYCBaseTest {
 	
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
