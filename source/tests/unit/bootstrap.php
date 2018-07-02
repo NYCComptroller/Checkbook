@@ -150,8 +150,40 @@ function data_controller_get_instance($a = 1)
 
 function log_error(){}
 
-function _get_contract_includes_subvendors_data(){}
+function _get_contract_includes_subvendors_data_test($a){}
 
-function _checkbook_max_data_year(){}
+function _checkbook_max_data_year_test(){}
 
 function data_controller_get_operator_factory_instance(){}
+
+/**
+ * Class LogHelper
+ */
+class LogHelper
+{
+    /**
+     * @param $text
+     */
+    static function log_warn($text)
+    {
+        echo $text;
+    }
+}
+
+function _checkbook_project_execute_sql_test($query)
+{
+    $return = [];
+    $return['total'] = 777555333111;
+    $return['acco_approved'] = 111;
+    $return['acco_reviewing'] = 888;
+    $return['acco_rejected'] = 999;
+    $return['acco_cancelled'] = 222;
+    $return['acco_submitted'] = 333;
+    $return['total_gross_pay'] = 123456789000;
+    $return['total_base_pay'] = 987654321000;
+    $return['total_overtime_pay'] = 192837465000;
+
+    return [$return];
+}
+
+include_once __DIR__ . '/../../webapp/sites/all/modules/custom/checkbook_project/includes/checkbook_project.inc';

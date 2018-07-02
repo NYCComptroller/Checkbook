@@ -1464,7 +1464,8 @@ function _checkbook_project_get_url_param_string($key, $key_alias = null, $ajaxP
 
     $urlPath = drupal_get_path_alias($_GET['q']);
     if (_checkbook_current_request_is_ajax()) {
-      $urlPath = $_SERVER['HTTP_REFERER'];
+      // remove query part
+      $urlPath = strtok($_SERVER['HTTP_REFERER'], '?');
     }
 
     $pathParams = explode('/', $urlPath);
@@ -1475,14 +1476,18 @@ function _checkbook_project_get_url_param_string($key, $key_alias = null, $ajaxP
         }
     }
 
+    $url = '';
     if ($keyIndex) {
         if ($key_alias == null) {
-            return "/$key/" . urlencode($pathParams[($keyIndex + 1)]);
+            $url = "/$key/" . urlencode($pathParams[($keyIndex + 1)]);
         } else {
-            return "/$key_alias/" . urlencode($pathParams[($keyIndex + 1)]);
+          $url = "/$key_alias/" . urlencode($pathParams[($keyIndex + 1)]);
         }
     }
-    return '';
+//    if (_checkbook_current_request_is_ajax()) {
+//      LogHelper::log_warn('_checkbook_project_get_url_param_string :: isAjax :: ' . $url);
+//    }
+    return $url;
 
 }
 
@@ -1800,6 +1805,10 @@ function _checkbook_project_execute_sql($sql, $db_name = "main", $data_source = 
 {
     global $databases;
 
+    if(function_exists('_checkbook_project_execute_sql_test')) {
+      return _checkbook_project_execute_sql_test($sql);
+    }
+
     if (!isset($databases[$data_source][$db_name])) {
       throw new Exception("No DB configuration found for: \$databases['$data_source']['$db_name']");
     }
@@ -2087,6 +2096,9 @@ function _get_num_from_string($string)
  */
 function _checkbook_max_data_year()
 {
+  if (function_exists('_checkbook_max_data_year')) {
+    return _checkbook_max_data_year();
+  }
     $query = "select type_of_year, max(year) year_value , max(year_id) year_id from {transactions_data_by_year} t join ref_year y on t.year = y.year_value group by type_of_year
   order by type_of_year ";
   $result = _checkbook_project_execute_sql($query);
@@ -2352,6 +2364,9 @@ function isAdvancedSearchResultsPage()
  */
 function _get_contract_includes_subvendors_data($attributes = NULL)
 {
+    if (function_exists('_get_contract_includes_subvendors_data')) {
+      return _get_contract_includes_subvendors_data($attributes);
+    }
     try {
         $dataController = data_controller_get_instance();
         $values = $dataController->queryDataset('checkbook:ref_subcontract_status',

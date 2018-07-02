@@ -34,20 +34,6 @@ class NodeSummaryUtil
 }
 
 /**
- * Class LogHelper
- */
-class LogHelper
-{
-    /**
-     * @param $text
-     */
-    static function log_warn($text)
-    {
-        echo $text;
-    }
-}
-
-/**
  * Class RequestUtilTest
  */
 class RequestUtilTest extends TestCase
