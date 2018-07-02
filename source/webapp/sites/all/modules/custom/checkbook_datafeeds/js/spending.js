@@ -43,7 +43,7 @@
                 $('.datafield.mwbecategory').hide();
                 $('.datafield.expenseid').hide();
 
-                $('.datafield.commadityline').show();
+                $('.datafield.commodityline').show();
                 $('.datafield.entity_contract_number').show();
                 $('.datafield.budgetname').show();
 
