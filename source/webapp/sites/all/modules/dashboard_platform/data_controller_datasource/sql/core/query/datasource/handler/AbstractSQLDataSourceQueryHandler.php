@@ -787,7 +787,7 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
 
             }
 
-            if (count($adjustedColumns) > 0) {
+            if (!empty($adjustedColumns) && sizeof($adjustedColumns)) {
                 $sql .= "\n ORDER BY " . implode(', ', $adjustedColumns);
             }
         return $sql;

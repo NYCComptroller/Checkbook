@@ -915,7 +915,8 @@ class SpendingUtil{
 
         $q = drupal_get_path_alias($_GET['q']);
         if (_checkbook_current_request_is_ajax()) {
-          $q = $_SERVER['HTTP_REFERER'];
+          // remove query part
+          $q = strtok($_SERVER['HTTP_REFERER'], '?');
         }
 
         $pathParams = explode('/', $q);
@@ -941,6 +942,10 @@ class SpendingUtil{
                 }
             }
         }
+
+//        if (_checkbook_current_request_is_ajax()) {
+//          LogHelper::log_warn('getSpendingUrl :: isAjax :: ' . $url);
+//        }
 
         return $url;
     }
