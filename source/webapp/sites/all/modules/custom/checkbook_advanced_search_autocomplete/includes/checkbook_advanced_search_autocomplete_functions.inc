@@ -1,5 +1,12 @@
 <?php
+require 'vendor/autoload.php';
 
+
+
+$hosts = [
+
+    'http://elk-checkbook-nyc.reisys.com:9200'
+];
 // Spending autocomplete menu callback functions
 /**
  * Construct query string and get results from Solr for spending domain.
@@ -27,6 +34,7 @@
  * @return array
  *   Results from Solr
  ***/
+
 function _get_spending_advanced_search_autocomplete_results($facet, $query, $year = null, $agency = null, $expcategory = null, $dept = null, $exptype = null, $mwbe_category = null, $industry = null, $data_source = 'checkbook'){
     if ($year) {
         $query .= _checkbook_autocomplete_get_start_end_dates($year, 'spending');
@@ -471,6 +479,79 @@ function _checkbook_advanced_search_autocomplete_payroll_employee_name($pay_freq
         drupal_json_output($matches);
     }
 }
+//Payroll autocomplete menu callback functions
+/**
+ * Returns auto suggestions for employee title based on the selected agency/pay frequency/year values.
+ * @param string $year
+ *   Year value
+ * @param string $agency
+ *   Selected agency id
+ * @param string $pay_frequency
+ *   Selected Pay Frequency
+ ***/
+function _checkbook_advanced_search_autocomplete_payroll_name($pay_frequency, $agency, $year)
+{
+
+    $matches = array();
+    $searchTerm = _get_seach_term();
+    $hosts = [
+
+        'http://elk-checkbook-nyc.reisys.com:9200'
+    ];
+
+    $client = Elasticsearch\ClientBuilder::create()
+        ->setHosts($hosts)
+        ->build();
+    if (!empty($searchTerm)) {
+        $params = [
+            'index' => 'checkbook',
+            'type' => 'payroll',
+            'body' => [
+                'size' => 0,
+                'query' => [
+
+                    'bool' => [
+                        'must' => [
+                            ['term' => ['civil_service_title' => $searchTerm]],
+                            ['term' => ['calendar_fiscal_year' => 2018]],
+
+                        ],
+                    ],
+                ],
+
+                'aggs' => [
+                    'names' => [
+                        'terms' => [
+                            'field' => 'civil_service_title.keyword',
+                        ],
+                    ],
+                ]
+            ]
+
+        ];
+
+        try {
+            $response = $client->search($params);
+        } catch (Exception $e) {
+            var_dump($e->getMessage());
+        }
+
+        $values = $response['aggregations']['names']['buckets'];
+        foreach ($values as $key => $value) {
+            $matches[] = $value['key'];
+        }
+        if ($matches) {
+            drupal_json_output($matches);
+        } else
+        {
+            drupal_json_output( array(array('label'=>'No Matches Found','value'=>'')));
+            }
+    }
+
+
+
+}
+
 
 //Contracts autocomplete menu callback functions
 /**
@@ -880,7 +961,7 @@ function _checkbook_advanced_search_autocomplete_budget_expcategory($fiscal_year
 
 /** @return options for budget code based on selected agency, department, expense category, year and budget name */
 function _checkbook_advanced_search_autocomplete_budget_budgetcode($fiscal_year, $agency, $dept, $expcategory, $budget_name) {
-   
+
     $params =  array("budget_fiscal_year_id"=>$fiscal_year);
     if($agency != '0' ) {
         $params["agency_id"] = $agency;

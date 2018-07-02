@@ -89,7 +89,7 @@ function checkbook_advanced_search_autocomplete_menu()
     );
     //payroll autocomplete paths
     $items['advanced-search/autocomplete/payroll/employee-name'] = array(
-        'page callback' => '_checkbook_advanced_search_autocomplete_payroll_employee_name',
+        'page callback' => '_checkbook_advanced_search_autocomplete_payroll_name',
         'access callback' => TRUE,
         'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
         'type' => MENU_CALLBACK
