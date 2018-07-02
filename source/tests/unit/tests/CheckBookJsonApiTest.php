@@ -5,22 +5,6 @@ include_once __DIR__ . '/../../../webapp/sites/all/modules/custom/checkbook_api/
 use PHPUnit\Framework\TestCase;
 use \checkbook_json_api\CheckBookJsonApi;
 
-function _checkbook_project_execute_sql($query)
-{
-    $return = [];
-    $return['total'] = 777555333111;
-    $return['acco_approved'] = 111;
-    $return['acco_reviewing'] = 888;
-    $return['acco_rejected'] = 999;
-    $return['acco_cancelled'] = 222;
-    $return['acco_submitted'] = 333;
-    $return['total_gross_pay'] = 123456789000;
-    $return['total_base_pay'] = 987654321000;
-    $return['total_overtime_pay'] = 192837465000;
-
-    return [$return];
-}
-
 /**
  * Class CheckBookJsonApiTest
  */
