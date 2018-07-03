@@ -2096,7 +2096,7 @@ function _get_num_from_string($string)
  */
 function _checkbook_max_data_year()
 {
-  if (function_exists('_checkbook_max_data_year')) {
+  if (function_exists('_checkbook_max_data_year_test')) {
     return _checkbook_max_data_year();
   }
     $query = "select type_of_year, max(year) year_value , max(year_id) year_id from {transactions_data_by_year} t join ref_year y on t.year = y.year_value group by type_of_year
