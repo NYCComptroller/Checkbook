@@ -1806,6 +1806,7 @@ function _checkbook_project_execute_sql($sql, $db_name = "main", $data_source = 
     global $databases;
 
     if(function_exists('_checkbook_project_execute_sql_test')) {
+//      phpunit
       return _checkbook_project_execute_sql_test($sql);
     }
 
@@ -2097,7 +2098,8 @@ function _get_num_from_string($string)
 function _checkbook_max_data_year()
 {
   if (function_exists('_checkbook_max_data_year_test')) {
-    return _checkbook_max_data_year();
+//    phpunit
+    return _checkbook_max_data_year_test();
   }
     $query = "select type_of_year, max(year) year_value , max(year_id) year_id from {transactions_data_by_year} t join ref_year y on t.year = y.year_value group by type_of_year
   order by type_of_year ";
@@ -2364,8 +2366,9 @@ function isAdvancedSearchResultsPage()
  */
 function _get_contract_includes_subvendors_data($attributes = NULL)
 {
-    if (function_exists('_get_contract_includes_subvendors_data')) {
-      return _get_contract_includes_subvendors_data($attributes);
+    if (function_exists('_get_contract_includes_subvendors_data_test')) {
+//      phpunit
+      return _get_contract_includes_subvendors_data_test($attributes);
     }
     try {
         $dataController = data_controller_get_instance();
