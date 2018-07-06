@@ -5072,6 +5072,10 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state)
         $formatted_search_criteria[$agency_label] = $agency;
     }
     if ($values['dept'] && $values['dept'] != 'Select Department') {
+        // converts special characters to HTML entities
+        if (preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $values['dept'])) {
+            $values['dept'] = htmlspecialchars($values['dept']);
+        }
         $form['filter']['department'] = array('#markup' => '<div><strong>Department:</strong> ' . $values['dept'] . '</div>');
         $user_criteria['Department'] = $values['dept'];
         $formatted_search_criteria['Department'] = $values['dept'];

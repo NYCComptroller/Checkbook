@@ -144,13 +144,10 @@
                 , success: function (data) {
                     var html = '<option select="selected" value="0" >Select Department</option>';
                     if (data[0]) {
-                        if (data[0] != 'No Matches Found') {
+                        if (data[0].label !== '') {
                             for (var i = 0; i < data.length; i++) {
-                                html = html + '<option value="' + data[i] + '">' + data[i] + '</option>';
+                                html = html + '<option title="' + data[i].value + '" value="' + data[i].value + ' ">' + data[i].label + '</option>';
                             }
-                        }
-                        else {
-                            html = html + '<option value="">' + data[0] + '</option>';
                         }
                     }
                     //Reload Department Drop-down
@@ -188,13 +185,10 @@
                 , success: function (data) {
                     var html = '<option select="selected" value="0" >Select Expense Category</option>';
                     if (data[0]) {
-                        if (data[0] != 'No Matches Found') {
+                        if (data[0].label !== '') {
                             for (var i = 0; i < data.length; i++) {
-                                html = html + '<option value="' + data[i] + ' ">' + data[i] + '</option>';
+                                html = html + '<option title="' + data[i].value + '" value="' + data[i].value + ' ">' + data[i].label + '</option>';
                             }
-                        }
-                        else {
-                            html = html + '<option value="">' + data[0] + '</option>';
                         }
                     }
                     $('#edit-expense-category').removeAttr('disabled');
