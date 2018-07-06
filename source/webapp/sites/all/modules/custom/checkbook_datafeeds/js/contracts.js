@@ -22,6 +22,12 @@
                 $("#edit-category").children("option[value='revenue']").hide();
                 $("#edit-apt-pin").attr('disabled', 'disabled');
 
+                //Moving fields to match with Advanced search form order
+                $('.datafield.pin').insertAfter('.datafield.purpose');
+                $('.datafield.receiveddate.datarange').insertAfter('.datafield.currentamt.datarange');
+                $('.datafield.enddate.datarange').insertAfter('.datafield.startdate.datarange');
+                $('.datafield.agency').insertBefore('.datafield.category');
+
                 break;
             default:
                 $('.datafield.commodityline').hide();
@@ -38,6 +44,12 @@
                 $("#edit-category").children("option[value='all']").show();
                 $("#edit-category").children("option[value='revenue']").show();
                 $("#edit-apt-pin").removeAttr('disabled');
+
+                //Moving fields to match with Advanced search form order
+                $('.datafield.pin').insertBefore('.datafield.currentamt.datarange');
+                $('.datafield.enddate.datarange').insertAfter('.datafield.currentamt.datarange');
+                $('.datafield.receiveddate.datarange').insertAfter('.datafield.startdate.datarange');
+                $('.datafield.agency').insertBefore('.datafield.industry');
         }
     }
 

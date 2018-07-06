@@ -309,7 +309,9 @@ body.page-data-feeds .ms-container {
 }
 
 body.page-data-feeds #edit-columns .form-item-column-select label,
+body.page-data-feeds #edit-columns .form-item-oge-column-select label,
 body.page-data-feeds #edit-columns .form-item-column-select-expense label,
+body.page-data-feeds #edit-columns .form-item-column-select-oge-expense label,
 body.page-data-feeds #edit-columns .form-item-column-select-revenue label,
 body.page-data-feeds #edit-columns .form-item-column-select-all label,
 body.page-data-feeds #edit-columns .form-item-column-select-pending-all label,
