@@ -676,22 +676,16 @@ function _checkbook_autocomplete_spending_dept($year, $agency, $spending_cat, $d
 
     $db_name = "main";
     $results = _checkbook_project_execute_sql($query, $db_name,  $data_source);
-    if(count($results) == 0){
-        $options = array('label' => 'No Matches Found','value' => '');
-    }else{
-        foreach ($results as $result) {
-            $options[$result['department_name']] = $result['department_name'];
+
+    if (count($results) > 0) {
+        $matches = array();
+        foreach ($results as $key=>$value) {
+            $dept_name_value = htmlentities($value['department_name']);
+            $dept_name_text = (strlen($dept_name_value) > 18) ? substr($dept_name_value, 0, 18) . '...' : $dept_name_value;
+            $matches[] = array('label'=> $dept_name_text,'value' => $dept_name_value);
         }
+        drupal_json_output($matches);
     }
-    $matches = array();
-    if(isset($options['label'])) {
-        $matches[] = $options['label'];
-    }
-    else {
-        foreach($options as $key => $value)
-            $matches[] = htmlentities($value);
-    }
-    drupal_json_output($matches);
 }
 
 function _checkbook_autocomplete_spending_expcategory($agency, $dept, $spending_cat, $year, $data_source = 'checkbook') {
@@ -723,22 +717,16 @@ function _checkbook_autocomplete_spending_expcategory($agency, $dept, $spending_
 
     $db_name = "main";
     $results = _checkbook_project_execute_sql($query, $db_name,  $data_source);
-    if(count($results) == 0){
-        $options = array('label' => 'No Matches Found','value' => '');
-    }else{
-        foreach ($results as $result) {
-            $options[$result['expenditure_object_code']] = $result['expenditure_object_code'];
+
+    if (count($results) > 0) {
+        $matches = array();
+        foreach ($results as $key=>$value) {
+            $exp_obj_value = htmlentities($value['expenditure_object_code']);
+            $exp_obj_text = (strlen($exp_obj_value) > 18) ? substr($exp_obj_value, 0, 18) . '...' : $exp_obj_value;
+            $matches[] = array('label'=> $exp_obj_text,'value' => $exp_obj_value);
         }
+        drupal_json_output($matches);
     }
-    $matches = array();
-    if(isset($options['label'])) {
-        $matches[] = $options['label'];
-    }
-    else {
-        foreach($options as $key => $value)
-            $matches[] = htmlentities($value);
-    }
-    drupal_json_output($matches);
 }
 
 // Payroll autocomplete menu callback functions:
