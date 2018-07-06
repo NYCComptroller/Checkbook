@@ -1,52 +1,51 @@
 (function ($) {
 
-    $(document).ready(function () {
-        //This is to reset the radio button to citywide if the user refreshes browser
-        var data_source = $('input:hidden[name="data_source"]').val();
-        var agency_selected = $('#edit-agency').val();
-        showHidePrimeAndSubIcon();
+    /**
+     * Function will show or hide fields based on datasource selection
+     * @param data_source
+     */
+    $.fn.showHideFields = function(data_source) {
+        switch (data_source) {
+            case 'checkbook_oge':
+                $('.datafield.commodityline').show();
+                $('.datafield.entity_contract_number').show();
+                $('.datafield.budgetname').show();
 
-        if (data_source === "checkbook_oge" && agency_selected ==='Citywide (All Agencies)') {
-            $('input:radio[name="datafeeds-contracts-domain-filter"][value="checkbook_oge"]').removeAttr('checked').button("refresh");
-            $('input:radio[name="datafeeds-contracts-domain-filter"][value="checkbook"]').attr('checked', 'checked').button("refresh");
-            $('input:hidden[name="data_source"]').val("checkbook");
+                $('.datafield.mwbecategory').hide();
+                $('.datafield.scntrc_status').hide();
+                $('.datafield.regdate').hide();
+                $('.datafield.sub_vendor_status_in_pip_id').hide();
+                $('.datafield.industry').hide();
+
+                $("#edit-df-contract-status").children("option[value='pending']").hide();
+                $("#edit-category").children("option[value='all']").hide();
+                $("#edit-category").children("option[value='revenue']").hide();
+                $("#edit-apt-pin").attr('disabled', 'disabled');
+
+                break;
+            default:
+                $('.datafield.commodityline').hide();
+                $('.datafield.entity_contract_number').hide();
+                $('.datafield.budgetname').hide();
+
+                $('.datafield.mwbecategory').show();
+                $('.datafield.scntrc_status').show();
+                $('.datafield.regdate').show();
+                $('.datafield.sub_vendor_status_in_pip_id').show();
+                $('.datafield.industry').show();
+
+                $("#edit-df-contract-status").children("option[value='pending']").show();
+                $("#edit-category").children("option[value='all']").show();
+                $("#edit-category").children("option[value='revenue']").show();
+                $("#edit-apt-pin").removeAttr('disabled');
         }
+    }
 
-        //On change of "Sub Vendor Status in PIP" status
-        $('#edit-sub_vendor_status_in_pip_id').change(function() {
-            var sub_vendor_status = $('#edit-sub_vendor_status_in_pip_id').val();
-            var includes_sub_vendors = $('#edit-contract_includes_sub_vendors_id').val();
-            var valid_status = [6,1,4,3,2,5];
-
-            if($.inArray(sub_vendor_status, valid_status)) {
-                if(includes_sub_vendors == 2){
-                    $('#edit-contract_includes_sub_vendors_id').html('<option value="0">Select Status</option>' +
-                        '<option value="2" selected>Yes</option>');
-                } else {
-                    $('#edit-contract_includes_sub_vendors_id').html('<option value="0" selected>Select Status</option>' +
-                        '<option value="2">Yes</option>');
-                }
-            }
-
-            if(sub_vendor_status == 0) {
-                if(includes_sub_vendors == 2){
-                    $('#edit-contract_includes_sub_vendors_id').html('<option value="0">Select Status</option>' +
-                        '<option value="2" selected>Yes</option>' +
-                        '<option value="3">No</option>' +
-                        '<option value="1">No Data Entered</option>' +
-                        '<option value="4">Not Required</option>');
-                } else {
-                    $('#edit-contract_includes_sub_vendors_id').html('<option value="0" selected>Select Status</option>' +
-                        '<option value="2">Yes</option>' +
-                        '<option value="3">No</option>' +
-                        '<option value="1">No Data Entered</option>' +
-                        '<option value="4">Not Required</option>');
-                }
-            }
-        });
-    });
-
-    function showHidePrimeAndSubIcon(){
+    /**
+     * Function will add the asterisk icon css from a field
+     * @param ele
+     */
+    $.fn.showHidePrimeAndSubIcon = function (){
             var note = jQuery(".prime-and-sub-note-datafeeds");
             var contract_status = jQuery(".contractstatus");
             var vendor = jQuery(".vendor");
@@ -60,15 +59,15 @@
 
             // Remove all asterisk fields & note
             note.remove();
-            removePrimeAndSubIcon(contract_status);
-            removePrimeAndSubIcon(vendor);
-            removePrimeAndSubIcon(mwbe_category);
-            removePrimeAndSubIcon(current_amt_from);
-            removePrimeAndSubIcon(category);
-            removePrimeAndSubIcon(sub_vendor_status_in_pip);
-            removePrimeAndSubIcon(purpose);
-            removePrimeAndSubIcon(industry);
-            removePrimeAndSubIcon(year);
+            $.fn.removePrimeAndSubIcon(contract_status);
+            $.fn.removePrimeAndSubIcon(vendor);
+            $.fn.removePrimeAndSubIcon(mwbe_category);
+            $.fn.removePrimeAndSubIcon(current_amt_from);
+            $.fn.removePrimeAndSubIcon(category);
+            $.fn.removePrimeAndSubIcon(sub_vendor_status_in_pip);
+            $.fn.removePrimeAndSubIcon(purpose);
+            $.fn.removePrimeAndSubIcon(industry);
+            $.fn.removePrimeAndSubIcon(year);
 
             var contract_status_val = jQuery("select[name=df_contract_status]").val();
             var category_val = jQuery("select[name=category]").val();
@@ -79,15 +78,15 @@
 
                 jQuery("<div class='prime-and-sub-note-datafeeds'><p>All Fields are searchable by Prime data, unless designated as Prime & Sub (<img src='/sites/all/themes/checkbook3/images/prime-and-sub.png' />).</p><br/></div>").insertAfter(jQuery("p.required-message"));
 
-                addPrimeAndSubIcon(contract_status);
-                addPrimeAndSubIcon(vendor);
-                addPrimeAndSubIcon(mwbe_category);
-                addPrimeAndSubIcon(current_amt_from);
-                addPrimeAndSubIcon(category);
-                addPrimeAndSubIcon(sub_vendor_status_in_pip);
-                addPrimeAndSubIcon(purpose);
-                addPrimeAndSubIcon(industry);
-                addPrimeAndSubIcon(year);
+                $.fn.addPrimeAndSubIcon(contract_status);
+                $.fn.addPrimeAndSubIcon(vendor);
+                $.fn.addPrimeAndSubIcon(mwbe_category);
+                $.fn.addPrimeAndSubIcon(current_amt_from);
+                $.fn.addPrimeAndSubIcon(category);
+                $.fn.addPrimeAndSubIcon(sub_vendor_status_in_pip);
+                $.fn.addPrimeAndSubIcon(purpose);
+                $.fn.addPrimeAndSubIcon(industry);
+                $.fn.addPrimeAndSubIcon(year);
             }
         }
     }
@@ -96,7 +95,7 @@
      * Function will remove the asterisk icon css from a field
      * @param ele
      */
-    function removePrimeAndSubIcon(ele){
+    $.fn.removePrimeAndSubIcon = function (ele){
         ele.find('.prime-and-sub-datafeeds').remove();
         ele.removeClass('asterisk-style');
 
@@ -106,13 +105,24 @@
      * Function will add the asterisk icon css to a field
      * @param ele
      */
-    function addPrimeAndSubIcon(ele){
+    $.fn.addPrimeAndSubIcon = function(ele){
         var primeAndSubIcon = "<img class='prime-and-sub-datafeeds' src='/sites/all/themes/checkbook3/images/prime-and-sub.png' />";
         jQuery(ele).find('label').first().prepend(primeAndSubIcon);
         ele.addClass('asterisk-style');
     }
 
-        $.fn.onDataSourceChange = function(){
+    /**
+     * Function will make changes to the form based on data-souce selection
+     * @param dataSource
+     */
+    $.fn.onDataSourceChange = function(dataSource){
+        //Agency drop-down options
+        $.fn.reloadAgencies(dataSource);
+        $.fn.showHideFields(dataSource);
+        //Change the Agency drop-down label
+        var vendor_label = (dataSource == 'checkbook_oge') ? 'Prime Vendor:' : 'Vendor:';
+        $("label[for = edit-vendor]").text(vendor_label);
+
         //clear all text fields
         var enclosingDiv = $("#dynamic-filter-data-wrapper").children('#edit-filter').children('div.fieldset-wrapper').children();
         jQuery(enclosingDiv).find(':input').each(function() {
@@ -122,14 +132,15 @@
         });
 
         //reset the drop-downs
+        var default_category = (dataSource == 'checkbook_oge') ? 'expense' : 'all';
         $('select[name="df_contract_status"]').val('active');
         $('select[name="contract_type"]').val('');
-        $('select[name="category"]').val('all');
+        $('select[name="category"]').val(default_category);
         $('select[name="award_method"]').val('');
         $('select[name="year"]').val('');
 
         //reset the selected columns
-        resetSelectedColumns();
+        $.fn.resetSelectedColumns();
 
         $('#edit-column-select-expense option[value="Year"]').attr('disabled','disabled');
         $('#edit-column-select-expense option[value="year"]').attr('disabled','disabled');
@@ -145,6 +156,22 @@
         $('#ms-edit-column-select-expense a.deselect').click(function () {
             $('#edit-column-select-expense').multiSelect('deselect_all');
         });
+
+        $('#edit-column-select-oge-expense option[value="Year"]').attr('disabled','disabled');
+        $('#edit-column-select-oge-expense option[value="year"]').attr('disabled','disabled');
+
+        $('#edit-column-select-oge-expense').multiSelect('refresh');
+        if(!$('#ms-edit-column-select-oge-expense .ms-selection').next().is("a")){
+            $('#ms-edit-column-select-oge-expense .ms-selection').after('<a class="deselect">Remove All</a>');
+            $('#ms-edit-column-select-oge-expense .ms-selection').after('<a class="select">Add All</a>');
+        }
+        $('#ms-edit-column-select-oge-expense a.select').click(function () {
+            $('#edit-column-select-oge-expense').multiSelect('select_all');
+        });
+        $('#ms-edit-column-select-oge-expense a.deselect').click(function () {
+            $('#edit-column-select-oge-expense').multiSelect('deselect_all');
+        });
+
         $('#edit-column-select-revenue option[value="Year"]').attr('disabled','disabled');
         $('#edit-column-select-revenue option[value="year"]').attr('disabled','disabled');
 
@@ -175,115 +202,253 @@
             $('#edit-column-select-all').multiSelect('deselect_all');
         });
 
-        showHidePrimeAndSubIcon();
+        var csval = $('select[name="df_contract_status"]').val();
+        var catval = $('#edit-category').val();
+        // Display multi-select
+        $.fn.hideShow(csval, catval);
+
+        $.fn.showHidePrimeAndSubIcon();
+    }
+
+    /**
+     * Function will make changes to the form based on dataSource selection
+     * @param dataSource
+     */
+    $.fn.reloadAgencies = function(dataSource){
+        //Change the Agency drop-down label
+        var agencyLabel = (dataSource == 'checkbook_oge') ? "Other Government<br/>Entity:" : "Agency:";
+        $("label[for = edit-agency]").html(agencyLabel);
+
+        var agency_hidden = $('input:hidden[name="agency_hidden"]').val();
+        $.ajax({
+            url: '/datafeeds/spending/agency/' + dataSource + '/1'
+            ,success: function(data) {
+                var html = '';
+                if (data[0]) {
+                    if (data[0].label !== 'No Matches Found') {
+                        for (var i = 0; i < data.length; i++) {
+                            html = html + '<option title="' + data[i].value + '" value="' + data[i].value + '">' + data[i].label + '</option>';
+                        }
+                    }
+                }
+                $('#edit-agency').html(html);
+                if(agency_hidden){
+                    $('#edit-agency').val(agency_hidden);
+                }
+            }
+        });
+    }
+
+    /**
+     * Function will remove the asterisk icon css from a field
+     * @param csval  -- Contract Status
+     * @param catval  -- Contract Category
+     */
+    $.fn.hideShow = function(csval, catval) {
+        var $expense = $('.form-item-column-select-expense');
+        var $oge_expense = $('.form-item-column-select-oge-expense');
+        var $revenue = $('.form-item-column-select-revenue');
+        var $pending = $('.form-item-column-select-pending');
+        var $all = $('.form-item-column-select-all');
+        var $pending_all = $('.form-item-column-select-pending-all');
+        var data_source = $('input:hidden[name="data_source"]').val();
+
+        if (csval == 'active') {
+            if(data_source == 'checkbook') {
+                if (catval == 'expense') {
+                    $('.form-item-column-select-expense label').html('Columns (Active Expense)<span class="form-required">*</span>');
+                    $expense.show();
+                    $revenue.hide();
+                    $pending.hide();
+                    $all.hide();
+                    $pending_all.hide();
+                    $oge_expense.hide();
+                } else if (catval == 'revenue') {
+                    $('.form-item-column-select-revenue label').html('Columns (Active Revenue)<span class="form-required">*</span>');
+                    $expense.hide();
+                    $revenue.show();
+                    $pending.hide();
+                    $all.hide();
+                    $pending_all.hide();
+                    $oge_expense.hide();
+                } else {
+                    $('.form-item-column-select-all label').html('Columns (All Active)<span class="form-required">*</span>');
+                    $all.show();
+                    $expense.hide();
+                    $revenue.hide();
+                    $pending.hide();
+                    $pending_all.hide();
+                    $oge_expense.hide();
+                }
+            }else if(data_source == 'checkbook_oge'){
+                $('.form-item-column-select-oge-expense label').html('Columns (Active Expense)<span class="form-required">*</span>');
+                $expense.hide();
+                $revenue.hide();
+                $pending.hide();
+                $all.hide();
+                $pending_all.hide();
+                $oge_expense.show();
+            }
+        } else if (csval == 'registered'){
+            if(data_source == 'checkbook') {
+                if (catval == 'expense') {
+                    $('.form-item-column-select-expense label').html('Columns (Registered Expense)<span class="form-required">*</span>');
+                    $expense.show();
+                    $revenue.hide();
+                    $pending.hide();
+                    $all.hide();
+                    $pending_all.hide();
+                    $oge_expense.hide();
+                } else if (catval == 'revenue') {
+                    $('.form-item-column-select-revenue label').html('Columns (Registered Revenue)<span class="form-required">*</span>');
+                    $expense.hide();
+                    $revenue.show();
+                    $pending.hide();
+                    $all.hide();
+                    $pending_all.hide();
+                    $oge_expense.hide();
+                } else {
+                    $('.form-item-column-select-all label').html('Columns (All Registered)<span class="form-required">*</span>');
+                    $expense.hide();
+                    $revenue.hide();
+                    $pending.hide();
+                    $all.show();
+                    $pending_all.hide();
+                    $oge_expense.hide();
+                }
+            }else if(data_source == 'checkbook_oge') {
+                if (catval == 'expense') {
+                    $('.form-item-column-select-oge-expense label').html('Columns (Registered Expense)<span class="form-required">*</span>');
+                    $expense.hide();
+                    $revenue.hide();
+                    $pending.hide();
+                    $all.hide();
+                    $pending_all.hide();
+                    $oge_expense.show();
+                }
+            }
+        } else {
+            if(catval == 'expense'){
+                $('.form-item-column-select-pending label').html('Columns (Pending Expense)<span class="form-required">*</span>');
+                $expense.hide();
+                $revenue.hide();
+                $pending.show();
+                $all.hide();
+                $pending_all.hide();
+                $oge_expense.hide();
+            } else if (catval == 'revenue') {
+                $('.form-item-column-select-pending label').html('Columns (Pending Revenue)<span class="form-required">*</span>');
+                $expense.hide();
+                $revenue.hide();
+                $pending.show();
+                $all.hide();
+                $pending_all.hide();
+                $oge_expense.hide();
+            } else {
+                $('.form-item-column-select-pending-all label').html('Columns (All Pending)<span class="form-required">*</span>');
+                $expense.hide();
+                $revenue.hide();
+                $pending.hide();
+                $all.hide();
+                $pending_all.show();
+                $oge_expense.hide();
+            }
+
+        }
     }
 
     Drupal.behaviors.contractsDataFeeds = {
         attach:function (context, settings) {
-            //use jQuery to hide/show the correct column select
+
+            //This is to reset the radio button to citywide if the user refreshes browser
+            var data_source = $('input:hidden[name="data_source"]', context).val();
             var $contractStatus = $('select[name="df_contract_status"]', context);
             var $category = $('#edit-category', context);
             var csval = $('select[name="df_contract_status"]', context).val();
             var catval = $('#edit-category', context).val();
-            hideShow(csval, catval);
+            $.fn.reloadAgencies(data_source);
+
+            /*var agency_selected = $('#edit-agency', context).val();
+            if (data_source === "checkbook_oge" && agency_selected ==='Citywide (All Agencies)') {
+                $('input:radio[name="datafeeds-contracts-domain-filter"][value="checkbook_oge"]', context).removeAttr('checked').button("refresh");
+                $('input:radio[name="datafeeds-contracts-domain-filter"][value="checkbook"]', context).attr('checked', 'checked').button("refresh");
+                $('input:hidden[name="data_source"]', context).val("checkbook");
+            }*/
+
+            //Show or hide fields based on data source selection
+            $.fn.showHideFields(data_source);
+
+            //Show Sub or Prime vendor icon
+            $.fn.showHidePrimeAndSubIcon();
+
+            // Display multi-select
+            $.fn.hideShow(csval, catval);
+
+            //On change of "Sub Vendor Status in PIP" status
+            $('#edit-sub_vendor_status_in_pip_id', context).change(function() {
+                var sub_vendor_status = $('#edit-sub_vendor_status_in_pip_id', context).val();
+                var includes_sub_vendors = $('#edit-contract_includes_sub_vendors_id', context).val();
+                var valid_status = [6,1,4,3,2,5];
+
+                if($.inArray(sub_vendor_status, valid_status)) {
+                    if(includes_sub_vendors == 2){
+                        $('#edit-contract_includes_sub_vendors_id', context).html('<option value="0">Select Status</option>' +
+                            '<option value="2" selected>Yes</option>');
+                    } else {
+                        $('#edit-contract_includes_sub_vendors_id', context).html('<option value="0" selected>Select Status</option>' +
+                            '<option value="2">Yes</option>');
+                    }
+                }
+
+                if(sub_vendor_status == 0) {
+                    if(includes_sub_vendors == 2){
+                        $('#edit-contract_includes_sub_vendors_id', context).html('<option value="0">Select Status</option>' +
+                            '<option value="2" selected>Yes</option>' +
+                            '<option value="3">No</option>' +
+                            '<option value="1">No Data Entered</option>' +
+                            '<option value="4">Not Required</option>');
+                    } else {
+                        $('#edit-contract_includes_sub_vendors_id', context).html('<option value="0" selected>Select Status</option>' +
+                            '<option value="2">Yes</option>' +
+                            '<option value="3">No</option>' +
+                            '<option value="1">No Data Entered</option>' +
+                            '<option value="4">Not Required</option>');
+                    }
+                }
+            });
+
+            //Data Source change event
+            $('input:radio[name=datafeeds-contracts-domain-filter]', context).change(function (){
+                $('input:hidden[name="data_source"]', context).val($(this).val());
+                var agency_hidden = $('input:hidden[name="agency_hidden"]', context).val("");
+                $.fn.onDataSourceChange($(this).val());
+            });
+
+            //Contract Status Drop-down
             $contractStatus.change(function () {
                 csval = $('select[name="df_contract_status"]', context).val();
                 catval = $('#edit-category', context).val();
-                resetSelectedColumns();
-                hideShow(csval, catval);
-                showHidePrimeAndSubIcon();
+                $.fn.resetSelectedColumns();
+                $.fn.hideShow(csval, catval);
+                $.fn.showHidePrimeAndSubIcon();
             });
+
+            //Contract Category Drop-down
             $category.change(function () {
                 csval = $('select[name="df_contract_status"]', context).val();
                 catval = $('#edit-category', context).val();
-                resetSelectedColumns();
-                hideShow(csval, catval);
-                showHidePrimeAndSubIcon();
+                $.fn.resetSelectedColumns();
+                $.fn.hideShow(csval, catval);
+                $.fn.showHidePrimeAndSubIcon();
             });
-            function hideShow(csval, catval) {
-                var $expense = $('.form-item-column-select-expense', context);
-                var $revenue = $('.form-item-column-select-revenue', context);
-                var $pending = $('.form-item-column-select-pending', context);
-                var $all = $('.form-item-column-select-all', context);
-                var $pending_all = $('.form-item-column-select-pending-all', context);
-                if (csval == 'active') {
-                    if (catval == 'expense') {
-                        $('.form-item-column-select-expense label').html('Columns (Active Expense)<span class="form-required">*</span>');
-                        $expense.show();
-                        $revenue.hide();
-                        $pending.hide();
-                        $all.hide();
-                        $pending_all.hide();
-                    } else if(catval == 'revenue') {
-                        $('.form-item-column-select-revenue label').html('Columns (Active Revenue)<span class="form-required">*</span>');
-                        $expense.hide();
-                        $revenue.show();
-                        $pending.hide();
-                        $all.hide();
-                        $pending_all.hide();
-                    } else {
-                        $('.form-item-column-select-all label').html('Columns (All Active)<span class="form-required">*</span>');
-                        $all.show();
-                        $expense.hide();
-                        $revenue.hide();
-                        $pending.hide();
-                        $pending_all.hide();
-                    }
-                } else if (csval == 'registered'){
-                    if (catval == 'expense'){
-                        $('.form-item-column-select-expense label').html('Columns (Registered Expense)<span class="form-required">*</span>');
-                        $expense.show();
-                        $revenue.hide();
-                        $pending.hide();
-                        $all.hide();
-                        $pending_all.hide();
-                    } else if (catval == 'revenue'){
-                        $('.form-item-column-select-revenue label').html('Columns (Registered Revenue)<span class="form-required">*</span>');
-                        $expense.hide();
-                        $revenue.show();
-                        $pending.hide();
-                        $all.hide();
-                        $pending_all.hide();
-                    } else {
-                        $('.form-item-column-select-all label').html('Columns (All Registered)<span class="form-required">*</span>');
-                        $expense.hide();
-                        $revenue.hide();
-                        $pending.hide();
-                        $all.show();
-                        $pending_all.hide();
-                    }
-                } else {
-                    if(catval == 'expense'){
-                        $('.form-item-column-select-pending label').html('Columns (Pending Expense)<span class="form-required">*</span>');
-                        $expense.hide();
-                        $revenue.hide();
-                        $pending.show();
-                        $all.hide();
-                        $pending_all.hide();
-                    } else if (catval == 'revenue') {
-                        $('.form-item-column-select-pending label').html('Columns (Pending Revenue)<span class="form-required">*</span>');
-                        $expense.hide();
-                        $revenue.hide();
-                        $pending.show();
-                        $all.hide();
-                        $pending_all.hide();
-                    } else {
-                        $('.form-item-column-select-pending-all label').html('Columns (All Pending)<span class="form-required">*</span>');
-                        $expense.hide();
-                        $revenue.hide();
-                        $pending.hide();
-                        $all.hide();
-                        $pending_all.show();
-                    }
 
-                }
-            }
             //Set up jQuery datepickers
             var currentYear = new Date().getFullYear();
             $('.datepicker', context).datepicker({dateFormat:"yy-mm-dd",
                                                 changeMonth:true,
                                                 changeYear:true,
                                                 yearRange:'-'+(currentYear-1900)+':+'+(2500-currentYear)});
+
             //Disable Year option for All Years
             if ($('#edit-year', context).val() == 'ALL'){
                 $('#edit-column-select-expense option[value="Year"]',context).attr('disabled','disabled');
@@ -293,8 +458,9 @@
                 $('#edit-column-select-all option[value="Year"]',context).attr('disabled','disabled');
                 $('#edit-column-select-all option[value="year"]',context).attr('disabled','disabled');
             }
+
             //Set up multiselects/option transfers
-            //Active/Registered Expense
+            //Active/Registered Expense -- CityWide
             $('#edit-column-select-expense', context).multiSelect();
             if(!$('#ms-edit-column-select-expense .ms-selection', context).next().is("a")){
                 $('#ms-edit-column-select-expense .ms-selection', context).after('<a class="deselect">Remove All</a>');
@@ -305,6 +471,19 @@
             });
             $('#ms-edit-column-select-expense a.deselect', context).click(function () {
                 $('#edit-column-select-expense', context).multiSelect('deselect_all');
+            });
+
+            //OGE Active/Registered Expense
+            $('#edit-column-select-oge-expense', context).multiSelect();
+            if(!$('#ms-edit-column-select-oge-expense .ms-selection', context).next().is("a")){
+                $('#ms-edit-column-select-oge-expense .ms-selection', context).after('<a class="deselect">Remove All</a>');
+                $('#ms-edit-column-select-oge-expense .ms-selection', context).after('<a class="select">Add All</a>');
+            }
+            $('#ms-edit-column-select-oge-expense a.select', context).click(function () {
+                $('#edit-column-select-oge-expense', context).multiSelect('select_all');
+            });
+            $('#ms-edit-column-select-oge-expense a.deselect', context).click(function () {
+                $('#edit-column-select-oge-expense', context).multiSelect('deselect_all');
             });
             //Active/Registered Revenue
             $('#edit-column-select-revenue', context).multiSelect();
@@ -357,15 +536,14 @@
 
             var status = $('select[name="df_contract_status"]', context).val();
             var category = $('#edit-category', context).val();
-            var contract_type = emptyToZero($('#edit-contract-type', context).val());
-            var agency = emptyToZero($('#edit-agency', context).val());
-            var award_method = emptyToZero($('#edit-award-method', context).val());
+            var contract_type = $.fn.emptyToZero($('#edit-contract-type', context).val());
+            var agency = $.fn.emptyToZero($('#edit-agency', context).val());
+            var award_method = $.fn.emptyToZero($('#edit-award-method', context).val());
             var year = ($('#edit-year', context).attr('disabled')) ? 0 : $('#edit-year', context).val();
             var mwbecat = ($('#edit-mwbe-category').val()) ? $('#edit-mwbe-category').val() : 0;
-            var industry = emptyToZero($('#edit-industry',context).val());
-            var data_source = $('input:radio[name=datafeeds-contracts-domain-filter]:checked').val();
-            var includes_sub_vendors = emptyToZero($('#edit-contract_includes_sub_vendors_id', context).val());
-            var sub_vendor_status = emptyToZero($('#edit-sub_vendor_status_in_pip_id', context).val());
+            var industry = $.fn.emptyToZero($('#edit-industry',context).val());
+            var includes_sub_vendors = $.fn.emptyToZero($('#edit-contract_includes_sub_vendors_id', context).val());
+            var sub_vendor_status = $.fn.emptyToZero($('#edit-sub_vendor_status_in_pip_id', context).val());
 
             $('#edit-vendor', context).autocomplete({source:'/autocomplete/contracts/vendor/'+ status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/'+ sub_vendor_status + '/' + data_source});
             $('#edit-contractno', context).autocomplete({source:'/autocomplete/contracts/contract_number/'+ status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/'+ sub_vendor_status + '/' + data_source});
@@ -378,16 +556,16 @@
                 $(this).focusin(function () {
                     var status = $('select[name="df_contract_status"]', context).val();
                     var category = $('#edit-category', context).val();
-                    var contract_type = emptyToZero($('#edit-contract-type', context).val());
-                    var agency = emptyToZero($('#edit-agency', context).val());
-                    var award_method = emptyToZero($('#edit-award-method', context).val());
+                    var contract_type = $.fn.emptyToZero($('#edit-contract-type', context).val());
+                    var agency = $.fn.emptyToZero($('#edit-agency', context).val());
+                    var award_method = $.fn.emptyToZero($('#edit-award-method', context).val());
                     var year = ($('#edit-year', context).attr('disabled')) ? 0 : $('#edit-year', context).val();
                     var mwbecat = ($('#edit-mwbe-category').val()) ? $('#edit-mwbe-category').val() : 0;
                     mwbecat = mwbecat == null ? 0 : mwbecat;
-                    var industry = emptyToZero($('#edit-industry',context).val());
+                    var industry = $.fn.emptyToZero($('#edit-industry',context).val());
                     var data_source = $('input:radio[name=datafeeds-contracts-domain-filter]:checked').val();
-                    var includes_sub_vendors = emptyToZero($('#edit-contract_includes_sub_vendors_id', context).val());
-                    var sub_vendor_status = emptyToZero($('#edit-sub_vendor_status_in_pip_id', context).val());
+                    var includes_sub_vendors = $.fn.emptyToZero($('#edit-contract_includes_sub_vendors_id', context).val());
+                    var sub_vendor_status = $.fn.emptyToZero($('#edit-sub_vendor_status_in_pip_id', context).val());
 
                     $('#edit-vendor', context).autocomplete('option', 'source', '/autocomplete/contracts/vendor/'+ status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/'+ sub_vendor_status + '/' + data_source);
                     $('#edit-contractno', context).autocomplete('option', 'source', '/autocomplete/contracts/contract_number/'+ status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/'+ sub_vendor_status + '/' + data_source);
@@ -398,6 +576,8 @@
                     $('#edit-budget-name',context).autocomplete('option','source','/autocomplete/contracts/budgetname/'+ status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/'+ sub_vendor_status + '/' + data_source);
                 });
             });
+
+            //Year Drop-down
             $('#edit-year',context).change(function(){
                if ($(this).val() == 'ALL'){
                    $('#edit-column-select-expense option[value="Year"]',context).attr('disabled','disabled');
@@ -481,13 +661,15 @@
                    });
                }
             });
-            fixAutoCompleteWrapping($("#dynamic-filter-data-wrapper").children());
+
+            $.fn.fixAutoCompleteWrapping($("#dynamic-filter-data-wrapper").children());
         }
     };
 
     //Reset the selected columns
-    function resetSelectedColumns() {
+    $.fn.resetSelectedColumns = function() {
         $('#edit-column-select-expense').multiSelect('deselect_all');
+        $('#edit-column-select-oge-expense').multiSelect('deselect_all');
         $('#edit-column-select-revenue').multiSelect('deselect_all');
         $('#edit-column-select-pending').multiSelect('deselect_all');
         $('#edit-column-select-pending-all').multiSelect('deselect_all');
@@ -495,7 +677,7 @@
     }
 
     //Prevent the auto-complete from wrapping un-necessarily
-    function fixAutoCompleteWrapping(divWrapper) {
+    $.fn.fixAutoCompleteWrapping = function(divWrapper) {
         jQuery(divWrapper.children()).find('input.ui-autocomplete-input:text').each(function () {
             $(this).data("autocomplete")._resizeMenu = function () {
                 (this.menu.element).outerWidth('100%');
@@ -504,7 +686,7 @@
     }
 
     //Function to retrieve values enclosed in brackets or return zero if none
-    function emptyToZero(input) {
+    $.fn.emptyToZero = function(input) {
         var p = /\[(.*?)\]$/;
         var inputval, output;
         inputval = p.exec(input);
