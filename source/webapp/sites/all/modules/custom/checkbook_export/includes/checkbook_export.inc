@@ -460,7 +460,7 @@ function _checkbook_export_generateExportFile($node,$headers, $exportConfigNode 
                 . $tempOutputFile
                 . "'  WITH DELIMITER ',' CSV QUOTE '\\\"' ESCAPE '\\\"' \" ";
 
-        log_error($command);
+//        log_error($command);
 
         shell_exec($command);
 
