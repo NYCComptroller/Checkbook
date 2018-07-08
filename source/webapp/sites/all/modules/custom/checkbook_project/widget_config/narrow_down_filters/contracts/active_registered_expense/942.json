@@ -13,8 +13,8 @@
         "psmwbe":"minority_type_id.minority_type_id"
     },
     "dataset":"checkbook:all_agreement_transactions_by_prime_sub_vendor_name",
-    "columns":["vendor_code.vendor_code", "legal_name.legal_name", "txcount"],
-    "orderBy":"-txcount",
+    "columns":["vendor_code.vendor_code", "legal_name.legal_name", "count_vendorcode"],
+    "orderBy":"-count_vendorcode",
     "autocompleteParamName":"vendor_auto",
     "autocompleteField":"legal_name.legal_name",
     "urlParameterName":"vendorcode",
