@@ -4,19 +4,17 @@
             "datasourceName":"main",
             "source":"all_agreement_transactions_by_prime_sub_vendor"
         },
+
         "all_agreement_transactions_by_prime_sub_vendor_name":{
             "datasourceName":"main",
             "source":"
-            SELECT   'P'   AS Vendor_Type_Code,1  AS Sort_Order, v.vendor_id  AS Prime_Vendor_Id,t.prime_vendor_code AS vendor_code, v.legal_name,
-            t.contract_number,t.sub_contract_id,t.prime_effective_end_year_id,t.prime_effective_begin_year_id, t.prime_starting_year_id,t.prime_ending_year_id,t.document_code,
-            t.sub_latest_flag,t.prime_vendor_name as vendor_name, t.prime_dollar_difference,
-            t. sub_dollar_difference
+            SELECT   'P' AS Vendor_Type_Code,1  AS Sort_Order, v.vendor_id , v.vendor_customer_code AS vendor_code,
+            v.legal_name ,t.prime_vendor_name AS vendor_name,t. prime_minority_type_id as minority_type_id, t.prime_minority_type_name as minority_type_name,t.*
             FROM vendor v JOIN all_agreement_transactions_by_prime_sub_vendor t ON v.vendor_customer_code = t.prime_vendor_code
             WHERE  t.prime_vendor_name IS NOT NULL AND t.sub_vendor_name IS NOT NULL
             UNION ALL
-            SELECT 'S'         AS Vendor_Type_Code, 2   AS Sort_Order, v.vendor_id AS Prime_Vendor_Id,	 t.sub_vendor_code, t.sub_vendor_name,t.contract_number,
-            t.sub_contract_id, t.prime_effective_end_year_id, t.prime_effective_begin_year_id,t.prime_starting_year_id, t.prime_ending_year_id ,t.document_code ,t.sub_latest_flag,t.prime_vendor_name as vendor_name,  t.prime_dollar_difference,
-            t. sub_dollar_difference
+            SELECT 'S'  AS Vendor_Type_Code, 2   AS Sort_Order, v.vendor_id , t.sub_vendor_code AS vendor_code,
+            t.sub_vendor_name , t.sub_vendor_name AS vendor_name ,t.sub_minority_type_id as minority_type_id, t.sub_minority_type_name as minority_type_name,t.*
             FROM vendor v
             JOIN all_agreement_transactions_by_prime_sub_vendor t	 ON v.vendor_customer_code = t.prime_vendor_code
             WHERE t.prime_vendor_name IS NOT NULl AND t.sub_vendor_name IS NOT NULL	 AND t.sub_vendor_type IN ('S', 'SM')
@@ -432,7 +430,10 @@
             ],
             "measures": {
                 "txcount": {
-                    "function":" COUNT(DISTINCT legal_name||contract_number||sub_contract_id  )"
+                    "function":"COUNT(DISTINCT (CASE WHEN vendor_code IN ('P','PM') THEN vendor_name||contract_number ELSE vendor_name||contract_number||sub_contract_id END )) "
+                },
+                "count_vendorcode":{
+                    "function":"COUNT(DISTINCT (legal_name||contract_number||sub_contract_id))"
                 }
             }
         },
