@@ -1282,29 +1282,34 @@ function _get_autocomplete_search_term() {
 }
 function _get_seach_term(){
     $term = trim($_REQUEST['term']);
-    if (strlen($term) > 0) {
+   if (strlen($term) > 0) {
         $autocomplete_text = trim(htmlspecialchars_decode($term, ENT_QUOTES));
-        $autocomplete_terms = explode(' ', $autocomplete_text);
-        $autocomplete_text = _checkbook_autocomplete_escapeSolrValue(trim(htmlspecialchars_decode($term), ENT_QUOTES));
+       $autocomplete_terms = explode(' ', $autocomplete_text);
+       $autocomplete_text = _checkbook_autocomplete_escapeSolrValue(trim(htmlspecialchars_decode($term), ENT_QUOTES));
 
         if (count($autocomplete_terms) > 0) {
             $autocomplete_text = "";
             foreach ($autocomplete_terms as $key => $value) {
                 if (strlen($value) > 0) {
-                    $autocomplete_text .= _checkbook_autocomplete_escapeSolrValue($value) . "%20AND%20";
+                    $autocomplete_text .= _checkbook_autocomplete_escapeSolrValue($value) ."%20AND%20" ;
+
                 }
             }
             $search_term =  substr($autocomplete_text, 0, -9) ;
+            $search_term = str_replace("%20AND%20"," ",$search_term);
+
         }
         else {
             $search_term = $autocomplete_text ;
         }
 
-        return $search_term;
+        return  $search_term;
     }
     else {
         return '';
     }
+
+
 }
 
 /**
