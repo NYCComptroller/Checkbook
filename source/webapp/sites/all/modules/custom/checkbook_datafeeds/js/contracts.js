@@ -128,9 +128,15 @@
      * @param dataSource
      */
     $.fn.onDataSourceChange = function(dataSource){
+        //Remove all the validation errors when data source is changed
+        $('.error').removeClass('error');
+
         //Agency drop-down options
         $.fn.reloadAgencies(dataSource);
+
+        //Show or hide fields based on data-source selection
         $.fn.showHideFields(dataSource);
+
         //Change the Agency drop-down label
         var vendor_label = (dataSource == 'checkbook_oge') ? 'Prime Vendor:' : 'Vendor:';
         $("label[for = edit-vendor]").text(vendor_label);
