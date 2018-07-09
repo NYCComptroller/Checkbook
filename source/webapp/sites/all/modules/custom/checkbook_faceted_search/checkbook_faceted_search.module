@@ -159,6 +159,18 @@ function _checkbook_faceted_search_update_data($node) {
                     ,$checked_items[0][str_replace('.','_',$node->widgetConfig->columns[2])]);
                 }
             }
+            if($checked_items[0]['count_vendorcode']){
+                if(count($checked_items[0]) == 2){
+                    $output['checked'][] = array($checked_items[0][str_replace('.','_',$node->widgetConfig->columns[0])]
+                    ,$checked_items[0][str_replace('.','_',$node->widgetConfig->columns[0])]
+                    ,$checked_items[0][str_replace('.','_',$node->widgetConfig->columns[1])]);
+                }else{
+                    $output['checked'][] = array($checked_items[0][str_replace('.','_',$node->widgetConfig->columns[0])]
+                    ,$checked_items[0][str_replace('.','_',$node->widgetConfig->columns[1])]
+                    ,$checked_items[0][str_replace('.','_',$node->widgetConfig->columns[2])]);
+                }
+
+            }
             if($checked_items[0]['title_count']){
                 if(count($checked_items[0]) == 2){
                     $output['checked'][] = array($checked_items[0][str_replace('.','_',$node->widgetConfig->columns[0])]
