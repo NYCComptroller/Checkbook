@@ -530,30 +530,28 @@ class RequestUtil
     /** Returns Budget page title and Breadcrumb */
     public static function getBudgetBreadcrumbTitle()
     {
-        $bottomURL = isset($_REQUEST['expandBottomContURL']) ? $_REQUEST['expandBottomContURL'] : FALSE;
-        $find = '_' . $bottomURL . current_path();
-        if (
-            stripos($bottomURL, 'transactions')
-            || stripos($find, 'department_budget_details')
-            || stripos($find, 'expense_category_budget_details')
-            || stripos('_'.current_path(), 'revenue_transactions')
-        ) {
-            $dtsmnid = $bottomURL ? RequestUtil::getRequestKeyValueFromURL("dtsmnid", $bottomURL) : RequestUtil::getRequestKeyValueFromURL("dtsmnid", current_path());
-            $smnid = $bottomURL ? RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL) : RequestUtil::getRequestKeyValueFromURL("smnid", current_path());
-            if (isset($dtsmnid)) {
-                $title = NodeSummaryUtil::getInitNodeSummaryTitle($dtsmnid);
-            } else if (isset($smnid)) {
-                $title = NodeSummaryUtil::getInitNodeSummaryTemplateTitle($smnid);
-            } else {
-                $title = _get_budget_breadcrumb_title_drilldown() . ' Expense Budget';
-            }
-        } else if (!$bottomURL && stripos('_'.current_path(),'budget/transactions/')) {
-            $title = "Expense Budget Transactions";
-        } else {
-            $title = _get_budget_breadcrumb_title_drilldown() . ' Expense Budget';
-        }
+      $bottomURL = isset($_REQUEST['expandBottomContURL']) ? $_REQUEST['expandBottomContURL'] : FALSE;
+      $find = '_' . $bottomURL . current_path();
 
-        return html_entity_decode($title);
+      $title = _get_budget_breadcrumb_title_drilldown() . ' Expense Budget';
+
+      if (!$bottomURL && stripos('_'.current_path(),'budget/transactions/')) {
+        $title = "Expense Budget Transactions";
+      } elseif (
+        stripos($find, 'transactions')
+        || stripos($find, 'department_budget_details')
+        || stripos($find, 'expense_category_budget_details')
+      ) {
+        $dtsmnid = $bottomURL ? RequestUtil::getRequestKeyValueFromURL("dtsmnid", $bottomURL) : RequestUtil::getRequestKeyValueFromURL("dtsmnid", current_path());
+        $smnid = $bottomURL ? RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL) : RequestUtil::getRequestKeyValueFromURL("smnid", current_path());
+        if (isset($dtsmnid)) {
+          $title = NodeSummaryUtil::getInitNodeSummaryTitle($dtsmnid);
+        } else if (isset($smnid)) {
+          $title = NodeSummaryUtil::getInitNodeSummaryTemplateTitle($smnid);
+        }
+      }
+
+      return html_entity_decode($title);
     }
 
     /** Returns Revenue page title and Breadcrumb */
