@@ -142,7 +142,7 @@ class RequestUtilTest extends TestCase
         $mock_current_path = 'panel_html/budget_agency_perecent_difference_transactions/budget/agency_details/dtsmnid/560/yeartype/B/year/119';
         unset($_REQUEST['expandBottomContURL']);
 
-        $this->assertEquals('53 Expense Budget', RequestUtil::getBudgetBreadcrumbTitle());
+        $this->assertEquals('getInitNodeSummaryTitle :: 560', RequestUtil::getBudgetBreadcrumbTitle());
 
         $mock_current_path = 'budget/transactions/year/119';
         unset($_REQUEST['expandBottomContURL']);
