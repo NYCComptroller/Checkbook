@@ -2745,6 +2745,7 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
     }
 
     $form_state['complete form']['agency_hidden']['#value'] = $form_state['values']['agency'];
+    $form_state['complete form']['data_source']['#value'] = $form_state['input']['datafeeds-contracts-domain-filter'];
 }
 
 //</editor-fold>
