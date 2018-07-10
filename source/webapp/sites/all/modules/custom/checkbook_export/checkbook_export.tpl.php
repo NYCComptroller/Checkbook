@@ -52,7 +52,7 @@ if($totalRecords > 0){
                     <input type='radio' name='dc' value='range' id="export-dc-range"/>
                   <label for="export-dc-range">
                     &nbsp;Pages from&nbsp;<input type='text' class="export-range-input" name='rangefrom' size="4"/>
-                    &nbspto&nbsp;<input class="export-range-input" type='text' name='rangeto' size="4"/><?php
+                    &nbsp;to&nbsp;<input class="export-range-input" type='text' name='rangeto' size="4"/><?php
                       echo '<span id="export-message">(Max allowed pages: '. number_format($maxPages) .')</span>';
                     ?></label>
                 </td>

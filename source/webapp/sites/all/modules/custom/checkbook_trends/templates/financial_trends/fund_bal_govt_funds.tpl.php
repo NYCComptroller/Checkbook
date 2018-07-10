@@ -1,32 +1,32 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 ?>
-<?php  
-echo eval($node->widgetConfig->header);  
+<?php
+echo eval($node->widgetConfig->header);
 $table_rows = array();
 $years = array();
-foreach( $node->data as $row){	
+foreach( $node->data as $row){
 	$length =  $row['indentation_level'];
-	$spaceString = '&nbsp';
+	$spaceString = '&nbsp;';
 	while($length > 0){
-		$spaceString .= '&nbsp';
+		$spaceString .= '&nbsp;';
 		$length -=1;
 	}
 	$table_rows[$row['display_order']]['category'] =  $row['category'];
@@ -91,7 +91,7 @@ rsort($years);
                 $amount_class .= " amount-" . $row['amount_display_type'];
 
             $row['category'] = (isset($row['category'])?$row['category']:'&nbsp;');
-            
+
             echo "<tr>
             <td class='text " . $cat_class . "' ><div>" . $row['category'] . "</div></td>";
             foreach ($years as $year){
