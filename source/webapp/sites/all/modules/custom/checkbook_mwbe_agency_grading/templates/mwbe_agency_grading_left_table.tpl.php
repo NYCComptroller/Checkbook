@@ -4,14 +4,14 @@
 <div class="download_link" ><span class="summary_export">Export</span></div>
 
 <div class="checkbook-grading-left">
-<div class="empty_div11">&nbsp</div>
+<div class="empty_div11">&nbsp;</div>
 <table id="grading_table"  >
 	<thead class="hidden_body" style="display:none" >
 		<tr id="scroll_wrapper_head">
 			<th><div><span>Agency</span></div></th>
 			<th><div><span>Spending Chart</span></div></th>
 			<th><div><span>YTD Spending</span></div></th>
-			<th>&nbsp</th>
+			<th>&nbsp;</th>
 		</tr>
 	</thead>
 	<tbody class="hidden_body" style="display:none" >

@@ -2233,7 +2233,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
             if ($values['sub_vendor_status_in_pip_id']) {
                 if ($values['sub_vendor_status_in_pip_id'] != 'Select Status') {
                     $aprv_sta_name = MappingUtil::getaprv_sta_name($values['sub_vendor_status_in_pip_id']);
-                    $form['filter']['sub_vendor_status_in_pip_id'] = array('#markup' => '<div><strong>Sub Vendor Status in PIP&nbsp:</strong> ' . $aprv_sta_name . '</div>');
+                    $form['filter']['sub_vendor_status_in_pip_id'] = array('#markup' => '<div><strong>Sub Vendor Status in PIP&nbsp;:</strong> ' . $aprv_sta_name . '</div>');
                     $user_criteria['Sub Vendor Status in PIP'] = $values['sub_vendor_status_in_pip_id'];
                     $formatted_search_criteria['Sub Vendor Status in PIP'] = $aprv_sta_name;
                 }
