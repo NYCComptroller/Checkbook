@@ -818,7 +818,10 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
             new __SQLDataSourceHandler__QueryExecutionCallbackProxy($this->prepareQueryStatementExecutionCallbackInstance(), $resultFormatter));
         LogHelper::log_notice(t('Database execution time: !executionTime', array('!executionTime' => ExecutionPerformanceHelper::formatExecutionTime($timeStart))));
 
-        $count = count($records);
+        $count = 0;
+        if (!empty($records)) {
+          $count = count($records);
+        }
         LogHelper::log_notice(t('Processed @count record(s)', array('@count' => $count)));
         LogHelper::log_debug($records);
 
