@@ -129,6 +129,7 @@
      */
     $.fn.onDataSourceChange = function(dataSource){
         //Remove all the validation errors when data source is changed
+        $('div.messages').remove();
         $('.error').removeClass('error');
 
         //Agency drop-down options
@@ -386,13 +387,6 @@
             var catval = $('#edit-category', context).val();
             $.fn.reloadAgencies(data_source);
 
-            /*var agency_selected = $('#edit-agency', context).val();
-            if (data_source === "checkbook_oge" && agency_selected ==='Citywide (All Agencies)') {
-                $('input:radio[name="datafeeds-contracts-domain-filter"][value="checkbook_oge"]', context).removeAttr('checked').button("refresh");
-                $('input:radio[name="datafeeds-contracts-domain-filter"][value="checkbook"]', context).attr('checked', 'checked').button("refresh");
-                $('input:hidden[name="data_source"]', context).val("checkbook");
-            }*/
-
             //Show or hide fields based on data source selection
             $.fn.showHideFields(data_source);
 
@@ -470,11 +464,9 @@
             //Disable Year option for All Years
             if ($('#edit-year', context).val() == 'ALL'){
                 $('#edit-column-select-expense option[value="Year"]',context).attr('disabled','disabled');
-                $('#edit-column-select-expense option[value="year"]',context).attr('disabled','disabled');
+                $('#edit-column-select-oge-expense option[value="Year"]',context).attr('disabled','disabled');
                 $('#edit-column-select-revenue option[value="Year"]',context).attr('disabled','disabled');
-                $('#edit-column-select-revenue option[value="year"]',context).attr('disabled','disabled');
                 $('#edit-column-select-all option[value="Year"]',context).attr('disabled','disabled');
-                $('#edit-column-select-all option[value="year"]',context).attr('disabled','disabled');
             }
 
             //Set up multiselects/option transfers
