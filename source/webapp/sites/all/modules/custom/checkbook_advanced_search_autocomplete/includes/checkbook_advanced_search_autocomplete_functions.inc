@@ -502,34 +502,32 @@ function _checkbook_advanced_search_autocomplete_payroll_name($pay_frequency, $a
     $client = Elasticsearch\ClientBuilder::create()
         ->setHosts($hosts)
         ->build();
+    $params['index']='checkbook';
+    $params['type']='payroll';
+    $params['body']['size']=0;
+
     if (!empty($searchTerm)) {
-        $params = [
-            'index' => 'checkbook',
-            'type' => 'payroll',
-            'body' => [
-                'size' => 0,
-                'query' => [
 
-                    'bool' => [
-                        'must' => [
-                            ['term' => ['civil_service_title' => $searchTerm]],
-                            ['term' => ['calendar_fiscal_year' => 2018]],
+        $params['body']['query']['bool']['must'][]['term']['civil_service_title']=$searchTerm;
+        if($pay_frequency){
+            $params['body']['query']['bool']['must'][]['term']['pay_frequency']= $pay_frequency;
+        }
+        if($agency){
+            $params['body']['query']['bool']['must'][]['term']['agency_id']= $agency;
+        }
+        if($year){
+            $year_type = substr($year, 0, 2);
+            $year_value = substr($year, 3,strlen($year));
+            if($year_value != 'all') {
+                if($year_type == 'fy'){
+                    $params['body']['query']['bool']['must'][]['term']['fiscal_year_id']= $year_value;
 
-                        ],
-                    ],
-                ],
-
-                'aggs' => [
-                    'names' => [
-                        'terms' => [
-                            'field' => 'civil_service_title.keyword',
-                        ],
-                    ],
-                ]
-            ]
-
-        ];
-
+                }elseif($year_type == 'cy'){
+                    $params['body']['query']['bool']['must'][]['term']['calendar_fiscal_year_id']= $year_value;
+                }
+            }
+        }
+        $params['body']['aggs']['names']['terms']['field']='civil_service_title.keyword';
         try {
             $response = $client->search($params);
         } catch (Exception $e) {
@@ -540,6 +538,7 @@ function _checkbook_advanced_search_autocomplete_payroll_name($pay_frequency, $a
         foreach ($values as $key => $value) {
             $matches[] = $value['key'];
         }
+        $matches = array_map('strtolower', $matches);
         if ($matches) {
             drupal_json_output($matches);
         } else
