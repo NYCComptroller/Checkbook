@@ -12,10 +12,10 @@
         "vendorcode":"vendor_code.vendor_code"
     },
     "dataset":"checkbook:all_agreement_transactions_by_prime_sub_vendor_name",
-    "columns":["vendor_code.vendor_code", "legal_name.legal_name", "count_vendorcode"],
-    "orderBy":"-count_vendorcode",
+    "columns":["vendor_code.vendor_code", "vendor_name.vendor_name", "txcount"],
+    "orderBy":"-txcount",
     "autocompleteParamName":"vendor_auto",
-    "autocompleteField":"legal_name.legal_name",
+    "autocompleteField":"vendor_name.vendor_name",
     "urlParameterName":"vendorcode",
     "urlParameterNameType":"eqtext",
     "autocompleteID":"fvendorCode",
@@ -27,7 +27,7 @@
         $parameters = ContractUtil::adjustActiveContractCommonParams($node, $parameters);
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $parameters = _checkbook_project_applyParameterFilters($node,$parameters);
-            $parameters['legal_name.legal_name'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+            $parameters['vendor_name.vendor_name'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
         }
         return $parameters;
     "
