@@ -3764,3 +3764,12 @@ a.new-features-morelink{
     vertical-align: super;
     font-size: smaller;
 }
+
+.ckbk-export-dialog label{
+    font-weight: initial;
+    display: initial;
+}
+
+#dialog.ckbk-export-dialog td{
+    padding: 5px 30px;
+}
