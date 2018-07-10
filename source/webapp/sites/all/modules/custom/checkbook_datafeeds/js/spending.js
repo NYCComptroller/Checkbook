@@ -2,6 +2,7 @@
     //On Data Source Change
     $.fn.onDataSourceChange = function (dataSource) {
         //Remove all the validation errors when data source is changed
+        $('div.messages').remove();
         $('.error').removeClass('error');
 
         //Reload Agency Drop-down Options
