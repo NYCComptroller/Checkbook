@@ -1,19 +1,19 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -59,7 +59,7 @@
 
     if(preg_match("/newwindow/",current_path())){
 		$child_contract_link=$contract['contract_number'];
-    	
+
     }else{
 		$child_contract_link ="<a
           href='/panel_html/contract_transactions/contract_details/agid/". $contract["original_agreement_id"]. "/doctype/"
@@ -98,7 +98,7 @@
 
       </div>
 
-      <div class="resultsContainer<?php print $count?>">&nbsp</div>
+      <div class="resultsContainer<?php print $count?>">&nbsp;</div>
     </td>
 
   </tr>
