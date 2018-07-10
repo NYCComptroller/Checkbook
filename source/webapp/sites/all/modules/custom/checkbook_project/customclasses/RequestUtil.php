@@ -533,6 +533,8 @@ class RequestUtil
       $bottomURL = isset($_REQUEST['expandBottomContURL']) ? $_REQUEST['expandBottomContURL'] : FALSE;
       $find = '_' . $bottomURL . current_path();
 
+      $title = _get_budget_breadcrumb_title_drilldown() . ' Expense Budget';
+
       if (!$bottomURL && stripos('_'.current_path(),'budget/transactions/')) {
         $title = "Expense Budget Transactions";
       } elseif (
@@ -546,11 +548,7 @@ class RequestUtil
           $title = NodeSummaryUtil::getInitNodeSummaryTitle($dtsmnid);
         } else if (isset($smnid)) {
           $title = NodeSummaryUtil::getInitNodeSummaryTemplateTitle($smnid);
-        } else {
-          $title = _get_budget_breadcrumb_title_drilldown() . ' Expense Budget';
         }
-      } else {
-        $title = _get_budget_breadcrumb_title_drilldown() . ' Expense Budget';
       }
 
       return html_entity_decode($title);
