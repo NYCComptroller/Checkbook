@@ -467,6 +467,11 @@
                 $('#edit-column-select-oge-expense option[value="Year"]',context).attr('disabled','disabled');
                 $('#edit-column-select-revenue option[value="Year"]',context).attr('disabled','disabled');
                 $('#edit-column-select-all option[value="Year"]',context).attr('disabled','disabled');
+            }else{
+                $('#edit-column-select-expense option[value="Year"]',context).attr('disabled','');
+                $('#edit-column-select-oge-expense option[value="Year"]',context).attr('disabled','');
+                $('#edit-column-select-revenue option[value="Year"]',context).attr('disabled','');
+                $('#edit-column-select-all option[value="Year"]',context).attr('disabled','');
             }
 
             //Set up multiselects/option transfers
@@ -603,6 +608,21 @@
                    $('#ms-edit-column-select-expense a.deselect', context).click(function () {
                        $('#edit-column-select-expense', context).multiSelect('deselect_all');
                    });
+
+                   $('#edit-column-select-oge-expense option[value="Year"]',context).attr('disabled','disabled');
+                   $('#edit-column-select-oge-expense option[value="year"]',context).attr('disabled','disabled');
+                   $('#edit-column-select-oge-expense', context).multiSelect('refresh');
+                   if(!$('#ms-edit-column-select-oge-expense .ms-selection', context).next().is("a")){
+                       $('#ms-edit-column-select-oge-expense .ms-selection', context).after('<a class="deselect">Remove All</a>');
+                       $('#ms-edit-column-select-oge-expense .ms-selection', context).after('<a class="select">Add All</a>');
+                   }
+                   $('#ms-edit-column-select-oge-expense a.select', context).click(function () {
+                       $('#edit-column-select-oge-expense', context).multiSelect('select_all');
+                   });
+                   $('#ms-edit-column-select-oge-expense a.deselect', context).click(function () {
+                       $('#edit-column-select-oge-expense', context).multiSelect('deselect_all');
+                   });
+
                    $('#edit-column-select-revenue option[value="Year"]',context).attr('disabled','disabled');
                    $('#edit-column-select-revenue option[value="year"]',context).attr('disabled','disabled');
                    $('#edit-column-select-revenue', context).multiSelect('refresh');
@@ -642,6 +662,19 @@
                    });
                    $('#ms-edit-column-select-expense a.deselect', context).click(function () {
                        $('#edit-column-select-expense', context).multiSelect('deselect_all');
+                   });
+                   $('#edit-column-select-oge-expense option[value="Year"]',context).attr('disabled','');
+                   $('#edit-column-select-oge-expense option[value="year"]',context).attr('disabled','');
+                   $('#edit-column-select-oge-expense', context).multiSelect('refresh');
+                   if(!$('#ms-edit-column-select-oge-expense .ms-selection', context).next().is("a")){
+                       $('#ms-edit-column-select-oge-expense .ms-selection', context).after('<a class="deselect">Remove All</a>');
+                       $('#ms-edit-column-select-oge-expense .ms-selection', context).after('<a class="select">Add All</a>');
+                   }
+                   $('#ms-edit-column-select-oge-expense a.select', context).click(function () {
+                       $('#edit-column-select-oge-expense', context).multiSelect('select_all');
+                   });
+                   $('#ms-edit-column-select-oge-expense a.deselect', context).click(function () {
+                       $('#edit-column-select-oge-expense', context).multiSelect('deselect_all');
                    });
                    $('#edit-column-select-revenue option[value="Year"]',context).attr('disabled','');
                    $('#edit-column-select-revenue option[value="year"]',context).attr('disabled','');
