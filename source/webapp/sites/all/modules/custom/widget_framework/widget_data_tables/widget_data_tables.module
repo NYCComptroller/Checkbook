@@ -338,7 +338,11 @@ function _widget_data_tables_list_ajaxdata($node){
  * @return updated node data
  */
 function widget_data_tables_get_data($node){
-	widget_config($node);
+	  widget_config($node);
+
+    if (!empty($node->nid) && $node->nid) {
+      LogHelper::log_notice("Loading node ".$node->nid.".json");
+    }
 
     //prepare anything we'll need before loading
     widget_prepare($node);
