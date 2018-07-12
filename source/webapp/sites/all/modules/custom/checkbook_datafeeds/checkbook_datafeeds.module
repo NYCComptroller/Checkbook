@@ -1395,19 +1395,11 @@ function checkbook_datafeeds_contracts($form, &$form_state)
         '#id' => 'edit-column-select-expense',
         '#default_value' => !empty($form_state['values']['column_select']) ? $form_state['values']['column_select'] : '',
     );
-    $form['columns']['column_select_oge_expense'] = array(
-        '#type' => 'select',
-        '#title' => t('Expense<span class="form-required" title="This field is required.">*</span>'),
-        '#multiple' => TRUE,
-        '#options' => _checkbook_datafeeds_contracts_column_options('checkbook_oge', 'default', 'expense', $data_type),
-        '#id' => 'edit-column-select-oge-expense',
-        '#default_value' => !empty($form_state['values']['column_select']) ? $form_state['values']['column_select'] : '',
-    );
     $form['columns']['column_select_revenue'] = array(
         '#type' => 'select',
         '#title' => t('Revenue<span class="form-required" title="This field is required.">*</span>'),
         '#multiple' => TRUE,
-        '#options' => _checkbook_datafeeds_contracts_column_options($data_source, 'default', 'revenue', $data_type),
+        '#options' => _checkbook_datafeeds_contracts_column_options('checkbook', 'default', 'revenue', $data_type),
         '#id' => 'edit-column-select-revenue',
         '#default_value' => !empty($form_state['values']['column_select']) ? $form_state['values']['column_select'] : '',
     );
@@ -1415,7 +1407,7 @@ function checkbook_datafeeds_contracts($form, &$form_state)
         '#type' => 'select',
         '#title' => t('All<span class="form-required" title="This field is required.">*</span>'),
         '#multiple' => TRUE,
-        '#options' => _checkbook_datafeeds_contracts_column_options($data_source, 'default', 'all', $data_type),
+        '#options' => _checkbook_datafeeds_contracts_column_options('checkbook', 'default', 'all', $data_type),
         '#id' => 'edit-column-select-all',
         '#default_value' => !empty($form_state['values']['column_select']) ? $form_state['values']['column_select'] : '',
     );
@@ -1423,7 +1415,7 @@ function checkbook_datafeeds_contracts($form, &$form_state)
         '#type' => 'select',
         '#title' => t('Pending<span class="form-required" title="This field is required.">*</span>'),
         '#multiple' => TRUE,
-        '#options' => _checkbook_datafeeds_contracts_column_options($data_source, 'pending', 'pending', $data_type),
+        '#options' => _checkbook_datafeeds_contracts_column_options('checkbook', 'pending', 'pending', $data_type),
         '#id' => 'edit-column-select-pending',
         '#default_value' => !empty($form_state['values']['column_select']) ? $form_state['values']['column_select'] : '',
     );
@@ -1431,8 +1423,16 @@ function checkbook_datafeeds_contracts($form, &$form_state)
         '#type' => 'select',
         '#title' => t('All<span class="form-required" title="This field is required.">*</span>'),
         '#multiple' => TRUE,
-        '#options' => _checkbook_datafeeds_contracts_column_options($data_source, 'pending', 'pending', $data_type),
+        '#options' => _checkbook_datafeeds_contracts_column_options('checkbook', 'pending', 'pending', $data_type),
         '#id' => 'edit-column-select-pending-all',
+        '#default_value' => !empty($form_state['values']['column_select']) ? $form_state['values']['column_select'] : '',
+    );
+    $form['columns']['column_select_oge_expense'] = array(
+        '#type' => 'select',
+        '#title' => t('Expense<span class="form-required" title="This field is required.">*</span>'),
+        '#multiple' => TRUE,
+        '#options' => _checkbook_datafeeds_contracts_column_options('checkbook_oge', 'default', 'expense', $data_type),
+        '#id' => 'edit-column-select-oge-expense',
         '#default_value' => !empty($form_state['values']['column_select']) ? $form_state['values']['column_select'] : '',
     );
     //Hidden Field for multi-select
