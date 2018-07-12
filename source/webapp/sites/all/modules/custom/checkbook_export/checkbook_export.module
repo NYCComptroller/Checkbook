@@ -1,19 +1,19 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -65,4 +65,23 @@ function checkbook_export_theme($existing, $type, $theme, $path){
             )
         )
     );
+}
+
+/**
+ * Implements hook_cron()
+ */
+function checkbook_export_cron()
+{
+    date_default_timezone_set('America/New_York');
+    $variable_name = 'checkbook_export_cron_last_run';
+
+    $now = time();
+
+    if (variable_get($variable_name) > ($now - 3600)) { // skip if already ran within last hour
+      return false;
+    }
+
+    LogHelper::log_notice("Running checkbook_export_cron");
+    _checkbook_project_clean_files();
+    variable_set($variable_name, $now);
 }

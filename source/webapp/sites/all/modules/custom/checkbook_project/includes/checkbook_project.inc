@@ -1780,21 +1780,22 @@ function _checkbook_project_prepare_data_feeds_dir($dir)
 }
 
 /**
- * @param $uri
+ *
  */
-function _checkbook_project_clean_files($uri)
+function _checkbook_project_clean_files()
 {
-    file_scan_directory($uri, '/.*/', array('callback' => '_checkbook_project_delete_file_if_stale'));
+    $dir = _checkbook_export_prepareFileOutputDir();
+    file_scan_directory($dir, '/.*/', array('callback' => '_checkbook_project_delete_file_if_stale'));
 }
 
 /**
  * Callback to delete files modified more than a set time ago.
  */
-function _checkbook_project_delete_file_if_stale($uri)
+function _checkbook_project_delete_file_if_stale($path)
 {
-    $timeDiff = intval(floor((REQUEST_TIME - filemtime($uri)) / (3600)));
+    $timeDiff = intval(floor((REQUEST_TIME - filemtime($path)) / (3600)));
     if ($timeDiff > 2) {//More than 2 hours old
-        file_unmanaged_delete($uri);
+        file_unmanaged_delete($path);
     }
 }
 
