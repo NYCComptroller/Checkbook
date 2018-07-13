@@ -45,15 +45,12 @@
 ",
  "derivedColumns":{
     "adopted_formatted":{
-        "type":"expression2",
         "expression":"custom_number_formatter_format($row['adopted_budget'],2,'$')"
     },
     "modified_formatted":{
-            "type":"expression2",
             "expression":"custom_number_formatter_format($row['current_modified_budget'],2,'$')"
     },
     "recognized_formatted":{
-            "type":"expression2",
             "expression":"'<a class=\"bottomContainerReload\" href=\"/panel_html/revenue_transactions/revenue/transactions'
                                .'/smnid/' . $node->nid
                                . _checkbook_project_get_year_url_param_string()
@@ -64,11 +61,9 @@
                                .'\">'.custom_number_formatter_format($row['revenue_amount_sum'],2,'$').'</a>'"
     },
     "remaining_formatted":{
-            "type":"expression2",
             "expression":"custom_number_formatter_format($row['remaining_amount'],2,'$')"
     },
     "revcat_link":{
-            "type":"expression2",
             "expression":"'<a href=\"/revenue'. _checkbook_project_get_year_url_param_string()
                                     ._checkbook_project_get_url_param_string(\"agency\")
                                     ._checkbook_project_get_url_param_string(\"fundsrccode\")

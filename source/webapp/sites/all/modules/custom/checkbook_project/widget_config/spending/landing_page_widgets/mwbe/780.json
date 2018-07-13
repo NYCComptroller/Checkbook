@@ -44,23 +44,18 @@
     ",
     "derivedColumns": {
         "agency_name_formatted": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['agency_agency_agency_name'],47)"
         },
         "agency_name_link": {
-            "type": "expression2",
             "expression": "'<a href=\"' . SpendingUtil::getAgencyNameLinkUrl($node,$row) . '\">' . $row['agency_name_formatted'] . '</a>'"
         },
         "formatted_check_amount_sum": {
-            "type": "expression2",
             "expression": "custom_number_formatter_format($row['check_amount_sum'],2,'$')"
         },
         "agency_amount_link":{
-            "type":"expression2",
             "expression": "'<a class=\"bottomContainerReload\" href=\"' . SpendingUtil::getAgencyAmountLinkUrl($node,$row) . '\">' . $row['formatted_check_amount_sum'] . '</a>'"
         },
         "percent_spending":{
-            "type":"expression2",
             "expression": "SpendingUtil::getPercentYtdSpending($node, $row)"
         }
     },

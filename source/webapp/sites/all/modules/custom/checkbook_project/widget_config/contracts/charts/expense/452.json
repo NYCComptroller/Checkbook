@@ -27,11 +27,9 @@
 "columns": ["agency.agency","agency.agency.agency_name","agency.agency.agency_short_name","current_amount_sum","total_contracts"],
 "derivedColumns":{
     "agency_formatted":{
-        "type":"expression2",
         "expression":"html_entity_decode($row[\"agency_agency_agency_short_name\"],ENT_QUOTES);"
     },
     "agency_long_name_formatted": {
-        "type": "expression2",
         "expression": "strtoupper(html_entity_decode($row[\"agency_name@checkbook:agency\"],ENT_QUOTES))"
     }
 },
