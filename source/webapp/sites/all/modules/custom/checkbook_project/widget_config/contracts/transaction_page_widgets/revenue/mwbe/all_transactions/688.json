@@ -47,7 +47,6 @@ return $header;
 "caption":"",
 "derivedColumns": {
 "contract_link": {
-"type": "expression2",
 "expression": " '<a href=/contracts_revenue_landing'
 . _checkbook_project_get_url_param_string('contstatus','status')
 . _checkbook_project_get_year_url_param_string()
@@ -55,29 +54,23 @@ return $header;
 .  ' >'. $row['contract_number'] . '</a>' "
 },
 "formatted_original_amount": {
-"type": "expression2",
 "expression": "custom_number_formatter_basic_format($row['original_contract_amount'])"
 },
 "formatted_current_amount": {
-"type": "expression2",
 "expression": "custom_number_formatter_basic_format($row['maximum_contract_amount'])"
 },
 "vendor_formatted": {
-"type": "expression2",
 "expression": "_get_tooltip_markup($row['vendor_name'],30)"
 },
 "vendor_name_link": {
-"type": "expression2",
 "expression": " '<a href=\"/contracts_revenue_landing'
 . ContractUtil::get_contracts_vendor_link_by_mwbe_category($row)
 .  '?expandBottomCont=true\">'. $row['vendor_formatted'] . '</a>'  "
 },
 "agency_formatted": {
-"type": "expression2",
 "expression": "_get_tooltip_markup($row['agency_name'],30)"
 },
 "agency_name_link": {
-"type": "expression2",
 "expression": " '<a href=\"/contracts_revenue_landing'
 .  _checkbook_project_get_year_url_param_string()
 .  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
@@ -85,35 +78,27 @@ return $header;
 .  '?expandBottomCont=true\">'. $row['agency_formatted'] . '</a>'  "
 },
 "purpose_formatted": {
-"type": "expression2",
 "expression": "_get_tooltip_markup($row['description'],40)"
 },
 "award_method_formatted": {
-"type": "expression2",
 "expression": "_get_tooltip_markup($row['award_method_name'],30)"
 },
 "contract_type_formatted": {
-"type": "expression2",
 "expression": "_get_tooltip_markup($row['agreement_type_name'],30)"
 },
 "industry_name_formatted": {
-"type": "expression2",
 "expression": "_get_tooltip_markup($row['industry_type_name'],30)"
 },
 "formatted_minority_name": {
-"type": "expression2",
 "expression": "MappingUtil::getMinorityCategoryById($row['minority_type_id'])"
 },
 "formatted_minority_name_link": {
-"type": "expression2",
 "expression": "ContractUtil::get_mwbe_category_url($row['minority_type_id'],null, $row['document_code@checkbook:ref_document_code'])"
 },
 "formatted_is_sub_vendor": {
-"type": "expression2",
 "expression": "($row['is_prime_or_sub'] == 'P')?'No':'Yes'"
 },
 "formatted_associated_vendor": {
-"type": "expression2",
 "expression": "($row['is_prime_or_sub'] == 'P')?'N/A':$row['prime_vendor_name']"
 }
 },

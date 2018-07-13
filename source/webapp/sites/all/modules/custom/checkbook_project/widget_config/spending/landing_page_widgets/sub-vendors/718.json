@@ -56,43 +56,33 @@
     ",
     "derivedColumns": {
         "contract_number_link":{
-            "type":"expression2",
             "expression":"'<a class=\"new_window\" href=\"' . SpendingUtil::getSubContractNumberLinkUrl($node,$row) . '\">'  . $row['document_id_document_id'] . '</a>'"
         },
         "sub_vendor_name_formatted": {
-            "type":"expression2",
             "expression":"_get_tooltip_markup($row['sub_vendor_sub_vendor_legal_name'],36)"
         },
         "sub_vendor_name_link": {
-            "type":"expression2",
             "expression":"'<a href=\"' . SpendingUtil::getSubVendorNameLinkUrl($node,$row) . '\">' . $row['sub_vendor_name_formatted'] . '</a>'"
         },
         "sub_vendor_name_link2": {
-            "type":"expression2",
             "expression":"($row['sub_vendor_sub_vendor'] == null )?$row['sub_vendor_sub_vendor_legal_name']:$row['sub_vendor_name_link']"
         },
         "prime_vendor_name_formatted": {
-            "type":"expression2",
             "expression":"_get_tooltip_markup($row['prime_vendor_prime_vendor_legal_name'],36)"
         },
         "prime_vendor_name_link": {
-            "type":"expression2",
             "expression":"'<a href=\"' . SpendingUtil::getPrimeVendorNameLinkUrl($node,$row) . '\">' . $row['prime_vendor_name_formatted'] . '</a>'"
         },
         "prime_vendor_name_link2": {
-            "type":"expression2",
             "expression":"($row['prime_vendor_prime_vendor'] == null )?$row['prime_vendor_prime_vendor_legal_name']:$row['prime_vendor_name_link']"
         },
         "sub_contract_purpose_formatted": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['sub_contract_purpose_sub_contract_purpose'],40)"
         },
         "formatted_check_amount_sum": {
-            "type": "expression2",
             "expression": " custom_number_formatter_format($row['check_amount_sum'],2,'$')"
         },
         "contract_amount_link":{
-            "type":"expression2",
             "expression": "'<a class=\"bottomContainerReload\" href=\"' . SpendingUtil::getSubContractAmountLinkUrl($node,$row) . '\">' . $row['formatted_check_amount_sum'] . '</a>'"
         }
     },

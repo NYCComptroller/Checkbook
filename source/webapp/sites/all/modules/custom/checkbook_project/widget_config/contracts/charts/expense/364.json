@@ -58,15 +58,12 @@
 },
 "derivedColumns": {
     "agency_formatted": {
-        "type": "expression2",
         "expression": "strtoupper(html_entity_decode($row[\"agency_name@checkbook:agency\"],ENT_QUOTES))"
     },
         "vendor_formatted": {
-        "type": "expression2",
         "expression": "strtoupper(html_entity_decode($row[\"legal_name@checkbook:vendor\"],ENT_QUOTES))"
     },
     "column_link":{
-        "type":"expression2",
         "expression":" 'contracts_landing' . _checkbook_project_get_url_param_string('status')  .  _checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string('vendor')  . _checkbook_project_get_url_param_string('agency')  . _checkbook_append_url_params() . '?expandBottomContURL=/panel_html/contract_transactions'
                         . ( in_array($row['document_code@checkbook:ref_document_code'], array('MMA1','MA1')) ? '/contract_details' : '' )
                         . ( in_array($row['document_code@checkbook:ref_document_code'], array('MMA1','MA1')) ? '/magid/' : '/agid/' )

@@ -993,12 +993,18 @@ function widget_data(&$node) {
 	//drupal_set_message('<pre>$$$node->data'. print_r($node->data, TRUE) . '</pre>');
 	if (isset($node->widgetConfig->derivedColumns)) {
 
+    /**
+     * TODO: DEBUG this
+     */
 		foreach ($node->widgetConfig->derivedColumns as $derivedColumnName => $derivedColumnDefinition) {
 		    $flag = property_exists($derivedColumnDefinition, 'visibility_flag') ? $derivedColumnDefinition->visibility_flag : null;
 			$visibility_flag = check_node_flag_visibilty($flag, $node);
 			if (isset($node->data) && is_array($node->data) && $visibility_flag) {
-                log_debug($node->data);
+//        log_debug($node->data);
 				foreach ($node->data as $rowKey => $row) {
+          /**
+           * TODO: DEBUG this
+           */
 					$result = calculateDerivedCell($row, $node->data, $derivedColumnDefinition, $node);
 					$node->data[$rowKey][$derivedColumnName] = $result;
 					if (isset($derivedColumnDefinition->saveInConfig)) {
@@ -1034,193 +1040,197 @@ function check_node_flag_visibilty($flag,$node){
 
 function calculateDerivedCell($row, $fulldata, $derivedColumnDefinition,$node) {
 
+  if (empty($derivedColumnDefinition->type)) {
+    $derivedColumnDefinition->type = 'default';
+  }
 	switch($derivedColumnDefinition->type) {
-		case "percentOfColumn":
-			$sourceColumn = $derivedColumnDefinition->sourceColumn;
-			$totalForColumn = calculateTotalOfColumn($fulldata, $sourceColumn);
-			$result = 100*($row[$sourceColumn]/$totalForColumn);
-			if (isset($derivedColumnDefinition->decimals)) {
-				$result = number_format($result, $derivedColumnDefinition->decimals);
-			}
-			return $result;
-			break;
-		case "isAnyRowNotNull":
-			$sourceColumn = $derivedColumnDefinition->sourceColumn;
-			$allRowsAreNull = isAnyRowNotNull($fulldata, $sourceColumn);
-			return $allRowsAreNull;
-			break;
-		case "expression":
-			$expression = $derivedColumnDefinition->expression;
-			eval("\$result = \"$expression\";");
-			return $result;
-			break;
-		case "expression2":
-			$expression = $derivedColumnDefinition->expression;
-			$result = eval("return $expression;");
-			return $result;
-			break;
-		case "fiscalYearWithQuarter":
-			$dateCol = $derivedColumnDefinition->sourceColumn;
-			$dateValues = date_parse($row[$dateCol]);
-			$year = $dateValues['year'];
-			$month = $dateValues['month'];
-			if ($year > 2000) {
-				$year = $year - 2000;
-			} else {
-				$year = $year - 1900;
-			}
-			if ($month <=3) {
-				$result = 'FY'.$year.' Q2';
-			} else if ($month <= 6) {
-				$result = 'FY'.$year.' Q3';
-			} else if ($month <= 9) {
-				$result = 'FY'.$year.' Q4';
-			} else {
-				$year = $year + 1;
-				$result = 'FY'.$year.' Q1';
-			}
-			return $result;
-			break;
-		case "trimdayandmonth":
-			$dateCol = $derivedColumnDefinition->sourceColumn;
-			$dateValues = date_parse($row[$dateCol]);
-			$year = $dateValues['year'];
-			return '01/01/'. $year;
-			break;
-		case "valueInMillions":
-			$expression = $derivedColumnDefinition->expression;
-			$result = round($row[$expression]/1000000, 2);
-			return $result;
-			break;
-		case "valueInBillions":
-			$expression = $derivedColumnDefinition->expression;
-			$result = round($row[$expression]/1000000000, 1);
-			return $result;
-			break;
-		case "fractionAsPercent":
-			$expression = $derivedColumnDefinition->number;
-			$result = $row[$expression]*100;
-			return $result;
-			break;
-		case "number_format":
-			$number = $derivedColumnDefinition->number;
-			if (!isset($derivedColumnDefinition->decimals))
-			$decimals = 0;
-			else
-			$decimals = $derivedColumnDefinition->decimals;
-
-			if (!isset($derivedColumnDefinition->dec_point))
-			$dec_point = '.';
-			else
-			$dec_point = $derivedColumnDefinition->dec_point;
-
-			if (!isset($derivedColumnDefinition->thousands_sep))
-			$thousands_sep = ',';
-			else
-			$thousands_sep = $derivedColumnDefinition->thousands_sep;
-
-			$result = number_format($row[$number], $decimals, $dec_point, $thousands_sep);
-			return $result;
-			break;
-		case "sum_columns":
-			$colArray = $derivedColumnDefinition->columns;
-			$result = 0.0;
-			foreach ($colArray as $colName) {
-				$result += $row[$colName];
-			}
-			return $result;
-			break;
-		case "difference_of_columns":
-			$colA = $row[$derivedColumnDefinition->colA];
-			$colB = $row[$derivedColumnDefinition->colB];
-			$result = $colA - $colB;
-			return $result;
-			break;
-		case "percent_of_two_columns":
-			$numerator = $derivedColumnDefinition->numerator;
-			$denominator = $derivedColumnDefinition->denominator;
-			$denominatorVal = $row[$denominator];
-			if ($denominatorVal != 0) {
-				$result = 100*($row[$numerator]/$denominatorVal);
-			}
-			else {
-				$result = 0;
-			}
-			return $result;
-			break;
-		case "big_money_format":
-			//assumes number is already in millions
-			$numberCol = $derivedColumnDefinition->number;
-			$number = $row[$numberCol];
-			$suffix = "M";
-			if ($number > 1000) {
-				$number = $number/1000;
-				$suffix = "B";
-			}
-			$number_formatted = number_format($number, 2);
-			$result = "$" . $number_formatted . " " . $suffix;
-			return $result;
-			break;
-		case "null_check":
-			$checkColumn = $derivedColumnDefinition->checkColumn;
-			$ifNullColumn = $derivedColumnDefinition->ifNullColumn;
-			$ifNotNullColumn = $derivedColumnDefinition->ifNotNullColumn;
-			if ($row[$checkColumn] == NULL) {
-				$result = $row[$ifNullColumn];
-			}
-			else {
-				$result = $row[$ifNotNullColumn];
-			}
-			return $result;
-		case "map_to_category":
-			$valueCol = $derivedColumnDefinition->column;
-			$value = $row[$valueCol];
-			foreach ($derivedColumnDefinition->mapping as $category => $details) {
-				if ($derivedColumnDefinition->match_type == 'numeric_range') {
-					$min = $details->min;
-					$max = $details->max;
-					//bounded on both sides
-					if (isset($min) && isset($max)) {
-						if ($value >= $min && $value <= $max) {
-							$result = $category;
-							break;
-						}
-					}
-					else if (isset($min) && !isset($max)) {
-						if ($value >= $min) {
-							$result = $category;
-							break;
-						}
-					}
-					else if (isset($max) && !isset($min)) {
-						if ($value <= $max) {
-							$result = $category;
-							break;
-						}
-					}
-					else {
-						//default case
-						$result = $category;
-						break;
-					}
-				}
-				else if ($derivedColumnDefinition->match_type == 'exact_string') {
-					$matchString = $details->match_string;
-					if (isset($matchString)) {
-						if ($value == $matchString) {
-							$result = $category;
-							break;
-						}
-					}
-					else {
-						//default case
-						$result = $category;
-						break;
-					}
-				}
-			}
-			return $result;
-			break;
+//		case "percentOfColumn":
+//			$sourceColumn = $derivedColumnDefinition->sourceColumn;
+//			$totalForColumn = calculateTotalOfColumn($fulldata, $sourceColumn);
+//			$result = 100*($row[$sourceColumn]/$totalForColumn);
+//			if (isset($derivedColumnDefinition->decimals)) {
+//				$result = number_format($result, $derivedColumnDefinition->decimals);
+//			}
+//			return $result;
+//			break;
+//		case "isAnyRowNotNull":
+//			$sourceColumn = $derivedColumnDefinition->sourceColumn;
+//			$allRowsAreNull = isAnyRowNotNull($fulldata, $sourceColumn);
+//			return $allRowsAreNull;
+//			break;
+//		case "expression":
+//			$expression = $derivedColumnDefinition->expression;
+//			eval("\$result = \"$expression\";");
+//			return $result;
+//			break;
+//		case "fiscalYearWithQuarter":
+//			$dateCol = $derivedColumnDefinition->sourceColumn;
+//			$dateValues = date_parse($row[$dateCol]);
+//			$year = $dateValues['year'];
+//			$month = $dateValues['month'];
+//			if ($year > 2000) {
+//				$year = $year - 2000;
+//			} else {
+//				$year = $year - 1900;
+//			}
+//			if ($month <=3) {
+//				$result = 'FY'.$year.' Q2';
+//			} else if ($month <= 6) {
+//				$result = 'FY'.$year.' Q3';
+//			} else if ($month <= 9) {
+//				$result = 'FY'.$year.' Q4';
+//			} else {
+//				$year = $year + 1;
+//				$result = 'FY'.$year.' Q1';
+//			}
+//			return $result;
+//			break;
+//		case "trimdayandmonth":
+//			$dateCol = $derivedColumnDefinition->sourceColumn;
+//			$dateValues = date_parse($row[$dateCol]);
+//			$year = $dateValues['year'];
+//			return '01/01/'. $year;
+//			break;
+//		case "valueInMillions":
+//			$expression = $derivedColumnDefinition->expression;
+//			$result = round($row[$expression]/1000000, 2);
+//			return $result;
+//			break;
+//		case "valueInBillions":
+//			$expression = $derivedColumnDefinition->expression;
+//			$result = round($row[$expression]/1000000000, 1);
+//			return $result;
+//			break;
+//		case "fractionAsPercent":
+//			$expression = $derivedColumnDefinition->number;
+//			$result = $row[$expression]*100;
+//			return $result;
+//			break;
+//		case "number_format":
+//			$number = $derivedColumnDefinition->number;
+//			if (!isset($derivedColumnDefinition->decimals))
+//			$decimals = 0;
+//			else
+//			$decimals = $derivedColumnDefinition->decimals;
+//
+//			if (!isset($derivedColumnDefinition->dec_point))
+//			$dec_point = '.';
+//			else
+//			$dec_point = $derivedColumnDefinition->dec_point;
+//
+//			if (!isset($derivedColumnDefinition->thousands_sep))
+//			$thousands_sep = ',';
+//			else
+//			$thousands_sep = $derivedColumnDefinition->thousands_sep;
+//
+//			$result = number_format($row[$number], $decimals, $dec_point, $thousands_sep);
+//			return $result;
+//			break;
+//		case "sum_columns":
+//			$colArray = $derivedColumnDefinition->columns;
+//			$result = 0.0;
+//			foreach ($colArray as $colName) {
+//				$result += $row[$colName];
+//			}
+//			return $result;
+//			break;
+//		case "difference_of_columns":
+//			$colA = $row[$derivedColumnDefinition->colA];
+//			$colB = $row[$derivedColumnDefinition->colB];
+//			$result = $colA - $colB;
+//			return $result;
+//			break;
+//		case "percent_of_two_columns":
+//			$numerator = $derivedColumnDefinition->numerator;
+//			$denominator = $derivedColumnDefinition->denominator;
+//			$denominatorVal = $row[$denominator];
+//			if ($denominatorVal != 0) {
+//				$result = 100*($row[$numerator]/$denominatorVal);
+//			}
+//			else {
+//				$result = 0;
+//			}
+//			return $result;
+//			break;
+//		case "big_money_format":
+//			//assumes number is already in millions
+//			$numberCol = $derivedColumnDefinition->number;
+//			$number = $row[$numberCol];
+//			$suffix = "M";
+//			if ($number > 1000) {
+//				$number = $number/1000;
+//				$suffix = "B";
+//			}
+//			$number_formatted = number_format($number, 2);
+//			$result = "$" . $number_formatted . " " . $suffix;
+//			return $result;
+//			break;
+//		case "null_check":
+//			$checkColumn = $derivedColumnDefinition->checkColumn;
+//			$ifNullColumn = $derivedColumnDefinition->ifNullColumn;
+//			$ifNotNullColumn = $derivedColumnDefinition->ifNotNullColumn;
+//			if ($row[$checkColumn] == NULL) {
+//				$result = $row[$ifNullColumn];
+//			}
+//			else {
+//				$result = $row[$ifNotNullColumn];
+//			}
+//			return $result;
+//		case "map_to_category":
+//			$valueCol = $derivedColumnDefinition->column;
+//			$value = $row[$valueCol];
+//			foreach ($derivedColumnDefinition->mapping as $category => $details) {
+//				if ($derivedColumnDefinition->match_type == 'numeric_range') {
+//					$min = $details->min;
+//					$max = $details->max;
+//					//bounded on both sides
+//					if (isset($min) && isset($max)) {
+//						if ($value >= $min && $value <= $max) {
+//							$result = $category;
+//							break;
+//						}
+//					}
+//					else if (isset($min) && !isset($max)) {
+//						if ($value >= $min) {
+//							$result = $category;
+//							break;
+//						}
+//					}
+//					else if (isset($max) && !isset($min)) {
+//						if ($value <= $max) {
+//							$result = $category;
+//							break;
+//						}
+//					}
+//					else {
+//						//default case
+//						$result = $category;
+//						break;
+//					}
+//				}
+//				else if ($derivedColumnDefinition->match_type == 'exact_string') {
+//					$matchString = $details->match_string;
+//					if (isset($matchString)) {
+//						if ($value == $matchString) {
+//							$result = $category;
+//							break;
+//						}
+//					}
+//					else {
+//						//default case
+//						$result = $category;
+//						break;
+//					}
+//				}
+//			}
+//			return $result;
+//			break;
+//    case "expression2":
+    default:
+      $expression = $derivedColumnDefinition->expression;
+      $result = eval("return $expression;");
+      return $result;
+      break;
 	}
 }
 
@@ -1232,15 +1242,15 @@ function calculateTotalOfColumn($fulldata, $columnName) {
 	return $total;
 }
 
-function isAnyRowNotNull($fulldata, $columnName) {
-	$allNull = 0;
-	foreach ($fulldata as $row) {
-		if ($row[$columnName] != NULL) {
-			$allNull = 1;
-		}
-	}
-	return $allNull;
-}
+//function isAnyRowNotNull($fulldata, $columnName) {
+//	$allNull = 0;
+//	foreach ($fulldata as $row) {
+//		if ($row[$columnName] != NULL) {
+//			$allNull = 1;
+//		}
+//	}
+//	return $allNull;
+//}
 
 
 function widget_config($node) {

@@ -52,35 +52,27 @@
 ",
 "derivedColumns": {
         "agency_name_formatted": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['agency_name'],36)"
         },
         "agency_name_link": {
-            "type": "expression2",
             "expression": "'<a href=\"/spending_landing' .  _checkbook_project_get_url_param_string(\"vendor\") ._checkbook_project_get_url_param_string(\"category\") . _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() . '/agency/'. $row['agency_id'] .'\">' . $row['agency_name_formatted'] . '</a>'"
         },
         "vendor_name_formatted": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['vendor_name'],36)"
         },
         "citywide_vendor_name_link": {
-            "type": "expression2",
             "expression": "'<a href=\"' . SpendingUtil::getPrimeVendorNameLinkUrl($node,$row) . '\">' . $row['vendor_name_formatted'] . '</a>'"
         },
         "oge_vendor_name_link": {
-            "type": "expression2",
             "expression": "'<a href=\"/spending_landing' .  _checkbook_project_get_url_param_string(\"agency\") ._checkbook_project_get_url_param_string(\"category\") . _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() . '/vendor/'. $row['vendor_id'] .'\">' . $row['vendor_name_formatted'] . '</a>'"
         },
         "vendor_name_link2": {
-            "type": "expression2",
             "expression": "_checkbook_check_isEDCPage() ? $row['oge_vendor_name_link'] : $row['citywide_vendor_name_link']"
-        },               
+        },
          "vendor_name_link3": {
-            "type": "expression2",
             "expression": "($row['expenditure_object_name'] == 'Payroll Summary') ? $row['vendor_name_formatted'] : $row['vendor_name_link2']"
         },
         "formatted_check_amount": {
-            "type": "expression2",
             "expression": "custom_number_formatter_format($row['check_amount'],2,'$')"
         }
 },

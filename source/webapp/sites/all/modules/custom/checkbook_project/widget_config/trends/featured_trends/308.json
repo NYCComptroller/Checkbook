@@ -36,19 +36,15 @@
 
     "derivedColumns": {
         "fiscal_year_date": {
-            "type": "expression2",
             "expression": "   $row['fiscal_year'] . '-1-1' "
         },
         "fiscal_year_utc": {
-            "type": "expression2",
             "expression": "   strtotime($row['fiscal_year_fiscal_year'] . '-1-1') * 1000"
         },
         "income_color":{
-            "type":"expression2",
             "expression":"checkbook_project_income_tax_color($row['income_or_population'])"
         },
         "mod_amount":{
-            "type":"expression2",
             "expression":"$row['income_or_population'] * 1000"
         }
     },

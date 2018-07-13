@@ -8,7 +8,6 @@
   "defaultParameters":{"year_id.year_id":22},
   "derivedColumns":{
     "ytd_format":{
-      "type":"expression2",
       "expression":"custom_number_formatter_format($row['budget_ytd'],2,'$')"
     }
   },

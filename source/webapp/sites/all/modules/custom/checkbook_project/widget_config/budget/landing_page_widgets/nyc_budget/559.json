@@ -46,7 +46,6 @@
 ",
  "derivedColumns":{
     "expense_category_link":{
-            "type":"expression2",
             "expression":"'<a href=\"/budget'. _checkbook_project_get_year_url_param_string()
                                     ._checkbook_project_get_url_param_string(\"agency\")
                                     ._checkbook_project_get_url_param_string(\"dept\")
@@ -55,7 +54,6 @@
                                     .'\">'.$row['object_class_name_object_class_name'].'</a>'"
     },
     "committed_formatted":{
-            "type":"expression2",
             "expression":"'<a class=\"bottomContainerReload\" href=\"/panel_html/budget_transactions/budget/transactions'
                   .'/smnid/' . $node->nid
                   . _checkbook_project_get_year_url_param_string()
@@ -67,19 +65,14 @@
                   .'\">'.custom_number_formatter_format($row['budget_committed'],2,'$').'</a>'"
     },
     "pre_encumbered_formatted":{
-        "type":"expression2",
         "expression":"custom_number_formatter_format($row['pre_encumbered'],2,'$')"    },
     "encumbered_formatted":{
-            "type":"expression2",
             "expression":"custom_number_formatter_format($row['encumbered'],2,'$')"    },
     "accrued_expense_formatted":{
-            "type":"expression2",
             "expression":"custom_number_formatter_format($row['accrued_expense'],2,'$')"    },
     "cash_payments_formatted":{
-            "type":"expression2",
             "expression":"custom_number_formatter_format($row['cash_payments'],2,'$')"    },
     "post_adjustments_formatted":{
-            "type":"expression2",
             "expression":"custom_number_formatter_format($row['post_adjustments'],2,'$')"    }
 },
 "table_columns": [
