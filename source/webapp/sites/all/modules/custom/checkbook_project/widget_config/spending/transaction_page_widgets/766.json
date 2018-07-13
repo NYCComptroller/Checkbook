@@ -380,6 +380,11 @@
           "column":"reference_document_number_link",
           "sourceColumn":"reference_document_number",
           "sql":"case when reference_document_number IS NULL then 'N/A' else reference_document_number end"
+        },
+        {
+          "column":"contract_purpose_text",
+          "sourceColumn":"purpose",
+          "sql":"case when spending_category_name IN ('Payroll','Others') then 'N/A' else purpose end"
         }
     ],
     "adjustParameters":"

@@ -478,6 +478,8 @@ function _checkbook_export_generateExportFile($node, $headers, $exportConfigNode
             $node->data = checkbook_export_remove_non_export_columns($node);
         }
 
+        LogHelper::log_notice("Exporting to file via SQL: \n".$node->data);
+
         $command = $conf['check_book']['data_feeds']['command'];
 
         $data_source = RequestUtilities::getRequestParamValue('datasource');
