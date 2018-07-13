@@ -47,19 +47,15 @@ jQuery('#capital-projects-filter .chartdateto').val(Highcharts.dateFormat('%Y',a
 },
 "derivedColumns": {
         "fiscal_year_date": {
-            "type": "expression2",
             "expression": "   $row['fiscal_year'] . '-1-1'"
         },
 "fiscal_year_utc": {
-            "type": "expression2",
             "expression": "   strtotime($row['fiscal_year'] . '-1-1') * 1000"
         },
 "capital_projects_color": {
-            "type": "expression2",
             "expression": "checkbook_project_capital_project_color($row['amount'])"
         },
 "mod_amount":{
-            "type":"expression2",
             "expression":"$row['amount'] * 1000"
         }
 },

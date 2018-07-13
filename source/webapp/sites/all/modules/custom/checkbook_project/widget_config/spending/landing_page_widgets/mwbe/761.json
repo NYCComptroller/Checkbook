@@ -37,19 +37,15 @@
     "derivedColumns":
     {
         "formatted_check_amount_sum": {
-            "type": "expression2",
             "expression": "custom_number_formatter_format($row['check_amount_sum'],2,'$')"
         },
         "formatted_check_amount_sum_link":{
-            "type": "expression2",
              "expression": "'<a class=\"bottomContainerReload\" href=\"' . SpendingUtil::getCheckAmountSumLinkUrl($node,$row) . '\">' . $row['formatted_check_amount_sum'] . '</a>'"
         },
         "percent_spending":{
-            "type":"expression2",
             "expression": "SpendingUtil::getPercentYtdSpending($node, $row)"
         },
         "formatted_expense_category": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['expenditure_object_name'],40)"
         }
 	},

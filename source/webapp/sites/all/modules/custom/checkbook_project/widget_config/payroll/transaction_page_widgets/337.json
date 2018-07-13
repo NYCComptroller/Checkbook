@@ -30,71 +30,54 @@
     "additionalSelectColumns":["amount_basis_id"],
     "derivedColumns": {
         "employee_name_formatted": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['civil_service_title'],30)"
         },
         "agency_name_formatted": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['agency_name'],30)"
         },
         "employee_name_link": {
-            "type": "expression2",
             "expression": "$row['employee_name_formatted']"
         },
         "agency_name_link": {
-            "type": "expression2",
             "expression": "'<a href=/payroll/agency_landing/agency/'. $row['agency_id'] . '/yeartype/B/year/' . $row['fiscal_year_id'] . '>'. $row['agency_name_formatted'] .'</a>'"
         },
         "formatted_salary_amount": {
-            "type": "expression2",
             "expression": " $row['amount_basis_id'] === 1 ? custom_number_formatter_basic_format($row['salaried_amount'])  : '-'  "
         },
         "annual_salary_link": {
-            "type": "expression2",
             "expression": " $row['amount_basis_id'] === 1 ? '<a href=/payroll/yeartype/B/year/' . $row['fiscal_year_id'] . '?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/' . $row['agency_id'] . '/yeartype/B/year/' . $row['fiscal_year_id'] . '/salamttype/' . $row['amount_basis_id'] . '/abc/' . $row['employee_id'] . '>'. $row['formatted_salary_amount'] .'</a>' : '-'"
         },
         "formatted_non_salary_amount": {
-            "type": "expression2",
             "expression": " $row['amount_basis_id'] === 1 ? '-' : custom_number_formatter_basic_format($row['non_salaried_amount'])"
         },
         "non_salary_link": {
-            "type": "expression2",
             "expression": " $row['amount_basis_id'] === 1 ? '-' : '<a href=/payroll/yeartype/B/year/' . $row['fiscal_year_id'] . '?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/' . $row['agency_id'] . '/yeartype/B/year/' . $row['fiscal_year_id'] . '/salamttype/' . $row['amount_basis_id'] . '/abc/' . $row['employee_id'] . '>'. $row['formatted_non_salary_amount'] .'</a>'"
         },
         "export_salary_amount": {
-            "type": "expression2",
             "expression": " $row['amount_basis_id'] === 1 ? $row['salaried_amount']  : NULL "
         },
         "export_non_salary_amount": {
-            "type": "expression2",
             "expression": " $row['amount_basis_id'] === 1? NULL : $row['non_salaried_amount']"
         },
         "formatted_gross_pay_amount": {
-            "type": "expression2",
             "expression": "custom_number_formatter_basic_format($row['gross_pay'])"
         },
         "formatted_base_pay_amount": {
-            "type": "expression2",
             "expression": "custom_number_formatter_basic_format($row['base_pay'])"
         },
         "formatted_other_payments_amount": {
-            "type": "expression2",
             "expression": "custom_number_formatter_basic_format($row['other_payments'])"
         },
         "formatted_overtime_pay_amount": {
-            "type": "expression2",
             "expression": "custom_number_formatter_basic_format($row['overtime_pay'])"
         },
         "formatted_gross_pay_ytd_amount": {
-            "type": "expression2",
             "expression": "custom_number_formatter_basic_format($row['gross_pay_ytd'])"
         },
         "formatted_payroll_type": {
-            "type": "expression2",
             "expression": " $row['amount_basis_id'] === 1 ? 'SALARIED'  : 'NON-SALARIED' "
         },
         "employee_number": {
-            "type": "expression2",
             "expression": "$row['employee_number']"
         }
     },

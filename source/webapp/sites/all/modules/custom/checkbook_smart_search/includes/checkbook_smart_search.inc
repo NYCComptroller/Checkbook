@@ -326,6 +326,7 @@ function _checkbook_smart_search_solr_results($query){
     }
     ini_set('default_socket_timeout',120);
     $url = $solr_server_url . $query;
+    LogHelper::log_notice("Getting solr: ".$url);
     $contents = file_get_contents($url);
     $contents = utf8_encode($contents);
 

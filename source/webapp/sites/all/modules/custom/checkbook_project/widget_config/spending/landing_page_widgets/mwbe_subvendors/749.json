@@ -62,43 +62,33 @@
     ",
     "derivedColumns": {
         "sub_contract_purpose_formatted": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['sub_contract_purpose_sub_contract_purpose'],40)"
         },
         "agency_name_formatted": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['agency_agency_agency_name'],40)"
         },
         "agency_name_link": {
-            "type": "expression2",
             "expression": "'<a href=\"' . SpendingUtil::getAgencyNameLinkUrl($node,$row) . '\">' . $row['agency_name_formatted'] . '</a>'"
         },
         "prime_vendor_name_formatted": {
-            "type":"expression2",
             "expression":"_get_tooltip_markup($row['prime_vendor_prime_vendor_legal_name'],36)"
         },
         "prime_vendor_name_link": {
-            "type":"expression2",
             "expression":"'<a href=\"' . SpendingUtil::getPrimeVendorNameLinkUrl($node,$row) . '\">' . $row['prime_vendor_name_formatted'] . '</a>'"
         },
         "prime_vendor_name": {
-            "type":"expression2",
             "expression":"($row['prime_vendor_prime_vendor'] == null )?$row['prime_vendor_prime_vendor_legal_name']:$row['prime_vendor_name_link']"
         },
         "formatted_check_amount_sum": {
-            "type": "expression2",
             "expression": " custom_number_formatter_format($row['check_amount_sum'],2,'$')"
         },
         "formatted_total_contract_amount_sum": {
-            "type": "expression2",
             "expression": "custom_number_formatter_format($row['total_contract_amount_sum'],2,'$')"
         },
         "contract_amount_link":{
-            "type":"expression2",
             "expression": "'<a class=\"bottomContainerReload\" href=\"' . SpendingUtil::getContractAmountLinkUrl($node,$row) . '\">' . $row['formatted_check_amount_sum'] . '</a>'"
         },
         "contract_number_link":{
-            "type":"expression2",
             "expression":"'<a class=\"new_window\" href=\"' . SpendingUtil::getSubContractNumberLinkUrl($node,$row) . '\">'  . $row['document_id_document_id'] . '</a>'"
         }
     },

@@ -26,36 +26,28 @@
 "enableExpand":true,
 "derivedColumns": {
 "subvendor_name_formatted": {
-"type": "expression2",
 "expression": "_get_tooltip_markup($row['subvendor_subvendor_legal_name'],60)"
 },
 "minority_type_link":{
-"type": "expression2",
 "expression": "ContractUtil::getMWBECategory($node,$row)"
 },
 "subvendor_name_link": {
-"type": "expression2",
 "expression": "'<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row['subvendor_subvendor'],RequestUtilities::getRequestParamValue('year'),$row['yeartype_yeartype']).  '?expandBottomCont=true\">' .$row['subvendor_name_formatted']. '</a>'"
 } ,
 "spent_amount_no_link": {
-"type": "expression2",
 "expression": "'$' . custom_number_formatter_format($row['spending_amount_sum'],2)"
 } ,
 "spent_amount_link": {
-"type": "expression2",
 "expression": "'<a class=\"new_window\" href=\"' . ContractUtil::getSubVendorSpentToDateLinkUrl($node,$row) . '\">' . custom_number_formatter_format($row['spending_amount_sum'],2,'$'). '</a>'"
 } ,
 "formatted_original_amount_sum": {
-"type": "expression2",
 "expression": "custom_number_formatter_format($row['original_amount_sum'],2,'$')"
 },
 "formatted_total_current_amount_sum": {
-"type": "expression2",
 "expression": "custom_number_formatter_format($row['current_amount_sum'],2,'$')"
 },
 
 "formatted_total_contracts": {
-"type": "expression2",
 "expression": " number_format($row['total_contracts'])"
 }
 },

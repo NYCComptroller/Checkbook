@@ -70,15 +70,12 @@
     ",
     "derivedColumns": {
         "contract_link": {
-            "type": "expression2",
             "expression": "ContractURLHelper::prepareExpenseContractLink($row, $node, false, $row['original_agreement_id'])"
         },
         "agency_formatted": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['agency_name'],26)"
         },
         "agency_name_link": {
-            "type": "expression2",
             "expression": " '<a href=\"/contracts_landing'
             . _checkbook_append_url_params()
             . _checkbook_project_get_url_param_string(\"year\", null, true)
@@ -89,45 +86,35 @@
             . '?expandBottomCont=true\">'. $row['agency_formatted'] . '</a>'  "
         },
         "purpose_formatted": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['description'],30)"
         },
         "prime_vendor_name_formatted": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['prime_vendor_name'],30)"
         },
         "prime_vendor_name_link": {
-            "type":"expression2",
             "expression":" '<a href=\"/contracts_landing'
             . ContractUtil::get_contracts_vendor_link_by_mwbe_category($row)
             . '?expandBottomCont=true\">'. $row['prime_vendor_name_formatted'] . '</a>'  "
         },
         "subvendor_name_formatted": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['sub_vendor_name'],30)"
         },
         "subvendor_name": {
-            "type": "expression2",
             "expression": "$row['sub_vendor_name'] == NULL ? 'NOT PROVIDED' : '<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row['sub_vendor_id'],RequestUtilities::getRequestParamValue('year'),RequestUtilities::getRequestParamValue('yeartype'), null, $row['sub_minority_type_id']) .  '?expandBottomCont=true\">' .$row['subvendor_name_formatted']. '</a>'"
         },
         "subvendor_name_export": {
-            "type": "expression2",
             "expression": "($row['sub_vendor_name'] == '' || $row['sub_vendor_name'] == NULL) ? 'NOT PROVIDED' : $row['sub_vendor_name']"
         },
         "sub_mwbe_category_name": {
-            "type": "expression2",
             "expression": "($row['sub_minority_type_name'] == '' || $row['sub_minority_type_name'] == NULL) ? 'NOT PROVIDED' : $row['sub_minority_type_name']"
         },
         "subvendor_status_pip":{
-            "type": "expression2",
             "expression": "($row['aprv_sta_value'] == 'N/A' || $row['aprv_sta_value'] == NULL) ? 'N/A' : _get_tooltip_markup($row['aprv_sta_value'],36)"
         },
         "subvendor_status_pip_export":{
-            "type": "expression2",
             "expression": "($row['aprv_sta_value'] == 'N/A' || $row['aprv_sta_value'] == NULL) ? 'N/A' : $row['aprv_sta_value']"
         },
         "sub_contract_reference_id":{
-            "type":"expression2",
             "expression":"isset($row['sub_contract_id']) ? $row['sub_contract_id'] : 'N/A'"
         }
     },

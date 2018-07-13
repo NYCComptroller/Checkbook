@@ -25,33 +25,26 @@ return $header;
 "caption":"",
 "derivedColumns": {
 "contract_link": {
-"type": "expression2",
 "expression": "ContractURLHelper::prepareRevenueContractLink($row, $node)"
 },
 "formatted_original_amount": {
-"type": "expression2",
 "expression": "custom_number_formatter_basic_format($row['original_contract_amount'])"
 },
 "formatted_current_amount": {
-"type": "expression2",
 "expression": "custom_number_formatter_basic_format($row['maximum_contract_amount'])"
 },
 "vendor_formatted": {
-"type": "expression2",
 "expression": "_get_tooltip_markup($row['vendor_name'],30)"
 },
 "vendor_name_link": {
-"type": "expression2",
 "expression": " '<a href=\"/contracts_revenue_landing'
 .  ContractUtil::get_contracts_vendor_link_by_mwbe_category($row)
 .  '?expandBottomCont=true\">'. $row['vendor_formatted'] . '</a>'  "
 },
 "agency_formatted": {
-"type": "expression2",
 "expression": "_get_tooltip_markup($row['agency_name'],30)"
 },
 "agency_name_link": {
-"type": "expression2",
 "expression": " '<a href=\"/contracts_revenue_landing'
 .  (isset($row['fiscal_year_id@checkbook:mwbe_contracts_coa_aggregates']) ? '/year/'.$row['fiscal_year_id@checkbook:mwbe_contracts_coa_aggregates'] : '')
 .  (isset($row['type_of_year@checkbook:mwbe_contracts_coa_aggregates']) ? '/yeartype/'.$row['type_of_year@checkbook:mwbe_contracts_coa_aggregates'] : '')
@@ -60,43 +53,33 @@ return $header;
 .  '?expandBottomCont=true\">'. $row['agency_formatted'] . '</a>'  "
 },
 "purpose_formatted": {
-"type": "expression2",
 "expression": "_get_tooltip_markup($row['description'],40)"
 },
 "award_method_formatted": {
-"type": "expression2",
 "expression": "_get_tooltip_markup($row['award_method_name'],30)"
 },
 "contract_type_formatted": {
-"type": "expression2",
 "expression": "_get_tooltip_markup($row['agreement_type_name'],30)"
 },
 "industry_name_formatted": {
-"type": "expression2",
 "expression": "_get_tooltip_markup($row['industry_type_name'],30)"
 },
 "formatted_dollar_diff": {
-"type": "expression2",
 "expression": "custom_number_formatter_basic_format($row['dollar_difference'])"
 },
 "formatted_percent_diff": {
-"type": "expression2",
 "expression": "round($row['percent_difference'],2) . '%'"
 },
 "mwbe_category_name_formatted": {
-"type":"expression2",
 "expression":"MappingUtil::getMinorityCategoryById($row['minority_type_id'])"
 },
 "mwbe_category_name": {
-"type": "expression2",
 "expression": "ContractUtil::get_mwbe_category_url($row['minority_type_id'], $row['is_prime_or_sub'])"
 },
 "formatted_is_sub_vendor": {
-"type": "expression2",
 "expression": "($row['is_prime_or_sub'] == 'P')?'No':'Yes'"
 },
 "formatted_associated_vendor": {
-"type": "expression2",
 "expression": "($row['is_prime_or_sub'] == 'P')?'N/A':$row['prime_vendor_name']"
 }
 },

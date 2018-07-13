@@ -24,32 +24,25 @@ if(RequestUtilities::getRequestParamValue('dashboard') == 'ss'){
 "enableExpand":true,
 "derivedColumns": {
 "agency_name_formatted": {
-"type": "expression2",
 "expression": "_get_tooltip_markup($row['agency_agency_agency_name'],46)"
 },
 "agency_name_link": {
-"type": "expression2",
 "expression": "'<a href=\"/contracts_landing' . _checkbook_append_url_params() .  _checkbook_project_get_url_param_string(\"status\") ._checkbook_project_get_url_param_string(\"subvendor\") .  _checkbook_project_get_url_param_string(\"awdmethod\")   ._checkbook_project_get_url_param_string(\"vendor\")  .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\") .  _checkbook_project_get_year_url_param_string() . '/agency/'.$row['agency_agency'] . '?expandBottomCont=true\">' .$row['agency_name_formatted']. '</a>'"
 } ,
 "spent_amount_no_link": {
-"type": "expression2",
 "expression": "custom_number_formatter_format($row['spending_amount_sum'],2,'$')"
 } ,
 "spent_amount_link": {
-"type": "expression2",
 "expression": "'<a class=\"new_window\" href=\"/contract/spending/transactions/cagency/' .$row['agency_agency'] . _checkbook_append_url_params() .  _checkbook_project_get_url_param_string(\"status\") . _checkbook_project_get_url_param_string(\"awdmethod\")   ._checkbook_project_get_url_param_string(\"vendor\",\"cvendor\")  .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\") .  ((RequestUtilities::getRequestParamValue(\"dashboard\") == \"ss\" || RequestUtilities::getRequestParamValue(\"dashboard\") == \"ms\" || RequestUtilities::getRequestParamValue(\"dashboard\") == \"sp\") ? '/doctype/CT1~CTA1' : '/doctype/CT1~CTA1~MA1').  ContractURLHelper::_checkbook_project_spending_get_year_url_param_string() . '/smnid/' . $node->nid . ContractUtil::getSpentToDateParams() . '/newwindow\">' . custom_number_formatter_format($row['spending_amount_sum'],2,'$'). '</a>'"
 } ,
 "formatted_original_amount_sum": {
-"type": "expression2",
 "expression": "custom_number_formatter_format($row['original_amount_sum'],2,'$')"
 },
 "formatted_total_current_amount_sum": {
-"type": "expression2",
 "expression": "custom_number_formatter_format($row['current_amount_sum'],2,'$')"
 },
 
 "formatted_total_contracts": {
-"type": "expression2",
 "expression": " number_format($row['total_contracts'])"
 }
 },

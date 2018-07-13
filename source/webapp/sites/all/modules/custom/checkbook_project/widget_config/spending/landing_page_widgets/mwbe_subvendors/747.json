@@ -58,31 +58,24 @@
     ",
     "derivedColumns": {
         "prime_mwbe_category_name": {
-            "type":"expression2",
             "expression":"MappingUtil::getMinorityCategoryById($row['prime_minority_type_prime_minority_type'])"
         },
         "formatted_check_amount_sum": {
-            "type": "expression2",
             "expression": "custom_number_formatter_format($row['check_amount_sum'],2,'$')"
         },
         "formatted_total_contract_amount_sum": {
-            "type": "expression2",
             "expression": "custom_number_formatter_format($row['total_contract_amount_sum'],2,'$')"
         },
         "vendor_name_formatted": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['prime_vendor_prime_vendor_legal_name'],40)"
         },
         "vendor_name_link": {
-            "type": "expression2",
             "expression": "'<a href=\"' . SpendingUtil::getPrimeVendorNameLinkUrl($node,$row) . '\">' . $row['prime_vendor_prime_vendor_legal_name'] . '</a>'"
         },
         "vendor_amount_link":{
-            "type":"expression2",
             "expression": "'<a class=\"bottomContainerReload\" href=\"' . SpendingUtil::getVendorAmountLinkUrl($node,$row) . '\">' . $row['formatted_check_amount_sum'] . '</a>'"
         },
         "percent_spending":{
-            "type":"expression2",
             "expression": "SpendingUtil::getPercentYtdSpending($node, $row)"
         }
     },

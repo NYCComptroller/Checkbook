@@ -46,15 +46,12 @@ jQuery('#debt-filter .chartdateto').val(Highcharts.dateFormat('%Y',axis.max));
 },
 "derivedColumns": {
         "fiscal_year_date": {
-            "type": "expression2",
             "expression": "   $row['fiscal_year'] . '-1-1'"
         },
 "fiscal_year_utc": {
-            "type": "expression2",
             "expression": "   strtotime($row['fiscal_year'] . '-1-1') * 1000"
         },
 "debt_color":{
-            "type": "expression2",
             "expression": "checkbook_project_debt_color($row['total_primary_government'])"
         },
 "modified_govt":{"type":"expression2","expression":"$row['total_primary_government'] * 1000000"}

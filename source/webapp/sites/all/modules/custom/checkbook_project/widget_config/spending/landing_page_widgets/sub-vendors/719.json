@@ -64,43 +64,33 @@
     ",
     "derivedColumns": {
             "mwbe_category_name": {
-                "type":"expression2",
                 "expression":"MappingUtil::getMinorityCategoryById($row['minority_type_minority_type'])"
             },
             "mwbe_category_name_link": {
-                "type": "expression2",
                 "expression": " RequestUtil::isNewWindow() || !MappingUtil::isMWBECertified(array($row['minority_type_minority_type'])) ? $row['mwbe_category_name']  : ('<a href=' . SpendingUtil::getMWBECategoryLinkUrl($node, $row) . '>'. $row['mwbe_category_name'] .'</a>') "
             },
             "sub_vendor_name_formatted": {
-                "type":"expression2",
                 "expression":"_get_tooltip_markup($row['sub_vendor_sub_vendor_legal_name'],36)"
             },
             "sub_vendor_name_link": {
-                "type":"expression2",
                 "expression":"'<a href=\"' . SpendingUtil::getSubVendorNameLinkUrl($node,$row) . '\">' . $row['sub_vendor_name_formatted'] . '</a>'"
             },
             "sub_vendor_name_link2": {
-                "type":"expression2",
                 "expression":"($row['sub_vendor_sub_vendor'] == null )?$row['sub_vendor_sub_vendor_legal_name']:$row['sub_vendor_name_link']"
             },
             "prime_vendor_name_formatted": {
-                "type":"expression2",
                 "expression":"_get_tooltip_markup($row['prime_vendor_prime_vendor_legal_name'],36)"
             },
             "prime_vendor_name_link": {
-                "type":"expression2",
                 "expression":"'<a href=\"' . SpendingUtil::getPrimeVendorNameLinkUrl($node,$row) . '\">' . $row['prime_vendor_name_formatted'] . '</a>'"
             },
             "prime_vendor_name_link2": {
-                "type":"expression2",
                 "expression":"($row['prime_vendor_prime_vendor'] == null )?$row['prime_vendor_prime_vendor_legal_name']:$row['prime_vendor_name_link']"
             },
             "ytd_spending_sub_vendors_link":{
-                "type":"expression2",
                 "expression": "'<a class=\"bottomContainerReload\" href=\"' . SpendingUtil::getSubVendorYtdSpendingUrl($node,$row) . '\">' . custom_number_formatter_format($row['ytd_spending_sub_vendors'],2,'$') . '</a>'"
             },
             "formatted_check_amount_sum": {
-                "type": "expression2",
                 "expression": "custom_number_formatter_format($row['check_amount_sum'],2,'$')"
             }
     },
