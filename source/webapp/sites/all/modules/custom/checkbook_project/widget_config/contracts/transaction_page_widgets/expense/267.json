@@ -42,7 +42,6 @@
 "caption":"",
 "derivedColumns": {
          "child_contrats_link":{
-	      "type": "expression2",
               "expression": " ($row['has_children'] == 'Y') ? '<span id=dtl_expand class=\"toggler collapsed\"  magid=\"' . $row['original_agreement_id'] . '\" '
                                 . _checkbook_append_url_params()
                                 . ( RequestUtilities::getRequestParamValue('smnid') != '' ?  ('smnid=\"' . RequestUtilities::getRequestParamValue('smnid') . '\"' ) : '')
@@ -54,27 +53,21 @@
                                 . '></span>' : '' "
             },
            "contract_link": {
-	      "type": "expression2",
                "expression": "ContractURLHelper::prepareExpenseContractLink($row, $node)"
 	    },
         "parent_contract_link": {
-            "type": "expression2",
             "expression": "(($row['master_agreement_yn'] == 'Y') ? 'N/A' : ContractURLHelper::prepareExpenseContractLink($row, $node, true))"
         },
         "parent_contract_export":{
-            "type": "expression2",
             "expression": "(($row['master_agreement_yn'] == 'Y') ? 'N/A' : $row['master_contract_number'])"
         },
 	"formatted_original_amount": {
-	      "type": "expression2",
 	      "expression": "custom_number_formatter_basic_format($row['original_contract_amount'])"
 	    },
 	"formatted_current_amount": {
-	      "type": "expression2",
 	        "expression": "custom_number_formatter_basic_format($row['maximum_contract_amount'])"
 	    },
        "formatted_spent_to_date": {
-	      "type": "expression2",
                 "expression": "
                                            '<a href=\"/spending/transactions'
                                           .  ($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['original_agreement_id']
@@ -83,11 +76,9 @@
                                       "
 	    },
 "vendor_formatted": {
-      "type": "expression2",
       "expression": "_get_tooltip_markup($row['vendor_name'],30)"
     },
 	"vendor_name_link": {
-	      "type": "expression2",
               "expression": " '<a href=\"/contracts_landing'
                                     . _checkbook_append_url_params()
                                     .  (isset($row['fiscal_year_id@checkbook:contracts_coa_aggregates']) ? '/year/'.$row['fiscal_year_id@checkbook:contracts_coa_aggregates'] : '')
@@ -100,11 +91,9 @@
                                     .  '?expandBottomCont=true\">'. $row['vendor_formatted'] . '</a>'  "
 	    },
 "agency_formatted": {
-      "type": "expression2",
       "expression": "_get_tooltip_markup($row['agency_name'],26)"
     },
 	"agency_name_link": {
-		"type": "expression2",
                 "expression": " '<a href=\"/contracts_landing'
                                     ._checkbook_append_url_params()
                                     .  (isset($row['fiscal_year_id@checkbook:contracts_coa_aggregates']) ? '/year/'.$row['fiscal_year_id@checkbook:contracts_coa_aggregates'] : '')
@@ -114,31 +103,24 @@
                                     .  '?expandBottomCont=true\">'. $row['agency_formatted'] . '</a>'  "
 	},
 "purpose_formatted": {
-      "type": "expression2",
       "expression": "_get_tooltip_markup($row['description'],36)"
     },
 "expense_cat_formatted": {
-      "type": "expression2",
       "expression": "_get_tooltip_markup($row['expenditure_object_names'],36)"
     },
 "award_method_formatted": {
-      "type": "expression2",
       "expression": "_get_tooltip_markup($row['award_method_name'],36)"
     },
 "contract_type_formatted": {
-      "type": "expression2",
       "expression": "_get_tooltip_markup($row['agreement_type_name'],36)"
     },
 "industry_name_formatted": {
-      "type": "expression2",
       "expression": "_get_tooltip_markup($row['industry_type_name'],36)"
     },
 "formatted_dollar_diff": {
-      "type": "expression2",
       "expression": "custom_number_formatter_basic_format($row['dollar_difference'])"
     },
 "formatted_percent_diff": {
-      "type": "expression2",
       "expression": "round($row['percent_difference'],2) . '%'"
     }
 },

@@ -8,18 +8,17 @@
 	"dataset": "checkbook:trends_personal_income",
 	"columns": ["fips","area","income_or_population","fiscal_year","highlight_yn","indentation_level","display_order"],
        "orderBy":"display_order",
-"derivedColumns": {       
+"derivedColumns": {
 	"amount": {
-	      "type": "expression2",
 	      "expression": "$row['income_or_population']"
 	}
 },
 	"table_title":"",
-	
+
 	"dataTableOptions":{
         "bFilter": false,
         "bPaginate": false,
-        "bLengthChange": false,        
+        "bLengthChange": false,
         "bInfo": false,
          "bSort":false,
        	 "sScrollX": "100%",

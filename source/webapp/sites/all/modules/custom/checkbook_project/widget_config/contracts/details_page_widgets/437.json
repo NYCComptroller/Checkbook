@@ -15,7 +15,6 @@
 "html_class": "initiative-table",
 "derivedColumns": {
 	"contract_link": {
-		"type": "expression2",
                 "expression": " '<a href=/panel_html/contract_transactions/contract_details/agid/' . $row['original_agreement_id'] . '/doctype/' . $row['document_code@checkbook:ref_document_code'] . ' class=\"ui-button bottomContainerReload\">' . $row['contract_number'] . '</a>' "
 	}
 },

@@ -55,39 +55,30 @@
     "table_title":"",
     "derivedColumns": {
         "agency_name_link": {
-         "type": "expression2",
          "expression": "'<a href=/payroll/agency_landing' . _checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string(\"title\") . '/agency/' . $row['agency_agency'] . '>'. $row['agency_agency_agency_name'] .'</a>'"
       },
       "total_gross_pay_formatted":{
-         "type":"expression2",
          "expression": "custom_number_formatter_format($row['total_gross_pay'],2,'$')"
        },
       "total_gross_pay_link":{
-         "type":"expression2",
            "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/payroll_agencytransactions/payroll/agencywide/transactions' ._checkbook_project_get_year_url_param_string() .'/agency/' .  $row['agency_agency'] . _checkbook_project_get_url_param_string(\"title\") . '/smnid/323 \">' . $row['total_gross_pay_formatted'] . '</a>'"
        },
        "total_employees_formatted":{
-         "type":"expression2",
          "expression": "number_format($row['total_employees'])"
        },
        "total_salaried_employees_formatted":{
-         "type":"expression2",
          "expression": "number_format($row['total_salaried_employees'])"
        },
        "total_hourly_employees_formatted":{
-         "type":"expression2",
          "expression": "number_format($row['total_non_salaried_employees'])"
        },
       "total_overtime_expense_formatted":{
-         "type":"expression2",
          "expression": "custom_number_formatter_format($row['total_overtime_pay'],2,'$')"
        },
       "total_overtime_expense_link":{
-         "type":"expression2",
         "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/payroll_agencytransactions/payroll/agencywide/transactions' ._checkbook_project_get_year_url_param_string() .'/agency/' .  $row['agency_agency'] . '\">' . $row['total_overtime_expense_formatted'] . '</a>'"
        },
        "total_other_payments_formatted":{
-         "type":"expression2",
          "expression": "custom_number_formatter_format($row['total_other_payments'],2,'$')"
        }
     },

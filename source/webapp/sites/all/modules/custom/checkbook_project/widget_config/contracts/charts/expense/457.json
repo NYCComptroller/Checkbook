@@ -25,7 +25,6 @@
 },
 "derivedColumns":{
     "agency_formatted":{
-        "type":"expression2",
         "expression":"html_entity_decode($row[\"document_agency_short_name_document_agency_short_name\"],ENT_QUOTES);"
     }
 },

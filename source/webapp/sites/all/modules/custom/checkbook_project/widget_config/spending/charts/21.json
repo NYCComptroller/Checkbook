@@ -67,12 +67,9 @@
   },
 "derivedColumns": {
     "current_spending": {
-        "type": "expression2",
         "expression": "  ($row['current_check_amount_sum']==null)?'0':$row['current_check_amount_sum']"
     },
     "previous_spending": {
-        "type": "null_check",
-        "type": "expression2",
         "expression": "  ($row['previous_check_amount_sum']==null)?'0':$row['previous_check_amount_sum']"
     }
 },

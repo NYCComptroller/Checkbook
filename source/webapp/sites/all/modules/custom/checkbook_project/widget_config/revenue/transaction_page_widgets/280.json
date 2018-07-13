@@ -55,27 +55,21 @@
     "caption":"",
     "derivedColumns": {
         "formatted_posting_amount": {
-            "type": "expression2",
             "expression": "custom_number_formatter_basic_format($row['posting_amount'])"
         },
         "formatted_adopted_amount": {
-            "type": "expression2",
             "expression": "custom_number_formatter_basic_format($row['adopted_amount'])"
         },
         "formatted_modified_amount": {
-            "type": "expression2",
             "expression": "custom_number_formatter_basic_format($row['current_modified_budget_amount'])"
         },
         "formatted_remaining_amount": {
-            "type": "expression2",
             "expression": "custom_number_formatter_basic_format($row['remaining_amount'])"
         },
         "agency_name_formatted":{
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['agency_name'], 50)"
         },
         "agency_name_link": {
-            "type": "expression2",
             "expression": " '<a href=/revenue/year/' . $row['budget_fiscal_year_id'] . '/agency/' . $row['agency_id'] .'>' . $row['agency_name_formatted'] .'</a>'"
         }
     },

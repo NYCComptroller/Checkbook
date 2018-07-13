@@ -38,55 +38,42 @@
     "caption":"",
     "derivedColumns": {
         "formatted_annual_salary": {
-            "type": "expression2",
             "expression": "$row['amount_basis_id_amount_basis_id'] == 1 ? custom_number_formatter_basic_format($row['annual_salary_pay'])  : '-'"
         },
         "formatted_hourly_rate": {
-            "type": "expression2",
             "expression":" $row['amount_basis_id_amount_basis_id'] != 1 ? custom_number_formatter_basic_format($row['hourly_rate_pay'])  : '-'"
         },
         "formatted_gross_pay_amount": {
-            "type": "expression2",
             "expression": "custom_number_formatter_basic_format($row['gross_pay_gross_pay'])"
         },
         "formatted_base_pay_amount": {
-            "type": "expression2",
             "expression": "custom_number_formatter_basic_format($row['base_pay_base_pay'])"
         },
         "formatted_other_payments_amount": {
-            "type": "expression2",
             "expression": "custom_number_formatter_basic_format($row['other_payments_other_payments'])"
         },
         "formatted_overtime_pay_amount": {
-            "type": "expression2",
             "expression": "custom_number_formatter_basic_format($row['overtime_pay_overtime_pay'])"
         },
         "formatted_gross_pay_ytd_amount": {
-            "type": "expression2",
             "expression": "custom_number_formatter_basic_format($row['gross_pay_ytd_gross_pay_ytd'])"
         },
         "agency_name_formatted": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['agency_name_agency_name'],30)"
         },
         "title_name_formatted": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['civil_service_title_civil_service_title'],42)"
         },
         "payroll_type_formatted": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['payroll_type'],25)"
         },
         "pay_frequency_formatted": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['pay_frequency_pay_frequency'],25)"
         },
         "pay_date_formatted": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['pay_date_pay_date'],15)"
         },
         "employee_number": {
-            "type": "expression2",
             "expression": "$row['employee_number_employee_number']"
         }
     },

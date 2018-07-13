@@ -23,7 +23,6 @@
     "widgetTitle":"Agency Revenue by Cross Year Collections Details",
      "derivedColumns":{
         "agency_link":{
-                "type":"expression2",
                 "expression":"'<a href=\"/revenue'. _checkbook_project_get_year_url_param_string()
                                         ._checkbook_project_get_url_param_string(\"agency\")
                                         ._checkbook_project_get_url_param_string(\"fundsrccode\")
@@ -32,23 +31,18 @@
                                         .'\">'.$row['agency_agency_agency_name'].'</a>'"
         },
         "current_recognized_formatted":{
-            "type":"expression2",
             "expression":"custom_number_formatter_basic_format($row['current_recognized'])"
         },
         "recognized_1_formatted":{
-            "type":"expression2",
             "expression":"custom_number_formatter_basic_format($row['recognized_1'])"
         },
         "recognized_2_formatted":{
-            "type":"expression2",
             "expression":"custom_number_formatter_basic_format($row['recognized_2'])"
         },
         "other_years_formatted":{
-            "type":"expression2",
             "expression":"custom_number_formatter_basic_format($row['other_years'])"
         },
         "remaining_formatted":{
-            "type":"expression2",
             "expression":"custom_number_formatter_basic_format($row['remaining_amount'])"
         }
      },
