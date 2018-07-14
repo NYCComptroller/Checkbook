@@ -874,7 +874,7 @@ function load_widget_data($node, $resultFormatter) {
   	if(isset($node->widgetConfig->transformationPHP)){
   		@$node->data = eval($node->widgetConfig->transformationPHP);
   	}
-    } catch(Exception $e) {
+    } catch(Exception $e) {log_error($node->nid);
         // FIXME Commented out printing of $e because it generates 100+ KBs in a log file
         log_error("Error getting data from the controller: \n" . $e->getMessage()/*, $e*/);
         $node->error = $e;
@@ -1515,8 +1515,10 @@ function _update_dataset_datasource($datasetName,$keepOriginalDatasource = false
 		return $datasetName;
 	}
     $database = RequestUtilities::getRequestParamValue('datasource');
-    if(isset($database)){
+    if(isset($database) && $database == 'checkbook_oge'){
         $database = str_replace("checkbook:", "checkbook_oge:",$datasetName);
+    }else if(isset($database) && $database == 'checkbook_nycha'){
+        $database = str_replace("checkbook:", "checkbook_nycha:",$datasetName);
     }else{
         $database = $datasetName;
     }
@@ -1533,6 +1535,7 @@ function _update_node_data($data,$keepOriginalDatasource = false){
         $arrayValues = array();
         foreach((Array)$value as $a=>$b){
           $a = str_replace('@checkbook_oge:',"@checkbook:",$a);
+          $a = str_replace('@checkbook_nycha:',"@checkbook:",$a);
           $arrayValues[$a] = $b;
         }
         $returnData[$key] = $arrayValues;
