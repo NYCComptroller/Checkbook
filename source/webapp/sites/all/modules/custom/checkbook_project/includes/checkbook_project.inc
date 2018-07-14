@@ -2166,7 +2166,20 @@ function _checkbook_append_url_params($source = null, $overidden_params = array(
 function _checkbook_check_isEDCPage()
 {
     $database = RequestUtilities::getRequestParamValue('datasource');
-    if (isset($database)) {
+    if (isset($database) && $database == 'checkbook_oge') {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+/**
+ * @return bool for NYCHA page
+ */
+function _checkbook_check_isNYCHAPage()
+{
+    $database = RequestUtilities::getRequestParamValue('datasource');
+    if (isset($database) && $database == 'checkbook_nycha') {
         return true;
     } else {
         return false;

@@ -1,0 +1,14 @@
+{
+    "datasets": {
+		"employee": {
+            "datasourceName": "main",
+            "source": "public_nycha.employee",
+            "columns": [
+                {
+                    "name": "employee_id",
+                    "key": true
+                }
+            ]
+        }
+    }
+}
