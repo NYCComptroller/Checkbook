@@ -18,7 +18,7 @@ class PayrollDataService extends DataService implements IPayrollDataService {
         }
     }
 
-    function GetAnnualSalariesPerAgency($parameters, $limit = null, $orderBy = null) {log_error(Datasource::isNYCHA());
+    function GetAnnualSalariesPerAgency($parameters, $limit = null, $orderBy = null) {
         if(Datasource::isNYCHA()){
             return $this->configureNYCHA(__FUNCTION__, $parameters, $limit, $orderBy);
         }else {
