@@ -1,0 +1,98 @@
+<statements>
+    <statement name="GetAnnualSalariesPerAgency" datasource="checkbook_nycha">
+        <param name="year" required ="true" type="int" />
+        <param name="yeartype" required ="true" type="string"/>
+        <param name="agency" type="int" />
+        <param name="title" type="int" />
+        <sql>
+            SELECT type_of_year,
+            agency_id,
+            employee_id,
+            fiscal_year_id,
+            civil_service_title,
+            civil_service_title_code,
+            employee_number,
+            MAX(annual_salary) as max_annual_salary,
+            SUM(gross_pay) as total_gross_pay,
+            SUM(base_pay) as total_base_pay,
+            SUM(other_payments) as total_other_pay,
+            SUM(overtime_pay) as total_overtime_pay
+            FROM public_nycha.aggregateon_payroll_latest_employee_agency
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="type_of_year" paramName= "yeartype" />
+                    <exp op="=" dbField="agency_id" paramName= "agency" />
+                    <exp op="=" dbField="civil_service_title_code" paramName="title" />
+
+                </exp>
+            </where>
+            AND type_of_employment = 'Salaried'
+            GROUP BY agency_id, employee_id, fiscal_year_id, type_of_year, civil_service_title, civil_service_title_code, employee_number
+        </sql>
+    </statement>
+    <statement name="GetTitlesByAgency" datasource="checkbook_nycha">
+        <param name="year" required ="true" type="int" />
+        <param name="yeartype" required ="true" type="string"/>
+        <param name="agency" type="int" />
+        <param name="title" type="int" />
+        <sql>
+            SELECT employee_count,
+            agency_id,
+            civil_service_title,
+            civil_service_title_code,
+            total_annual_salary,
+            total_gross_pay,
+            total_base_salary,
+            total_other_payments,
+            total_overtime_amount,
+            type_of_year,
+            fiscal_year_id,
+            type_of_employment
+            FROM public_nycha.aggregateon_payroll_employee_agency_title
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="agency_id" paramName="agency" />
+                </exp>
+            </where>
+            AND type_of_employment = 'Salaried'
+        </sql>
+    </statement>
+    <statement name="GetCountSalariedEmployees" datasource="checkbook_nycha">
+        <param name="year" required ="true" type="int" />
+        <param name="yeartype" required ="true" type="string"/>
+        <param name="agency" type="int" />
+        <param name="title" type="int" />
+        <sql>
+            SELECT DISTINCT emp.employee_number
+            FROM public_nycha.aggregateon_payroll_employee_agency emp
+            JOIN
+            (
+            SELECT max(pay_date) as pay_date,
+            employee_number,fiscal_year_id,type_of_year
+            FROM public_nycha.aggregateon_payroll_employee_agency
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="type_of_year" paramName="yeartype" />
+                </exp>
+            </where>
+            GROUP BY employee_number,fiscal_year_id,type_of_year
+            ) latest_emp ON latest_emp.pay_date = emp.pay_date
+            AND latest_emp.employee_number = emp.employee_number
+            AND latest_emp.fiscal_year_id = emp.fiscal_year_id
+            AND latest_emp.type_of_year = emp.type_of_year
+            AND type_of_employment = 'Salaried'
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="emp.fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="emp.type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="emp.agency_id" paramName="agency" />
+                    <exp op="=" dbField="emp.civil_service_title_code" paramName="title" />
+                </exp>
+            </where>
+        </sql>
+    </statement>
+</statements>
