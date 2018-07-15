@@ -138,7 +138,12 @@ else {
       else $node->widgetConfig->footerUrl = null;
   }
   else {
-      $node->widgetConfig->footerUrl = _widget_controller_footer_url($node);
+      $footerUrl = _widget_controller_footer_url($node);
+      if(isset($footerUrl)){
+          $node->widgetConfig->footerUrl = $footerUrl;
+      }else{
+          $node->widgetConfig->footerUrl = null;
+      }
   }
 
     if (isset($node->widgetConfig->footerUrl)) {
