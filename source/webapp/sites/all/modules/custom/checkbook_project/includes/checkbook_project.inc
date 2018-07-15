@@ -2130,7 +2130,7 @@ function _checkbook_append_url_params($source = null, $overidden_params = array(
 
     $url = "";
     if (isset($datasource)) {
-        $url = "/datasource/checkbook_oge";
+        $url = "/datasource/".$datasource;
     } else {
         $current_url = explode('/', $_SERVER['HTTP_REFERER']);
         if (($current_url[3] == 'contract' && ($current_url[4] == 'search' || $current_url[4] == 'all') && $current_url[5] == 'transactions')) {
@@ -2142,16 +2142,12 @@ function _checkbook_append_url_params($source = null, $overidden_params = array(
                 if (!in_array("mwbe", $source)) {
                     $url = isset($mwbe) ? "/mwbe/" . $mwbe : "";
                 }
-                // if(!in_array("subvendor",$source)){
-                // 	$url = isset($svendor) ? "/subvendor/".$svendor : "";
-                // }
                 if (!in_array("dashboard", $source)) {
                     $url = isset($dashboard) ? "/dashboard/" . $dashboard : "";
                 }
             } else {
                 if (!$top_nav || (isset($mwbe) && RequestUtilities::getRequestParamValue('vendor') > 0 && RequestUtilities::getRequestParamValue('dashboard') != "ms")) {
                     $url = isset($mwbe) ? "/mwbe/" . $mwbe : "";
-                    // $url .= isset($svendor) ? "/subvendor/".$svendor : "";
                     $url .= isset($dashboard) ? "/dashboard/" . $dashboard : "";
                 }
             }
