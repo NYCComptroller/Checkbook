@@ -47,7 +47,7 @@ public class OGEContractSpendingWidgetTest extends OGENYCBaseTest {
 	@Test
 	public void VerifyNumOfDepartmentsWidget() throws SQLException {
 		Integer totalAgencieswidgetCountDB = OGENYCDatabaseUtil.getContractSpendingDepartmentsCount(year,'B');
-		Integer totalAgenciesWidgetCountApp = SpendingPage.GetTop5WidgetTotalCount(WidgetOption.Top5Agencies);
+		Integer totalAgenciesWidgetCountApp = SpendingPage.GetTop5WidgetTotalCount(WidgetOption.TopDepartments);
 		assertEquals("Contract Spending  Departments widget count  did not match with the DB",totalAgenciesWidgetCountApp, totalAgencieswidgetCountDB);
 	}
 	@Test
@@ -59,7 +59,7 @@ public class OGEContractSpendingWidgetTest extends OGENYCBaseTest {
 	@Test
 	public void VerifyNumOfPrimeVendorsWidget() throws SQLException{
 		Integer totalPrimeVendorswidgetCountDB = OGENYCDatabaseUtil.getContractSpendingPrimeVendorsCount(year,'B');
-		Integer totalPrimeVendorsWidgetCountApp = SpendingPage.GetTop5WidgetTotalCount(WidgetOption.Top5PrimeVendors);
+		Integer totalPrimeVendorsWidgetCountApp = SpendingPage.GetTop5WidgetTotalCount(WidgetOption.TopPrimeVendors);
 		assertEquals("Contract Spending  Prime Vendor  widget count  did not match with the DB",totalPrimeVendorsWidgetCountApp, totalPrimeVendorswidgetCountDB);
 	}
 	@Test
