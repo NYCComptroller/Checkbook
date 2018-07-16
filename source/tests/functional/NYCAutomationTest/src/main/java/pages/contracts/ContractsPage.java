@@ -18,8 +18,9 @@ import helpers.Helper;
 public class ContractsPage {
 	public enum WidgetOption{
 		Top5MasterAgreements, Top5MasterAgreementModifications, Top5Contracts, Top5ContractAmountModifications,  Top5PrimeVendors, 
-		Top5AwardMethods, Top5Agencies,ContractsByIndustries, ContractsBySize, TopMasterAgreements,TopMasterAgreementModifications, TopContracts,TopContractAmountModifications,  TopPrimeVendors, TopAwardMethods, Top5SubContracts,
-		Top5SubContractAmountModifications,Top5SubVendors,SubContractStatus,SummaryOfPrimeVendor,SummaryOfSubVendorContracts,TopAgencies
+		Top5AwardMethods, Top5Agencies,Top5Departments,ContractsByIndustries, ContractsBySize, TopMasterAgreements,TopMasterAgreementModifications,
+		TopContracts,TopContractAmountModifications, TopAgencies,TopDepartments, TopPrimeVendors, TopAwardMethods, Top5SubContracts,
+		Top5SubContractAmountModifications,Top5SubVendors,SubContractStatus,SummaryOfPrimeVendor,SummaryOfSubVendorContracts
 	}
 	public static void GoTo() {
         TopNavigation.Contracts.Select();
@@ -222,6 +223,10 @@ public class ContractsPage {
 				return HomePage.GetWidgetTotalNumber("Top 5 Agencies");
 			case TopAgencies:
 				return HomePage.GetWidgetTotalNumber("Top Agencies");
+			case Top5Departments:
+				return HomePage.GetWidgetTotalNumber("Top 5 Departments");
+			case TopDepartments:
+				return HomePage.GetWidgetTotalNumber("Top Departments");
 			case ContractsByIndustries:
 				return HomePage.GetWidgetTotalNumber("Contracts by Industries");
 			case ContractsBySize:
@@ -302,6 +307,11 @@ public class ContractsPage {
 			case TopAgencies:
 				if(!HomePage.IsAtTop5DetailsPage("Top Agencies"))
 					detailsContainer = HomePage.GetWidgetDetailsContainer("Top Agencies");
+				break;
+			
+			case TopDepartments:
+				if(!HomePage.IsAtTop5DetailsPage("Top Departments"))
+					detailsContainer = HomePage.GetWidgetDetailsContainer("Top Departments");
 				break;
 			case ContractsByIndustries:
 				if(!HomePage.IsAtTop5DetailsPage("Contracts by Industries"))
