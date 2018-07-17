@@ -700,7 +700,7 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
   foreach ($facets as $key => $value) {
     switch ($key) {
       case 'agency_name':
-        $agencies[] = $value[$key];
+        $agencies = $value;
         break;
       case 'oge_agency_name':
         $ogeAgencies[] = $value[$key];
@@ -796,7 +796,7 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
     }
   }
   if (count($agencies) > 0) {
-    foreach ($agencies[0] as $agencyName => $count) {
+    foreach ($agencies as $agencyName => $count) {
       if ($count > 0) {
         $checked = in_array($agencyName, array_values_recursive($reqAgencies[0]));
         $agencyValue = urlencode($agencyName);

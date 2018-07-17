@@ -1,31 +1,31 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 $payroll_parameter_mapping = _checkbook_smart_search_domain_fields('payroll');
 
-$agency_id = $payroll_results['agency_id'];
-$dept_id = $payroll_results['department_id'];
-$emp_id = $payroll_results['employee_id'];
-$fiscal_year_id = $payroll_results['fiscal_year_id'][0];
-$salaried = $payroll_results['amount_basis_id'];
-$title = urlencode($payroll_results['civil_service_title']);
+$agency_id = $payroll_results['_source']['agency_id'];
+$dept_id = $payroll_results['_source']['department_id'];
+$emp_id = $payroll_results['_source']['employee_id'];
+$fiscal_year_id = $payroll_results['_source']['fiscal_year_id'];
+$salaried = $payroll_results['_source']['amount_basis_id'];
+$title = $payroll_results['_source']['civil_service_title'];
 
 
 $linkable_fields = array(
@@ -43,7 +43,7 @@ $count = 1;
 $row = array();
 $rows = array();
 foreach ($payroll_parameter_mapping as $key => $title){
-  $value = $payroll_results[$key];
+  $value = $payroll_results['_source'][$key];
 
   $temp = substr($value, strpos(strtoupper($value), strtoupper($SearchTerm)),strlen($SearchTerm));
   $value = str_ireplace($SearchTerm,'<em>'. $temp . '</em>', $value);

@@ -35,7 +35,7 @@
       echo '<div class="row">';
       echo '<div class="checkbox"><input type="checkbox" id="'.$id.'" value="'.urlencode($key).'" name="'.$name.'" onClick="javascript:applySearchFilters();"><label for="'.$id.'"></label></div>';
       echo '<div class="name">'.$key.'</div>';
-      echo '<div class="number"><span>'.number_format($value).'</span></div>';
+      echo '<div class="number "><span>'.number_format($value).'</span></div>';
       echo '</div>';
   }
   ?>
