@@ -710,7 +710,7 @@ class RequestUtil
                     }
                 }
                 if(_checkbook_check_isNYCHAPage()){
-                    $path = $path.'/data_source/checkbook_nycha';
+                    $path = $path.'/datasource/checkbook_nycha';
                 }
                 break;
             case "budget":
