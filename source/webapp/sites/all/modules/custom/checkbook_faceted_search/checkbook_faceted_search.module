@@ -797,15 +797,15 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
   }
   if (count($agencies) > 0) {
     foreach ($agencies as $agencyName => $count) {
-      if ($count > 0) {
-        $checked = in_array($agencyName, array_values_recursive($reqAgencies[0]));
-        $agencyValue = urlencode($agencyName);
+      if ($count['doc_count'] > 0) {
+        $checked = in_array($count['key'], array_values_recursive($reqAgencies[0]));
+        $agencyValue = urlencode($count['key']);
         if ($checked) {
-          $output['Citywide Agency']['checked'][] = array($agencyValue, $agencyName, $count);
+          $output['Citywide Agency']['checked'][] = array($agencyValue, $count['key'], $count['doc_count']);
         }
         else {
             if(count($reqOGEAgencies) == 0 || strlen($agencyName) > 0)
-                $output['Citywide Agency']['unchecked'][] = array($agencyValue, $agencyName, $count);
+                $output['Citywide Agency']['unchecked'][] = array($agencyValue,$count['key'], $count['doc_count']);
         }
       }
     }

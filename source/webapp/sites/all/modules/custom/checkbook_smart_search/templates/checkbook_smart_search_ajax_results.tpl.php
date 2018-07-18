@@ -24,7 +24,7 @@ $searchTerms = explode('*|*', $_REQUEST['search_term']);
 //$clear_icon = $theme_path."/images/filter-close-icon.png";
 
 //Begin of search results
-$noOfTotalResults = 1000;
+$noOfTotalResults = $search_results['hits']['total'];
 $total = 5;
 $noOfResultsPerPage = 10;
 $startIndex = $transaction_no = ($_REQUEST['page'])? ($_REQUEST['page']*10)+1:1;

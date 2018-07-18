@@ -131,7 +131,7 @@ if($searchTerm != ""){
 }
 
 //Begin of search results
-$noOfTotalResults = 100;
+$noOfTotalResults =$search_results['hits']['total'];
 $total = 5;
 $noOfResultsPerPage = 10;
 $startIndex = $transaction_no = ($_REQUEST['page'])? ($_REQUEST['page']*10)+1:1;

@@ -212,11 +212,13 @@ function _checkbook_smart_search_escapeSolrValue($string){
  * @param
  * @return search results
  */
-function _checkbook_smart_search_results($search_terms=null, $page_no, $no_of_results)
+function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results)
 {
 
+
     //$current_date = date("c").'Z';
-    $search_term = htmlspecialchars_decode($_REQUEST['term'], ENT_QUOTES);
+     $search_term = _checkbook_smart_search_get_results_query_search_term($search_terms);
+  //  $search_term['agency_name'];
 
     $hosts = [
 
@@ -229,20 +231,17 @@ function _checkbook_smart_search_results($search_terms=null, $page_no, $no_of_re
     $params['index'] = 'checkbook';
     $params['type'] = 'payroll';
 
-     $params['body']['size']=1000;
-    $matches = array();
-
-    $regex1 = '(.* ';
-    $regex2 = '.*)|(^';
-    $regex3 = '.*)';
-     $search_term ='police department';
-    $search_term = '(.*' . $search_term . '.*)';
-    $search_term = str_replace('%20', ' ', $search_term);
+     $params['body']['from']=$page_no*$no_of_results;
 
     if (!empty($search_term)) {
-
-        $params['body']['query']['regexp']['agency_name']['value'] = $search_term;
-        $params['body']['aggs']['names']['terms']['field'] = 'agency_name.keyword';
+        if($search_term=="*:*"){
+            $params['body']['query']['match_all']['boost'] = 1.2;
+            $params['body']['aggs']['names']['terms']['field'] = 'agency_name.keyword';
+        }
+        else {
+            $params['body']['query'] = $search_term;
+            $params['body']['aggs']['names']['terms']['field'] = 'agency_name.keyword';
+        }
 
         try {
             $search_results = $client->search($params);
@@ -250,80 +249,18 @@ function _checkbook_smart_search_results($search_terms=null, $page_no, $no_of_re
             var_dump($e->getMessage());
         }
 
-        /* $values = $response['aggregations']['names']['buckets'];
-         foreach ($values as $key => $value) {
-             $a = strtolower($value['key']);
-             $url = "/smart_search?search_term=*|*agency_names=";
-             $matches[]= array("url"=>$url, "category"=>"Agencies" ,"label" => $a, "value" => urlencode($a));
-         }
-        */
-        LogHelper::log_notice("Solr response: " . $search_results);
 
         return array('search_results' => $search_results, 'active_contracts' => null, 'registered_contracts' => null);
     }
 }
 
-    /*$search_string = _checkbook_smart_search_get_results_query_search_term($search_terms);
-    $query = "select/?q=". $search_string
-        ."&start=". ($page_no*$no_of_results)
-        ."&sort=domain_ordering+asc,date_ordering+desc"
-        ."&wt=php";
 
-    $search_results = _checkbook_smart_search_solr_results($query);
 
-    $contract_flag = false;
-    foreach($search_terms as $id => $keyvaluepair){
-        $keys = explode("=", $keyvaluepair);
-        if($keys[0] == 'domains'){
-            $tilda = strpos($keys[1], '~');
-            if($tilda) {
-                $domain = explode('~',$keys[1]);
-                foreach($domain as $key => $value){
-                    if($value == 'contracts'){
-                        $contract_flag = true;
-                    }
-                }
-            }
-            else{
-                if($keys[1] == 'contracts'){
-                    $contract_flag = true;
-                }
-            }
-        }
-    }
 
-    if($contract_flag){
-        //Active contracts count
-        $act_search_string = str_replace('&fq=(contract_status:"pending")','',$search_string);
-        foreach($search_terms as $id => $keyvaluepair){
-            $keys = explode("=", $keyvaluepair);
-            if($keys[0] == 'registered_fiscal_years'){
-                $act_search_string = str_replace('registered_fiscal_year','fiscal_year',$act_search_string);
-            }
-        }
-        $active_contracts_query = "select/?q=" . $act_search_string
-            ."&fq=contract_status:registered"
-            ."&wt=php";
 
-        $active_contracts = _checkbook_smart_search_solr_results($active_contracts_query);
 
-        // Registered Contracts count
-        $reg_search_string = str_replace('&fq=(contract_status:"pending")','',$search_string);
-        foreach($search_terms as $id => $keyvaluepair){
-            $keys = explode("=", $keyvaluepair);
-            if($keys[0] == 'fiscal_years'){
-                $reg_search_string = str_replace('fiscal_year','registered_fiscal_year',$reg_search_string);
-            }
-        }
-        $registered_contracts_query = "select/?q=" . $reg_search_string
-            ."&fq=contract_status:registered"
-            ."&wt=php";
 
-        $registered_contracts = _checkbook_smart_search_solr_results($registered_contracts_query);
-    }
 
-    return array('search_results'=> $search_results,'active_contracts' => $active_contracts,'registered_contracts' => $registered_contracts);
-}
 
 
 /** Returns solr results based on the search criteria from current URL */
@@ -352,20 +289,16 @@ function _checkbook_smart_search_results($search_terms=null, $page_no, $no_of_re
 
         for ($i = 1; $i < count($search_terms); $i++) {
             $reqParams = explode('=', $search_terms[$i]);
-            if ($reqParams[0] == 'vendor_type') {
-                $reqParams[1] = get_vendor_type_mapping($reqParams[1]);
-            }
-            if ($reqParams[0] == 'contract_status') {
-                $reqParams[1] = get_contract_status_mapping($reqParams[1]);
-            }
+
             $filters = explode('~', urldecode($reqParams[1]));
 
-            $subQuery = "";
+            $subQuery = [];
             foreach ($filters as $value) {
-                $subQuery .= "(" . $parameterMapping[$reqParams[0]] . ":" . _checkbook_smart_search_escapeSolrValue('"' . $value . '"') . ")%20OR%20";
+                $terms = strtolower($value);
+                $subQuery[$parameterMapping[$reqParams[0]]] = str_replace('%20', ' ', $terms);
             }
-            $subQuery = substr($subQuery, 0, -8);
-            $searchTerm = "agency_name";
+            $params['term']= $subQuery;
+            $searchTerm = $params;
         }
 
         return $searchTerm;
@@ -417,57 +350,72 @@ function _checkbook_smart_search_results($search_terms=null, $page_no, $no_of_re
             "payroll_type" => "payroll_type"
         );
 
+        $hosts = [
+
+            'http://localhost:9200'
+        ];
+
+        $client = Elasticsearch\ClientBuilder::create()
+            ->setHosts($hosts)
+            ->build();
+        $params['index'] = 'checkbook';
+        $params['type'] = 'payroll';
+
+        $matches = array();
+
         $search_string = $search_terms[0];
-        $request_facet_param = array();
+
         $result = array();
+
+
+
+       $search_term  = _checkbook_smart_search_get_results_query_search_term($search_terms);
+       $request_facet_param = $search_term['term']['agency_name'];
         for ($i = 1; $i < count($search_terms); $i++) {
             $req_params = explode('=', $search_terms[$i]); // ("domains", "payroll~spending") ("fiscal_years", "2014~2013")
-            if ($req_params[0] == 'vendor_type') {
-                $req_params[1] = get_vendor_type_mapping($req_params[1]);
-            }
-            if ($req_params[0] == 'contract_status') {
-                if ($req_params[1] == 'active') {
-                    $req_params[1] = 'registered';
-                }
-            }
+
             $filters = explode('~', urldecode($req_params[1]));
-            $sub_query = "";
+
             foreach ($filters as $value) {
                 if ($req_params[0] == $facet_name) {
                     $count = 1;
-                    $request_facet_param[] = $value;
-                }
-                $sub_query .= "(" . $parameter_mapping[$req_params[0]] . ":" .
-                    _checkbook_smart_search_escapeSolrValue('"' . $value . '"') . ")%20OR%20";
-            }
 
-            if (strlen($sub_query) > 0) {
-                $search_string .= "&fq=" . substr($sub_query, 0, -8);
+                }
+
             }
         }
 
-        if ($count > 0) {
-            $query = "select/?q=" . $search_string
-                . "&facet=true"
-                . "&facet.sort=count"
-                . "&facet.field=" . $parameter_mapping[$facet_name]
-                . "&wt=php"
-                . "&facet.mincount=1";
 
-            $selected_facet_results = _checkbook_smart_search_solr_results($query);
-            foreach ($selected_facet_results['facet_counts']['facet_fields'] as $name => $value) {
-                if (count($value) > 0) {
-                    foreach ($request_facet_param as $a => $b) {
-                        foreach ($value as $facet => $facet_count) {
-                            if ($facet == $b) {
-                                $result[] = array('name' => $facet, 'count' => $facet_count);
-                            }
-                        }
+            $search_term1 = str_replace('%20', ' ', $search_term);
+
+        if ($count>0) {
+            $params['body']['query']= $search_term;
+            $params['body']['aggs']['names']['terms']['field'] = 'agency_name.keyword';
+            $params['body']['aggs']['names']['terms']['size'] = 10000;
+
+            try {
+                $response = $client->search($params);
+            } catch (Exception $e) {
+                var_dump($e->getMessage());
+            }
+
+            $values = $response['aggregations']['names']['buckets'];
+
+            foreach ($values as $key => $value) {
+                if ($value['doc_count'] > 0) {
+                    if (strtolower($value['key']) == $request_facet_param) {
+
+                        $result[] = array('name' => $value['key'], 'count' => $value['doc_count']);
                     }
                 }
             }
+
+
+
+
             return $result;
-        } else
+        }
+            else
             return null;
 
     }
@@ -477,7 +425,7 @@ function _checkbook_smart_search_results($search_terms=null, $page_no, $no_of_re
 
         $hosts = [
 
-            'http://elk-checkbook-nyc.reisys.com:9200'
+            'http://localhost:9200'
         ];
 
         $client = Elasticsearch\ClientBuilder::create()
@@ -689,6 +637,7 @@ function _checkbook_smart_search_results($search_terms=null, $page_no, $no_of_re
 
         $search_term = trim(htmlspecialchars_decode($_REQUEST['term'], ENT_QUOTES));//eco
 
+
         $hosts = [
 
             'http://localhost:9200'
@@ -730,6 +679,7 @@ function _checkbook_smart_search_results($search_terms=null, $page_no, $no_of_re
             return drupal_json_output($matches);
 
         }
+
     }
 
     /**
