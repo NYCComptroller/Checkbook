@@ -31,9 +31,9 @@ foreach($node->data as $key=>$value){
         $nycha_agencies[$key] = $value;
     }
 }
-//log_error($city_agencies);log_error($nycha_agencies);
+
 $oge_filter_highlight = (_checkbook_check_isEDCPage() || _checkbook_check_isNYCHAPage()) ? 'agency_filter_highlight' : '';
-$city_filter_highlight = (!_checkbook_check_isEDCPage()) ? 'agency_filter_highlight' : '';
+$city_filter_highlight = (!(_checkbook_check_isEDCPage() || _checkbook_check_isNYCHAPage())) ? 'agency_filter_highlight' : '';
 
 $current_fy_year = _getFiscalYearID();
 $current_cal_year = _getCalendarYearID();
