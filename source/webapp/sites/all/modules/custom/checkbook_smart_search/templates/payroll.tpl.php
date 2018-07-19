@@ -45,7 +45,7 @@ $rows = array();
 foreach ($payroll_parameter_mapping as $key => $title){
   $value = $payroll_results['_source'][$key];
 
-  $temp = substr($value, strpos(strtoupper($value), strtoupper($SearchTerm)),strlen($SearchTerm));
+ // $temp = substr($value, strpos(strtoupper($value), strtoupper($SearchTerm)),strlen($SearchTerm));
   $value = str_ireplace($SearchTerm,'<em>'. $temp . '</em>', $value);
 
   if(in_array($key, $amount_fields)){

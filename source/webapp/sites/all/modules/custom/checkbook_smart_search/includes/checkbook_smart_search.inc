@@ -222,6 +222,7 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
 
     $hosts = [
 
+       // 'http://elk-checkbook-nyc.reisys.com:9200'
         'http://localhost:9200'
     ];
 
@@ -232,6 +233,7 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
     $params['type'] = 'payroll';
 
      $params['body']['from']=$page_no*$no_of_results;
+    // $params['body']['size']=($page_no*$no_of_results)+10;
 
     if (!empty($search_term)) {
         if($search_term=="*:*"){
@@ -239,7 +241,7 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
             $params['body']['aggs']['names']['terms']['field'] = 'agency_name.keyword';
         }
         else {
-            $params['body']['query'] = $search_term;
+            $params['body']['query']['bool'] = $search_term;
             $params['body']['aggs']['names']['terms']['field'] = 'agency_name.keyword';
         }
 
@@ -292,12 +294,13 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
 
             $filters = explode('~', urldecode($reqParams[1]));
 
-            $subQuery = [];
+
             foreach ($filters as $value) {
                 $terms = strtolower($value);
-                $subQuery[$parameterMapping[$reqParams[0]]] = str_replace('%20', ' ', $terms);
+
+                $subQuery['should'][]['term'][$parameterMapping[$reqParams[0]]] = str_replace('%20', ' ', $terms);
             }
-            $params['term']= $subQuery;
+            $params= $subQuery;
             $searchTerm = $params;
         }
 
@@ -370,7 +373,10 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
 
 
        $search_term  = _checkbook_smart_search_get_results_query_search_term($search_terms);
-       $request_facet_param = $search_term['term']['agency_name'];
+       if(isset($search_term['match']['agency_name'])){
+           $request_facet_param = $search_term['match']['agency_name'];
+       }
+
         for ($i = 1; $i < count($search_terms); $i++) {
             $req_params = explode('=', $search_terms[$i]); // ("domains", "payroll~spending") ("fiscal_years", "2014~2013")
 
@@ -389,7 +395,7 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
             $search_term1 = str_replace('%20', ' ', $search_term);
 
         if ($count>0) {
-            $params['body']['query']= $search_term;
+            $params['body']['query']['bool']= $search_term;
             $params['body']['aggs']['names']['terms']['field'] = 'agency_name.keyword';
             $params['body']['aggs']['names']['terms']['size'] = 10000;
 
@@ -403,7 +409,8 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
 
             foreach ($values as $key => $value) {
                 if ($value['doc_count'] > 0) {
-                    if (strtolower($value['key']) == $request_facet_param) {
+
+                    if (strtolower($value['key']) == 'police department') {
 
                         $result[] = array('name' => $value['key'], 'count' => $value['doc_count']);
                     }

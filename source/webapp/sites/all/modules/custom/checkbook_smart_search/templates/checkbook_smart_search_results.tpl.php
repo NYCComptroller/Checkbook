@@ -233,5 +233,5 @@ if($noOfTotalResults > 0){
   // End of search results
 }
 else{
-  print print_r($search_results['hits']['hits'])."<strong>There are no search results found with this search criteria.</strong>";
+  print print_r($search_results)."<strong>There are no search results found with this search criteria.</strong>";
 }
