@@ -944,7 +944,7 @@ function _checkbook_smart_search_export_data(){
 }
 
 /** Smart search results labels array */
-function _checkbook_smart_search_domain_fields($domain, $IsOge){
+function _checkbook_smart_search_domain_fields($domain, $IsOge=false){
   switch ($domain){
     case "spending":
         if($IsOge)
