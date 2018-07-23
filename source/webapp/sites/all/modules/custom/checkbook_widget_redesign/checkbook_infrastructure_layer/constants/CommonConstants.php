@@ -107,6 +107,10 @@ abstract class Datasource {
     public static function isNYCHA() {
         return self::getCurrent() == Datasource::NYCHA;
     }
+
+    public static function getDBSchema() {
+        return (self::getCurrent() == Datasource::NYCHA) ? 'public_nycha.':'';
+    }
 }
 
 abstract class Dashboard {
