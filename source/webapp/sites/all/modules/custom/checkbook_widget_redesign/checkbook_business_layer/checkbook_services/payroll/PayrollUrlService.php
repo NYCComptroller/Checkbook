@@ -10,18 +10,16 @@ class PayrollUrlService
      */
     static function getFooterUrl($parameters, $legacy_node_id = null)
     {
-        //For NYCHA disabling details links temporarily
-        if(Datasource::isNYCHA()){
-            return null;
-        }
         $agency = RequestUtilities::_getUrlParamString('agency');
         $title = RequestUtilities::_getUrlParamString('title');
         $legacy_node_id = isset($legacy_node_id) ? '/smnid/'.$legacy_node_id : '';
+        $data_source = RequestUtilities::_getUrlParamString('datasource');
 
         if ($agency != '') {
             $url = '/panel_html/payroll_agencytransactions/payroll/agencywide/transactions'
                 . RequestUtilities::_getUrlParamString('yeartype')
                 . RequestUtilities::_getUrlParamString('year')
+                . $data_source
                 . $legacy_node_id
                 . $agency.$title;
         }
@@ -30,6 +28,7 @@ class PayrollUrlService
                 . RequestUtilities::_getUrlParamString('yeartype')
                 . RequestUtilities::_getUrlParamString('year')
                 . RequestUtilities::_getUrlParamString('title')
+                . $data_source
                 . $legacy_node_id;
         }
         return $url;
