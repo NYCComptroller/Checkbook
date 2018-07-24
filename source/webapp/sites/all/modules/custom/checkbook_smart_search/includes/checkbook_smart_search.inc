@@ -222,8 +222,8 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
 
     $hosts = [
 
-       // 'http://elk-checkbook-nyc.reisys.com:9200'
-        'http://localhost:9200'
+       'http://elk-checkbook-nyc.reisys.com:9200'
+
     ];
 
     $client = Elasticsearch\ClientBuilder::create()
@@ -243,6 +243,7 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
         else {
             $params['body']['query']['bool'] = $search_term;
             $params['body']['aggs']['names']['terms']['field'] = 'agency_name.keyword';
+            $params['body']['sort']['pay_date']['order'] = 'desc';
         }
 
         try {
@@ -355,7 +356,7 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
 
         $hosts = [
 
-            'http://localhost:9200'
+            'http://elk-checkbook-nyc.reisys.com:9200'
         ];
 
         $client = Elasticsearch\ClientBuilder::create()
@@ -364,18 +365,20 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
         $params['index'] = 'checkbook';
         $params['type'] = 'payroll';
 
-        $matches = array();
-
-        $search_string = $search_terms[0];
 
         $result = array();
 
 
 
        $search_term  = _checkbook_smart_search_get_results_query_search_term($search_terms);
-       if(isset($search_term['match']['agency_name'])){
-           $request_facet_param = $search_term['match']['agency_name'];
-       }
+        $facetname= $parameter_mapping[$facet_name];
+
+       if(isset($search_term['should'])){
+           foreach ($search_term['should'] as $key=>$value){
+               $request_facet_param[] = $value['term'][$facetname];
+           }
+
+         }
 
         for ($i = 1; $i < count($search_terms); $i++) {
             $req_params = explode('=', $search_terms[$i]); // ("domains", "payroll~spending") ("fiscal_years", "2014~2013")
@@ -392,7 +395,7 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
         }
 
 
-            $search_term1 = str_replace('%20', ' ', $search_term);
+
 
         if ($count>0) {
             $params['body']['query']['bool']= $search_term;
@@ -402,25 +405,30 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
             try {
                 $response = $client->search($params);
             } catch (Exception $e) {
-                var_dump($e->getMessage());
+                var_dump($request_facet_param);
             }
 
             $values = $response['aggregations']['names']['buckets'];
+            foreach ($request_facet_param as $a=>$b) {
 
-            foreach ($values as $key => $value) {
-                if ($value['doc_count'] > 0) {
+               foreach ($values as $key => $value) {
 
-                    if (strtolower($value['key']) == 'police department') {
+                    if ($value['doc_count'] > 0)  {
 
-                        $result[] = array('name' => $value['key'], 'count' => $value['doc_count']);
+                        if (strtolower($value['key']) == $b) {
+
+                            $result[] = array('name' => $value['key'], 'count' => $value['doc_count']);
+                        }
                     }
                 }
             }
 
-
-
-
             return $result;
+
+
+
+
+
         }
             else
             return null;
@@ -432,7 +440,7 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
 
         $hosts = [
 
-            'http://localhost:9200'
+            'http://elk-checkbook-nyc.reisys.com:9200'
         ];
 
         $client = Elasticsearch\ClientBuilder::create()
@@ -647,7 +655,7 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
 
         $hosts = [
 
-            'http://localhost:9200'
+            'http://elk-checkbook-nyc.reisys.com:9200'
         ];
 
         $client = Elasticsearch\ClientBuilder::create()
