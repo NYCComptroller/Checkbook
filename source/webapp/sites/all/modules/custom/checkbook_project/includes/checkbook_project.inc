@@ -2466,6 +2466,7 @@ function _checkbook_vendor_link($vendor_id, $prime = FALSE) {
  * @return string
  */
 function _checkbook_agency_link($agency_id, $prime = FALSE){
+    $issubvendor='false';
 
   $status = '/status/' . (RequestUtilities::getRequestParamValue("status") ?: 'A');
 
@@ -2497,14 +2498,14 @@ function _checkbook_agency_link($agency_id, $prime = FALSE){
     } elseif (stripos($url, 'contracts_revenue_landing')) {
       $dashboard = '/contracts_revenue_landing';
     }
+    if (stripos($url, 'dashboard/ss')){
+        $issubvendor=true;
+    }
 
-
-      if (_is_mwbe_vendor(RequestUtilities::getRequestParamValue("magid"))) {
+      if (_is_mwbe_vendor(RequestUtilities::getRequestParamValue("magid"))||_is_mwbe_vendor(RequestUtilities::getRequestParamValue("agid"))||$issubvendor) {
           $mwbe = RequestUtilities::_appendMWBESubVendorDatasourceUrlParams();
       }
-      else if(_is_mwbe_vendor(RequestUtilities::getRequestParamValue("agid"))){
-          $mwbe = RequestUtilities::_appendMWBESubVendorDatasourceUrlParams();
-      }
+
     $agency_link = $dashboard.$status.'/year/' . _getCurrentYearID() . $datasource. '/yeartype/B/agency/'
       . $agency_id .$mwbe. '?expandBottomCont=true';
   }
