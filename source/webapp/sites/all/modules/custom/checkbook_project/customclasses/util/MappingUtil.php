@@ -271,7 +271,7 @@ class MappingUtil {
                   LogHelper::log_info('minority_spending_ :: CACHE HIT!');
                 } else {
                   $data = _checkbook_project_execute_sql($sql);
-                  dmemcache_set($cacheKey, $data, 3600);
+                  dmemcache_set($cacheKey, $data, 54000);
                 }
 
                 break;
@@ -309,7 +309,7 @@ class MappingUtil {
                   LogHelper::log_info('minority_contracts_ :: CACHE HIT!');
                 } else {
                   $data = _checkbook_project_execute_sql($sql);
-                  dmemcache_set($cacheKey, $data, 3600);
+                  dmemcache_set($cacheKey, $data, 54000);
                 }
 
                 break;

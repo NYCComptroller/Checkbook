@@ -1237,7 +1237,7 @@ class RequestUtil
         }
         $data = _checkbook_project_execute_sql($sql);
         $count = $data[0]['count'];
-        dmemcache_set($cacheKey, $count, 3600);
+        dmemcache_set($cacheKey, $count, 54000);
         return $count;
     }
 

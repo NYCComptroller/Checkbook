@@ -82,7 +82,7 @@ abstract class DataService implements IDataService {
           return $data;
         }
         $data = $this->getRepository()->getByDataset($parameters, $limit, $orderBy, $fnData);
-        dmemcache_set($cacheKey, $data, 3600);
+        dmemcache_set($cacheKey, $data, 54000);
         return $data;
     }
 
@@ -96,7 +96,7 @@ abstract class DataService implements IDataService {
           return $data;
         }
         $data = $this->getRepository()->getByDatasetRowCount($parameters, $fnData);
-        dmemcache_set($cacheKey, $data, 3600);
+        dmemcache_set($cacheKey, $data, 54000);
         return $data;
     }
 
