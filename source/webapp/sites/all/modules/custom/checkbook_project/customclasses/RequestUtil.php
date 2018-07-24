@@ -1229,8 +1229,16 @@ class RequestUtil
         $sql = 'select count(*) count
 				    from ' . $table . ' a1
 				   ' . $where_filter;
+        $cacheKey = '_top_nav_count_'.md5($sql);
+        $count = dmemcache_get($cacheKey);
+        if (null !== $count) {
+          LogHelper::log_info($cacheKey.' CACHE HIT!');
+          return $count;
+        }
         $data = _checkbook_project_execute_sql($sql);
-        return $data[0]['count'];
+        $count = $data[0]['count'];
+        dmemcache_set($cacheKey, $count, 54000);
+        return $count;
     }
 
     /**
