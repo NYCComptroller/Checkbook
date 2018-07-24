@@ -260,14 +260,19 @@ class MappingUtil {
                 }
 
 
-
                 $sql = 'select a1.minority_type_id
-				    from ' . $table. ' a1
-				   ' . $where_filter . '
-				    group by a1.minority_type_id  ';
+                        from ' . $table . ' a1
+                       ' . $where_filter . '
+                        group by a1.minority_type_id  ';
 
-
-                $data = _checkbook_project_execute_sql($sql);
+                $cacheKey = 'minority_spending_'.md5($sql);
+                $data = dmemcache_get($cacheKey);
+                if ($data) {
+                  LogHelper::log_info('minority_spending_ :: CACHE HIT!');
+                } else {
+                  $data = _checkbook_project_execute_sql($sql);
+                  dmemcache_set($cacheKey, $data, 54000);
+                }
 
                 break;
             case "contracts":
@@ -293,11 +298,20 @@ class MappingUtil {
 
 
                 $sql = 'select a1.minority_type_id
-				    from {aggregateon_mwbe_contracts_cumulative_spending} a1
-	    				join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
-				   ' . $where_filter . '
-				    group by a1.minority_type_id';
-                $data  = _checkbook_project_execute_sql($sql);
+                        from {aggregateon_mwbe_contracts_cumulative_spending} a1
+                          join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
+                       ' . $where_filter . '
+                        group by a1.minority_type_id';
+
+                $cacheKey = 'minority_contracts_'.md5($sql);
+                $data = dmemcache_get($cacheKey);
+                if ($data) {
+                  LogHelper::log_info('minority_contracts_ :: CACHE HIT!');
+                } else {
+                  $data = _checkbook_project_execute_sql($sql);
+                  dmemcache_set($cacheKey, $data, 54000);
+                }
+
                 break;
         }
         $applicable_minority_types = array();
