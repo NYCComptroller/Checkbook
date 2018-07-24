@@ -401,7 +401,7 @@ class SpendingUtil{
                   $spending_vendor_latest_mwbe_category[$row['vendor_id']][$row['is_prime_or_sub']]['minority_type_id'] = $row['minority_type_id'];
                 }
               }
-              dmemcache_set('spending_vendor_latest_mwbe_category', $spending_vendor_latest_mwbe_category, 3600);
+              dmemcache_set('spending_vendor_latest_mwbe_category', $spending_vendor_latest_mwbe_category, 54000);
             } else {
               LogHelper::log_info('spending_vendor_latest_mwbe_category :: CACHE HIT!');
             }

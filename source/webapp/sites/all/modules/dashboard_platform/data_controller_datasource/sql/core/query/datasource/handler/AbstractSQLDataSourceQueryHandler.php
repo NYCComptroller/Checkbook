@@ -289,7 +289,7 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
         LogHelper::log_notice($query);
         $result = $this->executeQuery($callcontext, $datasource, $sql, $resultFormatter);
         if(in_array($datasetName, $cacheDatasets)) {
-          dmemcache_set($cacheKey, $result, 3600);
+          dmemcache_set($cacheKey, $result, 54000);
         }
         return $result;
     }
@@ -505,7 +505,7 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
         $return = $this->executeQuery($callcontext, $datasource, $sql, $resultFormatter);
         $cache = false;
         if (is_array($return)) {
-          if (13 > sizeof($return) && 13 > sizeof($return[0])) {
+          if (14 > sizeof($return) && 14 > sizeof($return[0])) {
             // some small piece of data
             $cache = true;
           }
@@ -515,7 +515,7 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
           }
         }
         if ($cache) {
-         dmemcache_set($cacheKey, $return, 3600);
+         dmemcache_set($cacheKey, $return, 54000);
         }
         return $return;
     }
