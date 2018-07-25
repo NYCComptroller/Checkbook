@@ -27,6 +27,7 @@ foreach($node->data as $data){
     $year_type = $data['type_of_year'];
     $employment_type = $data['type_of_employment'];
     $agency_name = _shorten_word_with_tooltip(strtoupper($data['agency_name']),25);
+    $data_source = RequestUtilities::_getUrlParamString('datasource');
 
     $record['total_annual_salary'] = $node->total_annual_salary;
     $record['total_gross_pay'] = $data['total_gross_pay'];
@@ -37,7 +38,7 @@ foreach($node->data as $data){
     $record['total_overtime_employees'] = $data['total_overtime_employees'];
     $record['number_employees'] = $data['number_employees'];
     $record['agency_name'] = $data['agency_name'];
-    $record['agency_url'] = "<a href='/payroll/agency_landing/yeartype/$year_type/year/$year/agency/{$data['agency_id']}'>{$agency_name}</a>";
+    $record['agency_url'] = "<a href='/payroll/agency_landing/yeartype/$year_type/year/$year{$data_source}/agency/{$data['agency_id']}'>{$agency_name}</a>";
 
     $all_data[$employment_type][] = $record;
 }
