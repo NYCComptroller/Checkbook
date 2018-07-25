@@ -37,10 +37,6 @@ class PayrollUrlService
 
     static function getTitleFooterUrl($footerUrl, $widget){
         $url = null;
-        //For NYCHA disabling details links temporarily
-        if(Datasource::isNYCHA()){
-            return null;
-        }
         switch($widget){
             case "landing":
                 $url = "/panel_html/payroll_nyc_title_transactions/payroll/payroll_title/transactions";
