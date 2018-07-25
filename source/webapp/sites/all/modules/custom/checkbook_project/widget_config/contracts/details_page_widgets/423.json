@@ -8,6 +8,6 @@
  "urlParamMap":{"magid":"original_master_agreement_id@checkbook:history_master_agreement"},
 "dataset": "checkbook:history_agreement",
 "orderBy":["-rfed_amount","-contract_number"],
-"columns": ["contract_number","original_agreement_id","document_code@checkbook:ref_document_code","rfed_amount","maximum_contract_amount","original_contract_amount"]
-
+"columns": ["contract_number","original_agreement_id","document_code@checkbook:ref_document_code","rfed_amount","maximum_contract_amount","original_contract_amount"],
+ "limit": 100
 }

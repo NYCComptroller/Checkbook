@@ -37,7 +37,6 @@
   }
 
   foreach ($node->data as $contract) {
-
     $contract_number = $contract['contract_number'];
     $q1 = "SELECT DISTINCT COUNT(sub_contract_id) AS sub_vendor_count FROM subcontract_details
                         WHERE contract_number = '". $contract_number . "'
@@ -102,9 +101,14 @@
     </td>
 
   </tr>
-    <?php $count += 1;
-    if ($count > 1) {
+    <?php
+
+    if (++$count && $clickClass) {
       $clickClass = "";
+    }
+
+    if (99<$count){
+      break;
     }
   }
 
