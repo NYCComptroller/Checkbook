@@ -58,9 +58,6 @@ function checkbook_etl_status_theme($existing, $type, $theme, $path) {
         'variables' => array(
           'uat_status' => NULL,
           'prod_status' => NULL,
-          'comment' => NULL,
-          'invalid_records' => NULL,
-          'invalid_records_timestamp' => NULL,
         ),
         'template' => 'checkbook-etl-status',
         'path' => drupal_get_path('module', 'checkbook_etl_status').'/theme',
