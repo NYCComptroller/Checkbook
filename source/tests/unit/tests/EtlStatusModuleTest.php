@@ -286,14 +286,18 @@ class EtlStatusModuleTest extends TestCase
 
         $CheckbookEtlStatus->mail($message);
 
-        $expected = <<<EOM
-UAT  ETL STATUS:\t<strong style="color:darkgreen">SUCCESS</strong> (finished: {$this->CES->niceDisplayDate($this->fakeToday)})<br /><br />
-PROD ETL STATUS:\t<strong style="color:red">FAIL</strong> (last success: {$this->CES->niceDisplayDate($this->fakeYesterday)})
-
-EOM;
+        $expected = [
+            'uat_status' => '<strong style="color:darkgreen">SUCCESS</strong> (finished: '.
+                $this->CES->niceDisplayDate($this->fakeToday) . ')',
+            'prod_status' => '<strong style="color:red">FAIL</strong> (last success: '.
+                $this->CES->niceDisplayDate($this->fakeYesterday) . ')',
+            'comment' => '',
+            'invalid_records' => null,
+            'invalid_records_timestamp' => null,
+        ];
 
         $this->assertEquals('ETL Status: Fail ('.$this->fakeToday.')', $message['subject']);
-        $this->assertEquals($expected, $message['body'][0]);
+        $this->assertEquals($expected, $message['body']);
     }
 
     /**
@@ -328,13 +332,16 @@ EOM;
 
         $CheckbookEtlStatus->mail($message);
 
-        $expected = <<<EOM
-UAT  ETL STATUS:\t<strong style="color:red">FAIL</strong> (last success: {$this->CES->niceDisplayDate($this->fakeYesterday)})<br /><br />
-PROD ETL STATUS:\t<strong style="color:darkgreen">SUCCESS</strong> (finished: {$this->CES->niceDisplayDate($this->fakeToday)})
-
-EOM;
-
-        $this->assertEquals($expected, $message['body'][0]);
+        $expected = [
+            'uat_status' => '<strong style="color:red">FAIL</strong> (last success: '.
+                $this->CES->niceDisplayDate($this->fakeYesterday) . ')',
+            'prod_status' => '<strong style="color:darkgreen">SUCCESS</strong> (finished: '.
+                $this->CES->niceDisplayDate($this->fakeToday) . ')',
+            'comment' => '',
+            'invalid_records' => null,
+            'invalid_records_timestamp' => null,
+        ];
+        $this->assertEquals($expected, $message['body']);
     }
 
     /**

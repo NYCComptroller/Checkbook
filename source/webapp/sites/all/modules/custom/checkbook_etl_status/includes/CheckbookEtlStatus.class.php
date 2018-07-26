@@ -54,6 +54,11 @@ class CheckbookEtlStatus
     global $conf;
     global $base_url;
 
+    date_default_timezone_set('America/New_York');
+
+    if (defined('CHECKBOOK_DEV_VSL4')) {
+      return $this->sendmail();
+    }
     if (!isset($conf['etl_status_recipients'])) {
       //error_log("ETL STATUS MAIL CRON skips. Reason: \$conf['etl_status_recipients'] not defined");
       return false;
@@ -64,7 +69,6 @@ class CheckbookEtlStatus
       return false;
     }
 
-    date_default_timezone_set('America/New_York');
     $variable_name = 'checkbook_etl_status_last_run';
 
     $today = $this->date('Y-m-d');
@@ -174,14 +178,21 @@ class CheckbookEtlStatus
   public function mail(&$message)
   {
     $uat_result = $this->formatStatus($this->getUatStatus());
-    $prod_status = $this->formatStatus($this->getProdStatus());
+    $prod_json = $this->getProdStatus();
+    $prod_status = $this->formatStatus($prod_json);
     $comment = $this->comment();
+    $invalid_records = !empty($prod_json['invalid_records']) ? $prod_json['invalid_records'] : null;
+    $invalid_records_timestamp = !empty($prod_json['invalid_records_timestamp']) ? $prod_json['invalid_records_timestamp'] : null;
 
-    $message['body'][] = <<<EOM
-UAT  ETL STATUS:\t{$uat_result}<br /><br />
-PROD ETL STATUS:\t{$prod_status}
-{$comment}
-EOM;
+    $message['body'] =
+      [
+        'uat_status' => $uat_result,
+        'prod_status' => $prod_status,
+        'comment' => $comment,
+        'invalid_records' => $invalid_records,
+        'invalid_records_timestamp' => $invalid_records_timestamp,
+      ];
+
     $date = $this->date('Y-m-d');
 
     $message['subject'] = 'ETL Status: '.$this->success." ($date)";
