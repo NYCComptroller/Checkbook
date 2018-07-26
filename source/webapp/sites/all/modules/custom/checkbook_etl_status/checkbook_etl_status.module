@@ -42,13 +42,30 @@ function checkbook_etl_status_mail_alter(&$message)
     $message['headers']['Importance'] = 'High';
   }
   $message['headers']['Content-Type'] = 'text/html; charset=UTF-8; format=flowed; delsp=yes';
-  $replace_from = [
-    "\tSUCCESS",
-    "\tFAIL",
-  ];
-  $replace_to = [
-    "\t<strong style='color:green'>SUCCESS</strong>",
-    "\t<strong style='color: red'>FAIL</strong>",
-  ];
-  $message['body'] = str_replace($replace_from, $replace_to, $message['body']);
+  $message['body'] = theme('etl_status_email', $message['body']);
+  if (defined('CHECKBOOK_DEV_VSL4')) {
+    die($message['body']);
+  }
 }
+
+/**
+ * Implements hook_theme()
+ */
+function checkbook_etl_status_theme($existing, $type, $theme, $path) {
+  if($type == 'module') {
+    return array(
+      'etl_status_email' => array(
+        'variables' => array(
+          'uat_status' => NULL,
+          'prod_status' => NULL,
+          'comment' => NULL,
+          'invalid_records' => NULL,
+          'invalid_records_timestamp' => NULL,
+        ),
+        'template' => 'checkbook-etl-status',
+        'path' => drupal_get_path('module', 'checkbook_etl_status').'/theme',
+      ),
+    );
+  }
+}
+
