@@ -11,11 +11,6 @@ class CheckbookEtlStatus
   const LAST_RUN_SUCCESS_PERIOD = 60 * 60 * 12;
 
   /**
-   *
-   */
-  const MONDAY_NOTICE = "<small>ETL is not configured to run on Monday night, so expect FAILs each Tuesday morning.</small>";
-
-  /**
    * @var string
    */
   public $success = 'Success';
@@ -107,7 +102,9 @@ class CheckbookEtlStatus
   public function getUatStatus()
   {
     $local_api = new \checkbook_json_api\CheckBookJsonApi();
-    return $local_api->etl_status();
+    $result = $local_api->etl_status();
+    $result['source'] = 'UAT';
+    return $result;
   }
 
   /**
@@ -118,6 +115,7 @@ class CheckbookEtlStatus
     try {
       $prod_json_status = $this->get_contents('https://www.checkbooknyc.com/json_api/etl_status');
       $prod_status = json_decode($prod_json_status, true);
+      $prod_status['source'] = 'PROD';
       return $prod_status;
     } catch (Exception $e) {
       error_log($e->getMessage());
@@ -129,9 +127,14 @@ class CheckbookEtlStatus
    * @param $date
    * @return false|string
    */
-  public function niceDisplayDate($date)
+  public function niceDisplayDateDiff($date)
   {
-    return date('Y-m-d h:iA', strtotime($date));
+    if (!$date) {
+      return 'never';
+    }
+    $date1 = date_create($date);
+    $interval = date_diff($date1, date_create());
+    return $interval->format('%a day(s) %h hour(s) ago');
   }
 
   /**
@@ -140,35 +143,20 @@ class CheckbookEtlStatus
    */
   public function formatStatus($data)
   {
-    $result = 'FAIL (unknown)';
     $now = $this->timeNow();
 
     if (!empty($data['success']) && true == $data['success']) {
+      $data['hint'] = $this->niceDisplayDateDiff($data['data']);
 
-      $displayData = $this->niceDisplayDate($data['data']);
-
-      if (self::LAST_RUN_SUCCESS_PERIOD > ($now - strtotime($data['data']))) {
-        $result = '<strong style="color:darkgreen">SUCCESS</strong> (finished: ' . $displayData . ')';
-      } else {
-        $this->success = 'Fail';
-        $result = '<strong style="color:red">FAIL</strong> (last success: ' . $displayData . ')';
+      if (self::LAST_RUN_SUCCESS_PERIOD < ($now - strtotime($data['data']))) {
+        $data['hint'] = 'Last success: '.$data['hint'];
+        $data['success'] = false;
       }
+    } else {
+      $data['success'] = false;
+      $data['hint'] = 'Could not get data from server';
     }
-    return $result;
-  }
-
-  /**
-   * @return string
-   */
-  public function comment()
-  {
-    $comment = '';
-
-//    if ('Tue' == date('D', $this->timeNow())) {
-//      $comment .= "\n<br /><br />" . self::MONDAY_NOTICE;
-//    }
-
-    return $comment;
+    return $data;
   }
 
   /**
@@ -177,20 +165,13 @@ class CheckbookEtlStatus
    */
   public function mail(&$message)
   {
-    $uat_result = $this->formatStatus($this->getUatStatus());
-    $prod_json = $this->getProdStatus();
-    $prod_status = $this->formatStatus($prod_json);
-    $comment = $this->comment();
-    $invalid_records = !empty($prod_json['invalid_records']) ? $prod_json['invalid_records'] : null;
-    $invalid_records_timestamp = !empty($prod_json['invalid_records_timestamp']) ? $prod_json['invalid_records_timestamp'] : null;
+    $uat_status = $this->getUatStatus();
+    $prod_status = $this->getProdStatus();
 
     $message['body'] =
       [
-        'uat_status' => $uat_result,
-        'prod_status' => $prod_status,
-        'comment' => $comment,
-        'invalid_records' => $invalid_records,
-        'invalid_records_timestamp' => $invalid_records_timestamp,
+        'uat_status' => $this->formatStatus($uat_status),
+        'prod_status' => $this->formatStatus($prod_status),
       ];
 
     $date = $this->date('Y-m-d');
