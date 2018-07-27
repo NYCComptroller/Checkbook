@@ -13,7 +13,7 @@ class CheckbookEtlStatus
   /**
    * @var string
    */
-  public $success = 'Success';
+  public $successSubject = 'Success';
 
   /**
    * @param $format
@@ -151,6 +151,7 @@ class CheckbookEtlStatus
       if (self::LAST_RUN_SUCCESS_PERIOD < ($now - strtotime($data['data']))) {
         $data['hint'] = 'Last success: '.$data['hint'];
         $data['success'] = false;
+        $this->successSubject = 'Fail';
       }
     } else {
       $data['success'] = false;
@@ -176,7 +177,7 @@ class CheckbookEtlStatus
 
     $date = $this->date('Y-m-d');
 
-    $message['subject'] = 'ETL Status: '.$this->success." ($date)";
+    $message['subject'] = 'ETL Status: '.$this->successSubject." ($date)";
 
     return true;
   }
