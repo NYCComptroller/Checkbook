@@ -288,7 +288,7 @@ class EtlStatusModuleTest extends TestCase
             ]
         ];
 
-        $this->assertEquals('ETL Status: Success ('.$this->fakeToday.')', $message['subject']);
+        $this->assertEquals('ETL Status: Fail ('.$this->fakeToday.')', $message['subject']);
         $this->assertEquals($expected, $message['body']);
     }
 
