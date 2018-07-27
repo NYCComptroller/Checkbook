@@ -485,6 +485,8 @@ function _checkbook_export_generateExportFile($node, $headers, $exportConfigNode
         $data_source = RequestUtilities::getRequestParamValue('datasource');
         if ('checkbook_oge' == $data_source) {
             $command .= ' ' . $databases['checkbook_oge']['main']['database'] . ' ';
+        }else if ('checkbook_nycha' == $data_source) {
+            $command .= ' ' . $databases['checkbook_nycha']['main']['database'] . ' ';
         } else {
             $command .= ' ' . $databases['checkbook']['main']['database'] . ' ';
         }
@@ -494,7 +496,7 @@ function _checkbook_export_generateExportFile($node, $headers, $exportConfigNode
                 . $tempOutputFile
                 . "'  WITH DELIMITER ',' CSV QUOTE '\\\"' ESCAPE '\\\"' \" ";
 
-//        log_error($command);
+      //log_error($command);
 
         shell_exec($command);
 
