@@ -2508,7 +2508,7 @@ function _checkbook_agency_link($agency_id, $prime = FALSE){
     $dashboard = '/contracts_landing';
     $url = '  '.RequestUtil::getCurrentPageUrl();
     if (stripos($url, 'contracts_pending_exp_landing') && $status === '/status/A') {
-          $page = '/contracts_landing';
+          $dashboard = '/contracts_landing';
       }
     elseif (stripos($url, 'contracts_pending_exp_landing')) {
       $dashboard = '/contracts_pending_exp_landing';
@@ -2517,9 +2517,12 @@ function _checkbook_agency_link($agency_id, $prime = FALSE){
     } elseif (stripos($url, 'contracts_revenue_landing')) {
       $dashboard = '/contracts_revenue_landing';
     }
-    if (stripos($url, 'dashboard/ss')){
-        $issubvendor=true;
+    else if(stripos($url,'bottom_slider/sub_vendor')){
+        $dashboard='/contracts_landing/bottom_slider/sub_vendor';
     }
+     if (stripos($url, 'dashboard/ss')){
+        $issubvendor=true;
+     }
 
       if (_is_mwbe_vendor(RequestUtilities::getRequestParamValue("magid"))||_is_mwbe_vendor(RequestUtilities::getRequestParamValue("agid"))||$issubvendor) {
           $mwbe = RequestUtilities::_appendMWBESubVendorDatasourceUrlParams();
