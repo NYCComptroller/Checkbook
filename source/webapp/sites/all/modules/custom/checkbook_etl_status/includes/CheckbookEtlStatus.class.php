@@ -159,7 +159,7 @@ class CheckbookEtlStatus
     }
 
     if (!empty($data['invalid_records_timestamp']) &&
-      (self::LAST_RUN_SUCCESS_PERIOD > ($now - $data['invalid_records_timestamp']))) {
+      (self::LAST_RUN_SUCCESS_PERIOD < ($now - $data['invalid_records_timestamp']))) {
       unset($data['invalid_records_timestamp']);
       if (!empty($data['invalid_records'])) {
         unset($data['invalid_records']);
