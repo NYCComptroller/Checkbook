@@ -29,6 +29,8 @@ class EtlStatusModuleTest extends TestCase
      */
     private $fakeYesterday = '2222-11-21 03:39:54.635115';
 
+    private $fakeYesterdayTime = 7980367194;
+
     /**
      * @var /CheckbookEtlStatus
      */
@@ -281,6 +283,58 @@ class EtlStatusModuleTest extends TestCase
         ];
 
         $this->assertEquals('ETL Status: Fail (' . $this->fakeTodayYMD . ')', $message['subject']);
+        $this->assertEquals($expected, $message['body']);
+    }
+
+    public function test_needs_attention()
+    {
+        $CheckbookEtlStatus =
+            $this->getMockBuilder('CheckbookEtlStatus')
+                ->setMethods(['get_date', 'timeNow', 'getUatStatus', 'getProdStatus'])
+                ->getMock();
+
+        $message = null;
+
+        $CheckbookEtlStatus->expects($this->any())
+            ->method('timeNow')
+            ->will($this->returnValue($this->fakeTodayTime));
+
+        $CheckbookEtlStatus->expects($this->once())
+            ->method('getUatStatus')
+            ->will($this->returnValue([
+                'success' => true,
+                'data' => $this->fakeToday,
+                'invalid_records' => 'asdf',
+                'invalid_records_timestamp' => ($this->fakeTodayTime-7200),
+            ]));
+
+        $CheckbookEtlStatus->expects($this->once())
+            ->method('getProdStatus')
+            ->will($this->returnValue([
+                'success' => true,
+                'data' => $this->fakeToday,
+                'invalid_records' => 'asdf',
+                'invalid_records_timestamp' => ($this->fakeYesterdayTime),
+            ]));
+
+        $CheckbookEtlStatus->mail($message);
+
+        $expected = [
+            'subject' => 'Needs attention',
+            'uat_status' => [
+                'success' => true,
+                'data' => $this->fakeToday,
+                'hint' => $CheckbookEtlStatus->niceDisplayDateDiff($this->fakeToday),
+                'invalid_records' => 'asdf',
+                'invalid_records_timestamp' => ($this->fakeTodayTime-7200)
+
+            ],
+            'prod_status' => [
+                'success' => true,
+                'data' => $this->fakeToday,
+                'hint' => $CheckbookEtlStatus->niceDisplayDateDiff($this->fakeToday),
+            ]
+        ];
         $this->assertEquals($expected, $message['body']);
     }
 
