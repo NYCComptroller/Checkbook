@@ -426,18 +426,37 @@ class CheckBookJsonApi
     global $conf;
 
     try {
-      $data = file_get_contents($conf['etl-status-path']);
+      $data = file_get_contents($conf['etl-status-path'].'etl_status.txt');
       list(,$date) = explode(',', $data);
       $this->data = trim($date);
     } catch (Exception $e) {
-      $this->message = $e->getMessage();
+      $this->message .= $e->getMessage();
+    }
+
+    $invalid_records = '';
+    $invalid_records_timestamp = 0;
+    $invalid_records_csv_path = $conf['etl-status-path'].'invalid_records_details.csv';
+    try{
+      if (is_file($invalid_records_csv_path)) {
+        $invalid_records = array_map('str_getcsv', file($invalid_records_csv_path));
+        $invalid_records_timestamp = filemtime($invalid_records_csv_path);
+      } else {
+        $invalid_records = [
+          'FATAL ERROR',
+          'Could not find `invalid_records_details.csv` on server'
+        ];
+      }
+    } catch (Exception $e) {
+      $this->message .= $e->getMessage();
     }
 
     return [
       'success' => $this->success,
       'data' => $this->data,
       'message' => $this->message,
-      'info' => 'Last successful ETL run date'
+      'invalid_records' => $invalid_records,
+      'invalid_records_timestamp' => $invalid_records_timestamp,
+//      'info' => 'Last successful ETL run date'
     ];
   }
 

@@ -198,4 +198,57 @@ class CheckbookDatafeedsModuleTest extends TestCase
         checkbook_datafeeds_budget_next_submit([], $test_form_state);
         $this->assertEquals(777, $test_form_state['values']);
     }
+
+    //    public function test_checkbook_datafeeds_contracts_filter_data()
+//    {
+//        $test_form = [];
+//        $test_form_state = [
+//            'triggering_element' =>
+//            [
+//                '#value' => 'somevalue',
+//                '#ajax' => ['parameters'=> ['data_source_changed'=>'yes']]
+//            ]
+//        ];
+//        $test_data_source = [];
+//        $form = checkbook_datafeeds_contracts_filter_data($test_form, $test_form_state, $test_data_source);
+//        $this->assertEquals('array', gettype($form));
+//    }
+
+    public function test_checkbook_datafeeds_process_contracts_values()
+    {
+        $test_form = [];
+        $test_form_state = [];
+        $test_form_state['step_information']['contracts']['stored_values'] = [
+            'df_contract_status' => true,
+            'currentamtfrom'=> '',
+            'category' => '',
+            'currentamtto' => '',
+            'currentamtfrom' => '',
+            'startdateto' => '',
+            'enddatefrom' => '',
+            'enddateto' => '',
+            'regdatefrom' => '',
+            'regdateto' => '',
+            'recdatefrom' => '',
+            'recdateto' => '',
+            'pin' => '',
+            'apt_pin' => '',
+            'purpose' => '',
+            'agency' => 'Select One',
+            'entity_contract_number' => '',
+            'startdatefrom' => '',
+            'commodity_line' => '',
+            'budget_name' => '',
+            'vendor' => '',
+            'award_method' => '',
+            'contractno' => '',
+            'industry' => '',
+            'mwbe_category' => '',
+            'contract_includes_sub_vendors_id' => '',
+            'sub_vendor_status_in_pip_id' => '',
+            'contract_type' => 'No Contract Type Selected',
+        ];
+        $criteria = checkbook_datafeeds_process_contracts_values($test_form, $test_form_state, 'checkbook_oge');
+        $this->assertEquals('array', gettype($criteria));
+    }
 }
