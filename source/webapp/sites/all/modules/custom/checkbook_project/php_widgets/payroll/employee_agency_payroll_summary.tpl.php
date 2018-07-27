@@ -45,7 +45,7 @@ foreach($node->data as $data){
 
     //$record['title_url'] = "<a href='/payroll/title_landing/yeartype/$year_type/year/$year/title/$original_title'>{$title}</a>";
     $record['title'] = $title;
-    $record['agency_url'] = "<a href='/payroll/agency_landing/yeartype/$year_type/year/$year{$data_source}/agency/{$data['agency_agency']}'>{$agency_name}</a>";
+    $record['agency_url'] = "<a href='/payroll/agency_landing/yeartype/$year_type/year/$year/datasource/{$data_source}/agency/{$data['agency_agency']}'>{$agency_name}</a>";
     $record['employment_type'] = $employment_type;
     $record['max_annual_salary'] = $data['max_annual_salary'];
     $record['pay_frequency'] = $data['pay_frequency_pay_frequency'];
