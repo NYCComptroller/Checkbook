@@ -186,4 +186,8 @@ function _checkbook_project_execute_sql_test($query)
     return [$return];
 }
 
+function theme($a, $vars) {
+    return $vars;
+}
+
 include_once __DIR__ . '/../../webapp/sites/all/modules/custom/checkbook_project/includes/checkbook_project.inc';
