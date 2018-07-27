@@ -149,7 +149,7 @@ class CheckbookEtlStatus
       $data['hint'] = $this->niceDisplayDateDiff($data['data']);
 
       if (self::LAST_RUN_SUCCESS_PERIOD < ($now - strtotime($data['data']))) {
-        $data['hint'] = 'Last success: '.$data['hint'];
+        $data['hint'] = 'Last success: ' . $data['hint'];
         $data['success'] = false;
         $this->successSubject = 'Fail';
       }
@@ -157,6 +157,19 @@ class CheckbookEtlStatus
       $data['success'] = false;
       $data['hint'] = 'Could not get data from server';
     }
+
+    if (!empty($data['invalid_records_timestamp']) &&
+      (self::LAST_RUN_SUCCESS_PERIOD > ($now - $data['invalid_records_timestamp']))) {
+      unset($data['invalid_records_timestamp']);
+      if (!empty($data['invalid_records'])) {
+        unset($data['invalid_records']);
+      }
+    } else {
+      if ('Success' == $this->successSubject) {
+        $this->successSubject = 'Needs attention';
+      }
+    }
+
     return $data;
   }
 
@@ -177,7 +190,7 @@ class CheckbookEtlStatus
 
     $date = $this->date('Y-m-d');
 
-    $message['subject'] = 'ETL Status: '.$this->successSubject." ($date)";
+    $message['subject'] = 'ETL Status: ' . $this->successSubject . " ($date)";
 
     return true;
   }
