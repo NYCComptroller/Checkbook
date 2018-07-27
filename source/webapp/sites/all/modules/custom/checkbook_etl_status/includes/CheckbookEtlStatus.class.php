@@ -8,7 +8,7 @@ class CheckbookEtlStatus
   /**
    * Last ETL must successfully finish within last 12 hours
    */
-  const LAST_RUN_SUCCESS_PERIOD = 60 * 60 * 12;
+  const SUCCESS_IF_RUN_LESS_THAN_X_SECONDS_AGO = 60 * 60 * 12;
 
   /**
    * @var string
@@ -19,9 +19,9 @@ class CheckbookEtlStatus
    * @param $format
    * @return false|string
    */
-  public function date($format)
+  public function get_date($format)
   {
-    return date($format);
+    return date($format, $this->timeNow());
   }
 
   /**
@@ -66,8 +66,8 @@ class CheckbookEtlStatus
 
     $variable_name = 'checkbook_etl_status_last_run';
 
-    $today = $this->date('Y-m-d');
-    $current_hour = (int)$this->date('H');
+    $today = $this->get_date('Y-m-d');
+    $current_hour = (int)$this->get_date('H');
 
     if (variable_get($variable_name) == $today) {
       //error_log("ETL STATUS MAIL CRON skips. Reason: already ran today :: $today :: ".variable_get($variable_name));
@@ -133,7 +133,7 @@ class CheckbookEtlStatus
       return 'never';
     }
     $date1 = date_create($date);
-    $interval = date_diff($date1, date_create());
+    $interval = date_diff($date1, date_create($this->get_date("Y-m-d H:i:s")));
     return $interval->format('%a day(s) %h hour(s) ago');
   }
 
@@ -148,15 +148,30 @@ class CheckbookEtlStatus
     if (!empty($data['success']) && true == $data['success']) {
       $data['hint'] = $this->niceDisplayDateDiff($data['data']);
 
-      if (self::LAST_RUN_SUCCESS_PERIOD < ($now - strtotime($data['data']))) {
-        $data['hint'] = 'Last success: '.$data['hint'];
+      if (($now - strtotime($data['data'])) > self::SUCCESS_IF_RUN_LESS_THAN_X_SECONDS_AGO) {
+        $data['hint'] = 'Last success: ' . $data['hint'];
         $data['success'] = false;
         $this->successSubject = 'Fail';
       }
     } else {
+      $this->successSubject = 'Fail';
       $data['success'] = false;
       $data['hint'] = 'Could not get data from server';
     }
+
+    if (!empty($data['invalid_records_timestamp'])) {
+      if (($now - $data['invalid_records_timestamp']) > self::SUCCESS_IF_RUN_LESS_THAN_X_SECONDS_AGO) {
+        unset($data['invalid_records_timestamp']);
+        if (!empty($data['invalid_records'])) {
+          unset($data['invalid_records']);
+        }
+      } else {
+        if ('Success' == $this->successSubject) {
+          $this->successSubject = 'Needs attention';
+        }
+      }
+    }
+
     return $data;
   }
 
@@ -166,18 +181,19 @@ class CheckbookEtlStatus
    */
   public function mail(&$message)
   {
-    $uat_status = $this->getUatStatus();
-    $prod_status = $this->getProdStatus();
+    $uat_status = $this->formatStatus($this->getUatStatus());
+    $prod_status = $this->formatStatus($this->getProdStatus());
 
     $message['body'] =
       [
-        'uat_status' => $this->formatStatus($uat_status),
-        'prod_status' => $this->formatStatus($prod_status),
+        'uat_status' => $uat_status,
+        'prod_status' => $prod_status,
+        'subject' => $this->successSubject,
       ];
 
-    $date = $this->date('Y-m-d');
+    $date = $this->get_date('Y-m-d');
 
-    $message['subject'] = 'ETL Status: '.$this->successSubject." ($date)";
+    $message['subject'] = 'ETL Status: ' . $this->successSubject . " ($date)";
 
     return true;
   }

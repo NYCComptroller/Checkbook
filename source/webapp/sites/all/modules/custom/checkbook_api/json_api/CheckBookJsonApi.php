@@ -138,9 +138,6 @@ class CheckBookJsonApi
     $year_type = $this->validate_year_type($this->args[2]);
 
     if ($this->success) {
-//      $query = "SELECT SUM(total_contracts) as total from aggregateon_total_contracts
-//                WHERE fiscal_year='{$year}' AND status_flag='A' AND type_of_year='{$year_type}'";
-
       $query = "SELECT COUNT(contract_number) AS total FROM aggregateon_mwbe_contracts_cumulative_spending a
                   JOIN ref_document_code b ON a.document_code_id = b.document_code_id
                 WHERE a.fiscal_year = {$year} AND a.type_of_year = '{$year_type}' AND a.status_flag = 'A' AND b.document_code IN ('MA1','CTA1','CT1')";
@@ -456,7 +453,6 @@ class CheckBookJsonApi
       'message' => $this->message,
       'invalid_records' => $invalid_records,
       'invalid_records_timestamp' => $invalid_records_timestamp,
-//      'info' => 'Last successful ETL run date'
     ];
   }
 
