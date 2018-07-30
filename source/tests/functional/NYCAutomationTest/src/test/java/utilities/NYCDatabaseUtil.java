@@ -5052,7 +5052,130 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
                 }
                 return count;
             }
+///Sub Vendors Active expense  Details
+            
+        	public static int getSubContractsDetailsCount(int year , char yeartypeVal) throws SQLException{
 
+		           query = 	"select count(*) aCount from sub_agreement_snapshot  WHERE document_code_id IN (1, 2, 5)" +
+		           		"AND("+year+"    BETWEEN effective_begin_year AND effective_end_year)" +
+		           		" AND("+year+"    BETWEEN starting_year AND ending_year)";
+		        	rs =  amountQueryHelper(yeartypeVal);
+		        	  int count = 0;
+			           while (rs.next()) {
+			               count = rs.getInt("aCount");
+			           }
+			          return count;
+		        }
+        	
+        	public static String getSubContractsDetailsAmount(int year, char yearTypeVal) throws SQLException {
+        		 query = 	"select sum(maximum_contract_amount) aSum from sub_agreement_snapshot  WHERE document_code_id IN (1, 2, 5)" +
+ 		           		"AND("+year+"    BETWEEN effective_begin_year AND effective_end_year)" +
+ 		           		" AND("+year+"    BETWEEN starting_year AND ending_year)";
+
+        	    rs = amountQueryHelper(yearTypeVal);
+
+        	    BigDecimal totalAmount = new BigDecimal(0);
+
+        	    while (rs.next()) {
+        	        totalAmount = rs.getBigDecimal("aSum");
+        	    }
+        	    return formatNumber2(totalAmount);
+        	    // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
+        	}
+        	
+        	public static int getSubContractsModDetailsCount(int year , char yeartypeVal) throws SQLException{
+
+		           query = 	"select count(*) aCount from sub_agreement_snapshot  WHERE document_code_id IN (1, 2, 5)" +
+		           		"AND("+year+"    BETWEEN effective_begin_year AND effective_end_year)" +
+		           		" AND("+year+"    BETWEEN starting_year AND ending_year)"+
+		           	 "and maximum_contract_amount <> original_contract_amount";
+		        	rs =  amountQueryHelper(yeartypeVal);
+		        	  int count = 0;
+			           while (rs.next()) {
+			               count = rs.getInt("aCount");
+			           }
+			          return count;
+		        }
+     	
+     	public static String getSubContractsModDetailsAmount(int year, char yearTypeVal) throws SQLException {
+     		 query = 	"select sum(maximum_contract_amount) aSum from sub_agreement_snapshot  WHERE document_code_id IN (1, 2, 5)  and maximum_contract_amount <> original_contract_amount" +
+		           		"AND("+year+"    BETWEEN effective_begin_year AND effective_end_year)" +
+		           		" AND("+year+"    BETWEEN starting_year AND ending_year)";
+
+     	    rs = amountQueryHelper(yearTypeVal);
+
+     	    BigDecimal totalAmount = new BigDecimal(0);
+
+     	    while (rs.next()) {
+     	        totalAmount = rs.getBigDecimal("aSum");
+     	    }
+     	    return formatNumber2(totalAmount);
+     	    // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
+     	}
+        	
+///Sub Vendors Registered expense  Details
+            
+        	public static int getSubContractsRegisteredDetailsCount(int year , char yeartypeVal) throws SQLException{
+
+		           query = 	"select count(*) aCount from sub_agreement_snapshot  WHERE document_code_id IN (1, 2, 5)" +
+		        		   "AND registered_year =" + year + "" +
+		           		"                        AND("+year+"    BETWEEN starting_year AND ending_year)";
+		        	rs =  amountQueryHelper(yeartypeVal);
+		        	  int count = 0;
+			           while (rs.next()) {
+			               count = rs.getInt("aCount");
+			           }
+			          return count;
+		        }
+        	
+        	public static String getSubContractsRegisteredDetailsAmount(int year, char yearTypeVal) throws SQLException {
+        		 query = 	"select sum(maximum_contract_amount) aSum from sub_agreement_snapshot  WHERE document_code_id IN (1, 2, 5)" +
+        				 "AND registered_year =" + year + "" +
+ 		           		" AND("+ year +"  BETWEEN starting_year AND ending_year)";
+
+        	    rs = amountQueryHelper(yearTypeVal);
+
+        	    BigDecimal totalAmount = new BigDecimal(0);
+
+        	    while (rs.next()) {
+        	        totalAmount = rs.getBigDecimal("aSum");
+        	    }
+        	    return formatNumber2(totalAmount);
+        	    // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
+        	}
+        	
+          	public static int getSubContractsModRegisteredDetailsCount(int year , char yeartypeVal) throws SQLException{
+
+		           query = 	"select count(*) aCount from sub_agreement_snapshot  WHERE document_code_id IN (1, 2, 5) "+		        		   
+		        		   "AND registered_year =" + year + "" +
+		           		"AND(  "+ year +" BETWEEN starting_year AND ending_year)"+
+		           		 "and maximum_contract_amount <> original_contract_amount";
+		        	rs =  amountQueryHelper(yeartypeVal);
+		        	  int count = 0;
+			           while (rs.next()) {
+			               count = rs.getInt("aCount");
+			           }
+			          return count;
+		        }
+     	
+     	public static String getSubContractsModRegisteredDetailsAmount(int year, char yearTypeVal) throws SQLException {
+     		 query = 	"select sum(maximum_contract_amount) aSum from sub_agreement_snapshot  WHERE document_code_id IN (1, 2, 5) and maximum_contract_amount <> original_contract_amount " +
+     				 "AND registered_year =" + year + "" +
+		           		" AND("+year+"    BETWEEN starting_year AND ending_year)";
+
+     	    rs = amountQueryHelper(yearTypeVal);
+
+     	    BigDecimal totalAmount = new BigDecimal(0);
+
+     	    while (rs.next()) {
+     	        totalAmount = rs.getBigDecimal("aSum");
+     	    }
+     	    return formatNumber2(totalAmount);
+     	    // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
+     	}
+         
+            
+            //Sub Vendors
 			public static int  getTotalRegisteredPrimeVendorCount(int year, char c) throws SQLException {
 				// TODO Auto-generated method stub
 				query = "select count(distinct Prime_vendor_id) aCount from sub_agreement_snapshot WHERE document_code_id IN (1, 2)\r\n" +
