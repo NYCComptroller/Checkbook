@@ -20,8 +20,8 @@ import utilities.NYCBaseTest;
 import utilities.TestStatusReport;
 import utilities.NYCDatabaseUtil;
 
-//public class TrustAgencySpendingWidgetDetailsTest extends NYCBaseTest {
-	public class TrustAgencySpendingWidgetDetailsTest extends TestStatusReport{
+public class TrustAgencySpendingWidgetDetailsTest extends NYCBaseTest {
+	//public class TrustAgencySpendingWidgetDetailsTest extends TestStatusReport{
 		int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	public void GoToPage(){
@@ -118,7 +118,7 @@ import utilities.NYCDatabaseUtil;
 	    assertEquals("Trust and Agency spending Contracts Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
 	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getTrustAgencySpendingContractsDetailsAmount(2016,'B');
-		String WidgetDetailsAmountapp = HomePage.GetTransactionAmount1();
+		String WidgetDetailsAmountapp = HomePage.GetTransactionAmount2();
 		assertEquals("Trust and agency spending Contracts widget Details page  total  Spending amount did not match", WidgetDetailsAmountapp, WidgetDetailsAmountDB);
 	}
 	
