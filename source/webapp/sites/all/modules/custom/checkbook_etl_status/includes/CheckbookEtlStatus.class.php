@@ -160,7 +160,7 @@ class CheckbookEtlStatus
     }
 
     if (!empty($data['invalid_records_timestamp'])) {
-      if (($now - $data['invalid_records_timestamp']) > self::SUCCESS_IF_RUN_LESS_THAN_X_SECONDS_AGO) {
+      if (!defined('CHECKBOOK_DEV_VSL4') && (($now - $data['invalid_records_timestamp']) > self::SUCCESS_IF_RUN_LESS_THAN_X_SECONDS_AGO)) {
         unset($data['invalid_records_timestamp']);
         if (!empty($data['invalid_records'])) {
           unset($data['invalid_records']);
