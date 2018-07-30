@@ -22,8 +22,8 @@ import helpers.Helper;
 import navigation.SecondaryMenuNavigation.OtherGovernmentEntities;
 import navigation.TopNavigation.Contracts.ActiveExpenseContracts;
 import utilities.TestStatusReport;
-//public class OGEActiveExpenseContractsDetailsTest extends TestStatusReport{
-	public class OGEActiveExpenseContractsDetailsTest extends OGENYCBaseTest {
+public class OGEActiveExpenseContractsDetailsTest extends TestStatusReport{
+	//public class OGEActiveExpenseContractsDetailsTest extends OGENYCBaseTest {
 	int year =  Integer.parseInt(OGENYCBaseTest.prop.getProperty("year"));
 	@Before
 	public void GoToPage() {
