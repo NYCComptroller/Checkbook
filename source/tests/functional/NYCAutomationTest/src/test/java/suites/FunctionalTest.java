@@ -14,7 +14,9 @@ import FunctionalPayroll.*;
 import FunctionalSpendingMWBE.*;
 import FunctionalSpendingSubVendors.*;
 import FunctionalSpendingOGE.*;
+import FunctionalContractsOGE.*;
 import utilities.NYCBaseTest;
+import utilities.OGENYCBaseTest;
 import utilities.TestStatusReport;
 
 /**
@@ -77,12 +79,7 @@ import utilities.TestStatusReport;
 	MWBERegisteredRevenueContractsTest.class,
 	MWBERegisteredRevenueContractsDetailsTest.class,
 	
-	/* Sub vendors Contracts */
 	
-	NewSubVendorContractsbyFiscalYearTest.class,
-	StatusofSubVendorContractsbyPrimeVendorWidgetTest.class,
-	TotalActiveSubVendorContractsWidgetTest.class,
- 
 	/* Budget */
 	
 	
@@ -131,6 +128,13 @@ import utilities.TestStatusReport;
 	MWBEOtherSpendingWidgetTest.class,
 	MWBEOtherSpendingWidgetDetailsTest.class,
 	
+/* Sub vendors Contracts */
+	
+	NewSubVendorContractsbyFiscalYearTest.class,
+	StatusofSubVendorContractsbyPrimeVendorWidgetTest.class,
+	TotalActiveSubVendorContractsWidgetTest.class,
+ 
+	
 	/* OGE Spending */
 	OGETotalSpendingWidgetTest.class,	
 	OGETotalSpendingWidgetDetailsTest.class,
@@ -140,6 +144,13 @@ import utilities.TestStatusReport;
 
 	OGEContractSpendingWidgetTest.class,
 	OGEContractSpendingWidgetDetailsTest.class,
+	
+	/* OGE Contracts*/
+	OGEActiveExpenseContractsTest.class,
+	OGEActiveExpenseContractsDetailsTest.class,
+	OGERegisteredExpenseContractsTest.class,
+	OGERegisteredExpenseContractsDetailsTest.class, 
+	
 	
 
 

@@ -31,13 +31,17 @@ import utilities.TestStatusReport;
 import helpers.Driver;
 import helpers.Helper;
 
-//public class  NewSubVendorContractsbyFiscalYearTest extends NYCBaseTest {
-public class NewSubVendorContractsbyFiscalYearTest extends TestStatusReport{
+public class  NewSubVendorContractsbyFiscalYearTest extends NYCBaseTest {
+//public class NewSubVendorContractsbyFiscalYearTest extends TestStatusReport{
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	 public void GoToPage(){
 		   if (!SubVendorsPage.IsAt())
-			   RegisteredSubVendorContractsPage.GoTo();  
+			   
+			   SubVendorsPage.GoTo("Contracts", SubVendorCategoryOption.SubVendorsHome);
+			  // RegisteredSubVendorContractsPage.GoTo(); 
+		   SubVendorsPage.GoToBottomNavContractslink();
+		   
 			   if(!(Helper.getCurrentSelectedYear()).equalsIgnoreCase(NYCBaseTest.prop.getProperty("CurrentYear")))
 			   HomePage.SelectYear(NYCBaseTest.prop.getProperty("CurrentYear"));
 			   WebDriverWait wait = new WebDriverWait(Driver.Instance, 30);
@@ -53,6 +57,8 @@ public class NewSubVendorContractsbyFiscalYearTest extends TestStatusReport{
 		Integer numOfsubVendorContractsApp = ContractsPage.GetTop5WidgetTotalCount(WidgetOption.Top5SubContracts);
 		assertEquals("Number of Sub Vendor Contracts in the Active Sub Vendor Contracts did not match",numOfsubVendorContractsApp,activeSubVendorContractsNumDB);
 	}
+	
+
 	@Test
 	public void VerifyTop5SubContractsAmountModifications() throws SQLException {
 		Integer activeSubVendorContractAmountModificationsNumDB = NYCDatabaseUtil.getTotalRegisteredSubContractModifications(year, 'B');

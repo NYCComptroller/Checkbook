@@ -25,7 +25,8 @@ public class SubVendorsPage {
    
     	public enum WidgetOption{
     		Top5Checks, TopChecks,Top5SubVendors,TopSubVendors , Top5PrimeVendors, TopPrimeVendors,Top5Agencies,TopAgencies,
-    		 Top5SubContracts,TopSubContracts
+    		 Top5SubContracts,TopSubContracts,TopSubContractAmountModifications,Top5SubContractAmountModifications,
+    		 Top5AwardMethods,TopAwardMethods,ContractsbySize,ContractsbyIndustries,SubContractStatusbyPrimeContractID
     	}
     	
     	public static boolean IsAt() {
@@ -74,6 +75,32 @@ public class SubVendorsPage {
                 tabAnchor.click();
 	        }
      	
+     	public static void GoToBottomNavContractslink() {
+	          //  WebElement tab = Driver.Instance.findElement(By.cssSelector(".nyc_totals_links. td"));
+	        // WebElement tabAnchor = tab.findElement(By.tagName("a"));
+	           // WebElement tabAnchor = tab.findElement(By.linkText("Contract Spending"));
+	          //  WebElement tabAnchor = tab.findElement(By.className("dollars"));
+	            
+	            WebElement tabAnchor =Driver.Instance.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div[1]/div/div/div/div[1]/div/div/div/div[4]/div/div[1]/div/div/div[1]/div[2]/table/tbody/tr/td[2]/div[1]/a"));
+	                        
+	           // driver.findElement(By.linkText("App Configuration")).click();
+	            ((JavascriptExecutor) Driver.Instance).executeScript("arguments[0].scrollIntoView(true);", tabAnchor);
+              tabAnchor.click();
+	        }
+     	public static void GoToBottomNavContractslink3() {
+	          //  WebElement tab = Driver.Instance.findElement(By.cssSelector(".nyc_totals_links. td"));
+	        // WebElement tabAnchor = tab.findElement(By.tagName("a"));
+	           // WebElement tabAnchor = tab.findElement(By.linkText("Contract Spending"));
+	          //  WebElement tabAnchor = tab.findElement(By.className("dollars"));
+	            
+	            WebElement tabAnchor =Driver.Instance.findElement(By.xpath("/html/body/div[2]/div[3]/div[2]/div[1]/div/div/div/div[1]/div/div/div/div[4]/div/div[1]/div/div/div[1]/div[2]/table/tbody/tr/td[3]/div[1]/a"));
+	                        
+	           // driver.findElement(By.linkText("App Configuration")).click();
+	            ((JavascriptExecutor) Driver.Instance).executeScript("arguments[0].scrollIntoView(true);", tabAnchor);
+            tabAnchor.click();
+	        }
+     	
+     	
         public static void GoToBottomNavSpendinglink1(String secondaryTabName) {
             WebElement secTabContainer = Driver.Instance.findElement(By.cssSelector(".nyc_totals_links")); // .active > .positioning"));
             List<WebElement> tabs = secTabContainer.findElements(By.tagName("td"));
@@ -121,7 +148,11 @@ public class SubVendorsPage {
     		case Top5SubContracts:
     			return HomePage.GetWidgetTotalNumber("Top 5 Sub Contracts");
     		case TopSubContracts:
-    			return HomePage.GetWidgetTotalNumber("Top Sub Contracts");
+    			return HomePage.GetWidgetTotalNumber("Top Sub Contracts");    			
+    		case Top5SubContractAmountModifications:
+    			return HomePage.GetWidgetTotalNumber("Top 5 Sub Contract Amount Modifications");
+    		case TopSubContractAmountModifications:
+    			return HomePage.GetWidgetTotalNumber("Top Sub Contract Amount Modifications");
     		case Top5PrimeVendors:
     			return HomePage.GetWidgetTotalNumber("Top 5 Prime Vendors");
     		case TopPrimeVendors:
@@ -133,12 +164,26 @@ public class SubVendorsPage {
     	    case Top5Agencies:
     			return HomePage.GetWidgetTotalNumber("Top 5 Agencies");
     		case TopAgencies:
-    			return HomePage.GetWidgetTotalNumber("Top Agencies");
+    			return HomePage.GetWidgetTotalNumber("Top Agencies");    			
+    		 case Top5AwardMethods:
+     			return HomePage.GetWidgetTotalNumber("Top 5 Award Methods");
+     		case TopAwardMethods:
+     			return HomePage.GetWidgetTotalNumber("Top Award Methods");
+     		 case ContractsbySize:
+      			return HomePage.GetWidgetTotalNumber("Contracts by Size");
+      		case ContractsbyIndustries:
+      			return HomePage.GetWidgetTotalNumber("Contracts by Industries");
+      		case SubContractStatusbyPrimeContractID:
+      			return HomePage.GetWidgetTotalNumber("Sub Contract Status by Prime Contract ID");
+      			
     		default:
     			return null;
     		}
     	}
     	
+    	
+    	
+
     	public static void GoToTop5DetailsPage(WidgetOption option) {
     		WebElement detailsContainer = null;
     		switch (option) {
@@ -185,13 +230,48 @@ public class SubVendorsPage {
     				if(!HomePage.IsAtTop5DetailsPage("Top Agencies"))
     					detailsContainer = HomePage.GetWidgetDetailsContainer("Top Agencies");
     				break;
+    				
+    			case Top5SubContractAmountModifications:
+    				if(!HomePage.IsAtTop5DetailsPage("Top 5 Sub Contract Amount Modifications"))
+    					detailsContainer = HomePage.GetWidgetDetailsContainer("Top 5 Sub Contract Amount Modifications");
+    				break;
+    			case TopSubContractAmountModifications:
+    				if(!HomePage.IsAtTop5DetailsPage("Top Sub Contract Amount Modifications"))
+    					detailsContainer = HomePage.GetWidgetDetailsContainer("Top Sub Contract Amount Modifications");
+    				break;
+    				
+    			 case Top5AwardMethods:
+    					if(!HomePage.IsAtTop5DetailsPage("Top 5 Award Methods"))
+        					detailsContainer = HomePage.GetWidgetDetailsContainer("Top 5 Award Methods");
+        				break;
+        				
+    	     		case TopAwardMethods:
+    	     			if(!HomePage.IsAtTop5DetailsPage("Top Award Methods"))
+        					detailsContainer = HomePage.GetWidgetDetailsContainer("Top Award Methods");
+        				break;
+        				
+    	     		 case ContractsbySize:
+    	     			if(!HomePage.IsAtTop5DetailsPage("Contracts by Size"))
+        					detailsContainer = HomePage.GetWidgetDetailsContainer("Contracts by Size");
+        				break;
+        				
+    	      		case ContractsbyIndustries:
+    	      			if(!HomePage.IsAtTop5DetailsPage("Contracts by Industries"))
+        					detailsContainer = HomePage.GetWidgetDetailsContainer("Contracts by Industries");
+    	      			break;
+        				
+    	      		case SubContractStatusbyPrimeContractID:
+    	      			if(!HomePage.IsAtTop5DetailsPage("Sub Contract Status by Prime Contract ID"))
+        					detailsContainer = HomePage.GetWidgetDetailsContainer("Sub Contract Status by Prime Contract ID");
+    	      			break;
+        				
     			default:
     				break;
     		}
     		WebElement detailsAnchor = detailsContainer.findElement(By.partialLinkText("Details"));
     		((JavascriptExecutor) Driver.Instance).executeScript("arguments[0].scrollIntoView(true);", detailsAnchor);
     		detailsAnchor.click();	
-    		Driver.Instance.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+    		Driver.Instance.manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
     	}
     	
       
@@ -240,7 +320,7 @@ public class SubVendorsPage {
 
 	
 	
-	///Transaction count
+	///Spending Transaction count
 
 	public static Integer GetTransactionCount() {
 		WebDriverWait wait = new WebDriverWait(Driver.Instance, 30);
@@ -254,6 +334,23 @@ public class SubVendorsPage {
 			String count = (Driver.Instance.findElement(By.id("table_723_info"))).getText();
 			return Helper.GetTotalEntries(count, 5);
 	}
+		
+		//Contract Transaction count
+		
+		public static Integer GetTransactionCount2() {
+			WebDriverWait wait = new WebDriverWait(Driver.Instance, 30);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("table_939_info")));
+			String count = (Driver.Instance.findElement(By.id("table_939_info"))).getText();
+			return Helper.GetTotalEntries(count, 5);
+		}
 
+		
+		public static Integer GetTransactionCount3() {
+			WebDriverWait wait = new WebDriverWait(Driver.Instance, 30);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("table_932_info")));
+			String count = (Driver.Instance.findElement(By.id("table_932_info"))).getText();
+			return Helper.GetTotalEntries(count, 5);
+		}
+	
 	
 }
