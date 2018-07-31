@@ -1,6 +1,7 @@
 <?php
 
 namespace checkbook_json_api;
+
 use PHPUnit\Runner\Exception;
 
 /**
@@ -411,7 +412,7 @@ class CheckBookJsonApi
     if ('uat-checkbook-nyc.reisys.com' == parse_url($base_url, PHP_URL_HOST)) {
       $return = $this->getUatEtlStatus();
     } elseif (!empty($conf['etl-status-path'])) {
-      $return =  $this->getProdEtlStatus();
+      $return = $this->getProdEtlStatus();
     }
 
     $return['connections'] = [];
@@ -445,8 +446,8 @@ class CheckBookJsonApi
     global $conf;
 
     try {
-      $data = file_get_contents($conf['etl-status-path'].'etl_status.txt');
-      list(,$date) = explode(',', $data);
+      $data = file_get_contents($conf['etl-status-path'] . 'etl_status.txt');
+      list(, $date) = explode(',', $data);
       $this->data = trim($date);
     } catch (Exception $e) {
       $this->message .= $e->getMessage();
@@ -454,8 +455,8 @@ class CheckBookJsonApi
 
     $invalid_records = '';
     $invalid_records_timestamp = 0;
-    $invalid_records_csv_path = $conf['etl-status-path'].'invalid_records_details.csv';
-    try{
+    $invalid_records_csv_path = $conf['etl-status-path'] . 'invalid_records_details.csv';
+    try {
       if (is_file($invalid_records_csv_path)) {
         $invalid_records = array_map('str_getcsv', file($invalid_records_csv_path));
         $invalid_records_timestamp = filemtime($invalid_records_csv_path);

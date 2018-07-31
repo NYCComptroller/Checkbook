@@ -199,9 +199,9 @@ class CheckbookEtlStatus
       return $return;
     }
 
-    foreach($conf['etl-status-footer']['line1'] as $env => $url) {
+    foreach ($conf['etl-status-footer']['line1'] as $env => $url) {
       try {
-        $prod_json_status = $this->get_contents($url.'json_api/etl_status');
+        $prod_json_status = $this->get_contents($url . 'json_api/etl_status');
         $json = json_decode($prod_json_status, true);
         if (!empty($json['connections'])) {
           $return[$env] = $json['connections'];

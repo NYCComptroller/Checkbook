@@ -36,6 +36,7 @@
       color: #fff;
       text-indent:
     }
+
     table.dbconnections tr.header th, table.dbconnections th.env {
       background: #596b7b;
     }
@@ -134,33 +135,33 @@
 
   <?php if (!empty($connections)):
     $i = 0;
-  ?>
+    ?>
     <table class="dbconnections" cellpadding="3">
       <thead>
       <tr>
-        <th colspan="<?php echo (sizeof($connection_keys)+1);?>">
+        <th colspan="<?php echo(sizeof($connection_keys) + 1); ?>">
           DB CONNECTIONS
         </th>
       </tr>
       <tr class="header">
         <th></th>
-        <?php foreach ($connection_keys as $key):?>
+        <?php foreach ($connection_keys as $key): ?>
           <th><?php echo $key; ?></th>
-        <?php endforeach;?>
+        <?php endforeach; ?>
       </tr>
       </thead>
       <tbody>
-        <?php foreach($connections as $env => $v):?>
-        <tr class="<?php echo ($i++%2?'even':'odd');?>">
-          <th class="env"><?php echo $env;?></th>
-          <?php foreach ($connection_keys as $key):?>
-            <th><?php echo (!empty($v[$key])?$v[$key]:'-'); ?></th>
-          <?php endforeach;?>
+      <?php foreach ($connections as $env => $v): ?>
+        <tr class="<?php echo($i++ % 2 ? 'even' : 'odd'); ?>">
+          <th class="env"><?php echo $env; ?></th>
+          <?php foreach ($connection_keys as $key): ?>
+            <th><?php echo(!empty($v[$key]) ? $v[$key] : '-'); ?></th>
+          <?php endforeach; ?>
         </tr>
-        <?php endforeach;?>
+      <?php endforeach; ?>
       </tbody>
     </table>
-  <?php endif;?>
+  <?php endif; ?>
 </main>
 
 <footer>
