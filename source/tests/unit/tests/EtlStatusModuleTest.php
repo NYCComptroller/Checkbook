@@ -243,7 +243,7 @@ class EtlStatusModuleTest extends TestCase
     {
         $CheckbookEtlStatus =
             $this->getMockBuilder('CheckbookEtlStatus')
-                ->setMethods(['timeNow', 'getUatStatus', 'getProdStatus'])
+                ->setMethods(['timeNow', 'getUatStatus', 'getProdStatus', 'getConnectionConfigs'])
                 ->getMock();
 
         $message = null;
@@ -279,7 +279,9 @@ class EtlStatusModuleTest extends TestCase
                 'success' => false,
                 'data' => $this->fakeYesterday,
                 'hint' => 'Last success: ' . $CheckbookEtlStatus->niceDisplayDateDiff($this->fakeYesterday),
-            ]
+            ],
+            'connections' => false,
+            'connection_keys' => CheckbookEtlStatus::CONNECTIONS_KEYS,
         ];
 
         $this->assertEquals('ETL Status: Fail (' . $this->fakeTodayYMD . ')', $message['subject']);
@@ -290,7 +292,7 @@ class EtlStatusModuleTest extends TestCase
     {
         $CheckbookEtlStatus =
             $this->getMockBuilder('CheckbookEtlStatus')
-                ->setMethods(['get_date', 'timeNow', 'getUatStatus', 'getProdStatus'])
+                ->setMethods(['get_date', 'timeNow', 'getUatStatus', 'getProdStatus', 'getConnectionConfigs'])
                 ->getMock();
 
         $message = null;
@@ -333,7 +335,9 @@ class EtlStatusModuleTest extends TestCase
                 'success' => true,
                 'data' => $this->fakeToday,
                 'hint' => $CheckbookEtlStatus->niceDisplayDateDiff($this->fakeToday),
-            ]
+            ],
+            'connections' => false,
+            'connection_keys' => CheckbookEtlStatus::CONNECTIONS_KEYS,
         ];
         $this->assertEquals($expected, $message['body']);
     }
@@ -345,7 +349,7 @@ class EtlStatusModuleTest extends TestCase
     {
         $CheckbookEtlStatus =
             $this->getMockBuilder('CheckbookEtlStatus')
-                ->setMethods(['get_date', 'timeNow', 'getUatStatus', 'getProdStatus'])
+                ->setMethods(['get_date', 'timeNow', 'getUatStatus', 'getProdStatus', 'getConnectionConfigs'])
                 ->getMock();
 
         $message = null;
@@ -381,7 +385,9 @@ class EtlStatusModuleTest extends TestCase
                 'success' => true,
                 'data' => $this->fakeToday,
                 'hint' => $CheckbookEtlStatus->niceDisplayDateDiff($this->fakeToday),
-            ]
+            ],
+            'connections' => false,
+            'connection_keys' => CheckbookEtlStatus::CONNECTIONS_KEYS,
         ];
         $this->assertEquals($expected, $message['body']);
     }

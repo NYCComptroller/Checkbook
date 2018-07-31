@@ -405,14 +405,36 @@ class CheckBookJsonApi
   {
     drupal_page_is_cacheable(FALSE);
 
-    global $base_url, $conf;
+    global $base_url, $conf, $databases;
 
+    $return = [];
     if ('uat-checkbook-nyc.reisys.com' == parse_url($base_url, PHP_URL_HOST)) {
-      return $this->getUatEtlStatus();
+      $return = $this->getUatEtlStatus();
     } elseif (!empty($conf['etl-status-path'])) {
-      return $this->getProdEtlStatus();
+      $return =  $this->getProdEtlStatus();
     }
-    throw new Exception('available only at UAT and PROD');
+
+    $return['connections'] = [];
+    if (!empty($databases['default']['default']['host'])) {
+      $return['connections']['mysql'] = $databases['default']['default']['host'];
+    }
+    if (!empty($databases['checkbook']['main']['host'])) {
+      $return['connections']['psql_main'] = $databases['checkbook']['main']['host'];
+    }
+    if (!empty($databases['checkbook']['etl']['host'])) {
+      $return['connections']['psql_etl'] = $databases['checkbook']['etl']['host'];
+    }
+    if (!empty($databases['checkbook_oge']['main']['host'])) {
+      $return['connections']['psql_oge'] = $databases['checkbook_oge']['main']['host'];
+    }
+    if (!empty($databases['checkbook_nycha']['main']['host'])) {
+      $return['connections']['psql_nycha'] = $databases['checkbook_nycha']['main']['host'];
+    }
+    if (!empty($conf['check_book']['solr']['url'])) {
+      $return['connections']['solr'] = $conf['check_book']['solr']['url'];
+    }
+
+    return $return;
   }
 
   /**
