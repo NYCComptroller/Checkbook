@@ -11,6 +11,18 @@ class CheckbookEtlStatus
   const SUCCESS_IF_RUN_LESS_THAN_X_SECONDS_AGO = 60 * 60 * 12;
 
   /**
+   * List of conf db connections
+   */
+  const CONNECTIONS_KEYS = [
+    'mysql',
+    'psql_main',
+    'psql_etl',
+    'psql_oge',
+    'psql_nycha',
+    'solr',
+  ];
+
+  /**
    * @var string
    */
   public $successSubject = 'Success';
@@ -74,8 +86,8 @@ class CheckbookEtlStatus
       return false;
     }
 
-    if ($current_hour < 7) {
-      //error_log("ETL STATUS MAIL CRON skips. Reason: will run after 8:00 AM :: current hour: $current_hour");
+    if ($current_hour < 7 || $current_hour > 8) {
+      //error_log("ETL STATUS MAIL CRON skips. Reason: will run between 8 AM and 9 AM :: current hour: $current_hour");
       return false;
     }
 
@@ -160,7 +172,7 @@ class CheckbookEtlStatus
     }
 
     if (!empty($data['invalid_records_timestamp'])) {
-      if (($now - $data['invalid_records_timestamp']) > self::SUCCESS_IF_RUN_LESS_THAN_X_SECONDS_AGO) {
+      if (!defined('CHECKBOOK_DEV_VSL4') && (($now - $data['invalid_records_timestamp']) > self::SUCCESS_IF_RUN_LESS_THAN_X_SECONDS_AGO)) {
         unset($data['invalid_records_timestamp']);
         if (!empty($data['invalid_records'])) {
           unset($data['invalid_records']);
@@ -176,6 +188,32 @@ class CheckbookEtlStatus
   }
 
   /**
+   * @return array
+   */
+  public function getConnectionConfigs()
+  {
+    global $conf;
+
+    $return = [];
+    if (empty($conf['etl-status-footer']['line1'])) {
+      return $return;
+    }
+
+    foreach ($conf['etl-status-footer']['line1'] as $env => $url) {
+      try {
+        $prod_json_status = $this->get_contents($url . 'json_api/etl_status');
+        $json = json_decode($prod_json_status, true);
+        if (!empty($json['connections'])) {
+          $return[$env] = $json['connections'];
+        }
+      } catch (Exception $e) {
+        error_log($e->getMessage());
+      }
+    }
+    return $return;
+  }
+
+  /**
    * @param $message
    * @return bool
    */
@@ -183,12 +221,15 @@ class CheckbookEtlStatus
   {
     $uat_status = $this->formatStatus($this->getUatStatus());
     $prod_status = $this->formatStatus($this->getProdStatus());
+    $connections = $this->getConnectionConfigs();
 
     $message['body'] =
       [
         'uat_status' => $uat_status,
         'prod_status' => $prod_status,
         'subject' => $this->successSubject,
+        'connections' => $connections,
+        'connection_keys' => self::CONNECTIONS_KEYS,
       ];
 
     $date = $this->get_date('Y-m-d');
