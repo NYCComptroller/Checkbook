@@ -120,7 +120,7 @@ public class PendingRevenueContractsTest  extends TestStatusReport{
 	    						"Top Contract Amount Modifications",
 	    						"Top 5 Prime Vendors",
 	    						"Top 5 Award Methods",
-	    						"Top 5 Agencies",
+	    						"Top Agencies",
 	    						"Contracts by Industries",
 	    						"Contracts by Size"
 	    						};	    						

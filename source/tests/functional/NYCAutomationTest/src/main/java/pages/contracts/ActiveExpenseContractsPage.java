@@ -22,6 +22,13 @@ public class ActiveExpenseContractsPage {
 		return Helper.GetTotalEntries(count, 5);
 	}
 	
+	public static int GetOGETransactionCount() {
+		WebDriverWait wait = new WebDriverWait(Driver.Instance, 50);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("table_634_info")));
+		String count = (Driver.Instance.findElement(By.id("table_634_info"))).getText();
+		return Helper.GetTotalEntries(count, 5);
+	}
+	
 	public static String GetTransactionAmount1() {
 		WebDriverWait wait = new WebDriverWait(Driver.Instance, 20);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("transactions-total-amount")));
