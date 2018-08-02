@@ -10,19 +10,14 @@
       font-size: 12px;
     }
 
-    main {
-      margin: 20px;
-    }
-
     table {
       border: #ccc 1px dotted;
-    }
-
-    main table {
-      margin: 20px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     table.status {
+      font-size: larger;
       background: #ddd;
     }
 
@@ -38,7 +33,7 @@
     }
 
     table.dbconnections tr.header th, table.dbconnections th.env {
-      background: #596b7b;
+      background: #8e9eac;
     }
 
     thead tr.filename th {
@@ -63,6 +58,10 @@
       color: #5b5b5b;
       text-decoration: none;
     }
+
+    footer table{
+      border: 0;
+    }
   </style>
 
 </head>
@@ -84,6 +83,8 @@
 </header>
 
 <main>
+  <br/>
+  <br/>
 
   <table class="status" cellspacing="8">
     <tbody>
@@ -100,6 +101,9 @@
     <?php endforeach; ?>
     </tbody>
   </table>
+
+  <br/>
+  <br/>
 
   <?php
   foreach ([$prod_status, $uat_status] as $json):
@@ -130,9 +134,16 @@
         endforeach; ?>
         </tbody>
       </table>
+      <br/>
+      <br/>
     <?php endif;
   endforeach; ?>
-
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
   <?php if (!empty($connections)):
     $i = 0;
     ?>
@@ -155,35 +166,41 @@
         <tr class="<?php echo($i++ % 2 ? 'even' : 'odd'); ?>">
           <th class="env"><?php echo $env; ?></th>
           <?php foreach ($connection_keys as $key): ?>
-            <th><?php echo(!empty($v[$key]) ? $v[$key] : '-'); ?></th>
+            <th><?php echo(!empty($v[$key]) ? str_replace('|', '<br />', $v[$key]) : '-'); ?></th>
           <?php endforeach; ?>
         </tr>
       <?php endforeach; ?>
       </tbody>
     </table>
+    <br/>
+    <br/>
   <?php endif; ?>
 </main>
 
 <footer>
-  <p>
-    © <?php echo date('Y'); ?>, Checkbook NYC<br/>
-    <small>
-      <?php
-      global $conf;
-      if (!empty($conf['etl-status-footer'])):
-        $out = '';
-        $arr = [];
-        foreach ($conf['etl-status-footer'] as $line) {
-          foreach ($line as $text => $url):
-            $arr[] = "<a target=\"_blank\" href=\"$url\">$text</a>";
-          endforeach;
-          $out .= join(' | ', $arr) . '<br />';
-          $arr = [];
-        }
-        echo $out;
-      endif; ?>
-    </small>
-  </p>
+  <table width="100%">
+    <tr align="center">
+      <td>
+        © <?php echo date('Y'); ?>, Checkbook NYC<br/>
+        <small>
+          <?php
+          global $conf;
+          if (!empty($conf['etl-status-footer'])):
+            $out = '';
+            $arr = [];
+            foreach ($conf['etl-status-footer'] as $line) {
+              foreach ($line as $text => $url):
+                $arr[] = "<a target=\"_blank\" href=\"$url\">$text</a>";
+              endforeach;
+              $out .= join(' | ', $arr) . '<br />';
+              $arr = [];
+            }
+            echo $out;
+          endif; ?>
+        </small>
+      </td>
+    </tr>
+  </table>
 </footer>
 
 </body>

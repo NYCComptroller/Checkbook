@@ -417,22 +417,29 @@ class CheckBookJsonApi
 
     $return['connections'] = [];
     if (!empty($databases['default']['default']['host'])) {
-      $return['connections']['mysql'] = $databases['default']['default']['host'];
+      $return['connections']['mysql'] = $databases['default']['default']['host']
+        . '|' . $databases['default']['default']['database'];
     }
     if (!empty($databases['checkbook']['main']['host'])) {
-      $return['connections']['psql_main'] = $databases['checkbook']['main']['host'];
+      $return['connections']['psql_main'] = $databases['checkbook']['main']['host']
+        . '|' . $databases['checkbook']['main']['database'];
     }
     if (!empty($databases['checkbook']['etl']['host'])) {
-      $return['connections']['psql_etl'] = $databases['checkbook']['etl']['host'];
+      $return['connections']['psql_etl'] = $databases['checkbook']['etl']['host']
+        . '|' . $databases['checkbook']['etl']['database'];
     }
     if (!empty($databases['checkbook_oge']['main']['host'])) {
-      $return['connections']['psql_oge'] = $databases['checkbook_oge']['main']['host'];
+      $return['connections']['psql_oge'] = $databases['checkbook_oge']['main']['host']
+        . '|' . $databases['checkbook_oge']['main']['database'];
     }
     if (!empty($databases['checkbook_nycha']['main']['host'])) {
-      $return['connections']['psql_nycha'] = $databases['checkbook_nycha']['main']['host'];
+      $return['connections']['psql_nycha'] = $databases['checkbook_nycha']['main']['host']
+        . '|' . $databases['checkbook_nycha']['main']['database'];
     }
     if (!empty($conf['check_book']['solr']['url'])) {
-      $return['connections']['solr'] = $conf['check_book']['solr']['url'];
+      $solr_url = $conf['check_book']['solr']['url'];
+      $return['connections']['solr'] = substr($solr_url, 0, stripos($solr_url, '/solr/')+6)
+        . '|' . substr($solr_url, $pos = stripos($solr_url, '/solr/')+6, strlen($solr_url)-$pos-1);
     }
 
     return $return;
