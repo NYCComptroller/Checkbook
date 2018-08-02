@@ -26,7 +26,9 @@ public class SubVendorsPage {
     	public enum WidgetOption{
     		Top5Checks, TopChecks,Top5SubVendors,TopSubVendors , Top5PrimeVendors, TopPrimeVendors,Top5Agencies,TopAgencies,
     		 Top5SubContracts,TopSubContracts,TopSubContractAmountModifications,Top5SubContractAmountModifications,
-    		 Top5AwardMethods,TopAwardMethods,ContractsbySize,ContractsbyIndustries,SubContractStatusbyPrimeContractID
+    		 Top5AwardMethods,TopAwardMethods,ContractsbySize,ContractsbyIndustries,SubContractStatusbyPrimeContractID,
+    		 SummaryofPrimeContractSubVendorReporting,SummaryofSubVendorContractsbyPrimeContracts
+    		 
     	}
     	
     	public static boolean IsAt() {
@@ -175,6 +177,10 @@ public class SubVendorsPage {
       			return HomePage.GetWidgetTotalNumber("Contracts by Industries");
       		case SubContractStatusbyPrimeContractID:
       			return HomePage.GetWidgetTotalNumber("Sub Contract Status by Prime Contract ID");
+      		case SummaryofPrimeContractSubVendorReporting:
+      			return HomePage.GetWidgetTotalNumber("Summary of Prime Contract Sub Vendor Reporting");
+      		case SummaryofSubVendorContractsbyPrimeContracts:
+      			return HomePage.GetWidgetTotalNumber("Summary of Sub Vendor Contracts by Prime Contracts");
       			
     		default:
     			return null;

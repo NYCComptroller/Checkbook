@@ -31,8 +31,8 @@ import utilities.TestStatusReport;
 import helpers.Driver;
 import helpers.Helper;
 
-public class  NewSubVendorContractsbyFiscalYearTest extends NYCBaseTest {
-//public class NewSubVendorContractsbyFiscalYearTest extends TestStatusReport{
+//public class  NewSubVendorContractsbyFiscalYearTest extends NYCBaseTest {
+public class NewSubVendorContractsbyFiscalYearTest extends TestStatusReport{
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	 public void GoToPage(){
@@ -40,12 +40,12 @@ public class  NewSubVendorContractsbyFiscalYearTest extends NYCBaseTest {
 			   
 			   SubVendorsPage.GoTo("Contracts", SubVendorCategoryOption.SubVendorsHome);
 			  // RegisteredSubVendorContractsPage.GoTo(); 
-		   SubVendorsPage.GoToBottomNavContractslink();
+		  
 		   
 			   if(!(Helper.getCurrentSelectedYear()).equalsIgnoreCase(NYCBaseTest.prop.getProperty("CurrentYear")))
 			   HomePage.SelectYear(NYCBaseTest.prop.getProperty("CurrentYear"));
-			   WebDriverWait wait = new WebDriverWait(Driver.Instance, 30);
-				
+			//   WebDriverWait wait = new WebDriverWait(Driver.Instance, 30);
+			   SubVendorsPage.GoToBottomNavContractslink();
 	    }
 
 

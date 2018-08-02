@@ -5098,9 +5098,10 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
 		        }
      	
      	public static String getSubContractsModDetailsAmount(int year, char yearTypeVal) throws SQLException {
-     		 query = 	"select sum(maximum_contract_amount) aSum from sub_agreement_snapshot  WHERE document_code_id IN (1, 2, 5)  and maximum_contract_amount <> original_contract_amount" +
+     		 query = 	"select sum(maximum_contract_amount) aSum from sub_agreement_snapshot  WHERE document_code_id IN (1, 2, 5)" +
 		           		"AND("+year+"    BETWEEN effective_begin_year AND effective_end_year)" +
-		           		" AND("+year+"    BETWEEN starting_year AND ending_year)";
+		           		" AND("+year+"    BETWEEN starting_year AND ending_year)" +
+		           		"and maximum_contract_amount <> original_contract_amount";
 
      	    rs = amountQueryHelper(yearTypeVal);
 
@@ -5174,6 +5175,20 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
      	    // .divide(new BigDecimal(1000000000)).setScale(1, BigDecimal.ROUND_HALF_UP);
      	}
          
+     	//Subvendors 3rd bottom nav
+    	public static int getSubContractsStatusbyPrimeContractDetailsCount(int year , char yeartypeVal) throws SQLException{
+
+	           query = 	"select count(*) aCount from agreement_snapshot a left join (select contract_number,vendor_history_id, aprv_sta,sub_contract_id  from subcontract_details where latest_flag='Y') sd on a.contract_number=sd.contract_number"
+	           		+ "  WHERE a.document_code_id IN (1, 2) and a.scntrc_status =2" +
+	           		"AND("+year+" BETWEEN a.effective_begin_year AND a.effective_end_year)" +
+	           		" AND("+year+" BETWEEN a.starting_year AND a.ending_year)";
+	        	rs =  amountQueryHelper(yeartypeVal);
+	        	  int count = 0;
+		           while (rs.next()) {
+		               count = rs.getInt("aCount");
+		           }
+		          return count;
+	        }
             
             //Sub Vendors
 			public static int  getTotalRegisteredPrimeVendorCount(int year, char c) throws SQLException {
@@ -5395,22 +5410,33 @@ public static int getBudgetAgenciesCount(int year, char yearTypeVal) throws SQLE
 		  	           }
 		  	          return count;
 		         }
-
-				public static int getSubContractsCount(int year, char c) {
-					// TODO Auto-generated method stub
-					return 1936;
-				}
-
-				public static Integer getNumberOfContracts(int year, char c) {
-					// TODO Auto-generated method stub
-					return 23803;
-				}
-
-				public static Integer getReportedPrimeContracts(int year, char c) {
-					// TODO Auto-generated method stub
-					return  1936;
-				}
-
-
-
+//Contracts Subvendors 3rd bottom nav
+			
+				
+				   public static int getSubContractStatusbyPrimeContractIDCount(int year, char yeartypeVal) throws SQLException{
+					      query = 	"select count(distinct a.Contract_number) aCount from agreement_snapshot a left join (select contract_number,vendor_history_id, aprv_sta,sub_contract_id  from subcontract_details where latest_flag='Y') sd on a.contract_number=sd.contract_number"
+				 	           		+ "  WHERE a.document_code_id IN (1, 2) and a.scntrc_status =2" +
+				 	           		"AND("+year+" BETWEEN a.effective_begin_year AND a.effective_end_year)" +
+				 	           		" AND("+year+" BETWEEN a.starting_year AND a.ending_year)";
+				 	        	rs =  amountQueryHelper(yeartypeVal);
+				 	        	  int count = 0;
+				 		           while (rs.next()) {
+				 		               count = rs.getInt("aCount");
+				 		           }
+				 		          return count;
+				   }
+			  	        public static int getPrimeContractSubVendorReportingCount(int year, char yeartypeVal) throws SQLException{
+			 	           query = 	"select count(distinct a.Contract_number) aCount from agreement_snapshot a "
+			 	           		+ "  WHERE a.document_code_id IN (1, 2) " +
+			 	           		"AND("+year+" BETWEEN a.effective_begin_year AND a.effective_end_year)" +
+			 	           		" AND("+year+" BETWEEN a.starting_year AND a.ending_year)";
+			 	        	rs =  amountQueryHelper(yeartypeVal);
+			 	        	  int count = 0;
+			 		           while (rs.next()) {
+			 		               count = rs.getInt("aCount");
+			 		           }
+			 		          return count;
+			 	        }
+			  	        
+			  	  
 }
