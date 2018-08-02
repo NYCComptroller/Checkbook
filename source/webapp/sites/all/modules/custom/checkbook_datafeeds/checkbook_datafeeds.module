@@ -1733,6 +1733,7 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
     $form['filter']['purpose'] = array(
         '#type' => 'textfield',
         '#title' => t('Purpose:'),
+        '#maxlength' => 100,
         '#prefix' => '<div class="datafield purpose">',
         '#suffix' => '</div>',
         '#attributes' => array('class' => array('watch')),
