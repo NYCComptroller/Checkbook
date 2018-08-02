@@ -147,6 +147,14 @@ function _uuid_services_entity_update($entity_type, $uuid, $entity) {
       $entity = (object) $entity;
     }
     $entity->uuid_services = TRUE;
+    // Sanitize file user input.
+    if ($entity_type == 'file') {
+      $entity->filename = _services_file_check_name_extension($entity->filename);
+      $entity->uri = _services_file_check_destination_uri($entity->uri);
+      if (!empty($entity->filepath)) {
+        $entity->filepath = _services_file_check_destination($entity->filepath);
+      }
+    }
     entity_uuid_save($entity_type, $entity);
     return $entity;
   }

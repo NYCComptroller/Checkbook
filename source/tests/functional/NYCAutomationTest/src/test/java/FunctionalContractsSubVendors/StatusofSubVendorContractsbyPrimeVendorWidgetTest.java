@@ -17,26 +17,30 @@ import navigation.SubVendorCategory.SubVendorCategoryOption;
 import navigation.TopNavigation.Contracts.ActiveExpenseContracts;
 import pages.contracts.ActiveExpenseContractsPage;
 import pages.contracts.ContractsPage;
-import pages.contracts.ContractsPage.WidgetOption;
+//import pages.contracts.ContractsPage.WidgetOption;
 import pages.home.HomePage;
 import pages.spending.SpendingPage;
 import pages.subvendors.RegisteredSubVendorContractsPage;
 import pages.subvendors.StatusOfSubVendorContractsPage;
 import pages.subvendors.SubVendorsPage;
+import pages.subvendors.SubVendorsPage.WidgetOption;
 import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
 import utilities.TestStatusReport;
 import helpers.Helper;
 
 //public class  StatusofSubVendorContractsbyPrimeVendorWidgetTest extends NYCBaseTest {
-public class StatusofSubVendorContractsbyPrimeVendorWidgetTest extends TestStatusReport{
+	public class StatusofSubVendorContractsbyPrimeVendorWidgetTest extends TestStatusReport{
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	 public void GoToPage(){
 		   if (!SubVendorsPage.IsAt())
-			   StatusOfSubVendorContractsPage.GoTo();  
+			   
+				SubVendorsPage.GoTo("Contracts", SubVendorCategoryOption.SubVendorsHome);
+			 //  StatusOfSubVendorContractsPage.GoTo();  
 			   if(!(Helper.getCurrentSelectedYear()).equalsIgnoreCase(NYCBaseTest.prop.getProperty("CurrentYear")))
 			   HomePage.SelectYear(NYCBaseTest.prop.getProperty("CurrentYear"));
+			   SubVendorsPage.GoToBottomNavContractslink3();
 	    }
 
 
@@ -46,17 +50,37 @@ public class StatusofSubVendorContractsbyPrimeVendorWidgetTest extends TestStatu
 	
 
 	@Test
-	public void VerifySummaryOfSubContracts() throws SQLException {
-		Integer numOfSubContractsDB = NYCDatabaseUtil.getSubContractsCount(year, 'B');
-		Integer numOfSubContractsApp = ContractsPage.GetTop5WidgetTotalCount(WidgetOption.SummaryOfSubVendorContracts);
-		assertEquals("Number of Contracts in the  Active Expense contract by Industry  widget did not match",numOfSubContractsApp,numOfSubContractsDB);
+	public void VerifyNumOfSubContractStatusbyPrimeContractID() throws SQLException {
+		Integer numOfContractsDB = NYCDatabaseUtil.getSubContractStatusbyPrimeContractIDCount(year, 'B');
+		Integer numOfContractsApp = SubVendorsPage.GetTop5WidgetTotalCount(WidgetOption.SubContractStatusbyPrimeContractID);
+		assertEquals(" SubContractStatusbyPrimeContractID   widget Count did not match with DB",numOfContractsApp,numOfContractsDB);
 	}
 	@Test
-	public void VerifyNumOfContracts() throws SQLException {
-		Integer NumberOfContractsDb = NYCDatabaseUtil.getNumberOfContracts(year, 'B');
-		Integer NumberOfContractsApp = ContractsPage.GetTop5WidgetTotalCount(WidgetOption.SummaryOfPrimeVendor);
-		assertEquals("Number of Contracts in the  Active Expense Contracts by Size widget did not match", NumberOfContractsApp,NumberOfContractsDb);
+	public void VerifyNumOfSummaryofPrimeContractSubVendorReporting() throws SQLException {
+		Integer NumberOfContractsDB = NYCDatabaseUtil.getPrimeContractSubVendorReportingCount(year, 'B');
+		Integer NumberOfContractsApp = SubVendorsPage.GetTop5WidgetTotalCount(WidgetOption.SummaryofPrimeContractSubVendorReporting);
+		assertEquals("SummaryofPrimeContractSubVendorReporting  widget count did not match DB", NumberOfContractsApp,NumberOfContractsDB);
 	}
+	
+	@Test
+    public void VerifyNumofSummaryofSubVendorContractsbyPrimeContracts() throws SQLException {
+        Integer NumberOfContractsDB = NYCDatabaseUtil.getSubContractStatusbyPrimeContractIDCount(year, 'B');
+        Integer NumberOfContractsApp =  SubVendorsPage.GetTop5WidgetTotalCount(WidgetOption.SummaryofSubVendorContractsbyPrimeContracts);
+       
+      	 assertEquals("SummaryofSubVendorContractsbyPrimeContracts widget count  did not match with DB", NumberOfContractsApp, NumberOfContractsDB);
+
+    }
+	/*
+	@Test
+    public void VerifyNumofReportedPrimeContractswithSubVendor() throws SQLException {
+        Integer TotalContractAmtDB = NYCDatabaseUtil.getReportedPrimeContracts(year, 'B');
+        Integer TotalContractAmtApp =  ContractsPage.GetTop5WidgetTotalCount(WidgetOption.SubContractStatus);
+       
+    	System.out.println(TotalContractAmtApp);
+    	 assertEquals("Active Expense Contracts Bottom navigation Count did not match", TotalContractAmtApp, TotalContractAmtDB);
+
+    }
+    */
 	/////// amounts and titles
 
 	@Test
@@ -67,15 +91,7 @@ public class StatusofSubVendorContractsbyPrimeVendorWidgetTest extends TestStatu
         assertEquals("Active Expense Contracts Top navigation amount did not match", TotalContractAmtApp, TotalContractAmtDB);
     }
 
-	@Test
-    public void VerifyNumofReportedPrimeContractswithSubVendor() throws SQLException {
-        Integer TotalContractAmtDB = NYCDatabaseUtil.getReportedPrimeContracts(year, 'B');
-        Integer TotalContractAmtApp =  ContractsPage.GetTop5WidgetTotalCount(WidgetOption.SubContractStatus);
-       
-    	System.out.println(TotalContractAmtApp);
-    	 assertEquals("Active Expense Contracts Bottom navigation Count did not match", TotalContractAmtApp, TotalContractAmtDB);
 
-    }
 
 	@Test
     public void VerifyContractsVisualizationsTitles(){

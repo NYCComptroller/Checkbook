@@ -1733,6 +1733,7 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
     $form['filter']['purpose'] = array(
         '#type' => 'textfield',
         '#title' => t('Purpose:'),
+        '#maxlength' => 100,
         '#prefix' => '<div class="datafield purpose">',
         '#suffix' => '</div>',
         '#attributes' => array('class' => array('watch')),
@@ -4227,9 +4228,9 @@ function checkbook_datafeeds_spending($form, &$form_state)
 
     //Hidden Field for multi-select
     if($data_source == 'checkbook_oge') {
-        $multi_select_hidden = isset($form_state['values']['oge_column_select']) ? '|' . implode('||', $form_state['values']['oge_column_select']) . '|' : '';
+        $multi_select_hidden = isset($form_state['input']['oge_column_select']) ? '|' . implode('||', $form_state['input']['oge_column_select']) . '|' : '';
     }else {
-        $multi_select_hidden = isset($form_state['values']['column_select']) ? '|' . implode('||', $form_state['values']['column_select']) . '|' : '';
+        $multi_select_hidden = isset($form_state['input']['column_select']) ? '|' . implode('||', $form_state['input']['column_select']) . '|' : '';
     }
     $form['columns']['hidden_multiple_value'] = array(
         '#value' => $multi_select_hidden,
@@ -5248,9 +5249,9 @@ function checkbook_datafeeds_spending_validate($form, &$form_state) {
     $form_state['complete form']['date_filter_hidden']['#value'] = $form_state['values']['date_filter'];
     //Hidden Field for multi-select
     if($data_source == 'checkbook_oge') {
-        $multi_select_hidden = isset($form_state['values']['oge_column_select']) ? '|' . implode('||', $form_state['values']['oge_column_select']) . '|' : '';
+        $multi_select_hidden = isset($form_state['input']['oge_column_select']) ? '|' . implode('||', $form_state['input']['oge_column_select']) . '|' : '';
     }else {
-        $multi_select_hidden = isset($form_state['values']['column_select']) ? '|' . implode('||', $form_state['values']['column_select']) . '|' : '';
+        $multi_select_hidden = isset($form_state['input']['column_select']) ? '|' . implode('||', $form_state['input']['column_select']) . '|' : '';
     }
     $form_state['complete form']['hidden_multiple_value']['#value'] = $multi_select_hidden;
 }
