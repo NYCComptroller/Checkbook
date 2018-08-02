@@ -379,8 +379,8 @@ if(!$checked){
     $span = "open";
 }
 
-if(strtolower($filter_name) == 'agency'){
-    if(_checkbook_check_isEDCPage()){
+if(strtolower($filter_name) == 'agency' || strtolower($filter_name) == 'citywide agency'){
+    if(_checkbook_check_isEDCPage() || _checkbook_check_isNYCHAPage()){
         $filter_name = 'Other Government Entity';
     }else{
         $filter_name = 'Citywide Agency';

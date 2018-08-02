@@ -48,13 +48,13 @@
             "expression": " isset($row['total_salaried_amount']) ? custom_number_formatter_basic_format($row['total_salaried_amount'])  : '-'  "
         },
         "annual_salary_link": {
-            "expression": "isset($row['total_salaried_amount']) ? '<a class =\"bottomContainerReload\" href=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/' . $row['agency_agency'] . _checkbook_project_get_year_url_param_string() . '/salamttype/1/abc/' . $row['employee_employee'] . '>'. $row['formatted_salary_amount'] .'</a>' : '-'"
+            "expression": "isset($row['total_salaried_amount']) ? '<a class =\"bottomContainerReload\" href=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/' . $row['agency_agency'] . _checkbook_project_get_year_url_param_string() . RequestUtilities::_getUrlParamString('datasource') . '/salamttype/1/abc/' . $row['employee_employee'] . '>'. $row['formatted_salary_amount'] .'</a>' : '-'"
         },
         "formatted_non_salary_amount": {
             "expression": " isset($row['total_non_salaried_amount']) ? custom_number_formatter_basic_format($row['total_non_salaried_amount']) : '-'"
         },
         "non_salary_link": {
-            "expression": " isset($row['total_non_salaried_amount']) ? '<a class =\"bottomContainerReload\" href=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/' . $row['agency_agency'] . _checkbook_project_get_year_url_param_string()  . '/salamttype/2~3/abc/' . $row['employee_employee'] . '>'. $row['formatted_non_salary_amount'] .'</a>' : '-'"
+            "expression": " isset($row['total_non_salaried_amount']) ? '<a class =\"bottomContainerReload\" href=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/' . $row['agency_agency'] . _checkbook_project_get_year_url_param_string() . RequestUtilities::_getUrlParamString('datasource')  . '/salamttype/2~3/abc/' . $row['employee_employee'] . '>'. $row['formatted_non_salary_amount'] .'</a>' : '-'"
         },
         "export_salary_amount": {
             "expression": " $row['employment_type_employment_type'] == 'Salaried' ? $row['total_salaried_amount']  : NULL "

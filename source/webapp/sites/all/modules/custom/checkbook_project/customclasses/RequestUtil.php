@@ -709,6 +709,9 @@ class RequestUtil
                         $path = "payroll/yeartype/" . $yeartype . "/year/" . $year;
                     }
                 }
+                if(_checkbook_check_isNYCHAPage()){
+                    $path = $path.'/datasource/checkbook_nycha';
+                }
                 break;
             case "budget":
                 if (RequestUtilities::getRequestParamValue("agency") > 0) {
