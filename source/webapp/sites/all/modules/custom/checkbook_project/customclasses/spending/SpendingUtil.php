@@ -385,7 +385,7 @@ class SpendingUtil{
 
         $latest_minority_type_id = null;
         if(!isset($spending_vendor_latest_mwbe_category)){
-            $spending_vendor_latest_mwbe_category = dmemcache_get('spending_vendor_latest_mwbe_category');
+            $spending_vendor_latest_mwbe_category = _checkbook_dmemcache_get('spending_vendor_latest_mwbe_category');
             if (!$spending_vendor_latest_mwbe_category) {
               $query = "SELECT vendor_id, agency_id, year_id, type_of_year, minority_type_id, is_prime_or_sub
                       FROM spending_vendor_latest_mwbe_category
@@ -401,7 +401,7 @@ class SpendingUtil{
                   $spending_vendor_latest_mwbe_category[$row['vendor_id']][$row['is_prime_or_sub']]['minority_type_id'] = $row['minority_type_id'];
                 }
               }
-              dmemcache_set('spending_vendor_latest_mwbe_category', $spending_vendor_latest_mwbe_category, 54000);
+              _checkbook_dmemcache_set('spending_vendor_latest_mwbe_category', $spending_vendor_latest_mwbe_category);
             } else {
               LogHelper::log_info('spending_vendor_latest_mwbe_category :: CACHE HIT!');
             }
