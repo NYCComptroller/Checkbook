@@ -27,8 +27,8 @@ import helpers.Helper;
 import navigation.MWBECategory.MWBECategoryOption;
 import navigation.SubVendorCategory.SubVendorCategoryOption;
 import utilities.TestStatusReport;
-//public class NewSubVendorContractsbyFiscalYearDetailsTest extends TestStatusReport{
-	public class NewSubVendorContractsbyFiscalYearDetailsTest extends NYCBaseTest {
+public class NewSubVendorContractsbyFiscalYearDetailsTest extends TestStatusReport{
+	//public class NewSubVendorContractsbyFiscalYearDetailsTest extends NYCBaseTest {
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 
@@ -37,8 +37,7 @@ import utilities.TestStatusReport;
 			 //  if (!SubVendorsPage.IsAt())
 		SubVendorsPage.GoTo("Contracts", SubVendorCategoryOption.SubVendorsHome);
 				   //RegisteredSubVendorContractsPage.GoTo();  
-	
-				   if(!(Helper.getCurrentSelectedYear()).equalsIgnoreCase(NYCBaseTest.prop.getProperty("CurrentYear")))
+					   if(!(Helper.getCurrentSelectedYear()).equalsIgnoreCase(NYCBaseTest.prop.getProperty("CurrentYear")))
 				   HomePage.SelectYear(NYCBaseTest.prop.getProperty("CurrentYear"));
 				//   WebDriverWait wait = new WebDriverWait(Driver.Instance, 30);
 					SubVendorsPage.GoToBottomNavContractslink();		
