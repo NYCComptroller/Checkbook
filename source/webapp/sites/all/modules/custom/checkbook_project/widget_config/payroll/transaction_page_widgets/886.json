@@ -39,7 +39,7 @@
                "expression": "_get_tooltip_markup($row['civil_service_title_civil_service_title'],30)"
         },
         "employee_name_link": {
-           "expression": "  '<a href=\"/payroll/title_landing/yeartype/'. $row['year_type_year_type'] . '/year/' . $row['year_year'] . '/title/' . $row['civil_service_title_code_civil_service_title_code'] . '\">'. $row['employee_name_formatted'] . '</a>'"
+           "expression": "  '<a href=\"/payroll/title_landing/yeartype/'. $row['year_type_year_type'] . '/year/' . $row['year_year'] .RequestUtilities::_getUrlParamString('datasource'). '/title/' . $row['civil_service_title_code_civil_service_title_code'] . '\">'. $row['employee_name_formatted'] . '</a>'"
         },
         "total_no_of_employees_formatted": {
         "expression": "number_format($row['employee_count_employee_count'])"

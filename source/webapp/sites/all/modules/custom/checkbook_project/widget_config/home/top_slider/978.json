@@ -1,0 +1,35 @@
+{
+  "widgetType": "phpparser",
+  "no_results_content": "No Results Found",
+  "cleanURLParameters":["year","calyear","agency","yeartype","awdmethod","vendor","csize","cindustry","magid","mwbe","subvendor","title"],
+  "widgetPreprocessJSON":"
+    // Payroll amount should be calculated for 'Calendar Year' always for all the other domains
+    if(!preg_match('/payroll/',$_SERVER['REQUEST_URI'])){
+    unset($node->widgetConfig->model->series[0]->seriesURLParamMap->yeartype);
+    }
+
+    if(RequestUtilities::getRequestParamValue('yeartype') == 'B' && !preg_match('/payroll/',$_SERVER['REQUEST_URI']))
+    unset($node->widgetConfig->model->series[0]->seriesURLParamMap->year);
+
+    ",
+"model": {
+"join": {
+"method": "Union"
+},
+"series": [
+{
+"dataset":"checkbook:payroll_employee_agency",
+"columns":["total_base_pay","total_overtime_pay","total_gross_pay"],
+"seriesURLParamMap":{"vendor":"vendor_id","calyear":"year.year","year":"year.year","agency":"agency_id","yeartype":"type_of_year","title":"civil_service_title_code.civil_service_title_code"},
+"allowedParams":["year.year","agency_id","type_of_year","civil_service_title_code.civil_service_title_code"],
+"seriesDefaultParameters":{"type_of_year":"C"},
+"adjustSerieParameters":"
+if(RequestUtilities::getRequestParamValue('yeartype') == 'B' && !preg_match('/payroll/',$_SERVER['REQUEST_URI']))
+$serieParameters['fiscal_year_id'] = RequestUtil::getCalYearIdForTopNavigation();
+return $serieParameters;
+"
+}
+]
+},
+"template": "contracts_navigation"
+}
