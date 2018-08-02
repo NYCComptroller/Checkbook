@@ -90,16 +90,26 @@ abstract class Datasource {
 
     const CITYWIDE = "checkbook";
     const OGE = "checkbook_oge";
+    const NYCHA = "checkbook_nycha";
 
      public static function getCurrent() {
         $datasource = RequestUtilities::getRequestParamValue(UrlParameter::DATASOURCE);
         switch($datasource) {
             case self::OGE: return self::OGE;
+            case self::NYCHA: return self::NYCHA;
             default: return self::CITYWIDE;
         }
     }
     public static function isOGE() {
         return self::getCurrent() == Datasource::OGE;
+    }
+
+    public static function isNYCHA() {
+        return self::getCurrent() == Datasource::NYCHA;
+    }
+
+    public static function getDBSchema() {
+        return (self::getCurrent() == Datasource::NYCHA) ? 'public_nycha.':'';
     }
 }
 
@@ -107,6 +117,7 @@ abstract class Dashboard {
 
     const CITYWIDE = "citywide";
     const OGE = "oge";
+    const NYCHA = "nycha";
     const SUB_VENDORS = "sub_vendors";
     const SUB_VENDORS_MWBE = "sub_vendors_mwbe";
     const MWBE_SUB_VENDORS = "mwbe_sub_vendors";
@@ -130,13 +141,23 @@ abstract class Dashboard {
                 case DashboardParameter::SUB_VENDORS_MWBE: return self::SUB_VENDORS_MWBE;
                 case DashboardParameter::MWBE_SUB_VENDORS: return self::MWBE_SUB_VENDORS;
                 case DashboardParameter::MWBE: return self::MWBE;
-                default: return Datasource::isOGE() ? self::OGE : self::CITYWIDE;
+                default:
+                    if(Datasource::isOGE())
+                        return self::OGE;
+                    else if(Datasource::isNYCHA())
+                        return self::NYCHA;
+                    else
+                        return self::CITYWIDE;
             }
         }
      }
 
     public static function isOGE() {
         return self::getCurrent() == self::OGE;
+    }
+
+    public static function isNYCHA() {
+        return self::getCurrent() == self::NYCHA;
     }
 
      public static function isMWBE() {
@@ -151,7 +172,7 @@ abstract class Dashboard {
 
       public static function isPrimeDashboard() {
         $dashboard = self::getCurrent();
-        return $dashboard == self::MWBE || $dashboard == self::CITYWIDE || $dashboard == self::OGE;
+        return $dashboard == self::MWBE || $dashboard == self::CITYWIDE || $dashboard == self::OGE || $dashboard == self::NYCHA;
       }
 }
 
