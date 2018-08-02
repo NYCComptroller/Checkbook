@@ -281,7 +281,7 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
         ];
         $cacheKey = $cacheDatasets.md5($query);
         if(in_array($datasetName, $cacheDatasets)) {
-          if ($result = dmemcache_get($cacheKey)) {
+          if ($result = _checkbook_dmemcache_get($cacheKey)) {
             LogHelper::log_info($datasetName.' :: CACHE HIT!');
             return $result;
           }
@@ -289,7 +289,7 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
         LogHelper::log_notice($query);
         $result = $this->executeQuery($callcontext, $datasource, $sql, $resultFormatter);
         if(in_array($datasetName, $cacheDatasets)) {
-          dmemcache_set($cacheKey, $result, 54000);
+          _checkbook_dmemcache_set($cacheKey, $result);
         }
         return $result;
     }
@@ -497,7 +497,7 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
         // processing prepared sql and returning data
         $query = ''.new StatementLogMessage('cube.query', $sql);
         $cacheKey = $cubeName . md5($sql);
-        if ($return = dmemcache_get($cacheKey)) {
+        if ($return = _checkbook_dmemcache_get($cacheKey)) {
           LogHelper::log_info($cubeName .' :: CACHE HIT!');
           return $return;
         }
@@ -515,7 +515,7 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
           }
         }
         if ($cache) {
-         dmemcache_set($cacheKey, $return, 54000);
+          _checkbook_dmemcache_set($cacheKey, $return);
         }
         return $return;
     }

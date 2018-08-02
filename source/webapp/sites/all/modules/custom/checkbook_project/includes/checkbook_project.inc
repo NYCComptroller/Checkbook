@@ -1812,7 +1812,7 @@ function _checkbook_project_execute_sql($sql, $db_name = "main", $data_source = 
     }
 
     $cacheKey = '_checkbook_query_'.md5($sql.$db_name.$data_source);
-    if ($result = dmemcache_get($cacheKey)) {
+    if ($result = _checkbook_dmemcache_get($cacheKey)) {
       LogHelper::log_info($sql);
       LogHelper::log_info($cacheKey.' :: CACHE HIT! ('.sizeof($result).' records)');
       return $result;
@@ -1843,7 +1843,7 @@ function _checkbook_project_execute_sql($sql, $db_name = "main", $data_source = 
 
     LogHelper::log_info("Processed ".sizeof($output)." records (_checkbook_project_execute_sql)");
     if (13 > sizeof($output) || (13 > sizeof($output[0]) && 10000 > sizeof(sizeof($output)))) {
-      dmemcache_set($cacheKey, $output, 54000);
+      _checkbook_dmemcache_set($cacheKey, $output);
     }
 
 
@@ -2115,7 +2115,7 @@ function _checkbook_max_data_year()
 //    phpunit
     return _checkbook_max_data_year_test();
   }
-    if ($result = dmemcache_get('_checkbook_max_data_year')) {
+    if ($result = _checkbook_dmemcache_get('_checkbook_max_data_year')) {
       LogHelper::log_info('_checkbook_max_data_year :: CACHE HIT!');
       return $result;
     }
@@ -2124,7 +2124,7 @@ function _checkbook_max_data_year()
   $result = _checkbook_project_execute_sql($query);
   $result = array("year_value" => $result[0]['year_value'], "year_id" => $result[0]['year_id'],
     "cal_year_value" => $result[1]['year_value'], "cal_year_id" => $result[1]['year_id']);
-  dmemcache_set('_checkbook_max_data_year', $result, 54000);
+  _checkbook_dmemcache_set('_checkbook_max_data_year', $result);
   return $result;
 
 }
