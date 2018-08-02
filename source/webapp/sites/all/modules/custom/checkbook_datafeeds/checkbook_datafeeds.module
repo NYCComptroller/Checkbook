@@ -4485,6 +4485,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     $form['filter']['document_id'] = array(
         '#type' => 'textfield',
         '#title' => t('Document ID:'),
+        '#maxlength' => 30,
         '#prefix' => '<div class="datafield expenseid">',
         '#suffix' => '</div>',
         '#attributes' => array('class' => array('watch')),
@@ -4495,6 +4496,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     $form['filter']['capital_project'] = array(
         '#type' => 'textfield',
         '#title' => t('Capital Project:'),
+        '#maxlength' => 15,
         '#prefix' => '<div class="datafield capitalproject">',
         '#suffix' => '</div>',
         '#attributes' => array('class' => array('watch')),
