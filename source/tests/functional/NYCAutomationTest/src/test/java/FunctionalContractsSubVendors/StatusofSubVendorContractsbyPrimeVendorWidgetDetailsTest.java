@@ -29,8 +29,8 @@ import utilities.NYCDatabaseUtil;
 import utilities.TestStatusReport;
 import helpers.Helper;
 
-public class  StatusofSubVendorContractsbyPrimeVendorWidgetDetailsTest extends NYCBaseTest {
-//public class StatusofSubVendorContractsbyPrimeVendorWidgetDetailsTest extends TestStatusReport{
+//public class  StatusofSubVendorContractsbyPrimeVendorWidgetDetailsTest extends NYCBaseTest {
+public class StatusofSubVendorContractsbyPrimeVendorWidgetDetailsTest extends TestStatusReport{
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	 public void GoToPage(){
@@ -53,7 +53,7 @@ public class  StatusofSubVendorContractsbyPrimeVendorWidgetDetailsTest extends N
 	public void VerifyTop5SubVendorContracts() throws SQLException {
 		SubVendorsPage.GoToTop5DetailsPage(WidgetOption.SubContractStatusbyPrimeContractID);
 		
-		Integer totalCheckswidgetCountDB = NYCDatabaseUtil.getSubContractsDetailsCount(year,'B');
+		Integer totalCheckswidgetCountDB = NYCDatabaseUtil.getSubContractsStatusbyPrimeContractDetailsCount(year,'B');
 		Integer totalChecksWidgetCountApp = SubVendorsPage.GetTransactionCount3();
 		assertEquals("Sub Vendors Contracts widget count  did not match with the DB",totalChecksWidgetCountApp, totalCheckswidgetCountDB);
 		
@@ -61,10 +61,7 @@ public class  StatusofSubVendorContractsbyPrimeVendorWidgetDetailsTest extends N
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
 	    assertEquals("Sub Vendors Contracts  Widget title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
-	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getSubContractsDetailsAmount(year,'B');
-		String WidgetDetailsAmountApp = ActiveExpenseContractsPage.GetTransactionAmount1();
-	    assertEquals("Sub Vendors Contracts Widget Details page total Contract amount did not match", WidgetDetailsAmountApp, WidgetDetailsAmountDB); 
-	  
+	   
 
 	}
 
