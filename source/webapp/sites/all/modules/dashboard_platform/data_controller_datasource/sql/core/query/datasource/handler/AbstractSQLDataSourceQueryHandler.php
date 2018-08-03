@@ -271,7 +271,8 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
         // applying pagination
         $this->applyPagination($request, $sql);
 
-        $query = ''.new StatementLogMessage('dataset.query', $sql);
+        LogHelper::log_notice(new StatementLogMessage('dataset.query', $sql));
+
         $cacheDatasets = [
           'checkbook_oge:agency',
           'checkbook:agency',
@@ -279,14 +280,13 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
           'checkbook:year',
           'checkbook:month',
         ];
-        $cacheKey = $cacheDatasets.md5($query);
+        $cacheKey = $cacheDatasets.md5($sql);
         if(in_array($datasetName, $cacheDatasets)) {
           if ($result = _checkbook_dmemcache_get($cacheKey)) {
             LogHelper::log_info($datasetName.' :: CACHE HIT!');
             return $result;
           }
         }
-        LogHelper::log_notice($query);
         $result = $this->executeQuery($callcontext, $datasource, $sql, $resultFormatter);
         if(in_array($datasetName, $cacheDatasets)) {
           _checkbook_dmemcache_set($cacheKey, $result);
