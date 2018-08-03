@@ -272,7 +272,26 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
         $this->applyPagination($request, $sql);
 
         LogHelper::log_notice(new StatementLogMessage('dataset.query', $sql));
-        return $this->executeQuery($callcontext, $datasource, $sql, $resultFormatter);
+
+        $cacheDatasets = [
+          'checkbook_oge:agency',
+          'checkbook:agency',
+          'checkbook_nycha:agency',
+          'checkbook:year',
+          'checkbook:month',
+        ];
+        $cacheKey = $cacheDatasets.md5($sql);
+        if(in_array($datasetName, $cacheDatasets)) {
+          if ($result = _checkbook_dmemcache_get($cacheKey)) {
+            LogHelper::log_info($datasetName.' :: CACHE HIT!');
+            return $result;
+          }
+        }
+        $result = $this->executeQuery($callcontext, $datasource, $sql, $resultFormatter);
+        if(in_array($datasetName, $cacheDatasets)) {
+          _checkbook_dmemcache_set($cacheKey, $result);
+        }
+        return $result;
     }
 
     /*
@@ -476,8 +495,29 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
         $this->applyPagination($request, $sql);
 
         // processing prepared sql and returning data
-        LogHelper::log_notice(new StatementLogMessage('cube.query', $sql));
-        return $this->executeQuery($callcontext, $datasource, $sql, $resultFormatter);
+        $query = ''.new StatementLogMessage('cube.query', $sql);
+        $cacheKey = $cubeName . md5($sql);
+        if ($return = _checkbook_dmemcache_get($cacheKey)) {
+          LogHelper::log_info($cubeName .' :: CACHE HIT!');
+          return $return;
+        }
+        LogHelper::log_notice($query);
+        $return = $this->executeQuery($callcontext, $datasource, $sql, $resultFormatter);
+        $cache = false;
+        if (is_array($return)) {
+          if (14 > sizeof($return) && 14 > sizeof($return[0])) {
+            // some small piece of data
+            $cache = true;
+          }
+          if ('checkbook:budget' == $cubeName && 3 > sizeof($return[0])) {
+            // budget codes
+            $cache = true;
+          }
+        }
+        if ($cache) {
+          _checkbook_dmemcache_set($cacheKey, $return);
+        }
+        return $return;
     }
 
     /*
@@ -547,7 +587,9 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
                 . ") $tableAlias";
         }
 
-        LogHelper::log_notice(new StatementLogMessage('*.count', $sql));
+        $query = ''.new StatementLogMessage('*.count', $sql);
+        LogHelper::log_info('record_count :: '.md5($query));
+        LogHelper::log_notice($query);
         $records = $this->executeQuery($callcontext, $datasource, $sql, new PassthroughResultFormatter());
 
         return $records[0][$countIdentifier];

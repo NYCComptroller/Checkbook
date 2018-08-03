@@ -509,10 +509,10 @@ class GoogleAnalyticsCustomUrls extends DrupalWebTestCase {
     $ua_code = 'UA-123456-4';
     variable_set('googleanalytics_account', $ua_code);
 
-    $this->drupalGet('user/password', ['query' => ['name' => 'foo']]);
+    $this->drupalGet('user/password', array('query' => array('name' => 'foo')));
     $this->assertRaw('ga("set", "page", "' . $base_path . 'user/password"');
 
-    $this->drupalGet('user/password', ['query' => ['name' => 'foo@example.com']]);
+    $this->drupalGet('user/password', array('query' => array('name' => 'foo@example.com')));
     $this->assertRaw('ga("set", "page", "' . $base_path . 'user/password"');
 
     $this->drupalGet('user/password');

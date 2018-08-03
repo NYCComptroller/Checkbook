@@ -267,13 +267,6 @@
                 $('#edit-oge-column-select', context).multiSelect('deselect_all');
             });
 
-            //Set OGE multi-select default values
-             if(dataSource == 'checkbook_oge' && $('input:hidden[name="hidden_multiple_value"]', context).val().split('|').length > 2) {
-                 $('#edit-oge-column-select', context).multiSelect('select', $('input:hidden[name="hidden_multiple_value"]', context).val().split('|').filter(function (v) {
-                 return v !== ''
-                 }));
-             }
-
             //Display or hide fields based on data source selection
             $.fn.showHideFields(dataSource);
 

@@ -23,7 +23,7 @@ class EtlStatusModuleTest extends TestCase
      * @var int
      * 2222-11-22 08:01:00
      */
-    private $fakeTimeToday = 7980451260;
+    private $fakeTodayTime = 7980453594;
     /**
      * @var string
      */
@@ -31,9 +31,8 @@ class EtlStatusModuleTest extends TestCase
 
     /**
      * @var int
-     * 2222-11-26 08:01:00  == Tuesday Morning !
      */
-    private $fakeTuesday = 7980796860;
+    private $fakeYesterdayTime = 7980367194;
 
     /**
      * @var /CheckbookEtlStatus
@@ -88,10 +87,10 @@ class EtlStatusModuleTest extends TestCase
 
         $CheckbookEtlStatus =
             $this->getMockBuilder('CheckbookEtlStatus')
-                ->setMethods(['date'])
+                ->setMethods(['get_date'])
                 ->getMock();
         $CheckbookEtlStatus->expects($this->at(0))
-            ->method('date')
+            ->method('get_date')
             ->with($this->equalTo('Y-m-d'))
             ->will($this->returnValue($this->fakeTodayYMD));
 
@@ -114,14 +113,14 @@ class EtlStatusModuleTest extends TestCase
         $mocked_variable['checkbook_etl_status_last_run'] = $this->fakeYesterday;
         $CheckbookEtlStatus =
             $this->getMockBuilder('CheckbookEtlStatus')
-                ->setMethods(['date'])
+                ->setMethods(['get_date'])
                 ->getMock();
         $CheckbookEtlStatus->expects($this->at(0))
-            ->method('date')
+            ->method('get_date')
             ->with($this->equalTo('Y-m-d'))
             ->will($this->returnValue($this->fakeTodayYMD));
         $CheckbookEtlStatus->expects($this->at(1))
-            ->method('date')
+            ->method('get_date')
             ->with($this->equalTo('H'))
             ->will($this->returnValue('5'));
 
@@ -141,14 +140,14 @@ class EtlStatusModuleTest extends TestCase
         $mocked_variable['checkbook_etl_status_last_run'] = $this->fakeYesterday;
         $CheckbookEtlStatus =
             $this->getMockBuilder('CheckbookEtlStatus')
-                ->setMethods(['date', 'sendmail'])
+                ->setMethods(['get_date', 'sendmail'])
                 ->getMock();
         $CheckbookEtlStatus->expects($this->at(0))
-            ->method('date')
+            ->method('get_date')
             ->with($this->equalTo('Y-m-d'))
             ->will($this->returnValue($this->fakeTodayYMD));
         $CheckbookEtlStatus->expects($this->at(1))
-            ->method('date')
+            ->method('get_date')
             ->with($this->equalTo('H'))
             ->will($this->returnValue('8'));
         $CheckbookEtlStatus->expects($this->once())
@@ -161,49 +160,31 @@ class EtlStatusModuleTest extends TestCase
     /**
      *
      */
-    public function test_format_status_yesterday_date()
-    {
-        $CheckbookEtlStatus =
-            $this->getMockBuilder('CheckbookEtlStatus')
-                ->setMethods(['timeNow'])
-                ->getMock();
-
-        $CheckbookEtlStatus->expects($this->once())
-            ->method('timeNow')
-            ->will($this->returnValue($this->fakeTimeToday));
-
-        $sampleData = [
-            'success' => true,
-            'data' => $this->fakeYesterday
-        ];
-
-        $this->assertEquals('<strong style="color:red">FAIL</strong> (last success: ' .
-            $this->CES->niceDisplayDate($this->fakeYesterday) . ")",
-            $CheckbookEtlStatus->formatStatus($sampleData));
-    }
-
-    /**
-     *
-     */
     public function test_format_status_success()
     {
         $CheckbookEtlStatus =
-            $this->getMockBuilder('CheckbookEtlStatus')
+            $this
+                ->getMockBuilder('CheckbookEtlStatus')
                 ->setMethods(['timeNow'])
                 ->getMock();
 
-        $CheckbookEtlStatus->expects($this->once())
+        $CheckbookEtlStatus
+            ->expects($this->any())
             ->method('timeNow')
-            ->will($this->returnValue($this->fakeTimeToday));
+            ->will($this->returnValue($this->fakeTodayTime - 7500));
 
         $sampleData = [
             'success' => true,
             'data' => $this->fakeToday
         ];
 
-        $this->assertEquals('<strong style="color:darkgreen">SUCCESS</strong> (finished: ' .
-            $this->CES->niceDisplayDate($this->fakeToday) . ")",
-            $CheckbookEtlStatus->formatStatus($sampleData));
+        $expected = [
+            'success' => true,
+            'data' => $this->fakeToday,
+            'hint' => $CheckbookEtlStatus->niceDisplayDateDiff($this->fakeToday)
+        ];
+
+        $this->assertEquals($expected, $CheckbookEtlStatus->formatStatus($sampleData));
     }
 
     /**
@@ -214,6 +195,9 @@ class EtlStatusModuleTest extends TestCase
         $this->assertTrue($this->CES->sendmail());
     }
 
+    /**
+     *
+     */
     public function test_getProdStatus()
     {
         $CheckbookEtlStatus =
@@ -224,7 +208,10 @@ class EtlStatusModuleTest extends TestCase
             ->method('get_contents')
             ->will($this->returnValue('{"success":true}'));
 
-        $expected = ['success' => true];
+        $expected = [
+            'success' => true,
+            'source' => 'PROD',
+        ];
 
         $this->assertEquals($expected, $CheckbookEtlStatus->getProdStatus());
 
@@ -242,12 +229,17 @@ class EtlStatusModuleTest extends TestCase
 
         $CheckbookEtlStatus->expects($this->once())
             ->method('timeNow')
-            ->will($this->returnValue($this->fakeTimeToday));
+            ->will($this->returnValue($this->fakeTodayTime));
 
         $sampleData = [
         ];
 
-        $this->assertEquals("FAIL (unknown)", $CheckbookEtlStatus->formatStatus($sampleData));
+        $expected = [
+            'success' => false,
+            'hint' => 'Could not get data from server',
+        ];
+
+        $this->assertEquals($expected, $CheckbookEtlStatus->formatStatus($sampleData));
     }
 
     /**
@@ -257,18 +249,14 @@ class EtlStatusModuleTest extends TestCase
     {
         $CheckbookEtlStatus =
             $this->getMockBuilder('CheckbookEtlStatus')
-                ->setMethods(['date', 'timeNow', 'getUatStatus', 'getProdStatus'])
+                ->setMethods(['timeNow', 'getUatStatus', 'getProdStatus', 'getConnectionConfigs'])
                 ->getMock();
 
         $message = null;
 
         $CheckbookEtlStatus->expects($this->any())
             ->method('timeNow')
-            ->will($this->returnValue($this->fakeTimeToday));
-
-        $CheckbookEtlStatus->expects($this->once())
-            ->method('date')
-            ->will($this->returnValue($this->fakeToday));
+            ->will($this->returnValue($this->fakeTodayTime));
 
         $CheckbookEtlStatus->expects($this->once())
             ->method('getUatStatus')
@@ -286,14 +274,81 @@ class EtlStatusModuleTest extends TestCase
 
         $CheckbookEtlStatus->mail($message);
 
-        $expected = <<<EOM
-UAT  ETL STATUS:\t<strong style="color:darkgreen">SUCCESS</strong> (finished: {$this->CES->niceDisplayDate($this->fakeToday)})<br /><br />
-PROD ETL STATUS:\t<strong style="color:red">FAIL</strong> (last success: {$this->CES->niceDisplayDate($this->fakeYesterday)})
+        $expected = [
+            'subject' => 'Fail',
+            'uat_status' => [
+                'success' => true,
+                'data' => $this->fakeToday,
+                'hint' => $CheckbookEtlStatus->niceDisplayDateDiff($this->fakeToday),
+            ],
+            'prod_status' => [
+                'success' => false,
+                'data' => $this->fakeYesterday,
+                'hint' => 'Last success: ' . $CheckbookEtlStatus->niceDisplayDateDiff($this->fakeYesterday),
+            ],
+            'connections' => false,
+            'connection_keys' => CheckbookEtlStatus::CONNECTIONS_KEYS,
+        ];
 
-EOM;
+        $this->assertEquals('ETL Status: Fail (' . $this->fakeTodayYMD . ')', $message['subject']);
+        $this->assertEquals($expected, $message['body']);
+    }
 
-        $this->assertEquals('ETL Status: Fail ('.$this->fakeToday.')', $message['subject']);
-        $this->assertEquals($expected, $message['body'][0]);
+    /**
+     *
+     */
+    public function test_needs_attention()
+    {
+        $CheckbookEtlStatus =
+            $this->getMockBuilder('CheckbookEtlStatus')
+                ->setMethods(['get_date', 'timeNow', 'getUatStatus', 'getProdStatus', 'getConnectionConfigs'])
+                ->getMock();
+
+        $message = null;
+
+        $CheckbookEtlStatus->expects($this->any())
+            ->method('timeNow')
+            ->will($this->returnValue($this->fakeTodayTime));
+
+        $CheckbookEtlStatus->expects($this->once())
+            ->method('getUatStatus')
+            ->will($this->returnValue([
+                'success' => true,
+                'data' => $this->fakeToday,
+                'invalid_records' => 'asdf',
+                'invalid_records_timestamp' => ($this->fakeTodayTime - 7200),
+            ]));
+
+        $CheckbookEtlStatus->expects($this->once())
+            ->method('getProdStatus')
+            ->will($this->returnValue([
+                'success' => true,
+                'data' => $this->fakeToday,
+                'invalid_records' => 'asdf',
+                'invalid_records_timestamp' => ($this->fakeYesterdayTime),
+            ]));
+
+        $CheckbookEtlStatus->mail($message);
+
+        $expected = [
+            'subject' => 'Needs attention',
+            'uat_status' => [
+                'success' => true,
+                'data' => $this->fakeToday,
+                'hint' => $CheckbookEtlStatus->niceDisplayDateDiff($this->fakeToday),
+                'invalid_records' => 'asdf',
+                'invalid_records_timestamp' => ($this->fakeTodayTime - 7200)
+
+            ],
+            'prod_status' => [
+                'success' => true,
+                'data' => $this->fakeToday,
+                'hint' => $CheckbookEtlStatus->niceDisplayDateDiff($this->fakeToday),
+            ],
+            'connections' => false,
+            'connection_keys' => CheckbookEtlStatus::CONNECTIONS_KEYS,
+        ];
+        $this->assertEquals($expected, $message['body']);
     }
 
     /**
@@ -303,14 +358,14 @@ EOM;
     {
         $CheckbookEtlStatus =
             $this->getMockBuilder('CheckbookEtlStatus')
-                ->setMethods(['date', 'timeNow', 'getUatStatus', 'getProdStatus'])
+                ->setMethods(['get_date', 'timeNow', 'getUatStatus', 'getProdStatus', 'getConnectionConfigs'])
                 ->getMock();
 
         $message = null;
 
         $CheckbookEtlStatus->expects($this->any())
             ->method('timeNow')
-            ->will($this->returnValue($this->fakeTimeToday));
+            ->will($this->returnValue($this->fakeTodayTime));
 
         $CheckbookEtlStatus->expects($this->once())
             ->method('getUatStatus')
@@ -328,22 +383,22 @@ EOM;
 
         $CheckbookEtlStatus->mail($message);
 
-        $expected = <<<EOM
-UAT  ETL STATUS:\t<strong style="color:red">FAIL</strong> (last success: {$this->CES->niceDisplayDate($this->fakeYesterday)})<br /><br />
-PROD ETL STATUS:\t<strong style="color:darkgreen">SUCCESS</strong> (finished: {$this->CES->niceDisplayDate($this->fakeToday)})
-
-EOM;
-
-        $this->assertEquals($expected, $message['body'][0]);
-    }
-
-    /**
-     *
-     */
-    public function test_format_display_date()
-    {
-        $testDate = '2099-12-11 01:02:03.456789';
-        $this->assertEquals('2099-12-11 01:02AM', $this->CES->niceDisplayDate($testDate));
+        $expected = [
+            'subject' => 'Fail',
+            'uat_status' => [
+                'success' => false,
+                'data' => $this->fakeYesterday,
+                'hint' => 'Last success: ' . $CheckbookEtlStatus->niceDisplayDateDiff($this->fakeYesterday),
+            ],
+            'prod_status' => [
+                'success' => true,
+                'data' => $this->fakeToday,
+                'hint' => $CheckbookEtlStatus->niceDisplayDateDiff($this->fakeToday),
+            ],
+            'connections' => false,
+            'connection_keys' => CheckbookEtlStatus::CONNECTIONS_KEYS,
+        ];
+        $this->assertEquals($expected, $message['body']);
     }
 
     /**
@@ -359,29 +414,6 @@ EOM;
      */
     public function test_date_now()
     {
-        $this->assertEquals(date("Y-m-d"), $this->CES->date("Y-m-d"));
-    }
-
-    /**
-     *
-     */
-    public function test_monday()
-    {
-        $CheckbookEtlStatus =
-            $this->getMockBuilder('CheckbookEtlStatus')
-                ->setMethods(['timeNow', 'getUatStatus', 'getProdStatus'])
-                ->getMock();
-
-        $message = null;
-
-        $CheckbookEtlStatus->expects($this->any())
-            ->method('timeNow')
-            ->will($this->returnValue($this->fakeTuesday));
-
-//        $expectedWarning = "\n<br /><br />" . CheckbookEtlStatus::MONDAY_NOTICE;
-        $expectedWarning = '';
-
-        $this->assertEquals($expectedWarning,
-            $CheckbookEtlStatus->comment());
+        $this->assertEquals(date("Y-m-d"), $this->CES->get_date("Y-m-d"));
     }
 }

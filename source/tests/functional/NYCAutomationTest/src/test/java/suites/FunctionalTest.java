@@ -14,7 +14,9 @@ import FunctionalPayroll.*;
 import FunctionalSpendingMWBE.*;
 import FunctionalSpendingSubVendors.*;
 import FunctionalSpendingOGE.*;
+import FunctionalContractsOGE.*;
 import utilities.NYCBaseTest;
+import utilities.OGENYCBaseTest;
 import utilities.TestStatusReport;
 
 /**
@@ -23,8 +25,8 @@ import utilities.TestStatusReport;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-
-	/* Spending */
+/*
+	/* Spending 
 	TotalSpendingWidgetTest.class,
 	TotalSpendingTitlesTest.class,
 	TotalSpendingWidgetDetailsTest.class,	
@@ -46,7 +48,7 @@ import utilities.TestStatusReport;
 	
 	
 	
-	/*Contracts */
+	/*Contracts 
 	
 	ActiveExpenseContractsTest.class,
 	ActiveExpenseContractsDetailsTest.class,
@@ -77,13 +79,8 @@ import utilities.TestStatusReport;
 	MWBERegisteredRevenueContractsTest.class,
 	MWBERegisteredRevenueContractsDetailsTest.class,
 	
-	/* Sub vendors Contracts */
 	
-	NewSubVendorContractsbyFiscalYearTest.class,
-	StatusofSubVendorContractsbyPrimeVendorWidgetTest.class,
-	TotalActiveSubVendorContractsWidgetTest.class,
- 
-	/* Budget */
+	/* Budget 
 	
 	
 	BudgetWidgetDetailsPageTitlesTest.class,
@@ -92,21 +89,21 @@ import utilities.TestStatusReport;
 	BudgetWidgetDetailsTransactionCountsTest.class,
 	BudgetWidgetDetailsTotalStaticAmountTest.class,		
 
-	/* Revenue */
+	/* Revenue 
 	RevenueWidgetTest.class,
     RevenueWidgetTitles.class,
 	RevenueWidgetDetailsTest.class,
 	RevenueWidgetDetailsAmountTest.class,
 	RevenueWidgetDetailsPageTitlesTest.class,
 
-	/* Payroll */
+	/* Payroll 
 	PayrollWidgetCountsTest.class,
 	PayrollWidgetTitlesTest.class,
 	PayrollWidgetDetailsPageTitlesTest.class,	
 	PayrollWidgetDetailsTransactionCountsTest.class,
 	
 	
-	/* Sub Vendors Spending */
+	/* Sub Vendors Spending 
 	SubVendorsTotalSpendingWidgetTest.class,
 	SubvendorsTotalSpendingTitlesTest.class,		
 	SubVendorsTotalSpendingWidgetDetailsTest.class,
@@ -114,7 +111,7 @@ import utilities.TestStatusReport;
 	SubVendorsContractSpendingWidgetTest.class,
 	SubVendorsContractSpendingWidgetDetailsTest.class,
 	
-	/* MWBE Spending */
+	/* MWBE Spending 
 	MWBETotalSpendingWidgetTest.class,
 	MWBETotalSpendingTitlesTest.class,
 	MWBETotalSpendingWidgetDetailsTest.class,
@@ -131,7 +128,17 @@ import utilities.TestStatusReport;
 	MWBEOtherSpendingWidgetTest.class,
 	MWBEOtherSpendingWidgetDetailsTest.class,
 	
-	/* OGE Spending */
+/* Sub vendors Contracts 
+	
+	NewSubVendorContractsbyFiscalYearTest.class,
+	NewSubVendorContractsbyFiscalYearDetailsTest.class,
+	StatusofSubVendorContractsbyPrimeVendorWidgetTest.class,
+	StatusofSubVendorContractsbyPrimeVendorWidgetDetailsTest.class,
+	TotalActiveSubVendorContractsWidgetTest.class,
+	TotalActiveSubVendorContractsWidgetDetailsTest.class,
+ 
+	
+	/* OGE Spending 
 	OGETotalSpendingWidgetTest.class,	
 	OGETotalSpendingWidgetDetailsTest.class,
 	
@@ -140,6 +147,13 @@ import utilities.TestStatusReport;
 
 	OGEContractSpendingWidgetTest.class,
 	OGEContractSpendingWidgetDetailsTest.class,
+	
+	/* OGE Contracts*/
+	OGEActiveExpenseContractsTest.class,
+	OGEActiveExpenseContractsDetailsTest.class,
+	OGERegisteredExpenseContractsTest.class,
+	OGERegisteredExpenseContractsDetailsTest.class, 
+	
 	
 
 

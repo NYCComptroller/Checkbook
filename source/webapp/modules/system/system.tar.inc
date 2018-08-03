@@ -714,7 +714,7 @@ class Archive_Tar
         }
 
         // ----- Get the arguments
-        $v_att_list = & func_get_args();
+        $v_att_list = func_get_args();
 
         // ----- Read the attributes
         $i = 0;
