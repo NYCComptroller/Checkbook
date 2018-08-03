@@ -37,11 +37,15 @@ public class NewSubVendorContractsbyFiscalYearTest extends TestStatusReport{
 	@Before
 	 public void GoToPage(){
 		   if (!SubVendorsPage.IsAt())
-			   RegisteredSubVendorContractsPage.GoTo();  
+			   
+			   SubVendorsPage.GoTo("Contracts", SubVendorCategoryOption.SubVendorsHome);
+			  // RegisteredSubVendorContractsPage.GoTo(); 
+		  
+		   
 			   if(!(Helper.getCurrentSelectedYear()).equalsIgnoreCase(NYCBaseTest.prop.getProperty("CurrentYear")))
 			   HomePage.SelectYear(NYCBaseTest.prop.getProperty("CurrentYear"));
-			   WebDriverWait wait = new WebDriverWait(Driver.Instance, 30);
-				
+			//   WebDriverWait wait = new WebDriverWait(Driver.Instance, 30);
+			   SubVendorsPage.GoToBottomNavContractslink();
 	    }
 
 
@@ -53,6 +57,8 @@ public class NewSubVendorContractsbyFiscalYearTest extends TestStatusReport{
 		Integer numOfsubVendorContractsApp = ContractsPage.GetTop5WidgetTotalCount(WidgetOption.Top5SubContracts);
 		assertEquals("Number of Sub Vendor Contracts in the Active Sub Vendor Contracts did not match",numOfsubVendorContractsApp,activeSubVendorContractsNumDB);
 	}
+	
+
 	@Test
 	public void VerifyTop5SubContractsAmountModifications() throws SQLException {
 		Integer activeSubVendorContractAmountModificationsNumDB = NYCDatabaseUtil.getTotalRegisteredSubContractModifications(year, 'B');

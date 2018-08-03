@@ -8,25 +8,32 @@ class CheckbookEtlStatus
   /**
    * Last ETL must successfully finish within last 12 hours
    */
-  const LAST_RUN_SUCCESS_PERIOD = 60 * 60 * 12;
+  const SUCCESS_IF_RUN_LESS_THAN_X_SECONDS_AGO = 60 * 60 * 12;
 
   /**
-   *
+   * List of conf db connections
    */
-  const MONDAY_NOTICE = "<small>ETL is not configured to run on Monday night, so expect FAILs each Tuesday morning.</small>";
+  const CONNECTIONS_KEYS = [
+    'mysql',
+    'psql_main',
+    'psql_etl',
+    'psql_oge',
+    'psql_nycha',
+    'solr',
+  ];
 
   /**
    * @var string
    */
-  public $success = 'Success';
+  public $successSubject = 'Success';
 
   /**
    * @param $format
    * @return false|string
    */
-  public function date($format)
+  public function get_date($format)
   {
-    return date($format);
+    return date($format, $this->timeNow());
   }
 
   /**
@@ -54,6 +61,11 @@ class CheckbookEtlStatus
     global $conf;
     global $base_url;
 
+    date_default_timezone_set('America/New_York');
+
+    if (defined('CHECKBOOK_DEV_VSL4')) {
+      return $this->sendmail();
+    }
     if (!isset($conf['etl_status_recipients'])) {
       //error_log("ETL STATUS MAIL CRON skips. Reason: \$conf['etl_status_recipients'] not defined");
       return false;
@@ -64,19 +76,18 @@ class CheckbookEtlStatus
       return false;
     }
 
-    date_default_timezone_set('America/New_York');
     $variable_name = 'checkbook_etl_status_last_run';
 
-    $today = $this->date('Y-m-d');
-    $current_hour = (int)$this->date('H');
+    $today = $this->get_date('Y-m-d');
+    $current_hour = (int)$this->get_date('H');
 
     if (variable_get($variable_name) == $today) {
       //error_log("ETL STATUS MAIL CRON skips. Reason: already ran today :: $today :: ".variable_get($variable_name));
       return false;
     }
 
-    if ($current_hour < 7) {
-      //error_log("ETL STATUS MAIL CRON skips. Reason: will run after 8:00 AM :: current hour: $current_hour");
+    if ($current_hour < 7 || $current_hour > 8) {
+      //error_log("ETL STATUS MAIL CRON skips. Reason: will run between 8 AM and 9 AM :: current hour: $current_hour");
       return false;
     }
 
@@ -103,7 +114,9 @@ class CheckbookEtlStatus
   public function getUatStatus()
   {
     $local_api = new \checkbook_json_api\CheckBookJsonApi();
-    return $local_api->etl_status();
+    $result = $local_api->etl_status();
+    $result['source'] = 'UAT';
+    return $result;
   }
 
   /**
@@ -114,6 +127,7 @@ class CheckbookEtlStatus
     try {
       $prod_json_status = $this->get_contents('https://www.checkbooknyc.com/json_api/etl_status');
       $prod_status = json_decode($prod_json_status, true);
+      $prod_status['source'] = 'PROD';
       return $prod_status;
     } catch (Exception $e) {
       error_log($e->getMessage());
@@ -125,9 +139,14 @@ class CheckbookEtlStatus
    * @param $date
    * @return false|string
    */
-  public function niceDisplayDate($date)
+  public function niceDisplayDateDiff($date)
   {
-    return date('Y-m-d h:iA', strtotime($date));
+    if (!$date) {
+      return 'never';
+    }
+    $date1 = date_create($date);
+    $interval = date_diff($date1, date_create($this->get_date("Y-m-d H:i:s")));
+    return $interval->format('%a day(s) %h hour(s) ago');
   }
 
   /**
@@ -136,35 +155,62 @@ class CheckbookEtlStatus
    */
   public function formatStatus($data)
   {
-    $result = 'FAIL (unknown)';
     $now = $this->timeNow();
 
     if (!empty($data['success']) && true == $data['success']) {
+      $data['hint'] = $this->niceDisplayDateDiff($data['data']);
 
-      $displayData = $this->niceDisplayDate($data['data']);
+      if (($now - strtotime($data['data'])) > self::SUCCESS_IF_RUN_LESS_THAN_X_SECONDS_AGO) {
+        $data['hint'] = 'Last success: ' . $data['hint'];
+        $data['success'] = false;
+        $this->successSubject = 'Fail';
+      }
+    } else {
+      $this->successSubject = 'Fail';
+      $data['success'] = false;
+      $data['hint'] = 'Could not get data from server';
+    }
 
-      if (self::LAST_RUN_SUCCESS_PERIOD > ($now - strtotime($data['data']))) {
-        $result = '<strong style="color:darkgreen">SUCCESS</strong> (finished: ' . $displayData . ')';
+    if (!empty($data['invalid_records_timestamp'])) {
+      if (!defined('CHECKBOOK_DEV_VSL4') && (($now - $data['invalid_records_timestamp']) > self::SUCCESS_IF_RUN_LESS_THAN_X_SECONDS_AGO)) {
+        unset($data['invalid_records_timestamp']);
+        if (!empty($data['invalid_records'])) {
+          unset($data['invalid_records']);
+        }
       } else {
-        $this->success = 'Fail';
-        $result = '<strong style="color:red">FAIL</strong> (last success: ' . $displayData . ')';
+        if ('Success' == $this->successSubject) {
+          $this->successSubject = 'Needs attention';
+        }
       }
     }
-    return $result;
+
+    return $data;
   }
 
   /**
-   * @return string
+   * @return array
    */
-  public function comment()
+  public function getConnectionConfigs()
   {
-    $comment = '';
+    global $conf;
 
-//    if ('Tue' == date('D', $this->timeNow())) {
-//      $comment .= "\n<br /><br />" . self::MONDAY_NOTICE;
-//    }
+    $return = [];
+    if (empty($conf['etl-status-footer']['line1'])) {
+      return $return;
+    }
 
-    return $comment;
+    foreach ($conf['etl-status-footer']['line1'] as $env => $url) {
+      try {
+        $prod_json_status = $this->get_contents($url . 'json_api/etl_status');
+        $json = json_decode($prod_json_status, true);
+        if (!empty($json['connections'])) {
+          $return[$env] = $json['connections'];
+        }
+      } catch (Exception $e) {
+        error_log($e->getMessage());
+      }
+    }
+    return $return;
   }
 
   /**
@@ -173,18 +219,22 @@ class CheckbookEtlStatus
    */
   public function mail(&$message)
   {
-    $uat_result = $this->formatStatus($this->getUatStatus());
+    $uat_status = $this->formatStatus($this->getUatStatus());
     $prod_status = $this->formatStatus($this->getProdStatus());
-    $comment = $this->comment();
+    $connections = $this->getConnectionConfigs();
 
-    $message['body'][] = <<<EOM
-UAT  ETL STATUS:\t{$uat_result}<br /><br />
-PROD ETL STATUS:\t{$prod_status}
-{$comment}
-EOM;
-    $date = $this->date('Y-m-d');
+    $message['body'] =
+      [
+        'uat_status' => $uat_status,
+        'prod_status' => $prod_status,
+        'subject' => $this->successSubject,
+        'connections' => $connections,
+        'connection_keys' => self::CONNECTIONS_KEYS,
+      ];
 
-    $message['subject'] = 'ETL Status: '.$this->success." ($date)";
+    $date = $this->get_date('Y-m-d');
+
+    $message['subject'] = 'ETL Status: ' . $this->successSubject . " ($date)";
 
     return true;
   }

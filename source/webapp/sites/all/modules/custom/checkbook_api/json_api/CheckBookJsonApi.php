@@ -1,6 +1,7 @@
 <?php
 
 namespace checkbook_json_api;
+
 use PHPUnit\Runner\Exception;
 
 /**
@@ -138,9 +139,6 @@ class CheckBookJsonApi
     $year_type = $this->validate_year_type($this->args[2]);
 
     if ($this->success) {
-//      $query = "SELECT SUM(total_contracts) as total from aggregateon_total_contracts
-//                WHERE fiscal_year='{$year}' AND status_flag='A' AND type_of_year='{$year_type}'";
-
       $query = "SELECT COUNT(contract_number) AS total FROM aggregateon_mwbe_contracts_cumulative_spending a
                   JOIN ref_document_code b ON a.document_code_id = b.document_code_id
                 WHERE a.fiscal_year = {$year} AND a.type_of_year = '{$year_type}' AND a.status_flag = 'A' AND b.document_code IN ('MA1','CTA1','CT1')";
@@ -408,14 +406,43 @@ class CheckBookJsonApi
   {
     drupal_page_is_cacheable(FALSE);
 
-    global $base_url, $conf;
+    global $base_url, $conf, $databases;
 
+    $return = [];
     if ('uat-checkbook-nyc.reisys.com' == parse_url($base_url, PHP_URL_HOST)) {
-      return $this->getUatEtlStatus();
+      $return = $this->getUatEtlStatus();
     } elseif (!empty($conf['etl-status-path'])) {
-      return $this->getProdEtlStatus();
+      $return = $this->getProdEtlStatus();
     }
-    throw new Exception('available only at UAT and PROD');
+
+    $return['connections'] = [];
+    if (!empty($databases['default']['default']['host'])) {
+      $return['connections']['mysql'] = $databases['default']['default']['host']
+        . '|' . $databases['default']['default']['database'];
+    }
+    if (!empty($databases['checkbook']['main']['host'])) {
+      $return['connections']['psql_main'] = $databases['checkbook']['main']['host']
+        . '|' . $databases['checkbook']['main']['database'];
+    }
+    if (!empty($databases['checkbook']['etl']['host'])) {
+      $return['connections']['psql_etl'] = $databases['checkbook']['etl']['host']
+        . '|' . $databases['checkbook']['etl']['database'];
+    }
+    if (!empty($databases['checkbook_oge']['main']['host'])) {
+      $return['connections']['psql_oge'] = $databases['checkbook_oge']['main']['host']
+        . '|' . $databases['checkbook_oge']['main']['database'];
+    }
+    if (!empty($databases['checkbook_nycha']['main']['host'])) {
+      $return['connections']['psql_nycha'] = $databases['checkbook_nycha']['main']['host']
+        . '|' . $databases['checkbook_nycha']['main']['database'];
+    }
+    if (!empty($conf['check_book']['solr']['url'])) {
+      $solr_url = $conf['check_book']['solr']['url'];
+      $return['connections']['solr'] = substr($solr_url, 0, stripos($solr_url, '/solr/')+6)
+        . '|' . substr($solr_url, $pos = stripos($solr_url, '/solr/')+6, strlen($solr_url)-$pos-1);
+    }
+
+    return $return;
   }
 
   /**
@@ -426,18 +453,36 @@ class CheckBookJsonApi
     global $conf;
 
     try {
-      $data = file_get_contents($conf['etl-status-path']);
-      list(,$date) = explode(',', $data);
+      $data = file_get_contents($conf['etl-status-path'] . 'etl_status.txt');
+      list(, $date) = explode(',', $data);
       $this->data = trim($date);
     } catch (Exception $e) {
-      $this->message = $e->getMessage();
+      $this->message .= $e->getMessage();
+    }
+
+    $invalid_records = '';
+    $invalid_records_timestamp = 0;
+    $invalid_records_csv_path = $conf['etl-status-path'] . 'invalid_records_details.csv';
+    try {
+      if (is_file($invalid_records_csv_path)) {
+        $invalid_records = array_map('str_getcsv', file($invalid_records_csv_path));
+        $invalid_records_timestamp = filemtime($invalid_records_csv_path);
+      } else {
+        $invalid_records = [
+          'FATAL ERROR',
+          'Could not find `invalid_records_details.csv` on server'
+        ];
+      }
+    } catch (Exception $e) {
+      $this->message .= $e->getMessage();
     }
 
     return [
       'success' => $this->success,
       'data' => $this->data,
       'message' => $this->message,
-      'info' => 'Last successful ETL run date'
+      'invalid_records' => $invalid_records,
+      'invalid_records_timestamp' => $invalid_records_timestamp,
     ];
   }
 
