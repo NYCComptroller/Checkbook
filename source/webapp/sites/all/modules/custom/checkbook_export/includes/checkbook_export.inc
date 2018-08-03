@@ -378,6 +378,9 @@ function _checkbook_export_download_file($fileName){
 
 /** don't regenerate cached file */
 function _checkbook_export_check_cached(){
+  if (user_is_logged_in()) {
+    return false;
+  }
   $fileDir = _checkbook_export_prepareFileOutputDir();
   $filename = _checkbook_export_generate_uuid(). '.csv';
   $outputFile = DRUPAL_ROOT . '/' . $fileDir . '/' . $filename;
@@ -405,7 +408,7 @@ function _checkbook_export_generateExportFile($node, $headers, $exportConfigNode
         $tempOutputFile = $tmpDir .'/'. $filename;
         $outputFile = DRUPAL_ROOT . '/' . $fileDir . '/' . $filename;
 
-        if(is_file($outputFile)) {
+        if(!user_is_logged_in() && is_file($outputFile) && sizeof($outputFile)) {
           LogHelper::log_notice('Already cached: '.$outputFile);
           return $filename;
         }
