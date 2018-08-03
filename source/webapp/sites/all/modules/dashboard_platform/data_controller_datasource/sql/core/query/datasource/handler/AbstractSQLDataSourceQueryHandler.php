@@ -495,13 +495,14 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
         $this->applyPagination($request, $sql);
 
         // processing prepared sql and returning data
-        $query = ''.new StatementLogMessage('cube.query', $sql);
+        LogHelper::log_notice(new StatementLogMessage('cube.query', $sql));
+
         $cacheKey = $cubeName . md5($sql);
         if ($return = _checkbook_dmemcache_get($cacheKey)) {
           LogHelper::log_info($cubeName .' :: CACHE HIT!');
           return $return;
         }
-        LogHelper::log_notice($query);
+
         $return = $this->executeQuery($callcontext, $datasource, $sql, $resultFormatter);
         $cache = false;
         if (is_array($return)) {

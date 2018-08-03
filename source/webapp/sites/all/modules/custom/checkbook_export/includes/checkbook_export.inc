@@ -384,7 +384,7 @@ function _checkbook_export_check_cached(){
   $fileDir = _checkbook_export_prepareFileOutputDir();
   $filename = _checkbook_export_generate_uuid(). '.csv';
   $outputFile = DRUPAL_ROOT . '/' . $fileDir . '/' . $filename;
-  if(is_file($outputFile)) {
+  if(is_file($outputFile) && filesize($outputFile)) {
     LogHelper::log_notice('Already pre-cached: '.$outputFile);
     return $filename;
   }
@@ -408,7 +408,7 @@ function _checkbook_export_generateExportFile($node, $headers, $exportConfigNode
         $tempOutputFile = $tmpDir .'/'. $filename;
         $outputFile = DRUPAL_ROOT . '/' . $fileDir . '/' . $filename;
 
-        if(!user_is_logged_in() && is_file($outputFile) && sizeof($outputFile)) {
+        if(!user_is_logged_in() && is_file($outputFile) && filesize($outputFile)) {
           LogHelper::log_notice('Already cached: '.$outputFile);
           return $filename;
         }
@@ -498,15 +498,22 @@ function _checkbook_export_generateExportFile($node, $headers, $exportConfigNode
                 . "'  WITH DELIMITER ',' CSV QUOTE '\\\"' ESCAPE '\\\"' \" ";
 
 //        log_error($command);
+        LogHelper::log_notice($command);
 
         shell_exec($command);
 
         $cmd = "sed -i '1i" . escapeshellcmd($headers) . "' " . $tempOutputFile;
-//        LogHelper::log_notice($cmd);
+        LogHelper::log_notice($cmd);
         shell_exec($cmd);
 
         $mvcmd = "mv $tempOutputFile $outputFile";
+        LogHelper::log_notice($mvcmd);
         shell_exec($mvcmd);
+
+        LogHelper::log_notice("chmod 0666 $outputFile");
+        chmod($outputFile, 0666);
+
+        return $filename;
 
     }catch (Exception $e){
         $value = TextLogMessageTrimmer::$LOGGED_TEXT_LENGTH__MAXIMUM;
@@ -519,8 +526,7 @@ function _checkbook_export_generateExportFile($node, $headers, $exportConfigNode
 
         TextLogMessageTrimmer::$LOGGED_TEXT_LENGTH__MAXIMUM = $value;
     }
-
-    return $filename;
+    return false;
 }
 
 /**
