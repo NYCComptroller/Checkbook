@@ -107,9 +107,7 @@
     $allZero = true;
 
     $isAgencyPage = (strpos(current_path(),'payroll/agency_landing/') === 0);
-    if(_checkbook_check_isNYCHAPage()){
-    $data_source = '/datasource/checkbook_nycha';
-    }
+    $data_source= RequestUtilities::_getUrlParamString('datasource');
     $pathParams = explode('/',drupal_get_path_alias(current_path()));
     foreach ($node->data as $row){
         $categories[]=html_entity_decode($row['month_month_month_name'],ENT_QUOTES);
