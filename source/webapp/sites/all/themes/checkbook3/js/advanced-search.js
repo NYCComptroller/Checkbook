@@ -1005,6 +1005,7 @@
                     else if (div.ele('spending_category').val() === '4') {
                         div.ele('contract_id').attr("disabled", "disabled");
                         div.ele('contract_id').val("");
+                        div.ele('payee_name').removeAttr("disabled");
                     }
                     else {
                         div.ele('contract_id').removeAttr("disabled");
@@ -1141,6 +1142,7 @@
                     else if (div.ele('spending_category').val() === '4') {
                         div.ele('contract_id').attr("disabled", "disabled");
                         div.ele('contract_id').val("");
+                        div.ele('payee_name').removeAttr("disabled");
                     }
                     else {
                         div.ele('contract_id').removeAttr("disabled");
@@ -2331,11 +2333,11 @@
         }
 
         //Spending Category, Contract ID and Payee Name
-        if ($('select[name='+spending_data_source+'_spending_expense_type]').val() === '2') {
+        if ($('select[name='+spending_data_source+'_spending_expense_type]').val() == '2') {
             $('input:text[name='+spending_data_source+'_spending_contract_num]').attr("disabled", "disabled");
             $('input:text[name='+spending_data_source+'_spending_contract_num]').val("");
             $('input:text[name='+spending_data_source+'_spending_payee_name]').attr("disabled", "disabled");
-            $('input:text[name='+spending_data_source+'_spending_payee_name]').val("");
+           $('input:text[name='+spending_data_source+'_spending_payee_name]').val("");
         }
         else if ($('select[name='+spending_data_source+'_spending_expense_type]').val() === '4') {
             $('input:text[name='+spending_data_source+'_spending_contract_num]').attr("disabled", "disabled");
