@@ -9,7 +9,6 @@
     "filterName":"Department",
     "urlParameterName":"dept",
     "autocompleteParamName":"dept_auto", 
-    "getTotalDataCount":true,    
     "facetPager":true,
     "urlParameterNameType":"eqtext",    
     "autocompleteID":"fdeptid",

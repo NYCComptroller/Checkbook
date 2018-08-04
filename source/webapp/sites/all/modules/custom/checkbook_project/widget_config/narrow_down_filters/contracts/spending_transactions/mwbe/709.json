@@ -5,7 +5,6 @@
     "orderBy":"-txcount",
     "limit":100,
     "maxSelect":1,
-	"getTotalDataCount":true,    
 	"facetPager":true,
     "filterName":"Department",
     "urlParameterName":"deptnm",

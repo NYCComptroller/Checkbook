@@ -14,7 +14,6 @@
     "defaultParameters":{"status_flag":"A","type_of_year":"B","if_for_all_years":"N"},
     "columns":["display_vendor.display_vendor", "display_vendor.display_vendor.legal_name", "txcount"],
     "orderBy":"-txcount",
-    "getTotalDataCount":true,
     "facetPager":true,
     "filterName":"Vendor",
     "urlParameterName":"vendor",

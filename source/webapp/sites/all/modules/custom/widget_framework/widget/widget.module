@@ -800,6 +800,7 @@ function load_widget_data($node, $resultFormatter) {
                 $node->nodeAdjustedParamaterConfig = $parameters;
             }
           if ($config->getTotalDataCount) {
+              LogHelper::log_info('Count for node # '.$node->nid);
               /**
                * Added config setting in the widget json, if set, the count will only consider distinct columns
                */
@@ -834,8 +835,7 @@ function load_widget_data($node, $resultFormatter) {
 //                  log_info('AFTER***: ' . $sql);
                   $results = _checkbook_project_execute_sql_by_data_source($sql,_get_current_datasource());
                   $node->totalDataCount = $results[0]['record_count'];
-              }
-              else {$node->totalDataCount = $isList
+              } else {$node->totalDataCount = $isList
                   ? $dataQueryController->countDatasetRecords(
                       $datasetName,$parameters)
                   : $dataQueryController->countCubeRecords(

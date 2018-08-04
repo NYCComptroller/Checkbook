@@ -5,7 +5,6 @@
     "limit":100,
     "columns":["vendornm.vendornm", "txcount"],
     "orderBy":"-txcount",
-    "getTotalDataCount":true,
     "facetPager":true,
     "filterName":"Vendor",
     "urlParameterName":"vendornm_exact",
