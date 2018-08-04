@@ -4,7 +4,6 @@
     "columns":[ "deptnm.deptnm", "txcount"],
     "orderBy":"-txcount",
     "limit":100,
-	"getTotalDataCount":true,    
 	"facetPager":true,
     "filterName":"Department",
     "urlParameterName":"deptnm",

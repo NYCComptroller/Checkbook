@@ -8,7 +8,6 @@
     "maxSelect":5,
     "columns":["scntrc_status.scntrc_status","scntrc_status_name.scntrc_status_name", "txcount"],
     "orderBy":"-txcount",
-    "getTotalDataCount":true,
     "facetPager":true,
     "filterName":"Contract Includes Sub Vendors",
     "allowZeroValue":true,

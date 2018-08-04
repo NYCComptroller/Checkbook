@@ -13,7 +13,6 @@
     "urlParamMap":{"doctype":"document_code.document_code.document_code"},
     "columns":["vendor_type.vendor_type", "txcount"],
     "orderBy":"-txcount",
-    "getTotalDataCount":true,
     "facetPager":true,
     "filterName":"Vendor Type",
     "urlParameterName":"vendortype",

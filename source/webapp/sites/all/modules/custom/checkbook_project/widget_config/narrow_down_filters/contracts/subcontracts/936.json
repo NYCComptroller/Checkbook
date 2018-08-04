@@ -9,7 +9,6 @@
     "allowFacetDeselect":true,
     "columns":["contract_number.contract_number","txcount"],
     "orderBy":"-txcount",
-    "getTotalDataCount":true,
     "facetPager":true,
     "filterName":"Contract ID",
     "urlParameterName":"contnum",

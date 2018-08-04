@@ -7,7 +7,6 @@
     "columns":["object_class_name.object_class_name", "txcount"],
     "orderBy":"-txcount",    
     "filterName":"Expense Category",
-    "getTotalDataCount":true,    
     "facetPager":true,
     "urlParameterName":"expcategorynm",
     "autocompleteParamName":"expcategorynm_auto",    

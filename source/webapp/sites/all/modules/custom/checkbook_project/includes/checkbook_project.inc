@@ -1906,6 +1906,8 @@ function _checkbook_project_recordsExists($nid)
         return $recordExists[$nid];
     }
 
+    LogHelper::log_info('Loading node # '.$nid);
+
     $startTime = microtime(TRUE);
     $node = node_load($nid);
 

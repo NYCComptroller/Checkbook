@@ -9,7 +9,6 @@
     "filterName":"Expense Category",
     "urlParameterName":"expcategory",
     "autocompleteParamName":"expcategory_auto", 
-    "getTotalDataCount":true,    
     "facetPager":true,
     "urlParameterNameType":"eqtext",    
     "autocompleteID":"fExpCategory",
