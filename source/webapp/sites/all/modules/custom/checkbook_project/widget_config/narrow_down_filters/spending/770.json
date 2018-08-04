@@ -7,7 +7,6 @@
     "startWith":0,
     "columns":["vendor_type.vendor_type", "txcount"],
     "orderBy":"-txcount",
-    "getTotalDataCount":true,
     "facetPager":true,
     "filterName":"Vendor Type",
     "urlParameterName":"vendortype",

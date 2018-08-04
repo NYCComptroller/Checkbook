@@ -6,7 +6,6 @@
     "allowFacetDeselect":true,
     "columns":["vendor.vendor.legal_name", "txcount"],
     "orderBy":["-txcount" , "vendor.vendor.legal_name"], 
-	"getTotalDataCount":true,    
 	"facetPager":true,
     "filterName":"Vendor",
     "urlParameterName":"vendornm_exact",

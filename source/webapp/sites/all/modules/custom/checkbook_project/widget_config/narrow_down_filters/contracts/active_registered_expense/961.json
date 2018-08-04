@@ -13,7 +13,6 @@
     "dataset":"checkbook:all_agreement_transactions_by_prime_sub_vendor_type",
     "columns":["vendor_type_id.vendor_type_id", "vendor_type_name.vendor_type_name", "txcount"],
     "orderBy":"-txcount",
-    "getTotalDataCount":true,
     "facetPager":true,
     "showAllRecords":true,
     "allowFacetDeselect":true,

@@ -8,7 +8,6 @@
     "columns":["minority_type.minority_type", "minority_type.minority_type.minority_type_name", "txcount"],
     "urlParamMap":{"doctype":"document_code.document_code.document_code"},
     "orderBy":"-txcount",
-    "getTotalDataCount":true,
     "facetPager":true,
     "filterName":"M/WBE Category",
     "urlParameterName":"mwbe",

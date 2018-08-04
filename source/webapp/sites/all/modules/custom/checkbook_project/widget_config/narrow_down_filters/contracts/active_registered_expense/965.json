@@ -11,7 +11,6 @@
     "dataset":"checkbook:all_agreement_transactions_by_prime_sub_vendor_name",
     "columns":["minority_type_id.minority_type_id","minority_type_name.minority_type_name", "txcount"],
     "orderBy":"-txcount",
-    "getTotalDataCount":true,
     "facetPager":true,
     "filterName":"M/WBE Category",
     "allowZeroValue":true,
