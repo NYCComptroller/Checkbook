@@ -3,7 +3,6 @@
     "parentNid":317,
     "startWith":0,
     "maxSelect":5,
-    "getTotalDataCount":true,
     "facetPager":true,
     "columns":["pay_frequency.pay_frequency","txcount"],
     "orderBy":"-txcount",

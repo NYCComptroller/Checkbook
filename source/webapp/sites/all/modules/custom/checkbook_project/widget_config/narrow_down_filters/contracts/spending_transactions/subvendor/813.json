@@ -3,7 +3,6 @@
     "parentNid":724,
     "columns":["industry.industry", "industry.industry.industry_type_name", "txcount"],
     "orderBy":"-txcount",
-    "getTotalDataCount":true,
     "autocomplete":false,
     "urlParamMap":{
         "doctype":"document_code.document_code.document_code",

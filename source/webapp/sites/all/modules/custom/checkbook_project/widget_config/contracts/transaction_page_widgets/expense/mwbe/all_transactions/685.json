@@ -10,7 +10,6 @@
     "urlParamMap":{"doctype":"document_code.document_code.document_code"}  ,
     "columns":["award_method.award_method", "award_method.award_method.award_method_name", "txcount"],
     "orderBy":"-txcount",
-    "getTotalDataCount":true,
     "facetPager":true,
     "filterName":"Award Method",
     "urlParameterName":"awdmethod",

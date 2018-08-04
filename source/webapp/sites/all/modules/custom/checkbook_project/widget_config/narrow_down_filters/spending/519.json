@@ -4,7 +4,6 @@
     "limit":100,
     "columns":["vendor.vendor", "vendor.vendor.legal_name", "txcount"],
     "orderBy":["-txcount" , "vendor.vendor.legal_name"], 
-	"getTotalDataCount":true,    
 	"facetPager":true,
     "filterName":"Vendor",
     "urlParameterName":"fvendor",

@@ -8,7 +8,6 @@
     "allowFacetDeselect":true,
     "columns":["department_name.department_name", "txcount"],
     "orderBy":["-txcount","department_name.department_name"],    
-    "getTotalDataCount":true,    
     "filterName":"Department",
     "facetPager":true,
     "urlParameterName":"deptnm",

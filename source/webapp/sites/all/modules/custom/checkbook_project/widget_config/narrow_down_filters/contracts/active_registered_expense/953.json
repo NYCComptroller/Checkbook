@@ -7,7 +7,6 @@
     "maxSelect":5,
     "columns":["agency_id.agency_id", "agency_name.agency_name", "txcount"],
     "orderBy":"-txcount",
-    "getTotalDataCount":true,
     "facetPager":true,
     "filterName":"Agency",
     "urlParameterName":"agency",

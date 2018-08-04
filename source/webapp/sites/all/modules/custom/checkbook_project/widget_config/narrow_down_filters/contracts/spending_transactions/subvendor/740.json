@@ -9,7 +9,6 @@
         "doctype":"document_code.document_code.document_code"
     },
     "orderBy":"-txcount",
-    "getTotalDataCount":true,
     "facetPager":true,
     "filterName":"Vendor Type",
     "urlParameterName":"vendortype",

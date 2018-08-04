@@ -13,7 +13,6 @@
     "urlParamMap":{"doctype":"document_code.document_code.document_code"},
     "columns":["aprv_sta.aprv_sta","aprv_sta_name.aprv_sta_name", "txcount"],
     "orderBy":"-txcount",
-    "getTotalDataCount":true,
     "facetPager":true,
     "filterName":"Sub Vendor Status in PIP",
     "allowZeroValue":true,

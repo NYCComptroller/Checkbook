@@ -4,7 +4,6 @@
     "no_results_content":"No Results Found",
     "startWith":0,
     "maxSelect":5,
-    "getTotalDataCount":true,
     "facetPager":true,
     "filterName":"Vendor",
     "urlParamMap":{

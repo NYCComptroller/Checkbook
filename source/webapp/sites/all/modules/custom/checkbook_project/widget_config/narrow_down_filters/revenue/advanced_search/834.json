@@ -8,7 +8,6 @@
     "allowFacetDeselect":true,
     "columns":["class_name.class_name", "txcount"],
     "orderBy":["-txcount","class_name.class_name"],    
-	"getTotalDataCount":true,    
     "filterName":"Closing Classification Name",
     "facetPager":true,
     "urlParameterName":"clsname",

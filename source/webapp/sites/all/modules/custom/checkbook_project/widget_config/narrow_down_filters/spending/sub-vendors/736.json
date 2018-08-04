@@ -9,7 +9,6 @@
     "columns":["minority_type.minority_type", "minority_type.minority_type.minority_type_name", "txcount"],
     "defaultParameters":{"is_prime_or_sub":"S"},
     "orderBy":"-txcount",
-    "getTotalDataCount":true,
     "facetPager":true,
     "filterName":"M/WBE Category",
     "urlParameterName":"mwbe",

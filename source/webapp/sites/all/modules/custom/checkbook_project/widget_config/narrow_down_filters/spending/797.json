@@ -7,7 +7,6 @@
     "columns":["vendornm.vendornm", "txcount"],
     "orderBy":["-txcount", "vendornm.vendornm"],
     "urlParamMap":{"vendornm":"vendornm.vendornm"},
-    "getTotalDataCount":true,
     "facetPager":true,
     "filterName":"Vendor",
     "urlParameterName":"vendornm_exact",

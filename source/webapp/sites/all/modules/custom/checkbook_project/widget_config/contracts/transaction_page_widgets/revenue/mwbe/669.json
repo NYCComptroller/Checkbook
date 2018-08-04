@@ -21,7 +21,6 @@
     }  ,
     "columns":["vendor_name.vendor_name", "txcount"],
     "orderBy":["-txcount","vendor_name.vendor_name"],
-    "getTotalDataCount":true,
     "facetPager":true,
     "filterName":"Vendor",
     "autocompleteParamName":"vendor_auto",
