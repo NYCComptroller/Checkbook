@@ -5038,7 +5038,7 @@ function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_
             'records_from' => 1,
             'max_records' => 200000,
         ),
-        'responseColumns' => $values['column_select'],
+        'responseColumns' => ($data_source == 'checkbook_oge') ? $values['oge_column_select'] :$values['column_select'],
     );
 
     if ($values['capital_project']) {
