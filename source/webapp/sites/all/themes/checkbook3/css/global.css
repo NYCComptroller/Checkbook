@@ -1596,11 +1596,13 @@ div.create-alert-schedule-alert select{
     float: left;
 }
 #spending-advanced-search .form-item.form-item-spending-advanced-search-domain-filter,
-#contracts-advanced-search .form-item.form-item-contracts-advanced-search-domain-filter{
+#contracts-advanced-search .form-item.form-item-contracts-advanced-search-domain-filter,
+#payroll-advanced-search .form-item.form-item-payroll-advanced-search-domain-filter{
     width:205px;
     float: left;
 }
-#spending-advanced-search .form-item.form-item-spending-advanced-search-domain-filter input[type="radio"]{
+#spending-advanced-search .form-item.form-item-spending-advanced-search-domain-filter input[type="radio"],
+#payroll-advanced-search .form-item.form-item-payroll-advanced-search-domain-filter input[type="radio"]{
     width: auto;
     float: left;
     margin-right: 5px;
