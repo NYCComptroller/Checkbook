@@ -279,6 +279,7 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
           'checkbook_nycha:agency',
           'checkbook:year',
           'checkbook:month',
+          'checkbook:category',
         ];
         $cacheKey = $cacheDatasets.md5($sql);
         if(in_array($datasetName, $cacheDatasets)) {

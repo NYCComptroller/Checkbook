@@ -1842,7 +1842,7 @@ function _checkbook_project_execute_sql($sql, $db_name = "main", $data_source = 
     }
 
     LogHelper::log_info("Processed ".sizeof($output)." records (_checkbook_project_execute_sql)");
-    if (13 > sizeof($output) || (13 > sizeof($output[0]) && 10000 > sizeof(sizeof($output)))) {
+    if (13 > sizeof($output) || (13 > sizeof($output[0]) && 1000 > sizeof($output))) {
       _checkbook_dmemcache_set($cacheKey, $output);
     }
 

@@ -397,22 +397,22 @@ class MappingUtil {
         return $applicable_minority_types;
     }
 
-
-
     static function getVendorTypes($nodeData, $param){
         $unchecked = array();
         $checked = array();
         $params = explode('~', $param);
         $vendor_counts = array();
-        foreach($nodeData as $row){
-            if(in_array($row[0],array('P','PM'))){
-                $vendor_counts['pv'] = $vendor_counts['pv']+ $row[2];
-            }
-            if(in_array($row[0],array('S','SM'))){
-                $vendor_counts['sv'] = $vendor_counts['sv']+ $row[2];
-            }
-            if(in_array($row[0],array('PM','SM'))){
-                $vendor_counts['mv'] = $vendor_counts['mv']+ $row[2];
+        if (is_array($nodeData)) {
+            foreach($nodeData as $row){
+                if(in_array($row[0],array('P','PM'))){
+                    $vendor_counts['pv'] = $vendor_counts['pv']+ $row[2];
+                }
+                if(in_array($row[0],array('S','SM'))){
+                    $vendor_counts['sv'] = $vendor_counts['sv']+ $row[2];
+                }
+                if(in_array($row[0],array('PM','SM'))){
+                    $vendor_counts['mv'] = $vendor_counts['mv']+ $row[2];
+                }
             }
         }
         foreach($vendor_counts as $key=>$value){

@@ -21,14 +21,21 @@
 /** validates strings as UTF-8 to prevent cross site scripting attacks and decodes special characters */
 function checkbook_purifynprepare_init() {
     checkbook_purifynprepare_access_denied($_GET['q']);
-    $_GET['q'] = check_plain($_GET['q'],array());
+    $_GET['q'] = check_plain($_GET['q']);
     $_GET['q'] = htmlspecialchars_decode ($_GET['q'], ENT_QUOTES);
     if(is_array($_REQUEST)){
         foreach($_REQUEST as $key=>$value){       
-            if($key != "checkbookHistoryLinks")   
-              checkbook_purifynprepare_access_denied($value);
-            $_REQUEST[$key] = check_plain($value,array());
-            
+            if($key != "checkbookHistoryLinks") {
+                checkbook_purifynprepare_access_denied($value);
+            }
+
+            if (is_array($value)) {
+                foreach ($value as $k => $v) {
+                    $_REQUEST[$key][$k] = check_plain($v);
+                }
+            } else {
+                $_REQUEST[$key] = check_plain($value);
+            }
         }
     }
 }
