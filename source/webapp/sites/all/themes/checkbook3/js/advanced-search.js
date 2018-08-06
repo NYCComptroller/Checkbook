@@ -84,7 +84,12 @@
                 var href = window.location.href.replace(/(http|https):\/\//, '');
                 var n = href.indexOf('?');
                 href = href.substring(0, n !== -1 ? n : href.length);
-                var data_source = (href.indexOf('datasource/checkbook_oge') !== -1) ? "checkbook_oge" : "checkbook";
+                var data_source = 'checkbook';
+                if(href.indexOf('datasource/checkbook_oge') !== -1){
+                    data_source = 'checkbook_oge';
+                }else if(href.indexOf('datasource/checkbook_nycha') !== -1){
+                    data_source = 'checkbook_nycha';
+                }
                 var page_clicked_from = this.id ? this.id : href.split('/')[1];
                 var active_accordion_window = initializeActiveAccordionWindow(page_clicked_from, data_source);
 
@@ -118,13 +123,13 @@
                 /* For oge, Budget, Revenue & Payroll are not applicable and are disabled */
                 disableAccordionSections(data_source);
 
-                clearInputFields("#payroll-advanced-search", 'payroll');
+                clearInputFields("#payroll-advanced-search", 'payroll', data_source);
                 clearInputFieldByDataSource("#contracts-advanced-search", 'contracts', data_source);
                 clearInputFieldByDataSource("#spending-advanced-search", 'spending', data_source);
                 clearInputFields("#budget-advanced-search", 'budget');
                 clearInputFields("#revenue-advanced-search", 'revenue');
 
-                clearInputFields("#payroll-advanced-search", 'payroll');
+                clearInputFields("#payroll-advanced-search", 'payroll', data_source);
                 clearInputFieldByDataSource("#contracts-advanced-search", 'contracts', data_source);
                 clearInputFieldByDataSource("#spending-advanced-search", 'spending', data_source);
                 clearInputFields("#budget-advanced-search", 'budget');
