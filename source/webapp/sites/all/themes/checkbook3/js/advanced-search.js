@@ -123,13 +123,13 @@
                 /* For oge, Budget, Revenue & Payroll are not applicable and are disabled */
                 disableAccordionSections(data_source);
 
-                clearInputFields("#payroll-advanced-search", 'payroll', data_source);
+                clearInputFieldByDataSource("#payroll-advanced-search", 'payroll', data_source);
                 clearInputFieldByDataSource("#contracts-advanced-search", 'contracts', data_source);
                 clearInputFieldByDataSource("#spending-advanced-search", 'spending', data_source);
                 clearInputFields("#budget-advanced-search", 'budget');
                 clearInputFields("#revenue-advanced-search", 'revenue');
 
-                clearInputFields("#payroll-advanced-search", 'payroll', data_source);
+                clearInputFieldByDataSource("#payroll-advanced-search", 'payroll', data_source);
                 clearInputFieldByDataSource("#contracts-advanced-search", 'contracts', data_source);
                 clearInputFieldByDataSource("#spending-advanced-search", 'spending', data_source);
                 clearInputFields("#budget-advanced-search", 'budget');
@@ -800,6 +800,20 @@
                         $('#edit-payroll-employee-name').autocomplete({source: '/advanced-search/autocomplete/payroll/employee-name/' + pay_frequency + '/' + agency + '/' + year});
                     });
                 });
+
+                 //On change of data source
+                $('input:radio[name=payroll_advanced_search_domain_filter]').change(function () {
+                    onChangeDataSource($('input[name=payroll_advanced_search_domain_filter]:checked').val());
+                });
+                ///checkbook_advanced_search_clear_button.js sets this value by default
+                $('input:radio[name=payroll_advanced_search_domain_filter]').click(function () {
+                    onChangeDataSource($('input[name=payroll_advanced_search_domain_filter]:checked').val());
+                });
+
+                function onChangeDataSource(dataSource) {
+                    /* Reset all the fields for the data source */
+                    clearInputFields("#payroll-advanced-search", 'payroll', dataSource);
+                }
             }
 
 // advanced-search-revenue
@@ -1348,7 +1362,13 @@
             function advanced_search_buttons_init() {
                 $('#edit-payroll-clear').click(function (e) {
                     //$('#checkbook-advanced-search-form')[0].reset(); //this works
-                    clearInputFields('#payroll-advanced-search', 'payroll');
+                    var data_source = 'checkbook';
+                    if(href.indexOf('datasource/checkbook_oge') !== -1){
+                        data_source = 'checkbook_oge';
+                    }else if(href.indexOf('datasource/checkbook_nycha') !== -1){
+                        data_source = 'checkbook_nycha';
+                    }
+                    clearInputFieldByDataSource('#payroll-advanced-search', 'payroll', data_source);
                     $(this).blur();
                     /* Remove focus */
                     e.preventDefault();
@@ -1424,7 +1444,7 @@
                         break;
                 }
 
-                clearInputFields("#payroll-advanced-search", 'payroll');
+                clearInputFieldByDataSource("#payroll-advanced-search", 'payroll', data_source);
                 clearInputFieldByDataSource("#contracts-advanced-search", 'contracts', data_source);
                 clearInputFieldByDataSource("#spending-advanced-search", 'spending', data_source);
                 clearInputFields("#budget-advanced-search", 'budget');
@@ -1537,13 +1557,13 @@
                 /* For oge, Budget, Revenue & Payroll are not applicable and are disabled */
                 disableAccordionSections(data_source);
 
-                clearInputFields("#payroll-advanced-search", 'payroll');
+                clearInputFieldByDataSource("#payroll-advanced-search", 'payroll', data_source);
                 clearInputFieldByDataSource("#contracts-advanced-search", 'contracts', data_source);
                 clearInputFieldByDataSource("#spending-advanced-search", 'spending', data_source);
                 clearInputFields("#budget-advanced-search", 'budget');
                 clearInputFields("#revenue-advanced-search", 'revenue');
 
-                clearInputFields("#payroll-advanced-search", 'payroll');
+                clearInputFieldByDataSource("#payroll-advanced-search", 'payroll', data_source);
                 clearInputFieldByDataSource("#contracts-advanced-search", 'contracts', data_source);
                 clearInputFieldByDataSource("#spending-advanced-search", 'spending', data_source);
                 clearInputFields("#budget-advanced-search", 'budget');
