@@ -485,6 +485,10 @@ function _checkbook_export_generateExportFile($node, $headers, $exportConfigNode
 
         $command = $conf['check_book']['data_feeds']['command'];
 
+        if (stripos($command, 'webuser1 checkbook')) {
+            LogHelper::log_error('Remove db name from psql command');
+        }
+
         $data_source = RequestUtilities::getRequestParamValue('datasource');
         if ('checkbook_oge' == $data_source) {
             $command .= ' ' . $databases['checkbook_oge']['main']['database'] . ' ';
