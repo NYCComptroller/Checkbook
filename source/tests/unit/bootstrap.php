@@ -135,7 +135,13 @@ function drupal_map_assoc($a=[])
     return $a;
 }
 
+/**
+ * Class FakeDataController
+ */
 class FakeDataController{
+    /**
+     *
+     */
     public function queryDataset(){}
 }
 
@@ -148,12 +154,24 @@ function data_controller_get_instance($a = 1)
     return new FakeDataController();
 }
 
+/**
+ *
+ */
 function log_error(){}
 
+/**
+ * @param $a
+ */
 function _get_contract_includes_subvendors_data_test($a){}
 
+/**
+ *
+ */
 function _checkbook_max_data_year_test(){}
 
+/**
+ *
+ */
 function data_controller_get_operator_factory_instance(){}
 
 /**
@@ -170,6 +188,10 @@ class LogHelper
     }
 }
 
+/**
+ * @param $query
+ * @return array
+ */
 function _checkbook_project_execute_sql_test($query)
 {
     $return = [];
@@ -186,6 +208,11 @@ function _checkbook_project_execute_sql_test($query)
     return [$return];
 }
 
+/**
+ * @param $a
+ * @param $vars
+ * @return mixed
+ */
 function theme($a, $vars) {
     return $vars;
 }

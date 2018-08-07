@@ -1,6 +1,8 @@
 <?php
 
 include_once __DIR__ . '/../../../webapp/sites/all/modules/custom/checkbook_api/json_api/CheckBookJsonApi.php';
+include_once __DIR__ . '/../../../webapp/sites/all/modules/custom/checkbook_api/json_api/CheckBookJsonApiHelper.php';
+include_once __DIR__ . '/../../../webapp/sites/all/modules/custom/checkbook_api/json_api/CheckBookJsonApiModel.php';
 
 use PHPUnit\Framework\TestCase;
 use \checkbook_json_api\CheckBookJsonApi;
@@ -24,89 +26,177 @@ class CheckBookJsonApiTest extends TestCase
 //        $this->api = new CheckBookJsonApi();
     }
 
+    /**
+     *
+     */
     public function test_active_expense_contracts()
     {
         $this->api = new CheckBookJsonApi(['','2017','C']);
         $result = $this->api->active_expense_contracts();
         $this->assertEquals(true, $result['success']);
         $this->assertEquals(777555333111, $result['data']);
+
+        $this->api = new CheckBookJsonApi(['','2018']);
+        $result = $this->api->active_expense_contracts();
+        $this->assertEquals(true, $result['success']);
+        $this->assertEquals(777555333111, $result['data']);
     }
 
+    /**
+     *
+     */
     public function test_active_subcontracts()
     {
         $this->api = new CheckBookJsonApi(['','2017','C']);
         $result = $this->api->active_subcontracts();
         $this->assertEquals(true, $result['success']);
         $this->assertEquals(777555333111, $result['data']);
+
+        $this->api = new CheckBookJsonApi(['','2016']);
+        $result = $this->api->active_subcontracts();
+        $this->assertEquals(true, $result['success']);
+        $this->assertEquals(777555333111, $result['data']);
     }
 
+    /**
+     *
+     */
     public function test_subcontracts_approved()
     {
         $this->api = new CheckBookJsonApi(['','2017','C']);
         $result = $this->api->subcontracts_approved();
         $this->assertEquals(true, $result['success']);
         $this->assertEquals(111, $result['data']);
+
+        $this->api = new CheckBookJsonApi(['','2016']);
+        $result = $this->api->subcontracts_approved();
+        $this->assertEquals(true, $result['success']);
+        $this->assertEquals(111, $result['data']);
     }
 
+    /**
+     *
+     */
     public function test_subcontracts_under_review()
     {
         $this->api = new CheckBookJsonApi(['','2017','C']);
         $result = $this->api->subcontracts_under_review();
         $this->assertEquals(true, $result['success']);
         $this->assertEquals(888, $result['data']);
+
+        $this->api = new CheckBookJsonApi(['','2016']);
+        $result = $this->api->subcontracts_under_review();
+        $this->assertEquals(true, $result['success']);
+        $this->assertEquals(888, $result['data']);
     }
 
+    /**
+     *
+     */
     public function test_subcontracts_submitted()
     {
         $this->api = new CheckBookJsonApi(['','2017','C']);
         $result = $this->api->subcontracts_submitted();
         $this->assertEquals(true, $result['success']);
         $this->assertEquals(333, $result['data']);
+
+        $this->api = new CheckBookJsonApi(['','2016']);
+        $result = $this->api->subcontracts_submitted();
+        $this->assertEquals(true, $result['success']);
+        $this->assertEquals(333, $result['data']);
     }
 
+    /**
+     *
+     */
     public function test_subcontracts_canceled()
     {
         $this->api = new CheckBookJsonApi(['','2017','C']);
         $result = $this->api->subcontracts_canceled();
         $this->assertEquals(true, $result['success']);
         $this->assertEquals(222, $result['data']);
+
+        $this->api = new CheckBookJsonApi(['','2016']);
+        $result = $this->api->subcontracts_canceled();
+        $this->assertEquals(true, $result['success']);
+        $this->assertEquals(222, $result['data']);
     }
 
+    /**
+     *
+     */
     public function test_subcontracts_rejected()
     {
         $this->api = new CheckBookJsonApi(['','2017','C']);
         $result = $this->api->subcontracts_rejected();
         $this->assertEquals(true, $result['success']);
         $this->assertEquals(999, $result['data']);
+
+        $this->api = new CheckBookJsonApi(['','2016']);
+        $result = $this->api->subcontracts_rejected();
+        $this->assertEquals(true, $result['success']);
+        $this->assertEquals(999, $result['data']);
     }
 
+    /**
+     *
+     */
     public function test_total_payroll()
     {
         $this->api = new CheckBookJsonApi(['','2017','C']);
         $result = $this->api->total_payroll();
         $this->assertEquals(true, $result['success']);
         $this->assertEquals('123457000000.00', $result['data']);
+
+        $this->api = new CheckBookJsonApi(['','2016']);
+        $result = $this->api->total_payroll();
+        $this->assertEquals(true, $result['success']);
+        $this->assertEquals('123457000000.00', $result['data']);
     }
 
+    /**
+     *
+     */
     public function test_total_spending()
     {
         $this->api = new CheckBookJsonApi(['','2017','C']);
         $result = $this->api->total_spending();
         $this->assertEquals(true, $result['success']);
         $this->assertEquals('777555000000.00', $result['data']);
+
+        $this->api = new CheckBookJsonApi(['','2016']);
+        $result = $this->api->total_spending();
+        $this->assertEquals(true, $result['success']);
+        $this->assertEquals('777555000000.00', $result['data']);
     }
 
+    /**
+     *
+     */
     public function test_total_budget()
     {
         $this->api = new CheckBookJsonApi(['','2017','C']);
         $result = $this->api->total_budget();
         $this->assertEquals(true, $result['success']);
         $this->assertEquals('777555000000.00', $result['data']);
+
+        $this->api = new CheckBookJsonApi(['','2016']);
+        $result = $this->api->total_budget();
+        $this->assertEquals(true, $result['success']);
+        $this->assertEquals('777555000000.00', $result['data']);
     }
 
+    /**
+     *
+     */
     public function test_total_revenue()
     {
         $this->api = new CheckBookJsonApi(['','2017','C']);
+        $result = $this->api->total_revenue();
+        $this->assertEquals(true, $result['success']);
+        $this->assertEquals('777555000000.00', $result['data']);
+
+        $this->api = new CheckBookJsonApi(['','2016']);
         $result = $this->api->total_revenue();
         $this->assertEquals(true, $result['success']);
         $this->assertEquals('777555000000.00', $result['data']);
