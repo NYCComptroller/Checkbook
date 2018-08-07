@@ -24,6 +24,8 @@ module_load_include('php', 'checkbook_api', 'api/CheckbookAPIEntity');
 module_load_include('php', 'checkbook_api', 'api/CheckbookAPIRepository');
 module_load_include('php', 'checkbook_api', 'api/CheckbookAPIService');
 module_load_include('php', 'checkbook_api', 'json_api/CheckBookJsonApi');
+module_load_include('php', 'checkbook_api', 'json_api/CheckBookJsonApiModel');
+module_load_include('php', 'checkbook_api', 'json_api/CheckBookJsonApiHelper');
 
 use checkbook_api\CheckbookAPIService as CheckbookAPIService;
 use checkbook_api\ResponseStatus as ResponseStatus;
