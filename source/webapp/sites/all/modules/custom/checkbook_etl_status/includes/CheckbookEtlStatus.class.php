@@ -63,7 +63,7 @@ class CheckbookEtlStatus
 
     date_default_timezone_set('America/New_York');
 
-    if (defined('CHECKBOOK_DEV_VSL4')) {
+    if (defined('CHECKBOOK_DEV')) {
       return $this->sendmail();
     }
     if (!isset($conf['etl_status_recipients'])) {
@@ -172,7 +172,7 @@ class CheckbookEtlStatus
     }
 
     if (!empty($data['invalid_records_timestamp'])) {
-      if (!defined('CHECKBOOK_DEV_VSL4') && (($now - $data['invalid_records_timestamp']) > self::SUCCESS_IF_RUN_LESS_THAN_X_SECONDS_AGO)) {
+      if (!defined('CHECKBOOK_DEV') && (($now - $data['invalid_records_timestamp']) > self::SUCCESS_IF_RUN_LESS_THAN_X_SECONDS_AGO)) {
         unset($data['invalid_records_timestamp']);
         if (!empty($data['invalid_records'])) {
           unset($data['invalid_records']);
