@@ -754,7 +754,7 @@
                                     '<option value="2">Yes</option>');
                             }
 
-                   
+
                     }
                     $("#edit-contracts-clear").click(function () {
                         showHidePrimeAndSubFields(div_checkbook_contracts);
@@ -1197,14 +1197,14 @@
                     /* Initialize view by data source */
                     switch (dataSource) {
                         case "checkbook_oge":
-                            resetFields(div_checkbook_spending.contents());
+                            resetFields(div_checkbook_spending_oge.contents());
                             initializeSpendingView(div_checkbook_spending_oge, dataSource);
                             div_checkbook_spending.contents().hide();
                             div_checkbook_spending_oge.contents().show();
                             break;
 
                         default:
-                            resetFields(div_checkbook_spending_oge.contents());
+                            resetFields(div_checkbook_spending.contents());
                             initializeSpendingView(div_checkbook_spending, dataSource);
                             div_checkbook_spending.contents().show();
                             div_checkbook_spending_oge.contents().hide();
@@ -1222,7 +1222,9 @@
                     //Both
                     div.ele('dept').attr("disabled", "disabled");
                     div.ele('exp_category').attr("disabled", "disabled");
-
+                    div.ele('spending_category').val('Total Spending');
+                    div.ele('contract_id').removeAttr("disabled");
+                    div.ele('payee_name').removeAttr("disabled");
                     year = 0;
                     if (div.ele('date_filter_checked').val() === '0') {
                         year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
