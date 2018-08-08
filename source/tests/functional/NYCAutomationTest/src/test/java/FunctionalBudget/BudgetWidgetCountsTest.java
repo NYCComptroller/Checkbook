@@ -1,11 +1,8 @@
 package FunctionalBudget;
 
 import static org.junit.Assert.assertEquals;
-
 import helpers.Helper;
-
 import java.sql.SQLException;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,13 +12,20 @@ import pages.home.HomePage;
 import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
 import utilities.TestStatusReport;
-public class BudgetWidgetCountsTest extends TestStatusReport{
 
-//public class BudgetWidgetCountsTest  extends NYCBaseTest {
+import static org.junit.Assert.assertTrue;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import helpers.Driver;
+
+
+//public class BudgetWidgetCountsTest extends TestStatusReport{
+
+	public class BudgetWidgetCountsTest  extends NYCBaseTest {
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 		@Before
 	    public void GoToPage(){
-			 if (!BudgetPage.isAt())
+			// if (!BudgetPage.isAt())
 				   BudgetPage.GoTo();
 		 
 		   if(!(Helper.getCurrentSelectedYear()).equalsIgnoreCase(NYCBaseTest.prop.getProperty("CurrentYear")))

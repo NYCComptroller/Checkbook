@@ -261,11 +261,12 @@
             "expression":"_get_tooltip_markup($row['prime_vendor_name'],24)"
         },
         "prime_vendor_name_link": {
-            "type": "expression2",
-            "expression": " '<a href=\"'
-            . ContractsUrlService::primeVendorUrl($row['prime_vendor_id'],RequestUtilities::getRequestParamValue('year'), false,$row['document_code'])
-            .  '?expandBottomCont=true\">'. $row['prime_vendor_name_formatted'] . '</a>'  "
-        },
+           "type": "expression2",
+           "expression": " '<a href=\"'.
+               ContractsUrlService::applyLandingParameter($row['document_code'])
+              . ContractsUrlService::primeVendorUrl($row['prime_vendor_id'],_getRequestParamValue('year'), false)
+               . '?expandBottomCont=true\">'. $row['prime_vendor_name_formatted'] . '</a>'  "
+          },
         "subvendor_name_formatted": {
             "type":"expression2",
             "expression":"_get_tooltip_markup($row['sub_vendor_name'],30)"

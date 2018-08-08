@@ -79,6 +79,7 @@ public class HomePage {
     public static ArrayList<String> VisualizationTitles() {
 		ArrayList<String> titles = new ArrayList<String>();
 		List<WebElement> titleContainers = Driver.Instance.findElements(By.cssSelector("#nyc-spending > .top-chart > .inside > .panel-pane"));
+	
 		for(int i=0; i < titleContainers.size(); i++){
 			selectVisualizationSlider(i);
 			WebElement titleClass = titleContainers.get(i).findElement(By.cssSelector(".pane-content .chart-title"));
@@ -239,8 +240,25 @@ public class HomePage {
 		WebDriverWait wait = new WebDriverWait(Driver.Instance, 30);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("total-spending-amount")));
 		String amount = (Driver.Instance.findElement(By.className("total-spending-amount"))).getText();	
+		System.out.println(amount);
+		//return amount.substring(0,8).replaceAll("\\s", "");
+		return  amount.substring(0,7).replaceAll("\\s", "");
+		//return Helper.billionStringToFloat(count);
+	}
+	public static String GetTransactionAmount2() {
+		WebDriverWait wait = new WebDriverWait(Driver.Instance, 30);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("total-spending-amount")));
+		String amount = (Driver.Instance.findElement(By.className("total-spending-amount"))).getText();	
 		//System.out.println(Helper.billionStringToFloat(count));
-		return amount.substring(0,7);
+		return amount.substring(0,8);
+		//return Helper.billionStringToFloat(count);
+	}
+	public static String GetTransactionAmount3() {
+		WebDriverWait wait = new WebDriverWait(Driver.Instance, 30);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("total-spending-amount")));
+		String amount = (Driver.Instance.findElement(By.className("total-spending-amount"))).getText();	
+		//System.out.println(Helper.billionStringToFloat(count));
+		return amount.substring(0,6);
 		//return Helper.billionStringToFloat(count);
 	}
     

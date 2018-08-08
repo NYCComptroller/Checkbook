@@ -1,32 +1,40 @@
 {
-    "widgetType":"phpparser",
-    "parentNid":477,
-    "columns":["vendor.vendor", "vendor.vendor.legal_name", "txcount"],
-    "orderBy":"-txcount",
-    "limit":100,
-	"getTotalDataCount":true,    
-	"facetPager":true,
-    "filterName":"Payee",
-    "urlParameterName":"vendor",
-    "autocompleteParamName":"vendor_auto",    
-    "autocompleteID":"fvendorId", 	
-    "autocompleteField":"vendor.vendor.legal_name",
-    "maxSelect":5,
-    "urlParamMap":{
-				"doctype":"document_code.document_code.document_code"
-			  }  ,    
-    "adjustParameters":"
-	checkbook_faceted_search_adjust_param($node);
+  "widgetType": "phpparser",
+  "parentNid": 653,
+  "columns": [
+    "vendor.vendor",
+    "vendor.vendor.legal_name",
+    "txcount"
+  ],
+  "orderBy": "-txcount",
+  "limit": 100,
+  "getTotalDataCount": true,
+  "facetPager": true,
+  "filterName": "Payee",
+  "urlParameterName": "vendor",
+  "autocompleteParamName": "vendor_auto",
+  "autocompleteID": "fvendorId",
+  "autocompleteField": "vendor.vendor.legal_name",
+  "maxSelect": 5,
+  "urlParamMap": {
+    "doctype": "document_code.document_code.document_code"
+  },
+  "adjustParameters": "
+    checkbook_faceted_search_adjust_param($node);
     $year = $parameters['disb_fiscal_year_id'];
     if(isset($year)){
-        $parameters['fiscal_year_id'] = $year;
+      $parameters['fiscal_year_id'] = $year;
+    }
+    //Set spending vendor id for vendor spending transactions
+    if(_checkbook_project_get_url_param_string('vendor') || _checkbook_project_get_url_param_string('cvendor')){
+      $parameters['disb_vendor_id'] = $parameters['vendor_id'];
     }
     $adjustedParameters = $parameters;
-    if(function_exists('_checkbook_project_applyParameterFilters')){
-        $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+      if(function_exists('_checkbook_project_applyParameterFilters')){
+      $adjustedParameters = _checkbook_project_applyParameterFilters($node, $parameters);
     }
-    $adjustedParameters['vendor.vendor'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+    $adjustedParameters['vendor.vendor'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler:: $OPERATOR__NAME);
     return $adjustedParameters;
-    ",    
-    "template":"individual_filter"
+  ",
+  "template": "individual_filter"
 }

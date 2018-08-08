@@ -1,0 +1,51 @@
+<?php
+
+include_once 'includes/CheckbookEtlStatus.class.php';
+include_once 'includes/CheckbookMailSystem.class.php';
+
+/**
+ * Implements hook_cron()
+ */
+function checkbook_etl_status_cron()
+{
+  $CES = new CheckbookEtlStatus();
+  return $CES->run_cron();
+}
+
+/**
+ * Implements hook_mail().
+ *
+ * @param $key
+ * @param $message
+ * @param $params
+ */
+function checkbook_etl_status_mail($key, &$message, $params)
+{
+  $CES = new CheckbookEtlStatus();
+  $CES->mail($message);
+}
+
+/**
+ * Implements hook_mail_alter().
+ *
+ * Adds priority headers to messages passing condition.
+ */
+function checkbook_etl_status_mail_alter(&$message)
+{
+  if (stripos($message['subject'], 'Fail')) {
+    $message['headers']['X-Priority'] = '1 (Highest)';
+    $message['headers']['X-MSMail-Priority'] = 'High';
+    $message['headers']['Importance'] = 'High';
+  }
+  $message['headers']['Content-Type'] = 'text/html; charset=UTF-8; format=flowed; delsp=yes';
+  $replace_from = [
+    "\tSUCCESS",
+    "\tFAIL",
+  ];
+  $replace_to = [
+    "\t<strong style='color:green'>SUCCESS</strong>",
+    "\t<strong style='color: red'>FAIL</strong>",
+  ];
+  $message['body'] = str_replace($replace_from, $replace_to, $message['body']);
+
+}

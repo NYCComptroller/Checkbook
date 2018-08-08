@@ -1,6 +1,7 @@
 <?php
 
 namespace checkbook_json_api;
+use PHPUnit\Runner\Exception;
 
 /**
  * Class CheckBookJsonApi
@@ -35,7 +36,7 @@ class CheckBookJsonApi
    * CheckBookJsonApi constructor.
    * @param $args
    */
-  public function __construct($args)
+  public function __construct($args = [])
   {
     $this->args = $args;
   }
@@ -89,6 +90,7 @@ class CheckBookJsonApi
   /**
    * @param string $status
    * @return array
+   * @throws \Exception
    */
   private function get_subcontracts_by_status($status = '')
   {
@@ -109,7 +111,7 @@ class CheckBookJsonApi
                 WHERE (a.fiscal_year = '{$year}' AND a.type_of_year = '{$year_type}' AND a.status_flag = 'A' AND c.document_code IN ('CTA1','CT1','CT2') AND a.scntrc_status = 2)";
       $response = _checkbook_project_execute_sql($query);
 
-      if (sizeof($response) && $response[0]['acco_' . $status]) {
+      if (!empty($response) && !empty($response[0]['acco_' . $status])) {
         $this->data = $response[0]['acco_' . $status];
       }
       $this->message = 'There are ' . $this->data . ' subcontracts ' . $status . ' in ' . $this->year_type_string($year_type) . ' year ' . $year;
@@ -145,7 +147,7 @@ class CheckBookJsonApi
 
       $response = _checkbook_project_execute_sql($query);
 
-      if (sizeof($response) && $response[0]['total']) {
+      if (!empty($response) && $response[0]['total']) {
         $this->data = $response[0]['total'];
       }
       $this->message = 'There are ' . $this->data . ' active expense contracts for ' .
@@ -177,7 +179,7 @@ class CheckBookJsonApi
                 WHERE fiscal_year='{$year}' AND status_flag='A' AND type_of_year='{$year_type}'";
       $response = _checkbook_project_execute_sql($query);
 
-      if (sizeof($response) && $response[0]['total']) {
+      if (!empty($response) && $response[0]['total']) {
         $this->data = $response[0]['total'];
       }
 
@@ -270,7 +272,7 @@ class CheckBookJsonApi
                 WHERE s0.type_of_year = '{$year_type}' AND s0.fiscal_year_id = '{$year_id}'";
       $response = _checkbook_project_execute_sql($query);
 
-      if (sizeof($response) && $response[0]['total_gross_pay']) {
+      if (!empty($response) && $response[0]['total_gross_pay']) {
         $this->data = $response[0]['total_gross_pay'];
         $this->data = round($this->data, -6);
         $this->data = money_format('%i', $this->data);
@@ -309,7 +311,7 @@ class CheckBookJsonApi
                       AND s0.year_id = '{$year_id}'";
       $response = _checkbook_project_execute_sql($query);
 
-      if (sizeof($response) && $response[0]['total']) {
+      if (!empty($response) && $response[0]['total']) {
         $this->data = $response[0]['total'];
         $this->data = round($this->data, -6);
         $this->data = money_format('%i', $this->data);
@@ -344,7 +346,7 @@ class CheckBookJsonApi
                 WHERE s0.budget_fiscal_year = '{$year}'";
       $response = _checkbook_project_execute_sql($query);
 
-      if (sizeof($response) && $response[0]['total']) {
+      if (!empty($response) && $response[0]['total']) {
         $this->data = $response[0]['total'];
         $this->data = round($this->data, -6);
         $this->data = money_format('%i', $this->data);
@@ -378,7 +380,7 @@ class CheckBookJsonApi
                 WHERE s0.budget_fiscal_year = '{$year}'";
       $response = _checkbook_project_execute_sql($query);
 
-      if (sizeof($response) && $response[0]['total']) {
+      if (!empty($response) && $response[0]['total']) {
         $this->data = $response[0]['total'];
         $this->data = round($this->data, -6);
         $this->data = money_format('%i', $this->data);
@@ -395,4 +397,78 @@ class CheckBookJsonApi
         'like /json_api/total_revenue ; current year will be used'
     ];
   }
+
+  /**
+   * @SWG\Get(
+   *     path="/json_api/etl_status",
+   *     @SWG\Response(response="200", description="etl_status")
+   * )
+   */
+  public function etl_status()
+  {
+    drupal_page_is_cacheable(FALSE);
+
+    global $base_url, $conf;
+
+    if ('uat-checkbook-nyc.reisys.com' == parse_url($base_url, PHP_URL_HOST)) {
+      return $this->getUatEtlStatus();
+    } elseif (!empty($conf['etl-status-path'])) {
+      return $this->getProdEtlStatus();
+    }
+    throw new Exception('available only at UAT and PROD');
+  }
+
+  /**
+   * @return array
+   */
+  private function getProdEtlStatus()
+  {
+    global $conf;
+
+    try {
+      $data = file_get_contents($conf['etl-status-path']);
+      list(,$date) = explode(',', $data);
+      $this->data = trim($date);
+    } catch (Exception $e) {
+      $this->message = $e->getMessage();
+    }
+
+    return [
+      'success' => $this->success,
+      'data' => $this->data,
+      'message' => $this->message,
+      'info' => 'Last successful ETL run date'
+    ];
+  }
+
+  /**
+   * @return array
+   * @throws \Exception
+   */
+  private function getUatEtlStatus()
+  {
+    $query = "SELECT DISTINCT 
+                  MAX(refresh_end_date :: TIMESTAMP) AS last_successful_run
+                FROM etl.refresh_shards_status
+                WHERE latest_flag = 1";
+
+    try {
+      $response = _checkbook_project_execute_sql($query, 'etl');
+    } catch (Exception $e) {
+      $this->success = false;
+      $this->message = $e->getMessage();
+    }
+
+    if (!empty($response) && $response[0]['last_successful_run']) {
+      $this->data = $response[0]['last_successful_run'];
+    }
+
+    return [
+      'success' => $this->success,
+      'data' => $this->data,
+      'message' => $this->message,
+      'info' => 'Last successful ETL run date'
+    ];
+  }
+
 }

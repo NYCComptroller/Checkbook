@@ -166,7 +166,7 @@ function checkbook_api_load_ref_data($code_list_name) {
     echo $data;
   }
   else {
-    echo "Data is not generated. Please contact support team.";
+    echo "Data is not generated.. Please contact support team.";
   }
 }
 
@@ -209,11 +209,11 @@ function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, 
   $category = $criteria['value']['category'];
   $type_of_data = ($datasource == 'checkbook_oge') ? "contracts_oge":"";
 
-    //For Active/Registered Expense Contracts
+    //For Active/Registered Expense Contracts -- CityWide
     if(($type_of_data != "contracts_oge") && ($category == "expense" || $category == "all") && ($contract_status == "active" || $contract_status == "registered")) {
         checkbook_api_adjust_expense_contracts_params($parameters, $criteria, $contract_status, $category);
     }
-    else {
+    else {//For Active/Registered Expense Contracts -- OGE
         switch ($contract_status) {
             case "registered":
             case "active":
@@ -222,11 +222,6 @@ function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, 
                 // Either Fiscal or Calendar year is provided:
                 $fy = checkbook_api_change_datasource($datasource,$parameters['fiscal_year@checkbook:all_contracts_coa_aggregates']);
                 if (isset($fy)) {
-                    if(strtolower($type_of_data) == 'contracts_oge')
-                        $parameters[checkbook_api_change_datasource($datasource,'type_of_year')] = 'B';
-                    else
-                        $parameters[checkbook_api_change_datasource($datasource,'type_of_year@checkbook:all_contracts_coa_aggregates')] = 'B';
-
 
                     if ($contract_status == 'registered') {
                         if(strtolower($type_of_data) == 'contracts_oge')
@@ -243,15 +238,23 @@ function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, 
                         }
                     }
 
-                    // Adjust year:
+
                     if(strtolower($type_of_data) == 'contracts_oge'){
+                        // Adjust year and year type for OGE
                         $req_year = $parameters[checkbook_api_change_datasource($datasource,'fiscal_year')];
                         $req_years = _checkbook_project_querydataset('checkbook_oge:year',array('year_id','year_value'),array('year_value'=>$req_year));
                         $req_year = $req_years[0]['year_id'];
+                        $parameters[checkbook_api_change_datasource($datasource,'type_of_year')] = 'B';
+
+                        //Set vendor flag for OGE
+                        $parameters['is_vendor_flag'] = 'N';
                     }
                     else{
+                        // Adjust year and year type for Citywide
                         $req_year = $parameters[checkbook_api_change_datasource($datasource,'fiscal_year@checkbook:all_contracts_coa_aggregates')];
+                        $parameters[checkbook_api_change_datasource($datasource,'type_of_year@checkbook:all_contracts_coa_aggregates')] = 'B';
                     }
+
                     if (isset($req_year)) {
                         $ge_condition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, $req_year);
                         $le_condition = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, $req_year);
@@ -295,44 +298,32 @@ function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, 
                 break;
         }
 
-        //Document Code - Parameter name changes for OGE
+        //Set Document Code for OGE
         $doc_code = strtolower($type_of_data) == 'contracts_oge' ? "document_code" : "document_code@checkbook:ref_document_code";
+
         if( $category == 'all') {
-            $parameters[checkbook_api_change_datasource($datasource,$doc_code)] = array(
-                "MMA1",
-                "MA1",
-                "CT1",
-                "DO1",
-                "CTA1",
-                "MAR",
-                "CTR",
-                "RCT1",
-            );
+            $parameters[checkbook_api_change_datasource($datasource,$doc_code)] = array("MMA1", "MA1", "CT1", "DO1", "CTA1", "MAR", "CTR", "RCT1",);
         }
         else if ($category == 'revenue') {
             $parameters[checkbook_api_change_datasource($datasource,$doc_code)] = 'RCT1';
         }
-        else {
-            if ($category == 'expense') {
-                $parameters[checkbook_api_change_datasource($datasource,$doc_code)] = array(
-                    "MMA1",
-                    "MA1",
-                    "CT1",
-                    "DO1",
-                    "CTA1",
-                    "MAR",
-                    "CTR",
-                );
-            }
+        else if ($category == 'expense') {
+                $parameters[checkbook_api_change_datasource($datasource,$doc_code)] = array("MMA1", "MA1", "CT1", "DO1", "CTA1", "MAR", "CTR",);
         }
-        if(isset($parameters['minority_type_id']))
-            $parameters['minority_type_id'] = explode('~',$parameters['minority_type_id']);
-        
+
+        //Process Minority Type Id parameter
+        if(isset($parameters['minority_type_id'])) {
+          $parameters['minority_type_id'] = explode('~',$parameters['minority_type_id']);
+        }
+
+        //Set Agency id for the selected OGE Agency code
         if(isset($parameters['agency_code@checkbook_oge:oge_agency'])){
             $agency_id = _checkbook_project_querydataset('checkbook_oge:agency', array('agency_id'), array('agency_code' => $parameters['agency_code@checkbook_oge:oge_agency']));
             $parameters['agency_id'] = $agency_id[0]['agency_id'];
             unset($parameters['agency_code@checkbook_oge:oge_agency']);
         }
+
+        //Set Award method id for the selected OGE Award method code
         if(isset($parameters['award_method_code@checkbook_oge:award_method'])){
            $award_method_id = _checkbook_project_querydataset('checkbook_oge:award_method', array('award_method_id'), array('award_method_code' => $parameters['award_method_code@checkbook_oge:award_method']));
            $parameters['award_method_id'] = $award_method_id[0]['award_method_id'];
@@ -563,7 +554,7 @@ function checkbook_api_adjustSpendingSql(&$sql_query) {
     $sql_query =  str_replace("{$alias}expenditure_object_name", "CASE WHEN {$alias}is_prime_or_sub = 'P' THEN {$alias}expenditure_object_name ELSE 'N/A' END AS expenditure_object_name",$sql_query);
 
     $column = 'minority_type_name';
-    $minority_check = <<<END
+    $minority_check = <<<SQLEND
     CASE
         WHEN {$alias}{$column}= 2 THEN 'Black American' 
         WHEN {$alias}{$column}= 3 THEN 'Hispanic American' 
@@ -580,7 +571,7 @@ function checkbook_api_adjustSpendingSql(&$sql_query) {
         WHEN {$alias}{$column}= 'Caucasian Woman' THEN 'Women' 
         WHEN {$alias}{$column}= 'Individuals & Others' THEN 'Individuals and Others'
     END 
-END;
+SQLEND;
     $sql_query = str_replace("{$alias}minority_type_name", $minority_check . " AS minority_type_name", $sql_query);
     return $sql_query;
 

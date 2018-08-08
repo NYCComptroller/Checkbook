@@ -1447,15 +1447,25 @@ function _checkbook_project_get_year_url_param_string($applySpendingYear = false
 }
 
 /**
- * returns keyvalue pair string is present in URL
+ * @return bool
+ */
+function _checkbook_current_request_is_ajax()
+{
+  return (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
+}
+
+/**
+ * returns key-value pair string is present in URL
+ * detects ajax automatically
  * @return string
  */
 function _checkbook_project_get_url_param_string($key, $key_alias = null, $ajaxPath = FALSE)
 {
 
     $urlPath = drupal_get_path_alias($_GET['q']);
-    if ($ajaxPath)
-        $urlPath = $_SERVER['HTTP_REFERER'];
+    if (_checkbook_current_request_is_ajax()) {
+      $urlPath = $_SERVER['HTTP_REFERER'];
+    }
 
     $pathParams = explode('/', $urlPath);
     $keyIndex = NULL;
@@ -1789,6 +1799,11 @@ function _checkbook_project_delete_file_if_stale($uri)
 function _checkbook_project_execute_sql($sql, $db_name = "main", $data_source = 'checkbook')
 {
     global $databases;
+
+    if (!isset($databases[$data_source][$db_name])) {
+      throw new Exception("No DB configuration found for: \$databases['$data_source']['$db_name']");
+    }
+
     LogHelper::log_notice("Querying database \$databases['$data_source']['$db_name'] (".$databases[$data_source][$db_name]['host'].')');
     LogHelper::log_notice($sql);
 
@@ -1796,17 +1811,17 @@ function _checkbook_project_execute_sql($sql, $db_name = "main", $data_source = 
     $results = null;
 
     try {
-    $results = $connection->query($sql);
+      $results = $connection->query($sql);
     } catch (Exception $e) {
-    LogHelper::log_error("Erorr executing DB query for generating: " . $sql . ". Exception is: " . $e);
+      LogHelper::log_error("Erorr executing DB query for generating: " . $sql . ". Exception is: " . $e);
     }
 
     $output = array();
-    if ($results)
-    foreach ($results as $row) {
-    $output[] = get_object_vars($row);
+    if ($results) {
+      foreach ($results as $row) {
+        $output[] = get_object_vars($row);
+      }
     }
-
 
     return $output;
 }

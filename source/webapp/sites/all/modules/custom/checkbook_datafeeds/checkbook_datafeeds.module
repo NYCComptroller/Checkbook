@@ -1524,6 +1524,7 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                 '#type' => 'textfield',
                 '#title' => t('Contract ID:'),
                 '#attributes' => array('class' => array('watch')),
+                '#maxlength'=>32,
                 '#prefix' => '<div class="datafield contractno">',
                 '#suffix' => '</div>',
                 '#id' => 'edit-contractno',
@@ -1535,6 +1536,7 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                 '#title' => t('Commodity Line:'),
                 '#prefix' => '<div class="datafield commodityline">',
                 '#suffix' => '</div>',
+                '#maxlength'=> 3,
                 '#attributes' => array('class' => array('watch')),
                 '#id' => 'edit-commodity-line',
                 '#name' => 'commodity_line',
@@ -1803,6 +1805,7 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                 '#suffix' => '</div>',
                 '#id' => 'edit-contractno',
                 '#name' => 'contractno',
+                '#maxlength'=>32,
                 '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'contractno', $first_time_load, ''),
             );
             $form['filter']['contract_includes_sub_vendors_id'] = array(
@@ -2767,14 +2770,7 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
                 $criteria['value']['budget_name'] = $values['budget_name'];
             }
             if ($values['vendor']) {
-                preg_match($pattern, $values['vendor'], $vmatches);
-                if ($vmatches) {
-                    $criteria['value']['prime_vendor'] = trim($vmatches[1], '[ ]');
-                    $criteria['value']['vendor'] = trim($vmatches[1], '[ ]');
-                } else {
-                    $criteria['value']['prime_vendor'] = $values['vendor'];
-                    $criteria['value']['vendor'] = $values['vendor'];
-                }
+                $criteria['value']['prime_vendor'] = $values['vendor'];
             }
             break;
 
@@ -2835,6 +2831,20 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
     $pending = $form_state['values']['column_select_pending'];
     $pending_all = $form_state['values']['column_select_pending_all'];
     $vendor = $form_state['values']['vendor'];
+    $contract_id = $form_state['values']['contractno'];
+
+    //Contract Id
+    if($contract_id && strlen($contract_id) > 32){
+        form_set_error('contractno', t('Contract ID must be less than or equal to 32 characters'));
+    }
+
+    //Commodity Line
+    if ('checkbook_oge' == $data_source) {
+        $commodity_line = $form_state['values']['commodity_line'];
+        if($commodity_line && !is_numeric($commodity_line)){
+            form_set_error('commodity_line', t('Commodity Line must be a number'));
+        }
+    }
 
     // Start Date:
     if ($startfrom && !checkDateFormat($startfrom)) {
@@ -2896,14 +2906,18 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
                 switch($data_source) {
                     case 'checkbook_oge':
 
-                        $query = "SELECT DISTINCT vendor_name ";
-                        $query .= "FROM disbursement_line_item_details dld ";
-                        $query .= "JOIN ref_spending_category rsc on rsc.spending_category_id = dld.spending_category_id ";
-                        $query .= "JOIN ref_agency ra on ra.agency_code = dld.agency_code ";
-                        $query .= "WHERE ra.is_display = 'Y' " ;
-                        $query .= "AND vendor_name ilike '".$vendor."'";
-                        if($agency_code) $query .= "AND dld.agency_code = '".$agency_code."'";
-
+                        $query = "SELECT DISTINCT display_vendor_name 
+                                    FROM contracts_detailed_transactions
+                                    WHERE status_flag = 'A' 
+                                    AND display_vendor_name ILIKE '".$vendor."'";
+                        if($agency_code){
+                            $query = "SELECT DISTINCT cd.display_vendor_name 
+                                    FROM contracts_detailed_transactions cd
+                                    LEFT JOIN ref_agency a ON cd.agency_id = a.agency_id
+                                    WHERE cd.status_flag = 'A' 
+                                    AND agency_code = '".$agency_code."'
+                                    AND display_vendor_name ILIKE '".$vendor."'";
+                        }
                         $results = _checkbook_project_execute_sql($query, "main", $data_source);
 
                         break;
@@ -4659,12 +4673,14 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
                 '#suffix' => '</div>',
                 '#attributes' => array('class' => array('watch')),
                 '#id' => 'edit-contractno',
+                '#maxlength'=>32,
                 '#name' => 'contractno',
                 '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'contractno', $first_time_load, ''),
             );
             $form['filter']['commodity_line'] = array(
                 '#type' => 'textfield',
                 '#title' => t('Commodity Line:'),
+                '#maxlength'=>3,
                 '#prefix' => '<div class="datafield commodityline">',
                 '#suffix' => '</div>',
                 '#attributes' => array('class' => array('watch')),
@@ -4901,6 +4917,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
                 '#title' => t('Contract ID:'),
                 '#prefix' => '<div class="datafield contractno">',
                 '#suffix' => '</div>',
+                '#maxlength'=>32,
                 '#attributes' => array('class' => array('watch')),
                 '#id' => 'edit-contractno',
                 '#name' => 'contractno',
@@ -5578,7 +5595,7 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state)
 
     $user_criteria['Formatted'] = $formatted_search_criteria;
     $criteria = checkbook_datafeeds_process_spending_values($form, $form_state, $data_source);
-    $criteria['required_columns'] = checkbook_datafeeds_spending_add_required_columns($response_type, $data_source);
+//    $criteria['required_columns'] = checkbook_datafeeds_spending_add_required_columns($response_type, $data_source);
     $form_state['step_information']['confirmation']['stored_values']['criteria'] = $criteria;
     $form_state['step_information']['confirmation']['stored_values']['user_criteria'] = $user_criteria;
     $modified_form = checkbook_datafeeds_end_of_confirmation_form($form, $form_state, $criteria, $response_type, 'spending');
@@ -5747,6 +5764,13 @@ function checkbook_datafeeds_spending_validate($form, &$form_state) {
     $dateto = $form_state['values']['issuedto'];
     $vendor = $form_state['values']['payee_name'];
     $contract_id = $form_state['values']['contractno'];
+
+    if ('checkbook_oge' == $data_source) {
+        $commodity_line = $form_state['values']['commodity_line'];
+        if($commodity_line && !is_numeric($commodity_line)){
+            form_set_error('commodity_line', t('Commodity Line must be a number.'));
+        }
+    }
     if ($checkfrom && !is_numeric($checkfrom)) {
         form_set_error('checkamtfrom', t('Check Amount must be a number.'));
     }
@@ -6633,6 +6657,7 @@ function checkbook_datafeeds_confirmation_download_submit($form, &$form_state) {
     $record_count = $checkBookApi->getRecordCount();
     //records <= 30,000
     if ($record_count <= 30000) {
+        LogHelper::log_notice("DataFeeds :: <=30,000");
         if (isset($checkBookApi)) {
             if ($checkBookApi->validateRequest()) {
                 try {
@@ -6662,13 +6687,12 @@ function checkbook_datafeeds_confirmation_download_submit($form, &$form_state) {
             module_invoke_all('exit');
             exit;
         }
-    }
-    //100,000 >= records <= 200,000
-    else {
+    } else {
+        LogHelper::log_notice("DataFeeds :: >30,000");
         if (isset($checkBookApi)) {
             if ($checkBookApi->validateRequest()) {
                 try {
-                    //Generate file from sql command
+                    // Output file
                     $filename = $form_state['step_information']['confirmation']['filename'];
                     if($filename) {
                         $checkBookApi->outputFile($filename);
@@ -6681,6 +6705,8 @@ function checkbook_datafeeds_confirmation_download_submit($form, &$form_state) {
             else {
                 log_error($checkBookApi->getErrorResponse());
             }
+        } else {
+          LogHelper::log_notice("DataFeeds :: >30,000 :: \$checkBookApi not set");
         }
         module_invoke_all('exit');
         exit;
@@ -6910,13 +6936,14 @@ function checkbook_datafeeds_end_of_confirmation_form($form, &$form_state, $crit
         if (isset($checkBookApi)) {
             if ($checkBookApi->validateRequest()) {
                 if ($recordcount <= 30000) {
+                    LogHelper::log_notice("DataFeeds :: <=30,000 :: generatingData()");
                     $form_state['step_information']['confirmation']['response'] = $checkBookApi->getData();
                 } else {    // 30,000 .. 200,000
+                    LogHelper::log_notice("DataFeeds :: >30,000 :: generatingFile()");
                     $filename = $checkBookApi->generateFile();
                     $form_state['step_information']['confirmation']['filename'] = $filename;
                 }
-            }
-            else {  // invalid request
+            } else {  // invalid request
                 $form_state['step_information']['confirmation']['response'] = $checkBookApi->getErrorResponse();
             }
         }
