@@ -416,11 +416,17 @@ function _checkbook_export_generateExportFile($node, $headers, $exportConfigNode
         $columns = isset($exportConfigNode) ? $exportConfigNode->widgetConfig->table_columns : $node->widgetConfig->table_columns;
         $columnsConfig = array();
         foreach($columns as $column){
-          $columnsConfig[] = (isset($column->sortSourceColumn)) ? str_replace('.','_',$column->sortSourceColumn) : str_replace('.','_',$column->column);
+            if($column->column != "") {
+                $columnsConfig[] = (isset($column->sortSourceColumn)) ? str_replace('.', '_', $column->sortSourceColumn) : str_replace('.', '_', $column->column);
+            }
         }
-
         $input = $node->data;$start = "SELECT ";$end = " FROM (";
         $selectQuery = substr($input, strlen($start)+strpos($input, $start), (strlen($input) - strpos($input, $end))*(-1));
+        //If there is no sub-query in the export query
+        if(!$selectQuery){
+            $end = " FROM ";
+            $selectQuery = substr($input, strlen($start)+strpos($input, $start), (strlen($input) - strpos($input, $end))*(-1));
+        }
         $selectColumns = explode(",",$selectQuery);
         $exportColumns = array();
 
@@ -435,8 +441,8 @@ function _checkbook_export_generateExportFile($node, $headers, $exportConfigNode
         foreach($columnsConfig as $key => $value){
           $newQuery .= $exportColumns[$value] . ',';
         }
-        $newQuery = substr($newQuery, 0, -1);
-        $node->data = str_replace($selectQuery,$newQuery, $node->data);
+        $newQuery = substr($newQuery, 0, -1);log_error($newQuery);
+        $node->data = str_replace($selectQuery,$newQuery, $node->data);log_error($node->data);
 
         /*
          * For data over the limit of 5000, the sql executes directly from the db.
