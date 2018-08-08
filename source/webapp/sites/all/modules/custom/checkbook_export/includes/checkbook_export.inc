@@ -441,8 +441,8 @@ function _checkbook_export_generateExportFile($node, $headers, $exportConfigNode
         foreach($columnsConfig as $key => $value){
           $newQuery .= $exportColumns[$value] . ',';
         }
-        $newQuery = substr($newQuery, 0, -1);log_error($newQuery);
-        $node->data = str_replace($selectQuery,$newQuery, $node->data);log_error($node->data);
+        $newQuery = substr($newQuery, 0, -1);
+        $node->data = str_replace($selectQuery,$newQuery, $node->data);
 
         /*
          * For data over the limit of 5000, the sql executes directly from the db.
