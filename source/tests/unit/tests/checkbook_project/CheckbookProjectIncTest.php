@@ -1,15 +1,11 @@
 <?php
 
-//use CheckbookProject\CustomClasses\RequestUtil;
-
-//namespace CheckbookProject\CustomClasses;
-
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class CheckbookProjectTest
+ * Class CheckbookProjectIncTest
  */
-class CheckbookProjectTest extends TestCase
+class CheckbookProjectIncTest extends TestCase
 {
     /**
      * tests _checkbook_current_request_is_ajax

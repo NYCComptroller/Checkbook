@@ -2536,6 +2536,39 @@ function _checkbook_agency_link($agency_id, $prime = FALSE){
   return $agency_link;
 }
 
+function _checkbook_dmemcache_get($key, $bin = 'cache', $mc = NULL)
+{
+    if (defined('PHPUNIT_RUNNING') && PHPUNIT_RUNNING) {
+        global $phpunit_cache;
+        return !empty($phpunit_cache[$key]) ? $phpunit_cache[$key] : false;
+    }
+    if (user_is_logged_in()) {
+        return false;
+    }
+    if (function_exists('dmemcache_get')) {
+        return dmemcache_get($key, $bin, $mc);
+    }
+    LogHelper::log_warn('could not find dmemcache_get() function, try enabling memcache');
+    return false;
+}
+
+function _checkbook_dmemcache_set($key, $value, $exp = 54000, $bin = 'cache', $mc = NULL)
+{
+    if (defined('PHPUNIT_RUNNING') && PHPUNIT_RUNNING) {
+        global $phpunit_cache;
+        $phpunit_cache[$key] = $value;
+        return true;
+    }
+    if (user_is_logged_in() || !$value) {
+        return false;
+    }
+    if (function_exists('dmemcache_set')) {
+        return dmemcache_set($key, $value, $exp, $bin, $mc);
+    }
+    LogHelper::log_warn('could not find dmemcache_set() function, try enabling memcache');
+    return false;
+}
+
 //Returns new features from Drupal database
 /*function _checkbook_get_new_features(){
     $query = new EntityFieldQuery();

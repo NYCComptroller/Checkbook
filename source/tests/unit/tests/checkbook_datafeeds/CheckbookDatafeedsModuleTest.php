@@ -1,5 +1,5 @@
 <?php
-include_once __DIR__ . '/../../../webapp/sites/all/modules/custom/checkbook_datafeeds/checkbook_datafeeds.module';
+include_once CUSTOM_MODULES_DIR . '/checkbook_datafeeds/checkbook_datafeeds.module';
 
 use PHPUnit\Framework\TestCase;
 
@@ -50,7 +50,7 @@ class CheckbookDatafeedsModuleTest extends TestCase
      */
     public function test_checkbook_datafeeds_theme()
     {
-        $hooks = checkbook_datafeeds_theme(1,2,3,4);
+        $hooks = checkbook_datafeeds_theme(1, 2, 3, 4);
         $this->assertEquals(1, sizeof($hooks['user_criteria']));
         $this->assertEquals('array', gettype($hooks));
     }
@@ -220,7 +220,7 @@ class CheckbookDatafeedsModuleTest extends TestCase
         $test_form_state = [];
         $test_form_state['step_information']['contracts']['stored_values'] = [
             'df_contract_status' => true,
-            'currentamtfrom'=> '',
+            'currentamtfrom' => '',
             'category' => '',
             'currentamtto' => '',
             'currentamtfrom' => '',
