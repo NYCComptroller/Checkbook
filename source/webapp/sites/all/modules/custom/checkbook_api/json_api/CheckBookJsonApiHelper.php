@@ -109,12 +109,31 @@ class CheckBookJsonApiHelper
             $this->JsonApi->message .= $e->getMessage();
         }
 
+        $audit_status = '';
+        $audit_status_timestamp = 0;
+        $audit_status_csv_path = $conf['etl-status-path'] . 'audit_status.txt';
+        try {
+            if (is_file($audit_status_csv_path)) {
+                $audit_status = array_map('trim', file($audit_status_csv_path));
+                $audit_status_timestamp = filemtime($audit_status_csv_path);
+            } else {
+                $audit_status = [
+                    'FATAL ERROR',
+                    'Could not find `audit_status_details.csv` on server'
+                ];
+            }
+        } catch (Exception $e) {
+            $this->JsonApi->message .= $e->getMessage();
+        }
+
         return [
             'success' => $this->JsonApi->success,
             'data' => $data,
             'message' => $this->JsonApi->message,
             'invalid_records' => $invalid_records,
             'invalid_records_timestamp' => $invalid_records_timestamp,
+            'audit_status' => $audit_status,
+            'audit_status_timestamp' => $audit_status_timestamp,
         ];
     }
 

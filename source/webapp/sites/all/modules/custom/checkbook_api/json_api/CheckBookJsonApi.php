@@ -338,9 +338,9 @@ class CheckBookJsonApi
 
         $return = [];
         if ('uat-checkbook-nyc.reisys.com' == parse_url($base_url, PHP_URL_HOST)) {
-            $return = $this->Model->getUatEtlStatus();
+            $return = $this->Helper->getUatEtlStatus();
         } elseif (!empty($conf['etl-status-path'])) {
-            $return = $this->Model->getProdEtlStatus();
+            $return = $this->Helper->getProdEtlStatus();
         }
 
         $return['connections'] = $this->Helper->get_connections_info();
