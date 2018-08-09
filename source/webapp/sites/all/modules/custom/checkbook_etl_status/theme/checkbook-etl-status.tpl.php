@@ -107,6 +107,28 @@
 
   <?php
   foreach ([$prod_status, $uat_status] as $json):
+    if ($json['audit_status_timestamp'] && $json['audit_status']): ?>
+        <table class="file" cellpadding="5">
+            <thead>
+            <tr class="filename">
+                <th colspan="<?php echo sizeof($json['audit_status'][0]) ?>">
+                    <?php echo $json['source'] ?> ETL `audit_status.txt`
+                    (<?php echo date("Y-m-d g:iA", $json['audit_status_timestamp']); ?>)
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="odd">
+                <td>
+                    <?php echo json_encode($json['audit_status']); ?>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <br/>
+        <br/>
+    <?php
+    endif;
     if ($json['invalid_records_timestamp'] && $json['invalid_records']): ?>
 
       <table class="file" cellpadding="5">
