@@ -1,10 +1,6 @@
 <?php
 
-//use CheckbookProject\CustomClasses\RequestUtil;
-
-//namespace CheckbookProject\CustomClasses;
-
-include_once __DIR__ . '/../../../webapp/sites/all/modules/custom/checkbook_project/customclasses/RequestUtil.php';
+include_once CUSTOM_MODULES_DIR . '/checkbook_project/customclasses/RequestUtil.php';
 
 use PHPUnit\Framework\TestCase;
 
