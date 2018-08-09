@@ -35,7 +35,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
     private $fakeYesterdayTime = 7980367194;
 
     /**
-     * @var /CheckbookEtlStatus
+     * @var CheckbookEtlStatus
      */
     private $CES;
 
@@ -155,6 +155,14 @@ class CheckbookEtlStatusModuleTest extends TestCase
             ->will($this->returnValue('777'));
 
         $this->assertEquals('777', $CheckbookEtlStatus->run_cron());
+    }
+
+    /**
+     *
+     */
+    public function testNiceDisplayDateDiff()
+    {
+        $this->assertEquals('never', $this->CES->niceDisplayDateDiff(false));
     }
 
     /**
@@ -346,6 +354,202 @@ class CheckbookEtlStatusModuleTest extends TestCase
                 'hint' => $CheckbookEtlStatus->niceDisplayDateDiff($this->fakeToday),
             ],
             'connections' => false,
+            'connection_keys' => CheckbookEtlStatus::CONNECTIONS_KEYS,
+        ];
+        $this->assertEquals($expected, $message['body']);
+    }
+
+    /**
+     *
+     */
+    public function test_needs_attention_real_file()
+    {
+        global $conf;
+        $conf['etl-status-path'] = __DIR__ . '/files/';
+
+        /**
+         * @var CheckbookEtlStatus
+         */
+        $CheckbookEtlStatus =
+            $this->getMockBuilder('CheckbookEtlStatus')
+                ->setMethods(['get_date', 'timeNow', 'getUatStatus', 'getProdStatus', 'getConnectionConfigs'])
+                ->getMock();
+
+        $message = null;
+
+        $CheckbookEtlStatus->expects($this->any())
+            ->method('timeNow')
+            ->will($this->returnValue($this->fakeTodayTime));
+
+        $CheckbookEtlStatus->expects($this->once())
+            ->method('getUatStatus')
+            ->will($this->returnValue([
+                'success' => true,
+                'data' => $this->fakeToday,
+                "invalid_records" => array_map('str_getcsv',
+                    file($conf['etl-status-path'] . 'invalid_records_details.csv')),
+                'invalid_records_timestamp' => ($this->fakeTodayTime - 7200),
+            ]));
+
+        $CheckbookEtlStatus->expects($this->once())
+            ->method('getProdStatus')
+            ->will($this->returnValue([
+                'success' => true,
+                'data' => $this->fakeToday,
+                'invalid_records' => 'asdf',
+                'invalid_records_timestamp' => ($this->fakeYesterdayTime),
+            ]));
+
+        $CheckbookEtlStatus->mail($message);
+
+        $expected = [
+            'subject' => 'Needs attention',
+            'uat_status' => [
+                'success' => true,
+                'data' => $this->fakeToday,
+                'hint' => $CheckbookEtlStatus->niceDisplayDateDiff($this->fakeToday),
+                "invalid_records" => array_map('str_getcsv',
+                    file($conf['etl-status-path'] . 'invalid_records_details.csv')),
+                'invalid_records_timestamp' => ($this->fakeTodayTime - 7200),
+
+            ],
+            'prod_status' => [
+                'success' => true,
+                'data' => $this->fakeToday,
+                'hint' => $CheckbookEtlStatus->niceDisplayDateDiff($this->fakeToday),
+            ],
+            'connections' => null,
+            'connection_keys' => CheckbookEtlStatus::CONNECTIONS_KEYS,
+        ];
+        $this->assertEquals($expected, $message['body']);
+    }
+
+    /**
+     *
+     */
+    public function test_needs_attention_reasons()
+    {
+        global $conf;
+        $conf['etl-status-path'] = __DIR__ . '/files/';
+        $conf['etl-status-skip-invalid-records-reasons'] = ['Duplicate'];
+        $conf['etl-status-skip-invalid-records-limit'] = 99;
+
+        /**
+         * @var CheckbookEtlStatus
+         */
+        $CheckbookEtlStatus =
+            $this->getMockBuilder('CheckbookEtlStatus')
+                ->setMethods(['get_date', 'timeNow', 'getUatStatus', 'getProdStatus', 'getConnectionConfigs'])
+                ->getMock();
+
+        $message = null;
+
+        $CheckbookEtlStatus->expects($this->any())
+            ->method('timeNow')
+            ->will($this->returnValue($this->fakeTodayTime));
+
+        $CheckbookEtlStatus->expects($this->once())
+            ->method('getUatStatus')
+            ->will($this->returnValue([
+                'success' => true,
+                'data' => $this->fakeToday,
+                "invalid_records" => array_map('str_getcsv',
+                    file($conf['etl-status-path'] . 'invalid_records_details.csv')),
+                'invalid_records_timestamp' => ($this->fakeTodayTime - 7200),
+            ]));
+
+        $CheckbookEtlStatus->expects($this->once())
+            ->method('getProdStatus')
+            ->will($this->returnValue([
+                'success' => true,
+                'data' => $this->fakeToday,
+                'invalid_records' => 'asdf',
+                'invalid_records_timestamp' => ($this->fakeYesterdayTime),
+            ]));
+
+        $CheckbookEtlStatus->mail($message);
+
+        $expected = [
+            'subject' => 'Success',
+            'uat_status' => [
+                'success' => true,
+                'data' => $this->fakeToday,
+                'hint' => $CheckbookEtlStatus->niceDisplayDateDiff($this->fakeToday),
+
+            ],
+            'prod_status' => [
+                'success' => true,
+                'data' => $this->fakeToday,
+                'hint' => $CheckbookEtlStatus->niceDisplayDateDiff($this->fakeToday),
+            ],
+            'connections' => null,
+            'connection_keys' => CheckbookEtlStatus::CONNECTIONS_KEYS,
+        ];
+        $this->assertEquals($expected, $message['body']);
+    }
+
+    /**
+     *
+     */
+    public function test_needs_attention_reasons_hit_limit()
+    {
+        global $conf;
+        $conf['etl-status-path'] = __DIR__ . '/files/';
+        $conf['etl-status-skip-invalid-records-reasons'] = ['Duplicate'];
+        $conf['etl-status-skip-invalid-records-limit'] = 11;
+
+        /**
+         * @var CheckbookEtlStatus
+         */
+        $CheckbookEtlStatus =
+            $this->getMockBuilder('CheckbookEtlStatus')
+                ->setMethods(['get_date', 'timeNow', 'getUatStatus', 'getProdStatus', 'getConnectionConfigs'])
+                ->getMock();
+
+        $message = null;
+
+        $CheckbookEtlStatus->expects($this->any())
+            ->method('timeNow')
+            ->will($this->returnValue($this->fakeTodayTime));
+
+        $CheckbookEtlStatus->expects($this->once())
+            ->method('getUatStatus')
+            ->will($this->returnValue([
+                'success' => true,
+                'data' => $this->fakeToday,
+                "invalid_records" => array_map('str_getcsv',
+                    file($conf['etl-status-path'] . 'invalid_records_details.csv')),
+                'invalid_records_timestamp' => ($this->fakeTodayTime - 7200),
+            ]));
+
+        $CheckbookEtlStatus->expects($this->once())
+            ->method('getProdStatus')
+            ->will($this->returnValue([
+                'success' => true,
+                'data' => $this->fakeToday,
+                'invalid_records' => 'asdf',
+                'invalid_records_timestamp' => ($this->fakeYesterdayTime),
+            ]));
+
+        $CheckbookEtlStatus->mail($message);
+
+        $expected = [
+            'subject' => 'Needs attention - too many invalid reasons skipped (11+)',
+            'uat_status' => [
+                'success' => true,
+                'data' => $this->fakeToday,
+                'hint' => $CheckbookEtlStatus->niceDisplayDateDiff($this->fakeToday),
+                "invalid_records" => array_map('str_getcsv',
+                    file($conf['etl-status-path'] . 'invalid_records_details.csv')),
+                'invalid_records_timestamp' => ($this->fakeTodayTime - 7200),
+
+            ],
+            'prod_status' => [
+                'success' => true,
+                'data' => $this->fakeToday,
+                'hint' => $CheckbookEtlStatus->niceDisplayDateDiff($this->fakeToday),
+            ],
+            'connections' => null,
             'connection_keys' => CheckbookEtlStatus::CONNECTIONS_KEYS,
         ];
         $this->assertEquals($expected, $message['body']);
