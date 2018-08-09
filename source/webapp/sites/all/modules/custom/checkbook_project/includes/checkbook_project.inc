@@ -26,7 +26,7 @@ function _getFiscalYearID()
  * This function returns Calendar year ID
  * @return year_id
  */
-function _getCalendarYearID()
+function _getCurrentCalendarYearID()
 {
     static $calYearId;
 
