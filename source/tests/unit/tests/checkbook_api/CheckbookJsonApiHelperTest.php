@@ -1,17 +1,14 @@
 <?php
 
-//include_once __DIR__ . '/../../../webapp/sites/all/modules/custom/checkbook_api/json_api/CheckBookJsonApi.php';
-include_once __DIR__ . '/../../../webapp/sites/all/modules/custom/checkbook_api/json_api/CheckBookJsonApiHelper.php';
-
-//include_once __DIR__ . '/../../../webapp/sites/all/modules/custom/checkbook_api/json_api/CheckBookJsonApiModel.php';
+include_once CUSTOM_MODULES_DIR . '/checkbook_api/json_api/CheckBookJsonApiHelper.php';
 
 use PHPUnit\Framework\TestCase;
 use \checkbook_json_api\CheckBookJsonApiHelper;
 
 /**
- * Class CheckBookJsonApiHelperTest
+ * Class CheckbookJsonApiHelperTest
  */
-class CheckBookJsonApiHelperTest extends TestCase
+class CheckbookJsonApiHelperTest extends TestCase
 {
     /**
      * @var
@@ -110,7 +107,7 @@ class CheckBookJsonApiHelperTest extends TestCase
     public function test_get_prod_etl_status()
     {
         global $conf;
-        $conf['etl-status-path'] = __DIR__ . '/../files/';
+        $conf['etl-status-path'] = __DIR__ . '/files/';
         $expected = [
             'success' => true,
             'data' => 'great success',

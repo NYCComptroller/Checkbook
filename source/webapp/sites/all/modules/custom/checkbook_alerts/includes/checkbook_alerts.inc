@@ -335,27 +335,3 @@ function _checkbook_alerts_get_node_config(){
 
   return $node;
 }
-
-function _checkbook_dmemcache_get($key, $bin = 'cache', $mc = NULL)
-{
-  if (user_is_logged_in()) {
-    return false;
-  }
-  if (function_exists('dmemcache_get')) {
-    return dmemcache_get($key, $bin, $mc);
-  }
-  LogHelper::log_warn('could not find dmemcache_get() function, try enabling memcache');
-  return false;
-}
-
-function _checkbook_dmemcache_set($key, $value, $exp = 54000, $bin = 'cache', $mc = NULL)
-{
-  if (user_is_logged_in() || !$value) {
-    return false;
-  }
-  if (function_exists('dmemcache_set')) {
-    return dmemcache_set($key, $value, $exp, $bin, $mc);
-  }
-  LogHelper::log_warn('could not find dmemcache_set() function, try enabling memcache');
-  return false;
-}
