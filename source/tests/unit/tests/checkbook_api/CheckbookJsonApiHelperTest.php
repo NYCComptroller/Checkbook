@@ -16,7 +16,7 @@ class CheckbookJsonApiHelperTest extends TestCase
     public $api;
 
     /**
-     * @var
+     * @var CheckBookJsonApiHelper
      */
     public $helper;
 
@@ -112,11 +112,13 @@ class CheckbookJsonApiHelperTest extends TestCase
             'success' => true,
             'data' => 'great success',
             'message' => '',
-            'invalid_records' => [
-                ['a', 'b', 'c', 'd'],
-                [1, 2, 3, 4],
-            ],
-            'invalid_records_timestamp' => filemtime($conf['etl-status-path'] . 'invalid_records_details.csv'),
+            "invalid_records" => array_map('str_getcsv',
+                file($conf['etl-status-path'] . 'invalid_records_details.csv')),
+            'invalid_records_timestamp' => filemtime(
+                $conf['etl-status-path'] . 'invalid_records_details.csv'),
+            'audit_status' => ['OK'],
+            'audit_status_timestamp' => filemtime(
+                $conf['etl-status-path'] . 'audit_status.txt'),
         ];
         $this->assertEquals($expected, $this->helper->getProdEtlStatus());
     }

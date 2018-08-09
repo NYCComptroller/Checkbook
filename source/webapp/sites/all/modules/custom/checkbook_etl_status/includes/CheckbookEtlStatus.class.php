@@ -182,6 +182,7 @@ class CheckbookEtlStatus
                 if (isset($conf['etl-status-skip-invalid-records-reasons'])) {
                     $filtered_invalid_records = [];
                     $skipped = 0;
+                    $limitReached = false;
                     foreach ($data['invalid_records'] as $line) {
                         if (!in_array($line[3], $conf['etl-status-skip-invalid-records-reasons'])) {
                             $filtered_invalid_records[] = $line;
@@ -190,22 +191,39 @@ class CheckbookEtlStatus
                                 $this->successSubject = 'Needs attention - too many invalid reasons skipped (' .
                                     $conf['etl-status-skip-invalid-records-limit'] . '+)';
                             }
+                            $limitReached = true;
                             break;
                         }
                     }
-                    if (1 < sizeof($filtered_invalid_records)) {
-                        if ('Success' == $this->successSubject) {
-                            $this->successSubject = 'Needs attention';
+                    if (!$limitReached) {
+                        if (1 < sizeof($filtered_invalid_records)) {
+                            if ('Success' == $this->successSubject) {
+                                $this->successSubject = 'Needs attention';
+                            }
+                            $data['invalid_records'] = $filtered_invalid_records;
+                        } else {
+                            unset($data['invalid_records']);
+                            unset($data['invalid_records_timestamp']);
                         }
-                        $data['invalid_records'] = $filtered_invalid_records;
-                    } else {
-                        unset($data['invalid_records']);
-                        unset($data['invalid_records_timestamp']);
                     }
                 } else {
                     if ('Success' == $this->successSubject) {
                         $this->successSubject = 'Needs attention';
                     }
+                }
+            }
+        }
+
+        if (!empty($data['audit_status_timestamp'])) {
+            if (!defined('CHECKBOOK_DEV') && (($now - $data['audit_status_timestamp']) > self::SUCCESS_IF_RUN_LESS_THAN_X_SECONDS_AGO)) {
+                unset($data['audit_status_timestamp']);
+                if (!empty($data['audit_status'])) {
+                    unset($data['audit_status']);
+                }
+            } else {
+                $allGood = ['OK'];
+                if (($allGood !== $data['audit_status']) && ('Success' == $this->successSubject)) {
+                    $this->successSubject = 'Needs attention';
                 }
             }
         }
