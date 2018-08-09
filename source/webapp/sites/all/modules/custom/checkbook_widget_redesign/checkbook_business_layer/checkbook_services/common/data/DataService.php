@@ -90,7 +90,7 @@ abstract class DataService implements IDataService {
         $parameters = isset($parameters) ? $parameters : $this->parameters;
         $fnData = $this->fnData;
         LogHelper::log_info("Get By RecordCount: ".$fnData);
-        $cacheKey = 'record_count_'.md5(serialize([$parameters, $fnData]));
+        $cacheKey = 'get_by_record_count_'.md5(serialize([$parameters, $fnData]));
         if ($data = _checkbook_dmemcache_get($cacheKey)) {
           LogHelper::log_info($cacheKey.' CACHE HIT!');
           return $data;
@@ -100,7 +100,7 @@ abstract class DataService implements IDataService {
         return $data;
     }
 
-    private function getRepository() {
+    public function getRepository() {
         if(!isset($this->repository)) {
             $this->repository = new SqlEntityRepository($this->sqlConfigPath);
         }

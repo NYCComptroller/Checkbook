@@ -1,19 +1,19 @@
 <?php
 
-include_once __DIR__.'/../../../webapp/sites/all/modules/custom/checkbook_api/checkbook_api.module';
-
-use PHPUnit\Framework\TestCase;
+include_once CUSTOM_MODULES_DIR . '/checkbook_api/checkbook_api.module';
 
 /**
  * Class CheckbookApiModuleTest
  */
-class CheckbookApiModuleTest extends TestCase {
+class CheckbookApiModuleTest extends \PHPUnit\Framework\TestCase
+{
 
 
     /**
      *
      */
-    public function test_checkbook_api_adjustSpendingSql() {
+    public function test_checkbook_api_adjustSpendingSql()
+    {
         $query = 'l1.prime_vendor_name';
         $this->assertEquals("CASE WHEN l1.is_prime_or_sub = 'S' THEN l1.prime_vendor_name ELSE 'N/A' END AS prime_vendor_name",
             checkbook_api_adjustSpendingSql($query));
@@ -37,7 +37,7 @@ class CheckbookApiModuleTest extends TestCase {
         $query = 'l1.expenditure_object_name';
         $this->assertEquals("CASE WHEN l1.is_prime_or_sub = 'P' THEN l1.expenditure_object_name ELSE 'N/A' END AS expenditure_object_name",
             checkbook_api_adjustSpendingSql($query));
-        
+
         $query = 'prime_vendor_name';
         $this->assertEquals("CASE WHEN is_prime_or_sub = 'S' THEN prime_vendor_name ELSE 'N/A' END AS prime_vendor_name",
             checkbook_api_adjustSpendingSql($query));
@@ -81,7 +81,7 @@ class CheckbookApiModuleTest extends TestCase {
         WHEN minority_type_name= 'Individuals & Others' THEN 'Individuals and Others'
     END  AS minority_type_name
 SQLEND
-        ,checkbook_api_adjustSpendingSql($query));
+            , checkbook_api_adjustSpendingSql($query));
 
     }
 }
