@@ -36,7 +36,7 @@ $oge_filter_highlight = (_checkbook_check_isEDCPage() || _checkbook_check_isNYCH
 $city_filter_highlight = (!(_checkbook_check_isEDCPage() || _checkbook_check_isNYCHAPage())) ? 'agency_filter_highlight' : '';
 
 $current_fy_year = _getFiscalYearID();
-$current_cal_year = _getCalendarYearID();
+$current_cal_year = _getCurrentCalendarYearID();
 
 $current_url = explode('/',$_SERVER['REQUEST_URI']);
 $url = $current_url[1];

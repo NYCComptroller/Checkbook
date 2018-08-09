@@ -85,11 +85,10 @@
                 var n = href.indexOf('?');
                 href = href.substring(0, n !== -1 ? n : href.length);
                 var data_source = 'checkbook';
-                if(href.indexOf('datasource/checkbook_oge') !== -1){
+                if(href.indexOf('datasource/checkbook_oge') !== -1 || href.indexOf('datasource/checkbook_nycha') !== -1){
                     data_source = 'checkbook_oge';
-                }else if(href.indexOf('datasource/checkbook_nycha') !== -1){
-                    data_source = 'checkbook_nycha';
                 }
+
                 var page_clicked_from = this.id ? this.id : href.split('/')[1];
                 var active_accordion_window = initializeActiveAccordionWindow(page_clicked_from, data_source);
 
@@ -129,11 +128,11 @@
                 clearInputFields("#budget-advanced-search", 'budget');
                 clearInputFields("#revenue-advanced-search", 'revenue');
 
-                clearInputFieldByDataSource("#payroll-advanced-search", 'payroll', data_source);
+                /*clearInputFieldByDataSource("#payroll-advanced-search", 'payroll', data_source);
                 clearInputFieldByDataSource("#contracts-advanced-search", 'contracts', data_source);
                 clearInputFieldByDataSource("#spending-advanced-search", 'spending', data_source);
                 clearInputFields("#budget-advanced-search", 'budget');
-                clearInputFields("#revenue-advanced-search", 'revenue');
+                clearInputFields("#revenue-advanced-search", 'revenue');*/
 
                 bootstrap_complete();
 
@@ -301,7 +300,7 @@
             }
 
 // advanced-search-clear-button
-            function clearInputFields(enclosingDiv, domain) {
+            function clearInputFields(enclosingDiv, domain, dataSource = null) {
                 $(enclosingDiv).find(':input').each(function () {
                     switch (this.type) {
                         case 'select-one':
@@ -311,7 +310,6 @@
                             } else {
                               $(this).find('option:first').attr("selected", "selected");
                             }
-
                             break;
                         case 'text':
                             $(this).val('');
@@ -331,16 +329,27 @@
                             break;
                     }
                 });
-                /* Disable the drop-downs by domain */
+
+               /**** Domain specific functionality ****/
                 switch (domain) {
                     case 'budget':
+                         // Disable dynamic drop-downs
                         $('#edit-budget-expense-category').attr("disabled", "disabled");
                         $('#edit-budget-department').attr("disabled", "disabled");
                         $('#edit-budget-budget-code').val("0").trigger("chosen:updated");
                         $('#edit-budget-budget-name').val("0").trigger("chosen:updated");
                         reloadBudgetCode();
                         reloadBudgetName();
-
+                        break;
+                    case 'payroll':
+                        // Show/hide Citywide/OGE agencies drop-down
+                        if(dataSource == 'checkbook_oge'){
+                            $(".form-item-checkbook-payroll-agencies").hide();
+                            $(".form-item-checkbook-oge-payroll-agencies").show();
+                        }else{
+                            $(".form-item-checkbook-payroll-agencies").show();
+                            $(".form-item-checkbook-oge-payroll-agencies").hide();
+                        }
                         break;
                 }
             }
@@ -782,8 +791,9 @@
 
                 // employee_name = ($('#edit-payroll-employee-name')).val() ? $('#edit-payroll-employee-name').val() : 0;
                 pay_frequency = $('#edit-payroll-pay-frequency').val() || 0;
-                agency = $('#edit-payroll-agencies').val() || 0;
                 year = $('#edit-payroll-year').val() || 0;
+                data_source = $('input[name=payroll_advanced_search_domain_filter]:checked').val();
+                agency = $("#edit-"+ data_source.replace("_", "-") +"-payroll-agencies").val() || 0;
 
                 $('#edit-payroll-employee-name').autocomplete({
                     source: '/advanced-search/autocomplete/payroll/employee-name/' + pay_frequency + '/' + agency + '/' + year,
@@ -795,7 +805,8 @@
                     $(this).focusout(function () {
                         // employee_name = ($('#edit-payroll-employee-name')).val() ? $('#edit-payroll-employee-name').val() : 0;
                         pay_frequency = $('#edit-payroll-pay-frequency').val() || 0;
-                        agency = $('#edit-payroll-agencies').val() || 0;
+                        data_source = $('input[name=payroll_advanced_search_domain_filter]:checked').val();
+                        agency = $("#edit-"+ data_source.replace("_", "-") +"-payroll-agencies").val() || 0;
                         year = $('#edit-payroll-year').val() || 0;
                         $('#edit-payroll-employee-name').autocomplete({source: '/advanced-search/autocomplete/payroll/employee-name/' + pay_frequency + '/' + agency + '/' + year});
                     });
@@ -1363,11 +1374,11 @@
                 $('#edit-payroll-clear').click(function (e) {
                     //$('#checkbook-advanced-search-form')[0].reset(); //this works
                     var data_source = 'checkbook';
-                    if(href.indexOf('datasource/checkbook_oge') !== -1){
+                    var href = window.location.href.replace(/(http|https):\/\//, '');
+                    if(href.indexOf('datasource/checkbook_oge') !== -1 || href.indexOf('datasource/checkbook_nycha') !== -1){
                         data_source = 'checkbook_oge';
-                    }else if(href.indexOf('datasource/checkbook_nycha') !== -1){
-                        data_source = 'checkbook_nycha';
                     }
+
                     clearInputFieldByDataSource('#payroll-advanced-search', 'payroll', data_source);
                     $(this).blur();
                     /* Remove focus */
@@ -1489,7 +1500,6 @@
                 if (data_source === "checkbook_oge") {
                     disableAccordionSection('Budget');
                     disableAccordionSection('Revenue');
-                    disableAccordionSection('Payroll');
                 }
             }
 
@@ -1510,7 +1520,7 @@
                 var href = window.location.href.replace(/(http|https):\/\//, '');
                 var n = href.indexOf('?');
                 href = href.substring(0, n !== -1 ? n : href.length);
-                var data_source = (href.indexOf('datasource/checkbook_oge') !== -1) ? "checkbook_oge" : "checkbook";
+                var data_source = (href.indexOf('datasource/checkbook_oge') !== -1 || href.indexOf('datasource/checkbook_nycha') !== -1) ? "checkbook_oge" : "checkbook";
                 var page_clicked_from = this.id ? this.id : href.split('/')[1];
                 var active_accordion_window = initializeActiveAccordionWindow(page_clicked_from, data_source);
 
@@ -1563,11 +1573,11 @@
                 clearInputFields("#budget-advanced-search", 'budget');
                 clearInputFields("#revenue-advanced-search", 'revenue');
 
-                clearInputFieldByDataSource("#payroll-advanced-search", 'payroll', data_source);
+                /*clearInputFieldByDataSource("#payroll-advanced-search", 'payroll', data_source);
                 clearInputFieldByDataSource("#contracts-advanced-search", 'contracts', data_source);
                 clearInputFieldByDataSource("#spending-advanced-search", 'spending', data_source);
                 clearInputFields("#budget-advanced-search", 'budget');
-                clearInputFields("#revenue-advanced-search", 'revenue');
+                clearInputFields("#revenue-advanced-search", 'revenue');*/
 
                 bootstrap_complete();
 
@@ -2305,7 +2315,6 @@
                     } else {
                       $(this).find('option:first').attr("selected", "selected");
                     }
-
                     break;
                 case 'text':
                     $(this).val('');
@@ -2319,7 +2328,7 @@
                 case 'radio':
                     switch (domain) {
                         case 'payroll':
-                            $('#edit-payroll-amount-type-0').attr('checked', 'checked');
+                            $(':radio[name="payroll_advanced_search_domain_filter"][value="' + dataSource + '"]').click();
                             break;
                         case 'spending':
                             $(':radio[name="spending_advanced_search_domain_filter"][value="' + dataSource + '"]').click();

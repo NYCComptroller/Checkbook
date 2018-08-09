@@ -47,7 +47,7 @@ function checkbook_project_url_outbound_alter(&$path, &$options, $original_path)
 	}
 	/*elseif(($path == 'payroll')  || ($path == 'payroll/agency/%')){
 	
-	  //$path .="/yeartype/C/year/"._getCalendarYearID();
+	  //$path .="/yeartype/C/year/"._getCurrentCalendarYearID();
 	  $path .="/yeartype/B/year/"._getCurrentYearID();
 	  return true;
 	}*/
