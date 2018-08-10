@@ -18,7 +18,7 @@
             "associated_prime_vendor":"prime_vendor_name",
             "sub_contract_reference_id":"sub_contract_id",
             "sub_vendor":"sub_vendor_name",
-            "sub_vendor_status_in_pip" :"aprv_sta",
+            "sub_vendor_status_in_pip_id" :"aprv_sta",
             "contract_includes_sub_vendors":"scntrc_status",
             "vendor_code":"vendor_code",
             "purpose":"purpose",
@@ -103,7 +103,7 @@
                         "sub_vendor":"sub_vendor",
                         "sub_vendor_mwbe_category":"sub_vendor_mwbe_category",
                         "sub_contract_purpose":"sub_contract_purpose",
-                        "sub_vendor_status_in_pip":"sub_vendor_status_in_pip",
+                        "sub_vendor_status_in_pip_id":"sub_vendor_status_in_pip",
                         "sub_contract_industry":"sub_contract_industry",
                         "sub_contract_current_amount":"sub_contract_current_amount",
                         "sub_contract_original_amount":"sub_contract_original_amount",
@@ -272,7 +272,7 @@
                 "dataType":"text",
                 "maxLength":"2"
             },
-            "sub_vendor_status_in_pip":{
+            "sub_vendor_status_in_pip_id":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"2"
@@ -299,7 +299,7 @@
             "pin":"prime_pin",
             "apt_pin":"prime_apt_pin",
             "industry_type_id":"industry_type_id",
-            "sub_vendor_status_in_pip" :"aprv_sta",
+            "sub_vendor_status_in_pip_id" :"aprv_sta",
             "contract_includes_sub_vendors":"scntrc_status",
             "vendor_code":"vendor_code",
             "purpose":"purpose",
@@ -594,7 +594,7 @@
                 "dataType":"text",
                 "maxLength":"2"
             },
-            "sub_vendor_status_in_pip":{
+            "sub_vendor_status_in_pip_id":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"2"
@@ -796,7 +796,7 @@
                 "dataType":"text",
                 "maxLength":"2"
             },
-            "sub_vendor_status_in_pip":{
+            "sub_vendor_status_in_pip_id":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"2"
@@ -1000,7 +1000,7 @@
             "associated_prime_vendor":"prime_vendor_name",
             "sub_contract_reference_id":"sub_contract_id",
             "sub_vendor":"sub_vendor_name",
-            "sub_vendor_status_in_pip" :"aprv_sta",
+            "sub_vendor_status_in_pip_id" :"aprv_sta",
             "contract_includes_sub_vendors":"scntrc_status",
             //logical OR columns
             "vendor_code":"vendor_code",
@@ -1255,7 +1255,7 @@
                 "dataType":"text",
                 "maxLength":"2"
             },
-            "sub_vendor_status_in_pip":{
+            "sub_vendor_status_in_pip_id":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"2"
@@ -1283,7 +1283,7 @@
             "apt_pin":"prime_apt_pin",
             "industry_type_id":"industry_type_id",
             "associated_prime_vendor":"prime_vendor_name",
-            "sub_vendor_status_in_pip" :"aprv_sta",
+            "sub_vendor_status_in_pip_id" :"aprv_sta",
             "contract_includes_sub_vendors":"scntrc_status",
             //logical OR columns
             "vendor_code":"vendor_code",
@@ -1578,7 +1578,7 @@
                 "dataType":"text",
                 "maxLength":"2"
             },
-            "sub_vendor_status_in_pip":{
+            "sub_vendor_status_in_pip_id":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"2"
