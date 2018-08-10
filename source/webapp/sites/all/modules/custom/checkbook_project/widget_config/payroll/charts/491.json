@@ -114,11 +114,11 @@
 
         $currentYearUrl = current_path() . '?expandBottomContURL=' . ($isAgencyPage
             ? '/panel_html/payroll_agency_by_month_transactions/payroll/agencywide/monthly/transactions' . _checkbook_project_get_year_url_param_string() .$data_source. _checkbook_project_get_url_param_string('agency') . _checkbook_project_get_url_param_string('title') . '/month/' . $row['current_month_month']
-            : '/panel_html/payroll_by_month_nyc_transactions/payroll/monthly/transactions' . _checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string('agency') . _checkbook_project_get_url_param_string('title') . '/month/' . $row['current_month_month']);
+            : '/panel_html/payroll_by_month_nyc_transactions/payroll/monthly/transactions' . _checkbook_project_get_year_url_param_string() .$data_source. _checkbook_project_get_url_param_string('agency') . _checkbook_project_get_url_param_string('title') . '/month/' . $row['current_month_month']);
 
         $previousYearUrl = current_path() . '?expandBottomContURL=' . ($isAgencyPage
             ? '/panel_html/payroll_agency_by_month_transactions/payroll/agencywide/monthly/transactions' . _checkbook_project_get_year_url_param_string(false, true) .$data_source. _checkbook_project_get_url_param_string('agency') . _checkbook_project_get_url_param_string('title') . '/month/' . $row['previous_month_month']
-            : '/panel_html/payroll_by_month_nyc_transactions/payroll/monthly/transactions' . _checkbook_project_get_year_url_param_string(false, true) . _checkbook_project_get_url_param_string('agency') . _checkbook_project_get_url_param_string('title') . '/month/' . $row['previous_month_month']);
+            : '/panel_html/payroll_by_month_nyc_transactions/payroll/monthly/transactions' . _checkbook_project_get_year_url_param_string(false, true) .$data_source. _checkbook_project_get_url_param_string('agency') . _checkbook_project_get_url_param_string('title') . '/month/' . $row['previous_month_month']);
 
 
         if(abs($row['previous_total_overtime_pay']) > 0)
