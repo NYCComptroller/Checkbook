@@ -849,7 +849,6 @@ td.active div.indicator {
     margin-bottom: -17px;
     position: relative;
     top: 1px;
-    z-index: 10;
 }
 /********************
 *** CHART STYLING ***
@@ -1597,11 +1596,13 @@ div.create-alert-schedule-alert select{
     float: left;
 }
 #spending-advanced-search .form-item.form-item-spending-advanced-search-domain-filter,
-#contracts-advanced-search .form-item.form-item-contracts-advanced-search-domain-filter{
+#contracts-advanced-search .form-item.form-item-contracts-advanced-search-domain-filter,
+#payroll-advanced-search .form-item.form-item-payroll-advanced-search-domain-filter{
     width:205px;
     float: left;
 }
-#spending-advanced-search .form-item.form-item-spending-advanced-search-domain-filter input[type="radio"]{
+#spending-advanced-search .form-item.form-item-spending-advanced-search-domain-filter input[type="radio"],
+#payroll-advanced-search .form-item.form-item-payroll-advanced-search-domain-filter input[type="radio"]{
     width: auto;
     float: left;
     margin-right: 5px;
@@ -2166,7 +2167,7 @@ table#assoc_contracts_list .assoc_item > div + div > div > div div{margin-left:0
 table#assoc_contracts_list .assoc_item > div + div > div > div div .dataTable th:first-child div,
 table#assoc_contracts_list .assoc_item > div + div > div > div div .dataTable td:first-child div{margin-left:10px;}
 table#assoc_contracts_list .assoc_item .rfed-amount {
-    color: #3C5E7C;
+    color: #5C5C5C;
     float: right;
     font-size: 16px;
     font-weight: bold;
@@ -2321,6 +2322,14 @@ table#assoc_contracts_list .assoc_item .rfed-amount {
 .oge-ca-details .contract-id .contractLinkNote,
 .oge-assoc-contracts-list .contractLinkNote {
     position:relative;
+
+}
+.oge-ma-details .contract-id .contractIcon,
+.oge-ca-details .contract-id .contractIcon
+ {
+    position:relative;
+    left:-60px;
+
 }
 .page-contracts-landing #assoc_contracts_list_wrapper .dollar-amounts div,
 .page-contract-details #assoc_contracts_list_wrapper .dollar-amounts div{
@@ -2439,21 +2448,25 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 }
 .oge-assoc-contracts-list .assoc_amounts{
     float:right;
+
 }
 .oge-assoc-contracts-list .assoc_amounts .rfed-amount{
-    float:left;
-    margin:0px 0px 0px 30px;
+   float:right;
+    width: 150px;
+
 }
 .oge-assoc-contracts-list .assoc_amounts .rfed-amount span{
     display:block;
-    width:100%;
+    width:150%;
     text-align: center;
-    text-transform: capitalize;
+    text-transform: uppercase;
     float:left;
     clear:both;
 }
 .oge-assoc-contracts-list .assoc_amounts .rfed-amount span.label{
-    font-size: 12px;
+    font-size: 11px;
+    font-weight: normal;
+    line-height: 16px;
 }
 
 .cb-ca-details .contract-id .master-contract-link,
@@ -3752,4 +3765,13 @@ a.new-features-morelink{
 .html sup{
     vertical-align: super;
     font-size: smaller;
+}
+
+.ckbk-export-dialog label{
+    font-weight: initial;
+    display: initial;
+}
+
+#dialog.ckbk-export-dialog td{
+    padding: 5px 30px;
 }

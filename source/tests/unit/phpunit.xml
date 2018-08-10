@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit bootstrap="vendor/autoload.php"
+<phpunit bootstrap="bootstrap.php"
          colors="true"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
@@ -14,6 +14,8 @@
     <filter>
         <whitelist addUncoveredFilesFromWhitelist="false">
             <directory suffix=".php">../../webapp/sites/all/modules/custom</directory>
+            <directory suffix=".module">../../webapp/sites/all/modules/custom</directory>
+            <directory suffix=".inc">../../webapp/sites/all/modules/custom</directory>
         </whitelist>
     </filter>
     <logging>

@@ -21,7 +21,7 @@ include_once('export_link.php');
         echo "<tr><th class='number'>" . WidgetUtil::generateLabelMapping("fiscal_year") . "</th>
         <th class='number'>"  .WidgetUtil::generateLabelMapping("recognized")  .  " </th>
         <th class='number'>" . WidgetUtil::generateLabelMapping("remaining"). "</th>
-        <th>&nbsp</th>
+        <th>&nbsp;</th>
         </tr>\n";
     ?>
     </thead>
@@ -34,7 +34,7 @@ include_once('export_link.php');
                    echo '<td>' . $datarow['year_year_year_value'] . '</td>';
                    echo '<td>' . $datarow['revenue_amount_sum'] . '</td>';
                    echo '<td>' . $datarow['remaining_amount'] . '</td>';
-                   echo "<td>&nbsp</td>";
+                   echo "<td>&nbsp;</td>";
                 echo "</tr>";
             }
         }

@@ -29,6 +29,7 @@ Prime Vendor Information
     $version_num = RequestUtilities::getRequestParamValue("version");
 
 $queryVendorDetails = "SELECT
+       p.minority_type_id,
        vh.vendor_id,
        rb.business_type_code,
        p.vendor_id vendor_vendor,
@@ -39,7 +40,7 @@ $queryVendorDetails = "SELECT
        a.address_line_2,
        a.city, a.state, a.zip, a.country,
       (CASE WHEN (rb.business_type_code = 'MNRT' OR rb.business_type_code = 'WMNO') THEN 'Yes' ELSE 'NO' END) AS mwbe_vendor,
-      (CASE WHEN rm.minority_type_id in (4,5) then 'Asian American' ELSE rm.minority_type_name END)AS ethnicity
+      (CASE WHEN p.minority_type_id in (4,5) then 'Asian American' ELSE p.minority_type_name END)AS ethnicity
 	                        FROM {pending_contracts} p
 	                            LEFT JOIN {vendor} v ON p.vendor_id = v.vendor_id
 	                            LEFT JOIN (SELECT vendor_id, MAX(vendor_history_id) AS vendor_history_id
@@ -87,6 +88,7 @@ if($node->data[0]["vendor_id"]){
   <ul class="left">
     <li><span class="gi-list-item">Prime Vendor:</span> <a href="<?php echo $vendor_link;?> " ><?php echo $node->data[0]['vendor_name'] ;?></a></li>
   <?php
+      $minority_type_id = $node->data[0]['minority_type_id'];
       $address = $node->data[0]['address_line_1'] ;
       $address .= " "  .  $node->data[0]['address_line_2'];
       $address .= " "  .  $node->data[0]['city'];
@@ -97,15 +99,18 @@ if($node->data[0]["vendor_id"]){
       $ethnicities = array();
       foreach($node->data as $row){
         if($row['ethnicity'] != null and trim($row['ethnicity']) != '' ){
-          $ethnicities[] = $row['ethnicity'];
+          $ethnicities[] =MappingUtil::getMinorityCategoryById($minority_type_id);
         }
       }
       $ethnicity = implode(',',$ethnicities);
+     if($minority_type_id == "4" || $minority_type_id == "5"){
+      $minority_type_id = "4~5";
+       }
 
   ?>
     <li><span class="gi-list-item">Address:</span> <?php echo $address;?></li>
     <li><span class="gi-list-item">Total Number of NYC Contracts:</span> <?php echo $total_cont;?></li>
     <li><span class="gi-list-item">M/WBE Vendor:</span> <?php echo $node->data[0]['mwbe_vendor'] ;?></li>
 
-    <li><span class="gi-list-item">Ethnicity:</span> <?php echo $ethnicity ;?></li>
+    <li><span class="gi-list-item">M/WBE Category:</span> <?php echo $ethnicity ;?></li>
 </ul>

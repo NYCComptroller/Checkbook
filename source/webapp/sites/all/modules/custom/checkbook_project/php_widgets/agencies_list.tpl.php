@@ -21,19 +21,22 @@
 
 $city_agencies = array();
 $edc_agencies = array();
+$nycha_agencies= array();
 foreach($node->data as $key=>$value){
-    if(array_key_exists('is_oge_agency', $value)){
+    if($value['is_oge_agency'] == 'Y'){
         $edc_agencies[$key] = $value;
-    }else{
+    }else if($value['is_oge_agency'] == 'N'){
         $city_agencies[$key] = $value;
+    }else{
+        $nycha_agencies[$key] = $value;
     }
 }
 
-$oge_filter_highlight = (_checkbook_check_isEDCPage()) ? 'agency_filter_highlight' : '';
-$city_filter_highlight = (!_checkbook_check_isEDCPage()) ? 'agency_filter_highlight' : '';
+$oge_filter_highlight = (_checkbook_check_isEDCPage() || _checkbook_check_isNYCHAPage()) ? 'agency_filter_highlight' : '';
+$city_filter_highlight = (!(_checkbook_check_isEDCPage() || _checkbook_check_isNYCHAPage())) ? 'agency_filter_highlight' : '';
 
 $current_fy_year = _getFiscalYearID();
-$current_cal_year = _getCalendarYearID();
+$current_cal_year = _getCurrentCalendarYearID();
 
 $current_url = explode('/',$_SERVER['REQUEST_URI']);
 $url = $current_url[1];
@@ -72,7 +75,8 @@ foreach($agencies as $key => $agencies_chunck){
     $agency_list .= "<ul class='listCol".($key+1)."'>";
     foreach($agencies_chunck as $a => $agency){
         $agency_url ="";
-        $agency_url = ($current_url[1] == 'payroll')?'payroll/agency_landing/agency/'.$agency['agency_id'].'/yeartype/B/year/'.$current_fy_year
+
+        $agency_url = ($current_url[1] == 'payroll')?'payroll/agency_landing/agency/'.$agency['agency_id'].'/yeartype/C/year/'.$current_cal_year
             : $url.'/agency/'.$agency['agency_id'];
 
         $agency_list .= "<li id=agency-list-id-".$agency['agency_id'].">
@@ -96,6 +100,9 @@ if($current_url[1] == 'contracts_landing')
 else
     $edc_url = "spending_landing";
 
+//NYCHA Agencies: Set NYCHA default URL to Payroll
+$nycha_url = "payroll/agency_landing/yeartype/C/year/".$current_cal_year."/datasource/checkbook_nycha/agency/";
+
 $agency_list_other = "<div id='agency-list-other' class='agency-nav-dropdowns'>
   <div class='agency-list-open'><span id='other-agency-list-open' class='".$oge_filter_highlight."'>Other Government Entities</span></div>
   <div class='agency-list-content other-agency-list-content'>
@@ -104,6 +111,9 @@ $agency_list_other = "<div id='agency-list-other' class='agency-nav-dropdowns'>
           <ul class='listCol'>";
 foreach($edc_agencies as $key => $edc_agency){
     $agency_list_other .= "<li><a href='/". $edc_url .'/yeartype/B/year/'.$current_fy_year."/datasource/checkbook_oge/agency/".$edc_agency['agency_id']. "'>". $edc_agency['agency_name'] ."</a></li>";
+}
+foreach($nycha_agencies as $key => $nycha_agency){
+    $agency_list_other .= "<li><a href='/". $nycha_url.$nycha_agency['agency_id'] ."'>". $nycha_agency['agency_name'] ."</a></li>";
 }
 $agency_list_other .= "</ul>
         </div>

@@ -8,17 +8,6 @@ include_once __DIR__ . '/../../../webapp/sites/all/modules/custom/checkbook_proj
 
 use PHPUnit\Framework\TestCase;
 
-$mock_current_path = null;
-
-/**
- * @return null
- */
-function current_path()
-{
-    global $mock_current_path;
-    return $mock_current_path;
-}
-
 /**
  * Class NodeSummaryUtil
  * MOCKED
@@ -41,20 +30,6 @@ class NodeSummaryUtil
     static function getInitNodeSummaryTemplateTitle($b)
     {
         return 'getInitNodeSummaryTemplateTitle :: ' . $b;
-    }
-}
-
-/**
- * Class LogHelper
- */
-class LogHelper
-{
-    /**
-     * @param $text
-     */
-    static function log_warn($text)
-    {
-        echo $text;
     }
 }
 
@@ -167,7 +142,7 @@ class RequestUtilTest extends TestCase
         $mock_current_path = 'panel_html/budget_agency_perecent_difference_transactions/budget/agency_details/dtsmnid/560/yeartype/B/year/119';
         unset($_REQUEST['expandBottomContURL']);
 
-        $this->assertEquals('53 Expense Budget', RequestUtil::getBudgetBreadcrumbTitle());
+        $this->assertEquals('getInitNodeSummaryTitle :: 560', RequestUtil::getBudgetBreadcrumbTitle());
 
         $mock_current_path = 'budget/transactions/year/119';
         unset($_REQUEST['expandBottomContURL']);

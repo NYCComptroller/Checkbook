@@ -92,75 +92,57 @@
     },
     "derivedColumns": {
         "associated_prime_vendor_name":{
-            "type": "expression2",
             "expression":"_get_tooltip_markup($row['legal_name@checkbook:prime_vendor'], 34)"
         },
         "associated_prime_vendor_name_export":{
-            "type": "expression2",
             "expression":"$row['legal_name@checkbook:prime_vendor']"
         },
         "is_sub_vendor": {
-            "type":"expression2",
             "expression":"'Yes'"
         },
         "agency_name_formatted":{
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['agency_name'], 40)"
         },
         "agency_name_link": {
-            "type": "expression2",
             "expression": " RequestUtil::isNewWindow() ? $row['agency_name_formatted']  : ('<a href=/spending_landing' . _checkbook_project_get_year_url_param_string(false,false,false,true) . SpendingUtil::getDataSourceParams()  . _checkbook_project_get_url_param_string('category') . '/agency/'. $row['agency_id']. '?expandBottomCont=true>'. $row['agency_name_formatted'] .'</a>') "
         },
         "payee_name_formatted":{
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['vendor_name'], 40)"
         },
         "payee_name_export":{
-            "type": "expression2",
             "expression": "$row['vendor_name']"
         },
         "payee_name_link": {
-            "type": "expression2",
             "expression": " RequestUtil::isNewWindow() ||  $row['spending_category_id']==2 ?  $row['payee_name_formatted'] : ('<a href=\"' . SpendingUtil::getPayeeNameLinkUrl($node,$row) . '?expandBottomCont=true' . '\">'. $row['payee_name_formatted'] .'</a>') "
         },
         "issue_date_formatted":{
-            "type": "expression2",
             "expression": "$row['check_eft_issued_date']"
         },
         "formatted_check_amount": {
-            "type": "expression2",
             "expression": "custom_number_formatter_basic_format($row['check_amount'])"
         },
         "reference_document_number_export": {
-            "type": "expression2",
             "expression": "($row['spending_category_name'] == 'Payroll' ||  $row['spending_category_name'] == 'Others') ? 'N/A' : $row['reference_document_number']"
         },
         "reference_document_number_link":{
-            "type":"expression2",
             "expression": "($row['spending_category_name'] == 'Payroll' ||  $row['spending_category_name'] == 'Others') ? 'N/A' : (RequestUtil::isNewWindow() ? $row['reference_document_number'] : '<a class=\"new_window\" href=\"' . SpendingUtil::getSubContractNumberLinkUrl($node,$row) . '\">'  . $row['reference_document_number'] . '</a>')"
         },
         "purpose_formatted":{
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['purpose'], 30)"
         },
         "contract_purpose_text":{
-            "type": "expression2",
             "expression": "($row['spending_category_name'] == 'Payroll' ||  $row['spending_category_name'] == 'Others') ? 'N/A' : $row['purpose_formatted']"
         },
         "contract_purpose_export":{
-            "type": "expression2",
             "expression": "($row['spending_category_name'] == 'Payroll' ||  $row['spending_category_name'] == 'Others') ? 'N/A' : $row['purpose']"
         },
         "mwbe_category_name_formatted": {
-            "type":"expression2",
             "expression":"MappingUtil::getMinorityCategoryById($row['minority_type_id'])"
         },
         "mwbe_category_name": {
-            "type": "expression2",
             "expression": " !SpendingUtil::showMWBECategoryLink($node,$row) ? $row['mwbe_category_name_formatted']  : ('<a href=' . SpendingUtil::getMWBECategoryLinkUrl($node, $row) . '>'. $row['mwbe_category_name_formatted'] .'</a>') "
         },
         "industry_name_formatted": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['industry_type_name'],36)"
         }
     },

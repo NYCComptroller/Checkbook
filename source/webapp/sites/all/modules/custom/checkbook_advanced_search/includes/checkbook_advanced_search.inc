@@ -109,6 +109,10 @@ function _checkbook_advanced_search_get_agencyname_and_id($data_source = 'checkb
                 $title = 'Select One';
                 $parameters = array("is_oge_agency" => "Y", "is_display" => "Y");
                 break;
+            case 'checkbook_nycha':
+                $title = 'Select One';
+                $parameters = array("is_display" => "Y");
+                break;
             default:
                 $title = 'Citywide(All Agencies)';
                 $parameters = array("is_display" => "Y");
@@ -138,6 +142,10 @@ function _checkbook_advanced_search_get_agency_attributes($data_source = 'checkb
                 $title = 'Select One';
                 $parameters = array("is_oge_agency" => "Y");
                 break;
+            case 'checkbook_nycha':
+                $title = 'Select One';
+                $parameters = array("is_display" => "Y");
+                break;
             default:
                 $title = 'Citywide(All Agencies)';
                 $parameters = null;
@@ -149,7 +157,6 @@ function _checkbook_advanced_search_get_agency_attributes($data_source = 'checkb
         foreach ($nyc_agencies as $value) {
             $nyc_agencies_key_val[$value['agency_id']] = array('title' => $value['agency_name']);
         }
-
         return $nyc_agencies_key_val;
     } catch (Exception $e) {
         log_error("Error getting data from controller: \n" . $e->getMessage());
@@ -619,9 +626,10 @@ function _checkbook_advanced_search_get_contract_type_and_id($data_source = 'che
  */
 function _checkbook_advanced_search_payroll_submit($form, &$form_state)
 {
+    $data_source = $form_state['values']['payroll_advanced_search_domain_filter'];
     $payroll_employee_name = trim($form['payroll']['payroll_employee_name']['#value']);
     $payroll_employee_name_exact = trim($form['payroll']['payroll_employee_name_exact']['#value']);
-    $payroll_agency = trim($form['payroll']['payroll_agencies']['#value']);
+    $payroll_agency = trim($form['payroll'][$data_source.'_payroll_agencies']['#value']);
     $payroll_department = trim($form['payroll']['payroll_department']['#value']);
     $payroll_pay_frequency = trim($form['payroll']['payroll_pay_frequency']['#value']);
     $payroll_pay_date_from = trim($form['payroll']['payroll_pay_date_from']['#value']['date']);
@@ -665,14 +673,12 @@ function _checkbook_advanced_search_payroll_submit($form, &$form_state)
 
     $payroll_amount_range_array = array('from' => $payroll_amount_from, 'to' => $payroll_amount_to, 'type' => 'amount');
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($payroll_amount_range_array, 'salamt', TRUE);
-//    $redirect_url .= _checkbook_advanced_search_add_payroll_range_filter_param($payroll_amount_from,$payroll_amount_to,"annualsalary");
 
     $payroll_base_salary_range_array = array('from' => $payroll_base_salary_from, 'to' => $payroll_base_salary_to, 'type' => 'amount');
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($payroll_base_salary_range_array, 'baseamt', TRUE);
 
     $payroll_overtime_amount_range_array = array('from' => $payroll_overtime_amount_from, 'to' => $payroll_overtime_amount_to, 'type' => 'amount');
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($payroll_overtime_amount_range_array, 'overamt', TRUE);
-//    $redirect_url .= _checkbook_advanced_search_add_payroll_range_filter_param($payroll_overtime_amount_from,$payroll_overtime_amount_to,"overtimepayment");
 
     $payroll_other_payments_range_array = array('from' => $payroll_other_payments_from, 'to' => $payroll_other_payments_to, 'type' => 'amount');
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($payroll_other_payments_range_array, 'otheramt', TRUE);
@@ -682,10 +688,13 @@ function _checkbook_advanced_search_payroll_submit($form, &$form_state)
 
     $payroll_total_gross_pay_range_array = array('from' => $payroll_total_gross_pay_from, 'to' => $payroll_total_gross_pay_to, 'type' => 'amount');
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($payroll_total_gross_pay_range_array, 'totalgrosspay', TRUE);
-//    $redirect_url .= _checkbook_advanced_search_add_payroll_range_filter_param($payroll_total_gross_pay_from,$payroll_total_gross_pay_to,"grosspayytd");
 
     if (!empty($payroll_year)) {
         $redirect_url .= _checkbook_advanced_search_year_arg($payroll_year);
+    }
+
+    if($data_source == 'checkbook_oge'){
+        $redirect_url .= '/datasource/checkbook_nycha';
     }
 
     if ($payroll_amount_type == 0) {
@@ -1150,8 +1159,12 @@ function _checkbook_advanced_search_revenue_submit($form, &$form_state, $button 
     $revenue_revenue_source = trim($form['revenue']['revenue_revenue_source']['#value']);
     $revenue_revenue_source_exact = trim($form['revenue']['revenue_revenue_source_exact']['#value']);
     $revenue_funding_source = trim($form['revenue']['revenue_funding_source']['#value']);
-    $revenue_revenue_amount_from = trim($form['revenue']['revenue_amount_from']['#value']);
-    $revenue_revenue_amount_to = trim($form['revenue']['revenue_amount_to']['#value']);
+    $revenue_adopted_from = trim($form['revenue']['revenue_adopted_from']['#value']);
+    $revenue_adopted_to = trim($form['revenue']['revenue_adopted_to']['#value']);
+    $revenue_recognized_from = trim($form['revenue']['revenue_recognized_from']['#value']);
+    $revenue_recognized_to = trim($form['revenue']['revenue_recognized_to']['#value']);
+    $revenue_modified_from = trim($form['revenue']['revenue_modified_from']['#value']);
+    $revenue_modified_to = trim($form['revenue']['revenue_modified_to']['#value']);
 
     $redirect_url = "revenue/transactions";
 
@@ -1191,8 +1204,15 @@ function _checkbook_advanced_search_revenue_submit($form, &$form_state, $button 
     }
 
     //URL for ranges
-    $revenue_revenue_amount_range_array = array('from' => $revenue_revenue_amount_from, 'to' => $revenue_revenue_amount_to, 'type' => 'amount');
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($revenue_revenue_amount_range_array, 'amt', TRUE);
+    $revenue_adopted_range_array = array('from' => $revenue_adopted_from, 'to' => $revenue_adopted_to, 'type' => 'amount');
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($revenue_adopted_range_array, 'adopted_amt', TRUE);
+    
+    $revenue_recognized_range_array = array('from' => $revenue_recognized_from, 'to' => $revenue_recognized_to, 'type' => 'amount');
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($revenue_recognized_range_array, 'amt', TRUE);
+    
+    $revenue_modified_range_array = array('from' => $revenue_modified_from, 'to' => $revenue_modified_to, 'type' => 'amount');
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($revenue_modified_range_array, 'modified_amt', TRUE);
+
 
     return $redirect_url;
 }

@@ -24,43 +24,33 @@ $parameters['minority_type_id'] = 1000;
 "enableExpand":true,
 "derivedColumns": {
   "agency_name_formatted": {
-      "type": "expression2",
       "expression": "_get_tooltip_markup($row['document_agency_name_document_agency_name'],28)"
     },
      "vendor_name_formatted": {
-      "type": "expression2",
       "expression": "_get_tooltip_markup($row['vendor_legal_name_vendor_legal_name'],26)"
     },
      "agency_name_link": {
-      "type": "expression2",
       "expression": "'<a href=\"/contracts_pending_exp_landing' . _checkbook_project_get_url_param_string('dashboard') ._checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string(\"mwbe\") ._checkbook_project_get_url_param_string(\"vendor\")  .  _checkbook_project_get_url_param_string(\"cindustry\")  .  _checkbook_project_get_url_param_string(\"csize\") .    _checkbook_project_get_url_param_string(\"awdmethod\") .  _checkbook_project_get_url_param_string(\"status\") .'/agency/' . $row['document_agency_id_document_agency_id']. '?expandBottomCont=true\">' .$row['agency_name_formatted']. '</a>'"
     },
 "vendor_name_link": {
-      "type": "expression2",
      "expression": "'<a href=\"/contracts_pending_exp_landing' ._checkbook_project_get_year_url_param_string() . ContractUtil::get_pending_contract_vendor_minority_category($row['vendor_vendor']) . _checkbook_project_get_url_param_string(\"agency\")  .  _checkbook_project_get_url_param_string(\"cindustry\")  .  _checkbook_project_get_url_param_string(\"csize\") .    _checkbook_project_get_url_param_string(\"awdmethod\") .  _checkbook_project_get_url_param_string(\"status\")  . '/vendor/' .$row['vendor_vendor'] . '?expandBottomCont=true\">' .$row['vendor_name_formatted']. '</a>'"
     },
 "contract_number_link": {
-      "type": "expression2",
       "expression": "_pending_contracts_link_contract_details($row['contract_number_contract_number'],$row['original_agreement_id_original_agreement_id'],$row['document_code_document_code_document_code'],$row['pending_contract_number_pending_contract_number'],$row['document_version_document_version'])"
 	},
 "formatted_original_amount_sum": {
-      "type": "expression2",
       "expression": " '$' . custom_number_formatter_format($row['original_amount_sum'],2)"
     },
 "formatted_total_current_amount_sum": {
-      "type": "expression2",
       "expression": " '$' . custom_number_formatter_format($row['current_amount_sum'],2)"
     },
 "formatted_dollar_difference": {
-      "type": "expression2",
       "expression": "  custom_number_formatter_format($row['dollar_difference_dollar_difference'],2,'$')"
     },
 "formatted_percent_difference":{
-      "type": "expression2",
       "expression": "$row['percent_difference_percent_difference'].'%'"
 },
 "purpose_formatted": {
-      "type": "expression2",
       "expression": "_get_tooltip_markup($row['pending_contract_purpose_pending_contract_purpose'],32)"
     }
 },

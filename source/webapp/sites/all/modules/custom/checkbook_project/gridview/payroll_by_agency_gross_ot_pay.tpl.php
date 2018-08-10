@@ -1,19 +1,19 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -29,7 +29,7 @@ include_once('export_link.php');
     <tr>
         <th class='text'><?php echo WidgetUtil::generateLabelMapping("agency_name");?></th>
         <th class='number'><?php echo WidgetUtil::generateLabelMapping("amount");?></th>
-        <th>&nbsp</th>
+        <th>&nbsp;</th>
     </tr>
   </thead>
   <tbody>
@@ -39,7 +39,7 @@ include_once('export_link.php');
               echo "<tr>";
               echo "<td><div>".$datarow['agency_agency_agency_name']."</div></td>";
               echo "<td>".( $isByGrossPay ? $datarow['total_gross_pay'] : $datarow['total_overtime_pay'])."</td>";
-              echo "<td>&nbsp</td>";
+              echo "<td>&nbsp;</td>";
               echo "</tr>";
             }
         }

@@ -3147,7 +3147,7 @@ return FALSE;',
       'admin_title' => 'Contracts Bottom Container',
       'title' => '',
       'body' => '<p class="show-details-link"><a href="/minipanels/contracts_expense_bottom" class="bottomContainerToggle">Show Details &#187;<a>
-<div class="bottomContainer" style="display:none">&nbsp</div>',
+<div class="bottomContainer" style="display:none">&nbsp;</div>',
       'format' => 'full_html',
       'substitute' => TRUE,
     );

@@ -4,26 +4,26 @@
 <div class="download_link" ><span class="summary_export">Export</span></div>
 
 <div class="checkbook-grading-left">
-<div class="empty_div11">&nbsp</div>
+<div class="empty_div11">&nbsp;</div>
 <table id="grading_table"  >
 	<thead class="hidden_body" style="display:none" >
 		<tr id="scroll_wrapper_head">
 			<th><div><span>Agency</span></div></th>
 			<th><div><span>Spending Chart</span></div></th>
 			<th><div><span>YTD Spending</span></div></th>
-			<th>&nbsp</th>
+			<th>&nbsp;</th>
 		</tr>
 	</thead>
 	<tbody class="hidden_body" style="display:none" >
 		<?php
-			$id = 0;
-			foreach($left_agencies_data as $row){
+
+        foreach($left_agencies_data as $row){
 				$agency = $row['agency_name'];
 				$chart = theme('mwbe_agency_grading_row_chart',array('id'=>$id, 'data_row'=>$row['data_row']));
 				if( $row['spending_amount'] > 0){
-                    if($is_prime == 'sub_vendor_data'){
+                    if($data_type == 'sub_vendor_data'){
                         $link = "/spending_landing/year/" . RequestUtilities::getRequestParamValue("year") .
-                            "/yeartype/" .  RequestUtilities::getRequestParamValue("yeartype") . "/agency/" .  $row["agency_id"] . "/dashboard/sp/mwbe/" . MappingUtil::$total_mwbe_cats;
+                            "/yeartype/" .  RequestUtilities::getRequestParamValue("yeartype") . "/agency/" .  $row["agency_id"] . "/dashboard/ms/mwbe/" . MappingUtil::$total_mwbe_cats;
                     }
                     else{
                         $link = "/spending_landing/year/" . RequestUtilities::getRequestParamValue("year") .

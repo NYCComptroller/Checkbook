@@ -120,8 +120,8 @@ import utilities.NYCDatabaseUtil;
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
 	    assertEquals("Capital Spending  Contracts  widget details did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
-	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getCapitalContractsSpendingDetailsAmount(year, 'B');
-			String WidgetDetailsAmountApp = HomePage.GetTransactionAmount1();
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getCapitalContractsSpendingContractsDetailsAmount(year, 'B');
+			String WidgetDetailsAmountApp = HomePage.GetTransactionAmount3();
 		    assertEquals("Capital Spending  Contracts  widget details  page total spending amount did not match", WidgetDetailsAmountApp, WidgetDetailsAmountDB);
 	}
 	//*/

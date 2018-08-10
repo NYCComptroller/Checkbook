@@ -4,8 +4,6 @@
             "fiscal_year":"fiscal_year",
             "purpose":"description",
             "other_government_entities_code":"agency_code@checkbook_oge:oge_agency",
-            "other_government_entities":"agency_name@checkbook_oge:agency",
-            "vendor_name":"legal_name@checkbook_oge:vendor",
             "current_amount":"maximum_contract_amount",
             "spent_to_date":"spending_amount_disb",
             "award_method":"award_method_code@checkbook_oge:award_method",
@@ -17,6 +15,7 @@
             "category":"document_code",
             "pin":"tracking_number",
             "apt_pin":"brd_awd_no",
+            "prime_vendor":"display_vendor_name",
             "is_vendor_flag":"is_vendor_flag",
             "if_for_all_years":"if_for_all_years",
             "latest_flag":"latest_flag",
@@ -38,12 +37,12 @@
             "name":"checkbook_oge:agreement_snapshot_oge",
             "columnTypes":{
                 "contract_number":"like",
-                "legal_name@checkbook_oge:vendor":"like",
                 "commodity_line":"like",
                 "entity_contract_number":"like",
                 "budget_name":"contains",
                 "oge_contract_number":"like",
-                "description":"contains"
+                "description":"contains",
+                "display_vendor_name":"like"
             },
             "displayConfiguration":{
                 "xml":{
@@ -133,8 +132,6 @@
     "contracts_oge_active_expense_all_years":{
         "searchCriteriaMap":{
             "other_government_entities_code":"agency_code@checkbook_oge:oge_agency",
-            "other_government_entities":"agency_name@checkbook_oge:agency",
-            "vendor_name":"legal_name@checkbook_oge:vendor",
             "purpose":"description",
             "current_amount":"maximum_contract_amount",
             "spent_to_date":"spending_amount_disb",
@@ -147,6 +144,7 @@
             "category":"document_code",
             "pin":"tracking_number",
             "apt_pin":"brd_awd_no",
+            "prime_vendor":"display_vendor_name",
             "is_vendor_flag":"is_vendor_flag",
             "if_for_all_years":"if_for_all_years",
             "latest_flag":"latest_flag",
@@ -169,12 +167,12 @@
             "columnTypes":{
                 "expenditure_object_codes":"trueLike",
                 "contract_number":"like",
-                "legal_name@checkbook_oge:vendor":"like",
                 "commodity_line":"like",
                 "entity_contract_number":"like",
                 "budget_name":"contains",
                 "oge_contract_number":"like",
-                "description":"contains"
+                "description":"contains",
+                "display_vendor_name":"like"
             },
             "displayConfiguration":{
                 "xml":{
@@ -277,7 +275,7 @@
     "validators":[
         {
             "name":"optionalSingleFilter",
-            "configKey":["contracts_oge_active_expense", "contracts_oge_active_revenue"],
+            "configKey":["contracts_oge_active_expense", "contracts_oge_active_expense_all_years"],
             "config":{
                 "criteriaLevel":"value",
                 "validatorType":"filterName",

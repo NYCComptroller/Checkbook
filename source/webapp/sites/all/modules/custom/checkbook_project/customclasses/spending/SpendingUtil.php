@@ -385,20 +385,25 @@ class SpendingUtil{
 
         $latest_minority_type_id = null;
         if(!isset($spending_vendor_latest_mwbe_category)){
-            $query = "SELECT vendor_id, agency_id, year_id, type_of_year, minority_type_id, is_prime_or_sub
+            $spending_vendor_latest_mwbe_category = _checkbook_dmemcache_get('spending_vendor_latest_mwbe_category');
+            if (!$spending_vendor_latest_mwbe_category) {
+              $query = "SELECT vendor_id, agency_id, year_id, type_of_year, minority_type_id, is_prime_or_sub
                       FROM spending_vendor_latest_mwbe_category
                       WHERE minority_type_id IN (2,3,4,5,9) AND year_id = '".$year_id."' AND type_of_year = '".$year_type."'
                       GROUP BY vendor_id, agency_id, year_id, type_of_year, minority_type_id, is_prime_or_sub";
 
-            $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
-            foreach($results as $row){
+              $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
+              foreach($results as $row){
                 if(isset($row['agency_id'])) {
-                    $spending_vendor_latest_mwbe_category[$row['vendor_id']][$row['agency_id']][$row['is_prime_or_sub']]['minority_type_id'] = $row['minority_type_id'];
+                  $spending_vendor_latest_mwbe_category[$row['vendor_id']][$row['agency_id']][$row['is_prime_or_sub']]['minority_type_id'] = $row['minority_type_id'];
                 }
                 else {
-                    $spending_vendor_latest_mwbe_category[$row['vendor_id']][$row['is_prime_or_sub']]['minority_type_id'] = $row['minority_type_id'];
+                  $spending_vendor_latest_mwbe_category[$row['vendor_id']][$row['is_prime_or_sub']]['minority_type_id'] = $row['minority_type_id'];
                 }
-
+              }
+              _checkbook_dmemcache_set('spending_vendor_latest_mwbe_category', $spending_vendor_latest_mwbe_category);
+            } else {
+              LogHelper::log_info('spending_vendor_latest_mwbe_category :: CACHE HIT!');
             }
         }
 
@@ -913,7 +918,14 @@ class SpendingUtil{
 
         $url =  $path . _checkbook_project_get_year_url_param_string();
 
-        $pathParams = explode('/',drupal_get_path_alias($_GET['q']));
+        $q = drupal_get_path_alias($_GET['q']);
+        if (_checkbook_current_request_is_ajax()) {
+          // remove query part
+          $q = strtok($_SERVER['HTTP_REFERER'], '?');
+        }
+
+        $pathParams = explode('/', $q);
+
         $url_params = self::$landingPageParams;
         $exclude_params = array_keys($override_params);
         if(is_array($url_params)){
@@ -935,6 +947,10 @@ class SpendingUtil{
                 }
             }
         }
+
+//        if (_checkbook_current_request_is_ajax()) {
+//          LogHelper::log_warn('getSpendingUrl :: isAjax :: ' . $url);
+//        }
 
         return $url;
     }

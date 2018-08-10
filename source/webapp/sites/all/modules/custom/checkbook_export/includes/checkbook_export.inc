@@ -220,7 +220,12 @@ function _checkbook_export_grid_sort($node, $order = null){
  * Function to handle export data
  */
 function _checkbook_export_transactions(){
-    $exportMemoryRecordLimit = 5000;
+    if ($fileName = _checkbook_export_check_cached()) {
+      _checkbook_export_download_file($fileName);
+      return;
+    }
+
+    $exportMemoryRecordLimit = 0;
 
     //set_time_limit(0);
     $node = _checkbook_export_get_node_config();
@@ -231,8 +236,6 @@ function _checkbook_export_transactions(){
     $node->widgetConfig->getData = true;
 
     $isList = $node->widgetConfig->useList;
-    $data = NULL;
-    $i = 0;
 
     //Get Export column Configuration
     $exportConfigNid = isset($node->widgetConfig->exportConfigNid)? $node->widgetConfig->exportConfigNid: null;
@@ -250,30 +253,41 @@ function _checkbook_export_transactions(){
     $columns = array();
     foreach($exportColumns as $column){
         if(!isset($column->datasource) || (isset($column->datasource) && ($column->datasource == RequestUtilities::getRequestParamValue('datasource')))){
-            if(check_node_flag_visibilty($column->visibility_flag, $node))
-                array_push($columns, $column);
+            if(check_node_flag_visibilty($column->visibility_flag, $node)) {
+              array_push($columns, $column);
+            }
         }
     }
 
+    $headers = [];
+    $i = 0;
     $columnsConfig = array();
     foreach($columns as $column){
-        if($column->export === FALSE){
+        if(FALSE === $column->export){
             continue;
         }
 
-        $label = (isset($column->labelAlias))? (WidgetUtil::getLabel($column->labelAlias)) :
-            (isset($column->colLabel) ? $column->colLabel : $column->label);
+        $label = $column->label;
+        if (isset($column->labelAlias)) {
+          $label = WidgetUtil::getLabel($column->labelAlias);
+        } elseif (isset($column->colLabel)) {
+          $label = $column->colLabel;
+        }
+
         $label = str_replace("<br/>"," ",$label);
 
-        if($i == 0){
-            $data .= $label;
-        }else{
-            $data .= ',"'.$label.'"';
-        }
+        $headers[] = $label;
 
         $columnsConfig[] = (isset($column->sortSourceColumn)) ? $column->sortSourceColumn : $column->column;
         $i++;
     }
+
+    if (!empty($headers)) {
+      $headers = '"'.join('","',$headers).'"';
+    } else {
+      $headers = '';
+    }
+
     //handle additional columns required to export derived columns
     //Add these to the json as "export_columns"
     $exportColumns = $node->widgetConfig->export_columns;
@@ -289,54 +303,56 @@ function _checkbook_export_transactions(){
     //load data
     widget_data($node);
 
+    // $exportMemoryRecordLimit = 5000 ?
+
     if(($limit > $exportMemoryRecordLimit) || isset($exportConfigNid)){
         try{
-            $fileName = _checkbook_export_generateExportFile($node,$data, $exportConfigNode);
+            $fileName = _checkbook_export_generateExportFile($node, $headers, $exportConfigNode);
             _checkbook_export_download_file($fileName);
         }catch (Exception $e){
             LogHelper::log_error("Error generating export file:" . $e->getMessage());
-            drupal_add_http_header("Content-Type", "text/csv");
-            drupal_add_http_header("Content-Length",strlen($data));
-            drupal_add_http_header("Content-Disposition", "attachment; filename=TransactionsData.csv");
+            drupal_add_http_header("Content-Type", "text/plain");
+            drupal_add_http_header("Content-Length",strlen($headers));
+            drupal_add_http_header("Content-Disposition", "attachment; filename=TransactionsData.Error.txt");
             drupal_add_http_header("Pragma", "cache");
             drupal_add_http_header("Expires", "-1");
             echo "There was an error generating file.";
             return;
         }
     }else{
-        foreach($node->data as $dataRecord){
-            $data .= PHP_EOL;
-            $i = 0;
-            $rowData = NULL;
-            foreach($columns as $column){
-                if(property_exists($column, 'export') && $column->export === FALSE){
-                    continue;
-                }
-
-                $columnValue = NULL;
-                if(isset($column->exportColumn)){
-                    $columnValue = $dataRecord[$column->exportColumn];
-                }else if(isset($column->sortSourceColumn)){
-                    $columnValue = $isList ? $dataRecord[str_replace(".", "_",$column->sortSourceColumn)] : $dataRecord[$column->sortSourceColumn];
-                }else{
-                    $columnValue = $dataRecord[$column->column];
-                }
-
-                $columnValue = str_replace('"',chr(34).'"',$columnValue);
-                $rowData .= ($i == 0) ? ('"'.$columnValue.'"') : (',"'.$columnValue.'"');
-                $i++;
-            }
-
-            $rowData = str_replace(array("\r\n", "\n", "\r"),'',$rowData);
-            $data .= $rowData;
-        }
-
-        drupal_add_http_header("Content-Type", "text/csv");
-        drupal_add_http_header("Content-Length",strlen($data));
-        drupal_add_http_header("Content-Disposition", "attachment; filename=TransactionsData.csv");
-        drupal_add_http_header("Pragma", "cache");
-        drupal_add_http_header("Expires", "-1");
-        echo $data;
+//        foreach($node->data as $dataRecord){
+//            $data .= PHP_EOL;
+//            $i = 0;
+//            $rowData = NULL;
+//            foreach($columns as $column){
+//                if(property_exists($column, 'export') && $column->export === FALSE){
+//                    continue;
+//                }
+//
+//                $columnValue = NULL;
+//                if(isset($column->exportColumn)){
+//                    $columnValue = $dataRecord[$column->exportColumn];
+//                }else if(isset($column->sortSourceColumn)){
+//                    $columnValue = $isList ? $dataRecord[str_replace(".", "_",$column->sortSourceColumn)] : $dataRecord[$column->sortSourceColumn];
+//                }else{
+//                    $columnValue = $dataRecord[$column->column];
+//                }
+//
+//                $columnValue = str_replace('"',chr(34).'"',$columnValue);
+//                $rowData .= ($i == 0) ? ('"'.$columnValue.'"') : (',"'.$columnValue.'"');
+//                $i++;
+//            }
+//
+//            $rowData = str_replace(array("\r\n", "\n", "\r"),'',$rowData);
+//            $data .= $rowData;
+//        }
+//
+//        drupal_add_http_header("Content-Type", "text/csv");
+//        drupal_add_http_header("Content-Length",strlen($data));
+//        drupal_add_http_header("Content-Disposition", "attachment; filename=TransactionsData.csv");
+//        drupal_add_http_header("Pragma", "cache");
+//        drupal_add_http_header("Expires", "-1");
+//        echo $data;
     }
 }
 
@@ -356,12 +372,27 @@ function _checkbook_export_download_file($fileName){
         drupal_add_http_header("Content-Length",strlen($data));
         echo $data;
     }else{
-        echo "Data is not generated. Please contact support team.";
+        echo "Data is not generated! Please contact support team.";
     }
 }
 
+/** don't regenerate cached file */
+function _checkbook_export_check_cached(){
+  if (user_is_logged_in()) {
+    return false;
+  }
+  $fileDir = _checkbook_export_prepareFileOutputDir();
+  $filename = _checkbook_export_generate_uuid(). '.csv';
+  $outputFile = DRUPAL_ROOT . '/' . $fileDir . '/' . $filename;
+  if(is_file($outputFile) && filesize($outputFile)) {
+    LogHelper::log_notice('Already pre-cached: '.$outputFile);
+    return $filename;
+  }
+  return false;
+}
+
 /** Function to handle generate export file */
-function _checkbook_export_generateExportFile($node,$headers, $exportConfigNode = NULL){
+function _checkbook_export_generateExportFile($node, $headers, $exportConfigNode = NULL){
     global $conf, $databases;
 
     try{
@@ -377,14 +408,25 @@ function _checkbook_export_generateExportFile($node,$headers, $exportConfigNode 
         $tempOutputFile = $tmpDir .'/'. $filename;
         $outputFile = DRUPAL_ROOT . '/' . $fileDir . '/' . $filename;
 
+        if(!user_is_logged_in() && is_file($outputFile) && filesize($outputFile)) {
+          LogHelper::log_notice('Already cached: '.$outputFile);
+          return $filename;
+        }
+
         $columns = isset($exportConfigNode) ? $exportConfigNode->widgetConfig->table_columns : $node->widgetConfig->table_columns;
         $columnsConfig = array();
         foreach($columns as $column){
-          $columnsConfig[] = (isset($column->sortSourceColumn)) ? str_replace('.','_',$column->sortSourceColumn) : str_replace('.','_',$column->column);
+            if($column->column != "") {
+                $columnsConfig[] = (isset($column->sortSourceColumn)) ? str_replace('.', '_', $column->sortSourceColumn) : str_replace('.', '_', $column->column);
+            }
         }
-
         $input = $node->data;$start = "SELECT ";$end = " FROM (";
         $selectQuery = substr($input, strlen($start)+strpos($input, $start), (strlen($input) - strpos($input, $end))*(-1));
+        //If there is no sub-query in the export query
+        if(!$selectQuery){
+            $end = " FROM ";
+            $selectQuery = substr($input, strlen($start)+strpos($input, $start), (strlen($input) - strpos($input, $end))*(-1));
+        }
         $selectColumns = explode(",",$selectQuery);
         $exportColumns = array();
 
@@ -403,11 +445,10 @@ function _checkbook_export_generateExportFile($node,$headers, $exportConfigNode 
         $node->data = str_replace($selectQuery,$newQuery, $node->data);
 
         /*
-         * For data over the limit of 2000, the sql executes directly from the db.
+         * For data over the limit of 5000, the sql executes directly from the db.
          * Columns that are derived do not get selected, this allows us to override the
          * select value of the column sql directly.
          * */
-
         $sqlOverride = isset($exportConfigNode) ? $exportConfigNode->widgetConfig->exportColumnSqlOverride : $node->widgetConfig->exportColumnSqlOverride;
         if(isset($sqlOverride)) {
             $override_sql = null;
@@ -446,11 +487,19 @@ function _checkbook_export_generateExportFile($node,$headers, $exportConfigNode 
             $node->data = checkbook_export_remove_non_export_columns($node);
         }
 
+        LogHelper::log_notice("Exporting to file via SQL: \n".$node->data);
+
         $command = $conf['check_book']['data_feeds']['command'];
+
+        if (stripos($command, 'webuser1 checkbook')) {
+            LogHelper::log_error('Remove db name from psql command');
+        }
 
         $data_source = RequestUtilities::getRequestParamValue('datasource');
         if ('checkbook_oge' == $data_source) {
             $command .= ' ' . $databases['checkbook_oge']['main']['database'] . ' ';
+        }else if ('checkbook_nycha' == $data_source) {
+            $command .= ' ' . $databases['checkbook_nycha']['main']['database'] . ' ';
         } else {
             $command .= ' ' . $databases['checkbook']['main']['database'] . ' ';
         }
@@ -460,15 +509,23 @@ function _checkbook_export_generateExportFile($node,$headers, $exportConfigNode 
                 . $tempOutputFile
                 . "'  WITH DELIMITER ',' CSV QUOTE '\\\"' ESCAPE '\\\"' \" ";
 
-        log_error($command);
+//        log_error($command);
+        LogHelper::log_notice($command);
 
         shell_exec($command);
 
-        $cmd = "sed -i 1i'" . $headers . "' " . $tempOutputFile;
+        $cmd = "sed -i '1i" . escapeshellcmd($headers) . "' " . $tempOutputFile;
+        LogHelper::log_notice($cmd);
         shell_exec($cmd);
 
         $mvcmd = "mv $tempOutputFile $outputFile";
+        LogHelper::log_notice($mvcmd);
         shell_exec($mvcmd);
+
+        LogHelper::log_notice("chmod 0666 $outputFile");
+        chmod($outputFile, 0666);
+
+        return $filename;
 
     }catch (Exception $e){
         $value = TextLogMessageTrimmer::$LOGGED_TEXT_LENGTH__MAXIMUM;
@@ -481,8 +538,7 @@ function _checkbook_export_generateExportFile($node,$headers, $exportConfigNode 
 
         TextLogMessageTrimmer::$LOGGED_TEXT_LENGTH__MAXIMUM = $value;
     }
-
-    return $filename;
+    return false;
 }
 
 /**
@@ -538,13 +594,6 @@ function _checkbook_export_prepareFileOutputDir(){
     $dir .= '/' . $conf['check_book']['export_data_dir'];
     _checkbook_export_prepareDirectory($dir);
 
-    try{
-        //delete files older than 2 hours
-        _checkbook_project_clean_files($dir);
-    }catch (Exception $e){
-        LogHelper::log_error($e);
-    }
-
     return $dir;
 }
 
@@ -563,6 +612,11 @@ function _checkbook_export_prepareDirectory($dir){
 
 /** Function to generate a unique id */
 function _checkbook_export_generate_uuid(){
+    if (!empty($_SERVER['REQUEST_METHOD']) && 'GET' === $_SERVER['REQUEST_METHOD']) {
+      $data = $_SERVER['REQUEST_URI'].date('Y-m-d');
+      return md5($data);
+    }
+
     $guid = 'export';
     $uid = uniqid("", true);
     $data = '';

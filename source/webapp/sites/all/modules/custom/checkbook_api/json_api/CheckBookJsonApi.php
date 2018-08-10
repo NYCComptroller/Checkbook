@@ -2,6 +2,8 @@
 
 namespace checkbook_json_api;
 
+use PHPUnit\Runner\Exception;
+
 /**
  * Class CheckBookJsonApi
  * @package checkbook_json_api
@@ -35,7 +37,7 @@ class CheckBookJsonApi
    * CheckBookJsonApi constructor.
    * @param $args
    */
-  public function __construct($args)
+  public function __construct($args = [])
   {
     $this->args = $args;
   }
@@ -89,6 +91,7 @@ class CheckBookJsonApi
   /**
    * @param string $status
    * @return array
+   * @throws \Exception
    */
   private function get_subcontracts_by_status($status = '')
   {
@@ -109,7 +112,7 @@ class CheckBookJsonApi
                 WHERE (a.fiscal_year = '{$year}' AND a.type_of_year = '{$year_type}' AND a.status_flag = 'A' AND c.document_code IN ('CTA1','CT1','CT2') AND a.scntrc_status = 2)";
       $response = _checkbook_project_execute_sql($query);
 
-      if (sizeof($response) && $response[0]['acco_' . $status]) {
+      if (!empty($response) && !empty($response[0]['acco_' . $status])) {
         $this->data = $response[0]['acco_' . $status];
       }
       $this->message = 'There are ' . $this->data . ' subcontracts ' . $status . ' in ' . $this->year_type_string($year_type) . ' year ' . $year;
@@ -136,16 +139,13 @@ class CheckBookJsonApi
     $year_type = $this->validate_year_type($this->args[2]);
 
     if ($this->success) {
-//      $query = "SELECT SUM(total_contracts) as total from aggregateon_total_contracts
-//                WHERE fiscal_year='{$year}' AND status_flag='A' AND type_of_year='{$year_type}'";
-
       $query = "SELECT COUNT(contract_number) AS total FROM aggregateon_mwbe_contracts_cumulative_spending a
                   JOIN ref_document_code b ON a.document_code_id = b.document_code_id
                 WHERE a.fiscal_year = {$year} AND a.type_of_year = '{$year_type}' AND a.status_flag = 'A' AND b.document_code IN ('MA1','CTA1','CT1')";
 
       $response = _checkbook_project_execute_sql($query);
 
-      if (sizeof($response) && $response[0]['total']) {
+      if (!empty($response) && $response[0]['total']) {
         $this->data = $response[0]['total'];
       }
       $this->message = 'There are ' . $this->data . ' active expense contracts for ' .
@@ -177,7 +177,7 @@ class CheckBookJsonApi
                 WHERE fiscal_year='{$year}' AND status_flag='A' AND type_of_year='{$year_type}'";
       $response = _checkbook_project_execute_sql($query);
 
-      if (sizeof($response) && $response[0]['total']) {
+      if (!empty($response) && $response[0]['total']) {
         $this->data = $response[0]['total'];
       }
 
@@ -270,7 +270,7 @@ class CheckBookJsonApi
                 WHERE s0.type_of_year = '{$year_type}' AND s0.fiscal_year_id = '{$year_id}'";
       $response = _checkbook_project_execute_sql($query);
 
-      if (sizeof($response) && $response[0]['total_gross_pay']) {
+      if (!empty($response) && $response[0]['total_gross_pay']) {
         $this->data = $response[0]['total_gross_pay'];
         $this->data = round($this->data, -6);
         $this->data = money_format('%i', $this->data);
@@ -309,7 +309,7 @@ class CheckBookJsonApi
                       AND s0.year_id = '{$year_id}'";
       $response = _checkbook_project_execute_sql($query);
 
-      if (sizeof($response) && $response[0]['total']) {
+      if (!empty($response) && $response[0]['total']) {
         $this->data = $response[0]['total'];
         $this->data = round($this->data, -6);
         $this->data = money_format('%i', $this->data);
@@ -344,7 +344,7 @@ class CheckBookJsonApi
                 WHERE s0.budget_fiscal_year = '{$year}'";
       $response = _checkbook_project_execute_sql($query);
 
-      if (sizeof($response) && $response[0]['total']) {
+      if (!empty($response) && $response[0]['total']) {
         $this->data = $response[0]['total'];
         $this->data = round($this->data, -6);
         $this->data = money_format('%i', $this->data);
@@ -378,7 +378,7 @@ class CheckBookJsonApi
                 WHERE s0.budget_fiscal_year = '{$year}'";
       $response = _checkbook_project_execute_sql($query);
 
-      if (sizeof($response) && $response[0]['total']) {
+      if (!empty($response) && $response[0]['total']) {
         $this->data = $response[0]['total'];
         $this->data = round($this->data, -6);
         $this->data = money_format('%i', $this->data);
@@ -395,4 +395,125 @@ class CheckBookJsonApi
         'like /json_api/total_revenue ; current year will be used'
     ];
   }
+
+  /**
+   * @SWG\Get(
+   *     path="/json_api/etl_status",
+   *     @SWG\Response(response="200", description="etl_status")
+   * )
+   */
+  public function etl_status()
+  {
+    drupal_page_is_cacheable(FALSE);
+
+    global $base_url, $conf, $databases;
+
+    $return = [];
+    if ('uat-checkbook-nyc.reisys.com' == parse_url($base_url, PHP_URL_HOST)) {
+      $return = $this->getUatEtlStatus();
+    } elseif (!empty($conf['etl-status-path'])) {
+      $return = $this->getProdEtlStatus();
+    }
+
+    $return['connections'] = [];
+    if (!empty($databases['default']['default']['host'])) {
+      $return['connections']['mysql'] = $databases['default']['default']['host']
+        . '|' . $databases['default']['default']['database'];
+    }
+    if (!empty($databases['checkbook']['main']['host'])) {
+      $return['connections']['psql_main'] = $databases['checkbook']['main']['host']
+        . '|' . $databases['checkbook']['main']['database'];
+    }
+    if (!empty($databases['checkbook']['etl']['host'])) {
+      $return['connections']['psql_etl'] = $databases['checkbook']['etl']['host']
+        . '|' . $databases['checkbook']['etl']['database'];
+    }
+    if (!empty($databases['checkbook_oge']['main']['host'])) {
+      $return['connections']['psql_oge'] = $databases['checkbook_oge']['main']['host']
+        . '|' . $databases['checkbook_oge']['main']['database'];
+    }
+    if (!empty($databases['checkbook_nycha']['main']['host'])) {
+      $return['connections']['psql_nycha'] = $databases['checkbook_nycha']['main']['host']
+        . '|' . $databases['checkbook_nycha']['main']['database'];
+    }
+    if (!empty($conf['check_book']['solr']['url'])) {
+      $solr_url = $conf['check_book']['solr']['url'];
+      $return['connections']['solr'] = substr($solr_url, 0, stripos($solr_url, '/solr/')+6)
+        . '|' . substr($solr_url, $pos = stripos($solr_url, '/solr/')+6, strlen($solr_url)-$pos-1);
+    }
+
+    return $return;
+  }
+
+  /**
+   * @return array
+   */
+  private function getProdEtlStatus()
+  {
+    global $conf;
+
+    try {
+      $data = file_get_contents($conf['etl-status-path'] . 'etl_status.txt');
+      list(, $date) = explode(',', $data);
+      $this->data = trim($date);
+    } catch (Exception $e) {
+      $this->message .= $e->getMessage();
+    }
+
+    $invalid_records = '';
+    $invalid_records_timestamp = 0;
+    $invalid_records_csv_path = $conf['etl-status-path'] . 'invalid_records_details.csv';
+    try {
+      if (is_file($invalid_records_csv_path)) {
+        $invalid_records = array_map('str_getcsv', file($invalid_records_csv_path));
+        $invalid_records_timestamp = filemtime($invalid_records_csv_path);
+      } else {
+        $invalid_records = [
+          'FATAL ERROR',
+          'Could not find `invalid_records_details.csv` on server'
+        ];
+      }
+    } catch (Exception $e) {
+      $this->message .= $e->getMessage();
+    }
+
+    return [
+      'success' => $this->success,
+      'data' => $this->data,
+      'message' => $this->message,
+      'invalid_records' => $invalid_records,
+      'invalid_records_timestamp' => $invalid_records_timestamp,
+    ];
+  }
+
+  /**
+   * @return array
+   * @throws \Exception
+   */
+  private function getUatEtlStatus()
+  {
+    $query = "SELECT DISTINCT 
+                  MAX(refresh_end_date :: TIMESTAMP) AS last_successful_run
+                FROM etl.refresh_shards_status
+                WHERE latest_flag = 1";
+
+    try {
+      $response = _checkbook_project_execute_sql($query, 'etl');
+    } catch (Exception $e) {
+      $this->success = false;
+      $this->message = $e->getMessage();
+    }
+
+    if (!empty($response) && $response[0]['last_successful_run']) {
+      $this->data = $response[0]['last_successful_run'];
+    }
+
+    return [
+      'success' => $this->success,
+      'data' => $this->data,
+      'message' => $this->message,
+      'info' => 'Last successful ETL run date'
+    ];
+  }
+
 }

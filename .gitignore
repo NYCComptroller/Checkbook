@@ -1,10 +1,9 @@
 .idea/
 source/webapp/.buildpath
 source/webapp/.project
-source/webapp/.settings/.jsdtscope
-source/webapp/.settings/org.eclipse.php.core.prefs
-source/webapp/.settings/org.eclipse.php.debug.core.Debug_Process_Preferences.prefs
-source/webapp/.settings/org.eclipse.wst.jsdt.ui.superType.container
-source/webapp/.settings/org.eclipse.wst.jsdt.ui.superType.name
+source/webapp/.settings/
 source/webapp/sites/all/modules/custom/checkbook_advanced_search/includes/ConfigUtility.php
 source/tests/unit/reports
+source/tests/functional/NYCAutomationTest/*.xls
+.metadata/
+.recommenders/

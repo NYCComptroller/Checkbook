@@ -36,39 +36,30 @@
     "columns": ["employee_count.employee_count", "civil_service_title.civil_service_title", "civil_service_title_code.civil_service_title_code", "total_annual_salary.total_annual_salary", "total_gross_pay.total_gross_pay", "total_base_salary.total_base_salary", "total_other_payments.total_other_payments", "total_overtime_amount.total_overtime_amount", "year_type.year_type", "year.year", "employment_type.employment_type"],
     "derivedColumns": {
         "employee_name_formatted": {
-               "type": "expression2",
                "expression": "_get_tooltip_markup($row['civil_service_title_civil_service_title'],30)"
         },
         "employee_name_link": {
-          "type": "expression2",
-           "expression": "  '<a href=\"/payroll/title_landing/yeartype/'. $row['year_type_year_type'] . '/year/' . $row['year_year'] . '/title/' . $row['civil_service_title_code_civil_service_title_code'] . '\">'. $row['employee_name_formatted'] . '</a>'"
+           "expression": "  '<a href=\"/payroll/title_landing/yeartype/'. $row['year_type_year_type'] . '/year/' . $row['year_year'] .RequestUtilities::_getUrlParamString('datasource'). '/title/' . $row['civil_service_title_code_civil_service_title_code'] . '\">'. $row['employee_name_formatted'] . '</a>'"
         },
         "total_no_of_employees_formatted": {
-        "type": "expression2",
         "expression": "number_format($row['employee_count_employee_count'])"
         },
         "total_gross_pay_formatted":{
-        "type":"expression2",
         "expression": "custom_number_formatter_basic_format($row['total_gross_pay_total_gross_pay'],2,'$')"
         },
         "total_base_salary_formatted":{
-        "type":"expression2",
         "expression": "custom_number_formatter_basic_format($row['total_base_salary_total_base_salary'],2,'$')"
         },
         "total_other_payments_formatted":{
-        "type":"expression2",
         "expression": "custom_number_formatter_basic_format($row['total_other_payments_total_other_payments'],2,'$')"
         },
         "total_overtime_amount_formatted":{
-        "type":"expression2",
         "expression": "custom_number_formatter_basic_format($row['total_overtime_amount_total_overtime_amount'],2,'$')"
         },
         "annual_salary_formatted":{
-        "type":"expression2",
         "expression": "custom_number_formatter_basic_format($row['total_annual_salary_total_annual_salary'],2,'$')"
         },
         "export_salary_amount": {
-        "type": "expression2",
         "expression": " $row['employment_type.employment_type'] == 'Salaried' ? $row['total_annual_salary']  : NULL "
         }
     },

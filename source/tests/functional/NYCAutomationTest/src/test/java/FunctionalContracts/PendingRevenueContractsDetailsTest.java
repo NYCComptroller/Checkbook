@@ -83,7 +83,7 @@ public class PendingRevenueContractsDetailsTest extends TestStatusReport{
 	}
 	@Test
 	public void VerifyTop5AgenciesTransactionPage() throws SQLException{
-		ContractsPage.GoToTop5DetailsPage(WidgetOption.Top5Agencies);
+		ContractsPage.GoToTop5DetailsPage(WidgetOption.TopAgencies);
 		HomePage.ShowWidgetDetails();
 		int NumOfPRContractsDetailsCountDB = NYCDatabaseUtil.getPRContractsDetailsCount(year,'B');
 		int numOfPRContractsDetailsCountapp = PendingExpenseContractsPage.GetTransactionCount();

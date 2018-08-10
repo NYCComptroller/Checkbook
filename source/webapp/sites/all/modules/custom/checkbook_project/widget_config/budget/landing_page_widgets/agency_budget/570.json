@@ -44,15 +44,12 @@
 ",
  "derivedColumns":{
     "adopted_formatted":{
-        "type":"expression2",
         "expression":"custom_number_formatter_format($row['budget_adopted'],2,'$')"
     },
     "modified_formatted":{
-            "type":"expression2",
             "expression":"custom_number_formatter_format($row['budget_current'],2,'$')"
             },
     "committed_formatted":{
-            "type":"expression2",
             "expression":"'<a class=\"bottomContainerReload\" href=\"/panel_html/budget_transactions/budget/transactions'
                                .'/smnid/' . $node->nid
                                . _checkbook_project_get_year_url_param_string()
@@ -63,7 +60,6 @@
                                .'\">'.custom_number_formatter_format($row['budget_committed'],2,'$').'</a>'"
             },
     "remaining_formatted":{
-            "type":"expression2",
             "expression":"custom_number_formatter_format($row['budget_remaining'],2,'$')"
             }
 },

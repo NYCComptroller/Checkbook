@@ -17,8 +17,10 @@ import helpers.Helper;
 
 public class ContractsPage {
 	public enum WidgetOption{
-		Top5MasterAgreements, Top5MasterAgreementModifications, Top5Contracts, Top5ContractAmountModifications, Top5ContractsAmountModifications, Top5PrimeVendors, 
-		Top5AwardMethods, Top5Agencies, ContractsByIndustries, ContractsBySize, TopContractAmountModifications, TopContractsAmountModifications, TopPrimeVendors, TopAwardMethods, TopAgencies
+		Top5MasterAgreements, Top5MasterAgreementModifications, Top5Contracts, Top5ContractAmountModifications,  Top5PrimeVendors, 
+		Top5AwardMethods, Top5Agencies,Top5Departments,ContractsByIndustries, ContractsBySize, TopMasterAgreements,TopMasterAgreementModifications,
+		TopContracts,TopContractAmountModifications, TopAgencies,TopDepartments, TopPrimeVendors, TopAwardMethods, Top5SubContracts,
+		Top5SubContractAmountModifications,Top5SubVendors,SubContractStatus,SummaryOfPrimeVendor,SummaryOfSubVendorContracts
 	}
 	public static void GoTo() {
         TopNavigation.Contracts.Select();
@@ -28,6 +30,11 @@ public class ContractsPage {
           WebElement contractsAmt = Driver.Instance.findElement(By.cssSelector(".top-navigation-left .contracts > .expense-container > a"));
           return contractsAmt.getText().substring((contractsAmt.getText().indexOf("$")));
       }
+	  public static String GetMWBEContractsAmount() {
+          WebElement contractsAmt = Driver.Instance.findElement(By.cssSelector(".top-navigation-right .mwbe > .expense-container > a"));
+          return contractsAmt.getText().substring((contractsAmt.getText().indexOf("$")));
+      }
+	
 	
 	 public static String GetBottomNavContractAmount() {
            WebElement contractAmt = Driver.Instance.findElement(By.cssSelector(".nyc_totals_links .active > .positioning > a .dollars"));
@@ -49,8 +56,25 @@ public class ContractsPage {
 			//return amount;
 			//return Helper.billionStringToFloat(count);
 		}
-	 
-	 
+		public static int GetActiveSubVendorContractAmount() {
+					 WebElement contractAmt = Driver.Instance.findElement(By.cssSelector(".nyc_subvendors_totals_links > table > tbody > tr > td.active > div.positioning > a > span.count"));
+			        return Helper.stringToInt(contractAmt.getText());
+
+				 }
+		 public static ArrayList<String> SubVendorVisualizationTitles() {
+			 			ArrayList<String> titles = new ArrayList<String>();
+			 				List<WebElement> titleContainers = Driver.Instance.findElements(By.cssSelector("#mini-panel-subven_contract_vis > div > div > div.panel-pane"));
+
+			 				for(int i=0; i < titleContainers.size(); i++){
+			 					selectVisualizationSlider(i);
+			 					WebElement titleClass = titleContainers.get(i).findElement(By.cssSelector(".pane-content >.chart-title"));
+			 					if(titleClass.isDisplayed()){
+			 						String title = titleClass.getText();
+			 						titles.add(title);
+			 				}
+			 			}
+			 				return titles;
+			 			}	 
 	
 	   
 	    public static ArrayList<String> VisualizationTitles() {
@@ -70,8 +94,89 @@ public class ContractsPage {
 		public static void selectVisualizationSlider(int sliderPosition){
 			List<WebElement> sliderContainer = Driver.Instance.findElements(By.cssSelector("#nyc-contracts > .top-chart > .slider-pager > a"));
 			sliderContainer.get(sliderPosition).click();
-			Driver.Instance.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+			Driver.Instance.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		}
+		
+		
+	    public static ArrayList<String> VisualizationTitles2() {
+				ArrayList<String> titles = new ArrayList<String>();
+				List<WebElement> titleContainers = Driver.Instance.findElements(By.cssSelector("#nyc-expense-pending-contracts > .top-chart > .inside > .panel-pane"));
+				for(int i=0; i < titleContainers.size(); i++){
+					selectVisualizationSlider2(i);
+					WebElement titleClass = titleContainers.get(i).findElement(By.cssSelector(".pane-content .chart-title"));
+					if(titleClass.isDisplayed()){
+						String title = titleClass.getText();
+						titles.add(title);
+					}
+				}	
+				return titles;
+			}
+			
+			public static void selectVisualizationSlider2(int sliderPosition){
+				List<WebElement> sliderContainer = Driver.Instance.findElements(By.cssSelector("#nyc-expense-pending-contracts > .top-chart > .slider-pager > a"));
+				sliderContainer.get(sliderPosition).click();
+				Driver.Instance.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+			}
+			
+			 public static ArrayList<String> VisualizationTitles3() {
+					ArrayList<String> titles = new ArrayList<String>();
+					List<WebElement> titleContainers = Driver.Instance.findElements(By.cssSelector("#nyc-revenue-pending-contracts > .top-chart > .inside > .panel-pane"));
+					for(int i=0; i < titleContainers.size(); i++){
+						selectVisualizationSlider3(i);
+						WebElement titleClass = titleContainers.get(i).findElement(By.cssSelector(".pane-content .chart-title"));
+						if(titleClass.isDisplayed()){
+							String title = titleClass.getText();
+							titles.add(title);
+						}
+					}	
+					return titles;
+				}
+				
+				public static void selectVisualizationSlider3(int sliderPosition){
+					List<WebElement> sliderContainer = Driver.Instance.findElements(By.cssSelector("#nyc-revenue-pending-contracts > .top-chart > .slider-pager > a"));
+					sliderContainer.get(sliderPosition).click();
+					Driver.Instance.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+				}
+				
+			    public static ArrayList<String> MWBEVisualizationTitles() {
+					ArrayList<String> titles = new ArrayList<String>();
+					List<WebElement> titleContainers = Driver.Instance.findElements(By.cssSelector("#mini-panel-mwbe_contract_visualizations > div > div > div.panel-pane"));
+					for(int i=0; i < titleContainers.size(); i++){
+						selectVisualizationSlider(i);
+						WebElement titleClass = titleContainers.get(i).findElement(By.cssSelector(".pane-content .chart-title"));
+						if(titleClass.isDisplayed()){
+							String title = titleClass.getText();
+							titles.add(title);
+						}
+					}	
+					return titles;
+				}
+				
+				public static void selectVisualizationSlider4(int sliderPosition){
+					List<WebElement> sliderContainer = Driver.Instance.findElements(By.cssSelector("#nyc_contracts > .top-chart > .slider-pager > a"));
+					sliderContainer.get(sliderPosition).click();
+					Driver.Instance.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+				}
+				   public static ArrayList<String> MWBEVisualizationTitles2() {
+						ArrayList<String> titles = new ArrayList<String>();
+						List<WebElement> titleContainers = Driver.Instance.findElements(By.cssSelector("#mini-panel-mwbe_contract_visualizations > div > div > div.panel-pane"));
+						for(int i=0; i < titleContainers.size(); i++){
+							MWBEselectVisualizationSlider2(i);
+							WebElement titleClass = titleContainers.get(i).findElement(By.cssSelector(".pane-content .chart-title"));
+							if(titleClass.isDisplayed()){
+								String title = titleClass.getText();
+								titles.add(title);
+							}
+						}	
+						return titles;
+					}
+					
+					public static void MWBEselectVisualizationSlider2(int sliderPosition){
+						List<WebElement> sliderContainer = Driver.Instance.findElements(By.cssSelector("#nyc-expense-pending-contracts > .top-chart > .slider-pager > a"));
+						sliderContainer.get(sliderPosition).click();
+						Driver.Instance.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+					}
+				
 		
 		public static ArrayList<String> WidgetTitles() {
 			ArrayList<String> titles = new ArrayList<String>();
@@ -96,16 +201,16 @@ public class ContractsPage {
 				return HomePage.GetWidgetTotalNumber("Top 5 Master Agreements");
 			case Top5MasterAgreementModifications:
 				return HomePage.GetWidgetTotalNumber("Top 5 Master Agreement Modifications");
+			case TopMasterAgreementModifications:
+				return HomePage.GetWidgetTotalNumber("Top Master Agreement Modifications");
 			case Top5Contracts:
 				return HomePage.GetWidgetTotalNumber("Top 5 Contracts");
+			case TopContracts:
+				return HomePage.GetWidgetTotalNumber("Top Contracts");
 			case Top5ContractAmountModifications:
-				return HomePage.GetWidgetTotalNumber("Top 5 Contract Amount Modifications");
-			case Top5ContractsAmountModifications:
-				return HomePage.GetWidgetTotalNumber("Top 5 Contracts Amount Modifications");
-			case TopContractsAmountModifications:
-				return HomePage.GetWidgetTotalNumber("Top Contracts Amount Modifications");
+				return HomePage.GetWidgetTotalNumber("Top 5 Contract Amount Modifications");			
 			case TopContractAmountModifications:
-				return HomePage.GetWidgetTotalNumber("Top Contract Amount Modifications");
+				return HomePage.GetWidgetTotalNumber("Top Contract Amount Modifications");				
 			case Top5PrimeVendors:
 				return HomePage.GetWidgetTotalNumber("Top 5 Prime Vendors");
 			case TopPrimeVendors:
@@ -118,10 +223,26 @@ public class ContractsPage {
 				return HomePage.GetWidgetTotalNumber("Top 5 Agencies");
 			case TopAgencies:
 				return HomePage.GetWidgetTotalNumber("Top Agencies");
+			case Top5Departments:
+				return HomePage.GetWidgetTotalNumber("Top 5 Departments");
+			case TopDepartments:
+				return HomePage.GetWidgetTotalNumber("Top Departments");
 			case ContractsByIndustries:
 				return HomePage.GetWidgetTotalNumber("Contracts by Industries");
 			case ContractsBySize:
 				return HomePage.GetWidgetTotalNumber("Contracts by Size");	
+			case SubContractStatus:
+						return HomePage.GetWidgetTotalNumber("Sub Contract Status by Prime Contract ID");
+			case SummaryOfPrimeVendor:
+								return HomePage.GetWidgetTotalNumber("Summary of Prime Contract Sub Vendor Reporting");
+			case SummaryOfSubVendorContracts:
+								return HomePage.GetWidgetTotalNumber("Summary of Sub Vendor Contracts by Prime Contracts");
+			case Top5SubContracts:
+							return HomePage.GetWidgetTotalNumber("Top 5 Sub Contracts");
+			case Top5SubContractAmountModifications:
+								return HomePage.GetWidgetTotalNumber("Top 5 Sub Contract Amount Modifications");
+			case Top5SubVendors:
+						return HomePage.GetWidgetTotalNumber("Top 5 Sub Vendors");
 			default:
 				return null;
 		}
@@ -134,26 +255,31 @@ public class ContractsPage {
 				if(!HomePage.IsAtTop5DetailsPage("Top 5 Master Agreements"))
 					detailsContainer = HomePage.GetWidgetDetailsContainer("Top 5 Master Agreements");
 				break;
+			case TopMasterAgreements:	
+				if(!HomePage.IsAtTop5DetailsPage("Top Master Agreements"))
+					detailsContainer = HomePage.GetWidgetDetailsContainer("Top Master Agreements");
+				break;
 			case Top5MasterAgreementModifications:
 				if(!HomePage.IsAtTop5DetailsPage("Top 5 Master Agreement Modifications"))
 					detailsContainer = HomePage.GetWidgetDetailsContainer("Top 5 Master Agreement Modifications");
+				break;
+			case TopMasterAgreementModifications:
+				if(!HomePage.IsAtTop5DetailsPage("Top Master Agreement Modifications"))
+					detailsContainer = HomePage.GetWidgetDetailsContainer("Top Master Agreement Modifications");
 				break;
 			case Top5Contracts:
 				if(!HomePage.IsAtTop5DetailsPage("Top 5 Contracts"))
 					detailsContainer = HomePage.GetWidgetDetailsContainer("Top 5 Contracts");
 				break;
+			case TopContracts:
+				if(!HomePage.IsAtTop5DetailsPage("Top Contracts"))
+					detailsContainer = HomePage.GetWidgetDetailsContainer("Top Contracts");
+				break;
 			case Top5ContractAmountModifications:
 				if(!HomePage.IsAtTop5DetailsPage("Top 5 Contract Amount Modifications"))
 					detailsContainer = HomePage.GetWidgetDetailsContainer("Top 5 Contract Amount Modifications");
 				break;
-			case Top5ContractsAmountModifications:
-				if(!HomePage.IsAtTop5DetailsPage("Top 5 Contracts Amount Modifications"))
-					detailsContainer = HomePage.GetWidgetDetailsContainer("Top 5 Contracts Amount Modifications");
-				break;
-			case TopContractsAmountModifications:
-				if(!HomePage.IsAtTop5DetailsPage("Top Contracts Amount Modifications"))
-					detailsContainer = HomePage.GetWidgetDetailsContainer("Top Contracts Amount Modifications");
-				break;
+			
 			case TopContractAmountModifications:
 				if(!HomePage.IsAtTop5DetailsPage("Top Contract Amount Modifications"))
 					detailsContainer = HomePage.GetWidgetDetailsContainer("Top Contract Amount Modifications");
@@ -182,6 +308,11 @@ public class ContractsPage {
 				if(!HomePage.IsAtTop5DetailsPage("Top Agencies"))
 					detailsContainer = HomePage.GetWidgetDetailsContainer("Top Agencies");
 				break;
+			
+			case TopDepartments:
+				if(!HomePage.IsAtTop5DetailsPage("Top Departments"))
+					detailsContainer = HomePage.GetWidgetDetailsContainer("Top Departments");
+				break;
 			case ContractsByIndustries:
 				if(!HomePage.IsAtTop5DetailsPage("Contracts by Industries"))
 					detailsContainer = HomePage.GetWidgetDetailsContainer("Contracts by Industries");
@@ -196,7 +327,7 @@ public class ContractsPage {
 		WebElement detailsAnchor = detailsContainer.findElement(By.partialLinkText("Details"));
 		((JavascriptExecutor) Driver.Instance).executeScript("arguments[0].scrollIntoView(true);", detailsAnchor);
 		detailsAnchor.click();	
-		Driver.Instance.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+		Driver.Instance.manage().timeouts().implicitlyWait(40, TimeUnit.SECONDS);
 	}
 	
 }

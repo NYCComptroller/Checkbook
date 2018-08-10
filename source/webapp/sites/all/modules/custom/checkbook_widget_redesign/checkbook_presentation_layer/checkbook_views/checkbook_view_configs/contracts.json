@@ -333,7 +333,7 @@
                 },
                 "award_methods":{
                     "widget_config":"oge_award_methods_view",
-                    "legacy_node_id":432,
+                    "legacy_node_id":610,
                     "visibility_parameters":["-awdmethod"]
                 },
                 "departments":{

@@ -19,19 +19,15 @@
 "enableExpand":true,
 "derivedColumns": {
      "vendor_name_formatted": {
-      "type": "expression2",
       "expression": "_get_tooltip_markup($row['vendor_legal_name_vendor_legal_name'],60)"
     },
 "vendor_name_link": {
-      "type": "expression2",
 "expression": "'<a href=\"/contracts_pending_rev_landing'._checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string('dashboard'). ContractUtil::get_pending_contract_vendor_minority_category($row['vendor_vendor']) . _checkbook_project_get_url_param_string(\"agency\")  .  _checkbook_project_get_url_param_string(\"cindustry\")  .  _checkbook_project_get_url_param_string(\"csize\") .    _checkbook_project_get_url_param_string(\"awdmethod\") .  _checkbook_project_get_url_param_string(\"status\")   . '/vendor/' .$row['vendor_vendor'] . '?expandBottomCont=true\">' .$row['vendor_name_formatted']. '</a>'"
     },
 "formatted_original_amount_sum": {
-      "type": "expression2",
       "expression": " '$' . custom_number_formatter_format($row['original_amount_sum'],2)"
     },
 "formatted_total_current_amount_sum": {
-      "type": "expression2",
       "expression": " '$' . custom_number_formatter_format($row['current_amount_sum'],2)"
     }
 },

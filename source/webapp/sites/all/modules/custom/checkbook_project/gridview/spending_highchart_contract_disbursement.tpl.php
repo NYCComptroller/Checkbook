@@ -32,7 +32,7 @@ include_once('export_link.php');
             <th>&nbsp;&nbsp;</th>
             <th class='text'><?php echo WidgetUtil::generateLabelMapping("prime_vendor") ;?></th>
             <th class='text'><?php echo WidgetUtil::generateLabelMapping("contract_agency") ;?></th>
-            <th>&nbsp</th>
+            <th>&nbsp;</th>
         </tr>
 
         </thead>

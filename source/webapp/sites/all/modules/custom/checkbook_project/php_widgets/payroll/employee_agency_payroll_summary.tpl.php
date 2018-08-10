@@ -1,25 +1,31 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
-
+$year = RequestUtilities::getRequestParamValue('year');
+$year_type = RequestUtilities::getRequestParamValue('yeartype');
+$employeeID = RequestUtilities::getRequestParamValue('abc');
+$agencyId =RequestUtilities::getRequestParamValue('agency');
+$data_source =RequestUtilities::getRequestParamValue('datasource');
+$original_title= PayrollUtil::getTitleByEmployeeId($employeeID,$agencyId,$year_type,$year);
+$titleLatest = mb_convert_case(strtolower($original_title), MB_CASE_TITLE, "UTF-8");
 $all_data = array();
+
 foreach($node->data as $data){
 
     $record = array();
@@ -39,7 +45,7 @@ foreach($node->data as $data){
 
     //$record['title_url'] = "<a href='/payroll/title_landing/yeartype/$year_type/year/$year/title/$original_title'>{$title}</a>";
     $record['title'] = $title;
-    $record['agency_url'] = "<a href='/payroll/agency_landing/yeartype/$year_type/year/$year/agency/{$data['agency_agency']}'>{$agency_name}</a>";
+    $record['agency_url'] = "<a href='/payroll/agency_landing/yeartype/$year_type/year/$year/datasource/{$data_source}/agency/{$data['agency_agency']}'>{$agency_name}</a>";
     $record['employment_type'] = $employment_type;
     $record['max_annual_salary'] = $data['max_annual_salary'];
     $record['pay_frequency'] = $data['pay_frequency_pay_frequency'];
@@ -50,7 +56,6 @@ foreach($node->data as $data){
 
     $all_data[$employment_type][] = $record;
 }
-
 //Order data by pay frequency
 foreach($all_data as $employment_type => $employment_data) {
 
@@ -73,6 +78,7 @@ foreach($all_data as $employment_type => $employment_data) {
 
 $salaried_count = count($all_data[PayrollType::$SALARIED]);
 $non_salaried_count = count($all_data[PayrollType::$NON_SALARIED]);
+
 
 //Default view based on salamttype in url
 $default_view = $salaried_count > 0 ? PayrollType::$SALARIED : PayrollType::$NON_SALARIED;
@@ -166,7 +172,7 @@ foreach($all_data as $employment_type => $employment_data) {
 
         $table .= "<div id='payroll-emp-trans-name'>
                         <span class='payroll-label'>Title: </span>
-                        <span class='payroll-value'>{$title}</span>
+                        <span class='payroll-value'>{$titleLatest}</span>
                     </div>";
 
 

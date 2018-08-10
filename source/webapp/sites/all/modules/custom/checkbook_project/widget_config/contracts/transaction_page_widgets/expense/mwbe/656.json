@@ -139,31 +139,24 @@
     "caption":"",
     "derivedColumns": {
         "child_contrats_link":{
-            "type": "expression2",
             "expression": "ContractURLHelper::prepareExpandLink($row, $node)"
         },
         "contract_link": {
-            "type": "expression2",
             "expression": "ContractURLHelper::prepareExpenseContractLink($row, $node, false, $row['contract_original_agreement_id'])"
         },
         "parent_contract_link": {
-            "type": "expression2",
             "expression": "(($row['master_agreement_yn'] == 'Y') ? 'N/A' : ContractURLHelper::prepareExpenseContractLink($row, $node, true, $row['contract_original_agreement_id']))"
         },
         "parent_contract_export":{
-            "type": "expression2",
             "expression":"(!($row['master_contract_number']) ? 'N/A' : $row['master_contract_number'])"
         },
         "formatted_original_amount": {
-            "type": "expression2",
             "expression": "custom_number_formatter_basic_format($row['original_contract_amount'])"
         },
         "formatted_current_amount": {
-            "type": "expression2",
             "expression": "custom_number_formatter_basic_format($row['maximum_contract_amount'])"
         },
         "formatted_spent_to_date": {
-            "type": "expression2",
             "expression": "
             '<a href=\"/spending/transactions'
             .  ($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['original_agreement_id@checkbook:all_contracts_coa_aggregates']
@@ -173,25 +166,20 @@
             "
         },
         "current_prime_minority_type_id": {
-            "type": "expression2",
             "expression": "$row['minority_type_id']"
         },
         "vendor_formatted": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['vendor_name'],30)"
         },
         "vendor_name_link": {
-            "type": "expression2",
             "expression": " '<a href=\"/contracts_landing'
             . ContractUtil::get_contracts_vendor_link_by_mwbe_category($row)
             . '?expandBottomCont=true\">'. $row['vendor_formatted'] . '</a>'  "
         },
         "agency_formatted": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['agency_name'],26)"
         },
         "agency_name_link": {
-            "type": "expression2",
             "expression": " '<a href=\"/contracts_landing'
             ._checkbook_append_url_params()
             .  (isset($row['fiscal_year_id@checkbook:all_contracts_coa_aggregates']) ? '/year/'.$row['fiscal_year_id@checkbook:all_contracts_coa_aggregates'] : '')
@@ -201,75 +189,57 @@
             .  '?expandBottomCont=true\">'. $row['agency_formatted'] . '</a>'  "
         },
         "purpose_formatted": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['description'],36)"
         },
         "expense_cat_formatted": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['expenditure_object_names'],36)"
         },
         "expense_cat": {
-            "type": "expression2",
             "expression":"($row['is_prime_or_sub'] == 'S') ? '' : $row['expense_cat_formatted']"
         },
         "expense_cat_export": {
-            "type": "expression2",
             "expression":"($row['is_prime_or_sub'] == 'S') ? '' : $row['expenditure_object_names']"
         },
         "award_method_formatted": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['award_method_name'],36)"
         },
         "contract_type_formatted": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['agreement_type_name'],36)"
         },
         "industry_name_formatted": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['industry_type_name'],36)"
         },
         "formatted_dollar_diff": {
-            "type": "expression2",
             "expression": "custom_number_formatter_basic_format($row['dollar_difference'])"
         },
         "formatted_percent_diff": {
-            "type": "expression2",
             "expression": "round($row['percent_difference'],2) . '%'"
         },
         "mwbe_category_name_formatted": {
-            "type":"expression2",
             "expression":"MappingUtil::getMinorityCategoryById($row['minority_type_id'])"
         },
         "mwbe_category_name": {
-            "type": "expression2",
             "expression": "ContractUtil::get_mwbe_category_url($row['minority_type_id'], $row['is_prime_or_sub'])"
         },
         "is_sub_vendor": {
-            "type":"expression2",
             "expression": "($row['is_prime_or_sub'] == 'P')?'No':'Yes'"
         },
         "associated_prime_vendor_name":{
-            "type": "expression2",
             "expression": "($row['is_prime_or_sub'] == 'P') ? 'N/A' :  _get_tooltip_markup($row['prime_vendor_name'], 34)"
         },
         "associated_prime_vendor_name_export":{
-            "type": "expression2",
             "expression": "($row['is_prime_or_sub'] == 'P') ? 'N/A' :  $row['prime_vendor_name']"
         },
         "subvendor_status":{
-            "type": "expression2",
             "expression": "($row['document_code_checkbook_ref_document_code'] == 'CT1' || $row['document_code_checkbook_ref_document_code'] == 'CTA1' || $row['document_code_checkbook_ref_document_code'] == 'CT2') ? $row['scntrc_status_name'] : 'N/A'"
         },
         "subvendor_status_pip":{
-            "type": "expression2",
             "expression": "($row['aprv_sta_name'] == 'N/A' || $row['aprv_sta_name'] == NULL) ? 'N/A' : _get_tooltip_markup($row['aprv_sta_name'],36)"
         },
         "subvendor_status_pip_export":{
-            "type": "expression2",
             "expression": "($row['aprv_sta_name'] == 'N/A' || $row['aprv_sta_name'] == NULL) ? 'N/A' : $row['aprv_sta_name']"
         },
         "sub_contract_reference_id":{
-            "type": "expression2",
             "expression": "($row['sub_contract_id'] == '' || $row['sub_contract_id'] == NULL) ? 'N/A' : $row['sub_contract_id']"
         }
     },

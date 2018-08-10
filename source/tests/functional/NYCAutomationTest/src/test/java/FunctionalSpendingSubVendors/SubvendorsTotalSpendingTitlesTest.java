@@ -2,27 +2,21 @@ package FunctionalSpendingSubVendors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import helpers.Helper;
-import navigation.SubVendorCategory.SubVendorCategoryOption;
-
-import java.sql.SQLException;
 import java.util.Arrays;
-
+import helpers.Helper;
+import java.sql.SQLException;
 import org.junit.Before;
 import org.junit.Test;
 
-
+import navigation.SubVendorCategory.SubVendorCategoryOption;
 import pages.home.HomePage;
-import pages.mwbe.MWBEPage;
 import pages.subvendors.SubVendorsPage;
-import pages.subvendors.SubVendorPage;
-import pages.spending.SpendingPage;
 import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
 import utilities.TestStatusReport;
 
-//public class TotalSpendingTitlesTest extends TestStatusReport{
-	public class SubvendorsTotalSpendingTitlesTest extends NYCBaseTest{
+public class SubvendorsTotalSpendingTitlesTest extends TestStatusReport{
+	// public class SubvendorsTotalSpendingTitlesTest extends NYCBaseTest{
 
 	
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
@@ -39,7 +33,7 @@ import utilities.TestStatusReport;
 
 	@Test
     public void VerifyTopNavSpendingAmount() throws SQLException {
-        String TotalSpendingAmtDB = NYCDatabaseUtil.getSpendingAmount(2016, 'B');
+        String TotalSpendingAmtDB = NYCDatabaseUtil.getSubVendorsSpendingAmount(year, 'B');
           // String spendingAmt = SubVendorsPage.GetSpendingSubVendorAmount();
         String spendingAmt = SubVendorsPage.GetSubVendorSpendingAmount();
         assertEquals("Spending Amount did not match", spendingAmt, TotalSpendingAmtDB);
@@ -47,7 +41,7 @@ import utilities.TestStatusReport;
 	
 	@Test
     public void VerifyBottomNavTotalSpendingAmount() throws SQLException {
-        String TotalSpendingAmtDB = NYCDatabaseUtil.getSpendingAmount(year, 'B');
+        String TotalSpendingAmtDB = NYCDatabaseUtil.getSubVendorsSpendingAmount(year, 'B');
         String spendingAmt = SubVendorsPage.GetBottomNavSpendingAmount();
     	System.out.println(spendingAmt); 
         assertEquals("Spending Amount did not match", spendingAmt, TotalSpendingAmtDB);

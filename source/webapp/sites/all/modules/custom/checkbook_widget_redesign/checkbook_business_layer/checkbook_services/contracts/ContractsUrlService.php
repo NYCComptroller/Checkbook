@@ -102,7 +102,7 @@ class ContractsUrlService {
             . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
             . RequestUtilities::_getUrlParamString("status","contstatus")
             . (!Datasource::isOGE() ? RequestUtilities::_getUrlParamString("agency","cagency") : "")
-            . RequestUtilities::_getUrlParamString("vendor","cvendor")
+            . (!Datasource::isOGE() ? RequestUtilities::_getUrlParamString("vendor","cvendor") : RequestUtilities::_getUrlParamString("vendor"))
             . RequestUtilities::_getUrlParamString("awdmethod")
             . RequestUtilities::_getUrlParamString("cindustry")
             . RequestUtilities::_getUrlParamString("csize")
@@ -378,15 +378,9 @@ class ContractsUrlService {
      * @param $current
      * @return string
      */
-    static function primeVendorUrl($vendor_id, $year_id = null, $current = true,$contractCode = null) {
-        if ($contractCode == "RCT1") {
-            $page = '/contracts_revenue_landing';
-        }
-        else {
-            $page='/contracts_landing';
-        }
+    static function primeVendorUrl($vendor_id, $year_id = null, $current = true) {
 
-        $url = $page.RequestUtilities::_getUrlParamString("agency")
+        $url = RequestUtilities::_getUrlParamString("agency")
             . RequestUtilities::_getUrlParamString("contstatus","status")
             . RequestUtilities::_getUrlParamString("cindustry")
             . RequestUtilities::_getUrlParamString("csize")

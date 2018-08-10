@@ -22,6 +22,7 @@
 
 require_once(__DIR__ . '/constants/Constants.php');
 
+
 /**
  * Class RequestUtil
  */
@@ -529,30 +530,28 @@ class RequestUtil
     /** Returns Budget page title and Breadcrumb */
     public static function getBudgetBreadcrumbTitle()
     {
-        $bottomURL = isset($_REQUEST['expandBottomContURL']) ? $_REQUEST['expandBottomContURL'] : FALSE;
-        $find = '_' . $bottomURL . current_path();
-        if (
-            stripos($bottomURL, 'transactions')
-            || stripos($find, 'department_budget_details')
-            || stripos($find, 'expense_category_budget_details')
-            || stripos('_'.current_path(), 'revenue_transactions')
-        ) {
-            $dtsmnid = $bottomURL ? RequestUtil::getRequestKeyValueFromURL("dtsmnid", $bottomURL) : RequestUtil::getRequestKeyValueFromURL("dtsmnid", current_path());
-            $smnid = $bottomURL ? RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL) : RequestUtil::getRequestKeyValueFromURL("smnid", current_path());
-            if (isset($dtsmnid)) {
-                $title = NodeSummaryUtil::getInitNodeSummaryTitle($dtsmnid);
-            } else if (isset($smnid)) {
-                $title = NodeSummaryUtil::getInitNodeSummaryTemplateTitle($smnid);
-            } else {
-                $title = _get_budget_breadcrumb_title_drilldown() . ' Expense Budget';
-            }
-        } else if (!$bottomURL && stripos('_'.current_path(),'budget/transactions/')) {
-            $title = "Expense Budget Transactions";
-        } else {
-            $title = _get_budget_breadcrumb_title_drilldown() . ' Expense Budget';
-        }
+      $bottomURL = isset($_REQUEST['expandBottomContURL']) ? $_REQUEST['expandBottomContURL'] : FALSE;
+      $find = '_' . $bottomURL . current_path();
 
-        return html_entity_decode($title);
+      $title = _get_budget_breadcrumb_title_drilldown() . ' Expense Budget';
+
+      if (!$bottomURL && stripos('_'.current_path(),'budget/transactions/')) {
+        $title = "Expense Budget Transactions";
+      } elseif (
+        stripos($find, 'transactions')
+        || stripos($find, 'department_budget_details')
+        || stripos($find, 'expense_category_budget_details')
+      ) {
+        $dtsmnid = $bottomURL ? RequestUtil::getRequestKeyValueFromURL("dtsmnid", $bottomURL) : RequestUtil::getRequestKeyValueFromURL("dtsmnid", current_path());
+        $smnid = $bottomURL ? RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL) : RequestUtil::getRequestKeyValueFromURL("smnid", current_path());
+        if (isset($dtsmnid)) {
+          $title = NodeSummaryUtil::getInitNodeSummaryTitle($dtsmnid);
+        } else if (isset($smnid)) {
+          $title = NodeSummaryUtil::getInitNodeSummaryTemplateTitle($smnid);
+        }
+      }
+
+      return html_entity_decode($title);
     }
 
     /** Returns Revenue page title and Breadcrumb */
@@ -710,6 +709,9 @@ class RequestUtil
                         $path = "payroll/yeartype/" . $yeartype . "/year/" . $year;
                     }
                 }
+                if(_checkbook_check_isNYCHAPage()){
+                    $path = $path.'/datasource/checkbook_nycha';
+                }
                 break;
             case "budget":
                 if (RequestUtilities::getRequestParamValue("agency") > 0) {
@@ -775,7 +777,7 @@ class RequestUtil
         } else if (RequestUtilities::getRequestParamValue("calyear") != NULL) {
             $year = RequestUtilities::getRequestParamValue("calyear");
         }
-        $currentCalYear = _getCalendarYearID();
+        $currentCalYear = _getCurrentCalendarYearID();
         if (is_null($year) || $year > $currentCalYear) {
             $year = $currentCalYear;
         }
@@ -1230,8 +1232,16 @@ class RequestUtil
         $sql = 'select count(*) count
 				    from ' . $table . ' a1
 				   ' . $where_filter;
+        $cacheKey = '_top_nav_count_'.md5($sql);
+        $count = _checkbook_dmemcache_get($cacheKey);
+        if (null !== $count) {
+          LogHelper::log_info($cacheKey.' CACHE HIT!');
+          return $count;
+        }
         $data = _checkbook_project_execute_sql($sql);
-        return $data[0]['count'];
+        $count = $data[0]['count'];
+        _checkbook_dmemcache_set($cacheKey, $count);
+        return $count;
     }
 
     /**

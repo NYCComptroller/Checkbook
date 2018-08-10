@@ -13,6 +13,8 @@ class ContractsWidgetService extends WidgetDataService implements IWidgetService
     public function implementDerivedColumn($column_name,$row) {
         $value = null;
         $legacy_node_id = $this->getLegacyNodeId();
+        $data_source = RequestUtilities::getRequestParamValue('datasource');
+
         switch($column_name) {
             case "contract_id_link":
                 $column = $row['contract_number'];
@@ -66,9 +68,8 @@ class ContractsWidgetService extends WidgetDataService implements IWidgetService
                 break;
 
             case "master_agreements_agency_landing_link":
-                $datasource = RequestUtilities::getRequestParamValue('datasource');
                 $column = $row['agency_name'];
-                if($datasource == 'checkbook_oge'){
+                if($data_source == 'checkbook_oge'){
                     return $column;
                 }
                 $url = ContractsUrlService::agencyUrl($row['agency_id']);
@@ -76,9 +77,8 @@ class ContractsWidgetService extends WidgetDataService implements IWidgetService
                 break;
 
             case "master_agreements_vendor_name_link":
-                $datasource = RequestUtilities::getRequestParamValue('datasource');
                 $column = $row['vendor_name'];
-                if($datasource == 'checkbook_oge'){
+                if($data_source == 'checkbook_oge'){
                     return $column;
                 }
                 $url = ContractsUrlService::primeVendorUrl($row['vendor_id'], null, true, $row);

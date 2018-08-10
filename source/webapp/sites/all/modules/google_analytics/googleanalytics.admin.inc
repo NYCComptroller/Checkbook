@@ -176,7 +176,7 @@ function googleanalytics_admin_settings_form($form_state) {
     '#type' => 'fieldset',
     '#title' => t('Users'),
   );
-  $t_permission = array('%permission' => t('opt-in or out of tracking'));
+  $t_permission = array('%permission' => t('Opt-in or out of tracking'));
   $form['tracking']['user_vis_settings']['googleanalytics_custom'] = array(
     '#type' => 'radios',
     '#title' => t('Allow users to customize tracking on their account page'),
@@ -806,6 +806,7 @@ function _googleanalytics_validate_create_field_name($name) {
     'sampleRate',
     'siteSpeedSampleRate',
     'storage',
+    'useAmpClientId',
     'userId',
   );
 

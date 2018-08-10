@@ -1,7 +1,7 @@
 {
     "widgetType":"data_tables",
     "widgetSubType":"dataTableList",
-    "cleanURLParameters":["doctype", "contstatus", "year", "calyear", "yeartype", "agency", "vendor", "curamtr", "vendornm","vendornm_exact", "contdesc", "agrmnttypecode", "agencyh", "contnum", "aptpin", "pin",
+    "cleanURLParameters":["doctype", "contstatus", "year", "calyear", "yeartype", "agency", "vendor", "curamtr", "vendornm","vendornm_exact", "contdesc", "agrmnttypecode", "agencyh", "contnum","contnum_exact", "aptpin", "pin",
         "awdmethod", "curamt", "startdate", "enddate", "regdate", "cindustry", "csize", "modamt", "entcontnum_exact", "entcontnum", "comline_exact", "comline", "budname_exact", "budname"],
     "urlParamMap":{
         "doctype":"document_code@checkbook:ref_document_code",
@@ -18,6 +18,7 @@
         "agrmnttypecode":"agreement_type_code",
         "agencyh":"agency_history_id",
         "contnum":"contract_number",
+        "contnum_exact": "contract_number",
         "aptpin":"brd_awd_no",
         "pin":"tracking_number",
         "awdmethod":"award_method_id",
@@ -48,6 +49,7 @@
         "vendornm_exact":"eqignorecase",
         "contdesc":"contains",
         "contnum":"like",
+        "contnum_exact":"eqignorecase",
         "aptpin":"like",
         "pin":"like",
         "curamt":"range",
@@ -74,7 +76,7 @@
     "noDataInitialLoad":true,
     "html_class": "initiative-table",
     "no_results_content":"No Results Found",
-    "dataset": "checkbook:agreement_snapshot_oge",
+    "dataset": "checkbook_oge:agreement_snapshot_oge",
     "uniqueSortColumn":["agreement_id","fiscal_year_id","fms_commodity_line"],
     "columns": [
         "agreement_id",
@@ -131,7 +133,6 @@
     "caption":"",
     "derivedColumns": {
         "child_contrats_link":{
-            "type": "expression2",
             "expression": " ($row['has_children'] == 'Y') ? '<span id=dtl_expand class=\"toggler collapsed\"  magid=\"' . $row['original_agreement_id'] . '\" '
             . ( RequestUtilities::getRequestParamValue('datasource') != '' ?  ('datasource=\"' . RequestUtilities::getRequestParamValue('datasource') . '\"' ) : '')
             . ( RequestUtilities::getRequestParamValue('smnid') != '' ?  ('smnid=\"' . RequestUtilities::getRequestParamValue('smnid') . '\"' ) : '')
@@ -143,35 +144,27 @@
             . '></span>' : '' "
         },
         "contract_link": {
-            "type": "expression2",
             "expression": "ContractURLHelper::prepareExpenseContractLink($row, $node)"
         },
         "parent_contract_link": {
-            "type": "expression2",
             "expression": "(($row['has_children'] == 'Y') ? 'N/A' : ContractURLHelper::prepareExpenseContractLink($row, $node, true))"
         },
         "parent_contract_export":{
-            "type": "expression2",
             "expression": "(($row['has_children'] == 'Y') ? 'N/A' : $row['master_contract_number'])"
         },
         "formatted_original_amount": {
-            "type": "expression2",
             "expression": "custom_number_formatter_basic_format($row['original_contract_amount'])"
         },
         "formatted_current_amount": {
-            "type": "expression2",
             "expression": "custom_number_formatter_basic_format($row['maximum_contract_amount'])"
         },
         "formatted_spent_to_date": {
-            "type": "expression2",
             "expression": "ContractURLHelper::_prepare_oge_spent_to_date_url($row, $node)"
         },
         "vendor_formatted": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['vendor_name'],30)"
         },
         "vendor_name_link": {
-            "type": "expression2",
             "expression": "($row['has_children'] != 'Y') ? ('<a href=\"/contracts_landing'
             . _checkbook_append_url_params()
             .(_checkbook_check_isEDCPage() ? ('/agency/'. $row['agency_id']) :'')
@@ -183,11 +176,9 @@
             .  '?expandBottomCont=true\">'. $row['vendor_formatted'] . '</a>') : $row['vendor_formatted'] "
         },
         "agency_formatted": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['agency_name'],30)"
         },
         "agency_name_link": {
-            "type": "expression2",
             "expression": "($row['has_children'] != 'Y') ? ('<a href=\"/contracts_landing'
             ._checkbook_append_url_params()
             .  (isset($row['fiscal_year_id']) ? '/year/'.$row['fiscal_year_id'] : '')
@@ -197,39 +188,30 @@
             .  '?expandBottomCont=true\">'. $row['agency_formatted'] . '</a>') : $row['agency_formatted']  "
         },
         "purpose_formatted": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['description'],36)"
         },
         "expense_cat_formatted": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['expenditure_object_names'],36)"
         },
         "award_method_formatted": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['award_method_name'],36)"
         },
         "contract_type_formatted": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['agreement_type_name'],36)"
         },
         "industry_name_formatted": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['industry_type_name'],36)"
         },
         "formatted_dollar_diff": {
-            "type": "expression2",
             "expression": "custom_number_formatter_basic_format($row['dollar_difference'])"
         },
         "formatted_percent_diff": {
-            "type": "expression2",
             "expression": "round($row['percent_difference'],2) . '%'"
         },
         "budget_name_formatted":{
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['budget_name'], 36)"
         },
         "reg_date":{
-            "type": "expression2",
             "expression": "(_checkbook_check_isEDCPage()? 'N/A' : 'N/A')"
         }
     },
