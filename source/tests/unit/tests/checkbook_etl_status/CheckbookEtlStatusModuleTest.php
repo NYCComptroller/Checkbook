@@ -149,7 +149,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
         $CheckbookEtlStatus->expects($this->at(1))
             ->method('get_date')
             ->with($this->equalTo('H'))
-            ->will($this->returnValue('8'));
+            ->will($this->returnValue('9'));
         $CheckbookEtlStatus->expects($this->once())
             ->method('sendmail')
             ->will($this->returnValue('777'));
