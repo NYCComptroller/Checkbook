@@ -86,8 +86,8 @@ class CheckbookEtlStatus
             return false;
         }
 
-        if ($current_hour < 7 || $current_hour > 8) {
-            //error_log("ETL STATUS MAIL CRON skips. Reason: will run between 8 AM and 9 AM :: current hour: $current_hour");
+        if ($current_hour < 9 || $current_hour > 10) {
+            //error_log("ETL STATUS MAIL CRON skips. Reason: will run between 9 AM and 11 AM EST :: current hour: $current_hour");
             return false;
         }
 
