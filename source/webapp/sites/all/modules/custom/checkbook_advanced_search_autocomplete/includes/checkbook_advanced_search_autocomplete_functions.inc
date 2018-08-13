@@ -446,7 +446,7 @@ function _checkbook_advanced_search_autocomplete_spending_budgetname($year, $age
  * @param string $pay_frequency
  *   Selected Pay Frequency
  ***/
-function _checkbook_advanced_search_autocomplete_payroll_employee_name($pay_frequency, $agency, $year){
+function _checkbook_advanced_search_autocomplete_payroll_employee_name($pay_frequency, $agency, $year, $datasource){
     $searchTerm = _get_autocomplete_search_term();
     $query = 'select/?q=civil_service_title_autocomplete:'.$searchTerm.'&facet=true&facet.field=civil_service_title&fq=domain:payroll&facet.limit=10&wt=php';
     if(!empty($searchTerm)){
