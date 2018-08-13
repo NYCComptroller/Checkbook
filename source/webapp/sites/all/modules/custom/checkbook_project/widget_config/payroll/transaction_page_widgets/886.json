@@ -95,9 +95,9 @@
 
                 $sortingCol = $_REQUEST['iSortCol_0'];
                 if($sortingCol == 2){//annual sal
-                    array_unshift($config->orderBy, '-employment_type.employment_type');
+                    array_unshift($config->orderBy, '-type_of_employment');
                 }else if($sortingCol == 3){//hourly rate
-                    array_unshift($config->orderBy, 'employment_type.employment_type');
+                    array_unshift($config->orderBy, 'type_of_employment');
                 }
 
                $monthId = RequestUtilities::getRequestParamValue('month');
