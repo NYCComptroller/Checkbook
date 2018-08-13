@@ -685,10 +685,11 @@ class RequestUtil
                     $yeartype = RequestUtilities::getRequestParamValue("yeartype");
                 }
 
-                if (preg_match('/agency_landing/', current_path())) {
+                if (preg_match('/agency_landing/', current_path()) || Datasource::isNYCHA()) {
                     $path = "payroll/agency_landing/yeartype/" . $yeartype . "/year/" . $year;
                     $path .= _checkbook_project_get_url_param_string("title");
-                    $path .= "/agency/" . RequestUtilities::getRequestParamValue("agency");
+                    $path .= RequestUtilities::_getUrlParamString('agency');
+                    $path .= RequestUtilities::_getUrlParamString('datasource');
                 } else if (preg_match('/title_landing/', current_path())) {
                     $path = "payroll/title_landing/yeartype/" . $yeartype . "/year/" . $year;
                     $path .= _checkbook_project_get_url_param_string("agency");
@@ -708,9 +709,6 @@ class RequestUtil
                     } else { //NYC Level
                         $path = "payroll/yeartype/" . $yeartype . "/year/" . $year;
                     }
-                }
-                if(_checkbook_check_isNYCHAPage()){
-                    $path = $path.'/datasource/checkbook_nycha';
                 }
                 break;
             case "budget":
