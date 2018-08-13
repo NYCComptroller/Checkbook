@@ -796,7 +796,7 @@
                 agency = $("#edit-"+ data_source.replace("_", "-") +"-payroll-agencies").val() || 0;
 
                 $('#edit-payroll-employee-name').autocomplete({
-                    source: '/advanced-search/autocomplete/payroll/employee-name/' + pay_frequency + '/' + agency + '/' + year,
+                    source: '/advanced-search/autocomplete/payroll/employee-name/' + pay_frequency + '/' + agency + '/' + year + '/' + data_source,
                     select: function (event, ui) {
                         $(this).parent().next().val(ui.item.label);
                     }
@@ -808,7 +808,7 @@
                         data_source = $('input[name=payroll_advanced_search_domain_filter]:checked').val();
                         agency = $("#edit-"+ data_source.replace("_", "-") +"-payroll-agencies").val() || 0;
                         year = $('#edit-payroll-year').val() || 0;
-                        $('#edit-payroll-employee-name').autocomplete({source: '/advanced-search/autocomplete/payroll/employee-name/' + pay_frequency + '/' + agency + '/' + year});
+                        $('#edit-payroll-employee-name').autocomplete({source: '/advanced-search/autocomplete/payroll/employee-name/' + pay_frequency + '/' + agency + '/' + year + '/' + data_source});
                     });
                 });
 
