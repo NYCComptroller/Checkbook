@@ -296,6 +296,9 @@ class CheckbookEtlStatusModuleTest extends TestCase
             ],
             'connections' => false,
             'connection_keys' => CheckbookEtlStatus::CONNECTIONS_KEYS,
+            'solr_health_status' => [
+
+            ],
         ];
 
         $this->assertEquals('ETL Status: Fail (' . $this->fakeTodayYMD . ')', $message['subject']);
@@ -344,14 +347,16 @@ class CheckbookEtlStatusModuleTest extends TestCase
                 'hint' => $CheckbookEtlStatus->niceDisplayDateDiff($this->fakeToday),
                 'audit_status_timestamp' => $this->fakeTodayTimestamp,
                 'audit_status' => ['OK'],
+                'audit_status_time_diff' => $CheckbookEtlStatus->niceDisplayDateDiff($this->fakeToday),
             ],
             'prod_status' => [
                 'success' => true,
                 'data' => $this->fakeToday,
                 'hint' => $CheckbookEtlStatus->niceDisplayDateDiff($this->fakeToday),
             ],
-            'connections' => false,
+            'connections' => null,
             'connection_keys' => CheckbookEtlStatus::CONNECTIONS_KEYS,
+            'solr_health_status' => []
         ];
 
         $this->assertEquals('ETL Status: Success (' . $this->fakeTodayYMD . ')', $message['subject']);
@@ -423,6 +428,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
                 'hint' => $CheckbookEtlStatus->niceDisplayDateDiff($this->fakeToday),
                 'audit_status_timestamp' => $this->fakeTodayTimestamp,
                 'audit_status' => ['OK'],
+                'audit_status_time_diff' => $CheckbookEtlStatus->niceDisplayDateDiff($this->fakeToday),
             ],
             'prod_status' => [
                 'success' => true,
@@ -433,6 +439,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
                 'fakeKey' => $fakeConnectionsConfig
             ],
             'connection_keys' => CheckbookEtlStatus::CONNECTIONS_KEYS,
+            'solr_health_status' => []
         ];
 
         $this->assertEquals('ETL Status: Success (' . $this->fakeTodayYMD . ')', $message['subject']);
@@ -481,14 +488,16 @@ class CheckbookEtlStatusModuleTest extends TestCase
                 'hint' => $CheckbookEtlStatus->niceDisplayDateDiff($this->fakeToday),
                 'audit_status_timestamp' => $this->fakeTodayTimestamp,
                 'audit_status' => ['Not okay'],
+                'audit_status_time_diff' => $CheckbookEtlStatus->niceDisplayDateDiff($this->fakeToday),
             ],
             'prod_status' => [
                 'success' => true,
                 'data' => $this->fakeToday,
                 'hint' => $CheckbookEtlStatus->niceDisplayDateDiff($this->fakeToday),
             ],
-            'connections' => false,
+            'connections' => null,
             'connection_keys' => CheckbookEtlStatus::CONNECTIONS_KEYS,
+            'solr_health_status' => [],
         ];
 
         $this->assertEquals('ETL Status: Needs attention (' . $this->fakeTodayYMD . ')', $message['subject']);
@@ -546,8 +555,9 @@ class CheckbookEtlStatusModuleTest extends TestCase
                 'data' => $this->fakeToday,
                 'hint' => $CheckbookEtlStatus->niceDisplayDateDiff($this->fakeToday),
             ],
-            'connections' => false,
+            'connections' => null,
             'connection_keys' => CheckbookEtlStatus::CONNECTIONS_KEYS,
+            'solr_health_status' => [],
         ];
         $this->assertEquals($expected, $message['body']);
     }
@@ -613,6 +623,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
             ],
             'connections' => null,
             'connection_keys' => CheckbookEtlStatus::CONNECTIONS_KEYS,
+            'solr_health_status' => [],
         ];
         $this->assertEquals($expected, $message['body']);
     }
@@ -677,6 +688,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
             ],
             'connections' => null,
             'connection_keys' => CheckbookEtlStatus::CONNECTIONS_KEYS,
+            'solr_health_status' => [],
         ];
         $this->assertEquals($expected, $message['body']);
     }
@@ -744,6 +756,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
             ],
             'connections' => null,
             'connection_keys' => CheckbookEtlStatus::CONNECTIONS_KEYS,
+            'solr_health_status' => [],
         ];
         $this->assertEquals($expected, $message['body']);
     }
@@ -807,6 +820,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
             ],
             'connections' => null,
             'connection_keys' => CheckbookEtlStatus::CONNECTIONS_KEYS,
+            'solr_health_status' => [],
         ];
         $this->assertEquals($expected, $message['body']);
     }
@@ -857,6 +871,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
             ],
             'connections' => false,
             'connection_keys' => CheckbookEtlStatus::CONNECTIONS_KEYS,
+            'solr_health_status' => [],
         ];
         $this->assertEquals($expected, $message['body']);
     }
