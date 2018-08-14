@@ -54,7 +54,7 @@
       text-align: center;
     }
 
-    footer a:link, footer a:visited {
+    a:link, footer a:visited {
       color: #5b5b5b;
       text-decoration: none;
     }
@@ -109,6 +109,16 @@
   foreach ([$prod_status, $uat_status] as $json):
     if ($json['audit_status_timestamp'] && $json['audit_status']): ?>
         <table class="file" cellpadding="5">
+            <?php if(['OK'] == $json['audit_status']):?>
+            <tbody>
+            <tr class="odd">
+                <td>
+                    <strong>PROD-UAT Match</strong> ✅
+                    <?php echo $json['audit_status_time_diff']; ?>
+                </td>
+            </tr>
+            </tbody>
+            <?php else: ?>
             <thead>
             <tr class="filename">
                 <th colspan="<?php echo sizeof($json['audit_status'][0]) ?>">
@@ -120,10 +130,16 @@
             <tbody>
             <tr class="odd">
                 <td>
+                    <strong>PROD-UAT Match</strong> ❌ <br />
+                </td>
+            </tr>
+            <tr class="even">
+                <td>
                     <?php echo json_encode($json['audit_status']); ?>
                 </td>
             </tr>
             </tbody>
+            <?php endif; ?>
         </table>
         <br/>
         <br/>
@@ -162,6 +178,33 @@
   endforeach; ?>
   <br/>
   <br/>
+    <?php if(!empty($solr_health_status)):
+        $i = 0;
+    ?>
+    <table class="dbconnections" cellpadding="3">
+        <thead>
+        <tr>
+            <th colspan="2">
+                SOLR HEALTH STATUS
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($solr_health_status as $solrServer => $cores): ?>
+            <?php foreach ($cores as $core => $health): ?>
+                <tr class="<?php echo($i++ % 2 ? 'even' : 'odd'); ?>">
+                    <?php if($i % 2): ?>
+                        <th class="env" rowspan="2"><?php echo $solrServer; ?></th>
+                    <?php endif; ?>
+                    <th><?php echo "<a target='_blank' href='{$health['url']}'>{$core}</a>"; ?></th>
+                    <td>
+                        <?php echo ('OK' == $health['status'] ? '✅' : ('❌ </br >'.$health['status'])); ?>
+                </tr>
+            <?php endforeach; ?>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+    <?php endif; ?>
   <br/>
   <br/>
   <br/>

@@ -144,6 +144,9 @@ class CheckbookEtlStatus
         if (!$date) {
             return 'never';
         }
+        if (is_numeric($date)) {
+            $date = date('c', $date);
+        }
         $date1 = date_create($date);
         $interval = date_diff($date1, date_create($this->get_date("Y-m-d H:i:s")));
         return $interval->format('%a day(s) %h hour(s) ago');
@@ -222,6 +225,7 @@ class CheckbookEtlStatus
                 }
             } else {
                 $allGood = ['OK'];
+                $data['audit_status_time_diff'] = $this->niceDisplayDateDiff($data['audit_status_timestamp']);
                 if (($allGood !== $data['audit_status']) && ('Success' == $this->successSubject)) {
                     $this->successSubject = 'Needs attention';
                 }
@@ -257,6 +261,28 @@ class CheckbookEtlStatus
         return $return;
     }
 
+    public function getSolrHealthStatus()
+    {
+        global $conf;
+        $solr_health = [];
+        if (empty($conf['check_book']['solr23']) || empty($conf['check_book']['solr24'])) {
+            return $solr_health;
+        }
+        foreach (['solr23', 'solr24'] as $server) {
+            foreach ($conf['check_book'][$server] as $core => $url) {
+                try {
+                    $health = $this->get_contents($url . 'admin/ping?wt=json');
+                    $solr_health[$server][$core]['status'] = json_decode($health, true)['status'];
+                } catch (Exception $e) {
+                    $solr_health[$server][$core]['status'] = $e->getMessage();
+                }
+                $solr_health[$server][$core]['url'] = $url . 'admin/ping';
+            }
+        }
+
+        return $solr_health;
+    }
+
     /**
      * @param $message
      * @return bool
@@ -266,12 +292,14 @@ class CheckbookEtlStatus
         $uat_status = $this->formatStatus($this->getUatStatus());
         $prod_status = $this->formatStatus($this->getProdStatus());
         $connections = $this->getConnectionConfigs();
+        $solr_health_status = $this->getSolrHealthStatus();
 
         $message['body'] =
             [
                 'uat_status' => $uat_status,
                 'prod_status' => $prod_status,
                 'subject' => $this->successSubject,
+                'solr_health_status' => $solr_health_status,
                 'connections' => $connections,
                 'connection_keys' => self::CONNECTIONS_KEYS,
             ];
