@@ -376,6 +376,35 @@
         }
     }
 
+    $.fn.subVendorStatusInPipChange = function(sub_vendor_status, includes_sub_vendors){
+        var valid_status = [6,1,4,3,2,5];
+        if($.inArray(sub_vendor_status, valid_status)) {
+            if(includes_sub_vendors == 2){
+                $('#edit-contract_includes_sub_vendors_id').html('<option value="0">Select Status</option>' +
+                    '<option value="2" selected>Yes</option>');
+            } else {
+                $('#edit-contract_includes_sub_vendors_id').html('<option value="0" selected>Select Status</option>' +
+                    '<option value="2">Yes</option>');
+            }
+        }
+
+        if(sub_vendor_status == 0) {
+            if(includes_sub_vendors == 2){
+                $('#edit-contract_includes_sub_vendors_id').html('<option value="0">Select Status</option>' +
+                    '<option value="2" selected>Yes</option>' +
+                    '<option value="3">No</option>' +
+                    '<option value="1">No Data Entered</option>' +
+                    '<option value="4">Not Required</option>');
+            } else {
+                $('#edit-contract_includes_sub_vendors_id').html('<option value="0" selected>Select Status</option>' +
+                    '<option value="2">Yes</option>' +
+                    '<option value="3">No</option>' +
+                    '<option value="1">No Data Entered</option>' +
+                    '<option value="4">Not Required</option>');
+            }
+        }
+    }
+
     Drupal.behaviors.contractsDataFeeds = {
         attach:function (context, settings) {
 
@@ -396,37 +425,14 @@
             // Display multi-select
             $.fn.hideShow(csval, catval);
 
+            // Enable/disable and add/remove options in 'Contracts Include SubVendors' and 'SubVendor Status in PIP' drop-downs
+            $.fn.subVendorStatusInPipChange($('#edit-sub_vendor_status_in_pip_id', context).val(), $('#edit-contract_includes_sub_vendors_id', context).val());
+
             //On change of "Sub Vendor Status in PIP" status
             $('#edit-sub_vendor_status_in_pip_id', context).change(function() {
                 var sub_vendor_status = $('#edit-sub_vendor_status_in_pip_id', context).val();
                 var includes_sub_vendors = $('#edit-contract_includes_sub_vendors_id', context).val();
-                var valid_status = [6,1,4,3,2,5];
-
-                if($.inArray(sub_vendor_status, valid_status)) {
-                    if(includes_sub_vendors == 2){
-                        $('#edit-contract_includes_sub_vendors_id', context).html('<option value="0">Select Status</option>' +
-                            '<option value="2" selected>Yes</option>');
-                    } else {
-                        $('#edit-contract_includes_sub_vendors_id', context).html('<option value="0" selected>Select Status</option>' +
-                            '<option value="2">Yes</option>');
-                    }
-                }
-
-                if(sub_vendor_status == 0) {
-                    if(includes_sub_vendors == 2){
-                        $('#edit-contract_includes_sub_vendors_id', context).html('<option value="0">Select Status</option>' +
-                            '<option value="2" selected>Yes</option>' +
-                            '<option value="3">No</option>' +
-                            '<option value="1">No Data Entered</option>' +
-                            '<option value="4">Not Required</option>');
-                    } else {
-                        $('#edit-contract_includes_sub_vendors_id', context).html('<option value="0" selected>Select Status</option>' +
-                            '<option value="2">Yes</option>' +
-                            '<option value="3">No</option>' +
-                            '<option value="1">No Data Entered</option>' +
-                            '<option value="4">Not Required</option>');
-                    }
-                }
+                $.fn.subVendorStatusInPipChange(sub_vendor_status, includes_sub_vendors);
             });
 
             //Data Source change event
