@@ -737,22 +737,33 @@
                     var sub_vendor_status = div.ele('sub_vendor_status').val();
                     var includes_sub_vendors = div.ele('includes_sub_vendors').val();
 
-                    if (['0','1', '2', '3', '4', '5', '6'].includes(sub_vendor_status)) {
+                    if (['1', '2', '3', '4', '5', '6'].includes(sub_vendor_status)) {
                         if (includes_sub_vendors === '2') {
                             div.ele('includes_sub_vendors').html('<option value="0">Select Status</option>' +
                                 '<option value="2" selected>Yes</option>');
-                        } else if(sub_vendor_status==='0'){
+                        }
+                        else {
+                            div.ele('includes_sub_vendors').html('<option value="0" selected>Select Status</option>' +
+                                '<option value="2">Yes</option>');
+                        }
+                    }
+                    if(sub_vendor_status === '0') {
+                        if (includes_sub_vendors === '2') {
+                            div.ele('includes_sub_vendors').html('<option value="0">Select Status</option>' +
+                                '<option value="2" selected>Yes</option>' +
+                                '<option value="3">No</option>' +
+                                '<option value="1">No Data Entered</option>' +
+                                '<option value="4">Not Required</option>');
+                        }
+                        else if (sub_vendor_status === '0') {
                             div.ele('includes_sub_vendors').html('<option value="0" selected>Select Status</option>' +
                                 '<option value="2">Yes</option>' +
                                 '<option value="3">No</option>' +
                                 '<option value="1">No Data Entered</option>' +
                                 '<option value="4">Not Required</option>');
                         }
-                        else
-                            {
-                                div.ele('includes_sub_vendors').html('<option value="0" selected>Select Status</option>' +
-                                    '<option value="2">Yes</option>');
-                            }
+                    }
+
 
 
                     }
@@ -765,7 +776,7 @@
                             '<option value="4">Not Required</option>');
                     });
                 }
-            }
+
 
 // advanced-search-payroll
             function advanced_search_payroll_init() {
@@ -2379,7 +2390,7 @@
 
         //upon 'Incudes Sub Vendor' change
         var includes_sub_vendors = $('select[name="'+contracts_data_source+'_contracts_includes_sub_vendors"]').val();
-        if(includes_sub_vendors === '3' || includes_sub_vendors === '1') {
+        if(includes_sub_vendors === '3' || includes_sub_vendors === '1' ) {
             $('select[name="'+contracts_data_source+'_contracts_sub_vendor_status"]').attr("disabled", "disabled");
         }
 
