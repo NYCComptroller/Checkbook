@@ -694,7 +694,7 @@ function _checkbook_advanced_search_payroll_submit($form, &$form_state)
     }
 
     if($data_source == 'checkbook_oge'){
-        $redirect_url .= '/datasource/checkbook_nycha';
+        $redirect_url .= '/datasource/checkbook_nycha'.Datasource::getNYCHAUrl();
     }
 
     if ($payroll_amount_type == 0) {
