@@ -1435,12 +1435,13 @@ function checkbook_datafeeds_contracts($form, &$form_state)
         '#id' => 'edit-column-select-oge-expense',
         '#default_value' => !empty($form_state['values']['column_select']) ? $form_state['values']['column_select'] : '',
     );
-    $form['columns']['column_select'] = array(
+
+    //Hidden Fields for multi-select
+    $form['columns']['hidden_multiple_value'] = array(
         '#value' => isset($form_state['values']['column_select']) ? '|'.implode('||',$form_state['values']['column_select']).'|' : '',
         '#type' => 'hidden',
     );
-    //Hidden Field for multi-select
-    $form['columns']['hidden_multiple_value'] = array(
+    $form['columns']['column_select'] = array(
         '#value' => isset($form_state['values']['column_select']) ? '|'.implode('||',$form_state['values']['column_select']).'|' : '',
         '#type' => 'hidden',
     );
