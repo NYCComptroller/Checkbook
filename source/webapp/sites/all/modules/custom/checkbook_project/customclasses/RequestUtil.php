@@ -690,6 +690,9 @@ class RequestUtil
                     $path .= _checkbook_project_get_url_param_string("title");
                     $path .= RequestUtilities::_getUrlParamString('agency');
                     $path .= RequestUtilities::_getUrlParamString('datasource');
+                    if(!RequestUtilities::getRequestParamValue("agency") && Datasource::isNYCHA()){
+                        $path .= Datasource::getNYCHAUrl();
+                    }
                 } else if (preg_match('/title_landing/', current_path())) {
                     $path = "payroll/title_landing/yeartype/" . $yeartype . "/year/" . $year;
                     $path .= _checkbook_project_get_url_param_string("agency");
