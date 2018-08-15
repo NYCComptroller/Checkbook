@@ -538,6 +538,7 @@
                     resetFields(div_checkbook_contracts.contents());
                     resetFields(div_checkbook_contracts_oge.contents());
 
+
                     /* Initialize the disabled fields */
                     onStatusChange(div_checkbook_contracts);
                     onStatusChange(div_checkbook_contracts_oge);
@@ -570,6 +571,9 @@
                             initializeContractsView(div_checkbook_contracts);
                             div_checkbook_contracts.contents().show();
                             div_checkbook_contracts_oge.contents().hide();
+                            //handle attributes
+                            div_checkbook_contracts.ele('sub_vendor_status').val('0');
+                            updateIncludeSubvendorsField(div_checkbook_contracts);
                             showHidePrimeAndSubFields(div_checkbook_contracts);
 
 
@@ -701,6 +705,7 @@
                     } else {
                         div.ele('includes_sub_vendors').removeAttr("disabled");
                         div.ele('sub_vendor_status').removeAttr("disabled");
+
                     }
                 }
 
