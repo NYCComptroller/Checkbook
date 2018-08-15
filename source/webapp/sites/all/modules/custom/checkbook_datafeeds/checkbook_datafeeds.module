@@ -1435,8 +1435,13 @@ function checkbook_datafeeds_contracts($form, &$form_state)
         '#id' => 'edit-column-select-oge-expense',
         '#default_value' => !empty($form_state['values']['column_select']) ? $form_state['values']['column_select'] : '',
     );
-    //Hidden Field for multi-select
+
+    //Hidden Fields for multi-select
     $form['columns']['hidden_multiple_value'] = array(
+        '#value' => isset($form_state['values']['column_select']) ? '|'.implode('||',$form_state['values']['column_select']).'|' : '',
+        '#type' => 'hidden',
+    );
+    $form['columns']['column_select'] = array(
         '#value' => isset($form_state['values']['column_select']) ? '|'.implode('||',$form_state['values']['column_select']).'|' : '',
         '#type' => 'hidden',
     );
@@ -1903,7 +1908,6 @@ function _checkbook_datafeeds_contracts_column_options($data_source, $status, $c
  *   Data Feeds wizard form_state array
  */
 function checkbook_datafeeds_contracts_next_submit($form, &$form_state) {
-
     $current_step = & $form_state['step'];
     $form_state['step_information'][$current_step]['stored_values'] = $form_state['values'];
     $current_step = 'contracts_confirmation';
