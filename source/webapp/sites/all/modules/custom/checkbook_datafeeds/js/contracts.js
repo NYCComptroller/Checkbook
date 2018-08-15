@@ -403,6 +403,7 @@
                     '<option value="4">Not Required</option>');
             }
         }
+        $('#edit-contract_includes_sub_vendors_id').val(includes_sub_vendors);
     }
 
     Drupal.behaviors.contractsDataFeeds = {
@@ -424,7 +425,6 @@
 
             // Display multi-select
             $.fn.hideShow(csval, catval);
-
             // Enable/disable and add/remove options in 'Contracts Include SubVendors' and 'SubVendor Status in PIP' drop-downs
             $.fn.subVendorStatusInPipChange($('#edit-sub_vendor_status_in_pip_id', context).val(), $('#edit-contract_includes_sub_vendors_id', context).val());
 
