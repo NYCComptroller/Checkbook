@@ -281,10 +281,9 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
           'checkbook:month',
           'checkbook:category',
         ];
-        $cacheKey = $cacheDatasets.md5($sql);
+        $cacheKey = '_'.$datasetName.'_'.md5($sql);
         if(in_array($datasetName, $cacheDatasets)) {
           if ($result = _checkbook_dmemcache_get($cacheKey)) {
-            LogHelper::log_info($datasetName.' :: CACHE HIT!');
             return $result;
           }
         }
@@ -500,7 +499,6 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
 
         $cacheKey = $cubeName . md5($sql);
         if ($return = _checkbook_dmemcache_get($cacheKey)) {
-            LogHelper::log_info($cubeName . ' :: CACHE HIT!');
             return $return;
         }
 
@@ -598,7 +596,6 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
 
         $cacheKey = 'count_'.md5(serialize([$datasource->name, $sql]));
         if ($count = _checkbook_dmemcache_get($cacheKey)) {
-            LogHelper::log_info($cacheKey.' CACHE HIT!');
             return $count;
         }
         $records = $this->executeQuery($callcontext, $datasource, $sql, new PassthroughResultFormatter());

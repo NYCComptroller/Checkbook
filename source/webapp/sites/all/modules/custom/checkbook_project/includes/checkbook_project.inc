@@ -1814,7 +1814,7 @@ function _checkbook_project_execute_sql($sql, $db_name = "main", $data_source = 
     $cacheKey = '_checkbook_query_'.md5($sql.$db_name.$data_source);
     if ($result = _checkbook_dmemcache_get($cacheKey)) {
       LogHelper::log_info($sql);
-      LogHelper::log_info($cacheKey.' :: CACHE HIT! ('.sizeof($result).' records)');
+      LogHelper::log_info(' PROCESSED CACHED ('.sizeof($result).' records)');
       return $result;
     }
 
@@ -2113,22 +2113,20 @@ function _get_num_from_string($string)
  */
 function _checkbook_max_data_year()
 {
-  if (function_exists('_checkbook_max_data_year_test')) {
 //    phpunit
-    return _checkbook_max_data_year_test();
-  }
-    if ($result = _checkbook_dmemcache_get('_checkbook_max_data_year')) {
-      LogHelper::log_info('_checkbook_max_data_year :: CACHE HIT!');
-      return $result;
+    if (function_exists('_checkbook_max_data_year_test')) {
+        return _checkbook_max_data_year_test();
     }
-    $query = "select type_of_year, max(year) year_value , max(year_id) year_id from {transactions_data_by_year} t join ref_year y on t.year = y.year_value group by type_of_year
-  order by type_of_year ";
-  $result = _checkbook_project_execute_sql($query);
-  $result = array("year_value" => $result[0]['year_value'], "year_id" => $result[0]['year_id'],
-    "cal_year_value" => $result[1]['year_value'], "cal_year_id" => $result[1]['year_id']);
-  _checkbook_dmemcache_set('_checkbook_max_data_year', $result);
-  return $result;
 
+    $query = "select type_of_year, max(year) year_value , max(year_id) year_id
+                  from {transactions_data_by_year} t
+                  join ref_year y on t.year = y.year_value
+              group by type_of_year
+              order by type_of_year ";
+    $result = _checkbook_project_execute_sql($query);
+    $result = array("year_value" => $result[0]['year_value'], "year_id" => $result[0]['year_id'],
+        "cal_year_value" => $result[1]['year_value'], "cal_year_id" => $result[1]['year_id']);
+    return $result;
 }
 
 /*
@@ -2538,15 +2536,21 @@ function _checkbook_agency_link($agency_id, $prime = FALSE){
 
 function _checkbook_dmemcache_get($key, $bin = 'cache', $mc = NULL)
 {
+//    MOCK CACHE FOR PHPUNIT
     if (defined('PHPUNIT_RUNNING') && PHPUNIT_RUNNING) {
         global $phpunit_cache;
         return !empty($phpunit_cache[$key]) ? $phpunit_cache[$key] : false;
     }
+//    NO CACHE FOR ADMINS
     if (user_is_logged_in()) {
         return false;
     }
     if (function_exists('dmemcache_get')) {
-        return dmemcache_get($key, $bin, $mc);
+        $return = dmemcache_get($key, $bin, $mc);
+        if ($return) {
+            LogHelper::log_info($key . ' CACHE HIT! '.md5(json_encode($return)));
+        }
+        return $return;
     }
     LogHelper::log_warn('could not find dmemcache_get() function, try enabling memcache');
     return false;
@@ -2563,7 +2567,11 @@ function _checkbook_dmemcache_set($key, $value, $exp = 54000, $bin = 'cache', $m
         return false;
     }
     if (function_exists('dmemcache_set')) {
-        return dmemcache_set($key, $value, $exp, $bin, $mc);
+        $return = dmemcache_set($key, $value, $exp, $bin, $mc);
+        if ($return) {
+            LogHelper::log_info($key . ' CACHED NOW! '.md5(json_encode($value)));
+        }
+        return $return;
     }
     LogHelper::log_warn('could not find dmemcache_set() function, try enabling memcache');
     return false;

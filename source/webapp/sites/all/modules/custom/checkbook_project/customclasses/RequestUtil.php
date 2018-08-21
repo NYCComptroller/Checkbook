@@ -1232,7 +1232,6 @@ class RequestUtil
         $cacheKey = '_top_nav_count_'.md5($sql);
         $count = _checkbook_dmemcache_get($cacheKey);
         if (null !== $count) {
-          LogHelper::log_info($cacheKey.' CACHE HIT!');
           return $count;
         }
         $data = _checkbook_project_execute_sql($sql);

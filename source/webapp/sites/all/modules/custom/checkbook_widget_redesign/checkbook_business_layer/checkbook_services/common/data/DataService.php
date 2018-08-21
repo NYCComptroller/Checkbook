@@ -78,7 +78,6 @@ abstract class DataService implements IDataService {
         LogHelper::log_info("Get By DataSet: ".$fnData);
         $cacheKey = 'get_by_dataset_'.md5(serialize([$parameters, $limit, $orderBy, $fnData]));
         if ($data = _checkbook_dmemcache_get($cacheKey)) {
-          LogHelper::log_info($cacheKey.' CACHE HIT!');
           return $data;
         }
         $data = $this->getRepository()->getByDataset($parameters, $limit, $orderBy, $fnData);
@@ -92,7 +91,6 @@ abstract class DataService implements IDataService {
         LogHelper::log_info("Get By RecordCount: ".$fnData);
         $cacheKey = 'get_by_record_count_'.md5(serialize([$parameters, $fnData]));
         if ($data = _checkbook_dmemcache_get($cacheKey)) {
-          LogHelper::log_info($cacheKey.' CACHE HIT!');
           return $data;
         }
         $data = $this->getRepository()->getByDatasetRowCount($parameters, $fnData);
