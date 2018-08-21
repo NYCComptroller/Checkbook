@@ -265,14 +265,7 @@ class MappingUtil {
                        ' . $where_filter . '
                         group by a1.minority_type_id  ';
 
-                $cacheKey = 'minority_spending_'.md5($sql);
-                $data = _checkbook_dmemcache_get($cacheKey);
-                if ($data) {
-                  LogHelper::log_info('minority_spending_ :: CACHE HIT!');
-                } else {
-                  $data = _checkbook_project_execute_sql($sql);
-                  _checkbook_dmemcache_set($cacheKey, $data);
-                }
+                $data = _checkbook_project_execute_sql($sql);
 
                 break;
             case "contracts":
@@ -303,14 +296,7 @@ class MappingUtil {
                        ' . $where_filter . '
                         group by a1.minority_type_id';
 
-                $cacheKey = 'minority_contracts_'.md5($sql);
-                $data = _checkbook_dmemcache_get($cacheKey);
-                if ($data) {
-                  LogHelper::log_info('minority_contracts_ :: CACHE HIT!');
-                } else {
-                  $data = _checkbook_project_execute_sql($sql);
-                  _checkbook_dmemcache_set($cacheKey, $data);
-                }
+                $data = _checkbook_project_execute_sql($sql);
 
                 break;
         }
