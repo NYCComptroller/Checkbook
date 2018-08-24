@@ -8,4 +8,4 @@ source/tests/functional/NYCAutomationTest/*.xls
 .metadata/
 .recommenders/
 tmp/
-/nbproject/private/
+/nbproject/
