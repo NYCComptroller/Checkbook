@@ -8,18 +8,14 @@
 
 class payrollDetails {
 
+    /**
+     * @param $node
+     * @throws Exception
+     */
     public function getData(&$node){
 
-        $year_type = RequestUtilities::getRequestParamValue("yeartype");
-        $year = RequestUtilities::getRequestParamValue("year");
-        $title = RequestUtilities::getRequestParamValue("title");
-        $agency = RequestUtilities::getRequestParamValue("agency");
-        $month = RequestUtilities::getRequestParamValue("month");
-        $smnid = RequestUtilities::getRequestParamValue("smnid");
-
-        if($year_type == 'C' && !isset($year)) {
-            $year = RequestUtilities::getRequestParamValue("calyear");
-        }
+        list ($year_type, $year, $title) = RequestUtilities::get(['yeartype', 'year|calyear', 'title']);
+        list ($agency, $month, $smnid) = RequestUtilities::get(['agency', 'month', 'smnid']);
 
         $dataset = 'aggregateon_payroll_employee_agency';
         $where = $sub_query_where = "";
@@ -194,6 +190,7 @@ class payrollDetails {
      * @param null $month
      * @param null $agency
      * @param null $title
+     * @param null $employee_id
      * @return int
      */
     public function getMaxAnnualSalary($year, $year_type, $month = NULL, $agency = NULL, $title = NULL, $employee_id = NULL)
@@ -261,7 +258,8 @@ class payrollDetails {
      * @param null $month
      * @param null $agency
      * @param null $title
-     * @return int
+     * @param null $employee_id
+     * @return array
      */
     public function getMaxAnnualSalaryByPayFrequency($year, $year_type, $month = NULL, $agency = NULL, $title = NULL, $employee_id = NULL)
     {

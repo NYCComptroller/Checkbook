@@ -323,7 +323,7 @@ function _checkbook_alerts_get_node_config(){
 
   $_GET['q']=urldecode(check_plain($_GET['refURL']));
 
-  $nodeId = RequestUtilities::getRequestParamValue('node');
+  $nodeId = RequestUtilities::get('node');
 
   $node = node_load($nodeId);
 

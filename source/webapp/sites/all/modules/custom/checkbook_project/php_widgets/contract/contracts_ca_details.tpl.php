@@ -19,7 +19,7 @@
 */
 
 
-if (RequestUtilities::getRequestParamValue("datasource") == "checkbook_oge") {
+if (RequestUtilities::get("datasource") == "checkbook_oge") {
   $oge_class = "oge-ca-details";
 } else {
   $oge_class = "cb-ca-details";
@@ -29,24 +29,24 @@ $vendor_link = _checkbook_vendor_link($node->data[0]['vendor_id_checkbook_vendor
 $agency_link = _checkbook_agency_link($node->data[0]['agency_id_checkbook_agency']);
 
 $datasource = '';
-if ('checkbook_oge' == RequestUtilities::getRequestParamValue("datasource")) {
+if ('checkbook_oge' == RequestUtilities::get("datasource")) {
   $datasource = "/datasource/checkbook_oge";
 }
 
-$spending_link = "/spending/transactions/agid/" . RequestUtilities::getRequestParamValue("agid") . $datasource.  "/newwindow";
+$spending_link = "/spending/transactions/agid/" . RequestUtilities::get("agid") . $datasource.  "/newwindow";
 ?>
 <div class="contract-details-heading <?php echo $oge_class ;?>">
   <div class="contract-id">
     <h2 class="contract-title">Contract ID: <span
       class="contract-number"><?php echo $node->data[0]['contract_number'];?></span></h2>
 	<?php
-    if ( RequestUtilities::getRequestParamValue("datasource") == "checkbook_oge" && !preg_match('/newwindow/',$_GET['q']) && $node->data_source_amounts_differ) {
+    if ( RequestUtilities::get("datasource") == "checkbook_oge" && !preg_match('/newwindow/',$_GET['q']) && $node->data_source_amounts_differ) {
 			$alt_txt = "This contract agreement has addtional information as a prime vendor. <br><br> Click this icon to view this contract as a prime vendor. ";
-			$url="/contract_details/agid/" .  RequestUtilities::getRequestParamValue("agid") . "/doctype/CTA1/newwindow";
+			$url="/contract_details/agid/" .  RequestUtilities::get("agid") . "/doctype/CTA1/newwindow";
 			echo "<div class='contractLinkNote contractIcon'><a class='new_window' href='". $url ."' alt='" . $alt_txt . "'  >View as Vendor</a></div>";
     }elseif( !preg_match('/newwindow/',$_GET['q']) && _checkbook_is_oge_contract($node->data[0]['contract_number']) && $node->data_source_amounts_differ){
 			$alt_txt = "This contract agreement has addtional information as agency <br><br> Click this icon to view this contract as an agency ";
-			$url="/contract_details/agid/" .  RequestUtilities::getRequestParamValue("agid") . "/doctype/CTA1/datasource/checkbook_oge/newwindow";
+			$url="/contract_details/agid/" .  RequestUtilities::get("agid") . "/doctype/CTA1/datasource/checkbook_oge/newwindow";
 			echo "<div class='contractLinkNote contractIcon'><a class='new_window' href='". $url ."' alt='" . $alt_txt . "'  >View as agency</a></div>";
 		}
 	?>
@@ -68,8 +68,8 @@ if(!preg_match("/newwindow/",current_path())){
   $newwindowclass= 'class="new_window"';
 }
 
-$original_contract_amount =  ( RequestUtilities::getRequestParamValue("datasource") == "checkbook_oge") ? $node->original_contract_amount:$node->data[0]['original_contract_amount'];
-$maximum_contract_amount =  ( RequestUtilities::getRequestParamValue("datasource") == "checkbook_oge") ? $node->maximum_contract_amount:$node->data[0]['maximum_contract_amount'];
+$original_contract_amount =  ( RequestUtilities::get("datasource") == "checkbook_oge") ? $node->original_contract_amount:$node->data[0]['original_contract_amount'];
+$maximum_contract_amount =  ( RequestUtilities::get("datasource") == "checkbook_oge") ? $node->maximum_contract_amount:$node->data[0]['maximum_contract_amount'];
 
 ?>
 
@@ -103,11 +103,11 @@ $maximum_contract_amount =  ( RequestUtilities::getRequestParamValue("datasource
 </div>
 
 <div class="contract-information <?php echo $oge_class ;?>">
-  <div class="contract-details <?php echo ( RequestUtilities::getRequestParamValue("datasource") == "checkbook_oge")? "oge-cta-contract ":"" ; ?>">
+  <div class="contract-details <?php echo ( RequestUtilities::get("datasource") == "checkbook_oge")? "oge-cta-contract ":"" ; ?>">
     <h4>General Information</h4>
     <ul class="left">
     <?php
-    if ( RequestUtilities::getRequestParamValue("datasource") == "checkbook_oge") {
+    if ( RequestUtilities::get("datasource") == "checkbook_oge") {
     ?>
         <li><span class="gi-list-item">Contracting Agency:</span>
             <?php echo $node->data[0]['agency_name_checkbook_agency'];?></li>
@@ -126,7 +126,7 @@ $maximum_contract_amount =  ( RequestUtilities::getRequestParamValue("datasource
       <li><span class="gi-list-item">Contract Type:</span> <?php echo $node->data[0]['agreement_type_name'];?></li>
 
      <?php
-    if ( RequestUtilities::getRequestParamValue("datasource") != "checkbook_oge") {
+    if ( RequestUtilities::get("datasource") != "checkbook_oge") {
     ?>
       <li><span class="gi-list-item">Contracting Agency:</span>
           <?php if(!preg_match('/newwindow/',$_GET['q'])){ ?>
@@ -139,7 +139,7 @@ $maximum_contract_amount =  ( RequestUtilities::getRequestParamValue("datasource
       <li><span
         class="gi-list-item">Award Method:</span> <?php echo $node->data[0]['award_method_name_checkbook_award_method'];?>
       </li>
-      <?php if ( RequestUtilities::getRequestParamValue("datasource") != "checkbook_oge") { ?>
+      <?php if ( RequestUtilities::get("datasource") != "checkbook_oge") { ?>
       <li><span class="gi-list-item">Version Number:</span> <?php echo $node->data[0]['document_version'];?></li>
       <?php } ?>
       <li><span
@@ -159,7 +159,7 @@ $maximum_contract_amount =  ( RequestUtilities::getRequestParamValue("datasource
       <li><span class="gi-list-item">End
           Date:</span> <?php echo format_string_to_date($node->data[0]['date_checkbk_date_id_effctv_end_date_id_chckbk_history_agrmnt_1']);?>
       </li>
-      <?php if ( RequestUtilities::getRequestParamValue("datasource") != "checkbook_oge") { ?>
+      <?php if ( RequestUtilities::get("datasource") != "checkbook_oge") { ?>
       <li><span class="gi-list-item">Registration
           Date:</span> <?php echo format_string_to_date($node->data[0]['date_chckbk_date_id_rgstrd_date_id_checkbook_history_agreemnt_2']);?>
       </li>
@@ -169,7 +169,7 @@ $maximum_contract_amount =  ( RequestUtilities::getRequestParamValue("datasource
     </ul>
   </div>
     <?php
-    if ( RequestUtilities::getRequestParamValue("datasource") != "checkbook_oge") {
+    if ( RequestUtilities::get("datasource") != "checkbook_oge") {
             echo '<div class="contract-vendor-details">';
 	    $nid = 439;
 	    $node = node_load($nid);

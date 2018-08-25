@@ -17,9 +17,9 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-$smnid = RequestUtilities::getRequestParamValue('smnid');
-$dashboard= RequestUtilities::getRequestParamValue('dashboard');
-$contactStatus = RequestUtilities::getRequestParamValue('contstatus');
+$smnid = RequestUtilities::get('smnid');
+$dashboard= RequestUtilities::get('dashboard');
+$contactStatus = RequestUtilities::get('contstatus');
 $bottomNavigation = "";
 if ($contactStatus == 'A') {
     $contactStatusLabel = 'Active';
@@ -39,7 +39,7 @@ if($dashboard == 'ms' || $dashboard == 'sp'){
     else
      $bottomNavigation = "New M/WBE Sub Vendor Contracts by Fiscal Year";
 }
-$contactCategory = RequestUtilities::getRequestParamValue('contcat');
+$contactCategory = RequestUtilities::get('contcat');
 $contactCategoryLabel = 'Expense';
 if ($contactCategory == 'revenue') {
   $contactCategoryLabel = 'Revenue';

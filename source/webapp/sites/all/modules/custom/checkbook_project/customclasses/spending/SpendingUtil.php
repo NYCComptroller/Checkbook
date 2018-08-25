@@ -141,10 +141,10 @@ class SpendingUtil{
      */
     static function getSpendingLinkUrl($node, $row){
         return '/panel_html/spending_transactions/spending/transactions'
-        . _checkbook_project_get_url_param_string("agency")
-        . _checkbook_project_get_url_param_string("vendor")
-        . _checkbook_project_get_url_param_string("category")
-        . _checkbook_project_get_url_param_string("industry")
+        . RequestUtilities::buildUrlFromParam('agency')
+        . RequestUtilities::buildUrlFromParam('vendor')
+        . RequestUtilities::buildUrlFromParam('category')
+        . RequestUtilities::buildUrlFromParam('industry')
         . '/dtsmnid/' . $node->nid
         . _checkbook_project_get_year_url_param_string(false,false,true)
         . _checkbook_append_url_params();
@@ -188,10 +188,10 @@ class SpendingUtil{
     static function getSubVendorNameLinkUrl($node, $row){
         $override_params = null;
         $vendor_id = isset($row["sub_vendor_sub_vendor"]) ? $row["sub_vendor_sub_vendor"] : $row["vendor_id"];
-        $year_id = RequestUtilities::getRequestParamValue("year");
-        $year_type = RequestUtilities::getRequestParamValue("yeartype");
-        $agency_id = RequestUtilities::getRequestParamValue("agency");
-        $dashboard = RequestUtilities::getRequestParamValue("dashboard");
+        $year_id = RequestUtilities::get("year");
+        $year_type = RequestUtilities::get("yeartype");
+        $agency_id = RequestUtilities::get("agency");
+        $dashboard = RequestUtilities::get("dashboard");
 
         return self::getSubVendorLink($vendor_id, $agency_id, $year_id, $year_type, $dashboard);
     }
@@ -209,11 +209,11 @@ class SpendingUtil{
         if(!isset($vendor_id)) {
             $vendor_id = isset($row["vendor_id"]) ? $row["vendor_id"] : $row["vendor_vendor"];
         }
-        $year_id = RequestUtilities::getRequestParamValue("year");
-        $year_type = RequestUtilities::getRequestParamValue("yeartype");
-        $agency_id = RequestUtilities::getRequestParamValue("agency");
-        $dashboard = RequestUtilities::getRequestParamValue("dashboard");
-        $datasource = RequestUtilities::getRequestParamValue("datasource");
+        $year_id = RequestUtilities::get("year");
+        $year_type = RequestUtilities::get("yeartype");
+        $agency_id = RequestUtilities::get("agency");
+        $dashboard = RequestUtilities::get("dashboard");
+        $datasource = RequestUtilities::get("datasource");
 
         return self::getPrimeVendorLink($vendor_id, $agency_id, $year_id, $year_type, $dashboard, '', $datasource);
     }
@@ -228,12 +228,12 @@ class SpendingUtil{
      */
     static function getPayeeNameLinkUrl($node, $row){
 
-        $year = RequestUtilities::getRequestParamValue("year");
-        $calyear = RequestUtilities::getRequestParamValue("calyear");
+        $year = RequestUtilities::get("year");
+        $calyear = RequestUtilities::get("calyear");
         $year_type = isset($calyear) ? "C" : "B";
         $year_id = isset($calyear) ? $calyear : (isset($year) ? $year : _getCurrentYearID());
         $vendor_id = $row["vendor_id"];
-        $dashboard = RequestUtilities::getRequestParamValue("dashboard");
+        $dashboard = RequestUtilities::get("dashboard");
 
         return $row["is_sub_vendor"] == "No"
             ? self::getPrimeVendorLink($vendor_id, $agency_id, $year_id, $year_type, $dashboard, true)
@@ -368,19 +368,19 @@ class SpendingUtil{
         STATIC $spending_vendor_latest_mwbe_category;
 
         if($agency_id == null){
-        	$agency_id =  RequestUtilities::getRequestParamValue('agency');
+        	$agency_id =  RequestUtilities::get('agency');
         }
 
         if($year_id == null){
-        	$year_id =  RequestUtilities::getRequestParamValue('year');
+        	$year_id =  RequestUtilities::get('year');
         }
 
         if($year_id == null){
-            $year_id =  RequestUtilities::getRequestParamValue('calyear');
+            $year_id =  RequestUtilities::get('calyear');
         }
 
         if($year_type == null){
-        	$year_type =  RequestUtilities::getRequestParamValue('yeartype');
+        	$year_type =  RequestUtilities::get('yeartype');
         }
 
         $latest_minority_type_id = null;
@@ -417,11 +417,11 @@ class SpendingUtil{
      */
      public static function getLatestMwbeCategoryTitleByVendor($vendor_id, $year_id = NULL, $year_type = NULL, $is_prime_or_sub = "P"){
         if($year_id == null){
-            $year_id =  RequestUtilities::getRequestParamValue('year');
+            $year_id =  RequestUtilities::get('year');
         }
 
         if($year_type == null){
-            $year_type =  RequestUtilities::getRequestParamValue('yeartype');
+            $year_type =  RequestUtilities::get('yeartype');
         }
 
          $query = "SELECT minority_type_id FROM(
@@ -454,11 +454,11 @@ class SpendingUtil{
     public static function getLatestMwbeCategoryByVendorByTransactionYear($vendor_id, $year_id = null, $year_type = null){
 
         if($year_id == null){
-            $year_id =  RequestUtilities::getRequestParamValue('year');
+            $year_id =  RequestUtilities::get('year');
         }
 
         if($year_type == null){
-            $year_type =  RequestUtilities::getRequestParamValue('yeartype');
+            $year_type =  RequestUtilities::get('yeartype');
         }
 
         $query = "SELECT vendor_id, agency_id, year_id, type_of_year, minority_type_id, is_prime_or_sub
@@ -483,11 +483,11 @@ class SpendingUtil{
      public static function getLatestMwbeCategoryBySpendingVendorByTransactionYear($vendor_id, $year_id = null, $year_type = null){
 
         if($year_id == null){
-            $year_id =  RequestUtilities::getRequestParamValue('year');
+            $year_id =  RequestUtilities::get('year');
         }
 
         if($year_type == null){
-            $year_type =  RequestUtilities::getRequestParamValue('yeartype');
+            $year_type =  RequestUtilities::get('yeartype');
         }
 
         $query = "SELECT vendor_id, agency_id, year_id, type_of_year, minority_type_id, is_prime_or_sub
@@ -733,9 +733,9 @@ class SpendingUtil{
         //ytd_spending_sub_vendors_link
         return '/spending/transactions'
         . '/agency/'. $row["agency_agency"]
-        . _checkbook_project_get_url_param_string("vendor")
-        . _checkbook_project_get_url_param_string("category")
-        . _checkbook_project_get_url_param_string("industry")
+        . RequestUtilities::buildUrlFromParam('vendor')
+        . RequestUtilities::buildUrlFromParam('category')
+        . RequestUtilities::buildUrlFromParam('industry')
         . _checkbook_project_get_year_url_param_string(false,false,true)
         . '/smnid/' . $node->nid . '/dtsmnid/' . $node->nid .'/newwindow';
     }
@@ -780,9 +780,9 @@ class SpendingUtil{
      * @return string
      */
     static function getMWBECategoryLinkUrl($node, $row){
-        $dtsmnid = RequestUtilities::getRequestParamValue("dtsmnid");
-        $smnid = RequestUtilities::getRequestParamValue("smnid");
-        $dashboard = RequestUtilities::getRequestParamValue("dashboard");
+        $dtsmnid = RequestUtilities::get("dtsmnid");
+        $smnid = RequestUtilities::get("smnid");
+        $dashboard = RequestUtilities::get("dashboard");
 
         if($dtsmnid != null) $nid = $dtsmnid;
         else if($smnid != null) $nid = $smnid;
@@ -810,8 +810,8 @@ class SpendingUtil{
      * @return string
      */
     static function showMWBECategoryLink($node,$row){
-        $dtsmnid = RequestUtilities::getRequestParamValue("dtsmnid");
-        $smnid = RequestUtilities::getRequestParamValue("smnid");
+        $dtsmnid = RequestUtilities::get("dtsmnid");
+        $smnid = RequestUtilities::get("smnid");
 
         $showLink = !RequestUtil::isNewWindow() &&
             MappingUtil::isMWBECertified(array($row['minority_type_id'])) &&
@@ -841,7 +841,7 @@ class SpendingUtil{
      * @return string
      */
     static function getPrimeMWBECategoryLinkUrl($node, $row){
-        $dashboard = RequestUtilities::getRequestParamValue("dashboard");
+        $dashboard = RequestUtilities::get("dashboard");
         $mwbe = isset($row["prime_minority_type_id"]) ? $row["prime_minority_type_id"] : $row["prime_minority_type_prime_minority_type"];
         $custom_params = array(
             'dashboard'=>(preg_match('/p/', $dashboard)) ? "mp" : "ms",
@@ -856,14 +856,14 @@ class SpendingUtil{
      * @return null|request
      */
     static function getVendorFacetParameter($node){
-        $dashboard = RequestUtilities::getRequestParamValue('dashboard');
+        $dashboard = RequestUtilities::get('dashboard');
         $facet_vendor_param = null;
 
         if($dashboard == "mp") {
-            $facet_vendor_param = RequestUtilities::getRequestParamValue("vendor");
+            $facet_vendor_param = RequestUtilities::get("vendor");
         }
         else if($dashboard == "ss" || $dashboard == "ms") {
-            $facet_vendor_param = RequestUtilities::getRequestParamValue("subvendor");
+            $facet_vendor_param = RequestUtilities::get("subvendor");
         }
         return $facet_vendor_param;
     }
@@ -959,7 +959,7 @@ class SpendingUtil{
      * @return string
      */
     public static function getVendorTypeUrlParam($node){
-        $dashboard = RequestUtilities::getRequestParamValue('dashboard');
+        $dashboard = RequestUtilities::get('dashboard');
         $vendortype = null;
         $nid = $node->nid;
         /**
@@ -1019,7 +1019,7 @@ class SpendingUtil{
      */
     public static function getDataSourceParams(){
         if(self::isAdvancedSearchResults()) {
-            $data_source = RequestUtilities::getRequestParamValue("datasource");
+            $data_source = RequestUtilities::get("datasource");
             return isset($data_source) ? "/datasource/checkbook_oge" : "";
         }
         return _checkbook_append_url_params();
@@ -1180,9 +1180,9 @@ class SpendingUtil{
   public static function getTransactionPageTitle($widgetTitle){
         $catName = self::getTransactionPageCategoryName();
         $dashboard_title = RequestUtil::getDashboardTitle();
-        $dashboard = RequestUtilities::getRequestParamValue('dashboard');
-        $category = RequestUtilities::getRequestParamValue('category');
-        $smnid = RequestUtilities::getRequestParamValue('smnid');
+        $dashboard = RequestUtilities::get('dashboard');
+        $category = RequestUtilities::get('category');
+        $smnid = RequestUtilities::get('smnid');
 
         //Sub Vendors Exception
         if(($widgetTitle == "Sub Vendors" || $widgetTitle == "Sub Vendor") && $dashboard == "ss") {
@@ -1208,9 +1208,9 @@ class SpendingUtil{
 
     /** Returns Spending Category based on 'category' value from current path */
     public static function getTransactionPageCategoryName($defaultName = 'Total Spending'){
-        $categoryId = RequestUtilities::getRequestParamValue('category');
-        $dtsmnid = RequestUtilities::getRequestParamValue('dtsmnid');
-        $smnid = RequestUtilities::getRequestParamValue('smnid');
+        $categoryId = RequestUtilities::get('category');
+        $dtsmnid = RequestUtilities::get('dtsmnid');
+        $smnid = RequestUtilities::get('smnid');
 
         $nid = isset($dtsmnid) ? $dtsmnid : $smnid;
         $category_name = $defaultName;
@@ -1227,9 +1227,9 @@ class SpendingUtil{
         $dashboard = RequestUtil::getDashboardTitle();
         $contractTitle = self::getContractTitle();
 
-        $dashboard_param = RequestUtilities::getRequestParamValue('dashboard');
-        $smnid = RequestUtilities::getRequestParamValue('smnid');
-        $status = RequestUtilities::getRequestParamValue('contstatus');
+        $dashboard_param = RequestUtilities::get('dashboard');
+        $smnid = RequestUtilities::get('smnid');
+        $status = RequestUtilities::get('contstatus');
         if($smnid == 720) {
             if ($dashboard_param == "ms") {
             $dashboard = "M/WBE";
@@ -1282,13 +1282,13 @@ class SpendingUtil{
     }
 
      public static function getContractTitle(){
-        if(RequestUtilities::getRequestParamValue('contstatus')){
-            $contract_status = RequestUtilities::getRequestParamValue('contstatus');
+        if(RequestUtilities::get('contstatus')){
+            $contract_status = RequestUtilities::get('contstatus');
         }
-        if(RequestUtilities::getRequestParamValue('status')){
-            $contract_status = RequestUtilities::getRequestParamValue('status');
+        if(RequestUtilities::get('status')){
+            $contract_status = RequestUtilities::get('status');
         }
-        $contract_type = RequestUtilities::getRequestParamValue('contcat');
+        $contract_type = RequestUtilities::get('contcat');
         $title = 'by';
 
         switch($contract_status) {
@@ -1314,12 +1314,12 @@ class SpendingUtil{
     }
 
     public static function _show_mwbe_custom_legend(){
-    	$mwbe_cats = RequestUtilities::getRequestParamValue('mwbe');
-    	if(	($mwbe_cats =='4~5' || $mwbe_cats =='4' || $mwbe_cats =='5' || $mwbe_cats =='2' || $mwbe_cats =='3' || $mwbe_cats =='9' ) && !(RequestUtilities::getRequestParamValue('vendor') > 0 ) ){
+    	$mwbe_cats = RequestUtilities::get('mwbe');
+    	if(	($mwbe_cats =='4~5' || $mwbe_cats =='4' || $mwbe_cats =='5' || $mwbe_cats =='2' || $mwbe_cats =='3' || $mwbe_cats =='9' ) && !(RequestUtilities::get('vendor') > 0 ) ){
     		return true;
     	}
 
-    	if(	!(RequestUtilities::getRequestParamValue('vendor') > 0 ) && ( RequestUtilities::getRequestParamValue('agency') > 0 || RequestUtilities::getRequestParamValue('industry') > 0 ) ){
+    	if(	!(RequestUtilities::get('vendor') > 0 ) && ( RequestUtilities::get('agency') > 0 || RequestUtilities::get('industry') > 0 ) ){
     		return true;
     	}
     	return false;
@@ -1327,7 +1327,7 @@ class SpendingUtil{
 
 
     function _mwbe_spending_use_subvendor(){
-    	if(RequestUtilities::getRequestParamValue('vendor') > 0 || RequestUtilities::getRequestParamValue('mwbe') == '7' || RequestUtilities::getRequestParamValue('mwbe') == '11')
+    	if(RequestUtilities::get('vendor') > 0 || RequestUtilities::get('mwbe') == '7' || RequestUtilities::get('mwbe') == '11')
     	{
     		return true;
     	}else{

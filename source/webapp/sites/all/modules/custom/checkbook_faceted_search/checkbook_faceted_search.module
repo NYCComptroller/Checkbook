@@ -85,7 +85,7 @@ function _checkbook_faceted_search_node_pagination($nid){
 }
 
 function _checkbook_faceted_search_node_autocomplete(){
-  $nid = RequestUtilities::getRequestParamValue('node');
+  $nid = RequestUtilities::get('node');
   $node = node_load($nid);
   widget_config($node);
   widget_prepare($node);
@@ -109,7 +109,7 @@ function _checkbook_faceted_search_update_data($node) {
     $data = $node->data;
     $output = array();
     $output['filter_name'] = $node->widgetConfig->filterName;
-    $params = explode('~', RequestUtilities::getRequestParamValue($node->widgetConfig->urlParameterName));
+    $params = explode('~', RequestUtilities::get($node->widgetConfig->urlParameterName));
 
     //The value in this facet can be 0
     if($node->widgetConfig->allowZeroValue == true) {
@@ -257,7 +257,7 @@ function _checkbook_faceted_search_update_data_range_filter($node){
     $rangeColumnNameVariant = $node->widgetConfig->rangeColumnNameVariant;
     $output = array();
     $output['filter_name'] = $node->widgetConfig->filterName;
-    $params = explode('~',RequestUtilities::getRequestParamValue($node->widgetConfig->urlParameterName));
+    $params = explode('~',RequestUtilities::get($node->widgetConfig->urlParameterName));
     if(!is_array($data[0])){
       $data = array(0=>array());
     }
@@ -302,7 +302,7 @@ function _checkbook_faceted_search_update_data_logical_or_filter($node){
     $data = $node->data;
     $output = array();
     $output['filter_name'] = $node->widgetConfig->filterName;
-    $params = explode('~',RequestUtilities::getRequestParamValue($node->widgetConfig->urlParameterName));
+    $params = explode('~',RequestUtilities::get($node->widgetConfig->urlParameterName));
     if(!is_array($data[0])){
         $data = array(0=>array());
     }
@@ -347,7 +347,7 @@ function _checkbook_faceted_search_update_data_union_or_filter($node){
     $data = $node->data;
     $output = array();
     $output['filter_name'] = $node->widgetConfig->filterName;
-    $params = explode('~',RequestUtilities::getRequestParamValue($node->widgetConfig->urlParameterName));
+    $params = explode('~',RequestUtilities::get($node->widgetConfig->urlParameterName));
 
     if(!is_array($data[0])){
         $data = array(0=>array());
@@ -410,7 +410,7 @@ function _checkbook_faceted_search_update_data_range2_filter($node){
   $data = $node->data;
   $output = array();
   $output['filter_name'] = $node->widgetConfig->filterName;
-  $params = explode('~',RequestUtilities::getRequestParamValue($node->widgetConfig->urlParameterName));
+  $params = explode('~',RequestUtilities::get($node->widgetConfig->urlParameterName));
   if(!is_array($data[0])){
     $data = array(0=>array());
   }
@@ -444,7 +444,7 @@ function _checkbook_faceted_search_update_data_range3_filter($node){
     $data = $node->data;
     $output = array();
     $output['filter_name'] = $node->widgetConfig->filterName;
-    $params = explode('~',RequestUtilities::getRequestParamValue($node->widgetConfig->urlParameterName));
+    $params = explode('~',RequestUtilities::get($node->widgetConfig->urlParameterName));
     if(!is_array($data[0])){
         $data = array(0=>array());
     }
