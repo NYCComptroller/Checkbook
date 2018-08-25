@@ -2008,15 +2008,23 @@ function _getLastRequestParamValue($url = null, $param = null)
     $pathParams = explode('/', $urlPath);
 
     $replacedPathParams = array();
+    $slipParams = [
+        'mwbe',
+        'dashboard',
+        'status',
+        'yeartype',
+        'year',
+    ];
     foreach ($pathParams as $key) {
-        if ($key == "mwbe" || $key == "dashboard") {
+        if (in_array($key, $slipParams)) {
             $skip_next = true;
-        } elseif (!$skip_next) {
-            $replacedPathParams[] = $key;
-            $skip_next = false;
-        } else {
-            $skip_next = false;
+            continue;
         }
+        if ($skip_next) {
+            $skip_next = false;
+            continue;
+        }
+        $replacedPathParams[] = $key;
     }
 
     if ($param == null) {
