@@ -459,7 +459,7 @@ function checkbook_trends_menu(){
 function _checkbook_trends_default_download($node,$template = null){
 	$_GET['q'] = check_plain($_GET['dataUrl']);
 	
-	$nodeId = RequestUtilities::getRequestParamValue('node');
+	$nodeId = RequestUtilities::get('node');
 	
 	$node = node_load($nodeId);
     widget_config($node);

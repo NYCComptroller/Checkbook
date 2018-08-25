@@ -30,14 +30,14 @@ if(is_array($records)){
     $totcontamnt = WidgetUtil::getLabel("total_contract_amount");
     $mwbe_category = "";
 
-    if(RequestUtilities::getRequestParamValue('smnid') == 717){
+    if(RequestUtilities::get('smnid') == 717){
         $no_of_subvendor_value = $row['sub_vendor_count'];
         $no_of_subvendor = WidgetUtil::getLabel("num_sub_vendors");
         $mwbe_category_label = WidgetUtil::getLabel("mwbe_category");
         $mwbe_category = strtoupper(MappingUtil::getMinorityCategoryById($row['prime_minority_type_prime_minority_type']));
         $mwbe_category = '<br><b>'.$mwbe_category_label .':</b> '.$mwbe_category ;
     }
-    if(RequestUtilities::getRequestParamValue('smnid') == 747){
+    if(RequestUtilities::get('smnid') == 747){
         $percent_spending_value = $row['percent_spending'];
         $percent_spending = WidgetUtil::getLabel("percent_spending");
         $mwbe_category_label = WidgetUtil::getLabel("mwbe_category");

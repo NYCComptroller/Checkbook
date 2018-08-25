@@ -35,7 +35,7 @@ foreach($node->data as $data){
 
 //Default view based on salamttype in url
 $default_view = $salaried_count > 0 ? PayrollType::$SALARIED : PayrollType::$NON_SALARIED;
-$salamttype = RequestUtilities::getRequestParamValue('salamttype');
+$salamttype = RequestUtilities::get('salamttype');
 if(isset($salamttype)) {
     $salamttype = explode('~',$salamttype);
     if (!in_array(1, $salamttype)) {

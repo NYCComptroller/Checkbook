@@ -13,7 +13,7 @@ class ContractsWidgetService extends WidgetDataService implements IWidgetService
     public function implementDerivedColumn($column_name,$row) {
         $value = null;
         $legacy_node_id = $this->getLegacyNodeId();
-        $data_source = RequestUtilities::getRequestParamValue('datasource');
+        $data_source = RequestUtilities::get('datasource');
 
         switch($column_name) {
             case "contract_id_link":

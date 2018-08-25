@@ -48,7 +48,7 @@ $tooltip = "";
 if($node->widgetConfig->filterName == 'Amount') {
     $showAllRecords = isset($node->widgetConfig->showAllRecords) ? $node->widgetConfig->showAllRecords : false;
     if(!$showAllRecords) {
-        $params = explode('~', RequestUtilities::getRequestParamValue($node->widgetConfig->urlParameterName));
+        $params = explode('~', RequestUtilities::get($node->widgetConfig->urlParameterName));
         if($params[0]) {
             $unchecked = null;
         }
@@ -63,7 +63,7 @@ $is_payroll_range_filter =
 if($is_payroll_range_filter) {
     $showAllRecords = isset($node->widgetConfig->showAllRecords) ? $node->widgetConfig->showAllRecords : false;
     if(!$showAllRecords) {
-        $params = explode('~', RequestUtilities::getRequestParamValue($node->widgetConfig->urlParameterName));
+        $params = explode('~', RequestUtilities::get($node->widgetConfig->urlParameterName));
         if($params[0]) {
             $unchecked = null;
         }
@@ -143,7 +143,7 @@ if($node->widgetConfig->filterName == 'Payroll Type') {
 if($node->widgetConfig->filterName == 'Modified Expense Budget') {
     $showAllRecords = isset($node->widgetConfig->showAllRecords) ? $node->widgetConfig->showAllRecords : false;
     if(!$showAllRecords) {
-        $params = explode('~', RequestUtilities::getRequestParamValue($node->widgetConfig->urlParameterName));
+        $params = explode('~', RequestUtilities::get($node->widgetConfig->urlParameterName));
         if($params[0]) {
             $unchecked = null;
         }
@@ -154,7 +154,7 @@ if($node->widgetConfig->filterName == 'Modified Expense Budget') {
 if($node->widgetConfig->filterName == 'Revenue Recognized') {
     $showAllRecords = isset($node->widgetConfig->showAllRecords) ? $node->widgetConfig->showAllRecords : false;
     if(!$showAllRecords) {
-        $params = explode('~', RequestUtilities::getRequestParamValue($node->widgetConfig->urlParameterName));
+        $params = explode('~', RequestUtilities::get($node->widgetConfig->urlParameterName));
         if($params[0]) {
             $unchecked = null;
         }
@@ -271,7 +271,7 @@ if($is_prime_filter || $is_sub_filter || ($is_prime_sub_filter && $node->widgetC
 //Checking 'Asian-American' filter in MWBE Category Facet
 $count =0;
 if($node->widgetConfig->filterName == 'M/WBE Category' && $node->widgetConfig->parentNid != 939){
-    $dashboard = RequestUtilities::getRequestParamValue('dashboard');
+    $dashboard = RequestUtilities::get('dashboard');
     foreach($unchecked as $key => $value){
         if(isset($dashboard) && $dashboard != 'ss'){
             if($value[0] == 7 || $value[0] == 11){
@@ -349,7 +349,7 @@ if($node->widgetConfig->filterName == 'Vendor Type'){
           }
         }
         $checked = $unchecked = array();
-        $selected_vendor_types =  RequestUtilities::getRequestParamValue('vendortype');
+        $selected_vendor_types =  RequestUtilities::get('vendortype');
 //        if (is_array($vendor_counts)) {
         if (isset($vendor_counts) && $vendor_counts) {
           foreach($vendor_counts as $key=>$value){
@@ -363,7 +363,7 @@ if($node->widgetConfig->filterName == 'Vendor Type'){
         }
     }
     else {
-        $vendor_types = RequestUtilities::getRequestParamValue('vendortype');
+        $vendor_types = RequestUtilities::get('vendortype');
         $vendor_type_data = MappingUtil::getVendorTypes($checked, $vendor_types);
         $vendor_type_data = MappingUtil::getVendorTypes($unchecked, $vendor_types);
         $checked = $vendor_type_data['checked'];

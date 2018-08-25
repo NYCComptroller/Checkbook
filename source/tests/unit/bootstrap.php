@@ -1,6 +1,12 @@
 <?php
 
+/**
+ *
+ */
 define('PHPUNIT_RUNNING', true);
+/**
+ *
+ */
 define('CUSTOM_MODULES_DIR', realpath(__DIR__ . '/../../webapp/sites/all/modules/custom/'));
 
 include_once 'vendor/autoload.php';
@@ -239,6 +245,14 @@ function _checkbook_project_execute_sql_test($query)
     $return['total_overtime_pay'] = 192837465000;
 
     return [$return];
+}
+
+/**
+ * @param $q
+ * @return mixed
+ */
+function drupal_get_path_alias($q) {
+    return $q;
 }
 
 /**

@@ -13,9 +13,9 @@ class BudgetUrlService {
         $legacy_node_id = isset($legacy_node_id) ? '/dtsmnid/'.$legacy_node_id : '';
         $url = '/panel_html/budget_transactions/budget/transactions'
             . $legacy_node_id
-            .RequestUtilities::_getUrlParamString("agency")
-            .RequestUtilities::_getUrlParamString("dept")
-            .RequestUtilities::_getUrlParamString("expcategory")
+            .RequestUtilities::buildUrlFromParam('agency')
+            .RequestUtilities::buildUrlFromParam('dept')
+            .RequestUtilities::buildUrlFromParam('expcategory')
             . _checkbook_project_get_year_url_param_string();
 
         return $url;
@@ -60,9 +60,9 @@ class BudgetUrlService {
 
         $url = "/panel_html/budget_transactions/budget/transactions"
             . $legacy_node_id
-            .RequestUtilities::_getUrlParamString("agency")
-            .RequestUtilities::_getUrlParamString("dept")
-            .RequestUtilities::_getUrlParamString("expcategory")
+            .RequestUtilities::buildUrlFromParam('agency')
+            .RequestUtilities::buildUrlFromParam('dept')
+            .RequestUtilities::buildUrlFromParam('expcategory')
             . _checkbook_project_get_year_url_param_string()
             . $dynamic_parameter;
 
@@ -75,9 +75,9 @@ class BudgetUrlService {
      */
     static function departmentUrl($department_id) {
         $url =   "/budget"
-                .RequestUtilities::_getUrlParamString("year")
-                .RequestUtilities::_getUrlParamString("agency")
-                .RequestUtilities::_getUrlParamString("expcategory")
+                .RequestUtilities::buildUrlFromParam('year')
+                .RequestUtilities::buildUrlFromParam('agency')
+                .RequestUtilities::buildUrlFromParam('expcategory')
                 .'/dept/'.$department_id;
         return $url;
     }
@@ -89,19 +89,19 @@ class BudgetUrlService {
      */
     static function expenseCategoryUrl($expense_category_id) {
         $url =   "/budget"
-            .RequestUtilities::_getUrlParamString("year")
-            .RequestUtilities::_getUrlParamString("agency")
-            .RequestUtilities::_getUrlParamString("expcategory")
-            .RequestUtilities::_getUrlParamString("dept")
+            .RequestUtilities::buildUrlFromParam('year')
+            .RequestUtilities::buildUrlFromParam('agency')
+            .RequestUtilities::buildUrlFromParam('expcategory')
+            .RequestUtilities::buildUrlFromParam('dept')
             .'/expcategory/'.$expense_category_id;
         return $url;
     }
 
     static function agencyNameUrl($agency_id) {
         $url = "/budget"
-            .RequestUtilities::_getUrlParamString("yeartype")
-            .RequestUtilities::_getUrlParamString("year")
-            .RequestUtilities::_getUrlParamString("agency")
+            .RequestUtilities::buildUrlFromParam('yeartype')
+            .RequestUtilities::buildUrlFromParam('year')
+            .RequestUtilities::buildUrlFromParam('agency')
             ."/agency/".$agency_id;
         return $url;
     }

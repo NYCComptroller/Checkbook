@@ -26,7 +26,7 @@
       <?php
       $class = "";
       $is_active_expense_contracts = false;
-      $is_active_expense_contracts = preg_match("/^contracts_landing/", $_GET['q']) & RequestUtilities::getRequestParamValue("status") == "A";
+      $is_active_expense_contracts = preg_match("/^contracts_landing/", $_GET['q']) & RequestUtilities::get("status") == "A";
       if ($is_active_expense_contracts) {
         $class = ' class="active"';
 
@@ -38,7 +38,7 @@
       <td<?php echo $class; ?>>
           <?php
           $class = ' class="positioning"';
-          $is_edc_prime_vendor = RequestUtilities::getRequestParamValue("vendor") == "5616";
+          $is_edc_prime_vendor = RequestUtilities::get("vendor") == "5616";
           if ($is_active_expense_contracts && $is_edc_prime_vendor) {
               $class = ' class="positioning activeExpenseContract"';
           }
@@ -54,7 +54,7 @@
       </td>
       <?php
       $class = "";
-      if (preg_match("/^contracts_landing/", $_GET['q']) & RequestUtilities::getRequestParamValue("status") == "R") {
+      if (preg_match("/^contracts_landing/", $_GET['q']) & RequestUtilities::get("status") == "R") {
         $class = ' class="active"';
       }
       $reg_link = ContractURLHelper::prepareActRegContractsSliderFilter('contracts_landing', 'R');
@@ -73,7 +73,7 @@
       </td>
       <?php
       $class = "";
-      if (preg_match("/^contracts_revenue_landing/", $_GET['q']) & RequestUtilities::getRequestParamValue("status") == "A") {
+      if (preg_match("/^contracts_revenue_landing/", $_GET['q']) & RequestUtilities::get("status") == "A") {
         $class = ' class="active"';
       }
       $active_link = ContractURLHelper::prepareActRegContractsSliderFilter('contracts_revenue_landing', 'A');
@@ -93,7 +93,7 @@
       </td>
       <?php
       $class = "";
-      if (preg_match("/^contracts_revenue_landing/", $_GET['q']) & RequestUtilities::getRequestParamValue("status") == "R") {
+      if (preg_match("/^contracts_revenue_landing/", $_GET['q']) & RequestUtilities::get("status") == "R") {
         $class = ' class="active"';
       }
       $reg_link = ContractURLHelper::prepareActRegContractsSliderFilter('contracts_revenue_landing', 'R');

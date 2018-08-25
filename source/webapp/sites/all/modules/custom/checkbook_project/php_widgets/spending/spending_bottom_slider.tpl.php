@@ -29,7 +29,7 @@
         $total +=  $row['check_amount_sum'];
       }
       $class = "";
-      if ( RequestUtilities::getRequestParamValue("category") == "") {
+      if ( RequestUtilities::get("category") == "") {
         $class = ' class="active"';
       }
       $link = RequestUtil::preparePayrollBottomNavFilter("spending_landing",null);
@@ -47,7 +47,7 @@
       </td>
       <?php
       $class = "";
-      if (RequestUtilities::getRequestParamValue("category") == 2) {
+      if (RequestUtilities::get("category") == 2) {
         $class = ' class="active"';
       }
       $link = RequestUtil::preparePayrollBottomNavFilter("spending_landing",2);
@@ -65,7 +65,7 @@
       </td>
       <?php
       $class = "";
-      if (RequestUtilities::getRequestParamValue("category") == 3) {
+      if (RequestUtilities::get("category") == 3) {
         $class = ' class="active"';
       }
       $link = RequestUtil::preparePayrollBottomNavFilter("spending_landing",3);
@@ -84,7 +84,7 @@
       </td>
       <?php
       $class = "";
-      if (RequestUtilities::getRequestParamValue("category") == 1) {
+      if (RequestUtilities::get("category") == 1) {
         $class = ' class="active"';
       }
       $link = RequestUtil::preparePayrollBottomNavFilter("spending_landing",1);
@@ -103,7 +103,7 @@
       </td>
       <?php
       $class = "";
-      if (RequestUtilities::getRequestParamValue("category") == 5) {
+      if (RequestUtilities::get("category") == 5) {
         $class = ' class="active"';
       }
       $link = RequestUtil::preparePayrollBottomNavFilter("spending_landing",5);
@@ -122,7 +122,7 @@
       </td>
       <?php
       $class = "";
-      if (RequestUtilities::getRequestParamValue("category") == 4) {
+      if (RequestUtilities::get("category") == 4) {
         $class = ' active';
       }
       $link = RequestUtil::preparePayrollBottomNavFilter("spending_landing",4);
