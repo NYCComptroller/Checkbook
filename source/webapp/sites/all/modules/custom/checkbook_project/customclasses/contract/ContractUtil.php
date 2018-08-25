@@ -567,6 +567,7 @@ namespace { //global
 
             return self::getContractUrl($contracts_landing_path,$override_params);
         }
+
         static function getRevenueLandingPageUrl($vendor_id,$row,$year_id=null,$type=null){
             if($year_id == null){
                 $year_id =  RequestUtilities::get('year');

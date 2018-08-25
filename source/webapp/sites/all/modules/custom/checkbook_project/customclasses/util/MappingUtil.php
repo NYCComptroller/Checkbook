@@ -21,9 +21,23 @@ class MappingUtil {
     );
 
 
-    public static $spendingMWBEParamMap = array("year"=>"year_id","yeartype"=>"type_of_year","agency"=>"agency_id","vendor"=>"vendor_id","category"=>"spending_category_id");
-    public static $contractsMWBEParamMap = array("year"=>"fiscal_year_id","agency"=>"agency_id","yeartype"=>"type_of_year","awdmethod"=>"award_method_id","vendor"=>"vendor_id",
-        "status"=>"status_flag","csize"=>"award_size_id","cindustry"=>"industry_type_id");
+    public static $spendingMWBEParamMap = [
+        "year" => "year_id",
+        "yeartype" => "type_of_year",
+        "agency" => "agency_id",
+//        "vendor" => "vendor_id",
+//        "category" => "spending_category_id"
+    ];
+    public static $contractsMWBEParamMap = [
+        "year" => "fiscal_year_id",
+        "agency" => "agency_id",
+        "yeartype" => "type_of_year",
+//        "awdmethod" => "award_method_id",
+//        "vendor" => "vendor_id",
+//        "status" => "status_flag",
+//        "csize" => "award_size_id",
+//        "cindustry" => "industry_type_id"
+    ];
     /** Returns the vendor type value based on the vendor_type mapping */
     static function getVendorTypeValue($vendor_types) {
         $param = "";
