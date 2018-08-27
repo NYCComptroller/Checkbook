@@ -25,10 +25,10 @@ Prime Vendor Information
 
 
 //TODO temp fix move bottom code to separate custom preprocess function
-if(RequestUtilities::getRequestParamValue("magid") != ""){
-  $ag_id = RequestUtilities::getRequestParamValue("magid");
+if(RequestUtilities::get("magid") != ""){
+  $ag_id = RequestUtilities::get("magid");
 }else{
-  $ag_id = RequestUtilities::getRequestParamValue("agid");
+  $ag_id = RequestUtilities::get("agid");
 }
 
 if(_get_current_datasource() != "checkbook_oge"){
@@ -75,8 +75,8 @@ $node->data = $results1;
 
 $total_cont  = 0;
 $results2 = _checkbook_project_execute_sql_by_data_source($queryVendorCount,_get_current_datasource());
-if(RequestUtilities::getRequestParamValue("status")){
-    $status = '/status/'.RequestUtilities::getRequestParamValue("status");
+if(RequestUtilities::get("status")){
+    $status = '/status/'.RequestUtilities::get("status");
 }else{
     $status = '/status/A';
 }
@@ -126,7 +126,7 @@ $contract_number = $node->data[0]['contract_number'];
     <li><span class="gi-list-item">M/WBE Vendor:</span> <?php echo $node->data[0]['mwbe_vendor'] ;?></li>
 
 
-<?php if(!preg_match('/newwindow/',$_GET['q']) && $node->data[0]["mwbe_vendor"] == 'Yes' && RequestUtilities::getRequestParamValue("doctype") == "RCT1") { ?>
+<?php if(!preg_match('/newwindow/',$_GET['q']) && $node->data[0]["mwbe_vendor"] == 'Yes' && RequestUtilities::get("doctype") == "RCT1") { ?>
         <li><span class="gi-list-item">M/WBE Category:</span> <a href="/contracts_revenue_landing<?php echo $status;?>/yeartype/B/year/<?php echo _getFiscalYearID();?>/mwbe/<?php echo $minority_type_id; ?>/dashboard/mp"><?php echo $ethnicity ;?></a></li>
 <?php } elseif(!preg_match('/newwindow/',$_GET['q']) && $node->data[0]["mwbe_vendor"] == 'Yes'){ ?>
         <li><span class="gi-list-item">M/WBE Category:</span> <a href="/contracts_landing<?php echo $status;?>/yeartype/B/year/<?php echo _getFiscalYearID();?>/mwbe/<?php echo $minority_type_id; ?>/dashboard/mp"><?php echo $ethnicity ;?></a></li>
@@ -137,7 +137,7 @@ $contract_number = $node->data[0]['contract_number'];
 </ul>
 <?php
 
-if (RequestUtilities::getRequestParamValue("datasource") != "checkbook_oge") {
+if (RequestUtilities::get("datasource") != "checkbook_oge") {
     $querySubVendorinfo = "SELECT SUM(maximum_contract_amount) AS total_current_amt, SUM(original_contract_amount) AS total_original_amt, SUM(rfed_amount) AS total_spent_todate
     FROM {subcontract_details}
     WHERE contract_number = '". $contract_number . "'
@@ -175,13 +175,13 @@ if (RequestUtilities::getRequestParamValue("datasource") != "checkbook_oge") {
 
 }
 ?>
-<?php if(!RequestUtilities::getRequestParamValue("datasource") == "checkbook_oge"){?>
+<?php if(!RequestUtilities::get("datasource") == "checkbook_oge"){?>
 <div class="dollar-amounts">
     <h4>
         Sub Vendor Information
     </h4>
     <?php
-    if(RequestUtilities::getRequestParamValue("doctype")=="CTA1" || RequestUtilities::getRequestParamValue("doctype")=="CT1"){
+    if(RequestUtilities::get("doctype")=="CTA1" || RequestUtilities::get("doctype")=="CT1"){
         echo '<ul class="left"><li><span class="gi-list-item">Contract Includes Sub Vendors: </span>'.strtoupper($subVendorStatus).'</li>';
         echo  '<li><span class="gi-list-item">Total Number of Sub Vendors: </span>'.$total_subvendor_count .'</li></ul>';
     }

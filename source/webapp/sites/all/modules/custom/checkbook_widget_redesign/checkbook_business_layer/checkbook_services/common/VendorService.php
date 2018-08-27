@@ -14,8 +14,8 @@ abstract class VendorService {
 
         $latest_minority_types = null;
         $type_of_year = 'B';
-        $year_id = RequestUtilities::getRequestParamValue('year') ?:  _getCurrentYearID();
-        $agency_id = $agency_id ?: RequestUtilities::getRequestParamValue('agency');
+        $year_id = RequestUtilities::get('year') ?:  _getCurrentYearID();
+        $agency_id = $agency_id ?: RequestUtilities::get('agency');
         $domain = $domain ?: CheckbookDomain::getCurrent();
 
         $latest_minority_types = MinorityTypeService::getAllVendorMinorityTypes($type_of_year, $year_id, $domain);

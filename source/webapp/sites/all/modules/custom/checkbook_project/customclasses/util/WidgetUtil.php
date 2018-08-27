@@ -30,7 +30,7 @@ class WidgetUtil
                                  "percent_spending", "ytd_spending_sub_vendors", "sub_vendors_percent_paid",
                                  "num_sub_vendors", "ytd_spending_agency");
         if(in_array($labelAlias,$dynamic_labelAlias)){
-            $year = _getYearValueFromID(RequestUtilities::getRequestParamValue('year'));
+            $year = _getYearValueFromID(RequestUtilities::get('year'));
             $dynamic_labels = array("current_modified" => "Modified<br/>".$year,
                                     "previous_modified" => "Modified<br/>".($year-1),
                                     "previous_1_modified" => "Modified<br/>".($year-2),
@@ -52,7 +52,7 @@ class WidgetUtil
         $dynamic_labelAlias = array("current_modified","previous_modified","previous_1_modified","previous_2_modified",
                                     "recognized_current","recognized_1","recognized_2","recognized_3");
         if(in_array($labelAlias,$dynamic_labelAlias)){
-            $year = _getYearValueFromID(RequestUtilities::getRequestParamValue('year'));
+            $year = _getYearValueFromID(RequestUtilities::get('year'));
             $dynamic_labels = array("current_modified" => "Modified<br/>".$year,
                                     "previous_modified" => "Modified<br/>".($year-1),
                                     "previous_1_modified" => "Modified<br/>".($year-2),
@@ -461,7 +461,7 @@ class WidgetUtil
         $dynamic_labelAlias = array("current_modified","previous_modified","previous_1_modified","previous_2_modified",
             "recognized_current","recognized_1","recognized_2","recognized_3");
         if(in_array($labelAlias,$dynamic_labelAlias)){
-            $year = _getYearValueFromID(RequestUtilities::getRequestParamValue('year'));
+            $year = _getYearValueFromID(RequestUtilities::get('year'));
             $dynamic_labels = array("current_modified" => "Modified<br/>".$year,
                 "previous_modified" => "Modified<br/>".($year-1),
                 "previous_1_modified" => "Modified<br/>".($year-2),

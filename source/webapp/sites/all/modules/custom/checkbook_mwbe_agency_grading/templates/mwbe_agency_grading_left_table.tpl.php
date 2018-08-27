@@ -22,12 +22,12 @@
 				$chart = theme('mwbe_agency_grading_row_chart',array('id'=>$id, 'data_row'=>$row['data_row']));
 				if( $row['spending_amount'] > 0){
                     if($data_type == 'sub_vendor_data'){
-                        $link = "/spending_landing/year/" . RequestUtilities::getRequestParamValue("year") .
-                            "/yeartype/" .  RequestUtilities::getRequestParamValue("yeartype") . "/agency/" .  $row["agency_id"] . "/dashboard/ms/mwbe/" . MappingUtil::$total_mwbe_cats;
+                        $link = "/spending_landing/year/" . RequestUtilities::get("year") .
+                            "/yeartype/" .  RequestUtilities::get("yeartype") . "/agency/" .  $row["agency_id"] . "/dashboard/ms/mwbe/" . MappingUtil::$total_mwbe_cats;
                     }
                     else{
-                        $link = "/spending_landing/year/" . RequestUtilities::getRequestParamValue("year") .
-                            "/yeartype/" .  RequestUtilities::getRequestParamValue("yeartype") . "/agency/" .  $row["agency_id"] . "/dashboard/mp/mwbe/" . MappingUtil::$total_mwbe_cats;
+                        $link = "/spending_landing/year/" . RequestUtilities::get("year") .
+                            "/yeartype/" .  RequestUtilities::get("yeartype") . "/agency/" .  $row["agency_id"] . "/dashboard/mp/mwbe/" . MappingUtil::$total_mwbe_cats;
                     }
 
 					echo "<tr>

@@ -74,7 +74,7 @@ if($spending_amount  == 0){
     $spending_link =  l('<span class="nav-title">Spending</span><br>'. custom_number_formatter_format($spending_amount ,1,'$'),RequestUtil::getTopNavURL("spending"),$options);
 }
 
-$current_dashboard = RequestUtilities::getRequestParamValue("dashboard");
+$current_dashboard = RequestUtilities::get("dashboard");
 
 if($contract_amount == 0){
   //Check if there are any Active contracts when the registered amount is zero to enable 'Contracts' domain
@@ -183,7 +183,7 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
     }
 }
 // tm_wbe is an exception case for total MWBE link. When prime data is not present but sub data is present for the agency vendor combination.
-if(RequestUtilities::getRequestParamValue("tm_wbe") == 'Y'){
+if(RequestUtilities::get("tm_wbe") == 'Y'){
     $svendor_amount = $mwbe_amount;
 }
 
@@ -199,7 +199,7 @@ if(!preg_match('/smnid/',$_GET['q']) && (preg_match('/spending\/transactions/',$
 	$mwbeclass = ' ';
 }
 
-$featured_dashboard = RequestUtilities::getRequestParamValue("dashboard");
+$featured_dashboard = RequestUtilities::get("dashboard");
 
 if($mwbe_amount  == 0 && $mwbe_amount_active_inc == 0){
     $mwbe_link = l('<div><div class="top-navigation-amount"><span class="nav-title">' . RequestUtil::getDashboardTopNavTitle("mwbe") . '</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') . '</div></div>','',$options_disabled);
@@ -221,7 +221,7 @@ if($featured_dashboard != null){
 if($svendor_amount  == 0 && $svendor_amount_active_inc == 0){
     if($svendor_amount_active_inc == 0 && preg_match('/contract/',$_GET['q']) && !_checkbook_check_isEDCPage() && ContractUtil::checkStatusOfSubVendorByPrimeCounts()){
         $dashboard = (isset($featured_dashboard) && $featured_dashboard == 'mp')? 'sp': 'ss';
-        $svendor_active_domain_link = ContractURLHelper::prepareSubvendorContractsSliderFilter('contracts_landing', $dashboard, TRUE);
+//        $svendor_active_domain_link = ContractURLHelper::prepareSubvendorContractsSliderFilter('contracts_landing', $dashboard, TRUE);
         $subvendors_link = l('<div><div class="top-navigation-amount"><span class="nav-title">' .RequestUtil::getDashboardTopNavTitle("subvendor")  .'</span><br>&nbsp;'. custom_number_formatter_format($svendor_amount ,1,'$') . '</div></div>',$svendor_active_domain_link ,$options);
     }else{
         $subvendors_link = l('<div><div class="top-navigation-amount"><span class="nav-title">' .RequestUtil::getDashboardTopNavTitle("subvendor")  .'</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') . '</div></div>','',$options_disabled);
