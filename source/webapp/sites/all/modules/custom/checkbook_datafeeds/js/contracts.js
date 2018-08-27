@@ -720,7 +720,7 @@
     }
 
     //Function to clear text fields and drop-downs
-    $.fn.clearInputFields = function () {
+    $.fn.clearInputFields = function (dataSource) {
         $('.fieldset-wrapper').find(':input').each(function () {
             switch (this.type) {
                 case 'select-one':
