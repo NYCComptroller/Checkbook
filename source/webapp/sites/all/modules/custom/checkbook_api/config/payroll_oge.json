@@ -1,8 +1,8 @@
 {
-    "payroll_fiscal_year":{
+    "payroll_oge_fiscal_year":{
         "searchCriteriaMap":{
             "fiscal_year":"fiscal_year",
-            "other_government_entity":"agency_code",
+            "other_government_entities_code":"agency_code",
             "pay_frequency":"pay_frequency",
             "pay_date":"pay_date",
             "amount":"annual_salary",
@@ -17,7 +17,7 @@
         },
         "dataset":{
             "sortColumn":["-gross_pay","-payroll_id"],
-            "name":"checkbook:payroll",
+            "name":"checkbook_nycha:payroll",
             "columnTypes":{
                 "civil_service_title":"like"
             },
@@ -26,7 +26,7 @@
                     "rootElement":"payroll_transactions",
                     "rowParentElement":"transaction",
                     "elementsColumn":{
-                        "other_government_entity":"agency_name",
+                        "other_government_entities":"agency_name",
                         "title":"civil_service_title",
                         "pay_frequency":"pay_frequency",
                         "pay_date":"pay_date",
@@ -41,12 +41,12 @@
                         "fiscal_year":"fiscal_year",
                         "calendar_year":"calendar_fiscal_year"
                     },
-                    "rowElements":["other_government_entity", "title", "pay_frequency", "pay_date", "payroll_type", "annual_salary", "hourly_rate", "gross_pay", "base_pay", "other_payments", "overtime_payments", "gross_pay_ytd",
+                    "rowElements":["other_government_entities", "title", "pay_frequency", "pay_date", "payroll_type", "annual_salary", "hourly_rate", "gross_pay", "base_pay", "other_payments", "overtime_payments", "gross_pay_ytd",
                         "fiscal_year", "calendar_year"]
                 },
                 "csv":{
                     "elementsColumn":{
-                        "Other Government Entity":"agency_name",
+                        "Other Government Entities":"agency_name",
                         "Title":"civil_service_title",
                         "Pay Frequency":"pay_frequency",
                         "Pay Date":"pay_date",
@@ -73,7 +73,7 @@
                 "dataType":"year",
                 "maxLength":"4"
             },
-            "other_government_entity":{
+            "other_government_entities_code":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"3"
@@ -150,10 +150,10 @@
             }
         }
     },
-    "payroll_calendar_year":{
+    "payroll_oge_calendar_year":{
         "searchCriteriaMap":{
             "calendar_year":"calendar_fiscal_year",
-            "other_government_entity":"agency_code",
+            "other_government_entities_code":"agency_code",
             "pay_frequency":"pay_frequency",
             "pay_date":"pay_date",
             "amount":"annual_salary",
@@ -168,7 +168,7 @@
         },
         "dataset":{
             "sortColumn":["-gross_pay","-payroll_id"],
-            "name":"checkbook:payroll",
+            "name":"checkbook_nycha:payroll",
             "columnTypes":{
                 "civil_service_title":"like"
             },
@@ -177,7 +177,7 @@
                     "rootElement":"payroll_transactions",
                     "rowParentElement":"transaction",
                     "elementsColumn":{
-                        "other_government_entity":"agency_name",
+                        "other_government_entities":"agency_name",
                         "title":"civil_service_title",
                         "pay_frequency":"pay_frequency",
                         "pay_date":"pay_date",
@@ -192,12 +192,12 @@
                         "fiscal_year":"fiscal_year",
                         "calendar_year":"calendar_fiscal_year"
                     },
-                    "rowElements":["other_government_entity", "title", "pay_frequency", "pay_date", "payroll_type", "annual_salary", "hourly_rate", "gross_pay", "base_pay", "other_payments", "overtime_payments", "gross_pay_ytd",
+                    "rowElements":["other_government_entities", "title", "pay_frequency", "pay_date", "payroll_type", "annual_salary", "hourly_rate", "gross_pay", "base_pay", "other_payments", "overtime_payments", "gross_pay_ytd",
                         "fiscal_year", "calendar_year"]
                 },
                 "csv":{
                     "elementsColumn":{
-                        "Other Government Entity":"agency_name",
+                        "Other Government Entities":"agency_name",
                         "Title":"civil_service_title",
                         "Pay Frequency":"pay_frequency",
                         "Pay Date":"pay_date",
@@ -224,7 +224,7 @@
                 "dataType":"year",
                 "maxLength":"4"
             },
-            "other_government_entity":{
+            "other_government_entities_code":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"3"
@@ -303,7 +303,7 @@
     "validators":[
         {
             "name":"optionalSingleFilter",
-            "configKey":["payroll_fiscal_year", "payroll_calendar_year"],
+            "configKey":["payroll_oge_fiscal_year", "payroll_oge_calendar_year"],
             "config":{
                 "criteriaLevel":"value",
                 "validatorType":"filterName",

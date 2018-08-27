@@ -50,15 +50,16 @@
             });
 
             var dataSource = $('input:hidden[name="data_source"]', context).val();
-            $.fn.onDataSourceChange(dataSource);
+            $.fn.showHideFields(dataSource);
 
             //Data Source change event
-            $('input:radio[name=datafeeds_payroll_domain_filter]', context).change(function (){
+            $('input:radio[name=datafeeds-payroll-domain-filter]', context).change(function (){
                 //Remove all the validation errors when data source is changed
                 $('div.messages', context).remove();
                 $('.error', context).removeClass('error');
 
                 $('input:hidden[name="data_source"]', context).val($(this, context).val());
+                $('input:hidden[name="hidden_multiple_value"]', context).val("");
                 $.fn.clearInputFields();
                 $.fn.onDataSourceChange($(this, context).val());
             });
@@ -67,14 +68,22 @@
 
     //On Data Source Change
     $.fn.onDataSourceChange = function (dataSource) {
+        //reset the selected columns
+        $('#edit-column-select').multiSelect('deselect_all');
+        $('#edit-oge-column-select').multiSelect('deselect_all');
+
+        $.fn.showHideFields(dataSource);
+    }
+
+    $.fn.showHideFields = function (dataSource) {
         if(dataSource == 'checkbook_oge'){
             $('.datafield.agency').hide();
-            $('.datafield.other_government_entities').show();
+            $('.datafield.other_government_entity').show();
             $('.form-item-oge-column-select').show();
             $('.form-item-column-select').hide();
         }else{
             $('.datafield.agency').show();
-            $('.datafield.other_government_entities').hide();
+            $('.datafield.other_government_entity').hide();
             $('.form-item-oge-column-select').hide();
             $('.form-item-column-select').show();
         }
