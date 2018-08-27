@@ -12,12 +12,7 @@
         $.fn.showHideFields(dataSource);
 
         //Clear all text fields
-        var enclosingDiv = $("#dynamic-filter-data-wrapper").children('#edit-filter').children('div.fieldset-wrapper').children();
-        jQuery(enclosingDiv).find(':input').each(function () {
-            if (this.type == 'text') {
-                jQuery(this).val('');
-            }
-        });
+        $.fn.clearInputFields();
 
         //Reset the Spending Category
         $('select[name="expense_type"]').val('Total Spending [ts]');
@@ -398,6 +393,25 @@
             output = 0;
         }
         return output;
+    }
+
+    //Function to clear text fields and drop-downs
+    $.fn.clearInputFields = function () {
+        $('.fieldset-wrapper').find(':input').each(function () {
+            switch (this.type) {
+                case 'select-one':
+                    var default_option = $(this).attr('default_selected_value');
+                    if (default_option) {
+                      $(this).find('option[value=' + default_option + ']').attr("selected", "selected");
+                    } else {
+                      $(this).find('option:first').attr("selected", "selected");
+                    }
+                    break;
+                case 'text':
+                    $(this).val('');
+                    break;
+            }
+        });
     }
 
 }(jQuery));
