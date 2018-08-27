@@ -739,8 +739,8 @@
 
         //Enable "Contract includes sub vendors" and "Sub Vendor Status in PIP" drop-downs
         if(dataSource != 'checkbook_oge'){
-            $('#edit-contract_includes_sub_vendors_id',context).removeAttr('disabled');
-            $('#edit-sub_vendor_status_in_pip_id',context).removeAttr('disabled');
+            $('#edit-contract_includes_sub_vendors_id').removeAttr('disabled');
+            $('#edit-sub_vendor_status_in_pip_id').removeAttr('disabled');
         }
 
     }
