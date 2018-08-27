@@ -1327,12 +1327,6 @@ function checkbook_datafeeds_contracts($form, &$form_state)
     $data_source = $form_state['values']['datafeeds-contracts-domain-filter'];
     $data_source = !isset($data_source) ? 'checkbook' : $data_source;
 
-    $form['data_source'] = array(
-        '#title' =>  'data_source',
-        '#value' => $data_source,
-        '#type' => 'hidden'
-    );
-
     //<editor-fold desc="Heading">
 
     $form['loaded'] = array(
@@ -2785,7 +2779,7 @@ function checkbook_datafeeds_payroll($form, &$form_state) {
 
     //</editor-fold>
 
-    $form['datafeeds_payroll_domain_filter'] = array(
+    $form['datafeeds-payroll-domain-filter'] = array(
         '#type' => 'radios',
         '#options' => array('checkbook' => 'Citywide Agencies', 'checkbook_oge' => 'Other Government Entities'),
         '#default_value' => !isset($data_source) ? 'checkbook' : $data_source,
@@ -2796,7 +2790,7 @@ function checkbook_datafeeds_payroll($form, &$form_state) {
 
     $form['data_source'] = array(
         '#title' => 'data_source',
-        '#value' =>  $form_state['input']['datafeeds_payroll_domain_filter'],
+        '#value' =>  $data_source,
         '#type' => 'hidden'
     );
 
@@ -2805,14 +2799,14 @@ function checkbook_datafeeds_payroll($form, &$form_state) {
         '#title' => t('3. Filter the Data:'),
         '#attributes' => array('class' => array('payroll-fieldset')),
     );
-    $form['filter']['other_government_entities'] = array(
+    $form['filter']['other_government_entity'] = array(
         '#type' => 'select',
         '#title' => t('Other Government<br/>Entities:'),
         '#options' => $oge_options['options'],
         '#option_attributes' => $oge_options['options_attributes'],
         '#attributes' => array('class' => array('watch')),
-        '#default_value' => !empty($form_state['values']['other_government_entities']) ? $form_state['values']['other_government_entities'] : 'Select One',
-        '#prefix' => '<div class="column column-left"><div class="datafield other_government_entities">',
+        '#default_value' => !empty($form_state['values']['other_government_entity']) ? $form_state['values']['other_government_entity'] : 'Select One',
+        '#prefix' => '<div class="column column-left"><div class="datafield other_government_entity">',
         '#suffix' => '</div>',
     );
     $form['filter']['title'] = array(
@@ -2981,16 +2975,16 @@ function checkbook_datafeeds_payroll($form, &$form_state) {
         '#options' => _checkbook_datafeeds_payroll_column_options($datatype),
         '#multiple' => TRUE,
         '#default_value' => !empty($form_state['values']['column_select']) ? $form_state['values']['column_select'] : '',
-        '#required' => TRUE,
+        '#id' => 'edit-column-select',
     );
 
     $form['columns']['oge_column_select'] = array(
         '#type' => 'select',
-        '#title' => t('Columns'),
+        '#title' => t('Columns<span class="form-required" title="This field is required.">*</span>'),
         '#options' => _checkbook_datafeeds_payroll_column_options($datatype, 'checkbook_oge'),
         '#multiple' => TRUE,
         '#default_value' => !empty($form_state['values']['oge_column_select']) ? $form_state['values']['oge_column_select'] : '',
-        '#required' => TRUE,
+        '#id' => 'edit-oge-column-select',
     );
     //Hidden Field for multi-select
     if($data_source == 'checkbook_oge') {
@@ -2998,6 +2992,7 @@ function checkbook_datafeeds_payroll($form, &$form_state) {
     }else {
         $multi_select_hidden = isset($form_state['input']['column_select']) ? '|' . implode('||', $form_state['input']['column_select']) . '|' : '';
     }
+
     $form['columns']['hidden_multiple_value'] = array(
         '#value' => $multi_select_hidden,
         '#type' => 'hidden',
@@ -3051,16 +3046,16 @@ function _checkbook_datafeeds_payroll_column_options($datatype, $data_source = "
                                                                 "Fiscal year", "Gross Pay", "Gross Pay YTD", "Hourly Rate",
                                                                 "Other Payments", "Overtime Payments", "Pay Date",
                                                                 "Pay Frequency", "Payroll Type", "Title",)),
-                        "checkbook_oge" => drupal_map_assoc(array("Annual Salary", "Base Pay", "Calendar Year", "Other Government Entities",
+                        "checkbook_oge" => drupal_map_assoc(array("Annual Salary", "Base Pay", "Calendar Year",
                                                          "Fiscal year", "Gross Pay", "Gross Pay YTD", "Hourly Rate",
-                                                         "Other Payments", "Overtime Payments", "Pay Date",
+                                                         "Other Government Entities","Other Payments", "Overtime Payments", "Pay Date",
                                                          "Pay Frequency", "Payroll Type", "Title",))
                   );
     }else if($datatype == 'xml') {
         $options = array("checkbook" => drupal_map_assoc(array("agency", "annual_salary", "base_pay", "calendar_year", "fiscal_year",
                                                         "gross_pay", "gross_pay_ytd", "hourly_rate", "other_payments", "overtime_payments",
                                                         "pay_date", "pay_frequency", "payroll_type", "title",)),
-                          "checkbook_oge" => drupal_map_assoc(array("annual_salary", "base_pay", "calendar_year", "fiscal_year",
+                         "checkbook_oge" => drupal_map_assoc(array("annual_salary", "base_pay", "calendar_year", "fiscal_year",
                                                                     "gross_pay", "gross_pay_ytd", "hourly_rate", "other_government_entities",
                                                                     "overtime_payments", "pay_date", "pay_frequency", "payroll_type", "title",)),
                     );
@@ -3128,12 +3123,13 @@ function checkbook_datafeeds_payroll_next_submit($form, &$form_state) {
  * @param string $response_type
  *   response type (i.e. csv, xml)
  */
-function checkbook_datafeeds_payroll_filter_selected_columns($selected_columns, $data_source, $response_type)
+function checkbook_datafeeds_payroll_filter_selected_columns($selected_columns, $data_source, $response_type, $year_type = 'calendar_year')
 {
     //Get column configurations
     $domain = 'payroll';
     $domain = $data_source == 'checkbook_oge' ? $domain.'_oge' : $domain;
     $domain_config = ConfigUtil::getDomainConfiguration($domain);
+    $domain = $domain.'_'.$year_type;
     //Get columns which should be included for the current data source
     $columns_included = $domain_config->$domain->dataset->displayConfiguration->$response_type->elementsColumn;
     //Filter out selected columns which are not configured to show for this data source
@@ -3159,7 +3155,7 @@ function checkbook_datafeeds_payroll_confirmation($form, &$form_state) {
     $user_criteria['Type of Data'] = 'Payroll';
     $user_criteria['Type of File'] = $responsetype;
     //Get current data source
-    $data_source = $form_state['input']['datafeeds_payroll_domain_filter'];
+    $data_source = $form_state['input']['datafeeds-payroll-domain-filter'];
     //Set type/source of data by data_source
     $user_criteria['Type of Data'] = $data_source == 'checkbook_oge' ? 'Payroll_OGE' : 'Payroll';
 
@@ -3180,24 +3176,24 @@ function checkbook_datafeeds_payroll_confirmation($form, &$form_state) {
     //Used to maintain the order of the columns
     $selected_columns = checkbook_datafeeds_format_columns();
     //Filter columns for current data source
-    $filtered_columns = checkbook_datafeeds_payroll_filter_selected_columns($selected_columns, $data_source, $responsetype);
-
+    $filtered_columns = checkbook_datafeeds_spending_filter_selected_columns($selected_columns, $data_source, $responsetype);
     if($data_source == 'checkbook_oge'){
-        $form_state['step_information']['payroll']['stored_values']['oge_column_select'] = $filtered_columns;
+        $form_state['step_information']['spending']['stored_values']['oge_column_select'] = $filtered_columns;
     }else {
-        $form_state['step_information']['payroll']['stored_values']['column_select'] = $filtered_columns;
+        $form_state['step_information']['spending']['stored_values']['column_select'] = $filtered_columns;
     }
 
-    $formatted_search_criteria = array();
-    //Used to maintain the order of the columns
-    $selected_columns = checkbook_datafeeds_format_columns();
-    $form_state['step_information']['payroll']['stored_values']['column_select'] = $selected_columns;
-    foreach ($selected_columns as $column) {
-        $form['columns'][$column] = array(
-            '#markup' => '<div>' . $column . '</div>',
-        );
+    foreach ($filtered_columns as $column) {
+        $form['columns'][$column] = array('#markup' => '<div>' . $column . '</div>');
         $user_criteria['Columns'][] = $column;
     }
+
+    $form['#attributes'] = array(
+        'class' => array(
+            'confirmation-page',
+            'data-feeds-wizard',
+        )
+    );
     $form['filter'] = array(
         '#type' => 'fieldset',
         '#title' => t('Search Criteria'),
@@ -3223,12 +3219,24 @@ function checkbook_datafeeds_payroll_confirmation($form, &$form_state) {
         $user_criteria['Title'] = $values['title'];
         $formatted_search_criteria['Title'] = $values['title'];
     }
-    if ($values['agency']) {
-        $form['filter']['agency'] = array(
-            '#markup' => '<div><strong>Agency:</strong> ' . $values['agency'] . '</div>',
-        );
-        $user_criteria['Agency'] = $values['agency'];
-        $formatted_search_criteria['Agency'] = $values['agency'];
+
+    if($data_source == 'checkbook_oge'){
+        if ($values['other_government_entity']) {
+            $other_government_entity = ($values['other_government_entity'] == 'Select One') ? 'All' : $values['other_government_entity'];
+            $form['filter']['other_government_entity'] = array(
+                '#markup' => '<div><strong>Other Government Entities:</strong> ' . $other_government_entity . '</div>',
+            );
+            $user_criteria['Other Government Entity'] = $values['other_government_entity'];
+            $formatted_search_criteria['Other Government Entities'] = $other_government_entity;
+        }
+    }else {
+        if ($values['agency']) {
+            $form['filter']['agency'] = array(
+                '#markup' => '<div><strong>Agency:</strong> ' . $values['agency'] . '</div>',
+            );
+            $user_criteria['Agency'] = $values['agency'];
+            $formatted_search_criteria['Agency'] = $values['agency'];
+        }
     }
     if ($values['otherfrom'] && $values['otherto']) {
         $form['filter']['other_pay'] = array('#markup' => '<div><strong>Other Payments:</strong> Greater Than Equal to: $' . $values['otherfrom'] . ' Less Than Equal to: $' . $values['otherto'] . '</div>');
@@ -3344,6 +3352,7 @@ function checkbook_datafeeds_payroll_confirmation($form, &$form_state) {
         );
         $user_criteria['Fiscal Year'] = $values['year'];
         $formatted_search_criteria['Year'] = $values['year'];
+        $year_type = 'fiscal_year';
     }
     elseif (startsWith($values['year'], 'C')) {
         $form['filter']['year'] = array(
@@ -3351,6 +3360,7 @@ function checkbook_datafeeds_payroll_confirmation($form, &$form_state) {
         );
         $user_criteria['Calendar Year'] = $values['year'];
         $formatted_search_criteria['Year'] = $values['year'];
+        $year_type = 'calendar_year';
     }
     if ($values['paydatefrom'] && $values['paydateto']) {
         $form['filter']['pay_date'] = array('#markup' => '<div><strong>Pay Date:</strong> From: ' . $values['paydatefrom'] . ' To: ' . $values['paydateto'] . '</div>');
@@ -3383,6 +3393,23 @@ function checkbook_datafeeds_payroll_confirmation($form, &$form_state) {
         $form['filter']['pay_rate'] = array('#markup' => '<div><strong>Pay Rate:</strong> Greater Than Equal to: $' . $values['payratefrom'] . '</div>');
         $user_criteria['Pay Rate Greater Than'] = $values['payratefrom'];
         $formatted_search_criteria['Pay Rate'] = 'Greater Than Equal to: $' . $values['payratefrom'];
+    }
+
+    //Used to maintain the order of the columns
+    $selected_columns = checkbook_datafeeds_format_columns();
+    //Filter columns for current data source
+    $filtered_columns = checkbook_datafeeds_payroll_filter_selected_columns($selected_columns, $data_source, $responsetype, $year_type);
+
+    if($data_source == 'checkbook_oge'){
+        $form_state['step_information']['payroll']['stored_values']['oge_column_select'] = $filtered_columns;
+    }else {
+        $form_state['step_information']['payroll']['stored_values']['column_select'] = $filtered_columns;
+    }
+    foreach ($filtered_columns as $column) {
+        $form['columns'][$column] = array(
+            '#markup' => '<div>' . $column . '</div>',
+        );
+        $user_criteria['Columns'][] = $column;
     }
 
     $user_criteria['Formatted'] = $formatted_search_criteria;
@@ -3430,17 +3457,24 @@ function checkbook_datafeeds_process_payroll_values($form, &$form_state, $data_s
             'records_from' => 1,
             'max_records' => 200000,
         ),
-        'responseColumns' => $data_source == 'checkbook_oge' ? $values['oge_column_select'] : $values['column_select'],
+        'responseColumns' => ($data_source == 'checkbook_oge') ? $values['oge_column_select'] : $values['column_select'],
     );
     if (startsWith($values['year'], 'F')) {
         $criteria['value']['fiscal_year'] = ltrim($values['year'], 'FY ');
-    }
-    elseif (startsWith($values['year'], 'C')) {
+    } elseif (startsWith($values['year'], 'C')) {
         $criteria['value']['calendar_year'] = ltrim($values['year'], 'CY ');
     }
-    if ($values['agency'] != 'Citywide (All Agencies)') {
-        preg_match($pattern, $values['agency'], $amatches);
-        $criteria['value']['agency_code'] = trim($amatches[1], '[ ]');
+
+    if($data_source == 'checkbook_oge') {
+        if ($values['other_government_entity'] != 'Select One') {
+            preg_match($pattern, $values['other_government_entity'], $amatches);
+            $criteria['value']['other_government_entities_code'] = trim($amatches[1], '[ ]');
+        }
+    }else{
+        if ($values['agency'] != 'Citywide (All Agencies)') {
+            preg_match($pattern, $values['agency'], $amatches);
+            $criteria['value']['agency_code'] = trim($amatches[1], '[ ]');
+        }
     }
     if ($values['title']) {
         $title_exact = $_POST['title_exact'];
@@ -3613,6 +3647,7 @@ function checkbook_datafeeds_payroll_validate($form, &$form_state) {
     }else {
         $multi_select_hidden = isset($form_state['input']['column_select']) ? '|' . implode('||', $form_state['input']['column_select']) . '|' : '';
     }
+    $form_state['complete form']['data_source']['#value'] = $data_source;
     $form_state['complete form']['hidden_multiple_value']['#value'] = $multi_select_hidden;
 }
 
