@@ -24,7 +24,7 @@ class childAgreementDetails {
 
   public function getData(&$node){
 
-    $ag_id = RequestUtilities::getRequestParamValue("agid");
+    $ag_id = RequestUtilities::get("agid");
 
     $query1 = "SELECT l1.contract_number, a.master_contract_number,
            l2.vendor_id AS vendor_id_checkbook_vendor_history,

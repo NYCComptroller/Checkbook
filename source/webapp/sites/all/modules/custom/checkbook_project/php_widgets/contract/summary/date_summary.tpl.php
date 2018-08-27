@@ -20,15 +20,15 @@
 
     $title = eval($node->widgetConfig->summaryView->templateTitleEval);
     $month = '';
-    $yearType = RequestUtilities::getRequestParamValue('yeartype');
-    $year = RequestUtilities::getRequestParamValue('calyear');
+    $yearType = RequestUtilities::get('yeartype');
+    $year = RequestUtilities::get('calyear');
     $yearLabel = $yearType == 'C' ? 'CY' : 'FY';
     $year = isset($year)
-        ? _getYearValueFromID(RequestUtilities::getRequestParamValue('calyear'))
-        : _getYearValueFromID(RequestUtilities::getRequestParamValue('year'));
+        ? _getYearValueFromID(RequestUtilities::get('calyear'))
+        : _getYearValueFromID(RequestUtilities::get('year'));
     $year = $yearLabel.$year;
-    $monthDetails = CheckbookDateUtil::getMonthDetails(RequestUtilities::getRequestParamValue('month'));
-    $amount = custom_number_formatter_format(RequestUtilities::getRequestParamValue('amt'),2);
+    $monthDetails = CheckbookDateUtil::getMonthDetails(RequestUtilities::get('month'));
+    $amount = custom_number_formatter_format(RequestUtilities::get('amt'),2);
 
     if(isset($monthDetails)){
         $month = strtoupper($monthDetails[0]['month_name']);

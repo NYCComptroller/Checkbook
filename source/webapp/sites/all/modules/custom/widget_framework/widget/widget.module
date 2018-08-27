@@ -563,7 +563,7 @@ function load_widget_data($node, $resultFormatter) {
 
         //update
 
-        $ajaxRequest = RequestUtilities::getRequestParamValue('ajax');
+        $ajaxRequest = RequestUtilities::get('ajax');
 
         if(isset($config->adjustParameters)){
            @$parameters =  eval($config->adjustParameters);
@@ -1524,7 +1524,7 @@ function _update_dataset_datasource($datasetName,$keepOriginalDatasource = false
 	if($keepOriginalDatasource == true){
 		return $datasetName;
 	}
-    $database = RequestUtilities::getRequestParamValue('datasource');
+    $database = RequestUtilities::get('datasource');
     if(isset($database)){
         $database = str_replace("checkbook:", "checkbook_oge:",$datasetName);
     }else{
@@ -1557,7 +1557,7 @@ function _update_columns_by_datasource($node_columns, $datasource_mapping = null
 		return $node_columns;
 	}
     $columns = array();
-    $database = RequestUtilities::getRequestParamValue('datasource');
+    $database = RequestUtilities::get('datasource');
     $datasource_mapping = ($datasource_mapping != null) ? get_object_vars($datasource_mapping) : null;
     if (isset($node_columns) && $node_columns) {
         foreach($node_columns as $column){
@@ -1579,7 +1579,7 @@ function _update_columns_by_datasource($node_columns, $datasource_mapping = null
 
 
 function _get_current_datasource(){
-	$datasource = RequestUtilities::getRequestParamValue('datasource');
+	$datasource = RequestUtilities::get('datasource');
 	if(isset($datasource)){
 		return $datasource;
 	}else{

@@ -19,7 +19,7 @@
 */
 
 
-if ( RequestUtilities::getRequestParamValue("datasource") == "checkbook_oge") {
+if ( RequestUtilities::get("datasource") == "checkbook_oge") {
     $datasource ="/datasource/checkbook_oge";
 }
 

@@ -47,7 +47,7 @@ $non_salaried_count = count($all_data[PayrollType::$NON_SALARIED]);
 
 //Default view based on salamttype in url
 $default_view = $salaried_count > 0 ? PayrollType::$SALARIED : PayrollType::$NON_SALARIED;
-$salamttype = RequestUtilities::getRequestParamValue('salamttype');
+$salamttype = RequestUtilities::get('salamttype');
 if(isset($salamttype)) {
     $salamttype = explode('~',$salamttype);
     if (!in_array(1, $salamttype)) {
@@ -145,9 +145,9 @@ foreach($all_data as $employment_type => $employment_data) {
         $lbl_overtime_pay_ytd = WidgetUtil::getLabel('combined_overtime_pay_ytd');
 
         //Details link from the agency landing page - don't display agency name
-        $show_agency = !(RequestUtilities::getRequestParamValue('dtsmnid') == 325);
+        $show_agency = !(RequestUtilities::get('dtsmnid') == 325);
 
-        if(RequestUtilities::getRequestParamValue('smnid') == 322){
+        if(RequestUtilities::get('smnid') == 322){
             $total_overtime_employees_label = WidgetUtil::getLabel('total_no_of_ot_employees').':';
             $total_overtime_employees = number_format($data['total_overtime_employees']);
         }

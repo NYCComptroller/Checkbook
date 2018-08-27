@@ -92,7 +92,7 @@ abstract class Datasource {
     const OGE = "checkbook_oge";
 
      public static function getCurrent() {
-        $datasource = RequestUtilities::getRequestParamValue(UrlParameter::DATASOURCE);
+        $datasource = RequestUtilities::get(UrlParameter::DATASOURCE);
         switch($datasource) {
             case self::OGE: return self::OGE;
             default: return self::CITYWIDE;
@@ -116,7 +116,7 @@ abstract class Dashboard {
 
      public static function getCurrent() {
         $domain = CheckbookDomain::getCurrent();
-        $year = RequestUtilities::getRequestParamValue(UrlParameter::YEAR);
+        $year = RequestUtilities::get(UrlParameter::YEAR);
 
         if($domain == CheckbookDomain::REVENUE){
             if($year >= RequestUtilities::getCurrentYearID())
@@ -163,7 +163,7 @@ abstract class DashboardParameter {
     const MWBE_SUB_VENDORS = "ms";
 
      public static function getCurrent() {
-        return RequestUtilities::getRequestParamValue(UrlParameter::DASHBOARD);
+        return RequestUtilities::get(UrlParameter::DASHBOARD);
     }
 }
 
