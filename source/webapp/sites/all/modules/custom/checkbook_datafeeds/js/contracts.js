@@ -142,21 +142,7 @@
         var vendor_label = (dataSource == 'checkbook_oge') ? 'Prime Vendor:' : 'Vendor:';
         $("label[for = edit-vendor]").text(vendor_label);
 
-        //clear all text fields
-        var enclosingDiv = $("#dynamic-filter-data-wrapper").children('#edit-filter').children('div.fieldset-wrapper').children();
-        jQuery(enclosingDiv).find(':input').each(function() {
-            if(this.type == 'text') {
-                jQuery(this).val('');
-            }
-        });
-
-        //reset the drop-downs
-        var default_category = (dataSource == 'checkbook_oge') ? 'expense' : 'all';
-        $('select[name="df_contract_status"]').val('active');
-        $('select[name="contract_type"]').val('');
-        $('select[name="category"]').val(default_category);
-        $('select[name="award_method"]').val('');
-        $('select[name="year"]').val('');
+        $.fn.clearInputFields(dataSource);
 
         //reset the selected columns
         $.fn.resetSelectedColumns();
@@ -731,6 +717,32 @@
             output = 0;
         }
         return output;
+    }
+
+    //Function to clear text fields and drop-downs
+    $.fn.clearInputFields = function (dataSource) {
+        $('.fieldset-wrapper').find(':input').each(function () {
+            switch (this.type) {
+                case 'select-one':
+                    var default_option = $(this).attr('default_selected_value');
+                    if (default_option) {
+                      $(this).find('option[value=' + default_option + ']').attr("selected", "selected");
+                    } else {
+                      $(this).find('option:first').attr("selected", "selected");
+                    }
+                    break;
+                case 'text':
+                    $(this).val('');
+                    break;
+            }
+        });
+
+        //Enable "Contract includes sub vendors" and "Sub Vendor Status in PIP" drop-downs
+        if(dataSource != 'checkbook_oge'){
+            $('#edit-contract_includes_sub_vendors_id').removeAttr('disabled');
+            $('#edit-sub_vendor_status_in_pip_id').removeAttr('disabled');
+        }
+
     }
 
 }(jQuery));
