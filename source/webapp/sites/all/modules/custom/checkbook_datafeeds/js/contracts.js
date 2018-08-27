@@ -416,9 +416,7 @@
             //Data Source change event
             $('input:radio[name=datafeeds-contracts-domain-filter]', context).change(function (){
                 $('input:hidden[name="data_source"]', context).val($(this).val());
-                $('input:hidden[name="agency_hidden"]', context).val("");
-                $('input:hidden[name="hidden_multiple_value"]', context).val("");
-                $('input:hidden[name="column_select"]', context).val("");
+                var agency_hidden = $('input:hidden[name="agency_hidden"]', context).val("");
                 $.fn.onDataSourceChange($(this).val());
             });
 
