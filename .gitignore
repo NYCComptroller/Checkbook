@@ -1,11 +1,11 @@
 .idea/
+.metadata/
+.recommenders/
+nbproject/
+tmp/
 source/webapp/.buildpath
 source/webapp/.project
 source/webapp/.settings/
 source/webapp/sites/all/modules/custom/checkbook_advanced_search/includes/ConfigUtility.php
 source/tests/unit/reports
 source/tests/functional/NYCAutomationTest/*.xls
-.metadata/
-.recommenders/
-tmp/
-/nbproject/
