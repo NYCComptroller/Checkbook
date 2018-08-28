@@ -5533,7 +5533,7 @@ function _agency_options($data_source = null, $json_output = false) {
 function _checkbook_datafeeds_agency_options($data,$data_source = null, $json_output = false) {
 
     //IE8 - handle drop down width issue
-    if($data_source == 'checkbook_oge'){
+    if($data_source == 'checkbook_oge' || $data_source == 'checkbook_nycha'){
         $menu_options = array('Select One' => 'Select One');
         $json_menu_options[] = array('label'=> 'Select One','value' => 'Select One', 'code' => '');
     }else{
@@ -5541,7 +5541,7 @@ function _checkbook_datafeeds_agency_options($data,$data_source = null, $json_ou
         $json_menu_options[] = array('label'=> 'Citywide (All Agencies)','value' => 'Citywide (All Agencies)', 'code' => '');
     }
 
-    $title = $data_source == 'checkbook_oge'
+    $title = ($data_source == 'checkbook_oge' || $data_source == 'checkbook_nycha')
         ? 'Select One'
         : 'Citywide (All Agencies)';
     $menu_options_attributes = array($title => array('title' => $title));
