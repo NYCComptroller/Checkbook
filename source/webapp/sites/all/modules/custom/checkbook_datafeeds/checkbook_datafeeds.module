@@ -2761,7 +2761,7 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
 function checkbook_datafeeds_payroll($form, &$form_state) {
     $datatype = $form_state['step_information']['type']['stored_values']['format'];
     $agency_options = _agency_options();
-    $oge_options = _agency_options('checkbook_oge');
+    $oge_options = _agency_options('checkbook_nycha');
     $data_source = $form_state['values']['datafeeds-payroll-domain-filter'];
     $data_source = !isset($data_source) ? 'checkbook' : $data_source;
 
@@ -5502,6 +5502,12 @@ function _agency_options($data_source = null, $json_output = false) {
                     'agency_code',
                     'agency_name',
                 ), array("is_display" => "Y","is_oge_agency" => "Y"), 'agency_name');
+                break;
+            case 'checkbook_nycha':
+                $data = $dataController->queryDataset("checkbook_nycha:agency", array(
+                    'agency_code',
+                    'agency_name',
+                ), array("is_display" => "Y"), 'agency_name');
                 break;
             default:
                 $data = $dataController->queryDataset("checkbook:agency", array(
