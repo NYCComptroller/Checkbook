@@ -142,7 +142,10 @@
         var vendor_label = (dataSource == 'checkbook_oge') ? 'Prime Vendor:' : 'Vendor:';
         $("label[for = edit-vendor]").text(vendor_label);
 
+        //Clear text fields and drop-downs
         $.fn.clearInputFields(dataSource);
+        //Reset 'sub-vendor status in PIP' and 'contracts include sub-vendors' drop-downs
+        $.fn.subVendorStatusInPipChange(0,0);
 
         //reset the selected columns
         $.fn.resetSelectedColumns();
