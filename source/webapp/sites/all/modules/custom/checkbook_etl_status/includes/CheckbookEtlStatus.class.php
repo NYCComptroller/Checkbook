@@ -232,6 +232,21 @@ class CheckbookEtlStatus
             }
         }
 
+        if (!empty($data['match_status_timestamp'])) {
+            if (!defined('CHECKBOOK_DEV') && (($now - $data['match_status_timestamp']) > self::SUCCESS_IF_RUN_LESS_THAN_X_SECONDS_AGO)) {
+                unset($data['match_status_timestamp']);
+                if (!empty($data['match_status'])) {
+                    unset($data['match_status']);
+                }
+            } else {
+//                $allGood = ['OK'];
+//                $data['match_status_time_diff'] = $this->niceDisplayDateDiff($data['match_status_timestamp']);
+//                if (($allGood !== $data['match_status']) && ('Success' == $this->successSubject)) {
+//                    $this->successSubject = 'Needs attention';
+//                }
+            }
+        }
+
         return $data;
     }
 

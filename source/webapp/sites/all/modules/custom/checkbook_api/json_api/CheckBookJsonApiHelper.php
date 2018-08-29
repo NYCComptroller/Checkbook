@@ -126,6 +126,40 @@ class CheckBookJsonApiHelper
             $this->JsonApi->message .= $e->getMessage();
         }
 
+        $match_status = [];
+        $match_status_timestamp = 0;
+        $match_status_csv_path = $conf['etl-status-path'] . 'file_data_statistics.csv';
+        $data_source_name_file_path = $conf['etl-status-path'] . 'data_source_name.txt';
+
+        try {
+            if (is_file($match_status_csv_path) && is_file($data_source_name_file_path)) {
+                $data_source_names = array_map('trim', file($data_source_name_file_path));
+                if ('data_source_name' == $data_source_names[0]) {
+//                    removing first line
+                    array_shift($data_source_names);
+                }
+                foreach($data_source_names as $source) {
+                    $match_status[$source] = false;
+                }
+
+                $match_status_csv = array_map('trim', file($match_status_csv_path));
+                foreach($match_status_csv as $line){
+                    list($source,) = explode(',',$line);
+                    if ('data_source_name' == $source) {
+                        continue;
+                    }
+                    if (in_array($source, $data_source_names)) {
+                        $match_status[$source] = true;
+                    }
+                }
+                $match_status_timestamp = filemtime($match_status_csv_path);
+            } else {
+                $match_status = false;
+            }
+        } catch (Exception $e) {
+            $this->JsonApi->message .= $e->getMessage();
+        }
+
         return [
             'success' => $this->JsonApi->success,
             'data' => $data,
@@ -134,6 +168,8 @@ class CheckBookJsonApiHelper
             'invalid_records_timestamp' => $invalid_records_timestamp,
             'audit_status' => $audit_status,
             'audit_status_timestamp' => $audit_status_timestamp,
+            'match_status' => $match_status,
+            'match_status_timestamp' => $match_status_timestamp,
         ];
     }
 
