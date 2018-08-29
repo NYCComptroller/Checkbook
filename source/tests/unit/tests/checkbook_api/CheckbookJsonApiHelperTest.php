@@ -119,6 +119,15 @@ class CheckbookJsonApiHelperTest extends TestCase
             'audit_status' => ['OK'],
             'audit_status_timestamp' => filemtime(
                 $conf['etl-status-path'] . 'audit_status.txt'),
+            'match_status' => [
+                'PMS' => true,
+                'PMSSummary' => true,
+                'PendingContracts' => true,
+                'COAExpenditureObject' => false,
+
+            ],
+            'match_status_timestamp' => filemtime(
+                $conf['etl-status-path'] . 'file_data_statistics.csv'),
         ];
         $this->assertEquals($expected, $this->helper->getProdEtlStatus());
     }

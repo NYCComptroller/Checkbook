@@ -175,6 +175,38 @@
       <br/>
       <br/>
     <?php endif;
+
+      if ($json['match_status_timestamp'] && $json['match_status']): ?>
+
+          <table class="file" cellpadding="5">
+              <thead>
+              <tr class="filename">
+                  <th colspan="<?php echo sizeof($json['match_status']) ?>">
+                      <?php echo $json['source'] ?> ETL `invalid_records_details.csv`
+                      (<?php echo date("Y-m-d g:iA", $json['match_status_timestamp']); ?>)
+                  </th>
+              </tr>
+              <?php $first = true;
+              $key = 0;
+              foreach ($json['match_status'] as $source => $source_status):
+              $class = $key ? ($key % 2 ? 'odd' : 'even') : 'header';
+              $td = $first ? 'th' : 'td'; ?>
+              <tr class="<?php echo $class ?>">
+                  <td><?php echo htmlentities($source) ?></td>
+                  <td><?php echo $source_status?'✅':'❌' ?></td>
+              </tr>
+              <?php if ($first): ?>
+              </thead>
+              <tbody>
+              <?php endif; ?>
+              <?php $first = false;
+              $key++;
+              endforeach; ?>
+              </tbody>
+          </table>
+          <br/>
+          <br/>
+      <?php endif;
   endforeach; ?>
   <br/>
   <br/>
