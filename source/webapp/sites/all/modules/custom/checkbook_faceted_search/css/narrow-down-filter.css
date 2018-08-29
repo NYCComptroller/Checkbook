@@ -204,6 +204,7 @@ div.filter-content-fdomainName div.options{
 
 .facet-content label{
   all: unset;
+  cursor: pointer;
 }
 
 .filter-title span{

@@ -149,26 +149,26 @@
 
       <table class="file" cellpadding="5">
         <thead>
-        <tr class="filename">
-          <th colspan="<?php echo sizeof($json['invalid_records'][0]) ?>">
-            <?php echo $json['source'] ?> ETL `invalid_records_details.csv`
-            (<?php echo date("Y-m-d g:iA", $json['invalid_records_timestamp']); ?>)
-          </th>
-        </tr>
+            <tr class="filename">
+              <th colspan="<?php echo sizeof($json['invalid_records'][0]) ?>">
+                <?php echo $json['source'] ?> ETL `invalid_records_details.csv`
+                (<?php echo date("Y-m-d g:iA", $json['invalid_records_timestamp']); ?>)
+              </th>
+            </tr>
         <?php $first = true;
         foreach ($json['invalid_records'] as $key => $row):
-        $class = $key ? ($key % 2 ? 'odd' : 'even') : 'header';
-        $td = $first ? 'th' : 'td'; ?>
-        <tr class="<?php echo $class ?>">
-          <?php foreach ($row as $item) {
-            echo "<$td>" . htmlentities($item) . "</$td>";
-          } ?>
-        </tr>
-        <?php if ($first): ?>
-        </thead>
-        <tbody>
-        <?php endif; ?>
-        <?php $first = false;
+            $class = $key ? ($key % 2 ? 'odd' : 'even') : 'header';
+            $td = $first ? 'th' : 'td'; ?>
+                <tr class="<?php echo $class ?>">
+                  <?php foreach ($row as $item) {
+                    echo "<$td>" . htmlentities($item) . "</$td>";
+                  } ?>
+                </tr>
+            <?php if ($first): ?>
+            </thead>
+            <tbody>
+            <?php endif; ?>
+            <?php $first = false;
         endforeach; ?>
         </tbody>
       </table>
@@ -180,27 +180,25 @@
 
           <table class="file" cellpadding="5">
               <thead>
-              <tr class="filename">
-                  <th colspan="<?php echo sizeof($json['match_status']) ?>">
-                      <?php echo $json['source'] ?> ETL `invalid_records_details.csv`
-                      (<?php echo date("Y-m-d g:iA", $json['match_status_timestamp']); ?>)
-                  </th>
-              </tr>
-              <?php $first = true;
-              $key = 0;
-              foreach ($json['match_status'] as $source => $source_status):
-              $class = $key ? ($key % 2 ? 'odd' : 'even') : 'header';
-              $td = $first ? 'th' : 'td'; ?>
-              <tr class="<?php echo $class ?>">
-                  <td><?php echo htmlentities($source) ?></td>
-                  <td><?php echo $source_status?'✅':'❌' ?></td>
-              </tr>
-              <?php if ($first): ?>
+                  <tr class="filename">
+                      <th colspan="<?php echo sizeof($json['match_status']) ?>">
+                          <?php echo $json['source'] ?> ETL `file_data_statistics.csv`
+                          (<?php echo date("Y-m-d g:iA", $json['match_status_timestamp']); ?>)
+                      </th>
+                  </tr>
               </thead>
               <tbody>
-              <?php endif; ?>
-              <?php $first = false;
-              $key++;
+              <?php
+              $key = 0;
+              foreach ($json['match_status'] as $source => $source_status):
+                  $class = $key ? ($key % 2 ? 'odd' : 'even') : 'header';
+                  ?>
+                      <tr class="<?php echo $class ?>">
+                          <td><?php echo htmlentities($source) ?></td>
+                          <td><?php echo $source_status?'✅':'❌' ?></td>
+                      </tr>
+                  <?php
+                  $key++;
               endforeach; ?>
               </tbody>
           </table>
