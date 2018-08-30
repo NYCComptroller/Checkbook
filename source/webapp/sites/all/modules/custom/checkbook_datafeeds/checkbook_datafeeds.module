@@ -1393,7 +1393,7 @@ function checkbook_datafeeds_contracts($form, &$form_state)
         '#multiple' => TRUE,
         '#options' => _checkbook_datafeeds_contracts_column_options('checkbook', 'default', 'expense', $data_type),
         '#id' => 'edit-column-select-expense',
-        '#default_value' => !empty($form_state['values']['column_select']) ? $form_state['values']['column_select'] : '',
+        '#default_value' => !empty($form_state['values']['column_select_expense']) ? $form_state['values']['column_select_expense'] : '',
     );
     $form['columns']['column_select_revenue'] = array(
         '#type' => 'select',
@@ -1401,7 +1401,7 @@ function checkbook_datafeeds_contracts($form, &$form_state)
         '#multiple' => TRUE,
         '#options' => _checkbook_datafeeds_contracts_column_options('checkbook', 'default', 'revenue', $data_type),
         '#id' => 'edit-column-select-revenue',
-        '#default_value' => !empty($form_state['values']['column_select']) ? $form_state['values']['column_select'] : '',
+        '#default_value' => !empty($form_state['values']['column_select_revenue']) ? $form_state['values']['column_select_revenue'] : '',
     );
     $form['columns']['column_select_all'] = array(
         '#type' => 'select',
@@ -1409,7 +1409,7 @@ function checkbook_datafeeds_contracts($form, &$form_state)
         '#multiple' => TRUE,
         '#options' => _checkbook_datafeeds_contracts_column_options('checkbook', 'default', 'all', $data_type),
         '#id' => 'edit-column-select-all',
-        '#default_value' => !empty($form_state['values']['column_select']) ? $form_state['values']['column_select'] : '',
+        '#default_value' => !empty($form_state['values']['column_select_all']) ? $form_state['values']['column_select_all'] : '',
     );
     $form['columns']['column_select_pending'] = array(
         '#type' => 'select',
@@ -1417,7 +1417,7 @@ function checkbook_datafeeds_contracts($form, &$form_state)
         '#multiple' => TRUE,
         '#options' => _checkbook_datafeeds_contracts_column_options('checkbook', 'pending', 'pending', $data_type),
         '#id' => 'edit-column-select-pending',
-        '#default_value' => !empty($form_state['values']['column_select']) ? $form_state['values']['column_select'] : '',
+        '#default_value' => !empty($form_state['values']['column_select_pending']) ? $form_state['values']['column_select_pending'] : '',
     );
     $form['columns']['column_select_pending_all'] = array(
         '#type' => 'select',
@@ -1425,7 +1425,7 @@ function checkbook_datafeeds_contracts($form, &$form_state)
         '#multiple' => TRUE,
         '#options' => _checkbook_datafeeds_contracts_column_options('checkbook', 'pending', 'pending', $data_type),
         '#id' => 'edit-column-select-pending-all',
-        '#default_value' => !empty($form_state['values']['column_select']) ? $form_state['values']['column_select'] : '',
+        '#default_value' => !empty($form_state['values']['column_select_pending_all']) ? $form_state['values']['column_select_pending_all'] : '',
     );
     $form['columns']['column_select_oge_expense'] = array(
         '#type' => 'select',
@@ -1433,11 +1433,34 @@ function checkbook_datafeeds_contracts($form, &$form_state)
         '#multiple' => TRUE,
         '#options' => _checkbook_datafeeds_contracts_column_options('checkbook_oge', 'default', 'expense', $data_type),
         '#id' => 'edit-column-select-oge-expense',
-        '#default_value' => !empty($form_state['values']['column_select']) ? $form_state['values']['column_select'] : '',
+        '#default_value' => !empty($form_state['values']['column_select_oge_expense']) ? $form_state['values']['column_select_oge_expense'] : '',
     );
+
+    if($form_state['input']['datafeeds-contracts-domain-filter'] == 'checkbook_oge'){
+        $multi_select_hidden = isset($form_state['input']['column_select_oge_expense']) ? '|' . implode('||', $form_state['input']['column_select_oge_expense']) . '|' : '';
+    }else{
+        if($form_state['input']['df_contract_status'] == 'pending'){
+            if ($form_state['input']['category'] != 'all') {
+                $multi_select_hidden = isset($form_state['input']['column_select_pending']) ? '|' . implode('||', $form_state['input']['column_select_pending']) . '|' : '';
+            }
+            if ($form_state['input']['category'] == 'all') {
+                $multi_select_hidden = isset($form_state['input']['column_select_pending_all']) ? '|' . implode('||', $form_state['input']['column_select_pending_all']) . '|' : '';
+            }
+        }else{
+            if($form_state['input']['category'] == 'all'){
+                $multi_select_hidden = isset($form_state['input']['column_select_all']) ? '|' . implode('||', $form_state['input']['column_select_all']) . '|' : '';
+            }
+            if($form_state['input']['category'] == 'expense'){
+                $multi_select_hidden = isset($form_state['input']['column_select_expense']) ? '|' . implode('||', $form_state['input']['column_select_expense']) . '|' : '';
+            }
+            if($form_state['input']['category'] == 'revenue'){
+                $multi_select_hidden = isset($form_state['input']['column_select_revenue']) ? '|' . implode('||', $form_state['input']['column_select_revenue']) . '|' : '';
+            }
+        }
+    }
     //Hidden Field for multi-select
     $form['columns']['hidden_multiple_value'] = array(
-        '#value' => isset($form_state['values']['column_select']) ? '|'.implode('||',$form_state['values']['column_select']).'|' : '',
+        '#value' => $multi_select_hidden,
         '#type' => 'hidden',
     );
 
@@ -1956,7 +1979,29 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
     $selected_columns = checkbook_datafeeds_format_columns();
     //Filter columns for current data source
     $filtered_columns = checkbook_datafeeds_contracts_filter_selected_columns($selected_columns, $data_source, $response_type, $values['df_contract_status'],$values['category'],$values['year']);
-    $form_state['step_information']['contracts']['stored_values']['column_select'] = $filtered_columns;
+    //$form_state['step_information']['contracts']['stored_values']['column_select'] = $filtered_columns;
+    if($data_source == 'checkbook_oge'){
+        $form_state['step_information']['contracts']['stored_values']['column_select_oge_expense'] = $filtered_columns;
+    }else{
+        if($values['df_contract_status'] == 'pending'){
+            if ($values['category'] != 'all') {
+                $form_state['step_information']['contracts']['stored_values']['column_select_pending'] = $filtered_columns;
+            }
+            if ($values['category'] == 'all') {
+                $form_state['step_information']['contracts']['stored_values']['column_select_pending_all'] = $filtered_columns;
+            }
+        }else{
+            if($values['category'] == 'all'){
+                $form_state['step_information']['contracts']['stored_values']['column_select_all'] = $filtered_columns;
+            }
+            if($values['category'] == 'expense'){
+                $form_state['step_information']['contracts']['stored_values']['column_select_expense'] = $filtered_columns;
+            }
+            if($values['category'] == 'revenue'){
+                $form_state['step_information']['contracts']['stored_values']['column_select_revenue'] = $filtered_columns;
+            }
+        }
+    }
     foreach ($filtered_columns as $column) {
         $form['columns'][$column] = array(
             '#markup' => '<div>' . $column . '</div>',
@@ -2418,37 +2463,37 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
             'max_records' => 200000,
         ),
     );
-
-    if ($values['df_contract_status'] != 'pending' && $values['category'] == 'expense') {
-        $criteria['responseColumns'] = $values['column_select'];
-        if ($values['year'] && $values['year'] != 'ALL') {
-            if (startsWith($values['year'], 'F')) {
-                $criteria['value']['fiscal_year'] = ltrim($values['year'], 'FY');
-            } elseif (startsWith($values['year'], 'C')) {
-                $criteria['value']['calendar_year'] = ltrim($values['year'], 'CY');
+    if($data_source == 'checkbook_oge'){
+        $criteria['responseColumns'] = $values['column_select_oge_expense'];
+    }else{
+        if($values['df_contract_status'] == 'pending'){
+            if ($values['category'] != 'all') {
+                $criteria['responseColumns'] = $values['column_select_pending'];
+            }
+            if ($values['category'] == 'all') {
+                $criteria['responseColumns'] = $values['column_select_pending_all'];
+            }
+        }else{
+            if($values['category'] == 'all'){
+                $criteria['responseColumns'] = $values['column_select_all'];
+            }
+            if($values['category'] == 'expense'){
+                $criteria['responseColumns'] = $values['column_select_expense'];
+            }
+            if($values['category'] == 'revenue'){
+                $criteria['responseColumns'] = $values['column_select_revenue'];
             }
         }
-    } elseif ($values['df_contract_status'] != 'pending' && $values['category'] == 'revenue') {
-        $criteria['responseColumns'] = $values['column_select'];
-        if ($values['year'] && $values['year'] != 'ALL') {
-            if (startsWith($values['year'], 'F')) {
-                $criteria['value']['fiscal_year'] = ltrim($values['year'], 'FY ');
-            } elseif (startsWith($values['year'], 'C')) {
-                $criteria['value']['calendar_year'] = ltrim($values['year'], 'CY ');
-            }
-        }
-    }  elseif ($values['df_contract_status'] != 'pending' && $values['category'] == 'all') {
-        $criteria['responseColumns'] = $values['column_select'];
-        if ($values['year'] && $values['year'] != 'ALL') {
-            if (startsWith($values['year'], 'F')) {
-                $criteria['value']['fiscal_year'] = ltrim($values['year'], 'FY ');
-            } elseif (startsWith($values['year'], 'C')) {
-                $criteria['value']['calendar_year'] = ltrim($values['year'], 'CY ');
-            }
-        }
-    }elseif ($values['df_contract_status'] == 'pending' && $values['category'] == 'expense') {
-        $criteria['responseColumns'] = $values['column_select'];
     }
+
+    if ($values['year'] && $values['year'] != 'ALL') {
+        if (startsWith($values['year'], 'F')) {
+            $criteria['value']['fiscal_year'] = ltrim($values['year'], 'FY');
+        } elseif (startsWith($values['year'], 'C')) {
+            $criteria['value']['calendar_year'] = ltrim($values['year'], 'CY');
+        }
+    }
+
     if ($values['currentamtfrom'] !== '' || $values['currentamtto'] !== '') {
         $criteria['range']['current_amount'] = array(
             checknull($values['currentamtfrom']),
@@ -2705,26 +2750,42 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
 
     //Columns
     if($data_source == 'checkbook_oge'){
+        $multi_select_hidden = isset($form_state['input']['column_select_oge_expense']) ? '|' . implode('||', $form_state['input']['column_select_oge_expense']) . '|' : '';
         if(!$ogeexpense){
             form_set_error('column_select_oge_expense', t('You must select at least one column.'));
         }
     }else{
         if($form_state['values']['df_contract_status'] == 'pending'){
-            if (!$pending && $form_state['values']['category'] != 'all') {
-                form_set_error('column_select_pending', t('You must select at least one column.'));
+            if ($form_state['values']['category'] != 'all') {
+                $multi_select_hidden = isset($form_state['input']['column_select_pending']) ? '|' . implode('||', $form_state['input']['column_select_pending']) . '|' : '';
+                if(!$pending) {
+                    form_set_error('column_select_pending', t('You must select at least one column.'));
+                }
             }
-            if (!$pending_all && $form_state['values']['category'] == 'all') {
-                form_set_error('column_select_pending_all', t('You must select at least one column.'));
+            if ($form_state['values']['category'] == 'all') {
+                $multi_select_hidden = isset($form_state['input']['column_select_pending_all']) ? '|' . implode('||', $form_state['input']['column_select_pending_all']) . '|' : '';
+                if(!$pending_all) {
+                    form_set_error('column_select_pending_all', t('You must select at least one column.'));
+                }
             }
         }else{
-            if(!$all && $form_state['values']['category'] == 'all'){
-                form_set_error('column_select_all', t('You must select at least one column.'));
+            if($form_state['values']['category'] == 'all'){
+                $multi_select_hidden = isset($form_state['input']['column_select_all']) ? '|' . implode('||', $form_state['input']['column_select_all']) . '|' : '';
+                if(!$all) {
+                    form_set_error('column_select_all', t('You must select at least one column.'));
+                }
             }
-            if(!$activeexpense && $form_state['values']['category'] == 'expense'){
-                form_set_error('column_select_expense', t('You must select at least one column.'));
+            if($form_state['values']['category'] == 'expense'){
+                $multi_select_hidden = isset($form_state['input']['column_select_expense']) ? '|' . implode('||', $form_state['input']['column_select_expense']) . '|' : '';
+                if(!$activeexpense) {
+                    form_set_error('column_select_expense', t('You must select at least one column.'));
+                }
             }
             if(!$activerevenue && $form_state['values']['category'] == 'revenue'){
-                form_set_error('column_select_revenue', t('You must select at least one column.'));
+                $multi_select_hidden = isset($form_state['input']['column_select_revenue']) ? '|' . implode('||', $form_state['input']['column_select_revenue']) . '|' : '';
+                if(!$activerevenue) {
+                    form_set_error('column_select_revenue', t('You must select at least one column.'));
+                }
             }
         }
     }
@@ -2751,6 +2812,8 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
     }
     $form_state['complete form']['agency_hidden']['#value'] = $form_state['values']['agency'];
     $form_state['complete form']['data_source']['#value'] = $form_state['input']['datafeeds-contracts-domain-filter'];
+    //Hidden Field for multi-select
+    $form_state['complete form']['hidden_multiple_value']['#value'] = $multi_select_hidden;
 }
 
 //</editor-fold>
