@@ -92,20 +92,20 @@ class RequestUtilitiesTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expected, RequestUtilities::get(['a', 'c|ccc', 'e|ee', 'f']));
     }
 
-    /**
-     *
-     */
-    public function testGetByAjaxReferrer()
-    {
-        $_SERVER['HTTP_X_REQUESTED_WITH'] = 'xmlhttprequest';
-        $_SERVER['HTTP_REFERER'] = 'a/b3/c/d4/e/f5/f/g6';
-        $_GET['q'] = 'a/b/ccc/d/ee/f/g';
-
-        $expected = ['b3', 'd4', 'f5', 'g6'];
-        $this->assertEquals($expected, RequestUtilities::get(['a', 'c|ccc', 'e|ee', 'f']));
-        unset($_SERVER['HTTP_X_REQUESTED_WITH']);
-        unset($_SERVER['HTTP_REFERER']);
-    }
+//    /**
+//     *
+//     */
+//    public function testGetByAjaxReferrer()
+//    {
+//        $_SERVER['HTTP_X_REQUESTED_WITH'] = 'xmlhttprequest';
+//        $_SERVER['HTTP_REFERER'] = 'a/b3/c/d4/e/f5/f/g6';
+//        $_GET['q'] = 'a/b/ccc/d/ee/f/g';
+//
+//        $expected = ['b3', 'd4', 'f5', 'g6'];
+//        $this->assertEquals($expected, RequestUtilities::get(['a', 'c|ccc', 'e|ee', 'f']));
+//        unset($_SERVER['HTTP_X_REQUESTED_WITH']);
+//        unset($_SERVER['HTTP_REFERER']);
+//    }
 
     /**
      *
