@@ -232,6 +232,15 @@ class CheckbookEtlStatus
             }
         }
 
+        if (!empty($data['match_status_timestamp'])) {
+            if (!defined('CHECKBOOK_DEV') && (($now - $data['match_status_timestamp']) > self::SUCCESS_IF_RUN_LESS_THAN_X_SECONDS_AGO)) {
+                unset($data['match_status_timestamp']);
+                if (!empty($data['match_status'])) {
+                    unset($data['match_status']);
+                }
+            }
+        }
+
         return $data;
     }
 
@@ -261,6 +270,9 @@ class CheckbookEtlStatus
         return $return;
     }
 
+    /**
+     * @return array
+     */
     public function getSolrHealthStatus()
     {
         global $conf;
