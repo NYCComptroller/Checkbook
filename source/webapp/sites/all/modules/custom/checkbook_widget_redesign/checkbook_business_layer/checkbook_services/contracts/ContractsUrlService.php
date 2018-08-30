@@ -412,9 +412,9 @@ class ContractsUrlService
         $url = RequestUtilities::buildUrlFromParam([
                 'agency',
                 'contstatus|status',
-                'cindustry',
+//                'cindustry',//NYCCHKBK-8560
                 'csize',
-                'awdmethod',
+//                'awdmethod',//NYCCHKBK-8560
             ])
             . _checkbook_project_get_year_url_param_string();
 
@@ -495,11 +495,6 @@ class ContractsUrlService
                 . "/subvendor/" . $vendor_id;
             return $currentUrl . $url;
         }
-    }
-
-    static function applyVendorParameter($vendor_id, $year_id = null)
-    {
-        $vendornm_exact = RequestUtilities::get('vendornm_exact');
     }
 
     static function applyLandingParameter($docType)

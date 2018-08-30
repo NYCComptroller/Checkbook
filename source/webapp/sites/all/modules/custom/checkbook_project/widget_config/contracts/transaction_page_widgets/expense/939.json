@@ -45,9 +45,34 @@
         "contnum_exact":"contract_number",
         "year":"year"
     },
-    "allowRequestParams":["smnid","doctype","mwbe","modamt","psmwbe","vendor","pcuramtr","scuramtr"],
-    "paramTypeConfig":{"vendornm_exact":"eqignorecase","vendornm":"like","pcontdesc":"contains","scontdesc":"contains","contnum":"like","contnum_exact":"eqignorecase","aptpin":"like","pin":"like",
-        "startdate":"range","enddate":"range","regdate":"range","curamt":"range","pcuramtr":"rangeid","scuramtr":"rangeid","pmodamt":"ne","smodamt":"ne"},
+    "allowRequestParams": [
+      "smnid",
+      "doctype",
+      "mwbe",
+      "modamt",
+      "psmwbe",
+      "vendor",
+      "pcuramtr",
+      "scuramtr"
+    ],
+    "paramTypeConfig": {
+      "vendornm_exact": "eqignorecase",
+      "vendornm": "like",
+      "pcontdesc": "contains",
+      "scontdesc": "contains",
+      "contnum": "like",
+      "contnum_exact": "eqignorecase",
+      "aptpin": "like",
+      "pin": "like",
+      "startdate": "range",
+      "enddate": "range",
+      "regdate": "range",
+      "curamt": "range",
+      "pcuramtr": "rangeid",
+      "scuramtr": "rangeid",
+      "pmodamt": "ne",
+      "smodamt": "ne"
+    },
     "header":"
         $header = NULL;
         $header .= widget_data_tables_export_link($node);
