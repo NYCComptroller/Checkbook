@@ -247,6 +247,11 @@ class CheckbookDatafeedsModuleTest extends TestCase
             'contract_includes_sub_vendors_id' => '',
             'sub_vendor_status_in_pip_id' => '',
             'contract_type' => 'No Contract Type Selected',
+            'column_select_oge_expense' => array (
+                'Award Method' => 'Award Method',
+                'Budget Name' => 'Budget Name',
+                'Commodity Line' => 'Commodity Line',
+                'Contract ID' => 'Contract ID',)
         ];
         $criteria = checkbook_datafeeds_process_contracts_values($test_form, $test_form_state, 'checkbook_oge');
         $this->assertEquals('array', gettype($criteria));
