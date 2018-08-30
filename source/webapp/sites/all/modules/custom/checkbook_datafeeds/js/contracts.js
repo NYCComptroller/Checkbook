@@ -744,6 +744,10 @@
             $('#edit-sub_vendor_status_in_pip_id').removeAttr('disabled');
         }
 
+        //For OGE set 'Expense' as default category
+        if(dataSource == 'checkbook_oge'){
+            $('select[name="category"]').val('expense');
+        }
     }
 
 }(jQuery));
