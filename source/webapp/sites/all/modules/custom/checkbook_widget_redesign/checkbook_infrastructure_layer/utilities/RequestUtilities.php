@@ -107,9 +107,6 @@ class RequestUtilities
      * Get one or many url parameters from current request, with options to override values or use default values
      * or use specific query URL ('q' option) instead of drupal request 'q' param
      *
-     * Warning: by this implementation AJAX is automatically detected and HTTP_REFERRER is used automatically
-     * instead of drupal 'q' request
-     *
      * @param string|array $paramName
      * @param array $options ['override','default', 'q']
      * @return string|array value
@@ -181,9 +178,6 @@ class RequestUtilities
             $urlPath = $options['q'];
         } else {
             $urlPath = drupal_get_path_alias($_GET['q']);
-            if (self::is_ajax()) {
-                $urlPath = strtok($_SERVER['HTTP_REFERER'], '?');
-            }
         }
         $pathParams = explode('/', $urlPath);
         $index = array_search($paramName, $pathParams);
