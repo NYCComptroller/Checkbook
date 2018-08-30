@@ -238,12 +238,6 @@ class CheckbookEtlStatus
                 if (!empty($data['match_status'])) {
                     unset($data['match_status']);
                 }
-            } else {
-//                $allGood = ['OK'];
-//                $data['match_status_time_diff'] = $this->niceDisplayDateDiff($data['match_status_timestamp']);
-//                if (($allGood !== $data['match_status']) && ('Success' == $this->successSubject)) {
-//                    $this->successSubject = 'Needs attention';
-//                }
             }
         }
 
@@ -276,6 +270,9 @@ class CheckbookEtlStatus
         return $return;
     }
 
+    /**
+     * @return array
+     */
     public function getSolrHealthStatus()
     {
         global $conf;
