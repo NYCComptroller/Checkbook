@@ -251,7 +251,8 @@ function _checkbook_project_execute_sql_test($query)
  * @param $q
  * @return mixed
  */
-function drupal_get_path_alias($q) {
+function drupal_get_path_alias($q)
+{
     return $q;
 }
 

@@ -119,8 +119,30 @@ class CheckbookJsonApiHelperTest extends TestCase
             'audit_status' => ['OK'],
             'audit_status_timestamp' => filemtime(
                 $conf['etl-status-path'] . 'audit_status.txt'),
+            'match_status' => [
+                'PMSSummary' => 'unknown',
+                'COAExpenditureObject' => 'unknown',
+                'COARevenueSource' => '7 days ago',
+                'MAG' => '5 days ago',
+                'Some Incredible Name' => 'unknown data source name',
+            ],
+            'match_status_timestamp' => filemtime(
+                $conf['etl-status-path'] . 'file_data_statistics.csv'),
         ];
+        $fakeToday = '2222-12-22';
+        $this->helper->timeNow = strtotime($fakeToday);
+        $this->helper->dataSourceLastSuccess = serialize([
+            'MAG' => '2222-12-17',
+            'COARevenueSource' => '2222-12-15',
+        ]);
         $this->assertEquals($expected, $this->helper->getProdEtlStatus());
+        $expected = [
+            'COARevenueSource' => '2222-12-15',
+            'MAG' => '2222-12-17',
+            'PendingContracts' => $fakeToday,
+            'PMS' => $fakeToday,
+        ];
+        $this->assertEquals($expected, unserialize($this->helper->dataSourceLastSuccess));
     }
 
     /**
