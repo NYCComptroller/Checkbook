@@ -219,39 +219,62 @@ class CheckbookDatafeedsModuleTest extends TestCase
         $test_form = [];
         $test_form_state = [];
         $test_form_state['step_information']['contracts']['stored_values'] = [
-            'df_contract_status' => true,
+            'data_source' => 'checkbook_oge',
+            'datafeeds-contracts-domain-filter' => 'checkbook_oge',
+            'df_contract_status' => 'active',
+            'vendor' => '',
+            'mwbe_category' => '',
+            'contract_type' => 'No Contract Type Selected',
+            'contractno' => '',
+            'commodity_line' => '',
+            'entity_contract_number' => '',
+            'budget_name' => '',
+            'contract_includes_sub_vendors_id' => '0',
+            'pin' => '',
             'currentamtfrom' => '',
-            'category' => '',
             'currentamtto' => '',
-            'currentamtfrom' => '',
-            'startdateto' => '',
             'enddatefrom' => '',
             'enddateto' => '',
             'regdatefrom' => '',
             'regdateto' => '',
-            'recdatefrom' => '',
-            'recdateto' => '',
-            'pin' => '',
-            'apt_pin' => '',
+            'category' => 'expense',
+            'sub_vendor_status_in_pip_id' => '0',
             'purpose' => '',
             'agency' => 'Select One',
-            'entity_contract_number' => '',
+            'industry' => '0',
+            'apt_pin' => '',
+            'award_method' => 'No Award Method Selected',
             'startdatefrom' => '',
-            'commodity_line' => '',
-            'budget_name' => '',
-            'vendor' => '',
-            'award_method' => '',
-            'contractno' => '',
-            'industry' => '',
-            'mwbe_category' => '',
-            'contract_includes_sub_vendors_id' => '',
-            'sub_vendor_status_in_pip_id' => '',
-            'contract_type' => 'No Contract Type Selected',
-            'column_select_oge_expense' => array (
-                'Award Method' => 'Award Method',
-                'Budget Name' => 'Budget Name',
-                'Commodity Line' => 'Commodity Line',
-                'Contract ID' => 'Contract ID',)
+            'startdateto' => '',
+            'recdatefrom' => '',
+            'recdateto' => '',
+            'year' => 'ALL',
+            'agency_hidden' => 'Select One',
+            'column_select_expense' =>
+                array (
+                ),
+            'column_select_revenue' =>
+                array (
+                ),
+            'column_select_all' =>
+                array (
+                ),
+            'column_select_pending' =>
+                array (
+                ),
+            'column_select_pending_all' =>
+                array (
+                ),
+            'column_select_oge_expense' =>
+                array (
+                    'Award Method' => 'Award Method',
+                    'Budget Name' => 'Budget Name',
+                    'Commodity Line' => 'Commodity Line',
+                    'Contract ID' => 'Contract ID',
+                    'Contract Industry' => 'Contract Industry',
+                    'Contract Type' => 'Contract Type',
+                    'Current Amount' => 'Current Amount',
+                ),
         ];
         $criteria = checkbook_datafeeds_process_contracts_values($test_form, $test_form_state, 'checkbook_oge');
         $this->assertEquals('array', gettype($criteria));
