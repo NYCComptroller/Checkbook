@@ -29,10 +29,11 @@ public class OGERegisteredExpenseContractsDetailsTest extends TestStatusReport{
 			OtherGovernmentEntities.GoTo();
 	
 		ContractsPage.GoTo();	
-		RegisteredExpenseContractsPage.GoTo();
+	
 		if(!(Helper.getCurrentSelectedYear()).equalsIgnoreCase(OGENYCBaseTest.prop.getProperty("CurrentYear")))
 			HomePage.SelectYear(OGENYCBaseTest.prop.getProperty("CurrentYear"));
 		HomePage.ShowWidgetDetails();
+		RegisteredExpenseContractsPage.GoTo();
 	}
 
 	/* ***************** Test Widget Transaction Total Count ****************** */
