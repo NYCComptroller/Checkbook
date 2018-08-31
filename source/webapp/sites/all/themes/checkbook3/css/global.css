@@ -2028,7 +2028,7 @@ td.vers-num div{margin-left:40px;}
 .dataTable td.childcontracts .jspPane table td.vers-num div {
     margin: 13px 0px 13px 40px;
 }
-td.expander span.collapsed, td.expander span.expanded, td.expander span.loader, a.showHide, a.showHide.open, .assoc_item span.expanded , .assoc_item span.collapsed {
+td.expander span.collapsed, td.expander span.expanded, td.expander span.loader, a.showHide, a.showHide.open, .assoc_item span.expanded , .assoc_item span.collapsed ,.assoc_item span.loader{
     display:block;
     height: 16px;
     width: 16px;
@@ -2048,9 +2048,10 @@ a.showHide, a.showHide.open, .assoc_item span.expanded , .assoc_item span.collap
 .assoc_item .contract-title.clearfix div{
     margin:0px;
 }
-td.expander span.loader {
+.assoc_item span.loader, td.expander span.loader {
     background: url("../images/ajax-loader.gif") no-repeat scroll right center transparent;
 }
+
 .jspPane{margin-left:25px !important;}
 
 .dataTable td.childcontracts .jspPane {
