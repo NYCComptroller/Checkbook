@@ -18,7 +18,7 @@ function panels_breadcrumbs_page_manager_variant_operations_alter(&$operations, 
   // Use this obnoxious construct to safely insert our item.
   reset($operations['children']);
   $children_operations = array();
-  while (list($key, $value) = each($operations['children'])) {
+  foreach ($operations['children'] as $key => $value) {
     $children_operations[$key] = $value;
     if ($key == 'context') {
       $children_operations['breadcrumb'] = array(
@@ -156,62 +156,74 @@ function panels_breadcrumbs_partial_configuration_form($conf, $contexts) {
  *   FALSE if the breadcrumb could not be built with the given configuration.
  */
 function panels_breadcrumbs_build_breadcrumb($conf, $contexts, $override = FALSE) {
-  $breadcrumbs = array();
+  $breadcrumbs = &drupal_static(__FUNCTION__);
 
-  // If no titles or paths are defined, bail out.
-  if (!isset($conf['panels_breadcrumbs_titles']) || !isset($conf['panels_breadcrumbs_paths'])) {
-    return;
-  }
-
-  // Look for placeholder tokens in paths and convert them for this display
-  $titles = $conf['panels_breadcrumbs_titles'];
-  $paths = ctools_context_keyword_substitute($conf['panels_breadcrumbs_paths'], array(), $contexts);
-
-  // Break titles and paths into arrays and remove empty keys
-  $titles = array_filter(array_map('trim', explode(PHP_EOL, $titles)), 'strlen');
-  $paths = array_filter(array_map('trim', explode(PHP_EOL, $paths)), 'strlen');
-
-  $default_breadcrumb_info = array(
-    'title' => '',
-    'href' => '',
-    'localized_options' => array(),
-  );
-
-  $breadcrumbs_info = array();
-
-  // Set the first crumb to home
-  if (!isset($conf['panels_breadcrumbs_home']) || $conf['panels_breadcrumbs_home'] == TRUE) {
-    $breadcrumbs_info[] = array('title' => t('Home'), 'href' => '<front>') + $default_breadcrumb_info;
-  }
-
-  // Iterate through all crumbs and add them to the breadcrumb
-  foreach ($titles as $key => $title) {
-
-    // Translate the title and convert existing placeholder tokens afterwards.
-    $translated_title = t($title);
-    $translated_title = ctools_context_keyword_substitute($translated_title, array(), $contexts);
-
-    if (empty($translated_title)) {
-      continue;
+  if (empty($breadcrumbs)) {
+    // If no titles or paths are defined, bail out.
+    if (!isset($conf['panels_breadcrumbs_titles']) || !isset($conf['panels_breadcrumbs_paths'])) {
+      // Do not store anything in the static $breadcrumbs variable, in order to
+      // allow a possible fallback with another breadcrumb configuration.
+      return;
     }
 
-    $translated_title = html_entity_decode(trim($translated_title), ENT_QUOTES, 'UTF-8');
-    $path = empty($paths[$key]) ? '<none>' : trim($paths[$key]);
-    $breadcrumbs_info[] = array('title' => $translated_title, 'href' => $path) + $default_breadcrumb_info;
-  }
+    // The configuration is active and is the first triggered, so we don't allow
+    // another breadcrumb configuration to override it by setting the static
+    // variable.
+    $breadcrumbs = array();
 
-  // Allow other modules to intercept and operate changes in the breadcrumb
-  $breadcrumb_info_end = end($breadcrumbs_info);
-  drupal_alter('menu_breadcrumb', $breadcrumbs_info, $breadcrumb_info_end);
+    // Look for placeholder tokens in paths and convert them for this display
+    $titles = $conf['panels_breadcrumbs_titles'];
+    $paths = ctools_context_keyword_substitute($conf['panels_breadcrumbs_paths'], array(), $contexts);
 
-  // Finally, render the breadcrumb
-  foreach ($breadcrumbs_info as $crumb) {
-    if (isset($crumb['href']) && $crumb['href'] == '<none>') {
-      $crumb['localized_options'] += array('attributes' => array(), 'html' => TRUE);
-      $breadcrumbs[] = '<span ' . drupal_attributes($crumb['localized_options']['attributes']) . '>' . ($crumb['localized_options']['html'] ? $crumb['title'] : check_plain($crumb['title'])) . '</span>';
+    // Break titles and paths into arrays and remove empty keys
+    $titles = array_filter(array_map('trim', explode("\n", $titles)), 'strlen');
+    $paths = array_filter(array_map('trim', explode("\n", $paths)), 'strlen');
+
+    // We add in path as although it is not used to render breadcrumbs, it is
+    // required by user_menu_breadcrumb_alter().
+    $default_breadcrumb_info = array(
+      'title' => '',
+      'href' => '',
+      'localized_options' => array(),
+      'path' => '',
+    );
+
+    $breadcrumbs_info = array();
+
+    // Set the first crumb to home
+    if (!isset($conf['panels_breadcrumbs_home']) || $conf['panels_breadcrumbs_home'] == TRUE) {
+      $breadcrumbs_info[] = array('title' => t('Home'), 'href' => '<front>') + $default_breadcrumb_info;
     }
-    else {
-      $breadcrumbs[] = l($crumb['title'], $crumb['href'], $crumb['localized_options']);
+
+    // Iterate through all crumbs and add them to the breadcrumb
+    foreach ($titles as $key => $title) {
+
+      // Translate the title and convert existing placeholder tokens afterwards.
+      $translated_title = t($title);
+      $translated_title = ctools_context_keyword_substitute($translated_title, array(), $contexts);
+
+      if (empty($translated_title)) {
+        continue;
+      }
+
+      $translated_title = html_entity_decode(trim($translated_title), ENT_QUOTES, 'UTF-8');
+      $path = empty($paths[$key]) ? '<none>' : trim($paths[$key]);
+      $breadcrumbs_info[] = array('title' => $translated_title, 'href' => $path) + $default_breadcrumb_info;
+    }
+
+    // Allow other modules to intercept and operate changes in the breadcrumb
+    $breadcrumb_info_end = end($breadcrumbs_info);
+    drupal_alter('menu_breadcrumb', $breadcrumbs_info, $breadcrumb_info_end);
+
+    // Finally, render the breadcrumb
+    foreach ($breadcrumbs_info as $crumb) {
+      if (isset($crumb['href']) && $crumb['href'] == '<none>') {
+        $crumb['localized_options'] += array('attributes' => array(), 'html' => TRUE);
+        $breadcrumbs[] = '<span ' . drupal_attributes($crumb['localized_options']['attributes']) . '>' . ($crumb['localized_options']['html'] ? $crumb['title'] : check_plain($crumb['title'])) . '</span>';
+      }
+      else {
+        $breadcrumbs[] = l($crumb['title'], $crumb['href'], $crumb['localized_options']);
+      }
     }
   }
 
