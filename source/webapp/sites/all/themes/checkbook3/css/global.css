@@ -2039,7 +2039,7 @@ td.expander span.collapsed, td.expander span.expanded, td.expander span.loader, 
 td.expander span.expanded, a.showHide, .assoc_item span.expanded {
     background: url("../images/close.png") no-repeat scroll right center transparent;
 }
-a.showHide, a.showHide.open, .assoc_item span.expanded , .assoc_item span.collapsed  {
+a.showHide, a.showHide.open, .assoc_item span.expanded , .assoc_item span.collapsed ,.assoc_item span.loader {
     height:14px;
     width:14px;
     float:left;
