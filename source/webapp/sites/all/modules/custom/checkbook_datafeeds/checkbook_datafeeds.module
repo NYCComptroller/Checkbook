@@ -3178,9 +3178,9 @@ function checkbook_datafeeds_payroll_confirmation($form, &$form_state) {
     //Filter columns for current data source
     $filtered_columns = checkbook_datafeeds_spending_filter_selected_columns($selected_columns, $data_source, $responsetype);
     if($data_source == 'checkbook_oge'){
-        $form_state['step_information']['spending']['stored_values']['oge_column_select'] = $filtered_columns;
+        $form_state['step_information']['payroll']['stored_values']['oge_column_select'] = $filtered_columns;
     }else {
-        $form_state['step_information']['spending']['stored_values']['column_select'] = $filtered_columns;
+        $form_state['step_information']['payroll']['stored_values']['column_select'] = $filtered_columns;
     }
 
     foreach ($filtered_columns as $column) {
