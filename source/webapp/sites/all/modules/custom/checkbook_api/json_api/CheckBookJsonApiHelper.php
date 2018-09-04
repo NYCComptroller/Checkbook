@@ -237,7 +237,9 @@ class CheckBookJsonApiHelper
                 $data = serialize($data_source_last_success);
                 if ($data_source_last_success && (md5($data) !== $data_source_last_success_md5)) {
                     if (!defined('PHPUNIT_RUNNING')) {
-                        file_put_contents($data_source_last_success_file_path, $data);
+                        if (!file_put_contents($data_source_last_success_file_path, $data)) {
+                            \LogHelper::log_error('Could not write file: '.$data_source_last_success_file_path);
+                        }
                     } else {
                         $this->dataSourceLastSuccess = $data;
                     }
