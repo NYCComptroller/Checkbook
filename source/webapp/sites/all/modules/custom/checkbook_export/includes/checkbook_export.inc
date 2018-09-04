@@ -416,11 +416,13 @@ function _checkbook_export_generateExportFile($node, $headers, $exportConfigNode
         $columns = isset($exportConfigNode) ? $exportConfigNode->widgetConfig->table_columns : $node->widgetConfig->table_columns;
         $columnsConfig = array();
         foreach($columns as $column){
-            if($column->column != "") {
+            if($column->column) {
                 $columnsConfig[] = (isset($column->sortSourceColumn)) ? str_replace('.', '_', $column->sortSourceColumn) : str_replace('.', '_', $column->column);
             }
         }
-        $input = $node->data;$start = "SELECT ";$end = " FROM (";
+        $input = $node->data;
+        $start = "SELECT ";
+        $end = " FROM (";
         $selectQuery = substr($input, strlen($start)+strpos($input, $start), (strlen($input) - strpos($input, $end))*(-1));
         //If there is no sub-query in the export query
         if(!$selectQuery){
@@ -431,7 +433,13 @@ function _checkbook_export_generateExportFile($node, $headers, $exportConfigNode
         $exportColumns = array();
 
         foreach($selectColumns as $key =>$value){
-          $selectColumn = (strpos($value,' AS ')) ? str_replace('AS ','',substr($value, strpos($value,' AS ')+1)) : substr($value, strpos($value,'.')+1);
+            $selectColumn = $value;
+            if (strpos($selectColumn,' AS ')) {
+                list(,$selectColumn) = explode(' AS ', $selectColumn);
+            }
+            if (strpos($selectColumn,'.')) {
+                list(,$selectColumn) = explode('.', $selectColumn);
+            }
           if(in_array(trim($selectColumn),$columnsConfig)){
             $exportColumns[trim($selectColumn)] = $value;
           }
@@ -439,7 +447,10 @@ function _checkbook_export_generateExportFile($node, $headers, $exportConfigNode
 
         $newQuery = null;
         foreach($columnsConfig as $key => $value){
-          $newQuery .= $exportColumns[$value] . ',';
+            if (empty($exportColumns[$value])) {
+                LogHelper::log_error('-=EMPTY EXPORT COLUMN FOUND=-');
+            }
+            $newQuery .= $exportColumns[$value] . ',';
         }
         $newQuery = substr($newQuery, 0, -1);
         $node->data = str_replace($selectQuery,$newQuery, $node->data);
