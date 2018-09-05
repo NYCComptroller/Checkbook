@@ -35,6 +35,7 @@
                 "-if_for_all_years"
             ],
             "name":"checkbook_oge:agreement_snapshot_oge",
+            "data_source":"checkbook_oge",
             "columnTypes":{
                 "contract_number":"like",
                 "commodity_line":"like",
