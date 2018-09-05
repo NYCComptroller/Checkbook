@@ -18,6 +18,7 @@
         "dataset":{
             "sortColumn":["-check_amount", "-disbursement_line_item_id"],
             "name":"checkbook_oge:fact_disbursement_line_item1",
+            "data_source":"checkbook_oge",
             "columnTypes":{
                 "reference_document_number":"like",
                 "reporting_code":"like",

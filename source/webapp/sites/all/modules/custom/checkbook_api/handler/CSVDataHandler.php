@@ -162,6 +162,10 @@ class CSVDataHandler extends AbstractDataHandler {
                     $new_column = "CASE WHEN " . $alias . $column . " ~* 's' THEN 'Yes' ELSE 'No' END";
                     $new_select_part .= $new_column . ' AS \\"' . $columnMappings[$column] . '\\",' .  "\n";
                     break;
+                case "amount_basis_id":
+                    $new_column = "CASE WHEN " . $alias . $column . " = 1 THEN 'Salaried' ELSE 'Non-Salaried' END";
+                    $new_select_part .= $new_column . ' AS \\"' . $columnMappings[$column] . '\\",' .  "\n";
+                    break;
                 default:
                     $new_select_part .= $alias . $column . ' AS \\"' . $columnMappings[$column] . '\\",' .  "\n";
                     break;
@@ -175,8 +179,10 @@ class CSVDataHandler extends AbstractDataHandler {
             $filename = _checkbook_project_generate_uuid(). '.csv';
             $tmpDir =  (isset($conf['check_book']['tmpdir']) && is_dir($conf['check_book']['tmpdir'])) ? rtrim($conf['check_book']['tmpdir'],'/') : '/tmp';
             LogHelper::log_notice("DataFeeds :: csv::getJobCommand() tmp dir: ".$tmpDir);
+
             $command = $conf['check_book']['data_feeds']['command'];
-            $command .= ' ' . $databases['checkbook']['main']['database'] . ' ';
+            $data_source = isset($this->requestDataSet->data_source) ? $this->requestDataSet->data_source : 'checkbook';
+            $command .= ' ' . $databases[$data_source]['main']['database'] . ' ';
 
             if(!is_writable($tmpDir)){
                 LogHelper::log_error("$tmpDir is not writable. Please make sure this is writable to generate export file.");
