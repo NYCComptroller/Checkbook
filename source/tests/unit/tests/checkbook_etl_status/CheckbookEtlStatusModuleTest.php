@@ -54,8 +54,8 @@ class CheckbookEtlStatusModuleTest extends TestCase
     public function test_checkbook_etl_status_cron_empty_recepients_list()
     {
         global $conf;
-        if (isset($conf['etl_status_recipients'])) {
-            unset($conf['etl_status_recipients']);
+        if (isset($conf['checkbook_dev_group_email'])) {
+            unset($conf['checkbook_dev_group_email']);
         }
         $this->assertFalse($this->CES->run_cron());
     }
@@ -67,7 +67,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
     {
         global $conf;
         global $base_url;
-        $conf['etl_status_recipients'] = true;
+        $conf['checkbook_dev_group_email'] = true;
         $base_url = 'wrong.domain';
         $this->assertFalse($this->CES->run_cron());
     }
@@ -79,7 +79,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
     {
         global $conf;
         global $base_url;
-        $conf['etl_status_recipients'] = true;
+        $conf['checkbook_dev_group_email'] = true;
         $base_url = 'http://uat-checkbook-nyc.reisys.com/asdf';
 
         global $mocked_variable;
@@ -106,7 +106,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
     {
         global $conf;
         global $base_url;
-        $conf['etl_status_recipients'] = true;
+        $conf['checkbook_dev_group_email'] = true;
         $base_url = 'http://uat-checkbook-nyc.reisys.com/asdf';
 
         global $mocked_variable;
@@ -133,7 +133,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
     public function test_checkbook_etl_status_cron_success()
     {
         global $conf, $base_url;
-        $conf['etl_status_recipients'] = true;
+        $conf['checkbook_dev_group_email'] = true;
         $base_url = 'http://uat-checkbook-nyc.reisys.com/asdf';
 
         global $mocked_variable;
