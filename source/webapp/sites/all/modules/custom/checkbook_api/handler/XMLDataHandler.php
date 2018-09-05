@@ -239,8 +239,10 @@ class XMLDataHandler extends AbstractDataHandler
             $fileDir = _checkbook_project_prepare_data_feeds_file_output_dir();
             $filename = _checkbook_project_generate_uuid(). '.xml';
             $tmpDir =  (isset($conf['check_book']['tmpdir']) && is_dir($conf['check_book']['tmpdir'])) ? rtrim($conf['check_book']['tmpdir'],'/') : '/tmp';
+
             $command = $conf['check_book']['data_feeds']['command'];
-            $command .= ' ' . $databases['checkbook']['main']['database'] . ' ';
+            $data_source = $this->requestDataSet->data_source;
+            $command .= ' ' . $databases[$data_source]['main']['database'] . ' ';
 
             if(!is_writable($tmpDir)){
                 LogHelper::log_error("$tmpDir is not writable. Please make sure this is writable to generate export file.");
