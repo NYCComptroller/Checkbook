@@ -44,6 +44,9 @@ class CheckbookEtlStatusModuleTest extends TestCase
      */
     public function setUp()
     {
+        global $conf;
+        $conf['CHECKBOOK_ENV'] = 'PHPUNIT';
+        $conf['email_from'] = 'test@example.com';
         parent::setUp();
         $this->CES = new CheckbookEtlStatus();
     }
@@ -78,9 +81,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
     public function test_checkbook_etl_status_cron_already_ran()
     {
         global $conf;
-        global $base_url;
         $conf['checkbook_dev_group_email'] = true;
-        $base_url = 'http://uat-checkbook-nyc.reisys.com/asdf';
 
         global $mocked_variable;
         global $mocked_date;
@@ -105,9 +106,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
     public function test_checkbook_etl_status_cron_too_early()
     {
         global $conf;
-        global $base_url;
         $conf['checkbook_dev_group_email'] = true;
-        $base_url = 'http://uat-checkbook-nyc.reisys.com/asdf';
 
         global $mocked_variable;
         $mocked_variable['checkbook_etl_status_last_run'] = $this->fakeYesterday;
@@ -132,9 +131,8 @@ class CheckbookEtlStatusModuleTest extends TestCase
      */
     public function test_checkbook_etl_status_cron_success()
     {
-        global $conf, $base_url;
+        global $conf;
         $conf['checkbook_dev_group_email'] = true;
-        $base_url = 'http://uat-checkbook-nyc.reisys.com/asdf';
 
         global $mocked_variable;
         $mocked_variable['checkbook_etl_status_last_run'] = $this->fakeYesterday;
@@ -301,7 +299,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
             ],
         ];
 
-        $this->assertEquals('ETL Status: Fail (' . $this->fakeTodayYMD . ')', $message['subject']);
+        $this->assertEquals('[PHPUNIT] ETL Status: Fail (' . $this->fakeTodayYMD . ')', $message['subject']);
         $this->assertEquals($expected, $message['body']);
     }
 
@@ -359,7 +357,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
             'solr_health_status' => []
         ];
 
-        $this->assertEquals('ETL Status: Success (' . $this->fakeTodayYMD . ')', $message['subject']);
+        $this->assertEquals('[PHPUNIT] ETL Status: Success (' . $this->fakeTodayYMD . ')', $message['subject']);
         $this->assertEquals($expected, $message['body']);
     }
 
@@ -369,12 +367,10 @@ class CheckbookEtlStatusModuleTest extends TestCase
     public function test_get_connection_configs()
     {
         global $conf;
-        $conf = [
-            'etl-status-footer' => [
-                'line1' => [
-                    'fakeKey' => 'fakeUrl',
-                ],
-            ],
+        $conf['etl-status-footer'] = [
+            'line1' => [
+                'fakeKey' => 'fakeUrl',
+            ]
         ];
 
         $CheckbookEtlStatus =
@@ -405,8 +401,8 @@ class CheckbookEtlStatusModuleTest extends TestCase
             ]));
 
         $fakeConnectionsConfig = [];
-        foreach( CheckbookEtlStatus::CONNECTIONS_KEYS as $key) {
-            $fakeConnectionsConfig[$key] = 'https://'.$key;
+        foreach (CheckbookEtlStatus::CONNECTIONS_KEYS as $key) {
+            $fakeConnectionsConfig[$key] = 'https://' . $key;
         }
 
         $CheckbookEtlStatus->expects($this->once())
@@ -442,7 +438,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
             'solr_health_status' => []
         ];
 
-        $this->assertEquals('ETL Status: Success (' . $this->fakeTodayYMD . ')', $message['subject']);
+        $this->assertEquals('[PHPUNIT] ETL Status: Success (' . $this->fakeTodayYMD . ')', $message['subject']);
         $this->assertEquals($expected, $message['body']);
     }
 
@@ -500,7 +496,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
             'solr_health_status' => [],
         ];
 
-        $this->assertEquals('ETL Status: Needs attention (' . $this->fakeTodayYMD . ')', $message['subject']);
+        $this->assertEquals('[PHPUNIT] ETL Status: Needs attention (' . $this->fakeTodayYMD . ')', $message['subject']);
         $this->assertEquals($expected, $message['body']);
     }
 

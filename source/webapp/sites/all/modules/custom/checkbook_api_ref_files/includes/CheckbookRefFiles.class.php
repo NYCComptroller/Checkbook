@@ -11,6 +11,11 @@ class CheckbookRefFiles
     public $successSubject = 'No changes';
 
     /**
+     *
+     */
+    const CRON_LAST_RUN_DRUPAL_VAR = 'checkbook_api_ref_files_last_run';
+
+    /**
      * for easier phpUnit testing
      * @param $format
      * @return false|string
@@ -47,12 +52,10 @@ class CheckbookRefFiles
             return false;
         }
 
-        $variable_name = 'checkbook_api_ref_files_last_run';
-
         $today_week = $this->get_date('Y-W');
         $current_hour = (int)$this->get_date('H');
 
-        if (variable_get($variable_name) == $today_week) {
+        if (variable_get(self::CRON_LAST_RUN_DRUPAL_VAR) == $today_week) {
             //error_log("ETL STATUS MAIL CRON skips. Reason: already ran this week :: $today_week :: ".variable_get($variable_name));
             return false;
         }
@@ -62,7 +65,7 @@ class CheckbookRefFiles
             return false;
         }
 
-        variable_set($variable_name, $today_week);
+        variable_set(self::CRON_LAST_RUN_DRUPAL_VAR, $today_week);
         return $this->sendmail();
     }
 
@@ -74,8 +77,9 @@ class CheckbookRefFiles
         global $conf;
 
         $to = $conf['checkbook_dev_group_email'];
-        drupal_mail('checkbook_api_ref_files', "send-status", $to,
-            null, [], 'checkbook@reisys.com', TRUE);
+        $from = $conf['email_from'];
+        drupal_mail('checkbook_api_ref_files', 'send-status', $to, null, [], $from, TRUE);
+
         return true;
     }
 
@@ -185,6 +189,7 @@ class CheckbookRefFiles
      */
     public function mail(&$message)
     {
+        global $conf;
         $result = $this->generate_files();
         $message['body'] =
             [
@@ -195,7 +200,7 @@ class CheckbookRefFiles
 
         $date = $this->get_date('Y-m-d');
 
-        $message['subject'] = 'API Ref Files: ' . $this->successSubject . " ($date)";
+        $message['subject'] = "[{$conf['CHECKBOOK_ENV']}] API Ref Files: " . $this->successSubject . " ($date)";
 
         return true;
     }

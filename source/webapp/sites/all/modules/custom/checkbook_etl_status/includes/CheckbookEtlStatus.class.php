@@ -11,6 +11,11 @@ class CheckbookEtlStatus
     const SUCCESS_IF_RUN_LESS_THAN_X_SECONDS_AGO = 60 * 60 * 12;
 
     /**
+     *
+     */
+    const CRON_LAST_RUN_DRUPAL_VAR = 'checkbook_etl_status_last_run';
+
+    /**
      * List of conf db connections
      */
     const CONNECTIONS_KEYS = [
@@ -59,7 +64,6 @@ class CheckbookEtlStatus
     public function run_cron()
     {
         global $conf;
-        global $base_url;
 
         date_default_timezone_set('America/New_York');
 
@@ -72,17 +76,15 @@ class CheckbookEtlStatus
             return false;
         }
 
-        if ('uat-checkbook-nyc.reisys.com' !== parse_url($base_url, PHP_URL_HOST)) {
-            //error_log("ETL STATUS MAIL CRON skips. Reason: domain is not uat-checkbook-nyc.reisys.com");
+        if (empty($conf['CHECKBOOK_ENV']) || !in_array($conf['CHECKBOOK_ENV'], ['UAT','PHPUNIT'])) {
+            // we run this cron only on UAT and PHPUNIT
             return false;
         }
-
-        $variable_name = 'checkbook_etl_status_last_run';
 
         $today = $this->get_date('Y-m-d');
         $current_hour = (int)$this->get_date('H');
 
-        if (variable_get($variable_name) == $today) {
+        if (variable_get(self::CRON_LAST_RUN_DRUPAL_VAR) == $today) {
             //error_log("ETL STATUS MAIL CRON skips. Reason: already ran today :: $today :: ".variable_get($variable_name));
             return false;
         }
@@ -92,7 +94,7 @@ class CheckbookEtlStatus
             return false;
         }
 
-        variable_set($variable_name, $today);
+        variable_set(self::CRON_LAST_RUN_DRUPAL_VAR, $today);
         return $this->sendmail();
     }
 
@@ -104,8 +106,8 @@ class CheckbookEtlStatus
         global $conf;
 
         $to = $conf['checkbook_dev_group_email'];
-        drupal_mail('checkbook_etl_status', "send-status", $to,
-            null, [], 'checkbook@reisys.com', TRUE);
+        $from = $conf['email_from'];
+        drupal_mail('checkbook_etl_status', 'send-status', $to, null, [], $from, TRUE);
         return true;
     }
 
@@ -302,6 +304,7 @@ class CheckbookEtlStatus
      */
     public function mail(&$message)
     {
+        global $conf;
         $uat_status = $this->formatStatus($this->getUatStatus());
         $prod_status = $this->formatStatus($this->getProdStatus());
         $connections = $this->getConnectionConfigs();
@@ -319,7 +322,7 @@ class CheckbookEtlStatus
 
         $date = $this->get_date('Y-m-d');
 
-        $message['subject'] = 'ETL Status: ' . $this->successSubject . " ($date)";
+        $message['subject'] = "[{$conf['CHECKBOOK_ENV']}] ETL Status: " . $this->successSubject . " ($date)";
 
         return true;
     }
