@@ -44,9 +44,6 @@ class CheckbookEtlStatusModuleTest extends TestCase
      */
     public function setUp()
     {
-        global $conf;
-        $conf['CHECKBOOK_ENV'] = 'PHPUNIT';
-        $conf['email_from'] = 'test@example.com';
         parent::setUp();
         $this->CES = new CheckbookEtlStatus();
     }
@@ -54,25 +51,25 @@ class CheckbookEtlStatusModuleTest extends TestCase
     /**
      *
      */
-    public function test_checkbook_etl_status_cron_empty_recepients_list()
+    public function test_checkbook_etl_status_cron_empty_recipients_list()
     {
         global $conf;
-        if (isset($conf['checkbook_dev_group_email'])) {
-            unset($conf['checkbook_dev_group_email']);
-        }
+        $email = $conf['checkbook_dev_group_email'];
+        unset($conf['checkbook_dev_group_email']);
         $this->assertFalse($this->CES->run_cron());
+        $conf['checkbook_dev_group_email'] = $email;
     }
 
     /**
      *
      */
-    public function test_checkbook_etl_status_cron_wrong_domain()
+    public function test_checkbook_etl_status_cron_wrong_env()
     {
         global $conf;
-        global $base_url;
-        $conf['checkbook_dev_group_email'] = true;
-        $base_url = 'wrong.domain';
+        $env =  $conf['CHECKBOOK_ENV'];
+        $conf['CHECKBOOK_ENV'] = 'wrong';
         $this->assertFalse($this->CES->run_cron());
+        $conf['CHECKBOOK_ENV'] = $env;
     }
 
     /**
@@ -80,9 +77,6 @@ class CheckbookEtlStatusModuleTest extends TestCase
      */
     public function test_checkbook_etl_status_cron_already_ran()
     {
-        global $conf;
-        $conf['checkbook_dev_group_email'] = true;
-
         global $mocked_variable;
         global $mocked_date;
 
@@ -105,9 +99,6 @@ class CheckbookEtlStatusModuleTest extends TestCase
      */
     public function test_checkbook_etl_status_cron_too_early()
     {
-        global $conf;
-        $conf['checkbook_dev_group_email'] = true;
-
         global $mocked_variable;
         $mocked_variable['checkbook_etl_status_last_run'] = $this->fakeYesterday;
         $CheckbookEtlStatus =
@@ -131,9 +122,6 @@ class CheckbookEtlStatusModuleTest extends TestCase
      */
     public function test_checkbook_etl_status_cron_success()
     {
-        global $conf;
-        $conf['checkbook_dev_group_email'] = true;
-
         global $mocked_variable;
         $mocked_variable['checkbook_etl_status_last_run'] = $this->fakeYesterday;
         $CheckbookEtlStatus =
