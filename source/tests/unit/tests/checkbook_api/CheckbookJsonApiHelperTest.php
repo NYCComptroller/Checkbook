@@ -197,11 +197,9 @@ class CheckbookJsonApiHelperTest extends TestCase
                 ],
             ],
         ];
-        $conf = [
-            'check_book' => [
-                'solr' => [
-                    'url' => 'http://solr-url/solr/solr-db/'
-                ]
+        $conf['check_book'] = [
+            'solr' => [
+                'url' => 'http://solr-url/solr/solr-db/'
             ]
         ];
         $expected = [
