@@ -101,8 +101,8 @@
             </tr>
     <?php else: ?>
             <tr>
-                <th>Filename</th>
-                <th>Status</th>
+                <th>File</th>
+                <th>Sample</th>
             </tr>
         <?php foreach($files as $filename => $info): ?>
             <tr class="<?php echo ((empty($c) || $c=='even')?($c = 'odd'):($c = 'even')) ?>">
@@ -120,7 +120,7 @@
                         <?php if($info['new_timestamp'] && ($info['old_timestamp'] !== $info['new_timestamp'])):?>
                             <br /> New file: <?php echo $info['new_timestamp'] ?>
                         <?php endif; ?>
-                        <?php if($info['new_filesize'] && ($info['old_filesize'] !== $info['new_filesize'])):?>
+                        <?php if($info['new_filesize']):?>
                             <br /> New filesize(bytes): <?php echo $info['new_filesize'] ?>
                         <?php endif; ?>
                         <br />Updated: <?php echo($info['updated'] ? '✅' : 'No'); ?>
@@ -128,7 +128,13 @@
                 </th>
                 <td>
                     <?php if($info['error']): ?>
-                        ❌ <?php echo $info['error']; ?> ❌<br />
+                        ⛔ <?php echo $info['error']; ?> ⛔<br />
+                    <?php endif; ?>
+                    <?php if($info['warning']): ?>
+                        ☢ <?php echo $info['warning']; ?> ☢<br />
+                    <?php endif; ?>
+                    <?php if($info['info']): ?>
+                        ⚡ <?php echo $info['info']; ?> ⚡<br />
                     <?php endif; ?>
                     <?php if($info['sample']): ?>
                         <?php $headers = array_keys($info['sample'][0]); ?>
