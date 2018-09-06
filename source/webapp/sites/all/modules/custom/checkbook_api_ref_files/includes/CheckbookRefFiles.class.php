@@ -130,11 +130,13 @@ class CheckbookRefFiles
                 $force_quote = ' FORCE QUOTE "'.join('","', $ref_file->force_quote).'"';
             }
 
-            $psql_command = <<<PSQL
-\COPY ({$ref_file->sql}) TO '{$file_new}' WITH DELIMITER ',' CSV HEADER QUOTE '"' ESCAPE '"' {$force_quote}
-PSQL;
+            /**
+             * RTFM https://gpdb.docs.pivotal.io/510/ref_guide/sql_commands/COPY.html
+             */
+            $psql_command = "COPY ({$ref_file->sql}) TO '{$file_new}' WITH CSV HEADER {$force_quote}";
+
             $command = $conf['check_book']['data_feeds']['command'];
-            $command .= ' ' . $databases['checkbook']['main']['database'] . ' -c "';
+            $command .= ' ' . $databases['checkbook']['main']['database'] . ' -c "\\';
             $command .= addcslashes($psql_command, '"').'"';
 
             $file_info['command'] = $command;
