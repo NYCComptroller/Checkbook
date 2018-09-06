@@ -178,12 +178,12 @@
 
         if ($json['match_status_timestamp'] && $json['match_status']): ?>
 
-            <table class="file" cellpadding="5">
+            <table class="file" cellpadding="5" title="file_data_statistics.csv (<?php
+                    echo date("Y-m-d g:iA", $json['match_status_timestamp']); ?>)">
                 <thead>
                 <tr class="filename">
                     <th colspan="<?php echo(sizeof($json['match_status']) + 1) ?>">
-                        <?php echo $json['source'] ?> ETL `file_data_statistics.csv`
-                        (<?php echo date("Y-m-d g:iA", $json['match_status_timestamp']); ?>)
+                        <?php echo $json['source'] ?> ETL :: Missing data source files
                     </th>
                 </tr>
                 <tr>
