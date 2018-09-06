@@ -63,11 +63,12 @@ class CheckbookEtlStatus
 
         date_default_timezone_set('America/New_York');
 
+//        always run cron for developer
         if (defined('CHECKBOOK_DEV')) {
             return $this->sendmail();
         }
-        if (!isset($conf['etl_status_recipients'])) {
-            //error_log("ETL STATUS MAIL CRON skips. Reason: \$conf['etl_status_recipients'] not defined");
+        if (!isset($conf['checkbook_dev_group_email'])) {
+            //error_log("ETL STATUS MAIL CRON skips. Reason: \$conf['checkbook_dev_group_email'] not defined");
             return false;
         }
 
@@ -102,7 +103,7 @@ class CheckbookEtlStatus
     {
         global $conf;
 
-        $to = $conf['etl_status_recipients'];
+        $to = $conf['checkbook_dev_group_email'];
         drupal_mail('checkbook_etl_status', "send-status", $to,
             null, [], 'checkbook@reisys.com', TRUE);
         return true;

@@ -1,14 +1,14 @@
 <?php
 
-include_once 'includes/CheckbookEtlStatus.class.php';
+include_once 'includes/CheckbookRefFiles.class.php';
 
 /**
  * Implements hook_cron()
  */
-function checkbook_etl_status_cron()
+function checkbook_api_ref_files_cron()
 {
-    $CES = new CheckbookEtlStatus();
-    return $CES->run_cron();
+    $CRF = new CheckbookRefFiles();
+    return $CRF->run_cron();
 }
 
 /**
@@ -18,10 +18,10 @@ function checkbook_etl_status_cron()
  * @param $message
  * @param $params
  */
-function checkbook_etl_status_mail($key, &$message, $params)
+function checkbook_api_ref_files_mail($key, &$message, $params)
 {
-    $CES = new CheckbookEtlStatus();
-    $CES->mail($message);
+    $CRF = new CheckbookRefFiles();
+    $CRF->mail($message);
 }
 
 /**
@@ -29,10 +29,10 @@ function checkbook_etl_status_mail($key, &$message, $params)
  *
  * Adds priority headers to messages passing condition.
  */
-function checkbook_etl_status_mail_alter(&$message)
+function checkbook_api_ref_files_mail_alter(&$message)
 {
-    // Apply this hook only for `checkbook_etl_status` module
-    if ('checkbook_etl_status' !== $message['module']) {
+    // Apply this hook only for `checkbook_api_ref_files` module
+    if ('checkbook_api_ref_files' !== $message['module']) {
         return;
     }
     if (stripos($message['subject'], 'Fail')) {
@@ -41,7 +41,7 @@ function checkbook_etl_status_mail_alter(&$message)
         $message['headers']['Importance'] = 'High';
     }
     $message['headers']['Content-Type'] = 'text/html; charset=UTF-8; format=flowed; delsp=yes';
-    $message['body'] = theme('etl_status_email', $message['body']);
+    $message['body'] = theme('api_ref_files', $message['body']);
     if (defined('CHECKBOOK_DEV')) {
         echo($message['body']);
         $message['send'] = false;
@@ -51,17 +51,16 @@ function checkbook_etl_status_mail_alter(&$message)
 /**
  * Implements hook_theme()
  */
-function checkbook_etl_status_theme($existing, $type, $theme, $path)
+function checkbook_api_ref_files_theme($existing, $type, $theme, $path)
 {
     if ($type == 'module') {
         return array(
-            'etl_status_email' => array(
+            'api_ref_files' => array(
                 'variables' => array(
-                    'uat_status' => NULL,
-                    'prod_status' => NULL,
+                    'status' => NULL,
                 ),
-                'template' => 'etl-status.email',
-                'path' => drupal_get_path('module', 'checkbook_etl_status') . '/theme',
+                'template' => 'api-ref-files.email',
+                'path' => drupal_get_path('module', 'checkbook_api_ref_files') . '/theme',
             ),
         );
     }
