@@ -1,5 +1,10 @@
 <?php
 
+global $conf;
+$conf['CHECKBOOK_ENV'] = 'PHPUNIT';
+$conf['email_from'] = 'test@example.com';
+$conf['checkbook_dev_group_email'] = 'test@example.com';
+
 /**
  *
  */
