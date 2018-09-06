@@ -5,52 +5,13 @@
  */
 class CheckbookRefFiles
 {
-    const REF_DATA_QUERIES = [
-        'agency_code_list' => 'SELECT agency_code \\"Agency Code\\",agency_name \\"Agency Name\\"  FROM ref_agency where is_display = \'Y\' ORDER BY agency_name',
-        'vendor_code_list' => 'SELECT vendor_customer_code \\"Vendor Code\\", legal_name \\"Vendor Name\\" FROM vendor',
-        'department_code_list' => 'SELECT distinct d.department_code \\"Department Code\\", d.department_name \\"Department Name\\",a.agency_code \\"Agency Code\\", a.agency_name \\"Agency Name\\" FROM ref_department d LEFT OUTER JOIN ref_agency a  ON d.agency_id = a.agency_id ORDER BY d.department_name',
-        'mwbe_code_list' => 'SELECT DISTINCT minority_type_name \\"Minority Type Name\\", minority_type_id \\"Minority Type Id\\" FROM ref_minority_type',
-        'industry_code_list' => 'SELECT DISTINCT industry_type_name \\"Industry Type Name\\", industry_type_id \\"Industry Type Id\\" FROM ref_industry_type',
-
-        // Budget:
-        'budget_code_list' => 'SELECT distinct budget_code \\"Budget Code\\",attribute_name \\"Budget Code Name\\"  FROM ref_budget_code ORDER BY attribute_name',
-        'budget_expense_category_code_list' => 'SELECT distinct object_class_code \\"Expense Category Code\\",object_class_name \\"Expense Category Name\\"  FROM ref_object_class ORDER BY object_class_name',
-
-        // Revenue:
-        'revenue_class_code_list' => 'SELECT distinct revenue_class_code \\"Revneue Class Code\\",revenue_class_name \\"Revneue Class Name\\"  FROM ref_revenue_class ORDER BY revenue_class_name',
-        'fund_class_code_list' => 'SELECT distinct fund_class_code \\"Fund Class Code\\",fund_class_name \\"Fund Class Name\\"  FROM ref_fund_class where fund_class_name = \'General Fund\' ORDER BY fund_class_name',
-        'funding_source_code_list' => 'SELECT distinct funding_class_code \\"Funding Class Code\\",funding_class_name \\"Funding Class Name\\"  FROM ref_funding_class ORDER BY funding_class_name',
-        'revenue_category_code_list' => 'SELECT distinct revenue_category_code \\"Revenue Category Code\\",revenue_category_name \\"Revenue Category Name\\"  FROM ref_revenue_category ORDER BY revenue_category_name',
-        'revenue_source_code_list' => 'SELECT distinct revenue_source_code \\"Revenue Source Code\\",revenue_source_name \\"Revenue Source Name\\"  FROM ref_revenue_source ORDER BY revenue_source_name',
-
-        // Spending:
-        'payee_code_list' => 'SELECT vendor_customer_code \\"Payee Code\\",legal_name \\"Payee Name\\"  FROM vendor ORDER BY legal_name',
-        'expense_code_list' => 'SELECT DISTINCT document_id \\"Expense Id\\"  FROM history_master_agreement ORDER BY document_id',
-        'spending_expense_category_code_list' => 'SELECT DISTINCT expenditure_object_code \\"Expense Category Code\\",expenditure_object_name \\"Expense Catergory Name\\" FROM ref_expenditure_object ORDER BY expenditure_object_name',
-        'capital_project_code_list' => 'SELECT DISTINCT reporting_code \\"Capital Project Code\\" FROM disbursement_line_item_details where coalesce(reporting_code,\'\') <> \'\' ORDER BY reporting_code',
-        'document_id_code_list' => 'SELECT DISTINCT disbursement_number \\"Document Id\\" FROM disbursement_line_item_details ORDER BY disbursement_number',
-        'spending_category_code_list' => 'SELECT DISTINCT spending_category_name \\"Spending Category Name\\", spending_category_code \\"Spending Category Code\\" FROM ref_spending_category',
-
-    ];
-
-    /**
-     * List of conf db connections
-     */
-    const CONNECTIONS_KEYS = [
-        'mysql',
-        'psql_main',
-        'psql_etl',
-        'psql_oge',
-        'psql_nycha',
-        'solr',
-    ];
-
     /**
      * @var string
      */
     public $successSubject = 'No changes';
 
     /**
+     * for easier phpUnit testing
      * @param $format
      * @return false|string
      */
@@ -60,15 +21,7 @@ class CheckbookRefFiles
     }
 
     /**
-     * @param $url
-     * @return bool|string
-     */
-    public function get_contents($url)
-    {
-        return file_get_contents($url);
-    }
-
-    /**
+     * for easier phpUnit testing
      * @return int
      */
     public function timeNow()
@@ -126,6 +79,9 @@ class CheckbookRefFiles
         return true;
     }
 
+    /**
+     * @return array
+     */
     public function generate_files()
     {
         global $conf, $databases;
@@ -135,10 +91,7 @@ class CheckbookRefFiles
             'files' => [],
         ];
 
-        ini_set('max_execution_time',0);
-        error_reporting(E_ALL);
-        ini_set('display_errors', true);
-        ini_set('display_startup_errors', true);
+        ini_set('max_execution_time',60*60);
 
         $dir = variable_get('file_public_path', 'sites/default/files') . '/' . $conf['check_book']['data_feeds']['output_file_dir'];
         $dir = realpath($dir);
@@ -146,6 +99,7 @@ class CheckbookRefFiles
             $return['error'] = "Could not prepare directory $dir for generating reference data.";
             return $return;
         }
+
         /*if(!is_link($dir) && !@chmod($dir,0777)){
             LogHelper::log_error("Could not change permissions to 777 for $dir.");
             echo $failure;
@@ -158,7 +112,10 @@ class CheckbookRefFiles
             return $return;
         }
 
-        foreach(self::REF_DATA_QUERIES as $filename => $sql) {
+        $ref_files_list = json_decode(file_get_contents(__DIR__.'/../config/ref_files_list.json'));
+
+        foreach($ref_files_list as $filename => $ref_file) {
+            $file_info = [];
             $file = $dir . '/' . $filename . '.csv';
             $file_info['error'] = false;
             $file_info['old_timestamp'] = filemtime($file);
@@ -168,13 +125,20 @@ class CheckbookRefFiles
             $file_info['old_filesize'] = filesize($file);
             $file_new = $file.'.new';
 
+            $force_quote = '';
+            if ($ref_file->force_quote) {
+                $force_quote = ' FORCE QUOTE "'.join('","', $ref_file->force_quote).'"';
+            }
+
+            $psql_command = <<<PSQL
+\COPY ({$ref_file->sql}) TO '{$file_new}' WITH DELIMITER ',' CSV HEADER QUOTE '"' ESCAPE '"' {$force_quote}
+PSQL;
             $command = $conf['check_book']['data_feeds']['command'];
-            $command .= ' ' . $databases['checkbook']['main']['database'] . ' ';
-            $command .= " -c \"\\\\COPY (" . $sql . ") TO '"
-                . $file_new
-                . "'  WITH DELIMITER ',' CSV HEADER QUOTE '\\\"' ESCAPE '\\\"' \" ";
+            $command .= ' ' . $databases['checkbook']['main']['database'] . ' -c "';
+            $command .= addcslashes($psql_command, '"').'"';
 
             $file_info['command'] = $command;
+            LogHelper::log_notice('Generating ref file: '.$command);
 
             try{
                 shell_exec($command);
@@ -193,15 +157,20 @@ class CheckbookRefFiles
                             $this->successSubject = 'Fail';
                         }
                     } else {
+                        $file_info['info'] = 'New file is same as old one, no changes needed';
                         $file_info['updated'] = false;
+                        unlink($file_new);
                     }
+                } else {
+                    $file_info['warning'] = 'Newly generated file is zero byte size, keeping old file intact ';
+                    unlink($file_new);
                 }
             } catch(Exception $ex){
                 $file_info['error'] = "Could not run sql command: $command Error:".$ex->getMessage();
                 $this->successSubject = 'Fail';
             }
 
-            $php_sql = str_replace('\\','',$sql);
+            $php_sql = str_replace('\\','',$ref_file->sql);
             $file_info['sample'] = _checkbook_project_execute_sql($php_sql.' LIMIT 5');
             $return['files'][$filename] = $file_info;
         }
