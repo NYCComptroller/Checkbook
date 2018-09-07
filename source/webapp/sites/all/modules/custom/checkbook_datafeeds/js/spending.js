@@ -11,8 +11,11 @@
         //Show Hide fields
         $.fn.showHideFields(dataSource);
 
-        //Clear all text fields
+        //Clear all text fields and drop-downs
         $.fn.clearInput();
+
+        //Reset deafult year to current Fiscal Year
+        $('select[name="year"]').val($('input:hidden[name="current_year_hidden"]').val());
 
         //Reset the Spending Category
         $('select[name="expense_type"]').val('Total Spending [ts]');
@@ -46,7 +49,6 @@
                 $('.datafield.budgetname').show();
 
                 $('input:radio[name=date_filter]')[0].checked = true;
-                $('select[name="year"]').val($('input:hidden[name="current_year_hidden"]').val());
                 $('select[name="year"]').removeAttr('disabled');
                 //Disable Issue date
                 $('input:radio[name=date_filter][value="1"]').attr('disabled', 'disabled');
@@ -81,7 +83,6 @@
                     $('input[name="issuedto"]').attr('disabled', 'disabled');
                 }else{
                     $('input:radio[name=date_filter]')[1].checked = true;
-                    $('select[name="year"]').val($('input:hidden[name="current_year_hidden"]').val());
                     $('select[name="year"]').attr('disabled', 'disabled');
                 }
 
@@ -402,9 +403,9 @@
                 case 'select-one':
                     var default_option = $(this).attr('default_selected_value');
                     if (default_option) {
-                      $(this).find('option[value=' + default_option + ']').attr("selected", "selected");
+                        $(this).find('option[value=' + default_option + ']').attr("selected", "selected");
                     } else {
-                      $(this).find('option:first').attr("selected", "selected");
+                        $(this).find('option:first').attr("selected", "selected");
                     }
                     break;
                 case 'text':
