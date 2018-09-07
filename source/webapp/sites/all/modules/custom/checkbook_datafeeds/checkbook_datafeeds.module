@@ -4498,24 +4498,24 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
         '#name' => 'payee_name',
         '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'payee_name', $first_time_load, ''),
     );
-    $form['filter']['checkamtfrom'] = array(
+    $form['filter']['check_amt_from'] = array(
         '#type' => 'textfield',
         '#size' => 15,
         '#maxlength' => 15,
-        '#prefix' => '<div class="column column-right '.str_replace('_','-',$data_source).'"><div class="datafield datarange checkamount"><label>Check Amount:</label><div class="ranges">',
-        '#id' => 'edit-checkamtfrom',
-        '#name' => 'checkamtfrom',
-        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'checkamtfrom', $first_time_load, ''),
+        '#prefix' => '<div class="column column-right '.str_replace('_','-',$data_source).'"><div class="datafield datarange check_amount"><label>Check Amount:</label><div class="ranges">',
+        '#id' => 'edit-check_amt_from',
+        '#name' => 'check_amt_from',
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'check_amt_from', $first_time_load, ''),
     );
-    $form['filter']['checkamtto'] = array(
+    $form['filter']['check_amt_to'] = array(
         '#type' => 'textfield',
         '#title' => t('to'),
         '#size' => 15,
         '#maxlength' => 15,
         '#suffix' => '</div></div>',
-        '#id' => 'edit-checkamtto',
-        '#name' => 'checkamtto',
-        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'checkamtto', $first_time_load, ''),
+        '#id' => 'edit-check_amt_to',
+        '#name' => 'check_amt_to',
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'check_amt_to', $first_time_load, ''),
     );
     $form['filter']['contractno'] = array(
         '#type' => 'textfield',
@@ -4942,27 +4942,27 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state)
         $user_criteria['Payee Name'] = $values['payee_name'];
         $formatted_search_criteria['Payee Name'] = $values['payee_name'];
     }
-    if ($values['checkamtfrom'] && $values['checkamtto']) {
+    if ($values['check_amt_from'] && $values['check_amt_to']) {
         $form['filter']['chkamount'] = array(
-            '#markup' => '<div><strong>Check Amount:</strong> Greater Than Equal to: $' . $values['checkamtfrom'] . ' Less Than Equal to: $' . $values['checkamtto'] . '</div>',
+            '#markup' => '<div><strong>Check Amount:</strong> Greater Than Equal to: $' . $values['check_amt_from'] . ' Less Than Equal to: $' . $values['check_amt_to'] . '</div>',
         );
-        $user_criteria['Check Amount Greater Than'] = $values['checkamtfrom'];
-        $user_criteria['Check Amount Less Than'] = $values['checkamtto'];
-        $formatted_search_criteria['Check Amount'] = 'Greater Than Equal to: $' . $values['checkamtfrom'] . ' Less Than Equal to: $' . $values['checkamtto'];
+        $user_criteria['Check Amount Greater Than'] = $values['check_amt_from'];
+        $user_criteria['Check Amount Less Than'] = $values['check_amt_to'];
+        $formatted_search_criteria['Check Amount'] = 'Greater Than Equal to: $' . $values['check_amt_from'] . ' Less Than Equal to: $' . $values['check_amt_to'];
     }
-    elseif (!$values['checkamtfrom'] && $values['checkamtto']) {
+    elseif (!$values['check_amt_from'] && $values['check_amt_to']) {
         $form['filter']['chkamount'] = array(
-            '#markup' => '<div><strong>Check Amount:</strong> Less Than Equal to: $' . $values['checkamtto'] . '</div>',
+            '#markup' => '<div><strong>Check Amount:</strong> Less Than Equal to: $' . $values['check_amt_to'] . '</div>',
         );
-        $user_criteria['Check Amount Less Than'] = $values['checkamtto'];
-        $formatted_search_criteria['Check Amount'] = 'Less Than Equal to: $' . $values['checkamtto'];
+        $user_criteria['Check Amount Less Than'] = $values['check_amt_to'];
+        $formatted_search_criteria['Check Amount'] = 'Less Than Equal to: $' . $values['check_amt_to'];
     }
-    elseif ($values['checkamtfrom'] && !$values['checkamtfrom']) {
+    elseif ($values['check_amt_from'] && !$values['check_amt_from']) {
         $form['filter']['chkamount'] = array(
-            '#markup' => '<div><strong>Check Amount:</strong> Greater Than Equal to: $' . $values['checkamtfrom'] . '</div>',
+            '#markup' => '<div><strong>Check Amount:</strong> Greater Than Equal to: $' . $values['check_amt_from'] . '</div>',
         );
-        $user_criteria['Check Amount Greater Than'] = $values['checkamtto'];
-        $formatted_search_criteria['Check Amount'] = 'Greater Than Equal to: $' . $values['checkamtfrom'];
+        $user_criteria['Check Amount Greater Than'] = $values['check_amt_to'];
+        $formatted_search_criteria['Check Amount'] = 'Greater Than Equal to: $' . $values['check_amt_from'];
     }
     if ($values['contractno']) {
         $form['filter']['contractno'] = array(
@@ -5114,10 +5114,10 @@ function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_
     if ($values['budget_name']) {
         $criteria['value']['budget_name'] = $values['budget_name'];
     }
-    if ($values['checkamtfrom'] !== '' || $values['checkamtto'] !== '') {
+    if ($values['check_amt_from'] !== '' || $values['check_amt_to'] !== '') {
         $criteria['range']['check_amount'] = array(
-            checknull($values['checkamtfrom']),
-            checknull($values['checkamtto']),
+            checknull($values['check_amt_from']),
+            checknull($values['check_amt_to']),
         );
     }
     if ($values['commodity_line']) {
@@ -5222,8 +5222,8 @@ function checkbook_datafeeds_spending_validate($form, &$form_state) {
     $data_source = $form_state['input']['data_source'];
     $agency = $form_state['values']['agency'];
     $agency_code = emptyToZero($agency);
-    $checkfrom = $form_state['values']['checkamtfrom'];
-    $checkto = $form_state['values']['checkamtto'];
+    $checkfrom = $form_state['values']['check_amt_from'];
+    $checkto = $form_state['values']['check_amt_to'];
     $datefrom = $form_state['values']['issuedfrom'];
     $dateto = $form_state['values']['issuedto'];
     $vendor = $form_state['values']['payee_name'];
@@ -5232,13 +5232,13 @@ function checkbook_datafeeds_spending_validate($form, &$form_state) {
     $oge_response_columns = $form_state['values']['oge_column_select'];
 
     if ($checkfrom && !is_numeric($checkfrom)) {
-        form_set_error('checkamtfrom', t('Check Amount must be a number.'));
+        form_set_error('check_amt_from', t('Check Amount must be a number.'));
     }
     if ($checkto && !is_numeric($checkto)) {
-        form_set_error('checkamtto', t('Check Amount must be a number.'));
+        form_set_error('check_amt_to', t('Check Amount must be a number.'));
     }
     if ($checkfrom && $checkto && $checkto < $checkfrom) {
-        form_set_error('checkamtto', t('Invalid range for Check Amount.'));
+        form_set_error('check_amt_to', t('Invalid range for Check Amount.'));
     }
     if ($datefrom && !checkDateFormat($datefrom)) {
         form_set_error('issuedfrom', t('Issue Date must be a valid date (YYYY-MM-DD).'));

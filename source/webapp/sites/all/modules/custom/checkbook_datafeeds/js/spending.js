@@ -12,7 +12,7 @@
         $.fn.showHideFields(dataSource);
 
         //Clear all text fields
-        $.fn.clearInputFields();
+        $.fn.clearInput();
 
         //Reset the Spending Category
         $('select[name="expense_type"]').val('Total Spending [ts]');
@@ -59,7 +59,7 @@
                 $('.form-item-column-select').hide();
 
                 //Move Issue Date fields to left column for OGE
-                $('.datafield.datarange.checkamount').appendTo($(".column.column-left"));
+                $('.datafield.datarange.check_amount').appendTo($(".spending.data-feeds-wizard .column.column-left"));
                 break;
             default:
                 $('.datafield.industry').show();
@@ -89,7 +89,7 @@
                 $('.form-item-column-select').show();
 
                 //Move Issue Date fields to left column for Citywide
-                $('.datafield.datarange.checkamount').prependTo($(".column.column-right"));
+                $('.datafield.datarange.check_amount').prependTo($(".spending.data-feeds-wizard .column.column-right"));
         }
 
     };
@@ -396,7 +396,7 @@
     }
 
     //Function to clear text fields and drop-downs
-    $.fn.clearInputFields = function () {
+    $.fn.clearInput = function () {
         $('.fieldset-wrapper').find(':input').each(function () {
             switch (this.type) {
                 case 'select-one':
