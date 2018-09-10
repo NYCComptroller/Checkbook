@@ -1118,11 +1118,12 @@ function checkbook_datafeeds_budget_confirmation_previous_submit($form, &$form_s
 function checkbook_datafeeds_process_budget_values($form, $form_state) {
     $values = $form_state['step_information']['budget']['stored_values'];
     $pattern = "/.*?(\\[.*?\\])/is";
+    global $conf;
     $criteria = array(
         'global' => array(
             'type_of_data' => 'Budget',
             'records_from' => 1,
-            'max_records' => 200000,
+            'max_records' => $conf['check_book']['data_feeds']['max_record_limit'],
         ),
     );
     $criteria['responseColumns'] = $values['column_select'];
@@ -2455,12 +2456,13 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
 {
     $values = $form_state['step_information']['contracts']['stored_values'];
     $pattern = "/.*?(\\[.*?\\])/is";
+    global $conf;
     $criteria = array(
         'global' => array(
             //Set data source for query
             'type_of_data' => $data_source == 'checkbook_oge' ? 'Contracts_OGE' : 'Contracts',
             'records_from' => 1,
-            'max_records' => 200000,
+            'max_records' => $conf['check_book']['data_feeds']['max_record_limit'],
         ),
     );
     if($data_source == 'checkbook_oge'){
@@ -3428,11 +3430,12 @@ function checkbook_datafeeds_payroll_confirmation_previous_submit($form, &$form_
 function checkbook_datafeeds_process_payroll_values($form, &$form_state) {
     $values = $form_state['step_information']['payroll']['stored_values'];
     $pattern = "/.*?(\\[.*?\\])/is";
+    global $conf;
     $criteria = array(
         'global' => array(
             'type_of_data' => 'Payroll',
             'records_from' => 1,
-            'max_records' => 200000,
+            'max_records' => $conf['check_book']['data_feeds']['max_record_limit'],
         ),
         'responseColumns' => $values['column_select']
     );
@@ -4094,11 +4097,12 @@ function checkbook_datafeeds_revenue_confirmation_previous_submit($form, &$form_
 function checkbook_datafeeds_process_revenue_values($form, &$form_state) {
     $values = $form_state['step_information']['revenue']['stored_values'];
     $pattern = "/.*?(\\[.*?\\])/is";
+    global $conf;
     $criteria = array(
         'global' => array(
             'type_of_data' => 'Revenue',
             'records_from' => 1,
-            'max_records' => 200000,
+            'max_records' => $conf['check_book']['data_feeds']['max_record_limit'],
         ),
         'responseColumns' => $values['column_select'],
     );
@@ -5098,12 +5102,13 @@ function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_
     $values = $form_state['step_information']['spending']['stored_values'];
     //$pattern = '/\[(.*?)\]$/';
     $pattern = "/.*?(\\[.*?\\])/is";
+    global $conf;
     $criteria = array(
         'global' => array(
             //Set data source for query
             'type_of_data' => $data_source == 'checkbook_oge' ? 'Spending_OGE' : 'Spending',
             'records_from' => 1,
-            'max_records' => 200000,
+            'max_records' => $conf['check_book']['data_feeds']['max_record_limit'],
         ),
         'responseColumns' => ($data_source == 'checkbook_oge') ? $values['oge_column_select'] : $values['column_select'],
     );
@@ -6136,6 +6141,8 @@ function _industry_options() {
  */
 function checkbook_datafeeds_confirmation_download_submit($form, &$form_state) {
     $data = $form_state['step_information']['confirmation']['response'];
+    global $conf;
+    $query_records_limit = $conf['check_book']['data_feeds']['query_records_limit'];
 
     //Store request in db
     $criteria = $form_state['step_information']['confirmation']['stored_values']['criteria'];
@@ -6153,9 +6160,8 @@ function checkbook_datafeeds_confirmation_download_submit($form, &$form_state) {
     }
 
     $record_count = $checkBookApi->getRecordCount();
-    //records <= 30,000
-    if ($record_count <= 30000) {
-        LogHelper::log_notice("DataFeeds :: <=30,000");
+    if ($record_count <= $query_records_limit) {
+        LogHelper::log_notice("DataFeeds :: <=".$query_records_limit);
         if (isset($checkBookApi)) {
             if ($checkBookApi->validateRequest()) {
                 try {
@@ -6186,7 +6192,7 @@ function checkbook_datafeeds_confirmation_download_submit($form, &$form_state) {
             exit;
         }
     } else {
-        LogHelper::log_notice("DataFeeds :: >30,000");
+        LogHelper::log_notice("DataFeeds :: >".$query_records_limit);
         if (isset($checkBookApi)) {
             if ($checkBookApi->validateRequest()) {
                 try {
@@ -6204,7 +6210,7 @@ function checkbook_datafeeds_confirmation_download_submit($form, &$form_state) {
                 log_error($checkBookApi->getErrorResponse());
             }
         } else {
-          LogHelper::log_notice("DataFeeds :: >30,000 :: \$checkBookApi not set");
+          LogHelper::log_notice("DataFeeds :: >".$query_records_limit." :: \$checkBookApi not set");
         }
         module_invoke_all('exit');
         exit;
@@ -6398,6 +6404,10 @@ function previous_submit($form, &$form_state) {
  */
 function checkbook_datafeeds_end_of_confirmation_form($form, &$form_state, $criteria, $responsetype, $domain) {
     $searchCriteria = new SearchCriteria($criteria, $responsetype);
+    global $conf;
+    $query_records_limit = $conf['check_book']['data_feeds']['query_records_limit'];
+    $max_record_limt = $conf['check_book']['data_feeds']['max_record_limit'];
+
     try {
         $checkBookApi = new CheckBookAPI($searchCriteria);
     }
@@ -6426,18 +6436,18 @@ function checkbook_datafeeds_end_of_confirmation_form($form, &$form_state, $crit
             '#value' => t('Cancel'),
         );
     }
-    elseif ($recordcount > 0 && $recordcount < 200000) {
+    elseif ($recordcount > 0 && $recordcount < $max_record_limt) {
         /**
          * see docs
             http://wiki.reisys.com:8080/display/USASv2/Data+Feeds+Documentation
          */
         if (isset($checkBookApi)) {
             if ($checkBookApi->validateRequest()) {
-                if ($recordcount <= 30000) {
-                    LogHelper::log_notice("DataFeeds :: <=30,000 :: generatingData()");
+                if ($recordcount <= $query_records_limit) {
+                    LogHelper::log_notice("DataFeeds :: <=".$query_records_limit." :: generatingData()");
                     $form_state['step_information']['confirmation']['response'] = $checkBookApi->getData();
-                } else {    // 30,000 .. 200,000
-                    LogHelper::log_notice("DataFeeds :: >30,000 :: generatingFile()");
+                } else {
+                    LogHelper::log_notice("DataFeeds :: >".$query_records_limit." :: generatingFile()");
                     $filename = $checkBookApi->generateFile();
                     $form_state['step_information']['confirmation']['filename'] = $filename;
                 }
