@@ -1,210 +1,210 @@
 <ul class="api-jump-links">
-    <li><a href="#global-parameters">Global Parameters</a></li>
-    <li><a href="#payroll-parameters">Payroll Parameters</a></li>
-    <li><a href="#possible-response">Possible Response Columns</a></li>
-    <li><a href="#predefined-xml-entities">Predefined Entities in XML</a></li>
-    <li><a href="#sample-xml">Sample XML Requests and Responses</a></li>
-    <li><a href="#sample-request-payroll">Sample Request: Payroll Transactions</a></li>
-    <li><a href="#sample-response-payroll">Sample Response: Payroll Transactions</a></li>
-    <li><a href="#status-codes-messages">Status Codes and Messages</a></li>
+  <li><a href="#global-parameters">Global Parameters</a></li>
+  <li><a href="#payroll-parameters">Payroll Parameters</a></li>
+  <li><a href="#possible-response">Possible Response Columns</a></li>
+  <li><a href="#predefined-xml-entities">Predefined Entities in XML</a></li>
+  <li><a href="#sample-xml">Sample XML Requests and Responses</a></li>
+  <li><a href="#sample-request-payroll">Sample Request: Payroll Transactions</a></li>
+  <li><a href="#sample-response-payroll">Sample Response: Payroll Transactions</a></li>
+  <li><a href="#status-codes-messages">Status Codes and Messages</a></li>
 </ul>
 <a name="global-parameters" id="global-parameters"></a>
 <h3 class="title">Global Parameters</h3>
 <table class="api-table">
-    <thead>
-    <tr>
-        <th>Name</td>
-        <th>Required (Y/N)</th>
-        <th>Format/Value</th>
-        <th>Description</th>
-        <th>Example</th>
-    </tr>
-    </thead>
-    <tr>
-        <td>type_of_data</td>
-        <td>Y</td>
-        <td>String – Must be one of the following: <br />
-            Contracts, Payroll, or Spending.</td>
-        <td>Allows user to select different types of data. Value must be one of the following: Contracts, Payroll, or Spending.</td>
-        <td>Payroll</td>
-    </tr>
-    <tr>
-        <td>max_records</td>
-        <td>N</td>
-        <td>String - Maximum 4 Characters</td>
-        <td>Allows you to set the maximum number of records retrieved to fewer than 1000</td>
-        <td>500</td>
-    </tr>
-    <tr>
-        <td>record_from</td>
-        <td>N</td>
-        <td>String - Maximum 15 Characters</td>
-        <td>Allows you to set the starting position of the records to be retrieved</td>
-        <td>12500</td>
-    </tr>
+  <thead>
+  <tr>
+    <th>Name</td>
+    <th>Required (Y/N)</th>
+    <th>Format/Value</th>
+    <th>Description</th>
+    <th>Example</th>
+  </tr>
+  </thead>
+  <tr>
+    <td>type_of_data</td>
+    <td>Y</td>
+    <td>String – Must be one of the following: <br />
+      Contracts, Payroll, or Spending.</td>
+    <td>Allows user to select different types of data. Value must be one of the following: Contracts, Payroll, or Spending.</td>
+    <td>Payroll</td>
+  </tr>
+  <tr>
+    <td>max_records</td>
+    <td>N</td>
+    <td>String - Maximum 4 Characters</td>
+    <td>Allows you to set the maximum number of records retrieved to fewer than 1000</td>
+    <td>500</td>
+  </tr>
+  <tr>
+    <td>record_from</td>
+    <td>N</td>
+    <td>String - Maximum 15 Characters</td>
+    <td>Allows you to set the starting position of the records to be retrieved</td>
+    <td>12500</td>
+  </tr>
 </table>
 <a href="#top" class="float-right">Back to the top</a>
 <a name="payroll-parameters" id="budget-parameters"></a>
 <h3 class="title">type_of_data:Payroll</h3>
 <p><strong>Payroll Parameters</strong> – All the parameters are optional, meaning that you can send only 1 or all of them. If you choose to not send any, you will receive random transactions in return, as these parameters are the filter.</p>
 <table class="api-table">
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Required (Y/N/C)<br />
-            (Yes/No/<br />
-            Conditional)</th>
-        <th>Type of Criteria (value/range)</th>
-        <th>Format/Value</th>
-        <th>Description</th>
-        <th>Example</th>
-    </tr>
-    </thead>
-    <tr>
-        <td>fiscal_year</td>
-        <td>C</td>
-        <td>value</td>
-        <td>String - YYYY - Maximum 4 characters </td>
-        <td>Fiscal Year. Must be exactly 4 characters. It is mandatory to select either fiscal year or calendar year.</td>
-        <td>2005</td>
-    </tr>
-    <tr>
-        <td>calendar_year</td>
-        <td>C</td>
-        <td>value</td>
-        <td>String - YYYY - Maximum 4 characters</td>
-        <td>Calendar Year. Must be exactly 4 characters. It is mandatory to select either fiscal year or calendar year. </td>
-        <td>2011</td>
-    </tr>
-    <tr>
-        <td>agency_code</td>
-        <td>N</td>
-        <td>value</td>
-        <td>String - Maximum 4 characters</td>
-        <td>Identification code associated with agency. See here for <a href="/ref_code_list/agency">agency codes list</a></td>
-        <td>127</td>
-    </tr>
-    <tr>
-        <td>pay_frequency</td>
-        <td>N</td>
-        <td>value</td>
-        <td>String</td>
-        <td>Possible values are: BI-WEEKLY, MONTHLY and SUPPLEMENTAL</td>
-        <td>BI-WEEKLY</td>
-    </tr>
-    <tr>
-        <td>title</td>
-        <td>N</td>
-        <td>value</td>
-        <td>String - Maximum 100 characters</td>
-        <td>Possible Values are: civil service title 1, civil service title 2, and civil service title 3</td>
-        <td>civil service title 1</td>
-    </tr>
-    <tr>
-        <td>pay_date</td>
-        <td>N</td>
-        <td>range</td>
-        <td>String - YYYY-MM-DD</td>
-        <td>Date of payment</td>
-        <td>2001-08-12</td>
-    </tr>
-    <tr>
-        <td>amount</td>
-        <td>N</td>
-        <td>range</td>
-        <td>String - Maximum 18 characters</td>
-        <td>If amount is provided, then amount type needs to be provided in order to distinguish annual, rate and all. By default, data for all types is provided.</td>
-        <td>250000.00</td>
-    </tr>
-    <tr>
-        <td>amount_type</td>
-        <td>N</td>
-        <td>value</td>
-        <td>Possible values are &ldquo;ANNUAL&rdquo;, &rdquo;RATE&rdquo; and &rdquo;ALL&rdquo; </td>
-        <td>Three possible columns should be in this format: ANNUAL, RATE and ALL. By default, ‘ALL’ is preselected.</td>
-        <td>ANNUAL</td>
-    </tr>
-    <tr>
-        <td>gross_pay</td>
-        <td>N</td>
-        <td>range</td>
-        <td>String - Maximum 18 characters</td>
-        <td>A dollar amount which is summation of base pay, other payments and overtime amounts.</td>
-        <td>250000.00</td>
-    </tr>
-    <tr>
-        <td>base_pay</td>
-        <td>N</td>
-        <td>range</td>
-        <td>String - Maximum 18 characters</td>
-        <td>An employee's base pay can be expressed as a base hourly rate of pay or as an annual salary</td>
-        <td>250000.00</td>
-    </tr>
-    <tr>
-        <td>other_payments</td>
-        <td>N</td>
-        <td>range</td>
-        <td>String - Maximum 18 characters</td>
-        <td>Other payments associated to an employee salary.</td>
-        <td>250000.00</td>
-    </tr>
-    <tr>
-        <td>overtime_payments</td>
-        <td>N</td>
-        <td>range</td>
-        <td>String - Maximum 18 characters</td>
-        <td>Employee's overtime pay</td>
-        <td>250000.00</td>
-    </tr>
-    <tr>
-        <td>gross_pay_ytd</td>
-        <td>N</td>
-        <td>range</td>
-        <td>String - Maximum 18 characters</td>
-        <td>The Total Gross pay would be displayed based on the selected Fiscal year or calendar year.</td>
-        <td>250000.00</td>
-    </tr>
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Required (Y/N/C)<br />
+      (Yes/No/<br />
+      Conditional)</th>
+    <th>Type of Criteria (value/range)</th>
+    <th>Format/Value</th>
+    <th>Description</th>
+    <th>Example</th>
+  </tr>
+  </thead>
+  <tr>
+    <td>fiscal_year</td>
+    <td>C</td>
+    <td>value</td>
+    <td>String - YYYY - Maximum 4 characters </td>
+    <td>Fiscal Year. Must be exactly 4 characters. It is mandatory to select either fiscal year or calendar year.</td>
+    <td>2005</td>
+  </tr>
+  <tr>
+    <td>calendar_year</td>
+    <td>C</td>
+    <td>value</td>
+    <td>String - YYYY - Maximum 4 characters</td>
+    <td>Calendar Year. Must be exactly 4 characters. It is mandatory to select either fiscal year or calendar year. </td>
+    <td>2011</td>
+  </tr>
+  <tr>
+    <td>agency_code</td>
+    <td>N</td>
+    <td>value</td>
+    <td>String - Maximum 4 characters</td>
+    <td>Identification code associated with agency. See here for <a href="/ref_code_list/agency">agency codes list</a> (<a href="/ref_code_list/agency">CSV</a>, <a href="/ref_code_list_excel/agency">Excel</a>)</td>
+    <td>127</td>
+  </tr>
+  <tr>
+    <td>pay_frequency</td>
+    <td>N</td>
+    <td>value</td>
+    <td>Possible values are: BI-WEEKLY, WEEKLY, SEMI-MONTHLY, SUPPLEMENTAL, DAILY AND HOURLY</td>
+    <td>Possible values are: BI-WEEKLY, WEEKLY, SEMI-MONTHLY, SUPPLEMENTAL, DAILY AND HOURLY</td>
+    <td>BI-WEEKLY</td>
+  </tr>
+  <tr>
+    <td>title</td>
+    <td>N</td>
+    <td>value</td>
+    <td>String - Maximum 100 characters</td>
+    <td>Displays employees civil service title</td>
+    <td>teacher</td>
+  </tr>
+  <tr>
+    <td>pay_date</td>
+    <td>N</td>
+    <td>range</td>
+    <td>String - YYYY-MM-DD</td>
+    <td>Date of payment</td>
+    <td>2001-08-12</td>
+  </tr>
+  <tr>
+    <td>amount</td>
+    <td>N</td>
+    <td>range</td>
+    <td>String - Maximum 18 characters</td>
+    <td>If amount is provided, then amount type needs to be provided in order to distinguish annual, rate and all. By default, data for all types is provided.</td>
+    <td>250000.00</td>
+  </tr>
+  <tr>
+    <td>amount_type</td>
+    <td>N</td>
+    <td>value</td>
+    <td>Possible values are &ldquo;ANNUAL&rdquo;, &rdquo;RATE&rdquo; and &rdquo;ALL&rdquo; </td>
+    <td>Three possible columns should be in this format: ANNUAL, RATE and ALL. By default, ‘ALL’ is preselected.</td>
+    <td>ANNUAL</td>
+  </tr>
+  <tr>
+    <td>gross_pay</td>
+    <td>N</td>
+    <td>range</td>
+    <td>String - Maximum 18 characters</td>
+    <td>A dollar amount which is summation of base pay, other payments and overtime amounts.</td>
+    <td>250000.00</td>
+  </tr>
+  <tr>
+    <td>base_pay</td>
+    <td>N</td>
+    <td>range</td>
+    <td>String - Maximum 18 characters</td>
+    <td>An employee's base pay can be expressed as a base hourly rate of pay or as an annual salary</td>
+    <td>250000.00</td>
+  </tr>
+  <tr>
+    <td>other_payments</td>
+    <td>N</td>
+    <td>range</td>
+    <td>String - Maximum 18 characters</td>
+    <td>Other payments associated to an employee salary.</td>
+    <td>250000.00</td>
+  </tr>
+  <tr>
+    <td>overtime_payments</td>
+    <td>N</td>
+    <td>range</td>
+    <td>String - Maximum 18 characters</td>
+    <td>Employee's overtime pay</td>
+    <td>250000.00</td>
+  </tr>
+  <tr>
+    <td>gross_pay_ytd</td>
+    <td>N</td>
+    <td>range</td>
+    <td>String - Maximum 18 characters</td>
+    <td>The Total Gross pay would be displayed based on the selected Fiscal year or calendar year.</td>
+    <td>250000.00</td>
+  </tr>
 </table>
 <a href="#top" class="float-right">Back to the top</a>
 <a name="possible-response" id="possible-response"></a>
 <h3 class="title">Possible response columns:</h3>
 <p>User would be able to select which columns he would like to view in his output. Below mentioned are the possible column names for payroll domain. The user should include the required column names in the request xml in an element called &lt;response_coloumns&gt;</p>
 <div>
-    <table class="api-table">
-        <thead>
-        <tr>
-            <th colspan="2">Response Column Names</th>
-        </tr>
-        <thead>
-        <tr>
-            <td>agency</td>
-            <td>base_pay</td>
-        </tr>
-        <tr>
-            <td>fiscal_year</td>
-            <td>other_payments</td>
-        </tr>
-        <tr>
-            <td>pay_frequency</td>
-            <td>overtime_payments</td>
-        </tr>
-        <tr>
-            <td>hourly_rate</td>
-            <td>gross_pay_ytd</td>
-        </tr>
-        <tr>
-            <td>gross_pay</td>
-            <td>calendar_year</td>
-        </tr>
-        <tr>
-            <td>title</td>
-            <td>annual_salary</td>
-        </tr>
-        <tr>
-            <td>pay_date</td>
-            <td>payroll_type</td>
-        </tr>
-    </table>
+  <table class="api-table">
+    <thead>
+    <tr>
+      <th colspan="2">Response Column Names</th>
+    </tr>
+    <thead>
+    <tr>
+      <td>agency</td>
+      <td>base_pay</td>
+    </tr>
+    <tr>
+      <td>fiscal_year</td>
+      <td>other_payments</td>
+    </tr>
+    <tr>
+      <td>pay_frequency</td>
+      <td>overtime_payments</td>
+    </tr>
+    <tr>
+      <td>hourly_rate</td>
+      <td>gross_pay_ytd</td>
+    </tr>
+    <tr>
+      <td>gross_pay</td>
+      <td>calendar_year</td>
+    </tr>
+    <tr>
+      <td>title</td>
+      <td>annual_salary</td>
+    </tr>
+    <tr>
+      <td>pay_date</td>
+      <td>payroll_type</td>
+    </tr>
+  </table>
 </div>
 <br />
 <div class="divider" style="clear: both;"></div>
@@ -213,56 +213,56 @@
 <h3>Predefined Entities in XML</h3>
 <p>The user has to encode the names using the predefined entities list embedded below, while searching using names (payee_name, budget_name, vendor, and purpose). The table below lists the five XML predefined entities. The "Name" column mentions the entity's name. The "Character" column shows the character. To render the character, the format &name; is used; for example, &amp;amp; renders as &.</p>
 <table class="api-table">
-    <tbody>
-    <tr>
-        <th>Name</th>
-        <th>Character</th>
-        <th>Description</th>
-        <th>Representation</th>
-        <th>Example Text</th>
-        <th>Example Request/Response</th>
-    </tr>
-    <tr>
-        <td>quot</td>
-        <td>"</td>
-        <td>double quotation mark</td>
-        <td>&amp;quot;</td>
-        <td>“Gilbane”</td>
-        <td>&amp;quot;Gilbane&amp;quot;</td>
-    </tr>
-    <tr>
-        <td>amp</td>
-        <td>&</td>
-        <td>ampersand</td>
-        <td>&amp;amp;</td>
-        <td>Mckissack & Mckissack</td>
-        <td>Mckissack &amp;amp; Mckissack</td>
-    </tr>
-    <tr>
-        <td>apos</td>
-        <td>'</td>
-        <td>apostrophe (apostrophe-quote)</td>
-        <td>&amp;apos;</td>
-        <td>‘turner’</td>
-        <td>&amp;apos; turner &amp;apos;</td>
-    </tr>
-    <tr>
-        <td>lt</td>
-        <td>&lt;</td>
-        <td>less-than sign</td>
-        <td>&amp;lt;</td>
-        <td>&lt;gilbane building</td>
-        <td>&amp;lt;gilbane building</td>
-    </tr>
-    <tr>
-        <td>gt</td>
-        <td>&gt;</td>
-        <td>greater-than sign</td>
-        <td>&amp;gt;</td>
-        <td>gilbane building&gt;</td>
-        <td>gilbane building&amp;gt;</td>
-    </tr>
-    </tbody>
+  <tbody>
+  <tr>
+    <th>Name</th>
+    <th>Character</th>
+    <th>Description</th>
+    <th>Representation</th>
+    <th>Example Text</th>
+    <th>Example Request/Response</th>
+  </tr>
+  <tr>
+    <td>quot</td>
+    <td>"</td>
+    <td>double quotation mark</td>
+    <td>&amp;quot;</td>
+    <td>“Gilbane”</td>
+    <td>&amp;quot;Gilbane&amp;quot;</td>
+  </tr>
+  <tr>
+    <td>amp</td>
+    <td>&</td>
+    <td>ampersand</td>
+    <td>&amp;amp;</td>
+    <td>Mckissack & Mckissack</td>
+    <td>Mckissack &amp;amp; Mckissack</td>
+  </tr>
+  <tr>
+    <td>apos</td>
+    <td>'</td>
+    <td>apostrophe (apostrophe-quote)</td>
+    <td>&amp;apos;</td>
+    <td>‘turner’</td>
+    <td>&amp;apos; turner &amp;apos;</td>
+  </tr>
+  <tr>
+    <td>lt</td>
+    <td>&lt;</td>
+    <td>less-than sign</td>
+    <td>&amp;lt;</td>
+    <td>&lt;gilbane building</td>
+    <td>&amp;lt;gilbane building</td>
+  </tr>
+  <tr>
+    <td>gt</td>
+    <td>&gt;</td>
+    <td>greater-than sign</td>
+    <td>&amp;gt;</td>
+    <td>gilbane building&gt;</td>
+    <td>gilbane building&amp;gt;</td>
+  </tr>
+  </tbody>
 </table>
 <br />
 <div class="divider" style="clear: both;"></div>
@@ -279,7 +279,7 @@
 <h3 class="title">Sample Request: Payroll Transactions</h3>
 <pre>
     &lt;request&gt;
-      &lt;type_of_data&gt;payroll&lt;/type_of_data&gt;
+      &lt;type_of_data&gt;Payroll&lt;/type_of_data&gt;
       &lt;records_from&gt;1&lt;/records_from&gt;
       &lt;max_records&gt;5&lt;/max_records&gt;
       &lt;search_criteria&gt;
@@ -348,7 +348,7 @@
         &lt;criteria&gt;
           &lt;name&gt;title&lt;/name&gt;
           &lt;type&gt;value&lt;/type&gt;
-          &lt;value&gt;civil service title 1&lt;/value&gt;
+          &lt;value&gt;teacher&lt;/value&gt;
         &lt;/criteria&gt;
       &lt;/search_criteria&gt;
       &lt;response_columns&gt;
@@ -378,7 +378,7 @@
       &lt;/status&gt;
       &lt;request_criteria&gt;
         &lt;request&gt;
-          &lt;type_of_data&gt;payroll&lt;/type_of_data&gt;
+          &lt;type_of_data&gt;Payroll&lt;/type_of_data&gt;
           &lt;records_from&gt;1&lt;/records_from&gt;
           &lt;max_records&gt;1000&lt;/max_records&gt;
           &lt;search_criteria&gt;
@@ -447,7 +447,7 @@
             &lt;criteria&gt;
               &lt;name&gt;title&lt;/name&gt;
               &lt;type&gt;value&lt;/type&gt;
-              &lt;value&gt;civil service title 1&lt;/value&gt;
+              &lt;value&gt;TEACHER&lt;/value&gt;
             &lt;/criteria&gt;
           &lt;/search_criteria&gt;
         &lt;/request&gt;
@@ -505,70 +505,70 @@
 </pre>
 <a href="#top" class="float-right">Back to the top</a>
 <div class="status-codes">
-    <table class="api-table">
-        <thead>
-        <tr>
-            <th>Status Code</th>
-            <th>Description</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>1</td>
-            <td>The status is still a success but there are no results found for given search criteria. </td>
-        </tr>
-        <tr>
-            <td>1000</td>
-            <td>Required parameter 'type_of_data' is missing.</td>
-        </tr>
-        <tr>
-            <td>1001</td>
-            <td>Invalid value 'PayrollRequest' is provided for 'type_of_data'. Valid values are Payroll, Contracts, Budget, Spending, and Revenue.</td>
-        </tr>
-        <tr>
-            <td>1002</td>
-            <td>Provided value '2.1' for 'records_from' is not an integer. Valid value is a number values without decimal places</td>
-        </tr>
-        <tr>
-            <td>1003</td>
-            <td>Total number of requested records '1001' exceeds allowed limit of '1000' records</td>
-        </tr>
-        <tr>
-            <td>1101</td>
-            <td>Provided request parameter 'date' is not valid for 'Payroll' domain. Valid values are 'fiscal_year, agency_code, department_code, budget_code, expense_category, adopted_budget, current_modified_budget, pre_encumbered, encumbered, cash_expense, post_adjustment, accrued_expense</td>
-        </tr>
-        <tr>
-            <td>1102</td>
-            <td>No value is provided for request parameter 'fiscal_year'.</td>
-        </tr>
-        <tr>
-            <td>1103</td>
-            <td>Provided value '20000' for request parameter 'fiscal_year' is not valid year.</td>
-        </tr>
-        <tr>
-            <td>1104</td>
-            <td>Provided 'start' value '200s' for request parameter 'adopted_budget' is not valid amount.</td>
-        </tr>
-        <tr>
-            <td>1105</td>
-            <td>Provided start value '1000' is greater than end value '500' for request parameter 'adopted_budget'.</td>
-        </tr>
-        <tr>
-            <td>1106</td>
-            <td>Provided response column 'agencyname' value is not allowed for 'Payroll' domain. Valid values are 'agency_name, department_name, expense_category, budget_code, budget_code_name, current_modified_budget, adopted_budget, pre_encumbered, encumbered, cash_expense, post_adjustment, accrued_expense'.</td>
-        </tr>
-        <tr>
-            <td>1108</td>
-            <td>Provided value 'abcd' for request parameter 'agency_code' exceeds maximum allowed '3' characters.</td>
-        </tr>
-        <tr>
-            <td>1109</td>
-            <td>Provided 'start' value '1234567890' for request parameter 'adopted_budget' exceeds maximum allowed '5' characters.</td>
-        </tr>
-        <tr>
-            <td>1110</td>
-            <td>Request parameter 'agency_code' do not support range values.</td>
-        </tr>
-        </tbody>
-    </table>
+  <table class="api-table">
+    <thead>
+    <tr>
+      <th>Status Code</th>
+      <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>1</td>
+      <td>The status is still a success but there are no results found for given search criteria. </td>
+    </tr>
+    <tr>
+      <td>1000</td>
+      <td>Required parameter 'type_of_data' is missing.</td>
+    </tr>
+    <tr>
+      <td>1001</td>
+      <td>Invalid value 'PayrollRequest' is provided for 'type_of_data'. Valid values are Payroll, Contracts, Budget, Spending, and Revenue.</td>
+    </tr>
+    <tr>
+      <td>1002</td>
+      <td>Provided value '2.1' for 'records_from' is not an integer. Valid value is a number values without decimal places</td>
+    </tr>
+    <tr>
+      <td>1003</td>
+      <td>Total number of requested records '1001' exceeds allowed limit of '1000' records</td>
+    </tr>
+    <tr>
+      <td>1101</td>
+      <td>Provided request parameter 'date' is not valid for 'Payroll' domain. Valid values are 'fiscal_year, agency_code, department_code, budget_code, expense_category, adopted_budget, current_modified_budget, pre_encumbered, encumbered, cash_expense, post_adjustment, accrued_expense</td>
+    </tr>
+    <tr>
+      <td>1102</td>
+      <td>No value is provided for request parameter 'fiscal_year'.</td>
+    </tr>
+    <tr>
+      <td>1103</td>
+      <td>Provided value '20000' for request parameter 'fiscal_year' is not valid year.</td>
+    </tr>
+    <tr>
+      <td>1104</td>
+      <td>Provided 'start' value '200s' for request parameter 'adopted_budget' is not valid amount.</td>
+    </tr>
+    <tr>
+      <td>1105</td>
+      <td>Provided start value '1000' is greater than end value '500' for request parameter 'adopted_budget'.</td>
+    </tr>
+    <tr>
+      <td>1106</td>
+      <td>Provided response column 'agencyname' value is not allowed for 'Payroll' domain. Valid values are 'agency_name, department_name, expense_category, budget_code, budget_code_name, current_modified_budget, adopted_budget, pre_encumbered, encumbered, cash_expense, post_adjustment, accrued_expense'.</td>
+    </tr>
+    <tr>
+      <td>1108</td>
+      <td>Provided value 'abcd' for request parameter 'agency_code' exceeds maximum allowed '3' characters.</td>
+    </tr>
+    <tr>
+      <td>1109</td>
+      <td>Provided 'start' value '1234567890' for request parameter 'adopted_budget' exceeds maximum allowed '5' characters.</td>
+    </tr>
+    <tr>
+      <td>1110</td>
+      <td>Request parameter 'agency_code' do not support range values.</td>
+    </tr>
+    </tbody>
+  </table>
 </div>
