@@ -4,12 +4,14 @@ import glob
 import csv
 from xlsxwriter.workbook import Workbook
 
+reload(sys)
+sys.setdefaultencoding('utf8')
+
 fn = sys.argv[1]
 if os.path.exists(fn):
-  # print os.path.basename(fn)
-  print os.path.basename(fn)
   for csvfile in glob.glob(os.path.join(fn, '*.csv')):
-    workbook = Workbook(csvfile[:-4] + '.xlsx')
+    print "Converting "+csvfile
+    workbook = Workbook(csvfile[:-4] + '.xlsx', {'constant_memory': True})
 
     worksheet = workbook.add_worksheet()
     with open(csvfile, 'rt') as f:
@@ -18,11 +20,3 @@ if os.path.exists(fn):
         for c, col in enumerate(row):
           worksheet.write(r, c, col)
     workbook.close()
-
-
-
-
-
-
-
-
