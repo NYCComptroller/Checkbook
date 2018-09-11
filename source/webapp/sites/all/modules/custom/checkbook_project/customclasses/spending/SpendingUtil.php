@@ -1086,7 +1086,8 @@ class SpendingUtil{
     }
 
 
-    public static function getMWBENYCLegend($year, $yeartype, $non_mwbe_spending_prime, $mwbe_spending_prime){
+    public static function getMWBENYCLegend($year, $yeartype, $non_mwbe_spending_prime = '', $mwbe_spending_prime = '')
+    {
 
     	$where_filter =  "where year_id = $year and type_of_year = '$yeartype' ";
 
