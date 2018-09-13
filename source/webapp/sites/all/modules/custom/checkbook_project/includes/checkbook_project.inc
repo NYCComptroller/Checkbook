@@ -848,7 +848,8 @@ function _checkbook_project_adjust_mwbe_spending_parameter_filters(&$node, &$par
     $current_node_nid = $node->nid;
 
     $magid = RequestUtilities::get('magid');
-    if ($smnid == 764 && $magid != null) {
+    $industry = RequestUtilities::get('industry');
+    if ($smnid == 764 && $magid != null && $industry!=null) {
         $parameters['master_contract_industry_type_id'] = $parameters['industry_type_id'];
         unset($parameters['industry_type_id']);
     }
