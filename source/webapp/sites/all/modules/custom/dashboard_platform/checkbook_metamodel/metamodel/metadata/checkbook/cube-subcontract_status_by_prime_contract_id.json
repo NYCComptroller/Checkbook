@@ -7,28 +7,19 @@
         "mixed_vendor_data":{
             "datasourceName":"main",
             "source":"
-                SELECT
-                t.prime_vendor_code        AS vendor_code,
-                v.legal_name,
-                t.prime_vendor_name        AS vendor_name,
-                t.prime_vendor_type        AS vendor_type,
-                t.prime_minority_type_id   AS minority_type_id,
-                t.prime_minority_type_name AS minority_type_name,
-                t.*
-                FROM vendor v JOIN subcontract_status_by_prime_contract_id t ON v.vendor_customer_code = t.prime_vendor_code
-                WHERE prime_vendor_type IN ('P', 'PM')
+                SELECT prime_vendor_code as vendor_code, prime_vendor_name as vendor_name,
+                prime_vendor_type as vendor_type,
+                prime_minority_type_id as minority_type_id, prime_minority_type_name as minority_type_name, *
+                FROM subcontract_status_by_prime_contract_id
+                WHERE prime_vendor_type IN ('P','PM')
+
                 UNION ALL
-                SELECT
-                t.sub_vendor_code        AS vendor_code,
-                t.sub_vendor_name,
-                t.sub_vendor_name        AS vendor_name,
-                t.sub_vendor_type        AS vendor_type,
-                t.sub_minority_type_id   AS minority_type_id,
-                t.sub_minority_type_name AS minority_type_name,
-                t.*
-                FROM vendor v
-                JOIN subcontract_status_by_prime_contract_id t ON v.vendor_customer_code = t.prime_vendor_code
-                WHERE sub_vendor_type IN ('S', 'SM')
+
+                SELECT sub_vendor_code as vendor_code, sub_vendor_name as vendor_name,
+                sub_vendor_type as vendor_type,
+                sub_minority_type_id as minority_type_id, sub_minority_type_name as minority_type_name, *
+                FROM subcontract_status_by_prime_contract_id
+                WHERE sub_vendor_type IN ('S','SM')
             "
         },
         "mixed_vendor_type_data":{
@@ -266,20 +257,11 @@
                             "sourceColumnName": "minority_type_id"
                         }
                     ]
-                },
-                {
-                    "name":"legal_name",
-                    "levels":[
-                        {
-                            "name":"legal_name",
-                            "sourceColumnName":"legal_name"
-                        }
-                    ]
                 }
             ],
             "measures": {
                 "txcount": {
-                    "function": "COUNT(DISTINCT (CASE WHEN vendor_type IN ('P','PM') AND vendor_type IN ('S','SM') THEN legal_name||contract_number ELSE legal_name||contract_number||sub_contract_id END )) "
+                    "function": "COUNT(DISTINCT (CASE WHEN vendor_type IN ('P','PM') THEN vendor_name||contract_number ELSE vendor_name||contract_number||sub_contract_id END )) "
                 }
             }
         },
