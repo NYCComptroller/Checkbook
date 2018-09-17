@@ -1372,6 +1372,11 @@ function widget_mergeJSFunctions($node, $phpArray) {
 	$PLACEHOLDER_END = '"';
 
 	$json = json_encode($phpArray);
+	if (!$json) {
+        $error = json_last_error_msg();
+        LogHelper::log_warn('Could not encode json:: '.$error);
+    }
+
 	if (isset($node->jsFunctions)) {
 		foreach ($node->jsFunctions as $key => $value) {
 
