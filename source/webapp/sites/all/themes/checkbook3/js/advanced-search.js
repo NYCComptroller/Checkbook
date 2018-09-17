@@ -774,7 +774,7 @@
                     }
                     $("#edit-contracts-clear").click(function () {
                         showHidePrimeAndSubFields(div_checkbook_contracts);
-                        div.ele('includes_sub_vendors').html('<option value="0" selected>Select Status</option>' +
+                        div_checkbook_contracts.ele('includes_sub_vendors').html('<option value="0" selected>Select Status</option>' +
                             '<option value="2">Yes</option>' +
                             '<option value="3">No</option>' +
                             '<option value="1">No Data Entered</option>' +

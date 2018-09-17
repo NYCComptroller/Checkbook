@@ -16,12 +16,15 @@ for path in sys.argv[1:]:
   if os.path.exists(path):
     for csvfile in glob.glob(os.path.join(path, '*.csv')):
       print "Converting "+csvfile
-      workbook = Workbook(csvfile[:-4] + '.xlsx', {'constant_memory': True})
+      try:
+        workbook = Workbook(csvfile[:-4] + '.xlsx', {'constant_memory': True})
 
-      worksheet = workbook.add_worksheet()
-      with open(csvfile, 'rt') as f:
-        reader = csv.reader(f)
-        for r, row in enumerate(reader):
-          for c, col in enumerate(row):
-            worksheet.write(r, c, col)
-      workbook.close()
+        worksheet = workbook.add_worksheet()
+        with open(csvfile, 'rt') as f:
+          reader = csv.reader(f)
+          for r, row in enumerate(reader):
+            for c, col in enumerate(row):
+              worksheet.write(r, c, col)
+        workbook.close()
+      except:
+        print "Unexpected error: ", sys.exc_info()[0]

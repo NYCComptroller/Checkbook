@@ -848,7 +848,8 @@ function _checkbook_project_adjust_mwbe_spending_parameter_filters(&$node, &$par
     $current_node_nid = $node->nid;
 
     $magid = RequestUtilities::get('magid');
-    if ($smnid == 764 && $magid != null) {
+    $industry = RequestUtilities::get('industry');
+    if ($smnid == 764 && $magid != null && $industry!=null) {
         $parameters['master_contract_industry_type_id'] = $parameters['industry_type_id'];
         unset($parameters['industry_type_id']);
     }
@@ -897,7 +898,7 @@ function _checkbook_project_adjust_mwbe_spending_parameter_filters(&$node, &$par
     }
 
     if($dtsmnid == 764){
-        $parameters['contract_document_code'] = array('CT1', 'CTA1', 'POD', 'POC', 'PCC1', 'DO1', 'MA1', 'MMA1', 'PON1');
+        $parameters['contract_document_code'] = array('CT1', 'CTA1', 'MMA1', 'MA1', 'DO1', 'POC', 'POD', 'PCC1', 'PRN2','PRC2', 'PRM2','RTGPF' );
     }
 
     return $parameters;
@@ -1791,7 +1792,7 @@ function _checkbook_project_clean_files()
 
 /**
  * Callback to delete files modified more than a set time ago.
- * 
+ *
  * @param $path
  */
 function _checkbook_project_delete_file_if_stale($path)
@@ -1994,7 +1995,7 @@ function format_string_to_date($string)
 
 /**
  * returns last paramater value from URL($_REQUEST['q'])
- * 
+ *
  * @param null $url
  * @param null $param
  * @return array
