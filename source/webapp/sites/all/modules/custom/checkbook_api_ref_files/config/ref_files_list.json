@@ -1,12 +1,12 @@
 {
   "agency_code_list": {
-    "sql": "SELECT agency_code, agency_name FROM ref_agency where is_display = 'Y' ORDER BY agency_name",
+    "sql": "SELECT DISTINCT agency_code, agency_name FROM ref_agency where is_display = 'Y' ORDER BY agency_name",
     "force_quote": [
       "agency_code"
     ]
   },
   "vendor_code_list": {
-    "sql": "SELECT vendor_customer_code, legal_name FROM vendor ORDER BY vendor_customer_code",
+    "sql": "SELECT DISTINCT vendor_customer_code, legal_name FROM vendor ORDER BY vendor_customer_code",
     "force_quote": [
       "vendor_customer_code"
     ]
@@ -69,7 +69,7 @@
     ]
   },
   "payee_code_list": {
-    "sql": "SELECT vendor_customer_code,legal_name FROM vendor ORDER BY legal_name",
+    "sql": "SELECT DISTINCT vendor_customer_code,legal_name FROM vendor ORDER BY legal_name",
     "force_quote": [
       "vendor_customer_code"
     ]
@@ -105,13 +105,13 @@
     ]
   },
   "contract_type_code_list": {
-    "sql": "SELECT agreement_type_code, agreement_type_name FROM ref_agreement_type ORDER BY agreement_type_code",
+    "sql": "SELECT DISTINCT agreement_type_code, agreement_type_name FROM ref_agreement_type ORDER BY agreement_type_code",
     "force_quote": [
       "agreement_type_code"
     ]
   },
   "award_method_code_list": {
-    "sql": "SELECT award_method_code, award_method_name FROM ref_award_method ORDER BY award_method_code",
+    "sql": "SELECT DISTINCT award_method_code, award_method_name FROM ref_award_method ORDER BY award_method_code",
     "force_quote": [
       "award_method_code"
     ]
