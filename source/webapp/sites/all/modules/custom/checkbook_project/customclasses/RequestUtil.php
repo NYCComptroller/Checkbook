@@ -971,22 +971,21 @@ class RequestUtil
     public static function getDashboardTopNavURL($dashboard_filter)
     {
 
-//        if (self::isContractsSpendingLandingPage()) {
-//            $url = $_GET['q'];
-//
-//            //Exclude parameters that should not persist in the feature dashboards for Spending Domain
-//            if (preg_match('/contract/', $url)) {
-//                $url = ContractUtil::getLandingPageWidgetUrl();
-//            } else {
-//                //Default to total spending
-//                $override_params = array("category" => null);
-//                $url = SpendingUtil::getLandingPageWidgetUrl($override_params);
-//            }
-//
-//        } else {
-//            $url = self::getCurrentDomainURLFromParams();
-//        }
-        $url = self::getCurrentDomainURLFromParams();
+        if (self::isContractsSpendingLandingPage()) {
+            $url = $_GET['q'];
+
+            //Exclude parameters that should not persist in the feature dashboards for Spending Domain
+            if (preg_match('/contract/', $url)) {
+                $url = ContractUtil::getLandingPageWidgetUrl();
+            } else {
+                //Default to total spending
+                $override_params = array("category" => null);
+                $url = SpendingUtil::getLandingPageWidgetUrl($override_params);
+            }
+
+        } else {
+            $url = self::getCurrentDomainURLFromParams();
+        }
 
         switch ($dashboard_filter) {
             case "mwbe":
@@ -1003,7 +1002,6 @@ class RequestUtil
                 }
                 break;
             case "subvendor":
-
                 if (RequestUtilities::get("dashboard") != null) {
                     $url = preg_replace('/\/dashboard\/[^\/]*/', '', $url);
                 }
