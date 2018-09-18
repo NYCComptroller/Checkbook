@@ -1463,7 +1463,7 @@ function _checkbook_current_request_is_ajax()
  */
 function _checkbook_project_get_url_param_string($key, $key_alias = null, $ajaxPath = FALSE)
 {
-    return RequestUtilities::buildUrlFromParam('{$key}|{$key_alias}');
+    return RequestUtilities::buildUrlFromParam("{$key}|{$key_alias}");
 
 //    $urlPath = drupal_get_path_alias($_GET['q']);
 //    if (_checkbook_current_request_is_ajax()) {
