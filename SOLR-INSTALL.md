@@ -1,13 +1,12 @@
 Solr Installation for Checkbook NYC
 -----------------------------------
 
-Checkbook NYC runs Solr inside Tomcat, and comes with both of them
-pre-packaged for direct installation by copying, as described below.
+Checkbook NYC runs Solr inside Tomcat.
 
-1. Copy the Solr and Tomcat directories to the right places.
+1. Get Solr and Tomcat and put them to the right places.
 
-          $ sudo cp -a software/solr-4.1.0 /opt/solr-4.1.0
-          $ sudo cp -a software/apache-tomcat-6.0.35 /opt/apache-tomcat-6.0.35
+          $ sudo cp -a ./solr-4.1.0 /opt/solr-4.1.0
+          $ sudo cp -a ./apache-tomcat-6.0.35 /opt/apache-tomcat-6.0.35
 
  *Note: you may need to create the `/opt` directory first on some systems.*
 
