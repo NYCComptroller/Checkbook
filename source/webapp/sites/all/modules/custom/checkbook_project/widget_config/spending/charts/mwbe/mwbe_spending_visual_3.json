@@ -73,35 +73,37 @@
 ",
 "widgetUpdateJSONConfig":"
 
-	$series_ba =  array();
-	$series_ha =  array();
-	$series_w =  array();
-	$series_aa =  array();
-	$series_e =  array();
+	$series_ba =  [];
+	$series_ha =  [];
+	$series_w =  [];
+	$series_aa =  [];
+	$series_e =  [];
+  $total = [];
 
 	 $year = '';
 	 foreach ($node->data as $row){
 
 	 	switch($row['minority_type_id']){
 	 		case '2':
-	 		$series_ba[$row['month_value'] - 1]->y += $row['total_spending'];
-	 		break;
+        $series_ba[$row['month_value'] - 1]->y += $row['total_spending'];
+        break;
 	 		case '3':
-	 		$series_ha[$row['month_value'] - 1]->y += $row['total_spending'];
-	 		break;
+        $series_ha[$row['month_value'] - 1]->y += $row['total_spending'];
+        break;
 	 		case '4':
-	 		$series_aa[$row['month_value'] - 1]->y += $row['total_spending'];
-	 		break;
+        $series_aa[$row['month_value'] - 1]->y += $row['total_spending'];
+        break;
 	 		case '5':
-	 		$series_aa[$row['month_value'] - 1]->y += $row['total_spending'];
-	 		break;
+        $series_aa[$row['month_value'] - 1]->y += $row['total_spending'];
+        break;
 	 		case '9':
-	 		$series_w[$row['month_value'] - 1]->y += $row['total_spending'];
-	 		break;
+        $series_w[$row['month_value'] - 1]->y += $row['total_spending'];
+        break;
 	 		case '7':
-	 		$non_mwbe_data[$row['month_value'] - 1] = $row['total_spending'];
-	 		break;
+        $non_mwbe_data[$row['month_value'] - 1] = $row['total_spending'];
+        break;
 	 	}
+    $total[$row['month_value'] - 1] += $row['total_spending'];
 	 	$year = $row['year_value'];
 	 }
 
@@ -118,14 +120,19 @@
 
 	$i = 0;
 	while($i <=11){
+    $div = $total[$i]/100;
+
 		$series_ba[$i]->total =  $series_ba[$i]->y;
-	 	$series_ba[$i]->y = $series_ba[$i]->y/$non_mwbe_data[$i]*100;
-		$series_ha[$i]->total =  $series_ha[$i]->y;
-	 	$series_ha[$i]->y = $series_ha[$i]->y/$non_mwbe_data[$i]*100;
-		$series_aa[$i]->total =  $series_aa[$i]->y;
-	 	$series_aa[$i]->y = $series_aa[$i]->y/$non_mwbe_data[$i]*100;
-		$series_w[$i]->total =  $series_w[$i]->y;
-	 	$series_w[$i]->y = $series_w[$i]->y/$non_mwbe_data[$i]*100;
+    $series_ha[$i]->total =  $series_ha[$i]->y;
+    $series_aa[$i]->total =  $series_aa[$i]->y;
+    $series_w[$i]->total =  $series_w[$i]->y;
+
+    if ($div) {
+      $series_ba[$i]->y /= $div;
+      $series_ha[$i]->y /= $div;
+      $series_aa[$i]->y /= $div;
+      $series_w[$i]->y /= $div;
+    }
 	 	$tooltip_label = 	'Year: ' . $year. '<br/>' .
 	 						'Month: '. $months[$i] . '<br/>' .
 							'Asian American: ' . custom_number_formatter_format($series_aa[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_aa[$i]->y,1,null,'%') . ')' .  '<br/>'
