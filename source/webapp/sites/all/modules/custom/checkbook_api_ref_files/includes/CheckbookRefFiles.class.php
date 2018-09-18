@@ -104,12 +104,6 @@ class CheckbookRefFiles
             return $return;
         }
 
-        /*if(!is_link($dir) && !@chmod($dir,0777)){
-            LogHelper::log_error("Could not change permissions to 777 for $dir.");
-            echo $failure;
-            return;
-        }*/
-
         $dir .= '/' . $conf['check_book']['ref_data_dir'];
         if (!file_prepare_directory($dir, FILE_CREATE_DIRECTORY)) {
             $return['error'] = "Could not prepare directory $dir for generating reference data.";
@@ -119,6 +113,9 @@ class CheckbookRefFiles
         $ref_files_list = json_decode(file_get_contents(__DIR__.'/../config/ref_files_list.json'));
 
         foreach($ref_files_list as $filename => $ref_file) {
+            if (!empty($ref_file['disabled']) && $ref_file['disabled']) {
+                continue;
+            }
             $file_info = [];
             $file = $dir . '/' . $filename . '.csv';
             $file_info['error'] = false;

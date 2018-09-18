@@ -19,6 +19,7 @@
     ]
   },
   "mwbe_code_list": {
+    "disabled": true,
     "sql": "SELECT DISTINCT minority_type_id, minority_type_name FROM ref_minority_type ORDER BY minority_type_id",
     "force_quote": []
   },
@@ -75,6 +76,7 @@
     ]
   },
   "expense_code_list": {
+    "disabled": true,
     "sql": "SELECT DISTINCT document_id FROM history_master_agreement ORDER BY document_id",
     "force_quote": [
       "document_id"
@@ -99,7 +101,7 @@
     ]
   },
   "spending_category_code_list": {
-    "sql": "SELECT DISTINCT spending_category_name, spending_category_code FROM ref_spending_category ORDER BY spending_category_code",
+    "sql": "SELECT DISTINCT spending_category_name, spending_category_code FROM ref_spending_category ORDER BY spending_category_name",
     "force_quote": [
       "spending_category_name"
     ]
