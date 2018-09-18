@@ -152,7 +152,6 @@ class MappingUtil {
             $applicable_minority_types = self::getCurrentPrimeMWBEApplicableFilters($domain);
         }
 
-        $mwbe_featured_dashboard_param = RequestUtil::getNextMWBEDashboardState();
         $active_domain_link =  preg_replace('/\/mwbe\/[^\/]*/','',$active_domain_link);
 
         $filters_html =  "<div class='main-nav-drop-down' style='display:none'>
@@ -174,6 +173,7 @@ class MappingUtil {
         }
 
         $total_mwbe_link = RequestUtil::getTotalMWBELink();
+        $mwbe_total_link_html = '';
         if($total_mwbe_link !=  null && $total_mwbe_link != ""){
             $mwbe_total_link_html  ="<li class='no-click'><a href='" . $total_mwbe_link."'>Total M/WBE</a></li>";
         }

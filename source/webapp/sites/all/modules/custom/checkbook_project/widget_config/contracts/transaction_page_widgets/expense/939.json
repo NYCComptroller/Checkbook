@@ -214,9 +214,9 @@
             "expression":" '<a href=\"'
              .ContractsUrlService::applyLandingParameter($row['document_code'])
              ._checkbook_append_url_params()
-            .  '/year/'._getFiscalYearID()
+            .  RequestUtilities::buildUrlFromParam('year')
             .  '/yeartype/B'
-            .  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
+            .  RequestUtilities::buildUrlFromParam('contstatus|status')
             . '/agency/' . $row['agency_id']
             .  '?expandBottomCont=true\">'. $row['agency_formatted'] . '</a>'  "
         },
