@@ -476,9 +476,9 @@ namespace { //global
             // pending_changes
 
             $url .= RequestUtilities::buildUrlFromParam('agency')
-            . RequestUtilities::buildUrlFromParam('cindustry')
-            . RequestUtilities::buildUrlFromParam('csize')
-            . RequestUtilities::buildUrlFromParam('awdmethod')
+//            . RequestUtilities::buildUrlFromParam('cindustry')    // NYCCHKBK-8560
+//            . RequestUtilities::buildUrlFromParam('csize')        // NYCCHKBK-8560
+//            . RequestUtilities::buildUrlFromParam('awdmethod')    // NYCCHKBK-8560
             . RequestUtilities::buildUrlFromParam('contstatus|status')
             . RequestUtilities::buildUrlFromParam('vendor')
             . RequestUtilities::buildUrlFromParam('subvendor');
