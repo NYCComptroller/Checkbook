@@ -1123,7 +1123,7 @@ function checkbook_datafeeds_process_budget_values($form, $form_state) {
         'global' => array(
             'type_of_data' => 'Budget',
             'records_from' => 1,
-            'max_records' => $conf['check_book']['data_feeds']['max_record_limit'],
+            'max_records' => isset($conf['check_book']['data_feeds']['max_record_limit']) ? $conf['check_book']['data_feeds']['max_record_limit'] : 200000,
         ),
     );
     $criteria['responseColumns'] = $values['column_select'];
@@ -2457,7 +2457,7 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
     $values = $form_state['step_information']['contracts']['stored_values'];
     $pattern = "/.*?(\\[.*?\\])/is";
     global $conf;
-    $max_records= $conf['check_book']['data_feeds']['max_record_limit'];
+    $max_records= isset($conf['check_book']['data_feeds']['max_record_limit']) ? $conf['check_book']['data_feeds']['max_record_limit'] : 200000;
 
     $criteria = array(
         'global' => array(
@@ -3437,7 +3437,7 @@ function checkbook_datafeeds_process_payroll_values($form, &$form_state) {
         'global' => array(
             'type_of_data' => 'Payroll',
             'records_from' => 1,
-            'max_records' => $conf['check_book']['data_feeds']['max_record_limit'],
+            'max_records' => isset($conf['check_book']['data_feeds']['max_record_limit']) ? $conf['check_book']['data_feeds']['max_record_limit'] : 200000,
         ),
         'responseColumns' => $values['column_select']
     );
@@ -4104,7 +4104,7 @@ function checkbook_datafeeds_process_revenue_values($form, &$form_state) {
         'global' => array(
             'type_of_data' => 'Revenue',
             'records_from' => 1,
-            'max_records' => $conf['check_book']['data_feeds']['max_record_limit'],
+            'max_records' => isset($conf['check_book']['data_feeds']['max_record_limit']) ? $conf['check_book']['data_feeds']['max_record_limit'] : 200000,
         ),
         'responseColumns' => $values['column_select'],
     );
@@ -5110,7 +5110,7 @@ function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_
             //Set data source for query
             'type_of_data' => $data_source == 'checkbook_oge' ? 'Spending_OGE' : 'Spending',
             'records_from' => 1,
-            'max_records' => $conf['check_book']['data_feeds']['max_record_limit'],
+            'max_records' => isset($conf['check_book']['data_feeds']['max_record_limit']) ? $conf['check_book']['data_feeds']['max_record_limit'] : 200000,
         ),
         'responseColumns' => ($data_source == 'checkbook_oge') ? $values['oge_column_select'] : $values['column_select'],
     );
@@ -6144,7 +6144,7 @@ function _industry_options() {
 function checkbook_datafeeds_confirmation_download_submit($form, &$form_state) {
     $data = $form_state['step_information']['confirmation']['response'];
     global $conf;
-    $query_records_limit = $conf['check_book']['data_feeds']['query_records_limit'];
+    $query_records_limit = isset($conf['check_book']['data_feeds']['query_records_limit']) ?$conf['check_book']['data_feeds']['query_records_limit'] : 10000;
 
     //Store request in db
     $criteria = $form_state['step_information']['confirmation']['stored_values']['criteria'];
@@ -6407,8 +6407,8 @@ function previous_submit($form, &$form_state) {
 function checkbook_datafeeds_end_of_confirmation_form($form, &$form_state, $criteria, $responsetype, $domain) {
     $searchCriteria = new SearchCriteria($criteria, $responsetype);
     global $conf;
-    $query_records_limit = $conf['check_book']['data_feeds']['query_records_limit'];
-    $max_record_limt = $conf['check_book']['data_feeds']['max_record_limit'];
+    $query_records_limit = isset($conf['check_book']['data_feeds']['query_records_limit']) ?$conf['check_book']['data_feeds']['query_records_limit'] : 10000;
+    $max_record_limit = isset($conf['check_book']['data_feeds']['max_record_limit']) ? $conf['check_book']['data_feeds']['max_record_limit'] : 200000;
 
     try {
         $checkBookApi = new CheckBookAPI($searchCriteria);
@@ -6438,7 +6438,7 @@ function checkbook_datafeeds_end_of_confirmation_form($form, &$form_state, $crit
             '#value' => t('Cancel'),
         );
     }
-    elseif ($recordcount > 0 && $recordcount < $max_record_limt) {
+    elseif ($recordcount > 0 && $recordcount < $max_record_limit) {
         /**
          * see docs
             http://wiki.reisys.com:8080/display/USASv2/Data+Feeds+Documentation
