@@ -2457,12 +2457,14 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
     $values = $form_state['step_information']['contracts']['stored_values'];
     $pattern = "/.*?(\\[.*?\\])/is";
     global $conf;
+    $max_records= $conf['check_book']['data_feeds']['max_record_limit'];
+
     $criteria = array(
         'global' => array(
             //Set data source for query
             'type_of_data' => $data_source == 'checkbook_oge' ? 'Contracts_OGE' : 'Contracts',
             'records_from' => 1,
-            'max_records' => $conf['check_book']['data_feeds']['max_record_limit'],
+            'max_records' => $max_records,
         ),
     );
     if($data_source == 'checkbook_oge'){
