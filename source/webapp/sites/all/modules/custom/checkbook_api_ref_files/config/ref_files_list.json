@@ -89,9 +89,9 @@
     ]
   },
   "capital_project_code_list": {
-    "sql": "SELECT DISTINCT reporting_code FROM disbursement_line_item_details where coalesce(reporting_code,'') <> '' ORDER BY reporting_code",
+    "sql": "SELECT DISTINCT reporting_code \"Capital Project Code\" FROM disbursement_line_item_details where coalesce(reporting_code,'') <> '' ORDER BY reporting_code",
     "force_quote": [
-      "reporting_code"
+      "Capital Project Code"
     ]
   },
   "document_id_code_list": {
