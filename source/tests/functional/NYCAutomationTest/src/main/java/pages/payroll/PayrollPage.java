@@ -109,7 +109,7 @@ public class PayrollPage {
 			WebElement detailsAnchor = detailsContainer.findElement(By.partialLinkText("Details"));
 			((JavascriptExecutor) Driver.Instance).executeScript("arguments[0].scrollIntoView(true);", detailsAnchor);
 			detailsAnchor.click();	
-			Driver.Instance.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+			Driver.Instance.manage().timeouts().implicitlyWait(40, TimeUnit.SECONDS);
 		}
 		
 	
@@ -162,13 +162,13 @@ public static String GetWidgetText() {
 ///Transaction count
 
 public static Integer GetTransactionCount() {
-	WebDriverWait wait = new WebDriverWait(Driver.Instance, 10);
+	WebDriverWait wait = new WebDriverWait(Driver.Instance, 20);
 	wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("table_317_info")));
 	String count = (Driver.Instance.findElement(By.id("table_317_info"))).getText();
 	return Helper.GetTotalEntries(count, 9);
 }
 	public static Integer GetTransactionCount1() {
-		WebDriverWait wait = new WebDriverWait(Driver.Instance, 10);
+		WebDriverWait wait = new WebDriverWait(Driver.Instance, 20);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("table_886_info")));
 		String count = (Driver.Instance.findElement(By.id("table_886_info"))).getText();
 		return Helper.GetTotalEntries(count, 5);

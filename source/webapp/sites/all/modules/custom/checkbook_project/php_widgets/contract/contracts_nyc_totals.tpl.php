@@ -26,7 +26,7 @@
       <?php
       $class = "";
       $is_active_expense_contracts = false;
-      $is_active_expense_contracts = preg_match("/^contracts_landing/", $_GET['q']) & RequestUtilities::getRequestParamValue("status") == "A";
+      $is_active_expense_contracts = preg_match("/^contracts_landing/", $_GET['q']) & RequestUtilities::get("status") == "A";
       if ($is_active_expense_contracts) {
         $class = ' class="active"';
 
@@ -38,14 +38,14 @@
       <td<?php echo $class; ?>>
           <?php
           $class = ' class="positioning"';
-          $is_edc_prime_vendor = RequestUtilities::getRequestParamValue("vendor") == "5616";
+          $is_edc_prime_vendor = RequestUtilities::get("vendor") == "5616";
           if ($is_active_expense_contracts && $is_edc_prime_vendor) {
               $class = ' class="positioning activeExpenseContract"';
           }
           ?>
         <div<?php echo $class; ?>>
       <?php if($node->data[0]['total_contracts'] > 0 ){?>
-          <a href="/<?php echo $active_link; ?>?expandBottomCont=true"><?php echo $count; ?><br>Active<br>Expense Contracts<br><?php echo $dollars; ?></a>
+          <a href="/<?php echo $active_link; ?>"><?php echo $count; ?><br>Active<br>Expense Contracts<br><?php echo $dollars; ?></a>
         <?php }else{?>
         <?php echo $count; ?><br>Active<br>Expense Contracts<br><?php echo $dollars; ?>
         <?php }?>
@@ -54,7 +54,7 @@
       </td>
       <?php
       $class = "";
-      if (preg_match("/^contracts_landing/", $_GET['q']) & RequestUtilities::getRequestParamValue("status") == "R") {
+      if (preg_match("/^contracts_landing/", $_GET['q']) & RequestUtilities::get("status") == "R") {
         $class = ' class="active"';
       }
       $reg_link = ContractURLHelper::prepareActRegContractsSliderFilter('contracts_landing', 'R');
@@ -64,7 +64,7 @@
       <td<?php echo $class; ?>>
         <div class="positioning">
       <?php if($node->data[1]['total_contracts'] > 0 ){?>
-        <a href="/<?php echo $reg_link; ?>?expandBottomCont=true"><?php echo $count; ?><br>Registered<br>Expense Contracts<br><?php echo $dollars; ?></a>
+        <a href="/<?php echo $reg_link; ?>"><?php echo $count; ?><br>Registered<br>Expense Contracts<br><?php echo $dollars; ?></a>
         <?php }else{?>
         <?php echo $count; ?><br>Registered<br>Expense Contracts<br><?php echo $dollars; ?>
         <?php }?>
@@ -73,7 +73,7 @@
       </td>
       <?php
       $class = "";
-      if (preg_match("/^contracts_revenue_landing/", $_GET['q']) & RequestUtilities::getRequestParamValue("status") == "A") {
+      if (preg_match("/^contracts_revenue_landing/", $_GET['q']) & RequestUtilities::get("status") == "A") {
         $class = ' class="active"';
       }
       $active_link = ContractURLHelper::prepareActRegContractsSliderFilter('contracts_revenue_landing', 'A');
@@ -84,7 +84,7 @@
       <td<?php echo $class; ?>>
         <div class="positioning">
         <?php if($node->data[2]['total_contracts'] > 0 ){?>
-          <a href="/<?php echo $active_link; ?>?expandBottomCont=true"><?php echo $count; ?><br>Active<br>Revenue Contracts<br><?php echo $dollars; ?></a>
+          <a href="/<?php echo $active_link; ?>"><?php echo $count; ?><br>Active<br>Revenue Contracts<br><?php echo $dollars; ?></a>
         <?php }else{?>
         <?php echo $count; ?><br>Active<br>Revenue Contracts<br><?php echo $dollars; ?>
         <?php }?>
@@ -93,7 +93,7 @@
       </td>
       <?php
       $class = "";
-      if (preg_match("/^contracts_revenue_landing/", $_GET['q']) & RequestUtilities::getRequestParamValue("status") == "R") {
+      if (preg_match("/^contracts_revenue_landing/", $_GET['q']) & RequestUtilities::get("status") == "R") {
         $class = ' class="active"';
       }
       $reg_link = ContractURLHelper::prepareActRegContractsSliderFilter('contracts_revenue_landing', 'R');
@@ -104,7 +104,7 @@
       <td<?php echo $class; ?>>
         <div class="positioning">
       <?php if($node->data[3]['total_contracts'] > 0 ){?>
-          <a href="/<?php echo $reg_link; ?>?expandBottomCont=true"><?php echo $count; ?><br>Registered<br>Revenue Contracts<br><?php echo $dollars; ?></a>
+          <a href="/<?php echo $reg_link; ?>"><?php echo $count; ?><br>Registered<br>Revenue Contracts<br><?php echo $dollars; ?></a>
         <?php }else{?>
         <?php echo $count; ?><br>Registered<br>Revenue Contracts<br><?php echo $dollars; ?>
         <?php }?>
@@ -123,7 +123,7 @@
       <td<?php echo $class;?>>
         <div class="positioning">
       <?php if($node->data[5]['total_contracts'] > 0 ){?>
-          <a href="/<?php echo $pending_exp_link; ?>?expandBottomCont=true"><?php echo $count; ?><br>Pending<br>Expense Contracts<br><?php echo $dollars; ?></a>
+          <a href="/<?php echo $pending_exp_link; ?>"><?php echo $count; ?><br>Pending<br>Expense Contracts<br><?php echo $dollars; ?></a>
         <?php }else{?>
         <?php echo $count; ?><br>Pending<br>Expense Contracts<br><?php echo $dollars; ?>
         <?php }?>
@@ -143,7 +143,7 @@
       <td class="last<?php echo $class;?>">
         <div class="positioning">
         <?php if($node->data[7]['total_contracts'] > 0 ){?>
-          <a href="/<?php echo $pending_rev_link; ?>?expandBottomCont=true"><?php echo $count; ?><br>Pending<br>Revenue Contracts<br><?php echo $dollars; ?></a>
+          <a href="/<?php echo $pending_rev_link; ?>"><?php echo $count; ?><br>Pending<br>Revenue Contracts<br><?php echo $dollars; ?></a>
         <?php }else{?>
         <?php echo $count; ?><br>Pending<br>Revenue Contracts<br><?php echo $dollars; ?>
         <?php }?>

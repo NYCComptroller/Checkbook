@@ -9,7 +9,6 @@
 	"columns":["category.category","category.category.revenue_category_name", "txcount"],
 	"orderBy":"-txcount",    
     "filterName":"Revenue Category",
-    "getTotalDataCount":true,    
     "facetPager":true,
     "urlParameterName":"revcat",
     "autocompleteParamName":"frevenueCategoryId_auto",    

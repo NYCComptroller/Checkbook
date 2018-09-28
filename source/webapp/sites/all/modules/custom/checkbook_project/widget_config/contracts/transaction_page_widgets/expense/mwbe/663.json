@@ -18,7 +18,6 @@
     }  ,
     "columns":["industry.industry", "industry.industry.industry_type_name", "txcount"],
     "orderBy":"-txcount",
-    "getTotalDataCount":true,
     "facetPager":true,
     "filterName":"Industry",
     "urlParameterName":"cindustry",

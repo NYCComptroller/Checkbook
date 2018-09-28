@@ -1,19 +1,19 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -45,7 +45,7 @@ $ref_data_queries = array(
   // Spending:
   'payee_code_list' => "SELECT vendor_customer_code \\\"Payee Code\\\",legal_name \\\"Payee Name\\\"  FROM vendor ORDER BY legal_name",
   'expense_code_list' => "SELECT DISTINCT document_id \\\"Expense Id\\\"  FROM history_master_agreement ORDER BY document_id",
-  'spending_expense_category_code_list' => "SELECT expenditure_object_code \\\"Expense Category Code\\\",expenditure_object_name \\\"Expense Catergory Name\\\" FROM ref_expenditure_object ORDER BY expenditure_object_name",
+  'spending_expense_category_code_list' => "SELECT DISTINCT expenditure_object_code \\\"Expense Category Code\\\",expenditure_object_name \\\"Expense Catergory Name\\\" FROM ref_expenditure_object ORDER BY expenditure_object_name",
   'capital_project_code_list' => "SELECT DISTINCT reporting_code \\\"Capital Project Code\\\" FROM disbursement_line_item_details where coalesce(reporting_code,'') <> '' ORDER BY reporting_code",
   'document_id_code_list' => "SELECT DISTINCT disbursement_number \\\"Document Id\\\" FROM disbursement_line_item_details ORDER BY disbursement_number",
   'spending_category_code_list' => "SELECT DISTINCT spending_category_name \\\"Spending Category Name\\\", spending_category_code \\\"Spending Category Code\\\" FROM ref_spending_category",

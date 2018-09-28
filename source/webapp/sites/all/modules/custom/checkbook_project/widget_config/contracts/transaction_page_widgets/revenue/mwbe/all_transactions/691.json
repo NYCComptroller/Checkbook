@@ -12,7 +12,6 @@
     "urlParamMap":{"doctype":"document_code.document_code.document_code"}  ,
     "columns":["vendor.vendor", "vendor.vendor.legal_name", "txcount"],
     "orderBy":["-txcount","vendor.vendor.legal_name"],
-    "getTotalDataCount":true,
     "facetPager":true,
     "filterName":"Vendor",
     "urlParameterName":"vendor",

@@ -39,55 +39,42 @@
     "columns": ["employee.employee","civil_service_title.civil_service_title","agency.agency.agency_short_name","annual_salary_max","combined_total_gross_pay","combined_total_base_salary","combined_total_other_payments","combined_total_overtime_amount","year.year","year_type.year_type","agency.agency.agency_name","employment_type.employment_type"],
     "derivedColumns": {
         "employee_name_formatted": {
-              "type": "expression2",
               "expression": "_get_tooltip_markup($row['civil_service_title_civil_service_title'],30)"
         },
         "formatted_salary_amount": {
-            "type": "expression2",
             "expression": " $row['employment_type_employment_type'] == 'Salaried' ? custom_number_formatter_basic_format($row['annual_salary_max'])  : '-'  "
         },
         "annual_salary_link": {
-            "type": "expression2",
             "expression": " $row['employment_type_employment_type'] == 'Salaried' ? '<a href=/payroll' . _checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string('agency') . '?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions' . _checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string('agency') . '/salamttype/1/abc/' . $row['employee_employee'] . '>'. $row['formatted_salary_amount'] .'</a>' : '-'"
         },
         "formatted_non_salary_amount": {
-            "type": "expression2",
             "expression": " $row['employment_type_employment_type'] == 'Salaried' ? '-' : custom_number_formatter_basic_format($row['total_non_salaried_amount'])"
         },
         "non_salary_link": {
-            "type": "expression2",
             "expression": " $row['employment_type_employment_type'] == 'Salaried' ? '-' : '<a href=/payroll' . _checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string('agency') . '?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions' . _checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string('agency') . '/salamttype/2~3/abc/' . $row['employee_employee'] . '>'. $row['formatted_non_salary_amount'] .'</a>'"
         },
         "export_salary_amount": {
-            "type": "expression2",
             "expression": " $row['employment_type_employment_type'] == 'Salaried' ? $row['annual_salary_max']  : NULL "
         },
         "export_non_salary_amount": {
-            "type": "expression2",
             "expression": " $row['employment_type_employment_type'] == 'Salaried' ? NULL : $row['total_non_salaried_amount']"
         },
         "formatted_gross_pay_amount": {
-              "type": "expression2",
               "expression": "custom_number_formatter_basic_format($row['combined_total_gross_pay'])"
         },
         "formatted_base_salary_amount": {
-              "type": "expression2",
               "expression": "custom_number_formatter_basic_format($row['combined_total_base_salary'])"
         },
         "formatted_other_payments_amount": {
-              "type": "expression2",
               "expression": "custom_number_formatter_basic_format($row['combined_total_other_payments'])"
         },
         "formatted_overtime_pay_amount": {
-              "type": "expression2",
               "expression": "custom_number_formatter_basic_format($row['combined_total_overtime_amount'])"
         },
         "agency_name_formatted": {
-              "type": "expression2",
               "expression": "_get_tooltip_markup($row['agency_agency_agency_name'],30)"
         },
         "payroll_type_formatted": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['employment_type_employment_type'],15)"
         }
     },

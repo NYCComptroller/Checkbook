@@ -1,19 +1,19 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -272,7 +272,26 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
         $this->applyPagination($request, $sql);
 
         LogHelper::log_notice(new StatementLogMessage('dataset.query', $sql));
-        return $this->executeQuery($callcontext, $datasource, $sql, $resultFormatter);
+
+        $cacheDatasets = [
+          'checkbook_oge:agency',
+          'checkbook:agency',
+          'checkbook_nycha:agency',
+          'checkbook:year',
+          'checkbook:month',
+          'checkbook:category',
+        ];
+        $cacheKey = '_'.$datasetName.'_'.md5($sql);
+        if(in_array($datasetName, $cacheDatasets)) {
+          if ($result = _checkbook_dmemcache_get($cacheKey)) {
+            return $result;
+          }
+        }
+        $result = $this->executeQuery($callcontext, $datasource, $sql, $resultFormatter);
+        if(in_array($datasetName, $cacheDatasets)) {
+          _checkbook_dmemcache_set($cacheKey, $result);
+        }
+        return $result;
     }
 
     /*
@@ -477,7 +496,32 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
 
         // processing prepared sql and returning data
         LogHelper::log_notice(new StatementLogMessage('cube.query', $sql));
-        return $this->executeQuery($callcontext, $datasource, $sql, $resultFormatter);
+
+        $cacheKey = $cubeName . md5($sql);
+        if ($return = _checkbook_dmemcache_get($cacheKey)) {
+            return $return;
+        }
+
+        $return = $this->executeQuery($callcontext, $datasource, $sql, $resultFormatter);
+        $cache = false;
+        if (is_array($return)) {
+            if (stripos($sql, 'txcount')) {
+//                facet
+                $cache = true;
+            }
+            if (14 > sizeof($return) && 14 > sizeof($return[0])) {
+                // some small piece of data
+                $cache = true;
+            }
+            if ('checkbook:budget' == $cubeName && 3 > sizeof($return[0])) {
+                // budget codes
+                $cache = true;
+            }
+        }
+        if ($cache) {
+            _checkbook_dmemcache_set($cacheKey, $return);
+        }
+        return $return;
     }
 
     /*
@@ -548,7 +592,14 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
         }
 
         LogHelper::log_notice(new StatementLogMessage('*.count', $sql));
+
+
+        $cacheKey = 'count_'.md5(serialize([$datasource->name, $sql]));
+        if ($count = _checkbook_dmemcache_get($cacheKey)) {
+            return $count;
+        }
         $records = $this->executeQuery($callcontext, $datasource, $sql, new PassthroughResultFormatter());
+        _checkbook_dmemcache_set($cacheKey, $records[0][$countIdentifier]);
 
         return $records[0][$countIdentifier];
     }
@@ -769,19 +820,32 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
                 $adjustedColumn = $sortingConfiguration->formatPropertyNameAsDatabaseColumnName($this->getMaximumEntityNameLength());
                 // adjusting direction of the sorting
                 if (!$sortingConfiguration->isSortAscending) {
-                    $adjustedColumn = $adjustedColumn . ' DESC';
+
+                   if(isset($sortingConfiguration->sql)){
+                       $adjustedColumn = $sortingConfiguration->sql.','.$adjustedColumn . ' DESC';
+                   }
+                   else {
+                       $adjustedColumn = $adjustedColumn . ' DESC';
+                   }
                 }
 
+                   elseif($sortingConfiguration->isSortAscending && isset($sortingConfiguration->sql)){
+                    $adjustedColumn=$sortingConfiguration->sql.','.$adjustedColumn;
+                   }
                 $adjustedColumns[] = $adjustedColumn;
+                }
+
+
             }
 
-            if (count($adjustedColumns) > 0) {
+            if (!empty($adjustedColumns) && sizeof($adjustedColumns)) {
                 $sql .= "\n ORDER BY " . implode(', ', $adjustedColumns);
             }
+        return $sql;
         }
 
-        return $sql;
-    }
+
+
 
     /*
      * Adds pagination to SQL statement.
@@ -805,7 +869,10 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
             new __SQLDataSourceHandler__QueryExecutionCallbackProxy($this->prepareQueryStatementExecutionCallbackInstance(), $resultFormatter));
         LogHelper::log_notice(t('Database execution time: !executionTime', array('!executionTime' => ExecutionPerformanceHelper::formatExecutionTime($timeStart))));
 
-        $count = count($records);
+        $count = 0;
+        if (!empty($records)) {
+          $count = count($records);
+        }
         LogHelper::log_notice(t('Processed @count record(s)', array('@count' => $count)));
         LogHelper::log_debug($records);
 

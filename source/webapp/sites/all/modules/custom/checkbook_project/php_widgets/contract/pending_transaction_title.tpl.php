@@ -18,7 +18,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-$contactCategory = RequestUtilities::getRequestParamValue('contcat');
+$contactCategory = RequestUtilities::get('contcat');
 $contactCategoryLabel = 'Expense';
 if ($contactCategory == 'revenue') {
   $contactCategoryLabel = 'Revenue';

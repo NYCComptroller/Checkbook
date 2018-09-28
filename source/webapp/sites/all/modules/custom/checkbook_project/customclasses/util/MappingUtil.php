@@ -21,9 +21,23 @@ class MappingUtil {
     );
 
 
-    public static $spendingMWBEParamMap = array("year"=>"year_id","yeartype"=>"type_of_year","agency"=>"agency_id","vendor"=>"vendor_id","category"=>"spending_category_id");
-    public static $contractsMWBEParamMap = array("year"=>"fiscal_year_id","agency"=>"agency_id","yeartype"=>"type_of_year","awdmethod"=>"award_method_id","vendor"=>"vendor_id",
-        "status"=>"status_flag","csize"=>"award_size_id","cindustry"=>"industry_type_id");
+    public static $spendingMWBEParamMap = [
+        "year" => "year_id",
+        "yeartype" => "type_of_year",
+        "agency" => "agency_id",
+//        "vendor" => "vendor_id",
+//        "category" => "spending_category_id"
+    ];
+    public static $contractsMWBEParamMap = [
+        "year" => "fiscal_year_id",
+        "agency" => "agency_id",
+        "yeartype" => "type_of_year",
+//        "awdmethod" => "award_method_id",
+//        "vendor" => "vendor_id",
+//        "status" => "status_flag",
+//        "csize" => "award_size_id",
+//        "cindustry" => "industry_type_id"
+    ];
     /** Returns the vendor type value based on the vendor_type mapping */
     static function getVendorTypeValue($vendor_types) {
         $param = "";
@@ -115,7 +129,7 @@ class MappingUtil {
      * @return int|string
      */
     static function getCurrenEthnicityName($minority_type_ids = null) {
-        $mwbe_url_params = isset($minority_type_ids) ? $minority_type_ids : explode('~',RequestUtilities::getRequestParamValue('mwbe'));
+        $mwbe_url_params = isset($minority_type_ids) ? $minority_type_ids : explode('~',RequestUtilities::get('mwbe'));
 
         foreach(self::$minority_type_category_map_multi_chart as $key=>$values){
             if(count(array_diff($mwbe_url_params, $values)) == 0){
@@ -138,7 +152,6 @@ class MappingUtil {
             $applicable_minority_types = self::getCurrentPrimeMWBEApplicableFilters($domain);
         }
 
-        $mwbe_featured_dashboard_param = RequestUtil::getNextMWBEDashboardState();
         $active_domain_link =  preg_replace('/\/mwbe\/[^\/]*/','',$active_domain_link);
 
         $filters_html =  "<div class='main-nav-drop-down' style='display:none'>
@@ -160,6 +173,7 @@ class MappingUtil {
         }
 
         $total_mwbe_link = RequestUtil::getTotalMWBELink();
+        $mwbe_total_link_html = '';
         if($total_mwbe_link !=  null && $total_mwbe_link != ""){
             $mwbe_total_link_html  ="<li class='no-click'><a href='" . $total_mwbe_link."'>Total M/WBE</a></li>";
         }
@@ -188,7 +202,7 @@ class MappingUtil {
     static function getCurrentSubVendorsTopNavFilters($active_domain_link, $domain){
 
         $mwbe_filters_html = "";
-        $tm_wbe = RequestUtilities::getRequestParamValue('tm_wbe');
+        $tm_wbe = RequestUtilities::get('tm_wbe');
 
         //M/WBE filters should be included in mp and sp dashboards
         if(RequestUtil::isDashboardFlowPrimevendor() || $tm_wbe == "Y") {
@@ -246,8 +260,8 @@ class MappingUtil {
                 $where_filters = array();
 
                 foreach(self::$spendingMWBEParamMap as $param=>$value){
-                    if(RequestUtilities::getRequestParamValue($param) != null){
-                        $paramValue = RequestUtilities::getRequestParamValue($param);
+                    if(RequestUtilities::get($param) != null){
+                        $paramValue = RequestUtilities::get($param);
                         if($param == 'yeartype' && $paramValue == 'C'){
                             $paramValue = 'B';
                         }
@@ -260,12 +274,10 @@ class MappingUtil {
                 }
 
 
-
                 $sql = 'select a1.minority_type_id
-				    from ' . $table. ' a1
-				   ' . $where_filter . '
-				    group by a1.minority_type_id  ';
-
+                        from ' . $table . ' a1
+                       ' . $where_filter . '
+                        group by a1.minority_type_id  ';
 
                 $data = _checkbook_project_execute_sql($sql);
 
@@ -276,8 +288,8 @@ class MappingUtil {
                     "status"=>"status_flag","csize"=>"award_size_id","cindustry"=>"industry_type_id");
                 $where_filters = array();
                 foreach(self::$contractsMWBEParamMap as $param=>$value){
-                    if(RequestUtilities::getRequestParamValue($param) != null){
-                        $paramValue = RequestUtilities::getRequestParamValue($param);
+                    if(RequestUtilities::get($param) != null){
+                        $paramValue = RequestUtilities::get($param);
                         if($param == 'yeartype' && $paramValue == 'C'){
                             $paramValue = 'B';
                         }
@@ -293,11 +305,13 @@ class MappingUtil {
 
 
                 $sql = 'select a1.minority_type_id
-				    from {aggregateon_mwbe_contracts_cumulative_spending} a1
-	    				join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
-				   ' . $where_filter . '
-				    group by a1.minority_type_id';
-                $data  = _checkbook_project_execute_sql($sql);
+                        from {aggregateon_mwbe_contracts_cumulative_spending} a1
+                          join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
+                       ' . $where_filter . '
+                        group by a1.minority_type_id';
+
+                $data = _checkbook_project_execute_sql($sql);
+
                 break;
         }
         $applicable_minority_types = array();
@@ -320,8 +334,8 @@ class MappingUtil {
                 $where_filters = array();
 
                 foreach($urlParamMap as $param=>$value){
-                    if(RequestUtilities::getRequestParamValue($param) != null){
-                        $paramValue = RequestUtilities::getRequestParamValue($param);
+                    if(RequestUtilities::get($param) != null){
+                        $paramValue = RequestUtilities::get($param);
                         if($param == 'yeartype' && $paramValue == 'C'){
                             $paramValue = 'B';
                         }
@@ -352,8 +366,8 @@ class MappingUtil {
 
                 $where_filters = array();
                 foreach($urlParamMap as $param=>$value){
-                    if(RequestUtilities::getRequestParamValue($param) != null){
-                        $paramValue = RequestUtilities::getRequestParamValue($param);
+                    if(RequestUtilities::get($param) != null){
+                        $paramValue = RequestUtilities::get($param);
                         if($param == 'yeartype' && $paramValue == 'C'){
                             $paramValue = 'B';
                         }
@@ -383,22 +397,22 @@ class MappingUtil {
         return $applicable_minority_types;
     }
 
-
-
     static function getVendorTypes($nodeData, $param){
         $unchecked = array();
         $checked = array();
         $params = explode('~', $param);
         $vendor_counts = array();
-        foreach($nodeData as $row){
-            if(in_array($row[0],array('P','PM'))){
-                $vendor_counts['pv'] = $vendor_counts['pv']+ $row[2];
-            }
-            if(in_array($row[0],array('S','SM'))){
-                $vendor_counts['sv'] = $vendor_counts['sv']+ $row[2];
-            }
-            if(in_array($row[0],array('PM','SM'))){
-                $vendor_counts['mv'] = $vendor_counts['mv']+ $row[2];
+        if (is_array($nodeData)) {
+            foreach($nodeData as $row){
+                if(in_array($row[0],array('P','PM'))){
+                    $vendor_counts['pv'] = $vendor_counts['pv']+ $row[2];
+                }
+                if(in_array($row[0],array('S','SM'))){
+                    $vendor_counts['sv'] = $vendor_counts['sv']+ $row[2];
+                }
+                if(in_array($row[0],array('PM','SM'))){
+                    $vendor_counts['mv'] = $vendor_counts['mv']+ $row[2];
+                }
             }
         }
         foreach($vendor_counts as $key=>$value){
@@ -463,7 +477,7 @@ class MappingUtil {
     }
 
     static function getPrimeVendorEthinictyTitle($vendor_id, $domain,$is_prime_or_sub = "P"){
-        if(RequestUtilities::getRequestParamValue('mwbe') != NULL){
+        if(RequestUtilities::get('mwbe') != NULL){
             switch($domain){
                 case "spending":
                     $ethnicity_id = SpendingUtil::getLatestMwbeCategoryTitleByVendor($vendor_id, null, null, $is_prime_or_sub);
@@ -476,8 +490,8 @@ class MappingUtil {
                       FROM contract_vendor_latest_mwbe_category
                       WHERE  vendor_id = ".$vendor_id
                         ." AND is_prime_or_sub = '" . $is_prime_or_sub . "'"
-                        ." AND type_of_year = '" . RequestUtilities::getRequestParamValue('yeartype') . "'"
-                        ." AND year_id = ". RequestUtilities::getRequestParamValue('year')
+                        ." AND type_of_year = '" . RequestUtilities::get('yeartype') . "'"
+                        ." AND year_id = ". RequestUtilities::get('year')
                         ." AND latest_mwbe_flag = 'Y'"
                         ." LIMIT 1 ";
 

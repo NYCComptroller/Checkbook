@@ -47,19 +47,15 @@
     ",
     "derivedColumns": {
         "industry_name_link": {
-            "type": "expression2",
             "expression": "'<a href=\"' . SpendingUtil::getIndustryNameLinkUrl($node,$row) . '\">' . $row['industry_industry_industry_type_name'] . '</a>'"
         },
         "formatted_check_amount_sum": {
-            "type": "expression2",
             "expression": "custom_number_formatter_format($row['check_amount_sum'],2,'$')"
         },
         "ytd_spending_link":{
-            "type":"expression2",
             "expression": "'<a class=\"bottomContainerReload\" href=\"' . SpendingUtil::getIndustryYtdSpendingLinkUrl($node, $row) . '\">' . $row['formatted_check_amount_sum'] . '</a>'"
         },
         "percent_spending": {
-            "type":"expression2",
             "expression": "SpendingUtil::getPercentYtdSpending($node, $row)"
         }
 

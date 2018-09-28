@@ -25,9 +25,9 @@ $years = array();
 
 foreach ($node->data as $row) {
     $length = $row['indentation_level'];
-    $spaceString = '&nbsp';
+    $spaceString = '&nbsp;';
     while ($length > 0) {
-        $spaceString .= '&nbsp';
+        $spaceString .= '&nbsp;';
         $length -= 1;
     }
     $table_rows[$row['display_order']]['category'] = $row['category'];

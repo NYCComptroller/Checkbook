@@ -19,7 +19,7 @@ public class SpendingPage {
     	public enum WidgetOption{
     		Top5Checks, TopChecks,  Top5PrimeVendors, TopPrimeVendors,Top5Agencies,TopAgencies,
     		Top5ExpenseCategories, TopExpenseCategories, Top5Contracts,TopContracts,Top5Departments,
-    		TopDepartments
+    		TopDepartments ,Top5SubVendors, TopSubVendors,SpendingByIndustries
     	}
     	public static void GoTo() {
     		navigation.TopNavigation.Spending.Select();
@@ -46,6 +46,8 @@ public class SpendingPage {
             //Boolean totalSpendingSelected = h2title.getText().equals("Total Spending");    
             return spendingSelected;
         }
+        
+        
     	
         
         ///Widgets counts
@@ -64,6 +66,12 @@ public class SpendingPage {
     			return HomePage.GetWidgetTotalNumber("Top 5 Prime Vendors");
     		case TopPrimeVendors:
     			return HomePage.GetWidgetTotalNumber("Top Prime Vendors");
+    		case Top5SubVendors:
+    			return HomePage.GetWidgetTotalNumber("Top 5 Sub Vendors");
+    		case TopSubVendors:
+    			return HomePage.GetWidgetTotalNumber("Top Sub Vendors");
+    		case SpendingByIndustries:
+    			return HomePage.GetWidgetTotalNumber("Spending By Industries");
     		case Top5ExpenseCategories:
     			return HomePage.GetWidgetTotalNumber("Top 5 Expense Categories");
     		case TopExpenseCategories:
@@ -72,6 +80,11 @@ public class SpendingPage {
     			return HomePage.GetWidgetTotalNumber("Top 5 Agencies");
     		case TopAgencies:
     			return HomePage.GetWidgetTotalNumber("Top Agencies");
+    			
+    		case Top5Departments:
+    			return HomePage.GetWidgetTotalNumber("Top 5 Departments");
+    		case TopDepartments:
+    			return HomePage.GetWidgetTotalNumber("Top Departments");
     		default:
     			return null;
     		}
@@ -105,13 +118,27 @@ public class SpendingPage {
     				if(!HomePage.IsAtTop5DetailsPage("Top Prime Vendors"))
     					detailsContainer = HomePage.GetWidgetDetailsContainer("Top Prime Vendors");
     				break;
+    			case Top5SubVendors:
+    				if(!HomePage.IsAtTop5DetailsPage("Top 5 Sub Vendors"))
+    					detailsContainer = HomePage.GetWidgetDetailsContainer("Top 5 Sub Vendors");
+    				break;
+    			case TopSubVendors:
+    				if(!HomePage.IsAtTop5DetailsPage("Top Sub Vendors"))
+    					detailsContainer = HomePage.GetWidgetDetailsContainer("Top Sub Vendors");
+    				break;
+    				
+    			case SpendingByIndustries:
+    				if(!HomePage.IsAtTop5DetailsPage("Spending By Industries"))
+    					detailsContainer = HomePage.GetWidgetDetailsContainer("Spending By Industries");
+    				break;
+    				
     			case Top5Departments:
     				if(!HomePage.IsAtTop5DetailsPage("Top 5 Departments"))
     					detailsContainer = HomePage.GetWidgetDetailsContainer("Top 5 Departmetns");
     				break;
     			case TopDepartments:
     				if(!HomePage.IsAtTop5DetailsPage("Top Departments"))
-    					detailsContainer = HomePage.GetWidgetDetailsContainer("Top Departmetns");
+    					detailsContainer = HomePage.GetWidgetDetailsContainer("Top Departments");
     				break;
     			case Top5ExpenseCategories:
     				if(!HomePage.IsAtTop5DetailsPage("Top 5 Expense Categories"))
@@ -129,6 +156,8 @@ public class SpendingPage {
     				if(!HomePage.IsAtTop5DetailsPage("Top Agencies"))
     					detailsContainer = HomePage.GetWidgetDetailsContainer("Top Agencies");
     				break;
+    			
+    				
     			default:
     				break;
     		}
@@ -142,10 +171,34 @@ public class SpendingPage {
     
     
  /// visualization  titles   
-    public static ArrayList<String> VisualizationTitles() {
+   // public static ArrayList<String> VisualizationTitles() {
 		
-		return HomePage.VisualizationTitles();
+		//return HomePage.VisualizationTitles();
+	//}
+    
+    
+    public static ArrayList<String> VisualizationTitles() {
+		ArrayList<String> titles = new ArrayList<String>();
+		List<WebElement> titleContainers = Driver.Instance.findElements(By.cssSelector("#nyc-spending > .top-chart > .inside > .panel-pane"));
+	
+		for(int i=0; i < titleContainers.size(); i++){
+			selectVisualizationSlider(i);
+			WebElement titleClass = titleContainers.get(i).findElement(By.cssSelector(".pane-content .chart-title"));
+			if(titleClass.isDisplayed()){
+				String title = titleClass.getText();
+				titles.add(title);
+			}
+		}	
+		return titles;
 	}
+	
+	public static void selectVisualizationSlider(int sliderPosition){
+		List<WebElement> sliderContainer = Driver.Instance.findElements(By.cssSelector("#nyc-spending > .top-chart > .slider-pager > a"));
+		sliderContainer.get(sliderPosition).click();
+		Driver.Instance.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+	}
+	
+
   /// /// widget titles 
 	public static ArrayList<String> WidgetTitles() {
 		ArrayList<String> titles = new ArrayList<String>();
@@ -198,6 +251,18 @@ public class SpendingPage {
 			String count = (Driver.Instance.findElement(By.id("table_706_info"))).getText();
 			return Helper.GetTotalEntries(count, 5);
 	}
+		public static Integer GetTransactionCount2() {
+			WebDriverWait wait = new WebDriverWait(Driver.Instance, 50);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("table_706_info")));
+			String count = (Driver.Instance.findElement(By.id("table_706_info"))).getText();
+			return Helper.GetTotalEntries(count, 5);
+	}
+		
+		public static Integer GetOGETransactionCount1() {
+			WebDriverWait wait = new WebDriverWait(Driver.Instance, 50);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("table_652_info")));
+			String count = (Driver.Instance.findElement(By.id("table_652_info"))).getText();
+			return Helper.GetTotalEntries(count, 5);
 
-	
+		}
 }

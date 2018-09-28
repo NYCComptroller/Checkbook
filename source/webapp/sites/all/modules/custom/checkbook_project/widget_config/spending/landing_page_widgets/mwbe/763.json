@@ -71,35 +71,27 @@
     ",
     "derivedColumns": {
             "mwbe_category_name": {
-                "type":"expression2",
                 "expression":"MappingUtil::getMinorityCategoryById($row['minority_type_minority_type'])"
             },
             "sub_vendor_name_formatted": {
-                "type":"expression2",
                 "expression":"_get_tooltip_markup($row['sub_vendor_sub_vendor_legal_name'],50)"
             },
             "sub_vendor_name_link": {
-                "type":"expression2",
                 "expression":"'<a href=\"' . SpendingUtil::getSubVendorNameLinkUrl($node,$row) . '\">' . $row['sub_vendor_name_formatted'] . '</a>'"
             },
             "sub_vendor_name_link2": {
-                "type":"expression2",
                 "expression":"($row['sub_vendor_sub_vendor'] == null )?$row['sub_vendor_sub_vendor_legal_name']:$row['sub_vendor_name_link']"
             },
             "ytd_spending_sub_vendors_link":{
-                "type":"expression2",
                 "expression": "'<a class=\"bottomContainerReload\" href=\"' . SpendingUtil::getSubVendorYtdSpendingUrl($node,$row) . '\">' . custom_number_formatter_format($row['ytd_spending_sub_vendors'],2,'$') . '</a>'"
             },
             "formatted_total_contract_amount_sum": {
-                "type": "expression2",
                 "expression": "custom_number_formatter_format($row['total_contract_amount_sum'],2,'$')"
             },
             "formatted_check_amount_sum": {
-                "type": "expression2",
                 "expression": "custom_number_formatter_format($row['ytd_spending_sub_vendors'],2,'$')"
             },
             "percent_spending":{
-                "type":"expression2",
                 "expression": "SpendingUtil::getPercentYtdSpending($node, $row)"
             }
     },

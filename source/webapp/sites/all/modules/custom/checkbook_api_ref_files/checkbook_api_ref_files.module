@@ -1,0 +1,68 @@
+<?php
+
+include_once 'includes/CheckbookRefFiles.class.php';
+
+/**
+ * Implements hook_cron()
+ */
+function checkbook_api_ref_files_cron()
+{
+    $CRF = new CheckbookRefFiles();
+    return $CRF->run_cron();
+}
+
+/**
+ * Implements hook_mail().
+ *
+ * @param $key
+ * @param $message
+ * @param $params
+ */
+function checkbook_api_ref_files_mail($key, &$message, $params)
+{
+    $CRF = new CheckbookRefFiles();
+    $CRF->mail($message);
+}
+
+/**
+ * Implements hook_mail_alter().
+ *
+ * Adds priority headers to messages passing condition.
+ */
+function checkbook_api_ref_files_mail_alter(&$message)
+{
+    // Apply this hook only for `checkbook_api_ref_files` module
+    if ('checkbook_api_ref_files' !== $message['module']) {
+        return;
+    }
+    if (stripos($message['subject'], 'Fail')) {
+        $message['headers']['X-Priority'] = '1 (Highest)';
+        $message['headers']['X-MSMail-Priority'] = 'High';
+        $message['headers']['Importance'] = 'High';
+    }
+    $message['headers']['Content-Type'] = 'text/html; charset=UTF-8; format=flowed; delsp=yes';
+    $message['body'] = theme('api_ref_files', $message['body']);
+    if (defined('CHECKBOOK_DEV')) {
+        echo($message['body']);
+        $message['send'] = false;
+    }
+}
+
+/**
+ * Implements hook_theme()
+ */
+function checkbook_api_ref_files_theme($existing, $type, $theme, $path)
+{
+    if ($type == 'module') {
+        return array(
+            'api_ref_files' => array(
+                'variables' => array(
+                    'status' => NULL,
+                ),
+                'template' => 'api-ref-files.email',
+                'path' => drupal_get_path('module', 'checkbook_api_ref_files') . '/theme',
+            ),
+        );
+    }
+}
+

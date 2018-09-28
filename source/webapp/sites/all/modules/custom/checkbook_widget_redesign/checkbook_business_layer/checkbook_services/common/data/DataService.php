@@ -75,18 +75,30 @@ abstract class DataService implements IDataService {
         $limit = isset($limit) ? $limit : $this->limit;
         $orderBy = isset($orderBy) ? $orderBy : $this->orderBy;
         $fnData = $this->fnData;
-        LogHelper::log_notice("Get By DataSet: \n\n".$fnData."\n\n");
-        return $this->getRepository()->getByDataset($parameters, $limit, $orderBy, $fnData);
+        LogHelper::log_info("Get By DataSet: ".$fnData);
+        $cacheKey = 'get_by_dataset_'.md5(serialize([$parameters, $limit, $orderBy, $fnData]));
+        if ($data = _checkbook_dmemcache_get($cacheKey)) {
+          return $data;
+        }
+        $data = $this->getRepository()->getByDataset($parameters, $limit, $orderBy, $fnData);
+        _checkbook_dmemcache_set($cacheKey, $data);
+        return $data;
     }
 
     public function getByDatasetRowCount($parameters = null) {
         $parameters = isset($parameters) ? $parameters : $this->parameters;
         $fnData = $this->fnData;
-        LogHelper::log_notice("Get By RecordCount: \n\n".$fnData."\n\n");
-        return $this->getRepository()->getByDatasetRowCount($parameters, $fnData);
+        LogHelper::log_info("Get By RecordCount: ".$fnData);
+        $cacheKey = 'get_by_record_count_'.md5(serialize([$parameters, $fnData]));
+        if ($data = _checkbook_dmemcache_get($cacheKey)) {
+          return $data;
+        }
+        $data = $this->getRepository()->getByDatasetRowCount($parameters, $fnData);
+        _checkbook_dmemcache_set($cacheKey, $data);
+        return $data;
     }
 
-    private function getRepository() {
+    public function getRepository() {
         if(!isset($this->repository)) {
             $this->repository = new SqlEntityRepository($this->sqlConfigPath);
         }

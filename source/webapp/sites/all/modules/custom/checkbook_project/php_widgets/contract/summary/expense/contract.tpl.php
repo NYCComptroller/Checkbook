@@ -31,7 +31,7 @@ if(is_array($records)){
     $camnt = WidgetUtil::getLabel("current_amount");
     $purpose = WidgetUtil::getLabel("contract_purpose");
     $agency = WidgetUtil::getLabel("contract_agency");
-    $smnid = RequestUtilities::getRequestParamValue('smnid');
+    $smnid = RequestUtilities::get('smnid');
 
     $dynamicLabel = $node->widgetConfig->summaryView->entityColumnLabel;
     $dynamicValue = strtoupper($row[$node->widgetConfig->summaryView->entityColumnName]);

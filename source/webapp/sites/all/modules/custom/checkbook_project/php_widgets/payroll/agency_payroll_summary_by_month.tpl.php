@@ -42,11 +42,11 @@ if($results){
         $month_value = $dateObj->format('F');
     }
     $yeartype = 'FY';
-    if(RequestUtilities::getRequestParamValue('yeartype') == 'C'){
+    if(RequestUtilities::get('yeartype') == 'C'){
         $yeartype = 'CY';
     }
 
-    if(RequestUtilities::getRequestParamValue('smnid') == 491){
+    if(RequestUtilities::get('smnid') == 491){
         $total_overtime_employees_label = WidgetUtil::getLabel('total_no_of_ot_employees').':';
         $overtime_employees_value = number_format($results['total_overtime_employees']);
     }

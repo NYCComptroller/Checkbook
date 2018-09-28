@@ -22,7 +22,7 @@ $records = $node->data;
 if(is_array($records)){
     $row = $records[0];
     $noContr = WidgetUtil::getLabel("no_of_contracts");
-    $smnid = RequestUtilities::getRequestParamValue('smnid');
+    $smnid = RequestUtilities::get('smnid');
     $dynamicLabel = $node->widgetConfig->summaryView->entityColumnLabel;
     $dynamicValue = strtoupper($row[$node->widgetConfig->summaryView->entityColumnName]);
 

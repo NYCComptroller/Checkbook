@@ -20,16 +20,15 @@ import pages.home.HomePage;
 import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
 import utilities.TestStatusReport;
-
 //public class CapitalSpendingWidgetTest extends NYCBaseTest {
 	public class CapitalSpendingWidgetTest extends TestStatusReport{
 		int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	public void GoToPage(){
 		CapitalSpendingPage.GoTo();
-		if (!CapitalSpendingPage.isAt()){
-			CapitalSpendingPage.GoTo();
-		}
+		//if (!CapitalSpendingPage.isAt()){
+			//CapitalSpendingPage.GoTo();}
+		
 		if(!(Helper.getCurrentSelectedYear()).equalsIgnoreCase(NYCBaseTest.prop.getProperty("CurrentYear")))
 			HomePage.SelectYear(NYCBaseTest.prop.getProperty("CurrentYear"));
 		HomePage.ShowWidgetDetails();

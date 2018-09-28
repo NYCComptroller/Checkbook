@@ -7,11 +7,11 @@
         "all_agreement_transactions_by_prime_sub_vendor_name":{
             "datasourceName":"main",
             "source":"
-                SELECT prime_vendor_code as vendor_code, prime_vendor_name as vendor_name, prime_vendor_type as vendor_type, prime_minority_type_id as minority_type_id, prime_minority_type_name as minority_type_name,  * FROM all_agreement_transactions_by_prime_sub_vendor WHERE prime_vendor_type IN ('P','PM')
-                UNION ALL
-                SELECT sub_vendor_code as vendor_code, sub_vendor_name as vendor_name, sub_vendor_type as vendor_type, sub_minority_type_id as minority_type_id, sub_minority_type_name as minority_type_name,* FROM all_agreement_transactions_by_prime_sub_vendor WHERE sub_vendor_type IN ('S','SM')
-                UNION ALL
-                SELECT prime_vendor_code as vendor_code, prime_vendor_name as vendor_name, sub_vendor_type as vendor_type, NULL as minority_type_id,NULL as minority_type_name,* FROM all_agreement_transactions_by_prime_sub_vendor WHERE sub_vendor_type IN ('S','SM')
+            SELECT prime_vendor_code as vendor_code, prime_vendor_name as vendor_name, prime_vendor_type as vendor_type, prime_minority_type_id as minority_type_id, prime_minority_type_name as minority_type_name,  * FROM all_agreement_transactions_by_prime_sub_vendor WHERE prime_vendor_type IN ('P','PM')
+            UNION ALL
+            SELECT sub_vendor_code as vendor_code, sub_vendor_name as vendor_name, sub_vendor_type as vendor_type, sub_minority_type_id as minority_type_id, sub_minority_type_name as minority_type_name,* FROM all_agreement_transactions_by_prime_sub_vendor WHERE sub_vendor_type IN ('S','SM')
+            UNION ALL
+            SELECT prime_vendor_code as vendor_code, prime_vendor_name as vendor_name, sub_vendor_type as vendor_type, NULL as minority_type_id,NULL as minority_type_name,* FROM all_agreement_transactions_by_prime_sub_vendor WHERE sub_vendor_type IN ('S','SM')
             "
         },
         "all_agreement_transactions_by_prime_sub_vendor_type":{
@@ -413,7 +413,10 @@
             ],
             "measures": {
                 "txcount": {
-                    "function":"COUNT(DISTINCT (CASE WHEN vendor_type IN ('P','PM') THEN vendor_name||contract_number ELSE vendor_name||contract_number||sub_contract_id END )) "
+                    "function":"COUNT(DISTINCT (CASE WHEN vendor_code IN ('P','PM') THEN vendor_name||contract_number ELSE vendor_name||contract_number||sub_contract_id END )) "
+                },
+                "count_vendorcode":{
+                    "function":"COUNT(DISTINCT (legal_name||contract_number||sub_contract_id))"
                 }
             }
         },

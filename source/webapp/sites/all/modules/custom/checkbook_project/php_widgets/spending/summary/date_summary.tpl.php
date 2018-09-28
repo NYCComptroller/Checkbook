@@ -20,17 +20,17 @@
 
     $title = eval($node->widgetConfig->summaryView->templateTitleEval);
     $month = '';
-    $yearType = RequestUtilities::getRequestParamValue('yeartype');
-    $year = RequestUtilities::getRequestParamValue('calyear');
+    $yearType = RequestUtilities::get('yeartype');
+    $year = RequestUtilities::get('calyear');
     $yearLabel = $yearType == 'C' ? 'CY' : 'FY';
     $year = isset($year)
-        ? _getYearValueFromID(RequestUtilities::getRequestParamValue('calyear'))
-        : _getYearValueFromID(RequestUtilities::getRequestParamValue('year'));
+        ? _getYearValueFromID(RequestUtilities::get('calyear'))
+        : _getYearValueFromID(RequestUtilities::get('year'));
     $year = $yearLabel.$year;
     $amount = _checkbook_project_pre_process_aggregation($node,'check_amount_sum');
     $amount = custom_number_formatter_format($amount,2,'$');
     $catname = RequestUtil::getSpendingTransactionTitle();
-    $monthDetails = CheckbookDateUtil::getMonthDetails(RequestUtilities::getRequestParamValue('month'));
+    $monthDetails = CheckbookDateUtil::getMonthDetails(RequestUtilities::get('month'));
     if(isset($monthDetails)){
         $month = strtoupper($monthDetails[0]['month_name']);
     }

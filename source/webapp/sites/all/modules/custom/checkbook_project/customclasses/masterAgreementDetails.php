@@ -25,7 +25,7 @@ class masterAgreementDetails {
   public function getData(&$node){
 
 
-    $mag_id = RequestUtilities::getRequestParamValue("magid");
+    $mag_id = RequestUtilities::get("magid");
 
     $query1 = "SELECT l1.contract_number,
     l2.vendor_id AS vendor_id_checkbook_vendor_history,

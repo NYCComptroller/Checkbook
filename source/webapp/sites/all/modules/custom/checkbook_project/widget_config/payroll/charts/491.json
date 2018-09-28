@@ -72,12 +72,9 @@
 },
 "derivedColumns": {
     "current_overtime_pay": {
-        "type": "expression2",
         "expression": "  ($row['current_total_overtime_pay']==null)?0:$row['current_total_overtime_pay']"
     },
     "previous_overtime_pay": {
-        "type": "null_check",
-        "type": "expression2",
         "expression": "  ($row['previous_total_overtime_pay']==null)?0:$row['previous_total_overtime_pay']"
     }
 },

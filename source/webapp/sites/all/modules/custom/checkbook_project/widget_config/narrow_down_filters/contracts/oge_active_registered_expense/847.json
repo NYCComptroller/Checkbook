@@ -13,7 +13,6 @@
     "defaultParameters":{"status_flag":"A","is_vendor_flag":"N","type_of_year":"B","if_for_all_years":"N"},
     "columns":["award_method.award_method", "award_method.award_method.award_method_name", "txcount"],
     "orderBy":"-txcount",
-	"getTotalDataCount":true,
 	"facetPager":true,
     "filterName":"Award Method",
     "urlParameterName":"awdmethod",

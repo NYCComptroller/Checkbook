@@ -22,15 +22,12 @@ return $adjustedParameters;
 "enableExpand":true,
 "derivedColumns": {
 "subvendor_name_formatted": {
-"type": "expression2",
 "expression": "_get_tooltip_markup($row['subvendor_subvendor_legal_name'],60)"
 },
 "minority_type_id_map":{
-"type": "expression2",
 "expression":"($row['minority_type_minority_type'] == 4 || $row['minority_type_minority_type'] == 5) ? '4~5': $row['minority_type_minority_type']"
 },
 "minority_type_link":{
-"type": "expression2",
 "expression": "'<a href=\"/contracts_landing' . _checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string(\"agency\")
 . _checkbook_project_get_url_param_string(\"cindustry\")
 . _checkbook_project_get_url_param_string(\"csize\")
@@ -42,28 +39,22 @@ return $adjustedParameters;
 . '/mwbe/'. $row['minority_type_id_map'] .  '?expandBottomCont=true\">' . MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']).'</a>'"
 },
 "subvendor_name_link": {
-"type": "expression2",
 "expression": "'<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row['subvendor_subvendor'],RequestUtilities::getRequestParamValue('year'),$row['yeartype_yeartype']) .  '?expandBottomCont=true\">' .$row['subvendor_name_formatted']. '</a>'"
 } ,
 "spent_amount_no_link": {
-"type": "expression2",
 "expression": "'$' . custom_number_formatter_format($row['spending_amount_sum'],2)"
 } ,
 "spent_amount_link": {
-"type": "expression2",
 "expression": "'<a class=\"new_window\" href=\"/contract/spending/transactions/csubvendor/' .$row['subvendor_subvendor'] . _checkbook_append_url_params() .  _checkbook_project_get_url_param_string(\"status\") . _checkbook_project_get_url_param_string(\"agency\",\"cagency\")   ._checkbook_project_get_url_param_string(\"awdmethod\") .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\")  .  ((RequestUtilities::getRequestParamValue(\"dashboard\") == \"ss\" || RequestUtilities::getRequestParamValue(\"dashboard\") == \"ms\") ? '/doctype/CT1~CTA1' : '/doctype/CT1~CTA1~MA1').ContractURLHelper::_checkbook_project_spending_get_year_url_param_string()  . '/smnid/' . $node->nid . ContractUtil::getSpentToDateParams() . _checkbook_project_get_url_param_string(\"subvendor\") .  '/newwindow\">' . custom_number_formatter_format($row['spending_amount_sum'],2,'$'). '</a>'"
 } ,
 "formatted_original_amount_sum": {
-"type": "expression2",
 "expression": "custom_number_formatter_format($row['original_amount_sum'],2,'$')"
 },
 "formatted_total_current_amount_sum": {
-"type": "expression2",
 "expression": "custom_number_formatter_format($row['current_amount_sum'],2,'$')"
 },
 
 "formatted_total_contracts": {
-"type": "expression2",
 "expression": " number_format($row['total_contracts'])"
 }
 },

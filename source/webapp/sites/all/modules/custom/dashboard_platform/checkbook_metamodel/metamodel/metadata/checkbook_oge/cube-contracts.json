@@ -198,9 +198,9 @@
             ],
             "measures": {
                 "original_amount_sum": {
-                    "function": "MIN(COALESCE(original_contract_amount,0))"}     ,
+                    "function": "SUM(COALESCE(original_contract_amount,0))"}     ,
                 "current_amount_sum": {
-                    "function": "MIN(COALESCE(maximum_contract_amount,0))"}      ,
+                    "function": "SUM(COALESCE(maximum_contract_amount,0))"}      ,
                 "spending_amount_sum": {
                     "function": "SUM(COALESCE(spending_amount_disb,0))"}      ,
                 "dollar_difference": {

@@ -32,7 +32,7 @@ if(is_array($records)){
 
 
 
-    if(RequestUtilities::getRequestParamValue('smnid') == 22){
+    if(RequestUtilities::get('smnid') == 22){
         $percent_spending = '';
         $percent_spending_value = '';
     }

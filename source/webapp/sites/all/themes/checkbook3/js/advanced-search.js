@@ -497,7 +497,7 @@
                     var contract_status_val = div.ele('status').val();
                     var category_val = div.ele('category').val();
 
-                    if ((contract_status_val === 'A' || contract_status_val === 'R') && (category_val === 'expense' || category_val === 'all')) {
+                    if ((contract_status_val == 'A' || contract_status_val == 'R') && (category_val == 'expense' || category_val == 'all')) {
                         $("<div class='prime-and-sub-note'>All Fields are searchable by Prime data, unless designated as Prime & Sub (<img src='/sites/all/themes/checkbook3/images/prime-and-sub.png' />).</div>").insertBefore($("#edit-contracts-advanced-search-domain-filter"));
                         addPrimeAndSubIcon(contract_status);
                         addPrimeAndSubIcon(vendor);
@@ -538,6 +538,7 @@
                     resetFields(div_checkbook_contracts.contents());
                     resetFields(div_checkbook_contracts_oge.contents());
 
+
                     /* Initialize the disabled fields */
                     onStatusChange(div_checkbook_contracts);
                     onStatusChange(div_checkbook_contracts_oge);
@@ -565,19 +566,24 @@
                             break;
 
                         default:
+                            //Fix the default for category
+                            $("select#edit-checkbook-contracts-category").val("all");
                             initializeContractsView(div_checkbook_contracts);
                             div_checkbook_contracts.contents().show();
                             div_checkbook_contracts_oge.contents().hide();
+                            //handle attributes
+                            div_checkbook_contracts.ele('sub_vendor_status').val('0');
+                            updateIncludeSubvendorsField(div_checkbook_contracts);
                             showHidePrimeAndSubFields(div_checkbook_contracts);
-                            //Fix the default for category
-                            $("select#edit-checkbook-contracts-category").val("expense");
+
+
                             break;
                     }
                 }
 
                 function autoCompletes(div) {
                     var status = div.ele('status').val() || 0;
-                    var category = div.ele('category').val() || 0;
+                    var category = div.ele('category').val() ? div.ele('category').val() : 0;
                     var mwbe_category = div.ele('mwbe_category').val() || 0;
                     var industry = div.ele('industry').val() || 0;
                     var contract_type = div.ele('contract_type').val() || 0;
@@ -611,8 +617,10 @@
 
                     autoCompletes(div);
 
+
                     $('#contracts-advanced-search').each(function () {
                         $(this).focusout(function () {
+
                             autoCompletes(div);
                         });
                     });
@@ -697,6 +705,7 @@
                     } else {
                         div.ele('includes_sub_vendors').removeAttr("disabled");
                         div.ele('sub_vendor_status').removeAttr("disabled");
+
                     }
                 }
 
@@ -737,35 +746,42 @@
                         if (includes_sub_vendors === '2') {
                             div.ele('includes_sub_vendors').html('<option value="0">Select Status</option>' +
                                 '<option value="2" selected>Yes</option>');
-                        } else {
+                        }
+                        else {
                             div.ele('includes_sub_vendors').html('<option value="0" selected>Select Status</option>' +
                                 '<option value="2">Yes</option>');
                         }
-                    // } else {
-                    //     if (includes_sub_vendors === 2) {
-                    //         div.ele('includes_sub_vendors').html('<option value="0">Select Status</option>' +
-                    //             '<option value="2" selected>Yes</option>' +
-                    //             '<option value="3">No</option>' +
-                    //             '<option value="1">No Data Entered</option>' +
-                    //             '<option value="4">Not Required</option>');
-                    //     } else {
-                    //         div.ele('includes_sub_vendors').html('<option value="0" selected>Select Status</option>' +
-                    //             '<option value="2">Yes</option>' +
-                    //             '<option value="3">No</option>' +
-                    //             '<option value="1">No Data Entered</option>' +
-                    //             '<option value="4">Not Required</option>');
-                    //     }
+                    }
+                    if(sub_vendor_status === '0') {
+                        if (includes_sub_vendors === '2') {
+                            div.ele('includes_sub_vendors').html('<option value="0">Select Status</option>' +
+                                '<option value="2" selected>Yes</option>' +
+                                '<option value="3">No</option>' +
+                                '<option value="1">No Data Entered</option>' +
+                                '<option value="4">Not Required</option>');
+                        }
+                        else if (sub_vendor_status === '0') {
+                            div.ele('includes_sub_vendors').html('<option value="0" selected>Select Status</option>' +
+                                '<option value="2">Yes</option>' +
+                                '<option value="3">No</option>' +
+                                '<option value="1">No Data Entered</option>' +
+                                '<option value="4">Not Required</option>');
+                        }
+                    }
+
+
+
                     }
                     $("#edit-contracts-clear").click(function () {
                         showHidePrimeAndSubFields(div_checkbook_contracts);
-                        div.ele('includes_sub_vendors').html('<option value="0" selected>Select Status</option>' +
+                        div_checkbook_contracts.ele('includes_sub_vendors').html('<option value="0" selected>Select Status</option>' +
                             '<option value="2">Yes</option>' +
                             '<option value="3">No</option>' +
                             '<option value="1">No Data Entered</option>' +
                             '<option value="4">Not Required</option>');
                     });
                 }
-            }
+
 
 // advanced-search-payroll
             function advanced_search_payroll_init() {
@@ -1001,6 +1017,7 @@
                     else if (div.ele('spending_category').val() === '4') {
                         div.ele('contract_id').attr("disabled", "disabled");
                         div.ele('contract_id').val("");
+                        div.ele('payee_name').removeAttr("disabled");
                     }
                     else {
                         div.ele('contract_id').removeAttr("disabled");
@@ -1137,6 +1154,7 @@
                     else if (div.ele('spending_category').val() === '4') {
                         div.ele('contract_id').attr("disabled", "disabled");
                         div.ele('contract_id').val("");
+                        div.ele('payee_name').removeAttr("disabled");
                     }
                     else {
                         div.ele('contract_id').removeAttr("disabled");
@@ -1195,14 +1213,14 @@
                     /* Initialize view by data source */
                     switch (dataSource) {
                         case "checkbook_oge":
-                            resetFields(div_checkbook_spending.contents());
+                            resetFields(div_checkbook_spending_oge.contents());
                             initializeSpendingView(div_checkbook_spending_oge, dataSource);
                             div_checkbook_spending.contents().hide();
                             div_checkbook_spending_oge.contents().show();
                             break;
 
                         default:
-                            resetFields(div_checkbook_spending_oge.contents());
+                            resetFields(div_checkbook_spending.contents());
                             initializeSpendingView(div_checkbook_spending, dataSource);
                             div_checkbook_spending.contents().show();
                             div_checkbook_spending_oge.contents().hide();
@@ -1220,7 +1238,9 @@
                     //Both
                     div.ele('dept').attr("disabled", "disabled");
                     div.ele('exp_category').attr("disabled", "disabled");
-
+                    div.ele('spending_category').val('Total Spending');
+                    div.ele('contract_id').removeAttr("disabled");
+                    div.ele('payee_name').removeAttr("disabled");
                     year = 0;
                     if (div.ele('date_filter_checked').val() === '0') {
                         year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
@@ -2268,7 +2288,7 @@
         $(enclosingDiv).find(':input').each(function () {
             switch (this.type) {
                 case 'select-one':
-                    $("select#edit-checkbook-contracts-category").val("expense");
+                    $("select#edit-checkbook-contracts-category").val("all");
                     //$('#edit-spending-fiscal-year').removeAttr("disabled");
                     var defaultoption = $(this).attr('default_selected_value');
                     if (defaultoption) {
@@ -2327,11 +2347,11 @@
         }
 
         //Spending Category, Contract ID and Payee Name
-        if ($('select[name='+spending_data_source+'_spending_expense_type]').val() === '2') {
+        if ($('select[name='+spending_data_source+'_spending_expense_type]').val() == '2') {
             $('input:text[name='+spending_data_source+'_spending_contract_num]').attr("disabled", "disabled");
             $('input:text[name='+spending_data_source+'_spending_contract_num]').val("");
             $('input:text[name='+spending_data_source+'_spending_payee_name]').attr("disabled", "disabled");
-            $('input:text[name='+spending_data_source+'_spending_payee_name]').val("");
+           $('input:text[name='+spending_data_source+'_spending_payee_name]').val("");
         }
         else if ($('select[name='+spending_data_source+'_spending_expense_type]').val() === '4') {
             $('input:text[name='+spending_data_source+'_spending_contract_num]').attr("disabled", "disabled");
@@ -2375,7 +2395,7 @@
 
         //upon 'Incudes Sub Vendor' change
         var includes_sub_vendors = $('select[name="'+contracts_data_source+'_contracts_includes_sub_vendors"]').val();
-        if(includes_sub_vendors === '3' || includes_sub_vendors === '1') {
+        if(includes_sub_vendors === '3' || includes_sub_vendors === '1' ) {
             $('select[name="'+contracts_data_source+'_contracts_sub_vendor_status"]').attr("disabled", "disabled");
         }
 

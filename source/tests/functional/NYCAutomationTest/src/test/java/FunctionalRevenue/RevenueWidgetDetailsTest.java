@@ -25,7 +25,7 @@ import helpers.Helper;
 import utilities.TestStatusReport;
 
 //public class RevenueWidgetDetailsTest extends NYCBaseTest {
-	public class RevenueWidgetDetailsTest extends TestStatusReport {
+		public class RevenueWidgetDetailsTest extends TestStatusReport {
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	public  void GoToPage() {
@@ -39,13 +39,13 @@ import utilities.TestStatusReport;
 	
 	/* ***************** Test Widget Transaction Count ****************** */
 	@Test
-	public  void VerifyRevenueDetailsTransactionCount() throws SQLException {
+	public  void VerifyRevenueAgenciesDetailsTransactionCount() throws SQLException {
 	    RevenuePage.GoToTop5DetailsPage(WidgetOption.Top5Agencies);	
 	    HomePage.ShowWidgetDetails();
-	   	int NumOfRevenueDetailsCount2016 =  NYCDatabaseUtil.getRevenueDetailsCount(year,'B');
+	   	int NumOfRevenueDetailsCountDB =  NYCDatabaseUtil.getRevenueDetailsCount(year,'B');
 		int numOfRevenueDetailsCountapp = RevenuePage.GetTransactionCount();
 	    System.out.println( RevenuePage.GetTransactionCount()); 
-		assertEquals("Number of master contracts widget Details page table count did not match", numOfRevenueDetailsCountapp, NumOfRevenueDetailsCount2016); 
+		assertEquals("Revenue domain Agencies widget Details page table count did not match with DB", numOfRevenueDetailsCountapp, NumOfRevenueDetailsCountDB); 
 		}	
 	
 
@@ -53,10 +53,10 @@ import utilities.TestStatusReport;
 	public  void VerifyRevenueCategoriesDetailsTransactionCount() throws SQLException {
 		RevenuePage.GoToTop5DetailsPage(WidgetOption.Top5RevenueCategories);
 		//HomePage.ShowWidgetDetails();
-		int NumOfRevenueDetailsCount2016 =  NYCDatabaseUtil.getRevenueDetailsCount(year,'B');
+		int NumOfRevenueDetailsCountDB =  NYCDatabaseUtil.getRevenueDetailsCount(year,'B');
 		int numOfRevenueDetailsCountapp = RevenuePage.GetTransactionCount();
 		 System.out.println( RevenuePage.GetTransactionCount()); 
-		assertEquals("Number of master contracts widget Details page table count did not match", numOfRevenueDetailsCountapp, NumOfRevenueDetailsCount2016); 
+		assertEquals("Revenue Domain RevenueCategories widget Details page table count did not match with DB", numOfRevenueDetailsCountapp, NumOfRevenueDetailsCountDB); 
 	
 	}
 
@@ -64,10 +64,10 @@ import utilities.TestStatusReport;
 	public  void VerifyRevenueByFundingclassesDetailsTransactionCount() throws SQLException {
 		RevenuePage.GoToTop5DetailsPage(WidgetOption.RevenuebyFundingClasses);
 		HomePage.ShowWidgetDetails();
-		int NumOfRevenueDetailsCount2016 =  NYCDatabaseUtil.getRevenueDetailsCount(year,'B');
+		int NumOfRevenueDetailsCountDB =  NYCDatabaseUtil.getRevenueDetailsCount(year,'B');
 		int numOfRevenueDetailsCountapp = RevenuePage.GetTransactionCount();
 		 System.out.println( RevenuePage.GetTransactionCount()); 
-		assertEquals("Number of master contracts widget Details page table count did not match", numOfRevenueDetailsCountapp, NumOfRevenueDetailsCount2016); 
+		assertEquals("Revenue Domain RevenueByFundingclasses widget Details page table count did not match with DB", numOfRevenueDetailsCountapp, NumOfRevenueDetailsCountDB); 
 		}
 
 	
@@ -82,29 +82,29 @@ import utilities.TestStatusReport;
 	public  void VerifyFundingclassesbyCrossYearCollectionsDetailsTransactionCount() throws SQLException {
 		RevenuePage.GoToTop5DetailsPage(WidgetOption.RevenuebyFundingClassesbyCrossYearCollections);
 		HomePage.ShowWidgetDetails();
-		int NumOfRevenueDetailsCount2016 =  NYCDatabaseUtil.getRevenueFundingclassCount(year,'B');
+		int NumOfRevenueDetailsCountDB =  NYCDatabaseUtil.getRevenueFundingClassesCrossYearColectionsDetailsCount(year,'B');
 		int numOfRevenueDetailsCountapp = RevenuePage.GetTransactionCount2();
 		 System.out.println( RevenuePage.GetTransactionCount2()); 
-		assertEquals("Number of master contracts widget Details page table count did not match", numOfRevenueDetailsCountapp, NumOfRevenueDetailsCount2016); 
+		assertEquals("Revenue Domain FundingclassesbyCrossYearCollections widget Details page table count did not match with DB", numOfRevenueDetailsCountapp, NumOfRevenueDetailsCountDB); 
 		}
 	@Test
 	public  void VerifyRevenueCategoriesbyCrossYearCollectionsDetailsTransactionCount() throws SQLException {
 		RevenuePage.GoToTop5DetailsPage(WidgetOption.Top5RevenueCategoriesbyCrossYearCollections);
 		HomePage.ShowWidgetDetails();
-		int NumOfRevenueDetailsCount2016 =  NYCDatabaseUtil.getRevenueCategoriesCount(year,'B');
+		int NumOfRevenueDetailsCountDB =  NYCDatabaseUtil.getRevenueCategoriesCrossYearColectionsDetailsCount(year,'B');
 		int numOfRevenueDetailsCountapp = RevenuePage.GetTransactionCount3();
 		 System.out.println( RevenuePage.GetTransactionCount3()); 
-		assertEquals("Number of master contracts widget Details page table count did not match", numOfRevenueDetailsCountapp, NumOfRevenueDetailsCount2016); 
+		assertEquals("Revenue Domain RevenueCategoriesbyCrossYearCollections widget Details page table count did not match with DB", numOfRevenueDetailsCountapp, NumOfRevenueDetailsCountDB); 
 		}
 	
 	@Test
 	public  void VerifyAgenciesbyCrossYearCollectionsDetailsTransactionCount() throws SQLException {
 		RevenuePage.GoToTop5DetailsPage(WidgetOption.Top5AgenciesbyCrossYearCollections);
 		HomePage.ShowWidgetDetails();
-		int NumOfRevenueDetailsCount2016 =  NYCDatabaseUtil.getRevenueAgenciesCount(year,'B');
+		int NumOfRevenueDetailsCountDB =  NYCDatabaseUtil.getRevenueAgenciesCrossYearColectionsDetailsCount(year,'B');
 		int numOfRevenueDetailsCountapp = RevenuePage.GetTransactionCount1();
 		 System.out.println( RevenuePage.GetTransactionCount1()); 
-		assertEquals("Number of master contracts widget Details page table count did not match", numOfRevenueDetailsCountapp, NumOfRevenueDetailsCount2016); 
+		assertEquals("Revenue Domain AgenciesbyCrossYearCollections widget Details page table count did not match with DB", numOfRevenueDetailsCountapp, NumOfRevenueDetailsCountDB); 
 		}
 
 
@@ -117,11 +117,11 @@ import utilities.TestStatusReport;
 		RevenuePage.GoToTop5DetailsPage(WidgetOption.Top5Agencies);
 		//HomePage.ShowWidgetDetails();
 	//assertTrue(HomePage.GetTransactionAmount1()== transactionAmt);
-		String NumOfRevenueDetailsAmount2016 =  NYCDatabaseUtil.getRevenueDetailsAmount(2016,'B');
+		String NumOfRevenueDetailsAmountDB =  NYCDatabaseUtil.getRevenueDetailsAmount(DB,'B');
 		String numOfRevenueDetailsAmountapp = HomePage.GetTransactionAmount1();
 		
 		System.out.println( RevenuePage.GetTransactionAmount1()); 
-	assertEquals("Number ofRevenue widget Details page table count did not match", numOfRevenueDetailsAmountapp, NumOfRevenueDetailsAmount2016); 
+	assertEquals("Number ofRevenue widget Details page table count did not match", numOfRevenueDetailsAmountapp, NumOfRevenueDetailsAmountDB); 
 	Driver.Instance.quit();
 	}
 

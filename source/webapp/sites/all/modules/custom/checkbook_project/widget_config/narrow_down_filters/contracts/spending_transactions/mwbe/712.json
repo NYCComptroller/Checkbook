@@ -6,7 +6,6 @@
     "maxSelect":1,
     "columns":["expenditure_object_nm.expenditure_object_nm",  "txcount"],
     "orderBy":"-txcount",
-	"getTotalDataCount":true,    
 	"facetPager":true,
     "filterName":"Expense Category",
     "urlParameterName":"expcategorynm",

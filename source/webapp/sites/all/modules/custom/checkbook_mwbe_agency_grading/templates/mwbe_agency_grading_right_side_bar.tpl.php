@@ -73,12 +73,12 @@ $mwbe_cats =  _mwbe_agency_grading_current_cats();
 	            attach:function (context, settings) {
 	            	$(".checkbox-grading-legend .legend_entry").click(function () {
 	                    var filter = getNamedFilterCriteria("mwbe_right_filter");
-                        <?php if(RequestUtilities::getRequestParamValue('mwbe_agency_grading') == 'sub_vendor_data'){
+                        <?php if(RequestUtilities::get('mwbe_agency_grading') == 'sub_vendor_data'){
                         ?>
-                        window.location = "/mwbe_agency_grading/sub_vendor_data/year/<?php echo RequestUtilities::getRequestParamValue('year'); ?>/yeartype/<?php echo RequestUtilities::getRequestParamValue('yeartype'); ?>/mwbe_filter/" + filter;
+                        window.location = "/mwbe_agency_grading/sub_vendor_data/year/<?php echo RequestUtilities::get('year'); ?>/yeartype/<?php echo RequestUtilities::get('yeartype'); ?>/mwbe_filter/" + filter;
                         <?php
                         } else{?>
-                        window.location = "/mwbe_agency_grading/year/<?php echo RequestUtilities::getRequestParamValue('year'); ?>/yeartype/<?php echo RequestUtilities::getRequestParamValue('yeartype'); ?>/mwbe_filter/" + filter;
+                        window.location = "/mwbe_agency_grading/year/<?php echo RequestUtilities::get('year'); ?>/yeartype/<?php echo RequestUtilities::get('yeartype'); ?>/mwbe_filter/" + filter;
                         <?php
                         }?>
 

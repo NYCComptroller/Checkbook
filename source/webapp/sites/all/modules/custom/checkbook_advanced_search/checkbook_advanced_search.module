@@ -64,13 +64,17 @@ function checkbook_advanced_search_display()
 
 function checkbook_advanced_search_display_ajax()
 {
-    if ($cached = cache_get('advanced_search_form')) {
-        echo $cached->data;
-    } else {
-        $html = render(drupal_get_form('checkbook_advanced_search_form'));
-        cache_set('advanced_search_form', $html);
-        echo $html;
-    }
+//    if ($cached = cache_get('advanced_search_form', 'cache_form')) {
+//        echo $cached->data;
+//    } else {
+//        $html = render(drupal_get_form('checkbook_advanced_search_form'));
+//        cache_set('advanced_search_form', $html, 'cache_form', 60*60+time());
+//        echo $html;
+//    }
+    $html = render(drupal_get_form('checkbook_advanced_search_form'));
+//    cache_set('advanced_search_form', $html, 'cache_form', 60*60+time());
+    echo $html;
+
     exit;
 }
 

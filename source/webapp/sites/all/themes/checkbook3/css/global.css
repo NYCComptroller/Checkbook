@@ -849,7 +849,6 @@ td.active div.indicator {
     margin-bottom: -17px;
     position: relative;
     top: 1px;
-    z-index: 10;
 }
 /********************
 *** CHART STYLING ***
@@ -1800,13 +1799,13 @@ input[type="url"], input[type="week"] {
     border: none;
 }
 .dataTables_wrapper th, .outerTable th{
-    background: #48759d; /* Old browsers */
-    background: -moz-linear-gradient(top, #48759d 0%, #3f668f 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #48759d), color-stop(100%, #3f668f)); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top, #48759d 0%, #3f668f 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top, #48759d 0%, #3f668f 100%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(top, #48759d 0%, #3f668f 100%); /* IE10+ */
-    background: linear-gradient(to bottom, #48759d 0%, #3f668f 100%); /* W3C */
+    background-color: #48759d; /* Old browsers */
+    background-image: -moz-linear-gradient(top, #48759d 0%, #3f668f 100%); /* FF3.6+ */
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #48759d), color-stop(100%, #3f668f)); /* Chrome,Safari4+ */
+    background-image: -webkit-linear-gradient(top, #48759d 0%, #3f668f 100%); /* Chrome10+,Safari5.1+ */
+    background-image: -o-linear-gradient(top, #48759d 0%, #3f668f 100%); /* Opera 11.10+ */
+    background-image: -ms-linear-gradient(top, #48759d 0%, #3f668f 100%); /* IE10+ */
+    background-image: linear-gradient(to bottom, #48759d 0%, #3f668f 100%); /* W3C */
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr = '#48759d', endColorstr = '#3f668f', GradientType = 0)"; /* IE6-9 */
     color: #ffffff;
     font-weight: bold;
@@ -2029,7 +2028,7 @@ td.vers-num div{margin-left:40px;}
 .dataTable td.childcontracts .jspPane table td.vers-num div {
     margin: 13px 0px 13px 40px;
 }
-td.expander span.collapsed, td.expander span.expanded, td.expander span.loader, a.showHide, a.showHide.open, .assoc_item span.expanded , .assoc_item span.collapsed {
+td.expander span.collapsed, td.expander span.expanded, td.expander span.loader, a.showHide, a.showHide.open, .assoc_item span.expanded , .assoc_item span.collapsed ,.assoc_item span.loader{
     display:block;
     height: 16px;
     width: 16px;
@@ -2040,7 +2039,7 @@ td.expander span.collapsed, td.expander span.expanded, td.expander span.loader, 
 td.expander span.expanded, a.showHide, .assoc_item span.expanded {
     background: url("../images/close.png") no-repeat scroll right center transparent;
 }
-a.showHide, a.showHide.open, .assoc_item span.expanded , .assoc_item span.collapsed  {
+a.showHide, a.showHide.open, .assoc_item span.expanded , .assoc_item span.collapsed ,.assoc_item span.loader {
     height:14px;
     width:14px;
     float:left;
@@ -2049,9 +2048,10 @@ a.showHide, a.showHide.open, .assoc_item span.expanded , .assoc_item span.collap
 .assoc_item .contract-title.clearfix div{
     margin:0px;
 }
-td.expander span.loader {
+.assoc_item span.loader, td.expander span.loader {
     background: url("../images/ajax-loader.gif") no-repeat scroll right center transparent;
 }
+
 .jspPane{margin-left:25px !important;}
 
 .dataTable td.childcontracts .jspPane {
@@ -2166,7 +2166,7 @@ table#assoc_contracts_list .assoc_item > div + div > div > div div{margin-left:0
 table#assoc_contracts_list .assoc_item > div + div > div > div div .dataTable th:first-child div,
 table#assoc_contracts_list .assoc_item > div + div > div > div div .dataTable td:first-child div{margin-left:10px;}
 table#assoc_contracts_list .assoc_item .rfed-amount {
-    color: #3C5E7C;
+    color: #5C5C5C;
     float: right;
     font-size: 16px;
     font-weight: bold;
@@ -2321,6 +2321,14 @@ table#assoc_contracts_list .assoc_item .rfed-amount {
 .oge-ca-details .contract-id .contractLinkNote,
 .oge-assoc-contracts-list .contractLinkNote {
     position:relative;
+
+}
+.oge-ma-details .contract-id .contractIcon,
+.oge-ca-details .contract-id .contractIcon
+ {
+    position:relative;
+    left:-60px;
+
 }
 .page-contracts-landing #assoc_contracts_list_wrapper .dollar-amounts div,
 .page-contract-details #assoc_contracts_list_wrapper .dollar-amounts div{
@@ -2439,21 +2447,25 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 }
 .oge-assoc-contracts-list .assoc_amounts{
     float:right;
+
 }
 .oge-assoc-contracts-list .assoc_amounts .rfed-amount{
-    float:left;
-    margin:0px 0px 0px 30px;
+   float:right;
+    width: 150px;
+
 }
 .oge-assoc-contracts-list .assoc_amounts .rfed-amount span{
     display:block;
-    width:100%;
+    width:150%;
     text-align: center;
-    text-transform: capitalize;
+    text-transform: uppercase;
     float:left;
     clear:both;
 }
 .oge-assoc-contracts-list .assoc_amounts .rfed-amount span.label{
-    font-size: 12px;
+    font-size: 11px;
+    font-weight: normal;
+    line-height: 16px;
 }
 
 .cb-ca-details .contract-id .master-contract-link,
@@ -3752,4 +3764,13 @@ a.new-features-morelink{
 .html sup{
     vertical-align: super;
     font-size: smaller;
+}
+
+.ckbk-export-dialog label{
+    font-weight: initial;
+    display: initial;
+}
+
+#dialog.ckbk-export-dialog td{
+    padding: 5px 30px;
 }

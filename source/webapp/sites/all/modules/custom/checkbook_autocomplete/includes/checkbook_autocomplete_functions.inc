@@ -88,7 +88,7 @@ function _get_contracts_datafeeds_autocomplete_results($facet, $query, $status =
     if($industry){
         $query .= '&fq=industry_type_id:'.$industry;
     }
-    
+
     //if($status != 'P' && $category != 'revenue') {
 
     //}
@@ -443,6 +443,9 @@ function _get_spending_datafeeds_autocomplete_results($facet, $query, $year = NU
  */
 function _checkbook_autocomplete_spending_payee($year, $agency, $expcategory, $dept, $exptype = 0, $mwbe_category = 0, $industry, $data_source = 'checkbook') {
     $search_term = _get_autocomplete_search_term();
+    $dept = _emptyToZero(urldecode($dept));
+    $expcategory = _emptyToZero(urldecode($expcategory));
+
     if (!empty($search_term)) {
         switch($data_source)
         {
@@ -483,6 +486,8 @@ function _checkbook_autocomplete_spending_payee($year, $agency, $expcategory, $d
  */
 function _checkbook_autocomplete_spending_contractno($year, $agency, $expcategory, $dept, $exptype = 0, $mwbe_category = 0, $industry, $data_source = 'checkbook') {
     $search_term = _get_autocomplete_search_term();
+    $dept = _emptyToZero(urldecode($dept));
+    $expcategory = _emptyToZero(urldecode($expcategory));
     if (!empty($search_term)) {
         $query = 'select/?q=contract_number:' . $search_term . '&facet=true&facet.field=contract_number&fq=domain:spending&facet.limit=10&wt=php';
         $query .= $data_source == 'checkbook_oge' ? '&fq=agency_type:oge' : '&fq=-agency_type:oge';
@@ -513,6 +518,8 @@ function _checkbook_autocomplete_spending_contractno($year, $agency, $expcategor
  */
 function _checkbook_autocomplete_spending_capitalproject($year, $agency, $expcategory, $dept, $exptype = 0, $mwbe_category = 0, $industry, $data_source = 'checkbook') {
     $search_term = _get_autocomplete_search_term();
+    $dept = _emptyToZero(urldecode($dept));
+    $expcategory = _emptyToZero(urldecode($expcategory));
     if (!empty($search_term)) {
         $query = 'select/?q=reporting_code_autocomplete:' . $search_term . '&facet=true&facet.field=reporting_code&fq=domain:spending&facet.limit=10&wt=php';
         if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
@@ -543,6 +550,8 @@ function _checkbook_autocomplete_spending_capitalproject($year, $agency, $expcat
  */
 function _checkbook_autocomplete_spending_documentid($year, $agency, $expcategory, $dept, $exptype = 0, $mwbe_category = 0, $industry, $data_source = 'checkbook') {
     $search_term = _get_autocomplete_search_term();
+    $dept = _emptyToZero(urldecode($dept));
+    $expcategory = _emptyToZero(urldecode($expcategory));
     if (!empty($search_term)) {
         $query = 'select/?q=expense_id:' . $search_term . '&facet=true&facet.field=expense_id&fq=domain:spending&facet.limit=10&wt=php';
         if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
@@ -573,6 +582,8 @@ function _checkbook_autocomplete_spending_documentid($year, $agency, $expcategor
  */
 function _checkbook_autocomplete_spending_entitycontractnum($year, $agency, $expcategory, $dept, $exptype = 0, $mwbe_category = 0, $industry, $data_source = 'checkbook') {
     $search_term = _get_autocomplete_search_term();
+    $dept = _emptyToZero(urldecode($dept));
+    $expcategory = _emptyToZero(urldecode($expcategory));
     if (!empty($search_term)) {
         $query = 'select/?q=spending_entity_contract_number:' . $search_term . '&facet=true&facet.field=spending_entity_contract_number&fq=domain:spending&facet.limit=10&wt=php';
         if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
@@ -603,6 +614,8 @@ function _checkbook_autocomplete_spending_entitycontractnum($year, $agency, $exp
  */
 function _checkbook_autocomplete_spending_commodityline($year, $agency, $expcategory, $dept, $exptype = 0, $mwbe_category = 0, $industry, $data_source = 'checkbook') {
     $search_term = _get_autocomplete_search_term();
+    $dept = _emptyToZero(urldecode($dept));
+    $expcategory = _emptyToZero(urldecode($expcategory));
     if (!empty($search_term)) {
         $query = 'select/?q=spending_commodity_line:' . $search_term . '&facet=true&facet.field=spending_commodity_line&fq=domain:spending&facet.limit=10&wt=php';
         if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
@@ -633,6 +646,8 @@ function _checkbook_autocomplete_spending_commodityline($year, $agency, $expcate
  */
 function _checkbook_autocomplete_spending_budgetname($year, $agency, $expcategory, $dept, $exptype = 0, $mwbe_category = 0, $industry, $data_source = 'checkbook') {
     $search_term = _get_autocomplete_search_term();
+    $dept = _emptyToZero(urldecode($dept));
+    $expcategory = _emptyToZero(urldecode($expcategory));
     if (!empty($search_term)) {
         $query = 'select/?q=spending_budget_name_autocomplete:' . $search_term . '&facet=true&facet.field=spending_budget_name&fq=domain:spending&facet.limit=10&wt=php';
         if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
@@ -661,27 +676,21 @@ function _checkbook_autocomplete_spending_dept($year, $agency, $spending_cat, $d
 
     $db_name = "main";
     $results = _checkbook_project_execute_sql($query, $db_name,  $data_source);
-    if(count($results) == 0){
-        $options = array('label' => 'No Matches Found','value' => '');
-    }else{
-        foreach ($results as $result) {
-            $options[$result['department_name']] = $result['department_name'];
+
+    if (count($results) > 0) {
+        $matches = array();
+        foreach ($results as $key=>$value) {
+            $dept_name_value = htmlentities($value['department_name']);
+            $dept_name_text = (strlen($dept_name_value) > 18) ? substr($dept_name_value, 0, 18) . '...' : $dept_name_value;
+            $matches[] = array('label'=> $dept_name_text,'value' => $dept_name_value);
         }
+        drupal_json_output($matches);
     }
-    $matches = array();
-    if(isset($options['label'])) {
-        $matches[] = $options['label'];
-    }
-    else {
-        foreach($options as $key => $value)
-            $matches[] = htmlentities($value);
-    }
-    drupal_json_output($matches);
 }
 
 function _checkbook_autocomplete_spending_expcategory($agency, $dept, $spending_cat, $year, $data_source = 'checkbook') {
     $options = $year_type = $year_value = $year_string = $agency_string = $dept_string = null;
-
+    $dept = _emptyToZero(urldecode($dept));
     if ($year && startsWith($year, 'F')) {
         $year = ltrim($year, 'FY');
         $year_string = " AND disbursement_line_item_details.fiscal_year = " . $year . " ";
@@ -691,7 +700,7 @@ function _checkbook_autocomplete_spending_expcategory($agency, $dept, $spending_
         $year_string = " AND disbursement_line_item_details.calendar_fiscal_year = " . $year . " ";
     }
     if ($agency) {
-        $agency_string = " AND disbursement_line_item_details.agency_code = " . $agency . " ";
+        $agency_string = " AND disbursement_line_item_details.agency_code = '" . $agency . "' ";
     }
 
     $spending_cat_string = ($spending_cat)
@@ -699,7 +708,7 @@ function _checkbook_autocomplete_spending_expcategory($agency, $dept, $spending_
         : " ref_spending_category.spending_category_id IN (1,2,3,4,5)";
 
     if ($dept){
-        $dept_string = " AND disbursement_line_item_details.department_code = " . $dept . " ";
+        $dept_string = " AND disbursement_line_item_details.department_code = '" . $dept . "' ";
     }
     $query = "SELECT DISTINCT expenditure_object_name|| '[' || expenditure_object_code || ']' expenditure_object_code
               FROM disbursement_line_item_details, ref_spending_category
@@ -708,22 +717,16 @@ function _checkbook_autocomplete_spending_expcategory($agency, $dept, $spending_
 
     $db_name = "main";
     $results = _checkbook_project_execute_sql($query, $db_name,  $data_source);
-    if(count($results) == 0){
-        $options = array('label' => 'No Matches Found','value' => '');
-    }else{
-        foreach ($results as $result) {
-            $options[$result['expenditure_object_code']] = $result['expenditure_object_code'];
+
+    if (count($results) > 0) {
+        $matches = array();
+        foreach ($results as $key=>$value) {
+            $exp_obj_value = htmlentities($value['expenditure_object_code']);
+            $exp_obj_text = (strlen($exp_obj_value) > 18) ? substr($exp_obj_value, 0, 18) . '...' : $exp_obj_value;
+            $matches[] = array('label'=> $exp_obj_text,'value' => $exp_obj_value);
         }
+        drupal_json_output($matches);
     }
-    $matches = array();
-    if(isset($options['label'])) {
-        $matches[] = $options['label'];
-    }
-    else {
-        foreach($options as $key => $value)
-            $matches[] = htmlentities($value);
-    }
-    drupal_json_output($matches);
 }
 
 // Payroll autocomplete menu callback functions:
@@ -1204,28 +1207,31 @@ function _checkbook_autocomplete_get_start_end_dates($year, $domain = NULL, $sta
  *   Escaped string
  */
 function _checkbook_autocomplete_escapeSolrValue($string) {
+    $string_start = $string;
 
     $string = str_replace("%", "%25", $string);
-    $string = str_replace("\\", "%5C%5C", $string);
+    $string = str_replace('\\', "%5C", $string);
     $string = str_replace(" ", "%20", $string);
     $string = str_replace("#", "%23", $string);
-    $string = str_replace("/", "\%2F", $string);
+    $string = str_replace("/", "%2F", $string);
     $string = str_replace("&", "%26", $string);
-    $string = str_replace("[", "\[", $string);
-    $string = str_replace("]", "\]", $string);
-    $string = str_replace(":", "\:", $string);
+    $string = str_replace("[", "\\[", $string);
+    $string = str_replace("]", "\\]", $string);
+    $string = str_replace(":", "\\:", $string);
     $string = str_replace("'", "%27", $string);
-    $string = str_replace("+", "\%2B", $string);
-    $string = str_replace("?", "\%3F", $string);
-    $string = str_replace("$", "\%24", $string);
-    $string = str_replace("!", "\%21", $string);
-    $string = str_replace("^", "\%5E", $string);
-    $string = str_replace("|", "\%7C", $string);
-    $string = str_replace("(", "\%28", $string);
-    $string = str_replace(")", "\%29", $string);
-    $string = str_replace("*", "\%2A", $string);
-    $string = str_replace(".", "\%2E", $string);
-    $string = str_replace("-", "\-", $string);
+    $string = str_replace("+", "%2B", $string);
+    $string = str_replace("?", "%3F", $string);
+    $string = str_replace("$", "%24", $string);
+    $string = str_replace("!", "%21", $string);
+    $string = str_replace("^", "%5E", $string);
+    $string = str_replace("|", "%7C", $string);
+    $string = str_replace("(", "%28", $string);
+    $string = str_replace(")", "%29", $string);
+    $string = str_replace("*", "%2A", $string);
+    $string = str_replace(".", "%2E", $string);
+    $string = str_replace("-", "-", $string);
+
+    LogHelper::log_notice("Solr: '$string_start' => '$string' ");
 
     return $string;
 }

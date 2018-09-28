@@ -115,7 +115,7 @@ function _widget_add_padding_data($node){
   $columns_max_length = array();
   foreach ($node->widgetConfig->table_columns as $row){
       if(check_node_flag_visibilty($row->visibility_flag, $node)){
-         if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == RequestUtilities::getRequestParamValue('datasource')))){
+         if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == RequestUtilities::get('datasource')))){
         $colDataTableOptions = $node->widgetConfig->dataTableOptions->aoColumns[$index];
         if(!isset($colDataTableOptions)){
           $colDataTableOptions->sClass = $row->type;
@@ -173,7 +173,7 @@ function _widget_data_tables_ajaxdata_json($node){
             if(is_array($node->widgetConfig->table_columns)){
                 foreach ($node->widgetConfig->table_columns as $row){
                     if(check_node_flag_visibilty($row->visibility_flag, $node)){
-                        if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == RequestUtilities::getRequestParamValue('datasource')))){
+                        if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == RequestUtilities::get('datasource')))){
                             if ($node->customDataPaddings[$row->column] > 0) {
                                 $style = "style='margin-right:" . $node->customDataPaddings[$row->column] * 8 . "px'";
                             } else {
@@ -234,7 +234,7 @@ function _widget_data_tables_list_wt_prepare_json($node){
             $rowarray = array();
             foreach ($node->widgetConfig->table_columns as $row){
                 if(check_node_flag_visibilty($row->visibility_flag, $node)){
-                    if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == RequestUtilities::getRequestParamValue('datasource')))){
+                    if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == RequestUtilities::get('datasource')))){
                     if ($row->isWidget){
                         $widgetnode = node_load($row->widgetNid);
                         widget_set_uid($widgetnode,$i . '-' . uniqid());
@@ -307,7 +307,7 @@ function _widget_data_tables_list_ajaxdata($node){
                 $flag = property_exists($row, 'visibility_flag') ? $row->visibility_flag : null;
                 if(check_node_flag_visibilty($flag, $node)){
 //                if(property_exists($row, 'visibility_flag') && check_node_flag_visibilty($row->visibility_flag, $node)){
-                    if (!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == RequestUtilities::getRequestParamValue('datasource')))) {
+                    if (!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == RequestUtilities::get('datasource')))) {
                         if (isset($node->customDataPaddings[$row->column]) && $node->customDataPaddings[$row->column] > 0) {
                             $style = "style='margin-right:" . $node->customDataPaddings[$row->column] * 8 . "px'";
                         } else {
@@ -338,7 +338,11 @@ function _widget_data_tables_list_ajaxdata($node){
  * @return updated node data
  */
 function widget_data_tables_get_data($node){
-	widget_config($node);
+	  widget_config($node);
+
+    if (!empty($node->nid) && $node->nid) {
+      LogHelper::log_notice("Loading node ".$node->nid.".json");
+    }
 
     //prepare anything we'll need before loading
     widget_prepare($node);
@@ -609,7 +613,7 @@ function widget_data_tables_widget_view(&$node) {
                 $cls = new stdClass();
                 $cls->bSortable = false;
                 foreach ($tableColumns as $tableColumn){
-                    if(!isset($tableColumn->datasource) || (isset($tableColumn->datasource) && ($tableColumn->datasource == RequestUtilities::getRequestParamValue('datasource')))){
+                    if(!isset($tableColumn->datasource) || (isset($tableColumn->datasource) && ($tableColumn->datasource == RequestUtilities::get('datasource')))){
                         if(isset($tableColumn->isWidget) && $tableColumn->isWidget){
                             foreach($tableColumn->gridViewColumns as $gridViewColumn){
                                 $updatedaoColumns[] = $cls;
@@ -685,7 +689,7 @@ function widget_data_tables_add_js($node){
             $aoCols = get_object_vars($value);
 
             $visibility_flag = check_node_flag_visibilty($aoCols['visibility_flag'], $node);
-            if ($visibility_flag && ((isset($aoCols['datasource']) && RequestUtilities::getRequestParamValue('datasource') == isset($aoCols['datasource'])))) {
+            if ($visibility_flag && ((isset($aoCols['datasource']) && RequestUtilities::get('datasource') == isset($aoCols['datasource'])))) {
                 $newAolcols[] = $value;
             } else if ((!isset($aoCols['datasource'])) && $visibility_flag) {
                 $newAolcols[] = $value;

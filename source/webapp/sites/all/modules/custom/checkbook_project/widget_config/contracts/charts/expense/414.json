@@ -43,15 +43,12 @@
 "columns":["pending_contract_number.pending_contract_number","document_version.document_version","version_number.version_number","contract_number.contract_number","document_agency_name.document_agency_name","document_agency_code.document_agency_code","vendor_legal_name.vendor_legal_name","vendor.vendor","total_revised_maximum_amount","original_agreement_id.original_agreement_id","document_code.document_code.document_code"],
 "derivedColumns": {
     "agency_formatted": {
-        "type": "expression2",
         "expression": "strtoupper(html_entity_decode($row[\"document_agency_name_document_agency_name\"], ENT_QUOTES))"
     },
     "vendor_formatted": {
-        "type": "expression2",
         "expression": "strtoupper(html_entity_decode($row[\"vendor_legal_name_vendor_legal_name\"], ENT_QUOTES))"
     },
     "column_link":{
-        "type":"expression2",
         "expression":"_pending_contracts_link_contract_details($row['contract_number_contract_number'],$row['original_agreement_id_original_agreement_id'],$row['document_code_document_code_document_code'],$row['pending_contract_number_pending_contract_number'],$row['document_version_document_version'],'bar')"
     }
 },

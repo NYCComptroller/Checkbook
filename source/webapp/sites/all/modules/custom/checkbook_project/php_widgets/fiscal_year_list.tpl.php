@@ -41,7 +41,7 @@ foreach($node->data as $key => $value){
 
         $display_text = 'FY '.$value['year_value'].' (Jul 1, '.($value['year_value']-1).' - Jun 30, '.$value['year_value'].')';
 
-        $yearFromURL = RequestUtilities::getRequestParamValue("year");
+        $yearFromURL = RequestUtilities::get("year");
         $link = preg_replace("/year\/" . $yearFromURL . "/","year/" .  $value['year_id'],$q);
 
         $fiscal_year_data_array[] = array('display_text' => $display_text,

@@ -866,7 +866,7 @@ function widget_controller_update_dataset_datasource($datasetName,$keepOriginalD
 	if($keepOriginalDatasource == true){
 		return $datasetName;
 	}
-    $database = RequestUtilities::getRequestParamValue('datasource');
+    $database = RequestUtilities::get('datasource');
     if(isset($database)){
         $database = str_replace("checkbook:", "checkbook_oge:",$datasetName);
     }else{
@@ -897,7 +897,7 @@ function widget_controller_update_columns_by_datasource($node_columns, $datasour
 		return $node_columns;
 	}
     $columns = array();
-    $database = RequestUtilities::getRequestParamValue('datasource');
+    $database = RequestUtilities::get('datasource');
     $datasource_mapping = ($datasource_mapping != null) ? get_object_vars($datasource_mapping) : null;
     foreach($node_columns as $column){
         if($datasource_mapping == null){
@@ -916,7 +916,7 @@ function widget_controller_update_columns_by_datasource($node_columns, $datasour
 
 
 function widget_controller_get_current_datasource(){
-	$datasource = RequestUtilities::getRequestParamValue('datasource');
+	$datasource = RequestUtilities::get('datasource');
 	if(isset($datasource)){
 		return $datasource;
 	}else{

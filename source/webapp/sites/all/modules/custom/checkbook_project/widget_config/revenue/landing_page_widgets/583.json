@@ -43,7 +43,6 @@
 ",
  "derivedColumns":{
     "current_recognized_formatted":{
-        "type":"expression2",
         "expression":"'<a class=\"bottomContainerReload\" href=\"/panel_html/revenue_transactions/revenue/transactions'
                                        .'/smnid/' . $node->nid
                                        ._checkbook_project_get_year_url_param_string()
@@ -55,7 +54,6 @@
                                        .'\">'.custom_number_formatter_format($row['current_recognized'],2,'$').'</a>'"
     },
     "recognized_1_formatted":{
-        "type":"expression2",
         "expression":"'<a class=\"bottomContainerReload\" href=\"/panel_html/revenue_transactions/revenue/transactions'
                                        .'/smnid/' . $node->nid
                                        ._checkbook_project_get_year_url_param_string()
@@ -67,7 +65,6 @@
                                        .'\">'.custom_number_formatter_format($row['recognized_1'],2,'$').'</a>'"
     },
     "recognized_2_formatted":{
-        "type":"expression2",
         "expression":"'<a class=\"bottomContainerReload\" href=\"/panel_html/revenue_transactions/revenue/transactions'
                                        .'/smnid/' . $node->nid
                                        ._checkbook_project_get_year_url_param_string()
@@ -79,11 +76,9 @@
                                        .'\">'.custom_number_formatter_format($row['recognized_2'],2,'$').'</a>'"
     },
     "other_years_formatted":{
-        "type":"expression2",
         "expression":"custom_number_formatter_format($row['other_years'],2,'$')"
     },
     "remaining_formatted":{
-        "type":"expression2",
         "expression":"custom_number_formatter_format($row['remaining_amount'],2,'$')"
     }
  },

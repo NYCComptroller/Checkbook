@@ -85,7 +85,7 @@ function _checkbook_faceted_search_node_pagination($nid){
 }
 
 function _checkbook_faceted_search_node_autocomplete(){
-  $nid = RequestUtilities::getRequestParamValue('node');
+  $nid = RequestUtilities::get('node');
   $node = node_load($nid);
   widget_config($node);
   widget_prepare($node);
@@ -109,7 +109,7 @@ function _checkbook_faceted_search_update_data($node) {
     $data = $node->data;
     $output = array();
     $output['filter_name'] = $node->widgetConfig->filterName;
-    $params = explode('~', RequestUtilities::getRequestParamValue($node->widgetConfig->urlParameterName));
+    $params = explode('~', RequestUtilities::get($node->widgetConfig->urlParameterName));
 
     //The value in this facet can be 0
     if($node->widgetConfig->allowZeroValue == true) {
@@ -158,6 +158,18 @@ function _checkbook_faceted_search_update_data($node) {
                     ,$checked_items[0][str_replace('.','_',$node->widgetConfig->columns[1])]
                     ,$checked_items[0][str_replace('.','_',$node->widgetConfig->columns[2])]);
                 }
+            }
+            if($checked_items[0]['count_vendorcode']){
+                if(count($checked_items[0]) == 2){
+                    $output['checked'][] = array($checked_items[0][str_replace('.','_',$node->widgetConfig->columns[0])]
+                    ,$checked_items[0][str_replace('.','_',$node->widgetConfig->columns[0])]
+                    ,$checked_items[0][str_replace('.','_',$node->widgetConfig->columns[1])]);
+                }else{
+                    $output['checked'][] = array($checked_items[0][str_replace('.','_',$node->widgetConfig->columns[0])]
+                    ,$checked_items[0][str_replace('.','_',$node->widgetConfig->columns[1])]
+                    ,$checked_items[0][str_replace('.','_',$node->widgetConfig->columns[2])]);
+                }
+
             }
             if($checked_items[0]['title_count']){
                 if(count($checked_items[0]) == 2){
@@ -245,7 +257,7 @@ function _checkbook_faceted_search_update_data_range_filter($node){
     $rangeColumnNameVariant = $node->widgetConfig->rangeColumnNameVariant;
     $output = array();
     $output['filter_name'] = $node->widgetConfig->filterName;
-    $params = explode('~',RequestUtilities::getRequestParamValue($node->widgetConfig->urlParameterName));
+    $params = explode('~',RequestUtilities::get($node->widgetConfig->urlParameterName));
     if(!is_array($data[0])){
       $data = array(0=>array());
     }
@@ -290,7 +302,7 @@ function _checkbook_faceted_search_update_data_logical_or_filter($node){
     $data = $node->data;
     $output = array();
     $output['filter_name'] = $node->widgetConfig->filterName;
-    $params = explode('~',RequestUtilities::getRequestParamValue($node->widgetConfig->urlParameterName));
+    $params = explode('~',RequestUtilities::get($node->widgetConfig->urlParameterName));
     if(!is_array($data[0])){
         $data = array(0=>array());
     }
@@ -335,7 +347,7 @@ function _checkbook_faceted_search_update_data_union_or_filter($node){
     $data = $node->data;
     $output = array();
     $output['filter_name'] = $node->widgetConfig->filterName;
-    $params = explode('~',RequestUtilities::getRequestParamValue($node->widgetConfig->urlParameterName));
+    $params = explode('~',RequestUtilities::get($node->widgetConfig->urlParameterName));
 
     if(!is_array($data[0])){
         $data = array(0=>array());
@@ -398,7 +410,7 @@ function _checkbook_faceted_search_update_data_range2_filter($node){
   $data = $node->data;
   $output = array();
   $output['filter_name'] = $node->widgetConfig->filterName;
-  $params = explode('~',RequestUtilities::getRequestParamValue($node->widgetConfig->urlParameterName));
+  $params = explode('~',RequestUtilities::get($node->widgetConfig->urlParameterName));
   if(!is_array($data[0])){
     $data = array(0=>array());
   }
@@ -432,7 +444,7 @@ function _checkbook_faceted_search_update_data_range3_filter($node){
     $data = $node->data;
     $output = array();
     $output['filter_name'] = $node->widgetConfig->filterName;
-    $params = explode('~',RequestUtilities::getRequestParamValue($node->widgetConfig->urlParameterName));
+    $params = explode('~',RequestUtilities::get($node->widgetConfig->urlParameterName));
     if(!is_array($data[0])){
         $data = array(0=>array());
     }
@@ -899,10 +911,12 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
       }
     }
     $output['Expense Category']['name'] = 'fexpenseCategoryName';
-    foreach($reqExpenseCategories[0] as $key => $value){
+    if (!empty($reqExpenseCategories[0])) {
+      foreach($reqExpenseCategories[0] as $key => $value){
         if(!in_array($value['name'], array_values_recursive($output['Expense Category']['checked']))){
-            $output['Expense Category']['checked'][] = array(urlencode($value['name']), $value['name'], $value['count']);
+          $output['Expense Category']['checked'][] = array(urlencode($value['name']), $value['name'], $value['count']);
         }
+      }
     }
 
   }
@@ -941,14 +955,16 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
       }
     }
     $output['Fiscal Year']['name'] = 'fyear';
-    foreach($reqFiscalYears[0] as $key => $value){
+    if (!empty($reqFiscalYears[0])) {
+      foreach($reqFiscalYears[0] as $key => $value){
         if(!in_array($value['name'], array_values_recursive($output['Fiscal Year']['checked']))){
-            $output['Fiscal Year']['checked'][] = array(urlencode($value['name']), $value['name'], $value['count']);
+          $output['Fiscal Year']['checked'][] = array(urlencode($value['name']), $value['name'], $value['count']);
         }
+      }
     }
   }
     // Registered fiscal year
-    if (count($regfiscalYears[0]) > 0) {
+    if (!empty($regfiscalYears[0])) {
         krsort($regfiscalYears[0]);
         foreach ($regfiscalYears[0] as $fiscalYear => $count) {
             if ($count > 0) {
@@ -1008,10 +1024,12 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
             }
         }
         $output['M/WBE Category']['name'] = 'fmwbeCategory';
-        foreach($reqMWBECategory[0] as $key => $value){
+        if (!empty($reqMWBECategory[0])) {
+          foreach($reqMWBECategory[0] as $key => $value){
             if(!in_array($value['name'], array_values_recursive($output['M/WBE Category']['checked']))){
-                $output['M/WBE Category']['checked'][] = array(urlencode($value['name']), $value['name'], $value['count']);
+              $output['M/WBE Category']['checked'][] = array(urlencode($value['name']), $value['name'], $value['count']);
             }
+          }
         }
     }
     //Payroll Type
@@ -1029,10 +1047,12 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
             }
         }
         $output['Payroll Type']['name'] = 'fpayrollTypeName';
-        foreach($reqpayrollType[0] as $key => $value){
+        if (!empty($reqpayrollType[0])) {
+          foreach($reqpayrollType[0] as $key => $value){
             if(!in_array($value['name'], array_values_recursive($output['Payroll Type']['checked']))){
-                $output['Payroll Type']['checked'][] = array(urlencode($value['name']), $value['name'], $value['count']);
+              $output['Payroll Type']['checked'][] = array(urlencode($value['name']), $value['name'], $value['count']);
             }
+          }
         }
     }
 
