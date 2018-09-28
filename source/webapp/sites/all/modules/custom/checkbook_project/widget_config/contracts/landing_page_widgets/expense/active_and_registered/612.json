@@ -4,10 +4,12 @@
 "no_results_content":"No Results Found",
 "defaultParameters":{"type_of_year":"B","document_code.document_code.document_code":"MA1~CTA1~CT1","status_flag":"A"},
 "cleanURLParameters":["mwbe","year","calyear","agency","yeartype","awdmethod","vendor","status","cagency","cvendor","csize","cindustry","awdmethod"],
- "urlParamMap":{"mwbe":"minority_type_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"vendor_id","status":"status_flag","cagency":"agency_id","cvendor":"vendor_id","csize":"award_size_id","cindustry":"industry_type_id","awdmethod":"award_method_id"},
- "preProcessConfiguration":"
-    $node->is_mwbe = _checkbook_check_is_mwbe_page();
-if($node->is_mwbe) $node->widgetConfig->dataset = 'checkbook:mwbe_contracts_coa_aggregates';
+"urlParamMap":{"mwbe":"minority_type_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"vendor_id","status":"status_flag","cagency":"agency_id","cvendor":"vendor_id","csize":"award_size_id","cindustry":"industry_type_id","awdmethod":"award_method_id"},
+"preProcessConfiguration":"
+  //$node->is_mwbe = _checkbook_check_is_mwbe_page();
+  //if($node->is_mwbe) $node->widgetConfig->dataset = 'checkbook:mwbe_contracts_coa_aggregates';
+  if(RequestUtilities::getRequestParamValue('vendor') || RequestUtilities::getRequestParamValue('cvendor') || RequestUtilities::getRequestParamValue('svendor'))
+  $node->widgetConfig->dataset = 'checkbook:edc_mag_contracts_coa_aggregates';
 ",
  "dataset": "checkbook:edc_contracts_coa_aggregates_no_vendor",
 "noDataInitialLoad":true,
@@ -23,24 +25,19 @@ if($node->is_mwbe) $node->widgetConfig->dataset = 'checkbook:mwbe_contracts_coa_
 "getTotalDataCount":true,
 "derivedColumns": {
 "contract_size_link": {
-      "type": "expression2",
       "expression": "'<a href=\"/contracts_landing' . _checkbook_project_get_url_param_string(\"agency\") . _checkbook_append_url_params()  .   _checkbook_project_get_url_param_string(\"vendor\")  .  _checkbook_project_get_url_param_string(\"awdmethod\") . _checkbook_project_get_url_param_string(\"status\")  .  _checkbook_project_get_url_param_string(\"cindustry\")  .   _checkbook_project_get_year_url_param_string() . '/csize/'. $row['award_size_award_size']  .'?expandBottomCont=true\">' .$row['award_size_award_size_award_size_name']. '</a>'"
     } ,
 "spent_amount_link": {
-      "type": "expression2",
       "expression": "'<a class=\"new_window\" href=\"/contract/spending/transactions/csize/' .$row['award_size_award_size']  . _checkbook_append_url_params() . _checkbook_project_get_url_param_string(\"agency\",\"cagency\") . _checkbook_project_get_url_param_string(\"vendor\",\"cvendor\")   .  _checkbook_project_get_url_param_string(\"awdmethod\") . _checkbook_project_get_url_param_string(\"status\")  .  _checkbook_project_get_url_param_string(\"cindustry\") .  '/doctype/CT1~CTA1~MA1' .  ContractURLHelper::_checkbook_project_spending_get_year_url_param_string() . '/smnid/' . $node->nid . ContractUtil::getSpentToDateParams() . '/newwindow\">' . custom_number_formatter_format($row['spending_amount_sum'],2,'$'). '</a>'"
     } ,
 "formatted_original_amount_sum": {
-      "type": "expression2",
       "expression": "custom_number_formatter_format($row['original_amount_sum'],2,'$')"
     },
 "formatted_total_current_amount_sum": {
-      "type": "expression2",
       "expression": "custom_number_formatter_format($row['current_amount_sum'],2,'$')"
     },
 
 "formatted_total_contracts": {
-      "type": "expression2",
       "expression": " number_format($row['total_contracts'])"
     }
 },
@@ -64,16 +61,16 @@ else
 return $footer;
 ",
 "header":"
-$node->widgetConfig->getData=true;
-unset($node->widgetConfig->limit);
-load_widget_data($node);
-$total = 0;
-foreach($node->data as $key=>$row){
-     $total += $row['total_contracts'];
-}
-$header='<div class=\"tableHeader\"><h2>Contracts by Size</h2>
-<span class=\"contCount\"> Number of Contracts:  ' . number_format($total) . '</span>
-</div>';
+//$node->widgetConfig->getData=true;
+//unset($node->widgetConfig->limit);
+//load_widget_data($node);
+//$total = 0;
+//foreach($node->data as $key=>$row){
+//     $total += $row['total_contracts'];
+//}
+//$header='<div class=\"tableHeader\"><h2>Contracts by Size</h2>
+//<span class=\"contCount\"> Number of Contracts:  ' . number_format($total) . '</span>
+//</div>';
 return $header;
 ",
 "summaryView":{

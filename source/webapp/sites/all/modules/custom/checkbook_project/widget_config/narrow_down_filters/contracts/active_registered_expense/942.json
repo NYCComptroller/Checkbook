@@ -32,7 +32,7 @@
             if(RequestUtilities::getRequestParamValue('dashboard') == 'ss'){
                 $parameters['vendor_record_type'] = 'Sub Vendor';
             }
-            if(!RequestUtilities::getRequestParamValue('dashboard')) {
+            if(!RequestUtilities::getRequestParamValue('dashboard') || Dashboard::isMWBE()) {
                     unset($parameters['prime_vendor_code']);
                     unset($parameters['sub_vendor_code']);
             }

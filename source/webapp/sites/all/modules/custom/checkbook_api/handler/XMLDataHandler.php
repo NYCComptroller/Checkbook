@@ -1,19 +1,19 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -239,8 +239,10 @@ class XMLDataHandler extends AbstractDataHandler
             $fileDir = _checkbook_project_prepare_data_feeds_file_output_dir();
             $filename = _checkbook_project_generate_uuid(). '.xml';
             $tmpDir =  (isset($conf['check_book']['tmpdir']) && is_dir($conf['check_book']['tmpdir'])) ? rtrim($conf['check_book']['tmpdir'],'/') : '/tmp';
+
             $command = $conf['check_book']['data_feeds']['command'];
-            $command .= ' ' . $databases['checkbook']['main']['database'] . ' ';
+            $data_source = $this->requestDataSet->data_source;
+            $command .= ' ' . $databases[$data_source]['main']['database'] . ' ';
 
             if(!is_writable($tmpDir)){
                 LogHelper::log_error("$tmpDir is not writable. Please make sure this is writable to generate export file.");
@@ -288,7 +290,8 @@ class XMLDataHandler extends AbstractDataHandler
             $commands[] = $command;
 
             //xmllint command to format the xml
-            $command = "xmllint --format $tempOutputFile --output $formattedOutputFile";
+            $maxmem = 1024 * 1024 * 500;  // 500 MB
+            $command = "xmllint --format $tempOutputFile --output $formattedOutputFile --maxmem $maxmem";
             $commands[] = $command;
 
             //Move file from tmp to data feeds dir

@@ -39,7 +39,7 @@ if(isset($node->widgetConfig->headerConfig)){
 
     foreach ($node->widgetConfig->table_columns as $row) {
       if(check_node_flag_visibilty($row->visibility_flag, $node)){
-        if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == RequestUtilities::getRequestParamValue('datasource')))){
+        if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == RequestUtilities::get('datasource')))){
             $label = (isset($row->labelAlias))? (WidgetUtil::generateLabelMapping($row->labelAlias)) : $row->label;
             $fn = $row->adjustLabelFunction;
             if(isset($fn) && function_exists($fn)){
@@ -72,7 +72,7 @@ if(isset($node->widgetConfig->headerConfig)){
     foreach ($node->data as $datarow) {
       echo "<tr>";
       foreach ($node->widgetConfig->table_columns as $row) {
-        if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == RequestUtilities::getRequestParamValue('datasource')))){
+        if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == RequestUtilities::get('datasource')))){
             echo '<td class="' . $datarow[$row->classColumn] . '">' . $datarow[$row->column] . '</td>';
         }
       }

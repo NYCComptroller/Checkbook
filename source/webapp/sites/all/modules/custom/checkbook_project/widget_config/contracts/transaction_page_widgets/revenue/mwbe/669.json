@@ -5,9 +5,11 @@
     "defaultParameters":{
         "cum_spend.cum_spend.status_flag":"A"
     },
+    "allowRequestParams":["contstatus"],
     "limit":10,
     "startWith":0,
     "maxSelect":5,
+    "allowFacetDeselect":true,
     "urlParamMap":{
         "doctype":"document_code.document_code.document_code",
         "contstatus":"cum_spend.cum_spend.status_flag",
@@ -17,16 +19,15 @@
         "mwbe_vendor":"cum_spend.cum_spend.vendor_id",
         "mwbe":"cum_spend.cum_spend.minority_type_id"
     }  ,
-    "columns":["vendor.vendor.vendor_id","vendor_name.vendor_name", "txcount"],
+    "columns":["vendor_name.vendor_name", "txcount"],
     "orderBy":["-txcount","vendor_name.vendor_name"],
-    "getTotalDataCount":true,
     "facetPager":true,
     "filterName":"Vendor",
-    "urlParameterName":"fvendor",
     "autocompleteParamName":"vendor_auto",
-    "autocompleteID":"fvendorId",
     "autocompleteField":"vendor_name",
+    "urlParameterName":"vendornm_exact",
     "urlParameterNameType":"eqtext",
+    "autocompleteID":"fvendorNm",
     "adjustParameters":"
         if(isset($parameters['vendor_type'])){
             $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);

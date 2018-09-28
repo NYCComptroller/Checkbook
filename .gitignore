@@ -1,10 +1,113 @@
 .idea/
+.metadata/
+.recommenders/
+nbproject/
+tmp/
 source/webapp/.buildpath
 source/webapp/.project
-source/webapp/.settings/.jsdtscope
-source/webapp/.settings/org.eclipse.php.core.prefs
-source/webapp/.settings/org.eclipse.php.debug.core.Debug_Process_Preferences.prefs
-source/webapp/.settings/org.eclipse.wst.jsdt.ui.superType.container
-source/webapp/.settings/org.eclipse.wst.jsdt.ui.superType.name
+source/webapp/.settings/
 source/webapp/sites/all/modules/custom/checkbook_advanced_search/includes/ConfigUtility.php
 source/tests/unit/reports
+source/tests/functional/NYCAutomationTest/*.xls
+
+
+
+
+
+
+
+
+
+
+# Created by https://www.gitignore.io/api/macos
+
+### macOS ###
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon must end with two \r
+Icon
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+
+# End of https://www.gitignore.io/api/macos
+
+
+
+
+
+# Created by https://www.gitignore.io/api/windows
+
+### Windows ###
+# Windows thumbnail cache files
+Thumbs.db
+ehthumbs.db
+ehthumbs_vista.db
+
+# Dump file
+*.stackdump
+
+# Folder config file
+[Dd]esktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+
+
+# End of https://www.gitignore.io/api/windows
+
+
+
+# Created by https://www.gitignore.io/api/vim
+
+### Vim ###
+# Swap
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+
+# Session
+Session.vim
+
+# Temporary
+.netrwhist
+*~
+# Auto-generated tag files
+tags
+# Persistent undo
+[._]*.un~
+
+
+# End of https://www.gitignore.io/api/vim

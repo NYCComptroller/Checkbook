@@ -7,7 +7,6 @@
 	"columns":["fundingcode.fundingcode","funding_class_name.funding_class_name", "txcount"],
 	"orderBy":"-txcount",    
     "filterName":"Funding Class",
-    "getTotalDataCount":true,    
     "facetPager":true,
     "urlParameterName":"fundsrccode",
     "autocompleteParamName":"ffundingSourceId_auto",    

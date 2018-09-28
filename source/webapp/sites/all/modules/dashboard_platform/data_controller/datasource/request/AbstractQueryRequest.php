@@ -1,19 +1,19 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -54,8 +54,8 @@ abstract class AbstractQueryRequest extends AbstractRequest {
         return FALSE;
     }
 
-    protected function initiateSortingConfiguration($columnName, $isSortAscending) {
-        return new PropertyBasedComparator_DefaultSortingConfiguration($columnName, $isSortAscending);
+    protected function initiateSortingConfiguration($columnName, $isSortAscending,$sql=NULL) {
+        return new PropertyBasedComparator_DefaultSortingConfiguration($columnName, $isSortAscending,$sql);
     }
 
     public function addSortingConfiguration(__PropertyBasedComparator_AbstractSortingConfiguration $sortingConfiguration) {
@@ -70,20 +70,20 @@ abstract class AbstractQueryRequest extends AbstractRequest {
         }
     }
 
-    public function addOrderByColumn($directionalColumnName) {
-        list($columnName, $isSortAscending) = PropertyBasedComparator_DefaultSortingConfiguration::parseDirectionalPropertyName($directionalColumnName);
-        $this->addSortingConfiguration($this->initiateSortingConfiguration($columnName, $isSortAscending));
+    public function addOrderByColumn($directionalColumnName,$sortSourceByNull) {
+        list($columnName, $isSortAscending,$sql) = PropertyBasedComparator_DefaultSortingConfiguration::parseDirectionalPropertyName($directionalColumnName,$sortSourceByNull);
+        $this->addSortingConfiguration($this->initiateSortingConfiguration($columnName, $isSortAscending,$sql));
     }
 
-    public function addOrderByColumns($directionalColumnNames) {
+    public function addOrderByColumns($directionalColumnNames,$sortSourceByNull=Null) {
         if (isset($directionalColumnNames)) {
             if (is_array($directionalColumnNames)) {
                 foreach ($directionalColumnNames as $directionalColumnName) {
-                    $this->addOrderByColumn($directionalColumnName);
+                    $this->addOrderByColumn($directionalColumnName,$sortSourceByNull);
                 }
             }
             else {
-                $this->addOrderByColumn($directionalColumnNames);
+                $this->addOrderByColumn($directionalColumnNames,$sortSourceByNull);
             }
         }
     }

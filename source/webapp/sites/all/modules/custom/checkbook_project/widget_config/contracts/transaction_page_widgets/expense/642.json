@@ -47,45 +47,35 @@
 ",
 "derivedColumns": {
          "child_contrats_link":{
-	      "type": "expression2",
              "expression": "''"
             },
          "contract_link": {
-	      "type": "expression2",
                "expression": "ContractURLHelper::prepareExpenseContractLink($row, $node)"
 	    },
          "parent_contract_link": {
-	      "type": "expression2",
               "expression": ""
 	    },
          "parent_contract_actual": {
-	      "type": "expression2",
               "expression": " '<a class=\"new_window\" href=\"/contract_details/magid/' . $row['master_agreement_id']  .  '/datasource/checkbook_oge/newwindow\">'. $row['master_contract_number'] .'</a>'  "
 	    },
 	"formatted_original_amount": {
-	      "type": "expression2",
               "expression": " ($row['document_code@checkbook:ref_document_code'] == 'DO1') ? 'N/A' : custom_number_formatter_basic_format($row['original_contract_amount']) "
 	    },
 	"formatted_current_amount": {
-	      "type": "expression2",
                 "expression": " ($row['document_code@checkbook:ref_document_code'] == 'DO1') ? 'N/A' : custom_number_formatter_basic_format($row['maximum_contract_amount']) "
 	    },
        "formatted_spent_to_date": {
-	      "type": "expression2",
                 "expression": "ContractURLHelper::_prepare_oge_contracts_spending_url($row, $node)"
 	    },
 	   "vendor_name_link_old": {
-	      "type": "expression2",
               "expression": " '<a href=\"/contracts_landing/vendor/' . $row['vendor_id']
                                     .  _checkbook_project_get_year_url_param_string()
                                     .  '\">'. $row['vendor_name'] . '</a>'  "
 	    },
 "vendor_formatted": {
-      "type": "expression2",
       "expression": "_get_tooltip_markup($row['vendor_name'],30)"
     },
           "vendor_name_link": {
-	      "type": "expression2",
               "expression": " '<a href=\"/contracts_landing'
                                     .  (isset($row['fiscal_year_id']) ? ('/year/'.$row['fiscal_year_id'] . '/yeartype/'.$row['type_of_year']) : _checkbook_project_get_year_url_param_string())
                                     .  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
@@ -95,17 +85,14 @@
                                     .  '?expandBottomCont=true\">'. $row['vendor_formatted'] . '</a>'  "
 	    },
 	   "agency_name_link_old": {
-		"type": "expression2",
                 "expression": " '<a href=\"/contracts_landing/agency/' . $row['agency_id']
                                     .  _checkbook_project_get_year_url_param_string()
                                     .  '\">'. $row['agency_name'] . '</a>'  "
 	},
 "agency_formatted": {
-      "type": "expression2",
       "expression": "_get_tooltip_markup($row['agency_name'],30)"
     },
         "agency_name_link": {
-		"type": "expression2",
                 "expression": " '<a href=\"/contracts_landing'
                                     .  (isset($row['fiscal_year_id']) ? ('/year/'.$row['fiscal_year_id'] . '/yeartype/'.$row['type_of_year']) : _checkbook_project_get_year_url_param_string())
                                    .  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
@@ -113,47 +100,36 @@
                                     .  '?expandBottomCont=true\">'. $row['agency_formatted'] . '</a>'  "
 	},
 	"display_effective_begin_date": {
-		"type": "expression2",
 		"expression": " ($row['document_code@checkbook:ref_document_code'] == 'DO1') ? 'N/A' : $row['effective_begin_date'] "
 	},
 	"display_effective_end_date": {
-		"type": "expression2",
 		"expression": " ($row['document_code@checkbook:ref_document_code'] == 'DO1') ? 'N/A' : $row['effective_end_date'] "
 	},
 	"display_registered_date": {
-		"type": "expression2",
 		"expression": " ($row['document_code@checkbook:ref_document_code'] == 'DO1') ? 'N/A' : $row['registered_date'] "
 	},
        "purpose_formatted": {
-      "type": "expression2",
       "expression": "_get_tooltip_markup($row['description'],36)"
     },
 "expense_cat_formatted": {
-      "type": "expression2",
       "expression": "_get_tooltip_markup($row['expenditure_object_names'],36)"
     },
 "award_method_formatted": {
-      "type": "expression2",
       "expression": "_get_tooltip_markup($row['award_method_name'],36)"
     },
 "contract_type_formatted": {
-      "type": "expression2",
       "expression": "_get_tooltip_markup($row['agreement_type_name'],36)"
     },
 "industry_name_formatted": {
-      "type": "expression2",
       "expression": "_get_tooltip_markup($row['industry_type_name'],36)"
     },
 "formatted_dollar_diff": {
-      "type": "expression2",
        "expression": " ($row['document_code@checkbook:ref_document_code'] == 'DO1') ? 'N/A' : custom_number_formatter_basic_format($row['dollar_difference']) "
     },
 "formatted_percent_diff": {
-      "type": "expression2",
       "expression": " ($row['document_code@checkbook:ref_document_code'] == 'DO1') ? 'N/A' : (round($row['percent_difference'],2) . '%')"
     },
 "budget_name_formatted":{
-                "type": "expression2",
                 "expression": "_get_tooltip_markup($row['budget_name'], 36)"
        }
 },

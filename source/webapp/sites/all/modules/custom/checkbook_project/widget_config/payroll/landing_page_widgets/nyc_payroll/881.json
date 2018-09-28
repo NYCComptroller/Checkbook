@@ -42,35 +42,27 @@
     "table_title":"",
     "derivedColumns": {
        "employee_name_formatted": {
-          "type": "expression2",
           "expression": "_get_tooltip_markup($row['civil_service_title'],36)"
         },
      "employee_name_link": {
-         "type": "expression2",
          "expression": "'<a href=/payroll/title_landing' . _checkbook_project_get_year_url_param_string() .'/title/' . $row['civil_service_title_code'] . '>' . $row['employee_name_formatted'] . '</a>'"
       },
      "total_no_of_employees_formatted": {
-         "type": "expression2",
          "expression": "number_format($row['employee_count'])"
       },
       "total_gross_pay_formatted":{
-         "type":"expression2",
          "expression": "custom_number_formatter_format($row['total_gross_pay'],2,'$')"
        },
        "total_base_salary_formatted":{
-         "type":"expression2",
          "expression": "custom_number_formatter_format($row['total_base_salary'],2,'$')"
        },
         "total_other_payments_formatted":{
-         "type":"expression2",
          "expression": "custom_number_formatter_format($row['total_other_payments'],2,'$')"
        },
       "total_overtime_amount_formatted":{
-         "type":"expression2",
          "expression": "custom_number_formatter_format($row['total_overtime_amount'],2,'$')"
        },
       "annual_salary_formatted":{
-         "type":"expression2",
          "expression": "custom_number_formatter_format($row['total_annual_salary'],2,'$')"
        }
     },

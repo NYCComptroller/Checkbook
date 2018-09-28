@@ -24,40 +24,31 @@ return $adjustedParameters;
 "enableExpand":true,
 "derivedColumns": {
 "vendor_name_formatted": {
-"type": "expression2",
 "expression": "_get_tooltip_markup($row['vendor_vendor_legal_name'],100)"
 },
 "current_prime_minority_type_id": {
-"type": "expression2",
 "expression": "$row['minority_type_minority_type']"
 },
 "vendor_name_link": {
-"type": "expression2",
 "expression": "'<a href=\"/contracts_revenue_landing' . ContractUtil::get_contracts_vendor_link_by_mwbe_category($row) . '?expandBottomCont=true\">' .$row['vendor_name_formatted']. '</a>'"
 } ,
 "spent_amount_link": {
-"type": "expression2",
 "expression": "'<a href=\"/spending/transactions/cvendor/' .$row['vendor_vendor'] .  _checkbook_project_get_url_param_string(\"status\") . _checkbook_project_get_url_param_string(\"agency\",\"cagency\")   ._checkbook_project_get_url_param_string(\"awdmethod\")  . _checkbook_project_get_url_param_string(\"mwbe\") .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\") .  ContractURLHelper::_checkbook_project_spending_get_year_url_param_string() .  '\">' . '$ ' . custom_number_formatter_format($row['spending_amount_sum'],2). '</a>'"
 } ,
 "formatted_original_amount_sum": {
-"type": "expression2",
 "expression": " '$' . custom_number_formatter_format($row['original_amount_sum'],2)"
 },
 "formatted_total_current_amount_sum": {
-"type": "expression2",
 "expression": " '$' . custom_number_formatter_format($row['current_amount_sum'],2)"
 } ,
 
 "formatted_total_contracts": {
-"type": "expression2",
 "expression": " number_format($row['total_contracts'])"
 },
 "mwbe_category_name": {
-"type":"expression2",
 "expression":"MappingUtil::getMinorityCategoryById($row['minority_type_minority_type'])"
 },
 "mwbe_category_name_link": {
-"type": "expression2",
 "expression": "!MappingUtil::isMWBECertified(array($row['minority_type_minority_type'])) ? $row['mwbe_category_name']  : ('<a href=' . ContractUtil::getMWBECategoryLinkUrl($row['minority_type_minority_type']) . '>'. $row['mwbe_category_name'] .'</a>') "
 }
 },

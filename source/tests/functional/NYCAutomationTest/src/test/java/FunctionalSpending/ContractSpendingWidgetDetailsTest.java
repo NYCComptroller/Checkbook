@@ -19,9 +19,9 @@ import utilities.NYCBaseTest;
 import utilities.TestStatusReport;
 import utilities.NYCDatabaseUtil;
 
+public class ContractSpendingWidgetDetailsTest extends NYCBaseTest {
 
-//public class ContractSpendingWidgetDetailsTest extends NYCBaseTest {
-	public class ContractSpendingWidgetDetailsTest extends TestStatusReport{
+//public class ContractSpendingWidgetDetailsTest extends TestStatusReport{
 	int year =  Integer.parseInt(NYCBaseTest.prop.getProperty("year"));
 	@Before
 	public void GoToPage(){		
@@ -119,7 +119,7 @@ import utilities.NYCDatabaseUtil;
 		String WidgetDetailsTitleApp = HomePage.DetailsPagetitle();
 	    assertEquals("Contracts Spending Contracts widget Details title did not match", WidgetDetailsTitle, WidgetDetailsTitleApp); 
 	    
-	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getContractsSpendingDetailsAmount(year,'B');
+	    String WidgetDetailsAmountDB =  NYCDatabaseUtil.getContractsSpendingContractsDetailsAmount(year,'B');
 			String WidgetDetailsAmountApp = HomePage.GetTransactionAmount1();
 		    assertEquals("Contracts Spending Contracts widget Details page Total Spending Amount did not match", WidgetDetailsAmountApp, WidgetDetailsAmountDB);
 

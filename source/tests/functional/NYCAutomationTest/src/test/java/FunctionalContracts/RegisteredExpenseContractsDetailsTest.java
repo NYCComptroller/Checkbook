@@ -8,6 +8,7 @@ import java.sql.SQLException;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.After;
 
 import pages.contracts.ActiveExpenseContractsPage;
 import pages.contracts.ContractsPage;

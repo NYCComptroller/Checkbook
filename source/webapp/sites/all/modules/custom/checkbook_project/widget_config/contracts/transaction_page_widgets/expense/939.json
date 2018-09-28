@@ -45,9 +45,34 @@
         "contnum_exact":"contract_number",
         "year":"year"
     },
-    "allowRequestParams":["smnid","doctype","mwbe","modamt","psmwbe","vendor","pcuramtr","scuramtr"],
-    "paramTypeConfig":{"vendornm_exact":"eqignorecase","vendornm":"like","pcontdesc":"contains","scontdesc":"contains","contnum":"like","contnum_exact":"eqignorecase","aptpin":"like","pin":"like",
-        "startdate":"range","enddate":"range","regdate":"range","curamt":"range","pcuramtr":"rangeid","scuramtr":"rangeid","pmodamt":"ne","smodamt":"ne"},
+    "allowRequestParams": [
+      "smnid",
+      "doctype",
+      "mwbe",
+      "modamt",
+      "psmwbe",
+      "vendor",
+      "pcuramtr",
+      "scuramtr"
+    ],
+    "paramTypeConfig": {
+      "vendornm_exact": "eqignorecase",
+      "vendornm": "like",
+      "pcontdesc": "contains",
+      "scontdesc": "contains",
+      "contnum": "like",
+      "contnum_exact": "eqignorecase",
+      "aptpin": "like",
+      "pin": "like",
+      "startdate": "range",
+      "enddate": "range",
+      "regdate": "range",
+      "curamt": "range",
+      "pcuramtr": "rangeid",
+      "scuramtr": "rangeid",
+      "pmodamt": "ne",
+      "smodamt": "ne"
+    },
     "header":"
         $header = NULL;
         $header .= widget_data_tables_export_link($node);
@@ -138,35 +163,27 @@
     "caption":"",
     "derivedColumns": {
         "child_contrats_link":{
-            "type":"expression2",
             "expression":"ContractURLHelper::expenseContractsExpandLink($row, $node)"
         },
         "contract_link": {
-            "type":"expression2",
             "expression":" (($row['document_code']=='RCT1')? ContractURLHelper::prepareRevenueContractLink($row, $node) : ContractURLHelper::expenseContractsLink($row, $node, false, $row['contract_original_agreement_id']))"
         },
         "parent_contract_link": {
-            "type":"expression2",
             "expression":"(($row['master_agreement_yn'] == 'Y') ? 'N/A' : ContractURLHelper::prepareExpenseContractLink($row, $node, true, $row['contract_original_agreement_id']))"
         },
         "formatted_prime_original_contract_amount": {
-            "type":"expression2",
             "expression":"(strtolower($row['vendor_record_type']) == 'sub vendor') ? 'N/A' : custom_number_formatter_basic_format($row['prime_original_contract_amount'])"
         },
         "formatted_prime_current_amount": {
-            "type":"expression2",
             "expression":"(strtolower($row['vendor_record_type']) == 'sub vendor') ? 'N/A' : custom_number_formatter_basic_format($row['prime_maximum_contract_amount'])"
         },
         "formatted_sub_original_contract_amount": {
-            "type":"expression2",
             "expression":"(strtolower($row['vendor_record_type']) == 'prime vendor') ? 'N/A' : custom_number_formatter_basic_format($row['sub_original_contract_amount'])"
         },
         "formatted_sub_current_amount": {
-            "type":"expression2",
             "expression":"(strtolower($row['vendor_record_type']) == 'prime vendor') ? 'N/A' : custom_number_formatter_basic_format($row['sub_maximum_contract_amount'])"
         },
         "formatted_spent_to_date": {
-            "type":"expression2",
             "expression":"(strtolower($row['vendor_record_type']) == 'prime vendor')? (
             '<a href=\"/spending/transactions'
             .  ($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['original_agreement_id']
@@ -176,7 +193,6 @@
             "
         },
         "formatted_paid_to_date": {
-            "type":"expression2",
             "expression":"(strtolower($row['vendor_record_type']) == 'sub vendor')? (
             '<a href=\"/spending/search/transactions'
             .  ($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['original_agreement_id']
@@ -186,104 +202,82 @@
             "
         },
         "formatted_sub_effective_begin_date": {
-            "type":"expression2",
             "expression":"(strtolower($row['vendor_record_type']) == 'sub vendor')? $row['sub_effective_begin_date'] : 'N/A'"
         },
         "formatted_sub_effective_end_date": {
-            "type":"expression2",
             "expression":"(strtolower($row['vendor_record_type']) == 'sub vendor')? $row['sub_effective_end_date'] : 'N/A'"
         },
         "agency_formatted": {
-            "type":"expression2",
             "expression":"_get_tooltip_markup($row['agency_name'],26)"
         },
         "agency_name_link": {
-            "type":"expression2",
             "expression":" '<a href=\"'
              .ContractsUrlService::applyLandingParameter($row['document_code'])
              ._checkbook_append_url_params()
-            .  '/year/'._getFiscalYearID()
+            .  RequestUtilities::buildUrlFromParam('year')
             .  '/yeartype/B'
-            .  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
+            .  RequestUtilities::buildUrlFromParam('contstatus|status')
             . '/agency/' . $row['agency_id']
             .  '?expandBottomCont=true\">'. $row['agency_formatted'] . '</a>'  "
         },
         "prime_purpose_formatted": {
-            "type":"expression2",
             "expression":"_get_tooltip_markup($row['prime_purpose'],36)"
         },
         "sub_purpose_formatted": {
-            "type":"expression2",
             "expression":"(strtolower($row['vendor_record_type']) == 'sub vendor')? _get_tooltip_markup($row['sub_purpose'],36) : 'N/A'"
         },
         "expense_cat": {
-            "type":"expression2",
             "expression":"isset($row['expenditure_object_names']) ? _get_tooltip_markup($row['expenditure_object_names'],36): 'N/A'"
         },
         "award_method_formatted": {
-            "type":"expression2",
             "expression":"_get_tooltip_markup($row['award_method_name'],36)"
         },
         "contract_type_formatted": {
-            "type":"expression2",
             "expression":"_get_tooltip_markup($row['agreement_type_name'],36)"
         },
         "prime_industry_name_formatted": {
-            "type":"expression2",
             "expression":"_get_tooltip_markup($row['prime_industry_type_name'],36)"
         },
         "sub_industry_name_formatted": {
-            "type":"expression2",
             "expression":"(strtolower($row['vendor_record_type']) == 'sub vendor')? _get_tooltip_markup($row['sub_industry_type_name'],36) : 'N/A'"
         },
         "formatted_prime_dollar_diff": {
-            "type":"expression2",
             "expression":"(strtolower($row['vendor_record_type']) == 'prime vendor')?custom_number_formatter_basic_format($row['prime_dollar_difference']):'N/A'"
         },
         "formatted_prime_percent_diff": {
-            "type":"expression2",
             "expression":"(strtolower($row['vendor_record_type']) == 'prime vendor')?round($row['prime_percent_difference'],2) . '%':'N/A'"
         },
         "formatted_sub_dollar_diff": {
-            "type":"expression2",
             "expression":"(strtolower($row['vendor_record_type']) == 'sub vendor')?custom_number_formatter_basic_format($row['sub_dollar_difference']):'N/A'"
         },
         "formatted_sub_percent_diff": {
-            "type":"expression2",
             "expression":"(strtolower($row['vendor_record_type']) == 'sub vendor')?round($row['sub_percent_difference'],2) . '%':'N/A'"
         },
         "sub_contract_reference_id":{
-            "type":"expression2",
             "expression":"isset($row['sub_contract_id']) ? $row['sub_contract_id'] : 'N/A'"
         },
         "prime_vendor_name_formatted": {
-            "type":"expression2",
             "expression":"_get_tooltip_markup($row['prime_vendor_name'],24)"
         },
         "prime_vendor_name_link": {
-            "type": "expression2",
-            "expression": " '<a href=\"'
-            . ContractsUrlService::primeVendorUrl($row['prime_vendor_id'],RequestUtilities::getRequestParamValue('year'), false,$row['document_code'])
-            .  '?expandBottomCont=true\">'. $row['prime_vendor_name_formatted'] . '</a>'  "
-        },
+           "expression": " '<a href=\"'.
+               ContractsUrlService::applyLandingParameter($row['document_code'])
+              . ContractsUrlService::primeVendorUrl($row['prime_vendor_id'],_getRequestParamValue('year'), false)
+               . '?expandBottomCont=true\">'. $row['prime_vendor_name_formatted'] . '</a>'  "
+          },
         "subvendor_name_formatted": {
-            "type":"expression2",
             "expression":"_get_tooltip_markup($row['sub_vendor_name'],30)"
         },
         "subvendor_name": {
-            "type":"expression2",
             "expression":"(in_array(strtoupper($row['sub_vendor_name']), array('NOT PROVIDED', 'N/A', '', NULL))) ? (isset($row['sub_vendor_name']) ? $row['sub_vendor_name']: 'N/A' ) : '<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row['sub_vendor_id'],RequestUtilities::getRequestParamValue('year'),RequestUtilities::getRequestParamValue('yeartype'), null, $row['sub_minority_type_id']) .  '?expandBottomCont=true\">' .$row['subvendor_name_formatted']. '</a>'"
         },
         "sub_mwbe_category_name": {
-            "type":"expression2",
             "expression":"(in_array(strtoupper($row['sub_minority_type_name']), array('NOT PROVIDED', 'N/A', '', NULL))) ? (isset($row['sub_minority_type_name']) ? $row['sub_minority_type_name']: 'N/A' ) : $row['sub_minority_type_name']"
         },
         "contract_includes_sub":{
-            "type":"expression2",
             "expression":"isset($row['scntrc_status_name']) ? $row['scntrc_status_name'] : 'N/A'"
         },
         "subvendor_status_pip":{
-            "type":"expression2",
             "expression": "(in_array($row['document_code'], array('MA1','MMA1')))?'N/A':(in_array($row['scntrc_status'], array(0,1,3))  ? (isset($row['aprv_sta_name']) ? _get_tooltip_markup($row['aprv_sta_name'],36) : 'N/A') : ($row['vendor_record_type'] == 'Prime Vendor') ? (isset($row['aprv_sta_name']) ? _get_tooltip_markup($row['aprv_sta_name'],36) : 'N/A') :_get_tooltip_markup($row['aprv_sta_name'],36))"
         }
     },

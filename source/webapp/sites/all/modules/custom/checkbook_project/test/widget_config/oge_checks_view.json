@@ -40,7 +40,7 @@ $header='<div class=\"tableHeader\"><h2>Top ' .  $count . 'Checks</h2><span clas
 return $header;
 ",
 "footer":"
-$url = '/panel_html/spending_transactions/spending/transactions'. _checkbook_project_get_url_param_string(\"vendor\",\"fvendor\") ._checkbook_project_get_url_param_string(\"agency\")  . '/dtsmnid/' . $node->nid ._checkbook_project_get_url_param_string(\"category\") . _checkbook_project_get_year_url_param_string(false,false,true). _checkbook_append_url_params();
+$url = '/panel_html/spending_transactions/spending/transactions'. RequestUtilities::buildUrlFromParam(\'vendor|fvendor\') .RequestUtilities::buildUrlFromParam(\'agency\')  . '/dtsmnid/' . $node->nid .RequestUtilities::buildUrlFromParam(\'category\') . _checkbook_project_get_year_url_param_string(false,false,true). _checkbook_append_url_params();
 $footer = '';
 if($node->totalDataCount > 0)
     $footer = \"<a class='show-details bottomContainerReload' href='$url'>Details >></a>\";
@@ -51,23 +51,18 @@ return $footer;
 ",
 "derivedColumns": {
 "agency_name_link": {
-"type": "expression2",
-"expression": "'<a href=\"/spending_landing' .  _checkbook_project_get_url_param_string(\"vendor\") ._checkbook_project_get_url_param_string(\"category\") . _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() . '/agency/'. $row['agency_id'] .'\">' . $row['agency_name'] . '</a>'"
+"expression": "'<a href=\"/spending_landing' .  RequestUtilities::buildUrlFromParam(\'vendor\') .RequestUtilities::buildUrlFromParam(\'category\') . _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() . '/agency/'. $row['agency_id'] .'\">' . $row['agency_name'] . '</a>'"
 },
 "vendor_name_formatted": {
-"type": "expression2",
 "expression": "_get_tooltip_markup($row['vendor_name'],36)"
 },
 "vendor_name_link": {
-"type": "expression2",
-"expression": "'<a href=\"/spending_landing' .  _checkbook_project_get_url_param_string(\"agency\") ._checkbook_project_get_url_param_string(\"category\") . _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() . '/vendor/'. $row['vendor_id'] .'\">' . $row['vendor_name_formatted'] . '</a>'"
+"expression": "'<a href=\"/spending_landing' .  RequestUtilities::buildUrlFromParam(\'agency\') .RequestUtilities::buildUrlFromParam(\'category\') . _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() . '/vendor/'. $row['vendor_id'] .'\">' . $row['vendor_name_formatted'] . '</a>'"
 },
 "vendor_name_link2": {
-"type": "expression2",
 "expression": "($row['vendor_id'] == null )?$row['vendor_name']:$row['vendor_name_link']"
 },
 "formatted_check_amount": {
-"type": "expression2",
 "expression": "custom_number_formatter_format($row['check_amount'],2,'$')"
 }
 },

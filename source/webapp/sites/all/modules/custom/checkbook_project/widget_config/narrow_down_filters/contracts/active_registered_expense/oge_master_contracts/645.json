@@ -9,7 +9,6 @@
      },
     "columns":["vendor.vendor", "vendor.vendor.legal_name", "txcount"],
     "orderBy":"-txcount",
-	"getTotalDataCount":true,
 	"facetPager":true,
     "filterName":"Vendor",
     "urlParameterName":"vendor",

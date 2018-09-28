@@ -1,19 +1,19 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -155,7 +155,8 @@ class DefaultDataQueryController extends AbstractDataQueryController {
         	"Using '!formattingPath' to format result of the dataset: @datasetName",
             array('!formattingPath' => $datasetResultFormatter->printFormattingPath(), '@datasetName' => $datasetName)));
 
-        return $this->getDataSourceQueryHandlerByDatasetName($datasetName)->queryDataset($callcontext, $datasetQueryRequest, $datasetResultFormatter);
+        $result = $this->getDataSourceQueryHandlerByDatasetName($datasetName)->queryDataset($callcontext, $datasetQueryRequest, $datasetResultFormatter);
+        return $result;
     }
 
     protected function executeDatasetCountRequest(DataQueryControllerDatasetRequest $request) {
@@ -192,6 +193,7 @@ class DefaultDataQueryController extends AbstractDataQueryController {
         $cubeResultFormatter->adjustCubeQueryRequest($callcontext, $cubeQueryRequest);
 
         $cubeName = $cubeQueryRequest->getCubeName();
+        LogHelper::log_info('cubeQuery');
         LogHelper::log_debug(t(
         	"Using '!formattingPath' to format result of the cube: @cubeName",
             array('!formattingPath' => $cubeResultFormatter->printFormattingPath(), '@cubeName' =>  $cubeName)));
@@ -211,6 +213,7 @@ class DefaultDataQueryController extends AbstractDataQueryController {
         $cubeResultFormatter = isset($request->resultFormatter) ? $request->resultFormatter : $this->getDefaultResultFormatter();
         $cubeResultFormatter->adjustCubeCountRequest($callcontext, $cubeCountRequest);
 
+        LogHelper::log_info('cubeCount');
         LogHelper::log_debug($request);
 
         $cubeName = $cubeCountRequest->getCubeName();

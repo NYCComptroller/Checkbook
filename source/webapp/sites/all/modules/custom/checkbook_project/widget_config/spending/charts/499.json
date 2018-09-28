@@ -61,15 +61,12 @@
   },
 "derivedColumns": {
     "agency_formatted": {
-        "type": "expression2",
         "expression": "strtoupper(html_entity_decode($row[\"agency_agency_agency_name\"],ENT_QUOTES))"
     },
     "vendor_formatted": {
-        "type": "expression2",
         "expression": "strtoupper(html_entity_decode($row[\"vendor_vendor_legal_name\"],ENT_QUOTES))"
     },
     "column_link":{
-        "type":"expression2",
         "expression":" 'contract_details'
                        . ( in_array($row['document_code_document_code'], array('MMA1','MA1')) ? '/magid/' : '/agid/' )
                        .  $row['agreement_id_agreement_id'] .  _checkbook_append_url_params() . '/doctype/' . $row['document_code_document_code'] . '/newwindow' "

@@ -14,7 +14,6 @@
     "defaultParameters":{"status_flag":"A","is_vendor_flag":"Y","type_of_year":"B","if_for_all_years":"N"},
     "columns":["vendor.vendor", "vendor.vendor.legal_name", "txcount"],
     "orderBy":"-txcount",
-    "getTotalDataCount":true,
     "facetPager":true,
     "filterName":"Vendor",
     "urlParameterName":"vendor",
@@ -23,23 +22,23 @@
     "autocompleteID":"fvendorId",
     "autocompleteField":"vendor_name",
     "adjustParameters":"
-	checkbook_faceted_search_adjust_param($node);
-    if(function_exists('_checkbook_project_adjustContractParameterFilters')){
-        _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');
-    }
-    if(RequestUtilities::getRequestParamValue('vendor') || RequestUtilities::getRequestParamValue('vendornm')){
-        $parameters['is_vendor_flag'] = 'Y';
-    }
-    if(!(RequestUtilities::getRequestParamValue('year') || RequestUtilities::getRequestParamValue('calyear'))){
-        $parameters['latest_flag'] = 'Y';
-        $parameters['if_for_all_years'] = 'Y';
-    }
-    if(function_exists('_checkbook_project_applyParameterFilters')){
-        $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
-		$adjustedParameters['vendor.vendor'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
-        return $adjustedParameters;
-    }
-    return $parameters;
+        checkbook_faceted_search_adjust_param($node);
+        if(function_exists('_checkbook_project_adjustContractParameterFilters')){
+            _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');
+        }
+        if(RequestUtilities::getRequestParamValue('vendor') || RequestUtilities::getRequestParamValue('vendornm')){
+            $parameters['is_vendor_flag'] = 'Y';
+        }
+        if(!(RequestUtilities::getRequestParamValue('year') || RequestUtilities::getRequestParamValue('calyear'))){
+            $parameters['latest_flag'] = 'Y';
+            $parameters['if_for_all_years'] = 'Y';
+        }
+        if(function_exists('_checkbook_project_applyParameterFilters')){
+            $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+            $adjustedParameters['vendor.vendor'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+            return $adjustedParameters;
+        }
+        return $parameters;
     ",
     "template":"individual_filter"
 }

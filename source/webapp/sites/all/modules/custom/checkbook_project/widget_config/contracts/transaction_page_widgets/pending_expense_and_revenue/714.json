@@ -50,67 +50,51 @@
     "caption":"",
     "derivedColumns": {
         "formatted__maximum_amount": {
-            "type": "expression2",
             "expression": "custom_number_formatter_basic_format($row['revised_maximum_amount'])"
         },
         "formatted__original_maximum_amount": {
-            "type": "expression2",
             "expression": "custom_number_formatter_basic_format($row['original_maximum_amount'])"
         },
         "parent_contract_link": {
-            "type": "expression2",
             "expression": "empty($row['fms_parent_contract_number']) ? 'N/A' : $row['fms_parent_contract_number']"
         },
         "formatted__original_or_modified": {
-            "type": "expression2",
             "expression": " $row['original_or_modified'] == 'N' ? 'Original' : 'Modified'; "
         },
         "purpose_formatted": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['description'],40)"
         },
         "contract_link": {
-            "type": "expression2",
             "expression": "_pending_contracts_link_contract_details($row['fms_contract_number'],$row['original_agreement_id'],$row['document_code@checkbook:ref_document_code'],$row['contract_number'],$row['document_version'])"
         },
         "award_method_formatted": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['award_method_name'],40)"
         },
         "contract_type_formatted": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['contract_type_name'],40)"
         },
         "agency_formatted": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['document_agency_name'],34)"
         },
         "vendor_formatted": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['vendor_legal_name'],34)"
         },
         "industry_name_formatted": {
-            "type": "expression2",
             "expression": "_get_tooltip_markup($row['industry_type_name@checkbook:industry_type'],30)"
         },
         "formatted_dollar_diff": {
-            "type": "expression2",
             "expression": "custom_number_formatter_basic_format($row['dollar_difference'])"
         },
         "formatted_percent_diff": {
-            "type": "expression2",
             "expression": "round($row['percent_difference'],2) . '%'"
         },
         "mwbe_category_name": {
-            "type": "expression2",
             "expression": "ContractUtil::get_mwbe_category_url($row['minority_type_id'],null,$row['document_code@checkbook:ref_document_code'])"
         },
         "mwbe_category_name_formatted": {
-            "type": "expression2",
             "expression": "MappingUtil::getMinorityCategoryById($row['minority_type_id'])"
         },
         "formatted_is_sub_vendor": {
-            "type": "expression2",
             "expression": "'No'"
         }
     },
@@ -137,8 +121,9 @@
         {"labelAlias": "apt_pin","column":"board_award_number"}
     ],
     "adjustParameters":"
-        if(isset($parameters['cont_type_code'][0])){
-            $parameters['cont_type_code'] = (int)$parameters['cont_type_code'][0];
+    //FIX ME: Hard coded the contract type code for 'Construction' for now since it is not matching with reference table value
+    if(isset($parameters['cont_type_code'][0]) && $parameters['cont_type_code'][0] == '05'){
+            $parameters['cont_type_code'] = '5';
         }
         if(isset($parameters['vendor_type'])){
             $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);

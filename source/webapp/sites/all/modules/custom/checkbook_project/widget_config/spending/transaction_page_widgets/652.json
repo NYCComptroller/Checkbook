@@ -70,87 +70,66 @@ return $header;
 "columns_datasource":{"budget_name@checkbook:oge_contract":"checkbook_oge","oge_contract_number@checkbook:oge_contract":"checkbook_oge","agreement_commodity_line_number":"checkbook_oge"},
 "derivedColumns": {
 "agency_name_formatted":{
-"type": "expression2",
 "expression": "_get_tooltip_markup($row['agency_name'], 30)"
 },
 "agency_name_link": {
-"type": "expression2",
 "expression": " RequestUtil::isNewWindow() ? $row['agency_name_formatted']  : ('<a href=/spending_landing' . _checkbook_project_get_year_url_param_string(false,false,false,true) . _checkbook_append_url_params()  . _checkbook_project_get_url_param_string('category') . '/agency/'. $row['agency_id']. '?expandBottomCont=true>'. $row['agency_name_formatted'] .'</a>') "
 },
 "vendor_name_export":{
-"type": "expression2",
 "expression": "($row['spending_category_name']=='Payroll')?$row['vendor_name']:$row['vendor_name']"
 },
 "vendor_name_formatted":{
-"type": "expression2",
 "expression": "($row['spending_category_id']==2)?_get_tooltip_markup($row['vendor_name'], 30):_get_tooltip_markup($row['vendor_name'], 34)"
 },
 "agency_param":{
-"type": "expression2",
 "expression": "(_checkbook_check_isEDCPage()? _checkbook_project_get_url_param_string(\"agency\") :'')"
 },
 "issue_date_formatted":{
-"type": "expression2",
 "expression": "(_checkbook_check_isEDCPage()? 'N/A' : $row['check_eft_issued_date'])"
 },
 "vendor_name_link": {
-"type": "expression2",
 "expression": " RequestUtil::isNewWindow() ||  $row['spending_category_id']==2 ?  $row['vendor_name_formatted'] : ('<a href=/spending_landing' . _checkbook_project_get_year_url_param_string(false,false,false,true) . _checkbook_append_url_params() . $row['agency_param'] . _checkbook_project_get_url_param_string('category') . (_checkbook_check_isEDCPage() ? ('/agency/'. $row['agency_id']) :'') . '/vendor/'. $row['vendor_id'] . '?expandBottomCont=true>'. $row['vendor_name_formatted'] .'</a>') "
 } ,
 "formatted_check_amount": {
-"type": "expression2",
 "expression": "custom_number_formatter_basic_format($row['check_amount'])"
 },
 "reference_document_number_export": {
-"type": "expression2",
 "expression": "($row['spending_category_name'] == 'Payroll' ||  $row['spending_category_name'] == 'Others') ? 'N/A' : $row['reference_document_number']"
 } ,
 "reference_document_number_link": {
-"type": "expression2",
 "expression": "(ContractURLHelper::prepareSpendingContractLink($row, $node))?ContractURLHelper::prepareSpendingContractLink($row, $node):'N/A'"
 },
 "fms_document_link": {
-"type": "expression2",
 "expression": "($row['spending_category_name'] == 'Payroll' ||  $row['spending_category_name'] == 'Others') ? 'N/A' : '' "
 },
 "purpose_formatted":{
-"type": "expression2",
 "expression": "_get_tooltip_markup($row['purpose'], 30)"
 },
 "contract_purpose_text":{
-"type": "expression2",
 "expression": "($row['spending_category_name'] == 'Payroll' ||  $row['spending_category_name'] == 'Others') ? 'N/A' : $row['purpose_formatted']"
 },
 "contract_purpose_export":{
-"type": "expression2",
 "expression": "($row['spending_category_name'] == 'Payroll' ||  $row['spending_category_name'] == 'Others') ? 'N/A' : $row['purpose']"
 },
 "purpose_cy_formatted":{
-"type": "expression2",
 "expression": "_get_tooltip_markup($row['purpose_cy'], 30)"
 },
 "contract_purpose_cy_text":{
-"type": "expression2",
 "expression": "($row['spending_category_name'] == 'Payroll' ||  $row['spending_category_name'] == 'Others') ? 'N/A' : $row['purpose_cy_formatted']"
 },
 "contract_purpose_cy_export":{
-"type": "expression2",
 "expression": "($row['spending_category_name'] == 'Payroll' ||  $row['spending_category_name'] == 'Others') ? 'N/A' : $row['purpose_cy']"
 },
 "budget_code_formatted":{
-"type": "expression2",
 "expression": "_get_tooltip_markup($row['budget_name'],30)"
 },
 "expense_cat_formatted":{
-"type": "expression2",
 "expression": "_get_tooltip_markup($row['expenditure_object_name'],40)"
 },
 "dept_name_formatted":{
-"type": "expression2",
 "expression": "_get_tooltip_markup($row['department_name'],40)"
 },
 "budget_name_formatted":{
-"type": "expression2",
 "expression": "_get_tooltip_markup($row['budget_name@checkbook:oge_contract'],36)"
 }
 },

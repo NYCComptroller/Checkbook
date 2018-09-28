@@ -10,7 +10,6 @@
     "urlParamMap":{"title":"civil_service_title.civil_service_title"},
     "orderBy":"-txcount",
     "filterName":"Title",
-    "getTotalDataCount":true,
     "facetPager":true,
     "urlParameterName":"title",
     "urlParameterNameType":"eqtext",

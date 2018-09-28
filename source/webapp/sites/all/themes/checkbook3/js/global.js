@@ -640,11 +640,10 @@ jQuery(document).ready(function ($) {
                                     }
 
 
-                                    var frmtfilter = $('input[name=frmt]:checked').val();
-                                    if (frmtfilter == null) {
-                                        alertMsgs.push('Format must be selected');
-                                    }
-
+                                    // var frmtfilter = $('input[name=frmt]:checked').val();
+                                    // if (frmtfilter == null) {
+                                    //     alertMsgs.push('Format must be selected');
+                                    // }
 
                                     if (alertMsgs.length > 0) {
                                         $('#errorMessages').html('Below errors must be corrected:<div class="error-message"><ul>' + '<li>' + alertMsgs.join('<li/>') + '</ul></div>');
@@ -698,6 +697,11 @@ jQuery(document).ready(function ($) {
                                 "Cancel": function () {
                                     $(this).dialog('close');
                                 }
+                            },
+                            open: function(){
+                              $('.export-range-input').click(function(){
+                                $('#export-dc-range').attr("checked", "checked").trigger("click");
+                              });
                             }
                         });
                     }
@@ -1272,7 +1276,7 @@ function splitLine(st, n) {
 function fasterSplit(str, len) {
     var ret = [], strlen = str.length, off = 0, rem = len
     do {
-        //if()  
+        //if()
         ret.push(str.substr(off, len));
         off += len
     } while (off < strlen)

@@ -28,27 +28,42 @@ import utilities.TestStatusReport;
 		/* ***************** Test Widget Counts ****************** */
 		@Test
 		public void VerifyNumOfRevenueAgenies() throws SQLException {
-			Integer NumOfRevenueAgencies2016 =  NYCDatabaseUtil.getRevenueAgenciesCount(2016,'B');
+			Integer NumOfRevenueAgenciesDB =  NYCDatabaseUtil.getRevenueAgenciesCount(year,'B');
 			Integer numOfRevenueAgenciesapp = RevenuePage.GetTop5WidgetTotalCount(WidgetOption.Top5Agencies);
-			assertEquals("Number of Revenue Agencies did not match", numOfRevenueAgenciesapp, NumOfRevenueAgencies2016);
+			assertEquals("Revenue domain  Agencies widget count did not match with DB", numOfRevenueAgenciesapp, NumOfRevenueAgenciesDB);
 		}
 
-		public void VerifyNumOfRevenueAgenies1() {
-			Integer NumOfRevenueAgencies2016 =  150;
-			Integer numOfRevenueAgenciesapp = RevenuePage.GetTop5WidgetTotalCount(WidgetOption.Top5Agencies);
-			 assertEquals("Number of Revenue Agencies did not match", numOfRevenueAgenciesapp, NumOfRevenueAgencies2016);
-		}
 		@Test
 		public void VerifyNumOfRevenueCategories() throws SQLException {
-			Integer NumOfRevenueCategories2016 =  NYCDatabaseUtil.getRevenueCategoriesCount(2016,'B');
+			Integer NumOfRevenueCategoriesDB =  NYCDatabaseUtil.getRevenueCategoriesCount(year,'B');
 			Integer numOfRevenueCategoriesapp = RevenuePage.GetTop5WidgetTotalCount(WidgetOption.Top5RevenueCategories);
-	        assertEquals("Number of Revenue categories did not match", numOfRevenueCategoriesapp, NumOfRevenueCategories2016);
+	        assertEquals("Revenue domain Revenue categories widget count did not match with DB", numOfRevenueCategoriesapp, NumOfRevenueCategoriesDB);
 		}
 		@Test
 		public void VerifyNumOfRevenueFundingclass() throws SQLException {
-			Integer NumOfRevenueFundingclass2016 =  NYCDatabaseUtil.getRevenueFundingclassCount(2016,'B');
+			Integer NumOfRevenueFundingclassDB =  NYCDatabaseUtil.getRevenueFundingclassCount(year,'B');
 			Integer numOfRevenueFundingclassapp = RevenuePage.GetTop5WidgetTotalCount(WidgetOption.RevenuebyFundingClasses);
-	        assertEquals("Number of Revenue funding class did not match", numOfRevenueFundingclassapp, NumOfRevenueFundingclass2016);
+	        assertEquals("Revenue domain  funding class widget count did not match with DB", numOfRevenueFundingclassapp, NumOfRevenueFundingclassDB);
+		}
+		
+		@Test
+		public void VerifyNumOfRevenueAgeniesCrossYearCollections() throws SQLException {
+			Integer NumOfRevenueAgenciesDB =  NYCDatabaseUtil.getRevenueAgenciesCrossYearColectionsDetailsCount(year,'B');
+			Integer numOfRevenueAgenciesapp = RevenuePage.GetTop5WidgetTotalCount(WidgetOption.Top5AgenciesbyCrossYearCollections);
+			assertEquals("Revenue domain Agencies byCrossYearCollections widget count did not match with DB", numOfRevenueAgenciesapp, NumOfRevenueAgenciesDB);
+		}
+
+		@Test
+		public void VerifyNumOfRevenueCategoriesCrossYearCollections() throws SQLException {
+			Integer NumOfRevenueCategoriesDB =  NYCDatabaseUtil.getRevenueCategoriesCrossYearColectionsDetailsCount(year,'B');
+			Integer numOfRevenueCategoriesapp = RevenuePage.GetTop5WidgetTotalCount(WidgetOption.Top5RevenueCategoriesbyCrossYearCollections);
+	        assertEquals("Revenue domain Revenue categories byCrossYearCollections widget count did not match with DB", numOfRevenueCategoriesapp, NumOfRevenueCategoriesDB);
+		}
+		@Test
+		public void VerifyNumOfRevenueFundingclassCrossYearCollections() throws SQLException {
+			Integer NumOfRevenueFundingclassDB =  NYCDatabaseUtil.getRevenueFundingClassesCrossYearColectionsDetailsCount(year,'B');
+			Integer numOfRevenueFundingclassapp = RevenuePage.GetTop5WidgetTotalCount(WidgetOption.RevenuebyFundingClassesbyCrossYearCollections);
+	        assertEquals("Revenue domain funding classbyCrossYearCollections widget count did not match with DB", numOfRevenueFundingclassapp, NumOfRevenueFundingclassDB);
 		}
 
 }

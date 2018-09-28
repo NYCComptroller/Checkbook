@@ -12,7 +12,6 @@
         "mwbe":"minority_type.minority_type"
     },
     "orderBy":"-txcount",
-    "getTotalDataCount":true,
     "facetPager":true,
     "filterName":"Industry",
     "urlParameterName":"industry",

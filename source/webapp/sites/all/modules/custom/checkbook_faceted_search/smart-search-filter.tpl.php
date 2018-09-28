@@ -52,9 +52,11 @@ foreach ($render_array as $title => $value) {
     if ($title == 'Type of Data' || $title == 'Spending Category' || $title == 'Category' || $title == 'Status'){
         $count =0;
         foreach ($value as $v) {
-            if(in_array('checked', $v))
-                $count++;
+            if(is_array($v) && in_array('checked', $v)) {
+              $count++;
+            }
         }
+
         if($count == 0){
             $display_facet = "none";
             $span = "";
@@ -63,7 +65,7 @@ foreach ($render_array as $title => $value) {
             $span = "open";
         }
     }else{
-        if(count($value['checked']) > 0 ){
+        if(!empty($value['checked'])){
             $display_facet = "block";
             $span = "open";
         }else{
@@ -71,13 +73,16 @@ foreach ($render_array as $title => $value) {
             $span = "";
         }
     }
+
     echo '<div class="filter-content-' . $value['name'] . ' filter-content">';
     echo '<div class="filter-title"><span class="'.$span.'">By ' . $title . '</span></div>';
     echo '<div class="facet-content" style="display:'.$display_facet.'" ><div class="progress"></div>';
+
     if ($title == 'Type of Data' || $title == 'Spending Category' || $title == 'Category' || $title == 'Status') {
         echo '<div class="options">';
         echo '<div class="rows">';
         $index = 0;
+
         foreach ($value as $v) {
             $name = $value['name'];
             $id = $id_title.$index;
@@ -93,7 +98,7 @@ foreach ($render_array as $title => $value) {
                 echo '<label for="'.$id.'"></label></div>';
                 echo '<div class="name">' . htmlentities($v[1]) . '</div>';
                 echo '<div class="number"><span' . $active . '>' . number_format($v[2]) . '</span></div>';
-                if (count($sub_cat_array[$v[1]]) > 0) {
+                if ($sub_cat_array && count($sub_cat_array[$v[1]]) > 0) {
                     $sub_index = 0;
                     foreach ($sub_cat_array[$v[1]] as $a => $b) {
                         $sub_id_title = str_replace(" ", "_", $a);
@@ -120,8 +125,8 @@ foreach ($render_array as $title => $value) {
                                     }
                                 }
                                 echo '<label for="'.$id.'"></label></div>';
-                                echo '<div class="name">' . htmlentities($sub_cat[1]) . '</div>';
-                                echo '<div class="number"><span' . $active . '>' . number_format($sub_cat[2]) . '</span></div>';
+                                echo '<div class="name"><label for="'.$id.'">' . htmlentities($sub_cat[1]) . '</label></div>';
+                                echo '<div class="number"><span' . $active . '><label for="'.$id.'">' . number_format($sub_cat[2]) . '</label></span></div>';
                                 echo '</div>';
                             }
                         }
@@ -199,24 +204,24 @@ foreach ($render_array as $title => $value) {
                     $id = "vendor_type_pv_checked";
                     echo '<div class="row">';
                     echo '<div class="checkbox"><input type="checkbox" id="'.$id.'" value="' . $prime_vendor['value'] . '"  name="' . $value['name'] . '" checked="checked" onClick="javascript:applySearchFilters();"><label for="'.$id.'"></label></div>';
-                    echo '<div class="name">' . htmlentities($prime_vendor['name']) . '</div>';
-                    echo '<div class="number"><span>' . htmlentities(number_format($prime_vendor['count'])) . '</span></div>';
+                    echo '<div class="name"><label for="'.$id.'">' . htmlentities($prime_vendor['name']) . '</label></div>';
+                    echo '<div class="number"><span><label for="'.$id.'">' . htmlentities(number_format($prime_vendor['count'])) . '</label></span></div>';
                     echo '</div>';
                 }
                 if($sub_flag){
                     $id = "vendor_type_sv_checked";
                     echo '<div class="row">';
                     echo '<div class="checkbox"><input type="checkbox" id="'.$id.'" value="' . $sub_vendor['value'] . '" name="' . $value['name'] . '" checked="checked" onClick="javascript:applySearchFilters();"><label for="'.$id.'"></label></div>';
-                    echo '<div class="name">' . htmlentities($sub_vendor['name']) . '</div>';
-                    echo '<div class="number"><span>' . htmlentities(number_format($sub_vendor['count'])) . '</span></div>';
+                    echo '<div class="name"><label for="'.$id.'">' . htmlentities($sub_vendor['name']) . '</label></div>';
+                    echo '<div class="number"><span><label for="'.$id.'">' . htmlentities(number_format($sub_vendor['count'])) . '</label></span></div>';
                     echo '</div>';
                 }
                 if($mwbe_flag){
                     $id = "vendor_type_mv_checked";
                     echo '<div class="row">';
                     echo '<div class="checkbox"><input type="checkbox" id="'.$id.'" value="' . $mwbe_vendor['value'] . '"  name="' . $value['name'] . '" checked="checked" onClick="javascript:applySearchFilters();"><label for="'.$id.'"></label></div>';
-                    echo '<div class="name">' . htmlentities($mwbe_vendor['name']) . '</div>';
-                    echo '<div class="number"><span>' . htmlentities(number_format($mwbe_vendor['count'])) . '</span></div>';
+                    echo '<div class="name"><label for="'.$id.'">' . htmlentities($mwbe_vendor['name']) . '</label></div>';
+                    echo '<div class="number"><span><label for="'.$id.'">' . htmlentities(number_format($mwbe_vendor['count'])) . '</label></span></div>';
                     echo '</div>';
                 }
             }
@@ -260,24 +265,24 @@ foreach ($render_array as $title => $value) {
                     $id = "vendor_type_pv_unchecked";
                     echo '<div class="row">';
                     echo '<div class="checkbox"><input type="checkbox" id="'.$id.'" value="' . $prime_vendor['value'] . '" ' . $disabled . ' name="' . $value['name'] . '" onClick="javascript:applySearchFilters();"><label for="'.$id.'"></label></div>';
-                    echo '<div class="name">' . htmlentities($prime_vendor['name']) . '</div>';
-                    echo '<div class="number"><span>' . htmlentities(number_format($prime_vendor['count'])) . '</span></div>';
+                    echo '<div class="name"><label for="'.$id.'">' . htmlentities($prime_vendor['name']) . '</label></div>';
+                    echo '<div class="number"><span><label for="'.$id.'">' . htmlentities(number_format($prime_vendor['count'])) . '</label></span></div>';
                     echo '</div>';
                 }
                 if($sub_count){
                     $id = "vendor_type_sv_unchecked";
                     echo '<div class="row">';
                     echo '<div class="checkbox"><input type="checkbox" id="'.$id.'" value="' . $sub_vendor['value'] . '" ' . $disabled . ' name="' . $value['name'] . '" onClick="javascript:applySearchFilters();"><label for="'.$id.'"></label></div>';
-                    echo '<div class="name">' . htmlentities($sub_vendor['name']) . '</div>';
-                    echo '<div class="number"><span>' . htmlentities(number_format($sub_vendor['count'])) . '</span></div>';
+                    echo '<div class="name"><label for="'.$id.'">' . htmlentities($sub_vendor['name']) . '</label></div>';
+                    echo '<div class="number"><span><label for="'.$id.'">' . htmlentities(number_format($sub_vendor['count'])) . '</label></span></div>';
                     echo '</div>';
                 }
                 if($mwbe_count){
                     $id = "vendor_type_mvv_unchecked";
                     echo '<div class="row">';
                     echo '<div class="checkbox"><input type="checkbox" id="'.$id.'" value="' . $mwbe_vendor['value'] . '" ' . $disabled . ' name="' . $value['name'] . '" onClick="javascript:applySearchFilters();"><label for="'.$id.'"></label></div>';
-                    echo '<div class="name">' . htmlentities($mwbe_vendor['name']) . '</div>';
-                    echo '<div class="number"><span>' . htmlentities(number_format($mwbe_vendor['count'])) . '</span></div>';
+                    echo '<div class="name"><label for="'.$id.'">' . htmlentities($mwbe_vendor['name']) . '</label></div>';
+                    echo '<div class="number"><span><label for="'.$id.'">' . htmlentities(number_format($mwbe_vendor['count'])) . '</label></span></div>';
                     echo '</div>';
                 }
             }
@@ -288,7 +293,7 @@ foreach ($render_array as $title => $value) {
             $autocomplete_id = "autocomplete_" . $value['name'];
             $disabled = ($value['checked'] && count($value['checked']) >= 5) ? "disabled" : '';
             if($title != 'M/WBE Category' && $title != 'Vendor Type' && $title != 'Payroll Type'){
-                if((!count($value['checked']) && !count($value['unchecked']))){
+                if(empty($value['checked']) && empty($value['unchecked'])){
                     echo '<div class="disable_autocomplete"><input type="text" disabled="disabled"></div>';
                 }else{
                     echo '<div class="autocomplete"><input id="' . $autocomplete_id . '" ' . $disabled . ' type="text"></div>';
@@ -304,15 +309,15 @@ foreach ($render_array as $title => $value) {
                         if($yearID <= _getFiscalYearID()){
                             echo '<div class="row">';
                             echo '<div class="checkbox"><input type="checkbox" id="'.$id.'" value="' . $row[0] . '" name="' . $value['name'] . '" checked="checked" onClick="javascript:applySearchFilters();"><label for="'.$id.'"></label></div>';
-                            echo '<div class="name">' . htmlentities($row[1]) . '</div>';
-                            echo '<div class="number"><span class="active">' . number_format($row[2]) . '</span></div>';
+                            echo '<div class="name"><label for="'.$id.'">' . htmlentities($row[1]) . '</label></div>';
+                            echo '<div class="number"><span class="active"><label for="'.$id.'">' . number_format($row[2]) . '</label></span></div>';
                             echo '</div>';
                         }
                     }else{
                         echo '<div class="row">';
                         echo '<div class="checkbox"><input type="checkbox" id="'.$id.'" value="' . $row[0] . '" name="' . $value['name'] . '" checked="checked" onClick="javascript:applySearchFilters();"><label for="'.$id.'"></label></div>';
-                        echo '<div class="name">' . htmlentities($row[1]) . '</div>';
-                        echo '<div class="number"><span class="active">' . number_format($row[2]) . '</span></div>';
+                        echo '<div class="name"><label for="'.$id.'">' . htmlentities($row[1]) . '</label></div>';
+                        echo '<div class="number"><span class="active"><label for="'.$id.'">' . number_format($row[2]) . '</label></span></div>';
                         echo '</div>';
                     }
                     $checked_index++;
@@ -330,15 +335,15 @@ foreach ($render_array as $title => $value) {
                         if($yearID <= _getFiscalYearID()){
                             echo '<div class="row">';
                             echo '<div class="checkbox"><input type="checkbox" id="'.$id.'" value="' . $row[0] . '" ' . $disabled . ' name="' . $value['name'] . '" onClick="javascript:applySearchFilters();"><label for="'.$id.'"></label></div>';
-                            echo '<div class="name">' . htmlentities($row[1]) . '</div>';
-                            echo '<div class="number"><span>' . htmlentities(number_format($row[2])) . '</span></div>';
+                            echo '<div class="name"><label for="'.$id.'">' . htmlentities($row[1]) . '</label></div>';
+                            echo '<div class="number"><span><label for="'.$id.'">' . htmlentities(number_format($row[2])) . '</label></span></div>';
                             echo '</div>';
                         }
                     }else{
                         echo '<div class="row">';
                         echo '<div class="checkbox"><input type="checkbox" id="'.$id.'" value="' . $row[0] . '" ' . $disabled . ' name="' . $value['name'] . '" onClick="javascript:applySearchFilters();"><label for="'.$id.'"></label></div>';
-                        echo '<div class="name">' . htmlentities($row[1]) . '</div>';
-                        echo '<div class="number"><span>' . htmlentities(number_format($row[2])) . '</span></div>';
+                        echo '<div class="name"><label for="'.$id.'">' . htmlentities($row[1]) . '</label></div>';
+                        echo '<div class="number"><span><label for="'.$id.'">' . htmlentities(number_format($row[2])) . '</label></span></div>';
                         echo '</div>';
                     }
                     $unchecked_index++;

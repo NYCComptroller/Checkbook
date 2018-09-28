@@ -1,0 +1,6 @@
+.out/
+.metadata/
+.idea/
+.settings/
+.recommenders/
+.reportFile.html

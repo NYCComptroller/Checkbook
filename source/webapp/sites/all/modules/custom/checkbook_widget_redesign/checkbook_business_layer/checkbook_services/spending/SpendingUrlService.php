@@ -29,10 +29,10 @@ class SpendingUrlService {
      */
     static function agencyUrl($agency_id) {
         $url = '/spending_landing'
-            . RequestUtilities::_getUrlParamString('vendor')
-            . RequestUtilities::_getUrlParamString('subvendor')
-            . RequestUtilities::_getUrlParamString('category')
-            . RequestUtilities::_getUrlParamString('industry')
+            . RequestUtilities::buildUrlFromParam('vendor')
+            . RequestUtilities::buildUrlFromParam('subvendor')
+            . RequestUtilities::buildUrlFromParam('category')
+            . RequestUtilities::buildUrlFromParam('industry')
             . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
             . _checkbook_project_get_year_url_param_string()
             . '/agency/'. $agency_id;
@@ -47,9 +47,9 @@ class SpendingUrlService {
      */
     static function payrollAgencyUrl($agency_id) {
         $url = '/spending_landing'
-            . RequestUtilities::_getUrlParamString('vendor')
-            . RequestUtilities::_getUrlParamString('category')
-            . RequestUtilities::_getUrlParamString('industry')
+            . RequestUtilities::buildUrlFromParam('vendor')
+            . RequestUtilities::buildUrlFromParam('category')
+            . RequestUtilities::buildUrlFromParam('industry')
             . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
             . _checkbook_project_get_year_url_param_string()
             . '/category/2/agency/'. $agency_id;
@@ -67,10 +67,10 @@ class SpendingUrlService {
         $url = '/spending_landing'
             ._checkbook_project_get_year_url_param_string()
             .RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
-            .RequestUtilities::_getUrlParamString('vendor')
-            .RequestUtilities::_getUrlParamString('subvendor')
-            .RequestUtilities::_getUrlParamString('category')
-            .RequestUtilities::_getUrlParamString('agency')
+            .RequestUtilities::buildUrlFromParam('vendor')
+            .RequestUtilities::buildUrlFromParam('subvendor')
+            .RequestUtilities::buildUrlFromParam('category')
+            .RequestUtilities::buildUrlFromParam('agency')
             . '/industry/'. $industry_type_id;
 
         return $url;
@@ -97,12 +97,12 @@ class SpendingUrlService {
             return null;
         }
 
-        $year_type = RequestUtilities::getRequestParamValue("yeartype");
-        $industry = RequestUtilities::getRequestParamValue("industry");
-        $agency_id = RequestUtilities::getRequestParamValue("agency");
-        $category = RequestUtilities::getRequestParamValue("category");
-        $dashboard = RequestUtilities::getRequestParamValue("dashboard");
-        $datasource = RequestUtilities::getRequestParamValue("datasource");
+        $year_type = RequestUtilities::get("yeartype");
+        $industry = RequestUtilities::get("industry");
+        $agency_id = RequestUtilities::get("agency");
+        $category = RequestUtilities::get("category");
+        $dashboard = RequestUtilities::get("dashboard");
+        $datasource = RequestUtilities::get("datasource");
 
         $latest_minority_id = !isset($year_id)
             ? PrimeVendorService::getLatestMinorityType($vendor_id, $agency_id)
@@ -149,11 +149,11 @@ class SpendingUrlService {
      */
     static function subVendorUrl($vendor_id, $year_id = null) {
 
-        $year_type = RequestUtilities::getRequestParamValue("yeartype");
-        $agency_id = RequestUtilities::getRequestParamValue("agency");
-        $industry = RequestUtilities::getRequestParamValue("industry");
-        $dashboard = RequestUtilities::getRequestParamValue("dashboard");
-        $datasource = RequestUtilities::getRequestParamValue("datasource");
+        $year_type = RequestUtilities::get("yeartype");
+        $agency_id = RequestUtilities::get("agency");
+        $industry = RequestUtilities::get("industry");
+        $dashboard = RequestUtilities::get("dashboard");
+        $datasource = RequestUtilities::get("datasource");
 
         $latest_minority_id = !isset($year_id)
             ? SubVendorService::getLatestMinorityType($vendor_id, $agency_id)
@@ -199,7 +199,7 @@ class SpendingUrlService {
             return null;
         }
 
-        $dashboard = RequestUtilities::getRequestParamValue("dashboard") ?: "mp";
+        $dashboard = RequestUtilities::get("dashboard") ?: "mp";
         $url = static::mwbeUrl($minority_type_id,$dashboard);
 
         return $url;
@@ -236,9 +236,9 @@ class SpendingUrlService {
         $minority_type_id = $minority_type_id == 4 || $minority_type_id == 5 ? '4~5' : $minority_type_id;
         $url = '/spending_landing'
             . _checkbook_project_get_year_url_param_string()
-            . RequestUtilities::_getUrlParamString('agency')
-            . RequestUtilities::_getUrlParamString('vendor')
-            . RequestUtilities::_getUrlParamString('category')
+            . RequestUtilities::buildUrlFromParam('agency')
+            . RequestUtilities::buildUrlFromParam('vendor')
+            . RequestUtilities::buildUrlFromParam('category')
             . '/dashboard/'. $dashboard
             . '/mwbe/'. $minority_type_id
             . '?expandBottomCont=true';
@@ -258,11 +258,11 @@ class SpendingUrlService {
         $dynamic_parameter = isset($dynamic_parameter) ? $dynamic_parameter : '';
 
         $url = '/panel_html/spending_transactions/spending/transactions'
-            . RequestUtilities::_getUrlParamString('vendor')
+            . RequestUtilities::buildUrlFromParam('vendor')
             . static::getVendorFacetParameter()
-            . RequestUtilities::_getUrlParamString('agency')
-            . RequestUtilities::_getUrlParamString('category')
-            . RequestUtilities::_getUrlParamString('industry')
+            . RequestUtilities::buildUrlFromParam('agency')
+            . RequestUtilities::buildUrlFromParam('category')
+            . RequestUtilities::buildUrlFromParam('industry')
             . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
             . _checkbook_project_get_year_url_param_string()
             . $dynamic_parameter
@@ -280,11 +280,11 @@ class SpendingUrlService {
     static function getFooterUrl($parameters,$legacy_node_id = null) {
         $legacy_node_id = isset($legacy_node_id) ? '/dtsmnid/'.$legacy_node_id : '';
         $url = '/panel_html/spending_transactions/spending/transactions'
-            . RequestUtilities::_getUrlParamString('vendor')
+            . RequestUtilities::buildUrlFromParam('vendor')
             . static::getVendorFacetParameter()
-            . RequestUtilities::_getUrlParamString('agency')
-            . RequestUtilities::_getUrlParamString('category')
-            . RequestUtilities::_getUrlParamString('industry')
+            . RequestUtilities::buildUrlFromParam('agency')
+            . RequestUtilities::buildUrlFromParam('category')
+            . RequestUtilities::buildUrlFromParam('industry')
             . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
             . _checkbook_project_get_year_url_param_string()
             . $legacy_node_id;
@@ -299,8 +299,8 @@ class SpendingUrlService {
     static function getVendorFacetParameter() {
 
         $facet_vendor_id = Dashboard::isSubDashboard()
-            ? RequestUtilities::getRequestParamValue("subvendor")
-            : RequestUtilities::getRequestParamValue("vendor");
+            ? RequestUtilities::get("subvendor")
+            : RequestUtilities::get("vendor");
 
         $facet_vendor_id = isset($facet_vendor_id) ? "/fvendor/" . $facet_vendor_id : '';
 

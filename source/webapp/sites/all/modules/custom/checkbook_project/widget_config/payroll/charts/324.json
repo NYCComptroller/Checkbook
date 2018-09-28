@@ -73,12 +73,9 @@
   },
 "derivedColumns": {
     "current_gross_pay": {
-        "type": "expression2",
         "expression": "  ($row['current_total_gross_pay']==null)?0:$row['current_total_gross_pay']"
     },
     "previous_gross_pay": {
-        "type": "null_check",
-        "type": "expression2",
         "expression": "  ($row['previous_total_gross_pay']==null)?0:$row['previous_total_gross_pay']"
     }
 },

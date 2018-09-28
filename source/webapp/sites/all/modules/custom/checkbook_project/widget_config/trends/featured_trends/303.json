@@ -67,27 +67,21 @@
     },
     "derivedColumns": {
             "fiscal_year_date": {
-                "type": "expression2",
                 "expression": "   $row['fiscal_year'] . '-1-1'"
             },
     "fiscal_year_utc":{
-               "type":"expression2",
                "expression":"strtotime($row['fiscal_year'] . '-1-1') * 1000"
             },
     "revenue_color":{
-                "type":"expression2",
                 "expression":"checkbook_project_general_fund_revenue_color($row['revenue_amount'])"
             },
     "expenditure_color":{
-                "type":"expression2",
                 "expression":"checkbook_project_general_fund_expenditure_color($row['expenditure_amount'])"
             },
     "modified_exp_amt":{
-                "type":"expression2",
                 "expression":"$row['expenditure_amount'] * 1000"
             },
     "modified_rev_amt":{
-               "type":"expression2",
                "expression":"$row['revenue_amount'] * 1000"
            }
     },
