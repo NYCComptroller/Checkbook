@@ -17,7 +17,9 @@ for path in sys.argv[1:]:
     for csvfile in glob.glob(os.path.join(path, '*.csv')):
       print "Converting "+csvfile
       try:
-        workbook = Workbook(csvfile[:-4] + '.xlsx', {'constant_memory': True})
+        xlsfile = csvfile[:-4] + '.xlsx'
+        xlsfiletmp = xlsfile + '.tmp'
+        workbook = Workbook(xlsfiletmp, {'constant_memory': True})
 
         worksheet = workbook.add_worksheet()
         with open(csvfile, 'rt') as f:
@@ -26,5 +28,6 @@ for path in sys.argv[1:]:
             for c, col in enumerate(row):
               worksheet.write(r, c, col)
         workbook.close()
+        os.rename(xlsfiletmp, xlsfile)
       except:
         print "Unexpected error: ", sys.exc_info()[0]
