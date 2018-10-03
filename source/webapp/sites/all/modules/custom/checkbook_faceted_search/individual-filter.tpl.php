@@ -393,7 +393,7 @@ if(strtolower($filter_name) == 'vendor'){
 }
 $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
 ?>
-<div class="filter-content <?php if( $hide_filter != "") print "disabled"; ?>"><div <?php print $hide_filter; ?>>
+<div title="<?php print $node->widgetConfig->urlParameterName; ?>" id="<?php print $autocomplete_id; ?>" class="filter-content <?php if( $hide_filter != "") print "disabled"; ?>"><div <?php print $hide_filter; ?>>
   <div class="filter-title" <?php print $tooltip ?>><span class="<?php print $span;?>">By <?php print $filter_name;?></span></div>
   <div class="facet-content" style="display:<?php echo $display_facet; ?>">
   <div class="progress"></div>
