@@ -5,13 +5,30 @@
  */
 function getNamedFilterCriteria(filterName){
     var filterId = '';
+    var filterUrlValue = '';
+
+    var facetId = document.getElementById(filterName);
     var oFilterIds = document.getElementsByName(filterName);
     if(!eval(oFilterIds)){
         return filterId;
     }
+
+    //Get facet parameter value from URL
+    if(facetId) {
+        var filterUrlParam = facetId.getAttribute('title');
+        var url = oTable.fnSettings().sAjaxSource;
+        var urlParts = url.split('/');
+        var index = urlParts.indexOf(filterUrlParam);
+        if (index >= 0 && index < urlParts.length - 1) {
+          filterUrlValue = urlParts[index + 1];
+        }
+        var filterUrlValues = filterUrlValue.split('~');
+    }
+
+    //Get the new facet selected values
     for(var i = 0; i < oFilterIds.length; i++)
     {
-        if(oFilterIds[i].checked)
+        if(oFilterIds[i].checked && filterUrlValues.indexOf(oFilterIds[i].value) == -1)
         {
             if(filterId.length>0){
                 filterId = filterId  +'~'+ oFilterIds[i].value;
@@ -19,6 +36,16 @@ function getNamedFilterCriteria(filterName){
                 filterId = oFilterIds[i].value;
             }
         }
+    }
+
+    //Append the selected filter values to URL value
+    if(filterUrlValue != ''){
+      if(filterId != ''){
+        filterId = filterUrlValue +'~'+ filterId;
+      }
+      else{
+        return filterUrlValue;
+      }
     }
 
     return filterId;
