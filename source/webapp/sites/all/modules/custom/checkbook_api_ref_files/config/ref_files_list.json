@@ -28,9 +28,9 @@
     "force_quote": []
   },
   "budget_code_list": {
-    "sql": "SELECT DISTINCT budget_code, attribute_name FROM ref_budget_code ORDER BY attribute_name",
+    "sql": "SELECT DISTINCT budget_code \"Budget Code\",attribute_name \"Budget Code Name\" FROM ref_budget_code ORDER BY attribute_name",
     "force_quote": [
-      "budget_code"
+      "Budget Code"
     ]
   },
   "budget_expense_category_code_list": {
