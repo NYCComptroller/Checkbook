@@ -62,9 +62,9 @@
 			        $checked = ($reqAgencyId == $value['agency_agency']) ? 'checked' : '';
                                 $agencyName = _get_shortened_text($value['agency_agency_agency_name']);
 				if($i<5){
-					$displayRows .= "<tr><td><input class='styled' type='checkbox' name='fagencyId' {$checked} value='{$value['agency_agency']}' onClick='javascript:applyTableListFilters();'/></td>  <td>{$agencyName}</td> <td class=\"results\"><span class=\"results\">".number_format($value['txcount'])."</span></td> </tr>";
+					$displayRows .= "<tr><td><input class='styled' type='checkbox' name='fagencyId' {$checked} value='{$value['agency_agency']}' onClick='javascript:applyTableListFilters(this.checked);'/></td>  <td>{$agencyName}</td> <td class=\"results\"><span class=\"results\">".number_format($value['txcount'])."</span></td> </tr>";
 				}else{
-					$hiddenRows .= "<tr><td><input class='styled' type='checkbox' name='fagencyId' {$checked} value='{$value['agency_agency']}' onClick='javascript:applyTableListFilters();'/></td>  <td>{$agencyName}</td> <td class=\"results\"><span class=\"results\">".number_format($value['txcount'])."</span></td> </tr>";
+					$hiddenRows .= "<tr><td><input class='styled' type='checkbox' name='fagencyId' {$checked} value='{$value['agency_agency']}' onClick='javascript:applyTableListFilters(this.checked);'/></td>  <td>{$agencyName}</td> <td class=\"results\"><span class=\"results\">".number_format($value['txcount'])."</span></td> </tr>";
 				}
 				$i++;
 			}
@@ -94,9 +94,9 @@
 				$checked = ($reqDeptId == $value['dept_dept']) ? 'checked' : '';
 				$deptName = _get_shortened_text($value['dept_dept_department_short_name']);
 				if($i<5){
-					$displayRows .= "<tr><td><input class='styled' type='checkbox' name='fdeptId' {$checked} value='{$value['dept_dept']}' onClick='javascript:applyTableListFilters();'/></td>  <td>{$deptName}</td> <td class=\"results\"><span class=\"results\">".number_format($value['txcount'])."</span></td> </tr>";
+					$displayRows .= "<tr><td><input class='styled' type='checkbox' name='fdeptId' {$checked} value='{$value['dept_dept']}' onClick='javascript:applyTableListFilters(this.checked);'/></td>  <td>{$deptName}</td> <td class=\"results\"><span class=\"results\">".number_format($value['txcount'])."</span></td> </tr>";
 				}else{
-					$hiddenRows .= "<tr><td><input class='styled' type='checkbox' name='fdeptId' {$checked} value='{$value['dept_dept']}' onClick='javascript:applyTableListFilters();'/></td>  <td>{$deptName}</td> <td class=\"results\"><span class=\"results\">".number_format($value['txcount'])."</span></td> </tr>";
+					$hiddenRows .= "<tr><td><input class='styled' type='checkbox' name='fdeptId' {$checked} value='{$value['dept_dept']}' onClick='javascript:applyTableListFilters(this.checked);'/></td>  <td>{$deptName}</td> <td class=\"results\"><span class=\"results\">".number_format($value['txcount'])."</span></td> </tr>";
 				}
 				$i++;
 			}
@@ -126,9 +126,9 @@
 				$checked = ($reqVendorId == $value['vendor_vendor']) ? 'checked' : '';
 				$vendorName = _get_shortened_text($value['vendor_vendor_legal_name']);
 				if($i<5){
-					$displayRows .= "<tr><td><input class='styled' type='checkbox' name='fvendorId' {$checked}  value='{$value['vendor_vendor']}' onClick='javascript:applyTableListFilters();'/></td>  <td>{$vendorName}</td> <td class=\"results\"><span class=\"results\">".number_format($value['txcount'])."</span></td> </tr>";
+					$displayRows .= "<tr><td><input class='styled' type='checkbox' name='fvendorId' {$checked}  value='{$value['vendor_vendor']}' onClick='javascript:applyTableListFilters(this.checked);'/></td>  <td>{$vendorName}</td> <td class=\"results\"><span class=\"results\">".number_format($value['txcount'])."</span></td> </tr>";
 				}else{
-					$hiddenRows .= "<tr><td><input class='styled' type='checkbox' name='fvendorId' {$checked}  value='{$value['vendor_vendor']}' onClick='javascript:applyTableListFilters();'/></td>  <td>{$vendorName}</td> <td class=\"results\"><span class=\"results\">".number_format($value['txcount'])."</span></td> </tr>";
+					$hiddenRows .= "<tr><td><input class='styled' type='checkbox' name='fvendorId' {$checked}  value='{$value['vendor_vendor']}' onClick='javascript:applyTableListFilters(this.checked);'/></td>  <td>{$vendorName}</td> <td class=\"results\"><span class=\"results\">".number_format($value['txcount'])."</span></td> </tr>";
 				}
 				$i++;
 			}
@@ -154,12 +154,12 @@
 
 			$displayRows = NULL;
 
-            $displayRows .= "<tr><td><input class='styled' type='checkbox' name='fCheckAmount' value='6' onClick='javascript:applyTableListFilters();'/></td>  <td>Greater than $100M</td> <td class=\"results\"><span class=\"results\">".number_format($checkAmounts['g100m_count'])."</span></td> </tr>";
-            $displayRows .= "<tr><td><input class='styled' type='checkbox' name='fCheckAmount' value='5' onClick='javascript:applyTableListFilters();'/></td>  <td>$51M - $100M</td> <td class=\"results\"><span class=\"results\">".number_format($checkAmounts['g50m_le100m_count'])."</span></td> </tr>";
-            $displayRows .= "<tr><td><input class='styled' type='checkbox' name='fCheckAmount' value='4' onClick='javascript:applyTableListFilters();'/></td>  <td>$26M - $50M</td> <td class=\"results\"><span class=\"results\">".number_format($checkAmounts['g25m_le50m_count'])."</span></td> </tr>";
-            $displayRows .= "<tr><td><input class='styled' type='checkbox' name='fCheckAmount' value='3' onClick='javascript:applyTableListFilters();'/></td>  <td>$11M - $25M</td> <td class=\"results\"><span class=\"results\">".number_format($checkAmounts['g10m_le25m_count'])."</span></td> </tr>";
-            $displayRows .= "<tr><td><input class='styled' type='checkbox' name='fCheckAmount' value='2' onClick='javascript:applyTableListFilters();'/></td>  <td>$1M - $10M</td> <td class=\"results\"><span class=\"results\">".number_format($checkAmounts['ge1m_le10m_count'])."</span></td> </tr>";
-            $displayRows .= "<tr><td><input class='styled' type='checkbox' name='fCheckAmount' value='1' onClick='javascript:applyTableListFilters();'/></td>  <td>Less than $1M</td> <td class=\"results\"><span class=\"results\">".number_format($checkAmounts['less1m_count'])."</span></td> </tr>";
+            $displayRows .= "<tr><td><input class='styled' type='checkbox' name='fCheckAmount' value='6' onClick='javascript:applyTableListFilters(this.checked);'/></td>  <td>Greater than $100M</td> <td class=\"results\"><span class=\"results\">".number_format($checkAmounts['g100m_count'])."</span></td> </tr>";
+            $displayRows .= "<tr><td><input class='styled' type='checkbox' name='fCheckAmount' value='5' onClick='javascript:applyTableListFilters(this.checked);'/></td>  <td>$51M - $100M</td> <td class=\"results\"><span class=\"results\">".number_format($checkAmounts['g50m_le100m_count'])."</span></td> </tr>";
+            $displayRows .= "<tr><td><input class='styled' type='checkbox' name='fCheckAmount' value='4' onClick='javascript:applyTableListFilters(this.checked);'/></td>  <td>$26M - $50M</td> <td class=\"results\"><span class=\"results\">".number_format($checkAmounts['g25m_le50m_count'])."</span></td> </tr>";
+            $displayRows .= "<tr><td><input class='styled' type='checkbox' name='fCheckAmount' value='3' onClick='javascript:applyTableListFilters(this.checked);'/></td>  <td>$11M - $25M</td> <td class=\"results\"><span class=\"results\">".number_format($checkAmounts['g10m_le25m_count'])."</span></td> </tr>";
+            $displayRows .= "<tr><td><input class='styled' type='checkbox' name='fCheckAmount' value='2' onClick='javascript:applyTableListFilters(this.checked);'/></td>  <td>$1M - $10M</td> <td class=\"results\"><span class=\"results\">".number_format($checkAmounts['ge1m_le10m_count'])."</span></td> </tr>";
+            $displayRows .= "<tr><td><input class='styled' type='checkbox' name='fCheckAmount' value='1' onClick='javascript:applyTableListFilters(this.checked);'/></td>  <td>Less than $1M</td> <td class=\"results\"><span class=\"results\">".number_format($checkAmounts['less1m_count'])."</span></td> </tr>";
 
 			$displayRows = "<tbody>" .$displayRows."</tbody>" ;
 			$output .= $displayRows. "</table>";
@@ -175,9 +175,9 @@
 				$checked = ($reqExpId == $value['expenditure_object_expenditure_object']) ? 'checked' : '';
 				$categoryName = _get_shortened_text($value['expenditure_object_expenditure_object_expenditure_object_name']);
 				if($i<5){
-					$displayRows .= "<tr><td><input class='styled' type='checkbox' name='fCategoryId' {$checked}  value='{$value['expenditure_object_expenditure_object']}' onClick='javascript:applyTableListFilters();'/></td>  <td>{$categoryName}</td> <td class=\"results\"><span class=\"results\">".number_format($value['txcount'])."</span></td> </tr>";
+					$displayRows .= "<tr><td><input class='styled' type='checkbox' name='fCategoryId' {$checked}  value='{$value['expenditure_object_expenditure_object']}' onClick='javascript:applyTableListFilters(this.checked);'/></td>  <td>{$categoryName}</td> <td class=\"results\"><span class=\"results\">".number_format($value['txcount'])."</span></td> </tr>";
 				}else{
-					$hiddenRows .= "<tr><td><input class='styled' type='checkbox' name='fCategoryId' {$checked}  value='{$value['expenditure_object_expenditure_object']}' onClick='javascript:applyTableListFilters();'/></td>  <td>{$categoryName}</td> <td class=\"results\"><span class=\"results\">".number_format($value['txcount'])."</span></td> </tr>";
+					$hiddenRows .= "<tr><td><input class='styled' type='checkbox' name='fCategoryId' {$checked}  value='{$value['expenditure_object_expenditure_object']}' onClick='javascript:applyTableListFilters(this.checked);'/></td>  <td>{$categoryName}</td> <td class=\"results\"><span class=\"results\">".number_format($value['txcount'])."</span></td> </tr>";
 				}
 				$i++;
 			}
@@ -207,9 +207,9 @@
                 $checked = ($reqSpendCatId == $value['category_category']) ? 'checked' : '';
                 $spendCategoryName = _get_shortened_text($value['category_category_spending_category_name']);
                 if($i<5){
-                    $displayRows .= "<tr><td><input class='styled' type='checkbox' name='fSpendCategoryId' {$checked}  value='{$value['category_category']}' onClick='javascript:applyTableListFilters();'/></td>  <td>{$spendCategoryName}</td> <td class=\"results\"><span class=\"results\">".number_format($value['txcount'])."</span></td> </tr>";
+                    $displayRows .= "<tr><td><input class='styled' type='checkbox' name='fSpendCategoryId' {$checked}  value='{$value['category_category']}' onClick='javascript:applyTableListFilters(this.checked);'/></td>  <td>{$spendCategoryName}</td> <td class=\"results\"><span class=\"results\">".number_format($value['txcount'])."</span></td> </tr>";
                 }else{
-                    $hiddenRows .= "<tr><td><input class='styled' type='checkbox' name='fSpendCategoryId' {$checked}  value='{$value['category_category']}' onClick='javascript:applyTableListFilters();'/></td>  <td>{$spendCategoryName}</td> <td class=\"results\"><span class=\"results\">".number_format($value['txcount'])."</span></td> </tr>";
+                    $hiddenRows .= "<tr><td><input class='styled' type='checkbox' name='fSpendCategoryId' {$checked}  value='{$value['category_category']}' onClick='javascript:applyTableListFilters(this.checked);'/></td>  <td>{$spendCategoryName}</td> <td class=\"results\"><span class=\"results\">".number_format($value['txcount'])."</span></td> </tr>";
                 }
                 $i++;
             }
