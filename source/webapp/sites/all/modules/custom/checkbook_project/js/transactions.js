@@ -15,7 +15,7 @@ function getNamedFilterCriteria(filterName){
 
     //Get facet parameter value from URL
     if(facetId) {
-        var filterUrlParam = facetId.getAttribute('title');
+        var filterUrlParam = facetId.getAttribute('name');
         var url = oTable.fnSettings().sAjaxSource;
         var urlParts = url.split('/');
         var index = urlParts.indexOf(filterUrlParam);
