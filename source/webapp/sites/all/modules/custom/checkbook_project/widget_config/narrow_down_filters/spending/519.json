@@ -3,12 +3,12 @@
     "parentNid":652,
     "limit":100,
     "columns":["vendor.vendor", "vendor.vendor.legal_name", "txcount"],
-    "orderBy":["-txcount" , "vendor.vendor.legal_name"], 
+    "orderBy":["-txcount" , "vendor.vendor.legal_name"],
 	"facetPager":true,
     "filterName":"Vendor",
     "urlParameterName":"fvendor",
-    "autocompleteParamName":"vendor_auto",    
-    "autocompleteID":"fvendorId", 	
+    "autocompleteParamName":"vendor_auto",
+    "autocompleteID":"fvendorId",
     "autocompleteField":"vendor_name",
     "maxSelect":5,
     "adjustParameters":"
@@ -17,9 +17,10 @@
     	$parameters = _checkbook_project_adjust_spending_parameter_filters($node, $parameters);
     }
     //Set contract vendor id for Master Agreement spending transactions
-    if(_checkbook_project_get_url_param_string('vendor') || _checkbook_project_get_url_param_string('cvendor')){
+    if(_checkbook_project_get_url_param_string('vendor') || _checkbook_project_get_url_param_string('cvendor')||_checkbook_project_get_url_param_string('svendor')){
       $parameters['contract_vendor_id'] = $parameters['vendor_id'];
     }
+        
 
     if(function_exists('_checkbook_project_applyParameterFilters')){
         $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
@@ -35,6 +36,6 @@
         }
     }
     return $adjustedParameters;
-    ",      
+    ",
     "template":"individual_filter"
 }

@@ -39,12 +39,12 @@
             "datasourceName": "main",
             "source": "aggregateon_contracts_spending_by_month"
         },
-        
+
         "aggregateon_total_contracts": {
             "datasourceName": "main",
             "source": "aggregateon_total_contracts"
         }
-        		        
+
      },
 
     "cubes": {
@@ -198,9 +198,9 @@
             ],
             "measures": {
                 "original_amount_sum": {
-                    "function": "SUM(COALESCE(original_contract_amount,0))"}     ,
+                    "function": "MIN(COALESCE(original_contract_amount,0))"}     ,
                 "current_amount_sum": {
-                    "function": "SUM(COALESCE(maximum_contract_amount,0))"}      ,
+                    "function": "MIN(COALESCE(maximum_contract_amount,0))"}      ,
                 "spending_amount_sum": {
                     "function": "SUM(COALESCE(spending_amount_disb,0))"}      ,
                 "dollar_difference": {
@@ -376,7 +376,7 @@
         },
         "contracts_coa_aggregates": {
             "sourceDatasetName": "contracts_coa_aggregates",
-            "dimensions": [                               				
+            "dimensions": [
 				{
                     "name": "agency",
                     "levels": [
@@ -386,7 +386,7 @@
                             	"sourceColumnName": "agency_id"
                             }
                     ]
-                }    ,  
+                }    ,
 				{
                     "name": "year",
                     "levels": [
@@ -395,7 +395,7 @@
                             	"sourceColumnName": "fiscal_year"
                             }
                     ]
-                }  , 
+                }  ,
 				{
                     "name": "yeartype",
                     "levels": [
@@ -404,7 +404,7 @@
                             	"sourceColumnName": "type_of_year"
                             }
                     ]
-                },    
+                },
 				{
                     "name": "month",
                     "levels": [
@@ -414,7 +414,7 @@
                             	"sourceColumnName": "month_id"
                             }
                     ]
-                },                                 
+                },
 				{
                     "name": "vendor",
                     "levels": [
@@ -450,7 +450,7 @@
                        		{
                             	"name": "contract_category",
                             	"sourceColumnName": "contract_category",
-                            	"datasetName": "category"                            	
+                            	"datasetName": "category"
                             }
                     ]
                 }    ,
@@ -530,16 +530,16 @@
                 "spending_amount_sum": {
                     "function": "SUM(COALESCE(spending_amount_disb,0))"}      ,
                 "dollar_difference": {
-                    "function": "SUM(COALESCE(dollar_difference,0))"}      ,                    
+                    "function": "SUM(COALESCE(dollar_difference,0))"}      ,
                 "percent_difference": {
                     "function": "AVG(percent_difference)"} ,
                 "total_contracts": {
-                    "function": "COUNT(contract_number)"}                                                            
+                    "function": "COUNT(contract_number)"}
             }
         },
 		"contracts_coa_spending_month": {
             "sourceDatasetName": "contracts_coa_spending_month",
-            "dimensions": [                               				
+            "dimensions": [
 				{
                     "name": "agency",
                     "levels": [
@@ -549,7 +549,7 @@
                             	"sourceColumnName": "agency_id"
                             }
                     ]
-                }    ,  
+                }    ,
 				{
                     "name": "year",
                     "levels": [
@@ -558,7 +558,7 @@
                             	"sourceColumnName": "fiscal_year"
                             }
                     ]
-                }  , 
+                }  ,
 				{
                     "name": "yeartype",
                     "levels": [
@@ -567,7 +567,7 @@
                             	"sourceColumnName": "type_of_year"
                             }
                     ]
-                },    
+                },
 				{
                     "name": "month",
                     "levels": [
@@ -577,7 +577,7 @@
                             	"sourceColumnName": "month_id"
                             }
                     ]
-                },                                 
+                },
 				{
                     "name": "vendor",
                     "levels": [
@@ -604,10 +604,10 @@
                        		{
                             	"name": "contract_category",
                             	"sourceColumnName": "contract_category",
-                            	"datasetName": "category"                            	
+                            	"datasetName": "category"
                             }
                     ]
-                }    ,				
+                }    ,
 				{
                     "name": "document_code",
                     "levels": [
@@ -617,7 +617,7 @@
                             	"sourceColumnName": "document_code_id"
                             }
                     ]
-                }                                                                                                         
+                }
             ],
             "measures": {
                 "spending_amount_sum": {
@@ -626,7 +626,7 @@
         }    ,
 		"aggregateon_total_contracts": {
             "sourceDatasetName": "aggregateon_total_contracts",
-            "dimensions": [                               				
+            "dimensions": [
 				{
                     "name": "agency",
                     "levels": [
@@ -636,7 +636,7 @@
                             	"sourceColumnName": "agency_id"
                             }
                     ]
-                }    ,  
+                }    ,
 				{
                     "name": "year",
                     "levels": [
@@ -645,7 +645,7 @@
                             	"sourceColumnName": "fiscal_year"
                             }
                     ]
-                }  , 
+                }  ,
 				{
                     "name": "yeartype",
                     "levels": [
@@ -654,7 +654,7 @@
                             	"sourceColumnName": "type_of_year"
                             }
                     ]
-                },    
+                },
 				{
                     "name": "month",
                     "levels": [
@@ -664,7 +664,7 @@
                             	"sourceColumnName": "month_id"
                             }
                     ]
-                },                                 
+                },
 				{
                     "name": "vendor",
                     "levels": [
@@ -691,10 +691,10 @@
                        		{
                             	"name": "contract_category",
                             	"sourceColumnName": "contract_category",
-                            	"datasetName": "category"                            	
+                            	"datasetName": "category"
                             }
                     ]
-                }    ,				
+                }    ,
 				{
                     "name": "document_code",
                     "levels": [
@@ -704,7 +704,7 @@
                             	"sourceColumnName": "document_code_id"
                             }
                     ]
-                }                                                                                                         
+                }
             ],
             "measures": {
                 "total_contracts_sum": {
@@ -720,14 +720,14 @@
 				"total_revenue_contracts_amount_sum": {
                     "function": "sum(COALESCE(total_revenue_contracts_amount,0))"},
 				"total_contracts_amount_sum": {
-                    "function": "sum(COALESCE(total_contracts_amount,0))"},                                              
+                    "function": "sum(COALESCE(total_contracts_amount,0))"},
 				"total_spending_amount_sum": {
                     "function": "sum(COALESCE(spending_amount_disb,0))"}
-            }                      
+            }
         }      ,
 	"aggregateon_contracts_department": {
             "sourceDatasetName": "aggregateon_contracts_department",
-            "dimensions": [                               				
+            "dimensions": [
 				{
                     "name": "agency",
                     "levels": [
@@ -737,7 +737,7 @@
                             	"sourceColumnName": "agency_id"
                             }
                     ]
-                }    , 
+                }    ,
                 {
                     "name": "document_agency",
                     "levels": [
@@ -746,7 +746,7 @@
                             	"sourceColumnName": "agency_id"
                             }
                     ]
-                }    , 
+                }    ,
 				{
                     "name": "department",
                     "levels": [
@@ -756,7 +756,7 @@
                             	"sourceColumnName": "department_id"
                             }
                     ]
-                }    ,                  
+                }    ,
 				{
                     "name": "year",
                     "levels": [
@@ -765,7 +765,7 @@
                             	"sourceColumnName": "fiscal_year"
                             }
                     ]
-                }  , 
+                }  ,
 				{
                     "name": "yeartype",
                     "levels": [
@@ -774,7 +774,7 @@
                             	"sourceColumnName": "type_of_year"
                             }
                     ]
-                },    
+                },
 				{
                     "name": "month",
                     "levels": [
@@ -784,7 +784,7 @@
                             	"sourceColumnName": "month_id"
                             }
                     ]
-                },                                 
+                },
 				{
                     "name": "vendor",
                     "levels": [
@@ -811,10 +811,10 @@
                        		{
                             	"name": "contract_category",
                             	"sourceColumnName": "contract_category",
-                            	"datasetName": "category"                            	
+                            	"datasetName": "category"
                             }
                     ]
-                }    ,				
+                }    ,
 				{
                     "name": "document_code",
                     "levels": [
@@ -824,15 +824,15 @@
                             	"sourceColumnName": "document_code_id"
                             }
                     ]
-                }                                                                                                         
+                }
             ],
-            "measures": {               
+            "measures": {
                 "spending_amount_sum": {
                     "function": "SUM(COALESCE(spending_amount_disb,0))"}      ,
                 "total_contracts": {
-                    "function": "sum(total_contracts)"}                                                            
+                    "function": "sum(total_contracts)"}
             }
-        
+
         },
 
     "aggregateon_contracts_department_no_vendor": {
@@ -945,7 +945,7 @@
 
        }
 
-                  
+
     },
 	"references": {
         "contracts_coa_aggregates__vendor_contract": [
@@ -955,16 +955,16 @@
 		"contracts_coa_aggregates__agency": [
                 {"datasetName": "contracts_coa_aggregates", "columnNames": ["agency_id"]},
                 {"datasetName": "agency", "columnNames": ["agency_id"]}
-        ],  
+        ],
 		"contracts_coa_aggregates__document_code": [
                 {"datasetName": "contracts_coa_aggregates", "columnNames": ["document_code_id"]},
                 {"datasetName": "ref_document_code", "columnNames": ["document_code_id"]}
-        ] ,          
+        ] ,
 		"contracts_coa_aggregates__award_method": [
                 {"datasetName": "contracts_coa_aggregates", "columnNames": ["award_method_id"]},
                 {"datasetName": "award_method", "columnNames": ["award_method_id"]}
-        ]         
-        
-             
-    }    
+        ]
+
+
+    }
 }
