@@ -517,9 +517,9 @@ function checkbook_advanced_search_form($form, $form_state)
     $form['payroll']['payroll_year'] = array(
         '#type' => 'select',
         '#title' => t('Year'),
-        '#default_value' => 'cy~' . _getCurrentYearID(),
+        '#default_value' => 'cy~' . _getCalendarYearID(),
         '#options' => _checkbook_advanced_search_get_year('payroll'),
-        '#attributes' => array('default_selected_value' => 'cy~' . _getCurrentYearID())
+        '#attributes' => array('default_selected_value' => 'cy~' . _getCalendarYearID())
     );
     $form['payroll']['payroll_pay_date_from'] = array(
         '#type' => 'date_popup',
