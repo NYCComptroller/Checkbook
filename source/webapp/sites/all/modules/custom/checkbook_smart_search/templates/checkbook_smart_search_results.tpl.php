@@ -198,7 +198,7 @@ if($noOfTotalResults > 0){
         print theme('spending', array('spending_results'=> $value, 'SearchTerm' => $searchTerms[0], 'IsOge' => isset($value["oge_agency_name"]) ));
         break;
       case "payroll":
-        print theme('payroll', array('payroll_results'=> $value, 'SearchTerm' => $searchTerms[0]));
+        print theme('payroll', array('payroll_results'=> $value, 'SearchTerm' => $searchTerms[0], 'IsOge' => isset($value["oge_agency_name"])));
         break;
       case "contracts":
         print theme('contracts', array('contracts_results'=> $value, 'SearchTerm' => $searchTerms[0], 'IsOge' => isset($value["oge_agency_name"]) ));
