@@ -1034,7 +1034,7 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge=false){
           if ($IsOge){
               $parameter_mapping = array(
                   "civil_service_title" => "Title",
-                  "agency_name" => "Agency",
+                  "oge_agency_name" => "Agency",
                   "pay_frequency" => "Pay Frequency",
                   "pay_date" => "Pay Date",
                   "gross_pay" => "Gross Pay",
@@ -1049,7 +1049,7 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge=false){
           }else{
               $parameter_mapping = array(
                   "civil_service_title" => "Title",
-                  "oge_agency_name" => "Agency",
+                  "agency_name" => "Agency",
                   "pay_frequency" => "Pay Frequency",
                   "pay_date" => "Pay Date",
                   "gross_pay" => "Gross Pay",
