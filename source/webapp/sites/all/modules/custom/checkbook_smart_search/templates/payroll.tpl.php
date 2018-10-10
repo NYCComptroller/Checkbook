@@ -27,10 +27,21 @@ $fiscal_year_id = $payroll_results['fiscal_year_id'][0];
 $salaried = $payroll_results['amount_basis_id'];
 $title = urlencode($payroll_results['civil_service_title']);
 
+if ($IsOge) {
+    $linkable_fields = array(
+        "oge_agency_name" => "/payroll/agency_landing/datasource/checkbook_nycha/yeartype/C/year/" . $fiscal_year_id . "/agency/" . $agency_id,
+    );
+}else {
+    $linkable_fields = array(
+        "agency_name" => "/payroll/agency_landing/yeartype/C/year/" . $fiscal_year_id . "/agency/" . $agency_id,
+    );
+}
 
-$linkable_fields = array(
-                         "agency_name" => "/payroll/agency_landing/yeartype/B/year/". $fiscal_year_id ."/agency/". $agency_id,
-                        );
+if($IsOge){
+    $dataSourceUrl = "/datasource/checkbook_nycha/agency/" . $agency_id;
+}else{
+    $dataSourceUrl = "";
+}
 
 if($payroll_results['fiscal_year'] < 2010){
     $linkable_fields = array();
@@ -58,7 +69,7 @@ foreach ($payroll_parameter_mapping as $key => $title){
 
   if($title == 'Annual Salary'){
       if($salaried == 1){
-          $value = "<a  href='/payroll/yeartype/B/year/" . $fiscal_year_id . "?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/" .$agency_id. "/abc/" .$emp_id. "/salamttype/".$salaried."/year/" . $fiscal_year_id . "/yeartype/B'>". custom_number_formatter_format($value, 2 , '$') ."</a>";
+          $value = "<a  href='/payroll/yeartype/B/year/" . $fiscal_year_id . $dataSourceUrl . "?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/" .$agency_id . $dataSourceUrl . "/abc/" .$emp_id. "/salamttype/".$salaried."/year/" . $fiscal_year_id . "/yeartype/B'>". custom_number_formatter_format($value, 2 , '$') ."</a>";
       }
       else{
           $value = '';
@@ -67,7 +78,7 @@ foreach ($payroll_parameter_mapping as $key => $title){
 
   if($title == 'Hourly Rate'){
         if($salaried != 1){
-            $value = "<a  href='/payroll/yeartype/B/year/" . $fiscal_year_id . "?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/" .$agency_id. "/abc/" .$emp_id. "/salamttype/".$salaried."/year/" . $fiscal_year_id . "/yeartype/B'>". custom_number_formatter_format($value, 2 , '$') ."</a>";
+            $value = "<a  href='/payroll/yeartype/B/year/" . $fiscal_year_id . $dataSourceUrl . "?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/" .$agency_id . $dataSourceUrl . "/abc/" .$emp_id. "/salamttype/".$salaried."/year/" . $fiscal_year_id . "/yeartype/B'>". custom_number_formatter_format($value, 2 , '$') ."</a>";
         }
         else{
             $value = '';
