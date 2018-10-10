@@ -945,108 +945,123 @@ function _checkbook_smart_search_export_data(){
 
 /** Smart search results labels array */
 function _checkbook_smart_search_domain_fields($domain, $IsOge=false){
-  switch ($domain){
-    case "spending":
-        if($IsOge)
-          $parameter_mapping = array(
-          "spending_category_name" => "Spending Category",
-          "oge_agency_name" => "Agency",
-          "department_name" => "Department",
-          "vendor_name" => "Payee Name",
-          "expenditure_object_name" => "Expense Category",
-          "contract_number" => "Contract ID",
-          "spending_commodity_line" => "Commodity Line",
-          "check_amount" => "Check Amount",
-          "check_eft_issued_date" => "Issue Date",
-          "spending_entity_contract_number" => "Entity Contract#",
-          "spending_budget_name" => "Budget Name",
-          "" => "",
-          );
-        else
-            $parameter_mapping = array(
-                "spending_category_name" => "Spending Category",
-                "agency_name" => "Agency",
-                "department_name" => "Department",
-                "vendor_name" => "Payee Name",
-                "expenditure_object_name" => "Expense Category",
-                "industry_type_name" => "Industry",
-                "contract_number" => "Contract ID",
-                "check_amount" => "Check Amount",
-                "check_eft_issued_date" => "Issue Date",
-                "is_prime_or_sub" => "Sub Vendor",
-                "minority_type_name" => "M/WBE Category",
-                "prime_vendor_name" => "Associated Prime Vendor",
-                "" => ""
-            );
-      break;
-    case "contracts":
-        if($IsOge)
-        {
-          $parameter_mapping = array(
-              "contract_status"=>"Status",
-              "contract_category_name"=>"Category",
-              "vendor_name"=>"Prime Vendor",
-              "oge_contracting_agency_name"=>"Agency",
-              "contract_number"=>"Contract ID",
-          	  "contract_commodity_line" => "Commodity Line",
-              "contract_purpose"=>"Purpose",
-              "parent_contract_number"=>"Parent Contract ID",
-              "award_method_name"=>"Award Method",
-              "contract_type"=>"Contract type",
-          	  "current_amount"=>"Current Amount",
-          	  "original_amount"=>"Original Amount",
-              "start_date_orig"=>"Start date",
-              "end_date_orig"=>"End Date",
-              "pin"=>"PIN",
-              "apt_pin"=>"APT PIN",
-              "expense_category_name"=>"Expense Category",
-              "contract_entity_contract_number" => "Entity Contract#",
-              "contract_budget_name" => "Budget Name",
-          	  "" => ""
-          );
-        }
-        else{
-            $parameter_mapping = array(
-                "contract_status"=>"Status",
-                "contract_category_name"=>"Category",
-                "vendor_name"=>"Vendor",
-                "agency_name"=>"Agency",
-                "contract_number"=>"Contract ID",
-                "version_number"=>"Version Number",
-                "contract_purpose"=>"Purpose",
-                "parent_contract_number"=>"Parent Contract ID",
-                "award_method_name"=>"Award Method",
-                "contract_type"=>"Contract type",
-                "current_amount"=>"Current Amount",
-                "original_amount"=>"Original Amount",
-                "start_date_orig"=>"Start date",
-                "end_date_orig"=>"End Date",
-                "pin"=>"PIN",
-                "apt_pin"=>"APT PIN",
-                "registration_date"=>"Registration date",
-                "expense_category_name"=>"Expense Category",
-                "industry_type_name" => "Industry",
-                "received_date"=>"Received date",
-                "minority_type_name" => "M/WBE Category",
-                "prime_vendor_name" => "Associated Prime Vendor",
-                "" => "");
-        }
-      break;
-    case "payroll":
-      $parameter_mapping = array(
-      "civil_service_title" => "Title",
-      "agency_name" => "Agency",
-      "pay_frequency" => "Pay Frequency",
-      "pay_date" => "Pay Date",
-      "gross_pay" => "Gross Pay",
-      "annual_salary" => "Annual Salary",
-      "base_pay" => "Base Pay",
-      "hourly_rate" => "Hourly Rate",
-      "other_payments" => "Other Payments",
-      "overtime_pay" => "Overtime Payments",
-      "payroll_type" => "Payroll Type",
-      "" => ""
-      );
+  switch ($domain) {
+      case "spending":
+          if ($IsOge)
+              $parameter_mapping = array(
+                  "spending_category_name" => "Spending Category",
+                  "oge_agency_name" => "Agency",
+                  "department_name" => "Department",
+                  "vendor_name" => "Payee Name",
+                  "expenditure_object_name" => "Expense Category",
+                  "contract_number" => "Contract ID",
+                  "spending_commodity_line" => "Commodity Line",
+                  "check_amount" => "Check Amount",
+                  "check_eft_issued_date" => "Issue Date",
+                  "spending_entity_contract_number" => "Entity Contract#",
+                  "spending_budget_name" => "Budget Name",
+                  "" => "",
+              );
+          else
+              $parameter_mapping = array(
+                  "spending_category_name" => "Spending Category",
+                  "agency_name" => "Agency",
+                  "department_name" => "Department",
+                  "vendor_name" => "Payee Name",
+                  "expenditure_object_name" => "Expense Category",
+                  "industry_type_name" => "Industry",
+                  "contract_number" => "Contract ID",
+                  "check_amount" => "Check Amount",
+                  "check_eft_issued_date" => "Issue Date",
+                  "is_prime_or_sub" => "Sub Vendor",
+                  "minority_type_name" => "M/WBE Category",
+                  "prime_vendor_name" => "Associated Prime Vendor",
+                  "" => ""
+              );
+          break;
+      case "contracts":
+          if ($IsOge) {
+              $parameter_mapping = array(
+                  "contract_status" => "Status",
+                  "contract_category_name" => "Category",
+                  "vendor_name" => "Prime Vendor",
+                  "oge_contracting_agency_name" => "Agency",
+                  "contract_number" => "Contract ID",
+                  "contract_commodity_line" => "Commodity Line",
+                  "contract_purpose" => "Purpose",
+                  "parent_contract_number" => "Parent Contract ID",
+                  "award_method_name" => "Award Method",
+                  "contract_type" => "Contract type",
+                  "current_amount" => "Current Amount",
+                  "original_amount" => "Original Amount",
+                  "start_date_orig" => "Start date",
+                  "end_date_orig" => "End Date",
+                  "pin" => "PIN",
+                  "apt_pin" => "APT PIN",
+                  "expense_category_name" => "Expense Category",
+                  "contract_entity_contract_number" => "Entity Contract#",
+                  "contract_budget_name" => "Budget Name",
+                  "" => ""
+              );
+          } else {
+              $parameter_mapping = array(
+                  "contract_status" => "Status",
+                  "contract_category_name" => "Category",
+                  "vendor_name" => "Vendor",
+                  "agency_name" => "Agency",
+                  "contract_number" => "Contract ID",
+                  "version_number" => "Version Number",
+                  "contract_purpose" => "Purpose",
+                  "parent_contract_number" => "Parent Contract ID",
+                  "award_method_name" => "Award Method",
+                  "contract_type" => "Contract type",
+                  "current_amount" => "Current Amount",
+                  "original_amount" => "Original Amount",
+                  "start_date_orig" => "Start date",
+                  "end_date_orig" => "End Date",
+                  "pin" => "PIN",
+                  "apt_pin" => "APT PIN",
+                  "registration_date" => "Registration date",
+                  "expense_category_name" => "Expense Category",
+                  "industry_type_name" => "Industry",
+                  "received_date" => "Received date",
+                  "minority_type_name" => "M/WBE Category",
+                  "prime_vendor_name" => "Associated Prime Vendor",
+                  "" => "");
+          }
+          break;
+      case "payroll":
+          if ($IsOge){
+              $parameter_mapping = array(
+                  "civil_service_title" => "Title",
+                  "agency_name" => "Agency",
+                  "pay_frequency" => "Pay Frequency",
+                  "pay_date" => "Pay Date",
+                  "gross_pay" => "Gross Pay",
+                  "annual_salary" => "Annual Salary",
+                  "base_pay" => "Base Pay",
+                  "hourly_rate" => "Hourly Rate",
+                  "other_payments" => "Other Payments",
+                  "overtime_pay" => "Overtime Payments",
+                  "payroll_type" => "Payroll Type",
+                  "" => ""
+              );
+          }else{
+              $parameter_mapping = array(
+                  "civil_service_title" => "Title",
+                  "oge_agency_name" => "Agency",
+                  "pay_frequency" => "Pay Frequency",
+                  "pay_date" => "Pay Date",
+                  "gross_pay" => "Gross Pay",
+                  "annual_salary" => "Annual Salary",
+                  "base_pay" => "Base Pay",
+                  "hourly_rate" => "Hourly Rate",
+                  "other_payments" => "Other Payments",
+                  "overtime_pay" => "Overtime Payments",
+                  "payroll_type" => "Payroll Type",
+                  "" => ""
+              );
+          }
       break;
     case "budget":
     $parameter_mapping = array("agency_name" => "Agency",
