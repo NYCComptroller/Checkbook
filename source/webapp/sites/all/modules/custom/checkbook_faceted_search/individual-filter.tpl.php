@@ -394,7 +394,8 @@ if(strtolower($filter_name) == 'vendor'){
 }
 $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
 ?>
-<div name="<?php print $urlParameter; ?>" id="<?php print $autocomplete_id; ?>" class="filter-content <?php if( $hide_filter != "") print "disabled"; ?>"><div <?php print $hide_filter; ?>>
+<div name="<?php print $urlParameter; ?>" id="<?php print $autocomplete_id; ?>" class="filter-content <?php if( $hide_filter != "") print "disabled"; ?>">
+    <div <?php print $hide_filter; ?>>
   <div class="filter-title" <?php print $tooltip ?>><span class="<?php print $span;?>">By <?php print $filter_name;?></span></div>
   <div class="facet-content" style="display:<?php echo $display_facet; ?>">
   <div class="progress"></div>
@@ -428,7 +429,7 @@ $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
             $row[1] = str_replace('__','/', $row[1]);
             $id = $id_filter_name."_checked_".$ct;
             echo '<div class="row">';
-            echo "<div class='checkbox'><input class='styled' id='" . $id . "' name= '" . $autocomplete_id . "' type='checkbox' " . $disableFacet . " checked='checked' value='" . urlencode(html_entity_decode($row[0], ENT_QUOTES)) . "' onClick=\"return applyTableListFilters(this.checked, this.value,'".$urlParameter."');\"><label for='" . $id . "'></label></div>";
+            echo "<div class='checkbox'><input class='styled' id='" . $id . "' name= '" . $autocomplete_id . "' type='checkbox' " . $disableFacet . " checked='checked' value='" . urlencode(html_entity_decode($row[0], ENT_QUOTES)) . "' onClick=\"return applyTableListFilters(this.checked, '" .urlencode(html_entity_decode($row[0], ENT_QUOTES)). "', '".$urlParameter."');\"><label for='" . $id . "'></label></div>";
             if($node->widgetConfig->filterName == 'Contract ID') {
               echo '<div class="name"><label for="'.$id.'">' . $row[1] . '</label></div>';
             }
@@ -456,7 +457,7 @@ $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
             $row[1] = str_replace('__', '/', $row[1]);
             $id = $id_filter_name . "_unchecked_" . $ct;
             echo '<div class="row">';
-            echo "<div class='checkbox'><input class='styled' id='" . $id . "' name= '" . $autocomplete_id . "' type='checkbox' " . $disabled . "value='" . urlencode(html_entity_decode($row[0], ENT_QUOTES)) . "' onClick=\"return applyTableListFilters(this.checked, this.value,'".$urlParameter."');\"><label for='" . $id . "'></label></div>";
+            echo "<div class='checkbox'><input class='styled' id='" . $id . "' name= '" . $autocomplete_id . "' type='checkbox' " . $disabled . "value='" . urlencode(html_entity_decode($row[0], ENT_QUOTES)) . "' onClick=\"return applyTableListFilters(this.checked, '" .urlencode(html_entity_decode($row[0], ENT_QUOTES)). "', '".$urlParameter."');\"><label for='" . $id . "'></label></div>";
             if ($node->widgetConfig->filterName == 'Contract ID') {
                 echo '<div class="name"><label for="' . $id . '">' . $row[1] . '</label></div>';
             } else {
