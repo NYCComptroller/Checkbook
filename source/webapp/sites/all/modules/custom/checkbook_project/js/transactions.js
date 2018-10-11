@@ -52,6 +52,8 @@ function getNamedFilterCriteria(filterName){
 }
 
 function removeUrlParam(url, urlParam, value){
+  value = replaceAllOccurrences('/', '__', value);
+  value = replaceAllOccurrences('%2F', encodeURIComponent('__'), value);
   var urlParamValue = '';
   var newUrlParamValue = '';
   var urlParts = url.split('/');
