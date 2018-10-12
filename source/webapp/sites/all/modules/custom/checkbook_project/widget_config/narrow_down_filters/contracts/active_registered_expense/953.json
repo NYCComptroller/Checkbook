@@ -5,7 +5,7 @@
     "startWith":0,
     "limit":100,
     "maxSelect":5,
-    "columns":["agency_id.agency_id", "agency_name.agency_name", "txcount"],
+    "columns":["agency_id.agency_id", "agency.agency.agency_name", "txcount"],
     "orderBy":"-txcount",
     "facetPager":true,
     "filterName":"Agency",

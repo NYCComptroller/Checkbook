@@ -48,8 +48,19 @@
                     "levels": [
                         {
                             "name":"agency_name",
+                            "datasetName": "agency",
                             "sourceColumnName":"agency_name"
                         }]
+                },
+                {
+                    "name": "agency",
+                    "levels": [
+                        {
+                            "name": "agency",
+                            "datasetName": "agency",
+                            "sourceColumnName": "agency_id"
+                        }
+                    ]
                 },
                 {
                     "name":"agency_code",
@@ -538,5 +549,13 @@
                 }
             }
         }
+    },
+    "references": {
+
+        "all_agreement_transactions_by_prime_sub_vendor__ref_agency": [
+            {"datasetName": "all_agreement_transactions_by_prime_sub_vendor", "columnNames": ["agency_id"]},
+            {"datasetName": "agency", "columnNames": ["agency_id"]}
+        ]
+
     }
 }
