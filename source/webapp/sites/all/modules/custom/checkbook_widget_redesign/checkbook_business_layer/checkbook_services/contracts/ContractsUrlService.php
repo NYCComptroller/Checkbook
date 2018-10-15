@@ -406,7 +406,7 @@ class ContractsUrlService
      * @param $current
      * @return string
      */
-    static function primeVendorUrl($vendor_id, $year_id = null, $current = true)
+    static function primeVendorUrl($vendor_id, $year_id = null, $current = true,$document_code=null)
     {
 
         $url = RequestUtilities::buildUrlFromParam([
@@ -435,6 +435,10 @@ class ContractsUrlService
             : PrimeVendorService::getLatestMinorityType($vendor_id, $agency_id);
 
         $is_mwbe_certified = MinorityTypeService::isMWBECertified($latest_minority_id);
+        $mwbe_amount = VendorService::getMwbeAmount($vendor_id,$year_id,$document_code);
+
+
+
 
         $urlPath = drupal_get_path_alias($_GET['q']);
         if (!preg_match('/pending/', $urlPath)) {
@@ -442,14 +446,19 @@ class ContractsUrlService
                 $url .= "/status/A";
             }
         }
-        /*if($is_mwbe_certified && $status){
-            $url .= "/dashboard/ms/mwbe/2~3~4~5~9/vendor/".$vendor_id;
-        }*/
-        if ($is_mwbe_certified) {
-            $url .= "/dashboard/mp/mwbe/2~3~4~5~9/vendor/" . $vendor_id;
-        } else {
-            $url .= RequestUtilities::buildUrlFromParam('datasource') . "/vendor/" . $vendor_id;
+
+        if ($is_mwbe_certified ) {
+            if (isset($mwbe_amount)) {
+                $url .= "/dashboard/mp/mwbe/2~3~4~5~9/vendor/" . $vendor_id;
+            } else if ( $mwbe_amount == 0 || !isset($mwbe_amount)){
+                // if prime is zero and sub amount is not zero. change dashboard to ms
+                $url .= "/dashboard/ms/mwbe/2~3~4~5~9/vendor/" . $vendor_id;
+            }
         }
+        else{
+                $url .= RequestUtilities::buildUrlFromParam('datasource') . "/vendor/" . $vendor_id;
+         }
+
         $currentUrl = RequestUtilities::_getCurrentPage();
         $url = ($current) ? $currentUrl . $url : $url;
         return $url;
