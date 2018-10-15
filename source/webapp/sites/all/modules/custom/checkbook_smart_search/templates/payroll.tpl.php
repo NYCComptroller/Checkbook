@@ -38,8 +38,10 @@ if ($IsOge) {
 }
 
 if($IsOge){
+    $agencyLandingUrl = "/agency_landing";
     $dataSourceUrl = "/datasource/checkbook_nycha/agency/" . $agency_id;
 }else{
+    $agencyLandingUrl = "";
     $dataSourceUrl = "";
 }
 
@@ -69,7 +71,7 @@ foreach ($payroll_parameter_mapping as $key => $title){
 
   if($title == 'Annual Salary'){
       if($salaried == 1){
-          $value = "<a  href='/payroll/yeartype/B/year/" . $fiscal_year_id . $dataSourceUrl . "?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/" .$agency_id . $dataSourceUrl . "/abc/" .$emp_id. "/salamttype/".$salaried."/year/" . $fiscal_year_id . "/yeartype/B'>". custom_number_formatter_format($value, 2 , '$') ."</a>";
+          $value = "<a  href='/payroll".$agencyLandingUrl."/yeartype/B/year/" . $fiscal_year_id . $dataSourceUrl . "?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/" .$agency_id . $dataSourceUrl . "/abc/" .$emp_id. "/salamttype/".$salaried."/year/" . $fiscal_year_id . "/yeartype/B'>". custom_number_formatter_format($value, 2 , '$') ."</a>";
       }
       else{
           $value = '';
@@ -78,7 +80,7 @@ foreach ($payroll_parameter_mapping as $key => $title){
 
   if($title == 'Hourly Rate'){
         if($salaried != 1){
-            $value = "<a  href='/payroll/yeartype/B/year/" . $fiscal_year_id . $dataSourceUrl . "?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/" .$agency_id . $dataSourceUrl . "/abc/" .$emp_id. "/salamttype/".$salaried."/year/" . $fiscal_year_id . "/yeartype/B'>". custom_number_formatter_format($value, 2 , '$') ."</a>";
+            $value = "<a  href='/payroll".$agencyLandingUrl."/yeartype/B/year/" . $fiscal_year_id . $dataSourceUrl . "?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/" .$agency_id . $dataSourceUrl . "/abc/" .$emp_id. "/salamttype/".$salaried."/year/" . $fiscal_year_id . "/yeartype/B'>". custom_number_formatter_format($value, 2 , '$') ."</a>";
         }
         else{
             $value = '';
