@@ -406,7 +406,7 @@ class ContractsUrlService
      * @param $current
      * @return string
      */
-    static function primeVendorUrl($vendor_id, $year_id = null, $current = true,$document_code=null)
+    static function primeVendorUrl($vendor_id, $year_id = null, $current = true)
     {
 
         $url = RequestUtilities::buildUrlFromParam([
@@ -436,6 +436,7 @@ class ContractsUrlService
 
         $is_mwbe_certified = MinorityTypeService::isMWBECertified($latest_minority_id);
         $mwbe_amount = VendorService::getMwbeAmount($vendor_id,$year_id,$document_code);
+        $subven_amount = VendorService::getSubVendorAmount($vendor_id,$year_id,$document_code);
 
 
 
@@ -447,16 +448,15 @@ class ContractsUrlService
             }
         }
 
-        if ($is_mwbe_certified ) {
-            if (isset($mwbe_amount)) {
+        if ($is_mwbe_certified && isset($mwbe_amount)) {
                 $url .= "/dashboard/mp/mwbe/2~3~4~5~9/vendor/" . $vendor_id;
-            } else if ( $mwbe_amount == 0 || !isset($mwbe_amount)){
-                // if prime is zero and sub amount is not zero. change dashboard to ms
-                $url .= "/dashboard/ms/mwbe/2~3~4~5~9/vendor/" . $vendor_id;
-            }
         }
-        else{
-                $url .= RequestUtilities::buildUrlFromParam('datasource') . "/vendor/" . $vendor_id;
+        else if ( $mwbe_amount == 0 && $subven_amount>0 || !isset($mwbe_amount)&&$subven_amount>0){
+         // if prime is zero and sub amount is not zero. change dashboard to ms
+          $url .= "/dashboard/ms/mwbe/2~3~4~5~9/vendor/" . $vendor_id;
+        }
+        else {
+            $url .= RequestUtilities::buildUrlFromParam('datasource') . "/vendor/" . $vendor_id;
          }
 
         $currentUrl = RequestUtilities::_getCurrentPage();
