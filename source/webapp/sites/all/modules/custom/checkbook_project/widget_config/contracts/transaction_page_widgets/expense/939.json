@@ -263,7 +263,7 @@
         "prime_vendor_name_link": {
            "expression": " '<a href=\"'.
                ContractsUrlService::applyLandingParameter($row['document_code'])
-              . ContractsUrlService::primeVendorUrl($row['prime_vendor_id'],_getRequestParamValue('year'), false,$row['document_code'])
+              . ContractsUrlService::primeVendorUrl($row['prime_vendor_id'],_getRequestParamValue('year'), false)
                . '?expandBottomCont=true\">'. $row['prime_vendor_name_formatted'] . '</a>'  "
           },
         "subvendor_name_formatted": {
