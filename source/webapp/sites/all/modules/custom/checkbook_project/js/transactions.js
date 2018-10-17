@@ -68,9 +68,9 @@ function removeUrlParam(url, urlParam, value){
   var filterUrlValues = urlParamValue.split('~');
   for(var i = 0; i < filterUrlValues.length; i++)
   {
-    if(filterUrlValues[i] != value && newUrlParamValue.length>0){
+    if(urldecode(filterUrlValues[i]) != urldecode(value) && newUrlParamValue.length>0){
       newUrlParamValue = newUrlParamValue  +'~'+ filterUrlValues[i];
-    }else if(filterUrlValues[i] != value){
+    }else if(urldecode(filterUrlValues[i]) != urldecode(value)){
       newUrlParamValue  = filterUrlValues[i];
     }
   }
@@ -83,6 +83,14 @@ function removeUrlParam(url, urlParam, value){
     url = url + '/' + urlParam + '/' +newUrlParamValue;
   }
   return url;
+}
+
+
+function urldecode(str) {
+  if (typeof str != "string") {
+    return str;
+  }
+  return decodeURIComponent(str.replace(/\+/g, ' ')).toLowerCase();
 }
 
 /**
