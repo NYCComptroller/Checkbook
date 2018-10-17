@@ -1593,6 +1593,7 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
         '#suffix' => '</div>',
         '#attributes' => array('class' => array('watch')),
         '#id' => 'edit-entity-contract-number',
+        '#maxlength'=> 15,
         '#name' => 'entity_contract_number',
         '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'entity_contract_number', $first_time_load, ''),
     );
@@ -2643,6 +2644,7 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
     $vendor = $form_state['values']['vendor'];
     $contract_id = $form_state['values']['contractno'];
     $ogeexpense = $form_state['values']['column_select_oge_expense'];
+    $entity_contractno =$form_state['values']['entity_contract_number'];
 
     //Contract Id
     if($contract_id && strlen($contract_id) > 32){
@@ -2651,10 +2653,15 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
 
     //Commodity Line
     if ('checkbook_oge' == $data_source) {
+
         $commodity_line = $form_state['values']['commodity_line'];
         if($commodity_line && !is_numeric($commodity_line)){
             form_set_error('commodity_line', t('Commodity Line must be a number'));
         }
+        if($entity_contractno && !is_numeric($entity_contractno)){
+            form_set_error('entity_contract_number', t('Entity Contract # must be a number'));
+        }
+
     }
 
     // Start Date:
@@ -4550,6 +4557,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
         '#title' => t('Entity Contract #:'),
         '#prefix' => '<div class="datafield entity_contract_number">',
         '#suffix' => '</div>',
+        '#maxlength'=>15,
         '#attributes' => array('class' => array('watch')),
         '#id' => 'edit-entity-contract-number',
         '#name' => 'entity_contract_number',
@@ -5305,10 +5313,15 @@ function checkbook_datafeeds_spending_validate($form, &$form_state) {
     //Commodity Line
     if ('checkbook_oge' == $data_source) {
         //Validate Commodity Line
+        $entity_contractno = $form_state['values']['entity_contract_number'];
         $commodity_line = $form_state['values']['commodity_line'];
         if($commodity_line && !is_numeric($commodity_line)){
             form_set_error('commodity_line', t('Commodity Line must be a number.'));
         }
+        if($entity_contractno && !is_numeric($entity_contractno)){
+            form_set_error('entity_contract_number', t('Entity Contract # must be a number'));
+        }
+
     }
     //Validate response columns
     if('checkbook_oge' == $data_source && !$oge_response_columns){
