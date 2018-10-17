@@ -435,8 +435,8 @@ class ContractsUrlService
             : PrimeVendorService::getLatestMinorityType($vendor_id, $agency_id);
 
         $is_mwbe_certified = MinorityTypeService::isMWBECertified($latest_minority_id);
-        $mwbe_amount = VendorService::getMwbeAmount($vendor_id,$year_id,$document_code);
-        $subven_amount = VendorService::getSubVendorAmount($vendor_id,$year_id,$document_code);
+        $mwbe_amount = VendorService::getMwbeAmount($vendor_id,$year_id);
+        $subven_amount = VendorService::getSubVendorAmount($vendor_id,$year_id);
 
 
 
