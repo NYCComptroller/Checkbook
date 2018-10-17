@@ -28,12 +28,16 @@ function getNamedFilterCriteria(filterName){
     //Get the new facet selected values
     for(var i = 0; i < oFilterIds.length; i++)
     {
-        if(oFilterIds[i].checked && filterUrlValues.indexOf(oFilterIds[i].value) == -1)
+        var value = oFilterIds[i].value;
+        value = replaceAllOccurrences('/', '__', value);
+        value = replaceAllOccurrences('%2F', encodeURIComponent('__'), value);
+
+        if(oFilterIds[i].checked && filterUrlValues.indexOf(value) == -1)
         {
             if(filterId.length>0){
-                filterId = filterId  +'~'+ oFilterIds[i].value;
+                filterId = filterId  +'~'+ value;
             }else{
-                filterId = oFilterIds[i].value;
+                filterId = value;
             }
         }
     }
