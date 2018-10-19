@@ -307,7 +307,7 @@ if(_checkbook_check_isEDCPage()) {
 </div>
 
 <div class="top-navigation-right">
-    <div class="featured-dashboard-title"><a href="#" alt="The amounts represented in the featured dashboards are subset amounts of either the Spending or Contract Domains">
+    <div class="featured-dashboard-title"><a  alt="The amounts represented in the featured dashboards are subset amounts of either the Spending or Contract Domains">
         <?php echo (preg_match('/contract/',$_GET['q']))?"Contracts ":"Spending " ;?>Featured Dashboard</a>
     </div>
     <div class="featured-dashboard-table">
