@@ -70,9 +70,3 @@ foreach ($node->results_prime_vendor_info as $vendor => $vendor_summary) {
 
 $html = "<div class='contracts-spending-top'>" . WidgetUtil::generateTable($tbl_spending) . "</div>" ;
 echo $html;
-
-?>
-
-
-
-
