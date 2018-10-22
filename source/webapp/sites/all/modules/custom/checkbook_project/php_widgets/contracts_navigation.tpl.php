@@ -204,8 +204,9 @@ $featured_dashboard = RequestUtilities::get("dashboard");
 if($mwbe_amount  == 0 && $mwbe_amount_active_inc == 0){
     $mwbe_link = l('<div><div class="top-navigation-amount"><span class="nav-title">' . RequestUtil::getDashboardTopNavTitle("mwbe") . '</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') . '</div></div>','',$options_disabled);
 }else{
-    //Contracts-M/WBE(Subvendors) should be navigated to third bottom slider when amount is zero
+    //Contracts-M/WBE(Subvendors) should be navigated to third bottom slider only when active contracts amount is zero
     if((!isset($mwbe_amount) || $mwbe_amount == 0) && preg_match('/contract/',$_GET['q']) && !_checkbook_check_isEDCPage() && RequestUtil::getDashboardTopNavTitle("mwbe") == 'M/WBE (Sub Vendors)'){
+
         $mwbe_active_domain_link = ContractURLHelper::prepareSubvendorContractsSliderFilter($mwbe_active_domain_link, 'ms', ContractURLHelper::thirdBottomSliderValue());
     }
     $mwbe_link = l('<div><div class="top-navigation-amount"><span class="nav-title">' . RequestUtil::getDashboardTopNavTitle("mwbe") . '</span><br>&nbsp;'. custom_number_formatter_format($mwbe_amount ,1,'$') . '</div></div>',$mwbe_active_domain_link,$options);
