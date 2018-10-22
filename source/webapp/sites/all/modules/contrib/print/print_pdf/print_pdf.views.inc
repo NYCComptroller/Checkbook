@@ -2,7 +2,7 @@
 
 /**
  * @file
- * PDF Version Views integration
+ * PDF Version Views integration.
  *
  * @ingroup print
  */
@@ -25,18 +25,16 @@ function print_pdf_views_data() {
     // 'field' is the foreign key in this table.
     'left_field' => 'nid',
     'field' => 'nid',
-//    'type' => 'INNER',
   );
   $data['print_pdf_page_counter']['table']['join']['node'] = array(
     // 'left_field' is the primary key in the referenced table.
     // 'field' is the foreign key in this table.
     'left_field' => 'nid',
     'field' => 'path',
-//    'type' => 'INNER',
     'handler' => 'print_join_page_counter',
   );
 
-  // print_pdf_node_conf fields
+  // print_pdf_node_conf fields.
   $data['print_pdf_node_conf']['link'] = array(
     'title' => t('PDF: Show link'),
     'help' => t('Whether to show the PDF version link.'),
@@ -85,9 +83,36 @@ function print_pdf_views_data() {
       'handler' => 'views_handler_sort',
     ),
   );
+  $data['print_pdf_node_conf']['size'] = array(
+    'title' => t('PDF: Paper size'),
+    'help' => t('Configured PDF paper size'),
+    'field' => array(
+      'handler' => 'views_handler_field',
+      'click sortable' => TRUE,
+    ),
+    'filter' => array(
+      'handler' => 'views_handler_filter_string',
+    ),
+    'sort' => array(
+      'handler' => 'views_handler_sort',
+    ),
+  );
+  $data['print_pdf_node_conf']['orientation'] = array(
+    'title' => t('PDF: Page orientation'),
+    'help' => t('Configured PDF page orientation.'),
+    'field' => array(
+      'handler' => 'views_handler_field',
+      'click sortable' => TRUE,
+    ),
+    'filter' => array(
+      'handler' => 'views_handler_filter_string',
+    ),
+    'sort' => array(
+      'handler' => 'views_handler_sort',
+    ),
+  );
 
-
-  // print_pdf_page_counter fields
+  // print_pdf_page_counter fields.
   $data['print_pdf_page_counter']['totalcount'] = array(
     'title' => t('PDF: Number of page accesses'),
     'help' => t('Counter of accesses to the PDF version for this node.'),
