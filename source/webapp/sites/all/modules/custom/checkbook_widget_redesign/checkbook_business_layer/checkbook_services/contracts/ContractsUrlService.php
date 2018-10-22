@@ -455,6 +455,9 @@ class ContractsUrlService
          // if prime is zero and sub amount is not zero. change dashboard to ms
           $url .= "/dashboard/ms/mwbe/2~3~4~5~9/vendor/" . $vendor_id;
         }
+        else if($is_mwbe_certified){
+            $url .= "/dashboard/mp/mwbe/2~3~4~5~9/vendor/" . $vendor_id;
+        }
         else {
             $url .= RequestUtilities::buildUrlFromParam('datasource') . "/vendor/" . $vendor_id;
          }
