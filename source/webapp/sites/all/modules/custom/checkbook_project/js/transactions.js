@@ -31,14 +31,30 @@ function getNamedFilterCriteria(filterName){
         var value = oFilterIds[i].value;
         value = replaceAllOccurrences('/', '__', value);
         value = replaceAllOccurrences('%2F', encodeURIComponent('__'), value);
+        var multiValueExistence = false;
 
-        if(oFilterIds[i].checked && filterUrlValues.indexOf(value) == -1)
-        {
-            if(filterId.length>0){
-                filterId = filterId  +'~'+ value;
-            }else{
-                filterId = value;
+        if(oFilterIds[i].checked && filterUrlValues.indexOf(value) == -1) {
+          //When a checkbox has multiple values, check the existence of them in the URL. Eg: Minority Type ID
+          if (urldecode(value).indexOf('~') != -1) {
+            var multiValues = urldecode(value).split('~');
+            var filtered = filterUrlValues.filter(
+              function (e) {
+                return this.indexOf(e) < 0;
+              },
+              multiValues
+            );
+            if (filtered.length > 0 && filtered.length < filterUrlValues.length) {
+              multiValueExistence = true;
             }
+          }
+
+          if (!multiValueExistence){
+            if (filterId.length > 0) {
+              filterId = filterId + '~' + value;
+            } else {
+              filterId = value;
+            }
+          }
         }
     }
 
