@@ -12,7 +12,7 @@
     ]
   },
   "department_code_list": {
-    "sql": "SELECT DISTINCT d.department_code, d.department_name, a.agency_code, a.agency_name FROM ref_department d LEFT OUTER JOIN ref_agency a  ON d.agency_id = a.agency_id ORDER BY d.department_name",
+    "sql": "SELECT DISTINCT d.department_code, d.department_name, a.agency_code, a.agency_name FROM ref_department d LEFT OUTER JOIN ref_agency a  ON d.agency_id = a.agency_id WHERE  ( REGEXP_REPLACE(d.department_name, '^[^[:alnum:]].*', '') = '' ) IS FALSE ORDER BY d.department_name",
     "force_quote": [
       "department_code",
       "agency_code"
