@@ -29,6 +29,10 @@ function getNamedFilterCriteria(filterName){
     for(var i = 0; i < oFilterIds.length; i++)
     {
         var value = oFilterIds[i].value;
+        //Exception for Payroll Type
+        if((filterName == 'payrolltype' || filterName == 'fpayrolltype') && value == "2"){
+          value = encodeURIComponent("2~3");
+        }
         value = replaceAllOccurrences('/', '__', value);
         value = replaceAllOccurrences('%2F', encodeURIComponent('__'), value);
         var multiValueExistence = false;
@@ -36,16 +40,7 @@ function getNamedFilterCriteria(filterName){
         if(oFilterIds[i].checked && filterUrlValues.indexOf(value) == -1) {
           //When a checkbox has multiple values, check the existence of them in the URL. Eg: Minority Type ID
           if (urldecode(value).indexOf('~') != -1) {
-            var multiValues = urldecode(value).split('~');
-            var filtered = filterUrlValues.filter(
-              function (e) {
-                return this.indexOf(e) < 0;
-              },
-              multiValues
-            );
-            if (filtered.length > 0 && filtered.length < filterUrlValues.length) {
-              multiValueExistence = true;
-            }
+            multiValueExistence = checkMultivalueExistence(filterUrlValues, value);
           }
 
           if (!multiValueExistence){
@@ -74,6 +69,10 @@ function getNamedFilterCriteria(filterName){
 function removeUrlParam(url, urlParam, value){
   value = replaceAllOccurrences('/', '__', value);
   value = replaceAllOccurrences('%2F', encodeURIComponent('__'), value);
+  //Exception for Payroll Type Filter
+  if((urlParam == 'payrolltype' || urlParam == 'fpayrolltype') && value == "2"){
+    value = encodeURIComponent("2~3");
+  }
   var urlParamValue = '';
   var newUrlParamValue = '';
   var urlParts = url.split('/');
@@ -101,12 +100,28 @@ function removeUrlParam(url, urlParam, value){
   return url;
 }
 
-
 function urldecode(str) {
   if (typeof str != "string") {
     return str;
   }
   return decodeURIComponent(str.replace(/\+/g, ' ')).toLowerCase();
+}
+
+//Checks the existence of multiple values in URL
+function checkMultivalueExistence(filterUrlValues, value){
+  var multiValueExistence = false;
+  var multiValues = urldecode(value).split('~');
+  var filtered = filterUrlValues.filter(
+    function (e) {
+      return this.indexOf(e) < 0;
+    },
+    multiValues
+  );
+  if (filtered.length > 0 && filtered.length < filterUrlValues.length) {
+    multiValueExistence = true;
+  }
+
+  return multiValueExistence;
 }
 
 /**
