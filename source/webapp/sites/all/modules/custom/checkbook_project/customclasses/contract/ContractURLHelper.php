@@ -439,13 +439,13 @@ class ContractURLHelper
     static function thirdBottomSliderValue()
     {
 
-        $node = node_load(363);
+        $node = node_load(737);
         widget_config($node);
         widget_prepare($node);
         widget_invoke($node, 'widget_prepare');
         widget_data($node);
-        $contracts = $node->data[2]['total_contracts'];
-        if ($contracts == 0) {
+        $contracts = $node->data[0]['total_contracts'];
+        if ($contracts > 0) {
             $third_bottom_slider = false;
         } else {
             $third_bottom_slider = true;
