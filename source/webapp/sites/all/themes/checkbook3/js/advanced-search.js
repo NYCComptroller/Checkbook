@@ -18,7 +18,8 @@
         attach: function (context, settings) {
 
             // Advanced Search link once
-            $('a.advanced-search').attr('href', 'javascript:void(0)').click(function () {
+            $('a.advanced-search').click(function (e) {
+                e.preventDefault();
                 if (advancedSearchFormLoading) {
                     return;
                 }
