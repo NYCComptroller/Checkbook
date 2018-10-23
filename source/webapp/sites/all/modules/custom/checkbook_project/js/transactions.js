@@ -22,25 +22,21 @@ function getNamedFilterCriteria(filterName){
         if (index >= 0 && index < urlParts.length - 1) {
           filterUrlValue = urlParts[index + 1];
         }
-        var filterUrlValues = filterUrlValue.split('~');
+        var filterUrlValues = urldecode(filterUrlValue).split('~');
     }
 
     //Get the new facet selected values
     for(var i = 0; i < oFilterIds.length; i++)
     {
         var value = oFilterIds[i].value;
-        //Exception for Payroll Type
-        if((filterName == 'payrolltype' || filterName == 'fpayrolltype') && value == "2"){
-          value = encodeURIComponent("2~3");
-        }
         value = replaceAllOccurrences('/', '__', value);
         value = replaceAllOccurrences('%2F', encodeURIComponent('__'), value);
         var multiValueExistence = false;
 
-        if(oFilterIds[i].checked && filterUrlValues.indexOf(value) == -1) {
-          //When a checkbox has multiple values, check the existence of them in the URL. Eg: Minority Type ID
+        if(oFilterIds[i].checked && filterUrlValues.indexOf(urldecode(value)) == -1) {
+          //When a checkbox has multiple values, check the existence of them in the URL. Eg: Minority Type ID, Payroll Type
           if (urldecode(value).indexOf('~') != -1) {
-            multiValueExistence = checkMultivalueExistence(filterUrlValues, value);
+            multiValueExistence = checkMultivalueExistence(filterUrlValues, urldecode(value));
           }
 
           if (!multiValueExistence){
@@ -62,7 +58,6 @@ function getNamedFilterCriteria(filterName){
         return filterUrlValue;
       }
     }
-
     return filterId;
 }
 
@@ -71,7 +66,7 @@ function removeUrlParam(url, urlParam, value){
   value = replaceAllOccurrences('%2F', encodeURIComponent('__'), value);
   //Exception for Payroll Type Filter
   if((urlParam == 'payrolltype' || urlParam == 'fpayrolltype') && value == "2"){
-    value = encodeURIComponent("2~3");
+    value = "2~3";
   }
   var urlParamValue = '';
   var newUrlParamValue = '';
@@ -83,10 +78,16 @@ function removeUrlParam(url, urlParam, value){
   var filterUrlValues = urlParamValue.split('~');
   for(var i = 0; i < filterUrlValues.length; i++)
   {
-    if(urldecode(filterUrlValues[i]) != urldecode(value) && newUrlParamValue.length>0){
-      newUrlParamValue = newUrlParamValue  +'~'+ filterUrlValues[i];
-    }else if(urldecode(filterUrlValues[i]) != urldecode(value)){
-      newUrlParamValue  = filterUrlValues[i];
+    var multiValueExistence = false;
+    if (urldecode(filterUrlValues[i]).indexOf('~') != -1) {
+      multiValueExistence = checkMultivalueExistence(urldecode(value).split('~'), urldecode(filterUrlValues[i]));
+    }
+    if(!multiValueExistence) {
+      if (urldecode(filterUrlValues[i]) != urldecode(value) && newUrlParamValue.length > 0) {
+        newUrlParamValue = newUrlParamValue + '~' + filterUrlValues[i];
+      } else if (urldecode(filterUrlValues[i]) != urldecode(value)) {
+        newUrlParamValue = filterUrlValues[i];
+      }
     }
   }
   var reg = new RegExp("/" +  urlParam + "\/[^\/]*");
@@ -110,14 +111,14 @@ function urldecode(str) {
 //Checks the existence of multiple values in URL
 function checkMultivalueExistence(filterUrlValues, value){
   var multiValueExistence = false;
-  var multiValues = urldecode(value).split('~');
+  var multiValues = value.split('~');
   var filtered = filterUrlValues.filter(
     function (e) {
       return this.indexOf(e) < 0;
     },
     multiValues
   );
-  if (filtered.length > 0 && filtered.length < filterUrlValues.length) {
+  if (filtered.length >= 0 && filtered.length < filterUrlValues.length) {
     multiValueExistence = true;
   }
 
