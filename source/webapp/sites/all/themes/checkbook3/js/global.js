@@ -23,6 +23,9 @@ jQuery(document).ready(function ($) {
         });
     });
 
+    // remove all empty # hrefs
+    $('a').each(function(){if('#' === $(this).attr('href')){jQuery(this).removeAttr("href");}});
+
     function setNewFeaturesMenuColor(status) {
         if (status === 'enable') {
             $('#nice-menu-1 li.menu-path-node-975 a').removeClass('disabled');
