@@ -21,10 +21,10 @@
 $title = 'New York City';
 $domain = 'Revenue';
 
-$year = _getYearValueFromID(RequestUtilities::getRequestParamValue('year'));
-$revcat = RequestUtilities::getRequestParamValue('revcat');
-$fundsrccode = RequestUtilities::getRequestParamValue('fundsrccode');
-$agency = RequestUtilities::getRequestParamValue('agency');
+$year = _getYearValueFromID(RequestUtilities::get('year'));
+$revcat = RequestUtilities::get('revcat');
+$fundsrccode = RequestUtilities::get('fundsrccode');
+$agency = RequestUtilities::get('agency');
 
 if(!empty($revcat)){
   $title =  _checkbook_project_get_name_for_argument('revenue_category_id', $revcat);

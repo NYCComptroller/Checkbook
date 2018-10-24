@@ -28,7 +28,7 @@ if(is_array($records)){
     $sub_vendor_name= WidgetUtil::getLabel("sub_vendor_name");
     $prime_vendor_name= WidgetUtil::getLabel("prime_vendor");
     $sub_contract_purpose_value = strtoupper($row['sub_contract_purpose_sub_contract_purpose']);
-    $smmnid = RequestUtilities::getRequestParamValue('smnid');
+    $smmnid = RequestUtilities::get('smnid');
     switch($smmnid) {
         case 718:
         case 749:

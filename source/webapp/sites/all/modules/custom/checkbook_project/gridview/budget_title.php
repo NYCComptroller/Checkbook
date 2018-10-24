@@ -20,8 +20,8 @@
  
 $title = 'New York City';
 $domain= 'Budget';
-$agency = RequestUtilities::getRequestParamValue('agency');
-$expcategory = RequestUtilities::getRequestParamValue('expcategory');
+$agency = RequestUtilities::get('agency');
+$expcategory = RequestUtilities::get('expcategory');
 
 if(!empty($expcategory)){
     $expName = _checkbook_project_get_name_for_argument('object_class_id', $expcategory);

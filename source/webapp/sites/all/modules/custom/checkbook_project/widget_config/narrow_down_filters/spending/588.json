@@ -5,7 +5,6 @@
     "maxSelect":5,
     "columns":["dept.dept", "deptname.deptname", "txcount"],
     "orderBy":["-txcount" , "department_name"],
-	"getTotalDataCount":true,
 	"facetPager":true,
     "filterName":"Department",
     "urlParameterName":"dept",

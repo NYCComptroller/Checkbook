@@ -18,8 +18,8 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-    $is_active_expense_contracts = (preg_match("/^contracts_landing/", $_GET['q']) && RequestUtilities::getRequestParamValue("status") == "A" 
-                                    && RequestUtilities::getRequestParamValue("bottom_slider") != "sub_vendor")? true:false;
+    $is_active_expense_contracts = (preg_match("/^contracts_landing/", $_GET['q']) && RequestUtilities::get("status") == "A"
+                                    && RequestUtilities::get("bottom_slider") != "sub_vendor")? true:false;
     $td_class1 = ($is_active_expense_contracts)?'  class="active"':"";
     $active_link = ContractURLHelper::prepareActRegContractsSliderFilter('contracts_landing', 'A');
     $count = "<span class='count'>" . number_format($node->data[0]['total_contracts']) . "</span>";
@@ -32,7 +32,7 @@
         <tr>
             <td<?php echo $td_class1; ?>>
                 <?php
-                    $is_edc_prime_vendor = RequestUtilities::getRequestParamValue("vendor") == "5616";
+                    $is_edc_prime_vendor = RequestUtilities::get("vendor") == "5616";
                     $link_class = ($is_active_expense_contracts && $is_edc_prime_vendor)? ' class="positioning activeExpenseContract"':' class="positioning"';
                 ?>
                 <div<?php echo $link_class; ?>>
@@ -47,7 +47,7 @@
                 <div class="indicator"></div>
             </td>
             <?php
-                $td_class2 = (preg_match("/^contracts_landing/", $_GET['q']) & RequestUtilities::getRequestParamValue("status") == "R")?' class="active"':"";
+                $td_class2 = (preg_match("/^contracts_landing/", $_GET['q']) & RequestUtilities::get("status") == "R")?' class="active"':"";
                 $reg_link = ContractURLHelper::prepareActRegContractsSliderFilter('contracts_landing', 'R');
                 $count = "<span class='count'>" . number_format($node->data[1]['total_contracts']) . "</span>";
                 $dollars = "<span class='dollars'>" . custom_number_formatter_format($node->data[1]['current_amount_sum'],1,'$') . "</span>";      
@@ -64,7 +64,7 @@
                 <div class="indicator"></div>
             </td>
             <?php
-                $td_class3 = (preg_match("/^contracts_landing/", $_GET['q']) & RequestUtilities::getRequestParamValue("bottom_slider") == "sub_vendor")?' class="active"':"";
+                $td_class3 = (preg_match("/^contracts_landing/", $_GET['q']) & RequestUtilities::get("bottom_slider") == "sub_vendor")?' class="active"':"";
                 $subvendor_link = ContractURLHelper::prepareSubvendorContractsSliderFilter('contracts_landing', NULL, TRUE);
             ?>
             <td<?php echo $td_class3; ?>>

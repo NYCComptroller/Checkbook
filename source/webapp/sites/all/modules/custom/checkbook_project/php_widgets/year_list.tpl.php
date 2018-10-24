@@ -22,7 +22,7 @@
 //Hide the Date Filter
 //on Spending Advanced Search page when 'Check Date' parameter is present in the URL &
 //on Pending Contracts Advanced Search page
-if((preg_match('/^spending\/search\/transactions/',$_GET['q']) && (RequestUtilities::getRequestParamValue('chkdate') || !RequestUtilities::getRequestParamValue('year'))) || RequestUtilities::getRequestParamValue('contstatus') == 'P'
+if((preg_match('/^spending\/search\/transactions/',$_GET['q']) && (RequestUtilities::get('chkdate') || !RequestUtilities::get('year'))) || RequestUtilities::get('contstatus') == 'P'
     || preg_match('/^contract\/all\/transactions/',$_GET['q'])){
     return;
 }
@@ -54,13 +54,13 @@ if(preg_match("/contracts_pending_exp_landing/",$q)){
 }
 
 //Set $url_year_id_value and $url_year_type_value from the current URL
-if(RequestUtilities::getRequestParamValue('year')){
-    $url_year_id_value = RequestUtilities::getRequestParamValue('year');
-}else if(RequestUtilities::getRequestParamValue('calyear')){
-    $url_year_id_value = RequestUtilities::getRequestParamValue('calyear');
+if(RequestUtilities::get('year')){
+    $url_year_id_value = RequestUtilities::get('year');
+}else if(RequestUtilities::get('calyear')){
+    $url_year_id_value = RequestUtilities::get('calyear');
 }
 
-$url_year_type_value = (RequestUtilities::getRequestParamValue('yeartype')) ? RequestUtilities::getRequestParamValue('yeartype') : 'B';
+$url_year_type_value = (RequestUtilities::get('yeartype')) ? RequestUtilities::get('yeartype') : 'B';
 
 //Set $year_id_value to current Fiscal Year ID for Pending Contracts
 if(preg_match("/contracts_pending_exp_landing/",$_GET['q']) || preg_match("/contracts_pending_rev_landing/",$_GET['q'])){
@@ -118,7 +118,7 @@ foreach($node->data as $key => $value){
         if($trends || $search){
             $link = $q .$value['year_id'] ;
         }else{
-            if(RequestUtilities::getRequestParamValue("calyear")){
+            if(RequestUtilities::get("calyear")){
                 $link = preg_replace("/calyear\/" . $url_year_id_value . "/","year/" .  $value['year_id'],$q);
             }else{
                 $link = preg_replace("/year\/" . $url_year_id_value . "/","year/" .  $value['year_id'],$q);
@@ -161,7 +161,7 @@ foreach($node->data as $key => $value){
     /*********  Begining of Calendar Year Options (Applicable for Payroll domain only)   ********/
     if(preg_match('/payroll/',$_SERVER['REQUEST_URI'])){
         if($value['year_value'] <= $filter_years['cal_year_value']){
-            if(RequestUtilities::getRequestParamValue("calyear")){
+            if(RequestUtilities::get("calyear")){
                 $link = preg_replace("/calyear\/" . $url_year_id_value . "/","calyear/" .  $value['year_id'],$q);
             }else{
                 $link = preg_replace("/year\/" . $url_year_id_value . "/","year/" .  $value['year_id'],$q);

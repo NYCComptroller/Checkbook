@@ -563,7 +563,7 @@ function load_widget_data($node, $resultFormatter) {
 
         //update
 
-        $ajaxRequest = RequestUtilities::getRequestParamValue('ajax');
+        $ajaxRequest = RequestUtilities::get('ajax');
 
         if(isset($config->adjustParameters)){
            @$parameters =  eval($config->adjustParameters);
@@ -800,6 +800,7 @@ function load_widget_data($node, $resultFormatter) {
                 $node->nodeAdjustedParamaterConfig = $parameters;
             }
           if ($config->getTotalDataCount) {
+              LogHelper::log_info('Count for node # '.$node->nid);
               /**
                * Added config setting in the widget json, if set, the count will only consider distinct columns
                */
@@ -834,8 +835,7 @@ function load_widget_data($node, $resultFormatter) {
 //                  log_info('AFTER***: ' . $sql);
                   $results = _checkbook_project_execute_sql_by_data_source($sql,_get_current_datasource());
                   $node->totalDataCount = $results[0]['record_count'];
-              }
-              else {$node->totalDataCount = $isList
+              } else {$node->totalDataCount = $isList
                   ? $dataQueryController->countDatasetRecords(
                       $datasetName,$parameters)
                   : $dataQueryController->countCubeRecords(
@@ -1372,6 +1372,11 @@ function widget_mergeJSFunctions($node, $phpArray) {
 	$PLACEHOLDER_END = '"';
 
 	$json = json_encode($phpArray);
+	if (!$json) {
+        $error = json_last_error_msg();
+        LogHelper::log_warn('Could not encode json:: '.$error);
+    }
+
 	if (isset($node->jsFunctions)) {
 		foreach ($node->jsFunctions as $key => $value) {
 
@@ -1524,10 +1529,10 @@ function _update_dataset_datasource($datasetName,$keepOriginalDatasource = false
 	if($keepOriginalDatasource == true){
 		return $datasetName;
 	}
-    $database = RequestUtilities::getRequestParamValue('datasource');
-    if(isset($database) && $database == 'checkbook_oge'){
+    $datasource = RequestUtilities::getRequestParamValue('datasource');
+    if('checkbook_oge' === $datasource){
         $database = str_replace("checkbook:", "checkbook_oge:",$datasetName);
-    }else if(isset($database) && $database == 'checkbook_nycha'){
+    }else if('checkbook_nycha' === $datasource){
         $database = str_replace("checkbook:", "checkbook_nycha:",$datasetName);
     }else{
         $database = $datasetName;
@@ -1560,7 +1565,7 @@ function _update_columns_by_datasource($node_columns, $datasource_mapping = null
 		return $node_columns;
 	}
     $columns = array();
-    $database = RequestUtilities::getRequestParamValue('datasource');
+    $database = RequestUtilities::get('datasource');
     $datasource_mapping = ($datasource_mapping != null) ? get_object_vars($datasource_mapping) : null;
     if (isset($node_columns) && $node_columns) {
         foreach($node_columns as $column){
@@ -1582,7 +1587,7 @@ function _update_columns_by_datasource($node_columns, $datasource_mapping = null
 
 
 function _get_current_datasource(){
-	$datasource = RequestUtilities::getRequestParamValue('datasource');
+	$datasource = RequestUtilities::get('datasource');
 	if(isset($datasource)){
 		return $datasource;
 	}else{

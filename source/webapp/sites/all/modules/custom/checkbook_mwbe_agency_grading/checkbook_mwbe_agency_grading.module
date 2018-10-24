@@ -139,8 +139,8 @@ function _checkbook_mwbe_agency_grading_right($agencies_data){
 
 function _checkbook_mwbe_agency_grading_getdata(){
 
-    $is_prime = RequestUtilities::getRequestParamValue('mwbe_agency_grading');
-    $is_prime_csv = RequestUtilities::getRequestParamValue('mwbe_agency_grading_csv');
+    $is_prime = RequestUtilities::get('mwbe_agency_grading');
+    $is_prime_csv = RequestUtilities::get('mwbe_agency_grading_csv');
     if($is_prime == 'sub_vendor_data' || $is_prime_csv == 'sub_vendor_data' ){
         $sql1 = _checkbook_mwbe_agency_grading_generate_sql("aggregateon_subven_spending_coa_entities");
     }else{
@@ -199,7 +199,7 @@ function _checkbook_mwbe_agency_grading_generate_sql($table){
 	$urlParamMap = array("year_id"=>"year", "type_of_year"=>"yeartype");
     $mwbe_cats = _mwbe_agency_grading_current_cats();
 	foreach($urlParamMap as $column=>$path_param){
-		$where_filters[] = _widget_build_sql_condition(' a.' . $column, RequestUtilities::getRequestParamValue($path_param));
+		$where_filters[] = _widget_build_sql_condition(' a.' . $column, RequestUtilities::get($path_param));
 	}
 
 	if(count($where_filters) > 0){
@@ -285,8 +285,8 @@ function _checkbook_mwbe_agency_grading_generate_sql($table){
 
 function _mwbe_agency_grading_current_cats(){
 
-	if(RequestUtilities::getRequestParamValue('mwbe_filter') != null){
-		$url_cats = explode('~',RequestUtilities::getRequestParamValue('mwbe_filter'));
+	if(RequestUtilities::get('mwbe_filter') != null){
+		$url_cats = explode('~',RequestUtilities::get('mwbe_filter'));
 		return $url_cats;
 	}else{
 		return array('aa_mwbe','ba_mwbe','ha_mwbe','w_mwbe');

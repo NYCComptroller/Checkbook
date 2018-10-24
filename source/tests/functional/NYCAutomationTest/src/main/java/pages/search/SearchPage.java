@@ -64,23 +64,41 @@ public class SearchPage {
 
 
         public static int activeExpenseContractsTransactionsCount() {
-            Driver.Instance.findElement(By.id("edit-spending-advanced-search-domain-filter-checkbook")).click();
+          //  Driver.Instance.findElement(By.id("edit-spending-advanced-search-domain-filter-checkbook")).click();
 
-            Driver.Instance.findElement(By.xpath("//form[@id='checkbook-advanced-search-form']/div/div[3]/h3[4]/span")).click();
+           Driver.Instance.findElement(By.xpath("//form[@id='checkbook-advanced-search-form']/div/div[3]/h3[4]/span")).click();
 
-            Driver.Instance.findElement(By.xpath("//form[@id='checkbook-advanced-search-form']/div/div[3]/h3[4]/span")).click();
+           
+            
+           // Driver.Instance.findElement(By.id("contracts-advanced-search")).click();
 
-            WebDriverWait wait = new WebDriverWait(Driver.Instance, 60);
+            WebDriverWait wait = new WebDriverWait(Driver.Instance, 120);
+            //Year selected
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("edit-checkbook-contracts-year")));
 
             new Select(Driver.Instance.findElement(By.id("edit-checkbook-contracts-year"))).selectByVisibleText("FY 2016");
-            Driver.Instance.findElement(By.id("edit-contracts-submit")).click();
-
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"table_939_info\"]")));
-            String totalTransactionsString = Driver.Instance.findElement(By.xpath("//*[@id=\"table_939_info\"]")).getText();
-            int totalTransactions = Helper.GetTotalEntries(totalTransactionsString, 5);		
-            		
             
+            
+            //Radio button
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("edit-contracts-advanced-search-domain-filter-checkbook-oge")));
+            Driver.Instance.findElement(By.id("edit-contracts-advanced-search-domain-filter-checkbook-oge")).click();
+           
+                              
+
+            //submitCitywide
+          //  Driver.Instance.findElement(By.id("edit-contracts-submit")).click();
+            
+            //Submit OGE
+            Driver.Instance.findElement(By.id("edit-contracts-submit--2")).click();
+            
+//Citywide transaction
+          //  wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"table_939_info\"]")));
+          //  String totalTransactionsString = Driver.Instance.findElement(By.xpath("//*[@id=\"table_939_info\"]")).getText();
+         //   int totalTransactions = Helper.GetTotalEntries(totalTransactionsString, 5);		
+  //OGE transaction          		
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("table_634_info")));
+            String totalTransactionsString = Driver.Instance.findElement(By.id("table_634_info")).getText();
+            int totalTransactions = Helper.GetTotalEntries(totalTransactionsString, 5);	
             return totalTransactions;
         }
     }

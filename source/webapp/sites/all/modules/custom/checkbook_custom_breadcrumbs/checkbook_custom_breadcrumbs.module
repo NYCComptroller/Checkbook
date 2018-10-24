@@ -249,10 +249,10 @@ function _get_payroll_breadcrumb_title_drilldown()
         $title = null;
     }else{
         if (preg_match('/agency_landing/', current_path())) {
-            $value = RequestUtilities::getRequestParamValue('agency');
+            $value = RequestUtilities::get('agency');
             $title = _checkbook_project_get_name_for_argument("agency_id", $value);
         } else if (preg_match('/title_landing/', current_path())) {
-            $value = RequestUtilities::getRequestParamValue('title');
+            $value = RequestUtilities::get('title');
             $title = _checkbook_project_get_name_for_argument("title", $value);
         }
         else {
@@ -315,14 +315,14 @@ function _get_pending_contracts_breadcrumb_title_drilldown($ethinicty = true){
 * Custom function to set breadcrumbs and title for contracts landing pages
 */
 function _set_contracts_breadcrumb_title(){
-  $agency_id = RequestUtilities::getRequestParamValue("agency", true);
-  $vendor_id = RequestUtilities::getRequestParamValue("vendor", true);
-  $year_id = RequestUtilities::getRequestParamValue("year", true);
-  $award_method_id = RequestUtilities::getRequestParamValue("awdmethod", true);
-  $award_size_id = RequestUtilities::getRequestParamValue("csize", true);
-  $industry_type_id = RequestUtilities::getRequestParamValue("cindustry", true);
+  $agency_id = RequestUtilities::get("agency");
+  $vendor_id = RequestUtilities::get("vendor");
+  $year_id = RequestUtilities::get("year");
+  $award_method_id = RequestUtilities::get("awdmethod");
+  $award_size_id = RequestUtilities::get("csize");
+  $industry_type_id = RequestUtilities::get("cindustry");
 
-  $year_type = RequestUtilities::getRequestParamValue("yeartype", true);
+  $year_type = RequestUtilities::get("yeartype");
   $values['agency_id'] = (isset($agency_id))? _checkbook_project_get_name_for_argument("agency_id",$agency_id):"";
   $values['vendor_id'] = (isset($vendor_id))?_checkbook_project_get_name_for_argument("vendor_id",$vendor_id):"";
   $values['award_method'] =(isset($award_method_id))? _checkbook_project_get_name_for_argument("award_method_id",$award_method_id):"";
@@ -392,13 +392,13 @@ function _set_contracts_breadcrumb_title(){
 * Custom function to set breadcrumbs and title for pending contracts landing pages
 */
 function _set_pending_contracts_breadcrumb_title(){
-    $pending_contracts_agency_id = RequestUtilities::getRequestParamValue("agency", true);
-    $pending_contracts_vendor_code = RequestUtilities::getRequestParamValue("vendor", true);
-    $pending_contracts_year_id = RequestUtilities::getRequestParamValue("year", true);
-    $pending_contracts_award_method_code = RequestUtilities::getRequestParamValue("awrdmthd", true);
-    $pending_contracts_award_size_id = RequestUtilities::getRequestParamValue("csize", true);
-    $pending_contracts_industry_type_id = RequestUtilities::getRequestParamValue("cindustry", true);
-    $pending_contracts_year_type = RequestUtilities::getRequestParamValue("yeartype", true);
+    $pending_contracts_agency_id = RequestUtilities::get("agency");
+    $pending_contracts_vendor_code = RequestUtilities::get("vendor");
+    $pending_contracts_year_id = RequestUtilities::get("year");
+    $pending_contracts_award_method_code = RequestUtilities::get("awrdmthd");
+    $pending_contracts_award_size_id = RequestUtilities::get("csize");
+    $pending_contracts_industry_type_id = RequestUtilities::get("cindustry");
+    $pending_contracts_year_type = RequestUtilities::get("yeartype");
 
     $values['pending_contracts_agency_id'] = (isset($pending_contracts_agency_id))? _checkbook_project_get_name_for_argument("agency_id",$pending_contracts_agency_id):"";
     $values['pending_contracts_vendor_code'] = (isset($pending_contracts_vendor_code))?_checkbook_project_get_name_for_argument("pending_contracts_vendor_code",$pending_contracts_vendor_code):"";

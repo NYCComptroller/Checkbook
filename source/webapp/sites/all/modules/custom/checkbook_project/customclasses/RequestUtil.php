@@ -249,7 +249,7 @@ class RequestUtil
     public static function getDashboardTitle($dashboard = null)
     {
         if ($dashboard == null) {
-            $dashboard = RequestUtilities::getRequestParamValue('dashboard');
+            $dashboard = RequestUtilities::get('dashboard');
         }
         switch ($dashboard) {
             case "mp" :
@@ -336,7 +336,7 @@ class RequestUtil
      */
     public static function getSpendingTransactionTitle($defaultName = 'Total Spending')
     {
-        $categoryId = RequestUtilities::getRequestParamValue('category');
+        $categoryId = RequestUtilities::get('category');
         if (isset($categoryId)) {
             $categoryDetails = SpendingUtil::getSpendingCategoryDetails($categoryId, 'display_name');
             if (is_array($categoryDetails)) {
@@ -365,7 +365,7 @@ class RequestUtil
     public static function getTitleByVendorType($domain, $defaultTitle = 'Total Spending')
     {
         if (_checkbook_check_is_mwbe_page()) {
-            $minority_type_id = RequestUtilities::getRequestParamValue('mwbe');
+            $minority_type_id = RequestUtilities::get('mwbe');
         } else {
             $lastReqParam = _getLastRequestParamValue();
             $minority_type_id = '';
@@ -403,10 +403,10 @@ class RequestUtil
      */
     public static function getLatestMinorityTypeByVendorType($domain, $vendor_id, $vendor_type)
     {
-        $year_id = RequestUtilities::getRequestParamValue('year');
+        $year_id = RequestUtilities::get('year');
         $type_of_year = 'B';
 
-        if (empty($year_id)) $year_id = RequestUtilities::getRequestParamValue('calyear');
+        if (empty($year_id)) $year_id = RequestUtilities::get('calyear');
         if (empty($type_of_year)) $type_of_year = 'B';
         if (empty($year_id)) $year_id = _getCurrentYearID();
 
@@ -432,7 +432,7 @@ class RequestUtil
      */
     public static function getSpendingCategoryName($defaultName = 'Total Spending')
     {
-        $categoryId = RequestUtilities::getRequestParamValue('category');
+        $categoryId = RequestUtilities::get('category');
         if (isset($categoryId)) {
             $categoryDetails = SpendingUtil::getSpendingCategoryDetails($categoryId, 'display_name');
             if (is_array($categoryDetails)) {
@@ -631,6 +631,7 @@ class RequestUtil
     {
         $path = '';
         $fiscalYearId = static::getFiscalYearIdForTopNavigation();
+
         switch ($domain) {
             case "contracts":
                 //Get 'Contracts Bottom Slider' amounts
@@ -639,6 +640,8 @@ class RequestUtil
                 widget_prepare($node);
                 widget_invoke($node, 'widget_prepare');
                 widget_data($node);
+                //default value for landing path if all values are zero
+                $contracts_landing_path = "contracts_landing/status/A";
                 if ($node->data[0]['total_contracts'] > 0 || $node->data[0]['current_amount_sum'] > 0) {
                     $contracts_landing_path = "contracts_landing/status/A";
                 } else if ($node->data[1]['total_contracts'] > 0 || $node->data[1]['current_amount_sum'] > 0) {
@@ -651,29 +654,27 @@ class RequestUtil
                     $contracts_landing_path = "contracts_pending_exp_landing";
                 } else if ($node->data[6]['total_contracts'] > 0 || $node->data[6]['current_amount_sum'] > 0) {
                     $contracts_landing_path = "contracts_pending_rev_landing";
-                } else {
-                    return "";
                 }
 
                 $path = $contracts_landing_path . "/yeartype/B/year/" . $fiscalYearId . _checkbook_append_url_params(null, array(), true);
-                if (RequestUtilities::getRequestParamValue("agency") > 0) {
-                    $path = $path . "/agency/" . RequestUtilities::getRequestParamValue("agency");
+                if (RequestUtilities::get("agency") > 0) {
+                    $path = $path . "/agency/" . RequestUtilities::get("agency");
                 } else if (_checkbook_check_isEDCPage()) {
                     $path = $path . "/agency/9000";
                 }
-                if (RequestUtilities::getRequestParamValue("vendor") > 0) {
-                    $path = $path . "/vendor/" . RequestUtilities::getRequestParamValue("vendor");
+                if (RequestUtilities::get("vendor") > 0) {
+                    $path = $path . "/vendor/" . RequestUtilities::get("vendor");
                 }
                 break;
             case "spending":
                 $path = "spending_landing/yeartype/B/year/" . $fiscalYearId . _checkbook_append_url_params(null, array(), true);
-                if (RequestUtilities::getRequestParamValue("agency") > 0) {
-                    $path = $path . "/agency/" . RequestUtilities::getRequestParamValue("agency");
+                if (RequestUtilities::get("agency") > 0) {
+                    $path = $path . "/agency/" . RequestUtilities::get("agency");
                 } else if (_checkbook_check_isEDCPage()) {
                     $path = $path . "/agency/9000";
                 }
-                if (RequestUtilities::getRequestParamValue("vendor") > 0) {
-                    $path = $path . "/vendor/" . RequestUtilities::getRequestParamValue("vendor");
+                if (RequestUtilities::get("vendor") > 0) {
+                    $path = $path . "/vendor/" . RequestUtilities::get("vendor");
                 }
                 break;
             case "payroll":
@@ -682,69 +683,65 @@ class RequestUtil
                 if (!preg_match('/payroll/', $_SERVER['REQUEST_URI'])) {
                     $yeartype = 'C';
                 } else {
-                    $yeartype = RequestUtilities::getRequestParamValue("yeartype");
+                    $yeartype = RequestUtilities::get("yeartype");
                 }
 
                 if (preg_match('/agency_landing/', current_path()) || Datasource::isNYCHA()) {
                     $path = "payroll/agency_landing/yeartype/" . $yeartype . "/year/" . $year;
-                    $path .= _checkbook_project_get_url_param_string("title");
-                    $path .= RequestUtilities::_getUrlParamString('agency');
-                    $path .= RequestUtilities::_getUrlParamString('datasource');
-                    if(!RequestUtilities::getRequestParamValue("agency") && Datasource::isNYCHA()){
+                    $path .= RequestUtilities::buildUrlFromParam('title');
+                    $path .= RequestUtilities::buildUrlFromParam('agency');
+                    $path .= RequestUtilities::buildUrlFromParam('datasource');
+                    if(!RequestUtilities::get("agency") && Datasource::isNYCHA()){
                         $path .= Datasource::getNYCHAUrl();
                     }
                 } else if (preg_match('/title_landing/', current_path())) {
                     $path = "payroll/title_landing/yeartype/" . $yeartype . "/year/" . $year;
-                    $path .= _checkbook_project_get_url_param_string("agency");
-                    $path .= "/title/" . RequestUtilities::getRequestParamValue("title");
+                    $path .= RequestUtilities::buildUrlFromParam('agency');
+                    $path .= RequestUtilities::buildUrlFromParam('title');
                 } else {
                     $bottomURL = $_REQUEST['expandBottomContURL'];
                     $bottomURL = ($bottomURL) ? $bottomURL : current_path();
                     $last_parameter = _getLastRequestParamValue($bottomURL);
                     if ($last_parameter['agency'] > 0) {
                         $path = "payroll/agency_landing/yeartype/" . $yeartype . "/year/" . $year;
-                        $path .= _checkbook_project_get_url_param_string("title");
-                        $path .= "/agency/" . RequestUtilities::getRequestParamValue("agency");
+                        $path .= RequestUtilities::buildUrlFromParam('title');
+                        $path .= RequestUtilities::buildUrlFromParam('agency');
                     } else if ($last_parameter['title'] > 0) {
                         $path = "payroll/title_landing/yeartype/" . $yeartype . "/year/" . $year;
-                        $path .= _checkbook_project_get_url_param_string("agency");
-                        $path .= "/title/" . RequestUtilities::getRequestParamValue("title");
+                        $path .= RequestUtilities::buildUrlFromParam('agency');
+                        $path .= RequestUtilities::buildUrlFromParam('title');
                     } else { //NYC Level
                         $path = "payroll/yeartype/" . $yeartype . "/year/" . $year;
                     }
                 }
                 break;
             case "budget":
-                if (RequestUtilities::getRequestParamValue("agency") > 0) {
-                    $path = "budget/yeartype/B/year/" . $fiscalYearId . "/agency/" . RequestUtilities::getRequestParamValue("agency");
+                if (RequestUtilities::get("agency") > 0) {
+                    $path = "budget/yeartype/B/year/" . $fiscalYearId . RequestUtilities::buildUrlFromParam('agency');
                 } else {
                     $path = "budget/yeartype/B/year/" . $fiscalYearId;
                 }
                 break;
             case "revenue":
-                if (RequestUtilities::getRequestParamValue("agency") > 0) {
-                    $path = "revenue/yeartype/B/year/" . $fiscalYearId . "/agency/" . RequestUtilities::getRequestParamValue("agency");
+                if (RequestUtilities::get("agency") > 0) {
+                    $path = "revenue/yeartype/B/year/" . $fiscalYearId . RequestUtilities::buildUrlFromParam('agency');
                 } else {
                     $path = "revenue/yeartype/B/year/" . $fiscalYearId;
                 }
                 break;
         }
 
-        if(RequestUtilities::getRequestParamValue("vendor") > 0 && in_array($domain, array('contracts','spending'))){
+        if(RequestUtilities::get("vendor") > 0 && in_array($domain, array('contracts','spending'))){
             $non_minority_type_ids = array(7, 11);
-            $vendor_minority_type_ids = VendorService::getAllVendorMinorityTypesByYear($domain, RequestUtilities::getRequestParamValue("vendor"), $fiscalYearId);
+            $vendor_minority_type_ids = VendorService::getAllVendorMinorityTypesByYear($domain, RequestUtilities::get("vendor"), $fiscalYearId);
             $vendor_non_minority_type_ids = array_intersect($non_minority_type_ids ,$vendor_minority_type_ids);
 
             if(count($vendor_non_minority_type_ids) > 0){
                 $path = preg_replace('/\/dashboard\/[^\/]*/','',$path);
                 $path = preg_replace('/\/mwbe\/[^\/]*/','',$path);
             }else{
-                if(!preg_match('/mwbe/',$path) && RequestUtilities::getRequestParamValue("mwbe")){
-                   $path = $path."/mwbe/". RequestUtilities::getRequestParamValue("mwbe");
-                }
-                if(!preg_match('/dashboard/',$path) && RequestUtilities::getRequestParamValue("dashboard")){
-                   $path = $path."/dashboard/". RequestUtilities::getRequestParamValue("dashboard");
-                }
+                $path .= RequestUtilities::buildUrlFromParam('mwbe');
+                $path .= RequestUtilities::buildUrlFromParam('dashboard');
             }
         }
         return $path;
@@ -755,15 +752,13 @@ class RequestUtil
      */
     public static function getFiscalYearIdForTopNavigation()
     {
-        if (RequestUtilities::getRequestParamValue("year") != NULL) {
-            $year = RequestUtilities::getRequestParamValue("year");
-        } else if (RequestUtilities::getRequestParamValue("calyear") != NULL) {
-            $year = RequestUtilities::getRequestParamValue("calyear");
-        } else {
+        $year = RequestUtilities::get("year|calyear");
+        if (!$year) {
             $year = _getCurrentYearID();
         }
+
         //For CY 2010 Payroll selection, other domains should be navigated to FY 2011
-        $fiscalYearId = ($year == 111 && strtoupper(RequestUtilities::getRequestParamValue("yeartype")) == 'C') ? 112 : $year;
+        $fiscalYearId = ($year == 111 && strtoupper(RequestUtilities::get("yeartype")) == 'C') ? 112 : $year;
         return $fiscalYearId;
     }
 
@@ -773,10 +768,10 @@ class RequestUtil
     public static function getCalYearIdForTopNavigation()
     {
         $year = null;
-        if (RequestUtilities::getRequestParamValue("year") != NULL) {
-            $year = RequestUtilities::getRequestParamValue("year");
-        } else if (RequestUtilities::getRequestParamValue("calyear") != NULL) {
-            $year = RequestUtilities::getRequestParamValue("calyear");
+        if (RequestUtilities::get("year") != NULL) {
+            $year = RequestUtilities::get("year");
+        } else if (RequestUtilities::get("calyear") != NULL) {
+            $year = RequestUtilities::get("calyear");
         }
         $currentCalYear = _getCurrentCalendarYearID();
         if (is_null($year) || $year > $currentCalYear) {
@@ -812,7 +807,7 @@ class RequestUtil
      */
     public static function isEDCPage()
     {
-        $vendor_id = RequestUtilities::getRequestParamValue('vendor');
+        $vendor_id = RequestUtilities::get('vendor');
         if ($vendor_id != null) {
             $vendor = _checkbook_project_querydataset("checkbook:vendor", "vendor_customer_code", array("vendor_id" => $vendor_id));
 
@@ -853,7 +848,7 @@ class RequestUtil
     public static function getNextMWBEDashboardState($current_state = null)
     {
         if ($current_state == null) {
-            $current_state = RequestUtilities::getRequestParamValue('dashboard');
+            $current_state = RequestUtilities::get('dashboard');
         }
         return "/dashboard/" . self::getNextMWBEDashboardStateParam($current_state);
 
@@ -865,7 +860,7 @@ class RequestUtil
      */
     public static function getNextMWBEDashboardStateParam($current_state = null)
     {
-        $current_state = $current_state?: RequestUtilities::getRequestParamValue('dashboard');
+        $current_state = $current_state?: RequestUtilities::get('dashboard');
 
         if (!$current_state) {
             if (stripos('_' . current_path(), 'contracts')) {
@@ -908,7 +903,7 @@ class RequestUtil
      */
     public static function getNextSubvendorDashboardState($current_state = null)
     {
-        $current_state = $current_state ?: RequestUtilities::getRequestParamValue('dashboard');
+        $current_state = $current_state ?: RequestUtilities::get('dashboard');
 
         return "/dashboard/" . self::getNextSubvendorDashboardStateParam($current_state);
     }
@@ -927,7 +922,7 @@ class RequestUtil
      */
     public static function getNextSubvendorDashboardStateParam($current_state = null)
     {
-        $current_state = $current_state ?: RequestUtilities::getRequestParamValue('dashboard');
+        $current_state = $current_state ?: RequestUtilities::get('dashboard');
 
         switch ($current_state) {
             case "mp" :
@@ -956,7 +951,7 @@ class RequestUtil
      */
     public static function isDashboardSubvendor($current_state = null)
     {
-        $current_state = $current_state ?: RequestUtilities::getRequestParamValue('dashboard');
+        $current_state = $current_state ?: RequestUtilities::get('dashboard');
 
         switch ($current_state) {
             case "sp" :
@@ -993,25 +988,24 @@ class RequestUtil
 
         switch ($dashboard_filter) {
             case "mwbe":
-                if (RequestUtilities::getRequestParamValue("dashboard") != null) {
+                if (RequestUtilities::get("dashboard") != null) {
                     $url = preg_replace('/\/dashboard\/[^\/]*/', '', $url);
                 }
                 $url .= "/dashboard/" . self::getNextMWBEDashboardStateParam();
                 if (!preg_match('/mwbe/', $url)) {
-                    if (RequestUtilities::getRequestParamValue("mwbe") != null) {
-                        $url .= "/mwbe/" . RequestUtilities::getRequestParamValue("mwbe");
+                    if (RequestUtilities::get("mwbe") != null) {
+                        $url .= "/mwbe/" . RequestUtilities::get("mwbe");
                     } else {
                         $url .= "/mwbe/2~3~4~5~9";
                     }
                 }
                 break;
             case "subvendor":
-
-                if (RequestUtilities::getRequestParamValue("dashboard") != null) {
+                if (RequestUtilities::get("dashboard") != null) {
                     $url = preg_replace('/\/dashboard\/[^\/]*/', '', $url);
                 }
                 // tm_wbe is an exception case for total MWBE link. When prime data is not present but sub data is present for the agency vendor combination.
-                if (RequestUtilities::getRequestParamValue("dashboard") == 'ms' && RequestUtilities::getRequestParamValue("mwbe") == '2~3~4~5~9' && RequestUtilities::getRequestParamValue("tm_wbe") != 'Y') {
+                if (RequestUtilities::get("dashboard") == 'ms' && RequestUtilities::get("mwbe") == '2~3~4~5~9' && RequestUtilities::get("tm_wbe") != 'Y') {
                     $url = preg_replace('/\/mwbe\/[^\/]*/', '', $url);
                 }
 
@@ -1060,7 +1054,7 @@ class RequestUtil
         }
 
         foreach ($reqParams as $key => $value) {
-            $value = RequestUtilities::getRequestParamValue($key);
+            $value = RequestUtilities::get($key);
             if ($key == "year") {
                 $value =  static::getFiscalYearIdForTopNavigation();
             }
@@ -1091,7 +1085,7 @@ class RequestUtil
                 return "M/WBE";
             case "subvendor":
                 // tm_wbe is an exception case for total MWBE link. When prime data is not present but sub data is present for the agency vendor combination.
-                if (self::isDashboardFlowPrimevendor() || RequestUtilities::getRequestParamValue("tm_wbe") == 'Y') {
+                if (self::isDashboardFlowPrimevendor() || RequestUtilities::get("tm_wbe") == 'Y') {
                     return "Sub Vendors (M/WBE)";
                 }
                 return "Sub Vendors";
@@ -1110,7 +1104,7 @@ class RequestUtil
             return true;
         }
 
-        $current_state = $current_state ?: RequestUtilities::getRequestParamValue('dashboard');
+        $current_state = $current_state ?: RequestUtilities::get('dashboard');
 
         return in_array($current_state, array('ms', 'ss'));
     }
@@ -1121,7 +1115,7 @@ class RequestUtil
      */
     public static function isDashboardFlowPrimevendor($current_state = null)
     {
-        $current_state = $current_state ?: RequestUtilities::getRequestParamValue('dashboard');
+        $current_state = $current_state ?: RequestUtilities::get('dashboard');
 
         return in_array($current_state, array('mp', 'sp'));
     }
@@ -1153,18 +1147,18 @@ class RequestUtil
             case "spending":
                 $table = "aggregateon_subven_spending_coa_entities";
                 $urlParamMap = array("year" => "year_id", "yeartype" => "type_of_year", "agency" => "agency_id", "vendor" => "prime_vendor_id");
-                $sub_vendors_total_link = RequestUtil::getLandingPageUrl("spending", RequestUtilities::getRequestParamValue("year"), 'B');
+                $sub_vendors_total_link = RequestUtil::getLandingPageUrl("spending", RequestUtilities::get("year"), 'B');
                 break;
             case "contracts":
                 $table = "aggregateon_subven_contracts_cumulative_spending";
                 $urlParamMap = array("year" => "fiscal_year_id", "agency" => "agency_id", "yeartype" => "type_of_year", "vendor" => "prime_vendor_id");
                 $default_params = array("status_flag" => "A");
-                $sub_vendors_total_link = RequestUtil::getLandingPageUrl("contracts", RequestUtilities::getRequestParamValue("year"), 'B');
+                $sub_vendors_total_link = RequestUtil::getLandingPageUrl("contracts", RequestUtilities::get("year"), 'B');
                 break;
         }
         if (self::get_top_nav_records_count($urlParamMap, $default_params, $table) > 0) {
-            return "/" . $sub_vendors_total_link . _checkbook_project_get_url_param_string("agency")
-                . _checkbook_project_get_url_param_string("vendor") .
+            return "/" . $sub_vendors_total_link . RequestUtilities::buildUrlFromParam('agency')
+                . RequestUtilities::buildUrlFromParam('vendor') .
                 "/dashboard/ss";
         }
         return '';
@@ -1215,8 +1209,8 @@ class RequestUtil
         $where_filter = null;
 
         foreach ($urlParamMap as $param => $value) {
-            if (RequestUtilities::getRequestParamValue($param) != null) {
-                $where_filters[] = _widget_build_sql_condition(' a1.' . $value, RequestUtilities::getRequestParamValue($param));
+            if (RequestUtilities::get($param) != null) {
+                $where_filters[] = _widget_build_sql_condition(' a1.' . $value, RequestUtilities::get($param));
             }
         }
 
@@ -1235,13 +1229,14 @@ class RequestUtil
 				   ' . $where_filter;
         $cacheKey = '_top_nav_count_'.md5($sql);
         $count = _checkbook_dmemcache_get($cacheKey);
-        if (null !== $count) {
-          LogHelper::log_info($cacheKey.' CACHE HIT!');
+        if (is_numeric($count)) {
           return $count;
         }
         $data = _checkbook_project_execute_sql($sql);
         $count = $data[0]['count'];
-        _checkbook_dmemcache_set($cacheKey, $count);
+        if( is_numeric($count)) {
+            _checkbook_dmemcache_set($cacheKey, $count);
+        }
         return $count;
     }
 
@@ -1284,8 +1279,8 @@ class RequestUtil
         }
         return '/' . RequestUtil::getLandingPageUrl($domain, static::getFiscalYearIdForTopNavigation(), 'B') . "/mwbe/" . MappingUtil::$total_mwbe_cats
             . "/dashboard/" . $dashboard .
-            _checkbook_project_get_url_param_string("agency")
-            . _checkbook_project_get_url_param_string("vendor");
+            RequestUtilities::buildUrlFromParam('agency')
+            . RequestUtilities::buildUrlFromParam('vendor');
     }
 
     /**

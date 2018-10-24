@@ -21,7 +21,6 @@
     }  ,
     "columns":["minority_type.minority_type", "minority_type.minority_type.minority_type_name", "txcount"],
     "orderBy":"-txcount",
-    "getTotalDataCount":true,
     "facetPager":true,
     "filterName":"M/WBE Category",
     "urlParameterName":"mwbe",

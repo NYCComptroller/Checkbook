@@ -142,28 +142,15 @@
         var vendor_label = (dataSource == 'checkbook_oge') ? 'Prime Vendor:' : 'Vendor:';
         $("label[for = edit-vendor]").text(vendor_label);
 
-        //clear all text fields
-        var enclosingDiv = $("#dynamic-filter-data-wrapper").children('#edit-filter').children('div.fieldset-wrapper').children();
-        jQuery(enclosingDiv).find(':input').each(function() {
-            if(this.type == 'text') {
-                jQuery(this).val('');
-            }
-        });
-
-        //reset the drop-downs
-        var default_category = (dataSource == 'checkbook_oge') ? 'expense' : 'all';
-        $('select[name="df_contract_status"]').val('active');
-        $('select[name="contract_type"]').val('');
-        $('select[name="category"]').val(default_category);
-        $('select[name="award_method"]').val('');
-        $('select[name="year"]').val('');
+        //Clear text fields and drop-downs
+        $.fn.clearInputFields(dataSource);
+        //Reset 'sub-vendor status in PIP' and 'contracts include sub-vendors' drop-downs
+        $.fn.subVendorStatusInPipChange(0,0);
 
         //reset the selected columns
         $.fn.resetSelectedColumns();
 
         $('#edit-column-select-expense option[value="Year"]').attr('disabled','disabled');
-        $('#edit-column-select-expense option[value="year"]').attr('disabled','disabled');
-
         $('#edit-column-select-expense').multiSelect('refresh');
         if(!$('#ms-edit-column-select-expense .ms-selection').next().is("a")){
             $('#ms-edit-column-select-expense .ms-selection').after('<a class="deselect">Remove All</a>');
@@ -177,8 +164,6 @@
         });
 
         $('#edit-column-select-oge-expense option[value="Year"]').attr('disabled','disabled');
-        $('#edit-column-select-oge-expense option[value="year"]').attr('disabled','disabled');
-
         $('#edit-column-select-oge-expense').multiSelect('refresh');
         if(!$('#ms-edit-column-select-oge-expense .ms-selection').next().is("a")){
             $('#ms-edit-column-select-oge-expense .ms-selection').after('<a class="deselect">Remove All</a>');
@@ -192,8 +177,6 @@
         });
 
         $('#edit-column-select-revenue option[value="Year"]').attr('disabled','disabled');
-        $('#edit-column-select-revenue option[value="year"]').attr('disabled','disabled');
-
         $('#edit-column-select-revenue').multiSelect('refresh');
         if(!$('#ms-edit-column-select-revenue .ms-selection').next().is("a")){
             $('#ms-edit-column-select-revenue .ms-selection').after('<a class="deselect">Remove All</a>');
@@ -207,9 +190,7 @@
         });
 
         $('#edit-column-select-all option[value="Year"]').attr('disabled','disabled');
-        $('#edit-column-select-all option[value="year"]').attr('disabled','disabled');
-
-        $('#edit-column-select-expense').multiSelect('refresh');
+        $('#edit-column-select-all').multiSelect('refresh');
         if(!$('#ms-edit-column-select-all .ms-selection').next().is("a")){
             $('#ms-edit-column-select-all .ms-selection').after('<a class="deselect">Remove All</a>');
             $('#ms-edit-column-select-all .ms-selection').after('<a class="select">Add All</a>');
@@ -376,6 +357,36 @@
         }
     }
 
+    $.fn.subVendorStatusInPipChange = function(sub_vendor_status, includes_sub_vendors){
+        var valid_status = [6,1,4,3,2,5];
+        if($.inArray(sub_vendor_status, valid_status)) {
+            if(includes_sub_vendors == 2){
+                $('#edit-contract_includes_sub_vendors_id').html('<option value="0">Select Status</option>' +
+                    '<option value="2" selected>Yes</option>');
+            } else {
+                $('#edit-contract_includes_sub_vendors_id').html('<option value="0" selected>Select Status</option>' +
+                    '<option value="2">Yes</option>');
+            }
+        }
+
+        if(sub_vendor_status == 0) {
+            if(includes_sub_vendors == 2){
+                $('#edit-contract_includes_sub_vendors_id').html('<option value="0">Select Status</option>' +
+                    '<option value="2" selected>Yes</option>' +
+                    '<option value="3">No</option>' +
+                    '<option value="1">No Data Entered</option>' +
+                    '<option value="4">Not Required</option>');
+            } else {
+                $('#edit-contract_includes_sub_vendors_id').html('<option value="0" selected>Select Status</option>' +
+                    '<option value="2">Yes</option>' +
+                    '<option value="3">No</option>' +
+                    '<option value="1">No Data Entered</option>' +
+                    '<option value="4">Not Required</option>');
+            }
+        }
+        $('#edit-contract_includes_sub_vendors_id').val(includes_sub_vendors);
+    }
+
     Drupal.behaviors.contractsDataFeeds = {
         attach:function (context, settings) {
 
@@ -395,38 +406,14 @@
 
             // Display multi-select
             $.fn.hideShow(csval, catval);
+            // Enable/disable and add/remove options in 'Contracts Include SubVendors' and 'SubVendor Status in PIP' drop-downs
+            $.fn.subVendorStatusInPipChange($('#edit-sub_vendor_status_in_pip_id', context).val(), $('#edit-contract_includes_sub_vendors_id', context).val());
 
             //On change of "Sub Vendor Status in PIP" status
             $('#edit-sub_vendor_status_in_pip_id', context).change(function() {
                 var sub_vendor_status = $('#edit-sub_vendor_status_in_pip_id', context).val();
                 var includes_sub_vendors = $('#edit-contract_includes_sub_vendors_id', context).val();
-                var valid_status = [6,1,4,3,2,5];
-
-                if($.inArray(sub_vendor_status, valid_status)) {
-                    if(includes_sub_vendors == 2){
-                        $('#edit-contract_includes_sub_vendors_id', context).html('<option value="0">Select Status</option>' +
-                            '<option value="2" selected>Yes</option>');
-                    } else {
-                        $('#edit-contract_includes_sub_vendors_id', context).html('<option value="0" selected>Select Status</option>' +
-                            '<option value="2">Yes</option>');
-                    }
-                }
-
-                if(sub_vendor_status == 0) {
-                    if(includes_sub_vendors == 2){
-                        $('#edit-contract_includes_sub_vendors_id', context).html('<option value="0">Select Status</option>' +
-                            '<option value="2" selected>Yes</option>' +
-                            '<option value="3">No</option>' +
-                            '<option value="1">No Data Entered</option>' +
-                            '<option value="4">Not Required</option>');
-                    } else {
-                        $('#edit-contract_includes_sub_vendors_id', context).html('<option value="0" selected>Select Status</option>' +
-                            '<option value="2">Yes</option>' +
-                            '<option value="3">No</option>' +
-                            '<option value="1">No Data Entered</option>' +
-                            '<option value="4">Not Required</option>');
-                    }
-                }
+                $.fn.subVendorStatusInPipChange(sub_vendor_status, includes_sub_vendors);
             });
 
             //Data Source change event
@@ -596,7 +583,6 @@
             $('#edit-year',context).change(function(){
                if ($(this).val() == 'ALL'){
                    $('#edit-column-select-expense option[value="Year"]',context).attr('disabled','disabled');
-                   $('#edit-column-select-expense option[value="year"]',context).attr('disabled','disabled');
                    $('#edit-column-select-expense', context).multiSelect('refresh');
                    if(!$('#ms-edit-column-select-expense .ms-selection', context).next().is("a")){
                        $('#ms-edit-column-select-expense .ms-selection', context).after('<a class="deselect">Remove All</a>');
@@ -610,7 +596,6 @@
                    });
 
                    $('#edit-column-select-oge-expense option[value="Year"]',context).attr('disabled','disabled');
-                   $('#edit-column-select-oge-expense option[value="year"]',context).attr('disabled','disabled');
                    $('#edit-column-select-oge-expense', context).multiSelect('refresh');
                    if(!$('#ms-edit-column-select-oge-expense .ms-selection', context).next().is("a")){
                        $('#ms-edit-column-select-oge-expense .ms-selection', context).after('<a class="deselect">Remove All</a>');
@@ -624,7 +609,6 @@
                    });
 
                    $('#edit-column-select-revenue option[value="Year"]',context).attr('disabled','disabled');
-                   $('#edit-column-select-revenue option[value="year"]',context).attr('disabled','disabled');
                    $('#edit-column-select-revenue', context).multiSelect('refresh');
                    if(!$('#ms-edit-column-select-revenue .ms-selection', context).next().is("a")){
                        $('#ms-edit-column-select-revenue .ms-selection', context).after('<a class="deselect">Remove All</a>');
@@ -637,7 +621,6 @@
                        $('#edit-column-select-revenue', context).multiSelect('deselect_all');
                    });
                    $('#edit-column-select-all option[value="Year"]',context).attr('disabled','disabled');
-                   $('#edit-column-select-all option[value="year"]',context).attr('disabled','disabled');
                    $('#edit-column-select-all', context).multiSelect('refresh');
                    if(!$('#ms-edit-column-select-all .ms-selection', context).next().is("a")){
                        $('#ms-edit-column-select-all .ms-selection', context).after('<a class="deselect">Remove All</a>');
@@ -651,7 +634,6 @@
                    });
                } else {
                    $('#edit-column-select-expense option[value="Year"]',context).attr('disabled','');
-                   $('#edit-column-select-expense option[value="year"]',context).attr('disabled','');
                    $('#edit-column-select-expense', context).multiSelect('refresh');
                    if(!$('#ms-edit-column-select-expense .ms-selection', context).next().is("a")){
                        $('#ms-edit-column-select-expense .ms-selection', context).after('<a class="deselect">Remove All</a>');
@@ -664,7 +646,6 @@
                        $('#edit-column-select-expense', context).multiSelect('deselect_all');
                    });
                    $('#edit-column-select-oge-expense option[value="Year"]',context).attr('disabled','');
-                   $('#edit-column-select-oge-expense option[value="year"]',context).attr('disabled','');
                    $('#edit-column-select-oge-expense', context).multiSelect('refresh');
                    if(!$('#ms-edit-column-select-oge-expense .ms-selection', context).next().is("a")){
                        $('#ms-edit-column-select-oge-expense .ms-selection', context).after('<a class="deselect">Remove All</a>');
@@ -677,7 +658,6 @@
                        $('#edit-column-select-oge-expense', context).multiSelect('deselect_all');
                    });
                    $('#edit-column-select-revenue option[value="Year"]',context).attr('disabled','');
-                   $('#edit-column-select-revenue option[value="year"]',context).attr('disabled','');
                    $('#edit-column-select-revenue', context).multiSelect('refresh');
                    if(!$('#ms-edit-column-select-revenue .ms-selection', context).next().is("a")){
                        $('#ms-edit-column-select-revenue .ms-selection', context).after('<a class="deselect">Remove All</a>');
@@ -690,7 +670,6 @@
                        $('#edit-column-select-revenue', context).multiSelect('deselect_all');
                    });
                    $('#edit-column-select-all option[value="Year"]',context).attr('disabled','');
-                   $('#edit-column-select-all option[value="year"]',context).attr('disabled','');
                    $('#edit-column-select-all', context).multiSelect('refresh');
                    if(!$('#ms-edit-column-select-all .ms-selection', context).next().is("a")){
                        $('#ms-edit-column-select-all .ms-selection', context).after('<a class="deselect">Remove All</a>');
@@ -739,6 +718,36 @@
             output = 0;
         }
         return output;
+    }
+
+    //Function to clear text fields and drop-downs
+    $.fn.clearInputFields = function (dataSource) {
+        $('.fieldset-wrapper').find(':input').each(function () {
+            switch (this.type) {
+                case 'select-one':
+                    var default_option = $(this).attr('default_selected_value');
+                    if (default_option) {
+                      $(this).find('option[value=' + default_option + ']').attr("selected", "selected");
+                    } else {
+                      $(this).find('option:first').attr("selected", "selected");
+                    }
+                    break;
+                case 'text':
+                    $(this).val('');
+                    break;
+            }
+        });
+
+        //Enable "Contract includes sub vendors" and "Sub Vendor Status in PIP" drop-downs
+        if(dataSource != 'checkbook_oge'){
+            $('#edit-contract_includes_sub_vendors_id').removeAttr('disabled');
+            $('#edit-sub_vendor_status_in_pip_id').removeAttr('disabled');
+        }
+
+        //For OGE set 'Expense' as default category
+        if(dataSource == 'checkbook_oge'){
+            $('select[name="category"]').val('expense');
+        }
     }
 
 }(jQuery));

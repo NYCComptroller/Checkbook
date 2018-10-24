@@ -10,7 +10,6 @@
     "urlParamMap":{"doctype":"document_code.document_code.document_code"},
     "columns":["pending_contract_number.pending_contract_number","txcount"],
     "orderBy":"-txcount",
-    "getTotalDataCount":true,
     "facetPager":true,
     "filterName":"Contract ID",
     "urlParameterName":"contnum_exact",

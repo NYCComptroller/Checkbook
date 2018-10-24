@@ -29,11 +29,11 @@ if(is_array($records)){
     $agency_name = WidgetUtil::getLabel("agency_name");
     $ytdspending = WidgetUtil::getLabel("ytd_spending");
 
-    if(RequestUtilities::getRequestParamValue('smnid') == 759 || RequestUtilities::getRequestParamValue('smnid') == 746 || RequestUtilities::getRequestParamValue('smnid') == 780){
+    if(RequestUtilities::get('smnid') == 759 || RequestUtilities::get('smnid') == 746 || RequestUtilities::get('smnid') == 780){
         $percent_spending_value = $row['percent_spending'];
         $percent_spending = WidgetUtil::getLabel("percent_spending");
     }
-    if(RequestUtilities::getRequestParamValue('smnid') == 716){
+    if(RequestUtilities::get('smnid') == 716){
         $percent_spending_value = '';
         $percent_spending = '';
         $ytdspending = WidgetUtil::getLabel("ytd_spending_sub_vendors");

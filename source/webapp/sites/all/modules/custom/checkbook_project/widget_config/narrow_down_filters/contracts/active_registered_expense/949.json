@@ -8,7 +8,6 @@
     "showAllRecords":true,
     "columns":["prime_industry_type_id.prime_industry_type_id", "prime_industry_type_name.prime_industry_type_name", "count_prime_records"],
     "orderBy":"-count_prime_records",
-    "getTotalDataCount":true,
     "facetPager":true,
     "filterName":"Prime Industry",
     "urlParameterName":"pcindustry",

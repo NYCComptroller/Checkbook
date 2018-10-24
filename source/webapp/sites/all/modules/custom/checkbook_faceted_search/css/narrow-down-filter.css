@@ -201,6 +201,12 @@ div.filter-content-fdomainName div.options{
 .facet-content{
     margin-bottom: 20px;
 }
+
+.facet-content label{
+  all: unset;
+  cursor: pointer;
+}
+
 .filter-title span{
     -moz-user-select: none;
     background:url("/sites/all/themes/checkbook3/images/arrow-down.png") no-repeat scroll 185px 3px transparent;

@@ -45,9 +45,34 @@
         "contnum_exact":"contract_number",
         "year":"year"
     },
-    "allowRequestParams":["smnid","doctype","mwbe","modamt","psmwbe","vendor","pcuramtr","scuramtr"],
-    "paramTypeConfig":{"vendornm_exact":"eqignorecase","vendornm":"like","pcontdesc":"contains","scontdesc":"contains","contnum":"like","contnum_exact":"eqignorecase","aptpin":"like","pin":"like",
-        "startdate":"range","enddate":"range","regdate":"range","curamt":"range","pcuramtr":"rangeid","scuramtr":"rangeid","pmodamt":"ne","smodamt":"ne"},
+    "allowRequestParams": [
+      "smnid",
+      "doctype",
+      "mwbe",
+      "modamt",
+      "psmwbe",
+      "vendor",
+      "pcuramtr",
+      "scuramtr"
+    ],
+    "paramTypeConfig": {
+      "vendornm_exact": "eqignorecase",
+      "vendornm": "like",
+      "pcontdesc": "contains",
+      "scontdesc": "contains",
+      "contnum": "like",
+      "contnum_exact": "eqignorecase",
+      "aptpin": "like",
+      "pin": "like",
+      "startdate": "range",
+      "enddate": "range",
+      "regdate": "range",
+      "curamt": "range",
+      "pcuramtr": "rangeid",
+      "scuramtr": "rangeid",
+      "pmodamt": "ne",
+      "smodamt": "ne"
+    },
     "header":"
         $header = NULL;
         $header .= widget_data_tables_export_link($node);
@@ -68,6 +93,7 @@
         "contract_number",
         "contract_original_agreement_id",
         "agreement_type_name",
+        "agency_name",
         "sub_contract_id",
         "master_agreement_yn",
         "master_contract_number",
@@ -79,7 +105,7 @@
         "aprv_sta",
         "aprv_sta_name",
         "agency_id",
-        "agency_name",
+        "agency_name@checkbook:agency",
         "award_method_name",
         "prime_industry_type_name",
         "sub_industry_type_name",
@@ -189,9 +215,9 @@
             "expression":" '<a href=\"'
              .ContractsUrlService::applyLandingParameter($row['document_code'])
              ._checkbook_append_url_params()
-            .  '/year/'._getFiscalYearID()
+            .  RequestUtilities::buildUrlFromParam('year')
             .  '/yeartype/B'
-            .  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
+            .  RequestUtilities::buildUrlFromParam('contstatus|status')
             . '/agency/' . $row['agency_id']
             .  '?expandBottomCont=true\">'. $row['agency_formatted'] . '</a>'  "
         },

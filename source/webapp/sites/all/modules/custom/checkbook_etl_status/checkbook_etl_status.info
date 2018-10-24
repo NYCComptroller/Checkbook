@@ -21,4 +21,4 @@ name = "Checkbook ETL Status Mailing"
 description = "Module to email ETL Status every morning"
 package = NYC Checkbook
 core = 7.x
-
+dependencies[] = checkbook_mail_system

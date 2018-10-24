@@ -12,7 +12,6 @@
     },
 	"orderBy":"-txcount",
     "filterName":"Payroll Type",
-    "getTotalDataCount":true,
     "autocomplete":false,
     "urlParameterName":"payrolltype",
     "autocompleteID":"fpayrolltype",

@@ -10,24 +10,23 @@ class PayrollUrlService
      */
     static function getFooterUrl($parameters, $legacy_node_id = null)
     {
-        $agency = RequestUtilities::_getUrlParamString('agency');
-        $title = RequestUtilities::_getUrlParamString('title');
         $legacy_node_id = isset($legacy_node_id) ? '/smnid/'.$legacy_node_id : '';
         $data_source = RequestUtilities::_getUrlParamString('datasource');
+        $agency = RequestUtilities::get('agency');
 
-        if ($agency != '') {
+        if ($agency) {
             $url = '/panel_html/payroll_agencytransactions/payroll/agencywide/transactions'
-                . RequestUtilities::_getUrlParamString('yeartype')
-                . RequestUtilities::_getUrlParamString('year')
+                . RequestUtilities::buildUrlFromParam('yeartype')
+                . RequestUtilities::buildUrlFromParam('year')
                 . $data_source
                 . $legacy_node_id
-                . $agency.$title;
-        }
-        else {
+                . RequestUtilities::buildUrlFromParam('agency')
+                . RequestUtilities::buildUrlFromParam('title');
+        } else {
             $url = '/panel_html/payroll_nyc_transactions/payroll/transactions'
-                . RequestUtilities::_getUrlParamString('yeartype')
-                . RequestUtilities::_getUrlParamString('year')
-                . RequestUtilities::_getUrlParamString('title')
+                . RequestUtilities::buildUrlFromParam('yeartype')
+                . RequestUtilities::buildUrlFromParam('year')
+                . RequestUtilities::buildUrlFromParam('title')
                 . $data_source
                 . $legacy_node_id;
         }
@@ -53,10 +52,11 @@ class PayrollUrlService
     static function agencyNameUrl($agency_id)
     {
         $url = "/payroll/agency_landing"
-            . RequestUtilities::_getUrlParamString("yeartype")
-            . RequestUtilities::_getUrlParamString("year")
-            . RequestUtilities::_getUrlParamString("title")
-            . RequestUtilities::_getUrlParamString("datasource")
+            . RequestUtilities::buildUrlFromParam('yeartype')
+            . RequestUtilities::buildUrlFromParam('year')
+            . RequestUtilities::buildUrlFromParam('title')
+            . RequestUtilities::buildUrlFromParam('agency')
+            . RequestUtilities::buildUrlFromParam('datasource')
             . "/agency/" . $agency_id;
         return $url;
     }
@@ -69,10 +69,10 @@ class PayrollUrlService
         $url = "/panel_html/payroll_agencytransactions/payroll/agencywide/transactions"
             . '/smnid/' . $legacy_node_id
             . $agency
-            . RequestUtilities::_getUrlParamString("yeartype")
-            . RequestUtilities::_getUrlParamString("year")
-            . RequestUtilities::_getUrlParamString("datasource")
-            . RequestUtilities::_getUrlParamString("title");
+            . RequestUtilities::buildUrlFromParam('yeartype')
+            . RequestUtilities::buildUrlFromParam('year')
+            . RequestUtilities::buildUrlFromParam('datasource')
+            . RequestUtilities::buildUrlFromParam('title');
         return $url;
     }
 
@@ -82,9 +82,9 @@ class PayrollUrlService
 
         $url = "/panel_html/payroll_employee_transactions/payroll/employee/transactions"
             . $agency
-            . RequestUtilities::_getUrlParamString("yeartype")
-            . RequestUtilities::_getUrlParamString("year")
-            . RequestUtilities::_getUrlParamString("datasource")
+            . RequestUtilities::buildUrlFromParam('yeartype')
+            . RequestUtilities::buildUrlFromParam('year')
+            . RequestUtilities::buildUrlFromParam('datasource')
             . "/salamttype/1"
             . $employee;
         return $url;
@@ -96,9 +96,9 @@ class PayrollUrlService
 
         $url = "/panel_html/payroll_employee_transactions/payroll/employee/transactions"
             . $agency
-            . RequestUtilities::_getUrlParamString("yeartype")
-            . RequestUtilities::_getUrlParamString("year")
-            . RequestUtilities::_getUrlParamString("datasource")
+            . RequestUtilities::buildUrlFromParam('yeartype')
+            . RequestUtilities::buildUrlFromParam('year')
+            . RequestUtilities::buildUrlFromParam('datasource')
             . $employee;
         return $url;
     }
@@ -107,9 +107,9 @@ class PayrollUrlService
         $title = isset($title) ? '/title/' . $title : '';
 
         $url = '/payroll/title_landing'
-            . RequestUtilities::_getUrlParamString("yeartype")
-            . RequestUtilities::_getUrlParamString("year")
-            . RequestUtilities::_getUrlParamString("datasource")
+            . RequestUtilities::buildUrlFromParam('yeartype')
+            . RequestUtilities::buildUrlFromParam('year')
+            . RequestUtilities::buildUrlFromParam('datasource')
             . $title;
         return $url;
     }
@@ -117,9 +117,9 @@ class PayrollUrlService
     static function titleAgencyUrl($agency, $title) {
         $agency = isset($agency) ? '/agency/' . $agency : '';
         $title = isset($title) ? '/title/' . $title : '';
-        $year=RequestUtilities::getRequestParamValue('year');
-        $yearType = RequestUtilities::getRequestParamValue('yeartype');
-        $dataSource = RequestUtilities::_getUrlParamString("datasource");
+        $year=RequestUtilities::buildUrlFromParam('year');
+        $yearType = RequestUtilities::buildUrlFromParam('yeartype');
+        $dataSource = RequestUtilities::buildUrlFromParam('datasource');
         if($yearType=='C'){
             $url = '/payroll/title_landing/yeartype/C/year/'.$year
                 . $agency

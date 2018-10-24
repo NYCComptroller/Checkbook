@@ -4,22 +4,14 @@
             "datasourceName":"main",
             "source":"all_agreement_transactions_by_prime_sub_vendor"
         },
-
         "all_agreement_transactions_by_prime_sub_vendor_name":{
             "datasourceName":"main",
             "source":"
-            SELECT   'P' AS Vendor_Type_Code,1  AS Sort_Order, v.vendor_id , v.vendor_customer_code AS vendor_code,
-            v.legal_name ,t.prime_vendor_name AS vendor_name,t. prime_minority_type_id as minority_type_id, t.prime_minority_type_name as minority_type_name,t.*
-            FROM vendor v JOIN all_agreement_transactions_by_prime_sub_vendor t ON v.vendor_customer_code = t.prime_vendor_code
-            WHERE  t.prime_vendor_name IS NOT NULL AND t.sub_vendor_name IS NOT NULL
+            SELECT prime_vendor_code as vendor_code, prime_vendor_name as vendor_name, prime_vendor_type as vendor_type, prime_minority_type_id as minority_type_id, prime_minority_type_name as minority_type_name,  * FROM all_agreement_transactions_by_prime_sub_vendor WHERE prime_vendor_type IN ('P','PM')
             UNION ALL
-            SELECT 'S'  AS Vendor_Type_Code, 2   AS Sort_Order, v.vendor_id , t.sub_vendor_code AS vendor_code,
-            t.sub_vendor_name , t.sub_vendor_name AS vendor_name ,t.sub_minority_type_id as minority_type_id, t.sub_minority_type_name as minority_type_name,t.*
-            FROM vendor v
-            JOIN all_agreement_transactions_by_prime_sub_vendor t	 ON v.vendor_customer_code = t.prime_vendor_code
-            WHERE t.prime_vendor_name IS NOT NULl AND t.sub_vendor_name IS NOT NULL	 AND t.sub_vendor_type IN ('S', 'SM')
-            AND t.sub_latest_flag = 'Y'
-
+            SELECT sub_vendor_code as vendor_code, sub_vendor_name as vendor_name, sub_vendor_type as vendor_type, sub_minority_type_id as minority_type_id, sub_minority_type_name as minority_type_name,* FROM all_agreement_transactions_by_prime_sub_vendor WHERE sub_vendor_type IN ('S','SM')
+            UNION ALL
+            SELECT prime_vendor_code as vendor_code, prime_vendor_name as vendor_name, sub_vendor_type as vendor_type, NULL as minority_type_id,NULL as minority_type_name,* FROM all_agreement_transactions_by_prime_sub_vendor WHERE sub_vendor_type IN ('S','SM')
             "
         },
         "all_agreement_transactions_by_prime_sub_vendor_type":{
@@ -56,8 +48,19 @@
                     "levels": [
                         {
                             "name":"agency_name",
+                            "datasetName": "agency",
                             "sourceColumnName":"agency_name"
                         }]
+                },
+                {
+                    "name": "agency",
+                    "levels": [
+                        {
+                            "name": "agency",
+                            "datasetName": "agency",
+                            "sourceColumnName": "agency_id"
+                        }
+                    ]
                 },
                 {
                     "name":"agency_code",
@@ -417,15 +420,6 @@
                                 "sourceColumnName":"minority_type_name"
                             }
                     ]
-                },
-                {
-                    "name":"legal_name",
-                    "levels":[
-                        {
-                            "name":"legal_name",
-                            "sourceColumnName":"legal_name"
-                        }
-                    ]
                 }
             ],
             "measures": {
@@ -555,5 +549,13 @@
                 }
             }
         }
+    },
+    "references": {
+
+        "all_agreement_transactions_by_prime_sub_vendor__ref_agency": [
+            {"datasetName": "all_agreement_transactions_by_prime_sub_vendor", "columnNames": ["agency_id"]},
+            {"datasetName": "agency", "columnNames": ["agency_id"]}
+        ]
+
     }
 }

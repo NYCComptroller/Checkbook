@@ -11,13 +11,11 @@
         //Show Hide fields
         $.fn.showHideFields(dataSource);
 
-        //Clear all text fields
-        var enclosingDiv = $("#dynamic-filter-data-wrapper").children('#edit-filter').children('div.fieldset-wrapper').children();
-        jQuery(enclosingDiv).find(':input').each(function () {
-            if (this.type == 'text') {
-                jQuery(this).val('');
-            }
-        });
+        //Clear all text fields and drop-downs
+        $.fn.clearInput();
+
+        //Reset deafult year to current Fiscal Year
+        $('select[name="year"]').val($('input:hidden[name="current_year_hidden"]').val());
 
         //Reset the Spending Category
         $('select[name="expense_type"]').val('Total Spending [ts]');
@@ -51,7 +49,6 @@
                 $('.datafield.budgetname').show();
 
                 $('input:radio[name=date_filter]')[0].checked = true;
-                $('select[name="year"]').val($('input:hidden[name="current_year_hidden"]').val());
                 $('select[name="year"]').removeAttr('disabled');
                 //Disable Issue date
                 $('input:radio[name=date_filter][value="1"]').attr('disabled', 'disabled');
@@ -64,7 +61,7 @@
                 $('.form-item-column-select').hide();
 
                 //Move Issue Date fields to left column for OGE
-                $('.datafield.datarange.checkamount').appendTo($(".column.column-left"));
+                $('.datafield.datarange.check_amount').appendTo($(".spending.data-feeds-wizard .column.column-left"));
                 break;
             default:
                 $('.datafield.industry').show();
@@ -86,7 +83,6 @@
                     $('input[name="issuedto"]').attr('disabled', 'disabled');
                 }else{
                     $('input:radio[name=date_filter]')[1].checked = true;
-                    $('select[name="year"]').val($('input:hidden[name="current_year_hidden"]').val());
                     $('select[name="year"]').attr('disabled', 'disabled');
                 }
 
@@ -94,7 +90,7 @@
                 $('.form-item-column-select').show();
 
                 //Move Issue Date fields to left column for Citywide
-                $('.datafield.datarange.checkamount').prependTo($(".column.column-right"));
+                $('.datafield.datarange.check_amount').prependTo($(".spending.data-feeds-wizard .column.column-right"));
         }
 
     };
@@ -398,6 +394,25 @@
             output = 0;
         }
         return output;
+    }
+
+    //Function to clear text fields and drop-downs
+    $.fn.clearInput = function () {
+        $('.fieldset-wrapper').find(':input').each(function () {
+            switch (this.type) {
+                case 'select-one':
+                    var default_option = $(this).attr('default_selected_value');
+                    if (default_option) {
+                        $(this).find('option[value=' + default_option + ']').attr("selected", "selected");
+                    } else {
+                        $(this).find('option:first').attr("selected", "selected");
+                    }
+                    break;
+                case 'text':
+                    $(this).val('');
+                    break;
+            }
+        });
     }
 
 }(jQuery));

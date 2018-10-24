@@ -11,7 +11,6 @@
     "filterName":"Budget Code",
     "urlParameterName":"bdgcode_code",
     "autocompleteParamName":"bdgcode_code_auto",
-    "getTotalDataCount":true,
     "facetPager":true,
     "autocompleteID":"fbdgcode_code",
     "autocompleteField":"budget_code",

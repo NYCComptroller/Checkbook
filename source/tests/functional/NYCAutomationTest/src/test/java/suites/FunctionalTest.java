@@ -72,8 +72,8 @@ import utilities.TestStatusReport;
 	MWBEActiveRevenueContractsDetailsTest.class,
 	MWBEPendingExpenseContractsTest.class,
 	MWBEPendingExpenseContractsDetailsTest.class,
-	/*MWBEPendingRevenueContractsTest.class,
-	MWBEPendingRevenueContractsDetailsTest.class,*/
+	MWBEPendingRevenueContractsTest.class,
+	MWBEPendingRevenueContractsDetailsTest.class,
 	MWBERegisteredExpenseContractsTest.class,
 	MWBERegisteredExpenseContractsDetailsTest.class,
 	MWBERegisteredRevenueContractsTest.class,
@@ -148,11 +148,12 @@ import utilities.TestStatusReport;
 	OGEContractSpendingWidgetTest.class,
 	OGEContractSpendingWidgetDetailsTest.class,
 	
-	/* OGE Contracts*/
+	// OGE Contracts
 	OGEActiveExpenseContractsTest.class,
 	OGEActiveExpenseContractsDetailsTest.class,
 	OGERegisteredExpenseContractsTest.class,
 	OGERegisteredExpenseContractsDetailsTest.class, 
+	*/
 	
 	
 
