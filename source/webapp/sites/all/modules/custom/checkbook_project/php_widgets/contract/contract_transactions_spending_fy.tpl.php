@@ -47,7 +47,7 @@ foreach($transactions as $key=>$value){
       $show_data .= '</tbody>';
 
       $output .= '<tr><td>'. $key .'</td>
-                      <td>'. '<div>'.  count($transactions[$key]) .'<a class="contract-transactions-toggle" href="#">Show</a></div>' .'</td>
+                      <td>'. '<div>'.  count($transactions[$key]) .'<a class="contract-transactions-toggle" >Show</a></div>' .'</td>
                       <td>'. custom_number_formatter_format($amount_spent, 2, '$') .'</td>
                   </tr>'.$show_data;
       $show_data = ''; $amount_spent = '';

@@ -32,7 +32,7 @@ if(is_array($records)){
     $agency = WidgetUtil::getLabel("contract_agency");
     $vendor= WidgetUtil::getLabel("sub_vendor_name");
 
-    if(RequestUtilities::getRequestParamValue('smnid') == 721){
+    if(RequestUtilities::get('smnid') == 721){
         $purpose = WidgetUtil::getLabel("sub_contract_purpose");
         $associated_prime_vendor_value = strtoupper($row['vendor_vendor_legal_name']);
         $associated_prime_vendor = WidgetUtil::getLabel("associated_prime_vendor");

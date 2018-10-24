@@ -279,11 +279,11 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
           'checkbook_nycha:agency',
           'checkbook:year',
           'checkbook:month',
+          'checkbook:category',
         ];
-        $cacheKey = $cacheDatasets.md5($sql);
+        $cacheKey = '_'.$datasetName.'_'.md5($sql);
         if(in_array($datasetName, $cacheDatasets)) {
           if ($result = _checkbook_dmemcache_get($cacheKey)) {
-            LogHelper::log_info($datasetName.' :: CACHE HIT!');
             return $result;
           }
         }
@@ -499,24 +499,27 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
 
         $cacheKey = $cubeName . md5($sql);
         if ($return = _checkbook_dmemcache_get($cacheKey)) {
-          LogHelper::log_info($cubeName .' :: CACHE HIT!');
-          return $return;
+            return $return;
         }
 
         $return = $this->executeQuery($callcontext, $datasource, $sql, $resultFormatter);
         $cache = false;
         if (is_array($return)) {
-          if (14 > sizeof($return) && 14 > sizeof($return[0])) {
-            // some small piece of data
-            $cache = true;
-          }
-          if ('checkbook:budget' == $cubeName && 3 > sizeof($return[0])) {
-            // budget codes
-            $cache = true;
-          }
+            if (stripos($sql, 'txcount')) {
+//                facet
+                $cache = true;
+            }
+            if (14 > sizeof($return) && 14 > sizeof($return[0])) {
+                // some small piece of data
+                $cache = true;
+            }
+            if ('checkbook:budget' == $cubeName && 3 > sizeof($return[0])) {
+                // budget codes
+                $cache = true;
+            }
         }
         if ($cache) {
-          _checkbook_dmemcache_set($cacheKey, $return);
+            _checkbook_dmemcache_set($cacheKey, $return);
         }
         return $return;
     }
@@ -588,10 +591,15 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
                 . ") $tableAlias";
         }
 
-        $query = ''.new StatementLogMessage('*.count', $sql);
-        LogHelper::log_info('record_count :: '.md5($query));
-        LogHelper::log_notice($query);
+        LogHelper::log_notice(new StatementLogMessage('*.count', $sql));
+
+
+        $cacheKey = 'count_'.md5(serialize([$datasource->name, $sql]));
+        if ($count = _checkbook_dmemcache_get($cacheKey)) {
+            return $count;
+        }
         $records = $this->executeQuery($callcontext, $datasource, $sql, new PassthroughResultFormatter());
+        _checkbook_dmemcache_set($cacheKey, $records[0][$countIdentifier]);
 
         return $records[0][$countIdentifier];
     }

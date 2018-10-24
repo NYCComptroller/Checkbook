@@ -8,7 +8,6 @@
     "showAllRecords":true,
     "columns":["award_method_id.award_method_id", "award_method_name.award_method_name", "txcount"],
     "orderBy":"-txcount",
-    "getTotalDataCount":true,
     "facetPager":true,
     "filterName":"Award Method",
     "urlParameterName":"awdmethod",

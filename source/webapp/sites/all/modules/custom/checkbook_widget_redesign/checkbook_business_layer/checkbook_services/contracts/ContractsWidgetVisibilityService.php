@@ -13,22 +13,22 @@ class ContractsWidgetVisibilityService {
      * @return view name to be displayed
      */
     static function getWidgetVisibility($widget) {
-        $dashboard = RequestUtilities::getRequestParamValue('dashboard');
+        $dashboard = RequestUtilities::get('dashboard');
         $category = ContractsParameters::getContractCategory();
         $view = NULL;
 
         switch($widget){
             case 'departments':
             case 'departments_vendor':
-                if(RequestUtilities::getRequestParamValue('agency')) {
+                if(RequestUtilities::get('agency')) {
                     if($category === 'expense'){
                         if(RequestUtilities::isEDCPage()){
-                            if(RequestUtilities::getRequestParamValue('vendor'))
+                            if(RequestUtilities::get('vendor'))
                                 $view = 'contracts_departments_view';
                             else
                                 $view = 'oge_contracts_departments_view';
                         }else{
-                            if(($dashboard == NULL || $dashboard == 'mp') && RequestUtilities::getRequestParamValue('agency')){
+                            if(($dashboard == NULL || $dashboard == 'mp') && RequestUtilities::get('agency')){
                                 $view = 'contracts_departments_view';
                             }
                         }
@@ -90,7 +90,7 @@ class ContractsWidgetVisibilityService {
                 }
                 break;
             case 'industries':
-                if(!RequestUtilities::getRequestParamValue('cindustry')){
+                if(!RequestUtilities::get('cindustry')){
                     switch($category) {
                         case "expense":
                             switch($dashboard) {
@@ -119,7 +119,7 @@ class ContractsWidgetVisibilityService {
                 }
                 break;
             case 'size':
-                if(!RequestUtilities::getRequestParamValue('csize')){
+                if(!RequestUtilities::get('csize')){
                     switch($category) {
                         case "expense":
                             switch($dashboard) {
@@ -148,7 +148,7 @@ class ContractsWidgetVisibilityService {
                 }
                 break;
             case 'award_methods':
-                if(!RequestUtilities::getRequestParamValue('awdmethod')){
+                if(!RequestUtilities::get('awdmethod')){
                     switch($category) {
                         case "expense":
                             switch($dashboard) {
@@ -225,7 +225,7 @@ class ContractsWidgetVisibilityService {
                 }
                 break;
             case 'vendors':
-                if(!RequestUtilities::getRequestParamValue('vendor')){
+                if(!RequestUtilities::get('vendor')){
                     switch($category) {
                         case "expense":
                             switch($dashboard) {
@@ -271,7 +271,7 @@ class ContractsWidgetVisibilityService {
                 }
                 break;
             case 'sub_vendors':
-                if(!RequestUtilities::getRequestParamValue('subvendor')){
+                if(!RequestUtilities::get('subvendor')){
                     switch($dashboard) {
                         case "ss":
                         case "sp":
@@ -285,7 +285,7 @@ class ContractsWidgetVisibilityService {
                 }
                 break;
             case 'agencies':
-                if(!RequestUtilities::getRequestParamValue('agency')){
+                if(!RequestUtilities::get('agency')){
                     switch($category) {
                         case "expense":
                             switch($dashboard) {

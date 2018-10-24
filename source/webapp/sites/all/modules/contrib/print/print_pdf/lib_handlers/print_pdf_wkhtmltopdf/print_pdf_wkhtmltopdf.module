@@ -1,0 +1,111 @@
+<?php
+
+/**
+ * @file
+ * Generate a PDF for the print_pdf module using the wkhtmltopdf library.
+ *
+ * @ingroup print
+ */
+
+define('PRINT_PDF_WKHTMLTOPDF_OPTIONS', "--footer-font-size 7 --footer-right '[page]'");
+define('PRINT_PDF_WKHTMLTOPDF_VERSION_DEFAULT', '');
+define('PRINT_PDF_WKHTMLTOPDF_USE_INPUT_FILE_DEFAULT', FALSE);
+
+/**
+ * Implements hook_pdf_tool_info().
+ */
+function print_pdf_wkhtmltopdf_pdf_tool_info() {
+  return array(
+    'name' => 'wkhtmltopdf',
+    'min_version' => '0.9.6',
+    'url' => 'http://wkhtmltopdf.org/downloads.html',
+    'expand_css' => FALSE,
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function print_pdf_wkhtmltopdf_menu() {
+  $items = array();
+
+  $items['admin/config/user-interface/print/pdf/wkhtmltopdf'] = array(
+    'title' => 'wkhtmltopdf',
+    'description' => 'Configure the wkhtmltopdf options.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('print_pdf_wkhtmltopdf_settings'),
+    'access arguments'  => array('administer print'),
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'print_pdf_wkhtmltopdf.admin.inc',
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_flush_caches().
+ */
+function print_pdf_wkhtmltopdf_flush_caches() {
+  // Delete the cached version info during cache clear.
+  variable_del('print_pdf_wkhtmltopdf_version');
+  return array();
+}
+
+/**
+ * Implements hook_pdf_tool_version().
+ */
+function print_pdf_wkhtmltopdf_pdf_tool_version($pdf_tool, $reset = TRUE) {
+  $version = variable_get('print_pdf_wkhtmltopdf_version', PRINT_PDF_WKHTMLTOPDF_VERSION_DEFAULT);
+
+  if ($reset || empty($version)) {
+    // Ask the version information from the executable.
+    $descriptor = array(
+      0 => array('pipe', 'r'),
+      1 => array('pipe', 'w'),
+      2 => array('pipe', 'w'),
+    );
+
+    $cmd = '"' . realpath($pdf_tool) . '" --version';
+    $process = proc_open($cmd, $descriptor, $pipes, NULL, NULL);
+    if (is_resource($process)) {
+      $content = stream_get_contents($pipes[1]);
+      preg_match('!.*?(\d+\.\d+\.\d+).*$!m', $content, $matches);
+      fclose($pipes[0]);
+      fclose($pipes[1]);
+      fclose($pipes[2]);
+      proc_close($process);
+
+      // Cache the results of this expensive operation.
+      variable_set('print_pdf_wkhtmltopdf_version', $matches[1]);
+      return ($matches[1]);
+    }
+  }
+  else {
+    // For performance sake, usually use the cached value.
+    return $version;
+  }
+
+  return 'unknown';
+}
+
+/**
+ * Implements hook_print_pdf_available_libs_alter().
+ */
+function print_pdf_wkhtmltopdf_print_pdf_available_libs_alter(&$pdf_tools) {
+  module_load_include('inc', 'print', 'includes/print');
+  $tools = _print_scan_libs('wkhtmltopdf', '!^wkhtmltopdf!');
+
+  // See if there is a binary version of wkhtmltopdf available.
+  if (drupal_substr(php_uname('s'), 0, 3) !== 'Win') {
+    exec('export PATH="$PATH:/usr/local/bin" ; which wkhtmltopdf', $binary_output, $binary_status);
+    if (count($binary_output) > 0 && $binary_status == 0) {
+      $tools[] = $binary_output[0];
+    }
+  }
+
+  foreach ($tools as $tool) {
+    $version = print_pdf_wkhtmltopdf_pdf_tool_version($tool, TRUE);
+
+    $pdf_tools['print_pdf_wkhtmltopdf|' . $tool] = 'wkhtmltopdf ' . $version . ' (' . $tool . ')';
+  }
+}

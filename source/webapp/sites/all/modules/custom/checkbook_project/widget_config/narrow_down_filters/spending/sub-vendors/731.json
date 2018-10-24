@@ -7,7 +7,6 @@
     "columns":["vendor.vendor", "vendornm.vendornm", "txcount"],
     "defaultParameters":{"is_prime_or_sub":"S"},
     "orderBy":"-txcount",
-    "getTotalDataCount":true,
     "facetPager":true,
     "filterName":"Vendor",
     "urlParameterName":"fvendor",

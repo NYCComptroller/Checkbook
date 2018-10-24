@@ -9,13 +9,12 @@
     "filterName":"Expense Category",
     "urlParameterName":"expcategory",
     "autocompleteParamName":"expcategory_auto", 
-    "getTotalDataCount":true,    
     "facetPager":true,
     "urlParameterNameType":"eqtext",    
     "autocompleteID":"fExpCategory",
     "autocompleteField":"object_class_name",
     "adjustParameters":"
-        $parameters = BudgetUtil::adjustBudgetCodeNameParameter($node, $parameters);
+        //$parameters = BudgetUtil::adjustBudgetCodeNameParameter($node, $parameters);
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
         }

@@ -17,11 +17,11 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-$year = RequestUtilities::getRequestParamValue('year');
-$year_type = RequestUtilities::getRequestParamValue('yeartype');
-$employeeID = RequestUtilities::getRequestParamValue('abc');
-$agencyId =RequestUtilities::getRequestParamValue('agency');
-$data_source =RequestUtilities::getRequestParamValue('datasource');
+$year = RequestUtilities::get('year');
+$year_type = RequestUtilities::get('yeartype');
+$employeeID = RequestUtilities::get('abc');
+$agencyId =RequestUtilities::get('agency');
+$data_source =RequestUtilities::get('datasource');
 $original_title= PayrollUtil::getTitleByEmployeeId($employeeID,$agencyId,$year_type,$year);
 $titleLatest = mb_convert_case(strtolower($original_title), MB_CASE_TITLE, "UTF-8");
 $all_data = array();
@@ -32,13 +32,13 @@ foreach($node->data as $data){
 
     $amount_basis_id = $data['amount_basis_id_amount_basis_id'];
     $employment_type = $amount_basis_id == 1 ? PayrollType::$SALARIED : PayrollType::$NON_SALARIED;
-    if(RequestUtilities::getRequestParamValue('year') > 0){
-        $year = RequestUtilities::getRequestParamValue('year');
+    if(RequestUtilities::get('year') > 0){
+        $year = RequestUtilities::get('year');
     }
-    if(RequestUtilities::getRequestParamValue('calyear') > 0){
-        $year = RequestUtilities::getRequestParamValue('calyear');
+    if(RequestUtilities::get('calyear') > 0){
+        $year = RequestUtilities::get('calyear');
     }
-    $year_type = RequestUtilities::getRequestParamValue('yeartype');
+    $year_type = RequestUtilities::get('yeartype');
     $original_title = $data['civil_service_title_civil_service_title'];
     $title = mb_convert_case(strtolower($original_title), MB_CASE_TITLE, "UTF-8");
     $agency_name = _shorten_word_with_tooltip(strtoupper($data['agency_name_agency_name']),25);
@@ -82,7 +82,7 @@ $non_salaried_count = count($all_data[PayrollType::$NON_SALARIED]);
 
 //Default view based on salamttype in url
 $default_view = $salaried_count > 0 ? PayrollType::$SALARIED : PayrollType::$NON_SALARIED;
-$salamttype = RequestUtilities::getRequestParamValue('salamttype');
+$salamttype = RequestUtilities::get('salamttype');
 if(isset($salamttype)) {
     $salamttype = explode('~',$salamttype);
     if (!in_array(1, $salamttype)) {
@@ -134,6 +134,7 @@ $js .= "
             jQuery('.emp-record-salaried').toggle();
             jQuery('.emp-record-non-salaried').toggle();
         };
+        jQuery('.toggleEmployee').click(toggleEmployee);
     ";
 
     if($_REQUEST['appendScripts']){
@@ -218,12 +219,12 @@ foreach($all_data as $employment_type => $employment_data) {
 
 
 if ($salaried_count && $non_salaried_count) {
-    $employeeData .= "<div id='toggle-employee-salaried' class='emp-record-salaried'>
+    $employeeData .= "<div id='toggle-employee-salaried' class='emp-record-salaried toggleEmployee'>
                             <strong>Viewing Salaried Details</strong>&nbsp;|&nbsp;
-                            <a href='javascript:toggleEmployee();'>View Non-salaried Details</a>
+                            <a>View Non-salaried Details</a>
                           </div>";
-    $employeeData .= "<div id='toggle-employee-non-salaried' class='emp-record-non-salaried'>
-                            <a href='javascript:toggleEmployee();'>View Salaried Details</a>&nbsp;|&nbsp;
+    $employeeData .= "<div id='toggle-employee-non-salaried' class='emp-record-non-salaried toggleEmployee'>
+                            <a>View Salaried Details</a>&nbsp;|&nbsp;
                             <strong>Viewing Non-salaried Details</strong>
                           </div>";
 }

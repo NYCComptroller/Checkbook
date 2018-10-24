@@ -68,40 +68,44 @@
    ' . $where_filter . '
     group by rm.minority_type_id, rm.minority_type_name, month_value,month_name,year_value  ';
 
+//select rm.minority_type_id, rm.minority_type_name , month_value,month_name,year_value, sum(total_spending_amount) total_spending from aggregateon_subven_spending_coa_entities a1 join ref_minority_type rm on rm.minority_type_id = a1.minority_type_id join ref_month rmo on rmo.month_id = a1.month_id join ref_year ry on a1.year_id = ry.year_id where a1.type_of_year='B' and a1.year_id='120' group by rm.minority_type_id, rm.minority_type_name, month_value,month_name,year_value
     $node->data  = _checkbook_project_execute_sql($sql);
     $node->data_sub_ven  = array();
 ",
 "widgetUpdateJSONConfig":"
 
-	$series_ba =  array();
-	$series_ha =  array();
-	$series_w =  array();
-	$series_aa =  array();
-	$series_e =  array();
+	$series_ba =  [];
+	$series_ha =  [];
+	$series_w =  [];
+	$series_aa =  [];
+	$series_e =  [];
+  $non_mwbe_data = [];
+  $total = [];
 
 	 $year = '';
 	 foreach ($node->data as $row){
 
 	 	switch($row['minority_type_id']){
 	 		case '2':
-	 		$series_ba[$row['month_value'] - 1]->y += $row['total_spending'];
-	 		break;
+        $series_ba[$row['month_value'] - 1]->y += $row['total_spending'];
+        break;
 	 		case '3':
-	 		$series_ha[$row['month_value'] - 1]->y += $row['total_spending'];
-	 		break;
+        $series_ha[$row['month_value'] - 1]->y += $row['total_spending'];
+        break;
 	 		case '4':
-	 		$series_aa[$row['month_value'] - 1]->y += $row['total_spending'];
-	 		break;
+        $series_aa[$row['month_value'] - 1]->y += $row['total_spending'];
+        break;
 	 		case '5':
-	 		$series_aa[$row['month_value'] - 1]->y += $row['total_spending'];
-	 		break;
+        $series_aa[$row['month_value'] - 1]->y += $row['total_spending'];
+        break;
 	 		case '9':
-	 		$series_w[$row['month_value'] - 1]->y += $row['total_spending'];
-	 		break;
+        $series_w[$row['month_value'] - 1]->y += $row['total_spending'];
+        break;
 	 		case '7':
-	 		$non_mwbe_data[$row['month_value'] - 1] = $row['total_spending'];
-	 		break;
+        $non_mwbe_data[$row['month_value'] - 1] = $row['total_spending'];
+        break;
 	 	}
+    $total[$row['month_value'] - 1] += $row['total_spending'];
 	 	$year = $row['year_value'];
 	 }
 
@@ -115,17 +119,20 @@
 		$months_pos = array(6,7,8,9,10,11,0,1,2,3,4,5);
 	}
 
-
 	$i = 0;
 	while($i <=11){
-		$series_ba[$i]->total =  $series_ba[$i]->y;
-	 	$series_ba[$i]->y = $series_ba[$i]->y/$non_mwbe_data[$i]*100;
+    $div = $total[$i]/100;
+
+    $series_ba[$i]->total =  $series_ba[$i]->y;
 		$series_ha[$i]->total =  $series_ha[$i]->y;
-	 	$series_ha[$i]->y = $series_ha[$i]->y/$non_mwbe_data[$i]*100;
 		$series_aa[$i]->total =  $series_aa[$i]->y;
-	 	$series_aa[$i]->y = $series_aa[$i]->y/$non_mwbe_data[$i]*100;
 		$series_w[$i]->total =  $series_w[$i]->y;
-	 	$series_w[$i]->y = $series_w[$i]->y/$non_mwbe_data[$i]*100;
+    if ($div) {
+      $series_ba[$i]->y /= $div;
+      $series_ha[$i]->y /= $div;
+      $series_aa[$i]->y /= $div;
+      $series_w[$i]->y /= $div;
+    }
 	 	$tooltip_label = 	'Year: ' . $year. '<br/>' .
 	 						'Month: '. $months[$i] . '<br/>' .
 							'Asian American: ' . custom_number_formatter_format($series_aa[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_aa[$i]->y,1,null,'%') . ')' .  '<br/>'

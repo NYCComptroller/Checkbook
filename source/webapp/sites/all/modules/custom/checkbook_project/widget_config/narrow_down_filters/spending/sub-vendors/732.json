@@ -9,7 +9,6 @@
     "columns":["vendor_type.vendor_type", "txcount"],
     "defaultParameters":{"is_prime_or_sub":"S"},
     "orderBy":"-txcount",
-    "getTotalDataCount":true,
     "facetPager":true,
     "filterName":"Vendor Type",
     "urlParameterName":"vendortype",

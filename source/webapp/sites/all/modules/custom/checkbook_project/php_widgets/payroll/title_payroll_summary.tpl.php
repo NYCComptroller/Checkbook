@@ -44,7 +44,7 @@ $non_salaried_count = count($all_data[PayrollType::$NON_SALARIED]);
 
 //Default view based on salamttype in url
 $default_view = $salaried_count > 0 ? PayrollType::$SALARIED : PayrollType::$NON_SALARIED;
-$salamttype = RequestUtilities::getRequestParamValue('salamttype');
+$salamttype = RequestUtilities::get('salamttype');
 if(isset($salamttype)) {
     $salamttype = explode('~',$salamttype);
     if (!in_array(1, $salamttype)) {
@@ -97,6 +97,7 @@ $js .= "
             jQuery('.emp-record-salaried').toggle();
             jQuery('.emp-record-non-salaried').toggle();
         };
+        jQuery('.toggleEmployee').click(toggleEmployee);
     ";
 
     if($_REQUEST['appendScripts']){
@@ -128,7 +129,7 @@ foreach($all_data as $employment_type => $employment_data) {
         $number_employees = number_format($data['number_employees']);
         $total_employees =  number_format($node->total_employees);
 
-        if(RequestUtilities::getRequestParamValue('smnid') == 322){
+        if(RequestUtilities::get('smnid') == 322){
             $total_overtime_employees_label = WidgetUtil::getLabel('total_no_of_ot_employees').':';
             $total_overtime_employees = number_format($data['total_overtime_employees']);
         }
@@ -201,12 +202,12 @@ foreach($all_data as $employment_type => $employment_data) {
 
 
 if ($salaried_count && $non_salaried_count) {
-    $employeeData .= "<div id='toggle-employee-salaried' class='emp-record-salaried'>
+    $employeeData .= "<div id='toggle-employee-salaried' class='emp-record-salaried toggleEmployee'>
                             <strong>Viewing Salaried Details</strong>&nbsp;|&nbsp;
-                            <a href='javascript:toggleEmployee();'>View Non-salaried Details</a>
+                            <a>View Non-salaried Details</a>
                           </div>";
-    $employeeData .= "<div id='toggle-employee-non-salaried' class='emp-record-non-salaried'>
-                            <a href='javascript:toggleEmployee();'>View Salaried Details</a>&nbsp;|&nbsp;
+    $employeeData .= "<div id='toggle-employee-non-salaried' class='emp-record-non-salaried toggleEmployee'>
+                            <a>View Salaried Details</a>&nbsp;|&nbsp;
                             <strong>Viewing Non-salaried Details</strong>
                           </div>";
 }

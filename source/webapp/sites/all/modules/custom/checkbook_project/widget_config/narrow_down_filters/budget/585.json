@@ -9,13 +9,12 @@
     "filterName":"Department",
     "urlParameterName":"dept",
     "autocompleteParamName":"dept_auto", 
-    "getTotalDataCount":true,    
     "facetPager":true,
     "urlParameterNameType":"eqtext",    
     "autocompleteID":"fdeptid",
     "autocompleteField":"department_name",
     "adjustParameters":"
-        $parameters = BudgetUtil::adjustBudgetCodeNameParameter($node, $parameters);
+        //$parameters = BudgetUtil::adjustBudgetCodeNameParameter($node, $parameters);
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
         }

@@ -1,0 +1,121 @@
+{
+  "agency_code_list": {
+    "sql": "SELECT DISTINCT agency_code, agency_name FROM ref_agency where is_display = 'Y' ORDER BY agency_name",
+    "force_quote": [
+      "agency_code"
+    ]
+  },
+  "vendor_code_list": {
+    "sql": "SELECT DISTINCT vendor_customer_code, legal_name FROM vendor ORDER BY vendor_customer_code",
+    "force_quote": [
+      "vendor_customer_code"
+    ]
+  },
+  "department_code_list": {
+    "sql": "SELECT DISTINCT d.department_code, d.department_name, a.agency_code, a.agency_name FROM ref_department d LEFT OUTER JOIN ref_agency a  ON d.agency_id = a.agency_id WHERE  ( REGEXP_REPLACE(d.department_name, '^[^[:alnum:]].*', '') = '' ) IS FALSE ORDER BY d.department_name",
+    "force_quote": [
+      "department_code",
+      "agency_code"
+    ]
+  },
+  "mwbe_code_list": {
+    "disabled": true,
+    "sql": "SELECT DISTINCT minority_type_id, minority_type_name FROM ref_minority_type ORDER BY minority_type_id",
+    "force_quote": []
+  },
+  "industry_code_list": {
+    "sql": "SELECT DISTINCT industry_type_id, industry_type_name FROM ref_industry_type ORDER BY industry_type_id",
+    "force_quote": []
+  },
+  "budget_code_list": {
+    "sql": "SELECT DISTINCT budget_code \"Budget Code\",attribute_name \"Budget Code Name\" FROM ref_budget_code ORDER BY attribute_name",
+    "force_quote": [
+      "Budget Code"
+    ]
+  },
+  "budget_expense_category_code_list": {
+    "sql": "SELECT DISTINCT object_class_code, object_class_name FROM ref_object_class ORDER BY object_class_name",
+    "force_quote": [
+      "object_class_code"
+    ]
+  },
+  "revenue_class_code_list": {
+    "sql": "SELECT DISTINCT revenue_class_code, revenue_class_name FROM ref_revenue_class ORDER BY revenue_class_name",
+    "force_quote": [
+      "revenue_class_code"
+    ]
+  },
+  "fund_class_code_list": {
+    "sql": "SELECT DISTINCT fund_class_code, fund_class_name FROM ref_fund_class where fund_class_name = 'General Fund' ORDER BY fund_class_name",
+    "force_quote": [
+      "fund_class_code"
+    ]
+  },
+  "funding_source_code_list": {
+    "sql": "SELECT DISTINCT funding_class_code, funding_class_name FROM ref_funding_class ORDER BY funding_class_name",
+    "force_quote": [
+      "funding_class_code"
+    ]
+  },
+  "revenue_category_code_list": {
+    "sql": "SELECT DISTINCT revenue_category_code, revenue_category_name FROM ref_revenue_category ORDER BY revenue_category_name",
+    "force_quote": [
+      "revenue_category_code"
+    ]
+  },
+  "revenue_source_code_list": {
+    "sql": "SELECT DISTINCT revenue_source_code, revenue_source_name FROM ref_revenue_source ORDER BY revenue_source_name",
+    "force_quote": [
+      "revenue_source_code"
+    ]
+  },
+  "payee_code_list": {
+    "sql": "SELECT DISTINCT vendor_customer_code,legal_name FROM vendor ORDER BY legal_name",
+    "force_quote": [
+      "vendor_customer_code"
+    ]
+  },
+  "expense_code_list": {
+    "disabled": true,
+    "sql": "SELECT DISTINCT document_id FROM history_master_agreement ORDER BY document_id",
+    "force_quote": [
+      "document_id"
+    ]
+  },
+  "spending_expense_category_code_list": {
+    "sql": "SELECT DISTINCT expenditure_object_code, expenditure_object_name FROM ref_expenditure_object ORDER BY expenditure_object_name",
+    "force_quote": [
+      "expenditure_object_code"
+    ]
+  },
+  "capital_project_code_list": {
+    "sql": "SELECT DISTINCT reporting_code \"Capital Project Code\" FROM disbursement_line_item_details where coalesce(reporting_code,'') <> '' ORDER BY reporting_code",
+    "force_quote": [
+      "Capital Project Code"
+    ]
+  },
+  "document_id_code_list": {
+    "sql": "SELECT DISTINCT disbursement_number FROM disbursement_line_item_details ORDER BY disbursement_number",
+    "force_quote": [
+      "disbursement_number"
+    ]
+  },
+  "spending_category_code_list": {
+    "sql": "SELECT DISTINCT spending_category_name, spending_category_code FROM ref_spending_category ORDER BY spending_category_name",
+    "force_quote": [
+      "spending_category_name"
+    ]
+  },
+  "contract_type_code_list": {
+    "sql": "SELECT DISTINCT agreement_type_code, agreement_type_name FROM ref_agreement_type ORDER BY agreement_type_code",
+    "force_quote": [
+      "agreement_type_code"
+    ]
+  },
+  "award_method_code_list": {
+    "sql": "SELECT DISTINCT award_method_code, award_method_name FROM ref_award_method ORDER BY award_method_code",
+    "force_quote": [
+      "award_method_code"
+    ]
+  }
+}

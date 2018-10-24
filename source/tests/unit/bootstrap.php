@@ -1,7 +1,21 @@
 <?php
 
+global $conf;
+$conf['CHECKBOOK_ENV'] = 'PHPUNIT';
+$conf['email_from'] = 'test@example.com';
+$conf['checkbook_dev_group_email'] = 'test@example.com';
+
+/**
+ *
+ */
+define('PHPUNIT_RUNNING', true);
+/**
+ *
+ */
+define('CUSTOM_MODULES_DIR', realpath(__DIR__ . '/../../webapp/sites/all/modules/custom/'));
+
 include_once 'vendor/autoload.php';
-include __DIR__.'/../../webapp/sites/all/modules/custom/checkbook_project/customclasses/util/MappingUtil.php';
+include_once CUSTOM_MODULES_DIR . '/checkbook_project/customclasses/util/MappingUtil.php';
 
 /**
  * @param string $name
@@ -43,7 +57,8 @@ function current_path()
  * @param int $h
  * @return bool
  */
-function drupal_mail($a, $b, $c, $d, $e, $f=1, $g=2, $h=3) {
+function drupal_mail($a, $b, $c, $d, $e, $f = 1, $g = 2, $h = 3)
+{
     return true;
 }
 
@@ -53,7 +68,7 @@ function drupal_mail($a, $b, $c, $d, $e, $f=1, $g=2, $h=3) {
  * @param int $c
  * @return bool
  */
-function module_load_include($a=0, $b=1, $c=2)
+function module_load_include($a = 0, $b = 1, $c = 2)
 {
     return true;
 }
@@ -61,7 +76,9 @@ function module_load_include($a=0, $b=1, $c=2)
 /**
  * Class DefaultMailSystem
  */
-class DefaultMailSystem{}
+class DefaultMailSystem
+{
+}
 
 /**
  *
@@ -85,7 +102,7 @@ define('MENU_CALLBACK', true);
  * @param int $b
  * @return bool
  */
-function drupal_get_path($a=1, $b=2)
+function drupal_get_path($a = 1, $b = 2)
 {
     return true;
 }
@@ -94,7 +111,7 @@ function drupal_get_path($a=1, $b=2)
  * @param int $a
  * @return bool
  */
-function node_load($a=1)
+function node_load($a = 1)
 {
     return true;
 }
@@ -103,7 +120,7 @@ function node_load($a=1)
  * @param int $a
  * @return bool
  */
-function node_view($a=1)
+function node_view($a = 1)
 {
     return true;
 }
@@ -112,7 +129,7 @@ function node_view($a=1)
  * @param int $a
  * @return int
  */
-function t($a=1)
+function t($a = 1)
 {
     return $a;
 }
@@ -121,7 +138,7 @@ function t($a=1)
  * @param int $a
  * @return int
  */
-function drupal_get_form($a=1)
+function drupal_get_form($a = 1)
 {
     return [$a];
 }
@@ -130,13 +147,22 @@ function drupal_get_form($a=1)
  * @param array $a
  * @return array
  */
-function drupal_map_assoc($a=[])
+function drupal_map_assoc($a = [])
 {
     return $a;
 }
 
-class FakeDataController{
-    public function queryDataset(){}
+/**
+ * Class FakeDataController
+ */
+class FakeDataController
+{
+    /**
+     *
+     */
+    public function queryDataset()
+    {
+    }
 }
 
 /**
@@ -148,13 +174,33 @@ function data_controller_get_instance($a = 1)
     return new FakeDataController();
 }
 
-function log_error(){}
+/**
+ *
+ */
+function log_error()
+{
+}
 
-function _get_contract_includes_subvendors_data_test($a){}
+/**
+ * @param $a
+ */
+function _get_contract_includes_subvendors_data_test($a)
+{
+}
 
-function _checkbook_max_data_year_test(){}
+/**
+ *
+ */
+function _checkbook_max_data_year_test()
+{
+}
 
-function data_controller_get_operator_factory_instance(){}
+/**
+ *
+ */
+function data_controller_get_operator_factory_instance()
+{
+}
 
 /**
  * Class LogHelper
@@ -168,8 +214,28 @@ class LogHelper
     {
         echo $text;
     }
+
+    /**
+     * @param $text
+     */
+    static function log_info($text)
+    {
+//        echo $text;
+    }
+
+    /**
+     * @param $text
+     */
+    static function log_notice($text)
+    {
+//        echo $text;
+    }
 }
 
+/**
+ * @param $query
+ * @return array
+ */
 function _checkbook_project_execute_sql_test($query)
 {
     $return = [];
@@ -186,8 +252,23 @@ function _checkbook_project_execute_sql_test($query)
     return [$return];
 }
 
-function theme($a, $vars) {
+/**
+ * @param $q
+ * @return mixed
+ */
+function drupal_get_path_alias($q)
+{
+    return $q;
+}
+
+/**
+ * @param $a
+ * @param $vars
+ * @return mixed
+ */
+function theme($a, $vars)
+{
     return $vars;
 }
 
-include_once __DIR__ . '/../../webapp/sites/all/modules/custom/checkbook_project/includes/checkbook_project.inc';
+include_once CUSTOM_MODULES_DIR . '/checkbook_project/includes/checkbook_project.inc';

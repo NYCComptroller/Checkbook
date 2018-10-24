@@ -72,7 +72,7 @@ foreach ($node->results_spending as $spending_row) {
 //Main table header
 $tbl_spending['header']['title'] = "<h3>SPENDING BY SUB VENDOR</h3>";
 
-if(RequestUtilities::getRequestParamValue("doctype")=="CT1" || RequestUtilities::getRequestParamValue("doctype")=="CTA1"){
+if(RequestUtilities::get("doctype")=="CT1" || RequestUtilities::get("doctype")=="CTA1"){
     $tbl_spending['header']['columns'] = array(
         array('value' => WidgetUtil::generateLabelMappingNoDiv("sub_vendor_name"), 'type' => 'text'),
         array('value' => WidgetUtil::generateLabelMappingNoDiv("mwbe_category"), 'type' => 'text'),
@@ -134,7 +134,7 @@ foreach ($vendor_contract_summary as $vendor => $vendor_summary) {
 
     //Main table columns
 
-    if(RequestUtilities::getRequestParamValue("doctype")=="CT1" || RequestUtilities::getRequestParamValue("doctype")=="CTA1"){
+    if(RequestUtilities::get("doctype")=="CT1" || RequestUtilities::get("doctype")=="CTA1"){
 
         $querySubVendorStatusInPIP = "SELECT
                                         c.aprv_sta_id, 

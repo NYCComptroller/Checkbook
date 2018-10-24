@@ -39,12 +39,12 @@
   foreach ($node->data as $contract) {
 
     $contract_number = $contract['contract_number'];
-    $q1 = "SELECT DISTINCT COUNT(sub_contract_id) AS sub_vendor_count FROM subcontract_details
-                        WHERE contract_number = '". $contract_number . "'
-                        AND latest_flag = 'Y'
-                        LIMIT 1";
-
-      $subcontract_details = _checkbook_project_execute_sql_by_data_source($q1);
+//    $q1 = "SELECT DISTINCT COUNT(sub_contract_id) AS sub_vendor_count FROM subcontract_details
+//                        WHERE contract_number = '". $contract_number . "'
+//                        AND latest_flag = 'Y'
+//                        LIMIT 1";
+//
+//      $subcontract_details = _checkbook_project_execute_sql_by_data_source($q1);
 
     if ($count % 2 == 0) {
       $class = "odd";
@@ -89,10 +89,12 @@
                   <div class="amount-title">Current Amount
                   </div>
               </div>
+              <?php /*
               <div class="spent-to-date"><?php if($subcontract_details[0]['sub_vendor_count']) { echo $subcontract_details[0]['sub_vendor_count']; } else echo '0';?>
                   <div class="amount-title">Number of Sub Vendors
                   </div>
               </div>
+                */ ?>
           </div>
 
 

@@ -1,0 +1,19 @@
+<?php
+
+function checkbook_api_ref_files_enable() {
+  if (class_exists('CheckbookMailSystem')){
+    $current = variable_get('mail_system', array('default-system' => 'DefaultMailSystem'));
+    if (!isset($current['checkbook_api_ref_files'])){
+      $addition = array('checkbook_api_ref_files' => 'CheckbookMailSystem');
+      variable_set('mail_system', array_merge($current, $addition));
+    }
+  }
+}
+
+function checkbook_api_ref_files_disable() {
+  $mail_system = variable_get('mail_system', array('default-system' => 'DefaultMailSystem'));
+  if (isset($mail_system['checkbook_api_ref_files'])){
+    unset($mail_system['checkbook_api_ref_files']);
+    variable_set('mail_system', $mail_system);
+  }
+}

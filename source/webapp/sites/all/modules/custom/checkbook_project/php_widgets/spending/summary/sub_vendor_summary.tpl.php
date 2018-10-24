@@ -32,11 +32,11 @@ if(is_array($records)){
     $mwbe_category = strtoupper(MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']));
     $totcontamnt_value = $row['formatted_total_contract_amount_sum'];
 
-    if(RequestUtilities::getRequestParamValue('smnid') == 759 ){
+    if(RequestUtilities::get('smnid') == 759 ){
         $percent_spending_value = $row['percent_spending'];
         $percent_spending = WidgetUtil::getLabel("percent_spending");
     }
-    if(RequestUtilities::getRequestParamValue('smnid') == 719){
+    if(RequestUtilities::get('smnid') == 719){
         $percent_spending_value = '';
         $percent_spending = '';
         $associated_prime_vendor_value = $row['prime_vendor_prime_vendor_legal_name'];
@@ -48,7 +48,7 @@ if(is_array($records)){
         $totcontamnt = '';
 
     }
-    if(RequestUtilities::getRequestParamValue('smnid') == 763 || RequestUtilities::getRequestParamValue('smnid') == 748){
+    if(RequestUtilities::get('smnid') == 763 || RequestUtilities::get('smnid') == 748){
         $percent_spending_value = $row['percent_spending'];
         $percent_spending = WidgetUtil::getLabel("percent_spending");
         $no_of_subcontracts_value = $row['total_sub_contracts'];

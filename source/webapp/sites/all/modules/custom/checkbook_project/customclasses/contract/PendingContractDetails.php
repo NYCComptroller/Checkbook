@@ -23,8 +23,8 @@ class pendingContractDetails {
   public function getData(&$node){
 
 
-    $contract_num = RequestUtilities::getRequestParamValue("contract");
-    $version_num = RequestUtilities::getRequestParamValue("version");
+    $contract_num = RequestUtilities::get("contract");
+    $version_num = RequestUtilities::get("version");
 
     $query1 = "SELECT
                 vh.vendor_id,

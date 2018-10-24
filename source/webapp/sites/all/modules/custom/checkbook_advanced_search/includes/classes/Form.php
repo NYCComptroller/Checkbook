@@ -42,7 +42,7 @@ class Form
 
         $div_id = "$this->domain_name-advanced-search";
 
-        $form[$domain][$domain_field]['#prefix'] = '<h3><a href="#">'.$this->domain_name.'</a></h3><div id="'.$div_id.'">';
+        $form[$domain][$domain_field]['#prefix'] = '<h3><a >'.$this->domain_name.'</a></h3><div id="'.$div_id.'">';
 
         return $form;
     }

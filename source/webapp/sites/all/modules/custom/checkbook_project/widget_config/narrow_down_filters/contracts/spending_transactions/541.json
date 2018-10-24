@@ -8,7 +8,6 @@
   ],
   "orderBy": "-txcount",
   "limit": 100,
-  "getTotalDataCount": true,
   "facetPager": true,
   "filterName": "Payee",
   "urlParameterName": "vendor",

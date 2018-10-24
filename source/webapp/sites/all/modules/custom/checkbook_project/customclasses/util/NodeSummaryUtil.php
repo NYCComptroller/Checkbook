@@ -122,7 +122,7 @@ class NodeSummaryUtil
     }
 
     static function getNodeId(){
-        return RequestUtilities::getRequestParamValue('smnid');//summary node id
+        return RequestUtilities::get('smnid');//summary node id
     }
 
 }

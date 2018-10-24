@@ -46,7 +46,7 @@ foreach ($node->results_prime_vendor_info as $vendor => $vendor_summary) {
         array('value' => custom_number_formatter_format($vendor_summary['spent_to_date'], 2, '$'), 'type' => 'number')
     );
 
-    if ( RequestUtilities::getRequestParamValue("datasource") != "checkbook_oge") {
+    if ( RequestUtilities::get("datasource") != "checkbook_oge") {
         $contract_vendor_details ='<div id = "contract_history">';
         $nid = 426;
         $node = node_load($nid);
@@ -70,9 +70,3 @@ foreach ($node->results_prime_vendor_info as $vendor => $vendor_summary) {
 
 $html = "<div class='contracts-spending-top'>" . WidgetUtil::generateTable($tbl_spending) . "</div>" ;
 echo $html;
-
-?>
-
-
-
-
