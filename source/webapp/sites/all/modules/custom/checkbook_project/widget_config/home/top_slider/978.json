@@ -7,10 +7,6 @@
     if(!preg_match('/payroll/',$_SERVER['REQUEST_URI'])){
     unset($node->widgetConfig->model->series[0]->seriesURLParamMap->yeartype);
     }
-
-    if(RequestUtilities::getRequestParamValue('yeartype') == 'B' && !preg_match('/payroll/',$_SERVER['REQUEST_URI']))
-    unset($node->widgetConfig->model->series[0]->seriesURLParamMap->year);
-
     ",
 "model": {
 "join": {
@@ -31,5 +27,5 @@ return $serieParameters;
 }
 ]
 },
-"template": "contracts_navigation"
+"template": "nycha_top_navigation"
 }

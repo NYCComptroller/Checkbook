@@ -633,6 +633,9 @@ class RequestUtil
         $fiscalYearId = static::getFiscalYearIdForTopNavigation();
 
         switch ($domain) {
+            case "nycha_contracts":
+                $path = "/nycha_contracts/". Datasource::getNYCHAUrl();
+                break;
             case "contracts":
                 //Get 'Contracts Bottom Slider' amounts
                 $node = node_load(363);
