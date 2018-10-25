@@ -337,6 +337,10 @@ function checkbook_project_theme($existing, $type, $theme, $path){
             'template' => 'php_widgets/contracts_navigation',
             'arguments' => array('node' => NULL)
         ),
+        'nycha_top_navigation' => array(
+            'template' => 'php_widgets/nycha_top_navigation',
+            'arguments' => array('node' => NULL)
+        ),
         //GridView templates
         'highchart_revenue_comparisons_grid_view' => array(
             'template' => 'gridview/revenue_year_comparisons',

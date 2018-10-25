@@ -874,7 +874,7 @@ function load_widget_data($node, $resultFormatter) {
   	if(isset($node->widgetConfig->transformationPHP)){
   		@$node->data = eval($node->widgetConfig->transformationPHP);
   	}
-    } catch(Exception $e) {log_error($node->nid);
+    } catch(Exception $e) {
         // FIXME Commented out printing of $e because it generates 100+ KBs in a log file
         log_error("Error getting data from the controller: \n" . $e->getMessage()/*, $e*/);
         $node->error = $e;
