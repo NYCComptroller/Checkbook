@@ -23,6 +23,8 @@
  *  Set Spending, Budget & Revenue domains to "0" for NYCHA
  *  This logic should only apply to the landing & transaction pages from the details links, NOT the advanced search pages.
  */
+$options = array('html'=>true);
+$options_disabled = array('html'=>true,"attributes"=>array("class"=>"noclick"));
 
 $budget_link = l('<span class="nav-title">Budget</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') ,'',$options_disabled);
 $revenue_link = l('<span class="nav-title">Revenue</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
