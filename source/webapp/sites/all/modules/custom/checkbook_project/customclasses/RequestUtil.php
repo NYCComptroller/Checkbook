@@ -634,7 +634,7 @@ class RequestUtil
 
         switch ($domain) {
             case "nycha_contracts":
-                $path = "/nycha_contracts/". Datasource::getNYCHAUrl();
+                $path = "/nycha_contracts/datasource/". Datasource::NYCHA;
                 break;
             case "contracts":
                 //Get 'Contracts Bottom Slider' amounts

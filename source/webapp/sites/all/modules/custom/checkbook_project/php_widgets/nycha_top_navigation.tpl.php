@@ -94,7 +94,11 @@ $feature_db_css = "expense-container";
         </tr>
     </table>
 </div>
-
+<?php
+    //M/WBE and Section links of NYCHA Contracts
+    $mwbe_link = l('<span class="nav-title">M/WBE</span><br>'.custom_number_formatter_format(0 ,1,'$'),RequestUtil::getTopNavURL("nycha_contracts"),$options);;
+    $section_link = l('<span class="nav-title">Section</span><br>'.custom_number_formatter_format(0 ,1,'$'),RequestUtil::getTopNavURL("nycha_contracts"),$options);;
+?>
 <div class="top-navigation-right">
     <div class="featured-dashboard-title"><a  alt="The amounts represented in the featured dashboards are subset amounts of either the Spending or Contract Domains">
             <?php echo (preg_match('/contract/',$_GET['q']))?"Contracts ":"Spending " ;?>Featured Dashboard</a>
@@ -112,7 +116,7 @@ $feature_db_css = "expense-container";
                 </td>
                 <td class="mwbe subvendors<?php if($svclass){print $svclass;}?>">
                     <div class="<?php print $fdexpclass;?>">
-                        <?php print $subvendors_link; print '<div class="drop-down-menu-triangle">'  . $svendor_filters .'</div>' ?>
+                        <?php print $section_link; print '<div class="drop-down-menu-triangle">'  . $svendor_filters .'</div>' ?>
                     </div>
                     <?php if($featured_dashboard == "sp" ||$featured_dashboard == "ss"){?>
                         <div class='indicator'></div>
