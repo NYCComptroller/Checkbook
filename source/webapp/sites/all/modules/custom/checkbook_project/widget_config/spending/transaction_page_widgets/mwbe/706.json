@@ -26,7 +26,7 @@
         "expdoc":"disbursement_number","deptnm":"department_name",
         "expcategorynm":"expenditure_object_name","syear":"check_eft_issued_nyc_year_id",
         "scalyear":"calendar_fiscal_year_id","magid":"master_agreement_id","agid":"agreement_id",
-        "cvendor":"vendor_id@checkbook:contracts_spending_transactions",
+        "cvendor":"vendor_id",
         "cagency":"document_agency_id@checkbook:contracts_spending_transactions",
         "awdmethod":"award_method_id@checkbook:contracts_spending_transactions",
         "status":"status_flag@checkbook:contracts_spending_transactions",
