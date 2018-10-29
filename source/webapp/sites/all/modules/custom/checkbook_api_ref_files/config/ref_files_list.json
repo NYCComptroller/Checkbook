@@ -1,18 +1,18 @@
 {
   "agency_code_list": {
-    "sql": "SELECT DISTINCT agency_code, agency_name FROM ref_agency where is_display = 'Y' ORDER BY agency_name",
+    "sql": "SELECT DISTINCT t1.agency_code, t1.agency_name FROM ref_agency t1 where t1.is_display = 'Y' AND EXISTS ( select 1 from all_disbursement_transactions t2 where t2.agency_id = t1.agency_id ) ORDER BY t1.agency_name",
     "force_quote": [
       "agency_code"
     ]
   },
   "vendor_code_list": {
-    "sql": "SELECT DISTINCT vendor_customer_code, legal_name FROM vendor ORDER BY vendor_customer_code",
+    "sql": "SELECT DISTINCT t1.vendor_customer_code, t1.legal_name FROM vendor t1 WHERE EXISTS ( select 1 from all_disbursement_transactions t2 where t2.vendor_id = t1.vendor_id ) ORDER BY t1.vendor_customer_code",
     "force_quote": [
       "vendor_customer_code"
     ]
   },
   "department_code_list": {
-    "sql": "SELECT DISTINCT d.department_code, d.department_name, a.agency_code, a.agency_name FROM ref_department d LEFT OUTER JOIN ref_agency a  ON d.agency_id = a.agency_id WHERE  ( REGEXP_REPLACE(d.department_name, '^[^[:alnum:]].*', '') = '' ) IS FALSE ORDER BY d.department_name",
+    "sql": "SELECT DISTINCT d.department_code, d.department_name, a.agency_code, a.agency_name FROM ref_department d LEFT OUTER JOIN ref_agency a  ON d.agency_id = a.agency_id WHERE EXISTS ( select 1 from budget b where d.department_id = b.department_id ) ORDER BY d.department_name",
     "force_quote": [
       "department_code",
       "agency_code"
@@ -24,53 +24,53 @@
     "force_quote": []
   },
   "industry_code_list": {
-    "sql": "SELECT DISTINCT industry_type_id, industry_type_name FROM ref_industry_type ORDER BY industry_type_id",
+    "sql": "SELECT DISTINCT t1.industry_type_id, t1.industry_type_name FROM ref_industry_type t1 WHERE EXISTS ( select 1 from all_agreement_transactions t2 where t2.industry_type_id = t1.industry_type_id ) ORDER BY t1.industry_type_id",
     "force_quote": []
   },
   "budget_code_list": {
-    "sql": "SELECT DISTINCT budget_code \"Budget Code\",attribute_name \"Budget Code Name\" FROM ref_budget_code ORDER BY attribute_name",
+    "sql": "SELECT DISTINCT bc.budget_code \"Budget Code\", bc.attribute_name \"Budget Code Name\" FROM ref_budget_code bc WHERE EXISTS ( select 1 from budget b where bc.budget_code_id = b.budget_code_id ) ORDER BY bc.attribute_name",
     "force_quote": [
       "Budget Code"
     ]
   },
   "budget_expense_category_code_list": {
-    "sql": "SELECT DISTINCT object_class_code, object_class_name FROM ref_object_class ORDER BY object_class_name",
+    "sql": "SELECT DISTINCT oc.object_class_code, oc.object_class_name FROM ref_object_class oc WHERE EXISTS ( select 1 from budget b where  oc.object_class_id = b.object_class_id ) ORDER BY oc.object_class_name",
     "force_quote": [
       "object_class_code"
     ]
   },
   "revenue_class_code_list": {
-    "sql": "SELECT DISTINCT revenue_class_code, revenue_class_name FROM ref_revenue_class ORDER BY revenue_class_name",
+    "sql": "SELECT DISTINCT t1.revenue_class_code, t1.revenue_class_name FROM ref_revenue_class t1 WHERE EXISTS ( select 1 from revenue_details t2 where t2.revenue_class_id  = t1.revenue_class_id ) ORDER BY t1.revenue_class_name",
     "force_quote": [
       "revenue_class_code"
     ]
   },
   "fund_class_code_list": {
-    "sql": "SELECT DISTINCT fund_class_code, fund_class_name FROM ref_fund_class where fund_class_name = 'General Fund' ORDER BY fund_class_name",
+    "sql": "SELECT DISTINCT t1.fund_class_code, t1.fund_class_name FROM ref_fund_class t1 WHERE t1.fund_class_name = 'General Fund' AND EXISTS ( select 1 from revenue_details t2 where t2.fund_class_id = t1.fund_class_id ) ORDER BY t1.fund_class_name",
     "force_quote": [
       "fund_class_code"
     ]
   },
   "funding_source_code_list": {
-    "sql": "SELECT DISTINCT funding_class_code, funding_class_name FROM ref_funding_class ORDER BY funding_class_name",
+    "sql": "SELECT DISTINCT t1.funding_class_code, t1.funding_class_name FROM ref_funding_class t1 WHERE EXISTS ( select 1 from revenue_details t2 where t2.funding_class_id = t1.funding_class_id ) ORDER BY t1.funding_class_name",
     "force_quote": [
       "funding_class_code"
     ]
   },
   "revenue_category_code_list": {
-    "sql": "SELECT DISTINCT revenue_category_code, revenue_category_name FROM ref_revenue_category ORDER BY revenue_category_name",
+    "sql": "SELECT DISTINCT t1.revenue_category_code, t1.revenue_category_name FROM ref_revenue_category t1 WHERE EXISTS ( select 1 from revenue_details t2 where t2.revenue_category_id  = t1.revenue_category_id ) ORDER BY t1.revenue_category_name",
     "force_quote": [
       "revenue_category_code"
     ]
   },
   "revenue_source_code_list": {
-    "sql": "SELECT DISTINCT revenue_source_code, revenue_source_name FROM ref_revenue_source ORDER BY revenue_source_name",
+    "sql": "SELECT DISTINCT t1.revenue_source_code, t1.revenue_source_name FROM ref_revenue_source t1 WHERE EXISTS ( select 1 from revenue_details t2 where t2.revenue_source_id = t1.revenue_source_id ) ORDER BY t1.revenue_source_name",
     "force_quote": [
       "revenue_source_code"
     ]
   },
   "payee_code_list": {
-    "sql": "SELECT DISTINCT vendor_customer_code,legal_name FROM vendor ORDER BY legal_name",
+    "sql": "SELECT DISTINCT t1.vendor_customer_code, t1.legal_name FROM vendor t1 WHERE EXISTS ( select 1 from all_disbursement_transactions t2 where t2.vendor_id = t1.vendor_id ) ORDER BY t1.legal_name",
     "force_quote": [
       "vendor_customer_code"
     ]
@@ -83,7 +83,7 @@
     ]
   },
   "spending_expense_category_code_list": {
-    "sql": "SELECT DISTINCT expenditure_object_code, expenditure_object_name FROM ref_expenditure_object ORDER BY expenditure_object_name",
+    "sql": "SELECT DISTINCT t1.expenditure_object_code, t1.expenditure_object_name FROM ref_expenditure_object t1 WHERE EXISTS ( select 1 from all_disbursement_transactions t2 where t2.expenditure_object_id = t1.expenditure_object_id ) ORDER BY t1.expenditure_object_name",
     "force_quote": [
       "expenditure_object_code"
     ]
@@ -113,7 +113,7 @@
     ]
   },
   "award_method_code_list": {
-    "sql": "SELECT DISTINCT award_method_code, award_method_name FROM ref_award_method ORDER BY award_method_code",
+    "sql": "SELECT DISTINCT t1.award_method_code, t1.award_method_name FROM ref_award_method t1 WHERE EXISTS ( select 1 from all_agreement_transactions t2 where t2.award_method_id = t1.award_method_id ) ORDER BY t1.award_method_code",
     "force_quote": [
       "award_method_code"
     ]
