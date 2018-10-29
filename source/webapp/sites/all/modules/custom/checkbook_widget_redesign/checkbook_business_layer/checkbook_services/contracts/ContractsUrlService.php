@@ -110,7 +110,7 @@ class ContractsUrlService
     static function masterAgreementSpentToDateUrl($spend_type_parameter, $legacy_node_id = null)
     {
 
-        $url = "/spending/transactions"
+        $url = "/contract/spending/transactions"
             . $spend_type_parameter
             . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
             . RequestUtilities::buildUrlFromParam('status|contstatus')
