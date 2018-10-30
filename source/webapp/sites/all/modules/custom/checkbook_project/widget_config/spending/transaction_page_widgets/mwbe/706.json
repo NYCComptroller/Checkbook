@@ -6,7 +6,7 @@
         "mcagency","agencyh","year","yeartype","calyear","mcvendor","expcategory","category","checkamtr","dept",
         "contnum","checkamt","chkdate","fundcls","bdgcodenm","captprj","expdoc","vendornm","deptnm","expcategorynm","syear",
         "scalyear","magid","agid","cvendor","cagency","awdmethod","status","csize","cindustry","expcategorycode","month",
-        "industry","mwbe","vendor","subvendor","fvendor","vendortype"
+        "industry","mwbe","vendor","subvendor","fvendor","vendortype","svendor"
     ],
     "urlParamMap":{
         "contnum_exact":"reference_document_number",
@@ -34,7 +34,8 @@
         "cindustry":"industry_type_id@checkbook:contracts_spending_transactions",
         "expcategorycode":"expenditure_object_code", "month":"check_eft_issued_cal_month_id",
         "mwbe":"minority_type_id","industry":"industry_type_id",
-        "vendor":"prime_vendor_id","subvendor":"vendor_id","fvendor":"vendor_id","vendortype":"vendor_type"
+        "vendor":"prime_vendor_id","subvendor":"vendor_id","fvendor":"vendor_id","vendortype":"vendor_type",
+        "svendor":"vendor_id"
     },
     "paramTypeConfig":{
         "vendornm_exact":"eqignorecase","expdoc_exact":"eqignorecase","captprj_exact":"eqignorecase",
