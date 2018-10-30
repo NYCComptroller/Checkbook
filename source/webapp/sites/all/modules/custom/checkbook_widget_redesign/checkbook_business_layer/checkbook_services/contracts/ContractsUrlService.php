@@ -115,7 +115,7 @@ class ContractsUrlService
             . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
             . RequestUtilities::buildUrlFromParam('status|contstatus')
             . (!Datasource::isOGE() ? RequestUtilities::buildUrlFromParam('agency|cagency') : "")
-            . (!Datasource::isOGE() ? RequestUtilities::buildUrlFromParam('vendor|cvendor') : RequestUtilities::buildUrlFromParam('vendor'))
+            . (!Datasource::isOGE() ? RequestUtilities::buildUrlFromParam('vendor|fvendor') : RequestUtilities::buildUrlFromParam('vendor'))
             . RequestUtilities::buildUrlFromParam([
                 'awdmethod',
                 'cindustry',
