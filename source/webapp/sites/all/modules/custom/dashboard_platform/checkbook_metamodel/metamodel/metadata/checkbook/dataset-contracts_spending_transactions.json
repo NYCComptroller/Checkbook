@@ -53,7 +53,7 @@
                             "sourceColumnName": "disb_expenditure_object_name"
                         }
                     ]
-                },                
+                },
                 {
                     "name": "dept",
                     "levels": [
@@ -65,7 +65,7 @@
                     ]
                 },
                 {
-                	"name": "deptnm",
+                    "name": "deptnm",
                     "levels": [
                         {
                             "name": "deptnm",
@@ -90,6 +90,25 @@
                             "name": "document_code",
                             "datasetName": "ref_document_code",
                             "sourceColumnName": "document_code_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "disbursement_line_item",
+                    "levels": [
+                        {
+                            "name": "disbursement_line_item",
+                            "sourceColumnName": "disbursement_line_item_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "minority_type",
+                    "levels": [
+                        {
+                            "name": "minority_type",
+                            "datasetName": "minority_type",
+                            "sourceColumnName": "minority_type_id"
                         }
                     ]
                 }
@@ -126,6 +145,19 @@
         "contracts_spending_transactions__ref_document_code": [
             {"datasetName": "contracts_spending_transactions", "columnNames": ["document_code_id"]},
             {"datasetName": "ref_document_code", "columnNames": ["document_code_id"]}
+        ],
+        "contracts_spending_transactions__vendor": [
+            {"datasetName": "contracts_spending_transactions", "columnNames": ["vendor_id"]},
+            {"datasetName": "vendor", "columnNames": ["vendor_id"]}
+        ],
+        "contracts_spending_transactions__agency": [
+            {"datasetName": "contracts_spending_transactions", "columnNames": ["disb_agency_id"]},
+            {"datasetName": "agency", "columnNames": ["agency_id"]}
+        ],
+        "contracts_spending_transactions__award_method": [
+            {"datasetName": "contracts_spending_transactions", "columnNames": ["award_method_id"]},
+            {"datasetName": "award_method", "columnNames": ["award_method_id"]}
         ]
+
     }
 }
