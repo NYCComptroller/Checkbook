@@ -6,7 +6,7 @@
         "mcagency","agencyh","year","yeartype","calyear","mcvendor","expcategory","category","checkamtr","dept",
         "contnum","checkamt","chkdate","fundcls","bdgcodenm","captprj","expdoc","vendornm","deptnm","expcategorynm","syear",
         "scalyear","magid","agid","cvendor","cagency","awdmethod","status","csize","cindustry","expcategorycode","month",
-        "industry","mwbe","vendor","subvendor","fvendor","vendortype","svendor"
+        "industry","mwbe","vendor","subvendor","fvendor","vendortype","svendor","sagency","sindustry"
     ],
     "urlParamMap":{
         "contnum_exact":"reference_document_number",
@@ -27,11 +27,13 @@
         "expcategorynm":"expenditure_object_name","syear":"check_eft_issued_nyc_year_id",
         "scalyear":"calendar_fiscal_year_id","magid":"master_agreement_id","agid":"agreement_id",
         "cvendor":"vendor_id@checkbook:contracts_spending_transactions",
-        "cagency":"agency_id",
+        "cagency":"document_agency_id@checkbook:contracts_spending_transactions",
         "awdmethod":"award_method_id@checkbook:contracts_spending_transactions",
         "status":"status_flag@checkbook:contracts_spending_transactions",
         "csize":"award_size_id@checkbook:contracts_spending_transactions",
-        "cindustry":"industry_type_id",
+        "cindustry":"industry_type_id@checkbook:contracts_spending_transactions",
+        "sindustry":"industry_type_id",
+        "sagency":"agency_id",
         "expcategorycode":"expenditure_object_code", "month":"check_eft_issued_cal_month_id",
         "mwbe":"minority_type_id","industry":"industry_type_id",
         "vendor":"prime_vendor_id","subvendor":"vendor_id","fvendor":"vendor_id","vendortype":"vendor_type",
