@@ -25,7 +25,7 @@
  */
 $options = array('html'=>true);
 $options_disabled = array('html'=>true,"attributes"=>array("class"=>"noclick"));
-
+var_dump($options);
 $budget_link = l('<span class="nav-title">Budget</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') ,'',$options_disabled);
 $revenue_link = l('<span class="nav-title">Revenue</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
 $spending_link =  l('<span class="nav-title">Spending</span><br>'. custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);

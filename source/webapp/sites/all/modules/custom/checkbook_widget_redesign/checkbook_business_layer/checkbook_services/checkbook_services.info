@@ -43,11 +43,15 @@ files[] = spending/ISpendingDataService.php
 files[] = spending/SpendingDataService.php
 
 files[] = contracts/ContractsUrlService.php
+files[] = nychaContracts/NychaContractsUrlService.php
 files[] = contracts/ContractsWidgetService.php
+files[] = nychaContracts/NychaContractsWidgetService.php
 files[] = contracts/ContractsWidgetVisibilityService.php
 files[] = contracts/ContractsParameters.php
 files[] = contracts/data/IContractsDataService.php
+files[] = nychaContracts/data/INychaContractsDataService.php
 files[] = contracts/data/ContractsDataService.php
+files[] = nychaContracts/data/NychaContractsDataService.php
 
 files[] = revenue/data/RevenueDataService.php
 files[] = revenue/data/IRevenueDataService.php
