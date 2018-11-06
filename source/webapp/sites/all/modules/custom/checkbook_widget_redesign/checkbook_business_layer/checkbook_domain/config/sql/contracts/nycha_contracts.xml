@@ -2,24 +2,29 @@
   <!--GetNychaVendors-->
   <statement name="GetContractsByVendors" datasource="checkbook_nycha">
     <param name="year" required ="true" type="int"/>
-    <param name="yeartype" required ="true" type="string" />
     <sql>
-      select fiscal_year,
+      SELECT fiscal_year,
         vendor_name,
         purchase_order_count,
         spend_to_date
-      from  public.fy_vendor_summary_vw
-      where fiscal_year = '2013'
-      order by spend_to_date DESC
+      FROM fy_vendor_summary_vw
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="fiscal_year" paramName="year" />
+        </exp>
+      </where>
     </sql>
   </statement>
   <statement name="GetCountContractsByVendors" datasource="checkbook_nycha">
     <param name="year" required ="true" type="int"/>
-    <param name="yeartype" required ="true" type="string" />
     <sql>
-      select DISTINCT vendor_name
-      from  public.fy_vendor_summary_vw
-      where fiscal_year = '2013'
+      SELECT DISTINCT vendor_name
+      FROM fy_vendor_summary_vw
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="fiscal_year" paramName="year" />
+        </exp>
+      </where>
     </sql>
   </statement>
 </statements>
