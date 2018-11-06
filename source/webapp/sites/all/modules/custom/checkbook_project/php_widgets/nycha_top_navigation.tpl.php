@@ -33,9 +33,9 @@ $contracts_link = l('<span class="nav-title">Contracts</span><br>'.custom_number
 $payroll_link = l('<span class="nav-title">Payroll</span><br>'.custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
 
 //Payroll Link
-if($node->data[1]['total_gross_pay'] > 0  ){
+//if($node->data[1]['total_gross_pay'] > 0  ){
     $payroll_link = l('<span class="nav-title">Payroll</span><br>'.custom_number_formatter_format($node->data[1]['total_gross_pay'] ,1,'$'),RequestUtil::getTopNavURL("payroll"),$options);
-}
+//}
 
 //Contracts Link
 $contracts_link = l('<span class="nav-title">Contracts</span><br>'.custom_number_formatter_format(0 ,1,'$'),RequestUtil::getTopNavURL("nycha_contracts"),$options);
@@ -97,7 +97,7 @@ $feature_db_css = "expense-container";
 <?php
     //M/WBE and Section links of NYCHA Contracts
     $mwbe_link = l('<span class="nav-title">M/WBE</span><br>'.custom_number_formatter_format(0 ,1,'$'),RequestUtil::getTopNavURL("nycha_contracts"),$options);;
-    $section_link = l('<span class="nav-title">Section</span><br>'.custom_number_formatter_format(0 ,1,'$'),RequestUtil::getTopNavURL("nycha_contracts"),$options);;
+    $section_link = l('<span class="nav-title">Section 3</span><br>'.custom_number_formatter_format(0 ,1,'$'),RequestUtil::getTopNavURL("nycha_contracts"),$options);;
 ?>
 <div class="top-navigation-right">
     <div class="featured-dashboard-title"><a  alt="The amounts represented in the featured dashboards are subset amounts of either the Spending or Contract Domains">
