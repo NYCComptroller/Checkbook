@@ -1,7 +1,6 @@
 <?php
 
 class NychaContractsWidgetService extends WidgetDataService implements IWidgetService {
-
     /**
      * Function to allow the client to initialize the data service
      * @return mixed
