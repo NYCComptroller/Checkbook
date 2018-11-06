@@ -28,6 +28,7 @@ files[] = config/sql/contracts/contracts.xml
 files[] = config/sql/contracts/oge_contracts.xml
 files[] = config/sql/contracts/pending_contracts.xml
 files[] = config/sql/contracts/sub_contracts.xml
+files[] = config/sql/contracts/nycha_contracts.xml
 files[] = config/sql/revenue/revenue.xml
 files[] = config/sql/spending/mwbe_spending.xml
 files[] = config/sql/spending/oge_spending.xml
