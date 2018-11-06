@@ -236,7 +236,8 @@ class WidgetUtil
         "acco_cancelled" => "Acco<br/>Canceled",
         "subvendor_mwbe_category" => "Sub Vendor's M/WBE<br/>Category",
         "subvendor_status_pip" => "Sub Vendor<br/>Status in PIP",
-        "prime_contract_version" => "Prime Contract<br/>Version",
+        "purchase_contract_count" => "Purchase Order Count",
+        "spend_to_date" => "Spend to Date"
     );
 
     //For number cols, need to find out if they are uniform number of digits for formatting
