@@ -100,8 +100,8 @@ if($current_url[1] == 'contracts_landing')
 else
     $edc_url = "spending_landing";
 
-//NYCHA Agencies: Set NYCHA default URL to Payroll
-$nycha_url = "payroll/agency_landing/yeartype/C/year/".$current_cal_year."/datasource/checkbook_nycha/agency/";
+//NYCHA Agencies: Set NYCHA default URL to Contracts
+$nycha_url = "nycha_contracts/yeartype/C/year/".$current_cal_year."/datasource/checkbook_nycha/agency/";
 
 $agency_list_other = "<div id='agency-list-other' class='agency-nav-dropdowns'>
   <div class='agency-list-open'><span id='other-agency-list-open' class='".$oge_filter_highlight."'>Other Government Entities</span></div>
