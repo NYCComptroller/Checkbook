@@ -6,9 +6,9 @@
     "headerTitle":"Vendors",
     "headerSubTitle":"Vendors",
     "table_columns":[
-        {"labelAlias":"prime_vendor","column":"vendor_name","derivedColumn":"prime_vendor_link","tooltip":60},
-        {"labelAlias":"no_of_contracts","column":"purchase_order_count","format":"number"},
-        {"labelAlias":"current_amount","column":"spend_to_date","format":"dollar"},
+        {"labelAlias":"prime_vendor","column":"vendor_name","tooltip":60},
+        {"labelAlias":"purchase_contract_count","column":"purchase_order_count","format":"number"},
+        {"labelAlias":"spend_to_date","column":"spend_to_date","format":"dollar"},
         {"label":"","column":""}
     ],
     "dataTableOptions":{
