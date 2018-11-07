@@ -3,6 +3,10 @@
       "landing_page_widgets": {
         "nycha_vendors": {
           "widget_config": "nycha_contracts_by_vendors_view"
+        },
+
+        "nycha_awardmethods": {
+          "widget_config": "nycha_contracts_by_award_methods_view"
         }
       }
   }
