@@ -1,7 +1,6 @@
 {
   "serviceName":"NychaContractsWidgetService",
   "dataFunc":"GetContractsByAwardMethods",
-  "countFunc":"GetCountContractsByAwardMethods",
   "defaultParameters":{"type_of_year":"B"},
   "headerTitle":"Award Methods",
   "headerSubTitle":"Award Methods",
