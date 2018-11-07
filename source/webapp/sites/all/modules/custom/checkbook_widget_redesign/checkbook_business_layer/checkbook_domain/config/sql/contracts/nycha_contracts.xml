@@ -27,4 +27,18 @@
       </where>
     </sql>
   </statement>
+  <!--GetNychaAwardMethods-->
+  <statement name="GetContractsByAwardMethods" datasource="checkbook_nycha">
+    <param name="year" required ="true" type="int"/>
+    <sql>
+      SELECT fiscal_year,
+      award_method_name, purchase_order_count, spend_to_date
+      FROM fy_award_method_summary_vw
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="fiscal_year" paramName="year" />
+        </exp>
+      </where>
+    </sql>
+  </statement>
 </statements>
