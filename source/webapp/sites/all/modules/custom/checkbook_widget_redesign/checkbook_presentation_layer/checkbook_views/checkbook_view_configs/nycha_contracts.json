@@ -7,6 +7,9 @@
 
         "nycha_awardmethods": {
           "widget_config": "nycha_contracts_by_award_methods_view"
+        },
+        "nycha_purchase_orders":{
+          "widget_config":"nycha_contracts_by_purchase_orders"
         }
       }
   }
