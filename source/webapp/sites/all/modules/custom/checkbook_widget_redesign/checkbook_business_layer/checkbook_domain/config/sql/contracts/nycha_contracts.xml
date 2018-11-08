@@ -41,4 +41,18 @@
       </where>
     </sql>
   </statement>
+  <!--GetNychaPurchaseOrders-->
+  <statement name="GetContractsByPurchaseOrders" datasource="checkbook_nycha">
+    <param name="year" required ="true" type="int"/>
+    <sql>
+      SELECT fiscal_year,
+      po_number, vendor_name,agreement_total_amount,agreement_original_amount, spend_to_date
+      FROM  fy_po_vendor_summary_vw
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="fiscal_year" paramName="year" />
+        </exp>
+      </where>
+    </sql>
+  </statement>
 </statements>
