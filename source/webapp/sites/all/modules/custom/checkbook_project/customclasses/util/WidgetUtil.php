@@ -237,7 +237,8 @@ class WidgetUtil
         "subvendor_mwbe_category" => "Sub Vendor's M/WBE<br/>Category",
         "subvendor_status_pip" => "Sub Vendor<br/>Status in PIP",
         "purchase_contract_count" => "Purchase Order Count",
-        "spend_to_date" => "Spend to Date"
+        "spend_to_date" => "Spend to Date",
+        "po_number"=>"PO Number"
     );
 
     //For number cols, need to find out if they are uniform number of digits for formatting
