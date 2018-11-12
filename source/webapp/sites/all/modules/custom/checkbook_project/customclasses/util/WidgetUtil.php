@@ -238,7 +238,8 @@ class WidgetUtil
         "subvendor_status_pip" => "Sub Vendor<br/>Status in PIP",
         "purchase_contract_count" => "Purchase Order Count",
         "spend_to_date" => "Spend to Date",
-        "po_number"=>"PO Number"
+        "po_number"=>"PO Number",
+        "boroughs" =>'Boroughs'
     );
 
     //For number cols, need to find out if they are uniform number of digits for formatting
