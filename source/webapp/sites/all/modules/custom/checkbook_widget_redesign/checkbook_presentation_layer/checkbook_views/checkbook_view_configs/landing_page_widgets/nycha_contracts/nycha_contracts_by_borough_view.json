@@ -1,0 +1,31 @@
+{
+  "serviceName":"NychaContractsWidgetService",
+  "dataFunc":"GetContractsByBoroughs",
+  "defaultParameters":{"type_of_year":"B"},
+  "headerTitle":"Boroughs",
+  "headerSubTitle":"Boroughs",
+  "table_columns":[
+    {"labelAlias": "boroughs","column": "location_borough_name"},
+    {"labelAlias":"purchase_contract_count","column":"purchase_order_count","format":"number"},
+    {"labelAlias":"spend_to_date","column":"spend_to_date","format":"dollar"},
+    {"label":"","column":""}
+  ],
+  "dataTableOptions":{
+    "aoColumns":[
+      {"sClass":"text","sWidth":"249px","bSortable":false},
+      {"sClass":"number","sWidth":"120px","asSorting":["desc","asc"]},
+      {"sClass":"number","sWidth":"177px","asSorting":["desc","asc"]},
+      {"sWidth":"15px","bSortable":false}
+    ],
+    "bServerSide":true,
+    "bFilter":false,
+    "bPaginate":false,
+    "bProcessing":true,
+    "bLengthChange":false,
+    "bInfo":false,
+    "bAutoWidth":false,
+    "aaSorting":[[2,"desc"]],
+    "fnServerParams":"##function ( aoData ) { reloadExpandCollapseWidget(this,aoData); }##",
+    "oLanguage":{"sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"}
+  }
+}

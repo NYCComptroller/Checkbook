@@ -10,6 +10,9 @@
         },
         "nycha_purchase_orders":{
           "widget_config":"nycha_contracts_by_purchase_orders"
+        },
+        "nycha_boroughs":{
+          "widget_config":"nycha_contracts_by_borough_view"
         }
       }
   }
