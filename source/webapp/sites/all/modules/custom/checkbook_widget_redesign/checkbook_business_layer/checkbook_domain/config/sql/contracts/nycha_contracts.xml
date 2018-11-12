@@ -31,26 +31,39 @@
   <statement name="GetContractsByAwardMethods" datasource="checkbook_nycha">
     <param name="year" required ="true" type="int"/>
     <sql>
-      SELECT fiscal_year,
+      SELECT  fiscal_year_id,fiscal_year,
       award_method_name, purchase_order_count, spend_to_date
       FROM fy_award_method_summary_vw
       <where>
         <exp op="AND">
-          <exp op="=" dbField="fiscal_year" paramName="year" />
+          <exp op="=" dbField="fiscal_year_id" paramName="year" />
         </exp>
       </where>
     </sql>
   </statement>
   <!--GetNychaPurchaseOrders-->
   <statement name="GetContractsByPurchaseOrders" datasource="checkbook_nycha">
+  <param name="year" required ="true" type="int"/>
+  <sql>
+    SELECT fiscal_year_id,fiscal_year,
+    po_number, vendor_name,agreement_total_amount,agreement_original_amount, spend_to_date
+    FROM  fy_po_vendor_summary_vw
+    <where>
+      <exp op="AND">
+        <exp op="=" dbField="fiscal_year_id" paramName="year" />
+      </exp>
+    </where>
+  </sql>
+</statement>
+  <statement name="GetContractsByBoroughs" datasource="checkbook_nycha">
     <param name="year" required ="true" type="int"/>
     <sql>
-      SELECT fiscal_year,
-      po_number, vendor_name,agreement_total_amount,agreement_original_amount, spend_to_date
-      FROM  fy_po_vendor_summary_vw
+      SELECT fiscal_year_id,fiscal_year,
+      location_borough_name,purchase_order_count,total_amount,original_amount,spend_to_date
+      FROM  contracts_fy_borough_summary_vw
       <where>
         <exp op="AND">
-          <exp op="=" dbField="fiscal_year" paramName="year" />
+          <exp op="=" dbField="fiscal_year_id" paramName="year" />
         </exp>
       </where>
     </sql>
