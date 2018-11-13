@@ -487,8 +487,9 @@ function _checkbook_custom_breadcrumnb_add_breadcrumb_title(){
 
    else if(preg_match('/^contract/',current_path())){
      $checkbook_breadcrumb_title = RequestUtil::getContractBreadcrumbTitle();
-   }
-   elseif(preg_match('/^payroll/',current_path())){
+   } else if(preg_match('/^nycha_contracts/',current_path())){
+       $checkbook_breadcrumb_title = RequestUtil::getNYCHAContractBreadcrumbTitle();
+   } elseif(preg_match('/^payroll/',current_path())){
      $checkbook_breadcrumb_title = RequestUtil::getPayrollBreadcrumbTitle();
    }elseif(preg_match('/^spending/',current_path())){
      $checkbook_breadcrumb_title = RequestUtil::getSpendingBreadcrumbTitle();

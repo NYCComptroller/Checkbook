@@ -101,7 +101,7 @@ else
     $edc_url = "spending_landing";
 
 //NYCHA Agencies: Set NYCHA default URL to Contracts
-$nycha_url = "nycha_contracts/yeartype/C/year/".$current_cal_year."/datasource/checkbook_nycha/agency/";
+$nycha_url = "nycha_contracts/year/".$current_cal_year."/datasource/checkbook_nycha";
 
 $agency_list_other = "<div id='agency-list-other' class='agency-nav-dropdowns'>
   <div class='agency-list-open'><span id='other-agency-list-open' class='".$oge_filter_highlight."'>Other Government Entities</span></div>
@@ -113,7 +113,7 @@ foreach($edc_agencies as $key => $edc_agency){
     $agency_list_other .= "<li><a href='/". $edc_url .'/yeartype/B/year/'.$current_fy_year."/datasource/checkbook_oge/agency/".$edc_agency['agency_id']. "'>". $edc_agency['agency_name'] ."</a></li>";
 }
 foreach($nycha_agencies as $key => $nycha_agency){
-    $agency_list_other .= "<li><a href='/". $nycha_url.$nycha_agency['agency_id'] ."'>". $nycha_agency['agency_name'] ."</a></li>";
+    $agency_list_other .= "<li><a href='/". $nycha_url .'/agency/'.$nycha_agency['agency_id'] ."'>". $nycha_agency['agency_name'] ."</a></li>";
 }
 $agency_list_other .= "</ul>
         </div>
