@@ -1348,4 +1348,12 @@ class RequestUtil
       }
       return $url;
     }
+
+    /** Returns NYCHA Contracts page title and Breadcrumb */
+    public static function getNYCHAContractBreadcrumbTitle()
+    {
+        $title = 'NYCHA Contracts';
+        return html_entity_decode($title);
+    }
 }
+
