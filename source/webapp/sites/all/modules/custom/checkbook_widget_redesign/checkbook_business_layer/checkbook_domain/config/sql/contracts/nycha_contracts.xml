@@ -32,8 +32,8 @@
     <param name="year" required ="true" type="int"/>
     <sql>
       SELECT  fiscal_year_id,fiscal_year,
-      award_method_name, purchase_order_count, spend_to_date
-      FROM fy_award_method_summary_vw
+      award_method_name, purchase_order_count, total_amount,original_amount,spend_to_date
+      FROM contracts_fy_award_method_summary_vw
       <where>
         <exp op="AND">
           <exp op="=" dbField="fiscal_year_id" paramName="year" />
