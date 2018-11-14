@@ -5,8 +5,8 @@
   "headerTitle":"Blanket Agreements",
   "headerSubTitle":"Blanket Agreements",
   "table_columns":[
-    {"labelAlias": "contract_purpose","column": "purpose"},
-    {"labelAlias": "vendor_name","column": "vendor_name"},
+    {"labelAlias": "vendor_name","column": "vendor_name","tooltip":32},
+    {"labelAlias": "contract_purpose","column": "purpose","tooltip":32},
     {"labelAlias":"current_amount","column":"total_amount","format":"dollar"},
     {"labelAlias":"original_amount","column":"original_amount","format":"dollar"},
     {"labelAlias":"spend_to_date","column":"spend_to_date","format":"dollar"},
@@ -14,8 +14,8 @@
   ],
   "dataTableOptions":{
     "aoColumns": [
-      { "bSortable": false,"sWidth":"300px","sClass":"text" },
-      { "bSortable": false,"sWidth":"300px","sClass":"text" },
+      { "bSortable": false,"sWidth":"170px","sClass":"text" },
+      { "bSortable": false,"sWidth":"170px","sClass":"text" },
       { "bSortable": true,"sWidth":"130px","sClass":"number","asSorting": [ "desc","asc"  ] },
       { "bSortable": true,"sWidth":"130px" ,"sClass":"number","asSorting": [ "desc" ,"asc" ]},
       { "bSortable": true,"sWidth":"130px","sClass":"number","asSorting": [ "desc","asc"  ] },
