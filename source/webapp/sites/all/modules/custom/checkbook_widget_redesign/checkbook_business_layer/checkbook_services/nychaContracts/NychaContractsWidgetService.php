@@ -13,12 +13,10 @@ class NychaContractsWidgetService extends WidgetDataService implements IWidgetSe
         $value = null;
 
         switch($column_name) {
-            case "Vendor_link":
+            case "vendor_link":
                 $column = $row['vendor_name'];
-                $class = "bottomContainerReload";
-                $url = "";
-
-                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+                $url = NychaContractsUrlService::vendorUrl($row['vendor_id']);
+                $value = "<a href='{$url}'>{$column}</a>";
                 break;
         }
 
