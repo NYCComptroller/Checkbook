@@ -3,27 +3,17 @@
   <statement name="GetContractsByVendors" datasource="checkbook_nycha">
     <param name="year" required ="true" type="int"/>
     <sql>
-      SELECT fiscal_year,
-        vendor_name,
+      SELECT vendor_name,
+        vendor_number,
+        vendor_id,
         purchase_order_count,
-        spend_to_date
-      FROM fy_vendor_summary_vw
+        spend_to_date,
+        total_amount,
+        original_amount
+      FROM contracts_fy_vendor_summary_vw
       <where>
         <exp op="AND">
-          <exp op="=" dbField="fiscal_year" paramName="year" />
-        </exp>
-      </where>
-    </sql>
-  </statement>
-  <statement name="GetCountContractsByVendors" datasource="checkbook_nycha">
-    <param name="year" required ="true" type="int"/>
-    <sql>
-      SELECT DISTINCT vendor_name
-      FROM fy_vendor_summary_vw
-      <where>
-        <exp op="AND">
-          <exp op="=" dbField="fiscal_year" paramName="year" />
-        </exp>
+          <exp op="=" dbField="fiscal_year_id" paramName="year" />        </exp>
       </where>
     </sql>
   </statement>
