@@ -227,6 +227,12 @@ class SqlModelFactory {
         if($type == "string") {
             $value = "'{$value}'";
         }
+        if('yearfix' == $type) {
+            $value = (int)$value;
+            if ($value < 2000) {
+                $value += 1899; //  fixes 119 to 2018
+            }
+        }
         switch($operator) {
             case SqlOperator::EQUAL:
             case SqlOperator::NOT_EQUAL:
@@ -247,7 +253,10 @@ class SqlModelFactory {
                 $where = "{$name} $operator {$value}";
                 break;
 
-
+            case SqlOperator::BETWEEN:
+                list($name1,$name2) = explode(',', $name);
+                $where = "{$value} $operator {$name1} AND {$name2}";
+                break;
 
         }
         return $where;
