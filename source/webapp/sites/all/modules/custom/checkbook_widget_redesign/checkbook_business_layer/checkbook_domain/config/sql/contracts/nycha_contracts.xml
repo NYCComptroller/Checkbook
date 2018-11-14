@@ -68,4 +68,33 @@
       </where>
     </sql>
   </statement>
+  <!--GetNychaBlanketAgreements-->
+  <statement name="GetBlanketAgreements" datasource="checkbook_nycha">
+    <param name="year" required ="true" type="yearfix"/>
+    <sql>
+      SELECT
+      purpose, vendor_name, total_amount, original_amount, spend_to_date
+      <!--, transaction_type_code-->
+      <!--     , FY_Start-->
+      <!--     , FY_End-->
+      <!--       , vendor_number-->
+      <!--       , vendor_name-->
+      <!--       , vendor_id-->
+      <!--       , total_amount-->
+      <!--       , original_amount-->
+      <!--       , spend_to_date-->
+      <!--       , dollar_difference-->
+      <!--       , percent_difference-->
+      <!--       , revision_count-->
+      <!--       , contract_agreement_uniq_id-->
+      FROM contract_agreements_fy_vendor
+      <where>
+        <exp op="AND">
+          <!--WHERE  '2016' BETWEEN FY_Start AND FY_End-->
+          <exp op="BETWEEN" paramName="year" dbField="FY_Start,FY_End" />
+          <exp op="=" dbField="transaction_type_code">'BA'</exp>
+        </exp>
+      </where>
+    </sql>
+  </statement>
 </statements>
