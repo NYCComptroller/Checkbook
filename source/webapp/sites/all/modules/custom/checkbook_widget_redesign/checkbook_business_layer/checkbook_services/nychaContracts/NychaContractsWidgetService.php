@@ -31,6 +31,6 @@ class NychaContractsWidgetService extends WidgetDataService implements IWidgetSe
     }
 
     public function getWidgetFooterUrl($parameters) {
-        return NychaContractsUrlService::getFooterUrl($parameters,$this->getLegacyNodeId());
+        return NychaContractsUrlService::getFooterUrl($parameters);
     }
 }
