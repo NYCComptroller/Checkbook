@@ -12,4 +12,5 @@ interface INychaContractsDataService {
     function GetContractsBlanketAgreements($parameters, $limit = null, $orderBy = null);
     function GetContractsBlanketAgreementModifications($parameters, $limit = null, $orderBy = null);
     function GetContractsByGrants($parameters, $limit = null, $orderBy = null);
+    function GetContractsByDepartments($parameters, $limit = null, $orderBy = null);
 }

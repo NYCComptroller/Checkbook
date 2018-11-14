@@ -25,6 +25,9 @@ class NychaContractsDataService extends DataService implements INychaContractsDa
     function GetContractsByGrants($parameters, $limit = null, $orderBy = null){
         return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
     }
+    function GetContractsByDepartments($parameters, $limit = null, $orderBy = null){
+        return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
+    }
 
     /**
      * Common function that automatically configures the NYCHA Contracts sql
