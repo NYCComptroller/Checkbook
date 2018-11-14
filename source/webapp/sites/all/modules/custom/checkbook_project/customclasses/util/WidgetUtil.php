@@ -236,8 +236,8 @@ class WidgetUtil
         "acco_cancelled" => "Acco<br/>Canceled",
         "subvendor_mwbe_category" => "Sub Vendor's M/WBE<br/>Category",
         "subvendor_status_pip" => "Sub Vendor<br/>Status in PIP",
-        "purchase_contract_count" => "Purchase Order Count",
-        "spend_to_date" => "Spend to Date",
+        "purchase_contract_count" => "Purchase Order<br/>Count",
+        "spend_to_date" => "Spend to<br/> Date",
         "po_number"=>"PO Number",
         "boroughs" =>'Boroughs',
     );
