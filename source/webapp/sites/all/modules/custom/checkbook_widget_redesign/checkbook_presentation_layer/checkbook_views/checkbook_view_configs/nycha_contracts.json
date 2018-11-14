@@ -22,6 +22,12 @@
       },
       "nycha_grants":{
         "widget_config":"nycha_contracts_by_grants_view"
+      },
+      "nycha_planned_agreements": {
+        "widget_config": "nycha_contracts_by_planned_agreements_view"
+      },
+      "nycha_planned_agreement_modifications": {
+        "widget_config": "nycha_contracts_by_planned_agreement_modifs_view"
       }
     }
   }
