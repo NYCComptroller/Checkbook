@@ -10,12 +10,11 @@ class NychaContractsUrlService
 {
     /**
      * @param $parameters
-     * @param null $legacy_node_id
      * @return string
      */
-    static function getFooterUrl($parameters, $legacy_node_id = null)
+    static function getFooterUrl($parameters)
     {
-        $url = "";
+        $url = "/panel_html/nycha_contracts_transactions_page/nycha_contracts/transactions";
         return $url;
     }
 
