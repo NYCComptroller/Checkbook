@@ -1,15 +1,17 @@
 {
   "serviceName":"NychaContractsWidgetService",
-  "dataFunc":"GetContractsBlanketAgreements",
+  "dataFunc":"GetContractsBlanketAgreementModifications",
   "defaultParameters":{},
-  "headerTitle":"Blanket Agreements",
-  "headerSubTitle":"Blanket Agreements",
+  "headerTitle":"Blanket Agreement Modifications",
+  "headerSubTitle":"Blanket Agreement Modifications",
   "table_columns":[
     {"labelAlias": "contract_purpose","column": "purpose"},
     {"labelAlias": "vendor_name","column": "vendor_name"},
     {"labelAlias":"current_amount","column":"total_amount","format":"dollar"},
     {"labelAlias":"original_amount","column":"original_amount","format":"dollar"},
     {"labelAlias":"spend_to_date","column":"spend_to_date","format":"dollar"},
+    {"labelAlias":"dollar_difference","column":"dollar_difference","format":"dollar"},
+    {"labelAlias":"percent_difference","column":"percent_difference"},
     {"label":"","column":""}
   ],
   "dataTableOptions":{
@@ -17,8 +19,10 @@
       { "bSortable": false,"sWidth":"300px","sClass":"text" },
       { "bSortable": false,"sWidth":"300px","sClass":"text" },
       { "bSortable": true,"sWidth":"130px","sClass":"number","asSorting": [ "desc","asc"  ] },
+      { "bSortable": true,"sWidth":"130px","sClass":"number","asSorting": [ "desc","asc"  ] },
       { "bSortable": true,"sWidth":"130px" ,"sClass":"number","asSorting": [ "desc" ,"asc" ]},
       { "bSortable": true,"sWidth":"130px","sClass":"number","asSorting": [ "desc","asc"  ] },
+      { "bSortable": false,"sWidth":"130px","sClass":"number" },
       { "bSortable": false,"sWidth":"15px" }
     ],
     "bServerSide":true,
@@ -28,7 +32,7 @@
     "bLengthChange":false,
     "bInfo":false,
     "bAutoWidth":false,
-    "aaSorting":[[2,"desc"]],
+    "aaSorting":[[6,"desc"]],
     "fnServerParams":"##function ( aoData ) { reloadExpandCollapseWidget(this,aoData); }##",
     "oLanguage":{"sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"}
   }
