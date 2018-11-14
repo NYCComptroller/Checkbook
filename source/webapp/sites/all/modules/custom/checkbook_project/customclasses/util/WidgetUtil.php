@@ -240,7 +240,6 @@ class WidgetUtil
         "spend_to_date" => "Spend to Date",
         "po_number"=>"PO Number",
         "boroughs" =>'Boroughs',
-        "purpose" => 'Purpose' ,
     );
 
     //For number cols, need to find out if they are uniform number of digits for formatting

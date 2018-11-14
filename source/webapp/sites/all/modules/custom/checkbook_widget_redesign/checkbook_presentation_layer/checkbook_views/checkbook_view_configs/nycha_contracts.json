@@ -15,6 +15,9 @@
       },
       "nycha_blanket_agreements": {
         "widget_config": "nycha_contracts_by_blanket_agreements_view"
+      },
+      "nycha_blanket_agreement_modifications": {
+        "widget_config": "nycha_contracts_by_blanket_agreement_modifs_view"
       }
     }
   }
