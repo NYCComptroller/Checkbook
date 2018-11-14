@@ -1,19 +1,21 @@
 {
   "nycha": {
-      "landing_page_widgets": {
-        "nycha_vendors": {
-          "widget_config": "nycha_contracts_by_vendors_view"
-        },
-
-        "nycha_awardmethods": {
-          "widget_config": "nycha_contracts_by_award_methods_view"
-        },
-        "nycha_purchase_orders":{
-          "widget_config":"nycha_contracts_by_purchase_orders"
-        },
-        "nycha_boroughs":{
-          "widget_config":"nycha_contracts_by_boroughs_view"
-        }
+    "landing_page_widgets": {
+      "nycha_vendors": {
+        "widget_config": "nycha_contracts_by_vendors_view"
+      },
+      "nycha_awardmethods": {
+        "widget_config": "nycha_contracts_by_award_methods_view"
+      },
+      "nycha_purchase_orders": {
+        "widget_config": "nycha_contracts_by_purchase_orders"
+      },
+      "nycha_boroughs": {
+        "widget_config": "nycha_contracts_by_boroughs_view"
+      },
+      "nycha_blanket_agreements": {
+        "widget_config": "nycha_contracts_by_blanket_agreements_view"
       }
+    }
   }
 }
