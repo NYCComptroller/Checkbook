@@ -2,6 +2,7 @@
   <!--GetNychaVendors-->
   <statement name="GetContractsByVendors" datasource="checkbook_nycha">
     <param name="year" required ="true" type="int"/>
+    <param name="vendor" type="int"/>
     <sql>
       SELECT vendor_name,
         vendor_number,
@@ -13,7 +14,9 @@
       FROM contracts_fy_vendor_summary_vw
       <where>
         <exp op="AND">
-          <exp op="=" dbField="fiscal_year_id" paramName="year" />        </exp>
+          <exp op="=" dbField="fiscal_year_id" paramName="year" />
+          <exp op="=" dbField="vendor_id" paramName="vendor" />
+        </exp>
       </where>
     </sql>
   </statement>
@@ -34,6 +37,7 @@
   <!--GetNychaPurchaseOrders-->
   <statement name="GetContractsByPurchaseOrders" datasource="checkbook_nycha">
   <param name="year" required ="true" type="int"/>
+    <param name="vendor" type="int"/>
   <sql>
     SELECT fiscal_year_id,fiscal_year,
     po_number,purpose, vendor_name,total_amount,original_amount, spend_to_date
@@ -41,12 +45,14 @@
     <where>
       <exp op="AND">
         <exp op="=" dbField="fiscal_year_id" paramName="year" />
+        <exp op="=" dbField="vendor_id" paramName="vendor" />
       </exp>
     </where>
   </sql>
 </statement>
   <statement name="GetContractsByBoroughs" datasource="checkbook_nycha">
     <param name="year" required ="true" type="int"/>
+    <param name="vendor" type="int"/>
     <sql>
       SELECT fiscal_year_id,fiscal_year,
       location_borough_name,purchase_order_count,total_amount,original_amount,spend_to_date
@@ -54,6 +60,7 @@
       <where>
         <exp op="AND">
           <exp op="=" dbField="fiscal_year_id" paramName="year" />
+          <exp op="=" dbField="vendor_id" paramName="vendor" />
         </exp>
       </where>
     </sql>
@@ -61,6 +68,7 @@
   <!--GetNychaBlanketAgreements-->
   <statement name="GetContractsBlanketAgreements" datasource="checkbook_nycha">
     <param name="year" required ="true" type="yearfix"/>
+    <param name="vendor" type="int"/>
     <sql>
       SELECT
       purpose, vendor_name, total_amount, original_amount, spend_to_date
@@ -70,6 +78,7 @@
           <!--WHERE  '2016' BETWEEN FY_Start AND FY_End-->
           <exp op="BETWEEN" paramName="year" dbField="FY_Start,FY_End" />
           <exp op="=" dbField="transaction_category_code">'BA'</exp>
+          <exp op="=" dbField="vendor_id" paramName="vendor" />
         </exp>
       </where>
     </sql>
@@ -77,6 +86,7 @@
   <!--GetBlanketAgreementModifications-->
   <statement name="GetContractsBlanketAgreementModifications" datasource="checkbook_nycha">
     <param name="year" required ="true" type="yearfix"/>
+    <param name="vendor" type="int"/>
     <sql>
       SELECT
       purpose, vendor_name, total_amount, original_amount, spend_to_date,
@@ -87,6 +97,7 @@
           <!--WHERE  '2016' BETWEEN FY_Start AND FY_End-->
           <exp op="BETWEEN" paramName="year" dbField="FY_Start,FY_End" />
           <exp op="=" dbField="transaction_category_code">'BA'</exp>
+          <exp op="=" dbField="vendor_id" paramName="vendor" />
         </exp>
       </where>
     </sql>
@@ -94,6 +105,7 @@
   <!--GetGrants-->
   <statement name="GetContractsByGrants" datasource="checkbook_nycha">
     <param name="year" required ="true" type="int"/>
+    <param name="vendor" type="int"/>
     <sql>
       SELECT
        fiscal_year_id,grant_name, purchase_order_count,total_amount, original_amount, spend_to_date
@@ -101,6 +113,44 @@
       <where>
         <exp op="AND">
           <exp op="=" dbField="fiscal_year_id" paramName="year" />
+          <exp op="=" dbField="vendor_id" paramName="vendor" />
+        </exp>
+      </where>
+    </sql>
+  </statement>
+  <!--GetNychaPlannedAgreements-->
+  <statement name="GetContractsPlannedAgreements" datasource="checkbook_nycha">
+    <param name="year" required ="true" type="yearfix"/>
+    <param name="vendor" type="int"/>
+    <sql>
+      SELECT
+      purpose, vendor_name, total_amount, original_amount, spend_to_date
+      FROM contract_agreements_fy_vendor
+      <where>
+        <exp op="AND">
+          <!--WHERE  '2016' BETWEEN FY_Start AND FY_End-->
+          <exp op="BETWEEN" paramName="year" dbField="FY_Start,FY_End" />
+          <exp op="=" dbField="transaction_category_code">'PA'</exp>
+          <exp op="=" dbField="vendor_id" paramName="vendor" />
+        </exp>
+      </where>
+    </sql>
+  </statement>
+  <!--GetPlannedAgreementModifications-->
+  <statement name="GetContractsPlannedAgreementModifications" datasource="checkbook_nycha">
+    <param name="year" required ="true" type="yearfix"/>
+    <param name="vendor" type="int"/>
+    <sql>
+      SELECT
+      purpose, vendor_name, total_amount, original_amount, spend_to_date,
+      dollar_difference, percent_difference
+      FROM contract_agreements_fy_vendor
+      <where>
+        <exp op="AND">
+          <!--WHERE  '2016' BETWEEN FY_Start AND FY_End-->
+          <exp op="BETWEEN" paramName="year" dbField="FY_Start,FY_End" />
+          <exp op="=" dbField="transaction_category_code">'PA'</exp>
+          <exp op="=" dbField="vendor_id" paramName="vendor" />
         </exp>
       </where>
     </sql>
