@@ -69,7 +69,7 @@
         <exp op="AND">
           <!--WHERE  '2016' BETWEEN FY_Start AND FY_End-->
           <exp op="BETWEEN" paramName="year" dbField="FY_Start,FY_End" />
-          <exp op="=" dbField="transaction_type_code">'BA'</exp>
+          <exp op="=" dbField="transaction_category_code">'BA'</exp>
         </exp>
       </where>
     </sql>
@@ -86,7 +86,21 @@
         <exp op="AND">
           <!--WHERE  '2016' BETWEEN FY_Start AND FY_End-->
           <exp op="BETWEEN" paramName="year" dbField="FY_Start,FY_End" />
-          <exp op="=" dbField="transaction_type_code">'BA'</exp>
+          <exp op="=" dbField="transaction_category_code">'BA'</exp>
+        </exp>
+      </where>
+    </sql>
+  </statement>
+  <!--GetGrants-->
+  <statement name="GetContractsByGrants" datasource="checkbook_nycha">
+    <param name="year" required ="true" type="int"/>
+    <sql>
+      SELECT
+       fiscal_year_id,grant_name, purchase_order_count,total_amount, original_amount, spend_to_date
+      FROM contracts_fy_grant_summary_vw
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="fiscal_year_id" paramName="year" />
         </exp>
       </where>
     </sql>
