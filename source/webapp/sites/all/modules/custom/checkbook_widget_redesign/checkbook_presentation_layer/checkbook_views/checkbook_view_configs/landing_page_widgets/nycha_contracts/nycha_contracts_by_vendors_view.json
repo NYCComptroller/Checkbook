@@ -1,13 +1,13 @@
 {
     "serviceName":"NychaContractsWidgetService",
     "dataFunc":"GetContractsByVendors",
-    "countFunc":"GetCountContractsByVendors",
-    "defaultParameters":{"type_of_year":"B"},
     "headerTitle":"Vendors",
     "headerSubTitle":"Vendors",
     "table_columns":[
-        {"labelAlias":"prime_vendor","column":"vendor_name","tooltip":60},
+        {"labelAlias":"vendor_name","column":"vendor_name","derivedColumn":"vendor_link","tooltip":60},
         {"labelAlias":"purchase_contract_count","column":"purchase_order_count","format":"number"},
+        {"labelAlias":"total_contract_amount","column":"total_amount","format":"dollar"},
+        {"labelAlias":"original_amount","column":"original_amount","format":"dollar"},
         {"labelAlias":"spend_to_date","column":"spend_to_date","format":"dollar"},
         {"label":"","column":""}
     ],
@@ -15,6 +15,8 @@
         "aoColumns":[
             {"sClass":"text","sWidth":"249px","bSortable":false},
             {"sClass":"number","sWidth":"120px","asSorting":["desc","asc"]},
+            {"sClass":"number","sWidth":"177px","asSorting":["desc","asc"]},
+            {"sClass":"number","sWidth":"177px","asSorting":["desc","asc"]},
             {"sClass":"number","sWidth":"177px","asSorting":["desc","asc"]},
             {"sWidth":"15px","bSortable":false}
         ],
