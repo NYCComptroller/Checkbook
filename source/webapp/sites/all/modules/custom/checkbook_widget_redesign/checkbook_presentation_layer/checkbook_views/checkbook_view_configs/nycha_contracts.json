@@ -28,6 +28,9 @@
       },
       "nycha_planned_agreement_modifications": {
         "widget_config": "nycha_contracts_by_planned_agreement_modifs_view"
+      },
+      "nycha_departments": {
+        "widget_config": "nycha_contracts_by_departments_view"
       }
     }
   }
