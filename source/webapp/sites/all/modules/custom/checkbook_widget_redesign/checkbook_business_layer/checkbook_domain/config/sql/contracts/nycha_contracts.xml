@@ -79,7 +79,7 @@
         <exp op="AND">
           <!--WHERE  '2016' BETWEEN FY_Start AND FY_End-->
           <exp op="BETWEEN" paramName="year" dbField="FY_Start,FY_End" />
-          <exp op="=" dbField="transaction_type_code">'BA'</exp>
+          <exp op="=" dbField="transaction_category_code">'BA'</exp>
         </exp>
       </where>
     </sql>
@@ -96,7 +96,7 @@
         <exp op="AND">
           <!--WHERE  '2016' BETWEEN FY_Start AND FY_End-->
           <exp op="BETWEEN" paramName="year" dbField="FY_Start,FY_End" />
-          <exp op="=" dbField="transaction_type_code">'BA'</exp>
+          <exp op="=" dbField="transaction_category_code">'BA'</exp>
         </exp>
       </where>
     </sql>
