@@ -2,7 +2,8 @@
   "nycha": {
     "landing_page_widgets": {
       "nycha_vendors": {
-        "widget_config": "nycha_contracts_by_vendors_view"
+        "widget_config": "nycha_contracts_by_vendors_view",
+        "visibility_parameters": ["-vendor"]
       },
       "nycha_awardmethods": {
         "widget_config": "nycha_contracts_by_award_methods_view"

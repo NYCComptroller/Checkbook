@@ -18,4 +18,18 @@ class NychaContractsUrlService
         $url = "";
         return $url;
     }
+
+    /**
+     * Returns NYCHA Contracts Vendor Landing page URL for the given vendor id
+     * @param $vendor_id
+     */
+    static function vendorUrl($vendor_id)
+    {
+        $url = '/nycha_contracts'
+            . RequestUtilities::buildUrlFromParam('year')
+            . RequestUtilities::buildUrlFromParam('datasource')
+            . '/vendor/'. $vendor_id;
+
+        return $url;
+    }
 }
