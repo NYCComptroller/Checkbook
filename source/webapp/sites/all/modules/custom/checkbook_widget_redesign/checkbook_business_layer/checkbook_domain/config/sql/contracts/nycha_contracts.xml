@@ -220,27 +220,35 @@
       GROUP BY department_id, department_name
     </sql>
   </statement>
-  <statement name="GetContractsByIndustries" datasource="checkbook">
+  <statement name="GetContractsByIndustries" datasource="checkbook_nycha">
     <param name="year" required ="true" type="int"/>
     <param name="vendor" type="int"/>
     <sql>
-      SELECT fiscal_year,
-        fiscal_year_id,
-        transaction_category_code,
-        industry_type_code,
+      SELECT
         industry_type_name,
         industry_type_id,
-        purchase_order_count,
-        total_amount,
-        original_amount
+        SUM(purchase_order_count) AS purchase_order_count,
+        SUM(total_amount) AS total_amount,
+        SUM(original_amount) AS original_amount,
+        SUM(spend_to_Date) AS spend_to_Date
       FROM contracts_fy_industry_summary_vw
       <where>
         <exp op="AND">
           <exp op="=" dbField="fiscal_year_id" paramName="year" />
-          <exp op="=" dbField="vendor_id" paramName="vendor" />
         </exp>
       </where>
       GROUP BY industry_type_id,industry_type_name
+    </sql>
+  </statement>
+  <statement name="GetCountContracts" datasource="checkbook_nycha">
+    <param name="year" required ="true" type="int"/>
+    <sql>
+      SELECT SUM(purchase_order_count) FROM contracts_fy_industry_summary_vw
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="fiscal_year_id" paramName="year" />
+         </exp>
+      </where>
     </sql>
   </statement>
 </statements>
