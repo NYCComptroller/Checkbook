@@ -5,12 +5,11 @@
     <param name="vendor" type="int"/>
     <sql>
       SELECT vendor_name,
-        vendor_number,
         vendor_id,
-        purchase_order_count,
-        spend_to_date,
-        total_amount,
-        original_amount
+        SUM(purchase_order_count) AS purchase_order_count,
+        SUM(spend_to_date) AS spend_to_date,
+        SUM(total_amount) AS total_amount,
+        SUM(original_amount) AS original_amount
       FROM contracts_fy_vendor_summary_vw
       <where>
         <exp op="AND">
@@ -18,20 +17,26 @@
           <exp op="=" dbField="vendor_id" paramName="vendor" />
         </exp>
       </where>
+      GROUP BY vendor_id, vendor_name
     </sql>
   </statement>
   <!--GetNychaAwardMethods-->
   <statement name="GetContractsByAwardMethods" datasource="checkbook_nycha">
     <param name="year" required ="true" type="int"/>
     <sql>
-      SELECT  fiscal_year_id,fiscal_year,
-      award_method_name, purchase_order_count, total_amount,original_amount,spend_to_date
+      SELECT award_method_id,
+        award_method_name,
+        SUM(purchase_order_count) AS purchase_order_count,
+        SUM(total_amount) AS total_amount,
+        SUM(original_amount) AS original_amount,
+        SUM(spend_to_date) AS spend_to_date
       FROM contracts_fy_award_method_summary_vw
       <where>
         <exp op="AND">
           <exp op="=" dbField="fiscal_year_id" paramName="year" />
         </exp>
       </where>
+      GROUP BY award_method_name, award_method_id
     </sql>
   </statement>
   <!--GetNychaPurchaseOrders-->
@@ -39,8 +44,12 @@
   <param name="year" required ="true" type="int"/>
     <param name="vendor" type="int"/>
   <sql>
-    SELECT fiscal_year_id,fiscal_year,
-    po_number,purpose, vendor_name,total_amount,original_amount, spend_to_date
+    SELECT po_number,
+      purpose,
+      vendor_name,
+      SUM(total_amount) AS total_amount,
+      SUM(original_amount) AS original_amount,
+      SUM(spend_to_date) AS spend_to_date
     FROM  contracts_fy_po_vendor_summary_vw
     <where>
       <exp op="AND">
@@ -48,21 +57,27 @@
         <exp op="=" dbField="vendor_id" paramName="vendor" />
       </exp>
     </where>
+    GROUP BY po_number, purpose, vendor_name
   </sql>
 </statement>
   <statement name="GetContractsByBoroughs" datasource="checkbook_nycha">
     <param name="year" required ="true" type="int"/>
     <param name="vendor" type="int"/>
     <sql>
-      SELECT fiscal_year_id,fiscal_year,
-      location_borough_name,purchase_order_count,total_amount,original_amount,spend_to_date
-      FROM  contracts_fy_borough_summary_vw
+      SELECT
+        location_borough_name,
+        SUM(purchase_order_count) AS purchase_order_count,
+        SUM(total_amount) AS total_amount,
+        SUM(original_amount) AS original_amount,
+        SUM(spend_to_date) AS spend_to_date
+      FROM contracts_fy_borough_summary_vw
       <where>
         <exp op="AND">
           <exp op="=" dbField="fiscal_year_id" paramName="year" />
           <exp op="=" dbField="vendor_id" paramName="vendor" />
         </exp>
       </where>
+      GROUP BY location_borough_name
     </sql>
   </statement>
   <!--GetNychaBlanketAgreements-->
@@ -70,8 +85,13 @@
     <param name="year" required ="true" type="yearfix"/>
     <param name="vendor" type="int"/>
     <sql>
-      SELECT
-      purpose, vendor_name, total_amount, original_amount, spend_to_date
+      SELECT po_number,
+        contract_agreement_uniq_id,
+        purpose,
+        vendor_name,
+        SUM(total_amount) AS total_amount,
+        SUM(original_amount) AS original_amount,
+        SUM(spend_to_date) AS spend_to_date
       FROM contract_agreements_fy_vendor
       <where>
         <exp op="AND">
@@ -81,6 +101,7 @@
           <exp op="=" dbField="vendor_id" paramName="vendor" />
         </exp>
       </where>
+      GROUP BY po_number, contract_agreement_uniq_id, purpose, vendor_name
     </sql>
   </statement>
   <!--GetBlanketAgreementModifications-->
@@ -88,9 +109,15 @@
     <param name="year" required ="true" type="yearfix"/>
     <param name="vendor" type="int"/>
     <sql>
-      SELECT
-      purpose, vendor_name, total_amount, original_amount, spend_to_date,
-      dollar_difference, percent_difference
+      SELECT po_number,
+        contract_agreement_uniq_id,
+        purpose,
+        vendor_name,
+        SUM(total_amount) AS total_amount,
+        SUM(original_amount) AS original_amount,
+        SUM(spend_to_date) AS spend_to_date,
+        SUM(dollar_difference) AS dollar_difference,
+        AVG(percent_difference) AS percent_difference
       FROM contract_agreements_fy_vendor
       <where>
         <exp op="AND">
@@ -100,6 +127,7 @@
           <exp op="=" dbField="vendor_id" paramName="vendor" />
         </exp>
       </where>
+      GROUP BY  po_number, contract_agreement_uniq_id, purpose, vendor_name
     </sql>
   </statement>
   <!--GetGrants-->
@@ -107,8 +135,12 @@
     <param name="year" required ="true" type="int"/>
     <param name="vendor" type="int"/>
     <sql>
-      SELECT
-       fiscal_year_id,grant_name, purchase_order_count,total_amount, original_amount, spend_to_date
+       SELECT grant_id,
+              grant_name,
+              SUM(purchase_order_count) AS purchase_order_count,
+              SUM(total_amount) AS total_amount,
+              SUM(original_amount) AS original_amount,
+              SUM(spend_to_date) AS spend_to_date
       FROM contracts_fy_grant_summary_vw
       <where>
         <exp op="AND">
@@ -116,6 +148,7 @@
           <exp op="=" dbField="vendor_id" paramName="vendor" />
         </exp>
       </where>
+      GROUP BY grant_id, grant_name
     </sql>
   </statement>
   <!--GetNychaPlannedAgreements-->
@@ -123,8 +156,13 @@
     <param name="year" required ="true" type="yearfix"/>
     <param name="vendor" type="int"/>
     <sql>
-      SELECT
-      purpose, vendor_name, total_amount, original_amount, spend_to_date
+      SELECT po_number,
+             contract_agreement_uniq_id,
+             purpose,
+             vendor_name,
+             SUM(total_amount) AS total_amount,
+             SUM(original_amount) AS original_amount,
+             SUM(spend_to_date) AS spend_to_date
       FROM contract_agreements_fy_vendor
       <where>
         <exp op="AND">
@@ -134,6 +172,7 @@
           <exp op="=" dbField="vendor_id" paramName="vendor" />
         </exp>
       </where>
+      GROUP BY po_number, contract_agreement_uniq_id, purpose, vendor_name
     </sql>
   </statement>
   <!--GetPlannedAgreementModifications-->
@@ -141,9 +180,15 @@
     <param name="year" required ="true" type="yearfix"/>
     <param name="vendor" type="int"/>
     <sql>
-      SELECT
-      purpose, vendor_name, total_amount, original_amount, spend_to_date,
-      dollar_difference, percent_difference
+      SELECT po_number,
+              contract_agreement_uniq_id,
+              purpose,
+              vendor_name,
+              SUM(total_amount) AS total_amount,
+              SUM(original_amount) AS original_amount,
+              SUM(spend_to_date) AS spend_to_date,
+              SUM(dollar_difference) AS dollar_difference,
+              AVG(percent_difference) AS percent_difference
       FROM contract_agreements_fy_vendor
       <where>
         <exp op="AND">
@@ -153,20 +198,49 @@
           <exp op="=" dbField="vendor_id" paramName="vendor" />
         </exp>
       </where>
+      GROUP BY po_number, contract_agreement_uniq_id, purpose, vendor_name
     </sql>
   </statement>
   <!--GetDepartment-->
   <statement name="GetContractsByDepartments" datasource="checkbook_nycha">
     <param name="year" required ="true" type="int"/>
     <sql>
-      SELECT
-      fiscal_year_id,department_name, purchase_order_count,total_amount, original_amount, spend_to_date
+      SELECT department_id,
+             department_name,
+             SUM(purchase_order_count) AS purchase_order_count,
+             SUM(total_amount) AS total_amount,
+             SUM(original_amount) AS original_amount,
+             SUM(spend_to_date) AS spend_to_date
       FROM  contracts_fy_department_summary_vw
       <where>
         <exp op="AND">
           <exp op="=" dbField="fiscal_year_id" paramName="year" />
         </exp>
       </where>
+      GROUP BY department_id, department_name
+    </sql>
+  </statement>
+  <statement name="GetContractsByIndustries" datasource="checkbook">
+    <param name="year" required ="true" type="int"/>
+    <param name="vendor" type="int"/>
+    <sql>
+      SELECT fiscal_year,
+        fiscal_year_id,
+        transaction_category_code,
+        industry_type_code,
+        industry_type_name,
+        industry_type_id,
+        purchase_order_count,
+        total_amount,
+        original_amount
+      FROM contracts_fy_industry_summary_vw
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="fiscal_year_id" paramName="year" />
+          <exp op="=" dbField="vendor_id" paramName="vendor" />
+        </exp>
+      </where>
+      GROUP BY industry_type_id,industry_type_name
     </sql>
   </statement>
 </statements>
