@@ -24,6 +24,18 @@ if(RequestUtilities::getRequestParamValue('yeartype') == 'B' && !preg_match('/pa
 $serieParameters['fiscal_year_id'] = RequestUtil::getCalYearIdForTopNavigation();
 return $serieParameters;
 "
+},
+{
+"dataset":"checkbook_nycha:contracts_fy_vendor_summary",
+"columns":["total_maximum_contract_amount"],
+"seriesURLParamMap":{"vendor":"vendor_id","calyear":"fiscal_year_id","year":"fiscal_year_id"},
+"allowedParams":["vendor_id","fiscal_year_id","agency_id","calyear"],
+"adjustSerieParameters":"
+//Calculate amount for all years on 'All Years' advanced search results page
+if(RequestUtilities::getRequestParamValue('year') || RequestUtilities::getRequestParamValue('calyear'))
+$serieParameters['fiscal_year_id'] = RequestUtil::getFiscalYearIdForTopNavigation();
+return $serieParameters;
+"
 }
 ]
 },

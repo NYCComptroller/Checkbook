@@ -33,13 +33,14 @@ $contracts_link = l('<span class="nav-title">Contracts</span><br>'.custom_number
 $payroll_link = l('<span class="nav-title">Payroll</span><br>'.custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
 
 //Payroll Link
-//if($node->data[1]['total_gross_pay'] > 0  ){
-    $payroll_link = l('<span class="nav-title">Payroll</span><br>'.custom_number_formatter_format($node->data[1]['total_gross_pay'] ,1,'$'),RequestUtil::getTopNavURL("payroll"),$options);
-//}
+if($node->data[0]['total_gross_pay'] > 0  ){
+    $payroll_link = l('<span class="nav-title">Payroll</span><br>'.custom_number_formatter_format($node->data[0]['total_gross_pay'] ,1,'$'),RequestUtil::getTopNavURL("payroll"),$options);
+}
 
 //Contracts Link
-$contracts_link = l('<span class="nav-title">Contracts</span><br>'.custom_number_formatter_format(0 ,1,'$'),RequestUtil::getTopNavURL("nycha_contracts"),$options);
-
+if($node->data[1]['total_maximum_contract_amount'] > 0  ) {
+    $contracts_link = l('<span class="nav-title">Contracts</span><br>' . custom_number_formatter_format($node->data[1]['total_maximum_contract_amount'], 1, '$'), RequestUtil::getTopNavURL("nycha_contracts"), $options);
+}
 $arg = arg(0);
 $budget_active = '';
 $revenue_active = '';
