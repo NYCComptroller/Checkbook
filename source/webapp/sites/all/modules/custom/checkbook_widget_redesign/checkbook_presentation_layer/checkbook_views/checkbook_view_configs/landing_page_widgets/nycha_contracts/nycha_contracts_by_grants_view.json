@@ -15,7 +15,7 @@
   "dataTableOptions":{
     "aoColumns": [
       { "bSortable": false,"sWidth":"150px","sClass":"text" },
-      { "bSortable": false,"sWidth":"127px","sClass":"number","asSorting": [ "desc","asc"  ] },
+      { "bSortable": true,"sWidth":"127px","sClass":"number","asSorting": [ "desc","asc"  ] },
       { "bSortable": true,"sWidth":"130px","sClass":"number","asSorting": [ "desc","asc"  ] },
       { "bSortable": true,"sWidth":"130px" ,"sClass":"number","asSorting": [ "desc" ,"asc" ]},
       { "bSortable": true,"sWidth":"130px","sClass":"number","asSorting": [ "desc","asc"  ] },
