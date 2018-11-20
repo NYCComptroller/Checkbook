@@ -10,7 +10,7 @@
         SUM(spend_to_date) AS spend_to_date,
         SUM(total_amount) AS total_amount,
         SUM(original_amount) AS original_amount
-      FROM contracts_fy_vendor_summary_vw
+      FROM contracts_fy_po_vendor_summary_vw
       <where>
         <exp op="AND">
           <exp op="=" dbField="fiscal_year_id" paramName="year" />
