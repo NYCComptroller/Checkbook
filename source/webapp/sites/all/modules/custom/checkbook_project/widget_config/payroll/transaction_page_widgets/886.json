@@ -15,7 +15,6 @@
         "overtimepayment":"total_overtime_amount.total_overtime_amount"
     },
     "paramTypeConfig":{
-        "title":"eqignorecase",
         "grosspayytd":"rangeid3",
         "annualsalary":"rangeid3",
         "overtimepayment":"rangeid3"
