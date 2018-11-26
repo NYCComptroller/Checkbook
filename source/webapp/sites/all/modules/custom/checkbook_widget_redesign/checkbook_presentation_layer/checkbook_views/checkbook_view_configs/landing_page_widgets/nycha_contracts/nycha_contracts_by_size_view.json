@@ -2,6 +2,7 @@
   "serviceName":"NychaContractsWidgetService",
   "dataFunc":"GetContractsBySize",
   "table_title":"Contracts by Size",
+  "countFunc":"GetCountContracts",
   "headerSubTitle":"Contracts",
   "table_columns":[
     {"labelAlias":"contract_size","column":"award_size_name"},
