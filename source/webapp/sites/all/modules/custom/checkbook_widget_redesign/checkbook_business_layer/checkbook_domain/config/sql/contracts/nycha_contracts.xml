@@ -251,4 +251,23 @@
       </where>
     </sql>
   </statement>
+  <statement name="GetContractsBySize" datasource="checkbook_nycha">
+    <param name="year" required ="true" type="int"/>
+    <param name="vendor" type="int"/>
+    <sql>
+      SELECT
+      award_size_name,
+      SUM(po_count) AS po_count,
+      SUM(total_amount) AS total_amount,
+      SUM(original_amount) AS original_amount,
+      SUM(spend_to_date) AS spend_to_date
+      FROM contracts_fy_size_vw
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="year_id" paramName="year" />
+        </exp>
+      </where>
+      GROUP BY  award_size_name
+    </sql>
+  </statement>
 </statements>
