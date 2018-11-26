@@ -22,7 +22,7 @@
       { "bSortable": true,"sWidth":"90px","sClass":"number","asSorting": [ "desc","asc"  ] },
       { "bSortable": true,"sWidth":"90px" ,"sClass":"number","asSorting": [ "desc" ,"asc" ]},
       { "bSortable": true,"sWidth":"90px","sClass":"number","asSorting": [ "desc","asc"  ] },
-      { "bSortable": false,"sWidth":"90px","sClass":"number" },
+      { "bSortable": true,"sWidth":"90px","sClass":"number", "asSorting": [ "desc","asc"  ]},
       { "bSortable": false,"sWidth":"15px" }
     ],
     "bServerSide":true,
