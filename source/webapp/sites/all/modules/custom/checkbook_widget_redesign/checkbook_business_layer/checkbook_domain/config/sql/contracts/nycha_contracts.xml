@@ -44,20 +44,20 @@
   <param name="year" required ="true" type="int"/>
     <param name="vendor" type="int"/>
   <sql>
-    SELECT po_number,
+    SELECT purchase_order_number,
       purpose,
       vendor_name,
       SUM(total_amount) AS total_amount,
       SUM(original_amount) AS original_amount,
       SUM(spend_to_date) AS spend_to_date
-    FROM  contracts_fy_po_vendor_summary_vw
+    FROM  standard_purchase_orders
     <where>
       <exp op="AND">
-        <exp op="=" dbField="fiscal_year_id" paramName="year" />
+        <exp op="=" dbField="approved_fiscal_year_id" paramName="year" />
         <exp op="=" dbField="vendor_id" paramName="vendor" />
       </exp>
     </where>
-    GROUP BY po_number, purpose, vendor_name
+    GROUP BY purchase_order_number, purpose, vendor_name
   </sql>
 </statement>
   <statement name="GetContractsByBoroughs" datasource="checkbook_nycha">
