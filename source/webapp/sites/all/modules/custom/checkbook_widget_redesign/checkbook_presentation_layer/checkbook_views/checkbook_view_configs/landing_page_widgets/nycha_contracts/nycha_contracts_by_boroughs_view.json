@@ -2,7 +2,7 @@
   "serviceName":"NychaContractsWidgetService",
   "dataFunc":"GetContractsByBoroughs",
   "defaultParameters":{"type_of_year":"B"},
-  "headerTitle":"Boroughs",
+  "table_title":"Contracts by Boroughs",
   "headerSubTitle":"Boroughs",
   "table_columns":[
     {"labelAlias": "boroughs","column": "location_borough_name"},
