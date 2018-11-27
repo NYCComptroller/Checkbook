@@ -11,7 +11,7 @@
     {"labelAlias":"original_amount","column":"original_amount","format":"dollar"},
     {"labelAlias":"spend_to_date","column":"spend_to_date","format":"dollar"},
     {"labelAlias":"dollar_diff","column":"dollar_difference","format":"dollar"},
-    {"labelAlias":"percent_diff","column":"percent_difference"},
+    {"labelAlias":"percent_diff","column":"percent_difference", "format":"percent"},
     {"label":"","column":""}
   ],
   "dataTableOptions":{
@@ -22,7 +22,7 @@
       { "bSortable": true,"sWidth":"90px","sClass":"number","asSorting": [ "desc","asc"  ] },
       { "bSortable": true,"sWidth":"90px" ,"sClass":"number","asSorting": [ "desc" ,"asc" ]},
       { "bSortable": true,"sWidth":"90px","sClass":"number","asSorting": [ "desc","asc"  ] },
-      { "bSortable": false,"sWidth":"90px","sClass":"number" },
+      { "bSortable": true,"sWidth":"90px","sClass":"number", "asSorting": [ "desc","asc"  ] },
       { "bSortable": false,"sWidth":"15px" }
     ],
     "bServerSide":true,
