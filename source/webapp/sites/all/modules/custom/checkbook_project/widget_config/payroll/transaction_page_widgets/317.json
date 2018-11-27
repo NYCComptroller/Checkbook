@@ -16,7 +16,6 @@
         "emptype":"employment_type.employment_type"
     },
     "paramTypeConfig":{
-        "title":"eqignorecase",
         "grosspayytd":"rangeid3",
         "annualsalary":"rangeid3",
         "overtimepayment":"rangeid3"
