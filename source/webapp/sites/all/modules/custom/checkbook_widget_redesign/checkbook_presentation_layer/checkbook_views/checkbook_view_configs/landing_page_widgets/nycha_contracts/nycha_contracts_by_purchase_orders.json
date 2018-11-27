@@ -5,7 +5,7 @@
   "headerTitle":"Purchase Orders",
   "headerSubTitle":"Purchase Orders",
   "table_columns":[
-    {"labelAlias": "po_number","column": "po_number"},
+    {"labelAlias": "po_number","column": "purchase_order_number"},
     {"labelAlias": "contract_purpose","column": "purpose","tooltip":22},
     {"labelAlias":"vendor_name","column":"vendor_name","tooltip":22},
     {"labelAlias":"current_amount","column":"total_amount","format":"dollar"},

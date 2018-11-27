@@ -34,6 +34,10 @@ class NychaContractsDataService extends DataService implements INychaContractsDa
     function GetContractsByIndustries($parameters, $limit = null, $orderBy = null){
         return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
     }
+    function GetContractsBySize($parameters, $limit = null, $orderBy = null)
+    {
+        return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
+    }
     function GetCountContracts($parameters){
         return $this->configureNycha(__FUNCTION__,$parameters);
     }

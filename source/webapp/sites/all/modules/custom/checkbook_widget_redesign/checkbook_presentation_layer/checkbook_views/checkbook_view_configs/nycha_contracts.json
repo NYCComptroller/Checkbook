@@ -34,6 +34,9 @@
       },
       "nycha_industries": {
         "widget_config": "nycha_contracts_by_industries_view"
+      },
+      "nycha_size":{
+        "widget_config": "nycha_contracts_by_size_view"
       }
     }
   }
