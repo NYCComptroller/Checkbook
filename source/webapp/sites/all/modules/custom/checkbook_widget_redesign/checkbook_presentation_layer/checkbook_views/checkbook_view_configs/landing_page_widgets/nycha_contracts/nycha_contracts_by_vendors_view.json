@@ -6,7 +6,7 @@
     "table_columns":[
         {"labelAlias":"vendor_name","column":"vendor_name","derivedColumn":"vendor_link","tooltip":60},
         {"labelAlias":"purchase_contract_count","column":"purchase_order_count","format":"number"},
-        {"labelAlias":"total_contract_amount","column":"current_amount","format":"dollar"},
+        {"labelAlias":"current_amount","column":"total_contract_amount","format":"dollar"},
         {"labelAlias":"original_amount","column":"original_amount","format":"dollar"},
         {"labelAlias":"spend_to_date","column":"spend_to_date","format":"dollar"},
         {"label":"","column":""}
