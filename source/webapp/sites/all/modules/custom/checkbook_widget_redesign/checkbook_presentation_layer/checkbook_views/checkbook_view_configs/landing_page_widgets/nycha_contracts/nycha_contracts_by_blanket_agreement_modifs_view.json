@@ -1,7 +1,7 @@
 {
   "serviceName":"NychaContractsWidgetService",
   "dataFunc":"GetContractsBlanketAgreementModifications",
-  "defaultParameters":{},
+  "defaultParameters":{"is_modification":"true"},
   "headerTitle":"Blanket Agreement Modifications",
   "headerSubTitle":"Blanket Agreement Modifications",
   "table_columns":[
