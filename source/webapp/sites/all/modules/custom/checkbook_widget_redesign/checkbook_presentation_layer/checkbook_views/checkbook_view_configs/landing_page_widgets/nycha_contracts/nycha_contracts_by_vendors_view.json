@@ -6,7 +6,7 @@
     "table_columns":[
         {"labelAlias":"vendor_name","column":"vendor_name","derivedColumn":"vendor_link","tooltip":60},
         {"labelAlias":"purchase_contract_count","column":"purchase_order_count","format":"number"},
-        {"labelAlias":"total_contract_amount","column":"total_amount","format":"dollar"},
+        {"labelAlias":"total_contract_amount","column":"current_amount","format":"dollar"},
         {"labelAlias":"original_amount","column":"original_amount","format":"dollar"},
         {"labelAlias":"spend_to_date","column":"spend_to_date","format":"dollar"},
         {"label":"","column":""}
@@ -14,7 +14,7 @@
     "dataTableOptions":{
         "aoColumns":[
             {"sClass":"text","sWidth":"249px","bSortable":false},
-            {"sClass":"number","sWidth":"120px","asSorting":["desc","asc"]},
+            {"sClass":"number","sWidth":"170px","asSorting":["desc","asc"]},
             {"sClass":"number","sWidth":"177px","asSorting":["desc","asc"]},
             {"sClass":"number","sWidth":"177px","asSorting":["desc","asc"]},
             {"sClass":"number","sWidth":"177px","asSorting":["desc","asc"]},
