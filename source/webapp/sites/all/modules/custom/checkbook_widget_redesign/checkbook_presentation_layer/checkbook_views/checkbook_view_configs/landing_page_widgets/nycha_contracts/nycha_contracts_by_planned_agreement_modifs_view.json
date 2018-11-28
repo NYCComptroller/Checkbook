@@ -1,7 +1,7 @@
 {
   "serviceName":"NychaContractsWidgetService",
   "dataFunc":"GetContractsPlannedAgreementModifications",
-  "defaultParameters":{},
+  "defaultParameters":{"is_modification":"true"},
   "headerTitle":"Planned Agreement Modifications",
   "headerSubTitle":"Planned Agreement Modifications",
   "table_columns":[
