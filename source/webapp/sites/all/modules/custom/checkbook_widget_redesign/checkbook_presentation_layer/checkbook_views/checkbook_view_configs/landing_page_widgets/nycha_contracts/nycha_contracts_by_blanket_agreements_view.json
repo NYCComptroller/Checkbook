@@ -5,6 +5,7 @@
   "headerTitle":"Blanket Agreements",
   "headerSubTitle":"Blanket Agreements",
   "table_columns":[
+    {"labelAlias": "ba_number","column": "po_number"},
     {"labelAlias": "vendor_name","column": "vendor_name","tooltip":32},
     {"labelAlias": "contract_purpose","column": "purpose","tooltip":32},
     {"labelAlias":"current_amount","column":"total_amount","format":"dollar"},
@@ -14,6 +15,7 @@
   ],
   "dataTableOptions":{
     "aoColumns": [
+      { "bSortable": false,"sWidth":"90px","sClass":"text" },
       { "bSortable": false,"sWidth":"170px","sClass":"text" },
       { "bSortable": false,"sWidth":"170px","sClass":"text" },
       { "bSortable": true,"sWidth":"130px","sClass":"number","asSorting": [ "desc","asc"  ] },
@@ -28,7 +30,7 @@
     "bLengthChange":false,
     "bInfo":false,
     "bAutoWidth":false,
-    "aaSorting":[[2,"desc"]],
+    "aaSorting":[[3,"desc"]],
     "fnServerParams":"##function ( aoData ) { reloadExpandCollapseWidget(this,aoData); }##",
     "oLanguage":{"sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"}
   }

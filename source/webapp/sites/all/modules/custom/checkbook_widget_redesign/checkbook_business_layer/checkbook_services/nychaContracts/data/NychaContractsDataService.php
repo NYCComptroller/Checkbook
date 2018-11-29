@@ -17,7 +17,8 @@ class NychaContractsDataService extends DataService implements INychaContractsDa
         return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
     }
     function GetContractsBlanketAgreementModifications($parameters, $limit = null, $orderBy = null){
-        return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
+        $parameters["is_modification"] = true;
+        return $this->configureNycha('GetContractsBlanketAgreements',$parameters,$limit,$orderBy);
     }
     function GetContractsByGrants($parameters, $limit = null, $orderBy = null){
         return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
@@ -26,7 +27,8 @@ class NychaContractsDataService extends DataService implements INychaContractsDa
         return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
     }
     function GetContractsPlannedAgreementModifications($parameters, $limit = null, $orderBy = null){
-        return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
+        $parameters["is_modification"] = true;
+        return $this->configureNycha('GetContractsPlannedAgreements',$parameters,$limit,$orderBy);
     }
     function GetContractsByDepartments($parameters, $limit = null, $orderBy = null){
         return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);

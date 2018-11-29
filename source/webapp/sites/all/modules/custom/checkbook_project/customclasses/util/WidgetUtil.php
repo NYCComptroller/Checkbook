@@ -239,6 +239,8 @@ class WidgetUtil
         "purchase_contract_count" => "Purchase Order<br/>Count",
         "spend_to_date" => "Spend to<br/> Date",
         "po_number"=>"PO Number",
+        "pa_number"=>"PA Number",
+        "ba_number"=>"BA Number",
         "grant_name"=>"Grant<br/>Name",
         "boroughs" =>'Boroughs',
     );
