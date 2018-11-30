@@ -23,7 +23,7 @@
 
 /**
  * Drupal Hook to alter menu items generated to add specific   ...
- * @param unknown_type $path 
+ * @param unknown_type $path
  * @param unknown_type $options
  * @param unknown_type $original_path
  * @return boolean
@@ -36,7 +36,7 @@ function checkbook_project_url_outbound_alter(&$path, &$options, $original_path)
 	if(strpos($path, 'ctools') === 0) {
 		return true;
 	}
-	
+
 
 	if(($path == 'spending_landing')  || ($path == 'spending/agencies')
         || ($path == 'spending/vendors') || ($path == 'mwbe_agency_grading')
@@ -58,7 +58,7 @@ function checkbook_project_url_outbound_alter(&$path, &$options, $original_path)
 
 /**
  * Define new toklen type for checkbook
- * @return multitype:NULL 
+ * @return multitype:NULL
  */
 function checkbook_project_token_info(){
 	$info['types']['custom_checkbook'] = array(
@@ -69,8 +69,8 @@ function checkbook_project_token_info(){
   $info['tokens']['custom_checkbook']['year_string'] = array(
     'name' => t('Year String'),
     'description' => t("The Year String for URL"),
-  );  
-   
+  );
+
   return $info;
 }
 
@@ -86,13 +86,13 @@ function checkbook_project_token_info(){
  */
 function checkbook_project_tokens($type, $tokens, array $data = array(), array $options = array()) {
   $replacements = array();
-  $replacements[$tokens['year_string']] = substr(_checkbook_project_get_year_url_param_string(),1);        
+  $replacements[$tokens['year_string']] = substr(_checkbook_project_get_year_url_param_string(),1);
   return $replacements;
 }
 
 /**
  * Implementation of hook_menu.. USed for dsiplaying popups.
- * @return multitype:string boolean multitype:number  
+ * @return multitype:string boolean multitype:number
  */
 function checkbook_project_menu(){
     $items['checkbook/view_all_popup/node/%node'] = array(
@@ -114,15 +114,15 @@ function checkbook_project_menu(){
         'access callback' => true,
         'type'=>MENU_CALLBACK
     );
-    
-    
+
+
     $items['gridview/popup/widget/%widget'] = array(
     		'page callback' => '_checkbook_project_grid_view_widget_popup',
     		'page arguments' => array(3),
     		'access callback' => true,
     		'type'=>MENU_CALLBACK
     );
-    
+
 
     $items['nodedisplay/node/%node'] = array(
         'page callback' => '_checkbook_project_node_display',
@@ -130,21 +130,21 @@ function checkbook_project_menu(){
         'access callback' => true,
         'type'=>MENU_CALLBACK
     );
-    
+
     $items['publish-new-features'] = array(
         'page callback' => '_checkbook_publish_new_features',
         'access callback' => true,
         'page arguments' => array(),
         'type'=>MENU_CALLBACK
     );
-    
+
     $items['new-features/%'] = array(
         'page callback' => '_checkbook_publish_new_features',
         'access callback' => true,
         'page arguments' => array(1),
         'type'=>MENU_CALLBACK
     );
-   
+
 
     return $items;
 }
@@ -165,7 +165,7 @@ function checkbook_project_init(){
  * @param unknown_type $type
  * @param unknown_type $theme
  * @param unknown_type $path
- * @return multitype:multitype:string multitype:unknown   multitype:string multitype:NULL   
+ * @return multitype:multitype:string multitype:unknown   multitype:string multitype:NULL
  */
 function checkbook_project_theme($existing, $type, $theme, $path){
     return array(
@@ -438,15 +438,20 @@ function checkbook_project_theme($existing, $type, $theme, $path){
             'template' => 'gridview/contracts_highchart_pending_agency_vendor',
             'arguments' => array('node' => NULL)
         ),
-    		
+        'highchart_nycha_contracts_vendor' => array(
+            'template' => 'gridview/nychacontracts_highchart_vendor',
+            'arguments' => array('node' => NULL)
+        ),
+
+
     	//Generic Grid views template.
 		// contracts
 	    	'chart_grid_view' => array(
 	    		'template' => 'gridview/chart_grid_view',
 	    		'arguments' => array('node' => NULL)
-	    	),    		
-	    
-    		
+	    	),
+
+
         // Contracts Templates
         'contracts_nyc_totals' => array(
                     'template' => 'php_widgets/contract/contracts_nyc_totals',
@@ -491,15 +496,15 @@ function checkbook_project_theme($existing, $type, $theme, $path){
         'contracts_ma_history' => array(
                 'template' => 'php_widgets/contract/contracts_ma_history',
                 'arguments' => array('node' => NULL)
-        ),  
+        ),
         'contracts_cta_history' => array(
             'template' => 'php_widgets/contract/contracts_cta_history',
             'arguments' => array('node' => NULL)
-        ),   
+        ),
         'contracts_cta_spending_history' => array(
             'template' => 'php_widgets/contract/contracts_cta_spending_history',
             'arguments' => array('node' => NULL)
-        ),                   
+        ),
         'contract_vendor_info' => array(
             'template' => 'php_widgets/contract/contract_vendor_info',
             'arguments' => array('node' => NULL)
@@ -507,9 +512,9 @@ function checkbook_project_theme($existing, $type, $theme, $path){
         'contracts_cta_spending_by_exp_cat' => array(
             'template' => 'php_widgets/contract/contracts_cta_spending_by_exp_cat',
             'arguments' => array('node' => NULL)
-        ),        
-        
-    
+        ),
+
+
         //Pending Contracts Templates
         'pending_contracts_total_amount' => array(
             'template' => 'php_widgets/pending_contracts/pending_contracts_total_amount',
@@ -552,6 +557,7 @@ function checkbook_project_theme($existing, $type, $theme, $path){
             'template' => 'php_widgets/contract/summary/date_summary',
             'arguments' => array('node' => NULL)
         ),
+
         //---------------End Contract Summary Templates---------------
 
         //++++++++++++++++++Spending Summary Templates++++++++++++++++++
@@ -595,13 +601,15 @@ function checkbook_project_theme($existing, $type, $theme, $path){
             'template' => 'php_widgets/spending/summary/date_summary',
             'arguments' => array('node' => NULL)
         ),
+
         //---------------End Spending Summary Templates---------------
 
         'no_records_found' => array(
             'template' => 'php_widgets/no_records_found',
             'arguments' => array('message' => NULL)
         ),
-        
+
+
        //---------------Template for publishing New Features page----------------
         'publish_new_features' => array(
             'template' => 'templates/publish_new_features',
