@@ -33,6 +33,15 @@
           ]
         },
         {
+          "name": "vendor_name",
+          "levels": [
+            {
+              "name": "vendor_name",
+              "sourceColumnName": "vendor_name"
+            }
+          ]
+        },
+        {
           "name": "year",
           "levels": [
             {
@@ -59,6 +68,9 @@
         "total_maximum_contract_amount": {
           "function": "SUM(total_amount)"
         },
+        "total_contracts": {
+          "function": "COUNT(po_number)"},
+
         "g100m_count": {
           "function": "SUM(CASE WHEN COALESCE($COLUMN{total_amount},0) > 100000000 THEN 1 ELSE 0 END)"
         },
