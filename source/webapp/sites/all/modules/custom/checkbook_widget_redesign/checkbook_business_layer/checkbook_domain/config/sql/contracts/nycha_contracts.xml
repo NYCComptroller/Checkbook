@@ -215,7 +215,7 @@
         SUM(purchase_order_count) AS purchase_order_count,
         SUM(total_amount) AS total_amount,
         SUM(original_amount) AS original_amount,
-        SUM(spend_to_Date) AS spend_to_Date
+        SUM(spend_to_date) AS spend_to_date
       FROM contracts_fy_industry_summary_vw
       <where>
         <exp op="AND">
