@@ -26,6 +26,7 @@
  */
 function checkbook_custom_breadcrumbs_page_alter(&$page) {
   //TODO
+
   if(preg_match('/^contracts_landing/',current_path()) || preg_match('/^contracts_revenue_landing/',current_path())){
       _set_contracts_breadcrumb_title_drilldown();
   }
@@ -46,6 +47,9 @@ function checkbook_custom_breadcrumbs_page_alter(&$page) {
   }
   elseif( preg_match('/^alert/',current_path())){
       _set_alert_breadcrumb_title_drilldown();
+  }
+  else if(preg_match('/^nycha_contracts/',current_path())){
+      _set_nycha_contracts_breadcrumb_title_drilldown();
   }
 
   _checkbook_custom_breadcrumnb_add_breadcrumb_title();
@@ -93,7 +97,12 @@ function _set_revenue_breadcrumb_title_drilldown(){
 function _set_payroll_breadcrumb_title_drilldown(){
     drupal_set_title(_get_payroll_breadcrumb_title_drilldown(),PASS_THROUGH);
 }
-
+/**
+ * Custom function to set title for NYCHA CONTRACTS landing pages
+ **/
+function _set_nycha_contracts_breadcrumb_title_drilldown(){
+    drupal_set_title( _get_nycha_contracts_breadcrumb_title_drilldown(),PASS_THROUGH);
+}
 /**
  * Custom function to get title for contracts landing pages
  **/
@@ -250,7 +259,7 @@ function _get_payroll_breadcrumb_title_drilldown()
     }else{
         if (preg_match('/agency_landing/', current_path())) {
             $value = RequestUtilities::get('agency');
-            $title = _checkbook_project_get_name_for_argument("agency_id", $value);
+          $title = _checkbook_project_get_name_for_argument("agency_id", $value);
         } else if (preg_match('/title_landing/', current_path())) {
             $value = RequestUtilities::get('title');
             $title = _checkbook_project_get_name_for_argument("title", $value);
@@ -263,6 +272,25 @@ function _get_payroll_breadcrumb_title_drilldown()
     return $title;
 
 }
+/**
+ * Custom function to get title for NYCHA CONTRACTS landing pages
+ **/
+function _get_nycha_contracts_breadcrumb_title_drilldown()
+{
+    $bottomURL = $_REQUEST['expandBottomContURL'];
+        if (preg_match('/agency/', current_path())) {
+            $value = RequestUtilities::get('agency');
+            $title = _checkbook_project_get_name_for_argument("agency_id", $value);
+        }
+        else {
+            $title = "NYCHA";
+        }
+
+
+    return $title;
+
+}
+
 
 /**
 * Custom function to set title for contracts landing pages
