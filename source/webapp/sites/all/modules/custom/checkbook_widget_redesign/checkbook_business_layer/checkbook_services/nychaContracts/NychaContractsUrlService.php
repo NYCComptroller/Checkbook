@@ -14,7 +14,9 @@ class NychaContractsUrlService
      */
     static function getFooterUrl($parameters)
     {
-        $url = "/panel_html/nycha_contracts_transactions_page/nycha_contracts/transactions";
+        $url = "/panel_html/nycha_contracts_transactions_page/nycha_contracts/transactions"
+                . RequestUtilities::buildUrlFromParam('year')
+                . RequestUtilities::buildUrlFromParam('datasource');
         return $url;
     }
 

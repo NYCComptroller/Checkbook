@@ -27,7 +27,6 @@
   //},
   "skipCustomPadding":true,
   "table_columns": [
-    {"label":"","column":""},
     {"labelAlias":"purchase_order_number","column":"purchase_order_number"},
     {"labelAlias":"release_number","column":"release_number"},
     {"labelAlias":"shipment_number","column":"shipment_number"},
@@ -58,7 +57,7 @@
   "adjustDataTableOptions":"
       $adjustDataTableOptions = $node->widgetConfig->dataTableOptions;
       if(!$node->is_master_agreement) {
-      $adjustDataTableOptions->fnInitComplete = '##function () { new FixedColumns( oTable, {\"iLeftColumns\": 2,\"iLeftWidth\": 180} );}##';
+      $adjustDataTableOptions->fnInitComplete = '##function () { new FixedColumns( oTable, {\"iLeftColumns\": 2,\"iLeftWidth\": 225} );}##';
     }",
   "dataTableOptions":{
     "bRetrieve":true,
@@ -75,8 +74,7 @@
     },
     "bInfo":true,
     "aoColumns": [
-      {"bSortable":false,"sWidth":"5px"},
-      {"sClass":"text", "sWidth":"100px","asSorting":["asc","desc"]},
+      {"sClass":"number-center", "sWidth":"150px","asSorting":["asc","desc"]},
       {"sClass":"number-center", "sWidth":"75px","asSorting":["asc","desc"]},
       {"sClass":"number-center", "sWidth":"75px","asSorting":["asc","desc"]},
       {"sClass":"number-center", "sWidth":"75px","asSorting":["asc","desc"]},
@@ -97,13 +95,13 @@
       {"sClass":"text", "sWidth":"180px","asSorting":["asc","desc"]},
       {"sClass":"text", "sWidth":"180px","asSorting":["asc","desc"]},
       {"sClass":"text", "sWidth":"180px","asSorting":["asc","desc"]},
-      {"sClass":"text", "sWidth":"180px","asSorting":["asc","desc"]},
-      {"sClass":"text", "sWidth":"180px","asSorting":["asc","desc"]},
-      {"sClass":"text", "sWidth":"180px","asSorting":["asc","desc"]},
-      {"sClass":"text", "sWidth":"180px","asSorting":["asc","desc"]},
-      {"bSortable":false,"sWidth":"5px"}
+      {"sClass":"text", "sWidth":"220px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"220px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"220px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"220px","asSorting":["asc","desc"]},
+      {"bSortable":false,"sWidth":"2px"}
     ],
-    "aaSorting":[[1,"desc"]],
+    "aaSorting":[[0,"desc"]],
     "sScrollX":"100%",
     "bScrollCollapse": true
   },
