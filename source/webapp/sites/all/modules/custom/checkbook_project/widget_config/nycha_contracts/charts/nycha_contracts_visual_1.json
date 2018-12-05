@@ -63,7 +63,7 @@ $datasource = RequestUtilities::getRequestParamValue('datasource');
 $sql = ' select
 vendor_name,vendor_id
 , sum(original_amount) current_amount_sum
-, count(po_number) total_contracts
+, count(purchase_order_number) total_contracts
 from contracts_fy_po_vendor_summary_vw
 ' . $where_filter . '
 group by vendor_name  ,vendor_id
