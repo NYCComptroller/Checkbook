@@ -243,6 +243,23 @@ class WidgetUtil
         "ba_number"=>"BA Number",
         "grant_name"=>"Grant<br/>Name",
         "boroughs" =>'Boroughs',
+        "purchase_order_number" => "Purchase<br/>Order Number",
+        "release_number" => "Release<br/>Number",
+        "shipment_number" => "Shipment<br/>Number",
+        "distribution_number" => "Distribution<br/>Number",
+        "agreement_start_date" => "Agreement<br/>Start Date",
+        "agreement_end_date" => "Agreement<br/>End Date",
+        "release_approved_date" => "Aprroved<br/>Date",
+        "release_total_amount" => "Total<br/>Amount",
+        "location" => "Location",
+        "borough" => "Borough",
+        "grant" => "Grant<br/>Name",
+        "expenditure_type" => "Expenditure<br/>Type",
+        "funding_source" => "Funding<br/>Source",
+        "responsibility_center" => "Responsibility<br/>Center",
+        "program" => "Program",
+        "project" => "Project",
+        "commodity_category" => "Commodity<br/>Category",
     );
 
     //For number cols, need to find out if they are uniform number of digits for formatting
