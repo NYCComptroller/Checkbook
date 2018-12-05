@@ -122,7 +122,7 @@ function _getFullYearString()
     $yearValue = _getYearValueFromID($year_id);
     $yearString = ($yearType == 'B') ? "FY $yearValue" : "CY $yearValue";
     if(RequestUtilities::get('datasource')==Datasource::NYCHA){
-        $yearString .= "(June 1, " . ($yearValue) . " - Decemeber 30, $yearValue)";
+        $yearString .= "(January 1, " . ($yearValue) . " - Decemeber 31, $yearValue)";
     }
     else{
         $yearString .= ($yearType == 'B') ? " (July 1, " . ($yearValue - 1) . " - June 30, $yearValue)" : " (January 1, {$yearValue} - December 31, $yearValue)";
