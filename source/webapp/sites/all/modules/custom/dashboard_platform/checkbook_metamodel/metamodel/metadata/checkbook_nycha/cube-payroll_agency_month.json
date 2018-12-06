@@ -2,7 +2,7 @@
     "datasets":{
         "payroll_agency_month":{
             "datasourceName":"main",
-            "source":"public_nycha.aggregateon_payroll_agency_month",
+            "source":"aggregateon_payroll_agency_month",
             "columns": [
                 {
                     "name": "agency_id"},

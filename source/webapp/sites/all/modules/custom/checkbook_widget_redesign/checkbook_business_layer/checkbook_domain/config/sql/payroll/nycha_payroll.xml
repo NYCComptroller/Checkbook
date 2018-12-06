@@ -17,7 +17,7 @@
             SUM(base_pay) as total_base_pay,
             SUM(other_payments) as total_other_pay,
             SUM(overtime_pay) as total_overtime_pay
-            FROM public_nycha.aggregateon_payroll_latest_employee_agency
+            FROM aggregateon_payroll_latest_employee_agency
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="fiscal_year_id" paramName="year" />
@@ -49,7 +49,7 @@
             type_of_year,
             fiscal_year_id,
             type_of_employment
-            FROM public_nycha.aggregateon_payroll_employee_agency_title
+            FROM aggregateon_payroll_employee_agency_title
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="fiscal_year_id" paramName="year" />
@@ -67,12 +67,12 @@
         <param name="title" type="int" />
         <sql>
             SELECT DISTINCT emp.employee_number
-            FROM public_nycha.aggregateon_payroll_employee_agency emp
+            FROM aggregateon_payroll_employee_agency emp
             JOIN
             (
             SELECT max(pay_date) as pay_date,
             employee_number,fiscal_year_id,type_of_year
-            FROM public_nycha.aggregateon_payroll_employee_agency
+            FROM aggregateon_payroll_employee_agency
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="fiscal_year_id" paramName="year" />
@@ -107,8 +107,8 @@
             COUNT(DISTINCT (CASE WHEN COALESCE(emp_type.type_of_employment,'Non-Salaried') = 'Salaried' THEN emp_type.employee_number_1 END)) AS total_salaried_employees,
             COUNT(DISTINCT (CASE WHEN COALESCE(emp_type.type_of_employment,'Non-Salaried') = 'Non-Salaried' AND emp.pay_date = latest_emp.pay_date THEN emp.employee_number END)) AS total_non_salaried_employees,
             agency.agency_id as agency, agency.agency_name
-            FROM public_nycha.aggregateon_payroll_employee_agency emp
-            JOIN public_nycha.ref_agency agency ON agency.agency_id = emp.agency_id
+            FROM aggregateon_payroll_employee_agency emp
+            JOIN ref_agency agency ON agency.agency_id = emp.agency_id
             LEFT JOIN
             (
             SELECT DISTINCT
@@ -117,12 +117,12 @@
             emp.fiscal_year_id AS fiscal_year_id_1,
             emp.type_of_year AS type_of_year_1
             ,agency_id AS agency_id_1
-            FROM public_nycha.aggregateon_payroll_employee_agency emp
+            FROM aggregateon_payroll_employee_agency emp
             JOIN
             (
             SELECT max(pay_date) as pay_date,
             employee_number,fiscal_year_id,type_of_year
-            FROM public_nycha.aggregateon_payroll_employee_agency
+            FROM aggregateon_payroll_employee_agency
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="fiscal_year_id" paramName="year" />
@@ -152,7 +152,7 @@
             (
             SELECT max(pay_date) as pay_date,
             employee_number,fiscal_year_id,type_of_year
-            FROM public_nycha.aggregateon_payroll_employee_agency
+            FROM aggregateon_payroll_employee_agency
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="fiscal_year_id" paramName="year" />
@@ -182,7 +182,7 @@
         <param name="agency" type="int" />
         <param name="title" type="int" />
         <sql>
-            SELECT DISTINCT agency_id FROM public_nycha.aggregateon_payroll_employee_agency
+            SELECT DISTINCT agency_id FROM aggregateon_payroll_employee_agency
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="fiscal_year_id" paramName="year" />
@@ -205,8 +205,8 @@
             SUM(agg.gross_pay) AS total_gross_pay,
             COUNT(DISTINCT (CASE WHEN COALESCE(agg.positive_overtime_pay,0) &gt; 0 THEN agg.employee_number END)) AS total_overtime_employees,
             SUM(agg.overtime_pay) AS total_overtime_pay
-            FROM public_nycha.aggregateon_payroll_employee_agency agg
-            JOIN public_nycha.ref_agency ON ref_agency.agency_id = agg.agency_id
+            FROM aggregateon_payroll_employee_agency agg
+            JOIN ref_agency ON ref_agency.agency_id = agg.agency_id
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="agg.type_of_year" paramName="yeartype" />
