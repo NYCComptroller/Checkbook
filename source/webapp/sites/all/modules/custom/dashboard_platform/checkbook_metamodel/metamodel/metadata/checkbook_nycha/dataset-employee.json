@@ -2,7 +2,7 @@
     "datasets": {
 		"employee": {
             "datasourceName": "main",
-            "source": "public_nycha.employee",
+            "source": "employee",
             "columns": [
                 {
                     "name": "employee_id",
