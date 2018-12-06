@@ -18,9 +18,8 @@ class payrollDetails {
         list ($agency, $month, $smnid) = RequestUtilities::get(['agency', 'month', 'smnid']);
 
         $data_source = Datasource::getCurrent();
-        $db_schema = Datasource::getDBSchema();
 
-        $dataset = $db_schema.'aggregateon_payroll_employee_agency';
+        $dataset = 'aggregateon_payroll_employee_agency';
         $where = $sub_query_where = "";
         if(isset($year)) {
             $where .= $where == "" ? "WHERE emp.fiscal_year_id = $year" : " AND emp.fiscal_year_id = $year";
@@ -31,9 +30,9 @@ class payrollDetails {
             $sub_query_where .= $sub_query_where == "" ? "WHERE type_of_year = '$year_type'" : " AND type_of_year = '$year_type'";
         }
         if(isset($month)) {
-            $dataset = $db_schema.'aggregateon_payroll_employee_agency_month';
+            $dataset = 'aggregateon_payroll_employee_agency_month';
             $where .= $where == "" ? "WHERE emp.month_id = '$month'" : " AND emp.month_id = '$month'";
-            $ref_month_join = "JOIN ".$db_schema."ref_month month ON month.month_id = emp.month_id";
+            $ref_month_join = "JOIN "."ref_month month ON month.month_id = emp.month_id";
             $month_select = ",month_id, month_name";
             $month_id_select = ",month_id";
             $month_sub_select = ",month.month_id, month.month_name";
@@ -57,7 +56,7 @@ class payrollDetails {
             $where .= $where == "" ? "WHERE emp.agency_id = '$agency'" : " AND emp.agency_id = '$agency'";
             $agency_select = ",agency_id,agency_name";
             $agency_sub_select = ",agency.agency_id,agency.agency_name";
-            $agency_join = "JOIN ".$db_schema."ref_agency agency ON agency.agency_id = emp.agency_id";
+            $agency_join = "JOIN "."ref_agency agency ON agency.agency_id = emp.agency_id";
             $agency_join_on = "AND emp_type.agency_id_1 = emp.agency_id";
             $agency_id_sub_select = ",agency_id AS agency_id_1";
             $agency_group_by = ", agency_id, agency_name";
@@ -199,11 +198,10 @@ class payrollDetails {
     public function getMaxAnnualSalary($year, $year_type, $month = NULL, $agency = NULL, $title = NULL, $employee_id = NULL)
     {
         $data_source = Datasource::getCurrent();
-        $db_schema = Datasource::getDBSchema();
-        $dataset = $db_schema.'aggregateon_payroll_employee_agency';
+        $dataset = 'aggregateon_payroll_employee_agency';
         $select = $where = $group_by = $join = "";
         if(isset($month)) {
-            $dataset = $db_schema.'aggregateon_payroll_employee_agency_month';
+            $dataset = 'aggregateon_payroll_employee_agency_month';
             $select .= ", emp.month_id";
             $where .= " AND emp.month_id = $month";
             $group_by .= ", emp.month_id";
@@ -269,7 +267,6 @@ class payrollDetails {
     public function getMaxAnnualSalaryByPayFrequency($year, $year_type, $month = NULL, $agency = NULL, $title = NULL, $employee_id = NULL)
     {
         $data_source = Datasource::getCurrent();
-        $db_schema = Datasource::getDBSchema();
         $select = $where = $group_by = $join = "";
         $year_param = $year_type == 'B' ? "emp.fiscal_year_id" : "emp.calendar_fiscal_year_id";
         $year_join = $year_type == 'B' ? "AND latest_emp.fiscal_year_id = emp.fiscal_year_id" : "AND latest_emp.calendar_fiscal_year_id = emp.calendar_fiscal_year_id";
@@ -296,11 +293,11 @@ class payrollDetails {
         }
         $query = "
             SELECT MAX(emp.annual_salary) as annual_salary, emp.employee_number, {$year_param}, emp.amount_basis_id, emp.pay_frequency{$select}
-            FROM {$db_schema}payroll emp
+            FROM payroll emp
             JOIN
             (
                 SELECT MAX(emp.pay_date) as pay_date,emp.employee_number, {$year_param}, emp.amount_basis_id, emp.pay_frequency{$select}
-                FROM {$db_schema}payroll emp
+                FROM payroll emp
                 WHERE {$year_param} = {$year} AND emp.amount_basis_id = 1{$where}
                 GROUP BY emp.employee_number, {$year_param}, emp.amount_basis_id, emp.pay_frequency{$group_by}
             ) latest_emp ON latest_emp.pay_date = emp.pay_date
@@ -335,7 +332,6 @@ class payrollDetails {
     public function getMaxHourlyRateByPayFrequency($year, $year_type, $month = NULL, $agency = NULL, $title = NULL, $employee_id = NULL)
     {
         $data_source = Datasource::getCurrent();
-        $db_schema = Datasource::getDBSchema();
         $select = $where = $group_by = $join = "";
         $year_param = $year_type == 'B' ? "emp.fiscal_year_id" : "emp.calendar_fiscal_year_id";
         $year_join = $year_type == 'B' ? "AND latest_emp.fiscal_year_id = emp.fiscal_year_id" : "AND latest_emp.calendar_fiscal_year_id = emp.calendar_fiscal_year_id";
@@ -362,11 +358,11 @@ class payrollDetails {
         }
         $query = "
             SELECT MAX(emp.annual_salary) as annual_salary, emp.employee_number, {$year_param}, emp.amount_basis_id, emp.pay_frequency{$select}
-            FROM {$db_schema}payroll emp
+            FROM payroll emp
             JOIN
             (
                 SELECT MAX(emp.pay_date) as pay_date,emp.employee_number, {$year_param}, emp.amount_basis_id, emp.pay_frequency{$select}
-                FROM {$db_schema}payroll emp
+                FROM payroll emp
                 WHERE {$year_param} = {$year} AND emp.amount_basis_id <> 1{$where}
                 GROUP BY emp.employee_number, {$year_param}, emp.amount_basis_id, emp.pay_frequency{$group_by}
             ) latest_emp ON latest_emp.pay_date = emp.pay_date
