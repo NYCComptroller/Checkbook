@@ -2,11 +2,11 @@
     "datasets":{
         "payroll":{
             "datasourceName":"main",
-            "source":"public_nycha.payroll"
+            "source":"payroll"
         },
         "ref_pay_frequency":{
             "datasourceName":"main",
-            "source":"public_nycha.ref_pay_frequency"
+            "source":"ref_pay_frequency"
         }
     },
     "cubes":{
