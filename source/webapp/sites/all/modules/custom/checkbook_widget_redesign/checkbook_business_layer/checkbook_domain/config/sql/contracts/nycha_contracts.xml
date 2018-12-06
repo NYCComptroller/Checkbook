@@ -54,13 +54,13 @@
         purchase_order_number,
         purpose,
         vendor_name,
-        SUM(total_amount) AS total_amount,
-        SUM(original_amount) AS original_amount,
-        SUM(spend_to_date) AS spend_to_date
-      FROM standard_purchase_orders
+        SUM(release_line_total_amount) AS total_amount,
+        SUM(release_line_original_amount) AS original_amount,
+        SUM(release_line_spend_to_date) AS spend_to_date
+      FROM all_agreement_transactions
       <where>
         <exp op="AND">
-          <exp op="=" dbField="approved_fiscal_year_id" paramName="year"/>
+          <exp op="=" dbField="release_approved_year_id" paramName="year"/>
           <exp op="=" dbField="vendor_id" paramName="vendor"/>
         </exp>
       </where>
