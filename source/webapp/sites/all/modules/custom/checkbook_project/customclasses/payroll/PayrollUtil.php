@@ -67,10 +67,9 @@ class PayrollUtil {
      */
     static function getTitleByCode($civil_service_title_code) {
         $data_source = Datasource::getCurrent();
-        $db_schema = Datasource::getDBSchema();
         $title = "";
         $sql = "SELECT civil_service_title
-                FROM {$db_schema}lookup_civil_service_title
+                FROM lookup_civil_service_title
                 WHERE civil_service_title_code = {$civil_service_title_code}";
 
         try {
@@ -94,7 +93,6 @@ class PayrollUtil {
     static function getSalariedEmployeeCount($year, $year_type, $agency_id = null, $title = null) {
 
         $data_source = Datasource::getCurrent();
-        $db_schema = Datasource::getDBSchema();
         $employee_count = null;
         $sub_query_where = "WHERE fiscal_year_id = '$year' AND type_of_year = '$year_type'";
         $sub_query_group_by = "GROUP BY employee_number,fiscal_year_id,type_of_year";
@@ -104,12 +102,12 @@ class PayrollUtil {
 
         $sql = "
                 SELECT COUNT(DISTINCT emp.employee_number) AS record_count
-                FROM {$db_schema}aggregateon_payroll_employee_agency emp
+                FROM aggregateon_payroll_employee_agency emp
                 JOIN
                 (
                     SELECT max(pay_date) as pay_date,
                     employee_number,fiscal_year_id,type_of_year
-                    FROM {$db_schema}aggregateon_payroll_employee_agency
+                    FROM aggregateon_payroll_employee_agency
                     {$sub_query_where}
                     {$sub_query_group_by}
                 ) latest_emp ON latest_emp.pay_date = emp.pay_date
@@ -140,7 +138,6 @@ class PayrollUtil {
      */
     static function getAgencyEmployeeCountByType($year, $year_type, $title = null) {
         $data_source = Datasource::getCurrent();
-        $db_schema = Datasource::getDBSchema();
 
         $where = $sub_query_where = $agency_select = $latest_emp_where = "";
         if(isset($year)) {
@@ -157,7 +154,7 @@ class PayrollUtil {
         if(isset($agency)) {
             $where .= $where == "" ? "WHERE emp.agency_id = '$agency'" : " AND emp.agency_id = '$agency'";
         }
-        $dataset = $db_schema.'aggregateon_payroll_employee_agency';
+        $dataset = 'aggregateon_payroll_employee_agency';
 
         $query = "
                 SELECT
@@ -197,7 +194,7 @@ class PayrollUtil {
                 (
                     SELECT max(pay_date) as pay_date,
                     employee_number,fiscal_year_id,type_of_year
-                    FROM {$db_schema}aggregateon_payroll_employee_agency
+                    FROM aggregateon_payroll_employee_agency
                     WHERE fiscal_year_id = {$year} AND type_of_year = '{$year_type}'
                     GROUP BY employee_number,fiscal_year_id,type_of_year
                 ) latest_emp ON latest_emp.pay_date = emp.pay_date
@@ -238,19 +235,18 @@ class PayrollUtil {
     }
     static function getTitleByEmployeeId($employeeId,$agency_id,$year_type,$year){
         $data_source = Datasource::getCurrent();
-        $db_schema = Datasource::getDBSchema();
         $where = "WHERE fiscal_year_id = $year AND type_of_year = '$year_type'";
         $where .= isset($agency_id) ? " AND agency_id = $agency_id" : "";
         $where .= isset($employeeId) ? " AND employee_id = $employeeId" : "";
         $query="select s1.pay_date,
           s1.civil_service_title_code,
           s1.civil_service_title 
-        from {$db_schema}aggregateon_payroll_employee_agency s1
+        from aggregateon_payroll_employee_agency s1
         inner join
         (
           select max(pay_date) pay_date,
           employee_id
-          from {$db_schema}aggregateon_payroll_employee_agency 
+          from aggregateon_payroll_employee_agency 
             {$where}
           group by employee_id
         ) s2
