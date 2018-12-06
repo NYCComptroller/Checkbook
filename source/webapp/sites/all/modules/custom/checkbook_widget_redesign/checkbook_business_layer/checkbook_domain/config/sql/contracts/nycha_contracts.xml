@@ -231,12 +231,11 @@
   <statement name="GetCountContracts" datasource="checkbook_nycha">
     <param name="year" required="true" type="int"/>
     <sql>
-      SELECT
-        SUM(purchase_order_count)
-      FROM contracts_fy_industry_summary_vw
+      SELECT DISTINCT purchase_order_number FROM all_agreement_transactions
       <where>
         <exp op="AND">
-          <exp op="=" dbField="fiscal_year_id" paramName="year"/>
+          <exp op="=" dbField="release_approved_year_id" paramName="year"/>
+          <exp op="IN" dbField="transaction_status_name" paramName="transaction_status_name">('APPROVED','CLOSED','FINALLY CLOSED')</exp>
         </exp>
       </where>
     </sql>
