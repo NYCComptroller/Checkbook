@@ -113,10 +113,6 @@ abstract class Datasource {
         return self::getCurrent() == Datasource::NYCHA;
     }
 
-    public static function getDBSchema() {
-        return (self::getCurrent() == Datasource::NYCHA) ? 'public_nycha.':'';
-    }
-
     public static function getNYCHAUrl() {
 
             $nychaId = _checkbook_project_querydataset('checkbook_nycha:agency', array('agency_id'), array('agency_short_name' => 'NYCHA'));
