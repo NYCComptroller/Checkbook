@@ -5,7 +5,7 @@
             "source": "ref_award_method",
             "columns": [
                 {
-                    "name": "public_nycha.award_method_id",
+                    "name": "award_method_id",
                     "key": true}
             ]}            
     }

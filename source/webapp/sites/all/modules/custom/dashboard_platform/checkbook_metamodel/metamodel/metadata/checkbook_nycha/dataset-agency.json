@@ -2,7 +2,7 @@
     "datasets": {
 		"agency": {
             "datasourceName": "main",
-            "source": "public_nycha.ref_agency",
+            "source": "ref_agency",
             "columns": [
                 {
                     "name": "agency_id",
@@ -12,7 +12,7 @@
         },
         "agency_history":{
                 "datasourceName":"main",
-                "source":"public_nycha.ref_agency_history",
+                "source":"ref_agency_history",
                 "columns":[
                     {
                         "name":"agency_history_id",
