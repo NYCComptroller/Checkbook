@@ -115,9 +115,9 @@ abstract class Datasource {
 
     public static function getNYCHAUrl() {
 
-            $nychaId = _checkbook_project_querydataset('checkbook_nycha:agency', array('agency_id'), array('agency_short_name' => 'NYCHA'));
+            $nychaId = _checkbook_project_querydataset('checkbook_nycha:agency', array('agency_id'), array('agency_short_name' => 'HOUSING AUTH'));
             return (self::getCurrent() == Datasource::NYCHA) ? '/agency/' . $nychaId[0]['agency_id'] : '';
-       
+
     }
 }
 
