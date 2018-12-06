@@ -1,0 +1,17 @@
+{
+  "datasets": {
+    "nycha_all_agreements": {
+      "datasourceName": "main",
+      "source": "SELECT * FROM all_agreement_transactions WHERE transaction_status_name IN ('APPROVED','CLOSED','FINALLY CLOSED')"
+    }
+  },
+  "cubes": {
+    "nycha_all_agreements": {
+      "sourceDatasetName": "nycha_all_agreements",
+      "dimensions": [
+      ],
+      "measures": {
+      }
+    }
+  }
+}

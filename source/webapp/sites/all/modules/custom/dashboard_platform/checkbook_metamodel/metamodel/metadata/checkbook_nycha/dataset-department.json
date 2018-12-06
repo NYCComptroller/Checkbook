@@ -2,7 +2,7 @@
     "datasets":{
         "department":{
             "datasourceName":"main",
-            "source": "public_nycha.ref_department",
+            "source": "ref_department",
             "columns":[
                 {
                     "name":"department_code",
@@ -12,7 +12,7 @@
         },
         "department_code":{
             "datasourceName":"main",
-            "source": "public_nycha.ref_department",
+            "source": "ref_department",
             "columns":[
                 {
                     "name":"department_code"
@@ -21,7 +21,7 @@
         },
         "department_name":{
             "datasourceName":"main",
-            "source": "public_nycha.ref_department",
+            "source": "ref_department",
             "columns":[
                 {
                     "name":"department_name"
@@ -30,7 +30,7 @@
         },
         "department_history":{
             "datasourceName":"main",
-            "source": "public_nycha.ref_department_history",
+            "source": "ref_department_history",
             "columns":[
                 {
                     "name":"department_history_id",

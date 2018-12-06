@@ -2,7 +2,7 @@
     "datasets":{
         "payroll_month":{
             "datasourceName":"main",
-            "source":"public_nycha.aggregateon_payroll_coa_month "
+            "source":"aggregateon_payroll_coa_month "
         }
     },
     "cubes":{
