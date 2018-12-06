@@ -32,7 +32,7 @@ class payrollDetails {
         if(isset($month)) {
             $dataset = 'aggregateon_payroll_employee_agency_month';
             $where .= $where == "" ? "WHERE emp.month_id = '$month'" : " AND emp.month_id = '$month'";
-            $ref_month_join = "JOIN "."ref_month month ON month.month_id = emp.month_id";
+            $ref_month_join = "JOIN ref_month month ON month.month_id = emp.month_id";
             $month_select = ",month_id, month_name";
             $month_id_select = ",month_id";
             $month_sub_select = ",month.month_id, month.month_name";
@@ -56,7 +56,7 @@ class payrollDetails {
             $where .= $where == "" ? "WHERE emp.agency_id = '$agency'" : " AND emp.agency_id = '$agency'";
             $agency_select = ",agency_id,agency_name";
             $agency_sub_select = ",agency.agency_id,agency.agency_name";
-            $agency_join = "JOIN "."ref_agency agency ON agency.agency_id = emp.agency_id";
+            $agency_join = "JOIN ref_agency agency ON agency.agency_id = emp.agency_id";
             $agency_join_on = "AND emp_type.agency_id_1 = emp.agency_id";
             $agency_id_sub_select = ",agency_id AS agency_id_1";
             $agency_group_by = ", agency_id, agency_name";
