@@ -2,7 +2,7 @@
     "datasets": {
 		"award_category": {
             "datasourceName": "main",
-            "source": "public_nycha.ref_award_category",
+            "source": "ref_award_category",
             "columns": [
                 {
                     "name": "award_category_id",

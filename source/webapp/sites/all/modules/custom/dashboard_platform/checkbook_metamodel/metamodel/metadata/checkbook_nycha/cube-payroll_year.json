@@ -2,7 +2,7 @@
     "datasets":{
         "payroll_year":{
             "datasourceName":"main",
-            "source":"public_nycha.aggregateon_payroll_year",
+            "source":"aggregateon_payroll_year",
             "columns": [
                 {
                     "name": "fiscal_year_id"},

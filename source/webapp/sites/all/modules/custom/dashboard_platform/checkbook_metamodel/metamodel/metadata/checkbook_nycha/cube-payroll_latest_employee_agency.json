@@ -2,7 +2,7 @@
     "datasets":{
         "payroll_latest_employee_agency":{
             "datasourceName":"main",
-            "source":"public_nycha.aggregateon_payroll_latest_employee_agency",
+            "source":"aggregateon_payroll_latest_employee_agency",
             "columns": [
                 {
                     "name": "agency_id"},

@@ -2,7 +2,7 @@
     "datasets": {
 		"year": {
             "datasourceName": "main",
-            "source": "public_nycha.ref_year",
+            "source": "ref_year",
             "columns": [
                 {
                     "name": "year_id",
@@ -11,7 +11,7 @@
             ]}     ,
         "ref_year":{
             "datasourceName":"main",
-            "source": "public_nycha.ref_year",
+            "source": "ref_year",
             "columns":[
                 {
                     "name":"year_value",
@@ -21,7 +21,7 @@
         },
 		"month": {
             "datasourceName": "main",
-            "source": "public_nycha.ref_month",
+            "source": "ref_month",
             "columns": [
                 {
                     "name": "month_id",
@@ -29,7 +29,7 @@
             ]}     ,		
 		"date_id": {
             "datasourceName": "main",
-            "source": "public_nycha.ref_date",
+            "source": "ref_date",
             "columns": [
                 {
                     "name": "date_id",
@@ -37,7 +37,7 @@
             ]},
         "fiscal_period":{
             "datasourceName":"main",
-            "source": "public_nycha.ref_fiscal_period",
+            "source": "ref_fiscal_period",
             "columns": [
                 {
                     "name": "fiscal_period",
