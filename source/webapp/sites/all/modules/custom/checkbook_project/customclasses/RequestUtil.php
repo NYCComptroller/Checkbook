@@ -113,6 +113,10 @@ class RequestUtil
     {
         return 0 === stripos($path, 'contracts_revenue_landing');
     }
+    public static function isNYCHAContractPath($path)
+    {
+        return 0 === stripos($path, 'nycha_contracts');
+    }
 
     /** Returns Contracts page title and Breadcrumb */
     public static function getContractBreadcrumbTitle()
