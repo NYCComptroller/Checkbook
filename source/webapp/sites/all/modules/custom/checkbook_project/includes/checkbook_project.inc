@@ -531,10 +531,13 @@ function _checkbook_project_node_display($node)
  */
 function _checkbook_project_get_name_for_argument($keyword, $id)
 {
-
     switch ($keyword) {
         case "agency_id":
-            $agencies = _checkbook_project_querydataset('checkbook:agency', array('agency_id', 'agency_name'), array($keyword => $id));
+            if(_checkbook_check_isNYCHAPage()) {
+                $agencies = _checkbook_project_querydataset('checkbook_nycha:agency', array('agency_id', 'agency_name'), array($keyword => $id));
+            }else{
+                $agencies = _checkbook_project_querydataset('checkbook:agency', array('agency_id', 'agency_name'), array($keyword => $id));
+            }
             return htmlentities(ucwords(strtolower($agencies[0]['agency_name'])));
             break;
         case "object_class_id":
