@@ -4,6 +4,7 @@
   "defaultParameters":{},
   "headerTitle":"Planned Agreements",
   "headerSubTitle":"Planned Agreements",
+  "footerUrl":"_widget_controller_footer_url($node).NychaContractsUrlService::agreementTypeUrl('PA')",
   "table_columns":[
     {"labelAlias": "pa_number","column": "po_number"},
     {"labelAlias": "vendor_name","column": "vendor_name","tooltip":32},

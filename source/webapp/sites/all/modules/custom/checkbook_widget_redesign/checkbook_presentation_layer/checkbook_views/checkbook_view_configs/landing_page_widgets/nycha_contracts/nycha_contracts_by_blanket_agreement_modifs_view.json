@@ -4,6 +4,7 @@
   "defaultParameters":{"is_modification":"true"},
   "headerTitle":"Blanket Agreement Modifications",
   "headerSubTitle":"Blanket Agreement Modifications",
+  "footerUrl":"_widget_controller_footer_url($node).NychaContractsUrlService::agreementTypeUrl('BA')",
   "table_columns":[
     {"labelAlias": "ba_number","column": "po_number"},
     {"labelAlias": "vendor_name","column": "vendor_name","tooltip":32},
