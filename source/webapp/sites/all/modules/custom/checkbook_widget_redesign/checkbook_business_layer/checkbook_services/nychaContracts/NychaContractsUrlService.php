@@ -33,4 +33,12 @@ class NychaContractsUrlService
 
         return $url;
     }
+
+    /**
+     *
+     */
+    static function agreementTypeUrl($agreementTypeCode){
+        $url = "/agreement_type/".$agreementTypeCode;
+        return $url;
+    }
 }
