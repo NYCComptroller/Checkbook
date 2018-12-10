@@ -33,4 +33,14 @@ class NychaContractsUrlService
 
         return $url;
     }
+
+    /**
+     *  Returns NYCHA Agreement Type Code URL string for the given Agreement Type Code
+     *  @param $agreementTypeCode
+     *  @return string
+     */
+    static function agreementTypeUrl($agreementTypeCode){
+        $url = "/agreement_type/".$agreementTypeCode;
+        return $url;
+    }
 }
