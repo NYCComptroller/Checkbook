@@ -1,7 +1,7 @@
 {
   "widgetType":"data_tables",
   "widgetSubType":"dataTableList",
-  "cleanURLParameters":["year", "vendor"],
+  "cleanURLParameters":["year", "vendor","agreement_type"],
   "urlParamMap":{"year":"release_approved_year_id","vendor":"vendor_id","agreement_type":"agreement_type_code"},
  // "paramTypeConfig": {},
   "header":"

@@ -4,6 +4,7 @@
   "defaultParameters":{"type_of_year":"B"},
   "headerTitle":"Purchase Orders",
   "headerSubTitle":"Purchase Orders",
+  "footerUrl":"_widget_controller_footer_url($node).NychaContractsUrlService::agreementTypeUrl('PO')",
   "table_columns":[
     {"labelAlias": "po_number","column": "purchase_order_number"},
     {"labelAlias": "contract_purpose","column": "purpose","tooltip":22},
