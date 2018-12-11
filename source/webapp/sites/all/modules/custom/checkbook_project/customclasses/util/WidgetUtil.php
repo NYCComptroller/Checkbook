@@ -244,6 +244,7 @@ class WidgetUtil
         "grant_name"=>"Grant<br/>Name",
         "boroughs" =>'Boroughs',
         "purchase_order_number" => "Purchase<br/>Order Number",
+        "purchase_order_type" => "Purchase<br/>Order Type",
         "release_number" => "Release<br/>Number",
         "shipment_number" => "Shipment<br/>Number",
         "distribution_number" => "Distribution<br/>Number",
