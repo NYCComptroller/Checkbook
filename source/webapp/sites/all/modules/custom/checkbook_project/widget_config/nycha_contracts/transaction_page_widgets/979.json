@@ -16,7 +16,7 @@
   "html_class":"initiative-table",
   "no_results_content":"No Results Found",
   "dataset":"checkbook_nycha:nycha_all_agreements",
-  "columns": [ "purchase_order_number", "release_number", "shipment_number", "distribution_number", "agreement_start_date",
+  "columns": [ "purchase_order_number", "agreement_type_name", "release_number", "shipment_number", "distribution_number", "agreement_start_date",
     "agreement_end_date", "release_approved_date", "release_total_amount", "release_original_amount", "release_spend_to_date",
     "purpose", "vendor_name", "location_descr", "location_borough_name", "contract_type_descr", "award_method_name", "grant_name",
     "expenditure_type_descr", "industry_type_name", "funding_source_descr", "responsibility_center_descr", "program_phase_descr",
@@ -28,13 +28,15 @@
   "skipCustomPadding":true,
   "table_columns": [
     {"labelAlias":"purchase_order_number","column":"purchase_order_number"},
+    {"label":"","column":""},
+    {"labelAlias":"purchase_order_type","column":"agreement_type_name"},
     {"labelAlias":"release_number","column":"release_number"},
     {"labelAlias":"shipment_number","column":"shipment_number"},
     {"labelAlias":"distribution_number","column":"distribution_number"},
     {"labelAlias":"agreement_start_date","column":"agreement_start_date"},
     {"labelAlias":"agreement_end_date","column":"agreement_end_date"},
     {"labelAlias":"release_approved_date","column":"release_approved_date"},
-    {"labelAlias":"release_total_amount","column":"release_total_amount"},
+    {"labelAlias":"current_amount","column":"release_total_amount"},
     {"labelAlias":"original_amount","column":"release_original_amount"},
     {"labelAlias":"spend_to_date","column":"release_spend_to_date"},
     {"label":"","column":""},
@@ -57,7 +59,7 @@
   "adjustDataTableOptions":"
       $adjustDataTableOptions = $node->widgetConfig->dataTableOptions;
       if(!$node->is_master_agreement) {
-      $adjustDataTableOptions->fnInitComplete = '##function () { new FixedColumns( oTable, {\"iLeftColumns\": 2,\"iLeftWidth\": 225} );}##';
+      $adjustDataTableOptions->fnInitComplete = '##function () { new FixedColumns( oTable, {\"iLeftColumns\": 4,\"iLeftWidth\": 360} );}##';
     }",
   "dataTableOptions":{
     "bRetrieve":true,
@@ -75,7 +77,9 @@
     "bInfo":true,
     "aoColumns": [
       {"sClass":"number-center", "sWidth":"150px","asSorting":["asc","desc"]},
-      {"sClass":"number-center", "sWidth":"75px","asSorting":["asc","desc"]},
+      {"bSortable":false,"sWidth":"10px"},
+      {"sClass":"text", "sWidth":"150px","asSorting":["asc","desc"]},
+      {"sClass":"number-center", "sWidth":"50px","asSorting":["asc","desc"]},
       {"sClass":"number-center", "sWidth":"75px","asSorting":["asc","desc"]},
       {"sClass":"number-center", "sWidth":"75px","asSorting":["asc","desc"]},
       {"sClass":"number-center", "sWidth":"110px","asSorting":["asc","desc"]},
@@ -85,7 +89,7 @@
       {"sClass":"number", "sWidth":"110px","asSorting":["asc","desc"]},
       {"sClass":"number", "sWidth":"110px","asSorting":["asc","desc"]},
       {"bSortable":false,"sWidth":"50px"},
-      {"sClass":"text", "sWidth":"180px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"200px","asSorting":["asc","desc"]},
       {"sClass":"text", "sWidth":"180px","asSorting":["asc","desc"]},
       {"sClass":"text", "sWidth":"180px","asSorting":["asc","desc"]},
       {"sClass":"text", "sWidth":"180px","asSorting":["asc","desc"]},
