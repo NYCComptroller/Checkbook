@@ -1,9 +1,14 @@
 {
   "widgetType":"data_tables",
   "widgetSubType":"dataTableList",
-  "cleanURLParameters":["year", "vendor","agreement_type"],
-  "urlParamMap":{"year":"release_approved_year_id","vendor":"vendor_id","agreement_type":"agreement_type_code"},
- // "paramTypeConfig": {},
+  "stickyHeader":true,
+  "cleanURLParameters":["year", "vendor","agreement_type", "po_num", "po_num_exact", "agency"],
+  "urlParamMap":{"year":"release_approved_year_id","vendor":"vendor_id","agreement_type":"agreement_type_code",
+                 "po_num":"purchase_order_number", "po_num_exact":"purchase_order_number", "agency":"agency_id"},
+  "paramTypeConfig": {
+    "po_num": "like",
+    "po_num_exact": "eqignorecase"
+  },
   "header":"
         $header = NULL;
         $header .= widget_data_tables_export_link($node);
@@ -21,6 +26,12 @@
     "purpose", "vendor_name", "location_descr", "location_borough_name", "contract_type_descr", "award_method_name", "grant_name",
     "expenditure_type_descr", "industry_type_name", "funding_source_descr", "responsibility_center_descr", "program_phase_descr",
     "gl_project_descr", "commodity_category_descr"],
+  "adjustParameters":"
+      if(function_exists('_checkbook_project_applyParameterFilters')){
+       $parameters = _checkbook_project_applyParameterFilters($node,$parameters);
+      }
+     return $parameters;
+  ",
   "caption":"",
   //"derivedColumns": {
 
@@ -56,6 +67,12 @@
     {"labelAlias":"commodity_category","column":"commodity_category_descr"},
     {"label":"","column":""}
     ],
+  "adjustParameters":"
+      if(function_exists('_checkbook_project_applyParameterFilters')){
+      $parameters = _checkbook_project_applyParameterFilters($node,$parameters);
+    }
+    return $parameters;
+  ",
   "adjustDataTableOptions":"
       $adjustDataTableOptions = $node->widgetConfig->dataTableOptions;
       if(!$node->is_master_agreement) {
@@ -128,11 +145,15 @@
 
     function prepareTableListFilterUrl() {
           var oVendorNms = getNamedFilterCriteria('fvendorNm');
+          var oPOnums = getNamedFilterCriteria('fPONumber');
+          var oAgencys = getNamedFilterCriteria('fagencyId');
 
           var cUrl = oTable.fnSettings().sAjaxSource;
           var cUrlArray = cUrl.split('/');
 
           cUrl = adjustUrlParameter(cUrl,'vendornm_exact',oVendorNms);
+          cUrl = adjustUrlParameter(cUrl,'po_num_exact',oPOnums);
+          cUrl = adjustUrlParameter(cUrl,'agency',oAgencys);
           return cUrl;
     }"
 }
