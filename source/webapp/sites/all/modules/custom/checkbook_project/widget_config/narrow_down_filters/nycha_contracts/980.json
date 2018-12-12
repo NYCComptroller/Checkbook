@@ -9,9 +9,11 @@
   "orderBy":"-txcount",
   "filterName":"Other Government Entity",
   "urlParameterName":"agency",
-  "autocompleteParamName":"agency_auto",
+  "autocompleteParamName":"agency_id_auto",
   "autocompleteID":"fagencyId",
-  "autocompleteField":"agency_name.agency_name",
+  "autocompleteField":"agency_name",
+  "allowFacetDeselect":false,
+  "autocomplete":false,
   "adjustParameters":"
     if(function_exists('_checkbook_project_applyParameterFilters')){
       $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
