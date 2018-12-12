@@ -147,6 +147,7 @@
           var oVendorNms = getNamedFilterCriteria('fvendorNm');
           var oPOnums = getNamedFilterCriteria('fPONumber');
           var oAgencys = getNamedFilterCriteria('fagencyId');
+          var oAgreementTypes = getNamedFilterCriteria('fagreementType');
 
           var cUrl = oTable.fnSettings().sAjaxSource;
           var cUrlArray = cUrl.split('/');
@@ -154,6 +155,7 @@
           cUrl = adjustUrlParameter(cUrl,'vendornm_exact',oVendorNms);
           cUrl = adjustUrlParameter(cUrl,'po_num_exact',oPOnums);
           cUrl = adjustUrlParameter(cUrl,'agency',oAgencys);
+          cUrl = adjustUrlParameter(cUrl,'agreement_type',oAgreementTypes);
           return cUrl;
     }"
 }
