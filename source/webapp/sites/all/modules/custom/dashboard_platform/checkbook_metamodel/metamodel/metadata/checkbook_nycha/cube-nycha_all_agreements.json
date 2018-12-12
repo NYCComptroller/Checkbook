@@ -34,6 +34,24 @@
               "sourceColumnName": "agency_name"
             }
           ]
+        },
+        {
+          "name": "agreement_type_name",
+          "levels": [
+            {
+              "name": "agreement_type_name",
+              "sourceColumnName": "agreement_type_name"
+            }
+          ]
+        },
+        {
+          "name": "agreement_type_code",
+          "levels": [
+            {
+              "name": "agreement_type_code",
+              "sourceColumnName": "agreement_type_code"
+            }
+          ]
         }
       ],
       "measures": {
