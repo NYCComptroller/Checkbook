@@ -16,7 +16,8 @@ class NychaContractsUrlService
     {
         $url = "/panel_html/nycha_contracts_transactions_page/nycha_contracts/transactions"
                 . RequestUtilities::buildUrlFromParam('year')
-                . RequestUtilities::buildUrlFromParam('datasource');
+                . RequestUtilities::buildUrlFromParam('datasource')
+                . RequestUtilities::buildUrlFromParam('agency');
         return $url;
     }
 
