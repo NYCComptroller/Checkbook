@@ -250,7 +250,7 @@ class WidgetUtil
         "distribution_number" => "Distribution<br/>Number",
         "agreement_start_date" => "Agreement<br/>Start Date",
         "agreement_end_date" => "Agreement<br/>End Date",
-        "release_approved_date" => "Aprroved<br/>Date",
+        "release_approved_date" => "Approved<br/>Date",
         "release_total_amount" => "Total<br/>Amount",
         "location" => "Location",
         "borough" => "Borough",
