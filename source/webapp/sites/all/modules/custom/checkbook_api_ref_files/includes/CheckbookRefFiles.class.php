@@ -88,7 +88,7 @@ class CheckbookRefFiles
      */
     public function generate_files()
     {
-        global $conf, $databases;
+        global $conf;
 
         $return = [
             'error' => false,
