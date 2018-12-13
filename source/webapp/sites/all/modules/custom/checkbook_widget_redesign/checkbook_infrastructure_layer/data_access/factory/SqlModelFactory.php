@@ -228,10 +228,7 @@ class SqlModelFactory {
             $value = "'{$value}'";
         }
         if('yearfix' == $type) {
-            $value = (int)$value;
-            if ($value < 2000) {
-                $value += 1899; //  fixes 119 to 2018
-            }
+            $value = _checkbook_full_year($value);
         }
         switch($operator) {
             case SqlOperator::EQUAL:

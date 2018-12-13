@@ -2653,6 +2653,18 @@ function _checkbook_psql_command($database = 'checkbook')
     return $command;
 }
 
+/**
+ * @param $year
+ * @return int
+ */
+function _checkbook_full_year($year) {
+    $year = (int)$year;
+    if ($year < 2000) {
+        $year += 1899; //  fixes 119 to 2018
+    }
+    return $year;
+}
+
 //Returns new features from Drupal database
 /*function _checkbook_get_new_features(){
     $query = new EntityFieldQuery();
