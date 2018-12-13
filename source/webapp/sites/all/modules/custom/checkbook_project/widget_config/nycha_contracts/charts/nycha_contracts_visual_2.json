@@ -33,7 +33,7 @@
 
   "cleanURLParameters":["awdmethod","vendor","csize","cindustry","year"],
   "cleanURLParametersPending":["awdmethod","vendor","csize","cindustry"],
-  "urlParamMap":{"year":"fiscal_year_id","awdmethod":"award_method_id","vendor":"vendor_id",
+  "urlParamMap":{"year":"full_year","awdmethod":"award_method_id","vendor":"vendor_id",
    "csize":"award_size_id","cindustry":"industry_type_id"},
   "urlParamMapPending":{"vendor":"vendor_id",
     "awdmethod":"award_method_id",
@@ -49,11 +49,15 @@
 "chartTitle":"Top Ten Blanket agreements by Current Amount",
 "widgetDataLoader":"
 
-  //$where_filters = [' transaction_category_code = \'BA\' '];
   $where_filters = [];
   foreach($node->widgetConfig->requestParams as $param=>$value){
+    if ('full_year' == $param){
+      $where_filters[] = _checkbook_full_year($value).' BETWEEN FY_Start AND FY_End';
+      continue;
+     }
     $where_filters[] = _widget_build_sql_condition( $param, $value);
   }
+  $where_filters[] = _widget_build_sql_condition( 'transaction_category_code', 'BA');
 
   $where_filter = '';
   if(count($where_filters) > 0){
@@ -76,7 +80,7 @@ $sql = 'SELECT
 ' . $where_filter . '
 ORDER BY total_amount DESC LIMIT 10';
 
-
+LogHelper::log_error($sql);
 $node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
 
 ",
