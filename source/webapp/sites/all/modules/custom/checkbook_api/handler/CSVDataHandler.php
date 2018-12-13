@@ -180,9 +180,8 @@ class CSVDataHandler extends AbstractDataHandler {
             $tmpDir =  (isset($conf['check_book']['tmpdir']) && is_dir($conf['check_book']['tmpdir'])) ? rtrim($conf['check_book']['tmpdir'],'/') : '/tmp';
             LogHelper::log_notice("DataFeeds :: csv::getJobCommand() tmp dir: ".$tmpDir);
 
-            $command = $conf['check_book']['data_feeds']['command'];
-            $data_source = isset($this->requestDataSet->data_source) ? $this->requestDataSet->data_source : 'checkbook';
-            $command .= ' ' . $databases[$data_source]['main']['database'] . ' ';
+
+            $command = _checkbook_psql_command($this->requestDataSet->data_source);
 
             if(!is_writable($tmpDir)){
                 LogHelper::log_error("$tmpDir is not writable. Please make sure this is writable to generate export file.");
