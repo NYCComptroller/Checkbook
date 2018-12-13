@@ -150,7 +150,7 @@ class XMLDataHandler extends AbstractDataHandler
      * @return string
      */
     function getJobCommand($query) {
-        global $conf, $databases;
+        global $conf;
 
         //map tags and build sql
         $rootElement = $this->requestDataSet->displayConfiguration->xml->rootElement;
@@ -240,9 +240,7 @@ class XMLDataHandler extends AbstractDataHandler
             $filename = _checkbook_project_generate_uuid(). '.xml';
             $tmpDir =  (isset($conf['check_book']['tmpdir']) && is_dir($conf['check_book']['tmpdir'])) ? rtrim($conf['check_book']['tmpdir'],'/') : '/tmp';
 
-            $command = $conf['check_book']['data_feeds']['command'];
-            $data_source = $this->requestDataSet->data_source;
-            $command .= ' ' . $databases[$data_source]['main']['database'] . ' ';
+            $command = _checkbook_psql_command($this->requestDataSet->data_source);
 
             if(!is_writable($tmpDir)){
                 LogHelper::log_error("$tmpDir is not writable. Please make sure this is writable to generate export file.");

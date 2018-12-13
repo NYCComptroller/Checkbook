@@ -145,15 +145,12 @@ class QueueJob {
      * @return array
      */
     private function getCSVJobCommand($filename, $limit = 'ALL',$offset = 0) {
-        global $conf, $databases;
-
         $file = $this->getFullPathToFile($filename,$this->tmpFileOutputDir);
 
         $query = $this->jobDetails['data_command'];
         $query .= " LIMIT " . $limit . " OFFSET " . $offset;
 
-        $command = $conf['check_book']['data_feeds']['command'];
-        $command .= ' ' . $databases['checkbook']['main']['database'] . ' ';
+        $command = _checkbook_psql_command();
         $command .= " -c \"\\\\COPY (" . $query . ") TO '"
                 . $file
                 . "'  WITH DELIMITER ',' CSV QUOTE '\\\"' ESCAPE '\\\"' \" ";
@@ -187,8 +184,6 @@ class QueueJob {
      * @return array
      */
     private function getXMLJobCommands($filename) {
-        global $conf, $databases;
-
         $query = $this->jobDetails['data_command'];
         $request_criteria = $this->jobDetails['request_criteria'];
         $search_criteria = new SearchCriteria($request_criteria, $this->responseFormat);
@@ -259,8 +254,7 @@ class QueueJob {
         $commands = array();
 
         //sql command
-        $command = $conf['check_book']['data_feeds']['command'];
-        $command .= ' ' . $databases['checkbook']['main']['database'] . ' ';
+        $command = _checkbook_psql_command();
         $command .= " -c \"\\\\COPY (" . $query . ") TO '"
                     . $file
                     . "' \" ";

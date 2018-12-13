@@ -136,8 +136,8 @@ class CheckbookRefFiles
              */
             $psql_command = "COPY ({$ref_file->sql}) TO '{$file_new}' WITH CSV HEADER {$force_quote}";
 
-            $command = $conf['check_book']['data_feeds']['command'];
-            $command .= ' ' . $databases['checkbook']['main']['database'] . ' -c "\\';
+            $command = _checkbook_psql_command();
+            $command .= ' -c "\\';
             $command .= addcslashes($psql_command, '"').'"';
 
             $file_info['command'] = $command;
