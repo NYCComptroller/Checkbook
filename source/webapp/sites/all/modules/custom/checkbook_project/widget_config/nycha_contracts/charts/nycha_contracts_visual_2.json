@@ -14,13 +14,8 @@
     "sortColumn":2,
     "table_columns": [
       {
-        "labelAlias": "Prime Vendor",
+        "labelAlias": "Vendor Name",
         "columnType": "text"
-      },
-      {
-        "labelAlias": "Number of Contracts",
-        "columnType": "number",
-        "formatType": "number"
       },
       {
         "labelAlias": "Amount",
@@ -68,7 +63,7 @@
 $datasource = RequestUtilities::getRequestParamValue('datasource');
 $sql = 'SELECT
   po_number,
-  contract_agreement_uniq_id as tratatata,
+  contract_agreement_uniq_id,
   purpose,
   vendor_name,
   total_amount,
@@ -97,9 +92,6 @@ $tooltip_label =
 'Contracting Agency: NYCHA <br />' .
 'Amount: ' . custom_number_formatter_format($row['total_amount'] ,2, '$').  '<br/>'
 ;
-
-//$link= CustomURLHelper::prepareUrl(strstr($_GET['q'],'\/',true), ContractURLHelper::$landingPageParams, array('expandBottomCont'=>'true'),
-//			array('vendor'=>$row['vendor_id']) );
 
 $link = strstr($_GET['q'],'/',true) .  ContractUtil::get_contracts_vendor_link($row['vendor_id'],RequestUtilities::getRequestParamValue('year'),
 RequestUtilities::getRequestParamValue('yeartype'), RequestUtilities::getRequestParamValue('agency')) .
