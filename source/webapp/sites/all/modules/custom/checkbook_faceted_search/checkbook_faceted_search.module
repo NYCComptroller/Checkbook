@@ -635,6 +635,7 @@ function checkbook_faceted_search_preprocess_pagination(&$variables){
     $variables['checked'] = $data['checked'];
     $variables['unchecked'] = $data['unchecked'];
     $variables['autocomplete_id'] = $data['autocomplete_id'];
+    $variables['urlParameter'] = $node->widgetConfig->urlParameterName;
 }
 
 /**

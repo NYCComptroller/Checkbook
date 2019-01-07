@@ -113,7 +113,7 @@ class CheckbookRefFiles
         $ref_files_list = json_decode(file_get_contents(__DIR__.'/../config/ref_files_list.json'));
 
         foreach($ref_files_list as $filename => $ref_file) {
-            if (!empty($ref_file['disabled']) && $ref_file['disabled']) {
+            if ($ref_file->disabled) {
                 continue;
             }
             $file_info = [];

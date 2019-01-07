@@ -2337,7 +2337,7 @@ table#assoc_contracts_list .assoc_item .rfed-amount {
 }
 .page-contracts-landing #assoc_contracts_list_wrapper .contract-title,
 .page-contract-details #assoc_contracts_list_wrapper .contract-title{
-    margin: 10px 0 -30px 0;
+    margin: 10px 0 -20px 0;
 }
 .contract-details-heading .contract-id .master-contract-link{
     margin:10px 0px;

@@ -11,7 +11,7 @@
     "autocompleteParamName":"agency_auto",    
     "autocompleteID":"fagencyId",
     "autocompleteField":"agency_name", 
-    "maxSelect":1,
+    "maxSelect":5,
     "adjustParameters":"
         if(isset($parameters['vendor_type'])){
             $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);

@@ -107,9 +107,9 @@
 
     <?php
     foreach ([$prod_status, $uat_status] as $json):
-        if ($json['audit_status_timestamp'] && $json['audit_status']): ?>
+        if ($json['audit_status_timestamp']): ?>
             <table class="file" cellpadding="5">
-                <?php if (['OK'] == $json['audit_status']): ?>
+                <?php if (!empty($json['audit_status']) && (['OK'] == $json['audit_status'])): ?>
                     <tbody>
                     <tr class="odd">
                         <td>
@@ -121,7 +121,7 @@
                 <?php else: ?>
                     <thead>
                     <tr class="filename">
-                        <th colspan="<?php echo sizeof($json['audit_status'][0]) ?>">
+                        <th>
                             <?php echo $json['source'] ?> ETL `audit_status.txt`
                             (<?php echo date("Y-m-d g:iA", $json['audit_status_timestamp']); ?>)
                         </th>
@@ -135,7 +135,13 @@
                     </tr>
                     <tr class="even">
                         <td>
-                            <?php echo json_encode($json['audit_status']); ?>
+                            <?php
+                                if(empty($json['audit_status'])):
+                                    echo '*file is empty*';
+                                else:
+                                    echo json_encode($json['audit_status']);
+                                endif;
+                            ?>
                         </td>
                     </tr>
                     </tbody>

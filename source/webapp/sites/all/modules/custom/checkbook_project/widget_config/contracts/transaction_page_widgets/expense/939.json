@@ -93,6 +93,7 @@
         "contract_number",
         "contract_original_agreement_id",
         "agreement_type_name",
+        "agency_name",
         "sub_contract_id",
         "master_agreement_yn",
         "master_contract_number",
@@ -104,7 +105,7 @@
         "aprv_sta",
         "aprv_sta_name",
         "agency_id",
-        "agency_name",
+        "agency_name@checkbook:agency",
         "award_method_name",
         "prime_industry_type_name",
         "sub_industry_type_name",
@@ -214,7 +215,7 @@
             "expression":" '<a href=\"'
              .ContractsUrlService::applyLandingParameter($row['document_code'])
              ._checkbook_append_url_params()
-            .  RequestUtilities::buildUrlFromParam('year')
+            .  '/year/'.(RequestUtilities::get('year')? RequestUtilities::get('year') :_getFiscalYearID())
             .  '/yeartype/B'
             .  RequestUtilities::buildUrlFromParam('contstatus|status')
             . '/agency/' . $row['agency_id']

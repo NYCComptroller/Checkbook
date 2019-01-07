@@ -25,18 +25,18 @@ class MappingUtil {
         "year" => "year_id",
         "yeartype" => "type_of_year",
         "agency" => "agency_id",
-//        "vendor" => "vendor_id",
-//        "category" => "spending_category_id"
+        "vendor" => "vendor_id",
+//        "category" => "spending_category_id"  // NYCCHKBK-8560
     ];
     public static $contractsMWBEParamMap = [
         "year" => "fiscal_year_id",
         "agency" => "agency_id",
         "yeartype" => "type_of_year",
-//        "awdmethod" => "award_method_id",
-//        "vendor" => "vendor_id",
-//        "status" => "status_flag",
-//        "csize" => "award_size_id",
-//        "cindustry" => "industry_type_id"
+//        "awdmethod" => "award_method_id", // NYCCHKBK-8560
+        "vendor" => "vendor_id",
+//        "status" => "status_flag",    // NYCCHKBK-8560
+//        "csize" => "award_size_id",   // NYCCHKBK-8560
+//        "cindustry" => "industry_type_id" // NYCCHKBK-8560
     ];
     /** Returns the vendor type value based on the vendor_type mapping */
     static function getVendorTypeValue($vendor_types) {
@@ -466,8 +466,8 @@ class MappingUtil {
                         if($results)
                             $ethnicity_id = $results[0]['minority_type_id'];
                     }
-                    if($ethnicity_id != 7 && $ethnicity_id != 11){
-                        $title = " <br/><span class=\"second-line\">M/WBE Category: " . MappingUtil::getMinorityCategoryById($ethnicity_id) . "</span>";
+                    if($ethnicity_id != 7 && $ethnicity_id != 11 && $ethnicity_id!==null){
+                        $title = " <br/><span class=\"second-line\">M/WBE Category: ".MappingUtil::getMinorityCategoryById($ethnicity_id) . "</span>";
                     }
                 }
                 break;
@@ -499,8 +499,8 @@ class MappingUtil {
                     if($results)
                         $ethnicity_id = $results[0]['minority_type_id'];
 
-                    if($ethnicity_id != 7 && $ethnicity_id != 11){
-                        $title = " <br/><span class=\"second-line\">M/WBE Category: " . MappingUtil::getMinorityCategoryById($ethnicity_id) . "</span>";
+                    if($ethnicity_id != 7 && $ethnicity_id != 11 && $ethnicity_id!==null){
+                        $title = " <br/><span class=\"second-line\">M/WBE Category: " .MappingUtil::getMinorityCategoryById($ethnicity_id) . "</span>";
                     }
                     break;
             }

@@ -6,7 +6,7 @@
         "mcagency","agencyh","year","yeartype","calyear","mcvendor","expcategory","category","checkamtr","dept",
         "contnum","checkamt","chkdate","fundcls","bdgcodenm","captprj","expdoc","vendornm","deptnm","expcategorynm","syear",
         "scalyear","magid","agid","cvendor","cagency","awdmethod","status","csize","cindustry","expcategorycode","month",
-        "industry","mwbe","vendor","subvendor","fvendor","vendortype"
+        "industry","mwbe","vendor","subvendor","fvendor","vendortype","svendor","sagency","sindustry"
     ],
     "urlParamMap":{
         "contnum_exact":"reference_document_number",
@@ -32,9 +32,12 @@
         "status":"status_flag@checkbook:contracts_spending_transactions",
         "csize":"award_size_id@checkbook:contracts_spending_transactions",
         "cindustry":"industry_type_id@checkbook:contracts_spending_transactions",
+        "sindustry":"industry_type_id",
+        "sagency":"agency_id",
         "expcategorycode":"expenditure_object_code", "month":"check_eft_issued_cal_month_id",
         "mwbe":"minority_type_id","industry":"industry_type_id",
-        "vendor":"prime_vendor_id","subvendor":"vendor_id","fvendor":"vendor_id","vendortype":"vendor_type"
+        "vendor":"prime_vendor_id","subvendor":"vendor_id","fvendor":"vendor_id","vendortype":"vendor_type",
+        "svendor":"vendor_id"
     },
     "paramTypeConfig":{
         "vendornm_exact":"eqignorecase","expdoc_exact":"eqignorecase","captprj_exact":"eqignorecase",
@@ -57,7 +60,7 @@
     "html_class": "initiative-table transaction-table",
     "no_results_content":"No Results Found",
     "dataset": "checkbook:spending_transactions_all",
-    "uniqueSortColumn":"disbursement_line_item_id",
+   // "uniqueSortColumn":"disbursement_line_item_id",
     "columns": [
         "disbursement_number",
         "agency_id",

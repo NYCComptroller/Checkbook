@@ -111,4 +111,44 @@ abstract class VendorService {
         }
         return $minority_type_ids;
     }
+    public static function getMwbeAmount($vendor_id =null,$year_id=null,$status='A')
+    {
+
+
+        $contstatus = RequestUtilities::get('contstatus')?:RequestUtilities::get('status');
+        $status =  ($contstatus == null) ? $status : $contstatus;
+        $year_id = ($year_id == null) ? _getCurrentYearID() : $year_id;
+        $query = "SELECT SUM(COALESCE(maximum_contract_amount,0)) AS current_amount_sum
+                  FROM aggregateon_mwbe_contracts_cumulative_spending s0
+                  LEFT OUTER JOIN ref_document_code s15 ON s15.document_code_id = s0.document_code_id
+                   WHERE s0.minority_type_id IN (2,3,4,5,9)
+                   AND s0.vendor_id = ".$vendor_id."
+                          AND  s0.fiscal_year_id= ".$year_id."
+                            AND s0.type_of_year = 'B'
+                            AND s0.status_flag = '" . $status . "' 
+                             AND s15.document_code IN ('CT1', 'CTA1', 'RCT1', 'MA1')
+                          ";
+        $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
+        return $results[0]['current_amount_sum'];
+    }
+    public static function getSubVendorAmount($vendor_id =null,$year_id=null,$status='A')
+    {
+
+        $contstatus = RequestUtilities::get('contstatus')?:RequestUtilities::get('status');
+        $status =  ($contstatus == null) ? $status : $contstatus;
+        $year_id = ($year_id == null) ? _getCurrentYearID() : $year_id;
+        $query = "SELECT SUM(COALESCE(maximum_contract_amount,0)) AS current_amount_sum
+                  FROM aggregateon_subven_contracts_cumulative_spending s0
+                  LEFT OUTER JOIN ref_document_code s15 ON s15.document_code_id = s0.document_code_id
+                   WHERE s0.minority_type_id IN (2,3,4,5,9)
+                   AND s0.prime_vendor_id = ".$vendor_id."
+                          AND  s0.fiscal_year_id= ".$year_id."
+                            AND s0.type_of_year = 'B'
+                            AND s0.status_flag = '" . $status . "' 
+                             AND s15.document_code IN ('CT1', 'CTA1', 'RCT1', 'MA1')
+                          ";
+        $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
+        return $results[0]['current_amount_sum'];
+
+    }
 }

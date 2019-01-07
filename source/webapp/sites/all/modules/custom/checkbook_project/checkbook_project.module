@@ -45,12 +45,6 @@ function checkbook_project_url_outbound_alter(&$path, &$options, $original_path)
         $path .="/yeartype/B/year/"._getCurrentYearID();
 		return true;
 	}
-	/*elseif(($path == 'payroll')  || ($path == 'payroll/agency/%')){
-	
-	  //$path .="/yeartype/C/year/"._getCalendarYearID();
-	  $path .="/yeartype/B/year/"._getCurrentYearID();
-	  return true;
-	}*/
 	elseif(($path == 'budget') || ($path == 'revenue')){
 		$path .="/year/"._getCurrentYearID();
 	}
@@ -190,16 +184,8 @@ function checkbook_project_theme($existing, $type, $theme, $path){
             'arguments' => array('node' => $node)
         ),
         //Contract Transactions List
-        'pending_contract_transactions_narrow_down_filters' => array(
-            'template' => 'php_widgets/contract/pending_transactions_narrow_down_filters',
-            'arguments' => array('node' => NULL)
-        ),
         'pending_contract_transaction_total_amount' => array(
             'template' => 'php_widgets/contract/pending_transaction_total_amount',
-            'arguments' => array('node' => NULL)
-        ),
-        'contract_transactions_narrow_down_filters' => array(
-            'template' => 'php_widgets/contract/transactions_narrow_down_filters',
             'arguments' => array('node' => NULL)
         ),
         'active_registered_contract_transaction_total_amount' => array(
@@ -215,16 +201,8 @@ function checkbook_project_theme($existing, $type, $theme, $path){
             'arguments' => array('node' => NULL)
         ),
         //Spending Transactions List
-        'spending_transactions_narrow_down_filters' => array(
-            'template' => 'php_widgets/spending/transactions_narrow_down_filters',
-            'arguments' => array('node' => NULL)
-        ),
         'spending_transaction_total_amount' => array(
             'template' => 'php_widgets/spending/transaction_total_amount',
-            'arguments' => array('node' => NULL)
-        ),
-        'spending_contract_transactions_narrow_down_filters' => array(
-            'template' => 'php_widgets/spending/contract_transactions_narrow_down_filters',
             'arguments' => array('node' => NULL)
         ),
         'spending_contract_transaction_total_amount' => array(
@@ -242,10 +220,6 @@ function checkbook_project_theme($existing, $type, $theme, $path){
             'arguments' => array('node' => NULL)
         ),
         //Revenue Transactions List
-        'revenue_transactions_narrow_down_filters' => array(
-            'template' => 'php_widgets/revenue/transactions_narrow_down_filters',
-            'arguments' => array('node' => NULL)
-        ),
         'revenue_transaction_total_amount' => array(
             'template' => 'php_widgets/revenue/transaction_total_amount',
             'arguments' => array('node' => NULL)
@@ -263,16 +237,8 @@ function checkbook_project_theme($existing, $type, $theme, $path){
             'arguments' => array('node' => NULL)
         ),
         //Budget Transactions List
-        'budget_expense_transactions_narrow_down_filters' => array(
-            'template' => 'php_widgets/budget/expense_transactions_narrow_down_filters',
-            'arguments' => array('node' => NULL)
-        ),
         'budget_expense_transaction_total_amount' => array(
             'template' => 'php_widgets/budget/expense_transaction_total_amount',
-            'arguments' => array('node' => NULL)
-        ),
-        'budget_revenue_transactions_narrow_down_filters' => array(
-            'template' => 'php_widgets/budget/revenue_transactions_narrow_down_filters',
             'arguments' => array('node' => NULL)
         ),
         'budget_revenue_transaction_total_amount' => array(
@@ -518,12 +484,6 @@ function checkbook_project_theme($existing, $type, $theme, $path){
             'template' => 'php_widgets/contract/contracts_cta_spending_top',
             'arguments' => array('node' => NULL)
         ),
-    		
-    		
-        /*'contracts_ca_assoc_contracts_list' => array(
-            'template' => 'php_widgets/contract/contracts_ca_assoc_contracts_list',
-            'arguments' => array('node' => NULL)
-        ),*/
         'contracts_ma_history' => array(
                 'template' => 'php_widgets/contract/contracts_ma_history',
                 'arguments' => array('node' => NULL)
@@ -540,10 +500,6 @@ function checkbook_project_theme($existing, $type, $theme, $path){
             'template' => 'php_widgets/contract/contract_vendor_info',
             'arguments' => array('node' => NULL)
         ),
-        /*'contracts_ma_assoc_contracts_list' => array(
-            'template' => 'php_widgets/contract/contracts_ma_assoc_contracts_list',
-            'arguments' => array('node' => NULL)
-        ),*/
         'contracts_cta_spending_by_exp_cat' => array(
             'template' => 'php_widgets/contract/contracts_cta_spending_by_exp_cat',
             'arguments' => array('node' => NULL)
