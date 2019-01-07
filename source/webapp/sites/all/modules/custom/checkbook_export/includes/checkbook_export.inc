@@ -82,12 +82,9 @@ function _checkbook_export_grid_transactions(){
     			$dataRecord['formatType'] = $sortindexFormat;
     		}
     	}
-        if($isAsc){
-            $order = 'asc';
-        }
-        else{
-            $order = 'desc';
-        }
+
+    	$order = $isAsc ? 'asc' : 'desc';
+
     	_checkbook_export_grid_sort($node, $order);
     	foreach ($node->widgetConfig->gridConfig->data as $datarow) {
     		$index = 0;
