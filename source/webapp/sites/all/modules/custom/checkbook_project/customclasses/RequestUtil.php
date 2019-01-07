@@ -631,6 +631,7 @@ class RequestUtil
     {
         $path = '';
         $fiscalYearId = static::getFiscalYearIdForTopNavigation();
+
         switch ($domain) {
             case "contracts":
                 //Get 'Contracts Bottom Slider' amounts
@@ -639,6 +640,8 @@ class RequestUtil
                 widget_prepare($node);
                 widget_invoke($node, 'widget_prepare');
                 widget_data($node);
+                //default value for landing path if all values are zero
+                $contracts_landing_path = "contracts_landing/status/A";
                 if ($node->data[0]['total_contracts'] > 0 || $node->data[0]['current_amount_sum'] > 0) {
                     $contracts_landing_path = "contracts_landing/status/A";
                 } else if ($node->data[1]['total_contracts'] > 0 || $node->data[1]['current_amount_sum'] > 0) {
@@ -651,8 +654,6 @@ class RequestUtil
                     $contracts_landing_path = "contracts_pending_exp_landing";
                 } else if ($node->data[6]['total_contracts'] > 0 || $node->data[6]['current_amount_sum'] > 0) {
                     $contracts_landing_path = "contracts_pending_rev_landing";
-                } else {
-                    return "";
                 }
 
                 $path = $contracts_landing_path . "/yeartype/B/year/" . $fiscalYearId . _checkbook_append_url_params(null, array(), true);

@@ -114,11 +114,11 @@ class ContractsUrlService
             . $spend_type_parameter
             . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
             . RequestUtilities::buildUrlFromParam('status|contstatus')
-            . (!Datasource::isOGE() ? RequestUtilities::buildUrlFromParam('agency|cagency') : "")
-            . (!Datasource::isOGE() ? RequestUtilities::buildUrlFromParam('vendor|cvendor') : RequestUtilities::buildUrlFromParam('vendor'))
-            . RequestUtilities::buildUrlFromParam([
+            . (!Datasource::isOGE() ? RequestUtilities::buildUrlFromParam('agency|sagency') : "")
+            . (!Datasource::isOGE() ? RequestUtilities::buildUrlFromParam('vendor|svendor') : RequestUtilities::buildUrlFromParam('vendor'))
+            . RequestUtilities::buildUrlFromParam('cindustry|sindustry')
+                .RequestUtilities::buildUrlFromParam([
                 'awdmethod',
-                'cindustry',
                 'csize',
             ])
             . _checkbook_project_get_year_url_param_string()
@@ -435,6 +435,11 @@ class ContractsUrlService
             : PrimeVendorService::getLatestMinorityType($vendor_id, $agency_id);
 
         $is_mwbe_certified = MinorityTypeService::isMWBECertified($latest_minority_id);
+        $mwbe_amount = VendorService::getMwbeAmount($vendor_id,$year_id);
+        $subven_amount = VendorService::getSubVendorAmount($vendor_id,$year_id);
+
+
+
 
         $urlPath = drupal_get_path_alias($_GET['q']);
         if (!preg_match('/pending/', $urlPath)) {
@@ -442,14 +447,21 @@ class ContractsUrlService
                 $url .= "/status/A";
             }
         }
-        /*if($is_mwbe_certified && $status){
-            $url .= "/dashboard/ms/mwbe/2~3~4~5~9/vendor/".$vendor_id;
-        }*/
-        if ($is_mwbe_certified) {
-            $url .= "/dashboard/mp/mwbe/2~3~4~5~9/vendor/" . $vendor_id;
-        } else {
-            $url .= RequestUtilities::buildUrlFromParam('datasource') . "/vendor/" . $vendor_id;
+
+        if ($is_mwbe_certified && isset($mwbe_amount)) {
+                $url .= "/dashboard/mp/mwbe/2~3~4~5~9/vendor/" . $vendor_id;
         }
+        else if ( $mwbe_amount == 0 && $subven_amount>0 || !isset($mwbe_amount)&&$subven_amount>0){
+         // if prime is zero and sub amount is not zero. change dashboard to ms
+          $url .= "/dashboard/ms/mwbe/2~3~4~5~9/vendor/" . $vendor_id;
+        }
+        else if($is_mwbe_certified){
+            $url .= "/dashboard/mp/mwbe/2~3~4~5~9/vendor/" . $vendor_id;
+        }
+        else {
+            $url .= RequestUtilities::buildUrlFromParam('datasource') . "/vendor/" . $vendor_id;
+         }
+
         $currentUrl = RequestUtilities::_getCurrentPage();
         $url = ($current) ? $currentUrl . $url : $url;
         return $url;

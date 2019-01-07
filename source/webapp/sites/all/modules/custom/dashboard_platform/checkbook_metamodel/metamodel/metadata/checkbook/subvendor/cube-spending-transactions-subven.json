@@ -207,7 +207,7 @@
                     "levels": [
                         {
                             "name": "agency",
-                            "datasetName": "agency",
+                           "datasetName": "agency",
                             "sourceColumnName": "agency_id"
                         }
                     ]
@@ -401,6 +401,15 @@
             {"datasetName": "subcontract_spending_details", "columnNames": ["prime_vendor_id"]},
             {"datasetName": "prime_vendor", "columnNames": ["vendor_id"]}
         ],
+        "spending_transactions_all__contracts_spending_transactions":[
+            {"datasetName": "spending_transactions_all", "columnNames": ["disbursement_line_item_id"]},
+            {"datasetName": "contracts_spending_transactions", "columnNames": ["disbursement_line_item_id"]}
+        ],
+        "spending_transactions_all__contracts_mwbe_spending_transactions":[
+            {"datasetName": "spending_transactions_all", "columnNames": ["disbursement_line_item_id"]},
+            {"datasetName": "contracts_mwbe_spending_transactions", "columnNames": ["disbursement_line_item_id"]}
+        ],
+
         "spending_transactions_all__sub_vendor": [
             {"datasetName": "spending_transactions_all", "columnNames": ["vendor_id"]},
             {"datasetName": "sub_vendor", "columnNames": ["vendor_id"]}
