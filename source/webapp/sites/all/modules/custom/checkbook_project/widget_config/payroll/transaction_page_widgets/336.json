@@ -39,7 +39,7 @@
             "expression": "'<a href=/payroll'.((!RequestUtilities::getRequestParamValue(UrlParameter::AGENCY)) ? '/agency_landing' : '').'/title_landing/yeartype/C/year/' . $row['calendar_fiscal_year_id'] . _checkbook_project_get_url_param_string('datasource'). Datasource::getNYCHAUrl() . '/title/' . urlencode($row['civil_service_title']) . '>'. $row['employee_name_formatted'] .'</a>'"
         },
         "agency_name_link": {
-            "expression": "'<a href=/payroll/agency_landing/agency/'. $row['agency_id'] . '/yeartype/C/year/' . $row['calendar_fiscal_year_id']  . _checkbook_project_get_url_param_string('datasource'). Datasource::getNYCHAUrl() . '>'. $row['agency_name_formatted'] .'</a>'"
+            "expression": "!Datasource::isNYCHA()?'<a href=/payroll/agency_landing/agency/'. $row['agency_id'] . '/yeartype/C/year/' . $row['calendar_fiscal_year_id']  . _checkbook_project_get_url_param_string('datasource'). Datasource::getNYCHAUrl() . '>'. $row['agency_name_formatted'] .'</a>':$row['agency_name_formatted']"
         },
         "formatted_salary_amount": {
             "expression": " $row['amount_basis_id'] === 1 ? custom_number_formatter_basic_format($row['salaried_amount'])  : '-'  "
