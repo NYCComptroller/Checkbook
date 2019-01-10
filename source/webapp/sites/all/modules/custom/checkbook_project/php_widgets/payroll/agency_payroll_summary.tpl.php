@@ -133,7 +133,7 @@ foreach($all_data as $employment_type => $employment_data) {
         $number_employees = number_format($data['number_employees']);
         $total_employees =  number_format($node->total_employees);
         $agency_name =  $data['agency_name'];
-        $agency_url =  $data['agency_url'];
+        $agency_url = Datasource::isNycha()? $data['agency_name']:$data['agency_url'];
         $lbl_total_number_employees =
             $employment_type == PayrollType::$SALARIED
                 ? WidgetUtil::getLabel('total_no_of_sal_employees')
@@ -148,6 +148,7 @@ foreach($all_data as $employment_type => $employment_data) {
 
         //Details link from the agency landing page - don't display agency name
         $show_agency = !(RequestUtilities::get('dtsmnid') == 325);
+
 
         if(RequestUtilities::get('smnid') == 322){
             $total_overtime_employees_label = WidgetUtil::getLabel('total_no_of_ot_employees').':';
