@@ -191,13 +191,6 @@ function _get_contract_includes_subvendors_data_test($a)
 /**
  *
  */
-function _checkbook_max_data_year_test()
-{
-}
-
-/**
- *
- */
 function data_controller_get_operator_factory_instance()
 {
 }
