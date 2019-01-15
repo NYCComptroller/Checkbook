@@ -6,7 +6,7 @@
   "headerSubTitle":"Award Methods",
   "table_columns":[
     {"labelAlias": "award_method","column": "award_method_name"},
-    {"labelAlias":"purchase_contract_count","column":"purchase_order_count","format":"number"},
+    {"labelAlias":"no_of_contracts","column":"purchase_order_count","format":"number"},
     {"labelAlias":"current_amount","column":"total_amount","format":"dollar"},
     {"labelAlias":"original_amount","column":"original_amount","format":"dollar"},
     {"labelAlias":"spend_to_date","column":"spend_to_date","format":"dollar"},
