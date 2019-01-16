@@ -246,7 +246,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
                 ->setMethods(['timeNow', 'getUatStatus', 'getProdStatus', 'getConnectionConfigs'])
                 ->getMock();
 
-        $message = null;
+        $message = [];
 
         $CheckbookEtlStatus->expects($this->any())
             ->method('timeNow')
@@ -266,7 +266,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
                 'data' => $this->fakeYesterday
             ]));
 
-        $CheckbookEtlStatus->mail($message);
+        $CheckbookEtlStatus->prepareMessage($message);
 
         $expected = [
             'subject' => 'Fail',
@@ -301,7 +301,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
                 ->setMethods(['timeNow', 'getUatStatus', 'getProdStatus', 'getConnectionConfigs'])
                 ->getMock();
 
-        $message = null;
+        $message = [];
 
         $CheckbookEtlStatus->expects($this->any())
             ->method('timeNow')
@@ -323,7 +323,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
                 'data' => $this->fakeToday
             ]));
 
-        $CheckbookEtlStatus->mail($message);
+        $CheckbookEtlStatus->prepareMessage($message);
 
         $expected = [
             'subject' => 'Success',
@@ -366,7 +366,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
                 ->setMethods(['timeNow', 'getUatStatus', 'getProdStatus', 'get_contents'])
                 ->getMock();
 
-        $message = null;
+        $message = [];
 
         $CheckbookEtlStatus->expects($this->any())
             ->method('timeNow')
@@ -402,7 +402,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
                 ]
             )));
 
-        $CheckbookEtlStatus->mail($message);
+        $CheckbookEtlStatus->prepareMessage($message);
 
         $expected = [
             'subject' => 'Success',
@@ -440,7 +440,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
                 ->setMethods(['timeNow', 'getUatStatus', 'getProdStatus', 'getConnectionConfigs'])
                 ->getMock();
 
-        $message = null;
+        $message = [];
 
         $CheckbookEtlStatus->expects($this->any())
             ->method('timeNow')
@@ -462,7 +462,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
                 'data' => $this->fakeToday
             ]));
 
-        $CheckbookEtlStatus->mail($message);
+        $CheckbookEtlStatus->prepareMessage($message);
 
         $expected = [
             'subject' => 'Needs attention',
@@ -498,7 +498,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
                 ->setMethods(['get_date', 'timeNow', 'getUatStatus', 'getProdStatus', 'getConnectionConfigs'])
                 ->getMock();
 
-        $message = null;
+        $message = [];
 
         $CheckbookEtlStatus->expects($this->any())
             ->method('timeNow')
@@ -522,7 +522,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
                 'invalid_records_timestamp' => ($this->fakeYesterdayTime),
             ]));
 
-        $CheckbookEtlStatus->mail($message);
+        $CheckbookEtlStatus->prepareMessage($message);
 
         $expected = [
             'subject' => 'Needs attention',
@@ -562,7 +562,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
                 ->setMethods(['get_date', 'timeNow', 'getUatStatus', 'getProdStatus', 'getConnectionConfigs'])
                 ->getMock();
 
-        $message = null;
+        $message = [];
 
         $CheckbookEtlStatus->expects($this->any())
             ->method('timeNow')
@@ -587,7 +587,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
                 'invalid_records_timestamp' => ($this->fakeYesterdayTime),
             ]));
 
-        $CheckbookEtlStatus->mail($message);
+        $CheckbookEtlStatus->prepareMessage($message);
 
         $expected = [
             'subject' => 'Needs attention',
@@ -630,7 +630,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
                 ->setMethods(['get_date', 'timeNow', 'getUatStatus', 'getProdStatus', 'getConnectionConfigs'])
                 ->getMock();
 
-        $message = null;
+        $message = [];
 
         $CheckbookEtlStatus->expects($this->any())
             ->method('timeNow')
@@ -655,7 +655,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
                 'invalid_records_timestamp' => ($this->fakeYesterdayTime),
             ]));
 
-        $CheckbookEtlStatus->mail($message);
+        $CheckbookEtlStatus->prepareMessage($message);
 
         $expected = [
             'subject' => 'Success',
@@ -695,7 +695,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
                 ->setMethods(['get_date', 'timeNow', 'getUatStatus', 'getProdStatus', 'getConnectionConfigs'])
                 ->getMock();
 
-        $message = null;
+        $message = [];
 
         $CheckbookEtlStatus->expects($this->any())
             ->method('timeNow')
@@ -720,7 +720,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
                 'invalid_records_timestamp' => ($this->fakeYesterdayTime),
             ]));
 
-        $CheckbookEtlStatus->mail($message);
+        $CheckbookEtlStatus->prepareMessage($message);
 
         $expected = [
             'subject' => 'Needs attention - too many invalid reasons skipped (11+)',
@@ -763,7 +763,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
                 ->setMethods(['get_date', 'timeNow', 'getUatStatus', 'getProdStatus', 'getConnectionConfigs'])
                 ->getMock();
 
-        $message = null;
+        $message = [];
 
         $CheckbookEtlStatus->expects($this->any())
             ->method('timeNow')
@@ -788,7 +788,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
                 'invalid_records_timestamp' => ($this->fakeYesterdayTime),
             ]));
 
-        $CheckbookEtlStatus->mail($message);
+        $CheckbookEtlStatus->prepareMessage($message);
 
         $expected = [
             'subject' => 'Success',
@@ -819,7 +819,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
                 ->setMethods(['get_date', 'timeNow', 'getUatStatus', 'getProdStatus', 'getConnectionConfigs'])
                 ->getMock();
 
-        $message = null;
+        $message = [];
 
         $CheckbookEtlStatus->expects($this->any())
             ->method('timeNow')
@@ -839,7 +839,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
                 'data' => $this->fakeToday
             ]));
 
-        $CheckbookEtlStatus->mail($message);
+        $CheckbookEtlStatus->prepareMessage($message);
 
         $expected = [
             'subject' => 'Fail',
