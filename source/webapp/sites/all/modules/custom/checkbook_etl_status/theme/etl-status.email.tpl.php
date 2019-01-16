@@ -255,7 +255,7 @@
     <br/>
     <br/>
     <br/>
-    <?php if (!empty($connections)):
+    <?php if (!empty($connections) && isset($dev_mode) && $dev_mode):
         $i = 0;
         ?>
         <table class="dbconnections" cellpadding="3">

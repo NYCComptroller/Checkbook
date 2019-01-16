@@ -2120,20 +2120,14 @@ function _get_num_from_string($string)
  */
 function _checkbook_max_data_year()
 {
-//    phpunit
-    if (function_exists('_checkbook_max_data_year_test')) {
-        return _checkbook_max_data_year_test();
-    }
-
-    $query = "select type_of_year, max(year) year_value , max(year_id) year_id
-                  from {transactions_data_by_year} t
-                  join ref_year y on t.year = y.year_value
-              group by type_of_year
-              order by type_of_year ";
-    $result = _checkbook_project_execute_sql($query);
-    $result = array("year_value" => $result[0]['year_value'], "year_id" => $result[0]['year_id'],
-        "cal_year_value" => $result[1]['year_value'], "cal_year_id" => $result[1]['year_id']);
-    return $result;
+    $year = date('Y');
+    $year_id = $year - 1899;
+    return [
+        'year_value' => $year,
+        'year_id' => $year_id,
+        'cal_year_value' => $year,
+        'cal_year_id' => $year_id
+    ];
 }
 
 /*
