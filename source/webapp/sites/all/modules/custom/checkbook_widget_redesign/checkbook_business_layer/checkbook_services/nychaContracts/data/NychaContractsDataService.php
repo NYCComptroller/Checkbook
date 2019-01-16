@@ -20,9 +20,6 @@ class NychaContractsDataService extends DataService implements INychaContractsDa
         $parameters["is_modification"] = true;
         return $this->configureNycha('GetContractsBlanketAgreements',$parameters,$limit,$orderBy);
     }
-    function GetContractsByGrants($parameters, $limit = null, $orderBy = null){
-        return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
-    }
     function GetContractsPlannedAgreements($parameters, $limit = null, $orderBy = null){
         return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
     }
