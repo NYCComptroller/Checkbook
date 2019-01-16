@@ -112,19 +112,23 @@ class CheckbookEtlStatus
 
         $from = $conf['email_from'];
 
-        $to_dev = $conf['checkbook_dev_group_email'];
+        if (isset($conf['checkbook_dev_group_email'])){
+            $to_dev = $conf['checkbook_dev_group_email'];
 
-        try{
-            drupal_mail('checkbook_etl_status', 'send-dev-status', $to_dev, null, ['dev_mode'=> true], $from);
-        } catch(Exception $ex1){
-            error_log($ex1->getMessage());
+            try{
+                drupal_mail('checkbook_etl_status', 'send-dev-status', $to_dev, null, ['dev_mode'=> true], $from);
+            } catch(Exception $ex1){
+                error_log($ex1->getMessage());
+            }
         }
 
-        $to_client = $conf['checkbook_client_emails'];
-        try{
-            drupal_mail('checkbook_etl_status', 'send-client-status', $to_client, null, ['dev_mode'=> false], $from);
-        } catch(Exception $ex2){
-            error_log($ex2->getMessage());
+        if (isset($conf['checkbook_client_emails'])) {
+            $to_client = $conf['checkbook_client_emails'];
+            try{
+                drupal_mail('checkbook_etl_status', 'send-client-status', $to_client, null, ['dev_mode'=> false], $from);
+            } catch(Exception $ex2){
+                error_log($ex2->getMessage());
+            }
         }
 
         return true;
