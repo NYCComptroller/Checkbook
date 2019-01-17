@@ -1,42 +1,147 @@
 <?php
 
+/**
+ * Class NychaContractsDataService
+ */
 class NychaContractsDataService extends DataService implements INychaContractsDataService {
-    function GetContractsByVendors($parameters, $limit = null, $orderBy = null) {
+    /**
+     * @param $parameters
+     * @param null $limit
+     * @param null $orderBy
+     * @return DataService
+     */
+    function GetContractsByVendors($parameters, $limit = null, $orderBy = null)
+    {
         return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
     }
-    function GetContractsByAwardMethods($parameters, $limit = null, $orderBy = null){
+
+    /**
+     * @param $parameters
+     * @param null $limit
+     * @param null $orderBy
+     * @return DataService
+     */
+    function GetContractsByAwardMethods($parameters, $limit = null, $orderBy = null)
+    {
         return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
     }
-    function GetContractsByPurchaseOrders($parameters, $limit = null, $orderBy = null){
+
+    /**
+     * @param $parameters
+     * @param null $limit
+     * @param null $orderBy
+     * @return DataService
+     */
+    function GetContractsByPurchaseOrders($parameters, $limit = null, $orderBy = null)
+    {
         return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
     }
-    function GetContractsByBoroughs($parameters, $limit = null, $orderBy = null){
+
+    /**
+     * @param $parameters
+     * @param null $limit
+     * @param null $orderBy
+     * @return DataService
+     */
+    function GetContractsByBoroughs($parameters, $limit = null, $orderBy = null)
+    {
         return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
     }
-    function GetContractsBlanketAgreements($parameters, $limit = null, $orderBy = null){
+
+    /**
+     * @param $parameters
+     * @param null $limit
+     * @param null $orderBy
+     * @return DataService
+     */
+    function GetContractsBlanketAgreements($parameters, $limit = null, $orderBy = null)
+    {
         return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
     }
-    function GetContractsBlanketAgreementModifications($parameters, $limit = null, $orderBy = null){
+
+    /**
+     * @param $parameters
+     * @param null $limit
+     * @param null $orderBy
+     * @return DataService
+     */
+    function GetContractsBlanketAgreementModifications($parameters, $limit = null, $orderBy = null)
+    {
         $parameters["is_modification"] = true;
         return $this->configureNycha('GetContractsBlanketAgreements',$parameters,$limit,$orderBy);
     }
-    function GetContractsPlannedAgreements($parameters, $limit = null, $orderBy = null){
+
+    /**
+     * @param $parameters
+     * @param null $limit
+     * @param null $orderBy
+     * @return DataService
+     */
+    function GetContractsPlannedAgreements($parameters, $limit = null, $orderBy = null)
+    {
         return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
     }
-    function GetContractsPlannedAgreementModifications($parameters, $limit = null, $orderBy = null){
+
+    /**
+     * @param $parameters
+     * @param null $limit
+     * @param null $orderBy
+     * @return DataService
+     */
+    function GetContractsPlannedAgreementModifications($parameters, $limit = null, $orderBy = null)
+    {
         $parameters["is_modification"] = true;
         return $this->configureNycha('GetContractsPlannedAgreements',$parameters,$limit,$orderBy);
     }
-    function GetContractsByDepartments($parameters, $limit = null, $orderBy = null){
+
+    /**
+     * @param $parameters
+     * @param null $limit
+     * @param null $orderBy
+     * @return DataService
+     */
+    function GetContractsByDepartments($parameters, $limit = null, $orderBy = null)
+    {
         return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
     }
-    function GetContractsByIndustries($parameters, $limit = null, $orderBy = null){
+
+    /**
+     * @param $parameters
+     * @param null $limit
+     * @param null $orderBy
+     * @return DataService
+     */
+    function GetContractsByIndustries($parameters, $limit = null, $orderBy = null)
+    {
         return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
     }
+
+    /**
+     * @param $parameters
+     * @param null $limit
+     * @param null $orderBy
+     * @return DataService
+     */
+    function GetContractsByRespCenters($parameters, $limit = null, $orderBy = null)
+    {
+        return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
+    }
+
+    /**
+     * @param $parameters
+     * @param null $limit
+     * @param null $orderBy
+     * @return DataService
+     */
     function GetContractsBySize($parameters, $limit = null, $orderBy = null)
     {
         return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
     }
+
+    /**
+     * @param $parameters
+     * @return DataService
+     */
     function GetCountContracts($parameters){
         return $this->configureNycha(__FUNCTION__,$parameters);
     }
