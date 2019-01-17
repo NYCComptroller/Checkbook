@@ -11,8 +11,8 @@
       "nycha_purchase_orders": {
         "widget_config": "nycha_contracts_by_purchase_orders"
       },
-      "nycha_boroughs": {
-        "widget_config": "nycha_contracts_by_boroughs_view"
+      "nycha_resp_centers": {
+        "widget_config": "nycha_contracts_by_resp_centers_view"
       },
       "nycha_blanket_agreements": {
         "widget_config": "nycha_contracts_by_blanket_agreements_view"

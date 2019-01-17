@@ -45,7 +45,9 @@
       GROUP BY award_method_name, award_method_id
     </sql>
   </statement>
+
   <!--GetNychaPurchaseOrders-->
+
   <statement name="GetContractsByPurchaseOrders" datasource="checkbook_nycha">
     <param name="year" required="true" type="int"/>
     <param name="vendor" type="int"/>
@@ -68,7 +70,7 @@
     </sql>
   </statement>
 
-  <!-- -->
+  <!-- GetContractsByBoroughs -->
 
   <statement name="GetContractsByBoroughs" datasource="checkbook_nycha">
     <param name="year" required="true" type="int"/>
@@ -203,7 +205,7 @@
     </sql>
   </statement>
 
-  <!-- -->
+  <!-- GetContractsByIndustries -->
 
   <statement name="GetContractsByIndustries" datasource="checkbook_nycha">
     <param name="year" required="true" type="int"/>
@@ -226,7 +228,7 @@
     </sql>
   </statement>
 
-  <!-- -->
+  <!-- GetCountContracts -->
 
   <statement name="GetCountContracts" datasource="checkbook_nycha">
     <param name="year" required="true" type="int"/>
@@ -240,6 +242,9 @@
       </where>
     </sql>
   </statement>
+
+  <!-- GetContractsBySize -->
+
   <statement name="GetContractsBySize" datasource="checkbook_nycha">
     <param name="year" required="true" type="int"/>
     <param name="vendor" type="int"/>
@@ -259,4 +264,37 @@
       GROUP BY award_size_name
     </sql>
   </statement>
+
+  <!-- GetContractsByRespCenters -->
+
+  <statement name="GetContractsByRespCenters" datasource="checkbook_nycha">
+    <param name="year" required="true" type="yearfix"/>
+    <sql>
+      SELECT
+        agreement_type_code
+        , transaction_category_name
+        , release_approved_year
+        , responsibility_center_code
+        , responsibility_center_descr
+        , SUM(contract_count)         AS contract_count
+        , SUM(total_amount)         AS total_amount
+        , SUM(original_amount)     AS original_amount
+        , SUM(spend_to_date)         AS spend_to_date
+        , SUM(delta_amount)         AS delta_amount
+      FROM   contracts_fy_responsibility_centers
+      <where>
+        <exp op="AND">
+          <exp op="IS NOT" dbField="responsibility_center_code">NULL</exp>
+          <exp op="=" dbField="release_approved_year" paramName="year"/>
+        </exp>
+      </where>
+      GROUP BY
+        agreement_type_code
+        , transaction_category_name
+        , release_approved_year
+        , responsibility_center_code
+        , responsibility_center_descr
+    </sql>
+  </statement>
+
 </statements>
