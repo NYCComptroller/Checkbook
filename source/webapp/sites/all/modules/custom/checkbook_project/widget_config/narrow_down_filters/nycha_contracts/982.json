@@ -6,7 +6,6 @@
   "startWith":0,
   "maxSelect":5,
   "showAllRecords":true,
-  "allowFacetDeselect":true,
   "autocomplete":false,
   "columns":["agreement_type_code.agreement_type_code", "agreement_type_name.agreement_type_name","txcount"],
   "orderBy":"-txcount",
