@@ -1358,7 +1358,7 @@ class RequestUtil
     /** Returns NYCHA Contracts page title and Breadcrumb */
     public static function getNYCHAContractBreadcrumbTitle()
     {
-        $title = 'NYCHA Contracts';
+        $title = 'New York City Housing Authority Contracts';
         return html_entity_decode($title);
     }
 }
