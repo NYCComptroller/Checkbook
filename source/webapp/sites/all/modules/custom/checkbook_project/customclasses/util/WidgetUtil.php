@@ -237,6 +237,7 @@ class WidgetUtil
         "subvendor_mwbe_category" => "Sub Vendor's M/WBE<br/>Category",
         "subvendor_status_pip" => "Sub Vendor<br/>Status in PIP",
         "spend_to_date" => "Spend to<br/> Date",
+        "delta_amount" => "Delta<br/>Amount",
         "po_number"=>"PO Number",
         "pa_number"=>"PA Number",
         "ba_number"=>"BA Number",
