@@ -286,7 +286,7 @@ function _get_nycha_contracts_breadcrumb_title_drilldown()
             $title = _checkbook_project_get_name_for_argument("vendor_id", $value);
         }
         else {
-            $title = "NYCHA";
+            $title = "NEW YORK CITY HOUSING AUTHORITY ";
         }
 
 
