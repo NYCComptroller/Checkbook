@@ -2,12 +2,14 @@
   "widgetType":"data_tables",
   "widgetSubType":"dataTableList",
   "stickyHeader":true,
-  "cleanURLParameters":["year", "vendor","agreement_type", "po_num", "po_num_exact", "agency"],
-  "urlParamMap":{"year":"release_approved_year_id","vendor":"vendor_id","agreement_type":"agreement_type_code",
-                 "po_num":"purchase_order_number", "po_num_exact":"purchase_order_number", "agency":"agency_id"},
+  "cleanURLParameters":["year","curamtr", "vendornm_exact","responsibilitynm_exact","fundingnm_exact","industrynm_exact","agreement_type", "po_num", "po_num_exact", "agency","awdmethod"],
+  "urlParamMap":{"year":"release_approved_year_id", "curamtr":"release_line_total_amount","industrynm_exact":"industry_type_id","fundingnm_exact":"funding_source_id","vendornm_exact":"vendor_id","agreement_type":"agreement_type_code",
+                 "po_num":"purchase_order_number","responsibilitynm_exact":"responsibility_center_id","po_num_exact":"purchase_order_number", "agency":"agency_id", "awdmethod":"award_method_id"
+  },
   "paramTypeConfig": {
     "po_num": "like",
-    "po_num_exact": "eqignorecase"
+    "po_num_exact": "eqignorecase",
+    "curamtr": "rangeid"
   },
   "header":"
         $header = NULL;
@@ -25,7 +27,7 @@
     "agreement_end_date", "release_approved_date", "release_total_amount", "release_original_amount", "release_spend_to_date",
     "purpose", "vendor_name", "location_descr", "location_borough_name", "contract_type_descr", "award_method_name", "grant_name",
     "expenditure_type_descr", "industry_type_name", "funding_source_descr", "responsibility_center_descr", "program_phase_descr",
-    "gl_project_descr", "commodity_category_descr"],
+    "gl_project_descr", "commodity_category_descr","release_line_total_amount"],
   "adjustParameters":"
       if(function_exists('_checkbook_project_applyParameterFilters')){
        $parameters = _checkbook_project_applyParameterFilters($node,$parameters);
@@ -148,14 +150,23 @@
           var oPOnums = getNamedFilterCriteria('fPONumber');
           var oAgencys = getNamedFilterCriteria('fagencyId');
           var oAgreementTypes = getNamedFilterCriteria('fagreementType');
-
+          var oAwdMethod = getNamedFilterCriteria('fAwdMethodId');
+          var oIndustryNms = getNamedFilterCriteria('fIndustryId');
+          var oResCenterNms = getNamedFilterCriteria('fResCenterId');
+          var oFundingNms = getNamedFilterCriteria('fFundingId');
+          var oCurAmount = getNamedFilterCriteria('fCurAmount');
           var cUrl = oTable.fnSettings().sAjaxSource;
           var cUrlArray = cUrl.split('/');
 
           cUrl = adjustUrlParameter(cUrl,'vendornm_exact',oVendorNms);
+          cUrl = adjustUrlParameter(cUrl,'fundingnm_exact',oFundingNms);
+          cUrl = adjustUrlParameter(cUrl,'curamtr',oCurAmount);
+          cUrl = adjustUrlParameter(cUrl,'responsibilitynm_exact',oResCenterNms);
+           cUrl = adjustUrlParameter(cUrl,'industrynm_exact',oIndustryNms);
           cUrl = adjustUrlParameter(cUrl,'po_num_exact',oPOnums);
           cUrl = adjustUrlParameter(cUrl,'agency',oAgencys);
           cUrl = adjustUrlParameter(cUrl,'agreement_type',oAgreementTypes);
+          cUrl = adjustUrlParameter(cUrl,'awdmethod',oAwdMethod);
           return cUrl;
     }"
 }
