@@ -3,6 +3,7 @@
     "dataFunc": "GetAgenciesByPayroll",
     "countFunc": "GetCountAgencies",
     "headerTitle": "Agencies by Payroll",
+    "nychaTitle": "Payroll by Agency Title",
     "headerSubTitle": "Agencies",
     "table_columns": [
         {
