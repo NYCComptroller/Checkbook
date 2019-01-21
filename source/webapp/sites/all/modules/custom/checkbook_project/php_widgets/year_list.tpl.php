@@ -99,7 +99,7 @@ foreach($years as $year){
         if('B' == $url_year_type_value){
             $selected_fiscal_year = 'selected = yes';
         }
-        if(('C' == $url_year_type_value) || _is_nycha_url($_SERVER['REQUEST_URI'])){
+        if(('C' == $url_year_type_value) || Datasource::isNYCHA()){
             $selected_cal_year = 'selected = yes';
         }
     }
@@ -159,7 +159,7 @@ foreach($years as $year){
     }
     /*********  End of Fiscal Year Options   ********/
 
-    /*********  Begining of Calendar Year Options (Applicable for Payroll domain only)   ********/
+    /*********  Beginning of Calendar Year Options (Applicable for Payroll domain only)   ********/
     if(preg_match('/payroll/',$_SERVER['REQUEST_URI'])){
         if($year['year_value'] <= $filter_years['cal_year_value']){
             if(RequestUtilities::get("calyear")){
@@ -203,7 +203,7 @@ foreach($years as $year){
     /*********  End of Calendar Year Options (Applicable for Payroll domain only)   ********/
 
     /****** Beginning of Year options for NYCHA****/
-    if(_is_nycha_url($_SERVER['REQUEST_URI'])){
+    if(Datasource::isNYCHA()){
         $link = preg_replace("/year\/" . $url_year_id_value . "/","year/" .  $year['year_id'],$q);
         if($year['year_value'] <= $filter_years['cal_year_value']) {
             $nycha_year_data_array[] = array('display_text' => 'FY ' . $year['year_value'] . ' (Jan 1, ' . $year['year_value'] . ' - Dec 31, ' . $year['year_value'] . ')',
@@ -216,7 +216,11 @@ foreach($years as $year){
     /****** End of Year options for NYCHA ****/
 }
 
-$year_data_array = (_is_nycha_url($_SERVER['REQUEST_URI']) ? $nycha_year_data_array : array_merge($calendar_year_data_array, $fiscal_year_data_array));
+if(Datasource::isNYCHA() && preg_match('/payroll/',$_SERVER['REQUEST_URI'])){
+    $year_data_array = $calendar_year_data_array;
+}else {
+    $year_data_array = (Datasource::isNYCHA() ? $nycha_year_data_array : array_merge($calendar_year_data_array, $fiscal_year_data_array));
+}
 
 //HTML for Date Filter
 $year_list = "<select id='year_list'>";
