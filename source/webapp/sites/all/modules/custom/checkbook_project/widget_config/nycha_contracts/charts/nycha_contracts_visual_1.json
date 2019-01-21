@@ -46,7 +46,7 @@
 }
 
 ",
-"chartTitle":"Top Ten Vendors",
+"chartTitle":"Top Ten Vendors By Current Amount",
 "widgetDataLoader":"
 
 $where_filters = array();
