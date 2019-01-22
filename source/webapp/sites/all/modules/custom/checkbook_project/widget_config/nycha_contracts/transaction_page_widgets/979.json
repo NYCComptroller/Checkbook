@@ -41,7 +41,7 @@
   "skipCustomPadding":true,
   "table_columns": [
     {"labelAlias":"purchase_order_number","column":"purchase_order_number"},
-    {"label":"","column":""},
+    {"label":"","column":"", "export":false},
     {"labelAlias":"purchase_order_type","column":"agreement_type_name"},
     {"labelAlias":"release_number","column":"release_number"},
     {"labelAlias":"shipment_number","column":"shipment_number"},
@@ -52,7 +52,7 @@
     {"labelAlias":"current_amount","column":"release_total_amount"},
     {"labelAlias":"original_amount","column":"release_original_amount"},
     {"labelAlias":"spend_to_date","column":"release_spend_to_date"},
-    {"label":"","column":""},
+    {"label":"","column":"", "export":false},
     {"labelAlias":"contract_purpose","column":"purpose"},
     {"labelAlias":"vendor_name","column":"vendor_name"},
     {"labelAlias":"location","column":"location_descr"},
@@ -67,7 +67,7 @@
     {"labelAlias":"program","column":"program_phase_descr"},
     {"labelAlias":"project","column":"gl_project_descr"},
     {"labelAlias":"commodity_category","column":"commodity_category_descr"},
-    {"label":"","column":""}
+    {"label":"","column":"", "export":false}
     ],
   "adjustParameters":"
       if(function_exists('_checkbook_project_applyParameterFilters')){
