@@ -277,18 +277,21 @@ function _get_payroll_breadcrumb_title_drilldown()
  **/
 function _get_nycha_contracts_breadcrumb_title_drilldown()
 {
+    $bottomURL = $_REQUEST['expandBottomContURL'];
+    if (!$bottomURL && preg_match('/^nycha_contracts\/search\/transactions/', current_path())) {
+        $title = null;
+    }
+    else {
         if (preg_match('/agency/', current_path())) {
             $value = RequestUtilities::get('agency');
             $title = _checkbook_project_get_name_for_argument("agency_id", $value);
-        }
-        elseif (preg_match('/vendor/', current_path())) {
+        } elseif (preg_match('/vendor/', current_path())) {
             $value = RequestUtilities::get('vendor');
             $title = _checkbook_project_get_name_for_argument("vendor_id", $value);
-        }
-        else {
+        } else {
             $title = "NEW YORK CITY HOUSING AUTHORITY ";
         }
-
+    }
 
     return $title;
 
