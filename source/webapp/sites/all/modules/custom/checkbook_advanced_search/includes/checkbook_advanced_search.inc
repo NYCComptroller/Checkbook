@@ -106,11 +106,9 @@ function _checkbook_advanced_search_get_agencyname_and_id($data_source = 'checkb
     try {
         switch ($data_source) {
             case 'checkbook_oge':
-                $title = 'Select One';
                 $parameters = array("is_oge_agency" => "Y", "is_display" => "Y");
                 break;
             case 'checkbook_nycha':
-                $title = 'Select One';
                 $parameters = array("is_display" => "Y");
                 break;
             default:
@@ -120,7 +118,9 @@ function _checkbook_advanced_search_get_agencyname_and_id($data_source = 'checkb
         }
         $dataController = data_controller_get_instance();
         $nyc_agencies = $dataController->queryDataset($data_source.':agency', array('agency_name', 'agency_id'), $parameters, 'agency_name', 0, NULL, NULL);
-        $nyc_agencies_key_val = array($title);
+        if(isset($title)) {
+            $nyc_agencies_key_val = array($title);
+        }
         foreach ($nyc_agencies as $value) {
             if (strlen($value['agency_name']) > 20)
                 $nyc_agencies_key_val[$value['agency_id']] = substr($value['agency_name'], 0, 20) . '...';
@@ -139,11 +139,9 @@ function _checkbook_advanced_search_get_agency_attributes($data_source = 'checkb
     try {
         switch ($data_source) {
             case 'checkbook_oge':
-                $title = 'Select One';
                 $parameters = array("is_oge_agency" => "Y");
                 break;
             case 'checkbook_nycha':
-                $title = 'Select One';
                 $parameters = array("is_display" => "Y");
                 break;
             default:
@@ -153,7 +151,9 @@ function _checkbook_advanced_search_get_agency_attributes($data_source = 'checkb
         }
         $dataController = data_controller_get_instance();
         $nyc_agencies = $dataController->queryDataset($data_source . ':agency', array('agency_name', 'agency_id'), $parameters, 'agency_name', 0, NULL, NULL);
-        $nyc_agencies_key_val = array($title => array('title' => $title));
+        if(isset($title)) {
+            $nyc_agencies_key_val = array($title => array('title' => $title));
+        }
         foreach ($nyc_agencies as $value) {
             $nyc_agencies_key_val[$value['agency_id']] = array('title' => $value['agency_name']);
         }
