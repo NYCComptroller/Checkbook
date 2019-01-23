@@ -2165,15 +2165,6 @@ function _checkbook_max_data_year()
     return $result;
 }
 
-/**
- * @param $url
- * @return bool
- */
-function _is_nycha_url(string $url)
-{
-    return (bool)stristr('_'.$url, '/nycha');
-}
-
 /*
  * Will add mwbe, subvendor and datasource parameters to url.  Precedence ,$source > $overidden_params > requestparam
  */
