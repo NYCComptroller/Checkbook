@@ -621,6 +621,122 @@ function _checkbook_advanced_search_get_contract_type_and_id($data_source = 'che
     }
 }
 
+/***
+ * Get Responsibility center options for NYCHA Contracts
+ * @returns array
+ */
+function _checkbook_advanced_search_get_responsibility_centers($data_source = 'checkbook_nycha'){
+    try {
+        $query = "SELECT DISTINCT responsibility_center_id, responsibility_center_code, description FROM ref_responsibility_center ORDER BY description";
+        $results = _checkbook_project_execute_sql_by_data_source($query, $data_source);
+
+        $res_center_key_val_option_attributes = array('title' => 'Select Responsibility Center');
+        $res_center_key_val_options = array('Select Responsibility Center');
+
+        foreach ($results as $value) {
+            $keys = 'id=>' . $value['responsibility_center_id'] . '~code=>' . $value['responsibility_center_code'];
+            $res_center_key_val_option_attributes[$keys] = array('title' => $value['description']);
+            if (strlen($value['description']) > 20)
+                $res_center_key_val_options[$keys] = substr($value['description'], 0, 20) . '...';
+            else
+                $res_center_key_val_options[$keys] = $value['description'];
+        }
+
+        return array('options' => $res_center_key_val_options, 'option_attributes' => $res_center_key_val_option_attributes);
+        
+    } catch (Exception $e) {
+        log_error("Error getting data from controller: \n" . $e->getMessage());
+        return;
+    }
+}
+
+/***
+ * Get Contract Type options for NYCHA
+ * @returns array
+ */
+function _checkbook_advanced_search_get_nycha_contract_types($data_source = 'checkbook_nycha'){
+    try {
+        $query = "SELECT DISTINCT contract_type_id, contract_type_code, meaning, description FROM ref_contract_type ORDER BY meaning";
+        $results = _checkbook_project_execute_sql_by_data_source($query, $data_source);
+
+        $contract_type_key_val_option_attributes = array('title' => 'Select Contract Type');
+        $contract_type_key_val_options = array('Select Contract Type');
+        
+        foreach ($results as $value) {
+            $keys = 'id=>' . $value['contract_type_id'] . '~code=>' . $value['contract_type_code'];
+            $contract_type_key_val_option_attributes[$keys] = array('title' => $value['meaning']);
+            if (strlen($value['meaning']) > 20)
+                $contract_type_key_val_options[$keys] = substr($value['meaning'], 0, 20) . '...';
+            else
+                $contract_type_key_val_options[$keys] = $value['meaning'];
+        }
+
+        return array('options' => $contract_type_key_val_options, 'option_attributes' => $contract_type_key_val_option_attributes);
+    } catch (Exception $e) {
+        log_error("Error getting data from controller: \n" . $e->getMessage());
+        return;
+    }
+}
+
+/***
+ * Get NYCHA Award Method options for NYCHA
+ * @returns array
+ */
+function checkbook_advanced_search_get_nycha_award_methods($data_source = 'checkbook_nycha'){
+    try {
+        $query = "SELECT DISTINCT award_method_id, award_method_code, award_method_name FROM ref_award_method ORDER BY award_method_name";
+        $results = _checkbook_project_execute_sql_by_data_source($query, $data_source);
+        
+        $award_method_key_val_option_attributes = array('title' => 'Select Award Method');
+        $award_method_key_val_options = array('Select Award Method');
+
+        foreach ($results as $value) {
+            $keys = 'id=>' . $value['award_method_id'] . '~code=>' . $value['award_methode_code'];
+            $award_method_key_val_option_attributes[$keys] = array('title' => $value['award_method_name']);
+            if (strlen($value['award_method_name']) > 20)
+                $award_method_key_val_options[$keys] = substr($value['award_method_name'], 0, 20) . '...';
+            else
+                $award_method_key_val_options[$keys] = $value['award_method_name'];
+        }
+
+        return array('options' => $award_method_key_val_options, 'option_attributes' => $award_method_key_val_option_attributes);
+
+    } catch (Exception $e) {
+        log_error("Error getting data from controller: \n" . $e->getMessage());
+        return;
+    }
+}
+
+/***
+ * Get Nycha Industry options for NYCHA
+ * @returns array
+ */
+function checkbook_advanced_search_get_nycha_industries($data_source = 'checkbook_nycha'){
+    try {
+        $query = "SELECT DISTINCT industry_type_name, industry_type_id, industry_type_code FROM ref_industry_type ORDER BY industry_type_name";
+        $results = _checkbook_project_execute_sql_by_data_source($query, $data_source);
+
+        $industry_key_val_option_attributes = array('title' => 'Select Industry');
+        $industry_key_val_options = array('Select Industry');
+
+        foreach ($results as $value) {
+            $keys = 'id=>' . $value['industry_type_id'] . '~code=>' . $value['industry_type_code'];
+            $industry_key_val_option_attributes[$keys] = array('title' => $value['industry_type_name']);
+            if (strlen($value['industry_type_name']) > 20)
+                $industry_key_val_options[$keys] = substr($value['industry_type_name'], 0, 20) . '...';
+            else
+                $industry_key_val_options[$keys] = $value['industry_type_name'];
+        }
+        return array('options' => $industry_key_val_options, 'option_attributes' => $industry_key_val_option_attributes);
+
+    } catch (Exception $e) {
+        log_error("Error getting data from controller: \n" . $e->getMessage());
+        return;
+    }
+}
+
+
+
 /*
  * Constructs the URL for Payroll based on the input by the users
  */
