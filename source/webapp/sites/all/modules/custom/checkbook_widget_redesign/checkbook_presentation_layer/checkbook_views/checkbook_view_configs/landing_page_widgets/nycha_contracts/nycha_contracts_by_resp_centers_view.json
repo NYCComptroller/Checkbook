@@ -10,7 +10,6 @@
     {"labelAlias":"current_amount","column":"total_amount","format":"dollar"},
     {"labelAlias":"original_amount","column":"original_amount","format":"dollar"},
     {"labelAlias":"spend_to_date","column":"spend_to_date","format":"dollar"},
-    {"labelAlias":"delta_amount","column":"delta_amount","format":"dollar"},
     {"label":"","column":""}
   ],
   "dataTableOptions":{
@@ -19,7 +18,6 @@
       { "bSortable": true,"sWidth":"127px","sClass":"number","asSorting": [ "desc","asc"  ] },
       { "bSortable": true,"sWidth":"130px","sClass":"number","asSorting": [ "desc","asc"  ] },
       { "bSortable": true,"sWidth":"130px" ,"sClass":"number","asSorting": [ "desc" ,"asc" ]},
-      { "bSortable": true,"sWidth":"130px","sClass":"number","asSorting": [ "desc","asc"  ] },
       { "bSortable": true,"sWidth":"130px","sClass":"number","asSorting": [ "desc","asc"  ] },
       { "bSortable": false,"sWidth":"15px" }
     ],
