@@ -686,6 +686,18 @@ function _checkbook_advanced_search_filter_field_definition($domain, $data_sourc
     {
         $agencies = _checkbook_advanced_search_get_agencyname_and_id($data_source);
         $agency_attributes = _checkbook_advanced_search_get_agency_attributes($data_source);
+
+        if($domain == Domain::Contracts){
+            $nycha_agencies = _checkbook_advanced_search_get_agencyname_and_id(DataSource::NYCHA);
+            $nycha_agency_attributes = _checkbook_advanced_search_get_agency_attributes(DataSource::NYCHA);
+            $agencies = array_merge($agencies, $nycha_agencies);
+            $agency_attributes = array_merge($agency_attributes, $nycha_agency_attributes);
+
+            $nycha_responsibility_center_attributes = _checkbook_advanced_search_get_responsibility_centers(DataSource::NYCHA);
+            $nycha_contract_type_attributes = _checkbook_advanced_search_get_nycha_contract_types(DataSource::NYCHA);
+            $nycha_award_method_attributes = checkbook_advanced_search_get_nycha_award_methods(DataSource::NYCHA);
+            $nycha_industry_attributes = checkbook_advanced_search_get_nycha_industries(DataSource::NYCHA);
+        }
     }
     else if($data_source == DataSource::CitywideAgency) {
         $mwbe_category_attributes = _checkbook_advanced_search_get_mwbe_category_and_id();
@@ -740,6 +752,22 @@ function _checkbook_advanced_search_filter_field_definition($domain, $data_sourc
                         break;
                     case '$includes_sub_vendors':
                         $field_definition_configs[$i]['attributes']['options'] = $includes_sub_vendors;
+                        break;
+                    case '$nycha_responsibility_center_attributes':
+                        $field_definition_configs[$i]['attributes']['options'] = $nycha_responsibility_center_attributes['options'];
+                        $field_definition_configs[$i]['attributes']['option_attributes'] = $nycha_responsibility_center_attributes['option_attributes'];
+                        break;
+                    case '$nycha_contract_type_attributes':
+                        $field_definition_configs[$i]['attributes']['options'] = $nycha_contract_type_attributes['options'];
+                        $field_definition_configs[$i]['attributes']['option_attributes'] = $nycha_contract_type_attributes['option_attributes'];
+                        break;
+                    case '$nycha_award_method_attributes':
+                        $field_definition_configs[$i]['attributes']['options'] = $nycha_award_method_attributes['options'];
+                        $field_definition_configs[$i]['attributes']['option_attributes'] = $nycha_award_method_attributes['option_attributes'];
+                        break;
+                    case '$nycha_industry_attributes':
+                        $field_definition_configs[$i]['attributes']['options'] = $nycha_industry_attributes['options'];
+                        $field_definition_configs[$i]['attributes']['option_attributes'] = $nycha_industry_attributes['option_attributes'];
                         break;
                 }
             }

@@ -457,7 +457,12 @@
                         'sub_vendor_status': 'select[name="' + data_source + '_contracts_sub_vendor_status"]',
                         'purpose': 'input:text[name=' + data_source + '_contracts_purpose]',
                         'curremt_amount_from': 'input:text[name="' + data_source + '_contracts_current_contract_amount_from"]',
-                        'curremt_amount_to': 'input:text[name="' + data_source + '_contracts_current_contract_amount_to"]'
+                        'curremt_amount_to': 'input:text[name="' + data_source + '_contracts_current_contract_amount_to"]',
+                        'purchase_order_type': 'input:text[name="' + data_source + '_contracts_purchase_order_type"]',
+                        'purchase_order_number': 'input:text[name="' + data_source + '_contracts_purchase_order_number"]',
+                        'responsibility_center': 'input:text[name="' + data_source + '_contracts_responsibility_center"]',
+                        'nycha_award_method': 'input:text[name="' + data_source + '_contracts_nycha_award_method"]',
+                        'approved_date': 'input:text[name="' + data_source + '_contracts_approved_date"]'
                     };
 
                     this.data_source = data_source;
@@ -483,6 +488,53 @@
                 $('input:radio[name=contracts_advanced_search_domain_filter]').click(function () {
                     onChangeDataSource($('input[name=contracts_advanced_search_domain_filter]:checked').val());
                 });
+
+                //
+                $("#edit-checkbook-oge-contracts-agency").change(function () {
+                    onOGEAgencyChange($("#edit-checkbook-oge-contracts-agency").val());
+                });
+
+                function onOGEAgencyChange(oge_agency){
+                  if(oge_agency == 1){
+                    $(".form-item-checkbook-oge-contracts-purchase-order-type").show();
+                    $(".form-item-checkbook-oge-contracts-purchase-order-number").show();
+                    $(".form-item-checkbook-oge-contracts-responsibility-center").show();
+                    $(".form-item-checkbook-oge-contracts-nycha-contract-type").show();
+                    $(".form-item-checkbook-oge-contracts-nycha-industry").show();
+                    $(".form-item-checkbook-oge-contracts-nycha-award-method").show();
+                    $(".form-item-approved-date").show();
+
+                    $(".form-item-checkbook-oge-contracts-status").hide();
+                    $(".form-item-checkbook-oge-contracts-contract-num").hide();
+                    $(".form-item-checkbook-oge-contracts-commodity-line").hide();
+                    $(".form-item-checkbook-oge-contracts-entity-contract-number").hide();
+                    $(".form-item-checkbook-oge-contracts-budget-name").hide();
+                    $(".form-item-checkbook-oge-contracts-type").hide();
+                    $(".form-item-received-date").hide();
+                    $(".form-item-checkbook-oge-contracts-category").hide();
+                    $(".form-item-checkbook-oge-contracts-apt-pin").hide();
+                    $(".form-item-checkbook-oge-contracts-award-method").hide();
+                  }else{
+                    $(".form-item-checkbook-oge-contracts-purchase-order-type").hide();
+                    $(".form-item-checkbook-oge-contracts-purchase-order-number").hide();
+                    $(".form-item-checkbook-oge-contracts-responsibility-center").hide();
+                    $(".form-item-checkbook-oge-contracts-nycha-contract-type").hide();
+                    $(".form-item-checkbook-oge-contracts-nycha-industry").hide();
+                    $(".form-item-checkbook-oge-contracts-nycha-award-method").hide();
+                    $(".form-item-approved-date").hide();
+
+                    $(".form-item-checkbook-oge-contracts-status").show();
+                    $(".form-item-checkbook-oge-contracts-contract-num").show();
+                    $(".form-item-checkbook-oge-contracts-commodity-line").show();
+                    $(".form-item-checkbook-oge-contracts-entity-contract-number").show();
+                    $(".form-item-checkbook-oge-contracts-budget-name").show();
+                    $(".form-item-checkbook-oge-contracts-type").show();
+                    $(".form-item-received-date").show();
+                    $(".form-item-checkbook-oge-contracts-category").show();
+                    $(".form-item-checkbook-oge-contracts-apt-pin").show();
+                    $(".form-item-checkbook-oge-contracts-award-method").show();
+                  }
+                }
 
                 function showHidePrimeAndSubFields(div) {
 
@@ -565,6 +617,9 @@
                             initializeContractsView(div_checkbook_contracts_oge);
                             div_checkbook_contracts.contents().hide();
                             div_checkbook_contracts_oge.contents().show();
+
+                            //Hide NYCHA fields
+                            onOGEAgencyChange($("#edit-checkbook-oge-contracts-agency").val());
 
                             //handle oge attributes
                             div_checkbook_contracts_oge.ele('status').find('option[value=P]').remove();
@@ -1462,6 +1517,7 @@
                     case "contracts_pending_exp_landing":
                     case "contracts_pending_landing":
                     case "contract":
+                    case "nycha_contracts":
                         active_accordion_window = 3;
                         break;
                     case "payroll":
@@ -2325,7 +2381,6 @@
             switch (this.type) {
                 case 'select-one':
                     $("select#edit-checkbook-contracts-category").val("all");
-                    //$('#edit-spending-fiscal-year').removeAttr("disabled");
                     var defaultoption = $(this).attr('default_selected_value');
                     if (defaultoption) {
                       $(this).find('option[value=' + defaultoption + ']').attr("selected", "selected");
