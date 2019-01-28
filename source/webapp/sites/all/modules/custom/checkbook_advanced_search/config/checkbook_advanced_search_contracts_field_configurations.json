@@ -26,9 +26,15 @@
             ],
     "checkbook_oge":
             [
+                {"field_name":"purchase_order_type","column":"column-left"},
+                {"field_name":"purchase_order_number","column":"column-left"},
                 {"field_name":"status","column":"column-left"},
                 {"field_name":"prime_vendor_name","column":"column-left"},
+                {"field_name":"responsibility_center","column":"column-left"},
+                {"field_name":"nycha_contract_type","column":"column-left"},
                 {"field_name":"type","column":"column-left"},
+                {"field_name":"nycha_award_method","column":"column-left"},
+                {"field_name":"nycha_industry","column":"column-left"},
                 {"field_name":"contract_id","column":"column-left"},
                 {"field_name":"commodity_line","column":"column-left"},
                 {"field_name":"entity_contract_number","column":"column-left"},
@@ -43,6 +49,7 @@
                 {"field_name":"award_method","column":"column-right"},
                 {"field_name":"start_date","column":"column-right"},
                 {"field_name":"end_date","column":"column-right"},
+                {"field_name":"approved_date","column":"column-right"},
                 {"field_name":"year","column":"column-right"},
                 {"field_name":"contracts","column":"none"}
             ]
