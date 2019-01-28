@@ -1648,6 +1648,8 @@ div.create-alert-schedule-alert select{
 #checkbook-advanced-search-form #edit-checkbook-contracts-start-date-to label,
 #checkbook-advanced-search-form #edit-checkbook-oge-contracts-start-date-from label,
 #checkbook-advanced-search-form #edit-checkbook-oge-contracts-start-date-to label,
+#checkbook-advanced-search-form #edit-checkbook-oge-contracts-approved-date-from label,
+#checkbook-advanced-search-form #edit-checkbook-oge-contracts-approved-date-to label,
 #checkbook-advanced-search-form #edit-checkbook-contracts-received-date-from label,
 #checkbook-advanced-search-form #edit-checkbook-contracts-received-date-to label,
 #checkbook-advanced-search-form #edit-checkbook-oge-contracts-received-date-from label,
