@@ -81,11 +81,22 @@
             $('.datafield.other_government_entity').show();
             $('.form-item-oge-column-select').show();
             $('.form-item-column-select').hide();
+
+            /** Hide Fiscal Year values for OGE **/
+            $("#edit-year > option").each(function() {alert($(this).val().toLowerCase());
+              if($(this).val().toLowerCase().indexOf("fy") >= 0)
+                $(this).hide();
+            });
         }else{
             $('.datafield.agency').show();
             $('.datafield.other_government_entity').hide();
             $('.form-item-oge-column-select').hide();
             $('.form-item-column-select').show();
+
+            $("#edit-year > option").each(function() {
+              if($(this).val().toLowerCase().indexOf("fy") >= 0)
+                $(this).show();
+            });
         }
     }
 
