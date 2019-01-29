@@ -18,6 +18,11 @@ class NychaContractsWidgetService extends WidgetDataService implements IWidgetSe
                 $url = NychaContractsUrlService::vendorUrl($row['vendor_id']);
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
+            case "contract_id_link":
+                $contract_id = isset($row['po_number']) && $row['po_number'] ? $row['po_number']: $row['purchase_order_number'];
+                $url = NychaContractsUrlService::contractDetailsUrl($contract_id);
+                $value = "<a href='{$url}'>{$contract_id}</a>";
+                break;
         }
 
         if(isset($value)) {
