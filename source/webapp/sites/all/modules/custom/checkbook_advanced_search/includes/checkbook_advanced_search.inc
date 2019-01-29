@@ -846,6 +846,100 @@ function _checkbook_advanced_search_add_payroll_range_filter_param($from,$to,$ur
 
     return $redirect_url;
 }
+/*
+ * Constructs the URL for Nycha Contracts based on the input by the users
+ */
+function _checkbook_advanced_search_nycha_contracts_submit($form, &$form_state, $data_source = 'checkbook_oge')
+{
+    $filter_dimension = $data_source . '_contracts';
+    $contracts_nycha_agency_id = Datasource::getNYCHAId();
+    $contracts_contract_type=trim($form[$filter_dimension][$data_source . '_contracts_nycha_contract_type']['#value']);
+    $contracts_responsibility_center=trim($form[$filter_dimension][$data_source . '_contracts_responsibility_center']['#value']);
+    $contracts_purchase_order_type = trim($form[$filter_dimension][$data_source . '_contracts_purchase_order_type']['#value']);
+    $contracts_contract_vendor_name = trim($form[$filter_dimension][$data_source . '_contracts_vendor_name']['#value']);
+    $contracts_contract_purpose = trim($form[$filter_dimension][$data_source . '_contracts_purpose']['#value']);
+    $contracts_contract_contract_num = trim($form[$filter_dimension][$data_source . '_contracts_purchase_order_number']['#value']);
+    $contracts_contract_pin = trim($form[$filter_dimension][$data_source . '_contracts_pin']['#value']);
+    $contracts_contract_award_method = trim($form[$filter_dimension][$data_source . '_contracts_nycha_award_method']['#value']);
+    $contracts_contract_current_contract_amount_from = trim($form[$filter_dimension][$data_source . '_contracts_current_contract_amount_from']['#value']);
+    $contracts_contract_current_contract_amount_to = trim($form[$filter_dimension][$data_source . '_contracts_current_contract_amount_to']['#value']);
+    $contracts_contract_start_date_from = trim($form[$filter_dimension][$data_source . '_contracts_start_date_from']['#value']['date']);
+    $contracts_contract_start_date_to = trim($form[$filter_dimension][$data_source . '_contracts_start_date_to']['#value']['date']);
+    $contracts_contract_end_date_from = trim($form[$filter_dimension][$data_source . '_contracts_end_date_from']['#value']['date']);
+    $contracts_contract_end_date_to = trim($form[$filter_dimension][$data_source . '_contracts_end_date_to']['#value']['date']);
+    $contracts_contract_approved_date_from = trim($form_state['input'][$data_source . '_contracts_approved_date_from']['date']);
+    $contracts_contract_approved_date_to = trim($form_state['input'][$data_source . '_contracts_approved_date_to']['date']);
+    $contracts_year = trim($form[$filter_dimension][$data_source . '_contracts_year']['#value']);
+    $contracts_industry_type_id = trim($form[$filter_dimension][$data_source . '_contracts_nycha_industry']['#value']);
+    $contracts_industry_type_id = $contracts_industry_type_id == "Select Industry" ? 0 : $contracts_industry_type_id;
+
+    if ($contracts_year == 'fy~all') {
+        $contracts_year = null;
+    }
+
+    $redirect_url = 'nycha_contracts/search/transactions';
+    if(!empty($contracts_nycha_agency_id)){
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_nycha_agency_id, 'agency');
+    }
+
+    if(!empty($contracts_purchase_order_type)){
+        if($contracts_purchase_order_type!=="ALL"){
+
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_purchase_order_type, 'agreement_type');
+        }
+    }
+
+    //Pending Contracts should always be in the current FY.
+    if (!empty($contracts_industry_type_id)) {
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_industry_type_id, 'cindustry');
+    }
+
+
+
+    if (!empty($contracts_contract_vendor_name)) {
+
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_vendor_name, 'vendornm_exact');
+
+    }
+    if (!empty($contracts_contract_purpose)) {
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_purpose, 'pcontdesc');
+    }
+
+    if (!empty($contracts_contract_contract_num)) {
+
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_contract_num, 'po_num_exact"');
+
+    }
+
+    if (!empty($contracts_contract_pin)) {
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_pin, 'pin');
+    }
+    if (!empty($contracts_contract_award_method)) {
+        $code_id_array = _checkbook_advanced_search_autocomplete_get_code_id($contracts_contract_award_method);
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($code_id_array['id'], 'awdmethod');
+    }
+
+    if (!empty($contracts_year)) {
+        $redirect_url .= _checkbook_advanced_search_year_arg($contracts_year);
+    }
+
+    $contracts_contract_current_contract_amount_range_array = array('from' => $contracts_contract_current_contract_amount_from, 'to' => $contracts_contract_current_contract_amount_to, 'type' => 'amount');
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_current_contract_amount_range_array, 'curamt', TRUE);
+
+    $contracts_contract_start_date_range_array = array('from' => $contracts_contract_start_date_from, 'to' => $contracts_contract_start_date_to, 'type' => 'date');
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_start_date_range_array, 'startdate', TRUE);
+
+    $contracts_contract_end_date_range_array = array('from' => $contracts_contract_end_date_from, 'to' => $contracts_contract_end_date_to, 'type' => 'date');
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_end_date_range_array, 'enddate', TRUE);
+
+    $contracts_contract_approved_date_range_array = array('from' => $contracts_contract_approved_date_from, 'to' => $contracts_contract_approved_date_to, 'type' => 'date');
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_approved_date_range_array, 'recdate', TRUE);
+
+
+    $redirect_url .= '/datasource/checkbook_nycha';
+
+    return $redirect_url;
+}
 
 /*
  * Constructs the URL for Contracts based on the input by the users
@@ -853,6 +947,11 @@ function _checkbook_advanced_search_add_payroll_range_filter_param($from,$to,$ur
 function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_source = 'checkbook')
 {
     $filter_dimension = $data_source . '_contracts';
+    $contracts_agency = trim($form[$filter_dimension][$data_source . '_contracts_agency']['#value']);
+    if( $contracts_agency == 1){
+     $redirect_url =   _checkbook_advanced_search_nycha_contracts_submit($form, $form_state,  'checkbook_oge');
+     return $redirect_url;
+    }
 
     $contracts_contract_status = trim($form[$filter_dimension][$data_source . '_contracts_status']['#value']);
     $contracts_contract_category = trim($form[$filter_dimension][$data_source . '_contracts_category']['#value']);
@@ -893,6 +992,7 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
     $contracts_sub_vendor_status = trim($form[$filter_dimension][$data_source . '_contracts_sub_vendor_status']['#value']);
     $contracts_sub_vendor_status = $contracts_sub_vendor_status == "Select Status" ||  $contracts_sub_vendor_status == ""
         ? 0 : $contracts_sub_vendor_status;
+
 
     if ($contracts_year == 'fy~all') {
         $redirect_url = 'contract/all/transactions';
