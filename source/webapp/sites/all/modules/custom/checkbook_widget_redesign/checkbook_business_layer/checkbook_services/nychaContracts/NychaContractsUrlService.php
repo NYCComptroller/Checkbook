@@ -36,6 +36,21 @@ class NychaContractsUrlService
     }
 
     /**
+     * Returns NYCHA Contracts Vendor Landing page URL for the given vendor id
+     * @param $contract_id
+     */
+    static function contractDetailsUrl($contract_id)
+    {
+        $url = '/nycha_contracts'
+            . RequestUtilities::buildUrlFromParam('year')
+            . RequestUtilities::buildUrlFromParam('datasource')
+            . RequestUtilities::buildUrlFromParam('agency')
+            .'?expandBottomContURL=/panel_html/nycha_contract_details/contract/'.$contract_id;
+
+        return $url;
+    }
+
+    /**
      *  Returns NYCHA Agreement Type Code URL string for the given Agreement Type Code
      *  @param $agreementTypeCode
      *  @return string
