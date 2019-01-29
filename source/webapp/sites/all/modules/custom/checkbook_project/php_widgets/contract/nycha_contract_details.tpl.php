@@ -18,73 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-//var_dump($node->data);
-
 
 $contract = $node->data[0];
-
-//if ( RequestUtilities::get("datasource") == "checkbook_oge") {
-//    $datasource ="/datasource/checkbook_oge";
-//    $oge_class = "oge-ma-details";
-//}else{
-//    $oge_class = "cb-ma-details";
-//}
-//if(RequestUtilities::get("status")){
-//    $status = '/status/'.RequestUtilities::get("status");
-//}else{
-//    $status = '/status/A';
-//}
-
-$vendor_link = '';//_checkbook_vendor_link($contract['vendor_id_checkbook_vendor_history'],TRUE);
-$agency_link = '';//_checkbook_agency_link($contract['agency_id_checkbook_agency'],TRUE);
-
-$spending_link = '';//"/spending/transactions/magid/" . RequestUtilities::get("magid") . $datasource . "/newwindow";
-$newwindowclass = '';
-//if(!preg_match("/newwindow/",current_path())){
-//    $newwindowclass= 'class="new_window"';
-//}
-
-/*
- * array(1) {
-  [0]=>
-  array(17) {
-    ["contractid"]=>
-    string(9) "BA1404493"
-    ["vendor_id"]=>
-    string(6) "807055"
-    ["vendor_name"]=>
-    string(41) "APTIM ENVIRONMENTAL & INFRASTRUCTURE, INC"
-    ["purpose"]=>
-    string(70) "CPD-Program Mgmt. Services Related to Hurricane Sandy Long Term Repair"
-    ["award_method_id"]=>
-    string(2) "60"
-    ["award_method_name"]=>
-    string(15) "COMPETETIVE RFP"
-    ["number_of_solicitations"]=>
-    NULL
-    ["response_to_solicitation"]=>
-    NULL
-    ["spend_to_date"]=>
-    string(11) "81011295.84"
-    ["award_size_name"]=>
-    string(23) "Greater than $1 Million"
-    ["award_size_id"]=>
-    string(1) "1"
-    ["original_amount"]=>
-    string(11) "14132443.96"
-    ["total_amount"]=>
-    string(12) "146618596.34"
-    ["start_date"]=>
-    string(10) "2014-03-14"
-    ["end_date"]=>
-    string(10) "2022-06-30"
-    ["approved_date"]=>
-    string(10) "2018-01-25"
-    ["revision_count"]=>
-    string(1) "8"
-  }
-}
- */
 
 ?>
 <div class="content clearfix">
@@ -222,30 +157,9 @@ $newwindowclass = '';
             "bInfo": false
         });
     </script>
-    <!-- END OUTPUT from 'sites/all/modules/custom/checkbook_project/php_widgets/contract/contracts_ma_history.tpl.php' -->
-
 </div>
 
 <div class="clearfix">
     <div class="links node-links clearfix"></div>
 
-</div>
-
-
-<?php /*
-        <div class="contract-vendor-details">
-
-            $nid = 425;
-            $node = node_load($nid);
-            node_build_content($node);
-            print drupal_render($node->content);
-        </div>
-        */ ?>
-<!--<div class="associated-contracts">
-  <?php
-/*  $nid = 437;
-  $node = node_load($nid);
-  node_build_content($node);
-  print drupal_render($node->content);
-  */ ?>
 </div>
