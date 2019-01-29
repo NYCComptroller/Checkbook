@@ -165,7 +165,7 @@ function checkbook_project_init(){
  * @param unknown_type $type
  * @param unknown_type $theme
  * @param unknown_type $path
- * @return multitype:multitype:string multitype:unknown   multitype:string multitype:NULL
+ * @return array
  */
 function checkbook_project_theme($existing, $type, $theme, $path){
     return array(
@@ -467,6 +467,10 @@ function checkbook_project_theme($existing, $type, $theme, $path){
         ),
         'contracts_ca_details' => array(
             'template' => 'php_widgets/contract/contracts_ca_details',
+            'arguments' => array('node' => NULL)
+        ),
+        'nycha_contract_details' => array(
+            'template' => 'php_widgets/contract/nycha_contract_details',
             'arguments' => array('node' => NULL)
         ),
         'contracts_ma_assoc_contracts' => array(

@@ -892,6 +892,18 @@
                 function onChangeDataSource(dataSource) {
                     /* Reset all the fields for the data source */
                     clearInputFields("#payroll-advanced-search", 'payroll', dataSource);
+                    /** Hide Fiscal Year values for OGE **/
+                    if(dataSource == 'checkbook_oge'){
+                        $("#edit-payroll-year > option").each(function() {
+                          if($(this).val().indexOf("fy") >= 0)
+                            $(this).hide();
+                        });
+                    }else{
+                        $("#edit-payroll-year > option").each(function() {
+                          if($(this).val().indexOf("fy") >= 0)
+                            $(this).show();
+                        });
+                    }
                 }
             }
 
