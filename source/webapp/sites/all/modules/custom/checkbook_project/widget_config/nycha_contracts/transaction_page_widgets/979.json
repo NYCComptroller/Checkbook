@@ -4,7 +4,7 @@
   "stickyHeader":true,
   "cleanURLParameters":["year","curamtr","pcontdesc","appdate","startdate","enddate", "vendornm_exact","responsibilitynm_exact","fundingnm_exact","industrynm_exact","agreement_type", "po_num", "po_num_exact", "agency","awdmethod","contract_type"],
   "urlParamMap":{"year":"release_approved_year_id", "curamtr":"release_line_total_amount","industrynm_exact":"industry_type_id","fundingnm_exact":"funding_source_id","vendornm_exact":"vendor_id","agreement_type":"agreement_type_code",
-                 "po_num":"purchase_order_number","responsibilitynm_exact":"responsibility_center_id","po_num_exact":"purchase_order_number", "agency":"agency_id", "awdmethod":"award_method_id","contract_type": "contract_type_code",
+                 "po_num":"contract_id","responsibilitynm_exact":"responsibility_center_id","po_num_exact":"contract_id", "agency":"agency_id", "awdmethod":"award_method_id","contract_type": "contract_type_code",
     "pcontdesc":"purpose","appdate": "release_approved_date","startdate": "agreement_start_date","enddate": "agreement_end_date"
   },
   "paramTypeConfig": {
@@ -28,7 +28,7 @@
   "html_class":"initiative-table",
   "no_results_content":"No Results Found",
   "dataset":"checkbook_nycha:nycha_all_agreements",
-  "columns": [ "purchase_order_number", "agreement_type_name", "release_number", "shipment_number", "distribution_number", "agreement_start_date",
+  "columns": [ "contract_id", "agreement_type_name", "release_number", "shipment_number", "distribution_number", "agreement_start_date",
     "agreement_end_date", "release_approved_date", "release_total_amount", "release_original_amount", "release_spend_to_date",
     "purpose", "vendor_name", "location_descr", "location_borough_name", "contract_type_descr", "award_method_name", "grant_name",
     "expenditure_type_descr", "industry_type_name", "funding_source_descr", "responsibility_center_descr", "program_phase_descr",
@@ -45,7 +45,7 @@
   //},
   "skipCustomPadding":true,
   "table_columns": [
-    {"labelAlias":"contract_id","column":"purchase_order_number"},
+    {"labelAlias":"contract_id","column":"contract_id"},
     {"label":"","column":"", "export":false},
     {"labelAlias":"purchase_order_type","column":"agreement_type_name"},
     {"labelAlias":"release_number","column":"release_number"},

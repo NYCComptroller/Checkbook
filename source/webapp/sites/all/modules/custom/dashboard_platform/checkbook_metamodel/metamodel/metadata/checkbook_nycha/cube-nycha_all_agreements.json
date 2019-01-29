@@ -10,11 +10,11 @@
       "sourceDatasetName": "nycha_all_agreements",
       "dimensions": [
         {
-          "name":"purchase_order_number",
+          "name":"contract_id",
           "levels": [
             {
-              "name":"purchase_order_number",
-              "sourceColumnName":"purchase_order_number"
+              "name":"contract_id",
+              "sourceColumnName":"contract_id"
             }]
         },
         {
