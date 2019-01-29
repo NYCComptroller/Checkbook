@@ -121,6 +121,14 @@ abstract class Datasource {
             return $path;
 
     }
+    public static function getNYCHAId() {
+
+        $nychaId = _checkbook_project_querydataset('checkbook_nycha:agency', array('agency_id'), array('agency_short_name' => 'HOUSING AUTH'));
+        $agency_id= $nychaId[0]['agency_id'];
+
+        return $agency_id;
+
+    }
 }
 
 abstract class Dashboard {
