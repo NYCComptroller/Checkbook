@@ -883,18 +883,22 @@ function _checkbook_advanced_search_nycha_contracts_submit($form, &$form_state, 
     }
 
     if(!empty($contracts_purchase_order_type)){
-        if($contracts_purchase_order_type!=="ALL"){
+        if($contracts_purchase_order_type!=="All"){
 
             $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_purchase_order_type, 'agreement_type');
         }
     }
+    if(!empty( $contracts_contract_type))
+    {
+        $code_id_array = _checkbook_advanced_search_autocomplete_get_code_id($contracts_contract_type);
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($code_id_array['code'], 'contract_type');
+    }
 
     //Pending Contracts should always be in the current FY.
     if (!empty($contracts_industry_type_id)) {
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_industry_type_id, 'cindustry');
+        $code_id_array = _checkbook_advanced_search_autocomplete_get_code_id($contracts_industry_type_id);
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($code_id_array['id'], 'industrynm_exact');
     }
-
-
 
     if (!empty($contracts_contract_vendor_name)) {
 
@@ -907,8 +911,13 @@ function _checkbook_advanced_search_nycha_contracts_submit($form, &$form_state, 
 
     if (!empty($contracts_contract_contract_num)) {
 
-            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_contract_num, 'po_num_exact"');
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_contract_num, 'po_num_exact');
 
+    }
+
+    if (!empty($contracts_responsibility_center)) {
+        $code_id_array = _checkbook_advanced_search_autocomplete_get_code_id($contracts_responsibility_center);
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($code_id_array['id'], 'responsibilitynm_exact');
     }
 
     if (!empty($contracts_contract_pin)) {
@@ -924,7 +933,7 @@ function _checkbook_advanced_search_nycha_contracts_submit($form, &$form_state, 
     }
 
     $contracts_contract_current_contract_amount_range_array = array('from' => $contracts_contract_current_contract_amount_from, 'to' => $contracts_contract_current_contract_amount_to, 'type' => 'amount');
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_current_contract_amount_range_array, 'curamt', TRUE);
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_current_contract_amount_range_array, 'curamtr', TRUE);
 
     $contracts_contract_start_date_range_array = array('from' => $contracts_contract_start_date_from, 'to' => $contracts_contract_start_date_to, 'type' => 'date');
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_start_date_range_array, 'startdate', TRUE);
@@ -933,7 +942,7 @@ function _checkbook_advanced_search_nycha_contracts_submit($form, &$form_state, 
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_end_date_range_array, 'enddate', TRUE);
 
     $contracts_contract_approved_date_range_array = array('from' => $contracts_contract_approved_date_from, 'to' => $contracts_contract_approved_date_to, 'type' => 'date');
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_approved_date_range_array, 'recdate', TRUE);
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_approved_date_range_array, 'appdate', TRUE);
 
 
     $redirect_url .= '/datasource/checkbook_nycha';
@@ -948,7 +957,7 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
 {
     $filter_dimension = $data_source . '_contracts';
     $contracts_agency = trim($form[$filter_dimension][$data_source . '_contracts_agency']['#value']);
-    if( $contracts_agency == 1){
+    if( $contracts_agency == Datasource::getNYCHAId()){
      $redirect_url =   _checkbook_advanced_search_nycha_contracts_submit($form, $form_state,  'checkbook_oge');
      return $redirect_url;
     }

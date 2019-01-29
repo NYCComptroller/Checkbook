@@ -2,14 +2,19 @@
   "widgetType":"data_tables",
   "widgetSubType":"dataTableList",
   "stickyHeader":true,
-  "cleanURLParameters":["year","curamtr", "vendornm_exact","responsibilitynm_exact","fundingnm_exact","industrynm_exact","agreement_type", "po_num", "po_num_exact", "agency","awdmethod"],
+  "cleanURLParameters":["year","curamtr","pcontdesc","appdate","startdate","enddate", "vendornm_exact","responsibilitynm_exact","fundingnm_exact","industrynm_exact","agreement_type", "po_num", "po_num_exact", "agency","awdmethod","contract_type"],
   "urlParamMap":{"year":"release_approved_year_id", "curamtr":"release_line_total_amount","industrynm_exact":"industry_type_id","fundingnm_exact":"funding_source_id","vendornm_exact":"vendor_id","agreement_type":"agreement_type_code",
-                 "po_num":"purchase_order_number","responsibilitynm_exact":"responsibility_center_id","po_num_exact":"purchase_order_number", "agency":"agency_id", "awdmethod":"award_method_id"
+                 "po_num":"purchase_order_number","responsibilitynm_exact":"responsibility_center_id","po_num_exact":"purchase_order_number", "agency":"agency_id", "awdmethod":"award_method_id","contract_type": "contract_type_code",
+    "pcontdesc":"purpose","appdate": "release_approved_date","startdate": "agreement_start_date","enddate": "agreement_end_date"
   },
   "paramTypeConfig": {
     "po_num": "like",
     "po_num_exact": "eqignorecase",
-    "curamtr": "rangeid"
+    "curamtr": "rangeid",
+    "pcontdesc": "contains",
+    "startdate": "range",
+    "enddate": "range",
+    "appdate": "range"
   },
   "header":"
         $header = NULL;
@@ -40,7 +45,7 @@
   //},
   "skipCustomPadding":true,
   "table_columns": [
-    {"labelAlias":"purchase_order_number","column":"purchase_order_number"},
+    {"labelAlias":"contract_id","column":"purchase_order_number"},
     {"label":"","column":"", "export":false},
     {"labelAlias":"purchase_order_type","column":"agreement_type_name"},
     {"labelAlias":"release_number","column":"release_number"},
@@ -121,7 +126,7 @@
       {"sClass":"text", "sWidth":"220px","asSorting":["asc","desc"]},
       {"sClass":"text", "sWidth":"220px","asSorting":["asc","desc"]},
       {"sClass":"text", "sWidth":"220px","asSorting":["asc","desc"]},
-      {"sClass":"text", "sWidth":"220px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"180px","asSorting":["asc","desc"]},
       {"bSortable":false,"sWidth":"2px"}
     ],
     "aaSorting":[[0,"desc"]],
