@@ -83,7 +83,7 @@
             $('.form-item-column-select').hide();
 
             /** Hide Fiscal Year values for OGE **/
-            $("#edit-year > option").each(function() {alert($(this).val().toLowerCase());
+            $("#edit-year > option").each(function() {
               if($(this).val().toLowerCase().indexOf("fy") >= 0)
                 $(this).hide();
             });
