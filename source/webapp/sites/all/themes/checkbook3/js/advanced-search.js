@@ -491,11 +491,11 @@
 
                 //
                 $("#edit-checkbook-oge-contracts-agency").change(function () {
-                    onOGEAgencyChange($("#edit-checkbook-oge-contracts-agency").val());
+                    onOGEAgencyChange(jQuery("#edit-checkbook-oge-contracts-agency option:selected").attr('title').toUpperCase());
                 });
 
                 function onOGEAgencyChange(oge_agency){
-                  if(oge_agency == 1){
+                  if(oge_agency == 'NEW YORK CITY HOUSING AUTHORITY'){
                     $(".form-item-checkbook-oge-contracts-purchase-order-type").show();
                     $(".form-item-checkbook-oge-contracts-purchase-order-number").show();
                     $(".form-item-checkbook-oge-contracts-responsibility-center").show();
@@ -619,7 +619,7 @@
                             div_checkbook_contracts_oge.contents().show();
 
                             //Hide NYCHA fields
-                            onOGEAgencyChange($("#edit-checkbook-oge-contracts-agency").val());
+                            onOGEAgencyChange(jQuery("#edit-checkbook-oge-contracts-agency option:selected").attr('title').toUpperCase());
 
                             //handle oge attributes
                             div_checkbook_contracts_oge.ele('status').find('option[value=P]').remove();
