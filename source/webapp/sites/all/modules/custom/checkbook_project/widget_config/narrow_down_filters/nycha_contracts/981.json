@@ -10,7 +10,7 @@
   "columns":["purchase_order_number.purchase_order_number","txcount"],
   "orderBy":"-txcount",
   "facetPager":true,
-  "filterName":"Purchase Order Number",
+  "filterName":"Contract ID",
   "urlParameterName":"po_num_exact",
   "autocompleteParamName":"po_num_exact_auto",
   "autocompleteID":"fPONumber",
