@@ -26,25 +26,10 @@ $contract = $node->data[0];
     <div class="contract-id">
         <h2 class='contract-title'>Contract ID: <span
                 class="contract-number"><?= $contract['contract_id']; ?></span></h2>
-        <?php
-        //$oge_agency_id = _checkbook_get_oge_agency_id($contract['vendor_id_checkbook_vendor_history']);
-
-
-        if (RequestUtilities::get("datasource") == "checkbook_oge" && !preg_match('/newwindow/', $_GET['q']) && $node->data_source_amounts_differ) {
-            $alt_txt = "This master agreement has additional information as a prime vendor.<br><br> Click this icon to view this contract as a prime vendor. ";
-            $url = "/contract_details/magid/" . RequestUtilities::get("magid") . "/doctype/MMA1/newwindow";
-            echo "<div class='contractLinkNote contractIcon'><a class='new_window' href='" . $url . "' alt='" . $alt_txt . "' >Open in New Window</a></div>";
-        } elseif (!preg_match('/newwindow/', $_GET['q']) && _checkbook_is_oge_parent_contract($contract['contract_number']) && $node->data_source_amounts_differ) {
-            $alt_txt = "This master agreement has additional information as an agency <br><br> Click this icon to view this contract as an agency ";
-            $url = "/contract_details/magid/" . RequestUtilities::get("magid") . "/doctype/MMA1/datasource/checkbook_oge/newwindow";
-            echo "<div class='contractLinkNote contractIcon'><a class='new_window' href='" . $url . "' alt='" . $alt_txt . "' >Open in New Window</a></div>";
-        }
-        ?>
     </div>
     <div class="dollar-amounts">
         <div class="spent-to-date">
-            <a <?= $newwindowclass ?>
-                href="<?= $spending_link; ?>"><?= custom_number_formatter_format($contract['spend_to_date'], 2, "$"); ?></a>
+            <?= custom_number_formatter_format($contract['spend_to_date'], 2, "$"); ?>
             <div class="amount-title">Spent to<br/>Date</div>
         </div>
         <div class="original-amount">
@@ -56,13 +41,13 @@ $contract = $node->data[0];
             <div class="amount-title">Current Amount</div>
         </div>
     </div>
-    <div class="contract-information <?= $oge_class; ?>">
+    <div class="contract-information">
         <div class="contract-details">
             <h4>General Information</h4>
             <ul class="left">
                 <li>
                     <span class="gi-list-item">Vendor:</span>
-                    &nbsp;<a href="<?= $vendor_link; ?>"><?= $contract['vendor_name']; ?></a></li>
+                    &nbsp;<?= $contract['vendor_name']; ?></li>
                 <li>
                     <span class="gi-list-item">Purpose:</span>
                     &nbsp;<?= $contract['purpose']; ?>
@@ -92,9 +77,11 @@ $contract = $node->data[0];
                 Vendor Information
             </h4>
             <ul class="left">
-                <li><span class="gi-list-item">Vendor:</span>&nbsp;<a
-                        href="<?= $vendor_link; ?>"><?= $contract['vendor_name'] ?></a></li>
-                <li><span class="gi-list-item">Address:</span>
+                <li>
+                    <span class="gi-list-item">Vendor:</span>
+                    &nbsp;<?= $contract['vendor_name'] ?></li>
+                <li>
+                    <span class="gi-list-item">Address:</span>
                     &nbsp;<?= $contract['address_line1'] ?>
                     <br/><?= $contract['address_line2'] ?>
                 </li>
@@ -117,10 +104,10 @@ $contract = $node->data[0];
                     <div><span>Revision<br/>Number</span></div>
                 </th>
                 <th class='text thLastMDate'>
-                    <div><span>Revision<br />Approved&nbsp;Date</span></div>
+                    <div><span>Revision<br/>Approved&nbsp;Date</span></div>
                 </th>
                 <th class='number thTotalAmt'>
-                    <div><span>Revision <br />Total&nbsp;Amount</span></div>
+                    <div><span>Revision <br/>Total&nbsp;Amount</span></div>
                 </th>
                 <th class='number thOrigAmt'>
                     <div><span>Original<br/>Amount</span></div>
