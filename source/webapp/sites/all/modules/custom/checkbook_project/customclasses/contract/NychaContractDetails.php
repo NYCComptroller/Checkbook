@@ -20,9 +20,15 @@
 
 require_once(realpath(drupal_get_path('module', 'checkbook_project')) .'/customclasses/contract/ContractUtil.php');
 
+/**
+ * Class NychaContractDetails
+ */
 class NychaContractDetails {
 
-  public function getData(&$node){
+    /**
+     * @param $node
+     */
+    public function getData(&$node){
 
       $contract_id = RequestUtilities::getRequestParamValue('contract');
 
