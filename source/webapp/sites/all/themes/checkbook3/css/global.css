@@ -2284,6 +2284,10 @@ table#assoc_contracts_list .assoc_item .rfed-amount {
     float: right;
 }
 
+#nycha-contracts-landing .contract-details-heading{
+  width: 920px;
+}
+
 .contract-details{
     border: 1px dotted #CACACA;
     border-width: 1px 1px 0px 0px;
