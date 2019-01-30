@@ -6,7 +6,7 @@
   "headerSubTitle":"Purchase Orders",
   "footerUrl":"_widget_controller_footer_url($node).NychaContractsUrlService::agreementTypeUrl('PO')",
   "table_columns":[
-    {"labelAlias": "contract_id","column": "purchase_order_number","derivedColumn":"contract_id_link"},
+    {"labelAlias": "contract_id","column": "contract_id","derivedColumn":"contract_id_link"},
     {"labelAlias": "contract_purpose","column": "purpose","tooltip":22},
     {"labelAlias":"vendor_name","column":"vendor_name","tooltip":22},
     {"labelAlias":"current_amount","column":"total_amount","format":"dollar"},
