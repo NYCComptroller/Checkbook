@@ -6,7 +6,7 @@
   "headerSubTitle":"Blanket Agreements",
   "footerUrl":"_widget_controller_footer_url($node).NychaContractsUrlService::agreementTypeUrl('BA')",
   "table_columns":[
-    {"labelAlias": "contract_id","column": "po_number","derivedColumn":"contract_id_link"},
+    {"labelAlias": "contract_id","column": "contract_id","derivedColumn":"contract_id_link"},
     {"labelAlias": "vendor_name","column": "vendor_name","tooltip":32},
     {"labelAlias": "contract_purpose","column": "purpose","tooltip":32},
     {"labelAlias":"current_amount","column":"total_amount","format":"dollar"},
