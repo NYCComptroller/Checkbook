@@ -40,9 +40,11 @@
      return $parameters;
   ",
   "caption":"",
-  //"derivedColumns": {
-
-  //},
+  "derivedColumns": {
+  "contract_purpose_formatted": {
+  "expression": "_get_tooltip_markup($row['purpose'],36)"
+  }
+  },
   "skipCustomPadding":true,
   "table_columns": [
     {"labelAlias":"contract_id","column":"contract_id"},
@@ -58,7 +60,7 @@
     {"labelAlias":"original_amount","column":"release_original_amount"},
     {"labelAlias":"spend_to_date","column":"release_spend_to_date"},
     {"label":"","column":"", "export":false},
-    {"labelAlias":"contract_purpose","column":"purpose"},
+    {"labelAlias":"contract_purpose","column":"contract_purpose_formatted"},
     {"labelAlias":"vendor_name","column":"vendor_name"},
     {"labelAlias":"location","column":"location_descr"},
     {"labelAlias":"borough","column":"location_borough_name"},
