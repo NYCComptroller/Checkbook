@@ -53,7 +53,7 @@
     <param name="vendor" type="int"/>
     <sql>
       SELECT
-        purchase_order_number,
+        contract_id,
         purpose,
         vendor_name,
         SUM(release_line_total_amount) AS total_amount,
@@ -66,7 +66,7 @@
           <exp op="=" dbField="vendor_id" paramName="vendor"/>
         </exp>
       </where>
-      GROUP BY purchase_order_number, purpose, vendor_name
+      GROUP BY  contract_id, purpose, vendor_name
     </sql>
   </statement>
 
@@ -125,7 +125,7 @@
     <param name="is_modification" type="bool"/>
     <sql>
       SELECT
-        po_number,
+        contract_id,
         contract_agreement_uniq_id,
         purpose,
         vendor_name,
@@ -146,7 +146,7 @@
       <exp op="IF" condition="=" paramName="is_modification" compareValue="true">
         AND dollar_difference != 0
       </exp>
-      GROUP BY po_number, contract_agreement_uniq_id, purpose, vendor_name
+      GROUP BY  contract_id, contract_agreement_uniq_id, purpose, vendor_name
     </sql>
   </statement>
 
@@ -158,7 +158,7 @@
     <param name="is_modification" type="bool"/>
     <sql>
       SELECT
-        po_number,
+        contract_id,
         contract_agreement_uniq_id,
         purpose,
         vendor_name,
@@ -179,7 +179,7 @@
       <exp op="IF" condition="=" paramName="is_modification" compareValue="true">
         AND dollar_difference != 0
       </exp>
-      GROUP BY po_number, contract_agreement_uniq_id, purpose, vendor_name
+      GROUP BY  contract_id, contract_agreement_uniq_id, purpose, vendor_name
     </sql>
   </statement>
 
@@ -233,7 +233,7 @@
   <statement name="GetCountContracts" datasource="checkbook_nycha">
     <param name="year" required="true" type="int"/>
     <sql>
-      SELECT DISTINCT purchase_order_number FROM all_agreement_transactions
+      SELECT DISTINCT contract_id FROM all_agreement_transactions
       <where>
         <exp op="AND">
           <exp op="=" dbField="release_approved_year_id" paramName="year"/>
