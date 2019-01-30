@@ -86,7 +86,7 @@ $feature_db_css = "expense-container";
             </td>
             <td class="contracts<?php if($contracts_active){print $contracts_active;}?>">
                 <div class="expense-container"><?php print $contracts_link ?></div>
-                <?php if($indicator_left){?><div class='indicator'></div><?php }?>
+               <div class='indicator'></div>
             </td>
             <td class="employees<?php if($payroll_active){print $payroll_active;}?>">
                 <div class="expense-container"><?php print $payroll_link ?></div>
