@@ -2,7 +2,7 @@
   "serviceName":"NychaContractsWidgetService",
   "dataFunc":"GetContractsByRespCenters",
   "defaultParameters":{"type_of_year":"B"},
-  "table_title":"Top 5 Responsibility Centers",
+  "headerTitle":"Top 5 Responsibility Centers",
   "headerSubTitle":"Top Responsibility Centers",
   "table_columns":[
     {"labelAlias": "responsibility_center","column": "responsibility_center_descr"},
