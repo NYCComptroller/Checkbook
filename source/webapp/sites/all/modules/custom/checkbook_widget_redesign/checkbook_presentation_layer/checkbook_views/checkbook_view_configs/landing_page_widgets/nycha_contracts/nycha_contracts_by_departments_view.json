@@ -4,6 +4,7 @@
   "defaultParameters":{"type_of_year":"B"},
   "headerTitle":"Departments",
   "headerSubTitle":"Departments",
+  "footerUrl":"_widget_controller_footer_url($node).NychaContractsUrlService::TypeUrl('DEP')",
   "table_columns":[
     {"labelAlias": "dept_name","column": "department_name"},
     {"labelAlias":"no_of_contracts","column":"purchase_order_count","format":"number"},

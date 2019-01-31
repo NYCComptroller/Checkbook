@@ -4,7 +4,7 @@
   "defaultParameters":{},
   "headerTitle":"Blanket Agreements",
   "headerSubTitle":"Blanket Agreements",
-  "footerUrl":"_widget_controller_footer_url($node).NychaContractsUrlService::agreementTypeUrl('BA')",
+  "footerUrl":"_widget_controller_footer_url($node).NychaContractsUrlService::agreementTypeUrl('BA').NychaContractsUrlService::TypeUrl('BA')",
   "table_columns":[
     {"labelAlias": "contract_id","column": "contract_id","derivedColumn":"contract_id_link"},
     {"labelAlias": "vendor_name","column": "vendor_name","tooltip":32},
