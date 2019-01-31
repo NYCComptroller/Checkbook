@@ -59,4 +59,13 @@ class NychaContractsUrlService
         $url = "/agreement_type/".$agreementTypeCode;
         return $url;
     }
+    /**
+     *  Returns NYCHA  Type Code URL string for the given Widget
+     *  @param $TypeCode
+     *  @return string
+     */
+    static function TypeUrl($TypeCode){
+        $url = "/tCode/".$TypeCode;
+        return $url;
+    }
 }
