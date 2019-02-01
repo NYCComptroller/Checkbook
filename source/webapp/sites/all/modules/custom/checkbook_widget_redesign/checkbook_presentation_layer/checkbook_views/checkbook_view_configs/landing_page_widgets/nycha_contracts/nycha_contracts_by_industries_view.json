@@ -4,6 +4,7 @@
   "countFunc":"GetCountContracts",
   "table_title":"Contracts by Industries",
   "headerSubTitle":"Contracts",
+  "footerUrl":"_widget_controller_footer_url($node).NychaContractsUrlService::TypeUrl('IND')",
   "table_columns":[
     {"labelAlias":"contract_industry","column":"industry_type_name"},
     {"labelAlias":"no_of_contracts","column":"purchase_order_count","format":"number"},
