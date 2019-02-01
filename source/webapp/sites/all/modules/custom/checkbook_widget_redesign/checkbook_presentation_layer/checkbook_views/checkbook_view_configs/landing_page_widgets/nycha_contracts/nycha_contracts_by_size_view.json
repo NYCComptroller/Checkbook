@@ -4,6 +4,7 @@
   "table_title":"Contracts by Size",
   "countFunc":"GetCountContracts",
   "headerSubTitle":"Contracts",
+  "footerUrl":"_widget_controller_footer_url($node).NychaContractsUrlService::TypeUrl('SZ')",
   "table_columns":[
     {"labelAlias":"contract_size","column":"award_size_name"},
     {"labelAlias":"no_of_contracts","column":"po_count","format":"number"},
