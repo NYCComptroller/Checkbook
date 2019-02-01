@@ -3,6 +3,7 @@
     "dataFunc":"GetContractsByVendors",
     "headerTitle":"Vendors",
     "headerSubTitle":"Vendors",
+    "footerUrl":"_widget_controller_footer_url($node).NychaContractsUrlService::TypeUrl('VO')",
     "table_columns":[
         {"labelAlias":"vendor_name","column":"vendor_name","derivedColumn":"vendor_link","tooltip":60},
         {"labelAlias":"no_of_contracts","column":"purchase_order_count","format":"number"},

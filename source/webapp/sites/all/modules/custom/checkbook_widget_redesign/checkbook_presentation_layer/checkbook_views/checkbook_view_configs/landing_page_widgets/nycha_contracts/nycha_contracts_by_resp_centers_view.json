@@ -4,6 +4,7 @@
   "defaultParameters":{"type_of_year":"B"},
   "headerTitle":"Top 5 Responsibility Centers",
   "headerSubTitle":"Top Responsibility Centers",
+  "footerUrl":"_widget_controller_footer_url($node).NychaContractsUrlService::TypeUrl('RESC')",
   "table_columns":[
     {"labelAlias": "responsibility_center","column": "responsibility_center_descr"},
     {"labelAlias":"no_of_contracts","column":"contract_count","format":"number"},

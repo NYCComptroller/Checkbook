@@ -4,6 +4,7 @@
   "defaultParameters":{"type_of_year":"B"},
   "headerTitle":"Award Methods",
   "headerSubTitle":"Award Methods",
+  "footerUrl":"_widget_controller_footer_url($node).NychaContractsUrlService::TypeUrl('AWD')",
   "table_columns":[
     {"labelAlias": "award_method","column": "award_method_name"},
     {"labelAlias":"no_of_contracts","column":"purchase_order_count","format":"number"},
