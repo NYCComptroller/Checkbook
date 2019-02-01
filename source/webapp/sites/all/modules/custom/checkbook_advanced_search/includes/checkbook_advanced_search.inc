@@ -874,10 +874,11 @@ function _checkbook_advanced_search_nycha_contracts_submit($form, &$form_state, 
     $contracts_industry_type_id = $contracts_industry_type_id == "Select Industry" ? 0 : $contracts_industry_type_id;
 
     if ($contracts_year == 'fy~all') {
-        $contracts_year = null;
+        $redirect_url = 'nycha_contracts/all/transactions';
     }
-
-    $redirect_url = 'nycha_contracts/search/transactions';
+    else {
+        $redirect_url = 'nycha_contracts/search/transactions';
+    }
     if(!empty($contracts_nycha_agency_id)){
         $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_nycha_agency_id, 'agency');
     }

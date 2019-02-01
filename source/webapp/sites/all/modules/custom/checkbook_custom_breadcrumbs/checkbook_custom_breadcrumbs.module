@@ -278,7 +278,7 @@ function _get_payroll_breadcrumb_title_drilldown()
 function _get_nycha_contracts_breadcrumb_title_drilldown()
 {
     $bottomURL = $_REQUEST['expandBottomContURL'];
-    if (!$bottomURL && preg_match('/^nycha_contracts\/search\/transactions/', current_path())) {
+    if (!$bottomURL && preg_match('/^nycha_contracts\/search\/transactions/', current_path()) || preg_match('/^nycha_contracts\/all\/transactions/', current_path())) {
         $title = null;
     }
     else {
