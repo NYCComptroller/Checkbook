@@ -62,7 +62,7 @@
 
 $datasource = RequestUtilities::getRequestParamValue('datasource');
 $sql = 'SELECT
-  po_number,
+  contract_id,
   contract_agreement_uniq_id,
   purpose,
   vendor_name,
@@ -87,7 +87,7 @@ $series_new = [];
 $index = 0;
 foreach($node->data as $row){
 $tooltip_label =
-'Contract ID: ' . $row['po_number'] .  '<br/>' .
+'Contract ID: ' . $row['contract_id'] .  '<br/>' .
 'Vendor: ' . $row['vendor_name'] .  '<br/>' .
 'Contracting Agency: NYCHA <br />' .
 'Amount: ' . custom_number_formatter_format($row['total_amount'] ,2, '$').  '<br/>'
@@ -100,7 +100,7 @@ $series_new[$index]->url = 	$link;
 
 $series_new[$index]->y = (float)$row['total_amount'];
 $series_new[$index]->tooltip_label = $tooltip_label;
-$node->widgetConfig->gridConfig->data[] = array($row['vendor_name'],$row['po_number'],$row['total_amount'] );
+$node->widgetConfig->gridConfig->data[] = array($row['vendor_name'],$row['contract_id'],$row['total_amount'] );
 $index += 1;
 }
 
