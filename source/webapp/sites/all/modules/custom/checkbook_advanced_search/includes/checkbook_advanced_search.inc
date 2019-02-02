@@ -875,6 +875,7 @@ function _checkbook_advanced_search_nycha_contracts_submit($form, &$form_state, 
 
     if ($contracts_year == 'fy~all') {
         $redirect_url = 'nycha_contracts/all/transactions';
+        $contracts_year = null;
     }
     else {
         $redirect_url = 'nycha_contracts/search/transactions';
@@ -903,7 +904,7 @@ function _checkbook_advanced_search_nycha_contracts_submit($form, &$form_state, 
 
     if (!empty($contracts_contract_vendor_name)) {
 
-            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_vendor_name, 'vendornm_exact');
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_vendor_name, 'vendornm');
 
     }
     if (!empty($contracts_contract_purpose)) {
