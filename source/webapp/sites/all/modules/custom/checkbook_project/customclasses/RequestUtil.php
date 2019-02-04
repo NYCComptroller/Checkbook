@@ -1359,9 +1359,9 @@ class RequestUtil
     public static function getNYCHAContractBreadcrumbTitle()
     {
         $bottomURL = $_REQUEST['expandBottomContURL'];
-        $title = "NEW YORK CITY HOUSING AUTHORITY ";
+        $title = "NEW YORK CITY HOUSING AUTHORITY CONTRACTS";
         if (!$bottomURL && preg_match('/^nycha_contracts\/search\/transactions/', current_path()) || preg_match('/^nycha_contracts\/all\/transactions/', current_path())) {
-            $title = null;
+            $title = 'NYCHA Contracts Transactions';
         }
         else if( stripos($bottomURL, 'transactions')){
             $code= RequestUtil::getRequestKeyValueFromURL("tCode",$bottomURL);
