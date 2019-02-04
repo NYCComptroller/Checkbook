@@ -2,8 +2,8 @@
   "serviceName":"NychaContractsWidgetService",
   "dataFunc":"GetContractsByRespCenters",
   "defaultParameters":{"type_of_year":"B"},
-  "headerTitle":"Top 5 Responsibility Centers",
-  "headerSubTitle":"Top Responsibility Centers",
+  "headerTitle":"Responsibility Centers",
+  "headerSubTitle":"Responsibility Centers",
   "footerUrl":"_widget_controller_footer_url($node).NychaContractsUrlService::TypeUrl('RESC')",
   "table_columns":[
     {"labelAlias": "responsibility_center","column": "responsibility_center_descr"},
