@@ -23,6 +23,7 @@ $contract = $node->data[0];
 
 ?>
 <div class="content clearfix">
+    <div class="contract-details-heading cb-ma-details  ;?>">
     <div class="contract-id">
         <h2 class='contract-title'>Contract ID: <span
                 class="contract-number"><?= $contract['contract_id']; ?></span></h2>
@@ -40,6 +41,10 @@ $contract = $node->data[0];
             <?= custom_number_formatter_format($contract['spend_to_date'], 2, '$'); ?>
             <div class="amount-title">Current Amount</div>
         </div>
+        <div class="total-contracts">
+            <?=$node->total_associated_releases; ?>
+            <div class="amount-title">Assoc. Releases</div>
+        </div>
     </div>
     <div class="contract-information">
         <div class="contract-details">
@@ -53,11 +58,36 @@ $contract = $node->data[0];
                     &nbsp;<?= $contract['purpose']; ?>
                 </li>
                 <li>
-                    <span class="gi-list-item">Revision Number:</span>
+                    <span class="gi-list-item">Contract Type:</span>
+                    &nbsp;<?= $contract['contract_type_descr']; ?>
+                </li>
+                <li>
+                    <span class="gi-list-item">Contracting Agency:</span>
+                    &nbsp;<?= $contract['agency_name']; ?>
+                </li>
+                <li><span class="gi-list-item">Award Method:</span>
+                    &nbsp;<?= $contract['award_method_name']; ?>
+
+                </li>
+
+                <li>
+                    <span class="gi-list-item">Version Number:</span>
                     &nbsp;<?= $contract['revision_number'] ?>
+                </li>
+                <li>
+                    <span class="gi-list-item">Commodity Category:</span>
+                    &nbsp;<?= $contract['commodity_category_descr'] ?>
                 </li>
             </ul>
             <ul class="right">
+                <li>
+                    <span class="gi-list-item">Number of Solicitations per Contract:</span>
+                    &nbsp;<?= $contract['number_of_solicitations']; ?>
+                </li>
+                <li>
+                    <span class="gi-list-item">Number of Responses per Solicitation:</span>
+                    &nbsp;<?= $contract['response_to_solicitation']; ?>
+                </li>
                 <li>
                     <span class="gi-list-item">Start Date:</span>
                     &nbsp;<?= format_string_to_date($contract['start_date']); ?>
@@ -67,8 +97,17 @@ $contract = $node->data[0];
                     &nbsp;<?= format_string_to_date($contract['end_date']); ?>
                 </li>
                 <li>
-                    <span class="gi-list-item">Registration Date:</span>
+                    <span class="gi-list-item">Approved Date:</span>
                     &nbsp;<?= format_string_to_date($contract['approved_date']); ?>
+                </li>
+                <li>
+                    <span class="gi-list-item">Cancelled Date:</span>
+
+                </li>
+                <li>
+                    <span class="gi-list-item">Transaction Status:</span>
+                    &nbsp;<?= 'Approved'; ?>
+
                 </li>
             </ul>
         </div>
@@ -85,9 +124,22 @@ $contract = $node->data[0];
                     &nbsp;<?= $contract['address_line1'] ?>
                     <br/><?= $contract['address_line2'] ?>
                 </li>
+                <li>
+                    <span class="gi-list-item">Total Number of NYCHA Contracts:</span>
+
+                </li>
+                <li>
+                    <span class="gi-list-item">M/WBE Vendor:</span>
+
+                </li>
+                <li>
+                    <span class="gi-list-item">M/WBE Category:</span>
+
+                </li>
             </ul>
         </div>
     </div>
+</div>
 </div>
 
 <div class="content clearfix nycha-contract-history">
