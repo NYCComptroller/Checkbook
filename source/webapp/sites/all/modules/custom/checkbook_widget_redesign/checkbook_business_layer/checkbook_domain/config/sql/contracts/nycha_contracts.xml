@@ -9,7 +9,7 @@
       SELECT
         vendor_name,
         vendor_id,
-        SUM(revision_count) AS purchase_order_count,
+        SUM(purchase_order_count) AS purchase_order_count,
         SUM(spend_to_date) AS spend_to_date,
         SUM(total_amount) AS total_amount,
         SUM(original_amount) AS original_amount
@@ -38,10 +38,12 @@
         SUM(total_amount) AS total_amount,
         SUM(original_amount) AS original_amount,
         SUM(spend_to_date) AS spend_to_date
-      FROM contracts_fy_award_method_summary_vw
+      FROM contracts_fy_award_method_summary_vw c
+      JOIN ref_year y ON c.start_year = y.year_value
+      JOIN ref_year y1 ON c.end_year = y1.year_value
       <where>
         <exp op="AND">
-          <exp op="=" dbField="fiscal_year_id" paramName="year"/>
+          <exp op="BETWEEN" paramName="year" dbField="y.year_id, y1.year_id"/>
         </exp>
       </where>
       GROUP BY award_method_name, award_method_id
@@ -200,10 +202,12 @@
         SUM(total_amount) AS total_amount,
         SUM(original_amount) AS original_amount,
         SUM(spend_to_date) AS spend_to_date
-      FROM contracts_fy_department_summary_vw
+      FROM contracts_fy_department_summary_vw  c
+      JOIN ref_year y ON c.start_year = y.year_value
+      JOIN ref_year y1 ON c.end_year = y1.year_value
       <where>
         <exp op="AND">
-          <exp op="BETWEEN" paramName="year" dbField="start_year, end_year"/>
+          <exp op="BETWEEN" paramName="year" dbField="y.year_id, y1.year_id"/>
         </exp>
       </where>
       GROUP BY department_id, department_name
@@ -223,10 +227,12 @@
         SUM(total_amount) AS total_amount,
         SUM(original_amount) AS original_amount,
         SUM(spend_to_date) AS spend_to_date
-      FROM contracts_fy_industry_summary_vw
+      FROM contracts_fy_industry_summary_vw c
+      JOIN ref_year y ON c.start_year = y.year_value
+      JOIN ref_year y1 ON c.end_year = y1.year_value
       <where>
         <exp op="AND">
-          <exp op="BETWEEN" paramName="year" dbField="start_year, end_year"/>
+          <exp op="BETWEEN" paramName="year" dbField="y.year_id, y1.year_id"/>
         </exp>
       </where>
       GROUP BY industry_type_id,industry_type_name
@@ -256,14 +262,16 @@
     <sql>
       SELECT
         award_size_name,
-        SUM(po_count) AS po_count,
+        SUM(purchase_order_count) AS po_count,
         SUM(total_amount) AS total_amount,
         SUM(original_amount) AS original_amount,
         SUM(spend_to_date) AS spend_to_date
-      FROM contracts_fy_size_vw
+      FROM contracts_fy_size_vw c
+      JOIN ref_year y ON c.start_year = y.year_value
+      JOIN ref_year y1 ON c.end_year = y1.year_value
       <where>
         <exp op="AND">
-          <exp op="=" dbField="year_id" paramName="year"/>
+          <exp op="BETWEEN" paramName="year" dbField="y.year_id, y1.year_id"/>
         </exp>
       </where>
       GROUP BY award_size_name
@@ -281,16 +289,16 @@
         , release_approved_year
         , responsibility_center_code
         , responsibility_center_descr
-        , SUM(contract_count)         AS contract_count
+        , SUM(purchase_order_count)         AS contract_count
         , SUM(total_amount)         AS total_amount
         , SUM(original_amount)     AS original_amount
         , SUM(spend_to_date)         AS spend_to_date
-        , SUM(delta_amount)         AS delta_amount
+        , SUM(amount_difference)         AS delta_amount
       FROM contracts_fy_responsibility_centers
       <where>
         <exp op="AND">
           <exp op="IS NOT" dbField="responsibility_center_code">NULL</exp>
-          <exp op="=" dbField="release_approved_year" paramName="year"/>
+          <exp op="=" dbField="release_approved_year_id" paramName="year"/>
         </exp>
       </where>
       GROUP BY
