@@ -1370,7 +1370,7 @@ class RequestUtil
         else {
             if (preg_match('/agency/', current_path())) {
                 $value = RequestUtilities::get('agency');
-                $title = _checkbook_project_get_name_for_argument("agency_id", $value);
+                $title = _checkbook_project_get_name_for_argument("agency_id", $value).' Contracts';
             }
             else if (preg_match('/vendor/', current_path())) {
                 $value = RequestUtilities::get('vendor');
