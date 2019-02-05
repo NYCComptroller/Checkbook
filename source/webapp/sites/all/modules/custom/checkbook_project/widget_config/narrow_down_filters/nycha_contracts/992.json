@@ -11,11 +11,10 @@
   "orderBy":"-txcount",
   "facetPager":true,
   "filterName":"Vendor",
-  "urlParameterName":"vendornm",
-  "autocompleteParamName":"vendornm_auto",
+  "urlParameterName":"vendornm_exact",
+  "autocompleteParamName":"vendornm_exact_auto",
   "autocompleteID":"fvendorNm",
   "autocompleteField":"vendor_name",
-  "functionality":"search",
   "adjustParameters":"
   if(function_exists('_checkbook_project_applyParameterFilters')){
   $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);

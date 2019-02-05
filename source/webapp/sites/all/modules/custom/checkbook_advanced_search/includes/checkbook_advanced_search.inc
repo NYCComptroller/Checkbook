@@ -854,6 +854,7 @@ function _checkbook_advanced_search_nycha_contracts_submit($form, &$form_state, 
     $filter_dimension = $data_source . '_contracts';
     $contracts_nycha_agency_id = Datasource::getNYCHAId();
     $contracts_contract_type=trim($form[$filter_dimension][$data_source . '_contracts_nycha_contract_type']['#value']);
+    $contracts_contract_vendor_name_exact = trim($form[$filter_dimension][$data_source . '_contracts_vendor_name_exact']['#value']);
     $contracts_responsibility_center=trim($form[$filter_dimension][$data_source . '_contracts_responsibility_center']['#value']);
     $contracts_purchase_order_type = trim($form[$filter_dimension][$data_source . '_contracts_purchase_order_type']['#value']);
     $contracts_contract_vendor_name = trim($form[$filter_dimension][$data_source . '_contracts_vendor_name']['#value']);
@@ -903,9 +904,11 @@ function _checkbook_advanced_search_nycha_contracts_submit($form, &$form_state, 
     }
 
     if (!empty($contracts_contract_vendor_name)) {
-
+        if ($contracts_contract_vendor_name_exact == $contracts_contract_vendor_name) {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_vendor_name_exact, 'vendornm_exact');
+        } else {
             $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_vendor_name, 'vendornm');
-
+        }
     }
     if (!empty($contracts_contract_purpose)) {
         $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_purpose, 'pcontdesc');
