@@ -11,8 +11,8 @@
   "orderBy":"-txcount",
   "facetPager":true,
   "filterName":"Vendor",
-  "urlParameterName":"vendornm_exact",
-  "autocompleteParamName":"vendornm_exact_auto",
+  "urlParameterName":"vendorid",
+  "autocompleteParamName":"vendorid_auto",
   "autocompleteID":"fvendorId",
   "autocompleteField":"vendor_name",
   "adjustParameters":"
