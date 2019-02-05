@@ -1,5 +1,5 @@
 {
-    "payroll_oge_fiscal_year":{
+    /*"payroll_oge_fiscal_year":{
         "searchCriteriaMap":{
             "fiscal_year":"fiscal_year",
             "other_government_entities_code":"agency_code",
@@ -150,7 +150,7 @@
                 "maxLength":"100"
             }
         }
-    },
+    },*/
     "payroll_oge_calendar_year":{
         "searchCriteriaMap":{
             "calendar_year":"calendar_fiscal_year",
@@ -305,13 +305,13 @@
     "validators":[
         {
             "name":"optionalSingleFilter",
-            "configKey":["payroll_oge_fiscal_year", "payroll_oge_calendar_year"],
+            "configKey":["payroll_oge_calendar_year"],
             "config":{
                 "criteriaLevel":"value",
                 "validatorType":"filterName",
                 "validatorTypeConfig":{
                     "required":true,
-                    "filterNames":["fiscal_year", "calendar_year"]
+                    "filterNames":["calendar_year"]
                 }
             }
         }
