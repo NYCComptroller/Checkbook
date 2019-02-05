@@ -127,7 +127,6 @@
     <sql>
       SELECT
         contract_id,
-        contract_agreement_uniq_id,
         purpose,
         vendor_name,
         SUM(total_amount) AS total_amount,
@@ -147,7 +146,7 @@
       <exp op="IF" condition="=" paramName="is_modification" compareValue="true">
         AND dollar_difference != 0
       </exp>
-      GROUP BY  contract_id, contract_agreement_uniq_id, purpose, vendor_name
+      GROUP BY  contract_id, purpose, vendor_name
     </sql>
   </statement>
 
@@ -160,7 +159,6 @@
     <sql>
       SELECT
         contract_id,
-        contract_agreement_uniq_id,
         purpose,
         vendor_name,
         SUM(total_amount) AS total_amount,
@@ -180,7 +178,7 @@
       <exp op="IF" condition="=" paramName="is_modification" compareValue="true">
         AND dollar_difference != 0
       </exp>
-      GROUP BY  contract_id, contract_agreement_uniq_id, purpose, vendor_name
+      GROUP BY  contract_id, purpose, vendor_name
     </sql>
   </statement>
 
