@@ -1358,8 +1358,69 @@ class RequestUtil
     /** Returns NYCHA Contracts page title and Breadcrumb */
     public static function getNYCHAContractBreadcrumbTitle()
     {
-        $title = 'New York City Housing Authority Contracts';
-        return html_entity_decode($title);
+        $bottomURL = $_REQUEST['expandBottomContURL'];
+        $title = "NEW YORK CITY HOUSING AUTHORITY CONTRACTS";
+        if (!$bottomURL && preg_match('/^nycha_contracts\/search\/transactions/', current_path()) || preg_match('/^nycha_contracts\/all\/transactions/', current_path())) {
+            $title = 'NYCHA Contracts Transactions';
+        }
+        else if( stripos($bottomURL, 'transactions')){
+            $code= RequestUtil::getRequestKeyValueFromURL("tCode",$bottomURL);
+            $title = self::getTitleByCode($code). ' Contracts Transactions';
+        }
+        else {
+            if (preg_match('/agency/', current_path())) {
+                $value = RequestUtilities::get('agency');
+                $title = _checkbook_project_get_name_for_argument("agency_id", $value);
+            }
+            else if (preg_match('/vendor/', current_path())) {
+                $value = RequestUtilities::get('vendor');
+                $title = _checkbook_project_get_name_for_argument("vendor_id", $value);
+            }
+        }
+
+
+
+        return $title;
+    }
+    public static function getTitleByCode($tcode){
+        $summaryTitle='';
+
+        switch($tcode){
+            case 'BA':
+                $summaryTitle = 'Blanket Agreements';
+                break;
+            case 'BAM':
+                $summaryTitle='Blanket Agreement Modifications';
+                break;
+            case 'PA':
+                $summaryTitle='Planned Agreement';
+                break;
+            case 'PAM':
+                $summaryTitle='Planned Agreement Modifications';
+                break;
+            case 'PO':
+                $summaryTitle='Purchase Orders';
+                break;
+            case 'VO':
+                $summaryTitle='Vendors';
+                break;
+            case 'AWD':
+                $summaryTitle='Award Methods';
+                break;
+            case 'IND':
+                $summaryTitle='Contracts by Industries';
+                break;
+            case 'RESC':
+                $summaryTitle='Responsibility Centers';
+                break;
+            case 'DEP':
+                $summaryTitle='Departments';
+                break;
+            case 'SZ':
+                $summaryTitle='Contracts by Size';
+                break;
+        }
+        return $summaryTitle;
     }
 }
 
