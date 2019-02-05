@@ -22,40 +22,7 @@
 $tcode = RequestUtilities::get('tCode');
 $summaryTitle = '';
 global $checkbook_breadcrumb_title;
-switch($tcode){
-    case 'BA':
-        $summaryTitle = 'Blanket Agreements';
-        break;
-    case 'BAM':
-        $summaryTitle='Blanket Agreement Modifications';
-        break;
-    case 'PA':
-        $summaryTitle='Planned Agreement';
-        break;
-    case 'PAM':
-        $summaryTitle='Planned Agreement Modifications';
-        break;
-    case 'PO':
-        $summaryTitle='Purchase Orders';
-        break;
-    case 'VO':
-        $summaryTitle='Vendors';
-        break;
-    case 'AWD':
-        $summaryTitle='Award Methods';
-        break;
-    case 'IND':
-        $summaryTitle='Contracts by Industries';
-        break;
-    case 'RESC':
-        $summaryTitle='Responsibility Centers';
-        break;
-    case 'DEP':
-        $summaryTitle='Departments';
-        break;
-    case 'SZ':
-        $summaryTitle='Contracts by Size';
-        break;
-}
+$summaryTitle = RequestUtil::getTitleByCode($tcode);
+
 print "<h2 class='contract-title' class='title'>{$summaryTitle} Contracts Transactions</h2>";
 $checkbook_breadcrumb_title =  "$summaryTitle Contracts Transactions";

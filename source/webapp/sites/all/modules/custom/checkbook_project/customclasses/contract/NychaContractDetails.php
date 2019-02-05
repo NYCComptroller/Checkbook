@@ -32,9 +32,9 @@ class NychaContractDetails {
 
       $contract_id = RequestUtilities::getRequestParamValue('contract');
 
-      if (!ctype_alnum($contract_id)) {
-          return;
-      }
+        if (!ctype_alnum($contract_id)) {
+            return;
+        }
 
       $query = <<<SQL
             SELECT
@@ -64,7 +64,7 @@ class NychaContractDetails {
               vendor_id,
               vendor_number,
               vendor_name,
-              nycha_vendor_site_id,
+              vendor_site_id,
               address_line1,
               address_line2,
               city,
@@ -90,6 +90,10 @@ class NychaContractDetails {
             WHERE
               (purchase_order_number = '{$contract_id}' OR contract_id='{$contract_id}')
 SQL;
+        $query2 =
+            "SELECT
+            contract_id, count(release_number) as associated_releases from all_agreement_transactions  where (contract_id = '{$contract_id}' ) group by contract_id";
+
 
   $latest_contract_sql = $query . " AND latest_flag = 'Y' LIMIT 1";
 
@@ -98,6 +102,13 @@ SQL;
   $contract_history_query = $query . " ORDER BY revision_number DESC ";
 
   $node->contract_history = _checkbook_project_execute_sql_by_data_source($contract_history_query,'checkbook_nycha');
+        $results3 = _checkbook_project_execute_sql_by_data_source($query2,'checkbook_nycha');
+        $total_associated_releases= 0;
+        foreach($results3 as $row){
+            $total_associated_releases +=$row["associated_releases"];
+        }
+        $node->total_associated_releases = $total_associated_releases;
+
 
   }
 

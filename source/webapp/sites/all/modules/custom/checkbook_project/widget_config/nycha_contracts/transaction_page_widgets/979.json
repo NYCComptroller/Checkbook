@@ -9,8 +9,8 @@
   },
   "paramTypeConfig": {
     "po_num": "like",
-    "po_num_exact": "eqignorecase",
-    "vendornm": "eqignorecase",
+    "po_num_exact": "like",
+    "vendornm": "like",
     "curamtr": "rangeid",
     "pcontdesc": "contains",
     "startdate": "range",
