@@ -63,7 +63,6 @@
 $datasource = RequestUtilities::getRequestParamValue('datasource');
 $sql = 'SELECT
   contract_id,
-  contract_agreement_uniq_id,
   purpose,
   vendor_name,
   total_amount,
