@@ -639,7 +639,7 @@ class RequestUtil
         switch ($domain) {
             case "nycha_contracts":
                 $path = "/nycha_contracts/datasource/".Datasource::NYCHA;
-                $path .= RequestUtilities::buildUrlFromParam('year');
+                $path .="/year/".$fiscalYearId;
                 $path .= Datasource::getNYCHAUrl();
                 break;
             case "contracts":
