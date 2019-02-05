@@ -860,6 +860,7 @@ function _checkbook_advanced_search_nycha_contracts_submit($form, &$form_state, 
     $contracts_contract_vendor_name = trim($form[$filter_dimension][$data_source . '_contracts_vendor_name']['#value']);
     $contracts_contract_purpose = trim($form[$filter_dimension][$data_source . '_contracts_purpose']['#value']);
     $contracts_contract_contract_num = trim($form[$filter_dimension][$data_source . '_contracts_purchase_order_number']['#value']);
+    $contracts_contract_contract_num_exact = trim($form[$filter_dimension][$data_source . '_contracts_purchase_order_number_exact']['#value']);
     $contracts_contract_pin = trim($form[$filter_dimension][$data_source . '_contracts_pin']['#value']);
     $contracts_contract_award_method = trim($form[$filter_dimension][$data_source . '_contracts_nycha_award_method']['#value']);
     $contracts_contract_current_contract_amount_from = trim($form[$filter_dimension][$data_source . '_contracts_current_contract_amount_from']['#value']);
@@ -915,10 +916,16 @@ function _checkbook_advanced_search_nycha_contracts_submit($form, &$form_state, 
     }
 
     if (!empty($contracts_contract_contract_num)) {
+        if ($contracts_contract_contract_num_exact == $contracts_contract_contract_num) {
 
             $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_contract_num, 'po_num_exact');
+        }
+        else{
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_contract_num, 'po_num');
+        }
 
     }
+
 
     if (!empty($contracts_responsibility_center)) {
         $code_id_array = _checkbook_advanced_search_autocomplete_get_code_id($contracts_responsibility_center);
