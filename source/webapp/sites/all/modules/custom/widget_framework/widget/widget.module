@@ -726,17 +726,22 @@ function load_widget_data($node, $resultFormatter) {
                 $serieStartWith = isset($serie->startWith) ? $serie->startWith : $startWith;
                 $serieLimit = isset($serie->limit) ? $serie->limit : $limit;
 
-                $records = $isSerieList
-                ? $dataQueryController->queryDataset(
-                        $serieDatasetName,
-                        $serieColumns, $serieParameters, $serieOrderBy,
-                        $serieStartWith, $serieLimit,
-                        $resultFormatter)
-                : $dataQueryController->queryCube(
-                        $serieDatasetName,
-                        $serieColumns, $serieParameters, $serieOrderBy,
-                        $serieStartWith, $serieLimit,
-                        $resultFormatter);
+                if(isset($serie->widgetDataLoader)){
+                    eval($serie->widgetDataLoader);
+                    $records = $node->data;
+                }else {
+                    $records = $isSerieList
+                        ? $dataQueryController->queryDataset(
+                            $serieDatasetName,
+                            $serieColumns, $serieParameters, $serieOrderBy,
+                            $serieStartWith, $serieLimit,
+                            $resultFormatter)
+                        : $dataQueryController->queryCube(
+                            $serieDatasetName,
+                            $serieColumns, $serieParameters, $serieOrderBy,
+                            $serieStartWith, $serieLimit,
+                            $resultFormatter);
+                }
                 $node->nodeAdjustedParamaterConfig[] = $parameters;
 
                 // post-processing records
