@@ -3,9 +3,9 @@
   "widgetDatahandler": "highcharts",
   "html_class":"",
   "header":"
-  $header = '<h2 class=\"chart-title\" style=\"display:none;\">'. $node->widgetConfig->chartTitle . '</h2>';
-  $header .= ChartUtil::generateWidgetGridViewLink($node);
-  return $header;
+    $header = '<h2 class=\"chart-title\" style=\"display:none;\">'. $node->widgetConfig->chartTitle . '</h2>';
+    $header .= ChartUtil::generateWidgetGridViewLink($node);
+    return $header;
   ",
   "gridConfig":{
     "template":"chart_grid_view",
@@ -30,90 +30,67 @@
     ]
   },
   "no_results_content":"No Results Found",
-
   "cleanURLParameters":["awdmethod","vendor","csize","cindustry","year"],
   "cleanURLParametersPending":["awdmethod","vendor","csize","cindustry"],
-  "urlParamMap":{"year":"fiscal_year_id","awdmethod":"award_method_id","vendor":"vendor_id",
-   "csize":"award_size_id","cindustry":"industry_type_id"},
-  "urlParamMapPending":{"vendor":"vendor_id",
-    "awdmethod":"award_method_id",
-    "csize":"award_size_id","cindustry":"industry_type_id"},
+  "urlParamMap":{"year":"fiscal_year_id","awdmethod":"award_method_id","vendor":"vendor_id", "csize":"award_size_id","cindustry":"industry_type_id"},
+  "urlParamMapPending":{"vendor":"vendor_id", "awdmethod":"award_method_id", "csize":"award_size_id","cindustry":"industry_type_id"},
   "widgetPreprocessJSON":"
-  if(preg_match('/pending/',$_GET['q'])){
-  $node->widgetConfig->urlParamMap = $node->widgetConfig->urlParamMapPending;
-  $node->widgetConfig->defaultParameters = $node->widgetConfig->defaultParametersPending;
-  $node->widgetConfig->cleanURLParameters = $node->widgetConfig->cleanURLParametersPending;
-}
+    if(preg_match('/pending/',$_GET['q'])){
+      $node->widgetConfig->urlParamMap = $node->widgetConfig->urlParamMapPending;
+      $node->widgetConfig->defaultParameters = $node->widgetConfig->defaultParametersPending;
+      $node->widgetConfig->cleanURLParameters = $node->widgetConfig->cleanURLParametersPending;
+    }",
+  "chartTitle":"Top Ten Vendors By Current Amount",
+  "widgetDataLoader":"
+      $where_filters = array();
+      foreach($node->widgetConfig->requestParams as $param=>$value){
+        if($param == 'fiscal_year_id'){
+            $where_filters[] = '('. $value . ' BETWEEN y.year_id AND y1.year_id)';
+        }else{
+          $where_filters[] = _widget_build_sql_condition( $param, $value);
+        }
+      }
+      if(count($where_filters) > 0){
+        $where_filter = ' WHERE ' . implode(' AND ' , $where_filters);
+      }
+      $datasource = RequestUtilities::getRequestParamValue('datasource');
+      $sql = 'SELECT vendor_name, vendor_id, SUM(original_amount) current_amount_sum, COUNT(purchase_order_number) total_contracts
+                FROM contracts_fy_po_vendor_summary_vw C JOIN ref_year y ON c.start_year = y.year_value JOIN ref_year y1 ON c.end_year = y1.year_value'
+              . $where_filter . ' GROUP BY vendor_name, vendor_id ORDER BY 3 DESC LIMIT 10';
+      $node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
+  ",
+  "widgetUpdateJSONConfig":"
+    $series_new = array();
+    $index = 0;
+    foreach($node->data as $row){
+        $tooltip_label =
+        'Vendor: ' . $row['vendor_name'] .  '<br/>' .
+        'Number of Contracts: ' . $row['total_contracts'].  '<br/>' .
+        'Amount: ' . custom_number_formatter_format($row['current_amount_sum'] ,2, '$').  '<br/>';
+          $link = strstr($_GET['q'],'/',true) .  ContractUtil::get_contracts_vendor_link($row['vendor_id'],RequestUtilities::getRequestParamValue('year'),
+          RequestUtilities::getRequestParamValue('yeartype'), RequestUtilities::getRequestParamValue('agency')) .
+        '?expandBottomCont=true';
+        $series_new[$index]->url = 	$link;
 
-",
-"chartTitle":"Top Ten Vendors By Current Amount",
-"widgetDataLoader":"
-
-$where_filters = array();
-foreach($node->widgetConfig->requestParams as $param=>$value){
-$where_filters[] = _widget_build_sql_condition( $param, $value);
-}
-
-if(count($where_filters) > 0){
-$where_filter = ' where ' . implode(' and ' , $where_filters);
-}
-
-
-$datasource = RequestUtilities::getRequestParamValue('datasource');
-$sql = ' select
-vendor_name,vendor_id
-, sum(original_amount) current_amount_sum
-, count(purchase_order_number) total_contracts
-from contracts_fy_po_vendor_summary_vw
-' . $where_filter . '
-group by vendor_name  ,vendor_id
-order by 3 desc limit 10';
-
-$node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
-
-",
-"widgetUpdateJSONConfig":"
-
-$series_new = array();
-
-
-$index = 0;
-foreach($node->data as $row){
-$tooltip_label =
-'Vendor: ' . $row['vendor_name'] .  '<br/>' .
-'Number of Contracts: ' . $row['total_contracts'].  '<br/>' .
-'Amount: ' . custom_number_formatter_format($row['current_amount_sum'] ,2, '$').  '<br/>'
-;
-//$link= CustomURLHelper::prepareUrl(strstr($_GET['q'],'\/',true), ContractURLHelper::$landingPageParams, array('expandBottomCont'=>'true'),
-//			array('vendor'=>$row['vendor_id']) );
-
-$link = strstr($_GET['q'],'/',true) .  ContractUtil::get_contracts_vendor_link($row['vendor_id'],RequestUtilities::getRequestParamValue('year'),
-RequestUtilities::getRequestParamValue('yeartype'), RequestUtilities::getRequestParamValue('agency')) .
-'?expandBottomCont=true';
-$series_new[$index]->url = 	$link;
-
-$series_new[$index]->y = (float)$row['current_amount_sum'];
-$series_new[$index]->tooltip_label = $tooltip_label;
-$node->widgetConfig->gridConfig->data[] = array($row['vendor_name'],$row['total_contracts'],$row['current_amount_sum'] );
-$index += 1;
-}
-
-$node->widgetConfig->chartConfig->series[0]->name = 'Fiscal Years';
-$node->widgetConfig->chartConfig->series[0]->type = 'column';
-$node->widgetConfig->chartConfig->series[0]->pointWidth = 30;
-$node->widgetConfig->chartConfig->series[0]->data = $series_new;
-
-
-",
-"chartConfig" : {
-"colors":["#7DB7E5"],
-"plotOptions": {
-"series": {
-"cursor": "pointer"   ,
-"stacking": "normal",
-"dataLabels": {
-"enabled": false
-}  ,
+        $series_new[$index]->y = (float)$row['current_amount_sum'];
+        $series_new[$index]->tooltip_label = $tooltip_label;
+        $node->widgetConfig->gridConfig->data[] = array($row['vendor_name'],$row['total_contracts'],$row['current_amount_sum'] );
+        $index += 1;
+    }
+    $node->widgetConfig->chartConfig->series[0]->name = 'Fiscal Years';
+    $node->widgetConfig->chartConfig->series[0]->type = 'column';
+    $node->widgetConfig->chartConfig->series[0]->pointWidth = 30;
+    $node->widgetConfig->chartConfig->series[0]->data = $series_new;
+  ",
+  "chartConfig" : {
+  "colors":["#7DB7E5"],
+  "plotOptions": {
+  "series": {
+  "cursor": "pointer"   ,
+  "stacking": "normal",
+  "dataLabels": {
+  "enabled": false
+  }  ,
 "point": {"events": {"function": "clickEvent"}}
 }
 },
