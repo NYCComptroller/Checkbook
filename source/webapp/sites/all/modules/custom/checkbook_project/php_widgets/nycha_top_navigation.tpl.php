@@ -99,7 +99,11 @@ $feature_db_css = "expense-container";
     //M/WBE and Section links of NYCHA Contracts
     $mwbe_link = l('<span class="nav-title">M/WBE</span><br>'.custom_number_formatter_format(0 ,1,'$'),RequestUtil::getTopNavURL("nycha_contracts"),$options);;
     $section_link = l('<span class="nav-title">Section 3</span><br>'.custom_number_formatter_format(0 ,1,'$'),RequestUtil::getTopNavURL("nycha_contracts"),$options);;
+    //css to indicate no child menus for featured dashboards
+    //Remove no-menu when M/WBE and Subvendors dashboards are implemented
+    $fdexpclass = "expense-container no-menu";
 ?>
+
 <div class="top-navigation-right">
     <div class="featured-dashboard-title"><a  alt="The amounts represented in the featured dashboards are subset amounts of either the Spending or Contract Domains">
             <?php echo (preg_match('/contract/',$_GET['q']))?"Contracts ":"Spending " ;?>Featured Dashboard</a>
