@@ -772,7 +772,7 @@ $contract = $node->data[0];
                 </div>
             </td>
         </tr>
-        <?php for ($j = 2; $j < 11; $j++): ?>
+        <?php for ($j = 2; $j <= $node->total_associated_releases; $j++): ?>
             <tr>
                 <td class="assoc_item">
                     <div class="contract-title clearfix">
