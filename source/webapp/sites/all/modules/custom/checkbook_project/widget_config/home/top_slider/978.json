@@ -36,12 +36,14 @@ if(RequestUtilities::getRequestParamValue('year') || RequestUtilities::getReques
 $serieParameters['fiscal_year_id'] = RequestUtil::getFiscalYearIdForTopNavigation();
 return $serieParameters;
 ",
-  "widgetDataLoader":"$parameters = $node->nodeAdjustedParamaterConfig;
+  "widgetDataLoader":"
+  $parameters = $node->nodeAdjustedParamaterConfig;
+  $parameter_mapping = array('vendor'=>'vendor_id');
   foreach($node->widgetConfig->requestParams as $param=>$value){
     if($param == 'year'){
       $where_filters[] = '('. $value . ' BETWEEN y.year_id AND y1.year_id)';
     }else{
-      $where_filters[] = _widget_build_sql_condition( $param, $value);
+      $where_filters[] = _widget_build_sql_condition( $parameter_mapping[$param], $value);
     }
   }
   if(count($where_filters) > 0){
