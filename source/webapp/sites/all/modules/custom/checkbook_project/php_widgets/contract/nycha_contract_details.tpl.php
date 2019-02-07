@@ -146,6 +146,7 @@ $contract = $node->data[0];
 <div class="panel-separator"></div>
 
 <div class="content clearfix nycha-contract-history">
+
     <div>
         <h3>
             Contract History
@@ -281,10 +282,15 @@ $contract = $node->data[0];
     <?php endif; ?>
 </div>
 
+<div class="clearfix">
+    <div class="links node-links clearfix"></div>
+</div>
+
+
 <div class="panel-separator"></div>
 
 
-<div class="content clearfix">
+<div class="content clearfix nycha-assoc-releases">
 
     <h3>Associated Releases</h3>
     <table id="assoc_contracts_list">
@@ -327,144 +333,143 @@ $contract = $node->data[0];
                                 <div class="panel-pane pane-custom pane-1">
 
 
-                                    <div class="pane-content">
-
-                                        <div class="contracts-spending-top"><h3>SPENDING BY PRIME VENDOR</h3>
-                                            <table class="dataTable outerTable" style="border: 1px solid #CACACA;">
-                                                <thead>
-                                                <tr>
-                                                    <th style="text-align: left !important; vertical-align: middle;">
+                                    <div class="contracts-spending-top"><h3>SPENDING BY PRIME VENDOR</h3>
+                                        <table class="dataTable outerTable" style="border: 1px solid #CACACA;">
+                                            <thead>
+                                            <tr>
+                                                <th style="text-align: left !important; vertical-align: middle;">
                                                         <span
                                                             style="margin:8px 0 8px 15px!important; display:inline-block; text-align: center !important;">Prime Vendor<br>Name</span>
-                                                    </th>
-                                                    <th style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
+                                                </th>
+                                                <th style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
                                                         <span
                                                             style="margin:8px 0 8px 0 !important;display:inline-block; text-align: center !important;">Current<br>Amount</span>
-                                                    </th>
-                                                    <th style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
+                                                </th>
+                                                <th style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
                                                         <span
                                                             style="margin:8px 0 8px 0 !important;display:inline-block; text-align: center !important;">Original<br>Amount</span>
-                                                    </th>
-                                                    <th style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
+                                                </th>
+                                                <th style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
                                                         <span
                                                             style="margin:8px 0 8px 0 !important;display:inline-block; text-align: center !important;">Spent To<br>Date</span>
-                                                    </th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr class="even outer">
-                                                    <td style="text-align: left !important; vertical-align: middle; padding: 10px 5px !important;">
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr class="even outer">
+                                                <td style="text-align: left !important; vertical-align: middle; padding: 10px 5px !important;">
                                                         <span
                                                             style="margin:8px 0 8px 15px!important; display:inline-block; text-align: left !important;"><a
                                                                 class="showHide  expandTwo"></a><?= $contract['vendor_name']; ?></span>
-                                                    </td>
-                                                    <td style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
+                                                </td>
+                                                <td style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
                                                         <span
                                                             style="display:inline-block; text-align: right !important;">
                                                             <?= custom_number_formatter_format($contract['total_amount'], 2, '$'); ?>
                                                         </span>
-                                                    </td>
-                                                    <td style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
+                                                </td>
+                                                <td style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
                                                         <span
                                                             style="display:inline-block; text-align: right !important;">
                                                             <?= custom_number_formatter_format($contract['original_amount'], 2, '$'); ?>
                                                         </span>
-                                                    </td>
-                                                    <td style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
+                                                </td>
+                                                <td style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
                                                         <span
                                                             style="display:inline-block; text-align: right !important;">
                                                             <?= custom_number_formatter_format($contract['spend_to_date'], 2, "$"); ?>
                                                         </span>
-                                                    </td>
-                                                </tr>
-                                                <tr class="showHide" style="">
-                                                    <td colspan="4">
-                                                        <div>
-                                                            <div id="contract_history">
+                                                </td>
+                                            </tr>
+                                            <tr class="showHide" style="">
+                                                <td colspan="4">
+                                                    <div>
+                                                        <div id="contract_history">
 
-                                                                <div>
-                                                                    <h3>
-                                                                        Shipment and Distribution Details
-                                                                    </h3>
-                                                                    <div class="scroll">
-                                                                        <table class="dataTable cta-history outerTable">
-                                                                            <thead>
-                                                                            <tr>
-                                                                                <th class="text">
-                                                                                    <div><span>Shipment number</span>
-                                                                                    </div>
-                                                                                </th>
-                                                                                <th class="text">
-                                                                                    <div><span>Distribution <br/>Number</span>
-                                                                                    </div>
-                                                                                </th>
-                                                                                <th class="number">
-                                                                                    <div style="margin-right: 82px;">
-                                                                                        <span>Current<br>Amount</span>
-                                                                                    </div>
-                                                                                </th>
-                                                                                <th class="number endCol">
-                                                                                    <div style="margin-right: 81px;">
-                                                                                        <span>Original<br>Amount</span>
-                                                                                    </div>
-                                                                                </th>
-                                                                                <th class="number endCol">
-                                                                                    <div style="margin-right: 81px;">
-                                                                                        <span>Spend to date</span></div>
-                                                                                </th>
-                                                                                <th class="number endCol">
-                                                                                    <div style="margin-right: 81px;">
-                                                                                        <span>Responsibility center</span>
-                                                                                    </div>
-                                                                                </th>
+                                                            <div>
+                                                                <h3>
+                                                                    Shipment and Distribution Details
+                                                                </h3>
+                                                                <div class="scroll">
+                                                                    <table class="dataTable cta-history outerTable">
+                                                                        <thead>
+                                                                        <tr>
+                                                                            <th class="text">
+                                                                                <div><span>Shipment number</span>
+                                                                                </div>
+                                                                            </th>
+                                                                            <th class="text">
+                                                                                <div>
+                                                                                    <span>Distribution <br/>Number</span>
+                                                                                </div>
+                                                                            </th>
+                                                                            <th class="number">
+                                                                                <div style="margin-right: 82px;">
+                                                                                    <span>Current<br>Amount</span>
+                                                                                </div>
+                                                                            </th>
+                                                                            <th class="number endCol">
+                                                                                <div style="margin-right: 81px;">
+                                                                                    <span>Original<br>Amount</span>
+                                                                                </div>
+                                                                            </th>
+                                                                            <th class="number endCol">
+                                                                                <div style="margin-right: 81px;">
+                                                                                    <span>Spend to date</span></div>
+                                                                            </th>
+                                                                            <th class="number endCol">
+                                                                                <div style="margin-right: 81px;">
+                                                                                    <span>Responsibility center</span>
+                                                                                </div>
+                                                                            </th>
+                                                                        </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                        <?php for ($z = 0; $z < 50; $z++): ?>
+                                                                            <tr class="outer <?= ($z % 2 ? 'even' : 'odd') ?>">
+                                                                                <td class="text">
+                                                                                    <div><?= $z % 2 + 1 ?></div>
+                                                                                </td>
+                                                                                <td class="text">
+                                                                                    <div>1</div>
+                                                                                </td>
+                                                                                <td class="number">
+                                                                                    <div
+                                                                                        style="margin-right: 82px;">
+                                                                                        <div
+                                                                                            class="spent-to-date"><?= custom_number_formatter_format($contract['total_amount'], 2, "$"); ?>
+                                                                                        </div>
+                                                                                </td>
+                                                                                <td class="number endCol">
+                                                                                    <div
+                                                                                        style="margin-right: 81px;">
+                                                                                        <div
+                                                                                            class="spent-to-date"><?= custom_number_formatter_format($contract['original_amount'], 2, "$"); ?>
+                                                                                        </div>
+                                                                                </td>
+                                                                                <td class="number endCol">
+                                                                                    <div
+                                                                                        style="margin-right: 81px;">
+                                                                                        <div
+                                                                                            class="spent-to-date"><?= custom_number_formatter_format($contract['spend_to_date'], 2, "$"); ?>
+                                                                                        </div>
+                                                                                </td>
+                                                                                <td class="text">
+                                                                                    <div>Center <?= $z + 7 ?></div>
+                                                                                </td>
                                                                             </tr>
-                                                                            </thead>
-                                                                            <tbody>
-                                                                            <?php for ($z = 0; $z < 50; $z++): ?>
-                                                                                <tr class="outer <?= ($z % 2 ? 'even' : 'odd') ?>">
-                                                                                    <td class="text">
-                                                                                        <div><?= $z % 2 + 1 ?></div>
-                                                                                    </td>
-                                                                                    <td class="text">
-                                                                                        <div>1</div>
-                                                                                    </td>
-                                                                                    <td class="number">
-                                                                                        <div
-                                                                                            style="margin-right: 82px;">
-                                                                                            <div
-                                                                                                class="spent-to-date"><?= custom_number_formatter_format($contract['total_amount'], 2, "$"); ?>
-                                                                                            </div>
-                                                                                    </td>
-                                                                                    <td class="number endCol">
-                                                                                        <div
-                                                                                            style="margin-right: 81px;">
-                                                                                            <div
-                                                                                                class="spent-to-date"><?= custom_number_formatter_format($contract['original_amount'], 2, "$"); ?>
-                                                                                            </div>
-                                                                                    </td>
-                                                                                    <td class="number endCol">
-                                                                                        <div
-                                                                                            style="margin-right: 81px;">
-                                                                                            <div
-                                                                                                class="spent-to-date"><?= custom_number_formatter_format($contract['spend_to_date'], 2, "$"); ?>
-                                                                                            </div>
-                                                                                    </td>
-                                                                                    <td class="text">
-                                                                                        <div>Center <?= $z + 7 ?></div>
-                                                                                    </td>
-                                                                                </tr>
-                                                                            <?php endfor; ?>
-                                                                        </table>
-                                                                    </div>
+                                                                        <?php endfor; ?>
+                                                                    </table>
                                                                 </div>
                                                             </div>
                                                         </div>
-
-
-                                        </div>
-                                        <div class="panel-separator"></div>
-
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
+                                    <div class="panel-separator"></div>
                                     <div id="spending_transactions">
                                         <div>
                                             <h3>
@@ -594,188 +599,171 @@ $contract = $node->data[0];
                                                 ?>
                                                 </tbody>
                                             </table>
-                                        </div>
-                                        <div class="panel-separator"></div>
-                                        <div>
-                                            <h3>
-                                                Spending Transactions by Release
-                                            </h3>
+                                            <div class="panel-separator"></div>
+                                            <div>
+                                                <h3>
+                                                    Spending Transactions by Release
+                                                </h3>
 
-                                            <table class="dataTable cta-spending-history outerTable">
-                                                <thead>
-                                                <tr>
-                                                    <th class="text">
-                                                        <div><span>Fiscal<br>Year</span></div>
-                                                    </th>
-                                                    <th class="text">
-                                                        <div><span>Number Of<br>Transactions</span></div>
-                                                    </th>
-                                                    <th class="number endCol">
-                                                        <div style="margin-right: 119px;">
-                                                            <span>Amount<br>Spent</span></div>
-                                                    </th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <?php
-                                                $year_cnt = 0;
-                                                foreach ([2019, 2018, 2017, 2016, 2015] as $year): ?>
-                                                    <tr class="outer <?= ($year_cnt % 2 ? 'even' : 'odd') ?>">
-                                                        <td class="text">
-                                                            <div>
-                                                                <a class="showHide <?= ($year_cnt ? 'open' : '') ?>"></a>
-                                                                FY <?= $year ?></div>
-                                                        </td>
-                                                        <td class="text">
-                                                            <div>7 Transactions</div>
-                                                        </td>
-                                                        <td class="number endCol">
-                                                            <div style="margin-right: 119px;">$3.38M</div>
-                                                        </td>
+                                                <table class="dataTable cta-spending-history outerTable">
+                                                    <thead>
+                                                    <tr>
+                                                        <th class="text">
+                                                            <div><span>Fiscal<br>Year</span></div>
+                                                        </th>
+                                                        <th class="text">
+                                                            <div><span>Number Of<br>Transactions</span></div>
+                                                        </th>
+                                                        <th class="number endCol">
+                                                            <div style="margin-right: 119px;">
+                                                                <span>Amount<br>Spent</span></div>
+                                                        </th>
                                                     </tr>
-                                                    <tr id="showHidectaspe<?= $year ?>" class="showHide odd"
-                                                        style="<?= ($year_cnt ? 'display:none' : '') ?>">
-                                                        <td colspan="3">
-                                                            <div class="scroll" style="padding-left:20px">
-                                                                <table class="dataTable outerTable">
-                                                                    <thead>
-                                                                    <tr>
-                                                                        <th class="text th1">
-                                                                            <div><span>Date</span></div>
-                                                                        </th>
-                                                                        <th class="text th2">
-                                                                            <div><span>Document id</span></div>
-                                                                        </th>
-                                                                        <th class="number th3">
-                                                                            <div><span>Check<br>Amount</span></div>
-                                                                        </th>
-                                                                        <th class="text th4">
-                                                                            <div><span>Expence<br>Category</span></div>
-                                                                        </th>
-                                                                        <th class="text th5">
-                                                                            <div><span>Nycha<br/>Payment</span></div>
-                                                                        </th>
-                                                                        <th class="text th6">
-                                                                            <div><span>Agency</span></div>
-                                                                        </th>
-                                                                        <th class="text th7">
-                                                                            <div><span>Department</span></div>
-                                                                        </th>
-                                                                    </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                    <?php $cnt = 0;
-                                                                    for ($i = 1; $i < 100; $i++): ?>
-                                                                        <tr class="<?= ($i % 2 ? 'odd' : 'even') ?>">
-                                                                            <td class="text td1">
-                                                                                <div>07/18/<?= $year ?></div>
-                                                                            </td>
-                                                                            <td class="text td2">
-                                                                                <div>428758926</div>
-                                                                            </td>
-                                                                            <td class="number td3">
-                                                                                <div>$3.14B</div>
-                                                                            </td>
-                                                                            <td class="text td4">
-                                                                                <div>CONSTRUCTION BUILDINGS</div>
-                                                                            </td>
-                                                                            <td class="text td5">
-                                                                                <div>$2.58M</div>
-                                                                            </td>
-                                                                            <td class="text td6">
-                                                                                <div>HEALTH AND HOSPITALS</div>
-                                                                            </td>
-                                                                            <td class="text td7">
-                                                                                <div>400-819-303</div>
-                                                                            </td>
-                                                                        </tr>
-                                                                    <?php endfor; ?>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
                                                     <?php
-                                                    $year_cnt++;
-                                                endforeach;
-                                                ?>
-                                                </tbody>
-                                            </table>
-                                        </div>
-
-                                    </div>
-
-
-                                    <div class="panel-separator"></div>
-
-                                    <div class="contextual-links-region panel-pane pane-node">
-
-
-                                        <div class="pane-content">
-
-                                            <div about="/node/428" typeof="sioc:Item foaf:Document"
-                                                 class="node node-widget node-teaser node-published node-not-promoted node-not-sticky self-posted author-admin odd clearfix"
-                                                 id="node-widget-428">
-
-
-                                                <div class="content clearfix">
-
-
-                                                    <h3>Spending by Expense Category</h3>
-                                                    <table class="dataTable outerTable"
-                                                           style="border: 1px solid #CACACA;">
-                                                        <thead>
-                                                        <tr>
-                                                            <th style="text-align: left !important; vertical-align: middle;"><span
-                                                                    style="margin:8px 0 8px 15px!important; display:inline-block; text-align: center !important;">Expense<br>Category</span>
-                                                            </th>
-                                                            <th style="text-align: left !important; vertical-align: middle;"><span
-                                                                    style="margin:8px 0 8px 15px!important; display:inline-block; text-align: center !important;">Category<br>Type</span>
-                                                            </th>
-                                                            <th style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
-                            <span
-                                style="margin:8px 0 8px 0 !important;display:inline-block; text-align: center !important;">Encumbered<br>Amount</span>
-                                                            </th>
-                                                            <th style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
-                            <span
-                                style="margin:8px 0 8px 0 !important;display:inline-block; text-align: center !important;">Spent To<br>Date</span>
-                                                            </th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        <tr class="even outer">
-                                                            <td style="text-align: left !important; vertical-align: middle; padding: 10px 5px !important;">
-                            <span
-                                style="margin:8px 0 8px 15px!important; display:inline-block; text-align: left !important;">CONSTRUCTION-BUILDINGS</span>
+                                                    $year_cnt = 0;
+                                                    foreach ([2019, 2018, 2017, 2016, 2015] as $year): ?>
+                                                        <tr class="outer <?= ($year_cnt % 2 ? 'even' : 'odd') ?>">
+                                                            <td class="text">
+                                                                <div>
+                                                                    <a class="showHide <?= ($year_cnt ? 'open' : '') ?>"></a>
+                                                                    FY <?= $year ?></div>
                                                             </td>
-                                                            <td style="text-align: left !important; vertical-align: middle; padding: 10px 5px !important;">
-                            <span
-                                style="margin:8px 0 8px 15px!important; display:inline-block; text-align: left !important;">OTHER</span>
+                                                            <td class="text">
+                                                                <div>7 Transactions</div>
                                                             </td>
-                                                            <td style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
-                                                                <span
-                                                                    style="display:inline-block; text-align: right !important;">$14.17M</span>
-                                                            </td>
-                                                            <td style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
-                                                                <span
-                                                                    style="display:inline-block; text-align: right !important;">$12.74M</span>
+                                                            <td class="number endCol">
+                                                                <div style="margin-right: 119px;">$3.38M</div>
                                                             </td>
                                                         </tr>
-                                                        </tbody>
-                                                    </table>
-
-                                                </div>
-
-                                                <div class="clearfix">
-                                                    <div class="links node-links clearfix"></div>
-
-                                                </div>
+                                                        <tr id="showHidectaspe<?= $year ?>" class="showHide odd"
+                                                            style="<?= ($year_cnt ? 'display:none' : '') ?>">
+                                                            <td colspan="3">
+                                                                <div class="scroll" style="padding-left:20px">
+                                                                    <table class="dataTable outerTable">
+                                                                        <thead>
+                                                                        <tr>
+                                                                            <th class="text th1">
+                                                                                <div><span>Date</span></div>
+                                                                            </th>
+                                                                            <th class="text th2">
+                                                                                <div><span>Document id</span></div>
+                                                                            </th>
+                                                                            <th class="number th3">
+                                                                                <div><span>Check<br>Amount</span></div>
+                                                                            </th>
+                                                                            <th class="text th4">
+                                                                                <div><span>Expence<br>Category</span>
+                                                                                </div>
+                                                                            </th>
+                                                                            <th class="text th5">
+                                                                                <div><span>Nycha<br/>Payment</span>
+                                                                                </div>
+                                                                            </th>
+                                                                            <th class="text th6">
+                                                                                <div><span>Agency</span></div>
+                                                                            </th>
+                                                                            <th class="text th7">
+                                                                                <div><span>Department</span></div>
+                                                                            </th>
+                                                                        </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                        <?php $cnt = 0;
+                                                                        for ($i = 1; $i < 100; $i++): ?>
+                                                                            <tr class="<?= ($i % 2 ? 'odd' : 'even') ?>">
+                                                                                <td class="text td1">
+                                                                                    <div>07/18/<?= $year ?></div>
+                                                                                </td>
+                                                                                <td class="text td2">
+                                                                                    <div>428758926</div>
+                                                                                </td>
+                                                                                <td class="number td3">
+                                                                                    <div>$3.14B</div>
+                                                                                </td>
+                                                                                <td class="text td4">
+                                                                                    <div>CONSTRUCTION BUILDINGS</div>
+                                                                                </td>
+                                                                                <td class="text td5">
+                                                                                    <div>$2.58M</div>
+                                                                                </td>
+                                                                                <td class="text td6">
+                                                                                    <div>HEALTH AND HOSPITALS</div>
+                                                                                </td>
+                                                                                <td class="text td7">
+                                                                                    <div>400-819-303</div>
+                                                                                </td>
+                                                                            </tr>
+                                                                        <?php endfor; ?>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <?php
+                                                        $year_cnt++;
+                                                    endforeach;
+                                                    ?>
+                                                    </tbody>
+                                                </table>
                                             </div>
 
                                         </div>
-
-
                                     </div>
+                                    <div class="panel-separator"></div>
+
+
+                                    <h3>Spending by Expense Category</h3>
+                                    <table class="dataTable outerTable"
+                                           style="border: 1px solid #CACACA;">
+                                        <thead>
+                                        <tr>
+                                            <th style="text-align: left !important; vertical-align: middle;"><span
+                                                    style="margin:8px 0 8px 15px!important; display:inline-block; text-align: center !important;">Expense<br>Category</span>
+                                            </th>
+                                            <th style="text-align: left !important; vertical-align: middle;"><span
+                                                    style="margin:8px 0 8px 15px!important; display:inline-block; text-align: center !important;">Category<br>Type</span>
+                                            </th>
+                                            <th style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
+                            <span
+                                style="margin:8px 0 8px 0 !important;display:inline-block; text-align: center !important;">Encumbered<br>Amount</span>
+                                            </th>
+                                            <th style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
+                            <span
+                                style="margin:8px 0 8px 0 !important;display:inline-block; text-align: center !important;">Spent To<br>Date</span>
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr class="even outer">
+                                            <td style="text-align: left !important; vertical-align: middle; padding: 10px 5px !important;">
+                            <span
+                                style="margin:8px 0 8px 15px!important; display:inline-block; text-align: left !important;">CONSTRUCTION-BUILDINGS</span>
+                                            </td>
+                                            <td style="text-align: left !important; vertical-align: middle; padding: 10px 5px !important;">
+                            <span
+                                style="margin:8px 0 8px 15px!important; display:inline-block; text-align: left !important;">OTHER</span>
+                                            </td>
+                                            <td style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
+                                                                <span
+                                                                    style="display:inline-block; text-align: right !important;">$14.17M</span>
+                                            </td>
+                                            <td style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
+                                                                <span
+                                                                    style="display:inline-block; text-align: right !important;">$12.74M</span>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
             </td>
         </tr>
         <?php for ($j = 3; $j < 11; $j++): ?>
