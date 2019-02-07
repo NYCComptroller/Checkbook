@@ -55,7 +55,7 @@ class NychaContractDetails
     private function loadPo(&$node, $contract_id)
     {
         $po_query = <<<SQL
-            SELECT distinct
+            SELECT DISTINCT
                 contract_id,
                 agreement_type_code,
                 agreement_type_name,
@@ -76,6 +76,8 @@ class NychaContractDetails
                 revision_number,
                 revision_total_amount,
                 revision_approved_date,
+                shipment_number,
+                distribution_number,
                 purpose,
                 agency_name,
                 contract_type_descr,
@@ -94,7 +96,7 @@ class NychaContractDetails
                 latest_flag
             FROM
                 all_agreement_transactions
-            WHERE latest_flag = 'Y' AND agreement_type_code = 'PO' AND contract_id='{$contract_id}'
+            WHERE contract_id='{$contract_id}'
             ORDER BY revision_approved_date DESC
 SQL;
 
