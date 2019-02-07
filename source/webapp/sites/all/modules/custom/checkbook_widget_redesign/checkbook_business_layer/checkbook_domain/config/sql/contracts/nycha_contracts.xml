@@ -265,14 +265,27 @@
     <param name="year" required="true" type="int"/>
     <param name="vendor" type="int"/>
     <sql>
-      SELECT DISTINCT contract_id FROM all_agreement_transactions
+      SELECT DISTINCT contract_counts
+      FROM (SELECT DISTINCT contract_id contract_counts FROM all_agreements
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="vendor_id" paramName="vendor"/>
+          <exp op="BETWEEN" dbField="start_year_id,end_year_id" paramName="year"/>
+          <exp op="IN" dbField="transaction_status_name" paramName="transaction_status_name">('APPROVED','CLOSED','FINALLY CLOSED','REQUIRES REAPPROVAL')</exp>
+        </exp>
+      </where>
+      UNION ALL
+      SELECT DISTINCT contract_id contract_counts
+      FROM all_agreement_transactions
       <where>
         <exp op="AND">
           <exp op="=" dbField="vendor_id" paramName="vendor"/>
           <exp op="=" dbField="release_approved_year_id" paramName="year"/>
-          <exp op="IN" dbField="transaction_status_name" paramName="transaction_status_name">('APPROVED','CLOSED','FINALLY CLOSED')</exp>
+          <exp op="IN" dbField="transaction_status_name" paramName="transaction_status_name">('APPROVED','CLOSED','FINALLY CLOSED','REQUIRES REAPPROVAL')</exp>
+          <exp op="=" dbField="agreement_type_code">'PO'</exp>
         </exp>
       </where>
+      ) a
     </sql>
   </statement>
 
