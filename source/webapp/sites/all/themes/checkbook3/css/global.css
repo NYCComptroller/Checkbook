@@ -3790,3 +3790,7 @@ a.new-features-morelink{
 .nycha-assoc-releases .assoc_item .contract-title{
   margin-top:7px;
 }
+
+.nycha-contract-history td.thVNum{
+  padding: 0 10px;
+}
