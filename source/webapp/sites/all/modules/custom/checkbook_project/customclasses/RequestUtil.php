@@ -1363,6 +1363,10 @@ class RequestUtil
         if (!$bottomURL && preg_match('/^nycha_contracts\/search\/transactions/', current_path()) || preg_match('/^nycha_contracts\/all\/transactions/', current_path())) {
             $title = 'NYCHA Contracts Transactions';
         }
+        else  if (preg_match('/contract/', $bottomURL)) {
+            $title = RequestUtil::getRequestKeyValueFromURL("contract", $bottomURL);
+
+        }
         else if( stripos($bottomURL, 'transactions')){
             $code= RequestUtil::getRequestKeyValueFromURL("tCode",$bottomURL);
             $title = self::getTitleByCode($code). ' Contracts Transactions';
