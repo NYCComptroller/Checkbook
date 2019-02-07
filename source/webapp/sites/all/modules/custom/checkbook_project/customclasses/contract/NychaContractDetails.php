@@ -38,7 +38,78 @@ class NychaContractDetails
             return;
         }
 
-        $all_agreements_query = <<<SQL
+        if (stripos(' '.$contract_id, 'ba') || stripos(' '.$contract_id, 'pa')) {
+            $this->loadBaPa($node, $contract_id);
+            $node->contractBAPA = true;
+        }
+
+        if (stripos(' '.$contract_id, 'po')) {
+            $this->loadPo($node, $contract_id);
+            $node->contractPO = true;
+        }
+
+        $node->contract_history_by_years = $this->processContractHistory($node->contract_history);
+        $this->calcNumberOfContracts($node);
+    }
+
+    private function loadPo(&$node, $contract_id)
+    {
+        $po_query = <<<SQL
+            SELECT distinct
+                contract_id,
+                agreement_type_code,
+                agreement_type_name,
+                release_total_amount total_amount,
+                release_original_amount original_amount,
+                release_spend_to_date spend_to_date,
+                transaction_category_name category_descr,
+                transaction_status_name,
+                purchase_order_number,
+                release_approved_date,
+                release_approved_year,
+                release_approved_year_id,
+                release_line_total_amount,
+                release_line_original_amount,
+                release_line_spend_to_date,
+                release_line_amount_difference,
+                release_revision_count,
+                revision_number,
+                revision_total_amount,
+                revision_approved_date,
+                purpose,
+                agency_name,
+                contract_type_descr,
+                vendor_id,
+                vendor_number,
+                vendor_name,
+                vendor_site_id,
+                address_line1,
+                address_line2,
+                city,
+                STATE,
+                zip,
+                industry_type_name,
+                department_name,
+                award_method_name,
+                latest_flag
+            FROM
+                all_agreement_transactions
+            WHERE latest_flag = 'Y' AND agreement_type_code = 'PO' AND contract_id='{$contract_id}'
+            ORDER BY revision_approved_date DESC
+SQL;
+
+        $contracts = _checkbook_project_execute_sql_by_data_source($po_query, 'checkbook_nycha');
+        if ($contracts && sizeof($contracts)) {
+            $node->data = $contracts[0];
+        }
+
+        $node->contract_history = $contracts;
+
+    }
+
+    private function loadBaPa(&$node, $contract_id)
+    {
+        $bapa_query = <<<SQL
             SELECT
               contract_id,
               agency_name,
@@ -84,23 +155,22 @@ class NychaContractDetails
               contracting_agency,
               commodity_category_id,
               commodity_category_code,
-              commodity_category_descr,
+              commodity_category_descr category_descr,
               number_of_solicitations,
               response_to_solicitation
             FROM
               all_agreements
             WHERE
               (purchase_order_number = '{$contract_id}' OR contract_id='{$contract_id}')
+            ORDER BY revision_number DESC
 SQL;
 
-        $latest_contract_sql = $all_agreements_query . " AND latest_flag = 'Y' LIMIT 1";
+        $contracts = _checkbook_project_execute_sql_by_data_source($bapa_query, 'checkbook_nycha');
+        if ($contracts && sizeof($contracts)) {
+            $node->data = $contracts[0];
+        }
 
-        $node->data = _checkbook_project_execute_sql_by_data_source($latest_contract_sql, 'checkbook_nycha');
-
-        $contract_history_query = $all_agreements_query . " ORDER BY revision_number DESC ";
-
-        $node->contract_history = _checkbook_project_execute_sql_by_data_source($contract_history_query, 'checkbook_nycha');
-        $node->contract_history_by_years = $this->processContractHistory($node->contract_history);
+        $node->contract_history = $contracts;
 
         $agreement_transactions_query =
             "SELECT
@@ -112,28 +182,31 @@ SQL;
             $total_associated_releases += $row["associated_releases"];
         }
         $node->total_associated_releases = $total_associated_releases;
+    }
 
-        $vendor_id = $node->data[0]['vendor_id'];
+    private function calcNumberOfContracts(&$node)
+    {
+        $vendor_id = $node->data['vendor_id'];
         $node->total_number_of_contracts = 0;
         if ($vendor_id) {
-            $total_number_contracts_query = <<<EOQ
-            SELECT SUM(count) FROM
-               (SELECT COUNT(DISTINCT contract_id)
+            $total_number_contracts_query = <<<EOQ2
+            SELECT SUM(count)
+            FROM (SELECT COUNT(DISTINCT contract_id) 
                   FROM all_agreements
-                WHERE vendor_id = {$vendor_id}
+                  WHERE transaction_status_name = ANY (ARRAY ['APPROVED', 'CLOSED', 'FINALLY CLOSED','REQUIRES REAPPROVAL'])
+                    AND vendor_id = '{$vendor_id}'
                   UNION ALL
-                SELECT COUNT(DISTINCT contract_id)
+                  SELECT COUNT(DISTINCT contract_id)
                   FROM all_agreement_transactions
-                      WHERE agreement_type_code = 'PO'
-                        AND vendor_id = {$vendor_id}
-                 ) a
-EOQ;
+                  WHERE agreement_type_code = 'PO' AND transaction_status_name = ANY (ARRAY ['APPROVED', 'CLOSED', 'FINALLY CLOSED','REQUIRES REAPPROVAL'])
+                    AND vendor_id = '{$vendor_id}') a
+EOQ2;
+
             $total_number_of_contracts = _checkbook_project_execute_sql_by_data_source($total_number_contracts_query, 'checkbook_nycha');
             if ($total_number_of_contracts) {
                 $node->total_number_of_contracts = $total_number_of_contracts[0];
             }
         }
-
     }
 
     private function processContractHistory($history)
