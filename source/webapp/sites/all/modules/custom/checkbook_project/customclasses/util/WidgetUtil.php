@@ -156,6 +156,7 @@ class WidgetUtil
         "increase_decrease" => "Increase/<br>Decrease",
         "version_status" => "Version<br/>Status",
         "release_status" => "Release<br/>Status",
+        "transaction_status" => "Transaction<br/>Status",
         "contract_status" => "Status",
         "document_id" => "Document<br/>ID",
         "check_amount" => "Check<br/>Amount",
