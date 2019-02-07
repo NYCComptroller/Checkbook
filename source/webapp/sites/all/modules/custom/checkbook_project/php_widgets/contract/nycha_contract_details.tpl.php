@@ -195,20 +195,11 @@ $contract = $node->data[0];
                         class="showHide odd" <?= ($hidden ? 'style="display:none"' : '') ?>>
                         <td colspan="4">
                             <div class="scroll">
-                                <table class="sub-table col9">
+                                <table class="dataTable outerTable">
                                     <thead>
                                     <tr>
                                         <th class="number thVNum">
-                                            <?= WidgetUtil::generateLabelMapping("revision_number") ?>
-                                        </th>
-                                        <th class="text thRegDate">
-                                            <?= WidgetUtil::generateLabelMapping("release_approved_date") ?>
-                                        </th>
-                                        <th class="number thOrigAmt">
-                                            <?= WidgetUtil::generateLabelMapping("original_amount") ?>
-                                        </th>
-                                        <th class="number thCurAmt">
-                                            <?= WidgetUtil::generateLabelMapping("revision_total_amount") ?>
+                                            <?= WidgetUtil::generateLabelMapping("version_number") ?>
                                         </th>
                                         <th class="text thStartDate">
                                             <?= WidgetUtil::generateLabelMapping("start_date") ?>
@@ -216,8 +207,20 @@ $contract = $node->data[0];
                                         <th class="text thEndDate">
                                             <?= WidgetUtil::generateLabelMapping("end_date") ?>
                                         </th>
+                                        <th class="text thRegDate">
+                                            <?= WidgetUtil::generateLabelMapping("release_approved_date") ?>
+                                        </th>
+                                        <th class="text thLastMDate">
+                                            <?= WidgetUtil::generateLabelMapping("last_mod_date") ?>
+                                        </th>
+                                        <th class="number thOrigAmt">
+                                            <?= WidgetUtil::generateLabelMapping("original_amount") ?>
+                                        </th>
+                                        <th class="number thCurAmt">
+                                            <?= WidgetUtil::generateLabelMapping("current_amount") ?>
+                                        </th>
                                         <th class="text thVerStat">
-                                            <?= WidgetUtil::generateLabelMapping("release_status") ?>
+                                            <?= WidgetUtil::generateLabelMapping("transaction_status") ?>
                                         </th>
                                     </tr>
                                     </thead>
@@ -229,7 +232,16 @@ $contract = $node->data[0];
                                             <td class="number thVNum">
                                                 <div><?= (int)$revision['revision_number'] ?></div>
                                             </td>
+                                            <td class="text thStartDate">
+                                                <div><?= format_string_to_date($contract['start_date']) ?></div>
+                                            </td>
+                                            <td class="text thEndDate">
+                                                <div><?= format_string_to_date($contract['end_date']) ?></div>
+                                            </td>
                                             <td class="text thRegDate">
+                                                <div><?= format_string_to_date($revision['revision_approved_date']) ?></div>
+                                            </td>
+                                            <td class="text thLastMDate">
                                                 <div><?= format_string_to_date($revision['revision_approved_date']) ?></div>
                                             </td>
                                             <td class="number thOrigAmt">
@@ -237,12 +249,6 @@ $contract = $node->data[0];
                                             </td>
                                             <td class="number thCurAmt">
                                                 <div><?= custom_number_formatter_format($revision['revision_total_amount'], 2, '$') ?></div>
-                                            </td>
-                                            <td class="text thStartDate">
-                                                <div><?= format_string_to_date($contract['start_date']) ?></div>
-                                            </td>
-                                            <td class="text thEndDate">
-                                                <div><?= format_string_to_date($contract['end_date']) ?></div>
                                             </td>
                                             <td class="text thVerStat">
                                                 <div>Approved</div>
@@ -300,8 +306,8 @@ $contract = $node->data[0];
                 <div class="contract-title clearfix">
                     <span class="toggler expanded clickOnLoad odd" id="master_assoc_cta_expand"></span>
 
-                    <div class='contract-title-text'>Release Spending for <a
-                            class='bottomContainerReload'><?= $contract['contract_id']; ?>-2</a></div>
+                    <div class='contract-title-text'>Release Spending for <strong
+                            class='bottomContainerReload'><?= $contract['contract_id']; ?>-1</strong></div>
 
                     <div class="dollar-amounts">
                         <div
@@ -395,7 +401,7 @@ $contract = $node->data[0];
                                                                         <thead>
                                                                         <tr>
                                                                             <th class="text">
-                                                                                <div><span>Shipment number</span>
+                                                                                <div><span>Shipment<br />Number</span>
                                                                                 </div>
                                                                             </th>
                                                                             <th class="text">
@@ -766,14 +772,14 @@ $contract = $node->data[0];
                 </div>
             </td>
         </tr>
-        <?php for ($j = 3; $j < 11; $j++): ?>
+        <?php for ($j = 2; $j < 11; $j++): ?>
             <tr>
                 <td class="assoc_item">
                     <div class="contract-title clearfix">
                         <span class="toggler collapsed  <?= ($j % 2 ? 'even' : 'odd') ?>"></span>
 
-                        <div class='contract-title-text'>Release Spending for <a
-                                class='bottomContainerReload '><?= $contract['contract_id']; ?>-<?= $j ?></a></div>
+                        <div class='contract-title-text'>Release Spending for <strong
+                                class='bottomContainerReload '><?= $contract['contract_id']; ?>-<?= $j ?></strong></div>
 
                         <div class="dollar-amounts">
                             <div
