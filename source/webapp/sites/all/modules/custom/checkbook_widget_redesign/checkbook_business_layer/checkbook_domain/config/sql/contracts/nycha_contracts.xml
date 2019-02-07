@@ -30,6 +30,7 @@
 
   <statement name="GetContractsByAwardMethods" datasource="checkbook_nycha">
     <param name="year" required="true" type="int"/>
+    <param name="vendor" type="int"/>
     <sql>
       SELECT
         award_method_id,
@@ -38,12 +39,18 @@
         SUM(total_amount) AS total_amount,
         SUM(original_amount) AS original_amount,
         SUM(spend_to_date) AS spend_to_date
-      FROM contracts_fy_award_method_summary_vw c
+      <exp op="IF" condition="=" paramName="vendor" compareValue="">
+        FROM contracts_fy_award_method_summary_vw c
+      </exp>
+      <exp op="IF" condition="&lt;&gt;" paramName="vendor" compareValue="">
+        FROM contracts_fy_award_method_vendor_summary c
+      </exp>
       JOIN ref_year y ON c.start_year = y.year_value
       JOIN ref_year y1 ON c.end_year = y1.year_value
       <where>
         <exp op="AND">
           <exp op="BETWEEN" paramName="year" dbField="y.year_id, y1.year_id"/>
+          <exp op="=" dbField="vendor_id" paramName="vendor"/>
         </exp>
       </where>
       GROUP BY award_method_name, award_method_id
@@ -194,6 +201,7 @@
 
   <statement name="GetContractsByDepartments" datasource="checkbook_nycha">
     <param name="year" required="true" type="int"/>
+    <param name="vendor" type="int"/>
     <sql>
       SELECT
         department_id,
@@ -202,12 +210,18 @@
         SUM(total_amount) AS total_amount,
         SUM(original_amount) AS original_amount,
         SUM(spend_to_date) AS spend_to_date
-      FROM contracts_fy_department_summary_vw  c
+      <exp op="IF" condition="=" paramName="vendor" compareValue="">
+        FROM contracts_fy_department_summary_vw c
+      </exp>
+      <exp op="IF" condition="&lt;&gt;" paramName="vendor" compareValue="">
+        FROM contracts_fy_department_vendor_summary c
+      </exp>
       JOIN ref_year y ON c.start_year = y.year_value
       JOIN ref_year y1 ON c.end_year = y1.year_value
       <where>
         <exp op="AND">
           <exp op="BETWEEN" paramName="year" dbField="y.year_id, y1.year_id"/>
+          <exp op="=" dbField="vendor_id" paramName="vendor"/>
         </exp>
       </where>
       GROUP BY department_id, department_name
@@ -227,12 +241,18 @@
         SUM(total_amount) AS total_amount,
         SUM(original_amount) AS original_amount,
         SUM(spend_to_date) AS spend_to_date
-      FROM contracts_fy_industry_summary_vw c
+      <exp op="IF" condition="=" paramName="vendor" compareValue="">
+        FROM contracts_fy_industry_summary_vw c
+      </exp>
+      <exp op="IF" condition="&lt;&gt;" paramName="vendor" compareValue="">
+        FROM contracts_fy_industry_vendor_summary c
+      </exp>
       JOIN ref_year y ON c.start_year = y.year_value
       JOIN ref_year y1 ON c.end_year = y1.year_value
       <where>
         <exp op="AND">
           <exp op="BETWEEN" paramName="year" dbField="y.year_id, y1.year_id"/>
+          <exp op="=" dbField="vendor_id" paramName="vendor"/>
         </exp>
       </where>
       GROUP BY industry_type_id,industry_type_name
@@ -243,10 +263,12 @@
 
   <statement name="GetCountContracts" datasource="checkbook_nycha">
     <param name="year" required="true" type="int"/>
+    <param name="vendor" type="int"/>
     <sql>
       SELECT DISTINCT contract_id FROM all_agreement_transactions
       <where>
         <exp op="AND">
+          <exp op="=" dbField="vendor_id" paramName="vendor"/>
           <exp op="=" dbField="release_approved_year_id" paramName="year"/>
           <exp op="IN" dbField="transaction_status_name" paramName="transaction_status_name">('APPROVED','CLOSED','FINALLY CLOSED')</exp>
         </exp>
@@ -266,11 +288,17 @@
         SUM(total_amount) AS total_amount,
         SUM(original_amount) AS original_amount,
         SUM(spend_to_date) AS spend_to_date
-      FROM contracts_fy_size_vw c
+      <exp op="IF" condition="=" paramName="vendor" compareValue="">
+        FROM contracts_fy_size_vw c
+      </exp>
+      <exp op="IF" condition="&lt;&gt;" paramName="vendor" compareValue="">
+        FROM contracts_fy_size_vendor_summary c
+      </exp>
       JOIN ref_year y ON c.start_year = y.year_value
       JOIN ref_year y1 ON c.end_year = y1.year_value
       <where>
         <exp op="AND">
+          <exp op="=" dbField="vendor_id" paramName="vendor"/>
           <exp op="BETWEEN" paramName="year" dbField="y.year_id, y1.year_id"/>
         </exp>
       </where>
@@ -282,6 +310,7 @@
 
   <statement name="GetContractsByRespCenters" datasource="checkbook_nycha">
     <param name="year" required="true"/>
+    <param name="vendor" type="int"/>
     <sql>
       SELECT
         agreement_type_code
@@ -294,9 +323,15 @@
         , SUM(original_amount)     AS original_amount
         , SUM(spend_to_date)         AS spend_to_date
         , SUM(amount_difference)         AS delta_amount
-      FROM contracts_fy_responsibility_centers
+      <exp op="IF" condition="=" paramName="vendor" compareValue="">
+        FROM contracts_fy_responsibility_centers
+      </exp>
+      <exp op="IF" condition="&lt;&gt;" paramName="vendor" compareValue="">
+        FROM contracts_fy_responsibility_centers_vendor_summary
+      </exp>
       <where>
         <exp op="AND">
+          <exp op="=" dbField="vendor_id" paramName="vendor"/>
           <exp op="IS NOT" dbField="responsibility_center_code">NULL</exp>
           <exp op="=" dbField="release_approved_year_id" paramName="year"/>
         </exp>
