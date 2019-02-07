@@ -86,17 +86,39 @@
           echo "<div class='scroll'>";
           echo "<table class='sub-table col9'>";
           //For IE9, tables cannot have line breaks between table elements
-          echo "<thead><tr>";
-          echo "<th class='number thVNum'>" . WidgetUtil::generateLabelMapping("version_number") . "</th>";
-          echo "<th class='text thStartDate'>" . WidgetUtil::generateLabelMapping("start_date") . "</th>";
-          echo "<th class='text thEndDate'>" . WidgetUtil::generateLabelMapping("end_date") . "</th>";
-          echo "<th class='text thRegDate'>" . WidgetUtil::generateLabelMapping("reg_date") . "</th>";
-          echo "<th class='text thLastMDate'>" . WidgetUtil::generateLabelMapping("last_mod_date") . "</th>";
-          echo "<th class='number thCurAmt'>" . WidgetUtil::generateLabelMapping("current_amount") . "</th>";          
-          echo "<th class='number thOrigAmt'>" . WidgetUtil::generateLabelMapping("original_amount") . "</th>";
-          echo "<th class='number thIncDec'>" . WidgetUtil::generateLabelMapping("increase_decrease") . "</th>";
-          echo "<th class='text thVerStat'>" . WidgetUtil::generateLabelMapping("version_status") . "</th>";
-          echo "</tr></thead><tbody>";
+          echo "<thead>";
+          ?>
+    <tr>
+        <th class="number thVNum">
+            <?= WidgetUtil::generateLabelMapping("version_number") ?>
+        </th>
+        <th class="text thStartDate">
+            <?= WidgetUtil::generateLabelMapping("start_date") ?>
+        </th>
+        <th class="text thEndDate">
+            <?= WidgetUtil::generateLabelMapping("end_date") ?>
+        </th>
+        <th class="text thRegDate">
+            <?= WidgetUtil::generateLabelMapping("reg_date") ?>
+        </th>
+        <th class="text thLastMDate">
+            <?= WidgetUtil::generateLabelMapping("last_mod_date") ?>
+        </th>
+        <th class="number thCurAmt">
+            <?= WidgetUtil::generateLabelMapping("current_amount") ?>
+        </th>
+        <th class="number thOrigAmt">
+            <?= WidgetUtil::generateLabelMapping("original_amount") ?>
+        </th>
+        <th class="number thIncDec">
+            <?= WidgetUtil::generateLabelMapping("increase_decrease") ?>
+        </th>
+        <th class="text thVerStat">
+            <?= WidgetUtil::generateLabelMapping("version_status") ?>
+        </th>
+    </tr>
+    <?php
+          echo "</thead><tbody>";
           $count = 0;
           foreach ($items as $item) {
             if ($count % 2 == 0) {

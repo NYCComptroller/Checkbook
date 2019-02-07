@@ -2138,6 +2138,7 @@ table#assoc_contracts_list {
     border: none;
     border-collapse: separate;
     border-spacing: 0 10px;
+    width:100%;
 }
 table#assoc_contracts_list > thead{
     display:none;
@@ -3784,4 +3785,8 @@ a.new-features-morelink{
 
 #dialog.ckbk-export-dialog td{
     padding: 5px 30px;
+}
+
+.nycha-assoc-releases .assoc_item .contract-title{
+  margin-top:7px;
 }
