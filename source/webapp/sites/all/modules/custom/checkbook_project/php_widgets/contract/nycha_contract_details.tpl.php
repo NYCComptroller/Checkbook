@@ -532,30 +532,24 @@ $contract = $node->data[0];
                                                                             <div><span>Version Number</span></div>
                                                                         </th>
                                                                         <th class="text th2">
-                                                                            <div><span>Start<br>Date</span></div>
-                                                                        </th>
-                                                                        <th class="number th3">
-                                                                            <div><span>End<br>Date</span></div>
-                                                                        </th>
-                                                                        <th class="text th4">
                                                                             <div><span>Approved<br>Date</span></div>
                                                                         </th>
-                                                                        <th class="text th5">
+                                                                        <th class="text th3">
                                                                             <div>
                                                                                 <span>Last<br/>Modified&nbsp;Date</span>
                                                                             </div>
                                                                         </th>
-                                                                        <th class="text th6">
+                                                                        <th class="text th4">
                                                                             <div><span>Current<br/>Amount</span></div>
                                                                         </th>
-                                                                        <th class="text th7">
+                                                                        <th class="text th5">
                                                                             <div><span>Original<br/>Amount</span></div>
                                                                         </th>
-                                                                        <th class="text th8">
+                                                                        <th class="text th6">
                                                                             <div><span>Increase/<br/>Decrease</span>
                                                                             </div>
                                                                         </th>
-                                                                        <th class="text th9">
+                                                                        <th class="text th7">
                                                                             <div><span>Transaction<br/>Status</span>
                                                                             </div>
                                                                         </th>
@@ -569,27 +563,21 @@ $contract = $node->data[0];
                                                                                 <div><?= $i ?></div>
                                                                             </td>
                                                                             <td class="text td2">
-                                                                                <div>07/18/2018</div>
+                                                                                <div>01/13/2020</div>
                                                                             </td>
-                                                                            <td class="number td3">
-                                                                                <div>12/11/2019</div>
+                                                                            <td class="text td3">
+                                                                                <div>01/13/2020</div>
                                                                             </td>
                                                                             <td class="text td4">
-                                                                                <div>01/13/2020</div>
-                                                                            </td>
-                                                                            <td class="text td5">
-                                                                                <div>01/13/2020</div>
-                                                                            </td>
-                                                                            <td class="text td6">
                                                                                 <div>$2.58M</div>
                                                                             </td>
-                                                                            <td class="text td7">
+                                                                            <td class="text td5">
                                                                                 <div>$3.58M</div>
                                                                             </td>
-                                                                            <td class="text td8">
+                                                                            <td class="text td6">
                                                                                 <div>-$1.00M</div>
                                                                             </td>
-                                                                            <td class="text td9">
+                                                                            <td class="text td7">
                                                                                 <div>Approved</div>
                                                                             </td>
                                                                         </tr>
