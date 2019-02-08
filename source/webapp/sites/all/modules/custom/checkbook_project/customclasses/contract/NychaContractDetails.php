@@ -70,7 +70,7 @@ class NychaContractDetails
                 release_total_amount total_amount,
                 release_original_amount original_amount,
                 release_spend_to_date spend_to_date,
-                transaction_category_name category_descr,
+                transaction_category_name,
                 transaction_status_name,
                 purchase_order_number,
                 release_approved_date,
@@ -100,6 +100,7 @@ class NychaContractDetails
                 industry_type_name,
                 department_name,
                 award_method_name,
+                commodity_category_descr category_descr,
                 latest_flag
             FROM
                 all_agreement_transactions
