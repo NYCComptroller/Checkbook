@@ -359,14 +359,16 @@ $contract = $node->data;
                         <div>
                             <div>
                                 <h3>
-                                    Shipment and Distribution Details
+                                    Shipment and Distribution Details (<?= sizeof($node->shipments) ?>)
                                 </h3>
                                 <div class="scroll">
-                                    <table class="dataTable cta-history outerTable">
+                                    <table
+                                        class="dataTable cta-history outerTable">
                                         <thead>
                                         <tr>
                                             <th class="text">
-                                                <div><span>Shipment<br/>Number</span>
+                                                <div>
+                                                    <span>Shipment<br/>Number</span>
                                                 </div>
                                             </th>
                                             <th class="text">
@@ -375,61 +377,70 @@ $contract = $node->data;
                                                 </div>
                                             </th>
                                             <th class="number">
-                                                <div style="margin-right: 82px;">
+                                                <div
+                                                    style="margin-right: 82px;">
                                                     <span>Current<br>Amount</span>
                                                 </div>
                                             </th>
                                             <th class="number endCol">
-                                                <div style="margin-right: 81px;">
+                                                <div
+                                                    style="margin-right: 81px;">
                                                     <span>Original<br>Amount</span>
                                                 </div>
                                             </th>
                                             <th class="number endCol">
-                                                <div style="margin-right: 81px;">
-                                                    <span>Spend to date</span></div>
+                                                <div
+                                                    style="margin-right: 81px;">
+                                                    <span>Spend to date</span>
+                                                </div>
                                             </th>
                                             <th class="number endCol">
-                                                <div style="margin-right: 81px;">
+                                                <div
+                                                    style="margin-right: 81px;">
                                                     <span>Responsibility center</span>
                                                 </div>
                                             </th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <?php for ($z = 0; $z < 50; $z++): ?>
+                                        <?php
+                                        $z = 0;
+                                        foreach ($node->shipments as $shipment):?>
                                             <tr class="outer <?= ($z % 2 ? 'even' : 'odd') ?>">
                                                 <td class="text">
-                                                    <div><?= $z % 2 + 1 ?></div>
+                                                    <div><?= $shipment['shipment_number'] ?></div>
                                                 </td>
                                                 <td class="text">
-                                                    <div>1</div>
+                                                    <div><?= $shipment['distribution_number'] ?></div>
                                                 </td>
                                                 <td class="number">
                                                     <div
                                                         style="margin-right: 82px;">
                                                         <div
-                                                            class="spent-to-date"><?= custom_number_formatter_format($contract['total_amount'], 2, "$"); ?>
+                                                            class="spent-to-date"><?= custom_number_formatter_format($shipment['release_line_total_amount'], 2, "$"); ?>
                                                         </div>
                                                 </td>
                                                 <td class="number endCol">
                                                     <div
                                                         style="margin-right: 81px;">
                                                         <div
-                                                            class="spent-to-date"><?= custom_number_formatter_format($contract['original_amount'], 2, "$"); ?>
+                                                            class="spent-to-date"><?= custom_number_formatter_format($shipment['release_line_original_amount'], 2, "$"); ?>
                                                         </div>
                                                 </td>
                                                 <td class="number endCol">
                                                     <div
                                                         style="margin-right: 81px;">
                                                         <div
-                                                            class="spent-to-date"><?= custom_number_formatter_format($contract['spend_to_date'], 2, "$"); ?>
+                                                            class="spent-to-date"><?= custom_number_formatter_format($shipment['release_line_spend_to_date'], 2, "$"); ?>
                                                         </div>
                                                 </td>
                                                 <td class="text">
-                                                    <div>Center <?= $z + 7 ?></div>
+                                                    <div><?= $shipment['responsibility_center_descr'] ?></div>
                                                 </td>
                                             </tr>
-                                        <?php endfor; ?>
+                                            <?php
+                                            $z++;
+                                        endforeach; ?>
                                     </table>
                                 </div>
                             </div>
