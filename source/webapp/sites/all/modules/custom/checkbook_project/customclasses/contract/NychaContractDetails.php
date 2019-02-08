@@ -50,6 +50,8 @@ class NychaContractDetails
 
         $node->contract_history_by_years = $this->processContractHistory($node->contract_history);
         $this->calcNumberOfContracts($node);
+
+        $node->assocReleases = $this->getAssocReleases($contract_id);
     }
 
     private function loadPo(&$node, $contract_id)
@@ -222,5 +224,23 @@ EOQ2;
             $return[$year][$line['revision_number']] = $line;
         }
         return $return;
+    }
+
+    private function getAssocReleases($contract_id)
+    {
+        $releases_sql = <<<SQL
+            SELECT DISTINCT release_id,
+                            vendor_id,
+                            vendor_name,
+                            release_total_amount,
+                            release_original_amount,
+                            release_spend_to_date
+            FROM all_agreement_transactions
+            WHERE transaction_status_name = ANY (ARRAY ['APPROVED', 'CLOSED', 'FINALLY CLOSED', 'REQUIRES REAPPROVAL'])
+              AND contract_id = '{$contract_id}'
+            ORDER BY release_id
+SQL;
+        return _checkbook_project_execute_sql_by_data_source($releases_sql, 'checkbook_nycha');
+
     }
 }
