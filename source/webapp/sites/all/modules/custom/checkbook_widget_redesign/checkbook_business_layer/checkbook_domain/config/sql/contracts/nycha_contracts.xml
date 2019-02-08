@@ -76,6 +76,7 @@
           <exp op="=" dbField="release_approved_year_id" paramName="year"/>
           <exp op="=" dbField="vendor_id" paramName="vendor"/>
           <exp op="=" dbField="agreement_type_code">'PO'</exp>
+          <exp op="=" dbField="latest_flag">'Y'</exp>
         </exp>
       </where>
       GROUP BY  contract_id, purpose, vendor_name
