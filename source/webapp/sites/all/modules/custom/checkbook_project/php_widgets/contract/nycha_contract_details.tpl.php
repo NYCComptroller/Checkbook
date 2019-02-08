@@ -353,13 +353,13 @@ $contract = $node->data;
                                                         </span>
                 </td>
             </tr>
-            <tr class="showHide" style="">
+            <tr class="showHide">
                 <td colspan="4">
                     <div>
                         <div>
                             <div>
                                 <h3>
-                                    Shipment and Distribution Details (<?= sizeof($node->shipments) ?>)
+                                    Shipment and Distribution Details <!-- (<?= sizeof($node->shipments) ?>) -->
                                 </h3>
                                 <div class="scroll">
                                     <table
