@@ -38,18 +38,24 @@ class NychaContractDetails
             return;
         }
 
-        if (stripos(' '.$contract_id, 'ba') || stripos(' '.$contract_id, 'pa')) {
+        if (stripos(' ' . $contract_id, 'ba') || stripos(' ' . $contract_id, 'pa')) {
             $this->loadBaPa($node, $contract_id);
             $node->contractBAPA = true;
         }
 
-        if (stripos(' '.$contract_id, 'po')) {
+        if (stripos(' ' . $contract_id, 'po')) {
             $this->loadPo($node, $contract_id);
             $node->contractPO = true;
         }
 
-        $node->contract_history_by_years = $this->processContractHistory($node->contract_history);
+        $node->contract_history_by_years = $this->splitHistoryByYears($node->contract_history);
         $this->calcNumberOfContracts($node);
+
+        $node->assocReleases = $this->getAssocReleases($contract_id);
+        if ($node->assocReleases && sizeof($node->assocReleases)) {
+            $this->loadReleaseHistory($node->assocReleases, $contract_id);
+            $this->loadShipmentDistributionDetails($node->assocReleases, $contract_id);
+        }
     }
 
     private function loadPo(&$node, $contract_id)
@@ -211,9 +217,12 @@ EOQ2;
         }
     }
 
-    private function processContractHistory($history)
+    private function splitHistoryByYears($history)
     {
         $return = [];
+        if (!$history or !is_array($history) or !sizeof($history)) {
+            return [];
+        }
         foreach ($history as $line) {
             list($year,) = explode('-', $line['revision_approved_date']);
             if ($year < 1900 || $year > (date('Y') + 10)) {
@@ -222,5 +231,91 @@ EOQ2;
             $return[$year][$line['revision_number']] = $line;
         }
         return $return;
+    }
+
+    private function getAssocReleases($contract_id)
+    {
+        $releases_sql = <<<SQL
+            SELECT DISTINCT release_id,
+                            vendor_id,
+                            vendor_name,
+                            release_total_amount,
+                            release_original_amount,
+                            release_spend_to_date
+            FROM all_agreement_transactions
+            WHERE transaction_status_name = ANY (ARRAY ['APPROVED', 'CLOSED', 'FINALLY CLOSED', 'REQUIRES REAPPROVAL'])
+              AND contract_id = '{$contract_id}'
+            ORDER BY release_id
+SQL;
+        return _checkbook_project_execute_sql_by_data_source($releases_sql, 'checkbook_nycha');
+
+    }
+
+    private function loadReleaseHistory(&$releases, $contract_id)
+    {
+        $rh_sql = <<<SQL
+            SELECT DISTINCT 
+                release_id,
+                revision_number,
+                release_year,
+                release_year_id,
+                release_approved_date,
+                revision_total_amount,
+                release_original_amount,
+                revision_approved_date,
+                transaction_status_name
+            FROM all_agreement_transactions a
+            WHERE transaction_status_name = ANY (ARRAY ['APPROVED', 'CLOSED', 'FINALLY CLOSED','REQUIRES REAPPROVAL'])
+              AND contract_id = '{$contract_id}'
+            ORDER BY revision_number DESC;
+SQL;
+        $release_history = _checkbook_project_execute_sql_by_data_source($rh_sql, 'checkbook_nycha');
+
+        if (!$release_history) {
+            return;
+        }
+        $history = [];
+        foreach ($release_history as $row) {
+            if (!isset($history[$row['release_id']])) {
+                $history[$row['release_id']] = [];
+            }
+            $history[$row['release_id']][] = $row;
+        }
+
+        foreach ($releases as &$release) {
+            $release['history'] = $this->splitHistoryByYears($history[$release['release_id']]);
+        }
+    }
+
+    private function loadShipmentDistributionDetails(&$releases, $contract_id)
+    {
+        $sd_sql = <<<SQL
+            SELECT DISTINCT 
+                release_id,
+                shipment_number,
+                distribution_number,
+                release_line_total_amount,
+                release_line_original_amount,
+                release_line_spend_to_date,
+                responsibility_center_descr,
+                transaction_status_name
+            FROM all_agreement_transactions a
+            WHERE transaction_status_name = ANY (ARRAY ['APPROVED', 'CLOSED', 'FINALLY CLOSED','REQUIRES REAPPROVAL'])
+              AND contract_id = '{$contract_id}'
+            ORDER BY shipment_number, distribution_number;
+SQL;
+
+        $shipments = _checkbook_project_execute_sql_by_data_source($sd_sql, 'checkbook_nycha');
+        $return = [];
+        foreach($shipments as $shipment) {
+            if(!isset($return[$shipment['release_id']])){
+                $return[$shipment['release_id']] = [];
+            }
+            $return[$shipment['release_id']][] = $shipment;
+        }
+
+        foreach($releases as &$release) {
+            $release['shipments'] = $return[$release['release_id']];
+        }
     }
 }
