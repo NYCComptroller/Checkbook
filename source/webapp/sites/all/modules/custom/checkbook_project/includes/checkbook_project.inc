@@ -2005,7 +2005,7 @@ function _checkbook_project_getChartTitle($domain, $subTitle, $by = null, $chart
 function format_string_to_date($string)
 {
 
-    if (string == null or trim($string) == '')
+    if ($string == null or trim($string) == '')
         return "";
 
     return date("m/d/Y", strtotime($string));
