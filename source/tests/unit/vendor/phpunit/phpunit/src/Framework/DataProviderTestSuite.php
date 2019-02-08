@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -9,17 +9,35 @@
  */
 namespace PHPUnit\Framework;
 
-class DataProviderTestSuite extends TestSuite
+/**
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ */
+final class DataProviderTestSuite extends TestSuite
 {
     /**
-     * Sets the dependencies of a TestCase.
-     *
+     * @var string[]
+     */
+    private $dependencies = [];
+
+    /**
      * @param string[] $dependencies
      */
-    public function setDependencies(array $dependencies)
+    public function setDependencies(array $dependencies): void
     {
+        $this->dependencies = $dependencies;
+
         foreach ($this->tests as $test) {
             $test->setDependencies($dependencies);
         }
+    }
+
+    public function getDependencies(): array
+    {
+        return $this->dependencies;
+    }
+
+    public function hasDependencies(): bool
+    {
+        return \count($this->dependencies) > 0;
     }
 }

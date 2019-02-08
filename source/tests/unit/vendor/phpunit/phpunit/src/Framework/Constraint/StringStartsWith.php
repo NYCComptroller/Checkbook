@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -13,42 +13,34 @@ namespace PHPUnit\Framework\Constraint;
  * Constraint that asserts that the string it is evaluated for begins with a
  * given prefix.
  */
-class StringStartsWith extends Constraint
+final class StringStartsWith extends Constraint
 {
     /**
      * @var string
      */
-    protected $prefix;
+    private $prefix;
+
+    public function __construct(string $prefix)
+    {
+        $this->prefix = $prefix;
+    }
 
     /**
-     * @param string $prefix
+     * Returns a string representation of the constraint.
      */
-    public function __construct($prefix)
+    public function toString(): string
     {
-        parent::__construct();
-        $this->prefix = $prefix;
+        return 'starts with "' . $this->prefix . '"';
     }
 
     /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
      *
-     * @param mixed $other Value or object to evaluate.
-     *
-     * @return bool
+     * @param mixed $other value or object to evaluate
      */
-    protected function matches($other)
+    protected function matches($other): bool
     {
-        return \strpos($other, $this->prefix) === 0;
-    }
-
-    /**
-     * Returns a string representation of the constraint.
-     *
-     * @return string
-     */
-    public function toString()
-    {
-        return 'starts with "' . $this->prefix . '"';
+        return \strpos((string) $other, $this->prefix) === 0;
     }
 }
