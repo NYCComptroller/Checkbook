@@ -326,9 +326,7 @@
     <param name="vendor" type="int"/>
     <sql>
       SELECT
-        agreement_type_code
-        , transaction_category_name
-        , release_approved_year
+         release_approved_year
         , responsibility_center_code
         , responsibility_center_descr
         , SUM(purchase_order_count)         AS contract_count
@@ -350,9 +348,7 @@
         </exp>
       </where>
       GROUP BY
-        agreement_type_code
-        , transaction_category_name
-        , release_approved_year
+         release_approved_year
         , responsibility_center_code
         , responsibility_center_descr
     </sql>
