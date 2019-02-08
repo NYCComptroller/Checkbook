@@ -135,6 +135,7 @@ abstract class PHP_TokenWithScope extends PHP_Token
 
         while ($this->endTokenId === null && isset($tokens[$i])) {
             if ($tokens[$i] instanceof PHP_Token_OPEN_CURLY ||
+                $tokens[$i] instanceof PHP_Token_DOLLAR_OPEN_CURLY_BRACES ||
                 $tokens[$i] instanceof PHP_Token_CURLY_OPEN) {
                 $block++;
             } elseif ($tokens[$i] instanceof PHP_Token_CLOSE_CURLY) {
@@ -1347,114 +1348,5 @@ class PHP_Token_SPACESHIP extends PHP_Token
 }
 
 class PHP_Token_YIELD_FROM extends PHP_Token
-{
-}
-
-// Tokens introduced in HackLang / HHVM
-class PHP_Token_ASYNC extends PHP_Token
-{
-}
-
-class PHP_Token_AWAIT extends PHP_Token
-{
-}
-
-class PHP_Token_COMPILER_HALT_OFFSET extends PHP_Token
-{
-}
-
-class PHP_Token_ENUM extends PHP_Token
-{
-}
-
-class PHP_Token_EQUALS extends PHP_Token
-{
-}
-
-class PHP_Token_IN extends PHP_Token
-{
-}
-
-class PHP_Token_JOIN extends PHP_Token
-{
-}
-
-class PHP_Token_LAMBDA_ARROW extends PHP_Token
-{
-}
-
-class PHP_Token_LAMBDA_CP extends PHP_Token
-{
-}
-
-class PHP_Token_LAMBDA_OP extends PHP_Token
-{
-}
-
-class PHP_Token_ONUMBER extends PHP_Token
-{
-}
-
-class PHP_Token_NULLSAFE_OBJECT_OPERATOR extends PHP_Token
-{
-}
-
-class PHP_Token_SHAPE extends PHP_Token
-{
-}
-
-class PHP_Token_SUPER extends PHP_Token
-{
-}
-
-class PHP_Token_TYPE extends PHP_Token
-{
-}
-
-class PHP_Token_TYPELIST_GT extends PHP_Token
-{
-}
-
-class PHP_Token_TYPELIST_LT extends PHP_Token
-{
-}
-
-class PHP_Token_WHERE extends PHP_Token
-{
-}
-
-class PHP_Token_XHP_ATTRIBUTE extends PHP_Token
-{
-}
-
-class PHP_Token_XHP_CATEGORY extends PHP_Token
-{
-}
-
-class PHP_Token_XHP_CATEGORY_LABEL extends PHP_Token
-{
-}
-
-class PHP_Token_XHP_CHILDREN extends PHP_Token
-{
-}
-
-class PHP_Token_XHP_LABEL extends PHP_Token
-{
-}
-
-class PHP_Token_XHP_REQUIRED extends PHP_Token
-{
-}
-
-class PHP_Token_XHP_TAG_GT extends PHP_Token
-{
-}
-
-class PHP_Token_XHP_TAG_LT extends PHP_Token
-{
-}
-
-class PHP_Token_XHP_TEXT extends PHP_Token
 {
 }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -7,61 +7,46 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace PHPUnit\TextUI;
 
-use PHP_Timer;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
-use PHPUnit\Framework\Warning;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\Framework\TestResult;
-use PHPUnit\Framework\TestListener;
-use PHPUnit\Framework\TestFailure;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestFailure;
+use PHPUnit\Framework\TestListener;
+use PHPUnit\Framework\TestResult;
+use PHPUnit\Framework\TestSuite;
+use PHPUnit\Framework\Warning;
 use PHPUnit\Runner\PhptTestCase;
+use PHPUnit\Util\Color;
 use PHPUnit\Util\InvalidArgumentHelper;
 use PHPUnit\Util\Printer;
 use SebastianBergmann\Environment\Console;
+use SebastianBergmann\Timer\Timer;
 
 /**
- * Prints the result of a TextUI TestRunner run.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 class ResultPrinter extends Printer implements TestListener
 {
-    const EVENT_TEST_START      = 0;
-    const EVENT_TEST_END        = 1;
-    const EVENT_TESTSUITE_START = 2;
-    const EVENT_TESTSUITE_END   = 3;
+    public const EVENT_TEST_START      = 0;
 
-    const COLOR_NEVER   = 'never';
-    const COLOR_AUTO    = 'auto';
-    const COLOR_ALWAYS  = 'always';
-    const COLOR_DEFAULT = self::COLOR_NEVER;
+    public const EVENT_TEST_END        = 1;
 
-    /**
-     * @var array
-     */
-    private static $ansiCodes = [
-        'bold'       => 1,
-        'fg-black'   => 30,
-        'fg-red'     => 31,
-        'fg-green'   => 32,
-        'fg-yellow'  => 33,
-        'fg-blue'    => 34,
-        'fg-magenta' => 35,
-        'fg-cyan'    => 36,
-        'fg-white'   => 37,
-        'bg-black'   => 40,
-        'bg-red'     => 41,
-        'bg-green'   => 42,
-        'bg-yellow'  => 43,
-        'bg-blue'    => 44,
-        'bg-magenta' => 45,
-        'bg-cyan'    => 46,
-        'bg-white'   => 47
-    ];
+    public const EVENT_TESTSUITE_START = 2;
+
+    public const EVENT_TESTSUITE_END   = 3;
+
+    public const COLOR_NEVER   = 'never';
+
+    public const COLOR_AUTO    = 'auto';
+
+    public const COLOR_ALWAYS  = 'always';
+
+    public const COLOR_DEFAULT = self::COLOR_NEVER;
+
+    private const AVAILABLE_COLORS = [self::COLOR_NEVER, self::COLOR_AUTO, self::COLOR_ALWAYS];
 
     /**
      * @var int
@@ -131,42 +116,24 @@ class ResultPrinter extends Printer implements TestListener
     /**
      * Constructor.
      *
-     * @param mixed      $out
-     * @param bool       $verbose
-     * @param string     $colors
-     * @param bool       $debug
-     * @param int|string $numberOfColumns
-     * @param bool       $reverse
+     * @param null|resource|string $out
+     * @param int|string           $numberOfColumns
      *
      * @throws Exception
      */
-    public function __construct($out = null, $verbose = false, $colors = self::COLOR_DEFAULT, $debug = false, $numberOfColumns = 80, $reverse = false)
+    public function __construct($out = null, bool $verbose = false, string $colors = self::COLOR_DEFAULT, bool $debug = false, $numberOfColumns = 80, bool $reverse = false)
     {
         parent::__construct($out);
 
-        if (!\is_bool($verbose)) {
-            throw InvalidArgumentHelper::factory(2, 'boolean');
-        }
-
-        $availableColors = [self::COLOR_NEVER, self::COLOR_AUTO, self::COLOR_ALWAYS];
-
-        if (!\in_array($colors, $availableColors)) {
+        if (!\in_array($colors, self::AVAILABLE_COLORS, true)) {
             throw InvalidArgumentHelper::factory(
                 3,
-                \vsprintf('value from "%s", "%s" or "%s"', $availableColors)
+                \vsprintf('value from "%s", "%s" or "%s"', self::AVAILABLE_COLORS)
             );
-        }
-
-        if (!\is_bool($debug)) {
-            throw InvalidArgumentHelper::factory(4, 'boolean');
         }
 
         if (!\is_int($numberOfColumns) && $numberOfColumns !== 'max') {
             throw InvalidArgumentHelper::factory(5, 'integer or "max"');
-        }
-
-        if (!\is_bool($reverse)) {
-            throw InvalidArgumentHelper::factory(6, 'boolean');
         }
 
         $console            = new Console;
@@ -189,9 +156,9 @@ class ResultPrinter extends Printer implements TestListener
     }
 
     /**
-     * @param TestResult $result
+     * @throws \SebastianBergmann\Timer\RuntimeException
      */
-    public function printResult(TestResult $result)
+    public function printResult(TestResult $result): void
     {
         $this->printHeader();
         $this->printErrors($result);
@@ -208,10 +175,125 @@ class ResultPrinter extends Printer implements TestListener
     }
 
     /**
-     * @param array  $defects
-     * @param string $type
+     * An error occurred.
      */
-    protected function printDefects(array $defects, $type)
+    public function addError(Test $test, \Throwable $t, float $time): void
+    {
+        $this->writeProgressWithColor('fg-red, bold', 'E');
+        $this->lastTestFailed = true;
+    }
+
+    /**
+     * A failure occurred.
+     */
+    public function addFailure(Test $test, AssertionFailedError $e, float $time): void
+    {
+        $this->writeProgressWithColor('bg-red, fg-white', 'F');
+        $this->lastTestFailed = true;
+    }
+
+    /**
+     * A warning occurred.
+     */
+    public function addWarning(Test $test, Warning $e, float $time): void
+    {
+        $this->writeProgressWithColor('fg-yellow, bold', 'W');
+        $this->lastTestFailed = true;
+    }
+
+    /**
+     * Incomplete test.
+     */
+    public function addIncompleteTest(Test $test, \Throwable $t, float $time): void
+    {
+        $this->writeProgressWithColor('fg-yellow, bold', 'I');
+        $this->lastTestFailed = true;
+    }
+
+    /**
+     * Risky test.
+     */
+    public function addRiskyTest(Test $test, \Throwable $t, float $time): void
+    {
+        $this->writeProgressWithColor('fg-yellow, bold', 'R');
+        $this->lastTestFailed = true;
+    }
+
+    /**
+     * Skipped test.
+     */
+    public function addSkippedTest(Test $test, \Throwable $t, float $time): void
+    {
+        $this->writeProgressWithColor('fg-cyan, bold', 'S');
+        $this->lastTestFailed = true;
+    }
+
+    /**
+     * A testsuite started.
+     */
+    public function startTestSuite(TestSuite $suite): void
+    {
+        if ($this->numTests == -1) {
+            $this->numTests      = \count($suite);
+            $this->numTestsWidth = \strlen((string) $this->numTests);
+            $this->maxColumn     = $this->numberOfColumns - \strlen('  /  (XXX%)') - (2 * $this->numTestsWidth);
+        }
+    }
+
+    /**
+     * A testsuite ended.
+     */
+    public function endTestSuite(TestSuite $suite): void
+    {
+    }
+
+    /**
+     * A test started.
+     */
+    public function startTest(Test $test): void
+    {
+        if ($this->debug) {
+            $this->write(
+                \sprintf(
+                    "Test '%s' started\n",
+                    \PHPUnit\Util\Test::describeAsString($test)
+                )
+            );
+        }
+    }
+
+    /**
+     * A test ended.
+     */
+    public function endTest(Test $test, float $time): void
+    {
+        if ($this->debug) {
+            $this->write(
+                \sprintf(
+                    "Test '%s' ended\n",
+                    \PHPUnit\Util\Test::describeAsString($test)
+                )
+            );
+        }
+
+        if (!$this->lastTestFailed) {
+            $this->writeProgress('.');
+        }
+
+        if ($test instanceof TestCase) {
+            $this->numAssertions += $test->getNumAssertions();
+        } elseif ($test instanceof PhptTestCase) {
+            $this->numAssertions++;
+        }
+
+        $this->lastTestFailed = false;
+
+        if ($test instanceof TestCase && !$test->hasExpectationOnOutput()) {
+            $this->write($test->getActualOutput());
+        }
+    }
+
+    protected function printDefects(array $defects, string $type): void
     {
         $count = \count($defects);
 
@@ -246,21 +328,13 @@ class ResultPrinter extends Printer implements TestListener
         $this->defectListPrinted = true;
     }
 
-    /**
-     * @param TestFailure $defect
-     * @param int         $count
-     */
-    protected function printDefect(TestFailure $defect, $count)
+    protected function printDefect(TestFailure $defect, int $count): void
     {
         $this->printDefectHeader($defect, $count);
         $this->printDefectTrace($defect);
     }
 
-    /**
-     * @param TestFailure $defect
-     * @param int         $count
-     */
-    protected function printDefectHeader(TestFailure $defect, $count)
+    protected function printDefectHeader(TestFailure $defect, int $count): void
     {
         $this->write(
             \sprintf(
@@ -271,10 +345,7 @@ class ResultPrinter extends Printer implements TestListener
         );
     }
 
-    /**
-     * @param TestFailure $defect
-     */
-    protected function printDefectTrace(TestFailure $defect)
+    protected function printDefectTrace(TestFailure $defect): void
     {
         $e = $defect->thrownException();
         $this->write((string) $e);
@@ -284,63 +355,45 @@ class ResultPrinter extends Printer implements TestListener
         }
     }
 
-    /**
-     * @param TestResult $result
-     */
-    protected function printErrors(TestResult $result)
+    protected function printErrors(TestResult $result): void
     {
         $this->printDefects($result->errors(), 'error');
     }
 
-    /**
-     * @param TestResult $result
-     */
-    protected function printFailures(TestResult $result)
+    protected function printFailures(TestResult $result): void
     {
         $this->printDefects($result->failures(), 'failure');
     }
 
-    /**
-     * @param TestResult $result
-     */
-    protected function printWarnings(TestResult $result)
+    protected function printWarnings(TestResult $result): void
     {
         $this->printDefects($result->warnings(), 'warning');
     }
 
-    /**
-     * @param TestResult $result
-     */
-    protected function printIncompletes(TestResult $result)
+    protected function printIncompletes(TestResult $result): void
     {
         $this->printDefects($result->notImplemented(), 'incomplete test');
     }
 
-    /**
-     * @param TestResult $result
-     */
-    protected function printRisky(TestResult $result)
+    protected function printRisky(TestResult $result): void
     {
         $this->printDefects($result->risky(), 'risky test');
     }
 
-    /**
-     * @param TestResult $result
-     */
-    protected function printSkipped(TestResult $result)
+    protected function printSkipped(TestResult $result): void
     {
         $this->printDefects($result->skipped(), 'skipped test');
     }
 
-    protected function printHeader()
+    /**
+     * @throws \SebastianBergmann\Timer\RuntimeException
+     */
+    protected function printHeader(): void
     {
-        $this->write("\n\n" . PHP_Timer::resourceUsage() . "\n\n");
+        $this->write("\n\n" . Timer::resourceUsage() . "\n\n");
     }
 
-    /**
-     * @param TestResult $result
-     */
-    protected function printFooter(TestResult $result)
+    protected function printFooter(TestResult $result): void
     {
         if (\count($result) === 0) {
             $this->writeWithColor(
@@ -412,165 +465,16 @@ class ResultPrinter extends Printer implements TestListener
             $this->writeCountString($result->skippedCount(), 'Skipped', $color);
             $this->writeCountString($result->notImplementedCount(), 'Incomplete', $color);
             $this->writeCountString($result->riskyCount(), 'Risky', $color);
-            $this->writeWithColor($color, '.', true);
+            $this->writeWithColor($color, '.');
         }
     }
 
-    public function printWaitPrompt()
-    {
-        $this->write("\n<RETURN> to continue\n");
-    }
-
-    /**
-     * An error occurred.
-     *
-     * @param Test       $test
-     * @param \Exception $e
-     * @param float      $time
-     */
-    public function addError(Test $test, \Exception $e, $time)
-    {
-        $this->writeProgressWithColor('fg-red, bold', 'E');
-        $this->lastTestFailed = true;
-    }
-
-    /**
-     * A failure occurred.
-     *
-     * @param Test                 $test
-     * @param AssertionFailedError $e
-     * @param float                $time
-     */
-    public function addFailure(Test $test, AssertionFailedError $e, $time)
-    {
-        $this->writeProgressWithColor('bg-red, fg-white', 'F');
-        $this->lastTestFailed = true;
-    }
-
-    /**
-     * A warning occurred.
-     *
-     * @param Test    $test
-     * @param Warning $e
-     * @param float   $time
-     */
-    public function addWarning(Test $test, Warning $e, $time)
-    {
-        $this->writeProgressWithColor('fg-yellow, bold', 'W');
-        $this->lastTestFailed = true;
-    }
-
-    /**
-     * Incomplete test.
-     *
-     * @param Test       $test
-     * @param \Exception $e
-     * @param float      $time
-     */
-    public function addIncompleteTest(Test $test, \Exception $e, $time)
-    {
-        $this->writeProgressWithColor('fg-yellow, bold', 'I');
-        $this->lastTestFailed = true;
-    }
-
-    /**
-     * Risky test.
-     *
-     * @param Test       $test
-     * @param \Exception $e
-     * @param float      $time
-     */
-    public function addRiskyTest(Test $test, \Exception $e, $time)
-    {
-        $this->writeProgressWithColor('fg-yellow, bold', 'R');
-        $this->lastTestFailed = true;
-    }
-
-    /**
-     * Skipped test.
-     *
-     * @param Test       $test
-     * @param \Exception $e
-     * @param float      $time
-     */
-    public function addSkippedTest(Test $test, \Exception $e, $time)
-    {
-        $this->writeProgressWithColor('fg-cyan, bold', 'S');
-        $this->lastTestFailed = true;
-    }
-
-    /**
-     * A testsuite started.
-     *
-     * @param TestSuite $suite
-     */
-    public function startTestSuite(TestSuite $suite)
-    {
-        if ($this->numTests == -1) {
-            $this->numTests      = \count($suite);
-            $this->numTestsWidth = \strlen((string) $this->numTests);
-            $this->maxColumn     = $this->numberOfColumns - \strlen('  /  (XXX%)') - (2 * $this->numTestsWidth);
-        }
-    }
-
-    /**
-     * A testsuite ended.
-     *
-     * @param TestSuite $suite
-     */
-    public function endTestSuite(TestSuite $suite)
-    {
-    }
-
-    /**
-     * A test started.
-     *
-     * @param Test $test
-     */
-    public function startTest(Test $test)
+    protected function writeProgress(string $progress): void
     {
         if ($this->debug) {
-            $this->write(
-                \sprintf(
-                    "\nStarting test '%s'.\n",
-                    \PHPUnit\Util\Test::describe($test)
-                )
-            );
-        }
-    }
-
-    /**
-     * A test ended.
-     *
-     * @param Test  $test
-     * @param float $time
-     */
-    public function endTest(Test $test, $time)
-    {
-        if (!$this->lastTestFailed) {
-            $this->writeProgress('.');
+            return;
         }
 
-        if ($test instanceof TestCase) {
-            $this->numAssertions += $test->getNumAssertions();
-        } elseif ($test instanceof PhptTestCase) {
-            $this->numAssertions++;
-        }
-
-        $this->lastTestFailed = false;
-
-        if ($test instanceof TestCase) {
-            if (!$test->hasExpectationOnOutput()) {
-                $this->write($test->getActualOutput());
-            }
-        }
-    }
-
-    /**
-     * @param string $progress
-     */
-    protected function writeProgress($progress)
-    {
         $this->write($progress);
         $this->column++;
         $this->numTestsRun++;
@@ -596,7 +500,7 @@ class ResultPrinter extends Printer implements TestListener
         }
     }
 
-    protected function writeNewLine()
+    protected function writeNewLine(): void
     {
         $this->column = 0;
         $this->write("\n");
@@ -605,33 +509,20 @@ class ResultPrinter extends Printer implements TestListener
     /**
      * Formats a buffer with a specified ANSI color sequence if colors are
      * enabled.
-     *
-     * @param string $color
-     * @param string $buffer
-     *
-     * @return string
      */
-    protected function formatWithColor($color, $buffer)
+    protected function colorizeTextBox(string $color, string $buffer): string
     {
         if (!$this->colors) {
             return $buffer;
         }
 
-        $codes   = \array_map('trim', \explode(',', $color));
         $lines   = \explode("\n", $buffer);
-        $padding = \max(\array_map('strlen', $lines));
-        $styles  = [];
-
-        foreach ($codes as $code) {
-            $styles[] = self::$ansiCodes[$code];
-        }
-
-        $style = \sprintf("\x1b[%sm", \implode(';', $styles));
+        $padding = \max(\array_map('\strlen', $lines));
 
         $styledLines = [];
 
         foreach ($lines as $line) {
-            $styledLines[] = $style . \str_pad($line, $padding) . "\x1b[0m";
+            $styledLines[] = Color::colorize($color, \str_pad($line, $padding));
         }
 
         return \implode("\n", $styledLines);
@@ -639,14 +530,10 @@ class ResultPrinter extends Printer implements TestListener
 
     /**
      * Writes a buffer out with a color sequence if colors are enabled.
-     *
-     * @param string $color
-     * @param string $buffer
-     * @param bool   $lf
      */
-    protected function writeWithColor($color, $buffer, $lf = true)
+    protected function writeWithColor(string $color, string $buffer, bool $lf = true): void
     {
-        $this->write($this->formatWithColor($color, $buffer));
+        $this->write($this->colorizeTextBox($color, $buffer));
 
         if ($lf) {
             $this->write("\n");
@@ -655,23 +542,14 @@ class ResultPrinter extends Printer implements TestListener
 
     /**
      * Writes progress with a color sequence if colors are enabled.
-     *
-     * @param string $color
-     * @param string $buffer
      */
-    protected function writeProgressWithColor($color, $buffer)
+    protected function writeProgressWithColor(string $color, string $buffer): void
     {
-        $buffer = $this->formatWithColor($color, $buffer);
+        $buffer = $this->colorizeTextBox($color, $buffer);
         $this->writeProgress($buffer);
     }
 
-    /**
-     * @param int    $count
-     * @param string $name
-     * @param string $color
-     * @param bool   $always
-     */
-    private function writeCountString($count, $name, $color, $always = false)
+    private function writeCountString(int $count, string $name, string $color, bool $always = false): void
     {
         static $first = true;
 
