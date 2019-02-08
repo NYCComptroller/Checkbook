@@ -177,9 +177,10 @@ $contract = $node->data;
             <?php
             if ($node->contract_history_by_years && sizeof($node->contract_history_by_years)):
                 $hidden = 0;
+                $yi = 0;
                 foreach ($node->contract_history_by_years as $year => $contract_history_by_year):
                     ?>
-                    <tr class="outer odd">
+                    <tr class="outer <?= ($yi++%2 ? 'odd':'even') ?>">
                         <td class="text">
                             <div><a class="showHide <?= ($hidden ? 'open' : '') ?>"></a> FY <?= $year ?></div>
                         </td>
@@ -196,7 +197,7 @@ $contract = $node->data;
                         </td>
                     </tr>
                     <tr id="showHideNychaOrderRevisions<?= $year ?>"
-                        class="showHide odd" <?= ($hidden ? 'style="display:none"' : '') ?>>
+                        class="showHide <?= ($yi++%2 ? 'odd':'even') ?>" <?= ($hidden ? 'style="display:none"' : '') ?>>
                         <td colspan="4">
                             <div class="scroll">
                                 <table class="dataTable outerTable">
@@ -599,33 +600,38 @@ $contract = $node->data;
 <?php endif; ?>
 
 
-<?php if($node->contractBAPA): ?>
+<?php if($node->contractBAPA && $node->assocReleases && sizeof($node->assocReleases)): ?>
 <div class="content clearfix nycha-assoc-releases">
 
     <h3>Associated Releases</h3>
     <table id="assoc_contracts_list">
         <tbody>
+        <?php
+        $ri=0;
+        foreach($node->assocReleases as $release): ?>
         <tr>
             <td class="assoc_item">
                 <div class="contract-title clearfix">
-                    <span class="toggler expanded clickOnLoad odd" id="master_assoc_cta_expand"></span>
-
-                    <div class='contract-title-text'>Release Spending for <strong
-                            class='bottomContainerReload'><?= $contract['contract_id']; ?>-1</strong></div>
+                    <div>
+                        <div><a class="contract-title-text showHide <?= ($ri ? 'open' : '') ?>"></a>
+                            <a>Release Spending for
+                                <strong><?= $release['release_id'] ?></strong></a>
+                        </div>
+                    </div>
 
                     <div class="dollar-amounts">
                         <div
-                            class="spent-to-date"><?= custom_number_formatter_format($contract['spend_to_date'], 2, "$"); ?>
+                            class="spent-to-date"><?= custom_number_formatter_format($release['release_spend_to_date'], 2, "$"); ?>
                             <div class="amount-title">Spent to Date
                             </div>
                         </div>
                         <div
-                            class="original-amount"><?= custom_number_formatter_format($contract['original_amount'], 2, '$'); ?>
+                            class="original-amount"><?= custom_number_formatter_format($release['release_original_amount'], 2, '$'); ?>
                             <div class="amount-title">Original Amount
                             </div>
                         </div>
                         <div
-                            class="current-amount"><?= custom_number_formatter_format($contract['total_amount'], 2, '$'); ?>
+                            class="current-amount"><?= custom_number_formatter_format($release['release_total_amount'], 2, '$'); ?>
                             <div class="amount-title">Current Amount
                             </div>
                         </div>
@@ -634,8 +640,7 @@ $contract = $node->data;
 
                 </div>
 
-                <div class="resultsContainer0">
-
+                <div class="showHide" style="display: <?= $ri ? 'none' : 'block' ?>;">
                     <div class="panel-display omega-grid omega-12-onecol">
                         <div class="panel-panel">
                             <div class="inside">
@@ -670,24 +675,24 @@ $contract = $node->data;
                                                 <td style="text-align: left !important; vertical-align: middle; padding: 10px 5px !important;">
                                                         <span
                                                             style="margin:8px 0 8px 15px!important; display:inline-block; text-align: left !important;"><a
-                                                                class="showHide  expandTwo"></a><?= $contract['vendor_name']; ?></span>
+                                                                class="showHide  expandTwo"></a><?= $release['vendor_name']; ?></span>
                                                 </td>
                                                 <td style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
                                                         <span
                                                             style="display:inline-block; text-align: right !important;">
-                                                            <?= custom_number_formatter_format($contract['total_amount'], 2, '$'); ?>
+                                                            <?= custom_number_formatter_format($release['release_total_amount'], 2, '$'); ?>
                                                         </span>
                                                 </td>
                                                 <td style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
                                                         <span
                                                             style="display:inline-block; text-align: right !important;">
-                                                            <?= custom_number_formatter_format($contract['original_amount'], 2, '$'); ?>
+                                                            <?= custom_number_formatter_format($release['release_original_amount'], 2, '$'); ?>
                                                         </span>
                                                 </td>
                                                 <td style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
                                                         <span
                                                             style="display:inline-block; text-align: right !important;">
-                                                            <?= custom_number_formatter_format($contract['spend_to_date'], 2, "$"); ?>
+                                                            <?= custom_number_formatter_format($release['release_spend_to_date'], 2, "$"); ?>
                                                         </span>
                                                 </td>
                                             </tr>
@@ -1064,40 +1069,9 @@ $contract = $node->data;
                 </div>
             </td>
         </tr>
-        <?php for ($j = 2; $j <= $node->total_associated_releases; $j++): ?>
-            <tr>
-                <td class="assoc_item">
-                    <div class="contract-title clearfix">
-                        <span class="toggler collapsed  <?= ($j % 2 ? 'even' : 'odd') ?>"></span>
-
-                        <div class='contract-title-text'>Release Spending for <strong
-                                class='bottomContainerReload '><?= $contract['contract_id']; ?>-<?= $j ?></strong></div>
-
-                        <div class="dollar-amounts">
-                            <div
-                                class="spent-to-date"><?= custom_number_formatter_format($contract['spend_to_date'], 2, "$"); ?>
-                                <div class="amount-title">Spent to Date
-                                </div>
-                            </div>
-                            <div
-                                class="original-amount"><?= custom_number_formatter_format($contract['original_amount'], 2, '$'); ?>
-                                <div class="amount-title">Original Amount
-                                </div>
-                            </div>
-                            <div
-                                class="current-amount"><?= custom_number_formatter_format($contract['total_amount'], 2, '$'); ?>
-                                <div class="amount-title">Current Amount
-                                </div>
-                            </div>
-                        </div>
-
-
-                    </div>
-
-                    <div class="resultsContainer<?= $j ?>">&nbsp;</div>
-                </td>
-            </tr>
-        <?php endfor ?>
+        <?php
+        $ri++;
+        endforeach; ?>
         </tbody>
     </table>
 </div>
