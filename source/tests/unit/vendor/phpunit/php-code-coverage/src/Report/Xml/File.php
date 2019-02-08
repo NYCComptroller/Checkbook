@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the php-code-coverage package.
  *
@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace SebastianBergmann\CodeCoverage\Report\Xml;
 
 class File
@@ -28,30 +27,14 @@ class File
         $this->contextNode = $context;
     }
 
-    /**
-     * @return \DOMElement
-     */
-    protected function getContextNode()
-    {
-        return $this->contextNode;
-    }
-
-    /**
-     * @return \DOMDocument
-     */
-    protected function getDomDocument()
-    {
-        return $this->dom;
-    }
-
-    public function getTotals()
+    public function getTotals(): Totals
     {
         $totalsContainer = $this->contextNode->firstChild;
 
         if (!$totalsContainer) {
             $totalsContainer = $this->contextNode->appendChild(
                 $this->dom->createElementNS(
-                    'http://schema.phpunit.de/coverage/1.0',
+                    'https://schema.phpunit.de/coverage/1.0',
                     'totals'
                 )
             );
@@ -60,17 +43,17 @@ class File
         return new Totals($totalsContainer);
     }
 
-    public function getLineCoverage($line)
+    public function getLineCoverage(string $line): Coverage
     {
         $coverage = $this->contextNode->getElementsByTagNameNS(
-            'http://schema.phpunit.de/coverage/1.0',
+            'https://schema.phpunit.de/coverage/1.0',
             'coverage'
         )->item(0);
 
         if (!$coverage) {
             $coverage = $this->contextNode->appendChild(
                 $this->dom->createElementNS(
-                    'http://schema.phpunit.de/coverage/1.0',
+                    'https://schema.phpunit.de/coverage/1.0',
                     'coverage'
                 )
             );
@@ -78,11 +61,21 @@ class File
 
         $lineNode = $coverage->appendChild(
             $this->dom->createElementNS(
-                'http://schema.phpunit.de/coverage/1.0',
+                'https://schema.phpunit.de/coverage/1.0',
                 'line'
             )
         );
 
         return new Coverage($lineNode, $line);
+    }
+
+    protected function getContextNode(): \DOMElement
+    {
+        return $this->contextNode;
+    }
+
+    protected function getDomDocument(): \DOMDocument
+    {
+        return $this->dom;
     }
 }

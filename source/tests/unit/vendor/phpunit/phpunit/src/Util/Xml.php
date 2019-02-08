@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -18,10 +18,17 @@ use PHPUnit\Framework\Exception;
 use ReflectionClass;
 
 /**
- * XML helpers.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-class Xml
+final class Xml
 {
+    public static function import(DOMElement $element): DOMElement
+    {
+        $document = new DOMDocument;
+
+        return $document->importNode($element, true);
+    }
+
     /**
      * Load an $actual document into a DOMDocument.  This is called
      * from the selector assertions.
@@ -36,15 +43,11 @@ class Xml
      * not a string as it currently does.  To load a file into a
      * DOMDocument, use loadFile() instead.
      *
-     * @param string|DOMDocument $actual
-     * @param bool               $isHtml
-     * @param string             $filename
-     * @param bool               $xinclude
-     * @param bool               $strict
+     * @param DOMDocument|string $actual
      *
-     * @return DOMDocument
+     * @throws Exception
      */
-    public static function load($actual, $isHtml = false, $filename = '', $xinclude = false, $strict = false)
+    public static function load($actual, bool $isHtml = false, string $filename = '', bool $xinclude = false, bool $strict = false): DOMDocument
     {
         if ($actual instanceof DOMDocument) {
             return $actual;
@@ -71,8 +74,8 @@ class Xml
         $message   = '';
         $reporting = \error_reporting(0);
 
-        if ('' !== $filename) {
-            // Necessary for xinclude
+        if ($filename !== '') {
+            // Required for XInclude
             $document->documentURI = $filename;
         }
 
@@ -103,7 +106,7 @@ class Xml
                     \sprintf(
                         'Could not load "%s".%s',
                         $filename,
-                        $message != '' ? "\n" . $message : ''
+                        $message !== '' ? "\n" . $message : ''
                     )
                 );
             }
@@ -121,17 +124,13 @@ class Xml
     /**
      * Loads an XML (or HTML) file into a DOMDocument object.
      *
-     * @param string $filename
-     * @param bool   $isHtml
-     * @param bool   $xinclude
-     * @param bool   $strict
-     *
-     * @return DOMDocument
+     * @throws Exception
      */
-    public static function loadFile($filename, $isHtml = false, $xinclude = false, $strict = false)
+    public static function loadFile(string $filename, bool $isHtml = false, bool $xinclude = false, bool $strict = false): DOMDocument
     {
         $reporting = \error_reporting(0);
         $contents  = \file_get_contents($filename);
+
         \error_reporting($reporting);
 
         if ($contents === false) {
@@ -146,10 +145,7 @@ class Xml
         return self::load($contents, $isHtml, $filename, $xinclude, $strict);
     }
 
-    /**
-     * @param DOMNode $node
-     */
-    public static function removeCharacterDataNodes(DOMNode $node)
+    public static function removeCharacterDataNodes(DOMNode $node): void
     {
         if ($node->hasChildNodes()) {
             for ($i = $node->childNodes->length - 1; $i >= 0; $i--) {
@@ -162,33 +158,26 @@ class Xml
 
     /**
      * Escapes a string for the use in XML documents
+     *
      * Any Unicode character is allowed, excluding the surrogate blocks, FFFE,
      * and FFFF (not even as character reference).
-     * See http://www.w3.org/TR/xml/#charsets
      *
-     * @param string $string
-     *
-     * @return string
+     * @see https://www.w3.org/TR/xml/#charsets
      */
-    public static function prepareString($string)
+    public static function prepareString(string $string): string
     {
         return \preg_replace(
             '/[\\x00-\\x08\\x0b\\x0c\\x0e-\\x1f\\x7f]/',
             '',
             \htmlspecialchars(
                 self::convertToUtf8($string),
-                ENT_QUOTES,
-                'UTF-8'
+                \ENT_QUOTES
             )
         );
     }
 
     /**
      * "Convert" a DOMElement object into a PHP variable.
-     *
-     * @param DOMElement $element
-     *
-     * @return mixed
      */
     public static function xmlToVariable(DOMElement $element)
     {
@@ -216,6 +205,7 @@ class Xml
                         $variable[] = $value;
                     }
                 }
+
                 break;
 
             case 'object':
@@ -236,10 +226,12 @@ class Xml
                 } else {
                     $variable = new $className;
                 }
+
                 break;
 
             case 'boolean':
-                $variable = $element->textContent == 'true';
+                $variable = $element->textContent === 'true';
+
                 break;
 
             case 'integer':
@@ -248,58 +240,41 @@ class Xml
                 $variable = $element->textContent;
 
                 \settype($variable, $element->tagName);
+
                 break;
         }
 
         return $variable;
     }
 
-    /**
-     * Converts a string to UTF-8 encoding.
-     *
-     * @param string $string
-     *
-     * @return string
-     */
-    private static function convertToUtf8($string)
+    private static function convertToUtf8(string $string): string
     {
         if (!self::isUtf8($string)) {
-            if (\function_exists('mb_convert_encoding')) {
-                return \mb_convert_encoding($string, 'UTF-8');
-            }
-
-            return \utf8_encode($string);
+            $string = \mb_convert_encoding($string, 'UTF-8');
         }
 
         return $string;
     }
 
-    /**
-     * Checks a string for UTF-8 encoding.
-     *
-     * @param string $string
-     *
-     * @return bool
-     */
-    private static function isUtf8($string)
+    private static function isUtf8(string $string): bool
     {
         $length = \strlen($string);
 
         for ($i = 0; $i < $length; $i++) {
             if (\ord($string[$i]) < 0x80) {
                 $n = 0;
-            } elseif ((\ord($string[$i]) & 0xE0) == 0xC0) {
+            } elseif ((\ord($string[$i]) & 0xE0) === 0xC0) {
                 $n = 1;
-            } elseif ((\ord($string[$i]) & 0xF0) == 0xE0) {
+            } elseif ((\ord($string[$i]) & 0xF0) === 0xE0) {
                 $n = 2;
-            } elseif ((\ord($string[$i]) & 0xF0) == 0xF0) {
+            } elseif ((\ord($string[$i]) & 0xF0) === 0xF0) {
                 $n = 3;
             } else {
                 return false;
             }
 
             for ($j = 0; $j < $n; $j++) {
-                if ((++$i == $length) || ((\ord($string[$i]) & 0xC0) != 0x80)) {
+                if ((++$i === $length) || ((\ord($string[$i]) & 0xC0) !== 0x80)) {
                     return false;
                 }
             }
