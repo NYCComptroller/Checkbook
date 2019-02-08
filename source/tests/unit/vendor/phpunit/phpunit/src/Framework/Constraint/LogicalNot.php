@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -14,33 +14,14 @@ use PHPUnit\Framework\ExpectationFailedException;
 /**
  * Logical NOT.
  */
-class LogicalNot extends Constraint
+final class LogicalNot extends Constraint
 {
     /**
      * @var Constraint
      */
-    protected $constraint;
+    private $constraint;
 
-    /**
-     * @param Constraint $constraint
-     */
-    public function __construct($constraint)
-    {
-        parent::__construct();
-
-        if (!($constraint instanceof Constraint)) {
-            $constraint = new IsEqual($constraint);
-        }
-
-        $this->constraint = $constraint;
-    }
-
-    /**
-     * @param string $string
-     *
-     * @return string
-     */
-    public static function negate($string)
+    public static function negate(string $string): string
     {
         $positives = [
             'contains ',
@@ -52,7 +33,7 @@ class LogicalNot extends Constraint
             'starts with ',
             'ends with ',
             'reference ',
-            'not not '
+            'not not ',
         ];
 
         $negatives = [
@@ -65,7 +46,7 @@ class LogicalNot extends Constraint
             'starts not with ',
             'ends not with ',
             'don\'t reference ',
-            'not '
+            'not ',
         ];
 
         \preg_match('/(\'[\w\W]*\')([\w\W]*)("[\w\W]*")/i', $string, $matches);
@@ -94,6 +75,18 @@ class LogicalNot extends Constraint
     }
 
     /**
+     * @param Constraint|mixed $constraint
+     */
+    public function __construct($constraint)
+    {
+        if (!($constraint instanceof Constraint)) {
+            $constraint = new IsEqual($constraint);
+        }
+
+        $this->constraint = $constraint;
+    }
+
+    /**
      * Evaluates the constraint for parameter $other
      *
      * If $returnResult is set to false (the default), an exception is thrown
@@ -103,15 +96,10 @@ class LogicalNot extends Constraint
      * a boolean value instead: true in case of success, false in case of a
      * failure.
      *
-     * @param mixed  $other        Value or object to evaluate.
-     * @param string $description  Additional information about the test
-     * @param bool   $returnResult Whether to return a result or throw an exception
-     *
-     * @return mixed
-     *
      * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public function evaluate($other, $description = '', $returnResult = false)
+    public function evaluate($other, string $description = '', bool $returnResult = false)
     {
         $success = !$this->constraint->evaluate($other, $description, true);
 
@@ -125,36 +113,9 @@ class LogicalNot extends Constraint
     }
 
     /**
-     * Returns the description of the failure
-     *
-     * The beginning of failure messages is "Failed asserting that" in most
-     * cases. This method should return the second part of that sentence.
-     *
-     * @param mixed $other Evaluated value or object.
-     *
-     * @return string
-     */
-    protected function failureDescription($other)
-    {
-        switch (\get_class($this->constraint)) {
-            case LogicalAnd::class:
-            case self::class:
-            case LogicalOr::class:
-                return 'not( ' . $this->constraint->failureDescription($other) . ' )';
-
-            default:
-                return self::negate(
-                    $this->constraint->failureDescription($other)
-                );
-        }
-    }
-
-    /**
      * Returns a string representation of the constraint.
-     *
-     * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         switch (\get_class($this->constraint)) {
             case LogicalAnd::class:
@@ -171,11 +132,34 @@ class LogicalNot extends Constraint
 
     /**
      * Counts the number of constraint elements.
-     *
-     * @return int
      */
-    public function count()
+    public function count(): int
     {
         return \count($this->constraint);
+    }
+
+    /**
+     * Returns the description of the failure
+     *
+     * The beginning of failure messages is "Failed asserting that" in most
+     * cases. This method should return the second part of that sentence.
+     *
+     * @param mixed $other evaluated value or object
+     *
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
+    protected function failureDescription($other): string
+    {
+        switch (\get_class($this->constraint)) {
+            case LogicalAnd::class:
+            case self::class:
+            case LogicalOr::class:
+                return 'not( ' . $this->constraint->failureDescription($other) . ' )';
+
+            default:
+                return self::negate(
+                    $this->constraint->failureDescription($other)
+                );
+        }
     }
 }
