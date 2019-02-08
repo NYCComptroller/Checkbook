@@ -38,6 +38,8 @@ class NychaContractDetails
             return;
         }
 
+        $node->contractPO = $node->contractBAPA = false;
+
         if (stripos(' ' . $contract_id, 'ba') || stripos(' ' . $contract_id, 'pa')) {
             $this->loadBaPa($node, $contract_id);
             $node->contractBAPA = true;
@@ -54,7 +56,7 @@ class NychaContractDetails
         $node->assocReleases = $this->getAssocReleases($contract_id);
         if ($node->assocReleases && sizeof($node->assocReleases)) {
             $this->loadReleaseHistory($node->assocReleases, $contract_id);
-            $this->loadShipmentDistributionDetails($node->assocReleases, $contract_id);
+            $this->loadShipmentDistributionDetails($node, $contract_id);
         }
     }
 
@@ -90,7 +92,6 @@ class NychaContractDetails
                 vendor_id,
                 vendor_number,
                 vendor_name,
-                vendor_site_id,
                 address_line1,
                 address_line2,
                 city,
@@ -145,7 +146,6 @@ SQL;
               vendor_id,
               vendor_number,
               vendor_name,
-              vendor_site_id,
               address_line1,
               address_line2,
               city,
@@ -287,7 +287,7 @@ SQL;
         }
     }
 
-    private function loadShipmentDistributionDetails(&$releases, $contract_id)
+    private function loadShipmentDistributionDetails(&$node, $contract_id)
     {
         $sd_sql = <<<SQL
             SELECT DISTINCT 
@@ -306,6 +306,11 @@ SQL;
 SQL;
 
         $shipments = _checkbook_project_execute_sql_by_data_source($sd_sql, 'checkbook_nycha');
+        if ($node->contractPO) {
+            $node->shipments = $shipments;
+            return;
+        }
+
         $return = [];
         foreach($shipments as $shipment) {
             if(!isset($return[$shipment['release_id']])){
@@ -314,7 +319,7 @@ SQL;
             $return[$shipment['release_id']][] = $shipment;
         }
 
-        foreach($releases as &$release) {
+        foreach($node->assocReleases as &$release) {
             $release['shipments'] = $return[$release['release_id']];
         }
     }
