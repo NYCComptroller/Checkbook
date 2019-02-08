@@ -273,6 +273,7 @@
           <exp op="=" dbField="vendor_id" paramName="vendor"/>
           <exp op="BETWEEN" dbField="start_year_id,end_year_id" paramName="year"/>
           <exp op="IN" dbField="transaction_status_name" paramName="transaction_status_name">('APPROVED','CLOSED','FINALLY CLOSED','REQUIRES REAPPROVAL')</exp>
+          <exp op="=" dbField="latest_flag">'Y'</exp>
         </exp>
       </where>
       UNION ALL
@@ -284,6 +285,7 @@
           <exp op="=" dbField="release_approved_year_id" paramName="year"/>
           <exp op="IN" dbField="transaction_status_name" paramName="transaction_status_name">('APPROVED','CLOSED','FINALLY CLOSED','REQUIRES REAPPROVAL')</exp>
           <exp op="=" dbField="agreement_type_code">'PO'</exp>
+          <exp op="=" dbField="latest_flag">'Y'</exp>
         </exp>
       </where>
       ) a
