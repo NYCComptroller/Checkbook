@@ -76,20 +76,8 @@ $contract = $node->data;
                         <span class="gi-list-item">Version Number:</span>
                         &nbsp;<?= $contract['revision_number'] ?>
                     </li>
-                    <li>
-                        <span class="gi-list-item">Commodity Category:</span>
-                        &nbsp;<?= $contract['category_descr'] ?>
-                    </li>
                 </ul>
                 <ul class="right">
-                    <li>
-                        <span class="gi-list-item">Number of Solicitations per Contract:</span>
-                        &nbsp;<?= $contract['number_of_solicitations']; ?>
-                    </li>
-                    <li>
-                        <span class="gi-list-item">Number of Responses per Solicitation:</span>
-                        &nbsp;<?= $contract['response_to_solicitation']; ?>
-                    </li>
                     <?php if ($contract['start_date']): ?>
                         <li>
                         <span class="gi-list-item">Start Date:</span>
@@ -111,7 +99,10 @@ $contract = $node->data;
                     <li>
                         <span class="gi-list-item">Transaction Status:</span>
                         &nbsp;<?= 'Approved'; ?>
-
+                    </li>
+                    <li>
+                        <span class="gi-list-item">Commodity Category:</span>
+                        &nbsp;<?= $contract['category_descr'] ?>
                     </li>
                 </ul>
             </div>
