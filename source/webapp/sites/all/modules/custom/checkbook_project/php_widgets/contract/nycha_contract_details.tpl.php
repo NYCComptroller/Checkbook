@@ -909,13 +909,13 @@ $contract = $node->data;
                                                                                         <div><?= format_string_to_date($revision['revision_approved_date']) ?></div>
                                                                                     </td>
                                                                                     <td class="text td4">
-                                                                                        <div><?= custom_number_formatter_format($revision['revision_total_amount']) ?></div>
+                                                                                        <div><?= custom_number_formatter_format($revision['revision_total_amount'], 2, '$') ?></div>
                                                                                     </td>
                                                                                     <td class="text td5">
-                                                                                        <div><?= custom_number_formatter_format($revision['release_original_amount']) ?></div>
+                                                                                        <div><?= custom_number_formatter_format($revision['release_original_amount'], 2, '$') ?></div>
                                                                                     </td>
                                                                                     <td class="text td6">
-                                                                                        <div><?= custom_number_formatter_format($revision['revision_total_amount'] - $revision['release_original_amount']) ?></div>
+                                                                                        <div><?= custom_number_formatter_format(($revision['revision_total_amount'] - $revision['release_original_amount']), 2, '$') ?></div>
                                                                                     </td>
                                                                                     <td class="text td7">
                                                                                         <div><?= $revision['transaction_status_name'] ?></div>
