@@ -42,7 +42,7 @@ return $serieParameters;
   foreach($node->widgetConfig->requestParams as $param=>$value){
     if($param == 'year'){
       $where_filters[] = '('. $value . ' BETWEEN y.year_id AND y1.year_id)';
-    }else{
+    }else if($param!='yeartype'){
       $where_filters[] = _widget_build_sql_condition( $parameter_mapping[$param], $value);
     }
   }
