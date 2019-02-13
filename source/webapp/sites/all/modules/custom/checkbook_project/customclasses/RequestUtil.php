@@ -709,7 +709,7 @@ class RequestUtil
                     $bottomURL = $_REQUEST['expandBottomContURL'];
                     $bottomURL = ($bottomURL) ? $bottomURL : current_path();
                     $last_parameter = _getLastRequestParamValue($bottomURL);
-                    if ($last_parameter['agency'] > 0 || RequestUtilities::getRequestParamValue('agency')) {
+                    if ($last_parameter['agency'] > 0 ) {
                         $path = "payroll/agency_landing/yeartype/" . $yeartype . "/year/" . $year;
                         $path .= RequestUtilities::buildUrlFromParam('datasource');
                         $path .= RequestUtilities::buildUrlFromParam('title');
@@ -719,7 +719,13 @@ class RequestUtil
                         $path .= RequestUtilities::buildUrlFromParam('datasource');
                         $path .= RequestUtilities::buildUrlFromParam('agency');
                         $path .= RequestUtilities::buildUrlFromParam('title');
-                    } else {
+                    } else if(RequestUtilities::getRequestParamValue('agency')) {
+                        $path = "payroll/agency_landing/yeartype/" . $yeartype . "/year/" . $year;
+                        $path .= RequestUtilities::buildUrlFromParam('datasource');
+                        $path .= RequestUtilities::buildUrlFromParam('title');
+                        $path .= RequestUtilities::buildUrlFromParam('agency');
+                    }
+                        else{
                         //Nyc Level
                             $path = "payroll/yeartype/" . $yeartype . "/year/" . $year . RequestUtilities::buildUrlFromParam('datasource');
                     }
