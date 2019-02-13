@@ -30,8 +30,9 @@ class NychaContractsUrlService
     {
         $url = '/nycha_contracts'
             . RequestUtilities::buildUrlFromParam('year')
+            . RequestUtilities::buildUrlFromParam('agency')
             . '/datasource/checkbook_nycha'
-            . '/vendor/' . $vendor_id;
+            . '/vendor/'. $vendor_id;
 
         return $url;
     }
