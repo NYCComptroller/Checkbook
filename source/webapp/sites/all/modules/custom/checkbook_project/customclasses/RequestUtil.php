@@ -695,7 +695,7 @@ class RequestUtil
                     $yeartype = RequestUtilities::get("yeartype");
                 }
 
-                if (preg_match('/agency_landing/', current_path())||Datasource::isNYCHA()) {
+                if (preg_match('/agency_landing/', current_path())) {
                     $path = "payroll/agency_landing/yeartype/" . $yeartype . "/year/" . $year;
                     $path .= RequestUtilities::buildUrlFromParam('title');
                     $path .= RequestUtilities::buildUrlFromParam('agency');
@@ -709,7 +709,7 @@ class RequestUtil
                     $bottomURL = $_REQUEST['expandBottomContURL'];
                     $bottomURL = ($bottomURL) ? $bottomURL : current_path();
                     $last_parameter = _getLastRequestParamValue($bottomURL);
-                    if ($last_parameter['agency'] > 0) {
+                    if ($last_parameter['agency'] > 0 || RequestUtilities::getRequestParamValue('agency')) {
                         $path = "payroll/agency_landing/yeartype/" . $yeartype . "/year/" . $year;
                         $path .= RequestUtilities::buildUrlFromParam('datasource');
                         $path .= RequestUtilities::buildUrlFromParam('title');
@@ -719,8 +719,9 @@ class RequestUtil
                         $path .= RequestUtilities::buildUrlFromParam('datasource');
                         $path .= RequestUtilities::buildUrlFromParam('agency');
                         $path .= RequestUtilities::buildUrlFromParam('title');
-                    } else { //NYC Level
-                        $path = "payroll/yeartype/" . $yeartype . "/year/" . $year . RequestUtilities::buildUrlFromParam('datasource');
+                    } else {
+                        //Nyc Level
+                            $path = "payroll/yeartype/" . $yeartype . "/year/" . $year . RequestUtilities::buildUrlFromParam('datasource');
                     }
                 }
                 break;
