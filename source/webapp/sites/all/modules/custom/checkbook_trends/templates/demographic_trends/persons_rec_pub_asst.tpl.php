@@ -19,7 +19,11 @@
 */
 ?>
 <?php  
-echo eval($node->widgetConfig->header);  
+echo eval($node->widgetConfig->header);
+
+$last_year = end($node->data)['fiscal_year'];
+reset($node->data);
+
 ?>
 
 <a class="trends-export" href="/export/download/trends_persons_rec_pub_asst_csv?dataUrl=/node/<?php echo $node->nid ?>">Export</a>
@@ -35,7 +39,7 @@ echo eval($node->widgetConfig->header);
     ?>
     <thead>
     <tr class="first-row">
-        <th colspan="3" class="centrig bb"><div>2002-2017<br>(Average Annual Recipients)</div></th>
+        <th colspan="3" class="centrig bb"><div>2002-<?= $last_year ?><br>(Average Annual Recipients)</div></th>
     </tr>
 	<tr class="second-row">
         <th class="number" ><div class="trendCen">Year</div></th>
