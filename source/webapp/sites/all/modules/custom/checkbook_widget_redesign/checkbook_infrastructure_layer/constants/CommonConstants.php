@@ -98,18 +98,28 @@ abstract class Datasource {
     const NYCHA = "checkbook_nycha";
 
      public static function getCurrent() {
-        $datasource = RequestUtilities::get(UrlParameter::DATASOURCE);
-        switch($datasource) {
-            case self::OGE: return self::OGE;
-            case self::NYCHA: return self::NYCHA;
-            default: return self::CITYWIDE;
-        }
+         $urlPath = '//' . $_GET['q'];
+
+         if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+             // that's AJAX
+             $urlPath = '//' . $_SERVER['HTTP_REFERER'];
+         }
+         if (stripos($urlPath, self::OGE)) {
+            return self::OGE;;
+         }
+         else if (stripos($urlPath, self::NYCHA)) {
+             return self::NYCHA;
+         }
+         else {
+             return self::CITYWIDE;
+         }
     }
     public static function isOGE() {
         return self::getCurrent() == Datasource::OGE;
     }
 
     public static function isNYCHA() {
+        $bottomURL = $_REQUEST['expandBottomContURL'];
         return self::getCurrent() == Datasource::NYCHA;
     }
 
