@@ -36,8 +36,8 @@ abstract class AbstractSQLDataSourceHandler extends AbstractDataSourceHandler im
     }
 
     public function formatStringValue($value) {
-        // replacing ' with '' and \ with \\ then surround the value with quotes
-        return '\'' . str_replace(array('\'', '\\'), array('\'\'', '\\\\'), $value) . '\'';
+        // replacing ' with '' then surround the value with quotes
+        return '\'' . $value . '\'';
     }
 
     public function formatOperatorValue(DataControllerCallContext $callcontext, AbstractRequest $request, $datasetName, $columnName, OperatorHandler $value) {
