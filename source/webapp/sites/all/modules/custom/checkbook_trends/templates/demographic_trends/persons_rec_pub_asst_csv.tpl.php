@@ -18,7 +18,10 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	echo "\n".'2002-2017 (Average Annual Recipients)'."\n"."\n";
+    $last_year = end($node->data)['fiscal_year'];
+    reset($node->data);
+
+	echo "\n".'2002-'.$last_year.' (Average Annual Recipients)'."\n"."\n";
     $header = 'Year';
     $header .=  ",Public Assistance (in thousands)" ;
     $header .=  ",SSI(a)" ;

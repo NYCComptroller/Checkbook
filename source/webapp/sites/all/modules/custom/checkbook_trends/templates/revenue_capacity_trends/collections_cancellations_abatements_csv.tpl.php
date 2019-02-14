@@ -18,13 +18,16 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-    echo "\n".",,".'"'."Percent of Levy through June 30, 2017".'"'."\n";
+$last_year = end($node->data)['fiscal_year'];
+reset($node->data);
+
+    echo "\n".",,".'"'."Percent of Levy through June 30, {$last_year}".'"'."\n";
     $header = 'Fiscal year';
     $header .=  ",Tax Levy (in millions)(2)" ;
     $header .=  ",Collections,";
     $header .=  ",Cancellations,";
     $header .=  ",Abatements and Discounts(1),";
-    $header .=  ",".'"'."Uncollected Balance June 30, 2017".'"'.',';
+    $header .=  ",".'"'."Uncollected Balance June 30, {$last_year}".'"'.',';
 
 	echo $header . "\n";
 
