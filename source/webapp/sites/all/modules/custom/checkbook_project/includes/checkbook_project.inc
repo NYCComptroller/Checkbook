@@ -1155,7 +1155,7 @@ function _checkbook_project_applyParameterFilters($node, $parameters)
                 case "eqignorecase":
                     $patterns = array();
                     foreach ($paramValues as $value) {
-                        $patterns[] = "(^" . _checkbook_regex_replace_pattern($value) . "$)";
+                        $patterns[] = "(^" ._checkbook_regex_replace_pattern($value) . "$)";
                     }
                     $conditions[] = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, implode($patterns, "|"));
                     break;
@@ -2067,6 +2067,8 @@ function _getLastRequestParamValue($url = null, $param = null)
  */
 function _checkbook_regex_replace_pattern($string)
 {
+
+
     $search = [
         '.',
         '^',
@@ -2081,19 +2083,20 @@ function _checkbook_regex_replace_pattern($string)
         '}',
     ];
     $replace = [
-        '\\.',
-        '\\^',
-        '\\$',
-        '\\*',
-        '\\+',
-        '\\(',
-        '\\)',
-        '\\[',
-        '\\]',
-        '\\{',
-        '\\}',
+        '\.',
+        '\^',
+        '\$',
+        '\*',
+        '\+',
+        '\(',
+        '\)',
+        '\[',
+        '\]',
+        '\{',
+        '\}',
     ];
-    $string = str_replace($search, $replace, $string);
+    $string = str_replace($search, $replace,$string);
+
 
     return $string;
 }
