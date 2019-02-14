@@ -54,7 +54,8 @@ $contract = $node->data;
                 <ul class="left">
                     <li>
                         <span class="gi-list-item">Vendor:</span>
-                        &nbsp;<?= $contract['vendor_name']; ?></li>
+                        &nbsp;<a href="<?= NychaContractsUrlService::vendorUrl($contract['vendor_id']) ?>">
+                            <?= $contract['vendor_name']; ?></a></li>
                     <li>
                         <span class="gi-list-item">Purpose:</span>
                         &nbsp;<?= $contract['purpose']; ?>
@@ -65,7 +66,9 @@ $contract = $node->data;
                     </li>
                     <li>
                         <span class="gi-list-item">Contracting Agency:</span>
-                        &nbsp;<?= $contract['agency_name']; ?>
+                        &nbsp;<a href="<?= NychaContractsUrlService::agencyUrl() ?>">
+                            <?= $contract['agency_name']; ?>
+                        </a>
                     </li>
                     <li><span class="gi-list-item">Award Method:</span>
                         &nbsp;<?= $contract['award_method_name']; ?>
@@ -113,7 +116,8 @@ $contract = $node->data;
                 <ul class="left">
                     <li>
                         <span class="gi-list-item">Vendor:</span>
-                        &nbsp;<?= $contract['vendor_name'] ?></li>
+                        &nbsp;<a href="<?= NychaContractsUrlService::vendorUrl($contract['vendor_id']) ?>">
+                            <?= $contract['vendor_name'] ?></a></li>
                     <li>
                         <span class="gi-list-item">Address:</span>
                         &nbsp;<?= $contract['address_line1'] ?>
@@ -148,6 +152,9 @@ $contract = $node->data;
         </h3>
 
         <table class="outerTable nycha-c-history">
+            <?php
+            if ($node->contract_history_by_years && sizeof($node->contract_history_by_years)):
+            ?>
             <thead>
             <tr>
                 <th class="text">
@@ -164,113 +171,113 @@ $contract = $node->data;
                 </th>
             </tr>
             </thead>
-            <tbody>
-            <?php
-            if ($node->contract_history_by_years && sizeof($node->contract_history_by_years)):
-                $hidden = 0;
-                $yi = 0;
-                foreach ($node->contract_history_by_years as $year => $contract_history_by_year):
-                    ?>
-                    <tr class="outer <?= ($yi++ % 2 ? 'odd' : 'even') ?>">
-                        <td class="text">
-                            <div><a class="showHide <?= ($hidden ? 'open' : '') ?>"></a> FY <?= $year ?></div>
-                        </td>
-                        <td class="text">
-                            <div><?= sizeof($contract_history_by_year) ?> Modifications</div>
-                        </td>
-                        <td class="number">
-                            <div
-                                style="margin-right: 86px;"><?= custom_number_formatter_format($contract_history_by_year[key($contract_history_by_year)]['revision_total_amount'], 2, '$') ?></div>
-                        </td>
-                        <td class="number">
-                            <div
-                                style="margin-right: 86px;"><?= custom_number_formatter_format($contract['original_amount'], 2, '$') ?></div>
-                        </td>
-                    </tr>
-                    <tr id="showHideNychaOrderRevisions<?= $year ?>"
-                        class="showHide <?= ($yi++ % 2 ? 'odd' : 'even') ?>" <?= ($hidden ? 'style="display:none"' : '') ?>>
-                        <td colspan="4">
-                            <div class="scroll">
-                                <table class="dataTable outerTable">
-                                    <thead>
-                                    <tr>
-                                        <th class="number thVNum">
-                                            <?= WidgetUtil::generateLabelMapping("version_number") ?>
+            <tbody><?php
+            $hidden = 0;
+            $yi = 0;
+            foreach ($node->contract_history_by_years as $year => $contract_history_by_year):
+                ?>
+                <tr class="outer <?= ($yi % 2 ? 'odd' : 'even') ?>">
+                    <td class="text">
+                        <div><a class="showHide <?= ($hidden ? 'open' : '') ?>"></a> FY <?= $year ?></div>
+                    </td>
+                    <td class="text">
+                        <div><?= sizeof($contract_history_by_year) ?> Modifications</div>
+                    </td>
+                    <td class="number">
+                        <div
+                            style="margin-right: 86px;"><?= custom_number_formatter_format($contract_history_by_year[key($contract_history_by_year)]['revision_total_amount'], 2, '$') ?></div>
+                    </td>
+                    <td class="number">
+                        <div
+                            style="margin-right: 86px;"><?= custom_number_formatter_format($contract['original_amount'], 2, '$') ?></div>
+                    </td>
+                </tr>
+                <tr id="showHideNychaOrderRevisions<?= $year ?>"
+                    class="showHide <?= ($yi % 2 ? 'odd' : 'even') ?>" <?= ($hidden ? 'style="display:none"' : '') ?>>
+                    <td colspan="4">
+                        <div class="scroll">
+                            <table class="dataTable outerTable">
+                                <thead>
+                                <tr>
+                                    <th class="number thVNum">
+                                        <?= WidgetUtil::generateLabelMapping("version_number") ?>
+                                    </th>
+                                    <?php if ($node->contractBAPA): ?>
+                                        <th class="text thStartDate">
+                                            <?= WidgetUtil::generateLabelMapping("start_date") ?>
                                         </th>
+                                        <th class="text thEndDate">
+                                            <?= WidgetUtil::generateLabelMapping("end_date") ?>
+                                        </th>
+                                    <?php endif; ?>
+                                    <th class="text thRegDate">
+                                        <?= WidgetUtil::generateLabelMapping("release_approved_date") ?>
+                                    </th>
+                                    <th class="text thLastMDate">
+                                        <?= WidgetUtil::generateLabelMapping("last_mod_date") ?>
+                                    </th>
+                                    <th class="number thOrigAmt">
+                                        <?= WidgetUtil::generateLabelMapping("original_amount") ?>
+                                    </th>
+                                    <th class="number thCurAmt">
+                                        <?= WidgetUtil::generateLabelMapping("current_amount") ?>
+                                    </th>
+                                    <th class="text thVerStat">
+                                        <?= WidgetUtil::generateLabelMapping("transaction_status") ?>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <?php
+                                $even = 0;
+                                foreach ($contract_history_by_year as $revision): ?>
+                                    <tr class="inner <?= ($even++ % 2 ? 'even' : 'odd') ?>">
+                                        <td class="number thVNum">
+                                            <div><?= (int)$revision['revision_number'] ?></div>
+                                        </td>
                                         <?php if ($node->contractBAPA): ?>
-                                            <th class="text thStartDate">
-                                                <?= WidgetUtil::generateLabelMapping("start_date") ?>
-                                            </th>
-                                            <th class="text thEndDate">
-                                                <?= WidgetUtil::generateLabelMapping("end_date") ?>
-                                            </th>
+                                            <td class="text thStartDate">
+                                                <div><?= format_string_to_date($contract['start_date']) ?></div>
+                                            </td>
+                                            <td class="text thEndDate">
+                                                <div><?= format_string_to_date($contract['end_date']) ?></div>
+                                            </td>
                                         <?php endif; ?>
-                                        <th class="text thRegDate">
-                                            <?= WidgetUtil::generateLabelMapping("release_approved_date") ?>
-                                        </th>
-                                        <th class="text thLastMDate">
-                                            <?= WidgetUtil::generateLabelMapping("last_mod_date") ?>
-                                        </th>
-                                        <th class="number thOrigAmt">
-                                            <?= WidgetUtil::generateLabelMapping("original_amount") ?>
-                                        </th>
-                                        <th class="number thCurAmt">
-                                            <?= WidgetUtil::generateLabelMapping("current_amount") ?>
-                                        </th>
-                                        <th class="text thVerStat">
-                                            <?= WidgetUtil::generateLabelMapping("transaction_status") ?>
-                                        </th>
+                                        <td class="text thRegDate">
+                                            <div><?= format_string_to_date($revision['revision_approved_date']) ?></div>
+                                        </td>
+                                        <td class="text thLastMDate">
+                                            <div><?= format_string_to_date($revision['revision_approved_date']) ?></div>
+                                        </td>
+                                        <td class="number thOrigAmt">
+                                            <div><?= custom_number_formatter_format($contract['original_amount'], 2, '$') ?></div>
+                                        </td>
+                                        <td class="number thCurAmt">
+                                            <div><?= custom_number_formatter_format($revision['revision_total_amount'], 2, '$') ?></div>
+                                        </td>
+                                        <td class="text thVerStat">
+                                            <div>Approved</div>
+                                        </td>
                                     </tr>
-                                    </thead>
-                                    <tbody>
-                                    <?php
-                                    $even = 0;
-                                    foreach ($contract_history_by_year as $revision): ?>
-                                        <tr class="inner <?= ($even++ % 2 ? 'even' : 'odd') ?>">
-                                            <td class="number thVNum">
-                                                <div><?= (int)$revision['revision_number'] ?></div>
-                                            </td>
-                                            <?php if ($node->contractBAPA): ?>
-                                                <td class="text thStartDate">
-                                                    <div><?= format_string_to_date($contract['start_date']) ?></div>
-                                                </td>
-                                                <td class="text thEndDate">
-                                                    <div><?= format_string_to_date($contract['end_date']) ?></div>
-                                                </td>
-                                            <?php endif; ?>
-                                            <td class="text thRegDate">
-                                                <div><?= format_string_to_date($revision['revision_approved_date']) ?></div>
-                                            </td>
-                                            <td class="text thLastMDate">
-                                                <div><?= format_string_to_date($revision['revision_approved_date']) ?></div>
-                                            </td>
-                                            <td class="number thOrigAmt">
-                                                <div><?= custom_number_formatter_format($contract['original_amount'], 2, '$') ?></div>
-                                            </td>
-                                            <td class="number thCurAmt">
-                                                <div><?= custom_number_formatter_format($revision['revision_total_amount'], 2, '$') ?></div>
-                                            </td>
-                                            <td class="text thVerStat">
-                                                <div>Approved</div>
-                                            </td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </td>
-                    </tr>
-                    <?php
-                    $hidden++;
-                endforeach;
-            else:?>
-                <tr class="odd">
-                    <td class="dataTables_empty" valign="top" colspan="4">
-                        <div id="no-records-datatable" class="clearfix">
-                            <span>No Matching Records Found</span>
+                                <?php endforeach; ?>
+                                </tbody>
+                            </table>
                         </div>
                     </td>
                 </tr>
+                <?php
+                $yi++;
+                $hidden++;
+            endforeach;
+            else: ?>
+            <tbody>
+            <tr class="odd">
+                <td class="dataTables_empty" valign="top" colspan="4">
+                    <div id="no-records-datatable" class="clearfix">
+                        <span>No Matching Records Found</span>
+                    </div>
+                </td>
+            </tr>
             <?php endif; ?>
             </tbody>
         </table>
@@ -279,11 +286,6 @@ $contract = $node->data;
     <?php if ($node->contract_history_by_years && sizeof($node->contract_history_by_years)): ?>
         <script type="text/javascript">
             contractsAddPadding(jQuery('div.nycha-contract-history'));
-            jQuery('table.nycha-c-history').dataTable({
-                "bFilter": false,
-                "bPaginate": false,
-                "bInfo": false
-            });
         </script>
     <?php endif; ?>
 </div>
@@ -515,7 +517,7 @@ $contract = $node->data;
                                 </thead>
                                 <tbody>
                                 <?php $revision_cnt = 0;
-                                for ($i = 1; $i < 100; $i++): ?>
+                                for ($i = 1; $i < 11; $i++): ?>
                                     <tr class="<?= ($i % 2 ? 'odd' : 'even') ?>">
                                         <td class="text td1">
                                             <div>07/18/<?= $year ?></div>
@@ -662,7 +664,7 @@ $contract = $node->data;
                                                             style="margin:8px 0 8px 0 !important;display:inline-block; text-align: center !important;">Current<br>Amount</span>
                                                         </th>
                                                         <th style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
-                                                        <span
+                                                        <span>
                                                             style="margin:8px 0 8px 0 !important;display:inline-block; text-align: center !important;">Original<br>Amount</span>
                                                         </th>
                                                         <th style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
@@ -1004,7 +1006,7 @@ $contract = $node->data;
                                                                                 </thead>
                                                                                 <tbody>
                                                                                 <?php $revision_cnt = 0;
-                                                                                for ($i = 1; $i < 100; $i++): ?>
+                                                                                for ($i = 1; $i < 11; $i++): ?>
                                                                                     <tr class="<?= ($i % 2 ? 'odd' : 'even') ?>">
                                                                                         <td class="text td1">
                                                                                             <div>
