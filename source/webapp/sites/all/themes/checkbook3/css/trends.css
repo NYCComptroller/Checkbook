@@ -104,19 +104,19 @@ body.page-featured-trends .highcharts-border{
     border:1px solid #767676;
 }
 #featured-trends-thumbnails #general-fund {
-    background: url("/sites/all/themes/checkbook/images/GeneralFund.png") no-repeat scroll left top transparent;
+    background: url("/sites/all/themes/checkbook/images/trends/GeneralFund.png") no-repeat scroll left top transparent;
 }
 #featured-trends-thumbnails #property-tax {
-    background: url("/sites/all/themes/checkbook/images/PropertyTax.png") no-repeat scroll left top transparent;
+    background: url("/sites/all/themes/checkbook/images/trends/PropertyTax.png") no-repeat scroll left top transparent;
 }
 #featured-trends-thumbnails #capital-projects {
-    background: url("/sites/all/themes/checkbook/images/CapitalProjects.png") no-repeat scroll left top transparent;
+    background: url("/sites/all/themes/checkbook/images/trends/CapitalProjects.png") no-repeat scroll left top transparent;
 }
 #featured-trends-thumbnails #personal-income {
-    background: url("/sites/all/themes/checkbook/images/PersonalIncome.png") no-repeat scroll left top transparent;
+    background: url("/sites/all/themes/checkbook/images/trends/PersonalIncome.png") no-repeat scroll left top transparent;
 }
 #featured-trends-thumbnails #debt-ratio {
-    background: url("/sites/all/themes/checkbook/images/RatiosOfDebt.png") no-repeat scroll left top transparent;
+    background: url("/sites/all/themes/checkbook/images/trends/RatiosOfDebt.png") no-repeat scroll left top transparent;
 }
 #featured-trends .pane-content{
     width: 940px;;

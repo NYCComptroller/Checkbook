@@ -21,6 +21,7 @@
 <?php  
 	$table_rows = array();
 	$years = array();
+
 foreach( $node->data as $row){
 
 	$table_rows[$row['display_order']]['category'] =  $row['category'];
@@ -33,6 +34,8 @@ foreach( $node->data as $row){
 	$years[$row['fiscal_year']] = 	$row['fiscal_year'];
 }
 rsort($years);
+$last_year = $years[0];
+
 	$header = 'Type of Property';
     foreach ($years as $year){
         if($year == 2014){
@@ -106,4 +109,4 @@ rsort($years);
 "Note: Property in New York City is reassessed once a year. The City assesses property at approximately 40 percent of "
 "      Market Value for commercial and industrial property and 20 percent of Market Value for residential property."
 
-"Sources: Resolutions of the City Council and The Annual Report, The New York City Property Tax Fiscal Year 2017. "
+"Sources: Resolutions of the City Council and The Annual Report, The New York City Property Tax Fiscal Year <?= $last_year ?>. "
