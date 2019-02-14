@@ -200,6 +200,11 @@ function checkbook_project_theme($existing, $type, $theme, $path){
             'template' => 'php_widgets/contract/pending_transaction_title',
             'arguments' => array('node' => NULL)
         ),
+        //Nycha Contract Transactions List
+        'nycha_contract_transaction_total_amount' => array(
+            'template' => 'php_widgets/contract/nycha_contract_transaction_total_amount',
+            'arguments' => array('node' => NULL)
+        ),
         //Spending Transactions List
         'spending_transaction_total_amount' => array(
             'template' => 'php_widgets/spending/transaction_total_amount',
