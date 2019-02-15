@@ -1902,12 +1902,13 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
     $form['filter']['nycha_fields_start'] = array(
         '#prefix' => '<div class="nycha-fields">',
     );
-    $form = checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $agency_options, $first_time_load);
+    $form = checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $first_time_load);
     return $form;
 }
 
 //NYCHA Form
-function checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $agency_options, $first_time_load){
+function checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $first_time_load){
+    $agency_options = _agency_options('checkbook_oge_nycha');
     $form['filter']['purchase_order_type'] = array(
         '#type' => 'select',
         '#title' => t('Purchase Order<br/>Type:'),
@@ -1945,7 +1946,7 @@ function checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $ag
         '#title' => t('Responsibility<br/>Center:'),
         '#options' => array(),
         '#attributes' => array('class' => array('watch')),
-        '#prefix' => '<div class="column column-left"><div class="datafield resp-center">',
+        '#prefix' => '<div class="datafield resp-center">',
         '#suffix' => '</div>',
         '#id' => 'edit-resp-center',
         '#name' => 'resp_center',
@@ -1956,7 +1957,7 @@ function checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $ag
         '#title' => t('Contract Type:'),
         '#options' => array(),
         '#attributes' => array('class' => array('watch')),
-        '#prefix' => '<div class="column column-left"><div class="datafield nycha-contract-type">',
+        '#prefix' => '<div class="datafield nycha-contract-type">',
         '#suffix' => '</div>',
         '#id' => 'edit-nycha-contract-type',
         '#name' => 'nycha_contract_type',
@@ -1967,7 +1968,7 @@ function checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $ag
         '#title' => t('Award Method:'),
         '#options' => array(),
         '#attributes' => array('class' => array('watch')),
-        '#prefix' => '<div class="column column-left"><div class="datafield nycha-awd-method">',
+        '#prefix' => '<div class="datafield nycha-awd-method">',
         '#suffix' => '</div>',
         '#id' => 'edit-nycha-awd-method',
         '#name' => 'nycha_awd_method',
@@ -1985,6 +1986,15 @@ function checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $ag
         '#name' => 'nycha_industry',
         '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_industry', $first_time_load, ''),
     );
+    $form['filter']['nycha_currentamtfrom'] = array(
+        '#type' => 'textfield',
+        '#size' => 15,
+        '#maxlength' => 15,
+        '#prefix' => '<div class="datafield currentamt datarange"><label>Current Amount:</label><div class="ranges">',
+        '#id' => 'edit-nycha-currentamtfrom',
+        '#name' => 'nycha_currentamtfrom',
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_currentamtfrom', $first_time_load, ''),
+    );
     $form['filter']['nycha_currentamtto'] = array(
         '#type' => 'textfield',
         '#title' => t('to'),
@@ -1993,7 +2003,7 @@ function checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $ag
         '#suffix' => '</div></div>',
         '#id' => 'edit-nycha-currentamtto',
         '#name' => 'nycha_currentamtto',
-        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_currentamtto', $first_time_load, ''),
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha-currentamtto', $first_time_load, ''),
     );
     $form['filter']['nycha_agency'] = array(
         '#type' => 'select',
@@ -2001,7 +2011,7 @@ function checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $ag
         '#options' => $agency_options['options'],
         '#option_attributes' => $agency_options['options_attributes'],
         '#attributes' => array('class' => array('watch')),
-        '#prefix' => '<div class="column column-right"><div class="datafield nycha-agency">',
+        '#prefix' => '</div><div class="column column-right"><div class="datafield nycha-agency">',
         '#suffix' => '</div>',
         '#id' => 'edit-nycha-agency',
         '#name' => 'nycha_agency',

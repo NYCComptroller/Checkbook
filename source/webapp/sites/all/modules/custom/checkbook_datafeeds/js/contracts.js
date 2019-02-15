@@ -10,15 +10,15 @@
                 $('.default-fields').show();
                 $('.nycha-fields').hide();
 
-                $('.datafield.commodityline').show();
-                $('.datafield.entity_contract_number').show();
-                $('.datafield.budgetname').show();
+                $('.default-fields .datafield.commodityline').show();
+                $('.default-fields .datafield.entity_contract_number').show();
+                $('.default-fields .datafield.budgetname').show();
 
-                $('.datafield.mwbecategory').hide();
-                $('.datafield.scntrc_status').hide();
-                $('.datafield.regdate').hide();
-                $('.datafield.sub_vendor_status_in_pip_id').hide();
-                $('.datafield.industry').hide();
+                $('.default-fields .datafield.mwbecategory').hide();
+                $('.default-fields .datafield.scntrc_status').hide();
+                $('.default-fields .datafield.regdate').hide();
+                $('.default-fields .datafield.sub_vendor_status_in_pip_id').hide();
+                $('.default-fields .datafield.industry').hide();
 
                 $("#edit-df-contract-status").children("option[value='pending']").hide();
                 $("#edit-category").children("option[value='all']").hide();
@@ -26,10 +26,10 @@
                 $("#edit-apt-pin").attr('disabled', 'disabled');
 
                 //Moving fields to match with Advanced search form order
-                $('.datafield.pin').insertAfter('.datafield.purpose');
-                $('.datafield.receiveddate.datarange').insertAfter('.datafield.currentamt.datarange');
-                $('.datafield.enddate.datarange').insertAfter('.datafield.startdate.datarange');
-                $('.datafield.agency').insertBefore('.datafield.category');
+                $('.default-fields .datafield.pin').insertAfter('.default-fields .datafield.purpose');
+                $('.default-fields .datafield.receiveddate.datarange').insertAfter('.default-fields .datafield.currentamt.datarange');
+                $('.default-fields .datafield.enddate.datarange').insertAfter('.default-fields .datafield.startdate.datarange');
+                $('.default-fields .datafield.agency').insertBefore('.default-fields .datafield.category');
 
                 break;
             case 'checkbook_nycha':
@@ -40,15 +40,15 @@
                 $('.default-fields').show();
                 $('.nycha-fields').hide();
 
-                $('.datafield.commodityline').hide();
-                $('.datafield.entity_contract_number').hide();
-                $('.datafield.budgetname').hide();
+                $('.default-fields .datafield.commodityline').hide();
+                $('.default-fields .datafield.entity_contract_number').hide();
+                $('.default-fields .datafield.budgetname').hide();
 
-                $('.datafield.mwbecategory').show();
-                $('.datafield.scntrc_status').show();
-                $('.datafield.regdate').show();
-                $('.datafield.sub_vendor_status_in_pip_id').show();
-                $('.datafield.industry').show();
+                $('.default-fields .datafield.mwbecategory').show();
+                $('.default-fields .datafield.scntrc_status').show();
+                $('.default-fields .datafield.regdate').show();
+                $('.default-fields .datafield.sub_vendor_status_in_pip_id').show();
+                $('.default-fields .datafield.industry').show();
 
                 $("#edit-df-contract-status").children("option[value='pending']").show();
                 $("#edit-category").children("option[value='all']").show();
@@ -56,10 +56,10 @@
                 $("#edit-apt-pin").removeAttr('disabled');
 
                 //Moving fields to match with Advanced search form order
-                $('.datafield.pin').insertBefore('.datafield.currentamt.datarange');
-                $('.datafield.enddate.datarange').insertAfter('.datafield.currentamt.datarange');
-                $('.datafield.receiveddate.datarange').insertAfter('.datafield.startdate.datarange');
-                $('.datafield.agency').insertBefore('.datafield.industry');
+                $('.default-fields .datafield.pin').insertBefore('.default-fields .datafield.currentamt.datarange');
+                $('.default-fields .datafield.enddate.datarange').insertAfter('.default-fields .datafield.currentamt.datarange');
+                $('.default-fields .datafield.receiveddate.datarange').insertAfter('.default-fields .datafield.startdate.datarange');
+                $('.default-fields .datafield.agency').insertBefore('.default-fields .datafield.industry');
         }
     }
 
