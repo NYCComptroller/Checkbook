@@ -7,6 +7,9 @@
     $.fn.showHideFields = function(data_source) {
         switch (data_source) {
             case 'checkbook_oge':
+                $('.default-fields').show();
+                $('.nycha-fields').hide();
+
                 $('.datafield.commodityline').show();
                 $('.datafield.entity_contract_number').show();
                 $('.datafield.budgetname').show();
@@ -29,7 +32,14 @@
                 $('.datafield.agency').insertBefore('.datafield.category');
 
                 break;
+            case 'checkbook_nycha':
+                $('.default-fields').hide();
+                $('.nycha-fields').show();
+                break;
             default:
+                $('.default-fields').show();
+                $('.nycha-fields').hide();
+
                 $('.datafield.commodityline').hide();
                 $('.datafield.entity_contract_number').hide();
                 $('.datafield.budgetname').hide();
@@ -132,80 +142,94 @@
         $('div.messages').remove();
         $('.error').removeClass('error');
 
-        //Agency drop-down options
-        $.fn.reloadAgencies(dataSource);
-
         //Show or hide fields based on data-source selection
         $.fn.showHideFields(dataSource);
 
-        //Change the Agency drop-down label
-        var vendor_label = (dataSource == 'checkbook_oge') ? 'Prime Vendor:' : 'Vendor:';
-        $("label[for = edit-vendor]").text(vendor_label);
+        if(dataSource != 'checkbook_nycha') {
+          //Agency drop-down options
+          $.fn.reloadAgencies(dataSource);
 
-        //Clear text fields and drop-downs
-        $.fn.clearInputFields(dataSource);
-        //Reset 'sub-vendor status in PIP' and 'contracts include sub-vendors' drop-downs
-        $.fn.subVendorStatusInPipChange(0,0);
+          //Change the Agency drop-down label
+          var vendor_label = (dataSource == 'checkbook_oge') ? 'Prime Vendor:' : 'Vendor:';
+          $("label[for = edit-vendor]").text(vendor_label);
 
-        //reset the selected columns
-        $.fn.resetSelectedColumns();
+          //Clear text fields and drop-downs
+          $.fn.clearInputFields(dataSource);
+          //Reset 'sub-vendor status in PIP' and 'contracts include sub-vendors' drop-downs
+          $.fn.subVendorStatusInPipChange(0, 0);
 
-        $('#edit-column-select-expense option[value="Year"]').attr('disabled','disabled');
-        $('#edit-column-select-expense').multiSelect('refresh');
-        if(!$('#ms-edit-column-select-expense .ms-selection').next().is("a")){
+          //reset the selected columns
+          $.fn.resetSelectedColumns();
+
+          $('#edit-column-select-expense option[value="Year"]').attr('disabled', 'disabled');
+          $('#edit-column-select-expense').multiSelect('refresh');
+          if (!$('#ms-edit-column-select-expense .ms-selection').next().is("a")) {
             $('#ms-edit-column-select-expense .ms-selection').after('<a class="deselect">Remove All</a>');
             $('#ms-edit-column-select-expense .ms-selection').after('<a class="select">Add All</a>');
-        }
-        $('#ms-edit-column-select-expense a.select').click(function () {
+          }
+          $('#ms-edit-column-select-expense a.select').click(function () {
             $('#edit-column-select-expense').multiSelect('select_all');
-        });
-        $('#ms-edit-column-select-expense a.deselect').click(function () {
+          });
+          $('#ms-edit-column-select-expense a.deselect').click(function () {
             $('#edit-column-select-expense').multiSelect('deselect_all');
-        });
+          });
 
-        $('#edit-column-select-oge-expense option[value="Year"]').attr('disabled','disabled');
-        $('#edit-column-select-oge-expense').multiSelect('refresh');
-        if(!$('#ms-edit-column-select-oge-expense .ms-selection').next().is("a")){
+          $('#edit-column-select-oge-expense option[value="Year"]').attr('disabled', 'disabled');
+          $('#edit-column-select-oge-expense').multiSelect('refresh');
+          if (!$('#ms-edit-column-select-oge-expense .ms-selection').next().is("a")) {
             $('#ms-edit-column-select-oge-expense .ms-selection').after('<a class="deselect">Remove All</a>');
             $('#ms-edit-column-select-oge-expense .ms-selection').after('<a class="select">Add All</a>');
-        }
-        $('#ms-edit-column-select-oge-expense a.select').click(function () {
+          }
+          $('#ms-edit-column-select-oge-expense a.select').click(function () {
             $('#edit-column-select-oge-expense').multiSelect('select_all');
-        });
-        $('#ms-edit-column-select-oge-expense a.deselect').click(function () {
+          });
+          $('#ms-edit-column-select-oge-expense a.deselect').click(function () {
             $('#edit-column-select-oge-expense').multiSelect('deselect_all');
-        });
+          });
 
-        $('#edit-column-select-revenue option[value="Year"]').attr('disabled','disabled');
-        $('#edit-column-select-revenue').multiSelect('refresh');
-        if(!$('#ms-edit-column-select-revenue .ms-selection').next().is("a")){
+          $('#edit-column-select-nycha').multiSelect('refresh');
+          if (!$('#ms-edit-column-select-nycha .ms-selection').next().is("a")) {
+            $('#ms-edit-column-select-nycha .ms-selection').after('<a class="deselect">Remove All</a>');
+            $('#ms-edit-column-select-nycha .ms-selection').after('<a class="select">Add All</a>');
+          }
+          $('#ms-edit-column-select-nycha a.select').click(function () {
+            $('#edit-column-select-nycha').multiSelect('select_all');
+          });
+          $('#ms-edit-column-select-nycha a.deselect').click(function () {
+            $('#edit-column-select-nycha').multiSelect('deselect_all');
+          });
+
+          $('#edit-column-select-revenue option[value="Year"]').attr('disabled', 'disabled');
+          $('#edit-column-select-revenue').multiSelect('refresh');
+          if (!$('#ms-edit-column-select-revenue .ms-selection').next().is("a")) {
             $('#ms-edit-column-select-revenue .ms-selection').after('<a class="deselect">Remove All</a>');
             $('#ms-edit-column-select-revenue .ms-selection').after('<a class="select">Add All</a>');
-        }
-        $('#ms-edit-column-select-revenue a.select').click(function () {
+          }
+          $('#ms-edit-column-select-revenue a.select').click(function () {
             $('#edit-column-select-revenue').multiSelect('select_all');
-        });
-        $('#ms-edit-column-select-revenue a.deselect').click(function () {
+          });
+          $('#ms-edit-column-select-revenue a.deselect').click(function () {
             $('#edit-column-select-revenue').multiSelect('deselect_all');
-        });
+          });
 
-        $('#edit-column-select-all option[value="Year"]').attr('disabled','disabled');
-        $('#edit-column-select-all').multiSelect('refresh');
-        if(!$('#ms-edit-column-select-all .ms-selection').next().is("a")){
+          $('#edit-column-select-all option[value="Year"]').attr('disabled', 'disabled');
+          $('#edit-column-select-all').multiSelect('refresh');
+          if (!$('#ms-edit-column-select-all .ms-selection').next().is("a")) {
             $('#ms-edit-column-select-all .ms-selection').after('<a class="deselect">Remove All</a>');
             $('#ms-edit-column-select-all .ms-selection').after('<a class="select">Add All</a>');
-        }
-        $('#ms-edit-column-select-all a.select').click(function () {
+          }
+          $('#ms-edit-column-select-all a.select').click(function () {
             $('#edit-column-select-all').multiSelect('select_all');
-        });
-        $('#ms-edit-column-select-all a.deselect').click(function () {
+          });
+          $('#ms-edit-column-select-all a.deselect').click(function () {
             $('#edit-column-select-all').multiSelect('deselect_all');
-        });
+          });
+        }
 
         var csval = $('select[name="df_contract_status"]').val();
         var catval = $('#edit-category').val();
         // Display multi-select
-        $.fn.hideShow(csval, catval);
+        $.fn.hideShow(csval, catval, dataSource);
 
         $.fn.showHidePrimeAndSubIcon();
     }
@@ -245,116 +269,137 @@
      * @param csval  -- Contract Status
      * @param catval  -- Contract Category
      */
-    $.fn.hideShow = function(csval, catval) {
+    $.fn.hideShow = function(csval, catval, datasource) {
         var $expense = $('.form-item-column-select-expense');
         var $oge_expense = $('.form-item-column-select-oge-expense');
         var $revenue = $('.form-item-column-select-revenue');
         var $pending = $('.form-item-column-select-pending');
         var $all = $('.form-item-column-select-all');
         var $pending_all = $('.form-item-column-select-pending-all');
+        var $nycha = $('.form-item-column-select-nycha');
         var data_source = $('input:hidden[name="data_source"]').val();
 
-        if (csval == 'active') {
-            if(data_source == 'checkbook') {
-                if (catval == 'expense') {
-                    $('.form-item-column-select-expense label').html('Columns (Active Expense)<span class="form-required">*</span>');
-                    $expense.show();
-                    $revenue.hide();
-                    $pending.hide();
-                    $all.hide();
-                    $pending_all.hide();
-                    $oge_expense.hide();
-                } else if (catval == 'revenue') {
-                    $('.form-item-column-select-revenue label').html('Columns (Active Revenue)<span class="form-required">*</span>');
-                    $expense.hide();
-                    $revenue.show();
-                    $pending.hide();
-                    $all.hide();
-                    $pending_all.hide();
-                    $oge_expense.hide();
-                } else {
-                    $('.form-item-column-select-all label').html('Columns (All Active)<span class="form-required">*</span>');
-                    $all.show();
-                    $expense.hide();
-                    $revenue.hide();
-                    $pending.hide();
-                    $pending_all.hide();
-                    $oge_expense.hide();
-                }
-            }else if(data_source == 'checkbook_oge'){
-                $('.form-item-column-select-oge-expense label').html('Columns (Active Expense)<span class="form-required">*</span>');
+        if(datasource == 'checkbook_nycha'){
+            $expense.hide();
+            $revenue.hide();
+            $pending.hide();
+            $all.hide();
+            $pending_all.hide();
+            $oge_expense.hide();
+            $nycha.show();
+        }else {
+          if (csval == 'active') {
+            if (data_source == 'checkbook') {
+              if (catval == 'expense') {
+                $('.form-item-column-select-expense label').html('Columns (Active Expense)<span class="form-required">*</span>');
+                $expense.show();
+                $revenue.hide();
+                $pending.hide();
+                $all.hide();
+                $pending_all.hide();
+                $oge_expense.hide();
+                $nycha.hide();
+              } else if (catval == 'revenue') {
+                $('.form-item-column-select-revenue label').html('Columns (Active Revenue)<span class="form-required">*</span>');
+                $expense.hide();
+                $revenue.show();
+                $pending.hide();
+                $all.hide();
+                $pending_all.hide();
+                $oge_expense.hide();
+                $nycha.hide();
+              } else {
+                $('.form-item-column-select-all label').html('Columns (All Active)<span class="form-required">*</span>');
+                $all.show();
+                $expense.hide();
+                $revenue.hide();
+                $pending.hide();
+                $pending_all.hide();
+                $oge_expense.hide();
+                $nycha.hide();
+              }
+            } else if (data_source == 'checkbook_oge') {
+              $('.form-item-column-select-oge-expense label').html('Columns (Active Expense)<span class="form-required">*</span>');
+              $expense.hide();
+              $revenue.hide();
+              $pending.hide();
+              $all.hide();
+              $pending_all.hide();
+              $oge_expense.show();
+              $nycha.hide();
+            }
+          } else if (csval == 'registered') {
+            if (data_source == 'checkbook') {
+              if (catval == 'expense') {
+                $('.form-item-column-select-expense label').html('Columns (Registered Expense)<span class="form-required">*</span>');
+                $expense.show();
+                $revenue.hide();
+                $pending.hide();
+                $all.hide();
+                $pending_all.hide();
+                $oge_expense.hide();
+                $nycha.hide();
+              } else if (catval == 'revenue') {
+                $('.form-item-column-select-revenue label').html('Columns (Registered Revenue)<span class="form-required">*</span>');
+                $expense.hide();
+                $revenue.show();
+                $pending.hide();
+                $all.hide();
+                $pending_all.hide();
+                $oge_expense.hide();
+                $nycha.hide();
+              } else {
+                $('.form-item-column-select-all label').html('Columns (All Registered)<span class="form-required">*</span>');
+                $expense.hide();
+                $revenue.hide();
+                $pending.hide();
+                $all.show();
+                $pending_all.hide();
+                $oge_expense.hide();
+                $nycha.hide();
+              }
+            } else if (data_source == 'checkbook_oge') {
+              if (catval == 'expense') {
+                $('.form-item-column-select-oge-expense label').html('Columns (Registered Expense)<span class="form-required">*</span>');
                 $expense.hide();
                 $revenue.hide();
                 $pending.hide();
                 $all.hide();
                 $pending_all.hide();
                 $oge_expense.show();
+                $nycha.hide();
+              }
             }
-        } else if (csval == 'registered'){
-            if(data_source == 'checkbook') {
-                if (catval == 'expense') {
-                    $('.form-item-column-select-expense label').html('Columns (Registered Expense)<span class="form-required">*</span>');
-                    $expense.show();
-                    $revenue.hide();
-                    $pending.hide();
-                    $all.hide();
-                    $pending_all.hide();
-                    $oge_expense.hide();
-                } else if (catval == 'revenue') {
-                    $('.form-item-column-select-revenue label').html('Columns (Registered Revenue)<span class="form-required">*</span>');
-                    $expense.hide();
-                    $revenue.show();
-                    $pending.hide();
-                    $all.hide();
-                    $pending_all.hide();
-                    $oge_expense.hide();
-                } else {
-                    $('.form-item-column-select-all label').html('Columns (All Registered)<span class="form-required">*</span>');
-                    $expense.hide();
-                    $revenue.hide();
-                    $pending.hide();
-                    $all.show();
-                    $pending_all.hide();
-                    $oge_expense.hide();
-                }
-            }else if(data_source == 'checkbook_oge') {
-                if (catval == 'expense') {
-                    $('.form-item-column-select-oge-expense label').html('Columns (Registered Expense)<span class="form-required">*</span>');
-                    $expense.hide();
-                    $revenue.hide();
-                    $pending.hide();
-                    $all.hide();
-                    $pending_all.hide();
-                    $oge_expense.show();
-                }
-            }
-        } else {
-            if(catval == 'expense'){
-                $('.form-item-column-select-pending label').html('Columns (Pending Expense)<span class="form-required">*</span>');
-                $expense.hide();
-                $revenue.hide();
-                $pending.show();
-                $all.hide();
-                $pending_all.hide();
-                $oge_expense.hide();
+          } else {
+            if (catval == 'expense') {
+              $('.form-item-column-select-pending label').html('Columns (Pending Expense)<span class="form-required">*</span>');
+              $expense.hide();
+              $revenue.hide();
+              $pending.show();
+              $all.hide();
+              $pending_all.hide();
+              $oge_expense.hide();
+              $nycha.hide();
             } else if (catval == 'revenue') {
-                $('.form-item-column-select-pending label').html('Columns (Pending Revenue)<span class="form-required">*</span>');
-                $expense.hide();
-                $revenue.hide();
-                $pending.show();
-                $all.hide();
-                $pending_all.hide();
-                $oge_expense.hide();
+              $('.form-item-column-select-pending label').html('Columns (Pending Revenue)<span class="form-required">*</span>');
+              $expense.hide();
+              $revenue.hide();
+              $pending.show();
+              $all.hide();
+              $pending_all.hide();
+              $oge_expense.hide();
+              $nycha.hide();
             } else {
-                $('.form-item-column-select-pending-all label').html('Columns (All Pending)<span class="form-required">*</span>');
-                $expense.hide();
-                $revenue.hide();
-                $pending.hide();
-                $all.hide();
-                $pending_all.show();
-                $oge_expense.hide();
+              $('.form-item-column-select-pending-all label').html('Columns (All Pending)<span class="form-required">*</span>');
+              $expense.hide();
+              $revenue.hide();
+              $pending.hide();
+              $all.hide();
+              $pending_all.show();
+              $oge_expense.hide();
+              $nycha.hide();
             }
-
+          }
         }
     }
 
@@ -406,7 +451,7 @@
             $.fn.showHidePrimeAndSubIcon();
 
             // Display multi-select
-            $.fn.hideShow(csval, catval);
+            $.fn.hideShow(csval, catval, data_source);
             // Enable/disable and add/remove options in 'Contracts Include SubVendors' and 'SubVendor Status in PIP' drop-downs
             $.fn.subVendorStatusInPipChange($('#edit-sub_vendor_status_in_pip_id', context).val(), $('#edit-contract_includes_sub_vendors_id', context).val());
 
@@ -428,8 +473,9 @@
             $contractStatus.change(function () {
                 csval = $('select[name="df_contract_status"]', context).val();
                 catval = $('#edit-category', context).val();
+                data_source = $('input:hidden[name="data_source"]', context).val();
                 $.fn.resetSelectedColumns();
-                $.fn.hideShow(csval, catval);
+                $.fn.hideShow(csval, catval, data_source);
                 $.fn.showHidePrimeAndSubIcon();
             });
 
@@ -437,9 +483,17 @@
             $category.change(function () {
                 csval = $('select[name="df_contract_status"]', context).val();
                 catval = $('#edit-category', context).val();
+                data_source = $('input:hidden[name="data_source"]', context).val();
                 $.fn.resetSelectedColumns();
-                $.fn.hideShow(csval, catval);
+                $.fn.hideShow(csval, catval, data_source);
                 $.fn.showHidePrimeAndSubIcon();
+            });
+
+            //Agnecy Drop-down
+            $('#edit-agency', context).change(function () {
+                $('input:hidden[name="data_source"]', context).val('checkbook_nycha');
+                var agency_hidden = $('input:hidden[name="agency_hidden"]', context).val($('#edit-agency', context).val());
+                $.fn.onDataSourceChange('checkbook_nycha');
             });
 
             //Set up jQuery datepickers
@@ -535,6 +589,19 @@
             });
             $('#ms-edit-column-select-all a.deselect', context).click(function () {
                 $('#edit-column-select-all', context).multiSelect('deselect_all');
+            });
+
+            //NYCHA
+            $('#edit-column-select-nycha', context).multiSelect();
+            if(!$('#ms-edit-column-select-nycha .ms-selection', context).next().is("a")){
+              $('#ms-edit-column-select-nycha .ms-selection', context).after('<a class="deselect">Remove All</a>');
+              $('#ms-edit-column-select-nycha .ms-selection', context).after('<a class="select">Add All</a>');
+            }
+            $('#ms-edit-column-select-nycha a.select', context).click(function () {
+              $('#edit-column-select-nycha', context).multiSelect('select_all');
+            });
+            $('#ms-edit-column-select-nycha a.deselect', context).click(function () {
+              $('#edit-column-select-nycha', context).multiSelect('deselect_all');
             });
 
             var status = $('select[name="df_contract_status"]', context).val();
@@ -697,6 +764,7 @@
         $('#edit-column-select-pending').multiSelect('deselect_all');
         $('#edit-column-select-pending-all').multiSelect('deselect_all');
         $('#edit-column-select-all').multiSelect('deselect_all');
+        $('#edit-column-select-nycha').multiSelect('deselect_all');
     }
 
     //Prevent the auto-complete from wrapping un-necessarily

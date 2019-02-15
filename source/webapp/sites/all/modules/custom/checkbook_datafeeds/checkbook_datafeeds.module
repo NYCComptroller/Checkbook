@@ -1431,6 +1431,15 @@ function checkbook_datafeeds_contracts($form, &$form_state)
         '#default_value' => !empty($form_state['values']['column_select_oge_expense']) ? $form_state['values']['column_select_oge_expense'] : '',
     );
 
+    $form['columns']['column_select_nycha'] = array(
+        '#type' => 'select',
+        '#title' => t('NYCHA<span class="form-required" title="This field is required.">*</span>'),
+        '#multiple' => TRUE,
+        '#options' => _checkbook_datafeeds_contracts_column_options('checkbook_nycha', 'default', '', $data_type),
+        '#id' => 'edit-column-select-nycha',
+        '#default_value' => !empty($form_state['values']['column_select_nycha']) ? $form_state['values']['column_select_nycha'] : '',
+    );
+
     if($form_state['input']['datafeeds-contracts-domain-filter'] == 'checkbook_oge'){
         $multi_select_hidden = isset($form_state['input']['column_select_oge_expense']) ? '|' . implode('||', $form_state['input']['column_select_oge_expense']) . '|' : '';
     }else{
@@ -1509,6 +1518,9 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
     $contract_includes_sub_vendors_options = _get_contract_includes_subvendors_data();
     $contract_includes_sub_vendors_attributes = _get_contract_includes_subvendors_data('attributes');
 
+    $form['filter']['fields_start'] = array(
+        '#prefix' => '<div class="default-fields">',
+    );
     $form['filter']['df_contract_status'] = array(
         '#type' => 'select',
         '#title' => t('Status:'),
@@ -1875,7 +1887,7 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
         '#attributes' => array('class' => array('watch')),
         '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'year', $first_time_load, 'ALL'),
         '#prefix' => '<div class="datafield year last-item">',
-        '#suffix' => '</div></div>',
+        '#suffix' => '</div></div></div>',
         '#id' => 'edit-year',
         '#name' => 'year',
         '#states' => array(
@@ -1885,6 +1897,228 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
         )
     );
 
+
+    //NYCHA Fields
+    $form['filter']['nycha_fields_start'] = array(
+        '#prefix' => '<div class="nycha-fields">',
+    );
+    $form = checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $agency_options, $first_time_load);
+    return $form;
+}
+
+//NYCHA Form
+function checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $agency_options, $first_time_load){
+    $form['filter']['purchase_order_type'] = array(
+        '#type' => 'select',
+        '#title' => t('Purchase Order<br/>Type:'),
+        '#options' => array("All"=>"All", "BA"=>"Blanket Agreement", "PA"=>" Planned Agreement", "PO"=>"Purchase Order"),
+        '#attributes' => array('class' => array('watch')),
+        '#prefix' => '<div class="column column-left"><div class="datafield purchase_order_type">',
+        '#suffix' => '</div>',
+        '#id' => 'edit-purchase-order-type',
+        '#name' => 'purchase_order_type',
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'purchase_order_type', $first_time_load, 'All'),
+    );
+    $form['filter']['nycha_contract_id'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Contract ID:'),
+        '#attributes' => array('class' => array('watch')),
+        '#prefix' => '<div class="datafield nycha-contract-id">',
+        '#suffix' => '</div>',
+        '#id' => 'edit-nycha-contract-id',
+        '#name' => 'nycha_contract_id',
+        '#maxlength'=>32,
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_contract_id', $first_time_load, ''),
+    );
+    $form['filter']['nycha_vendor'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Vendor:'),
+        '#attributes' => array('class' => array('watch')),
+        '#prefix' => '<div class="datafield nycha-vendor">',
+        '#suffix' => '</div>',
+        '#id' => 'edit-nycha-vendor',
+        '#name' => 'nycha_vendor',
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_vendor', $first_time_load, ''),
+    );
+    $form['filter']['resp_center'] = array(
+        '#type' => 'select',
+        '#title' => t('Responsibility<br/>Center:'),
+        '#options' => array(),
+        '#attributes' => array('class' => array('watch')),
+        '#prefix' => '<div class="column column-left"><div class="datafield resp-center">',
+        '#suffix' => '</div>',
+        '#id' => 'edit-resp-center',
+        '#name' => 'resp_center',
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'resp_center', $first_time_load, 'Select Responsibility Center'),
+    );
+    $form['filter']['nycha_contract_type'] = array(
+        '#type' => 'select',
+        '#title' => t('Contract Type:'),
+        '#options' => array(),
+        '#attributes' => array('class' => array('watch')),
+        '#prefix' => '<div class="column column-left"><div class="datafield nycha-contract-type">',
+        '#suffix' => '</div>',
+        '#id' => 'edit-nycha-contract-type',
+        '#name' => 'nycha_contract_type',
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_contract_type', $first_time_load, 'Select Contract Type'),
+    );
+    $form['filter']['nycha_awd_method'] = array(
+        '#type' => 'select',
+        '#title' => t('Award Method:'),
+        '#options' => array(),
+        '#attributes' => array('class' => array('watch')),
+        '#prefix' => '<div class="column column-left"><div class="datafield nycha-awd-method">',
+        '#suffix' => '</div>',
+        '#id' => 'edit-nycha-awd-method',
+        '#name' => 'nycha_awd_method',
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_awd_method', $first_time_load, 'Select Award Method'),
+    );
+    $form['filter']['nycha_industry'] = array(
+        '#type' => 'select',
+        '#title' => t('Industry:'),
+        '#options' => _industry_options(),
+        '#prefix' => '<div class="datafield nycha-industry">',
+        '#suffix' => '</div>',
+        '#attributes' => array('class' => array('watch')),
+        '#multiple' => FALSE,
+        '#id' => 'edit-nycha-industry',
+        '#name' => 'nycha_industry',
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_industry', $first_time_load, ''),
+    );
+    $form['filter']['nycha_currentamtto'] = array(
+        '#type' => 'textfield',
+        '#title' => t('to'),
+        '#size' => 15,
+        '#maxlength' => 15,
+        '#suffix' => '</div></div>',
+        '#id' => 'edit-nycha-currentamtto',
+        '#name' => 'nycha_currentamtto',
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_currentamtto', $first_time_load, ''),
+    );
+    $form['filter']['nycha_agency'] = array(
+        '#type' => 'select',
+        '#title' => t('Other Government<br/>Entity:'),
+        '#options' => $agency_options['options'],
+        '#option_attributes' => $agency_options['options_attributes'],
+        '#attributes' => array('class' => array('watch')),
+        '#prefix' => '<div class="column column-right"><div class="datafield nycha-agency">',
+        '#suffix' => '</div>',
+        '#id' => 'edit-nycha-agency',
+        '#name' => 'nycha_agency',
+        '#validated' => true,
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_agency', $first_time_load, 'NEW YORK CITY HOUSING AUTHORITY [996]'),
+    );
+    $form['filter']['nycha_purpose'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Purpose:'),
+        '#maxlength' => 100,
+        '#prefix' => '<div class="datafield nycha-purpose">',
+        '#suffix' => '</div>',
+        '#attributes' => array('class' => array('watch')),
+        '#id' => 'edit-nycha-purpose',
+        '#name' => 'nycha_purpose',
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_purpose', $first_time_load, ''),
+    );
+    $form['filter']['nycha_apt_pin'] = array(
+        '#type' => 'textfield',
+        '#title' => t('APT PIN:'),
+        '#attributes' => array('class' => array('watch')),
+        '#prefix' => '<div class="datafield nycha-apt-pin">',
+        '#suffix' => '</div>',
+        '#id' => 'edit-nycha-apt-pin',
+        '#name' => 'nycha_apt_pin',
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_apt_pin', $first_time_load, ''),
+    );
+    $form['filter']['nycha_apt_pin'] = array(
+        '#type' => 'textfield',
+        '#title' => t('APT PIN:'),
+        '#attributes' => array('class' => array('watch')),
+        '#prefix' => '<div class="datafield nycha-apt-pin">',
+        '#suffix' => '</div>',
+        '#id' => 'edit-nycha-apt-pin',
+        '#name' => 'nycha_apt_pin',
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_apt_pin', $first_time_load, ''),
+    );
+    $form['filter']['nycha_startdatefrom'] = array(
+        '#type' => 'textfield',
+        '#size' => 15,
+        '#maxlength' => 15,
+        '#description' => 'E.g., ' . date('Y-m-d'),
+        '#attributes' => array('class' => array('datepicker')),
+        '#prefix' => '<div class="datafield startdate datarange"><label>Start Date:</label><div class="ranges">',
+        '#id' => 'edit-nycha-startdatefrom',
+        '#name' => 'nycha_startdatefrom',
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_startdatefrom', $first_time_load, ''),
+    );
+    $form['filter']['nycha_startdateto'] = array(
+        '#type' => 'textfield',
+        '#title' => t('to'),
+        '#size' => 15,
+        '#maxlength' => 15,
+        '#description' => 'E.g., ' . date('Y-m-d'),
+        '#suffix' => '</div></div>',
+        '#attributes' => array('class' => array('datepicker')),
+        '#id' => 'edit-nycha-startdateto',
+        '#name' => 'nycha_startdateto',
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_startdateto', $first_time_load, ''),
+    );
+    $form['filter']['nycha_enddatefrom'] = array(
+        '#type' => 'textfield',
+        '#size' => 15,
+        '#maxlength' => 15,
+        '#description' => 'E.g., ' . date('Y-m-d'),
+        '#attributes' => array('class' => array('datepicker')),
+        '#prefix' => '<div class="datafield enddate datarange"><label>End Date:</label><div class="ranges">',
+        '#id' => 'edit-nycha-enddatefrom',
+        '#name' => 'nycha_enddatefrom',
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_enddatefrom', $first_time_load, ''),
+    );
+    $form['filter']['nycha_enddateto'] = array(
+        '#type' => 'textfield',
+        '#title' => t('to'),
+        '#size' => 15,
+        '#maxlength' => 15,
+        '#description' => 'E.g., ' . date('Y-m-d'),
+        '#suffix' => '</div></div>',
+        '#attributes' => array('class' => array('datepicker')),
+        '#id' => 'edit-nycha-enddateto',
+        '#name' => 'nycha_enddateto',
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_enddateto', $first_time_load, ''),
+    );
+    $form['filter']['nycha_appr_datefrom'] = array(
+        '#type' => 'textfield',
+        '#size' => 15,
+        '#maxlength' => 15,
+        '#description' => 'E.g., ' . date('Y-m-d'),
+        '#attributes' => array('class' => array('datepicker')),
+        '#prefix' => '<div class="datafield appr-date datarange"><label>Approved Date:</label><div class="ranges">',
+        '#id' => 'edit-nycha-appr-datefrom',
+        '#name' => 'nycha_appr_datefrom',
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_appr_datefrom', $first_time_load, ''),
+    );
+    $form['filter']['nycha_appr_dateto'] = array(
+        '#type' => 'textfield',
+        '#title' => t('to'),
+        '#size' => 15,
+        '#maxlength' => 15,
+        '#description' => 'E.g., ' . date('Y-m-d'),
+        '#suffix' => '</div></div>',
+        '#attributes' => array('class' => array('datepicker')),
+        '#id' => 'edit-nycha-appr-dateto',
+        '#name' => 'nycha_apr_dateto',
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_appr_dateto', $first_time_load, ''),
+    );
+    $form['filter']['nycha_year'] = array(
+        '#type' => 'select',
+        '#title' => t('Year:'),
+        '#options' => _year_options('all-years'),
+        '#attributes' => array('class' => array('watch')),
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_year', $first_time_load, 'ALL'),
+        '#prefix' => '<div class="datafield nycha-year last-item">',
+        '#suffix' => '</div></div></div>',
+        '#id' => 'edit-nycha-year',
+        '#name' => 'nycha_year',
+    );
     return $form;
 }
 
