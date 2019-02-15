@@ -17,6 +17,8 @@ interface IPayrollDataService {
 
     /* Titles Method(s) */
     function GetTitlesByNumberOfEmployees($parameters, $limit = null, $orderBy = null);
+    function GetTitlesByNonSalariedEmployees($parameters, $limit = null, $orderBy = null);
+
 
     /* Count Methods */
     function GetCountAgencies($parameters);

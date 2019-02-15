@@ -57,7 +57,13 @@
                     "widget_config": "titles_by_agency_view",
                     "legacy_node_id": 882,
                     "visibility_parameters": ["-title"]
+                },
+                "titles_by_nonsalaried": {
+                    "widget_config": "titles_by_nonsalaried_view",
+                    "legacy_node_id": 882,
+                    "visibility_parameters": ["-title"]
                 }
+
             }
         },
         "title_landing":{
