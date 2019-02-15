@@ -5596,6 +5596,18 @@ function _agency_options($data_source = null, $json_output = false) {
                     'agency_name',
                 ), array("is_display" => "Y"), 'agency_name');
                 break;
+            case 'checkbook_oge_nycha':
+                $oge_data = $dataController->queryDataset("checkbook_oge:agency", array(
+                    'agency_code',
+                    'agency_name',
+                ), array("is_display" => "Y","is_oge_agency" => "Y"), 'agency_name');
+
+                $nycha_data = $dataController->queryDataset("checkbook_nycha:agency", array(
+                    'agency_code',
+                    'agency_name',
+                ), array("is_display" => "Y"), 'agency_name');
+                $data = array_merge($oge_data, $nycha_data);
+                break;
             default:
                 $data = $dataController->queryDataset("checkbook:agency", array(
                     'agency_code',
@@ -5620,17 +5632,12 @@ function _agency_options($data_source = null, $json_output = false) {
 function _checkbook_datafeeds_agency_options($data,$data_source = null, $json_output = false) {
 
     //IE8 - handle drop down width issue
-    if($data_source == 'checkbook_oge' || $data_source == 'checkbook_nycha'){
-        $menu_options = array('Select One' => 'Select One');
-        $json_menu_options[] = array('label'=> 'Select One','value' => 'Select One', 'code' => '');
-    }else{
+    if($data_source == 'checkbook'){
         $menu_options = array('Citywide (All Agencies)' => 'Citywide (All Agencies)');
         $json_menu_options[] = array('label'=> 'Citywide (All Agencies)','value' => 'Citywide (All Agencies)', 'code' => '');
+        $title = 'Citywide (All Agencies)';
     }
 
-    $title = ($data_source == 'checkbook_oge' || $data_source == 'checkbook_nycha')
-        ? 'Select One'
-        : 'Citywide (All Agencies)';
     $menu_options_attributes = array($title => array('title' => $title));
 
     foreach ($data as $row) {
