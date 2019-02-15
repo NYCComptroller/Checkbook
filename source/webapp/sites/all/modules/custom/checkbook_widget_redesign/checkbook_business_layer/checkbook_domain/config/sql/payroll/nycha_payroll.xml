@@ -218,4 +218,34 @@
             GROUP BY agg.agency_id, ref_agency.agency_name
         </sql>
     </statement>
+    <statement name="GetTitlesByNonSalariedEmployees" datasource="checkbook_nycha">
+        <param name="year" required ="true" type="int" />
+        <param name="yeartype" required ="true" type="string"/>
+        <param name="agency" type="int" />
+        <param name="title" type="int" />
+        <sql>
+            SELECT employee_count,
+            agency_id,
+            civil_service_title,
+            civil_service_title_code,
+            total_annual_salary,
+            total_gross_pay,
+            total_base_salary,
+            total_other_payments,
+            total_overtime_amount,
+            type_of_year,
+            fiscal_year_id,
+            type_of_employment
+            FROM aggregateon_payroll_employee_agency_title
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="civil_service_title_code" paramName="title" />
+                    <exp op="=" dbField="agency_id" paramName="agency"/>
+                    <exp op="=" dbField="type_of_employment">'Non-Salaried'</exp>
+                </exp>
+            </where>
+        </sql>
+    </statement>
 </statements>
