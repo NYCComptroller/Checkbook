@@ -41,6 +41,11 @@ class PayrollDataService extends DataService implements IPayrollDataService {
             return $this->configureCitywide(__FUNCTION__, $parameters, $limit, $orderBy);
         }
     }
+    function GetTitlesByNonSalariedEmployees($parameters, $limit = null, $orderBy = null) {
+        if(Datasource::isNYCHA()){
+            return $this->configureNYCHA(__FUNCTION__, $parameters, $limit, $orderBy);
+        }
+    }
 
     function GetCountAgencies($parameters) {
         if(Datasource::isNYCHA()){
