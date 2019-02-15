@@ -221,7 +221,8 @@
 
         var agency_hidden = $('input:hidden[name="agency_hidden"]').val();
         $.ajax({
-            url: '/datafeeds/spending/agency/' + dataSource + '/1'
+            //Need NYCHA and OGE agencies for Contracts Other Government Entities options
+            url: '/datafeeds/spending/agency/checkbook_oge_nycha/1'
             ,success: function(data) {
                 var html = '';
                 if (data[0]) {
