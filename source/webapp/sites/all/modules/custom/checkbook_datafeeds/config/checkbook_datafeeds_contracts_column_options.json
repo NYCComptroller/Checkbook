@@ -310,6 +310,70 @@
                     }
                 }
             }
+        },
+        "checkbook_nycha":{
+        "status":{
+          "default":{
+            "category":{
+              "default":{
+                "data_type":{
+                  "csv":{
+                    "Contract ID":"Contract ID",
+                    "Purchase Order Type":"Purchase Order Type",
+                    "Release Number":"Release Number",
+                    "Shipment Number":"Shipment Number",
+                    "Start Date":"Start Date",
+                    "End Date":"End Date",
+                    "Approved Date":"Approved Date",
+                    "Current Amount":"Current Amount",
+                    "Original amount":"Original amount",
+                    "Spent to Date":"Spent to Date",
+                    "Purpose":"Purpose",
+                    "Vendor":"Vendor",
+                    "Location":"Location",
+                    "Borough":"Borough",
+                    "Contract Type":"Contract Type",
+                    "Award Method":"Award Method",
+                    "Grant Name":"Grant Name",
+                    "Expenditure Type":"Expenditure Type",
+                    "Industry":"Industry",
+                    "Funding Source":"Funding Source",
+                    "Responsibility Center":"Responsibility Center",
+                    "Program":"Program",
+                    "Project":"Project",
+                    "Commodity Category":"Commodity Category"
+                  },
+                  "xml":{
+                    "Contract ID":"contract_ID",
+                    "Purchase Order Type":"purchase_order_type",
+                    "Release Number":"release_number",
+                    "Shipment Number":"shipment_number",
+                    "Start Date":"start_date",
+                    "End Date":"end_date",
+                    "Approved Date":"approved_date",
+                    "Current Amount":"current_amount",
+                    "Original amount":"original_amount",
+                    "Spent to Date":"spent_to_date",
+                    "Purpose":"purpose",
+                    "Vendor":"vendor",
+                    "Location":"location",
+                    "Borough":"borough",
+                    "Contract Type":"contract_type",
+                    "Award Method":"award_method",
+                    "Grant Name":"grant_name",
+                    "Expenditure Type":"expenditure_type",
+                    "Industry":"industry",
+                    "Funding Source":"funding_source",
+                    "Responsibility Center":"responsibility_center",
+                    "Program":"program",
+                    "Project":"project",
+                    "Commodity Category":"commodity_category"
+                  }
+                }
+              }
+            }
+          }
         }
+      }
     }
 }
