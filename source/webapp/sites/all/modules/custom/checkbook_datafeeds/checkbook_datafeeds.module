@@ -1909,6 +1909,11 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
 //NYCHA Form
 function checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $first_time_load){
     $agency_options = _agency_options('checkbook_oge_nycha');
+    $resp_center_options = _checkbook_advanced_search_get_responsibility_centers('checkbook_nycha', true);
+    $contract_types = _checkbook_advanced_search_get_nycha_contract_types('checkbook_nycha', true);
+    $award_methods = checkbook_advanced_search_get_nycha_award_methods('checkbook_nycha', true);
+    $industries = checkbook_advanced_search_get_nycha_industries('checkbook_nycha', true);
+
     $form['filter']['purchase_order_type'] = array(
         '#type' => 'select',
         '#title' => t('Purchase Order<br/>Type:'),
@@ -1944,7 +1949,8 @@ function checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $fi
     $form['filter']['resp_center'] = array(
         '#type' => 'select',
         '#title' => t('Responsibility<br/>Center:'),
-        '#options' => array(),
+        '#options' => $resp_center_options['options'],
+        '#option_attributes' => $resp_center_options['option_attributes'],
         '#attributes' => array('class' => array('watch')),
         '#prefix' => '<div class="datafield resp-center">',
         '#suffix' => '</div>',
@@ -1955,7 +1961,8 @@ function checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $fi
     $form['filter']['nycha_contract_type'] = array(
         '#type' => 'select',
         '#title' => t('Contract Type:'),
-        '#options' => array(),
+        '#options' => $contract_types['options'],
+        '#option_attributes' => $contract_types['option_attributes'],
         '#attributes' => array('class' => array('watch')),
         '#prefix' => '<div class="datafield nycha-contract-type">',
         '#suffix' => '</div>',
@@ -1966,7 +1973,8 @@ function checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $fi
     $form['filter']['nycha_awd_method'] = array(
         '#type' => 'select',
         '#title' => t('Award Method:'),
-        '#options' => array(),
+        '#options' => $award_methods['options'],
+        '#option_attributes' => $award_methods['option_attributes'],
         '#attributes' => array('class' => array('watch')),
         '#prefix' => '<div class="datafield nycha-awd-method">',
         '#suffix' => '</div>',
@@ -1977,7 +1985,8 @@ function checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $fi
     $form['filter']['nycha_industry'] = array(
         '#type' => 'select',
         '#title' => t('Industry:'),
-        '#options' => _industry_options(),
+        '#options' => $industries['options'],
+        '#option_attributes' => $industries['option_attributes'],
         '#prefix' => '<div class="datafield nycha-industry">',
         '#suffix' => '</div>',
         '#attributes' => array('class' => array('watch')),
@@ -2864,6 +2873,8 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
     $data_source = $form_state['input']['datafeeds-contracts-domain-filter'];
     $agency = $form_state['values']['agency'];
     $agency_code = emptyToZero($agency);
+    $nycha_agency = $form_state['values']['nycha_agency'];
+    $nycha_agency_code = emptyToZero($nycha_agency);
     $startfrom = $form_state['values']['startdatefrom'];
     $startto = $form_state['values']['startdateto'];
     $enddatefrom = $form_state['values']['enddatefrom'];
