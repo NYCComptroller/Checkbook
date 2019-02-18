@@ -1,5 +1,19 @@
 (function ($) {
 
+    /** On agency change for OGE and NYCHA **/
+    $.fn.onAgencyChange = function(agency){
+        if(agency.toUpperCase() == 'NEW YORK CITY ECONOMIC DEVELOPMENT CORPORATION [z81]'){
+          $('input:hidden[name="data_source"]').val('checkbook_oge');
+          $.fn.onDataSourceChange('checkbook_oge');
+        }else if(agency.toUpperCase() == 'NEW YORK CITY HOUSING AUTHORITY [996]'){
+          $('input:hidden[name="data_source"]').val('checkbook_nycha');
+          $.fn.onDataSourceChange('checkbook_nycha');
+        }else{
+          $('input:hidden[name="data_source"]').val('');
+        }
+        var agency_hidden = $('input:hidden[name="agency_hidden"]').val(agency);
+    }
+
     /**
      * Function will show or hide fields based on datasource selection
      * @param data_source
@@ -242,11 +256,17 @@
         //Change the Agency drop-down label
         var agencyLabel = (dataSource == 'checkbook_oge') ? "Other Government<br/>Entity:" : "Agency:";
         $("label[for = edit-agency]").html(agencyLabel);
+        //For OGE and NYCHA, populate agency drop-down options
+        if(dataSource == 'checkbook_oge' || dataSource == 'checkbook_nycha'){
+          dataSource = 'checkbook_oge_nycha';
+        }else{
+          dataSource = 'checkbook'
+        }
 
         var agency_hidden = $('input:hidden[name="agency_hidden"]').val();
         $.ajax({
             //Need NYCHA and OGE agencies for Contracts Other Government Entities options
-            url: '/datafeeds/spending/agency/checkbook_oge_nycha/1'
+            url: '/datafeeds/spending/agency/'+ dataSource +'/1'
             ,success: function(data) {
                 var html = '';
                 if (data[0]) {
@@ -491,9 +511,7 @@
 
             //Agnecy Drop-down
             $('#edit-agency', context).change(function () {
-                $('input:hidden[name="data_source"]', context).val('checkbook_nycha');
-                var agency_hidden = $('input:hidden[name="agency_hidden"]', context).val($('#edit-agency', context).val());
-                $.fn.onDataSourceChange('checkbook_nycha');
+                $.fn.onAgencyChange($(this, context).val());
             });
 
             //Set up jQuery datepickers
