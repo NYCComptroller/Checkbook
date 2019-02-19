@@ -635,13 +635,12 @@ function _checkbook_advanced_search_get_responsibility_centers($data_source = 'c
 
         foreach ($results as $value) {
             if($feeds){
-                $keys = $value['responsibility_center_code'];
                 $text = $value['description'].' ['.$value['responsibility_center_code'].']';
-                $res_center_key_val_option_attributes[$keys] = array('title' => $text);
+                $res_center_key_val_option_attributes[$text] = array('title' => $text);
                 if (strlen($text) > 20)
-                    $res_center_key_val_options[$keys] = substr($text, 0, 20) . '...';
+                    $res_center_key_val_options[$text] = substr($text, 0, 20) . '...';
                 else
-                    $res_center_key_val_options[$keys] = $text;
+                    $res_center_key_val_options[$text] = $text;
             } else {
                 $keys = 'id=>' . $value['responsibility_center_id'] . '~code=>' . $value['responsibility_center_code'];
                 $res_center_key_val_option_attributes[$keys] = array('title' => $value['description']);
@@ -674,13 +673,12 @@ function _checkbook_advanced_search_get_nycha_contract_types($data_source = 'che
         
         foreach ($results as $value) {
             if($feeds){
-                $keys = $value['contract_type_code'];
                 $text = $value['meaning'].' ['.$value['contract_type_code'].']';
-                $contract_type_key_val_option_attributes[$keys] = array('title' => $text);
+                $contract_type_key_val_option_attributes[$text] = array('title' => $text);
                 if (strlen($text) > 20)
-                    $contract_type_key_val_options[$keys] = substr($text, 0, 20) . '...';
+                    $contract_type_key_val_options[$text] = substr($text, 0, 20) . '...';
                 else
-                    $contract_type_key_val_options[$keys] = $text;
+                    $contract_type_key_val_options[$text] = $text;
             }else {
                 $keys = 'id=>' . $value['contract_type_id'] . '~code=>' . $value['contract_type_code'];
                 $contract_type_key_val_option_attributes[$keys] = array('title' => $value['meaning']);
@@ -712,13 +710,12 @@ function checkbook_advanced_search_get_nycha_award_methods($data_source = 'check
 
         foreach ($results as $value) {
             if($feeds){
-                $keys = $value['award_method_code'];
                 $text = $value['award_method_name'].' ['.$value['award_method_code'].']';
-                $award_method_key_val_option_attributes[$keys] = array('title' => $text);
+                $award_method_key_val_option_attributes[$text] = array('title' => $text);
                 if (strlen($text) > 20)
-                    $award_method_key_val_options[$keys] = substr($text, 0, 20) . '...';
+                    $award_method_key_val_options[$text] = substr($text, 0, 20) . '...';
                 else
-                    $award_method_key_val_options[$keys] = $text;
+                    $award_method_key_val_options[$text] = $text;
             }else {
                 $keys = 'id=>' . $value['award_method_id'] . '~code=>' . $value['award_methode_code'];
                 $award_method_key_val_option_attributes[$keys] = array('title' => $value['award_method_name']);
@@ -751,13 +748,12 @@ function checkbook_advanced_search_get_nycha_industries($data_source = 'checkboo
 
         foreach ($results as $value) {
             if($feeds){
-                $keys = $value['industry_type_code'];
                 $text = $value['industry_type_name'].' ['.$value['industry_type_code'].']';
-                $industry_key_val_option_attributes[$keys] = array('title' => $text);
+                $industry_key_val_option_attributes[$text] = array('title' => $text);
                 if (strlen($text) > 20)
-                    $industry_key_val_options[$keys] = substr($text, 0, 20) . '...';
+                    $industry_key_val_options[$text] = substr($text, 0, 20) . '...';
                 else
-                    $industry_key_val_options[$keys] = $text;
+                    $industry_key_val_options[$text] = $text;
             }else {
                 $keys = 'id=>' . $value['industry_type_id'] . '~code=>' . $value['industry_type_code'];
                 $industry_key_val_option_attributes[$keys] = array('title' => $value['industry_type_name']);
