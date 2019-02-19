@@ -29,6 +29,12 @@ class PayrollDataService extends DataService implements IPayrollDataService {
     function GetAnnualSalaries($parameters, $limit = null, $orderBy = null) {
         return $this->configureCitywide(__FUNCTION__, $parameters, $limit, $orderBy);
     }
+    function GetNonSalariedRates($parameters, $limit = null, $orderBy = null)
+    {
+        if (Datasource::isNYCHA()) {
+            return $this->configureNYCHA(__FUNCTION__, $parameters, $limit, $orderBy);
+        }
+    }
 
     function GetTitlesByNumberOfEmployees($parameters, $limit = null, $orderBy = null) {
         return $this->configureCitywide(__FUNCTION__, $parameters, $limit, $orderBy);
@@ -63,6 +69,11 @@ class PayrollDataService extends DataService implements IPayrollDataService {
         }
     }
 
+    function GetCountNonSalariedEmployees($parameters) {
+        if(Datasource::isNYCHA()) {
+            return $this->configureNYCHA(__FUNCTION__, $parameters);
+        }
+    }
     /**
      * Common function that automatically configures the Citywide Payroll sql
      * @param $dataFunction
