@@ -63,7 +63,7 @@
                 },
                 "titles_by_nonsalaried": {
                     "widget_config": "titles_by_nonsalaried_view",
-                    "legacy_node_id": 882,
+                    "param_config": "nonsalaried",
                     "visibility_parameters": ["-title"]
                 }
             }
