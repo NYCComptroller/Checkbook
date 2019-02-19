@@ -34,8 +34,7 @@ $urlParameter = $node->widgetConfig->urlParameterName;
 if($disableFacet) { //only URL parameters count and can be disabled
     $query_string = $_GET['q'];
     $is_new_window = preg_match('/newwindow/i',$query_string);
-    $current_url = $_SERVER['REQUEST_URI'];
-    $url_ref = $is_new_window ? $_GET['q'] : $current_url;
+    $url_ref = $is_new_window ? $_GET['q'] : $_SERVER['HTTP_REFERER'];
     $disableFacet = preg_match('"/'.$urlParameter.'/"',$url_ref);
 }
 
