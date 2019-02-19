@@ -1,7 +1,6 @@
 {
   "serviceName": "PayrollWidgetService",
   "dataFunc": "GetTitlesByNonSalariedEmployees",
-  "countFunc": "GetCountSalariedEmployees",
   "headerTitle": "Titles by Number of Non-Salaried Employees ",
   "headerSubTitle": "Non-Salaried Employees",
   "footerUrl":"PayrollUrlService::getTitleFooterUrl(_widget_controller_footer_url($node), 'agency')",
