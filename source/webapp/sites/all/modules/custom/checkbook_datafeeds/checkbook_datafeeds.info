@@ -24,3 +24,4 @@ dependencies[] = checkbook_autocomplete
 dependencies[] = checkbook_api
 
 files[] = config/util/DatafeedsConfigUtil.php
+files[] = includes/checkbook_datafeeds_contracts.onc
