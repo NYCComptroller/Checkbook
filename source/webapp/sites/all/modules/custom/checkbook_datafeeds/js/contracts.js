@@ -2,7 +2,7 @@
 
     /** On agency change for OGE and NYCHA **/
     $.fn.onAgencyChange = function(agency){
-        if(agency.toUpperCase() == 'NEW YORK CITY ECONOMIC DEVELOPMENT CORPORATION [z81]'){
+        if(agency.toUpperCase() == 'NEW YORK CITY ECONOMIC DEVELOPMENT CORPORATION [Z81]'){
           $('input:hidden[name="data_source"]').val('checkbook_oge');
           $.fn.onDataSourceChange('checkbook_oge');
         }else if(agency.toUpperCase() == 'NEW YORK CITY HOUSING AUTHORITY [996]'){
@@ -49,6 +49,7 @@
             case 'checkbook_nycha':
                 $('.default-fields').hide();
                 $('.nycha-fields').show();
+                $('#edit-nycha-agency').val('NEW YORK CITY HOUSING AUTHORITY [996]');
                 break;
             default:
                 $('.default-fields').show();
@@ -82,31 +83,31 @@
      * @param ele
      */
     $.fn.showHidePrimeAndSubIcon = function (){
-            var note = jQuery(".prime-and-sub-note-datafeeds");
-            var contract_status = jQuery(".contractstatus");
-            var vendor = jQuery(".vendor");
-            var mwbe_category = jQuery(".mwbecategory");
-            var current_amt_from = jQuery(".currentamt");
-            var category = jQuery(".category");
-            var sub_vendor_status_in_pip = jQuery(".sub_vendor_status_in_pip_id");
-            var purpose = jQuery(".purpose");
-            var industry = jQuery(".industry");
-            var year = jQuery(".year");
+        var note = jQuery(".prime-and-sub-note-datafeeds");
+        var contract_status = jQuery(".contractstatus");
+        var vendor = jQuery(".vendor");
+        var mwbe_category = jQuery(".mwbecategory");
+        var current_amt_from = jQuery(".currentamt");
+        var category = jQuery(".category");
+        var sub_vendor_status_in_pip = jQuery(".sub_vendor_status_in_pip_id");
+        var purpose = jQuery(".purpose");
+        var industry = jQuery(".industry");
+        var year = jQuery(".year");
 
-            // Remove all asterisk fields & note
-            note.remove();
-            $.fn.removePrimeAndSubIcon(contract_status);
-            $.fn.removePrimeAndSubIcon(vendor);
-            $.fn.removePrimeAndSubIcon(mwbe_category);
-            $.fn.removePrimeAndSubIcon(current_amt_from);
-            $.fn.removePrimeAndSubIcon(category);
-            $.fn.removePrimeAndSubIcon(sub_vendor_status_in_pip);
-            $.fn.removePrimeAndSubIcon(purpose);
-            $.fn.removePrimeAndSubIcon(industry);
-            $.fn.removePrimeAndSubIcon(year);
+        // Remove all asterisk fields & note
+        note.remove();
+        $.fn.removePrimeAndSubIcon(contract_status);
+        $.fn.removePrimeAndSubIcon(vendor);
+        $.fn.removePrimeAndSubIcon(mwbe_category);
+        $.fn.removePrimeAndSubIcon(current_amt_from);
+        $.fn.removePrimeAndSubIcon(category);
+        $.fn.removePrimeAndSubIcon(sub_vendor_status_in_pip);
+        $.fn.removePrimeAndSubIcon(purpose);
+        $.fn.removePrimeAndSubIcon(industry);
+        $.fn.removePrimeAndSubIcon(year);
 
-            var contract_status_val = jQuery("select[name=df_contract_status]").val();
-            var category_val = jQuery("select[name=category]").val();
+        var contract_status_val = jQuery("select[name=df_contract_status]").val();
+        var category_val = jQuery("select[name=category]").val();
         if(jQuery("input[name='datafeeds-contracts-domain-filter']:checked").val() == 'checkbook'){
             // Add asterisk fields & note
             if((contract_status_val == 'active' || contract_status_val == 'registered')
@@ -160,84 +161,84 @@
         $.fn.showHideFields(dataSource);
 
         if(dataSource != 'checkbook_nycha') {
-          //Agency drop-down options
-          $.fn.reloadAgencies(dataSource);
+            //Agency drop-down options
+            $.fn.reloadAgencies(dataSource);
 
-          //Change the Agency drop-down label
-          var vendor_label = (dataSource == 'checkbook_oge') ? 'Prime Vendor:' : 'Vendor:';
-          $("label[for = edit-vendor]").text(vendor_label);
+            //Change the Agency drop-down label
+            var vendor_label = (dataSource == 'checkbook_oge') ? 'Prime Vendor:' : 'Vendor:';
+            $("label[for = edit-vendor]").text(vendor_label);
 
-          //Clear text fields and drop-downs
-          $.fn.clearInputFields(dataSource);
-          //Reset 'sub-vendor status in PIP' and 'contracts include sub-vendors' drop-downs
-          $.fn.subVendorStatusInPipChange(0, 0);
+            //Clear text fields and drop-downs
+            $.fn.clearInputFields(dataSource);
+            //Reset 'sub-vendor status in PIP' and 'contracts include sub-vendors' drop-downs
+            $.fn.subVendorStatusInPipChange(0, 0);
 
-          //reset the selected columns
-          $.fn.resetSelectedColumns();
+            //reset the selected columns
+            $.fn.resetSelectedColumns();
 
-          $('#edit-column-select-expense option[value="Year"]').attr('disabled', 'disabled');
-          $('#edit-column-select-expense').multiSelect('refresh');
-          if (!$('#ms-edit-column-select-expense .ms-selection').next().is("a")) {
-            $('#ms-edit-column-select-expense .ms-selection').after('<a class="deselect">Remove All</a>');
-            $('#ms-edit-column-select-expense .ms-selection').after('<a class="select">Add All</a>');
-          }
-          $('#ms-edit-column-select-expense a.select').click(function () {
-            $('#edit-column-select-expense').multiSelect('select_all');
-          });
-          $('#ms-edit-column-select-expense a.deselect').click(function () {
-            $('#edit-column-select-expense').multiSelect('deselect_all');
-          });
+            $('#edit-column-select-expense option[value="Year"]').attr('disabled', 'disabled');
+            $('#edit-column-select-expense').multiSelect('refresh');
+            if (!$('#ms-edit-column-select-expense .ms-selection').next().is("a")) {
+              $('#ms-edit-column-select-expense .ms-selection').after('<a class="deselect">Remove All</a>');
+              $('#ms-edit-column-select-expense .ms-selection').after('<a class="select">Add All</a>');
+            }
+            $('#ms-edit-column-select-expense a.select').click(function () {
+              $('#edit-column-select-expense').multiSelect('select_all');
+            });
+            $('#ms-edit-column-select-expense a.deselect').click(function () {
+              $('#edit-column-select-expense').multiSelect('deselect_all');
+            });
 
-          $('#edit-column-select-oge-expense option[value="Year"]').attr('disabled', 'disabled');
-          $('#edit-column-select-oge-expense').multiSelect('refresh');
-          if (!$('#ms-edit-column-select-oge-expense .ms-selection').next().is("a")) {
-            $('#ms-edit-column-select-oge-expense .ms-selection').after('<a class="deselect">Remove All</a>');
-            $('#ms-edit-column-select-oge-expense .ms-selection').after('<a class="select">Add All</a>');
-          }
-          $('#ms-edit-column-select-oge-expense a.select').click(function () {
-            $('#edit-column-select-oge-expense').multiSelect('select_all');
-          });
-          $('#ms-edit-column-select-oge-expense a.deselect').click(function () {
-            $('#edit-column-select-oge-expense').multiSelect('deselect_all');
-          });
+            $('#edit-column-select-oge-expense option[value="Year"]').attr('disabled', 'disabled');
+            $('#edit-column-select-oge-expense').multiSelect('refresh');
+            if (!$('#ms-edit-column-select-oge-expense .ms-selection').next().is("a")) {
+              $('#ms-edit-column-select-oge-expense .ms-selection').after('<a class="deselect">Remove All</a>');
+              $('#ms-edit-column-select-oge-expense .ms-selection').after('<a class="select">Add All</a>');
+            }
+            $('#ms-edit-column-select-oge-expense a.select').click(function () {
+              $('#edit-column-select-oge-expense').multiSelect('select_all');
+            });
+            $('#ms-edit-column-select-oge-expense a.deselect').click(function () {
+              $('#edit-column-select-oge-expense').multiSelect('deselect_all');
+            });
 
-          $('#edit-column-select-nycha').multiSelect('refresh');
-          if (!$('#ms-edit-column-select-nycha .ms-selection').next().is("a")) {
-            $('#ms-edit-column-select-nycha .ms-selection').after('<a class="deselect">Remove All</a>');
-            $('#ms-edit-column-select-nycha .ms-selection').after('<a class="select">Add All</a>');
-          }
-          $('#ms-edit-column-select-nycha a.select').click(function () {
-            $('#edit-column-select-nycha').multiSelect('select_all');
-          });
-          $('#ms-edit-column-select-nycha a.deselect').click(function () {
-            $('#edit-column-select-nycha').multiSelect('deselect_all');
-          });
+            $('#edit-column-select-revenue option[value="Year"]').attr('disabled', 'disabled');
+            $('#edit-column-select-revenue').multiSelect('refresh');
+            if (!$('#ms-edit-column-select-revenue .ms-selection').next().is("a")) {
+              $('#ms-edit-column-select-revenue .ms-selection').after('<a class="deselect">Remove All</a>');
+              $('#ms-edit-column-select-revenue .ms-selection').after('<a class="select">Add All</a>');
+            }
+            $('#ms-edit-column-select-revenue a.select').click(function () {
+              $('#edit-column-select-revenue').multiSelect('select_all');
+            });
+            $('#ms-edit-column-select-revenue a.deselect').click(function () {
+              $('#edit-column-select-revenue').multiSelect('deselect_all');
+            });
 
-          $('#edit-column-select-revenue option[value="Year"]').attr('disabled', 'disabled');
-          $('#edit-column-select-revenue').multiSelect('refresh');
-          if (!$('#ms-edit-column-select-revenue .ms-selection').next().is("a")) {
-            $('#ms-edit-column-select-revenue .ms-selection').after('<a class="deselect">Remove All</a>');
-            $('#ms-edit-column-select-revenue .ms-selection').after('<a class="select">Add All</a>');
-          }
-          $('#ms-edit-column-select-revenue a.select').click(function () {
-            $('#edit-column-select-revenue').multiSelect('select_all');
-          });
-          $('#ms-edit-column-select-revenue a.deselect').click(function () {
-            $('#edit-column-select-revenue').multiSelect('deselect_all');
-          });
-
-          $('#edit-column-select-all option[value="Year"]').attr('disabled', 'disabled');
-          $('#edit-column-select-all').multiSelect('refresh');
-          if (!$('#ms-edit-column-select-all .ms-selection').next().is("a")) {
-            $('#ms-edit-column-select-all .ms-selection').after('<a class="deselect">Remove All</a>');
-            $('#ms-edit-column-select-all .ms-selection').after('<a class="select">Add All</a>');
-          }
-          $('#ms-edit-column-select-all a.select').click(function () {
-            $('#edit-column-select-all').multiSelect('select_all');
-          });
-          $('#ms-edit-column-select-all a.deselect').click(function () {
-            $('#edit-column-select-all').multiSelect('deselect_all');
-          });
+            $('#edit-column-select-all option[value="Year"]').attr('disabled', 'disabled');
+            $('#edit-column-select-all').multiSelect('refresh');
+            if (!$('#ms-edit-column-select-all .ms-selection').next().is("a")) {
+              $('#ms-edit-column-select-all .ms-selection').after('<a class="deselect">Remove All</a>');
+              $('#ms-edit-column-select-all .ms-selection').after('<a class="select">Add All</a>');
+            }
+            $('#ms-edit-column-select-all a.select').click(function () {
+              $('#edit-column-select-all').multiSelect('select_all');
+            });
+            $('#ms-edit-column-select-all a.deselect').click(function () {
+              $('#edit-column-select-all').multiSelect('deselect_all');
+            });
+        }else{
+            $('#edit-column-select-nycha').multiSelect('refresh');
+            if (!$('#ms-edit-column-select-nycha .ms-selection').next().is("a")) {
+              $('#ms-edit-column-select-nycha .ms-selection').after('<a class="deselect">Remove All</a>');
+              $('#ms-edit-column-select-nycha .ms-selection').after('<a class="select">Add All</a>');
+            }
+            $('#ms-edit-column-select-nycha a.select').click(function () {
+              $('#edit-column-select-nycha').multiSelect('select_all');
+            });
+            $('#ms-edit-column-select-nycha a.deselect').click(function () {
+              $('#edit-column-select-nycha').multiSelect('deselect_all');
+            });
         }
 
         var csval = $('select[name="df_contract_status"]').val();
@@ -256,14 +257,18 @@
         //Change the Agency drop-down label
         var agencyLabel = (dataSource == 'checkbook_oge') ? "Other Government<br/>Entity:" : "Agency:";
         $("label[for = edit-agency]").html(agencyLabel);
+        var agency_hidden = $('input:hidden[name="agency_hidden"]').val();
         //For OGE and NYCHA, populate agency drop-down options
-        if(dataSource == 'checkbook_oge' || dataSource == 'checkbook_nycha'){
+        if(dataSource == 'checkbook_oge'){
+          agency_hidden = 'NEW YORK CITY ECONOMIC DEVELOPMENT CORPORATION [z81]';
+          dataSource = 'checkbook_oge_nycha';
+        }else if(dataSource == 'checkbook_nycha') {
+          agency_hidden = 'NEW YORK CITY HOUSING AUTHORITY [996]';
           dataSource = 'checkbook_oge_nycha';
         }else{
           dataSource = 'checkbook'
         }
 
-        var agency_hidden = $('input:hidden[name="agency_hidden"]').val();
         $.ajax({
             //Need NYCHA and OGE agencies for Contracts Other Government Entities options
             url: '/datafeeds/spending/agency/'+ dataSource +'/1'
@@ -511,7 +516,12 @@
 
             //Agnecy Drop-down
             $('#edit-agency', context).change(function () {
-                $.fn.onAgencyChange($(this, context).val());
+                $.fn.onAgencyChange($(this).val());
+            });
+
+            //Agnecy Drop-down
+            $('#edit-nycha-agency', context).change(function () {
+              $.fn.onAgencyChange($(this).val());
             });
 
             //Set up jQuery datepickers
