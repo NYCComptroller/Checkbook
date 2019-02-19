@@ -21,8 +21,16 @@
 
 class SpendingUtil{
 
+    /**
+     * @var array
+     */
     static $landingPageParams = array("category"=>"category","industry"=>"industry","mwbe"=>"mwbe","dashboard"=>"dashboard","agency"=>"agency","vendor"=>"vendor","subvendor"=>"subvendor");
 
+    /**
+     * @param $categoryId
+     * @param array $columns
+     * @return array|null
+     */
     static function getSpendingCategoryDetails($categoryId, $columns=array('spending_category_id','display_name')){
         if(!isset($categoryId)){
             return NULL;
@@ -32,6 +40,9 @@ class SpendingUtil{
         return $categoryDetails;
     }
 
+    /**
+     * @return string
+     */
     static  public function getSpendingTransactionsTitle(){
         $title = '';
         if(preg_match('/category\/1/',current_path())){
@@ -56,7 +67,10 @@ class SpendingUtil{
       return $title ;
     }
 
-     public static function getDepartmentIds(){
+    /**
+     * @return array
+     */
+    public static function getDepartmentIds(){
         $bottomURL = $_REQUEST['expandBottomContURL'];
         $deptId = NULL;$deptIds = array();
 
@@ -88,7 +102,10 @@ class SpendingUtil{
 
     }
 
-     public static function getExpenseCatIds(){
+    /**
+     * @return array
+     */
+    public static function getExpenseCatIds(){
         $bottomURL = $_REQUEST['expandBottomContURL'];
         $expCatId = NULL;$expCatIds = array();
 
@@ -233,6 +250,7 @@ class SpendingUtil{
         $year_type = isset($calyear) ? "C" : "B";
         $year_id = isset($calyear) ? $calyear : (isset($year) ? $year : _getCurrentYearID());
         $vendor_id = $row["vendor_id"];
+        $agency_id = $row["agency"];
         $dashboard = RequestUtilities::get("dashboard");
 
         return $row["is_sub_vendor"] == "No"
@@ -451,6 +469,12 @@ class SpendingUtil{
         }
     }
 
+    /**
+     * @param $vendor_id
+     * @param null $year_id
+     * @param null $year_type
+     * @return bool
+     */
     public static function getLatestMwbeCategoryByVendorByTransactionYear($vendor_id, $year_id = null, $year_type = null){
 
         if($year_id == null){
@@ -480,7 +504,13 @@ class SpendingUtil{
     }
 
 
-     public static function getLatestMwbeCategoryBySpendingVendorByTransactionYear($vendor_id, $year_id = null, $year_type = null){
+    /**
+     * @param $vendor_id
+     * @param null $year_id
+     * @param null $year_type
+     * @return bool
+     */
+    public static function getLatestMwbeCategoryBySpendingVendorByTransactionYear($vendor_id, $year_id = null, $year_type = null){
 
         if($year_id == null){
             $year_id =  RequestUtilities::get('year');
@@ -1086,6 +1116,13 @@ class SpendingUtil{
     }
 
 
+    /**
+     * @param $year
+     * @param $yeartype
+     * @param string $non_mwbe_spending_prime
+     * @param string $mwbe_spending_prime
+     * @return string
+     */
     public static function getMWBENYCLegend($year, $yeartype, $non_mwbe_spending_prime = '', $mwbe_spending_prime = '')
     {
 
@@ -1178,7 +1215,11 @@ class SpendingUtil{
 
     }
 
-  public static function getTransactionPageTitle($widgetTitle){
+    /**
+     * @param string $widgetTitle
+     * @return string
+     */
+    public static function getTransactionPageTitle($widgetTitle=''){
         $catName = self::getTransactionPageCategoryName();
         $dashboard_title = RequestUtil::getDashboardTitle();
         $dashboard = RequestUtilities::get('dashboard');
@@ -1207,7 +1248,12 @@ class SpendingUtil{
         return $dashboard_title . " " . $widgetTitle . " " . $catName . " Transactions";
     }
 
-    /** Returns Spending Category based on 'category' value from current path */
+    /**
+     * Returns Spending Category based on 'category' value from current path
+     *
+     * @param string $defaultName
+     * @return string
+     */
     public static function getTransactionPageCategoryName($defaultName = 'Total Spending'){
         $categoryId = RequestUtilities::get('category');
         $dtsmnid = RequestUtilities::get('dtsmnid');
@@ -1224,7 +1270,11 @@ class SpendingUtil{
         return $category_name;
     }
 
-  public static function getSpentToDateTitle($widgetTitle){
+    /**
+     * @param $widgetTitle
+     * @return string
+     */
+    public static function getSpentToDateTitle($widgetTitle){
         $dashboard = RequestUtil::getDashboardTitle();
         $contractTitle = self::getContractTitle();
 
@@ -1282,7 +1332,10 @@ class SpendingUtil{
         return ($dashboard . " " . $widgetTitle . " " . $contractTitle . " Contracts Transactions");
     }
 
-     public static function getContractTitle(){
+    /**
+     * @return string
+     */
+    public static function getContractTitle(){
         if(RequestUtilities::get('contstatus')){
             $contract_status = RequestUtilities::get('contstatus');
         }
@@ -1314,6 +1367,9 @@ class SpendingUtil{
         return $title;
     }
 
+    /**
+     * @return bool
+     */
     public static function _show_mwbe_custom_legend(){
     	$mwbe_cats = RequestUtilities::get('mwbe');
     	if(	($mwbe_cats =='4~5' || $mwbe_cats =='4' || $mwbe_cats =='5' || $mwbe_cats =='2' || $mwbe_cats =='3' || $mwbe_cats =='9' ) && !(RequestUtilities::get('vendor') > 0 ) ){
@@ -1327,6 +1383,9 @@ class SpendingUtil{
     }
 
 
+    /**
+     * @return bool
+     */
     function _mwbe_spending_use_subvendor(){
     	if(RequestUtilities::get('vendor') > 0 || RequestUtilities::get('mwbe') == '7' || RequestUtilities::get('mwbe') == '11')
     	{
