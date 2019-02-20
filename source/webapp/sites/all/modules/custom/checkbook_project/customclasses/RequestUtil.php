@@ -1379,12 +1379,12 @@ class RequestUtil
 
         }
         else {
-            if (preg_match('/agency/', current_path())) {
+            if (preg_match('/agency/', current_path()) && !preg_match('/vendor/', current_path()) ) {
                 $value = RequestUtilities::get('agency');
                 $title = _checkbook_project_get_name_for_argument("agency_id", $value).' Contracts';
             }
             else if (preg_match('/vendor/', current_path())) {
-                $value = RequestUtilities::get('vendor');
+                $value =RequestUtilities::get('vendor');
                 $title = _checkbook_project_get_name_for_argument("vendor_id", $value).' Contracts';
             }
         }

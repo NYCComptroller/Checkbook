@@ -1,0 +1,68 @@
+{
+  "serviceName": "PayrollWidgetService",
+  "dataFunc": "GetTitlesByNonSalariedEmployees",
+  "countFunc":"GetCountNonSalariedEmployees",
+  "headerTitle": "Titles by Number of Non-Salaried Employees ",
+  "headerSubTitle": "Non-Salaried Employees",
+  "footerUrl":"PayrollUrlService::getTitleFooterUrl(_widget_controller_footer_url($node), 'agency')",
+  "table_columns": [
+    {
+      "labelAlias": "title",
+      "column": "civil_service_title",
+      "derivedColumn": "title_agency_link",
+      "tooltip": 35
+    },
+    {
+      "labelAlias": "no_of_employees",
+      "column": "employee_count",
+      "format": "number"
+    },
+    {
+      "labelAlias": "combined_gross_pay_ytd",
+      "column": "total_gross_pay",
+      "format": "dollar"
+    },
+    {
+      "labelAlias": "combined_base_pay_ytd",
+      "column": "total_base_salary",
+      "format": "dollar"
+    },
+    {
+      "labelAlias": "combined_other_pay_ytd",
+      "column": "total_other_payments",
+      "format": "dollar"
+    },
+    {
+      "labelAlias": "combined_overtime_pay_ytd",
+      "column": "total_overtime_amount",
+      "format": "dollar"
+    },
+    {
+      "labelAlias": "",
+      "column": ""
+    }
+  ],
+  "dataTableOptions": {
+    "aoColumns": [
+      {"bSortable":false,"sClass":"text","sWidth":"100px","asSorting": [ "asc","desc"  ]},
+      {"bSortable":true,"sClass":"number","sWidth":"85px","asSorting": [ "desc","asc"  ]},
+      {"bSortable":true,"sClass":"number","sWidth":"100px","asSorting": [ "desc","asc"  ]},
+      {"bSortable":true,"sClass":"number","sWidth":"100px","asSorting": [ "desc","asc"  ]},
+      {"bSortable":true,"sClass":"number","sWidth":"110px","asSorting": [ "desc","asc"  ]},
+      {"bSortable":true,"sClass":"number","sWidth":"115px","asSorting": [ "desc","asc"  ]},
+      { "bSortable": false,"sWidth":"15px" }
+    ],
+    "aaSorting": [[1, "desc"]],
+    "bServerSide": true,
+    "bFilter": false,
+    "bPaginate": false,
+    "bProcessing": true,
+    "bLengthChange": false,
+    "bInfo": false,
+    "bAutoWidth": false,
+    "fnServerParams": "##function ( aoData ) { reloadExpandCollapseWidget(this,aoData); }##",
+    "oLanguage": {
+      "sProcessing": "<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"
+    }
+  }
+}
