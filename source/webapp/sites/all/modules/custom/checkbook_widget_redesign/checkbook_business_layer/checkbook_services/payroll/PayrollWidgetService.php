@@ -76,11 +76,7 @@ class PayrollWidgetService extends WidgetDataService implements IWidgetService {
     }
 
     public function getWidgetFooterUrl($parameters) {
-        $param = $this->getParamName();
-        if(isset($param)){
-          return  PayrollUrlService::getFooterUrl($parameters,$param);
-        }
-        return PayrollUrlService::getFooterUrl($parameters,$this->getLegacyNodeId());
+        return PayrollUrlService::getFooterUrl($parameters,$this->getLegacyNodeId(),$this->getParamName());
     }
 
 }
