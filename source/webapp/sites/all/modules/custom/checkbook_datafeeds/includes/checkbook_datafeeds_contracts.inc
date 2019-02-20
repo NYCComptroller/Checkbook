@@ -62,7 +62,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
     $agency_code = emptyToZero($agency);
     $data_source = !isset($form_state['input']['data_source']) ? 'checkbook' : $form_state['input']['data_source'];
     //Set type/source of data by data_source
-    if($agency_code == 996 && $data_source == Datasource::NYCHA){
+    if($agency_code == 996){
         $user_criteria['Type of Data'] = 'Contracts_NYCHA';
         $data_source = Datasource::NYCHA;
         $year = $values['nycha_year'];
