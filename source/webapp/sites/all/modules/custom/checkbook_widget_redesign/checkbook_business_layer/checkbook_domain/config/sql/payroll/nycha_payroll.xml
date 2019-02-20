@@ -31,6 +31,51 @@
             GROUP BY agency_id, employee_id, fiscal_year_id, type_of_year, civil_service_title, civil_service_title_code, employee_number
         </sql>
     </statement>
+    <statement name="GetNonSalariedRates" datasource="checkbook_nycha">
+        <param name="year" required ="true" type="int" />
+        <param name="yeartype" required ="true" type="string"/>
+        <param name="agency" type="int" />
+        <param name="title" type="int" />
+        <sql>
+            SELECT agg.employee_id as employee_id,
+            ref.agency_name AS agency_name,
+            agg.agency_id AS agency_id,
+            ref.agency_short_name,
+            agg.employee_number,
+            agg.civil_service_title AS civil_service_title,
+            agg.civil_service_title_code AS civil_service_title_code,
+            MAX(agg.annual_salary) AS non_salaried_rate,
+            SUM(agg.gross_pay) AS total_gross_pay,
+            SUM(agg.base_pay) AS total_base_salary,
+            SUM(agg.other_payments) AS total_other_payments,
+            SUM(agg.overtime_pay) AS total_overtime_amount,
+            agg.type_of_year AS type_of_year,
+            agg.fiscal_year_id AS fiscal_year_id,
+            agg.type_of_employment
+            FROM aggregateon_payroll_latest_employee_agency agg
+            JOIN ref_agency ref
+            ON ref.agency_id = agg.agency_id
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="type_of_year" paramName= "yeartype" />
+                    <exp op="=" dbField="agg.agency_id" paramName= "agency" />
+                    <exp op="=" dbField="agg.civil_service_title_code" paramName="title" />
+                </exp>
+            </where>
+            AND agg.type_of_employment='Non-Salaried' and agg.agency_id = 162
+            GROUP BY agg.agency_id,
+            agg.employee_id,
+            agg.type_of_employment,
+            agg.fiscal_year_id,
+            agg.type_of_year,
+            agg.civil_service_title,
+            agg.civil_service_title_code,
+            agg.employee_number,
+            ref.agency_name,
+            ref.agency_short_name
+        </sql>
+    </statement>
     <statement name="GetTitlesByAgency" datasource="checkbook_nycha">
         <param name="year" required ="true" type="int" />
         <param name="yeartype" required ="true" type="string"/>
@@ -85,6 +130,41 @@
             AND latest_emp.fiscal_year_id = emp.fiscal_year_id
             AND latest_emp.type_of_year = emp.type_of_year
             AND type_of_employment = 'Salaried'
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="emp.fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="emp.type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="emp.agency_id" paramName="agency" />
+                    <exp op="=" dbField="emp.civil_service_title_code" paramName="title" />
+                </exp>
+            </where>
+        </sql>
+    </statement>
+    <statement name="GetCountNonSalariedEmployees" datasource="checkbook_nycha">
+        <param name="year" required ="true" type="int" />
+        <param name="yeartype" required ="true" type="string"/>
+        <param name="agency" type="int" />
+        <param name="title" type="int" />
+        <sql>
+            SELECT DISTINCT emp.employee_number
+            FROM aggregateon_payroll_employee_agency emp
+            JOIN
+            (
+            SELECT max(pay_date) as pay_date,
+            employee_number,fiscal_year_id,type_of_year
+            FROM aggregateon_payroll_employee_agency
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="type_of_year" paramName="yeartype" />
+                </exp>
+            </where>
+            GROUP BY employee_number,fiscal_year_id,type_of_year
+            ) latest_emp ON latest_emp.pay_date = emp.pay_date
+            AND latest_emp.employee_number = emp.employee_number
+            AND latest_emp.fiscal_year_id = emp.fiscal_year_id
+            AND latest_emp.type_of_year = emp.type_of_year
+            AND type_of_employment = 'Non-Salaried'
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="emp.fiscal_year_id" paramName="year" />
@@ -216,6 +296,36 @@
                 </exp>
             </where>
             GROUP BY agg.agency_id, ref_agency.agency_name
+        </sql>
+    </statement>
+    <statement name="GetTitlesByNonSalariedEmployees" datasource="checkbook_nycha">
+        <param name="year" required ="true" type="int" />
+        <param name="yeartype" required ="true" type="string"/>
+        <param name="agency" type="int" />
+        <param name="title" type="int" />
+        <sql>
+            SELECT employee_count,
+            agency_id,
+            civil_service_title,
+            civil_service_title_code,
+            total_annual_salary,
+            total_gross_pay,
+            total_base_salary,
+            total_other_payments,
+            total_overtime_amount,
+            type_of_year,
+            fiscal_year_id,
+            type_of_employment
+            FROM aggregateon_payroll_employee_agency_title
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="civil_service_title_code" paramName="title" />
+                    <exp op="=" dbField="agency_id" paramName="agency"/>
+                    <exp op="=" dbField="type_of_employment">'Non-Salaried'</exp>
+                </exp>
+            </where>
         </sql>
     </statement>
 </statements>
