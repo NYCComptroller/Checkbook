@@ -175,9 +175,11 @@ function _widget_controller_node_view($key){
     $viewName = WidgetController::getInstance()->getWidgetViewConfigName($key);
     if(!isset($viewName)) return;
     $legacy_node_id = WidgetController::getInstance()->getWidgetLegacyNodeId($key);
+    $param_config = WidgetController::getInstance()->getWidgetParamConfig($key);
     $node = _widget_controller_node_load_file($viewName);
     $node = widget_merge_default_settings($node);
     $node->legacy_node_id = $legacy_node_id;
+    $node->param_config = $param_config;
     $node = widget_controller_node_view($node);
     echo $node->content['body']['#markup'];
 }
@@ -704,6 +706,7 @@ function widget_controller_config($node) {
 		$node->widgetConfig->uid = $savedUid;
 	}
     $node->widgetConfig->legacy_node_id = $node->legacy_node_id;
+    $node->widgetConfig->param_config= $node->param_config;
 	return $node->widgetConfig;
 }
 

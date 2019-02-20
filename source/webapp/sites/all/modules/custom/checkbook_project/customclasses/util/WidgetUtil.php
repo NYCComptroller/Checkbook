@@ -265,6 +265,7 @@ class WidgetUtil
         "program" => "Program",
         "project" => "Project",
         "commodity_category" => "Commodity<br/>Category",
+        "non_salary_rate" => "Non-Salaried<br/>Rates",
     );
 
     //For number cols, need to find out if they are uniform number of digits for formatting
