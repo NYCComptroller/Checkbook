@@ -87,10 +87,9 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
 
     $formatted_search_criteria = array();
     //Used to maintain the order of the columns
-    $selected_columns = checkbook_datafeeds_format_columns();
+    $selected_columns = checkbook_datafeeds_format_columns(Domain::$CONTRACTS, $data_source);
     //Filter columns for current data source
     $filtered_columns = checkbook_datafeeds_contracts_filter_selected_columns($selected_columns, $data_source, $response_type, $values['df_contract_status'],$values['category'],$year);
-    //$form_state['step_information']['contracts']['stored_values']['column_select'] = $filtered_columns;
     if($data_source == Datasource::OGE){
         $form_state['step_information']['contracts']['stored_values']['column_select_oge_expense'] = $filtered_columns;
     }else if($data_source == Datasource::NYCHA){
@@ -672,12 +671,7 @@ function _checkbook_datafeeds_contracts_override_column_options($response_type, 
         $domain = $domain.'_nycha';
     }
     $domain_config = ConfigUtil::getDomainConfiguration($domain);
-    $domain_filter = $domain;
-    if($data_source != Datasource::NYCHA){
-        $domain_filter .= $status == 'pending' ? '_pending' : '_active';
-        $domain_filter .= $status == 'pending' ? '' : '_' . $expense_category;
-    }
-    if ($year == 'All Years' || $year = 'ALL') $domain_filter .= "_all_years";
+    $domain_filter = checkbook_datafeeds_get_configuration_key($domain, $data_source, $status, $expense_category, $year);
 
     //Get columns which should be required to get but not display
     $override_columns = $domain_config->$domain_filter->dataset->displayConfiguration->$response_type->overrideColumns;
@@ -965,6 +959,7 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
     $agency = $form_state['values']['agency'];
     $agency_code = emptyToZero($agency);
     if($agency_code == 996){
+        $data_source = Datasource::NYCHA;
         $startfrom = $form_state['values']['nycha_startdatefrom'];
         $startto = $form_state['values']['nycha_startdateto'];
         $enddatefrom = $form_state['values']['nycha_enddatefrom'];
@@ -1024,10 +1019,9 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
         }
 
         $form_state['complete form']['agency_hidden']['#value'] = $form_state['values']['nycha_agency'];
-        $form_state['complete form']['data_source']['#value'] = Datasource::NYCHA;
+        $form_state['complete form']['data_source']['#value'] = $data_source;
     }
     else {
-        $data_source = Datasource::NYCHA;
         $startfrom = $form_state['values']['startdatefrom'];
         $startto = $form_state['values']['startdateto'];
         $enddatefrom = $form_state['values']['enddatefrom'];
@@ -1255,12 +1249,8 @@ function checkbook_datafeeds_contracts_filter_selected_columns($selected_columns
         $domain = $domain.'_nycha';
     }
     $domain_config = ConfigUtil::getDomainConfiguration($domain);
-    $domain_filter = $domain;
-    if($data_source != Datasource::NYCHA){
-        $domain_filter .= $status == 'pending' ? '_pending' : '_active';
-        $domain_filter .= $status == 'pending' ? '' : '_' . $expense_category;
-    }
-    if ($year == 'All Years' || $year = 'ALL') $domain_filter .= "_all_years";
+    $domain_filter = checkbook_datafeeds_get_configuration_key($domain, $data_source, $status, $expense_category, $year);
+
     //Get columns which should be included for the current data source
     $columns_included = $domain_config->$domain_filter->dataset->displayConfiguration->$response_type->elementsColumn;
     //Filter out selected columns which are not configured to show for this data source
@@ -1288,15 +1278,31 @@ function checkbook_datafeeds_contracts_add_required_columns($response_type, $dat
         $domain = $domain.'_nycha';
     }
     $domain_config = ConfigUtil::getDomainConfiguration($domain);
-    $domain_filter = $domain;
-    if($data_source != Datasource::NYCHA){
-        $domain_filter .= $status == 'pending' ? '_pending' : '_active';
-        $domain_filter .= $status == 'pending' ? '' : '_' . $expense_category;
-    }
-    if ($year == 'All Years' || $year = 'ALL') $domain_filter .= "_all_years";
+    $domain_filter = checkbook_datafeeds_get_configuration_key($domain, $data_source, $status, $expense_category, $year);
 
     //Get columns which should be required to get but not display
     $required_columns = $domain_config->$domain->dataset->displayConfiguration->$response_type->required_non_display_columns;
 
     return $required_columns;
+}
+
+
+/**
+ * Returns the configuration key
+ * @param $data_source
+ * @param $status
+ * @param $expense_category
+ * @param $year
+ * @return mixed
+ */
+function checkbook_datafeeds_get_configuration_key($domain, $data_source, $status, $expense_category, $year){
+    $domain_filter = $domain;
+    if($data_source == Datasource::NYCHA){
+        $domain_filter .=  ($year == 'ALL') ? "_all_years" :"";
+    }else{
+        $domain_filter .= $status == 'pending' ? '_pending' : '_active';
+        $domain_filter .= $status == 'pending' ? '' : '_' . $expense_category;
+        $domain_filter .=  ($year == 'All Years' || $year = 'ALL') ? "_all_years" :"";
+    }
+    return $domain_filter;
 }
