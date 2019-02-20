@@ -281,7 +281,7 @@ class RequestUtil
             } else if ($smnid > 0) {
                 $title = NodeSummaryUtil::getInitNodeSummaryTitle($smnid);
             } else {
-                //$title = _checkbook_project_get_name_for_argument("agency_id", RequestUtil::getRequestKeyValueFromURL("agency", $bottomURL)) . ' Payroll Transactions';
+                $title = _checkbook_project_get_name_for_argument("agency_id", RequestUtil::getRequestKeyValueFromURL("agency", $bottomURL)) . ' Payroll Transactions';
             }
         } else if (isset($bottomURL) && preg_match('/payroll_employee_transactions/', $bottomURL)) {
             $title = "Individual Employee Payroll Transactions";
