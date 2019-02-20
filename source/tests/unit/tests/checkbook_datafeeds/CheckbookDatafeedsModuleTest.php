@@ -1,5 +1,6 @@
 <?php
 include_once CUSTOM_MODULES_DIR . '/checkbook_datafeeds/checkbook_datafeeds.module';
+include_once CUSTOM_MODULES_DIR . '/checkbook_datafeeds/includes/checkbook_datafeeds_contracts.inc';
 
 use PHPUnit\Framework\TestCase;
 
