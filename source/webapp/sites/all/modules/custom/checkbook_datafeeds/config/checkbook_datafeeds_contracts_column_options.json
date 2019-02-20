@@ -341,7 +341,8 @@
                     "Shipment Number":"Shipment Number",
                     "Spent to Date":"Spent to Date",
                     "Start Date":"Start Date",
-                    "Vendor":"Vendor"
+                    "Vendor":"Vendor",
+                    "Year":"year"
                   },
                   "xml":{
                     "approved_date":"approved_date",
@@ -367,7 +368,8 @@
                     "shipment_number":"shipment_number",
                     "spent_to_date":"spent_to_date",
                     "start_date":"start_date",
-                    "vendor":"vendor"
+                    "vendor":"vendor",
+                    "year":"year"
                   }
                 }
               }
