@@ -46,6 +46,13 @@ class PayrollWidgetService extends WidgetDataService implements IWidgetService {
                 $url = PayrollUrlService::annualSalaryPerAgencyUrl($agency, $employee);
                 $value = "<a class='{$bottomContainerReloadClass}' href='{$url}'>{$column}</a>";
                 break;
+            case "non_salary_per_agency_link":
+                $column = $row['non_salaried_rate'];
+                $employee = $row['employee_id'];
+                $agency = $row['agency_id'];
+                $url = PayrollUrlService::annualSalaryPerAgencyUrl($agency, $employee);
+                $value = "<a class='{$bottomContainerReloadClass}' href='{$url}'>{$column}</a>";
+                break;
             case "title_agency_link":
                 $column = $row['civil_service_title'];
                 $agency = $row['agency_id'];
@@ -69,6 +76,10 @@ class PayrollWidgetService extends WidgetDataService implements IWidgetService {
     }
 
     public function getWidgetFooterUrl($parameters) {
+        $param = $this->getParamName();
+        if(isset($param)){
+          return  PayrollUrlService::getFooterUrl($parameters,$param);
+        }
         return PayrollUrlService::getFooterUrl($parameters,$this->getLegacyNodeId());
     }
 

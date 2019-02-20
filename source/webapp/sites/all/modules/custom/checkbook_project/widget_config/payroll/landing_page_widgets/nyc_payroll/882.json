@@ -39,7 +39,7 @@ else{
 }
 return $footer;
 ",
-"widgetTitle":"Payroll Summary by Number of Employees",
+"widgetTitle":"Payroll Summary by Number of Salaried Employees",
 "table_title":"",
 "derivedColumns": {
    "employee_name_formatted": {
