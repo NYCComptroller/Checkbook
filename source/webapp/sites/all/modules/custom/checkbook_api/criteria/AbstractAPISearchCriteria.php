@@ -661,6 +661,11 @@ abstract class AbstractAPISearchCriteria {
           }
         }
         break;
+        case "contracts_nycha":
+            if (!isset($this->criteria['value']['fiscal_year'])) {
+                $config_key .= "_all_years";
+            }
+        break;
 
       default:
         break;
