@@ -88,8 +88,8 @@
             "Commodity Category":"commodity_category_descr"
           }
         }
-      },
-      "adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($data_set,$parameters,$criteria,'checkbook_nycha');}"
+      }
+      //,"adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($data_set,$parameters,$criteria,'checkbook_nycha');}"
     },
     "requestParameters":{
       "fiscal_year":{"valueType":"value","dataType":"year","maxLength":"4"},
