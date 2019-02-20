@@ -5,8 +5,8 @@ package = Panels
 dependencies[] = ctools
 dependencies[] = page_manager
 dependencies[] = panels
-; Information added by Drupal.org packaging script on 2018-08-27
-version = "7.x-2.3"
+; Information added by Drupal.org packaging script on 2019-01-23
+version = "7.x-2.4"
 core = "7.x"
 project = "panels_breadcrumbs"
-datestamp = "1535382184"
+datestamp = "1548270183"
