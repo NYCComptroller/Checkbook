@@ -20,7 +20,7 @@
 
 
 $all_data = array();
-
+$payroll_type = RequestUtilities::getRequestParamValue('payroll_type');
 $total_annual_salary = 0;
 $total_gross_pay = 0;
 $total_base_pay = 0;
@@ -44,7 +44,7 @@ foreach($node->data as $data) {
     $total_hourly_employees += $node->non_salaried_employees;
 }
 
-$total_annual_salary = custom_number_formatter_format($total_annual_salary,2,'$');
+$total_annual_salary = $payroll_type=="nonsalaried"? " ":custom_number_formatter_format($total_annual_salary,2,'$');
 $total_gross_pay = custom_number_formatter_format($total_gross_pay,2,'$');
 $total_base_pay = custom_number_formatter_format($total_base_pay,2,'$');
 $total_other_payments = custom_number_formatter_format($total_other_payments,2,'$');
@@ -54,35 +54,67 @@ $total_hourly_employees = number_format($total_hourly_employees);
 $total_employees =  number_format($total_employees);
 $total_overtime_employees = number_format($total_overtime_employees);
 $total_overtime_employees_label = WidgetUtil::getLabel('total_no_of_ot_employees').':';
-$payroll_type = strtoupper(PayrollType::$SALARIED);
+$payroll_type = $payroll_type=="nonsalaried"?strtoupper(PayrollType::$NON_SALARIED): strtoupper(PayrollType::$SALARIED);
+$employment_type = $payroll_type=="nonsalaried"?strtoupper(PayrollType::$NON_SALARIED): strtoupper(PayrollType::$SALARIED);
 
-$table = "
+if($employment_type == PayrollType::$SALARIED) {
+    $table = "
 <div id='payroll-tx-static-content'>
     <table id='payroll-tx-static-content-table'>
-        <tr>
-            <td width='50%'><strong>". WidgetUtil::getLabel('total_combined_annual_salary') ."</strong>: {$total_annual_salary}</td>
-            <td width='50%'><strong>". WidgetUtil::getLabel('payroll_type') ."</strong>: {$payroll_type}</td>
+  
+      <tr>
+            <td width='50%'><strong>" . WidgetUtil::getLabel('total_combined_annual_salary') . "</strong>: {$total_annual_salary}</td>
+            <td width='50%'><strong>" . WidgetUtil::getLabel('payroll_type') . "</strong>: {$payroll_type}</td>
         </tr>
         <tr>
-            <td><strong>". WidgetUtil::getLabel('total_combined_gross_pay_ytd') ."</strong>: {$total_gross_pay}</td>
-            <td><strong>". WidgetUtil::getLabel('total_no_of_employees') ."</strong>: {$total_employees}</td>
+            <td><strong>" . WidgetUtil::getLabel('total_combined_gross_pay_ytd') . "</strong>: {$total_gross_pay}</td>
+            <td><strong>" . WidgetUtil::getLabel('total_no_of_employees') . "</strong>: {$total_employees}</td>
 
         </tr>
         <tr>
-            <td><strong>". WidgetUtil::getLabel('total_combined_base_pay_ytd') ."</strong>: {$total_base_pay}</td>
-            <td><strong>". WidgetUtil::getLabel('total_no_of_sal_employees') ."</strong>: {$total_salaried_employees}</td>
+            <td><strong>" . WidgetUtil::getLabel('total_combined_base_pay_ytd') . "</strong>: {$total_base_pay}</td>
+            <td><strong>" . WidgetUtil::getLabel('total_no_of_sal_employees') . "</strong>: {$total_salaried_employees}</td>
 
         </tr>
         <tr>
-            <td><strong>". WidgetUtil::getLabel('total_combined_other_pay_ytd') ."</strong>: {$total_other_payments}</td>
-             <td><strong>". WidgetUtil::getLabel('total_no_of_non_sal_employees') ."</strong>: {$total_hourly_employees}</td>
+            <td><strong>" . WidgetUtil::getLabel('total_combined_other_pay_ytd') . "</strong>: {$total_other_payments}</td>
+             <td><strong>" . WidgetUtil::getLabel('total_no_of_non_sal_employees') . "</strong>: {$total_hourly_employees}</td>
 
         </tr>
         <tr>
-            <td><strong>". WidgetUtil::getLabel('total_combined_overtime_pay_ytd') ."</strong>: {$total_overtime_pay}</td>
+            <td><strong>" . WidgetUtil::getLabel('total_combined_overtime_pay_ytd') . "</strong>: {$total_overtime_pay}</td>
             <td></td>
         </tr>";
 
     $table .= "</table></div>";
+}
+else{
+    $table = "
+ <div id='payroll-tx-static-content'>
+    <table id='payroll-tx-static-content-table'>
+  
+      <tr>
+             <td  width='50%'><strong>" . WidgetUtil::getLabel('total_combined_gross_pay_ytd') . "</strong>: {$total_gross_pay}</td>
+            <td width='50%'><strong>" . WidgetUtil::getLabel('payroll_type') . "</strong>: {$payroll_type}</td>
+        </tr>
+        <tr>
+            <td><strong>" . WidgetUtil::getLabel('total_combined_base_pay_ytd') . "</strong>: {$total_base_pay}</td>
+            <td><strong>" . WidgetUtil::getLabel('total_no_of_employees') . "</strong>: {$total_employees}</td>
+
+        </tr>
+        <tr> 
+         <td><strong>" . WidgetUtil::getLabel('total_combined_other_pay_ytd') . "</strong>: {$total_other_payments}</td>
+        <td><strong>" . WidgetUtil::getLabel('total_no_of_sal_employees') . "</strong>: {$total_salaried_employees}</td>
+
+        </tr>
+        <tr>
+            <td><strong>" . WidgetUtil::getLabel('total_combined_overtime_pay_ytd') . "</strong>: {$total_overtime_pay}</td>
+             <td><strong>" . WidgetUtil::getLabel('total_no_of_non_sal_employees') . "</strong>: {$total_hourly_employees}</td>
+
+        </tr>
+     ";
+
+    $table .= "</table></div>";
+}
 
     print $table;

@@ -281,7 +281,7 @@ class RequestUtil
             } else if ($smnid > 0) {
                 $title = NodeSummaryUtil::getInitNodeSummaryTitle($smnid);
             } else {
-                $title = _checkbook_project_get_name_for_argument("agency_id", RequestUtil::getRequestKeyValueFromURL("agency", $bottomURL)) . ' Payroll Transactions';
+                //$title = _checkbook_project_get_name_for_argument("agency_id", RequestUtil::getRequestKeyValueFromURL("agency", $bottomURL)) . ' Payroll Transactions';
             }
         } else if (isset($bottomURL) && preg_match('/payroll_employee_transactions/', $bottomURL)) {
             $title = "Individual Employee Payroll Transactions";
@@ -298,7 +298,11 @@ class RequestUtil
             }
         } else if (isset($bottomURL) && preg_match('/payroll_nyc_title_transactions/', $bottomURL)) {
             $smnid = RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL);
-            if ($smnid > 0) {
+            $payroll_type = RequestUtil::getRequestKeyValueFromURL("payroll_type", $bottomURL);
+            if(isset($param_type)){
+                $title = RequestUtil::getPayrollTitlebyType($payroll_type);
+            }
+            else if ($smnid > 0) {
                 $title = NodeSummaryUtil::getInitNodeSummaryTitle($smnid);
             }
         } else if (isset($bottomURL) && preg_match('/payroll_by_month_nyc_transactions/', $bottomURL)) {
@@ -1432,6 +1436,15 @@ class RequestUtil
                 break;
         }
         return $summaryTitle;
+    }
+    public static function getPayrollTitlebyType($type){
+        $title = '';
+        switch($type){
+            case "nonsalaried":
+                $title ="Payroll Summary by Number of Non-Salaried Employees";
+                break;
+        }
+        return $title;
     }
 }
 
