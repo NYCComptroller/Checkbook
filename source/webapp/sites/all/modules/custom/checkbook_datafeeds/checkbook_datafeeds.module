@@ -1940,6 +1940,7 @@ function checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $fi
     $form['filter']['nycha_vendor'] = array(
         '#type' => 'textfield',
         '#title' => t('Vendor:'),
+        '#maxlength' => 100,
         '#attributes' => array('class' => array('watch')),
         '#prefix' => '<div class="datafield nycha-vendor">',
         '#suffix' => '</div>',
@@ -1998,8 +1999,8 @@ function checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $fi
     );
     $form['filter']['nycha_currentamtfrom'] = array(
         '#type' => 'textfield',
-        '#size' => 15,
-        '#maxlength' => 15,
+        '#size' => 18,
+        '#maxlength' => 18,
         '#prefix' => '<div class="datafield currentamt datarange"><label>Current Amount:</label><div class="ranges">',
         '#id' => 'edit-nycha-currentamtfrom',
         '#name' => 'nycha_currentamtfrom',
@@ -2008,8 +2009,8 @@ function checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $fi
     $form['filter']['nycha_currentamtto'] = array(
         '#type' => 'textfield',
         '#title' => t('to'),
-        '#size' => 15,
-        '#maxlength' => 15,
+        '#size' => 18,
+        '#maxlength' => 18,
         '#suffix' => '</div></div>',
         '#id' => 'edit-nycha-currentamtto',
         '#name' => 'nycha_currentamtto',
@@ -2042,6 +2043,7 @@ function checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $fi
     $form['filter']['nycha_apt_pin'] = array(
         '#type' => 'textfield',
         '#title' => t('APT PIN:'),
+        '#maxlength' => 100,
         '#attributes' => array('class' => array('watch')),
         '#prefix' => '<div class="datafield nycha-apt-pin">',
         '#suffix' => '</div>',
