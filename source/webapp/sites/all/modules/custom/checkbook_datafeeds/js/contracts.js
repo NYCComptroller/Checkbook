@@ -11,7 +11,7 @@
         }else{
           $('input:hidden[name="data_source"]').val('');
         }
-        var agency_hidden = $('input:hidden[name="agency_hidden"]').val(agency);
+        $('input:hidden[name="agency_hidden"]').val(agency);
     }
 
     /**
@@ -467,6 +467,11 @@
             var $category = $('#edit-category', context);
             var csval = $('select[name="df_contract_status"]', context).val();
             var catval = $('#edit-category', context).val();
+            var agency = $('input:hidden[name="agency_hidden"]', context).val();
+            if(agency.toUpperCase() == 'NEW YORK CITY HOUSING AUTHORITY [996]'){
+              data_source = 'checkbook_nycha';
+              $('input:hidden[name="data_source"]', context).val('checkbook_nycha');
+            }
             $.fn.reloadAgencies(data_source);
 
             //Show or hide fields based on data source selection

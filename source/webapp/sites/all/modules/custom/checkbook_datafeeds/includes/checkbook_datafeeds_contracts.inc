@@ -65,7 +65,9 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
     if($agency_code == 996 && $data_source == Datasource::NYCHA){
         $user_criteria['Type of Data'] = 'Contracts_NYCHA';
         $data_source = Datasource::NYCHA;
+        $year = $values['nycha_year'];
     }else{
+        $year = $values['year'];
         $user_criteria['Type of Data'] = $data_source == 'checkbook_oge' ? 'Contracts_OGE' : 'Contracts';
     }
 
@@ -87,7 +89,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
     //Used to maintain the order of the columns
     $selected_columns = checkbook_datafeeds_format_columns();
     //Filter columns for current data source
-    $filtered_columns = checkbook_datafeeds_contracts_filter_selected_columns($selected_columns, $data_source, $response_type, $values['df_contract_status'],$values['category'],$values['year']);
+    $filtered_columns = checkbook_datafeeds_contracts_filter_selected_columns($selected_columns, $data_source, $response_type, $values['df_contract_status'],$values['category'],$year);
     //$form_state['step_information']['contracts']['stored_values']['column_select'] = $filtered_columns;
     if($data_source == Datasource::OGE){
         $form_state['step_information']['contracts']['stored_values']['column_select_oge_expense'] = $filtered_columns;
@@ -351,7 +353,9 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
             }
 
             if ($values['nycha_agency']) {
-                $form['filter']['nycha_agency'] = array('#markup' => '<div><strong>Other Government Entities:</strong> ' . $agency . '</div>',);
+                $form['filter']['nycha_agency'] = array(
+                    '#markup' => '<div><strong>Other Government Entities:</strong> ' . $values['nycha_agency'] . '</div>',
+                );
                 $user_criteria['Other Government Entities'] = $values['nycha_agency'];
                 $formatted_search_criteria['Other Government Entities'] = $values['nycha_agency'];
             }
@@ -610,13 +614,13 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
 
     $user_criteria['Formatted'] = $formatted_search_criteria;
     $criteria = checkbook_datafeeds_process_contracts_values($form, $form_state, $data_source);
-    $criteria['required_columns'] = checkbook_datafeeds_contracts_add_required_columns($response_type, $data_source,$values['df_contract_status'],$values['category'],$values['year']);
+    $criteria['required_columns'] = checkbook_datafeeds_contracts_add_required_columns($response_type, $data_source,$values['df_contract_status'],$values['category'],$year);
     $form_state['step_information']['confirmation']['stored_values']['criteria'] = $criteria;
     $form_state['step_information']['confirmation']['stored_values']['user_criteria'] = $user_criteria;
 
     //Update Criteria with overridden column order on export only for CityWide Active/Registered Expense Contracts
     if(strtolower($values['df_contract_status']) != 'pending' && strtolower($values['category']) != 'revenue' && $data_source != 'checkbook_oge' && $data_source != 'checkbook_nycha'){
-        $intended_order =  _checkbook_datafeeds_contracts_override_column_options($response_type, $data_source,$values['df_contract_status'],$values['category'],$values['year']);
+        $intended_order =  _checkbook_datafeeds_contracts_override_column_options($response_type, $data_source,$values['df_contract_status'],$values['category'],$year);
         $criteria['responseColumns'] = checkbook_datafeeds_override_column_order($criteria['responseColumns'], $intended_order);
     }
 
@@ -850,9 +854,13 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
             }
             break;
         case 'checkbook_nycha':
-            if ($values['purchase_order_type']) {
-                preg_match($pattern, $values['purchase_order_type'], $amatches);
-                $criteria['value']['purchase_order_type'] = trim($amatches[1], '[ ]');
+            if ($values['purchase_order_type'] && $values['purchase_order_type'] != 'All') {
+                preg_match($pattern, $values['purchase_order_type'], $pmatches);
+                if ($pmatches) {
+                    $criteria['value']['purchase_order_type'] = trim($pmatches[1], '[ ]');
+                }else{
+                    $criteria['value']['purchase_order_type'] = $values['purchase_order_type'];
+                }
             }
             if ($values['nycha_contract_id']) {
                 $criteria['value']['contract_id'] = $values['nycha_contract_id'];
@@ -860,10 +868,10 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
             if ($values['nycha_vendor']) {
                 preg_match($pattern, $values['nycha_vendor'], $vmatches);
                 if ($vmatches) {
-                    $criteria['value']['vendor_code'] = trim($vmatches[1], '[ ]');
+                    $criteria['value']['vendor'] = trim($vmatches[1], '[ ]');
                 }
                 else {
-                    $criteria['value']['vendor_code'] = $values['nycha_vendor'];
+                    $criteria['value']['vendor'] = $values['nycha_vendor'];
                 }
             }
             if ($values['resp_center']) {
@@ -885,8 +893,8 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
             if ($values['nycha_currentamtfrom'] !== '' || $values['nycha_currentamtto'] !== '') {
                 $criteria['range']['current_amount'] = array(checknull($values['nycha_currentamtfrom']), checknull($values['nycha_currentamtto']),);
             }
-            if ($values['nycha_agency']) {
-                preg_match($pattern, $values['anycha_gency'], $amatches);
+            if ($values['nycha_agency'] != 'Select One') {
+                preg_match($pattern, $values['nycha_agency'], $amatches);
                 $criteria['value']['other_government_entities_code'] = trim($amatches[1], '[ ]');
             }
             if ($values['nycha_purpose']) {
@@ -906,7 +914,7 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
             }
             if ($values['nycha_year'] && $values['nycha_year'] != 'ALL') {
                 if (startsWith($values['nycha_year'], 'F')) {
-                    $criteria['value']['fiscal_year'] = ltrim($values['year'], 'FY');
+                    $criteria['value']['fiscal_year'] = ltrim($values['nycha_year'], 'FY');
                 }
             }
             break;
@@ -961,6 +969,8 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
         $currentfrom = $form_state['values']['nycha_currentamtfrom'];
         $currentto = $form_state['values']['nycha_currentamtto'];
         $nycha_multi_select = $form_state['values']['column_select_nycha'];
+        $vendor = $form_state['values']['nycha_vendor'];
+
         $multi_select_hidden = isset($form_state['input']['column_select_nycha']) ? '|' . implode('||', $form_state['input']['column_select_nycha']) . '|' : '';
 
         // Current Amount:
@@ -1012,6 +1022,7 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
         $form_state['complete form']['data_source']['#value'] = Datasource::NYCHA;
     }
     else {
+        $data_source = Datasource::NYCHA;
         $startfrom = $form_state['values']['startdatefrom'];
         $startto = $form_state['values']['startdateto'];
         $enddatefrom = $form_state['values']['enddatefrom'];
@@ -1173,17 +1184,16 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
                 $dataController = data_controller_get_instance();
                 switch ($data_source) {
                     case 'checkbook_oge':
-                        $query = "SELECT DISTINCT display_vendor_name 
-                                FROM contracts_detailed_transactions
-                                WHERE status_flag = 'A' 
-                                AND display_vendor_name ILIKE '" . $vendor . "'";
-                        if ($agency_code) {
-                            $query = "SELECT DISTINCT cd.display_vendor_name 
-                                FROM contracts_detailed_transactions cd
-                                LEFT JOIN ref_agency a ON cd.agency_id = a.agency_id
-                                WHERE cd.status_flag = 'A' 
-                                AND agency_code = '" . $agency_code . "'
-                                AND display_vendor_name ILIKE '" . $vendor . "'";
+                        if($agency_code == 996){
+                            $query = "SELECT vendor_name FROM all_agreement_transactions 
+                                        WHERE latest_flag = 'Y' 
+                                        AND transaction_status_name IN ('APPROVED','CLOSED','FINALLY CLOSED', 'REQUIRES REAPPROVAL')
+                                        AND vendor_name ILIKE '" . $vendor . "'";
+                        }else {
+                            $query = "SELECT DISTINCT display_vendor_name 
+                                    FROM contracts_detailed_transactions
+                                    WHERE status_flag = 'A' 
+                                    AND display_vendor_name ILIKE '" . $vendor . "'";
                         }
                         $results = _checkbook_project_execute_sql($query, "main", $data_source);
                         break;
@@ -1198,6 +1208,9 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
                 switch ($data_source) {
                     case 'checkbook_oge':
                         form_set_error('payee_name', t('Please enter a valid vendor name.'));
+                        break;
+                    case 'checkbook_nycha':
+                        form_set_error('nycha_vendor', t('Please enter a valid vendor name.'));
                         break;
                     default:
                         form_set_error('payee_name', t('Please enter a valid vendor code.'));
@@ -1231,14 +1244,18 @@ function checkbook_datafeeds_contracts_filter_selected_columns($selected_columns
 {
     //Get column configurations
     $domain = 'contracts';
-    $domain = $data_source == 'checkbook_oge' ? $domain.'_oge' : $domain;
+    if($data_source == Datasource::OGE){
+        $domain = $domain.'_oge';
+    }else if($data_source == Datasource::NYCHA){
+        $domain = $domain.'_nycha';
+    }
     $domain_config = ConfigUtil::getDomainConfiguration($domain);
-
     $domain_filter = $domain;
-    $domain_filter .= $status == 'pending' ? '_pending' : '_active';
-    $domain_filter .= $status == 'pending' ? '' :  '_'.$expense_category;
-    if ($year == 'All Years') $domain_filter .= "_all_years";
-
+    if($data_source != Datasource::NYCHA){
+        $domain_filter .= $status == 'pending' ? '_pending' : '_active';
+        $domain_filter .= $status == 'pending' ? '' : '_' . $expense_category;
+    }
+    if ($year == 'All Years' || $year = 'ALL') $domain_filter .= "_all_years";
     //Get columns which should be included for the current data source
     $columns_included = $domain_config->$domain_filter->dataset->displayConfiguration->$response_type->elementsColumn;
     //Filter out selected columns which are not configured to show for this data source
@@ -1260,13 +1277,18 @@ function checkbook_datafeeds_contracts_add_required_columns($response_type, $dat
 {
     ///Get column configurations
     $domain = 'contracts';
-    $domain = $data_source == 'checkbook_oge' ? $domain.'_oge' : $domain;
+    if($data_source == Datasource::OGE){
+        $domain = $domain.'_oge';
+    }else if($data_source == Datasource::NYCHA){
+        $domain = $domain.'_nycha';
+    }
     $domain_config = ConfigUtil::getDomainConfiguration($domain);
-
     $domain_filter = $domain;
-    $domain_filter .= $status == 'pending' ? '_pending' : '_active';
-    $domain_filter .= $status == 'pending' ? '' :  '_'.$expense_category;
-    if ($year == 'All Years') $domain_filter .= "_all_years";
+    if($data_source != Datasource::NYCHA){
+        $domain_filter .= $status == 'pending' ? '_pending' : '_active';
+        $domain_filter .= $status == 'pending' ? '' : '_' . $expense_category;
+    }
+    if ($year == 'All Years' || $year = 'ALL') $domain_filter .= "_all_years";
 
     //Get columns which should be required to get but not display
     $required_columns = $domain_config->$domain->dataset->displayConfiguration->$response_type->required_non_display_columns;
