@@ -619,7 +619,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
     $form_state['step_information']['confirmation']['stored_values']['user_criteria'] = $user_criteria;
 
     //Update Criteria with overridden column order on export only for CityWide Active/Registered Expense Contracts
-    if(strtolower($values['df_contract_status']) != 'pending' && strtolower($values['category']) != 'revenue' && $data_source != 'checkbook_oge' && $data_source != 'checkbook_nycha'){
+    if(strtolower($values['df_contract_status']) != 'pending' && strtolower($values['category']) != 'revenue' && $data_source != 'checkbook_oge'){
         $intended_order =  _checkbook_datafeeds_contracts_override_column_options($response_type, $data_source,$values['df_contract_status'],$values['category'],$year);
         $criteria['responseColumns'] = checkbook_datafeeds_override_column_order($criteria['responseColumns'], $intended_order);
     }
@@ -664,15 +664,20 @@ function _checkbook_datafeeds_contracts_column_options($data_source, $status, $c
  */
 function _checkbook_datafeeds_contracts_override_column_options($response_type, $data_source, $status, $expense_category, $year)
 {
-    ///Get column configurations
+    //Get column configurations
     $domain = 'contracts';
-    $domain = $data_source == 'checkbook_oge' ? $domain.'_oge' : $domain;
+    if($data_source == Datasource::OGE){
+        $domain = $domain.'_oge';
+    }else if($data_source == Datasource::NYCHA){
+        $domain = $domain.'_nycha';
+    }
     $domain_config = ConfigUtil::getDomainConfiguration($domain);
-
     $domain_filter = $domain;
-    $domain_filter .= $status == 'pending' ? '_pending' : '_active';
-    $domain_filter .= $status == 'pending' ? '' :  '_'.$expense_category;
-    if ($year == 'All Years') $domain_filter .= "_all_years";
+    if($data_source != Datasource::NYCHA){
+        $domain_filter .= $status == 'pending' ? '_pending' : '_active';
+        $domain_filter .= $status == 'pending' ? '' : '_' . $expense_category;
+    }
+    if ($year == 'All Years' || $year = 'ALL') $domain_filter .= "_all_years";
 
     //Get columns which should be required to get but not display
     $override_columns = $domain_config->$domain_filter->dataset->displayConfiguration->$response_type->overrideColumns;
@@ -1275,7 +1280,7 @@ function checkbook_datafeeds_contracts_filter_selected_columns($selected_columns
  */
 function checkbook_datafeeds_contracts_add_required_columns($response_type, $data_source, $status, $expense_category, $year)
 {
-    ///Get column configurations
+    //Get column configurations
     $domain = 'contracts';
     if($data_source == Datasource::OGE){
         $domain = $domain.'_oge';
