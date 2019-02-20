@@ -228,6 +228,7 @@
               $('#edit-column-select-all').multiSelect('deselect_all');
             });
         }else{
+            $('#edit-column-select-nycha option[value="Year"]').attr('disabled', 'disabled');
             $('#edit-column-select-nycha').multiSelect('refresh');
             if (!$('#ms-edit-column-select-nycha .ms-selection').next().is("a")) {
               $('#ms-edit-column-select-nycha .ms-selection').after('<a class="deselect">Remove All</a>');
@@ -548,6 +549,12 @@
                 $('#edit-column-select-revenue option[value="Year"]',context).attr('disabled','');
                 $('#edit-column-select-all option[value="Year"]',context).attr('disabled','');
             }
+          //Disable Year option for All Years - for NYCHA
+            if ($('#edit-nycha-year', context).val() == 'ALL') {
+              $('#edit-column-select-nycha option[value="Year"]').attr('disabled', 'disabled');
+            }else{
+              $('#edit-column-select-nycha option[value="Year"]').attr('disabled', '');
+            }
 
             //Set up multiselects/option transfers
             //Active/Registered Expense -- CityWide
@@ -681,108 +688,84 @@
             });
 
             //Year Drop-down
+            $('#edit-nycha-year',context).change(function(){
+              if ($(this).val() == 'ALL'){
+                $('#edit-column-select-nycha option[value="Year"]',context).attr('disabled','disabled');
+              }else{
+                $('#edit-column-select-nycha option[value="Year"]',context).attr('disabled','');
+              }
+              $('#edit-column-select-nycha', context).multiSelect('refresh');
+              if(!$('#ms-edit-column-select-nycha .ms-selection', context).next().is("a")){
+                $('#ms-edit-column-select-nycha .ms-selection', context).after('<a class="deselect">Remove All</a>');
+                $('#ms-edit-column-select-nycha .ms-selection', context).after('<a class="select">Add All</a>');
+              }
+              $('#ms-edit-column-select-nycha a.select', context).click(function () {
+                $('#edit-column-select-nycha', context).multiSelect('select_all');
+              });
+              $('#ms-edit-column-select-nycha a.deselect', context).click(function () {
+                $('#edit-column-select-nycha', context).multiSelect('deselect_all');
+              });
+            });
+            //Year Drop-down
             $('#edit-year',context).change(function(){
                if ($(this).val() == 'ALL'){
                    $('#edit-column-select-expense option[value="Year"]',context).attr('disabled','disabled');
-                   $('#edit-column-select-expense', context).multiSelect('refresh');
-                   if(!$('#ms-edit-column-select-expense .ms-selection', context).next().is("a")){
-                       $('#ms-edit-column-select-expense .ms-selection', context).after('<a class="deselect">Remove All</a>');
-                       $('#ms-edit-column-select-expense .ms-selection', context).after('<a class="select">Add All</a>');
-                   }
-                   $('#ms-edit-column-select-expense a.select', context).click(function () {
-                       $('#edit-column-select-expense', context).multiSelect('select_all');
-                   });
-                   $('#ms-edit-column-select-expense a.deselect', context).click(function () {
-                       $('#edit-column-select-expense', context).multiSelect('deselect_all');
-                   });
-
                    $('#edit-column-select-oge-expense option[value="Year"]',context).attr('disabled','disabled');
-                   $('#edit-column-select-oge-expense', context).multiSelect('refresh');
-                   if(!$('#ms-edit-column-select-oge-expense .ms-selection', context).next().is("a")){
-                       $('#ms-edit-column-select-oge-expense .ms-selection', context).after('<a class="deselect">Remove All</a>');
-                       $('#ms-edit-column-select-oge-expense .ms-selection', context).after('<a class="select">Add All</a>');
-                   }
-                   $('#ms-edit-column-select-oge-expense a.select', context).click(function () {
-                       $('#edit-column-select-oge-expense', context).multiSelect('select_all');
-                   });
-                   $('#ms-edit-column-select-oge-expense a.deselect', context).click(function () {
-                       $('#edit-column-select-oge-expense', context).multiSelect('deselect_all');
-                   });
-
                    $('#edit-column-select-revenue option[value="Year"]',context).attr('disabled','disabled');
-                   $('#edit-column-select-revenue', context).multiSelect('refresh');
-                   if(!$('#ms-edit-column-select-revenue .ms-selection', context).next().is("a")){
-                       $('#ms-edit-column-select-revenue .ms-selection', context).after('<a class="deselect">Remove All</a>');
-                       $('#ms-edit-column-select-revenue .ms-selection', context).after('<a class="select">Add All</a>');
-                   }
-                   $('#ms-edit-column-select-revenue a.select', context).click(function () {
-                       $('#edit-column-select-revenue', context).multiSelect('select_all');
-                   });
-                   $('#ms-edit-column-select-revenue a.deselect', context).click(function () {
-                       $('#edit-column-select-revenue', context).multiSelect('deselect_all');
-                   });
                    $('#edit-column-select-all option[value="Year"]',context).attr('disabled','disabled');
-                   $('#edit-column-select-all', context).multiSelect('refresh');
-                   if(!$('#ms-edit-column-select-all .ms-selection', context).next().is("a")){
-                       $('#ms-edit-column-select-all .ms-selection', context).after('<a class="deselect">Remove All</a>');
-                       $('#ms-edit-column-select-all .ms-selection', context).after('<a class="select">Add All</a>');
-                   }
-                   $('#ms-edit-column-select-all a.select', context).click(function () {
-                       $('#edit-column-select-all', context).multiSelect('select_all');
-                   });
-                   $('#ms-edit-column-select-all a.deselect', context).click(function () {
-                       $('#edit-column-select-all', context).multiSelect('deselect_all');
-                   });
                } else {
-                   $('#edit-column-select-expense option[value="Year"]',context).attr('disabled','');
-                   $('#edit-column-select-expense', context).multiSelect('refresh');
-                   if(!$('#ms-edit-column-select-expense .ms-selection', context).next().is("a")){
-                       $('#ms-edit-column-select-expense .ms-selection', context).after('<a class="deselect">Remove All</a>');
-                       $('#ms-edit-column-select-expense .ms-selection', context).after('<a class="select">Add All</a>');
-                   }
-                   $('#ms-edit-column-select-expense a.select', context).click(function () {
-                       $('#edit-column-select-expense', context).multiSelect('select_all');
-                   });
-                   $('#ms-edit-column-select-expense a.deselect', context).click(function () {
-                       $('#edit-column-select-expense', context).multiSelect('deselect_all');
-                   });
-                   $('#edit-column-select-oge-expense option[value="Year"]',context).attr('disabled','');
-                   $('#edit-column-select-oge-expense', context).multiSelect('refresh');
-                   if(!$('#ms-edit-column-select-oge-expense .ms-selection', context).next().is("a")){
-                       $('#ms-edit-column-select-oge-expense .ms-selection', context).after('<a class="deselect">Remove All</a>');
-                       $('#ms-edit-column-select-oge-expense .ms-selection', context).after('<a class="select">Add All</a>');
-                   }
-                   $('#ms-edit-column-select-oge-expense a.select', context).click(function () {
-                       $('#edit-column-select-oge-expense', context).multiSelect('select_all');
-                   });
-                   $('#ms-edit-column-select-oge-expense a.deselect', context).click(function () {
-                       $('#edit-column-select-oge-expense', context).multiSelect('deselect_all');
-                   });
-                   $('#edit-column-select-revenue option[value="Year"]',context).attr('disabled','');
-                   $('#edit-column-select-revenue', context).multiSelect('refresh');
-                   if(!$('#ms-edit-column-select-revenue .ms-selection', context).next().is("a")){
-                       $('#ms-edit-column-select-revenue .ms-selection', context).after('<a class="deselect">Remove All</a>');
-                       $('#ms-edit-column-select-revenue .ms-selection', context).after('<a class="select">Add All</a>');
-                   }
-                   $('#ms-edit-column-select-revenue a.select', context).click(function () {
-                       $('#edit-column-select-revenue', context).multiSelect('select_all');
-                   });
-                   $('#ms-edit-column-select-revenue a.deselect', context).click(function () {
-                       $('#edit-column-select-revenue', context).multiSelect('deselect_all');
-                   });
-                   $('#edit-column-select-all option[value="Year"]',context).attr('disabled','');
-                   $('#edit-column-select-all', context).multiSelect('refresh');
-                   if(!$('#ms-edit-column-select-all .ms-selection', context).next().is("a")){
-                       $('#ms-edit-column-select-all .ms-selection', context).after('<a class="deselect">Remove All</a>');
-                       $('#ms-edit-column-select-all .ms-selection', context).after('<a class="select">Add All</a>');
-                   }
-                   $('#ms-edit-column-select-all a.select', context).click(function () {
-                       $('#edit-column-select-all', context).multiSelect('select_all');
-                   });
-                   $('#ms-edit-column-select-all a.deselect', context).click(function () {
-                       $('#edit-column-select-all', context).multiSelect('deselect_all');
-                   });
+                 $('#edit-column-select-expense option[value="Year"]',context).attr('disabled','');
+                 $('#edit-column-select-oge-expense option[value="Year"]',context).attr('disabled','');
+                 $('#edit-column-select-revenue option[value="Year"]',context).attr('disabled','');
+                 $('#edit-column-select-all option[value="Year"]',context).attr('disabled','');
                }
+              $('#edit-column-select-expense', context).multiSelect('refresh');
+              if(!$('#ms-edit-column-select-expense .ms-selection', context).next().is("a")){
+                $('#ms-edit-column-select-expense .ms-selection', context).after('<a class="deselect">Remove All</a>');
+                $('#ms-edit-column-select-expense .ms-selection', context).after('<a class="select">Add All</a>');
+              }
+              $('#ms-edit-column-select-expense a.select', context).click(function () {
+                $('#edit-column-select-expense', context).multiSelect('select_all');
+              });
+              $('#ms-edit-column-select-expense a.deselect', context).click(function () {
+                $('#edit-column-select-expense', context).multiSelect('deselect_all');
+              });
+
+              $('#edit-column-select-oge-expense', context).multiSelect('refresh');
+              if(!$('#ms-edit-column-select-oge-expense .ms-selection', context).next().is("a")){
+                $('#ms-edit-column-select-oge-expense .ms-selection', context).after('<a class="deselect">Remove All</a>');
+                $('#ms-edit-column-select-oge-expense .ms-selection', context).after('<a class="select">Add All</a>');
+              }
+              $('#ms-edit-column-select-oge-expense a.select', context).click(function () {
+                $('#edit-column-select-oge-expense', context).multiSelect('select_all');
+              });
+              $('#ms-edit-column-select-oge-expense a.deselect', context).click(function () {
+                $('#edit-column-select-oge-expense', context).multiSelect('deselect_all');
+              });
+
+              $('#edit-column-select-revenue', context).multiSelect('refresh');
+              if(!$('#ms-edit-column-select-revenue .ms-selection', context).next().is("a")){
+                $('#ms-edit-column-select-revenue .ms-selection', context).after('<a class="deselect">Remove All</a>');
+                $('#ms-edit-column-select-revenue .ms-selection', context).after('<a class="select">Add All</a>');
+              }
+              $('#ms-edit-column-select-revenue a.select', context).click(function () {
+                $('#edit-column-select-revenue', context).multiSelect('select_all');
+              });
+              $('#ms-edit-column-select-revenue a.deselect', context).click(function () {
+                $('#edit-column-select-revenue', context).multiSelect('deselect_all');
+              });
+
+              $('#edit-column-select-all', context).multiSelect('refresh');
+              if(!$('#ms-edit-column-select-all .ms-selection', context).next().is("a")){
+                $('#ms-edit-column-select-all .ms-selection', context).after('<a class="deselect">Remove All</a>');
+                $('#ms-edit-column-select-all .ms-selection', context).after('<a class="select">Add All</a>');
+              }
+              $('#ms-edit-column-select-all a.select', context).click(function () {
+                $('#edit-column-select-all', context).multiSelect('select_all');
+              });
+              $('#ms-edit-column-select-all a.deselect', context).click(function () {
+                $('#edit-column-select-all', context).multiSelect('deselect_all');
+              });
             });
 
             $.fn.fixAutoCompleteWrapping($("#dynamic-filter-data-wrapper").children());
