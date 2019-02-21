@@ -740,7 +740,7 @@ function checkbook_advanced_search_get_nycha_award_methods($data_source = 'check
  */
 function checkbook_advanced_search_get_nycha_industries($data_source = 'checkbook_nycha', $feeds = false){
     try {
-        $query = "SELECT DISTINCT industry_type_name, industry_type_id, industry_type_code FROM ref_industry_type ORDER BY industry_type_name";
+        $query = "SELECT DISTINCT industry_type_name, industry_type_id, industry_type_code, display_name FROM ref_industry_type ORDER BY industry_type_name";
         $results = _checkbook_project_execute_sql_by_data_source($query, $data_source);
 
         $industry_key_val_option_attributes = array('title' => 'Select Industry');
@@ -748,7 +748,7 @@ function checkbook_advanced_search_get_nycha_industries($data_source = 'checkboo
 
         foreach ($results as $value) {
             if($feeds){
-                $text = $value['industry_type_name'].' ['.$value['industry_type_code'].']';
+                $text = $value['display_name'].' ['.$value['industry_type_code'].']';
                 $industry_key_val_option_attributes[$text] = array('title' => $text);
                 if (strlen($text) > 20)
                     $industry_key_val_options[$text] = substr($text, 0, 20) . '...';
@@ -756,11 +756,11 @@ function checkbook_advanced_search_get_nycha_industries($data_source = 'checkboo
                     $industry_key_val_options[$text] = $text;
             }else {
                 $keys = 'id=>' . $value['industry_type_id'] . '~code=>' . $value['industry_type_code'];
-                $industry_key_val_option_attributes[$keys] = array('title' => $value['industry_type_name']);
-                if (strlen($value['industry_type_name']) > 20)
-                    $industry_key_val_options[$keys] = substr($value['industry_type_name'], 0, 20) . '...';
+                $industry_key_val_option_attributes[$keys] = array('title' => $value['display_name']);
+                if (strlen($value['display_name']) > 20)
+                    $industry_key_val_options[$keys] = substr($value['display_name'], 0, 20) . '...';
                 else
-                    $industry_key_val_options[$keys] = $value['industry_type_name'];
+                    $industry_key_val_options[$keys] = $value['display_name'];
             }
         }
         return array('options' => $industry_key_val_options, 'option_attributes' => $industry_key_val_option_attributes);
