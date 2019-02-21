@@ -1435,7 +1435,7 @@ function checkbook_datafeeds_contracts($form, &$form_state)
 
     $form['columns']['column_select_nycha'] = array(
         '#type' => 'select',
-        '#title' => t('NYCHA<span class="form-required" title="This field is required.">*</span>'),
+        '#title' => t('Columns<span class="form-required" title="This field is required.">*</span>'),
         '#multiple' => TRUE,
         '#options' => _checkbook_datafeeds_contracts_column_options(Datasource::NYCHA, 'default', '', $data_type),
         '#id' => 'edit-column-select-nycha',
@@ -2046,7 +2046,7 @@ function checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $fi
     );
     $form['filter']['nycha_apt_pin'] = array(
         '#type' => 'textfield',
-        '#title' => t('APT PIN:'),
+        '#title' => t('PIN:'),
         '#maxlength' => 100,
         '#attributes' => array('class' => array('watch')),
         '#prefix' => '<div class="datafield nycha-apt-pin">',
