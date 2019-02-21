@@ -4,7 +4,7 @@
   "defaultParameters":{"is_modification":"true"},
   "headerTitle":"Blanket Agreement Modifications",
   "headerSubTitle":"Blanket Agreement Modifications",
-  "footerUrl":"_widget_controller_footer_url($node).NychaContractsUrlService::agreementTypeUrl('BA').NychaContractsUrlService::TypeUrl('BAM')",
+  "footerUrl":"_widget_controller_footer_url($node).NychaContractsUrlService::agreementTypeUrl('BA').NychaContractsUrlService::TypeUrl('BAM').NychaContractsUrlService::modificationUrl()",
   "table_columns":[
     {"labelAlias": "contract_id","column": "contract_id","derivedColumn":"contract_id_link"},
     {"labelAlias": "vendor_name","column": "vendor_name","tooltip":32},

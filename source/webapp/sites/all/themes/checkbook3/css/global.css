@@ -2249,6 +2249,7 @@ table#assoc_contracts_list .assoc_item .rfed-amount {
 }
 .contract-id,
 .inside .contract-details-heading,
+.inside .nycha-contract-details-heading,
 .page-revenue #revenue-transactions .inside .panel-pane.pane-custom.pane-2,
 .page-budget .inside .panel-pane.pane-custom.pane-2,
 .expense_category_budget_details .panel-pane.pane-custom.pane-1
@@ -2666,6 +2667,7 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 #contract-details .contract-id,
 #nyc-payroll .contract-id,
 .inside .contract-details-heading,
+.inside .nycha-contract-details-heading,
 .inside .transactions-container
 .contract_transactions,
 #nyc-expense-pending-contracts .omega-12-twocol-3-9 .inside .contract-details-heading,
@@ -2688,6 +2690,7 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 h1.no-spending-transactions {width: 500px}
 .newwindow .inside .transactions-container,
 .newwindow .inside .contract-details-heading,
+.newwindow .inside .nycha-contract-details-heading,
 .contract_transactions .inside .contract-details-heading,
 #nyc-expense-pending-contracts .inside .contract-details-heading,
 .inside #node-widget-545 .contract-details-heading,
