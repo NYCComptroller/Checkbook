@@ -95,7 +95,7 @@ class NychaContractDetails
                 address_line1,
                 address_line2,
                 city,
-                STATE,
+                state,
                 zip,
                 industry_type_name,
                 department_name,
