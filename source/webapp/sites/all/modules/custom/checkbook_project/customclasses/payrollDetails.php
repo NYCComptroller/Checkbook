@@ -15,7 +15,7 @@ class payrollDetails {
     public function getData(&$node){
 
         list ($year_type, $year, $title) = RequestUtilities::get(['yeartype', 'year|calyear', 'title']);
-        list ($agency, $month, $smnid) = RequestUtilities::get(['agency', 'month', 'smnid']);
+        list ($agency, $month, $smnid,$payroll_type) = RequestUtilities::get(['agency', 'month', 'smnid','payroll_type']);
 
         $data_source = Datasource::getCurrent();
 
@@ -51,6 +51,7 @@ class payrollDetails {
             $title_group_by = ',civil_service_title_code';
         }
         $show_salaried = $smnid == 881 || $smnid == 882;
+        $show_nonsalaried= $payroll_type =="nonsalaried";
 
         if(isset($agency)) {
             $where .= $where == "" ? "WHERE emp.agency_id = '$agency'" : " AND emp.agency_id = '$agency'";
@@ -172,6 +173,14 @@ class payrollDetails {
                 if($result['type_of_employment'] == PayrollType::$SALARIED) {
                     $salaried_results[0] = $result;
                     $node->data = $salaried_results;
+                }
+            }
+        }
+        else if($show_nonsalaried){
+            foreach($results as $result){
+                if($result['type_of_employment'] == PayrollType::$NON_SALARIED) {
+                    $nonsalaried_results[0] = $result;
+                    $node->data = $nonsalaried_results;
                 }
             }
         }
