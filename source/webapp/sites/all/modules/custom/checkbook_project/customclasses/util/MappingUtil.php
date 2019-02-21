@@ -466,8 +466,8 @@ class MappingUtil {
                         if($results)
                             $ethnicity_id = $results[0]['minority_type_id'];
                     }
-                    if($ethnicity_id != 7 && $ethnicity_id != 11){
-                        $title = " <br/><span class=\"second-line\">M/WBE Category: " . MappingUtil::getMinorityCategoryById($ethnicity_id) . "</span>";
+                    if($ethnicity_id != 7 && $ethnicity_id != 11 && $ethnicity_id!==null){
+                        $title = " <br/><span class=\"second-line\">M/WBE Category: ".MappingUtil::getMinorityCategoryById($ethnicity_id) . "</span>";
                     }
                 }
                 break;
@@ -499,8 +499,8 @@ class MappingUtil {
                     if($results)
                         $ethnicity_id = $results[0]['minority_type_id'];
 
-                    if($ethnicity_id != 7 && $ethnicity_id != 11){
-                        $title = " <br/><span class=\"second-line\">M/WBE Category: " . MappingUtil::getMinorityCategoryById($ethnicity_id) . "</span>";
+                    if($ethnicity_id != 7 && $ethnicity_id != 11 && $ethnicity_id!==null){
+                        $title = " <br/><span class=\"second-line\">M/WBE Category: " .MappingUtil::getMinorityCategoryById($ethnicity_id) . "</span>";
                     }
                     break;
             }

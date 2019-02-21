@@ -114,11 +114,11 @@ class ContractsUrlService
             . $spend_type_parameter
             . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
             . RequestUtilities::buildUrlFromParam('status|contstatus')
-            . (!Datasource::isOGE() ? RequestUtilities::buildUrlFromParam('agency|cagency') : "")
-            . (!Datasource::isOGE() ? RequestUtilities::buildUrlFromParam('vendor|cvendor') : RequestUtilities::buildUrlFromParam('vendor'))
-            . RequestUtilities::buildUrlFromParam([
+            . (!Datasource::isOGE() ? RequestUtilities::buildUrlFromParam('agency|sagency') : "")
+            . (!Datasource::isOGE() ? RequestUtilities::buildUrlFromParam('vendor|svendor') : RequestUtilities::buildUrlFromParam('vendor'))
+            . RequestUtilities::buildUrlFromParam('cindustry|sindustry')
+                .RequestUtilities::buildUrlFromParam([
                 'awdmethod',
-                'cindustry',
                 'csize',
             ])
             . _checkbook_project_get_year_url_param_string()

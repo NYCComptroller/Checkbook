@@ -34,7 +34,7 @@
     "agreement_end_date", "release_approved_date", "release_total_amount", "release_original_amount", "release_spend_to_date",
     "purpose", "vendor_name", "location_descr", "location_borough_name", "contract_type_descr", "award_method_name", "grant_name",
     "expenditure_type_descr", "industry_type_name", "funding_source_descr", "responsibility_center_descr", "program_phase_descr",
-    "gl_project_descr", "commodity_category_descr","release_line_total_amount","vendor_id"],
+    "gl_project_descr", "commodity_category_descr","release_line_total_amount","vendor_id","release_line_total_amount","release_line_original_amount","release_line_spend_to_date"],
   "adjustParameters":"
       if(function_exists('_checkbook_project_applyParameterFilters')){
        $parameters = _checkbook_project_applyParameterFilters($node,$parameters);
@@ -74,13 +74,13 @@
      "expression": "_get_tooltip_markup($row['vendor_name'],36)"
       },
     "current_amount_formatted":{
-       "expression": "custom_number_formatter_basic_format($row['release_total_amount'])"
+       "expression": "custom_number_formatter_basic_format($row['release_line_total_amount'])"
       },
       "original_amount_formatted":{
-       "expression": "custom_number_formatter_basic_format($row['release_original_amount'])"
+       "expression": "custom_number_formatter_basic_format($row['release_line_original_amount'])"
        },
       "formatted_spent_to_date": {
-       "expression": "custom_number_formatter_basic_format($row['release_spend_to_date'])"
+       "expression": "custom_number_formatter_basic_format($row['release_line_spend_to_date'])"
       },
       "prime_vendor_name_link": {
        "expression": " '<a href=\"'.
@@ -103,9 +103,9 @@
     {"labelAlias":"start_date","column":"agreement_start_date"},
     {"labelAlias":"end_date","column":"agreement_end_date"},
     {"labelAlias":"release_approved_date","column":"release_approved_date"},
-    {"labelAlias":"current_amount","column":"current_amount_formatted","sortSourceColumn":"release_total_amount"},
-    {"labelAlias":"original_amount","column":"original_amount_formatted","sortSourceColumn":"release_original_amount"},
-    {"labelAlias":"spend_to_date","column":"formatted_spent_to_date","sortSourceColumn":"release_spend_to_date"},
+    {"labelAlias":"current_amount","column":"current_amount_formatted","sortSourceColumn":"release_line_total_amount"},
+    {"labelAlias":"original_amount","column":"original_amount_formatted","sortSourceColumn":"release_line_original_amount"},
+    {"labelAlias":"spend_to_date","column":"formatted_spent_to_date","sortSourceColumn":"release_line_spend_to_date"},
     {"label":"","column":"", "export":false},
     {"labelAlias":"contract_purpose","column":"contract_purpose_formatted","sortSourceColumn":"purpose"},
     {"labelAlias":"vendor_name","column":"prime_vendor_name_link","sortSourceColumn":"vendor_name"},

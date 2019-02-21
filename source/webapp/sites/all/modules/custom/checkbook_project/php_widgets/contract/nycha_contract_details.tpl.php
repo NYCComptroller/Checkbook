@@ -26,7 +26,7 @@ $contract = $node->data;
     <div class="contract-details-heading cb-ma-details">
         <div class="contract-id">
             <h2 class='contract-title'>Contract ID: <span
-                    class="contract-number"><?= $contract['contract_id']; ?></span></h2>
+                    class="contract-number"><?= htmlentities($contract['contract_id']) ?></span></h2>
         </div>
         <div class="dollar-amounts">
             <div class="spent-to-date">
@@ -43,7 +43,7 @@ $contract = $node->data;
             </div>
             <?php if ($node->total_associated_releases): ?>
                 <div class="total-contracts">
-                    <?= $node->total_associated_releases; ?>
+                    <?= intval($node->total_associated_releases) ?>
                     <div class="amount-title">Assoc. Releases</div>
                 </div>
             <?php endif; ?>
@@ -55,29 +55,29 @@ $contract = $node->data;
                     <li>
                         <span class="gi-list-item">Vendor:</span>
                         &nbsp;<a href="<?= NychaContractsUrlService::vendorUrl($contract['vendor_id']) ?>">
-                            <?= $contract['vendor_name']; ?></a></li>
+                            <?= htmlentities($contract['vendor_name']) ?></a></li>
                     <li>
                         <span class="gi-list-item">Purpose:</span>
-                        &nbsp;<?= $contract['purpose']; ?>
+                        &nbsp;<?= htmlentities($contract['purpose']) ?>
                     </li>
                     <li>
                         <span class="gi-list-item">Contract Type:</span>
-                        &nbsp;<?= $contract['contract_type_descr']; ?>
+                        &nbsp;<?= htmlentities($contract['contract_type_descr']) ?>
                     </li>
                     <li>
                         <span class="gi-list-item">Contracting Agency:</span>
                         &nbsp;<a href="<?= NychaContractsUrlService::agencyUrl() ?>">
-                            <?= $contract['agency_name']; ?>
+                            <?= htmlentities($contract['agency_name']) ?>
                         </a>
                     </li>
                     <li><span class="gi-list-item">Award Method:</span>
-                        &nbsp;<?= $contract['award_method_name']; ?>
+                        &nbsp;<?= htmlentities($contract['award_method_name']) ?>
 
                     </li>
 
                     <li>
                         <span class="gi-list-item">Version Number:</span>
-                        &nbsp;<?= $contract['revision_number'] ?>
+                        &nbsp;<?= htmlentities($contract['revision_number']) ?>
                     </li>
                 </ul>
                 <ul class="right">
@@ -93,7 +93,7 @@ $contract = $node->data;
                         </li><?php endif; ?>
                     <li>
                         <span class="gi-list-item">Approved Date:</span>
-                        &nbsp;<?= format_string_to_date($contract['revision_approved_date']); ?>
+                        &nbsp;<?= format_string_to_date($node->contractPO ? $contract['release_approved_date'] : $contract['revision_approved_date']); ?>
                     </li>
                     <li>
                         <span class="gi-list-item">Cancelled Date:</span>
@@ -105,7 +105,7 @@ $contract = $node->data;
                     </li>
                     <li>
                         <span class="gi-list-item">Commodity Category:</span>
-                        &nbsp;<?= $contract['category_descr'] ?>
+                        &nbsp;<?= htmlentities($contract['category_descr']) ?>
                     </li>
                 </ul>
             </div>
@@ -117,11 +117,11 @@ $contract = $node->data;
                     <li>
                         <span class="gi-list-item">Vendor:</span>
                         &nbsp;<a href="<?= NychaContractsUrlService::vendorUrl($contract['vendor_id']) ?>">
-                            <?= $contract['vendor_name'] ?></a></li>
+                            <?= htmlentities($contract['vendor_name']) ?></a></li>
                     <li>
                         <span class="gi-list-item">Address:</span>
-                        &nbsp;<?= $contract['address_line1'] ?>
-                        <br/><?= $contract['address_line2'] ?>
+                        &nbsp;<?= htmlentities($contract['address_line1']) ?> <?= htmlentities($contract['address_line2']) ?>
+                        <?= htmlentities($contract['city']) ?> <?= htmlentities($contract['state']) ?> <?= htmlentities($contract['zip']) ?>
                     </li>
                     <li>
                         <span class="gi-list-item">Total Number of NYCHA Contracts:</span>
@@ -158,16 +158,16 @@ $contract = $node->data;
             <thead>
             <tr>
                 <th class="text">
-                    <div><span>Fiscal<br>Year</span></div>
+                    <div><span>Fiscal<br/>Year</span></div>
                 </th>
                 <th class="text">
-                    <div><span>Number Of<br>Modifications</span></div>
+                    <div><span>Number Of<br/>Modifications</span></div>
                 </th>
                 <th class="number">
-                    <div style="margin-right: 86px;"><span>Current<br>Amount</span></div>
+                    <div style="margin-right: 86px;"><span>Current<br/>Amount</span></div>
                 </th>
                 <th class="number">
-                    <div style="margin-right: 86px;"><span>Original<br>Amount</span></div>
+                    <div style="margin-right: 86px;"><span>Original<br/>Amount</span></div>
                 </th>
             </tr>
             </thead>
@@ -299,51 +299,40 @@ $contract = $node->data;
 
 <?php if ($node->contractPO): ?>
     <div class="contracts-spending-top"><h3>SPENDING BY VENDOR</h3>
-        <table class="dataTable outerTable" style="border: 1px solid #CACACA;">
+        <table class="dataTable cta-spending-history outerTable">
             <thead>
             <tr>
-                <th style="text-align: left !important; vertical-align: middle;">
-                                                        <span
-                                                            style="margin:8px 0 8px 15px!important; display:inline-block; text-align: center !important;">Vendor<br>Name</span>
-                </th>
-                <th style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
-                                                        <span
-                                                            style="margin:8px 0 8px 0 !important;display:inline-block; text-align: center !important;">Current<br>Amount</span>
-                </th>
-                <th style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
-                                                        <span
-                                                            style="margin:8px 0 8px 0 !important;display:inline-block; text-align: center !important;">Original<br>Amount</span>
-                </th>
-                <th style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
-                                                        <span
-                                                            style="margin:8px 0 8px 0 !important;display:inline-block; text-align: center !important;">Spent To<br>Date</span>
-                </th>
+                <th><span
+                        style="margin:8px 0px 8px 15px!important; display:inline-block; text-align: center !important;">
+                                                                Vendor<br/>Name</span></th>
+                <th><span style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
+                                                                Current<br/>Amount</span></th>
+                <th><span style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
+                                                                Original<br/>Amount</span></th>
+                <th><span style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
+                                                                Spent To<br/>Date</span></th>
             </tr>
             </thead>
             <tbody>
             <tr class="even outer">
                 <td style="text-align: left !important; vertical-align: middle; padding: 10px 5px !important;">
-                                                        <span
-                                                            style="margin:8px 0 8px 15px!important; display:inline-block; text-align: left !important;"><a
-                                                                class="showHide  expandTwo"></a><?= $contract['vendor_name']; ?></span>
+                    <span style="margin:8px 0px 8px 15px!important; display:inline-block; text-align: left !important;">
+                    <a class="showHide  expandTwo"></a><?= htmlentities($contract['vendor_name']) ?></span>
                 </td>
-                <td style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
-                                                        <span
-                                                            style="display:inline-block; text-align: right !important;">
-                                                            <?= custom_number_formatter_format($contract['total_amount'], 2, '$'); ?>
-                                                        </span>
+                <td style="text-align: left !important; vertical-align: middle; padding: 10px 5px !important;">
+                    <span style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
+                    <?= custom_number_formatter_format($contract['total_amount'], 2, '$'); ?>
+                    </span>
                 </td>
-                <td style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
-                                                        <span
-                                                            style="display:inline-block; text-align: right !important;">
-                                                            <?= custom_number_formatter_format($contract['original_amount'], 2, '$'); ?>
-                                                        </span>
+                <td style="text-align: left !important; vertical-align: middle; padding: 10px 5px !important;">
+                    <span style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
+                    <?= custom_number_formatter_format($contract['original_amount'], 2, '$'); ?>
+                    </span>
                 </td>
-                <td style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
-                                                        <span
-                                                            style="display:inline-block; text-align: right !important;">
-                                                            <?= custom_number_formatter_format($contract['spend_to_date'], 2, "$"); ?>
-                                                        </span>
+                <td style="text-align: left !important; vertical-align: middle; padding: 10px 5px !important;">
+                    <span style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
+                    <?= custom_number_formatter_format($contract['spend_to_date'], 2, "$"); ?>
+                    </span>
                 </td>
             </tr>
             <tr class="showHide">
@@ -372,13 +361,13 @@ $contract = $node->data;
                                             <th class="number">
                                                 <div
                                                     style="margin-right: 82px;">
-                                                    <span>Current<br>Amount</span>
+                                                    <span>Current<br/>Amount</span>
                                                 </div>
                                             </th>
                                             <th class="number endCol">
                                                 <div
                                                     style="margin-right: 81px;">
-                                                    <span>Original<br>Amount</span>
+                                                    <span>Original<br/>Amount</span>
                                                 </div>
                                             </th>
                                             <th class="number endCol">
@@ -401,10 +390,10 @@ $contract = $node->data;
                                         foreach ($node->shipments as $shipment):?>
                                             <tr class="outer <?= ($z % 2 ? 'even' : 'odd') ?>">
                                                 <td class="text">
-                                                    <div><?= $shipment['shipment_number'] ?></div>
+                                                    <div><?= htmlentities($shipment['shipment_number']) ?></div>
                                                 </td>
                                                 <td class="text">
-                                                    <div><?= $shipment['distribution_number'] ?></div>
+                                                    <div><?= htmlentities($shipment['distribution_number']) ?></div>
                                                 </td>
                                                 <td class="number">
                                                     <div
@@ -428,7 +417,7 @@ $contract = $node->data;
                                                         </div>
                                                 </td>
                                                 <td class="text">
-                                                    <div><?= $shipment['responsibility_center_descr'] ?></div>
+                                                    <div><?= htmlentities($shipment['responsibility_center_descr']) ?></div>
                                                 </td>
                                             </tr>
                                             <?php
@@ -455,14 +444,14 @@ $contract = $node->data;
             <thead>
             <tr>
                 <th class="text">
-                    <div><span>Fiscal<br>Year</span></div>
+                    <div><span>Fiscal<br/>Year</span></div>
                 </th>
                 <th class="text">
-                    <div><span>Number Of<br>Transactions</span></div>
+                    <div><span>Number Of<br/>Transactions</span></div>
                 </th>
                 <th class="number endCol">
                     <div style="margin-right: 119px;">
-                        <span>Amount<br>Spent</span></div>
+                        <span>Amount<br/>Spent</span></div>
                 </th>
             </tr>
             </thead>
@@ -497,10 +486,10 @@ $contract = $node->data;
                                         <div><span>Document id</span></div>
                                     </th>
                                     <th class="number th3">
-                                        <div><span>Check<br>Amount</span></div>
+                                        <div><span>Check<br/>Amount</span></div>
                                     </th>
                                     <th class="text th4">
-                                        <div><span>Expence<br>Category</span>
+                                        <div><span>Expence<br/>Category</span>
                                         </div>
                                     </th>
                                     <th class="text th5">
@@ -618,7 +607,7 @@ $contract = $node->data;
                             <div>
                                 <div><a class="contract-title-text showHide <?= ($ri ? 'open' : '') ?>"></a>
                                     <a>Release Spending for
-                                        <strong><?= $release['release_id'] ?></strong></a>
+                                        <strong><?= htmlentities($release['release_id']) ?></strong></a>
                                 </div>
                             </div>
 
@@ -649,57 +638,51 @@ $contract = $node->data;
                                     <div class="inside">
 
                                         <div class="panel-pane pane-custom pane-1">
-
-
                                             <div class="contracts-spending-top"><h3>SPENDING BY VENDOR</h3>
-                                                <table class="dataTable outerTable" style="border: 1px solid #CACACA;">
+                                                <table class="dataTable cta-spending-history outerTable">
                                                     <thead>
                                                     <tr>
-                                                        <th style="text-align: left !important; vertical-align: middle;">
-                                                        <span
-                                                            style="margin:8px 0 8px 15px!important; display:inline-block; text-align: center !important;">Vendor<br>Name</span>
-                                                        </th>
-                                                        <th style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
-                                                        <span
-                                                            style="margin:8px 0 8px 0 !important;display:inline-block; text-align: center !important;">Current<br>Amount</span>
-                                                        </th>
-                                                        <th style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
-                                                        <span>
-                                                            style="margin:8px 0 8px 0 !important;display:inline-block; text-align: center !important;">Original<br>Amount</span>
-                                                        </th>
-                                                        <th style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
-                                                        <span
-                                                            style="margin:8px 0 8px 0 !important;display:inline-block; text-align: center !important;">Spent To<br>Date</span>
-                                                        </th>
+                                                        <th><span
+                                                                style="margin:8px 0px 8px 15px!important; display:inline-block; text-align: center !important;">
+                                                                Vendor<br/>Name</span></th>
+                                                        <th><span
+                                                                style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
+                                                                Current<br/>Amount</span></th>
+                                                        <th><span
+                                                                style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
+                                                                Original<br/>Amount</span></th>
+                                                        <th><span
+                                                                style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
+                                                                Spent To<br/>Date</span></th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
                                                     <tr class="even outer">
                                                         <td style="text-align: left !important; vertical-align: middle; padding: 10px 5px !important;">
                                                         <span
-                                                            style="margin:8px 0 8px 15px!important; display:inline-block; text-align: left !important;"><a
-                                                                class="showHide  expandTwo"></a><?= $release['vendor_name']; ?></span>
+                                                            style="margin:8px 0px 8px 15px!important; display:inline-block; text-align: left !important;">
+                                                            <a class="showHide  expandTwo"></a><?= htmlentities($release['vendor_name']) ?></span>
                                                         </td>
-                                                        <td style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
+                                                        <td style="text-align: left !important; vertical-align: middle; padding: 10px 5px !important;">
                                                         <span
-                                                            style="display:inline-block; text-align: right !important;">
+                                                            style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
                                                             <?= custom_number_formatter_format($release['release_total_amount'], 2, '$'); ?>
                                                         </span>
                                                         </td>
-                                                        <td style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
+                                                        <td style="text-align: left !important; vertical-align: middle; padding: 10px 5px !important;">
                                                         <span
-                                                            style="display:inline-block; text-align: right !important;">
+                                                            style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
                                                             <?= custom_number_formatter_format($release['release_original_amount'], 2, '$'); ?>
                                                         </span>
                                                         </td>
-                                                        <td style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
+                                                        <td style="text-align: left !important; vertical-align: middle; padding: 10px 5px !important;">
                                                         <span
-                                                            style="display:inline-block; text-align: right !important;">
+                                                            style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
                                                             <?= custom_number_formatter_format($release['release_spend_to_date'], 2, "$"); ?>
                                                         </span>
                                                         </td>
                                                     </tr>
-                                                    <tr class="showHide" style="">
+                                                    <tr class="showHide">
                                                         <td colspan="4">
                                                             <div>
                                                                 <div id="contract_history">
@@ -726,13 +709,13 @@ $contract = $node->data;
                                                                                     <th class="number">
                                                                                         <div
                                                                                             style="margin-right: 82px;">
-                                                                                            <span>Current<br>Amount</span>
+                                                                                            <span>Current<br/>Amount</span>
                                                                                         </div>
                                                                                     </th>
                                                                                     <th class="number endCol">
                                                                                         <div
                                                                                             style="margin-right: 81px;">
-                                                                                            <span>Original<br>Amount</span>
+                                                                                            <span>Original<br/>Amount</span>
                                                                                         </div>
                                                                                     </th>
                                                                                     <th class="number endCol">
@@ -755,10 +738,10 @@ $contract = $node->data;
                                                                                 foreach ($release['shipments'] as $shipment):?>
                                                                                     <tr class="outer <?= ($z % 2 ? 'even' : 'odd') ?>">
                                                                                         <td class="text">
-                                                                                            <div><?= $shipment['shipment_number'] ?></div>
+                                                                                            <div><?= htmlentities($shipment['shipment_number']) ?></div>
                                                                                         </td>
                                                                                         <td class="text">
-                                                                                            <div><?= $shipment['distribution_number'] ?></div>
+                                                                                            <div><?= htmlentities($shipment['distribution_number']) ?></div>
                                                                                         </td>
                                                                                         <td class="number">
                                                                                             <div
@@ -782,7 +765,7 @@ $contract = $node->data;
                                                                                                 </div>
                                                                                         </td>
                                                                                         <td class="text">
-                                                                                            <div><?= $shipment['responsibility_center_descr'] ?></div>
+                                                                                            <div><?= htmlentities($shipment['responsibility_center_descr']) ?></div>
                                                                                         </td>
                                                                                     </tr>
                                                                                     <?php
@@ -809,18 +792,18 @@ $contract = $node->data;
                                                         <thead>
                                                         <tr>
                                                             <th class="text">
-                                                                <div><span>Fiscal<br>Year</span></div>
+                                                                <div><span>Fiscal<br/>Year</span></div>
                                                             </th>
                                                             <th class="text">
-                                                                <div><span>Number Of<br>Modifications</span></div>
+                                                                <div><span>Number Of<br/>Modifications</span></div>
                                                             </th>
                                                             <th class="number endCol">
                                                                 <div style="margin-right: 119px;">
-                                                                    <span>Current<br>Amount</span></div>
+                                                                    <span>Current<br/>Amount</span></div>
                                                             </th>
                                                             <th class="number endCol">
                                                                 <div style="margin-right: 119px;">
-                                                                    <span>Original<br>Amount</span></div>
+                                                                    <span>Original<br/>Amount</span></div>
                                                             </th>
                                                         </tr>
                                                         </thead>
@@ -858,7 +841,7 @@ $contract = $node->data;
                                                                                     </div>
                                                                                 </th>
                                                                                 <th class="text th2">
-                                                                                    <div><span>Approved<br>Date</span>
+                                                                                    <div><span>Approved<br/>Date</span>
                                                                                     </div>
                                                                                 </th>
                                                                                 <th class="text th3">
@@ -893,7 +876,7 @@ $contract = $node->data;
                                                                             foreach ($revisions as $revision): ?>
                                                                                 <tr class="<?= ($revision_cnt % 2 ? 'odd' : 'even') ?>">
                                                                                     <td class="text td1">
-                                                                                        <div><?= $revision['revision_number'] ?></div>
+                                                                                        <div><?= htmlentities($revision['revision_number']) ?></div>
                                                                                     </td>
                                                                                     <td class="text td2">
                                                                                         <div><?= format_string_to_date($revision['revision_approved_date']) ?></div>
@@ -911,7 +894,7 @@ $contract = $node->data;
                                                                                         <div><?= custom_number_formatter_format(($revision['revision_total_amount'] - $revision['release_original_amount']), 2, '$') ?></div>
                                                                                     </td>
                                                                                     <td class="text td7">
-                                                                                        <div><?= $revision['transaction_status_name'] ?></div>
+                                                                                        <div><?= htmlentities($revision['transaction_status_name']) ?></div>
                                                                                     </td>
                                                                                 </tr>
                                                                                 <?php
@@ -938,14 +921,14 @@ $contract = $node->data;
                                                             <thead>
                                                             <tr>
                                                                 <th class="text">
-                                                                    <div><span>Fiscal<br>Year</span></div>
+                                                                    <div><span>Fiscal<br/>Year</span></div>
                                                                 </th>
                                                                 <th class="text">
-                                                                    <div><span>Number Of<br>Transactions</span></div>
+                                                                    <div><span>Number Of<br/>Transactions</span></div>
                                                                 </th>
                                                                 <th class="number endCol">
                                                                     <div style="margin-right: 119px;">
-                                                                        <span>Amount<br>Spent</span></div>
+                                                                        <span>Amount<br/>Spent</span></div>
                                                                 </th>
                                                             </tr>
                                                             </thead>
@@ -982,12 +965,12 @@ $contract = $node->data;
                                                                                     </th>
                                                                                     <th class="number th3">
                                                                                         <div>
-                                                                                            <span>Check<br>Amount</span>
+                                                                                            <span>Check<br/>Amount</span>
                                                                                         </div>
                                                                                     </th>
                                                                                     <th class="text th4">
                                                                                         <div>
-                                                                                            <span>Expence<br>Category</span>
+                                                                                            <span>Expence<br/>Category</span>
                                                                                         </div>
                                                                                     </th>
                                                                                     <th class="text th5">
@@ -1058,48 +1041,47 @@ $contract = $node->data;
                                                    style="border: 1px solid #CACACA;">
                                                 <thead>
                                                 <tr>
-                                                    <th style="text-align: left !important; vertical-align: middle;"><span
+                                                    <th style="text-align: left !important; vertical-align: middle;">
+                                                        <span
                                                             style="margin:8px 0 8px 15px!important; display:inline-block; text-align: center !important;">Expense<br>Category</span>
                                                     </th>
-                                                    <th style="text-align: left !important; vertical-align: middle;"><span
+                                                    <th style="text-align: left !important; vertical-align: middle;">
+                                                        <span
                                                             style="margin:8px 0 8px 15px!important; display:inline-block; text-align: center !important;">Category<br>Type</span>
                                                     </th>
                                                     <th style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
-                            <span
-                                style="margin:8px 0 8px 0 !important;display:inline-block; text-align: center !important;">Encumbered<br>Amount</span>
+                                                        <span
+                                                            style="margin:8px 0 8px 0 !important;display:inline-block; text-align: center !important;">Encumbered<br>Amount</span>
                                                     </th>
                                                     <th style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
-                            <span
-                                style="margin:8px 0 8px 0 !important;display:inline-block; text-align: center !important;">Spent To<br>Date</span>
+                                                        <span
+                                                            style="margin:8px 0 8px 0 !important;display:inline-block; text-align: center !important;">Spent To<br>Date</span>
                                                     </th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
                                                 <tr class="even outer">
                                                     <td style="text-align: left !important; vertical-align: middle; padding: 10px 5px !important;">
-                            <span
-                                style="margin:8px 0 8px 15px!important; display:inline-block; text-align: left !important;">CONSTRUCTION-BUILDINGS</span>
+                                                        <span
+                                                            style="margin:8px 0 8px 15px!important; display:inline-block; text-align: left !important;">CONSTRUCTION-BUILDINGS</span>
                                                     </td>
                                                     <td style="text-align: left !important; vertical-align: middle; padding: 10px 5px !important;">
-                            <span
-                                style="margin:8px 0 8px 15px!important; display:inline-block; text-align: left !important;">OTHER</span>
+                                                        <span
+                                                            style="margin:8px 0 8px 15px!important; display:inline-block; text-align: left !important;">OTHER</span>
                                                     </td>
                                                     <td style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
-                                                                <span
-                                                                    style="display:inline-block; text-align: right !important;">$14.17M</span>
+                                                        <span
+                                                            style="display:inline-block; text-align: right !important;">$14.17M</span>
                                                     </td>
                                                     <td style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
-                                                                <span
-                                                                    style="display:inline-block; text-align: right !important;">$12.74M</span>
+                                                        <span
+                                                            style="display:inline-block; text-align: right !important;">$12.74M</span>
                                                     </td>
                                                 </tr>
                                                 </tbody>
                                             </table>
-
                                         </div>
-
                                     </div>
-
                                 </div>
                             </div>
                         </div>

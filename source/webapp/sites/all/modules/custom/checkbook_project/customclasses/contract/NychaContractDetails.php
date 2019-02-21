@@ -95,7 +95,7 @@ class NychaContractDetails
                 address_line1,
                 address_line2,
                 city,
-                STATE,
+                state,
                 zip,
                 industry_type_name,
                 department_name,
@@ -247,6 +247,7 @@ EOQ2;
             WHERE transaction_status_name = ANY (ARRAY ['APPROVED', 'CLOSED', 'FINALLY CLOSED', 'REQUIRES REAPPROVAL'])
               AND contract_id = '{$contract_id}'
             ORDER BY release_id
+            LIMIT 50
 SQL;
         return _checkbook_project_execute_sql_by_data_source($releases_sql, 'checkbook_nycha');
 

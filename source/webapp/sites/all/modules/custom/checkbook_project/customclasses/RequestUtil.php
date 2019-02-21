@@ -299,7 +299,7 @@ class RequestUtil
         } else if (isset($bottomURL) && preg_match('/payroll_nyc_title_transactions/', $bottomURL)) {
             $smnid = RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL);
             $payroll_type = RequestUtil::getRequestKeyValueFromURL("payroll_type", $bottomURL);
-            if(isset($param_type)){
+            if(isset($payroll_type)){
                 $title = RequestUtil::getPayrollTitlebyType($payroll_type);
             }
             else if ($smnid > 0) {
@@ -1445,6 +1445,17 @@ class RequestUtil
                 break;
         }
         return $title;
+    }
+    public static function getPayrollType(){
+        $URL =  $_SERVER['HTTP_REFERER'];
+
+        $payroll_type = RequestUtil::getRequestKeyValueFromURL("payroll_type", $URL);
+        if($payroll_type){
+            return PayrollType::$NON_SALARIED;
+        }
+        else{
+            return PayrollType::$SALARIED;
+        }
     }
 }
 
