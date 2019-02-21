@@ -26,7 +26,7 @@ $contract = $node->data;
     <div class="contract-details-heading cb-ma-details">
         <div class="contract-id">
             <h2 class='contract-title'>Contract ID: <span
-                    class="contract-number"><?= $contract['contract_id']; ?></span></h2>
+                    class="contract-number"><?= htmlentities($contract['contract_id']) ?></span></h2>
         </div>
         <div class="dollar-amounts">
             <div class="spent-to-date">
@@ -43,7 +43,7 @@ $contract = $node->data;
             </div>
             <?php if ($node->total_associated_releases): ?>
                 <div class="total-contracts">
-                    <?= $node->total_associated_releases; ?>
+                    <?= intval($node->total_associated_releases) ?>
                     <div class="amount-title">Assoc. Releases</div>
                 </div>
             <?php endif; ?>
@@ -55,29 +55,29 @@ $contract = $node->data;
                     <li>
                         <span class="gi-list-item">Vendor:</span>
                         &nbsp;<a href="<?= NychaContractsUrlService::vendorUrl($contract['vendor_id']) ?>">
-                            <?= $contract['vendor_name']; ?></a></li>
+                            <?= htmlentities($contract['vendor_name']) ?></a></li>
                     <li>
                         <span class="gi-list-item">Purpose:</span>
-                        &nbsp;<?= $contract['purpose']; ?>
+                        &nbsp;<?= htmlentities($contract['purpose']) ?>
                     </li>
                     <li>
                         <span class="gi-list-item">Contract Type:</span>
-                        &nbsp;<?= $contract['contract_type_descr']; ?>
+                        &nbsp;<?= htmlentities($contract['contract_type_descr']) ?>
                     </li>
                     <li>
                         <span class="gi-list-item">Contracting Agency:</span>
                         &nbsp;<a href="<?= NychaContractsUrlService::agencyUrl() ?>">
-                            <?= $contract['agency_name']; ?>
+                            <?= htmlentities($contract['agency_name']) ?>
                         </a>
                     </li>
                     <li><span class="gi-list-item">Award Method:</span>
-                        &nbsp;<?= $contract['award_method_name']; ?>
+                        &nbsp;<?= htmlentities($contract['award_method_name']) ?>
 
                     </li>
 
                     <li>
                         <span class="gi-list-item">Version Number:</span>
-                        &nbsp;<?= $contract['revision_number'] ?>
+                        &nbsp;<?= htmlentities($contract['revision_number']) ?>
                     </li>
                 </ul>
                 <ul class="right">
@@ -93,7 +93,7 @@ $contract = $node->data;
                         </li><?php endif; ?>
                     <li>
                         <span class="gi-list-item">Approved Date:</span>
-                        &nbsp;<?= format_string_to_date($contract['revision_approved_date']); ?>
+                        &nbsp;<?= format_string_to_date($node->contractPO ? $contract['release_approved_date'] : $contract['revision_approved_date']); ?>
                     </li>
                     <li>
                         <span class="gi-list-item">Cancelled Date:</span>
@@ -105,7 +105,7 @@ $contract = $node->data;
                     </li>
                     <li>
                         <span class="gi-list-item">Commodity Category:</span>
-                        &nbsp;<?= $contract['category_descr'] ?>
+                        &nbsp;<?= htmlentities($contract['category_descr']) ?>
                     </li>
                 </ul>
             </div>
@@ -117,11 +117,11 @@ $contract = $node->data;
                     <li>
                         <span class="gi-list-item">Vendor:</span>
                         &nbsp;<a href="<?= NychaContractsUrlService::vendorUrl($contract['vendor_id']) ?>">
-                            <?= $contract['vendor_name'] ?></a></li>
+                            <?= htmlentities($contract['vendor_name']) ?></a></li>
                     <li>
                         <span class="gi-list-item">Address:</span>
-                        &nbsp;<?= $contract['address_line1'] ?>
-                        <br/><?= $contract['address_line2'] ?>
+                        &nbsp;<?= htmlentities($contract['address_line1']) ?> <?= htmlentities($contract['address_line2']) ?>
+                        <?= htmlentities($contract['city']) ?> <?= htmlentities($contract['state']) ?> <?= htmlentities($contract['zip']) ?>
                     </li>
                     <li>
                         <span class="gi-list-item">Total Number of NYCHA Contracts:</span>
@@ -325,7 +325,7 @@ $contract = $node->data;
                 <td style="text-align: left !important; vertical-align: middle; padding: 10px 5px !important;">
                                                         <span
                                                             style="margin:8px 0 8px 15px!important; display:inline-block; text-align: left !important;"><a
-                                                                class="showHide  expandTwo"></a><?= $contract['vendor_name']; ?></span>
+                                                                class="showHide  expandTwo"></a><?= htmlentities($contract['vendor_name']) ?></span>
                 </td>
                 <td style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
                                                         <span
@@ -401,10 +401,10 @@ $contract = $node->data;
                                         foreach ($node->shipments as $shipment):?>
                                             <tr class="outer <?= ($z % 2 ? 'even' : 'odd') ?>">
                                                 <td class="text">
-                                                    <div><?= $shipment['shipment_number'] ?></div>
+                                                    <div><?= htmlentities($shipment['shipment_number']) ?></div>
                                                 </td>
                                                 <td class="text">
-                                                    <div><?= $shipment['distribution_number'] ?></div>
+                                                    <div><?= htmlentities($shipment['distribution_number']) ?></div>
                                                 </td>
                                                 <td class="number">
                                                     <div
@@ -428,7 +428,7 @@ $contract = $node->data;
                                                         </div>
                                                 </td>
                                                 <td class="text">
-                                                    <div><?= $shipment['responsibility_center_descr'] ?></div>
+                                                    <div><?= htmlentities($shipment['responsibility_center_descr']) ?></div>
                                                 </td>
                                             </tr>
                                             <?php
@@ -618,7 +618,7 @@ $contract = $node->data;
                             <div>
                                 <div><a class="contract-title-text showHide <?= ($ri ? 'open' : '') ?>"></a>
                                     <a>Release Spending for
-                                        <strong><?= $release['release_id'] ?></strong></a>
+                                        <strong><?= htmlentities($release['release_id']) ?></strong></a>
                                 </div>
                             </div>
 
@@ -678,7 +678,7 @@ $contract = $node->data;
                                                         <td style="text-align: left !important; vertical-align: middle; padding: 10px 5px !important;">
                                                         <span
                                                             style="margin:8px 0 8px 15px!important; display:inline-block; text-align: left !important;"><a
-                                                                class="showHide  expandTwo"></a><?= $release['vendor_name']; ?></span>
+                                                                class="showHide  expandTwo"></a><?= htmlentities($release['vendor_name']) ?></span>
                                                         </td>
                                                         <td style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
                                                         <span
@@ -755,10 +755,10 @@ $contract = $node->data;
                                                                                 foreach ($release['shipments'] as $shipment):?>
                                                                                     <tr class="outer <?= ($z % 2 ? 'even' : 'odd') ?>">
                                                                                         <td class="text">
-                                                                                            <div><?= $shipment['shipment_number'] ?></div>
+                                                                                            <div><?= htmlentities($shipment['shipment_number']) ?></div>
                                                                                         </td>
                                                                                         <td class="text">
-                                                                                            <div><?= $shipment['distribution_number'] ?></div>
+                                                                                            <div><?= htmlentities($shipment['distribution_number']) ?></div>
                                                                                         </td>
                                                                                         <td class="number">
                                                                                             <div
@@ -782,7 +782,7 @@ $contract = $node->data;
                                                                                                 </div>
                                                                                         </td>
                                                                                         <td class="text">
-                                                                                            <div><?= $shipment['responsibility_center_descr'] ?></div>
+                                                                                            <div><?= htmlentities($shipment['responsibility_center_descr']) ?></div>
                                                                                         </td>
                                                                                     </tr>
                                                                                     <?php
@@ -893,7 +893,7 @@ $contract = $node->data;
                                                                             foreach ($revisions as $revision): ?>
                                                                                 <tr class="<?= ($revision_cnt % 2 ? 'odd' : 'even') ?>">
                                                                                     <td class="text td1">
-                                                                                        <div><?= $revision['revision_number'] ?></div>
+                                                                                        <div><?= htmlentities($revision['revision_number']) ?></div>
                                                                                     </td>
                                                                                     <td class="text td2">
                                                                                         <div><?= format_string_to_date($revision['revision_approved_date']) ?></div>
@@ -911,7 +911,7 @@ $contract = $node->data;
                                                                                         <div><?= custom_number_formatter_format(($revision['revision_total_amount'] - $revision['release_original_amount']), 2, '$') ?></div>
                                                                                     </td>
                                                                                     <td class="text td7">
-                                                                                        <div><?= $revision['transaction_status_name'] ?></div>
+                                                                                        <div><?= htmlentities($revision['transaction_status_name']) ?></div>
                                                                                     </td>
                                                                                 </tr>
                                                                                 <?php
