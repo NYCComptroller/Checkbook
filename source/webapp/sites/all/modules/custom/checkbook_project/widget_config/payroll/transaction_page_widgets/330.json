@@ -16,7 +16,6 @@
         "payrolltype":"amount_basis_id.amount_basis_id"
     },
     "paramTypeConfig":{
-        "title":"eqignorecase",
         "grosspayytd":"rangeid3",
         "annualsalary":"rangeid3",
         "overtimepayment":"rangeid3"

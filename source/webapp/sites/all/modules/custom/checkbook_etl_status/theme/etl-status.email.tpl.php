@@ -220,13 +220,31 @@
             </table>
             <br/>
             <br/>
+        <?php elseif('PROD' == $json['source']):?>
+            <table class="file" cellpadding="5">
+                <thead>
+                <tr class="filename">
+                    <th>
+                        PROD ETL :: Missing data source files
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="odd">
+                    <td><strong>No missing data found</strong> ✅</td>
+                </tr>
+                </tbody>
+                <tbody>
+            </table>
+            <br/>
+            <br/>
         <?php endif;
     endforeach; ?>
-    <br/>
-    <br/>
-    <?php if (!empty($solr_health_status)):
+    <?php if (!empty($solr_health_status) && isset($dev_mode) && $dev_mode):
         $i = 0;
         ?>
+        <br/>
+        <br/>
         <table class="dbconnections" cellpadding="3">
             <thead>
             <tr>
@@ -250,12 +268,12 @@
             <?php endforeach; ?>
             </tbody>
         </table>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
     <?php endif; ?>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <?php if (!empty($connections)):
+    <?php if (!empty($connections) && isset($dev_mode) && $dev_mode):
         $i = 0;
         ?>
         <table class="dbconnections" cellpadding="3">
@@ -293,6 +311,7 @@
         <tr align="center">
             <td>
                 © <?php echo date('Y'); ?>, Checkbook NYC<br/>
+                <?php if(isset($dev_mode) && $dev_mode):?>
                 <small>
                     <?php
                     global $conf;
@@ -309,6 +328,7 @@
                         echo $out;
                     endif; ?>
                 </small>
+                <?php endif; ?>
             </td>
         </tr>
     </table>

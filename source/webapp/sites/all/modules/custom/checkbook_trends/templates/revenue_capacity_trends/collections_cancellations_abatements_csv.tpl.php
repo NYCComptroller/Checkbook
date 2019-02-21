@@ -55,7 +55,7 @@ reset($node->data);
 "(2) The Tax Levy amounts are the amount from the City Council Resolution. In 2005 an 18% surcharge was imposed"
 "and is included in each year following."
 
-"Notes: Total uncollected balance at June 30, 2017 less allowance for uncollectible amounts equals net realizable amount"
+"Notes: Total uncollected balance at June 30, <?= $last_year ?> less allowance for uncollectible amounts equals net realizable amount"
 "(real estate taxes receivable)."
 
 "Levy may total over 100 percent due to imposed charges that include ICIP deferred charges (Industrial and Commercial"

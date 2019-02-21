@@ -20,7 +20,6 @@
 
 
 $all_data = array();
-$payroll_type = RequestUtilities::getRequestParamValue('payroll_type');
 $total_annual_salary = 0;
 $total_gross_pay = 0;
 $total_base_pay = 0;
@@ -29,6 +28,7 @@ $total_overtime_pay = 0;
 $total_salaried_employees = 0;
 $total_hourly_employees = 0;
 $total_employees = 0;
+$employment_type = '';
 
 foreach($node->data as $data) {
 
@@ -44,7 +44,7 @@ foreach($node->data as $data) {
     $total_hourly_employees += $node->non_salaried_employees;
 }
 
-$total_annual_salary = $payroll_type=="nonsalaried"? " ":custom_number_formatter_format($total_annual_salary,2,'$');
+$total_annual_salary = custom_number_formatter_format($total_annual_salary,2,'$');
 $total_gross_pay = custom_number_formatter_format($total_gross_pay,2,'$');
 $total_base_pay = custom_number_formatter_format($total_base_pay,2,'$');
 $total_other_payments = custom_number_formatter_format($total_other_payments,2,'$');
@@ -54,10 +54,10 @@ $total_hourly_employees = number_format($total_hourly_employees);
 $total_employees =  number_format($total_employees);
 $total_overtime_employees = number_format($total_overtime_employees);
 $total_overtime_employees_label = WidgetUtil::getLabel('total_no_of_ot_employees').':';
-$payroll_type = $payroll_type=="nonsalaried"?strtoupper(PayrollType::$NON_SALARIED): strtoupper(PayrollType::$SALARIED);
-$employment_type = $payroll_type=="nonsalaried"?strtoupper(PayrollType::$NON_SALARIED): strtoupper(PayrollType::$SALARIED);
+$payroll_type = strtoupper($employment_type);
 
-if($employment_type == PayrollType::$SALARIED) {
+
+if($employment_type == PayrollType::$SALARIED ) {
     $table = "
 <div id='payroll-tx-static-content'>
     <table id='payroll-tx-static-content-table'>
