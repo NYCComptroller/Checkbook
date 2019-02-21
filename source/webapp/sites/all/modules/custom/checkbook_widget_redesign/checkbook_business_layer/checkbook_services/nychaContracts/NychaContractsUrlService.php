@@ -87,4 +87,13 @@ class NychaContractsUrlService
             . '/agency/' . $agencyID;
         return $url;
     }
+    /**
+     * @param int $agencyID
+     * @return string
+     */
+    public static function modificationUrl()
+    {
+        $url = "/modamt/0";
+        return $url;
+    }
 }
