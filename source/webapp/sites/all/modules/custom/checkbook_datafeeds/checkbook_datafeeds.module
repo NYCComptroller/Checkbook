@@ -1328,6 +1328,7 @@ function checkbook_datafeeds_contracts($form, &$form_state)
     $data_type = $form_state['step_information']['type']['stored_values']['format'];
     $data_source = $form_state['values']['datafeeds-contracts-domain-filter'];
     $data_source = !isset($data_source) ? 'checkbook' : $data_source;
+    $nycha_agency_code = emptyToZero($form_state['values']['nycha_agency']);
 
     //<editor-fold desc="Heading">
 
@@ -1442,7 +1443,10 @@ function checkbook_datafeeds_contracts($form, &$form_state)
     );
 
     if($form_state['input']['datafeeds-contracts-domain-filter'] == 'checkbook_oge'){
-        $multi_select_hidden = isset($form_state['input']['column_select_oge_expense']) ? '|' . implode('||', $form_state['input']['column_select_oge_expense']) . '|' : '';
+        if($nycha_agency_code = 996)
+            $multi_select_hidden = isset($form_state['input']['column_select_nycha']) ? '|' . implode('||', $form_state['input']['column_select_nycha']) . '|' : '';
+        else
+            $multi_select_hidden = isset($form_state['input']['column_select_oge_expense']) ? '|' . implode('||', $form_state['input']['column_select_oge_expense']) . '|' : '';
     }else{
         if($form_state['input']['df_contract_status'] == 'pending'){
             if ($form_state['input']['category'] != 'all') {
@@ -5981,10 +5985,15 @@ function checkDateFormat($date) {
  * @return array
  *   re-ordered columns
  */
-function checkbook_datafeeds_format_columns() {
+function checkbook_datafeeds_format_columns($domain = null, $data_source = null) {
     //Used to maintain the order of the columns
     $hidden_selected_values = $_POST['hidden_multiple_value']; //get the values from the hidden field
-    if($_POST['year'] == 'ALL'){
+    if($domain == Domain::$CONTRACTS && $data_source == Datasource::NYCHA){
+        $year = $_POST['nycha_year'];
+    }else{
+        $year = $_POST['year'];
+    }
+    if($year == 'ALL'){
         if(strpos($hidden_selected_values, "|year|")){
             $hidden_selected_values = str_replace("|year|", "", $hidden_selected_values);
         }
