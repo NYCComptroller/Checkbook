@@ -74,8 +74,10 @@
           ],
     "adjustDataTableOptions":"
         $adjustDataTableOptions = $node->widgetConfig->dataTableOptions;
-            $payroll_type =  RequestUtilities::getRequestParamValue('payroll_type');
+
+
             $smnid = RequestUtilities::getRequestParamValue('smnid');
+            $payroll_type = RequestUtil::getPayrollType();
             if(isset($smnid)){
                 switch($smnid){
                     case 322:
@@ -91,14 +93,16 @@
                     break;
                 }
             }
-       if($payroll_type == 'nonsalaried' ){
-        foreach($node->widgetConfig->table_columns as $key => $table_column){
-           if($table_column->labelAlias == 'combined_annual_salary'){
-            unset($node->widgetConfig->table_columns[$key]);
-             unset($adjustDataTableOptions->aoColumns[$key]);
-     }
-   }
-  }
+
+          if($payroll_type==PayrollType::$NON_SALARIED){
+           foreach($node->widgetConfig->table_columns as $key => $table_column){
+        if($table_column->labelAlias == 'combined_annual_salary'){
+        unset($node->widgetConfig->table_columns[$key]);
+        unset($adjustDataTableOptions->aoColumns[$key]);
+        }
+        }
+        }
+
 $node->widgetConfig->table_columns = array_values($node->widgetConfig->table_columns);
 $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoColumns);
     ",
