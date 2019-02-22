@@ -173,6 +173,10 @@ class RequestUtilities
      */
     private static function getFilteredQueryParam($paramName, $options = [])
     {
+        if (isset($_GET[$paramName])) {
+            return htmlspecialchars_decode(trim(filter_xss($_GET[$paramName])), ENT_QUOTES);
+        }
+
         if (isset($options['q'])) {
             $urlPath = $options['q'];
         } else {
