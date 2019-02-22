@@ -10,7 +10,7 @@ source/webapp/sites/all/modules/custom/checkbook_advanced_search/includes/Config
 source/tests/unit/reports
 source/tests/functional/NYCAutomationTest/*.xls
 *.swp
-
+*.cache
 
 
 
