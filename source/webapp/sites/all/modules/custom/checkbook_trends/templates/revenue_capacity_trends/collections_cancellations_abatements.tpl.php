@@ -80,7 +80,7 @@
     (2) The Tax Levy amounts are the amount from the City Council Resolution. In 2005 an 18% surcharge was imposed
     and is included in each year following.
 </p>
-<p>Notes: Total uncollected balance at June 30, 2017 less allowance for uncollectible amounts equals net realizable amount
+<p>Notes: Total uncollected balance at June 30, <?= $last_year ?> less allowance for uncollectible amounts equals net realizable amount
     (real estate taxes receivable).</p>
 <p>Levy may total over 100 percent due to imposed charges that include ICIP deferred charges (Industrial and Commercial
     Incentive Program), rebilling charges and other additional charges imposed by The Department of Finance(DOF). This

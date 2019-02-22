@@ -2165,7 +2165,6 @@ function _checkbook_max_data_year()
         'cal_year_value' => $year,
         'cal_year_id' => $year_id
     ];
-    return $result;
 }
 
 /*

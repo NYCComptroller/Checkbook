@@ -219,7 +219,10 @@ function panels_breadcrumbs_build_breadcrumb($conf, $contexts, $override = FALSE
     foreach ($breadcrumbs_info as $crumb) {
       if (isset($crumb['href']) && $crumb['href'] == '<none>') {
         $crumb['localized_options'] += array('attributes' => array(), 'html' => TRUE);
-        $breadcrumbs[] = '<span ' . drupal_attributes($crumb['localized_options']['attributes']) . '>' . ($crumb['localized_options']['html'] ? $crumb['title'] : check_plain($crumb['title'])) . '</span>';
+        $attributes = drupal_attributes($crumb['localized_options']['attributes']);
+        $content = $crumb['localized_options']['html'] ? filter_xss_admin($crumb['title']) : check_plain($crumb['title']);
+
+        $breadcrumbs[] = sprintf('<span %s>%s</span>', $attributes, $content);
       }
       else {
         $breadcrumbs[] = l($crumb['title'], $crumb['href'], $crumb['localized_options']);

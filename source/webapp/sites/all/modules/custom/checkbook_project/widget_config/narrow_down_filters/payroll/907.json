@@ -12,7 +12,6 @@
     "filterName":"Title",
     "facetPager":true,
     "urlParameterName":"title",
-    "urlParameterNameType":"eqtext",
     "autocompleteParamName":"ftitle_auto",
     "autocompleteID":"ftitle",
     "autocompleteField":"civil_service_title.civil_service_title",
