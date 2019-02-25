@@ -49,11 +49,16 @@ $non_salaried_count = count($all_data[PayrollType::$NON_SALARIED]);
 //Default view based on salamttype in url
 $default_view = $salaried_count > 0 ? PayrollType::$SALARIED : PayrollType::$NON_SALARIED;
 $salamttype = RequestUtilities::get('salamttype');
+//Default view based on payroll type in url
+$payroll_type = RequestUtil::getPayrollType();
 if(isset($salamttype)) {
     $salamttype = explode('~',$salamttype);
     if (!in_array(1, $salamttype)) {
         $default_view = PayrollType::$NON_SALARIED;
     }
+}
+if($payroll_type==PayrollType::$NON_SALARIED){
+    $default_view =  PayrollType::$NON_SALARIED;
 }
 
 

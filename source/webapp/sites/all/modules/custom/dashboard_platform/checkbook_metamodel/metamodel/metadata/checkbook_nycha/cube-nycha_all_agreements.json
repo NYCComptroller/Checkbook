@@ -143,7 +143,7 @@
           "function":"COUNT(*)"
         },
         "total_current_amount": {
-          "function": "SUM(COALESCE($COLUMN{release_total_amount},0))"
+          "function": "SUM(COALESCE($COLUMN{release_line_total_amount},0))"
         },
         "g100m_prime_count": {
           "function": "SUM(CASE WHEN COALESCE($COLUMN{release_line_total_amount},0) > 100000000 THEN 1 ELSE 0 END)"
