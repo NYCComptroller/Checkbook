@@ -315,7 +315,8 @@ body.page-data-feeds #edit-columns .form-item-column-select-oge-expense label,
 body.page-data-feeds #edit-columns .form-item-column-select-revenue label,
 body.page-data-feeds #edit-columns .form-item-column-select-all label,
 body.page-data-feeds #edit-columns .form-item-column-select-pending-all label,
-body.page-data-feeds #edit-columns .form-item-column-select-pending label {
+body.page-data-feeds #edit-columns .form-item-column-select-pending label,
+body.page-data-feeds #edit-columns .form-item-column-select-nycha label{
     margin-left: 97px;
 }
 
