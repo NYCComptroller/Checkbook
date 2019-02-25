@@ -67,11 +67,8 @@
         'Vendor: ' . $row['vendor_name'] .  '<br/>' .
         'Number of Contracts: ' . $row['total_contracts'].  '<br/>' .
         'Amount: ' . custom_number_formatter_format($row['current_amount_sum'] ,2, '$').  '<br/>';
-          $link = strstr($_GET['q'],'/',true) .  ContractUtil::get_contracts_vendor_link($row['vendor_id'],RequestUtilities::getRequestParamValue('year'),
-          RequestUtilities::getRequestParamValue('yeartype'), RequestUtilities::getRequestParamValue('agency')) .
-        '?expandBottomCont=true';
+        $link =  strstr($_GET['q'],'/',true) .  NychaContractsUrlService::vendorUrl($row['vendor_id']) .'?expandBottomCont=true';
         $series_new[$index]->url = 	$link;
-
         $series_new[$index]->y = (float)$row['current_amount_sum'];
         $series_new[$index]->tooltip_label = $tooltip_label;
         $node->widgetConfig->gridConfig->data[] = array($row['vendor_name'],$row['total_contracts'],$row['current_amount_sum'] );
