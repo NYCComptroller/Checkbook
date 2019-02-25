@@ -40,7 +40,7 @@ return $serieParameters;
   $parameters = $node->nodeAdjustedParamaterConfig;
   $parameter_mapping = array('vendor'=>'vendor_id','year'=>'fiscal_year_id','calyear'=>'fiscal_year_id');
   foreach($node->widgetConfig->requestParams as $param=>$value){
-    if($param == 'year'){
+    if($param == 'year' ||  $param =='calyear'){
       $where_filters[] = '('. $value . ' BETWEEN y.year_id AND y1.year_id)';
     }else if(array_key_exists($param,  $parameter_mapping)){
       $where_filters[] = _widget_build_sql_condition( $parameter_mapping[$param], $value);
