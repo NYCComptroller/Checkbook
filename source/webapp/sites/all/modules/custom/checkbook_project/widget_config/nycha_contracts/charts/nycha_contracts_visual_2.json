@@ -102,9 +102,7 @@ $tooltip_label =
 'Amount: ' . custom_number_formatter_format($row['total_amount'] ,2, '$').  '<br/>'
 ;
 
-$link = strstr($_GET['q'],'/',true) .  ContractUtil::get_contracts_vendor_link($row['vendor_id'],RequestUtilities::getRequestParamValue('year'),
-RequestUtilities::getRequestParamValue('yeartype'), RequestUtilities::getRequestParamValue('agency')) .
-'?expandBottomCont=true';
+$link = NychaContractsUrlService::contractDetailsUrl($row['contract_id']);
 $series_new[$index]->url = 	$link;
 
 $series_new[$index]->y = (float)$row['total_amount'];
