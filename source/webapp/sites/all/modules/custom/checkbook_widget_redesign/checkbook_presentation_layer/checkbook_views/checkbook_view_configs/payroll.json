@@ -54,7 +54,8 @@
                     "legacy_node_id": 325
                 },
                 "nonsalaried_agency": {
-                    "widget_config": "nonsalaried_agency_view"
+                    "widget_config": "nonsalaried_agency_view",
+                     "param_config": "nonsalaried"
                 },
                 "titles_by_agency": {
                     "widget_config": "titles_by_agency_view",
