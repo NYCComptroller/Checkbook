@@ -16,14 +16,10 @@ class payrollDetails {
 
         list ($year_type, $year, $title) = RequestUtilities::get(['yeartype', 'year|calyear', 'title']);
         list ($agency, $month, $smnid,$payroll_type) = RequestUtilities::get(['agency', 'month', 'smnid','payroll_type']);
-        $http_ref = $_SERVER['HTTP_REFERER'];
-        $current_url = $_GET['q'];
-        $summary_by_agency = '';
+        $current_url = explode('/',$_SERVER['HTTP_REFERER']);
+        $summary_by_agency = array_search('payroll_agencytransactions',$current_url);
 
 
-        if(preg_match("/payroll\/agencywide\/transactions/",$current_url)|| preg_match("/payroll\/agencywide\/transactions/",$http_ref)){
-                $summary_by_agency = true;
-            }
 
 
         $data_source = Datasource::getCurrent();
