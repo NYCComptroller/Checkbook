@@ -104,6 +104,7 @@ class WidgetUtil
         "combined_annual_salary" => "Combined<br/>Annual Salary",
         "total_combined_annual_salary" => "Total Combined Annual<br/>Salary",
         "hourly_rate" => "Hourly<br/>Rate",
+        "daily_wage" => "Daily<br/>Wage",
         "pay_rate" => "Pay<br/>Rate",
         "pay_frequency" => "Pay<br/>Frequency",
         "pay_date" => "Pay<br/>Date",
