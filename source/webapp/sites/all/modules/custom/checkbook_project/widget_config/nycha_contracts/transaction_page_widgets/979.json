@@ -42,6 +42,7 @@
       }
      return $parameters;
   ",
+  "uniqueSortColumn":["-release_number", "-shipment_number", "-distribution_number"],
   "caption":"",
   "derivedColumns": {
   "contract_purpose_formatted": {
