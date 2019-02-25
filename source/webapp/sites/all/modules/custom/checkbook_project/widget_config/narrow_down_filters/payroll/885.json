@@ -24,6 +24,9 @@
         if( isset($agencyId)){
             $node->widgetConfig->dataset = 'checkbook:payroll_employee_agency_title';
         }
+        if(isset($parameters['employment_type.employment_type'])){
+          $parameters['employment_type.employment_type']=RequestUtil::getPayrollType();
+         }
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
         }

@@ -48,6 +48,7 @@ class NychaContractsUrlService
             . RequestUtilities::buildUrlFromParam('year')
             . RequestUtilities::buildUrlFromParam('datasource')
             . RequestUtilities::buildUrlFromParam('agency')
+            . RequestUtilities::buildUrlFromParam('vendor')
             . '?expandBottomContURL=/panel_html/nycha_contract_details/contract/' . $contract_id;
 
         return $url;
