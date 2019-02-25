@@ -88,6 +88,7 @@
             {"labelAlias": "agency_name","column":"agency_name_formatted","sortSourceColumn":"agency.agency.agency_name"},
             {"labelAlias": "annual_salary","column": "annual_salary_link","sortSourceColumn": "total_salaried_amount"},
             {"labelAlias": "hourly_rate","column": "non_salary_link","sortSourceColumn": "total_non_salaried_amount"},
+            {"labelAlias": "daily_wage","column": "non_salary_link","sortSourceColumn": "total_non_salaried_amount"},
             {"labelAlias": "gross_pay_ytd","column": "formatted_gross_pay_amount","sortSourceColumn": "total_gross_pay"},
             {"labelAlias": "base_pay","column": "formatted_base_salary_amount","sortSourceColumn": "total_base_salary"},
             {"labelAlias": "other_pays","column": "formatted_other_payments_amount","sortSourceColumn": "total_other_payments"},
@@ -95,8 +96,10 @@
             {"labelAlias": "payroll_type","column": "payroll_type_formatted","sortSourceColumn": "employment_type.employment_type"}
           ],
     "adjustDataTableOptions":"
-
+            $adjustDataTableOptions = $node->widgetConfig->dataTableOptions;
             $nid = RequestUtilities::getRequestParamValue('smnid');
+            $payroll_type = RequestUtil::getPayrollType();
+            $datasource = RequestUtilities::getRequestParamValue('datasource');
             if(!isset($nid)) {
                 $nid = !isset($nid) ? RequestUtilities::getRequestParamValue('dtsmnid') : $nid;
             }
@@ -117,6 +120,22 @@
                     break;
                 }
             }
+
+        foreach($node->widgetConfig->table_columns as $key => $table_column){
+            if(($table_column->labelAlias == 'annual_salary' )&& ($payroll_type==PayrollType::$NON_SALARIED )){
+            unset($node->widgetConfig->table_columns[$key]);
+            unset($adjustDataTableOptions->aoColumns[$key]);
+            }
+            if(($table_column->labelAlias == 'daily_wage' )&& ($datasource!='checkbook_nycha' )){
+            unset($node->widgetConfig->table_columns[$key]);
+            unset($adjustDataTableOptions->aoColumns[$key]);
+            }
+           else if($table_column->labelAlias == 'daily_wage' ){
+                  $adjustDataTableOptions->aaSorting = array(array(3, 'desc'));
+              }
+            }
+$node->widgetConfig->table_columns = array_values($node->widgetConfig->table_columns);
+$adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoColumns);
     ",
     "adjustParameters":"
         $sortingCol = $_REQUEST['iSortCol_0'];
@@ -162,6 +181,7 @@
             {"sClass":"text", "sWidth":"150px","asSorting": [ "asc","desc" ]},
             {"sClass":"text pad-left","asSorting": [ "asc","desc" ]},
             {"sClass":"number","asSorting": [ "desc","asc" ]},
+            {"sClass":"number pad-left endCol","asSorting": [ "desc","asc" ]},
             {"sClass":"number pad-left endCol","asSorting": [ "desc","asc" ]},
             {"sClass":"number pad-left","asSorting": [ "desc","asc" ]},
             {"sClass":"number pad-left","asSorting": [ "desc","asc" ]},

@@ -16,6 +16,11 @@ class payrollDetails {
 
         list ($year_type, $year, $title) = RequestUtilities::get(['yeartype', 'year|calyear', 'title']);
         list ($agency, $month, $smnid,$payroll_type) = RequestUtilities::get(['agency', 'month', 'smnid','payroll_type']);
+        $current_url = explode('/',$_SERVER['HTTP_REFERER']);
+        $summary_by_agency = array_search('payroll_agencytransactions',$current_url);
+
+
+
 
         $data_source = Datasource::getCurrent();
 
@@ -176,7 +181,7 @@ class payrollDetails {
                 }
             }
         }
-        else if($show_nonsalaried){
+        else if($show_nonsalaried && !$summary_by_agency){
             foreach($results as $result){
                 if($result['type_of_employment'] == PayrollType::$NON_SALARIED) {
                     $nonsalaried_results[0] = $result;
