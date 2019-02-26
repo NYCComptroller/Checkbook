@@ -119,33 +119,8 @@
             $nid = RequestUtilities::getRequestParamValue('smnid');
             $payroll_type = RequestUtil::getPayrollType();
             $datasource = RequestUtilities::getRequestParamValue('datasource');
-            if(!isset($nid)) {
-                $nid = !isset($nid) ? RequestUtilities::getRequestParamValue('dtsmnid') : $nid;
-            }
-            if(isset($nid)){
-                switch($nid){
-                    case 322:
-                    case 491:
-                    case 492:
-                        $node->widgetConfig->dataTableOptions->aaSorting = array(array(7,'desc'));
-                    break;
-                    case 320:
-                    case 325:
-                        $node->widgetConfig->dataTableOptions->aaSorting = array(array(2,'desc'));
-                    break;
-                    case 323:
-                    break;
-                    default:
-                    break;
-                }
-            }
 
         foreach($node->widgetConfig->table_columns as $key => $table_column){
-          //annual salary column must be removed when payroll type is nonsalaried
-            if(($table_column->labelAlias == 'annual_salary' )&& ($payroll_type==PayrollType::$NON_SALARIED )){
-            unset($node->widgetConfig->table_columns[$key]);
-            unset($adjustDataTableOptions->aoColumns[$key]);
-            }
            //daily wage column must not be included in citywide
             if(($table_column->labelAlias == 'daily_wage' )&& ($datasource!='checkbook_nycha' )){
                unset($node->widgetConfig->table_columns[$key]);
@@ -161,6 +136,26 @@
                   $adjustDataTableOptions->aaSorting = array(array(3, 'desc'));
                   $node->widgetConfig->columns[]='total_daily_wage_amount';
               }
+            }
+            if(!isset($nid)) {
+            $nid = !isset($nid) ? RequestUtilities::getRequestParamValue('dtsmnid') : $nid;
+            }
+            if(isset($nid)){
+            switch($nid){
+            case 322:
+            case 491:
+            case 492:
+            $node->widgetConfig->dataTableOptions->aaSorting = array(array(7,'desc'));
+            break;
+            case 320:
+            case 325:
+            $node->widgetConfig->dataTableOptions->aaSorting = array(array(2,'desc'));
+            break;
+            case 323:
+            break;
+            default:
+            break;
+            }
             }
 $node->widgetConfig->table_columns = array_values($node->widgetConfig->table_columns);
 $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoColumns);

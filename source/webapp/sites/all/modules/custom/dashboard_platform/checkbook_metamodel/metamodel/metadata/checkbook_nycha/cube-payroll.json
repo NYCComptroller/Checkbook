@@ -203,6 +203,9 @@
                 "payroll_type": {
                     "function": "MAX(CASE WHEN amount_basis_id = 1 THEN 'Salaried' ELSE 'Non-Salaried' END)"
                 },
+                "rate_type": {
+                    "function": "MAX(CASE WHEN amount_basis_id = 2 THEN 'Daily' WHEN amount_basis_id = 3 Then 'Hourly' Else 'Annual'END)"
+                },
                 "annual_salary_pay":{
                     "function": "CASE WHEN amount_basis_id = 1 THEN annual_salary ELSE NULL END"
                 },
