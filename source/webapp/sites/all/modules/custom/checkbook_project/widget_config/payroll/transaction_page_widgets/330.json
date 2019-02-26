@@ -110,6 +110,7 @@
       //hourly rate column must refer amount basis id for nycha
       if(($table_column->labelAlias == 'hourly_rate' )&& ($datasource=='checkbook_nycha' )){
       $table_column->column= 'formatted_hourly_rate_amount';
+      $table_column->exportColumn= 'formatted_hourly_rate_amount';
       }
       //daily wage column must be sorted by default for nycha and must  refer amount basis id
       if($table_column->labelAlias == 'daily_wage' && ($datasource=='checkbook_nycha' )){
