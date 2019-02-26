@@ -2018,7 +2018,7 @@ function checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $fi
         '#suffix' => '</div></div>',
         '#id' => 'edit-nycha-currentamtto',
         '#name' => 'nycha_currentamtto',
-        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha-currentamtto', $first_time_load, ''),
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_currentamtto', $first_time_load, ''),
     );
     $form['filter']['nycha_agency'] = array(
         '#type' => 'select',
