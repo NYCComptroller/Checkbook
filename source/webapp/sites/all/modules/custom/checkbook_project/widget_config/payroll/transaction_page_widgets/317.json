@@ -133,7 +133,7 @@
            }
            //daily wage column must be sorted by default for nycha and must  refer amount basis id
             if($table_column->labelAlias == 'daily_wage' && ($datasource=='checkbook_nycha' )){
-                  $adjustDataTableOptions->aaSorting = array(array(3, 'desc'));
+                  $adjustDataTableOptions->aaSorting = array(array(4, 'desc'));
                   $node->widgetConfig->columns[]='total_daily_wage_amount';
               }
             }
@@ -145,13 +145,21 @@
             case 322:
             case 491:
             case 492:
-            $node->widgetConfig->dataTableOptions->aaSorting = array(array(7,'desc'));
+            if($datasource=='checkbook_nycha'){
+              $node->widgetConfig->dataTableOptions->aaSorting = array(array(8,'desc'));
+                  }
+             else{
+               $node->widgetConfig->dataTableOptions->aaSorting = array(array(7, 'desc'));
+            }
             break;
             case 320:
             case 325:
             $node->widgetConfig->dataTableOptions->aaSorting = array(array(2,'desc'));
             break;
             case 323:
+            if($datasource='checkbook_nycha'){
+            $node->widgetConfig->dataTableOptions->aaSorting = array(array(5, 'desc'));
+            }
             break;
             default:
             break;
