@@ -20,6 +20,8 @@
 ?>
 <?php  
 echo eval($node->widgetConfig->header);
+
+$first_year = $node->data[0]['fiscal_year'];
 $last_year = end($node->data)['fiscal_year'];
 reset($node->data);
 ?>
@@ -38,7 +40,7 @@ reset($node->data);
     <thead>
     <tr>
     	<th rowspan="3" class="number"><div class="trendCen">Year</div></th>
-    	<th class="centrig bb" colspan="5"><div>1994-<?= $last_year ?></div></th>
+    	<th class="centrig bb" colspan="5"><div><?= $first_year ?>-<?= $last_year ?></div></th>
     </tr>
     <tr>
 
