@@ -7,7 +7,7 @@
     "allowFacetDeselect":true,
     "columns":["amount_basis_id.amount_basis_id","payroll_type", "txcount"],
     "urlParamMap":{
-        "payrolltype":"amount_basis_id.amount_basis_id"
+    "payrolltype":"amount_basis_id.amount_basis_id"
     },
     "orderBy":"-txcount",
     "filterName":"Payroll Type",
@@ -15,11 +15,11 @@
     "urlParameterName":"payrolltype",
     "autocompleteID":"fpayrolltype",
     "adjustParameters":"
-        if(function_exists('_checkbook_project_applyParameterFilters')){
-            $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
-        }
-        return $adjustedParameters;
+    if(function_exists('_checkbook_project_applyParameterFilters')){
+    $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+    }
+    return $adjustedParameters;
     ",
     "transformationPHP":"return PayrollUtil::updatePayrollTypeFacetData($node);",
-    "template":"individual_filter"
+"template":"individual_filter"
 }
