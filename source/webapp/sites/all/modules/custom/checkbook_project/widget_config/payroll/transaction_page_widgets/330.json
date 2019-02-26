@@ -1,7 +1,7 @@
 {
     "widgetType": "data_tables",
     "widgetSubType": "dataTableList",
-    "cleanURLParameters":["abc","xyz","agency","calyear","year","title","grosspayytd","annualsalary","overtimepayment","payfrequency","payrolltype"],
+    "cleanURLParameters":["abc","xyz","agency","calyear","year","title","grosspayytd","annualsalary","overtimepayment","payfrequency","payrolltype","ratetype"],
     "urlParamMap":{
         "xyz":"employee_id.employee_id",
         "abc":"employee_id.employee_id",
@@ -13,7 +13,8 @@
         "annualsalary":"annual_salary.annual_salary",
         "overtimepayment":"overtime_pay.overtime_pay",
         "payfrequency":"pay_frequency.pay_frequency",
-        "payrolltype":"amount_basis_id.amount_basis_id"
+        "payrolltype":"amount_basis_id.amount_basis_id",
+      "ratetype":"amount_basis_id.amount_basis_id"
     },
     "paramTypeConfig":{
         "grosspayytd":"rangeid3",
@@ -34,6 +35,12 @@
     "columns": ["employee_number.employee_number","payroll_id.payroll_id","agency_name.agency_name","civil_service_title.civil_service_title","annual_salary.annual_salary","amount_basis_id.amount_basis_id","payroll_type","pay_frequency.pay_frequency","pay_date.pay_date","gross_pay.gross_pay","base_pay.base_pay","other_payments.other_payments","overtime_pay.overtime_pay","gross_pay_cytd.gross_pay_cytd","calendar_fiscal_year_id.calendar_fiscal_year_id","agency_id.agency_id","annual_salary_pay","hourly_rate_pay"],
     "caption":"",
     "derivedColumns": {
+      "formatted_daily_wage_amount": {
+        "expression": "$row['amount_basis_id_amount_basis_id'] == 2 ? custom_number_formatter_basic_format($row['annual_salary_annual_salary'])  : '-'"
+      },
+      "formatted_hourly_rate_amount": {
+        "expression": "$row['amount_basis_id_amount_basis_id'] == 3 ? custom_number_formatter_basic_format($row['annual_salary_annual_salary'])  : '-'"
+      },
         "formatted_annual_salary": {
         "expression": "$row['amount_basis_id_amount_basis_id'] == 1 ? custom_number_formatter_basic_format($row['annual_salary_annual_salary'])  : '-'"
         },
@@ -80,6 +87,7 @@
             {"labelAlias": "pay_date","column":"pay_date_formatted",  "sortSourceColumn":"pay_date.pay_date"},
             {"labelAlias": "annual_salary","column": "formatted_annual_salary","sortSourceColumn": "annual_salary_pay"},
             {"labelAlias": "hourly_rate","column": "formatted_hourly_rate","sortSourceColumn": "hourly_rate_pay"},
+           {"labelAlias": "daily_wage","column": "formatted_daily_wage_amount","sortSourceColumn": "hourly_rate_pay"},
             {"labelAlias": "pay_frequency","column": "pay_frequency_formatted","sortSourceColumn":"pay_frequency.pay_frequency"},
             {"labelAlias": "gross_pay","column": "formatted_gross_pay_amount","sortSourceColumn": "gross_pay.gross_pay"},
             {"labelAlias": "base_pay","column": "formatted_base_pay_amount","sortSourceColumn": "base_pay.base_pay"},
@@ -88,6 +96,28 @@
             {"labelAlias": "gross_pay_ytd","column": "formatted_gross_pay_ytd_amount","sortSourceColumn": "gross_pay_cytd.gross_pay_cytd"},
             {"labelAlias": "payroll_type","column": "payroll_type_formatted","sortSourceColumn": "payroll_type"}
           ],
+    "adjustDataTableOptions":"
+        $adjustDataTableOptions = $node->widgetConfig->dataTableOptions;
+        $nid = RequestUtilities::getRequestParamValue('smnid');
+        $payroll_type = RequestUtil::getPayrollType();
+        $datasource = RequestUtilities::getRequestParamValue('datasource');
+        foreach($node->widgetConfig->table_columns as $key => $table_column){
+        //daily wage column must not be included in citywide
+        if(($table_column->labelAlias == 'daily_wage' )&& ($datasource!='checkbook_nycha' )){
+        unset($node->widgetConfig->table_columns[$key]);
+      unset($adjustDataTableOptions->aoColumns[$key]);
+      }
+      //hourly rate column must refer amount basis id for nycha
+      if(($table_column->labelAlias == 'hourly_rate' )&& ($datasource=='checkbook_nycha' )){
+      $table_column->column= 'formatted_hourly_rate_amount';
+      }
+      //daily wage column must be sorted by default for nycha and must  refer amount basis id
+      if($table_column->labelAlias == 'daily_wage' && ($datasource=='checkbook_nycha' )){
+      $adjustDataTableOptions->aaSorting = array(array(7, 'desc'));
+      }
+      }
+      $node->widgetConfig->table_columns = array_values($node->widgetConfig->table_columns);
+      $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoColumns);",
     "adjustParameters":"
         $adjustedParameters = $parameters;
         if(function_exists('_checkbook_project_applyParameterFilters')){
@@ -117,6 +147,7 @@
                 {"sClass":"text", "sWidth":"110px","asSorting": [ "asc","desc" ]},
                 {"sClass":"number", "sWidth":"110px","asSorting": [ "asc","desc" ]},
                 {"sClass":"number","sWidth":"110px","asSorting": [ "desc","asc" ]},
+                {"sClass":"number","sWidth":"110px","asSorting": [ "desc","asc" ]},
                 {"sClass":"text pad-left","sWidth":"110px","asSorting": [ "desc","asc" ]},
                 {"sClass":"number","sWidth":"110px","asSorting": [ "desc","asc" ]},
                 {"sClass":"number","sWidth":"110px","asSorting": [ "desc","asc" ]},
@@ -139,6 +170,7 @@
         var oOvertimePayment = getNamedFilterCriteria('fovertimePayment');
         var oPayFrequency = getNamedFilterCriteria('fpayFrequency');
         var oPayrollType = getNamedFilterCriteria('fpayrolltype');
+        var oRateType = getNamedFilterCriteria('fratetype');
 
         var cUrl = oTable.fnSettings().sAjaxSource;
         var cUrlArray = cUrl.split('/');
@@ -151,6 +183,7 @@
         cUrl = adjustUrlParameter(cUrl,'overtimepayment',oOvertimePayment);
         cUrl = adjustUrlParameter(cUrl,'payfrequency',oPayFrequency);
         cUrl = adjustUrlParameter(cUrl,'payrolltype',oPayrollType);
+        cUrl = adjustUrlParameter(cUrl,'ratetype',oRateType);
 
         return cUrl;
         }"
