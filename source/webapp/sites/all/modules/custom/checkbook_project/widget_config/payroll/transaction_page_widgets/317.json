@@ -2,7 +2,7 @@
     "stickyHeader":true,
     "widgetType": "data_tables",
     "widgetSubType": "dataTableList",
-    "cleanURLParameters":["agency","year","calyear","yeartype","month","title","grosspayytd","annualsalary","overtimepayment","emptype"],
+    "cleanURLParameters":["agency","year","calyear","yeartype","month","title","grosspayytd","annualsalary","overtimepayment","emptype","ratetype"],
     "urlParamMap":{
         "agency":"agency_id",
         "year":"fiscal_year_id",
@@ -13,7 +13,8 @@
         "grosspayytd":"gross_pay.gross_pay",
         "annualsalary":"annual_salary.annual_salary",
         "overtimepayment":"overtime_pay.overtime_pay",
-        "emptype":"employment_type.employment_type"
+        "emptype":"employment_type.employment_type",
+        "ratetype": "amount_basis_name.amount_basis_name"
     },
     "paramTypeConfig":{
         "grosspayytd":"rangeid3",
@@ -34,6 +35,12 @@
     "html_class": "initiative-table transaction-table",
     "no_results_content":"No Results Found",
     "dataset": "checkbook:payroll_employee_agency",
+    "preProcessConfiguration":"
+    $datasource = RequestUtilities::getRequestParamValue('datasource');
+    if($datasource=='checkbook_nycha'){
+    $node->widgetConfig->dataset='checkbook_nycha:payroll_employee_agency_basis';
+     }
+    ",
     "uniqueSortColumn":["employee_employee"],
     "columns": ["agency.agency","pay_date.pay_date","employee.employee","civil_service_title.civil_service_title","civil_service_title_code.civil_service_title_code","employee_number.employee_number","agency.agency.agency_short_name","total_salaried_amount","total_non_salaried_amount","total_gross_pay","total_base_salary","total_other_payments","total_overtime_amount","year.year","year_type.year_type","agency.agency.agency_name","employment_type.employment_type"],
     "derivedColumns": {
@@ -52,8 +59,20 @@
         "formatted_non_salary_amount": {
             "expression": " isset($row['total_non_salaried_amount']) ? custom_number_formatter_basic_format($row['total_non_salaried_amount']) : '-'"
         },
+         "formatted_daily_wage_amount": {
+        "expression": " isset($row['total_daily_wage_amount']) ? custom_number_formatter_basic_format($row['total_daily_wage_amount']) : '-'"
+         },
+         "formatted_hourly_rate_amount": {
+         "expression": " isset($row['total_hourly_rate_amount']) ? custom_number_formatter_basic_format($row['total_hourly_rate_amount']) : '-'"
+         },
         "non_salary_link": {
             "expression": " isset($row['total_non_salaried_amount']) ? '<a class =\"bottomContainerReload\" href=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/' . $row['agency_agency'] . _checkbook_project_get_year_url_param_string() . RequestUtilities::_getUrlParamString('datasource')  . '/salamttype/2~3/abc/' . $row['employee_employee'] . '>'. $row['formatted_non_salary_amount'] .'</a>' : '-'"
+        },
+        "daily_wage_link": {
+        "expression": " isset($row['total_daily_wage_amount']) ? '<a class =\"bottomContainerReload\" href=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/' . $row['agency_agency'] . _checkbook_project_get_year_url_param_string() . RequestUtilities::_getUrlParamString('datasource')  . '/salamttype/2~3/abc/' . $row['employee_employee'] . '>'. $row['formatted_daily_wage_amount'] .'</a>' : '-'"
+        },
+       "hourly_rate_link": {
+        "expression": " isset($row['total_hourly_rate_amount']) ? '<a class =\"bottomContainerReload\" href=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/' . $row['agency_agency'] . _checkbook_project_get_year_url_param_string() . RequestUtilities::_getUrlParamString('datasource')  . '/salamttype/2~3/abc/' . $row['employee_employee'] . '>'. $row['formatted_hourly_rate_amount'] .'</a>' : '-'"
         },
         "export_salary_amount": {
             "expression": " $row['employment_type_employment_type'] == 'Salaried' ? $row['total_salaried_amount']  : NULL "
@@ -88,7 +107,7 @@
             {"labelAlias": "agency_name","column":"agency_name_formatted","sortSourceColumn":"agency.agency.agency_name"},
             {"labelAlias": "annual_salary","column": "annual_salary_link","sortSourceColumn": "total_salaried_amount"},
             {"labelAlias": "hourly_rate","column": "non_salary_link","sortSourceColumn": "total_non_salaried_amount"},
-            {"labelAlias": "daily_wage","column": "non_salary_link","sortSourceColumn": "total_non_salaried_amount"},
+            {"labelAlias": "daily_wage","column": "daily_wage_link","sortSourceColumn": "total_daily_wage_amount"},
             {"labelAlias": "gross_pay_ytd","column": "formatted_gross_pay_amount","sortSourceColumn": "total_gross_pay"},
             {"labelAlias": "base_pay","column": "formatted_base_salary_amount","sortSourceColumn": "total_base_salary"},
             {"labelAlias": "other_pays","column": "formatted_other_payments_amount","sortSourceColumn": "total_other_payments"},
@@ -122,16 +141,25 @@
             }
 
         foreach($node->widgetConfig->table_columns as $key => $table_column){
+          //annual salary column must be removed when payroll type is nonsalaried
             if(($table_column->labelAlias == 'annual_salary' )&& ($payroll_type==PayrollType::$NON_SALARIED )){
             unset($node->widgetConfig->table_columns[$key]);
             unset($adjustDataTableOptions->aoColumns[$key]);
             }
+           //daily wage column must not be included in citywide
             if(($table_column->labelAlias == 'daily_wage' )&& ($datasource!='checkbook_nycha' )){
-            unset($node->widgetConfig->table_columns[$key]);
-            unset($adjustDataTableOptions->aoColumns[$key]);
+               unset($node->widgetConfig->table_columns[$key]);
+               unset($adjustDataTableOptions->aoColumns[$key]);
             }
-           else if($table_column->labelAlias == 'daily_wage' ){
+            //hourly rate column must refer amount basis id for nycha
+            if(($table_column->labelAlias == 'hourly_rate' )&& ($datasource=='checkbook_nycha' )){
+                $node->widgetConfig->columns[]='total_hourly_rate_amount';
+                $table_column->column= 'hourly_rate_link';
+           }
+           //daily wage column must be sorted by default for nycha and must  refer amount basis id
+            if($table_column->labelAlias == 'daily_wage' && ($datasource=='checkbook_nycha' )){
                   $adjustDataTableOptions->aaSorting = array(array(3, 'desc'));
+                  $node->widgetConfig->columns[]='total_daily_wage_amount';
               }
             }
 $node->widgetConfig->table_columns = array_values($node->widgetConfig->table_columns);
@@ -208,6 +236,7 @@ $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoCol
         var oAnnualSalary = getNamedFilterCriteria('fannualSalary');
         var oOvertimePayment = getNamedFilterCriteria('fovertimePayment');
         var oEmpType = getNamedFilterCriteria('fempType');
+        var oRateType = getNamedFilterCriteria('frateType');
 
         var cUrl = oTable.fnSettings().sAjaxSource;
         var cUrlArray = cUrl.split('/');
@@ -219,6 +248,7 @@ $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoCol
         cUrl = adjustUrlParameter(cUrl,'annualsalary',oAnnualSalary);
         cUrl = adjustUrlParameter(cUrl,'overtimepayment',oOvertimePayment);
         cUrl = adjustUrlParameter(cUrl,'emptype',oEmpType);
+        cUrl = adjustUrlParameter(cUrl,'ratetype',oRateType);
 
         return cUrl;
     }"
