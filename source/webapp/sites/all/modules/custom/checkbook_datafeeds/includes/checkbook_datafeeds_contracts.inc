@@ -718,7 +718,7 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
 
     if($data_source == Datasource::OGE){
         $type_of_data = 'Contracts_OGE';
-    }else if(Datasource::NYCHA){
+    }else if($data_source == Datasource::NYCHA){
         $type_of_data = 'Contracts_NYCHA';
     }else{
         $type_of_data = 'Contracts';
@@ -940,7 +940,6 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
             }
             break;
     }
-
 
     return $criteria;
 }
