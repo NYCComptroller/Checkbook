@@ -90,7 +90,6 @@
           }
         }
       }
-      //,"adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($data_set,$parameters,$criteria,'checkbook_nycha');}"
     },
     "requestParameters":{
       "fiscal_year":{"valueType":"value","dataType":"year","maxLength":"4"},
@@ -203,8 +202,7 @@
             "Year": "release_approved_year"
           }
         }
-      }
-      //,"adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($data_set,$parameters,$criteria,'checkbook_nycha');}"
+      },
     },
     "requestParameters":{
       "fiscal_year":{"valueType":"value","dataType":"year","maxLength":"4"},
