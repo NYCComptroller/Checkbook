@@ -48,6 +48,32 @@ class PayrollUtil {
 
         return $data;
     }
+    static function updateRateTypeFacetData($node) {
+
+        $data = array();
+        foreach($node->data as $row) {
+            if($row['amount_basis_id_amount_basis_id'] == 2) {
+                $new_row = array(
+                    'amount_basis_id_amount_basis_id' => '2',
+                    'rate_type' => 'Daily',
+                    'txcount' => $row['txcount']
+                );
+                array_push($data, $new_row);
+            }
+            else  if($row['amount_basis_id_amount_basis_id'] == 3) {
+                $new_row = array(
+                    'amount_basis_id_amount_basis_id' => '3',
+                    'rate_type' => 'Hourly',
+                    'txcount' => $row['txcount']
+                );
+                array_push($data, $new_row);
+            }
+        }
+
+
+
+        return $data;
+    }
 
     /**
      * Checks the current URL to determine if this is the title landing page.
