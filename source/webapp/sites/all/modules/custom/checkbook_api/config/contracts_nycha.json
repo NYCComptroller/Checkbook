@@ -202,7 +202,7 @@
             "Year": "release_approved_year"
           }
         }
-      },
+      }
     },
     "requestParameters":{
       "fiscal_year":{"valueType":"value","dataType":"year","maxLength":"4"},
