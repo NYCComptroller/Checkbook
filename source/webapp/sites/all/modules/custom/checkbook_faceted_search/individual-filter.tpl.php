@@ -70,7 +70,15 @@ if($is_payroll_range_filter) {
         }
     }
 }
-
+//donot show annual in ratetype facet
+if($node->widgetConfig->filterName == 'Rate Type'){
+    if ($unchecked && $unchecked)
+        foreach($unchecked as $key => $value) {
+            if($value[1] == 'ANNUAL') {
+                $unchecked[$key] = 0;
+            }
+        }
+}
 //Contract Includes Sub Vendors Facet
 //For N/A value, some values are null, this needs to be handled
 if($node->widgetConfig->filterName == 'Contract Includes Sub Vendors') {
