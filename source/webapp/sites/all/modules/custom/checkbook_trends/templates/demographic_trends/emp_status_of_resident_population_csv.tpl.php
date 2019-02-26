@@ -18,10 +18,11 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+$first_year = $node->data[0]['fiscal_year'];
 $last_year = end($node->data)['fiscal_year'];
 reset($node->data);
 
-    $header = ",,,1994-{$last_year},,,"."\n";
+    $header = ",,,{$first_year}-{$last_year},,,"."\n";
     $header .= 'year';
 
     $header .=  ",New York City Employed - Civilian Labor Force (in thousands)" ;
