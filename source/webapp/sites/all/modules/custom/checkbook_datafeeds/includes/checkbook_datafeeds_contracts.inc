@@ -618,7 +618,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
     $form_state['step_information']['confirmation']['stored_values']['user_criteria'] = $user_criteria;
 
     //Update Criteria with overridden column order on export only for CityWide Active/Registered Expense Contracts
-    if(strtolower($values['df_contract_status']) != 'pending' && strtolower($values['category']) != 'revenue' && $data_source != 'checkbook_oge'){
+    if(strtolower($values['df_contract_status']) != 'pending' && strtolower($values['category']) != 'revenue' && !in_array($data_source, array(Datasource::OGE, Datasource::NYCHA))){
         $intended_order =  _checkbook_datafeeds_contracts_override_column_options($response_type, $data_source,$values['df_contract_status'],$values['category'],$year);
         $criteria['responseColumns'] = checkbook_datafeeds_override_column_order($criteria['responseColumns'], $intended_order);
     }
