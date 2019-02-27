@@ -130,8 +130,9 @@ class CSVDataHandler extends AbstractDataHandler {
             }
             //get only column
             if (strpos($sql_part,".") !== false) {
-                $alias = substr($sql_part, 0, 3);
-                $column = substr($sql_part, 3);
+                $select_column_parts = explode('.', $sql_part);
+                $alias = $select_column_parts[0];
+                $column = $select_column_parts[1];
             }
 
             //Handle derived columns
