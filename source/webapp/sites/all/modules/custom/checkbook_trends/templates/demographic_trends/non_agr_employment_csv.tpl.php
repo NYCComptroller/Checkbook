@@ -18,8 +18,8 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	$table_rows = array();
-	$years = array();
+	$table_rows = [];
+	$years = [];
 	foreach( $node->data as $row){
 		$table_rows[$row['display_order']]['category'] = $row['category'];
 		$table_rows[$row['display_order']]['highlight_yn'] = $row['highlight_yn'];
@@ -30,7 +30,7 @@
 	}
 	rsort($years);
 	$header = '';
-    $header .= ',,,,,,1997-'.$years[0].',,,,,'."\n";
+    $header .= ',,,,,,'.end($years).'-'.$years[0].',,,,,'."\n";
     $header .= ',,,,,,(average annual employment in thousands),,,,,'."\n";
 
     foreach ($years as $year){
@@ -83,5 +83,3 @@ echo "\n"."\n"."(a) Includes rounding  adjustments"."\n"."\n"
 //employer employs more than 2 percent of total nonagricultural employees.".'"'."\n\n".
 //"Data are not seasonally adjusted."."\n\n".'"'.
 //"Source: New York State Department of Labor, Division of Research and Statistics.".'"'
-?>
-
