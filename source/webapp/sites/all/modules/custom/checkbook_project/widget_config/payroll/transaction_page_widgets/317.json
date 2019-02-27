@@ -176,6 +176,11 @@ $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoCol
         else if($sortingCol == 3){//hourly rate
             array_unshift($config->orderBy, 'employment_type.employment_type');
         }
+        else if($sortingCol == 4){//daily wage
+        array_unshift($config->orderBy, 'employment_type.employment_type');
+        }
+
+
 
         $monthId = RequestUtilities::getRequestParamValue('month');
         if( isset($monthId)){
