@@ -5,7 +5,7 @@
         "useList":true,
 "defaultParameters":{"display_yn":"Y"},
 	"no_results_content":"No Results Found",
-	"dataset": "checkbook:trends_non_agricultural_wage_salary_employment",
+	"dataset": "checkbook:trends_non_agricultural_wage_salary_employement",
 	"columns": ["category","amount", "amount_display_type", "fiscal_year","highlight_yn","indentation_level","display_order"],
        "orderBy":"display_order",
 	"table_title":"",	

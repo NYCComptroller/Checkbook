@@ -17,11 +17,11 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<?php
+
 echo eval($node->widgetConfig->header);
-$table_rows = array();
-$years = array();
+$table_rows = [];
+$years = [];
+
 foreach( $node->data as $row){
 	$length =  $row['indentation_level'];
 	$spaceString = '&nbsp;';
@@ -46,7 +46,7 @@ rsort($years);
   <tbody>
   <tr>
     <td width="240"><div>&nbsp;</div></td>
-    <td class="bb"><div>1997-<?= $years[0] ?><br>(average annual employment in thousands)</div></td>
+    <td class="bb"><div><?= end($years) ?>-<?= $years[0] ?><br>(average annual employment in thousands)</div></td>
   </tr>
   </tbody>
 </table>
