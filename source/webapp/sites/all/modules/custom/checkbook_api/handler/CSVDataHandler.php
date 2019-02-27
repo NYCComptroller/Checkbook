@@ -130,8 +130,8 @@ class CSVDataHandler extends AbstractDataHandler {
             }
             //get only column
             if (strpos($sql_part,".") !== false) {
-                $select_column_parts = explode('.', $sql_part);
-                $alias = $select_column_parts[0];
+                $select_column_parts = explode('.', trim($sql_part));
+                $alias = $select_column_parts[0] . '.';
                 $column = $select_column_parts[1];
             }
 
@@ -173,7 +173,7 @@ class CSVDataHandler extends AbstractDataHandler {
             }
         }
         $new_select_part = rtrim($new_select_part,",\n");
-        $query = substr_replace($query, $new_select_part, 0, $end);
+        $query = substr_replace($query, $new_select_part.' ', 0, $end);
 
         try{
             $fileDir = _checkbook_project_prepare_data_feeds_file_output_dir();
