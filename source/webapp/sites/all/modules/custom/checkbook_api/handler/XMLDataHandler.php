@@ -184,8 +184,9 @@ class XMLDataHandler extends AbstractDataHandler
             }
             //get only column
             if (strpos($sql_part,".") !== false) {
-                $alias = substr($sql_part, 0, 3);
-                $column = substr($sql_part, 3);
+                $select_column_parts = explode('.', trim($sql_part));
+                $alias = $select_column_parts[0] . '.';
+                $column = $select_column_parts[1];
             }
 
             //Handle derived columns
@@ -299,7 +300,6 @@ class XMLDataHandler extends AbstractDataHandler
             //Remove tmp file file from tmp to data feeds dir
             $command = "rm $tempOutputFile";
             $commands[] = $command;
-
             $this->processCommands($commands);
         }
         catch (Exception $e){
