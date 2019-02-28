@@ -58,17 +58,21 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
     $response_type = $form_state['step_information']['type']['stored_values']['format'];
     $user_criteria = array();
     //Get current data source
-    $agency = $values['agency'];
+    $agency = $values['nycha_agency'];
     $agency_code = emptyToZero($agency);
+    $year = $values['year'];
+
     $data_source = !isset($form_state['input']['data_source']) ? 'checkbook' : $form_state['input']['data_source'];
     //Set type/source of data by data_source
-    if($agency_code == 996){
+    if($data_source == Datasource::NYCHA){
         $user_criteria['Type of Data'] = 'Contracts_NYCHA';
-        $data_source = Datasource::NYCHA;
         $year = $values['nycha_year'];
+        if($agency_code == 'z81'){
+            $data_source == Datasource::OGE;
+            $user_criteria['Type of Data'] = 'Contracts_OGE';
+        }
     }else{
-        $year = $values['year'];
-        $user_criteria['Type of Data'] = $data_source == 'checkbook_oge' ? 'Contracts_OGE' : 'Contracts';
+        $user_criteria['Type of Data'] = 'Contracts';
     }
 
     $form['download_feeds'] = array(
@@ -133,9 +137,9 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
     );
     $formatted_search_criteria['Type of File'] = $form_state['step_information']['type']['stored_values']['format'];
 
-    $agency = $data_source == 'checkbook_oge' ? ($values['agency'] == 'Select One' ? 'All' : $values['agency']) : $values['agency'];
+    $agency = ($data_source == Datasource::OGE) ? ($values['agency'] == 'Select One' ? 'All' : $values['agency']) : $values['agency'];
     switch ($data_source) {
-        case 'checkbook_oge':
+        case Datasource::OGE:
             if ($values['df_contract_status']) {
                 $form['filter']['df_contract_status'] = array('#markup' => '<div><strong>Status:</strong> ' . $values['df_contract_status'] . '</div>');
                 $user_criteria['Contract Status'] = $values['df_contract_status'];
@@ -294,7 +298,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
                 }
             }
             break;
-        case 'checkbook_nycha':
+        case Datasource::NYCHA:
             if ($values['purchase_order_type']) {
                 $form['filter']['purchase_order_type'] = array('#markup' => '<div><strong>Purchase Order Type:</strong> ' . $values['purchase_order_type'] . '</div>');
                 $user_criteria['Purchase Order Type'] = $values['purchase_order_type'];
@@ -709,8 +713,7 @@ function checkbook_datafeeds_contracts_confirmation_previous_submit($form, &$for
  * @return array
  *   Structured array expected by API
  */
-function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data_source)
-{
+function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data_source){
     $values = $form_state['step_information']['contracts']['stored_values'];
     $pattern = "/.*?(\\[.*?\\])/is";
     global $conf;
@@ -807,7 +810,7 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
         if ($values['category']) {
             $criteria['value']['category'] = $values['category'];
         }
-        if ($data_source != 'checkbook_oge') {
+        if ($data_source != Datasource::OGE) {
             if ($values['regdatefrom'] !== '' || $values['regdateto'] !== '') {
                 $criteria['range']['registration_date'] = array(
                     checknull($values['regdatefrom']),
@@ -834,7 +837,7 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
     //By data source
     switch($data_source)
     {
-        case 'checkbook_oge':
+        case Datasource::OGE:
             if ($values['agency'] != 'Select One') {
                 preg_match($pattern, $values['agency'], $amatches);
                 $criteria['value']['other_government_entities_code'] = trim($amatches[1], '[ ]');
@@ -852,7 +855,7 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
                 $criteria['value']['prime_vendor'] = $values['vendor'];
             }
             break;
-        case 'checkbook_nycha':
+        case Datasource::NYCHA:
             if ($values['purchase_order_type'] && $values['purchase_order_type'] != 'All') {
                 preg_match($pattern, $values['purchase_order_type'], $pmatches);
                 if ($pmatches) {
@@ -955,10 +958,14 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
 function checkbook_datafeeds_contracts_validate($form, &$form_state)
 {
     $data_source = $form_state['input']['datafeeds-contracts-domain-filter'];
-    $agency = $form_state['values']['agency'];
+    $agency = $form_state['input']['agency'];
     $agency_code = emptyToZero($agency);
-    if($agency_code == 996){
-        $data_source = Datasource::NYCHA;
+    if($data_source == Datasource::NYCHA){
+        if($agency_code == 'z81'){
+            $data_source = Datasource::OGE;
+        }
+    }
+    if($data_source == Datasource::NYCHA){
         $startfrom = $form_state['values']['nycha_startdatefrom'];
         $startto = $form_state['values']['nycha_startdateto'];
         $enddatefrom = $form_state['values']['nycha_enddatefrom'];
@@ -1018,9 +1025,7 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
         }
 
         $form_state['complete form']['agency_hidden']['#value'] = $form_state['values']['nycha_agency'];
-        $form_state['complete form']['data_source']['#value'] = $data_source;
-    }
-    else {
+    }else {
         $startfrom = $form_state['values']['startdatefrom'];
         $startto = $form_state['values']['startdateto'];
         $enddatefrom = $form_state['values']['enddatefrom'];
@@ -1047,7 +1052,7 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
         }
 
         //Commodity Line
-        if ('checkbook_oge' == $data_source) {
+        if (Datasource::OGE == $data_source) {
             $commodity_line = $form_state['values']['commodity_line'];
             if ($commodity_line && !is_numeric($commodity_line)) {
                 form_set_error('commodity_line', t('Commodity Line must be a number'));
@@ -1123,9 +1128,8 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
                 form_set_error('spentto', t('Registered Date filter is not available on pending contracts'));
             }
         }
-
         //Multi-select Columns
-        if($data_source == 'checkbook_oge'){
+        if($data_source == Datasource::OGE){
             $multi_select_hidden = isset($form_state['input']['column_select_oge_expense']) ? '|' . implode('||', $form_state['input']['column_select_oge_expense']) . '|' : '';
             if(!$ogeexpense){
                 form_set_error('column_select_oge_expense', t('You must select at least one column.'));
@@ -1171,7 +1175,6 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
             $form_state['complete form']['sub_vendor_status_in_pip_id']['#value'] = 0;
         }
         $form_state['complete form']['agency_hidden']['#value'] = $form_state['values']['agency'];
-        $form_state['complete form']['data_source']['#value'] = $form_state['input']['datafeeds-contracts-domain-filter'];
     }
     // Vendor:
     if ($vendor) {
@@ -1181,7 +1184,7 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
             try {
                 $dataController = data_controller_get_instance();
                 switch ($data_source) {
-                    case 'checkbook_oge':
+                    case Datasource::OGE:
                         if($agency_code == 996){
                             $query = "SELECT vendor_name FROM all_agreement_transactions 
                                         WHERE latest_flag = 'Y' 
@@ -1204,10 +1207,10 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
             }
             if (!$results[0]) {
                 switch ($data_source) {
-                    case 'checkbook_oge':
+                    case Datasource::OGE:
                         form_set_error('payee_name', t('Please enter a valid vendor name.'));
                         break;
-                    case 'checkbook_nycha':
+                    case Datasource::NYCHA:
                         form_set_error('nycha_vendor', t('Please enter a valid vendor name.'));
                         break;
                     default:
@@ -1218,6 +1221,8 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
         }
     }
 
+    //Hidden Field for data-source
+    $form_state['complete form']['data_source']['#value'] = $data_source;
     //Hidden Field for multi-select
     $form_state['complete form']['hidden_multiple_value']['#value'] = $multi_select_hidden;
 }
