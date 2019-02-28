@@ -1348,7 +1348,7 @@ function checkbook_datafeeds_contracts($form, &$form_state)
 
     $form['datafeeds-contracts-domain-filter'] = array(
         '#type' => 'radios',
-        '#options' => array('checkbook' => 'Citywide Agencies', 'checkbook_oge' => 'Other Government Entities'),
+        '#options' => array('checkbook' => 'Citywide Agencies', 'checkbook_nycha' => 'Other Government Entities'),
         '#default_value' => !isset($data_source) ? 'checkbook' : $data_source,
         '#prefix' => '<div id="div_data_source">',
         '#suffix' => '</div><br/><br/>',
@@ -4876,7 +4876,7 @@ function _agency_options($data_source = null, $json_output = false) {
                     'agency_code',
                     'agency_name',
                 ), array("is_display" => "Y"), 'agency_name');
-                $data = array_merge($oge_data, $nycha_data);
+                $data = array_merge($nycha_data, $oge_data);
                 break;
             default:
                 $data = $dataController->queryDataset("checkbook:agency", array(
