@@ -31,8 +31,8 @@
     "additionalSelectColumns":["amount_basis_id"],
     "derivedColumns": {
         "formatted_daily_wage_amount": {
-            "expression":  "$row['amount_basis_id'] === 2 ? custom_number_formatter_basic_format($row['non_salaried_amount'])  : '-'  "
-        },
+        "expression":  "$row['amount_basis_id'] === 2 ? custom_number_formatter_basic_format($row['non_salaried_amount'])  : '-'  "
+      },
         "formatted_hourly_rate_amount": {
             "expression":  "$row['amount_basis_id'] === 3 ? custom_number_formatter_basic_format($row['non_salaried_amount'])  : '-'  "
         },
@@ -100,7 +100,7 @@
         {"labelAlias": "pay_date","column": "pay_date"},
         {"labelAlias": "annual_salary","column": "annual_salary_link","sortSourceColumn": "salaried_amount","exportColumn":"export_salary_amount"},
         {"labelAlias": "hourly_rate","column": "non_salary_link","sortSourceColumn": "non_salaried_amount","exportColumn":"export_non_salary_amount"},
-        {"labelAlias": "daily_wage","column": "daily_wage_link","sortSourceColumn": "non_salaried_amount"},
+        {"labelAlias": "daily_wage","column": "daily_wage_link","sortSourceColumn":"non_salaried_amount"},
         {"labelAlias": "pay_frequency","column": "pay_frequency"},
         {"labelAlias": "gross_pay","column": "formatted_gross_pay_amount","sortSourceColumn": "gross_pay"},
         {"labelAlias": "base_pay","column": "formatted_base_pay_amount","sortSourceColumn": "base_pay"},
@@ -123,7 +123,6 @@
     //hourly rate column must refer amount basis id for nycha
     if(($table_column->labelAlias == 'hourly_rate' )&& ($datasource=='checkbook_nycha' )){
          $table_column->column= 'hourly_rate_link';
-        $table_column->exportColumn='formatted_hourly_rate_amount';
     }
     //daily wage column must be sorted by default for nycha and must  refer amount basis id
     if($table_column->labelAlias == 'daily_wage' && ($datasource=='checkbook_nycha' )){
@@ -137,7 +136,12 @@
         "column":"formatted_payroll_type",
         "sourceColumn":"amount_basis_id",
         "sql":"CASE WHEN amount_basis_id = 1 THEN 'SALARIED' ELSE 'NON-SALARIED' END AS payroll_type"
-        }
+        },
+       {
+      "column":"hourly_rate_link",
+       "sourceColumn":"non_salaried_amount",
+      "sql":"CASE WHEN amount_basis_id = 3 THEN non_salaried_amount else null  END AS hourly_rate"
+      }
     ],
     "adjustParameters":"
 
@@ -147,6 +151,9 @@
                }else if($sortingCol == 4){//hourly rate
                     array_unshift($config->orderBy, '-amount_basis_id');
                }
+                else if($sortingCol == 5){
+                    array_unshift($config->orderBy, '-amount_basis_id');
+                  }
 
                 $adjustedParameters = $parameters;
                 if(function_exists('_checkbook_project_applyParameterFilters')){
@@ -188,7 +195,7 @@
         ],
         "sScrollX": "100%",
         "bScrollCollapse": true,
-        "sScrollXInner": "1060px",
+        "sScrollXInner": "1160px",
         "bScrollCollapse": true,
         "fnInitComplete": "##function () { new FixedColumns( oTable, {
         \"iLeftColumns\": 1,
