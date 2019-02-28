@@ -1442,7 +1442,7 @@ function checkbook_datafeeds_contracts($form, &$form_state)
         '#default_value' => !empty($form_state['values']['column_select_nycha']) ? $form_state['values']['column_select_nycha'] : '',
     );
 
-    if($form_state['input']['datafeeds-contracts-domain-filter'] == 'checkbook_oge'){
+    if($form_state['input']['datafeeds-contracts-domain-filter'] == 'checkbook_nycha'){
         if($nycha_agency_code = 996)
             $multi_select_hidden = isset($form_state['input']['column_select_nycha']) ? '|' . implode('||', $form_state['input']['column_select_nycha']) . '|' : '';
         else
