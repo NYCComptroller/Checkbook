@@ -23,8 +23,8 @@
 
 
 /** Implementation of hook block view alter
- * @param unknown_type $data
- * @param unknown_type $block
+ * @param $data
+ * @param $block
  */
 function checkbook_trends_block_view_alter(&$data, $block){
   if(preg_match('/trends/',$block->delta )){
@@ -36,11 +36,11 @@ function checkbook_trends_block_view_alter(&$data, $block){
 
 /**
  * Implementation of hook_theme() ...
- * @param unknown_type $existing
- * @param unknown_type $type
- * @param unknown_type $theme
- * @param unknown_type $path
- * @return multitype:multitype:string multitype:unknown   multitype:string multitype:NULL   
+ * @param $existing
+ * @param $type
+ * @param $theme
+ * @param $path
+ * @return array   
  */
 function checkbook_trends_theme($existing, $type, $theme, $path){
     $node = 'undefined';

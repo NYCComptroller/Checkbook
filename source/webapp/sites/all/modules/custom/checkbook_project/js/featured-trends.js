@@ -5,15 +5,11 @@
             var chartNumber = $(this).attr('name');
             var minraw = $(parentID + ' .chartdatefrom').val();
             var maxraw = $(parentID + ' .chartdateto').val();
-            var lastYear = new Date().getFullYear()-1;
+            // var lastYear = new Date().getFullYear()-1;
+            var minYear = Highcharts.dateFormat('%Y',Highcharts.chartarray[chartNumber].xAxis[0].getExtremes().dataMin);
+            var maxYear = Highcharts.dateFormat('%Y',Highcharts.chartarray[chartNumber].xAxis[0].getExtremes().dataMax);
             if (minraw.length > 0 || maxraw.length > 0) {
-                if (chartNumber === '3') {
-                    validateInput(minraw, maxraw, chartNumber, 1980,2012)
-                } else if(chartNumber === '0' || chartNumber === '2') {
-                    validateInput(minraw, maxraw, chartNumber, 1994,lastYear)
-                } else if(chartNumber === '1' || chartNumber === '4') {
-                    validateInput(minraw, maxraw, chartNumber, 1995,lastYear)
-                }
+                validateInput(minraw, maxraw, chartNumber, minYear,maxYear);
             } else if (minraw.length === 0 && maxraw.length === 0) {
                 var today = new Date().getFullYear();
                 var lastYear = today - 1;
