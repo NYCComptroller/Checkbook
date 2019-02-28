@@ -212,6 +212,12 @@
                 "hourly_rate_pay":{
                     "function": "CASE WHEN amount_basis_id = 1 THEN NULL ELSE annual_salary END"
                 },
+                "daily_wage_pay":{
+                    "function": "CASE WHEN amount_basis_id = 2 THEN annual_salary ELSE NULL END"
+                },
+                "hourly_rate_amount":{
+                    "function": "CASE WHEN amount_basis_id = 3 THEN  annual_salary ELSE NULL END"
+                },
                 "max_annual_salary":{
                     "function": "MAX(annual_salary)"
                 },
