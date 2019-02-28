@@ -19,7 +19,7 @@
     "dataset":{
       "name":"checkbook_nycha:nycha_all_agreements",
       "data_source":"checkbook_nycha",
-      "sortColumn":["contract_id", "-release_number", "-shipment_number", "-distribution_number"],
+      "sortColumn":["-contract_id", "release_number", "shipment_number", "distribution_number"],
       "columnTypes":{
         "contract_id":"like",
         "vendor":"like",
@@ -130,7 +130,7 @@
     "dataset":{
       "name":"checkbook_nycha:nycha_all_agreements",
       "data_source":"checkbook_nycha",
-      "sortColumn":["contract_id", "-release_number", "-shipment_number", "-distribution_number"],
+      "sortColumn":["-contract_id", "release_number", "shipment_number", "distribution_number"],
       "columnTypes":{
         "contract_id":"like",
         "vendor":"like",
