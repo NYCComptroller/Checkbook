@@ -959,12 +959,12 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
 {
     $data_source = $form_state['input']['datafeeds-contracts-domain-filter'];
     $agency = $form_state['input']['agency'];
-    $agency_code = emptyToZero($agency);log_error($agency_code);
+    $agency_code = emptyToZero($agency);
     if($data_source == Datasource::NYCHA){
         if($agency_code == 'z81'){
             $data_source = Datasource::OGE;
         }
-    }log_error($data_source);
+    }
     if($data_source == Datasource::NYCHA){
         $startfrom = $form_state['values']['nycha_startdatefrom'];
         $startto = $form_state['values']['nycha_startdateto'];
@@ -1025,7 +1025,6 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
         }
 
         $form_state['complete form']['agency_hidden']['#value'] = $form_state['values']['nycha_agency'];
-        $form_state['complete form']['data_source']['#value'] = $data_source;
     }else {
         $startfrom = $form_state['values']['startdatefrom'];
         $startto = $form_state['values']['startdateto'];
@@ -1129,7 +1128,6 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
                 form_set_error('spentto', t('Registered Date filter is not available on pending contracts'));
             }
         }
-
         //Multi-select Columns
         if($data_source == Datasource::OGE){
             $multi_select_hidden = isset($form_state['input']['column_select_oge_expense']) ? '|' . implode('||', $form_state['input']['column_select_oge_expense']) . '|' : '';
@@ -1177,7 +1175,6 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
             $form_state['complete form']['sub_vendor_status_in_pip_id']['#value'] = 0;
         }
         $form_state['complete form']['agency_hidden']['#value'] = $form_state['values']['agency'];
-        $form_state['complete form']['data_source']['#value'] = $form_state['input']['datafeeds-contracts-domain-filter'];
     }
     // Vendor:
     if ($vendor) {
@@ -1224,6 +1221,8 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
         }
     }
 
+    //Hidden Field for data-source
+    $form_state['complete form']['data_source']['#value'] = $data_source;
     //Hidden Field for multi-select
     $form_state['complete form']['hidden_multiple_value']['#value'] = $multi_select_hidden;
 }
