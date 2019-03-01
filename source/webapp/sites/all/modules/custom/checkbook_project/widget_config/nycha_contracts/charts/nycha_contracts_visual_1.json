@@ -54,7 +54,7 @@
         $where_filter = ' WHERE ' . implode(' AND ' , $where_filters);
       }
       $datasource = RequestUtilities::getRequestParamValue('datasource');
-      $sql = 'SELECT vendor_name, vendor_id, SUM(original_amount) current_amount_sum, COUNT(purchase_order_number) total_contracts
+      $sql = 'SELECT vendor_name, vendor_id, SUM(total_amount) current_amount_sum, SUM(purchase_order_count) total_contracts
                 FROM contracts_fy_po_vendor_summary_vw C JOIN ref_year y ON c.start_year = y.year_value JOIN ref_year y1 ON c.end_year = y1.year_value'
               . $where_filter . ' GROUP BY vendor_name, vendor_id ORDER BY 3 DESC LIMIT 10';
       $node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
