@@ -65,11 +65,12 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
     $data_source = !isset($form_state['input']['data_source']) ? 'checkbook' : $form_state['input']['data_source'];
     //Set type/source of data by data_source
     if($data_source == Datasource::NYCHA){
-        $user_criteria['Type of Data'] = 'Contracts_NYCHA';
-        $year = $values['nycha_year'];
         if($agency_code == 'z81'){
             $data_source == Datasource::OGE;
             $user_criteria['Type of Data'] = 'Contracts_OGE';
+        }else{
+            $user_criteria['Type of Data'] = 'Contracts_NYCHA';
+            $year = $values['nycha_year'];
         }
     }else{
         $user_criteria['Type of Data'] = 'Contracts';
