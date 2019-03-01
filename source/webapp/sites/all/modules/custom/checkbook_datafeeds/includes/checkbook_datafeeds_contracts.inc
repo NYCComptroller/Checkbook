@@ -1190,7 +1190,7 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
                                         WHERE latest_flag = 'Y' 
                                         AND transaction_status_name IN ('APPROVED','CLOSED','FINALLY CLOSED', 'REQUIRES REAPPROVAL')
                                         AND vendor_name ILIKE '" . $vendor . "'";
-                        $results = _checkbook_project_execute_sql($query, "main", $data_source);log_error($query);
+                        $results = _checkbook_project_execute_sql($query, "main", $data_source);
                         if (!$results[0]) {
                             form_set_error('nycha_vendor', t('Please enter a valid vendor name.'));
                         }
