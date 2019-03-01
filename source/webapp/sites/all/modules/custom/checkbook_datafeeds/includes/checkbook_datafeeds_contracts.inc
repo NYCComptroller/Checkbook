@@ -1185,39 +1185,35 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
             try {
                 $dataController = data_controller_get_instance();
                 switch ($data_source) {
-                    case Datasource::OGE:
-                        if($agency_code == 996){
-                            $query = "SELECT vendor_name FROM all_agreement_transactions 
+                    case Datasource::NYCHA:
+                        $query = "SELECT vendor_name FROM all_agreement_transactions 
                                         WHERE latest_flag = 'Y' 
                                         AND transaction_status_name IN ('APPROVED','CLOSED','FINALLY CLOSED', 'REQUIRES REAPPROVAL')
                                         AND vendor_name ILIKE '" . $vendor . "'";
-                        }else {
-                            $query = "SELECT DISTINCT display_vendor_name 
+                        $results = _checkbook_project_execute_sql($query, "main", $data_source);
+                        if (!$results[0]) {
+                            form_set_error('nycha_vendor', t('Please enter a valid vendor name.'));
+                        }
+                        break;
+                    case Datasource::OGE:
+                        $query = "SELECT DISTINCT display_vendor_name 
                                     FROM contracts_detailed_transactions
                                     WHERE status_flag = 'A' 
                                     AND display_vendor_name ILIKE '" . $vendor . "'";
-                        }
                         $results = _checkbook_project_execute_sql($query, "main", $data_source);
+                        if (!$results[0]) {
+                            form_set_error('payee_name', t('Please enter a valid vendor name.'));
+                        }
                         break;
                     default:
                         $results = $dataController->queryDataset('checkbook:vendor', array('vendor_customer_code'), array('vendor_customer_code' => $vendor));
+                        if (!$results[0]) {
+                            form_set_error('payee_name', t('Please enter a valid vendor code.'));
+                        }
                         break;
                 }
             } catch (Exception $e) {
                 log_error($e->getMessage());
-            }
-            if (!$results[0]) {
-                switch ($data_source) {
-                    case Datasource::OGE:
-                        form_set_error('payee_name', t('Please enter a valid vendor name.'));
-                        break;
-                    case Datasource::NYCHA:
-                        form_set_error('nycha_vendor', t('Please enter a valid vendor name.'));
-                        break;
-                    default:
-                        form_set_error('payee_name', t('Please enter a valid vendor code.'));
-                        break;
-                }
             }
         }
     }
