@@ -469,9 +469,9 @@
             var csval = $('select[name="df_contract_status"]', context).val();
             var catval = $('#edit-category', context).val();
             var agency = $('input:hidden[name="agency_hidden"]', context).val();
-            if(agency.toUpperCase() == 'NEW YORK CITY HOUSING AUTHORITY [996]'){
-              data_source = 'checkbook_nycha';
-              $('input:hidden[name="data_source"]', context).val('checkbook_nycha');
+            if(agency.toUpperCase() == 'NEW YORK CITY ECONOMIC DEVELOPMENT CORPORATION [Z81]'){
+              data_source = 'checkbook_oge';
+              $('input:hidden[name="data_source"]', context).val('checkbook_oge');
             }
             $.fn.reloadAgencies(data_source);
 

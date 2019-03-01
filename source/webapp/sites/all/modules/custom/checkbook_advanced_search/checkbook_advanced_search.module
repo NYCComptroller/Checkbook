@@ -690,8 +690,8 @@ function _checkbook_advanced_search_filter_field_definition($domain, $data_sourc
         if($domain == Domain::Contracts){
             $nycha_agencies = _checkbook_advanced_search_get_agencyname_and_id(DataSource::NYCHA);
             $nycha_agency_attributes = _checkbook_advanced_search_get_agency_attributes(DataSource::NYCHA);
-            $agencies = $agencies + $nycha_agencies;
-            $agency_attributes = $agency_attributes + $nycha_agency_attributes;
+            $agencies = $nycha_agencies + $agencies;
+            $agency_attributes = $nycha_agency_attributes + $agency_attributes;
 
             $nycha_responsibility_center_attributes = _checkbook_advanced_search_get_responsibility_centers(DataSource::NYCHA);
             $nycha_contract_type_attributes = _checkbook_advanced_search_get_nycha_contract_types(DataSource::NYCHA);
