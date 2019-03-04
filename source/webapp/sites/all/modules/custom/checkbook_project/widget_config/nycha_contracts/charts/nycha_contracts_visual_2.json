@@ -49,7 +49,7 @@
 }
 
 ",
-"chartTitle":"Top Ten Blanket agreements by Current Amount",
+"chartTitle":"Top Ten Blanket Agreements By Current Amount",
 "widgetDataLoader":"
 
   $where_filters = [];
