@@ -185,8 +185,13 @@ $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoCol
 
 
         $monthId = RequestUtilities::getRequestParamValue('month');
-        if( isset($monthId)){
+        $datasource = RequestUtilities::getRequestParamValue('datasource');
+
+        if( isset($monthId) && $datasource!='checkbook_nycha' ){
             $node->widgetConfig->dataset = 'checkbook:payroll_employee_agency_month';
+        }
+        else{
+          $node->widgetConfig->dataset = 'checkbook_nycha:payroll_employee_agency_month_basis';
         }
 
         $adjustedParameters = $parameters;
