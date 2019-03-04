@@ -1457,5 +1457,11 @@ class RequestUtil
             return PayrollType::$SALARIED;
         }
     }
+    public static function getContractType(){
+        $URL =  $_SERVER['HTTP_REFERER'];
+
+        $contract_type = RequestUtil::getRequestKeyValueFromURL("tCode", $URL);
+       return $contract_type;
+    }
 }
 
