@@ -2538,7 +2538,7 @@ function checkbook_datafeeds_payroll_filter_selected_columns($selected_columns, 
 {
     //Get column configurations
     $domain = 'payroll';
-    $domain = $data_source == 'checkbook_oge' ? $domain.'_oge' : $domain;
+    $domain = $data_source == 'checkbook_oge' ? $domain.'_nycha' : $domain;
     $domain_config = ConfigUtil::getDomainConfiguration($domain);
     $domain = $domain.'_'.$year_type;
     //Get columns which should be included for the current data source
@@ -2568,7 +2568,7 @@ function checkbook_datafeeds_payroll_confirmation($form, &$form_state) {
     //Get current data source
     $data_source = $form_state['input']['datafeeds-payroll-domain-filter'];
     //Set type/source of data by data_source
-    $user_criteria['Type of Data'] = $data_source == 'checkbook_oge' ? 'Payroll_OGE' : 'Payroll';
+    $user_criteria['Type of Data'] = $data_source == 'checkbook_oge' ? 'Payroll_NYCHA' : 'Payroll';
 
     $form['download_feeds'] = array(
         '#markup' => '<h2 id="edit-description">Download Data</h2>',
@@ -2865,7 +2865,7 @@ function checkbook_datafeeds_process_payroll_values($form, &$form_state, $data_s
     $criteria = array(
         'global' => array(
             //Set data source for query
-            'type_of_data' => $data_source == 'checkbook_oge' ? 'Payroll_OGE' : 'Payroll',
+            'type_of_data' => $data_source == 'checkbook_oge' ? 'Payroll_NYCHA' : 'Payroll',
             'records_from' => 1,
             'max_records' => isset($conf['check_book']['data_feeds']['max_record_limit']) ? $conf['check_book']['data_feeds']['max_record_limit'] : 200000,
         ),
