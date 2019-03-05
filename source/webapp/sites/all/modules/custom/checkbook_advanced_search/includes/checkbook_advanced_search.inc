@@ -665,7 +665,7 @@ function _checkbook_advanced_search_get_responsibility_centers($data_source = 'c
  */
 function _checkbook_advanced_search_get_nycha_contract_types($data_source = 'checkbook_nycha', $feeds = false){
     try {
-        $query = "SELECT DISTINCT contract_type_id, contract_type_code, meaning, description FROM ref_contract_type ORDER BY meaning";
+        $query = "SELECT DISTINCT contract_type_id, contract_type_code, contract_type_name, contract_type_description FROM ref_contract_type ORDER BY contract_type_name";
         $results = _checkbook_project_execute_sql_by_data_source($query, $data_source);
 
         $contract_type_key_val_option_attributes = array('title' => 'Select Contract Type');
@@ -673,7 +673,7 @@ function _checkbook_advanced_search_get_nycha_contract_types($data_source = 'che
         
         foreach ($results as $value) {
             if($feeds){
-                $text = $value['meaning'].' ['.$value['contract_type_code'].']';
+                $text = $value['contract_type_name'].' ['.$value['contract_type_code'].']';
                 $contract_type_key_val_option_attributes[$text] = array('title' => $text);
                 if (strlen($text) > 20)
                     $contract_type_key_val_options[$text] = substr($text, 0, 20) . '...';
@@ -681,11 +681,11 @@ function _checkbook_advanced_search_get_nycha_contract_types($data_source = 'che
                     $contract_type_key_val_options[$text] = $text;
             }else {
                 $keys = 'id=>' . $value['contract_type_id'] . '~code=>' . $value['contract_type_code'];
-                $contract_type_key_val_option_attributes[$keys] = array('title' => $value['meaning']);
-                if (strlen($value['meaning']) > 20)
-                    $contract_type_key_val_options[$keys] = substr($value['meaning'], 0, 20) . '...';
+                $contract_type_key_val_option_attributes[$keys] = array('title' => $value['contract_type_name']);
+                if (strlen($value['contract_type_name']) > 20)
+                    $contract_type_key_val_options[$keys] = substr($value['contract_type_name'], 0, 20) . '...';
                 else
-                    $contract_type_key_val_options[$keys] = $value['meaning'];
+                    $contract_type_key_val_options[$keys] = $value['contract_type_name'];
             }
         }
 
