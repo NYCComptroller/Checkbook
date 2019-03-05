@@ -521,13 +521,24 @@ function checkbook_api_adjustPayrollParameterFilters(&$data_set, &$parameters, $
  * Used to adjust columns in the data set after sql call.  This is to handle derived columns
  * @param $data_records
  */
-function checkbook_api_adjustPayrollDataSetResults(&$data_records) {
+function checkbook_api_adjustPayrollDataSetResults(&$data_records, $data_source = Datasource::CITYWIDE) {
 
     foreach($data_records as $key => $data_record) {
         //Derive payroll type from amount_basis_id
         if(isset($data_record['amount_basis_id'])) {
             $data_records[$key]['amount_basis_id'] = PayrollUtil::getEmploymentTypeByAmountBasisId($data_record['amount_basis_id']);
         }
+        if($data_source == Datasource::NYCHA) {
+            //Daily Wage data display
+            if(isset($data_record['amount_basis_id']) && $data_record['amount_basis_id'] == 2) {
+                $data_record['daily_wage'] = $data_record["non_salaried_amount"];
+            }
+            //Modify Hourly Rate display, display '-' for hourly rate in NYCHA
+            if(isset($data_record['non_salaried_amount'])) {
+                $data_record['non_salaried_amount'] =  "-";
+            }
+        }
+
     }
 }
 
