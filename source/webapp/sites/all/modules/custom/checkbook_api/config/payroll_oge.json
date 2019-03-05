@@ -34,6 +34,7 @@
                         "payroll_type":"amount_basis_id",
                         "annual_salary":"salaried_amount",
                         "hourly_rate":"non_salaried_amount",
+                        "daily_wage":"daily_wage",
                         "gross_pay":"gross_pay",
                         "base_pay":"base_pay",
                         "other_payments":"other_payments",
@@ -41,7 +42,7 @@
                         "gross_pay_ytd":"gross_pay_cytd",
                         "calendar_year":"calendar_fiscal_year"
                     },
-                    "rowElements":["other_government_entities", "title", "pay_frequency", "pay_date", "payroll_type", "annual_salary", "hourly_rate", "gross_pay", "base_pay", "other_payments", "overtime_payments", "gross_pay_ytd",
+                    "rowElements":["other_government_entities", "title", "pay_frequency", "pay_date", "payroll_type", "annual_salary", "hourly_rate", "daily_wage", "gross_pay", "base_pay", "other_payments", "overtime_payments", "gross_pay_ytd",
                          "calendar_year"]
                 },
                 "csv":{
@@ -53,6 +54,7 @@
                         "Payroll Type":"amount_basis_id",
                         "Annual Salary":"salaried_amount",
                         "Hourly Rate":"non_salaried_amount",
+                        "Daily Wage":"daily_wage",
                         "Gross Pay":"gross_pay",
                         "Base Pay":"base_pay",
                         "Other Payments":"other_payments",
@@ -63,7 +65,7 @@
                 }
             },
             "adjustParameters":"if(function_exists('checkbook_api_adjustPayrollParameterFilters')){checkbook_api_adjustPayrollParameterFilters($data_set,$parameters,$criteria);}",
-            "adjustDataSetResults":"if(function_exists('checkbook_api_adjustPayrollDataSetResults')){checkbook_api_adjustPayrollDataSetResults($data_records);}",
+            "adjustDataSetResults":"if(function_exists('checkbook_api_adjustPayrollDataSetResults')){checkbook_api_adjustPayrollDataSetResults($data_records, Datasource::NYCHA);}",
             "adjustSql":"if(function_exists('checkbook_api_adjustPayrollSql')){checkbook_api_adjustPayrollSql($sql_query);}"
         },
         "requestParameters":{
