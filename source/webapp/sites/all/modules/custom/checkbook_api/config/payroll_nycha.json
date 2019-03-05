@@ -1,5 +1,5 @@
 {
-    "payroll_oge_calendar_year":{
+    "payroll_nycha_calendar_year":{
         "searchCriteriaMap":{
             "calendar_year":"calendar_fiscal_year",
             "other_government_entities_code":"agency_code",
@@ -34,7 +34,7 @@
                         "payroll_type":"amount_basis_id",
                         "annual_salary":"salaried_amount",
                         "hourly_rate":"non_salaried_amount",
-                        "daily_wage":"daily_wage",
+                        "daily_wage":"non_salaried_amount",
                         "gross_pay":"gross_pay",
                         "base_pay":"base_pay",
                         "other_payments":"other_payments",
@@ -54,7 +54,7 @@
                         "Payroll Type":"amount_basis_id",
                         "Annual Salary":"salaried_amount",
                         "Hourly Rate":"non_salaried_amount",
-                        "Daily Wage":"daily_wage",
+                        "Daily Wage":"non_salaried_amount",
                         "Gross Pay":"gross_pay",
                         "Base Pay":"base_pay",
                         "Other Payments":"other_payments",
@@ -153,7 +153,7 @@
     "validators":[
         {
             "name":"optionalSingleFilter",
-            "configKey":["payroll_oge_calendar_year"],
+            "configKey":["payroll_nycha_calendar_year"],
             "config":{
                 "criteriaLevel":"value",
                 "validatorType":"filterName",
