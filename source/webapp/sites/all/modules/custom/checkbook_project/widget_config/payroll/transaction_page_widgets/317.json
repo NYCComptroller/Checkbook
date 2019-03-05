@@ -165,7 +165,7 @@
             $node->widgetConfig->dataTableOptions->aaSorting = array(array(2,'desc'));
             break;
             case 323:
-            if($datasource='checkbook_nycha'){
+            if($datasource=='checkbook_nycha'){
             $node->widgetConfig->dataTableOptions->aaSorting = array(array(5, 'desc'));
             }
             break;
@@ -193,14 +193,14 @@ $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoCol
         $monthId = RequestUtilities::getRequestParamValue('month');
         $datasource = RequestUtilities::getRequestParamValue('datasource');
 
-        if( isset($monthId) && $datasource!='checkbook_nycha' ){
-            $node->widgetConfig->dataset = 'checkbook:payroll_employee_agency_month';
+        if(isset($monthId) && $datasource=='checkbook_nycha' ){
+        $node->widgetConfig->dataset = 'checkbook_nycha:payroll_employee_agency_month_basis';
         }
-        else{
-          $node->widgetConfig->dataset = 'checkbook_nycha:payroll_employee_agency_month_basis';
+        else if(isset($monthId)){
+        $node->widgetConfig->dataset = 'checkbook:payroll_employee_agency_month';
         }
 
-        $adjustedParameters = $parameters;
+  $adjustedParameters = $parameters;
         if(isset($parameters['annual_salary.annual_salary'])){
             $parameters['type_of_employment'] = 'Salaried';
         }
