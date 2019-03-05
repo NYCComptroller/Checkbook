@@ -18,7 +18,7 @@
         "dataset":{
             "sortColumn":["-gross_pay","-payroll_id"],
             "name":"checkbook_nycha:payroll",
-            "data_source":"checkbook_oge",
+            "data_source":"checkbook_nycha",
             "columnTypes":{
                 "civil_service_title":"like"
             },
