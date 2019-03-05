@@ -23,7 +23,7 @@
  * Class that defines the validations.
  */
 class ValidatorConfig {
-  static $domains = array('Budget','Revenue','Spending','Payroll','Contracts','Spending_OGE','Contracts_OGE', 'Payroll_OGE', 'Contracts_NYCHA');
+  static $domains = array('Budget','Revenue','Spending','Payroll','Contracts','Spending_OGE','Contracts_OGE', 'Payroll_NYCHA', 'Contracts_NYCHA');
   static $response_formats = array('xml','csv');
   static $specialChars = "!\"#$%&'()*+,–./:;<=>@?[\\]^{}|~`";
   static $allow_special_chars_params = array('vendor', 'budget_code_name','payee_name','budget_name','vendor_name','prime_vendor','purpose','minority_type_id','mwbe_category','title','title_exact','apt_pin','expense_category', 'vendor_customer_code', 'payee_code');
