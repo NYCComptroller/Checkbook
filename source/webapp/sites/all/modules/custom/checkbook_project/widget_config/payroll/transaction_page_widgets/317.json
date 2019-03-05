@@ -119,6 +119,7 @@
             $nid = RequestUtilities::getRequestParamValue('smnid');
             $payroll_type = RequestUtil::getPayrollType();
             $datasource = RequestUtilities::getRequestParamValue('datasource');
+             $monthId = RequestUtilities::getRequestParamValue('month');
 
         foreach($node->widgetConfig->table_columns as $key => $table_column){
            //daily wage column must not be included in citywide
@@ -133,8 +134,13 @@
                 $table_column->sortSourceColumn='total_hourly_rate_amount';
            }
            //daily wage column must be sorted by default for nycha and must  refer amount basis id
-            if($table_column->labelAlias == 'daily_wage' && ($datasource=='checkbook_nycha' )){
-                  $adjustDataTableOptions->aaSorting = array(array(4, 'desc'));
+            if($table_column->labelAlias == 'daily_wage' && ($datasource=='checkbook_nycha' ) ){
+                if(isset($monthId)){
+                $adjustDataTableOptions->aaSorting = array(array(5, 'desc'));
+                 }
+                else{
+                    $adjustDataTableOptions->aaSorting = array(array(4, 'desc'));
+                 }
                   $node->widgetConfig->columns[]='total_daily_wage_amount';
 
               }
