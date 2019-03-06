@@ -10,7 +10,6 @@
     "urlParameterName":"dept",
     "autocompleteParamName":"dept_auto", 
     "facetPager":true,
-    "urlParameterNameType":"eqtext",    
     "autocompleteID":"fdeptid",
     "autocompleteField":"department_name",
     "adjustParameters":"
