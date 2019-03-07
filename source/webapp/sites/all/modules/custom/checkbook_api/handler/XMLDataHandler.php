@@ -211,6 +211,11 @@ class XMLDataHandler extends AbstractDataHandler
                 case "amount_basis_id":
                     $new_select_part .=  "CASE WHEN amount_basis_id = 1 THEN 'SALARIED' ELSE 'NON-SALARIED' END";
                     break;
+                case "hourly_rate":
+                    if($this->requestDataSet->data_source == Datasource::NYCHA) {
+                        $new_select_part .=  "'-'";
+                    }
+                    break;
                 default:
                     $new_select_part .= "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')";
                     break;
