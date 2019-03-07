@@ -12,7 +12,7 @@
     "po_num_exact": "eqignorecase",
     "vendornm": "like",
     "vendornm_exact": "eqignorecase",
-    "curamtr": "rangeid",
+    "curamtr": "range",
     "pcontdesc": "contains",
     "startdate": "range",
     "enddate": "range",
