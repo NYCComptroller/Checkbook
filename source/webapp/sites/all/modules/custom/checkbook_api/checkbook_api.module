@@ -528,13 +528,6 @@ function checkbook_api_adjustPayrollDataSetResults(&$data_records, $data_source 
         if(isset($data_record['amount_basis_id'])) {
             $data_records[$key]['amount_basis_id'] = PayrollUtil::getEmploymentTypeByAmountBasisId($data_record['amount_basis_id']);
         }
-        if($data_source == Datasource::NYCHA) {
-            //Modify Hourly Rate display, display '-' for hourly rate in NYCHA
-            if(isset($data_record['amount_basis_id']) == 3 && !isset($data_record["non_salaried_amount"])) {
-                $data_records[$key]['non_salaried_amount'] =  "-";
-            }
-        }
-
     }
 }
 
@@ -641,11 +634,15 @@ function checkbook_api_adjustContractSql(&$sql_query) {
     }
 }
 
-function checkbook_api_adjustPayrollSql(&$sql_query) {
+function checkbook_api_adjustPayrollSql(&$sql_query, $data_source = Datasource::CITYWIDE) {
     $sql_parts = explode("FROM", $sql_query);
     $select_part = $sql_parts[0];
     $from_part = $sql_parts[1];
     $select_part =  str_replace("amount_basis_id", "CASE WHEN amount_basis_id = 1 THEN 'SALARIED' ELSE 'NON-SALARIED' END AS payroll_type",$select_part);
+    if($data_source == Datasource::NYCHA) {
+        $select_part = str_replace("daily_wage", "non_salaried_amount AS daily_wage", $select_part);
+        $select_part = str_replace("hourly_rate", "CASE WHEN hourly_rate IS NOT NULL THEN non_salaried_amount ELSE '-' END AS hourly_rate", $select_part);
+    }
     $sql_query = $select_part."FROM".$from_part;
 }
 
