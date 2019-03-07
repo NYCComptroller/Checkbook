@@ -9,7 +9,7 @@
     "autocompleteParamName":"agency_auto",    
     "autocompleteID":"fagencyId",
     "autocompleteField":"agency.agency.agency_name", 
-    "maxSelect":1,
+    "maxSelect":5,
     "urlParamMap":{
         "doctype":"document_code.document_code.document_code",
         "cagency":"agency.agency"
