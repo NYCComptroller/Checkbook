@@ -52,6 +52,20 @@ class RequestUtilitiesTest extends \PHPUnit\Framework\TestCase
     /**
      *
      */
+    public function testGetRegularGet()
+    {
+        $_GET = [
+            'q' => '/a/b/c/d/e',
+            'f' => 'g',
+            'h' => 'j',
+        ];
+        $this->assertEquals('g', RequestUtilities::get('f'));
+        $this->assertEquals('j', RequestUtilities::get('h'));
+    }
+
+    /**
+     *
+     */
     public function testGetMultipleParams()
     {
         $_GET['q'] = 'a/b/c/d/e/f/g';
