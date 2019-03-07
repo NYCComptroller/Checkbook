@@ -4,7 +4,7 @@
     "no_results_content":"No Results Found",
     "startWith":0,
     "limit":10,
-    "maxSelect":1,
+    "maxSelect":5,
     "columns":["industry.industry", "industry.industry.industry_type_name", "txcount"],
     "defaultParameters":{"is_prime_or_sub":"S"},
     "urlParamMap":{
