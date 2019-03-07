@@ -33,8 +33,8 @@
                         "pay_date":"pay_date",
                         "payroll_type":"amount_basis_id",
                         "annual_salary":"salaried_amount",
-                        "hourly_rate":"non_salaried_amount",
-                        "daily_wage":"non_salaried_amount",
+                        "hourly_rate":"hourly_rate",
+                        "daily_wage":"daily_wage",
                         "gross_pay":"gross_pay",
                         "base_pay":"base_pay",
                         "other_payments":"other_payments",
@@ -53,8 +53,8 @@
                         "Pay Date":"pay_date",
                         "Payroll Type":"amount_basis_id",
                         "Annual Salary":"salaried_amount",
-                        "Hourly Rate":"non_salaried_amount",
-                        "Daily Wage":"non_salaried_amount",
+                        "Hourly Rate":"hourly_rate",
+                        "Daily Wage":"daily_wage",
                         "Gross Pay":"gross_pay",
                         "Base Pay":"base_pay",
                         "Other Payments":"other_payments",
@@ -66,7 +66,7 @@
             },
             "adjustParameters":"if(function_exists('checkbook_api_adjustPayrollParameterFilters')){checkbook_api_adjustPayrollParameterFilters($data_set,$parameters,$criteria);}",
             "adjustDataSetResults":"if(function_exists('checkbook_api_adjustPayrollDataSetResults')){checkbook_api_adjustPayrollDataSetResults($data_records, Datasource::NYCHA);}",
-            "adjustSql":"if(function_exists('checkbook_api_adjustPayrollSql')){checkbook_api_adjustPayrollSql($sql_query);}"
+            "adjustSql":"if(function_exists('checkbook_api_adjustPayrollSql')){checkbook_api_adjustPayrollSql($sql_query, Datasource::NYCHA);}"
         },
         "requestParameters":{
             "calendar_year":{
