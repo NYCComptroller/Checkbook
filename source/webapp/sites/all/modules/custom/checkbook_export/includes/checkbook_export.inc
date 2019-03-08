@@ -42,6 +42,7 @@ function _checkbook_export_grid_transactions(){
     	eval($node->widgetConfig->widgetUpdateJSONConfig);
     }
 
+    $columns=[];
     //remove blank columns
     $cols = $node->widgetConfig->gridConfig->table_columns;
     for($i=0; $i<count($cols); $i++){
@@ -67,41 +68,41 @@ function _checkbook_export_grid_transactions(){
         }
         $i++;
     }
+
     if(isset($node->widgetConfig->gridConfig->data)){
     	foreach($node->widgetConfig->gridConfig->table_columns as $column){
-    		echo $column->labelAlias . ",";
+            $data .= $column->labelAlias . ",";
     	}
-    	echo "\r\n";
+        $data .= "\r\n";
 
-        $sortindex = $_REQUEST['iSortCol_0'];
+        $sort_index = $_REQUEST['iSortCol_0'];
 
-    	$sortindexFormat = $node->widgetConfig->gridConfig->table_columns[$sortindex]->formatType;
+    	$sort_index_format = $node->widgetConfig->gridConfig->table_columns[$sort_index]->formatType;
     	foreach($node->widgetConfig->gridConfig->data as &$dataRecord){
-    		$dataRecord['sort_column'] = $sortindex;
-    		if(isset($sortindexFormat)){
-    			$dataRecord['formatType'] = $sortindexFormat;
+    		$dataRecord['sort_column'] = $sort_index;
+    		if(isset($sort_index_format)){
+    			$dataRecord['formatType'] = $sort_index_format;
     		}
     	}
 
     	$order = $isAsc ? 'asc' : 'desc';
 
     	_checkbook_export_grid_sort($node, $order);
-    	foreach ($node->widgetConfig->gridConfig->data as $datarow) {
+    	foreach ($node->widgetConfig->gridConfig->data as $data_row) {
     		$index = 0;
     		while($index <count($node->widgetConfig->gridConfig->table_columns)){
-    			$columnValue = html_entity_decode($datarow[$index]);
+    			$columnValue = html_entity_decode($data_row[$index]);
     			$columnValue = str_replace('"',chr(34).'"',$columnValue);
 				if($node->widgetConfig->gridConfig->table_columns[$index]->formatType =="amount"){
 					$columnValue = ($columnValue == null) ? 0:$columnValue;
 				}
-    			echo (($index == 0) ? ('"'.$columnValue.'"') : (',"'.$columnValue.'"'));
+                $data .= (($index == 0) ? ('"'.$columnValue.'"') : (',"'.$columnValue.'"'));
     			$index +=1;
     		}
-    		echo "\r\n";
+            $data .= "\r\n";
     	}
 
-    }
-    else if(is_array($node->data) and count($node->data) > 0){
+    } else if(is_array($node->data) and count($node->data) > 0){
         $dataRecords = $node->data;
 
         //Custom column for ordering
