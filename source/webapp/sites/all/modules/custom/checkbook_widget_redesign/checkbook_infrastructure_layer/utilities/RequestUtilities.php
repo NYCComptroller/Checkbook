@@ -173,9 +173,10 @@ class RequestUtilities
      */
     private static function getFilteredQueryParam($paramName, $options = [])
     {
+        $urlPath = '';
         if (isset($options['q'])) {
             $urlPath = $options['q'];
-        } else {
+        } elseif(isset($_GET['q'])) {
             $urlPath = drupal_get_path_alias($_GET['q']);
         }
         $pathParams = explode('/', $urlPath);
@@ -186,6 +187,11 @@ class RequestUtilities
                 return htmlspecialchars_decode($value, ENT_QUOTES);
             }
         }
+
+        if(isset($_GET[$paramName])){
+            return filter_xss(htmlspecialchars_decode($_GET[$paramName], ENT_QUOTES));
+        }
+
         return null;
     }
 
