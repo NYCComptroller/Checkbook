@@ -2171,10 +2171,10 @@ function checkbook_datafeeds_override_column_order(array $selectedColumns, array
  */
 function checkbook_datafeeds_payroll($form, &$form_state) {
     $datatype = $form_state['step_information']['type']['stored_values']['format'];
-    $agency_options = _agency_options();
-    $oge_options = _agency_options('checkbook_nycha');
+    $agency_options = _agency_options( Datasource::CITYWIDE);
+    $oge_options = _agency_options(Datasource::NYCHA);
     $data_source = $form_state['values']['datafeeds-payroll-domain-filter'];
-    $data_source = !isset($data_source) ? 'checkbook' : $data_source;
+    $data_source = !isset($data_source) ? Datasource::CITYWIDE : $data_source;
 
     //<editor-fold desc="Heading">
 
