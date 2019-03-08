@@ -169,7 +169,7 @@ class CSVDataHandler extends AbstractDataHandler {
                     break;
                 case "hourly_rate":
                     if($this->requestDataSet->data_source == Datasource::NYCHA) {
-                        $new_column = "'-'";
+                        $new_column = "''";
                         $new_select_part .= $new_column . ' AS \\"' . $columnMappings[$column] . '\\",' . "\n";
                     }
                     break;

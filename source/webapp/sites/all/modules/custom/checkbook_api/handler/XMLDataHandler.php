@@ -213,7 +213,7 @@ class XMLDataHandler extends AbstractDataHandler
                     break;
                 case "hourly_rate":
                     if($this->requestDataSet->data_source == Datasource::NYCHA) {
-                        $new_select_part .=  "'-'";
+                        $new_select_part .=  "''";
                     }
                     break;
                 default:
