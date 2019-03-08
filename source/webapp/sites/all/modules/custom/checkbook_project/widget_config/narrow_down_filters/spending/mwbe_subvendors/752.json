@@ -3,7 +3,7 @@
     "parentNid":757,
     "startWith":0,
     "limit":100,
-    "maxSelect":1,
+    "maxSelect":5,
     "columns":["vendor.vendor", "vendornm.vendornm", "txcount"],
     "orderBy":"-txcount",
     "facetPager":true,
