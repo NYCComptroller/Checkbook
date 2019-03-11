@@ -25,6 +25,7 @@
         return $header;
   ",
   "useList":true,
+  "exportConfigNid":997,
   "getTotalDataCount":true,
   "limit":"35",
   "noDataInitialLoad":true,
