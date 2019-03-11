@@ -10,7 +10,6 @@
     "urlParameterName":"expcategory",
     "autocompleteParamName":"expcategory_auto", 
     "facetPager":true,
-    "urlParameterNameType":"eqtext",    
     "autocompleteID":"fExpCategory",
     "autocompleteField":"object_class_name",
     "adjustParameters":"
