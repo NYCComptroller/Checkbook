@@ -116,7 +116,7 @@ class CSVDataHandler extends AbstractDataHandler {
         $select_part = str_replace("SELECT", "", $select_part);
 
         $sql_parts = explode(",", $select_part);
-        $new_select_part = "SELECT ";
+        $new_select_part = "SELECT ";log_error($sql_parts);
         foreach($sql_parts as $sql_part) {
 
             $sql_part = trim($sql_part);
@@ -166,6 +166,12 @@ class CSVDataHandler extends AbstractDataHandler {
                 case "amount_basis_id":
                     $new_column = "CASE WHEN " . $alias . $column . " = 1 THEN 'Salaried' ELSE 'Non-Salaried' END";
                     $new_select_part .= $new_column . ' AS \\"' . $columnMappings[$column] . '\\",' .  "\n";
+                    break;
+                case "hourly_rate":
+                    if($this->requestDataSet->data_source == Datasource::NYCHA) {
+                        $new_column = "''";
+                        $new_select_part .= $new_column . ' AS \\"' . $columnMappings[$column] . '\\",' . "\n";
+                    }
                     break;
                 default:
                     $new_select_part .= $alias . $column . ' AS \\"' . $columnMappings[$column] . '\\",' .  "\n";

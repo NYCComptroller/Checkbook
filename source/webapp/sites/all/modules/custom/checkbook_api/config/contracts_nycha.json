@@ -89,7 +89,8 @@
             "Commodity Category":"commodity_category_descr"
           }
         }
-      }
+      },
+      "adjustParameters":"if(function_exists('checkbook_api_adjustNYCHAContractsParams')){checkbook_api_adjustNYCHAContractsParams($data_set,$parameters,$criteria);}"
     },
     "requestParameters":{
       "fiscal_year":{"valueType":"value","dataType":"year","maxLength":"4"},
@@ -202,7 +203,8 @@
             "Year": "release_approved_year"
           }
         }
-      }
+      },
+      "adjustParameters":"if(function_exists('checkbook_api_adjustNYCHAContractsParams')){checkbook_api_adjustNYCHAContractsParams($data_set,$parameters,$criteria);}"
     },
     "requestParameters":{
       "fiscal_year":{"valueType":"value","dataType":"year","maxLength":"4"},

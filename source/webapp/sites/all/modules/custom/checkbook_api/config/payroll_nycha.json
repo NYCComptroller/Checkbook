@@ -1,5 +1,5 @@
 {
-    "payroll_oge_calendar_year":{
+    "payroll_nycha_calendar_year":{
         "searchCriteriaMap":{
             "calendar_year":"calendar_fiscal_year",
             "other_government_entities_code":"agency_code",
@@ -18,7 +18,7 @@
         "dataset":{
             "sortColumn":["-gross_pay","-payroll_id"],
             "name":"checkbook_nycha:payroll",
-            "data_source":"checkbook_oge",
+            "data_source":"checkbook_nycha",
             "columnTypes":{
                 "civil_service_title":"like"
             },
@@ -33,7 +33,8 @@
                         "pay_date":"pay_date",
                         "payroll_type":"amount_basis_id",
                         "annual_salary":"salaried_amount",
-                        "hourly_rate":"non_salaried_amount",
+                        "hourly_rate":"hourly_rate",
+                        "daily_wage":"non_salaried_amount",
                         "gross_pay":"gross_pay",
                         "base_pay":"base_pay",
                         "other_payments":"other_payments",
@@ -41,8 +42,8 @@
                         "gross_pay_ytd":"gross_pay_cytd",
                         "calendar_year":"calendar_fiscal_year"
                     },
-                    "rowElements":["other_government_entities", "title", "pay_frequency", "pay_date", "payroll_type", "annual_salary", "hourly_rate", "gross_pay", "base_pay", "other_payments", "overtime_payments", "gross_pay_ytd",
-                         "calendar_year"]
+                    "rowElements":["other_government_entities", "title", "pay_frequency", "pay_date", "payroll_type", "annual_salary", "hourly_rate", "daily_wage",
+                                   "gross_pay", "base_pay", "other_payments", "overtime_payments", "gross_pay_ytd", "calendar_year"]
                 },
                 "csv":{
                     "elementsColumn":{
@@ -52,7 +53,8 @@
                         "Pay Date":"pay_date",
                         "Payroll Type":"amount_basis_id",
                         "Annual Salary":"salaried_amount",
-                        "Hourly Rate":"non_salaried_amount",
+                        "Hourly Rate":"hourly_rate",
+                        "Daily Wage":"non_salaried_amount",
                         "Gross Pay":"gross_pay",
                         "Base Pay":"base_pay",
                         "Other Payments":"other_payments",
@@ -63,7 +65,7 @@
                 }
             },
             "adjustParameters":"if(function_exists('checkbook_api_adjustPayrollParameterFilters')){checkbook_api_adjustPayrollParameterFilters($data_set,$parameters,$criteria);}",
-            "adjustDataSetResults":"if(function_exists('checkbook_api_adjustPayrollDataSetResults')){checkbook_api_adjustPayrollDataSetResults($data_records);}",
+            "adjustDataSetResults":"if(function_exists('checkbook_api_adjustPayrollDataSetResults')){non_salaried_amount($data_records);}",
             "adjustSql":"if(function_exists('checkbook_api_adjustPayrollSql')){checkbook_api_adjustPayrollSql($sql_query);}"
         },
         "requestParameters":{
@@ -151,7 +153,7 @@
     "validators":[
         {
             "name":"optionalSingleFilter",
-            "configKey":["payroll_oge_calendar_year"],
+            "configKey":["payroll_nycha_calendar_year"],
             "config":{
                 "criteriaLevel":"value",
                 "validatorType":"filterName",

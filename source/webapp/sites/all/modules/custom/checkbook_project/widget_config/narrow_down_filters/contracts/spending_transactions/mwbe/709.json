@@ -4,7 +4,7 @@
     "columns":[ "deptnm.deptnm", "txcount"],
     "orderBy":"-txcount",
     "limit":100,
-    "maxSelect":1,
+    "maxSelect":5,
 	"facetPager":true,
     "filterName":"Department",
     "urlParameterName":"deptnm",

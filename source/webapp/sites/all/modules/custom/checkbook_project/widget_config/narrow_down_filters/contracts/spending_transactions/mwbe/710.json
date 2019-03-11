@@ -2,7 +2,7 @@
     "widgetType":"phpparser",
     "parentNid":707,
     "limit":100,
-    "maxSelect":1,
+    "maxSelect":5,
     "urlParamMap":{
         "doctype":"document_code.document_code.document_code"
     },

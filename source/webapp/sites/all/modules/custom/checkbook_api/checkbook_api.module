@@ -237,6 +237,21 @@ function checkbook_api_adjustBudgetParameterFilters(&$data_set, &$parameters, $c
  * @param $data_set
  * @param $parameters
  * @param $criteria
+ */
+function checkbook_api_adjustNYCHAContractsParams(&$data_set, &$parameters, $criteria){
+    if(isset($parameters['release_approved_year'])){
+        $year = $parameters['release_approved_year'];
+        $data_controller_instance = data_controller_get_operator_factory_instance();
+        $parameters['agreement_start_year_id'] = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, $year);
+        $parameters['agreement_end_year_id'] = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, $year);
+        unset($parameters['release_approved_year']);
+    }
+}
+
+/**
+ * @param $data_set
+ * @param $parameters
+ * @param $criteria
  * @param null $datasource
  */
 function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, $criteria,$datasource = null) {

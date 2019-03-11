@@ -3,7 +3,7 @@
     "parentNid":707,
     "limit":100,
     "startWith":0,
-    "maxSelect":1,
+    "maxSelect":5,
     "columns":["expenditure_object_nm.expenditure_object_nm",  "txcount"],
     "orderBy":"-txcount",
 	"facetPager":true,
