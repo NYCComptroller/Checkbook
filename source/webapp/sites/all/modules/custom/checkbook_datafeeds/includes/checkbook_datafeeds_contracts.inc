@@ -1188,7 +1188,6 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
                     case Datasource::NYCHA:
                         $query = "SELECT vendor_name FROM all_agreement_transactions 
                                         WHERE latest_flag = 'Y' 
-                                        AND transaction_status_name IN ('APPROVED','CLOSED','FINALLY CLOSED', 'REQUIRES REAPPROVAL')
                                         AND vendor_name ILIKE '" . $vendor . "'";
                         $results = _checkbook_project_execute_sql($query, "main", $data_source);
                         if (!$results[0]) {

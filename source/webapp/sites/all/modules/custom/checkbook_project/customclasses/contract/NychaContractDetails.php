@@ -202,13 +202,11 @@ SQL;
             SELECT SUM(count)
             FROM (SELECT COUNT(DISTINCT contract_id) 
                   FROM all_agreements
-                  WHERE transaction_status_name = ANY (ARRAY ['APPROVED', 'CLOSED', 'FINALLY CLOSED','REQUIRES REAPPROVAL'])
-                    AND vendor_id = '{$vendor_id}'
+                  WHERE vendor_id = '{$vendor_id}'
                   UNION ALL
                   SELECT COUNT(DISTINCT contract_id)
                   FROM all_agreement_transactions
-                  WHERE agreement_type_code = 'PO' AND transaction_status_name = ANY (ARRAY ['APPROVED', 'CLOSED', 'FINALLY CLOSED','REQUIRES REAPPROVAL'])
-                    AND vendor_id = '{$vendor_id}') a
+                  WHERE agreement_type_code = 'PO' AND vendor_id = '{$vendor_id}') a
 EOQ2;
 
             $total_number_of_contracts = _checkbook_project_execute_sql_by_data_source($total_number_contracts_query, 'checkbook_nycha');
@@ -244,8 +242,7 @@ EOQ2;
                             release_original_amount,
                             release_spend_to_date
             FROM all_agreement_transactions
-            WHERE transaction_status_name = ANY (ARRAY ['APPROVED', 'CLOSED', 'FINALLY CLOSED', 'REQUIRES REAPPROVAL'])
-              AND contract_id = '{$contract_id}'
+            WHERE contract_id = '{$contract_id}'
             ORDER BY release_id
             LIMIT 50
 SQL;
@@ -267,8 +264,7 @@ SQL;
                 revision_approved_date,
                 transaction_status_name
             FROM all_agreement_transactions a
-            WHERE transaction_status_name = ANY (ARRAY ['APPROVED', 'CLOSED', 'FINALLY CLOSED','REQUIRES REAPPROVAL'])
-              AND contract_id = '{$contract_id}'
+            WHERE contract_id = '{$contract_id}'
             ORDER BY revision_number DESC;
 SQL;
         $release_history = _checkbook_project_execute_sql_by_data_source($rh_sql, 'checkbook_nycha');
@@ -302,8 +298,7 @@ SQL;
                 responsibility_center_descr,
                 transaction_status_name
             FROM all_agreement_transactions a
-            WHERE transaction_status_name = ANY (ARRAY ['APPROVED', 'CLOSED', 'FINALLY CLOSED','REQUIRES REAPPROVAL'])
-              AND contract_id = '{$contract_id}'
+            WHERE contract_id = '{$contract_id}'
             ORDER BY shipment_number, distribution_number;
 SQL;
 
