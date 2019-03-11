@@ -19,7 +19,9 @@
 */
 ?>
 <?php  
-echo eval($node->widgetConfig->header);  
+    echo eval($node->widgetConfig->header);
+    $last_year = end($node->data)['fiscal_year'];
+    reset($node->data);
 ?>
 
 <a class="trends-export" href="/export/download/trends_nyc_population_csv?dataUrl=/node/<?php echo $node->nid ?>">Export</a>
@@ -36,7 +38,7 @@ echo eval($node->widgetConfig->header);
     <thead>
     <tr>
     	<th>&nbsp;</th>
-    	<th colspan="4" class="centrig bb"><div>2000-2016<sup>*</sup></div></th>
+    	<th colspan="4" class="centrig bb"><div>2000-<?= $last_year ?><sup>*</sup></div></th>
     </tr>
 	<tr>
         <th class="number" ><div class="trendCen">Year</div></th>
@@ -68,7 +70,7 @@ echo eval($node->widgetConfig->header);
     </tbody>
 </table>
     <div class="footnote">
-         <p>*Amounts as of March 28, 2017</p>
+         <p>*Amounts as of March 28, <?= $last_year ?></p>
          <p>Source: U.S Department of Commerce, Bureau of Economic Analysis. US Census Bureau and American Fact Finder.</p>
     </div>
 <?php 

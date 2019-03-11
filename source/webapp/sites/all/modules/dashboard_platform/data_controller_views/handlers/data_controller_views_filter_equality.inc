@@ -1,6 +1,5 @@
 <?php
-
-
+/*
    Inspired by World Bank API
 */
 

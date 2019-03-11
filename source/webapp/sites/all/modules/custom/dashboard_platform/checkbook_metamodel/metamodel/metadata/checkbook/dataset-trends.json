@@ -28,11 +28,11 @@
             "datasourceName": "main",
             "source": "trends_numberofcityemployees"
          },
-         "trends_non_agricultural_wage_salary_employment": {
+         "trends_non_agricultural_wage_salary_employement": {
             "datasourceName": "main",
-            "source": "trends_non_agricultural_wage_salary_employement"
+            "source": "trends_non_agricultural_wage_salary_employment"
          },
-         "trends_employement_status_of_resident_population": {
+         "trends_employment_status_of_resident_population": {
             "datasourceName": "main",
             "source": "trends_employment_status_of_resident_population"
          },
