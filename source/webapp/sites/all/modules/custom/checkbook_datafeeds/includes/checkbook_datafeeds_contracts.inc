@@ -635,13 +635,11 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
 /**
  * Column options for contracts domain.
  *
+ * @param $data_source
+ * @param $status
+ * @param $category
  * @param string $data_type
  *   Type of data for Data Feeds to return (xml or csv)
- * @param string $contract_type
- *   Type of contract (expense or revenue)
- * @param string $contract_status
- *   Contract status (active, registered or pending)
- *
  * @return array
  *   FAPI structured array for select box #options
  */
@@ -702,7 +700,6 @@ function checkbook_datafeeds_contracts_confirmation_previous_submit($form, &$for
 }
 
 
-
 /**
  * Convert values from Contracts section of form to an array format expected by API SearchCriteria.
  *
@@ -711,6 +708,7 @@ function checkbook_datafeeds_contracts_confirmation_previous_submit($form, &$for
  * @param array $form_state
  *   Data Feeds wizard form_state array
  *
+ * @param $data_source
  * @return array
  *   Structured array expected by API
  */
@@ -1238,6 +1236,7 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
  *   expense category
  * @param string $year
  *   year
+ * @return array
  */
 function checkbook_datafeeds_contracts_filter_selected_columns($selected_columns, $data_source, $response_type, $status, $expense_category, $year)
 {
@@ -1289,6 +1288,7 @@ function checkbook_datafeeds_contracts_add_required_columns($response_type, $dat
 
 /**
  * Returns the configuration key
+ * @param $domain
  * @param $data_source
  * @param $status
  * @param $expense_category

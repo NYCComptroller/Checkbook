@@ -160,7 +160,7 @@ class PayrollUtil {
      * @param $year
      * @param $year_type
      * @param null $title
-     * @return int|null
+     * @return array
      */
     static function getAgencyEmployeeCountByType($year, $year_type, $title = null) {
         $data_source = Datasource::getCurrent();

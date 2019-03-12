@@ -770,7 +770,11 @@ class SpendingUtil{
         . '/smnid/' . $node->nid . '/dtsmnid/' . $node->nid .'/newwindow';
     }
 
-    /** Returns Ytd Spending percent */
+    /** Returns Ytd Spending percent
+     * @param $node
+     * @param $row
+     * @return string
+     */
     static function getPercentYtdSpending($node, $row){
         $ytd_spending = $row['check_amount_sum']/$node->totalAggregateColumns['check_amount_sum']*100;
         $ytd_spending = $ytd_spending < 0 ? 0.00 : $ytd_spending;
@@ -883,7 +887,7 @@ class SpendingUtil{
     /**
      * Returns the vendor or sub vendor id for the vendor facets
      * @param $node
-     * @return null|request
+     * @return array|string
      */
     static function getVendorFacetParameter($node){
         $dashboard = RequestUtilities::get('dashboard');

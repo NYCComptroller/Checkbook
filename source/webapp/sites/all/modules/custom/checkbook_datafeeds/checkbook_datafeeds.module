@@ -99,6 +99,11 @@ function checkbook_datafeeds_library() {
 
 /**
  * Implements hook_theme().
+ * @param $existing
+ * @param $type
+ * @param $theme
+ * @param $path
+ * @return array
  */
 function checkbook_datafeeds_theme($existing, $type, $theme, $path) {
     $hooks = array();
@@ -2448,6 +2453,7 @@ function checkbook_datafeeds_payroll($form, &$form_state) {
  * @param string $datatype
  *   Type of data for Data Feeds to return (xml or csv)
  *
+ * @param string $data_source
  * @return array
  *   FAPI structured array for select box #options
  */
@@ -2533,6 +2539,8 @@ function checkbook_datafeeds_payroll_next_submit($form, &$form_state) {
  *   current selected data source (i.e. checkbook, checkbook_oge)
  * @param string $response_type
  *   response type (i.e. csv, xml)
+ * @param string $year_type
+ * @return array
  */
 function checkbook_datafeeds_payroll_filter_selected_columns($selected_columns, $data_source, $response_type, $year_type = 'calendar_year')
 {
@@ -2855,6 +2863,7 @@ function checkbook_datafeeds_payroll_confirmation_previous_submit($form, &$form_
  * @param array $form_state
  *   Data Feeds wizard form_state array
  *
+ * @param $data_source
  * @return array
  *   Structured array expected by API
  */
@@ -4133,9 +4142,8 @@ function checkbook_datafeeds_year_ajax($form, &$form_state) {
 /**
  * Column options for Spending domain.
  *
- * @param string $datatype
- *   Type of data for Data Feeds to return (csv or xml)
- *
+ * @param $data_source
+ * @param $data_type
  * @return array
  *   FAPI structured array for select box #options
  */
@@ -4179,6 +4187,7 @@ function checkbook_datafeeds_spending_next_submit($form, &$form_state)
  *   current selected data source (i.e. checkbook, checkbook_oge)
  * @param string $response_type
  *   response type (i.e. csv, xml)
+ * @return array
  */
 function checkbook_datafeeds_spending_filter_selected_columns($selected_columns, $data_source, $response_type)
 {
@@ -4469,6 +4478,7 @@ function checkbook_datafeeds_spending_confirmation_previous_submit($form, &$form
  * @param array $form_state
  *   Data Feeds wizard form_state array
  *
+ * @param $data_source
  * @return array
  *   Structured array expected by API
  */
@@ -4720,7 +4730,7 @@ function checkbook_datafeeds_spending_validate($form, &$form_state) {
  * @param string|null $yeartype
  *   All Years or Budget Fiscal Years
  *
- * @return array
+ * @return void
  *   Array of years formatted for FAPI select box #options
  */
 function _year_options($yeartype = NULL) {
@@ -4846,7 +4856,9 @@ function currentCalendarYear() {
 /**
  * Get Agencies from Data Controller and format into a FAPI select input #options array.
  *
- * @return array
+ * @param null $data_source
+ * @param bool $json_output
+ * @return void
  *   Agency names and codes
  */
 function _agency_options($data_source = null, $json_output = false) {
@@ -4897,6 +4909,7 @@ function _agency_options($data_source = null, $json_output = false) {
  * Get the agency options, for IE8, the text will be shortened to fit the width and a title attribute is there
  * @param $data
  * @param null $data_source
+ * @param bool $json_output
  * @return mixed
  */
 function _checkbook_datafeeds_agency_options($data,$data_source = null, $json_output = false) {
@@ -4931,7 +4944,7 @@ function _checkbook_datafeeds_agency_options($data,$data_source = null, $json_ou
 /**
  * Get Sub Vendor Status in PIP from Data Controller and format into a FAPI select input #options array.
  *
- * @return array
+ * @return void
  *   Sub Vendor Status In PIP ids and nammes
  */
 function _sub_vendor_status_in_pip() {
@@ -4967,7 +4980,7 @@ function _sub_vendor_status_in_pip() {
 /**
  * Get Fund Classes from Data Controller and format into a FAPI select input #options array.
  *
- * @return array
+ * @return void
  *   Fund classes and fund class names
  */
 function _fund_class_options() {
@@ -4995,7 +5008,7 @@ function _fund_class_options() {
 /**
  * Get Revenue Categories from Data Controller and format into a FAPI select input #options array.
  *
- * @return array
+ * @return void
  *   Revenue categories and revenue category names
  */
 function _revenue_category_options() {
@@ -5020,7 +5033,7 @@ function _revenue_category_options() {
 /**
  * Get Funding Sources from Data Controller and format into a FAPI select input #options array.
  *
- * @return array
+ * @return void
  *   Funding source codes and funding source names
  */
 function _funding_source_options() {
@@ -5045,7 +5058,8 @@ function _funding_source_options() {
 /**
  * Get Expense Type from Data Controller and format into a FAPI select input options array.
  *
- * @return array
+ * @param string $data_source
+ * @return void
  *   Spending category codes and display names
  */
 function _expense_type_options($data_source = 'checkbook') {
@@ -5129,7 +5143,7 @@ function _pay_frequency_options() {
 /**
  * Get Contract Type from Data Controller and format into a FAPI select input #options array.
  *
- * @return array
+ * @return void
  *   Agreement type codes and agreement type names
  */
 function _contract_type_options() {
@@ -5176,7 +5190,7 @@ function _checkbook_datafeeds_contract_type_options($data) {
 /**
  * Get Award Method from Data Controller and format into a FAPI select input #options array.
  *
- * @return array
+ * @return void
  *   Award method codes and award method names
  */
 function _award_method_options() {
@@ -5223,14 +5237,12 @@ function _checkbook_datafeeds_award_method_options($data) {
 /**
  * Get Department from Data Controller and format into a FAPI select input #options array.
  *
- * @param $agency
- *   Agency code
- * @param $sc
- *   Spending category
  * @param $year
  *   Year
  *
- * @return array
+ * @param $agency
+ *   Agency code
+ * @return void Department codes and department names filtered by agency, year
  *  Department codes and department names filtered by agency, year
  */
 function _budget_dept_options($year, $agency) {
@@ -5256,16 +5268,14 @@ function _budget_dept_options($year, $agency) {
 /**
  * Get Expenditure Category from Data Controller and format into a FAPI select input #options array.
  *
+ * @param $year
+ *   Year
+ *
  * @param $agency
  *   Agency code
  * @param $dept
  *   Department code
- * @param $sc
- *   Spending category code
- * @param $year
- *   Year
- *
- * @return array
+ * @return void Expenditure object codes and expenditure object names, filtered by agency, department, year
  *   Expenditure object codes and expenditure object names, filtered by agency, department, year
  */
 function _budget_expcat_options($year, $agency, $dept) {
@@ -5397,6 +5407,7 @@ function _checkbook_datafeeds_dept_options($data,$data_source = null) {
  * @param $year
  *   Year
  *
+ * @param null $data_source
  * @return array
  *   Expenditure object codes and expenditure object names, filtered by agency, department, spending category, year
  */
@@ -5982,6 +5993,8 @@ function checkDateFormat($date) {
 /**
  * Maintains the selected column order
  *
+ * @param null $domain
+ * @param null $data_source
  * @return array
  *   re-ordered columns
  */
@@ -6054,6 +6067,9 @@ function checkbook_datafeeds_file_download_page($results) {
 
 /**
  * Implementation of hook_mail().
+ * @param $key
+ * @param $message
+ * @param $params
  */
 function checkbook_datafeeds_mail($key, &$message, $params) {
     switch ($key) {

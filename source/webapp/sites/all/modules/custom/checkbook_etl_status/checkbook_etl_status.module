@@ -30,6 +30,8 @@ function checkbook_etl_status_mail($key, &$message, $params)
  * Implements hook_mail_alter().
  *
  * Adds priority headers to messages passing condition.
+ * @param $message
+ * @throws Exception
  */
 function checkbook_etl_status_mail_alter(&$message)
 {
@@ -52,6 +54,11 @@ function checkbook_etl_status_mail_alter(&$message)
 
 /**
  * Implements hook_theme()
+ * @param $existing
+ * @param $type
+ * @param $theme
+ * @param $path
+ * @return array
  */
 function checkbook_etl_status_theme($existing, $type, $theme, $path)
 {

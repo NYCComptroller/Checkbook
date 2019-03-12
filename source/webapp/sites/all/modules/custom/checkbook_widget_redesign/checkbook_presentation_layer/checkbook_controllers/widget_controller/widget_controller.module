@@ -526,6 +526,7 @@ function _load_widget_controller_data($node, $service) {
  * Function set the the count for the widget header text
  * @param $service
  * @param $parameters
+ * @return mixed
  */
 function _load_widget_controller_header_count($service, $parameters) {
     $results = $service->getWidgetHeaderCount($parameters);
@@ -536,6 +537,7 @@ function _load_widget_controller_header_count($service, $parameters) {
  * Function gets actual widget data row count
  * @param $service
  * @param $parameters
+ * @return mixed
  */
 function _load_widget_controller_row_count($service, $parameters) {
     $results = $service->getWidgetDataCount($parameters);
@@ -559,6 +561,7 @@ function _widget_controller_footer_url($node) {
  * @param $node
  * @param $service
  * @return mixed
+ * @throws Exception
  */
 function _widget_controller_format_widget_data($node, $service){
     $formatColumns = array_filter($node->widgetConfig->table_columns,
@@ -615,7 +618,7 @@ function _widget_controller_format_widget_data($node, $service){
 /**
  * Function will convert the order by to a SQL clause
  * @param $node
- * @return array
+ * @return string
  */
 function _prepare_order_by($node) {
     $orderBy = "";
@@ -713,6 +716,9 @@ function widget_controller_config($node) {
 
 /**
  * Returns JSON file after merging in the js functions
+ * @param $node
+ * @param $phpArray
+ * @return false|mixed|string
  */
 function widget_controller_mergeJSFunctions($node, $phpArray) {
 	$PLACEHOLDER_START = '"function":"';

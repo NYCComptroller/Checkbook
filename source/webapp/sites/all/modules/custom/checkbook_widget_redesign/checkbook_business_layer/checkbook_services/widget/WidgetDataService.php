@@ -22,6 +22,7 @@ abstract class WidgetDataService extends WidgetService {
      * @param $limit
      * @param $orderBy
      * @return mixed
+     * @throws Exception
      */
     public function getWidgetData($parameters, $limit, $orderBy) {
         $fnData = $this->widgetConfig->dataFunc;
@@ -33,6 +34,7 @@ abstract class WidgetDataService extends WidgetService {
      * Returns total number of records for the widget for the dataset row count
      * @param $parameters
      * @return mixed
+     * @throws Exception
      */
     public function getWidgetDataCount($parameters) {
         $fnData = $this->widgetConfig->dataFunc;
@@ -43,6 +45,7 @@ abstract class WidgetDataService extends WidgetService {
      * Returns count for widget header using specified datasource or default row count
      * @param $parameters
      * @return mixed
+     * @throws Exception
      */
     public function getWidgetHeaderCount($parameters) {
         $fnCount = isset($this->widgetConfig->countFunc) ? $this->widgetConfig->countFunc : $this->widgetConfig->dataFunc;

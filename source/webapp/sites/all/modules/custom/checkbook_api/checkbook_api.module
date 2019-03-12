@@ -389,6 +389,7 @@ function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, 
 /**
  * Updates the parameters for Active/Registered Expense Contracts
  * @param $parameters
+ * @param $criteria
  * @param $contract_status
  * @param $category
  */
