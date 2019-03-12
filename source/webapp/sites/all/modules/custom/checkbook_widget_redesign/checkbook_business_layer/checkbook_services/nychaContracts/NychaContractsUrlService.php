@@ -16,8 +16,12 @@ class NychaContractsUrlService
     {
         $url = "/panel_html/nycha_contracts_transactions_page/nycha_contracts/transactions"
             . RequestUtilities::buildUrlFromParam('year')
-            . RequestUtilities::buildUrlFromParam('datasource')
-            . RequestUtilities::buildUrlFromParam('agency');
+            . RequestUtilities::buildUrlFromParam('agency')
+            . RequestUtilities::buildUrlFromParam('vendor')
+            . RequestUtilities::buildUrlFromParam('industry')
+            . RequestUtilities::buildUrlFromParam('size')
+            . RequestUtilities::buildUrlFromParam('awdmethod')
+            . RequestUtilities::buildUrlFromParam('datasource');
         return $url;
     }
 
@@ -26,13 +30,17 @@ class NychaContractsUrlService
      * @param $vendor_id
      * @return string
      */
-    static function vendorUrl($vendor_id)
+    static function generateLandingPageUrl($urlParamName, $urlParamValue)
     {
         $url = '/nycha_contracts'
             . RequestUtilities::buildUrlFromParam('year')
             . RequestUtilities::buildUrlFromParam('agency')
-            . '/datasource/checkbook_nycha'
-            . '/vendor/'. $vendor_id;
+            . RequestUtilities::buildUrlFromParam('vendor')
+            . RequestUtilities::buildUrlFromParam('industry')
+            . RequestUtilities::buildUrlFromParam('size')
+            . RequestUtilities::buildUrlFromParam('awdmethod')
+            . RequestUtilities::buildUrlFromParam('datasource')
+            . '/'.$urlParamName.'/'. $urlParamValue;
 
         return $url;
     }
@@ -46,9 +54,12 @@ class NychaContractsUrlService
     {
         $url = '/nycha_contracts'
             . RequestUtilities::buildUrlFromParam('year')
-            . RequestUtilities::buildUrlFromParam('datasource')
             . RequestUtilities::buildUrlFromParam('agency')
             . RequestUtilities::buildUrlFromParam('vendor')
+            . RequestUtilities::buildUrlFromParam('industry')
+            . RequestUtilities::buildUrlFromParam('size')
+            . RequestUtilities::buildUrlFromParam('awdmethod')
+            . RequestUtilities::buildUrlFromParam('datasource')
             . '?expandBottomContURL=/panel_html/nycha_contract_details/contract/' . $contract_id;
 
         return $url;
