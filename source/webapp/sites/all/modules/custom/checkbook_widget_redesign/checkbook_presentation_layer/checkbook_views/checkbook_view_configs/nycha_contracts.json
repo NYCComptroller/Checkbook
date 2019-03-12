@@ -6,7 +6,8 @@
         "visibility_parameters": ["-vendor"]
       },
       "nycha_awardmethods": {
-        "widget_config": "nycha_contracts_by_award_methods_view"
+        "widget_config": "nycha_contracts_by_award_methods_view",
+        "visibility_parameters": ["-awdmethod"]
       },
       "nycha_purchase_orders": {
         "widget_config": "nycha_contracts_by_purchase_orders"
@@ -30,10 +31,12 @@
         "widget_config": "nycha_contracts_by_departments_view"
       },
       "nycha_industries": {
-        "widget_config": "nycha_contracts_by_industries_view"
+        "widget_config": "nycha_contracts_by_industries_view",
+        "visibility_parameters": ["-industry"]
       },
       "nycha_size":{
-        "widget_config": "nycha_contracts_by_size_view"
+        "widget_config": "nycha_contracts_by_size_view",
+        "visibility_parameters": ["-size"]
       }
     }
   }
