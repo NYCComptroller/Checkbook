@@ -11,7 +11,7 @@
   "orderBy":"-txcount",
   "facetPager":true,
   "filterName":"Industry",
-  "urlParameterName":"industrynm_exact",
+  "urlParameterName":"industry",
   "autocompleteParamName":"industrynm_exact_auto",
   "autocompleteID":"fIndustryId",
   "autocompleteField":"industry_type_name",

@@ -7,7 +7,7 @@
   "footerUrl":"_widget_controller_footer_url($node).NychaContractsUrlService::agreementTypeUrl('BA').NychaContractsUrlService::TypeUrl('BA')",
   "table_columns":[
     {"labelAlias": "contract_id","column": "contract_id","derivedColumn":"contract_id_link"},
-    {"labelAlias": "vendor_name","column": "vendor_name","tooltip":32},
+    {"labelAlias": "vendor_name","column": "vendor_name","tooltip":32, "derivedColumn":"vendor_link"},
     {"labelAlias": "contract_purpose","column": "purpose","tooltip":32},
     {"labelAlias":"current_amount","column":"total_amount","format":"dollar"},
     {"labelAlias":"original_amount","column":"original_amount","format":"dollar"},
