@@ -248,7 +248,7 @@ abstract class AbstractDataHandler {
   }
 
   /**
-   * @return Record
+   * @return int
    */
   function getRecordCount() {
     // validateRequest:
@@ -336,6 +336,7 @@ abstract class AbstractDataHandler {
     /**
      * Calls db query and generates the file
      * @return string
+     * @throws Exception
      */
     function generateFile() {
         $isList = TRUE;

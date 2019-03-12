@@ -23,9 +23,9 @@
 
 /**
  * Drupal Hook to alter menu items generated to add specific   ...
- * @param unknown_type $path
- * @param unknown_type $options
- * @param unknown_type $original_path
+ * @param $path
+ * @param $options
+ * @param $original_path
  * @return boolean
  */
 function checkbook_project_url_outbound_alter(&$path, &$options, $original_path){
@@ -75,14 +75,13 @@ function checkbook_project_token_info(){
 }
 
 
-
 /**
  * Define replacement for checkbook tokens
- * @param unknown_type $type
- * @param unknown_type $tokens
+ * @param $type
+ * @param $tokens
  * @param array $data
  * @param array $options
- * @return unknown
+ * @return array
  */
 function checkbook_project_tokens($type, $tokens, array $data = array(), array $options = array()) {
   $replacements = array();
@@ -161,10 +160,10 @@ function checkbook_project_init(){
 
 /**
  * Implementation of hook_theme() ...
- * @param unknown_type $existing
- * @param unknown_type $type
- * @param unknown_type $theme
- * @param unknown_type $path
+ * @param $existing
+ * @param $type
+ * @param $theme
+ * @param $path
  * @return array
  */
 function checkbook_project_theme($existing, $type, $theme, $path){
@@ -172,16 +171,16 @@ function checkbook_project_theme($existing, $type, $theme, $path){
         //Vendors Landing Page
         'vendors_sidebar1' => array(
             'template' => 'php_widgets/vendors_sidebar1',
-            'arguments' => array('node' => $node)
+            'arguments' => array('node' => NULL)
         ),
         'vendors_sidebar2' => array(
             'template' => 'php_widgets/vendors_sidebar2',
-            'arguments' => array('node' => $node)
+            'arguments' => array('node' => NULL)
         ),
         //Budget Pages
         'budget_sidebar' => array(
             'template' => 'php_widgets/budget_sidebar',
-            'arguments' => array('node' => $node)
+            'arguments' => array('node' => NULL)
         ),
         //Contract Transactions List
         'pending_contract_transaction_total_amount' => array(

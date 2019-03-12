@@ -6,6 +6,7 @@ class PayrollUrlService
     /**
      * @param $parameters
      * @param null $legacy_node_id
+     * @param null $payroll_type
      * @return string
      */
     static function getFooterUrl($parameters, $legacy_node_id = null,$payroll_type=null)

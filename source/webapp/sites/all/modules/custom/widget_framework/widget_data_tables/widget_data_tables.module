@@ -35,7 +35,7 @@ function widget_data_tables_widget_metadata() {
 
 /**
  * Implementation for hook widget validate (custom)
- * @param unknown_type $node
+ * @param $node
  */
 function widget_data_tables_widget_validate(&$node) {
 
@@ -43,7 +43,7 @@ function widget_data_tables_widget_validate(&$node) {
 
 /**
  * Implementation for hook widget data ...
- * @param unknown_type $node
+ * @param $node
  */
 function widget_data_tables_widget_data(&$node) {
 
@@ -158,7 +158,7 @@ function _widget_add_padding_data($node){
 /**
  * construct the json from data returned from data controller.This function is used for simple ajax data table widget .
  * @param $node
- * @return
+ * @return false|string
  */
 function _widget_data_tables_ajaxdata_json($node){
     $response['aaData'] = array();
@@ -215,7 +215,7 @@ function _widget_data_tables_list_wt_ajaxdata($node){
 /**
  * construct the json from data returned from data controller.This function is used for dataTableWidgets data table widget .
  * @param $node
- * @return json representation of data
+ * @return false|string
  */
 function _widget_data_tables_list_wt_prepare_json($node){
 	global $conf;
@@ -386,11 +386,11 @@ function widget_data_tables_widget_prepare($node){
     while($count < $_REQUEST['iSortingCols']){
 	$index =  $count ;
 
+        $sort_actual_column = '';
         $sort_column = $sort_columns[$_REQUEST['iSortCol_' . $index ]]->column;
         if(isset($sort_columns[$_REQUEST['iSortCol_' . $index ]]->sortSourceColumn)){
             $sort_actual_column = $sort_columns[$_REQUEST['iSortCol_' . $index ]]->sortSourceColumn;
-        }
-        else{
+        } else{
             foreach($node->widgetConfig->columns as $column)
                 if($sort_column ==  str_replace('.', '_',$column) )
                     $sort_actual_column = $column;

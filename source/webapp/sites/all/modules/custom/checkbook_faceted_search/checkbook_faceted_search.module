@@ -46,6 +46,11 @@ function checkbook_faceted_search_menu() {
 
 /**
  * Implements hook_theme()
+ * @param $existing
+ * @param $type
+ * @param $theme
+ * @param $path
+ * @return array
  */
 
 function checkbook_faceted_search_theme($existing, $type, $theme, $path) {

@@ -163,8 +163,6 @@ function _checkbook_autocomplete_contracts_vendor($status, $category, $contract_
  *   Award method code
  * @param string $year
  *   Year
- * @param null $mwbe_category
- *   Minority type id
  * @param string $mwbe_category
  *   Minority type id
  * @param string $industry
@@ -1139,7 +1137,7 @@ function _checkbook_autocomplete_revenue_revenuesource($year, $fundclass, $agenc
  * @param string|null $status
  *   Status
  *
- * @return array
+ * @return string
  *   array('start_date' => $start_date, 'end_date' => $end_date)
  */
 function _checkbook_autocomplete_get_start_end_dates($year, $domain = NULL, $status = NULL) {

@@ -23,17 +23,31 @@
 
 class DefaultOperatorFactory extends OperatorFactory {
 
+    /**
+     * @var array|null
+     */
     private $handlerConfigurations = NULL;
+    /**
+     * @var null
+     */
     private $handlerMetaDataInstances = NULL;
 
+    /**
+     * DefaultOperatorFactory constructor.
+     */
     public function __construct() {
         parent::__construct();
         $this->handlerConfigurations = module_invoke_all('dc_datasource_operator');
     }
 
-    public function initiateHandler($operatorName) {
-        $values = func_get_args();
-        array_shift($values);
+    /**
+     * @param mixed ...$values
+     * @return mixed|object
+     * @throws IllegalArgumentException
+     * @throws ReflectionException
+     */
+    public function initiateHandler(...$values) {
+        $operatorName = array_shift($values);
 
         $handlerConfiguration = $this->getHandlerConfiguration($operatorName);
 
@@ -73,6 +87,11 @@ class DefaultOperatorFactory extends OperatorFactory {
         return $handlerClass->newInstanceArgs($params);
     }
 
+    /**
+     * @param $operatorName
+     * @return mixed
+     * @throws IllegalArgumentException
+     */
     protected function getHandlerConfiguration($operatorName) {
         if (!isset($this->handlerConfigurations[$operatorName])) {
             throw new IllegalArgumentException(t('Unsupported operator: @name', array('@name' => $operatorName)));
@@ -81,10 +100,17 @@ class DefaultOperatorFactory extends OperatorFactory {
         return $this->handlerConfigurations[$operatorName];
     }
 
+    /**
+     * @param $operatorName
+     * @param $metadataInstance
+     */
     protected function registerOperatorMetaDataInstance($operatorName, $metadataInstance) {
         $this->handlerMetaDataInstances[$operatorName] = $metadataInstance;
     }
 
+    /**
+     * @return mixed|null
+     */
     public function getSupportedOperators() {
         $supportedOperators = NULL;
 
@@ -95,12 +121,21 @@ class DefaultOperatorFactory extends OperatorFactory {
         return $supportedOperators;
     }
 
+    /**
+     * @param $operatorName
+     * @return bool|mixed
+     */
     public function isSupported($operatorName) {
         $supportedOperators = $this->getSupportedOperators();
 
         return isset($supportedOperators[$operatorName]);
     }
 
+    /**
+     * @param $operatorName
+     * @return AbstractOperatorMetaData|bool|null
+     * @throws IllegalArgumentException
+     */
     public function getOperatorMetaData($operatorName) {
         if (isset($this->handlerMetaDataInstances[$operatorName])) {
             $metadataInstance = $this->handlerMetaDataInstances[$operatorName];
