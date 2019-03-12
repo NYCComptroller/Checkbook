@@ -131,13 +131,7 @@ $node->show_difference = ($contract_type== 'BAM'||$contract_type== 'PAM');
     {"label":"","column":"", "export":false}
     ],
     "adjustParameters":"
-      if(isset($parameters['release_approved_year_id'])){
-          $year = $parameters['release_approved_year_id'];
-          $data_controller_instance = data_controller_get_operator_factory_instance();
-          $parameters['agreement_start_year_id'] = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, $year);
-          $parameters['agreement_end_year_id'] = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, $year);
-          unset($parameters['release_approved_year_id']);
-      }
+      $parameters = NYCHAContractUtil::adjustYearParams($node, $parameters);
       if(function_exists('_checkbook_project_applyParameterFilters')){
           $parameters = _checkbook_project_applyParameterFilters($node,$parameters);
       }
