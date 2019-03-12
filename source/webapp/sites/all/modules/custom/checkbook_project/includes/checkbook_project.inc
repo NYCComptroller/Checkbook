@@ -531,104 +531,102 @@ function _checkbook_project_node_display($node)
  */
 function _checkbook_project_get_name_for_argument($keyword, $id)
 {
+    if(_checkbook_check_isNYCHAPage()) {
+        $data_source = Datasource::NYCHA;
+    }else{
+        $data_source = Datasource::CITYWIDE;
+    }
     switch ($keyword) {
         case "agency_id":
-            if(_checkbook_check_isNYCHAPage()) {
-                $agencies = _checkbook_project_querydataset('checkbook_nycha:agency', array('agency_id', 'agency_name'), array($keyword => $id));
-            }else{
-                $agencies = _checkbook_project_querydataset('checkbook:agency', array('agency_id', 'agency_name'), array($keyword => $id));
-            }
+            $agencies = _checkbook_project_querydataset($data_source.':agency', array('agency_id', 'agency_name'), array($keyword => $id));
             return htmlentities(ucwords(strtolower($agencies[0]['agency_name'])));
             break;
         case "object_class_id":
-            $objects = _checkbook_project_querydataset('checkbook:object_class', array('object_class_id', 'object_class_name'), array($keyword => $id));
+            $objects = _checkbook_project_querydataset($data_source.':object_class', array('object_class_id', 'object_class_name'), array($keyword => $id));
             return ucwords(strtolower($objects[0]['object_class_name']));
             break;
         case "budget_code_id":
-            $budget_codes = _checkbook_project_querydataset('checkbook:budget_code', array('budget_code_id', 'attribute_name'), array($keyword => $id));
+            $budget_codes = _checkbook_project_querydataset($data_source.':budget_code', array('budget_code_id', 'attribute_name'), array($keyword => $id));
             return ucwords(strtolower($budget_codes[0]['attribute_name']));
             break;
         case "revenue_category_id":
-            $revcat_ids = _checkbook_project_querydataset('checkbook:revenue_category', array('revenue_category_id', 'revenue_category_name'), array($keyword => $id));
+            $revcat_ids = _checkbook_project_querydataset($data_source.':revenue_category', array('revenue_category_id', 'revenue_category_name'), array($keyword => $id));
             return ucwords(strtolower($revcat_ids[0]['revenue_category_name']));
             break;
         case "funding_class_id":
-            $fundsrc_ids = _checkbook_project_querydataset('checkbook:ref_funding_class', array('funding_class_id', 'funding_class_name'), array($keyword => $id));
+            $fundsrc_ids = _checkbook_project_querydataset($data_source.':ref_funding_class', array('funding_class_id', 'funding_class_name'), array($keyword => $id));
             return ucwords(strtolower($fundsrc_ids[0]['funding_class_name']));
             break;
         case "funding_class_code":
-            $revcat_codes = _checkbook_project_querydataset('checkbook:funding_class', array('funding_class_code', 'funding_class_name'), array($keyword => $id));
+            $revcat_codes = _checkbook_project_querydataset($data_source.':funding_class', array('funding_class_code', 'funding_class_name'), array($keyword => $id));
             return ucwords(strtolower($revcat_codes[0]['funding_class_name']));
             break;
         case "vendor_id":
+            $vendors = _checkbook_project_querydataset($data_source.':vendor', array('vendor_id', 'legal_name'), array($keyword => $id));
             if(_checkbook_check_isNYCHAPage()) {
-                $vendors = _checkbook_project_querydataset('checkbook_nycha:vendor', array('vendor_id', 'vendor_name'), array($keyword => $id));
                 return ucwords(strtolower($vendors[0]['vendor_name']));
-                break;
+            } else {
+                return ucwords(strtolower($vendors[0]['legal_name']));
             }
-            else {
-                $vendors = _checkbook_project_querydataset('checkbook:vendor', array('vendor_id', 'legal_name'), array($keyword => $id));
-            }
-            return ucwords(strtolower($vendors[0]['legal_name']));
             break;
         case "year_id":
-            $years = _checkbook_project_querydataset('checkbook:year', array('year_id', 'year_value'), array($keyword => $id));
+            $years = _checkbook_project_querydataset($data_source.':year', array('year_id', 'year_value'), array($keyword => $id));
             return ucwords(strtolower($years[0]['year_value']));
             break;
         case "department_id":
-            $depts = _checkbook_project_querydataset('checkbook:department', array('department_id', 'department_name'), array($keyword => $id));
+            $depts = _checkbook_project_querydataset($data_source.':department', array('department_id', 'department_name'), array($keyword => $id));
             return ucwords(strtolower($depts[0]['department_name']));
             break;
         case "award_method_id":
-            $award_methods = _checkbook_project_querydataset('checkbook:award_method', array('award_method_id', 'award_method_name'), array($keyword => $id));
+            $award_methods = _checkbook_project_querydataset($data_source.':award_method', array('award_method_id', 'award_method_name'), array($keyword => $id));
             return ucwords(strtolower($award_methods[0]['award_method_name']));
             break;
         case "award_size_id":
-            $award_sizes = _checkbook_project_querydataset('checkbook:award_size', array('award_size_id', 'award_size_name'), array($keyword => $id));
+            $award_sizes = _checkbook_project_querydataset($data_source.':award_size', array('award_size_id', 'award_size_name'), array($keyword => $id));
             return ucwords(strtolower('Contracts ' . $award_sizes[0]['award_size_name']));
             break;
         case "industry_type_id":
-            $industry_types = _checkbook_project_querydataset('checkbook:industry_type', array('industry_type_id', 'industry_type_name'), array($keyword => $id));
+            $industry_types = _checkbook_project_querydataset($data_source.':industry_type', array('industry_type_id', 'industry_type_name'), array($keyword => $id));
             return ucwords(strtolower($industry_types[0]['industry_type_name']));
             break;
         case "pending_contracts_vendor_id":
             $keyword = 'vendor_id';
-            $pending_contracts_vendors = _checkbook_project_querydataset('checkbook:pending_contracts', array('vendor_id', 'vendor_legal_name'), array($keyword => $id));
+            $pending_contracts_vendors = _checkbook_project_querydataset($data_source.':pending_contracts', array('vendor_id', 'vendor_legal_name'), array($keyword => $id));
             return ucwords(strtolower($pending_contracts_vendors[0]['vendor_legal_name']));
             break;
         case "pending_contracts_award_method":
             $keyword = 'award_method_code';
-            $pending_contracts_award_method = _checkbook_project_querydataset('checkbook:pending_contracts', array('award_method_code', 'award_method_name'), array($keyword => $id));
+            $pending_contracts_award_method = _checkbook_project_querydataset($data_source.':pending_contracts', array('award_method_code', 'award_method_name'), array($keyword => $id));
             return ucwords(strtolower($pending_contracts_award_method[0]['award_method_name']));
             break;
         case "employee_id":
-            $employees = _checkbook_project_querydataset('checkbook:employee', array('civil_service_title', 'employee_id'), array($keyword => $id));
+            $employees = _checkbook_project_querydataset($data_source.':employee', array('civil_service_title', 'employee_id'), array($keyword => $id));
             return ucwords(strtolower($employees[0]['civil_service_title']));
             break;
         case "expenditure_object_id":
-            $exp_categorys = _checkbook_project_querydataset('checkbook:expenditure_object', array('expenditure_object_name', 'expenditure_object_id'), array($keyword => $id));
+            $exp_categorys = _checkbook_project_querydataset($data_source.':expenditure_object', array('expenditure_object_name', 'expenditure_object_id'), array($keyword => $id));
             return ucwords(strtolower($exp_categorys[0]['expenditure_object_name']));
             break;
         case "agreement_id":
-            $contracts = _checkbook_project_querydataset('checkbook:history_agreement', array('contract_number', 'agreement_id'), array($keyword => $id));
+            $contracts = _checkbook_project_querydataset($data_source.':history_agreement', array('contract_number', 'agreement_id'), array($keyword => $id));
             return ucwords(strtolower($contracts[0]['contract_number']));
             break;
         case "master_agreement_id":
-            $contracts = _checkbook_project_querydataset('checkbook:history_master_agreement', array('contract_number', 'master_agreement_id'), array($keyword => $id));
+            $contracts = _checkbook_project_querydataset($data_source.':history_master_agreement', array('contract_number', 'master_agreement_id'), array($keyword => $id));
             return ucwords(strtolower($contracts[0]['contract_number']));
             break;
         case "document_code":
-            $agencies = _checkbook_project_querydataset('checkbook:ref_document_code', array('document_code', 'document_code_id'), array($keyword => $id));
+            $agencies = _checkbook_project_querydataset($data_source.':ref_document_code', array('document_code', 'document_code_id'), array($keyword => $id));
             return htmlentities(ucwords(strtolower($agencies[0]['document_code_id'])));
             break;
         case "sub_vendor_id":
             $keyword = "vendor_id";
-            $sub_vendors = _checkbook_project_querydataset('checkbook:sub_vendor', array('vendor_id', 'legal_name'), array($keyword => $id));
+            $sub_vendors = _checkbook_project_querydataset($data_source.':sub_vendor', array('vendor_id', 'legal_name'), array($keyword => $id));
             return htmlentities(ucwords(strtolower($sub_vendors[0]['legal_name'])));
             break;
         case "minority_type_id":
             $keyword = "minority_type_id";
-            $mwbe = _checkbook_project_querydataset('checkbook:minority_type', array('minority_type_id', 'minority_type_name'), array($keyword => $id));
+            $mwbe = _checkbook_project_querydataset($data_source.':minority_type', array('minority_type_id', 'minority_type_name'), array($keyword => $id));
             return htmlentities(ucwords(strtolower($mwbe[0]['minority_type_name'])));
             break;
         case "title":
