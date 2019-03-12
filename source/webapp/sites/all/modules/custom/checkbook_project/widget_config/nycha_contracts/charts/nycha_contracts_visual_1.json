@@ -68,7 +68,7 @@ $sql = 'SELECT vendor_name, vendor_id, SUM(total_amount) current_amount_sum, cou
         'Vendor: ' . $row['vendor_name'] .  '<br/>' .
         'Number of Contracts: ' . $row['total_contracts'].  '<br/>' .
         'Amount: ' . custom_number_formatter_format($row['current_amount_sum'] ,2, '$').  '<br/>';
-        $link =  strstr($_GET['q'],'/',true) .  NychaContractsUrlService::vendorUrl($row['vendor_id']) .'?expandBottomCont=true';
+        $link =  strstr($_GET['q'],'/',true) .  NychaContractsUrlService::generateLandingPageUrl('vendor', $row['vendor_id']) .'?expandBottomCont=true';
         $series_new[$index]->url = 	$link;
         $series_new[$index]->y = (float)$row['current_amount_sum'];
         $series_new[$index]->tooltip_label = $tooltip_label;

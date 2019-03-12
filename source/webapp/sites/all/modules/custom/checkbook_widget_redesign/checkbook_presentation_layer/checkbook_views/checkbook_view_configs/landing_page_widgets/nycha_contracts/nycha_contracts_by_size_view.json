@@ -6,7 +6,7 @@
   "headerSubTitle":"Contracts",
   "footerUrl":"_widget_controller_footer_url($node).NychaContractsUrlService::TypeUrl('SZ')",
   "table_columns":[
-    {"labelAlias":"contract_size","column":"award_size_name"},
+    {"labelAlias":"contract_size","column":"award_size_name", "derivedColumn":"size_link","tooltip":60},
     {"labelAlias":"no_of_contracts","column":"po_count","format":"number"},
     {"labelAlias":"current_amount","column":"total_amount","format":"dollar"},
     {"labelAlias":"original_amount","column":"original_amount","format":"dollar"},
