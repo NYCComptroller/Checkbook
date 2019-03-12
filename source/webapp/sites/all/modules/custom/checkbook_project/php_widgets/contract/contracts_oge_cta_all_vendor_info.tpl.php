@@ -71,5 +71,5 @@ if(count($node->vendors_list) > 0){
 
 $html = WidgetUtil::generateTable($tbl);
 echo $html;
-?>
+
 

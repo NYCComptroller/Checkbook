@@ -258,5 +258,6 @@ class CSVDataHandler extends AbstractDataHandler {
         } else {
             echo "Data is not generated... Please contact support team.";
         }
+        return;
     }
 }

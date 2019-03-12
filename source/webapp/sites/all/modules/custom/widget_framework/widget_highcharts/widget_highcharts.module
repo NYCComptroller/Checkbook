@@ -93,9 +93,10 @@ function widget_highcharts_widget_data(&$node) {
                 }
                 if ($ds->isArray == true) {
 
-                	if ($ds->columns) {                		
+                    $allowNullValues = false;
+                	if ($ds->columns) {
+                        $dataPoint=[];
                 		foreach ($ds->columns as $col) {
-                		    $allowNullValues = false;
 						    if (isset($ds->allowNullValues)){
 						    	$allowNullValues = $ds->allowNullValues;
 						    }   
@@ -112,7 +113,7 @@ function widget_highcharts_widget_data(&$node) {
                 			}
                 		}
                 		
-                		if ($dataPoint != null) {
+                		if (sizeof($dataPoint)) {
                 			$results[$ds->name][] = $dataPoint;
                 			unset($dataPoint);
                 		}                		

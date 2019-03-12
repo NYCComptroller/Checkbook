@@ -282,9 +282,6 @@ class CheckBookJsonApiHelper
     }
 
     /**
-     * @param $databases
-     * @param $conf
-     * @param $return
      * @return array
      */
     public function get_connections_info()

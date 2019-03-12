@@ -54,15 +54,15 @@ class Log_composite extends Log
     /**
      * Constructs a new composite Log object.
      *
-     * @param boolean   $name       This parameter is ignored.
-     * @param boolean   $ident      This parameter is ignored.
-     * @param boolean   $conf       This parameter is ignored.
-     * @param boolean   $level      This parameter is ignored.
+     * @param boolean $name This parameter is ignored.
+     * @param string $ident This parameter is ignored.
+     * @param array $conf This parameter is ignored.
+     * @param int $level This parameter is ignored.
      *
      * @access public
      */
-    function Log_composite($name, $ident = '', $conf = array(),
-                           $level = PEAR_LOG_DEBUG)
+    function __construct($name, $ident = '', $conf = array(),
+                         $level = PEAR_LOG_DEBUG)
     {
         $this->_ident = $ident;
     }

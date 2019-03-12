@@ -27,7 +27,8 @@ class NychaContractsUrlService
 
     /**
      * Returns NYCHA Contracts Vendor Landing page URL for the given vendor id
-     * @param $vendor_id
+     * @param $urlParamName
+     * @param $urlParamValue
      * @return string
      */
     static function generateLandingPageUrl($urlParamName, $urlParamValue)
@@ -99,8 +100,8 @@ class NychaContractsUrlService
             . '/agency/' . $agencyID;
         return $url;
     }
+
     /**
-     * @param int $agencyID
      * @return string
      */
     public static function modificationUrl()

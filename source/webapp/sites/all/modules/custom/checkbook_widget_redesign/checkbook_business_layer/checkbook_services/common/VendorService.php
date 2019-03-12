@@ -83,8 +83,8 @@ abstract class VendorService {
      * @param $domain
      * @param $vendor_id
      * @param $year_id
-     * @param $status
-     * @return $minority_types
+     * @param string $status
+     * @return array $minority_types
      */
     public static function getAllVendorMinorityTypesByYear($domain, $vendor_id, $year_id, $status = 'A') {
         $minority_type_ids  = array();

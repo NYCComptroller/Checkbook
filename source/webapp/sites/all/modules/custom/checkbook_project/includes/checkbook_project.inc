@@ -100,8 +100,7 @@ function _getYearValueFromID($year_id)
 
 /**
  * return full year text value for a give year id ...
- * @param string $year_id
- * @return year
+ * @return string
  */
 function _getFullYearString()
 {
@@ -189,6 +188,7 @@ function _getMonthValueFromId($month_id)
  * return replacment patter for long text string with markup ...
  * @param string $text
  * @param integer $length
+ * @return string
  */
 function _get_shortened_text($text, $length = 20)
 {
@@ -202,6 +202,7 @@ function _get_shortened_text($text, $length = 20)
  *
  * @param $text
  * @param int $length
+ * @return string
  */
 function _shorten_word_with_tooltip($text, $length = 20)
 {
@@ -217,6 +218,8 @@ function _shorten_word_with_tooltip($text, $length = 20)
  * return replacment patter for title ...
  * @param string $text
  * @param integer $length
+ * @param int $no_of_lines
+ * @return string
  */
 function _get_tooltip_markup($text, $length = 20, $no_of_lines = 2)
 {
@@ -232,6 +235,8 @@ function _get_tooltip_markup($text, $length = 20, $no_of_lines = 2)
  * return replacment patter for title ...
  * @param string $text
  * @param integer $length
+ * @param int $no_of_lines
+ * @return string
  */
 function _break_text_custom($text, $length = 20, $no_of_lines = 2)
 {
@@ -289,6 +294,7 @@ function _break_text_custom($text, $length = 20, $no_of_lines = 2)
  * return replacment patter for title ...
  * @param string $text
  * @param integer $length
+ * @return string
  */
 function _break_text_custom2($text, $length = 18)
 {
@@ -319,8 +325,8 @@ function _getRequestParamValue($paramName, $fromRequestPath = True)
 /**
  * returns request parameter value from bottomURL
  * @param string $paramName
- * @param boolean $fromRequestPath
- * @return request parameter value
+ * @param string $fromRequestPath
+ * @return string
  */
 function _getRequestParamValueBottomURL($paramName, $fromRequestPath = 'TRUE')
 {
@@ -348,7 +354,9 @@ function _getRequestParamValueBottomURL($paramName, $fromRequestPath = 'TRUE')
 
 /**
  * Page callback for grid view popupdatatable..
- * @param unknown_type $node
+ * @param $node
+ * @return mixed|string
+ * @throws Exception
  */
 function _checkbook_project_grid_view_popup($node)
 {
@@ -420,7 +428,8 @@ function _checkbook_project_grid_view_widget_popup($node)
 
 /**
  * Page callback for popupdatatable.. Only called on initial load ...
- * @param unknown_type $node
+ * @param $node
+ * @return mixed|string|string[]|null
  */
 function _checkbook_project_view_all_popup($node)
 {
@@ -453,7 +462,8 @@ function _checkbook_project_view_all_popup($node)
 
 /**
  * Page callback for  datatable popup pager..
- * @param unknown_type $node
+ * @param $node
+ * @return string
  */
 function _checkbook_project_view_all_popup_data($node)
 {
@@ -508,7 +518,8 @@ function _checkbook_project_view_all_popup_data($node)
 
 /**
  * Page callback for displaying node view
- * @param unknown_type $node
+ * @param $node
+ * @throws Exception
  */
 function _checkbook_project_node_display($node)
 {
@@ -526,8 +537,9 @@ function _checkbook_project_node_display($node)
 
 /**
  * Return the name for the reference object... this will be used to get agency name, department name, vendor name etc from a give id
- * @param unknown_type $object_name
- * @param unknown_type $ref_id
+ * @param $keyword
+ * @param $id
+ * @return string
  */
 function _checkbook_project_get_name_for_argument($keyword, $id)
 {
@@ -645,7 +657,8 @@ function _checkbook_project_get_name_for_argument($keyword, $id)
  * query the dataset and get data ...
  * @param string $dataset
  * @param array|string $columns
- * @return array
+ * @param null $parameters
+ * @return void
  */
 function _checkbook_project_querydataset($dataset, $columns, $parameters = null)
 {
@@ -665,7 +678,8 @@ function _checkbook_project_querydataset($dataset, $columns, $parameters = null)
  * @param $node Node data
  * @param $parameters Widget parsed request parameters
  * @param $contractType Contract Type
- * @return array adjusted parameters
+ * @param null $dimension
+ * @return void adjusted parameters
  */
 function _checkbook_project_adjustContractParameterFilters(&$node, &$parameters, $contractType, $dimension = null)
 {
@@ -1039,7 +1053,7 @@ function _checkbook_project_payroll_sql($node)
  * Function to adjust custom parameters passed to data controller module
  * @param $node Node data
  * @param $parameters Widget parsed request parameters
- * @return array adjusted parameters
+ * @return Widget adjusted parameters
  */
 function _checkbook_project_applyParameterFilters($node, $parameters)
 {
@@ -1333,7 +1347,7 @@ function get_db_results($isList, $datasetName, $columns = NULL, $parameters = NU
  * @param $columns Required Colummns
  * @param null $parameters Parameters
  * @param null|ResultFormatter $resultFormatter ResultFormatter
- * @return Record Count
+ * @return integer Count
  */
 function get_db_result_count($isList, $datasetName, $columns, $parameters = NULL, ResultFormatter $resultFormatter = NULL)
 {
@@ -1361,7 +1375,7 @@ function get_db_result_count($isList, $datasetName, $columns, $parameters = NULL
  * @param null $limit Limit
  * @param null|ResultFormatter $resultFormatter ResultFormatter
  * @return null Query
- * @throws Exception Exception
+ * @throws Exception
  */
 function get_db_query($isList, $datasetName, $columns = NULL, $parameters = NULL, $orderBy = NULL, $startWith = 0, $limit = NULL, ResultFormatter $resultFormatter = NULL)
 {
@@ -1390,7 +1404,9 @@ function get_db_query($isList, $datasetName, $columns = NULL, $parameters = NULL
 /**
  * Function to get connection to data feeds DB
  *
- * @return Database DB connection
+ * @param string $db_name
+ * @param string $data_source
+ * @return DatabaseConnection|void DB connection
  */
 function get_datafeed_connection($db_name = "datafeed", $data_source = 'checkbook')
 {
@@ -1423,6 +1439,10 @@ function _checkbook_project_check_parameter($reqParam, $value = null)
 
 /**
  * returns the year type and year values string to be appended to the URL.
+ * @param bool $applySpendingYear
+ * @param bool $applyPreviousYear
+ * @param bool $spendingTransactions
+ * @param bool $landing_page_link
  * @return string
  */
 function _checkbook_project_get_year_url_param_string($applySpendingYear = false, $applyPreviousYear = false, $spendingTransactions = false, $landing_page_link = false)
@@ -1474,6 +1494,9 @@ function _checkbook_current_request_is_ajax()
 /**
  * returns key-value pair string is present in URL
  * detects ajax automatically
+ * @param $key
+ * @param null $key_alias
+ * @param bool $ajaxPath
  * @return string
  */
 function _checkbook_project_get_url_param_string($key, $key_alias = null, $ajaxPath = FALSE)
@@ -1554,7 +1577,7 @@ function _checkbook_project_get_vendor_facet_url_param_string($node = null)
 
 /**
  * return helper function to get master agreement id from chidl agreement id
- * @return string
+ * @return array
  */
 function _get_document_codes()
 {
@@ -1583,6 +1606,7 @@ function _get_master_agreement_id()
 
 /**
  * return helper function to get master agreement id details
+ * @param $magid
  * @return array
  */
 function _get_master_agreement_details($magid)
@@ -1613,6 +1637,7 @@ function _get_master_agreement_details_by_parent_contract_number($parent_contrac
 
 /**
  * return helper function to get child agreement id details
+ * @param $agid
  * @return array
  */
 function _get_child_agreement_details($agid)
@@ -1628,6 +1653,7 @@ function _get_child_agreement_details($agid)
 
 /**
  * determines whether contract is master agreement or not based on the contract number
+ * @param $contnum
  * @return string
  */
 function _get_contract_type($contnum)
@@ -1716,7 +1742,6 @@ function _pending_contracts_link_contract_details($contract_number, $original_ag
 
 /**
  * @param $doctype
- *
  * @return string
  */
 function _get_contract_cat($doctype)
@@ -1733,6 +1758,7 @@ function _get_contract_cat($doctype)
 /**
  * Function to generate the path to save the file for data feeds
  * @return string
+ * @throws Exception
  */
 function _checkbook_project_prepare_data_feeds_file_output_dir()
 {
@@ -2426,7 +2452,6 @@ function isAdvancedSearchResultsPage()
 
 /**
  * @param null $attributes
- *
  * @return array|void
  */
 function _get_contract_includes_subvendors_data($attributes = NULL)
@@ -2527,6 +2552,7 @@ function _checkbook_vendor_link($vendor_id, $prime = FALSE) {
 /**
  * @param $agency_id
  *
+ * @param bool $prime
  * @return string
  */
 function _checkbook_agency_link($agency_id, $prime = FALSE){
@@ -2710,4 +2736,3 @@ function _checkbook_full_year($year) {
     $html = theme('new_features',array('new_features'=>$new_features, 'total_count' => $count));
     return $html;
 }*/
-

@@ -28,4 +28,3 @@ EOD;
 print $summaryContent;
 
 
-?>
