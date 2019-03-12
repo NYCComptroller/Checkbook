@@ -37,6 +37,7 @@ function _checkbook_export_grid_transactions(){
     }
     $isAsc = ($_REQUEST['sSortDir_0'] == 'asc');
 
+    LogHelper::log_notice("Exporting grid by node id # ".$node->nid);
     widget_data($node);
     if(isset($node->widgetConfig->widgetUpdateJSONConfig)){
     	eval($node->widgetConfig->widgetUpdateJSONConfig);

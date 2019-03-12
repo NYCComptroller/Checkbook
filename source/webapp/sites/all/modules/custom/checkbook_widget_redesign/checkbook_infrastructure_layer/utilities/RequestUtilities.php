@@ -174,6 +174,10 @@ class RequestUtilities
     private static function getFilteredQueryParam($paramName, $options = [])
     {
         $urlPath = '';
+        if (isset($_GET[$paramName])) {
+            return htmlspecialchars_decode(trim(filter_xss($_GET[$paramName])), ENT_QUOTES);
+        }
+
         if (isset($options['q'])) {
             $urlPath = $options['q'];
         } elseif(isset($_GET['q'])) {
@@ -260,26 +264,6 @@ class RequestUtilities
     {
         return (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
     }
-
-//    /**
-//     * @param $pathParams
-//     * @param $key
-//     * @param null $key_alias
-//     * @return null|string
-//     */
-//    public static function get_url_param($pathParams, $key, $key_alias = null)
-//    {
-//
-//        $keyIndex = array_search($key, $pathParams);
-//        if ($keyIndex) {
-//            if ($key_alias == null) {
-//                return "/$key/" . $pathParams[($keyIndex + 1)];
-//            } else {
-//                return "/$key_alias/" . $pathParams[($keyIndex + 1)];
-//            }
-//        }
-//        return NULL;
-//    }
 
     /**
      * This function returns the current NYC year  ...

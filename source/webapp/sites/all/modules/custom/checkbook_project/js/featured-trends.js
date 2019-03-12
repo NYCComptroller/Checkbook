@@ -22,25 +22,25 @@
         $('body.page-featured-trends .panel-separator').remove();
         $('body.page-featured-trends #block-system-main').after('<div id="featured-trends-thumbnails"></div>');
 
-        var slide = getParameterByName("slide");
-        if(slide === '') slide = '0';
-        switch(slide){
-            case '1':
-                $('#breadcrumb span.last').text("Property Tax Levies and Collections");
-                break;
-            case '2':
-                $('#breadcrumb span.last').text("Capital Projects Fund Aid Revenues");
-                break;
-            case '3':
-                $('#breadcrumb span.last').text("Personal Income");
-                break;
-            case '4':
-                $('#breadcrumb span.last').text("Ratios of Outstanding Debt by Type");
-                break;
-            case '0':
-            default:
-                $('#breadcrumb span.last').text("General Fund Revenues and General Fund Expenditures");
-        }
+    var slide = getParameterByName("slide");
+    if(slide === '') slide = '0';
+    switch(slide){
+      case '1':
+        $('#breadcrumb span.last').text("Property Tax Levies and Collections");
+        break;
+      case '2':
+        $('#breadcrumb span.last').text("Capital Projects Fund Aid Revenues");
+        break;
+      case '3':
+        $('#breadcrumb span.last').text("Personal Income");
+        break;
+      case '4':
+        $('#breadcrumb span.last').text("Ratios of Outstanding Debt by Type");
+        break;
+      case '0':
+      default:
+        $('#breadcrumb span.last').text("General Fund Revenues and General Fund Expenditures");
+    }
 
         $('body.page-featured-trends #featured-trends .inside').cycle(
             {
@@ -95,28 +95,28 @@
 }(jQuery));
 
 function isValidYear(n, floor) {
-    var ceiling = new Date().getFullYear() - 1;
-    return !isNaN(parseFloat(n)) && isFinite(n) && n >= floor && n <= ceiling;
+  var ceiling = new Date().getFullYear() - 1;
+  return !isNaN(parseFloat(n)) && isFinite(n) && n >= floor && n <= ceiling;
 }
 
 function validateInput(min, max, chartno, floor, ceiling) {
-    min = Number(min);
-    max = Number(max);
-    var mindate = Date.UTC(min, 1, 31);
-    var maxdate = Date.UTC(max, 1, 31);
-    var floorDate = Date.UTC(floor, 1, 31);
-    var ceilingDate = Date.UTC(ceiling, 1, 31);
-    if (min <= max) {
-        if (isValidYear(min, floor) && isValidYear(max, floor)) {
-            Highcharts.chartarray[chartno].xAxis[0].setExtremes(mindate, maxdate, true);
-        } else if (isValidYear(min, floor) && !isValidYear(max, floor)) {
-            Highcharts.chartarray[chartno].xAxis[0].setExtremes(mindate, ceilingDate, true);
-        } else if (!isValidYear(min, floor) && isValidYear(max, floor)) {
-            Highcharts.chartarray[chartno].xAxis[0].setExtremes(floorDate, maxdate, true);
-        }else{
-        	Highcharts.chartarray[chartno].xAxis[0].setExtremes(floorDate, ceilingDate, true);
-        }
-    } else {
-        Highcharts.chartarray[chartno].xAxis[0].setExtremes(floorDate, ceilingDate, true);
+  min = Number(min);
+  max = Number(max);
+  var mindate = Date.UTC(min, 1, 31);
+  var maxdate = Date.UTC(max, 1, 31);
+  var floorDate = Date.UTC(floor, 1, 31);
+  var ceilingDate = Date.UTC(ceiling, 1, 31);
+  if (min <= max) {
+    if (isValidYear(min, floor) && isValidYear(max, floor)) {
+      Highcharts.chartarray[chartno].xAxis[0].setExtremes(mindate, maxdate, true);
+    } else if (isValidYear(min, floor) && !isValidYear(max, floor)) {
+      Highcharts.chartarray[chartno].xAxis[0].setExtremes(mindate, ceilingDate, true);
+    } else if (!isValidYear(min, floor) && isValidYear(max, floor)) {
+      Highcharts.chartarray[chartno].xAxis[0].setExtremes(floorDate, maxdate, true);
+    }else{
+      Highcharts.chartarray[chartno].xAxis[0].setExtremes(floorDate, ceilingDate, true);
     }
+  } else {
+    Highcharts.chartarray[chartno].xAxis[0].setExtremes(floorDate, ceilingDate, true);
+  }
 }
