@@ -99,4 +99,4 @@ if (isset($typeString)) {
 } else {
 	echo "Invalid type";
 }
-?>
+

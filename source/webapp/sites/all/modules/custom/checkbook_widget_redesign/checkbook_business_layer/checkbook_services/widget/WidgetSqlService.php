@@ -15,6 +15,7 @@ abstract class WidgetSqlService extends WidgetService {
      * @param $limit
      * @param $orderBy
      * @return mixed
+     * @throws Exception
      */
     public function getWidgetData($parameters, $limit, $orderBy) {
         $data = $this->getRepository()->getWidgetData($parameters, $limit, $orderBy);
@@ -26,6 +27,7 @@ abstract class WidgetSqlService extends WidgetService {
      * Returns total number of records for the widget
      * @param $parameters
      * @return mixed
+     * @throws Exception
      */
     public function getWidgetDataCount($parameters) {
         $data = $this->getRepository()->getTotalRowCount($parameters);
@@ -36,6 +38,7 @@ abstract class WidgetSqlService extends WidgetService {
      * Returns count for widget header using specified datasource or default row count
      * @param $parameters
      * @return mixed
+     * @throws Exception
      */
     public function getWidgetHeaderCount($parameters) {
         if(!($this->repository instanceof WidgetRepository)) return null;

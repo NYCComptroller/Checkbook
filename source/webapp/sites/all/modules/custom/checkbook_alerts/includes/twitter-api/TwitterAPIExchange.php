@@ -27,8 +27,9 @@ class TwitterAPIExchange
      * oauth access token, oauth access token secret, consumer key, consumer secret
      * These are all available by creating your own application on dev.twitter.com
      * Requires the cURL library
-     * 
+     *
      * @param array $settings
+     * @throws Exception
      */
     public function __construct(array $settings)
     {
@@ -50,13 +51,14 @@ class TwitterAPIExchange
         $this->consumer_key = $settings['consumer_key'];
         $this->consumer_secret = $settings['consumer_secret'];
     }
-    
+
     /**
      * Set postfields array, example: array('screen_name' => 'J7mbo')
-     * 
+     *
      * @param array $array Array of parameters to send to API
-     * 
+     *
      * @return TwitterAPIExchange Instance of self for method chaining
+     * @throws Exception
      */
     public function setPostfields(array $array)
     {
@@ -74,13 +76,14 @@ class TwitterAPIExchange
         
         return $this;
     }
-    
+
     /**
      * Set getfield string, example: '?screen_name=J7mbo'
-     * 
+     *
      * @param string $string Get key and value pairs as string
-     * 
+     *
      * @return \TwitterAPIExchange Instance of self for method chaining
+     * @throws Exception
      */
     public function setGetfield($string)
     {
@@ -117,14 +120,15 @@ class TwitterAPIExchange
     {
         return $this->postfields;
     }
-    
+
     /**
      * Build the Oauth object using params set in construct and additionals
      * passed to this method. For v1.1, see: https://dev.twitter.com/docs/api/1.1
-     * 
+     *
      * @param string $url The API url to use. Example: https://api.twitter.com/1.1/search/tweets.json
      * @param string $requestMethod Either POST or GET
      * @return \TwitterAPIExchange Instance of self for method chaining
+     * @throws Exception
      */
     public function buildOauth($url, $requestMethod)
     {
@@ -169,13 +173,14 @@ class TwitterAPIExchange
         
         return $this;
     }
-    
+
     /**
      * Perform the actual data retrieval from the API
-     * 
+     *
      * @param boolean $return If true, returns data.
-     * 
+     *
      * @return string json If $return param is true, returns json data.
+     * @throws Exception
      */
     public function performRequest($return = true)
     {
@@ -214,6 +219,7 @@ class TwitterAPIExchange
         curl_close($feed);
 
         if ($return) { return $json; }
+        return;
     }
     
     /**

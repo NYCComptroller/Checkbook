@@ -142,7 +142,7 @@ class QueueJob {
      * @param $filename
      * @param string $limit
      * @param int $offset
-     * @return array
+     * @return string
      */
     private function getCSVJobCommand($filename, $limit = 'ALL',$offset = 0) {
         $file = $this->getFullPathToFile($filename,$this->tmpFileOutputDir);

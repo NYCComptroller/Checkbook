@@ -127,12 +127,13 @@ function _get_spending_expense_cat_options($agency, $dept, $spending_cat, $year,
  *   Selected M/WBE Category
  * @param $industry
  *   Selected Industry
- * @param $data_source
+ * @param string $data_source
  *   Data source to get data (i.e checkbook, checkbook_oge)
  *
- * @return array
+ * @return void Results from Solr
  *   Results from Solr
- ***/
+ *
+ */
 function _checkbook_advanced_search_autocomplete_spending_payee($year, $agency, $expcategory, $dept, $exptype = 0, $mwbe_category, $industry, $data_source = 'checkbook') {
     $searchTerm = _get_autocomplete_search_term();
     if (!empty($searchTerm)) {
@@ -163,9 +164,10 @@ function _checkbook_advanced_search_autocomplete_spending_payee($year, $agency, 
  * @param string $data_source
  *   Data source (checkbook, checkbook_oge)
  *
- * @return array
+ * @return void Results from Solr
  *   Results from Solr
- ***/
+ *
+ */
 function _checkbook_advanced_search_autocomplete_spending_contractno($year, $agency, $expcategory, $dept, $exptype = 0, $mwbe_category, $industry, $data_source = 'checkbook') {
     $searchTerm = _get_autocomplete_search_term();
     if (!empty($searchTerm)) {
@@ -189,12 +191,12 @@ function _checkbook_advanced_search_autocomplete_spending_contractno($year, $age
  *   Year value
  * @param string $agency
  *   Selected agency id
+ * @param $expcategory
+ *   Selected Expense Category
  * @param string $dept
  *   Selected Department Name
  * @param int $exptype
  *   Selected Spending Category Id
- * @param $expcategory
- *   Selected Expense Category
  * @param $mwbe_category
  *   Selected M/WBE Category
  * @param $industry
@@ -202,9 +204,10 @@ function _checkbook_advanced_search_autocomplete_spending_contractno($year, $age
  * @param string $data_source
  *   Data source (checkbook, checkbook_oge)
  *
- * @return array
+ * @return void Results from Solr
  *   Results from Solr
- ***/
+ *
+ */
 function _checkbook_advanced_search_autocomplete_spending_capitalproject($year, $agency, $expcategory, $dept, $exptype = 0, $mwbe_category, $industry, $data_source = 'checkbook') {
     $searchTerm = _get_autocomplete_search_term();
     if (!empty($searchTerm)) {
@@ -221,12 +224,12 @@ function _checkbook_advanced_search_autocomplete_spending_capitalproject($year, 
  *   Year value
  * @param string $agency
  *   Selected agency id
+ * @param $expcategory
+ *   Selected Expense Category
  * @param string $dept
  *   Selected Department Name
  * @param int $exptype
  *   Selected Spending Category Id
- * @param $expcategory
- *   Selected Expense Category
  * @param $mwbe_category
  *   Selected M/WBE Category
  * @param $industry
@@ -234,9 +237,10 @@ function _checkbook_advanced_search_autocomplete_spending_capitalproject($year, 
  * @param string $data_source
  *   Data source (checkbook, checkbook_oge)
  *
- * @return array
+ * @return void Results from Solr
  *   Results from Solr
- ***/
+ *
+ */
 function _checkbook_advanced_search_autocomplete_spending_expenseid($year, $agency, $expcategory, $dept, $exptype = 0, $mwbe_category, $industry, $data_source = 'checkbook') {
     $searchTerm = _get_autocomplete_search_term();
     if (!empty($searchTerm)) {
@@ -259,9 +263,10 @@ function _checkbook_advanced_search_autocomplete_spending_expenseid($year, $agen
  * @param string $data_source
  *   Data source (checkbook, checkbook_oge)
  *
- * @return array
+ * @return void Results from Solr
  *   Results from Solr
- ***/
+ *
+ */
 function _checkbook_advanced_search_autocomplete_spending_department($year, $agency, $exp_type, $data_source = 'checkbook') {
     if ($year) {
         $year_type = substr($year, 0, 2);
@@ -307,15 +312,14 @@ function _checkbook_advanced_search_autocomplete_spending_department($year, $age
  *   Year value
  * @param string $agency
  *   Selected agency id
- * @param string $dept
- *   Selected Department Name
- * @param string $exptype
- *   Selected Spending Category Id
  * @param $dept
  *   Selected Department
+ * @param string $exptype
+ *   Selected Spending Category Id
  * @param string $data_source
  *   Data source (checkbook, checkbook_oge)
- ***/
+ *
+ */
 function _checkbook_advanced_search_autocomplete_spending_expcategory($year, $agency, $dept, $exptype, $data_source = 'checkbook') {
     $options = _get_spending_expense_cat_options($agency, str_replace('__','/',$dept), $exptype, $year, $data_source);
     $matches = array();
@@ -340,12 +344,10 @@ function _checkbook_advanced_search_autocomplete_spending_expcategory($year, $ag
  *   Selected agency id
  * @param $expcategory
  *   Selected Expense Category
- * @param string $dept
- *   Selected Department Name
- * @param int $exptype
- *   Selected Spending Category Id
  * @param $dept
  *   Selected Department
+ * @param int $exptype
+ *   Selected Spending Category Id
  * @param $mwbe_category
  *   Selected M/WBE Category
  * @param $industry
@@ -353,9 +355,10 @@ function _checkbook_advanced_search_autocomplete_spending_expcategory($year, $ag
  * @param string $data_source
  *   Data source (checkbook, checkbook_oge)
  *
- * @return array
+ * @return void Results from Solr
  *   Results from Solr
- ***/
+ *
+ */
 function _checkbook_advanced_search_autocomplete_spending_entitycontractnum($year, $agency, $expcategory, $dept, $exptype = 0,  $mwbe_category, $industry, $data_source = 'checkbook') {
     $searchTerm = _get_autocomplete_search_term();
     if (!empty($searchTerm)) {
@@ -375,12 +378,10 @@ function _checkbook_advanced_search_autocomplete_spending_entitycontractnum($yea
  *   Selected agency id
  * @param $expcategory
  *   Selected Expense Category
- * @param string $dept
- *   Selected Department Name
- * @param int $exptype
- *   Selected Spending Category Id
  * @param $dept
  *   Selected Department
+ * @param int $exptype
+ *   Selected Spending Category Id
  * @param $mwbe_category
  *   Selected M/WBE Category
  * @param $industry
@@ -388,9 +389,10 @@ function _checkbook_advanced_search_autocomplete_spending_entitycontractnum($yea
  * @param string $data_source
  *   Data source (checkbook, checkbook_oge)
  *
- * @return array
+ * @return void Results from Solr
  *   Results from Solr
- ***/
+ *
+ */
 function _checkbook_advanced_search_autocomplete_spending_commodityline($year, $agency, $expcategory, $dept, $exptype = 0,  $mwbe_category, $industry, $data_source = 'checkbook') {
     $searchTerm = _get_autocomplete_search_term();
     if(strlen($searchTerm) > 0){
@@ -410,12 +412,10 @@ function _checkbook_advanced_search_autocomplete_spending_commodityline($year, $
  *   Selected agency id
  * @param $expcategory
  *   Selected Expense Category
- * @param string $dept
- *   Selected Department Name
- * @param int $exptype
- *   Selected Spending Category Id
  * @param $dept
  *   Selected Department
+ * @param int $exptype
+ *   Selected Spending Category Id
  * @param $mwbe_category
  *   Selected M/WBE Category
  * @param $industry
@@ -423,9 +423,10 @@ function _checkbook_advanced_search_autocomplete_spending_commodityline($year, $
  * @param string $data_source
  *   Data source (checkbook, checkbook_oge)
  *
- * @return array
+ * @return void Results from Solr
  *   Results from Solr
- ***/
+ *
+ */
 function _checkbook_advanced_search_autocomplete_spending_budgetname($year, $agency, $expcategory, $dept, $exptype = 0,  $mwbe_category, $industry, $data_source = 'checkbook') {
     $searchTerm = _get_autocomplete_search_term();
     if(strlen($searchTerm) > 0){
@@ -439,13 +440,15 @@ function _checkbook_advanced_search_autocomplete_spending_budgetname($year, $age
 //Payroll autocomplete menu callback functions
 /**
  * Returns auto suggestions for employee title based on the selected agency/pay frequency/year values.
- * @param string $year
- *   Year value
- * @param string $agency
- *   Selected agency id
  * @param string $pay_frequency
  *   Selected Pay Frequency
- ***/
+ *
+ * @param string $agency
+ *   Selected agency id
+ * @param string $year
+ *   Year value
+ * @param $datasource
+ */
 function _checkbook_advanced_search_autocomplete_payroll_employee_name($pay_frequency, $agency, $year, $datasource){
     $searchTerm = _get_autocomplete_search_term();
     $query = 'select/?q=civil_service_title_autocomplete:'.$searchTerm.'&facet=true&facet.field=civil_service_title&fq=domain:payroll&facet.limit=10&wt=php';
@@ -843,7 +846,11 @@ function _checkbook_advanced_search_autocomplete_contracts_budgetname($status, $
 
 //Budget autocomplete menu callback functions
 
-/** @return options for department based on selected agency and year */
+/**
+ * @param $fiscal_year
+ * @param $agency
+ * @return void for department based on selected agency and year
+ */
 function _checkbook_advanced_search_autocomplete_budget_department($fiscal_year, $agency) {
     $params =  array("agency_id"=>$agency,"budget_fiscal_year_id"=>$fiscal_year);
     $results = get_db_results(false, 'checkbook:budget', array("department_name.department_name"), $params,"department_name.department_name");
@@ -859,7 +866,12 @@ function _checkbook_advanced_search_autocomplete_budget_department($fiscal_year,
     }
 }
 
-/** @return options for Expense Category based on selected agency, Department and year */
+/**
+ * @param $fiscal_year
+ * @param $agency
+ * @param $dept
+ * @return void for Expense Category based on selected agency, Department and year
+ */
 function _checkbook_advanced_search_autocomplete_budget_expcategory($fiscal_year, $agency, $dept) {
     $params =  array("agency_id"=>$agency,"budget_fiscal_year_id"=>$fiscal_year);
     if($dept != '0' ) {
@@ -878,7 +890,14 @@ function _checkbook_advanced_search_autocomplete_budget_expcategory($fiscal_year
     }
 }
 
-/** @return options for budget code based on selected agency, department, expense category, year and budget name */
+/**
+ * @param $fiscal_year
+ * @param $agency
+ * @param $dept
+ * @param $expcategory
+ * @param $budget_name
+ * @return void for budget code based on selected agency, department, expense category, year and budget name
+ */
 function _checkbook_advanced_search_autocomplete_budget_budgetcode($fiscal_year, $agency, $dept, $expcategory, $budget_name) {
    
     $params =  array("budget_fiscal_year_id"=>$fiscal_year);
@@ -911,7 +930,14 @@ function _checkbook_advanced_search_autocomplete_budget_budgetcode($fiscal_year,
     }
 }
 
-/** @return options for budget name based on selected agency, department, expense category, year and budget code */
+/**
+ * @param $fiscal_year
+ * @param $agency
+ * @param $dept
+ * @param $expcategory
+ * @param $budget_code
+ * @return void for budget name based on selected agency, department, expense category, year and budget code
+ */
 function _checkbook_advanced_search_autocomplete_budget_budgetname($fiscal_year, $agency, $dept, $expcategory, $budget_code) {
     $params =  array("budget_fiscal_year_id"=>$fiscal_year);
     if($agency != '0' ) {
@@ -947,7 +973,16 @@ function _checkbook_advanced_search_autocomplete_budget_budgetname($fiscal_year,
 
 //Revenue autocomplete menu callback functions
 
-/** @return auto suggestions for revenue class name based on selected year, fund class, agency, revenue category and budget year */
+/**
+ * @param $year
+ * @param $fundclass
+ * @param $agency
+ * @param $budgetyear
+ * @param $revcat
+ * @param $revsrc
+ * @param $fundingsrc
+ * @return void suggestions for revenue class name based on selected year, fund class, agency, revenue category and budget year
+ */
 function _checkbook_advanced_search_autocomplete_revenue_revenueclass($year, $fundclass, $agency, $budgetyear, $revcat, $revsrc, $fundingsrc) {
     $searchTerm = _get_autocomplete_search_term();
     if (!empty($searchTerm)) {
@@ -975,7 +1010,16 @@ function _checkbook_advanced_search_autocomplete_revenue_revenueclass($year, $fu
     }
 }
 
-/** @return auto suggestions for revenue source name based on selected year, fund class, agency, revenue category and budget year */
+/**
+ * @param $year
+ * @param $fundclass
+ * @param $agency
+ * @param $budgetyear
+ * @param $revcat
+ * @param $revclass
+ * @param $fundingsrc
+ * @return void suggestions for revenue source name based on selected year, fund class, agency, revenue category and budget year
+ */
 function _checkbook_advanced_search_autocomplete_revenue_revenuesource($year, $fundclass, $agency, $budgetyear, $revcat, $revclass, $fundingsrc) {
     $searchTerm = _get_autocomplete_search_term();
     if (!empty($searchTerm)) {

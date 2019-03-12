@@ -23,7 +23,19 @@
 
 abstract class OperatorFactory extends AbstractFactory {
 
+    /**
+     * @var null
+     */
     private static $factory = NULL;
+
+    /**
+     * @param mixed ...$params
+     *     A string containing name of an operator.
+     *     A variable number of arguments which are passed to corresponding operator handler instance.
+     *     Instead of a variable number of arguments, you may also pass a single array containing the arguments.
+     * @return mixed
+     */
+    public abstract function initiateHandler(...$params);
 
     /**
      * @static
@@ -39,13 +51,13 @@ abstract class OperatorFactory extends AbstractFactory {
 
     /**
      * @param $operatorName
-     *     A string containing name of an operator.
-     * @param ...
-     *     A variable number of arguments which are passed to corresponding operator handler instance.
-     *     Instead of a variable number of arguments, you may also pass a single array containing the arguments.
+     * @return mixed
      */
-    public abstract function initiateHandler($operatorName);
     public abstract function isSupported($operatorName);
+
+    /**
+     * @return mixed
+     */
     public abstract function getSupportedOperators();
 
     /**

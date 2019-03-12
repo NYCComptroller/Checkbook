@@ -19,10 +19,9 @@
 */
 
 
-
-
 /**
  * Implements hook_page_alter().
+ * @param $page
  */
 function checkbook_custom_breadcrumbs_page_alter(&$page) {
   //TODO
@@ -103,9 +102,12 @@ function _set_payroll_breadcrumb_title_drilldown(){
 function _set_nycha_contracts_breadcrumb_title_drilldown(){
     drupal_set_title( _get_nycha_contracts_breadcrumb_title_drilldown(),PASS_THROUGH);
 }
+
 /**
  * Custom function to get title for contracts landing pages
- **/
+ * @param bool $ethinicty
+ * @return string
+ */
 function _get_contracts_breadcrumb_title_drilldown($ethinicty =  true){
 
     $lastReqParam = _getLastRequestParamValue();
@@ -148,7 +150,9 @@ function _get_contracts_breadcrumb_title_drilldown($ethinicty =  true){
 
 /**
  * Custom function to get title for spending landing pages
- **/
+ * @param bool $ethinicty
+ * @return string
+ */
 function _get_spending_breadcrumb_title_drilldown($ethinicty = true){
 
     $lastReqParam = _getLastRequestParamValue();
@@ -314,7 +318,9 @@ function _set_pending_contracts_breadcrumb_title_drilldown(){
 
 /**
  * Custom function to set title for contracts landing pages
- **/
+ * @param bool $ethinicty
+ * @return string
+ */
 function _get_pending_contracts_breadcrumb_title_drilldown($ethinicty = true){
 
     $lastReqParam = _getLastRequestParamValue();

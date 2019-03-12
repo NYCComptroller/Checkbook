@@ -341,7 +341,8 @@ class payrollDetails {
      * @param null $month
      * @param null $agency
      * @param null $title
-     * @return int
+     * @param null $employee_id
+     * @return array
      */
     public function getMaxHourlyRateByPayFrequency($year, $year_type, $month = NULL, $agency = NULL, $title = NULL, $employee_id = NULL)
     {

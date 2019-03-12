@@ -211,6 +211,7 @@ function _checkbook_alerts_process_twitter($alert){
  * All Alerts for a user ->value is hash of this recipient
  *
  * @return string
+ * @throws Exception
  */
 function _checkbook_alerts_unsubscribe() {
     $alert = arg(2);
@@ -260,6 +261,7 @@ function _checkbook_alerts_unsubscribe() {
  * 4. Alert end date is not past
  *
  * @return string
+ * @throws Exception
  */
 function _checkbook_alerts_activate() {
     $arg = arg(2);

@@ -190,7 +190,7 @@ function _checkbook_advanced_search_get_mwbe_category_and_id()
 
 /**
  * Gets the industry types and id using the data controller
- * @return array
+ * @return void
  */
 function _checkbook_advanced_search_get_industry_type_and_id()
 {
@@ -230,7 +230,8 @@ function _checkbook_advanced_search_get_expensename_and_id()
 
 /**
  * Gets the subcontract_approval_status and id using the data controller
- * @return array
+ * @param null $attributes
+ * @return void
  */
 function _checkbook_advanced_search_get_subcontract_approval_status_and_id($attributes = NULL)
 {
@@ -263,10 +264,10 @@ function _checkbook_advanced_search_get_subcontract_approval_status_and_id($attr
 }
 
 
-
 /**
  * Gets the scntrc_status_name, scntrc_status(id), and display_flag using the data controller
- * @return array
+ * @param null $attributes
+ * @return void
  */
 function _checkbook_advanced_search_get_contract_includes_subvendors_status($attributes = NULL)
 {
@@ -304,7 +305,6 @@ function _checkbook_advanced_search_get_contract_includes_subvendors_status($att
 /**
  * Generates the Url param mappings for current amount id by prime and sub
  * @param $value
- * @param string $url_param
  * @return string
  */
 function _checkbook_advanced_search_add_current_amount_id($value)
@@ -623,7 +623,9 @@ function _checkbook_advanced_search_get_contract_type_and_id($data_source = 'che
 
 /***
  * Get Responsibility center options for NYCHA Contracts
- * @returns array
+ * @param string $data_source
+ * @param bool $feeds
+ * @return array|void
  */
 function _checkbook_advanced_search_get_responsibility_centers($data_source = 'checkbook_nycha', $feeds = false){
     try {
@@ -661,7 +663,9 @@ function _checkbook_advanced_search_get_responsibility_centers($data_source = 'c
 
 /***
  * Get Contract Type options for NYCHA
- * @returns array
+ * @param string $data_source
+ * @param bool $feeds
+ * @return array|void
  */
 function _checkbook_advanced_search_get_nycha_contract_types($data_source = 'checkbook_nycha', $feeds = false){
     try {
@@ -698,7 +702,9 @@ function _checkbook_advanced_search_get_nycha_contract_types($data_source = 'che
 
 /***
  * Get NYCHA Award Method options for NYCHA
- * @returns array
+ * @param string $data_source
+ * @param bool $feeds
+ * @return array|void
  */
 function checkbook_advanced_search_get_nycha_award_methods($data_source = 'checkbook_nycha', $feeds = false){
     try {
@@ -736,7 +742,9 @@ function checkbook_advanced_search_get_nycha_award_methods($data_source = 'check
 
 /***
  * Get Nycha Industry options for NYCHA
- * @returns array
+ * @param string $data_source
+ * @param bool $feeds
+ * @return array|void
  */
 function checkbook_advanced_search_get_nycha_industries($data_source = 'checkbook_nycha', $feeds = false){
     try {
