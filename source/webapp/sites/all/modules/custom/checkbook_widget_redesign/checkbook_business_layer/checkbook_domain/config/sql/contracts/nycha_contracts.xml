@@ -69,6 +69,7 @@
         contract_id,
         purpose,
         vendor_name,
+        vendor_id,
         MAX(total_amount) AS total_amount,
         MAX(original_amount) AS original_amount,
         MAX(spend_to_date) AS spend_to_date,
@@ -86,7 +87,7 @@
           <exp op="=" dbField="award_method_id" paramName="awdmethod"/>
         </exp>
       </where>
-      GROUP BY contract_id, purpose, vendor_name
+      GROUP BY contract_id, purpose, vendor_name, vendor_id
     </sql>
   </statement>
 
@@ -103,6 +104,7 @@
         contract_id,
         purpose,
         vendor_name,
+        vendor_id,
         MAX(total_amount) AS total_amount,
         MAX(original_amount) AS original_amount,
         MAX(spend_to_date) AS spend_to_date,
@@ -121,7 +123,7 @@
           <exp op="=" dbField="award_method_id" paramName="awdmethod"/>
         </exp>
       </where>
-      GROUP BY  contract_id, purpose, vendor_name
+      GROUP BY  contract_id, purpose, vendor_name, vendor_id
       <exp op="IF" condition="=" paramName="is_modification" compareValue="true">
         HAVING ABS(SUM(original_amount - total_amount))!= 0
       </exp>
@@ -141,6 +143,7 @@
         contract_id,
         purpose,
         vendor_name,
+        vendor_id,
         MAX(total_amount) AS total_amount,
         MAX(original_amount) AS original_amount,
         MAX(spend_to_date) AS spend_to_date,
@@ -159,7 +162,7 @@
           <exp op="=" dbField="award_method_id" paramName="awdmethod"/>
         </exp>
       </where>
-      GROUP BY  contract_id, purpose, vendor_name
+      GROUP BY  contract_id, purpose, vendor_name, vendor_id
       <exp op="IF" condition="=" paramName="is_modification" compareValue="true">
         HAVING ABS( SUM(original_amount - total_amount) )!= 0
       </exp>
