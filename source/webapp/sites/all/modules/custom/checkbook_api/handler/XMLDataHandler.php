@@ -128,7 +128,7 @@ class XMLDataHandler extends AbstractDataHandler
      * Function will reformat the xml document to have correct indention.
      *
      * @param $strXml
-     * @return DOMDocument
+     * @return string
      */
     private function formatXmlString($strXml) {
 
@@ -372,5 +372,6 @@ class XMLDataHandler extends AbstractDataHandler
         else {
             echo "Data is not generated. Please contact support team.";
         }
+        return;
     }
 }

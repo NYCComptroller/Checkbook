@@ -2,8 +2,8 @@
 
 /**
  * Returns the processed data from the node output
- * @param unknown_type $node - node id
- * @param unknown_type $param - data type
+ * @param $node - node id
+ * @param $param - data type
  */
 function _checkbook_get_agency_budget_percent_difference($node, $param){
 
@@ -17,8 +17,9 @@ function _checkbook_get_agency_budget_percent_difference($node, $param){
 
 /**
  * Returns the node data in json format
- * @param unknown_type $node
- * @param unknown_type $param - data type
+ * @param $node
+ * @param $param - data type
+ * @return false|string
  */
 function _checkbook_get_agency_budget_percent_difference_json($node, $param){
 
@@ -149,8 +150,8 @@ function _checkbook_get_agency_budget_percent_difference_json($node, $param){
 
 /**
  * Returns the processed data from the node output
- * @param unknown_type $node - node id
- * @param unknown_type $param - data type
+ * @param $node - node id
+ * @param $param - data type
  */
 function _checkbook_revenue_get_data($node, $param){
 
@@ -164,8 +165,9 @@ function _checkbook_revenue_get_data($node, $param){
 
 /**
  * Returns the node data in json format
- * @param unknown_type $node
- * @param unknown_type $param - data type
+ * @param $node
+ * @param $param - data type
+ * @return false|string
  */
 function _checkbook_revenue_get_data_json($node, $param){
 
@@ -294,10 +296,10 @@ function _checkbook_revenue_get_data_json($node, $param){
 }
 
 
-
 /**
  * Page callback for view all popup for data tables which use 'template' sub type
- * @param unknown_type $node
+ * @param $node
+ * @param $param
  */
 
 function _checkbook_custom_template_view_all_popup_template($node, $param){
@@ -337,7 +339,8 @@ function _checkbook_custom_template_view_all_popup_template($node, $param){
 
 /**
  * Page callback for  datatable popup pager..
- * @param unknown_type $node
+ * @param $node
+ * @param $param
  */
 function _checkbook_custom_template_view_all_popup_template_data($node, $param){
   $_GET['q'] = drupal_get_path_alias($_GET['refURL']);
@@ -354,9 +357,13 @@ function _checkbook_custom_template_view_all_popup_template_data($node, $param){
 
 /**
  * Function to sort a multi dimensional array
- * @param $array An array being sorted.
- * @param $arg sort options for the previous array argument
- * @param $dir sort direction ASC or DESC
+ * @param $table_rows
+ * @param $total_col
+ * @param $sort_col
+ * @param $sort_dir
+ * @param $req_year_id
+ * @param $param
+ * @return mixed
  */
 
 function _checkbook_custom_template_multisort_array($table_rows, $total_col, $sort_col, $sort_dir, $req_year_id, $param){
@@ -397,4 +404,4 @@ function _checkbook_custom_template_multisort_array($table_rows, $total_col, $so
 
 
 
-?>
+

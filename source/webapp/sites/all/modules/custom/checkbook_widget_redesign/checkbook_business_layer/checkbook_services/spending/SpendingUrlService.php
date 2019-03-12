@@ -294,7 +294,7 @@ class SpendingUrlService {
 
     /**
      * Returns the vendor or sub vendor id for the vendor facets
-     * @return request
+     * @return string
      */
     static function getVendorFacetParameter() {
 
