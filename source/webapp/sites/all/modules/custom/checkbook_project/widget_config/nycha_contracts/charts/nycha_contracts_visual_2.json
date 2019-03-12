@@ -55,12 +55,12 @@
   $where_filters = [];
   foreach($node->widgetConfig->requestParams as $param=>$value){
     if($param == 'fiscal_year_id'){
-      $where_filters[] = '('. $value . ' BETWEEN y.year_id AND y1.year_id)';
+      $where_filters[] = '('. $value . ' BETWEEN start_year_id AND end_year_id)';
     }else{
       $where_filters[] = _widget_build_sql_condition( $param, $value);
     }
   }
-  $where_filters[] = _widget_build_sql_condition( 'agreement_type_code', 'BA');
+  $where_filters[] = _widget_build_sql_condition( 'agreement_type_id', '1');
 
   $where_filter = '';
   if(count($where_filters) > 0){
@@ -69,19 +69,17 @@
 
 
 $datasource = RequestUtilities::getRequestParamValue('datasource');
-$sql = 'SELECT
-    contract_id,
-    purpose,
-    vendor_name,
-    total_amount,
-    original_amount,
-    spend_to_date,
-    amount_difference AS dollar_difference,
-    percent_difference
-  FROM contract_agreements_fy_vendor c
-JOIN ref_year y ON c.start_year = y.year_value
-JOIN ref_year y1 ON c.end_year = y1.year_value
+$sql = 'SELECT contract_id,purpose,vendor_name,total_amount,original_amount,spend_to_date,
+abs(SUM(original_amount - total_amount)) AS dollar_difference,
+ROUND(CASE COALESCE(SUM(original_amount), 0 :: NUMERIC) WHEN 0 THEN 100 :: NUMERIC ELSE ABS(
+SUM(original_amount - total_amount) / SUM(original_amount))* 100 END, 2) AS percent_difference
+FROM    contracts_widget_summary
 ' . $where_filter . '
+GROUP BY contract_id,purpose,
+vendor_name,
+total_amount,
+original_amount,
+spend_to_date
 ORDER BY total_amount DESC LIMIT 10';
 
 LogHelper::log_error($sql);

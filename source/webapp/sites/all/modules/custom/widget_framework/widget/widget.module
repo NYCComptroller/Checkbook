@@ -964,6 +964,7 @@ function widget_data(&$node) {
     	eval($node->widgetConfig->widgetDataLoader);
     }
     elseif (isset($node->widgetConfig->dataset) || isset($node->widgetConfig->model)) {
+        LogHelper::log_notice("Loading widget node # ".$node->nid);
         load_widget_data($node, $resultFormatter);
     }
 

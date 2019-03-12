@@ -45,7 +45,7 @@
       $where_filters = array();
       foreach($node->widgetConfig->requestParams as $param=>$value){
         if($param == 'fiscal_year_id'){
-            $where_filters[] = '('. $value . ' BETWEEN y.year_id AND y1.year_id)';
+            $where_filters[] = '('. $value . ' BETWEEN start_year_id AND end_year_id)';
         }else{
           $where_filters[] = _widget_build_sql_condition( $param, $value);
         }
@@ -54,8 +54,9 @@
         $where_filter = ' WHERE ' . implode(' AND ' , $where_filters);
       }
       $datasource = RequestUtilities::getRequestParamValue('datasource');
-      $sql = 'SELECT vendor_name, vendor_id, SUM(total_amount) current_amount_sum, SUM(purchase_order_count) total_contracts
-                FROM contracts_fy_po_vendor_summary_vw C JOIN ref_year y ON c.start_year = y.year_value JOIN ref_year y1 ON c.end_year = y1.year_value'
+
+$sql = 'SELECT vendor_name, vendor_id, SUM(total_amount) current_amount_sum, count(distinct contract_id) total_contracts
+          FROM contracts_widget_summary C'
               . $where_filter . ' GROUP BY vendor_name, vendor_id ORDER BY 3 DESC LIMIT 10';
       $node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
   ",
@@ -67,7 +68,7 @@
         'Vendor: ' . $row['vendor_name'] .  '<br/>' .
         'Number of Contracts: ' . $row['total_contracts'].  '<br/>' .
         'Amount: ' . custom_number_formatter_format($row['current_amount_sum'] ,2, '$').  '<br/>';
-        $link =  strstr($_GET['q'],'/',true) .  NychaContractsUrlService::vendorUrl($row['vendor_id']) .'?expandBottomCont=true';
+        $link =  strstr($_GET['q'],'/',true) .  NychaContractsUrlService::generateLandingPageUrl('vendor', $row['vendor_id']) .'?expandBottomCont=true';
         $series_new[$index]->url = 	$link;
         $series_new[$index]->y = (float)$row['current_amount_sum'];
         $series_new[$index]->tooltip_label = $tooltip_label;
