@@ -55,12 +55,12 @@
   $where_filters = [];
   foreach($node->widgetConfig->requestParams as $param=>$value){
     if($param == 'fiscal_year_id'){
-      $where_filters[] = '('. $value . ' BETWEEN y.year_id AND y1.year_id)';
+      $where_filters[] = '('. $value . ' BETWEEN start_year_id AND end_year_id)';
     }else{
       $where_filters[] = _widget_build_sql_condition( $param, $value);
     }
   }
-  $where_filters[] = _widget_build_sql_condition( 'agreement_type_code', 'BA');
+  $where_filters[] = _widget_build_sql_condition( 'agreement_type_id', '1');
 
   $where_filter = '';
   if(count($where_filters) > 0){
@@ -79,8 +79,6 @@ $sql = 'SELECT
     amount_difference AS dollar_difference,
     percent_difference
   FROM contract_agreements_fy_vendor c
-JOIN ref_year y ON c.start_year = y.year_value
-JOIN ref_year y1 ON c.end_year = y1.year_value
 ' . $where_filter . '
 ORDER BY total_amount DESC LIMIT 10';
 
