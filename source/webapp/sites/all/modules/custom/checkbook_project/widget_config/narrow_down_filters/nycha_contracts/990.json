@@ -17,6 +17,7 @@
   "autocompleteID":"fagreementType",
   "autocompleteField":"agreement_type_code.agreement_type_code",
   "adjustParameters":"
+  $parameters = NYCHAContractUtil::adjustYearParams($node, $parameters);
   if(function_exists('_checkbook_project_applyParameterFilters')){
   $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
 }
