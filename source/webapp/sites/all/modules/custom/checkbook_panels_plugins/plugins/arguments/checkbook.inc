@@ -24,6 +24,10 @@ $plugin = array(
 
 /**
  * Discover if this argument gives us the term we crave.
+ * @param null $arg
+ * @param null $conf
+ * @param bool $empty
+ * @return ctools_context
  */
 function ctools_checkbook_context($arg = NULL, $conf = NULL, $empty = FALSE) {
   // If unset it wants a generic, unfilled context.
@@ -39,6 +43,9 @@ function ctools_checkbook_context($arg = NULL, $conf = NULL, $empty = FALSE) {
 
 /**
  * Settings form for the argument
+ * @param $form
+ * @param $form_state
+ * @param $conf
  */
 function ctools_checkbook_settings_form(&$form, &$form_state, $conf) {
   $form['settings']['use_tail'] = array(
@@ -52,6 +59,8 @@ function ctools_checkbook_settings_form(&$form, &$form_state, $conf) {
 
 /**
  * Switch the placeholder based upon user settings.
+ * @param $argument
+ * @return string
  */
 function ctools_checkbook_path_placeholder($argument) {
   if (empty($argument['settings']['use_tail'])) {

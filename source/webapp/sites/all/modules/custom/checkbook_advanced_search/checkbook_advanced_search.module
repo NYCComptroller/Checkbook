@@ -81,6 +81,9 @@ function checkbook_advanced_search_display_ajax()
 
 /**
  * Implements hook_form().
+ * @param $form
+ * @param $form_state
+ * @return mixed
  */
 function checkbook_advanced_search_form($form, $form_state)
 {
@@ -799,6 +802,9 @@ function _checkbook_advanced_search_filter_field_definition($domain, $data_sourc
  * Ajax callback for the data source radio button toggle.
  *
  * Updates the form to point to correct data source for spending
+ * @param $form
+ * @param $form_state
+ * @return array
  */
 function advanced_search_spending_filter_ajax($form, $form_state) {
     $new_data_Source = $form_state['triggering_element']['#ajax']['attributes']['new_data_source'];
@@ -807,10 +813,14 @@ function advanced_search_spending_filter_ajax($form, $form_state) {
     $commands[] = ajax_command_replace('#advanced_search_spending_dynamic_fields', $fields_html);
     return array('#type' => 'ajax', '#commands' => $commands);
 }
+
 /**
  * Ajax callback for the data source radio button toggle.
  *
  * Updates the form to point to correct data source for contracts
+ * @param $form
+ * @param $form_state
+ * @return array
  */
 function advanced_search_contracts_filter_ajax($form, $form_state) {
     $new_data_Source = $form_state['triggering_element']['#ajax']['attributes']['new_data_source'];

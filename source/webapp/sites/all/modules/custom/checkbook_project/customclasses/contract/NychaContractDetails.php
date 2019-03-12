@@ -46,7 +46,7 @@ class NychaContractDetails
         }
 
         if (stripos(' ' . $contract_id, 'po')) {
-            $this->loadPo($node, $contract_id);
+            $this->loadPurchaceOrder($node, $contract_id);
             $node->contractPO = true;
         }
 
@@ -60,7 +60,7 @@ class NychaContractDetails
         }
     }
 
-    private function loadPo(&$node, $contract_id)
+    private function loadPurchaceOrder(&$node, $contract_id)
     {
         $po_query = <<<SQL
             SELECT DISTINCT
@@ -81,9 +81,9 @@ class NychaContractDetails
                 release_line_spend_to_date,
                 release_line_amount_difference,
                 release_revision_count,
-                revision_number,
-                revision_total_amount,
-                revision_approved_date,
+                'fixme' revision_number,
+                'fixme' revision_total_amount,
+                'fixme' revision_approved_date,
                 shipment_number,
                 distribution_number,
                 purpose,
@@ -135,9 +135,9 @@ SQL;
               award_size_name,
               revision_count,
               purpose,
-              revision_number,
-              revision_total_amount,
-              revision_approved_date,
+              'fixme' revision_number,
+              'fixme' revision_total_amount,
+              'fixme' revision_approved_date,
               agency_id,
               agency_code,
               agency_name,
@@ -236,6 +236,7 @@ EOQ2;
     {
         $releases_sql = <<<SQL
             SELECT DISTINCT release_id,
+                            release_number,
                             vendor_id,
                             vendor_name,
                             release_total_amount,
@@ -243,7 +244,7 @@ EOQ2;
                             release_spend_to_date
             FROM all_agreement_transactions
             WHERE contract_id = '{$contract_id}'
-            ORDER BY release_id
+            ORDER BY release_number
             LIMIT 50
 SQL;
         return _checkbook_project_execute_sql_by_data_source($releases_sql, 'checkbook_nycha');
@@ -255,7 +256,7 @@ SQL;
         $rh_sql = <<<SQL
             SELECT DISTINCT 
                 release_id,
-                revision_number,
+                'fixme' revision_number,
                 release_year,
                 release_year_id,
                 release_approved_date,

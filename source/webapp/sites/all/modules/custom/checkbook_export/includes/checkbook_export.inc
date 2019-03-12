@@ -355,7 +355,9 @@ function _checkbook_export_transactions(){
     }
 }
 
-/** Function to handle download export file */
+/** Function to handle download export file
+ * @param $fileName
+ */
 function _checkbook_export_download_file($fileName){
     global $conf;
 
@@ -390,7 +392,12 @@ function _checkbook_export_check_cached(){
   return false;
 }
 
-/** Function to handle generate export file */
+/** Function to handle generate export file
+ * @param $node
+ * @param $headers
+ * @param null $exportConfigNode
+ * @return bool|string
+ */
 function _checkbook_export_generateExportFile($node, $headers, $exportConfigNode = NULL){
     global $conf, $databases;
 
@@ -594,7 +601,10 @@ function _checkbook_export_prepareFileOutputDir(){
     return $dir;
 }
 
-/** Function to generate the path to save export file */
+/** Function to generate the path to save export file
+ * @param $dir
+ * @throws Exception
+ */
 function _checkbook_export_prepareDirectory($dir){
     if(!file_prepare_directory($dir,FILE_CREATE_DIRECTORY)){
         LogHelper::log_error("Could not prepare file output directory $dir.Should check if this directory is writable.");
@@ -657,6 +667,7 @@ function _checkbook_export_get_data_count(){
 /**
  * Function to prepare widget using configuration
  *
+ * @param null $nodeId
  * @return bool|mixed Prepared widget node.
  */
 function _checkbook_export_get_node_config($nodeId=NULL){

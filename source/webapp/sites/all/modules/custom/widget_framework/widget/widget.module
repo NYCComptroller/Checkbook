@@ -67,12 +67,7 @@ function widget_menu(){
 
 
 function widget_load($key){
-	if( $id > 0 ){
-		$node = node_load($key);
-	}
-	if($node == null){
-		$node = _widget_node_load_file($key);
-	}
+    $node = _widget_node_load_file($key);
 
 	return $node;
 }
@@ -107,6 +102,7 @@ function widget_access($op, $node, $account) {
 			return TRUE;
 		}
 	}
+	return;
 }
 
 function widget_perm() {
@@ -127,11 +123,12 @@ function _widget_node_load($key, $type='node'){
 
 	switch ($type) {
 		case 'node':
-			return node_load($key);;
+			return node_load($key);
 		case 'file':
 			return _widget_node_load_file($key);
 
 	}
+	return;
 }
 
 function _widget_node_view_page($key){
@@ -184,6 +181,7 @@ function widget_node_load($nodes,$types){
       }
     }
   }
+  return;
 }
 
 function widget_form(&$node) {
@@ -201,6 +199,7 @@ function widget_form(&$node) {
       '#weight' => -5,
 		);
 	}
+    $form=[];
 
 	if ($type->has_body) {
 		// In Drupal 6, we can use node_body_field() to get the body and filter
@@ -218,19 +217,7 @@ function widget_node_validate(&$node) {
 		return ;
 
 	widget_config($node);
-/*	if (!isset($node->widgetConfig)) {
-		form_set_error('body', "Unable to parse JSON");
-	}
-	else {
-		if (!isset($node->widgetConfig->widgetType)) {
-			form_set_error('body', "Property 'widgetType' is required.");
-		}
-	}
-
-	//if we were able to determine the widgetType, invoke that widget's hook
-	if (isset($node->widgetConfig->widgetType)) {
-		widget_invoke($node, 'widget_validate');
-	}*/
+    return;
 }
 
 function widget_node_view($node, $nodata = true) {
@@ -356,6 +343,7 @@ function widget_invoke(&$node, $hook, $a2 = NULL, $a3 = NULL, $a4 = NULL) {
 		$function = $module .'_'. $hook;
 		return ($function($node, $a2, $a3, $a4));
 	}
+	return;
 }
 
 function widget_get_types($op = 'types', $node = NULL, $reset = FALSE) {
@@ -364,6 +352,8 @@ function widget_get_types($op = 'types', $node = NULL, $reset = FALSE) {
 	if ($reset || !isset($_widget_types)) {
 		list($_widget_types, $_widget_names) = _widget_types_build();
 	}
+
+    $type = null;
 
 	if ($node) {
 		if (is_object($node)) {
@@ -386,6 +376,7 @@ function widget_get_types($op = 'types', $node = NULL, $reset = FALSE) {
 		case 'name':
 			return isset($_widget_names[$type]) ? $_widget_names[$type] : FALSE;
 	}
+	return;
 }
 
 function _widget_types_build() {
@@ -1369,9 +1360,11 @@ function widget_merge_config($parent_config, $child_config){
 }
 
 
-
 /**
  * Returns JSON file after merging in the js functions
+ * @param $node
+ * @param $phpArray
+ * @return false|mixed|string
  */
 function widget_mergeJSFunctions($node, $phpArray) {
 	$PLACEHOLDER_START = '"function":"';

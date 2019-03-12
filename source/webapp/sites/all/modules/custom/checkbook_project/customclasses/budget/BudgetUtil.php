@@ -8,11 +8,12 @@
 
 class BudgetUtil{
     /**
-        * Function to handle Budget Code Name paramenter
-        * Adjust Budget Code Name paramenter to do wildcard search on 'Budget Code Name' or 'Budget Code' columns
-        * @param $node
-        * @param $parameters
-    */
+     * Function to handle Budget Code Name paramenter
+     * Adjust Budget Code Name paramenter to do wildcard search on 'Budget Code Name' or 'Budget Code' columns
+     * @param $node
+     * @param $parameters
+     * @return mixed
+     */
     public static function adjustBudgetCodeNameParameter(&$node, &$parameters){
         if(isset($parameters['budget_code_name'])){
             $data_controller_instance = data_controller_get_operator_factory_instance();
@@ -22,14 +23,15 @@ class BudgetUtil{
         }
         return $parameters;
     }
-    
-    
+
+
     /**
-        * Function to get Budget Code Id for the combination of Budget Code, Budget Code Name and Year
-        * @param $budget_code_name
-        * @param $budget_code
-        * @param $year
-    */
+     * Function to get Budget Code Id for the combination of Budget Code, Budget Code Name and Year
+     * @param $budget_code_name
+     * @param $budget_code
+     * @param $year
+     * @return
+     */
     public static function getBudgetCodeId($budget_code_name, $budget_code, $year){
         $query = "SELECT DISTINCT budget_code_id FROM budget
                   WHERE budget_code = '". trim($budget_code). "'"
@@ -39,13 +41,14 @@ class BudgetUtil{
         $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
         return $results[0]['budget_code_id'];
     }
-    
+
     /**
-        * Function to get Budget Code and Budget Code Name for the combination of Budget Code ID, Agency Id and Year ID
-        * @param $budget_code_id
-        * @param $agency_id
-        * @param $year
-    */
+     * Function to get Budget Code and Budget Code Name for the combination of Budget Code ID, Agency Id and Year ID
+     * @param $budget_code_id
+     * @param $agency_id
+     * @param $year
+     * @return array|null
+     */
     public static function getBudgetCodeNameAndBudgetCode($budget_code_id, $agency_id, $year){
         $query = "SELECT DISTINCT budget_code, budget_code_name FROM budget
                   WHERE budget_code_id = ". $budget_code_id

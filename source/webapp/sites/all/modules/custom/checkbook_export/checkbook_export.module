@@ -55,6 +55,13 @@ function checkbook_export_menu(){
     return $items;
 }
 
+/**
+ * @param $existing
+ * @param $type
+ * @param $theme
+ * @param $path
+ * @return array
+ */
 function checkbook_export_theme($existing, $type, $theme, $path){
     return array(
         'checkbook_export_default_theme' => array(
@@ -84,4 +91,5 @@ function checkbook_export_cron()
     LogHelper::log_notice("Running checkbook_export_cron");
     _checkbook_project_clean_files();
     variable_set($variable_name, $now);
+    return;
 }
