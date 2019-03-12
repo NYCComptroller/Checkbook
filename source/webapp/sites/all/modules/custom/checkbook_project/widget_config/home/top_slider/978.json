@@ -41,7 +41,7 @@ return $serieParameters;
   $parameter_mapping = array('vendor'=>'vendor_id','year'=>'fiscal_year_id','calyear'=>'fiscal_year_id');
   foreach($node->widgetConfig->requestParams as $param=>$value){
     if($param == 'year' ||  $param =='calyear'){
-      $where_filters[] = '('. $value . ' BETWEEN y.year_id AND y1.year_id)';
+      $where_filters[] = '('. $value . ' BETWEEN start_year_id AND end_year_id)';
     }else if(array_key_exists($param,  $parameter_mapping)){
       $where_filters[] = _widget_build_sql_condition( $parameter_mapping[$param], $value);
     }
@@ -50,10 +50,11 @@ return $serieParameters;
     $where_filter = ' WHERE ' . implode(' AND ' , $where_filters);
   }
   $datasource = RequestUtilities::getRequestParamValue('datasource');
-  $sql = 'SELECT SUM(total_amount) AS total_maximum_contract_amount
-          FROM contracts_fy_po_vendor_summary_vw C JOIN ref_year y
-          ON c.start_year = y.year_value JOIN ref_year y1 ON c.end_year = y1.year_value'
-          . $where_filter;
+  $sql = 'select SUM(total_maximum_contract_amount) AS total_maximum_contract_amount
+from   (SELECT C.contract_id
+        , MAX(C.total_amount) AS total_maximum_contract_amount
+          FROM   contracts_widget_summary C'
+          . $where_filter.'group by C.contract_id)a';
   $node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
 "
 }
