@@ -8,7 +8,7 @@
   "table_columns":[
     {"labelAlias": "contract_id","column": "contract_id","derivedColumn":"contract_id_link"},
     {"labelAlias": "contract_purpose","column": "purpose","tooltip":22},
-    {"labelAlias":"vendor_name","column":"vendor_name","tooltip":22},
+    {"labelAlias":"vendor_name","column":"vendor_name","tooltip":22, "derivedColumn":"vendor_link"},
     {"labelAlias":"current_amount","column":"total_amount","format":"dollar"},
     {"labelAlias":"original_amount","column":"original_amount","format":"dollar"},
     {"labelAlias":"spend_to_date","column":"spend_to_date","format":"dollar"},
