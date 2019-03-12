@@ -54,7 +54,7 @@ $contract = $node->data;
                 <ul class="left">
                     <li>
                         <span class="gi-list-item">Vendor:</span>
-                        &nbsp;<a href="<?= NychaContractsUrlService::vendorUrl($contract['vendor_id']) ?>">
+                        &nbsp;<a href="<?= NychaContractsUrlService::generateLandingPageUrl('vendor', $contract['vendor_id']) ?>">
                             <?= htmlentities($contract['vendor_name']) ?></a></li>
                     <li>
                         <span class="gi-list-item">Purpose:</span>
@@ -116,7 +116,7 @@ $contract = $node->data;
                 <ul class="left">
                     <li>
                         <span class="gi-list-item">Vendor:</span>
-                        &nbsp;<a href="<?= NychaContractsUrlService::vendorUrl($contract['vendor_id']) ?>">
+                        &nbsp;<a href="<?= NychaContractsUrlService::generateLandingPageUrl('vendor', $contract['vendor_id']) ?>">
                             <?= htmlentities($contract['vendor_name']) ?></a></li>
                     <li>
                         <span class="gi-list-item">Address:</span>

@@ -6,7 +6,7 @@
   "headerSubTitle":"Award Methods",
   "footerUrl":"_widget_controller_footer_url($node).NychaContractsUrlService::TypeUrl('AWD')",
   "table_columns":[
-    {"labelAlias": "award_method","column": "award_method_name"},
+    {"labelAlias": "award_method","column": "award_method_name", "derivedColumn":"award_method_link","tooltip":60},
     {"labelAlias":"no_of_contracts","column":"purchase_order_count","format":"number"},
     {"labelAlias":"current_amount","column":"total_amount","format":"dollar"},
     {"labelAlias":"original_amount","column":"original_amount","format":"dollar"},

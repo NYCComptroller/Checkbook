@@ -6,7 +6,7 @@
   "headerSubTitle":"Contracts",
   "footerUrl":"_widget_controller_footer_url($node).NychaContractsUrlService::TypeUrl('IND')",
   "table_columns":[
-    {"labelAlias":"contract_industry","column":"industry_type_name"},
+    {"labelAlias":"contract_industry","column":"industry_type_name", "derivedColumn":"industry_link","tooltip":60},
     {"labelAlias":"no_of_contracts","column":"purchase_order_count","format":"number"},
     {"labelAlias":"current_amount","column":"total_amount","format":"dollar"},
     {"labelAlias":"original_amount","column":"original_amount","format":"dollar"},
