@@ -42,7 +42,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
     /**
      *
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->CES = new CheckbookEtlStatus();

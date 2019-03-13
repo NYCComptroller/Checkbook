@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -9,7 +9,10 @@
  */
 namespace PHPUnit\Framework\Error;
 
-class Warning extends Error
+/**
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ */
+final class Warning extends Error
 {
     public static $enabled = true;
 }

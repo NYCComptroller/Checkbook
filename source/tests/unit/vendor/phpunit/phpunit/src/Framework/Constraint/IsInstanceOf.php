@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -18,61 +18,22 @@ use ReflectionException;
  *
  * The expected class name is passed in the constructor.
  */
-class IsInstanceOf extends Constraint
+final class IsInstanceOf extends Constraint
 {
     /**
      * @var string
      */
-    protected $className;
+    private $className;
 
-    /**
-     * @param string $className
-     */
-    public function __construct($className)
+    public function __construct(string $className)
     {
-        parent::__construct();
         $this->className = $className;
     }
 
     /**
-     * Evaluates the constraint for parameter $other. Returns true if the
-     * constraint is met, false otherwise.
-     *
-     * @param mixed $other Value or object to evaluate.
-     *
-     * @return bool
-     */
-    protected function matches($other)
-    {
-        return ($other instanceof $this->className);
-    }
-
-    /**
-     * Returns the description of the failure
-     *
-     * The beginning of failure messages is "Failed asserting that" in most
-     * cases. This method should return the second part of that sentence.
-     *
-     * @param mixed $other Evaluated value or object.
-     *
-     * @return string
-     */
-    protected function failureDescription($other)
-    {
-        return \sprintf(
-            '%s is an instance of %s "%s"',
-            $this->exporter->shortenedExport($other),
-            $this->getType(),
-            $this->className
-        );
-    }
-
-    /**
      * Returns a string representation of the constraint.
-     *
-     * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return \sprintf(
             'is instance of %s "%s"',
@@ -81,10 +42,42 @@ class IsInstanceOf extends Constraint
         );
     }
 
-    private function getType()
+    /**
+     * Evaluates the constraint for parameter $other. Returns true if the
+     * constraint is met, false otherwise.
+     *
+     * @param mixed $other value or object to evaluate
+     */
+    protected function matches($other): bool
+    {
+        return $other instanceof $this->className;
+    }
+
+    /**
+     * Returns the description of the failure
+     *
+     * The beginning of failure messages is "Failed asserting that" in most
+     * cases. This method should return the second part of that sentence.
+     *
+     * @param mixed $other evaluated value or object
+     *
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
+    protected function failureDescription($other): string
+    {
+        return \sprintf(
+            '%s is an instance of %s "%s"',
+            $this->exporter()->shortenedExport($other),
+            $this->getType(),
+            $this->className
+        );
+    }
+
+    private function getType(): string
     {
         try {
             $reflection = new ReflectionClass($this->className);
+
             if ($reflection->isInterface()) {
                 return 'interface';
             }

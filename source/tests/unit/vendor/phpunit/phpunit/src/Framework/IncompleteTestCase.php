@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -10,9 +10,9 @@
 namespace PHPUnit\Framework;
 
 /**
- * An incomplete test case
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-class IncompleteTestCase extends TestCase
+final class IncompleteTestCase extends TestCase
 {
     /**
      * @var string
@@ -44,29 +44,14 @@ class IncompleteTestCase extends TestCase
      */
     protected $useOutputBuffering = false;
 
-    /**
-     * @param string $className
-     * @param string $methodName
-     * @param string $message
-     */
-    public function __construct($className, $methodName, $message = '')
+    public function __construct(string $className, string $methodName, string $message = '')
     {
-        $this->message = $message;
         parent::__construct($className . '::' . $methodName);
+
+        $this->message = $message;
     }
 
-    /**
-     * @throws Exception
-     */
-    protected function runTest()
-    {
-        $this->markTestIncomplete($this->message);
-    }
-
-    /**
-     * @return string
-     */
-    public function getMessage()
+    public function getMessage(): string
     {
         return $this->message;
     }
@@ -74,10 +59,18 @@ class IncompleteTestCase extends TestCase
     /**
      * Returns a string representation of the test case.
      *
-     * @return string
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public function toString()
+    public function toString(): string
     {
         return $this->getName();
+    }
+
+    /**
+     * @throws Exception
+     */
+    protected function runTest(): void
+    {
+        $this->markTestIncomplete($this->message);
     }
 }

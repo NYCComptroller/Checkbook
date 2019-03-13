@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -9,63 +9,60 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use PHPUnit\Util\InvalidArgumentHelper;
 use SplObjectStorage;
 
 /**
  * Constraint that asserts that the Traversable it is applied to contains
  * a given value.
  */
-class TraversableContains extends Constraint
+final class TraversableContains extends Constraint
 {
     /**
      * @var bool
      */
-    protected $checkForObjectIdentity;
+    private $checkForObjectIdentity;
 
     /**
      * @var bool
      */
-    protected $checkForNonObjectIdentity;
+    private $checkForNonObjectIdentity;
 
     /**
      * @var mixed
      */
-    protected $value;
+    private $value;
 
     /**
-     * @param mixed $value
-     * @param bool  $checkForObjectIdentity
-     * @param bool  $checkForNonObjectIdentity
-     *
      * @throws \PHPUnit\Framework\Exception
      */
-    public function __construct($value, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false)
+    public function __construct($value, bool $checkForObjectIdentity = true, bool $checkForNonObjectIdentity = false)
     {
-        parent::__construct();
-
-        if (!\is_bool($checkForObjectIdentity)) {
-            throw InvalidArgumentHelper::factory(2, 'boolean');
-        }
-
-        if (!\is_bool($checkForNonObjectIdentity)) {
-            throw InvalidArgumentHelper::factory(3, 'boolean');
-        }
-
         $this->checkForObjectIdentity    = $checkForObjectIdentity;
         $this->checkForNonObjectIdentity = $checkForNonObjectIdentity;
         $this->value                     = $value;
     }
 
     /**
+     * Returns a string representation of the constraint.
+     *
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
+    public function toString(): string
+    {
+        if (\is_string($this->value) && \strpos($this->value, "\n") !== false) {
+            return 'contains "' . $this->value . '"';
+        }
+
+        return 'contains ' . $this->exporter()->export($this->value);
+    }
+
+    /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
      *
-     * @param mixed $other Value or object to evaluate.
-     *
-     * @return bool
+     * @param mixed $other value or object to evaluate
      */
-    protected function matches($other)
+    protected function matches($other): bool
     {
         if ($other instanceof SplObjectStorage) {
             return $other->contains($this->value);
@@ -97,30 +94,16 @@ class TraversableContains extends Constraint
     }
 
     /**
-     * Returns a string representation of the constraint.
-     *
-     * @return string
-     */
-    public function toString()
-    {
-        if (\is_string($this->value) && \strpos($this->value, "\n") !== false) {
-            return 'contains "' . $this->value . '"';
-        }
-
-        return 'contains ' . $this->exporter->export($this->value);
-    }
-
-    /**
      * Returns the description of the failure
      *
      * The beginning of failure messages is "Failed asserting that" in most
      * cases. This method should return the second part of that sentence.
      *
-     * @param mixed $other Evaluated value or object.
+     * @param mixed $other evaluated value or object
      *
-     * @return string
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    protected function failureDescription($other)
+    protected function failureDescription($other): string
     {
         return \sprintf(
             '%s %s',
