@@ -1381,27 +1381,26 @@ class RequestUtil
             $title = self::getTitleByCode($code). ' Contracts Transactions';
         } else if (preg_match('/contract/', $bottomURL)) {
             $title = RequestUtil::getRequestKeyValueFromURL("contract", $bottomURL);
-        }
-        $lastReqParam = _getLastRequestParamValue();
-        foreach($lastReqParam as $key => $value){
-            switch($key){
-                case 'vendor':
-                    $title = _checkbook_project_get_name_for_argument("vendor_id", $value);
-                    break;
-                case 'awdmethod':
-                    $title = _checkbook_project_get_name_for_argument("award_method_id",$value);
-                    break;
-                case 'size':
-                    $title = _checkbook_project_get_name_for_argument("award_size_id",$value);
-                    break;
-                case 'industry':
-                    $title = _checkbook_project_get_name_for_argument("industry_type_id",$value);
-                    break;
-                default:
-                    $title = "NEW YORK CITY HOUSING AUTHORITY";
+        }else {
+            $lastReqParam = _getLastRequestParamValue();
+            foreach ($lastReqParam as $key => $value) {
+                switch ($key) {
+                    case 'vendor':
+                        $title = _checkbook_project_get_name_for_argument("vendor_id", $value);
+                        break;
+                    case 'awdmethod':
+                        $title = _checkbook_project_get_name_for_argument("award_method_id", $value);
+                        break;
+                    case 'size':
+                        $title = _checkbook_project_get_name_for_argument("award_size_id", $value);
+                        break;
+                    case 'industry':
+                        $title = _checkbook_project_get_name_for_argument("industry_type_id", $value);
+                        break;
+                    default:
+                        $title = "NEW YORK CITY HOUSING AUTHORITY";
+                }
             }
-
-            $title = $title.' Contracts';
         }
         return $title;
     }

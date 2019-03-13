@@ -284,24 +284,25 @@ function _get_nycha_contracts_breadcrumb_title_drilldown()
     $bottomURL = $_REQUEST['expandBottomContURL'];
     if (!$bottomURL && preg_match('/^nycha_contracts\/search\/transactions/', current_path()) || preg_match('/^nycha_contracts\/all\/transactions/', current_path())) {
         $title = null;
-    }
-    $lastReqParam = _getLastRequestParamValue();
-    foreach($lastReqParam as $key => $value){
-        switch($key){
-            case 'vendor':
-                $title = _checkbook_project_get_name_for_argument("vendor_id", $value);
-                break;
-            case 'awdmethod':
-                $title = _checkbook_project_get_name_for_argument("award_method_id",$value);
-                break;
-            case 'size':
-                $title = _checkbook_project_get_name_for_argument("award_size_id",$value);
-                break;
-            case 'industry':
-                $title = _checkbook_project_get_name_for_argument("industry_type_id",$value);
-                break;
-            default:
-                $title = "NEW YORK CITY HOUSING AUTHORITY ";
+    }else {
+        $lastReqParam = _getLastRequestParamValue();
+        foreach ($lastReqParam as $key => $value) {
+            switch ($key) {
+                case 'vendor':
+                    $title = _checkbook_project_get_name_for_argument("vendor_id", $value);
+                    break;
+                case 'awdmethod':
+                    $title = _checkbook_project_get_name_for_argument("award_method_id", $value);
+                    break;
+                case 'size':
+                    $title = _checkbook_project_get_name_for_argument("award_size_id", $value);
+                    break;
+                case 'industry':
+                    $title = _checkbook_project_get_name_for_argument("industry_type_id", $value);
+                    break;
+                default:
+                    $title = "NEW YORK CITY HOUSING AUTHORITY ";
+            }
         }
     }
     return $title;
