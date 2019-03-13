@@ -76,7 +76,7 @@ echo eval($node->widgetConfig->header);
 echo '<div class="tableFooter">';
   if ($node->widgetConfig->enableExpand == TRUE) {
     if($node->totalDataCount > 5){
-        echo '<a href="#" class="expandCollapseWidget"><img src="/' . drupal_get_path('theme',$GLOBALS['theme']) . '/images/open.png"></a>';
+        echo '<a  class="expandCollapseWidget"><img src="/' . drupal_get_path('theme',$GLOBALS['theme']) . '/images/open.png"></a>';
         echo '<span class="plus-or" style="display: none;">or</span>';
     }
   }

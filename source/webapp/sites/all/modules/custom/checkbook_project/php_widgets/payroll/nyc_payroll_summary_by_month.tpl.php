@@ -33,6 +33,7 @@ if(is_array($node->data) && count($node->data) > 0){
                 jQuery('.emp-record-salaried').toggle();
                 jQuery('.emp-record-non-salaried').toggle();
             };
+            jQuery('.toggleEmployee').click(toggleEmployee);
         ";
 
 
@@ -145,12 +146,12 @@ if(is_array($node->data) && count($node->data) > 0){
         $employeeData .= $table;
     }
     if (count($node->data) > 1) {
-        $employeeData .= "<div id='toggle-employee-salaried' class='emp-record-salaried'>
+        $employeeData .= "<div id='toggle-employee-salaried' class='emp-record-salaried toggleEmployee'>
                             <strong>Viewing Salaried Details</strong>&nbsp;|&nbsp;
-                            <a href='javascript:toggleEmployee();'>View Non-salaried Details</a>
+                            <a>View Non-salaried Details</a>
                           </div>";
         $employeeData .= "<div id='toggle-employee-non-salaried' class='emp-record-non-salaried'>
-                            <a href='javascript:toggleEmployee();'>View Salaried Details</a>&nbsp;|&nbsp;
+                            <a>View Salaried Details</a>&nbsp;|&nbsp;
                             <strong>Viewing Non-salaried Details</strong>
                           </div>";
         $employeeData .= "</div></div>";

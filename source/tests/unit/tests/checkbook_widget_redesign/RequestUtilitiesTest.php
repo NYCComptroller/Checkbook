@@ -34,6 +34,15 @@ class RequestUtilitiesTest extends \PHPUnit\Framework\TestCase
     /**
      *
      */
+    public function testGetSingleZeroParam()
+    {
+        $_GET['q'] = 'a/b/c/0/e';
+        $this->assertEquals('0', RequestUtilities::get('c'));
+    }
+
+    /**
+     *
+     */
     public function testGetSpecifyQ()
     {
         $q = 'a/b/c/d/e';

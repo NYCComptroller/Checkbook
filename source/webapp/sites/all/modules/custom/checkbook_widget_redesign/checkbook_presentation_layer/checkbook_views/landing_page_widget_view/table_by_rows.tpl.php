@@ -123,9 +123,9 @@ else {
 //                                                 'oge_spending_by_departments_view', 'mwbe_spending_by_agencies_view',
 //                                                 'mwe_spending_expense_categories_view', 'mwbe_spending_by_departments_view');
             if(in_array($node->nid, $simultExpandCollapseNodeIds)){
-                echo '<a href="#" class="simultExpandCollapseWidget"><img src="/' . drupal_get_path('theme',$GLOBALS['theme']) . '/images/open.png"></a>';
+                echo '<a  class="simultExpandCollapseWidget"><img src="/' . drupal_get_path('theme',$GLOBALS['theme']) . '/images/open.png"></a>';
             }else{
-                echo '<a href="#" class="expandCollapseWidget"><img src="/' . drupal_get_path('theme',$GLOBALS['theme']) . '/images/open.png"></a>';
+                echo '<a  class="expandCollapseWidget"><img src="/' . drupal_get_path('theme',$GLOBALS['theme']) . '/images/open.png"></a>';
             }
         }
     }

@@ -97,6 +97,7 @@ $js .= "
             jQuery('.emp-record-salaried').toggle();
             jQuery('.emp-record-non-salaried').toggle();
         };
+        jQuery('.toggleEmployee').click(toggleEmployee);
     ";
 
     if($_REQUEST['appendScripts']){
@@ -208,12 +209,12 @@ foreach($all_data as $employment_type => $employment_data) {
 
 
 if ($salaried_count && $non_salaried_count) {
-    $employeeData .= "<div id='toggle-employee-salaried' class='emp-record-salaried'>
+    $employeeData .= "<div id='toggle-employee-salaried' class='emp-record-salaried toggleEmployee'>
                             <strong>Viewing Salaried Details</strong>&nbsp;|&nbsp;
-                            <a href='javascript:toggleEmployee();'>View Non-salaried Details</a>
+                            <a>View Non-salaried Details</a>
                           </div>";
-    $employeeData .= "<div id='toggle-employee-non-salaried' class='emp-record-non-salaried'>
-                            <a href='javascript:toggleEmployee();'>View Salaried Details</a>&nbsp;|&nbsp;
+    $employeeData .= "<div id='toggle-employee-non-salaried' class='emp-record-non-salaried toggleEmployee'>
+                            <a>View Salaried Details</a>&nbsp;|&nbsp;
                             <strong>Viewing Non-salaried Details</strong>
                           </div>";
 }

@@ -86,9 +86,9 @@ foreach($agencies as $key => $agencies_chunck){
 
 $agency_list .= "</div>";
 $agency_list .= "</div>";
-$agency_list .= "<div class='agency-list-nav'><a href='#' id='prev1'>Prev</a><a href='#' id='next1'>Next</a>";
+$agency_list .= "<div class='agency-list-nav'><a id='prev1'>Prev</a><a  id='next1'>Next</a>";
 $agency_list .= "<a href='/".$all_agency_url."' id='citywide_all_agencies'>CITYWIDE ALL AGENCIES</a></div>";
-$agency_list .= "<div class='agency-list-close'><a href='#'>x Close</a></div>";
+$agency_list .= "<div class='agency-list-close'><a>x Close</a></div>";
 $agency_list .= "</div></div>";
 
 //$edc_agencies
@@ -109,10 +109,10 @@ foreach($edc_agencies as $key => $edc_agency){
 $agency_list_other .= "</ul>
         </div>
     </div>
-        <div class='agency-list-nav'><a href='#' id='prev2'>Prev</a><a href='#' id='next2'>Next</a>
+        <div class='agency-list-nav'><a id='prev2'>Prev</a><a  id='next2'>Next</a>
         <a href='/spending_landing" . '/yeartype/B/year/'.$current_fy_year ."/datasource/checkbook_oge/agency/9000"."' id='citywide_all_agencies'>OTHER GOVERNMENT ENTITIES</a>
         </div>
-    <div class='agency-list-close'><a href='#'>x Close</a></div>
+    <div class='agency-list-close'><a>x Close</a></div>
   </div>
 </div>";
 

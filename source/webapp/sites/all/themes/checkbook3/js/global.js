@@ -23,6 +23,9 @@ jQuery(document).ready(function ($) {
         });
     });
 
+    // remove all empty # hrefs
+    $('a').each(function(){if('#' === $(this).attr('href')){jQuery(this).removeAttr("href");}});
+
     function setNewFeaturesMenuColor(status) {
         if (status === 'enable') {
             $('#nice-menu-1 li.menu-path-node-975 a').removeClass('disabled');
@@ -456,7 +459,7 @@ jQuery(document).ready(function ($) {
 
             })
         }
-    }
+    };
 
     Drupal.behaviors.viewAllPopup = {
         attach: function (context, settings) {
@@ -841,31 +844,18 @@ jQuery(document).ready(function ($) {
         }
     };
 
-    $('.bottomContainerReload').live("click",
-        function (event) {
-            event.preventDefault();
-
-            var hrefURL = this.getAttribute("href");
-            // var hrefarr = hrefURL.split('/');
-            reloadURL = window.location.pathname + "?expandBottomContURL=" + hrefURL;
-            // for(var i=0; i< hrefarr.length; i++){
-            //     if(hrefarr[i] == 'category'){
-            //         var category = hrefarr[i] + "/" + hrefarr[i+1];
-            //         var reloadURL =  window.location.pathname +"/"+category+ "?expandBottomContURL=" +  hrefURL ;
-            //     }
-            // }
-            window.location = reloadURL;
-            /* $('.bottomContainer').html("Loading Data");
-             $.ajax({
-                 url:callBackURL,
-                 success:function (data) {
-                     $('.bottomContainer').html(data);
-                     $(".clickOnLoad").click();
-                 }
-             });
- */
-        }
-    );
+    Drupal.behaviors.bottomContainerReload = {
+      attach: function (context, settings) {
+        $(document).ajaxStop(function() {
+          $('.bottomContainerReload')
+            .not('.altered')
+            .each(function(){
+              $(this).addClass('altered');
+              $(this).attr('href', window.location.pathname + "?expandBottomContURL=" + $(this).attr('href'));
+            });
+        })
+      }
+    };
 
     Drupal.behaviors.loadParentWindow = {
         attach: function (context, settings) {
@@ -885,7 +875,7 @@ jQuery(document).ready(function ($) {
                 });
             }
         }
-    }
+    };
 
     Drupal.behaviors.viewHide = {
         attach: function (context, settings) {

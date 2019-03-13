@@ -60,7 +60,7 @@ class RequestUtilities
                 $key = array_pop($keys);
             }
         }
-        if (!empty($value)) {
+        if (!is_null($value)) {
             $url = '/' . $key;
             $url .= '/' . urlencode($value);
             return $url;
@@ -78,7 +78,7 @@ class RequestUtilities
      */
     public static function _getUrlParamString($key, $key_alias = null)
     {
-        if (!empty($key_alias)) {
+        if (!is_null($key_alias)) {
             $key .= '|' . $key_alias;
         }
         return self::buildUrlFromParam($key);
@@ -92,9 +92,9 @@ class RequestUtilities
      * @param bool $fromRequestPath
      * @return array|mixed|null|string|string[]
      */
-    public static function getRequestParamValue($paramName, $fromRequestPath = True)
+    public static function getRequestParamValue($paramName, $fromRequestPath = true)
     {
-        if (empty($paramName)) {
+        if ('' === $paramName) {
             return NULL;
         }
         if ($fromRequestPath) {
@@ -138,7 +138,7 @@ class RequestUtilities
      */
     private static function getSingleParam($paramName, $options = [])
     {
-        if (empty($paramName)) {
+        if ('' === trim($paramName)) {
             return null;
         }
 
@@ -147,19 +147,19 @@ class RequestUtilities
             $params = explode('|', $paramName);
             foreach ($params as $param) {
                 $value = self::getSingleParam($param, $options);
-                if (!empty($value)) {
+                if (!is_null($value)) {
                     return $value;
                 }
             }
         }
 
-        if (!empty($options['override'][$paramName])) {
+        if (isset($options['override'][$paramName])) {
             return $options['override'][$paramName];
         }
 
         $value = self::getFilteredQueryParam($paramName, $options);
 
-        if (empty($value) && !empty($options['default'][$paramName])) {
+        if (is_null($value) && isset($options['default'][$paramName])) {
             return $options['default'][$paramName];
         }
 
@@ -173,21 +173,20 @@ class RequestUtilities
      */
     private static function getFilteredQueryParam($paramName, $options = [])
     {
-        $value = null;
-        if (!empty($options['q'])) {
+        if (isset($options['q'])) {
             $urlPath = $options['q'];
         } else {
             $urlPath = drupal_get_path_alias($_GET['q']);
         }
         $pathParams = explode('/', $urlPath);
         $index = array_search($paramName, $pathParams);
-        if ($index !== FALSE && !empty($pathParams[($index + 1)])) {
+        if ($index !== FALSE && isset($pathParams[($index + 1)])) {
             $value = trim(filter_xss($pathParams[($index + 1)]));
-            if ($value) {
+            if ('' !== $value) {
                 return htmlspecialchars_decode($value, ENT_QUOTES);
             }
         }
-        return $value;
+        return null;
     }
 
     /**
@@ -253,7 +252,7 @@ class RequestUtilities
      */
     public static function is_ajax()
     {
-        return (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
+        return (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
     }
 
 //    /**

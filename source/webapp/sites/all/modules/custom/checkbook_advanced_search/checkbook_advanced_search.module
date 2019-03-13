@@ -110,7 +110,7 @@ function checkbook_advanced_search_form($form, $form_state)
     $form['budget']['budget_agencies'] = array(
         '#type' => 'select',
         '#title' => t('Agency'),
-        '#prefix' => '<h3><a href="#">Budget</a></h3><div id="budget-advanced-search"><div class="column column-left">',
+        '#prefix' => '<h3><a >Budget</a></h3><div id="budget-advanced-search"><div class="column column-left">',
         '#default_value' => t('Citywide(All Agencies)'),
         '#options' => $agencies,
         '#option_attributes' => $agency_attributes,
@@ -275,7 +275,7 @@ function checkbook_advanced_search_form($form, $form_state)
     //<editor-fold desc="Revenue">
 
     $form['revenue']['revenue_budget_fiscal_year'] = array(
-        '#prefix' => '<h3><a href="#">Revenue</a></h3><div id="revenue-advanced-search"><div class="column column-left">',
+        '#prefix' => '<h3><a >Revenue</a></h3><div id="revenue-advanced-search"><div class="column column-left">',
         '#type' => 'select',
         '#title' => t('Budget FY'),
         '#options' => _checkbook_advanced_search_get_year('revenue'),
@@ -408,7 +408,7 @@ function checkbook_advanced_search_form($form, $form_state)
     //<editor-fold desc="Payroll">
 
     $form['payroll']['payroll_employee_name'] = array(
-        '#prefix' => '<h3><a href="#">Payroll</a></h3><div id="payroll-advanced-search"><div class="column column-left">',
+        '#prefix' => '<h3><a >Payroll</a></h3><div id="payroll-advanced-search"><div class="column column-left">',
         '#type' => 'textfield',
         '#title' => t('Title'),
         '#size' => 30,

@@ -106,9 +106,9 @@ else {
   if ($node->widgetConfig->enableExpand == TRUE) {
     if($node->totalDataCount > 5){
         if($node->nid == 22 || $node->nid == 23 || $node->nid == 29){
-            echo '<a href="#" class="simultExpandCollapseWidget"><img src="/' . drupal_get_path('theme',$GLOBALS['theme']) . '/images/open.png"></a>';
+            echo '<a class="simultExpandCollapseWidget"><img src="/' . drupal_get_path('theme',$GLOBALS['theme']) . '/images/open.png"></a>';
         }else{
-            echo '<a href="#" class="expandCollapseWidget"><img src="/' . drupal_get_path('theme',$GLOBALS['theme']) . '/images/open.png"></a>';
+            echo '<a class="expandCollapseWidget"><img src="/' . drupal_get_path('theme',$GLOBALS['theme']) . '/images/open.png"></a>';
         }
         echo '<span class="plus-or">or</span>';
     }
