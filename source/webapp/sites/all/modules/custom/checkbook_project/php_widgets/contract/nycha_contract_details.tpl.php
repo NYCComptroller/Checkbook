@@ -154,9 +154,6 @@ $contract = $node->data;
         </h3>
 
         <table class="outerTable nycha-c-history">
-            <?php
-            if ($node->contract_history_by_years && sizeof($node->contract_history_by_years)):
-            ?>
             <thead>
             <tr>
                 <th class="text">
@@ -173,7 +170,9 @@ $contract = $node->data;
                 </th>
             </tr>
             </thead>
-            <tbody><?php
+            <tbody>
+            <?php
+            if ($node->contract_history_by_years && sizeof($node->contract_history_by_years)):
             $hidden = 0;
             $yi = 0;
             foreach ($node->contract_history_by_years as $year => $contract_history_by_year):
@@ -272,8 +271,7 @@ $contract = $node->data;
                 $hidden++;
             endforeach;
             else: ?>
-            <tbody>
-            <tr class="odd">
+            <tr>
                 <td class="dataTables_empty" valign="top" colspan="4">
                     <div id="no-records-datatable" class="clearfix">
                         <span>No Matching Records Found</span>
@@ -783,8 +781,6 @@ $contract = $node->data;
                                                         Release History
                                                     </h3>
 
-                                                    <?php if($release['history']):?>
-
                                                     <table class="dataTable cta-spending-history outerTable">
                                                         <thead>
                                                         <tr>
@@ -803,7 +799,7 @@ $contract = $node->data;
                                                         </tr>
                                                         </thead>
                                                         <tbody>
-                                                        <?php
+                                                        <?php if($release['history']):
                                                         $year_cnt = 0;
                                                         foreach ($release['history'] as $year => $revisions): ?>
                                                             <tr class="outer <?= ($year_cnt % 2 ? 'even' : 'odd') ?>">
@@ -893,21 +889,17 @@ $contract = $node->data;
                                                             $year_cnt++;
                                                         endforeach;
                                                         ?>
-                                                        </tbody>
-                                                    </table>
-                                                    <?php else: ?>
-                                                        <table class="outerTable nycha-c-history">
-                                                            <tbody>
-                                                            <tr class="odd">
+                                                        <?php else: ?>
+                                                            <tr>
                                                                 <td class="dataTables_empty" valign="top" colspan="4">
                                                                     <div id="no-records-datatable" class="clearfix">
                                                                         <span>No Matching Records Found</span>
                                                                     </div>
                                                                 </td>
                                                             </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    <?php endif;?>
+                                                        <?php endif; ?>
+                                                        </tbody>
+                                                    </table>
                                                     <div class="panel-separator"></div>
                                                     <div>
                                                         <h3>
