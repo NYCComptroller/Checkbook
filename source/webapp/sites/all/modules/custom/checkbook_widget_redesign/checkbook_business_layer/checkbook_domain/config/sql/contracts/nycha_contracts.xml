@@ -102,7 +102,7 @@
       <where>
         <exp op="AND">
           <exp op="BETWEEN" paramName="year" dbField="start_year_id, end_year_id"/>
-          <exp op="=" dbField="agreement_type_id">1</exp>
+          <exp op="=" dbField="agreement_type_id">3</exp>
           <exp op="=" dbField="vendor_id" paramName="vendor"/>
           <exp op="=" dbField="industry_type_id" paramName="industry"/>
           <exp op="=" dbField="award_size_id" paramName="size"/>
@@ -303,7 +303,7 @@
       select
       award_size_id,
       award_size_name,
-      count(distinct contract_id) as purchase_order_count,
+      count(distinct contract_id) as po_count,
       sum(total_amount) as total_amount,
       sum(original_amount) as original_amount,
       sum(spend_to_date) as spend_to_date
