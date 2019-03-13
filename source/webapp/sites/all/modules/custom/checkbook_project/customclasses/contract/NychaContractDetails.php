@@ -260,9 +260,9 @@ SQL;
                 release_year,
                 release_year_id,
                 release_approved_date,
-                revision_total_amount,
+                'fixme' revision_total_amount,
                 release_original_amount,
-                revision_approved_date,
+                'fixme' revision_approved_date,
                 transaction_status_name
             FROM all_agreement_transactions a
             WHERE contract_id = '{$contract_id}'
