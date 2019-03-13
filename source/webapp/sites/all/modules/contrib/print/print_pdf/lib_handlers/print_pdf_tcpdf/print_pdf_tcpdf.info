@@ -1,0 +1,13 @@
+name = "TCPDF library handler"
+description = "PDF generation library using TCPDF."
+core = 7.x
+package = "Printer, email and PDF versions"
+dependencies[] = print_pdf
+files[] = print_pdf_tcpdf.class.inc
+configure = admin/config/user-interface/print/pdf/tcpdf
+
+; Information added by Drupal.org packaging script on 2018-10-05
+version = "7.x-2.2"
+core = "7.x"
+project = "print"
+datestamp = "1538760185"
