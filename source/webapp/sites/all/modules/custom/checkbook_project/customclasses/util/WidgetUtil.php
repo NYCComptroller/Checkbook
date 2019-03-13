@@ -48,6 +48,10 @@ class WidgetUtil
         }
     }
 
+    static function getLabelDiv($labelAlias) {
+        return self::generateLabelMapping($labelAlias);
+    }
+
     static function generateLabelMapping($labelAlias, $labelOnly = false){
         $dynamic_labelAlias = array("current_modified","previous_modified","previous_1_modified","previous_2_modified",
                                     "recognized_current","recognized_1","recognized_2","recognized_3");
@@ -89,6 +93,7 @@ class WidgetUtil
         "dollar_diff" => "Dollar<br/>Difference",
         "percent_diff" => "Percent<br/>Difference",
         "no_of_contracts" => "Number of<br/>Contracts",
+        "no_of_modifications" => "Number of<br/>Modifications",
         "award_method" => "Award<br/>Method",
         "dept_name" => "Department",
         "agency_name" => "Agency",
@@ -176,7 +181,7 @@ class WidgetUtil
         "resp_per_sol"=>"# of Responses per Solicitation",
         "payee_name"=>"Payee<br/>Name",
         "issue_date"=>"Issue<br/>Date",
-    	"date"=>"Date",
+        "date"=>"Date",
         "capital_project"=>"Capital<br/>Project",
         "spending_category"=>"Spending<br/>Category",
         "spending_amount"=>"Amount",
@@ -204,11 +209,13 @@ class WidgetUtil
         "budget_code"=>"Budget<br/>Code",
         "commodity_line"=>"Commodity<br/>Line",
         "entity_contact_num"=>"Entity<br/>Contract # ",
-    	"prime_vendor_name"=>"Prime Vendor<br/>Name",
-    	"prime_vendor"=>"Prime<br/>Vendor",
-    	"tot_edc_con"=>"Total number of<br/>NYC EDC Contracts",
-    	"vendor_address"=>"Vendor<br/>Address",
-    	"prime_vendor_address"=>"Prime Vendor<br/>Address",
+        "prime_vendor_name"=>"Prime Vendor<br/>Name",
+        "prime_vendor"=>"Prime<br/>Vendor",
+        "tot_edc_con"=>"Total number of<br/>NYC EDC Contracts",
+        "total_number_nycha_contracts"=>"Total number of<br/>NYCHA Contracts",
+        "vendor_address"=>"Vendor<br/>Address",
+        "address"=>"Address",
+        "prime_vendor_address"=>"Prime Vendor<br/>Address",
         "percent_spending"=>"%<br/>Spending",
         "sub_vendor_name"=>"Sub<br/>Vendor",
         "sub_vendor_nowrap"=>"Sub Vendor",
@@ -239,6 +246,7 @@ class WidgetUtil
         "acco_approved" => "Acco<br/>Approved",
         "acco_rejected" => "Acco<br/>Rejected",
         "acco_cancelled" => "Acco<br/>Canceled",
+        "assoc_releases" => "Assoc. Releases",
         "subvendor_mwbe_category" => "Sub Vendor's M/WBE<br/>Category",
         "subvendor_status_pip" => "Sub Vendor<br/>Status in PIP",
         "spend_to_date" => "Spend to<br/> Date",
@@ -259,6 +267,7 @@ class WidgetUtil
         "agreement_original_amount"=>"Agreement<br/>Original Amount",
         "agreement_spend_to_date"=>"Agreement<br/>Spend to Date",
         "release_approved_date" => "Approved<br/>Date",
+        "canceled_date" => "Canceled<br/>Date",
         "release_total_amount" => "Total<br/>Amount",
         "location" => "Location",
         "borough" => "Borough",
@@ -270,6 +279,8 @@ class WidgetUtil
         "project" => "Project",
         "commodity_category" => "Commodity<br/>Category",
         "non_salary_rate" => "Non-Salaried<br/>Rates",
+        "nycha_payment" => "NYCHA<br/>Payment",
+        "category_type" => "Category<br/>Type",
     );
 
     //For number cols, need to find out if they are uniform number of digits for formatting
