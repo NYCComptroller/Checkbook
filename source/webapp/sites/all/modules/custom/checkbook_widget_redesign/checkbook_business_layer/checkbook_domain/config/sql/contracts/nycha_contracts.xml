@@ -7,14 +7,24 @@
     <param name="size" />
     <param name="awdmethod" />
     <sql>
-      SELECT
-        vendor_name,
-        vendor_id,
-        COUNT(DISTINCT contract_id) AS purchase_order_count,
-        SUM(spend_to_date) AS spend_to_date,
-        SUM(total_amount) AS total_amount,
-        SUM(original_amount) AS original_amount
-      FROM contracts_widget_summary c
+      select
+      vendor_id,
+      vendor_name,
+      count(distinct contract_id) as purchase_order_count,
+      sum(total_amount) as total_amount,
+      sum(original_amount) as original_amount,
+      sum(spend_to_date) as spend_to_date
+      from
+      (
+      select
+      vendor_id,
+      vendor_name,
+      contract_id,
+      max(total_amount) as total_amount,
+      max(original_amount) as original_amount,
+      max(spend_to_date) as spend_to_date
+      from
+      contracts_widget_summary
       <where>
         <exp op="AND">
           <exp op="BETWEEN" paramName="year" dbField=" start_year_id, end_year_id"/>
@@ -24,7 +34,8 @@
           <exp op="=" dbField="award_method_id" paramName="awdmethod"/>
         </exp>
       </where>
-      GROUP BY vendor_id, vendor_name
+      group by vendor_name, vendor_id, contract_id ) a
+      group by vendor_name, vendor_id
     </sql>
   </statement>
 
@@ -36,14 +47,24 @@
     <param name="size" />
     <param name="awdmethod" />
     <sql>
-      SELECT
-        award_method_id,
-        award_method_name,
-        count(distinct contract_id) AS purchase_order_count,
-        SUM(total_amount) AS total_amount,
-        SUM(original_amount) AS original_amount,
-        SUM(spend_to_date) AS spend_to_date
-      FROM contracts_widget_summary
+      select
+      award_method_id,
+      award_method_name,
+      count(distinct contract_id) as purchase_order_count,
+      sum(total_amount) as total_amount,
+      sum(original_amount) as original_amount,
+      sum(spend_to_date) as spend_to_date
+      from
+      (
+      select
+      award_method_id,
+      award_method_name,
+      contract_id,
+      max(total_amount) as total_amount,
+      max(original_amount) as original_amount,
+      max(spend_to_date) as spend_to_date
+      from
+      contracts_widget_summary
       <where>
         <exp op="AND">
           <exp op="BETWEEN" paramName="year" dbField=" start_year_id, end_year_id"/>
@@ -53,7 +74,8 @@
           <exp op="=" dbField="award_method_id" paramName="awdmethod"/>
         </exp>
       </where>
-      GROUP BY award_method_name, award_method_id
+      group by award_method_name, award_method_id, contract_id) a
+      group by award_method_name, award_method_id
     </sql>
   </statement>
 
@@ -177,14 +199,24 @@
     <param name="size" />
     <param name="awdmethod" />
     <sql>
-      SELECT
-        department_id,
-        department_name,
-        count(distinct contract_id) AS purchase_order_count,
-        SUM(total_amount) AS total_amount,
-        SUM(original_amount) AS original_amount,
-        SUM(spend_to_date) AS spend_to_date
-      FROM contracts_widget_summary
+      select
+      department_id,
+      department_name,
+      count(distinct contract_id) as purchase_order_count,
+      sum(total_amount) as total_amount,
+      sum(original_amount) as original_amount,
+      sum(spend_to_date) as spend_to_date
+      from
+      (
+      select
+      department_id,
+      department_name,
+      contract_id,
+      max(total_amount) as total_amount,
+      max(original_amount) as original_amount,
+      max(spend_to_date) as spend_to_date
+      from
+      contracts_widget_summary
       <where>
         <exp op="AND">
           <exp op="BETWEEN" paramName="year" dbField="start_year_id, end_year_id"/>
@@ -194,7 +226,8 @@
           <exp op="=" dbField="award_method_id" paramName="awdmethod"/>
         </exp>
       </where>
-      GROUP BY department_id, department_name
+      group by department_name, department_id, contract_id ) a
+      group by department_name, department_id
     </sql>
   </statement>
 
@@ -206,14 +239,24 @@
     <param name="size" />
     <param name="awdmethod" />
     <sql>
-      SELECT
-        industry_type_name,
-        industry_type_id,
-        count(distinct contract_id) AS purchase_order_count,
-        SUM(total_amount) AS total_amount,
-        SUM(original_amount) AS original_amount,
-        SUM(spend_to_date) AS spend_to_date
-      FROM contracts_widget_summary
+      select
+      industry_type_name,
+      industry_type_id,
+      count(distinct contract_id) as purchase_order_count,
+      sum(total_amount) as total_amount,
+      sum(original_amount) as original_amount,
+      sum(spend_to_date) as spend_to_date
+      from
+      (
+      select
+      industry_type_name,
+      industry_type_id,
+      contract_id,
+      max(total_amount) as total_amount,
+      max(original_amount) as original_amount,
+      max(spend_to_date) as spend_to_date
+      from
+      contracts_widget_summary
       <where>
         <exp op="AND">
           <exp op="BETWEEN" paramName="year" dbField="start_year_id, end_year_id"/>
@@ -223,7 +266,8 @@
           <exp op="=" dbField="award_method_id" paramName="awdmethod"/>
         </exp>
       </where>
-      GROUP BY industry_type_id,industry_type_name
+      group by industry_type_name, industry_type_id, contract_id ) a
+      group by industry_type_name, industry_type_id
     </sql>
   </statement>
 
@@ -256,14 +300,23 @@
     <param name="size" />
     <param name="awdmethod" />
     <sql>
-      SELECT
-        award_size_id,
-        award_size_name,
-        count(distinct contract_id) AS po_count,
-        SUM(total_amount) AS total_amount,
-        SUM(original_amount) AS original_amount,
-        SUM(spend_to_date) AS spend_to_date
-      FROM contracts_widget_summary
+      select
+      award_size_id,
+      award_size_name,
+      count(distinct contract_id) as purchase_order_count,
+      sum(total_amount) as total_amount,
+      sum(original_amount) as original_amount,
+      sum(spend_to_date) as spend_to_date
+      from (
+      select
+      award_size_id,
+      award_size_name,
+      contract_id,
+      max(total_amount) as total_amount,
+      max(original_amount) as original_amount,
+      max(spend_to_date) as spend_to_date
+      from
+      contracts_widget_summary
       <where>
         <exp op="AND">
           <exp op="BETWEEN" paramName="year" dbField="start_year_id, end_year_id"/>
@@ -273,7 +326,8 @@
           <exp op="=" dbField="award_method_id" paramName="awdmethod"/>
         </exp>
       </where>
-      GROUP BY  award_size_id,award_size_name
+      group by award_size_id, award_size_name, contract_id ) a
+      group by award_size_id, award_size_name
     </sql>
   </statement>
 
@@ -285,16 +339,26 @@
     <param name="size" />
     <param name="awdmethod" />
     <sql>
-      SELECT
-        responsibility_center_id,
-        responsibility_center_code,
-        responsibility_center_name AS responsibility_center_descr,
-        COUNT(distinct contract_id) AS contract_count,
-        SUM(total_amount) AS total_amount,
-        SUM(original_amount) AS original_amount,
-        SUM(spend_to_date) AS spend_to_date,
-        ABS(SUM(original_amount - total_amount)) AS delta_amount
-      FROM contracts_widget_summary
+      select
+      responsibility_center_id,
+      responsibility_center_code,
+      responsibility_center_name as responsibility_center_descr,
+      count(distinct contract_id) as purchase_order_count,
+      sum(total_amount) as total_amount,
+      sum(original_amount) as original_amount,
+      sum(spend_to_date) as spend_to_date
+      from
+      (
+      select
+      responsibility_center_id,
+      responsibility_center_code,
+      responsibility_center_name,
+      contract_id,
+      max(total_amount) as total_amount,
+      max(original_amount) as original_amount,
+      max(spend_to_date) as spend_to_date
+      from
+      contracts_widget_summary
       <where>
         <exp op="AND">
           <exp op="=" dbField="vendor_id" paramName="vendor"/>
@@ -305,7 +369,8 @@
           <exp op="=" dbField="award_method_id" paramName="awdmethod"/>
         </exp>
       </where>
-      GROUP BY responsibility_center_id, responsibility_center_code, responsibility_center_descr
+      group by responsibility_center_id, responsibility_center_code, responsibility_center_name, contract_id ) a
+      group by responsibility_center_id, responsibility_center_code, responsibility_center_descr
     </sql>
   </statement>
 </statements>
