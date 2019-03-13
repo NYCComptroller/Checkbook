@@ -1374,31 +1374,35 @@ class RequestUtil
     public static function getNYCHAContractBreadcrumbTitle()
     {
         $bottomURL = $_REQUEST['expandBottomContURL'];
-        $title = "NEW YORK CITY HOUSING AUTHORITY CONTRACTS";
         if (!$bottomURL && preg_match('/^nycha_contracts\/search\/transactions/', current_path()) || preg_match('/^nycha_contracts\/all\/transactions/', current_path())) {
             $title = 'NYCHA Contracts Transactions';
-        }
-        else if(stripos($bottomURL, 'transactions')){
+        } else if(stripos($bottomURL, 'transactions')){
             $code= RequestUtil::getRequestKeyValueFromURL("tCode",$bottomURL);
             $title = self::getTitleByCode($code). ' Contracts Transactions';
-        }
-        else if (preg_match('/contract/', $bottomURL)) {
+        } else if (preg_match('/contract/', $bottomURL)) {
             $title = RequestUtil::getRequestKeyValueFromURL("contract", $bottomURL);
-
         }
-        else {
-            if (preg_match('/agency/', current_path()) && !preg_match('/vendor/', current_path()) ) {
-                $value = RequestUtilities::get('agency');
-                $title = _checkbook_project_get_name_for_argument("agency_id", $value).' Contracts';
+        $lastReqParam = _getLastRequestParamValue();
+        foreach($lastReqParam as $key => $value){
+            switch($key){
+                case 'vendor':
+                    $title = _checkbook_project_get_name_for_argument("vendor_id", $value);
+                    break;
+                case 'awdmethod':
+                    $title = _checkbook_project_get_name_for_argument("award_method_id",$value);
+                    break;
+                case 'size':
+                    $title = _checkbook_project_get_name_for_argument("award_size_id",$value);
+                    break;
+                case 'industry':
+                    $title = _checkbook_project_get_name_for_argument("industry_type_id",$value);
+                    break;
+                default:
+                    $title = "NEW YORK CITY HOUSING AUTHORITY";
             }
-            else if (preg_match('/vendor/', current_path())) {
-                $value =RequestUtilities::get('vendor');
-                $title = _checkbook_project_get_name_for_argument("vendor_id", $value).' Contracts';
-            }
+
+            $title .= ' Contracts';
         }
-
-
-
         return $title;
     }
     public static function getTitleByCode($tcode){
