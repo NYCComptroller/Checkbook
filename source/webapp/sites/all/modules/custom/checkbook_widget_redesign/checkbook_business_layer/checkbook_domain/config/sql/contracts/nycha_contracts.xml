@@ -240,7 +240,7 @@
     <param name="awdmethod" />
     <sql>
       select
-      industry_type_name,
+      display_industry_type_name AS industry_type_name,
       industry_type_id,
       count(distinct contract_id) as purchase_order_count,
       sum(total_amount) as total_amount,
@@ -249,7 +249,7 @@
       from
       (
       select
-      industry_type_name,
+      display_industry_type_name,
       industry_type_id,
       contract_id,
       max(total_amount) as total_amount,
@@ -266,7 +266,7 @@
           <exp op="=" dbField="award_method_id" paramName="awdmethod"/>
         </exp>
       </where>
-      group by industry_type_name, industry_type_id, contract_id ) a
+      group by display_industry_type_name, industry_type_id, contract_id ) a
       group by industry_type_name, industry_type_id
     </sql>
   </statement>
