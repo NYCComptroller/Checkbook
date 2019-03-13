@@ -1401,7 +1401,7 @@ class RequestUtil
                     $title = "NEW YORK CITY HOUSING AUTHORITY";
             }
 
-            $title = $title.' Contracts';
+            $title .= ' Contracts';
         }
         return $title;
     }
