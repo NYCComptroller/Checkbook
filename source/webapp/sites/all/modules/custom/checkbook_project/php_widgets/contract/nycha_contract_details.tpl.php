@@ -25,26 +25,26 @@ $contract = $node->data;
 <div class="content clearfix">
     <div class="contract-details-heading cb-ma-details">
         <div class="contract-id">
-            <h2 class='contract-title'>Contract ID: <span
+            <h2 class='contract-title'><?= WidgetUtil::getLabel('contract_id') ?>: <span
                     class="contract-number"><?= htmlentities($contract['contract_id']) ?></span></h2>
         </div>
         <div class="dollar-amounts">
             <div class="spent-to-date">
                 <?= custom_number_formatter_format($contract['spend_to_date'], 2, "$"); ?>
-                <div class="amount-title">Spent to<br/>Date</div>
+                <div class="amount-title"><?= WidgetUtil::getLabel('spent_to_date') ?></div>
             </div>
             <div class="original-amount">
                 <?= custom_number_formatter_format($contract['original_amount'], 2, '$'); ?>
-                <div class="amount-title">Original Amount</div>
+                <div class="amount-title"><?= WidgetUtil::getLabel('original_amount') ?></div>
             </div>
             <div class="current-amount">
                 <?= custom_number_formatter_format($contract['total_amount'], 2, '$'); ?>
-                <div class="amount-title">Current Amount</div>
+                <div class="amount-title"><?= WidgetUtil::getLabel('current_amount') ?></div>
             </div>
             <?php if ($node->total_associated_releases): ?>
                 <div class="total-contracts">
                     <?= intval($node->total_associated_releases) ?>
-                    <div class="amount-title">Assoc. Releases</div>
+                    <div class="amount-title"><?= WidgetUtil::getLabel('assoc_releases') ?></div>
                 </div>
             <?php endif; ?>
         </div>
@@ -53,58 +53,59 @@ $contract = $node->data;
                 <h4>General Information</h4>
                 <ul class="left">
                     <li>
-                        <span class="gi-list-item">Vendor:</span>
-                        &nbsp;<a href="<?= NychaContractsUrlService::generateLandingPageUrl('vendor', $contract['vendor_id']) ?>">
+                        <span class="gi-list-item"><?= WidgetUtil::getLabel('vendor_name') ?>:</span>
+                        &nbsp;<a
+                            href="<?= NychaContractsUrlService::generateLandingPageUrl('vendor', $contract['vendor_id']) ?>">
                             <?= htmlentities($contract['vendor_name']) ?></a></li>
                     <li>
-                        <span class="gi-list-item">Purpose:</span>
+                        <span class="gi-list-item"><?= WidgetUtil::getLabel('contract_purpose') ?>:</span>
                         &nbsp;<?= htmlentities($contract['purpose']) ?>
                     </li>
                     <li>
-                        <span class="gi-list-item">Contract Type:</span>
+                        <span class="gi-list-item"><?= WidgetUtil::getLabel('contract_type') ?>:</span>
                         &nbsp;<?= htmlentities($contract['contract_type_descr']) ?>
                     </li>
                     <li>
-                        <span class="gi-list-item">Contracting Agency:</span>
+                        <span class="gi-list-item"><?= WidgetUtil::getLabel('contract_agency') ?>:</span>
                         &nbsp;<a href="<?= NychaContractsUrlService::agencyUrl() ?>">
                             <?= htmlentities($contract['agency_name']) ?>
                         </a>
                     </li>
-                    <li><span class="gi-list-item">Award Method:</span>
+                    <li><span class="gi-list-item"><?= WidgetUtil::getLabel('award_method') ?>:</span>
                         &nbsp;<?= htmlentities($contract['award_method_name']) ?>
 
                     </li>
 
                     <li>
-                        <span class="gi-list-item">Version Number:</span>
+                        <span class="gi-list-item"><?= WidgetUtil::getLabel('version_number') ?>:</span>
                         &nbsp;<?= htmlentities($contract['revision_number']) ?>
                     </li>
                 </ul>
                 <ul class="right">
                     <?php if ($contract['start_date']): ?>
                         <li>
-                        <span class="gi-list-item">Start Date:</span>
+                        <span class="gi-list-item"><?= WidgetUtil::getLabel('start_date') ?>:</span>
                         &nbsp;<?= format_string_to_date($contract['start_date']); ?>
                         </li><?php endif; ?>
                     <?php if ($contract['end_date']): ?>
                         <li>
-                        <span class="gi-list-item">End Date:</span>
+                        <span class="gi-list-item"><?= WidgetUtil::getLabel('end_date') ?>:</span>
                         &nbsp;<?= format_string_to_date($contract['end_date']); ?>
                         </li><?php endif; ?>
                     <li>
-                        <span class="gi-list-item">Approved Date:</span>
+                        <span class="gi-list-item"><?= WidgetUtil::getLabel('release_approved_date') ?>:</span>
                         &nbsp;<?= format_string_to_date($node->contractPO ? $contract['release_approved_date'] : $contract['revision_approved_date']); ?>
                     </li>
                     <li>
-                        <span class="gi-list-item">Cancelled Date:</span>
+                        <span class="gi-list-item"><?= WidgetUtil::getLabel('canceled_date') ?>:</span>
 
                     </li>
                     <li>
-                        <span class="gi-list-item">Transaction Status:</span>
+                        <span class="gi-list-item"><?= WidgetUtil::getLabel('transaction_status') ?>:</span>
                         &nbsp;<?= 'Approved'; ?>
                     </li>
                     <li>
-                        <span class="gi-list-item">Commodity Category:</span>
+                        <span class="gi-list-item"><?= WidgetUtil::getLabel('commodity_category') ?>:</span>
                         &nbsp;<?= htmlentities($contract['category_descr']) ?>
                     </li>
                 </ul>
@@ -115,16 +116,17 @@ $contract = $node->data;
                 </h4>
                 <ul class="left">
                     <li>
-                        <span class="gi-list-item">Vendor:</span>
-                        &nbsp;<a href="<?= NychaContractsUrlService::generateLandingPageUrl('vendor', $contract['vendor_id']) ?>">
+                        <span class="gi-list-item"><?= WidgetUtil::getLabel('vendor_name') ?>:</span>
+                        &nbsp;<a
+                            href="<?= NychaContractsUrlService::generateLandingPageUrl('vendor', $contract['vendor_id']) ?>">
                             <?= htmlentities($contract['vendor_name']) ?></a></li>
                     <li>
-                        <span class="gi-list-item">Address:</span>
+                        <span class="gi-list-item"><?= WidgetUtil::getLabel('address') ?>:</span>
                         &nbsp;<?= htmlentities($contract['address_line1']) ?> <?= htmlentities($contract['address_line2']) ?>
                         <?= htmlentities($contract['city']) ?> <?= htmlentities($contract['state']) ?> <?= htmlentities($contract['zip']) ?>
                     </li>
                     <li>
-                        <span class="gi-list-item">Total Number of NYCHA Contracts:</span>
+                        <span class="gi-list-item"><?= WidgetUtil::getLabel('total_number_nycha_contracts') ?>:</span>
                         <?= $node->total_number_of_contracts['sum'] ?>
 
                     </li>
@@ -152,26 +154,25 @@ $contract = $node->data;
         </h3>
 
         <table class="outerTable nycha-c-history">
-            <?php
-            if ($node->contract_history_by_years && sizeof($node->contract_history_by_years)):
-            ?>
             <thead>
             <tr>
                 <th class="text">
-                    <div><span>Fiscal<br/>Year</span></div>
+                    <?= WidgetUtil::getLabelDiv('fiscal_year') ?>
                 </th>
                 <th class="text">
-                    <div><span>Number Of<br/>Modifications</span></div>
+                    <?= WidgetUtil::getLabelDiv('no_of_modifications') ?>
                 </th>
                 <th class="number">
-                    <div style="margin-right: 86px;"><span>Current<br/>Amount</span></div>
+                    <div style="margin-right: 86px;"><span><?= WidgetUtil::getLabel('current_amount') ?></span></div>
                 </th>
                 <th class="number">
-                    <div style="margin-right: 86px;"><span>Original<br/>Amount</span></div>
+                    <div style="margin-right: 86px;"><span><?= WidgetUtil::getLabel('original_amount') ?></span></div>
                 </th>
             </tr>
             </thead>
-            <tbody><?php
+            <tbody>
+            <?php
+            if ($node->contract_history_by_years && sizeof($node->contract_history_by_years)):
             $hidden = 0;
             $yi = 0;
             foreach ($node->contract_history_by_years as $year => $contract_history_by_year):
@@ -200,30 +201,30 @@ $contract = $node->data;
                                 <thead>
                                 <tr>
                                     <th class="number thVNum">
-                                        <?= WidgetUtil::generateLabelMapping("version_number") ?>
+                                        <?= WidgetUtil::getLabelDiv("version_number") ?>
                                     </th>
                                     <?php if ($node->contractBAPA): ?>
                                         <th class="text thStartDate">
-                                            <?= WidgetUtil::generateLabelMapping("start_date") ?>
+                                            <?= WidgetUtil::getLabelDiv("start_date") ?>
                                         </th>
                                         <th class="text thEndDate">
-                                            <?= WidgetUtil::generateLabelMapping("end_date") ?>
+                                            <?= WidgetUtil::getLabelDiv("end_date") ?>
                                         </th>
                                     <?php endif; ?>
                                     <th class="text thRegDate">
-                                        <?= WidgetUtil::generateLabelMapping("release_approved_date") ?>
+                                        <?= WidgetUtil::getLabelDiv("release_approved_date") ?>
                                     </th>
                                     <th class="text thLastMDate">
-                                        <?= WidgetUtil::generateLabelMapping("last_mod_date") ?>
+                                        <?= WidgetUtil::getLabelDiv("last_mod_date") ?>
                                     </th>
                                     <th class="number thOrigAmt">
-                                        <?= WidgetUtil::generateLabelMapping("original_amount") ?>
+                                        <?= WidgetUtil::getLabelDiv("original_amount") ?>
                                     </th>
                                     <th class="number thCurAmt">
-                                        <?= WidgetUtil::generateLabelMapping("current_amount") ?>
+                                        <?= WidgetUtil::getLabelDiv("current_amount") ?>
                                     </th>
                                     <th class="text thVerStat">
-                                        <?= WidgetUtil::generateLabelMapping("transaction_status") ?>
+                                        <?= WidgetUtil::getLabelDiv("transaction_status") ?>
                                     </th>
                                 </tr>
                                 </thead>
@@ -270,8 +271,7 @@ $contract = $node->data;
                 $hidden++;
             endforeach;
             else: ?>
-            <tbody>
-            <tr class="odd">
+            <tr>
                 <td class="dataTables_empty" valign="top" colspan="4">
                     <div id="no-records-datatable" class="clearfix">
                         <span>No Matching Records Found</span>
@@ -303,14 +303,17 @@ $contract = $node->data;
             <thead>
             <tr>
                 <th><span
-                        style="margin:8px 0px 8px 15px!important; display:inline-block; text-align: center !important;">
-                                                                Vendor<br/>Name</span></th>
-                <th><span style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
-                                                                Current<br/>Amount</span></th>
-                <th><span style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
-                                                                Original<br/>Amount</span></th>
-                <th><span style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
-                                                                Spent To<br/>Date</span></th>
+                        style="margin:8px 0px 8px 15px!important; display:inline-block; text-align: center !important;"><?= WidgetUtil::getLabel('vendor_name') ?></span>
+                </th>
+                <th><span
+                        style="text-align: center !important; vertical-align: middle; padding-right:6% !important"><?= WidgetUtil::getLabel('current_amount') ?>
+                                                                </span></th>
+                <th><span
+                        style="text-align: center !important; vertical-align: middle; padding-right:6% !important"><?= WidgetUtil::getLabel('original_amount') ?>
+                                                                </span></th>
+                <th><span
+                        style="text-align: center !important; vertical-align: middle; padding-right:6% !important"><?= WidgetUtil::getLabel('spent_to_date') ?>
+                                                                </span></th>
             </tr>
             </thead>
             <tbody>
@@ -349,38 +352,25 @@ $contract = $node->data;
                                         <thead>
                                         <tr>
                                             <th class="text">
-                                                <div>
-                                                    <span>Shipment<br/>Number</span>
-                                                </div>
+                                                <?= WidgetUtil::getLabelDiv('line_number') ?>
                                             </th>
                                             <th class="text">
-                                                <div>
-                                                    <span>Distribution <br/>Number</span>
-                                                </div>
+                                                <?= WidgetUtil::getLabelDiv('shipment_number') ?>
+                                            </th>
+                                            <th class="text">
+                                                <?= WidgetUtil::getLabelDiv('distribution_number') ?>
                                             </th>
                                             <th class="number">
-                                                <div
-                                                    style="margin-right: 82px;">
-                                                    <span>Current<br/>Amount</span>
-                                                </div>
+                                                <?= WidgetUtil::getLabelDiv('current_amount') ?>
                                             </th>
                                             <th class="number endCol">
-                                                <div
-                                                    style="margin-right: 81px;">
-                                                    <span>Original<br/>Amount</span>
-                                                </div>
+                                                <?= WidgetUtil::getLabelDiv('original_amount') ?>
                                             </th>
                                             <th class="number endCol">
-                                                <div
-                                                    style="margin-right: 81px;">
-                                                    <span>Spend to date</span>
-                                                </div>
+                                                <?= WidgetUtil::getLabelDiv('spent_to_date') ?>
                                             </th>
                                             <th class="number endCol">
-                                                <div
-                                                    style="margin-right: 81px;">
-                                                    <span>Responsibility center</span>
-                                                </div>
+                                                <?= WidgetUtil::getLabelDiv('responsibility_center') ?>
                                             </th>
                                         </tr>
                                         </thead>
@@ -389,6 +379,9 @@ $contract = $node->data;
                                         $z = 0;
                                         foreach ($node->shipments as $shipment):?>
                                             <tr class="outer <?= ($z % 2 ? 'even' : 'odd') ?>">
+                                                <td class="text">
+                                                    <div><?= htmlentities($shipment['line_number']) ?></div>
+                                                </td>
                                                 <td class="text">
                                                     <div><?= htmlentities($shipment['shipment_number']) ?></div>
                                                 </td>
@@ -436,112 +429,109 @@ $contract = $node->data;
 
     <div class="panel-separator"></div>
     <div>
-        <h3>
-            Spending Transactions by Vendor
-        </h3>
+    <h3>
+        Spending Transactions by Vendor
+    </h3>
 
-        <table class="dataTable cta-spending-history outerTable">
-            <thead>
-            <tr>
-                <th class="text">
-                    <div><span>Fiscal<br/>Year</span></div>
-                </th>
-                <th class="text">
-                    <div><span>Number Of<br/>Transactions</span></div>
-                </th>
-                <th class="number endCol">
-                    <div style="margin-right: 119px;">
-                        <span>Amount<br/>Spent</span></div>
-                </th>
+    <table class="dataTable cta-spending-history outerTable">
+    <thead>
+    <tr>
+        <th class="text">
+            <?= WidgetUtil::getLabelDiv('fiscal_year') ?>
+        </th>
+        <th class="text">
+            <?= WidgetUtil::getLabelDiv('no_of_transactions') ?>
+        </th>
+        <th class="number endCol">
+            <?= WidgetUtil::getLabelDiv('amount_spent') ?>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php
+    $year_cnt = 0;
+    foreach ([2019, 2018, 2017, 2016, 2015] as $year): ?>
+        <tr class="outer <?= ($year_cnt % 2 ? 'even' : 'odd') ?>">
+            <td class="text">
+                <div>
+                    <a class="showHide <?= ($year_cnt ? 'open' : '') ?>"></a>
+                    FY <?= $year ?></div>
+            </td>
+            <td class="text">
+                <div>7 Transactions</div>
+            </td>
+            <td class="number endCol">
+                <div style="margin-right: 119px;">$3.38M</div>
+            </td>
+        </tr>
+        <tr id="showHidectaspe<?= $year ?>" class="showHide odd" style="<?= ($year_cnt ? 'display:none' : '') ?>">
+            <td colspan="3">
+                <div class="scroll" style="padding-left:20px">
+                    <table class="dataTable outerTable">
+                        <thead>
+                        <tr>
+                            <th class="text th1">
+                                <?= WidgetUtil::getLabelDiv('date') ?>
+                            </th>
+                            <th class="text th2">
+                                <?= WidgetUtil::getLabelDiv('document_id') ?>
+                            </th>
+                            <th class="number th3">
+                                <?= WidgetUtil::getLabelDiv('check_amount') ?>
+                            </th>
+                            <th class="text th4">
+                                <?= WidgetUtil::getLabelDiv('expense_category') ?>
+                </div>
+            </th>
+            <th class="text th5">
+                <?= WidgetUtil::getLabelDiv('nycha_payment') ?>
+            </th>
+            <th class="text th6">
+                <?= WidgetUtil::getLabelDiv('agency') ?>
+            </th>
+            <th class="text th7">
+                <?= WidgetUtil::getLabelDiv('dept_name') ?>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php $revision_cnt = 0;
+        for ($i = 1; $i < 11; $i++): ?>
+            <tr class="<?= ($i % 2 ? 'odd' : 'even') ?>">
+                <td class="text td1">
+                    <div>07/18/<?= $year ?></div>
+                </td>
+                <td class="text td2">
+                    <div>428758926</div>
+                </td>
+                <td class="number td3">
+                    <div>$3.14B</div>
+                </td>
+                <td class="text td4">
+                    <div>CONSTRUCTION BUILDINGS</div>
+                </td>
+                <td class="text td5">
+                    <div>$2.58M</div>
+                </td>
+                <td class="text td6">
+                    <div>HEALTH AND HOSPITALS</div>
+                </td>
+                <td class="text td7">
+                    <div>400-819-303</div>
+                </td>
             </tr>
-            </thead>
-            <tbody>
-            <?php
-            $year_cnt = 0;
-            foreach ([2019, 2018, 2017, 2016, 2015] as $year): ?>
-                <tr class="outer <?= ($year_cnt % 2 ? 'even' : 'odd') ?>">
-                    <td class="text">
-                        <div>
-                            <a class="showHide <?= ($year_cnt ? 'open' : '') ?>"></a>
-                            FY <?= $year ?></div>
-                    </td>
-                    <td class="text">
-                        <div>7 Transactions</div>
-                    </td>
-                    <td class="number endCol">
-                        <div style="margin-right: 119px;">$3.38M</div>
-                    </td>
-                </tr>
-                <tr id="showHidectaspe<?= $year ?>" class="showHide odd"
-                    style="<?= ($year_cnt ? 'display:none' : '') ?>">
-                    <td colspan="3">
-                        <div class="scroll" style="padding-left:20px">
-                            <table class="dataTable outerTable">
-                                <thead>
-                                <tr>
-                                    <th class="text th1">
-                                        <div><span>Date</span></div>
-                                    </th>
-                                    <th class="text th2">
-                                        <div><span>Document id</span></div>
-                                    </th>
-                                    <th class="number th3">
-                                        <div><span>Check<br/>Amount</span></div>
-                                    </th>
-                                    <th class="text th4">
-                                        <div><span>Expence<br/>Category</span>
-                                        </div>
-                                    </th>
-                                    <th class="text th5">
-                                        <div><span>Nycha<br/>Payment</span>
-                                        </div>
-                                    </th>
-                                    <th class="text th6">
-                                        <div><span>Agency</span></div>
-                                    </th>
-                                    <th class="text th7">
-                                        <div><span>Department</span></div>
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <?php $revision_cnt = 0;
-                                for ($i = 1; $i < 11; $i++): ?>
-                                    <tr class="<?= ($i % 2 ? 'odd' : 'even') ?>">
-                                        <td class="text td1">
-                                            <div>07/18/<?= $year ?></div>
-                                        </td>
-                                        <td class="text td2">
-                                            <div>428758926</div>
-                                        </td>
-                                        <td class="number td3">
-                                            <div>$3.14B</div>
-                                        </td>
-                                        <td class="text td4">
-                                            <div>CONSTRUCTION BUILDINGS</div>
-                                        </td>
-                                        <td class="text td5">
-                                            <div>$2.58M</div>
-                                        </td>
-                                        <td class="text td6">
-                                            <div>HEALTH AND HOSPITALS</div>
-                                        </td>
-                                        <td class="text td7">
-                                            <div>400-819-303</div>
-                                        </td>
-                                    </tr>
-                                <?php endfor; ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </td>
-                </tr>
-                <?php
-                $year_cnt++;
-            endforeach;
-            ?>
-            </tbody>
+        <?php endfor; ?>
+        </tbody>
         </table>
+        </div>
+        </td>
+        </tr>
+        <?php
+        $year_cnt++;
+    endforeach;
+    ?>
+    </tbody>
+    </table>
     </div>
 
     <div class="panel-separator"></div>
@@ -551,19 +541,25 @@ $contract = $node->data;
            style="border: 1px solid #CACACA;">
         <thead>
         <tr>
-            <th style="text-align: left !important; vertical-align: middle;"><span
-                    style="margin:8px 0 8px 15px!important; display:inline-block; text-align: center !important;">Expense<br>Category</span>
+            <th style="text-align: left !important; vertical-align: middle;">
+                <span style="margin:8px 0 8px 15px!important; display:inline-block; text-align: center !important;">
+                    <?= WidgetUtil::getLabel('expense_category') ?>
+                </span>
             </th>
-            <th style="text-align: left !important; vertical-align: middle;"><span
-                    style="margin:8px 0 8px 15px!important; display:inline-block; text-align: center !important;">Category<br>Type</span>
+            <th style="text-align: left !important; vertical-align: middle;">
+                <span style="margin:8px 0 8px 15px!important; display:inline-block; text-align: center !important;">
+                    <?= WidgetUtil::getLabel('category_type') ?>
+                </span>
             </th>
             <th style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
-                            <span
-                                style="margin:8px 0 8px 0 !important;display:inline-block; text-align: center !important;">Encumbered<br>Amount</span>
+                <span style="margin:8px 0 8px 0 !important;display:inline-block; text-align: center !important;">
+                    <?= WidgetUtil::getLabel('encumbered_amount') ?>
+                </span>
             </th>
             <th style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
-                            <span
-                                style="margin:8px 0 8px 0 !important;display:inline-block; text-align: center !important;">Spent To<br>Date</span>
+                <span style="margin:8px 0 8px 0 !important;display:inline-block; text-align: center !important;">
+                    <?= WidgetUtil::getLabel('spent_to_date') ?>
+                </span>
             </th>
         </tr>
         </thead>
@@ -612,19 +608,28 @@ $contract = $node->data;
                             </div>
 
                             <div class="dollar-amounts">
-                                <div
-                                    class="spent-to-date"><?= custom_number_formatter_format($release['release_spend_to_date'], 2, "$"); ?>
-                                    <div class="amount-title">Spent to Date
+                                <div class="spent-to-date"><?= custom_number_formatter_format($release['release_spend_to_date'], 2, "$"); ?>
+                                    <div class="amount-title">
+                                        <?= str_replace('<br/>',' ', WidgetUtil::getLabel('spent_to_date')) ?>
                                     </div>
                                 </div>
                                 <div
                                     class="original-amount"><?= custom_number_formatter_format($release['release_original_amount'], 2, '$'); ?>
-                                    <div class="amount-title">Original Amount
+                                    <div class="amount-title">
+                                        <?= str_replace('<br/>',' ', WidgetUtil::getLabel('original_amount')) ?>
                                     </div>
                                 </div>
                                 <div
                                     class="current-amount"><?= custom_number_formatter_format($release['release_total_amount'], 2, '$'); ?>
-                                    <div class="amount-title">Current Amount
+                                    <div class="amount-title">
+                                        <?= str_replace('<br/>',' ', WidgetUtil::getLabel('current_amount')) ?>
+                                    </div>
+                                </div>
+                                <div
+                                    class="approved-date">
+                                    <?= format_string_to_date($node->contractPO ? $contract['release_approved_date'] : $contract['revision_approved_date']); ?>
+                                    <div class="amount-title">
+                                        <?= str_replace('<br/>',' ', WidgetUtil::getLabel('release_approved_date')) ?>
                                     </div>
                                 </div>
                             </div>
@@ -644,16 +649,26 @@ $contract = $node->data;
                                                     <tr>
                                                         <th><span
                                                                 style="margin:8px 0px 8px 15px!important; display:inline-block; text-align: center !important;">
-                                                                Vendor<br/>Name</span></th>
-                                                        <th><span
+                                                            <?= WidgetUtil::getLabel('vendor_name') ?>
+                                                            </span>
+                                                        </th>
+                                                        <th>
+                                                            <span
                                                                 style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
-                                                                Current<br/>Amount</span></th>
-                                                        <th><span
+                                                                <?= WidgetUtil::getLabel('current_amount') ?>
+                                                            </span>
+                                                        </th>
+                                                        <th>
+                                                            <span
                                                                 style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
-                                                                Original<br/>Amount</span></th>
-                                                        <th><span
+                                                                <?= WidgetUtil::getLabel('original_amount') ?>
+                                                                </span>
+                                                        </th>
+                                                        <th>
+                                                            <span
                                                                 style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
-                                                                Spent To<br/>Date</span></th>
+                                                                <?= WidgetUtil::getLabel('spent_to_date') ?>
+                                                            </span></th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -697,38 +712,25 @@ $contract = $node->data;
                                                                                 <thead>
                                                                                 <tr>
                                                                                     <th class="text">
-                                                                                        <div>
-                                                                                            <span>Shipment<br/>Number</span>
-                                                                                        </div>
+                                                                                        <?= WidgetUtil::getLabelDiv('line_number') ?>
                                                                                     </th>
                                                                                     <th class="text">
-                                                                                        <div>
-                                                                                            <span>Distribution <br/>Number</span>
-                                                                                        </div>
+                                                                                        <?= WidgetUtil::getLabelDiv('shipment_number') ?>
+                                                                                    </th>
+                                                                                    <th class="text">
+                                                                                        <?= WidgetUtil::getLabelDiv('distribution_number') ?>
                                                                                     </th>
                                                                                     <th class="number">
-                                                                                        <div
-                                                                                            style="margin-right: 82px;">
-                                                                                            <span>Current<br/>Amount</span>
-                                                                                        </div>
+                                                                                        <?= WidgetUtil::getLabelDiv('current_amount') ?>
                                                                                     </th>
                                                                                     <th class="number endCol">
-                                                                                        <div
-                                                                                            style="margin-right: 81px;">
-                                                                                            <span>Original<br/>Amount</span>
-                                                                                        </div>
+                                                                                        <?= WidgetUtil::getLabelDiv('original_amount') ?>
                                                                                     </th>
                                                                                     <th class="number endCol">
-                                                                                        <div
-                                                                                            style="margin-right: 81px;">
-                                                                                            <span>Spend to date</span>
-                                                                                        </div>
+                                                                                        <?= WidgetUtil::getLabelDiv('spent_to_date') ?>
                                                                                     </th>
                                                                                     <th class="number endCol">
-                                                                                        <div
-                                                                                            style="margin-right: 81px;">
-                                                                                            <span>Responsibility center</span>
-                                                                                        </div>
+                                                                                        <?= WidgetUtil::getLabelDiv('responsibility_center') ?>
                                                                                     </th>
                                                                                 </tr>
                                                                                 </thead>
@@ -737,6 +739,9 @@ $contract = $node->data;
                                                                                 $z = 0;
                                                                                 foreach ($release['shipments'] as $shipment):?>
                                                                                     <tr class="outer <?= ($z % 2 ? 'even' : 'odd') ?>">
+                                                                                        <td class="text">
+                                                                                            <div><?= htmlentities($shipment['line_number']) ?></div>
+                                                                                        </td>
                                                                                         <td class="text">
                                                                                             <div><?= htmlentities($shipment['shipment_number']) ?></div>
                                                                                         </td>
@@ -792,23 +797,21 @@ $contract = $node->data;
                                                         <thead>
                                                         <tr>
                                                             <th class="text">
-                                                                <div><span>Fiscal<br/>Year</span></div>
+                                                                <?= WidgetUtil::getLabelDiv('fiscal_year') ?>
                                                             </th>
                                                             <th class="text">
-                                                                <div><span>Number Of<br/>Modifications</span></div>
+                                                                <?= WidgetUtil::getLabelDiv('no_of_mod') ?>
                                                             </th>
                                                             <th class="number endCol">
-                                                                <div style="margin-right: 119px;">
-                                                                    <span>Current<br/>Amount</span></div>
+                                                                <?= WidgetUtil::getLabelDiv('current_amount') ?>
                                                             </th>
                                                             <th class="number endCol">
-                                                                <div style="margin-right: 119px;">
-                                                                    <span>Original<br/>Amount</span></div>
+                                                                <?= WidgetUtil::getLabelDiv('original_amount') ?>
                                                             </th>
                                                         </tr>
                                                         </thead>
                                                         <tbody>
-                                                        <?php
+                                                        <?php if($release['history']):
                                                         $year_cnt = 0;
                                                         foreach ($release['history'] as $year => $revisions): ?>
                                                             <tr class="outer <?= ($year_cnt % 2 ? 'even' : 'odd') ?>">
@@ -837,36 +840,25 @@ $contract = $node->data;
                                                                             <thead>
                                                                             <tr>
                                                                                 <th class="text th1">
-                                                                                    <div><span>Version Number</span>
-                                                                                    </div>
+                                                                                    <?= WidgetUtil::getLabelDiv('version_number') ?>
                                                                                 </th>
                                                                                 <th class="text th2">
-                                                                                    <div><span>Approved<br/>Date</span>
-                                                                                    </div>
+                                                                                    <?= WidgetUtil::getLabelDiv('release_approved_date') ?>
                                                                                 </th>
                                                                                 <th class="text th3">
-                                                                                    <div>
-                                                                                        <span>Last<br/>Modified&nbsp;Date</span>
-                                                                                    </div>
+                                                                                    <?= WidgetUtil::getLabelDiv('last_mod_date') ?>
                                                                                 </th>
                                                                                 <th class="text th4">
-                                                                                    <div><span>Current<br/>Amount</span>
-                                                                                    </div>
+                                                                                    <?= WidgetUtil::getLabelDiv('current_amount') ?>
                                                                                 </th>
                                                                                 <th class="text th5">
-                                                                                    <div>
-                                                                                        <span>Original<br/>Amount</span>
-                                                                                    </div>
+                                                                                    <?= WidgetUtil::getLabelDiv('original_amount') ?>
                                                                                 </th>
                                                                                 <th class="text th6">
-                                                                                    <div>
-                                                                                        <span>Increase/<br/>Decrease</span>
-                                                                                    </div>
+                                                                                    <?= WidgetUtil::getLabelDiv('increase_decrease') ?>
                                                                                 </th>
                                                                                 <th class="text th7">
-                                                                                    <div>
-                                                                                        <span>Transaction<br/>Status</span>
-                                                                                    </div>
+                                                                                    <?= WidgetUtil::getLabelDiv('transaction_status') ?>
                                                                                 </th>
                                                                             </tr>
                                                                             </thead>
@@ -909,6 +901,15 @@ $contract = $node->data;
                                                             $year_cnt++;
                                                         endforeach;
                                                         ?>
+                                                        <?php else: ?>
+                                                            <tr>
+                                                                <td class="dataTables_empty" valign="top" colspan="4">
+                                                                    <div id="no-records-datatable" class="clearfix">
+                                                                        <span>No Matching Records Found</span>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        <?php endif; ?>
                                                         </tbody>
                                                     </table>
                                                     <div class="panel-separator"></div>
@@ -921,14 +922,13 @@ $contract = $node->data;
                                                             <thead>
                                                             <tr>
                                                                 <th class="text">
-                                                                    <div><span>Fiscal<br/>Year</span></div>
+                                                                    <?= WidgetUtil::getLabelDiv('fiscal_year') ?>
                                                                 </th>
                                                                 <th class="text">
-                                                                    <div><span>Number Of<br/>Transactions</span></div>
+                                                                    <?= WidgetUtil::getLabelDiv('no_of_transactions') ?>
                                                                 </th>
                                                                 <th class="number endCol">
-                                                                    <div style="margin-right: 119px;">
-                                                                        <span>Amount<br/>Spent</span></div>
+                                                                    <?= WidgetUtil::getLabelDiv('amount_spent') ?>
                                                                 </th>
                                                             </tr>
                                                             </thead>
@@ -957,33 +957,25 @@ $contract = $node->data;
                                                                                 <thead>
                                                                                 <tr>
                                                                                     <th class="text th1">
-                                                                                        <div><span>Date</span></div>
+                                                                                        <?= WidgetUtil::getLabelDiv('date') ?>
                                                                                     </th>
                                                                                     <th class="text th2">
-                                                                                        <div><span>Document id</span>
-                                                                                        </div>
+                                                                                        <?= WidgetUtil::getLabelDiv('document_id') ?>
                                                                                     </th>
                                                                                     <th class="number th3">
-                                                                                        <div>
-                                                                                            <span>Check<br/>Amount</span>
-                                                                                        </div>
+                                                                                        <?= WidgetUtil::getLabelDiv('current_amount') ?>
                                                                                     </th>
                                                                                     <th class="text th4">
-                                                                                        <div>
-                                                                                            <span>Expence<br/>Category</span>
-                                                                                        </div>
+                                                                                        <?= WidgetUtil::getLabelDiv('expense_category') ?>
                                                                                     </th>
                                                                                     <th class="text th5">
-                                                                                        <div>
-                                                                                            <span>Nycha<br/>Payment</span>
-                                                                                        </div>
+                                                                                        <?= WidgetUtil::getLabelDiv('nycha_payment') ?>
                                                                                     </th>
                                                                                     <th class="text th6">
-                                                                                        <div><span>Agency</span></div>
+                                                                                        <?= WidgetUtil::getLabelDiv('agency_name') ?>
                                                                                     </th>
                                                                                     <th class="text th7">
-                                                                                        <div><span>Department</span>
-                                                                                        </div>
+                                                                                        <?= WidgetUtil::getLabelDiv('dept_name') ?>
                                                                                     </th>
                                                                                 </tr>
                                                                                 </thead>
