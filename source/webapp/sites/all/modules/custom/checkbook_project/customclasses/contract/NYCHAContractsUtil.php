@@ -18,18 +18,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace { //global
-    class NYCHAContractUtil
-    {
-        public static function adjustYearParams(&$node, &$parameters) {
-            if(isset($parameters['release_approved_year_id'])){
-                $year = $parameters['release_approved_year_id'];
-                $data_controller_instance = data_controller_get_operator_factory_instance();
-                $parameters['agreement_start_year_id'] = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, $year);
-                $parameters['agreement_end_year_id'] = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, $year);
-                unset($parameters['release_approved_year_id']);
-            }
-            return $parameters;
+class NYCHAContractUtil
+{
+    static function adjustYearParams(&$node, &$parameters) {
+        if(isset($parameters['release_approved_year_id'])){
+            $year = $parameters['release_approved_year_id'];
+            $data_controller_instance = data_controller_get_operator_factory_instance();
+            $parameters['agreement_start_year_id'] = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, $year);
+            $parameters['agreement_end_year_id'] = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, $year);
+            unset($parameters['release_approved_year_id']);
         }
+        return $parameters;
     }
 }
