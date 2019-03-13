@@ -574,10 +574,11 @@ function _checkbook_project_get_name_for_argument($keyword, $id)
             return ucwords(strtolower($revcat_codes[0]['funding_class_name']));
             break;
         case "vendor_id":
-            $vendors = _checkbook_project_querydataset($data_source.':vendor', array('vendor_id', 'legal_name'), array($keyword => $id));
-            if(_checkbook_check_isNYCHAPage()) {
+            if($data_source == Datasource::NYCHA) {
+                $vendors = _checkbook_project_querydataset($data_source.':vendor', array('vendor_id', 'vendor_name'), array($keyword => $id));
                 return ucwords(strtolower($vendors[0]['vendor_name']));
             } else {
+                $vendors = _checkbook_project_querydataset($data_source.':vendor', array('vendor_id', 'legal_name'), array($keyword => $id));
                 return ucwords(strtolower($vendors[0]['legal_name']));
             }
             break;
