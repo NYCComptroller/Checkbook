@@ -352,6 +352,9 @@ $contract = $node->data;
                                         <thead>
                                         <tr>
                                             <th class="text">
+                                                <?= WidgetUtil::getLabelDiv('line_number') ?>
+                                            </th>
+                                            <th class="text">
                                                 <?= WidgetUtil::getLabelDiv('shipment_number') ?>
                                             </th>
                                             <th class="text">
@@ -376,6 +379,9 @@ $contract = $node->data;
                                         $z = 0;
                                         foreach ($node->shipments as $shipment):?>
                                             <tr class="outer <?= ($z % 2 ? 'even' : 'odd') ?>">
+                                                <td class="text">
+                                                    <div><?= htmlentities($shipment['line_number']) ?></div>
+                                                </td>
                                                 <td class="text">
                                                     <div><?= htmlentities($shipment['shipment_number']) ?></div>
                                                 </td>
@@ -706,6 +712,9 @@ $contract = $node->data;
                                                                                 <thead>
                                                                                 <tr>
                                                                                     <th class="text">
+                                                                                        <?= WidgetUtil::getLabelDiv('line_number') ?>
+                                                                                    </th>
+                                                                                    <th class="text">
                                                                                         <?= WidgetUtil::getLabelDiv('shipment_number') ?>
                                                                                     </th>
                                                                                     <th class="text">
@@ -730,6 +739,9 @@ $contract = $node->data;
                                                                                 $z = 0;
                                                                                 foreach ($release['shipments'] as $shipment):?>
                                                                                     <tr class="outer <?= ($z % 2 ? 'even' : 'odd') ?>">
+                                                                                        <td class="text">
+                                                                                            <div><?= htmlentities($shipment['line_number']) ?></div>
+                                                                                        </td>
                                                                                         <td class="text">
                                                                                             <div><?= htmlentities($shipment['shipment_number']) ?></div>
                                                                                         </td>
