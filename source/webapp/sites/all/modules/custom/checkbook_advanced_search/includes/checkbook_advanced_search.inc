@@ -629,7 +629,7 @@ function _checkbook_advanced_search_get_contract_type_and_id($data_source = 'che
  */
 function _checkbook_advanced_search_get_responsibility_centers($data_source = 'checkbook_nycha', $feeds = false){
     try {
-        $query = "SELECT DISTINCT responsibility_center_id, responsibility_center_code, description FROM ref_responsibility_center ORDER BY description";
+        $query = "SELECT DISTINCT responsibility_center_id, responsibility_center_code, responsibility_center_description FROM ref_responsibility_center ORDER BY responsibility_center_description";
         $results = _checkbook_project_execute_sql_by_data_source($query, $data_source);
 
         $res_center_key_val_option_attributes = array('title' => 'Select Responsibility Center');
