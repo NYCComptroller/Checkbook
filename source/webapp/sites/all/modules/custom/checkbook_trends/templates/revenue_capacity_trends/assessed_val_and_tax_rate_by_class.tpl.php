@@ -22,6 +22,7 @@
 echo eval($node->widgetConfig->header);
 $table_rows = array();
 $years = array();
+
 foreach( $node->data as $row){
 	$length =  $row['indentation_level'];
 	$spaceString = '&nbsp;';
@@ -39,6 +40,7 @@ foreach( $node->data as $row){
 	$years[$row['fiscal_year']] = 	$row['fiscal_year'];
 }
 rsort($years);
+$last_year = $years[0];
 ?>
 
 <h3 xmlns="http://www.w3.org/1999/html"><?php echo $node->widgetConfig->table_title; ?></h3>
@@ -160,6 +162,6 @@ rsort($years);
     condos as class four real property for the first time.</p>
     <p>Note: Property in New York City is reassessed once a year. The City assesses property at approximately 40
 percent of Market Value for commercial and industrial property and 20 percent of Market Value for residential property.</p>
-<p>Sources: Resolutions of the City Council and The Annual Report, The New York City Property Tax Fiscal Year 2017. </p>
+<p>Sources: Resolutions of the City Council and The Annual Report, The New York City Property Tax Fiscal Year <?= $last_year ?>. </p>
 </div>
 
