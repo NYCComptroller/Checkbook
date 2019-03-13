@@ -292,6 +292,7 @@ SQL;
             SELECT DISTINCT 
                 release_id,
                 shipment_number,
+                line_number,
                 distribution_number,
                 release_line_total_amount,
                 release_line_original_amount,

@@ -261,6 +261,7 @@ class WidgetUtil
         "release_number" => "Release<br/>Number",
         "shipment_number" => "Shipment<br/>Number",
         "distribution_number" => "Distribution<br/>Number",
+        "line_number" => "Line<br/>Number",
         "agreement_start_date" => "Agreement<br/>Start Date",
         "agreement_end_date" => "Agreement<br/>End Date",
         "agreement_current_amount"=>"Agreement<br/>Current Amount",
