@@ -54,7 +54,7 @@ return $serieParameters;
 from   (SELECT C.contract_id
         , MAX(C.total_amount) AS total_maximum_contract_amount
           FROM   contracts_widget_summary C'
-          . $where_filter.'group by C.contract_id)a';
+          . $where_filter.' group by C.contract_id) a';
   $node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
 "
 }
