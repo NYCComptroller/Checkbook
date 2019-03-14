@@ -4,7 +4,7 @@
     <param name="year" required="true" type="int"/>
     <param name="vendor" type="int"/>
     <param name="industry" />
-    <param name="size" />
+    <param name="csize" />
     <param name="awdmethod" />
     <sql>
       select
@@ -30,7 +30,7 @@
           <exp op="BETWEEN" paramName="year" dbField=" start_year_id, end_year_id"/>
           <exp op="=" dbField="vendor_id" paramName="vendor"/>
           <exp op="=" dbField="industry_type_id" paramName="industry"/>
-          <exp op="=" dbField="award_size_id" paramName="size"/>
+          <exp op="=" dbField="award_size_id" paramName="csize"/>
           <exp op="=" dbField="award_method_id" paramName="awdmethod"/>
         </exp>
       </where>
@@ -44,7 +44,7 @@
     <param name="year" required="true" type="int"/>
     <param name="vendor" type="int"/>
     <param name="industry" />
-    <param name="size" />
+    <param name="csize" />
     <param name="awdmethod" />
     <sql>
       select
@@ -70,7 +70,7 @@
           <exp op="BETWEEN" paramName="year" dbField=" start_year_id, end_year_id"/>
           <exp op="=" dbField="vendor_id" paramName="vendor"/>
           <exp op="=" dbField="industry_type_id" paramName="industry"/>
-          <exp op="=" dbField="award_size_id" paramName="size"/>
+          <exp op="=" dbField="award_size_id" paramName="csize"/>
           <exp op="=" dbField="award_method_id" paramName="awdmethod"/>
         </exp>
       </where>
@@ -84,7 +84,7 @@
     <param name="year" required="true" type="int"/>
     <param name="vendor" type="int"/>
     <param name="industry" />
-    <param name="size" />
+    <param name="csize" />
     <param name="awdmethod" />
     <sql>
       SELECT
@@ -105,7 +105,7 @@
           <exp op="=" dbField="agreement_type_id">3</exp>
           <exp op="=" dbField="vendor_id" paramName="vendor"/>
           <exp op="=" dbField="industry_type_id" paramName="industry"/>
-          <exp op="=" dbField="award_size_id" paramName="size"/>
+          <exp op="=" dbField="award_size_id" paramName="csize"/>
           <exp op="=" dbField="award_method_id" paramName="awdmethod"/>
         </exp>
       </where>
@@ -119,7 +119,7 @@
     <param name="vendor" type="int"/>
     <param name="is_modification" type="bool"/>
     <param name="industry" />
-    <param name="size" />
+    <param name="csize" />
     <param name="awdmethod" />
     <sql>
       SELECT
@@ -142,7 +142,7 @@
           <exp op="=" dbField="agreement_type_id">1</exp>
           <exp op="=" dbField="vendor_id" paramName="vendor"/>
           <exp op="=" dbField="industry_type_id" paramName="industry"/>
-          <exp op="=" dbField="award_size_id" paramName="size"/>
+          <exp op="=" dbField="award_size_id" paramName="csize"/>
           <exp op="=" dbField="award_method_id" paramName="awdmethod"/>
         </exp>
       </where>
@@ -159,7 +159,7 @@
     <param name="vendor" type="int"/>
     <param name="is_modification" type="bool"/>
     <param name="industry" />
-    <param name="size" />
+    <param name="csize" />
     <param name="awdmethod" />
     <sql>
       SELECT
@@ -181,7 +181,7 @@
           <exp op="=" dbField="agreement_type_id">2</exp>
           <exp op="=" dbField="vendor_id" paramName="vendor"/>
           <exp op="=" dbField="industry_type_id" paramName="industry"/>
-          <exp op="=" dbField="award_size_id" paramName="size"/>
+          <exp op="=" dbField="award_size_id" paramName="csize"/>
           <exp op="=" dbField="award_method_id" paramName="awdmethod"/>
         </exp>
       </where>
@@ -197,7 +197,7 @@
     <param name="year" required="true" type="int"/>
     <param name="vendor" type="int"/>
     <param name="industry" />
-    <param name="size" />
+    <param name="csize" />
     <param name="awdmethod" />
     <sql>
       select
@@ -223,7 +223,7 @@
           <exp op="BETWEEN" paramName="year" dbField="start_year_id, end_year_id"/>
           <exp op="=" dbField="vendor_id" paramName="vendor"/>
           <exp op="=" dbField="industry_type_id" paramName="industry"/>
-          <exp op="=" dbField="award_size_id" paramName="size"/>
+          <exp op="=" dbField="award_size_id" paramName="csize"/>
           <exp op="=" dbField="award_method_id" paramName="awdmethod"/>
         </exp>
       </where>
@@ -237,7 +237,7 @@
     <param name="year" required="true" type="int"/>
     <param name="vendor" type="int"/>
     <param name="industry" />
-    <param name="size" />
+    <param name="csize" />
     <param name="awdmethod" />
     <sql>
       select
@@ -263,7 +263,7 @@
           <exp op="BETWEEN" paramName="year" dbField="start_year_id, end_year_id"/>
           <exp op="=" dbField="vendor_id" paramName="vendor"/>
           <exp op="=" dbField="industry_type_id" paramName="industry"/>
-          <exp op="=" dbField="award_size_id" paramName="size"/>
+          <exp op="=" dbField="award_size_id" paramName="csize"/>
           <exp op="=" dbField="award_method_id" paramName="awdmethod"/>
         </exp>
       </where>
@@ -277,7 +277,7 @@
     <param name="year" required="true" type="int"/>
     <param name="vendor" type="int"/>
     <param name="industry" />
-    <param name="size" />
+    <param name="csize" />
     <param name="awdmethod" />
     <sql>
       SELECT DISTINCT contract_id FROM contracts_widget_summary
@@ -286,7 +286,7 @@
           <exp op="=" dbField="vendor_id" paramName="vendor"/>
           <exp op="BETWEEN" dbField="start_year_id,end_year_id" paramName="year"/>
           <exp op="=" dbField="industry_type_id" paramName="industry"/>
-          <exp op="=" dbField="award_size_id" paramName="size"/>
+          <exp op="=" dbField="award_size_id" paramName="csize"/>
           <exp op="=" dbField="award_method_id" paramName="awdmethod"/>
         </exp>
       </where>
@@ -298,7 +298,7 @@
     <param name="year" required="true" type="int"/>
     <param name="vendor" type="int"/>
     <param name="industry" />
-    <param name="size" />
+    <param name="csize" />
     <param name="awdmethod" />
     <sql>
       select
@@ -323,7 +323,7 @@
           <exp op="BETWEEN" paramName="year" dbField="start_year_id, end_year_id"/>
           <exp op="=" dbField="vendor_id" paramName="vendor"/>
           <exp op="=" dbField="industry_type_id" paramName="industry"/>
-          <exp op="=" dbField="award_size_id" paramName="size"/>
+          <exp op="=" dbField="award_size_id" paramName="csize"/>
           <exp op="=" dbField="award_method_id" paramName="awdmethod"/>
         </exp>
       </where>
@@ -337,14 +337,14 @@
     <param name="year" required="true"/>
     <param name="vendor" type="int"/>
     <param name="industry" />
-    <param name="size" />
+    <param name="csize" />
     <param name="awdmethod" />
     <sql>
       select
       responsibility_center_id,
       responsibility_center_code,
       responsibility_center_name as responsibility_center_descr,
-      count(distinct contract_id) as purchase_order_count,
+      count(distinct contract_id) as contract_count,
       sum(total_amount) as total_amount,
       sum(original_amount) as original_amount,
       sum(spend_to_date) as spend_to_date
@@ -366,7 +366,7 @@
           <exp op="BETWEEN" paramName="year" dbField="start_year_id, end_year_id"/>
           <exp op="IS NOT" dbField="responsibility_center_code">NULL</exp>
           <exp op="=" dbField="industry_type_id" paramName="industry"/>
-          <exp op="=" dbField="award_size_id" paramName="size"/>
+          <exp op="=" dbField="award_size_id" paramName="csize"/>
           <exp op="=" dbField="award_method_id" paramName="awdmethod"/>
         </exp>
       </where>
