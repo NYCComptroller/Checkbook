@@ -2,10 +2,10 @@
   "widgetType":"data_tables",
   "widgetSubType":"dataTableList",
   "stickyHeader":true,
-  "cleanURLParameters":["year","curamtr","pcontdesc","appdate","startdate","enddate","vendornm_exact","vendorid","vendornm","responsibilitynm_exact","fundingnm_exact","industrynm_exact","agreement_type", "po_num", "po_num_exact", "agency","awdmethod","contract_type","modamt"],
+  "cleanURLParameters":["year","curamtr","pcontdesc","appdate","startdate","enddate","vendornm_exact","vendor","vendornm","responsibilitynm_exact","fundingnm_exact","industrynm_exact","agreement_type", "po_num", "po_num_exact", "agency","awdmethod","contract_type","modamt"],
   "urlParamMap":{"year":"release_approved_year_id", "curamtr":"release_line_total_amount","industrynm_exact":"industry_type_id","fundingnm_exact":"funding_source_id","vendornm_exact":"vendor_name","agreement_type":"agreement_type_code",
                  "po_num":"contract_id","responsibilitynm_exact":"responsibility_center_id","po_num_exact":"contract_id", "agency":"agency_id", "awdmethod":"award_method_id","contract_type": "contract_type_code",
-    "pcontdesc":"purpose","appdate": "release_approved_date","startdate": "agreement_start_date","enddate": "agreement_end_date","vendornm": "vendor_name","vendorid": "vendor_id","modamt": "agreement_amount_difference"
+    "pcontdesc":"purpose","appdate": "release_approved_date","startdate": "agreement_start_date","enddate": "agreement_end_date","vendornm": "vendor_name","vendor": "vendor_id","modamt": "agreement_amount_difference"
   },
   "paramTypeConfig": {
     "po_num": "like",
@@ -220,7 +220,7 @@ $node->show_difference = ($contract_type== 'BAM'||$contract_type== 'PAM');
           var oCurAmount = getNamedFilterCriteria('fCurAmount');
           var cUrl = oTable.fnSettings().sAjaxSource;
           var cUrlArray = cUrl.split('/');
-          cUrl = adjustUrlParameter(cUrl,'vendorid',oVendorIds);
+          cUrl = adjustUrlParameter(cUrl,'vendor',oVendorIds);
           cUrl = adjustUrlParameter(cUrl,'vendornm_exact',oVendorNms);
           cUrl = adjustUrlParameter(cUrl,'fundingnm_exact',oFundingNms);
           cUrl = adjustUrlParameter(cUrl,'curamtr',oCurAmount);
