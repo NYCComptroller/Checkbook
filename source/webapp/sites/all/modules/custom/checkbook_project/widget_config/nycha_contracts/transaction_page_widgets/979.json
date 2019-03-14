@@ -37,7 +37,7 @@
     "purpose", "vendor_name", "location_descr", "location_borough_name", "contract_type_descr", "award_method_name", "grant_name",
     "expenditure_type_descr", "industry_type_name", "funding_source_descr", "responsibility_center_descr", "program_phase_descr",
     "gl_project_descr", "commodity_category_descr","release_line_total_amount","vendor_id","release_line_total_amount","release_line_original_amount","release_line_spend_to_date","agreement_amount_difference","agreement_percent_difference"],
-  "uniqueSortColumn":["-release_number", "-shipment_number", "-distribution_number"],
+  "uniqueSortColumn":["-release_number", "-line_number", "-shipment_number", "-distribution_number"],
 "preProcessConfiguration":"
 $contract_type = RequestUtil::getContractType();
 $node->show_difference = ($contract_type== 'BAM'||$contract_type== 'PAM');
