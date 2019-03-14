@@ -408,7 +408,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
             }
 
             if ($values['nycha_appr_datefrom'] && $values['nycha_appr_dateto']) {
-                $form['filter']['nycha_approved_date'] = array('#markup' => '<div><strong>Approved Date:</strong> Greater Than Equal to: ' . $values['nycha_enddatefrom'] . ' Less Than Equal to: ' . $values['nycha_appr_dateto'] . '</div>');
+                $form['filter']['nycha_approved_date'] = array('#markup' => '<div><strong>Approved Date:</strong> Greater Than Equal to: ' . $values['nycha_appr_datefrom'] . ' Less Than Equal to: ' . $values['nycha_appr_dateto'] . '</div>');
                 $user_criteria['Approved Date Greater Than'] = $values['nycha_appr_datefrom'];
                 $user_criteria['Approved Date Less Than'] = $values['nycha_appr_dateto'];
                 $formatted_search_criteria['Approved Date'] = 'Greater Than Equal to: ' . $values['nycha_appr_datefrom'] . ' Less Than Equal to: ' . $values['nycha_appr_dateto'];
