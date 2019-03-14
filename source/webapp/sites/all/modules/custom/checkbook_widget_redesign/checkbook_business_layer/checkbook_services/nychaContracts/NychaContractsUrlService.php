@@ -19,7 +19,7 @@ class NychaContractsUrlService
             . RequestUtilities::buildUrlFromParam('agency')
             . RequestUtilities::buildUrlFromParam('vendor')
             . RequestUtilities::buildUrlFromParam('industry')
-            . RequestUtilities::buildUrlFromParam('size')
+            . RequestUtilities::buildUrlFromParam('csize')
             . RequestUtilities::buildUrlFromParam('awdmethod')
             . RequestUtilities::buildUrlFromParam('datasource');
         return $url;
@@ -38,7 +38,7 @@ class NychaContractsUrlService
             . RequestUtilities::buildUrlFromParam('agency')
             . RequestUtilities::buildUrlFromParam('vendor')
             . RequestUtilities::buildUrlFromParam('industry')
-            . RequestUtilities::buildUrlFromParam('size')
+            . RequestUtilities::buildUrlFromParam('csize')
             . RequestUtilities::buildUrlFromParam('awdmethod')
             . RequestUtilities::buildUrlFromParam('datasource')
             . '/'.$urlParamName.'/'. $urlParamValue;
@@ -58,7 +58,7 @@ class NychaContractsUrlService
             . RequestUtilities::buildUrlFromParam('agency')
             . RequestUtilities::buildUrlFromParam('vendor')
             . RequestUtilities::buildUrlFromParam('industry')
-            . RequestUtilities::buildUrlFromParam('size')
+            . RequestUtilities::buildUrlFromParam('csize')
             . RequestUtilities::buildUrlFromParam('awdmethod')
             . RequestUtilities::buildUrlFromParam('datasource')
             . '?expandBottomContURL=/panel_html/nycha_contract_details/contract/' . $contract_id;
