@@ -116,7 +116,7 @@ class CSVDataHandler extends AbstractDataHandler {
         $select_part = str_replace("SELECT", "", $select_part);
 
         $sql_parts = explode(",", $select_part);
-        $new_select_part = "SELECT ";log_error($sql_parts);
+        $new_select_part = "SELECT ";
         foreach($sql_parts as $sql_part) {
 
             $sql_part = trim($sql_part);
