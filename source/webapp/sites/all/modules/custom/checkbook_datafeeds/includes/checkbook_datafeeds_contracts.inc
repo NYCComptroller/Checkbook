@@ -1302,7 +1302,7 @@ function checkbook_datafeeds_get_configuration_key($domain, $data_source, $statu
     }else{
         $domain_filter .= $status == 'pending' ? '_pending' : '_active';
         $domain_filter .= $status == 'pending' ? '' : '_' . $expense_category;
-        $domain_filter .=  ($year == 'All Years' || $year = 'ALL') ? "_all_years" :"";
+        $domain_filter .=  ($year == 'All Years' || $year == 'ALL') ? "_all_years" :"";
     }
     return $domain_filter;
 }
