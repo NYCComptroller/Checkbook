@@ -3,6 +3,7 @@
     {"labelAlias":"contract_id","column":"contract_id"},
     {"labelAlias":"purchase_order_type","column":"agreement_type_name"},
     {"labelAlias":"release_number","column":"release_number"},
+    {"labelAlias":"line_number","column":"line_number"},
     {"labelAlias":"shipment_number","column":"shipment_number"},
     {"labelAlias":"distribution_number","column":"distribution_number"},
     {"labelAlias":"start_date","column":"agreement_start_date"},
