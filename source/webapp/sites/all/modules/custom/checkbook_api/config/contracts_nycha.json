@@ -34,6 +34,7 @@
               "purchase_order_type":"agreement_type_name",
               "release_number":"release_number",
               "shipment_number":"shipment_number",
+              "distribution_number":"distribution_number",
               "start_date":"agreement_start_date",
               "end_date":"agreement_end_date",
               "approved_date":"release_approved_date",
@@ -53,8 +54,7 @@
               "responsibility_center":"responsibility_center_descr",
               "program":"program_phase_descr",
               "project":"gl_project_descr",
-              "commodity_category":"commodity_category_descr",
-              "distribution_number":"distribution_number"
+              "commodity_category":"commodity_category_descr"
           },
           "rowElements":["contract_id", "agreement_type_name", "release_number", "shipment_number", "distribution_number", "agreement_start_date",
             "agreement_end_date", "release_approved_date", "release_total_amount", "release_original_amount", "release_spend_to_date",
@@ -68,6 +68,7 @@
             "Purchase Order Type":"agreement_type_name",
             "Release Number":"release_number",
             "Shipment Number":"shipment_number",
+            "Distribution Number":"distribution_number",
             "Start Date":"agreement_start_date",
             "End Date":"agreement_end_date",
             "Approved Date":"release_approved_date",
@@ -87,8 +88,7 @@
             "Responsibility Center":"funding_source_descr",
             "Program":"program_phase_descr",
             "Project":"gl_project_descr",
-            "Commodity Category":"commodity_category_descr",
-            "Distribution Number":"distribution_number"
+            "Commodity Category":"commodity_category_descr"
           }
         }
       },
@@ -148,6 +148,7 @@
             "purchase_order_type":"agreement_type_name",
             "release_number":"release_number",
             "shipment_number":"shipment_number",
+            "distribution_number":"distribution_number",
             "start_date":"agreement_start_date",
             "end_date":"agreement_end_date",
             "approved_date":"release_approved_date",
@@ -168,8 +169,7 @@
             "program":"program_phase_descr",
             "project":"gl_project_descr",
             "commodity_category":"commodity_category_descr",
-            "year":"release_approved_year",
-            "distribution_number":"distribution_number"
+            "year":"release_approved_year"
           },
           "rowElements":["contract_id", "agreement_type_name", "release_number", "shipment_number", "distribution_number", "agreement_start_date",
             "agreement_end_date", "release_approved_date", "release_total_amount", "release_original_amount", "release_spend_to_date",
@@ -183,6 +183,7 @@
             "Purchase Order Type":"agreement_type_name",
             "Release Number":"release_number",
             "Shipment Number":"shipment_number",
+            "Distribution Number":"distribution_number",
             "Start Date":"agreement_start_date",
             "End Date":"agreement_end_date",
             "Approved Date":"release_approved_date",
@@ -203,8 +204,7 @@
             "Program":"program_phase_descr",
             "Project":"gl_project_descr",
             "Commodity Category":"commodity_category_descr",
-            "Year": "release_approved_year",
-            "Distribution Number":"distribution_number"
+            "Year": "release_approved_year"
           }
         }
       },
