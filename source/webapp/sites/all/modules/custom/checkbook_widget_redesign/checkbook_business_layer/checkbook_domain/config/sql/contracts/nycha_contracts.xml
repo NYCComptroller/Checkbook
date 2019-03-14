@@ -95,9 +95,9 @@
         MAX(total_amount) AS total_amount,
         MAX(original_amount) AS original_amount,
         MAX(spend_to_date) AS spend_to_date,
-        ABS(SUM(original_amount - total_amount)) AS amount_difference,
-        ROUND(CASE COALESCE( SUM(original_amount), 0 :: NUMERIC ) WHEN 0 THEN 100 :: NUMERIC
-            ELSE ABS( SUM(original_amount - total_amount) / SUM(original_amount) )* 100 END, 2) AS percent_difference
+        ABS(MAX(original_amount - total_amount)) AS amount_difference,
+      ROUND( CASE COALESCE( MAX(original_amount), 0 :: NUMERIC ) WHEN 0 THEN 100 :: NUMERIC ELSE ABS(
+      MAX(original_amount - total_amount) / MAX(original_amount) )* 100 END, 2) AS percent_difference
       FROM contracts_widget_summary
       <where>
         <exp op="AND">
@@ -130,9 +130,10 @@
         MAX(total_amount) AS total_amount,
         MAX(original_amount) AS original_amount,
         MAX(spend_to_date) AS spend_to_date,
-        ABS(SUM(original_amount - total_amount)) AS dollar_difference,
-        ROUND( CASE COALESCE(SUM(original_amount), 0 :: NUMERIC ) WHEN 0 THEN 100 :: NUMERIC
-                ELSE ABS( SUM(original_amount - total_amount) / SUM(original_amount) )* 100 END, 2) AS percent_difference
+        ABS(MAX(original_amount - total_amount)) AS dollar_difference,
+        ROUND( CASE COALESCE( MAX(original_amount), 0 :: NUMERIC ) WHEN 0 THEN 100 :: NUMERIC ELSE ABS(
+        MAX(original_amount - total_amount) / MAX(original_amount)
+        )* 100 END, 2 ) AS percent_difference
       FROM contracts_widget_summary
       <where>
         <exp op="AND">
@@ -147,7 +148,7 @@
       </where>
       GROUP BY  contract_id, purpose, vendor_name, vendor_id
       <exp op="IF" condition="=" paramName="is_modification" compareValue="true">
-        HAVING ABS(SUM(original_amount - total_amount))!= 0
+        HAVING ABS(MAX(original_amount - total_amount))!= 0
       </exp>
     </sql>
   </statement>
@@ -169,9 +170,9 @@
         MAX(total_amount) AS total_amount,
         MAX(original_amount) AS original_amount,
         MAX(spend_to_date) AS spend_to_date,
-        ABS( SUM(original_amount - total_amount)) AS dollar_difference,
-        ROUND( CASE COALESCE(SUM(original_amount), 0 :: NUMERIC ) WHEN 0 THEN 100 :: NUMERIC
-                  ELSE ABS(SUM(original_amount - total_amount) / SUM(original_amount) )* 100 END, 2 ) AS percent_difference
+        ABS( MAX(original_amount - total_amount)) AS dollar_difference,
+        ROUND( CASE COALESCE( MAX(original_amount), 0 :: NUMERIC ) WHEN 0 THEN 100 :: NUMERIC ELSE ABS(
+        MAX(original_amount - total_amount) / MAX(original_amount) )* 100 END, 2 ) AS percent_difference
       FROM contracts_widget_summary
       <where>
         <exp op="AND">
@@ -186,7 +187,7 @@
       </where>
       GROUP BY  contract_id, purpose, vendor_name, vendor_id
       <exp op="IF" condition="=" paramName="is_modification" compareValue="true">
-        HAVING ABS( SUM(original_amount - total_amount) )!= 0
+        HAVING ABS( MAX(original_amount - total_amount) )!= 0
       </exp>
     </sql>
   </statement>
