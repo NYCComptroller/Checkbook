@@ -343,7 +343,7 @@
       responsibility_center_id,
       responsibility_center_code,
       responsibility_center_name as responsibility_center_descr,
-      count(distinct contract_id) as purchase_order_count,
+      count(distinct contract_id) as contract_count,
       sum(total_amount) as total_amount,
       sum(original_amount) as original_amount,
       sum(spend_to_date) as spend_to_date
