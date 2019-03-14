@@ -19,7 +19,7 @@
     "dataset":{
       "name":"checkbook_nycha:nycha_all_agreements",
       "data_source":"checkbook_nycha",
-      "sortColumn":["-contract_id", "release_number", "shipment_number", "distribution_number"],
+      "sortColumn":["-contract_id", "release_number", "line_number", "shipment_number", "distribution_number"],
       "columnTypes":{
         "contract_id":"like",
         "vendor":"like",
@@ -44,6 +44,7 @@
               "purpose":"purpose",
               "vendor":"vendor_name",
               "location":"location_descr",
+              "line_number":"line_number",
               "borough":"location_borough_name",
               "contract_type":"contract_type_descr",
               "award_method":"award_method_name",
@@ -60,6 +61,7 @@
             "contract_id":"contract_id",
             "purchase_order_type":"agreement_type_name",
             "release_number":"release_number",
+            "line_number":"line_number",
             "shipment_number":"shipment_number",
             "distribution_number":"distribution_number",
             "start_date":"agreement_start_date",
@@ -104,6 +106,7 @@
             "Spent to Date":"release_spend_to_date",
             "Purpose":"purpose",
             "Vendor":"vendor_name",
+            "Line Number":"line_number",
             "Location":"location_descr",
             "Borough":"location_borough_name",
             "Contract Type":"contract_type_descr",
@@ -121,6 +124,7 @@
             "Contract ID":"contract_id",
             "Purchase Order Type":"agreement_type_name",
             "Release Number":"release_number",
+            "Line Number":"line_number",
             "Shipment Number":"shipment_number",
             "Distribution Number":"distribution_number",
             "Start Date":"agreement_start_date",
@@ -187,7 +191,7 @@
     "dataset":{
       "name":"checkbook_nycha:nycha_all_agreements",
       "data_source":"checkbook_nycha",
-      "sortColumn":["-contract_id", "release_number", "shipment_number", "distribution_number"],
+      "sortColumn":["-contract_id", "release_number", "line_number", "shipment_number", "distribution_number"],
       "columnTypes":{
         "contract_id":"like",
         "vendor":"like",
@@ -211,6 +215,7 @@
             "spent_to_date":"release_spend_to_date",
             "purpose":"purpose",
             "vendor":"vendor_name",
+            "line_number":"line_number",
             "location":"location_descr",
             "borough":"location_borough_name",
             "contract_type":"contract_type_descr",
@@ -230,6 +235,7 @@
             "contract_id":"contract_id",
             "purchase_order_type":"agreement_type_name",
             "release_number":"release_number",
+            "line_number":"line_number",
             "shipment_number":"shipment_number",
             "distribution_number":"distribution_number",
             "start_date":"agreement_start_date",
@@ -274,6 +280,7 @@
             "Spent to Date":"release_spend_to_date",
             "Purpose":"purpose",
             "Vendor":"vendor_name",
+            "Line Number":"line_number",
             "Location":"location_descr",
             "Borough":"location_borough_name",
             "Contract Type":"contract_type_descr",
@@ -288,7 +295,7 @@
             "Commodity Category":"commodity_category_descr",
             "Year": "release_approved_year"
           },
-          "elementsColumn":{
+          "overrideColumns":{
             "Year": "release_approved_year",
             "Contract ID":"contract_id",
             "Purchase Order Type":"agreement_type_name",
@@ -303,6 +310,7 @@
             "Spent to Date":"release_spend_to_date",
             "Purpose":"purpose",
             "Vendor":"vendor_name",
+            "Line Number":"line_number",
             "Location":"location_descr",
             "Borough":"location_borough_name",
             "Contract Type":"contract_type_descr",
