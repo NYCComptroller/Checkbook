@@ -2,11 +2,11 @@
   "widgetType":"data_tables",
   "widgetSubType":"dataTableList",
   "stickyHeader":true,
-  "cleanURLParameters":["year","curamtr","pcontdesc","appdate","startdate","enddate","vendornm_exact","vendor","vendornm","responsibilitynm_exact","fundingnm_exact","industrynm_exact","agreement_type", "po_num", "po_num_exact", "agency","awdmethod","contract_type","modamt"],
+  "cleanURLParameters":["csize","industry","year","curamtr","pcontdesc","appdate","startdate","enddate","vendornm_exact","vendor","vendornm","responsibilitynm_exact","fundingnm_exact","industrynm_exact","agreement_type", "po_num", "po_num_exact", "agency","awdmethod","contract_type","modamt"],
   "urlParamMap":{"year":"release_approved_year_id", "curamtr":"release_line_total_amount","industrynm_exact":"industry_type_id","fundingnm_exact":"funding_source_id","vendornm_exact":"vendor_name","agreement_type":"agreement_type_code",
                  "po_num":"contract_id","responsibilitynm_exact":"responsibility_center_id","po_num_exact":"contract_id", "agency":"agency_id", "awdmethod":"award_method_id","contract_type": "contract_type_code",
-    "pcontdesc":"purpose","appdate": "release_approved_date","startdate": "agreement_start_date","enddate": "agreement_end_date","vendornm": "vendor_name","vendor": "vendor_id","modamt": "agreement_amount_difference"
-  },
+    "pcontdesc":"purpose","appdate": "release_approved_date","startdate": "agreement_start_date","enddate": "agreement_end_date","vendornm": "vendor_name","vendor": "vendor_id","modamt": "agreement_amount_difference",
+    "csize":"award_size_id","industry":"industry_type_id"},
   "paramTypeConfig": {
     "po_num": "like",
     "po_num_exact": "eqignorecase",
@@ -37,7 +37,7 @@
     "purpose", "vendor_name", "location_descr", "location_borough_name", "contract_type_descr", "award_method_name", "grant_name",
     "expenditure_type_descr", "industry_type_name", "funding_source_descr", "responsibility_center_descr", "program_phase_descr",
     "gl_project_descr", "commodity_category_descr","release_line_total_amount","vendor_id","release_line_total_amount","release_line_original_amount","release_line_spend_to_date","agreement_amount_difference","agreement_percent_difference"],
-  "uniqueSortColumn":["-release_number", "-shipment_number", "-distribution_number"],
+  "uniqueSortColumn":["-release_number", "-line_number", "-shipment_number", "-distribution_number"],
 "preProcessConfiguration":"
 $contract_type = RequestUtil::getContractType();
 $node->show_difference = ($contract_type== 'BAM'||$contract_type== 'PAM');
@@ -103,6 +103,7 @@ $node->show_difference = ($contract_type== 'BAM'||$contract_type== 'PAM');
     {"label":"","column":"", "export":false},
     {"labelAlias":"purchase_order_type","column":"agreement_type_name"},
     {"labelAlias":"release_number","column":"release_number"},
+    {"labelAlias":"line_number","column":"line_number"},
     {"labelAlias":"shipment_number","column":"shipment_number"},
     {"labelAlias":"distribution_number","column":"distribution_number"},
     {"labelAlias":"start_date","column":"agreement_start_date"},
@@ -159,6 +160,7 @@ $node->show_difference = ($contract_type== 'BAM'||$contract_type== 'PAM');
       {"bSortable":false,"sWidth":"10px"},
       {"sClass":"text", "sWidth":"150px","asSorting":["asc","desc"]},
       {"sClass":"number-center", "sWidth":"50px","asSorting":["asc","desc"]},
+      {"sClass":"number-center", "sWidth":"75px","asSorting":["asc","desc"]},
       {"sClass":"number-center", "sWidth":"75px","asSorting":["asc","desc"]},
       {"sClass":"number-center", "sWidth":"75px","asSorting":["asc","desc"]},
       {"sClass":"text", "sWidth":"100px","asSorting":["asc","desc"]},
