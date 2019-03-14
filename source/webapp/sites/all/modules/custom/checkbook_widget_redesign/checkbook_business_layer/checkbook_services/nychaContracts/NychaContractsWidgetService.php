@@ -20,7 +20,7 @@ class NychaContractsWidgetService extends WidgetDataService implements IWidgetSe
                 break;
             case "size_link":
                 $column = $row['award_size_name'];
-                $url = NychaContractsUrlService::generateLandingPageUrl('size',$row['award_size_id']);
+                $url = NychaContractsUrlService::generateLandingPageUrl('csize',$row['award_size_id']);
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
             case "industry_link":

@@ -1391,7 +1391,7 @@ class RequestUtil
                     case 'awdmethod':
                         $title = _checkbook_project_get_name_for_argument("award_method_id", $value);
                         break;
-                    case 'size':
+                    case 'csize':
                         $title = _checkbook_project_get_name_for_argument("award_size_id", $value);
                         break;
                     case 'industry':

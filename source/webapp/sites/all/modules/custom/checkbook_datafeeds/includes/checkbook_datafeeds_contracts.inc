@@ -408,7 +408,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
             }
 
             if ($values['nycha_appr_datefrom'] && $values['nycha_appr_dateto']) {
-                $form['filter']['nycha_approved_date'] = array('#markup' => '<div><strong>Approved Date:</strong> Greater Than Equal to: ' . $values['nycha_enddatefrom'] . ' Less Than Equal to: ' . $values['nycha_appr_dateto'] . '</div>');
+                $form['filter']['nycha_approved_date'] = array('#markup' => '<div><strong>Approved Date:</strong> Greater Than Equal to: ' . $values['nycha_appr_datefrom'] . ' Less Than Equal to: ' . $values['nycha_appr_dateto'] . '</div>');
                 $user_criteria['Approved Date Greater Than'] = $values['nycha_appr_datefrom'];
                 $user_criteria['Approved Date Less Than'] = $values['nycha_appr_dateto'];
                 $formatted_search_criteria['Approved Date'] = 'Greater Than Equal to: ' . $values['nycha_appr_datefrom'] . ' Less Than Equal to: ' . $values['nycha_appr_dateto'];
@@ -623,7 +623,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
     $form_state['step_information']['confirmation']['stored_values']['user_criteria'] = $user_criteria;
 
     //Update Criteria with overridden column order on export only for CityWide Active/Registered Expense Contracts
-    if(strtolower($values['df_contract_status']) != 'pending' && strtolower($values['category']) != 'revenue' && !in_array($data_source, array(Datasource::OGE, Datasource::NYCHA))){
+    if(strtolower($values['df_contract_status']) != 'pending' && strtolower($values['category']) != 'revenue' && $data_source != Datasource::OGE){
         $intended_order =  _checkbook_datafeeds_contracts_override_column_options($response_type, $data_source,$values['df_contract_status'],$values['category'],$year);
         $criteria['responseColumns'] = checkbook_datafeeds_override_column_order($criteria['responseColumns'], $intended_order);
     }
