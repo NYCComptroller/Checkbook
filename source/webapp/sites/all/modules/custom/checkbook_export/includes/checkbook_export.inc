@@ -453,10 +453,10 @@ function _checkbook_export_generateExportFile($node, $headers, $exportConfigNode
 
         $newQuery = null;
         foreach($columnsConfig as $key => $value){
-            if (empty($exportColumns[$value])) {
-                LogHelper::log_error('-=EMPTY EXPORT COLUMN FOUND=-');
+            if (!empty($exportColumns[$value])) {
+                $newQuery .= $exportColumns[$value] . ',';
             }
-            $newQuery .= $exportColumns[$value] . ',';
+
         }
         $newQuery = substr($newQuery, 0, -1);
         $node->data = str_replace($selectQuery,$newQuery, $node->data);
