@@ -6,7 +6,6 @@
   "startWith":0,
   "maxSelect":5,
   "showAllRecords":true,
-  "allowFacetDeselect":true,
   "columns":["vendor_id.vendor_id","vendor_name.vendor_name","txcount"],
   "orderBy":"-txcount",
   "facetPager":true,
