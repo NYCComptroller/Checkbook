@@ -2126,7 +2126,7 @@ function checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $fi
         '#suffix' => '</div></div>',
         '#attributes' => array('class' => array('datepicker')),
         '#id' => 'edit-nycha-appr-dateto',
-        '#name' => 'nycha_apr_dateto',
+        '#name' => 'nycha_appr_dateto',
         '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_appr_dateto', $first_time_load, ''),
     );
     $form['filter']['nycha_year'] = array(
