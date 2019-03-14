@@ -36,7 +36,7 @@
       },
       "nycha_size":{
         "widget_config": "nycha_contracts_by_size_view",
-        "visibility_parameters": ["-size"]
+        "visibility_parameters": ["-csize"]
       }
     }
   }
