@@ -1398,7 +1398,7 @@ class RequestUtil
                         $title = _checkbook_project_get_name_for_argument("industry_type_id", $value);
                         break;
                     default:
-                        $title = "NEW YORK CITY HOUSING AUTHORITY";
+                        $title = "New York City Housing Authority";
                 }
             }
         }
