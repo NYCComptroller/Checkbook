@@ -1298,11 +1298,11 @@ function checkbook_datafeeds_contracts_add_required_columns($response_type, $dat
 function checkbook_datafeeds_get_configuration_key($domain, $data_source, $status, $expense_category, $year){
     $domain_filter = $domain;
     if($data_source == Datasource::NYCHA){
-        $domain_filter .=  ($year == 'ALL') ? "_all_years" :"";
+        $domain_filter =  $domain_filter . ($year == 'ALL') ? "_all_years" :"";
     }else{
-        $domain_filter .= $status == 'pending' ? '_pending' : '_active';
-        $domain_filter .= $status == 'pending' ? '' : '_' . $expense_category;
-        $domain_filter .=  ($year == 'All Years' || $year = 'ALL') ? "_all_years" :"";
+        $domain_filter = $domain_filter . ($status == 'pending' ? '_pending' : '_active');
+        $domain_filter = $domain_filter . ($status == 'pending' ? '' : '_' . $expense_category);
+        $domain_filter = $domain_filter . (($year == 'All Years' || $year == 'ALL') ? "_all_years" :"");
     }
     return $domain_filter;
 }
