@@ -3797,3 +3797,17 @@ a.new-features-morelink{
 .nycha-contract-history td.thVNum{
   padding: 0 10px;
 }
+
+
+#nycha_contract_assoc_releases table{
+  width: 100%;
+}
+
+a.nycha_assoc_load_more {
+  display: none;
+  float: right;
+}
+
+em.nycha_assoc_rel_stats {
+  display: none;
+}
