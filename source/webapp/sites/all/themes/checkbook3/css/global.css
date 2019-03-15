@@ -3815,3 +3815,11 @@ em.nycha_assoc_rel_stats {
 .assoc-loading {
   float: right;
 }
+
+.nycha_assoc_rel_pager {
+  display: inline-block;
+}
+
+.pager-center{
+  text-align: center;
+}
