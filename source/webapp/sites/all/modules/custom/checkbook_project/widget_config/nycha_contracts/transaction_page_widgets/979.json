@@ -2,9 +2,9 @@
   "widgetType":"data_tables",
   "widgetSubType":"dataTableList",
   "stickyHeader":true,
-  "cleanURLParameters":["csize","industry","year","curamtr","pcontdesc","appdate","startdate","enddate","vendornm_exact","vendor","vendornm","responsibilitynm_exact","fundingnm_exact","industrynm_exact","agreement_type", "po_num", "po_num_exact", "agency","awdmethod","contract_type","modamt"],
+    "cleanURLParameters":["csize","industry","year","curamtr","pcontdesc","appdate","startdate","enddate","vendornm_exact","vendor","vendornm","responsibilitynm_exact","fundingnm_exact","industrynm_exact","agreement_type", "po_num", "po_num_exact", "agency","award_method","awdmethod","contract_type","modamt"],
   "urlParamMap":{"year":"release_approved_year_id", "curamtr":"release_line_total_amount","industrynm_exact":"industry_type_id","fundingnm_exact":"funding_source_id","vendornm_exact":"vendor_name","agreement_type":"agreement_type_code",
-                 "po_num":"contract_id","responsibilitynm_exact":"responsibility_center_id","po_num_exact":"contract_id", "agency":"agency_id", "awdmethod":"award_method_id","contract_type": "contract_type_code",
+                 "po_num":"contract_id","responsibilitynm_exact":"responsibility_center_id","po_num_exact":"contract_id", "agency":"agency_id", "award_method":"award_method_id", "awdmethod":"award_method_id","contract_type": "contract_type_code",
     "pcontdesc":"purpose","appdate": "release_approved_date","startdate": "agreement_start_date","enddate": "agreement_end_date","vendornm": "vendor_name","vendor": "vendor_id","modamt": "agreement_amount_difference",
     "csize":"award_size_id","industry":"industry_type_id"},
   "paramTypeConfig": {
