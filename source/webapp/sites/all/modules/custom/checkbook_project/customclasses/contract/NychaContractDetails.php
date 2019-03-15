@@ -300,7 +300,8 @@ SQL;
             WHERE
               hgr.release_number is null
               AND revision_number <> 0
-              AND contract_id='{$contract_id}';
+              AND contract_id='{$contract_id}'
+            ORDER BY revision_number DESC;
 SQL;
 
         $history = _checkbook_project_execute_sql_by_data_source($sql, 'checkbook_nycha');
