@@ -109,4 +109,19 @@ class NychaContractsUrlService
         $url = "/modamt/0";
         return $url;
     }
+    /**
+     * Returns NYCHA Contracts Vendor Transaction page URL for the given vendor id
+     * @param $vendor_id
+     * @return string
+     */
+    static function vendorUrl($vendor_id)
+    {
+        $url = '/nycha_contracts'
+            . RequestUtilities::buildUrlFromParam('year')
+            . RequestUtilities::buildUrlFromParam('agency')
+            . '/datasource/checkbook_nycha'
+            . '/vendor/'. $vendor_id;
+
+        return $url;
+    }
 }
