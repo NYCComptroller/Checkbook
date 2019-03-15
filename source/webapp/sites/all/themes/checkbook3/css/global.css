@@ -3811,3 +3811,7 @@ a.nycha_assoc_load_more {
 em.nycha_assoc_rel_stats {
   display: none;
 }
+
+.assoc-loading {
+  float: right;
+}
