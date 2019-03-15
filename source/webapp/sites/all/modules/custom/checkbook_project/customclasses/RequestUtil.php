@@ -1400,7 +1400,7 @@ class RequestUtil
                     default:
                         $title = "New York City Housing Authority";
                 }
-                $title = $title.' Contracts';
+                $title .= ' Contracts';
             }
         }
         return $title;
