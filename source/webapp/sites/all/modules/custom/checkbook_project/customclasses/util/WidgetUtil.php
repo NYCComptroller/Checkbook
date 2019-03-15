@@ -267,6 +267,7 @@ class WidgetUtil
         "agreement_current_amount"=>"Agreement<br/>Current Amount",
         "agreement_original_amount"=>"Agreement<br/>Original Amount",
         "agreement_spend_to_date"=>"Agreement<br/>Spend to Date",
+        "approved_date" => "Approved<br/>Date",
         "release_approved_date" => "Approved<br/>Date",
         "canceled_date" => "Canceled<br/>Date",
         "release_total_amount" => "Total<br/>Amount",
