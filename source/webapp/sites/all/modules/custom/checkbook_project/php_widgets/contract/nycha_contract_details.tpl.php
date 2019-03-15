@@ -78,7 +78,7 @@ $contract = $node->data;
 
                     <li>
                         <span class="gi-list-item"><?= WidgetUtil::getLabel('version_number') ?>:</span>
-                        &nbsp;<?= htmlentities($contract['revision_number']) ?>
+                        &nbsp;<?= htmlentities($contract['revision_count']??$contract['release_revision_count']) ?>
                     </li>
                 </ul>
                 <ul class="right">
