@@ -1,0 +1,6 @@
+{
+  "widgetType": "phpparser",
+  "noDataInitialLoad":true,
+  "customDataHandlerClass":"NychaContractAssocReleases",
+  "template":"nycha_contract_assoc_releases"
+}
