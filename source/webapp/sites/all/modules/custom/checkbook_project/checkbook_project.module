@@ -477,6 +477,10 @@ function checkbook_project_theme($existing, $type, $theme, $path){
             'template' => 'php_widgets/contract/nycha_contract_details',
             'arguments' => array('node' => NULL)
         ),
+        'nycha_contract_assoc_releases' => array(
+            'template' => 'php_widgets/contract/nycha_contract_assoc_releases',
+            'arguments' => array('node' => NULL)
+        ),
         'nycha_contracts_summary' => array(
             'template' => 'php_widgets/contract/nycha_contracts_summary',
             'arguments' => array('node' => NULL)
