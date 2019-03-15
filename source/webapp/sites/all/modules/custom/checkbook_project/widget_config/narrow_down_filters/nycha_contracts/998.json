@@ -9,7 +9,7 @@
   "orderBy":"-txcount",
   "facetPager":true,
   "filterName":"Award Method",
-  "urlParameterName":"awdmethod",
+  "urlParameterName":"award_method",
   "autocompleteParamName":"awdmethod_auto",
   "autocompleteID":"fAwdMethodId",
   "autocompleteField":"award_method_name",
