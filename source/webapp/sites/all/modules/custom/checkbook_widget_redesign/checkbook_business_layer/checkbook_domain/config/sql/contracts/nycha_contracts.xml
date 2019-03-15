@@ -95,9 +95,9 @@
         MAX(total_amount) AS total_amount,
         MAX(original_amount) AS original_amount,
         MAX(spend_to_date) AS spend_to_date,
-        MAX(original_amount - total_amount) AS dollar_difference,
-      ROUND( CASE COALESCE( MAX(original_amount), 0 :: NUMERIC ) WHEN 0 THEN 100 :: NUMERIC ELSE (
-      MAX(original_amount - total_amount) / MAX(original_amount) )* 100 END, 2) AS percent_difference
+      MAX(total_amount-original_amount) AS dollar_difference,
+      ROUND( CASE COALESCE( MAX(total_amount), 0 :: NUMERIC ) WHEN 0 THEN 100 :: NUMERIC ELSE (
+      MAX(total_amount-original_amount) / MAX(total_amount) )* 100 END, 2) AS percent_difference
       FROM contracts_widget_summary
       <where>
         <exp op="AND">
@@ -130,9 +130,9 @@
         MAX(total_amount) AS total_amount,
         MAX(original_amount) AS original_amount,
         MAX(spend_to_date) AS spend_to_date,
-        MAX(original_amount - total_amount) AS dollar_difference,
-      ROUND( CASE COALESCE( MAX(original_amount), 0 :: NUMERIC ) WHEN 0 THEN 100 :: NUMERIC ELSE
-      (MAX(original_amount - total_amount) / MAX(original_amount) )* 100 END, 2) AS percent_difference
+        MAX(total_amount-original_amount) AS dollar_difference,
+      ROUND( CASE COALESCE( MAX(total_amount), 0 :: NUMERIC ) WHEN 0 THEN 100 :: NUMERIC ELSE
+      (MAX(total_amount-original_amount) / MAX(total_amount) )* 100 END, 2) AS percent_difference
       FROM contracts_widget_summary
       <where>
         <exp op="AND">
@@ -168,9 +168,9 @@
       MAX(total_amount) AS total_amount,
       MAX(original_amount) AS original_amount,
       MAX(spend_to_date) AS spend_to_date,
-      MAX(original_amount - total_amount) AS dollar_difference,
-      ROUND( CASE COALESCE( MAX(original_amount), 0 :: NUMERIC ) WHEN 0 THEN 100 :: NUMERIC ELSE (
-      MAX(original_amount - total_amount) / MAX(original_amount) )* 100 END, 2 ) AS percent_difference
+      MAX(total_amount-original_amount) AS dollar_difference,
+      ROUND( CASE COALESCE( MAX(total_amount), 0 :: NUMERIC ) WHEN 0 THEN 100 :: NUMERIC ELSE (
+      MAX(total_amount-original_amount) / MAX(total_amount) )* 100 END, 2 ) AS percent_difference
       FROM contracts_widget_summary
       <where>
         <exp op="AND">
