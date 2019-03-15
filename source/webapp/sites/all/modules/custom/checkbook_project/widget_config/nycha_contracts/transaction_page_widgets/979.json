@@ -32,7 +32,7 @@
   "html_class":"initiative-table",
   "no_results_content":"No Results Found",
   "dataset":"checkbook_nycha:nycha_all_agreements",
-  "columns": [ "contract_id", "agreement_type_name", "release_number", "shipment_number", "distribution_number", "agreement_start_date",
+  "columns": ["line_number", "contract_id", "agreement_type_name", "agreement_type_code", "release_number", "shipment_number", "distribution_number", "agreement_start_date",
     "agreement_end_date", "release_approved_date", "release_total_amount", "release_original_amount", "release_spend_to_date",
     "purpose", "vendor_name", "location_descr", "location_borough_name", "contract_type_descr", "award_method_name", "grant_name",
     "expenditure_type_descr", "industry_type_name", "funding_source_descr", "responsibility_center_descr", "program_phase_descr",
@@ -95,6 +95,9 @@ $node->show_difference = ($contract_type== 'BAM'||$contract_type== 'PAM');
       },
       "formatted_percent_diff": {
       "expression":"round($row['agreement_percent_difference'],2). '%'"
+      },
+      "release_number_formatted": {
+        "expression":"(strtolower($row['agreement_type_code']) == 'po')? 'N/A' : $row['release_number']"
       }
 },
   "skipCustomPadding":true,
@@ -102,7 +105,7 @@ $node->show_difference = ($contract_type== 'BAM'||$contract_type== 'PAM');
     {"labelAlias":"contract_id","column":"contract_link","sortSourceColumn":"contract_id"},
     {"label":"","column":"", "export":false},
     {"labelAlias":"purchase_order_type","column":"agreement_type_name"},
-    {"labelAlias":"release_number","column":"release_number"},
+    {"labelAlias":"release_number","column":"release_number_formatted","sortSourceColumn":"release_number"},
     {"labelAlias":"line_number","column":"line_number"},
     {"labelAlias":"shipment_number","column":"shipment_number"},
     {"labelAlias":"distribution_number","column":"distribution_number"},
