@@ -84,7 +84,7 @@ $node->show_difference = ($contract_type== 'BAM'||$contract_type== 'PAM');
        "expression": "custom_number_formatter_basic_format($row['release_line_spend_to_date'])"
       },
       "prime_vendor_name_link": {
-       "expression": " '<a href=\"'.NychaContractsUrlService::generateLandingPageUrl('vendor',$row['vendor_id']).'\">'.$row['vendor_name_formatted'].'</a>'  "
+       "expression": " '<a href=\"'.NychaContractsUrlService::vendorUrl($row['vendor_id']).'\">'.$row['vendor_name_formatted'].'</a>'  "
        },
       "contract_link":{
       "expression": " '<a href=\"'.
