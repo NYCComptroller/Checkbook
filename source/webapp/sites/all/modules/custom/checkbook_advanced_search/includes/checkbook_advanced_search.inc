@@ -637,7 +637,7 @@ function _checkbook_advanced_search_get_responsibility_centers($data_source = 'c
 
         foreach ($results as $value) {
             if($feeds){
-                $text = $value['description'].' ['.$value['responsibility_center_code'].']';
+                $text = $value['responsibility_center_description'].' ['.$value['responsibility_center_code'].']';
                 $res_center_key_val_option_attributes[$text] = array('title' => $text);
                 if (strlen($text) > 20)
                     $res_center_key_val_options[$text] = substr($text, 0, 20) . '...';
@@ -645,11 +645,11 @@ function _checkbook_advanced_search_get_responsibility_centers($data_source = 'c
                     $res_center_key_val_options[$text] = $text;
             } else {
                 $keys = 'id=>' . $value['responsibility_center_id'] . '~code=>' . $value['responsibility_center_code'];
-                $res_center_key_val_option_attributes[$keys] = array('title' => $value['description']);
-                if (strlen($value['description']) > 20)
-                    $res_center_key_val_options[$keys] = substr($value['description'], 0, 20) . '...';
+                $res_center_key_val_option_attributes[$keys] = array('title' => $value['responsibility_center_description']);
+                if (strlen($value['responsibility_center_description']) > 20)
+                    $res_center_key_val_options[$keys] = substr($value['responsibility_center_description'], 0, 20) . '...';
                 else
-                    $res_center_key_val_options[$keys] = $value['description'];
+                    $res_center_key_val_options[$keys] = $value['responsibility_center_description'];
             }
         }
 
