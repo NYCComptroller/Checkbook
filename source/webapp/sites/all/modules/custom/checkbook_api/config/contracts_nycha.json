@@ -202,6 +202,7 @@
           "rootElement":"contract_transactions",
           "rowParentElement":"transaction",
           "elementsColumn":{
+            "year":"release_approved_year",
             "contract_id":"contract_id",
             "purchase_order_type":"agreement_type_name",
             "release_number":"release_number",
@@ -227,8 +228,7 @@
             "responsibility_center":"responsibility_center_descr",
             "program":"program_phase_descr",
             "project":"gl_project_descr",
-            "commodity_category":"commodity_category_descr",
-            "year":"release_approved_year"
+            "commodity_category":"commodity_category_descr"
           },
           "overrideColumns":{
             "year":"release_approved_year",
@@ -267,6 +267,7 @@
         },
         "csv":{
           "elementsColumn":{
+            "Year": "release_approved_year",
             "Contract ID":"contract_id",
             "Purchase Order Type":"agreement_type_name",
             "Release Number":"release_number",
@@ -292,8 +293,7 @@
             "Responsibility Center":"funding_source_descr",
             "Program":"program_phase_descr",
             "Project":"gl_project_descr",
-            "Commodity Category":"commodity_category_descr",
-            "Year": "release_approved_year"
+            "Commodity Category":"commodity_category_descr"
           },
           "overrideColumns":{
             "Year": "release_approved_year",

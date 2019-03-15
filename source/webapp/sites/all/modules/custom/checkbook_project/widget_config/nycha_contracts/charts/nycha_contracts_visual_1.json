@@ -40,7 +40,7 @@
       $node->widgetConfig->defaultParameters = $node->widgetConfig->defaultParametersPending;
       $node->widgetConfig->cleanURLParameters = $node->widgetConfig->cleanURLParametersPending;
     }",
-  "chartTitle":"Top Ten Vendors By Current Amount",
+  "chartTitle":"Top Ten Vendors by Current Amount",
   "widgetDataLoader":"
       $where_filters = array();
       foreach($node->widgetConfig->requestParams as $param=>$value){
