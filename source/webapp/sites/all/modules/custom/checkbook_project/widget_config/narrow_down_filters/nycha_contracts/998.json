@@ -1,0 +1,25 @@
+{
+  "widgetType":"phpparser",
+  "parentNid":979,
+  "no_results_content":"No Results Found",
+  "limit":100,
+  "startWith":0,
+  "maxSelect":5,
+  "columns":["award_method_id.award_method_id", "award_method_name.award_method_name", "txcount"],
+  "orderBy":"-txcount",
+  "facetPager":true,
+  "filterName":"Award Method",
+  "urlParameterName":"awdmethod",
+  "autocompleteParamName":"awdmethod_auto",
+  "autocompleteID":"fAwdMethodId",
+  "autocompleteField":"award_method_name",
+  "adjustParameters":"
+  $parameters = NYCHAContractUtil::adjustYearParams($node, $parameters);
+  if(function_exists('_checkbook_project_applyParameterFilters')){
+  $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+}
+$adjustedParameters['award_method_id.award_method_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+return $adjustedParameters;
+",
+"template":"individual_filter"
+}
