@@ -147,7 +147,7 @@
       </where>
       GROUP BY  contract_id, purpose, vendor_name, vendor_id
       <exp op="IF" condition="=" paramName="is_modification" compareValue="true">
-        HAVING MAX(original_amount - total_amount)!= 0
+        HAVING MAX(total_amount-original_amount)!= 0
       </exp>
     </sql>
   </statement>
@@ -185,7 +185,7 @@
       </where>
       GROUP BY  contract_id, purpose, vendor_name
       <exp op="IF" condition="=" paramName="is_modification" compareValue="true">
-        HAVING  MAX(original_amount - total_amount)!= 0
+        HAVING  MAX(total_amount-original_amount)!= 0
       </exp>
     </sql>
   </statement>
