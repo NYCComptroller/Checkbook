@@ -591,45 +591,42 @@ $contract = $node->data;
     <div class="content clearfix nycha-assoc-releases">
 
         <h3>Associated Releases</h3>
-        <table id="assoc_contracts_list">
-            <tr>
-                <td id="nycha_contract_assoc_releases">
-
-                </td>
-            </tr>
-        </table>
-        <em class="nycha_assoc_rel_stats">
-            Showing <strong class="nycha_assoc_rel_num"></strong> of <strong><?= $node->assoc_releases_count ?></strong>
-        </em>
-        <a class="nycha_assoc_load_more">Load more >>></a>
+        <div class="nycha_contract_assoc_releases"></div>
+        <div class="pager-center">
+            <div class="nycha_assoc_rel_pager"></div>
+        </div>
     </div>
 
 <script type="text/javascript">
     jQuery(document).ready(function() {
         var callBackURL = "/panel_html/nycha_contract_assoc_releases/contract/<?= htmlentities($contract['contract_id']) ?>/page/";
 
-        var currentPage = 0;
         function loadAssocReleases(page){
-            jQuery(".nycha_assoc_load_more").hide();
-            jQuery("#nycha_contract_assoc_releases").append("<img class='assoc-loading' src='/sites/all/themes/checkbook/images/loading_large.gif' title='Loading Data...'/>");
+            jQuery(".nycha_contract_assoc_releases").html("<img class='assoc-loading' src='/sites/all/themes/checkbook/images/loading_large.gif' title='Loading Data...'/>");
             jQuery.ajax({
                 url: callBackURL+page,
                 success: function(data) {
-                    jQuery("#nycha_contract_assoc_releases").append(data);
+                    jQuery(".nycha_contract_assoc_releases").html(data);
                 },
                 complete: function(){
                     jQuery(".assoc-loading").remove();
-                    jQuery(".nycha_assoc_rel_num").text(jQuery('.assoc_item').length);
                     if (jQuery('.assoc_item').length < <?= $node->assoc_releases_count ?>) {
-                        jQuery(".nycha_assoc_load_more").show();
                     }
-                    jQuery(".nycha_assoc_rel_stats").show();
+                    jQuery(".nycha_assoc_rel_pager").show();
                 }
             });
         }
+
+        jQuery(".nycha_assoc_rel_pager").hide();
         loadAssocReleases(0);
-        jQuery('.nycha_assoc_load_more').click(function(){
-            loadAssocReleases(++currentPage);
+
+        jQuery('.nycha_assoc_rel_pager').pagination({
+            items: <?= $node->assoc_releases_count ?>,
+            itemsOnPage: 10,
+            cssStyle: 'compact-theme',
+            onPageClick: function(page){
+                loadAssocReleases(page-1)
+            }
         });
     });
 </script>
