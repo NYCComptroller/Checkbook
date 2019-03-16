@@ -55,7 +55,7 @@ $contract = $node->data;
                     <li>
                         <span class="gi-list-item"><?= WidgetUtil::getLabel('vendor_name') ?>:</span>
                         &nbsp;<a
-                            href="<?= NychaContractsUrlService::generateLandingPageUrl('vendor', $contract['vendor_id']) ?>">
+                            href="<?= NychaContractsUrlService::vendorUrl( $contract['vendor_id']) ?>">
                             <?= htmlentities($contract['vendor_name']) ?></a></li>
                     <li>
                         <span class="gi-list-item"><?= WidgetUtil::getLabel('contract_purpose') ?>:</span>
@@ -118,7 +118,7 @@ $contract = $node->data;
                     <li>
                         <span class="gi-list-item"><?= WidgetUtil::getLabel('vendor_name') ?>:</span>
                         &nbsp;<a
-                            href="<?= NychaContractsUrlService::generateLandingPageUrl('vendor', $contract['vendor_id']) ?>">
+                            href="<?= NychaContractsUrlService::vendorUrl($contract['vendor_id']) ?>">
                             <?= htmlentities($contract['vendor_name']) ?></a></li>
                     <li>
                         <span class="gi-list-item"><?= WidgetUtil::getLabel('address') ?>:</span>
