@@ -41,7 +41,7 @@ class NychaContractDetails
         $node->contractPO = $node->contractBAPA = false;
 
         if (stripos(' ' . $contract_id, 'ba') || stripos(' ' . $contract_id, 'pa')) {
-            $this->loadBaPa($node, $contract_id);
+            $this->loadBlankedOrPlannedAgreement($node, $contract_id);
             $node->contractBAPA = true;
         }
 
@@ -72,9 +72,9 @@ class NychaContractDetails
                 release_approved_date,
                 release_approved_year,
                 release_approved_year_id,
-                release_line_total_amount total_amount,
-                release_line_original_amount original_amount,
-                release_line_spend_to_date spend_to_date,
+                release_total_amount total_amount,
+                release_original_amount original_amount,
+                release_spend_to_date spend_to_date,
                 release_line_amount_difference,
                 release_revision_count,
                 purpose,
@@ -109,7 +109,7 @@ SQL;
      * @param $node
      * @param $contract_id
      */
-    private function loadBaPa(&$node, $contract_id)
+    private function loadBlankedOrPlannedAgreement(&$node, $contract_id)
     {
         $bapa_query = <<<SQL
             SELECT
