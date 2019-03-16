@@ -70,7 +70,7 @@ foreach ($node->assocReleases as $release): ?>
                                         <table class="dataTable cta-spending-history outerTable">
                                             <thead>
                                             <tr>
-                                                <th>
+                                                <th class="text">
                                                     <?= WidgetUtil::getLabelDiv('vendor_name') ?>
                                                 </th>
                                                 <th>
@@ -223,12 +223,10 @@ foreach ($node->assocReleases as $release): ?>
                                                                 <div><?= sizeof($revisions) ?></div>
                                                             </td>
                                                             <td class="number endCol">
-                                                                <div
-                                                                    style="margin-right: 119px;"><?= custom_number_formatter_format($revisions[key($revisions)]['revision_total_amount'], 2, "$") ?></div>
+                                                                <div><?= custom_number_formatter_format($revisions[key($revisions)]['revised_total_amount'], 2, "$") ?></div>
                                                             </td>
                                                             <td class="number endCol">
-                                                                <div
-                                                                    style="margin-right: 119px;"><?= custom_number_formatter_format($revisions[key($revisions)]['release_original_amount'], 2, "$") ?></div>
+                                                                <div><?= custom_number_formatter_format($revisions[key($revisions)]['release_original_amount'], 2, "$") ?></div>
                                                             </td>
                                                         </tr>
                                                         <tr id="showHidectaspe<?= $year ?>"
@@ -277,7 +275,7 @@ foreach ($node->assocReleases as $release): ?>
                                                                                     <div><?= format_string_to_date($revision['revision_approved_date'] ?? $revision['approved_date']) ?></div>
                                                                                 </td>
                                                                                 <td class="text td4">
-                                                                                    <div><?= custom_number_formatter_format($revision['revision_total_amount'], 2, '$') ?></div>
+                                                                                    <div><?= custom_number_formatter_format($revision['revised_total_amount'], 2, '$') ?></div>
                                                                                 </td>
                                                                                 <td class="text td5">
                                                                                     <div><?= custom_number_formatter_format($revision['release_original_amount'], 2, '$') ?></div>
