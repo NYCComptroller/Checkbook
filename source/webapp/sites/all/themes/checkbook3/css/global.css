@@ -3901,3 +3901,7 @@ table.nycha_assoc_contracts_list {
 .center{
   text-align:center;
 }
+
+.nycha_assoc_contracts_list .assoc-release-link {
+  color: #3C5E7C;
+}
