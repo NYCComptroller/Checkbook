@@ -41,18 +41,19 @@ class NychaContractDetails
         $node->contractPO = $node->contractBAPA = false;
 
         if (stripos(' ' . $contract_id, 'ba') || stripos(' ' . $contract_id, 'pa')) {
-            $this->loadBlankedOrPlannedAgreement($node, $contract_id);
             $node->contractBAPA = true;
+            $this->loadBlankedOrPlannedAgreement($node, $contract_id);
+            $this->calcBapaAssocReleases($node, $contract_id);
         }
 
         if (stripos(' ' . $contract_id, 'po')) {
-            $this->loadPurchaseOrder($node, $contract_id);
             $node->contractPO = true;
+            $this->loadPurchaseOrder($node, $contract_id);
+            NychaContractDetails::loadShipmentDistributionDetails($node, $contract_id);
         }
 
         $node->contract_history_by_years = $this->getContractHistory($node->data['contract_id'] ?? '');
         $this->calcNumberOfContracts($node);
-        $this->calcAssocReleases($node, $contract_id);
     }
 
     /**
@@ -261,7 +262,7 @@ EOQ2;
      * @param $contract_id
      * @return array|bool|mixed
      */
-    private function calcAssocReleases(&$node, $contract_id)
+    private function calcBapaAssocReleases(&$node, $contract_id)
     {
         $releases_sql = <<<SQL
             SELECT COUNT(DISTINCT release_id)
@@ -307,5 +308,43 @@ SQL;
         $history = _checkbook_project_execute_sql_by_data_source($sql, 'checkbook_nycha');
         return $this->splitHistoryByYears($history);
 
+    }
+
+
+    public static function loadShipmentDistributionDetails(&$node, $contract_id)
+    {
+        $sd_sql = <<<SQL
+            SELECT DISTINCT 
+                release_id,
+                shipment_number,
+                line_number,
+                distribution_number,
+                release_line_total_amount,
+                release_line_original_amount,
+                release_line_spend_to_date,
+                responsibility_center_descr,
+                transaction_status_name
+            FROM all_agreement_transactions a
+            WHERE contract_id = '{$contract_id}'
+            ORDER BY shipment_number, distribution_number, line_number;
+SQL;
+
+        $shipments = _checkbook_project_execute_sql_by_data_source($sd_sql, 'checkbook_nycha');
+        if ($node->contractPO) {
+            $node->shipments = $shipments;
+            return;
+        }
+
+        $return = [];
+        foreach ($shipments as $shipment) {
+            if (!isset($return[$shipment['release_id']])) {
+                $return[$shipment['release_id']] = [];
+            }
+            $return[$shipment['release_id']][] = $shipment;
+        }
+
+        foreach ($node->assocReleases as &$release) {
+            $release['shipments'] = $return[$release['release_id']];
+        }
     }
 }
