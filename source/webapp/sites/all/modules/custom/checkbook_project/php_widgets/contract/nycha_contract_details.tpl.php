@@ -78,7 +78,7 @@ $contract = $node->data;
 
                     <li>
                         <span class="gi-list-item"><?= WidgetUtil::getLabel('version_number') ?>:</span>
-                        &nbsp;<?= htmlentities($contract['revision_count']??$contract['release_revision_count']) ?>
+                        &nbsp;<?= htmlentities($contract['revision_count'] ?? $contract['release_revision_count']) ?>
                     </li>
                 </ul>
                 <ul class="right">
@@ -306,34 +306,34 @@ $contract = $node->data;
                         style="margin:8px 0px 8px 15px!important; display:inline-block; text-align: center !important;"><?= WidgetUtil::getLabel('vendor_name') ?></span>
                 </th>
                 <th><span
-                        style="text-align: center !important; vertical-align: middle; padding-right:6% !important"><?= WidgetUtil::getLabel('current_amount') ?>
+                    ><?= WidgetUtil::getLabel('current_amount') ?>
                                                                 </span></th>
                 <th><span
-                        style="text-align: center !important; vertical-align: middle; padding-right:6% !important"><?= WidgetUtil::getLabel('original_amount') ?>
+                    ><?= WidgetUtil::getLabel('original_amount') ?>
                                                                 </span></th>
                 <th><span
-                        style="text-align: center !important; vertical-align: middle; padding-right:6% !important"><?= WidgetUtil::getLabel('spent_to_date') ?>
+                    ><?= WidgetUtil::getLabel('spent_to_date') ?>
                                                                 </span></th>
             </tr>
             </thead>
             <tbody>
             <tr class="even outer">
-                <td style="text-align: left !important; vertical-align: middle; padding: 10px 5px !important;">
+                <td>
                     <span style="margin:8px 0px 8px 15px!important; display:inline-block; text-align: left !important;">
                     <a class="showHide  expandTwo"></a><?= htmlentities($contract['vendor_name']) ?></span>
                 </td>
-                <td style="text-align: left !important; vertical-align: middle; padding: 10px 5px !important;">
-                    <span style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
+                <td>
+                    <span>
                     <?= custom_number_formatter_format($contract['total_amount'], 2, '$'); ?>
                     </span>
                 </td>
-                <td style="text-align: left !important; vertical-align: middle; padding: 10px 5px !important;">
-                    <span style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
+                <td>
+                    <span>
                     <?= custom_number_formatter_format($contract['original_amount'], 2, '$'); ?>
                     </span>
                 </td>
-                <td style="text-align: left !important; vertical-align: middle; padding: 10px 5px !important;">
-                    <span style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
+                <td>
+                    <span>
                     <?= custom_number_formatter_format($contract['spend_to_date'], 2, "$"); ?>
                     </span>
                 </td>
@@ -461,13 +461,13 @@ $contract = $node->data;
                         <div>7 Transactions</div>
                     </td>
                     <td class="number endCol">
-                        <div style="margin-right: 119px;">$3.38M</div>
+                        <div>$3.38M</div>
                     </td>
                 </tr>
                 <tr id="showHidectaspe<?= $year ?>" class="showHide odd"
                     style="<?= ($year_cnt ? 'display:none' : '') ?>">
                     <td colspan="3">
-                        <div class="scroll" style="padding-left:20px">
+                        <div class="scroll">
                             <table class="dataTable outerTable">
                                 <thead>
                                 <tr>
@@ -537,49 +537,44 @@ $contract = $node->data;
     <div class="panel-separator"></div>
 
     <h3>Spending by Expense Category</h3>
-    <table class="dataTable outerTable"
-           style="border: 1px solid #CACACA;">
+    <table class="dataTable outerTable">
         <thead>
         <tr>
-            <th style="text-align: left !important; vertical-align: middle;">
-                <span style="margin:8px 0 8px 15px!important; display:inline-block; text-align: center !important;">
-                    <?= WidgetUtil::getLabel('expense_category') ?>
-                </span>
+            <th>
+                <?= WidgetUtil::getLabelDiv('expense_category'); ?>
             </th>
-            <th style="text-align: left !important; vertical-align: middle;">
-                <span style="margin:8px 0 8px 15px!important; display:inline-block; text-align: center !important;">
-                    <?= WidgetUtil::getLabel('category_type') ?>
-                </span>
+            <th>
+                <?= WidgetUtil::getLabelDiv('category_type'); ?>
             </th>
-            <th style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
-                <span style="margin:8px 0 8px 0 !important;display:inline-block; text-align: center !important;">
-                    <?= WidgetUtil::getLabel('encumbered_amount') ?>
-                </span>
+            <th>
+                <?= WidgetUtil::getLabelDiv('encumbered_amount'); ?>
             </th>
-            <th style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
-                <span style="margin:8px 0 8px 0 !important;display:inline-block; text-align: center !important;">
-                    <?= WidgetUtil::getLabel('spent_to_date') ?>
-                </span>
+            <th>
+                <?= WidgetUtil::getLabelDiv('spend_to_date'); ?>
             </th>
         </tr>
         </thead>
         <tbody>
         <tr class="even outer">
-            <td style="text-align: left !important; vertical-align: middle; padding: 10px 5px !important;">
-                            <span
-                                style="margin:8px 0 8px 15px!important; display:inline-block; text-align: left !important;">CONSTRUCTION-BUILDINGS</span>
+            <td class="center">
+                <div>
+                    CONSTRUCTION-BUILDINGS
+                </div>
             </td>
-            <td style="text-align: left !important; vertical-align: middle; padding: 10px 5px !important;">
-                            <span
-                                style="margin:8px 0 8px 15px!important; display:inline-block; text-align: left !important;">OTHER</span>
+            <td class="center">
+                <div>
+                    OTHER
+                </div>
             </td>
-            <td style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
-                                                                <span
-                                                                    style="display:inline-block; text-align: right !important;">$14.17M</span>
+            <td class="number-center">
+                <div>
+                    $14.17M
+                </div>
             </td>
-            <td style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
-                                                                <span
-                                                                    style="display:inline-block; text-align: right !important;">$12.74M</span>
+            <td class="number-center">
+                <div>
+                    $12.74M
+                </div>
             </td>
         </tr>
         </tbody>
@@ -597,37 +592,37 @@ $contract = $node->data;
         </div>
     </div>
 
-<script type="text/javascript">
-    jQuery(document).ready(function() {
-        var callBackURL = "/panel_html/nycha_contract_assoc_releases/contract/<?= htmlentities($contract['contract_id']) ?>/page/";
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            var callBackURL = "/panel_html/nycha_contract_assoc_releases/contract/<?= htmlentities($contract['contract_id']) ?>/page/";
 
-        function loadAssocReleases(page){
-            jQuery(".nycha_contract_assoc_releases").html("<img class='assoc-loading' src='/sites/all/themes/checkbook/images/loading_large.gif' title='Loading Data...'/>");
-            jQuery.ajax({
-                url: callBackURL+page,
-                success: function(data) {
-                    jQuery(".nycha_contract_assoc_releases").html(data);
-                },
-                complete: function(){
-                    jQuery(".assoc-loading").remove();
-                    if (jQuery('.assoc_item').length < <?= $node->assoc_releases_count ?>) {
+            function loadAssocReleases(page) {
+                jQuery(".nycha_contract_assoc_releases").html("<img class='assoc-loading' src='/sites/all/themes/checkbook/images/loading_large.gif' title='Loading Data...'/>");
+                jQuery.ajax({
+                    url: callBackURL + page,
+                    success: function (data) {
+                        jQuery(".nycha_contract_assoc_releases").html(data);
+                    },
+                    complete: function () {
+                        jQuery(".assoc-loading").remove();
+                        if (jQuery('.assoc_item').length < <?= $node->assoc_releases_count ?>) {
+                        }
+                        jQuery(".nycha_assoc_rel_pager").show();
                     }
-                    jQuery(".nycha_assoc_rel_pager").show();
+                });
+            }
+
+            jQuery(".nycha_assoc_rel_pager").hide();
+            loadAssocReleases(0);
+
+            jQuery('.nycha_assoc_rel_pager').pagination({
+                items: <?= $node->assoc_releases_count ?>,
+                itemsOnPage: 10,
+                cssStyle: 'compact-theme',
+                onPageClick: function (page) {
+                    loadAssocReleases(page - 1)
                 }
             });
-        }
-
-        jQuery(".nycha_assoc_rel_pager").hide();
-        loadAssocReleases(0);
-
-        jQuery('.nycha_assoc_rel_pager').pagination({
-            items: <?= $node->assoc_releases_count ?>,
-            itemsOnPage: 10,
-            cssStyle: 'compact-theme',
-            onPageClick: function(page){
-                loadAssocReleases(page-1)
-            }
         });
-    });
-</script>
+    </script>
 <?php endif; ?>
