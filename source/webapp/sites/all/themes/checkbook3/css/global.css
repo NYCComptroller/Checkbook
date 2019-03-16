@@ -3825,6 +3825,21 @@ em.nycha_assoc_rel_stats {
   margin:10px;
 }
 
+.pager-center li{
+  cursor: pointer;
+  display: inline-block;
+  padding:0.5em;
+  font-size:14px;
+}
+
+.pager-center li.active{
+  background: url(/sites/all/themes/checkbook3/images/pager-active-bg.png) repeat-x scroll 0 0 transparent;
+  color: #FFFFFF;
+  display: inline;
+  font-weight: bold;
+  height: 1em;
+}
+
 table.nycha_assoc_contracts_list {
   width: 100%;
   border-collapse: separate;
@@ -3842,13 +3857,17 @@ table.nycha_assoc_contracts_list {
 .nycha_assoc_contracts_list .assoc_item .contract-title div.assoc-release-link{
   width: 400px;
   float:left;
-  margin: 10px 0 10px 10px;
+  margin: 8px 0 10px 10px;
   text-transform: uppercase;
   font-weight:bold;
 }
 
+.nycha_assoc_contracts_list .assoc_item .contract-title div.assoc-release-link span{
+  font-size: 14px;
+}
+
 .nycha_assoc_contracts_list .assoc_item .contract-title a.showHide{
-  margin-top:-3px;
+  margin-top:-2px;
 }
 
 .nycha_assoc_contracts_list .assoc_item div.dollar-amounts{
