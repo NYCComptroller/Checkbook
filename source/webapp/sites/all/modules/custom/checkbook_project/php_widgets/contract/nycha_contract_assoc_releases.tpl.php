@@ -17,21 +17,21 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+?>
+<table class="nycha_assoc_contracts_list">
+    <tbody>
+<?php
 $first = (bool)!$node->page;
 foreach ($node->assocReleases as $release): ?>
-    <table id="assoc_contracts_list">
-        <tbody>
         <tr>
             <td class="assoc_item">
                 <div class="contract-title clearfix">
-                    <div>
+                    <div class="assoc-release-link">
                         <div><a class="contract-title-text showHide <?= ($first ? '' : 'open') ?>"></a>
                             <a>Release Spending for
                                 <strong><?= htmlentities($release['release_id']) ?></strong></a>
                         </div>
                     </div>
-
                     <div class="dollar-amounts">
                         <div
                             class="spent-to-date"><?= custom_number_formatter_format($release['release_spend_to_date'], 2, "$"); ?>
@@ -60,7 +60,6 @@ foreach ($node->assocReleases as $release): ?>
                         </div>
                     </div>
                 </div>
-
                 <div class="showHide" style="display: <?= $first ? 'block' : 'none' ?>;">
                     <div class="panel-display omega-grid omega-12-onecol">
                         <div class="panel-panel">
@@ -71,54 +70,42 @@ foreach ($node->assocReleases as $release): ?>
                                         <table class="dataTable cta-spending-history outerTable">
                                             <thead>
                                             <tr>
-                                                <th><span
-                                                        style="margin:8px 0px 8px 15px!important; display:inline-block; text-align: center !important;">
-                                                        <?= WidgetUtil::getLabel('vendor_name') ?>
-                                                        </span>
+                                                <th>
+                                                    <?= WidgetUtil::getLabelDiv('vendor_name') ?>
                                                 </th>
                                                 <th>
-                                                        <span
-                                                            style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
-                                                            <?= WidgetUtil::getLabel('current_amount') ?>
-                                                        </span>
+                                                    <?= WidgetUtil::getLabelDiv('current_amount') ?>
                                                 </th>
                                                 <th>
-                                                        <span
-                                                            style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
-                                                            <?= WidgetUtil::getLabel('original_amount') ?>
-                                                            </span>
+                                                    <?= WidgetUtil::getLabelDiv('original_amount') ?>
                                                 </th>
                                                 <th>
-                                                        <span
-                                                            style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
-                                                            <?= WidgetUtil::getLabel('spent_to_date') ?>
-                                                        </span></th>
+                                                    <?= WidgetUtil::getLabelDiv('spent_to_date') ?>
+                                                </th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             <tr class="even outer">
-                                                <td style="text-align: left !important; vertical-align: middle; padding: 10px 5px !important;">
-                                                    <span
-                                                        style="margin:8px 0px 8px 15px!important; display:inline-block; text-align: left !important;">
-                                                        <a class="showHide  expandTwo"></a><?= htmlentities($release['vendor_name']) ?></span>
+                                                <td>
+                                                    <div>
+                                                        <a class="showHide  expandTwo"></a><?= htmlentities($release['vendor_name']) ?>
+                                                    </div>
+
                                                 </td>
-                                                <td style="text-align: left !important; vertical-align: middle; padding: 10px 5px !important;">
-                                                    <span
-                                                        style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
+                                                <td class="number-center">
+                                                    <div>
                                                         <?= custom_number_formatter_format($release['release_total_amount'], 2, '$'); ?>
-                                                    </span>
+                                                    </div>
                                                 </td>
-                                                <td style="text-align: left !important; vertical-align: middle; padding: 10px 5px !important;">
-                                                    <span
-                                                        style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
+                                                <td class="number-center">
+                                                    <div>
                                                         <?= custom_number_formatter_format($release['release_original_amount'], 2, '$'); ?>
-                                                    </span>
+                                                    </div>
                                                 </td>
-                                                <td style="text-align: left !important; vertical-align: middle; padding: 10px 5px !important;">
-                                                    <span
-                                                        style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
+                                                <td class="number-center">
+                                                    <div>
                                                         <?= custom_number_formatter_format($release['release_spend_to_date'], 2, "$"); ?>
-                                                    </span>
+                                                    </div>
                                                 </td>
                                             </tr>
                                             <tr class="showHide">
@@ -162,38 +149,26 @@ foreach ($node->assocReleases as $release): ?>
                                                                         <?php
                                                                         $z = 0;
                                                                         foreach ($release['shipments'] as $shipment):?>
-                                                                            <tr class="outer <?= ($z % 2 ? 'even' : 'odd') ?>">
-                                                                                <td class="text">
+                                                                            <tr class="outer n_assoc_rel_shipments <?= ($z % 2 ? 'even' : 'odd') ?>">
+                                                                                <td class="text line_number">
                                                                                     <div><?= htmlentities($shipment['line_number']) ?></div>
                                                                                 </td>
-                                                                                <td class="text">
+                                                                                <td class="text shipment_number">
                                                                                     <div><?= htmlentities($shipment['shipment_number']) ?></div>
                                                                                 </td>
-                                                                                <td class="text">
+                                                                                <td class="text distribution_number">
                                                                                     <div><?= htmlentities($shipment['distribution_number']) ?></div>
                                                                                 </td>
-                                                                                <td class="number">
-                                                                                    <div
-                                                                                        style="margin-right: 82px;">
-                                                                                        <div
-                                                                                            class="spent-to-date"><?= custom_number_formatter_format($shipment['release_line_total_amount'], 2, "$"); ?>
-                                                                                        </div>
+                                                                                <td class="number total_amount">
+                                                                                    <div><?= custom_number_formatter_format($shipment['release_line_total_amount'], 2, "$"); ?></div>
                                                                                 </td>
-                                                                                <td class="number endCol">
-                                                                                    <div
-                                                                                        style="margin-right: 81px;">
-                                                                                        <div
-                                                                                            class="spent-to-date"><?= custom_number_formatter_format($shipment['release_line_original_amount'], 2, "$"); ?>
-                                                                                        </div>
+                                                                                <td class="number endCol original_amount">
+                                                                                    <div><?= custom_number_formatter_format($shipment['release_line_original_amount'], 2, "$"); ?></div>
                                                                                 </td>
-                                                                                <td class="number endCol">
-                                                                                    <div
-                                                                                        style="margin-right: 81px;">
-                                                                                        <div
-                                                                                            class="spent-to-date"><?= custom_number_formatter_format($shipment['release_line_spend_to_date'], 2, "$"); ?>
-                                                                                        </div>
+                                                                                <td class="number endCol spend_to_date">
+                                                                                    <div><?= custom_number_formatter_format($shipment['release_line_spend_to_date'], 2, "$"); ?></div>
                                                                                 </td>
-                                                                                <td class="text">
+                                                                                <td class="text responsibility_center_descr">
                                                                                     <div><?= htmlentities($shipment['responsibility_center_descr']) ?></div>
                                                                                 </td>
                                                                             </tr>
@@ -371,13 +346,13 @@ foreach ($node->assocReleases as $release): ?>
                                                                 <div>7 Transactions</div>
                                                             </td>
                                                             <td class="number endCol">
-                                                                <div style="margin-right: 119px;">$3.38M</div>
+                                                                <div>$3.38M</div>
                                                             </td>
                                                         </tr>
-                                                        <tr id="showHidectaspe<?= $year ?>" class="showHide odd"
+                                                        <tr id="showHidectaspe<?= $year ?>" class="showHide odd cta-r-data"
                                                             style="<?= ($year_cnt ? 'display:none' : '') ?>">
                                                             <td colspan="3">
-                                                                <div class="scroll" style="padding-left:20px">
+                                                                <div class="scroll">
                                                                     <table class="dataTable outerTable">
                                                                         <thead>
                                                                         <tr>
@@ -454,45 +429,44 @@ foreach ($node->assocReleases as $release): ?>
 
 
                                     <h3>Spending by Expense Category</h3>
-                                    <table class="dataTable outerTable"
-                                           style="border: 1px solid #CACACA;">
+                                    <table class="dataTable outerTable">
                                         <thead>
                                         <tr>
-                                            <th style="text-align: left !important; vertical-align: middle;">
-                                                    <span
-                                                        style="margin:8px 0 8px 15px!important; display:inline-block; text-align: center !important;">Expense<br>Category</span>
+                                            <th >
+                                                <?= WidgetUtil::getLabelDiv('expense_category'); ?>
                                             </th>
-                                            <th style="text-align: left !important; vertical-align: middle;">
-                                                    <span
-                                                        style="margin:8px 0 8px 15px!important; display:inline-block; text-align: center !important;">Category<br>Type</span>
+                                            <th >
+                                                <?= WidgetUtil::getLabelDiv('category_type'); ?>
                                             </th>
-                                            <th style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
-                                                    <span
-                                                        style="margin:8px 0 8px 0 !important;display:inline-block; text-align: center !important;">Encumbered<br>Amount</span>
+                                            <th >
+                                                <?= WidgetUtil::getLabelDiv('encumbered_amount'); ?>
                                             </th>
-                                            <th style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
-                                                    <span
-                                                        style="margin:8px 0 8px 0 !important;display:inline-block; text-align: center !important;">Spent To<br>Date</span>
+                                            <th >
+                                                <?= WidgetUtil::getLabelDiv('spend_to_date'); ?>
                                             </th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <tr class="even outer">
-                                            <td style="text-align: left !important; vertical-align: middle; padding: 10px 5px !important;">
-                                                    <span
-                                                        style="margin:8px 0 8px 15px!important; display:inline-block; text-align: left !important;">CONSTRUCTION-BUILDINGS</span>
+                                            <td class="center">
+                                                    <div>
+                                                        CONSTRUCTION-BUILDINGS
+                                                    </div>
                                             </td>
-                                            <td style="text-align: left !important; vertical-align: middle; padding: 10px 5px !important;">
-                                                    <span
-                                                        style="margin:8px 0 8px 15px!important; display:inline-block; text-align: left !important;">OTHER</span>
+                                            <td class="center">
+                                                <div>
+                                                    OTHER
+                                                </div>
                                             </td>
-                                            <td style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
-                                                    <span
-                                                        style="display:inline-block; text-align: right !important;">$14.17M</span>
+                                            <td class="number-center">
+                                                <div>
+                                                    $14.17M
+                                                </div>
                                             </td>
-                                            <td style="text-align: center !important; vertical-align: middle; padding-right:6% !important">
-                                                    <span
-                                                        style="display:inline-block; text-align: right !important;">$12.74M</span>
+                                            <td class="number-center">
+                                                <div>
+                                                    $12.74M
+                                                </div>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -504,7 +478,8 @@ foreach ($node->assocReleases as $release): ?>
                 </div>
             </td>
         </tr>
-    </table>
     <?php
     $first = false;
 endforeach; ?>
+    </tbody>
+</table>
