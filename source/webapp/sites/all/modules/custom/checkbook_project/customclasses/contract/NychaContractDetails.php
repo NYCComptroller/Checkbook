@@ -72,7 +72,7 @@ class NychaContractDetails
                 release_approved_date,
                 release_approved_year,
                 release_approved_year_id,
-                release_total_amount total_amount,
+                release_total_amount current_amount,
                 release_original_amount original_amount,
                 release_spend_to_date spend_to_date,
                 release_line_amount_difference,
@@ -134,7 +134,7 @@ SQL;
                 approved_year_id,
                 cancel_date,
                 reject_date,
-                total_amount,
+                total_amount current_amount,
                 original_amount,
                 spend_to_date,
                 amount_difference,
@@ -291,7 +291,7 @@ SQL;
                 hgr.revision_number,
                 agreement_start_date,
                 agreement_end_date,
-                hgr.revised_total_amount,
+                hgr.revised_total_amount current_amount,
                 hgr.revision_approved_date,
                 agreement_original_amount
             FROM
