@@ -28,8 +28,8 @@ foreach ($node->assocReleases as $release): ?>
                 <div class="contract-title clearfix">
                     <div class="assoc-release-link">
                         <div><a class="contract-title-text showHide <?= ($first ? '' : 'open') ?>"></a>
-                            <a>Release Spending for
-                                <strong><?= htmlentities($release['release_id']) ?></strong></a>
+                            <span>Release Spending for
+                                <strong><?= htmlentities($release['release_id']) ?></strong></span>
                         </div>
                     </div>
                     <div class="dollar-amounts">
