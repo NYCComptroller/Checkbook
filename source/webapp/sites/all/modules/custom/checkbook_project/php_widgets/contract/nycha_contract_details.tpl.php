@@ -38,7 +38,7 @@ $contract = $node->data;
                 <div class="amount-title"><?= WidgetUtil::getLabel('original_amount') ?></div>
             </div>
             <div class="current-amount">
-                <?= custom_number_formatter_format($contract['total_amount'], 2, '$'); ?>
+                <?= custom_number_formatter_format($contract['current_amount'], 2, '$'); ?>
                 <div class="amount-title"><?= WidgetUtil::getLabel('current_amount') ?></div>
             </div>
             <?php if ($node->total_associated_releases): ?>
@@ -186,7 +186,7 @@ $contract = $node->data;
                         </td>
                         <td class="number">
                             <div
-                                style="margin-right: 86px;"><?= custom_number_formatter_format($contract_history_by_year[key($contract_history_by_year)]['revision_total_amount'], 2, '$') ?></div>
+                                style="margin-right: 86px;"><?= custom_number_formatter_format($contract_history_by_year[key($contract_history_by_year)]['current_amount'], 2, '$') ?></div>
                         </td>
                         <td class="number">
                             <div
@@ -254,7 +254,7 @@ $contract = $node->data;
                                                 <div><?= custom_number_formatter_format($contract['original_amount'], 2, '$') ?></div>
                                             </td>
                                             <td class="number thCurAmt">
-                                                <div><?= custom_number_formatter_format($revision['revision_total_amount'], 2, '$') ?></div>
+                                                <div><?= custom_number_formatter_format($revision['current_amount'], 2, '$') ?></div>
                                             </td>
                                             <td class="text thVerStat">
                                                 <div>Approved</div>
@@ -324,7 +324,7 @@ $contract = $node->data;
                 </td>
                 <td>
                     <span>
-                    <?= custom_number_formatter_format($contract['total_amount'], 2, '$'); ?>
+                    <?= custom_number_formatter_format($contract['current_amount'], 2, '$'); ?>
                     </span>
                 </td>
                 <td>
