@@ -41,7 +41,7 @@ class NychaContractDetails
         $node->contractPO = $node->contractBAPA = false;
 
         if (stripos(' ' . $contract_id, 'ba') || stripos(' ' . $contract_id, 'pa')) {
-            $this->loadBaPa($node, $contract_id);
+            $this->loadBlankedOrPlannedAgreement($node, $contract_id);
             $node->contractBAPA = true;
         }
 
@@ -109,7 +109,7 @@ SQL;
      * @param $node
      * @param $contract_id
      */
-    private function loadBaPa(&$node, $contract_id)
+    private function loadBlankedOrPlannedAgreement(&$node, $contract_id)
     {
         $bapa_query = <<<SQL
             SELECT
