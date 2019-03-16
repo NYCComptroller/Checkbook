@@ -55,9 +55,10 @@
       }
       $datasource = RequestUtilities::getRequestParamValue('datasource');
 
-$sql = 'SELECT vendor_name, vendor_id, SUM(total_amount) current_amount_sum, count(distinct contract_id) total_contracts
+$sql = 'select vendor_id, vendor_name, count(distinct contract_id) as total_contracts, sum(total_amount) as current_amount_sum,sum(original_amount) as original_amount, sum(spend_to_date) as spend_to_date
+        from (SELECT vendor_name, vendor_id,contract_id, max(total_amount) as total_amount,  max(original_amount) as original_amount, max(spend_to_date) as spend_to_date
           FROM contracts_widget_summary C'
-              . $where_filter . ' GROUP BY vendor_name, vendor_id ORDER BY 3 DESC LIMIT 10';
+              . $where_filter . ' GROUP BY vendor_name, vendor_id, contract_id ) a  GROUP BY vendor_name, vendor_id ORDER BY 3 DESC LIMIT 10';
       $node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
   ",
   "widgetUpdateJSONConfig":"
