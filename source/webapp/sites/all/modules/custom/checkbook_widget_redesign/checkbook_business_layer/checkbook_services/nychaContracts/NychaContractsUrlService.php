@@ -49,11 +49,13 @@ class NychaContractsUrlService
     /**
      * Returns NYCHA Contracts Vendor Landing page URL for the given vendor id
      * @param $contract_id
+     * @param $append_landing_page
      * @return string
      */
-    static function contractDetailsUrl($contract_id)
+    static function contractDetailsUrl($contract_id, $append_landing_page = true)
     {
-        $url = '/nycha_contracts'
+        $landing_page = $append_landing_page ? '/nycha_contracts' : '';
+        $url = $landing_page
             . RequestUtilities::buildUrlFromParam('year')
             . RequestUtilities::buildUrlFromParam('agency')
             . RequestUtilities::buildUrlFromParam('vendor')

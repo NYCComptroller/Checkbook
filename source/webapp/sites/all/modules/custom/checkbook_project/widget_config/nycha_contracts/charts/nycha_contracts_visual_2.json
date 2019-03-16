@@ -96,7 +96,7 @@ $tooltip_label =
 'Amount: ' . custom_number_formatter_format($row['total_amount'] ,2, '$').  '<br/>'
 ;
 
-$link = strstr($_GET['q'],'/',true) . NychaContractsUrlService::contractDetailsUrl($row['contract_id']);
+$link = strstr($_GET['q'],'/',true) . NychaContractsUrlService::contractDetailsUrl($row['contract_id'], false);
 $series_new[$index]->url = 	$link;
 
 $series_new[$index]->y = (float)$row['total_amount'];
@@ -109,7 +109,6 @@ $node->widgetConfig->chartConfig->series[0]->name = 'Fiscal Years';
 $node->widgetConfig->chartConfig->series[0]->type = 'column';
 $node->widgetConfig->chartConfig->series[0]->pointWidth = 30;
 $node->widgetConfig->chartConfig->series[0]->data = $series_new;
-
 
 ",
 "chartConfig" : {
