@@ -34,13 +34,9 @@
   },
   "no_results_content":"No Results Found",
 
-  "cleanURLParameters":["awdmethod","vendor","csize","cindustry","year"],
-  "cleanURLParametersPending":["awdmethod","vendor","csize","cindustry"],
-  "urlParamMap":{"year":"fiscal_year_id","awdmethod":"award_method_id","vendor":"vendor_id",
-   "csize":"award_size_id","cindustry":"industry_type_id"},
-  "urlParamMapPending":{"vendor":"vendor_id",
-    "awdmethod":"award_method_id",
-    "csize":"award_size_id","cindustry":"industry_type_id"},
+  "cleanURLParameters":["awdmethod","vendor","csize","industry","year"],
+  "urlParamMap":{"year":"fiscal_year_id","awdmethod":"award_method_id","vendor":"vendor_id", "csize":"award_size_id",
+    "industry":"industry_type_id"},
   "widgetPreprocessJSON":"
   if(preg_match('/pending/',$_GET['q'])){
   $node->widgetConfig->urlParamMap = $node->widgetConfig->urlParamMapPending;
