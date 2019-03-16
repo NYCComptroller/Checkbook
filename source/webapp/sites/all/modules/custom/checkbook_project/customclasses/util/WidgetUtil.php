@@ -85,7 +85,7 @@ class WidgetUtil
         "contract_type" => "Contract<br/>Type",
         "contract_purpose" => "Purpose",
         "contract_agency" => "Contracting<br/>Agency",
-        "vendor_name" => "Vendor",
+        "vendor_name" => "Vendor<br/>Name",
         "original_amount" => "Original<br/>Amount",
         "current_amount" => "Current<br/>Amount",
         "spent_to_date" => "Spent To<br/>Date",
