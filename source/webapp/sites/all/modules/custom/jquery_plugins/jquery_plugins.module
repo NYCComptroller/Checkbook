@@ -140,9 +140,9 @@ function jquery_plugins_library()
         'js' => array(
             drupal_get_path('module', 'jquery_plugins') . '/simplePagination/jquery.simplePagination.js' => $options,
         ),
-        'css' => array(
-            drupal_get_path('module','jquery_plugins').'/simplePagination/simplePagination.css' => array()
-        ),
+//        'css' => array(
+//            drupal_get_path('module','jquery_plugins').'/simplePagination/simplePagination.css' => array()
+//        ),
         'dependencies'=>array(
             array('system','jquery')
         )

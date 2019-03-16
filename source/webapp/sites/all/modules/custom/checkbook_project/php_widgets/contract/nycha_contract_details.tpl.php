@@ -617,8 +617,8 @@ $contract = $node->data;
 
             jQuery('.nycha_assoc_rel_pager').pagination({
                 items: <?= $node->assoc_releases_count ?>,
+                prevText: 'Previous',
                 itemsOnPage: 10,
-                cssStyle: 'compact-theme',
                 onPageClick: function (page) {
                     loadAssocReleases(page - 1)
                 }
