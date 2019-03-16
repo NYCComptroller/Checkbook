@@ -60,9 +60,17 @@ class NychaContractsUrlService
             . RequestUtilities::buildUrlFromParam('industry')
             . RequestUtilities::buildUrlFromParam('csize')
             . RequestUtilities::buildUrlFromParam('awdmethod')
-            . RequestUtilities::buildUrlFromParam('datasource')
-            . '?expandBottomContURL=/panel_html/nycha_contract_details/contract/' . $contract_id;
+            . RequestUtilities::buildUrlFromParam('datasource');
 
+        //Persist the last parameter in the current page URL as the last param only to fix the title issues
+        $lastReqParam = _getLastRequestParamValue($_SERVER['HTTP_REFERER']);
+        if ($lastReqParam != _getLastRequestParamValue($url)) {
+            foreach ($lastReqParam as $key => $value) {
+                $url = preg_replace("/\/" . $key . "\/" . $value . "/", "", $url);
+                $url .= "/" . $key . "/" . $value;
+            }
+        }
+        $url .= '?expandBottomContURL=/panel_html/nycha_contract_details/contract/' . $contract_id;
         return $url;
     }
 

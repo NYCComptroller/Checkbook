@@ -11,7 +11,7 @@
       "current_amount":"release_total_amount",
       "other_government_entities_code":"agency_code",
       "purpose":"purpose",
-      "apt_pin":"",
+      "apt_pin":"po_header_id",
       "start_date":"agreement_start_date",
       "end_date":"agreement_end_date",
       "approved_date":"release_approved_date"
@@ -182,7 +182,7 @@
       "current_amount":"release_total_amount",
       "other_government_entities_code":"agency_code",
       "purpose":"purpose",
-      "apt_pin":"",
+      "apt_pin":"po_header_id",
       "start_date":"agreement_start_date",
       "end_date":"agreement_end_date",
       "approved_date":"release_approved_date",
