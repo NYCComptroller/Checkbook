@@ -3795,7 +3795,7 @@ a.new-features-morelink{
 }
 
 .nycha-contract-history td.thVNum{
-  padding: 0 10px;
+  padding: 0 50px;
 }
 
 
@@ -3822,4 +3822,82 @@ em.nycha_assoc_rel_stats {
 
 .pager-center{
   text-align: center;
+  margin:10px;
+}
+
+table.nycha_assoc_contracts_list {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+}
+
+.nycha_assoc_contracts_list tr{
+  width:100%;
+}
+
+.nycha_assoc_contracts_list .assoc_item{
+  border: 1px solid #cacaca;
+}
+
+.nycha_assoc_contracts_list .assoc_item .contract-title div.assoc-release-link{
+  width: 400px;
+  float:left;
+  margin: 10px 0 10px 10px;
+  text-transform: uppercase;
+  font-weight:bold;
+}
+
+.nycha_assoc_contracts_list .assoc_item .contract-title a.showHide{
+  margin-top:-3px;
+}
+
+.nycha_assoc_contracts_list .assoc_item div.dollar-amounts{
+  width: 500px;
+  margin:0;
+}
+.nycha_assoc_contracts_list .assoc_item div.dollar-amounts > div{
+  width: 120px;
+  margin:0;
+}
+.nycha_assoc_contracts_list .assoc_item div.dollar-amounts  div.amount-title{
+  margin:0;
+}
+.nycha_assoc_contracts_list div.inside{
+  margin:5px;
+}
+.nycha_assoc_contracts_list div.thVerStat{
+  margin:5px;
+}
+
+.nycha-contract-history td.thVerStat div{
+  padding-left:20px;
+}
+.nycha-contract-history td.thCurAmt div,
+.nycha-contract-history td.thOrigAmt div {
+  padding-right:40px;
+}
+.nycha-contract-history td.thLastMDate div{
+  padding-left:20px;
+}
+.nycha-contract-history .outerTable th.text div{
+  padding-left:10px;
+}
+.nycha-contract-history th.thEndDate div{
+  padding-left:17px;
+}
+.nycha_assoc_contracts_list .cta-history th.thEndDate div{
+  padding-left:17px;
+}
+.nycha_assoc_contracts_list td.shipment_number div,
+.nycha_assoc_contracts_list td.distribution_number div{
+  padding-left:30px;
+}
+
+.nycha_assoc_contracts_list .cta-r-data th.th3,
+.nycha_assoc_contracts_list .cta-r-data td.td3 {
+  padding-right: 20px;
+}
+
+.center{
+  text-align:center;
 }
