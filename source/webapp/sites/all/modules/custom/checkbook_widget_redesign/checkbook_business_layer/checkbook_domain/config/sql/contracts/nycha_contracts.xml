@@ -96,7 +96,7 @@
         MAX(original_amount) AS original_amount,
         MAX(spend_to_date) AS spend_to_date,
       MAX(total_amount-original_amount) AS dollar_difference,
-      ROUND( CASE COALESCE( MAX(total_amount), 0 :: NUMERIC ) WHEN 0 THEN 100 :: NUMERIC ELSE (
+      ROUND( CASE COALESCE( MAX(total_amount), 0 :: NUMERIC ) WHEN 0 THEN -100 :: NUMERIC ELSE (
       MAX(total_amount-original_amount) / MAX(total_amount) )* 100 END, 2) AS percent_difference
       FROM contracts_widget_summary
       <where>
@@ -131,7 +131,7 @@
         MAX(original_amount) AS original_amount,
         MAX(spend_to_date) AS spend_to_date,
         MAX(total_amount-original_amount) AS dollar_difference,
-      ROUND( CASE COALESCE( MAX(total_amount), 0 :: NUMERIC ) WHEN 0 THEN 100 :: NUMERIC ELSE
+      ROUND( CASE COALESCE( MAX(total_amount), 0 :: NUMERIC ) WHEN 0 THEN -100 :: NUMERIC ELSE
       (MAX(total_amount-original_amount) / MAX(total_amount) )* 100 END, 2) AS percent_difference
       FROM contracts_widget_summary
       <where>
@@ -169,7 +169,7 @@
       MAX(original_amount) AS original_amount,
       MAX(spend_to_date) AS spend_to_date,
       MAX(total_amount-original_amount) AS dollar_difference,
-      ROUND( CASE COALESCE( MAX(total_amount), 0 :: NUMERIC ) WHEN 0 THEN 100 :: NUMERIC ELSE (
+      ROUND( CASE COALESCE( MAX(total_amount), 0 :: NUMERIC ) WHEN 0 THEN -100 :: NUMERIC ELSE (
       MAX(total_amount-original_amount) / MAX(total_amount) )* 100 END, 2 ) AS percent_difference
       FROM contracts_widget_summary
       <where>
