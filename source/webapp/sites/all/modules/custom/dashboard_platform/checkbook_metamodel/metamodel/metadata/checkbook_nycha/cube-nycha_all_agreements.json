@@ -136,6 +136,24 @@
               "sourceColumnName": "agreement_type_code"
             }
           ]
+        },
+        {
+          "name": "release_approved_year_id",
+          "levels": [
+            {
+              "name": "release_approved_year_id",
+              "sourceColumnName": "release_approved_year_id"
+            }
+          ]
+        },
+        {
+          "name": "release_approved_year",
+          "levels": [
+            {
+              "name": "release_approved_year",
+              "sourceColumnName": "release_approved_year"
+            }
+          ]
         }
       ],
       "measures": {
