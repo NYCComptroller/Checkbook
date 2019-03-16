@@ -124,7 +124,8 @@ SQL;
             WHERE
                 release_id IN('{$release_ids}')
                 and hgr.release_number is not null
-                and revision_number <> 0;
+                and revision_number <> 0
+            ORDER BY revision_number DESC;
 SQL;
         $release_history = _checkbook_project_execute_sql_by_data_source($rh_sql, 'checkbook_nycha');
 
