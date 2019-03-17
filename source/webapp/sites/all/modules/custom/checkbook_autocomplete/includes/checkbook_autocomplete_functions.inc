@@ -392,7 +392,7 @@ function _checkbook_autocomplete_datafeeds_nycha_contracts($solr_field, $purchas
         }
         if($year && $year != 'ALL'){
             $year = ltrim($year, 'FY');
-            $facetquery .= '&fq=release_approved_year:' . $year;
+            $facetquery .= '&('.$year.':[*%20TO%20agreement_start_year]%20AND%20'.$year.':[agreement_end_year%20TO%20*])';
         }
         $query = "select/?q=".$solr_field.":" . $search_term
             ."&facet.field=" . $solr_field .$facetquery
