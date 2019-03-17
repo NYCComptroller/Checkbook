@@ -107,9 +107,9 @@
 
     <?php
     foreach ([$prod_status, $uat_status] as $json):
-        if ($json['audit_status_timestamp'] && $json['audit_status']): ?>
+        if ($json['audit_status_timestamp']): ?>
             <table class="file" cellpadding="5">
-                <?php if (['OK'] == $json['audit_status']): ?>
+                <?php if (!empty($json['audit_status']) && (['OK'] == $json['audit_status'])): ?>
                     <tbody>
                     <tr class="odd">
                         <td>
@@ -121,7 +121,7 @@
                 <?php else: ?>
                     <thead>
                     <tr class="filename">
-                        <th colspan="<?php echo sizeof($json['audit_status'][0]) ?>">
+                        <th>
                             <?php echo $json['source'] ?> ETL `audit_status.txt`
                             (<?php echo date("Y-m-d g:iA", $json['audit_status_timestamp']); ?>)
                         </th>
@@ -135,7 +135,13 @@
                     </tr>
                     <tr class="even">
                         <td>
-                            <?php echo json_encode($json['audit_status']); ?>
+                            <?php
+                                if(empty($json['audit_status'])):
+                                    echo '*file is empty*';
+                                else:
+                                    echo json_encode($json['audit_status']);
+                                endif;
+                            ?>
                         </td>
                     </tr>
                     </tbody>
@@ -214,13 +220,31 @@
             </table>
             <br/>
             <br/>
+        <?php elseif('PROD' == $json['source']):?>
+            <table class="file" cellpadding="5">
+                <thead>
+                <tr class="filename">
+                    <th>
+                        PROD ETL :: Missing data source files
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="odd">
+                    <td><strong>No missing data found</strong> ✅</td>
+                </tr>
+                </tbody>
+                <tbody>
+            </table>
+            <br/>
+            <br/>
         <?php endif;
     endforeach; ?>
-    <br/>
-    <br/>
-    <?php if (!empty($solr_health_status)):
+    <?php if (!empty($solr_health_status) && isset($dev_mode) && $dev_mode):
         $i = 0;
         ?>
+        <br/>
+        <br/>
         <table class="dbconnections" cellpadding="3">
             <thead>
             <tr>
@@ -244,12 +268,12 @@
             <?php endforeach; ?>
             </tbody>
         </table>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
     <?php endif; ?>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <?php if (!empty($connections)):
+    <?php if (!empty($connections) && isset($dev_mode) && $dev_mode):
         $i = 0;
         ?>
         <table class="dbconnections" cellpadding="3">
@@ -287,6 +311,7 @@
         <tr align="center">
             <td>
                 © <?php echo date('Y'); ?>, Checkbook NYC<br/>
+                <?php if(isset($dev_mode) && $dev_mode):?>
                 <small>
                     <?php
                     global $conf;
@@ -303,6 +328,7 @@
                         echo $out;
                     endif; ?>
                 </small>
+                <?php endif; ?>
             </td>
         </tr>
     </table>

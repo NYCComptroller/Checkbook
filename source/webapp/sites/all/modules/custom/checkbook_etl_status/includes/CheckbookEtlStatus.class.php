@@ -6,6 +6,11 @@
 class CheckbookEtlStatus
 {
     /**
+     * @var bool
+     */
+    private static $message = false;
+
+    /**
      * Last ETL must successfully finish within last 12 hours
      */
     const SUCCESS_IF_RUN_LESS_THAN_X_SECONDS_AGO = 60 * 60 * 12;
@@ -105,9 +110,27 @@ class CheckbookEtlStatus
     {
         global $conf;
 
-        $to = $conf['checkbook_dev_group_email'];
         $from = $conf['email_from'];
-        drupal_mail('checkbook_etl_status', 'send-status', $to, null, [], $from, TRUE);
+
+        if (isset($conf['checkbook_dev_group_email'])){
+            $to_dev = $conf['checkbook_dev_group_email'];
+
+            try{
+                drupal_mail('checkbook_etl_status', 'send-dev-status', $to_dev, null, ['dev_mode'=> true], $from);
+            } catch(Exception $ex1){
+                error_log($ex1->getMessage());
+            }
+        }
+
+        if (isset($conf['checkbook_client_emails'])) {
+            $to_client = $conf['checkbook_client_emails'];
+            try{
+                drupal_mail('checkbook_etl_status', 'send-client-status', $to_client, null, ['dev_mode'=> false], $from);
+            } catch(Exception $ex2){
+                error_log($ex2->getMessage());
+            }
+        }
+
         return true;
     }
 
@@ -302,15 +325,19 @@ class CheckbookEtlStatus
      * @param $message
      * @return bool
      */
-    public function mail(&$message)
+    public function prepareMessage(&$message)
     {
-        global $conf;
+        if (false !== self::$message) {
+            $message = array_merge($message, self::$message);
+        }
+
         $uat_status = $this->formatStatus($this->getUatStatus());
         $prod_status = $this->formatStatus($this->getProdStatus());
         $connections = $this->getConnectionConfigs();
         $solr_health_status = $this->getSolrHealthStatus();
 
-        $message['body'] =
+        $msg = [];
+        $msg['body'] =
             [
                 'uat_status' => $uat_status,
                 'prod_status' => $prod_status,
@@ -322,7 +349,10 @@ class CheckbookEtlStatus
 
         $date = $this->get_date('Y-m-d');
 
-        $message['subject'] = "[{$conf['CHECKBOOK_ENV']}] ETL Status: " . $this->successSubject . " ($date)";
+        $msg['subject'] = "ETL Status: " . $this->successSubject . " ($date)";
+
+        $message = array_merge($message, $msg);
+        self::$message = $msg;
 
         return true;
     }
