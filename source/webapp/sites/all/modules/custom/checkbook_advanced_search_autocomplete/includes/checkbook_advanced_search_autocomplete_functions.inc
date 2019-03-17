@@ -870,7 +870,7 @@ function _checkbook_autocomplete_nycha_contracts($solr_field, $purchase_order_ty
         if($year && $year != 'fy~all'){
             if (strpos($year, '~')) {
                 $year_id = substr($year, 3, strlen($year));
-                $facetquery .= '&fq=release_approved_year_id:' . $year_id;
+                $facetquery .= '&('.$year_id.':[*%20TO%20agreement_start_year_id]%20AND%20'.$year_id.':[agreement_end_year_id%20TO%20*])';
             }
         }
         $query = "select/?q=".$solr_field.":" . $search_term
