@@ -655,38 +655,79 @@
             var includes_sub_vendors = $.fn.emptyToZero($('#edit-contract_includes_sub_vendors_id', context).val());
             var sub_vendor_status = $.fn.emptyToZero($('#edit-sub_vendor_status_in_pip_id', context).val());
 
-            $('#edit-vendor', context).autocomplete({source:'/autocomplete/contracts/vendor/'+ status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/'+ sub_vendor_status + '/' + data_source});
-            $('#edit-contractno', context).autocomplete({source:'/autocomplete/contracts/contract_number/'+ status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/'+ sub_vendor_status + '/' + data_source});
-            $('#edit-apt-pin',context).autocomplete({source:'/autocomplete/contracts/apt_pin/'+ status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/'+ sub_vendor_status + '/' + data_source});
-            $('#edit-pin',context).autocomplete({source:'/autocomplete/contracts/pin/'+ status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/'+ sub_vendor_status + '/' + data_source});
-            $('#edit-entity-contract-number',context).autocomplete({source:'/autocomplete/contracts/entitycontractnum/'+ status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/'+ sub_vendor_status + '/' + data_source});
-            $('#edit-commodity-line',context).autocomplete({source:'/autocomplete/contracts/commodityline/'+ status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/'+ sub_vendor_status + '/' + data_source});
-            $('#edit-budget-name',context).autocomplete({source:'/autocomplete/contracts/budgetname/'+ status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/'+ sub_vendor_status + '/' + data_source});
-            $('.watch:input', context).each(function () {
-                $(this).focusin(function () {
-                    var status = $('select[name="df_contract_status"]', context).val();
-                    var category = $('#edit-category', context).val();
-                    var contract_type = $.fn.emptyToZero($('#edit-contract-type', context).val());
-                    var agency = $.fn.emptyToZero($('#edit-agency', context).val());
-                    var award_method = $.fn.emptyToZero($('#edit-award-method', context).val());
-                    var year = ($('#edit-year', context).attr('disabled')) ? 0 : $('#edit-year', context).val();
-                    var mwbecat = ($('#edit-mwbe-category').val()) ? $('#edit-mwbe-category').val() : 0;
-                    mwbecat = mwbecat == null ? 0 : mwbecat;
-                    var industry = $.fn.emptyToZero($('#edit-industry',context).val());
-                    var data_source = $('input:radio[name=datafeeds-contracts-domain-filter]:checked').val();
-                    var includes_sub_vendors = $.fn.emptyToZero($('#edit-contract_includes_sub_vendors_id', context).val());
-                    var sub_vendor_status = $.fn.emptyToZero($('#edit-sub_vendor_status_in_pip_id', context).val());
+            $('#edit-vendor', context).autocomplete({source: '/autocomplete/contracts/vendor/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + data_source});
+            $('#edit-contractno', context).autocomplete({source: '/autocomplete/contracts/contract_number/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + data_source});
+            $('#edit-apt-pin', context).autocomplete({source: '/autocomplete/contracts/apt_pin/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + data_source});
+            $('#edit-pin', context).autocomplete({source: '/autocomplete/contracts/pin/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + data_source});
+            $('#edit-entity-contract-number', context).autocomplete({source: '/autocomplete/contracts/entitycontractnum/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + data_source});
+            $('#edit-commodity-line', context).autocomplete({source: '/autocomplete/contracts/commodityline/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + data_source});
+            $('#edit-budget-name', context).autocomplete({source: '/autocomplete/contracts/budgetname/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + data_source});
 
-                    $('#edit-vendor', context).autocomplete('option', 'source', '/autocomplete/contracts/vendor/'+ status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/'+ sub_vendor_status + '/' + data_source);
-                    $('#edit-contractno', context).autocomplete('option', 'source', '/autocomplete/contracts/contract_number/'+ status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/'+ sub_vendor_status + '/' + data_source);
-                    $('#edit-apt-pin',context).autocomplete('option','source','/autocomplete/contracts/apt_pin/'+ status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/'+ sub_vendor_status + '/' + data_source);
-                    $('#edit-pin',context).autocomplete('option','source','/autocomplete/contracts/pin/'+ status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/'+ sub_vendor_status + '/' + data_source);
-                    $('#edit-entity-contract-number',context).autocomplete('option','source','/autocomplete/contracts/entitycontractnum/'+ status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/'+ sub_vendor_status + '/' + data_source);
-                    $('#edit-commodity-line',context).autocomplete('option','source','/autocomplete/contracts/commodityline/'+ status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/'+ sub_vendor_status + '/' + data_source);
-                    $('#edit-budget-name',context).autocomplete('option','source','/autocomplete/contracts/budgetname/'+ status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/'+ sub_vendor_status + '/' + data_source);
-                });
+            var purchase_order = $('select[name="purchase_order_type"]', context).val();
+            var responsibility_center = $.fn.emptyToZero($('select[name="resp_center"]', context).val());
+            var nycha_contract_type = $.fn.emptyToZero($('select[name="nycha_contract_type"]', context).val());
+            var nycha_award_method = $.fn.emptyToZero($('select[name="nycha_awd_method"]', context).val());
+            var nycha_industry = $.fn.emptyToZero($('select[name="nycha_industry"]', context).val());
+            var nycha_agency = $.fn.emptyToZero($('select[name="nycha_agency"]', context).val());
+            var nycha_year = $.fn.emptyToZero($('select[name="nycha_year"]', context).val());
+
+            $('#edit-nycha-vendor', context).autocomplete({
+              source: '/autocomplete/nycha_contracts/vendor_name/' + purchase_order + '/' + responsibility_center + '/' + nycha_contract_type + '/' + nycha_award_method + '/' + nycha_industry + '/' + nycha_agency + '/' + nycha_year + '/' + data_source
             });
 
+            $('#edit-nycha-contract-id', context).autocomplete({
+              source: '/autocomplete/nycha_contracts/contract_number/' + purchase_order + '/' + responsibility_center + '/' + nycha_contract_type + '/' + nycha_award_method + '/' + nycha_industry + '/' + nycha_agency + '/' + nycha_year + '/' + data_source
+            });
+
+            $('#edit-nycha-apt-pin', context).autocomplete({
+              source: '/autocomplete/nycha_contracts/pin/' + purchase_order + '/' + responsibility_center + '/' + nycha_contract_type + '/' + nycha_award_method + '/' + nycha_industry + '/' + nycha_agency + '/' + nycha_year + '/' + data_source
+            });
+
+            $('.watch:input', context).each(function () {
+              $(this).focusin(function () {
+                var status = $('select[name="df_contract_status"]', context).val();
+                var category = $('#edit-category', context).val();
+                var contract_type = $.fn.emptyToZero($('#edit-contract-type', context).val());
+                var agency = $.fn.emptyToZero($('#edit-agency', context).val());
+                var award_method = $.fn.emptyToZero($('#edit-award-method', context).val());
+                var year = ($('#edit-year', context).attr('disabled')) ? 0 : $('#edit-year', context).val();
+                var mwbecat = ($('#edit-mwbe-category').val()) ? $('#edit-mwbe-category').val() : 0;
+                mwbecat = mwbecat == null ? 0 : mwbecat;
+                var industry = $.fn.emptyToZero($('#edit-industry', context).val());
+                var data_source = $('input:radio[name=datafeeds-contracts-domain-filter]:checked').val();
+                var includes_sub_vendors = $.fn.emptyToZero($('#edit-contract_includes_sub_vendors_id', context).val());
+                var sub_vendor_status = $.fn.emptyToZero($('#edit-sub_vendor_status_in_pip_id', context).val());
+
+                $('#edit-vendor', context).autocomplete('option', 'source', '/autocomplete/contracts/vendor/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + data_source);
+                $('#edit-contractno', context).autocomplete('option', 'source', '/autocomplete/contracts/contract_number/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + data_source);
+                $('#edit-apt-pin', context).autocomplete('option', 'source', '/autocomplete/contracts/apt_pin/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + data_source);
+                $('#edit-pin', context).autocomplete('option', 'source', '/autocomplete/contracts/pin/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + data_source);
+                $('#edit-entity-contract-number', context).autocomplete('option', 'source', '/autocomplete/contracts/entitycontractnum/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + data_source);
+                $('#edit-commodity-line', context).autocomplete('option', 'source', '/autocomplete/contracts/commodityline/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + data_source);
+                $('#edit-budget-name', context).autocomplete('option', 'source', '/autocomplete/contracts/budgetname/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + data_source);
+
+                var purchase_order = $('select[name="purchase_order_type"]', context).val();
+                var responsibility_center = $.fn.emptyToZero($('select[name="resp_center"]', context).val());
+                var nycha_contract_type = $.fn.emptyToZero($('select[name="nycha_contract_type"]', context).val());
+                var nycha_award_method = $.fn.emptyToZero($('select[name="nycha_awd_method"]', context).val());
+                var nycha_industry = $.fn.emptyToZero($('select[name="nycha_industry"]', context).val());
+                var nycha_agency = $.fn.emptyToZero($('select[name="nycha_agency"]', context).val());
+                var nycha_year = $('select[name="nycha_year"]', context).val();
+
+                $('#edit-nycha-vendor', context).autocomplete({
+                  source: '/autocomplete/nycha_contracts/vendor_name/' + purchase_order + '/' + responsibility_center + '/' + nycha_contract_type + '/' + nycha_award_method + '/' + nycha_industry + '/' + nycha_agency + '/' + nycha_year + '/' + data_source
+                });
+
+                $('#edit-nycha-contract-id', context).autocomplete({
+                  source: '/autocomplete/nycha_contracts/contract_number/' + purchase_order + '/' + responsibility_center + '/' + nycha_contract_type + '/' + nycha_award_method + '/' + nycha_industry + '/' + nycha_agency + '/' + nycha_year + '/' + data_source
+                });
+
+                $('#edit-nycha-apt-pin', context).autocomplete({
+                  source: '/autocomplete/nycha_contracts/pin/' + purchase_order + '/' + responsibility_center + '/' + nycha_contract_type + '/' + nycha_award_method + '/' + nycha_industry + '/' + nycha_agency + '/' + nycha_year + '/' + data_source
+                });
+
+              });
+            });
             //Year Drop-down
             $('#edit-nycha-year',context).change(function(){
               if ($(this).val() == 'ALL'){
