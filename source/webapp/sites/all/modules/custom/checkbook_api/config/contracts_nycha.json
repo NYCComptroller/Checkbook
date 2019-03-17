@@ -124,7 +124,7 @@
             "Expenditure Type":"expenditure_type_descr",
             "Industry":"industry_type_name",
             "Funding Source":"funding_source_descr",
-            "Responsibility Center":"funding_source_descr",
+            "Responsibility Center":"responsibility_center_descr",
             "Program":"program_phase_descr",
             "Project":"gl_project_descr",
             "Commodity Category":"commodity_category_descr"
@@ -311,7 +311,7 @@
             "Expenditure Type":"expenditure_type_descr",
             "Industry":"industry_type_name",
             "Funding Source":"funding_source_descr",
-            "Responsibility Center":"funding_source_descr",
+            "Responsibility Center":"responsibility_center_descr",
             "Program":"program_phase_descr",
             "Project":"gl_project_descr",
             "Commodity Category":"commodity_category_descr"
