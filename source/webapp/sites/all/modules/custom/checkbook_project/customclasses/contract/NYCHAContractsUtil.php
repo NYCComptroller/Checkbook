@@ -21,12 +21,12 @@
 class NYCHAContractUtil
 {
     static function adjustYearParams(&$node, &$parameters) {
-        if(isset($parameters['release_approved_year_id'])){
-            $year = $parameters['release_approved_year_id'];
+        if(isset($parameters['release_year_id'])){
+            $year = $parameters['release_year_id'];
             $data_controller_instance = data_controller_get_operator_factory_instance();
             $parameters['agreement_start_year_id'] = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, $year);
             $parameters['agreement_end_year_id'] = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, $year);
-            unset($parameters['release_approved_year_id']);
+            unset($parameters['release_year_id']);
         }
         return $parameters;
     }
