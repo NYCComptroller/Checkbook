@@ -110,6 +110,14 @@ function checkbook_autocomplete_menu()
         'type' => MENU_CALLBACK
     );
 
+    //NYCHA Contracts Auto-completes
+    $items['autocomplete/nycha_contracts'] = array(
+        'page callback' => '_checkbook_autocomplete_datafeeds_nycha_contracts',
+        'access callback' => TRUE,
+        'file' => '/includes/checkbook_autocomplete_functions.inc',
+        'type' => MENU_CALLBACK
+    );
+
     //Spending autocomplete paths
     $items['autocomplete/spending/payee'] = array(
         'page callback' => '_checkbook_autocomplete_spending_payee',
