@@ -326,7 +326,7 @@ SQL;
                 transaction_status_name
             FROM all_agreement_transactions a
             WHERE contract_id = '{$contract_id}'
-            ORDER BY shipment_number, distribution_number, line_number;
+            ORDER BY line_number, shipment_number, distribution_number;
 SQL;
 
         $shipments = _checkbook_project_execute_sql_by_data_source($sd_sql, 'checkbook_nycha');
