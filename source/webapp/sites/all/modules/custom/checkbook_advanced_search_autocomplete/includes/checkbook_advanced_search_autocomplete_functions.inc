@@ -844,6 +844,43 @@ function _checkbook_advanced_search_autocomplete_contracts_budgetname($status, $
     }
 }
 
+//NYCHA Contracts auto-complete
+function _checkbook_autocomplete_nycha_contracts($solr_field, $purchase_order_type, $responsibility_center, $contract_type, $award_method, $industry, $agency, $year) {
+    $search_term = _get_autocomplete_search_term();
+    $facetquery = "";
+    if (!empty($search_term)){
+        if($purchase_order_type){
+            $facetquery .= '&fq=agreement_type_code:' . $purchase_order_type;
+        }
+        if($responsibility_center){
+            $facetquery .= '&fq=responsibility_center_id:' . $responsibility_center;
+        }
+        if($contract_type){
+            $facetquery .= '&fq=contract_type_id:' . $contract_type;
+        }
+        if($award_method){
+            $facetquery .= '&fq=award_method_id:' . $award_method;
+        }
+        if ($industry){
+            $facetquery .= '&fq=industry_type_id:' . $industry;
+        }
+        if($agency){
+            $facetquery .= '&fq=agency_id:' . $agency;
+        }
+        if($year && $year != 'fy~all'){
+            if (strpos($year, '~')) {
+                $year_id = substr($year, 3, strlen($year));
+                $facetquery .= '&('.$year_id.':[*%20TO%20agreement_start_year_id]%20AND%20'.$year_id.':[agreement_end_year_id%20TO%20*])';
+            }
+        }
+        $query = "select/?q=".$solr_field.":" . $search_term
+            ."&facet.field=" . $solr_field .$facetquery
+            ."&q.op=AND&rows=0&facet=true&facet.mincount=1&facet.limit=10&wt=php";
+        $matches = _checkbook_autocomplete_solr_results($query, $solr_field);
+        drupal_json_output($matches);
+    }
+}
+
 //Budget autocomplete menu callback functions
 
 /**
