@@ -81,7 +81,7 @@ class CheckbookEtlStatus
             return false;
         }
 
-        if (empty($conf['CHECKBOOK_ENV']) || !in_array($conf['CHECKBOOK_ENV'], ['UAT','PHPUNIT'])) {
+        if (empty($conf['CHECKBOOK_ENV']) || !in_array($conf['CHECKBOOK_ENV'], ['UAT', 'PHPUNIT'])) {
             // we run this cron only on UAT and PHPUNIT
             return false;
         }
@@ -112,21 +112,21 @@ class CheckbookEtlStatus
 
         $from = $conf['email_from'];
 
-        if (isset($conf['checkbook_dev_group_email'])){
+        if (isset($conf['checkbook_dev_group_email'])) {
             $to_dev = $conf['checkbook_dev_group_email'];
 
-            try{
-                drupal_mail('checkbook_etl_status', 'send-dev-status', $to_dev, null, ['dev_mode'=> true], $from);
-            } catch(Exception $ex1){
+            try {
+                drupal_mail('checkbook_etl_status', 'send-dev-status', $to_dev, null, ['dev_mode' => true], $from);
+            } catch (Exception $ex1) {
                 error_log($ex1->getMessage());
             }
         }
 
         if (isset($conf['checkbook_client_emails'])) {
             $to_client = $conf['checkbook_client_emails'];
-            try{
-                drupal_mail('checkbook_etl_status', 'send-client-status', $to_client, null, ['dev_mode'=> false], $from);
-            } catch(Exception $ex2){
+            try {
+                drupal_mail('checkbook_etl_status', 'send-client-status', $to_client, null, ['dev_mode' => false], $from);
+            } catch (Exception $ex2) {
                 error_log($ex2->getMessage());
             }
         }
@@ -323,9 +323,10 @@ class CheckbookEtlStatus
 
     /**
      * @param $message
+     * @param array $params
      * @return bool
      */
-    public function prepareMessage(&$message)
+    public function prepareMessage(&$message, array $params = [])
     {
         if (false !== self::$message) {
             $message = array_merge($message, self::$message);
@@ -349,7 +350,9 @@ class CheckbookEtlStatus
 
         $date = $this->get_date('Y-m-d');
 
-        $msg['subject'] = "ETL Status: " . $this->successSubject . " ($date)";
+        $internal = ($params['dev_mode']??false) ? ' [internal] ' : '';
+
+        $msg['subject'] = "ETL Status{$internal}: {$this->successSubject} ({$date})";
 
         $message = array_merge($message, $msg);
         self::$message = $msg;

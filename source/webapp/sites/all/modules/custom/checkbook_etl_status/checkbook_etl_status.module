@@ -21,7 +21,7 @@ function checkbook_etl_status_cron()
 function checkbook_etl_status_mail($key, &$message, $params)
 {
     $CES = new CheckbookEtlStatus();
-    $CES->prepareMessage($message);
+    $CES->prepareMessage($message, $params);
 
     $message['body'] = array_merge($message['body'], $params);
 }
