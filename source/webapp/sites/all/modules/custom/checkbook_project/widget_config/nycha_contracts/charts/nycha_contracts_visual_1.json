@@ -14,7 +14,7 @@
     "sortColumn":2,
     "table_columns": [
       {
-        "labelAlias": "Prime Vendor",
+        "labelAlias": "Vendor",
         "columnType": "text"
       },
       {
