@@ -665,9 +665,11 @@
                     var data_source = $('input:radio[name=contracts_advanced_search_domain_filter]:checked').val();
 
                     if(jQuery("#edit-checkbook-oge-contracts-agency option:selected").attr('title').toUpperCase() == 'NEW YORK CITY HOUSING AUTHORITY' && data_source == 'checkbook_oge'){
-                      var purchase_order = div.ele('purchase_order_type').val() || 0;
-                      var responsibility_center = div.ele('responsibility_center').val() || 0;
-                      var award_method = div.ele('nycha_award_method').val() || 0;
+                      var purchase_order = $('#edit-checkbook-oge-contracts-purchase-order-type').val() || 0;
+                      var responsibility_center = $('#edit-checkbook-oge-contracts-responsibility-center').val() || 0;
+                      var contract_type = $('#edit-checkbook-oge-contracts-nycha-contract-type').val() || 0;
+                      var award_method = $('#edit-checkbook-oge-contracts-nycha-award-method').val() || 0;
+                      var industry = $('#edit-checkbook-oge-contracts-nycha-industry').val() || 0;
 
                       div.ele('vendor_name').autocomplete({
                         source: '/advanced-search/autocomplete/nycha_contracts/vendor_name/' + purchase_order + '/' + responsibility_center + '/' + contract_type + '/' + award_method + '/' + industry + '/' + agency + '/' + year,
