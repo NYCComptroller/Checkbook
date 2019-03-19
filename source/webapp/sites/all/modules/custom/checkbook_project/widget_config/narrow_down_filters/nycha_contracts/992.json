@@ -14,6 +14,7 @@
   "urlParameterName":"vendornm_exact",
   "autocompleteParamName":"vendornm_exact_auto",
   "autocompleteID":"fvendorNm",
+  "urlParameterNameType":"eqtext",
   "autocompleteField":"vendor_name",
   "adjustParameters":"
   $parameters = NYCHAContractUtil::adjustYearParams($node, $parameters);
