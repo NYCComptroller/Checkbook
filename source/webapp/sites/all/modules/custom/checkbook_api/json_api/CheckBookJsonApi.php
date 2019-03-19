@@ -334,12 +334,12 @@ class CheckBookJsonApi
     {
         drupal_page_is_cacheable(FALSE);
 
-        global $base_url;
+        global $conf;
 
         $return = [];
-        if ('uat-checkbook-nyc.reisys.com' == parse_url($base_url, PHP_URL_HOST)) {
+        if ('UAT' == $conf['CHECKBOOK_ENV']) {
             $return = $this->Helper->getUatEtlStatus();
-        } elseif (!empty($conf['etl-status-path'])) {
+        } elseif ('PROD' == $conf['CHECKBOOK_ENV']) {
             $return = $this->Helper->getProdEtlStatus();
         }
 
