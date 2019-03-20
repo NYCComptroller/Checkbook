@@ -233,7 +233,7 @@ $node->show_difference = ($contract_type== 'BAM'||$contract_type== 'PAM');
           cUrl = adjustUrlParameter(cUrl,'fundingnm_exact',oFundingNms);
           cUrl = adjustUrlParameter(cUrl,'curamtr',oCurAmount);
           cUrl = adjustUrlParameter(cUrl,'responsibilitynm_exact',oResCenterNms);
-           cUrl = adjustUrlParameter(cUrl,'industrynm_exact',oIndustryNms);
+           cUrl = adjustUrlParameter(cUrl,'industry',oIndustryNms);
           cUrl = adjustUrlParameter(cUrl,'po_num_exact',oPOnums);
           cUrl = adjustUrlParameter(cUrl,'agency',oAgencys);
           cUrl = adjustUrlParameter(cUrl,'agreement_type',oAgreementTypes);
