@@ -402,7 +402,7 @@ function _checkbook_autocomplete_datafeeds_nycha_contracts($solr_field, $purchas
             $query = "select/?q=" . $solr_field . ":" . $search_term
                 . "&facet.field=" . $solr_field . $facetquery
                 . "&q.op=AND&rows=0&facet=true&facet.mincount=1&facet.limit=10&wt=php";
-        }log_error($query);
+        }
         $matches = _checkbook_autocomplete_solr_results($query, $solr_field);
         drupal_json_output($matches);
     }
