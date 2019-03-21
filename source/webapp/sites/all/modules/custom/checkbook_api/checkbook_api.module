@@ -650,6 +650,22 @@ function checkbook_api_adjustContractSql(&$sql_query) {
     }
 }
 
+function checkbook_api_adjustNYCHAContractSql(&$sql_query){
+    $year = NULL;
+    $sql_parts = explode("WHERE", $sql_query);
+    $where_part = $sql_parts[1];
+    $where_parts = explode('AND', $where_part);
+    foreach($where_parts as $key => $value){
+      if(strpos($value,'b.agreement_start_year') !== false){
+        $values = explode('<=', $value);
+        $year = trim($values[1]);
+      }
+    }
+    if(isset($year)){
+      $sql_query =  str_replace("b.release_approved_year", $year." AS release_approved_year",$sql_query);
+    }
+}
+
 function checkbook_api_adjustPayrollSql(&$sql_query) {
     $sql_parts = explode("FROM", $sql_query);
     $select_part = $sql_parts[0];

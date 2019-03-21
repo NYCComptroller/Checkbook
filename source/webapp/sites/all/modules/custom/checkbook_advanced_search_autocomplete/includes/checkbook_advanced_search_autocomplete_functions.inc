@@ -849,20 +849,24 @@ function _checkbook_autocomplete_nycha_contracts($solr_field, $purchase_order_ty
     $search_term = _get_autocomplete_search_term();
     $facetquery = "";
     if (!empty($search_term)){
-        if($purchase_order_type){
+        if($purchase_order_type && $purchase_order_type != 'All'){
             $facetquery .= '&fq=agreement_type_code:' . $purchase_order_type;
         }
         if($responsibility_center){
-            $facetquery .= '&fq=responsibility_center_id:' . $responsibility_center;
+            $code_id_array = _checkbook_advanced_search_autocomplete_get_code_id($responsibility_center);
+            $facetquery .= '&fq=responsibility_center_id:' . $code_id_array['id'];
         }
         if($contract_type){
-            $facetquery .= '&fq=contract_type_id:' . $contract_type;
+            $code_id_array = _checkbook_advanced_search_autocomplete_get_code_id($contract_type);
+            $facetquery .= '&fq=contract_type_id:' .  $code_id_array['id'];
         }
         if($award_method){
-            $facetquery .= '&fq=award_method_id:' . $award_method;
+            $code_id_array = _checkbook_advanced_search_autocomplete_get_code_id($award_method);
+            $facetquery .= '&fq=award_method_id:' .  $code_id_array['id'];
         }
         if ($industry){
-            $facetquery .= '&fq=industry_type_id:' . $industry;
+            $code_id_array = _checkbook_advanced_search_autocomplete_get_code_id($industry);
+            $facetquery .= '&fq=industry_type_id:' .  $code_id_array['id'];
         }
         if($agency){
             $facetquery .= '&fq=agency_id:' . $agency;
@@ -873,9 +877,15 @@ function _checkbook_autocomplete_nycha_contracts($solr_field, $purchase_order_ty
                 $facetquery .= '&('.$year_id.':[*%20TO%20agreement_start_year_id]%20AND%20'.$year_id.':[agreement_end_year_id%20TO%20*])';
             }
         }
-        $query = "select/?q=".$solr_field.":" . $search_term
+        if($solr_field == 'vendor_name'){
+            $query = "select/?q=vendor_name_autocomplete:" . $search_term
             ."&facet.field=" . $solr_field .$facetquery
             ."&q.op=AND&rows=0&facet=true&facet.mincount=1&facet.limit=10&wt=php";
+        } else{
+            $query = "select/?q=".$solr_field.":" . $search_term
+                ."&facet.field=" . $solr_field .$facetquery
+                ."&q.op=AND&rows=0&facet=true&facet.mincount=1&facet.limit=10&wt=php";
+        }
         $matches = _checkbook_autocomplete_solr_results($query, $solr_field);
         drupal_json_output($matches);
     }
