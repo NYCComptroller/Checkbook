@@ -945,7 +945,7 @@ function _checkbook_advanced_search_nycha_contracts_submit($form, &$form_state, 
     //Pending Contracts should always be in the current FY.
     if (!empty($contracts_industry_type_id)) {
         $code_id_array = _checkbook_advanced_search_autocomplete_get_code_id($contracts_industry_type_id);
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($code_id_array['id'], 'industrynm_exact');
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($code_id_array['id'], 'industry');
     }
 
     if (!empty($contracts_contract_vendor_name)) {
