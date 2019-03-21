@@ -662,7 +662,7 @@ function checkbook_api_adjustNYCHAContractSql(&$sql_query){
       }
     }
     if(isset($year)){
-      $sql_query =  str_replace("b.release_approved_year", $year." AS b.release_approved_year",$sql_query);
+      $sql_query =  str_replace("b.release_approved_year", $year." AS release_approved_year",$sql_query);
     }
 }
 
