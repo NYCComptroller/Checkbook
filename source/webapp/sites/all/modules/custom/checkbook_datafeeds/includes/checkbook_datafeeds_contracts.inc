@@ -877,7 +877,7 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
             }
             if ($values['resp_center']) {
                 preg_match($pattern, $values['resp_center'], $amatches);
-                $criteria['value']['resp_center'] = trim($amatches[1], '[ ]');
+                $criteria['value']['responsibility_center'] = trim($amatches[1], '[ ]');
             }
             if ($values['nycha_contract_type']) {
                 preg_match($pattern, $values['nycha_contract_type'], $amatches);
