@@ -151,6 +151,7 @@ class XMLDataHandler extends AbstractDataHandler
      */
     function getJobCommand($query) {
         global $conf;
+        $criteria = $this->requestSearchCriteria->getCriteria();
 
         //map tags and build sql
         $rootElement = $this->requestDataSet->displayConfiguration->xml->rootElement;
@@ -210,6 +211,11 @@ class XMLDataHandler extends AbstractDataHandler
                     break;
                 case "amount_basis_id":
                     $new_select_part .=  "CASE WHEN amount_basis_id = 1 THEN 'SALARIED' ELSE 'NON-SALARIED' END";
+                    break;
+                case "release_approved_year":
+                    if($criteria['global']['type_of_data'] == 'Contracts_NYCHA'){
+                      $new_select_part .= $criteria['value']['fiscal_year'];
+                    }
                     break;
                 case "hourly_rate":
                     if($this->requestDataSet->data_source == Datasource::NYCHA) {
