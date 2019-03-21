@@ -95,10 +95,12 @@ class CSVDataHandler extends AbstractDataHandler {
      * @return string
      */
     function getJobCommand($query) {
+
         global $conf, $databases;
 
         LogHelper::log_notice("DataFeeds :: csv::getJobCommand()");
 
+        $criteria = $this->requestSearchCriteria->getCriteria();
         //map csv headers
         $columnMappings = $this->requestDataSet->displayConfiguration->csv->elementsColumn;
         $columnMappings =  (array)$columnMappings;
@@ -171,6 +173,12 @@ class CSVDataHandler extends AbstractDataHandler {
                     if($this->requestDataSet->data_source == Datasource::NYCHA) {
                         $new_column = "''";
                         $new_select_part .= $new_column . ' AS \\"' . $columnMappings[$column] . '\\",' . "\n";
+                    }
+                    break;
+                case "release_approved_year":
+                    if($criteria['global']['type_of_data'] == 'Contracts_NYCHA'){
+                      $new_column = $criteria['value']['fiscal_year'];
+                      $new_select_part .= $new_column . ' AS \\"' . $columnMappings[$column] . '\\",' .  "\n";
                     }
                     break;
                 default:
