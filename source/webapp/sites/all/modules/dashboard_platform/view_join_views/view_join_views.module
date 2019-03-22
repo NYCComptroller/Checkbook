@@ -117,7 +117,7 @@ function view_join_views_views_data() {
 
 // sorry this code is really ugly, i need to clean it up
 function view_join_views_get_valid_view_args($thisview, $view, $args) {
-	$viewArgs = array();
+	$viewArgs = [];
 
 	//get the args for this view
 	$thisViewArgs = $thisview->get_items('argument');
@@ -163,12 +163,12 @@ function view_join_views_get_view_data($thisview, $viewname, $args) {
 	view_join_views_reset_rownum_fields($view);
 
 	//no we mine through the results to do our own thing
-	$rows = array();
+	$rows = [];
 	foreach ($view->result as $row) {
 		$rows[] = view_join_views_render_fields($view, $row);
 	}
 
-	$objects = array();
+	$objects = [];
 	foreach ($rows as $row) {
 		$object = array('row' => array());
 		/*Convert the $rows into a hierachial key => value array*/
@@ -181,7 +181,7 @@ function view_join_views_get_view_data($thisview, $viewname, $args) {
 					$content = $plaintext_output ? strip_tags($field->content) : $field->content;
 //				}
 //				else {
-//					$content = array();
+//					$content = [];
 //					foreach ($field->content as $n => $oc) $content[$n] = ($plaintext_output ? strip_tags($oc) : $oc);
 //				}
 //			}
@@ -191,7 +191,7 @@ function view_join_views_get_view_data($thisview, $viewname, $args) {
 //					$content = $plaintext_output ? strip_tags($field->raw) : $field->raw;
 //				}
 //				else {
-//					$content = array();
+//					$content = [];
 //					foreach ($field->raw as $n => $oc) $content[$n] = $plaintext_output ? strip_tags($oc) : $oc;
 //				}
 //			}
@@ -220,11 +220,11 @@ function view_join_views_reset_rownum_fields($view) {
 
 function view_join_views_render_fields($view, $row) {
 	$field_ids = array_keys($view->field);
-	$rendered_fields = array();
+	$rendered_fields = [];
 	foreach ($field_ids as $id) {
 		$field = $view->field[$id];
 		$field_is_multiple = FALSE;
-		$field_raw = array();
+		$field_raw = [];
 		//    if ((isset($field->options['multiple']['group']))&& isset($field->field_values)) {
 		//    	$field_output = _views_json_render_multiple_field($field, $row);
 		//    	$n = 0;
@@ -241,8 +241,8 @@ function view_join_views_render_fields($view, $row) {
 		$field_raw = (isset($view->field[$id]->field_alias) && isset($row->{$view->field[$id]->field_alias})) ? $row->{$view->field[$id]->field_alias} : NULL;
 		//    }
 
-		//    $img_match = array();
-		//    $src_match = array();
+		//    $img_match = [];
+		//    $src_match = [];
 		//    if (is_array($field_output)) {
 		//      foreach ($field_output as $i => $f) {
 		//        if (preg_match("/<img[^>]+>/i", $f, $img_match)) {
@@ -315,7 +315,7 @@ function view_join_views_views_handlers() {
 //then finds all of their fields and makes one big options list
 //extract here because its used in several places
 function _view_join_views_options_list_all_view_fields($view) {
-	$options = array();
+	$options = [];
 
 	$filters = $view->get_items('filter');
 
@@ -335,7 +335,7 @@ function _view_join_views_options_list_all_view_fields($view) {
 
 //this function finds all the joined views
 function _view_join_views_list_all_views($view) {
-	$result = array();
+	$result = [];
 
 	$filters = $view->get_items('filter');
 
@@ -350,7 +350,7 @@ function _view_join_views_list_all_views($view) {
 }
 
 function _view_join_views_options_list_view_arguments($view) {
-	$options = array();
+	$options = [];
 
 	$arguments = $view->get_items('argument');
 

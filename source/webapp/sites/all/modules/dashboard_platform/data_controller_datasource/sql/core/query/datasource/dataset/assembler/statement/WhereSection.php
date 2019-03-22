@@ -21,22 +21,45 @@
 
 abstract class ConditionSectionValue extends AbstractSection {
 
-    abstract public function assemble(Statement $statement, $useTableNameAsAlias);
+  /**
+   * @param Statement $statement
+   * @param $useTableNameAsAlias
+   * @return mixed
+   */
+  abstract public function assemble(Statement $statement, $useTableNameAsAlias);
 }
 
 
+/**
+ * Class TableColumnConditionSectionValue
+ */
 class TableColumnConditionSectionValue extends ConditionSectionValue {
 
-    public $tableAlias = NULL;
-    public $columnName = NULL;
+  /**
+   * @var null
+   */
+  public $tableAlias = NULL;
+  /**
+   * @var null
+   */
+  public $columnName = NULL;
 
-    public function __construct($tableAlias, $columnName) {
+  /**
+   * TableColumnConditionSectionValue constructor.
+   * @param $tableAlias
+   * @param $columnName
+   */
+  public function __construct($tableAlias, $columnName) {
         parent::__construct();
         $this->tableAlias = $tableAlias;
         $this->columnName = $columnName;
     }
 
-    public function event_updateTableAlias($oldTableAlias, $newTableAlias) {
+  /**
+   * @param $oldTableAlias
+   * @param $newTableAlias
+   */
+  public function event_updateTableAlias($oldTableAlias, $newTableAlias) {
         parent::event_updateTableAlias($oldTableAlias, $newTableAlias);
 
         if ($oldTableAlias === $this->tableAlias) {
@@ -44,7 +67,13 @@ class TableColumnConditionSectionValue extends ConditionSectionValue {
         }
     }
 
-    public function assemble(Statement $statement, $useTableNameAsAlias) {
+  /**
+   * @param Statement $statement
+   * @param $useTableNameAsAlias
+   * @return mixed|string
+   * @throws IllegalArgumentException
+   */
+  public function assemble(Statement $statement, $useTableNameAsAlias) {
         $table = $statement->getTable($this->tableAlias);
 
         list($referencedDatasetName, $referencedColumnName) = ReferencePathHelper::splitReference($this->columnName);
@@ -57,16 +86,39 @@ class TableColumnConditionSectionValue extends ConditionSectionValue {
 }
 
 
+/**
+ * Class ExactConditionSectionValue
+ */
 class ExactConditionSectionValue extends ConditionSectionValue {
 
-    public $value = NULL;
+  /**
+   * @var null
+   */
+  public $value = NULL;
+  /**
+   * @var bool
+   */
+  public $stringOperation = false;
 
-    public function __construct($value) {
+  /**
+   * ExactConditionSectionValue constructor.
+   * @param $value
+   * @param bool $propertyValue
+   */
+  public function __construct($value, $propertyValue = false) {
         parent::__construct();
         $this->value = $value;
+        if ($propertyValue && $propertyValue instanceof RegularExpressionOperatorHandler){
+          $this->stringOperation = true;
+        }
     }
 
-    public function event_updateTableAlias($oldTableAlias, $newTableAlias) {
+  /**
+   * @param $oldTableAlias
+   * @param $newTableAlias
+   * @throws UnsupportedOperationException
+   */
+  public function event_updateTableAlias($oldTableAlias, $newTableAlias) {
         parent::event_updateTableAlias($oldTableAlias, $newTableAlias);
 
         $callback = new ColumnStatementCompositeEntityParser__TableAliasUpdater($oldTableAlias, $newTableAlias, FALSE);
@@ -75,7 +127,13 @@ class ExactConditionSectionValue extends ConditionSectionValue {
         $this->value = $parser->parse($this->value, array($callback, 'updateTableAlias'));
     }
 
-    public function assemble(Statement $statement, $useTableNameAsAlias) {
+  /**
+   * @param Statement $statement
+   * @param $useTableNameAsAlias
+   * @return mixed
+   * @throws UnsupportedOperationException
+   */
+  public function assemble(Statement $statement, $useTableNameAsAlias) {
         $callback = new ColumnStatementCompositeEntityParser__ColumnNameAdjuster(TRUE);
 
         $parser = new ColumnStatementCompositeEntityParser();
@@ -84,24 +142,48 @@ class ExactConditionSectionValue extends ConditionSectionValue {
 }
 
 
+/**
+ * Class AbstractConditionSection
+ */
 abstract class AbstractConditionSection extends AbstractSection {
 
-    public $subjectColumnName = NULL;
-    public $joinValue = NULL;
+  /**
+   * @var null
+   */
+  public $subjectColumnName = NULL;
+  /**
+   * @var null
+   */
+  public $joinValue = NULL;
 
-    public function __construct($subjectColumnName, $joinValue) {
+  /**
+   * AbstractConditionSection constructor.
+   * @param $subjectColumnName
+   * @param $joinValue
+   */
+  public function __construct($subjectColumnName, $joinValue) {
         parent::__construct();
         $this->subjectColumnName = $subjectColumnName;
         $this->joinValue = $joinValue;
     }
 
-    public function event_updateTableAlias($oldTableAlias, $newTableAlias) {
+  /**
+   * @param $oldTableAlias
+   * @param $newTableAlias
+   */
+  public function event_updateTableAlias($oldTableAlias, $newTableAlias) {
         parent::event_updateTableAlias($oldTableAlias, $newTableAlias);
 
         $this->joinValue->event_updateTableAlias($oldTableAlias, $newTableAlias);
     }
 
-    public function assemble(Statement $statement, AbstractTableSection $table, $useTableNameAsAlias) {
+  /**
+   * @param Statement $statement
+   * @param AbstractTableSection $table
+   * @param $useTableNameAsAlias
+   * @return string
+   */
+  public function assemble(Statement $statement, AbstractTableSection $table, $useTableNameAsAlias) {
         list($referencedDatasetName, $referencedColumnName) = ReferencePathHelper::splitReference($this->subjectColumnName);
 
         $columnByAlias = $table->findColumnByAlias($referencedColumnName);
@@ -113,26 +195,58 @@ abstract class AbstractConditionSection extends AbstractSection {
 
         $tableAlias = $table->prepareColumnTableAlias($useTableNameAsAlias);
 
+        // We need to cast integer DB fields for autocomplete
+        // CAST(s0_b.release_approved_year AS text)  ~* '(.* 201.*)|(^201.*)'
+        $sql_column = isset($selectedColumn) ? $selectedColumn->assembleColumnName($tableAlias) : ColumnNameHelper::combineColumnName($tableAlias, $referencedColumnName);
+        if (('integer' === $this->subjectColumnType??false) && ($this->joinValue->stringOperation??false)) {
+          $sql_column = " CAST({$sql_column} AS text) ";
+        }
+
         return
-            (isset($selectedColumn) ? $selectedColumn->assembleColumnName($tableAlias) : ColumnNameHelper::combineColumnName($tableAlias, $referencedColumnName))
+          $sql_column
                 . $this->joinValue->assemble($statement, $useTableNameAsAlias);
     }
 }
 
 
+/**
+ * Class JoinConditionSection
+ */
 class JoinConditionSection extends AbstractConditionSection {}
 
 
+/**
+ * Class WhereConditionSection
+ */
 class WhereConditionSection extends AbstractConditionSection {
 
-    public $subjectTableAlias = NULL;
+  /**
+   * @var null
+   */
+  public $subjectTableAlias = NULL;
+  /**
+   * @var null
+   */
+  public $subjectColumnType = null;
 
-    public function __construct($subjectTableAlias, $subjectColumnName, $joinValue) {
+  /**
+   * WhereConditionSection constructor.
+   * @param $subjectTableAlias
+   * @param $subjectColumnName
+   * @param $joinValue
+   * @param null $subjectColumnType
+   */
+  public function __construct($subjectTableAlias, $subjectColumnName, $joinValue, $subjectColumnType = null) {
         parent::__construct($subjectColumnName, $joinValue);
         $this->subjectTableAlias = $subjectTableAlias;
+        $this->subjectColumnType = $subjectColumnType;
     }
 
-    public function event_updateTableAlias($oldTableAlias, $newTableAlias) {
+  /**
+   * @param $oldTableAlias
+   * @param $newTableAlias
+   */
+  public function event_updateTableAlias($oldTableAlias, $newTableAlias) {
         if ($oldTableAlias === $this->subjectTableAlias) {
             $this->subjectTableAlias = $newTableAlias;
         }
@@ -142,20 +256,43 @@ class WhereConditionSection extends AbstractConditionSection {
 }
 
 // FIXME combine with HAVING
+
+/**
+ * Class CompositeWhereConditionSection
+ */
 class CompositeWhereConditionSection extends AbstractSection {
 
-    public $subjectTableAlias = NULL;
-    public $subject = NULL;
-    public $value = NULL;
+  /**
+   * @var null
+   */
+  public $subjectTableAlias = NULL;
+  /**
+   * @var CompositeColumnSection|null
+   */
+  public $subject = NULL;
+  /**
+   * @var null
+   */
+  public $value = NULL;
 
-    public function __construct($subjectTableAlias, CompositeColumnSection $subject, $value) {
+  /**
+   * CompositeWhereConditionSection constructor.
+   * @param $subjectTableAlias
+   * @param CompositeColumnSection $subject
+   * @param $value
+   */
+  public function __construct($subjectTableAlias, CompositeColumnSection $subject, $value) {
         parent::__construct();
         $this->subjectTableAlias = $subjectTableAlias;
         $this->subject = $subject;
         $this->value = $value;
     }
 
-    public function event_updateTableAlias($oldTableAlias, $newTableAlias) {
+  /**
+   * @param $oldTableAlias
+   * @param $newTableAlias
+   */
+  public function event_updateTableAlias($oldTableAlias, $newTableAlias) {
         if ($oldTableAlias === $this->subjectTableAlias) {
             $this->subjectTableAlias = $newTableAlias;
         }
@@ -165,31 +302,61 @@ class CompositeWhereConditionSection extends AbstractSection {
         $this->value->event_updateTableAlias($oldTableAlias, $newTableAlias);
     }
 
-    public function assemble(Statement $statement, AbstractTableSection $table, $useTableNameAsAlias) {
+  /**
+   * @param Statement $statement
+   * @param AbstractTableSection $table
+   * @param $useTableNameAsAlias
+   * @return string
+   */
+  public function assemble(Statement $statement, AbstractTableSection $table, $useTableNameAsAlias) {
         return $this->subject->assembleColumnName($table->prepareColumnTableAlias($useTableNameAsAlias))
             . $this->value->assemble($statement, $useTableNameAsAlias);
     }
 }
 
 // FIXME move to a separate file. Create parent class for AbstractConditionSection and this class
+
+/**
+ * Class HavingConditionSection
+ */
 class HavingConditionSection extends AbstractSection {
 
-    public $subject = NULL;
-    public $value = NULL;
+  /**
+   * @var CompositeColumnSection|null
+   */
+  public $subject = NULL;
+  /**
+   * @var null
+   */
+  public $value = NULL;
 
-    public function __construct(CompositeColumnSection $subject, $value) {
+  /**
+   * HavingConditionSection constructor.
+   * @param CompositeColumnSection $subject
+   * @param $value
+   */
+  public function __construct(CompositeColumnSection $subject, $value) {
         parent::__construct();
         $this->subject = $subject;
         $this->value = $value;
     }
 
-    public function event_updateTableAlias($oldTableAlias, $newTableAlias) {
+  /**
+   * @param $oldTableAlias
+   * @param $newTableAlias
+   */
+  public function event_updateTableAlias($oldTableAlias, $newTableAlias) {
         parent::event_updateTableAlias($oldTableAlias, $newTableAlias);
 
         $this->value->event_updateTableAlias($oldTableAlias, $newTableAlias);
     }
 
-    public function assemble(Statement $statement, $useTableNameAsAlias) {
+  /**
+   * @param Statement $statement
+   * @param $useTableNameAsAlias
+   * @return string
+   */
+  public function assemble(Statement $statement, $useTableNameAsAlias) {
         // FIXME statement first table is 'facts'. Try to find better way to get the table instead of using [0]
         return $this->subject->assembleColumnName($statement->tables[0]->prepareColumnTableAlias($useTableNameAsAlias))
             . $this->value->assemble($statement, $useTableNameAsAlias);

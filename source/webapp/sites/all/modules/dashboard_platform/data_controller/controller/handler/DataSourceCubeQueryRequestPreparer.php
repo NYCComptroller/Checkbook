@@ -21,7 +21,13 @@
 
 class DataSourceCubeQueryRequestPreparer extends AbstractObject {
 
-    public function prepareCubeQueryRequest(DataQueryControllerCubeRequest $request) {
+  /**
+   * @param DataQueryControllerCubeRequest $request
+   * @return CubeQueryRequest
+   * @throws IllegalArgumentException
+   * @throws UnsupportedOperationException
+   */
+  public function prepareCubeQueryRequest(DataQueryControllerCubeRequest $request) {
         $cube = $this->getCube($request);
 
         $datasourceRequest = new CubeQueryRequest($cube->name);
@@ -37,7 +43,13 @@ class DataSourceCubeQueryRequestPreparer extends AbstractObject {
         return $datasourceRequest;
     }
 
-    public function prepareCubeCountRequest(DataQueryControllerCubeRequest $request) {
+  /**
+   * @param DataQueryControllerCubeRequest $request
+   * @return CubeQueryRequest
+   * @throws IllegalArgumentException
+   * @throws UnsupportedOperationException
+   */
+  public function prepareCubeCountRequest(DataQueryControllerCubeRequest $request) {
         $cube = $this->getCube($request);
 
         $datasourceRequest = new CubeQueryRequest($cube->name);
@@ -52,13 +64,24 @@ class DataSourceCubeQueryRequestPreparer extends AbstractObject {
         return $datasourceRequest;
     }
 
-    protected function getCube(DataQueryControllerCubeRequest $request) {
+  /**
+   * @param DataQueryControllerCubeRequest $request
+   * @return CubeMetaData
+   * @throws IllegalArgumentException
+   */
+  protected function getCube(DataQueryControllerCubeRequest $request) {
         $metamodel = data_controller_get_metamodel();
 
         return $metamodel->getCubeByDatasetName($request->datasetName);
     }
 
-    protected function prepareCubeRequestColumns(CubeQueryRequest $request, CubeMetaData $cube, array $columnNames) {
+  /**
+   * @param CubeQueryRequest $request
+   * @param CubeMetaData $cube
+   * @param array $columnNames
+   * @throws IllegalArgumentException
+   */
+  protected function prepareCubeRequestColumns(CubeQueryRequest $request, CubeMetaData $cube, array $columnNames) {
         $metamodel = data_controller_get_metamodel();
 
         foreach ($columnNames as $requestColumnIndex => $columnName) {
@@ -76,8 +99,8 @@ class DataSourceCubeQueryRequestPreparer extends AbstractObject {
                 }
 
                 // checking the level exists
-                $dimension = $cube->getDimension($elementName);
-                $level = $dimension->getLevel($subElementName);
+//                $dimension = $cube->getDimension($elementName);
+//                $level = $dimension->getLevel($subElementName);
 
                 // adding the level
                 if (isset($propertyName)) {
@@ -91,21 +114,27 @@ class DataSourceCubeQueryRequestPreparer extends AbstractObject {
                 $selectedRequest = $request;
                 if (isset($referencedCube)) {
                     // checking the measure exists in the referenced cube
-                    $measure = $referencedCube->getMeasure($referencedElementName);
+//                    $measure = $referencedCube->getMeasure($referencedElementName);
                     // preparing referenced request
                     $selectedRequest = $request->registerReferencedRequest($referencedCube->name);
                 }
-                else {
+//                else {
                     // checking the measure exists
-                    $measure = $cube->getMeasure($referencedElementName);
-                }
+//                    $measure = $cube->getMeasure($referencedElementName);
+//                }
                 // adding the measure
                 $selectedRequest->addMeasure($requestColumnIndex, $referencedElementName);
             }
         }
     }
 
-    protected function prepareCubeRequestQueries(CubeQueryRequest $request, CubeMetaData $cube, array $parameters = NULL) {
+  /**
+   * @param CubeQueryRequest $request
+   * @param CubeMetaData $cube
+   * @param array|NULL $parameters
+   * @throws IllegalArgumentException
+   */
+  protected function prepareCubeRequestQueries(CubeQueryRequest $request, CubeMetaData $cube, array $parameters = NULL) {
         if (!isset($parameters)) {
             return;
         }
@@ -116,10 +145,12 @@ class DataSourceCubeQueryRequestPreparer extends AbstractObject {
             list($elementName, $subElementName, $propertyName) = ParameterHelper::splitName($parameterName);
 
             list($referencedDatasetName, $referencedElementName) = ReferencePathHelper::splitReference($elementName);
+
             // checking that referenced cube exists
             $referencedCube = isset($referencedDatasetName)
                 ? $metamodel->getCubeByDatasetName($referencedDatasetName)
                 : NULL;
+
 
             if (isset($subElementName)) {
                 if (isset($referencedCube)) {
@@ -127,8 +158,8 @@ class DataSourceCubeQueryRequestPreparer extends AbstractObject {
                 }
 
                 // checking the level exists
-                $dimension = $cube->getDimension($elementName);
-                $level = $dimension->getLevel($subElementName);
+//                $dimension = $cube->getDimension($elementName);
+//                $level = $dimension->getLevel($subElementName);
 
                 // adding the dimension level related query
                 $request->addDimensionLevelPropertyQueryValues($elementName, $subElementName, $propertyName, $parameterValues);
@@ -157,7 +188,13 @@ class DataSourceCubeQueryRequestPreparer extends AbstractObject {
         }
     }
 
-    protected function useApplicableCubeRegions(CubeQueryRequest $request, CubeMetaData $cube) {
+  /**
+   * @param CubeQueryRequest $request
+   * @param CubeMetaData $cube
+   * @throws IllegalArgumentException
+   * @throws UnsupportedOperationException
+   */
+  protected function useApplicableCubeRegions(CubeQueryRequest $request, CubeMetaData $cube) {
         $metamodel = data_controller_get_metamodel();
 
         if (!isset($cube->regions)) {
@@ -306,7 +343,13 @@ class DataSourceCubeQueryRequestPreparer extends AbstractObject {
         $request->setCubeName($regionCube->name);
     }
 
-    protected function excludeIneligibleRegions(CubeMetaData $cube, &$eligibleRegionNames, array $requestDimensions, $isExactMatchRequired) {
+  /**
+   * @param CubeMetaData $cube
+   * @param $eligibleRegionNames
+   * @param array $requestDimensions
+   * @param $isExactMatchRequired
+   */
+  protected function excludeIneligibleRegions(CubeMetaData $cube, &$eligibleRegionNames, array $requestDimensions, $isExactMatchRequired) {
         // checking each request dimension
         foreach ($requestDimensions as $requestDimension) {
             $requestDimensionName = $requestDimension->dimensionName;

@@ -23,7 +23,7 @@ abstract class AbstractDataQueryController extends AbstractDataController implem
 
     /**
      * @param string $cubeName
-     * @return DataSourceQueryHandler
+     * @return DataSourceHandler
      */
     protected function getDataSourceQueryHandlerByCubeName($cubeName) {
         $metamodel = data_controller_get_metamodel();
@@ -35,7 +35,7 @@ abstract class AbstractDataQueryController extends AbstractDataController implem
 
     /**
      * @param CubeMetaData $cube
-     * @return DataSourceQueryHandler
+     * @return DataSourceHandler
      */
     protected function getDataSourceQueryHandlerByCube(CubeMetaData $cube) {
         return $this->getDataSourceQueryHandlerByDatasetName($cube->sourceDatasetName);
@@ -43,7 +43,7 @@ abstract class AbstractDataQueryController extends AbstractDataController implem
 
     /**
      * @param string $datasetName
-     * @return DataSourceQueryHandler
+     * @return DataSourceHandler
      */
     protected function getDataSourceQueryHandlerByDatasetName($datasetName) {
         return $this->getDataSourceHandlerByDatasetName($datasetName);
@@ -65,32 +65,69 @@ abstract class AbstractDataQueryController extends AbstractDataController implem
         return $this->getDataSourceHandler($datasourceName);
     }
 
-    protected function lookupDataSourceHandler($type) {
+  /**
+   * @param $type
+   * @return DataSourceHandler|DataSourceQueryHandler
+   */
+  protected function lookupDataSourceHandler($type) {
         return DataSourceQueryFactory::getInstance()->getHandler($type);
     }
 
-    public function queryDataset($datasetName, $columns = NULL, $parameters = NULL, $orderBy = NULL, $startWith = 0, $limit = NULL, ResultFormatter $resultFormatter = NULL) {
+  /**
+   * @param $datasetName
+   * @param null $columns
+   * @param null $parameters
+   * @param null $orderBy
+   * @param int $startWith
+   * @param null $limit
+   * @param ResultFormatter|NULL $resultFormatter
+   * @return mixed
+   */
+  public function queryDataset($datasetName, $columns = NULL, $parameters = NULL, $orderBy = NULL, $startWith = 0, $limit = NULL, ResultFormatter $resultFormatter = NULL) {
         $request = new DataQueryControllerDatasetRequest();
         $request->initializeFrom($datasetName, $columns, $parameters, $orderBy, $startWith, $limit, $resultFormatter);
 
         return $this->query($request);
     }
 
-    public function queryCube($datasetName, $columns, $parameters = NULL, $orderBy = NULL, $startWith = 0, $limit = NULL, ResultFormatter $resultFormatter = NULL) {
+  /**
+   * @param $datasetName
+   * @param $columns
+   * @param null $parameters
+   * @param null $orderBy
+   * @param int $startWith
+   * @param null $limit
+   * @param ResultFormatter|NULL $resultFormatter
+   * @return mixed
+   */
+  public function queryCube($datasetName, $columns, $parameters = NULL, $orderBy = NULL, $startWith = 0, $limit = NULL, ResultFormatter $resultFormatter = NULL) {
         $request = new DataQueryControllerCubeRequest();
         $request->initializeFrom($datasetName, $columns, $parameters, $orderBy, $startWith, $limit, $resultFormatter);
 
         return $this->query($request);
     }
 
-    public function countDatasetRecords($datasetName, $parameters = NULL, ResultFormatter $resultFormatter = NULL) {
+  /**
+   * @param $datasetName
+   * @param null $parameters
+   * @param ResultFormatter|NULL $resultFormatter
+   * @return int
+   */
+  public function countDatasetRecords($datasetName, $parameters = NULL, ResultFormatter $resultFormatter = NULL) {
         $request = new DataQueryControllerDatasetRequest();
         $request->initializeFrom($datasetName, NULL, $parameters, NULL, 0, NULL, $resultFormatter);
 
         return $this->countRecords($request);
     }
 
-    public function countCubeRecords($datasetName, $columns, $parameters = NULL, ResultFormatter $resultFormatter = NULL) {
+  /**
+   * @param $datasetName
+   * @param $columns
+   * @param null $parameters
+   * @param ResultFormatter|NULL $resultFormatter
+   * @return int
+   */
+  public function countCubeRecords($datasetName, $columns, $parameters = NULL, ResultFormatter $resultFormatter = NULL) {
         $request = new DataQueryControllerCubeRequest();
         // Note: even if we want we cannot remove $columns parameter for cube record number calculation.
         // That is because $columns are used to identify columns for aggregation

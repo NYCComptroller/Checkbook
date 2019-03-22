@@ -19,4 +19,9 @@
 */
 
 
-class DataControllerCallContext extends AbstractCallContext {}
+class DataControllerCallContext extends AbstractCallContext {
+  /**
+   * @var array
+   */
+  public $columnMapping = [];
+}
