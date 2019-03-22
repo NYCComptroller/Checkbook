@@ -26,7 +26,7 @@ class DimensionMetaData extends AbstractMetaData {
      * It is not possible to have a dimension without any levels
      * @var LevelMetaData[]
      */
-    public $levels = array();
+    public $levels = [];
 
     public function __clone() {
         parent::__clone();

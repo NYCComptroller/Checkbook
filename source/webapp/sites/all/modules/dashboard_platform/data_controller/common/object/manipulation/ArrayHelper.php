@@ -111,7 +111,7 @@ class ArrayHelper {
 
         if (isset($array)) {
             // it is possible that the array was empty. I expect it was a reason for that. We do not want to convert it to NULL
-            $clonnedArray = array();
+            $clonnedArray = [];
 
             foreach ($array as $key => $value) {
                 $clonnedArray[$key] = is_array($value)
