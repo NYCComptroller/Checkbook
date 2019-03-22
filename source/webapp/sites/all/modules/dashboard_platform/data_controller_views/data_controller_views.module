@@ -231,7 +231,7 @@ function data_controller_views_views_handlers() {
 //then finds all the fields in that dataset/cube and makes one big options list
 //extract here because its used in several places
 function _data_controller_views_options_list_all_dataset_fields($view) {
-    $options = array();
+    $options = [];
 
     $filters = $view->get_items('filter');
 
@@ -287,7 +287,7 @@ function _data_controller_views_options_list_all_dataset_fields($view) {
 }
 
 function  data_controller_views_get_column_name($view, $tableColumn) {
-    $columns = array();
+    $columns = [];
     foreach ($view->field as $key => $field) {
         if ($field->options['data_controller_col'] == $tableColumn) {
             $columns[] = $key;
