@@ -44,7 +44,7 @@ class data_controller_views_filter_equality extends views_handler_filter_equalit
 
         $operatorConfig = data_controller_get_operator_factory_instance();
         $supportedOperators = $operatorConfig->getSupportedOperators();
-        $operator_options = array();
+        $operator_options = [];
         foreach ($supportedOperators as $operatorName => $operatorDescription) {
             $operator_options[$operatorName] = $operatorDescription;
         }

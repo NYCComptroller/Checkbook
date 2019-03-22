@@ -21,13 +21,25 @@
 
 class CubeStatementGenerator extends AbstractObject {
 
-    protected static $TABLE_ALIAS__REFERENCED = 'r';
+  /**
+   * @var string
+   */
+  protected static $TABLE_ALIAS__REFERENCED = 'r';
 
     /*
      * Utility function for prepareSelectedCubeQueryStatement() method.
      * Collects information about selected columns and applied conditions for each dataset for further join operation
      */
-    private function registerDatasetConfig(array &$datasetConfigs = NULL, $index, DatasetMetaData $dataset = NULL, $columnName = NULL, AbstractConditionSection $condition = NULL) {
+  /**
+   * @param array|NULL $datasetConfigs
+   * @param $index
+   * @param DatasetMetaData|NULL $dataset
+   * @param null $columnName
+   * @param AbstractConditionSection|NULL $condition
+   * @throws IllegalArgumentException
+   * @throws IllegalStateException
+   */
+  private function registerDatasetConfig(array &$datasetConfigs = NULL, $index, DatasetMetaData $dataset = NULL, $columnName = NULL, AbstractConditionSection $condition = NULL) {
         if (isset($datasetConfigs[$index])) {
             $datasetConfig = $datasetConfigs[$index];
         }
@@ -66,7 +78,16 @@ class CubeStatementGenerator extends AbstractObject {
     /*
      * Prepares a statement object which represents a request to facts table
      */
-    protected function prepareSelectedCubeQueryStatement(AbstractSQLDataSourceQueryHandler $datasourceHandler, DataControllerCallContext $callcontext, CubeQueryRequest $request) {
+  /**
+   * @param AbstractSQLDataSourceQueryHandler $datasourceHandler
+   * @param DataControllerCallContext $callcontext
+   * @param CubeQueryRequest $request
+   * @return Statement
+   * @throws IllegalArgumentException
+   * @throws IllegalStateException
+   * @throws UnsupportedOperationException
+   */
+  protected function prepareSelectedCubeQueryStatement(AbstractSQLDataSourceQueryHandler $datasourceHandler, DataControllerCallContext $callcontext, CubeQueryRequest $request) {
         $metamodel = data_controller_get_metamodel();
 
         // loading cube configuration
@@ -106,7 +127,10 @@ class CubeStatementGenerator extends AbstractObject {
                         $TABLE_ALIAS__SOURCE . '0',
                         $propertyName,
                         new ExactConditionSectionValue(
-                            $datasourceHandler->formatOperatorValue($callcontext, $request, $cubeDataset->name, $propertyName, $propertyValue)));
+                            $datasourceHandler->formatOperatorValue($callcontext, $request, $cubeDataset->name, $propertyName, $propertyValue),
+                          $propertyValue),
+                        $cubeDataset->getColumn($propertyName)->type->applicationType??null
+                      );
                 }
             }
         }
@@ -329,12 +353,15 @@ class CubeStatementGenerator extends AbstractObject {
                     }
                 }
                 else {
-                    $table->columns = array(); // We do not need any columns
+                    $table->columns = []; // We do not need any columns
                 }
             }
             // preparing the table columns which we want to return
             if (isset($aggrSelectColumns[$orderIndex])) {
                 $tableSelectColumns = $aggrSelectColumns[$orderIndex];
+              /**
+               * @var AbstractSelectColumnSection $tableSelectColumn
+               */
                 foreach ($tableSelectColumns as $tableSelectColumn) {
                     // looking for a table in the statement which provides the column for SELECT section
                     $tableSection = $tableStatement->getColumnTable($tableSelectColumn->name);
@@ -346,6 +373,9 @@ class CubeStatementGenerator extends AbstractObject {
 
             // preparing measures which we want to return. Adding those measures to facts table
             if (($orderIndex == 0) && isset($aggrSelectMeasureColumns)) {
+              /**
+               * @var AbstractSelectColumnSection $tableSelectMeasureColumn
+               */
                 foreach ($aggrSelectMeasureColumns as $tableSelectMeasureColumn) {
                     $columnNames = $tableSelectMeasureColumn->parseColumns();
                     // searching which table contains the column
@@ -448,7 +478,17 @@ class CubeStatementGenerator extends AbstractObject {
         return $aggrStatement;
     }
 
-    protected function prepareReferencedCubeQueryStatement(
+  /**
+   * @param AbstractSQLDataSourceQueryHandler $datasourceHandler
+   * @param DataControllerCallContext $callcontext
+   * @param Statement $combinedStatement
+   * @param array $datasetMappedCubeRequests
+   * @param ReferenceLink $link
+   * @throws IllegalArgumentException
+   * @throws IllegalStateException
+   * @throws UnsupportedOperationException
+   */
+  protected function prepareReferencedCubeQueryStatement(
         AbstractSQLDataSourceQueryHandler $datasourceHandler, DataControllerCallContext $callcontext,
             Statement $combinedStatement, array $datasetMappedCubeRequests, ReferenceLink $link) {
 
@@ -628,7 +668,16 @@ class CubeStatementGenerator extends AbstractObject {
         }
     }
 
-    public function generateStatement(AbstractSQLDataSourceQueryHandler $datasourceHandler, DataControllerCallContext $callcontext, CubeQueryRequest $request) {
+  /**
+   * @param AbstractSQLDataSourceQueryHandler $datasourceHandler
+   * @param DataControllerCallContext $callcontext
+   * @param CubeQueryRequest $request
+   * @return Statement
+   * @throws IllegalArgumentException
+   * @throws IllegalStateException
+   * @throws UnsupportedOperationException
+   */
+  public function generateStatement(AbstractSQLDataSourceQueryHandler $datasourceHandler, DataControllerCallContext $callcontext, CubeQueryRequest $request) {
         $statement = $this->prepareSelectedCubeQueryStatement($datasourceHandler, $callcontext, $request);
         if (!isset($request->referencedRequests)) {
             return $statement;
