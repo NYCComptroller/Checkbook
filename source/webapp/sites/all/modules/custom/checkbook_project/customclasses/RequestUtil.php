@@ -764,8 +764,13 @@ class RequestUtil
                 $path = preg_replace('/\/dashboard\/[^\/]*/','',$path);
                 $path = preg_replace('/\/mwbe\/[^\/]*/','',$path);
             }else{
-                $path .= RequestUtilities::buildUrlFromParam('mwbe');
+                if(!stripos(' '.$path,'/mwbe/')) {
+                  $path .= RequestUtilities::buildUrlFromParam('mwbe');
+                }
+
+              if(!stripos(' '.$path,'/dashboard/')) {
                 $path .= RequestUtilities::buildUrlFromParam('dashboard');
+              }
             }
         }
         return $path;
