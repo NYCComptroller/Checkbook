@@ -126,8 +126,10 @@ class NychaContractsUrlService
      */
     static function vendorUrl($vendor_id)
     {
+
+
         $url = '/nycha_contracts'
-            . RequestUtilities::buildUrlFromParam('year')
+             . _checkbook_project_get_year_url_param_string()
             . RequestUtilities::buildUrlFromParam('agency')
             . '/datasource/checkbook_nycha'
             . '/vendor/'. $vendor_id;
