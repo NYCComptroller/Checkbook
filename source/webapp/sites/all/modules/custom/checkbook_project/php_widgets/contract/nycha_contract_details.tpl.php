@@ -357,13 +357,13 @@ $contract = $node->data;
                                         class="dataTable cta-history outerTable">
                                         <thead>
                                         <tr>
-                                            <th class="text nycc-line_number">
+                                            <th class="text">
                                                 <?= WidgetUtil::getLabelDiv('line_number') ?>
                                             </th>
-                                            <th class="text nycc-shipment_number">
+                                            <th class="text">
                                                 <?= WidgetUtil::getLabelDiv('shipment_number') ?>
                                             </th>
-                                            <th class="text nycc-distribution_number">
+                                            <th class="text">
                                                 <?= WidgetUtil::getLabelDiv('distribution_number') ?>
                                             </th>
                                             <th class="number">
@@ -385,17 +385,17 @@ $contract = $node->data;
                                         $z = 0;
                                         foreach ($node->shipments as $shipment):?>
                                             <tr class="outer <?= ($z % 2 ? 'even' : 'odd') ?>">
-                                                <td class="center">
+                                                <td class="center nycc-line_number">
                                                   <div>
                                                     <?= htmlentities($shipment['line_number']) ?>
                                                   </div>
                                                 </td>
-                                                <td class="center">
+                                                <td class="center nycc-shipment_number">
                                                   <div>
                                                     <?= htmlentities($shipment['shipment_number']) ?>
                                                   </div>
                                                 </td>
-                                                <td class="center">
+                                                <td class="center nycc-distribution_number">
                                                   <div>
                                                     <?= htmlentities($shipment['distribution_number']) ?>
                                                   </div>
