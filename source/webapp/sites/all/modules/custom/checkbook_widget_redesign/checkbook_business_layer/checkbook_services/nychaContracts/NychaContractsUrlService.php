@@ -54,9 +54,13 @@ class NychaContractsUrlService
      */
     static function contractDetailsUrl($contract_id, $append_landing_page = true)
     {
+        $year_id = RequestUtilities::getRequestParamValue('year');
+        if(!isset($year_id)){
+            $year_id = _getCurrentYearID();
+        }
         $landing_page = $append_landing_page ? '/nycha_contracts' : '';
         $url = $landing_page
-            . RequestUtilities::buildUrlFromParam('year')
+            . '/year/'.$year_id
             . RequestUtilities::buildUrlFromParam('agency')
             . RequestUtilities::buildUrlFromParam('vendor')
             . RequestUtilities::buildUrlFromParam('industry')
