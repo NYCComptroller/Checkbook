@@ -163,10 +163,10 @@ $contract = $node->data;
                     <?= WidgetUtil::getLabelDiv('no_of_modifications') ?>
                 </th>
                 <th class="number">
-                    <div style="margin-right: 86px;"><span><?= WidgetUtil::getLabel('current_amount') ?></span></div>
+                    <div><span><?= WidgetUtil::getLabel('current_amount') ?></span></div>
                 </th>
                 <th class="number">
-                    <div style="margin-right: 86px;"><span><?= WidgetUtil::getLabel('original_amount') ?></span></div>
+                    <div><span><?= WidgetUtil::getLabel('original_amount') ?></span></div>
                 </th>
             </tr>
             </thead>
@@ -185,12 +185,10 @@ $contract = $node->data;
                             <div><?= sizeof($contract_history_by_year) ?> Modifications</div>
                         </td>
                         <td class="number">
-                            <div
-                                style="margin-right: 86px;"><?= custom_number_formatter_format($contract_history_by_year[key($contract_history_by_year)]['current_amount'], 2, '$') ?></div>
+                            <div><?= custom_number_formatter_format($contract_history_by_year[key($contract_history_by_year)]['current_amount'], 2, '$') ?></div>
                         </td>
                         <td class="number">
-                            <div
-                                style="margin-right: 86px;"><?= custom_number_formatter_format($contract['original_amount'], 2, '$') ?></div>
+                            <div><?= custom_number_formatter_format($contract['original_amount'], 2, '$') ?></div>
                         </td>
                     </tr>
                     <tr id="showHideNychaOrderRevisions<?= $year ?>"
@@ -299,43 +297,51 @@ $contract = $node->data;
 
 <?php if ($node->contractPO): ?>
     <div class="contracts-spending-top"><h3>SPENDING BY VENDOR</h3>
-        <table class="dataTable cta-spending-history outerTable">
+        <table class="dataTable nycha-ct-spending-by-vendor outerTable">
             <thead>
             <tr>
-                <th><span
-                        style="margin:8px 0px 8px 15px!important; display:inline-block; text-align: center !important;"><?= WidgetUtil::getLabel('vendor_name') ?></span>
+                <th>
+                  <?= WidgetUtil::getLabelDiv('vendor_name') ?>
                 </th>
-                <th><span
-                    ><?= WidgetUtil::getLabel('current_amount') ?>
-                                                                </span></th>
-                <th><span
-                    ><?= WidgetUtil::getLabel('original_amount') ?>
-                                                                </span></th>
-                <th><span
-                    ><?= WidgetUtil::getLabel('spent_to_date') ?>
-                                                                </span></th>
+                <th>
+                  <?= WidgetUtil::getLabelDiv('current_amount') ?>
+                </th>
+                <th>
+                  <?= WidgetUtil::getLabelDiv('original_amount') ?>
+                </th>
+                <th>
+                  <?= WidgetUtil::getLabelDiv('spent_to_date') ?>
+                </th>
             </tr>
             </thead>
             <tbody>
             <tr class="even outer">
                 <td>
-                    <span style="margin:8px 0px 8px 15px!important; display:inline-block; text-align: left !important;">
+                    <div>
+                      <span>
                     <a class="showHide  expandTwo"></a><?= htmlentities($contract['vendor_name']) ?></span>
+                    </div>
                 </td>
-                <td>
-                    <span>
+                <td class="number-center">
+                    <div>
+                      <span>
                     <?= custom_number_formatter_format($contract['current_amount'], 2, '$'); ?>
                     </span>
+                    </div>
                 </td>
-                <td>
-                    <span>
+                <td class="number-center">
+                    <div>
+                      <span>
                     <?= custom_number_formatter_format($contract['original_amount'], 2, '$'); ?>
                     </span>
+                    </div>
                 </td>
-                <td>
-                    <span>
+                <td class="number-center">
+                    <div>
+                      <span>
                     <?= custom_number_formatter_format($contract['spend_to_date'], 2, "$"); ?>
                     </span>
+                    </div>
                 </td>
             </tr>
             <tr class="showHide">
@@ -351,13 +357,13 @@ $contract = $node->data;
                                         class="dataTable cta-history outerTable">
                                         <thead>
                                         <tr>
-                                            <th class="text">
+                                            <th class="text nycc-line_number">
                                                 <?= WidgetUtil::getLabelDiv('line_number') ?>
                                             </th>
-                                            <th class="text">
+                                            <th class="text nycc-shipment_number">
                                                 <?= WidgetUtil::getLabelDiv('shipment_number') ?>
                                             </th>
-                                            <th class="text">
+                                            <th class="text nycc-distribution_number">
                                                 <?= WidgetUtil::getLabelDiv('distribution_number') ?>
                                             </th>
                                             <th class="number">
@@ -379,38 +385,40 @@ $contract = $node->data;
                                         $z = 0;
                                         foreach ($node->shipments as $shipment):?>
                                             <tr class="outer <?= ($z % 2 ? 'even' : 'odd') ?>">
-                                                <td class="text">
-                                                    <div><?= htmlentities($shipment['line_number']) ?></div>
+                                                <td class="center">
+                                                  <div>
+                                                    <?= htmlentities($shipment['line_number']) ?>
+                                                  </div>
                                                 </td>
-                                                <td class="text">
-                                                    <div><?= htmlentities($shipment['shipment_number']) ?></div>
+                                                <td class="center">
+                                                  <div>
+                                                    <?= htmlentities($shipment['shipment_number']) ?>
+                                                  </div>
                                                 </td>
-                                                <td class="text">
-                                                    <div><?= htmlentities($shipment['distribution_number']) ?></div>
+                                                <td class="center">
+                                                  <div>
+                                                    <?= htmlentities($shipment['distribution_number']) ?>
+                                                  </div>
                                                 </td>
                                                 <td class="number">
-                                                    <div
-                                                        style="margin-right: 82px;">
-                                                        <div
-                                                            class="spent-to-date"><?= custom_number_formatter_format($shipment['release_line_total_amount'], 2, "$"); ?>
-                                                        </div>
+                                                  <div>
+                                                    <?= custom_number_formatter_format($shipment['release_line_total_amount'], 2, "$"); ?>
+                                                  </div>
                                                 </td>
                                                 <td class="number endCol">
-                                                    <div
-                                                        style="margin-right: 81px;">
-                                                        <div
-                                                            class="spent-to-date"><?= custom_number_formatter_format($shipment['release_line_original_amount'], 2, "$"); ?>
-                                                        </div>
+                                                  <div>
+                                                    <?= custom_number_formatter_format($shipment['release_line_original_amount'], 2, "$"); ?>
+                                                  </div>
                                                 </td>
                                                 <td class="number endCol">
-                                                    <div
-                                                        style="margin-right: 81px;">
-                                                        <div
-                                                            class="spent-to-date"><?= custom_number_formatter_format($shipment['release_line_spend_to_date'], 2, "$"); ?>
-                                                        </div>
+                                                  <div>
+                                                    <?= custom_number_formatter_format($shipment['release_line_spend_to_date'], 2, "$"); ?>
+                                                  </div>
                                                 </td>
-                                                <td class="text">
-                                                    <div><?= htmlentities($shipment['responsibility_center_descr']) ?></div>
+                                                <td class="center">
+                                                  <div>
+                                                    <?= htmlentities($shipment['responsibility_center_descr']) ?>
+                                                  </div>
                                                 </td>
                                             </tr>
                                             <?php
@@ -487,7 +495,7 @@ $contract = $node->data;
                                         <?= WidgetUtil::getLabelDiv('nycha_payment') ?>
                                     </th>
                                     <th class="text th6">
-                                        <?= WidgetUtil::getLabelDiv('agency') ?>
+                                        <?= WidgetUtil::getLabelDiv('agency_name') ?>
                                     </th>
                                     <th class="text th7">
                                         <?= WidgetUtil::getLabelDiv('dept_name') ?>
