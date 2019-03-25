@@ -103,7 +103,7 @@ class MemcacheHandler extends AbstractSharedCacheHandler {
     }
 
     protected function setInternalValues($values, $expiration) {
-        $errorEntryNames = array();
+        $errorEntryNames = [];
 
         foreach ($values as $entryName => $value) {
             if ($this->memcache->set($entryName, $value, 0, $expiration) === FALSE) {

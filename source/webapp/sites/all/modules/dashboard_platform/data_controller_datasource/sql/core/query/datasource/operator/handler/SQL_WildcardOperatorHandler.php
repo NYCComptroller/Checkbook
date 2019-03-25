@@ -34,7 +34,7 @@ class SQL_WildcardOperatorHandler extends SQL_AbstractOperatorHandler {
         $anyCharactersOnLeft = $this->getParameterValue('anyCharactersOnLeft', FALSE);
         $anyCharactersOnRight = $this->getParameterValue('anyCharactersOnRight', FALSE);
 
-        $searchCharacters = $replaceCharacters = array();
+        $searchCharacters = $replaceCharacters = [];
         // escape character
         $searchCharacters[] = self::$ESCAPE_CHARACTER;
         $replaceCharacters[] = self::$ESCAPE_CHARACTER . self::$ESCAPE_CHARACTER;

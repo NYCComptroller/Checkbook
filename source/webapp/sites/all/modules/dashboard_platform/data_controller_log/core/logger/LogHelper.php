@@ -53,7 +53,7 @@ class LogHelper extends AbstractFactory {
     }
 
     protected function initializeMessageListeners() {
-        $this->messageListeners = array();
+        $this->messageListeners = [];
 
         $listenerConfigurations = module_invoke_all('dc_log_message_listener');
         foreach ($listenerConfigurations as $listenerConfiguration) {

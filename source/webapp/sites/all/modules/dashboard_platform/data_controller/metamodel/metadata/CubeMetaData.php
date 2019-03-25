@@ -21,7 +21,10 @@
 
 class CubeMetaData extends AbstractMetaData {
 
-    public $sourceDatasetName = NULL;
+  /**
+   * @var null
+   */
+  public $sourceDatasetName = NULL;
     /**
      * @var DatasetMetaData
      */
@@ -35,14 +38,25 @@ class CubeMetaData extends AbstractMetaData {
      */
     public $measures = NULL;
 
-    public function __clone() {
+  /**
+   * @var array
+   */
+  public $regions = [];
+
+  /**
+   *
+   */
+  public function __clone() {
         parent::__clone();
 
         $this->dimensions = ArrayHelper::cloneArray($this->dimensions);
         $this->measures = ArrayHelper::cloneArray($this->measures);
     }
 
-    public function finalize() {
+  /**
+   *
+   */
+  public function finalize() {
         parent::finalize();
 
         if (isset($this->dimensions)) {
@@ -58,7 +72,10 @@ class CubeMetaData extends AbstractMetaData {
         }
     }
 
-    public function isComplete() {
+  /**
+   * @return bool|null
+   */
+  public function isComplete() {
         $complete = parent::isComplete() && isset($this->sourceDataset) && $this->sourceDataset->isComplete();
 
         for ($i = 0, $count = count($this->dimensions); $complete && ($i < $count); $i++) {
@@ -77,7 +94,10 @@ class CubeMetaData extends AbstractMetaData {
         return $complete;
     }
 
-    public function initializeFrom($sourceCube) {
+  /**
+   * @param $sourceCube
+   */
+  public function initializeFrom($sourceCube) {
         parent::initializeFrom($sourceCube);
 
         // preparing dataset property
@@ -99,7 +119,11 @@ class CubeMetaData extends AbstractMetaData {
         }
     }
 
-    public function initializeSourceDatasetFrom($sourceSourceDataset) {
+  /**
+   * @param $sourceSourceDataset
+   * @throws IllegalArgumentException
+   */
+  public function initializeSourceDatasetFrom($sourceSourceDataset) {
         if (isset($sourceSourceDataset)) {
             if (!isset($this->sourceDataset)) {
                 $this->initiateSourceDataset();
@@ -108,13 +132,19 @@ class CubeMetaData extends AbstractMetaData {
         }
     }
 
-    public function initiateSourceDataset() {
+  /**
+   * @return CubeSourceDatasetMetaData|DatasetMetaData
+   */
+  public function initiateSourceDataset() {
         $this->sourceDataset = new CubeSourceDatasetMetaData();
 
         return $this->sourceDataset;
     }
 
-    public function initializeDimensionsFrom($sourceDimensions) {
+  /**
+   * @param $sourceDimensions
+   */
+  public function initializeDimensionsFrom($sourceDimensions) {
         if (isset($sourceDimensions)) {
             foreach ($sourceDimensions as $sourceDimension) {
                 $sourceDimensionName = ObjectHelper::getPropertyValue($sourceDimension, 'name');
@@ -128,11 +158,18 @@ class CubeMetaData extends AbstractMetaData {
         }
     }
 
-    public function initiateDimension() {
+  /**
+   * @return DimensionMetaData
+   */
+  public function initiateDimension() {
         return new DimensionMetaData();
     }
 
-    public function registerDimension($dimensionName) {
+  /**
+   * @param $dimensionName
+   * @return DimensionMetaData
+   */
+  public function registerDimension($dimensionName) {
         $dimension = $this->initiateDimension();
         $dimension->name = $dimensionName;
 
@@ -141,7 +178,11 @@ class CubeMetaData extends AbstractMetaData {
         return $dimension;
     }
 
-    public function registerDimensionInstance(DimensionMetaData $unregisteredDimension) {
+  /**
+   * @param DimensionMetaData $unregisteredDimension
+   * @throws IllegalArgumentException
+   */
+  public function registerDimensionInstance(DimensionMetaData $unregisteredDimension) {
         $existingDimension = $this->findDimension($unregisteredDimension->name);
         if (isset($existingDimension)) {
             $this->errorDimensionFound($existingDimension);
@@ -150,7 +191,11 @@ class CubeMetaData extends AbstractMetaData {
         $this->dimensions[] = $unregisteredDimension;
     }
 
-    public function unregisterDimension($dimensionName) {
+  /**
+   * @param $dimensionName
+   * @throws IllegalArgumentException
+   */
+  public function unregisterDimension($dimensionName) {
         if (isset($this->dimensions)) {
             for ($i = 0, $count = count($this->dimensions); $i < $count; $i++) {
                 $dimension = $this->dimensions[$i];
@@ -164,7 +209,11 @@ class CubeMetaData extends AbstractMetaData {
         $this->errorDimensionNotFound($dimensionName);
     }
 
-    public function findDimension($dimensionName) {
+  /**
+   * @param $dimensionName
+   * @return DimensionMetaData|null
+   */
+  public function findDimension($dimensionName) {
         if (isset($this->dimensions)) {
             foreach ($this->dimensions as $dimension) {
                 if ($dimension->name === $dimensionName) {
@@ -176,7 +225,12 @@ class CubeMetaData extends AbstractMetaData {
         return NULL;
     }
 
-    public function getDimension($dimensionName) {
+  /**
+   * @param $dimensionName
+   * @return DimensionMetaData|null
+   * @throws IllegalArgumentException
+   */
+  public function getDimension($dimensionName) {
         $dimension = $this->findDimension($dimensionName);
         if (!isset($dimension)) {
             $this->errorDimensionNotFound($dimensionName);
@@ -185,7 +239,12 @@ class CubeMetaData extends AbstractMetaData {
         return $dimension;
     }
 
-    public function findDimensionAndLevelIndexBySourceColumnName($sourceColumnName) {
+  /**
+   * @param $sourceColumnName
+   * @return array|null
+   * @throws IllegalArgumentException
+   */
+  public function findDimensionAndLevelIndexBySourceColumnName($sourceColumnName) {
         $dimensionAndLevelIndex = NULL;
 
         if (isset($this->dimensions)) {
@@ -205,7 +264,12 @@ class CubeMetaData extends AbstractMetaData {
         return $dimensionAndLevelIndex;
     }
 
-    public function getDimensionAndLevelIndexBySourceColumnName($sourceColumnName) {
+  /**
+   * @param $sourceColumnName
+   * @return array|null
+   * @throws IllegalArgumentException
+   */
+  public function getDimensionAndLevelIndexBySourceColumnName($sourceColumnName) {
         $dimensionAndLevelIndex = $this->findDimensionAndLevelIndexBySourceColumnName($sourceColumnName);
         if (!isset($dimensionAndLevelIndex)) {
             $this->errorDimensionNotFoundBySourceColumnName($sourceColumnName);
@@ -214,35 +278,57 @@ class CubeMetaData extends AbstractMetaData {
         return $dimensionAndLevelIndex;
     }
 
-    public function getDimensionCount() {
+  /**
+   * @return int
+   */
+  public function getDimensionCount() {
         return isset($this->dimensions) ? count($this->dimensions) : 0;
     }
 
-    protected function errorDimensionFound($dimension) {
+  /**
+   * @param $dimension
+   * @throws IllegalArgumentException
+   */
+  protected function errorDimensionFound($dimension) {
         throw new IllegalArgumentException(t(
         	"Dimension '@dimensionName' has been already registered in '@cubeName' cube",
             array('@dimensionName' => $dimension->name, '@cubeName' => $this->publicName)));
     }
 
-    protected function errorDimensionNotFound($dimensionName) {
+  /**
+   * @param $dimensionName
+   * @throws IllegalArgumentException
+   */
+  protected function errorDimensionNotFound($dimensionName) {
         throw new IllegalArgumentException(t(
         	"Dimension '@dimensionName' is not registered in '@cubeName' cube",
             array('@dimensionName' => $dimensionName, '@cubeName' => $this->publicName)));
     }
 
-    protected function errorSeveralDimensionsFoundBySourceColumnName($sourceColumnName) {
+  /**
+   * @param $sourceColumnName
+   * @throws IllegalArgumentException
+   */
+  protected function errorSeveralDimensionsFoundBySourceColumnName($sourceColumnName) {
         throw new IllegalArgumentException(t(
         	"Found several dimensions in '@cubeName' cube by the source column name: @sourceColumnName",
             array('@sourceColumnName' => $sourceColumnName, '@cubeName' => $this->publicName)));
     }
 
-    protected function errorDimensionNotFoundBySourceColumnName($sourceColumnName) {
+  /**
+   * @param $sourceColumnName
+   * @throws IllegalArgumentException
+   */
+  protected function errorDimensionNotFoundBySourceColumnName($sourceColumnName) {
         throw new IllegalArgumentException(t(
         	"Cannot find dimension in '@cubeName' cube by the source column name: @sourceColumnName",
             array('@sourceColumnName' => $sourceColumnName, '@cubeName' => $this->publicName)));
     }
 
-    public function initializeMeasuresFrom($sourceMeasures) {
+  /**
+   * @param $sourceMeasures
+   */
+  public function initializeMeasuresFrom($sourceMeasures) {
         if (isset($sourceMeasures)) {
             foreach ($sourceMeasures as $sourceMeasureName => $sourceMeasure) {
                 $measure = $this->findMeasure($sourceMeasureName);
@@ -255,11 +341,18 @@ class CubeMetaData extends AbstractMetaData {
         }
     }
 
-    public function initiateMeasure() {
+  /**
+   * @return MeasureMetaData
+   */
+  public function initiateMeasure() {
         return new MeasureMetaData();
     }
 
-    public function registerMeasure($measureName) {
+  /**
+   * @param $measureName
+   * @return MeasureMetaData
+   */
+  public function registerMeasure($measureName) {
         $measure = $this->initiateMeasure();
         $measure->name = $measureName;
 
@@ -268,7 +361,11 @@ class CubeMetaData extends AbstractMetaData {
         return $measure;
     }
 
-    public function registerMeasureInstance(MeasureMetaData $unregisteredMeasure) {
+  /**
+   * @param MeasureMetaData $unregisteredMeasure
+   * @throws IllegalArgumentException
+   */
+  public function registerMeasureInstance(MeasureMetaData $unregisteredMeasure) {
         $existingMeasure = $this->findMeasure($unregisteredMeasure->name);
         if (isset($existingMeasure)) {
             $this->errorMeasureFound($existingMeasure);
@@ -277,7 +374,11 @@ class CubeMetaData extends AbstractMetaData {
         $this->measures[$unregisteredMeasure->name] = $unregisteredMeasure;
     }
 
-    public function unregisterMeasure($measureName) {
+  /**
+   * @param $measureName
+   * @throws IllegalArgumentException
+   */
+  public function unregisterMeasure($measureName) {
         if (isset($this->measures[$measureName])) {
             unset($this->measures[$measureName]);
         }
@@ -308,35 +409,58 @@ class CubeMetaData extends AbstractMetaData {
         return $measure;
     }
 
-    public function getMeasureCount() {
+  /**
+   * @return int
+   */
+  public function getMeasureCount() {
         return isset($this->measures) ? count($this->measures) : 0;
     }
 
-    protected function errorMeasureFound($measure) {
+  /**
+   * @param $measure
+   * @throws IllegalArgumentException
+   */
+  protected function errorMeasureFound($measure) {
         throw new IllegalArgumentException(t(
         	"Measure '@measureName' has been already registered in '@cubeName' cube",
             array('@measureName' => $measure->name, '@cubeName' => $this->publicName)));
     }
 
-    protected function errorMeasureNotFound($measureName) {
+  /**
+   * @param $measureName
+   * @throws IllegalArgumentException
+   */
+  protected function errorMeasureNotFound($measureName) {
         throw new IllegalArgumentException(t(
         	"Measure '@measureName' is not registered in '@cubeName' cube",
             array('@measureName' => $measureName, '@cubeName' => $this->publicName)));
     }
 }
 
+/**
+ * Class CubeSourceDatasetMetaData
+ */
 class CubeSourceDatasetMetaData extends DatasetMetaData {
 
-    public function __construct() {
+  /**
+   * CubeSourceDatasetMetaData constructor.
+   */
+  public function __construct() {
         parent::__construct();
         $this->system = TRUE;
     }
 
-    public function initiateColumn() {
+  /**
+   * @return ColumnMetaData|CubeSourceDatasetColumnMetaData
+   */
+  public function initiateColumn() {
         return new CubeSourceDatasetColumnMetaData();
     }
 }
 
+/**
+ * Class CubeSourceDatasetColumnMetaData
+ */
 class CubeSourceDatasetColumnMetaData extends ColumnMetaData {
 
 }
