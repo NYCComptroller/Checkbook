@@ -36,7 +36,7 @@ abstract class AbstractColumnBasedJoinController extends AbstractJoinController 
         $hashedSourceA = $this->hashSource($sourceConfigurationA);
         $hashedSourceB = $this->hashSource($sourceConfigurationB);
 
-        $result = array();
+        $result = [];
         $this->joinHash($result, $hashedSourceA, $hashedSourceB);
 
         return new JoinController_SourceConfiguration($result, $sourceConfigurationA->keyColumnNames);

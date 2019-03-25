@@ -320,7 +320,7 @@
                   "csv":{
                     "Agreement Current Amount":"Agreement Current Amount",
                     "Agreement Original Amount":"Agreement Original Amount",
-                    "Agreement Spend to Date":"Agreement Spend to Date",
+                    "Agreement Spent to Date":"Agreement Spent to Date",
                     "Approved Date":"Approved Date",
                     "Award Method":"Award Method",
                     "Borough":"Borough",
@@ -352,7 +352,7 @@
                   "xml":{
                     "agreement_current_amount":"agreement_current_amount",
                     "agreement_original_amount":"agreement_original_amount",
-                    "agreement_spend_to_date":"agreement_spend_to_date",
+                    "agreement_spent_to_date":"agreement_spent_to_date",
                     "approved_date":"approved_date",
                     "award_method":"award_method",
                     "borough":"borough",

@@ -26,15 +26,15 @@ class MetaModel extends AbstractMetaModel {
     /**
      * @var DatasetMetaData[]
      */
-    public $datasets = array();
+    public $datasets = [];
     /**
      * @var DatasetReference[]
      */
-    public $references = array();
+    public $references = [];
     /**
      * @var CubeMetaData[]
      */
-    public $cubes = array();
+    public $cubes = [];
 
     public function __clone() {
         parent::__clone();
@@ -80,10 +80,11 @@ class MetaModel extends AbstractMetaModel {
         return NULL;
     }
 
-    /**
-     * @param $datasetName
-     * @return DatasetMetaData
-     */
+  /**
+   * @param $datasetName
+   * @return DatasetMetaData
+   * @throws IllegalArgumentException
+   */
     public function getDataset($datasetName) {
         $dataset = $this->findDataset($datasetName);
         if (!isset($dataset)) {
@@ -97,7 +98,7 @@ class MetaModel extends AbstractMetaModel {
         $datasets = NULL;
 
         foreach ($this->datasets as $datasetName => $dataset) {
-            list($namespace, $datasetNameOnly) = NameSpaceHelper::splitAlias($datasetName);
+            list(, $datasetNameOnly) = NameSpaceHelper::splitAlias($datasetName);
             if ($datasetNameOnly == $datasetNamespacelessName) {
                 $datasets[$datasetName] = $dataset;
             }
@@ -224,10 +225,11 @@ class MetaModel extends AbstractMetaModel {
             : NULL;
     }
 
-    /**
-     * @param $referenceName
-     * @return DatasetReference
-     */
+  /**
+   * @param $referenceName
+   * @return DatasetReference
+   * @throws IllegalArgumentException
+   */
     public function getReference($referenceName) {
         $reference = $this->findReference($referenceName);
         if (!isset($reference)) {
@@ -237,10 +239,12 @@ class MetaModel extends AbstractMetaModel {
         return $reference;
     }
 
-    /**
-     * @param $datasetName
-     * @return DatasetReference[]|null
-     */
+  /**
+   * @param $datasetName
+   * @return DatasetReference[]|null
+   * @throws IllegalArgumentException
+   * @throws UnsupportedOperationException
+   */
     public function findReferencesByDatasetName($datasetName) {
         $references = NULL;
         foreach ($this->references as $reference) {
@@ -322,22 +326,22 @@ class MetaModel extends AbstractMetaModel {
 
     protected function validateReference(DatasetReference $reference) {
         // checking if dataset name is valid for all reference points
-        $pointCount = 0;
-        foreach ($reference->points as $referencePoint) {
-            // FIXME do not check for dataset name. Simplify code which needed to be changed to accommodate such check (Example: post processing of loaded configuration)
-            /*
-            foreach ($referencePoint->columns as $referencePointColumn) {
-                $dataset = $this->findDataset($referencePointColumn->datasetName);
-                if (!isset($dataset)) {
-                    LogHelper::log_error($this->datasets);
-                    throw new IllegalStateException(t(
-                        "Dataset '@datasetName' for '@referenceName' reference cannot be resolved",
-                        array('@datasetName' => $referencePointColumn->datasetName, '@referenceName' => $reference->publicName)));
-                }
-            }*/
-
-            $pointCount++;
-        }
+//        $pointCount = 0;
+//        foreach ($reference->points as $referencePoint) {
+//            // FIXME do not check for dataset name. Simplify code which needed to be changed to accommodate such check (Example: post processing of loaded configuration)
+//            /*
+//            foreach ($referencePoint->columns as $referencePointColumn) {
+//                $dataset = $this->findDataset($referencePointColumn->datasetName);
+//                if (!isset($dataset)) {
+//                    LogHelper::log_error($this->datasets);
+//                    throw new IllegalStateException(t(
+//                        "Dataset '@datasetName' for '@referenceName' reference cannot be resolved",
+//                        array('@datasetName' => $referencePointColumn->datasetName, '@referenceName' => $reference->publicName)));
+//                }
+//            }*/
+//
+//            $pointCount++;
+//        }
     }
 
     protected function validateReferences(array &$references) {
@@ -413,10 +417,11 @@ class MetaModel extends AbstractMetaModel {
             : NULL;
     }
 
-    /**
-     * @param $cubeName
-     * @return CubeMetaData
-     */
+  /**
+   * @param $cubeName
+   * @return CubeMetaData
+   * @throws IllegalArgumentException
+   */
     public function getCube($cubeName) {
         $cube = $this->findCube($cubeName);
         if (!isset($cube)) {

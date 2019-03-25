@@ -20,12 +20,10 @@
   },
   "mwbe_code_list": {
     "disabled": true,
-    "sql": "SELECT DISTINCT minority_type_id, minority_type_name FROM ref_minority_type ORDER BY minority_type_id",
-    "force_quote": []
+    "sql": "SELECT DISTINCT minority_type_id, minority_type_name FROM ref_minority_type ORDER BY minority_type_id"
   },
   "industry_code_list": {
-    "sql": "SELECT DISTINCT t1.industry_type_id, t1.industry_type_name FROM ref_industry_type t1 WHERE EXISTS ( select 1 from all_agreement_transactions t2 where t2.industry_type_id = t1.industry_type_id ) ORDER BY t1.industry_type_id",
-    "force_quote": []
+    "sql": "SELECT DISTINCT t1.industry_type_id, t1.industry_type_name FROM ref_industry_type t1 WHERE EXISTS ( select 1 from all_agreement_transactions t2 where t2.industry_type_id = t1.industry_type_id ) ORDER BY t1.industry_type_id"
   },
   "budget_code_list": {
     "sql": "SELECT DISTINCT bc.budget_code \"Budget Code\", bc.attribute_name \"Budget Code Name\" FROM ref_budget_code bc WHERE EXISTS ( select 1 from budget b where bc.budget_code_id = b.budget_code_id ) ORDER BY bc.attribute_name",
@@ -116,6 +114,41 @@
     "sql": "SELECT DISTINCT t1.award_method_code, t1.award_method_name FROM ref_award_method t1 WHERE EXISTS ( select 1 from all_agreement_transactions t2 where t2.award_method_id = t1.award_method_id ) ORDER BY t1.award_method_code",
     "force_quote": [
       "award_method_code"
+    ]
+  },
+  "nycha_vendor_code_list": {
+    "database": "checkbook_nycha",
+    "sql": "SELECT DISTINCT vendor_customer_code, vendor_name FROM vendor ORDER BY vendor_customer_code",
+    "force_quote": [
+      "vendor_customer_code"
+    ]
+  },
+  "nycha_contract_type_code_list": {
+    "database": "checkbook_nycha",
+    "sql": "SELECT DISTINCT agreement_type_code, agreement_type_name FROM ref_agreement_type ORDER BY agreement_type_code",
+    "force_quote": [
+      "agreement_type_code"
+    ]
+  },
+  "nycha_award_method_code_list": {
+    "database": "checkbook_nycha",
+    "sql": "SELECT DISTINCT t1.award_method_code, t1.award_method_name FROM ref_award_method t1 WHERE EXISTS ( select 1 from all_agreement_transactions t2 where t2.award_method_id = t1.award_method_id ) ORDER BY t1.award_method_code",
+    "force_quote": [
+      "award_method_code"
+    ]
+  },
+  "nycha_industry_code_list": {
+    "database": "checkbook_nycha",
+    "sql": "SELECT DISTINCT t1.industry_type_id, t1.industry_type_name FROM ref_industry_type t1 WHERE EXISTS ( select 1 from all_agreement_transactions t2 where t2.industry_type_id = t1.industry_type_id ) ORDER BY t1.industry_type_id",
+    "force_quote": [
+      "industry_type_name"
+    ]
+  },
+  "nycha_responsibility_center_code_list": {
+    "database": "checkbook_nycha",
+    "sql": "SELECT DISTINCT responsibility_center_code, responsibility_center_description FROM ref_responsibility_center ORDER BY responsibility_center_code",
+    "force_quote": [
+      "responsibility_center_description"
     ]
   }
 }
