@@ -3924,3 +3924,13 @@ table.nycha_assoc_contracts_list {
 .nycha_assoc_contracts_list .assoc-release-link {
   color: #3C5E7C;
 }
+
+.dataTable td.center{
+  vertical-align: top;
+}
+
+.dataTable td.nycc-line_number,
+.dataTable td.nycc-shipment_number,
+.dataTable td.nycc-distribution_number{
+  padding-right: 40px;
+}

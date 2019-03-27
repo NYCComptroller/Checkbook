@@ -125,9 +125,9 @@
   },
   "nycha_contract_type_code_list": {
     "database": "checkbook_nycha",
-    "sql": "SELECT DISTINCT agreement_type_code, agreement_type_name FROM ref_agreement_type ORDER BY agreement_type_code",
+    "sql": "SELECT DISTINCT contract_type_code, contract_type_name FROM ref_contract_type ORDER BY contract_type_code",
     "force_quote": [
-      "agreement_type_code"
+      "contract_type_name"
     ]
   },
   "nycha_award_method_code_list": {
@@ -142,6 +142,13 @@
     "sql": "SELECT DISTINCT t1.industry_type_id, t1.industry_type_name FROM ref_industry_type t1 WHERE EXISTS ( select 1 from all_agreement_transactions t2 where t2.industry_type_id = t1.industry_type_id ) ORDER BY t1.industry_type_id",
     "force_quote": [
       "industry_type_name"
+    ]
+  },
+  "nycha_purchase_order_code_list": {
+    "database": "checkbook_nycha",
+    "sql": "SELECT DISTINCT agreement_type_code, agreement_type_name FROM ref_agreement_type ORDER BY agreement_type_code",
+    "force_quote": [
+      "agreement_type_name"
     ]
   },
   "nycha_responsibility_center_code_list": {
