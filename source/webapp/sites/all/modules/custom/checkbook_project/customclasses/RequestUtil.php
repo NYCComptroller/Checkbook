@@ -649,6 +649,9 @@ class RequestUtil
                 $path = "/nycha_contracts/datasource/".Datasource::NYCHA;
                 $path .="/year/".$fiscalYearId;
                 $path .= Datasource::getNYCHAUrl();
+                if (RequestUtilities::get("vendor") > 0) {
+                    $path .=  "/vendor/" . RequestUtilities::get("vendor");
+                }
                 break;
             case "contracts":
                 //Get 'Contracts Bottom Slider' amounts
