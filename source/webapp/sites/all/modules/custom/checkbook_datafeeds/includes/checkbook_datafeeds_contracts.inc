@@ -372,10 +372,10 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
             }
             if ($values['nycha_apt_pin']) {
                 $form['filter']['nycha_apt_pin'] = array(
-                    '#markup' => '<div><strong>APT PIN:</strong> ' . $values['nycha_apt_pin'] . '</div>',
+                    '#markup' => '<div><strong>PIN:</strong> ' . $values['nycha_apt_pin'] . '</div>',
                 );
-                $user_criteria['APT PIN'] = $values['nycha_apt_pin'];
-                $formatted_search_criteria['APT PIN'] = $values['nycha_apt_pin'];
+                $user_criteria['PIN'] = $values['nycha_apt_pin'];
+                $formatted_search_criteria['PIN'] = $values['nycha_apt_pin'];
             }
 
             if ($values['nycha_startdatefrom'] && $values['nycha_startdateto']) {
@@ -902,7 +902,7 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
                 $criteria['value']['purpose'] = $values['nycha_purpose'];
             }
             if ($values['nycha_apt_pin']) {
-                $criteria['value']['apt_pin'] = strtoupper($values['nycha_apt_pin']);
+                $criteria['value']['pin'] = strtoupper($values['nycha_apt_pin']);
             }
             if ($values['nycha_startdatefrom'] !== '' || $values['nycha_startdateto'] !== '') {
                 $criteria['range']['start_date'] = array(checknull($values['nycha_startdatefrom']), checknull($values['nycha_startdateto']),);
