@@ -385,17 +385,17 @@ $contract = $node->data;
                                         $z = 0;
                                         foreach ($node->shipments as $shipment):?>
                                             <tr class="outer <?= ($z % 2 ? 'even' : 'odd') ?>">
-                                                <td class="center nycc-line_number">
+                                                <td class="number nycc-line_number">
                                                   <div>
                                                     <?= htmlentities($shipment['line_number']) ?>
                                                   </div>
                                                 </td>
-                                                <td class="center nycc-shipment_number">
+                                                <td class="number nycc-shipment_number">
                                                   <div>
                                                     <?= htmlentities($shipment['shipment_number']) ?>
                                                   </div>
                                                 </td>
-                                                <td class="center nycc-distribution_number">
+                                                <td class="number nycc-distribution_number">
                                                   <div>
                                                     <?= htmlentities($shipment['distribution_number']) ?>
                                                   </div>
