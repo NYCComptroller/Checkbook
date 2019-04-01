@@ -160,8 +160,8 @@ $node->show_difference = ($contract_type== 'BAM'||$contract_type== 'PAM');
     },
     "bInfo":true,
     "aoColumns": [
-      {"sClass":"number-center", "sWidth":"150px","asSorting":["asc","desc"]},
-      {"bSortable":false,"sWidth":"10px"},
+      {"sClass":"number-center", "sWidth":"112px","asSorting":["asc","desc"]},
+      {"bSortable":false,"sWidth":"50px"},
       {"sClass":"text", "sWidth":"150px","asSorting":["asc","desc"]},
       {"sClass":"number-center", "sWidth":"50px","asSorting":["asc","desc"]},
       {"sClass":"number-center", "sWidth":"75px","asSorting":["asc","desc"]},
