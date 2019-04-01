@@ -65,13 +65,14 @@
 
 
 $datasource = RequestUtilities::getRequestParamValue('datasource');
-$sql = 'SELECT contract_id,purpose,vendor_name,total_amount,original_amount,spend_to_date,
+$sql = 'SELECT contract_id,purpose,vendor_id,vendor_name,total_amount,original_amount,spend_to_date,
 abs(SUM(original_amount - total_amount)) AS dollar_difference,
 ROUND(CASE COALESCE(SUM(original_amount), 0 :: NUMERIC) WHEN 0 THEN 100 :: NUMERIC ELSE ABS(
 SUM(original_amount - total_amount) / SUM(original_amount))* 100 END, 2) AS percent_difference
 FROM    contracts_widget_summary
 ' . $where_filter . '
 GROUP BY contract_id,purpose,
+vendor_id,
 vendor_name,
 total_amount,
 original_amount,
@@ -96,7 +97,9 @@ $tooltip_label =
 'Amount: ' . custom_number_formatter_format($row['total_amount'] ,2, '$').  '<br/>'
 ;
 
-$link = 'nycha_contracts/' . NychaContractsUrlService::contractDetailsUrl($row['contract_id'], false);
+$link =  'nycha_contracts'.NychaContractsUrlService::contractDetailsUrl($row['contract_id'], false);
+$link = str_replace('?','/vendor/'.$row['vendor_id'].'?',$link);
+
 $series_new[$index]->url = 	$link;
 
 $series_new[$index]->y = (float)$row['total_amount'];
