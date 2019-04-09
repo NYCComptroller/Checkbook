@@ -93,12 +93,12 @@ $tooltip_label =
 'Contract ID: ' . $row['contract_id'] .  '<br/>' .
 'Vendor: ' . $row['vendor_name'] .  '<br/>' .
 'Contracting Agency: NYCHA <br />' .
-'Amount: ' . custom_number_formatter_format($row['total_amount'] ,2, '$').  '<br/>'
-;
+'Amount: ' . custom_number_formatter_format($row['total_amount'] ,2, '$').  '<br/>';
 
-$link = 'nycha_contracts/' . NychaContractsUrlService::contractDetailsUrl($row['contract_id'], false);
+list($link,) = explode('?',$_GET['q']);
+$link .= NychaContractsUrlService::contractDetailsUrl($row['contract_id'], true);
+
 $series_new[$index]->url = 	$link;
-
 $series_new[$index]->y = (float)$row['total_amount'];
 $series_new[$index]->tooltip_label = $tooltip_label;
 $node->widgetConfig->gridConfig->data[] = array($row['contract_id'],$row['vendor_name'],'NYCHA',$row['total_amount'] );
