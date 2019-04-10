@@ -318,16 +318,16 @@
               "default":{
                 "data_type":{
                   "csv":{
-                    "Agreement Current Amount":"Agreement Current Amount",
-                    "Agreement Original Amount":"Agreement Original Amount",
-                    "Agreement Spent to Date":"Agreement Spent to Date",
+                    "Contract Current Amount":"Contract Current Amount",
+                    "Contract Original Amount":"Contract Original Amount",
+                    "Contract Spent to Date":"Contract Spent to Date",
                     "Approved Date":"Approved Date",
                     "Award Method":"Award Method",
                     "Borough":"Borough",
                     "Commodity Category":"Commodity Category",
                     "Contract ID":"Contract ID",
                     "Contract Type":"Contract Type",
-                    "Current Amount":"Current Amount",
+                    "Line Current Amount":"Line Current Amount",
                     "Distribution Number":"Distribution Number",
                     "End Date":"End Date",
                     "Expenditure Type":"Expenditure Type",
@@ -336,7 +336,7 @@
                     "Industry":"Industry",
                     "Line Number":"Line Number",
                     "Location":"Location",
-                    "Original amount":"Original amount",
+                    "Line Original amount":"Line Original amount",
                     "Program":"Program",
                     "Project":"Project",
                     "Purchase Order Type":"Purchase Order Type",
@@ -344,7 +344,7 @@
                     "Release Number":"Release Number",
                     "Responsibility Center":"Responsibility Center",
                     "Shipment Number":"Shipment Number",
-                    "Spent to Date":"Spent to Date",
+                    "Line Spent to Date":"Line Spent to Date",
                     "Start Date":"Start Date",
                     "Vendor":"Vendor",
                     "Year":"Year"
