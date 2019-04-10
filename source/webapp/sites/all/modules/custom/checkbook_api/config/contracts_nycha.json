@@ -11,7 +11,7 @@
       "current_amount":"release_total_amount",
       "other_government_entities_code":"agency_code",
       "purpose":"purpose",
-      "apt_pin":"po_header_id",
+      "pin":"po_header_id",
       "start_date":"agreement_start_date",
       "end_date":"agreement_end_date",
       "approved_date":"release_approved_date"
@@ -177,7 +177,7 @@
       "current_amount":{"valueType":"range","dataType":"amount","maxLength":"18"},
       "other_government_entities_code":{"valueType":"value","dataType":"text","maxLength":"4"},
       "purpose":{"valueType":"value","dataType":"text","maxLength":"100"},
-      "apt_pin":{"valueType":"value","dataType":"text", "maxLength":"100"},
+      "pin":{"valueType":"value","dataType":"text", "maxLength":"100"},
       "start_date":{"valueType":"range","dataType":"date","format":"YYYY-MM-DD"},
       "end_date":{"valueType":"range","dataType":"date","format":"YYYY-MM-DD"},
       "approved_date":{"valueType":"range","dataType":"date","format":"YYYY-MM-DD"}
@@ -195,7 +195,7 @@
       "current_amount":"release_total_amount",
       "other_government_entities_code":"agency_code",
       "purpose":"purpose",
-      "apt_pin":"po_header_id",
+      "pin":"po_header_id",
       "start_date":"agreement_start_date",
       "end_date":"agreement_end_date",
       "approved_date":"release_approved_date",
@@ -366,7 +366,7 @@
       "current_amount":{"valueType":"range","dataType":"amount","maxLength":"18"},
       "other_government_entities_code":{"valueType":"value","dataType":"text","maxLength":"4"},
       "purpose":{"valueType":"value","dataType":"text","maxLength":"100"},
-      "apt_pin":{"valueType":"value","dataType":"text", "maxLength":"100"},
+      "pin":{"valueType":"value","dataType":"text", "maxLength":"100"},
       "start_date":{"valueType":"range","dataType":"date","format":"YYYY-MM-DD"},
       "end_date":{"valueType":"range","dataType":"date","format":"YYYY-MM-DD"},
       "approved_date":{"valueType":"range","dataType":"date","format":"YYYY-MM-DD"}

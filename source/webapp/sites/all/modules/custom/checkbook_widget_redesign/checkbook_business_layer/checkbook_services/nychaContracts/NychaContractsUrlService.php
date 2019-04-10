@@ -46,20 +46,21 @@ class NychaContractsUrlService
         return $url;
     }
 
-    /**
-     * Returns NYCHA Contracts Vendor Landing page URL for the given vendor id
-     * @param $contract_id
-     * @param $append_landing_page
-     * @return string
-     */
-    static function contractDetailsUrl($contract_id, $append_landing_page = true)
+  /**
+   * Returns NYCHA Contracts Vendor Landing page URL for the given vendor id
+   * @param $contract_id
+   * @param bool $just_bottom_url
+   * @return string
+   */
+    static function contractDetailsUrl($contract_id, $just_bottom_url = false)
     {
-        $year_id = RequestUtilities::getRequestParamValue('year');
-        if(!isset($year_id)){
+        $url = '';
+        if (!$just_bottom_url) {
+          $year_id = RequestUtilities::getRequestParamValue('year');
+          if(!isset($year_id)){
             $year_id = _getCurrentYearID();
-        }
-        $landing_page = $append_landing_page ? '/nycha_contracts' : '';
-        $url = $landing_page
+          }
+          $url = '/nycha_contracts'
             . '/year/'.$year_id
             . RequestUtilities::buildUrlFromParam('agency')
             . RequestUtilities::buildUrlFromParam('vendor')
@@ -68,14 +69,16 @@ class NychaContractsUrlService
             . RequestUtilities::buildUrlFromParam('awdmethod')
             . RequestUtilities::buildUrlFromParam('datasource');
 
-        //Persist the last parameter in the current page URL as the last param only to fix the title issues
-        $lastReqParam = _getLastRequestParamValue($_SERVER['HTTP_REFERER']);
-        if ($lastReqParam != _getLastRequestParamValue($url)) {
+          //Persist the last parameter in the current page URL as the last param only to fix the title issues
+          $lastReqParam = _getLastRequestParamValue($_SERVER['HTTP_REFERER']);
+          if ($lastReqParam != _getLastRequestParamValue($url)) {
             foreach ($lastReqParam as $key => $value) {
-                $url = preg_replace("/\/" . $key . "\/" . $value . "/", "", $url);
-                $url .= "/" . $key . "/" . $value;
+              $url = preg_replace("/\/" . $key . "\/" . $value . "/", "", $url);
+              $url .= "/" . $key . "/" . $value;
             }
+          }
         }
+
         $url .= '?expandBottomContURL=/panel_html/nycha_contract_details/contract/' . $contract_id;
         return $url;
     }
