@@ -101,6 +101,10 @@ $contract = $node->data;
 
                     </li>
                     <li>
+                        <span class="gi-list-item"><?= WidgetUtil::getLabel('pin') ?>:</span>
+                        &nbsp;<?= htmlentities($contract['po_header_id']) ?>
+                    </li>
+                    <li>
                         <span class="gi-list-item"><?= WidgetUtil::getLabel('transaction_status') ?>:</span>
                         &nbsp;<?= 'Approved'; ?>
                     </li>
