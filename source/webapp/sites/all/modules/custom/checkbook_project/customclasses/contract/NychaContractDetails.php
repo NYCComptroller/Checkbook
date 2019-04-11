@@ -90,6 +90,7 @@ class NychaContractDetails
                 city,
                 state,
                 zip,
+                po_header_id,
                 industry_type_name,
                 department_name,
                 award_method_name,
