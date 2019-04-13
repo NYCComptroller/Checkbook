@@ -720,7 +720,7 @@ jQuery(document).ready(function ($) {
                 var nodeId = $(this).attr('exportid');
                 var oSettings = $('#table_' + nodeId).dataTable().fnSettings();
 
-                var url = '/export/grid/transactions';
+                var url = '/export/grid/transactions/'+ nodeId;
                 var inputs = "<input type='hidden' name='refURL' value='" + (oSettings.sAjaxSource != null ? oSettings.sAjaxSource : oSettings.oInit.sAltAjaxSource) + "'/>"
                     + "<input type='hidden' name='iDisplayStart' value='" + oSettings._iDisplayStart + "'/>"
                     + "<input type='hidden' name='iDisplayLength' value='" + oSettings._iDisplayLength + "'/>"
