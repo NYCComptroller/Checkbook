@@ -421,9 +421,14 @@ function _checkbook_export_generateExportFile($node, $headers, $exportConfigNode
 
     $columns = isset($exportConfigNode) ? $exportConfigNode->widgetConfig->table_columns : $node->widgetConfig->table_columns;
     $columnsConfig = array();
-    foreach($columns as $column){
-      if($column->column) {
-        $columnsConfig[] = (isset($column->sortSourceColumn)) ? str_replace('.', '_', $column->sortSourceColumn) : str_replace('.', '_', $column->column);
+    foreach($columns as $column) {
+      if ($column->column) {
+        $selectedColumn = (isset($column->sortSourceColumn)) ? str_replace('.', '_', $column->sortSourceColumn) : str_replace('.', '_', $column->column);
+        //For columns selected from reference tables
+        if (strpos($selectedColumn, '@')) {
+          list($selectedColumn,) = explode('@', $selectedColumn);
+        }
+        $columnsConfig[] = $selectedColumn;
       }
     }
     $input = $node->data;
@@ -441,7 +446,7 @@ function _checkbook_export_generateExportFile($node, $headers, $exportConfigNode
     foreach($selectColumns as $key =>$value){
       $selectColumn = $value;
       if (strpos($selectColumn,' AS ')) {
-        list(,$selectColumn) = explode(' AS ', $selectColumn);
+        list($selectColumn,) = explode(' AS ', $selectColumn);
       }
       if (strpos($selectColumn,'.')) {
         list(,$selectColumn) = explode('.', $selectColumn);
@@ -450,7 +455,6 @@ function _checkbook_export_generateExportFile($node, $headers, $exportConfigNode
         $exportColumns[trim($selectColumn)] = $value;
       }
     }
-
     $newQuery = null;
     foreach($columnsConfig as $key => $value){
       if (!empty($exportColumns[$value])) {
@@ -520,7 +524,7 @@ function _checkbook_export_generateExportFile($node, $headers, $exportConfigNode
       . $tempOutputFile
       . "'  WITH DELIMITER ',' CSV QUOTE '\\\"' ESCAPE '\\\"' \" ";
 
-//        log_error($command);
+    //   log_error($command);
     LogHelper::log_notice($command);
 
     shell_exec($command);
