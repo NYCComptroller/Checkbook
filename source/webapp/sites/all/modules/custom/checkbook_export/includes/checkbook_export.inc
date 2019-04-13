@@ -13,9 +13,7 @@ function _checkbook_export_form(){
 }
 
 /** Function to render export data for grid view */
-function _checkbook_export_grid_transactions(){
-  $_GET['q'] = urldecode(drupal_get_path_alias($_GET['refURL']));
-  $nodeId = RequestUtilities::get('node',$_GET['q']);
+function _checkbook_export_grid_transactions($nodeId){
   $node = node_load($nodeId);
   if($node ==null ){
     $node = widget_load($nodeId);
