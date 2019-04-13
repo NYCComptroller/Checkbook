@@ -14,13 +14,12 @@ function _checkbook_export_form(){
 
 /** Function to render export data for grid view */
 function _checkbook_export_grid_transactions(){
-
-  $nodeId = RequestUtilities::get('node',false);
+  $_GET['q'] = urldecode(drupal_get_path_alias($_GET['refURL']));
+  $nodeId = RequestUtilities::get('node',$_GET['q']);
   $node = node_load($nodeId);
   if($node ==null ){
     $node = widget_load($nodeId);
   }
-  $_GET['q'] = urldecode(drupal_get_path_alias($_GET['refURL']));
   widget_config($node);
 
   if(isset($node->widgetConfig->gridConfig->adjustWidgetConfig)){
