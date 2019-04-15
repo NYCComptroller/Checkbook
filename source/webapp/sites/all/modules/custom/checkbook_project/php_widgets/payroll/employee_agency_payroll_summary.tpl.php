@@ -162,7 +162,7 @@ foreach($all_data as $employment_type => $employment_data) {
         //$title_url = $data['title_url'];
         $title = $data['title'];
         $agency_url = Datasource::isNycha()? $data['agency_name']:$data['agency_url'];
-        $max_annual_salary = $data['max_annual_salary'];
+        $max_annual_salary =$data['max_annual_salary'];
         $pay_frequency = $data['pay_frequency'];
         $total_gross_pay = $data['total_gross_pay'];
         $total_base_salary = $data['total_base_salary'];
@@ -184,7 +184,7 @@ foreach($all_data as $employment_type => $employment_data) {
 
                    </tr>";
         $table .= "<tr>
-                        <td><strong>". ( ($employment_type == PayrollType::$SALARIED) ? WidgetUtil::getLabel('annual_salary') : WidgetUtil::getLabel('pay_rate'))  ."</strong>: $". number_format($max_annual_salary,2) ."</td>
+                        <td><strong>". ( ($employment_type == PayrollType::$SALARIED) ? WidgetUtil::getLabel('annual_salary') : WidgetUtil::getLabel('daily_wage'))  ."</strong>: $". number_format($max_annual_salary,2) ."</td>
                         <td><strong>". WidgetUtil::getLabel('pay_frequency') ."</strong>: ". strtoupper($pay_frequency)."</td>
                    </tr>";
         $table .= "<tr>
