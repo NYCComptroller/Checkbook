@@ -59,7 +59,7 @@ function _checkbook_export_grid_transactions($nodeId){
     if($column->eval) {
       $label = eval("return $label;");
     }
-
+    $label = str_replace('<br/>',' ', $label);
     if($i == 0)
       $data .= $label;
     else{
