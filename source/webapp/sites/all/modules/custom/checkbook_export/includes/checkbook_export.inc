@@ -444,6 +444,7 @@ function _checkbook_export_generateExportFile($node, $headers, $exportConfigNode
     foreach($selectColumns as $key =>$value){
       $selectColumn = $value;
       if (strpos($selectColumn,' AS ')) {
+        //For the reference columns derived using syntax like column_name@datasource:dataset
         list($selectColumn,) = explode(' AS ', $selectColumn);
       }
       if (strpos($selectColumn,'.')) {
@@ -453,8 +454,9 @@ function _checkbook_export_generateExportFile($node, $headers, $exportConfigNode
         $exportColumns[trim($selectColumn)] = $value;
       }else{
         $selectColumn_ref = $value;
+        //For the reference columns derived from cube dimensions
         if (strpos($selectColumn_ref,' AS ')) {
-          list($selectColumn_ref,) = explode(' AS ', $selectColumn_ref);
+          list(,$selectColumn_ref) = explode(' AS ', $selectColumn_ref);
         }
         if(in_array(trim($selectColumn_ref),$columnsConfig)){
           $exportColumns[trim($selectColumn_ref)] = $value;
