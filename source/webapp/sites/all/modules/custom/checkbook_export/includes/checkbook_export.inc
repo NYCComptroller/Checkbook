@@ -445,6 +445,9 @@ function _checkbook_export_generateExportFile($node, $headers, $exportConfigNode
       $selectColumn = $value;
       if (strpos($selectColumn,' AS ')) {
         list($selectColumn,) = explode(' AS ', $selectColumn);
+        if(!in_array(trim($selectColumn),$columnsConfig)){
+          list(,$selectColumn) = explode(' AS ', $value);
+        }
       }
       if (strpos($selectColumn,'.')) {
         list(,$selectColumn) = explode('.', $selectColumn);
