@@ -452,11 +452,12 @@ function _checkbook_export_generateExportFile($node, $headers, $exportConfigNode
       if(in_array(trim($selectColumn),$columnsConfig)){
         $exportColumns[trim($selectColumn)] = $value;
       }else{
-        if (strpos($value,' AS ')) {
-          list($selectColumn,) = explode(' AS ', $selectColumn);
+        $selectColumn_ref = $value;
+        if (strpos($selectColumn_ref,' AS ')) {
+          list($selectColumn_ref,) = explode(' AS ', $selectColumn_ref);
         }
-        if(in_array(trim($selectColumn),$columnsConfig)){
-          $exportColumns[trim($selectColumn)] = $value;
+        if(in_array(trim($selectColumn_ref),$columnsConfig)){
+          $exportColumns[trim($selectColumn_ref)] = $value;
         }
       }
     }
