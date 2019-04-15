@@ -18,6 +18,7 @@ function _checkbook_export_grid_transactions($nodeId){
   if($node ==null ){
     $node = widget_load($nodeId);
   }
+  $_GET['q'] = urldecode(drupal_get_path_alias($_GET['refURL']));
   widget_config($node);
 
   if(isset($node->widgetConfig->gridConfig->adjustWidgetConfig)){
