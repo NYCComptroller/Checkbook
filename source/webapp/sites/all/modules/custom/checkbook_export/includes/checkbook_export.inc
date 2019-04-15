@@ -444,23 +444,13 @@ function _checkbook_export_generateExportFile($node, $headers, $exportConfigNode
     foreach($selectColumns as $key =>$value){
       $selectColumn = $value;
       if (strpos($selectColumn,' AS ')) {
-        //For the reference columns derived using syntax like column_name@datasource:dataset
         list($selectColumn,) = explode(' AS ', $selectColumn);
-        if(in_array(trim($selectColumn),$columnsConfig)){
-          $exportColumns[trim($selectColumn)] = $value;
-        }else{
-          //For the reference columns derived from cube dimensions
-          list(,$selectColumn) = explode(' AS ', $value);
-          if(in_array(trim($selectColumn),$columnsConfig)){
-            $exportColumns[trim($selectColumn)] = $value;
-          }
-        }
       }
       if (strpos($selectColumn,'.')) {
         list(,$selectColumn) = explode('.', $selectColumn);
-        if(in_array(trim($selectColumn),$columnsConfig)){
-          $exportColumns[trim($selectColumn)] = $value;
-        }
+      }
+      if(in_array(trim($selectColumn),$columnsConfig)){
+        $exportColumns[trim($selectColumn)] = $value;
       }
     }
     $newQuery = null;
@@ -532,7 +522,7 @@ function _checkbook_export_generateExportFile($node, $headers, $exportConfigNode
       . $tempOutputFile
       . "'  WITH DELIMITER ',' CSV QUOTE '\\\"' ESCAPE '\\\"' \" ";
 
-       log_error($command);
+    //   log_error($command);
     LogHelper::log_notice($command);
 
     shell_exec($command);
