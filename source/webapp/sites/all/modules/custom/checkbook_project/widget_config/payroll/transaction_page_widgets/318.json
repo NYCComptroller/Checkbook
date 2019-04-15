@@ -53,18 +53,27 @@
     "transformationPHP":"
         $year = RequestUtilities::getRequestParamValue('calyear') ? RequestUtilities::getRequestParamValue('calyear') : RequestUtilities::getRequestParamValue('year');
         $year_type = RequestUtilities::getRequestParamValue('yeartype');
+         $data_source = RequestUtilities::getRequestParamValue('datasource');
         $month = RequestUtilities::getRequestParamValue('month');
         $agency = RequestUtilities::getRequestParamValue('agency');
         $title = RequestUtilities::getRequestParamValue('title');
         $employee_id = RequestUtilities::getRequestParamValue('abc') ? RequestUtilities::getRequestParamValue('abc') : RequestUtilities::getRequestParamValue('xyz');
 
         $max_annual_salary = payrollDetails::getMaxAnnualSalaryByPayFrequency($year, $year_type, $month, $agency, $title, $employee_id);
-        $max_hourly_rate = payrollDetails::getMaxHourlyRateByPayFrequency($year, $year_type, $month, $agency, $title, $employee_id);
+         $max_hourly_rate = payrollDetails::getMaxHourlyRateByPayFrequency($year, $year_type, $month, $agency, $title, $employee_id);
+         $max_daily_wage = payrollDetails::getMaxDailyWageByPayFrequency($year, $year_type, $month, $agency, $title, $employee_id);
+
+
 
         foreach($node->data as &$row) {
             $pay_frequency = $row['pay_frequency_pay_frequency'];
             $amount_basis_id = $row['amount_basis_id_amount_basis_id'];
-            $row['max_annual_salary'] = $amount_basis_id == 1 ? $max_annual_salary[$pay_frequency] : $max_hourly_rate[$pay_frequency];
+            if($data_source=='checkbook_nycha'){
+             $row['max_annual_salary'] = $amount_basis_id == 1 ? $max_annual_salary[$pay_frequency] : $max_daily_wage[$pay_frequency];
+            }
+            else{
+            $row['max_annual_salary'] = $amount_basis_id == 1 ? $max_annual_salary[$pay_frequency] :   $max_hourly_rate[$pay_frequency];
+              }
         }
         return $node->data;
     ",
