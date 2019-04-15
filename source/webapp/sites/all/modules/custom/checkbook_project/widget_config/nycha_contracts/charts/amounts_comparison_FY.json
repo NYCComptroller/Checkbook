@@ -1,0 +1,76 @@
+{
+    "widgetType": "highcharts",
+    "widgetDatahandler": "highcharts",
+    "html_class":"nycha_amounts_line",
+    "header":"
+      $header = '<h2 class=\"chart-title\" style=\"display:none;\">'. $node->widgetConfig->chartTitle . '</h2>';
+      return $header;
+    ",
+    "no_results_content":"No Results Found",
+    "chartTitle":"NYCHA Amounts",
+    "widgetDataLoader":"
+        $datasource = RequestUtilities::getRequestParamValue('datasource');
+        $sql = 'SELECT
+                  release_approved_year AS year,
+                  SUM(agreement_total_amount) AS total_amount,
+                  SUM(agreement_original_amount) AS original_amount,
+                  SUM(agreement_spend_to_date) AS spent_to_date
+                FROM all_agreement_transactions
+                WHERE agreement_type_id = 3 AND release_approved_year BETWEEN 2013 AND 2018
+                GROUP BY release_approved_year
+                ORDER BY 1 ASC';
+        $node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
+    ",
+    "widgetUpdateJSONConfig":"
+        $series_new = array();
+        $index = 0;
+        foreach($node->data as $row){
+            $years[] = $row['year'];
+            $tooltip_label = 'Year: ' . $row['year'] .  '<br/>' .
+                              'Current Amount: ' . custom_number_formatter_format($row['total_amount'] ,2, '$').  '<br/>';
+            $total_amount_series[$index]->y = (float)$row['total_amount'];
+            $total_amount_series[$index]->tooltip_label = $tooltip_label;
+
+            $tooltip_label = 'Year: ' . $row['year'] .  '<br/>' .
+            'Original Amount: ' . custom_number_formatter_format($row['original_amount'] ,2, '$').  '<br/>';
+            $original_amount_series[$index]->y = (float)$row['original_amount'];
+            $original_amount_series[$index]->tooltip_label = $tooltip_label;
+
+            $tooltip_label = 'Year: ' . $row['year'] .  '<br/>' .
+            'Spent to Date: ' . custom_number_formatter_format($row['spent_to_date'] ,2, '$').  '<br/>';
+            $spent_amount_series[$index]->y = (float)$row['spent_to_date'];
+            $spent_amount_series[$index]->tooltip_label = $tooltip_label;
+
+            $index += 1;
+        }
+        $node->widgetConfig->chartConfig->series[0]->name = 'Current Amount';
+        $node->widgetConfig->chartConfig->series[0]->type = 'line';
+        $node->widgetConfig->chartConfig->series[0]->data = $total_amount_series;
+
+        $node->widgetConfig->chartConfig->series[1]->name = 'Original Amount';
+        $node->widgetConfig->chartConfig->series[1]->type = 'line';
+        $node->widgetConfig->chartConfig->series[1]->data = $original_amount_series;
+
+        $node->widgetConfig->chartConfig->series[2]->name = 'Spent to Date';
+        $node->widgetConfig->chartConfig->series[2]->type = 'line';
+        $node->widgetConfig->chartConfig->series[2]->data = $spent_amount_series;
+        $node->widgetConfig->chartConfig->xAxis->categories = $years;
+    ",
+    "chartConfig" : {
+        "colors":["Black", "#ADFF2F", "#D2691E"],
+        "plotOptions": {"label": {"connectorAllowed": false, "enabled": true}, "pointStart": 2010},
+        "yAxis": {"startOnTick":true, "title": {"text": ""}, "labels":{"style": {"color": "black"},"rotation": 0,"function":"yAxisFormatter"}} ,
+        "xAxis":{"labels":{"enabled":true, "style": {"color": "black", "fontSize": "13px"}}},
+        "legend": {"align": "right",  "verticalAlign": "top", "layout": "vertical", "x": 0, "y": 100, "symbolWidth": 25,
+                   "padding": 3, "itemMarginTop": 3, "itemMarginBottom": 3},
+        "chart": {"marginRight": 150},
+        "tooltip":{"function":"tooltipformatter"},
+        "title": {"text": ""}
+    }
+}
+<function>
+yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
+tooltipformatter^^'formatter' :
+function() {return this.point.tooltip_label ;
+}##
+</function>
