@@ -7,7 +7,7 @@
       return $header;
     ",
     "no_results_content":"No Results Found",
-    "chartTitle":"NYCHA Amounts",
+    "chartTitle":"",
     "widgetDataLoader":"
         $datasource = RequestUtilities::getRequestParamValue('datasource');
         $sql = 'SELECT
