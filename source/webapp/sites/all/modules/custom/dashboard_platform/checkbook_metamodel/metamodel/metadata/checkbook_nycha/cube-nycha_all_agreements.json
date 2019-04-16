@@ -2,7 +2,7 @@
   "datasets": {
     "nycha_all_agreements": {
       "datasourceName": "main",
-      "source": "SELECT * FROM all_agreement_transactions"
+      "source": "all_agreement_transactions"
     }
   },
   "cubes": {
