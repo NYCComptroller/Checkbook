@@ -48,7 +48,7 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
    * @param DataSourceMetaData $datasource
    * @param $sql
    * @param __SQLDataSourceHandler__AbstractQueryCallbackProxy $callbackInstance
-   * @return |null
+   * @return mixed|null
    * @throws IllegalStateException
    */
   protected function executeQueryStatement(DataControllerCallContext $callcontext, DataSourceMetaData $datasource, $sql, __SQLDataSourceHandler__AbstractQueryCallbackProxy $callbackInstance)
@@ -117,10 +117,10 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
    * @param DataControllerCallContext $callcontext
    * @param DataSourceMetaData $datasource
    * @param $sql
-   * @return AbstractMetaData
+   * @return AbstractMetaData|null
    * @throws IllegalStateException
    */
-  protected function processDatasetMetaData(DataControllerCallContext $callcontext, DataSourceMetaData $datasource, $sql) : AbstractMetaData
+  protected function processDatasetMetaData(DataControllerCallContext $callcontext, DataSourceMetaData $datasource, $sql)
   {
     LogHelper::log_info(new StatementLogMessage('metadata.dataset', $sql));
 
