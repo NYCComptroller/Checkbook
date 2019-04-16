@@ -1,0 +1,201 @@
+<html>
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+  <script src="https://d3js.org/d3.v5.js"></script>
+</head>
+<body>
+<h4>Total number of agreements by year <strong class="mapYear"></strong></h4>
+
+<div id="nyc-map-tooltip" class="hidden">
+  <div><strong>Borough:</strong> <span id="borough-name-tooltip">.</span></div>
+  <div><strong>Year:</strong> <span id="year-tooltip">.</span></div>
+  <div><strong>NYCHA Contracts:</strong> <span id="contract-number-tooltip">200</span></div>
+</div>
+
+<div id="borough-map"/>
+
+</body>
+</html>
+
+<script type="text/javascript">
+
+  var container = '#borough-map',
+    margin = {
+      top: 10,
+      left: 10,
+      bottom: 10,
+      right: 10
+    },
+    width = parseInt(d3.select(container).style("width")) - margin.left - margin.right,
+    mapRatio = .3,
+    height = width * mapRatio,
+    mapRatioAdjuster = 30,
+    nyc_center = [-74, 40.7],
+    boroughColor = d3.scaleThreshold().domain([5000, 10000, 20000, 40000, 60000, 80000]).range(["#E3E8EC", "#C7D1DA", "#ABBAC7", "#90A3B4", "#748CA1", "#58758F", "#3C5E7C"]),
+    projection = d3.geoMercator().center(nyc_center).translate([width / 2, height / 2]).scale(width * [mapRatio + mapRatioAdjuster]),
+    zoom = d3.zoom().on("zoom", zoomed),
+    highlightedBorough = '',
+    formatComma = d3.format(",");
+
+  d3.select(window).on("resize", resize);
+
+  function resize() {
+    width = parseInt(d3.select(container).style("width"));
+    width = width - margin.left - margin.right;
+    height = width * mapRatio;
+    projection.translate([width / 2, height / 2]).center(nyc_center).scale(width * [mapRatio + mapRatioAdjuster]);
+    svg.style("width", width + "px").style("height", height + "px");
+    svg.selectAll("path").attr("d", path);
+  }
+
+  function zoomed() {
+    features.attr("transform", d3.event.transform);
+  }
+
+  var svg = d3.select(container).append("svg").attr("width", width).attr("height", height).call(zoom),
+    path = d3.geoPath().projection(projection),
+    features = svg.append("g"),
+    yearIndex = 0,
+    mapYear = 2010,
+    boroughAgreementCount = {};
+
+  Promise.all([
+    d3.json("/sites/all/modules/custom/checkbook_test/pub/nyc.json"),
+    d3.csv("/sites/all/modules/custom/checkbook_test/pub/agreements_by_borough_by_year.csv")
+  ]).then(function (files) {
+    renderMap(files[0], files[1])
+  }).catch(function (err) {
+    throw err
+  });
+
+  function showNycMapTooltip(event) {
+    d3.select("#nyc-map-tooltip")
+      .style("top", (d3.event.offsetY + 20) + "px")
+      .style("left", (d3.event.offsetX + 20) + "px");
+    highlightedBorough = event.properties.borough;
+    d3.select("#borough-name-tooltip").text(event.properties.borough);
+    d3.select("#year-tooltip").text(mapYear);
+    d3.select("#contract-number-tooltip").text(boroughAgreementCount[mapYear][event.properties.borough]);
+    // d3.select("#precinct-number").text(event.properties.Precinct);
+    // d3.select("#contract-number").text(function () {
+    //   return formatComma(agreementCount[event.properties.Precinct])
+    // });
+    // d3.select("#nypd-tooltip").classed("hidden", !1)
+  }
+
+  function hideNycMapTooltip() {
+    d3.select("#nyc-map-tooltip").classed("hidden", !1)
+  }
+
+  function unhideNycMapTooltip() {
+    d3.select("#nyc-map-tooltip").classed("hidden", !0)
+  }
+
+  function updateMap(map, years) {
+    yearIndex++;
+    if (yearIndex >= years.length) {
+      yearIndex = 0;
+    }
+    mapYear = years[yearIndex];
+    d3.select(".mapYear").text(mapYear);
+    if (highlightedBorough) {
+      d3.select("#year-tooltip").text(mapYear);
+      d3.select("#contract-number-tooltip").text(boroughAgreementCount[mapYear][highlightedBorough]);
+    }
+    map.transition()
+      .duration(1000)
+      .attr("fill", function (e) {
+        return boroughColor(boroughAgreementCount[mapYear][e.properties.borough])
+      });e
+  }
+
+  function renderMap(jsonMap, csvData) {
+    // draw simple map
+    /*
+    features.selectAll("path")
+      .data(jsonMap.features)
+      .enter()
+      .append('path');
+      */
+    var years = [];
+    csvData.forEach(function (csvLine) {
+      if (typeof boroughAgreementCount[csvLine.year] == 'undefined') {
+        boroughAgreementCount[csvLine.year] = {
+          "Queens": 0,
+          "Staten Island": 0,
+          "Brooklyn": 0,
+          "Bronx": 0,
+          "Manhattan": 0
+        };
+      }
+
+      boroughAgreementCount[csvLine.year][csvLine.borough] = csvLine.count;
+      if (years.indexOf(csvLine.year) < 0) {
+        years.push(csvLine.year)
+      }
+    });
+
+    years = years.sort();
+
+    var map = features.selectAll("path")
+      .data(jsonMap.features)
+      .enter()
+      .append('path')
+      .attr("d", path);
+
+    map.attr("fill", function () {
+      return boroughColor(0)
+    })
+      .on("mousemove", showNycMapTooltip)
+      .on("mouseout", unhideNycMapTooltip)
+      .on("mouseover", hideNycMapTooltip);
+    d3.select(".mapYear").text(years[0]);
+
+    d3.interval(function () {
+      updateMap(map, years)
+    }, 2000);
+  }
+
+</script>
+
+
+<style>
+  h4 {
+    color: #3C5E7C;
+  }
+
+  #nyc-map-tooltip {
+    position: absolute;
+    width: 200px;
+    height: auto;
+    padding: 10px;
+    background-color: #fff;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, .4);
+    -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, .4);
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, .4);
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  #nyc-map-tooltip.hidden {
+    display: none
+  }
+
+  #nyc-map-tooltip p {
+    margin: 0;
+    font-family: sans-serif;
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  path:hover {
+    stroke-dasharray: 5,5;
+    stroke: #ccc;
+    stroke-width: 1;
+  }
+
+</style>

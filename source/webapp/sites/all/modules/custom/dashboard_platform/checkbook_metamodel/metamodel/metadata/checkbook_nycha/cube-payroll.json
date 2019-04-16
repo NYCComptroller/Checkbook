@@ -70,6 +70,24 @@
                     ]
                 },
                 {
+                    "name": "daily_wage",
+                    "levels": [
+                        {
+                            "name": "daily_wage",
+                            "sourceColumnName": "daily_wage"
+                        }
+                    ]
+                },
+                {
+                    "name": "hourly_rate",
+                    "levels": [
+                        {
+                            "name": "hourly_rate",
+                            "sourceColumnName": "hourly_rate"
+                        }
+                    ]
+                },
+                {
                     "name": "annual_salary",
                     "levels": [
                         {
