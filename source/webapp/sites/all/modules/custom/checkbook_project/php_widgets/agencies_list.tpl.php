@@ -32,8 +32,8 @@ foreach($node->data as $key=>$value){
 $oge_filter_highlight = (_checkbook_check_isEDCPage()) ? 'agency_filter_highlight' : '';
 $city_filter_highlight = (!_checkbook_check_isEDCPage()) ? 'agency_filter_highlight' : '';
 
-$current_fy_year = _getFiscalYearID();
-$current_cal_year = _getCalendarYearID();
+$current_fy_year = (RequestUtilities::get('year')) ? RequestUtilities::get('year') :  _getFiscalYearID() ;
+$current_cal_year = (RequestUtilities::get('year')) ? RequestUtilities::get('year') : _getCurrentCalendarYearID();
 
 $current_url = explode('/',$_SERVER['REQUEST_URI']);
 $url = $current_url[1];
