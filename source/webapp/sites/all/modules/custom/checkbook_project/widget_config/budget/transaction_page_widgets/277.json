@@ -217,16 +217,6 @@
       "column": ""
     }
   ],
-  "export_columns": [
-    "budget_code_name"
-  ],
-  "exportColumnSqlOverride": [
-    {
-      "column": "formatted_budget_code",
-      "sourceColumn": "budget_code",
-      "sql": "budget_code||'('||budget_code_name||')'"
-    }
-  ],
   "adjustParameters":"
       if(function_exists('_checkbook_project_applyParameterFilters')){
           $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
