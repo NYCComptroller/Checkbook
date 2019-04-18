@@ -65,7 +65,7 @@
                 }
             },
             "adjustParameters":"if(function_exists('checkbook_api_adjustPayrollParameterFilters')){checkbook_api_adjustPayrollParameterFilters($data_set,$parameters,$criteria);}",
-            "adjustDataSetResults":"if(function_exists('checkbook_api_adjustPayrollDataSetResults')){non_salaried_amount($data_records);}",
+            "adjustDataSetResults":"if(function_exists('checkbook_api_adjustPayrollDataSetResults')){checkbook_api_adjustPayrollDataSetResults($data_records);}",
             "adjustSql":"if(function_exists('checkbook_api_adjustPayrollSql')){checkbook_api_adjustPayrollSql($sql_query);}"
         },
         "requestParameters":{
