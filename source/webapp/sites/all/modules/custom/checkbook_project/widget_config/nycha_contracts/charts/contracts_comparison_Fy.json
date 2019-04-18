@@ -4,7 +4,6 @@
   "no_results_content":"No Results Found",
   "widgetDataLoader":"
   $datasource = 'checkbook_nycha';
-
    parse_str($_SERVER['QUERY_STRING'], $params);
 $start_year = isset($params['datefrom']) ? $params['datefrom'] : 2013;
 $end_year = isset($params['dateto']) ? $params['dateto'] : 2018;
@@ -21,7 +20,7 @@ $end_year = isset($params['dateto']) ? $params['dateto'] : 2018;
   foreach($node->data as $row){
   $years[] = $row['year'];
 $tooltip_label = 'Year: ' . $row['year'] .  '<br/>' .
-'Current Amount: ' . custom_number_formatter_format($row['total_contracts'] ,2, '$').  '<br/>';
+'Number of Contracts: ' . custom_number_formatter_format($row['total_contracts'] ,2, '$').  '<br/>';
 $contracts_series[$index]->y = (float)$row['total_contracts'];
 $contracts_series[$index]->tooltip_label = $tooltip_label;
 
