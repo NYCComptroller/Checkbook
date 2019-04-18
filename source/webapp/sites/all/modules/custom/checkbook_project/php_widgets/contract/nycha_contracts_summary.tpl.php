@@ -18,11 +18,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-$tcode = RequestUtilities::get('tCode');
+$agreement_type = RequestUtilities::get('agreement_type');
+if($agreement_type ){
+   $tcode = $agreement_type;
+}
+else {
+    $tcode = RequestUtilities::get('tCode');
+}
 $summaryTitle = '';
 global $checkbook_breadcrumb_title;
+
 $summaryTitle = RequestUtil::getTitleByCode($tcode);
+if(empty($summaryTitle)){
+    $summaryTitle = 'NYCHA';
+}
 
 print "<h2 class='contract-title' class='title'>{$summaryTitle} Contracts Transactions</h2>";
 $checkbook_breadcrumb_title =  "$summaryTitle Contracts Transactions";
