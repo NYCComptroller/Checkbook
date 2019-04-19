@@ -31,7 +31,7 @@ class BudgetUrlService {
         $url = null;
         switch($widget){
             case "departments":
-                $url = "/panel_html/department_budget_details/budget/dept_details";
+                $url = "/panel_html/deppartment_budget_details/budget/dept_details";
                 break;
             case "agencies":
                 $url = "/panel_html/budget_agency_perecent_difference_transactions/budget/agency_details";
