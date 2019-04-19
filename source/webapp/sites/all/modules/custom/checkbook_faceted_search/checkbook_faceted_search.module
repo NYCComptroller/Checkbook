@@ -234,6 +234,15 @@ function _checkbook_faceted_search_update_data($node) {
         $disableFacet = preg_match('"/'.$node->widgetConfig->urlParameterName.'/"',$url_ref);
     }
 
+   //To show only default checked items for nycha contracts advanced search
+     $currentPath = current_path();
+    if(preg_match('/nycha_contracts\/all\/transactions/', $currentPath) ||
+        preg_match('/nycha_contracts\/search\/transactions/', $currentPath)){
+        $url_ref =  $_GET['q'];
+        $disableFacet = preg_match('"/'.$node->widgetConfig->urlParameterName.'/"',$url_ref);
+
+    }
+
     if($disableFacet) {
         $output['unchecked'] = null;
     }
