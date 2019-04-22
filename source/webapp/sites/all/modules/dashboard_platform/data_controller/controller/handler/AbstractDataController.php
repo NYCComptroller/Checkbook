@@ -37,6 +37,13 @@ abstract class AbstractDataController extends AbstractObject implements DataCont
 
         $dataset = $metamodel->getDataset($datasetName);
 
+        if (!is_array($dataset->columns) || !sizeof($dataset->columns)) {
+          LogHelper::log_debug(t('Could not load metadata for dataset @datasourceName ; Query: @source', [
+            '@datasourceName' => $dataset->datasourceName,
+            '@source' => $dataset->source
+          ]));
+        }
+
         return $this->getDataSourceHandlerByDataset($dataset);
     }
 
