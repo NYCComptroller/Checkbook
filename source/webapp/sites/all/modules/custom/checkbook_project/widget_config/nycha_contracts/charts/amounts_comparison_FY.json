@@ -7,16 +7,21 @@
       return $header;
     ",
     "no_results_content":"No Results Found",
-    "chartTitle":"NYCHA Amounts",
+    "chartTitle":"",
     "widgetDataLoader":"
-        $datasource = RequestUtilities::getRequestParamValue('datasource');
+        $datasource = 'checkbook_nycha';
+        $get_query_params = $_SERVER['REDIRECT_QUERY_STRING'];
+        parse_str($get_query_params, $params);
+        $years = isset($params['years']) ? $params['years'] : 5;
+        $end_year = 2018;
+        $start_year = (2018 - $years) + 1;
         $sql = 'SELECT
                   release_approved_year AS year,
                   SUM(agreement_total_amount) AS total_amount,
                   SUM(agreement_original_amount) AS original_amount,
                   SUM(agreement_spend_to_date) AS spent_to_date
                 FROM all_agreement_transactions
-                WHERE agreement_type_id = 3 AND release_approved_year BETWEEN 2013 AND 2018
+                WHERE agreement_type_id = 3 AND release_approved_year BETWEEN ' . $start_year . ' AND ' . $end_year .'
                 GROUP BY release_approved_year
                 ORDER BY 1 ASC';
         $node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
@@ -43,16 +48,19 @@
 
             $index += 1;
         }
+        $get_query_params = $_SERVER['REDIRECT_QUERY_STRING'];
+        parse_str($get_query_params, $params);
+        $chart_type = isset($params['chart_type']) ? $params['chart_type'] : 'line';
         $node->widgetConfig->chartConfig->series[0]->name = 'Current Amount';
-        $node->widgetConfig->chartConfig->series[0]->type = 'line';
+        $node->widgetConfig->chartConfig->series[0]->type = $chart_type;
         $node->widgetConfig->chartConfig->series[0]->data = $total_amount_series;
 
         $node->widgetConfig->chartConfig->series[1]->name = 'Original Amount';
-        $node->widgetConfig->chartConfig->series[1]->type = 'line';
+        $node->widgetConfig->chartConfig->series[1]->type = $chart_type;
         $node->widgetConfig->chartConfig->series[1]->data = $original_amount_series;
 
         $node->widgetConfig->chartConfig->series[2]->name = 'Spent to Date';
-        $node->widgetConfig->chartConfig->series[2]->type = 'line';
+        $node->widgetConfig->chartConfig->series[2]->type = $chart_type;
         $node->widgetConfig->chartConfig->series[2]->data = $spent_amount_series;
         $node->widgetConfig->chartConfig->xAxis->categories = $years;
     ",
