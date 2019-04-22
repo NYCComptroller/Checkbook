@@ -230,20 +230,20 @@ function _checkbook_faceted_search_update_data($node) {
     if($disableFacet) { //only URL parameters count and can be disabled
         $query_string = $_GET['q'];
         $is_new_window = preg_match('/newwindow/i',$query_string);
-        $url_ref = $is_new_window ? $_GET['q'] : $_SERVER['HTTP_REFERER'];
-        $disableFacet = preg_match('"/'.$node->widgetConfig->urlParameterName.'/"',$url_ref);
-    }
-
-   //To show only default checked items for nycha contracts advanced search
-    if($disableFacet) {
         $currentPath = current_path();
+        //To show only default checked items for nycha contracts advanced search
         if (preg_match('/nycha_contracts\/all\/transactions/', $currentPath) ||
             preg_match('/nycha_contracts\/search\/transactions/', $currentPath)) {
             $url_ref = $_GET['q'];
             $disableFacet = preg_match('"/' . $node->widgetConfig->urlParameterName . '/"', $url_ref);
 
         }
+        else {
+            $url_ref = $is_new_window ? $_GET['q'] : $_SERVER['HTTP_REFERER'];
+            $disableFacet = preg_match('"/' . $node->widgetConfig->urlParameterName . '/"', $url_ref);
+        }
     }
+
 
     if($disableFacet) {
         $output['unchecked'] = null;
