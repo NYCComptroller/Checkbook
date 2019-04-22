@@ -45,9 +45,10 @@ function checkbook_export_menu(){
         'type' => MENU_CALLBACK,
     );
 
-    $items['export/grid/transactions'] = array(
+    $items['export/grid/transactions/%'] = array(
         'title' => 'Checkbook Export',
         'page callback' => '_checkbook_export_grid_transactions',
+        'page arguments' => array(3),
         'access callback' => TRUE,
         'type' => MENU_CALLBACK,
     );
