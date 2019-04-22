@@ -1427,7 +1427,7 @@ class RequestUtil
                 $summaryTitle='Blanket Agreement Modifications';
                 break;
             case 'PA':
-                $summaryTitle='Planned Agreement';
+                $summaryTitle='Planned Agreements';
                 break;
             case 'PAM':
                 $summaryTitle='Planned Agreement Modifications';
