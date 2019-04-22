@@ -18,9 +18,9 @@
         $sql = 'SELECT
                   release_approved_year_id AS year_id,
                   release_approved_year AS year,
-                  SUM(agreement_total_amount) AS total_amount,
-                  SUM(agreement_original_amount) AS original_amount,
-                  SUM(agreement_spend_to_date) AS spent_to_date
+                  SUM(release_total_amount) AS total_amount,
+                  SUM(release_original_amount) AS original_amount,
+                  SUM(release_spend_to_date) AS spent_to_date
                 FROM all_agreement_transactions
                 WHERE agreement_type_id = 3 AND release_approved_year BETWEEN ' . $start_year . ' AND ' . $end_year .'
                 GROUP BY release_approved_year, release_approved_year_id
@@ -42,11 +42,13 @@
             'Original Amount: ' . custom_number_formatter_format($row['original_amount'] ,2, '$').  '<br/>';
             $original_amount_series[$index]->y = (float)$row['original_amount'];
             $original_amount_series[$index]->tooltip_label = $tooltip_label;
+            $original_amount_series[$index]->url = $_SERVER['SERVER_NAME'].'/nycha_contracts/year/'.$row['year_id'].'/datasource/checkbook_nycha/agency/162?expandBottomContURL=/panel_html/nycha_contracts_transactions_page/nycha_contracts/transactions/year/'.$row['year_id'].'/agency/162/datasource/checkbook_nycha';
 
             $tooltip_label = 'Year: ' . $row['year'] .  '<br/>' .
             'Spent to Date: ' . custom_number_formatter_format($row['spent_to_date'] ,2, '$').  '<br/>';
             $spent_amount_series[$index]->y = (float)$row['spent_to_date'];
             $spent_amount_series[$index]->tooltip_label = $tooltip_label;
+            $spent_amount_series[$index]->url = $_SERVER['SERVER_NAME'].'/nycha_contracts/year/'.$row['year_id'].'/datasource/checkbook_nycha/agency/162?expandBottomContURL=/panel_html/nycha_contracts_transactions_page/nycha_contracts/transactions/year/'.$row['year_id'].'/agency/162/datasource/checkbook_nycha';
 
             $index += 1;
         }
