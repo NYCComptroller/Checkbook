@@ -16,13 +16,14 @@
         $end_year = 2018;
         $start_year = (2018 - $years) + 1;
         $sql = 'SELECT
+                  release_approved_year_id AS year_id,
                   release_approved_year AS year,
-                  SUM(agreement_total_amount) AS total_amount,
-                  SUM(agreement_original_amount) AS original_amount,
-                  SUM(agreement_spend_to_date) AS spent_to_date
+                  SUM(release_total_amount) AS total_amount,
+                  SUM(release_original_amount) AS original_amount,
+                  SUM(release_spend_to_date) AS spent_to_date
                 FROM all_agreement_transactions
                 WHERE agreement_type_id = 3 AND release_approved_year BETWEEN ' . $start_year . ' AND ' . $end_year .'
-                GROUP BY release_approved_year
+                GROUP BY release_approved_year, release_approved_year_id
                 ORDER BY 1 ASC';
         $node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
     ",
@@ -35,25 +36,30 @@
                               'Current Amount: ' . custom_number_formatter_format($row['total_amount'] ,2, '$').  '<br/>';
             $total_amount_series[$index]->y = (float)$row['total_amount'];
             $total_amount_series[$index]->tooltip_label = $tooltip_label;
+            $total_amount_series[$index]->url = $_SERVER['SERVER_NAME'].'/nycha_contracts/year/'.$row['year_id'].'/datasource/checkbook_nycha/agency/162?expandBottomContURL=/panel_html/nycha_contracts_transactions_page/nycha_contracts/transactions/year/'.$row['year_id'].'/agency/162/datasource/checkbook_nycha';
 
             $tooltip_label = 'Year: ' . $row['year'] .  '<br/>' .
             'Original Amount: ' . custom_number_formatter_format($row['original_amount'] ,2, '$').  '<br/>';
             $original_amount_series[$index]->y = (float)$row['original_amount'];
             $original_amount_series[$index]->tooltip_label = $tooltip_label;
+            $original_amount_series[$index]->url = $_SERVER['SERVER_NAME'].'/nycha_contracts/year/'.$row['year_id'].'/datasource/checkbook_nycha/agency/162?expandBottomContURL=/panel_html/nycha_contracts_transactions_page/nycha_contracts/transactions/year/'.$row['year_id'].'/agency/162/datasource/checkbook_nycha';
 
             $tooltip_label = 'Year: ' . $row['year'] .  '<br/>' .
             'Spent to Date: ' . custom_number_formatter_format($row['spent_to_date'] ,2, '$').  '<br/>';
             $spent_amount_series[$index]->y = (float)$row['spent_to_date'];
             $spent_amount_series[$index]->tooltip_label = $tooltip_label;
+            $spent_amount_series[$index]->url = $_SERVER['SERVER_NAME'].'/nycha_contracts/year/'.$row['year_id'].'/datasource/checkbook_nycha/agency/162?expandBottomContURL=/panel_html/nycha_contracts_transactions_page/nycha_contracts/transactions/year/'.$row['year_id'].'/agency/162/datasource/checkbook_nycha';
 
             $index += 1;
         }
         $get_query_params = $_SERVER['REDIRECT_QUERY_STRING'];
         parse_str($get_query_params, $params);
         $chart_type = isset($params['chart_type']) ? $params['chart_type'] : 'line';
+
         $node->widgetConfig->chartConfig->series[0]->name = 'Current Amount';
         $node->widgetConfig->chartConfig->series[0]->type = $chart_type;
         $node->widgetConfig->chartConfig->series[0]->data = $total_amount_series;
+        $node->widgetConfig->chartConfig->series[0]->url = $total_amount_series;
 
         $node->widgetConfig->chartConfig->series[1]->name = 'Original Amount';
         $node->widgetConfig->chartConfig->series[1]->type = $chart_type;
@@ -81,4 +87,5 @@ yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
 tooltipformatter^^'formatter' :
 function() {return this.point.tooltip_label ;
 }##
+clickEvent^^"click": function(){location.href = Drupal.settings.basePath+this.url; }
 </function>
