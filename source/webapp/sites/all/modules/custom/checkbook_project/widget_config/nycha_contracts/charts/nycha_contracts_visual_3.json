@@ -1,44 +1,13 @@
 {
   "widgetType": "highcharts",
   "widgetDatahandler": "highcharts",
-  "html_class":"",
-  "header":"
-    $header = '<h2 class=\"chart-title\" style=\"display:none;\">'. $node->widgetConfig->chartTitle . '</h2>';
-    $header .= ChartUtil::generateWidgetGridViewLink($node);
-    return $header;
-  ",
-  "gridConfig":{
-    "template":"chart_grid_view",
-    "domain":"contracts",
-    "html_class":"chart-grid-view-table three-columns",
-    "sortColumn":2,
-    "table_columns": [
-      {
-        "labelAlias": "Vendor",
-        "columnType": "text"
-      },
-      {
-        "labelAlias": "Number of Contracts",
-        "columnType": "number",
-        "formatType": "number"
-      },
-      {
-        "labelAlias": "Amount",
-        "columnType": "number",
-        "formatType": "amount"
-      }
-    ]
-  },
   "no_results_content":"No Results Found",
-  "cleanURLParameters":["awdmethod","vendor","csize","industry","year"],
-  "urlParamMap":{"year":"fiscal_year_id","awdmethod":"award_method_id","vendor":"vendor_id", "csize":"award_size_id","industry":"industry_type_id"},
-  "widgetPreprocessJSON":"
-    if(preg_match('/pending/',$_GET['q'])){
-      $node->widgetConfig->urlParamMap = $node->widgetConfig->urlParamMapPending;
-      $node->widgetConfig->defaultParameters = $node->widgetConfig->defaultParametersPending;
-      $node->widgetConfig->cleanURLParameters = $node->widgetConfig->cleanURLParametersPending;
-    }",
-  "chartTitle":"Fiscal Year Comparison By Agreement Types",
+  "header":"
+  $header = '<h2 class=\"chart-title\" style=\"display:none;\">'. $node->widgetConfig->chartTitle . '</h2>';
+  $header .= ChartUtil::generateWidgetGridViewLink($node);
+  return $header;
+  ",
+  "chartTitle":"Year Comparison By Agreement Types",
   "widgetDataLoader":"
       $where_filters = array();
       foreach($node->widgetConfig->requestParams as $param=>$value){
@@ -53,7 +22,7 @@
       }
       $datasource = RequestUtilities::getRequestParamValue('datasource');
 
-$sql = ' select agreement_type_code, release_approved_year,release_approved_year_id , max(release_total_amount) as total_amount, count(contract_id) as total_contracts from all_agreement_transactions  where release_approved_year_id between  113 and 120 group by agreement_type_code,release_approved_year_id,release_approved_year limit 40';
+$sql = ' select agreement_type_code, release_approved_year,release_approved_year_id , max(release_total_amount) as total_amount, count(contract_id) as total_contracts from all_agreement_transactions  where release_approved_year_id between  113 and 120 group by agreement_type_code,release_approved_year_id,release_approved_year';
       $node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
   ",
 "widgetUpdateJSONConfig":"
@@ -61,7 +30,6 @@ $series_previous_temp = array(array());
 
 $categories = array('2012','2013','2014','2015','2016','2017','2018','2019');
 $codes = array('BA','PO','PA');
-$node->widgetConfig->chartConfig->xAxis->categories = $categories;
 foreach($node->data as $row){
 $series_previous_temp[$row['agreement_type_code']][$row['release_approved_year']] = (float)$row['total_contracts'];
 }
@@ -76,6 +44,8 @@ $prev_series_obj->data = $series_previous;
 $node->widgetConfig->chartConfig->series[] = $prev_series_obj;
 unset($series_previous);
 }
+$node->widgetConfig->chartConfig->xAxis->categories = $categories;
+
 
 
 ",
@@ -84,14 +54,9 @@ unset($series_previous);
 "type": "area"
  },
   "colors":["#D78E35","#7DB7E5","#122E46"],
-"legend": {
-"enabled": "true",
-"align": "left",
-"verticalAlign": "bottom",
-"floating": "true",
-"layout": "horizontal"
-},
-
+"legend": {"align": "right",  "verticalAlign": "top", "layout": "vertical", "x": 0, "y": 100, "symbolWidth": 25,
+"padding": 3, "itemMarginTop": 3, "itemMarginBottom": 3},
+"xAxis":{"labels":{"enabled":true, "style": {"color": "black", "fontSize": "13px"}}},
 "tooltip": {
 "split": "true",
 "valueSuffix": " Contracts"
