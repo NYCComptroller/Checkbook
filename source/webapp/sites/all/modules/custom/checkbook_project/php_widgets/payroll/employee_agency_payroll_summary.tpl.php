@@ -184,7 +184,7 @@ foreach($all_data as $employment_type => $employment_data) {
 
                    </tr>";
         $table .= "<tr>
-                        <td><strong>". ( ($employment_type == PayrollType::$SALARIED) ? WidgetUtil::getLabel('annual_salary') : WidgetUtil::getLabel('daily_wage'))  ."</strong>: $". number_format($max_annual_salary,2) ."</td>
+                        <td><strong>". ( ($employment_type == PayrollType::$SALARIED) ? WidgetUtil::getLabel('annual_salary') : WidgetUtil::getLabel('pay_rate'))  ."</strong>: $". number_format($max_annual_salary,2) ."</td>
                         <td><strong>". WidgetUtil::getLabel('pay_frequency') ."</strong>: ". strtoupper($pay_frequency)."</td>
                    </tr>";
         $table .= "<tr>
