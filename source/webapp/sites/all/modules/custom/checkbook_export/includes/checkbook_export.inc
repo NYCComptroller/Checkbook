@@ -521,10 +521,12 @@ function _checkbook_export_generateExportFile($node, $headers, $exportConfigNode
         $command = $conf['check_book']['data_feeds']['command'];
 
         $data_source = RequestUtilities::get('datasource');
-        if ('checkbook_oge' == $data_source) {
-            $command .= ' ' . $databases['checkbook_oge']['main']['database'] . ' ';
-        } else {
-            $command .= ' ' . $databases['checkbook']['main']['database'] . ' ';
+        if (Datasource::OGE == $data_source) {
+            $command .= ' ' . $databases[Datasource::OGE]['main']['database'] . ' ';
+        } else if (Datasource::NYCHA == $data_source) {
+          $command .= ' ' . $databases[Datasource::NYCHA]['main']['database'] . ' ';
+        }else {
+            $command .= ' ' . $databases[Datasource::CITYWIDE]['main']['database'] . ' ';
         }
 
         $command .=
