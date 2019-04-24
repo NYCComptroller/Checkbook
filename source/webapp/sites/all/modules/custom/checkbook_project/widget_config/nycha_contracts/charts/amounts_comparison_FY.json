@@ -12,9 +12,8 @@
         $datasource = 'checkbook_nycha';
         $get_query_params = $_SERVER['REDIRECT_QUERY_STRING'];
         parse_str($get_query_params, $params);
-        $years = isset($params['years']) ? $params['years'] : 5;
-        $end_year = 2018;
-        $start_year = (2018 - $years) + 1;
+        $start_year = ($params['datefrom']) ? $params['datefrom'] : 2013;
+        $end_year = ($params['dateto']) ? $params['dateto'] : 2018;
         $sql = 'SELECT
                   release_approved_year_id AS year_id,
                   release_approved_year AS year,
@@ -24,7 +23,7 @@
                 FROM all_agreement_transactions
                 WHERE agreement_type_id = 3 AND release_approved_year BETWEEN ' . $start_year . ' AND ' . $end_year .'
                 GROUP BY release_approved_year, release_approved_year_id
-                ORDER BY 1 ASC';
+                ORDER BY 1 ASC';log_error($sql);
         $node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
     ",
     "widgetUpdateJSONConfig":"
