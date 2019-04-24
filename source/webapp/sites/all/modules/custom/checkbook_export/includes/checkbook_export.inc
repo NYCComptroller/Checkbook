@@ -397,7 +397,7 @@ function _checkbook_export_check_cached(){
  * @return bool|string
  */
 function _checkbook_export_generateExportFile($node, $headers, $exportConfigNode = NULL){
-    global $conf, $databases;
+    global $conf;
 
     try{
         $fileDir = _checkbook_export_prepareFileOutputDir();
@@ -518,16 +518,7 @@ function _checkbook_export_generateExportFile($node, $headers, $exportConfigNode
 
         LogHelper::log_notice("Exporting to file via SQL: \n".$node->data);
 
-        $command = $conf['check_book']['data_feeds']['command'];
-
-        $data_source = RequestUtilities::get('datasource');
-        if (Datasource::OGE == $data_source) {
-            $command .= ' ' . $databases[Datasource::OGE]['main']['database'] . ' ';
-        } else if (Datasource::NYCHA == $data_source) {
-          $command .= ' ' . $databases[Datasource::NYCHA]['main']['database'] . ' ';
-        }else {
-            $command .= ' ' . $databases[Datasource::CITYWIDE]['main']['database'] . ' ';
-        }
+        $command = _checkbook_psql_command(RequestUtilities::get('datasource'));
 
         $command .=
                 " -c \"\\\\COPY (" . str_replace('\\\\','\\\\\\',$node->data) . ") TO '"
