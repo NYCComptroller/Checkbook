@@ -244,7 +244,7 @@ function widget_highcharts_widget_view(&$node) {
 
 	switch ($node->widgetConfig->widgetSubType){
 		case "highstock":
-			drupal_add_js(drupal_get_path('module', 'widget_highcharts') .'/highstock/1.2.4/js/highstock.src.js',array('group'=>JS_LIBRARY,'weight'=>-1));
+			drupal_add_js(drupal_get_path('module', 'widget_highcharts') .'/highstock/7.1.1/code/highstock.src.js',array('group'=>JS_LIBRARY,'weight'=>-1));
 			drupal_add_js(drupal_get_path('module', 'widget_highcharts') .'/highcharts-globals.js',array('group'=>JS_LIBRARY,'weight'=>0));
 			return theme('widget_highstocks_default_theme', array('node' => $node));
 		break;
@@ -263,7 +263,8 @@ function widget_highcharts_widget_view(&$node) {
 
 
 function _widget_highcharts_include_plugin(){
-	drupal_add_js(drupal_get_path('module', 'widget_highcharts') .'/highcharts/4.0.4/js/highcharts.src.js',array('group'=>JS_LIBRARY,'weight'=>-1));
+//	drupal_add_js(drupal_get_path('module', 'widget_highcharts') .'/highcharts/4.0.4/js/highcharts.src.js',array('group'=>JS_LIBRARY,'weight'=>-1));
+	drupal_add_js(drupal_get_path('module', 'widget_highcharts') .'/highcharts/7.1.1/code/highcharts.src.js',array('group'=>JS_LIBRARY,'weight'=>-1));
 }
 
 
