@@ -539,7 +539,7 @@ class RequestUtil
         $title = "Expense Budget Transactions";
       } elseif (
         stripos($find, 'transactions')
-        || stripos($find, 'department_budget_details')
+        || stripos($find, 'deppartment_budget_details')
         || stripos($find, 'expense_category_budget_details')
       ) {
         $dtsmnid = $bottomURL ? RequestUtil::getRequestKeyValueFromURL("dtsmnid", $bottomURL) : RequestUtil::getRequestKeyValueFromURL("dtsmnid", current_path());
