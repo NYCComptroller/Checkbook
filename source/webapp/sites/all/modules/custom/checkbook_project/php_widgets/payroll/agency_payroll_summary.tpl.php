@@ -27,6 +27,7 @@ foreach($node->data as $data){
     $year_type = $data['type_of_year'];
     $employment_type = $data['type_of_employment'];
     $agency_name = _shorten_word_with_tooltip(strtoupper($data['agency_name']),25);
+    $data_source = RequestUtilities::_getUrlParamString('datasource');
 
     $record['total_annual_salary'] = $node->total_annual_salary;
     $record['total_gross_pay'] = $data['total_gross_pay'];
@@ -37,7 +38,7 @@ foreach($node->data as $data){
     $record['total_overtime_employees'] = $data['total_overtime_employees'];
     $record['number_employees'] = $data['number_employees'];
     $record['agency_name'] = $data['agency_name'];
-    $record['agency_url'] = "<a href='/payroll/agency_landing/yeartype/$year_type/year/$year/agency/{$data['agency_id']}'>{$agency_name}</a>";
+    $record['agency_url'] = "<a href='/payroll/agency_landing/yeartype/$year_type/year/$year{$data_source}/agency/{$data['agency_id']}'>{$agency_name}</a>";
 
     $all_data[$employment_type][] = $record;
 }
@@ -48,11 +49,16 @@ $non_salaried_count = count($all_data[PayrollType::$NON_SALARIED]);
 //Default view based on salamttype in url
 $default_view = $salaried_count > 0 ? PayrollType::$SALARIED : PayrollType::$NON_SALARIED;
 $salamttype = RequestUtilities::get('salamttype');
+//Default view based on payroll type in url
+$payroll_type = RequestUtil::getPayrollType();
 if(isset($salamttype)) {
     $salamttype = explode('~',$salamttype);
     if (!in_array(1, $salamttype)) {
         $default_view = PayrollType::$NON_SALARIED;
     }
+}
+if($payroll_type==PayrollType::$NON_SALARIED){
+    $default_view =  PayrollType::$NON_SALARIED;
 }
 
 
@@ -132,7 +138,7 @@ foreach($all_data as $employment_type => $employment_data) {
         $number_employees = number_format($data['number_employees']);
         $total_employees =  number_format($node->total_employees);
         $agency_name =  $data['agency_name'];
-        $agency_url =  $data['agency_url'];
+        $agency_url = Datasource::isNycha()? $data['agency_name']:$data['agency_url'];
         $lbl_total_number_employees =
             $employment_type == PayrollType::$SALARIED
                 ? WidgetUtil::getLabel('total_no_of_sal_employees')
@@ -147,6 +153,7 @@ foreach($all_data as $employment_type => $employment_data) {
 
         //Details link from the agency landing page - don't display agency name
         $show_agency = !(RequestUtilities::get('dtsmnid') == 325);
+
 
         if(RequestUtilities::get('smnid') == 322){
             $total_overtime_employees_label = WidgetUtil::getLabel('total_no_of_ot_employees').':';

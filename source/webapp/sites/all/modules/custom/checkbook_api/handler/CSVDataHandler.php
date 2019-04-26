@@ -95,10 +95,12 @@ class CSVDataHandler extends AbstractDataHandler {
      * @return string
      */
     function getJobCommand($query) {
+
         global $conf, $databases;
 
         LogHelper::log_notice("DataFeeds :: csv::getJobCommand()");
 
+        $criteria = $this->requestSearchCriteria->getCriteria();
         //map csv headers
         $columnMappings = $this->requestDataSet->displayConfiguration->csv->elementsColumn;
         $columnMappings =  (array)$columnMappings;
@@ -130,8 +132,9 @@ class CSVDataHandler extends AbstractDataHandler {
             }
             //get only column
             if (strpos($sql_part,".") !== false) {
-                $alias = substr($sql_part, 0, 3);
-                $column = substr($sql_part, 3);
+                $select_column_parts = explode('.', trim($sql_part));
+                $alias = $select_column_parts[0] . '.';
+                $column = $select_column_parts[1];
             }
 
             //Handle derived columns
@@ -166,13 +169,25 @@ class CSVDataHandler extends AbstractDataHandler {
                     $new_column = "CASE WHEN " . $alias . $column . " = 1 THEN 'Salaried' ELSE 'Non-Salaried' END";
                     $new_select_part .= $new_column . ' AS \\"' . $columnMappings[$column] . '\\",' .  "\n";
                     break;
+                case "hourly_rate":
+                    if($this->requestDataSet->data_source == Datasource::NYCHA) {
+                        $new_column = "''";
+                        $new_select_part .= $new_column . ' AS \\"' . $columnMappings[$column] . '\\",' . "\n";
+                    }
+                    break;
+                case "release_approved_year":
+                    if($criteria['global']['type_of_data'] == 'Contracts_NYCHA'){
+                      $new_column = $criteria['value']['fiscal_year'];
+                      $new_select_part .= $new_column . ' AS \\"' . $columnMappings[$column] . '\\",' .  "\n";
+                    }
+                    break;
                 default:
                     $new_select_part .= $alias . $column . ' AS \\"' . $columnMappings[$column] . '\\",' .  "\n";
                     break;
             }
         }
         $new_select_part = rtrim($new_select_part,",\n");
-        $query = substr_replace($query, $new_select_part, 0, $end);
+        $query = substr_replace($query, $new_select_part.' ', 0, $end);
 
         try{
             $fileDir = _checkbook_project_prepare_data_feeds_file_output_dir();
@@ -180,9 +195,8 @@ class CSVDataHandler extends AbstractDataHandler {
             $tmpDir =  (isset($conf['check_book']['tmpdir']) && is_dir($conf['check_book']['tmpdir'])) ? rtrim($conf['check_book']['tmpdir'],'/') : '/tmp';
             LogHelper::log_notice("DataFeeds :: csv::getJobCommand() tmp dir: ".$tmpDir);
 
-            $command = $conf['check_book']['data_feeds']['command'];
-            $data_source = isset($this->requestDataSet->data_source) ? $this->requestDataSet->data_source : 'checkbook';
-            $command .= ' ' . $databases[$data_source]['main']['database'] . ' ';
+
+            $command = _checkbook_psql_command($this->requestDataSet->data_source);
 
             if(!is_writable($tmpDir)){
                 LogHelper::log_error("$tmpDir is not writable. Please make sure this is writable to generate export file.");
@@ -252,5 +266,6 @@ class CSVDataHandler extends AbstractDataHandler {
         } else {
             echo "Data is not generated... Please contact support team.";
         }
+        return;
     }
 }

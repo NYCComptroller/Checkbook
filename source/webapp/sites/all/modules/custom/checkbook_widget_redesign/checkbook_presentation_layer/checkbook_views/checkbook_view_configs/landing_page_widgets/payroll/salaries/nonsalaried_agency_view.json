@@ -1,0 +1,67 @@
+{
+"serviceName": "PayrollWidgetService",
+"dataFunc": "GetNonSalariedRates",
+  "countFunc":"GetCountNonSalariedEmployees",
+"headerTitle": "Non-Salaried Rates",
+"headerSubTitle": "Non-Salaried Employees",
+"table_columns": [
+{
+"labelAlias": "title",
+"column": "civil_service_title",
+"tooltip": 30
+},
+{
+ "labelAlias": "non_salary_rate",
+ "column": "non_salaried_rate",
+ "derivedColumn": "non_salary_per_agency_link",
+"format": "dollar"
+},
+{
+"labelAlias": "gross_pay_ytd",
+"column": "total_gross_pay",
+"format": "dollar"
+},
+{
+"labelAlias": "base_pay_ytd",
+"column": "total_base_salary",
+"format": "dollar"
+},
+{
+"labelAlias": "other_pay_ytd",
+"column": "total_other_payments",
+"format": "dollar"
+},
+{
+"labelAlias": "overtime_pay_ytd",
+"column": "total_overtime_amount",
+"format": "dollar"
+},
+{
+"labelAlias": "",
+"column": ""
+}
+],
+"dataTableOptions": {
+  "aoColumns": [
+    {"bSortable":false,"sClass":"text","sWidth":"150px","asSorting": [ "asc","desc"  ]},
+    {"bSortable":true,"sClass":"number","sWidth":"130px","asSorting": [ "desc","asc"  ]},
+    {"bSortable":true,"sClass":"number","sWidth":"130px","asSorting": [ "desc","asc"  ]},
+    {"bSortable":true,"sClass":"number","sWidth":"130px","asSorting": [ "desc","asc"  ]},
+    {"bSortable":true,"sClass":"number","asSorting": [ "desc","asc"  ]},
+    {"bSortable":true,"sClass":"number","asSorting": [ "desc","asc"  ]},
+    { "bSortable": false,"sWidth":"15px" }
+  ],
+"aaSorting": [[1, "desc"]],
+"bServerSide": true,
+"bFilter": false,
+"bPaginate": false,
+"bProcessing": true,
+"bLengthChange": false,
+"bInfo": false,
+"bAutoWidth": false,
+"fnServerParams": "##function ( aoData ) { reloadExpandCollapseWidget(this,aoData); }##",
+"oLanguage": {
+"sProcessing": "<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"
+}
+}
+}

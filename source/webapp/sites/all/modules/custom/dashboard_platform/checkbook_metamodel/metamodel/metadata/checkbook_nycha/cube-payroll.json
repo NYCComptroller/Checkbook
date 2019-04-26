@@ -1,0 +1,347 @@
+{
+    "datasets":{
+        "payroll":{
+            "datasourceName":"main",
+            "source":"payroll"
+        },
+        "ref_pay_frequency":{
+            "datasourceName":"main",
+            "source":"ref_pay_frequency"
+        }
+    },
+    "cubes":{
+        "payroll":{
+            "sourceDatasetName":"payroll",
+            "dimensions":[
+                {
+                    "name": "agency",
+                    "levels": [
+                                {
+                                    "name": "agency",
+                                    "datasetName": "agency",
+                                    "sourceColumnName": "agency_id"
+                                }
+                    ]
+                },
+                {
+                    "name": "agency_id",
+                    "levels": [
+                        {
+                            "name": "agency_id",
+                            "sourceColumnName": "agency_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "agency_name",
+                    "levels": [
+                        {
+                            "name": "agency_name",
+                            "sourceColumnName": "agency_name"
+                        }
+                    ]
+                },
+                {
+                    "name": "dept",
+                    "levels": [
+                                {
+                                "name": "dept",
+                                "datasetName": "department",
+                                "sourceColumnName": "department_id"
+                                }
+                    ]
+                },
+                {
+                    "name":"civil_service_title",
+                    "levels":[
+                        {
+                            "name":"civil_service_title",
+                            "sourceColumnName":"civil_service_title"
+                        }
+                    ]
+                },
+                {
+                    "name": "gross_pay",
+                    "levels": [
+                        {
+                            "name": "gross_pay",
+                            "sourceColumnName": "gross_pay"
+                        }
+                    ]
+                },
+                {
+                    "name": "daily_wage",
+                    "levels": [
+                        {
+                            "name": "daily_wage",
+                            "sourceColumnName": "daily_wage"
+                        }
+                    ]
+                },
+                {
+                    "name": "hourly_rate",
+                    "levels": [
+                        {
+                            "name": "hourly_rate",
+                            "sourceColumnName": "hourly_rate"
+                        }
+                    ]
+                },
+                {
+                    "name": "annual_salary",
+                    "levels": [
+                        {
+                            "name": "annual_salary",
+                            "sourceColumnName": "annual_salary"
+                        }
+                    ]
+                },
+                {
+                    "name": "overtime_pay",
+                    "levels": [
+                        {
+                            "name": "overtime_pay",
+                            "sourceColumnName": "overtime_pay"
+                        }
+                    ]
+                },
+                {
+                    "name": "pay_frequency",
+                    "levels": [
+                        {
+                            "name": "pay_frequency",
+                            "sourceColumnName": "pay_frequency"
+                        }
+                    ]
+                },
+                {
+                    "name": "amount_basis_id",
+                    "levels": [
+                        {
+                            "name": "amount_basis_id",
+                            "sourceColumnName": "amount_basis_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "employee_id",
+                    "levels": [
+                        {
+                            "name": "employee_id",
+                            "sourceColumnName": "employee_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "employee_number",
+                    "levels": [
+                        {
+                            "name": "employee_number",
+                            "sourceColumnName": "employee_number"
+                        }
+                    ]
+                },
+                {
+                    "name": "fiscal_year_id",
+                    "levels": [
+                        {
+                            "name": "fiscal_year_id",
+                            "sourceColumnName": "fiscal_year_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "calendar_fiscal_year_id",
+                    "levels": [
+                        {
+                            "name": "calendar_fiscal_year_id",
+                            "sourceColumnName": "calendar_fiscal_year_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "other_payments",
+                    "levels": [
+                        {
+                            "name": "other_payments",
+                            "sourceColumnName": "other_payments"
+                        }
+                    ]
+                },
+                {
+                    "name": "gross_pay_ytd",
+                    "levels": [
+                        {
+                            "name": "gross_pay_ytd",
+                            "sourceColumnName": "gross_pay_ytd"
+                        }
+                    ]
+                },
+                {
+                    "name": "gross_pay_cytd",
+                    "levels": [
+                        {
+                            "name": "gross_pay_cytd",
+                            "sourceColumnName": "gross_pay_cytd"
+                        }
+                    ]
+                },
+                {
+                    "name": "base_pay",
+                    "levels": [
+                        {
+                            "name": "base_pay",
+                            "sourceColumnName": "base_pay"
+                        }
+                    ]
+                },
+                {
+                    "name": "payroll_id",
+                    "levels": [
+                        {
+                            "name": "payroll_id",
+                            "sourceColumnName": "payroll_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "pay_date",
+                    "levels": [
+                        {
+                            "name": "pay_date",
+                            "sourceColumnName": "pay_date"
+                        }
+                    ]
+                }
+            ],
+            "measures":{
+                "txcount": {
+                    "function": "COUNT(*)"
+                },
+                "payroll_type": {
+                    "function": "MAX(CASE WHEN amount_basis_id = 1 THEN 'Salaried' ELSE 'Non-Salaried' END)"
+                },
+                "rate_type": {
+                    "function": "MAX(CASE WHEN amount_basis_id = 2 THEN 'Daily' WHEN amount_basis_id = 3 Then 'Hourly' Else 'Annual'END)"
+                },
+                "annual_salary_pay":{
+                    "function": "CASE WHEN amount_basis_id = 1 THEN annual_salary ELSE NULL END"
+                },
+                "hourly_rate_pay":{
+                    "function": "CASE WHEN amount_basis_id = 1 THEN NULL ELSE annual_salary END"
+                },
+                "daily_wage_pay":{
+                    "function": "CASE WHEN amount_basis_id = 2 THEN annual_salary ELSE NULL END"
+                },
+                "hourly_rate_amount":{
+                    "function": "CASE WHEN amount_basis_id = 3 THEN  annual_salary ELSE NULL END"
+                },
+                "max_annual_salary":{
+                    "function": "MAX(annual_salary)"
+                },
+                "total_gross_pay": {
+                    "function": "SUM(gross_pay)"
+                },
+                "total_base_salary": {
+                    "function": "SUM(base_pay)"
+                },
+                "total_other_payments": {
+                    "function": "SUM(other_payments)"
+                },
+                "total_overtime_amount": {
+                    "function": "SUM(overtime_pay)"
+                },
+                "g100m_count": {
+                    "function": "SUM(CASE WHEN COALESCE(gross_pay,0) > 100000000 THEN 1 ELSE 0 END)"
+                },
+                "g50m_le100m_count": {
+                    "function": "SUM(CASE WHEN COALESCE(gross_pay,0) > 50000000 AND COALESCE(gross_pay,0) <= 100000000 THEN 1 ELSE 0 END)"
+                },
+                "g25m_le50m_count": {
+                    "function": "SUM(CASE WHEN COALESCE(gross_pay,0) > 25000000 AND COALESCE(gross_pay,0) <= 50000000 THEN 1 ELSE 0 END)"
+                },
+                "g10m_le25m_count": {
+                    "function": "SUM(CASE WHEN COALESCE(gross_pay,0) > 10000000 AND COALESCE(gross_pay,0) <= 25000000 THEN 1 ELSE 0 END)"
+                },
+                "ge1m_le10m_count": {
+                    "function": "SUM(CASE WHEN COALESCE(gross_pay,0) >= 1000000 AND COALESCE(gross_pay,0) <= 10000000 THEN 1 ELSE 0 END)"
+                },
+                "less1m_count": {
+                    "function": "SUM(CASE WHEN COALESCE(gross_pay,0) < 1000000 THEN 1 ELSE 0 END)"
+                },
+                "gross_pay_ytd_g250k_count": {
+                    "function": "SUM(CASE WHEN COALESCE(gross_pay_ytd,0) > 250000 THEN 1 ELSE 0 END)"
+                },
+                "gross_pay_ytd_g101k_le250k_count": {
+                    "function": "SUM(CASE WHEN COALESCE(gross_pay_ytd,0) > 100000 AND COALESCE(gross_pay_ytd,0) <= 250000 THEN 1 ELSE 0 END)"
+                },
+                "gross_pay_ytd_g51k_le100k_count": {
+                    "function": "SUM(CASE WHEN COALESCE(gross_pay_ytd,0) > 50000 AND COALESCE(gross_pay_ytd,0) <= 100000 THEN 1 ELSE 0 END)"
+                },
+                "gross_pay_ytd_ge20k_le50k_count": {
+                    "function": "SUM(CASE WHEN COALESCE(gross_pay_ytd,0) >= 20000 AND COALESCE(gross_pay_ytd,0) <= 50000 THEN 1 ELSE 0 END)"
+                },
+                "gross_pay_ytd_less20k_count": {
+                    "function": "SUM(CASE WHEN COALESCE(gross_pay_ytd,0) < 20000 THEN 1 ELSE 0 END)"
+                },
+
+                "gross_pay_cytd_g250k_count": {
+                    "function": "SUM(CASE WHEN COALESCE(gross_pay_cytd,0) > 250000 THEN 1 ELSE 0 END)"
+                },
+                "gross_pay_cytd_g101k_le250k_count": {
+                    "function": "SUM(CASE WHEN COALESCE(gross_pay_cytd,0) > 100000 AND COALESCE(gross_pay_cytd,0) <= 250000 THEN 1 ELSE 0 END)"
+                },
+                "gross_pay_cytd_g51k_le100k_count": {
+                    "function": "SUM(CASE WHEN COALESCE(gross_pay_cytd,0) > 50000 AND COALESCE(gross_pay_cytd,0) <= 100000 THEN 1 ELSE 0 END)"
+                },
+                "gross_pay_cytd_ge20k_le50k_count": {
+                    "function": "SUM(CASE WHEN COALESCE(gross_pay_cytd,0) >= 20000 AND COALESCE(gross_pay_cytd,0) <= 50000 THEN 1 ELSE 0 END)"
+                },
+                "gross_pay_cytd_less20k_count": {
+                    "function": "SUM(CASE WHEN COALESCE(gross_pay_cytd,0) < 20000 THEN 1 ELSE 0 END)"
+                },
+
+                "overtime_pay_g250k_count": {
+                    "function": "SUM(CASE WHEN COALESCE(overtime_pay,0) > 250000 THEN 1 ELSE 0 END)"
+                },
+                "overtime_pay_g101k_le250k_count": {
+                    "function": "SUM(CASE WHEN COALESCE(overtime_pay,0) > 100000 AND COALESCE(overtime_pay,0) <= 250000 THEN 1 ELSE 0 END)"
+                },
+                "overtime_pay_g51k_le100k_count": {
+                    "function": "SUM(CASE WHEN COALESCE(overtime_pay,0) > 50000 AND COALESCE(overtime_pay,0) <= 100000 THEN 1 ELSE 0 END)"
+                },
+                "overtime_pay_ge20k_le50k_count": {
+                    "function": "SUM(CASE WHEN COALESCE(overtime_pay,0) >= 20000 AND COALESCE(overtime_pay,0) <= 50000 THEN 1 ELSE 0 END)"
+                },
+                "overtime_pay_less20k_count": {
+                    "function": "SUM(CASE WHEN COALESCE(overtime_pay,0) < 20000 THEN 1 ELSE 0 END)"
+                },
+                "annual_salary_g250k_count": {
+                    "function": "SUM(CASE WHEN COALESCE(annual_salary,0) > 250000 THEN 1 ELSE 0 END)"
+                },
+                "annual_salary_g101k_le250k_count": {
+                    "function": "SUM(CASE WHEN COALESCE(annual_salary,0) > 100000 AND COALESCE(annual_salary,0) <= 250000 THEN 1 ELSE 0 END)"
+                },
+                "annual_salary_g51k_le100k_count": {
+                    "function": "SUM(CASE WHEN COALESCE(annual_salary,0) > 50000 AND COALESCE(annual_salary,0) <= 100000 THEN 1 ELSE 0 END)"
+                },
+                "annual_salary_ge20k_le50k_count": {
+                    "function": "SUM(CASE WHEN COALESCE(annual_salary,0) >= 20000 AND COALESCE(annual_salary,0) <= 50000 THEN 1 ELSE 0 END)"
+                },
+                "annual_salary_less20k_count": {
+                    "function": "SUM(CASE WHEN COALESCE(annual_salary,0) < 20000 THEN 1 ELSE 0 END)"
+                }
+            }
+        }
+    },
+    "references": {
+        "payroll__ref_amount_basis": [
+            {"datasetName": "payroll", "columnNames": ["amount_basis_id"]},
+            {"datasetName": "ref_amount_basis", "columnNames": ["amount_basis_id"]}
+        ],
+        "payroll__employee": [
+            {"datasetName": "payroll", "columnNames": ["employee_id"]},
+            {"datasetName": "employee", "columnNames": ["employee_id"]}
+        ]
+    }
+}

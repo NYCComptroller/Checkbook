@@ -1,0 +1,81 @@
+{
+  "widgetType": "highcharts",
+  "widgetDatahandler": "highcharts",
+  "no_results_content":"No Results Found",
+  "header":"
+  $header = '<h2 class=\"chart-title\" style=\"display:none;\">'. $node->widgetConfig->chartTitle . '</h2>';
+  $header .= ChartUtil::generateWidgetGridViewLink($node);
+  return $header;
+  ",
+  "chartTitle":"Year Comparison By Agreement Types",
+  "widgetDataLoader":"
+      $where_filters = array();
+      foreach($node->widgetConfig->requestParams as $param=>$value){
+        if($param == 'fiscal_year_id'){
+            $where_filters[] = '('. $value . ' BETWEEN agreement_start_year_id and agreement_end_year_id )';
+        }else{
+          $where_filters[] = _widget_build_sql_condition( $param, $value);
+        }
+      }
+      if(count($where_filters) > 0){
+        $where_filter = ' WHERE ' . implode(' AND ' , $where_filters);
+      }
+      $datasource = RequestUtilities::getRequestParamValue('datasource');
+
+$sql = ' select agreement_type_code, release_approved_year,release_approved_year_id , max(release_total_amount) as total_amount, count(contract_id) as total_contracts from all_agreement_transactions  where release_approved_year_id between  113 and 120 group by agreement_type_code,release_approved_year_id,release_approved_year';
+      $node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
+  ",
+"widgetUpdateJSONConfig":"
+$series_previous_temp = array(array());
+
+$categories = array('2012','2013','2014','2015','2016','2017','2018','2019');
+$codes = array('BA','PO','PA');
+foreach($node->data as $row){
+$series_previous_temp[$row['agreement_type_code']][$row['release_approved_year']] = (float)$row['total_contracts'];
+}
+$series_previous = array();
+foreach($codes as $code){
+$prev_series_obj = new stdClass();
+  foreach($categories as $category){
+     $series_previous[] = $series_previous_temp[$code][$category] ;
+   }
+$prev_series_obj->name = $code;
+$prev_series_obj->data = $series_previous;
+$node->widgetConfig->chartConfig->series[] = $prev_series_obj;
+unset($series_previous);
+}
+$node->widgetConfig->chartConfig->xAxis->categories = $categories;
+
+
+
+",
+  "chartConfig" : {
+"chart": {
+"type": "area"
+ },
+  "colors":["#D78E35","#7DB7E5","#122E46"],
+"legend": {"align": "right",  "verticalAlign": "top", "layout": "vertical", "x": 0, "y": 100, "symbolWidth": 25,
+"padding": 3, "itemMarginTop": 3, "itemMarginBottom": 3},
+"xAxis":{"labels":{"enabled":true, "style": {"color": "black", "fontSize": "13px"}}},
+"tooltip": {
+"split": "true",
+"valueSuffix": " Contracts"
+},
+"plotOptions": {
+"area": {
+"stacking": "normal",
+"lineColor": "#666666",
+"lineWidth": 1,
+"marker": {
+"lineWidth": 1,
+"lineColor": "#666666"
+}
+}
+},
+
+"title": {"text": ""}
+}
+}
+
+
+

@@ -15,6 +15,7 @@ abstract class SqlOperator {
     const GREATER_THAN_EQ = '>=';
     const LESS_THAN_EQ = '<=';
     const IN = 'IN';
+    const BETWEEN = 'BETWEEN';
     const NOT_IN = 'NOT IN';
     const LIKE = 'like';
     const ILIKE = 'ilike';

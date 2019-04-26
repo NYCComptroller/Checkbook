@@ -88,7 +88,7 @@ class CheckbookRefFiles
      */
     public function generate_files()
     {
-        global $conf, $databases;
+        global $conf;
 
         $return = [
             'error' => false,
@@ -127,7 +127,7 @@ class CheckbookRefFiles
             $file_new = $file.'.new';
 
             $force_quote = '';
-            if ($ref_file->force_quote) {
+            if ($ref_file->force_quote??false) {
                 $force_quote = ' FORCE QUOTE "'.join('","', $ref_file->force_quote).'"';
             }
 
@@ -136,8 +136,11 @@ class CheckbookRefFiles
              */
             $psql_command = "COPY ({$ref_file->sql}) TO '{$file_new}' WITH CSV HEADER {$force_quote}";
 
-            $command = $conf['check_book']['data_feeds']['command'];
-            $command .= ' ' . $databases['checkbook']['main']['database'] . ' -c "\\';
+            $db_name = 'main';
+            $data_source = $ref_file->database??'checkbook';
+
+            $command = _checkbook_psql_command($data_source);
+            $command .= ' -c "\\';
             $command .= addcslashes($psql_command, '"').'"';
 
             $file_info['command'] = $command;
@@ -174,7 +177,7 @@ class CheckbookRefFiles
             }
 
             $php_sql = str_replace('\\','',$ref_file->sql);
-            $file_info['sample'] = _checkbook_project_execute_sql($php_sql.' LIMIT 5');
+            $file_info['sample'] = _checkbook_project_execute_sql($php_sql.' LIMIT 5', $db_name, $data_source);
             $return['files'][$filename] = $file_info;
         }
         return $return;

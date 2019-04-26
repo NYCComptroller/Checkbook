@@ -1,0 +1,26 @@
+{
+"widgetType":"phpparser",
+"parentNid":979,
+"startWith":0,
+"maxSelect":5,
+"limit":100,
+"facetPager":true,
+"columns":["agency_id.agency_id", "agency_name.agency_name", "txcount"],
+"orderBy":"-txcount",
+"filterName":"Other Government Entity",
+"urlParameterName":"agency",
+"autocompleteParamName":"agency_id_auto",
+"autocompleteID":"fagencyId",
+"autocompleteField":"agency_name",
+"allowFacetDeselect":false,
+"autocomplete":false,
+"adjustParameters":"
+  $parameters = NYCHAContractUtil::adjustYearParams($node, $parameters);
+  if(function_exists('_checkbook_project_applyParameterFilters')){
+$adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+}
+$adjustedParameters['agency_id.agency_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+return $adjustedParameters;
+",
+"template":"individual_filter"
+}

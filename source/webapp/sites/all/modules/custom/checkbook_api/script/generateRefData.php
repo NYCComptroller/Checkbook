@@ -78,8 +78,7 @@ if (!file_prepare_directory($dir, FILE_CREATE_DIRECTORY)) {
 
 foreach ($ref_data_queries as $file_name => $ref_data_query) {
   $file = DRUPAL_ROOT . '/' . $dir . '/' . $file_name . '.csv';
-  $command = $conf['check_book']['data_feeds']['command'];
-  $command .= ' ' . $databases['checkbook']['main']['database'] . ' ';
+  $command = _checkbook_psql_command();
   $command .= " -c \"\\\\COPY (" . $ref_data_query . ") TO '"
     . $file
     . "'  WITH DELIMITER ',' CSV HEADER QUOTE '\\\"' ESCAPE '\\\"' \" ";

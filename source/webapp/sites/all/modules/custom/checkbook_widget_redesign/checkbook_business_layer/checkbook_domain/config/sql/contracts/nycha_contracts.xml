@@ -1,0 +1,376 @@
+<statements>
+  <!--GetNychaVendors-->
+  <statement name="GetContractsByVendors" datasource="checkbook_nycha">
+    <param name="year" required="true" type="int"/>
+    <param name="vendor" type="int"/>
+    <param name="industry" />
+    <param name="csize" />
+    <param name="awdmethod" />
+    <sql>
+      select
+      vendor_id,
+      vendor_name,
+      count(distinct contract_id) as purchase_order_count,
+      sum(total_amount) as total_amount,
+      sum(original_amount) as original_amount,
+      sum(spend_to_date) as spend_to_date
+      from
+      (
+      select
+      vendor_id,
+      vendor_name,
+      contract_id,
+      max(total_amount) as total_amount,
+      max(original_amount) as original_amount,
+      max(spend_to_date) as spend_to_date
+      from
+      contracts_widget_summary
+      <where>
+        <exp op="AND">
+          <exp op="BETWEEN" paramName="year" dbField=" start_year_id, end_year_id"/>
+          <exp op="=" dbField="vendor_id" paramName="vendor"/>
+          <exp op="=" dbField="industry_type_id" paramName="industry"/>
+          <exp op="=" dbField="award_size_id" paramName="csize"/>
+          <exp op="=" dbField="award_method_id" paramName="awdmethod"/>
+        </exp>
+      </where>
+      group by vendor_name, vendor_id, contract_id ) a
+      group by vendor_name, vendor_id
+    </sql>
+  </statement>
+
+  <!--GetNychaAwardMethods-->
+  <statement name="GetContractsByAwardMethods" datasource="checkbook_nycha">
+    <param name="year" required="true" type="int"/>
+    <param name="vendor" type="int"/>
+    <param name="industry" />
+    <param name="csize" />
+    <param name="awdmethod" />
+    <sql>
+      select
+      award_method_id,
+      award_method_name,
+      count(distinct contract_id) as purchase_order_count,
+      sum(total_amount) as total_amount,
+      sum(original_amount) as original_amount,
+      sum(spend_to_date) as spend_to_date
+      from
+      (
+      select
+      award_method_id,
+      award_method_name,
+      contract_id,
+      max(total_amount) as total_amount,
+      max(original_amount) as original_amount,
+      max(spend_to_date) as spend_to_date
+      from
+      contracts_widget_summary
+      <where>
+        <exp op="AND">
+          <exp op="BETWEEN" paramName="year" dbField=" start_year_id, end_year_id"/>
+          <exp op="=" dbField="vendor_id" paramName="vendor"/>
+          <exp op="=" dbField="industry_type_id" paramName="industry"/>
+          <exp op="=" dbField="award_size_id" paramName="csize"/>
+          <exp op="=" dbField="award_method_id" paramName="awdmethod"/>
+        </exp>
+      </where>
+      group by award_method_name, award_method_id, contract_id) a
+      group by award_method_name, award_method_id
+    </sql>
+  </statement>
+
+  <!--GetNychaPurchaseOrders-->
+  <statement name="GetContractsByPurchaseOrders" datasource="checkbook_nycha">
+    <param name="year" required="true" type="int"/>
+    <param name="vendor" type="int"/>
+    <param name="industry" />
+    <param name="csize" />
+    <param name="awdmethod" />
+    <sql>
+      SELECT
+        contract_id,
+        purpose,
+        vendor_name,
+        vendor_id,
+        MAX(total_amount) AS total_amount,
+        MAX(original_amount) AS original_amount,
+        MAX(spend_to_date) AS spend_to_date,
+      MAX(total_amount-original_amount) AS dollar_difference,
+      ROUND( CASE COALESCE( MAX(total_amount), 0 :: NUMERIC ) WHEN 0 THEN -100 :: NUMERIC ELSE (
+      MAX(total_amount-original_amount) / MAX(total_amount) )* 100 END, 2) AS percent_difference
+      FROM contracts_widget_summary
+      <where>
+        <exp op="AND">
+          <exp op="BETWEEN" paramName="year" dbField="start_year_id, end_year_id"/>
+          <exp op="=" dbField="agreement_type_id">3</exp>
+          <exp op="=" dbField="vendor_id" paramName="vendor"/>
+          <exp op="=" dbField="industry_type_id" paramName="industry"/>
+          <exp op="=" dbField="award_size_id" paramName="csize"/>
+          <exp op="=" dbField="award_method_id" paramName="awdmethod"/>
+        </exp>
+      </where>
+      GROUP BY contract_id, purpose, vendor_name, vendor_id
+    </sql>
+  </statement>
+
+  <!--GetNychaBlanketAgreements-->
+  <statement name="GetContractsBlanketAgreements" datasource="checkbook_nycha">
+    <param name="year" required="true"/>
+    <param name="vendor" type="int"/>
+    <param name="is_modification" type="bool"/>
+    <param name="industry" />
+    <param name="csize" />
+    <param name="awdmethod" />
+    <sql>
+      SELECT
+        contract_id,
+        purpose,
+        vendor_name,
+        vendor_id,
+        MAX(total_amount) AS total_amount,
+        MAX(original_amount) AS original_amount,
+        MAX(spend_to_date) AS spend_to_date,
+        MAX(total_amount-original_amount) AS dollar_difference,
+      ROUND( CASE COALESCE( MAX(total_amount), 0 :: NUMERIC ) WHEN 0 THEN -100 :: NUMERIC ELSE
+      (MAX(total_amount-original_amount) / MAX(total_amount) )* 100 END, 2) AS percent_difference
+      FROM contracts_widget_summary
+      <where>
+        <exp op="AND">
+          <!--WHERE  '2016' BETWEEN start_year AND end_year-->
+          <exp op="BETWEEN" paramName="year" dbField="start_year_id, end_year_id"/>
+          <exp op="=" dbField="agreement_type_id">1</exp>
+          <exp op="=" dbField="vendor_id" paramName="vendor"/>
+          <exp op="=" dbField="industry_type_id" paramName="industry"/>
+          <exp op="=" dbField="award_size_id" paramName="csize"/>
+          <exp op="=" dbField="award_method_id" paramName="awdmethod"/>
+        </exp>
+      </where>
+      GROUP BY  contract_id, purpose, vendor_name, vendor_id
+      <exp op="IF" condition="=" paramName="is_modification" compareValue="true">
+        HAVING MAX(total_amount-original_amount)!= 0
+      </exp>
+    </sql>
+  </statement>
+
+  <!--GetNychaPlannedAgreements-->
+  <statement name="GetContractsPlannedAgreements" datasource="checkbook_nycha">
+    <param name="year" required="true"/>
+    <param name="vendor" type="int"/>
+    <param name="is_modification" type="bool"/>
+    <param name="industry" />
+    <param name="csize" />
+    <param name="awdmethod" />
+    <sql>
+      SELECT
+      contract_id,
+      purpose,
+      vendor_name,
+      vendor_id,
+      MAX(total_amount) AS total_amount,
+      MAX(original_amount) AS original_amount,
+      MAX(spend_to_date) AS spend_to_date,
+      MAX(total_amount-original_amount) AS dollar_difference,
+      ROUND( CASE COALESCE( MAX(total_amount), 0 :: NUMERIC ) WHEN 0 THEN -100 :: NUMERIC ELSE (
+      MAX(total_amount-original_amount) / MAX(total_amount) )* 100 END, 2 ) AS percent_difference
+      FROM contracts_widget_summary
+      <where>
+        <exp op="AND">
+          <!--WHERE  '2016' BETWEEN start_year AND end_year-->
+          <exp op="BETWEEN" paramName="year" dbField="start_year_id, end_year_id"/>
+          <exp op="=" dbField="agreement_type_id">2</exp>
+          <exp op="=" dbField="vendor_id" paramName="vendor"/>
+          <exp op="=" dbField="industry_type_id" paramName="industry"/>
+          <exp op="=" dbField="award_size_id" paramName="csize"/>
+          <exp op="=" dbField="award_method_id" paramName="awdmethod"/>
+        </exp>
+      </where>
+      GROUP BY  contract_id, purpose, vendor_name, vendor_id
+      <exp op="IF" condition="=" paramName="is_modification" compareValue="true">
+        HAVING  MAX(total_amount-original_amount)!= 0
+      </exp>
+    </sql>
+  </statement>
+
+  <!--GetDepartment-->
+  <statement name="GetContractsByDepartments" datasource="checkbook_nycha">
+    <param name="year" required="true" type="int"/>
+    <param name="vendor" type="int"/>
+    <param name="industry" />
+    <param name="csize" />
+    <param name="awdmethod" />
+    <sql>
+      select
+      department_id,
+      department_name,
+      count(distinct contract_id) as purchase_order_count,
+      sum(total_amount) as total_amount,
+      sum(original_amount) as original_amount,
+      sum(spend_to_date) as spend_to_date
+      from
+      (
+      select
+      department_id,
+      department_name,
+      contract_id,
+      max(total_amount) as total_amount,
+      max(original_amount) as original_amount,
+      max(spend_to_date) as spend_to_date
+      from
+      contracts_widget_summary
+      <where>
+        <exp op="AND">
+          <exp op="BETWEEN" paramName="year" dbField="start_year_id, end_year_id"/>
+          <exp op="=" dbField="vendor_id" paramName="vendor"/>
+          <exp op="=" dbField="industry_type_id" paramName="industry"/>
+          <exp op="=" dbField="award_size_id" paramName="csize"/>
+          <exp op="=" dbField="award_method_id" paramName="awdmethod"/>
+        </exp>
+      </where>
+      group by department_name, department_id, contract_id ) a
+      group by department_name, department_id
+    </sql>
+  </statement>
+
+  <!-- GetContractsByIndustries -->
+  <statement name="GetContractsByIndustries" datasource="checkbook_nycha">
+    <param name="year" required="true" type="int"/>
+    <param name="vendor" type="int"/>
+    <param name="industry" />
+    <param name="csize" />
+    <param name="awdmethod" />
+    <sql>
+      select
+      display_industry_type_name AS industry_type_name,
+      industry_type_id,
+      count(distinct contract_id) as purchase_order_count,
+      sum(total_amount) as total_amount,
+      sum(original_amount) as original_amount,
+      sum(spend_to_date) as spend_to_date
+      from
+      (
+      select
+      display_industry_type_name,
+      industry_type_id,
+      contract_id,
+      max(total_amount) as total_amount,
+      max(original_amount) as original_amount,
+      max(spend_to_date) as spend_to_date
+      from
+      contracts_widget_summary
+      <where>
+        <exp op="AND">
+          <exp op="BETWEEN" paramName="year" dbField="start_year_id, end_year_id"/>
+          <exp op="=" dbField="vendor_id" paramName="vendor"/>
+          <exp op="=" dbField="industry_type_id" paramName="industry"/>
+          <exp op="=" dbField="award_size_id" paramName="csize"/>
+          <exp op="=" dbField="award_method_id" paramName="awdmethod"/>
+        </exp>
+      </where>
+      group by display_industry_type_name, industry_type_id, contract_id ) a
+      group by industry_type_name, industry_type_id
+    </sql>
+  </statement>
+
+  <!-- GetCountContracts -->
+  <statement name="GetCountContracts" datasource="checkbook_nycha">
+    <param name="year" required="true" type="int"/>
+    <param name="vendor" type="int"/>
+    <param name="industry" />
+    <param name="csize" />
+    <param name="awdmethod" />
+    <sql>
+      SELECT DISTINCT contract_id FROM contracts_widget_summary
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="vendor_id" paramName="vendor"/>
+          <exp op="BETWEEN" dbField="start_year_id,end_year_id" paramName="year"/>
+          <exp op="=" dbField="industry_type_id" paramName="industry"/>
+          <exp op="=" dbField="award_size_id" paramName="csize"/>
+          <exp op="=" dbField="award_method_id" paramName="awdmethod"/>
+        </exp>
+      </where>
+    </sql>
+  </statement>
+
+  <!-- GetContractsBySize -->
+  <statement name="GetContractsBySize" datasource="checkbook_nycha">
+    <param name="year" required="true" type="int"/>
+    <param name="vendor" type="int"/>
+    <param name="industry" />
+    <param name="csize" />
+    <param name="awdmethod" />
+    <sql>
+      select
+      award_size_id,
+      award_size_name,
+      count(distinct contract_id) as po_count,
+      sum(total_amount) as total_amount,
+      sum(original_amount) as original_amount,
+      sum(spend_to_date) as spend_to_date
+      from (
+      select
+      award_size_id,
+      award_size_name,
+      contract_id,
+      max(total_amount) as total_amount,
+      max(original_amount) as original_amount,
+      max(spend_to_date) as spend_to_date
+      from
+      contracts_widget_summary
+      <where>
+        <exp op="AND">
+          <exp op="BETWEEN" paramName="year" dbField="start_year_id, end_year_id"/>
+          <exp op="=" dbField="vendor_id" paramName="vendor"/>
+          <exp op="=" dbField="industry_type_id" paramName="industry"/>
+          <exp op="=" dbField="award_size_id" paramName="csize"/>
+          <exp op="=" dbField="award_method_id" paramName="awdmethod"/>
+        </exp>
+      </where>
+      group by award_size_id, award_size_name, contract_id ) a
+      group by award_size_id, award_size_name
+    </sql>
+  </statement>
+
+  <!-- GetContractsByRespCenters -->
+  <statement name="GetContractsByRespCenters" datasource="checkbook_nycha">
+    <param name="year" required="true"/>
+    <param name="vendor" type="int"/>
+    <param name="industry" />
+    <param name="csize" />
+    <param name="awdmethod" />
+    <sql>
+      select
+      responsibility_center_id,
+      responsibility_center_code,
+      responsibility_center_name as responsibility_center_descr,
+      count(distinct contract_id) as contract_count,
+      sum(total_amount) as total_amount,
+      sum(original_amount) as original_amount,
+      sum(spend_to_date) as spend_to_date
+      from
+      (
+      select
+      responsibility_center_id,
+      responsibility_center_code,
+      responsibility_center_name,
+      contract_id,
+      max(total_amount) as total_amount,
+      max(original_amount) as original_amount,
+      max(spend_to_date) as spend_to_date
+      from
+      contracts_widget_summary
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="vendor_id" paramName="vendor"/>
+          <exp op="BETWEEN" paramName="year" dbField="start_year_id, end_year_id"/>
+          <exp op="IS NOT" dbField="responsibility_center_code">NULL</exp>
+          <exp op="=" dbField="industry_type_id" paramName="industry"/>
+          <exp op="=" dbField="award_size_id" paramName="csize"/>
+          <exp op="=" dbField="award_method_id" paramName="awdmethod"/>
+        </exp>
+      </where>
+      group by responsibility_center_id, responsibility_center_code, responsibility_center_name, contract_id ) a
+      group by responsibility_center_id, responsibility_center_code, responsibility_center_descr
+    </sql>
+  </statement>
+</statements>

@@ -163,8 +163,6 @@ function _checkbook_autocomplete_contracts_vendor($status, $category, $contract_
  *   Award method code
  * @param string $year
  *   Year
- * @param null $mwbe_category
- *   Minority type id
  * @param string $mwbe_category
  *   Minority type id
  * @param string $industry
@@ -370,6 +368,45 @@ function _checkbook_autocomplete_contracts_budgetname($status, $category, $contr
     }
 }
 
+function _checkbook_autocomplete_datafeeds_nycha_contracts($solr_field, $purchase_order_type, $responsibility_center, $contract_type, $award_method, $industry, $agency, $year, $data_source){
+    $search_term = _get_autocomplete_search_term();
+    $facetquery = "";
+    if (!empty($search_term)) {
+        if($purchase_order_type && $purchase_order_type != 'All'){
+            $facetquery .= '&fq=agreement_type_code:' . $purchase_order_type;
+        }
+        if($responsibility_center){
+            $facetquery .= '&fq=responsibility_center_code:' . $responsibility_center;
+        }
+        if($contract_type){
+            $facetquery .= '&fq=contract_type_code:' . $contract_type;
+        }
+        if($award_method){
+            $facetquery .= '&fq=award_method_code:' . $award_method;
+        }
+        if ($industry){
+            $facetquery .= '&fq=industry_type_code:' . $industry;
+        }
+        if($agency){
+            $facetquery .= '&fq=agency_code:' . $agency;
+        }
+        if($year && $year != 'ALL'){
+            $year = ltrim($year, 'FY');
+            $facetquery .= '&('.$year.':[*%20TO%20agreement_start_year]%20AND%20'.$year.':[agreement_end_year%20TO%20*])';
+        }
+        if($solr_field == 'vendor_name'){
+            $query = "select/?q=vendor_name_autocomplete:" . $search_term
+                . "&facet.field=" . $solr_field . $facetquery
+                . "&q.op=AND&rows=0&facet=true&facet.mincount=1&facet.limit=10&wt=php";
+        }else {
+            $query = "select/?q=" . $solr_field . ":" . $search_term
+                . "&facet.field=" . $solr_field . $facetquery
+                . "&q.op=AND&rows=0&facet=true&facet.mincount=1&facet.limit=10&wt=php";
+        }
+        $matches = _checkbook_autocomplete_solr_results($query, $solr_field);
+        drupal_json_output($matches);
+    }
+}
 // Spending autocomplete menu callback functions:
 /**
  * Construct query string and get results from Solr.
@@ -1139,7 +1176,7 @@ function _checkbook_autocomplete_revenue_revenuesource($year, $fundclass, $agenc
  * @param string|null $status
  *   Status
  *
- * @return array
+ * @return string
  *   array('start_date' => $start_date, 'end_date' => $end_date)
  */
 function _checkbook_autocomplete_get_start_end_dates($year, $domain = NULL, $status = NULL) {

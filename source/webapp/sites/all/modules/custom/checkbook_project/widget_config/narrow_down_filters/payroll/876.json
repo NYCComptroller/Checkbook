@@ -14,6 +14,9 @@
     "autocompleteID":"fagencyId",
     "autocompleteField":"agency_name",
     "adjustParameters":"
+        if(Datasource::getCurrent() == Datasource::NYCHA){
+            $parameters['agency.agency.is_display'] = 'Y';
+        }
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
         }

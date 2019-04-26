@@ -2,6 +2,7 @@
 "widgetType": "phpparser",
 "useList":"true",
 "orderBy":["agency_name"],
+"keepOriginalDatasource":true,
 "model": {
         "join": {
             "method": "Union"
@@ -9,14 +10,19 @@
         "series": [
             {
                 "dataset": "checkbook:agency",
-                "columns":  ["agency_id","agency_name"],
-                "seriesDefaultParameters":{"is_display":"Y"}
+                "columns":  ["agency_id","agency_name","is_oge_agency"],
+                "seriesDefaultParameters":{"is_display":"Y", "is_oge_agency":"N"}
             },
            {
                "dataset": "checkbook_oge:agency",
                "columns":  ["agency_id","agency_name","is_oge_agency"],
                "seriesDefaultParameters":{"is_display":"Y","is_oge_agency":"Y"}
-            }
+           },
+          {
+            "dataset": "checkbook_nycha:agency",
+            "columns":  ["agency_id","agency_name"],
+            "seriesDefaultParameters":{"is_display":"Y"}
+          }
         ]
 },
 "template":"agencies_list"

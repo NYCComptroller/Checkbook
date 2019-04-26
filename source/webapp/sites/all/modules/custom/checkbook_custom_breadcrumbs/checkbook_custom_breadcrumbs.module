@@ -19,13 +19,13 @@
 */
 
 
-
-
 /**
  * Implements hook_page_alter().
+ * @param $page
  */
 function checkbook_custom_breadcrumbs_page_alter(&$page) {
   //TODO
+
   if(preg_match('/^contracts_landing/',current_path()) || preg_match('/^contracts_revenue_landing/',current_path())){
       _set_contracts_breadcrumb_title_drilldown();
   }
@@ -46,6 +46,9 @@ function checkbook_custom_breadcrumbs_page_alter(&$page) {
   }
   elseif( preg_match('/^alert/',current_path())){
       _set_alert_breadcrumb_title_drilldown();
+  }
+  else if(preg_match('/^nycha_contracts/',current_path())){
+      _set_nycha_contracts_breadcrumb_title_drilldown();
   }
 
   _checkbook_custom_breadcrumnb_add_breadcrumb_title();
@@ -93,10 +96,18 @@ function _set_revenue_breadcrumb_title_drilldown(){
 function _set_payroll_breadcrumb_title_drilldown(){
     drupal_set_title(_get_payroll_breadcrumb_title_drilldown(),PASS_THROUGH);
 }
+/**
+ * Custom function to set title for NYCHA CONTRACTS landing pages
+ **/
+function _set_nycha_contracts_breadcrumb_title_drilldown(){
+    drupal_set_title( _get_nycha_contracts_breadcrumb_title_drilldown(),PASS_THROUGH);
+}
 
 /**
  * Custom function to get title for contracts landing pages
- **/
+ * @param bool $ethinicty
+ * @return string
+ */
 function _get_contracts_breadcrumb_title_drilldown($ethinicty =  true){
 
     $lastReqParam = _getLastRequestParamValue();
@@ -139,7 +150,9 @@ function _get_contracts_breadcrumb_title_drilldown($ethinicty =  true){
 
 /**
  * Custom function to get title for spending landing pages
- **/
+ * @param bool $ethinicty
+ * @return string
+ */
 function _get_spending_breadcrumb_title_drilldown($ethinicty = true){
 
     $lastReqParam = _getLastRequestParamValue();
@@ -250,7 +263,7 @@ function _get_payroll_breadcrumb_title_drilldown()
     }else{
         if (preg_match('/agency_landing/', current_path())) {
             $value = RequestUtilities::get('agency');
-            $title = _checkbook_project_get_name_for_argument("agency_id", $value);
+          $title = _checkbook_project_get_name_for_argument("agency_id", $value);
         } else if (preg_match('/title_landing/', current_path())) {
             $value = RequestUtilities::get('title');
             $title = _checkbook_project_get_name_for_argument("title", $value);
@@ -263,6 +276,39 @@ function _get_payroll_breadcrumb_title_drilldown()
     return $title;
 
 }
+/**
+ * Custom function to get title for NYCHA CONTRACTS landing pages
+ **/
+function _get_nycha_contracts_breadcrumb_title_drilldown()
+{
+    $bottomURL = $_REQUEST['expandBottomContURL'];
+    if (!$bottomURL && preg_match('/^nycha_contracts\/search\/transactions/', current_path()) || preg_match('/^nycha_contracts\/all\/transactions/', current_path())) {
+        $title = null;
+    }else {
+        $lastReqParam = _getLastRequestParamValue();
+        foreach ($lastReqParam as $key => $value) {
+            switch ($key) {
+                case 'vendor':
+                    $title = _checkbook_project_get_name_for_argument("vendor_id", $value);
+                    break;
+                case 'awdmethod':
+                    $title = _checkbook_project_get_name_for_argument("award_method_id", $value);
+                    break;
+                case 'csize':
+                    $title = _checkbook_project_get_name_for_argument("award_size_id", $value);
+                    break;
+                case 'industry':
+                    $title = _checkbook_project_get_name_for_argument("industry_type_id", $value);
+                    break;
+                default:
+                    $title = "New York City Housing Authority";
+            }
+        }
+    }
+    return $title;
+
+}
+
 
 /**
 * Custom function to set title for contracts landing pages
@@ -273,7 +319,9 @@ function _set_pending_contracts_breadcrumb_title_drilldown(){
 
 /**
  * Custom function to set title for contracts landing pages
- **/
+ * @param bool $ethinicty
+ * @return string
+ */
 function _get_pending_contracts_breadcrumb_title_drilldown($ethinicty = true){
 
     $lastReqParam = _getLastRequestParamValue();
@@ -487,8 +535,9 @@ function _checkbook_custom_breadcrumnb_add_breadcrumb_title(){
 
    else if(preg_match('/^contract/',current_path())){
      $checkbook_breadcrumb_title = RequestUtil::getContractBreadcrumbTitle();
-   }
-   elseif(preg_match('/^payroll/',current_path())){
+   } else if(preg_match('/^nycha_contracts/',current_path())){
+       $checkbook_breadcrumb_title = RequestUtil::getNYCHAContractBreadcrumbTitle();
+   } elseif(preg_match('/^payroll/',current_path())){
      $checkbook_breadcrumb_title = RequestUtil::getPayrollBreadcrumbTitle();
    }elseif(preg_match('/^spending/',current_path())){
      $checkbook_breadcrumb_title = RequestUtil::getSpendingBreadcrumbTitle();

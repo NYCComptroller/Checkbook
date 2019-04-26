@@ -265,26 +265,6 @@ class RequestUtilities
         return (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
     }
 
-//    /**
-//     * @param $pathParams
-//     * @param $key
-//     * @param null $key_alias
-//     * @return null|string
-//     */
-//    public static function get_url_param($pathParams, $key, $key_alias = null)
-//    {
-//
-//        $keyIndex = array_search($key, $pathParams);
-//        if ($keyIndex) {
-//            if ($key_alias == null) {
-//                return "/$key/" . $pathParams[($keyIndex + 1)];
-//            } else {
-//                return "/$key_alias/" . $pathParams[($keyIndex + 1)];
-//            }
-//        }
-//        return NULL;
-//    }
-
     /**
      * This function returns the current NYC year  ...
      * @return int year_id

@@ -90,7 +90,7 @@ class Log_sqlite extends Log
      * @param int    $level        Log messages up to and including this level.
      * @access public
      */
-    function Log_sqlite($name,$ident = '', &$conf, $level = PEAR_LOG_DEBUG)
+    function __construct($name, $ident = '', &$conf, $level = PEAR_LOG_DEBUG)
     {
         $this->_id = md5(microtime());
         $this->_table = $name;
@@ -131,7 +131,7 @@ class Log_sqlite extends Log
             /* Attempt to connect to the database. */
             if ($this->_db = $connectFunction($this->_options['filename'],
                                               (int)$this->_options['mode'],
-                                              $error)) {
+                                              $error=[])) {
                 $this->_opened = true;
                 return $this->_createTable();
             }

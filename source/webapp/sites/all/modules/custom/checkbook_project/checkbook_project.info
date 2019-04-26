@@ -30,12 +30,15 @@ scripts[] = js/transactions.js
 scripts[] = js/cookie_breadcrumbs.js
 
 files[] = customclasses/constants/Constants.php
-files[] = customclasses/contract/ContractUtil.php
 files[] = customclasses/masterAgreementDetails.php
 files[] = customclasses/childAgreementDetails.php
 files[] = customclasses/payrollDetails.php
 files[] = customclasses/RequestUtil.php
 files[] = customclasses/contract/ContractURLHelper.php
+files[] = customclasses/contract/ContractUtil.php
+files[] = customclasses/contract/NychaContractDetails.php
+files[] = customclasses/contract/NychaContractAssocReleases.php
+files[] = customclasses/contract/NYCHAContractsUtil.php
 files[] = customclasses/spending/SpendingUtil.php
 files[] = customclasses/payroll/PayrollUtil.php
 files[] = customclasses/util/ChartUtil.php

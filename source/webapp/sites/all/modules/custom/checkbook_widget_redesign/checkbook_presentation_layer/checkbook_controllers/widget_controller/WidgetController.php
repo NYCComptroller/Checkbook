@@ -5,6 +5,7 @@ class WidgetViewConfigModel {
     public $widget_config;
     public $legacy_node_id;
     public $visibility_parameters;
+    public $param_config;
 
     function __construct($config) {
         if(isset($config->legacy_node_id))
@@ -13,6 +14,9 @@ class WidgetViewConfigModel {
             $this->visibility_parameters = $config->visibility_parameters;
         if(isset($config->widget_config))
             $this->widget_config = $config->widget_config;
+        if(isset($config->param_config))
+           $this->param_config = $config->param_config;
+
     }
 }
 
@@ -44,6 +48,12 @@ class WidgetController {
         $config = self::_getCurrentWidgetViewConfig($widget);
         $legacy_node_id = $config->legacy_node_id;
         return $legacy_node_id;
+    }
+    public function getWidgetParamConfig($widget) {
+
+        $config = self::_getCurrentWidgetViewConfig($widget);
+        $param_config= $config->param_config;
+        return $param_config;
     }
 
     /**
@@ -90,6 +100,7 @@ class WidgetController {
             case Domain::$SPENDING:
             case Domain::$REVENUE:
             case Domain::$BUDGET:
+            case Domain::$NYCHA_CONTRACTS:
                 $config = $configuration->$dashboard->landing_page_widgets->$widget;
                 break;
         }

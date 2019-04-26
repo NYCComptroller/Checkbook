@@ -227,6 +227,9 @@ class SqlModelFactory {
         if($type == "string") {
             $value = "'{$value}'";
         }
+        if('yearfix' == $type) {
+            $value = _checkbook_full_year($value);
+        }
         switch($operator) {
             case SqlOperator::EQUAL:
             case SqlOperator::NOT_EQUAL:
@@ -247,7 +250,10 @@ class SqlModelFactory {
                 $where = "{$name} $operator {$value}";
                 break;
 
-
+            case SqlOperator::BETWEEN:
+                list($name1,$name2) = explode(',', $name);
+                $where = "{$value} $operator {$name1} AND {$name2}";
+                break;
 
         }
         return $where;

@@ -1,11 +1,5 @@
 {
 "widgetType": "phpparser",
-"useList":"true",
-"dataset": "checkbook:year",
-"defaultParameters":{"year_value":"2010"},
-"defaultParamTypeConfig":{"year_value":"gte"},
-"columns": ["year_value","year_id"],
-"orderBy":["-year_value"],
 "template":"year_list",
 "adjustParameters":"
             $adjustedParameters = $parameters;

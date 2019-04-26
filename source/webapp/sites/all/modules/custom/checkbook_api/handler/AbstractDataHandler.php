@@ -248,7 +248,7 @@ abstract class AbstractDataHandler {
   }
 
   /**
-   * @return Record
+   * @return int
    */
   function getRecordCount() {
     // validateRequest:
@@ -307,8 +307,16 @@ abstract class AbstractDataHandler {
   private function getDataRecords() {
     DateDataTypeHandler::$MASK_CUSTOM = 'Y-m-d';
     ini_set('max_execution_time',0);
-    $records = get_db_results(TRUE, $this->requestDataSet->name, $this->requestDataSet->columns,
+    $sql_query = get_db_query(TRUE, $this->requestDataSet->name, $this->requestDataSet->columns,
       $this->requestDataSet->parameters, $this->requestDataSet->sortColumn, $this->requestDataSet->startWith, $this->requestDataSet->limit, NULL);
+
+    //Get Data Source from Data set name
+    $dataset_name = explode(':', $this->requestDataSet->name);
+    $data_source = $dataset_name[0];
+    if (isset($this->requestDataSet->adjustSql)) {
+      eval($this->requestDataSet->adjustSql);
+    }
+    $records = _checkbook_project_execute_sql_by_data_source($sql_query, $data_source);
 
     return $records;
   }
@@ -336,6 +344,7 @@ abstract class AbstractDataHandler {
     /**
      * Calls db query and generates the file
      * @return string
+     * @throws Exception
      */
     function generateFile() {
         $isList = TRUE;
@@ -348,7 +357,7 @@ abstract class AbstractDataHandler {
         $resultFormatter = null;
 
         $query = widget_get_db_query($isList, $dataSetName, $columns, $parameters, $orderBy, $startWith, $limit, $resultFormatter);
-
+log_error($query);
         LogHelper::log_notice("DataFeeds :: generateFile() query: ".$query);
 
         $filename = $this->getJobCommand($query);

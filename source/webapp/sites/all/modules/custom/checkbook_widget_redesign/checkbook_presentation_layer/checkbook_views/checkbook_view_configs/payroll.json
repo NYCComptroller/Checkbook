@@ -45,5 +45,41 @@
                 }
             }
         }
+    },
+    "nycha": {
+        "agency_landing":{
+            "landing_page_widgets":{
+                "annual_salaries_agency": {
+                    "widget_config": "annual_salaries_agency_view",
+                    "legacy_node_id": 325
+                },
+                "nonsalaried_agency": {
+                    "widget_config": "nonsalaried_agency_view",
+                     "param_config": "nonsalaried"
+                },
+                "titles_by_agency": {
+                    "widget_config": "titles_by_agency_view",
+                    "legacy_node_id": 882,
+                    "visibility_parameters": ["-title"]
+                },
+                "titles_by_nonsalaried": {
+                    "widget_config": "titles_by_nonsalaried_view",
+                    "param_config": "nonsalaried",
+                    "visibility_parameters": ["-title"]
+                }
+            }
+        },
+        "title_landing":{
+            "landing_page_widgets":{
+                "agencies_by_payroll": {
+                    "widget_config": "agencies_by_payroll_view",
+                    "legacy_node_id": 323
+                },
+                "agencies_by_overtime": {
+                    "widget_config": "agencies_by_overtime_view",
+                    "legacy_node_id": 322
+                }
+            }
+        }
     }
 }

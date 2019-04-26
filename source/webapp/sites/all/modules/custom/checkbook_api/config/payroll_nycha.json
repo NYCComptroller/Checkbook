@@ -1,0 +1,167 @@
+{
+    "payroll_nycha_calendar_year":{
+        "searchCriteriaMap":{
+            "calendar_year":"calendar_fiscal_year",
+            "other_government_entities_code":"agency_code",
+            "pay_frequency":"pay_frequency",
+            "pay_date":"pay_date",
+            "amount":"annual_salary",
+            "amount_type":"amount_basis_id",
+            "gross_pay":"gross_pay",
+            "base_pay":"base_pay",
+            "other_payments":"other_payments",
+            "overtime_payments":"overtime_pay",
+            "gross_pay_ytd":"gross_pay_cytd",
+            "title":"civil_service_title",
+            "title_exact":"civil_service_title_exact"
+        },
+        "dataset":{
+            "sortColumn":["-gross_pay","-payroll_id"],
+            "name":"checkbook_nycha:payroll",
+            "data_source":"checkbook_nycha",
+            "columnTypes":{
+                "civil_service_title":"like"
+            },
+            "displayConfiguration":{
+                "xml":{
+                    "rootElement":"payroll_transactions",
+                    "rowParentElement":"transaction",
+                    "elementsColumn":{
+                        "other_government_entities":"agency_name",
+                        "title":"civil_service_title",
+                        "pay_frequency":"pay_frequency",
+                        "pay_date":"pay_date",
+                        "payroll_type":"amount_basis_id",
+                        "annual_salary":"salaried_amount",
+                        "hourly_rate":"hourly_rate",
+                        "daily_wage":"non_salaried_amount",
+                        "gross_pay":"gross_pay",
+                        "base_pay":"base_pay",
+                        "other_payments":"other_payments",
+                        "overtime_payments":"overtime_pay",
+                        "gross_pay_ytd":"gross_pay_cytd",
+                        "calendar_year":"calendar_fiscal_year"
+                    },
+                    "rowElements":["other_government_entities", "title", "pay_frequency", "pay_date", "payroll_type", "annual_salary", "hourly_rate", "daily_wage",
+                                   "gross_pay", "base_pay", "other_payments", "overtime_payments", "gross_pay_ytd", "calendar_year"]
+                },
+                "csv":{
+                    "elementsColumn":{
+                        "Other Government Entities":"agency_name",
+                        "Title":"civil_service_title",
+                        "Pay Frequency":"pay_frequency",
+                        "Pay Date":"pay_date",
+                        "Payroll Type":"amount_basis_id",
+                        "Annual Salary":"salaried_amount",
+                        "Hourly Rate":"hourly_rate",
+                        "Daily Wage":"non_salaried_amount",
+                        "Gross Pay":"gross_pay",
+                        "Base Pay":"base_pay",
+                        "Other Payments":"other_payments",
+                        "Overtime Payments":"overtime_pay",
+                        "Gross Pay YTD":"gross_pay_ytd",
+                        "Calendar Year":"calendar_fiscal_year"
+                    }
+                }
+            },
+            "adjustParameters":"if(function_exists('checkbook_api_adjustPayrollParameterFilters')){checkbook_api_adjustPayrollParameterFilters($data_set,$parameters,$criteria);}",
+            "adjustDataSetResults":"if(function_exists('checkbook_api_adjustPayrollDataSetResults')){checkbook_api_adjustPayrollDataSetResults($data_records);}",
+            "adjustSql":"if(function_exists('checkbook_api_adjustPayrollSql')){checkbook_api_adjustPayrollSql($sql_query);}"
+        },
+        "requestParameters":{
+            "calendar_year":{
+                "valueType":"value",
+                "dataType":"year",
+                "maxLength":"4"
+            },
+            "other_government_entities_code":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"3"
+            },
+            "pay_frequency":{
+                "valueType":"value",
+                "dataType":"list",
+                "allowedValues":["BI-WEEKLY", "DAILY", "HOURLY", "SEMI-MONTHLY", "SUPPLEMENTAL", "WEEKLY", "MONTHLY"],
+                "paramMap":{
+                    "BI-WEEKLY":"BI-WEEKLY",
+                    "DAILY":"DAILY",
+                    "HOURLY":"HOURLY",
+                    "SEMI-MONTHLY":"SEMI-MONTHLY",
+                    "SUPPLEMENTAL":"SUPPLEMENTAL",
+                    "WEEKLY":"WEEKLY",
+                    "MONTHLY":"MONTHLY"
+                }
+            },
+            "pay_date":{
+                "valueType":"range",
+                "dataType":"date",
+                "format":"YYYY-MM-DD"
+            },
+            "amount":{
+                "valueType":"range",
+                "dataType":"amount",
+                "maxLength":"18"
+            },
+            "amount_type":{
+                "valueType":"value",
+                "dataType":"list",
+                "allowedValues":["ANNUAL", "RATE", "ALL"],
+                "paramMap":{
+                    "ANNUAL":"1",
+                    "RATE":"2~3",
+                    "ALL":"1~2~3"
+                }
+            },
+            "gross_pay":{
+                "valueType":"range",
+                "dataType":"amount",
+                "maxLength":"18"
+            },
+            "base_pay":{
+                "valueType":"range",
+                "dataType":"amount",
+                "maxLength":"18"
+            },
+            "other_payments":{
+                "valueType":"range",
+                "dataType":"amount",
+                "maxLength":"18"
+            },
+            "overtime_payments":{
+                "valueType":"range",
+                "dataType":"amount",
+                "maxLength":"18"
+            },
+            "gross_pay_ytd":{
+                "valueType":"range",
+                "dataType":"amount",
+                "maxLength":"18"
+            },
+            "title":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"100"
+            },
+            "title_exact":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"100"
+            }
+        }
+    },
+    "validators":[
+        {
+            "name":"optionalSingleFilter",
+            "configKey":["payroll_nycha_calendar_year"],
+            "config":{
+                "criteriaLevel":"value",
+                "validatorType":"filterName",
+                "validatorTypeConfig":{
+                    "required":true,
+                    "filterNames":["calendar_year"]
+                }
+            }
+        }
+    ]
+}

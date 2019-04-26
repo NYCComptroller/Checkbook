@@ -12,7 +12,7 @@
         <param name="awdmethod" />
         <param name="csize" />
         <param name="cindustry" />
-        <param name="is_modification" />
+        <param name="is_modification" type="bool"/>
         <sql>
             SELECT l1.contract_number,
             l1.description as contract_purpose,
@@ -67,7 +67,7 @@
         <param name="awdmethod" />
         <param name="csize" />
         <param name="cindustry" />
-        <param name="is_modification" />
+        <param name="is_modification" type="bool"/>
         <sql>
             SELECT DISTINCT l1.contract_number
             FROM aggregateon_mwbe_contracts_cumulative_spending l1

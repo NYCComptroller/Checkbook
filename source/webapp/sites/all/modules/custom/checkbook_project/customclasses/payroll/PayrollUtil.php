@@ -48,6 +48,32 @@ class PayrollUtil {
 
         return $data;
     }
+    static function updateRateTypeFacetData($node) {
+
+        $data = array();
+        foreach($node->data as $row) {
+            if($row['amount_basis_id_amount_basis_id'] == 2) {
+                $new_row = array(
+                    'amount_basis_id_amount_basis_id' => '2',
+                    'rate_type' => 'Daily',
+                    'txcount' => $row['txcount']
+                );
+                array_push($data, $new_row);
+            }
+            else  if($row['amount_basis_id_amount_basis_id'] == 3) {
+                $new_row = array(
+                    'amount_basis_id_amount_basis_id' => '3',
+                    'rate_type' => 'Hourly',
+                    'txcount' => $row['txcount']
+                );
+                array_push($data, $new_row);
+            }
+        }
+
+
+
+        return $data;
+    }
 
     /**
      * Checks the current URL to determine if this is the title landing page.
@@ -66,13 +92,14 @@ class PayrollUtil {
      * @return string
      */
     static function getTitleByCode($civil_service_title_code) {
+        $data_source = Datasource::getCurrent();
         $title = "";
         $sql = "SELECT civil_service_title
                 FROM lookup_civil_service_title
                 WHERE civil_service_title_code = {$civil_service_title_code}";
 
         try {
-            $result = _checkbook_project_execute_sql_by_data_source($sql,_get_default_datasource());
+            $result = _checkbook_project_execute_sql_by_data_source($sql,$data_source);
             $title = $result[0]['civil_service_title'];
         }
         catch (Exception $e) {
@@ -91,6 +118,7 @@ class PayrollUtil {
      */
     static function getSalariedEmployeeCount($year, $year_type, $agency_id = null, $title = null) {
 
+        $data_source = Datasource::getCurrent();
         $employee_count = null;
         $sub_query_where = "WHERE fiscal_year_id = '$year' AND type_of_year = '$year_type'";
         $sub_query_group_by = "GROUP BY employee_number,fiscal_year_id,type_of_year";
@@ -117,7 +145,7 @@ class PayrollUtil {
 //        log_error('getSalariedEmployeeCount:' .$sql);
 
         try {
-            $result = _checkbook_project_execute_sql_by_data_source($sql,_get_default_datasource());
+            $result = _checkbook_project_execute_sql_by_data_source($sql,$data_source);
             $employee_count= (int)$result[0]['record_count'];
         }
         catch (Exception $e) {
@@ -132,9 +160,10 @@ class PayrollUtil {
      * @param $year
      * @param $year_type
      * @param null $title
-     * @return int|null
+     * @return array
      */
     static function getAgencyEmployeeCountByType($year, $year_type, $title = null) {
+        $data_source = Datasource::getCurrent();
 
         $where = $sub_query_where = $agency_select = $latest_emp_where = "";
         if(isset($year)) {
@@ -207,7 +236,7 @@ class PayrollUtil {
 //        log_error('getAgencyEmployeeCountByType:' .$query);
         $employee_totals = array();
         try {
-            $result = _checkbook_project_execute_sql_by_data_source($query,_get_default_datasource());
+            $result = _checkbook_project_execute_sql_by_data_source($query,$data_source);
 
             foreach ($result as $row) {
                 $employee_totals[$row['agency_id']] = array(
@@ -231,6 +260,7 @@ class PayrollUtil {
         return null;
     }
     static function getTitleByEmployeeId($employeeId,$agency_id,$year_type,$year){
+        $data_source = Datasource::getCurrent();
         $where = "WHERE fiscal_year_id = $year AND type_of_year = '$year_type'";
         $where .= isset($agency_id) ? " AND agency_id = $agency_id" : "";
         $where .= isset($employeeId) ? " AND employee_id = $employeeId" : "";
@@ -249,7 +279,7 @@ class PayrollUtil {
           on s1.employee_id = s2.employee_id
           and s1.pay_date= s2.pay_date";
         try {
-            $result = _checkbook_project_execute_sql_by_data_source($query,_get_default_datasource());
+            $result = _checkbook_project_execute_sql_by_data_source($query,$data_source);
             $title = $result[0]['civil_service_title'];
 
            return $title;

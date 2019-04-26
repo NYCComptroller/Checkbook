@@ -70,12 +70,12 @@ function checkbook_smart_search_menu(){
         'file' => 'includes/checkbook_smart_search.inc',
         'type' => MENU_CALLBACK
     );
-    $items['smart_search/autocomplete/oge'] = array(
+    /*$items['smart_search/autocomplete/oge'] = array(
         'page callback' => '_checkbook_smart_search_oge_autocomplete',
         'access callback' => TRUE,
         'file' => 'includes/checkbook_smart_search.inc',
         'type' => MENU_CALLBACK
-    );
+    );*/
     $items['smart_search/facet/vendor'] = array(
         'page callback' => '_checkbook_smart_search_vendor_facet',
         'access callback' => TRUE,
@@ -147,7 +147,10 @@ function checkbook_smart_search_display(){
 
 /**
  * Returns the smart search form
-*/
+ * @param $form
+ * @param $form_state
+ * @return mixed
+ */
 
 function checkbook_smart_search_form($form, $form_state){
  module_load_include('inc','checkbook_smart_search','includes/checkbook_smart_search');
@@ -232,7 +235,10 @@ function checkbook_smart_search_block_info(){
     return $blocks;
 }
 
-/** Hook to place the smart search form in block. **/
+/** Hook to place the smart search form in block. *
+ * @param string $delta
+ * @return mixed
+ */
 
 function checkbook_smart_search_block_view($delta='')
 {

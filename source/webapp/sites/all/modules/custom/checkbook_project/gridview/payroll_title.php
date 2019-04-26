@@ -23,18 +23,26 @@ $refURL =$_GET['refURL'];
 
 $title = "New York City";
 
-$lastReqParam = _getLastRequestParamValue();
-
-foreach($lastReqParam as $key => $value){
-    switch($key){
-        case 'agency':
-            $title = _checkbook_project_get_name_for_argument("agency_id",$value);
-            break;
-        case 'title':
-            $title = _checkbook_project_get_name_for_argument("title",$value);
-            break;
-        default:
-    }
+if (preg_match("/agency_landing/", $refURL)) {
+    $page = 'agency';
 }
+if (preg_match("/title_landing/", $refURL)) {
+    $page = 'title';
+}
+
+switch($page){
+    case 'agency':
+        if(!is_null(RequestUtilities::getRequestParamValue('agency'))) {
+            $title = _checkbook_project_get_name_for_argument("agency_id", RequestUtilities::getRequestParamValue('agency'));
+        }
+        break;
+    case 'title':
+        if(!is_null(RequestUtilities::getRequestParamValue('title'))) {
+            $title = _checkbook_project_get_name_for_argument("title", RequestUtilities::getRequestParamValue('title'));
+        }
+        break;
+    default:
+}
+
 
 $domain = 'Payroll';

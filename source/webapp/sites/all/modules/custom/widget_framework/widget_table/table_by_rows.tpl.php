@@ -36,7 +36,7 @@ if (isset($node->data)) {
             echo "<th>" . $row->label . "</th>";
         }
         foreach ($node->data as $datarow) {
-            $tag = ($column->header == 'true') ? 'th' : 'td';
+            $tag = (($column->header??0) == 'true') ? 'th' : 'td';
             echo '<' . $tag . ' class="' . $datarow[$row->classColumn] . '">' . $datarow[$row->column] . '</' . $tag . '>';
         }
         echo "</tr>\n";

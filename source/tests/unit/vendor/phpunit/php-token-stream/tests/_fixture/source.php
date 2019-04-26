@@ -14,7 +14,7 @@ class Foo{function foo(){}
     /**
      * @param Foobar $foobar
      */
-     public static function foobar(Foobar $foobar)
+    static public function foobar(Foobar $foobar)
     {
     }
 
@@ -32,5 +32,11 @@ class Foo{function foo(){}
 
     public function blaz($x, $y)
     {
+    }
+
+    public function buzz($foo)
+    {
+        echo "${foo}";
+        return true;
     }
 }

@@ -1,0 +1,12 @@
+{
+    "datasets": {
+		"award_method": {
+            "datasourceName": "main",
+            "source": "ref_award_method",
+            "columns": [
+                {
+                    "name": "award_method_id",
+                    "key": true}
+            ]}            
+    }
+}

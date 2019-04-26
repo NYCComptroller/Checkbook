@@ -59,6 +59,7 @@ function custom_number_formatter_format($number, $decimal_digits = 0, $prefix = 
  * formats the date for display purposes, eg:2016-01-08 will be displayed as 01/08/2016
  * @param string $date
  * @return string formattedDate
+ * @throws Exception
  */
 function custom_date_format($date){
     $raw_date = new DateTime($date);
@@ -99,7 +100,6 @@ function custom_number_formatter_homepage_format($number, $decimal_digits = 0, $
  * @param int,float $number
  * @param int $decimal_digits
  * @param string $prefix
- * @param string $suffix
  * @return string formattedNumber
  */
 function custom_number_formatter_basic_format($number, $decimal_digits = 2, $prefix = '$') {

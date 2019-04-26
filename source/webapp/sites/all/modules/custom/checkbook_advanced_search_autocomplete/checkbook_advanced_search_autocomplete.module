@@ -137,6 +137,13 @@ function checkbook_advanced_search_autocomplete_menu()
         'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
         'type' => MENU_CALLBACK
     );
+    //NYCHA Contracts Auto-completes
+    $items['advanced-search/autocomplete/nycha_contracts'] = array(
+        'page callback' => '_checkbook_autocomplete_nycha_contracts',
+        'access callback' => TRUE,
+        'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
+        'type' => MENU_CALLBACK
+    );
     // Budget autocomplete paths
     $items['advanced-search/autocomplete/budget/agency'] = array(
         'page callback' => '_checkbook_advanced_search_autocomplete_budget_agency',

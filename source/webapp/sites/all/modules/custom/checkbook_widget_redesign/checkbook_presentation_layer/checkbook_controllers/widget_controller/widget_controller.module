@@ -175,9 +175,11 @@ function _widget_controller_node_view($key){
     $viewName = WidgetController::getInstance()->getWidgetViewConfigName($key);
     if(!isset($viewName)) return;
     $legacy_node_id = WidgetController::getInstance()->getWidgetLegacyNodeId($key);
+    $param_config = WidgetController::getInstance()->getWidgetParamConfig($key);
     $node = _widget_controller_node_load_file($viewName);
     $node = widget_merge_default_settings($node);
     $node->legacy_node_id = $legacy_node_id;
+    $node->param_config = $param_config;
     $node = widget_controller_node_view($node);
     echo $node->content['body']['#markup'];
 }
@@ -524,6 +526,7 @@ function _load_widget_controller_data($node, $service) {
  * Function set the the count for the widget header text
  * @param $service
  * @param $parameters
+ * @return mixed
  */
 function _load_widget_controller_header_count($service, $parameters) {
     $results = $service->getWidgetHeaderCount($parameters);
@@ -534,6 +537,7 @@ function _load_widget_controller_header_count($service, $parameters) {
  * Function gets actual widget data row count
  * @param $service
  * @param $parameters
+ * @return mixed
  */
 function _load_widget_controller_row_count($service, $parameters) {
     $results = $service->getWidgetDataCount($parameters);
@@ -557,6 +561,7 @@ function _widget_controller_footer_url($node) {
  * @param $node
  * @param $service
  * @return mixed
+ * @throws Exception
  */
 function _widget_controller_format_widget_data($node, $service){
     $formatColumns = array_filter($node->widgetConfig->table_columns,
@@ -613,7 +618,7 @@ function _widget_controller_format_widget_data($node, $service){
 /**
  * Function will convert the order by to a SQL clause
  * @param $node
- * @return array
+ * @return string
  */
 function _prepare_order_by($node) {
     $orderBy = "";
@@ -704,12 +709,16 @@ function widget_controller_config($node) {
 		$node->widgetConfig->uid = $savedUid;
 	}
     $node->widgetConfig->legacy_node_id = $node->legacy_node_id;
+    $node->widgetConfig->param_config= $node->param_config;
 	return $node->widgetConfig;
 }
 
 
 /**
  * Returns JSON file after merging in the js functions
+ * @param $node
+ * @param $phpArray
+ * @return false|mixed|string
  */
 function widget_controller_mergeJSFunctions($node, $phpArray) {
 	$PLACEHOLDER_START = '"function":"';
@@ -866,9 +875,9 @@ function widget_controller_update_dataset_datasource($datasetName,$keepOriginalD
 	if($keepOriginalDatasource == true){
 		return $datasetName;
 	}
-    $database = RequestUtilities::get('datasource');
+    $database = Datasource::getCurrent();
     if(isset($database)){
-        $database = str_replace("checkbook:", "checkbook_oge:",$datasetName);
+        $database = str_replace("checkbook:", $database.":",$datasetName);
     }else{
         $database = $datasetName;
     }
@@ -883,7 +892,8 @@ function widget_controller_update_node_data($data,$keepOriginalDatasource = fals
     foreach($data as $key=>$value){
          $arrayValues = array();
          foreach($value as $a=>$b){
-             $a = str_replace('@checkbook_oge:',"@checkbook:",$a);
+             $database = '@'.Datasource::getCurrent().':';
+             $a = str_replace($database,"@checkbook:",$a);
              $arrayValues[$a] = $b;
          }
         $returnData[$key] = $arrayValues;
@@ -897,7 +907,7 @@ function widget_controller_update_columns_by_datasource($node_columns, $datasour
 		return $node_columns;
 	}
     $columns = array();
-    $database = RequestUtilities::get('datasource');
+    $database = Datasource::getCurrent();
     $datasource_mapping = ($datasource_mapping != null) ? get_object_vars($datasource_mapping) : null;
     foreach($node_columns as $column){
         if($datasource_mapping == null){
@@ -916,7 +926,7 @@ function widget_controller_update_columns_by_datasource($node_columns, $datasour
 
 
 function widget_controller_get_current_datasource(){
-	$datasource = RequestUtilities::get('datasource');
+	$datasource = Datasource::getCurrent();
 	if(isset($datasource)){
 		return $datasource;
 	}else{

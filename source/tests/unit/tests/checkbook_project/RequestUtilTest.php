@@ -36,7 +36,7 @@ class RequestUtilTest extends TestCase
 {
 //    private $requestUtil;
 
-//    protected function setUp()
+//    protected function setUp(): void
 //    {
 //        $this->requestUtil = new RequestUtil();
 //    }

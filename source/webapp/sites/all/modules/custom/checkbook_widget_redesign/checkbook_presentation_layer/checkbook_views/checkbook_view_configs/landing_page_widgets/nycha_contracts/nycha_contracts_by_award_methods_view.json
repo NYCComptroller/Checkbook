@@ -1,0 +1,36 @@
+{
+  "serviceName":"NychaContractsWidgetService",
+  "dataFunc":"GetContractsByAwardMethods",
+  "defaultParameters":{"type_of_year":"B"},
+  "headerTitle":"Award Methods",
+  "headerSubTitle":"Award Methods",
+  "footerUrl":"_widget_controller_footer_url($node).NychaContractsUrlService::TypeUrl('AWD')",
+  "table_columns":[
+    {"labelAlias": "award_method","column": "award_method_name", "derivedColumn":"award_method_link","tooltip":60},
+    {"labelAlias":"no_of_contracts","column":"purchase_order_count","format":"number"},
+    {"labelAlias":"current_amount","column":"total_amount","format":"dollar"},
+    {"labelAlias":"original_amount","column":"original_amount","format":"dollar"},
+    {"labelAlias":"spent_to_date","column":"spend_to_date","format":"dollar"},
+    {"label":"","column":""}
+  ],
+  "dataTableOptions":{
+    "aoColumns":[
+      { "bSortable": false,"sWidth":"150px","sClass":"text" },
+      { "bSortable": true,"sWidth":"127px","sClass":"number","asSorting": [ "desc","asc"  ] },
+      { "bSortable": true,"sWidth":"130px","sClass":"number","asSorting": [ "desc","asc"  ] },
+      { "bSortable": true,"sWidth":"130px" ,"sClass":"number","asSorting": [ "desc" ,"asc" ]},
+      { "bSortable": true,"sWidth":"130px","sClass":"number","asSorting": [ "desc","asc"  ] },
+      { "bSortable": false,"sWidth":"15px" }
+    ],
+    "bServerSide":true,
+    "bFilter":false,
+    "bPaginate":false,
+    "bProcessing":true,
+    "bLengthChange":false,
+    "bInfo":false,
+    "bAutoWidth":false,
+    "aaSorting":[[2,"desc"]],
+    "fnServerParams":"##function ( aoData ) { reloadExpandCollapseWidget(this,aoData); }##",
+    "oLanguage":{"sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"}
+  }
+}

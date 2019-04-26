@@ -113,6 +113,10 @@ class RequestUtil
     {
         return 0 === stripos($path, 'contracts_revenue_landing');
     }
+    public static function isNYCHAContractPath($path)
+    {
+        return 0 === stripos($path, 'nycha_contracts');
+    }
 
     /** Returns Contracts page title and Breadcrumb */
     public static function getContractBreadcrumbTitle()
@@ -294,7 +298,11 @@ class RequestUtil
             }
         } else if (isset($bottomURL) && preg_match('/payroll_nyc_title_transactions/', $bottomURL)) {
             $smnid = RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL);
-            if ($smnid > 0) {
+            $payroll_type = RequestUtil::getRequestKeyValueFromURL("payroll_type", $bottomURL);
+            if(isset($payroll_type)){
+                $title = RequestUtil::getPayrollTitlebyType($payroll_type);
+            }
+            else if ($smnid > 0) {
                 $title = NodeSummaryUtil::getInitNodeSummaryTitle($smnid);
             }
         } else if (isset($bottomURL) && preg_match('/payroll_by_month_nyc_transactions/', $bottomURL)) {
@@ -314,7 +322,11 @@ class RequestUtil
             }
             $title = $customTitle;
         } elseif (preg_match('/^payroll\/search\/transactions/', current_path())) {
-            $title = "Payroll Transactions";
+            if(Datasource::isNYCHA()) {
+                $title = strtoupper(Dashboard::NYCHA)." ";
+            }
+            $title .= "Payroll Transactions";
+
         } elseif (preg_match('/^payroll/', current_path()) && preg_match('/agency_landing/', current_path())) {
             $title = _checkbook_project_get_name_for_argument("agency_id", RequestUtil::getRequestKeyValueFromURL("agency", current_path())) . ' Payroll';
         } elseif (preg_match('/^payroll/', current_path()) && preg_match('/title_landing/', current_path())) {
@@ -633,6 +645,14 @@ class RequestUtil
         $fiscalYearId = static::getFiscalYearIdForTopNavigation();
 
         switch ($domain) {
+            case "nycha_contracts":
+                $path = "/nycha_contracts/datasource/".Datasource::NYCHA;
+                $path .="/year/".$fiscalYearId;
+                $path .= Datasource::getNYCHAUrl();
+                if (RequestUtilities::get("vendor") > 0) {
+                    $path .=  "/vendor/" . RequestUtilities::get("vendor");
+                }
+                break;
             case "contracts":
                 //Get 'Contracts Bottom Slider' amounts
                 $node = node_load(363);
@@ -689,38 +709,49 @@ class RequestUtil
                 if (preg_match('/agency_landing/', current_path())) {
                     $path = "payroll/agency_landing/yeartype/" . $yeartype . "/year/" . $year;
                     $path .= RequestUtilities::buildUrlFromParam('title');
-                    $path .= "/agency/" . RequestUtilities::get("agency");
+                    $path .= RequestUtilities::buildUrlFromParam('agency');
+                    $path .= RequestUtilities::buildUrlFromParam('datasource');
                 } else if (preg_match('/title_landing/', current_path())) {
                     $path = "payroll/title_landing/yeartype/" . $yeartype . "/year/" . $year;
                     $path .= RequestUtilities::buildUrlFromParam('agency');
-                    $path .= "/title/" . RequestUtilities::get("title");
+                    $path .= RequestUtilities::buildUrlFromParam('title');
+                    $path .= RequestUtilities::buildUrlFromParam('datasource');
                 } else {
                     $bottomURL = $_REQUEST['expandBottomContURL'];
                     $bottomURL = ($bottomURL) ? $bottomURL : current_path();
                     $last_parameter = _getLastRequestParamValue($bottomURL);
-                    if ($last_parameter['agency'] > 0) {
+                    if ($last_parameter['agency'] > 0 ) {
                         $path = "payroll/agency_landing/yeartype/" . $yeartype . "/year/" . $year;
+                        $path .= RequestUtilities::buildUrlFromParam('datasource');
                         $path .= RequestUtilities::buildUrlFromParam('title');
-                        $path .= "/agency/" . RequestUtilities::get("agency");
+                        $path .= RequestUtilities::buildUrlFromParam('agency');
                     } else if ($last_parameter['title'] > 0) {
                         $path = "payroll/title_landing/yeartype/" . $yeartype . "/year/" . $year;
+                        $path .= RequestUtilities::buildUrlFromParam('datasource');
                         $path .= RequestUtilities::buildUrlFromParam('agency');
-                        $path .= "/title/" . RequestUtilities::get("title");
-                    } else { //NYC Level
-                        $path = "payroll/yeartype/" . $yeartype . "/year/" . $year;
+                        $path .= RequestUtilities::buildUrlFromParam('title');
+                    } else if(RequestUtilities::getRequestParamValue('agency')) {
+                        $path = "payroll/agency_landing/yeartype/" . $yeartype . "/year/" . $year;
+                        $path .= RequestUtilities::buildUrlFromParam('datasource');
+                        $path .= RequestUtilities::buildUrlFromParam('title');
+                        $path .= RequestUtilities::buildUrlFromParam('agency');
+                    }
+                        else{
+                        //Nyc Level
+                            $path = "payroll/yeartype/" . $yeartype . "/year/" . $year . RequestUtilities::buildUrlFromParam('datasource');
                     }
                 }
                 break;
             case "budget":
                 if (RequestUtilities::get("agency") > 0) {
-                    $path = "budget/yeartype/B/year/" . $fiscalYearId . "/agency/" . RequestUtilities::get("agency");
+                    $path = "budget/yeartype/B/year/" . $fiscalYearId . RequestUtilities::buildUrlFromParam('agency');
                 } else {
                     $path = "budget/yeartype/B/year/" . $fiscalYearId;
                 }
                 break;
             case "revenue":
                 if (RequestUtilities::get("agency") > 0) {
-                    $path = "revenue/yeartype/B/year/" . $fiscalYearId . "/agency/" . RequestUtilities::get("agency");
+                    $path = "revenue/yeartype/B/year/" . $fiscalYearId . RequestUtilities::buildUrlFromParam('agency');
                 } else {
                     $path = "revenue/yeartype/B/year/" . $fiscalYearId;
                 }
@@ -736,12 +767,13 @@ class RequestUtil
                 $path = preg_replace('/\/dashboard\/[^\/]*/','',$path);
                 $path = preg_replace('/\/mwbe\/[^\/]*/','',$path);
             }else{
-                if(!preg_match('/mwbe/',$path) && RequestUtilities::get("mwbe")){
-                   $path = $path."/mwbe/". RequestUtilities::get("mwbe");
+                if(!stripos(' '.$path,'/mwbe/')) {
+                  $path .= RequestUtilities::buildUrlFromParam('mwbe');
                 }
-                if(!preg_match('/dashboard/',$path) && RequestUtilities::get("dashboard")){
-                   $path = $path."/dashboard/". RequestUtilities::get("dashboard");
-                }
+
+              if(!stripos(' '.$path,'/dashboard/')) {
+                $path .= RequestUtilities::buildUrlFromParam('dashboard');
+              }
             }
         }
         return $path;
@@ -752,13 +784,11 @@ class RequestUtil
      */
     public static function getFiscalYearIdForTopNavigation()
     {
-        if (RequestUtilities::get("year") != NULL) {
-            $year = RequestUtilities::get("year");
-        } else if (RequestUtilities::get("calyear") != NULL) {
-            $year = RequestUtilities::get("calyear");
-        } else {
+        $year = RequestUtilities::get("year|calyear");
+        if (!$year) {
             $year = _getCurrentYearID();
         }
+
         //For CY 2010 Payroll selection, other domains should be navigated to FY 2011
         $fiscalYearId = ($year == 111 && strtoupper(RequestUtilities::get("yeartype")) == 'C') ? 112 : $year;
         return $fiscalYearId;
@@ -775,7 +805,7 @@ class RequestUtil
         } else if (RequestUtilities::get("calyear") != NULL) {
             $year = RequestUtilities::get("calyear");
         }
-        $currentCalYear = _getCalendarYearID();
+        $currentCalYear = _getCurrentCalendarYearID();
         if (is_null($year) || $year > $currentCalYear) {
             $year = $currentCalYear;
         }
@@ -1347,4 +1377,110 @@ class RequestUtil
       }
       return $url;
     }
+
+    /** Returns NYCHA Contracts page title and Breadcrumb */
+    public static function getNYCHAContractBreadcrumbTitle()
+    {
+        $bottomURL = $_REQUEST['expandBottomContURL'];
+        if (!$bottomURL && preg_match('/^nycha_contracts\/search\/transactions/', current_path()) || preg_match('/^nycha_contracts\/all\/transactions/', current_path())) {
+            $title = 'NYCHA Contracts Transactions';
+        } else if(stripos($bottomURL, 'transactions')){
+            $code= RequestUtil::getRequestKeyValueFromURL("tCode",$bottomURL);
+            $title = self::getTitleByCode($code). ' Contracts Transactions';
+        } else if (preg_match('/contract/', $bottomURL)) {
+            $title = RequestUtil::getRequestKeyValueFromURL("contract", $bottomURL);
+        }else {
+            $lastReqParam = _getLastRequestParamValue();
+            foreach ($lastReqParam as $key => $value) {
+                switch ($key) {
+                    case 'vendor':
+                        $title = _checkbook_project_get_name_for_argument("vendor_id", $value);
+                        break;
+                    case 'awdmethod':
+                        $title = _checkbook_project_get_name_for_argument("award_method_id", $value);
+                        break;
+                    case 'award_method':
+                        $title = _checkbook_project_get_name_for_argument("award_method_id", $value);
+                        break;
+                    case 'csize':
+                        $title = _checkbook_project_get_name_for_argument("award_size_id", $value);
+                        break;
+                    case 'industry':
+                        $title = _checkbook_project_get_name_for_argument("industry_type_id", $value);
+                        break;
+                    default:
+                        $title = "New York City Housing Authority";
+                }
+                $title .= ' Contracts';
+            }
+        }
+        return $title;
+    }
+    public static function getTitleByCode($tcode){
+        $summaryTitle='';
+
+        switch($tcode){
+            case 'BA':
+                $summaryTitle = 'Blanket Agreements';
+                break;
+            case 'BAM':
+                $summaryTitle='Blanket Agreement Modifications';
+                break;
+            case 'PA':
+                $summaryTitle='Planned Agreements';
+                break;
+            case 'PAM':
+                $summaryTitle='Planned Agreement Modifications';
+                break;
+            case 'PO':
+                $summaryTitle='Purchase Orders';
+                break;
+            case 'VO':
+                $summaryTitle='Vendors';
+                break;
+            case 'AWD':
+                $summaryTitle='Award Methods';
+                break;
+            case 'IND':
+                $summaryTitle='Contracts by Industries';
+                break;
+            case 'RESC':
+                $summaryTitle='Responsibility Centers';
+                break;
+            case 'DEP':
+                $summaryTitle='Departments';
+                break;
+            case 'SZ':
+                $summaryTitle='Contracts by Size';
+                break;
+        }
+        return $summaryTitle;
+    }
+    public static function getPayrollTitlebyType($type){
+        $title = '';
+        switch($type){
+            case "nonsalaried":
+                $title ="Payroll Summary by Number of Non-Salaried Employees";
+                break;
+        }
+        return $title;
+    }
+    public static function getPayrollType(){
+        $URL =  $_SERVER['HTTP_REFERER'];
+
+        $payroll_type = RequestUtil::getRequestKeyValueFromURL("payroll_type", $URL);
+        if($payroll_type){
+            return PayrollType::$NON_SALARIED;
+        }
+        else{
+            return PayrollType::$SALARIED;
+        }
+    }
+    public static function getContractType(){
+        $URL =  $_SERVER['HTTP_REFERER'];
+
+        $contract_type = RequestUtil::getRequestKeyValueFromURL("tCode", $URL);
+       return $contract_type;
+    }
 }
+

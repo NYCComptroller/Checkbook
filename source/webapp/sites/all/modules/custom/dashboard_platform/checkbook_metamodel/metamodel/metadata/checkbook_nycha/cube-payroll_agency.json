@@ -1,0 +1,81 @@
+{
+    "datasets":{
+        "payroll_agency":{
+            "datasourceName":"main",
+            "source":"aggregateon_payroll_agency",
+            "columns": [
+                {
+                    "name": "agency_id"},
+                {
+                    "name": "fiscal_year_id"},
+                {
+                    "name": "type_of_year"}
+            ]
+        }
+    },
+    "cubes":{
+        "payroll_agency":{
+            "sourceDatasetName":"payroll_agency",
+            "dimensions":[
+                {
+                    "name": "agency",
+                    "levels": [
+                                {
+                                    "name": "agency",
+                                    "datasetName": "agency",
+                                    "sourceColumnName": "agency_id"
+                                }
+                    ]
+                },
+                {
+                    "name":"year",
+                    "levels":[
+                        {
+                            "name":"year",
+                            "datasetName":"year",
+                            "sourceColumnName":"fiscal_year_id"
+                        }
+                    ]
+                },
+                {
+                    "name":"year_type",
+                    "levels":[
+                        {
+                            "name":"year_type",
+                            "sourceColumnName":"type_of_year"
+                        }
+                    ]
+                }
+            ],
+            "measures":{
+                "total_employees": {
+                    "function": "SUM(total_employees)"
+                },
+                "total_salaried_employees": {
+                    "function": "SUM(total_salaried_employees)"
+                },
+                "total_hourly_employees": {
+                    "function": "SUM(total_hourly_employees)"
+                },
+                "total_overtime_employees":{
+                    "function": "SUM(total_overtime_employees)"
+                },
+                "total_gross_pay": {
+                    "function": "SUM(gross_pay)"
+                },
+                "total_base_pay": {
+                    "function": "SUM(base_pay)"
+                },
+                "total_other_payments": {
+                    "function": "SUM(other_payments)"
+                },
+                "total_overtime_pay": {
+                    "function": "SUM(overtime_pay)"
+                },
+                "total_annual_salary": {
+                    "function": "SUM(annual_salary)"
+                }
+            }
+        }
+    }
+}

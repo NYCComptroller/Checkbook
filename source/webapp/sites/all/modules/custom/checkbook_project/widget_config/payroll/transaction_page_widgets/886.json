@@ -38,7 +38,7 @@
                "expression": "_get_tooltip_markup($row['civil_service_title_civil_service_title'],30)"
         },
         "employee_name_link": {
-           "expression": "  '<a href=\"/payroll/title_landing/yeartype/'. $row['year_type_year_type'] . '/year/' . $row['year_year'] . '/title/' . $row['civil_service_title_code_civil_service_title_code'] . '\">'. $row['employee_name_formatted'] . '</a>'"
+           "expression": "  '<a href=\"/payroll/title_landing/yeartype/'. $row['year_type_year_type'] . '/year/' . $row['year_year'] .RequestUtilities::_getUrlParamString('datasource'). '/title/' . $row['civil_service_title_code_civil_service_title_code'] . '\">'. $row['employee_name_formatted'] . '</a>'"
         },
         "total_no_of_employees_formatted": {
         "expression": "number_format($row['employee_count_employee_count'])"
@@ -73,7 +73,11 @@
             {"label": "","column": ""}
           ],
     "adjustDataTableOptions":"
+        $adjustDataTableOptions = $node->widgetConfig->dataTableOptions;
+
+
             $smnid = RequestUtilities::getRequestParamValue('smnid');
+            $payroll_type = RequestUtil::getPayrollType();
             if(isset($smnid)){
                 switch($smnid){
                     case 322:
@@ -89,14 +93,26 @@
                     break;
                 }
             }
+
+          if($payroll_type==PayrollType::$NON_SALARIED){
+           foreach($node->widgetConfig->table_columns as $key => $table_column){
+        if($table_column->labelAlias == 'combined_annual_salary'){
+        unset($node->widgetConfig->table_columns[$key]);
+        unset($adjustDataTableOptions->aoColumns[$key]);
+        }
+        }
+        }
+
+$node->widgetConfig->table_columns = array_values($node->widgetConfig->table_columns);
+$adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoColumns);
     ",
     "adjustParameters":"
 
                 $sortingCol = $_REQUEST['iSortCol_0'];
                 if($sortingCol == 2){//annual sal
-                    array_unshift($config->orderBy, '-employment_type.employment_type');
+                    array_unshift($config->orderBy, '-type_of_employment');
                 }else if($sortingCol == 3){//hourly rate
-                    array_unshift($config->orderBy, 'employment_type.employment_type');
+                    array_unshift($config->orderBy, 'type_of_employment');
                 }
 
                $monthId = RequestUtilities::getRequestParamValue('month');
@@ -108,6 +124,9 @@
                 if( isset($agencyId)){
                 $node->widgetConfig->dataset = 'checkbook:payroll_employee_agency_title';
                 }
+                if(isset($parameters['employment_type.employment_type'])){
+                      $parameters['employment_type.employment_type']=RequestUtil::getPayrollType();
+                 }
 
                 $adjustedParameters = $parameters;
                 if(function_exists('_checkbook_project_applyParameterFilters')){

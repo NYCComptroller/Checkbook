@@ -249,7 +249,7 @@
         "field_type":"select",
         "field_name":"agency",
         "attributes":{
-            "title":"Other Government<br/> Entities",
+            "title":"Other Government<br/> Entity",
             "options":"$agencies",
             "option_attributes":"$agency_attributes"
         }
@@ -287,5 +287,65 @@
             "options":"$sub_vendor_status",
             "option_attributes":"$sub_vendor_status_attributes"
         }
+    },
+    "purchase_order_type":{
+      "field_type":"select",
+      "field_name":"purchase_order_type",
+      "attributes":{
+        "title":"Purchase Order<br/>Type",
+        "options":{
+          "All":"All",
+          "BA":"Blanket Agreement",
+          "PA":" Planned Agreement",
+          "PO":"Purchase Order"
+        },
+        "default_value":"All"
+      }
+    },
+    "purchase_order_number":{
+      "field_type":"textfield",
+      "field_name":"purchase_order_number",
+      "attributes":{
+        "title":"Contract ID"
+      }
+    },
+    "responsibility_center":{
+      "field_type":"select",
+      "field_name":"responsibility_center",
+      "attributes":{
+        "title":"Responsibility<br/>Center",
+        "options":"$nycha_responsibility_center_attributes"
+      }
+    },
+    "nycha_contract_type":{
+      "field_type":"select",
+      "field_name":"nycha_contract_type",
+      "attributes":{
+        "options":"$nycha_contract_type_attributes",
+        "title":"Contract Type"
+      }
+    },
+   "nycha_award_method":{
+      "field_type":"select",
+      "field_name":"nycha_award_method",
+      "attributes":{
+        "title": "Award Method",
+        "options":"$nycha_award_method_attributes"
+      }
+   },
+   "nycha_industry":{
+      "field_type":"select",
+      "field_name":"nycha_industry",
+      "attributes":{
+        "title":"Industry",
+        "options":"$nycha_industry_attributes"
+      }
+   },
+    "approved_date":{
+      "field_type":"range",
+      "field_name":"approved_date",
+      "attributes":{
+        "date_year_range":"$year_range"
+      }
     }
 }

@@ -1,0 +1,27 @@
+{
+"widgetType":"phpparser",
+"parentNid":979,
+"no_results_content":"No Results Found",
+"limit":100,
+"startWith":0,
+"maxSelect":5,
+"showAllRecords":true,
+"allowFacetDeselect":true,
+"columns":["responsibility_center_id.responsibility_center_id","responsibility_center_descr.responsibility_center_descr","txcount"],
+"orderBy":"-txcount",
+"facetPager":true,
+"filterName":"Responsibility Center",
+"urlParameterName":"responsibilitynm_exact",
+"autocompleteParamName":"responsibilitynm_exact_auto",
+"autocompleteID":"fResCenterId",
+"autocompleteField":"responsibility_center_descr",
+"adjustParameters":"
+  $parameters = NYCHAContractUtil::adjustYearParams($node, $parameters);
+  if(function_exists('_checkbook_project_applyParameterFilters')){
+$adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+}
+$adjustedParameters['responsibility_center_id.responsibility_center_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+return $adjustedParameters;
+",
+"template":"individual_filter"
+}

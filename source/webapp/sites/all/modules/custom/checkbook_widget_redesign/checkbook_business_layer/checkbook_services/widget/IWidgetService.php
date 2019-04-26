@@ -64,5 +64,6 @@ interface IWidgetService {
      * @return array
      */
     function prepareInputParameters();
+    function getParamName();
 
 } 

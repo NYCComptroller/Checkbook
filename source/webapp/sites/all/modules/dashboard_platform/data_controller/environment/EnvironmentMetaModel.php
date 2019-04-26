@@ -26,7 +26,7 @@ class EnvironmentMetaModel extends AbstractMetaModel {
     /**
      * @var DataSourceMetaData[]
      */
-    public $datasources = array();
+    public $datasources = [];
 
     public function __clone() {
         parent::__clone();

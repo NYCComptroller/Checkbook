@@ -85,7 +85,11 @@
                 var href = window.location.href.replace(/(http|https):\/\//, '');
                 var n = href.indexOf('?');
                 href = href.substring(0, n !== -1 ? n : href.length);
-                var data_source = (href.indexOf('datasource/checkbook_oge') !== -1) ? "checkbook_oge" : "checkbook";
+                var data_source = 'checkbook';
+                if(href.indexOf('datasource/checkbook_oge') !== -1 || href.indexOf('datasource/checkbook_nycha') !== -1){
+                    data_source = 'checkbook_oge';
+                }
+
                 var page_clicked_from = this.id ? this.id : href.split('/')[1];
                 var active_accordion_window = initializeActiveAccordionWindow(page_clicked_from, data_source);
 
@@ -119,17 +123,17 @@
                 /* For oge, Budget, Revenue & Payroll are not applicable and are disabled */
                 disableAccordionSections(data_source);
 
-                clearInputFields("#payroll-advanced-search", 'payroll');
+                clearInputFieldByDataSource("#payroll-advanced-search", 'payroll', data_source);
                 clearInputFieldByDataSource("#contracts-advanced-search", 'contracts', data_source);
                 clearInputFieldByDataSource("#spending-advanced-search", 'spending', data_source);
                 clearInputFields("#budget-advanced-search", 'budget');
                 clearInputFields("#revenue-advanced-search", 'revenue');
 
-                clearInputFields("#payroll-advanced-search", 'payroll');
+                /*clearInputFieldByDataSource("#payroll-advanced-search", 'payroll', data_source);
                 clearInputFieldByDataSource("#contracts-advanced-search", 'contracts', data_source);
                 clearInputFieldByDataSource("#spending-advanced-search", 'spending', data_source);
                 clearInputFields("#budget-advanced-search", 'budget');
-                clearInputFields("#revenue-advanced-search", 'revenue');
+                clearInputFields("#revenue-advanced-search", 'revenue');*/
 
                 bootstrap_complete();
 
@@ -297,7 +301,7 @@
             }
 
 // advanced-search-clear-button
-            function clearInputFields(enclosingDiv, domain) {
+            function clearInputFields(enclosingDiv, domain, dataSource = null) {
                 $(enclosingDiv).find(':input').each(function () {
                     switch (this.type) {
                         case 'select-one':
@@ -307,7 +311,6 @@
                             } else {
                               $(this).find('option:first').attr("selected", "selected");
                             }
-
                             break;
                         case 'text':
                             $(this).val('');
@@ -327,16 +330,27 @@
                             break;
                     }
                 });
-                /* Disable the drop-downs by domain */
+
+               /**** Domain specific functionality ****/
                 switch (domain) {
                     case 'budget':
+                         // Disable dynamic drop-downs
                         $('#edit-budget-expense-category').attr("disabled", "disabled");
                         $('#edit-budget-department').attr("disabled", "disabled");
                         $('#edit-budget-budget-code').val("0").trigger("chosen:updated");
                         $('#edit-budget-budget-name').val("0").trigger("chosen:updated");
                         reloadBudgetCode();
                         reloadBudgetName();
-
+                        break;
+                    case 'payroll':
+                        // Show/hide Citywide/OGE agencies drop-down
+                        if(dataSource == 'checkbook_oge'){
+                            $(".form-item-checkbook-payroll-agencies").hide();
+                            $(".form-item-checkbook-oge-payroll-agencies").show();
+                        }else{
+                            $(".form-item-checkbook-payroll-agencies").show();
+                            $(".form-item-checkbook-oge-payroll-agencies").hide();
+                        }
                         break;
                 }
             }
@@ -443,7 +457,12 @@
                         'sub_vendor_status': 'select[name="' + data_source + '_contracts_sub_vendor_status"]',
                         'purpose': 'input:text[name=' + data_source + '_contracts_purpose]',
                         'curremt_amount_from': 'input:text[name="' + data_source + '_contracts_current_contract_amount_from"]',
-                        'curremt_amount_to': 'input:text[name="' + data_source + '_contracts_current_contract_amount_to"]'
+                        'curremt_amount_to': 'input:text[name="' + data_source + '_contracts_current_contract_amount_to"]',
+                        'purchase_order_type': 'input:text[name="' + data_source + '_contracts_purchase_order_type"]',
+                        'purchase_order_number': 'input:text[name="' + data_source + '_contracts_purchase_order_number"]',
+                        'responsibility_center': 'input:text[name="' + data_source + '_contracts_responsibility_center"]',
+                        'nycha_award_method': 'input:text[name="' + data_source + '_contracts_nycha_award_method"]',
+                        'approved_date': 'input:text[name="' + data_source + '_contracts_approved_date"]'
                     };
 
                     this.data_source = data_source;
@@ -469,6 +488,53 @@
                 $('input:radio[name=contracts_advanced_search_domain_filter]').click(function () {
                     onChangeDataSource($('input[name=contracts_advanced_search_domain_filter]:checked').val());
                 });
+
+                //
+                $("#edit-checkbook-oge-contracts-agency").change(function () {
+                    onOGEAgencyChange(jQuery("#edit-checkbook-oge-contracts-agency option:selected").attr('title').toUpperCase());
+                });
+
+                function onOGEAgencyChange(oge_agency){
+                  if(oge_agency == 'NEW YORK CITY HOUSING AUTHORITY'){
+                    $(".form-item-checkbook-oge-contracts-purchase-order-type").show();
+                    $(".form-item-checkbook-oge-contracts-purchase-order-number").show();
+                    $(".form-item-checkbook-oge-contracts-responsibility-center").show();
+                    $(".form-item-checkbook-oge-contracts-nycha-contract-type").show();
+                    $(".form-item-checkbook-oge-contracts-nycha-industry").show();
+                    $(".form-item-checkbook-oge-contracts-nycha-award-method").show();
+                    $(".form-item-approved-date").show();
+
+                    $(".form-item-checkbook-oge-contracts-status").hide();
+                    $(".form-item-checkbook-oge-contracts-contract-num").hide();
+                    $(".form-item-checkbook-oge-contracts-commodity-line").hide();
+                    $(".form-item-checkbook-oge-contracts-entity-contract-number").hide();
+                    $(".form-item-checkbook-oge-contracts-budget-name").hide();
+                    $(".form-item-checkbook-oge-contracts-type").hide();
+                    $(".form-item-received-date").hide();
+                    $(".form-item-checkbook-oge-contracts-category").hide();
+                    $(".form-item-checkbook-oge-contracts-apt-pin").hide();
+                    $(".form-item-checkbook-oge-contracts-award-method").hide();
+                  }else{
+                    $(".form-item-checkbook-oge-contracts-purchase-order-type").hide();
+                    $(".form-item-checkbook-oge-contracts-purchase-order-number").hide();
+                    $(".form-item-checkbook-oge-contracts-responsibility-center").hide();
+                    $(".form-item-checkbook-oge-contracts-nycha-contract-type").hide();
+                    $(".form-item-checkbook-oge-contracts-nycha-industry").hide();
+                    $(".form-item-checkbook-oge-contracts-nycha-award-method").hide();
+                    $(".form-item-approved-date").hide();
+
+                    $(".form-item-checkbook-oge-contracts-status").show();
+                    $(".form-item-checkbook-oge-contracts-contract-num").show();
+                    $(".form-item-checkbook-oge-contracts-commodity-line").show();
+                    $(".form-item-checkbook-oge-contracts-entity-contract-number").show();
+                    $(".form-item-checkbook-oge-contracts-budget-name").show();
+                    $(".form-item-checkbook-oge-contracts-type").show();
+                    $(".form-item-received-date").show();
+                    $(".form-item-checkbook-oge-contracts-category").show();
+                    $(".form-item-checkbook-oge-contracts-apt-pin").show();
+                    $(".form-item-checkbook-oge-contracts-award-method").show();
+                  }
+                }
 
                 function showHidePrimeAndSubFields(div) {
 
@@ -552,6 +618,9 @@
                             div_checkbook_contracts.contents().hide();
                             div_checkbook_contracts_oge.contents().show();
 
+                            //Hide NYCHA fields
+                            onOGEAgencyChange(jQuery("#edit-checkbook-oge-contracts-agency option:selected").attr('title').toUpperCase());
+
                             //handle oge attributes
                             div_checkbook_contracts_oge.ele('status').find('option[value=P]').remove();
                             div_checkbook_contracts_oge.ele('category').find('option[value=revenue]').remove();
@@ -595,23 +664,52 @@
                     var sub_vendor_status = div.ele('sub_vendor_status').val() || 0;
                     var data_source = $('input:radio[name=contracts_advanced_search_domain_filter]:checked').val();
 
-                    div.ele('vendor_name').autocomplete({
+                    if(jQuery("#edit-checkbook-oge-contracts-agency option:selected").attr('title').toUpperCase() == 'NEW YORK CITY HOUSING AUTHORITY' && data_source == 'checkbook_oge'){
+                      var purchase_order = $('#edit-checkbook-oge-contracts-purchase-order-type').val() || 0;
+                      var responsibility_center = $('#edit-checkbook-oge-contracts-responsibility-center').val() || 0;
+                      var contract_type = $('#edit-checkbook-oge-contracts-nycha-contract-type').val() || 0;
+                      var award_method = $('#edit-checkbook-oge-contracts-nycha-award-method').val() || 0;
+                      var industry = $('#edit-checkbook-oge-contracts-nycha-industry').val() || 0;
+
+                      div.ele('vendor_name').autocomplete({
+                        source: '/advanced-search/autocomplete/nycha_contracts/vendor_name/' + purchase_order + '/' + responsibility_center + '/' + contract_type + '/' + award_method + '/' + industry + '/' + agency + '/' + year,
+                        select: function (event, ui) {
+                          $(this).parent().next().val(ui.item.label);
+                        }
+                      });
+
+                      div.ele('purchase_order_number').autocomplete({
+                        source: '/advanced-search/autocomplete/nycha_contracts/contract_number/' + purchase_order + '/' + responsibility_center + '/' + contract_type + '/' + award_method + '/' + industry + '/' + agency + '/' + year,
+                        select: function (event, ui) {
+                          $(this).parent().next().val(ui.item.label);
+                        }
+                      });
+
+                      div.ele('pin').autocomplete({
+                        source: '/advanced-search/autocomplete/nycha_contracts/pin/' + purchase_order + '/' + responsibility_center + '/' + contract_type + '/' + award_method + '/' + industry + '/' + agency + '/' + year,
+                        select: function (event, ui) {
+                          $(this).parent().next().val(ui.item.label);
+                        }
+                      });
+                    }else {
+                      div.ele('vendor_name').autocomplete({
                         source: '/advanced-search/autocomplete/contracts/vendor-name/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + data_source,
                         select: function (event, ui) {
-                            $(this).parent().next().val(ui.item.label);
+                          $(this).parent().next().val(ui.item.label);
                         }
-                    });
-                    div.ele('contract_id').autocomplete({
+                      });
+                      div.ele('contract_id').autocomplete({
                         source: '/advanced-search/autocomplete/contracts/contract-num/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + data_source,
                         select: function (event, ui) {
-                            $(this).parent().next().val(ui.item.label);
+                          $(this).parent().next().val(ui.item.label);
                         }
-                    });
-                    div.ele('apt_pin').autocomplete({source: '/advanced-search/autocomplete/contracts/apt-pin/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + data_source});
-                    div.ele('pin').autocomplete({source: '/advanced-search/autocomplete/contracts/pin/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + data_source});
-                    div.ele('entity_contract_number').autocomplete({source: '/advanced-search/autocomplete/contracts/entity_contract_number/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + data_source});
-                    div.ele('commodity_line').autocomplete({source: '/advanced-search/autocomplete/contracts/commodity_line/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + data_source});
-                    div.ele('budget_name').autocomplete({source: '/advanced-search/autocomplete/contracts/budget_name/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + data_source});
+                      });
+                      div.ele('apt_pin').autocomplete({source: '/advanced-search/autocomplete/contracts/apt-pin/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + data_source});
+                      div.ele('pin').autocomplete({source: '/advanced-search/autocomplete/contracts/pin/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + data_source});
+                      div.ele('entity_contract_number').autocomplete({source: '/advanced-search/autocomplete/contracts/entity_contract_number/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + data_source});
+                      div.ele('commodity_line').autocomplete({source: '/advanced-search/autocomplete/contracts/commodity_line/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + data_source});
+                      div.ele('budget_name').autocomplete({source: '/advanced-search/autocomplete/contracts/budget_name/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + data_source});
+                    }
                 }
 
                 function initializeContractsView(div) {
@@ -790,11 +888,12 @@
 
                 // employee_name = ($('#edit-payroll-employee-name')).val() ? $('#edit-payroll-employee-name').val() : 0;
                 pay_frequency = $('#edit-payroll-pay-frequency').val() || 0;
-                agency = $('#edit-payroll-agencies').val() || 0;
                 year = $('#edit-payroll-year').val() || 0;
+                data_source = $('input[name=payroll_advanced_search_domain_filter]:checked').val();
+                agency = $("#edit-"+ data_source.replace("_", "-") +"-payroll-agencies").val() || 0;
 
                 $('#edit-payroll-employee-name').autocomplete({
-                    source: '/advanced-search/autocomplete/payroll/employee-name/' + pay_frequency + '/' + agency + '/' + year,
+                    source: '/advanced-search/autocomplete/payroll/employee-name/' + pay_frequency + '/' + agency + '/' + year + '/' + data_source,
                     select: function (event, ui) {
                         $(this).parent().next().val(ui.item.label);
                     }
@@ -803,11 +902,38 @@
                     $(this).focusout(function () {
                         // employee_name = ($('#edit-payroll-employee-name')).val() ? $('#edit-payroll-employee-name').val() : 0;
                         pay_frequency = $('#edit-payroll-pay-frequency').val() || 0;
-                        agency = $('#edit-payroll-agencies').val() || 0;
+                        data_source = $('input[name=payroll_advanced_search_domain_filter]:checked').val();
+                        agency = $("#edit-"+ data_source.replace("_", "-") +"-payroll-agencies").val() || 0;
                         year = $('#edit-payroll-year').val() || 0;
-                        $('#edit-payroll-employee-name').autocomplete({source: '/advanced-search/autocomplete/payroll/employee-name/' + pay_frequency + '/' + agency + '/' + year});
+                        $('#edit-payroll-employee-name').autocomplete({source: '/advanced-search/autocomplete/payroll/employee-name/' + pay_frequency + '/' + agency + '/' + year + '/' + data_source});
                     });
                 });
+
+                 //On change of data source
+                $('input:radio[name=payroll_advanced_search_domain_filter]').change(function () {
+                    onChangeDataSource($('input[name=payroll_advanced_search_domain_filter]:checked').val());
+                });
+                ///checkbook_advanced_search_clear_button.js sets this value by default
+                $('input:radio[name=payroll_advanced_search_domain_filter]').click(function () {
+                    onChangeDataSource($('input[name=payroll_advanced_search_domain_filter]:checked').val());
+                });
+
+                function onChangeDataSource(dataSource) {
+                    /* Reset all the fields for the data source */
+                    clearInputFields("#payroll-advanced-search", 'payroll', dataSource);
+                    /** Hide Fiscal Year values for OGE **/
+                    if(dataSource == 'checkbook_oge'){
+                        $("#edit-payroll-year > option").each(function() {
+                          if($(this).val().indexOf("fy") >= 0)
+                            $(this).hide();
+                        });
+                    }else{
+                        $("#edit-payroll-year > option").each(function() {
+                          if($(this).val().indexOf("fy") >= 0)
+                            $(this).show();
+                        });
+                    }
+                }
             }
 
 // advanced-search-revenue
@@ -1360,7 +1486,13 @@
             function advanced_search_buttons_init() {
                 $('#edit-payroll-clear').click(function (e) {
                     //$('#checkbook-advanced-search-form')[0].reset(); //this works
-                    clearInputFields('#payroll-advanced-search', 'payroll');
+                    var data_source = 'checkbook';
+                    var href = window.location.href.replace(/(http|https):\/\//, '');
+                    if(href.indexOf('datasource/checkbook_oge') !== -1 || href.indexOf('datasource/checkbook_nycha') !== -1){
+                        data_source = 'checkbook_oge';
+                    }
+
+                    clearInputFieldByDataSource('#payroll-advanced-search', 'payroll', data_source);
                     $(this).blur();
                     /* Remove focus */
                     e.preventDefault();
@@ -1426,6 +1558,7 @@
                     case "contracts_pending_exp_landing":
                     case "contracts_pending_landing":
                     case "contract":
+                    case "nycha_contracts":
                         active_accordion_window = 3;
                         break;
                     case "payroll":
@@ -1436,7 +1569,7 @@
                         break;
                 }
 
-                clearInputFields("#payroll-advanced-search", 'payroll');
+                clearInputFieldByDataSource("#payroll-advanced-search", 'payroll', data_source);
                 clearInputFieldByDataSource("#contracts-advanced-search", 'contracts', data_source);
                 clearInputFieldByDataSource("#spending-advanced-search", 'spending', data_source);
                 clearInputFields("#budget-advanced-search", 'budget');
@@ -1481,7 +1614,6 @@
                 if (data_source === "checkbook_oge") {
                     disableAccordionSection('Budget');
                     disableAccordionSection('Revenue');
-                    disableAccordionSection('Payroll');
                 }
             }
 
@@ -1502,7 +1634,7 @@
                 var href = window.location.href.replace(/(http|https):\/\//, '');
                 var n = href.indexOf('?');
                 href = href.substring(0, n !== -1 ? n : href.length);
-                var data_source = (href.indexOf('datasource/checkbook_oge') !== -1) ? "checkbook_oge" : "checkbook";
+                var data_source = (href.indexOf('datasource/checkbook_oge') !== -1 || href.indexOf('datasource/checkbook_nycha') !== -1) ? "checkbook_oge" : "checkbook";
                 var page_clicked_from = this.id ? this.id : href.split('/')[1];
                 var active_accordion_window = initializeActiveAccordionWindow(page_clicked_from, data_source);
 
@@ -1549,17 +1681,17 @@
                 /* For oge, Budget, Revenue & Payroll are not applicable and are disabled */
                 disableAccordionSections(data_source);
 
-                clearInputFields("#payroll-advanced-search", 'payroll');
+                clearInputFieldByDataSource("#payroll-advanced-search", 'payroll', data_source);
                 clearInputFieldByDataSource("#contracts-advanced-search", 'contracts', data_source);
                 clearInputFieldByDataSource("#spending-advanced-search", 'spending', data_source);
                 clearInputFields("#budget-advanced-search", 'budget');
                 clearInputFields("#revenue-advanced-search", 'revenue');
 
-                clearInputFields("#payroll-advanced-search", 'payroll');
+                /*clearInputFieldByDataSource("#payroll-advanced-search", 'payroll', data_source);
                 clearInputFieldByDataSource("#contracts-advanced-search", 'contracts', data_source);
                 clearInputFieldByDataSource("#spending-advanced-search", 'spending', data_source);
                 clearInputFields("#budget-advanced-search", 'budget');
-                clearInputFields("#revenue-advanced-search", 'revenue');
+                clearInputFields("#revenue-advanced-search", 'revenue');*/
 
                 bootstrap_complete();
 
@@ -2290,14 +2422,12 @@
             switch (this.type) {
                 case 'select-one':
                     $("select#edit-checkbook-contracts-category").val("all");
-                    //$('#edit-spending-fiscal-year').removeAttr("disabled");
                     var defaultoption = $(this).attr('default_selected_value');
                     if (defaultoption) {
                       $(this).find('option[value=' + defaultoption + ']').attr("selected", "selected");
                     } else {
                       $(this).find('option:first').attr("selected", "selected");
                     }
-
                     break;
                 case 'text':
                     $(this).val('');
@@ -2311,7 +2441,7 @@
                 case 'radio':
                     switch (domain) {
                         case 'payroll':
-                            $('#edit-payroll-amount-type-0').attr('checked', 'checked');
+                            $(':radio[name="payroll_advanced_search_domain_filter"][value="' + dataSource + '"]').click();
                             break;
                         case 'spending':
                             $(':radio[name="spending_advanced_search_domain_filter"][value="' + dataSource + '"]').click();

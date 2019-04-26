@@ -1,0 +1,183 @@
+{
+    "datasets":{
+        "payroll_employee_agency_title":{
+            "datasourceName":"main",
+            "source":"aggregateon_payroll_employee_agency_title",
+            "columns": [
+                {
+                    "name": "fiscal_year_id"},
+                {
+                    "name": "type_of_year"}
+            ]
+        }
+    },
+    "cubes":{
+        "payroll_employee_agency_title":{
+            "sourceDatasetName":"payroll_employee_agency_title",
+            "dimensions":[
+                {
+                    "name": "total_annual_salary",
+                    "levels": [
+                                {
+                                    "name": "total_annual_salary",
+                                    "sourceColumnName": "total_annual_salary"
+                                }
+                    ]
+                },
+                {
+                    "name": "employment_type",
+                    "levels": [
+                                {
+                                    "name": "employment_type",
+                                    "sourceColumnName": "type_of_employment"
+                                }
+                    ]
+                },
+                {
+                    "name":"year",
+                    "levels":[
+                        {
+                            "name":"year",
+                            "datasetName":"year",
+                            "sourceColumnName":"fiscal_year_id"
+                        }
+                    ]
+                },
+                {
+                    "name":"year_type",
+                    "levels":[
+                        {
+                            "name":"year_type",
+                            "sourceColumnName":"type_of_year"
+                        }
+                    ]
+                },
+                {
+                    "name": "total_gross_pay",
+                    "levels": [
+                        {
+                            "name": "total_gross_pay",
+                            "sourceColumnName": "total_gross_pay"
+                        }
+                    ]
+                },
+                {
+                    "name": "total_base_salary",
+                    "levels": [
+                        {
+                            "name": "total_base_salary",
+                            "sourceColumnName": "total_base_salary"
+                        }
+                    ]
+                },
+                {
+                    "name": "total_overtime_amount",
+                    "levels": [
+                        {
+                            "name": "total_overtime_amount",
+                            "sourceColumnName": "total_overtime_amount"
+                        }
+                    ]
+                },
+                {
+                    "name": "total_other_payments",
+                    "levels": [
+                        {
+                            "name": "total_other_payments",
+                            "sourceColumnName": "total_other_payments"
+                        }
+                    ]
+                },
+                {
+                    "name": "employee_count",
+                    "levels": [
+                        {
+                            "name": "employee_count",
+                            "sourceColumnName": "employee_count"
+                        }
+                    ]
+                },
+                {
+                    "name": "civil_service_title",
+                    "levels": [
+                        {
+                            "name": "civil_service_title",
+                            "sourceColumnName": "civil_service_title"
+                        }
+                    ]
+                },
+                {
+                    "name": "civil_service_title_code",
+                    "levels": [
+                        {
+                            "name": "civil_service_title_code",
+                            "sourceColumnName": "civil_service_title_code"
+                        }
+                    ]
+                },
+                {
+                    "name": "agency_id",
+                    "levels": [
+                        {
+                            "name": "agency_id",
+                            "sourceColumnName": "agency_id"
+                        }
+                    ]
+                }
+            ],
+            "measures":{
+                "txcount": {
+                    "function": "COUNT(*)"
+                },
+                "title_count": {
+                    "function": "COUNT(DISTINCT civil_service_title)"
+                },
+                "gross_pay_g250k_count_title": {
+                    "function": "COUNT(DISTINCT (CASE WHEN COALESCE(total_gross_pay,0) > 250000 THEN civil_service_title END))"
+                },
+                "gross_pay_g101k_le250k_count_title": {
+                    "function": "COUNT(DISTINCT(CASE WHEN COALESCE(total_gross_pay,0) > 100000 AND COALESCE(total_gross_pay,0) <= 250000 THEN civil_service_title END))"
+                },
+                "gross_pay_g51k_le100k_count_title": {
+                    "function": "COUNT(DISTINCT(CASE WHEN COALESCE(total_gross_pay,0) > 50000 AND COALESCE(total_gross_pay,0) <= 100000 THEN civil_service_title END))"
+                },
+                "gross_pay_ge20k_le50k_count_title": {
+                    "function": "COUNT(DISTINCT(CASE WHEN COALESCE(total_gross_pay,0) >= 20000 AND COALESCE(total_gross_pay,0) <= 50000 THEN civil_service_title END))"
+                },
+                "gross_pay_less20k_count_title": {
+                    "function": "COUNT(DISTINCT(CASE WHEN COALESCE(total_gross_pay,0) < 20000 THEN civil_service_title END))"
+                },
+                "overtime_pay_g250k_count_title": {
+                    "function": "COUNT(DISTINCT(CASE WHEN COALESCE(total_overtime_amount,0) > 250000 THEN civil_service_title END))"
+                },
+                "overtime_pay_g101k_le250k_count_title": {
+                    "function": "COUNT(DISTINCT(CASE WHEN COALESCE(total_overtime_amount,0) > 100000 AND COALESCE(total_overtime_amount,0) <= 250000 THEN civil_service_title END))"
+                },
+                "overtime_pay_g51k_le100k_count_title": {
+                    "function": "COUNT(DISTINCT(CASE WHEN COALESCE(total_overtime_amount,0) > 50000 AND COALESCE(total_overtime_amount,0) <= 100000 THEN civil_service_title END))"
+                },
+                "overtime_pay_ge20k_le50k_count_title": {
+                    "function": "COUNT(DISTINCT(CASE WHEN COALESCE(total_overtime_amount,0) >= 20000 AND COALESCE(total_overtime_amount,0) <= 50000 THEN civil_service_title END))"
+                },
+                "overtime_pay_less20k_count_title": {
+                    "function": "COUNT(DISTINCT(CASE WHEN COALESCE(total_overtime_amount,0) < 20000 THEN civil_service_title END))"
+                },
+                "annual_salary_g250k_count_title": {
+                    "function": "COUNT(DISTINCT(CASE WHEN COALESCE(total_annual_salary,0) > 250000 THEN civil_service_title END))"
+                },
+                "annual_salary_g101k_le250k_count_title": {
+                    "function": "COUNT(DISTINCT(CASE WHEN COALESCE(total_annual_salary,0) > 100000 AND COALESCE(total_annual_salary,0) <= 250000 THEN civil_service_title END))"
+                },
+                "annual_salary_g51k_le100k_count_title": {
+                    "function": "COUNT(DISTINCT(CASE WHEN COALESCE(total_annual_salary,0) > 50000 AND COALESCE(total_annual_salary,0) <= 100000 THEN civil_service_title END))"
+                },
+                "annual_salary_ge20k_le50k_count_title": {
+                    "function": "COUNT(DISTINCT(CASE WHEN COALESCE(total_annual_salary,0) >= 20000 AND COALESCE(total_annual_salary,0) <= 50000 THEN civil_service_title END))"
+                },
+                "annual_salary_less20k_count_title": {
+                    "function": "COUNT(DISTINCT(CASE WHEN COALESCE(total_annual_salary,0) < 20000 THEN civil_service_title END))"
+                }
+            }
+        }
+    }
+}

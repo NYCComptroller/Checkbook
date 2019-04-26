@@ -15,7 +15,14 @@ class payrollDetails {
     public function getData(&$node){
 
         list ($year_type, $year, $title) = RequestUtilities::get(['yeartype', 'year|calyear', 'title']);
-        list ($agency, $month, $smnid) = RequestUtilities::get(['agency', 'month', 'smnid']);
+        list ($agency, $month, $smnid,$payroll_type) = RequestUtilities::get(['agency', 'month', 'smnid','payroll_type']);
+        $current_url = explode('/',$_SERVER['HTTP_REFERER']);
+        $summary_by_agency = array_search('payroll_agencytransactions',$current_url);
+
+
+
+
+        $data_source = Datasource::getCurrent();
 
         $dataset = 'aggregateon_payroll_employee_agency';
         $where = $sub_query_where = "";
@@ -49,6 +56,7 @@ class payrollDetails {
             $title_group_by = ',civil_service_title_code';
         }
         $show_salaried = $smnid == 881 || $smnid == 882;
+        $show_nonsalaried= $payroll_type =="nonsalaried";
 
         if(isset($agency)) {
             $where .= $where == "" ? "WHERE emp.agency_id = '$agency'" : " AND emp.agency_id = '$agency'";
@@ -152,7 +160,7 @@ class payrollDetails {
     ";
 
 //        log_error('QUERY:' .$query);
-        $results = _checkbook_project_execute_sql_by_data_source($query,"checkbook");
+        $results = _checkbook_project_execute_sql_by_data_source($query,$data_source);
         $total_employees = 0;
         $salaried_employees = 0;
         $non_salaried_employees = 0;
@@ -170,6 +178,14 @@ class payrollDetails {
                 if($result['type_of_employment'] == PayrollType::$SALARIED) {
                     $salaried_results[0] = $result;
                     $node->data = $salaried_results;
+                }
+            }
+        }
+        else if($show_nonsalaried && !$summary_by_agency){
+            foreach($results as $result){
+                if($result['type_of_employment'] == PayrollType::$NON_SALARIED) {
+                    $nonsalaried_results[0] = $result;
+                    $node->data = $nonsalaried_results;
                 }
             }
         }
@@ -195,6 +211,7 @@ class payrollDetails {
      */
     public function getMaxAnnualSalary($year, $year_type, $month = NULL, $agency = NULL, $title = NULL, $employee_id = NULL)
     {
+        $data_source = Datasource::getCurrent();
         $dataset = 'aggregateon_payroll_employee_agency';
         $select = $where = $group_by = $join = "";
         if(isset($month)) {
@@ -242,7 +259,7 @@ class payrollDetails {
         ";
 
 //        log_error('QUERY: getMaxAnnualSalary:' .$query);
-        $results = _checkbook_project_execute_sql_by_data_source($query,"checkbook");
+        $results = _checkbook_project_execute_sql_by_data_source($query,$data_source);
         $max_annual_salary = 0;
         foreach($results as $result){
             $max_annual_salary += $result['max_annual_salary'];
@@ -263,6 +280,7 @@ class payrollDetails {
      */
     public function getMaxAnnualSalaryByPayFrequency($year, $year_type, $month = NULL, $agency = NULL, $title = NULL, $employee_id = NULL)
     {
+        $data_source = Datasource::getCurrent();
         $select = $where = $group_by = $join = "";
         $year_param = $year_type == 'B' ? "emp.fiscal_year_id" : "emp.calendar_fiscal_year_id";
         $year_join = $year_type == 'B' ? "AND latest_emp.fiscal_year_id = emp.fiscal_year_id" : "AND latest_emp.calendar_fiscal_year_id = emp.calendar_fiscal_year_id";
@@ -307,7 +325,7 @@ class payrollDetails {
         ";
 
 //        log_error('QUERY: getMaxAnnualSalaryByPayFrequency:' .$query);
-        $results = _checkbook_project_execute_sql_by_data_source($query,"checkbook");
+        $results = _checkbook_project_execute_sql_by_data_source($query,$data_source);
         $max_annual_salary = array();
         foreach($results as $result){
             $max_annual_salary[$result['pay_frequency']] = $result['annual_salary'];
@@ -323,10 +341,12 @@ class payrollDetails {
      * @param null $month
      * @param null $agency
      * @param null $title
-     * @return int
+     * @param null $employee_id
+     * @return array
      */
     public function getMaxHourlyRateByPayFrequency($year, $year_type, $month = NULL, $agency = NULL, $title = NULL, $employee_id = NULL)
     {
+        $data_source = Datasource::getCurrent();
         $select = $where = $group_by = $join = "";
         $year_param = $year_type == 'B' ? "emp.fiscal_year_id" : "emp.calendar_fiscal_year_id";
         $year_join = $year_type == 'B' ? "AND latest_emp.fiscal_year_id = emp.fiscal_year_id" : "AND latest_emp.calendar_fiscal_year_id = emp.calendar_fiscal_year_id";
@@ -370,11 +390,76 @@ class payrollDetails {
             GROUP BY emp.employee_number, {$year_param}, emp.amount_basis_id, emp.pay_frequency{$group_by}
         ";
 
-//        log_error('QUERY: getMaxHourlyRateByPayFrequency:' .$query);
-        $results = _checkbook_project_execute_sql_by_data_source($query,"checkbook");
+       // log_error('QUERY: getMaxHourlyRateByPayFrequency:' .$query);
+        $results = _checkbook_project_execute_sql_by_data_source($query,$data_source);
         $max_annual_salary = array();
         foreach($results as $result){
             $max_annual_salary[$result['pay_frequency']] = $result['annual_salary'];
+        }
+        return $max_annual_salary;
+    }
+    /**
+     * Function to get the max hourly based on the latest pay date.
+     *
+     * @param $year
+     * @param $year_type
+     * @param null $month
+     * @param null $agency
+     * @param null $title
+     * @param null $employee_id
+     * @return array
+     */
+    public function getMaxDailyWageByPayFrequency($year, $year_type, $month = NULL, $agency = NULL, $title = NULL, $employee_id = NULL)
+    {
+        $data_source = Datasource::getCurrent();
+        $select = $where = $group_by = $join = "";
+        $year_param = $year_type == 'B' ? "emp.fiscal_year_id" : "emp.calendar_fiscal_year_id";
+        $year_join = $year_type == 'B' ? "AND latest_emp.fiscal_year_id = emp.fiscal_year_id" : "AND latest_emp.calendar_fiscal_year_id = emp.calendar_fiscal_year_id";
+        if(isset($month)) {
+            $select .= ", emp.month_id";
+            $where .= " AND emp.month_id = $month";
+            $group_by .= ", emp.month_id";
+            $join .= " AND latest_emp.month_id = emp.month_id";
+        }
+        if(isset($title)) {
+            $select .= ", emp.civil_service_title_code";
+            $where .= " AND emp.civil_service_title_code = $title";
+            $group_by .= ", emp.civil_service_title_code";
+            $join .= " AND latest_emp.civil_service_title_code = emp.civil_service_title_code";
+        }
+        if(isset($agency)) {
+            $select .= ", emp.agency_id";
+            $where .= " AND emp.agency_id = $agency";
+            $group_by .= ", emp.agency_id";
+            $join .= " AND latest_emp.agency_id = emp.agency_id";
+        }
+        if(isset($employee_id)) {
+            $where .= " AND emp.employee_id = $employee_id";
+        }
+        $query = "
+            SELECT MAX(emp.daily_wage) as daily_wage, emp.employee_number, {$year_param}, emp.amount_basis_id, emp.pay_frequency{$select}
+            FROM payroll emp
+            JOIN
+            (
+                SELECT MAX(emp.pay_date) as pay_date,emp.employee_number, {$year_param}, emp.amount_basis_id, emp.pay_frequency{$select}
+                FROM payroll emp
+                WHERE {$year_param} = {$year} AND emp.amount_basis_id =2 {$where}
+                GROUP BY emp.employee_number, {$year_param}, emp.amount_basis_id, emp.pay_frequency{$group_by}
+            ) latest_emp ON latest_emp.pay_date = emp.pay_date
+            AND latest_emp.employee_number = emp.employee_number
+            AND latest_emp.amount_basis_id = emp.amount_basis_id
+            AND latest_emp.pay_frequency = emp.pay_frequency
+            {$year_join}
+            {$join}
+            WHERE {$year_param} = {$year} AND emp.amount_basis_id = 2 {$where}
+            GROUP BY emp.employee_number, {$year_param}, emp.amount_basis_id, emp.pay_frequency{$group_by}
+        ";
+
+        // log_error('QUERY: getMaxHourlyRateByPayFrequency:' .$query);
+        $results = _checkbook_project_execute_sql_by_data_source($query,$data_source);
+        $max_annual_salary = array();
+        foreach($results as $result){
+            $max_annual_salary[$result['pay_frequency']] = $result['daily_wage'];
         }
         return $max_annual_salary;
     }

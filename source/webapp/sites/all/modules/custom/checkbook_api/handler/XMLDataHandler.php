@@ -128,7 +128,7 @@ class XMLDataHandler extends AbstractDataHandler
      * Function will reformat the xml document to have correct indention.
      *
      * @param $strXml
-     * @return DOMDocument
+     * @return string
      */
     private function formatXmlString($strXml) {
 
@@ -150,7 +150,8 @@ class XMLDataHandler extends AbstractDataHandler
      * @return string
      */
     function getJobCommand($query) {
-        global $conf, $databases;
+        global $conf;
+        $criteria = $this->requestSearchCriteria->getCriteria();
 
         //map tags and build sql
         $rootElement = $this->requestDataSet->displayConfiguration->xml->rootElement;
@@ -184,8 +185,9 @@ class XMLDataHandler extends AbstractDataHandler
             }
             //get only column
             if (strpos($sql_part,".") !== false) {
-                $alias = substr($sql_part, 0, 3);
-                $column = substr($sql_part, 3);
+                $select_column_parts = explode('.', trim($sql_part));
+                $alias = $select_column_parts[0] . '.';
+                $column = $select_column_parts[1];
             }
 
             //Handle derived columns
@@ -209,6 +211,16 @@ class XMLDataHandler extends AbstractDataHandler
                     break;
                 case "amount_basis_id":
                     $new_select_part .=  "CASE WHEN amount_basis_id = 1 THEN 'SALARIED' ELSE 'NON-SALARIED' END";
+                    break;
+                case "release_approved_year":
+                    if($criteria['global']['type_of_data'] == 'Contracts_NYCHA'){
+                      $new_select_part .= $criteria['value']['fiscal_year'];
+                    }
+                    break;
+                case "hourly_rate":
+                    if($this->requestDataSet->data_source == Datasource::NYCHA) {
+                        $new_select_part .=  "''";
+                    }
                     break;
                 default:
                     $new_select_part .= "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')";
@@ -240,9 +252,7 @@ class XMLDataHandler extends AbstractDataHandler
             $filename = _checkbook_project_generate_uuid(). '.xml';
             $tmpDir =  (isset($conf['check_book']['tmpdir']) && is_dir($conf['check_book']['tmpdir'])) ? rtrim($conf['check_book']['tmpdir'],'/') : '/tmp';
 
-            $command = $conf['check_book']['data_feeds']['command'];
-            $data_source = $this->requestDataSet->data_source;
-            $command .= ' ' . $databases[$data_source]['main']['database'] . ' ';
+            $command = _checkbook_psql_command($this->requestDataSet->data_source);
 
             if(!is_writable($tmpDir)){
                 LogHelper::log_error("$tmpDir is not writable. Please make sure this is writable to generate export file.");
@@ -301,7 +311,6 @@ class XMLDataHandler extends AbstractDataHandler
             //Remove tmp file file from tmp to data feeds dir
             $command = "rm $tempOutputFile";
             $commands[] = $command;
-
             $this->processCommands($commands);
         }
         catch (Exception $e){
@@ -369,5 +378,6 @@ class XMLDataHandler extends AbstractDataHandler
         else {
             echo "Data is not generated. Please contact support team.";
         }
+        return;
     }
 }

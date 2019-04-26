@@ -23,9 +23,9 @@
 
 /**
  * Drupal Hook to alter menu items generated to add specific   ...
- * @param unknown_type $path 
- * @param unknown_type $options
- * @param unknown_type $original_path
+ * @param $path
+ * @param $options
+ * @param $original_path
  * @return boolean
  */
 function checkbook_project_url_outbound_alter(&$path, &$options, $original_path){
@@ -36,7 +36,7 @@ function checkbook_project_url_outbound_alter(&$path, &$options, $original_path)
 	if(strpos($path, 'ctools') === 0) {
 		return true;
 	}
-	
+
 
 	if(($path == 'spending_landing')  || ($path == 'spending/agencies')
         || ($path == 'spending/vendors') || ($path == 'mwbe_agency_grading')
@@ -58,7 +58,7 @@ function checkbook_project_url_outbound_alter(&$path, &$options, $original_path)
 
 /**
  * Define new toklen type for checkbook
- * @return multitype:NULL 
+ * @return multitype:NULL
  */
 function checkbook_project_token_info(){
 	$info['types']['custom_checkbook'] = array(
@@ -69,30 +69,29 @@ function checkbook_project_token_info(){
   $info['tokens']['custom_checkbook']['year_string'] = array(
     'name' => t('Year String'),
     'description' => t("The Year String for URL"),
-  );  
-   
+  );
+
   return $info;
 }
 
 
-
 /**
  * Define replacement for checkbook tokens
- * @param unknown_type $type
- * @param unknown_type $tokens
+ * @param $type
+ * @param $tokens
  * @param array $data
  * @param array $options
- * @return unknown
+ * @return array
  */
 function checkbook_project_tokens($type, $tokens, array $data = array(), array $options = array()) {
   $replacements = array();
-  $replacements[$tokens['year_string']] = substr(_checkbook_project_get_year_url_param_string(),1);        
+  $replacements[$tokens['year_string']] = substr(_checkbook_project_get_year_url_param_string(),1);
   return $replacements;
 }
 
 /**
  * Implementation of hook_menu.. USed for dsiplaying popups.
- * @return multitype:string boolean multitype:number  
+ * @return multitype:string boolean multitype:number
  */
 function checkbook_project_menu(){
     $items['checkbook/view_all_popup/node/%node'] = array(
@@ -114,15 +113,15 @@ function checkbook_project_menu(){
         'access callback' => true,
         'type'=>MENU_CALLBACK
     );
-    
-    
+
+
     $items['gridview/popup/widget/%widget'] = array(
     		'page callback' => '_checkbook_project_grid_view_widget_popup',
     		'page arguments' => array(3),
     		'access callback' => true,
     		'type'=>MENU_CALLBACK
     );
-    
+
 
     $items['nodedisplay/node/%node'] = array(
         'page callback' => '_checkbook_project_node_display',
@@ -130,21 +129,21 @@ function checkbook_project_menu(){
         'access callback' => true,
         'type'=>MENU_CALLBACK
     );
-    
+
     $items['publish-new-features'] = array(
         'page callback' => '_checkbook_publish_new_features',
         'access callback' => true,
         'page arguments' => array(),
         'type'=>MENU_CALLBACK
     );
-    
+
     $items['new-features/%'] = array(
         'page callback' => '_checkbook_publish_new_features',
         'access callback' => true,
         'page arguments' => array(1),
         'type'=>MENU_CALLBACK
     );
-   
+
 
     return $items;
 }
@@ -161,27 +160,27 @@ function checkbook_project_init(){
 
 /**
  * Implementation of hook_theme() ...
- * @param unknown_type $existing
- * @param unknown_type $type
- * @param unknown_type $theme
- * @param unknown_type $path
- * @return multitype:multitype:string multitype:unknown   multitype:string multitype:NULL   
+ * @param $existing
+ * @param $type
+ * @param $theme
+ * @param $path
+ * @return array
  */
 function checkbook_project_theme($existing, $type, $theme, $path){
     return array(
         //Vendors Landing Page
         'vendors_sidebar1' => array(
             'template' => 'php_widgets/vendors_sidebar1',
-            'arguments' => array('node' => $node)
+            'arguments' => array('node' => NULL)
         ),
         'vendors_sidebar2' => array(
             'template' => 'php_widgets/vendors_sidebar2',
-            'arguments' => array('node' => $node)
+            'arguments' => array('node' => NULL)
         ),
         //Budget Pages
         'budget_sidebar' => array(
             'template' => 'php_widgets/budget_sidebar',
-            'arguments' => array('node' => $node)
+            'arguments' => array('node' => NULL)
         ),
         //Contract Transactions List
         'pending_contract_transaction_total_amount' => array(
@@ -198,6 +197,11 @@ function checkbook_project_theme($existing, $type, $theme, $path){
         ),
         'pending_transaction_title' => array(
             'template' => 'php_widgets/contract/pending_transaction_title',
+            'arguments' => array('node' => NULL)
+        ),
+        //Nycha Contract Transactions List
+        'nycha_contract_transaction_total_amount' => array(
+            'template' => 'php_widgets/contract/nycha_contract_transaction_total_amount',
             'arguments' => array('node' => NULL)
         ),
         //Spending Transactions List
@@ -337,6 +341,10 @@ function checkbook_project_theme($existing, $type, $theme, $path){
             'template' => 'php_widgets/contracts_navigation',
             'arguments' => array('node' => NULL)
         ),
+        'nycha_top_navigation' => array(
+            'template' => 'php_widgets/nycha_top_navigation',
+            'arguments' => array('node' => NULL)
+        ),
         //GridView templates
         'highchart_revenue_comparisons_grid_view' => array(
             'template' => 'gridview/revenue_year_comparisons',
@@ -434,15 +442,20 @@ function checkbook_project_theme($existing, $type, $theme, $path){
             'template' => 'gridview/contracts_highchart_pending_agency_vendor',
             'arguments' => array('node' => NULL)
         ),
-    		
+        'highchart_nycha_contracts_vendor' => array(
+            'template' => 'gridview/nychacontracts_highchart_vendor',
+            'arguments' => array('node' => NULL)
+        ),
+
+
     	//Generic Grid views template.
 		// contracts
 	    	'chart_grid_view' => array(
 	    		'template' => 'gridview/chart_grid_view',
 	    		'arguments' => array('node' => NULL)
-	    	),    		
-	    
-    		
+	    	),
+
+
         // Contracts Templates
         'contracts_nyc_totals' => array(
                     'template' => 'php_widgets/contract/contracts_nyc_totals',
@@ -458,6 +471,18 @@ function checkbook_project_theme($existing, $type, $theme, $path){
         ),
         'contracts_ca_details' => array(
             'template' => 'php_widgets/contract/contracts_ca_details',
+            'arguments' => array('node' => NULL)
+        ),
+        'nycha_contract_details' => array(
+            'template' => 'php_widgets/contract/nycha_contract_details',
+            'arguments' => array('node' => NULL)
+        ),
+        'nycha_contract_assoc_releases' => array(
+            'template' => 'php_widgets/contract/nycha_contract_assoc_releases',
+            'arguments' => array('node' => NULL)
+        ),
+        'nycha_contracts_summary' => array(
+            'template' => 'php_widgets/contract/nycha_contracts_summary',
             'arguments' => array('node' => NULL)
         ),
         'contracts_ma_assoc_contracts' => array(
@@ -487,15 +512,15 @@ function checkbook_project_theme($existing, $type, $theme, $path){
         'contracts_ma_history' => array(
                 'template' => 'php_widgets/contract/contracts_ma_history',
                 'arguments' => array('node' => NULL)
-        ),  
+        ),
         'contracts_cta_history' => array(
             'template' => 'php_widgets/contract/contracts_cta_history',
             'arguments' => array('node' => NULL)
-        ),   
+        ),
         'contracts_cta_spending_history' => array(
             'template' => 'php_widgets/contract/contracts_cta_spending_history',
             'arguments' => array('node' => NULL)
-        ),                   
+        ),
         'contract_vendor_info' => array(
             'template' => 'php_widgets/contract/contract_vendor_info',
             'arguments' => array('node' => NULL)
@@ -503,9 +528,9 @@ function checkbook_project_theme($existing, $type, $theme, $path){
         'contracts_cta_spending_by_exp_cat' => array(
             'template' => 'php_widgets/contract/contracts_cta_spending_by_exp_cat',
             'arguments' => array('node' => NULL)
-        ),        
-        
-    
+        ),
+
+
         //Pending Contracts Templates
         'pending_contracts_total_amount' => array(
             'template' => 'php_widgets/pending_contracts/pending_contracts_total_amount',
@@ -548,6 +573,7 @@ function checkbook_project_theme($existing, $type, $theme, $path){
             'template' => 'php_widgets/contract/summary/date_summary',
             'arguments' => array('node' => NULL)
         ),
+
         //---------------End Contract Summary Templates---------------
 
         //++++++++++++++++++Spending Summary Templates++++++++++++++++++
@@ -591,13 +617,15 @@ function checkbook_project_theme($existing, $type, $theme, $path){
             'template' => 'php_widgets/spending/summary/date_summary',
             'arguments' => array('node' => NULL)
         ),
+
         //---------------End Spending Summary Templates---------------
 
         'no_records_found' => array(
             'template' => 'php_widgets/no_records_found',
             'arguments' => array('message' => NULL)
         ),
-        
+
+
        //---------------Template for publishing New Features page----------------
         'publish_new_features' => array(
             'template' => 'templates/publish_new_features',

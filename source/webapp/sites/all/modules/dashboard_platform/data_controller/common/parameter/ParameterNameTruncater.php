@@ -31,7 +31,7 @@ class ParameterNameTruncater {
         // removing vowels (except first character and words shorter than 4 characters) starting from the longest word
         $parameterNameParts = explode('_', $parameterName);
 
-        $processableIndexes = array();
+        $processableIndexes = [];
         foreach ($parameterNameParts as $index => $part) {
             $length = strlen($part);
             if ($length <= 3) {

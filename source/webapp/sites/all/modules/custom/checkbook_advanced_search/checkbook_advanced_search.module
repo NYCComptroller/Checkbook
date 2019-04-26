@@ -81,12 +81,17 @@ function checkbook_advanced_search_display_ajax()
 
 /**
  * Implements hook_form().
+ * @param $form
+ * @param $form_state
+ * @return mixed
  */
 function checkbook_advanced_search_form($form, $form_state)
 {
     $create_alert_view = "<div class='create-alert-view'></div>";
     $agencies = _checkbook_advanced_search_get_agencyname_and_id();
     $agency_attributes = _checkbook_advanced_search_get_agency_attributes();
+    $nycha_agencies = _checkbook_advanced_search_get_agencyname_and_id('checkbook_nycha');
+    $nycha_agency_attributes = _checkbook_advanced_search_get_agency_attributes('checkbook_nycha');
     $fund_class = _checkbook_advanced_search_get_fund_class_and_id();
     $year_range = "'-" . (date("Y") - 1900) . ":+" . (2500 - date("Y")) . "'";
     $revenue_fys = array(0 => "All Fiscal Years");
@@ -407,8 +412,23 @@ function checkbook_advanced_search_form($form, $form_state)
 
     //<editor-fold desc="Payroll">
 
+    $form['payroll']['payroll_advanced_search_domain_filter'] = array(
+        '#type' => 'radios',
+        '#options' => array('checkbook' => 'Citywide Agencies', 'checkbook_oge' => 'Other Government Entities'),
+        '#default_value' => !isset($data_source) ? 'checkbook' : $data_source,
+        '#prefix' => '<h3><a href="#">Payroll</a></h3><div id="payroll-advanced-search">',
+    );
+
+    $form['payroll']['checkbook_oge_payroll_agencies'] = array(
+        '#type' => 'select',
+        '#title' => t('Other Government<br/>Entities'),
+        '#default_value' => t('Select One)'),
+        '#options' => $nycha_agencies,
+        '#option_attributes' => $nycha_agency_attributes,
+        '#prefix' => '<div class="column column-left">',
+    );
+
     $form['payroll']['payroll_employee_name'] = array(
-        '#prefix' => '<h3><a >Payroll</a></h3><div id="payroll-advanced-search"><div class="column column-left">',
         '#type' => 'textfield',
         '#title' => t('Title'),
         '#size' => 30,
@@ -417,7 +437,7 @@ function checkbook_advanced_search_form($form, $form_state)
     $form['payroll']['payroll_employee_name_exact'] = array(
         '#type' => 'hidden'
     );
-    $form['payroll']['payroll_agencies'] = array(
+    $form['payroll']['checkbook_payroll_agencies'] = array(
         '#type' => 'select',
         '#title' => t('Agency'),
         '#default_value' => t('Citywide(All Agencies)'),
@@ -517,9 +537,9 @@ function checkbook_advanced_search_form($form, $form_state)
     $form['payroll']['payroll_year'] = array(
         '#type' => 'select',
         '#title' => t('Year'),
-        '#default_value' => 'cy~' . _getCalendarYearID(),
+        '#default_value' => 'cy~' . _getCurrentCalendarYearID(),
         '#options' => _checkbook_advanced_search_get_year('payroll'),
-        '#attributes' => array('default_selected_value' => 'cy~' . _getCalendarYearID())
+        '#attributes' => array('default_selected_value' => 'cy~' . _getCurrentCalendarYearID())
     );
     $form['payroll']['payroll_pay_date_from'] = array(
         '#type' => 'date_popup',
@@ -669,6 +689,18 @@ function _checkbook_advanced_search_filter_field_definition($domain, $data_sourc
     {
         $agencies = _checkbook_advanced_search_get_agencyname_and_id($data_source);
         $agency_attributes = _checkbook_advanced_search_get_agency_attributes($data_source);
+
+        if($domain == Domain::Contracts){
+            $nycha_agencies = _checkbook_advanced_search_get_agencyname_and_id(DataSource::NYCHA);
+            $nycha_agency_attributes = _checkbook_advanced_search_get_agency_attributes(DataSource::NYCHA);
+            $agencies = $nycha_agencies + $agencies;
+            $agency_attributes = $nycha_agency_attributes + $agency_attributes;
+
+            $nycha_responsibility_center_attributes = _checkbook_advanced_search_get_responsibility_centers(DataSource::NYCHA);
+            $nycha_contract_type_attributes = _checkbook_advanced_search_get_nycha_contract_types(DataSource::NYCHA);
+            $nycha_award_method_attributes = checkbook_advanced_search_get_nycha_award_methods(DataSource::NYCHA);
+            $nycha_industry_attributes = checkbook_advanced_search_get_nycha_industries(DataSource::NYCHA);
+        }
     }
     else if($data_source == DataSource::CitywideAgency) {
         $mwbe_category_attributes = _checkbook_advanced_search_get_mwbe_category_and_id();
@@ -724,6 +756,22 @@ function _checkbook_advanced_search_filter_field_definition($domain, $data_sourc
                     case '$includes_sub_vendors':
                         $field_definition_configs[$i]['attributes']['options'] = $includes_sub_vendors;
                         break;
+                    case '$nycha_responsibility_center_attributes':
+                        $field_definition_configs[$i]['attributes']['options'] = $nycha_responsibility_center_attributes['options'];
+                        $field_definition_configs[$i]['attributes']['option_attributes'] = $nycha_responsibility_center_attributes['option_attributes'];
+                        break;
+                    case '$nycha_contract_type_attributes':
+                        $field_definition_configs[$i]['attributes']['options'] = $nycha_contract_type_attributes['options'];
+                        $field_definition_configs[$i]['attributes']['option_attributes'] = $nycha_contract_type_attributes['option_attributes'];
+                        break;
+                    case '$nycha_award_method_attributes':
+                        $field_definition_configs[$i]['attributes']['options'] = $nycha_award_method_attributes['options'];
+                        $field_definition_configs[$i]['attributes']['option_attributes'] = $nycha_award_method_attributes['option_attributes'];
+                        break;
+                    case '$nycha_industry_attributes':
+                        $field_definition_configs[$i]['attributes']['options'] = $nycha_industry_attributes['options'];
+                        $field_definition_configs[$i]['attributes']['option_attributes'] = $nycha_industry_attributes['option_attributes'];
+                        break;
                 }
             }
             if(!(is_null($attributes['option_attributes'])))
@@ -754,6 +802,9 @@ function _checkbook_advanced_search_filter_field_definition($domain, $data_sourc
  * Ajax callback for the data source radio button toggle.
  *
  * Updates the form to point to correct data source for spending
+ * @param $form
+ * @param $form_state
+ * @return array
  */
 function advanced_search_spending_filter_ajax($form, $form_state) {
     $new_data_Source = $form_state['triggering_element']['#ajax']['attributes']['new_data_source'];
@@ -762,10 +813,14 @@ function advanced_search_spending_filter_ajax($form, $form_state) {
     $commands[] = ajax_command_replace('#advanced_search_spending_dynamic_fields', $fields_html);
     return array('#type' => 'ajax', '#commands' => $commands);
 }
+
 /**
  * Ajax callback for the data source radio button toggle.
  *
  * Updates the form to point to correct data source for contracts
+ * @param $form
+ * @param $form_state
+ * @return array
  */
 function advanced_search_contracts_filter_ajax($form, $form_state) {
     $new_data_Source = $form_state['triggering_element']['#ajax']['attributes']['new_data_source'];

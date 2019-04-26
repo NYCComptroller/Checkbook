@@ -1,0 +1,26 @@
+{
+  "widgetType":"phpparser",
+  "parentNid":979,
+  "no_results_content":"No Results Found",
+  "limit":100,
+  "startWith":0,
+  "maxSelect":5,
+  "showAllRecords":true,
+  "allowFacetDeselect":true,
+  "autocomplete":false,
+  "rangeColumnNameVariant":"prime_",
+  "filterName":"Current Amount",
+  "urlParameterName":"curamtr",
+  "urlParameterType":"rangeid",
+  "autocompleteID":"fCurAmount",
+  "columns":["g100m_prime_count", "g50m_le100m_prime_count", "g25m_le50m_prime_count", "g10m_le25m_prime_count", "ge1m_le10m_prime_count", "less1m_prime_count"],
+  "orderBy":"",
+  "adjustParameters":"
+  $parameters = NYCHAContractUtil::adjustYearParams($node, $parameters);
+  if(function_exists('_checkbook_project_applyParameterFilters')){
+  $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+}
+return $adjustedParameters;
+",
+"template":"individual_filter"
+}

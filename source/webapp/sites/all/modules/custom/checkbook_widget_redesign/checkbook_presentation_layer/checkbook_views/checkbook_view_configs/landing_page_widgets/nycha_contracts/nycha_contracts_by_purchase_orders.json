@@ -1,0 +1,38 @@
+{
+  "serviceName":"NychaContractsWidgetService",
+  "dataFunc":"GetContractsByPurchaseOrders",
+  "defaultParameters":{"type_of_year":"B"},
+  "headerTitle":"Purchase Orders",
+  "headerSubTitle":"Purchase Orders",
+  "footerUrl":"_widget_controller_footer_url($node).NychaContractsUrlService::agreementTypeUrl('PO').NychaContractsUrlService::TypeUrl('PO')",
+  "table_columns":[
+    {"labelAlias": "contract_id","column": "contract_id","derivedColumn":"contract_id_link"},
+    {"labelAlias": "contract_purpose","column": "purpose","tooltip":22},
+    {"labelAlias":"vendor_name","column":"vendor_name","tooltip":22, "derivedColumn":"vendor_link"},
+    {"labelAlias":"current_amount","column":"total_amount","format":"dollar"},
+    {"labelAlias":"original_amount","column":"original_amount","format":"dollar"},
+    {"labelAlias":"spent_to_date","column":"spend_to_date","format":"dollar"},
+    {"label":"","column":""}
+  ],
+  "dataTableOptions":{
+    "aoColumns": [
+      { "bSortable": false,"sWidth":"130px","sClass":"text" },
+      { "bSortable": false,"sWidth":"140px","sClass":"text" },
+      { "bSortable": false,"sWidth":"100px","sClass":"text" },
+      { "bSortable": true,"sWidth":"80px","sClass":"number","asSorting": [ "desc","asc"  ] },
+      { "bSortable": true,"sWidth":"130px" ,"sClass":"number","asSorting": [ "desc" ,"asc" ]},
+      { "bSortable": true,"sWidth":"130px","sClass":"number","asSorting": [ "desc","asc"  ] },
+      { "bSortable": false,"sWidth":"15px" }
+    ],
+    "bServerSide":true,
+    "bFilter":false,
+    "bPaginate":false,
+    "bProcessing":true,
+    "bLengthChange":false,
+    "bInfo":false,
+    "bAutoWidth":false,
+    "aaSorting":[[3,"desc"]],
+    "fnServerParams":"##function ( aoData ) { reloadExpandCollapseWidget(this,aoData); }##",
+    "oLanguage":{"sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"}
+  }
+}

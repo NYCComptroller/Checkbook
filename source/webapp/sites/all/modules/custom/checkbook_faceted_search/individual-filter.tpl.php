@@ -34,10 +34,18 @@ $urlParameter = $node->widgetConfig->urlParameterName;
 if($disableFacet) { //only URL parameters count and can be disabled
     $query_string = $_GET['q'];
     $is_new_window = preg_match('/newwindow/i',$query_string);
-    $url_ref = $is_new_window ? $_GET['q'] : $_SERVER['HTTP_REFERER'];
-    $disableFacet = preg_match('"/'.$urlParameter.'/"',$url_ref);
+    $currentPath = current_path();
+    //To disable the user to de-select the default criteria (for advanced search)-NYCHA Contracts
+    if (preg_match('/nycha_contracts\/all\/transactions/', $currentPath) ||
+        preg_match('/nycha_contracts\/search\/transactions/', $currentPath)) {
+        $url_ref = $_GET['q'];
+        $disableFacet = preg_match('"/' . $node->widgetConfig->urlParameterName . '/"', $url_ref);
+    }
+    else {
+        $url_ref = $is_new_window ? $_GET['q'] : $_SERVER['HTTP_REFERER'];
+        $disableFacet = preg_match('"/' . $urlParameter . '/"', $url_ref);
+    }
 }
-
 if(isset($node->widgetConfig->maxSelect) && !$disableFacet){
   $tooltip = 'title="Select upto ' . $node->widgetConfig->maxSelect . '"';
 }
@@ -70,7 +78,15 @@ if($is_payroll_range_filter) {
         }
     }
 }
-
+//donot show annual in ratetype facet
+if($node->widgetConfig->filterName == 'Rate Type'){
+    if ($unchecked && $unchecked)
+        foreach($unchecked as $key => $value) {
+            if($value[1] == 'ANNUAL') {
+                $unchecked[$key] = 0;
+            }
+        }
+}
 //Contract Includes Sub Vendors Facet
 //For N/A value, some values are null, this needs to be handled
 if($node->widgetConfig->filterName == 'Contract Includes Sub Vendors') {
@@ -380,8 +396,8 @@ if(!$checked){
     $span = "open";
 }
 
-if(strtolower($filter_name) == 'agency'){
-    if(_checkbook_check_isEDCPage()){
+if(strtolower($filter_name) == 'agency' || strtolower($filter_name) == 'citywide agency'){
+    if(_checkbook_check_isEDCPage() || _checkbook_check_isNYCHAPage()){
         $filter_name = 'Other Government Entity';
     }else{
         $filter_name = 'Citywide Agency';

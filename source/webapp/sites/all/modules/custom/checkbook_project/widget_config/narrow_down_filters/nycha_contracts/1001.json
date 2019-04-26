@@ -1,0 +1,27 @@
+{
+  "widgetType":"phpparser",
+  "parentNid":979,
+  "no_results_content":"No Results Found",
+  "limit":100,
+  "startWith":0,
+  "maxSelect":5,
+  "showAllRecords":true,
+  "allowFacetDeselect":true,
+  "columns":["release_approved_year_id.release_approved_year_id","release_approved_year.release_approved_year","txcount"],
+  "orderBy":"-txcount",
+  "facetPager":true,
+  "filterName":"Release Approved Year",
+  "urlParameterName":"releaseyear",
+  "autocompleteParamName":"releaseyear_auto",
+  "autocompleteID":"freleaseId",
+  "autocompleteField":"release_approved_year",
+  "adjustParameters":"
+  $parameters = NYCHAContractUtil::adjustYearParams($node, $parameters);
+  if(function_exists('_checkbook_project_applyParameterFilters')){
+  $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+}
+$adjustedParameters['release_approved_year_id.release_approved_year_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+return $adjustedParameters;
+",
+"template":"individual_filter"
+}

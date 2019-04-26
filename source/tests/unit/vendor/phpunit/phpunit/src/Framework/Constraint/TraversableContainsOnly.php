@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -15,26 +15,23 @@ use PHPUnit\Framework\ExpectationFailedException;
  * Constraint that asserts that the Traversable it is applied to contains
  * only values of a given type.
  */
-class TraversableContainsOnly extends Constraint
+final class TraversableContainsOnly extends Constraint
 {
     /**
      * @var Constraint
      */
-    protected $constraint;
+    private $constraint;
 
     /**
      * @var string
      */
-    protected $type;
+    private $type;
 
     /**
-     * @param string $type
-     * @param bool   $isNativeType
+     * @throws \PHPUnit\Framework\Exception
      */
-    public function __construct($type, $isNativeType = true)
+    public function __construct(string $type, bool $isNativeType = true)
     {
-        parent::__construct();
-
         if ($isNativeType) {
             $this->constraint = new IsType($type);
         } else {
@@ -56,21 +53,17 @@ class TraversableContainsOnly extends Constraint
      * a boolean value instead: true in case of success, false in case of a
      * failure.
      *
-     * @param mixed  $other        Value or object to evaluate.
-     * @param string $description  Additional information about the test
-     * @param bool   $returnResult Whether to return a result or throw an exception
-     *
-     * @return mixed
-     *
      * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public function evaluate($other, $description = '', $returnResult = false)
+    public function evaluate($other, string $description = '', bool $returnResult = false)
     {
         $success = true;
 
         foreach ($other as $item) {
             if (!$this->constraint->evaluate($item, '', true)) {
                 $success = false;
+
                 break;
             }
         }
@@ -86,10 +79,8 @@ class TraversableContainsOnly extends Constraint
 
     /**
      * Returns a string representation of the constraint.
-     *
-     * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return 'contains only values of type "' . $this->type . '"';
     }

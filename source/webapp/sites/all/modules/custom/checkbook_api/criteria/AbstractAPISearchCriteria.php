@@ -603,6 +603,7 @@ abstract class AbstractAPISearchCriteria {
     $config_key = $domain;
     switch ($config_key) {
       case "payroll":
+      case "payroll_nycha":
         if (isset($this->criteria['value']['fiscal_year'])) {
           $config_key .= "_fiscal_year";
         }
@@ -613,7 +614,7 @@ abstract class AbstractAPISearchCriteria {
           else {
             $config_key .= "_fiscal_year";
           }
-        }
+         }
         break;
 
       case "contracts":
@@ -659,6 +660,11 @@ abstract class AbstractAPISearchCriteria {
             $config_key .= "_all_years";
           }
         }
+        break;
+        case "contracts_nycha":
+            if (!isset($this->criteria['value']['fiscal_year'])) {
+                $config_key .= "_all_years";
+            }
         break;
 
       default:

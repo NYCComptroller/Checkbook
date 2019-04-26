@@ -1,0 +1,160 @@
+{
+  "widgetType": "highcharts",
+  "widgetDatahandler": "highcharts",
+  "html_class":"",
+  "header":"
+  $header = '<h2 class=\"chart-title\" style=\"display:none;\">'. $node->widgetConfig->chartTitle . '</h2>';
+  $header .= ChartUtil::generateWidgetGridViewLink($node);
+  return $header;
+  ",
+  "gridConfig":{
+    "template":"chart_grid_view",
+    "domain":"contracts",
+    "html_class":"chart-grid-view-table four-columns",
+    "sortColumn":3,
+    "table_columns": [
+      {
+        "labelAlias": "Contract ID",
+        "columnType": "text"
+      },
+      {
+        "labelAlias": "Vendor",
+        "columnType": "text"
+      },
+      {
+        "labelAlias": "Contracting Agency",
+        "columnType": "text"
+      },
+      {
+        "labelAlias": "Amount",
+        "columnType": "number",
+        "formatType": "amount"
+      }
+    ]
+  },
+  "no_results_content":"No Results Found",
+
+  "cleanURLParameters":["awdmethod","vendor","csize","industry","year"],
+  "urlParamMap":{"year":"fiscal_year_id","awdmethod":"award_method_id","vendor":"vendor_id", "csize":"award_size_id",
+    "industry":"industry_type_id"},
+  "widgetPreprocessJSON":"
+  if(preg_match('/pending/',$_GET['q'])){
+  $node->widgetConfig->urlParamMap = $node->widgetConfig->urlParamMapPending;
+  $node->widgetConfig->defaultParameters = $node->widgetConfig->defaultParametersPending;
+  $node->widgetConfig->cleanURLParameters = $node->widgetConfig->cleanURLParametersPending;
+}
+
+",
+"chartTitle":"Top Ten Blanket Agreements by Current Amount",
+"widgetDataLoader":"
+
+  $where_filters = [];
+  foreach($node->widgetConfig->requestParams as $param=>$value){
+    if($param == 'fiscal_year_id'){
+      $where_filters[] = '('. $value . ' BETWEEN start_year_id AND end_year_id)';
+    }else{
+      $where_filters[] = _widget_build_sql_condition( $param, $value);
+    }
+  }
+  $where_filters[] = _widget_build_sql_condition( 'agreement_type_id', '1');
+
+  $where_filter = '';
+  if(count($where_filters) > 0){
+    $where_filter = ' WHERE ' . implode(' AND ' , $where_filters);
+  }
+
+
+$datasource = RequestUtilities::getRequestParamValue('datasource');
+$sql = 'SELECT contract_id,purpose,vendor_name,total_amount,original_amount,spend_to_date,
+abs(SUM(original_amount - total_amount)) AS dollar_difference,
+ROUND(CASE COALESCE(SUM(original_amount), 0 :: NUMERIC) WHEN 0 THEN 100 :: NUMERIC ELSE ABS(
+SUM(original_amount - total_amount) / SUM(original_amount))* 100 END, 2) AS percent_difference
+FROM    contracts_widget_summary
+' . $where_filter . '
+GROUP BY contract_id,purpose,
+vendor_name,
+total_amount,
+original_amount,
+spend_to_date
+ORDER BY total_amount DESC LIMIT 10';
+
+LogHelper::log_error($sql);
+$node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
+
+",
+"widgetUpdateJSONConfig":"
+
+$series_new = [];
+
+
+$index = 0;
+foreach($node->data as $row){
+$tooltip_label =
+'Contract ID: ' . $row['contract_id'] .  '<br/>' .
+'Vendor: ' . $row['vendor_name'] .  '<br/>' .
+'Contracting Agency: NYCHA <br />' .
+'Amount: ' . custom_number_formatter_format($row['total_amount'] ,2, '$').  '<br/>';
+
+list($link,) = explode('?',$_GET['q']);
+$link .= NychaContractsUrlService::contractDetailsUrl($row['contract_id'], true);
+
+$series_new[$index]->url = 	$link;
+$series_new[$index]->y = (float)$row['total_amount'];
+$series_new[$index]->tooltip_label = $tooltip_label;
+$node->widgetConfig->gridConfig->data[] = array($row['contract_id'],$row['vendor_name'],'NYCHA',$row['total_amount'] );
+$index += 1;
+}
+
+$node->widgetConfig->chartConfig->series[0]->name = 'Fiscal Years';
+$node->widgetConfig->chartConfig->series[0]->type = 'column';
+$node->widgetConfig->chartConfig->series[0]->pointWidth = 30;
+$node->widgetConfig->chartConfig->series[0]->data = $series_new;
+
+",
+"chartConfig" : {
+"colors":["#7DB7E5"],
+"plotOptions": {
+"series": {
+"cursor": "pointer"   ,
+"stacking": "normal",
+"dataLabels": {
+"enabled": false
+}  ,
+"point": {"events": {"function": "clickEvent"}}
+}
+},
+"xAxis": {
+"categories": [0,1,2,3,4,5,6,7,8,9],
+"labels": {"enabled": false}
+},
+"series": [
+{
+"name": "FY",
+"type": "column",
+"pointWidth": 50,
+"data": []
+}
+],
+"title": {"text": ""},
+"yAxis": {
+"min":0,
+"minRange": 0.1,
+"startOnTick":true,
+"title": {"text": ""},
+"labels":{"rotation": 0,"function":"yAxisFormatter"}
+} ,
+"legend": {
+"enabled": false
+},
+"tooltip":{"function":"tooltipformatter"}
+}
+}
+
+
+<function>
+yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
+tooltipformatter^^'formatter' :
+function() {return this.point.tooltip_label ;
+}##
+clickEvent^^"click": function(){location.href = Drupal.settings.basePath+this.url; }
+</function>

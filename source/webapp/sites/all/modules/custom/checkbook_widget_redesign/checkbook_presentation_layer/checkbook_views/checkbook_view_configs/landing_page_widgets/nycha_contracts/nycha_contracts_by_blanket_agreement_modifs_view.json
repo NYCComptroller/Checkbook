@@ -1,0 +1,42 @@
+{
+  "serviceName":"NychaContractsWidgetService",
+  "dataFunc":"GetContractsBlanketAgreementModifications",
+  "defaultParameters":{"is_modification":"true"},
+  "headerTitle":"Blanket Agreement Modifications",
+  "headerSubTitle":"Blanket Agreement Modifications",
+  "footerUrl":"_widget_controller_footer_url($node).NychaContractsUrlService::agreementTypeUrl('BA').NychaContractsUrlService::TypeUrl('BAM').NychaContractsUrlService::modificationUrl()",
+  "table_columns":[
+    {"labelAlias": "contract_id","column": "contract_id","derivedColumn":"contract_id_link"},
+    {"labelAlias": "vendor_name","column": "vendor_name","tooltip":32, "derivedColumn":"vendor_link"},
+    {"labelAlias": "contract_purpose","column": "purpose","tooltip":32},
+    {"labelAlias":"current_amount","column":"total_amount","format":"dollar"},
+    {"labelAlias":"original_amount","column":"original_amount","format":"dollar"},
+    {"labelAlias":"spent_to_date","column":"spend_to_date","format":"dollar"},
+    {"labelAlias":"dollar_diff","column":"dollar_difference","format":"dollar"},
+    {"labelAlias":"percent_diff","column":"percent_difference", "format":"percent"},
+    {"label":"","column":""}
+  ],
+  "dataTableOptions":{
+    "aoColumns": [
+      { "bSortable": false,"sWidth":"90px","sClass":"text" },
+      { "bSortable": false,"sWidth":"170px","sClass":"text" },
+      { "bSortable": false,"sWidth":"170px","sClass":"text" },
+      { "bSortable": true,"sWidth":"90px","sClass":"number","asSorting": [ "desc","asc"  ] },
+      { "bSortable": true,"sWidth":"90px","sClass":"number","asSorting": [ "desc","asc"  ] },
+      { "bSortable": true,"sWidth":"90px" ,"sClass":"number","asSorting": [ "desc" ,"asc" ]},
+      { "bSortable": true,"sWidth":"90px","sClass":"number","asSorting": [ "desc","asc"  ] },
+      { "bSortable": true,"sWidth":"90px","sClass":"number", "asSorting": [ "desc","asc"  ]},
+      { "bSortable": false,"sWidth":"15px" }
+    ],
+    "bServerSide":true,
+    "bFilter":false,
+    "bPaginate":false,
+    "bProcessing":true,
+    "bLengthChange":false,
+    "bInfo":false,
+    "bAutoWidth":false,
+    "aaSorting":[[6,"desc"]],
+    "fnServerParams":"##function ( aoData ) { reloadExpandCollapseWidget(this,aoData); }##",
+    "oLanguage":{"sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"}
+  }
+}

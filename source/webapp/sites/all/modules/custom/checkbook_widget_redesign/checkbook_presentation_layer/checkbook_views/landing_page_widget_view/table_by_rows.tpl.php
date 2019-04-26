@@ -27,6 +27,7 @@ require_once(realpath(drupal_get_path('module', 'data_controller')) . '/common/o
 <?php 
 /* Evaluating Widget titles and sub titles */
 
+
     if (isset($node->widgetConfig->table_title)) {
         $widget_title = $node->widgetConfig->table_title;
         if(isset($node->widgetConfig->headerSubTitle)){
@@ -37,7 +38,12 @@ require_once(realpath(drupal_get_path('module', 'data_controller')) . '/common/o
         load_widget_controller_data_count($node);
         $headerSubTitle = isset($node->widgetConfig->headerSubTitle) ? $node->widgetConfig->headerSubTitle : $node->widgetConfig->headerTitle;
         $count = $node->headerCount > 4 ? '<span class="hideOnExpand">5 </span>' : '';
-        $widget_title = 'Top '.$count.' '.$node->widgetConfig->headerTitle;
+        if(Dashboard::isNycha() && isset($node->widgetConfig->nychaTitle)){
+            $widget_title = $node->widgetConfig->nychaTitle;
+        }
+        else{
+            $widget_title = 'Top '.$count.' '.$node->widgetConfig->headerTitle;
+        }
         $headerSubTitle = ' Number of '.$headerSubTitle.':  '.number_format($node->headerCount);
     }
     
@@ -138,7 +144,12 @@ else {
       else $node->widgetConfig->footerUrl = null;
   }
   else {
-      $node->widgetConfig->footerUrl = _widget_controller_footer_url($node);
+      $footerUrl = _widget_controller_footer_url($node);
+      if(isset($footerUrl)){
+          $node->widgetConfig->footerUrl = $footerUrl;
+      }else{
+          $node->widgetConfig->footerUrl = null;
+      }
   }
 
     if (isset($node->widgetConfig->footerUrl)) {

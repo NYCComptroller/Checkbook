@@ -1,0 +1,42 @@
+{
+    "datasets":{
+        "department":{
+            "datasourceName":"main",
+            "source": "ref_department",
+            "columns":[
+                {
+                    "name":"department_code",
+                    "key":true
+                }
+            ]
+        },
+        "department_code":{
+            "datasourceName":"main",
+            "source": "ref_department",
+            "columns":[
+                {
+                    "name":"department_code"
+                }
+            ]
+        },
+        "department_name":{
+            "datasourceName":"main",
+            "source": "ref_department",
+            "columns":[
+                {
+                    "name":"department_name"
+                }
+            ]
+        },
+        "department_history":{
+            "datasourceName":"main",
+            "source": "ref_department_history",
+            "columns":[
+                {
+                    "name":"department_history_id",
+                    "key":true
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,26 @@
+{
+  "datasets": {
+    "vendor": {
+      "datasourceName": "main",
+      "source": "vendor",
+      "columns": [
+        {
+          "name": "vendor_id",
+          "key": true}
+      ]}    ,
+    "vendor_history": {
+      "datasourceName": "main",
+      "source": "vendor_history",
+      "columns": [
+        {
+          "name": "vendor_history_id",
+          "key": true}
+      ]}
+  },
+  "references": {
+    "vendor_history__vendor": [
+      {"datasetName": "vendor", "columnNames": ["vendor_id"]},
+      {"datasetName": "vendor_history", "columnNames": ["vendor_id"]}
+    ]
+  }
+}

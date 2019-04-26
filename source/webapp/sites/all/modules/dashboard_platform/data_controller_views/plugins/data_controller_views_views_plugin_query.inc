@@ -28,11 +28,11 @@ class data_controller_views_views_plugin_query extends views_plugin_query {
      * Constructor; Create the basic query object and fill with default values.
      */
     function init($base_table, $base_field) {
-        $this->requests = array();
-        $this->aliases = array();
-        $this->joins = array();
-        $this->orderby = array();
-        $this->parameters = array();
+        $this->requests = [];
+        $this->aliases = [];
+        $this->joins = [];
+        $this->orderby = [];
+        $this->parameters = [];
         $this->ensure_table($base_table);
         $this->useCube = FALSE;
         $this->rowFlattenerConfig = NULL;
@@ -43,7 +43,7 @@ class data_controller_views_views_plugin_query extends views_plugin_query {
         // Required fields are fields that may not be empty in rows of the
         // resultset. Any rows with empty required fields are dropped *prior* to
         // paging.
-        $this->required_fields = array();
+        $this->required_fields = [];
     }
 
     function ensure_table($table) {
@@ -156,7 +156,7 @@ class data_controller_views_views_plugin_query extends views_plugin_query {
 
         //FIXME preparing the column list
         //need to refactor and just store in the format we want in the first place
-        $columns = array();
+        $columns = [];
         if (isset($this->aliases[''])) {
             foreach ($this->aliases[''] as $field => $alias) {
                 // log_debug("requested field: " . $field . " with alias " . $alias);
@@ -249,7 +249,7 @@ class data_controller_views_views_plugin_query extends views_plugin_query {
         $query .= $resultFormatterString;
 
         //convert result into format they expect
-        $view->result = array();
+        $view->result = [];
         if (isset($ourResult)) {
             foreach ($ourResult as $rowKey => $row) {
                 unset($newRow);

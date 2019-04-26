@@ -1,0 +1,64 @@
+{
+  "widgetType": "phpparser",
+  "no_results_content": "No Results Found",
+  "cleanURLParameters":["year","calyear","yeartype","awdmethod","vendor","csize","cindustry","magid","mwbe","subvendor","title"],
+  "widgetPreprocessJSON":"
+    // Payroll amount should be calculated for 'Calendar Year' always for all the other domains
+    if(!preg_match('/payroll/',$_SERVER['REQUEST_URI'])){
+    unset($node->widgetConfig->model->series[0]->seriesURLParamMap->yeartype);
+    }
+    ",
+"model": {
+"join": {
+"method": "Union"
+},
+"series": [
+{
+"dataset":"checkbook:payroll_employee_agency",
+"columns":["total_base_pay","total_overtime_pay","total_gross_pay"],
+"seriesURLParamMap":{"vendor":"vendor_id","calyear":"year.year","year":"year.year","agency":"agency_id","yeartype":"type_of_year","title":"civil_service_title_code.civil_service_title_code"},
+"allowedParams":["year.year","agency_id","type_of_year","civil_service_title_code.civil_service_title_code"],
+"seriesDefaultParameters":{"type_of_year":"C"},
+"adjustSerieParameters":"
+if(RequestUtilities::getRequestParamValue('yeartype') == 'B' && !preg_match('/payroll/',$_SERVER['REQUEST_URI']))
+$serieParameters['fiscal_year_id'] = RequestUtil::getCalYearIdForTopNavigation();
+return $serieParameters;
+"
+},
+{
+"dataset":"checkbook_nycha:contracts_fy_vendor_summary",
+"columns":["total_maximum_contract_amount"],
+"seriesURLParamMap":{"vendor":"vendor_id","calyear":"fiscal_year_id","year":"fiscal_year_id"},
+"allowedParams":["vendor_id","fiscal_year_id","calyear"],
+"adjustSerieParameters":"
+//Calculate amount for all years on 'All Years' advanced search results page
+if(RequestUtilities::getRequestParamValue('year') || RequestUtilities::getRequestParamValue('calyear'))
+$serieParameters['fiscal_year_id'] = RequestUtil::getFiscalYearIdForTopNavigation();
+return $serieParameters;
+",
+  "widgetDataLoader":"
+  $parameters = $node->nodeAdjustedParamaterConfig;
+  $parameter_mapping = array('vendor'=>'vendor_id','year'=>'fiscal_year_id','calyear'=>'fiscal_year_id');
+  foreach($node->widgetConfig->requestParams as $param=>$value){
+    if($param == 'year' ||  $param =='calyear'){
+      $where_filters[] = '('. $value . ' BETWEEN start_year_id AND end_year_id)';
+    }else if(array_key_exists($param,  $parameter_mapping)){
+      $where_filters[] = _widget_build_sql_condition( $parameter_mapping[$param], $value);
+    }
+  }
+  if(count($where_filters) > 0){
+    $where_filter = ' WHERE ' . implode(' AND ' , $where_filters);
+  }
+  $datasource = RequestUtilities::getRequestParamValue('datasource');
+  $sql = 'select SUM(total_maximum_contract_amount) AS total_maximum_contract_amount
+from   (SELECT C.contract_id
+        , MAX(C.total_amount) AS total_maximum_contract_amount
+          FROM   contracts_widget_summary C'
+          . $where_filter.' group by C.contract_id) a';
+  $node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
+"
+}
+]
+},
+"template": "nycha_top_navigation"
+}

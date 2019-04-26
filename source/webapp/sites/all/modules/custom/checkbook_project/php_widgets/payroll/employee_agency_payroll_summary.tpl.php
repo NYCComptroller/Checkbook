@@ -21,6 +21,7 @@ $year = RequestUtilities::get('year');
 $year_type = RequestUtilities::get('yeartype');
 $employeeID = RequestUtilities::get('abc');
 $agencyId =RequestUtilities::get('agency');
+$data_source =RequestUtilities::get('datasource');
 $original_title= PayrollUtil::getTitleByEmployeeId($employeeID,$agencyId,$year_type,$year);
 $titleLatest = mb_convert_case(strtolower($original_title), MB_CASE_TITLE, "UTF-8");
 $all_data = array();
@@ -44,7 +45,8 @@ foreach($node->data as $data){
 
     //$record['title_url'] = "<a href='/payroll/title_landing/yeartype/$year_type/year/$year/title/$original_title'>{$title}</a>";
     $record['title'] = $title;
-    $record['agency_url'] = "<a href='/payroll/agency_landing/yeartype/$year_type/year/$year/agency/{$data['agency_agency']}'>{$agency_name}</a>";
+    $record['agency_name']=$data['agency_name_agency_name'];
+    $record['agency_url'] = "<a href='/payroll/agency_landing/yeartype/$year_type/year/$year/datasource/{$data_source}/agency/{$data['agency_agency']}'>{$agency_name}</a>";
     $record['employment_type'] = $employment_type;
     $record['max_annual_salary'] = $data['max_annual_salary'];
     $record['pay_frequency'] = $data['pay_frequency_pay_frequency'];
@@ -159,8 +161,8 @@ foreach($all_data as $employment_type => $employment_data) {
 
         //$title_url = $data['title_url'];
         $title = $data['title'];
-        $agency_url = $data['agency_url'];
-        $max_annual_salary = $data['max_annual_salary'];
+        $agency_url = Datasource::isNycha()? $data['agency_name']:$data['agency_url'];
+        $max_annual_salary =$data['max_annual_salary'];
         $pay_frequency = $data['pay_frequency'];
         $total_gross_pay = $data['total_gross_pay'];
         $total_base_salary = $data['total_base_salary'];

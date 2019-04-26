@@ -39,8 +39,8 @@ h1 {
     color: #3c5e7c;
     margin-bottom: 0;
 }
-.page-contracts-landing h1, .page-budget-year h1, .page-payroll h1, .page-revenue h1, .page-budget h1,
-.page-featured-trends h1, .page-contract-transactions h1,
+.page-contracts-landing h1,.page-nycha-contracts h1, .page-budget-year h1, .page-payroll h1, .page-revenue h1, .page-budget h1,
+.page-featured-trends h1, .page-contract-transactions h1, .nycha_contracts_transactions_page h1,
 .page-budget-transactions h1, .page-budget-yeartype h1, .page-budget-revenue-transactions h1, .page-contracts-revenue-landing h1,
 .page-contracts-pending-exp-landing h1, .page-spending-landing h1, .page-contracts-pending-rev-landing h1 {
     font-size: 24px;
@@ -1596,11 +1596,13 @@ div.create-alert-schedule-alert select{
     float: left;
 }
 #spending-advanced-search .form-item.form-item-spending-advanced-search-domain-filter,
-#contracts-advanced-search .form-item.form-item-contracts-advanced-search-domain-filter{
+#contracts-advanced-search .form-item.form-item-contracts-advanced-search-domain-filter,
+#payroll-advanced-search .form-item.form-item-payroll-advanced-search-domain-filter{
     width:205px;
     float: left;
 }
-#spending-advanced-search .form-item.form-item-spending-advanced-search-domain-filter input[type="radio"]{
+#spending-advanced-search .form-item.form-item-spending-advanced-search-domain-filter input[type="radio"],
+#payroll-advanced-search .form-item.form-item-payroll-advanced-search-domain-filter input[type="radio"]{
     width: auto;
     float: left;
     margin-right: 5px;
@@ -1646,6 +1648,8 @@ div.create-alert-schedule-alert select{
 #checkbook-advanced-search-form #edit-checkbook-contracts-start-date-to label,
 #checkbook-advanced-search-form #edit-checkbook-oge-contracts-start-date-from label,
 #checkbook-advanced-search-form #edit-checkbook-oge-contracts-start-date-to label,
+#checkbook-advanced-search-form #edit-checkbook-oge-contracts-approved-date-from label,
+#checkbook-advanced-search-form #edit-checkbook-oge-contracts-approved-date-to label,
 #checkbook-advanced-search-form #edit-checkbook-contracts-received-date-from label,
 #checkbook-advanced-search-form #edit-checkbook-contracts-received-date-to label,
 #checkbook-advanced-search-form #edit-checkbook-oge-contracts-received-date-from label,
@@ -2134,6 +2138,7 @@ table#assoc_contracts_list {
     border: none;
     border-collapse: separate;
     border-spacing: 0 10px;
+    width:100%;
 }
 table#assoc_contracts_list > thead{
     display:none;
@@ -2244,6 +2249,7 @@ table#assoc_contracts_list .assoc_item .rfed-amount {
 }
 .contract-id,
 .inside .contract-details-heading,
+.inside .nycha-contract-details-heading,
 .page-revenue #revenue-transactions .inside .panel-pane.pane-custom.pane-2,
 .page-budget .inside .panel-pane.pane-custom.pane-2,
 .expense_category_budget_details .panel-pane.pane-custom.pane-1
@@ -2278,6 +2284,10 @@ table#assoc_contracts_list .assoc_item .rfed-amount {
 .cb-ma-details > .dollar-amounts {
     width: 550px;
     float: right;
+}
+
+#nycha-contracts-landing .contract-details-heading{
+  width: 920px;
 }
 
 .contract-details{
@@ -2623,6 +2633,7 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 #nyc-payroll .dataTables_wrapper,
 #budget-transactions .dataTables_wrapper,
 #revenue-transactions .dataTables_wrapper,
+#nycha-contracts-transactions .dataTables_wrapper,
 .page-budget .page-contract-details .dataTables_wrapper,
 .page-revenue .page-contract-details .dataTables_wrapper
 {
@@ -2632,7 +2643,8 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 #contract-details > div:nth-child(1),
 #nyc-payroll > div:nth-child(1),
 #budget-transactions > div:nth-child(1),
-#revenue-transactions > div:nth-child(1)
+#revenue-transactions > div:nth-child(1),
+#nycha-contracts-transactions > div:nth-child(1)
 {
     margin:18px 10px 5px 10px;
 }
@@ -2642,6 +2654,7 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 #nyc-payroll .dataTables_wrapper > div:nth-child(2),
 #budget-transactions .dataTables_wrapper > div:nth-child(2),
 #revenue-transactions .dataTables_wrapper > div:nth-child(2),
+#nycha-contracts-transactions .dataTables_wrapper > div:nth-child(2),
 .page-budget .page-contract-details .dataTables_wrapper > div:nth-child(2),
 .page-revenue .page-contract-details .dataTables_wrapper > div:nth-child(2)
 {
@@ -2654,6 +2667,7 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 #contract-details .contract-id,
 #nyc-payroll .contract-id,
 .inside .contract-details-heading,
+.inside .nycha-contract-details-heading,
 .inside .transactions-container
 .contract_transactions,
 #nyc-expense-pending-contracts .omega-12-twocol-3-9 .inside .contract-details-heading,
@@ -2676,6 +2690,7 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 h1.no-spending-transactions {width: 500px}
 .newwindow .inside .transactions-container,
 .newwindow .inside .contract-details-heading,
+.newwindow .inside .nycha-contract-details-heading,
 .contract_transactions .inside .contract-details-heading,
 #nyc-expense-pending-contracts .inside .contract-details-heading,
 .inside #node-widget-545 .contract-details-heading,
@@ -3773,4 +3788,149 @@ a.new-features-morelink{
 
 #dialog.ckbk-export-dialog td{
     padding: 5px 30px;
+}
+
+.nycha-assoc-releases .assoc_item .contract-title{
+  margin-top:7px;
+}
+
+.nycha-contract-history td.thVNum{
+  padding: 0 50px;
+}
+
+
+#nycha_contract_assoc_releases table{
+  width: 100%;
+}
+
+a.nycha_assoc_load_more {
+  display: none;
+  float: right;
+}
+
+em.nycha_assoc_rel_stats {
+  display: none;
+}
+
+.assoc-loading {
+  float: right;
+}
+
+.nycha_assoc_rel_pager {
+  display: inline-block;
+}
+
+.pager-center{
+  text-align: center;
+  margin:10px;
+}
+
+.pager-center li{
+  cursor: pointer;
+  display: inline-block;
+  padding:0.5em;
+  font-size:14px;
+}
+
+.pager-center li.active{
+  background: url(/sites/all/themes/checkbook3/images/pager-active-bg.png) repeat-x scroll 0 0 transparent;
+  color: #FFFFFF;
+  display: inline;
+  font-weight: bold;
+  height: 1em;
+}
+
+table.nycha_assoc_contracts_list {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+}
+
+.nycha_assoc_contracts_list tr{
+  width:100%;
+}
+
+.nycha_assoc_contracts_list .assoc_item{
+  border: 1px solid #cacaca;
+}
+
+.nycha_assoc_contracts_list .assoc_item .contract-title div.assoc-release-link{
+  width: 400px;
+  float:left;
+  margin: 8px 0 10px 10px;
+  text-transform: uppercase;
+  font-weight:bold;
+}
+
+.nycha_assoc_contracts_list .assoc_item .contract-title div.assoc-release-link span{
+  font-size: 14px;
+}
+
+.nycha_assoc_contracts_list .assoc_item .contract-title a.showHide{
+  margin-top:-2px;
+}
+
+.nycha_assoc_contracts_list .assoc_item div.dollar-amounts{
+  width: 500px;
+  margin:0;
+}
+.nycha_assoc_contracts_list .assoc_item div.dollar-amounts > div{
+  width: 120px;
+  margin:0;
+}
+.nycha_assoc_contracts_list .assoc_item div.dollar-amounts  div.amount-title{
+  margin:0;
+}
+.nycha_assoc_contracts_list div.inside{
+  margin:5px;
+}
+.nycha_assoc_contracts_list div.thVerStat{
+  margin:5px;
+}
+
+.nycha-contract-history td.thVerStat div{
+  padding-left:20px;
+}
+.nycha-contract-history td.thCurAmt div,
+.nycha-contract-history td.thOrigAmt div {
+  padding-right:40px;
+}
+.nycha-contract-history td.thLastMDate div{
+  padding-left:20px;
+}
+.nycha-contract-history .outerTable th.text div{
+  padding-left:10px;
+}
+.nycha-contract-history th.thEndDate div{
+  padding-left:17px;
+}
+.nycha_assoc_contracts_list .cta-history th.thEndDate div{
+  padding-left:17px;
+}
+.nycha_assoc_contracts_list td.shipment_number div,
+.nycha_assoc_contracts_list td.distribution_number div{
+  padding-left:30px;
+}
+
+.nycha_assoc_contracts_list .cta-r-data th.th3,
+.nycha_assoc_contracts_list .cta-r-data td.td3 {
+  padding-right: 20px;
+}
+
+.center{
+  text-align:center;
+}
+
+.nycha_assoc_contracts_list .assoc-release-link {
+  color: #3C5E7C;
+}
+
+.dataTable td.center{
+  vertical-align: top;
+}
+
+.dataTable td.nycc-line_number,
+.dataTable td.nycc-shipment_number,
+.dataTable td.nycc-distribution_number{
+  padding-right: 40px;
 }
