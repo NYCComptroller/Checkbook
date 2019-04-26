@@ -28,6 +28,7 @@
     {"labelAlias":"contract_industry","column":"industry_type_name"},
     {"labelAlias":"funding_source","column":"funding_source_descr"},
     {"labelAlias":"responsibility_center","column":"responsibility_center_descr"},
+    {"labelAlias":"pin","column":"po_header_id"},
     {"labelAlias":"program","column":"program_phase_descr"},
     {"labelAlias":"project","column":"gl_project_descr"},
     {"labelAlias":"commodity_category","column":"commodity_category_descr"}

@@ -81,7 +81,7 @@
                     "levels": [
                         {
                             "name": "dept",
-                            "datasetName": "department",
+                            "datasetName": "department_code",
                             "sourceColumnName": "department_code"
                         }
                     ]

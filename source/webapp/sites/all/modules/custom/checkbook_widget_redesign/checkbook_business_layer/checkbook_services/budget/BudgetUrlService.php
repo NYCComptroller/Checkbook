@@ -102,6 +102,7 @@ class BudgetUrlService {
             .RequestUtilities::buildUrlFromParam('yeartype')
             .RequestUtilities::buildUrlFromParam('year')
             .RequestUtilities::buildUrlFromParam('agency')
+            .RequestUtilities::buildUrlFromParam('expcategory')
             ."/agency/".$agency_id;
         return $url;
     }
