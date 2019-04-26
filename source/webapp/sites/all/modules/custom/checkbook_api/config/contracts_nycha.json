@@ -56,6 +56,7 @@
               "industry":"industry_type_name",
               "funding_source":"funding_source_descr",
               "responsibility_center":"responsibility_center_descr",
+              "pin":"po_header_id",
               "program":"program_phase_descr",
               "project":"gl_project_descr",
               "commodity_category":"commodity_category_descr"
@@ -87,6 +88,7 @@
             "industry":"industry",
             "funding_source":"funding_source",
             "responsibility_center":"responsibility_center",
+            "pin":"pin",
             "program":"program",
             "project":"project",
             "commodity_category":"commodity_category"
@@ -95,7 +97,7 @@
             "distribution_number", "start_date", "end_date", "approved_date", "line_current_amount", "line_original_amount",
             "line_spent_to_date", "contract_current_amount", "contract_original_amount", "contract_spent_to_date",
             "purpose", "vendor", "location", "borough", "contract_type", "award_method", "grant_name",
-            "expenditure_type", "industry", "funding_source", "responsibility_center", "program", "project", "commodity_category"]
+            "expenditure_type", "industry", "funding_source", "responsibility_center", "pin", "program", "project", "commodity_category"]
         },
         "csv":{
           "elementsColumn":{
@@ -125,6 +127,7 @@
             "Industry":"industry_type_name",
             "Funding Source":"funding_source_descr",
             "Responsibility Center":"responsibility_center_descr",
+            "PIN":"po_header_id",
             "Program":"program_phase_descr",
             "Project":"gl_project_descr",
             "Commodity Category":"commodity_category_descr"
@@ -156,6 +159,7 @@
             "Industry":"Industry",
             "Funding Source":"Funding Source",
             "Responsibility Center":"Responsibility Center",
+            "PIN":"PIN",
             "Program":"Program",
             "Project":"Project",
             "Commodity Category":"Commodity Category"
@@ -242,6 +246,7 @@
             "industry":"industry_type_name",
             "funding_source":"funding_source_descr",
             "responsibility_center":"responsibility_center_descr",
+            "pin":"po_header_id",
             "program":"program_phase_descr",
             "project":"gl_project_descr",
             "commodity_category":"commodity_category_descr"
@@ -274,6 +279,7 @@
             "industry":"industry",
             "funding_source":"funding_source",
             "responsibility_center":"responsibility_center",
+            "pin":"pin",
             "program":"program",
             "project":"project",
             "commodity_category":"commodity_category"
@@ -282,7 +288,7 @@
                          "distribution_number", "start_date", "end_date", "approved_date", "line_current_amount", "line_original_amount",
                          "line_spent_to_date", "contract_current_amount", "contract_original_amount", "contract_spent_to_date",
                          "purpose", "vendor", "location", "borough", "contract_type", "award_method", "grant_name",
-                         "expenditure_type", "industry", "funding_source", "responsibility_center", "program", "project", "commodity_category"]
+                         "expenditure_type", "industry", "funding_source", "responsibility_center", "pin", "program", "project", "commodity_category"]
         },
         "csv":{
           "elementsColumn":{
@@ -313,6 +319,7 @@
             "Industry":"industry_type_name",
             "Funding Source":"funding_source_descr",
             "Responsibility Center":"responsibility_center_descr",
+            "PIN":"po_header_id",
             "Program":"program_phase_descr",
             "Project":"gl_project_descr",
             "Commodity Category":"commodity_category_descr"
@@ -345,6 +352,7 @@
             "Industry":"Industry",
             "Funding Source":"Funding Source",
             "Responsibility Center":"Responsibility Center",
+            "PIN":"PIN",
             "Program":"Program",
             "Project":"Project",
             "Commodity Category":"Commodity Category"
