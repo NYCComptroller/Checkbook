@@ -5,7 +5,7 @@
             "source": "ref_department",
             "columns":[
                 {
-                    "name":"department_code",
+                    "name":"department_id",
                     "key":true
                 }
             ]
@@ -15,7 +15,8 @@
             "source": "ref_department",
             "columns":[
                 {
-                    "name":"department_code"
+                    "name":"department_code",
+                    "key":true
                 }
             ]
         },
