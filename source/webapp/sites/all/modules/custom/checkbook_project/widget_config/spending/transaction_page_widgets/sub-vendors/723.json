@@ -177,6 +177,11 @@
                 else 'Asian American'
                 end as minority_type_name
                 "
+        },
+        {
+          "column":"is_sub_vendor",
+          "sourceColumn":"vendor_type",
+          "sql":"'Yes' as is_sub_vendor"
         }
     ],
     "adjustParameters":"
