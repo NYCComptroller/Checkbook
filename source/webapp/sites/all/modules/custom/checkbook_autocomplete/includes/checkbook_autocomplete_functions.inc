@@ -1244,33 +1244,15 @@ function _checkbook_autocomplete_get_start_end_dates($year, $domain = NULL, $sta
  *   Escaped string
  */
 function _checkbook_autocomplete_escapeSolrValue($string) {
-    $string_start = $string;
+  $escape_chars = explode(' ', "+ - && || ! ( ) { } [ ] ^ \" ~ * ? : /");
+  $replace_to = [];
+  foreach($escape_chars as $char) {
+    $replace_to[] = '\\'.$char;
+  }
+  $return = urlencode(str_replace($escape_chars, $replace_to, $string));
 
-    $string = str_replace("%", "%25", $string);
-    $string = str_replace('\\', "%5C", $string);
-    $string = str_replace(" ", "%20", $string);
-    $string = str_replace("#", "%23", $string);
-    $string = str_replace("/", "%2F", $string);
-    $string = str_replace("&", "%26", $string);
-    $string = str_replace("[", "\\[", $string);
-    $string = str_replace("]", "\\]", $string);
-    $string = str_replace(":", "\\:", $string);
-    $string = str_replace("'", "%27", $string);
-    $string = str_replace("+", "%2B", $string);
-    $string = str_replace("?", "%3F", $string);
-    $string = str_replace("$", "%24", $string);
-    $string = str_replace("!", "%21", $string);
-    $string = str_replace("^", "%5E", $string);
-    $string = str_replace("|", "%7C", $string);
-    $string = str_replace("(", "%28", $string);
-    $string = str_replace(")", "%29", $string);
-    $string = str_replace("*", "%2A", $string);
-    $string = str_replace(".", "%2E", $string);
-    $string = str_replace("-", "-", $string);
-
-    LogHelper::log_notice("Solr: '$string_start' => '$string' ");
-
-    return $string;
+//  LogHelper::log_notice("$string => $return");
+  return $return;
 }
 
 /**
