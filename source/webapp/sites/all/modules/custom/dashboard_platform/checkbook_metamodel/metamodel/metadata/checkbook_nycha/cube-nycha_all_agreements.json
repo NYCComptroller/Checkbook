@@ -83,7 +83,7 @@
           "levels": [
             {
               "name":"industry_type_name",
-              "sourceColumnName":"industry_type_name"
+              "sourceColumnName":"display_industry_type_name"
             }]
         },
 
