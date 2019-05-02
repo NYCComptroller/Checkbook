@@ -102,25 +102,9 @@
         "bScrollCollapse": true
     },
     "customExternalJS":"function prepareTableListFilterUrl(){
-        var agencyIds = getNamedFilterCriteria('fagencyId');
-        if(agencyIds.length==0 && eval(document.getElementById('fHideAgencyId'))){
-            agencyIds = document.getElementById('fHideAgencyId').value;
-        }
-
         var oRevenueCategoryIds = getNamedFilterCriteria('frevenueCategoryId');
-        var oRevenueSourceIds = getNamedFilterCriteria('frevenueSourceId');
-        var oFundingSourceIds = getNamedFilterCriteria('ffundingSourceId');
-        var oRevenueAmount = getNamedFilterCriteria('frevenueAmount');
-        var oclsNms = getNamedFilterCriteria('fclsNm');
-
         var  cUrl = oTable.fnSettings().sAjaxSource;
-        cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
         cUrl = adjustUrlParameter(cUrl,'revcat',oRevenueCategoryIds);
-        cUrl = adjustUrlParameter(cUrl,'revsrc',oRevenueSourceIds);
-        cUrl = adjustUrlParameter(cUrl,'amtr',oRevenueAmount);
-        cUrl = adjustUrlParameter(cUrl,'clsname',oclsNms);
-        cUrl = adjustUrlParameter(cUrl,'fundsrccode',oFundingSourceIds);
-
         return cUrl;
     }"
 }
