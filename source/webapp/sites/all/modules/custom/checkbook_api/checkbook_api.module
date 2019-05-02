@@ -670,7 +670,7 @@ function checkbook_api_adjustPayrollSql(&$sql_query) {
     $sql_parts = explode("FROM", $sql_query);
     $select_part = $sql_parts[0];
     $from_part = $sql_parts[1];
-    $select_part =  str_replace("amount_basis_id", "CASE WHEN amount_basis_id = 1 THEN 'SALARIED' ELSE 'NON-SALARIED' END AS payroll_type",$select_part);
+    $select_part =  str_replace("amount_basis_id", "CASE WHEN amount_basis_id = 1 THEN 'SALARIED' ELSE 'NON-SALARIED' END AS amount_basis_id",$select_part);
     $sql_query = $select_part."FROM".$from_part;
 }
 
