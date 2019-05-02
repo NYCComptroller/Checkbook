@@ -600,8 +600,8 @@ function _checkbook_project_get_name_for_argument($keyword, $id)
             break;
         case "industry_type_id":
             if($data_source == Datasource::NYCHA) {
-                $industry_types = _checkbook_project_querydataset($data_source . ':industry_type', array('industry_type_id', 'display_name'), array($keyword => $id));
-                return ucwords(strtolower($industry_types[0]['display_name']));
+                $industry_types = _checkbook_project_querydataset($data_source . ':industry_type', array('industry_type_id', 'display_industry_type_name'), array($keyword => $id));
+                return ucwords(strtolower($industry_types[0]['display_industry_type_name']));
             }else {
                 $industry_types = _checkbook_project_querydataset($data_source . ':industry_type', array('industry_type_id', 'industry_type_name'), array($keyword => $id));
                 return ucwords(strtolower($industry_types[0]['industry_type_name']));
