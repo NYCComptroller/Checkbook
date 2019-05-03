@@ -1244,12 +1244,16 @@ function _checkbook_autocomplete_get_start_end_dates($year, $domain = NULL, $sta
  *   Escaped string
  */
 function _checkbook_autocomplete_escapeSolrValue($string) {
-  $escape_chars = explode(' ', "+ - && || ! ( ) { } [ ] ^ \" ~ * ? : /");
+  /**
+   * DO NOT CHANGE ORDER, BACKSLASH MUST BE FIRST
+   */
+  $escape_chars = explode(' ', '\\ + - & | ! ( ) { } [ ] ^ " ~ * ? : /');
   $replace_to = [];
   foreach($escape_chars as $char) {
-    $replace_to[] = '\\'.$char;
+    $replace_to[] = "\\".$char;
   }
-  $return = urlencode(str_replace($escape_chars, $replace_to, $string));
+  $return = str_replace($escape_chars, $replace_to, $string);
+  $return = urlencode($return);
 
 //  LogHelper::log_notice("$string => $return");
   return $return;
