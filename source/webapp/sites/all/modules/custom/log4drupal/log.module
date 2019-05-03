@@ -133,7 +133,7 @@ function _log_get_logger()
 
   $conf = array(
       'lineFormat' => '[%1$s] [%3$s] %4$s',
-      'timeFormat' => '%X %x'
+      'timeFormat' => '%b %d %H:%M:%S'
       );
 
       $logger = Log::singleton(
@@ -164,13 +164,27 @@ function _log_write_log_message($message, $level) {
   }
 
   $trace = debug_backtrace();
-  $log_message =  _log_get_top($trace). $message;
+
+  $log_message =  _log_get_top($trace). _log_url() . $message;
 
   if($include_stacktrace) {
    $log_message .= _log_get_stacktrace($trace);
   }
 
   _log_get_logger()->log($log_message, $level);
+}
+
+/**
+ * @return string
+ */
+function _log_url() {
+  if (empty($_SERVER['HTTP_HOST']) || empty($_SERVER['REQUEST_URI'])) {
+    return '';
+  }
+  $url = ($_SERVER['HTTPS'] ?? false) ? 'https' : 'http';
+  $url .= "://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
+
+  return "[$url] ";
 }
 
 /**
