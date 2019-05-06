@@ -14,8 +14,6 @@
         //Clear all text fields and drop-downs
         $.fn.clearInput();
 
-        //Reset deafult year to current Fiscal Year
-        $('select[name="year"]').val($('input:hidden[name="current_year_hidden"]').val());
 
         //Reset the Spending Category
         $('select[name="expense_type"]').val('Total Spending [ts]');
@@ -309,7 +307,6 @@
                     $('input[name="issuedto"]', context).val("");
                     $('input[name="issuedto"]', context).attr('disabled', 'disabled');
                 } else if ($('input:radio[name=date_filter]:checked', context).val() == 1) {
-                    $('select[name="year"]', context).val($('input:hidden[name="current_year_hidden"]', context).val());
                     $('select[name="year"]', context).attr('disabled', 'disabled');
                     $('input[name="issuedfrom"]', context).removeAttr("disabled");
                     $('input[name="issuedto"]', context).removeAttr("disabled");

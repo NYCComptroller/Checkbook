@@ -4083,7 +4083,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
         '#type' => 'select',
         '#options' => _year_options('all-years'),
         '#attributes' => array('class' => array('watch')),
-        '#default_value' => $year,
+        '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'date_filter', $first_time_load, 0),
         '#prefix' => '<div id="year"><div class="datafield year">',
         '#suffix' => '</div></div>',
         '#id' => 'edit-year',
