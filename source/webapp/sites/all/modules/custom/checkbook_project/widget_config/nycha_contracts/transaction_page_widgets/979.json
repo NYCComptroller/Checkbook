@@ -52,7 +52,7 @@ $node->show_difference = ($contract_type== 'BAM'||$contract_type== 'PAM');
        "expression": "_get_tooltip_markup($row['contract_type_descr'],36)"
     },
    "responsibility_center_descr_formatted":{
-        "expression": "_get_tooltip_markup($row['responsibility_center_descr'],36)"
+        "expression": "_get_tooltip_markup($row['responsibility_center_descr'],28)"
     },
     "program_phase_descr_formatted":{
     "expression": "_get_tooltip_markup($row['program_phase_descr'],36)"
