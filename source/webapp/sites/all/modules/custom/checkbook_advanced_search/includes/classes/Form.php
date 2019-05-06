@@ -158,8 +158,8 @@ class Form
 
                 $form[$domain][$domain_field]['#type'] = FieldType::DropDown;
                 $form[$domain][$domain_field]['#options'] = _checkbook_advanced_search_get_year($this->domain_name, $data_source);
-                $form[$domain][$domain_field]['#default_value'] = 'fy~' . _getCurrentYearID();
-                $form[$domain][$domain_field]['#attributes'] = array('class' => array('watch'), 'default_selected_value' => 'fy~' . _getCurrentYearID());
+                $form[$domain][$domain_field]['#default_value'] = 'fy~all' ;
+                $form[$domain][$domain_field]['#attributes'] = array('class' => array('watch'), 'default_selected_value' => 'fy~all');
                 $form[$domain][$domain_field]['#prefix'] = '<div class="datafield year">';
                 $form[$domain][$domain_field]['#suffix'] = '</div>';
 
