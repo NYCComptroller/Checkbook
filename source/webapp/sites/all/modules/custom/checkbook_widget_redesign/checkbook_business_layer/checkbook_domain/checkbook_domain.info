@@ -34,6 +34,7 @@ files[] = config/sql/spending/mwbe_spending.xml
 files[] = config/sql/spending/oge_spending.xml
 files[] = config/sql/spending/spending.xml
 files[] = config/sql/spending/sub_vendors_spending.xml
+files[] = config/sql/spending/nycha_spending.xml
 
 files[] = constants/SqlConfigPath.php
 
