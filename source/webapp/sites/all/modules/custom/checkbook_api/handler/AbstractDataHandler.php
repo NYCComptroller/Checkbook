@@ -357,7 +357,7 @@ abstract class AbstractDataHandler {
         $resultFormatter = null;
 
         $query = widget_get_db_query($isList, $dataSetName, $columns, $parameters, $orderBy, $startWith, $limit, $resultFormatter);
-log_error($query);
+
         LogHelper::log_notice("DataFeeds :: generateFile() query: ".$query);
 
         $filename = $this->getJobCommand($query);
