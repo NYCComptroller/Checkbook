@@ -78,7 +78,6 @@ original_amount,
 spend_to_date
 ORDER BY total_amount DESC LIMIT 10';
 
-LogHelper::log_error($sql);
 $node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
 
 ",
