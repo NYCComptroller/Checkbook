@@ -13,6 +13,7 @@ class Domain {
     public static $BUDGET = 'budget';
     public static $PAYROLL = 'payroll';
     public static $NYCHA_CONTRACTS = 'nycha_contracts';
+    public static $NYCHA_SPENDING = 'nycha_spending';
 }
 
 class VendorType {

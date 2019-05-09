@@ -1,0 +1,38 @@
+<statements>
+  <!--GetSpendingByChecks-->
+  <!--- don't forget to change the datasource to 'checkbook_nycha' when implementing nycha spending widgets-->
+  <statement name="GetNychaSpendingByChecks" datasource="checkbook">
+    <param name="year" required ="true" type="int" />
+    <param name="agency" type="int" />
+    <param name="vendor" type="int" />
+    <param name="fvendor" type="int" />
+    <param name="category" type="int" />
+    <param name="industry" type="int" />
+    <param name="mwbe"/>
+    <sql>
+      SELECT
+      check_eft_issued_date as issue_date,
+      vendor_name as prime_vendor_name,
+      agency_name,
+      check_amount,
+      expenditure_object_name as expense_category,
+      agency_id,
+      vendor_id as prime_vendor_id,
+      expenditure_object_id,
+      department_name,
+      industry_type_id
+      FROM disbursement_line_item_details
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="check_eft_issued_nyc_year_id" paramName="year" />
+          <exp op="IN" dbField="minority_type_id" paramName="mwbe"/>
+          <exp op="=" dbField="spending_category_id" paramName="category"/>
+          <exp op="=" dbField="vendor_id" paramName="vendor" />
+          <exp op="=" dbField="vendor_id" paramName="fvendor" />
+          <exp op="=" dbField="agency_id" paramName="agency" />
+          <exp op="=" dbField="industry_type_id" paramName="industry" />
+        </exp>
+      </where>
+    </sql>
+  </statement>
+</statements>
