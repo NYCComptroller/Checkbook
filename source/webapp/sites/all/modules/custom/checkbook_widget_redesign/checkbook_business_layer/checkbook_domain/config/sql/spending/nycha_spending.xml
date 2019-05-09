@@ -29,7 +29,7 @@
           <exp op="=" dbField="spending_category_id" paramName="category"/>
           <exp op="=" dbField="vendor_id" paramName="vendor" />
           <exp op="=" dbField="vendor_id" paramName="fvendor" />
-          <exp op="=" dbField="agency_id" paramName="agency" />
+          <!--<exp op="=" dbField="agency_id" paramName="agency" /> -->
           <exp op="=" dbField="industry_type_id" paramName="industry" />
         </exp>
       </where>
