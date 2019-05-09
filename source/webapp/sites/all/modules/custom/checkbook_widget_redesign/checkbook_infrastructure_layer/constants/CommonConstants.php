@@ -33,6 +33,7 @@ abstract class CheckbookDomain {
     const BUDGET = "budget";
     const PAYROLL = "payroll";
     const NYCHA_CONTRACTS = "nycha_contracts";
+    const NYCHA_SPENDING = "nycha_spending";
 
     public static function getCurrent() {
 
@@ -85,6 +86,10 @@ abstract class CheckbookDomain {
 
         if (!$domain && stripos($urlPath, '/nycha_contracts/')) {
             $domain = self::NYCHA_CONTRACTS;
+        }
+
+        if (!$domain && stripos($urlPath, '/nycha_spending/')) {
+            $domain = self::NYCHA_SPENDING;
         }
 
         return $domain;
