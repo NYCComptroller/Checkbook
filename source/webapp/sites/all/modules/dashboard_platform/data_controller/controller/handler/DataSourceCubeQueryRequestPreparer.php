@@ -34,7 +34,7 @@ class DataSourceCubeQueryRequestPreparer extends AbstractObject {
 
         $this->prepareCubeRequestColumns($datasourceRequest, $cube, $request->columns);
         $this->prepareCubeRequestQueries($datasourceRequest, $cube, $request->parameters);
-        $datasourceRequest->addOrderByColumns($request->orderBy);
+        $datasourceRequest->addOrderByColumns($request->orderBy,$request->sortSourceByNull);
         $datasourceRequest->setPagination($request->limit, $request->startWith);
         $datasourceRequest->addLogicalOrColumns($request->logicalOrColumns);
 
