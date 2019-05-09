@@ -1,12 +1,12 @@
 {
-    "serviceName":"NYCHASpendingWidgetService",
-    "dataFunc":"GetSpendingByChecks",
+    "serviceName":"NychaSpendingWidgetService",
+    "dataFunc":"GetNychaSpendingByChecks",
     "headerTitle":"Checks",
     "headerSubTitle":"Checks",
     "table_columns":[
         {"labelAlias":"issue_date","column":"issue_date","format":"date"},
-        {"labelAlias":"agency_name","column":"agency_name","derivedColumn":"agency_name_link","tooltip":36},
-        {"labelAlias":"prime_vendor","column":"prime_vendor_name","derivedColumn":"prime_vendor_link","tooltip":36},
+        {"labelAlias":"agency_name","column":"agency_name","tooltip":36},
+        {"labelAlias":"prime_vendor","column":"prime_vendor_name","tooltip":36},
         {"labelAlias":"expense_category","column":"expense_category"},
         {"labelAlias":"check_amount","column":"check_amount","format":"dollar"},
         {"label":"","column":""}

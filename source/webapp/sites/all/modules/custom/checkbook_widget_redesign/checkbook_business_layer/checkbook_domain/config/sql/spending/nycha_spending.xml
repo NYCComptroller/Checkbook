@@ -1,6 +1,7 @@
 <statements>
   <!--GetSpendingByChecks-->
-  <statement name="GetSpendingByChecks" datasource="checkbook">
+  <!--- don't forget to change the datasource to 'checkbook_nycha' when implementing nycha spending widgets-->
+  <statement name="GetNychaSpendingByChecks" datasource="checkbook">
     <param name="year" required ="true" type="int" />
     <param name="agency" type="int" />
     <param name="vendor" type="int" />
