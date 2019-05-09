@@ -41,6 +41,10 @@ if($node->data[0]['total_gross_pay'] > 0  ){
 if($node->data[1]['total_maximum_contract_amount'] > 0  ) {
     $contracts_link = l('<span class="nav-title">Contracts</span><br>' . custom_number_formatter_format($node->data[1]['total_maximum_contract_amount'], 1, '$'), RequestUtil::getTopNavURL("nycha_contracts"), $options);
 }
+
+//Spending Link
+$spending_link = l('<span class="nav-title">Spending</span><br>'.custom_number_formatter_format(0 ,1,'$'), RequestUtil::getTopNavURL("nycha_spending"), $options);
+
 $arg = arg(0);
 $budget_active = '';
 $revenue_active = '';
