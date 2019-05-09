@@ -29,6 +29,7 @@
   "exportConfigNid":997,
   "getTotalDataCount":true,
   "limit":"35",
+  "sortSourceByNull":"release_line_spend_to_date",
   "noDataInitialLoad":true,
   "html_class":"initiative-table",
   "no_results_content":"No Results Found",
