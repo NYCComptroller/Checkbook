@@ -42,7 +42,8 @@ h1 {
 .page-contracts-landing h1,.page-nycha-contracts h1, .page-budget-year h1, .page-payroll h1, .page-revenue h1, .page-budget h1,
 .page-featured-trends h1, .page-contract-transactions h1, .nycha_contracts_transactions_page h1,
 .page-budget-transactions h1, .page-budget-yeartype h1, .page-budget-revenue-transactions h1, .page-contracts-revenue-landing h1,
-.page-contracts-pending-exp-landing h1, .page-spending-landing h1, .page-contracts-pending-rev-landing h1 {
+.page-contracts-pending-exp-landing h1, .page-spending-landing h1, .page-contracts-pending-rev-landing h1,
+.page-nycha-spending h1, .nycha_spending_transactions_page h1{
     font-size: 24px;
     font-weight: bold;
     color: #2E2E2E;
@@ -2634,6 +2635,7 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 #budget-transactions .dataTables_wrapper,
 #revenue-transactions .dataTables_wrapper,
 #nycha-contracts-transactions .dataTables_wrapper,
+#nycha-spending-transactions .dataTables_wrapper,
 .page-budget .page-contract-details .dataTables_wrapper,
 .page-revenue .page-contract-details .dataTables_wrapper
 {
@@ -2644,7 +2646,8 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 #nyc-payroll > div:nth-child(1),
 #budget-transactions > div:nth-child(1),
 #revenue-transactions > div:nth-child(1),
-#nycha-contracts-transactions > div:nth-child(1)
+#nycha-contracts-transactions > div:nth-child(1),
+#nycha-spending-transactions > div:nth-child(1)
 {
     margin:18px 10px 5px 10px;
 }
@@ -2655,6 +2658,7 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 #budget-transactions .dataTables_wrapper > div:nth-child(2),
 #revenue-transactions .dataTables_wrapper > div:nth-child(2),
 #nycha-contracts-transactions .dataTables_wrapper > div:nth-child(2),
+#nycha-spending-transactions .dataTables_wrapper > div:nth-child(2),
 .page-budget .page-contract-details .dataTables_wrapper > div:nth-child(2),
 .page-revenue .page-contract-details .dataTables_wrapper > div:nth-child(2)
 {
