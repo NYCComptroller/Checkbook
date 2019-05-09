@@ -45,7 +45,7 @@ files[] = spending/SpendingDataService.php
 files[] = nychaSpending/NychaSpendingWidgetService.php
 files[] = nychaSpending/NychaSpendingUrlService.php
 files[] = nychaSpending/data/NychaSpendingDataService.php
-files[] = nychaSpending/data/InychaSpendingDataService.php
+files[] = nychaSpending/data/INychaSpendingDataService.php
 
 files[] = contracts/ContractsUrlService.php
 files[] = nychaContracts/NychaContractsUrlService.php
