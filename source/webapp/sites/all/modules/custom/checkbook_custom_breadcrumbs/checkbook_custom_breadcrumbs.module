@@ -51,6 +51,10 @@ function checkbook_custom_breadcrumbs_page_alter(&$page) {
       _set_nycha_contracts_breadcrumb_title_drilldown();
   }
 
+  else if(preg_match('/^nycha_spending/',current_path())){
+    _set_nycha_spending_breadcrumb_title_drilldown();
+  }
+
   _checkbook_custom_breadcrumnb_add_breadcrumb_title();
 }
 
@@ -101,6 +105,13 @@ function _set_payroll_breadcrumb_title_drilldown(){
  **/
 function _set_nycha_contracts_breadcrumb_title_drilldown(){
     drupal_set_title( _get_nycha_contracts_breadcrumb_title_drilldown(),PASS_THROUGH);
+}
+
+/**
+ * Custom function to set title for NYCHA Spending landing pages
+ **/
+function _set_nycha_spending_breadcrumb_title_drilldown(){
+  drupal_set_title( _get_nycha_spending_breadcrumb_title_drilldown(),PASS_THROUGH);
 }
 
 /**
@@ -309,6 +320,29 @@ function _get_nycha_contracts_breadcrumb_title_drilldown()
 
 }
 
+/**
+ * Custom function to get title for NYCHA CONTRACTS landing pages
+ **/
+function _get_nycha_spending_breadcrumb_title_drilldown()
+{
+  $bottomURL = $_REQUEST['expandBottomContURL'];
+  if (!$bottomURL && preg_match('/^nycha_spending\/search\/transactions/', current_path()) || preg_match('/^nycha_spending\/all\/transactions/', current_path())) {
+    $title = null;
+  }else {
+    $lastReqParam = _getLastRequestParamValue();
+    foreach ($lastReqParam as $key => $value) {
+      switch ($key) {
+        case 'vendor':
+          $title = _checkbook_project_get_name_for_argument("vendor_id", $value);
+          break;
+        default:
+          $title = "New York City Housing Authority";
+      }
+    }
+  }
+  return $title;
+
+}
 
 /**
 * Custom function to set title for contracts landing pages
@@ -541,6 +575,8 @@ function _checkbook_custom_breadcrumnb_add_breadcrumb_title(){
      $checkbook_breadcrumb_title = RequestUtil::getPayrollBreadcrumbTitle();
    }elseif(preg_match('/^spending/',current_path())){
      $checkbook_breadcrumb_title = RequestUtil::getSpendingBreadcrumbTitle();
+   }else if(preg_match('/^nycha_spending/',current_path())){
+     $checkbook_breadcrumb_title = RequestUtil::getNYCHASpendingBreadcrumbTitle();
    }elseif(preg_match('/^budget/',current_path())){
      $checkbook_breadcrumb_title = RequestUtil::getBudgetBreadcrumbTitle();
    }elseif(preg_match('/^revenue/',current_path())){
