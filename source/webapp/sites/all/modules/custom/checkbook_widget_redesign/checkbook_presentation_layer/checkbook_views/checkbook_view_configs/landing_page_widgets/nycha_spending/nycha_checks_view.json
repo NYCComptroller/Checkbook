@@ -1,0 +1,34 @@
+{
+    "serviceName":"NYCHASpendingWidgetService",
+    "dataFunc":"GetSpendingByChecks",
+    "headerTitle":"Checks",
+    "headerSubTitle":"Checks",
+    "table_columns":[
+        {"labelAlias":"issue_date","column":"issue_date","format":"date"},
+        {"labelAlias":"agency_name","column":"agency_name","derivedColumn":"agency_name_link","tooltip":36},
+        {"labelAlias":"prime_vendor","column":"prime_vendor_name","derivedColumn":"prime_vendor_link","tooltip":36},
+        {"labelAlias":"expense_category","column":"expense_category"},
+        {"labelAlias":"check_amount","column":"check_amount","format":"dollar"},
+        {"label":"","column":""}
+    ],
+    "dataTableOptions":{
+        "aoColumns": [
+            { "bSortable": true,"sClass":"text","sWidth":"100px","asSorting": ["asc","desc"]},
+          { "bSortable": false,"sClass":"text","sWidth":"210px"},
+          { "bSortable": false,"sClass":"text pad-left","sWidth":"250px"},
+          { "bSortable": false,"sClass":"text","sWidth":"210px"},
+          { "sClass":"number","asSorting": [ "desc","asc" ]},
+          { "bSortable": false,"sWidth":"15px" }
+        ],
+        "bServerSide": true,
+        "bFilter": false,
+        "bPaginate": false,
+        "bProcessing":true,
+        "bLengthChange": false,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "aaSorting": [[ 4, "desc"]],
+        "fnServerParams":"##function ( aoData ) { reloadExpandCollapseWidget(this,aoData); }##",
+    "oLanguage":{ "sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"}
+   }
+}
