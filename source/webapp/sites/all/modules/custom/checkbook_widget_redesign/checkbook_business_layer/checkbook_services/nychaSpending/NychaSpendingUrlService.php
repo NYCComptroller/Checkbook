@@ -6,8 +6,7 @@
  * Time: 10:26 AM
  */
 
-class NychaSpendingUrlService
-{
+class NychaSpendingUrlService{
     /**
      * @param $parameters
      * @return string

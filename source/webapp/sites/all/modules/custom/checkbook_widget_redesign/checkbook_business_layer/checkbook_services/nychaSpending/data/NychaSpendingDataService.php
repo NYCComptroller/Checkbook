@@ -3,7 +3,7 @@
 class NychaSpendingDataService extends DataService implements INychaSpendingDataService {
 
   /* Citywide Spending */
-  function GetSpendingByChecks($parameters, $limit = null, $orderBy = null) {
+  function GetNychaSpendingByChecks($parameters, $limit = null, $orderBy = null) {
     return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
   }
 

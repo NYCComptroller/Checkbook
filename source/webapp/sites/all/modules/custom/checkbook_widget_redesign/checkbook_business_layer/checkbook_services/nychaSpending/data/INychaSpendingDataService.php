@@ -4,5 +4,5 @@
  * Interface INychaSpendingDataService
  */
 interface INychaSpendingDataService {
-  function GetSpendingByChecks($parameters, $limit = null, $orderBy = null);
+  function GetNychaSpendingByChecks($parameters, $limit = null, $orderBy = null);
 }
