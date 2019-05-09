@@ -697,6 +697,14 @@ class RequestUtil
                     $path = $path . "/vendor/" . RequestUtilities::get("vendor");
                 }
                 break;
+            case "nycha_spending":
+              $path = "/nycha_spending/datasource/".Datasource::NYCHA;
+              $path .="/year/".$fiscalYearId;
+              $path .= Datasource::getNYCHAUrl();
+              if (RequestUtilities::get("vendor") > 0) {
+                $path .=  "/vendor/" . RequestUtilities::get("vendor");
+              }
+            break;
             case "payroll":
                 $year = static::getCalYearIdForTopNavigation();
                 //Payroll is always redirected to the respective Calendar Year irrespective of the 'yeartpe' paramenter in the URL for all the other Domains
