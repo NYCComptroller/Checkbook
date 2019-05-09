@@ -697,6 +697,14 @@ class RequestUtil
                     $path = $path . "/vendor/" . RequestUtilities::get("vendor");
                 }
                 break;
+            case "nycha_spending":
+              $path = "/nycha_spending/datasource/".Datasource::NYCHA;
+              $path .="/year/".$fiscalYearId;
+              $path .= Datasource::getNYCHAUrl();
+              if (RequestUtilities::get("vendor") > 0) {
+                $path .=  "/vendor/" . RequestUtilities::get("vendor");
+              }
+            break;
             case "payroll":
                 $year = static::getCalYearIdForTopNavigation();
                 //Payroll is always redirected to the respective Calendar Year irrespective of the 'yeartpe' paramenter in the URL for all the other Domains
@@ -1415,6 +1423,28 @@ class RequestUtil
             }
         }
         return $title;
+    }
+
+    /** Returns NYCHA Spending page title and Breadcrumb */
+    public static function getNYCHASpendingBreadcrumbTitle()
+    {
+      $bottomURL = $_REQUEST['expandBottomContURL'];
+      if (!$bottomURL && preg_match('/^nycha_spending\/search\/transactions/', current_path()) || preg_match('/^nycha_spending\/all\/transactions/', current_path())) {
+        $title = 'NYCHA Spending Transactions';
+      } else {
+        $lastReqParam = _getLastRequestParamValue();
+        foreach ($lastReqParam as $key => $value) {
+          switch ($key) {
+            case 'vendor':
+              $title = _checkbook_project_get_name_for_argument("vendor_id", $value);
+              break;
+            default:
+              $title = "New York City Housing Authority";
+          }
+          $title .= ' Spending';
+        }
+      }
+      return $title;
     }
     public static function getTitleByCode($tcode){
         $summaryTitle='';

@@ -5,6 +5,8 @@ abstract class SqlConfigPath {
     const CitywideSpending = "spending/spending";
     const OgeSpending = "spending/oge_spending";
     const SubVendorsSpending = "spending/sub_vendors_spending";
+    /* NYCHA Spending */
+    const NychaSpending = "spending/nycha_spending";
     /* Contracts */
     const CitywideContracts = "contracts/contracts";
     const PendingContracts = "contracts/pending_contracts";
