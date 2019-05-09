@@ -88,9 +88,9 @@ abstract class CheckbookDomain {
             $domain = self::NYCHA_CONTRACTS;
         }
 
-      if (!$domain && stripos($urlPath, '/nycha_spending/')) {
-        $domain = self::NYCHA_SPENDING;
-      }
+        if (!$domain && stripos($urlPath, '/nycha_spending/')) {
+            $domain = self::NYCHA_SPENDING;
+        }
 
         return $domain;
     }
