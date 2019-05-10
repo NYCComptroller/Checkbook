@@ -103,9 +103,10 @@ class Drupal_Sniffs_WhiteSpace_ScopeClosingBraceSniff implements PHP_CodeSniffer
 
         if ($tokens[$lastContent]['line'] === $tokens[$scopeEnd]['line']) {
             // Only allow empty classes and methods.
-            if ($tokens[$tokens[$scopeEnd]['scope_condition']]['code'] !== T_CLASS
+            if (($tokens[$tokens[$scopeEnd]['scope_condition']]['code'] !== T_CLASS
                 && !in_array(T_CLASS, $tokens[$scopeEnd]['conditions']))
-                {
+                || $tokens[$lastContent]['code'] !== T_OPEN_CURLY_BRACKET)
+            {
                 $error = 'Closing brace must be on a line by itself';
                 $phpcsFile->addError($error, $scopeEnd);
             }
@@ -115,12 +116,11 @@ class Drupal_Sniffs_WhiteSpace_ScopeClosingBraceSniff implements PHP_CodeSniffer
         // Check now that the closing brace is lined up correctly.
         $braceIndent   = $tokens[$scopeEnd]['column'];
         if (in_array($tokens[$stackPtr]['code'], array(T_CASE, T_DEFAULT)) === true) {
-            // BREAK and RETURN statements should be indented n spaces from the
+            // BREAK statements should be indented n spaces from the
             // CASE or DEFAULT statement.
             if ($braceIndent !== ($startColumn + $this->indent)) {
-                $error = '%s statement indented incorrectly; expected %s spaces, found %s';
+                $error = 'Case breaking statement indented incorrectly; expected %s spaces, found %s';
                 $data  = array(
-                          $tokens[$scopeEnd]['content'],
                           ($startColumn + $this->indent - 1),
                           ($braceIndent - 1),
                          );

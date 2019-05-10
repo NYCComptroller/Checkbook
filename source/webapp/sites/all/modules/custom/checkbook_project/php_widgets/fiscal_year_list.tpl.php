@@ -20,7 +20,7 @@
 
 
 $filter_years = _checkbook_max_data_year();
-$q = $_SERVER['REQUEST_URI'];
+$q = request_uri();
 $array_q = explode('/',$q);
 
 $year_key = array_search('year', $array_q);

@@ -51,6 +51,12 @@
  * Copyright 2009-11 by Jim Berry ("solotandem", http://drupal.org/user/240748)
  */
 
+if (!script_is_cli()) {
+  // Without proper web server configuration, this script can be invoked from a
+  // browser and is vulnerable to misuse.
+  return;
+}
+
 // Save memory usage for printing later (when code is loaded).
 $usage = array();
 save_memory_usage('start', $usage);
@@ -209,4 +215,13 @@ function error_handler($code, $message, $file, $line) {
     return;
   }
   throw new ErrorException($message, 0, $code, $file, $line);
+}
+
+/**
+ * Returns boolean indicating whether script is being run from the command line.
+ *
+ * @see drupal_is_cli()
+ */
+function script_is_cli() {
+  return (!isset($_SERVER['SERVER_SOFTWARE']) && (php_sapi_name() == 'cli' || (is_numeric($_SERVER['argc']) && $_SERVER['argc'] > 0)));
 }
