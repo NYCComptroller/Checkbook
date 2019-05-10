@@ -154,7 +154,7 @@ foreach ($render_array as $title => $value) {
                 $prime_flag = false;
                 $sub_flag = false;
                 $mwbe_flag = false;
-                $url = $_SERVER['REQUEST_URI'];
+                $url = request_uri();
                 $type = explode('*|*', $url);
                 for($i=0; $i<sizeof($type); $i++){
                     if(preg_match('/^vendor_type/', $type[$i])){

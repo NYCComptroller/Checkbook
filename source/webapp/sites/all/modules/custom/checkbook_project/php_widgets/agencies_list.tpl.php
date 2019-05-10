@@ -38,7 +38,7 @@ $city_filter_highlight = (!(_checkbook_check_isEDCPage() || _checkbook_check_isN
 $current_fy_year = (RequestUtilities::get('year')) ? RequestUtilities::get('year') :  _getFiscalYearID() ;
 $current_cal_year = (RequestUtilities::get('year')) ? RequestUtilities::get('year') : _getCurrentCalendarYearID();
 
-$current_url = explode('/',$_SERVER['REQUEST_URI']);
+$current_url = explode('/',request_uri());
 $url = $current_url[1];
 if($current_url[1] == 'contracts_landing' || $current_url[1] == 'contracts_revenue_landing' || $current_url[1] == 'contracts' ||
     $current_url[1] == 'contracts_pending_exp_landing' || $current_url[1] == 'contracts_pending_rev_landing'){
