@@ -1,4 +1,4 @@
-<?
+<?php
 
 #Discouraged comment style
 
@@ -413,7 +413,7 @@ Class FunctionTest {
   }
 
   /**
-   * Asterisks of this comment are wrong. And "private" should no be used.
+   * Asterisks of this comment are wrong.
   *
     */
   private function foobar() {
@@ -436,6 +436,8 @@ t("This is a \"fancy\" string.");
 t('Your user name: ' . $user_name);
 // Empty t() calls are not allowed.
 t();
+// The masage must not begin or end with white spaces.
+$text = t('Number of attempts: ') . $number;
 
 // require_once should be a statement.
 require_once('somefile.php');
@@ -458,6 +460,13 @@ function test2() {
  * Implementation of hook_menu().
  */
 function mymodule_menu() {
+  return array();
+}
+
+/**
+ * Implements of hook_boing().
+ */
+function mymodule_boing() {
   return array();
 }
 
@@ -707,7 +716,7 @@ $z = $foo ->x;
 // strings in l() should be translated.
 $x = l('Link text', '<front>');
 
-$x = 'Some markup text<br>';
+$x = 'Some markup text with allowed HTML5 <br> tag';
 
 $ip = $_SERVER['REMOTE_ADDR'];
 
@@ -723,6 +732,7 @@ $x = $y == $z ? 23 :42;
 $x = $y == $z ? 23  : 42;
 $x = $y == $z ? 23  :  42;
 $x = $y == $z ? 23 :'foo';
+$x = $y == $z ? : 42;
 
 // Watchdog messages should not use t().
 watchdog('mymodule', t('Log message here.'));
@@ -755,8 +765,34 @@ function test24() {
  *  @return bool
  *   Description.
  */
-function test24() {
+function test25() {
   return TRUE;
+}
+
+/**
+ * Void returns are not allowed.
+ *
+ * @return void
+ *   Description.
+ */
+function test26() {
+
+}
+
+/**
+ * Debugging functions are discouraged.
+ */
+function test27() {
+  $var = array(1, 2, 3);
+  dsm($var);
+  dpm($var);
+}
+
+class FooBar2 {
+  /**
+   * Function body should be on a line by itself, same for the closing brace.
+   */
+  public function test26() {print 'x';}
 }
 
 // Security issue: http://drupal.org/node/750148
@@ -782,5 +818,9 @@ try {
 
 // Function name aliases should not be used.
 $x = join($glue, $pieces);
+
+// Empty strings passed to t() are wrong.
+t('');
+t("");
 
 ?>

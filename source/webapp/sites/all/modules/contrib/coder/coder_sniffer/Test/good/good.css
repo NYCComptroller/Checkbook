@@ -65,3 +65,35 @@
   font-size: 6.875em;
   line-height: 1.0909090909090908em;
 }
+
+/* A comment describing the ruleset. */
+.selector-1,
+.selector-2,
+.selector-3[type="text"] {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  display: block;
+  margin: 0;
+  font-family: Times, "Times New Roman", sans-serif;
+  color: #333;
+  background: #fff;
+  background: linear-gradient(#fff, rgba(0, 0, 0, 0.8));
+}
+
+/**
+* A longer comment describing this ruleset. Note
+* the blank line before the docblock.
+*/
+.selector-4,
+.selector-5 {
+  padding: 10px;
+}
+
+/* This logical grouping of rulesets has no interleaving blank lines. */
+.profile {
+  margin: 1em 0;
+}
+.profile__picture {
+  float: right; /* LTR */
+}
