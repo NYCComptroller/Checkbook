@@ -216,7 +216,7 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
     $query = "select/?q=" . $search_string
         . "&start=" . ($page_no * $no_of_results)
         . "&sort=domain_ordering+asc,date_ordering+desc"
-        . "&wt=php";
+        . "&wt=phps";
 
     $search_results = _checkbook_smart_search_solr_results($query);
 
@@ -251,7 +251,7 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
         }
         $active_contracts_query = "select/?q=" . $act_search_string
             . "&fq=contract_status:registered"
-            . "&wt=php";
+            . "&wt=phps";
 
         $active_contracts = _checkbook_smart_search_solr_results($active_contracts_query);
 
@@ -265,7 +265,7 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
         }
         $registered_contracts_query = "select/?q=" . $reg_search_string
             . "&fq=contract_status:registered"
-            . "&wt=php";
+            . "&wt=phps";
 
         $registered_contracts = _checkbook_smart_search_solr_results($registered_contracts_query);
     }
@@ -343,7 +343,7 @@ function _checkbook_smart_search_solr_results($query)
 //    LogHelper::log_notice("Solr response: ".var_export($contents, true));
 
     if ($contents) {
-        eval("\$results = " . $contents . ";");
+      $results = unserialize($contents);
     }
     return $results;
 }
@@ -409,7 +409,7 @@ function _checkbook_smart_search_get_selected_facet_results($search_terms, $face
             . "&facet=true"
             . "&facet.sort=count"
             . "&facet.field=" . $parameter_mapping[$facet_name]
-            . "&wt=php"
+            . "&wt=phps"
             . "&facet.mincount=1";
 
         $selected_facet_results = _checkbook_smart_search_solr_results($query);
@@ -501,7 +501,7 @@ function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $
         . "&facet=true"
         . "&facet.sort=count"
         . "&facet.field=" . $parameter_mapping[$facet_name]
-        . "&wt=php"
+        . "&wt=phps"
         . "&facet.mincount=1";
 
     if ($offset && $offset > 0) {
@@ -541,7 +541,7 @@ function _checkbook_smart_search_autocomplete()
         . "&terms.fl=minority_type_name"
         . "&terms.fl=revenue_category_name"
         . "&terms.fl=expenditure_object_name"
-        . "&terms.regex=" . $search_term . "&wt=php";
+        . "&terms.regex=" . $search_term . "&wt=phps";
 
     $contents = _checkbook_smart_search_solr_results($query);
 
@@ -676,7 +676,7 @@ function _checkbook_smart_search_get_searchstring_autocomplete($facet_name, $fac
         . "&facet=true"
         . "&facet.field=" . $parameter_mapping[$facet_name] // oge_agency_name
         . "&facet.limit=10"
-        . "&wt=php";
+        . "&wt=phps";
 
     $results = _checkbook_smart_search_solr_results($query);
 

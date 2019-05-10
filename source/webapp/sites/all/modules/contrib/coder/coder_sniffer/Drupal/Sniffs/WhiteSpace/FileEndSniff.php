@@ -69,7 +69,15 @@ class Drupal_Sniffs_WhiteSpace_FileEndSniff implements PHP_CodeSniffer_Sniff
             // Retrieve the raw file content, as the tokens do not work consistently
             // for different file types (CSS and javascript files have additional
             // artifical tokens at the end for example).
-            $content = file_get_contents($phpcsFile->getFilename());
+            $filename = $phpcsFile->getFilename();
+
+            // file_get_contents requires a file path, but some programs will pass
+            // in info via STDIN. Change the filename to something file_get_contents
+            // will understand.
+            if ($filename == 'STDIN') {
+                $filename = 'php://stdin';
+            }
+            $content = file_get_contents($filename);
             $error = false;
             $lastChar = substr($content, -1);
             // There must be a \n character at the end of the last token.

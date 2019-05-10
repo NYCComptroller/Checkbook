@@ -31,7 +31,7 @@ if((preg_match('/^spending\/search\/transactions/',$_GET['q']) && (RequestUtilit
 $filter_years = _checkbook_max_data_year();
 
 //$q is the new URL for the Date Filter options
-$q = $_SERVER['REQUEST_URI'];
+$q = request_uri();
 $url_parts = parse_url($q);
 if(!isset($_REQUEST['expandBottomContURL']) && $url_parts['query']){
   $q = str_replace('?'.$url_parts['query'], "", $q);
@@ -160,7 +160,7 @@ foreach($years as $year){
     /*********  End of Fiscal Year Options   ********/
 
     /*********  Beginning of Calendar Year Options (Applicable for Payroll domain only)   ********/
-    if(preg_match('/payroll/',$_SERVER['REQUEST_URI'])){
+    if(preg_match('/payroll/',request_uri())){
         if($year['year_value'] <= $filter_years['cal_year_value']){
             if(RequestUtilities::get("calyear")){
                 $link = preg_replace("/calyear\/" . $url_year_id_value . "/","calyear/" .  $year['year_id'],$q);
@@ -216,7 +216,7 @@ foreach($years as $year){
     /****** End of Year options for NYCHA ****/
 }
 
-if(Datasource::isNYCHA() && preg_match('/payroll/',$_SERVER['REQUEST_URI'])){
+if(Datasource::isNYCHA() && preg_match('/payroll/',request_uri())){
     $year_data_array = $calendar_year_data_array;
 }else {
     $year_data_array = (Datasource::isNYCHA() ? $nycha_year_data_array : array_merge($calendar_year_data_array, $fiscal_year_data_array));
