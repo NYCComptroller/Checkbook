@@ -4,6 +4,8 @@
  * Bad examples of install hooks in a module file.
  */
 
+define('UNPREFIXED_CONSTANT', 'invalid');
+
 /**
  * Implements hook_install().
  */

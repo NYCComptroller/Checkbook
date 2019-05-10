@@ -8,8 +8,6 @@
  * Implements hook_reviews().
  */
 function coder_review_style_reviews() {
-  $br = 'br';
-
   // @todo: add more specific #link's foreach #warning.
   $rules['no_tabs'] = array(
     '#type' => 'regex',
@@ -103,13 +101,6 @@ function coder_review_style_reviews() {
     '#value' => '\s(stdclass)\s*\(',
     '#not' => '^(?-i)stdClass',
     '#warning' => "use stdClass caseCapitalization, it's the one exception to the mixed case style standard",
-  );
-  $rules['br'] = array(
-    '#type' => 'regex',
-    '#source' => 'html',
-    '#value' => '<' . $br . '>', // NOTE: use $br only to avoid a warning.
-    '#warning' => 'use &lt;br /&gt; instead of &lt;br&gt;',
-    '#severity' => 'minor',
   );
   $rules['lowercase_html'] = array(
     '#type' => 'regex',

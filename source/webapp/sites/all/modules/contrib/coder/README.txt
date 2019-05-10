@@ -6,8 +6,12 @@ review standards.
 Built-in support for:
  - Drupal Coding Standards - http://drupal.org/node/318
  - Handle text in a secure fashion - http://drupal.org/node/28984
- - Converting 4.6.x modules to 4.7.x - http://drupal.org/node/22218
- - Converting 4.7.x modules to 5.x - http://drupal.org/node/64279
+
+Coder Sniffer
+-------------
+
+See the README.txt file in the coder_sniffer directory.
+
 
 Installation
 ------------
@@ -15,6 +19,20 @@ Installation
 Copy coder.module to your module directory and then enable on the admin
 modules page.  Enable the modules that admin/config/development/coder/settings
 works on, then view the coder results page at coder.
+
+
+Automated Testing (PHPUnit)
+---------------------------
+
+Coder Sniffer comes with a PHPUnit test suite to make sure the sniffs work correctly.
+Use Composer to install the dependencies:
+
+  composer install
+
+Then execute the tests:
+
+  ./vendor/bin/phpunit
+
 
 Author
 ------

@@ -24,7 +24,7 @@ $foo = 'bar';
 define('FOO_BAR', 5);
 
 // Global variable names.
-global $user, $is_https, $_mymodule_myvar;
+global $argc, $argv, $user, $is_https, $_mymodule_myvar;
 
 /*
  * Multiline comment
@@ -187,6 +187,12 @@ switch ($condition) {
     $i;
     break;
 
+  // Blank line after the case statement is allowed.
+  case 3:
+
+    $i;
+    break;
+
   default:
     $i;
 }
@@ -247,6 +253,7 @@ do {
  * @see example_reference()
  * @see Example::exampleMethod()
  * @see http://drupal.org
+ * @see http://example.com/see/documentation/is/allowed/to/exceed/eighty/characters
  */
 function foo_bar($field1, $field2, $field3 = NULL, &$field4 = NULL) {
   $system["description"] = t("This module inserts funny text into posts randomly.");
@@ -290,7 +297,10 @@ $var = foo(
  */
 class Bar {
 
-  // Public properties don't have a prefix.
+  // Private properties have no prefix.
+  private $secret = 1;
+
+  // Protected properties also don't have a prefix.
   protected $foo = 1;
 
   // Longer properties use camelCase naming.
@@ -524,7 +534,21 @@ function mymodule_foo_some_type_bar() {
 /**
  * Implements hook_foo_bar() for foo_bar.tpl.php.
  */
-function mymodule_foo_bar() {
+function mymodule_foo_bar_phptemplate() {
+
+}
+
+/**
+ * Implements hook_foo_bar() for foo-bar.html.twig.
+ */
+function mymodule_foo_bar_twig() {
+
+}
+
+/**
+ * Implements drush_hook_foo_bar().
+ */
+function drush_mymodule_foo_bar() {
 
 }
 
@@ -560,6 +584,7 @@ preg_match('@.+@i', 'subject');
 preg_match('@.+@imsuxADSUXJ', 'subject');
 preg_filter('@.+@i', 'replacement', 'subject');
 preg_replace('@.+@i', 'replacement', 'subject');
+preg_match("/test(\d+)/is", 'subject');
 
 interface MyWellNamedInterface {
 }
@@ -571,3 +596,47 @@ try {
 catch (Exception $e) {
   scream();
 }
+
+$result = $x ?: FALSE;
+
+class Foo implements FooInterface {
+
+  /**
+   * {@inheritdoc}
+   */
+  public function test() {}
+
+  /**
+   * {@inheritdoc}
+   *
+   * Some additional documentation here.
+   */
+  public function test2() {}
+
+  /**
+   * Return docs are allowed to use $this.
+   *
+   * @return $this
+   *   This object for chaining method calls.
+   */
+  public function test3() {
+    return $this;
+  }
+
+  /**
+   * Returns the string representatuion of this object.
+   */
+  public function __toString() {
+    return 'foo';
+  }
+}
+
+t('Some long mulit-line 
+  text is weird, but allowed.');
+
+l("<i class='icon icon-industrial-building'></i>", 'node/add/job', array(
+  'attributes' => array('title' => t('add job')),
+  'html'       => TRUE,
+));
+
+$x = 'Some markup text with allowed HTML5 <br> tag';
