@@ -632,7 +632,7 @@ function _checkbook_export_prepareDirectory($dir){
 /** Function to generate a unique id */
 function _checkbook_export_generate_uuid(){
     if (!empty($_SERVER['REQUEST_METHOD']) && 'GET' === $_SERVER['REQUEST_METHOD']) {
-      $data = $_SERVER['REQUEST_URI'].date('Y-m-d');
+      $data = request_uri().date('Y-m-d');
       return md5($data);
     }
 
