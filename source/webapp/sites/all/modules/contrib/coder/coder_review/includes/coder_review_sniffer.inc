@@ -56,7 +56,7 @@ function _coder_review_sniffer_callback(array &$coder_args, array $review, array
     // Allocate the CodeSniffer object.
     // Save the CodeSniffer directory, and restore our default directory.
     $current_dir = getcwd();
-    $phpcs = new PHP_CodeSniffer();
+    $phpcs = new PHP_CodeSniffer(0, 0, 'utf-8');
     $phpcs_dir = getcwd();
     chdir($current_dir);
 
@@ -85,8 +85,7 @@ function _coder_review_sniffer_callback(array &$coder_args, array $review, array
     $phpcs->setCli($phpcs_cli);
 
     $sniffer_dir = __DIR__ . '/../../coder_sniffer/Drupal';
-    $phpcs->setTokenListeners($sniffer_dir, array());
-    $phpcs->populateCustomRules();
+    $phpcs->process(array(), $sniffer_dir, array());
     $phpcs->populateTokenListeners();
   }
 
