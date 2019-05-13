@@ -59,7 +59,10 @@ class Drupal_Sniffs_Semantics_LStringTranslatableSniff extends Drupal_Sniffs_Sem
         $tokens = $phpcsFile->getTokens();
         // Get the first argument passed to l().
         $argument = $sniff->getArgument(1);
-        if ($tokens[$argument['start']]['code'] === T_CONSTANT_ENCAPSED_STRING) {
+        if ($tokens[$argument['start']]['code'] === T_CONSTANT_ENCAPSED_STRING
+            // If the string starts with a HTML tag we don't complain.
+            && $tokens[$argument['start']]['content']{1} !== '<'
+        ) {
             $error = 'The $text argument to l() should be enclosed within t() so that it is translatable';
             $phpcsFile->addError($error, $stackPtr, 'LArg');
         }
@@ -68,5 +71,3 @@ class Drupal_Sniffs_Semantics_LStringTranslatableSniff extends Drupal_Sniffs_Sem
 
 
 }//end class
-
-?>

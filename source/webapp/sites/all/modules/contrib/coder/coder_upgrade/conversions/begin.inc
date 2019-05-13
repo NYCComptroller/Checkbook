@@ -140,7 +140,7 @@ function coder_upgrade_cache_info_hooks($item, $recursive = TRUE) {
         foreach ($functions as $function) {
 //          cdp("name = {$function->data->name}");
           if ($function->data->name == $_coder_upgrade_module_name . '_theme') {
-            $module_theme = eval($function->data->body->toString());
+            $module_theme = @eval($function->data->body->toString());
             foreach ($module_theme as $key => &$value) {
               $value['variables'] = isset($value['arguments']) ? $value['arguments'] : array();
               unset($value['arguments']);
