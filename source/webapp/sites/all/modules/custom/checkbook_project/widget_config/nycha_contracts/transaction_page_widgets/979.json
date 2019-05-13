@@ -29,7 +29,10 @@
   "exportConfigNid":997,
   "getTotalDataCount":true,
   "limit":"35",
-  "sortSourceByNull":["release_line_spend_to_date","release_line_total_amount","release_line_original_amount"],
+  "sortSourceByNull":["release_line_spend_to_date","release_line_total_amount","release_line_original_amount","release_number","line_number","shipment_number","distribution_number","release_approved_date","location_descr","grant_name",
+    "expenditure_type_descr","funding_source_descr", "responsibility_center_descr", "program_phase_descr",
+    "gl_project_descr"
+  ],
   "noDataInitialLoad":true,
   "html_class":"initiative-table",
   "no_results_content":"No Results Found",
