@@ -6,6 +6,9 @@
       },
       "nycha_vendor": {
         "widget_config":"nycha_vendor_view"
+      },
+      "nycha_contracts": {
+        "widget_config":"nycha_contracts_view"
       }
     }
   }
