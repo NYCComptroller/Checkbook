@@ -95,8 +95,14 @@ $node->show_difference = ($contract_type== 'BAM'||$contract_type== 'PAM');
       "expression": " '<a href=\"'.
        NychaContractsUrlService::contractDetailsUrl($row['contract_id']).  '\">'. $row['contract_id']. '</a>'  "
       },
+      "agreement_start_date": {
+        "expression":"(strtolower($row['agreement_type_code']) == 'po')? 'N/A' : $row['agreement_start_date']"
+      },
+      "agreement_end_date": {
+        "expression":"(strtolower($row['agreement_type_code']) == 'po')? 'N/A' : $row['agreement_end_date']"
+      },
       "formatted_dollar_diff": {
-      "expression":"custom_number_formatter_basic_format($row['agreement_amount_difference'])"
+        "expression":"custom_number_formatter_basic_format($row['agreement_amount_difference'])"
       },
       "formatted_percent_diff": {
       "expression":"round($row['agreement_percent_difference'],2). '%'"
