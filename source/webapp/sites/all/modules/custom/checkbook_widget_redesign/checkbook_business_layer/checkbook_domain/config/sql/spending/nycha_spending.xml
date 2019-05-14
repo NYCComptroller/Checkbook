@@ -35,4 +35,97 @@
       </where>
     </sql>
   </statement>
+  <!--GetNychaSpendingByVendors-->
+  <!--- Need to change the query one nycha dataset is ready-->
+  <statement name="GetNychaSpendingByVendors" datasource="checkbook">
+    <param name="year" required ="true" type="int" />
+    <param name="agency" type="int" />
+    <param name="vendor" type="int" />
+    <param name="fvendor" type="int" />
+    <param name="category" type="int" />
+    <param name="industry" type="int" />
+    <param name="mwbe"/>
+    <param name="is_all_categories" type="string"/>
+    <sql>
+      SELECT
+      <exp op="IF" condition="&lt;&gt;" paramName="mwbe" compareValue="">
+        a.minority_type_id as prime_minority_type_id,
+      </exp>
+      a.year_id AS year,
+      a.vendor_id as prime_vendor_id,
+      b.legal_name AS prime_vendor_name,
+      SUM(COALESCE(total_spending_amount,0)) AS check_amount_sum,
+      MAX(COALESCE(total_contract_amount,0)) AS total_contract_amount_sum,
+      SUM(total_spending_amount)/MAX(total.check_amount)*100 as percent_spending
+      <exp op="IF" condition="&lt;&gt;" paramName="mwbe" compareValue="">
+        FROM aggregateon_mwbe_spending_vendor a
+      </exp>
+      <exp op="IF" condition="=" paramName="mwbe" compareValue="">
+        FROM aggregateon_spending_vendor a
+      </exp>
+      JOIN vendor b ON b.vendor_id = a.vendor_id
+      JOIN
+      (
+      SELECT SUM(total_spending_amount) AS check_amount
+      FROM aggregateon_mwbe_spending_vendor
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="year_id" paramName="year" />
+          <exp op="=" dbField="vendor_id" paramName="vendor" />
+          <exp op="=" dbField="vendor_id" paramName="fvendor" />
+          <!--<exp op="=" dbField="agency_id" paramName="agency" /> -->
+          <exp op="=" dbField="spending_category_id" paramName="category" />
+          <exp op="=" dbField="industry_type_id" paramName="industry" />
+          <exp op="IN" dbField="minority_type_id" paramName="mwbe" />
+          <exp op="=" dbField="is_all_categories" paramName="is_all_categories" />
+        </exp>
+      </where>
+      ) total on 1 = 1
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="a.year_id" paramName="year" />
+          <exp op="IN" dbField="a.minority_type_id" paramName="mwbe"/>
+          <exp op="=" dbField="a.spending_category_id" paramName="category" />
+          <exp op="=" dbField="a.vendor_id" paramName="vendor" />
+          <exp op="=" dbField="a.vendor_id" paramName="fvendor" />
+          <!--<exp op="=" dbField="agency_id" paramName="agency" /> -->
+          <exp op="=" dbField="a.industry_type_id" paramName="industry" />
+          <exp op="IN" dbField="minority_type_id" paramName="mwbe" />
+          <exp op="=" dbField="is_all_categories" paramName="is_all_categories" />
+        </exp>
+      </where>
+      <exp op="IF" condition="&lt;&gt;" paramName="mwbe" compareValue="">
+        GROUP BY a.vendor_id, a.year_id, b.legal_name, a.minority_type_id
+      </exp>
+      <exp op="IF" condition="=" paramName="mwbe" compareValue="">
+        GROUP BY a.vendor_id, a.year_id, b.legal_name
+      </exp>
+    </sql>
+  </statement>
+  <!--GetCountVendors-->
+  <statement name="GetCountVendors" datasource="checkbook">
+    <param name="year" required ="true" type="int" />
+    <param name="agency" type="int" />
+    <param name="vendor" type="int" />
+    <param name="fvendor" type="int" />
+    <param name="category" type="int" />
+    <param name="industry" type="int" />
+    <param name="mwbe"/>
+    <param name="is_all_categories" type="string"/>
+    <sql>
+      SELECT DISTINCT a.vendor_id FROM aggregateon_mwbe_spending_vendor a
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="a.year_id" paramName="year" />
+          <exp op="IN" dbField="a.minority_type_id" paramName="mwbe"/>
+          <exp op="=" dbField="a.spending_category_id" paramName="category" />
+          <exp op="=" dbField="a.vendor_id" paramName="vendor" />
+          <exp op="=" dbField="a.vendor_id" paramName="fvendor" />
+          <!--<exp op="=" dbField="agency_id" paramName="agency" /> -->
+          <exp op="=" dbField="a.industry_type_id" paramName="industry" />
+          <exp op="=" dbField="is_all_categories" paramName="is_all_categories" />
+        </exp>
+      </where>
+    </sql>
+  </statement>
 </statements>
