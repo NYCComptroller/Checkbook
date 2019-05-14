@@ -3,6 +3,9 @@
     "landing_page_widgets": {
       "nycha_checks":{
         "widget_config":"nycha_checks_view"
+      },
+      "nycha_vendor": {
+        "widget_config":"nycha_vendor_view"
       }
     }
   }
