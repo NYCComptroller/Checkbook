@@ -102,6 +102,7 @@ class WidgetUtil
         "prime_contract_industry" => "Prime Contract Industry",
         "sub_contract_industry" => "Sub Contract Industry",
         "title" => "Title",
+        "vendor"=>"Vendor",
         "month" => "Month",
         "amount" => "Amount",
         "payroll_type" => "Payroll<br/>Type",
