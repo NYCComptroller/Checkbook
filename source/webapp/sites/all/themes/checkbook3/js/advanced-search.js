@@ -153,7 +153,7 @@
                         $("#payroll-advanced-search").addClass('transparent');
                         $(".advanced-search-accordion").addClass('transparent');
                         $("#block-checkbook-advanced-search-checkbook-advanced-search-form").addClass('disable_me');
-                        $("#block-checkbook-advanced-search-checkbook-advanced-search-form :input").attr("disabled", "disabled");
+                        disable_input("#block-checkbook-advanced-search-checkbook-advanced-search-form :input");
                     }, 1);
                 }
 
@@ -177,16 +177,16 @@
                 $(document).bind("ajaxSend", function () {
                     setTimeout(function () {
                         //Advanced search
-                        $('.adv-search-submit-btn').attr("disabled", "true");
+                        disable_input('.adv-search-submit-btn');
                         //create alert
-                        $('.create-alert-next-btn').attr("disabled", "true");
+                        disable_input('.create-alert-next-btn');
                     }, 1);
                 }).bind("ajaxComplete", function () {
                     setTimeout(function () {
                         //Advanced search
-                        $('.adv-search-submit-btn').removeAttr('disabled');
+                        enable_input('.adv-search-submit-btn');
                         //Create alert
-                        $('.create-alert-next-btn').removeAttr('disabled');
+                        enable_input('.create-alert-next-btn');
                     }, 1);
                 });
             }
@@ -295,13 +295,16 @@
                 });
 
                 $('#edit-budget-clear').click(function () {
-                    $('#edit-budget-expense-category').attr("disabled", "disabled");
-                    $('#edit-budget-department').attr("disabled", "disabled");
+                  disable_input([
+                    '#edit-budget-expense-category',
+                    '#edit-budget-department'
+                  ]);
                 });
             }
 
 // advanced-search-clear-button
-            function clearInputFields(enclosingDiv, domain, dataSource = null) {
+            function clearInputFields(enclosingDiv, domain, dataSourceName) {
+                var dataSource = dataSourceName || null;
                 $(enclosingDiv).find(':input').each(function () {
                     switch (this.type) {
                         case 'select-one':
@@ -314,6 +317,7 @@
                             break;
                         case 'text':
                             $(this).val('');
+                            $(this).removeAttr('storedvalue');
                             break;
                         case 'select-multiple':
                         case 'password':
@@ -335,8 +339,10 @@
                 switch (domain) {
                     case 'budget':
                          // Disable dynamic drop-downs
-                        $('#edit-budget-expense-category').attr("disabled", "disabled");
-                        $('#edit-budget-department').attr("disabled", "disabled");
+                        disable_input([
+                          '#edit-budget-expense-category',
+                          '#edit-budget-department'
+                          ]);
                         $('#edit-budget-budget-code').val("0").trigger("chosen:updated");
                         $('#edit-budget-budget-name').val("0").trigger("chosen:updated");
                         reloadBudgetCode();
@@ -491,11 +497,11 @@
 
                 //
                 $("#edit-checkbook-oge-contracts-agency").change(function () {
-                    onOGEAgencyChange(jQuery("#edit-checkbook-oge-contracts-agency option:selected").attr('title').toUpperCase());
+                    onOGEAgencyChange($("#edit-checkbook-oge-contracts-agency option:selected").attr('title').toUpperCase());
                 });
 
                 function onOGEAgencyChange(oge_agency){
-                  if(oge_agency == 'NEW YORK CITY HOUSING AUTHORITY'){
+                  if('NEW YORK CITY HOUSING AUTHORITY' === oge_agency){
                     $(".form-item-checkbook-oge-contracts-purchase-order-type").show();
                     $(".form-item-checkbook-oge-contracts-purchase-order-number").show();
                     $(".form-item-checkbook-oge-contracts-responsibility-center").show();
@@ -535,6 +541,36 @@
                     $(".form-item-checkbook-oge-contracts-award-method").show();
                   }
                 }
+
+              $('#edit-checkbook-oge-contracts-purchase-order-type').change(function(){
+                onAgreementTypeChange();
+              });
+
+              function onAgreementTypeChange(){
+                var oge_agency = $("#edit-checkbook-oge-contracts-agency option:selected").attr('title').toUpperCase();
+                var agreement_type = $("#edit-checkbook-oge-contracts-purchase-order-type option:selected").val().toUpperCase();
+
+                if ('NEW YORK CITY HOUSING AUTHORITY' !== oge_agency) {
+                  return;
+                }
+
+                switch (agreement_type) {
+                  case 'PO':
+                    disable_input(['.form-item-start-date :input','.form-item-end-date :input']);
+                    enable_input('.form-item-approved-date :input');
+                    break;
+                  case 'BA':
+                  case 'PA':
+                    enable_input(['.form-item-start-date :input','.form-item-end-date :input']);
+                    disable_input('.form-item-approved-date :input');
+                    break;
+                  case 'ALL':
+                  default:
+                    disable_input(['.form-item-start-date :input','.form-item-end-date :input']);
+                    disable_input('.form-item-approved-date :input');
+                    break;
+                }
+              }
 
                 function showHidePrimeAndSubFields(div) {
 
@@ -620,6 +656,7 @@
 
                             //Hide NYCHA fields
                             onOGEAgencyChange(jQuery("#edit-checkbook-oge-contracts-agency option:selected").attr('title').toUpperCase());
+                            onAgreementTypeChange();
 
                             //handle oge attributes
                             div_checkbook_contracts_oge.ele('status').find('option[value=P]').remove();
@@ -1587,8 +1624,10 @@
                 $('.create-alert-customize-results').css('display', 'none');
                 $('.create-alert-schedule-alert').css('display', 'none');
                 $('.create-alert-confirmation').css('display', 'none');
-                $('#edit-next-submit').attr('disabled', true);
-                $('#edit-back-submit').attr('disabled', true);
+                disable_input([
+                  '#edit-next-submit',
+                  '#edit-back-submit'
+                ]);
                 $('.create-alert-submit').css('display', 'none');
                 $('div.ui-dialog-titlebar').css('width', 'auto');
                 switch (accordion_type) {
@@ -1733,12 +1772,15 @@
                 /* Do not enable next buttons for results page here */
                 var step = $('input:hidden[name="step"]').val();
                 if (step === 'select_criteria') {
-                    $('#edit-next-submit').attr('disabled', true);
-                    $('#edit-back-submit').attr('disabled', true);
-                }
-                else if (step === 'schedule_alert') {
-                    $('#edit-next-submit').attr('disabled', false);
-                    $('#edit-back-submit').attr('disabled', false);
+                    disable_input([
+                      '#edit-next-submit',
+                      '#edit-back-submit'
+                    ]);
+                } else if (step === 'schedule_alert') {
+                    enable_input([
+                      '#edit-next-submit',
+                      '#edit-back-submit'
+                    ]);
                     $('a.ui-dialog-titlebar-close').show();
                     $('#advanced-search-rotator').css('display', 'none');
 
@@ -1747,7 +1789,7 @@
                     $('.create-alert-results-loading').css('display', 'none');
                 }
                 else {
-                    $('#edit-back-submit').attr('disabled', true);
+                  disable_input('#edit-back-submit');
                 }
 
                 $('.tableHeader').each(function (i) {
@@ -1831,8 +1873,10 @@
 
                         /* Buttons */
                         $('div.create-alert-submit #edit-next-submit').val('Schedule Alert');
-                        $('#edit-next-submit').attr('disabled', true);
-                        $('#edit-back-submit').attr('disabled', true);
+                        disable_input([
+                          '#edit-next-submit',
+                          '#edit-back-submit'
+                        ]);
                         $('#edit-next-submit').css('display', 'inline');
                         $('#edit-back-submit').css('display', 'inline');
 
@@ -1886,7 +1930,7 @@
                         previous_step = 'select_criteria';
 
                         //enable form
-                        $("#block-checkbook-advanced-search-checkbook-advanced-search-form :input").removeAttr("disabled");
+                        enable_input("#block-checkbook-advanced-search-checkbook-advanced-search-form :input");
 
                         /* Update width of dialog dimension */
                         $('div.ui-dialog-titlebar').css('width', 'auto');
@@ -1954,7 +1998,7 @@
                         $('#edit-back-submit').css('display', 'inline');
 
                         /* Enable Next button on back to results page  */
-                        $('#edit-next-submit').attr('disabled', false);
+                        enable_input('#edit-next-submit');
 
                         break;
 
@@ -2048,12 +2092,12 @@
                 if (alertMsgs.length > 0) {
                     $(alertDiv).find('#errorMessages').html('Below errors must be corrected:<div class="error-message"><ul>' + '<li>' + alertMsgs.join('</li><li>') + '</li></ul></div>');
                     /* back button needs to be enabled*/
-                    $('#edit-back-submit').attr('disabled', false);
+                    enable_input('#edit-back-submit');
                     /* Update hidden field for new step */
                     $('input:hidden[name="step"]').val('schedule_alert');
                 } else {
                     $('a.ui-dialog-titlebar-close').hide();
-                    $('#edit-next-submit').attr('disabled', true);
+                    disable_input('#edit-next-submit');
                     create_alert_loading();
                     $(".create-alert-view").addClass('transparent');
                     $(".create-alert-view").addClass('disable_me');
@@ -2101,7 +2145,7 @@
                             });
                         } else {
                             /* back button needs to be enabled*/
-                            $('#edit-back-submit').attr('disabled', false);
+                            disable_input('#edit-back-submit');
                             /* Update hidden field for new step */
                             $('input:hidden[name="step"]').val('schedule_alert');
 
@@ -2237,12 +2281,12 @@
                 });
 
                 $('#edit-next-submit').once('createAlertNextSubmit').click(function (event) {
-                    $('#edit-back-submit').attr('disabled', true);
+                    disable_input('#edit-back-submit');
                     $.fn.onScheduleAlertNextClick($('input:hidden[name="step"]').val());
                     event.preventDefault();
                 });
                 $('#edit-back-submit').once('createAlertBackSubmit').click(function (event) {
-                    $('#edit-next-submit').attr('disabled', true);
+                    disable_input('#edit-next-submit');
                     $.fn.onScheduleAlertBackClick($('input:hidden[name="step"]').val());
                     create_alert_form_enable();
                     event.preventDefault();
@@ -2431,6 +2475,7 @@
                     break;
                 case 'text':
                     $(this).val('');
+                    $(this).removeAttr('storedvalue');
                     break;
                 case 'select-multiple':
                 case 'password':
@@ -2459,83 +2504,131 @@
     function disableInputFields(){
         /****************disabling Budget fields*****************/
         if($('#edit-budget-agencies').val() === '0'){
-            $('#edit-budget-department').attr("disabled", "disabled");
-            $('#edit-budget-expense-category').attr("disabled", "disabled");
+            disable_input([
+              '#edit-budget-department',
+              '#edit-budget-expense-category'
+            ]);
         }
         if($('#edit-budget-department').val() === '0'){
-            $('#edit-budget-expense-category').attr("disabled", "disabled");
+            disable_input('#edit-budget-expense-category');
         }
 
         /****************disabling Spending fields*****************/
             //Agency, Department and Expense Category
         var spending_data_source = $('input:radio[name=spending_advanced_search_domain_filter]:checked').val();
         if ($('select[name='+spending_data_source+'_spending_agency]').val() === '0') {
-            $('select[name='+spending_data_source+'_spending_department]').attr("disabled", "disabled");
-            $('select[name='+spending_data_source+'_spending_expense_category]').attr("disabled", "disabled");
+            disable_input([
+              'select[name='+spending_data_source+'_spending_department]',
+              'select[name='+spending_data_source+'_spending_expense_category]'
+            ]);
         }
         if($('select[name='+spending_data_source+'_spending_department]').val() === '0'){
-            $('select[name='+spending_data_source+'_spending_expense_category]').attr("disabled", "disabled");
+            disable_input('select[name='+spending_data_source+'_spending_expense_category]');
         }
 
         //Spending Category, Contract ID and Payee Name
         if ($('select[name='+spending_data_source+'_spending_expense_type]').val() == '2') {
-            $('input:text[name='+spending_data_source+'_spending_contract_num]').attr("disabled", "disabled");
-            $('input:text[name='+spending_data_source+'_spending_contract_num]').val("");
-            $('input:text[name='+spending_data_source+'_spending_payee_name]').attr("disabled", "disabled");
-           $('input:text[name='+spending_data_source+'_spending_payee_name]').val("");
-        }
-        else if ($('select[name='+spending_data_source+'_spending_expense_type]').val() === '4') {
-            $('input:text[name='+spending_data_source+'_spending_contract_num]').attr("disabled", "disabled");
-            $('input:text[name='+spending_data_source+'_spending_contract_num]').val("");
+          disable_input([
+            'input:text[name='+spending_data_source+'_spending_contract_num]',
+            'input:text[name='+spending_data_source+'_spending_payee_name]'
+          ]);
+        } else if ($('select[name='+spending_data_source+'_spending_expense_type]').val() === '4') {
+            disable_input('input:text[name='+spending_data_source+'_spending_contract_num]');
         }
 
         //Date Filter
         var value = $('input:radio[name='+spending_data_source+'_spending_date_filter]:checked').val();
         if (value === '0') {
-            $('select[name="'+spending_data_source+'_spending_fiscal_year"]').attr('disabled', '');
-            $('input:text[name="'+spending_data_source+'_spending_issue_date_from[date]"]').attr('disabled', 'disabled');
-            $('input:text[name="'+spending_data_source+'_spending_issue_date_to[date]"]').attr('disabled', 'disabled');
+            enable_input('select[name="'+spending_data_source+'_spending_fiscal_year"]');
+            disable_input('input:text[name="'+spending_data_source+'_spending_issue_date_from[date]"]');
+            disable_input('input:text[name="'+spending_data_source+'_spending_issue_date_to[date]"]');
         } else if (value === '1') {
-            $('select[name="'+spending_data_source+'_spending_fiscal_year"]').attr('disabled', 'disabled');
+            disable_input('select[name="'+spending_data_source+'_spending_fiscal_year"]');
         }
 
         /****************disabling Contracts fields*****************/
         var contracts_data_source = $('input:radio[name=contracts_advanced_search_domain_filter]:checked').val();
 
         //If the datasource is 'OGE'
-        if(contracts_data_source === 'checkbook_oge'){
-            $('input:text[name='+contracts_data_source+'_contracts_apt_pin]').attr('disabled','disabled');
-            $('input:text[name="'+contracts_data_source+'_contracts_received_date_from[date]"]').attr('disabled','disabled');
-            $('input:text[name="'+contracts_data_source+'_contracts_received_date_to[date]"]').attr('disabled','disabled');
-            $('input:text[name="'+contracts_data_source+'_contracts_registration_date_from[date]"]').attr('disabled','disabled');
-            $('input:text[name="'+contracts_data_source+'_contracts_registration_date_to[date]"]').attr('disabled','disabled');
+        if(contracts_data_source === 'checkbook_oge') {
+          disable_input([
+            'input:text[name=' + contracts_data_source + '_contracts_apt_pin]',
+            'input:text[name="' + contracts_data_source + '_contracts_received_date_from[date]"]',
+            'input:text[name="' + contracts_data_source + '_contracts_received_date_to[date]"]',
+            'input:text[name="' + contracts_data_source + '_contracts_registration_date_from[date]"]',
+            'input:text[name="' + contracts_data_source + '_contracts_registration_date_to[date]"]'
+          ]);
         }
 
         //upon 'Status' change
         var contract_status = $('select[name='+contracts_data_source+'_contracts_status]').val();
         if (contract_status === 'P') {
             if(contracts_data_source === 'checkbook') {
-                $('input:text[name="'+contracts_data_source+'_contracts_registration_date_from[date]"]').attr('disabled','disabled');
-                $('input:text[name="'+contracts_data_source+'_contracts_registration_date_to[date]"]').attr('disabled','disabled');
+              disable_input([
+                'input:text[name="'+contracts_data_source+'_contracts_registration_date_from[date]"]',
+                'input:text[name="'+contracts_data_source+'_contracts_registration_date_to[date]"]'
+              ]);
             }
-            $('select[name="'+contracts_data_source+'_contracts_year"]').attr("disabled", "disabled");
+            disable_input('select[name="'+contracts_data_source+'_contracts_year"]');
         } else {
-            $('input:text[name="'+contracts_data_source+'_contracts_received_date_from[date]"]').attr('disabled','disabled');
-            $('input:text[name="'+contracts_data_source+'_contracts_received_date_to[date]"]').attr('disabled','disabled');
+            disable_input([
+              'input:text[name="'+contracts_data_source+'_contracts_received_date_from[date]"]',
+              'input:text[name="'+contracts_data_source+'_contracts_received_date_to[date]"]'
+            ]);
         }
 
         //upon 'Incudes Sub Vendor' change
         var includes_sub_vendors = $('select[name="'+contracts_data_source+'_contracts_includes_sub_vendors"]').val();
         if(includes_sub_vendors === '3' || includes_sub_vendors === '1' ) {
-            $('select[name="'+contracts_data_source+'_contracts_sub_vendor_status"]').attr("disabled", "disabled");
+            disable_input('select[name="'+contracts_data_source+'_contracts_sub_vendor_status"]');
         }
 
         //upon 'Category' change
         var contract_category = $('select[name='+contracts_data_source+'_contracts_category]').val();
         if (contract_status === 'P' || contract_category === 'revenue') {
-            $('select[name="'+contracts_data_source+'_contracts_includes_sub_vendors"]').attr("disabled", "disabled");
-            $('select[name="'+contracts_data_source+'_contracts_sub_vendor_status"]').attr("disabled", "disabled");
+            disable_input([
+              'select[name="' + contracts_data_source + '_contracts_includes_sub_vendors"]',
+              'select[name="' + contracts_data_source + '_contracts_sub_vendor_status"]'
+            ]);
         }
     }
+
+  function disable_input(selector){
+    if(Array.isArray(selector)) {
+      selector.forEach(disable_input);
+      return;
+    }
+    $(selector).each(function () {
+      $(this).attr('disabled','disabled');
+
+      // store value
+      if ('text' == $(this).attr('type')) {
+        if ($(this).val()){
+          $(this).attr('storedvalue', $(this).val());
+        }
+        $(this).val('');
+      }
+    })
+  }
+
+  function enable_input(selector){
+    if(Array.isArray(selector)) {
+      selector.forEach(enable_input);
+      return;
+    }
+
+    $(selector).each(function () {
+      $(this).removeAttr('disabled');
+
+      // restore value
+      if ('text' == $(this).attr('type')) {
+        if ($(this).attr('storedvalue')){
+          $(this).val($(this).attr('storedvalue'));
+        }
+        $(this).removeAttr('storedvalue');
+      }
+    })
+  }
+
 }(jQuery));
 
