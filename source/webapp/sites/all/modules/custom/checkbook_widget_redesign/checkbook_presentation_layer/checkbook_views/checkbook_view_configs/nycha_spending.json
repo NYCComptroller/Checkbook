@@ -12,6 +12,10 @@
       },
       "nycha_expense_categories": {
         "widget_config":"nycha_expense_categories_view"
+      },
+      "nycha_spending_by_industries":
+      {
+        "widget_config":"nycha_spending_by_industries_view"
       }
     }
   }
