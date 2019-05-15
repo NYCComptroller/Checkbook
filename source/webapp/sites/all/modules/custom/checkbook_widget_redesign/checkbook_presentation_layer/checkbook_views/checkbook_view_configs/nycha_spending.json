@@ -9,6 +9,9 @@
       },
       "nycha_contracts": {
         "widget_config":"nycha_contracts_view"
+      },
+      "nycha_expense_categories": {
+        "widget_config":"nycha_expense_categories_view"
       }
     }
   }
