@@ -102,6 +102,48 @@
       </exp>
     </sql>
   </statement>
+  <!--GetNychaSpendingByContracts-->
+  <statement name="GetNychaSpendingByContracts" datasource="checkbook">
+    <param name="year" required ="true" type="int" />
+    <param name="agency" type="int" />
+    <param name="vendor" type="int" />
+    <param name="fvendor" type="int" />
+    <param name="category" type="int" />
+    <param name="industry" type="int" />
+    <param name="mwbe"/>
+    <param name="agid"/>
+    <param name="magid"/>
+    <sql>
+      SELECT
+      a.agency_name,
+      v.legal_name AS prime_vendor_name,
+      s0.agency_id,
+      s0.vendor_id as prime_vendor_id,
+      s0.description as contract_purpose,
+      s0.document_id,
+      s0.document_code,
+      s0.agreement_id,
+      SUM(COALESCE(total_spending_amount,0)) AS check_amount_sum,
+      MAX(COALESCE(total_contract_amount,0)) AS total_contract_amount_sum
+      FROM aggregateon_mwbe_spending_contract s0
+      JOIN vendor v ON v.vendor_id = s0.vendor_id
+      JOIN ref_agency a ON a.agency_id = s0.agency_id
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="s0.year_id" paramName="year" />
+          <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
+          <exp op="=" dbField="s0.vendor_id" paramName="fvendor" />
+          <exp op="=" dbField="s0.spending_category_id" paramName="category" />
+          <exp op="=" dbField="s0.industry_type_id" paramName="industry" />
+          <exp op="=" dbField="s0.agreement_id" paramName="agid" />
+          <exp op="=" dbField="s0.agreement_id" paramName="magid" />
+          <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
+        </exp>
+      </where>
+      GROUP BY s0.agency_id, s0.vendor_id, s0.description, s0.document_id, s0.agreement_id,
+      a.agency_name, v.legal_name, s0.document_code
+    </sql>
+  </statement>
   <!--GetCountVendors-->
   <statement name="GetCountVendors" datasource="checkbook">
     <param name="year" required ="true" type="int" />
@@ -124,6 +166,34 @@
           <!--<exp op="=" dbField="agency_id" paramName="agency" /> -->
           <exp op="=" dbField="a.industry_type_id" paramName="industry" />
           <exp op="=" dbField="is_all_categories" paramName="is_all_categories" />
+        </exp>
+      </where>
+    </sql>
+  </statement>
+  <!--GetCountContracts-->
+  <statement name="GetCountContracts" datasource="checkbook">
+    <param name="year" required ="true" type="int" />
+    <param name="agency" type="int" />
+    <param name="vendor" type="int" />
+    <param name="fvendor" type="int" />
+    <param name="category" type="int" />
+    <param name="industry" type="int" />
+    <param name="mwbe"/>
+    <param name="agid"/>
+    <param name="magid"/>
+    <sql>
+      SELECT DISTINCT s0.document_id AS document_id_document_id
+      FROM aggregateon_mwbe_spending_contract s0
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="s0.year_id" paramName="year" />
+          <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
+          <exp op="=" dbField="s0.vendor_id" paramName="fvendor" />
+          <exp op="=" dbField="s0.spending_category_id" paramName="category" />
+          <exp op="=" dbField="s0.industry_type_id" paramName="industry" />
+          <exp op="=" dbField="s0.agreement_id" paramName="agid" />
+          <exp op="=" dbField="s0.agreement_id" paramName="magid" />
+          <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
         </exp>
       </where>
     </sql>
