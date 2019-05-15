@@ -317,6 +317,7 @@
                             break;
                         case 'text':
                             $(this).val('');
+                            $(this).removeAttr('storedvalue');
                             break;
                         case 'select-multiple':
                         case 'password':
@@ -2474,6 +2475,7 @@
                     break;
                 case 'text':
                     $(this).val('');
+                    $(this).removeAttr('storedvalue');
                     break;
                 case 'select-multiple':
                 case 'password':
