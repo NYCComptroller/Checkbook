@@ -541,6 +541,7 @@ function _checkbook_smart_search_autocomplete()
         . "&terms.fl=minority_type_name"
         . "&terms.fl=revenue_category_name"
         . "&terms.fl=expenditure_object_name"
+        . "&terms.regex.flag=case_insensitive"
         . "&terms.regex=" . $search_term . "&wt=phps";
 
     $contents = _checkbook_smart_search_solr_results($query);
