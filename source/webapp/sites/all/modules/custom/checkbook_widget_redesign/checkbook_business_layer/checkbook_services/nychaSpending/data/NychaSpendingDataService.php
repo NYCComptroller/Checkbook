@@ -18,6 +18,12 @@ class NychaSpendingDataService extends DataService implements INychaSpendingData
     function GetNychaSpendingByIndustries($parameters, $limit = null, $orderBy = null){
         return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
     }
+    function GetNychaSpendingByProgram($parameters, $limit = null, $orderBy = null){
+        return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
+    }
+    function GetNychaSpendingByFundingSource($parameters, $limit = null, $orderBy = null){
+        return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
+    }
     function GetCountVendors($parameters) {
         return $this->configureNycha(__FUNCTION__,$parameters);
     }

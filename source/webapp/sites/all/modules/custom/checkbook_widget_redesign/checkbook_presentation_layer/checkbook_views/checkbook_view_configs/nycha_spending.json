@@ -16,6 +16,12 @@
       "nycha_spending_by_industries":
       {
         "widget_config":"nycha_spending_by_industries_view"
+      },
+      "nycha_spending_by_funding_source": {
+        "widget_config":"nycha_spending_by_funding_source_view"
+      },
+      "nycha_spending_by_program": {
+        "widget_config":"nycha_spending_by_program_view"
       }
     }
   }
