@@ -20,8 +20,8 @@
       "nycha_spending_by_funding_source": {
         "widget_config":"nycha_spending_by_funding_source_view"
       },
-      "nycha_spending_by_program": {
-        "widget_config":"nycha_spending_by_program_view"
+      "nycha_departments": {
+        "widget_config":"nycha_departments_view"
       },
       "nycha_section8_spending": {
         "widget_config":"nycha_section8_spending_view"
