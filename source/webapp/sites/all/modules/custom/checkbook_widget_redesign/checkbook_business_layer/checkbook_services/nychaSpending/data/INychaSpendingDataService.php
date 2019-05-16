@@ -5,6 +5,7 @@
  */
 interface INychaSpendingDataService {
   function GetNychaSpendingByChecks($parameters, $limit = null, $orderBy = null);
+    function GetNychaSpendingBySection8($parameters, $limit = null, $orderBy = null);
   function  GetNychaSpendingByVendors($parameters, $limit = null, $orderBy = null);
   function GetNychaSpendingByContracts($parameters, $limit = null, $orderBy = null);
   function GetNychaSpendingByExpenseCategories($parameters, $limit = null, $orderBy = null);
