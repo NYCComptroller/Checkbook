@@ -203,6 +203,8 @@ class WidgetUtil
         "revenue_source"=>"Revenue<br/>Source",
         "funding_class"=>"Funding<br/>Class",
         "fund_class"=>"Fund<br/>Class",
+        "funding_source"=>"Funding<br/>Source",
+        "program_name"=>"Program",
         "cls_classification_name"=>"Closing Classification<br/>Name",
         "other_years"=>"Other<br/>Years",
         "year"=>"Year",
