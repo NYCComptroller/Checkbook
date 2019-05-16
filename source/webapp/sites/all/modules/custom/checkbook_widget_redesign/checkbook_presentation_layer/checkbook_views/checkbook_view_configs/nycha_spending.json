@@ -22,6 +22,9 @@
       },
       "nycha_spending_by_program": {
         "widget_config":"nycha_spending_by_program_view"
+      },
+      "nycha_section8_spending": {
+        "widget_config":"nycha_section8_spending_view"
       }
     }
   }
