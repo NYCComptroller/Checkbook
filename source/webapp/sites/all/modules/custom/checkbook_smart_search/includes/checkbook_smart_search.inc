@@ -1349,7 +1349,7 @@ function _checkbook_smart_search_expensecategory_facet($page)
 
 function _checkbook_smart_search_ajax_results()
 {
-    $page = $_GET['page'];
+//    $page = $_GET['page'];
     $search_terms = explode('*|*', $_REQUEST['search_term']);
     $search_terms[0] = urldecode($search_terms[0]); //"Education"
 
