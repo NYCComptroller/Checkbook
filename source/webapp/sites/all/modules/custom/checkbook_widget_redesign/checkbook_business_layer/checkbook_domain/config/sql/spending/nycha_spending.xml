@@ -188,7 +188,7 @@
     </where>
     GROUP BY s1.original_expenditure_object_name, s0.expenditure_object_code
   </sql>
-    <!--GetNychaSpendingByExpenseCategories-->
+    <!--GetNychaSpendingByIndustries-->
     <!--Added sql of expense category citywide-->
 </statement>
   <statement name="GetNychaSpendingByIndustries" datasource="checkbook">
@@ -203,6 +203,96 @@
       SELECT
       s0.expenditure_object_code,
       s1.original_expenditure_object_name AS industry_name,
+      SUM(total_spending_amount) AS check_amount_sum,
+      SUM(total_spending_amount)/MAX(total.check_amount)*100 as percent_spending
+      FROM aggregateon_mwbe_spending_coa_entities s0
+      JOIN ref_expenditure_object s1 ON s1.expenditure_object_code = s0.expenditure_object_code AND s1.expenditure_object_id= s0.expenditure_object_id
+      JOIN
+      (
+      SELECT SUM(total_spending_amount) AS check_amount
+      FROM aggregateon_mwbe_spending_coa_entities
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="year_id" paramName="year" />
+          <exp op="=" dbField="vendor_id" paramName="vendor" />
+          <exp op="=" dbField="vendor_id" paramName="fvendor" />
+          <exp op="=" dbField="spending_category_id" paramName="category" />
+          <exp op="=" dbField="industry_type_id" paramName="industry" />
+          <exp op="IN" dbField="minority_type_id" paramName="mwbe" />
+        </exp>
+      </where>
+      ) total on 1 = 1
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="s0.year_id" paramName="year" />
+          <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
+          <exp op="=" dbField="s0.vendor_id" paramName="fvendor" />
+          <exp op="=" dbField="s0.spending_category_id" paramName="category" />
+          <exp op="=" dbField="s0.industry_type_id" paramName="industry" />
+          <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
+        </exp>
+      </where>
+      GROUP BY s1.original_expenditure_object_name, s0.expenditure_object_code
+    </sql>
+  </statement>
+  <!--GetNychaSpendingByFundingSource-->
+<statement name="GetNychaSpendingByFundingSource" datasource="checkbook">
+<param name="year" required ="true" type="int" />
+<param name="agency" type="int" />
+<param name="vendor" type="int" />
+<param name="fvendor" type="int" />
+<param name="category" type="int" />
+<param name="industry" type="int" />
+<param name="mwbe"/>
+<sql>
+  SELECT
+  s0.expenditure_object_code,
+  s1.original_expenditure_object_name AS funding_source_name,
+  SUM(total_spending_amount) AS check_amount_sum,
+  SUM(total_spending_amount)/MAX(total.check_amount)*100 as percent_spending
+  FROM aggregateon_mwbe_spending_coa_entities s0
+  JOIN ref_expenditure_object s1 ON s1.expenditure_object_code = s0.expenditure_object_code AND s1.expenditure_object_id= s0.expenditure_object_id
+  JOIN
+  (
+  SELECT SUM(total_spending_amount) AS check_amount
+  FROM aggregateon_mwbe_spending_coa_entities
+  <where>
+    <exp op="AND">
+      <exp op="=" dbField="year_id" paramName="year" />
+      <exp op="=" dbField="vendor_id" paramName="vendor" />
+      <exp op="=" dbField="vendor_id" paramName="fvendor" />
+      <exp op="=" dbField="spending_category_id" paramName="category" />
+      <exp op="=" dbField="industry_type_id" paramName="industry" />
+      <exp op="IN" dbField="minority_type_id" paramName="mwbe" />
+    </exp>
+  </where>
+  ) total on 1 = 1
+  <where>
+    <exp op="AND">
+      <exp op="=" dbField="s0.year_id" paramName="year" />
+      <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
+      <exp op="=" dbField="s0.vendor_id" paramName="fvendor" />
+      <exp op="=" dbField="s0.spending_category_id" paramName="category" />
+      <exp op="=" dbField="s0.industry_type_id" paramName="industry" />
+      <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
+    </exp>
+  </where>
+  GROUP BY s1.original_expenditure_object_name, s0.expenditure_object_code
+</sql>
+</statement>
+  <!--GetNychaSpendingByProgram-->
+  <statement name="GetNychaSpendingByProgram" datasource="checkbook">
+    <param name="year" required ="true" type="int" />
+    <param name="agency" type="int" />
+    <param name="vendor" type="int" />
+    <param name="fvendor" type="int" />
+    <param name="category" type="int" />
+    <param name="industry" type="int" />
+    <param name="mwbe"/>
+    <sql>
+      SELECT
+      s0.expenditure_object_code,
+      s1.original_expenditure_object_name AS program_name,
       SUM(total_spending_amount) AS check_amount_sum,
       SUM(total_spending_amount)/MAX(total.check_amount)*100 as percent_spending
       FROM aggregateon_mwbe_spending_coa_entities s0
