@@ -315,8 +315,8 @@
   GROUP BY s1.original_expenditure_object_name, s0.expenditure_object_code
 </sql>
 </statement>
-  <!--GetNychaSpendingByProgram-->
-  <statement name="GetNychaSpendingByProgram" datasource="checkbook">
+  <!--GetNychaSpendingByDepartment-->
+  <statement name="GetNychaSpendingByDepartment" datasource="checkbook">
     <param name="year" required ="true" type="int" />
     <param name="agency" type="int" />
     <param name="vendor" type="int" />
@@ -327,7 +327,7 @@
     <sql>
       SELECT
       s0.expenditure_object_code,
-      s1.original_expenditure_object_name AS program_name,
+      s1.original_expenditure_object_name AS department_name,
       SUM(total_spending_amount) AS check_amount_sum,
       SUM(total_spending_amount)/MAX(total.check_amount)*100 as percent_spending
       FROM aggregateon_mwbe_spending_coa_entities s0
