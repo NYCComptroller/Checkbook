@@ -61,8 +61,7 @@ switch ($arg){
     case 'nycha_contracts':
         $contracts_active = ' active';
         break;
-    case 'spending_landing':
-    case 'spending':
+    case 'nycha_spending':
         $spending_active = ' active';
         break;
     case 'payroll':
