@@ -358,11 +358,11 @@
       max(original_amount) as original_amount,
       max(spend_to_date) as spend_to_date
       from
-      contracts_widget_summary
+      release_widget_summary
       <where>
         <exp op="AND">
           <exp op="=" dbField="vendor_id" paramName="vendor"/>
-          <exp op="BETWEEN" paramName="year" dbField="start_year_id, end_year_id"/>
+          <exp op="=" paramName="year" dbField="release_approved_year_id"/>
           <exp op="IS NOT" dbField="responsibility_center_code">NULL</exp>
           <exp op="=" dbField="industry_type_id" paramName="industry"/>
           <exp op="=" dbField="award_size_id" paramName="csize"/>
