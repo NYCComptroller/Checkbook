@@ -108,7 +108,10 @@ $node->show_difference = ($contract_type== 'BAM'||$contract_type== 'PAM');
       "expression":"round($row['agreement_percent_difference'],2). '%'"
       },
       "release_number_formatted": {
-        "expression":"(strtolower($row['agreement_type_code']) == 'po')? 'N/A' : $row['release_number']"
+        "expression":"(strtolower($row['agreement_type_code']) == 'po')? 'N/A' : ($row['release_number'])== null ?'-' :$row['release_number']"
+      },
+      "shipment_number_formatted":{
+       "expression":"($row['shipment_number'])== null ?'-' :$row['shipment_number']"
       }
 },
   "skipCustomPadding":true,
@@ -118,7 +121,7 @@ $node->show_difference = ($contract_type== 'BAM'||$contract_type== 'PAM');
     {"labelAlias":"purchase_order_type","column":"agreement_type_name"},
     {"labelAlias":"release_number","column":"release_number_formatted","sortSourceColumn":"release_number"},
     {"labelAlias":"line_number","column":"line_number"},
-    {"labelAlias":"shipment_number","column":"shipment_number"},
+    {"labelAlias":"shipment_number","column":"shipment_number_formatted","sortSourceColumn":"shipment_number"},
     {"labelAlias":"distribution_number","column":"distribution_number"},
     {"labelAlias":"start_date","column":"agreement_start_date"},
     {"labelAlias":"end_date","column":"agreement_end_date"},
