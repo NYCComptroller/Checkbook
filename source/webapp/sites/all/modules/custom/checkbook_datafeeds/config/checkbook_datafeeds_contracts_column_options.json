@@ -320,7 +320,6 @@
                   "csv":{
                     "Approved Date":"Approved Date",
                     "Award Method":"Award Method",
-                    "Borough":"Borough",
                     "Commodity Category":"Commodity Category",
                     "Contract ID":"Contract ID",
                     "Contract Type":"Contract Type",
@@ -353,7 +352,6 @@
                   "xml":{
                     "approved_date":"approved_date",
                     "award_method":"award_method",
-                    "borough":"borough",
                     "commodity_category":"commodity_category",
                     "contract_id":"contract_id",
                     "contract_type":"contract_type",
