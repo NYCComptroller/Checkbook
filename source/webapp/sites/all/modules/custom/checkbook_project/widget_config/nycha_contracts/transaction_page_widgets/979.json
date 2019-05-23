@@ -29,20 +29,20 @@
   "exportConfigNid":997,
   "getTotalDataCount":true,
   "limit":"35",
-  "sortSourceByNull":["release_line_spend_to_date","release_line_total_amount","release_line_original_amount","release_number","line_number","shipment_number","distribution_number","release_approved_date","location_descr","grant_name",
+  "sortSourceByNull":["release_line_spend_to_date","release_line_total_amount","release_line_original_amount","release_number","item_description","shipment_number","distribution_number","release_approved_date","location_descr","grant_name",
     "expenditure_type_descr","funding_source_descr", "responsibility_center_descr", "program_phase_descr",
-    "gl_project_descr"
+    "gl_project_descr","item_category","item_qty_ordered"
   ],
   "noDataInitialLoad":true,
   "html_class":"initiative-table",
   "no_results_content":"No Results Found",
   "dataset":"checkbook_nycha:nycha_all_agreements",
-  "columns": ["line_number", "contract_id", "agreement_type_name", "agreement_type_code", "release_number", "shipment_number", "distribution_number", "agreement_start_date",
+  "columns": ["item_description", "item_category","contract_id", "agreement_type_name", "agreement_type_code", "release_number", "shipment_number", "distribution_number", "agreement_start_date",
     "agreement_end_date", "release_approved_date", "release_total_amount", "release_original_amount", "release_spend_to_date", "po_header_id",
-    "purpose", "vendor_name", "location_descr", "contract_type_descr", "award_method_name", "grant_name",
+    "purpose", "vendor_name", "location_descr", "contract_type_descr", "award_method_name", "grant_name","item_qty_ordered",
     "expenditure_type_descr", "display_industry_type_name", "funding_source_descr", "responsibility_center_descr", "program_phase_descr",
     "gl_project_descr", "commodity_category_descr","release_line_total_amount","vendor_id","release_line_total_amount","release_line_original_amount","release_line_spend_to_date","agreement_amount_difference","agreement_percent_difference"],
-  "uniqueSortColumn":["-release_number", "-line_number", "-shipment_number", "-distribution_number"],
+  "uniqueSortColumn":["-release_number", "-shipment_number", "-distribution_number"],
 "preProcessConfiguration":"
 $contract_type = RequestUtil::getContractType();
 $node->show_difference = ($contract_type== 'BAM'||$contract_type== 'PAM');
@@ -112,7 +112,10 @@ $node->show_difference = ($contract_type== 'BAM'||$contract_type== 'PAM');
       },
       "shipment_number_formatted":{
        "expression":"($row['shipment_number'])== null ?'-' :$row['shipment_number']"
-      }
+      },
+        "item_description_formatted":{
+        "expression": "_get_tooltip_markup($row['item_description'],36)"
+     }
 },
   "skipCustomPadding":true,
   "table_columns": [
@@ -120,9 +123,11 @@ $node->show_difference = ($contract_type== 'BAM'||$contract_type== 'PAM');
     {"label":"","column":"", "export":false},
     {"labelAlias":"purchase_order_type","column":"agreement_type_name"},
     {"labelAlias":"release_number","column":"release_number_formatted","sortSourceColumn":"release_number"},
-    {"labelAlias":"line_number","column":"line_number"},
+    {"labelAlias":"item_category","column":"item_category"},
+    {"labelAlias":"item_description","column":"item_description_formatted","sortSourceColumn":"item_description"},
+    {"labelAlias":"quantity_ordered","column":"item_qty_ordered"},
     {"labelAlias":"shipment_number","column":"shipment_number_formatted","sortSourceColumn":"shipment_number"},
-    {"labelAlias":"distribution_number","column":"distribution_number"},
+     {"labelAlias":"responsibility_center","column":"responsibility_center_descr_formatted","sortSourceColumn":"responsibility_center_descr"},
     {"labelAlias":"start_date","column":"agreement_start_date"},
     {"labelAlias":"end_date","column":"agreement_end_date"},
     {"labelAlias":"release_approved_date","column":"release_approved_date"},
@@ -141,11 +146,9 @@ $node->show_difference = ($contract_type== 'BAM'||$contract_type== 'PAM');
     {"labelAlias":"expenditure_type","column":"expenditure_type_descr_formatted","sortSourceColumn":"expenditure_type_descr"},
     {"labelAlias":"contract_industry","column":"display_industry_type_name"},
     {"labelAlias":"funding_source","column":"funding_source_descr_formatted","sortSourceColumn":"funding_source_descr"},
-    {"labelAlias":"responsibility_center","column":"responsibility_center_descr_formatted","sortSourceColumn":"responsibility_center_descr"},
     {"labelAlias":"pin","column":"po_header_id"},
     {"labelAlias":"program","column":"program_phase_descr_formatted","sortSourceColumn":"program_phase_descr"},
     {"labelAlias":"project","column":"gl_project_descr_formatted","sortSourceColumn":"gl_project_descr"},
-    {"labelAlias":"commodity_category","column":"commodity_category_descr_formatted","sortSourceColumn":"commodity_category_descr"},
     {"label":"","column":"", "export":false}
     ],
     "adjustParameters":"
@@ -177,9 +180,11 @@ $node->show_difference = ($contract_type== 'BAM'||$contract_type== 'PAM');
       {"bSortable":false,"sWidth":"50px"},
       {"sClass":"text", "sWidth":"150px","asSorting":["asc","desc"]},
       {"sClass":"number-center", "sWidth":"50px","asSorting":["asc","desc"]},
+      {"sClass":"number-center", "sWidth":"50px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"150px","asSorting":["asc","desc"]},
       {"sClass":"number-center", "sWidth":"75px","asSorting":["asc","desc"]},
       {"sClass":"number-center", "sWidth":"75px","asSorting":["asc","desc"]},
-      {"sClass":"number-center", "sWidth":"75px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"200px","asSorting":["asc","desc"]},
       {"sClass":"text", "sWidth":"100px","asSorting":["asc","desc"]},
       {"sClass":"text", "sWidth":"100px","asSorting":["asc","desc"]},
       {"sClass":"number", "sWidth":"110px","asSorting":["asc","desc"]},
@@ -201,8 +206,6 @@ $node->show_difference = ($contract_type== 'BAM'||$contract_type== 'PAM');
       {"sClass":"text", "sWidth":"220px","asSorting":["asc","desc"]},
       {"sClass":"text", "sWidth":"220px","asSorting":["asc","desc"]},
       {"sClass":"text", "sWidth":"220px","asSorting":["asc","desc"]},
-      {"sClass":"text", "sWidth":"220px","asSorting":["asc","desc"]},
-      {"sClass":"text", "sWidth":"180px","asSorting":["asc","desc"]},
       {"bSortable":false,"sWidth":"2px"}
     ],
     "aaSorting":[[0,"desc"]],
