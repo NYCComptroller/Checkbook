@@ -20,7 +20,6 @@
     {"labelAlias":"contract_purpose","column":"purpose"},
     {"labelAlias":"vendor_name","column":"vendor_name"},
     {"labelAlias":"location","column":"location_descr"},
-    {"labelAlias":"borough","column":"location_borough_name"},
     {"labelAlias":"contract_type","column":"contract_type_descr"},
     {"labelAlias":"award_method","column":"award_method_name"},
     {"labelAlias":"grant","column":"grant_name"},
