@@ -377,7 +377,7 @@
                       "pin":"pin",
                       "quantity_ordered": "quantity_ordered",
                     "release_number":"release_number",
-                      "Responsibility Center":"Responsibility Center",
+                      "responsibility_center":"responsibility_center",
                     "shipment_number":"shipment_number",
                     "start_date":"start_date",
                     "vendor":"vendor",
