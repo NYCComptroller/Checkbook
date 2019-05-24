@@ -30,8 +30,7 @@
     {"labelAlias":"funding_source","column":"funding_source_descr"},
     {"labelAlias":"pin","column":"po_header_id"},
     {"labelAlias":"program","column":"program_phase_descr"},
-    {"labelAlias":"project","column":"gl_project_descr"},
-    {"labelAlias":"commodity_category","column":"commodity_category_descr"}
+    {"labelAlias":"project","column":"gl_project_descr"}
   ],
   "preProcessConfiguration":"
   $contract_type = RequestUtil::getContractType();
