@@ -130,10 +130,7 @@ function checkMultivalueExistence(filterUrlValues, value){
  * Function to apply table filters
  *
  */
-function applyTableListFilters(chkd, val, urlPar){
-  var checked = chkd || null;
-  var value = val || null;
-  var urlParam = urlPar || null;
+function applyTableListFilters(checked=null, value=null, urlParam=null){
 	jQuery('input[type=checkbox]').attr("disabled", true);
     var cUrl = prepareTableListFilterUrl();
     if(checked == false && urlParam !== null && value !== null){
