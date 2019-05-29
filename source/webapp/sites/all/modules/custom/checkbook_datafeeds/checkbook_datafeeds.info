@@ -19,6 +19,7 @@ name = Checkbook Data Feeds
 description = Data Feeds functionality for Checkbook 2.0
 core = 7.x
 version = 2.0
+php = 7.2
 package = NYC Checkbook
 dependencies[] = checkbook_autocomplete
 dependencies[] = checkbook_api

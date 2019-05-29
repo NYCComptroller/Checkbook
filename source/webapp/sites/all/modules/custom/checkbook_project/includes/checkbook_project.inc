@@ -2349,6 +2349,26 @@ function _checkbook_get_oge_agency_id($vendor_id)
 }
 
 /**
+ * Return citywide/edc/nycha current domain
+ * @return string
+ */
+function _checkbook_get_domain()
+{
+    $url = '//'.current_path();
+
+    if (strpos($url, '/nycha')){
+      return 'nycha';
+    }
+
+    if (strpos($url, 'agency/9000')
+      || strpos($url, '/edc')){
+      return 'edc';
+    }
+
+    return 'citywide';
+}
+
+/**
  * @param $agency_id
  *
  * @return string

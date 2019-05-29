@@ -18,6 +18,7 @@
 name = Checkbook Advanced Search
 description = Module to display the advanced search form in a dialog box with accordion to identify different buckets.
 core = 7.x
+php = 7.2
 package = NYC Checkbook
 dependencies[] = checkbook_project
 

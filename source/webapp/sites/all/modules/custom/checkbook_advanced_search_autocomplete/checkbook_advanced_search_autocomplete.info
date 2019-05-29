@@ -18,4 +18,5 @@
 name = Checkbook Advanced Search Autocomplete
 description = Sets up menu items to provide data to checkbook_advanced_search. This module is exclusively used for autocomplete features for Advanced Search
 core = 7.x
+php = 7.2
 package = NYC Checkbook
