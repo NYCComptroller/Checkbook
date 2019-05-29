@@ -53,13 +53,3 @@ foreach($domain_record_counts as $domain_record_count) {
     }
     $total_records +=  $domain_count[1];
 }
-
-
-//$output = '<div id="dialog">
-//    <div id="errorMessages"></div>
-//    <p>Type of Data<span>*</span>:</p>
-//</div>
-//<span id="export-message">
-//</span>';
-//
-//print $output;

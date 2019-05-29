@@ -18,4 +18,5 @@
 name = "Checkbook Purify and Prepare"
 description = "Checkbook 2.0-specific Purify and Prepare"
 core = 7.x
+php = 7.2
 package = NYC Checkbook

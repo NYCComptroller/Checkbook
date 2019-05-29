@@ -1235,31 +1235,6 @@ function _checkbook_autocomplete_get_start_end_dates($year, $domain = NULL, $sta
 }
 
 /**
- * Replaces and encodes the special characters in the given string.
- *
- * @param string $string
- *   String that needs escaping
- *
- * @return string
- *   Escaped string
- */
-function _checkbook_autocomplete_escapeSolrValue($string) {
-  /**
-   * DO NOT CHANGE ORDER, BACKSLASH MUST BE FIRST
-   */
-  $escape_chars = explode(' ', '\\ + - & | ! ( ) { } [ ] ^ " ~ * ? : /');
-  $replace_to = [];
-  foreach($escape_chars as $char) {
-    $replace_to[] = "\\".$char;
-  }
-  $return = str_replace($escape_chars, $replace_to, $string);
-  $return = urlencode($return);
-
-//  LogHelper::log_notice("$string => $return");
-  return $return;
-}
-
-/**
  * Get search term from $_REQUEST.
  *
  * @return string
@@ -1270,13 +1245,13 @@ function _get_autocomplete_search_term() {
     if (strlen($term) > 0) {
         $autocomplete_text = trim(htmlspecialchars_decode($term, ENT_QUOTES));
         $autocomplete_terms = explode(' ', $autocomplete_text);
-        $autocomplete_text = _checkbook_autocomplete_escapeSolrValue(trim(htmlspecialchars_decode($term), ENT_QUOTES));
+        $autocomplete_text = Checkbook_solr::escape(trim(htmlspecialchars_decode($term), ENT_QUOTES));
 
         if (count($autocomplete_terms) > 0) {
             $autocomplete_text = "";
             foreach ($autocomplete_terms as $key => $value) {
                 if (strlen($value) > 0) {
-                    $autocomplete_text .= _checkbook_autocomplete_escapeSolrValue($value) . "*%20AND%20";
+                    $autocomplete_text .= Checkbook_solr::escape($value) . "*%20AND%20";
                 }
             }
             $search_term = "(" . substr($autocomplete_text, 0, -9) . ")";
@@ -1303,13 +1278,13 @@ function _get_autocomplete_search_term_facet_prefix() {
     if (strlen($term) > 0) {
         $autocomplete_text = trim(htmlspecialchars_decode($term, ENT_QUOTES));
         $autocomplete_terms = explode(' ', $autocomplete_text);
-        $autocomplete_text = _checkbook_autocomplete_escapeSolrValue(trim(htmlspecialchars_decode($term), ENT_QUOTES));
+        $autocomplete_text = Checkbook_solr::escape(trim(htmlspecialchars_decode($term), ENT_QUOTES));
 
         if (count($autocomplete_terms) > 0) {
             $autocomplete_text = "";
             foreach ($autocomplete_terms as $key => $value) {
                 if (strlen($value) > 0) {
-                    $autocomplete_text .= _checkbook_autocomplete_escapeSolrValue($value) . "%20AND%20";
+                    $autocomplete_text .= Checkbook_solr::escape($value) . "%20AND%20";
                 }
             }
             $search_term =substr($autocomplete_text, 0, -9);
@@ -1337,17 +1312,8 @@ function _get_autocomplete_search_term_facet_prefix() {
  *   Facet results from Solr.
  */
 function _checkbook_autocomplete_solr_results($query, $facet = NULL) {
-    global $conf;
-    $results = array();
-    if ($conf['check_book']['solr']['url']) {
-        $solr_server_url = $conf['check_book']['solr']['url'];
-    }
-    $url = $solr_server_url . $query;
-    $contents = file_get_contents($url);
-    $contents = utf8_encode(''.$contents);
-    if ($contents) {
-      $results = unserialize($contents);
-    }
+    $solr = new Checkbook_Solr();
+    $results = $solr->request_phps($query);
 
     if ($results['response']['numFound'] != 0) {
         $facetcounts = $results['facet_counts']['facet_fields'][$facet];
