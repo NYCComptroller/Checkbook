@@ -18,5 +18,6 @@
 name = "Dataset Uploader Test Cases"
 description = "Module to test Dataset Uploader"
 core = 7.x
+php = 7.2
 package = REI Dashboard Platform TestSuite
 dependencies[] = dataset_uploader

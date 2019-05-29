@@ -17,6 +17,7 @@
 ; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 name = Checkbook MWBE Agency Grading
 description = Checkbook MWBE Agency Grading
+php = 7.2
 package = NYC Checkbook
 core = 7.x
 

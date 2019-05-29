@@ -21,23 +21,29 @@ function _checkbook_smart_search_submit($form, &$form_state)
         array(
             'query' => array(
                 'search_term' => urlencode($search_term),
+//                'domain' => 'citywide',
             )
         )
     );
 }
 
-/** Returns results for smart search */
-function _checkbook_smart_search_get_results()
+/** Returns results for smart search
+ * @param string $solr_datasource
+ * @return mixed|string
+ * @throws Exception
+ */
+function _checkbook_smart_search_get_results(string $solr_datasource='citywide')
 {
+    drupal_add_js(array('checkbook_smart_search' => array('solr_datasource' => $solr_datasource)), 'setting');
     $search_terms = explode('*|*', $_REQUEST['search_term']); // array("Education", "domains=Payroll~Spending", "fiscal_years=2014~2013")
     $search_terms[0] = urldecode($search_terms[0]); //"Education"
 
-    $search_terms[0] = ($search_terms[0] == "") ? "*:*" : ucwords(strtolower(_checkbook_smart_search_escapeSolrValue($search_terms[0])));
+    $search_terms[0] = ($search_terms[0] == "") ? "*:*" : ucwords(strtolower(Checkbook_solr::escape($search_terms[0])));
 
     //Search results
     $page_no = ($_REQUEST['page']) ? $_REQUEST['page'] : 0; // 0
     $no_of_results = 10;
-    $search_results = _checkbook_smart_search_results($search_terms, $page_no, $no_of_results);
+    $search_results = _checkbook_smart_search_results($search_terms, $page_no, $no_of_results, $solr_datasource);
     /* Facet Results
        These represent the side facet numbers and each is independent of what you select
     */
@@ -163,44 +169,12 @@ function _checkbook_smart_search_get_results()
         "payroll_type" => $selected_payroll_type
     ];
     return theme('checkbook_smart_search_results', [
-        'search_results' => $search_results['search_results'],
-        'active_contracts' => $search_results['active_contracts'],
-        'registered_contracts' => $search_results['registered_contracts'],
-        'facet_results' => $facetResults,
-        'selected_facet_results' => $selected_facet_results]);
-}
-
-/**
- *  Replaces and encodes the special characters in the goven string
- * @param $string
- * @return mixed $string
- */
-function _checkbook_smart_search_escapeSolrValue($string)
-{
-
-    $string = str_replace("%", "%25", $string);
-    $string = str_replace("'", "%27", $string);
-    $string = str_replace("\\", "%5C%5C", $string);
-    $string = str_replace(" ", "%20", $string);
-    $string = str_replace("#", "%23", $string);
-    $string = str_replace("/", "\%2F", $string);
-    $string = str_replace("&", "%26", $string);
-    $string = str_replace("[", "\[", $string);
-    $string = str_replace("]", "\]", $string);
-    $string = str_replace(":", "\:", $string);
-    $string = str_replace("+", "\%2B", $string);
-    $string = str_replace("?", "\%3F", $string);
-    $string = str_replace("$", "\%24", $string);
-    $string = str_replace("!", "\%21", $string);
-    $string = str_replace("(", "\%28", $string);
-    $string = str_replace(")", "\%29", $string);
-    $string = str_replace("|", "\%7C", $string);
-    $string = str_replace("^", "\%5E", $string);
-    $string = str_replace("*", "%2A", $string);
-    $string = str_replace(".", "\%2E", $string);
-    $string = str_replace("-", "\-", $string);
-
-    return $string;
+      'search_results' => $search_results['search_results'],
+      'active_contracts' => $search_results['active_contracts'],
+      'registered_contracts' => $search_results['registered_contracts'],
+      'facet_results' => $facetResults,
+      'selected_facet_results' => $selected_facet_results,
+    ]);
 }
 
 /**
@@ -208,9 +182,10 @@ function _checkbook_smart_search_escapeSolrValue($string)
  * @param $search_terms
  * @param $page_no
  * @param $no_of_results
+ * @param string $domain
  * @return array
  */
-function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results)
+function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results, string $domain = 'citywide')
 {
     $search_string = _checkbook_smart_search_get_results_query_search_term($search_terms);
     $query = "select/?q=" . $search_string
@@ -218,7 +193,7 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
         . "&sort=domain_ordering+asc,date_ordering+desc"
         . "&wt=phps";
 
-    $search_results = _checkbook_smart_search_solr_results($query);
+    $search_results = _checkbook_smart_search_solr_results($query, $domain);
 
     $contract_flag = false;
     foreach ($search_terms as $id => $keyvaluepair) {
@@ -253,7 +228,7 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
             . "&fq=contract_status:registered"
             . "&wt=phps";
 
-        $active_contracts = _checkbook_smart_search_solr_results($active_contracts_query);
+        $active_contracts = _checkbook_smart_search_solr_results($active_contracts_query, $domain);
 
         // Registered Contracts count
         $reg_search_string = str_replace('&fq=(contract_status:"pending")', '', $search_string);
@@ -267,7 +242,7 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
             . "&fq=contract_status:registered"
             . "&wt=phps";
 
-        $registered_contracts = _checkbook_smart_search_solr_results($registered_contracts_query);
+        $registered_contracts = _checkbook_smart_search_solr_results($registered_contracts_query, $domain);
     }
 
     return array('search_results' => $search_results, 'active_contracts' => $active_contracts, 'registered_contracts' => $registered_contracts);
@@ -311,7 +286,7 @@ function _checkbook_smart_search_get_results_query_search_term($search_terms)
 
         $subQuery = "";
         foreach ($filters as $value) {
-            $subQuery .= "(" . $parameterMapping[$reqParams[0]] . ":" . _checkbook_smart_search_escapeSolrValue('"' . $value . '"') . ")%20OR%20";
+            $subQuery .= "(" . $parameterMapping[$reqParams[0]] . ':"' . Checkbook_solr::escape($value) . '")%20OR%20';
         }
         $subQuery = substr($subQuery, 0, -8);
         $searchTerm .= "&fq=" . $subQuery;
@@ -322,30 +297,18 @@ function _checkbook_smart_search_get_results_query_search_term($search_terms)
 
 /**
  *  Outputs the solr query result for the input query.
- * @param $query
+ * @param string $query
  *  Returns the solr result in PHP array format
+ * @param string $domain
  * @return array
  */
-function _checkbook_smart_search_solr_results($query)
+function _checkbook_smart_search_solr_results(string $query, string $domain='citywide'): array
 {
-    global $conf;
-    $results = [];
-    $solr_server_url = '';
-    if ($conf['check_book']['solr']['url']) {
-        $solr_server_url = $conf['check_book']['solr']['url'];
+    if ('citywide' == $domain) {
+      $domain = _checkbook_get_domain();
     }
-    ini_set('default_socket_timeout', 120);
-    $url = $solr_server_url . $query;
-    LogHelper::log_notice("Getting solr: " . $url);
-    $contents = file_get_contents($url);
-    $contents = utf8_encode($contents);
-
-//    LogHelper::log_notice("Solr response: ".var_export($contents, true));
-
-    if ($contents) {
-      $results = unserialize($contents);
-    }
-    return $results;
+    $solr = new Checkbook_Solr($domain);
+    return $solr->request_phps($query);
 }
 
 /** Returns only selected facet values from current URL
@@ -396,7 +359,7 @@ function _checkbook_smart_search_get_selected_facet_results($search_terms, $face
                 $request_facet_param[] = $value;
             }
             $sub_query .= "(" . $parameter_mapping[$req_params[0]] . ":" .
-                _checkbook_smart_search_escapeSolrValue('"' . $value . '"') . ")%20OR%20";
+                Checkbook_solr::escape('"' . $value . '"') . ")%20OR%20";
         }
 
         if (strlen($sub_query) > 0) {
@@ -484,9 +447,9 @@ function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $
         foreach ($filters as $value) {
             if ($req_params[0] != $facet_name) {
                 $sub_query .= "(" . $parameter_mapping[$req_params[0]] . ":" .
-                    _checkbook_smart_search_escapeSolrValue('"' . $value . '"') . ")%20OR%20";
+                    Checkbook_solr::escape('"' . $value . '"') . ")%20OR%20";
             } elseif ($req_params[0] == $facet_name && $exclude == TRUE) {
-                $sub_query .= "-" . $parameter_mapping[$req_params[0]] . ":" . _checkbook_smart_search_escapeSolrValue('"' . $value . '"') . "%20OR%20";
+                $sub_query .= "-" . $parameter_mapping[$req_params[0]] . ":" . Checkbook_solr::escape('"' . $value . '"') . "%20OR%20";
             } elseif ($req_params[0] == $facet_name) {
                 $terms_count++;
             }
@@ -521,16 +484,17 @@ function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $
 /**
  *  Outputs the suggestions for the given input.
  *  Returns the matching words
- **/
-function _checkbook_smart_search_autocomplete()
+ *
+ * @param string $domain
+ */
+function _checkbook_smart_search_autocomplete($domain = 'citywide')
 {
-
     $search_term = htmlspecialchars_decode($_REQUEST['term'], ENT_QUOTES);
 
     $regex1 = escapeRegex('(.* ');
     $regex2 = escapeRegex('.*)|(^');
     $regex3 = escapeRegex('.*)');
-    $search_term = _checkbook_autocomplete_escapeSolrValue(strtolower($search_term));
+    $search_term = Checkbook_solr::escape(strtolower($search_term));
 
     $search_term = $regex1 . $search_term . $regex2 . $search_term . $regex3; //  (.* educ.*)|(^educ .*)
 
@@ -544,8 +508,10 @@ function _checkbook_smart_search_autocomplete()
         . "&terms.regex.flag=case_insensitive"
         . "&terms.regex=" . $search_term . "&wt=phps";
 
-    $contents = _checkbook_smart_search_solr_results($query);
+    $contents = _checkbook_smart_search_solr_results($query, $domain);
 
+    $smart_search_url = '/smart_search/'.$domain;
+    
     $matches = array();
     $count = 0;
     foreach ($contents['terms'] as $key => $value) {
@@ -554,7 +520,7 @@ function _checkbook_smart_search_autocomplete()
                 foreach ($value as $a => $b) {
                     if (!in_array($a, $contents['terms']['oge_agency_name'])) {
                         $count++;
-                        $url = "/smart_search?search_term=*|*agency_names=";
+                        $url = $smart_search_url."?search_term=*|*agency_names=";
                         $matches[] = array("url" => $url, "category" => "Agencies", "label" => $a, "value" => urlencode($a));
                     }
                 }
@@ -562,28 +528,28 @@ function _checkbook_smart_search_autocomplete()
             case 'oge_agency_name':
                 foreach ($value as $a => $b) {
                     $count++;
-                    $url = "/smart_search?search_term=*|*oge_agency_names=";
+                    $url = $smart_search_url."?search_term=*|*oge_agency_names=";
                     $matches[] = array("url" => $url, "category" => "Other Government Entities", "label" => $a, "value" => urlencode($a));
                 }
                 break;
             case 'vendor_name':
                 foreach ($value as $a => $b) {
                     $count++;
-                    $url = "/smart_search?search_term=*|*vendor_names=";
+                    $url = $smart_search_url."?search_term=*|*vendor_names=";
                     array_push($matches, array("url" => $url, "category" => "Vendors (Prime Vendor, Sub Vendor, M/WBE Vendor)", "label" => $a, "value" => urlencode($a)));
                 }
                 break;
             case 'minority_type_name':
                 foreach ($value as $a => $b) {
                     $count++;
-                    $url = "/smart_search?search_term=*|*minority_type_name=";
+                    $url = $smart_search_url."?search_term=*|*minority_type_name=";
                     array_push($matches, array("url" => $url, "category" => "M/WBE Category", "label" => $a, "value" => urlencode($a)));
                 }
                 break;
             case 'expenditure_object_name':
                 foreach ($value as $a => $b) {
                     $count++;
-                    $url = "/smart_search?search_term=*|*expense_categories=";
+                    $url = $smart_search_url."?search_term=*|*expense_categories=";
                     array_push($matches, array("url" => $url, "category" => "Expense Categories", "label" => $a, "value" => urlencode($a)));
                 }
                 break;
@@ -632,11 +598,11 @@ function _checkbook_smart_search_get_searchstring_autocomplete($facet_name, $fac
         $autocomplete_text = "";
         foreach ($autocomplete_terms as $key => $value) {
             if (strlen($value) > 0)
-                $autocomplete_text .= _checkbook_autocomplete_escapeSolrValue($value) . "*%20AND%20"; //eco*%20AND%20
+                $autocomplete_text .= Checkbook_solr::escape($value) . "*%20AND%20"; //eco*%20AND%20
         }
         $autocomplete_text = "(" . substr($autocomplete_text, 0, -9) . ")"; //(eco*)
     } else {
-        $autocomplete_text = _checkbook_autocomplete_escapeSolrValue($autocomplete_text) . "*";
+        $autocomplete_text = Checkbook_solr::escape($autocomplete_text) . "*";
     }
 
     $autocomplete_text = "&fq=" . $facet_autocomplete_field . ":" . $autocomplete_text; // &fq=oge_agency_name_autocomplete:(eco*)
@@ -646,7 +612,7 @@ function _checkbook_smart_search_get_searchstring_autocomplete($facet_name, $fac
     if ($search_terms[0] == "") {
         $search_text = "*:*"; //*:*
     } else {
-        $search_text = _checkbook_smart_search_escapeSolrValue(urldecode($search_terms[0]));
+        $search_text = Checkbook_solr::escape(urldecode($search_terms[0]));
         $search_text = ucwords(strtolower($search_text));
     }
 
@@ -667,7 +633,7 @@ function _checkbook_smart_search_get_searchstring_autocomplete($facet_name, $fac
         foreach ($filters as $key => $value) {
             if ($req_params[0] != $facet_name) {
                 $sub_query .= "(" . $parameter_mapping[$req_params[0]] . ":" .
-                    _checkbook_smart_search_escapeSolrValue('"' . $value . '"') . ")%20OR%20";
+                    Checkbook_solr::escape('"' . $value . '"') . ")%20OR%20";
             }
         }
         $search_string .= (strlen($sub_query) > 0) ? "&fq=" . substr($sub_query, 0, -8) : "";
@@ -899,7 +865,7 @@ function _checkbook_smart_search_export_data()
 {
     $search_terms = explode('*|*', $_REQUEST['search_term']);
     $search_terms[0] = urldecode($search_terms[0]); //"Education"
-    $search_terms[0] = ($search_terms[0] == "") ? "*:*" : ucwords(strtolower(_checkbook_smart_search_escapeSolrValue($search_terms[0])));
+    $search_terms[0] = ($search_terms[0] == "") ? "*:*" : ucwords(strtolower(Checkbook_solr::escape($search_terms[0])));
 
     $index = 0;
     $isoge = 0;
@@ -1259,17 +1225,8 @@ function _checkbook_smart_search_domain_export_fields($domain, $IsOge)
  */
 function _checkbook_smart_search_solr_results_csv($query)
 {
-    global $conf;
-    $solr_server_url = '';
-    if ($conf['check_book']['solr']['url']) {
-        $solr_server_url = $conf['check_book']['solr']['url'];
-    }
-    ini_set('default_socket_timeout', 120);
-    $url = $solr_server_url . $query;
-    $contents = file_get_contents($url);
-    $contents = utf8_encode($contents);
-
-    return $contents;
+  $solr = new Checkbook_Solr();
+  return $solr->request_csv($query);
 }
 
 /** Exports the smart search export data
@@ -1308,7 +1265,7 @@ function _checkbook_smart_search_vendor_facet($page)
     $search_terms = explode('*|*', $_REQUEST['search_term']);
     $search_terms[0] = urldecode($search_terms[0]); //"Education"
 
-    $search_terms[0] = ($search_terms[0] == "") ? "*:*" : ucwords(strtolower(_checkbook_smart_search_escapeSolrValue($search_terms[0])));
+    $search_terms[0] = ($search_terms[0] == "") ? "*:*" : ucwords(strtolower(Checkbook_solr::escape($search_terms[0])));
 
     $limit = 100;
     $double_limit = (2 * $limit);
@@ -1332,7 +1289,7 @@ function _checkbook_smart_search_expensecategory_facet($page)
     $search_terms = explode('*|*', $_REQUEST['search_term']);
     $search_terms[0] = urldecode($search_terms[0]); //"Education"
 
-    $search_terms[0] = ($search_terms[0] == "") ? "*:*" : ucwords(strtolower(_checkbook_smart_search_escapeSolrValue($search_terms[0])));
+    $search_terms[0] = ($search_terms[0] == "") ? "*:*" : ucwords(strtolower(Checkbook_solr::escape($search_terms[0])));
 
     $limit = 100;
     $double_limit = (2 * $limit);
@@ -1347,21 +1304,29 @@ function _checkbook_smart_search_expensecategory_facet($page)
     print theme('facet_results', array('results' => $results['facet_counts']['facet_fields']['expenditure_object_name'], 'name' => 'fexpenseCategoryName', 'page' => $page));
 }
 
-function _checkbook_smart_search_ajax_results()
+/**
+ * @param string $domain
+ * @throws Exception
+ */
+function _checkbook_smart_search_ajax_results(string $domain='citywide')
 {
 //    $page = $_GET['page'];
     $search_terms = explode('*|*', $_REQUEST['search_term']);
     $search_terms[0] = urldecode($search_terms[0]); //"Education"
 
-    $search_terms[0] = ($search_terms[0] == "") ? "*:*" : ucwords(strtolower(_checkbook_smart_search_escapeSolrValue($search_terms[0])));
+    $search_terms[0] = ($search_terms[0] == "") ? "*:*" : ucwords(strtolower(Checkbook_solr::escape($search_terms[0])));
 
     $page_no = ($_REQUEST['page']) ? $_REQUEST['page'] : 0; // 0
     $no_of_results = 10;
-    $search_results = _checkbook_smart_search_results($search_terms, $page_no, $no_of_results);
+    $search_results = _checkbook_smart_search_results($search_terms, $page_no, $no_of_results, $domain);
     print theme('ajax_results', array('search_results' => $search_results['search_results']));
 
 }
 
+/**
+ * @param $reqParams
+ * @return bool|string
+ */
 function get_vendor_type_mapping($reqParams)
 {
     $vtypeParam = explode('~', $reqParams);
@@ -1381,6 +1346,10 @@ function get_vendor_type_mapping($reqParams)
     return $reqParams;
 }
 
+/**
+ * @param $reqParams
+ * @return string
+ */
 function get_contract_status_mapping($reqParams)
 {
     switch ($reqParams) {
