@@ -19,6 +19,7 @@
 ;
 name = "Checkbook Domain"
 description = "Functionality to serve as a domain layer for checkbook"
+php = 7.2
 package = REI Checkbook Widget Redesign
 core = 7.x
 

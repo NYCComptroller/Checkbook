@@ -19,6 +19,7 @@
 ;
 name = "Checkbook Test"
 description = "Module to support unit test cases"
+php = 7.2
 package = NYC Checkbook
 core = 7.x
 
