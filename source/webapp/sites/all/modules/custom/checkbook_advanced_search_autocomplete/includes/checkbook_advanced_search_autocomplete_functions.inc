@@ -32,13 +32,13 @@ function _get_spending_advanced_search_autocomplete_results($facet, $query, $yea
         $query .= _checkbook_autocomplete_get_start_end_dates($year, 'spending');
     }
     if ($dept) {
-        $query .= '&fq=department_name:"'._checkbook_autocomplete_escapeSolrValue(trim(str_replace('__','/',$dept))).'"';
+        $query .= '&fq=department_name:"'.Checkbook_solr::escape(trim(str_replace('__','/',$dept))).'"';
     }
     if ($agency) {
         $query .= '&fq=agency_id:' . $agency;
     }
     if ($expcategory) {
-        $query .= '&fq=expenditure_object_code:' . '"'._checkbook_autocomplete_escapeSolrValue(trim($expcategory)).'"';
+        $query .= '&fq=expenditure_object_code:' . '"'.Checkbook_solr::escape(trim($expcategory)).'"';
     }
     if($exptype){
         $query .= '&fq=spending_category_id:'.$exptype;
