@@ -19,6 +19,7 @@
 ;
 name = "Checkbook HTML Emailer"
 description = "Module to email in HTML"
+php = 7.2
 package = NYC Checkbook
 core = 7.x
 
