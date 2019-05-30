@@ -10,6 +10,7 @@
  */
 function _checkbook_smart_search_submit($form, &$form_state)
 {
+    $solr_datasource = _checkbook_get_datasource();
     $search_term = trim($form['search_box']['#value']);
     if ($search_term == 'Type ahead search') {
         $search_term = '';
@@ -17,11 +18,10 @@ function _checkbook_smart_search_submit($form, &$form_state)
     $search_term = ($search_term) ? $search_term : '';
 
     $form_state['redirect'] = array(
-        'smart_search',
+        'smart_search/'.$solr_datasource,
         array(
             'query' => array(
-                'search_term' => urlencode($search_term),
-//                'domain' => 'citywide',
+                'search_term' => urlencode($search_term)
             )
         )
     );
@@ -299,15 +299,15 @@ function _checkbook_smart_search_get_results_query_search_term($search_terms)
  *  Outputs the solr query result for the input query.
  * @param string $query
  *  Returns the solr result in PHP array format
- * @param string $domain
+ * @param string $datasource
  * @return array
  */
-function _checkbook_smart_search_solr_results(string $query, string $domain='citywide'): array
+function _checkbook_smart_search_solr_results(string $query, string $datasource='citywide'): array
 {
-    if ('citywide' == $domain) {
-      $domain = _checkbook_get_domain();
+    if ('citywide' == $datasource) {
+      $datasource = _checkbook_get_datasource();
     }
-    $solr = new Checkbook_Solr($domain);
+    $solr = new Checkbook_Solr($datasource);
     return $solr->request_phps($query);
 }
 
