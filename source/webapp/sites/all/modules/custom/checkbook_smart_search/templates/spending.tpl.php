@@ -87,9 +87,9 @@ foreach ($spending_parameter_mapping as $key => $title) {
   }
 
   // highlighting (italics) search term
-  if (!empty($SearchTerm)) {
-    $temp = substr($value, strpos(strtoupper($value), strtoupper($SearchTerm)), strlen($SearchTerm));
-    $value = str_ireplace($SearchTerm, '<em>' . $temp . '</em>', $value);
+  if (!empty($searchTerm)) {
+    $temp = substr($value, strpos(strtoupper($value), strtoupper($searchTerm)), strlen($searchTerm));
+    $value = str_ireplace($searchTerm, '<em>' . $temp . '</em>', $value);
   }
 
   if (array_key_exists($key, $linkable_fields)) {
