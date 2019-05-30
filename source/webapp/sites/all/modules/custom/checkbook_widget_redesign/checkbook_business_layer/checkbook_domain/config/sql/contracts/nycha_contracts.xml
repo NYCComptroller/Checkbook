@@ -354,9 +354,9 @@
       responsibility_center_code,
       responsibility_center_name,
       contract_id,
-      sum(total_amount) as total_amount,
-      sum(original_amount) as original_amount,
-      sum(spend_to_date) as spend_to_date
+      sum(line_total_amount) as total_amount,
+      sum(line_original_amount) as original_amount,
+      sum(line_spend_to_date) as spend_to_date
       from
       release_widget_summary
       <where>
