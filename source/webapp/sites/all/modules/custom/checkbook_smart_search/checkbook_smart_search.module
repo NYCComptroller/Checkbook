@@ -161,7 +161,7 @@ function checkbook_smart_search_form($form, $form_state){
     );
     $form['domain'] = [
         '#type' => 'hidden',
-        '#value' => _checkbook_get_domain(),
+        '#value' => _checkbook_get_datasource(),
     ];
     $form['submit'] = array(
         '#type' => 'submit',
