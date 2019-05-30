@@ -201,15 +201,15 @@ foreach ($contracts_parameter_mapping as $key => $title){
   	$value = implode(', ' , $value);
   }
   $temp = '';
-  if ($SearchTerm) {
-    $temp = substr($value, strpos(strtoupper($value), strtoupper($SearchTerm)),strlen($SearchTerm));
+  if ($searchTerm) {
+    $temp = substr($value, strpos(strtoupper($value), strtoupper($searchTerm)),strlen($searchTerm));
   }
   if($key =="contract_number"){
     $value = "<a href='".$contract_Id_link ."'>".$contracts_results['contract_number']."</a>";
   }else if($key =="parent_contract_number"){
     $value = "<a href='".$master_contract_Id_link ."'>".$contracts_results['parent_contract_number']."</a>";
   }else{
-  	$value = str_ireplace($SearchTerm,'<em>'. $temp . '</em>', $value);
+  	$value = str_ireplace($searchTerm,'<em>'. $temp . '</em>', $value);
   }
   if(in_array($key, $amount_fields)){
     $value = custom_number_formatter_format($value, 2 , '$');

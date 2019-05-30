@@ -62,19 +62,19 @@ if($noOfTotalResults > 0){
     $transaction_no++;
     switch(strtolower($domain_display)){
       case "revenue":
-        print theme('revenue', array('revenue_results'=> $value, 'SearchTerm' => $searchTerms[0]));
+        print theme('revenue', array('revenue_results'=> $value, 'searchTerm' => $searchTerms[0]));
         break;
       case "budget":
-        print theme('budget', array('budget_results'=> $value, 'SearchTerm' => $searchTerms[0]));
+        print theme('budget', array('budget_results'=> $value, 'searchTerm' => $searchTerms[0]));
         break;
       case "spending":
-        print theme('spending', array('spending_results'=> $value, 'SearchTerm' => $searchTerms[0], 'IsOge' => isset($value["oge_agency_name"]) ));
+        print theme('spending', array('spending_results'=> $value, 'searchTerm' => $searchTerms[0], 'IsOge' => isset($value["oge_agency_name"]) ));
         break;
       case "payroll":
-        print theme('payroll', array('payroll_results'=> $value, 'SearchTerm' => $searchTerms[0]));
+        print theme('payroll', array('payroll_results'=> $value, 'searchTerm' => $searchTerms[0]));
         break;
       case "contracts":
-        print theme('contracts', array('contracts_results'=> $value, 'SearchTerm' => $searchTerms[0], 'IsOge' => isset($value["oge_agency_name"]) ));
+        print theme('contracts', array('contracts_results'=> $value, 'searchTerm' => $searchTerms[0], 'IsOge' => isset($value["oge_agency_name"]) ));
         break;
     }
     print "</li>";

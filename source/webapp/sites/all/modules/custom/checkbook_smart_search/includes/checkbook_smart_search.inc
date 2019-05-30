@@ -58,7 +58,12 @@ function _checkbook_smart_search_get_results(string $solr_datasource='citywide')
     drupal_add_js(array('checkbook_smart_search' => array('vendor_pages' => $vendor_pages)), 'setting');
     $expense_categories = _checkbook_smart_search_get_facet_results($search_terms, "expense_categories", NULL, 100);
     $all_expense_categories = _checkbook_smart_search_get_facet_results($search_terms, "expense_categories", NULL, -1);
-    $expense_categories_number = count($all_expense_categories['facet_counts']['facet_fields']['expenditure_object_name']);
+
+    $expense_categories_number = 0;
+    if($all_expense_categories['facet_counts']['facet_fields']['expenditure_object_name'] ?? false) {
+      $expense_categories_number = sizeof($all_expense_categories['facet_counts']['facet_fields']['expenditure_object_name']);
+    }
+
     $expense_category_pages = floor($expense_categories_number / 100);
     drupal_add_js(array('checkbook_smart_search' => array('expense_category_pages' => $expense_category_pages)), 'setting');
     $mwbe_category = _checkbook_smart_search_get_facet_results($search_terms, "minority_type_name");
