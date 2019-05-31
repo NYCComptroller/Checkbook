@@ -2349,10 +2349,10 @@ function _checkbook_get_oge_agency_id($vendor_id)
 }
 
 /**
- * Return citywide/edc/nycha current domain
+ * Return citywide/edc/nycha current datasource
  * @return string
  */
-function _checkbook_get_domain()
+function _checkbook_get_datasource()
 {
     $url = '//'.current_path();
 

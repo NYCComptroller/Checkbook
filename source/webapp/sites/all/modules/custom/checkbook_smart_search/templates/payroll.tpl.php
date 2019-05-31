@@ -58,8 +58,10 @@ $rows = array();
 foreach ($payroll_parameter_mapping as $key => $title){
   $value = $payroll_results[$key];
 
-  $temp = substr($value, strpos(strtoupper($value), strtoupper($SearchTerm)),strlen($SearchTerm));
-  $value = str_ireplace($SearchTerm,'<em>'. $temp . '</em>', $value);
+  if(isset($searchTerm) && $searchTerm) {
+    $temp = substr($value, strpos(strtoupper($value), strtoupper($searchTerm)),strlen($searchTerm));
+    $value = str_ireplace($searchTerm,'<em>'. $temp . '</em>', $value);
+  }
 
   if(in_array($key, $amount_fields)){
     $value = custom_number_formatter_format($value, 2 , '$');

@@ -10,6 +10,7 @@
  */
 function _checkbook_smart_search_submit($form, &$form_state)
 {
+    $solr_datasource = _checkbook_get_datasource();
     $search_term = trim($form['search_box']['#value']);
     if ($search_term == 'Type ahead search') {
         $search_term = '';
@@ -17,11 +18,10 @@ function _checkbook_smart_search_submit($form, &$form_state)
     $search_term = ($search_term) ? $search_term : '';
 
     $form_state['redirect'] = array(
-        'smart_search',
+        'smart_search/'.$solr_datasource,
         array(
             'query' => array(
-                'search_term' => urlencode($search_term),
-//                'domain' => 'citywide',
+                'search_term' => urlencode($search_term)
             )
         )
     );
@@ -58,7 +58,12 @@ function _checkbook_smart_search_get_results(string $solr_datasource='citywide')
     drupal_add_js(array('checkbook_smart_search' => array('vendor_pages' => $vendor_pages)), 'setting');
     $expense_categories = _checkbook_smart_search_get_facet_results($search_terms, "expense_categories", NULL, 100);
     $all_expense_categories = _checkbook_smart_search_get_facet_results($search_terms, "expense_categories", NULL, -1);
-    $expense_categories_number = count($all_expense_categories['facet_counts']['facet_fields']['expenditure_object_name']);
+
+    $expense_categories_number = 0;
+    if($all_expense_categories['facet_counts']['facet_fields']['expenditure_object_name'] ?? false) {
+      $expense_categories_number = sizeof($all_expense_categories['facet_counts']['facet_fields']['expenditure_object_name']);
+    }
+
     $expense_category_pages = floor($expense_categories_number / 100);
     drupal_add_js(array('checkbook_smart_search' => array('expense_category_pages' => $expense_category_pages)), 'setting');
     $mwbe_category = _checkbook_smart_search_get_facet_results($search_terms, "minority_type_name");
@@ -299,15 +304,15 @@ function _checkbook_smart_search_get_results_query_search_term($search_terms)
  *  Outputs the solr query result for the input query.
  * @param string $query
  *  Returns the solr result in PHP array format
- * @param string $domain
+ * @param string $datasource
  * @return array
  */
-function _checkbook_smart_search_solr_results(string $query, string $domain='citywide'): array
+function _checkbook_smart_search_solr_results(string $query, string $datasource='citywide'): array
 {
-    if ('citywide' == $domain) {
-      $domain = _checkbook_get_domain();
+    if ('citywide' == $datasource) {
+      $datasource = _checkbook_get_datasource();
     }
-    $solr = new Checkbook_Solr($domain);
+    $solr = new Checkbook_Solr($datasource);
     return $solr->request_phps($query);
 }
 
