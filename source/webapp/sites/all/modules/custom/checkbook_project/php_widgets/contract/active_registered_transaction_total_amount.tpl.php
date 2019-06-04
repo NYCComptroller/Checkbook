@@ -39,7 +39,7 @@
                   .'<div class="amount-title">Total '.$contactStatusLabel.' Current Contract Amount</div></div>';
 
     }else if(_checkbook_check_is_mwbe_page() || RequestUtilities::get('dashboard')){
-        $current_url = explode('/',$_SERVER['REQUEST_URI']);
+        $current_url = explode('/',request_uri());
         if($current_url[1] == 'contract' && ($current_url[2] == 'search' || $current_url[2] == 'all')&& $current_url[3] == 'transactions'){
             $summaryTitle = "";
         }else{

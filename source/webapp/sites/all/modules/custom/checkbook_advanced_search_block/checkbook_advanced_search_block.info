@@ -18,4 +18,5 @@
 name = Checkbook Advanced Search Block
 description = This block is designed to print the advanced search form which is then exposed to the users using a jQuery modal dialog box
 core = 7.x
+php = 7.2
 package = NYC Checkbook

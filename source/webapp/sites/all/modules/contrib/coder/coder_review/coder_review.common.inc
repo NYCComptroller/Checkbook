@@ -383,7 +383,10 @@ function _coder_review_read_and_parse_file(array &$coder_args) {
     $coder_args['#include_extensions'],
     array('module', 'theme')
   );
-  $ext = in_array($pathinfo['extension'], $allowed_extensions) ? 'php' : $pathinfo['extension'];
+
+  // If the file extension is any of the allowed extensions (other than 'js')
+  // then set $ext to 'php', otherwise use the actual extension.
+  $ext = in_array($pathinfo['extension'], array_diff($allowed_extensions, array('js'))) ? 'php' : $pathinfo['extension'];
 
   /* The use of variables with 'php' in them ($in_php, $in_all_php, $php_lines,
    * etc.) is misleading. All references to such should be renamed 'code'
@@ -447,7 +450,9 @@ function _coder_review_read_and_parse_file(array &$coder_args) {
     for ($pos = 0; $pos < $content_length; ++$pos) {
       // Get the current character.
       $char = $content[$pos];
-      if ($char == "\n") {
+      // Look ahead to the next character, to cater for \r\n  line ends.
+      $next_char = isset($content[$pos+1]) ? $content[$pos+1] : '';
+      if ($char == "\n" || $char . $next_char == "\r\n") {
         // End C++ style comments on newline.
         if ($in_comment === '/' || $in_comment === '#') {
           $in_comment = 0;
@@ -507,6 +512,10 @@ function _coder_review_read_and_parse_file(array &$coder_args) {
           }
         }
 
+        // Increment $pos by an extra one if the newline was indicated by the
+        // two-character CRLF 'carriage return line feed'.
+        $pos += ($char . $next_char == "\r\n");
+
         // Save this line and start a new line.
         ++$lineno;
         $this_all_lines = '';
@@ -522,6 +531,7 @@ function _coder_review_read_and_parse_file(array &$coder_args) {
         $beginning_of_line = 1;
         continue;
       }
+
       if ($this_all_lines != '') {
         $beginning_of_line = 0;
       }
@@ -624,7 +634,9 @@ function _coder_review_read_and_parse_file(array &$coder_args) {
 
             case '\'':
             case '"':
-              if ($content[$pos - 1] != '\\') {
+              // If the previous char is a backslash then we have not found the
+              // ending-quote as this one is internal to the string. Keep going.
+              if ($pos == 0 || $content[$pos - 1] != '\\') {
                 $this_php_lines .= $char;
                 $in_quote = $char;
                 if ($this_quote_sep) {
@@ -1595,7 +1607,13 @@ function _cache_set($cid, $data, $bin = 'default') {
  * @see drupal_substr()
  */
 function _substr($text, $start, $length = NULL) {
-  return function_exists('drupal_substr') ? drupal_substr($text, $start, $length) : substr($text, $start, $length);
+  if (function_exists('drupal_substr')) {
+    return drupal_substr($text, $start, $length);
+  }
+  if ($length === NULL) {
+    $length = strlen($text) - $start;
+  }
+  return substr($text, $start, $length);
 }
 
 /**

@@ -61,8 +61,14 @@ class Drupal_Sniffs_Commenting_FunctionCommentSniff implements PHP_CodeSniffer_S
      * @var array
      */
     protected $invalidTypes = array(
+                               'Array' => 'array',
                                'boolean' => 'bool',
+                               'Boolean' => 'bool',
                                'integer' => 'int',
+                               'str' => 'string',
+                               'stdClass' => 'object',
+                               'number' => 'int',
+                               'String' => 'string',
                               );
 
 
@@ -210,15 +216,10 @@ class Drupal_Sniffs_Commenting_FunctionCommentSniff implements PHP_CodeSniffer_S
 
         // Check if hook implementation doc is formated correctly.
         if (preg_match('/^[\s]*Implement[^\n]+?hook_[^\n]+/i', $comment->getShortComment(), $matches)) {
-            $formattingIssue = 0;
-            if (!strstr($matches[0], 'Implements ')) {
-                $formattingIssue++;
-            }
-            if (!preg_match('/ hook_[a-zA-Z0-9_]+\(\)( for [a-z0-9_]+(\(\)|\.tpl\.php))?\.$/', $matches[0])) {
-                $formattingIssue++;
-            }
-            if ($formattingIssue) {
-                $phpcsFile->addWarning('Format should be "* Implements hook_foo().", "* Implements hook_foo_BAR_ID_bar() for xyz_bar().", or "* Implements hook_foo_BAR_ID_bar() for xyz_bar.tpl.php.".', $commentStart + 1);
+            if (!strstr($matches[0], 'Implements ') || strstr($matches[0], 'Implements of')
+                || !preg_match('/ (drush_)?hook_[a-zA-Z0-9_]+\(\)( for [a-z0-9_-]+(\(\)|\.tpl\.php|\.html.twig))?\.$/', $matches[0])
+            ) {
+                $phpcsFile->addWarning('Format should be "* Implements hook_foo().", "* Implements hook_foo_BAR_ID_bar() for xyz_bar().",, "* Implements hook_foo_BAR_ID_bar() for xyz-bar.html.twig.", or "* Implements hook_foo_BAR_ID_bar() for xyz-bar.tpl.php.".', $commentStart + 1);
             } else {
                 // Check that a hook implementation does not duplicate @param and
                 // @return documentation.
@@ -276,7 +277,7 @@ class Drupal_Sniffs_Commenting_FunctionCommentSniff implements PHP_CodeSniffer_S
         $testShort = trim($short);
         $lastChar  = $testShort[(strlen($testShort) - 1)];
         if (substr_count($testShort, $phpcsFile->eolChar) !== 0) {
-            $error = 'Function comment short description must be on a single line';
+            $error = 'Function comment short description must be on a single line, further text should be a separate paragraph';
             $phpcsFile->addError($error, ($commentStart + 1), 'ShortSingleLine');
         }
 
@@ -285,14 +286,16 @@ class Drupal_Sniffs_Commenting_FunctionCommentSniff implements PHP_CodeSniffer_S
             $phpcsFile->addError($error, ($commentStart + 1), 'ShortStartSpace');
         }
 
-        if (preg_match('|[A-Z]|', $testShort[0]) === 0) {
-            $error = 'Function comment short description must start with a capital letter';
-            $phpcsFile->addError($error, ($commentStart + 1), 'ShortNotCapital');
-        }
+        if ($testShort !== '{@inheritdoc}') {
+            if (preg_match('|[A-Z]|', $testShort[0]) === 0) {
+                $error = 'Function comment short description must start with a capital letter';
+                $phpcsFile->addError($error, ($commentStart + 1), 'ShortNotCapital');
+            }
 
-        if ($lastChar !== '.') {
-            $error = 'Function comment short description must end with a full stop';
-            $phpcsFile->addError($error, ($commentStart + 1), 'ShortFullStop');
+            if ($lastChar !== '.') {
+                $error = 'Function comment short description must end with a full stop';
+                $phpcsFile->addError($error, ($commentStart + 1), 'ShortFullStop');
+            }
         }
 
     }//end process()
@@ -369,7 +372,7 @@ class Drupal_Sniffs_Commenting_FunctionCommentSniff implements PHP_CodeSniffer_S
                     $this->currentFile->addError($error, $errorPos, 'SpacingBeforeReturnType');
                 }
 
-                if (strpos($return->getValue(), '$') !== false) {
+                if (strpos($return->getValue(), '$') !== false && $return->getValue() !== '$this') {
                     $error = '@return data type must not contain "$"';
                     $this->currentFile->addError($error, $errorPos, '$InReturnType');
                 }
@@ -378,6 +381,11 @@ class Drupal_Sniffs_Commenting_FunctionCommentSniff implements PHP_CodeSniffer_S
                     $error = 'Expected a valid @return data type, but found %s';
                     $data = array($return->getValue());
                     $this->currentFile->addError($error, $errorPos, 'InvalidReturnType', $data);
+                }
+
+                if (strtolower($return->getValue()) === 'void') {
+                    $error = 'If there is no return value for a function, there must not be a @return tag.';
+                    $this->currentFile->addError($error, $errorPos, 'VoidReturn');
                 }
 
                 if (isset($this->invalidTypes[$return->getValue()]) === true) {

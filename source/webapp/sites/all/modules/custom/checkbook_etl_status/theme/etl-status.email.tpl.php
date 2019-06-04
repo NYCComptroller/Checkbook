@@ -188,7 +188,7 @@
                     echo date("Y-m-d g:iA", $json['match_status_timestamp']); ?>)">
                 <thead>
                 <tr class="filename">
-                    <th colspan="<?php echo(sizeof($json['match_status']) + 1) ?>">
+                    <th colspan="3">
                         <?php echo $json['source'] ?> ETL :: Missing data source files
                     </th>
                 </tr>

@@ -35,9 +35,9 @@ foreach ($revenue_parameter_mapping as $key=>$title){
     if($key == 'fiscal_year'){
         $value = $revenue_results[$key][0];
     }
-    if(strpos(strtoupper($value), strtoupper($SearchTerm)) !== FALSE){
-        $temp = substr($value, strpos(strtoupper($value), strtoupper($SearchTerm)),strlen($SearchTerm));
-        $value = str_ireplace($SearchTerm,'<em>'. $temp . '</em>', $value);
+    if(strpos(strtoupper($value), strtoupper($searchTerm)) !== FALSE){
+        $temp = substr($value, strpos(strtoupper($value), strtoupper($searchTerm)),strlen($searchTerm));
+        $value = str_ireplace($searchTerm,'<em>'. $temp . '</em>', $value);
         $value = _checkbook_smart_search_str_html_entities($value);
     }
 

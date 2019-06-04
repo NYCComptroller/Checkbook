@@ -181,7 +181,7 @@
         {
           "column":"is_sub_vendor",
           "sourceColumn":"vendor_type",
-          "sql":"'Yes' as is_sub_vendor"
+          "sql":"case when vendor_type = 'P' then 'No' else 'Yes' end as is_sub_vendor"
         }
     ],
     "adjustParameters":"
@@ -227,7 +227,7 @@
             {"sClass":"text pad-left","sWidth":"175px","asSorting":["asc","desc"]},
             {"sClass":"text pad-left","sWidth":"145px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"150px","asSorting":["asc","desc"]},
-            {"bSortable":false,"sWidth":"10px"}
+            {"bSortable":false,"sWidth":"10px"}w
         ],
         "aaSorting":[[6,"desc"]],
         "sScrollX": "100%",
