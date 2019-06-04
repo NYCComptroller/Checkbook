@@ -369,7 +369,7 @@
         {
             "column":"associated_prime_vendor_name",
             "sourceColumn":"legal_name",
-            "sql":"case when legal_name IS NULL then 'N/A' else legal_name end"
+            "sql":"case when vendor_type = 'S' or vendor_type = 'SM' then 'N/A' else legal_name end"
         },
         {
           "column":"disbursement_number_derived",
