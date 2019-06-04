@@ -2,7 +2,7 @@
   "datasets": {
     "contracts_fy_vendor_summary": {
       "datasourceName": "main",
-      "source": "public.contracts_fy_po_vendor_summary_vw",
+      "source": "contracts_widget_summary",
       "columns": [
         {
           "name": "fiscal_year_id"

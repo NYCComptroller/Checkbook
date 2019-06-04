@@ -18,5 +18,6 @@
 name = "Widget Highcharts"
 description = "Module to support Highcharts"
 core = 7.x
+php = 7.2
 package = REI Dashboard Platform (Visualization)
 dependencies[] = widget

@@ -40,6 +40,7 @@ function coder_review_drush_command() {
       'empty' => 'Show or hide results that are empty, valid options are 0|no|off, on by default.',
       'ignore' => 'Enable or disable Ignore handling, valid options are 0|no|off, on by default.',
       'ignorename' => 'Enable display of ignore "rule names", helpful when adding ignores.',
+      'ignores-pass' => 'Ignores will not cause a failing shell exit code.',
       'xml' => 'Output results as xml.',
       'checkstyle' => 'Output results in Checkstyle xml format.',
       'git' => 'Install this coder command as a .git pre-commit hook',
@@ -242,13 +243,16 @@ function _drush_coder_git_path() {
   static $gitpath;
   if (empty($gitpath)) {
     $path = drush_cwd();
-    do {
+    while (TRUE) {
       if (is_dir("$path/.git")) {
         $gitpath = "$path/.git";
         break;
       }
+      if ($path == DRUPAL_ROOT) {
+        break;
+      }
       $path = realpath("$path/..");
-    } while ($path != DRUPAL_ROOT);
+    }
   }
   return $gitpath;
 }
@@ -642,7 +646,7 @@ function theme_drush_coder_review_warning(array $variables) {
       );
       $attr['severity'] = $checkstyle_levels[$variables['severity_name']];
     }
-    return '<error ' . drupal_attributes($attr) . ' />';
+    return '<error ' . _coder_review_drupal_attributes($attr) . ' />';
   }
 
   // Return warning as text output, formatted for the drush screen.
@@ -673,6 +677,11 @@ function theme_drush_coder_review_warning(array $variables) {
  *   An array of summary statistics about warnings and errors.
  */
 function coder_review_print_drush_messages(array $summary) {
+  // if --ignores-pass is set then ignores should not be summed and counted
+  // against a shell exit code
+  if (drush_get_option('ignores-pass') && isset($summary['sums']['ignored'])) {
+    unset($summary['sums']['ignored']);
+  }
   // Count the number of warnings/errors.
   $sum = array_sum($summary['sums']);
   _coder_review_exit($sum ? 0 : 1);
@@ -706,6 +715,21 @@ function coder_review_print_drush_messages(array $summary) {
  */
 function _coder_review_drush_output($output) {
   return html_entity_decode(strip_tags($output));
+}
+
+/**
+ * Replaces default drupal drupal_attributes() for not bootstrapped usage.
+ */
+function _coder_review_drupal_attributes(array $attributes = array()) {
+  if (function_exists('drupal_attributes')) {
+    return drupal_attributes($attributes);
+  }
+
+  foreach ($attributes as $attribute => &$data) {
+    $data = implode(' ', (array) $data);
+    $data = $attribute . '="' . htmlspecialchars($data, ENT_QUOTES, 'UTF-8') . '"';
+  }
+  return $attributes ? ' ' . implode(' ', $attributes) : '';
 }
 
 /**

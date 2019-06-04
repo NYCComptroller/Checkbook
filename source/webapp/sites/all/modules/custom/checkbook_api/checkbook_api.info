@@ -18,6 +18,7 @@
 name = Checkbook API
 description = Checkbook API.
 core = 7.x
+php = 7.2
 package = NYC Checkbook
 dependencies[] = checkbook_project
 

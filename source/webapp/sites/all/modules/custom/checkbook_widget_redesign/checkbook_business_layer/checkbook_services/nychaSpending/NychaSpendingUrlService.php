@@ -13,7 +13,7 @@ class NychaSpendingUrlService{
      */
     static function getFooterUrl($parameters)
     {
-        $url = "/panel_html/nycha_spending_transactions_page/nycha_spending/transactions"
+        $url = "/panel_html/nycha_spending_transactions/nycha_spending/transactions"
             . RequestUtilities::buildUrlFromParam('year')
             . RequestUtilities::buildUrlFromParam('agency')
             . RequestUtilities::buildUrlFromParam('vendor')

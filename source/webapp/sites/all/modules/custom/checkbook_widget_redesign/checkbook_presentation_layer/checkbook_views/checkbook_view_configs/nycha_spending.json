@@ -3,6 +3,28 @@
     "landing_page_widgets": {
       "nycha_checks":{
         "widget_config":"nycha_checks_view"
+      },
+      "nycha_vendor": {
+        "widget_config":"nycha_vendor_view"
+      },
+      "nycha_contracts": {
+        "widget_config":"nycha_contracts_view"
+      },
+      "nycha_expense_categories": {
+        "widget_config":"nycha_expense_categories_view"
+      },
+      "nycha_spending_by_industries":
+      {
+        "widget_config":"nycha_spending_by_industries_view"
+      },
+      "nycha_spending_by_funding_source": {
+        "widget_config":"nycha_spending_by_funding_source_view"
+      },
+      "nycha_departments": {
+        "widget_config":"nycha_departments_view"
+      },
+      "nycha_section8_spending": {
+        "widget_config":"nycha_section8_spending_view"
       }
     }
   }

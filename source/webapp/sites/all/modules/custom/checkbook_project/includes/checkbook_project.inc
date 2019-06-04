@@ -708,7 +708,7 @@ function _checkbook_project_adjustContractParameterFilters(&$node, &$parameters,
             if (preg_match("/contract\/search\/transactions/", $current_url)) {
                 $advanced_search = true;
             } else {
-                $current_url = $_SERVER['REQUEST_URI'];
+                $current_url = request_uri();
                 if (preg_match("/contract\/search\/transactions/", $current_url)) {
                     $advanced_search = true;
                 }
@@ -2349,6 +2349,26 @@ function _checkbook_get_oge_agency_id($vendor_id)
 }
 
 /**
+ * Return citywide/edc/nycha current datasource
+ * @return string
+ */
+function _checkbook_get_datasource()
+{
+    $url = '//'.current_path();
+
+    if (strpos($url, '/nycha')){
+      return 'nycha';
+    }
+
+    if (strpos($url, 'agency/9000')
+      || strpos($url, '/edc')){
+      return 'edc';
+    }
+
+    return 'citywide';
+}
+
+/**
  * @param $agency_id
  *
  * @return string
@@ -2367,7 +2387,7 @@ function _checkbook_get_toggle_vendor_id($agency_id)
  */
 function _get_toggle_view_links()
 {
-    $q = $_SERVER['REQUEST_URI'];
+    $q = request_uri();
     $array_q = explode('/', $q);
     $array_q[1] = ($array_q[1] == 'contracts_landing') ? $array_q[1] . '/status/A' : $array_q[1];
     $year_string = _checkbook_project_get_year_url_param_string();
@@ -2448,7 +2468,7 @@ function isAdvancedSearchResultsPage()
     if (preg_match("/contract\/search\/transactions/", $current_url)) {
         return true;
     } else {
-        $current_url = $_SERVER['REQUEST_URI'];
+        $current_url = request_uri();
         if (preg_match("/contract\/search\/transactions/", $current_url)) {
             return true;
         }
