@@ -694,25 +694,6 @@ function _checkbook_smart_search_industrytype_autocomplete()
   return _checkbook_smart_search_get_searchstring_autocomplete("industry_type_name", "industry_type_name_autocomplete");
 }
 
-
-/** Escape special characters from regular expression string
- * @param $string
- * @return mixed
- */
-//function escapeRegex($string)
-//{
-//  $string = str_replace(" ", "%20", $string);
-//  $string = str_replace("(", "%28", $string);
-//  $string = str_replace("|", "%7C", $string);
-//  $string = str_replace("^", "%5E", $string);
-//  $string = str_replace(")", "%29", $string);
-//  $string = str_replace("*", "%2A", $string);
-//  $string = str_replace(".", "%2E", $string);
-//
-//  return $string;
-//}
-
-
 /** Returns the URL for clear functionality for each Search Term
  * @param $facetName
  * @param null $facetValue
@@ -1006,7 +987,7 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge = false)
           "payroll_type" => "Payroll Type",
           "" => ""
         );
-      } else {
+      } else {+-
         $parameter_mapping = array(
           "civil_service_title" => "Title",
           "agency_name" => "Agency",
