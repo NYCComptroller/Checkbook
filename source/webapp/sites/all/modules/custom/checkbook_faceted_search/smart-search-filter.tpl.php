@@ -47,42 +47,51 @@
 <div class="narrow-down-filter">
 <div class="narrow-down-title">Narrow Down Your Search:</div>
 <?php
-foreach ($render_array as $title => $value) {
-    $id_title = str_replace(" ", "_", $title);
-    if ($title == 'Type of Data' || $title == 'Spending Category' || $title == 'Category' || $title == 'Status'){
-        $count =0;
-        foreach ($value as $v) {
-            if(is_array($v) && in_array('checked', $v)) {
-              $count++;
-            }
-        }
+foreach ($facets_render as $facet_name => $facet) {
 
-        if($count == 0){
-            $display_facet = "none";
-            $span = "";
-        }else{
-            $display_facet = "block";
-            $span = "open";
-        }
-    }else{
-        if(!empty($value['checked'])){
-            $display_facet = "block";
-            $span = "open";
-        }else{
-            $display_facet = "none";
-            $span = "";
-        }
-    }
+  //    $id_title = str_replace(" ", "_", $title);
+//    if ($title == 'Type of Data' || $title == 'Spending Category' || $title == 'Category' || $title == 'Status'){
+//        $count =0;
+//        foreach ($value as $v) {
+//            if(is_array($v) && in_array('checked', $v)) {
+//              $count++;
+//            }
+//        }
+//
+//        if($count == 0){
+//            $display_facet = "none";
+//            $span = "";
+//        }else{
+//            $display_facet = "block";
+//            $span = "open";
+//        }
+//    }else{
+//        if(!empty($value['checked'])){
+//            $display_facet = "block";
+//            $span = "open";
+//        }else{
+//            $display_facet = "none";
+//            $span = "";
+//        }
+//    }
 
     echo '<div class="filter-content-' . $value['name'] . ' filter-content">';
-    echo '<div class="filter-title"><span class="'.$span.'">By ' . $title . '</span></div>';
+    echo '<div class="filter-title"><span class="'.$span.'">By ' . $facet->title . '</span></div>';
     echo '<div class="facet-content" style="display:'.$display_facet.'" ><div class="progress"></div>';
 
-    if ($title == 'Type of Data' || $title == 'Spending Category' || $title == 'Category' || $title == 'Status') {
-        echo '<div class="options">';
-        echo '<div class="rows">';
-        $index = 0;
+    if ($facet->autocomplete) {
+      $autocomplete_id = "autocomplete_" . $facet_name;
+  //      $disabled = ($value['checked'] && count($value['checked']) >= 5) ? "disabled" : '';
+      /**
+       * @TODO
+       */
+      $disabled = '';
 
+      echo '<div class="autocomplete"><input id="' . $autocomplete_id . '" ' . $disabled . ' type="text"></div>';
+    }
+
+    if ($title == 'Type of Data' || $title == 'Spending Category' || $title == 'Category' || $title == 'Status') {
+        /*
         foreach ($value as $v) {
             $name = $value['name'];
             $id = $id_title.$index;
@@ -138,9 +147,11 @@ foreach ($render_array as $title => $value) {
             }
             $index++;
         }
-        echo '</div></div>';
+        /* */
+//        echo '</div></div>';
     }
     else {
+      /*
         if($title == 'Vendor Type'){
             $disabled = ($value['checked'] && count($value['checked']) >= 5) ? "disabled" : '';
             echo '<div class="checked-items">';
@@ -352,7 +363,45 @@ foreach ($render_array as $title => $value) {
             echo '</div>';
             echo '</div>';
         }
+      /* */
     }
+
+    echo '<div class="options">';
+    echo '<div class="rows">';
+    $index = 0;
+
+    foreach($facet->results as $facet_value => $count) {
+
+      $facet_result_title = $facet_value;
+      if (is_array($count)) {
+        // vendor_type prepare_results()
+        list($facet_result_title, $count) = $count;
+      }
+
+      $id = 'facet_'.$facet_name.$index;
+      $active='';
+      echo '<div class="row">';
+      echo '<div class="checkbox">';
+
+      $checked = '';
+      if ($facet->selected) {
+        $checked = in_array($facet_value, $facet->selected);
+        $checked = $checked ? ' checked="checked" ' : '';
+      }
+
+      echo '<input type="checkbox" id="'.$id.'" '.$checked . ' name="'.$facet->input_name.'" value="'.$facet_value.'" onClick="javascript:applySearchFilters();"/>';
+      echo '<label for="'.$id.'">';
+      echo '</label>';
+      echo '</div>';
+
+      echo '<div class="name">' . htmlentities($facet_result_title) . '</div>';
+      echo '<div class="number"><span' . $active . '>' . number_format($count) . '</span></div>';
+      echo '</div>';
+      $index++;
+    }
+
+    echo '</div></div>';
+
     echo '</div></div>';
 }
 ?>

@@ -5,9 +5,9 @@
 */
 
 /**
- * Class Checkbook_Solr
+ * Class CheckbookSolr
  */
-class Checkbook_Solr
+class CheckbookSolr
 {
 
   /**
@@ -16,7 +16,7 @@ class Checkbook_Solr
   private $solr_url = '';
 
   /**
-   * Checkbook_Solr constructor.
+   * CheckbookSolr constructor.
    * @param string $datasource
    */
   public function __construct(string $datasource = 'citywide')
@@ -41,26 +41,6 @@ class Checkbook_Solr
     } else {
       LogHelper::log_warn("Could not find config \$conf['check_book']['$solr_datasource']['url']");
     }
-  }
-
-  /**
-   * @param string $string
-   * @return string
-   */
-  public static function escape(string $string): string
-  {
-    /**
-     * DO NOT CHANGE ORDER, BACKSLASH MUST BE FIRST
-     */
-    $escape_chars = explode(' ', '\\ + - & | ! ( ) { } [ ] ^ " ~ * ? : /');
-    $replace_to = [];
-    foreach($escape_chars as $char) {
-      $replace_to[] = "\\".$char;
-    }
-    $return = str_replace($escape_chars, $replace_to, $string);
-    $return = urlencode(strtolower($return));
-
-    return $return;
   }
 
   /**
@@ -98,6 +78,26 @@ class Checkbook_Solr
     $results = [];
     $response = $this->raw_query($query);
     if (stristr($query, 'wt=phps')) {
+      $results = unserialize($response);
+    }
+
+    if (!is_array($results)) {
+      return [];
+    }
+
+    return $results;
+  }
+
+  /**
+   * @param CheckbookSolrQuery $query
+   * @return array
+   */
+  public function requestTerms(CheckbookSolrQuery $query): array
+  {
+    $results = [];
+    $q = 'terms?'.$query->buildQuery();
+    $response = $this->raw_query($q);
+    if ('phps' == $query->getWt()) {
       $results = unserialize($response);
     }
 
