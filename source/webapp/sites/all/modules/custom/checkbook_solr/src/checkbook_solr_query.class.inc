@@ -68,24 +68,14 @@ class CheckbookSolrQuery
   /**
    * @var array
    */
-  private $paramMapping = [
-    "oge_agency_names" => "oge_agency_name",
-    "agency_names" => "agency_name",
-    "fiscal_years" => "fiscal_year",
-    "registered_fiscal_years" => "registered_fiscal_year",
-    "domains" => "domain",
-    "vendor_names" => "vendor_name",
-    "expense_categories" => "expenditure_object_name",
-    "revenue_categories" => "revenue_category_name",
-    "spending_categories" => "spending_category_name",
-    "contract_categories" => "contract_category_name",
-  ];
+  private $paramMapping = [];
 
   /**
    * CheckbookSolrQuery constructor.
    */
   public function __construct()
   {
+    $this->paramMapping = (array)CheckbookSolr::getFacetConfig()->param_mapping;
     return $this;
   }
 
@@ -243,6 +233,7 @@ class CheckbookSolrQuery
     $q = 'q=' . $this->q;
 
     /**
+     * ex.
      * http://sdw5.reisys.com:18983/solr/checkbook_dev.public.solr_index_full/select/?q=*:*&facet=true&facet.sort=count&facet.field=fiscal_year&wt=phps&facet.mincount=1
      */
 
@@ -284,25 +275,42 @@ class CheckbookSolrQuery
     }
 
     foreach ($searchTerms as $term) {
-      list($param, $value) = explode('=', urldecode($term));
-      if (in_array($param, array_keys($this->paramMapping))) {
-        $param = $this->paramMapping[$param];
+      $this->addFqTerm($term);
+    }
+
+    return $this;
+  }
+
+  /**
+   * @param string $term
+   * @param bool $exclude
+   * @return CheckbookSolrQuery
+   */
+  public function addFqTerm(string $term, bool $exclude = false): CheckbookSolrQuery
+  {
+    list($param, $value) = explode('=', urldecode($term));
+    if (in_array($param, array_keys($this->paramMapping))) {
+      $param = $this->paramMapping[$param];
+    }
+
+    $values = explode('~', $value);
+    $this->selectedFacets[$param] = $values;
+
+    $fq = [];
+    foreach ($values as $value) {
+      if ('vendor_type' == $param) {
+        $value = get_vendor_type_mapping($value);
       }
-
-      $values = explode('~', $value);
-      $this->selectedFacets[$param] = $values;
-
-      $fq = [];
-      foreach ($values as $value) {
-        if ('vendor_type' == $param) {
-          $value = get_vendor_type_mapping($value);
-        }
-        if ('contract_status' == $param) {
-          $value = get_contract_status_mapping($value);
-        }
-        $fq[] = '(' . $param . ':"' . self::escape($value) . '")';
+      if ('contract_status' == $param) {
+        $value = get_contract_status_mapping($value);
       }
+      $minus = $exclude ? '-' : '';
+      $fq[] = $minus . $param . ':"' . self::escape($value) . '"';
+    }
 
+    if ($exclude) {
+      $this->addFq(join('%20AND%20', $fq));
+    } else {
       $this->addFq(join('%20OR%20', $fq));
     }
 
@@ -350,14 +358,15 @@ class CheckbookSolrQuery
    * @param string $facet
    * @return CheckbookSolrQuery
    */
-  public function removeFqWith(string $facet): CheckbookSolrQuery
+  public function excludeFqTermValues(string $facet): CheckbookSolrQuery
   {
     $fq = $this->fq;
     $this->fq = [];
-    foreach($fq as $fq_line) {
-      if (!strpos(' '.$fq_line, $facet)){
-        $this->fq[] = $fq_line;
+    foreach ($fq as $fq_line) {
+      if (strpos(" $fq_line", "$facet:")) {
+        $fq_line = str_replace("$facet:", "-$facet:", $fq_line);
       }
+      $this->fq[] = $fq_line;
     }
     return $this;
   }
