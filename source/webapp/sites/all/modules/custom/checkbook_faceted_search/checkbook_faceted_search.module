@@ -1104,6 +1104,10 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables)
   $variables['facets_render'] = $facets_render;
 }
 
+/**
+ * @param $results
+ * @return array
+ */
 function ckbk_vendor_type_prepare_results($results)
 {
   $pv = $results['p']??0 + $results['pm']??0;

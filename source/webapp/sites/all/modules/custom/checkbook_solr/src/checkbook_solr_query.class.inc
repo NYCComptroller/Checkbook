@@ -338,6 +338,31 @@ class CheckbookSolrQuery
   }
 
   /**
+   * @return CheckbookSolrQuery
+   */
+  public function clearFacets(): CheckbookSolrQuery
+  {
+    $this->facets = [];
+    return $this;
+  }
+
+  /**
+   * @param string $facet
+   * @return CheckbookSolrQuery
+   */
+  public function removeFqWith(string $facet): CheckbookSolrQuery
+  {
+    $fq = $this->fq;
+    $this->fq = [];
+    foreach($fq as $fq_line) {
+      if (!strpos(' '.$fq_line, $facet)){
+        $this->fq[] = $fq_line;
+      }
+    }
+    return $this;
+  }
+
+  /**
    * @return array
    */
   public function getSelectedFacets(): array

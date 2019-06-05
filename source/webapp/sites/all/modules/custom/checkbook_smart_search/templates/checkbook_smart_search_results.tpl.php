@@ -145,8 +145,12 @@ if($noOfTotalResults > 0){
         $noOfResults .= $noOfResults == '' ? $key.'|'.$value : '~'.$key.'|'.$value;
     }
 
-    print "<div class='smart-search-right'>". theme('smart_search_filter', array('facets'=> $facet_results,
-      'active_contracts'=>$active_contracts, 'registered_contracts'=>$registered_contracts, 'selected_facet_results' => $selected_facet_results));
+    print "<div class='smart-search-right'>" . theme('smart_search_filter', [
+        'facets' => $facet_results,
+        'active_contracts' => $active_contracts,
+        'registered_contracts' => $registered_contracts,
+        'selected_facet_results' => $selected_facet_results
+      ]);
 
     //End of Facet results
 
