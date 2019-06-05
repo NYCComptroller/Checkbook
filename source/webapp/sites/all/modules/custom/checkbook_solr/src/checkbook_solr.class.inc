@@ -16,6 +16,25 @@ class CheckbookSolr
   private $solr_url = '';
 
   /**
+   * @var
+   */
+  private static $facet_config;
+
+  /**
+   * @return mixed
+   */
+  public static function getFacetConfig(): object
+  {
+    if (isset(self::$facet_config)) {
+      return self::$facet_config;
+    }
+
+    $facet_json_config = file_get_contents(__DIR__ . '/../config/smart_search_config.json');
+    self::$facet_config = json_decode($facet_json_config);
+    return self::$facet_config;
+  }
+
+  /**
    * CheckbookSolr constructor.
    * @param string $datasource
    */
