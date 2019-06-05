@@ -63,7 +63,10 @@ $node->show_difference = ($contract_type== 'BAM'||$contract_type== 'PAM');
     },
     "gl_project_descr_formatted":{
       "expression": "_get_tooltip_markup($row['gl_project_descr'],36)"
-     },
+    },
+    "grant_name_formatted":{
+      "expression": "_get_tooltip_markup($row['grant_name'],36)"
+    },
     "commodity_category_descr_formatted":{
       "expression": "_get_tooltip_markup($row['commodity_category_descr'],36)"
      },
@@ -115,7 +118,14 @@ $node->show_difference = ($contract_type== 'BAM'||$contract_type== 'PAM');
       },
         "item_description_formatted":{
         "expression": "_get_tooltip_markup($row['item_description'],36)"
-     }
+     },
+    "award_method_name_formatted":{
+        "expression": "_get_tooltip_markup($row['award_method_name'],36)"
+        },
+        "display_industry_type_name_formatted":
+        {
+        "expression": "_get_tooltip_markup($row['display_industry_type_name'],36)"
+         }
 },
   "skipCustomPadding":true,
   "table_columns": [
@@ -141,10 +151,10 @@ $node->show_difference = ($contract_type== 'BAM'||$contract_type== 'PAM');
     {"labelAlias":"vendor_name","column":"prime_vendor_name_link","sortSourceColumn":"vendor_name"},
     {"labelAlias":"location","column":"location_descr_formatted","sortSourceColumn":"location_descr"},
     {"labelAlias":"contract_type","column":"contract_type_formatted","sortSourceColumn":"contract_type_descr"},
-    {"labelAlias":"award_method","column":"award_method_name"},
-    {"labelAlias":"grant","column":"grant_name"},
+    {"labelAlias":"award_method","column":"award_method_name_formatted","sortSourceColumn":"award_method_name"},
+    {"labelAlias":"grant","column":"grant_name_formatted","sortSourceColumn":"grant_name"},
     {"labelAlias":"expenditure_type","column":"expenditure_type_descr_formatted","sortSourceColumn":"expenditure_type_descr"},
-    {"labelAlias":"contract_industry","column":"display_industry_type_name"},
+    {"labelAlias":"contract_industry","column":"display_industry_type_name_formatted","sortSourceColumn":"display_industry_type_name"},
     {"labelAlias":"funding_source","column":"funding_source_descr_formatted","sortSourceColumn":"funding_source_descr"},
     {"labelAlias":"pin","column":"po_header_id"},
     {"labelAlias":"program","column":"program_phase_descr_formatted","sortSourceColumn":"program_phase_descr"},
