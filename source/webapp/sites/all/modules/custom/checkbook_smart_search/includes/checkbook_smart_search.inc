@@ -215,6 +215,18 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
 //    "payroll_type" => $selected_payroll_type
 //  ];
 
+  if ($selected) {
+    foreach(array_keys($selected) as $facet) {
+      $facet_query = clone $solr_query;
+      $facet_query
+        ->clearFacets()
+        ->addFacet($facet)
+        ->removeFqWith($facet);
+      $facet_results = $solr->request_phps('select/?'.$facet_query->buildQuery());
+      $search_results['facet_counts']['facet_fields'][$facet] = $facet_results['facet_counts']['facet_fields'][$facet];
+    }
+  }
+
   return theme('checkbook_smart_search_results', [
     'search_results' => $search_results,
 //    'search_results' => $search_results['search_results'],

@@ -75,7 +75,15 @@ foreach ($facets_render as $facet_name => $facet) {
 //        }
 //    }
 
-    echo '<div class="filter-content-' . $value['name'] . ' filter-content">';
+    $span='';
+    $display_facet = 'none';
+
+    if ($facet->selected) {
+      $span = 'open';
+      $display_facet = 'block';
+    }
+
+    echo '<div class="filter-content-' . $facet_name . ' filter-content">';
     echo '<div class="filter-title"><span class="'.$span.'">By ' . $facet->title . '</span></div>';
     echo '<div class="facet-content" style="display:'.$display_facet.'" ><div class="progress"></div>';
 
