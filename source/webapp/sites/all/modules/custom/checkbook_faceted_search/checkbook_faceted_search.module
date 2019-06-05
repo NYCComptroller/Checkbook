@@ -657,14 +657,38 @@ function checkbook_faceted_search_preprocess_pagination(&$variables)
 
 function checkbook_faceted_search_preprocess_smart_search_filter(&$variables)
 {
-  $facets = $variables['facets'];
-  $active_contracts = $variables['active_contracts'];
-  $registered_contracts = $variables['registered_contracts'];
-  $selected_filters = $variables['selected_facet_results'];
-  $output = NULL;
-  $ogeAgencies = $agencies = $vendors = $vendor_type = $expenseCategories = $revenueCategories = $fiscalYears = $regfiscalYears = $domains = $contractCategory = $contractStatus = $spendingCategory = $MWBECategory = $contractMWBECategory = $spendingMWBECategory = $industryType = $payrollType = array();
-  $reqOGEAgencies = $reqAgencies = $reqFiscalYears = $regreqFiscalYears = $reqDomains = $reqVendors = $reqVendorType = $reqExpenseCategories = $reqRevenueCategories = $reqSpendCategories = $reqMWBECategory = $reqIndustryType = $reqpayrollType = array();
+//  $facets = $variables['facets'];
+//  $active_contracts = $variables['active_contracts'];
+//  $registered_contracts = $variables['registered_contracts'];
+//  $selected_filters = $variables['selected_facet_results'];
+//  $output = NULL;
+//  $ogeAgencies = $agencies = $vendors = $vendor_type = $expenseCategories = $revenueCategories = $fiscalYears = $regfiscalYears = $domains = $contractCategory = $contractStatus = $spendingCategory = $MWBECategory = $contractMWBECategory = $spendingMWBECategory = $industryType = $payrollType = array();
+//  $reqOGEAgencies = $reqAgencies = $reqFiscalYears = $regreqFiscalYears = $reqDomains = $reqVendors = $reqVendorType = $reqExpenseCategories = $reqRevenueCategories = $reqSpendCategories = $reqMWBECategory = $reqIndustryType = $reqpayrollType = array();
 
+  $facet_json_config = file_get_contents(__DIR__.'/../checkbook_smart_search/config/smart_search_config.json');
+  $facet_config = json_decode($facet_json_config);
+
+  $facets_render = [];
+
+  foreach($variables['facets'] as $facet => $results) {
+    if (!$results) {
+      continue;
+    }
+    $facets_render[$facet] = $facet_config->$facet;
+    if ($prepare_fn = $facet_config->$facet->prepare_results) {
+      $results = $prepare_fn($results);
+    }
+    $facets_render[$facet]->results = array_slice($results, 0, 100, true);
+  }
+
+  $selected = $variables['selected_facet_results'];
+  if (sizeof($selected)) {
+    foreach($selected as $facet=>$values){
+      $facets_render[$facet]->selected = $values;
+    }
+  }
+
+  /*
   //arrays for the selected facet values from the URL
   foreach ($selected_filters as $key => $value) {
     switch ($key) {
@@ -726,6 +750,7 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables)
     switch ($key) {
       case 'agency_name':
         $agencies[] = $value[$key];
+        $agencies[] = $value;
         break;
       case 'oge_agency_name':
         $ogeAgencies[] = $value[$key];
@@ -978,7 +1003,7 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables)
         }
       }
     }
-  }
+  }``
 
 // Registered fiscal year
   if ($regfiscalYears[0] ?? false) {
@@ -1075,6 +1100,26 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables)
 
   $variables['render_array'] = $output;
   $variables['sub_cat_array'] = $subCat;
+  */
+  $variables['facets_render'] = $facets_render;
+}
+
+function ckbk_vendor_type_prepare_results($results)
+{
+  $pv = $results['p']??0 + $results['pm']??0;
+  $sv = $results['s']??0 + $results['sm']??0;
+  $mv = $results['sm']??0 + $results['pm']??0;
+  $return = [];
+  if ($pv) {
+    $return['pv'] = ['Prime Vendor',$pv];
+  }
+  if ($sv) {
+    $return['sv'] = ['Sub Vendor', $sv];
+  }
+  if ($mv) {
+    $return['mv'] = ['M/WBE Vendor', $mv];
+  }
+  return $return;
 }
 
 function array_values_recursive($ary)

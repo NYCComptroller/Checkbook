@@ -136,7 +136,7 @@ $total = 5;
 $noOfResultsPerPage = 10;
 $startIndex = $transaction_no = ($_REQUEST['page'])? ($_REQUEST['page']*10)+1:1;
 $endIndex = (($startIndex+9) < $noOfTotalResults)? ($startIndex+9) : $noOfTotalResults;
-$domain_counts = $facet_results['domain']['domain'];
+$domain_counts = $facet_results['domain'];
 
 if($noOfTotalResults > 0){
 
