@@ -33,7 +33,7 @@ function _checkbook_smart_search_submit($form, &$form_state)
  * @param string $facet
  * @return array
  */
-function _checkbook_smart_search_get_unchecked_facets(string $solr_datasource, CheckbookSolrQuery $solr_query, string $facet): array
+function _checkbook_smart_search_load_unchecked_facets(string $solr_datasource, CheckbookSolrQuery $solr_query, string $facet): array
 {
   $solr = CheckbookSolr::getInstance($solr_datasource);
 
@@ -48,6 +48,23 @@ function _checkbook_smart_search_get_unchecked_facets(string $solr_datasource, C
   return $facet_results['facet_counts']['facet_fields'][$facet];
 }
 
+/**
+ * @param string $solr_datasource
+ * @throws Exception
+ */
+function _checkbook_smart_search_ajax_results(string $solr_datasource = 'citywide')
+{
+  $solr_query = new CheckbookSolrQuery($_REQUEST['search_term'], 10, $_REQUEST['page'] ?? 0);
+
+  $solr_query
+    ->setSort('domain_ordering asc,date_ordering desc');
+
+  $solr = CheckbookSolr::getInstance($solr_datasource);
+  $search_results = $solr->request_phps('select/?'.$solr_query->buildQuery());
+
+  print theme('ajax_results', ['search_results' => $search_results]);
+}
+
 /** Returns results for smart search
  * @param string $solr_datasource
  * @return mixed|string
@@ -55,20 +72,10 @@ function _checkbook_smart_search_get_unchecked_facets(string $solr_datasource, C
  */
 function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide')
 {
-  $search_terms = explode('*|*', $_REQUEST['search_term']); // array("Education", "domains=Payroll~Spending", "fiscal_years=2014~2013")
-
-  $solr_query = new CheckbookSolrQuery();
-  $solr_query
-    ->setSearchTerms($search_terms);
-
-  //Search results
-  $page_no = ($_REQUEST['page']) ? $_REQUEST['page'] : 0; // 0
-  $results_per_page = 10;
+  $solr_query = new CheckbookSolrQuery($_REQUEST['search_term'], 10, $_REQUEST['page'] ?? 0);
 
   $solr_query
-    ->setSort('domain_ordering asc,date_ordering desc')
-    ->setRows($results_per_page)
-    ->setPage($page_no);
+    ->setSort('domain_ordering asc,date_ordering desc');
 
   $datasource_facets = CheckbookSolr::getFacetConfigByDatasource($solr_datasource);
 
@@ -87,6 +94,7 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
     }
   }
 
+  $search_terms = explode('*|*', $_REQUEST['search_term']); // array("Education", "domains=Payroll~Spending", "fiscal_years=2014~2013")
   $reg_flag = false;
 //  $act_flag = false;
   foreach ($search_terms as $id => $keyvaluepair) {
@@ -106,7 +114,7 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
 
   $selected_facets = $solr_query->getSelectedFacets();
 
-  $solr = new CheckbookSolr($solr_datasource);
+  $solr = CheckbookSolr::getInstance($solr_datasource);
   $search_results = $solr->request_phps('select/?'.$solr_query->buildQuery());
 
   $vendor_number = count($search_results['facet_counts']['facet_fields']['vendor_name']);
@@ -123,7 +131,7 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
 
   if ($selected_facets) {
     foreach(array_keys($selected_facets) as $facet) {
-      $unchecked_facet_fields = _checkbook_smart_search_get_unchecked_facets($solr_datasource, $solr_query, $facet);
+      $unchecked_facet_fields = _checkbook_smart_search_load_unchecked_facets($solr_datasource, $solr_query, $facet);
       if ($unchecked_facet_fields) {
         $search_results['facet_counts']['facet_fields'][$facet] += $unchecked_facet_fields;
       }
@@ -136,8 +144,8 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
     'solr_datasource' => $solr_datasource,
     'search_results' => $search_results,
 //    'search_results' => $search_results['search_results'],
-    'active_contracts' => $search_results['active_contracts'],
-    'registered_contracts' => $search_results['registered_contracts'],
+//    'active_contracts' => $search_results['active_contracts'],
+//    'registered_contracts' => $search_results['registered_contracts'],
     'facet_results' => $search_results['facet_counts']['facet_fields'],
     'selected_facet_results' => $selected_facets,
 //    'selected_facet_results' => $selected_facet_results,
@@ -152,19 +160,14 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
  */
 function _checkbook_smart_search_facet_autocomplete(string $solr_datasource, string $facet_name)
 {
-  $search_terms = explode('*|*', $_REQUEST['search_term']); // array("Education", "domains=Payroll~Spending", "fiscal_years=2014~2013")
-
-  $solr_query = new CheckbookSolrQuery();
-  $solr_query
-    ->setSearchTerms($search_terms)
-    ->setRows(0);
+  $solr_query = new CheckbookSolrQuery($_REQUEST['search_term'], 0);
 
   $term = trim(htmlspecialchars_decode($_REQUEST['term'], ENT_QUOTES));//r*ei s.y|:s
   if ($term) {
     $terms = array_map('CheckbookSolrQuery::escape', explode(' ', $term)); // [r*ei, s.y|s]
     $fq_term = $facet_name . ':(' . join('"*%20AND%20"', $terms) . '*)';
     $solr_query
-      ->removeFqTermValues($facet_name)
+      ->removeFqTermValues($facet_name) // excluding current facet filtering for autocomplete
       ->addFq($fq_term);
   }
 
@@ -188,127 +191,121 @@ function _checkbook_smart_search_facet_autocomplete(string $solr_datasource, str
 
     return drupal_json_output($matches);
   }
+
   return drupal_json_output([['label' => 'No Matches Found', 'value' => 'No Matches Found']]);
 }
 
-
-/**
- * Outputs search results using the template file 'checkbook_smart_search_results.tpl.php'.
+/** Exports the smart search export data
+ * @param string $solr_datasource
  * @param $search_terms
  * @param $page_no
  * @param $no_of_results
- * @param string $domain
- * @return array
+ * @param string $fl
+ * @param bool $skip_header
+ * @return false|string
  */
-function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results, string $domain = 'citywide')
+function _checkbook_smart_search_get_results_csv(string $solr_datasource, string $search_terms, $page_no, $no_of_results, $fl = "*", $skip_header = false)
 {
-  $search_string = _checkbook_smart_search_get_results_query_search_term($search_terms);
-  $query = "select/?q=" . $search_string
-    . "&start=" . ($page_no * $no_of_results)
-    . "&sort=domain_ordering+asc,date_ordering+desc"
-    . "&wt=phps";
+  $solr_query = new CheckbookSolrQuery($search_terms, $no_of_results, $page_no);
+  $solr_query
+    ->setWt('csv')
+    ->setSort('domain_ordering asc,date_ordering desc');
 
-  $search_results = _checkbook_smart_search_solr_results($query, $domain);
+  $domain = $_REQUEST['domain'];
+  $solr_query->addFq('domain:'.$domain);
 
-  $contract_flag = false;
-  foreach ($search_terms as $id => $keyvaluepair) {
-    $keys = explode("=", $keyvaluepair);
-    if ($keys[0] == 'domains') {
-      $tilda = strpos($keys[1], '~');
-      if ($tilda) {
-        $domain = explode('~', $keys[1]);
-        foreach ($domain as $key => $value) {
-          if ($value == 'contracts') {
-            $contract_flag = true;
-          }
-        }
-      } else {
-        if ($keys[1] == 'contracts') {
-          $contract_flag = true;
-        }
-      }
-    }
+  $query = $solr_query->buildQuery();
+  $query .= '&fl='.$fl;
+
+  /**
+   * DANGER:
+   * SOLR 7 (gptext) doesn't seem to pick this up
+   */
+  if ($skip_header) {
+    $query = $query . "&csv.header:false";
   }
 
-  if ($contract_flag) {
-    //Active contracts count
-    $act_search_string = str_replace('&fq=(contract_status:"pending")', '', $search_string);
-    foreach ($search_terms as $id => $keyvaluepair) {
-      $keys = explode("=", $keyvaluepair);
-      if ($keys[0] == 'registered_fiscal_years') {
-        $act_search_string = str_replace('registered_fiscal_year', 'fiscal_year', $act_search_string);
-      }
-    }
-    $active_contracts_query = "select/?q=" . $act_search_string
-      . "&fq=contract_status:registered"
-      . "&wt=phps";
-
-    $active_contracts = _checkbook_smart_search_solr_results($active_contracts_query, $domain);
-
-    // Registered Contracts count
-    $reg_search_string = str_replace('&fq=(contract_status:"pending")', '', $search_string);
-    foreach ($search_terms as $id => $keyvaluepair) {
-      $keys = explode("=", $keyvaluepair);
-      if ($keys[0] == 'fiscal_years') {
-        $reg_search_string = str_replace('fiscal_year', 'registered_fiscal_year', $reg_search_string);
-      }
-    }
-    $registered_contracts_query = "select/?q=" . $reg_search_string
-      . "&fq=contract_status:registered"
-      . "&wt=phps";
-
-    $registered_contracts = _checkbook_smart_search_solr_results($registered_contracts_query, $domain);
-  }
-
-  return array('search_results' => $search_results, 'active_contracts' => $active_contracts, 'registered_contracts' => $registered_contracts);
+  $solr = CheckbookSolr::getInstance($solr_datasource);
+  return $solr->request_csv('select/?'.$query);
 }
 
-/** Returns solr results based on the search criteria from current URL
- * @param $search_terms
- * @return string
- */
-function _checkbook_smart_search_get_results_query_search_term($search_terms)
+/** Generates smart search export form */
+function _checkbook_smart_search_export_form()
 {
-  $parameterMapping = array(
-    "oge_agency_names" => "oge_agency_name",
-    "agency_names" => "agency_name",
-    "fiscal_years" => "fiscal_year",
-    "registered_fiscal_years" => "registered_fiscal_year",
-    "domains" => "domain",
-    "vendor_names" => "vendor_name",
-    "vendor_type" => "vendor_type",
-    "expense_categories" => "expenditure_object_name",
-    "revenue_categories" => "revenue_category_name",
-    "spending_categories" => "spending_category_name",
-    "contract_categories" => "contract_category_name",
-    "contract_status" => "contract_status",
-    "minority_type_name" => "minority_type_name",
-    "industry_type_name" => "industry_type_name",
-    "payroll_type" => "payroll_type"
-  );
-
-  $searchTerm = $search_terms[0];
-
-  for ($i = 1; $i < count($search_terms); $i++) {
-    $reqParams = explode('=', $search_terms[$i]);
-    if ($reqParams[0] == 'vendor_type') {
-      $reqParams[1] =  get_vendor_type_mapping($reqParams[1]);
-    }
-    if ($reqParams[0] == 'contract_status') {
-      $reqParams[1] = get_contract_status_mapping($reqParams[1]);
-    }
-    $filters = explode('~', urldecode($reqParams[1]));
-
-    $subQuery = "";
-    foreach ($filters as $value) {
-      $subQuery .= "(" . $parameterMapping[$reqParams[0]] . ':"' . CheckbookSolrQuery::escape($value) . '")%20OR%20';
-    }
-    $subQuery = substr($subQuery, 0, -8);
-    $searchTerm .= "&fq=" . $subQuery;
-  }
-
-  return $searchTerm;
+  echo theme('checkbook_smart_search_export_form');
 }
+
+/** Downloads the smart search export data
+ * @param string $solr_datasource
+ */
+function _checkbook_smart_search_export_download(string $solr_datasource)
+{
+  drupal_add_http_header("Content-Type", "text/csv");
+  //drupal_add_http_header("Content-Length",9);
+  drupal_add_http_header("Content-Disposition", "attachment; filename=TransactionsData.csv");
+  drupal_add_http_header("Pragma", "cache");
+  drupal_add_http_header("Expires", "-1");
+  _checkbook_smart_search_export_data($solr_datasource);
+}
+
+/** Exports the smart search export data
+ * @param string $solr_datasource
+ */
+function _checkbook_smart_search_export_data(string $solr_datasource)
+{
+  global $conf;
+  $remaining = $conf['check_book']['datatables']['iTotalDisplayRecords'];
+  $page_size = 10000;
+  $page_num = 0;
+
+  /**
+   * @TODO: fix export fields by solr_datasource
+   */
+  $fields = _checkbook_smart_search_domain_export_fields($_REQUEST['domain'], false);
+
+  $fl = implode(",", array_keys($fields));
+  echo implode(",", array_values($fields)) . "\n";
+
+  while ($remaining > 0) {
+    $result = _checkbook_smart_search_get_results_csv($solr_datasource, $_REQUEST['search_term']??'', $page_num, $page_size, $fl, true);
+    $page_num += 1;
+    $remaining = $remaining - $page_size;
+
+    /**
+     * SOLR 7 (gptext) doesn't seem to understand csv.header=false
+     */
+    $fls = explode(',',$fl);
+    $chunk = substr($result, 0, 200);
+    if (strpos($chunk, $fls[1]) && strpos($chunk, $fls[2]) && strpos($chunk, $fls[3])) {
+      // csv header detected
+      // removing first line manually
+      $result = preg_replace('/^.+\n/', '', $result);
+    }
+
+    $result = str_replace("Registered,Expense", "Active,Expense", $result);
+    $result = str_replace("Registered,Revenue", "Active,Revenue", $result);
+
+    $result = preg_replace("/1970-01-01T05:00:00Z/", "N/A", $result);
+    echo preg_replace("/(\d{4})-(\d{2})-(\d{2})...:..:.../", "$2/$3/$1", $result);
+    ob_flush();
+    flush();
+  }
+}
+
+/**
+ *
+ *
+██╗  ██╗███████╗██╗     ██╗         ██████╗ ███████╗██╗      ██████╗ ██╗    ██╗    ████████╗██╗  ██╗██╗███████╗    ██╗     ██╗███╗   ██╗███████╗
+██║  ██║██╔════╝██║     ██║         ██╔══██╗██╔════╝██║     ██╔═══██╗██║    ██║    ╚══██╔══╝██║  ██║██║██╔════╝    ██║     ██║████╗  ██║██╔════╝
+███████║█████╗  ██║     ██║         ██████╔╝█████╗  ██║     ██║   ██║██║ █╗ ██║       ██║   ███████║██║███████╗    ██║     ██║██╔██╗ ██║█████╗
+██╔══██║██╔══╝  ██║     ██║         ██╔══██╗██╔══╝  ██║     ██║   ██║██║███╗██║       ██║   ██╔══██║██║╚════██║    ██║     ██║██║╚██╗██║██╔══╝
+██║  ██║███████╗███████╗███████╗    ██████╔╝███████╗███████╗╚██████╔╝╚███╔███╔╝       ██║   ██║  ██║██║███████║    ███████╗██║██║ ╚████║███████╗
+╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝    ╚═════╝ ╚══════╝╚══════╝ ╚═════╝  ╚══╝╚══╝        ╚═╝   ╚═╝  ╚═╝╚═╝╚══════╝    ╚══════╝╚═╝╚═╝  ╚═══╝╚══════╝
+ *
+ *
+ */
+
+
 
 /**
  *  Outputs the solr query result for the input query.
@@ -673,86 +670,6 @@ function getCurrentYearID()
   return $current_nyc_year;
 }
 
-/** Generates smart search export form */
-function _checkbook_smart_search_export_form()
-{
-  echo theme('checkbook_smart_search_export_form');
-}
-
-/** Downloads the smart search export data */
-function _checkbook_smart_search_export_download()
-{
-  drupal_add_http_header("Content-Type", "text/csv");
-  //drupal_add_http_header("Content-Length",9);
-  drupal_add_http_header("Content-Disposition", "attachment; filename=TransactionsData.csv");
-  drupal_add_http_header("Pragma", "cache");
-  drupal_add_http_header("Expires", "-1");
-  _checkbook_smart_search_export_data();
-}
-
-/** Exports the smart search export data */
-function _checkbook_smart_search_export_data()
-{
-  $search_terms = explode('*|*', $_REQUEST['search_term']);
-  $search_terms[0] = urldecode($search_terms[0]); //"Education"
-  $search_terms[0] = ($search_terms[0] == "") ? "*:*" : ucwords(strtolower(CheckbookSolrQuery::escape($search_terms[0])));
-
-  $index = 0;
-  $isoge = 0;
-  foreach ($search_terms as $search_term) {
-    $terms = explode("=", $search_term);
-    if ($terms[0] == "domains") {
-      $domains = explode("~", $terms[1]);
-      $search_terms[$index] = "domains=" . $_REQUEST['domain'];
-    }
-    if ($terms[0] == "oge_agency_names") {
-      $isoge = 1;
-    }
-    $index += 1;
-  }
-  global $conf;
-  $remaining = $conf['check_book']['datatables']['iTotalDisplayRecords'];
-  $page_size = 10000;
-  $page_num = 0;
-
-  $fields = _checkbook_smart_search_domain_export_fields($_REQUEST['domain'], $isoge);
-  $fl = implode(",", array_keys($fields));
-  echo implode(",", array_values($fields)) . "\n";
-  $statusflag = false;
-  foreach ($search_terms as $id => $keyvaluepair) {
-    $keys = explode("=", $keyvaluepair);
-    if ($keys[0] == 'contract_status' && $keys[1] == 'registered') {
-      $statusflag = true;
-    } else if ($keys[0] == 'contract_status' && $keys[1] == 'active') {
-      $statusflag = false;
-    } else {
-      $statusflag = false;
-    }
-  }
-
-  while ($remaining > 0) {
-    $results = _checkbook_smart_search_get_results_csv($search_terms, $page_num, $page_size, $fl, true);
-    $page_num += 1;
-    $remaining = $remaining - $page_size;
-    /*
-     * For data which should be N/A and represent a timestamp,
-     * the column selected from solr is "1970-01-01 00:00:00 UTC" (epoch time)
-     * and we convert it to N/A here.  This is because a null timestamp would return
-     * and empty string and is not reliable for casting.
-     */
-    if (!$statusflag) {
-      $results = preg_replace("/Registered,Expense/", "Active,Expense", $results);
-      $results = preg_replace("/Registered,Revenue/", "Active,Revenue", $results);
-    }
-
-    $results = preg_replace("/1970-01-01T05:00:00Z/", "N/A", $results);
-    echo preg_replace("/(\d{4})-(\d{2})-(\d{2})...:..:.../", "$2/$3/$1", $results);
-    ob_flush();
-    flush();
-  }
-
-}
-
 /** Smart search results labels array
  * @param $domain
  * @param bool $IsOge
@@ -1049,62 +966,6 @@ function _checkbook_smart_search_domain_export_fields($domain, $IsOge)
   return $parameter_mapping;
 }
 
-/** Exports the smart search export data
- * @param $query
- * @return false|string
- */
-function _checkbook_smart_search_solr_results_csv($query)
-{
-  $solr = new CheckbookSolr();
-  return $solr->request_csv($query);
-}
-
-/** Exports the smart search export data
- * @param $search_terms
- * @param $page_no
- * @param $no_of_results
- * @param string $fl
- * @param bool $skip_header
- * @return false|string
- */
-function _checkbook_smart_search_get_results_csv($search_terms, $page_no, $no_of_results, $fl = "*", $skip_header = false)
-{
-  $search_string = _checkbook_smart_search_get_results_query_search_term($search_terms);
-  $domain = $_REQUEST['domain'];
-  $query = "select/?q=" . $search_string
-    . "&sort=domain_ordering+asc,date_ordering+desc"
-    . "&start=" . ($page_no * $no_of_results)
-    . "&wt=csv"
-    . "&rows=" . $no_of_results;
-
-  $query = $query . "&fq=domain:" . $domain;
-  $query = $query . "&fl=" . $fl;
-
-  if ($skip_header) {
-    $query = $query . "&csv.header=false";
-  }
-  return _checkbook_smart_search_solr_results_csv($query);
-}
-
-
-/**
- * @param string $domain
- * @throws Exception
- */
-function _checkbook_smart_search_ajax_results(string $domain = 'citywide')
-{
-//    $page = $_GET['page'];
-  $search_terms = explode('*|*', $_REQUEST['search_term']);
-  $search_terms[0] = urldecode($search_terms[0]); //"Education"
-
-  $search_terms[0] = ($search_terms[0] == "") ? "*:*" : ucwords(strtolower(CheckbookSolrQuery::escape($search_terms[0])));
-
-  $page_no = ($_REQUEST['page']) ? $_REQUEST['page'] : 0; // 0
-  $no_of_results = 10;
-  $search_results = _checkbook_smart_search_results($search_terms, $page_no, $no_of_results, $domain);
-  print theme('ajax_results', array('search_results' => $search_results['search_results']));
-
-}
 
 /**
  * @param $reqParams

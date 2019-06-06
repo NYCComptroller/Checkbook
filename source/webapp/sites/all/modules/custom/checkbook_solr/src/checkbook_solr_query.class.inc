@@ -72,10 +72,23 @@ class CheckbookSolrQuery
 
   /**
    * CheckbookSolrQuery constructor.
+   * @param string $searchTerms
+   * @param int $rows
+   * @param int $page
    */
-  public function __construct()
+  public function __construct(string $searchTerms='', int $rows=0, int $page=0)
   {
     $this->paramMapping = (array)CheckbookSolr::getParamMapping();
+
+    if ($searchTerms) {
+      $this
+        ->setSearchTerms(explode('*|*', $searchTerms));
+    }
+
+    $this
+      ->setRows($rows)
+      ->setPage($page);
+
     return $this;
   }
 
