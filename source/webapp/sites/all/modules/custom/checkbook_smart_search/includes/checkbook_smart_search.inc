@@ -680,18 +680,18 @@ function _checkbook_smart_search_export_form()
 }
 
 /** Downloads the smart search export data */
-function _checkbook_smart_search_export_download()
+function _checkbook_smart_search_export_download(string $solr_datasource)
 {
   drupal_add_http_header("Content-Type", "text/csv");
   //drupal_add_http_header("Content-Length",9);
   drupal_add_http_header("Content-Disposition", "attachment; filename=TransactionsData.csv");
   drupal_add_http_header("Pragma", "cache");
   drupal_add_http_header("Expires", "-1");
-  _checkbook_smart_search_export_data();
+  _checkbook_smart_search_export_data($solr_datasource);
 }
 
 /** Exports the smart search export data */
-function _checkbook_smart_search_export_data()
+function _checkbook_smart_search_export_data(string $solr_datasource)
 {
   $search_terms = explode('*|*', $_REQUEST['search_term']);
   $search_terms[0] = urldecode($search_terms[0]); //"Education"
@@ -731,7 +731,7 @@ function _checkbook_smart_search_export_data()
   }
 
   while ($remaining > 0) {
-    $results = _checkbook_smart_search_get_results_csv($search_terms, $page_num, $page_size, $fl, true);
+    $results = _checkbook_smart_search_get_results_csv($solr_datasource, $search_terms, $page_num, $page_size, $fl, true);
     $page_num += 1;
     $remaining = $remaining - $page_size;
     /*
@@ -1050,16 +1050,18 @@ function _checkbook_smart_search_domain_export_fields($domain, $IsOge)
 }
 
 /** Exports the smart search export data
+ * @param string $solr_datasource
  * @param $query
  * @return false|string
  */
-function _checkbook_smart_search_solr_results_csv($query)
+function _checkbook_smart_search_solr_results_csv(string $solr_datasource, $query)
 {
-  $solr = new CheckbookSolr();
+  $solr = CheckbookSolr::getInstance($solr_datasource);
   return $solr->request_csv($query);
 }
 
 /** Exports the smart search export data
+ * @param string $solr_datasource
  * @param $search_terms
  * @param $page_no
  * @param $no_of_results
@@ -1067,7 +1069,7 @@ function _checkbook_smart_search_solr_results_csv($query)
  * @param bool $skip_header
  * @return false|string
  */
-function _checkbook_smart_search_get_results_csv($search_terms, $page_no, $no_of_results, $fl = "*", $skip_header = false)
+function _checkbook_smart_search_get_results_csv(string $solr_datasource, $search_terms, $page_no, $no_of_results, $fl = "*", $skip_header = false)
 {
   $search_string = _checkbook_smart_search_get_results_query_search_term($search_terms);
   $domain = $_REQUEST['domain'];
@@ -1083,7 +1085,7 @@ function _checkbook_smart_search_get_results_csv($search_terms, $page_no, $no_of
   if ($skip_header) {
     $query = $query . "&csv.header=false";
   }
-  return _checkbook_smart_search_solr_results_csv($query);
+  return _checkbook_smart_search_solr_results_csv($solr_datasource, $query);
 }
 
 

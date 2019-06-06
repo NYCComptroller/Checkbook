@@ -153,7 +153,8 @@
                   "Download Data": function () {
                     var inputs = "<input type='hidden' name='search_term' value='" + getParameterByName("search_term") + "'/>"
                       + "<input type='hidden' name='domain' value='" + $('input[name=domain]:checked').val() + "'/>";
-                    var url = '/exportSmartSearch/download';
+                    var solr_datasource = Drupal.settings.checkbook_smart_search.solr_datasource || 'citywide';
+                    var url = '/exportSmartSearch/download/'+solr_datasource;
                     $('<form id="downloadForm" action="' + url + '" method="get">' + inputs + '</form>')
                       .appendTo('body')
                       .submit()
