@@ -55,7 +55,7 @@
               "grant_name":"grant_name",
               "expenditure_type":"expenditure_type_descr",
               "industry":"display_industry_type_name",
-              "funding_source":"funding_source_descr",
+              "funding_source":"display_funding_source_descr ",
               "pin":"po_header_id",
               "program":"program_phase_descr",
               "project":"gl_project_descr"
@@ -124,7 +124,7 @@
             "Grant Name":"grant_name",
             "Expenditure Type":"expenditure_type_descr",
             "Industry":"display_industry_type_name",
-            "Funding Source":"funding_source_descr",
+            "Funding Source":"display_funding_source_descr ",
             "PIN":"po_header_id",
             "Program":"program_phase_descr",
             "Project":"gl_project_descr"
@@ -242,7 +242,7 @@
             "grant_name":"grant_name",
             "expenditure_type":"expenditure_type_descr",
             "industry":"display_industry_type_name",
-            "funding_source":"funding_source_descr",
+            "funding_source":"display_funding_source_descr ",
             "pin":"po_header_id",
             "program":"program_phase_descr",
             "project":"gl_project_descr"
@@ -313,7 +313,7 @@
             "Grant Name":"grant_name",
             "Expenditure Type":"expenditure_type_descr",
             "Industry":"display_industry_type_name",
-            "Funding Source":"funding_source_descr",
+            "Funding Source":"display_funding_source_descr ",
             "PIN":"po_header_id",
             "Program":"program_phase_descr",
             "Project":"gl_project_descr"
