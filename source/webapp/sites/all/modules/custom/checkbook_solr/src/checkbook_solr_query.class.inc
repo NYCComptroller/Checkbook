@@ -38,7 +38,7 @@ class CheckbookSolrQuery
   /**
    * @var int
    */
-  private $perPage = 10;
+  private $rows = 10;
 
   /**
    * @var string
@@ -75,7 +75,7 @@ class CheckbookSolrQuery
    */
   public function __construct()
   {
-    $this->paramMapping = (array)CheckbookSolr::getFacetConfig()->param_mapping;
+    $this->paramMapping = (array)CheckbookSolr::getParamMapping();
     return $this;
   }
 
@@ -147,12 +147,12 @@ class CheckbookSolrQuery
   }
 
   /**
-   * @param int $perPage
+   * @param int $num_rows
    * @return CheckbookSolrQuery
    */
-  public function setPerPage(int $perPage): CheckbookSolrQuery
+  public function setRows(int $num_rows): CheckbookSolrQuery
   {
-    $this->perPage = $perPage;
+    $this->rows = $num_rows;
     return $this;
   }
 
@@ -203,8 +203,8 @@ class CheckbookSolrQuery
     }
 
     $query = array_merge($query, [
-      'start' => $this->page * $this->perPage,
-      'rows' => $this->perPage,
+      'start' => $this->page * $this->rows,
+      'rows' => $this->rows,
     ]);
 
     $fq = '';
@@ -268,6 +268,9 @@ class CheckbookSolrQuery
    */
   public function setSearchTerms(array $searchTerms): CheckbookSolrQuery
   {
+    $searchTerms[0] = urldecode($searchTerms[0]); //"Education"
+    $searchTerms[0] = ($searchTerms[0] == "") ? "*:*" : ucwords(strtolower(CheckbookSolrQuery::escape($searchTerms[0])));
+
     $this->q = array_shift($searchTerms);
 
     if (!sizeof($searchTerms)) {
@@ -282,6 +285,16 @@ class CheckbookSolrQuery
   }
 
   /**
+   * @param string $param
+   */
+  public function mapParam(string &$param): void
+  {
+    if (in_array($param, array_keys($this->paramMapping))) {
+      $param = $this->paramMapping[$param];
+    }
+  }
+
+  /**
    * @param string $term
    * @param bool $exclude
    * @return CheckbookSolrQuery
@@ -289,9 +302,7 @@ class CheckbookSolrQuery
   public function addFqTerm(string $term, bool $exclude = false): CheckbookSolrQuery
   {
     list($param, $value) = explode('=', urldecode($term));
-    if (in_array($param, array_keys($this->paramMapping))) {
-      $param = $this->paramMapping[$param];
-    }
+    $this->mapParam($param);
 
     $values = explode('~', $value);
     $this->selectedFacets[$param] = $values;
@@ -335,9 +346,7 @@ class CheckbookSolrQuery
    */
   public function addFacet(string $facet): CheckbookSolrQuery
   {
-    if (in_array($facet, array_keys($this->paramMapping))) {
-      $facet = $this->paramMapping[$facet];
-    }
+    $this->mapParam($facet);
 
     if (!in_array($facet, $this->facets)) {
       $this->facets[] = $facet;
@@ -360,13 +369,33 @@ class CheckbookSolrQuery
    */
   public function excludeFqTermValues(string $facet): CheckbookSolrQuery
   {
+    $this->mapParam($facet);
+
     $fq = $this->fq;
     $this->fq = [];
     foreach ($fq as $fq_line) {
-      if (strpos(" $fq_line", "$facet:")) {
+      if (2 === strpos("  $fq_line", "$facet:")) {
         $fq_line = str_replace("$facet:", "-$facet:", $fq_line);
       }
       $this->fq[] = $fq_line;
+    }
+    return $this;
+  }
+
+  /**
+   * @param string $facet
+   * @return CheckbookSolrQuery
+   */
+  public function removeFqTermValues(string $facet): CheckbookSolrQuery
+  {
+    $this->mapParam($facet);
+
+    $fq = $this->fq;
+    $this->fq = [];
+    foreach ($fq as $fq_line) {
+      if (2 !== strpos("  $fq_line", "$facet:")) {
+        $this->fq[] = $fq_line;
+      }
     }
     return $this;
   }
