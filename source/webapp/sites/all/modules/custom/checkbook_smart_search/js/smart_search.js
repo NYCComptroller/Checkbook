@@ -151,45 +151,32 @@
                 },
                 buttons: {
                   "Download Data": function () {
-                    var inputs = "<input type='hidden' name='search_term' value='" + getParameterByName("search_term") + "'/>"
-                      + "<input type='hidden' name='domain' value='" + $('input[name=domain]:checked').val() + "'/>";
                     var solr_datasource = Drupal.settings.checkbook_smart_search.solr_datasource || 'citywide';
                     var url = '/exportSmartSearch/download/'+solr_datasource;
-                    $('<form id="downloadForm" action="' + url + '" method="get">' + inputs + '</form>')
-                      .appendTo('body')
-                      .submit()
-                      .remove();
 
-                    $('#dialog #export-message').addClass('disable_me');
-                    $('.ui-dialog-titlebar').addClass('disable_me');
-                    $('.ui-dialog-buttonpane').addClass('disable_me');
-                    $('#dialog').addClass('disable_me');
-                    $('#loading_gif').show();
-                    $('#loading_gif').addClass('loading_bigger_gif');
+                    url += '?search_terms='+getParameterByName("search_term");
+                    url += '&domain='+$('input[name=domain]:checked').val();
 
-                    $.ajax({
-                      url: $('#downloadForm').attr('action'),
-                      data: {
-                        search_term: getParameterByName("search_term"),
-                        domain: $('input[name=domain]:checked').val()
-                      },
-                      success: function () {
-                        $('#dialog #export-message').removeClass('disable_me');
-                        $('.ui-dialog-titlebar').removeClass('disable_me');
-                        $('.ui-dialog-buttonpane').removeClass('disable_me');
-                        $('#dialog').removeClass('disable_me');
-                        $('#loading_gif').hide();
-                        $('#loading_gif').removeClass('loading_bigger_gif');
-                      },
-                      error: function () {
-                        $('#dialog #export-message').removeClass('disable_me');
-                        $('.ui-dialog-titlebar').removeClass('disable_me');
-                        $('.ui-dialog-buttonpane').removeClass('disable_me');
-                        $('#dialog').removeClass('disable_me');
-                        $('#loading_gif').hide();
-                        $('#loading_gif').removeClass('loading_bigger_gif');
-                      }
-                    });
+                    // $('#dialog #export-message')
+                    //   .add('.ui-dialog-titlebar')
+                    //   .add('.ui-dialog-buttonpane')
+                    //   .add('#dialog')
+                    //   .addClass('disable_me');
+                    // $('#loading_gif').show();
+                    // $('#loading_gif').addClass('loading_bigger_gif');
+
+                    // next line downloads csv!
+                    document.location.href = url;
+                    $(this).dialog('close');
+
+                    // $('#dialog #export-message')
+                    //   .add('.ui-dialog-titlebar')
+                    //   .add('.ui-dialog-buttonpane')
+                    //   .add('#dialog')
+                    //   .removeClass('disable_me');
+                    // $('#loading_gif').hide();
+                    // $('#loading_gif').removeClass('loading_bigger_gif');
+
                   },
                   "Cancel": function () {
                     $(this).dialog('close');
