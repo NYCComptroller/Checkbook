@@ -665,7 +665,9 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables)
 //  $ogeAgencies = $agencies = $vendors = $vendor_type = $expenseCategories = $revenueCategories = $fiscalYears = $regfiscalYears = $domains = $contractCategory = $contractStatus = $spendingCategory = $MWBECategory = $contractMWBECategory = $spendingMWBECategory = $industryType = $payrollType = array();
 //  $reqOGEAgencies = $reqAgencies = $reqFiscalYears = $regreqFiscalYears = $reqDomains = $reqVendors = $reqVendorType = $reqExpenseCategories = $reqRevenueCategories = $reqSpendCategories = $reqMWBECategory = $reqIndustryType = $reqpayrollType = array();
 
-  $facet_config = CheckbookSolr::getFacetConfig()->facets;
+  $solr_datasource = $variables['solr_datasource'];
+
+  $facet_config = CheckbookSolr::getFacetConfigByDatasource($solr_datasource);
 
   $facets_render = [];
 

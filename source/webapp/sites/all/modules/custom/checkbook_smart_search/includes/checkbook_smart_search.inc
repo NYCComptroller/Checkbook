@@ -27,6 +27,27 @@ function _checkbook_smart_search_submit($form, &$form_state)
   );
 }
 
+/**
+ * @param string $solr_datasource
+ * @param CheckbookSolrQuery $solr_query
+ * @param string $facet
+ * @return array
+ */
+function _checkbook_smart_search_get_unchecked_facets(string $solr_datasource, CheckbookSolrQuery $solr_query, string $facet): array
+{
+  $solr = CheckbookSolr::getInstance($solr_datasource);
+
+  $facet_query = clone $solr_query;
+  $facet_query
+    ->setRows(0)
+    ->clearFacets()
+    ->addFacet($facet)
+    ->excludeFqTermValues($facet);
+  $facet_results = $solr->request_phps('select/?'.$facet_query->buildQuery());
+
+  return $facet_results['facet_counts']['facet_fields'][$facet];
+}
+
 /** Returns results for smart search
  * @param string $solr_datasource
  * @return mixed|string
@@ -34,35 +55,37 @@ function _checkbook_smart_search_submit($form, &$form_state)
  */
 function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide')
 {
-  drupal_add_js(array('checkbook_smart_search' => array('solr_datasource' => $solr_datasource)), 'setting');
   $search_terms = explode('*|*', $_REQUEST['search_term']); // array("Education", "domains=Payroll~Spending", "fiscal_years=2014~2013")
-  $search_terms[0] = urldecode($search_terms[0]); //"Education"
 
-  $search_terms[0] = ($search_terms[0] == "") ? "*:*" : ucwords(strtolower(CheckbookSolrQuery::escape($search_terms[0])));
+  $solr_query = new CheckbookSolrQuery();
+  $solr_query
+    ->setSearchTerms($search_terms);
 
   //Search results
   $page_no = ($_REQUEST['page']) ? $_REQUEST['page'] : 0; // 0
   $results_per_page = 10;
 
-  $solr_query = new CheckbookSolrQuery();
   $solr_query
-    ->setPage($page_no)
-    ->setPerPage($results_per_page)
     ->setSort('domain_ordering asc,date_ordering desc')
-    ->setSearchTerms($search_terms);
+    ->setRows($results_per_page)
+    ->setPage($page_no);
 
-  $solr_query->addFacets([
-    'domains',
-    'oge_agency_names',
-    'agency_names',
-    'vendor_names',
-    'vendor_type',
-    'expense_categories',
-    'minority_type_name',
-    'industry_type_name',
-    'payroll_type',
-  ]);
+  $datasource_facets = CheckbookSolr::getFacetConfigByDatasource($solr_datasource);
 
+  $selected_facets = $solr_query->getSelectedFacets();
+
+  foreach($datasource_facets as $facet_name => $facet) {
+    if (!$facet->no_autoload) {
+      $solr_query->addFacet($facet_name);
+    }
+    if ($facet->sub && in_array($facet_name, array_keys($selected_facets))) {
+      foreach($selected_facets[$facet_name] as $facet_value) {
+        if ($domain_facets = $facet->sub->$facet_value ?? false) {
+          $solr_query->addFacets($domain_facets);
+        }
+      }
+    }
+  }
 
   $reg_flag = false;
 //  $act_flag = false;
@@ -75,42 +98,14 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
     }
   }
 
-  if ($reg_flag) {
+  if ($reg_flag && in_array('registered_fiscal_years', array_keys($datasource_facets))) {
     $solr_query->addFacet('registered_fiscal_years');
   } else {
     $solr_query->addFacet('fiscal_years');
   }
 
+  $selected_facets = $solr_query->getSelectedFacets();
 
-  foreach ($search_terms as $id => $keyvaluepair) {
-    $keys = explode("=", $keyvaluepair);
-    if ($keys[0] == 'domains') {
-      $tilda = strpos($keys[1], '~');
-      if ($tilda) {
-        $domain = explode('~', $keys[1]);
-        foreach ($domain as $key => $value) {
-          if ($value == 'contracts') {
-            $solr_query->addFacet('contract_categories');
-            $solr_query->addFacet('contract_status');
-          }
-          if ($value == 'spending') {
-            $solr_query->addFacet('spending_categories');
-          }
-        }
-      } else {
-        if ($keys[1] == 'contracts') {
-          $solr_query->addFacet('contract_categories');
-          $solr_query->addFacet('contract_status');
-        }
-        if ($keys[1] == 'spending') {
-          $solr_query->addFacet('spending_categories');
-        }
-      }
-    }
-  }
-
-
-  $selected = $solr_query->getSelectedFacets();
   $solr = new CheckbookSolr($solr_datasource);
   $search_results = $solr->request_phps('select/?'.$solr_query->buildQuery());
 
@@ -126,29 +121,76 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
   $expense_category_pages = floor($expense_categories_number / 100);
   drupal_add_js(array('checkbook_smart_search' => array('expense_category_pages' => $expense_category_pages)), 'setting');
 
-  if ($selected) {
-    foreach(array_keys($selected) as $facet) {
-      $facet_query = clone $solr_query;
-      $facet_query
-        ->setPerPage(0)
-        ->clearFacets()
-        ->addFacet($facet)
-        ->excludeFqTermValues($facet);
-      $facet_results = $solr->request_phps('select/?'.$facet_query->buildQuery());
-      $search_results['facet_counts']['facet_fields'][$facet] += $facet_results['facet_counts']['facet_fields'][$facet];
+  if ($selected_facets) {
+    foreach(array_keys($selected_facets) as $facet) {
+      $unchecked_facet_fields = _checkbook_smart_search_get_unchecked_facets($solr_datasource, $solr_query, $facet);
+      if ($unchecked_facet_fields) {
+        $search_results['facet_counts']['facet_fields'][$facet] += $unchecked_facet_fields;
+      }
     }
   }
 
+  drupal_add_js(array('checkbook_smart_search' => array('solr_datasource' => $solr_datasource)), 'setting');
+
   return theme('checkbook_smart_search_results', [
+    'solr_datasource' => $solr_datasource,
     'search_results' => $search_results,
 //    'search_results' => $search_results['search_results'],
     'active_contracts' => $search_results['active_contracts'],
     'registered_contracts' => $search_results['registered_contracts'],
     'facet_results' => $search_results['facet_counts']['facet_fields'],
-    'selected_facet_results' => $selected,
+    'selected_facet_results' => $selected_facets,
 //    'selected_facet_results' => $selected_facet_results,
   ]);
 }
+
+/**
+ * /smart_search/autocomplete_facet/nycha/vendor_name?term=RICHARDS
+ *
+ * @param string $solr_datasource
+ * @param string $facet_name
+ */
+function _checkbook_smart_search_facet_autocomplete(string $solr_datasource, string $facet_name)
+{
+  $search_terms = explode('*|*', $_REQUEST['search_term']); // array("Education", "domains=Payroll~Spending", "fiscal_years=2014~2013")
+
+  $solr_query = new CheckbookSolrQuery();
+  $solr_query
+    ->setSearchTerms($search_terms)
+    ->setRows(0);
+
+  $term = trim(htmlspecialchars_decode($_REQUEST['term'], ENT_QUOTES));//r*ei s.y|:s
+  if ($term) {
+    $terms = array_map('CheckbookSolrQuery::escape', explode(' ', $term)); // [r*ei, s.y|s]
+    $fq_term = $facet_name . ':(' . join('"*%20AND%20"', $terms) . '*)';
+    $solr_query
+      ->removeFqTermValues($facet_name)
+      ->addFq($fq_term);
+  }
+
+  $solr_query->addFacet($facet_name);
+
+  $mapped_facet = $facet_name;
+  $solr_query->mapParam($mapped_facet);
+
+  $solr = CheckbookSolr::getInstance($solr_datasource);
+  $results = $solr->request_phps('select/?'.$solr_query->buildQuery());
+
+  if ($results['response']['numFound'] != 0) {
+    $facet_results = $results['facet_counts']['facet_fields'][$mapped_facet];
+    $matches = array();
+    foreach ($facet_results as $key => $value) {
+      if ($value > 0) {
+        $key = (string)$key;
+        array_push($matches, array("url" => "", "category" => $facet_name, "label" => $key, "value" => urlencode($key)));
+      }
+    }
+
+    return drupal_json_output($matches);
+  }
+  return drupal_json_output([['label' => 'No Matches Found', 'value' => 'No Matches Found']]);
+}
+
 
 /**
  * Outputs search results using the template file 'checkbook_smart_search_results.tpl.php'.
@@ -284,182 +326,13 @@ function _checkbook_smart_search_solr_results(string $query, string $datasource 
   return $solr->request_phps($query);
 }
 
-/** Returns only selected facet values from current URL
- * @param $search_terms
- * @param $facet_name
- * @return array|null
- */
-//function _checkbook_smart_search_get_selected_facet_results($search_terms, $facet_name)
-//{
-//
-//  $parameter_mapping = array(
-//    "oge_agency_names" => "oge_agency_name",
-//    "agency_names" => "agency_name",
-//    "fiscal_years" => "fiscal_year",
-//    "registered_fiscal_years" => "registered_fiscal_year",
-//    "domains" => "domain",
-//    "vendor_names" => "vendor_name",
-//    "vendor_type" => "vendor_type",
-//    "expense_categories" => "expenditure_object_name",
-//    "revenue_categories" => "revenue_category_name",
-//    "spending_categories" => "spending_category_name",
-//    "contract_categories" => "contract_category_name",
-//    "contract_status" => "contract_status",
-//    "minority_type_name" => "minority_type_name",
-//    "industry_type_name" => "industry_type_name",
-//    "payroll_type" => "payroll_type"
-//  );
-//
-//  $search_string = $search_terms[0];
-//  $request_facet_param = array();
-//  $result = array();
-//  $count = 0;
-//  for ($i = 1; $i < count($search_terms); $i++) {
-//    $req_params = explode('=', $search_terms[$i]); // ("domains", "payroll~spending") ("fiscal_years", "2014~2013")
-//    if ($req_params[0] == 'vendor_type') {
-//      $req_params[1] = get_vendor_type_mapping($req_params[1]);
-//    }
-//    if ($req_params[0] == 'contract_status') {
-//      if ($req_params[1] == 'active') {
-//        $req_params[1] = 'registered';
-//      }
-//    }
-//    $filters = explode('~', urldecode($req_params[1]));
-//    $sub_query = "";
-//    foreach ($filters as $value) {
-//      if ($req_params[0] == $facet_name) {
-//        $count = 1;
-//        $request_facet_param[] = $value;
-//      }
-//      $sub_query .= "(" . $parameter_mapping[$req_params[0]] . ":" .
-//        CheckbookSolrQuery::escape('"' . $value . '"') . ")%20OR%20";
-//    }
-//
-//    if (strlen($sub_query) > 0) {
-//      $search_string .= "&fq=" . substr($sub_query, 0, -8);
-//    }
-//  }
-//
-//  if ($count) {
-//    $query = "select/?q=" . $search_string
-//      . "&facet=true"
-//      . "&facet.sort=count"
-//      . "&facet.field=" . $parameter_mapping[$facet_name]
-//      . "&wt=phps"
-//      . "&facet.mincount=1";
-//
-//    $selected_facet_results = _checkbook_smart_search_solr_results($query);
-//    foreach ($selected_facet_results['facet_counts']['facet_fields'] as $name => $value) {
-//      if (count($value) > 0) {
-//        foreach ($request_facet_param as $a => $b) {
-//          foreach ($value as $facet => $facet_count) {
-//            if ($facet == $b) {
-//              $result[] = array('name' => $facet, 'count' => $facet_count);
-//            }
-//          }
-//        }
-//      }
-//    }
-//    return $result;
-//  }
-//
-//  return null;
-//
-//}
-
-
-/** Returns Facet results
- * @param $search_terms - includes search query with filtered facets
- * @param $facet_name - current facet to gather data for
- * @param null $offset
- * @param null $limit
- * @param bool $exclude - exclude current $facet_name by "-$facet_name:value"
- * @param bool $fromScroll
- * @return array
- */
-//function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $offset = null, $limit = null, $exclude = FALSE, $fromScroll = FALSE)
-//{
-//  $parameter_mapping = array(
-//    "oge_agency_names" => "oge_agency_name",
-//    "agency_names" => "agency_name",
-//    "fiscal_years" => "fiscal_year",
-//    "registered_fiscal_years" => "registered_fiscal_year",
-//    "domains" => "domain",
-//    "vendor_names" => "vendor_name",
-//    "vendor_type" => "vendor_type",
-//    "expense_categories" => "expenditure_object_name",
-//    "revenue_categories" => "revenue_category_name",
-//    "spending_categories" => "spending_category_name",
-//    "contract_categories" => "contract_category_name",
-//    "contract_status" => "contract_status",
-//    "minority_type_name" => "minority_type_name",
-//    "industry_type_name" => "industry_type_name",
-//    "payroll_type" => "payroll_type"
-//  );
-//
-//  $search_string = $search_terms[0];
-//  $terms_count = 0;
-//  for ($i = 1; $i < count($search_terms); $i++) {
-//
-//    $req_params = explode('=', $search_terms[$i]);
-//
-//    if ($req_params[0] == 'vendor_type') {
-//      $req_params[1] = get_vendor_type_mapping($req_params[1]);
-//    }
-//
-//    if ($req_params[0] == 'contract_status') {
-//      if ($req_params[1] == 'active') {
-//        $req_params[1] = 'registered';
-//      }
-//    }
-//
-//    $filters = explode('~', urldecode($req_params[1]));
-//    $sub_query = "";
-//
-//    foreach ($filters as $value) {
-//      if ($req_params[0] != $facet_name) {
-//        $sub_query .= "(" . $parameter_mapping[$req_params[0]] . ":" .
-//          CheckbookSolrQuery::escape('"' . $value . '"') . ")%20OR%20";
-//      } elseif ($req_params[0] == $facet_name && $exclude == TRUE) {
-//        $sub_query .= "-" . $parameter_mapping[$req_params[0]] . ":" . CheckbookSolrQuery::escape('"' . $value . '"') . "%20OR%20";
-//      } elseif ($req_params[0] == $facet_name) {
-//        $terms_count++;
-//      }
-//    }
-//
-//    $sub_query = substr($sub_query, 0, -8);
-//    if (strlen($sub_query) > 0)
-//      $search_string .= "&fq=" . $sub_query;
-//  }
-//
-//  $query = "select/?q=" . $search_string
-//    . "&facet=true"
-//    . "&facet.sort=count"
-//    . "&facet.field=" . $parameter_mapping[$facet_name]
-//    . "&wt=phps"
-//    . "&facet.mincount=1";
-//
-//  if ($offset && $offset > 0) {
-//    $query .= "&facet.offset=" . $offset;
-//  }
-//  if ($limit && $limit >= 0 && !$fromScroll) {
-//    $query .= "&facet.limit=" . ($limit + $terms_count);
-//  } elseif ($limit) {
-//    $query .= "&facet.limit=" . $limit;
-//  }
-//
-//  $facet_results = _checkbook_smart_search_solr_results($query);
-//
-//  return $facet_results;
-//}
-
 /**
  *  Outputs the suggestions for the given input.
  *  Returns the matching words
  *
  * @param string $domain
  */
-function _checkbook_smart_search_autocomplete($domain = 'citywide')
+function _checkbook_smart_search_autocomplete_main_input($domain = 'citywide')
 {
   $search_term = htmlspecialchars_decode($_REQUEST['term'], ENT_QUOTES);
   $search_term = strtolower($search_term);
@@ -532,6 +405,7 @@ function _checkbook_smart_search_autocomplete($domain = 'citywide')
 
   return drupal_json_output($matches);
 }
+
 
 /**
  *  Outputs query string for facet auto complete fields
@@ -987,7 +861,7 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge = false)
           "payroll_type" => "Payroll Type",
           "" => ""
         );
-      } else {+-
+      } else {
         $parameter_mapping = array(
           "civil_service_title" => "Title",
           "agency_name" => "Agency",
@@ -1212,53 +1086,6 @@ function _checkbook_smart_search_get_results_csv($search_terms, $page_no, $no_of
   return _checkbook_smart_search_solr_results_csv($query);
 }
 
-/** Returns theme for Vendor facet
- * @param $page
- * @throws Exception
- */
-//function _checkbook_smart_search_vendor_facet($page)
-//{
-//  $search_terms = explode('*|*', $_REQUEST['search_term']);
-//  $search_terms[0] = urldecode($search_terms[0]); //"Education"
-//
-//  $search_terms[0] = ($search_terms[0] == "") ? "*:*" : ucwords(strtolower(CheckbookSolrQuery::escape($search_terms[0])));
-//
-//  $limit = 100;
-//  $double_limit = (2 * $limit);
-//  if ($page == 0) {
-//    $double_limit = 100;
-//  }
-//  $offset = 0;
-//  if ($page > 0) {
-//    $offset = ($page - 1) * $limit;
-//  }
-//  $results = _checkbook_smart_search_get_facet_results($search_terms, "vendor_names", $offset, $double_limit, TRUE, TRUE);
-//  print theme('facet_results', array('results' => $results['facet_counts']['facet_fields']['vendor_name'], 'name' => 'fvendorName', 'page' => $page));
-//}
-
-/** Returns theme for Expense Category facet
- * @param $page
- * @throws Exception
- */
-//function _checkbook_smart_search_expensecategory_facet($page)
-//{
-//  $search_terms = explode('*|*', $_REQUEST['search_term']);
-//  $search_terms[0] = urldecode($search_terms[0]); //"Education"
-//
-//  $search_terms[0] = ($search_terms[0] == "") ? "*:*" : ucwords(strtolower(CheckbookSolrQuery::escape($search_terms[0])));
-//
-//  $limit = 100;
-//  $double_limit = (2 * $limit);
-//  if ($page == 0) {
-//    $double_limit = 100;
-//  }
-//  $offset = 0;
-//  if ($page > 0) {
-//    $offset = ($page - 1) * $limit;
-//  }
-//  $results = _checkbook_smart_search_get_facet_results($search_terms, "expense_categories", $offset, $double_limit, TRUE, TRUE);
-//  print theme('facet_results', array('results' => $results['facet_counts']['facet_fields']['expenditure_object_name'], 'name' => 'fexpenseCategoryName', 'page' => $page));
-//}
 
 /**
  * @param string $domain

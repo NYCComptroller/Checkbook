@@ -45,7 +45,7 @@
 ?>
 
 <div class="narrow-down-filter">
-<div class="narrow-down-title">Narrow Down Your Search:</div>
+  <div class="narrow-down-title">Narrow Down Your Search:</div>
 <?php
 foreach ($facets_render as $facet_name => $facet) {
 
@@ -84,8 +84,8 @@ foreach ($facets_render as $facet_name => $facet) {
     }
 
     echo '<div class="filter-content-' . $facet_name . ' filter-content">';
-    echo '<div class="filter-title"><span class="'.$span.'">By ' . $facet->title . '</span></div>';
-    echo '<div class="facet-content" style="display:'.$display_facet.'" ><div class="progress"></div>';
+    echo '  <div class="filter-title"><span class="'.$span.'">By ' . htmlentities($facet->title) . '</span></div>';
+  echo '    <div class="facet-content" style="display:'.$display_facet.'" ><div class="progress"></div>';
 
     if ($facet->autocomplete) {
       $autocomplete_id = "autocomplete_" . $facet->input_name;
@@ -98,8 +98,8 @@ foreach ($facets_render as $facet_name => $facet) {
       echo '<div class="autocomplete"><input id="' . $autocomplete_id . '" ' . $disabled . ' type="text" /></div>';
     }
 
+    /*
     if ($title == 'Type of Data' || $title == 'Spending Category' || $title == 'Category' || $title == 'Status') {
-        /*
         foreach ($value as $v) {
             $name = $value['name'];
             $id = $id_title.$index;
@@ -155,11 +155,9 @@ foreach ($facets_render as $facet_name => $facet) {
             }
             $index++;
         }
-        /* */
 //        echo '</div></div>';
     }
     else {
-      /*
         if($title == 'Vendor Type'){
             $disabled = ($value['checked'] && count($value['checked']) >= 5) ? "disabled" : '';
             echo '<div class="checked-items">';
@@ -371,8 +369,8 @@ foreach ($facets_render as $facet_name => $facet) {
             echo '</div>';
             echo '</div>';
         }
-      /* */
     }
+    /* */
 
     echo '<div class="options">';
     echo '<div class="rows">';
@@ -397,7 +395,8 @@ foreach ($facets_render as $facet_name => $facet) {
         $checked = $checked ? ' checked="checked" ' : '';
       }
 
-      echo '<input type="checkbox" id="'.$id.'" '.$checked . ' name="'.$facet->input_name.'" value="'.$facet_value.'" onClick="javascript:applySearchFilters();"/>';
+      echo '<input type="checkbox" id="'.$id.'" '.$checked . ' name="'.$facet->input_name.'" value="'.
+        htmlentities($facet_value).'" onClick="javascript:applySearchFilters();" />';
       echo '<label for="'.$id.'">';
       echo '</label>';
       echo '</div>';

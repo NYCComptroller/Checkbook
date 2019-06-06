@@ -146,6 +146,7 @@ if($noOfTotalResults > 0){
     }
 
     print "<div class='smart-search-right'>" . theme('smart_search_filter', [
+        'solr_datasource' => $solr_datasource,
         'facets' => $facet_results,
         'active_contracts' => $active_contracts,
         'registered_contracts' => $registered_contracts,
