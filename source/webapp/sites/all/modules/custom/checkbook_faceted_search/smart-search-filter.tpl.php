@@ -88,14 +88,14 @@ foreach ($facets_render as $facet_name => $facet) {
     echo '<div class="facet-content" style="display:'.$display_facet.'" ><div class="progress"></div>';
 
     if ($facet->autocomplete) {
-      $autocomplete_id = "autocomplete_" . $facet_name;
+      $autocomplete_id = "autocomplete_" . $facet->input_name;
   //      $disabled = ($value['checked'] && count($value['checked']) >= 5) ? "disabled" : '';
       /**
        * @TODO
        */
       $disabled = '';
 
-      echo '<div class="autocomplete"><input id="' . $autocomplete_id . '" ' . $disabled . ' type="text"></div>';
+      echo '<div class="autocomplete"><input id="' . $autocomplete_id . '" ' . $disabled . ' type="text" /></div>';
     }
 
     if ($title == 'Type of Data' || $title == 'Spending Category' || $title == 'Category' || $title == 'Status') {
