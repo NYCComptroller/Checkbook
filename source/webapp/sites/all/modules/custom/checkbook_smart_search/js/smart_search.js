@@ -154,7 +154,7 @@
                     var solr_datasource = Drupal.settings.checkbook_smart_search.solr_datasource || 'citywide';
                     var url = '/exportSmartSearch/download/'+solr_datasource;
 
-                    url += '?search_terms='+getParameterByName("search_term");
+                    url += '?search_terms='+encodeURIComponent(getParameterByName("search_term"));
                     url += '&domain='+$('input[name=domain]:checked').val();
 
                     // $('#dialog #export-message')
