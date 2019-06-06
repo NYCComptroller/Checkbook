@@ -732,7 +732,9 @@ function _checkbook_smart_search_export_data(string $solr_datasource)
      * SOLR 7 (gptext) doesn't seem to understand csv.header=false
      */
     $fls = explode(',',$fl);
-     if (strpos($result, $fls[1]) && strpos($result, $fls[2]) && strpos($result, $fls[3])) {
+    $chunk = substr($result, 0, 200);
+     if (strpos($chunk, $fls[1]) && strpos($chunk, $fls[2]) && strpos($chunk, $fls[3])) {
+       // csv header detected
        // removing first line manually
        $result = preg_replace('/^.+\n/', '', $result);
     }
