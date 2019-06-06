@@ -267,16 +267,19 @@ function _checkbook_smart_search_export_data(string $solr_datasource)
   echo implode(",", array_values($fields)) . "\n";
 
   while ($remaining > 0) {
-    $result = _checkbook_smart_search_get_results_csv($solr_datasource, $_REQUEST['search_term']??'', $page_num, $page_size, $fl, true);
+    $result = _checkbook_smart_search_get_results_csv($solr_datasource, $_REQUEST['search_terms']??'', $page_num, $page_size, $fl, true);
     $page_num += 1;
     $remaining = $remaining - $page_size;
 
     /**
      * SOLR 7 (gptext) doesn't seem to understand csv.header=false
      */
-    $fls = explode(',',$fl);
     $chunk = substr($result, 0, 200);
-    if (strpos($chunk, $fls[1]) && strpos($chunk, $fls[2]) && strpos($chunk, $fls[3])) {
+    if (strpos($chunk, '"vendor_name"')
+      || strpos($chunk, '"contract_number"')
+      || strpos($chunk, '"current_amount"')
+      || strpos($chunk, '"original_amount"')
+    ) {
       // csv header detected
       // removing first line manually
       $result = preg_replace('/^.+\n/', '', $result);
