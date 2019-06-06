@@ -1,0 +1,237 @@
+{
+  "param_mapping": {
+    "oge_agency_names": "oge_agency_name",
+    "agency_names": "agency_name",
+    "fiscal_years": "fiscal_year",
+    "registered_fiscal_years": "registered_fiscal_year",
+    "domains": "domain",
+    "vendor_names": "vendor_name",
+    "expense_categories": "expenditure_object_name",
+    "revenue_categories": "revenue_category_name",
+    "spending_categories": "spending_category_name",
+    "contract_categories": "contract_category_name"
+  },
+  "facets": {
+    "citywide": {
+      "domain": {
+        "title": "Type of Data",
+        "input_name": "fdomainName",
+        "sub": {
+          "contracts": [
+            "contract_category_name",
+            "contract_status"
+          ],
+          "spending": [
+            "spending_category_name"
+          ],
+          "revenue": [
+            "revenue_category_name"
+          ]
+        }
+      },
+      "contract_category_name": {
+        "title": "Contract Category",
+        "input_name": "fcontractCatName",
+        "no_autoload": true
+      },
+      "contract_status": {
+        "title": "Contract Status",
+        "input_name": "fcontractStatus",
+        "no_autoload": true
+      },
+      "spending_category_name": {
+        "title": "Spending Category",
+        "input_name": "fspendingCatName",
+        "no_autoload": true
+      },
+      "revenue_category_name": {
+        "title": "Revenue Category",
+        "input_name": "frevenueCategoryName",
+        "no_autoload": true
+      },
+      "agency_name": {
+        "title": "Citywide Agency",
+        "input_name": "fagencyName",
+        "autocomplete": true
+      },
+      "oge_agency_name": {
+        "title": "Other Government Entity",
+        "input_name": "fogeName",
+        "autocomplete": true
+      },
+      "vendor_name": {
+        "title": "Vendor",
+        "input_name": "fvendorName",
+        "autocomplete": true
+      },
+      "vendor_type": {
+        "title": "Vendor Type",
+        "input_name": "fvendorType",
+        "prepare_results": "ckbk_vendor_type_prepare_results"
+      },
+      "payroll_type": {
+        "title": "Payroll Type",
+        "input_name": "fpayrollTypeName"
+      },
+      "expenditure_object_name": {
+        "title": "Expense Category",
+        "input_name": "fexpenseCategoryName",
+        "autocomplete": true
+      },
+      "fiscal_year": {
+        "title": "Fiscal Year",
+        "input_name": "fyear",
+        "autocomplete": true,
+        "no_autoload": true
+      },
+      "registered_fiscal_year": {
+        "title": "Fiscal Year",
+        "input_name": "regfyear",
+        "autocomplete": true,
+        "no_autoload": true
+      },
+      "minority_type_name": {
+        "title": "M/WBE Category",
+        "input_name": "fmwbeCategory"
+      },
+      "industry_type_name": {
+        "title": "Industry",
+        "input_name": "findustryTypeName",
+        "autocomplete": true
+      }
+    },
+    "edc": {
+      "domain": {
+        "title": "Type of Data",
+        "input_name": "fdomainName",
+        "sub": {
+          "contracts": [
+            "contract_category_name",
+            "contract_status"
+          ],
+          "spending": [
+            "spending_category_name"
+          ],
+          "revenue": [
+            "revenue_category_name"
+          ]
+        }
+      },
+      "contract_category_name": {
+        "title": "Contract Category",
+        "input_name": "fcontractCatName",
+        "no_autoload": true
+      },
+      "contract_status": {
+        "title": "Contract Status",
+        "input_name": "fcontractStatus",
+        "no_autoload": true
+      },
+      "spending_category_name": {
+        "title": "Spending Category",
+        "input_name": "fspendingCatName",
+        "no_autoload": true
+      },
+      "revenue_category_name": {
+        "title": "Revenue Category",
+        "input_name": "frevenueCategoryName",
+        "no_autoload": true
+      },
+      "agency_name": {
+        "title": "Citywide Agency",
+        "input_name": "fagencyName",
+        "autocomplete": true
+      },
+      "oge_agency_name": {
+        "title": "Other Government Entity",
+        "input_name": "fogeName",
+        "autocomplete": true
+      },
+      "vendor_name": {
+        "title": "Vendor",
+        "input_name": "fvendorName",
+        "autocomplete": true
+      },
+      "expenditure_object_name": {
+        "title": "Expense Category",
+        "input_name": "fexpenseCategoryName",
+        "autocomplete": true
+      },
+      "fiscal_year": {
+        "title": "Fiscal Year",
+        "input_name": "fyear",
+        "autocomplete": true,
+        "no_autoload": true
+      },
+      "registered_fiscal_year": {
+        "title": "Fiscal Year",
+        "input_name": "regfyear",
+        "autocomplete": true,
+        "no_autoload": true
+      }
+    },
+    "nycha": {
+      "domain": {
+        "title": "Type of Data",
+        "input_name": "fdomainName",
+        "sub": {
+          "contracts": [
+            "contract_category_name",
+            "contract_status"
+          ],
+          "spending": [
+            "spending_category_name"
+          ],
+          "revenue": [
+            "revenue_category_name"
+          ]
+        }
+      },
+      "contract_category_name": {
+        "title": "Contract Category",
+        "input_name": "fcontractCatName",
+        "no_autoload": true
+      },
+      "contract_status": {
+        "title": "Contract Status",
+        "input_name": "fcontractStatus",
+        "no_autoload": true
+      },
+      "spending_category_name": {
+        "title": "Spending Category",
+        "input_name": "fspendingCatName",
+        "no_autoload": true
+      },
+      "revenue_category_name": {
+        "title": "Revenue Category",
+        "input_name": "frevenueCategoryName",
+        "no_autoload": true
+      },
+      "agency_name": {
+        "title": "Citywide Agency",
+        "input_name": "fagencyName",
+        "autocomplete": true
+      },
+      "vendor_name": {
+        "title": "Vendor",
+        "input_name": "fvendorName",
+        "autocomplete": true
+      },
+      "payroll_type": {
+        "title": "Payroll Type",
+        "input_name": "fpayrollTypeName"
+      },
+      "fiscal_year": {
+        "title": "Fiscal Year",
+        "input_name": "fyear",
+        "autocomplete": true,
+        "no_autoload": true
+      },
+      "industry_type_name": {
+        "title": "Industry",
+        "input_name": "findustryTypeName",
+        "autocomplete": true
+      }
+    }
+  }
+}

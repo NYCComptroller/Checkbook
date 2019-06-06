@@ -47,7 +47,13 @@ function checkbook_smart_search_menu(){
     	'type' => MENU_CALLBACK
     );
     $items['smart_search/autocomplete'] = array(
-        'page callback' => '_checkbook_smart_search_autocomplete',
+        'page callback' => '_checkbook_smart_search_autocomplete_main_input',
+        'access callback' => TRUE,
+        'file' => 'includes/checkbook_smart_search.inc',
+        'type' => MENU_CALLBACK
+    );
+    $items['smart_search/autocomplete_facet'] = array(
+        'page callback' => '_checkbook_smart_search_facet_autocomplete',
         'access callback' => TRUE,
         'file' => 'includes/checkbook_smart_search.inc',
         'type' => MENU_CALLBACK
