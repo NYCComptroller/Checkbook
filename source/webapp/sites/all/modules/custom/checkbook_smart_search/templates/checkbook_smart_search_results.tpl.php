@@ -136,7 +136,7 @@ $total = 5;
 $noOfResultsPerPage = 10;
 $startIndex = $transaction_no = ($_REQUEST['page'])? ($_REQUEST['page']*10)+1:1;
 $endIndex = (($startIndex+9) < $noOfTotalResults)? ($startIndex+9) : $noOfTotalResults;
-$domain_counts = $facet_results['domain']['domain'];
+$domain_counts = $facet_results['domain'];
 
 if($noOfTotalResults > 0){
 
@@ -145,8 +145,13 @@ if($noOfTotalResults > 0){
         $noOfResults .= $noOfResults == '' ? $key.'|'.$value : '~'.$key.'|'.$value;
     }
 
-    print "<div class='smart-search-right'>". theme('smart_search_filter', array('facets'=> $facet_results,
-      'active_contracts'=>$active_contracts, 'registered_contracts'=>$registered_contracts, 'selected_facet_results' => $selected_facet_results));
+    print "<div class='smart-search-right'>" . theme('smart_search_filter', [
+        'solr_datasource' => $solr_datasource,
+        'facets' => $facet_results,
+        'active_contracts' => $active_contracts,
+        'registered_contracts' => $registered_contracts,
+        'selected_facet_results' => $selected_facet_results
+      ]);
 
     //End of Facet results
 

@@ -5,9 +5,9 @@
 */
 
 /**
- * Class Checkbook_Solr
+ * Class CheckbookSolr
  */
-class Checkbook_Solr
+class CheckbookSolr
 {
 
   /**
@@ -16,15 +16,79 @@ class Checkbook_Solr
   private $solr_url = '';
 
   /**
-   * Checkbook_Solr constructor.
+   * @var
+   */
+  private static $smart_search_config_json;
+
+  /**
+   * @var string
+   */
+  private $datasource;
+
+  /**
+   * @param string $domain
+   * @return mixed
+   */
+  public static function getFacetConfigByDatasource(string $domain): object
+  {
+    return self::getSmartSearchConfig()->facets->$domain ?? new StdClass();
+  }
+
+  /**
+   * @return mixed
+   */
+  public static function getParamMapping(): object
+  {
+    return self::getSmartSearchConfig()->param_mapping ?? new StdClass();
+  }
+
+  /**
+   * @return object
+   */
+  private static function getSmartSearchConfig(): object
+  {
+    if (isset(self::$smart_search_config_json)) {
+      return self::$smart_search_config_json;
+    }
+
+    $facet_json_config = file_get_contents(__DIR__ . '/../config/smart_search_config.json');
+    $config = json_decode($facet_json_config);
+
+    if (is_null($config)) {
+      LogHelper::log_warn('Could not json decode smart_search_config.json because: ' . json_last_error_msg());
+      return new StdClass();
+    }
+    return self::$smart_search_config_json = $config;
+  }
+
+  /**
+   * @var CheckbookSolr
+   */
+  public static $instance;
+
+  /**
+   * @param string $datasource
+   * @return CheckbookSolr
+   */
+  public static function getInstance(string $datasource)
+  {
+    if (self::$instance === null || ($datasource !== self::$instance->datasource)) {
+      self::$instance = new self($datasource);
+    }
+    return self::$instance;
+  }
+
+  /**
+   * CheckbookSolr constructor.
    * @param string $datasource
    */
-  public function __construct(string $datasource = 'citywide')
+  public function __construct(string $datasource)
   {
     global $conf;
 
+    $this->datasource = $datasource;
+
     switch ($datasource) {
-      case 'oge':
       case 'edc':
         $solr_datasource = 'solr_edc';
         break;
@@ -41,26 +105,8 @@ class Checkbook_Solr
     } else {
       LogHelper::log_warn("Could not find config \$conf['check_book']['$solr_datasource']['url']");
     }
-  }
 
-  /**
-   * @param string $string
-   * @return string
-   */
-  public static function escape(string $string): string
-  {
-    /**
-     * DO NOT CHANGE ORDER, BACKSLASH MUST BE FIRST
-     */
-    $escape_chars = explode(' ', '\\ + - & | ! ( ) { } [ ] ^ " ~ * ? : /');
-    $replace_to = [];
-    foreach($escape_chars as $char) {
-      $replace_to[] = "\\".$char;
-    }
-    $return = str_replace($escape_chars, $replace_to, $string);
-    $return = urlencode(strtolower($return));
-
-    return $return;
+    self::$instance = $this;
   }
 
   /**
@@ -78,11 +124,11 @@ class Checkbook_Solr
     ini_set('default_socket_timeout', 120);
     $url = $this->solr_url . $query;
     LogHelper::log_notice("Getting solr: " . $url);
-    try{
+    try {
       $contents = file_get_contents($url);
     } catch (Exception $ex) {
-      LogHelper::log_warn("Solr error: ".$ex->getMessage());
-      $contents='';
+      LogHelper::log_warn("Solr error: " . $ex->getMessage());
+      $contents = '';
     }
     $result = utf8_encode($contents);
 
@@ -98,6 +144,26 @@ class Checkbook_Solr
     $results = [];
     $response = $this->raw_query($query);
     if (stristr($query, 'wt=phps')) {
+      $results = unserialize($response);
+    }
+
+    if (!is_array($results)) {
+      return [];
+    }
+
+    return $results;
+  }
+
+  /**
+   * @param CheckbookSolrQuery $query
+   * @return array
+   */
+  public function requestTerms(CheckbookSolrQuery $query): array
+  {
+    $results = [];
+    $q = 'terms?' . $query->buildQuery();
+    $response = $this->raw_query($q);
+    if ('phps' == $query->getWt()) {
       $results = unserialize($response);
     }
 
