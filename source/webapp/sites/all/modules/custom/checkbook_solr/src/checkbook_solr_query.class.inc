@@ -71,6 +71,14 @@ class CheckbookSolrQuery
   private $paramMapping = [];
 
   /**
+   * @return string
+   */
+  public function __toString()
+  {
+    return $this->buildQuery();
+  }
+
+  /**
    * CheckbookSolrQuery constructor.
    * @param string $searchTerms
    * @param int $rows
@@ -114,12 +122,17 @@ class CheckbookSolrQuery
   }
 
   /**
+   * @param string $index
    * @param string $fq
    * @return CheckbookSolrQuery
    */
-  public function addFq(string $fq): CheckbookSolrQuery
+  public function setFq(string $index, string $fq): CheckbookSolrQuery
   {
-    $this->fq[] = $fq;
+    if (!$fq && isset($this->fq[$index])){
+      unset($this->fq[$index]);
+    } else {
+      $this->fq[$index] = $fq;
+    }
     return $this;
   }
 
@@ -199,7 +212,6 @@ class CheckbookSolrQuery
     $this->query = '';
 
     $query = [
-      'wt' => $this->wt,
     ];
 
     if (sizeof($this->termFields)) {
@@ -211,7 +223,7 @@ class CheckbookSolrQuery
       $query['terms.regex.flag'] = 'case_insensitive';
       $query['terms.regex'] = $this->termsRegex;
 
-      $this->query = http_build_query($query) . $terms;
+      $this->query = http_build_query($query) . $terms.'&wt='.$this->wt;
       return $this->query;
     }
 
@@ -250,7 +262,7 @@ class CheckbookSolrQuery
      * http://sdw5.reisys.com:18983/solr/checkbook_dev.public.solr_index_full/select/?q=*:*&facet=true&facet.sort=count&facet.field=fiscal_year&wt=phps&facet.mincount=1
      */
 
-    $this->query = $q . $fq . $sort . $facets . '&' . http_build_query($query);
+    $this->query = $q . $fq . $sort . $facets . '&' . http_build_query($query).'&wt='.$this->wt;
 
     return $this->query;
   }
@@ -282,7 +294,7 @@ class CheckbookSolrQuery
   public function setSearchTerms(array $searchTerms): CheckbookSolrQuery
   {
     $searchTerms[0] = urldecode($searchTerms[0]); //"Education"
-    $searchTerms[0] = ($searchTerms[0] == "") ? "*:*" : ucwords(strtolower(CheckbookSolrQuery::escape($searchTerms[0])));
+    $searchTerms[0] = ($searchTerms[0] == "") ? "*:*" : strtolower(CheckbookSolrQuery::escape($searchTerms[0]));
 
     $this->q = array_shift($searchTerms);
 
@@ -333,9 +345,9 @@ class CheckbookSolrQuery
     }
 
     if ($exclude) {
-      $this->addFq(join('%20AND%20', $fq));
+      $this->setFq($param, join('%20AND%20', $fq));
     } else {
-      $this->addFq(join('%20OR%20', $fq));
+      $this->setFq($param, join('%20OR%20', $fq));
     }
 
     return $this;
@@ -384,32 +396,10 @@ class CheckbookSolrQuery
   {
     $this->mapParam($facet);
 
-    $fq = $this->fq;
-    $this->fq = [];
-    foreach ($fq as $fq_line) {
-      if (2 === strpos("  $fq_line", "$facet:")) {
-        $fq_line = str_replace("$facet:", "-$facet:", $fq_line);
-      }
-      $this->fq[] = $fq_line;
+    if (isset($this->fq[$facet])) {
+      $this->fq[$facet] = str_replace("$facet:", "-$facet:", $this->fq[$facet]);
     }
-    return $this;
-  }
 
-  /**
-   * @param string $facet
-   * @return CheckbookSolrQuery
-   */
-  public function removeFqTermValues(string $facet): CheckbookSolrQuery
-  {
-    $this->mapParam($facet);
-
-    $fq = $this->fq;
-    $this->fq = [];
-    foreach ($fq as $fq_line) {
-      if (2 !== strpos("  $fq_line", "$facet:")) {
-        $this->fq[] = $fq_line;
-      }
-    }
     return $this;
   }
 
