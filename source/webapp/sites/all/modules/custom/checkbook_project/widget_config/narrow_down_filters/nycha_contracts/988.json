@@ -7,14 +7,14 @@
   "maxSelect":5,
   "showAllRecords":true,
   "allowFacetDeselect":true,
-  "columns":["funding_source_id.funding_source_id","funding_source_descr.funding_source_descr","txcount"],
+  "columns":["funding_source_id.funding_source_id","display_funding_source_descr.display_funding_source_descr","txcount"],
   "orderBy":"-txcount",
   "facetPager":true,
   "filterName":"Funding source ",
   "urlParameterName":"fundingnm_exact",
   "autocompleteParamName":"fundingnm_exact_auto",
   "autocompleteID":"fFundingId",
-  "autocompleteField":"funding_source_descr",
+  "autocompleteField":"display_funding_source_descr",
   "adjustParameters":"
   $parameters = NYCHAContractUtil::adjustYearParams($node, $parameters);
   if(function_exists('_checkbook_project_applyParameterFilters')){

@@ -27,7 +27,7 @@
     {"labelAlias":"grant","column":"grant_name"},
     {"labelAlias":"expenditure_type","column":"expenditure_type_descr"},
     {"labelAlias":"contract_industry","column":"display_industry_type_name"},
-    {"labelAlias":"funding_source","column":"funding_source_descr"},
+    {"labelAlias":"funding_source","column":"display_funding_source_descr"},
     {"labelAlias":"pin","column":"po_header_id"},
     {"labelAlias":"program","column":"program_phase_descr"},
     {"labelAlias":"project","column":"gl_project_descr"}

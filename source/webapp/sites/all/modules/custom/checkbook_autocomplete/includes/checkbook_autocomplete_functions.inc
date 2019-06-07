@@ -1245,13 +1245,13 @@ function _get_autocomplete_search_term() {
     if (strlen($term) > 0) {
         $autocomplete_text = trim(htmlspecialchars_decode($term, ENT_QUOTES));
         $autocomplete_terms = explode(' ', $autocomplete_text);
-        $autocomplete_text = Checkbook_solr::escape(trim(htmlspecialchars_decode($term), ENT_QUOTES));
+        $autocomplete_text = CheckbookSolrQuery::escape(trim(htmlspecialchars_decode($term), ENT_QUOTES));
 
         if (count($autocomplete_terms) > 0) {
             $autocomplete_text = "";
             foreach ($autocomplete_terms as $key => $value) {
                 if (strlen($value) > 0) {
-                    $autocomplete_text .= Checkbook_solr::escape($value) . "*%20AND%20";
+                    $autocomplete_text .= CheckbookSolrQuery::escape($value) . "*%20AND%20";
                 }
             }
             $search_term = "(" . substr($autocomplete_text, 0, -9) . ")";
@@ -1278,13 +1278,13 @@ function _get_autocomplete_search_term_facet_prefix() {
     if (strlen($term) > 0) {
         $autocomplete_text = trim(htmlspecialchars_decode($term, ENT_QUOTES));
         $autocomplete_terms = explode(' ', $autocomplete_text);
-        $autocomplete_text = Checkbook_solr::escape(trim(htmlspecialchars_decode($term), ENT_QUOTES));
+        $autocomplete_text = CheckbookSolrQuery::escape(trim(htmlspecialchars_decode($term), ENT_QUOTES));
 
         if (count($autocomplete_terms) > 0) {
             $autocomplete_text = "";
             foreach ($autocomplete_terms as $key => $value) {
                 if (strlen($value) > 0) {
-                    $autocomplete_text .= Checkbook_solr::escape($value) . "%20AND%20";
+                    $autocomplete_text .= CheckbookSolrQuery::escape($value) . "%20AND%20";
                 }
             }
             $search_term =substr($autocomplete_text, 0, -9);
@@ -1312,7 +1312,7 @@ function _get_autocomplete_search_term_facet_prefix() {
  *   Facet results from Solr.
  */
 function _checkbook_autocomplete_solr_results($query, $facet = NULL) {
-    $solr = new Checkbook_Solr();
+    $solr = new CheckbookSolr();
     $results = $solr->request_phps($query);
 
     if ($results['response']['numFound'] != 0) {
