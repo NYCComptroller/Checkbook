@@ -167,8 +167,7 @@ function _checkbook_smart_search_facet_autocomplete(string $solr_datasource, str
     $terms = array_map('CheckbookSolrQuery::escape', explode(' ', $term)); // [r*ei, s.y|s]
     $fq_term = $facet_name . ':(' . join('"*%20AND%20"', $terms) . '*)';
     $solr_query
-      ->removeFqTermValues($facet_name) // excluding current facet filtering for autocomplete
-      ->addFq($fq_term);
+      ->setFq($facet_name, $fq_term);
   }
 
   $solr_query->addFacet($facet_name);
@@ -212,7 +211,7 @@ function _checkbook_smart_search_get_results_csv(string $solr_datasource, string
     ->setSort('domain_ordering asc,date_ordering desc');
 
   $domain = $_REQUEST['domain'];
-  $solr_query->addFq('domain:'.$domain);
+  $solr_query->setFq('domain', 'domain:'.$domain);
 
   $query = $solr_query->buildQuery();
   $query .= '&fl='.$fl;
@@ -240,9 +239,10 @@ function _checkbook_smart_search_export_form()
  */
 function _checkbook_smart_search_export_download(string $solr_datasource)
 {
+  $domain = ucfirst($_REQUEST['domain']);
   drupal_add_http_header("Content-Type", "text/csv");
   //drupal_add_http_header("Content-Length",9);
-  drupal_add_http_header("Content-Disposition", "attachment; filename=TransactionsData.csv");
+  drupal_add_http_header("Content-Disposition", "attachment; filename={$solr_datasource}{$domain}.csv");
   drupal_add_http_header("Pragma", "cache");
   drupal_add_http_header("Expires", "-1");
   _checkbook_smart_search_export_data($solr_datasource);
@@ -293,37 +293,7 @@ function _checkbook_smart_search_export_data(string $solr_datasource)
     ob_flush();
     flush();
   }
-}
-
-/**
- *
- *
-██╗  ██╗███████╗██╗     ██╗         ██████╗ ███████╗██╗      ██████╗ ██╗    ██╗    ████████╗██╗  ██╗██╗███████╗    ██╗     ██╗███╗   ██╗███████╗
-██║  ██║██╔════╝██║     ██║         ██╔══██╗██╔════╝██║     ██╔═══██╗██║    ██║    ╚══██╔══╝██║  ██║██║██╔════╝    ██║     ██║████╗  ██║██╔════╝
-███████║█████╗  ██║     ██║         ██████╔╝█████╗  ██║     ██║   ██║██║ █╗ ██║       ██║   ███████║██║███████╗    ██║     ██║██╔██╗ ██║█████╗
-██╔══██║██╔══╝  ██║     ██║         ██╔══██╗██╔══╝  ██║     ██║   ██║██║███╗██║       ██║   ██╔══██║██║╚════██║    ██║     ██║██║╚██╗██║██╔══╝
-██║  ██║███████╗███████╗███████╗    ██████╔╝███████╗███████╗╚██████╔╝╚███╔███╔╝       ██║   ██║  ██║██║███████║    ███████╗██║██║ ╚████║███████╗
-╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝    ╚═════╝ ╚══════╝╚══════╝ ╚═════╝  ╚══╝╚══╝        ╚═╝   ╚═╝  ╚═╝╚═╝╚══════╝    ╚══════╝╚═╝╚═╝  ╚═══╝╚══════╝
- *
- *
- */
-
-
-
-/**
- *  Outputs the solr query result for the input query.
- * @param string $query
- *  Returns the solr result in PHP array format
- * @param string $datasource
- * @return array
- */
-function _checkbook_smart_search_solr_results(string $query, string $datasource = 'citywide'): array
-{
-  if ('citywide' == $datasource) {
-    $datasource = _checkbook_get_datasource();
-  }
-  $solr = new CheckbookSolr($datasource);
-  return $solr->request_phps($query);
+  exit();
 }
 
 /**
@@ -404,6 +374,38 @@ function _checkbook_smart_search_autocomplete_main_input($domain = 'citywide')
   }
 
   return drupal_json_output($matches);
+}
+
+
+/**
+ *
+ *
+██╗  ██╗███████╗██╗     ██╗         ██████╗ ███████╗██╗      ██████╗ ██╗    ██╗    ████████╗██╗  ██╗██╗███████╗    ██╗     ██╗███╗   ██╗███████╗
+██║  ██║██╔════╝██║     ██║         ██╔══██╗██╔════╝██║     ██╔═══██╗██║    ██║    ╚══██╔══╝██║  ██║██║██╔════╝    ██║     ██║████╗  ██║██╔════╝
+███████║█████╗  ██║     ██║         ██████╔╝█████╗  ██║     ██║   ██║██║ █╗ ██║       ██║   ███████║██║███████╗    ██║     ██║██╔██╗ ██║█████╗
+██╔══██║██╔══╝  ██║     ██║         ██╔══██╗██╔══╝  ██║     ██║   ██║██║███╗██║       ██║   ██╔══██║██║╚════██║    ██║     ██║██║╚██╗██║██╔══╝
+██║  ██║███████╗███████╗███████╗    ██████╔╝███████╗███████╗╚██████╔╝╚███╔███╔╝       ██║   ██║  ██║██║███████║    ███████╗██║██║ ╚████║███████╗
+╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝    ╚═════╝ ╚══════╝╚══════╝ ╚═════╝  ╚══╝╚══╝        ╚═╝   ╚═╝  ╚═╝╚═╝╚══════╝    ╚══════╝╚═╝╚═╝  ╚═══╝╚══════╝
+ *
+ *
+ */
+
+
+
+/**
+ *  Outputs the solr query result for the input query.
+ * @param string $query
+ *  Returns the solr result in PHP array format
+ * @param string $datasource
+ * @return array
+ */
+function _checkbook_smart_search_solr_results(string $query, string $datasource = 'citywide'): array
+{
+  if ('citywide' == $datasource) {
+    $datasource = _checkbook_get_datasource();
+  }
+  $solr = new CheckbookSolr($datasource);
+  return $solr->request_phps($query);
 }
 
 
