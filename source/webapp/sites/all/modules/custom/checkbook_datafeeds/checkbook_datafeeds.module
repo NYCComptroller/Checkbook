@@ -4730,7 +4730,7 @@ function checkbook_datafeeds_spending_validate($form, &$form_state) {
  * @param string|null $yeartype
  *   All Years or Budget Fiscal Years
  *
- * @return void
+ * @return mixed
  *   Array of years formatted for FAPI select box #options
  */
 function _year_options($yeartype = NULL) {
@@ -4858,7 +4858,7 @@ function currentCalendarYear() {
  *
  * @param null $data_source
  * @param bool $json_output
- * @return void
+ * @return mixed
  *   Agency names and codes
  */
 function _agency_options($data_source = null, $json_output = false) {
@@ -4944,7 +4944,7 @@ function _checkbook_datafeeds_agency_options($data,$data_source = null, $json_ou
 /**
  * Get Sub Vendor Status in PIP from Data Controller and format into a FAPI select input #options array.
  *
- * @return void
+ * @return mixed
  *   Sub Vendor Status In PIP ids and nammes
  */
 function _sub_vendor_status_in_pip() {
@@ -4980,7 +4980,7 @@ function _sub_vendor_status_in_pip() {
 /**
  * Get Fund Classes from Data Controller and format into a FAPI select input #options array.
  *
- * @return void
+ * @return mixed
  *   Fund classes and fund class names
  */
 function _fund_class_options() {
@@ -5008,7 +5008,7 @@ function _fund_class_options() {
 /**
  * Get Revenue Categories from Data Controller and format into a FAPI select input #options array.
  *
- * @return void
+ * @return mixed
  *   Revenue categories and revenue category names
  */
 function _revenue_category_options() {
@@ -5033,7 +5033,7 @@ function _revenue_category_options() {
 /**
  * Get Funding Sources from Data Controller and format into a FAPI select input #options array.
  *
- * @return void
+ * @return mixed
  *   Funding source codes and funding source names
  */
 function _funding_source_options() {
@@ -5059,7 +5059,7 @@ function _funding_source_options() {
  * Get Expense Type from Data Controller and format into a FAPI select input options array.
  *
  * @param string $data_source
- * @return void
+ * @return mixed
  *   Spending category codes and display names
  */
 function _expense_type_options($data_source = 'checkbook') {
@@ -5143,7 +5143,7 @@ function _pay_frequency_options() {
 /**
  * Get Contract Type from Data Controller and format into a FAPI select input #options array.
  *
- * @return void
+ * @return mixed
  *   Agreement type codes and agreement type names
  */
 function _contract_type_options() {
@@ -5190,7 +5190,7 @@ function _checkbook_datafeeds_contract_type_options($data) {
 /**
  * Get Award Method from Data Controller and format into a FAPI select input #options array.
  *
- * @return void
+ * @return mixed
  *   Award method codes and award method names
  */
 function _award_method_options() {
@@ -5242,7 +5242,7 @@ function _checkbook_datafeeds_award_method_options($data) {
  *
  * @param $agency
  *   Agency code
- * @return void Department codes and department names filtered by agency, year
+ * @return mixed Department codes and department names filtered by agency, year
  *  Department codes and department names filtered by agency, year
  */
 function _budget_dept_options($year, $agency) {
@@ -5275,7 +5275,7 @@ function _budget_dept_options($year, $agency) {
  *   Agency code
  * @param $dept
  *   Department code
- * @return void Expenditure object codes and expenditure object names, filtered by agency, department, year
+ * @return mixed Expenditure object codes and expenditure object names, filtered by agency, department, year
  *   Expenditure object codes and expenditure object names, filtered by agency, department, year
  */
 function _budget_expcat_options($year, $agency, $dept) {
