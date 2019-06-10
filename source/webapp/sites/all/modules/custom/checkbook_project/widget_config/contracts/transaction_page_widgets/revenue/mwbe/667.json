@@ -104,6 +104,22 @@ return $header;
     {"labelAlias": "apt_pin","column": "brd_awd_no"},
     {"labelAlias": "","column": "","export":false}
 ],
+"exportColumnSqlOverride":[
+  {
+    "column":"mwbe_category_name",
+    "sourceColumn":"minority_type_id",
+    "sql":"
+      CASE
+      WHEN minority_type_id = 2 THEN 'Black American'
+      WHEN minority_type_id = 3 THEN 'Hispanic American'
+      WHEN minority_type_id = 7 THEN 'Non-M/WBE'
+      WHEN minority_type_id = 9 THEN 'Women'
+      WHEN minority_type_id = 11 THEN 'Individuals and Others'
+      ELSE 'Asian American'
+      END AS minority_type_name
+    "
+  }
+],
 "adjustParameters":"
 if(isset($parameters['vendor_type'])){
     $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
