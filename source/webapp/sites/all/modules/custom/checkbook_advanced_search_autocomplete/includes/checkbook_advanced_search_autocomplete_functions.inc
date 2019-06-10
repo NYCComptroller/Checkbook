@@ -887,7 +887,7 @@ function _checkbook_autocomplete_nycha_contracts($solr_field, $purchase_order_ty
                 ."&facet.field=" . $solr_field .$facetquery
                 ."&q.op=AND&rows=0&facet=true&facet.mincount=1&facet.limit=10&wt=phps";
         }
-        $matches = _checkbook_autocomplete_solr_results($solr_datasource, $query, $solr_field);
+        $matches = _checkbook_autocomplete_solr_results('nycha', $query, $solr_field);
         drupal_json_output($matches);
     }
 }

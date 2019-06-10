@@ -688,6 +688,16 @@
                     }
                 }
 
+                function autoCompleteSource(solr_datasource, facet, filters) {
+                  var url = '/solr_autocomplete/';
+                  // var search_term = new URLSearchParams();
+                  // search_term.set('search_term', '*|*');
+
+                  var search_term = '/?search_term=';
+
+                  return url+solr_datasource+'/'+facet+search_term;
+                }
+
                 function autoCompletes(div) {
                     var status = div.ele('status').val() || 0;
                     var category = div.ele('category').val() ? div.ele('category').val() : 0;
@@ -709,14 +719,18 @@
                       var industry = $('#edit-checkbook-oge-contracts-nycha-industry').val() || 0;
 
                       div.ele('vendor_name').autocomplete({
-                        source: '/advanced-search/autocomplete/nycha_contracts/vendor_name/' + purchase_order + '/' + responsibility_center + '/' + contract_type + '/' + award_method + '/' + industry + '/' + agency + '/' + year,
+                        // source: '/advanced-search/autocomplete/nycha_contracts/vendor_name/' + purchase_order + '/' + responsibility_center + '/' + contract_type + '/' + award_method + '/' + industry + '/' + agency + '/' + year,
+                        source: autoCompleteSource('nycha','vendor_name',{}),
                         select: function (event, ui) {
                           $(this).parent().next().val(ui.item.label);
                         }
                       });
 
+                      // select/?q=contract_number:(ba*)&facet.field=contract_number&fq=responsibility_center_id:2762&fq=contract_type_id:196&fq=award_method_id:4&fq=agency_id:162&(120:[*%20TO%20agreement_start_year_id]%20AND%20120:[agreement_end_year_id%20TO%20*])&q.op=AND&rows=0&facet=true&facet.mincount=1&facet.limit=10&wt=phps
                       div.ele('purchase_order_number').autocomplete({
-                        source: '/advanced-search/autocomplete/nycha_contracts/contract_number/' + purchase_order + '/' + responsibility_center + '/' + contract_type + '/' + award_method + '/' + industry + '/' + agency + '/' + year,
+
+                        // source: '/advanced-search/autocomplete/nycha_contracts/contract_number/' + purchase_order + '/' + responsibility_center + '/' + contract_type + '/' + award_method + '/' + industry + '/' + agency + '/' + year,
+                        source: '/solr_autocomplete/nycha/contract_number/?' + purchase_order + '/' + responsibility_center + '/' + contract_type + '/' + award_method + '/' + industry + '/' + agency + '/' + year,
                         select: function (event, ui) {
                           $(this).parent().next().val(ui.item.label);
                         }
