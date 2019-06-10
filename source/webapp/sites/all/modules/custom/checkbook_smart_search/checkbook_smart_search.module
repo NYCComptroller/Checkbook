@@ -44,36 +44,13 @@ function checkbook_smart_search_menu(){
         'file' => 'includes/checkbook_smart_search.inc',
         'type' => MENU_CALLBACK
     );
-    $items['smart_search/autocomplete_facet'] = array(
-        'page callback' => '_checkbook_smart_search_facet_autocomplete',
-        'access callback' => TRUE,
-        'file' => 'includes/checkbook_smart_search.inc',
-        'type' => MENU_CALLBACK
+    $items['solr_autocomplete'] = array(
+      'page callback' => '_checkbook_smart_search_autocomplete',
+      'access callback' => TRUE,
+      'file' => 'includes/checkbook_smart_search.inc',
+      'type' => MENU_CALLBACK
     );
-    $items['smart_search/autocomplete/oge'] = array(
-        'page callback' => '_checkbook_smart_search_oge_autocomplete',
-        'access callback' => TRUE,
-        'file' => 'includes/checkbook_smart_search.inc',
-        'type' => MENU_CALLBACK
-    );
-    $items['smart_search/autocomplete/agency'] = array(
-        'page callback' => '_checkbook_smart_search_agency_autocomplete',
-        'access callback' => TRUE,
-        'file' => 'includes/checkbook_smart_search.inc',
-        'type' => MENU_CALLBACK
-    );
-    $items['smart_search/autocomplete/vendor'] = array(
-        'page callback' => '_checkbook_smart_search_vendor_autocomplete',
-        'access callback' => TRUE,
-        'file' => 'includes/checkbook_smart_search.inc',
-        'type' => MENU_CALLBACK
-    );
-    /*$items['smart_search/autocomplete/oge'] = array(
-        'page callback' => '_checkbook_smart_search_oge_autocomplete',
-        'access callback' => TRUE,
-        'file' => 'includes/checkbook_smart_search.inc',
-        'type' => MENU_CALLBACK
-    );*/
+
     $items['smart_search/facet/vendor'] = array(
         'page callback' => '_checkbook_smart_search_vendor_facet',
         'access callback' => TRUE,
@@ -87,13 +64,7 @@ function checkbook_smart_search_menu(){
         'file' => 'includes/checkbook_smart_search.inc',
         'type' => MENU_CALLBACK
     );
-   $items['smart_search/facet/expensecategory'] = array(
-        'page callback' => '_checkbook_smart_search_expensecategory_facet',
-        'access callback' => TRUE,
-        'file' => 'includes/checkbook_smart_search.inc',
-        'type' => MENU_CALLBACK,
-        'page arguments' => array(4)
-    );
+
     $items['smart_search/autocomplete/fiscalyear'] = array(
         'page callback' => '_checkbook_smart_search_fiscalyear_autocomplete',
         'access callback' => TRUE,

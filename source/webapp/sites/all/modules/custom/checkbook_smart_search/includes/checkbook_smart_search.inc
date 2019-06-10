@@ -1,4 +1,23 @@
 <?php
+/**
+ * This file is part of the Checkbook NYC financial transparency software.
+ *
+ * Copyright (C) 2019 New York City
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 /*
  * Redirects to the search results page upon submitting the search form
  *
@@ -150,48 +169,6 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
     'selected_facet_results' => $selected_facets,
 //    'selected_facet_results' => $selected_facet_results,
   ]);
-}
-
-/**
- * /smart_search/autocomplete_facet/nycha/vendor_name?term=RICHARDS
- *
- * @param string $solr_datasource
- * @param string $facet_name
- */
-function _checkbook_smart_search_facet_autocomplete(string $solr_datasource, string $facet_name)
-{
-  $solr_query = new CheckbookSolrQuery($_REQUEST['search_term'], 0);
-
-  $term = trim(htmlspecialchars_decode($_REQUEST['term'], ENT_QUOTES));//r*ei s.y|:s
-  if ($term) {
-    $terms = array_map('CheckbookSolrQuery::escape', explode(' ', $term)); // [r*ei, s.y|s]
-    $fq_term = $facet_name . ':(' . join('"*%20AND%20"', $terms) . '*)';
-    $solr_query
-      ->setFq($facet_name, $fq_term);
-  }
-
-  $solr_query->addFacet($facet_name);
-
-  $mapped_facet = $facet_name;
-  $solr_query->mapParam($mapped_facet);
-
-  $solr = CheckbookSolr::getInstance($solr_datasource);
-  $results = $solr->request_phps('select/?'.$solr_query->buildQuery());
-
-  if ($results['response']['numFound'] != 0) {
-    $facet_results = $results['facet_counts']['facet_fields'][$mapped_facet];
-    $matches = array();
-    foreach ($facet_results as $key => $value) {
-      if ($value > 0) {
-        $key = (string)$key;
-        array_push($matches, array("url" => "", "category" => $facet_name, "label" => $key, "value" => urlencode($key)));
-      }
-    }
-
-    return drupal_json_output($matches);
-  }
-
-  return drupal_json_output([['label' => 'No Matches Found', 'value' => 'No Matches Found']]);
 }
 
 /** Exports the smart search export data
@@ -376,6 +353,30 @@ function _checkbook_smart_search_autocomplete_main_input($domain = 'citywide')
   return drupal_json_output($matches);
 }
 
+/**
+ * @param string $solr_datasource
+ * @param string $facet
+ */
+function _checkbook_smart_search_autocomplete(string $solr_datasource, string $facet)
+{
+  $solr_query = new CheckbookSolrQuery($_REQUEST['search_term'] ?? '');
+
+  $solr_query->setFqAutocompleteTerm($facet, $_REQUEST['term'] ?? '');
+
+  $solr = new CheckbookSolr($solr_datasource);
+  $results = $solr->request_phps('select/?'.$solr_query);
+
+  if ($results['response']['numFound'] != 0) {
+    $facet_results = array_shift($results['facet_counts']['facet_fields']);
+    $matches = [];
+    foreach (array_keys($facet_results) as $key) {
+      array_push($matches, ["url" => "", "category" => $facet, "label" => $key, "value" => urlencode($key)]);
+    }
+
+    return drupal_json_output($matches);
+  }
+  return drupal_json_output([['label' => 'No Matches Found', 'value' => 'No Matches Found']]);
+}
 
 /**
  *
@@ -392,183 +393,6 @@ function _checkbook_smart_search_autocomplete_main_input($domain = 'citywide')
 
 
 
-/**
- *  Outputs the solr query result for the input query.
- * @param string $query
- *  Returns the solr result in PHP array format
- * @param string $datasource
- * @return array
- */
-function _checkbook_smart_search_solr_results(string $query, string $datasource = 'citywide'): array
-{
-  if ('citywide' == $datasource) {
-    $datasource = _checkbook_get_datasource();
-  }
-  $solr = new CheckbookSolr($datasource);
-  return $solr->request_phps($query);
-}
-
-
-/**
- *  Outputs query string for facet auto complete fields
- *  Return the Query String
- * @param $facet_name
- * @param $facet_autocomplete_field
- */
-function _checkbook_smart_search_get_searchstring_autocomplete($facet_name, $facet_autocomplete_field)
-{
-//"vendor_names","vendor_name_autocomplete"
-// "oge_agency_names","oge_agency_name_autocomplete"
-  $parameter_mapping = array(
-    "oge_agency_names" => "oge_agency_name",
-    "agency_names" => "agency_name",
-    "fiscal_years" => "fiscal_year",
-    "registered_fiscal_years" => "registered_fiscal_year",
-    "domains" => "domain",
-    "vendor_type" => "vendor_type",
-    "vendor_names" => "vendor_name",
-    "expense_categories" => "expenditure_object_name",
-    "revenue_categories" => "revenue_category_name",
-    "spending_categories" => "spending_category_name",
-    "contract_categories" => "contract_category_name",
-    "contract_status" => "contract_status",
-    "minority_type_name" => "minority_type_name",
-    "industry_type_name" => "industry_type_name",
-    "payroll_type" => "payroll_type"
-  );
-
-  $autocomplete_text = trim(htmlspecialchars_decode($_REQUEST['term'], ENT_QUOTES));//eco
-  $autocomplete_terms = explode(' ', $autocomplete_text); // (eco)
-
-  if (count($autocomplete_terms) > 0) {
-    $autocomplete_text = "";
-    foreach ($autocomplete_terms as $key => $value) {
-      if (strlen($value) > 0)
-        $autocomplete_text .= CheckbookSolrQuery::escape($value) . "*%20AND%20"; //eco*%20AND%20
-    }
-    $autocomplete_text = "(" . substr($autocomplete_text, 0, -9) . ")"; //(eco*)
-  } else {
-    $autocomplete_text = CheckbookSolrQuery::escape($autocomplete_text) . "*";
-  }
-
-  $autocomplete_text = "&fq=" . $facet_autocomplete_field . ":" . $autocomplete_text; // &fq=oge_agency_name_autocomplete:(eco*)
-
-  $request_search_term = $_REQUEST['search_term']; // ""
-  $search_terms = explode('*|*', $request_search_term);// ()
-  if ($search_terms[0] == "") {
-    $search_text = "*:*"; //*:*
-  } else {
-    $search_text = CheckbookSolrQuery::escape(urldecode($search_terms[0]));
-    $search_text = ucwords(strtolower($search_text));
-  }
-
-  $search_string = $search_text; //*:*
-  for ($i = 1; $i < count($search_terms); $i++) {
-    $req_params = explode('=', $search_terms[$i]);
-    if ($req_params[0] == 'vendor_type') {
-      $req_params[1] = get_vendor_type_mapping($req_params[1]);
-    }
-    if ($req_params[0] == 'contract_status') {
-      if ($req_params[1] == 'active') {
-        $req_params[1] = 'registered';
-      }
-    }
-
-    $filters = explode('~', $value = urldecode($req_params[1]));
-    $sub_query = "";
-    foreach ($filters as $key => $value) {
-      if ($req_params[0] != $facet_name) {
-        $sub_query .= "(" . $parameter_mapping[$req_params[0]] . ":" .
-          CheckbookSolrQuery::escape('"' . $value . '"') . ")%20OR%20";
-      }
-    }
-    $search_string .= (strlen($sub_query) > 0) ? "&fq=" . substr($sub_query, 0, -8) : "";
-  }
-  $query = "select/?q=" . $search_string // *:*
-    . $autocomplete_text //&fq=oge_agency_name_autocomplete:(eco*)
-    . "&facet=true"
-    . "&facet.field=" . $parameter_mapping[$facet_name] // oge_agency_name
-    . "&facet.limit=10"
-    . "&wt=phps";
-
-  /**
-   * http://sdw5.reisys.com:18983/solr/checkbook_nycha_dev.public.solr_nycha/terms/?terms.fl=agency_name&terms.fl=oge_agency_name&terms.fl=vendor_name&terms.fl=minority_type_name&terms.fl=revenue_category_name&terms.fl=expenditure_object_name&terms.regex.flag=case_insensitive&terms.regex=%28%2E%2A%20system%2E%2A%29%7C%28%5Esystem%2E%2A%29&wt=phps
-
-   */
-
-  $results = _checkbook_smart_search_solr_results($query);
-
-  if ($results['response']['numFound'] != 0) {
-    $facet_results = $results['facet_counts']['facet_fields'][$parameter_mapping[$facet_name]];
-    $matches = array();
-    foreach ($facet_results as $key => $value) {
-      if ($value > 0) {
-        $key = (string)$key;
-        array_push($matches, array("url" => "", "category" => $facet_name, "label" => $key, "value" => urlencode($key)));
-      }
-    }
-
-    return drupal_json_output($matches);
-  }
-  return drupal_json_output([['label' => 'No Matches Found', 'value' => 'No Matches Found']]);
-}
-
-/**
- *  Outputs the agency suggestions for the given input.
- *  Returns matching words
- **/
-function _checkbook_smart_search_agency_autocomplete()
-{
-  return _checkbook_smart_search_get_searchstring_autocomplete("agency_names", "agency_name_autocomplete");
-}
-
-/**
- *  Outputs the oge suggestions for the given input.
- **/
-function _checkbook_smart_search_oge_autocomplete()
-{
-  return _checkbook_smart_search_get_searchstring_autocomplete("oge_agency_names", "oge_agency_name_autocomplete"); // ln 422
-}
-
-/**
- *  Outputs the vendor suggestions for the given input.
- **/
-function _checkbook_smart_search_vendor_autocomplete()
-{
-  return _checkbook_smart_search_get_searchstring_autocomplete("vendor_names", "vendor_name_autocomplete");
-}
-
-/**
- *  Outputs the expense category suggestions for the given input.
- **/
-function _checkbook_smart_search_expensecategory_autocomplete()
-{
-  return _checkbook_smart_search_get_searchstring_autocomplete("expense_categories", "expenditure_object_name_autocomplete");
-}
-
-/**
- *  Outputs the fiscal year suggestions for the given input.
- **/
-function _checkbook_smart_search_fiscalyear_autocomplete()
-{
-  return _checkbook_smart_search_get_searchstring_autocomplete("fiscal_years", "fiscal_year");
-}
-
-/**
- *  Outputs the registered fiscal year suggestions for the given input.
- **/
-function _checkbook_smart_search_regfiscalyear_autocomplete()
-{
-  return _checkbook_smart_search_get_searchstring_autocomplete("registered_fiscal_years", "registered_fiscal_year");
-}
-
-/**
- *  Outputs the industry type suggestions for the given input.
- **/
-function _checkbook_smart_search_industrytype_autocomplete()
-{
-  return _checkbook_smart_search_get_searchstring_autocomplete("industry_type_name", "industry_type_name_autocomplete");
-}
 
 /** Returns the URL for clear functionality for each Search Term
  * @param $facetName
@@ -660,7 +484,7 @@ function _checkbook_smart_search_str_html_entities($string)
 
 /**
  * This function returns the current NYC year  ...
- * @return year_id    $string = str_replace("^", "\%5E", $string);
+ * @return string    $string = str_replace("^", "\%5E", $string);
  */
 function getCurrentYearID()
 {
@@ -679,6 +503,8 @@ function getCurrentYearID()
  * @param $domain
  * @param bool $IsOge
  * @return array
+ *
+ * @TODO: move this to json config
  */
 function _checkbook_smart_search_domain_fields($domain, $IsOge = false)
 {
@@ -969,50 +795,5 @@ function _checkbook_smart_search_domain_export_fields($domain, $IsOge)
       break;
   }
   return $parameter_mapping;
-}
-
-
-/**
- * @param $reqParams
- * @return bool|string
- */
-function get_vendor_type_mapping($reqParams)
-{
-  $vtypeParam = explode('~', $reqParams);
-  $reqParams = '';
-  foreach ($vtypeParam as $vtype) {
-    if ($vtype == 'pv') {
-      $reqParams .= 'p~pm~';
-    }
-    if ($vtype == 'sv') {
-      $reqParams .= 's~sm~';
-    }
-    if ($vtype == 'mv') {
-      $reqParams .= 'sm~pm~';
-    }
-  }
-  $reqParams = substr($reqParams, 0, -1);
-  return $reqParams;
-}
-
-/**
- * @param $reqParams
- * @return string
- */
-function get_contract_status_mapping($reqParams)
-{
-  switch ($reqParams) {
-
-    case 'pending':
-      return 'pending';
-      break;
-
-    case 'registered':
-    case 'active':
-    default:
-      return 'registered';
-      break;
-
-  }
 }
 
