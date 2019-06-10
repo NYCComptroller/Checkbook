@@ -157,8 +157,6 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
     }
   }
 
-  drupal_add_js(array('checkbook_smart_search' => array('solr_datasource' => $solr_datasource)), 'setting');
-
   return theme('checkbook_smart_search_results', [
     'solr_datasource' => $solr_datasource,
     'search_results' => $search_results,
