@@ -1,4 +1,21 @@
 {
+  "autocomplete_mapping": {
+    "agency_name": "agency_name_autocomplete",
+    "oge_agency_name": "oge_agency_name_autocomplete",
+    "vendor_name": "vendor_name_autocomplete",
+    "expenditure_object_name": "expenditure_object_name_autocomplete",
+    "industry_type_name": "industry_type_name_autocomplete",
+    "budget_code_name_code": "budget_code_name_code_autocomplete",
+    "vendor_name_code": "vendor_name_code_autocomplete",
+    "contract_budget_name": "contract_budget_name_autocomplete",
+    "reporting_code": "reporting_code_autocomplete",
+    "spending_budget_name": "spending_budget_name_autocomplete",
+    "civil_service_title": "civil_service_title_autocomplete",
+    "revenue_class_name_code": "revenue_class_name_code_autocomplete",
+    "revenue_source_name_code": "revenue_source_name_code_autocomplete",
+    "revenue_class_name": "revenue_class_name_autocomplete",
+    "revenue_source_name": "revenue_source_name_autocomplete"
+  },
   "param_mapping": {
     "oge_agency_names": "oge_agency_name",
     "agency_names": "agency_name",
