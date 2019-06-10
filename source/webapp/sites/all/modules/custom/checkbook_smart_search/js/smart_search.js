@@ -231,13 +231,14 @@
   Drupal.behaviors.narrowDownFilters = {
     attach: function (context, settings) {
       var solr_datasource = Drupal.settings.solr_datasource || 'citywide';
-      var search_term = window.location.href.toString().split(window.location.host)[1];
+      var urlParams = new URLSearchParams(location.search);
+      var search_term = urlParams.get('search_term');
 
       //Sets up jQuery UI autocompletes and autocomplete filtering functionality for agency name facet
       $('.solr_autocomplete', context).each(function(){
         var facet_name = $(this).attr('facet');
         $(this).autocomplete({
-          source: "/solr_autocomplete/"+solr_datasource+"/"+facet_name+"/" + search_term,
+          source: "/solr_autocomplete/"+solr_datasource+"/"+facet_name+"/?search_term=" + search_term,
           focus: function (event, ui) {
             if (ui.item.label.toLowerCase() == 'no matches found') {
               return false;
