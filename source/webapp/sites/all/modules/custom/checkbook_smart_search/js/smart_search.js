@@ -92,7 +92,7 @@
               domains = domains + "~" + this.value;
             });
           }
-          var solr_datasource = Drupal.settings.checkbook_smart_search.solr_datasource || 'citywide';
+          var solr_datasource = Drupal.settings.solr_datasource || 'citywide';
           var dialogUrl = '/exportSmartSearch/form/' + solr_datasource +
             '?search_term=' + getParameterByName("search_term") +
             '&totalRecords=' + $(this).attr("value") +
@@ -151,7 +151,7 @@
                 },
                 buttons: {
                   "Download Data": function () {
-                    var solr_datasource = Drupal.settings.checkbook_smart_search.solr_datasource || 'citywide';
+                    var solr_datasource = Drupal.settings.solr_datasource || 'citywide';
                     var url = '/exportSmartSearch/download/'+solr_datasource;
 
                     url += '?search_terms='+encodeURIComponent(getParameterByName("search_term"));
@@ -230,7 +230,7 @@
 
   Drupal.behaviors.narrowDownFilters = {
     attach: function (context, settings) {
-      var solr_datasource = Drupal.settings.checkbook_smart_search.solr_datasource || 'citywide';
+      var solr_datasource = Drupal.settings.solr_datasource || 'citywide';
       var search_term = window.location.href.toString().split(window.location.host)[1];
 
       //Sets up jQuery UI autocompletes and autocomplete filtering functionality for agency name facet
@@ -289,7 +289,7 @@
           var value = encodeURIComponent(search_filter[1]);
           newURL = newURL + '*|*' + search_filter[0] + '=' + value;
         }
-        var solr_datasource = Drupal.settings.checkbook_smart_search.solr_datasource || 'citywide';
+        var solr_datasource = Drupal.settings.solr_datasource || 'citywide';
         var curl = '/smart_search/ajax/results/'+solr_datasource+'?' + newURL;
         var progress = jQuery('.smart-search-left .loading');
         jQuery.ajax({

@@ -120,34 +120,37 @@ function checkbook_smart_search_display(){
  * @param $form_state
  * @return mixed
  */
+function checkbook_smart_search_form($form, $form_state)
+{
+  $solr_datasource = _checkbook_get_datasource();
+  module_load_include('inc', 'checkbook_smart_search', 'includes/checkbook_smart_search');
+  $form['search_box'] = array(
+    '#type' => 'textfield',
+    '#size' => 30,
+    '#maxlength' => 100,
+  );
+  $form['domain'] = [
+    '#type' => 'hidden',
+    '#value' => $solr_datasource,
+  ];
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Search'),
+    '#submit' => array('_checkbook_smart_search_submit')
+  );
+  $form['#attached'] = array(
+    'library' => array(
+      array('system', 'ui.autocomplete', FALSE)
+    ),
+    'js' => array(
+      'type' => 'file',
+      'data' => drupal_get_path('module', 'checkbook_smart_search') . '/js/smart_search.js'
+    )
+  );
 
-function checkbook_smart_search_form($form, $form_state){
- module_load_include('inc','checkbook_smart_search','includes/checkbook_smart_search');
-    $form['search_box'] = array(
-        '#type' => 'textfield',
-        '#size' => 30,
-        '#maxlength' => 100,
-    );
-    $form['domain'] = [
-        '#type' => 'hidden',
-        '#value' => _checkbook_get_datasource(),
-    ];
-    $form['submit'] = array(
-        '#type' => 'submit',
-        '#value' => t('Search'),
-        '#submit' => array('_checkbook_smart_search_submit')
-    );
-    $form['#attached'] = array(
-        'library' => array(
-            array('system', 'ui.autocomplete', FALSE)
-        ),
-        'js' => array(
-            'type' => 'file',
-            'data' => drupal_get_path('module', 'checkbook_smart_search') . '/js/smart_search.js'
-        )
-    );
+  drupal_add_js(['solr_datasource' => $solr_datasource], 'setting');
 
-    return $form;
+  return $form;
 }
 
 
