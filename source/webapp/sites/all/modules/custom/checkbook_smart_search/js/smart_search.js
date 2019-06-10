@@ -230,160 +230,37 @@
 
   Drupal.behaviors.narrowDownFilters = {
     attach: function (context, settings) {
-      var search_term = "";
-      search_term = window.location.href.toString().split(window.location.host)[1];
+      var solr_datasource = Drupal.settings.checkbook_smart_search.solr_datasource || 'citywide';
+      var search_term = window.location.href.toString().split(window.location.host)[1];
+
       //Sets up jQuery UI autocompletes and autocomplete filtering functionality for agency name facet
-      $('#autocomplete_fagencyName', context).autocomplete({
-        source: "/smart_search/autocomplete/agency/" + search_term,
-        focus: function (event, ui) {
-          if (ui.item.label.toLowerCase() == 'no matches found') {
-            return false;
-          } else {
-            $(event.target).val(ui.item.label);
-            return false;
+      $('.solr_autocomplete', context).each(function(){
+        var facet_name = $(this).attr('facet');
+        $(this).autocomplete({
+          source: "/solr_autocomplete/"+solr_datasource+"/"+facet_name+"/" + search_term,
+          focus: function (event, ui) {
+            if (ui.item.label.toLowerCase() == 'no matches found') {
+              return false;
+            } else {
+              $(event.target).val(ui.item.label);
+              return false;
+            }
+          },
+          select: function (event, ui) {
+            if (ui.item.label.toLowerCase() == 'no matches found') {
+              return false;
+            } else {
+              var url = getFacetAutocompleteUrl(facet_name, encodeURIComponent(ui.item.value));
+              $(event.target).val(ui.item.label);
+              window.location = url;
+              return false;
+            }
           }
-        },
-        select: function (event, ui) {
-          if (ui.item.label.toLowerCase() == 'no matches found') {
-            return false;
-          } else {
-            var url = getFacetAutocompleteUrl("agency_names", encodeURIComponent(ui.item.value));
-            $(event.target).val(ui.item.label);
-            window.location = url;
-            return false;
-          }
-        }
-      })
-
-      $('#autocomplete_fogeName', context).autocomplete({
-        source: "/smart_search/autocomplete/oge/" + search_term,
-        focus: function (event, ui) {
-          if (ui.item.label.toLowerCase() == 'no matches found') {
-            return false;
-          } else {
-            $(event.target).val(ui.item.label);
-            return false;
-          }
-        },
-        select: function (event, ui) {
-          if (ui.item.label.toLowerCase() == 'no matches found') {
-            return false;
-          } else {
-            var url = getFacetAutocompleteUrl("oge_agency_names", encodeURIComponent(ui.item.value));
-            $(event.target).val(ui.item.label);
-            window.location = url;
-            return false;
-          }
-        }
-      })
-
-      $('#autocomplete_fvendorName', context).autocomplete({
-        source: "/smart_search/autocomplete/vendor" + search_term,
-        focus: function (event, ui) {
-          if (ui.item.label.toLowerCase() == 'no matches found') {
-            return false;
-          } else {
-            $(event.target).val(ui.item.label);
-            return false;
-          }
-        },
-        select: function (event, ui) {
-          if (ui.item.label.toLowerCase() == 'no matches found') {
-            return false;
-          } else {
-            var url = getFacetAutocompleteUrl("vendor_names", encodeURIComponent(ui.item.value));
-            $(event.target).val(ui.item.label);
-            window.location = url;
-            return false;
-          }
-        }
-      });
-      $('#autocomplete_fexpenseCategoryName', context).autocomplete({
-        source: "/smart_search/autocomplete/expensecategory" + search_term,
-        focus: function (event, ui) {
-          if (ui.item.label.toLowerCase() == 'no matches found') {
-            return false;
-          } else {
-            $(event.target).val(ui.item.label);
-            return false;
-          }
-        },
-        select: function (event, ui) {
-          if (ui.item.label.toLowerCase() == 'no matches found') {
-            return false;
-          } else {
-            var url = getFacetAutocompleteUrl("expense_categories", encodeURIComponent(ui.item.value));
-            $(event.target).val(ui.item.label);
-            window.location = url;
-            return false;
-          }
-        }
-      });
-      $('#autocomplete_fyear', context).autocomplete({
-        source: "/smart_search/autocomplete/fiscalyear" + search_term,
-        focus: function (event, ui) {
-          if (ui.item.label.toLowerCase() == 'no matches found') {
-            return false;
-          } else {
-            $(event.target).val(ui.item.label);
-            return false;
-          }
-        },
-        select: function (event, ui) {
-          if (ui.item.label.toLowerCase() == 'no matches found') {
-            return false;
-          } else {
-            var url = getFacetAutocompleteUrl("fiscal_years", encodeURIComponent(ui.item.value));
-            $(event.target).val(ui.item.label);
-            window.location = url;
-            return false;
-          }
-        }
-      });
-      $('#autocomplete_regfyear', context).autocomplete({
-        source: "/smart_search/autocomplete/regfiscalyear" + search_term,
-        focus: function (event, ui) {
-          if (ui.item.label.toLowerCase() == 'no matches found') {
-            return false;
-          } else {
-            $(event.target).val(ui.item.label);
-            return false;
-          }
-        },
-        select: function (event, ui) {
-          if (ui.item.label.toLowerCase() == 'no matches found') {
-            return false;
-          } else {
-            var url = getFacetAutocompleteUrl("registered_fiscal_years", encodeURIComponent(ui.item.value));
-            $(event.target).val(ui.item.label);
-            window.location = url;
-            return false;
-          }
-        }
-      });
-      $('#autocomplete_findustryTypeName', context).autocomplete({
-        source: "/smart_search/autocomplete/industrytype" + search_term,
-        focus: function (event, ui) {
-          if (ui.item.label.toLowerCase() == 'no matches found') {
-            return false;
-          } else {
-            $(event.target).val(ui.item.label);
-            return false;
-          }
-        },
-        select: function (event, ui) {
-          if (ui.item.label.toLowerCase() == 'no matches found') {
-            return false;
-          } else {
-            var url = getFacetAutocompleteUrl("industry_type_name", encodeURIComponent(ui.item.value));
-            $(event.target).val(ui.item.label);
-            window.location = url;
-            return false;
-          }
-        }
+        });
       });
     }
-  }
+  };
+
   Drupal.behaviors.clear_search = {
     attach: function (context) {
 
