@@ -32,7 +32,7 @@
     "agency": "agency_id",
     "agencyh": "agency_history_id",
     "year": "budget_fiscal_year_id",
-    "dept": "department_id",
+    "dept": "department_code",
     "deptnm": "department_name",
     "expcategory": "object_class_id",
     "expcategorynm": "object_class_name",

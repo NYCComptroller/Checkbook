@@ -67,6 +67,16 @@
                     ]
                 },
                 {
+                    "name": "dept_code",
+                    "levels": [
+                        {
+                            "name": "dept_code",
+                            "sourceColumnName": "department_code"
+                        }
+                    ]
+
+                },
+                {
                   "name":"department_name",
                   "levels":[
                     {
