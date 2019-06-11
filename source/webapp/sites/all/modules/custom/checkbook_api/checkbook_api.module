@@ -338,6 +338,18 @@ function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, 
                 else {
                     // All years:
                     $parameters['latest_flag'] = 'Y';
+                    //Hide data for contracts, end date is prior 2011
+                    //TO DO: Move end fiscal year to Drupal variables
+                    $year = _getYearIDFromValue(2011);
+                    $ge_condition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($year));
+                    if ($contract_status == 'active') {
+                      if(strtolower($type_of_data) == 'contracts_oge'){
+                        $parameters['effective_end_year_id'] = $ge_condition;
+                      }
+                      else{
+                        $parameters['effective_end_year'] = $ge_condition;
+                      }
+                    }
                 }
                 break;
 
@@ -656,13 +668,13 @@ function checkbook_api_adjustNYCHAContractSql(&$sql_query){
     $where_part = $sql_parts[1];
     $where_parts = explode('AND', $where_part);
     foreach($where_parts as $key => $value){
-      if(strpos($value,'b.agreement_start_year') !== false){
+      if(strpos($value,'agreement_start_year') !== false){
         $values = explode('<=', $value);
         $year = trim($values[1]);
       }
     }
     if(isset($year)){
-      $sql_query =  str_replace("b.release_approved_year", $year." AS release_approved_year",$sql_query);
+      $sql_query =  str_replace("release_approved_year", $year." AS release_approved_year",$sql_query);
     }
 }
 

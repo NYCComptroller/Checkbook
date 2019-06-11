@@ -1,8 +1,30 @@
 <?php
-/*
+/**
+ * This file is part of the Checkbook NYC financial transparency software.
+ *
+ * Copyright (C) 2019 New York City
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
  * Advanced search submit form handler, used to figure which submit button
  * has been clicked and invoke the respective functions that generate the
  * redirect URL with the necessary parameters
+ * @param $form
+ * @param $form_state
+ * @return string
  */
 function checkbook_advanced_search_form_submit($form, &$form_state) {
 
@@ -25,29 +47,32 @@ function checkbook_advanced_search_form_submit($form, &$form_state) {
             $form_state['redirect'] = _checkbook_advanced_search_payroll_submit($form, $form_state);
             break;
         case "budget_next":
-            return _checkbook_advanced_search_budget_submit($form, $form_state,'next');
+            return _checkbook_advanced_search_budget_submit($form, $form_state);
             break;
         case "revenue_next":
             return _checkbook_advanced_search_revenue_submit($form, $form_state, 'next');
             break;
         case "spending_next":
             $data_source = $form_state['values']['spending_advanced_search_domain_filter'];
-            return _checkbook_advanced_search_spending_submit($form, $form_state, $data_source, 'next');
+            return _checkbook_advanced_search_spending_submit($form, $form_state, $data_source);
             break;
         case "contracts_next":
             $data_source = $form_state['values']['contracts_advanced_search_domain_filter'];
-            return _checkbook_advanced_search_contracts_submit($form, $form_state, $data_source, 'next');
+            return _checkbook_advanced_search_contracts_submit($form, $form_state, $data_source);
             break;
         case "payroll_next":
-            return _checkbook_advanced_search_payroll_submit($form, $form_state, 'next');
+            return _checkbook_advanced_search_payroll_submit($form, $form_state);
             break;
     }
 }
 
-
-/*
+/**
  * Get year_value and id using the data controller
  * To populate Year Filter drop downs on Advanced Search form
+ *
+ * @param null $domain
+ * @param null $form
+ * @param string $data_source
  * @return array
  */
 function _checkbook_advanced_search_get_year($domain = null, $form = null, $data_source = 'checkbook')
@@ -56,7 +81,7 @@ function _checkbook_advanced_search_get_year($domain = null, $form = null, $data
         $dataController = data_controller_get_instance();
         $data = $dataController->queryDataset($data_source.":year", array('year_value', 'year_id'), array('year_value' => data_controller_get_operator_factory_instance()->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, 2010)), 'year_value', 0);
 
-        $current_fy_id = _getFiscalYearID();
+//        $current_fy_id = _getFiscalYearID();
         $max_years = _checkbook_max_data_year();
         $fiscal_year_array = [];
         foreach ($data as $row) {
@@ -77,10 +102,15 @@ function _checkbook_advanced_search_get_year($domain = null, $form = null, $data
             }
         }
 
-        $fiscal_year_array && arsort($fiscal_year_array);
-        $calendar_year_array && arsort($calendar_year_array);
+         if (isset($fiscal_year_array)) {
+           arsort($fiscal_year_array);
+         }
 
-        if ($domain == 'payroll' && $calendar_year_array) {
+        if(isset($calendar_year_array)) {
+          arsort($calendar_year_array);
+        }
+
+        if ($domain == 'payroll' && isset($calendar_year_array)) {
             $fiscal_year_array = array_merge($calendar_year_array, $fiscal_year_array);
         }
 
@@ -97,9 +127,10 @@ function _checkbook_advanced_search_get_year($domain = null, $form = null, $data
     }
 }
 
-/*
+/**
  * Get agency name and id using the data controller
- * @return array
+ * @param string $data_source
+ * @return array|void
  */
 function _checkbook_advanced_search_get_agencyname_and_id($data_source = 'checkbook')
 {
@@ -134,6 +165,10 @@ function _checkbook_advanced_search_get_agencyname_and_id($data_source = 'checkb
     }
 }
 
+/**
+ * @param string $data_source
+ * @return array|void
+ */
 function _checkbook_advanced_search_get_agency_attributes($data_source = 'checkbook')
 {
     try {
@@ -164,7 +199,7 @@ function _checkbook_advanced_search_get_agency_attributes($data_source = 'checkb
     }
 }
 
-/*
+/**
  * Get mwbe category name and id using mapping
  *
  * Total M/WBE 2,3,4,5,7,9,11
@@ -190,7 +225,7 @@ function _checkbook_advanced_search_get_mwbe_category_and_id()
 
 /**
  * Gets the industry types and id using the data controller
- * @return void
+ * @return array
  */
 function _checkbook_advanced_search_get_industry_type_and_id()
 {
@@ -208,9 +243,10 @@ function _checkbook_advanced_search_get_industry_type_and_id()
     }
 }
 
-/*
+/**
  * Get expense name and id using the data controller
  * @return array
+ * @return array|void
  */
 function _checkbook_advanced_search_get_expensename_and_id()
 {
@@ -231,7 +267,7 @@ function _checkbook_advanced_search_get_expensename_and_id()
 /**
  * Gets the subcontract_approval_status and id using the data controller
  * @param null $attributes
- * @return void
+ * @return mixed
  */
 function _checkbook_advanced_search_get_subcontract_approval_status_and_id($attributes = NULL)
 {
@@ -267,7 +303,7 @@ function _checkbook_advanced_search_get_subcontract_approval_status_and_id($attr
 /**
  * Gets the scntrc_status_name, scntrc_status(id), and display_flag using the data controller
  * @param null $attributes
- * @return void
+ * @return mixed
  */
 function _checkbook_advanced_search_get_contract_includes_subvendors_status($attributes = NULL)
 {
@@ -360,13 +396,12 @@ function _checkbook_advanced_search_add_current_amount_id($value)
     return $redirect_url;
 }
 
-/*
+/**
  * this functiocheckbook_advanced_searchn is used to generate the URL based on what the users have selected on advanced search form
  * @param $value
  * @param string $url_param
- * @param boolean $need_to_get_id
- * @param boolean $is_range
- * @return string "$url_param/$value"
+ * @param bool $is_range
+ * @return string
  */
 function _checkbook_advanced_search_generate_redirect_url($value, $url_param = '', $is_range = FALSE)
 {
@@ -423,9 +458,10 @@ function _checkbook_advanced_search_generate_redirect_url($value, $url_param = '
     return $redirect_url;
 }
 
-/*
+/**
  * Get revenue category and id using the data controller
- * @return array
+ *
+ * @return array|void
  */
 function _checkbook_advanced_search_get_revenue_category_and_id()
 {
@@ -446,9 +482,10 @@ function _checkbook_advanced_search_get_revenue_category_and_id()
     }
 }
 
-/*
+/**
  * Get fund class name and id using the data controller
- * @return array
+ *
+ * @return array|void
  */
 function _checkbook_advanced_search_get_fund_class_and_id()
 {
@@ -470,9 +507,10 @@ function _checkbook_advanced_search_get_fund_class_and_id()
     }
 }
 
-/*
+/**
  * Get funding class name and code using the data controller
- * @return array
+ *
+ * @return array|void
  */
 function _checkbook_advanced_search_get_funding_source_and_id()
 {
@@ -497,6 +535,9 @@ function _checkbook_advanced_search_get_funding_source_and_id()
  * Get document id using the data controller
  * @return array
  */
+/**
+ * @return array|void
+ */
 function _checkbook_advanced_search_get_document_id()
 {
     try {
@@ -513,9 +554,10 @@ function _checkbook_advanced_search_get_document_id()
     }
 }
 
-/*
+/**
  * Get payroll frequency using the data controller
- * @return array
+ *
+ * @return array|void
  */
 function _checkbook_advanced_search_get_payroll_frequency()
 {
@@ -536,9 +578,11 @@ function _checkbook_advanced_search_get_payroll_frequency()
     }
 }
 
-/*
+/**
  * Get spending category name and id using data controller
- * @return array
+ *
+ * @param string $data_source
+ * @return array|void
  */
 function _checkbook_advanced_search_get_expensetype_and_id($data_source = 'checkbook')
 {
@@ -559,9 +603,11 @@ function _checkbook_advanced_search_get_expensetype_and_id($data_source = 'check
     }
 }
 
-/*
+/**
  * Get agency name and id using the data controller
- * @return array
+ *
+ * @param string $data_source
+ * @return array|void
  */
 function _checkbook_advanced_search_get_contract_award_method_and_id($data_source = 'checkbook')
 {
@@ -583,6 +629,10 @@ function _checkbook_advanced_search_get_contract_award_method_and_id($data_sourc
     }
 }
 
+/**
+ * @param string $data_source
+ * @return array|void
+ */
 function _checkbook_advanced_search_get_contract_award_method_attributes($data_source = 'checkbook')
 {
     try {
@@ -600,9 +650,11 @@ function _checkbook_advanced_search_get_contract_award_method_attributes($data_s
     }
 }
 
-/*
+/**
  * Get contract type name and id using the data controller
- * @return array
+ *
+ * @param string $data_source
+ * @return array|void
  */
 function _checkbook_advanced_search_get_contract_type_and_id($data_source = 'checkbook')
 {
@@ -621,8 +673,9 @@ function _checkbook_advanced_search_get_contract_type_and_id($data_source = 'che
     }
 }
 
-/***
+/**
  * Get Responsibility center options for NYCHA Contracts
+ *
  * @param string $data_source
  * @param bool $feeds
  * @return array|void
@@ -661,7 +714,7 @@ function _checkbook_advanced_search_get_responsibility_centers($data_source = 'c
     }
 }
 
-/***
+/**
  * Get Contract Type options for NYCHA
  * @param string $data_source
  * @param bool $feeds
@@ -700,7 +753,7 @@ function _checkbook_advanced_search_get_nycha_contract_types($data_source = 'che
     }
 }
 
-/***
+/**
  * Get NYCHA Award Method options for NYCHA
  * @param string $data_source
  * @param bool $feeds
@@ -740,7 +793,7 @@ function checkbook_advanced_search_get_nycha_award_methods($data_source = 'check
     }
 }
 
-/***
+/**
  * Get Nycha Industry options for NYCHA
  * @param string $data_source
  * @param bool $feeds
@@ -781,8 +834,12 @@ function checkbook_advanced_search_get_nycha_industries($data_source = 'checkboo
 
 
 
-/*
+/**
  * Constructs the URL for Payroll based on the input by the users
+ *
+ * @param $form
+ * @param $form_state
+ * @return string
  */
 function _checkbook_advanced_search_payroll_submit($form, &$form_state)
 {
@@ -868,7 +925,13 @@ function _checkbook_advanced_search_payroll_submit($form, &$form_state)
     return $redirect_url;
 }
 
-function _checkbook_advanced_search_add_payroll_range_filter_param($from,$to,$url_param){
+/**
+ * @param $from
+ * @param $to
+ * @param $url_param
+ * @return string
+ */
+function _checkbook_advanced_search_add_payroll_range_filter_param($from, $to, $url_param){
     $redirect_url = "";
     if($from == "" && $to == "") return $redirect_url;
     $parameters = array();
@@ -890,8 +953,14 @@ function _checkbook_advanced_search_add_payroll_range_filter_param($from,$to,$ur
 
     return $redirect_url;
 }
-/*
+
+/**
  * Constructs the URL for Nycha Contracts based on the input by the users
+ *
+ * @param $form
+ * @param $form_state
+ * @param string $data_source
+ * @return string
  */
 function _checkbook_advanced_search_nycha_contracts_submit($form, &$form_state, $data_source = 'checkbook_oge')
 {
@@ -1006,8 +1075,13 @@ function _checkbook_advanced_search_nycha_contracts_submit($form, &$form_state, 
     return $redirect_url;
 }
 
-/*
+/**
  * Constructs the URL for Contracts based on the input by the users
+ *
+ * @param $form
+ * @param $form_state
+ * @param string $data_source
+ * @return string
  */
 function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_source = 'checkbook')
 {
@@ -1208,8 +1282,13 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
     return $redirect_url;
 }
 
-/*
+/**
  * Constructs the URL for Spending transactions based on the input by the users
+ *
+ * @param $form
+ * @param $form_state
+ * @param string $data_source
+ * @return string
  */
 function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_source = 'checkbook')
 {
@@ -1353,8 +1432,12 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_s
     return $redirect_url;
 }
 
-/*
+/**
  * Constructs the URL for Budget transactions based on the input by the users
+ *
+ * @param $form
+ * @param $form_state
+ * @return string
  */
 function _checkbook_advanced_search_budget_submit($form, &$form_state)
 {
@@ -1424,8 +1507,13 @@ function _checkbook_advanced_search_budget_submit($form, &$form_state)
     return $redirect_url;
 }
 
-/*
+/**
  * Constructs the URL for Revenue transactions based on the input by the users
+ *
+ * @param $form
+ * @param $form_state
+ * @param null $button
+ * @return string
  */
 function _checkbook_advanced_search_revenue_submit($form, &$form_state, $button = NULL)
 {
@@ -1498,11 +1586,13 @@ function _checkbook_advanced_search_revenue_submit($form, &$form_state, $button 
     return $redirect_url;
 }
 
-/*
+/**
  * Constructs the URL for year value and type
- * @param: $year_arg (contains year type and year value separated by '~')
+ *
+ * @param string $year_arg // (contains year type and year value separated by '~')
+ * @return string
  */
-function _checkbook_advanced_search_year_arg($year_arg)
+function _checkbook_advanced_search_year_arg(string $year_arg)
 {
     $year_args = explode('~', $year_arg);
     $year_type = $year_args[0];
@@ -1517,7 +1607,11 @@ function _checkbook_advanced_search_year_arg($year_arg)
     return $year_url;
 }
 
-function _checkbook_advanced_search_replaceSlash($string)
+/**
+ * @param $string
+ * @return string
+ */
+function _checkbook_advanced_search_replaceSlash(string $string)
 {
     return str_replace('/', '__', $string);
 }
@@ -1572,6 +1666,11 @@ function _checkbook_advanced_search_create_alert_config()
     return $configuration;
 }
 
+/**
+ * @param $form
+ * @param $form_state
+ * @return array
+ */
 function _checkbook_advanced_search_create_alert_results_ajax($form, &$form_state) {
 
     /* Add new step to hidden field for persistence */
@@ -1619,6 +1718,10 @@ function _checkbook_advanced_search_encode_url($string) {
     return $string;
 }
 
+/**
+ * @param $step
+ * @return mixed
+ */
 function _checkbook_advanced_search_create_alert_instructions($step)
 {
     $create_alert_config =  _checkbook_advanced_search_create_alert_config();
@@ -1626,6 +1729,11 @@ function _checkbook_advanced_search_create_alert_instructions($step)
     return $instructions;
 }
 
+/**
+ * @param $create_alert_config
+ * @param $current_step
+ * @return string
+ */
 function _checkbook_advanced_search_create_alert_header($create_alert_config, $current_step)
 {
     $header_html = '';
