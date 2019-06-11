@@ -43,7 +43,7 @@
   "urlParamMap":{
     "year":"year_id.year_id",
     "agency":"agency_id.agency_id",
-    "dept":"dept.dept",
+    "dept":"dept_code.dept_code",
     "expcategory":"object_class_id.object_class_id"
   },
   "adjustParameters":"
@@ -64,7 +64,7 @@
   "transformationPHP":"
   $transactions_page = '/' .  current_path()  . '?expandBottomContURL=/panel_html/budget_transactions';
   $agency = ($node->widgetConfig->requestParams['agency_id.agency_id']) ? '/agency/' . $node->widgetConfig->requestParams['agency_id.agency_id'] : '';
-  $dept = ($node->widgetConfig->requestParams['dept.dept']) ? '/dept/' . $node->widgetConfig->requestParams['dept.dept'] : '';
+  $dept = ($node->widgetConfig->requestParams['dept_code.dept_code']) ? '/dept/' . $node->widgetConfig->requestParams['dept_code.dept_code'] : '';
   $expcategory = ($node->widgetConfig->requestParams['object_class_id.object_class_id']) ? '/expcategory/' . $node->widgetConfig->requestParams['object_class_id.object_class_id'] : '';
   $smnid = '/smnid/557';
   $budget_committed = '/budgettype/committed';
