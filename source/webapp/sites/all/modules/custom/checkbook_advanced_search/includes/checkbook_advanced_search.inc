@@ -1608,10 +1608,10 @@ function _checkbook_advanced_search_year_arg(string $year_arg)
 }
 
 /**
- * @param $string
- * @return string
+ * @param mixed $string
+ * @return mixed
  */
-function _checkbook_advanced_search_replaceSlash(string $string)
+function _checkbook_advanced_search_replaceSlash($string)
 {
     return str_replace('/', '__', $string);
 }
