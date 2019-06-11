@@ -2,7 +2,7 @@
 
 /**
  * This function returns current NYC fiscal year ID
- * @return year_id
+ * @return string
  */
 function _getFiscalYearID()
 {
@@ -24,7 +24,7 @@ function _getFiscalYearID()
 
 /**
  * This function returns Calendar year ID
- * @return year_id
+ * @return string
  */
 function _getCurrentCalendarYearID()
 {
@@ -66,7 +66,7 @@ function _getCurrentYearID()
 /**
  * returns NYC year id for a giver year ...
  * @param string $year_value
- * @return year_id
+ * @return string
  */
 function _getYearIDFromValue($year_value)
 {
@@ -84,7 +84,7 @@ function _getYearIDFromValue($year_value)
 /**
  * return year value for a give year id ...
  * @param string $year_id
- * @return year_value
+ * @return string
  */
 function _getYearValueFromID($year_id)
 {
@@ -664,7 +664,7 @@ function _checkbook_project_get_name_for_argument($keyword, $id)
  * @param string $dataset
  * @param array|string $columns
  * @param null $parameters
- * @return void
+ * @return mixed
  */
 function _checkbook_project_querydataset($dataset, $columns, $parameters = null)
 {
@@ -685,7 +685,7 @@ function _checkbook_project_querydataset($dataset, $columns, $parameters = null)
  * @param $parameters Widget parsed request parameters
  * @param $contractType Contract Type
  * @param null $dimension
- * @return void adjusted parameters
+ * @return mixed adjusted parameters
  */
 function _checkbook_project_adjustContractParameterFilters(&$node, &$parameters, $contractType, $dimension = null)
 {
@@ -705,14 +705,14 @@ function _checkbook_project_adjustContractParameterFilters(&$node, &$parameters,
             $yearTypeCol = $node->widgetConfig->urlParamMap->$yearTypeParam;
             $reqYearType = $node->widgetConfig->requestParams[$yearTypeCol];
             $current_url = $_SERVER['HTTP_REFERER'];
-            if (preg_match("/contract\/search\/transactions/", $current_url)) {
-                $advanced_search = true;
-            } else {
-                $current_url = request_uri();
-                if (preg_match("/contract\/search\/transactions/", $current_url)) {
-                    $advanced_search = true;
-                }
-            }
+//            if (preg_match("/contract\/search\/transactions/", $current_url)) {
+//                $advanced_search = true;
+//            } else {
+//                $current_url = request_uri();
+//                if (preg_match("/contract\/search\/transactions/", $current_url)) {
+//                    $advanced_search = true;
+//                }
+//            }
 
             if (isset($reqYearType) && ($reqYearType == 'C') && !_checkbook_check_isEDCPage()) {
                 if (isset($node->widgetConfig->dataset)) {

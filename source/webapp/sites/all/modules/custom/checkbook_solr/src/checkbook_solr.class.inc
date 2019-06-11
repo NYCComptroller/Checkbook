@@ -43,6 +43,14 @@ class CheckbookSolr
   }
 
   /**
+   * @return mixed
+   */
+  public static function getAutocompleteMapping(): object
+  {
+    return self::getSmartSearchConfig()->autocomplete_mapping ?? new StdClass();
+  }
+
+  /**
    * @return object
    */
   private static function getSmartSearchConfig(): object
@@ -90,6 +98,7 @@ class CheckbookSolr
 
     switch ($datasource) {
       case 'edc':
+      case 'checkbook_oge':
         $solr_datasource = 'solr_edc';
         break;
       case 'nycha':
