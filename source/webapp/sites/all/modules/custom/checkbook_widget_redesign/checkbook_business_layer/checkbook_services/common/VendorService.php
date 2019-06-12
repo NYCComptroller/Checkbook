@@ -36,13 +36,14 @@ abstract class VendorService {
      * @return bool
      */
     static protected function getLatestMinorityTypeByYear($vendor_id, $year_id, $type_of_year, $vendor_type, $domain = null) {
+        $vendor_id_param = (isset($vendor_id)) ? " AND vendor_id = ".$vendor_id ." " : "";
         switch ($domain){
             case Domain::$SPENDING :
                 $query = "SELECT minority_type_id
                             FROM spending_vendor_latest_mwbe_category
-                            WHERE minority_type_id IN (2,3,4,5,9)
-                            AND vendor_id = ".$vendor_id."
-                            AND year_id = ".$year_id."
+                            WHERE minority_type_id IN (2,3,4,5,9)"
+                            . $vendor_id_param .
+                            "AND year_id = ".$year_id."
                             AND type_of_year = '".$type_of_year."'
                             AND is_prime_or_sub = '".$vendor_type."' LIMIT 1";
 
@@ -51,9 +52,9 @@ abstract class VendorService {
             default :
                 $query = "SELECT DISTINCT minority_type_id, latest_minority_flag, latest_mwbe_flag
                             FROM contract_vendor_latest_mwbe_category
-                            WHERE minority_type_id IN (2,3,4,5,9)
-                            AND vendor_id = ".$vendor_id."
-                            AND year_id = ".$year_id."
+                            WHERE minority_type_id IN (2,3,4,5,9)"
+                            . $vendor_id_param .
+                            "AND year_id = ".$year_id."
                             AND type_of_year = 'B'
                             AND latest_minority_flag = 'Y'
                             AND is_prime_or_sub = '".$vendor_type."'";
@@ -118,34 +119,35 @@ abstract class VendorService {
         $contstatus = RequestUtilities::get('contstatus')?:RequestUtilities::get('status');
         $status =  ($contstatus == null) ? $status : $contstatus;
         $year_id = ($year_id == null) ? _getCurrentYearID() : $year_id;
-        $query = "SELECT SUM(COALESCE(maximum_contract_amount,0)) AS current_amount_sum
+        $vendor_id_param = (isset($vendor_id)) ? " AND s0.vendor_id = ".$vendor_id ." " : "";
+
+      $query = "SELECT SUM(COALESCE(maximum_contract_amount,0)) AS current_amount_sum
                   FROM aggregateon_mwbe_contracts_cumulative_spending s0
                   LEFT OUTER JOIN ref_document_code s15 ON s15.document_code_id = s0.document_code_id
-                   WHERE s0.minority_type_id IN (2,3,4,5,9)
-                   AND s0.vendor_id = ".$vendor_id."
-                          AND  s0.fiscal_year_id= ".$year_id."
-                            AND s0.type_of_year = 'B'
-                            AND s0.status_flag = '" . $status . "' 
-                             AND s15.document_code IN ('CT1', 'CTA1', 'RCT1', 'MA1')
-                          ";
+                  WHERE s0.minority_type_id IN (2,3,4,5,9)"
+                  .$vendor_id_param.
+                  "AND s0.fiscal_year_id= ".$year_id."
+                   AND s0.type_of_year = 'B'
+                   AND s0.status_flag = '" . $status . "' 
+                   AND s15.document_code IN ('CT1', 'CTA1', 'RCT1', 'MA1') ";
         $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
         return $results[0]['current_amount_sum'];
     }
     public static function getSubVendorAmount($vendor_id =null,$year_id=null,$status='A')
     {
-
         $contstatus = RequestUtilities::get('contstatus')?:RequestUtilities::get('status');
         $status =  ($contstatus == null) ? $status : $contstatus;
         $year_id = ($year_id == null) ? _getCurrentYearID() : $year_id;
+        $prime_vendor_id_param = (isset($vendor_id)) ? " AND s0.prime_vendor_id = ".$vendor_id ." " : "";
         $query = "SELECT SUM(COALESCE(maximum_contract_amount,0)) AS current_amount_sum
                   FROM aggregateon_subven_contracts_cumulative_spending s0
                   LEFT OUTER JOIN ref_document_code s15 ON s15.document_code_id = s0.document_code_id
-                   WHERE s0.minority_type_id IN (2,3,4,5,9)
-                   AND s0.prime_vendor_id = ".$vendor_id."
-                          AND  s0.fiscal_year_id= ".$year_id."
-                            AND s0.type_of_year = 'B'
-                            AND s0.status_flag = '" . $status . "' 
-                             AND s15.document_code IN ('CT1', 'CTA1', 'RCT1', 'MA1')
+                  WHERE s0.minority_type_id IN (2,3,4,5,9)"
+                        .$prime_vendor_id_param.
+                        "AND s0.fiscal_year_id= ".$year_id."
+                         AND s0.type_of_year = 'B'
+                         AND s0.status_flag = '" . $status . "' 
+                         AND s15.document_code IN ('CT1', 'CTA1', 'RCT1', 'MA1')
                           ";
         $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
         return $results[0]['current_amount_sum'];
