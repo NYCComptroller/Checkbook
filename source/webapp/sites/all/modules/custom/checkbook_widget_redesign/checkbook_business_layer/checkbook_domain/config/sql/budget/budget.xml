@@ -3,7 +3,7 @@
     <statement name="GetAgenciesByBudget" datasource="checkbook">
         <param name="year" type="int" />
         <param name="agency" type="int" />
-        <param name="dept" type="int" />
+        <param name="dept" type="string" />
         <param name="filter_type" type="string" />
         <param name="expcategory" type="int" />
         <sql>
@@ -27,7 +27,7 @@
     <statement name="GetAgenciesByCommittedExpenseBudget" datasource="checkbook">
         <param name="year" type="int" />
         <param name="agency" type="int" />
-        <param name="dept" type="int" />
+        <param name="dept" type="string" />
         <param name="filter_type" type="string" />
         <param name="expcategory" type="int" />
         <sql>
@@ -53,7 +53,7 @@
     <statement name="GetAgenciesByPercentDifference" datasource="checkbook">
         <param name="year" type="int" />
         <param name="agency" type="int" />
-        <param name="dept" type="int" />
+        <param name="dept" type="string" />
         <param name="filter_type" type="string" />
         <param name="expcategory" type="int" />
         <sql>
@@ -74,7 +74,7 @@
                     <exp op="=" dbField="s0.object_class_id" paramName="expcategory" />
                     <exp op="=" dbField="s0.budget_fiscal_year_id" paramName="year" />
                     <exp op="=" dbField="s0.agency_id " paramName="agency" />
-                    <exp op="=" dbField="s0.department_id " paramName="dept" />
+                    <exp op="=" dbField="s0.department_code " paramName="dept" />
                     <exp op="=" dbField="s0.filter_type" paramName="filter_type" />
                 </exp>
             </where>
@@ -85,7 +85,7 @@
     <statement name="GetExpenseCategoriesByBudget" datasource="checkbook">
         <param name="year" required ="true" type="int" />
         <param name="agency" type="int" />
-        <param name="dept" type="int" />
+        <param name="dept" type="string" />
         <sql>
             SELECT
             budget_fiscal_year_id as year_id,
@@ -100,7 +100,7 @@
                 <exp op="AND">
                     <exp op="=" dbField="budget_fiscal_year_id" paramName="year" />
                     <exp op="=" dbField="agency_id " paramName="agency" />
-                    <exp op="=" dbField="department_id " paramName="dept" />
+                    <exp op="=" dbField="department_code " paramName="dept" />
                 </exp>
             </where>
             GROUP BY budget_fiscal_year_id, object_class_id, object_class_name
@@ -109,7 +109,7 @@
     <statement name="GetExpenseCategoriesByCommittedExpenseBudget" datasource="checkbook">
         <param name="year" required ="true" type="int" />
         <param name="agency" type="int" />
-        <param name="dept" type="int" />
+        <param name="dept" type="string" />
         <sql>
             SELECT budget_fiscal_year_id as year_id,
             object_class_id as expense_category_id,
@@ -125,7 +125,7 @@
                 <exp op="AND">
                     <exp op="=" dbField="budget_fiscal_year_id" paramName="year" />
                     <exp op="=" dbField="agency_id " paramName="agency" />
-                    <exp op="=" dbField="department_id " paramName="dept" />
+                    <exp op="=" dbField="department_code " paramName="dept" />
                 </exp>
             </where>
             GROUP BY budget_fiscal_year_id, object_class_id, object_class_name
@@ -135,7 +135,7 @@
         <param name="year" required ="true" type="int" />
         <param name="agency" type="int" />
         <param name="expcategory" type="int" />
-        <param name="dept" type="int" />
+        <param name="dept" type="string" />
         <param name="filter_type" type="string" />
         <sql>
             SELECT s0.budget_fiscal_year_id,
@@ -155,7 +155,7 @@
                         <exp op="=" dbField="s0.object_class_id" paramName="expcategory" />
                         <exp op="=" dbField="s0.budget_fiscal_year_id" paramName="year" />
                         <exp op="=" dbField="s0.agency_id " paramName="agency" />
-                        <exp op="=" dbField="s0.department_id " paramName="dept" />
+                        <exp op="=" dbField="s0.department_code " paramName="dept" />
                         <exp op="=" dbField="s0.filter_type" paramName="filter_type" />
                     </exp>
                 </where>
@@ -167,11 +167,11 @@
         <param name="year" required ="true" type="int" />
         <param name="agency" type="int" />
         <param name="expcategory" type="int" />
-        <param name="dept" type="int" />
+        <param name="dept" type="string" />
         <param name="filter_type" type="string" />
         <sql>
             SELECT s0.budget_fiscal_year_id,
-                s0.department_id,
+                s0.department_code,
                 s0.department_name,
                 SUM(adopted_amount) AS budget_adopted,
                 SUM(COALESCE(current_budget_amount,0)) AS budget_current,
@@ -183,22 +183,22 @@
                         <exp op="=" dbField="s0.object_class_id" paramName="expcategory" />
                         <exp op="=" dbField="s0.budget_fiscal_year_id" paramName="year" />
                         <exp op="=" dbField="s0.agency_id " paramName="agency" />
-                        <exp op="=" dbField="s0.department_id " paramName="dept" />
+                        <exp op="=" dbField="s0.department_code " paramName="dept" />
                         <exp op="=" dbField="s0.filter_type" paramName="filter_type" />
                     </exp>
                 </where>
-            GROUP BY s0.budget_fiscal_year_id, s0.department_id, s0.department_name
+            GROUP BY s0.budget_fiscal_year_id, s0.department_code, s0.department_name
         </sql>
     </statement>
     <statement name="GetDepartmentsByCommittedExpenseBudget" datasource="checkbook">
         <param name="year" required ="true" type="int" />
         <param name="agency" type="int" />
         <param name="expcategory" type="int" />
-        <param name="dept" type="int" />
+        <param name="dept" type="string" />
         <param name="filter_type" type="string" />
         <sql>
             SELECT s0.budget_fiscal_year_id,
-                s0.department_id,
+                s0.department_code,
                 s0.department_name,
                 SUM(total_expenditure_amount) AS budget_committed,
                 SUM(pre_encumbered_amount) AS pre_encumbered,
@@ -212,22 +212,22 @@
                     <exp op="=" dbField="s0.object_class_id" paramName="expcategory" />
                     <exp op="=" dbField="s0.budget_fiscal_year_id" paramName="year" />
                     <exp op="=" dbField="s0.agency_id " paramName="agency" />
-                    <exp op="=" dbField="s0.department_id " paramName="dept" />
+                    <exp op="=" dbField="s0.department_code " paramName="dept" />
                     <exp op="=" dbField="s0.filter_type" paramName="filter_type" />
                 </exp>
             </where>
-            GROUP BY s0.budget_fiscal_year_id, s0.department_id, s0.department_name
+            GROUP BY s0.budget_fiscal_year_id, s0.department_code, s0.department_name
         </sql>
     </statement>
     <statement name="GetDepartmentsByPercentDifference" datasource="checkbook">
         <param name="year" required ="true" type="int" />
         <param name="agency" type="int" />
         <param name="expcategory" type="int" />
-        <param name="dept" type="int" />
+        <param name="dept" type="string" />
         <param name="filter_type" type="string" />
         <sql>
             SELECT s0.budget_fiscal_year_id,
-            s0.department_id,
+            s0.department_code,
             d.department_name,
             SUM(COALESCE(modified_budget_amount,0)) AS current_amount,
             SUM(COALESCE(modified_budget_amount_py,0)) AS previous_amount,
@@ -237,17 +237,17 @@
             CASE SUM(COALESCE(modified_budget_amount_py_1,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(modified_budget_amount,0)) - SUM(COALESCE(modified_budget_amount_py_1,0)))/SUM(COALESCE(modified_budget_amount_py_1,0)))*100 END AS percent_difference2,
             CASE SUM(COALESCE(modified_budget_amount_py_2,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(modified_budget_amount,0)) - SUM(COALESCE(modified_budget_amount_py_2,0)))/SUM(COALESCE(modified_budget_amount_py_2,0)))*100 END AS percent_difference3
             FROM aggregateon_budget_by_year s0
-            JOIN ref_department d ON s0.department_id = d.department_id
+            JOIN ref_department d ON s0.department_code = d.department_code
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="s0.object_class_id" paramName="expcategory" />
                     <exp op="=" dbField="s0.budget_fiscal_year_id" paramName="year" />
                     <exp op="=" dbField="s0.agency_id " paramName="agency" />
-                    <exp op="=" dbField="s0.department_id " paramName="dept" />
+                    <exp op="=" dbField="s0.department_code " paramName="dept" />
                     <exp op="=" dbField="s0.filter_type" paramName="filter_type" />
                 </exp>
             </where>
-            GROUP BY s0.budget_fiscal_year_id, s0.department_id, d.department_name
+            GROUP BY s0.budget_fiscal_year_id, s0.department_code, d.department_name
         </sql>
     </statement>
     <!--Expense Budget Categories Methods-->
@@ -255,7 +255,7 @@
         <param name="year" required ="true" type="int" />
         <param name="agency" type="int" />
         <param name="expcategory" type="int" />
-        <param name="dept" type="int" />
+        <param name="dept" type="string" />
         <param name="filter_type" type="string" />
         <sql>
             SELECT budget.budget_fiscal_year_id AS year_id,
@@ -271,7 +271,7 @@
                     <exp op="=" dbField="budget.agency_id" paramName="agency" />
                     <exp op="=" dbField="budget.budget_fiscal_year_id" paramName="year" />
                     <exp op="=" dbField="budget.object_class_id" paramName="expcategory" />
-                    <exp op="=" dbField="budget.department_id" paramName="dept" />
+                    <exp op="=" dbField="budget.department_code" paramName="dept" />
                 </exp>
             </where>
             GROUP BY budget.budget_fiscal_year_id, budget.budget_code_id, budget.budget_code_name
@@ -281,7 +281,7 @@
             <param name="year" required ="true" type="int" />
             <param name="agency" type="int" />
             <param name="expcategory" type="int" />
-            <param name="dept" type="int" />
+            <param name="dept" type="string" />
             <param name="filter_type" type="string" />
         <sql>
             SELECT s0.budget_fiscal_year_id,
@@ -299,7 +299,7 @@
                     <exp op="=" dbField="s0.object_class_id" paramName="expcategory" />
                     <exp op="=" dbField="s0.budget_fiscal_year_id" paramName="year" />
                     <exp op="=" dbField="s0.agency_id " paramName="agency" />
-                    <exp op="=" dbField="s0.department_id " paramName="dept" />
+                    <exp op="=" dbField="s0.department_code " paramName="dept" />
                     <exp op="=" dbField="s0.filter_type" paramName="filter_type" />
                 </exp>
             </where>

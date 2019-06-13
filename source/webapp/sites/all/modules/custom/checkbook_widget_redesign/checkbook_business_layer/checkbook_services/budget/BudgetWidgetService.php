@@ -27,7 +27,7 @@ class BudgetWidgetService extends WidgetDataService implements IWidgetService {
                 break;
             case "department_name_link":
                 $column = $row['department_name'];
-                $url = BudgetUrlService::departmentUrl($row['department_id']);
+                $url = BudgetUrlService::departmentUrl($row['department_code']);
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
             case "expense_category_name_link":
