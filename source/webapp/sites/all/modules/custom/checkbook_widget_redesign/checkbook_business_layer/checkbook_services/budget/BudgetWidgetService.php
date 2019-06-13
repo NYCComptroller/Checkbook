@@ -54,7 +54,7 @@ class BudgetWidgetService extends WidgetDataService implements IWidgetService {
             case "dept_committed_budget_link":
                 $column = $row['budget_committed'];
                 $class = "bottomContainerReload";
-                $dynamic_parameter = "/dept/" . $row["department_id"];
+                $dynamic_parameter = "/dept/" . $row["department_code"];
                 $url = BudgetUrlService::committedBudgetUrl($dynamic_parameter, $this->getLegacyNodeId());
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
