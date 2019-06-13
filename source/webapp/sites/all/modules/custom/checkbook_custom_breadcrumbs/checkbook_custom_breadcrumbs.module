@@ -223,7 +223,7 @@ function _get_budget_breadcrumb_title_drilldown()
           $title = _checkbook_project_get_name_for_argument("object_class_id", $value);
           break;
         case 'dept':
-          $title = _checkbook_project_get_name_for_argument("department_id", $value);
+          $title = _checkbook_project_get_name_for_argument("department_code", $value);
           break;
         case 'bdgcode':
           $title = _checkbook_project_get_name_for_argument("budget_code_id", $value);
