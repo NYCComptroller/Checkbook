@@ -2252,6 +2252,9 @@ function _checkbook_append_url_params($source = null, $overidden_params = array(
  */
 function _checkbook_check_isEDCPage()
 {
+    if ('edc' == _checkbook_get_datasource()) {
+      return true;
+    }
     $database = RequestUtilities::get('datasource');
     if (isset($database) && $database == 'checkbook_oge') {
         return true;
@@ -2265,6 +2268,9 @@ function _checkbook_check_isEDCPage()
  */
 function _checkbook_check_isNYCHAPage()
 {
+    if ('nycha' == _checkbook_get_datasource()) {
+      return true;
+    }
     $database = RequestUtilities::get('datasource');
     if (isset($database) && $database == 'checkbook_nycha') {
         return true;
@@ -2360,7 +2366,8 @@ function _checkbook_get_datasource()
 {
     $url = '//'.current_path();
 
-    if (strpos($url, '/nycha')){
+    if (strpos($url, '/nycha')
+    || strpos($url, 'agency/162')){
       return 'nycha';
     }
 

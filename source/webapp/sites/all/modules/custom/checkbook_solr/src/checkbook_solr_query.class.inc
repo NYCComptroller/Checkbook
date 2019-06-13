@@ -93,7 +93,7 @@ class CheckbookSolrQuery
    * @param int $rows
    * @param int $page
    */
-  public function __construct(string $searchTerms='', int $rows=0, int $page=0)
+  public function __construct($searchTerms='', int $rows=0, int $page=0)
   {
     $this->paramMapping = (array)CheckbookSolr::getParamMapping();
     $this->autocompleteMapping = (array)CheckbookSolr::getAutocompleteMapping();
@@ -164,16 +164,6 @@ class CheckbookSolrQuery
   }
 
   /**
-   * @param string $q
-   * @return CheckbookSolrQuery
-   */
-  public function setQ(string $q): CheckbookSolrQuery
-  {
-    $this->q = $q;
-    return $this;
-  }
-
-  /**
    * @param int $page
    * @return CheckbookSolrQuery
    */
@@ -222,8 +212,7 @@ class CheckbookSolrQuery
   {
     $this->query = '';
 
-    $query = [
-    ];
+    $query = [];
 
     if (sizeof($this->termFields)) {
       $terms = '';
@@ -266,7 +255,11 @@ class CheckbookSolrQuery
       $query['sort'] = $this->sort;
     }
 
-    $q = 'q=' . $this->q;
+    if ('*:*' == $this->q){
+      $q = 'q=*:*';
+    } else {
+      $q = 'q=text:'.$this->q.'*';
+    }
 
     /**
      * ex.

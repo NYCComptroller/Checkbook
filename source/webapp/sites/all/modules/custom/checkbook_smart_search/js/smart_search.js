@@ -3,7 +3,6 @@
  */
 (function ($) {
   $(document).ready(function () {
-
     $("#edit-search-box").autocomplete({
       position: {my: "right top", at: "right bottom"},
       minLength: 0,
@@ -305,109 +304,10 @@
         return false;
       });
     }
-  }
-
+  };
 }(jQuery));
 
-/**
- *  Redirects to the search results page for the given search criteria
- *  Requires 'prepareSearchFilterUrl' function
- */
 
-function applySearchFilters() {
-  jQuery('input[type=checkbox]').attr("disabled", true);
-  var cUrl = prepareSearchFilterUrl();
-  window.location = cUrl;
-
-}
-
-/**
- *  Returns the search URL
- *  Requires 'getSearchFilterCriteria' function
- */
-
-function prepareSearchFilterUrl() {
-  var domainNames = getSearchFilterCriteria('fdomainName');
-  var ogeAgencyNames = getSearchFilterCriteria('fogeName');
-  var agencyNames = getSearchFilterCriteria('fagencyName');
-  var vendorNames = getSearchFilterCriteria('fvendorName');
-  var vendorType = getSearchFilterCriteria('fvendorType');
-  var expenseCategories = getSearchFilterCriteria('fexpenseCategoryName');
-  var revenueCategories = getSearchFilterCriteria('frevenueCategoryName');
-  var fiscalYears = getSearchFilterCriteria('fyear');
-  var regfiscalYears = getSearchFilterCriteria('regfyear');
-  var contractCategories = getSearchFilterCriteria('fcontractCatName');
-  var contractStatus = getSearchFilterCriteria('fcontractStatus');
-  var spendingCategories = getSearchFilterCriteria('fspendingCatName');
-  var mwbeCategory = getSearchFilterCriteria('fmwbeCategory');
-  var industryTypes = getSearchFilterCriteria('findustryTypeName');
-  var payrollType = getSearchFilterCriteria('fpayrollTypeName');
-
-
-  var searchTerm = '';
-  var cUrl = null;
-
-  var qsParm = getQuerystringValues();
-  if (!qsParm) {
-    searchTerm = ""
-  } else if (qsParm["search_term"]) {
-    var searchTerms = qsParm.search_term.split("*|*");
-    searchTerm = searchTerms[0];
-  }
-
-  cUrl = "?search_term=" + searchTerm + "*|*";
-
-  if (domainNames) {
-    cUrl += "domains=" + encodeURIComponent(domainNames) + '*|*';
-  }
-  if (ogeAgencyNames) {
-    cUrl += "oge_agency_names=" + encodeURIComponent(ogeAgencyNames) + '*|*';
-  }
-  if (agencyNames) {
-    cUrl += "agency_names=" + encodeURIComponent(agencyNames) + '*|*';
-  }
-  if (vendorNames) {
-    cUrl += "vendor_names=" + encodeURIComponent(vendorNames) + '*|*';
-  }
-  if (vendorType) {
-    cUrl += "vendor_type=" + encodeURIComponent(vendorType) + '*|*';
-  }
-  if ((fiscalYears && !contractStatus) || (fiscalYears && contractStatus === "active") || (regfiscalYears && contractStatus === "active")) {
-    cUrl += "fiscal_years=" + encodeURIComponent((fiscalYears) ? fiscalYears : regfiscalYears) + '*|*';
-  }
-  if ((regfiscalYears && !contractStatus && domainNames === 'contracts') || (regfiscalYears && contractStatus === "registered" && domainNames === 'contracts') || (fiscalYears && contractStatus === "registered" && domainNames === 'contracts')) {
-    cUrl += "registered_fiscal_years=" + encodeURIComponent((regfiscalYears) ? regfiscalYears : fiscalYears) + '*|*';
-  }
-  if (expenseCategories) {
-    cUrl += "expense_categories=" + encodeURIComponent(expenseCategories) + '*|*';
-  }
-  if (revenueCategories) {
-    cUrl += "revenue_categories=" + encodeURIComponent(revenueCategories) + '*|*';
-  }
-  if (mwbeCategory) {
-    cUrl += "minority_type_name=" + encodeURIComponent(mwbeCategory) + '*|*';
-  }
-  if (industryTypes) {
-    cUrl += "industry_type_name=" + encodeURIComponent(industryTypes) + '*|*';
-  }
-  if (payrollType) {
-    cUrl += "payroll_type=" + encodeURIComponent(payrollType) + '*|*';
-  }
-  if (domainNames) {
-    if (contractCategories) {
-      cUrl += "contract_categories=" + encodeURIComponent(contractCategories) + '*|*';
-    }
-    if (contractStatus) {
-      cUrl += "contract_status=" + encodeURIComponent(contractStatus) + '*|*';
-    }
-    if (spendingCategories) {
-      cUrl += "spending_categories=" + encodeURIComponent(spendingCategories) + '*|*';
-    }
-  }
-  cUrl = cUrl.substring(0, cUrl.length - 3);
-
-  return cUrl;
-}
 
 
 /**
@@ -416,28 +316,63 @@ function prepareSearchFilterUrl() {
  */
 
 /*jshint evil:true */
-function getSearchFilterCriteria(filterName) {
-  var filterId = '';
-  var oFilterIds = document.getElementsByName(filterName);
-  /*jshint evil:true */
-  if (!eval(oFilterIds)) {
-    return filterId;
-  }
-  for (var i = 0; i < oFilterIds.length; i++) {
-    if (oFilterIds[i].checked) {
-      if (filterId.length > 0) {
-        filterId = filterId + '~' + oFilterIds[i].value;
-      } else {
-        filterId = oFilterIds[i].value;
-      }
+// function getSearchFilterCriteria(filterName) {
+//   var filterId = '';
+//   var oFilterIds = document.getElementsByName(filterName);
+//   /*jshint evil:true */
+//   if (!eval(oFilterIds)) {
+//     return filterId;
+//   }
+//   for (var i = 0; i < oFilterIds.length; i++) {
+//     if (oFilterIds[i].checked) {
+//       if (filterId.length > 0) {
+//         filterId = filterId + '~' + oFilterIds[i].value;
+//       } else {
+//         filterId = oFilterIds[i].value;
+//       }
+//     }
+//   }
+//   return filterId;
+// }
+
+/**
+ *  Redirects to the search results page for the given search criteria
+ *  Requires 'prepareSearchFilterUrl' function
+ */
+function applySearchFilters() {
+  jQuery('.smart-search-right input[type=checkbox]').attr("disabled", true);
+
+  // adding checked checkboxes to the query string
+  var fq = [];
+  jQuery('.smart-search-right .narrow-down-filter input:checkbox:checked').each(function(){
+    var facet_name = jQuery(this).attr('facet');
+    if (!(facet_name in fq)){
+      fq[facet_name] = [];
     }
+    fq[facet_name].push(jQuery(this).val());
+  });
+
+  var fq_string = '';
+  for (var k in fq){
+    fq_string += '*|*'+k+'='+ fq[k].join('~');
   }
-  return filterId;
+
+  // adding global q string
+  var searchTerm = '';
+  var url = new URLSearchParams(window.location.search);
+  if(url.get('search_term')) {
+    searchTerm = url.get('search_term').split('*|*')[0];
+  }
+
+  var cUrl = "?search_term=" + searchTerm;
+
+  cUrl += fq_string;
+
+  window.location = cUrl;
 }
 
 /**
  *  Returns the query string values from the current URL
- *
  */
 function getQuerystringValues() {
   var qsParm = [];
@@ -455,24 +390,31 @@ function getQuerystringValues() {
 }
 
 function getFacetAutocompleteUrl(category, value) {
-  var searchString = getQuerystringValues();
-  var newUrl = '?search_term=';
-  var count = 0;
 
-  if (searchString.search_term) {
-    var searchTerms = searchString.search_term.split("*|*");
-    newUrl += searchTerms[0];
+  var searchString = new URLSearchParams(window.location.search);
+
+  // var searchString = getQuerystringValues();
+  var newUrl = '?search_term=';
+  var found = 0;
+
+  if (searchString.get('search_term')) {
+    var searchTerms = searchString.get('search_term').split("*|*");
+    // newUrl += searchTerms[0];
 
     for (var i = 1; i < searchTerms.length; i++) {
       var params = searchTerms[i].split('=');
       if (params[0] == category) {
-        count++;
-        params[1] = params[1] + '~' + value;
+        found++;
+        var terms = params[1].split('~');
+        terms.push(value);
+
+        searchTerms[i] = params[0]+'='+ terms.join('~');
       }
-      newUrl += "*|*" + params[0] + '=' + params[1];
     }
 
-    if (count == 0) {
+    newUrl += searchTerms.join('*|*');
+
+    if (!found) {
       newUrl += "*|*" + category + '=' + value;
     }
   } else {
