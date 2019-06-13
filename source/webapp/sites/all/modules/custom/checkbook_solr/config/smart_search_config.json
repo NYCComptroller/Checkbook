@@ -65,10 +65,6 @@
         "title": "Citywide Agency",
         "autocomplete": true
       },
-      "oge_agency_name": {
-        "title": "Other Government Entity",
-        "autocomplete": true
-      },
       "vendor_name": {
         "title": "Vendor",
         "autocomplete": true
@@ -137,14 +133,6 @@
       "revenue_category_name": {
         "title": "Revenue Category",
         "no_autoload": true
-      },
-      "agency_name": {
-        "title": "Citywide Agency",
-        "autocomplete": true
-      },
-      "oge_agency_name": {
-        "title": "Other Government Entity",
-        "autocomplete": true
       },
       "vendor_name": {
         "title": "Vendor",
