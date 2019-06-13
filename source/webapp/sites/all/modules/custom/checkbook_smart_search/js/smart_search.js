@@ -405,7 +405,10 @@ function getFacetAutocompleteUrl(category, value) {
       var params = searchTerms[i].split('=');
       if (params[0] == category) {
         found++;
-        searchTerms[i] = params[0]+'='+ params[1].split('~').push(value).join('~');
+        var terms = params[1].split('~');
+        terms.push(value);
+
+        searchTerms[i] = params[0]+'='+ terms.join('~');
       }
     }
 
