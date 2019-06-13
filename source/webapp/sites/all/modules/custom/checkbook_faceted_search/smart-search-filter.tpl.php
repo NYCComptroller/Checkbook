@@ -67,7 +67,7 @@ foreach ($facets_render??[] as $facet_name => $facet) {
     echo '    <div class="facet-content" style="display:'.$display_facet.'" ><div class="progress"></div>';
 
     if ($facet->autocomplete) {
-      $autocomplete_id = "autocomplete_" . $facet->input_name;
+      $autocomplete_id = "autocomplete_" . $facet_name;
       $disabled = '';
 
       echo '<div class="autocomplete"><input id="' . $autocomplete_id . '" ' . $disabled . ' type="text" class="solr_autocomplete" facet="'.$facet_name.'" /></div>';
@@ -96,7 +96,7 @@ foreach ($facets_render??[] as $facet_name => $facet) {
         $checked = $checked ? ' checked="checked" ' : '';
       }
 
-      echo '<input type="checkbox" id="'.$id.'" '.$checked . ' name="'.$facet->input_name.'" value="'.
+      echo '<input type="checkbox" id="'.$id.'" '.$checked . ' facet="'.$facet_name.'" value="'.
         htmlentities($facet_value).'" onClick="javascript:applySearchFilters();" />';
       echo '<label for="'.$id.'">';
       echo '</label>';

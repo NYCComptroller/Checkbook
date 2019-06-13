@@ -435,7 +435,7 @@ function _checkbook_autocomplete_datafeeds_nycha_contracts($solr_field, $purchas
                 . "&facet.field=" . $solr_field . $facetquery
                 . "&q.op=AND&rows=0&facet=true&facet.mincount=1&facet.limit=10&wt=phps";
         }
-        $matches = _checkbook_autocomplete_solr_results($solr_datasource, $query, $solr_field);
+        $matches = _checkbook_autocomplete_solr_results('nycha', $query, $solr_field);
         drupal_json_output($matches);
     }
 }
@@ -1444,6 +1444,9 @@ function _get_autocomplete_search_term_facet_prefix() {
  *   Facet results from Solr.
  */
 function _checkbook_autocomplete_solr_results($solr_datasource, $query, $facet = NULL) {
+  if (!$solr_datasource) {
+    LogHelper::log_error('$solr_datasource is empty');return [];
+  }
     $solr = new CheckbookSolr($solr_datasource);
     $results = $solr->request_phps($query);
 

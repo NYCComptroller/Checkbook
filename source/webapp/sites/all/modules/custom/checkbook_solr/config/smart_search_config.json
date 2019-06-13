@@ -32,7 +32,6 @@
     "citywide": {
       "domain": {
         "title": "Type of Data",
-        "input_name": "fdomainName",
         "sub": {
           "contracts": [
             "contract_category_name",
@@ -48,79 +47,64 @@
       },
       "contract_category_name": {
         "title": "Contract Category",
-        "input_name": "fcontractCatName",
         "no_autoload": true
       },
       "contract_status": {
         "title": "Contract Status",
-        "input_name": "fcontractStatus",
         "no_autoload": true
       },
       "spending_category_name": {
         "title": "Spending Category",
-        "input_name": "fspendingCatName",
         "no_autoload": true
       },
       "revenue_category_name": {
         "title": "Revenue Category",
-        "input_name": "frevenueCategoryName",
         "no_autoload": true
       },
       "agency_name": {
         "title": "Citywide Agency",
-        "input_name": "fagencyName",
-        "autocomplete": true
-      },
-      "oge_agency_name": {
-        "title": "Other Government Entity",
-        "input_name": "fogeName",
         "autocomplete": true
       },
       "vendor_name": {
         "title": "Vendor",
-        "input_name": "fvendorName",
         "autocomplete": true
       },
       "vendor_type": {
         "title": "Vendor Type",
-        "input_name": "fvendorType",
         "prepare_results": "ckbk_vendor_type_prepare_results"
       },
       "payroll_type": {
-        "title": "Payroll Type",
-        "input_name": "fpayrollTypeName"
+        "title": "Payroll Type"
       },
       "expenditure_object_name": {
         "title": "Expense Category",
-        "input_name": "fexpenseCategoryName",
         "autocomplete": true
       },
       "fiscal_year": {
         "title": "Fiscal Year",
-        "input_name": "fyear",
         "autocomplete": true,
         "no_autoload": true
       },
       "registered_fiscal_year": {
         "title": "Fiscal Year",
-        "input_name": "regfyear",
         "autocomplete": true,
         "no_autoload": true
       },
       "minority_type_name": {
-        "title": "M/WBE Category",
-        "input_name": "fmwbeCategory"
+        "title": "M/WBE Category"
       },
       "industry_type_name": {
         "title": "Industry",
-        "input_name": "findustryTypeName",
+        "autocomplete": true
+      },
+      "contract_number": {
+        "title": "Contract ID",
         "autocomplete": true
       }
     },
     "edc": {
       "domain": {
         "title": "Type of Data",
-        "input_name": "fdomainName",
         "sub": {
           "contracts": [
             "contract_category_name",
@@ -136,65 +120,49 @@
       },
       "contract_category_name": {
         "title": "Contract Category",
-        "input_name": "fcontractCatName",
         "no_autoload": true
       },
       "contract_status": {
         "title": "Contract Status",
-        "input_name": "fcontractStatus",
         "no_autoload": true
       },
       "spending_category_name": {
         "title": "Spending Category",
-        "input_name": "fspendingCatName",
         "no_autoload": true
       },
       "revenue_category_name": {
         "title": "Revenue Category",
-        "input_name": "frevenueCategoryName",
         "no_autoload": true
-      },
-      "agency_name": {
-        "title": "Citywide Agency",
-        "input_name": "fagencyName",
-        "autocomplete": true
-      },
-      "oge_agency_name": {
-        "title": "Other Government Entity",
-        "input_name": "fogeName",
-        "autocomplete": true
       },
       "vendor_name": {
         "title": "Vendor",
-        "input_name": "fvendorName",
         "autocomplete": true
       },
       "expenditure_object_name": {
         "title": "Expense Category",
-        "input_name": "fexpenseCategoryName",
         "autocomplete": true
       },
       "fiscal_year": {
         "title": "Fiscal Year",
-        "input_name": "fyear",
         "autocomplete": true,
         "no_autoload": true
       },
       "registered_fiscal_year": {
         "title": "Fiscal Year",
-        "input_name": "regfyear",
         "autocomplete": true,
         "no_autoload": true
+      },
+      "contract_number": {
+        "title": "Contract ID",
+        "autocomplete": true
       }
     },
     "nycha": {
       "domain": {
         "title": "Type of Data",
-        "input_name": "fdomainName",
         "sub": {
           "contracts": [
-            "contract_category_name",
-            "contract_status"
+            "agreement_type_name"
           ],
           "spending": [
             "spending_category_name"
@@ -204,49 +172,52 @@
           ]
         }
       },
-      "contract_category_name": {
-        "title": "Contract Category",
-        "input_name": "fcontractCatName",
-        "no_autoload": true
-      },
-      "contract_status": {
-        "title": "Contract Status",
-        "input_name": "fcontractStatus",
+      "agreement_type_name": {
+        "title": "Agreement Type",
         "no_autoload": true
       },
       "spending_category_name": {
         "title": "Spending Category",
-        "input_name": "fspendingCatName",
         "no_autoload": true
       },
       "revenue_category_name": {
         "title": "Revenue Category",
-        "input_name": "frevenueCategoryName",
         "no_autoload": true
-      },
-      "agency_name": {
-        "title": "Citywide Agency",
-        "input_name": "fagencyName",
-        "autocomplete": true
       },
       "vendor_name": {
         "title": "Vendor",
-        "input_name": "fvendorName",
         "autocomplete": true
       },
       "payroll_type": {
-        "title": "Payroll Type",
-        "input_name": "fpayrollTypeName"
+        "title": "Payroll Type"
       },
       "fiscal_year": {
         "title": "Fiscal Year",
-        "input_name": "fyear",
         "autocomplete": true,
         "no_autoload": true
       },
       "industry_type_name": {
         "title": "Industry",
-        "input_name": "findustryTypeName",
+        "autocomplete": true
+      },
+      "responsibility_center_name": {
+        "title": "Responsibility Center",
+        "autocomplete": true
+      },
+      "funding_source_name": {
+        "title": "Funding Source",
+        "autocomplete": true
+      },
+      "grant_number": {
+        "title": "Grant Number",
+        "autocomplete": true
+      },
+      "grant_status": {
+        "title": "Grant Status",
+        "autocomplete": true
+      },
+      "contract_number": {
+        "title": "Contract ID",
         "autocomplete": true
       }
     }

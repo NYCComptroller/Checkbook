@@ -21,7 +21,7 @@
 $searchTerms = explode('*|*', $_REQUEST['search_term']);
 $filterCriteria = NULL;
 $theme_path =  drupal_get_path('theme',$GLOBALS['theme']);
-$clear_icon = $theme_path."/images/filter-close-icon.png";
+$clear_icon = '/'.$theme_path."/images/filter-close-icon.png";
 
 //arrays for the selected facet values from the URL
 for($i=1;$i < count($searchTerms);$i++){
@@ -86,7 +86,7 @@ for($i=1;$i < count($searchTerms);$i++){
         foreach($reqSpendingCategories as $key=>$value){
           $clearUrl = _checkbook_smart_search_clear_url($filters[0],$value,count($reqSpendingCategories));
           $filterCriteria .= "<li><span class='search-terms'>Spending Category: <strong>". $value ."</strong></span><a class='clear-filter' href='".$clearUrl."'>
-                                <img src='".$theme_path."/filter-close-icon.png'></a></li>";
+                                <img src='/".$theme_path."/filter-close-icon.png'></a></li>";
         }
       }
       break;
@@ -126,7 +126,7 @@ if($searchTerm != ""){
     print "<div class='search-filters'><span id='filter-header'> Filters: </span><ul>";
     print "<li><span class='search-terms'>Search Term: <strong>". htmlentities($searchTerm) ."</strong></span><a class='clear-filter' href='". $clearUrl ."'>
             <img src='".$clear_icon."'></a></li>";
-    print "<li class='clear-all'><a class='clear-all' href='/smart_search'><strong>Clear All</strong></a></li>";
+    print "<li class='clear-all'><a class='clear-all' href='/smart_search/{$solr_datasource}'><strong>Clear All</strong></a></li>";
     print "</ul></div>";
 }
 

@@ -16,11 +16,11 @@ class CheckbookSolrQueryTest extends \PHPUnit\Framework\TestCase
         $searchTerms = 'rei';
         $query = new CheckbookSolrQuery($searchTerms, 999, 7);
         $start = 999 * 7;
-        $this->assertEquals('q=rei&start=' . $start . '&rows=999&wt=phps', $query->buildQuery());
+        $this->assertEquals('q=text:rei*&start=' . $start . '&rows=999&wt=phps', $query->buildQuery());
 
         $searchTerms = 'rei*|*vendor_names=rei%2Bsystems%252C%2Binc.';
         $query = new CheckbookSolrQuery($searchTerms, 9);
-        $this->assertEquals('q=rei&fq=vendor_name:"rei%5C%2Bsystems%252c%5C%2Binc."&start=0&rows=9&wt=phps',
+        $this->assertEquals('q=text:rei*&fq=vendor_name:"rei%5C%2Bsystems%252c%5C%2Binc."&start=0&rows=9&wt=phps',
             $query->buildQuery());
     }
 
