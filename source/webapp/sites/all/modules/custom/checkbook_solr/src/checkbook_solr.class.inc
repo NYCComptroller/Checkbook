@@ -137,6 +137,7 @@ class CheckbookSolr
       $contents = file_get_contents($url);
     } catch (Exception $ex) {
       LogHelper::log_warn("Solr error: " . $ex->getMessage());
+//      drupal_set_message("Solr error: " . $ex->getMessage());
       $contents = '';
     }
     $result = utf8_encode($contents);
