@@ -58,7 +58,9 @@ foreach ($facets_render??[] as $facet_name => $facet) {
     $span='';
     $display_facet = 'none';
 
-    if ($facet->selected) {
+  $just_one_result = (1 === sizeof($facet->results));
+
+    if ($just_one_result||$facet->selected) {
       $span = 'open';
       $display_facet = 'block';
     }
@@ -67,7 +69,7 @@ foreach ($facets_render??[] as $facet_name => $facet) {
     echo '  <div class="filter-title"><span class="'.$span.'">By ' . htmlentities($facet->title) . '</span></div>';
     echo '    <div class="facet-content" style="display:'.$display_facet.'" ><div class="progress"></div>';
 
-    if ($facet->autocomplete) {
+    if ($facet->autocomplete && sizeof($facet->results)>9) {
       $autocomplete_id = "autocomplete_" . $facet_name;
       $disabled = '';
 
@@ -91,9 +93,9 @@ foreach ($facets_render??[] as $facet_name => $facet) {
       echo '<div class="checkbox">';
 
       $checked = '';
-      if ($facet->selected) {
+      if ($facet->selected||$just_one_result) {
         $checked = in_array($facet_value, $facet->selected);
-        $checked = $checked ? ' checked="checked" ' : '';
+        $checked = $checked||$just_one_result ? ' checked="checked" ' : '';
       }
       echo '<input type="checkbox" id="'.$id.'" '.$checked . ' facet="'.$facet_name.'" value="'.
         htmlentities($facet_value).'" onClick="javascript:applySearchFilters();" />';
@@ -104,19 +106,25 @@ foreach ($facets_render??[] as $facet_name => $facet) {
       echo '<div class="name">' . htmlentities($facet_result_title) . '</div>';
       echo '<div class="number"><span' . $active . '>' . number_format($count) . '</span></div>';
 
-      if ($checked && ($children = $facet->sub->$facet_value??false)){
+      if (($checked||$just_one_result) && ($children = $facet->sub->$facet_value??false)){
         $sub_index=0;
         foreach($children as $child){
           $sub_facet = $facets_render[$child];
+          if (!$sub_facet) {
+            continue;
+          }
+
+          $sub_facet_name = $child;
           echo '<div class="sub-category">';
           echo '<div class="subcat-filter-title">By '.htmlentities($sub_facet->title).'</div>';
           foreach($sub_facet->results as $sub_facet_value => $sub_count){
+
             $facet_result_title = $sub_facet_value;
             if (is_array($sub_count)) {
               list($facet_result_title, $sub_count) = $sub_count;
             }
 
-            $id = 'facet_'.$facet_value.$sub_index;
+            $id = 'facet_'.$sub_facet_name.$sub_index;
             $active='';
             echo '<div class="row">';
             echo '<div class="checkbox">';
@@ -126,7 +134,7 @@ foreach ($facets_render??[] as $facet_name => $facet) {
               $checked = in_array($sub_facet_value, $sub_facet->selected);
               $checked = $checked ? ' checked="checked" ' : '';
             }
-            echo '<input type="checkbox" id="'.$id.'" '.$checked . ' facet="'.$facet_name.'" value="'.
+            echo '<input type="checkbox" id="'.$id.'" '.$checked . ' facet="'.$sub_facet_name.'" value="'.
               htmlentities($sub_facet_value).'" onClick="javascript:applySearchFilters();" />';
             echo '<label for="'.$id.'"></label>';
             echo '</div>';
