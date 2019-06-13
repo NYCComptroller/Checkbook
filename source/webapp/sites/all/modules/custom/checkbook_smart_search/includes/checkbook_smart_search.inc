@@ -64,7 +64,7 @@ function _checkbook_smart_search_load_unchecked_facets(string $solr_datasource, 
     ->excludeFqTermValues($facet);
   $facet_results = $solr->request_phps('select/?'.$facet_query->buildQuery());
 
-  return $facet_results['facet_counts']['facet_fields'][$facet];
+  return $facet_results['facet_counts']['facet_fields'][$facet] ?? [];
 }
 
 /**
@@ -136,7 +136,7 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
   $solr = CheckbookSolr::getInstance($solr_datasource);
   $search_results = $solr->request_phps('select/?'.$solr_query->buildQuery());
 
-  $vendor_number = count($search_results['facet_counts']['facet_fields']['vendor_name']);
+  $vendor_number = count($search_results['facet_counts']['facet_fields']['vendor_name']??[]);
   $vendor_pages = floor($vendor_number / 100);
   drupal_add_js(array('checkbook_smart_search' => array('vendor_pages' => $vendor_pages)), 'setting');
 

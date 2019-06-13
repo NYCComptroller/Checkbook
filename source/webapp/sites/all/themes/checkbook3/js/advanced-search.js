@@ -708,11 +708,6 @@
             }
           });
 
-          // var search_term = new URLSearchParams();
-          // search_term.set('search_term', '*|*');
-
-          // http://checkbook.local/solr_autocomplete/nycha/vendor_name/?search_term=*|*&fq=agreement_type_code:PO&fq=responsibility_center:1657&fq=contract_type_id:0&fq=award_method_id:0&fq=industry_type_id:0&fq=agency_id:162&term=rich
-
           var search_term = '/?search_term=' + fq;
 
           return url+solr_datasource+'/'+facet+search_term;

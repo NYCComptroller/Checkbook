@@ -77,7 +77,7 @@ class CheckbookSolrQuery
   /**
    * @var int
    */
-  private $facetLimit = -1;
+  private $facetLimit = 30;
 
   /**
    * @return string
