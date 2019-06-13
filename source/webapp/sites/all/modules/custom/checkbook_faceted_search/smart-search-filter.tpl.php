@@ -96,7 +96,7 @@ foreach ($facets_render??[] as $facet_name => $facet) {
         $checked = $checked ? ' checked="checked" ' : '';
       }
 
-      echo '<input type="checkbox" id="'.$id.'" '.$checked . ' name="'.$facet->input_name.'" value="'.
+      echo '<input type="checkbox" id="'.$id.'" '.$checked . ' facet="'.$facet_name.'" name="'.$facet->input_name.'" value="'.
         htmlentities($facet_value).'" onClick="javascript:applySearchFilters();" />';
       echo '<label for="'.$id.'">';
       echo '</label>';
