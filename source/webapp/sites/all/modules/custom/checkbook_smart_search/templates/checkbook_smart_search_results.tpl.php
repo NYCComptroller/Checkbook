@@ -86,7 +86,7 @@ for($i=1;$i < count($searchTerms);$i++){
         foreach($reqSpendingCategories as $key=>$value){
           $clearUrl = _checkbook_smart_search_clear_url($filters[0],$value,count($reqSpendingCategories));
           $filterCriteria .= "<li><span class='search-terms'>Spending Category: <strong>". $value ."</strong></span><a class='clear-filter' href='".$clearUrl."'>
-                                <img src='".$theme_path."/filter-close-icon.png'></a></li>";
+                                <img src='/".$theme_path."/filter-close-icon.png'></a></li>";
         }
       }
       break;
