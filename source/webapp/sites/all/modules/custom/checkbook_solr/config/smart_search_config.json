@@ -47,19 +47,23 @@
       },
       "contract_category_name": {
         "title": "Contract Category",
-        "no_autoload": true
+        "no_autoload": true,
+        "child": true
       },
       "contract_status": {
         "title": "Contract Status",
-        "no_autoload": true
+        "no_autoload": true,
+        "child": true
       },
       "spending_category_name": {
         "title": "Spending Category",
-        "no_autoload": true
+        "no_autoload": true,
+        "child": true
       },
       "revenue_category_name": {
         "title": "Revenue Category",
-        "no_autoload": true
+        "no_autoload": true,
+        "child": true
       },
       "agency_name": {
         "title": "Citywide Agency",
@@ -120,19 +124,23 @@
       },
       "contract_category_name": {
         "title": "Contract Category",
-        "no_autoload": true
+        "no_autoload": true,
+        "child": true
       },
       "contract_status": {
         "title": "Contract Status",
-        "no_autoload": true
+        "no_autoload": true,
+        "child": true
       },
       "spending_category_name": {
         "title": "Spending Category",
-        "no_autoload": true
+        "no_autoload": true,
+        "child": true
       },
       "revenue_category_name": {
         "title": "Revenue Category",
-        "no_autoload": true
+        "no_autoload": true,
+        "child": true
       },
       "vendor_name": {
         "title": "Vendor",
@@ -174,15 +182,18 @@
       },
       "agreement_type_name": {
         "title": "Agreement Type",
-        "no_autoload": true
+        "no_autoload": true,
+        "child": true
       },
       "spending_category_name": {
         "title": "Spending Category",
-        "no_autoload": true
+        "no_autoload": true,
+        "child": true
       },
       "revenue_category_name": {
         "title": "Revenue Category",
-        "no_autoload": true
+        "no_autoload": true,
+        "child": true
       },
       "vendor_name": {
         "title": "Vendor",

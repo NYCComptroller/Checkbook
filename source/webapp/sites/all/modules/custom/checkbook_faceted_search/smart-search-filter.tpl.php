@@ -50,9 +50,10 @@
 <?php
 foreach ($facets_render??[] as $facet_name => $facet) {
 
-  /**
-   * @TODO: implement multilevel facets
-   */
+  // skipping children (sub facets)
+  if ($facet->child??false){
+    continue;
+  }
 
     $span='';
     $display_facet = 'none';
@@ -81,7 +82,6 @@ foreach ($facets_render??[] as $facet_name => $facet) {
 
       $facet_result_title = $facet_value;
       if (is_array($count)) {
-        // vendor_type prepare_results()
         list($facet_result_title, $count) = $count;
       }
 
@@ -95,7 +95,6 @@ foreach ($facets_render??[] as $facet_name => $facet) {
         $checked = in_array($facet_value, $facet->selected);
         $checked = $checked ? ' checked="checked" ' : '';
       }
-
       echo '<input type="checkbox" id="'.$id.'" '.$checked . ' facet="'.$facet_name.'" value="'.
         htmlentities($facet_value).'" onClick="javascript:applySearchFilters();" />';
       echo '<label for="'.$id.'">';
@@ -104,6 +103,61 @@ foreach ($facets_render??[] as $facet_name => $facet) {
 
       echo '<div class="name">' . htmlentities($facet_result_title) . '</div>';
       echo '<div class="number"><span' . $active . '>' . number_format($count) . '</span></div>';
+
+      if ($checked && ($children = $facet->sub->$facet_value??false)){
+        $sub_index=0;
+        foreach($children as $child){
+          $sub_facet = $facets_render[$child];
+          echo '<div class="sub-category">';
+          echo '<div class="subcat-filter-title">By '.htmlentities($sub_facet->title).'</div>';
+          foreach($sub_facet->results as $sub_facet_value => $sub_count){
+            $facet_result_title = $sub_facet_value;
+            if (is_array($sub_count)) {
+              list($facet_result_title, $sub_count) = $sub_count;
+            }
+
+            $id = 'facet_'.$facet_value.$sub_index;
+            $active='';
+            echo '<div class="row">';
+            echo '<div class="checkbox">';
+
+            $checked = '';
+            if ($sub_facet->selected) {
+              $checked = in_array($sub_facet_value, $sub_facet->selected);
+              $checked = $checked ? ' checked="checked" ' : '';
+            }
+            echo '<input type="checkbox" id="'.$id.'" '.$checked . ' facet="'.$facet_name.'" value="'.
+              htmlentities($sub_facet_value).'" onClick="javascript:applySearchFilters();" />';
+            echo '<label for="'.$id.'"></label>';
+            echo '</div>';
+
+            echo '<div class="name">' . htmlentities($facet_result_title) . '</div>';
+            echo '<div class="number"><span' . $active . '>' . number_format($sub_count) . '</span></div>';
+
+            echo '</div>';
+          }
+          $sub_index++;
+          echo '</div>';
+        }
+      }
+
+//      <div class="sub-category">
+//        <div class="subcat-filter-title">By Category</div>
+//        <div class="progress"></div>
+//        <div class="options">
+//            <div class="rows">
+//                <div class="row">
+//                    <div class="checkbox"><input id="Type_of_DataCategory00_checked" name="fcontractCatName"
+//                                                 type="checkbox" value="expense"
+//                                                 onclick="javascript:applySearchFilters();"><label
+//                            for="Type_of_DataCategory00_checked"></label></div>
+//                    <div class="name"><label for="Type_of_DataCategory00_checked">expense</label></div>
+//                    <div class="number"><span><label for="Type_of_DataCategory00_checked">712</label></span></div>
+//                </div>
+//            </div>
+//        </div>
+//    </div>
+
       echo '</div>';
       $index++;
     }
