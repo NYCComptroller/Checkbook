@@ -101,9 +101,7 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
   $selected_facets = $solr_query->getSelectedFacets();
 
   foreach($datasource_facets as $facet_name => $facet) {
-    if (!$facet->no_autoload) {
-      $solr_query->addFacet($facet_name);
-    }
+    $solr_query->addFacet($facet_name);
     if ($facet->sub && in_array($facet_name, array_keys($selected_facets))) {
       foreach($selected_facets[$facet_name] as $facet_value) {
         if ($domain_facets = $facet->sub->$facet_value ?? false) {
