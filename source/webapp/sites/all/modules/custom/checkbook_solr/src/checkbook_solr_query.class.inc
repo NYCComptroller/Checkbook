@@ -93,7 +93,7 @@ class CheckbookSolrQuery
    * @param int $rows
    * @param int $page
    */
-  public function __construct(string $searchTerms='', int $rows=0, int $page=0)
+  public function __construct($searchTerms='', int $rows=0, int $page=0)
   {
     $this->paramMapping = (array)CheckbookSolr::getParamMapping();
     $this->autocompleteMapping = (array)CheckbookSolr::getAutocompleteMapping();
