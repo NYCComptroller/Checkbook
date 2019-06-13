@@ -193,7 +193,7 @@
         "input_name": "fdomainName",
         "sub": {
           "contracts": [
-            "agreement_type_code"
+            "agreement_type_name"
           ],
           "spending": [
             "spending_category_name"
@@ -203,9 +203,9 @@
           ]
         }
       },
-      "agreement_type_code": {
+      "agreement_type_name": {
         "title": "Agreement Type",
-        "input_name": "agreementTypeCode",
+        "input_name": "agreementTypeBane",
         "no_autoload": true
       },
       "spending_category_name": {
@@ -217,11 +217,6 @@
         "title": "Revenue Category",
         "input_name": "frevenueCategoryName",
         "no_autoload": true
-      },
-      "agency_name": {
-        "title": "Citywide Agency",
-        "input_name": "fagencyName",
-        "autocomplete": true
       },
       "vendor_name": {
         "title": "Vendor",
@@ -241,6 +236,26 @@
       "industry_type_name": {
         "title": "Industry",
         "input_name": "findustryTypeName",
+        "autocomplete": true
+      },
+      "responsibility_center_name": {
+        "title": "Responsibility Center",
+        "input_name": "respCenterName",
+        "autocomplete": true
+      },
+      "funding_source_name": {
+        "title": "Funding Source",
+        "input_name": "fundSrcName",
+        "autocomplete": true
+      },
+      "grant_number": {
+        "title": "Grant Number",
+        "input_name": "grantNumber",
+        "autocomplete": true
+      },
+      "grant_status": {
+        "title": "Grant Status",
+        "input_name": "grantStatus",
         "autocomplete": true
       }
     }
