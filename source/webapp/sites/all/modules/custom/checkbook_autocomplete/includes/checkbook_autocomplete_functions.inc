@@ -1447,7 +1447,7 @@ function _checkbook_autocomplete_solr_results($solr_datasource, $query, $facet =
   if (!$solr_datasource) {
     LogHelper::log_error('$solr_datasource is empty');return [];
   }
-  $solr = new CheckbookSolr($solr_datasource);
+    $solr = new CheckbookSolr($solr_datasource);
     $results = $solr->request_phps($query);
 
     if ($results['response']['numFound'] != 0) {

@@ -193,8 +193,7 @@
         "input_name": "fdomainName",
         "sub": {
           "contracts": [
-            "contract_category_name",
-            "contract_status"
+            "agreement_type_code"
           ],
           "spending": [
             "spending_category_name"
@@ -204,14 +203,9 @@
           ]
         }
       },
-      "contract_category_name": {
-        "title": "Contract Category",
-        "input_name": "fcontractCatName",
-        "no_autoload": true
-      },
-      "contract_status": {
-        "title": "Contract Status",
-        "input_name": "fcontractStatus",
+      "agreement_type_code": {
+        "title": "Agreement Type",
+        "input_name": "agreementTypeCode",
         "no_autoload": true
       },
       "spending_category_name": {
