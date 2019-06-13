@@ -124,33 +124,50 @@ function checkbook_smart_search_form($form, $form_state)
 {
   $solr_datasource = _checkbook_get_datasource();
   module_load_include('inc', 'checkbook_smart_search', 'includes/checkbook_smart_search');
-  $form['search_box'] = array(
+  $form['search_box'] = [
     '#type' => 'textfield',
     '#size' => 30,
     '#maxlength' => 100,
-  );
+  ];
   $form['domain'] = [
     '#type' => 'hidden',
     '#value' => $solr_datasource,
   ];
-  $form['submit'] = array(
+  $form['submit'] = [
     '#type' => 'submit',
     '#value' => t('Search'),
-    '#submit' => array('_checkbook_smart_search_submit')
-  );
-  $form['#attached'] = array(
-    'library' => array(
-      array('system', 'ui.autocomplete', FALSE)
-    ),
-    'js' => array(
+    '#submit' => ['_checkbook_smart_search_submit']
+  ];
+  $form['#attached'] = [
+    'library' => [
+      ['system', 'ui.autocomplete', FALSE]
+    ],
+    'js' => [
       'type' => 'file',
       'data' => drupal_get_path('module', 'checkbook_smart_search') . '/js/smart_search.js'
-    )
-  );
+    ]
+  ];
 
   drupal_add_js(['solr_datasource' => $solr_datasource], 'setting');
 
   return $form;
+}
+
+function checkbook_smart_search_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'checkbook_smart_search_form') {
+    $solr_datasource = _checkbook_get_datasource();
+    switch ($solr_datasource){
+      case 'edc':
+        $placeholder = 'Search New York City Economic Development Corporation...';
+        break;
+      case 'nycha':
+        $placeholder = 'Search New York City Housing Authority...';
+        break;
+      default:
+        $placeholder = 'Search New York City information...';
+    }
+    $form['search_box']['#attributes']['placeholder'] = $placeholder;
+  }
 }
 
 
