@@ -115,6 +115,11 @@
         "title": "Industry",
         "input_name": "findustryTypeName",
         "autocomplete": true
+      },
+      "contract_number": {
+        "title": "Contract ID",
+        "input_name": "contractId",
+        "autocomplete": true
       }
     },
     "edc": {
@@ -185,6 +190,11 @@
         "input_name": "regfyear",
         "autocomplete": true,
         "no_autoload": true
+      },
+      "contract_number": {
+        "title": "Contract ID",
+        "input_name": "contractId",
+        "autocomplete": true
       }
     },
     "nycha": {
@@ -256,6 +266,11 @@
       "grant_status": {
         "title": "Grant Status",
         "input_name": "grantStatus",
+        "autocomplete": true
+      },
+      "contract_number": {
+        "title": "Contract ID",
+        "input_name": "contractId",
         "autocomplete": true
       }
     }
