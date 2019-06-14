@@ -565,7 +565,7 @@ function _get_contracts_advanced_search_autocomplete_results($facet, $query, $st
     if ($sub_vendor_status) {
         $query .= '&fq=aprv_sta:'.$sub_vendor_status;
     }
-    $matches = _checkbook_autocomplete_solr_results($solr_datasource, $query, $facet);
+    $matches = _checkbook_autocomplete_solr_results('citywide', $query, $facet);
     return $matches;
 }
 
