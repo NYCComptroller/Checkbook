@@ -2,7 +2,7 @@
 /**
  * This file is part of the Checkbook NYC financial transparency software.
  *
- * Copyright (C) 2012, 2013 New York City
+ * Copyright (C) 2019 New York City
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -148,23 +148,6 @@ foreach ($facets_render??[] as $facet_name => $facet) {
           echo '</div>';
         }
       }
-
-//      <div class="sub-category">
-//        <div class="subcat-filter-title">By Category</div>
-//        <div class="progress"></div>
-//        <div class="options">
-//            <div class="rows">
-//                <div class="row">
-//                    <div class="checkbox"><input id="Type_of_DataCategory00_checked" name="fcontractCatName"
-//                                                 type="checkbox" value="expense"
-//                                                 onclick="javascript:applySearchFilters();"><label
-//                            for="Type_of_DataCategory00_checked"></label></div>
-//                    <div class="name"><label for="Type_of_DataCategory00_checked">expense</label></div>
-//                    <div class="number"><span><label for="Type_of_DataCategory00_checked">712</label></span></div>
-//                </div>
-//            </div>
-//        </div>
-//    </div>
 
       echo '</div>';
       $index++;

@@ -50,6 +50,12 @@ function checkbook_smart_search_menu(){
       'file' => 'includes/checkbook_smart_search.inc',
       'type' => MENU_CALLBACK
     );
+    $items['advanced_autocomplete'] = array(
+      'page callback' => '_checkbook_advanced_search_autocomplete',
+      'access callback' => TRUE,
+      'file' => 'includes/checkbook_smart_search.inc',
+      'type' => MENU_CALLBACK
+    );
 
     $items['smart_search/facet/vendor'] = array(
         'page callback' => '_checkbook_smart_search_vendor_facet',

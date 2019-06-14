@@ -352,8 +352,9 @@ function _checkbook_smart_search_autocomplete_main_input($domain = 'citywide')
 /**
  * @param string $solr_datasource
  * @param string $facet
+ * @return array
  */
-function _checkbook_smart_search_autocomplete(string $solr_datasource, string $facet)
+function _checkbook_autocomplete(string $solr_datasource, string $facet): array
 {
   $solr_query = new CheckbookSolrQuery($_REQUEST['search_term'] ?? '');
 
@@ -366,12 +367,36 @@ function _checkbook_smart_search_autocomplete(string $solr_datasource, string $f
     $facet_results = array_shift($results['facet_counts']['facet_fields']);
     $matches = [];
     foreach (array_keys($facet_results) as $key) {
-      array_push($matches, ["url" => "", "category" => $facet, "label" => $key, "value" => urlencode($key)]);
+      array_push($matches, ["url" => "", "category" => $facet, "label" => $key, "value" => $key]);
     }
 
-    return drupal_json_output($matches);
+    return $matches;
   }
-  return drupal_json_output([['label' => 'No Matches Found', 'value' => 'No Matches Found']]);
+  return [['label' => 'No Matches Found', 'value' => '']];
+}
+
+/**
+ * @param string $solr_datasource
+ * @param string $facet
+ */
+function _checkbook_smart_search_autocomplete(string $solr_datasource, string $facet)
+{
+  $data = _checkbook_autocomplete($solr_datasource, $facet);
+  foreach($data as &$line) {
+    $line['value'] = urlencode($line['value']);
+  }
+  drupal_json_output($data);
+}
+
+/**
+ * @param string $solr_datasource
+ * @param string $facet
+ */
+function _checkbook_advanced_search_autocomplete(string $solr_datasource, string $facet)
+{
+  $data = _checkbook_autocomplete($solr_datasource, $facet);
+  drupal_json_output($data);
+
 }
 
 /**

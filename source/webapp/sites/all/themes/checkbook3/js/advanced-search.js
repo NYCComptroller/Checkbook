@@ -690,14 +690,14 @@
 
         function extractId(param)
         {
-          if (param.indexOf('id=>') > -1){
+          if (param && (param.indexOf('id=>') > -1)){
             return param.split('~')[0].split('=>')[1];
           }
           return param;
         }
 
         function autoCompleteSource(solr_datasource, facet, filters) {
-          var url = '/solr_autocomplete/';
+          var url = '/advanced_autocomplete/';
 
           var fq = '';
 
@@ -714,74 +714,62 @@
         }
 
         function autoCompletes(div) {
-          var status = div.ele('status').val() || 0;
-          var category = div.ele('category').val() ? div.ele('category').val() : 0;
-          var mwbe_category = div.ele('mwbe_category').val() || 0;
-          var industry = div.ele('industry').val() || 0;
-          var contract_type = div.ele('contract_type').val() || 0;
+          var contract_status = div.ele('status').val() || 0;
+          var contract_category_name = div.ele('category').val() ? div.ele('category').val() : 0;
+          var minority_type_id = div.ele('mwbe_category').val() || 0;
+          var industry_type_id = div.ele('industry').val() || 0;
+          var agreement_type_id = div.ele('contract_type').val() || 0;
           var agency_id = div.ele('agency').val() || 0;
-          var award_method = div.ele('award_method').val() || 0;
+          var award_method_id = div.ele('award_method').val() || 0;
           var year = div.ele('year').val() || 0;
-          var includes_sub_vendors = div.ele('includes_sub_vendors').val() || 0;
-          var sub_vendor_status = div.ele('sub_vendor_status').val() || 0;
+          var scntrc_status = div.ele('includes_sub_vendors').val() || 0;
+          var aprv_sta = div.ele('sub_vendor_status').val() || 0;
           var data_source = $('input:radio[name=contracts_advanced_search_domain_filter]:checked').val();
+          var solr_datasource = data_source;
 
-          if($("#edit-checkbook-oge-contracts-agency option:selected").attr('title').toUpperCase() == 'NEW YORK CITY HOUSING AUTHORITY' && data_source == 'checkbook_oge'){
-            var agreement_type_code = $('#edit-checkbook-oge-contracts-purchase-order-type').val() || 0;
-            var responsibility_center = $('#edit-checkbook-oge-contracts-responsibility-center').val() || 0;
-            var contract_type_id = $('#edit-checkbook-oge-contracts-nycha-contract-type').val() || 0;
-            var award_method_id = $('#edit-checkbook-oge-contracts-nycha-award-method').val() || 0;
-            var industry_type_id = $('#edit-checkbook-oge-contracts-nycha-industry').val() || 0;
+          if (('checkbook_oge' == data_source) && (162 == $("#edit-checkbook-oge-contracts-agency option:selected").val())){
+            solr_datasource = 'nycha';
+          }
 
-            div.ele('vendor_name').autocomplete({
-              // source: '/advanced-search/autocomplete/nycha_contracts/vendor_name/' + purchase_order + '/' + responsibility_center + '/' + contract_type + '/' + award_method + '/' + industry + '/' + agency + '/' + year,
-              source: autoCompleteSource('nycha','vendor_name',{
-                agreement_type_code: agreement_type_code,
-                responsibility_center: responsibility_center,
-                contract_type_id: contract_type_id,
-                award_method_id: award_method_id,
-                industry_type_id: industry_type_id,
-                agency_id: agency_id
-              }),
-              select: function (event, ui) {
-                $(this).parent().next().val(ui.item.label);
-              }
-            });
+          if('nycha' == solr_datasource){
+            var agreement_type_code_nycha = $('#edit-checkbook-oge-contracts-purchase-order-type').val() || 0;
+            var responsibility_center_nycha = $('#edit-checkbook-oge-contracts-responsibility-center').val() || 0;
+            var contract_type_id_nycha = $('#edit-checkbook-oge-contracts-nycha-contract-type').val() || 0;
+            var award_method_id_nycha = $('#edit-checkbook-oge-contracts-nycha-award-method').val() || 0;
+            var industry_type_id_nycha = $('#edit-checkbook-oge-contracts-nycha-industry').val() || 0;
 
-            // select/?q=contract_number:(ba*)&facet.field=contract_number&fq=responsibility_center_id:2762&fq=contract_type_id:196&fq=award_method_id:4&fq=agency_id:162&(120:[*%20TO%20agreement_start_year_id]%20AND%20120:[agreement_end_year_id%20TO%20*])&q.op=AND&rows=0&facet=true&facet.mincount=1&facet.limit=10&wt=phps
-            div.ele('purchase_order_number').autocomplete({
+            var nycha_filters = {
+              agreement_type_code: agreement_type_code_nycha,
+              responsibility_center: responsibility_center_nycha,
+              contract_type_id: contract_type_id_nycha,
+              award_method_id: award_method_id_nycha,
+              industry_type_id: industry_type_id_nycha,
+              agency_id: agency_id
+            };
 
-              // source: '/advanced-search/autocomplete/nycha_contracts/contract_number/' + purchase_order + '/' + responsibility_center + '/' + contract_type + '/' + award_method + '/' + industry + '/' + agency + '/' + year,
-              source: '/solr_autocomplete/nycha/contract_number/?' + agreement_type_code + '/' + responsibility_center + '/' + contract_type_id + '/' + award_method_id + '/' + industry_type_id + '/' + agency_id + '/' + year,
-              select: function (event, ui) {
-                $(this).parent().next().val(ui.item.label);
-              }
-            });
-
-            div.ele('pin').autocomplete({
-              source: '/advanced-search/autocomplete/nycha_contracts/pin/' + agreement_type_code + '/' + responsibility_center + '/' + contract_type_id + '/' + award_method_id + '/' + industry_type_id + '/' + agency_id + '/' + year,
-              select: function (event, ui) {
-                $(this).parent().next().val(ui.item.label);
-              }
-            });
+            div.ele('vendor_name').autocomplete({source: autoCompleteSource(solr_datasource,'vendor_name', nycha_filters)});
+            div.ele('purchase_order_number').autocomplete({source: autoCompleteSource(solr_datasource,'contract_number', nycha_filters)});
+            div.ele('pin').autocomplete({source: autoCompleteSource(solr_datasource,'pin', nycha_filters)});
           }else {
-            div.ele('vendor_name').autocomplete({
-              source: '/advanced-search/autocomplete/contracts/vendor-name/' + status + '/' + category + '/' + contract_type + '/' + agency_id + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + data_source,
-              select: function (event, ui) {
-                $(this).parent().next().val(ui.item.label);
-              }
-            });
-            div.ele('contract_id').autocomplete({
-              source: '/advanced-search/autocomplete/contracts/contract-num/' + status + '/' + category + '/' + contract_type + '/' + agency_id + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + data_source,
-              select: function (event, ui) {
-                $(this).parent().next().val(ui.item.label);
-              }
-            });
-            div.ele('apt_pin').autocomplete({source: '/advanced-search/autocomplete/contracts/apt-pin/' + status + '/' + category + '/' + contract_type + '/' + agency_id + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + data_source});
-            div.ele('pin').autocomplete({source: '/advanced-search/autocomplete/contracts/pin/' + status + '/' + category + '/' + contract_type + '/' + agency_id + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + data_source});
-            div.ele('entity_contract_number').autocomplete({source: '/advanced-search/autocomplete/contracts/entity_contract_number/' + status + '/' + category + '/' + contract_type + '/' + agency_id + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + data_source});
-            div.ele('commodity_line').autocomplete({source: '/advanced-search/autocomplete/contracts/commodity_line/' + status + '/' + category + '/' + contract_type + '/' + agency_id + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + data_source});
-            div.ele('budget_name').autocomplete({source: '/advanced-search/autocomplete/contracts/budget_name/' + status + '/' + category + '/' + contract_type + '/' + agency_id + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + data_source});
+            var filters = {
+              contract_status: contract_status,
+              contract_category_name: contract_category_name,
+              agreement_type_id: agreement_type_id,
+              agency_id: agency_id,
+              award_method_id: award_method_id,
+              minority_type_id: minority_type_id,
+              industry_type_id: industry_type_id,
+              scntrc_status: scntrc_status,
+              aprv_sta: aprv_sta
+            };
+
+            div.ele('vendor_name').autocomplete({source: autoCompleteSource(solr_datasource,'vendor_name',filters)});
+            div.ele('contract_id').autocomplete({source: autoCompleteSource(solr_datasource,'contract_number',filters)});
+            div.ele('apt_pin').autocomplete({source: autoCompleteSource(solr_datasource,'apt_pin',filters)});
+            div.ele('pin').autocomplete({source: autoCompleteSource(solr_datasource,'pin',filters)});
+            div.ele('entity_contract_number').autocomplete({source: autoCompleteSource(solr_datasource,'contract_entity_contract_number',filters)});
+            div.ele('commodity_line').autocomplete({source: autoCompleteSource(solr_datasource,'contract_commodity_line',filters)});
+            div.ele('budget_name').autocomplete({source: autoCompleteSource(solr_datasource,'contract_budget_name',filters)});
           }
         }
 
