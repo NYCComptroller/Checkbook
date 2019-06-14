@@ -33,6 +33,5 @@ class CheckbookSolrTest extends \PHPUnit\Framework\TestCase
     {
         $facets = CheckbookSolr::getAutocompleteMapping();
         $this->assertEquals('agency_name_autocomplete', $facets->agency_name);
-
     }
 }
