@@ -18,7 +18,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-$revenue_parameter_mapping = _checkbook_smart_search_domain_fields('revenue');
+$revenue_parameter_mapping = CheckbookSolr::getSearchFields($solr_datasource, 'revenue');
 
 $linkable_fields = array("agency_name" => "/agency/". $revenue_results["agency_id"],);
 
