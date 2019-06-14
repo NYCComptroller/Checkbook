@@ -28,8 +28,7 @@
       }
     })
       .data("autocomplete")._renderMenu = function (ul, items) {
-      var self = this,
-        currentCategory = "";
+      var currentCategory = "";
       $.each(items, function (index, item) {
 
         if (item.value == 'No matches found') {
@@ -71,16 +70,12 @@
 
   Drupal.behaviors.exportSmartSearchTransactions = {
     attach: function (context, settings) {
-//                $('span.exportSmartSearch').unbind("click");
       $('span.exportSmartSearch').once('exportSmartSearch', function () {
         $('span.exportSmartSearch').live("click", function () {
 
           var dialog = $("#dialog");
           if ($("#dialog").length == 0) {
             dialog = $('<div id="dialog" style="display:none"></div>');
-            //                        console.log('new dialog.init');
-          } else {
-            //                      console.log('$("#dialog").length = '+$("#dialog").length);
           }
           var domains = '';
           $.each($('input[name=fdomainName]:checked'), function () {
@@ -273,7 +268,8 @@
         e.preventDefault();
       });
     }
-  }
+  };
+
 // Filter Results Paginations
   Drupal.behaviors.smartSearchResults = {
     attach: function (context, settings) {
@@ -306,9 +302,6 @@
     }
   };
 }(jQuery));
-
-
-
 
 /**
  *  Returns the selected filter parameters on the form
@@ -371,23 +364,23 @@ function applySearchFilters() {
   window.location = cUrl;
 }
 
-/**
- *  Returns the query string values from the current URL
- */
-function getQuerystringValues() {
-  var qsParm = [];
-  var query = window.location.search.substring(1);
-  var parms = query.split('&');
-  for (var i = 0; i < parms.length; i++) {
-    var pos = parms[i].indexOf('=');
-    if (pos > 0) {
-      var key = parms[i].substring(0, pos);
-      var val = parms[i].substring(pos + 1);
-      qsParm[key] = val;
-    }
-  }
-  return qsParm;
-}
+// /**
+//  *  Returns the query string values from the current URL
+//  */
+// function getQuerystringValues() {
+//   var qsParm = [];
+//   var query = window.location.search.substring(1);
+//   var parms = query.split('&');
+//   for (var i = 0; i < parms.length; i++) {
+//     var pos = parms[i].indexOf('=');
+//     if (pos > 0) {
+//       var key = parms[i].substring(0, pos);
+//       var val = parms[i].substring(pos + 1);
+//       qsParm[key] = val;
+//     }
+//   }
+//   return qsParm;
+// }
 
 function getFacetAutocompleteUrl(category, value) {
 
