@@ -18,7 +18,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-$payroll_parameter_mapping = _checkbook_smart_search_domain_fields('payroll', $IsOge);
+$payroll_parameter_mapping = CheckbookSolr::getSearchFields($solr_datasource, 'payroll');
 
 $agency_id = $payroll_results['agency_id'];
 $dept_id = $payroll_results['department_id'];
