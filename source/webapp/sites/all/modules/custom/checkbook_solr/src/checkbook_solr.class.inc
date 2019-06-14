@@ -43,6 +43,26 @@ class CheckbookSolr
   }
 
   /**
+   * @param string $solr_datasource
+   * @param string $domain
+   * @return mixed
+   */
+  public static function getSearchFields(string $solr_datasource,string $domain): object
+  {
+    return self::getSmartSearchConfig()->search_fields->$solr_datasource->$domain ?? new StdClass();
+  }
+
+  /**
+   * @param string $solr_datasource
+   * @param string $domain
+   * @return mixed
+   */
+  public static function getExportFields(string $solr_datasource,string $domain): object
+  {
+    return self::getSmartSearchConfig()->export_fields->$solr_datasource->$domain ?? new StdClass();
+  }
+
+  /**
    * @return mixed
    */
   public static function getAutocompleteMapping(): object

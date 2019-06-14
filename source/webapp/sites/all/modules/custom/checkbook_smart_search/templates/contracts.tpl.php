@@ -8,7 +8,7 @@
 
 
 
-$contracts_parameter_mapping = _checkbook_smart_search_domain_fields('contracts', $IsOge);
+$contracts_parameter_mapping = CheckbookSolr::getSearchFields($solr_datasource, 'contracts');
 
 if(strtolower($contracts_results['contract_status']) == 'registered'){
 
