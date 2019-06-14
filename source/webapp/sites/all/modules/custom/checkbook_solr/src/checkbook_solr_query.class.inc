@@ -331,6 +331,11 @@ class CheckbookSolrQuery
   public function setFqTerm(string $term, bool $exclude = false): CheckbookSolrQuery
   {
     list($param, $value) = explode('=', urldecode($term));
+
+    if ('all' == $value) {
+      return $this;
+    }
+
     $this->mapParam($param);
 
     $values = explode('~', $value);
@@ -450,16 +455,16 @@ class CheckbookSolrQuery
    */
   private function get_vendor_type_mapping($reqParams)
   {
-    $vtypeParam = explode('~', $reqParams);
+    $vendorTypeParam = explode('~', $reqParams);
     $reqParams = '';
-    foreach ($vtypeParam as $vtype) {
-      if ($vtype == 'pv') {
+    foreach ($vendorTypeParam as $vendorType) {
+      if ($vendorType == 'pv') {
         $reqParams .= 'p~pm~';
       }
-      if ($vtype == 'sv') {
+      if ($vendorType == 'sv') {
         $reqParams .= 's~sm~';
       }
-      if ($vtype == 'mv') {
+      if ($vendorType == 'mv') {
         $reqParams .= 'sm~pm~';
       }
     }
@@ -473,12 +478,15 @@ class CheckbookSolrQuery
    */
   private function get_contract_status_mapping($reqParams)
   {
-    switch ($reqParams) {
+    switch (strtolower($reqParams)) {
 
+      case 'p':
       case 'pending':
         return 'pending';
         break;
 
+      case 'r':
+      case 'a':
       case 'registered':
       case 'active':
       default:

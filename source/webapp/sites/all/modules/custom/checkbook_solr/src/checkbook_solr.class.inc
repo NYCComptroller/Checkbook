@@ -105,6 +105,7 @@ class CheckbookSolr
         $solr_datasource = 'solr_nycha';
         break;
       case 'citywide':
+      case 'checkbook':
       default:
         $solr_datasource = 'solr';
     }
