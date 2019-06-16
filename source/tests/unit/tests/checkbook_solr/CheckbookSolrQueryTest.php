@@ -11,6 +11,15 @@ class CheckbookSolrQueryTest extends \PHPUnit\Framework\TestCase
     /**
      *
      */
+    public function test_json_valid()
+    {
+        $facets = CheckbookSolr::getAutocompleteMapping();
+        $this->assertEquals('agency_name_autocomplete', $facets->agency_name);
+    }
+
+    /**
+     *
+     */
     public function test_constructor()
     {
         $searchTerms = 'rei';

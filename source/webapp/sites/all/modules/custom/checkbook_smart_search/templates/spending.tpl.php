@@ -20,6 +20,10 @@
 
 $spending_parameter_mapping = CheckbookSolr::getSearchFields($solr_datasource, 'spending');
 
+$isNycha = ('nycha' === $solr_datasource);
+$isEdc = ('edc' === $solr_datasource);
+$isOge = $isNycha || $isEdc;
+
 if ($spending_results['fiscal_year_id'] != '') {
   $fiscal_year_id = $spending_results['fiscal_year_id'][0];
 } else {
