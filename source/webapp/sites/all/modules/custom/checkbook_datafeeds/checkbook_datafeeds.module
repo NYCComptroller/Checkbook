@@ -2070,6 +2070,15 @@ function checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $fi
         '#id' => 'edit-nycha-startdatefrom',
         '#name' => 'nycha_startdatefrom',
         '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_startdatefrom', $first_time_load, ''),
+        '#states' => array(
+            'disabled' => array(
+                array(
+                    array('select[name="purchase_order_type"]' => array('value' => 'All')),
+                    'or',
+                    array('select[name="purchase_order_type"]' => array('value' => 'Purchase Order [PO]'))
+                ),
+            ),
+        )
     );
     $form['filter']['nycha_startdateto'] = array(
         '#type' => 'textfield',
@@ -2082,6 +2091,15 @@ function checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $fi
         '#id' => 'edit-nycha-startdateto',
         '#name' => 'nycha_startdateto',
         '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_startdateto', $first_time_load, ''),
+        '#states' => array(
+            'disabled' => array(
+                array(
+                    array('select[name="purchase_order_type"]' => array('value' => 'All')),
+                    'or',
+                    array('select[name="purchase_order_type"]' => array('value' => 'Purchase Order [PO]'))
+                ),
+            ),
+        )
     );
     $form['filter']['nycha_enddatefrom'] = array(
         '#type' => 'textfield',
@@ -2093,6 +2111,15 @@ function checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $fi
         '#id' => 'edit-nycha-enddatefrom',
         '#name' => 'nycha_enddatefrom',
         '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_enddatefrom', $first_time_load, ''),
+        '#states' => array(
+            'disabled' => array(
+                array(
+                    array('select[name="purchase_order_type"]' => array('value' => 'All')),
+                    'or',
+                    array('select[name="purchase_order_type"]' => array('value' => 'Purchase Order [PO]'))
+                ),
+            ),
+        )
     );
     $form['filter']['nycha_enddateto'] = array(
         '#type' => 'textfield',
@@ -2105,6 +2132,15 @@ function checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $fi
         '#id' => 'edit-nycha-enddateto',
         '#name' => 'nycha_enddateto',
         '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_enddateto', $first_time_load, ''),
+        '#states' => array(
+            'disabled' => array(
+                array(
+                    array('select[name="purchase_order_type"]' => array('value' => 'All')),
+                    'or',
+                    array('select[name="purchase_order_type"]' => array('value' => 'Purchase Order [PO]'))
+                ),
+            ),
+        )
     );
     $form['filter']['nycha_appr_datefrom'] = array(
         '#type' => 'textfield',
@@ -2116,6 +2152,17 @@ function checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $fi
         '#id' => 'edit-nycha-appr-datefrom',
         '#name' => 'nycha_appr_datefrom',
         '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_appr_datefrom', $first_time_load, ''),
+        '#states' => array(
+            'disabled' => array(
+                array(
+                    array('select[name="purchase_order_type"]' => array('value' => 'All')),
+                    'or',
+                    array('select[name="purchase_order_type"]' => array('value' => 'Blanket Agreement [BA]')),
+                    'or',
+                    array('select[name="purchase_order_type"]' => array('value' => 'Planned Agreement [PA]'))
+                ),
+            ),
+        )
     );
     $form['filter']['nycha_appr_dateto'] = array(
         '#type' => 'textfield',
@@ -2128,6 +2175,17 @@ function checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $fi
         '#id' => 'edit-nycha-appr-dateto',
         '#name' => 'nycha_appr_dateto',
         '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_appr_dateto', $first_time_load, ''),
+        '#states' => array(
+        'disabled' => array(
+            array(
+                array('select[name="purchase_order_type"]' => array('value' => 'All')),
+                'or',
+                array('select[name="purchase_order_type"]' => array('value' => 'Blanket Agreement [BA]')),
+                'or',
+                array('select[name="purchase_order_type"]' => array('value' => 'Planned Agreement [PA]'))
+            ),
+        ),
+    )
     );
     $form['filter']['nycha_year'] = array(
         '#type' => 'select',
