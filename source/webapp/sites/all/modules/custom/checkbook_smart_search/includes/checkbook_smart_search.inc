@@ -159,7 +159,7 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
     }
   }
 
-  return theme('checkbook_smart_search_results', [
+  return theme('smart_search_results', [
     'solr_datasource' => $solr_datasource,
     'search_results' => $search_results,
     'facet_results' => $search_results['facet_counts']['facet_fields'],
