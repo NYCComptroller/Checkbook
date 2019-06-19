@@ -84,7 +84,7 @@ div.filter-content-fdomainName div.options{
 .grid-3 div.row,
 .page-node div.row,
 .smart-search-right div.row{
-    padding: 10px 10px 0 10px;
+    padding: 5px 5px 0 10px;
     min-height: 18px;
 }
 .grid-3 div.checkbox,
@@ -104,7 +104,8 @@ div.filter-content-fdomainName div.options{
 .smart-search-right div.checkbox{
     padding: 0 5px 0 0;
     text-align: left;
-    width: 12px;
+    width: 10px;
+    margin-top: -1px;
 }
 .grid-3 div.checkbox input,
 .page-node div.checkbox input,
@@ -116,8 +117,9 @@ div.filter-content-fdomainName div.options{
 .smart-search-right div.name{
     text-align: left;
     padding: 0 5px;
-    max-width: 88px;
+    max-width: 110px;
     text-transform: uppercase;
+    cursor: pointer;
 }
 .grid-3 div.number,
 .page-node div.number,
@@ -179,11 +181,11 @@ div.filter-content-fdomainName div.options{
     text-align: center;
 }
 .sub-category{
-    margin-left: 22px;
+    margin-left: 20px;
     width: 176px;
 }
 .sub-category div.subcat-filter-title{
-    padding: 10px 0 0 0;
+    padding: 5px 0 0 0;
     font-size: 11px;
     color: #2e2e2e;
     text-transform: uppercase;
@@ -193,15 +195,16 @@ div.filter-content-fdomainName div.options{
     font-size: 11px;
 }
 .sub-category div.row{
-    margin: 10px 0 0 0;
+    margin: 5px 0 0 0;
     padding: 0;
-    width: 176px;
+    width: 180px;
 }
 .sub-category div.name{
-    max-width: 79px;
+    max-width: 93px;
+    font-style: italic;
 }
 .sub-category div.number{
-    width: 70px;
+    width: 62px;
 }
 .facet-content{
     margin-bottom: 20px;

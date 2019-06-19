@@ -149,8 +149,7 @@ function checkbook_smart_search_form($form, $form_state)
       ['system', 'ui.autocomplete', FALSE]
     ],
     'js' => [
-      'type' => 'file',
-      'data' => drupal_get_path('module', 'checkbook_smart_search') . '/js/smart_search.js'
+      drupal_get_path('module', 'checkbook_smart_search') . '/js/smart_search.js'
     ]
   ];
 
@@ -185,13 +184,9 @@ function checkbook_smart_search_form_alter(&$form, &$form_state, $form_id) {
 /** Theme for search results page. **/
 function checkbook_smart_search_theme(){
     return array(
-        'checkbook_smart_search_results' => array(
-            'template' => 'templates/checkbook_smart_search_results',
+        'smart_search_results' => array(
+            'template' => 'templates/results',
             'arguments' => array('search_results' => NULL)
-        ),
-        'search_facets' => array(
-            'template' => 'templates/search_facets',
-            'arguments' => array('search_facets' => NULL)
         ),
         'revenue' => array(
             'template' => 'templates/revenue',
@@ -217,16 +212,12 @@ function checkbook_smart_search_theme(){
             'template' => 'templates/contracts',
             'arguments' => array('contracts_results' => NULL)
         ),
-        'facet_results' => array(
-            'template' => 'templates/facet_results',
-            'arguments' => array('results' => NULL,'name' => NULL)
-        ),
         'ajax_results' => array(
-            'template' => 'templates/checkbook_smart_search_ajax_results',
+            'template' => 'templates/ajax_results',
             'arguments' => array('results' => NULL,'name' => NULL)
         ),
         'checkbook_smart_search_export_form' => array(
-            'template' => 'templates/checkbook_smart_search_export_dialog'
+            'template' => 'templates/export_dialog'
         ) 
     );
 }
