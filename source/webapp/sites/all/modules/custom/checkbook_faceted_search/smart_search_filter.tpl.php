@@ -58,9 +58,8 @@ foreach ($facets_render??[] as $facet_name => $facet) {
     $span='';
     $display_facet = 'none';
 
-  $just_one_result = (1 === sizeof($facet->results));
-
-    if ($just_one_result||$facet->selected) {
+    // keep domain facet always open
+    if ($facet->selected || in_array($facet_name,['domain'])) {
       $span = 'open';
       $display_facet = 'block';
     }
@@ -98,9 +97,9 @@ foreach ($facets_render??[] as $facet_name => $facet) {
 END;
 
       $checked = '';
-      if ($facet->selected||$just_one_result) {
+      if ($facet->selected) {
         $checked = $facet->selected && in_array($facet_value, $facet->selected);
-        $checked = $checked||$just_one_result ? ' checked="checked" ' : '';
+        $checked = $checked ? ' checked="checked" ' : '';
       }
       echo '<input type="checkbox" id="'.$id.'" '.$checked . ' facet="'.$facet_name.'" value="'.
         htmlentities($facet_value).'" />';
@@ -115,7 +114,7 @@ END;
       echo '<div class="number"><span' . $active . '>' . number_format($count) . '</span></div>';
       echo '</label>';
 
-      if (($checked||$just_one_result) && ($children = $facet->sub->$facet_value??false)){
+      if (($checked) && ($children = $facet->sub->$facet_value??false)){
         $sub_index=0;
         foreach($children as $child){
           $sub_facet = $facets_render[$child];

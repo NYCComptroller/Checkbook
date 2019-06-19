@@ -5,3 +5,10 @@ php:
 
 git:
   depth: 3
+
+before_script:
+  - phpenv versions
+  - phpenv config-rm xdebug.ini
+
+script:
+  - phpunit --no-logging
