@@ -63,6 +63,15 @@ class CheckbookSolr
   }
 
   /**
+   * @param string $solr_datasource
+   * @return mixed
+   */
+  public static function getAutocompleteTerms(string $solr_datasource): object
+  {
+    return self::getSmartSearchConfig()->autocomplete_terms->$solr_datasource ?? new StdClass();
+  }
+
+  /**
    * @return mixed
    */
   public static function getAutocompleteMapping(): object
@@ -161,9 +170,7 @@ class CheckbookSolr
 //      drupal_set_message("Solr error: " . $ex->getMessage());
       $contents = '';
     }
-    $result = utf8_encode($contents);
-
-    return $result;
+    return $contents;
   }
 
   /**
