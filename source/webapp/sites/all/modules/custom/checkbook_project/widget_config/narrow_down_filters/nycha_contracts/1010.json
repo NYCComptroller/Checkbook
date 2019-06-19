@@ -21,6 +21,8 @@
   $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
 }
 $adjustedParameters['item_description.item_description'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+$adjustedParameters['item_description.item_description'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, '-');
+$adjustedParameters['item_description.item_description'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, '');
 return $adjustedParameters;
 ",
 "template":"individual_filter"
