@@ -216,7 +216,7 @@
 
       //Sets up jQuery UI autocompletes and autocomplete filtering functionality for agency name facet
       $('.solr_autocomplete', context).each(function () {
-        var facet_name = $(this).attr('name');
+        var facet_name = $(this).attr('facet');
         $(this).autocomplete({
           source: "/solr_autocomplete/" + solr_datasource + "/" + facet_name + "/" + search_term,
           focus: function (event, ui) {
@@ -300,7 +300,7 @@ function applySearchFilters() {
   // adding checked checkboxes to the query string
   var fq = [];
   jQuery('.smart-search-right .narrow-down-filter input:checkbox:checked').each(function () {
-    var facet_name = jQuery(this).attr('name');
+    var facet_name = jQuery(this).attr('facet');
     if (!(facet_name in fq)) {
       fq[facet_name] = [];
     }
