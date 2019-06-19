@@ -62,7 +62,7 @@ function _checkbook_smart_search_load_unchecked_facets(string $solr_datasource, 
     ->clearFacets()
     ->addFacet($facet)
     ->excludeFqTermValues($facet);
-  $facet_results = $solr->request_phps('select/?'.$facet_query->buildQuery());
+  $facet_results = $solr->request_phps('select/?' . $facet_query->buildQuery());
 
   return $facet_results['facet_counts']['facet_fields'][$facet] ?? [];
 }
@@ -79,7 +79,7 @@ function _checkbook_smart_search_ajax_results(string $solr_datasource = 'citywid
     ->setSort('domain_ordering asc,date_ordering desc');
 
   $solr = CheckbookSolr::getInstance($solr_datasource);
-  $search_results = $solr->request_phps('select/?'.$solr_query->buildQuery());
+  $search_results = $solr->request_phps('select/?' . $solr_query->buildQuery());
 
   print theme('ajax_results', [
     'solr_datasource' => $solr_datasource,
@@ -103,10 +103,10 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
 
   $selected_facets = $solr_query->getSelectedFacets();
 
-  foreach($datasource_facets as $facet_name => $facet) {
+  foreach ($datasource_facets as $facet_name => $facet) {
     $solr_query->addFacet($facet_name);
     if ($facet->sub && in_array($facet_name, array_keys($selected_facets))) {
-      foreach($selected_facets[$facet_name] as $facet_value) {
+      foreach ($selected_facets[$facet_name] as $facet_value) {
         if ($domain_facets = $facet->sub->$facet_value ?? false) {
           $solr_query->addFacets($domain_facets);
         }
@@ -135,9 +135,9 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
   $selected_facets = $solr_query->getSelectedFacets();
 
   $solr = CheckbookSolr::getInstance($solr_datasource);
-  $search_results = $solr->request_phps('select/?'.$solr_query->buildQuery());
+  $search_results = $solr->request_phps('select/?' . $solr_query->buildQuery());
 
-  $vendor_number = count($search_results['facet_counts']['facet_fields']['vendor_name']??[]);
+  $vendor_number = count($search_results['facet_counts']['facet_fields']['vendor_name'] ?? []);
   $vendor_pages = floor($vendor_number / 100);
   drupal_add_js(array('checkbook_smart_search' => array('vendor_pages' => $vendor_pages)), 'setting');
 
@@ -150,23 +150,20 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
   drupal_add_js(array('checkbook_smart_search' => array('expense_category_pages' => $expense_category_pages)), 'setting');
 
   if ($selected_facets) {
-    foreach(array_keys($selected_facets) as $facet) {
+    foreach (array_keys($selected_facets) as $facet) {
       $unchecked_facet_fields = _checkbook_smart_search_load_unchecked_facets($solr_datasource, $solr_query, $facet);
       if ($unchecked_facet_fields) {
-        $search_results['facet_counts']['facet_fields'][$facet] += $unchecked_facet_fields;
+        $search_results['facet_counts']['facet_fields'][$facet] =
+          ($search_results['facet_counts']['facet_fields'][$facet] ?? []) + ($unchecked_facet_fields ?? []);
       }
     }
   }
 
-  return theme('checkbook_smart_search_results', [
+  return theme('smart_search_results', [
     'solr_datasource' => $solr_datasource,
     'search_results' => $search_results,
-//    'search_results' => $search_results['search_results'],
-//    'active_contracts' => $search_results['active_contracts'],
-//    'registered_contracts' => $search_results['registered_contracts'],
     'facet_results' => $search_results['facet_counts']['facet_fields'],
     'selected_facet_results' => $selected_facets,
-//    'selected_facet_results' => $selected_facet_results,
   ]);
 }
 
@@ -187,10 +184,10 @@ function _checkbook_smart_search_get_results_csv(string $solr_datasource, string
     ->setSort('domain_ordering asc,date_ordering desc');
 
   $domain = $_REQUEST['domain'];
-  $solr_query->setFq('domain', 'domain:'.$domain);
+  $solr_query->setFq('domain', 'domain:' . $domain);
 
   $query = $solr_query->buildQuery();
-  $query .= '&fl='.$fl;
+  $query .= '&fl=' . $fl;
 
   /**
    * DANGER:
@@ -201,13 +198,22 @@ function _checkbook_smart_search_get_results_csv(string $solr_datasource, string
   }
 
   $solr = CheckbookSolr::getInstance($solr_datasource);
-  return $solr->request_csv('select/?'.$query);
+  return $solr->request_csv('select/?' . $query);
 }
 
-/** Generates smart search export form */
-function _checkbook_smart_search_export_form()
+/** Generates smart search export form
+ * @param string $solr_datasource
+ * @throws Exception
+ */
+function _checkbook_smart_search_export_form(string $solr_datasource)
 {
-  echo theme('checkbook_smart_search_export_form');
+  if (!$solr_datasource) {
+    echo 'unknown datasource';
+  } else {
+    echo theme('checkbook_smart_search_export_form', [
+      'solr_datasource' => $solr_datasource
+    ]);
+  }
 }
 
 /** Downloads the smart search export data
@@ -234,16 +240,13 @@ function _checkbook_smart_search_export_data(string $solr_datasource)
   $page_size = 10000;
   $page_num = 0;
 
-  /**
-   * @TODO: fix export fields by solr_datasource
-   */
-  $fields = CheckbookSolr::getExportFields($solr_datasource, $_REQUEST['domain']);
+  $fields = (array)CheckbookSolr::getExportFields($solr_datasource, $_REQUEST['domain']);
 
   $fl = implode(",", array_keys($fields));
   echo implode(",", array_values($fields)) . "\n";
 
   while ($remaining > 0) {
-    $result = _checkbook_smart_search_get_results_csv($solr_datasource, $_REQUEST['search_terms']??'', $page_num, $page_size, $fl, true);
+    $result = _checkbook_smart_search_get_results_csv($solr_datasource, $_REQUEST['search_terms'] ?? '', $page_num, $page_size, $fl, true);
     $page_num += 1;
     $remaining = $remaining - $page_size;
 
@@ -364,7 +367,7 @@ function _checkbook_autocomplete(string $solr_datasource, string $facet): array
   $solr_query->setFqAutocompleteTerm($facet, $_REQUEST['term'] ?? '');
 
   $solr = new CheckbookSolr($solr_datasource);
-  $results = $solr->request_phps('select/?'.$solr_query);
+  $results = $solr->request_phps('select/?' . $solr_query);
 
   if ($results['response']['numFound'] != 0) {
     $facet_results = array_shift($results['facet_counts']['facet_fields']);
@@ -385,7 +388,7 @@ function _checkbook_autocomplete(string $solr_datasource, string $facet): array
 function _checkbook_smart_search_autocomplete(string $solr_datasource, string $facet)
 {
   $data = _checkbook_autocomplete($solr_datasource, $facet);
-  foreach($data as &$line) {
+  foreach ($data as &$line) {
     $line['value'] = urlencode($line['value']);
   }
   drupal_json_output($data);
@@ -403,19 +406,39 @@ function _checkbook_advanced_search_autocomplete(string $solr_datasource, string
 }
 
 /**
+ * @param $results
+ * @return array
+ */
+function _checkbook_vendor_type_prepare_labels($results)
+{
+  $pv = $results['p'] ?? 0 + $results['pm'] ?? 0;
+  $sv = $results['s'] ?? 0 + $results['sm'] ?? 0;
+  $mv = $results['sm'] ?? 0 + $results['pm'] ?? 0;
+  $return = [];
+  if ($pv) {
+    $return['pv'] = ['Prime Vendor', $pv];
+  }
+  if ($sv) {
+    $return['sv'] = ['Sub Vendor', $sv];
+  }
+  if ($mv) {
+    $return['mv'] = ['M/WBE Vendor', $mv];
+  }
+  return $return;
+}
+
+/**
  *
  *
-██╗  ██╗███████╗██╗     ██╗         ██████╗ ███████╗██╗      ██████╗ ██╗    ██╗    ████████╗██╗  ██╗██╗███████╗    ██╗     ██╗███╗   ██╗███████╗
-██║  ██║██╔════╝██║     ██║         ██╔══██╗██╔════╝██║     ██╔═══██╗██║    ██║    ╚══██╔══╝██║  ██║██║██╔════╝    ██║     ██║████╗  ██║██╔════╝
-███████║█████╗  ██║     ██║         ██████╔╝█████╗  ██║     ██║   ██║██║ █╗ ██║       ██║   ███████║██║███████╗    ██║     ██║██╔██╗ ██║█████╗
-██╔══██║██╔══╝  ██║     ██║         ██╔══██╗██╔══╝  ██║     ██║   ██║██║███╗██║       ██║   ██╔══██║██║╚════██║    ██║     ██║██║╚██╗██║██╔══╝
-██║  ██║███████╗███████╗███████╗    ██████╔╝███████╗███████╗╚██████╔╝╚███╔███╔╝       ██║   ██║  ██║██║███████║    ███████╗██║██║ ╚████║███████╗
-╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝    ╚═════╝ ╚══════╝╚══════╝ ╚═════╝  ╚══╝╚══╝        ╚═╝   ╚═╝  ╚═╝╚═╝╚══════╝    ╚══════╝╚═╝╚═╝  ╚═══╝╚══════╝
+ * ██╗  ██╗███████╗██╗     ██╗         ██████╗ ███████╗██╗      ██████╗ ██╗    ██╗    ████████╗██╗  ██╗██╗███████╗    ██╗     ██╗███╗   ██╗███████╗
+ * ██║  ██║██╔════╝██║     ██║         ██╔══██╗██╔════╝██║     ██╔═══██╗██║    ██║    ╚══██╔══╝██║  ██║██║██╔════╝    ██║     ██║████╗  ██║██╔════╝
+ * ███████║█████╗  ██║     ██║         ██████╔╝█████╗  ██║     ██║   ██║██║ █╗ ██║       ██║   ███████║██║███████╗    ██║     ██║██╔██╗ ██║█████╗
+ * ██╔══██║██╔══╝  ██║     ██║         ██╔══██╗██╔══╝  ██║     ██║   ██║██║███╗██║       ██║   ██╔══██║██║╚════██║    ██║     ██║██║╚██╗██║██╔══╝
+ * ██║  ██║███████╗███████╗███████╗    ██████╔╝███████╗███████╗╚██████╔╝╚███╔███╔╝       ██║   ██║  ██║██║███████║    ███████╗██║██║ ╚████║███████╗
+ * ╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝    ╚═════╝ ╚══════╝╚══════╝ ╚═════╝  ╚══╝╚══╝        ╚═╝   ╚═╝  ╚═╝╚═╝╚══════╝    ╚══════╝╚═╝╚═╝  ╚═══╝╚══════╝
  *
  *
  */
-
-
 
 
 /** Returns the URL for clear functionality for each Search Term

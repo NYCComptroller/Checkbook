@@ -71,7 +71,7 @@
       },
       "vendor_type": {
         "title": "Vendor Type",
-        "prepare_results": "ckbk_vendor_type_prepare_results"
+        "prepare_results": "_checkbook_vendor_type_prepare_labels"
       },
       "payroll_type": {
         "title": "Payroll Type"
@@ -86,7 +86,7 @@
         "no_autoload": true
       },
       "registered_fiscal_year": {
-        "title": "Fiscal Year",
+        "title": "Registered Fiscal Year",
         "autocomplete": true,
         "no_autoload": true
       },
@@ -112,9 +112,6 @@
           ],
           "spending": [
             "spending_category_name"
-          ],
-          "revenue": [
-            "revenue_category_name"
           ]
         }
       },
@@ -128,10 +125,6 @@
       },
       "spending_category_name": {
         "title": "Spending Category",
-        "child": true
-      },
-      "revenue_category_name": {
-        "title": "Revenue Category",
         "child": true
       },
       "vendor_name": {
@@ -148,7 +141,7 @@
         "no_autoload": true
       },
       "registered_fiscal_year": {
-        "title": "Fiscal Year",
+        "title": "Registered Fiscal Year",
         "autocomplete": true,
         "no_autoload": true
       },
@@ -163,11 +156,14 @@
         "sub": {
           "contracts": [
             "agreement_type_name"
+          ],
+          "payroll": [
+            "payroll_type"
           ]
         }
       },
       "agreement_type_name": {
-        "title": "Agreement Type",
+        "title": "Purchase Order Type",
         "child": true
       },
       "vendor_name": {
@@ -175,7 +171,8 @@
         "autocomplete": true
       },
       "payroll_type": {
-        "title": "Payroll Type"
+        "title": "Payroll Type",
+        "child": true
       },
       "fiscal_year": {
         "title": "Fiscal Year",
@@ -204,6 +201,10 @@
       },
       "contract_number": {
         "title": "Contract ID",
+        "autocomplete": true
+      },
+      "release_number": {
+        "title": "Release Number",
         "autocomplete": true
       }
     }
@@ -363,9 +364,9 @@
         "release_total_amount": "Release Current Amount",
         "release_original_amount": "Release Original Amount",
         "release_spend_to_date": "Release spent to date",
-        "agreement_total_amount": "Release spent to date",
-        "agreement_original_amount": "Release spent to date",
-        "agreement_spend_to_date": "Release spent to date",
+        "agreement_total_amount": "Contract Current Amount",
+        "agreement_original_amount": "Contract Original Amount",
+        "agreement_spend_to_date": "Contract Spent to date",
         "release_number": "Release Number",
         "vendor_name": "Vendor Name",
         "display_industry_type_name": "Industry",
@@ -541,9 +542,9 @@
         "release_total_amount": "Release Current Amount",
         "release_original_amount": "Release Original Amount",
         "release_spend_to_date": "Release spent to date",
-        "agreement_total_amount": "Release spent to date",
-        "agreement_original_amount": "Release spent to date",
-        "agreement_spend_to_date": "Release spent to date",
+        "agreement_total_amount": "Contract Current Amount",
+        "agreement_original_amount": "Contract Original Amount",
+        "agreement_spend_to_date": "Contract Spent to date",
         "release_number": "Release Number",
         "vendor_name": "Vendor Name",
         "display_industry_type_name": "Industry",
