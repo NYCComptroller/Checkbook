@@ -17,7 +17,7 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-$year = RequestUtilities::get('year')?RequestUtilities::get('year'):RequestUtilities::get('calyear');
+$year = RequestUtilities::get('year') ? RequestUtilities::get('year') : RequestUtilities::get('calyear');
 $year_type = RequestUtilities::get('yeartype');
 $employeeID = RequestUtilities::get('abc');
 $agencyId =RequestUtilities::get('agency');
