@@ -90,7 +90,7 @@ $node->show_difference = ($contract_type== 'BAM'||$contract_type== 'PAM');
       "line_current_amount_formatted":{
        "expression": "custom_number_formatter_basic_format($row['release_line_total_amount'])"
       },
-      "original_amount_formatted":{
+      "line_original_amount_formatted":{
        "expression": "custom_number_formatter_basic_format($row['release_line_original_amount'])"
        },
       "line_spent_to_date_formatted": {
