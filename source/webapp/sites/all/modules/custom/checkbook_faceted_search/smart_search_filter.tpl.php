@@ -89,11 +89,13 @@ foreach ($facets_render??[] as $facet_name => $facet) {
 
       $id = 'facet_'.$facet_name.$index;
       $active='';
+      echo <<<END
 
-      echo '<div class="row">';
+    <div class="row">
+      <label for="{$id}">
+        <div class="checkbox">
 
-      echo "<label for=\"{$id}\">";
-      echo '<div class="checkbox">';
+END;
 
       $checked = '';
       if ($facet->selected||$just_one_result) {
@@ -102,8 +104,12 @@ foreach ($facets_render??[] as $facet_name => $facet) {
       }
       echo '<input type="checkbox" id="'.$id.'" '.$checked . ' facet="'.$facet_name.'" value="'.
         htmlentities($facet_value).'" />';
-      echo "<label for=\"{$id}\" />";
-      echo '</div>';
+      echo <<<END
+
+      <label for="{$id}" />
+    </div>
+
+END;
 
       echo '<div class="name">' . htmlentities($facet_result_title) . '</div>';
       echo '<div class="number"><span' . $active . '>' . number_format($count) . '</span></div>';
