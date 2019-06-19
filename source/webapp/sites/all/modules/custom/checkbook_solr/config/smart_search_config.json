@@ -195,10 +195,6 @@
         "title": "Grant Number",
         "autocomplete": true
       },
-      "grant_status": {
-        "title": "Grant Status",
-        "autocomplete": true
-      },
       "contract_number": {
         "title": "Contract ID",
         "autocomplete": true
