@@ -240,10 +240,7 @@ function _checkbook_smart_search_export_data(string $solr_datasource)
   $page_size = 10000;
   $page_num = 0;
 
-  /**
-   * @TODO: fix export fields by solr_datasource
-   */
-  $fields = CheckbookSolr::getExportFields($solr_datasource, $_REQUEST['domain']);
+  $fields = (array)CheckbookSolr::getExportFields($solr_datasource, $_REQUEST['domain']);
 
   $fl = implode(",", array_keys($fields));
   echo implode(",", array_values($fields)) . "\n";
