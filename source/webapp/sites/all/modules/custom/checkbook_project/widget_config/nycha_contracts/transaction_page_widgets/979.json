@@ -40,13 +40,13 @@
   "html_class":"initiative-table",
   "no_results_content":"No Results Found",
   "dataset":"checkbook_nycha:all_agreement_transactions_hrcy",
-  "columns": ["item_description","contract_id", "agreement_type_name", "agreement_type_code", "release_number", "shipment_number", "distribution_number", "agreement_start_date",
+  "columns": ["number_of_releases", "item_description","contract_id", "agreement_type_name", "agreement_type_code", "release_number", "shipment_number", "distribution_number", "agreement_start_date",
     "agreement_end_date", "release_approved_date", "release_total_amount", "release_original_amount", "release_spend_to_date", "po_header_id",
     "purpose", "vendor_name", "location_descr", "contract_type_descr", "award_method_name", "grant_name","item_qty_ordered",
     "expenditure_type_descr", "display_industry_type_name", "display_funding_source_descr", "responsibility_center_descr", "program_phase_descr",
     "gl_project_descr", "item_category_descr","vendor_id","release_line_total_amount","release_line_original_amount","release_line_spend_to_date",
     "agreement_amount_difference","agreement_percent_difference", "record_type"],
-  "uniqueSortColumn":["agreement_type_name","-sort_sequence"],
+  "uniqueSortColumn":["-sort_sequence"],
 "preProcessConfiguration":"
 $contract_type = RequestUtil::getContractType();
 $node->show_difference = ($contract_type== 'BAM'||$contract_type== 'PAM');

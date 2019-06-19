@@ -21,6 +21,8 @@
 $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
 }
 $adjustedParameters['responsibility_center_id.responsibility_center_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+$adjustedParameters['responsibility_center_descr.responsibility_center_descr'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, '-');
+$adjustedParameters['responsibility_center_descr.responsibility_center_descr'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, '');
 return $adjustedParameters;
 ",
 "template":"individual_filter"
