@@ -335,6 +335,42 @@
               "sourceColumnName": "release_approved_year"
             }
           ]
+        },
+        {
+          "name": "record_type",
+          "levels": [
+            {
+              "name": "record_type",
+              "sourceColumnName": "record_type"
+            }
+          ]
+        },
+        {
+          "name": "release_number",
+          "levels": [
+            {
+              "name": "release_number",
+              "sourceColumnName": "release_number"
+            }
+          ]
+        },
+        {
+          "name": "item_category_descr",
+          "levels": [
+            {
+              "name": "item_category_descr",
+              "sourceColumnName": "item_category_descr"
+            }
+          ]
+        },
+        {
+          "name": "item_description",
+          "levels": [
+            {
+              "name": "item_description",
+              "sourceColumnName": "item_description"
+            }
+          ]
         }
       ],
       "measures": {

@@ -292,6 +292,8 @@ class WidgetUtil
         "non_salary_rate" => "Non-Salaried<br/>Rates",
         "nycha_payment" => "NYCHA<br/>Payment",
         "category_type" => "Category<br/>Type",
+        "record_type" => "Record<br/>Type",
+        "number_of_releases" => "Number of<br/>Releases",
     );
 
     //For number cols, need to find out if they are uniform number of digits for formatting
