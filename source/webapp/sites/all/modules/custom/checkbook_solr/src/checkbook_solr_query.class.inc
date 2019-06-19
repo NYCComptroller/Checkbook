@@ -93,7 +93,7 @@ class CheckbookSolrQuery
    * @param int $rows
    * @param int $page
    */
-  public function __construct($searchTerms='', int $rows=0, int $page=0)
+  public function __construct($searchTerms = '', int $rows = 0, int $page = 0)
   {
     $this->paramMapping = (array)CheckbookSolr::getParamMapping();
     $this->autocompleteMapping = (array)CheckbookSolr::getAutocompleteMapping();
@@ -139,7 +139,7 @@ class CheckbookSolrQuery
   public function setFq(string $index, string $fq): CheckbookSolrQuery
   {
     $this->mapParam($index);
-    if (!$fq && isset($this->fq[$index])){
+    if (!$fq && isset($this->fq[$index])) {
       unset($this->fq[$index]);
     } else {
       $this->fq[$index] = $fq;
@@ -223,7 +223,7 @@ class CheckbookSolrQuery
       $query['terms.regex.flag'] = 'case_insensitive';
       $query['terms.regex'] = $this->termsRegex;
 
-      $this->query = http_build_query($query) . $terms.'&wt='.$this->wt;
+      $this->query = http_build_query($query) . $terms . '&wt=' . $this->wt;
       return $this->query;
     }
 
@@ -255,10 +255,10 @@ class CheckbookSolrQuery
       $query['sort'] = $this->sort;
     }
 
-    if ('*:*' == $this->q){
+    if ('*:*' == $this->q) {
       $q = 'q=*:*';
     } else {
-      $q = 'q=text:'.$this->q.'*';
+      $q = 'q=text:' . $this->q . '*';
     }
 
     /**
@@ -266,7 +266,7 @@ class CheckbookSolrQuery
      * http://sdw5.reisys.com:18983/solr/checkbook_dev.public.solr_index_full/select/?q=*:*&facet=true&facet.sort=count&facet.field=fiscal_year&wt=phps&facet.mincount=1
      */
 
-    $this->query = $q . $fq . $sort . $facets . '&' . http_build_query($query).'&wt='.$this->wt;
+    $this->query = $q . $fq . $sort . $facets . '&' . http_build_query($query) . '&wt=' . $this->wt;
 
     return $this->query;
   }
@@ -337,18 +337,19 @@ class CheckbookSolrQuery
     }
 
     $this->mapParam($param);
+    $this->selectedFacets[$param] = explode('~', $value);
+
+    if ('vendor_type' == $param) {
+      $value = $this->get_vendor_type_mapping($value);
+    }
+    if ('contract_status' == $param) {
+      $value = $this->get_contract_status_mapping($value);
+    }
 
     $values = explode('~', $value);
-    $this->selectedFacets[$param] = $values;
 
     $fq = [];
     foreach ($values as $value) {
-      if ('vendor_type' == $param) {
-        $value = $this->get_vendor_type_mapping($value);
-      }
-      if ('contract_status' == $param) {
-        $value = $this->get_contract_status_mapping($value);
-      }
       $minus = $exclude ? '-' : '';
       $fq[] = $minus . $param . ':"' . self::escape($value) . '"';
     }
@@ -382,7 +383,7 @@ class CheckbookSolrQuery
       $term = join('*%20AND%20', $terms);
       $facetValue = "($term*)";
     }
-    $this->setFq($facet, $autocompleteFacet.':'.$facetValue);
+    $this->setFq($facet, $autocompleteFacet . ':' . $facetValue);
 
     $this->addFacet($facet);
 
@@ -456,20 +457,24 @@ class CheckbookSolrQuery
   private function get_vendor_type_mapping($reqParams)
   {
     $vendorTypeParam = explode('~', $reqParams);
-    $reqParams = '';
+    $values = [];
     foreach ($vendorTypeParam as $vendorType) {
-      if ($vendorType == 'pv') {
-        $reqParams .= 'p~pm~';
-      }
-      if ($vendorType == 'sv') {
-        $reqParams .= 's~sm~';
-      }
-      if ($vendorType == 'mv') {
-        $reqParams .= 'sm~pm~';
+      switch (strtolower(trim($vendorType))) {
+        case 'pv':
+          array_push($values, 'p');
+          array_push($values, 'pm');
+          break;
+        case 'sv':
+          array_push($values, 's');
+          array_push($values, 'sm');
+          break;
+        case 'mv':
+          array_push($values, 'sm');
+          array_push($values, 'pm');
+          break;
       }
     }
-    $reqParams = substr($reqParams, 0, -1);
-    return $reqParams;
+    return join('~', array_unique($values));
   }
 
   /**

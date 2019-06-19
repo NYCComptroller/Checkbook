@@ -6,7 +6,7 @@
     $("#edit-search-box").autocomplete({
       position: {my: "right top", at: "right bottom"},
       minLength: 0,
-      source: '/smart_search/autocomplete/'+$('#checkbook-smart-search-form input[name=domain]').val(),
+      source: '/smart_search/autocomplete/' + $('#checkbook-smart-search-form input[name=domain]').val(),
       focus: function (event, ui) {
         $(event.target).val(ui.item.label);
         return false;
@@ -50,20 +50,20 @@
     };
     $("#edit-search-box").keypress(function (e) {
       if (e.which == 13) {
-        $("#edit-search-box").autocomplete("off");
-        $("#edit-search-box").autocomplete("close");
+        $(this).autocomplete("off").autocomplete("close");
       }
     });
+
     $("#edit-submit").click(function (e) {
       setTimeout(function () {
-        $("#edit-submit").addClass('disable_button');
-        $("#edit-search-box").addClass('transparent');
-        $("#edit-search-box").addClass('loadinggif');
-        $("#edit-search-box").focus();
+        $("#edit-submit").addClass('disable_button')
+          .css('cursor', 'default');
+        $("#edit-search-box").addClass('transparent')
+          .addClass('loadinggif')
+          .focus()
+          .attr("disabled", "disabled");
         // This is to fix the issue with chrome when trying to disable the search button
         $('input[type=submit]').attr("disabled", "disabled");
-        $("#edit-submit").css('cursor', 'default');
-        $("#edit-search-box").attr("disabled", "disabled");
       }, 1);
     });
   });
@@ -74,15 +74,15 @@
         $('span.exportSmartSearch').live("click", function () {
 
           var dialog = $("#dialog");
-          if ($("#dialog").length == 0) {
+          if (!dialog.length) {
             dialog = $('<div id="dialog" style="display:none"></div>');
           }
           var domains = '';
-          $.each($('input[name=fdomainName]:checked'), function () {
+          $.each($('input[facet=domain]:checked'), function () {
             domains = domains + "~" + this.value;
           });
-          if (domains == '') {
-            $.each($('input[name=fdomainName]'), function () {
+          if (domains === '') {
+            $.each($('input[facet=domain]'), function () {
               domains = domains + "~" + this.value;
             });
           }
@@ -93,12 +93,12 @@
             '&resultsdomains=' + domains;
 
           var checked_domains = '';
-          $.each($('input[name=fdomainName]:checked'), function () {
-            checked_domains = checked_domains == '' ? this.value : checked_domains + "~" + this.value;
+          $.each($('input[facet=domain]:checked'), function () {
+            checked_domains = checked_domains === '' ? this.value : checked_domains + "~" + this.value;
           });
           if (checked_domains == '') {
-            $.each($('input[name=fdomainName]'), function () {
-              checked_domains = checked_domains == '' ? this.value : checked_domains + "~" + this.value;
+            $.each($('input[facet=domain]'), function () {
+              checked_domains = checked_domains === '' ? this.value : checked_domains + "~" + this.value;
             });
           }
           var array_domains = checked_domains.split('~');
@@ -146,30 +146,14 @@
                 buttons: {
                   "Download Data": function () {
                     var solr_datasource = Drupal.settings.solr_datasource || 'citywide';
-                    var url = '/exportSmartSearch/download/'+solr_datasource;
+                    var url = '/exportSmartSearch/download/' + solr_datasource;
 
-                    url += '?search_terms='+encodeURIComponent(getParameterByName("search_term"));
-                    url += '&domain='+$('input[name=domain]:checked').val();
-
-                    // $('#dialog #export-message')
-                    //   .add('.ui-dialog-titlebar')
-                    //   .add('.ui-dialog-buttonpane')
-                    //   .add('#dialog')
-                    //   .addClass('disable_me');
-                    // $('#loading_gif').show();
-                    // $('#loading_gif').addClass('loading_bigger_gif');
+                    url += '?search_terms=' + encodeURIComponent(getParameterByName("search_term"));
+                    url += '&domain=' + $('input[name=domain]:checked').val();
 
                     // next line downloads csv!
                     document.location.href = url;
                     $(this).dialog('close');
-
-                    // $('#dialog #export-message')
-                    //   .add('.ui-dialog-titlebar')
-                    //   .add('.ui-dialog-buttonpane')
-                    //   .add('#dialog')
-                    //   .removeClass('disable_me');
-                    // $('#loading_gif').hide();
-                    // $('#loading_gif').removeClass('loading_bigger_gif');
 
                   },
                   "Cancel": function () {
@@ -177,7 +161,6 @@
                   }
                 }
               });
-              //$('.ui-dialog-buttonpane').append('<div class="exportDialogMessage">*Required Field</div>');
               onChangeDomain('spending');
 
               //On change of domain
@@ -193,7 +176,7 @@
                 var selectedDomain = $('input[name=domain]:checked').val();
                 $.each(arrayDomainCounts, function (i, val) {
                   var domainCount = val.split('|');
-                  if (selectedDomain == domainCount[0])
+                  if (selectedDomain === domainCount[0])
                     selectedRecords = domainCount[1];
                   totalRecords += parseInt(domainCount[1]);
                 });
@@ -216,7 +199,7 @@
 
       function getCheckboxAttributes(domain, array_domains) {
         var checked_domain = array_domains[0];
-        return (checked_domain == domain ? ' checked' : '') + ($.inArray(domain, array_domains) > -1 ? '' : ' disabled');
+        return (checked_domain === domain ? ' checked' : '') + ($.inArray(domain, array_domains) > -1 ? '' : ' disabled');
       }
 
     }
@@ -227,13 +210,17 @@
       var solr_datasource = Drupal.settings.solr_datasource || 'citywide';
       var search_term = window.location.href.toString().split(window.location.host)[1];
 
+      $('input:checkbox', context).each(function () {
+        $(this).click(applySearchFilters);
+      });
+
       //Sets up jQuery UI autocompletes and autocomplete filtering functionality for agency name facet
-      $('.solr_autocomplete', context).each(function(){
-        var facet_name = $(this).attr('facet');
+      $('.solr_autocomplete', context).each(function () {
+        var facet_name = $(this).attr('name');
         $(this).autocomplete({
-          source: "/solr_autocomplete/"+solr_datasource+"/"+facet_name+"/" + search_term,
+          source: "/solr_autocomplete/" + solr_datasource + "/" + facet_name + "/" + search_term,
           focus: function (event, ui) {
-            if (ui.item.label.toLowerCase() == 'no matches found') {
+            if (ui.item.label.toLowerCase() === 'no matches found') {
               return false;
             } else {
               $(event.target).val(ui.item.label);
@@ -241,7 +228,7 @@
             }
           },
           select: function (event, ui) {
-            if (ui.item.label.toLowerCase() == 'no matches found') {
+            if (ui.item.label.toLowerCase() === 'no matches found') {
               return false;
             } else {
               var url = getFacetAutocompleteUrl(facet_name, encodeURIComponent(ui.item.value));
@@ -259,7 +246,7 @@
     attach: function (context) {
 
       $('#edit-search-box', context).focus(function () {
-        if (this.value == this.defaultValue) {
+        if (this.value === this.defaultValue) {
           $(this).val("");
         }
       });
@@ -285,7 +272,7 @@
           newURL = newURL + '*|*' + search_filter[0] + '=' + value;
         }
         var solr_datasource = Drupal.settings.solr_datasource || 'citywide';
-        var curl = '/smart_search/ajax/results/'+solr_datasource+'?' + newURL;
+        var curl = '/smart_search/ajax/results/' + solr_datasource + '?' + newURL;
         var progress = jQuery('.smart-search-left .loading');
         jQuery.ajax({
           url: curl,
@@ -304,31 +291,6 @@
 }(jQuery));
 
 /**
- *  Returns the selected filter parameters on the form
- * @param filterName
- */
-
-/*jshint evil:true */
-// function getSearchFilterCriteria(filterName) {
-//   var filterId = '';
-//   var oFilterIds = document.getElementsByName(filterName);
-//   /*jshint evil:true */
-//   if (!eval(oFilterIds)) {
-//     return filterId;
-//   }
-//   for (var i = 0; i < oFilterIds.length; i++) {
-//     if (oFilterIds[i].checked) {
-//       if (filterId.length > 0) {
-//         filterId = filterId + '~' + oFilterIds[i].value;
-//       } else {
-//         filterId = oFilterIds[i].value;
-//       }
-//     }
-//   }
-//   return filterId;
-// }
-
-/**
  *  Redirects to the search results page for the given search criteria
  *  Requires 'prepareSearchFilterUrl' function
  */
@@ -337,23 +299,23 @@ function applySearchFilters() {
 
   // adding checked checkboxes to the query string
   var fq = [];
-  jQuery('.smart-search-right .narrow-down-filter input:checkbox:checked').each(function(){
-    var facet_name = jQuery(this).attr('facet');
-    if (!(facet_name in fq)){
+  jQuery('.smart-search-right .narrow-down-filter input:checkbox:checked').each(function () {
+    var facet_name = jQuery(this).attr('name');
+    if (!(facet_name in fq)) {
       fq[facet_name] = [];
     }
     fq[facet_name].push(jQuery(this).val());
   });
 
   var fq_string = '';
-  for (var k in fq){
-    fq_string += '*|*'+k+'='+ fq[k].join('~');
+  for (var k in fq) {
+    fq_string += '*|*' + k + '=' + fq[k].join('~');
   }
 
   // adding global q string
   var searchTerm = '';
   var url = new URLSearchParams(window.location.search);
-  if(url.get('search_term')) {
+  if (url.get('search_term')) {
     searchTerm = url.get('search_term').split('*|*')[0];
   }
 
@@ -363,24 +325,6 @@ function applySearchFilters() {
 
   window.location = cUrl;
 }
-
-// /**
-//  *  Returns the query string values from the current URL
-//  */
-// function getQuerystringValues() {
-//   var qsParm = [];
-//   var query = window.location.search.substring(1);
-//   var parms = query.split('&');
-//   for (var i = 0; i < parms.length; i++) {
-//     var pos = parms[i].indexOf('=');
-//     if (pos > 0) {
-//       var key = parms[i].substring(0, pos);
-//       var val = parms[i].substring(pos + 1);
-//       qsParm[key] = val;
-//     }
-//   }
-//   return qsParm;
-// }
 
 function getFacetAutocompleteUrl(category, value) {
 
@@ -401,7 +345,7 @@ function getFacetAutocompleteUrl(category, value) {
         var terms = params[1].split('~');
         terms.push(value);
 
-        searchTerms[i] = params[0]+'='+ terms.join('~');
+        searchTerms[i] = params[0] + '=' + terms.join('~');
       }
     }
 
