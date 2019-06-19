@@ -279,9 +279,9 @@ function _checkbook_smart_search_export_data(string $solr_datasource)
  *  Outputs the suggestions for the given input.
  *  Returns the matching words
  *
- * @param string $domain
+ * @param string $solr_datasource
  */
-function _checkbook_smart_search_autocomplete_main_input($domain = 'citywide')
+function _checkbook_smart_search_autocomplete_main_input($solr_datasource = 'citywide')
 {
   $search_term = htmlspecialchars_decode($_REQUEST['term'], ENT_QUOTES);
   $search_term = strtolower($search_term);
@@ -289,70 +289,89 @@ function _checkbook_smart_search_autocomplete_main_input($domain = 'citywide')
   $search_term = '(.* ' . $search_term . '.*)|(^' . $search_term . '.*)';
 
   $query = new CheckbookSolrQuery();
+
+  $autocomplete_categories = (array)CheckbookSolr::getAutocompleteTerms($solr_datasource);
+
   $query
-    ->addTermField('agency_name')
-    ->addTermField('oge_agency_name')
-    ->addTermField('vendor_name')
-    ->addTermField('minority_type_name')
-    ->addTermField('revenue_category_name')
-    ->addTermField('expenditure_object_name')
+    ->addTermFields(array_keys($autocomplete_categories))
     ->setTermsRegex($search_term);
 
-  $solr = new CheckbookSolr($domain);
+  $solr = new CheckbookSolr($solr_datasource);
   $contents = $solr->requestTerms($query);
 
 
-  $smart_search_url = '/smart_search/' . $domain;
+  $smart_search_url = '/smart_search/' . $solr_datasource;
 
-  $matches = array();
-  $count = 0;
-  foreach ($contents['terms'] as $key => $value) {
-    switch ($key) {
-      case 'agency_name':
-        foreach ($value as $a => $b) {
-          if (!in_array($a, $contents['terms']['oge_agency_name'])) {
-            $count++;
-            $url = $smart_search_url . "?search_term=*|*agency_names=";
-            $matches[] = array("url" => $url, "category" => "Agencies", "label" => $a, "value" => urlencode($a));
-          }
-        }
-        break;
-      case 'oge_agency_name':
-        foreach ($value as $a => $b) {
-          $count++;
-          $url = $smart_search_url . "?search_term=*|*oge_agency_names=";
-          $matches[] = array("url" => $url, "category" => "Other Government Entities", "label" => $a, "value" => urlencode($a));
-        }
-        break;
-      case 'vendor_name':
-        foreach ($value as $a => $b) {
-          $count++;
-          $url = $smart_search_url . "?search_term=*|*vendor_names=";
-          array_push($matches, array("url" => $url, "category" => "Vendors (Prime Vendor, Sub Vendor, M/WBE Vendor)", "label" => $a, "value" => urlencode($a)));
-        }
-        break;
-      case 'minority_type_name':
-        foreach ($value as $a => $b) {
-          $count++;
-          $url = $smart_search_url . "?search_term=*|*minority_type_name=";
-          array_push($matches, array("url" => $url, "category" => "M/WBE Category", "label" => $a, "value" => urlencode($a)));
-        }
-        break;
-      case 'expenditure_object_name':
-        foreach ($value as $a => $b) {
-          $count++;
-          $url = $smart_search_url . "?search_term=*|*expense_categories=";
-          array_push($matches, array("url" => $url, "category" => "Expense Categories", "label" => $a, "value" => urlencode($a)));
-        }
-        break;
+  $matches_render = [];
+
+  foreach($contents['terms'] as $term=>$matches){
+    foreach($matches as $match=>$count){
+      $url = $smart_search_url . "?search_term=*|*{$term}=";
+      $matches_render[] = [
+        "url" => $url,
+        "category" => $autocomplete_categories[$term],
+        "label" => $match,
+        "value" => urlencode($match)];
     }
-
-  }
-  if ($count == 0) {
-    array_push($matches, array("url" => "", "label" => '<span>' . "No matches found" . '</span>', 'value' => 'No matches found'));
   }
 
-  return drupal_json_output($matches);
+  if (!sizeof($matches_render)){
+    $matches_render = [
+      "url" => "",
+      "label" => '<span>' . "No matches found" . '</span>',
+      'value' => 'No matches found'
+    ];
+  }
+
+//
+//  $count = 0;
+//  foreach ($contents['terms'] as $key => $value) {
+//    switch ($key) {
+//      case 'agency_name':
+//        foreach ($value as $a => $b) {
+//          if (!in_array($a, $contents['terms']['oge_agency_name'])) {
+//            $count++;
+//            $url = $smart_search_url . "?search_term=*|*agency_names=";
+//            $matches[] = ["url" => $url, "category" => "Agencies", "label" => $a, "value" => urlencode($a)];
+//          }
+//        }
+//        break;
+//      case 'oge_agency_name':
+//        foreach ($value as $a => $b) {
+//          $count++;
+//          $url = $smart_search_url . "?search_term=*|*oge_agency_names=";
+//          $matches[] = array("url" => $url, "category" => "Other Government Entities", "label" => $a, "value" => urlencode($a));
+//        }
+//        break;
+//      case 'vendor_name':
+//        foreach ($value as $a => $b) {
+//          $count++;
+//          $url = $smart_search_url . "?search_term=*|*vendor_names=";
+//          array_push($matches, array("url" => $url, "category" => "Vendors (Prime Vendor, Sub Vendor, M/WBE Vendor)", "label" => $a, "value" => urlencode($a)));
+//        }
+//        break;
+//      case 'minority_type_name':
+//        foreach ($value as $a => $b) {
+//          $count++;
+//          $url = $smart_search_url . "?search_term=*|*minority_type_name=";
+//          array_push($matches, array("url" => $url, "category" => "M/WBE Category", "label" => $a, "value" => urlencode($a)));
+//        }
+//        break;
+//      case 'expenditure_object_name':
+//        foreach ($value as $a => $b) {
+//          $count++;
+//          $url = $smart_search_url . "?search_term=*|*expense_categories=";
+//          array_push($matches, array("url" => $url, "category" => "Expense Categories", "label" => $a, "value" => urlencode($a)));
+//        }
+//        break;
+//    }
+//
+//  }
+//  if ($count == 0) {
+//    array_push($matches, ["url" => "", "label" => '<span>' . "No matches found" . '</span>', 'value' => 'No matches found']);
+//  }
+
+  return drupal_json_output($matches_render);
 }
 
 /**
