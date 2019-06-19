@@ -18,7 +18,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-$spending_parameter_mapping = _checkbook_smart_search_domain_fields('spending', $IsOge);
+$spending_parameter_mapping = CheckbookSolr::getSearchFields($solr_datasource, 'spending');
+
+$isNycha = ('nycha' === $solr_datasource);
+$isEdc = ('edc' === $solr_datasource);
+$isOge = $isNycha || $isEdc;
 
 if ($spending_results['fiscal_year_id'] != '') {
   $fiscal_year_id = $spending_results['fiscal_year_id'][0];
