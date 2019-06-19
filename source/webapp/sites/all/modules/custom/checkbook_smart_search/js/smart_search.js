@@ -78,11 +78,11 @@
             dialog = $('<div id="dialog" style="display:none"></div>');
           }
           var domains = '';
-          $.each($('input[name=fdomainName]:checked'), function () {
+          $.each($('input[facet=domain]:checked'), function () {
             domains = domains + "~" + this.value;
           });
           if (domains === '') {
-            $.each($('input[name=fdomainName]'), function () {
+            $.each($('input[facet=domain]'), function () {
               domains = domains + "~" + this.value;
             });
           }
@@ -93,11 +93,11 @@
             '&resultsdomains=' + domains;
 
           var checked_domains = '';
-          $.each($('input[name=fdomainName]:checked'), function () {
+          $.each($('input[facet=domain]:checked'), function () {
             checked_domains = checked_domains === '' ? this.value : checked_domains + "~" + this.value;
           });
           if (checked_domains == '') {
-            $.each($('input[name=fdomainName]'), function () {
+            $.each($('input[facet=domain]'), function () {
               checked_domains = checked_domains === '' ? this.value : checked_domains + "~" + this.value;
             });
           }
@@ -216,7 +216,7 @@
 
       //Sets up jQuery UI autocompletes and autocomplete filtering functionality for agency name facet
       $('.solr_autocomplete', context).each(function () {
-        var facet_name = $(this).attr('facet');
+        var facet_name = $(this).attr('name');
         $(this).autocomplete({
           source: "/solr_autocomplete/" + solr_datasource + "/" + facet_name + "/" + search_term,
           focus: function (event, ui) {
@@ -300,7 +300,7 @@ function applySearchFilters() {
   // adding checked checkboxes to the query string
   var fq = [];
   jQuery('.smart-search-right .narrow-down-filter input:checkbox:checked').each(function () {
-    var facet_name = jQuery(this).attr('facet');
+    var facet_name = jQuery(this).attr('name');
     if (!(facet_name in fq)) {
       fq[facet_name] = [];
     }
