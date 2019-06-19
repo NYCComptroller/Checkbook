@@ -194,6 +194,18 @@ class CheckbookSolrQuery
   }
 
   /**
+   * @param array $termFieldArray
+   * @return CheckbookSolrQuery
+   */
+  public function addTermFields(array $termFieldArray):CheckbookSolrQuery
+  {
+    foreach($termFieldArray as $term){
+      $this->addTermField($term);
+    }
+    return $this;
+  }
+
+  /**
    * @param string $termField
    * @return CheckbookSolrQuery
    */

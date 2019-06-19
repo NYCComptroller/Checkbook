@@ -16,6 +16,23 @@
     "revenue_class_name": "revenue_class_name_autocomplete",
     "revenue_source_name": "revenue_source_name_autocomplete"
   },
+  "autocomplete_terms": {
+    "citywide": {
+      "agency_name": "Agencies",
+      "vendor_name": "Vendors (Prime Vendor, Sub Vendor, M/WBE Vendor)",
+      "minority_type_name": "M/WBE Category",
+      "expenditure_object_name": "Expense Categories"
+    },
+    "edc": {
+      "vendor_name": "Vendors (Prime Vendor, Sub Vendor, M/WBE Vendor)"
+    },
+    "nycha": {
+      "vendor_name": "Vendors (Prime Vendor, Sub Vendor)",
+      "contract_number": "Contract ID",
+      "funding_source_name": "Funding source",
+      "responsibility_center_name": "Responsibility center"
+    }
+  },
   "param_mapping": {
     "oge_agency_names": "oge_agency_name",
     "agency_names": "agency_name",
