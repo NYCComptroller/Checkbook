@@ -58,7 +58,7 @@ function checkbook_faceted_search_theme($existing, $type, $theme, $path)
 {
   return array(
     'smart_search_filter' => array(
-      'template' => 'smart-search-filter',
+      'template' => 'smart_search_filter',
       'arguments' => array('facets' => NULL, 'active_contracts' => NULL, 'registered_contracts' => NULL)
     ),
     'individual_filter' => array(
@@ -615,7 +615,8 @@ function checkbook_faceted_search_preprocess_individual_filter(&$variables)
   $variables['autocomplete_id'] = $data['autocomplete_id'];
   $variables['autocomplete_field_name'] = $data['autocomplete_field_name'];
   $variables['autocomplete_param_name'] = $data['autocomplete_param_name'];
-  if (($node->nid == 518 || $node->nid == 540 || $node->nid == 566 || $node->nid == 709 || $node->nid == 702 || $node->nid == 768) && !preg_match("/\/agency\//", $_GET['q'])) {
+
+  if (in_array($node->nid,[518,540,566,709,702,768]) && !preg_match("/\/agency\//", $_GET['q'])) {
     $variables['hide_filter'] = ' style="display:none" ';
   } else {
     $variables['hide_filter'] = "";
@@ -683,47 +684,6 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables)
   }
 
   $variables['facets_render'] = $facets_render;
-}
-
-/**
- * @param $results
- * @return array
- */
-function ckbk_vendor_type_prepare_results($results)
-{
-  $pv = $results['p']??0 + $results['pm']??0;
-  $sv = $results['s']??0 + $results['sm']??0;
-  $mv = $results['sm']??0 + $results['pm']??0;
-  $return = [];
-  if ($pv) {
-    $return['pv'] = ['Prime Vendor',$pv];
-  }
-  if ($sv) {
-    $return['sv'] = ['Sub Vendor', $sv];
-  }
-  if ($mv) {
-    $return['mv'] = ['M/WBE Vendor', $mv];
-  }
-  return $return;
-}
-
-function array_values_recursive($ary)
-{
-  $lst = array();
-  if (is_array($ary)) {
-    foreach (array_keys($ary) as $k) {
-      $v = $ary[$k];
-      if (is_scalar($v)) {
-        $lst[] = $v;
-      } elseif (is_array($v)) {
-        $lst = array_merge($lst,
-          array_values_recursive($v)
-        );
-      }
-    }
-  }
-
-  return $lst;
 }
 
 function checkbook_faceted_search_replaceSlash($string)

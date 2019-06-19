@@ -149,8 +149,7 @@ function checkbook_smart_search_form($form, $form_state)
       ['system', 'ui.autocomplete', FALSE]
     ],
     'js' => [
-      'type' => 'file',
-      'data' => drupal_get_path('module', 'checkbook_smart_search') . '/js/smart_search.js'
+      drupal_get_path('module', 'checkbook_smart_search') . '/js/smart_search.js'
     ]
   ];
 

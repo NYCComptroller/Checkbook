@@ -89,22 +89,31 @@ foreach ($facets_render??[] as $facet_name => $facet) {
 
       $id = 'facet_'.$facet_name.$index;
       $active='';
-      echo '<div class="row">';
-      echo '<div class="checkbox">';
+      echo <<<END
+
+    <div class="row">
+      <label for="{$id}">
+        <div class="checkbox">
+
+END;
 
       $checked = '';
       if ($facet->selected||$just_one_result) {
-        $checked = in_array($facet_value, $facet->selected);
+        $checked = $facet->selected && in_array($facet_value, $facet->selected);
         $checked = $checked||$just_one_result ? ' checked="checked" ' : '';
       }
       echo '<input type="checkbox" id="'.$id.'" '.$checked . ' facet="'.$facet_name.'" value="'.
-        htmlentities($facet_value).'" onClick="javascript:applySearchFilters();" />';
-      echo '<label for="'.$id.'">';
-      echo '</label>';
-      echo '</div>';
+        htmlentities($facet_value).'" />';
+      echo <<<END
+
+      <label for="{$id}" />
+    </div>
+
+END;
 
       echo '<div class="name">' . htmlentities($facet_result_title) . '</div>';
       echo '<div class="number"><span' . $active . '>' . number_format($count) . '</span></div>';
+      echo '</label>';
 
       if (($checked||$just_one_result) && ($children = $facet->sub->$facet_value??false)){
         $sub_index=0;
@@ -127,6 +136,7 @@ foreach ($facets_render??[] as $facet_name => $facet) {
             $id = 'facet_'.$sub_facet_name.$sub_index;
             $active='';
             echo '<div class="row">';
+            echo "<label for=\"{$id}\">";
             echo '<div class="checkbox">';
 
             $checked = '';
@@ -135,16 +145,17 @@ foreach ($facets_render??[] as $facet_name => $facet) {
               $checked = $checked ? ' checked="checked" ' : '';
             }
             echo '<input type="checkbox" id="'.$id.'" '.$checked . ' facet="'.$sub_facet_name.'" value="'.
-              htmlentities($sub_facet_value).'" onClick="javascript:applySearchFilters();" />';
-            echo '<label for="'.$id.'"></label>';
+              htmlentities($sub_facet_value).'" />';
+            echo "<label for=\"{$id}\" />";
             echo '</div>';
 
             echo '<div class="name">' . htmlentities($facet_result_title) . '</div>';
             echo '<div class="number"><span' . $active . '>' . number_format($sub_count) . '</span></div>';
+            echo '</label>';
 
             echo '</div>';
+            $sub_index++;
           }
-          $sub_index++;
           echo '</div>';
         }
       }
