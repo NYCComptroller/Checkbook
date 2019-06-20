@@ -24,10 +24,10 @@
       "expenditure_object_name": "Expense Categories"
     },
     "edc": {
-      "vendor_name": "Vendors (Prime Vendor, Sub Vendor, M/WBE Vendor)"
+      "vendor_name": "Vendors"
     },
     "nycha": {
-      "vendor_name": "Vendors (Prime Vendor, Sub Vendor)",
+      "vendor_name": "Vendors",
       "contract_number": "Contract ID",
       "funding_source_name": "Funding source",
       "responsibility_center_name": "Responsibility center"
