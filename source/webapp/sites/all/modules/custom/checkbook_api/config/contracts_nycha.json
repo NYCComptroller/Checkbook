@@ -222,7 +222,7 @@
       "fiscal_year":"release_approved_year"
     },
     "dataset":{
-      "name":"checkbook_nycha:nycha_all_agreements",
+      "name":"checkbook_nycha:all_agreement_transactions_hrcy",
       "data_source":"checkbook_nycha",
       "sortColumn":["-sort_sequence"],
       "columnTypes":{
