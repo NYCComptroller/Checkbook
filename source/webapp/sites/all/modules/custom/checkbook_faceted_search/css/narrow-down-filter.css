@@ -84,7 +84,7 @@ div.filter-content-fdomainName div.options{
 .grid-3 div.row,
 .page-node div.row,
 .smart-search-right div.row{
-    padding: 5px 5px 0 10px;
+    padding: 5px 10px 0 10px;
     min-height: 18px;
 }
 .grid-3 div.checkbox,
@@ -125,7 +125,7 @@ div.filter-content-fdomainName div.options{
 .page-node div.number,
 .smart-search-right div.number{
     text-align: right;
-    width: 70px;
+    width: 65px;
     float: right;
     padding-top: 2px;
 }
