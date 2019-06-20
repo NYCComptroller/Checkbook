@@ -121,8 +121,6 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
     $keys = explode("=", $keyvaluepair);
     if ($keys[1] == 'registered') {
       $reg_flag = true;
-    } else {
-//      $act_flag = true;
     }
   }
 

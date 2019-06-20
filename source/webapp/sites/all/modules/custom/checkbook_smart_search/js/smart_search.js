@@ -210,7 +210,7 @@
       var solr_datasource = Drupal.settings.solr_datasource || 'citywide';
       var search_term = window.location.href.toString().split(window.location.host)[1];
 
-      $('input:checkbox', context).each(function () {
+      $('.smart-search-right input:checkbox', context).each(function () {
         $(this).click(applySearchFilters);
       });
 
