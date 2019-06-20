@@ -219,6 +219,9 @@
       "release_number": {
         "title": "Release Number",
         "autocomplete": true
+      },
+      "civil_service_title": {
+        "title": "Civil Service"
       }
     }
   },
