@@ -224,7 +224,7 @@
     "dataset":{
       "name":"checkbook_nycha:nycha_all_agreements",
       "data_source":"checkbook_nycha",
-      "sortColumn":["-contract_id", "release_number", "shipment_number"],
+      "sortColumn":["-sort_sequence"],
       "columnTypes":{
         "contract_id":"like",
         "vendor":"like",
