@@ -80,12 +80,23 @@ div.filter-content-fdomainName div.options{
     max-height: 200px;
     overflow: auto;
     width: 100%;
+    margin-top: 5px;
 }
 .grid-3 div.row,
 .page-node div.row,
 .smart-search-right div.row{
-    padding: 5px 10px 0 10px;
+    padding: 7px 10px 0 10px;
     min-height: 18px;
+}
+.grid-3 div.row:hover,
+.page-node div.row:hover,
+.smart-search-right div.row:hover{
+  background-color:#eee !important;
+}
+.grid-3 div.row:nth-child(even),
+.page-node div.row:nth-child(even),
+.smart-search-right div.row:nth-child(even){
+  background-color:#fafafa;
 }
 .grid-3 div.checkbox,
 .grid-3 div.name,
@@ -125,7 +136,7 @@ div.filter-content-fdomainName div.options{
 .page-node div.number,
 .smart-search-right div.number{
     text-align: right;
-    width: 65px;
+    width: 60px;
     float: right;
     padding-top: 2px;
 }
