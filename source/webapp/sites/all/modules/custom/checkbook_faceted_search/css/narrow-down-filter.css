@@ -88,6 +88,11 @@ div.filter-content-fdomainName div.options{
     padding: 7px 10px 0 10px;
     min-height: 18px;
 }
+.grid-3 div.row:hover,
+.page-node div.row:hover,
+.smart-search-right div.row:hover{
+  background-color:#eee;
+}
 .grid-3 div.checkbox,
 .grid-3 div.name,
 .grid-3 div.number,
