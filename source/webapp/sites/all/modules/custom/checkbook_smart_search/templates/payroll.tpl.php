@@ -18,7 +18,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-$payroll_parameter_mapping = _checkbook_smart_search_domain_fields('payroll', $IsOge);
+$payroll_parameter_mapping = CheckbookSolr::getSearchFields($solr_datasource, 'payroll');
 
 $agency_id = $payroll_results['agency_id'];
 $dept_id = $payroll_results['department_id'];
@@ -27,20 +27,19 @@ $fiscal_year_id = $payroll_results['fiscal_year_id'][0];
 $salaried = $payroll_results['amount_basis_id'];
 $title = urlencode($payroll_results['civil_service_title']);
 
-if ($IsOge) {
-    $linkable_fields = array(
-        "oge_agency_name" => "/payroll/agency_landing/datasource/checkbook_nycha/yeartype/C/year/" . $fiscal_year_id . "/agency/" . $agency_id,
-    );
-}else {
-    $linkable_fields = array(
-        "agency_name" => "/payroll/agency_landing/yeartype/C/year/" . $fiscal_year_id . "/agency/" . $agency_id,
-    );
-}
-
-if($IsOge){
-    $agencyLandingUrl = "/agency_landing";
-    $dataSourceUrl = "/datasource/checkbook_nycha/agency/" . $agency_id;
-}else{
+switch($solr_datasource){
+  case 'nycha':
+  case 'oge':
+    $linkable_fields = [
+      "oge_agency_name" => "/payroll/agency_landing/datasource/checkbook_nycha/yeartype/C/year/" . $fiscal_year_id . "/agency/" . $agency_id,
+    ];
+  $agencyLandingUrl = "/agency_landing";
+  $dataSourceUrl = "/datasource/checkbook_nycha/agency/" . $agency_id;
+    break;
+  default:
+    $linkable_fields = [
+      "agency_name" => "/payroll/agency_landing/yeartype/C/year/" . $fiscal_year_id . "/agency/" . $agency_id,
+    ];
     $agencyLandingUrl = "";
     $dataSourceUrl = "";
 }

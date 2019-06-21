@@ -1,22 +1,22 @@
 <?php
 /**
-* This file is part of the Checkbook NYC financial transparency software.
-* 
-* Copyright (C) 2012, 2013 New York City
-* 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as
-* published by the Free Software Foundation, either version 3 of the
-* License, or (at your option) any later version.
-* 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-* 
-* You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * This file is part of the Checkbook NYC financial transparency software.
+ *
+ * Copyright (C) 2019 New York City
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 
 
@@ -38,44 +38,25 @@ function checkbook_smart_search_menu(){
         'file' => 'includes/checkbook_smart_search.inc',
     	'type' => MENU_CALLBACK
     );
-    $items['smart_search/%'] = array(
-    	'title' => '',
-    	'page callback' => '_checkbook_smart_search_get_results',
-    	'page arguments' => array(1),
-        'access callback' => TRUE,
-        'file' => 'includes/checkbook_smart_search.inc',
-    	'type' => MENU_CALLBACK
-    );
     $items['smart_search/autocomplete'] = array(
-        'page callback' => '_checkbook_smart_search_autocomplete',
+        'page callback' => '_checkbook_smart_search_autocomplete_main_input',
         'access callback' => TRUE,
         'file' => 'includes/checkbook_smart_search.inc',
         'type' => MENU_CALLBACK
     );
-    $items['smart_search/autocomplete/oge'] = array(
-        'page callback' => '_checkbook_smart_search_oge_autocomplete',
-        'access callback' => TRUE,
-        'file' => 'includes/checkbook_smart_search.inc',
-        'type' => MENU_CALLBACK
+    $items['solr_autocomplete'] = array(
+      'page callback' => '_checkbook_smart_search_autocomplete',
+      'access callback' => TRUE,
+      'file' => 'includes/checkbook_smart_search.inc',
+      'type' => MENU_CALLBACK
     );
-    $items['smart_search/autocomplete/agency'] = array(
-        'page callback' => '_checkbook_smart_search_agency_autocomplete',
-        'access callback' => TRUE,
-        'file' => 'includes/checkbook_smart_search.inc',
-        'type' => MENU_CALLBACK
+    $items['advanced_autocomplete'] = array(
+      'page callback' => '_checkbook_advanced_search_autocomplete',
+      'access callback' => TRUE,
+      'file' => 'includes/checkbook_smart_search.inc',
+      'type' => MENU_CALLBACK
     );
-    $items['smart_search/autocomplete/vendor'] = array(
-        'page callback' => '_checkbook_smart_search_vendor_autocomplete',
-        'access callback' => TRUE,
-        'file' => 'includes/checkbook_smart_search.inc',
-        'type' => MENU_CALLBACK
-    );
-    /*$items['smart_search/autocomplete/oge'] = array(
-        'page callback' => '_checkbook_smart_search_oge_autocomplete',
-        'access callback' => TRUE,
-        'file' => 'includes/checkbook_smart_search.inc',
-        'type' => MENU_CALLBACK
-    );*/
+
     $items['smart_search/facet/vendor'] = array(
         'page callback' => '_checkbook_smart_search_vendor_facet',
         'access callback' => TRUE,
@@ -89,13 +70,7 @@ function checkbook_smart_search_menu(){
         'file' => 'includes/checkbook_smart_search.inc',
         'type' => MENU_CALLBACK
     );
-   $items['smart_search/facet/expensecategory'] = array(
-        'page callback' => '_checkbook_smart_search_expensecategory_facet',
-        'access callback' => TRUE,
-        'file' => 'includes/checkbook_smart_search.inc',
-        'type' => MENU_CALLBACK,
-        'page arguments' => array(4)
-    );
+
     $items['smart_search/autocomplete/fiscalyear'] = array(
         'page callback' => '_checkbook_smart_search_fiscalyear_autocomplete',
         'access callback' => TRUE,
@@ -151,47 +126,67 @@ function checkbook_smart_search_display(){
  * @param $form_state
  * @return mixed
  */
+function checkbook_smart_search_form($form, $form_state)
+{
+  $solr_datasource = _checkbook_get_datasource();
+  module_load_include('inc', 'checkbook_smart_search', 'includes/checkbook_smart_search');
+  $form['search_box'] = [
+    '#type' => 'textfield',
+    '#size' => 30,
+    '#maxlength' => 100,
+  ];
+  $form['domain'] = [
+    '#type' => 'hidden',
+    '#value' => $solr_datasource,
+  ];
+  $form['submit'] = [
+    '#type' => 'submit',
+    '#value' => t('Search'),
+    '#submit' => ['_checkbook_smart_search_submit']
+  ];
+  $form['#attached'] = [
+    'library' => [
+      ['system', 'ui.autocomplete', FALSE]
+    ],
+    'js' => [
+      drupal_get_path('module', 'checkbook_smart_search') . '/js/smart_search.js'
+    ]
+  ];
 
-function checkbook_smart_search_form($form, $form_state){
- module_load_include('inc','checkbook_smart_search','includes/checkbook_smart_search');
-    $form['search_box'] = array(
-        '#type' => 'textfield',
-        '#size' => 30,
-        '#maxlength' => 100,
-    );
-    $form['domain'] = [
-        '#type' => 'hidden',
-        '#value' => _checkbook_get_datasource(),
-    ];
-    $form['submit'] = array(
-        '#type' => 'submit',
-        '#value' => t('Search'),
-        '#submit' => array('_checkbook_smart_search_submit')
-    );
-    $form['#attached'] = array(
-        'library' => array(
-            array('system', 'ui.autocomplete', FALSE)
-        ),
-        'js' => array(
-            'type' => 'file',
-            'data' => drupal_get_path('module', 'checkbook_smart_search') . '/js/smart_search.js'
-        )
-    );
+  drupal_add_js(['solr_datasource' => $solr_datasource], 'setting');
 
-    return $form;
+  return $form;
+}
+
+/**
+ * @param $form
+ * @param $form_state
+ * @param $form_id
+ */
+function checkbook_smart_search_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'checkbook_smart_search_form') {
+    $solr_datasource = _checkbook_get_datasource();
+    switch ($solr_datasource){
+      case 'edc':
+        $placeholder = 'Search New York City Economic Development Corporation...';
+        break;
+      case 'nycha':
+        $placeholder = 'Search New York City Housing Authority...';
+        break;
+      default:
+        $placeholder = 'Search New York City information...';
+    }
+    $form['search_box']['#attributes']['placeholder'] = $placeholder;
+  }
 }
 
 
 /** Theme for search results page. **/
 function checkbook_smart_search_theme(){
     return array(
-        'checkbook_smart_search_results' => array(
-            'template' => 'templates/checkbook_smart_search_results',
+        'smart_search_results' => array(
+            'template' => 'templates/results',
             'arguments' => array('search_results' => NULL)
-        ),
-        'search_facets' => array(
-            'template' => 'templates/search_facets',
-            'arguments' => array('search_facets' => NULL)
         ),
         'revenue' => array(
             'template' => 'templates/revenue',
@@ -217,20 +212,19 @@ function checkbook_smart_search_theme(){
             'template' => 'templates/contracts',
             'arguments' => array('contracts_results' => NULL)
         ),
-        'facet_results' => array(
-            'template' => 'templates/facet_results',
-            'arguments' => array('results' => NULL,'name' => NULL)
-        ),
         'ajax_results' => array(
-            'template' => 'templates/checkbook_smart_search_ajax_results',
+            'template' => 'templates/ajax_results',
             'arguments' => array('results' => NULL,'name' => NULL)
         ),
         'checkbook_smart_search_export_form' => array(
-            'template' => 'templates/checkbook_smart_search_export_dialog'
+            'template' => 'templates/export_dialog'
         ) 
     );
 }
 
+/**
+ * @return mixed
+ */
 function checkbook_smart_search_block_info(){
     $blocks['checkbook_smart_search_form'] = array(
         'info' => t('Checkbook Smart Search Form Block'),

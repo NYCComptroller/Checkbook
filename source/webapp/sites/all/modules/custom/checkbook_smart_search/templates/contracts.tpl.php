@@ -6,9 +6,11 @@
 * 	(see the file LICENSE for details)
 */
 
+$contracts_parameter_mapping = CheckbookSolr::getSearchFields($solr_datasource, 'contracts');
 
-
-$contracts_parameter_mapping = _checkbook_smart_search_domain_fields('contracts', $IsOge);
+$isNycha = ('nycha' === $solr_datasource);
+$isEdc = ('edc' === $solr_datasource);
+$isOge = $isNycha || $isEdc;
 
 if(strtolower($contracts_results['contract_status']) == 'registered'){
 

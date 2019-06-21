@@ -2,7 +2,7 @@
 
 /**
  * This function returns current NYC fiscal year ID
- * @return year_id
+ * @return string
  */
 function _getFiscalYearID()
 {
@@ -24,7 +24,7 @@ function _getFiscalYearID()
 
 /**
  * This function returns Calendar year ID
- * @return year_id
+ * @return string
  */
 function _getCurrentCalendarYearID()
 {
@@ -66,7 +66,7 @@ function _getCurrentYearID()
 /**
  * returns NYC year id for a giver year ...
  * @param string $year_value
- * @return year_id
+ * @return string
  */
 function _getYearIDFromValue($year_value)
 {
@@ -84,7 +84,7 @@ function _getYearIDFromValue($year_value)
 /**
  * return year value for a give year id ...
  * @param string $year_id
- * @return year_value
+ * @return string
  */
 function _getYearValueFromID($year_id)
 {
@@ -590,6 +590,10 @@ function _checkbook_project_get_name_for_argument($keyword, $id)
             $depts = _checkbook_project_querydataset($data_source.':department', array('department_id', 'department_name'), array($keyword => $id));
             return ucwords(strtolower($depts[0]['department_name']));
             break;
+        case "department_code":
+            $deptcodes = _checkbook_project_querydataset($data_source.':department_code', array('department_code', 'department_name'), array($keyword => $id));
+            return ucwords(strtolower($deptcodes[0]['department_name']));
+            break;
         case "award_method_id":
             $award_methods = _checkbook_project_querydataset($data_source.':award_method', array('award_method_id', 'award_method_name'), array($keyword => $id));
             return ucwords(strtolower($award_methods[0]['award_method_name']));
@@ -664,7 +668,7 @@ function _checkbook_project_get_name_for_argument($keyword, $id)
  * @param string $dataset
  * @param array|string $columns
  * @param null $parameters
- * @return void
+ * @return mixed
  */
 function _checkbook_project_querydataset($dataset, $columns, $parameters = null)
 {
@@ -685,7 +689,7 @@ function _checkbook_project_querydataset($dataset, $columns, $parameters = null)
  * @param $parameters Widget parsed request parameters
  * @param $contractType Contract Type
  * @param null $dimension
- * @return void adjusted parameters
+ * @return mixed adjusted parameters
  */
 function _checkbook_project_adjustContractParameterFilters(&$node, &$parameters, $contractType, $dimension = null)
 {
@@ -705,14 +709,14 @@ function _checkbook_project_adjustContractParameterFilters(&$node, &$parameters,
             $yearTypeCol = $node->widgetConfig->urlParamMap->$yearTypeParam;
             $reqYearType = $node->widgetConfig->requestParams[$yearTypeCol];
             $current_url = $_SERVER['HTTP_REFERER'];
-            if (preg_match("/contract\/search\/transactions/", $current_url)) {
-                $advanced_search = true;
-            } else {
-                $current_url = request_uri();
-                if (preg_match("/contract\/search\/transactions/", $current_url)) {
-                    $advanced_search = true;
-                }
-            }
+//            if (preg_match("/contract\/search\/transactions/", $current_url)) {
+//                $advanced_search = true;
+//            } else {
+//                $current_url = request_uri();
+//                if (preg_match("/contract\/search\/transactions/", $current_url)) {
+//                    $advanced_search = true;
+//                }
+//            }
 
             if (isset($reqYearType) && ($reqYearType == 'C') && !_checkbook_check_isEDCPage()) {
                 if (isset($node->widgetConfig->dataset)) {
@@ -2248,6 +2252,9 @@ function _checkbook_append_url_params($source = null, $overidden_params = array(
  */
 function _checkbook_check_isEDCPage()
 {
+    if ('edc' == _checkbook_get_datasource()) {
+      return true;
+    }
     $database = RequestUtilities::get('datasource');
     if (isset($database) && $database == 'checkbook_oge') {
         return true;
@@ -2261,6 +2268,9 @@ function _checkbook_check_isEDCPage()
  */
 function _checkbook_check_isNYCHAPage()
 {
+    if ('nycha' == _checkbook_get_datasource()) {
+      return true;
+    }
     $database = RequestUtilities::get('datasource');
     if (isset($database) && $database == 'checkbook_nycha') {
         return true;
@@ -2356,7 +2366,8 @@ function _checkbook_get_datasource()
 {
     $url = '//'.current_path();
 
-    if (strpos($url, '/nycha')){
+    if (strpos($url, '/nycha')
+    || strpos($url, 'agency/162')){
       return 'nycha';
     }
 
