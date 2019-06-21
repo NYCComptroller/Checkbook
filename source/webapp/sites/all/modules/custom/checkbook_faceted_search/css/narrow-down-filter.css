@@ -91,7 +91,12 @@ div.filter-content-fdomainName div.options{
 .grid-3 div.row:hover,
 .page-node div.row:hover,
 .smart-search-right div.row:hover{
-  background-color:#eee;
+  background-color:#eee !important;
+}
+.grid-3 div.row:nth-child(even),
+.page-node div.row:nth-child(even),
+.smart-search-right div.row:nth-child(even){
+  background-color:#fafafa;
 }
 .grid-3 div.checkbox,
 .grid-3 div.name,
