@@ -18,7 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-$payroll_parameter_mapping = CheckbookSolr::getSearchFields($solr_datasource, 'payroll');
+$payroll_parameter_mapping = (array)CheckbookSolr::getSearchFields($solr_datasource, 'payroll');
 
 $agency_id = $payroll_results['agency_id'];
 $dept_id = $payroll_results['department_id'];
@@ -55,6 +55,7 @@ $amount_fields = array("gross_pay", "base_pay", "other_payments", "overtime_pay"
 $count = 1;
 $row = array();
 $rows = array();
+
 foreach ($payroll_parameter_mapping as $key => $title){
   $value = $payroll_results[$key];
 
@@ -93,11 +94,17 @@ foreach ($payroll_parameter_mapping as $key => $title){
     if($title)
         $row[] = '<div class="field-label">'.$title.':</div><div class="field-content">'.html_entity_decode($value).'</div>';
     $rows[] = $row;
-    $row = array();
+    $row = [];
   } else {
     if($title)
         $row[] = '<div class="field-label">'.$title.':</div><div class="field-content">'.html_entity_decode($value).'</div>';
   }
   $count++;
 }
+
+if (sizeof($row)){
+  $row[] ='';
+  $rows[]=$row;
+}
+
 print theme('table',array('rows'=>$rows,'attributes'=>array('class'=>array('search-result-fields'))));
