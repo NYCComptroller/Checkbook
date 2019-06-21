@@ -356,7 +356,7 @@
     "nycha": {
       "spending": {
         "spending_category_name": "Spending Category",
-        "oge_agency_name": "Agency",
+        "agency_name": "Agency",
         "department_name": "Department",
         "vendor_name": "Payee Name",
         "expenditure_object_name": "Expense Category",
@@ -402,7 +402,7 @@
       },
       "payroll": {
         "civil_service_title": "Title",
-        "oge_agency_name": "Agency",
+        "agency_name": "Agency",
         "pay_frequency": "Pay Frequency",
         "pay_date": "Pay Date",
         "gross_pay": "Gross Pay",
