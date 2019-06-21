@@ -58,7 +58,7 @@ function checkbook_faceted_search_theme($existing, $type, $theme, $path)
 {
   return array(
     'smart_search_filter' => array(
-      'template' => 'smart-search-filter',
+      'template' => 'smart_search_filter',
       'arguments' => array('facets' => NULL, 'active_contracts' => NULL, 'registered_contracts' => NULL)
     ),
     'individual_filter' => array(
@@ -615,7 +615,8 @@ function checkbook_faceted_search_preprocess_individual_filter(&$variables)
   $variables['autocomplete_id'] = $data['autocomplete_id'];
   $variables['autocomplete_field_name'] = $data['autocomplete_field_name'];
   $variables['autocomplete_param_name'] = $data['autocomplete_param_name'];
-  if (($node->nid == 518 || $node->nid == 540 || $node->nid == 566 || $node->nid == 709 || $node->nid == 702 || $node->nid == 768) && !preg_match("/\/agency\//", $_GET['q'])) {
+
+  if (in_array($node->nid,[518,540,566,709,702,768]) && !preg_match("/\/agency\//", $_GET['q'])) {
     $variables['hide_filter'] = ' style="display:none" ';
   } else {
     $variables['hide_filter'] = "";
@@ -657,443 +658,32 @@ function checkbook_faceted_search_preprocess_pagination(&$variables)
 
 function checkbook_faceted_search_preprocess_smart_search_filter(&$variables)
 {
-  $facets = $variables['facets'];
-  $active_contracts = $variables['active_contracts'];
-  $registered_contracts = $variables['registered_contracts'];
-  $selected_filters = $variables['selected_facet_results'];
-  $output = NULL;
-  $ogeAgencies = $agencies = $vendors = $vendor_type = $expenseCategories = $revenueCategories = $fiscalYears = $regfiscalYears = $domains = $contractCategory = $contractStatus = $spendingCategory = $MWBECategory = $contractMWBECategory = $spendingMWBECategory = $industryType = $payrollType = array();
-  $reqOGEAgencies = $reqAgencies = $reqFiscalYears = $regreqFiscalYears = $reqDomains = $reqVendors = $reqVendorType = $reqExpenseCategories = $reqRevenueCategories = $reqSpendCategories = $reqMWBECategory = $reqIndustryType = $reqpayrollType = array();
+  $solr_datasource = $variables['solr_datasource'];
 
-  //arrays for the selected facet values from the URL
-  foreach ($selected_filters as $key => $value) {
-    switch ($key) {
-      case 'agency_name':
-        $reqAgencies[] = $value;
-        break;
-      case 'oge_agency_name':
-        $reqOGEAgencies[] = $value;
-        break;
-      case 'fiscal_year':
-        $reqFiscalYears[] = $value;
-        break;
-      case 'registered_fiscal_year':
-        $regreqFiscalYears[] = $value;
-        break;
-      case 'domain':
-        $reqDomains[] = $value;
-        break;
-      case 'vendor_name':
-        $reqVendors[] = $value;
-        break;
-      case 'vendor_type':
-        $reqVendorType[] = $value;
-        break;
-      case 'expenditure_object_name':
-        $reqExpenseCategories[] = $value;
-        break;
-      case 'spending_category_name':
-        $reqSpendCategories[] = $value;
-        break;
-      case 'contract_category_name':
-        $reqContCategories[] = $value;
-        break;
-      case 'contract_status':
-        $reqContStatus[] = $value;
-        break;
-      case 'mwbe_category':
-        $reqMWBECategory[] = $value;
-        break;
-      case 'industry_type_name':
-        $reqIndustryType[] = $value;
-        break;
-      case 'payroll_type':
-        $reqpayrollType[] = $value;
-        break;
+  $facet_config = CheckbookSolr::getFacetConfigByDatasource($solr_datasource);
+
+  $facets_render = [];
+
+  foreach($variables['facets'] as $facet => $results) {
+    if (!$results) {
+      continue;
     }
+    $facets_render[$facet] = $facet_config->$facet;
+    // apply json config `prepare_results` function
+    if ($prepare_fn = $facet_config->$facet->prepare_results) {
+      $results = $prepare_fn($results);
+    }
+    $facets_render[$facet]->results = array_slice($results, 0, 100, true);
   }
-  $search_terms = explode('*|*', $_REQUEST['search_term']); // array("Education", "domains=Payroll~Spending", "fiscal_years=2014~2013")
-  foreach ($search_terms as $id => $keyvaluepair) {
-    $keys = explode("=", $keyvaluepair);
-    if ($keys[1] == 'active') {
-      $reqContStatus[0][0]['name'] = 'active';
-      $reqContStatus[0][0]['count'] = $active_contracts['response']['numFound'];
+
+  $selected = $variables['selected_facet_results'];
+  if (sizeof($selected)) {
+    foreach($selected as $facet=>$values){
+      $facets_render[$facet]->selected = $values;
     }
   }
 
-  //arrays for the facet values
-  foreach ($facets as $key => $value) {
-    switch ($key) {
-      case 'agency_name':
-        $agencies[] = $value[$key];
-        break;
-      case 'oge_agency_name':
-        $ogeAgencies[] = $value[$key];
-        break;
-      case 'fiscal_year':
-        $fiscalYears[] = $value[$key];
-        break;
-      case 'registered_fiscal_year':
-        $regfiscalYears[] = $value[$key];
-        break;
-      case 'domain':
-        $domains[] = $value[$key];
-        break;
-      case 'vendor_name':
-        $vendors[] = $value[$key];
-        break;
-      case 'vendor_type':
-        $vendor_type[] = $value['vendor_type'];
-        break;
-      case 'expenditure_object_name':
-        $expenseCategories[] = $value[$key];
-        break;
-      case 'spending_category_name':
-        $spendingCategory[] = $value[$key];
-        break;
-      case 'contract_category_name':
-        $contractCategory[] = $value[$key];
-        break;
-      case 'contract_status':
-        $contractStatus[] = $value[$key];
-        break;
-      case 'mwbe_category':
-        $MWBECategory[] = $value['minority_type_name'];
-        break;
-      case 'industry_type_name':
-        $industryType[] = $value['industry_type_name'];
-        break;
-      case 'payroll_type':
-        $payrollType[] = $value['payroll_type'];
-        break;
-    }
-  }
-  $contractStatus[0]['active'] = $active_contracts['response']['numFound'];
-
-  if ($domains[0] ?? false) {
-    foreach ($domains[0] as $domainName => $count) {
-      if ($count > 0) {
-        $checked = (in_array($domainName, array_values_recursive($reqDomains[0]))) ? 'checked' : '';
-        $output['Type of Data'][] = array($domainName, $domainName, $count, $checked);
-        $output['Type of Data']['name'] = 'fdomainName';
-        if ($domainName == 'spending' && $checked == 'checked') {
-          foreach ($spendingCategory[0] as $spendingName => $spendingCount) {
-            if ($spendingCount > 0) {
-              $spendingValue = urlencode($spendingName);
-              $checked = (in_array($spendingName, array_values_recursive($reqSpendCategories[0]))) ? 'checked' : '';
-              $subCat['spending']['Spending Category'][] = array($spendingValue, $spendingName, $spendingCount, $checked);
-            }
-            $subCat['spending']['Spending Category']['name'] = 'fspendingCatName';
-          }
-        }
-        if ($domainName == 'contracts' && $checked == 'checked') {
-          if ($contractCategory[0] ?? false) {
-            foreach ($contractCategory[0] as $catName => $catCount) {
-              if ($catCount > 0) {
-                $checked = (in_array($catName, array_values_recursive($reqContCategories[0]))) ? 'checked' : '';
-                $subCat['contracts']['Category'][] = array($catName, $catName, $catCount, $checked);
-              }
-            }
-            $subCat['contracts']['Category']['name'] = 'fcontractCatName';
-          }
-          if (count($contractStatus) > 0) {
-            foreach ($contractStatus as $key => $value) {
-              foreach ($value as $status => $statusCount) {
-                $checked = (in_array($status, array_values_recursive($reqContStatus[0]))) ? 'checked' : '';
-                //$subCat['contracts']['Status'][] = array($status, $status, $statusCount, $checked);
-                if (strtolower($status) == 'registered') {
-                  if ($registered_contracts['response']['numFound'] > 0) {
-                    $subCat['contracts']['Status'][] = array('registered', 'Registered', $registered_contracts['response']['numFound'], $checked);
-                  }
-                } else if (strtolower($status) == 'active') {
-                  if ($active_contracts['response']['numFound'] > 0) {
-                    $subCat['contracts']['Status'][] = array('active', 'Active', $active_contracts['response']['numFound'], $checked);
-                  }
-                } else {
-                  $subCat['contracts']['Status'][] = array($status, $status, $statusCount, $checked);
-                }
-              }
-            }
-            $subCat['contracts']['Status']['name'] = 'fcontractStatus';
-          }
-        }
-      }
-    }
-  }
-
-  if ($agencies[0] ?? false) {
-    foreach ($agencies[0] as $agencyName => $count) {
-      if ($count > 0) {
-        $checked = in_array($agencyName, array_values_recursive($reqAgencies[0]));
-        $agencyValue = urlencode($agencyName);
-        if ($checked) {
-          $output['Citywide Agency']['checked'][] = array($agencyValue, $agencyName, $count);
-        } else {
-          if (count($reqOGEAgencies) == 0 || strlen($agencyName) > 0)
-            $output['Citywide Agency']['unchecked'][] = array($agencyValue, $agencyName, $count);
-        }
-      }
-    }
-    $output['Citywide Agency']['name'] = 'fagencyName';
-    if ($reqAgencies[0] ?? false) {
-      foreach ($reqAgencies[0] as $key => $value) {
-        if (!in_array($value['name'], array_values_recursive($output['Citywide Agency']['checked'])) && strlen($value['name']) > 0) {
-          $output['Citywide Agency']['checked'][] = array(urlencode($value['name']), $value['name'], $value['count']);
-        }
-      }
-    }
-  }
-
-  if ($ogeAgencies[0] ?? false) {
-    foreach ($ogeAgencies[0] as $agencyName => $count) {
-      if ($count > 0) {
-        $checked = in_array($agencyName, array_values_recursive($reqOGEAgencies[0]));
-        $agencyValue = urlencode($agencyName);
-        if ($checked) {
-          $output['Other Government Entity']['checked'][] = array($agencyValue, $agencyName, $count);
-        } else {
-          $output['Other Government Entity']['unchecked'][] = array($agencyValue, $agencyName, $count);
-        }
-      }
-    }
-    $output['Other Government Entity']['name'] = 'fogeName';
-    if ($reqOGEAgencies[0] ?? false) {
-      foreach ($reqOGEAgencies[0] as $key => $value) {
-        if (!in_array($value['name'], array_values_recursive($output['Other Government Entity']['checked']))) {
-          $output['Other Government Entity']['checked'][] = array(urlencode($value['name']), $value['name'], $value['count']);
-        }
-      }
-    }
-  }
-
-  if ($vendors[0] ?? false) {
-    foreach ($vendors[0] as $vendorName => $count) {
-      if ($count > 0) {
-        //use strict param=true search so that integer values don't get mistaken as strings.
-        $checked = in_array($vendorName, array_values_recursive($reqVendors[0]), true);
-        $vendorValue = urlencode($vendorName);
-        if ($checked) {
-          $output['Vendor']['checked'][] = array($vendorValue, $vendorName, $count);
-        } else {
-          $output['Vendor']['unchecked'][] = array($vendorValue, $vendorName, $count);
-        }
-      }
-    }
-    $output['Vendor']['name'] = 'fvendorName';
-    if ($reqVendors[0] ?? false) {
-      foreach ($reqVendors[0] as $key => $value) {
-        if (!in_array($value['name'], array_values_recursive($output['Vendor']['checked']))) {
-          $output['Vendor']['checked'][] = array(urlencode($value['name']), $value['name'], $value['count']);
-        }
-      }
-    }
-  }
-
-// Vendor type
-  if ($vendor_type[0] ?? false) {
-    foreach ($vendor_type[0] as $vendorTypeName => $count) {
-      if ($count > 0) {
-        $checked = in_array($vendorTypeName, array_values_recursive($reqVendorType[0]));
-        $vendorTypeValue = urlencode($vendorTypeName);
-        if ($checked) {
-          $output['Vendor Type']['checked'][] = array($vendorTypeValue, $vendorTypeName, $count);
-        } else {
-          $output['Vendor Type']['unchecked'][] = array($vendorTypeValue, $vendorTypeName, $count);
-        }
-      }
-    }
-    $output['Vendor Type']['name'] = 'fvendorType';
-    if ($reqVendorType[0] ?? false) {
-      foreach ($reqVendorType[0] as $key => $value) {
-        if (!in_array($value['name'], array_values_recursive($output['Vendor Type']['checked']))) {
-          $output['Vendor Type']['checked'][] = array(urlencode($value['name']), $value['name'], $value['count']);
-        }
-      }
-    }
-  }
-
-  if ($expenseCategories[0] ?? false) {
-    foreach ($expenseCategories[0] as $expenseCategoryName => $count) {
-      if ($count > 0) {
-        $checked = in_array($expenseCategoryName, array_values_recursive($reqExpenseCategories[0]));
-        $expenseCategoryValue = urlencode($expenseCategoryName);
-        if ($checked) {
-          $output['Expense Category']['checked'][] = array($expenseCategoryValue, $expenseCategoryName, $count);
-        } else {
-          $output['Expense Category']['unchecked'][] = array($expenseCategoryValue, $expenseCategoryName, $count);
-        }
-      }
-    }
-    $output['Expense Category']['name'] = 'fexpenseCategoryName';
-    if ($reqExpenseCategories[0] ?? false) {
-      foreach ($reqExpenseCategories[0] as $key => $value) {
-        if (!in_array($value['name'], array_values_recursive($output['Expense Category']['checked']))) {
-          $output['Expense Category']['checked'][] = array(urlencode($value['name']), $value['name'], $value['count']);
-        }
-      }
-    }
-
-  }
-
-  if ($revenueCategories[0] ?? false) {
-    foreach ($revenueCategories[0] as $revenueCategoryName => $count) {
-      if ($count > 0) {
-        $checked = in_array($revenueCategoryName, array_values_recursive($reqRevenueCategories[0]));
-        $revenueCategoryValue = urlencode($revenueCategoryName);
-        if ($checked) {
-          $output['Revenue Category']['checked'][] = array($revenueCategoryValue, $revenueCategoryName, $count);
-        } else {
-          $output['Revenue Category']['unchecked'][] = array($revenueCategoryValue, $revenueCategoryName, $count);
-        }
-      }
-    }
-    $output['Revenue Category']['name'] = 'frevenueCategoryName';
-    if ($reqRevenueCategories[0] ?? false) {
-      foreach ($reqRevenueCategories[0] as $key => $value) {
-        if (!in_array($value['name'], array_values_recursive($output['Revenue Category']['checked']))) {
-          $output['Revenue Category']['checked'][] = array(urlencode($value['name']), $value['name'], $value['count']);
-        }
-      }
-    }
-  }
-
-// Active fiscal year
-  if ($fiscalYears[0] ?? false) {
-    krsort($fiscalYears[0]);
-    foreach ($fiscalYears[0] as $fiscalYear => $count) {
-      if ($count > 0) {
-        $checked = in_array($fiscalYear, array_values_recursive($reqFiscalYears[0]));
-        if ($checked) {
-          $output['Fiscal Year']['checked'][] = array($fiscalYear, $fiscalYear, $count);
-        } else {
-          $output['Fiscal Year']['unchecked'][] = array($fiscalYear, $fiscalYear, $count);
-        }
-      }
-    }
-    $output['Fiscal Year']['name'] = 'fyear';
-    if ($reqFiscalYears[0] ?? false) {
-      foreach ($reqFiscalYears[0] as $key => $value) {
-        if (!in_array($value['name'], array_values_recursive($output['Fiscal Year']['checked']))) {
-          $output['Fiscal Year']['checked'][] = array(urlencode($value['name']), $value['name'], $value['count']);
-        }
-      }
-    }
-  }
-
-// Registered fiscal year
-  if ($regfiscalYears[0] ?? false) {
-    krsort($regfiscalYears[0]);
-    foreach ($regfiscalYears[0] as $fiscalYear => $count) {
-      if ($count > 0) {
-        $checked = in_array($fiscalYear, array_values_recursive($regreqFiscalYears[0]));
-        if ($checked) {
-          $output['Fiscal Year']['checked'][] = array($fiscalYear, $fiscalYear, $count);
-        } else {
-          $output['Fiscal Year']['unchecked'][] = array($fiscalYear, $fiscalYear, $count);
-        }
-      }
-    }
-    $output['Fiscal Year']['name'] = 'regfyear';
-    if ($regreqFiscalYears[0] ?? false) {
-      foreach ($regreqFiscalYears[0] as $key => $value) {
-        if (!in_array($value['name'], array_values_recursive($output['Fiscal Year']['checked']))) {
-          $output['Fiscal Year']['checked'][] = array(urlencode($value['name']), $value['name'], $value['count']);
-        }
-      }
-    }
-  }
-
-//Industry
-  if ($industryType[0] ?? false) {
-    foreach ($industryType[0] as $industryTypeName => $count) {
-      if ($count > 0) {
-        $checked = in_array($industryTypeName, array_values_recursive($reqIndustryType[0]));
-        $industryTypeValue = urlencode($industryTypeName);
-        if ($checked) {
-          $output['Industry']['checked'][] = array($industryTypeValue, $industryTypeName, $count);
-        } else {
-          $output['Industry']['unchecked'][] = array($industryTypeValue, $industryTypeName, $count);
-        }
-      }
-    }
-    $output['Industry']['name'] = 'findustryTypeName';
-    if (is_array($reqIndustryType[0])) {
-      foreach ($reqIndustryType[0] as $key => $value) {
-        if (!in_array($value['name'], array_values_recursive($output['Industry']['checked']))) {
-          $output['Industry']['checked'][] = array(urlencode($value['name']), $value['name'], $value['count']);
-        }
-      }
-    }
-
-  }
-
-
-  if ($MWBECategory[0] ?? false) {
-    foreach ($MWBECategory[0] as $MWBECategoryName => $count) {
-      if ($count > 0) {
-        $checked = in_array($MWBECategoryName, array_values_recursive($reqMWBECategory[0]));
-        $MWBECategoryValue = urlencode($MWBECategoryName);
-        if ($checked) {
-          $output['M/WBE Category']['checked'][] = array($MWBECategoryValue, $MWBECategoryName, $count);
-        } else {
-          $output['M/WBE Category']['unchecked'][] = array($MWBECategoryValue, $MWBECategoryName, $count);
-        }
-      }
-    }
-    $output['M/WBE Category']['name'] = 'fmwbeCategory';
-    if ($reqMWBECategory[0] ?? false) {
-      foreach ($reqMWBECategory[0] as $key => $value) {
-        if (!in_array($value['name'], array_values_recursive($output['M/WBE Category']['checked']))) {
-          $output['M/WBE Category']['checked'][] = array(urlencode($value['name']), $value['name'], $value['count']);
-        }
-      }
-    }
-  }
-
-//Payroll Type
-  if ($payrollType[0] ?? false) {
-    foreach ($payrollType[0] as $payrollTypeName => $count) {
-      if ($count > 0) {
-        $checked = in_array($payrollTypeName, array_values_recursive($reqpayrollType[0]));
-        $payrollTypeValue = urlencode($payrollTypeName);
-        if ($checked) {
-          $output['Payroll Type']['checked'][] = array($payrollTypeValue, $payrollTypeName, $count);
-        } else {
-          $output['Payroll Type']['unchecked'][] = array($payrollTypeValue, $payrollTypeName, $count);
-        }
-      }
-    }
-    $output['Payroll Type']['name'] = 'fpayrollTypeName';
-    if (!empty($reqpayrollType[0])) {
-      foreach ($reqpayrollType[0] as $key => $value) {
-        if (!in_array($value['name'], array_values_recursive($output['Payroll Type']['checked']))) {
-          $output['Payroll Type']['checked'][] = array(urlencode($value['name']), $value['name'], $value['count']);
-        }
-      }
-    }
-  }
-
-  $variables['render_array'] = $output;
-  $variables['sub_cat_array'] = $subCat;
-}
-
-function array_values_recursive($ary)
-{
-  $lst = array();
-  if (is_array($ary)) {
-    foreach (array_keys($ary) as $k) {
-      $v = $ary[$k];
-      if (is_scalar($v)) {
-        $lst[] = $v;
-      } elseif (is_array($v)) {
-        $lst = array_merge($lst,
-          array_values_recursive($v)
-        );
-      }
-    }
-  }
-
-  return $lst;
+  $variables['facets_render'] = $facets_render;
 }
 
 function checkbook_faceted_search_replaceSlash($string)

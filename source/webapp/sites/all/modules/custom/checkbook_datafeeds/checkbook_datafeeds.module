@@ -2070,6 +2070,15 @@ function checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $fi
         '#id' => 'edit-nycha-startdatefrom',
         '#name' => 'nycha_startdatefrom',
         '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_startdatefrom', $first_time_load, ''),
+        '#states' => array(
+            'disabled' => array(
+                array(
+                    array('select[name="purchase_order_type"]' => array('value' => 'All')),
+                    'or',
+                    array('select[name="purchase_order_type"]' => array('value' => 'Purchase Order [PO]'))
+                ),
+            ),
+        )
     );
     $form['filter']['nycha_startdateto'] = array(
         '#type' => 'textfield',
@@ -2082,6 +2091,15 @@ function checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $fi
         '#id' => 'edit-nycha-startdateto',
         '#name' => 'nycha_startdateto',
         '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_startdateto', $first_time_load, ''),
+        '#states' => array(
+            'disabled' => array(
+                array(
+                    array('select[name="purchase_order_type"]' => array('value' => 'All')),
+                    'or',
+                    array('select[name="purchase_order_type"]' => array('value' => 'Purchase Order [PO]'))
+                ),
+            ),
+        )
     );
     $form['filter']['nycha_enddatefrom'] = array(
         '#type' => 'textfield',
@@ -2093,6 +2111,15 @@ function checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $fi
         '#id' => 'edit-nycha-enddatefrom',
         '#name' => 'nycha_enddatefrom',
         '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_enddatefrom', $first_time_load, ''),
+        '#states' => array(
+            'disabled' => array(
+                array(
+                    array('select[name="purchase_order_type"]' => array('value' => 'All')),
+                    'or',
+                    array('select[name="purchase_order_type"]' => array('value' => 'Purchase Order [PO]'))
+                ),
+            ),
+        )
     );
     $form['filter']['nycha_enddateto'] = array(
         '#type' => 'textfield',
@@ -2105,6 +2132,15 @@ function checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $fi
         '#id' => 'edit-nycha-enddateto',
         '#name' => 'nycha_enddateto',
         '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_enddateto', $first_time_load, ''),
+        '#states' => array(
+            'disabled' => array(
+                array(
+                    array('select[name="purchase_order_type"]' => array('value' => 'All')),
+                    'or',
+                    array('select[name="purchase_order_type"]' => array('value' => 'Purchase Order [PO]'))
+                ),
+            ),
+        )
     );
     $form['filter']['nycha_appr_datefrom'] = array(
         '#type' => 'textfield',
@@ -2116,6 +2152,17 @@ function checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $fi
         '#id' => 'edit-nycha-appr-datefrom',
         '#name' => 'nycha_appr_datefrom',
         '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_appr_datefrom', $first_time_load, ''),
+        '#states' => array(
+            'disabled' => array(
+                array(
+                    array('select[name="purchase_order_type"]' => array('value' => 'All')),
+                    'or',
+                    array('select[name="purchase_order_type"]' => array('value' => 'Blanket Agreement [BA]')),
+                    'or',
+                    array('select[name="purchase_order_type"]' => array('value' => 'Planned Agreement [PA]'))
+                ),
+            ),
+        )
     );
     $form['filter']['nycha_appr_dateto'] = array(
         '#type' => 'textfield',
@@ -2128,6 +2175,17 @@ function checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $fi
         '#id' => 'edit-nycha-appr-dateto',
         '#name' => 'nycha_appr_dateto',
         '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_appr_dateto', $first_time_load, ''),
+        '#states' => array(
+        'disabled' => array(
+            array(
+                array('select[name="purchase_order_type"]' => array('value' => 'All')),
+                'or',
+                array('select[name="purchase_order_type"]' => array('value' => 'Blanket Agreement [BA]')),
+                'or',
+                array('select[name="purchase_order_type"]' => array('value' => 'Planned Agreement [PA]'))
+            ),
+        ),
+    )
     );
     $form['filter']['nycha_year'] = array(
         '#type' => 'select',
@@ -4730,7 +4788,7 @@ function checkbook_datafeeds_spending_validate($form, &$form_state) {
  * @param string|null $yeartype
  *   All Years or Budget Fiscal Years
  *
- * @return void
+ * @return mixed
  *   Array of years formatted for FAPI select box #options
  */
 function _year_options($yeartype = NULL) {
@@ -4858,7 +4916,7 @@ function currentCalendarYear() {
  *
  * @param null $data_source
  * @param bool $json_output
- * @return void
+ * @return mixed
  *   Agency names and codes
  */
 function _agency_options($data_source = null, $json_output = false) {
@@ -4944,7 +5002,7 @@ function _checkbook_datafeeds_agency_options($data,$data_source = null, $json_ou
 /**
  * Get Sub Vendor Status in PIP from Data Controller and format into a FAPI select input #options array.
  *
- * @return void
+ * @return mixed
  *   Sub Vendor Status In PIP ids and nammes
  */
 function _sub_vendor_status_in_pip() {
@@ -4980,7 +5038,7 @@ function _sub_vendor_status_in_pip() {
 /**
  * Get Fund Classes from Data Controller and format into a FAPI select input #options array.
  *
- * @return void
+ * @return mixed
  *   Fund classes and fund class names
  */
 function _fund_class_options() {
@@ -5008,7 +5066,7 @@ function _fund_class_options() {
 /**
  * Get Revenue Categories from Data Controller and format into a FAPI select input #options array.
  *
- * @return void
+ * @return mixed
  *   Revenue categories and revenue category names
  */
 function _revenue_category_options() {
@@ -5033,7 +5091,7 @@ function _revenue_category_options() {
 /**
  * Get Funding Sources from Data Controller and format into a FAPI select input #options array.
  *
- * @return void
+ * @return mixed
  *   Funding source codes and funding source names
  */
 function _funding_source_options() {
@@ -5059,7 +5117,7 @@ function _funding_source_options() {
  * Get Expense Type from Data Controller and format into a FAPI select input options array.
  *
  * @param string $data_source
- * @return void
+ * @return mixed
  *   Spending category codes and display names
  */
 function _expense_type_options($data_source = 'checkbook') {
@@ -5143,7 +5201,7 @@ function _pay_frequency_options() {
 /**
  * Get Contract Type from Data Controller and format into a FAPI select input #options array.
  *
- * @return void
+ * @return mixed
  *   Agreement type codes and agreement type names
  */
 function _contract_type_options() {
@@ -5190,7 +5248,7 @@ function _checkbook_datafeeds_contract_type_options($data) {
 /**
  * Get Award Method from Data Controller and format into a FAPI select input #options array.
  *
- * @return void
+ * @return mixed
  *   Award method codes and award method names
  */
 function _award_method_options() {
@@ -5242,7 +5300,7 @@ function _checkbook_datafeeds_award_method_options($data) {
  *
  * @param $agency
  *   Agency code
- * @return void Department codes and department names filtered by agency, year
+ * @return mixed Department codes and department names filtered by agency, year
  *  Department codes and department names filtered by agency, year
  */
 function _budget_dept_options($year, $agency) {
@@ -5275,7 +5333,7 @@ function _budget_dept_options($year, $agency) {
  *   Agency code
  * @param $dept
  *   Department code
- * @return void Expenditure object codes and expenditure object names, filtered by agency, department, year
+ * @return mixed Expenditure object codes and expenditure object names, filtered by agency, department, year
  *   Expenditure object codes and expenditure object names, filtered by agency, department, year
  */
 function _budget_expcat_options($year, $agency, $dept) {

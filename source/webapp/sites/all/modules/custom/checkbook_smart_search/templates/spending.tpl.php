@@ -18,7 +18,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-$spending_parameter_mapping = _checkbook_smart_search_domain_fields('spending', $IsOge);
+$spending_parameter_mapping = CheckbookSolr::getSearchFields($solr_datasource, 'spending');
+
+$isNycha = ('nycha' === $solr_datasource);
+$isEdc = ('edc' === $solr_datasource);
+$isOge = $isNycha || $isEdc;
 
 if ($spending_results['fiscal_year_id'] != '') {
   $fiscal_year_id = $spending_results['fiscal_year_id'][0];
@@ -94,9 +98,9 @@ foreach ($spending_parameter_mapping as $key => $title) {
 
   if (array_key_exists($key, $linkable_fields)) {
     $value = "<a href='" . $linkable_fields[$key] . "'>" . $value . "</a>";
-  } else if (in_array($key, $date_fields)) {
+  } else if (is_array($date_fields) && in_array($key, $date_fields)) {
     $value = date("F j, Y", strtotime($value));
-  } else if (in_array($key, $amount_fields)) {
+  } else if (is_array($amount_fields) && in_array($key, $amount_fields)) {
     $value = custom_number_formatter_format($value, 2, '$');
   }
   if ($key == 'contract_number' && $spending_results['agreement_id']) {

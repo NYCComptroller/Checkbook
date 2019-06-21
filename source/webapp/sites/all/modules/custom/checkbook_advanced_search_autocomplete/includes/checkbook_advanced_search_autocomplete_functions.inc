@@ -21,24 +21,24 @@
  *   Selected M/WBE Category
  * @param $industry
  *   Selected Industry
- * @param $data_source
+ * @param string $solr_datasource
  *   Data source to get data (i.e checkbook, checkbook_oge)
  *
  * @return array
  *   Results from Solr
  ***/
-function _get_spending_advanced_search_autocomplete_results($facet, $query, $year = null, $agency = null, $expcategory = null, $dept = null, $exptype = null, $mwbe_category = null, $industry = null, $data_source = 'checkbook'){
+function _get_spending_advanced_search_autocomplete_results($facet, $query, $year = null, $agency = null, $expcategory = null, $dept = null, $exptype = null, $mwbe_category = null, $industry = null, $solr_datasource = 'checkbook'){
     if ($year) {
         $query .= _checkbook_autocomplete_get_start_end_dates($year, 'spending');
     }
     if ($dept) {
-        $query .= '&fq=department_name:"'.Checkbook_solr::escape(trim(str_replace('__','/',$dept))).'"';
+        $query .= '&fq=department_name:"'.CheckbookSolrQuery::escape(trim(str_replace('__','/',$dept))).'"';
     }
     if ($agency) {
         $query .= '&fq=agency_id:' . $agency;
     }
     if ($expcategory) {
-        $query .= '&fq=expenditure_object_code:' . '"'.Checkbook_solr::escape(trim($expcategory)).'"';
+        $query .= '&fq=expenditure_object_code:' . '"'.CheckbookSolrQuery::escape(trim($expcategory)).'"';
     }
     if($exptype){
         $query .= '&fq=spending_category_id:'.$exptype;
@@ -49,7 +49,7 @@ function _get_spending_advanced_search_autocomplete_results($facet, $query, $yea
     if($industry){
         $query .= '&fq=industry_type_id:'.$industry;
     }
-    $matches = _checkbook_autocomplete_solr_results($query, $facet, $data_source);
+    $matches = _checkbook_autocomplete_solr_results($solr_datasource, $query, $facet);
     return $matches;
 }
 
@@ -130,7 +130,7 @@ function _get_spending_expense_cat_options($agency, $dept, $spending_cat, $year,
  * @param string $data_source
  *   Data source to get data (i.e checkbook, checkbook_oge)
  *
- * @return void Results from Solr
+ * @return mixed Results from Solr
  *   Results from Solr
  *
  */
@@ -164,7 +164,7 @@ function _checkbook_advanced_search_autocomplete_spending_payee($year, $agency, 
  * @param string $data_source
  *   Data source (checkbook, checkbook_oge)
  *
- * @return void Results from Solr
+ * @return mixed Results from Solr
  *   Results from Solr
  *
  */
@@ -204,7 +204,7 @@ function _checkbook_advanced_search_autocomplete_spending_contractno($year, $age
  * @param string $data_source
  *   Data source (checkbook, checkbook_oge)
  *
- * @return void Results from Solr
+ * @return mixed Results from Solr
  *   Results from Solr
  *
  */
@@ -237,7 +237,7 @@ function _checkbook_advanced_search_autocomplete_spending_capitalproject($year, 
  * @param string $data_source
  *   Data source (checkbook, checkbook_oge)
  *
- * @return void Results from Solr
+ * @return mixed Results from Solr
  *   Results from Solr
  *
  */
@@ -263,12 +263,13 @@ function _checkbook_advanced_search_autocomplete_spending_expenseid($year, $agen
  * @param string $data_source
  *   Data source (checkbook, checkbook_oge)
  *
- * @return void Results from Solr
+ * @return mixed Results from Solr
  *   Results from Solr
  *
  */
 function _checkbook_advanced_search_autocomplete_spending_department($year, $agency, $exp_type, $data_source = 'checkbook') {
-    if ($year) {
+  $year_string = '';
+  if ($year) {
         $year_type = substr($year, 0, 2);
         $year_value = substr($year, 3, strlen($year));
         if($year_value != 'all') {
@@ -355,7 +356,7 @@ function _checkbook_advanced_search_autocomplete_spending_expcategory($year, $ag
  * @param string $data_source
  *   Data source (checkbook, checkbook_oge)
  *
- * @return void Results from Solr
+ * @return mixed Results from Solr
  *   Results from Solr
  *
  */
@@ -389,7 +390,7 @@ function _checkbook_advanced_search_autocomplete_spending_entitycontractnum($yea
  * @param string $data_source
  *   Data source (checkbook, checkbook_oge)
  *
- * @return void Results from Solr
+ * @return mixed Results from Solr
  *   Results from Solr
  *
  */
@@ -423,7 +424,7 @@ function _checkbook_advanced_search_autocomplete_spending_commodityline($year, $
  * @param string $data_source
  *   Data source (checkbook, checkbook_oge)
  *
- * @return void Results from Solr
+ * @return mixed Results from Solr
  *   Results from Solr
  *
  */
@@ -470,7 +471,7 @@ function _checkbook_advanced_search_autocomplete_payroll_employee_name($pay_freq
                 }
             }
         }
-        $matches = _checkbook_autocomplete_solr_results($query, 'civil_service_title');
+        $matches = _checkbook_autocomplete_solr_results($solr_datasource, $query, 'civil_service_title');
         drupal_json_output($matches);
     }
 }
@@ -564,7 +565,7 @@ function _get_contracts_advanced_search_autocomplete_results($facet, $query, $st
     if ($sub_vendor_status) {
         $query .= '&fq=aprv_sta:'.$sub_vendor_status;
     }
-    $matches = _checkbook_autocomplete_solr_results($query, $facet);
+    $matches = _checkbook_autocomplete_solr_results('citywide', $query, $facet);
     return $matches;
 }
 
@@ -886,7 +887,7 @@ function _checkbook_autocomplete_nycha_contracts($solr_field, $purchase_order_ty
                 ."&facet.field=" . $solr_field .$facetquery
                 ."&q.op=AND&rows=0&facet=true&facet.mincount=1&facet.limit=10&wt=phps";
         }
-        $matches = _checkbook_autocomplete_solr_results($query, $solr_field);
+        $matches = _checkbook_autocomplete_solr_results('nycha', $query, $solr_field);
         drupal_json_output($matches);
     }
 }
@@ -896,7 +897,7 @@ function _checkbook_autocomplete_nycha_contracts($solr_field, $purchase_order_ty
 /**
  * @param $fiscal_year
  * @param $agency
- * @return void for department based on selected agency and year
+ * @return mixed for department based on selected agency and year
  */
 function _checkbook_advanced_search_autocomplete_budget_department($fiscal_year, $agency) {
     $params =  array("agency_id"=>$agency,"budget_fiscal_year_id"=>$fiscal_year);
@@ -917,7 +918,7 @@ function _checkbook_advanced_search_autocomplete_budget_department($fiscal_year,
  * @param $fiscal_year
  * @param $agency
  * @param $dept
- * @return void for Expense Category based on selected agency, Department and year
+ * @return mixed for Expense Category based on selected agency, Department and year
  */
 function _checkbook_advanced_search_autocomplete_budget_expcategory($fiscal_year, $agency, $dept) {
     $params =  array("agency_id"=>$agency,"budget_fiscal_year_id"=>$fiscal_year);
@@ -943,7 +944,7 @@ function _checkbook_advanced_search_autocomplete_budget_expcategory($fiscal_year
  * @param $dept
  * @param $expcategory
  * @param $budget_name
- * @return void for budget code based on selected agency, department, expense category, year and budget name
+ * @return mixed for budget code based on selected agency, department, expense category, year and budget name
  */
 function _checkbook_advanced_search_autocomplete_budget_budgetcode($fiscal_year, $agency, $dept, $expcategory, $budget_name) {
    
@@ -983,7 +984,7 @@ function _checkbook_advanced_search_autocomplete_budget_budgetcode($fiscal_year,
  * @param $dept
  * @param $expcategory
  * @param $budget_code
- * @return void for budget name based on selected agency, department, expense category, year and budget code
+ * @return mixed for budget name based on selected agency, department, expense category, year and budget code
  */
 function _checkbook_advanced_search_autocomplete_budget_budgetname($fiscal_year, $agency, $dept, $expcategory, $budget_code) {
     $params =  array("budget_fiscal_year_id"=>$fiscal_year);
@@ -1028,7 +1029,7 @@ function _checkbook_advanced_search_autocomplete_budget_budgetname($fiscal_year,
  * @param $revcat
  * @param $revsrc
  * @param $fundingsrc
- * @return void suggestions for revenue class name based on selected year, fund class, agency, revenue category and budget year
+ * @return mixed suggestions for revenue class name based on selected year, fund class, agency, revenue category and budget year
  */
 function _checkbook_advanced_search_autocomplete_revenue_revenueclass($year, $fundclass, $agency, $budgetyear, $revcat, $revsrc, $fundingsrc) {
     $searchTerm = _get_autocomplete_search_term();
@@ -1052,7 +1053,7 @@ function _checkbook_advanced_search_autocomplete_revenue_revenueclass($year, $fu
         if ($fundingsrc) {
             $query .= '&fq=funding_class_code:' . $fundingsrc;
         }
-        $matches = _checkbook_autocomplete_solr_results($query, 'revenue_class_name');
+        $matches = _checkbook_autocomplete_solr_results($solr_datasource, $query, 'revenue_class_name');
         drupal_json_output($matches);
     }
 }
@@ -1065,7 +1066,7 @@ function _checkbook_advanced_search_autocomplete_revenue_revenueclass($year, $fu
  * @param $revcat
  * @param $revclass
  * @param $fundingsrc
- * @return void suggestions for revenue source name based on selected year, fund class, agency, revenue category and budget year
+ * @return mixed suggestions for revenue source name based on selected year, fund class, agency, revenue category and budget year
  */
 function _checkbook_advanced_search_autocomplete_revenue_revenuesource($year, $fundclass, $agency, $budgetyear, $revcat, $revclass, $fundingsrc) {
     $searchTerm = _get_autocomplete_search_term();
@@ -1089,7 +1090,7 @@ function _checkbook_advanced_search_autocomplete_revenue_revenuesource($year, $f
         if ($fundingsrc) {
             $query .= '&fq=funding_class_code:' . $fundingsrc;
         }
-        $matches = _checkbook_autocomplete_solr_results($query, 'revenue_source_name');
+        $matches = _checkbook_autocomplete_solr_results($solr_datasource, $query, 'revenue_source_name');
         drupal_json_output($matches);
     }
 }

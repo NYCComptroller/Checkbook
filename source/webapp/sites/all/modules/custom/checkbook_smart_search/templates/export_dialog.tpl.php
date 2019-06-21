@@ -18,6 +18,8 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+//echo 'datasource: '.$solr_datasource;
+
 $max_records = 200000;
 $search_terms = explode('*|*', $_REQUEST['searchTerm']);
 $domains = explode("~", $_REQUEST['resultsdomains'] );

@@ -294,7 +294,7 @@
       "attributes":{
         "title":"Purchase Order<br/>Type",
         "options":{
-          "All":"All",
+          "0":"All",
           "BA":"Blanket Agreement",
           "PA":" Planned Agreement",
           "PO":"Purchase Order"
