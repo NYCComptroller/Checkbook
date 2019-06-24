@@ -546,12 +546,16 @@
         "spending_budget_name": "Budget Name"
       },
       "contracts": {
-        "agreement_type_name": "Purchase Order Type",
         "contract_number": "Contract ID",
+        "agreement_type_name": "Purchase Order Type",
+        "release_number": "Release Number",
         "item_category": "Item Category",
         "item_description": "Item Description",
         "shipment_number": "Shipment Number",
         "responsibility_center_name": "Responsibility center",
+        "start_date": "Start Date",
+        "end_date": "End Date",
+        "release_approved_date": "Approved Date",
         "release_line_total_amount": "Line Current Amount",
         "release_line_original_amount": "Line Original Amount",
         "release_line_spend_to_date": "Line Spent to Date",
@@ -561,22 +565,18 @@
         "agreement_total_amount": "Contract Current Amount",
         "agreement_original_amount": "Contract Original Amount",
         "agreement_spend_to_date": "Contract Spent to date",
-        "release_number": "Release Number",
+        "contract_purpose": "Purpose",
         "vendor_name": "Vendor Name",
-        "display_industry_type_name": "Industry",
         "contract_type_code": "Contract type",
         "award_method_name": "Award Method",
-        "start_date": "Start Date",
-        "end_date": "End Date",
-        "release_approved_date": "Approved Date",
-        "location_borough_name": "Location",
+        "display_industry_type_name": "Industry",
+        "pin": "PIN",
+        "location_name": "Location",
         "grant_number": "Grant Name",
         "expenditure_type_name": "Expenditure Type",
         "funding_source_name": "Funding source",
         "program_phase_code": "Program",
-        "gl_project_name": "Project",
-        "pin": "PIN",
-        "contract_purpose": "Purpose"
+        "gl_project_name": "Project"
       }
     }
   }
