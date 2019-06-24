@@ -251,15 +251,21 @@ function _checkbook_smart_search_export_data(string $solr_datasource)
     /**
      * SOLR 7 (gptext) doesn't seem to understand csv.header=false
      */
-    $chunk = substr($result, 0, 200);
-    if (strpos($chunk, '"vendor_name"')
-      || strpos($chunk, '"contract_number"')
-      || strpos($chunk, '"current_amount"')
-      || strpos($chunk, '"original_amount"')
+    $chunk = 'huerbuer'.substr($result, 0, 200);
+    $column_keys = array_keys($fields);
+    if (strpos($chunk, "\"{$column_keys[0]}\"")
+      || strpos($chunk, "\"{$column_keys[1]}\"")
+      || strpos($chunk, "\"{$column_keys[2]}\"")
     ) {
       // csv header detected
       // removing first line manually
       $result = preg_replace('/^.+\n/', '', $result);
+    }
+
+//    last page reached => exit
+    if (!$result){
+      $remaining=0;
+      continue;
     }
 
     $result = str_replace("Registered,Expense", "Active,Expense", $result);

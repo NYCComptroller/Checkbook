@@ -241,8 +241,6 @@ function checkbook_api_adjustBudgetParameterFilters(&$data_set, &$parameters, $c
 function checkbook_api_adjustNYCHAContractsParams(&$data_set, &$parameters, $criteria){
 
     $logicalOrColumns = array();
-
-
     if(isset($parameters['release_approved_year'])){
         $year = $parameters['release_approved_year'];
         $data_controller_instance = data_controller_get_operator_factory_instance();
@@ -253,19 +251,7 @@ function checkbook_api_adjustNYCHAContractsParams(&$data_set, &$parameters, $cri
         $logicalOrColumns[0] =  array("release_approved_year","agreement_start_year");
         $logicalOrColumns[1] = array("release_approved_year","agreement_end_year");
         $parameters['logicalOrColumns'] = $logicalOrColumns;
-
-
-
-
     }
-
-
-
-
-
-
-
-
 }
 
 /**
@@ -690,11 +676,11 @@ function checkbook_api_adjustNYCHAContractSql(&$sql_query){
     foreach($where_parts as $key => $value){
       if(strpos($value,'agreement_start_year') !== false){
         $values = explode('<=', $value);
-        $year = trim($values[1]);
+        $year = trim(str_replace(')','',$values[1]));
       }
     }
     if(isset($year)){
-      $sql_query =  str_replace("release_approved_year", $year." AS release_approved_year",$sql_query);
+      $sql_query =  str_replace("release_approved_year,", $year." AS release_approved_year,",$sql_query);
     }
 }
 
