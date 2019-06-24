@@ -591,7 +591,7 @@ function _checkbook_project_get_name_for_argument($keyword, $id)
             return ucwords(strtolower($depts[0]['department_name']));
             break;
         case "department_code":
-            $deptcodes = _checkbook_project_querydataset($data_source.':department_code', array('department_code', 'department_name'), array($keyword => $id));
+            $deptcodes = _checkbook_project_querydataset($data_source.':budget', array('department_code', 'department_name'), array($keyword => $id));
             return ucwords(strtolower($deptcodes[0]['department_name']));
             break;
         case "award_method_id":
