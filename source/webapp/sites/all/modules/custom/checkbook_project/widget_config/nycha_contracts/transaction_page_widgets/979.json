@@ -315,6 +315,7 @@ $node->show_difference = ($contract_type== 'BAM'||$contract_type== 'PAM');
           cUrl = adjustUrlParameter(cUrl,'record_type',oRecordType);
           cUrl = adjustUrlParameter(cUrl,'release_no',oReleaseNo);
           cUrl = adjustUrlParameter(cUrl,'item_descr',oItemDescr);
+          cUrl = adjustUrlParameter(cUrl,'item_category',oItemCategory);
 
           return cUrl;
     }"
