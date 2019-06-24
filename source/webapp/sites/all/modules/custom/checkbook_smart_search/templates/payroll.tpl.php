@@ -23,7 +23,7 @@ $payroll_parameter_mapping = (array)CheckbookSolr::getSearchFields($solr_datasou
 $agency_id = $payroll_results['agency_id'];
 $dept_id = $payroll_results['department_id'];
 $emp_id = $payroll_results['employee_id'];
-$fiscal_year_id = $payroll_results['fiscal_year_id'][0];
+$fiscal_year_id = is_array($payroll_results['fiscal_year_id']) ? $payroll_results['fiscal_year_id'][0] : $payroll_results['fiscal_year_id'];
 $salaried = $payroll_results['amount_basis_id'];
 $title = urlencode($payroll_results['civil_service_title']);
 
