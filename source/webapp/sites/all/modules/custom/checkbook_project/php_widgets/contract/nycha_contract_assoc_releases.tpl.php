@@ -18,6 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 ?>
+<!-----------------------------    Contract Details of PAs and BAs     ------------------->
 <table class="nycha_assoc_contracts_list">
     <tbody>
 <?php
@@ -122,14 +123,14 @@ foreach ($node->assocReleases as $release): ?>
                                                                         class="dataTable cta-history outerTable">
                                                                         <thead>
                                                                         <tr>
-                                                                            <th class="text">
-                                                                                <?= WidgetUtil::getLabelDiv('line_number') ?>
+                                                                            <th class="text item_category">
+                                                                                <?= WidgetUtil::getLabelDiv('item_category') ?>
                                                                             </th>
-                                                                            <th class="text">
+                                                                            <th class="text item_description">
+                                                                              <?= WidgetUtil::getLabelDiv('item_description') ?>
+                                                                            </th>
+                                                                            <th class="number shipment_number">
                                                                                 <?= WidgetUtil::getLabelDiv('shipment_number') ?>
-                                                                            </th>
-                                                                            <th class="text">
-                                                                                <?= WidgetUtil::getLabelDiv('distribution_number') ?>
                                                                             </th>
                                                                             <th class="number">
                                                                                 <?= WidgetUtil::getLabelDiv('current_amount') ?>
@@ -150,14 +151,14 @@ foreach ($node->assocReleases as $release): ?>
                                                                         $z = 0;
                                                                         foreach ($release['shipments'] as $shipment):?>
                                                                             <tr class="outer n_assoc_rel_shipments <?= ($z % 2 ? 'even' : 'odd') ?>">
-                                                                                <td class="text line_number">
-                                                                                    <div><?= htmlentities($shipment['line_number']) ?></div>
+                                                                                <td class="text item_category_descr">
+                                                                                    <div><?= htmlentities($shipment['commodity_category_descr']) ?></div>
                                                                                 </td>
-                                                                                <td class="text shipment_number">
+                                                                                <td class="text item_description">
+                                                                                  <div><?= htmlentities($shipment['item_description']) ?></div>
+                                                                                </td>
+                                                                                <td class="number-center shipment_number">
                                                                                     <div><?= htmlentities($shipment['shipment_number']) ?></div>
-                                                                                </td>
-                                                                                <td class="text distribution_number">
-                                                                                    <div><?= htmlentities($shipment['distribution_number']) ?></div>
                                                                                 </td>
                                                                                 <td class="number total_amount">
                                                                                     <div><?= custom_number_formatter_format($shipment['release_line_total_amount'], 2, "$"); ?></div>
