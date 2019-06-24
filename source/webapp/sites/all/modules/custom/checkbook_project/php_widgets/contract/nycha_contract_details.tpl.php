@@ -18,10 +18,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 $contract = $node->data;
-
 ?>
+<!-----------------------------    Contract Details of POs       ------------------->
 <div class="content clearfix">
     <div class="contract-details-heading cb-ma-details">
         <div class="contract-id">
@@ -361,14 +360,14 @@ $contract = $node->data;
                                         class="dataTable cta-history outerTable">
                                         <thead>
                                         <tr>
-                                            <th class="text">
-                                                <?= WidgetUtil::getLabelDiv('line_number') ?>
+                                            <th class="text ncc-item_category_descr">
+                                                <?= WidgetUtil::getLabelDiv('item_category') ?>
                                             </th>
-                                            <th class="text">
+                                            <th class="text ncc-item_description">
+                                                <?= WidgetUtil::getLabelDiv('item_description') ?>
+                                            </th>
+                                            <th class="number ncc-shipment_number">
                                                 <?= WidgetUtil::getLabelDiv('shipment_number') ?>
-                                            </th>
-                                            <th class="text">
-                                                <?= WidgetUtil::getLabelDiv('distribution_number') ?>
                                             </th>
                                             <th class="number">
                                                 <?= WidgetUtil::getLabelDiv('current_amount') ?>
@@ -389,19 +388,19 @@ $contract = $node->data;
                                         $z = 0;
                                         foreach ($node->shipments as $shipment):?>
                                             <tr class="outer <?= ($z % 2 ? 'even' : 'odd') ?>">
-                                                <td class="number nycc-line_number">
+                                                <td class="text ncc-item_category_descr">
                                                   <div>
-                                                    <?= htmlentities($shipment['line_number']) ?>
+                                                    <?= htmlentities($shipment['commodity_category_descr']) ?>
                                                   </div>
                                                 </td>
-                                                <td class="number nycc-shipment_number">
+                                                <td class="text ncc-item_description">
+                                                  <div>
+                                                    <?= htmlentities($shipment['item_description']) ?>
+                                                  </div>
+                                                </td>
+                                                <td class="number ncc-shipment_number">
                                                   <div>
                                                     <?= htmlentities($shipment['shipment_number']) ?>
-                                                  </div>
-                                                </td>
-                                                <td class="number nycc-distribution_number">
-                                                  <div>
-                                                    <?= htmlentities($shipment['distribution_number']) ?>
                                                   </div>
                                                 </td>
                                                 <td class="number">

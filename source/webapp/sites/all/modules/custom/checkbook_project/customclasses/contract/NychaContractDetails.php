@@ -319,6 +319,8 @@ SQL;
                 release_id,
                 shipment_number,
                 line_number,
+                commodity_category_descr,
+                item_description,
                 distribution_number,
                 release_line_total_amount,
                 release_line_original_amount,
