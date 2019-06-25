@@ -102,7 +102,7 @@ END;
         $checked = $checked ? ' checked="checked" ' : '';
       }
       echo '<input type="checkbox" id="'.$id.'" '.$checked . ' facet="'.$facet_name.'" value="'.
-        htmlentities($facet_value).'" />';
+        htmlentities(urlencode($facet_value)).'" />';
       echo <<<END
 
       <label for="{$id}" />
@@ -144,7 +144,7 @@ END;
               $checked = $checked ? ' checked="checked" ' : '';
             }
             echo '<input type="checkbox" id="'.$id.'" '.$checked . ' facet="'.$sub_facet_name.'" value="'.
-              htmlentities($sub_facet_value).'" />';
+              htmlentities(urlencode($sub_facet_value)).'" />';
             echo "<label for=\"{$id}\" />";
             echo '</div>';
 

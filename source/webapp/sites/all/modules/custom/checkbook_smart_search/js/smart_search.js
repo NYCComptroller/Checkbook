@@ -309,7 +309,7 @@ function applySearchFilters() {
 
   var fq_string = '';
   for (var k in fq) {
-    fq_string += '*|*' + k + '=' + fq[k].join('~');
+    fq_string += '*|*' + k + '=' + encodeURIComponent(fq[k].join('~'));
   }
 
   // adding global q string
