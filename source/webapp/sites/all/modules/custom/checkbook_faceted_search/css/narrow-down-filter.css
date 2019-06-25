@@ -93,11 +93,11 @@ div.filter-content-fdomainName div.options{
 .smart-search-right div.row:hover{
   background-color:#eee !important;
 }
-.grid-3 div.row:nth-child(even),
-.page-node div.row:nth-child(even),
-.smart-search-right div.row:nth-child(even){
-  background-color:#fafafa;
-}
+/*.grid-3 div.row:nth-child(even),*/
+/*.page-node div.row:nth-child(even),*/
+/*.smart-search-right div.row:nth-child(even){*/
+/*  background-color:#fafafa;*/
+/*}*/
 .grid-3 div.checkbox,
 .grid-3 div.name,
 .grid-3 div.number,
@@ -212,7 +212,6 @@ div.filter-content-fdomainName div.options{
 }
 .sub-category div.name{
     max-width: 93px;
-    font-style: italic;
 }
 .sub-category div.number{
     width: 62px;
