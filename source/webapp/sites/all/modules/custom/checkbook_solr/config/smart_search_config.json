@@ -4,7 +4,7 @@
     "oge_agency_name": "oge_agency_name_autocomplete",
     "vendor_name": "vendor_name_autocomplete",
     "expenditure_object_name": "expenditure_object_name_autocomplete",
-    "industry_type_name": "industry_type_name_autocomplete",
+    "display_industry_type_name": "industry_type_name_autocomplete",
     "budget_code_name_code": "budget_code_name_code_autocomplete",
     "vendor_name_code": "vendor_name_code_autocomplete",
     "contract_budget_name": "contract_budget_name_autocomplete",
@@ -110,7 +110,7 @@
       "minority_type_name": {
         "title": "M/WBE Category"
       },
-      "industry_type_name": {
+      "display_industry_type_name": {
         "title": "Industry",
         "autocomplete": true
       },
@@ -196,7 +196,7 @@
         "autocomplete": true,
         "no_autoload": true
       },
-      "industry_type_name": {
+      "display_industry_type_name": {
         "title": "Industry",
         "autocomplete": true
       },
@@ -206,10 +206,6 @@
       },
       "funding_source_name": {
         "title": "Funding Source",
-        "autocomplete": true
-      },
-      "grant_number": {
-        "title": "Grant Number",
         "autocomplete": true
       },
       "contract_number": {
@@ -233,7 +229,7 @@
         "department_name": "Department",
         "vendor_name": "Payee Name",
         "expenditure_object_name": "Expense Category",
-        "industry_type_name": "Industry",
+        "display_industry_type_name": "Industry",
         "contract_number": "Contract ID",
         "check_amount": "Check Amount",
         "check_eft_issued_date": "Issue Date",
@@ -260,7 +256,7 @@
         "apt_pin": "APT PIN",
         "registration_date": "Registration date",
         "expense_category_name": "Expense Category",
-        "industry_type_name": "Industry",
+        "display_industry_type_name": "Industry",
         "received_date": "Received date",
         "minority_type_name": "M/WBE Category",
         "prime_vendor_name": "Associated Prime Vendor"
@@ -423,7 +419,7 @@
         "department_name": "Department",
         "vendor_name": "Payee Name",
         "expenditure_object_name": "Expense Category",
-        "industry_type_name": "Industry",
+        "display_industry_type_name": "Industry",
         "contract_number": "Contract ID",
         "check_amount": "Check Amount",
         "check_eft_issued_date_export": "Issue Date",
@@ -451,7 +447,7 @@
         "apt_pin": "APT PIN",
         "registration_date": "Registration date",
         "expense_category_name": "Expense Category",
-        "industry_type_name": "Industry",
+        "display_industry_type_name": "Industry",
         "received_date": "Received date",
         "minority_type_name": "M/WBE Category",
         "prime_vendor_name": "Associated Prime Vendor"
