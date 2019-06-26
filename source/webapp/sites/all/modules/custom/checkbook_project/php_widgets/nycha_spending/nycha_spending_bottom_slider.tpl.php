@@ -81,6 +81,25 @@
                 </div>
                 <div class="indicator"></div>
             </td>
+            <?php
+            $class = "";
+            if (RequestUtilities::get("category") == 2) {
+                $class = ' class="active"';
+            }
+            $link = RequestUtil::preparePayrollBottomNavFilter("spending_landing",1);
+            $dollars = "<span class='dollars'>" . custom_number_formatter_format(0,1,'$') . "</span>";
+
+            ?>
+            <td<?php echo $class; ?>>
+                <div class="positioning">
+                    <?php if($dollars!= 0 ){?>
+                        <a href="/<?php echo $link; ?>?expandBottomCont=true"><?php echo $count; ?>Others<br>Spending<br><?php echo $dollars; ?></a>
+                    <?php }else{?>
+                        <?php echo $count; ?>Others<br>Spending<br><?php echo $dollars; ?>
+                    <?php }?>
+                </div>
+                <div class="indicator"></div>
+            </td>
         </tr>
         </tbody>
     </table>
