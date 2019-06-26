@@ -100,12 +100,12 @@
       "fiscal_year": {
         "title": "Fiscal Year",
         "autocomplete": true,
-        "no_autoload": true
+        "sort_by_key": -1
       },
       "registered_fiscal_year": {
         "title": "Registered Fiscal Year",
         "autocomplete": true,
-        "no_autoload": true
+        "sort_by_key": -1
       },
       "minority_type_name": {
         "title": "M/WBE Category"
@@ -155,12 +155,12 @@
       "fiscal_year": {
         "title": "Fiscal Year",
         "autocomplete": true,
-        "no_autoload": true
+        "sort_by_key": -1
       },
       "registered_fiscal_year": {
         "title": "Registered Fiscal Year",
         "autocomplete": true,
-        "no_autoload": true
+        "sort_by_key": -1
       },
       "contract_number": {
         "title": "Contract ID",
@@ -194,7 +194,7 @@
       "fiscal_year": {
         "title": "Fiscal Year",
         "autocomplete": true,
-        "no_autoload": true
+        "sort_by_key": -1
       },
       "display_industry_type_name": {
         "title": "Industry",
