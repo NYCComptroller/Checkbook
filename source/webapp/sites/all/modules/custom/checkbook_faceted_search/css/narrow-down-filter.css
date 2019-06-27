@@ -82,6 +82,11 @@ div.filter-content-fdomainName div.options{
     width: 100%;
     margin-top: 5px;
 }
+
+.filter-content-domain div.options {
+  max-height: none !important;
+}
+
 .grid-3 div.row,
 .page-node div.row,
 .smart-search-right div.row{
