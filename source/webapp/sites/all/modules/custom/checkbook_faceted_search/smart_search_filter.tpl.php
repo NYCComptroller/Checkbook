@@ -72,11 +72,12 @@ foreach ($facets_render??[] as $facet_name => $facet) {
       $autocomplete_id = "autocomplete_" . $facet_name;
       $disabled = '';
 
-      echo '<div class="autocomplete"><input id="' . $autocomplete_id . '" ' . $disabled . ' type="text" class="solr_autocomplete" facet="'.$facet_name.'" /></div>';
+      echo '<div class="autocomplete"><input placeholder="Autocomplete '.htmlentities($facet->title).'..." 
+      id="' . $autocomplete_id . '" ' . $disabled . ' type="text" class="solr_autocomplete" facet="'.$facet_name.'" /></div>';
     }
 
     echo '<div class="options">';
-    echo '<div class="rows">';
+    echo '<ul class="rows">';
     $index = 0;
 
     foreach($facet->results as $facet_value => $count) {
@@ -90,7 +91,7 @@ foreach ($facets_render??[] as $facet_name => $facet) {
       $active='';
       echo <<<END
 
-    <div class="row">
+    <li class="row">
       <label for="{$id}">
         <div class="checkbox">
 
@@ -110,9 +111,10 @@ END;
 
 END;
 
-      echo '<div class="name">' . htmlentities($facet_result_title) . '</div>';
       echo '<div class="number"><span' . $active . '>' . number_format($count) . '</span></div>';
+      echo '<div class="name">' . htmlentities($facet_result_title) . '</div>';
       echo '</label>';
+      echo '</li>';
 
       if (($checked) && ($children = $facet->sub->$facet_value??false)){
         $sub_index=0;
@@ -123,7 +125,7 @@ END;
           }
 
           $sub_facet_name = $child;
-          echo '<div class="sub-category">';
+          echo '<ul class="sub-category">';
           echo '<div class="subcat-filter-title">By '.htmlentities($sub_facet->title).'</div>';
           foreach($sub_facet->results as $sub_facet_value => $sub_count){
 
@@ -134,7 +136,7 @@ END;
 
             $id = 'facet_'.$sub_facet_name.$sub_index;
             $active='';
-            echo '<div class="row">';
+            echo '<li class="row">';
             echo "<label for=\"{$id}\">";
             echo '<div class="checkbox">';
 
@@ -148,22 +150,21 @@ END;
             echo "<label for=\"{$id}\" />";
             echo '</div>';
 
-            echo '<div class="name">' . htmlentities($facet_result_title) . '</div>';
             echo '<div class="number"><span' . $active . '>' . number_format($sub_count) . '</span></div>';
+            echo '<div class="name">' . htmlentities($facet_result_title) . '</div>';
             echo '</label>';
 
-            echo '</div>';
+            echo '</li>';
             $sub_index++;
           }
-          echo '</div>';
+          echo '</ul>';
         }
       }
 
-      echo '</div>';
       $index++;
     }
 
-    echo '</div></div>';
+    echo '</ul></div>';
 
     echo '</div></div>';
 }
