@@ -64,8 +64,7 @@ div.filter-content-fdomainName div.options{
     cursor:pointer;
 }
 .grid-3 div.autocomplete,
-.page-node div.autocomplete,
-.smart-search-right div.autocomplete{
+.page-node div.autocomplete{
     padding: 10px 10px 0 10px;
     width: 198px;
 }
@@ -115,6 +114,7 @@ div.filter-content-fdomainName div.options{
     display: inline-block;
     vertical-align: top;
 }
+
 .grid-3 div.checkbox,
 .page-node div.checkbox,
 .smart-search-right div.checkbox{
@@ -216,7 +216,7 @@ div.filter-content-fdomainName div.options{
     width: 180px;
 }
 .sub-category div.name{
-    max-width: 93px;
+    max-width: 90px;
 }
 .sub-category div.number{
     width: 62px;
@@ -271,4 +271,41 @@ div.filter-content-fdomainName div.options{
 }
 #node-widget-922 div.number {
     width: 11px;
+}
+
+/* Smart search facets ul:li */
+.smart-search-right div.autocomplete{
+  width:200px;
+  margin-top:5px;
+}
+.smart-search-right .row:hover div{
+  background-color:#eee !important;
+}
+.smart-search-right .row:hover div.name{
+  font-weight:bolder;
+}
+.smart-search-right li.row{
+  list-style: none;
+  padding: 3px 0;
+  width: 200px;
+  clear:both;
+}
+.smart-search-right div.facet-content{
+  padding-left: 10px;
+  margin:0;
+}
+.smart-search-right ul.sub-category li.row{
+  width: 180px;
+}
+.smart-search-right li.row div.checkbox{
+  float:left;
+}
+.smart-search-right li.row div.name{
+  max-width: unset;
+  display: flex;
+  line-height: 13px;
+}
+.smart-search-right li.row div.number{
+  width:unset;
+  padding-top:unset;
 }
