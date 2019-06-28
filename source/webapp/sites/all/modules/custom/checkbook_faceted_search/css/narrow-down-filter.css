@@ -276,6 +276,7 @@ div.filter-content-fdomainName div.options{
 /* Smart search facets ul:li */
 .smart-search-right div.autocomplete{
   width:200px;
+  margin-top:5px;
 }
 .smart-search-right .row:hover div{
   background-color:#eee !important;
@@ -285,12 +286,12 @@ div.filter-content-fdomainName div.options{
 }
 .smart-search-right li.row{
   list-style: none;
-  margin-top: 6px!important;
+  padding: 3px 0;
   width: 200px;
   clear:both;
 }
 .smart-search-right div.facet-content{
-  padding: 10px 0 0 10px;
+  padding-left: 10px;
   margin:0;
 }
 .smart-search-right ul.sub-category li.row{
@@ -302,7 +303,9 @@ div.filter-content-fdomainName div.options{
 .smart-search-right li.row div.name{
   max-width: unset;
   display: flex;
+  line-height: 13px;
 }
 .smart-search-right li.row div.number{
   width:unset;
+  padding-top:unset;
 }
