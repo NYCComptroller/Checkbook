@@ -72,11 +72,12 @@ foreach ($facets_render??[] as $facet_name => $facet) {
       $autocomplete_id = "autocomplete_" . $facet_name;
       $disabled = '';
 
-      echo '<div class="autocomplete"><input id="' . $autocomplete_id . '" ' . $disabled . ' type="text" class="solr_autocomplete" facet="'.$facet_name.'" /></div>';
+      echo '<div class="autocomplete"><input placeholder="Autocomplete '.htmlentities($facet->title).'..." 
+      id="' . $autocomplete_id . '" ' . $disabled . ' type="text" class="solr_autocomplete" facet="'.$facet_name.'" /></div>';
     }
 
     echo '<div class="options">';
-    echo '<div class="rows">';
+    echo '<ul class="rows">';
     $index = 0;
 
     foreach($facet->results as $facet_value => $count) {
@@ -90,7 +91,7 @@ foreach ($facets_render??[] as $facet_name => $facet) {
       $active='';
       echo <<<END
 
-    <div class="row">
+    <li class="row">
       <label for="{$id}">
         <div class="checkbox">
 
@@ -110,9 +111,10 @@ END;
 
 END;
 
-      echo '<div class="name">' . htmlentities($facet_result_title) . '</div>';
       echo '<div class="number"><span' . $active . '>' . number_format($count) . '</span></div>';
+      echo '<div class="name">' . htmlentities($facet_result_title) . '</div>';
       echo '</label>';
+      echo '</li>';
 
       if (($checked) && ($children = $facet->sub->$facet_value??false)){
         $sub_index=0;
@@ -123,7 +125,7 @@ END;
           }
 
           $sub_facet_name = $child;
-          echo '<div class="sub-category">';
+          echo '<ul class="sub-category">';
           echo '<div class="subcat-filter-title">By '.htmlentities($sub_facet->title).'</div>';
           foreach($sub_facet->results as $sub_facet_value => $sub_count){
 
@@ -134,7 +136,7 @@ END;
 
             $id = 'facet_'.$sub_facet_name.$sub_index;
             $active='';
-            echo '<div class="row">';
+            echo '<li class="row">';
             echo "<label for=\"{$id}\">";
             echo '<div class="checkbox">';
 
@@ -148,121 +150,23 @@ END;
             echo "<label for=\"{$id}\" />";
             echo '</div>';
 
-            echo '<div class="name">' . htmlentities($facet_result_title) . '</div>';
             echo '<div class="number"><span' . $active . '>' . number_format($sub_count) . '</span></div>';
+            echo '<div class="name">' . htmlentities($facet_result_title) . '</div>';
             echo '</label>';
 
-            echo '</div>';
+            echo '</li>';
             $sub_index++;
           }
-          echo '</div>';
+          echo '</ul>';
         }
       }
 
-      echo '</div>';
       $index++;
     }
 
-    echo '</div></div>';
+    echo '</ul></div>';
 
     echo '</div></div>';
 }
 ?>
 </div>
-<script type="text/javascript">
-    jQuery('.filter-title > .open').each(function(){
-        jQuery('div.filter-content-fagencyName .options').mCustomScrollbar("destroy");
-        jQuery('div.filter-content-fyear .options').mCustomScrollbar("destroy");
-        jQuery('div.filter-content-regfyear .options').mCustomScrollbar("destroy");
-        jQuery('div.filter-content-fvendorName .options').mCustomScrollbar("destroy");
-        jQuery('div.filter-content-fexpenseCategoryName .options').mCustomScrollbar("destroy");
-        jQuery('div.filter-content-fmwbeCategory .options').mCustomScrollbar("destroy");
-        jQuery('div.filter-content-fpayrollTypeName .options').mCustomScrollbar("destroy");
-        jQuery('div.filter-content-findustryTypeName .options').mCustomScrollbar("destroy");
-        scroll_facet();
-    });
-
-    jQuery('.filter-title').unbind('click');
-    jQuery('.filter-title').click(function(){
-        if(jQuery(this).next().css('display') == 'block'){
-            jQuery(this).next().css('display','none');
-            jQuery(this).children('span').removeClass('open');
-
-        } else {
-            jQuery(this).next().css('display','block');
-            jQuery(this).children('span').addClass('open');
-
-            jQuery('div.filter-content-fagencyName .options').mCustomScrollbar("destroy");
-            jQuery('div.filter-content-fyear .options').mCustomScrollbar("destroy");
-            jQuery('div.filter-content-regfyear .options').mCustomScrollbar("destroy");
-            jQuery('div.filter-content-fvendorName .options').mCustomScrollbar("destroy");
-            jQuery('div.filter-content-fexpenseCategoryName .options').mCustomScrollbar("destroy");
-            jQuery('div.filter-content-fmwbeCategory .options').mCustomScrollbar("destroy");
-            jQuery('div.filter-content-fpayrollTypeName .options').mCustomScrollbar("destroy");
-            jQuery('div.filter-content-findustryTypeName .options').mCustomScrollbar("destroy");
-            scroll_facet();
-        }
-    });
-    function scroll_facet(){
-        var opts = {
-            horizontalScroll:false,
-            scrollButtons:{
-                enable:false
-            },
-            theme:'dark'
-        };
-        jQuery('div.filter-content-fagencyName .options').mCustomScrollbar(opts);
-        jQuery('div.filter-content-fmwbeCategory .options').mCustomScrollbar(opts);
-        jQuery('div.filter-content-fpayrollTypeName .options').mCustomScrollbar(opts);
-        jQuery('div.filter-content-fyear .options').mCustomScrollbar(opts);
-        jQuery('div.filter-content-regfyear .options').mCustomScrollbar(opts);
-        jQuery('div.filter-content-findustryTypeName .options').mCustomScrollbar(opts);
-
-        var vendorpage = 0;
-        var vpagelimit = Drupal.settings.checkbook_smart_search.vendor_pages;
-        jQuery('div.filter-content-fvendorName .options').mCustomScrollbar({
-            horizontalScroll:false,
-            scrollButtons:{
-                enable:false
-            },
-            theme:'dark',
-            callbacks:{
-                onTotalScroll:function () {
-                    if (vendorpage < vpagelimit) {
-                        vendorpage++;
-                        smartSearchPaginateVendor(vendorpage);
-                    }
-                },
-                onTotalScrollBack:function () {
-                    if (vendorpage > 0) {
-                        vendorpage--;
-                        smartSearchPaginateVendor(vendorpage);
-                    }
-                }
-            }
-        });
-        var expcatpg = 0;
-        var ecpagelimit = Drupal.settings.checkbook_smart_search.expense_category_pages;
-        jQuery('div.filter-content-fexpenseCategoryName .options').mCustomScrollbar({
-            horizontalScroll:false,
-            scrollButtons:{
-                enable:false
-            },
-            theme:'dark',
-            callbacks:{
-                onTotalScroll:function () {
-                    if (expcatpg < ecpagelimit) {
-                        expcatpg++;
-                        smartSearchPaginateExpcat(expcatpg);
-                    }
-                },
-                onTotalScrollBack:function () {
-                    if (expcatpg > 0) {
-                        expcatpg--;
-                        smartSearchPaginateExpcat(expcatpg);
-                    }
-                }
-            }
-        });
-    }
-</script>
