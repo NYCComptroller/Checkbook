@@ -239,6 +239,36 @@
           }
         });
       });
+
+      // Facets open/close
+      $('div.facet-content .options').mCustomScrollbar("destroy");
+      scroll_facet();
+
+      $('.filter-title').unbind('click');
+      $('.filter-title').click(function () {
+        if ($(this).next().css('display') == 'block') {
+          $(this).next().css('display', 'none');
+          $(this).children('span').removeClass('open');
+
+        } else {
+          $(this).next().css('display', 'block');
+          $(this).children('span').addClass('open');
+
+          $('div.facet-content .options').mCustomScrollbar("destroy");
+          scroll_facet();
+        }
+      });
+
+      function scroll_facet() {
+        var opts = {
+          horizontalScroll: false,
+          scrollButtons: {
+            enable: false
+          },
+          theme: 'dark'
+        };
+        $('div.facet-content .options').mCustomScrollbar(opts);
+      }
     }
   };
 
@@ -264,7 +294,6 @@
         e.preventDefault();
         var search_string = jQuery(this).attr('href').split("?")[1];
         var search_term = search_string.split("*|*");
-        var newURL = '';
         newURL = search_term[0];
         for (var i = 1; i < search_term.length; i++) {
           var search_filter = search_term[i].split("=");

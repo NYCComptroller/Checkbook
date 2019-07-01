@@ -56,9 +56,6 @@
           ],
           "spending": [
             "spending_category_name"
-          ],
-          "revenue": [
-            "revenue_category_name"
           ]
         }
       },
@@ -75,8 +72,7 @@
         "child": true
       },
       "revenue_category_name": {
-        "title": "Revenue Category",
-        "child": true
+        "title": "Revenue Category"
       },
       "agency_name": {
         "title": "Citywide Agency",
