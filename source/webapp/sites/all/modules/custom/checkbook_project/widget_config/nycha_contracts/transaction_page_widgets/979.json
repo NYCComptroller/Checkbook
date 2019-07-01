@@ -2,15 +2,15 @@
   "widgetType":"data_tables",
   "widgetSubType":"dataTableList",
   "stickyHeader":true,
-    "cleanURLParameters":["pin","csize","releaseyear","industry","year","curamtr","pcontdesc","appdate","startdate","enddate","vendornm_exact","vendor",
+  "cleanURLParameters":["pin","csize","releaseyear","industry","year","curamtr","pcontdesc","appdate","startdate","enddate","vendornm_exact","vendor",
       "vendornm","responsibilitynm_exact","fundingnm_exact","industrynm_exact","agreement_type", "po_num", "po_num_exact", "award_method","awdmethod",
       "contract_type","modamt","curamt", "record_type","release_no","item_category","item_descr"],
   "urlParamMap":{"year":"release_year_id","releaseyear":"release_approved_year_id", "curamtr":"release_line_total_amount","industrynm_exact":"industry_type_id","fundingnm_exact":"funding_source_id","vendornm_exact":"vendor_name","agreement_type":"agreement_type_code",
                  "po_num":"contract_id","responsibilitynm_exact":"responsibility_center_id","po_num_exact":"contract_id", "agency":"agency_id", "award_method":"award_method_id", "awdmethod":"award_method_id","contract_type": "contract_type_code",
-    "pcontdesc":"purpose","appdate": "release_approved_date","startdate": "agreement_start_date","enddate": "agreement_end_date","vendornm": "vendor_name","vendor": "vendor_id","modamt": "agreement_amount_difference",
-    "csize":"award_size_id","industry":"industry_type_id", "pin":"po_header_id","curamt": "release_line_total_amount","record_type":"record_type","release_no":"release_number",
-    "item_category":"item_category_descr","item_descr":"item_description"},
-  "paramTypeConfig": {
+  "pcontdesc":"purpose","appdate": "release_approved_date","startdate": "agreement_start_date","enddate": "agreement_end_date","vendornm": "vendor_name","vendor": "vendor_id","modamt": "agreement_amount_difference",
+  "csize":"award_size_id","industry":"industry_type_id", "pin":"po_header_id","curamt": "release_line_total_amount","record_type":"record_type","release_no":"release_number",
+  "item_category":"item_category_descr","item_descr":"item_description"},
+   "paramTypeConfig": {
     "po_num": "like",
     "po_num_exact": "eqignorecase",
     "vendornm": "like",
@@ -22,7 +22,7 @@
     "enddate": "range",
     "appdate": "range",
     "modamt": "ne"
-  },
+   },
   "header":"
         $header = NULL;
         $header .= widget_data_tables_export_link($node);
@@ -32,123 +32,134 @@
   "exportConfigNid":997,
   "getTotalDataCount":true,
   "limit":"35",
-  "sortSourceByNull":["release_line_spend_to_date","release_line_total_amount","release_line_original_amount","release_number","item_description","shipment_number","distribution_number","release_approved_date","location_descr","grant_name",
-    "expenditure_type_descr","display_funding_source_descr", "responsibility_center_descr", "program_phase_descr","item_category_descr",
-    "gl_project_descr","item_qty_ordered"
-  ],
+  "sortSourceByNull":["number_of_releases", "release_number","item_qty_ordered","shipment_number",
+                      "release_line_total_amount","release_line_original_amount", "release_line_spend_to_date",
+                      "release_total_amount", "release_original_amount", "release_spend_to_date",
+                      "agreement_total_amount", "agreement_original_amount", "agreement_spend_to_date",
+                      "po_header_id"],
   "noDataInitialLoad":true,
   "html_class":"initiative-table",
   "no_results_content":"No Results Found",
   "dataset":"checkbook_nycha:all_agreement_transactions_hrcy",
   "columns": ["number_of_releases", "item_description","contract_id", "agreement_type_name", "agreement_type_code", "release_number", "shipment_number",
-    "distribution_number", "agreement_start_date", "agreement_end_date", "release_approved_date",
+    "agreement_start_date", "agreement_end_date", "release_approved_date",
     "release_total_amount", "release_original_amount", "release_spend_to_date", "agreement_total_amount", "agreement_original_amount", "agreement_spend_to_date",
     "po_header_id", "purpose", "vendor_name", "location_descr", "contract_type_descr", "award_method_name", "grant_name","item_qty_ordered",
     "expenditure_type_descr", "display_industry_type_name", "display_funding_source_descr", "responsibility_center_descr", "program_phase_descr",
     "gl_project_descr", "item_category_descr","vendor_id","release_line_total_amount","release_line_original_amount","release_line_spend_to_date",
     "agreement_amount_difference","agreement_percent_difference", "record_type" ],
   "uniqueSortColumn":["-sort_sequence"],
-"preProcessConfiguration":"
-$contract_type = RequestUtil::getContractType();
-$node->show_difference = ($contract_type== 'BAM'||$contract_type== 'PAM');
-",
+  "preProcessConfiguration":"
+      $contract_type = RequestUtil::getContractType();
+      $node->show_difference = ($contract_type== 'BAM'||$contract_type== 'PAM');
+  ",
   "caption":"",
   "derivedColumns": {
-  "contract_purpose_formatted": {
-  "expression": "_get_tooltip_markup($row['purpose'],36)"
+    "contract_link":{
+      "expression": " '<a href=\"'.NychaContractsUrlService::contractDetailsUrl($row['contract_id']).  '\">'. $row['contract_id']. '</a>'"
     },
-   "contract_type_formatted":{
-       "expression": "_get_tooltip_markup($row['contract_type_descr'],36)"
+    "number_of_releases_formatted": {
+      "expression":"($row['number_of_releases'] == null) ? '-' : $row['number_of_releases']"
     },
-   "responsibility_center_descr_formatted":{
-        "expression": "_get_tooltip_markup($row['responsibility_center_descr'],28)"
+    "release_number_formatted": {
+      "expression":"($row['release_number'] == null) ? '-' : $row['release_number']"
     },
-    "program_phase_descr_formatted":{
-    "expression": "_get_tooltip_markup($row['program_phase_descr'],36)"
+    "item_category_descr_formatted":{
+      "expression": "_get_tooltip_markup($row['item_category_descr'],36)"
     },
-    "gl_project_descr_formatted":{
-      "expression": "_get_tooltip_markup($row['gl_project_descr'],36)"
+    "item_description_formatted":{
+      "expression": "_get_tooltip_markup($row['item_description'],36)"
+    },
+    "item_qty_ordered_formatted":{
+      "expression": "(in_array(strtolower($row['record_type']), array('agreement', 'release'))) ? '-' : $row['item_qty_ordered']"
+    },
+    "shipment_number_formatted": {
+      "expression": "($row['shipment_number'] == null) ? '-' : $row['shipment_number']"
+    },
+    "responsibility_center_descr_formatted":{
+      "expression": "_get_tooltip_markup($row['responsibility_center_descr'],28)"
+    },
+    "agreement_start_date_formatted":{
+      "expression": "(strtoupper($row['agreement_type_name']) == 'PURCHASE ORDER') ? '-' : $row['agreement_start_date']"
+    },
+    "agreement_end_date_formatted":{
+      "expression": "(strtoupper($row['agreement_type_name']) == 'PURCHASE ORDER') ? '-' : $row['agreement_end_date']"
+    },
+    "release_approved_date_formatted":{
+      "expression": "($row['release_approved_date'] == null) ? '-' : $row['release_approved_date']"
+    },
+    "line_current_amount_formatted":{
+      "expression": "($row['release_line_total_amount'] == null) ? '-' : custom_number_formatter_basic_format($row['release_line_total_amount'])"
+    },
+    "line_original_amount_formatted":{
+      "expression": "($row['release_line_original_amount'] == null) ? '-' : custom_number_formatter_basic_format($row['release_line_original_amount'])"
+    },
+    "line_spent_to_date_formatted": {
+      "expression": "($row['release_line_spend_to_date'] == null) ? '-' : custom_number_formatter_basic_format($row['release_line_spend_to_date'])"
+    },
+    "release_current_amount_formatted":{
+      "expression": "($row['release_total_amount'] == null) ? '-' : custom_number_formatter_basic_format($row['release_total_amount'])"
+    },
+    "release_original_amount_formatted":{
+      "expression": "($row['release_original_amount'] == null) ? '-' : custom_number_formatter_basic_format($row['release_original_amount'])"
+    },
+    "release_spent_to_date_formatted": {
+      "expression": "($row['release_spend_to_date'] == null) ? '-' : custom_number_formatter_basic_format($row['release_spend_to_date'])"
+    },
+    "agreement_current_amount_formatted":{
+      "expression": "($row['agreement_total_amount'] == null) ? '-' : custom_number_formatter_basic_format($row['agreement_total_amount'])"
+    },
+    "agreement_original_amount_formatted":{
+      "expression": "($row['agreement_original_amount'] == null) ? '-' : custom_number_formatter_basic_format($row['agreement_original_amount'])"
+    },
+    "agreement_spent_to_date_formatted": {
+      "expression": "($row['agreement_spend_to_date'] == null) ? '-' : custom_number_formatter_basic_format($row['agreement_spend_to_date'])"
+    },
+    "formatted_dollar_diff": {
+      "expression":"custom_number_formatter_basic_format($row['agreement_amount_difference'])"
+    },
+    "formatted_percent_diff": {
+      "expression":"round($row['agreement_percent_difference'],2). '%'"
+    },
+    "contract_purpose_formatted": {
+      "expression": "_get_tooltip_markup($row['purpose'],36)"
+    },
+    "vendor_name_formatted":{
+      "expression": "_get_tooltip_markup($row['vendor_name'],36)"
+    },
+    "prime_vendor_name_link": {
+      "expression": " '<a href=\"'.NychaContractsUrlService::vendorUrl($row['vendor_id']).'\">'.$row['vendor_name_formatted'].'</a>'"
+    },
+    "contract_type_formatted": {
+      "expression": "_get_tooltip_markup($row['contract_type_descr'],36)"
+    },
+    "award_method_name_formatted":{
+      "expression": "_get_tooltip_markup($row['award_method_name'],36)"
+    },
+    "display_industry_type_name_formatted": {
+      "expression": "_get_tooltip_markup($row['display_industry_type_name'],36)"
+    },
+    "po_header_id_formatted":{
+      "expression": " ($row['po_header_id'] == null) ? '-' : $row['po_header_id']"
+    },
+    "location_descr_formatted":{
+      "expression": "_get_tooltip_markup($row['location_descr'],36)"
     },
     "grant_name_formatted":{
       "expression": "_get_tooltip_markup($row['grant_name'],36)"
     },
-    "item_category_descr_formatted":{
-      "expression": "_get_tooltip_markup($row['item_category_descr'],36)"
-     },
     "expenditure_type_descr_formatted":{
       "expression": "_get_tooltip_markup($row['expenditure_type_descr'],36)"
-   },
-   "funding_source_descr_formatted":{
+    },
+    "funding_source_descr_formatted":{
       "expression": "_get_tooltip_markup($row['display_funding_source_descr'],36)"
     },
-    "location_descr_formatted":{
-    "expression": "_get_tooltip_markup($row['location_descr'],36)"
+    "program_phase_descr_formatted":{
+      "expression": "_get_tooltip_markup($row['program_phase_descr'],36)"
     },
-     "vendor_name_formatted":{
-     "expression": "_get_tooltip_markup($row['vendor_name'],36)"
-      },
-      "line_current_amount_formatted":{
-       "expression": "custom_number_formatter_basic_format($row['release_line_total_amount'])"
-      },
-      "line_original_amount_formatted":{
-       "expression": "custom_number_formatter_basic_format($row['release_line_original_amount'])"
-       },
-      "line_spent_to_date_formatted": {
-       "expression": "custom_number_formatter_basic_format($row['release_line_spend_to_date'])"
-      },
-    "release_current_amount_formatted":{
-      "expression": "custom_number_formatter_basic_format($row['release_total_amount'])"
-    },
-    "release_original_amount_formatted":{
-      "expression": "custom_number_formatter_basic_format($row['release_original_amount'])"
-    },
-    "release_spent_to_date_formatted": {
-      "expression": "custom_number_formatter_basic_format($row['release_spend_to_date'])"
-    },
-    "agreement_current_amount_formatted":{
-      "expression": "custom_number_formatter_basic_format($row['agreement_total_amount'])"
-    },
-    "agreement_original_amount_formatted":{
-      "expression": "custom_number_formatter_basic_format($row['agreement_original_amount'])"
-    },
-    "agreement_spent_to_date_formatted": {
-      "expression": "custom_number_formatter_basic_format($row['agreement_spend_to_date'])"
-    },
-      "prime_vendor_name_link": {
-       "expression": " '<a href=\"'.NychaContractsUrlService::vendorUrl($row['vendor_id']).'\">'.$row['vendor_name_formatted'].'</a>'  "
-       },
-      "contract_link":{
-      "expression": " '<a href=\"'.
-       NychaContractsUrlService::contractDetailsUrl($row['contract_id']).  '\">'. $row['contract_id']. '</a>'  "
-      },
-      "agreement_start_date": {
-        "expression":"(strtolower($row['agreement_type_code']) == 'po')? 'N/A' : $row['agreement_start_date']"
-      },
-      "agreement_end_date": {
-        "expression":"(strtolower($row['agreement_type_code']) == 'po')? 'N/A' : $row['agreement_end_date']"
-      },
-      "formatted_dollar_diff": {
-        "expression":"custom_number_formatter_basic_format($row['agreement_amount_difference'])"
-      },
-      "formatted_percent_diff": {
-      "expression":"round($row['agreement_percent_difference'],2). '%'"
-      },
-      "release_number_formatted": {
-        "expression":"(strtolower($row['agreement_type_code']) == 'po')? 'N/A' : ($row['release_number'])== null ?'-' :$row['release_number']"
-      },
-      "shipment_number_formatted":{
-       "expression":"($row['shipment_number'])== null ?'-' :$row['shipment_number']"
-      },
-        "item_description_formatted":{
-        "expression": "_get_tooltip_markup($row['item_description'],36)"
-     },
-    "award_method_name_formatted":{
-        "expression": "_get_tooltip_markup($row['award_method_name'],36)"
-        },
-        "display_industry_type_name_formatted":
-        {
-        "expression": "_get_tooltip_markup($row['display_industry_type_name'],36)"
-         }
+    "gl_project_descr_formatted":{
+      "expression": "_get_tooltip_markup($row['gl_project_descr'],36)"
+    }
 },
   "skipCustomPadding":true,
   "table_columns": [
@@ -157,16 +168,16 @@ $node->show_difference = ($contract_type== 'BAM'||$contract_type== 'PAM');
     {"labelAlias":"purchase_order_type","column":"agreement_type_name"},
     {"labelAlias":"record_type","column":"record_type"},
     {"label":"","column":"", "export":false},
-    {"labelAlias":"number_of_releases","column":"number_of_releases"},
+    {"labelAlias":"number_of_releases", "column":"number_of_releases_formatted", "sortSourceColumn":"number_of_releases"},
     {"labelAlias":"release_number","column":"release_number_formatted","sortSourceColumn":"release_number"},
     {"labelAlias":"item_category","column":"item_category_descr_formatted","sortSourceColumn":"item_category_descr"},
     {"labelAlias":"item_description","column":"item_description_formatted","sortSourceColumn":"item_description"},
-    {"labelAlias":"quantity_ordered","column":"item_qty_ordered"},
+    {"labelAlias":"quantity_ordered","column":"item_qty_ordered_formatted", "sortSourceColumn":"item_qty_ordered"},
     {"labelAlias":"shipment_number","column":"shipment_number_formatted","sortSourceColumn":"shipment_number"},
     {"labelAlias":"responsibility_center","column":"responsibility_center_descr_formatted","sortSourceColumn":"responsibility_center_descr"},
-    {"labelAlias":"start_date","column":"agreement_start_date"},
-    {"labelAlias":"end_date","column":"agreement_end_date"},
-    {"labelAlias":"release_approved_date","column":"release_approved_date"},
+    {"labelAlias":"start_date","column":"agreement_start_date_formatted", "sortSourceColumn":"agreement_start_date"},
+    {"labelAlias":"end_date","column":"agreement_end_date_formatted", "sortSourceColumn":"agreement_end_date"},
+    {"labelAlias":"release_approved_date","column":"release_approved_date_formatted","sortSourceColumn":"release_approved_date"},
     {"labelAlias":"line_current_amount","column":"line_current_amount_formatted","sortSourceColumn":"release_line_total_amount"},
     {"labelAlias":"line_original_amount","column":"line_original_amount_formatted","sortSourceColumn":"release_line_original_amount"},
     {"labelAlias":"line_spend_to_date","column":"line_spent_to_date_formatted","sortSourceColumn":"release_line_spend_to_date"},

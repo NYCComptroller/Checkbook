@@ -38,7 +38,169 @@
     {"labelAlias":"project","column":"gl_project_descr"}
   ],
   "preProcessConfiguration":"
-  $contract_type = RequestUtil::getContractType();
-  $node->show_difference = ($contract_type== 'BAM'||$contract_type== 'PAM');
-  "
+    $contract_type = RequestUtil::getContractType();
+    $node->show_difference = ($contract_type= 'BAM'||$contract_type= 'PAM');
+  ",
+  "exportColumnSqlOverride":[
+    {
+      "column":"number_of_releases",
+      "sourceColumn":"number_of_releases",
+      "sql":"
+        CASE
+          WHEN number_of_releases IS NULL THEN '-'
+          ELSE CAST(number_of_releases AS TEXT)
+        END AS number_of_releases
+      "
+    },
+    {
+      "column":"release_number",
+      "sourceColumn":"release_number",
+      "sql":"
+      CASE
+      WHEN release_number IS NULL THEN '-'
+      ELSE CAST(release_number AS TEXT)
+      END AS release_number
+      "
+    },
+    {
+      "column":"item_qty_ordered",
+      "sourceColumn":"item_qty_ordered",
+      "sql":"
+        CASE
+          WHEN (record_type = 'agreement' OR record_type = 'release' ) THEN '-'
+          ELSE CAST(item_qty_ordered AS TEXT)
+        END AS item_qty_ordered
+      "
+    },
+    {
+      "column":"agreement_start_date",
+      "sourceColumn":"agreement_start_date",
+      "sql":"
+        CASE
+          WHEN upper(agreement_type_name) = 'PURCHASE ORDER' THEN '-'
+          ELSE TO_CHAR(agreement_start_date,'MM/DD/YYYY')
+        END AS agreement_start_date
+      "
+    },
+    {
+      "column":"agreement_end_date",
+      "sourceColumn":"agreement_end_date",
+      "sql":"
+        CASE
+          WHEN upper(agreement_type_name) = 'PURCHASE ORDER' THEN '-'
+          ELSE TO_CHAR(agreement_end_date,'MM/DD/YYYY')
+        END AS agreement_end_date
+      "
+    },
+    {
+      "column":"release_approved_date",
+      "sourceColumn":"release_approved_date",
+      "sql":"
+        CASE
+          WHEN release_approved_date IS NULL THEN '-'
+          ELSE TO_CHAR(release_approved_date,'MM/DD/YYYY')
+        END AS release_approved_date
+      "
+    },
+    {
+      "column":"release_line_total_amount",
+      "sourceColumn":"release_line_total_amount",
+      "sql":"
+        CASE
+          WHEN release_line_total_amount IS NULL THEN '-'
+          ELSE CAST(release_line_total_amount AS TEXT)
+        END AS release_line_total_amount
+      "
+    },
+    {
+      "column":"release_line_original_amount",
+      "sourceColumn":"release_line_original_amount",
+      "sql":"
+        CASE
+          WHEN release_line_original_amount IS NULL THEN '-'
+          ELSE CAST(release_line_original_amount AS TEXT)
+        END AS release_line_original_amount
+      "
+    },
+    {
+      "column":"release_line_spend_to_date",
+      "sourceColumn":"release_line_spend_to_date",
+      "sql":"
+        CASE
+          WHEN release_line_spend_to_date IS NULL THEN '-'
+          ELSE CAST(release_line_spend_to_date AS TEXT)
+        END AS release_line_spend_to_date
+      "
+    },
+    {
+      "column":"release_total_amount",
+      "sourceColumn":"release_total_amount",
+      "sql":"
+        CASE
+          WHEN release_total_amount IS NULL THEN '-'
+          ELSE CAST(release_total_amount AS TEXT)
+        END AS release_total_amount
+      "
+    },
+    {
+      "column":"release_original_amount",
+      "sourceColumn":"release_original_amount",
+      "sql":"
+        CASE
+          WHEN release_original_amount IS NULL THEN '-'
+          ELSE CAST(release_original_amount AS TEXT)
+        END AS release_original_amount
+      "
+    },
+    {
+      "column":"release_spend_to_date",
+      "sourceColumn":"release_spend_to_date",
+      "sql":"
+        CASE
+         WHEN release_spend_to_date IS NULL THEN '-'
+         ELSE CAST(release_spend_to_date AS TEXT)
+        END AS release_spend_to_date
+      "
+    },
+    {
+      "column":"agreement_total_amount",
+      "sourceColumn":"agreement_total_amount",
+      "sql":"
+        CASE
+          WHEN agreement_total_amount IS NULL THEN '-'
+          ELSE CAST(agreement_total_amount AS TEXT)
+        END AS agreement_total_amount
+      "
+    },
+    {
+      "column":"agreement_original_amount",
+      "sourceColumn":"agreement_original_amount",
+      "sql":"
+        CASE
+          WHEN agreement_original_amount IS NULL THEN '-'
+          ELSE CAST(agreement_original_amount AS TEXT)
+        END AS agreement_original_amount
+      "
+    },
+    {
+      "column":"agreement_spend_to_date",
+      "sourceColumn":"agreement_spend_to_date",
+      "sql":"
+        CASE
+          WHEN agreement_spend_to_date IS NULL THEN '-'
+          ELSE CAST(agreement_spend_to_date AS TEXT)
+        END AS agreement_spend_to_date
+      "
+    },
+    {
+      "column":"po_header_id",
+      "sourceColumn":"po_header_id",
+      "sql":"
+        CASE
+          WHEN po_header_id IS NULL THEN '-'
+          ELSE CAST(po_header_id AS TEXT)
+        END AS po_header_id
+      "
+    }
+  ]
 }
