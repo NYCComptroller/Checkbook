@@ -268,7 +268,7 @@ class WidgetUtil
         "line_number" => "Line<br/>Number",
         "line_current_amount" => "Line Current<br/>Amount",
         "line_original_amount" => "Line Original <br/> Amount",
-        "line_spend_to_date" => "Line Spent To<br/>Date",
+        "line_spend_to_date" => "Line Invoiced<br/>Amount",
         "agreement_start_date" => "Agreement<br/>Start Date",
         "agreement_end_date" => "Agreement<br/>End Date",
         "agreement_current_amount"=>"Agreement<br/>Current Amount",
