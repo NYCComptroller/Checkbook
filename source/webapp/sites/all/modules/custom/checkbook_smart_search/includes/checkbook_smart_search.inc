@@ -99,7 +99,7 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
   $solr_query
     ->setSort('domain_ordering asc,date_ordering desc');
 
-  $datasource_facets = CheckbookSolr::getFacetConfigByDatasource($solr_datasource);
+  $datasource_facets = (array)CheckbookSolr::getFacetConfigByDatasource($solr_datasource);
 
   $selected_facets = $solr_query->getSelectedFacets();
 
