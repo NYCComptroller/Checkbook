@@ -8,7 +8,7 @@
   "showAllRecords":true,
   "allowFacetDeselect":true,
   "columns":["release_approved_year_id.release_approved_year_id","release_approved_year.release_approved_year","txcount"],
-  "orderBy":"-txcount",
+  "orderBy":"-release_approved_year",
   "facetPager":true,
   "filterName":"Release Approved Year",
   "urlParameterName":"releaseyear",
