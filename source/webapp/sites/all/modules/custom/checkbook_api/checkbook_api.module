@@ -682,6 +682,29 @@ function checkbook_api_adjustNYCHAContractSql(&$sql_query){
     if(isset($year)){
       $sql_query =  str_replace("release_approved_year,", $year." AS release_approved_year,",$sql_query);
     }
+
+    $text_columns = array('number_of_releases', 'release_number', 'shipment_number', 'item_qty_ordered',
+                     'release_line_total_amount', 'release_line_original_amount', 'release_line_spend_to_date',
+                     'release_total_amount', 'release_original_amount', 'release_spend_to_date',
+                     'agreement_total_amount', 'agreement_original_amount', 'agreement_spend_to_date',
+                     'po_header_id');
+    foreach($text_columns as $key => $value){
+      $sql_query =  str_replace($value, "CASE WHEN " .$value." IS NULL THEN '-'
+                                                  ELSE CAST(".$value." AS TEXT)
+                                                 END AS ".$value, $sql_query);
+    }
+
+    //Set '-' to Start Date and End Date to POs
+    $po_date_columns = array('agreement_start_date', 'agreement_end_date');
+    foreach($po_date_columns as $key => $value){
+      $sql_query =  str_replace($value, "CASE WHEN (upper(agreement_type_name) = 'PURCHASE ORDER') THEN '-'
+                                                    ELSE TO_CHAR(".$value.",'MM/DD/YYYY')
+                                                   END AS ".$value, $sql_query);
+    }
+    // Set release_approved_date to hyphen when NULL
+    $sql_query =  str_replace('release_approved_date', "CASE WHEN release_approved_date IS NULL THEN '-'
+                                                    ELSE TO_CHAR(release_approved_date, 'MM/DD/YYYY')
+                                                   END AS release_approved_date", $sql_query);
 }
 
 function checkbook_api_adjustPayrollSql(&$sql_query) {
