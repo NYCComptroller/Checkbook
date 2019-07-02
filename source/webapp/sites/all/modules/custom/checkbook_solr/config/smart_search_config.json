@@ -29,6 +29,7 @@
     "nycha": {
       "vendor_name": "Vendors",
       "contract_number": "Contract ID",
+      "grant_name": "Grant Name",
       "funding_source_name": "Funding source",
       "responsibility_center_name": "Responsibility center"
     }
@@ -214,6 +215,9 @@
       },
       "civil_service_title": {
         "title": "Title"
+      },
+      "grant_name": {
+        "title": "Grant Name"
       }
     }
   },
@@ -384,7 +388,7 @@
         "end_date": "End Date",
         "release_approved_date": "Approved Date",
         "location_borough_name": "Location",
-        "grant_number": "Grant Name",
+        "grant_name": "Grant Name",
         "expenditure_type_name": "Expenditure Type",
         "funding_source_name": "Funding source",
         "program_phase_code": "Program",
@@ -564,7 +568,7 @@
         "display_industry_type_name": "Industry",
         "pin": "PIN",
         "location_name": "Location",
-        "grant_number": "Grant Name",
+        "grant_name": "Grant Name",
         "expenditure_type_name": "Expenditure Type",
         "funding_source_name": "Funding source",
         "program_phase_code": "Program",
