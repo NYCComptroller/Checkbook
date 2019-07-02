@@ -286,7 +286,7 @@ div.filter-content-fdomainName div.options{
 }
 .smart-search-right li.row{
   list-style: none;
-  padding: 3px 0;
+  padding: 5px 0;
   width: 200px;
   clear:both;
 }
@@ -299,6 +299,7 @@ div.filter-content-fdomainName div.options{
 }
 .smart-search-right li.row div.checkbox{
   float:left;
+  padding: 0 5px 0 2px;
 }
 .smart-search-right li.row div.name{
   max-width: unset;
