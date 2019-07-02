@@ -71,7 +71,7 @@
       "expression": "_get_tooltip_markup($row['item_description'],36)"
     },
     "item_qty_ordered_formatted":{
-      "expression": "(in_array(strtolower($row['record_type']), array('agreement', 'release'))) ? '-' : $row['item_qty_ordered']"
+      "expression": "($row['item_qty_ordered'] == null) ? '-' : $row['item_qty_ordered']"
     },
     "shipment_number_formatted": {
       "expression": "($row['shipment_number'] == null) ? '-' : $row['shipment_number']"
