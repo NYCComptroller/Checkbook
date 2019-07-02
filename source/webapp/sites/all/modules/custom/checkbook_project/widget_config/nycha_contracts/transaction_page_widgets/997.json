@@ -56,10 +56,20 @@
       "column":"release_number",
       "sourceColumn":"release_number",
       "sql":"
-      CASE
-      WHEN release_number IS NULL THEN '-'
-      ELSE CAST(release_number AS TEXT)
-      END AS release_number
+        CASE
+          WHEN release_number IS NULL THEN '-'
+          ELSE CAST(release_number AS TEXT)
+        END AS release_number
+      "
+    },
+    {
+      "column":"shipment_number",
+      "sourceColumn":"shipment_number",
+      "sql":"
+        CASE
+          WHEN shipment_number IS NULL THEN '-'
+          ELSE CAST(shipment_number AS TEXT)
+        END AS shipment_number
       "
     },
     {
@@ -67,7 +77,7 @@
       "sourceColumn":"item_qty_ordered",
       "sql":"
         CASE
-          WHEN (record_type = 'agreement' OR record_type = 'release' ) THEN '-'
+          WHEN item_qty_ordered IS NULL THEN '-'
           ELSE CAST(item_qty_ordered AS TEXT)
         END AS item_qty_ordered
       "
