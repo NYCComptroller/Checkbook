@@ -18,7 +18,7 @@
     "appdate": "range",
     "modamt": "ne"
   },
-  "dataset":"checkbook_nycha:nycha_all_agreements",
+  "dataset":"checkbook_nycha:all_agreement_transactions_hrcy",
   "columns": ["total_current_amount"],
   "adjustParameters":"
   $parameters = NYCHAContractUtil::adjustYearParams($node, $parameters);
