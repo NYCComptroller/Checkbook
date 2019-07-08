@@ -3911,16 +3911,19 @@ table.nycha_assoc_contracts_list {
 .nycha_assoc_contracts_list .cta-history th.thEndDate div{
   padding-left:17px;
 }
-
 .nycha_assoc_contracts_list th.item_description div,
 .nycha_assoc_contracts_list td.item_description div,
-.nycha_assoc_contracts_list th.shipment_number div,
+.nycha_assoc_contracts_list td.responsibility_center_descr div,
 .nycha_assoc_contracts_list td.shipment_number div,
 .dataTable th.ncc-item_description div,
 .dataTable td.ncc-item_description div,
 .dataTable th.nycc-shipment_number div,
-.dataTable td.nycc-shipment_number div{
-  padding-left:50px;
+.dataTable td.nycc-shipment_number div
+{
+    padding-left:50px;
+}
+.cta-history td{
+    vertical-align: middle;
 }
 
 .nycha_assoc_contracts_list .cta-r-data th.th3,
