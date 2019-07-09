@@ -663,7 +663,7 @@
             $('#edit-commodity-line', context).autocomplete({source: '/autocomplete/contracts/commodityline/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + data_source});
             $('#edit-budget-name', context).autocomplete({source: '/autocomplete/contracts/budgetname/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + data_source});
 
-            var purchase_order = $('select[name="purchase_order_type"]', context).val();
+            var purchase_order = $.fn.emptyToZero($('select[name="purchase_order_type"]', context).val());
             var responsibility_center = $.fn.emptyToZero($('select[name="resp_center"]', context).val());
             var nycha_contract_type = $.fn.emptyToZero($('select[name="nycha_contract_type"]', context).val());
             var nycha_award_method = $.fn.emptyToZero($('select[name="nycha_awd_method"]', context).val());
@@ -706,7 +706,7 @@
                 $('#edit-commodity-line', context).autocomplete('option', 'source', '/autocomplete/contracts/commodityline/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + data_source);
                 $('#edit-budget-name', context).autocomplete('option', 'source', '/autocomplete/contracts/budgetname/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + data_source);
 
-                var purchase_order = $('select[name="purchase_order_type"]', context).val();
+                var purchase_order = $.fn.emptyToZero($('select[name="purchase_order_type"]', context).val());
                 var responsibility_center = $.fn.emptyToZero($('select[name="resp_center"]', context).val());
                 var nycha_contract_type = $.fn.emptyToZero($('select[name="nycha_contract_type"]', context).val());
                 var nycha_award_method = $.fn.emptyToZero($('select[name="nycha_awd_method"]', context).val());
