@@ -278,6 +278,10 @@
   "customJS":"
     // Enable THEAD scroll bars
     jQuery('.dataTables_scrollHead').css('overflow', 'auto');
+    // Sync THEAD scrolling with TBODY
+    jQuery('.dataTables_scrollHead').scroll(function () {
+      jQuery('.dataTables_scrollBody').scrollLeft(jQuery(this).scrollLeft());
+    });
 
     jQuery('#dtl_expand').live( 'click',function () {
     var nTr = this.parentNode.parentNode.parentNode;
