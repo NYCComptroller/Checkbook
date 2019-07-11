@@ -40,12 +40,12 @@ function getNamedFilterCriteria(filterName){
           }
 
           if (!multiValueExistence){
-            if (filterId.length > 0) {
+            if(filterId.length>0){
               filterId = filterId + '~' + value;
-            } else {
+            }else{
               filterId = value;
             }
-          }
+            }
         }
     }
 
@@ -130,7 +130,10 @@ function checkMultivalueExistence(filterUrlValues, value){
  * Function to apply table filters
  *
  */
-function applyTableListFilters(checked, value, urlParam){
+function applyTableListFilters(chkd, val, urlPar){
+  var checked = chkd || null;
+  var value = val || null;
+  var urlParam = urlPar || null;
 	jQuery('input[type=checkbox]').attr("disabled", true);
     var cUrl = prepareTableListFilterUrl();
     if(checked == false && urlParam !== null && value !== null){
@@ -143,7 +146,7 @@ function applyTableListFilters(checked, value, urlParam){
         var str = '/dashboard_platform/data_tables_list/ajax_data/node/';
         if (settings.url.toLowerCase().indexOf(str) >= 0){
             setTimeout(function(){fnCustomInitCompleteReload();}, 500);}
-    });
+     });
 
     reloadSidebar(cUrl);
 }
