@@ -276,6 +276,9 @@
     "bScrollCollapse": true
   },
   "customJS":"
+    // Enable THEAD scroll bars
+    jQuery('.dataTables_scrollHead').css('overflow', 'auto');
+
     jQuery('#dtl_expand').live( 'click',function () {
     var nTr = this.parentNode.parentNode.parentNode;
     if ( jQuery(this).attr('class').match('loader') ){return;}
