@@ -161,6 +161,9 @@ function fnCustomInitCompleteReload() {
     jQuery('.dataTables_scrollHead').unstick();
     jQuery('.dataTables_scrollHead').css('overflow','hidden');
 
+    //NYCCHKBK-9146:Enable THEAD scroll bars for NYCHA Transactions Table
+    jQuery('#table_979_wrapper .dataTables_scrollHead').css('overflow', 'auto');
+
     jQuery('.dataTables_scrollHead').sticky({ 'topSpacing': topSpacing , 'bottomSpacing': bottomSpacing, getWidthFrom:'.dataTables_scroll' });
     jQuery('.dataTables_scrollHead').sticky('update');
 
