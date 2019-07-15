@@ -430,12 +430,12 @@ function widget_prepare(&$node) {
 			foreach ($urlParams as $up) {
                 $pathParam = $pathParams[$i];
 				if ($up == $pathParams[$i]) {
-       				 $up = isset($node->widgetConfig->urlParamMap) ? $node->widgetConfig->urlParamMap->$up : $up;
+          $up = isset($node->widgetConfig->urlParamMap) ? $node->widgetConfig->urlParamMap->$up : $up;
 					if(isset($pathParams[$i + 1]) && $pathParams[$i + 1] !='all'){
-                        $pathParams[$i + 1] = _replaceSpecialCharactersDecode($pathParams[$i + 1]);
-                        $node->widgetConfig->requestParams[$up] = htmlspecialchars_decode($pathParams[$i + 1]);
-                        $node->widgetConfig->originalRequestParams[$pathParam] = htmlspecialchars_decode($pathParams[$i + 1]);
-                    }
+              $pathParams[$i + 1] = _replaceSpecialCharactersDecode($pathParams[$i + 1]);
+              $node->widgetConfig->requestParams[$up] = pg_escape_string(htmlspecialchars_decode($pathParams[$i + 1]));
+              $node->widgetConfig->originalRequestParams[$pathParam] = pg_escape_string(htmlspecialchars_decode($pathParams[$i + 1]));
+          }
 					break;
 				}
 			}
