@@ -18,7 +18,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-$searchTerms = explode('*|*', $_REQUEST['search_term']);
+$searchTerms = explode('*!*', $_REQUEST['search_term']);
 //$filterCriteria = NULL;
 //$theme_path =  drupal_get_path('theme',$GLOBALS['theme']);
 //$clear_icon = $theme_path."/images/filter-close-icon.png";
