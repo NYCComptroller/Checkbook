@@ -293,12 +293,12 @@
       $('.item-list ul.pager li a').live('click', function (e) {
         e.preventDefault();
         var search_string = jQuery(this).attr('href').split("?")[1];
-        var search_term = search_string.split("*|*");
+        var search_term = search_string.split("*!*");
         newURL = search_term[0];
         for (var i = 1; i < search_term.length; i++) {
           var search_filter = search_term[i].split("=");
           var value = encodeURIComponent(search_filter[1]);
-          newURL = newURL + '*|*' + search_filter[0] + '=' + value;
+          newURL = newURL + '*!*' + search_filter[0] + '=' + value;
         }
         var solr_datasource = Drupal.settings.solr_datasource || 'citywide';
         var curl = '/smart_search/ajax/results/' + solr_datasource + '?' + newURL;
@@ -338,14 +338,14 @@ function applySearchFilters() {
 
   var fq_string = '';
   for (var k in fq) {
-    fq_string += '*|*' + k + '=' + encodeURIComponent(fq[k].join('~'));
+    fq_string += '*!*' + k + '=' + encodeURIComponent(fq[k].join('~'));
   }
 
   // adding global q string
   var searchTerm = '';
   var url = new URLSearchParams(window.location.search);
   if (url.get('search_term')) {
-    searchTerm = url.get('search_term').split('*|*')[0];
+    searchTerm = url.get('search_term').split('*!*')[0];
   }
 
   var cUrl = "?search_term=" + searchTerm;
@@ -364,7 +364,7 @@ function getFacetAutocompleteUrl(category, value) {
   var found = 0;
 
   if (searchString.get('search_term')) {
-    var searchTerms = searchString.get('search_term').split("*|*");
+    var searchTerms = searchString.get('search_term').split("*!*");
     // newUrl += searchTerms[0];
 
     for (var i = 1; i < searchTerms.length; i++) {
@@ -378,13 +378,13 @@ function getFacetAutocompleteUrl(category, value) {
       }
     }
 
-    newUrl += searchTerms.join('*|*');
+    newUrl += searchTerms.join('*!*');
 
     if (!found) {
-      newUrl += "*|*" + category + '=' + value;
+      newUrl += "*!*" + category + '=' + value;
     }
   } else {
-    newUrl += "*|*" + category + '=' + value;
+    newUrl += "*!*" + category + '=' + value;
   }
   return newUrl;
 }
