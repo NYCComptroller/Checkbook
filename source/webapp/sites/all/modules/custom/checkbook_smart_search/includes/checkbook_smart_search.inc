@@ -114,7 +114,7 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
     }
   }
 
-  $search_terms = explode('*|*', $_REQUEST['search_term']); // array("Education", "domains=Payroll~Spending", "fiscal_years=2014~2013")
+  $search_terms = explode('*!*', $_REQUEST['search_term']); // array("Education", "domains=Payroll~Spending", "fiscal_years=2014~2013")
   $reg_flag = false;
 //  $act_flag = false;
   foreach ($search_terms as $id => $keyvaluepair) {
@@ -326,7 +326,7 @@ function _checkbook_smart_search_autocomplete_main_input($solr_datasource = 'cit
 
   foreach($contents['terms'] as $term=>$matches){
     foreach($matches as $match=>$count){
-      $url = $smart_search_url . "?search_term=*|*{$term}=";
+      $url = $smart_search_url . "?search_term=*!*{$term}=";
       $matches_render[] = [
         "url" => $url,
         "category" => $autocomplete_categories[$term],
@@ -351,7 +351,7 @@ function _checkbook_smart_search_autocomplete_main_input($solr_datasource = 'cit
 //        foreach ($value as $a => $b) {
 //          if (!in_array($a, $contents['terms']['oge_agency_name'])) {
 //            $count++;
-//            $url = $smart_search_url . "?search_term=*|*agency_names=";
+//            $url = $smart_search_url . "?search_term=*!*agency_names=";
 //            $matches[] = ["url" => $url, "category" => "Agencies", "label" => $a, "value" => urlencode($a)];
 //          }
 //        }
@@ -359,28 +359,28 @@ function _checkbook_smart_search_autocomplete_main_input($solr_datasource = 'cit
 //      case 'oge_agency_name':
 //        foreach ($value as $a => $b) {
 //          $count++;
-//          $url = $smart_search_url . "?search_term=*|*oge_agency_names=";
+//          $url = $smart_search_url . "?search_term=*!*oge_agency_names=";
 //          $matches[] = array("url" => $url, "category" => "Other Government Entities", "label" => $a, "value" => urlencode($a));
 //        }
 //        break;
 //      case 'vendor_name':
 //        foreach ($value as $a => $b) {
 //          $count++;
-//          $url = $smart_search_url . "?search_term=*|*vendor_names=";
+//          $url = $smart_search_url . "?search_term=*!*vendor_names=";
 //          array_push($matches, array("url" => $url, "category" => "Vendors (Prime Vendor, Sub Vendor, M/WBE Vendor)", "label" => $a, "value" => urlencode($a)));
 //        }
 //        break;
 //      case 'minority_type_name':
 //        foreach ($value as $a => $b) {
 //          $count++;
-//          $url = $smart_search_url . "?search_term=*|*minority_type_name=";
+//          $url = $smart_search_url . "?search_term=*!*minority_type_name=";
 //          array_push($matches, array("url" => $url, "category" => "M/WBE Category", "label" => $a, "value" => urlencode($a)));
 //        }
 //        break;
 //      case 'expenditure_object_name':
 //        foreach ($value as $a => $b) {
 //          $count++;
-//          $url = $smart_search_url . "?search_term=*|*expense_categories=";
+//          $url = $smart_search_url . "?search_term=*!*expense_categories=";
 //          array_push($matches, array("url" => $url, "category" => "Expense Categories", "label" => $a, "value" => urlencode($a)));
 //        }
 //        break;
@@ -492,12 +492,12 @@ function _checkbook_smart_search_clear_url($facetName, $facetValue = null, $coun
   $searchArgs = $_REQUEST['search_term'];
   $clearArgURL = "/smart_search/?search_term=";
   $clearURL = "";
-  $searchTerms = explode('*|*', $searchArgs);
+  $searchTerms = explode('*!*', $searchArgs);
   if ($facetName == 'search_term') {
     for ($i = 1; $i < count($searchTerms); $i++) {
       $search_params = explode('=', $searchTerms[$i]);
       //$search_params[1] = urldecode($search_params[1]);
-      $clearURL .= "*|*" . $search_params[0] . '=' . urlencode($search_params[1]);
+      $clearURL .= "*!*" . $search_params[0] . '=' . urlencode($search_params[1]);
     }
 
     $clearArgURL .= $clearURL;
@@ -511,17 +511,17 @@ function _checkbook_smart_search_clear_url($facetName, $facetValue = null, $coun
           if ($facets[0] == 'contract_categories' || $facets[0] == 'contract_status') {
             $clearArgURL .= "";
           } else {
-            $clearArgURL .= '*|*' . $facets[0] . '=' . urlencode($facets[1]);
+            $clearArgURL .= '*!*' . $facets[0] . '=' . urlencode($facets[1]);
           }
 
         } else if ($facetName == 'domains' && $facetValue == 'spending') {
           if ($facets[0] == 'spending_categories') {
             $clearArgURL .= "";
           } else {
-            $clearArgURL .= '*|*' . $facets[0] . '=' . urlencode($facets[1]);
+            $clearArgURL .= '*!*' . $facets[0] . '=' . urlencode($facets[1]);
           }
         } else {
-          $clearArgURL .= '*|*' . $facets[0] . '=' . urlencode($facets[1]);
+          $clearArgURL .= '*!*' . $facets[0] . '=' . urlencode($facets[1]);
         }
       }
 
@@ -545,7 +545,7 @@ function _checkbook_smart_search_clear_url($facetName, $facetValue = null, $coun
           }
         }
         $contQueryString = substr($contQueryString, 0, -1);
-        $clearArgURL .= ($count > 1) ? ('*|*' . $facetName . '=' . $contQueryString) : "";
+        $clearArgURL .= ($count > 1) ? ('*!*' . $facetName . '=' . $contQueryString) : "";
       }
     }
   }
@@ -559,10 +559,10 @@ function _checkbook_smart_search_clear_url($facetName, $facetValue = null, $coun
  */
 function _checkbook_smart_search_str_html_entities($string)
 {
-  $string = str_replace("<em>", "**|**", $string);
+  $string = str_replace("<em>", "**!**", $string);
   $string = str_replace("</em>", "**||**", $string);
   $string = htmlentities($string);
-  $string = str_replace("**|**", "<em>", $string);
+  $string = str_replace("**!**", "<em>", $string);
   $string = str_replace("**||**", "</em>", $string);
 
   return $string;

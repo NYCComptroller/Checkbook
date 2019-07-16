@@ -704,7 +704,7 @@
           Object.keys(filters).forEach(function (key) {
             var val = extractId(filters[key]);
             if (val && ("0" !== val)){
-              fq += '*|*'+key+'='+val;
+              fq += '*!*'+key+'='+val;
             }
           });
 
@@ -721,7 +721,7 @@
           var agreement_type_id = div.ele('contract_type').val() || 0;
           var agency_id = div.ele('agency').val() || 0;
           var award_method_id = div.ele('award_method').val() || 0;
-          var year = div.ele('year').val() || 0;
+          // var year = div.ele('year').val() || 0;
           var scntrc_status = div.ele('includes_sub_vendors').val() || 0;
           var aprv_sta = div.ele('sub_vendor_status').val() || 0;
           var data_source = $('input:radio[name=contracts_advanced_search_domain_filter]:checked').val();

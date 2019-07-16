@@ -14,7 +14,7 @@ $isOge = $isNycha || $isEdc;
 
 if(strtolower($contracts_results['contract_status']) == 'registered'){
 
-    $search_terms = explode('*|*', $_REQUEST['search_term']);
+    $search_terms = explode('*!*', $_REQUEST['search_term']);
     $contract_status = '';
     foreach($search_terms as $id => $keyvaluepair){
         $keys = explode("=", $keyvaluepair);
