@@ -100,7 +100,7 @@ class CheckbookSolrQuery
 
     if ($searchTerms) {
       $this
-        ->setSearchTerms(explode('*|*', $searchTerms));
+        ->setSearchTerms(explode('*!*', $searchTerms));
     }
 
     $this
