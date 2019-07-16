@@ -6,7 +6,7 @@
     },
     "all_agreement_transactions_hrcy": {
       "datasourceName": "main",
-      "source": "all_agreement_transactions_by_release_by_line_base"
+      "source": "all_agreement_transactions_by_release_by_line"
     }
   },
   "cubes": {
