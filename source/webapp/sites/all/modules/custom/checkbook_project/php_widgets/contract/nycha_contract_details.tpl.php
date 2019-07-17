@@ -30,7 +30,7 @@ $contract = $node->data;
         <div class="dollar-amounts">
             <div class="spent-to-date">
                 <?= custom_number_formatter_format($contract['spend_to_date'], 2, "$"); ?>
-                <div class="amount-title"><?= WidgetUtil::getLabel('spent_to_date') ?></div>
+                <div class="amount-title"><?= WidgetUtil::getLabel('invoiced_amount') ?></div>
             </div>
             <div class="original-amount">
                 <?= custom_number_formatter_format($contract['original_amount'], 2, '$'); ?>
@@ -313,7 +313,7 @@ $contract = $node->data;
                   <?= WidgetUtil::getLabelDiv('original_amount') ?>
                 </th>
                 <th>
-                  <?= WidgetUtil::getLabelDiv('spent_to_date') ?>
+                  <?= WidgetUtil::getLabelDiv('invoiced_amount') ?>
                 </th>
             </tr>
             </thead>
@@ -376,7 +376,7 @@ $contract = $node->data;
                                                 <?= WidgetUtil::getLabelDiv('original_amount') ?>
                                             </th>
                                             <th class="number endCol">
-                                                <?= WidgetUtil::getLabelDiv('spent_to_date') ?>
+                                                <?= WidgetUtil::getLabelDiv('invoiced_amount') ?>
                                             </th>
                                             <th class="number endCol">
                                                 <?= WidgetUtil::getLabelDiv('responsibility_center') ?>
@@ -561,7 +561,7 @@ $contract = $node->data;
                 <?= WidgetUtil::getLabelDiv('encumbered_amount'); ?>
             </th>
             <th>
-                <?= WidgetUtil::getLabelDiv('spend_to_date'); ?>
+                <?= WidgetUtil::getLabelDiv('invoiced_amount'); ?>
             </th>
         </tr>
         </thead>
