@@ -37,7 +37,7 @@ foreach ($node->assocReleases as $release): ?>
                         <div
                             class="spent-to-date"><?= custom_number_formatter_format($release['release_spend_to_date'], 2, "$"); ?>
                             <div class="amount-title">
-                                <?= str_replace('<br/>', ' ', WidgetUtil::getLabel('spent_to_date')) ?>
+                                <?= str_replace('<br/>', ' ', WidgetUtil::getLabel('invoiced_amount')) ?>
                             </div>
                         </div>
                         <div
@@ -81,7 +81,7 @@ foreach ($node->assocReleases as $release): ?>
                                                     <?= WidgetUtil::getLabelDiv('original_amount') ?>
                                                 </th>
                                                 <th>
-                                                    <?= WidgetUtil::getLabelDiv('spent_to_date') ?>
+                                                    <?= WidgetUtil::getLabelDiv('invoiced_amount') ?>
                                                 </th>
                                             </tr>
                                             </thead>
@@ -139,7 +139,7 @@ foreach ($node->assocReleases as $release): ?>
                                                                                 <?= WidgetUtil::getLabelDiv('original_amount') ?>
                                                                             </th>
                                                                             <th class="number endCol">
-                                                                                <?= WidgetUtil::getLabelDiv('spent_to_date') ?>
+                                                                                <?= WidgetUtil::getLabelDiv('invoiced_amount') ?>
                                                                             </th>
                                                                             <th class="number endCol">
                                                                                 <?= WidgetUtil::getLabelDiv('responsibility_center') ?>
@@ -441,7 +441,7 @@ foreach ($node->assocReleases as $release): ?>
                                                 <?= WidgetUtil::getLabelDiv('encumbered_amount'); ?>
                                             </th>
                                             <th >
-                                                <?= WidgetUtil::getLabelDiv('spend_to_date'); ?>
+                                                <?= WidgetUtil::getLabelDiv('invoiced_amount'); ?>
                                             </th>
                                         </tr>
                                         </thead>

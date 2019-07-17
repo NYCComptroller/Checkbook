@@ -11,7 +11,7 @@
     {"labelAlias":"vendor_name","column":"vendor_name","tooltip":22, "derivedColumn":"vendor_link"},
     {"labelAlias":"current_amount","column":"total_amount","format":"dollar"},
     {"labelAlias":"original_amount","column":"original_amount","format":"dollar"},
-    {"labelAlias":"spent_to_date","column":"spend_to_date","format":"dollar"},
+    {"labelAlias":"contract_spend_to_date","column":"spend_to_date","format":"dollar"},
     {"label":"","column":""}
   ],
   "dataTableOptions":{
