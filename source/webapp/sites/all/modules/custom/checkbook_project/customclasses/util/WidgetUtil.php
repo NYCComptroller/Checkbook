@@ -276,10 +276,10 @@ class WidgetUtil
         "agreement_spend_to_date"=>"Agreement<br/>Spent to Date",
         "contract_current_amount"=>"Contract Current<br/>Amount",
         "contract_original_amount"=>"Contract Original<br/>Amount",
-        "contract_spend_to_date"=>"Contract Spent to<br/>Date",
+        "contract_spend_to_date"=>"Contract Invoiced<br/>Amount",
         "release_current_amount" => "Release Current<br/>Amount",
         "release_original_amount" => "Release Original<br/>Amount",
-        "release_spend_to_date" => "Release Spent to<br/>Date",
+        "release_spend_to_date" => "Release Invoiced<br/>Amount",
         "approved_date" => "Approved<br/>Date",
         "release_approved_date" => "Approved<br/>Date",
         "canceled_date" => "Canceled<br/>Date",
@@ -296,6 +296,7 @@ class WidgetUtil
         "category_type" => "Category<br/>Type",
         "record_type" => "Record<br/>Type",
         "number_of_releases" => "Number of<br/>Releases",
+        "invoiced_amount" => "Invoiced<br/>Amount",
     );
 
     //For number cols, need to find out if they are uniform number of digits for formatting

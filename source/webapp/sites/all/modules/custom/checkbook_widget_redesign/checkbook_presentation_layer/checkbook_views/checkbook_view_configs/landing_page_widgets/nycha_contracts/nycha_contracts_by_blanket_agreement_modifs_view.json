@@ -11,7 +11,7 @@
     {"labelAlias": "contract_purpose","column": "purpose","tooltip":32},
     {"labelAlias":"current_amount","column":"total_amount","format":"dollar"},
     {"labelAlias":"original_amount","column":"original_amount","format":"dollar"},
-    {"labelAlias":"spent_to_date","column":"spend_to_date","format":"dollar"},
+    {"labelAlias":"contract_spend_to_date","column":"spend_to_date","format":"dollar"},
     {"labelAlias":"dollar_diff","column":"dollar_difference","format":"dollar"},
     {"labelAlias":"percent_diff","column":"percent_difference", "format":"percent"},
     {"label":"","column":""}
@@ -21,12 +21,12 @@
       { "bSortable": false,"sWidth":"90px","sClass":"text" },
       { "bSortable": false,"sWidth":"170px","sClass":"text" },
       { "bSortable": false,"sWidth":"170px","sClass":"text" },
-      { "bSortable": true,"sWidth":"90px","sClass":"number","asSorting": [ "desc","asc"  ] },
-      { "bSortable": true,"sWidth":"90px","sClass":"number","asSorting": [ "desc","asc"  ] },
-      { "bSortable": true,"sWidth":"90px" ,"sClass":"number","asSorting": [ "desc" ,"asc" ]},
-      { "bSortable": true,"sWidth":"90px","sClass":"number","asSorting": [ "desc","asc"  ] },
-      { "bSortable": true,"sWidth":"90px","sClass":"number", "asSorting": [ "desc","asc"  ]},
-      { "bSortable": false,"sWidth":"15px" }
+      { "bSortable": true,"sWidth":"75px","sClass":"number","asSorting": [ "desc","asc"  ] },
+      { "bSortable": true,"sWidth":"75px","sClass":"number","asSorting": [ "desc","asc"  ] },
+      { "bSortable": true,"sWidth":"150px" ,"sClass":"number","asSorting": [ "desc" ,"asc" ]},
+      { "bSortable": true,"sWidth":"100px","sClass":"number","asSorting": [ "desc","asc"  ] },
+      { "bSortable": true,"sWidth":"100px","sClass":"number", "asSorting": [ "desc","asc"  ]},
+      { "bSortable": false,"sWidth":"5px" }
     ],
     "bServerSide":true,
     "bFilter":false,
