@@ -31,7 +31,7 @@
   foreach ($unchecked as $row) {
     $value = urlencode(html_entity_decode($row[0], ENT_QUOTES)) ;
     echo '<div class="row">';
-    echo '<div class="checkbox"><input class="styled" name="' . $autocomplete_id . '" type="checkbox" value="' . $value . '" onClick="return applyTableListFilters(this.checked, this.value,'.$urlParameter.');"></div>';
+    echo '<div class="checkbox"><input class="styled" name="' . $autocomplete_id . '" type="checkbox" value="' . $value . '" onClick="return applyTableListFilters();"></div>';
     echo '<div class="name">' . $row[1] . '</div>';
     echo '<div class="number"><span>' . number_format($row[2]) . '</span></div>';
     echo '</div>';

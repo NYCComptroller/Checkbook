@@ -451,7 +451,7 @@ $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
                 <div class="checkbox">
                             
 EOL;
-            echo "  <input class='styled' id='" . $id . "' name= '" . $autocomplete_id . "' type='checkbox' " . $disableFacet . " checked='checked' value='" . urlencode(html_entity_decode($row[0], ENT_QUOTES)) . "' onClick=\"return applyTableListFilters(this.checked, '" .urlencode(html_entity_decode($row[0], ENT_QUOTES)). "', '".$urlParameter."');\" />" .
+            echo "  <input class='styled' id='" . $id . "' name= '" . $autocomplete_id . "' type='checkbox' " . $disableFacet . " checked='checked' value='" . urlencode(html_entity_decode($row[0], ENT_QUOTES)) . "' onClick=\"return applyTableListFilters();\" />" .
               "<label for=\"{$id}\" />";
             echo "</div>";
             if($node->widgetConfig->filterName == 'Contract ID') {
@@ -488,7 +488,7 @@ EOL;
                   <div class="checkbox">
                               
 EOL;
-            echo "<input class='styled' id='" . $id . "' name= '" . $autocomplete_id . "' type='checkbox' " . $disabled . "value='" . urlencode(html_entity_decode($row[0], ENT_QUOTES)) . "' onClick=\"return applyTableListFilters(this.checked, '" .urlencode(html_entity_decode($row[0], ENT_QUOTES)). "', '".$urlParameter."');\">" .
+            echo "<input class='styled' id='" . $id . "' name= '" . $autocomplete_id . "' type='checkbox' " . $disabled . "value='" . urlencode(html_entity_decode($row[0], ENT_QUOTES)) . "' onClick=\"return applyTableListFilters();\">" .
               " <label for='" . $id . "' />" .
               "</div>";
             if ($node->widgetConfig->filterName == 'Contract ID') {
