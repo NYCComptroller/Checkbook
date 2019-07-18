@@ -688,34 +688,9 @@
           }
         }
 
-        function extractId(param)
-        {
-          if (param && (param.indexOf('id=>') > -1)){
-            return param.split('~')[0].split('=>')[1];
-          }
-          return param;
-        }
-
-        function autoCompleteSource(solr_datasource, facet, filters) {
-          var url = '/advanced_autocomplete/';
-
-          var fq = '';
-
-          Object.keys(filters).forEach(function (key) {
-            var val = extractId(filters[key]);
-            if (val && ("0" !== val)){
-              fq += '*!*'+key+'='+val;
-            }
-          });
-
-          var search_term = '/?search_term=' + fq;
-
-          return url+solr_datasource+'/'+facet+search_term;
-        }
-
         function autoCompletes(div) {
           var contract_status = div.ele('status').val() || 0;
-          var contract_category_name = div.ele('category').val() ? div.ele('category').val() : 0;
+          var contract_category_name = div.ele('category').val()|| 0;
           var minority_type_id = div.ele('mwbe_category').val() || 0;
           var industry_type_id = div.ele('industry').val() || 0;
           var agreement_type_id = div.ele('contract_type').val() || 0;
@@ -747,9 +722,9 @@
               agency_id: agency_id
             };
 
-            div.ele('vendor_name').autocomplete({source: autoCompleteSource(solr_datasource,'vendor_name', nycha_filters), select: function (event, ui) {$(this).parent().next().val(ui.item.label);}});
-            div.ele('purchase_order_number').autocomplete({source: autoCompleteSource(solr_datasource,'contract_number', nycha_filters), select: function (event, ui) {$(this).parent().next().val(ui.item.label);}});
-            div.ele('pin').autocomplete({source: autoCompleteSource(solr_datasource,'pin', nycha_filters), select: function (event, ui) {$(this).parent().next().val(ui.item.label);}});
+            div.ele('vendor_name').autocomplete({source: autoCompleteSource(solr_datasource,'vendor_name', nycha_filters)});
+            div.ele('purchase_order_number').autocomplete({source: autoCompleteSource(solr_datasource,'contract_number', nycha_filters)});
+            div.ele('pin').autocomplete({source: autoCompleteSource(solr_datasource,'pin', nycha_filters)});
           }else {
             var filters = {
               contract_status: contract_status,
@@ -763,14 +738,16 @@
               aprv_sta: aprv_sta
             };
 
-            div.ele('vendor_name').autocomplete({source: autoCompleteSource(solr_datasource,'vendor_name',filters), select: function (event, ui) {$(this).parent().next().val(ui.item.label);}});
-            div.ele('contract_id').autocomplete({source: autoCompleteSource(solr_datasource,'contract_number', filters),select: function (event, ui) {$(this).parent().next().val(ui.item.label);}});
-            div.ele('apt_pin').autocomplete({source: autoCompleteSource(solr_datasource,'apt_pin',filters), select: function (event, ui) {$(this).parent().next().val(ui.item.label);}});
-            div.ele('pin').autocomplete({source: autoCompleteSource(solr_datasource,'pin',filters), select: function (event, ui) {$(this).parent().next().val(ui.item.label);}});
-            div.ele('entity_contract_number').autocomplete({source: autoCompleteSource(solr_datasource,'contract_entity_contract_number',filters), select: function (event, ui) {$(this).parent().next().val(ui.item.label);}});
-            div.ele('commodity_line').autocomplete({source: autoCompleteSource(solr_datasource,'contract_commodity_line',filters), select: function (event, ui) {$(this).parent().next().val(ui.item.label);}});
-            div.ele('budget_name').autocomplete({source: autoCompleteSource(solr_datasource,'contract_budget_name',filters), select: function (event, ui) {$(this).parent().next().val(ui.item.label);}});
+            div.ele('vendor_name').autocomplete({source: autoCompleteSource(solr_datasource,'vendor_name',filters)});
+            div.ele('contract_id').autocomplete({source: autoCompleteSource(solr_datasource,'contract_number', filters)});
+            div.ele('apt_pin').autocomplete({source: autoCompleteSource(solr_datasource,'apt_pin',filters)});
+            div.ele('pin').autocomplete({source: autoCompleteSource(solr_datasource,'pin',filters)});
+            div.ele('entity_contract_number').autocomplete({source: autoCompleteSource(solr_datasource,'contract_entity_contract_number',filters)});
+            div.ele('commodity_line').autocomplete({source: autoCompleteSource(solr_datasource,'contract_commodity_line',filters)});
+            div.ele('budget_name').autocomplete({source: autoCompleteSource(solr_datasource,'contract_budget_name',filters)});
           }
+
+          $('.ui-autocomplete-input').bind('autocompleteselect', function (event, ui) {$(this).parent().next().val(ui.item.label);});
         }
 
         function initializeContractsView(div) {
@@ -1670,6 +1647,31 @@
             $('.advanced-search-accordion').css('display', 'inline');
             break;
         }
+      }
+
+      function extractId(param)
+      {
+        if (param && (param.indexOf('id=>') > -1)){
+          return param.split('~')[0].split('=>')[1];
+        }
+        return param;
+      }
+
+      function autoCompleteSource(solr_datasource, facet, filters) {
+        var url = '/advanced_autocomplete/';
+
+        var fq = '';
+
+        Object.keys(filters).forEach(function (key) {
+          var val = extractId(filters[key]);
+          if (val && ("0" !== val)){
+            fq += '*!*'+key+'='+val;
+          }
+        });
+
+        var search_term = '/?search_term=' + fq;
+
+        return url+solr_datasource+'/'+facet+search_term;
       }
 
       /* For oge, Budget, Revenue & Payroll are not applicable and are disabled */
