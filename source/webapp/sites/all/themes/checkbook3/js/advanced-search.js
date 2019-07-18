@@ -747,9 +747,9 @@
               agency_id: agency_id
             };
 
-            div.ele('vendor_name').autocomplete({source: autoCompleteSource(solr_datasource,'vendor_name', nycha_filters)});
-            div.ele('purchase_order_number').autocomplete({source: autoCompleteSource(solr_datasource,'contract_number', nycha_filters)});
-            div.ele('pin').autocomplete({source: autoCompleteSource(solr_datasource,'pin', nycha_filters)});
+            div.ele('vendor_name').autocomplete({source: autoCompleteSource(solr_datasource,'vendor_name', nycha_filters), select: function (event, ui) {$(this).parent().next().val(ui.item.label);}});
+            div.ele('purchase_order_number').autocomplete({source: autoCompleteSource(solr_datasource,'contract_number', nycha_filters), select: function (event, ui) {$(this).parent().next().val(ui.item.label);}});
+            div.ele('pin').autocomplete({source: autoCompleteSource(solr_datasource,'pin', nycha_filters), select: function (event, ui) {$(this).parent().next().val(ui.item.label);}});
           }else {
             var filters = {
               contract_status: contract_status,
@@ -763,13 +763,13 @@
               aprv_sta: aprv_sta
             };
 
-            div.ele('vendor_name').autocomplete({source: autoCompleteSource(solr_datasource,'vendor_name',filters)});
-            div.ele('contract_id').autocomplete({source: autoCompleteSource(solr_datasource,'contract_number',filters)});
-            div.ele('apt_pin').autocomplete({source: autoCompleteSource(solr_datasource,'apt_pin',filters)});
-            div.ele('pin').autocomplete({source: autoCompleteSource(solr_datasource,'pin',filters)});
-            div.ele('entity_contract_number').autocomplete({source: autoCompleteSource(solr_datasource,'contract_entity_contract_number',filters)});
-            div.ele('commodity_line').autocomplete({source: autoCompleteSource(solr_datasource,'contract_commodity_line',filters)});
-            div.ele('budget_name').autocomplete({source: autoCompleteSource(solr_datasource,'contract_budget_name',filters)});
+            div.ele('vendor_name').autocomplete({source: autoCompleteSource(solr_datasource,'vendor_name',filters), select: function (event, ui) {$(this).parent().next().val(ui.item.label);}});
+            div.ele('contract_id').autocomplete({source: autoCompleteSource(solr_datasource,'contract_number', filters),select: function (event, ui) {$(this).parent().next().val(ui.item.label);}});
+            div.ele('apt_pin').autocomplete({source: autoCompleteSource(solr_datasource,'apt_pin',filters), select: function (event, ui) {$(this).parent().next().val(ui.item.label);}});
+            div.ele('pin').autocomplete({source: autoCompleteSource(solr_datasource,'pin',filters), select: function (event, ui) {$(this).parent().next().val(ui.item.label);}});
+            div.ele('entity_contract_number').autocomplete({source: autoCompleteSource(solr_datasource,'contract_entity_contract_number',filters), select: function (event, ui) {$(this).parent().next().val(ui.item.label);}});
+            div.ele('commodity_line').autocomplete({source: autoCompleteSource(solr_datasource,'contract_commodity_line',filters), select: function (event, ui) {$(this).parent().next().val(ui.item.label);}});
+            div.ele('budget_name').autocomplete({source: autoCompleteSource(solr_datasource,'contract_budget_name',filters), select: function (event, ui) {$(this).parent().next().val(ui.item.label);}});
           }
         }
 
