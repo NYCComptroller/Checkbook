@@ -353,9 +353,19 @@ class CheckbookSolrQuery
 
     if ('vendor_type' == $param) {
       $value = $this->get_vendor_type_mapping($value);
-    }
-    if ('contract_status' == $param) {
+    }elseif ('contract_status' == $param) {
       $value = $this->get_contract_status_mapping($value);
+    }elseif('year' == $param) {
+      $sub3 = substr($value, 0, 3);
+      if('fy~' == $sub3){
+        $param = 'fiscal_year_id';
+        $value = str_replace($sub3, '',$value);
+      }elseif('cy~' == $sub3){
+        $param = 'calendar_fiscal_year_id';
+        $value = str_replace($sub3, '',$value);
+      }
+    }elseif('department_name' == $param) {
+      $value = str_replace('__','/',$value);
     }
 
     $values = explode('~', $value);
