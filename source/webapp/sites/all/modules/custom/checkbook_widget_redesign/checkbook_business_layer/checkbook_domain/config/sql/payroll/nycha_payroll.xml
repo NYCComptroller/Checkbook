@@ -44,7 +44,7 @@
             agg.employee_number,
             agg.civil_service_title AS civil_service_title,
             agg.civil_service_title_code AS civil_service_title_code,
-            MAX(agg.annual_salary) AS non_salaried_rate,
+            COALESCE(MAX(agg.daily_wage), MAX(hourly_rate)) AS non_salaried_rate,
             SUM(agg.gross_pay) AS total_gross_pay,
             SUM(agg.base_pay) AS total_base_salary,
             SUM(agg.other_payments) AS total_other_payments,
