@@ -152,10 +152,10 @@ foreach ($node->assocReleases as $release): ?>
                                                                         foreach ($release['shipments'] as $shipment):?>
                                                                             <tr class="outer n_assoc_rel_shipments <?= ($z % 2 ? 'even' : 'odd') ?>">
                                                                                 <td class="text item_category_descr">
-                                                                                    <div><?= htmlentities($shipment['commodity_category_descr']) ?></div>
+                                                                                    <div><?= _get_tooltip_markup(htmlentities($shipment['commodity_category_descr']), 40) ?></div>
                                                                                 </td>
                                                                                 <td class="text item_description">
-                                                                                  <div><?= htmlentities($shipment['item_description']) ?></div>
+                                                                                  <div><?= _get_tooltip_markup(htmlentities($shipment['item_description']), 20) ?></div>
                                                                                 </td>
                                                                                 <td class="number-center shipment_number">
                                                                                     <div><?= htmlentities($shipment['shipment_number']) ?></div>
