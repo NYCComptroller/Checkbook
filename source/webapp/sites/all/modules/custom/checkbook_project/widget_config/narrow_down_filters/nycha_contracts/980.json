@@ -1,27 +1,24 @@
 {
   "widgetType":"phpparser",
   "parentNid":979,
-  "no_results_content":"No Results Found",
-  "limit":100,
   "startWith":0,
   "maxSelect":5,
-  "showAllRecords":true,
-  --"allowFacetDeselect":true,
-  "columns":["agency.agency.agency_name","txcount"],
+  "limit":100,
+  "allowFacetDeselect":true,
+  "columns":["agency.agency", "agency.agency.agency_name", "txcount"],
   "orderBy":"-txcount",
-  "facetPager":true,
   "filterName":"Other Government Entity",
   "urlParameterName":"agency",
   "autocompleteParamName":"agency_auto",
-  "autocompleteID":"fAgency",
+  "autocompleteID":"fagencyId",
   "autocompleteField":"agency_name",
+  "autocomplete":false,
   "adjustParameters":"
-  $parameters = NYCHAContractUtil::adjustYearParams($node, $parameters);log_error($parameters);
-  if(function_exists('_checkbook_project_applyParameterFilters')){
-  $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
-}
-$adjustedParameters['agency.agency'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
-return $adjustedParameters;
-",
-"template":"individual_filter"
+    if(function_exists('_checkbook_project_applyParameterFilters')){
+      $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+    }
+    $adjustedParameters['agency.agency'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+    return $adjustedParameters;
+  ",
+  "template":"individual_filter"
 }
