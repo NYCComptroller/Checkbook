@@ -22,20 +22,12 @@
             }]
         },
         {
-          "name": "agency_id",
+          "name": "agency",
           "levels": [
             {
-              "name": "agency_id",
+              "name": "agency",
+              "datasetName": "agency",
               "sourceColumnName": "agency_id"
-            }
-          ]
-        },
-        {
-          "name": "agency_name",
-          "levels": [
-            {
-              "name": "agency_name",
-              "sourceColumnName": "agency_name"
             }
           ]
         },
@@ -199,20 +191,12 @@
             }]
         },
         {
-          "name": "agency_id",
+          "name": "agency",
           "levels": [
             {
-              "name": "agency_id",
+              "name": "agency",
+              "datasetName": "agency",
               "sourceColumnName": "agency_id"
-            }
-          ]
-        },
-        {
-          "name": "agency_name",
-          "levels": [
-            {
-              "name": "agency_name",
-              "sourceColumnName": "agency_name"
             }
           ]
         },
