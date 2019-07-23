@@ -16,7 +16,7 @@
   "autocompleteID":"fReleaseNo",
   "autocompleteField":"release_number",
   "adjustParameters":"
-  $parameters = NYCHAContractUtil::adjustYearParams($node, $parameters);log_error($parameters);
+  $parameters = NYCHAContractUtil::adjustYearParams($node, $parameters);
   if(function_exists('_checkbook_project_applyParameterFilters')){
   $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
 }
