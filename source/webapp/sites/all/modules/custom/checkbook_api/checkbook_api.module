@@ -671,16 +671,21 @@ function checkbook_api_adjustContractSql(&$sql_query) {
 function checkbook_api_adjustNYCHAContractSql(&$sql_query){
     $year = NULL;
     $sql_parts = explode("WHERE", $sql_query);
+    $select_part = $sql_parts[0];
     $where_part = $sql_parts[1];
     $where_parts = explode('AND', $where_part);
+
+    //Get Year value from WHERE
     foreach($where_parts as $key => $value){
       if(strpos($value,'agreement_start_year') !== false){
         $values = explode('<=', $value);
         $year = trim(str_replace(')','',$values[1]));
       }
     }
+
+    // Alter SELECT columns
     if(isset($year)){
-      $sql_query =  str_replace("release_approved_year,", $year." AS release_approved_year,",$sql_query);
+      $select_part =  str_replace("release_approved_year,", $year." AS release_approved_year,",$select_part);
     }
 
     $text_columns = array('number_of_releases', 'release_number', 'shipment_number', 'item_qty_ordered',
@@ -689,22 +694,24 @@ function checkbook_api_adjustNYCHAContractSql(&$sql_query){
                      'agreement_total_amount', 'agreement_original_amount', 'agreement_spend_to_date',
                      'po_header_id');
     foreach($text_columns as $key => $value){
-      $sql_query =  str_replace($value, "CASE WHEN " .$value." IS NULL THEN '-'
+      $select_part =  str_replace($value, "CASE WHEN " .$value." IS NULL THEN '-'
                                                   ELSE CAST(".$value." AS TEXT)
-                                                 END AS ".$value, $sql_query);
+                                                 END AS ".$value, $select_part);
     }
 
     //Set '-' to Start Date and End Date to POs
     $po_date_columns = array('agreement_start_date', 'agreement_end_date');
     foreach($po_date_columns as $key => $value){
-      $sql_query =  str_replace($value, "CASE WHEN (upper(agreement_type_name) = 'PURCHASE ORDER') THEN '-'
+      $select_part =  str_replace($value, "CASE WHEN (upper(agreement_type_name) = 'PURCHASE ORDER') THEN '-'
                                                     ELSE TO_CHAR(".$value.",'MM/DD/YYYY')
-                                                   END AS ".$value, $sql_query);
+                                                   END AS ".$value, $select_part);
     }
     // Set release_approved_date to hyphen when NULL
-    $sql_query =  str_replace('release_approved_date', "CASE WHEN release_approved_date IS NULL THEN '-'
+    $select_part =  str_replace('release_approved_date', "CASE WHEN release_approved_date IS NULL THEN '-'
                                                     ELSE TO_CHAR(release_approved_date, 'MM/DD/YYYY')
-                                                   END AS release_approved_date", $sql_query);
+                                                   END AS release_approved_date", $select_part);
+
+    $sql_query = implode(' WHERE ', array($select_part, $where_part));
 }
 
 function checkbook_api_adjustPayrollSql(&$sql_query) {
