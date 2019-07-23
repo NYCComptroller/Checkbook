@@ -390,12 +390,12 @@ $contract = $node->data;
                                             <tr class="outer <?= ($z % 2 ? 'even' : 'odd') ?>">
                                                 <td class="text ncc-item_category_descr">
                                                   <div>
-                                                    <?= htmlentities($shipment['commodity_category_descr']) ?>
+                                                    <?= _get_tooltip_markup(htmlentities($shipment['commodity_category_descr']), 40) ?>
                                                   </div>
                                                 </td>
                                                 <td class="text ncc-item_description">
                                                   <div>
-                                                    <?= htmlentities($shipment['item_description']) ?>
+                                                    <?= _get_tooltip_markup(htmlentities($shipment['item_description']), 20) ?>
                                                   </div>
                                                 </td>
                                                 <td class="number ncc-shipment_number">
