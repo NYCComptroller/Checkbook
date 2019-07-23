@@ -297,6 +297,8 @@ class WidgetUtil
         "record_type" => "Record<br/>Type",
         "number_of_releases" => "Number of<br/>Releases",
         "invoiced_amount" => "Invoiced<br/>Amount",
+        "static_current_amount" => "Current Amount",
+        "static_original_amount" => "Original Amount",
     );
 
     //For number cols, need to find out if they are uniform number of digits for formatting

@@ -34,11 +34,11 @@ $contract = $node->data;
             </div>
             <div class="original-amount">
                 <?= custom_number_formatter_format($contract['original_amount'], 2, '$'); ?>
-                <div class="amount-title"><?= WidgetUtil::getLabel('original_amount') ?></div>
+                <div class="amount-title"><?= WidgetUtil::getLabel('static_original_amount') ?></div>
             </div>
             <div class="current-amount">
                 <?= custom_number_formatter_format($contract['current_amount'], 2, '$'); ?>
-                <div class="amount-title"><?= WidgetUtil::getLabel('current_amount') ?></div>
+                <div class="amount-title"><?= WidgetUtil::getLabel('static_current_amount') ?></div>
             </div>
             <?php if ($node->total_associated_releases): ?>
                 <div class="total-contracts">
