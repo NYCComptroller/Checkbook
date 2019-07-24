@@ -72,9 +72,6 @@
         "title": "Spending Category",
         "child": true
       },
-      "revenue_category_name": {
-        "title": "Revenue Category"
-      },
       "agency_name": {
         "title": "Citywide Agency",
         "autocomplete": true
@@ -96,11 +93,6 @@
       },
       "fiscal_year": {
         "title": "Fiscal Year",
-        "autocomplete": true,
-        "sort_by_key": -1
-      },
-      "registered_fiscal_year": {
-        "title": "Registered Fiscal Year",
         "autocomplete": true,
         "sort_by_key": -1
       },
