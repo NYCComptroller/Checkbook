@@ -213,6 +213,9 @@
         "title": "Release Number",
         "autocomplete": true
       },
+      "record_type": {
+        "title": "Record Type"
+      },
       "civil_service_title": {
         "title": "Title"
       },
