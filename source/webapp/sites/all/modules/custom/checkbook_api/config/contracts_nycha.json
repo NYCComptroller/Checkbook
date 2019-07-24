@@ -333,7 +333,7 @@
             "Line Invoiced Amount":"release_line_spend_to_date",
             "Release Current Amount": "release_total_amount",
             "Release Original Amount": "release_original_amount",
-            "Release Invoiced Amount": "release_invoiced_amount",
+            "Release Invoiced Amount": "release_spend_to_date",
             "Contract Current Amount":"agreement_total_amount",
             "Contract Original Amount":"agreement_original_amount",
             "Contract Invoiced Amount":"agreement_spend_to_date",
