@@ -146,11 +146,6 @@
         "autocomplete": true,
         "sort_by_key": -1
       },
-      "registered_fiscal_year": {
-        "title": "Registered Fiscal Year",
-        "autocomplete": true,
-        "sort_by_key": -1
-      },
       "contract_number": {
         "title": "Contract ID",
         "autocomplete": true
