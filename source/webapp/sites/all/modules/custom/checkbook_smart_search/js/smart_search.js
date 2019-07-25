@@ -182,12 +182,13 @@
                 });
                 var message = '';
                 if (selectedRecords <= 200000) {
-                  message = addCommas(selectedRecords) + " " + selectedDomain + " records available for download. " +
-                    "The report will be in Comma Delimited format. Only one domain can be selected at a time to download the data.";
+                  message = addCommas(selectedRecords) + " " + selectedDomain + " records available for download. ";
                 } else {
-                  message = "Maximum of 200,000 records available for download from " + addCommas(selectedRecords) + " available " + selectedDomain + " records. " +
-                    "The report will be in Comma Delimited format. Only one domain can be selected at a time to download the data.";
+                  message = "Maximum of 200,000 records available for download from " + addCommas(selectedRecords) + " available " + selectedDomain + " records. ";
                 }
+
+                message += "The report will be in Comma Delimited format. Only one domain can be selected at a time to download the data. ";
+                message += "Use <a href='/data-feeds'>Data Feeds</a> to get all data. ";
 
                 $('#export-message').html(message);
               }
