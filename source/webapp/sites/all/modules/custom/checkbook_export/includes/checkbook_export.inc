@@ -516,10 +516,14 @@ function _checkbook_export_generateExportFile($node, $headers, $exportConfigNode
             $node->data = checkbook_export_remove_non_export_columns($node);
         }
 
+        //Escaping double quotes explicitly in parameters
+        $queryParts = explode('WHERE', $node->data);
+        $queryParts[1] = str_replace('"', '\"', $queryParts[1]);
+        $node->data = implode(' WHERE ', array($queryParts[0], $queryParts[1]));
+
         LogHelper::log_notice("Exporting to file via SQL: \n".$node->data);
 
         $command = _checkbook_psql_command(RequestUtilities::get('datasource'));
-
         $command .=
                 " -c \"\\\\COPY (" . str_replace('\\\\','\\\\\\',$node->data) . ") TO '"
                 . $tempOutputFile
