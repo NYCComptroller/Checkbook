@@ -29,6 +29,7 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
             $contract_status = 'Registered';
         }
     }
+
    $act_fiscal_year = $contracts_results['fiscal_year'];
    $reg_fiscal_year = $contracts_results['registered_fiscal_year'];
    $current_date = date("c").'Z';
@@ -181,7 +182,8 @@ if($IsOge && in_array($contracts_results['contract_type_code'],array('MMA1'))){
 
 $contracts_results["registration_date"] = ($IsOge)? "N/A" : $contracts_results["registration_date"];
 
-$date_fields = array("start_date_orig","end_date_orig","received_date","registration_date");
+$date_fields = array("start_date_orig","end_date_orig","received_date","registration_date",
+  "start_date", "end_date", "release_approved_date");
 $amount_fields = array("current_amount", "original_amount");
 
 $name_fields = array("agency_name", "vendor_name", "award_method_name", "contract_purpose", "expenditure_object_name");
@@ -199,13 +201,16 @@ foreach ($contracts_parameter_mapping as $key => $title){
   }else{
     $value = $contracts_results[$key];
   }
+
   if(is_array($value)){
   	$value = implode(', ' , $value);
   }
+
   $temp = '';
   if ($searchTerm) {
     $temp = substr($value, strpos(strtoupper($value), strtoupper($searchTerm)),strlen($searchTerm));
   }
+
   if($key =="contract_number"){
     $value = "<a href='".$contract_Id_link ."'>".$contracts_results['contract_number']."</a>";
   }else if($key =="parent_contract_number"){
@@ -213,6 +218,7 @@ foreach ($contracts_parameter_mapping as $key => $title){
   }else{
   	$value = str_ireplace($searchTerm,'<em>'. $temp . '</em>', $value);
   }
+
   if(in_array($key, $amount_fields)){
     $value = custom_number_formatter_format($value, 2 , '$');
   }else if(in_array($key, $date_fields)){
@@ -222,6 +228,7 @@ foreach ($contracts_parameter_mapping as $key => $title){
   }else if(array_key_exists($key, $linkable_fields)){
     $value = "<a href='" . $linkable_fields[$key]. "'>". $value ."</a>";
   }
+
   if(!$IsOge && $title == "Vendor"){
     $title = ($contracts_results["is_prime_or_sub"] == 'Yes') ? "Sub Vendor" : "Prime Vendor";
   }
