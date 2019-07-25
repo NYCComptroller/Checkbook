@@ -57,6 +57,9 @@
           ],
           "spending": [
             "spending_category_name"
+          ],
+          "payroll": [
+            "payroll_type"
           ]
         }
       },
@@ -85,7 +88,8 @@
         "prepare_results": "_checkbook_vendor_type_prepare_labels"
       },
       "payroll_type": {
-        "title": "Payroll Type"
+        "title": "Payroll Type",
+        "child": true
       },
       "expenditure_object_name": {
         "title": "Expense Category",
