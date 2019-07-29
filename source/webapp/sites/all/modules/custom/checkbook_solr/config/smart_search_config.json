@@ -57,6 +57,9 @@
           ],
           "spending": [
             "spending_category_name"
+          ],
+          "payroll": [
+            "payroll_type"
           ]
         }
       },
@@ -85,7 +88,8 @@
         "prepare_results": "_checkbook_vendor_type_prepare_labels"
       },
       "payroll_type": {
-        "title": "Payroll Type"
+        "title": "Payroll Type",
+        "child": true
       },
       "expenditure_object_name": {
         "title": "Expense Category",
@@ -143,11 +147,6 @@
       },
       "fiscal_year": {
         "title": "Fiscal Year",
-        "autocomplete": true,
-        "sort_by_key": -1
-      },
-      "registered_fiscal_year": {
-        "title": "Registered Fiscal Year",
         "autocomplete": true,
         "sort_by_key": -1
       },
@@ -539,9 +538,12 @@
       "contracts": {
         "contract_number": "Contract ID",
         "agreement_type_name": "Purchase Order Type",
+        "record_type": "Record Type",
+        "number_of_releases": "Number of Releases",
         "release_number": "Release Number",
         "item_category": "Item Category",
         "item_description": "Item Description",
+        "item_qty_ordered": "Quantity Ordered",
         "shipment_number": "Shipment Number",
         "responsibility_center_name": "Responsibility center",
         "start_date": "Start Date",

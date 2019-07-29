@@ -97,9 +97,11 @@ foreach ($facets_render??[] as $facet_name => $facet) {
 
 END;
 
+      $lowercase_selected = $facet->selected ? array_map('strtolower', $facet->selected) : [];
+
       $checked = '';
       if ($facet->selected) {
-        $checked = $facet->selected && in_array($facet_value, $facet->selected);
+        $checked = $facet->selected && in_array(strtolower($facet_value), $lowercase_selected);
         $checked = $checked ? ' checked="checked" ' : '';
       }
       echo '<input type="checkbox" id="'.$id.'" '.$checked . ' facet="'.$facet_name.'" value="'.
