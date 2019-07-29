@@ -420,7 +420,7 @@ $contract = $node->data;
                                                 </td>
                                                 <td class="center">
                                                   <div>
-                                                    <?= htmlentities($shipment['responsibility_center_descr']) ?>
+                                                    <?= _get_tooltip_markup(htmlentities($shipment['responsibility_center_descr']), 24) ?>
                                                   </div>
                                                 </td>
                                             </tr>
