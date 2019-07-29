@@ -19,7 +19,7 @@
     "dataset":{
       "name":"checkbook_nycha:all_agreement_transactions_hrcy",
       "data_source":"checkbook_nycha",
-      "sortColumn":["-sort_sequence"],
+      "sortColumn":["sort_sequence"],
       "columnTypes":{
         "contract_id":"like",
         "vendor":"like",
@@ -223,7 +223,7 @@
     "dataset":{
       "name":"checkbook_nycha:all_agreement_transactions_hrcy",
       "data_source":"checkbook_nycha",
-      "sortColumn":["-sort_sequence"],
+      "sortColumn":["sort_sequence"],
       "columnTypes":{
         "contract_id":"like",
         "vendor":"like",
