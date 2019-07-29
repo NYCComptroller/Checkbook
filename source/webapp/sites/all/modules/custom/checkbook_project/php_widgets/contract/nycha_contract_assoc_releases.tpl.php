@@ -170,7 +170,7 @@ foreach ($node->assocReleases as $release): ?>
                                                                                     <div><?= custom_number_formatter_format($shipment['release_line_spend_to_date'], 2, "$"); ?></div>
                                                                                 </td>
                                                                                 <td class="text responsibility_center_descr">
-                                                                                    <div><?= htmlentities($shipment['responsibility_center_descr']) ?></div>
+                                                                                    <div><?= _get_tooltip_markup(htmlentities($shipment['responsibility_center_descr']), 24) ?></div>
                                                                                 </td>
                                                                             </tr>
                                                                             <?php
