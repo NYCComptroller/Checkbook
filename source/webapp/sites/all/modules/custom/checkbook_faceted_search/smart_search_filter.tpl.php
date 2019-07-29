@@ -72,8 +72,10 @@ foreach ($facets_render??[] as $facet_name => $facet) {
       $autocomplete_id = "autocomplete_" . $facet_name;
       $disabled = '';
 
-      echo '<div class="autocomplete"><input placeholder="Autocomplete '.htmlentities($facet->title).'..." 
-      id="' . $autocomplete_id . '" ' . $disabled . ' type="text" class="solr_autocomplete" facet="'.$facet_name.'" /></div>';
+      echo '<div class="autocomplete">
+              <input id="' . $autocomplete_id . '" ' . $disabled . ' type="text" class="solr_autocomplete" facet="'.$facet_name.'" /> 
+            </div>';
+//      placeholder="Autocomplete '.htmlentities($facet->title).'..."
     }
 
     echo '<div class="options">';
