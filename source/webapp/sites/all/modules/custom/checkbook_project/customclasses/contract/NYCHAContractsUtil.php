@@ -24,7 +24,6 @@ class NYCHAContractUtil
         if(isset($parameters['release_year_id'])){
             $year_id = $parameters['release_year_id'];
             $data_controller_instance = data_controller_get_operator_factory_instance();
-            $parameters['release_approved_year_id'] = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, $year_id);
             $parameters['agreement_start_year_id'] = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, $year_id);
             $parameters['agreement_end_year_id'] = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, $year_id);
             unset($parameters['release_year_id']);
