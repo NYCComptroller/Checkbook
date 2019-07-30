@@ -27,12 +27,6 @@ class NYCHAContractUtil
             $parameters['release_approved_year_id'] = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, $year_id);
             $parameters['agreement_start_year_id'] = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, $year_id);
             $parameters['agreement_end_year_id'] = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, $year_id);
-
-            $node->widgetConfig->logicalOrColumns = [
-              ["release_approved_year_id","agreement_start_year_id"],
-              ["release_approved_year_id","agreement_end_year_id"]
-            ];
-
             unset($parameters['release_year_id']);
         }
         return $parameters;
