@@ -14,6 +14,7 @@
   "autocompleteField":"agency_name",
   "autocomplete":false,
   "adjustParameters":"
+    $parameters = NYCHAContractUtil::adjustYearParams($node, $parameters);
     if(function_exists('_checkbook_project_applyParameterFilters')){
       $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
     }
