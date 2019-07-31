@@ -23,7 +23,17 @@ $payroll_parameter_mapping = (array)CheckbookSolr::getSearchFields($solr_datasou
 $agency_id = $payroll_results['agency_id'];
 $dept_id = $payroll_results['department_id'];
 $emp_id = $payroll_results['employee_id'];
+
+if ('<unknown department>[001]' == $emp_id && is_numeric($payroll_results['employee_name'])) {
+//  while solr is broken
+//  @TODO: remove when fixed
+  $emp_id = $payroll_results['employee_name'];
+}
+
 $fiscal_year_id = is_array($payroll_results['fiscal_year_id']) ? $payroll_results['fiscal_year_id'][0] : $payroll_results['fiscal_year_id'];
+
+$fiscal_year_id = _checkbook_get_year_id($fiscal_year_id);
+
 $salaried = $payroll_results['amount_basis_id'];
 $title = urlencode($payroll_results['civil_service_title']);
 
@@ -72,22 +82,17 @@ foreach ($payroll_parameter_mapping as $key => $title){
     $value = "<a href='" .$linkable_fields[$key]."'>". _checkbook_smart_search_str_html_entities($value) ."</a>";
   }
 
-  if($title == 'Annual Salary'){
-      if($salaried == 1){
-          $value = "<a  href='/payroll".$agencyLandingUrl."/yeartype/B/year/" . $fiscal_year_id . $dataSourceUrl . "?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/" .$agency_id . $dataSourceUrl . "/abc/" .$emp_id. "/salamttype/".$salaried."/year/" . $fiscal_year_id . "/yeartype/B'>". custom_number_formatter_format($value, 2 , '$') ."</a>";
-      }
-      else{
-          $value = '';
-      }
-  }
-
-  if($title == 'Hourly Rate'){
-        if($salaried != 1){
-            $value = "<a  href='/payroll".$agencyLandingUrl."/yeartype/B/year/" . $fiscal_year_id . $dataSourceUrl . "?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/" .$agency_id . $dataSourceUrl . "/abc/" .$emp_id. "/salamttype/".$salaried."/year/" . $fiscal_year_id . "/yeartype/B'>". custom_number_formatter_format($value, 2 , '$') ."</a>";
-        }
-        else{
-            $value = '';
-        }
+  if (in_array($title, ['Annual Salary', 'Hourly Rate'])) {
+//    $url = PayrollUrlService::annualSalaryPerAgencyUrl($agency_id, $emp_id);
+    if (('Annual Salary' == $title && $salaried == 1)
+      || ('Hourly Rate' == $title && $salaried !== 1)) {
+      $value = "<a  href='/payroll".$agencyLandingUrl."/yeartype/B/year/" . $fiscal_year_id . $dataSourceUrl
+        . "?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/"
+        .$agency_id . $dataSourceUrl . "/abc/" .$emp_id. "/salamttype/".$salaried."/year/"
+        . $fiscal_year_id . "/yeartype/B'>". custom_number_formatter_format($value, 2 , '$') ."</a>";
+    } else {
+      $value = '';
+    }
   }
 
   if ($count % 2 == 0){
