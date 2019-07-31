@@ -215,7 +215,7 @@
       }
     }
   },
-  "search_fields": {
+  "search_results_fields": {
     "citywide": {
       "spending": {
         "spending_category_name": "Spending Category",
@@ -400,6 +400,7 @@
         "base_pay": "Base Pay",
         "hourly_rate": "Hourly Rate",
         "other_payments": "Other Payments",
+        "daily_wage": "Daily Wage",
         "overtime_pay": "Overtime Payments",
         "payroll_type": "Payroll Type"
       }
