@@ -2169,6 +2169,14 @@ function _get_num_from_string($string)
 }
 
 /**
+ * @param $year
+ * @return int
+ */
+function _checkbook_get_year_id($year) {
+  return $year < 1900 ? $year : $year - 1899;
+}
+
+/**
  * @return array
  */
 function _checkbook_year_list()
