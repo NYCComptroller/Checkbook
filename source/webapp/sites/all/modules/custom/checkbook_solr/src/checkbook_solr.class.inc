@@ -49,7 +49,7 @@ class CheckbookSolr
    */
   public static function getSearchFields(string $solr_datasource,string $domain): object
   {
-    return self::getSmartSearchConfig()->search_fields->$solr_datasource->$domain ?? new StdClass();
+    return self::getSmartSearchConfig()->search_results_fields->$solr_datasource->$domain ?? new StdClass();
   }
 
   /**
