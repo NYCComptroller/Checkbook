@@ -195,6 +195,12 @@
         "max_annual_salary":{
           "function": "MAX(annual_salary)"
         },
+        "max_hourly_rate":{
+          "function": "MAX(hourly_rate)"
+        },
+        "max_daily_wage":{
+          "function": "MAX(daily_wage)"
+        },
         "total_annual_salary": {
           "function": "SUM(annual_salary)"
         },
