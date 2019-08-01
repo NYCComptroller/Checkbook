@@ -294,8 +294,7 @@ SQL;
                 agreement_start_date,
                 agreement_end_date,
                 hgr.revised_total_amount current_amount,
-                hgr.revision_approved_date,
-                agreement_original_amount
+                hgr.revision_approved_date
             FROM
               history_agreement_all_revisions hgr
               join all_agreement_transactions agt on hgr.purchase_order_number = agt.purchase_order_number

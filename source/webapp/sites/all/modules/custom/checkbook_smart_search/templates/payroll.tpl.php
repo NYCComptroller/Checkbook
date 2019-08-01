@@ -82,10 +82,10 @@ foreach ($payroll_parameter_mapping as $key => $title){
     $value = "<a href='" .$linkable_fields[$key]."'>". _checkbook_smart_search_str_html_entities($value) ."</a>";
   }
 
-  if (in_array($title, ['Annual Salary', 'Hourly Rate'])) {
+  if (in_array($title, ['Annual Salary', 'Hourly Rate', 'Daily Wage'])) {
 //    $url = PayrollUrlService::annualSalaryPerAgencyUrl($agency_id, $emp_id);
     if (('Annual Salary' == $title && $salaried == 1)
-      || ('Hourly Rate' == $title && $salaried !== 1)) {
+      || (in_array($title, ['Hourly Rate', 'Daily Wage']) && $salaried !== 1 && $value)) {
       $value = "<a  href='/payroll".$agencyLandingUrl."/yeartype/B/year/" . $fiscal_year_id . $dataSourceUrl
         . "?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/"
         .$agency_id . $dataSourceUrl . "/abc/" .$emp_id. "/salamttype/".$salaried."/year/"
