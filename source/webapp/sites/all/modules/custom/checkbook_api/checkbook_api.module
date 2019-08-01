@@ -239,19 +239,13 @@ function checkbook_api_adjustBudgetParameterFilters(&$data_set, &$parameters, $c
  * @param $criteria
  */
 function checkbook_api_adjustNYCHAContractsParams(&$data_set, &$parameters, $criteria){
-
-    $logicalOrColumns = array();
-    if(isset($parameters['release_approved_year'])){
+   if(isset($parameters['release_approved_year'])){
         $year = $parameters['release_approved_year'];
         $data_controller_instance = data_controller_get_operator_factory_instance();
-
-        $parameters['release_approved_year'] = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, $year);
         $parameters['agreement_start_year'] = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, $year);
         $parameters['agreement_end_year'] = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, $year);
-        $logicalOrColumns[0] =  array("release_approved_year","agreement_start_year");
-        $logicalOrColumns[1] = array("release_approved_year","agreement_end_year");
-        $parameters['logicalOrColumns'] = $logicalOrColumns;
-    }
+        unset($parameters['release_approved_year']);
+   }
 }
 
 /**
