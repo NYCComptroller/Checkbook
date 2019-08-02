@@ -171,21 +171,12 @@
         "title": "Purchase Order Type",
         "child": true
       },
-      "vendor_name": {
-        "title": "Vendor",
-        "autocomplete": true
-      },
       "payroll_type": {
         "title": "Payroll Type",
         "child": true
       },
-      "fiscal_year": {
-        "title": "Fiscal Year",
-        "autocomplete": true,
-        "sort_by_key": -1
-      },
-      "display_industry_type_name": {
-        "title": "Industry",
+      "vendor_name": {
+        "title": "Vendor",
         "autocomplete": true
       },
       "responsibility_center_name": {
@@ -195,6 +186,14 @@
       "funding_source_name": {
         "title": "Funding Source",
         "autocomplete": true
+      },
+      "grant_name": {
+        "title": "Grant Name"
+      },
+      "fiscal_year": {
+        "title": "Fiscal Year",
+        "autocomplete": true,
+        "sort_by_key": -1
       },
       "contract_number": {
         "title": "Contract ID",
@@ -207,11 +206,12 @@
       "record_type": {
         "title": "Record Type"
       },
+      "display_industry_type_name": {
+        "title": "Industry",
+        "autocomplete": true
+      },
       "civil_service_title": {
         "title": "Title"
-      },
-      "grant_name": {
-        "title": "Grant Name"
       }
     }
   },
