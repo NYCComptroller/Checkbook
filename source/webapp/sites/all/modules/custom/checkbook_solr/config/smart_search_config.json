@@ -171,21 +171,12 @@
         "title": "Purchase Order Type",
         "child": true
       },
-      "vendor_name": {
-        "title": "Vendor",
-        "autocomplete": true
-      },
       "payroll_type": {
         "title": "Payroll Type",
         "child": true
       },
-      "fiscal_year": {
-        "title": "Fiscal Year",
-        "autocomplete": true,
-        "sort_by_key": -1
-      },
-      "display_industry_type_name": {
-        "title": "Industry",
+      "vendor_name": {
+        "title": "Vendor",
         "autocomplete": true
       },
       "responsibility_center_name": {
@@ -195,6 +186,14 @@
       "funding_source_name": {
         "title": "Funding Source",
         "autocomplete": true
+      },
+      "grant_name": {
+        "title": "Grant Name"
+      },
+      "fiscal_year": {
+        "title": "Fiscal Year",
+        "autocomplete": true,
+        "sort_by_key": -1
       },
       "contract_number": {
         "title": "Contract ID",
@@ -207,11 +206,12 @@
       "record_type": {
         "title": "Record Type"
       },
+      "display_industry_type_name": {
+        "title": "Industry",
+        "autocomplete": true
+      },
       "civil_service_title": {
         "title": "Title"
-      },
-      "grant_name": {
-        "title": "Grant Name"
       }
     }
   },
@@ -359,35 +359,38 @@
       },
       "contracts": {
         "agreement_type_name": "Purchase Order Type",
+        "number_of_releases": "Number of Releases",
         "contract_number": "Contract ID",
-        "item_category": "Item Category",
-        "item_description": "Item Description",
-        "shipment_number": "Shipment Number",
-        "responsibility_center_name": "Responsibility center",
-        "release_line_total_amount": "Line Current Amount",
-        "release_line_original_amount": "Line Original Amount",
-        "release_line_spend_to_date": "Line Invoiced Amount",
-        "release_total_amount": "Release Current Amount",
-        "release_original_amount": "Release Original Amount",
-        "release_spend_to_date": "Release Invoiced Amount",
-        "agreement_total_amount": "Contract Current Amount",
-        "agreement_original_amount": "Contract Original Amount",
-        "agreement_spend_to_date": "Contract Invoiced Amount",
         "release_number": "Release Number",
+        "record_type": "Record Type",
         "vendor_name": "Vendor Name",
+        "item_category": "Item Category",
         "display_industry_type_name": "Industry",
+        "item_description": "Item Description",
         "contract_type_code": "Contract type",
+        "item_qty_ordered": "Quantity Ordered",
         "award_method_name": "Award Method",
+        "shipment_number": "Shipment Number",
         "start_date": "Start Date",
+        "responsibility_center_name": "Responsibility center",
         "end_date": "End Date",
+        "release_line_total_amount": "Line Current Amount",
         "release_approved_date": "Approved Date",
+        "release_line_original_amount": "Line Original Amount",
         "location_borough_name": "Location",
+        "release_line_spend_to_date": "Line Invoiced Amount",
         "grant_name": "Grant Name",
+        "release_total_amount": "Release Current Amount",
         "expenditure_type_name": "Expenditure Type",
+        "release_original_amount": "Release Original Amount",
         "funding_source_name": "Funding source",
+        "release_spend_to_date": "Release Invoiced Amount",
         "program_phase_code": "Program",
+        "agreement_total_amount": "Contract Current Amount",
         "gl_project_name": "Project",
+        "agreement_original_amount": "Contract Original Amount",
         "pin": "PIN",
+        "agreement_spend_to_date": "Contract Invoiced Amount",
         "contract_purpose": "Purpose"
       },
       "payroll": {
