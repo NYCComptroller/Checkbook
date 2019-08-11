@@ -148,7 +148,7 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
   drupal_add_js(array('checkbook_smart_search' => array('expense_category_pages' => $expense_category_pages)), 'setting');
 
   foreach($search_results['facet_counts']['facet_fields'] as $facet => $v){
-    if($sort = $datasource_facets->$facet->sort_by_key??0){
+    if($sort = $datasource_facets[$facet]->sort_by_key??0){
       if ($sort > 0) {
         ksort($search_results['facet_counts']['facet_fields'][$facet]);
       } else {
@@ -160,7 +160,7 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
   if ($selected_facets) {
     foreach (array_keys($selected_facets) as $facet) {
       $unchecked_facet_fields = _checkbook_smart_search_load_unchecked_facets($solr_datasource, $solr_query, $facet);
-      if($sort = $datasource_facets->$facet->sort_by_key??0){
+      if($sort = $datasource_facets[$facet]->sort_by_key??0){
         if ($sort > 0) {
           ksort($unchecked_facet_fields);
         } else {
