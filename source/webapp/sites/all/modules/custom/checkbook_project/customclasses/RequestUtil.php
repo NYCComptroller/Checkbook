@@ -520,7 +520,7 @@ class RequestUtil
      * @param $category
      * @return string
      */
-    public static function preparePayrollBottomNavFilter($page, $category)
+    public static function prepareSpendingBottomNavFilter($page, $category)
     {
         $pathParams = explode('/', drupal_get_path_alias($_GET['q']));
         $url = $page;
@@ -528,7 +528,7 @@ class RequestUtil
             $url .= "/category/" . $category;
         }
         $url .= _checkbook_append_url_params();
-        $allowedFilters = array("year", "calyear", "agency", "yeartype", "vendor", "industry");
+        $allowedFilters = array("year", "calyear", "agency", "yeartype", "vendor", "industry", "datasource");
         for ($i = 1; $i < count($pathParams); $i++) {
             if (in_array($pathParams[$i], $allowedFilters)) {
                 $url .= '/' . $pathParams[$i] . '/' . $pathParams[($i + 1)];
