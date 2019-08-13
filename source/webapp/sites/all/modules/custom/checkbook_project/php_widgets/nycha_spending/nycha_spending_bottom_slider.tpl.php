@@ -19,88 +19,37 @@
  */
 ?>
 <div class="nyc_totals_links">
-    <table>
-        <tbody>
-        <tr>
-            <?php
+  <table>
+    <tbody>
+    <tr>
+      <?php
+          $categories_order = array(0, 2, 3, 1, 4);
+          foreach($node->data as $key=>$row){
+            $categories[$row['category_category']] = array('name' => $row['category_name_category_name'], 'amount' => $row['check_amount_sum']);
+            $total_spending +=  $row['check_amount_sum'];
+          }
+          $categories[0] = array('name' => 'Total', 'amount' => $total_spending);
+          foreach($categories_order as $key => $category_id){
+              $active_class = "";
+              if (RequestUtilities::get("category") == $category_id || (RequestUtilities::get("category") == "" && $category_id == 0)) {
+                  $active_class = ' class="active"';
+              }
+              $link = RequestUtil::prepareSpendingBottomNavFilter("nycha_spending", (($category_id == 0) ? null: $category_id));
+              $amount = "<span class='dollars'>" . custom_number_formatter_format($categories[$category_id]['amount'],1,'$') . "</span>";
+              $category_name = $categories[$category_id]['name'].'<br>Spending<br>';
 
-                $total +=  0;
-                $dollars =0;
-
-            $class = "";
-            if ( RequestUtilities::get("category") == "") {
-                $class = ' class="active"';
-            }
-            $link = RequestUtil::preparePayrollBottomNavFilter("spending_landing",null);
-            $dollars = "<span class='dollars'>" . custom_number_formatter_format($total,1,'$') . "</span>";
-            ?>
-            <td<?php echo $class; ?>>
-                <div class="positioning">
-                    <?php if($total != 0 ){?>
-                        <a href="/<?php echo $link; ?>?expandBottomCont=true"><?php echo $count; ?>Total<br>Spending<br><?php echo $dollars; ?></a>
-                    <?php }else{?>
-                        <?php echo $count; ?><a>Total<br>Spending</a><?php echo $dollars; ?>
-                    <?php }?>
-                </div>
-                <div class="indicator"></div>
-            </td>
-            <?php
-            $class = "";
-            if (RequestUtilities::get("category") == 2) {
-                $class = ' class="active"';
-            }
-            $link = RequestUtil::preparePayrollBottomNavFilter("spending_landing",2);
-            $dollars = "<span class='dollars'>" . custom_number_formatter_format(0,1,'$') . "</span>";
-            ?>
-            <td<?php echo $class; ?>>
-                <div class="positioning">
-                    <?php if($dollars != 0 ){?>
-                        <a href="/<?php echo $link; ?>?expandBottomCont=true"><?php echo $count; ?>Payroll<br>Spending<br><?php echo $dollars; ?></a>
-                    <?php }else{?>
-                        <?php echo $count; ?>Payroll<br>Spending<br><?php echo $dollars; ?>
-                    <?php }?>
-                </div>
-                <div class="indicator"></div>
-            </td>
-            <?php
-            $class = "";
-            if (RequestUtilities::get("category") == 1) {
-                $class = ' class="active"';
-            }
-            $link = RequestUtil::preparePayrollBottomNavFilter("spending_landing",1);
-            $dollars = "<span class='dollars'>" . custom_number_formatter_format(0,1,'$') . "</span>";
-
-            ?>
-            <td<?php echo $class; ?>>
-                <div class="positioning">
-                    <?php if($dollars!= 0 ){?>
-                        <a href="/<?php echo $link; ?>?expandBottomCont=true"><?php echo $count; ?>Contract<br>Spending<br><?php echo $dollars; ?></a>
-                    <?php }else{?>
-                        <?php echo $count; ?>Contract<br>Spending<br><?php echo $dollars; ?>
-                    <?php }?>
-                </div>
-                <div class="indicator"></div>
-            </td>
-            <?php
-            $class = "";
-            if (RequestUtilities::get("category") == 2) {
-                $class = ' class="active"';
-            }
-            $link = RequestUtil::preparePayrollBottomNavFilter("spending_landing",1);
-            $dollars = "<span class='dollars'>" . custom_number_formatter_format(0,1,'$') . "</span>";
-
-            ?>
-            <td<?php echo $class; ?>>
-                <div class="positioning">
-                    <?php if($dollars!= 0 ){?>
-                        <a href="/<?php echo $link; ?>?expandBottomCont=true"><?php echo $count; ?>Others<br>Spending<br><?php echo $dollars; ?></a>
-                    <?php }else{?>
-                        <?php echo $count; ?>Others<br>Spending<br><?php echo $dollars; ?>
-                    <?php }?>
-                </div>
-                <div class="indicator"></div>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+              echo "<td" . $active_class ."><div class='positioning'>";
+              if($categories[$category_id]['amount'] != 0 ){
+                echo '<a href="/'.$link.'">' .$category_name .$amount . '</a>';
+              }else{
+                echo $category_name .$amount;
+              }
+              echo "</div><div class=\"indicator\"></div></td>";
+          }
+      ?>
+    </tr>
+    </tbody>
+  </table>
 </div>
+
+

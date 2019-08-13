@@ -2,45 +2,19 @@
     "widgetType": "phpparser",
     "no_results_content": "No Results Found",
     "cleanURLParameters":["year","calyear","agency","industry","vendor"],
-   /* "model": {
+    "model": {
         "join": {"method": "Union"},
         "series": [
             {
-                "dataset": "checkbook_nycha:spending_transactions_all",
-                "columns": ["check_amount_sum","category.category"],
+                "dataset": "checkbook_nycha:all_disbursement_transactions",
+                "columns": ["check_amount_sum","category.category", "category_name.category_name"],
                 "seriesURLParamMap":{
-                    "agency":"agency_id",
-                    "industry":"industry_type_id",
-                    "category":"spending_category_id"
+                    "category":"spending_category_id","year":"issue_date_year_id"
                 },
-                "allowedParams":["year","agency_id","industry_type_id","spending_category_id"],
-                "adjustSerieParameters":"
-
-
-                $year = $serieParameters['year'][0];
-
-                unset($serieParameters['year']);
-
-
-                $vendor = RequestUtilities::getRequestParamValue('vendor');
-
-
-
-                if(isset($vendor)) {
-                    if($is_prime_or_sub == 'P') {
-                        $serieParameters['vendor_id'] = $vendor;
-                    }
-                    else {
-                        $serieParameters['prime_vendor_id'] = $vendor;
-                    }
-                }
-
-
-                return $serieParameters;
-                "
+                "allowedParams":["spending_category_id", "issue_date_year_id"],
+                "adjustSerieParameters":"return $serieParameters;"
             }
         ]
     },
-    */
     "template": "nycha_spending_bottom_slider"
 }
