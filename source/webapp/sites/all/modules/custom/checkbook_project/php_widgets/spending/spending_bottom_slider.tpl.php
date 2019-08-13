@@ -32,7 +32,7 @@
       if ( RequestUtilities::get("category") == "") {
         $class = ' class="active"';
       }
-      $link = RequestUtil::preparePayrollBottomNavFilter("spending_landing",null);
+      $link = RequestUtil::prepareSpendingBottomNavFilter("spending_landing",null);
       $dollars = "<span class='dollars'>" . custom_number_formatter_format($total,1,'$') . "</span>";
       ?>
       <td<?php echo $class; ?>>
@@ -50,7 +50,7 @@
       if (RequestUtilities::get("category") == 2) {
         $class = ' class="active"';
       }
-      $link = RequestUtil::preparePayrollBottomNavFilter("spending_landing",2);
+      $link = RequestUtil::prepareSpendingBottomNavFilter("spending_landing",2);
       $dollars = "<span class='dollars'>" . custom_number_formatter_format($dollars_by_cat[2],1,'$') . "</span>";
       ?>
       <td<?php echo $class; ?>>
@@ -68,7 +68,7 @@
       if (RequestUtilities::get("category") == 3) {
         $class = ' class="active"';
       }
-      $link = RequestUtil::preparePayrollBottomNavFilter("spending_landing",3);
+      $link = RequestUtil::prepareSpendingBottomNavFilter("spending_landing",3);
       $dollars = "<span class='dollars'>" . custom_number_formatter_format($dollars_by_cat[3],1,'$') . "</span>";
 
       ?>
@@ -87,7 +87,7 @@
       if (RequestUtilities::get("category") == 1) {
         $class = ' class="active"';
       }
-      $link = RequestUtil::preparePayrollBottomNavFilter("spending_landing",1);
+      $link = RequestUtil::prepareSpendingBottomNavFilter("spending_landing",1);
       $dollars = "<span class='dollars'>" . custom_number_formatter_format($dollars_by_cat[1],1,'$') . "</span>";
 
       ?>
@@ -106,7 +106,7 @@
       if (RequestUtilities::get("category") == 5) {
         $class = ' class="active"';
       }
-      $link = RequestUtil::preparePayrollBottomNavFilter("spending_landing",5);
+      $link = RequestUtil::prepareSpendingBottomNavFilter("spending_landing",5);
       $dollars = "<span class='dollars'>" . custom_number_formatter_format($dollars_by_cat[5],1,'$') . "</span>";
 
       ?>
@@ -125,7 +125,7 @@
       if (RequestUtilities::get("category") == 4) {
         $class = ' active';
       }
-      $link = RequestUtil::preparePayrollBottomNavFilter("spending_landing",4);
+      $link = RequestUtil::prepareSpendingBottomNavFilter("spending_landing",4);
       $dollars = "<span class='dollars'>" . custom_number_formatter_format($dollars_by_cat[4],1,'$') . "</span>";
 
       ?>
