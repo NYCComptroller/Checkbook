@@ -1,0 +1,38 @@
+{
+  "datasets": {
+    "all_disbursement_transactions": {
+      "datasourceName": "main",
+      "source": "all_disbursement_transactions"
+    }
+  },
+  "cubes": {
+    "all_disbursement_transactions": {
+      "sourceDatasetName": "all_disbursement_transactions",
+      "dimensions": [
+        {
+          "name": "category",
+          "levels": [
+            {
+              "name": "category",
+              "sourceColumnName": "spending_category_id"
+            }
+          ]
+        },
+        {
+          "name": "category_name",
+          "levels": [
+            {
+              "name": "category_name",
+              "sourceColumnName": "display_spending_category_name"
+            }
+          ]
+        }
+      ],
+      "measures": {
+        "check_amount_sum": {
+          "function": "SUM(check_amount)"
+        }
+      }
+    }
+  }
+}
