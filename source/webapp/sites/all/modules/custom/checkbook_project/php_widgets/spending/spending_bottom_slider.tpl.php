@@ -1,144 +1,52 @@
 <?php
 /**
-* This file is part of the Checkbook NYC financial transparency software.
-*
-* Copyright (C) 2012, 2013 New York City
-*
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as
-* published by the Free Software Foundation, either version 3 of the
-* License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-*
-* You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * This file is part of the Checkbook NYC financial transparency software.
+ *
+ * Copyright (C) 2012, 2013 New York City
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 ?>
 <div class="nyc_totals_links">
   <table>
     <tbody>
     <tr>
       <?php
-
+      $categories[0] = array('name' => 'Total', 'amount' => $total_spending);
       foreach($node->data as $key=>$row){
-        $dollars_by_cat[$row['category_category']] = $row['check_amount_sum'];
-        $total +=  $row['check_amount_sum'];
+        $categories[$row['category_category']] = array('name' => $row['category_category_spending_category_name'], 'amount' => $row['check_amount_sum']);
+        $total_spending +=  $row['check_amount_sum'];
       }
-      $class = "";
-      if ( RequestUtilities::get("category") == "") {
-        $class = ' class="active"';
-      }
-      $link = RequestUtil::prepareSpendingBottomNavFilter("spending_landing",null);
-      $dollars = "<span class='dollars'>" . custom_number_formatter_format($total,1,'$') . "</span>";
-      ?>
-      <td<?php echo $class; ?>>
-        <div class="positioning">
-      <?php if($total != 0 ){?>
-          <a href="/<?php echo $link; ?>?expandBottomCont=true"><?php echo $count; ?>Total<br>Spending<br><?php echo $dollars; ?></a>
-        <?php }else{?>
-        <?php echo $count; ?><a>Total<br>Spending</a><?php echo $dollars; ?>
-        <?php }?>
-        </div>
-        <div class="indicator"></div>
-      </td>
-      <?php
-      $class = "";
-      if (RequestUtilities::get("category") == 2) {
-        $class = ' class="active"';
-      }
-      $link = RequestUtil::prepareSpendingBottomNavFilter("spending_landing",2);
-      $dollars = "<span class='dollars'>" . custom_number_formatter_format($dollars_by_cat[2],1,'$') . "</span>";
-      ?>
-      <td<?php echo $class; ?>>
-        <div class="positioning">
-      <?php if($dollars_by_cat[2] != 0 ){?>
-        <a href="/<?php echo $link; ?>?expandBottomCont=true"><?php echo $count; ?>Payroll<br>Spending<br><?php echo $dollars; ?></a>
-        <?php }else{?>
-        <?php echo $count; ?>Payroll<br>Spending<br><?php echo $dollars; ?>
-        <?php }?>
-        </div>
-        <div class="indicator"></div>
-      </td>
-      <?php
-      $class = "";
-      if (RequestUtilities::get("category") == 3) {
-        $class = ' class="active"';
-      }
-      $link = RequestUtil::prepareSpendingBottomNavFilter("spending_landing",3);
-      $dollars = "<span class='dollars'>" . custom_number_formatter_format($dollars_by_cat[3],1,'$') . "</span>";
+      $categories[0]['amount'] = $total_spending;
+      foreach($categories as $category_id => $value){
+        $active_class = "";
+        if (RequestUtilities::get("category") == $category_id || (RequestUtilities::get("category") == "" && $category_id == 0)) {
+          $active_class = ' class="active"';
+        }
+        $link = RequestUtil::prepareSpendingBottomNavFilter("nycha_spending", (($category_id == 0) ? null: $category_id));
+        $amount = "<span class='dollars'>" . custom_number_formatter_format($value['amount'],1,'$') . "</span>";
+        $category_name = $value['name'].'<br>Spending<br>';
 
-      ?>
-      <td<?php echo $class; ?>>
-        <div class="positioning">
-        <?php if($dollars_by_cat[3] != 0 ){?>
-          <a href="/<?php echo $link; ?>?expandBottomCont=true"><?php echo $count; ?>Capital<br>Spending<br><?php echo $dollars; ?></a>
-        <?php }else{?>
-        <?php echo $count; ?>Capital<br>Spending<br><?php echo $dollars; ?>
-        <?php }?>
-        </div>
-        <div class="indicator"></div>
-      </td>
-      <?php
-      $class = "";
-      if (RequestUtilities::get("category") == 1) {
-        $class = ' class="active"';
+        echo "<td" . $active_class ."><div class='positioning'>";
+        if($value['amount'] != 0 ){
+          echo '<a href="/'.$link.'">' .$category_name .$amount . '</a>';
+        }else{
+          echo $category_name .$amount;
+        }
+        echo "</div><div class=\"indicator\"></div></td>";
       }
-      $link = RequestUtil::prepareSpendingBottomNavFilter("spending_landing",1);
-      $dollars = "<span class='dollars'>" . custom_number_formatter_format($dollars_by_cat[1],1,'$') . "</span>";
-
       ?>
-      <td<?php echo $class; ?>>
-        <div class="positioning">
-      <?php if($dollars_by_cat[1] != 0 ){?>
-          <a href="/<?php echo $link; ?>?expandBottomCont=true"><?php echo $count; ?>Contract<br>Spending<br><?php echo $dollars; ?></a>
-        <?php }else{?>
-        <?php echo $count; ?>Contract<br>Spending<br><?php echo $dollars; ?>
-        <?php }?>
-        </div>
-        <div class="indicator"></div>
-      </td>
-      <?php
-      $class = "";
-      if (RequestUtilities::get("category") == 5) {
-        $class = ' class="active"';
-      }
-      $link = RequestUtil::prepareSpendingBottomNavFilter("spending_landing",5);
-      $dollars = "<span class='dollars'>" . custom_number_formatter_format($dollars_by_cat[5],1,'$') . "</span>";
-
-      ?>
-      <td<?php echo $class;?>>
-        <div class="positioning">
-      <?php if($dollars_by_cat[5] != 0 ){?>
-          <a href="/<?php echo $link; ?>?expandBottomCont=true"><?php echo $count; ?>Trust & Agency<br>Spending<br><?php echo $dollars; ?></a>
-        <?php }else{?>
-        <?php echo $count; ?>Trust & Agency<br>Spending<br><?php echo $dollars; ?>
-        <?php }?>
-        </div>
-        <div class="indicator"></div>
-      </td>
-      <?php
-      $class = "";
-      if (RequestUtilities::get("category") == 4) {
-        $class = ' active';
-      }
-      $link = RequestUtil::prepareSpendingBottomNavFilter("spending_landing",4);
-      $dollars = "<span class='dollars'>" . custom_number_formatter_format($dollars_by_cat[4],1,'$') . "</span>";
-
-      ?>
-      <td class="last<?php echo $class;?>">
-        <div class="positioning">
-        <?php if($dollars_by_cat[4] != 0 ){?>
-          <a href="/<?php echo $link; ?>?expandBottomCont=true"><?php echo $count; ?>Other<br>Spending<br><?php echo $dollars; ?></a>
-        <?php }else{?>
-        <?php echo $count; ?>Other<br>Spending<br><?php echo $dollars; ?>
-        <?php }?>
-        </div>
-        <div class="indicator"></div>
-      </td>
     </tr>
     </tbody>
   </table>
