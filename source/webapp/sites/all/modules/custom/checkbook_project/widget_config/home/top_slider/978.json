@@ -57,6 +57,15 @@ from   (SELECT C.contract_id
           . $where_filter.' group by C.contract_id) a';
   $node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
 "
+},
+{
+"dataset": "checkbook_nycha:all_disbursement_transactions",
+"columns":["check_amount_sum"],
+"seriesURLParamMap":{"vendor":"vendor_id","year":"issue_date_year_id","agency":"agency_id"},
+"allowedParams":["vendor_id","issue_date_year_id","agency_id"],
+"adjustSerieParameters":"
+  return $serieParameters;
+"
 }
 ]
 },
