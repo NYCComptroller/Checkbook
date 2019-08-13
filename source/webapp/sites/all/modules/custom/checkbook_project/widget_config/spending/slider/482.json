@@ -7,7 +7,8 @@
         "series": [
             {
                 "dataset": "checkbook:spending_transactions_all",
-                "columns": ["check_amount_sum","category.category"],
+                "columns": ["check_amount_sum","category.category", "category.category.display_order", "category.category.spending_category_name"],
+                "orderBy": "category.category.display_order",
                 "seriesURLParamMap":{
                     "agency":"agency_id",
                     "mwbe":"minority_type_id",
