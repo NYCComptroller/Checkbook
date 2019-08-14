@@ -1,38 +1,91 @@
 <statements>
   <!--GetSpendingByChecks-->
-  <!--- don't forget to change the datasource to 'checkbook_nycha' when implementing nycha spending widgets-->
-  <statement name="GetNychaSpendingByChecks" datasource="checkbook">
+  <statement name="GetNychaSpendingByChecks" datasource="checkbook_nycha">
     <param name="year" required ="true" type="int" />
-    <param name="agency" type="int" />
     <param name="vendor" type="int" />
-    <param name="fvendor" type="int" />
     <param name="category" type="int" />
-    <param name="industry" type="int" />
-    <param name="mwbe"/>
     <sql>
       SELECT
-      check_eft_issued_date as issue_date,
-      vendor_name as prime_vendor_name,
-      agency_name,
-      check_amount,
-      expenditure_object_name as expense_category,
-      agency_id,
-      vendor_id as prime_vendor_id,
-      expenditure_object_id,
-      department_name,
-      industry_type_id
-      FROM disbursement_line_item_details
+        issue_date,
+        vendor_name,
+        vendor_id,
+        display_expenditure_object_name as expense_category,
+        check_amount
+      FROM all_disbursement_transactions
       <where>
         <exp op="AND">
-          <exp op="=" dbField="check_eft_issued_nyc_year_id" paramName="year" />
-          <exp op="IN" dbField="minority_type_id" paramName="mwbe"/>
+          <exp op="=" dbField="issue_date_year_id" paramName="year" />
           <exp op="=" dbField="spending_category_id" paramName="category"/>
           <exp op="=" dbField="vendor_id" paramName="vendor" />
-          <exp op="=" dbField="vendor_id" paramName="fvendor" />
-          <!--<exp op="=" dbField="agency_id" paramName="agency" /> -->
-          <exp op="=" dbField="industry_type_id" paramName="industry" />
         </exp>
       </where>
+      GROUP BY issue_date, vendor_name, vendor_id, display_expenditure_object_name, check_amount
+    </sql>
+  </statement>
+  <!--GetNychaSpendingByExpenseCategories-->
+  <statement name="GetNychaSpendingByExpenseCategories" datasource="checkbook_nycha">
+    <param name="year" required ="true" type="int" />
+    <param name="vendor" type="int" />
+    <param name="category" type="int" />
+    <sql>
+      SELECT
+        display_expenditure_object_name AS expenditure_object_name,
+        SUM(s0.check_amount) AS check_amount_sum
+      FROM all_disbursement_transactions s0
+      JOIN
+      (
+      SELECT SUM(check_amount) AS check_amount
+      FROM all_disbursement_transactions
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="issue_date_year_id" paramName="year" />
+          <exp op="=" dbField="vendor_id" paramName="vendor" />
+          <exp op="=" dbField="spending_category_id" paramName="category" />
+        </exp>
+      </where>
+      ) total ON 1 = 1
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="s0.issue_date_year_id" paramName="year" />
+          <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
+          <exp op="=" dbField="s0.spending_category_id" paramName="category" />
+        </exp>
+      </where>
+      GROUP BY display_expenditure_object_name
+    </sql>
+  </statement>
+  <!--GetNychaSpendingByVendors-->
+  <statement name="GetNychaSpendingByVendors" datasource="checkbook_nycha">
+    <param name="year" required ="true" type="int" />
+    <param name="vendor" type="int" />
+    <param name="category" type="int" />
+    <sql>
+      SELECT
+        vendor_name,
+        vendor_id,
+        SUM(s0.check_amount) AS check_amount_sum,
+        SUM(s0.invoice_net_amount) AS total_contract_amount_sum
+      FROM all_disbursement_transactions s0
+      JOIN
+      (
+      SELECT SUM(check_amount) AS check_amount
+      FROM all_disbursement_transactions
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="issue_date_year_id" paramName="year" />
+          <exp op="=" dbField="vendor_id" paramName="vendor" />
+          <exp op="=" dbField="spending_category_id" paramName="category" />
+        </exp>
+      </where>
+      ) total ON 1 = 1
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="s0.issue_date_year_id" paramName="year" />
+          <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
+          <exp op="=" dbField="s0.spending_category_id" paramName="category" />
+        </exp>
+      </where>
+      GROUP BY vendor_name, vendor_id
     </sql>
   </statement>
   <!--GetNychaSpendingBySection8-->
@@ -68,73 +121,6 @@
           <exp op="=" dbField="industry_type_id" paramName="industry" />
         </exp>
       </where>
-    </sql>
-  </statement>
-  <!--GetNychaSpendingByVendors-->
-  <!--- Need to change the query one nycha dataset is ready-->
-  <statement name="GetNychaSpendingByVendors" datasource="checkbook">
-    <param name="year" required ="true" type="int" />
-    <param name="agency" type="int" />
-    <param name="vendor" type="int" />
-    <param name="fvendor" type="int" />
-    <param name="category" type="int" />
-    <param name="industry" type="int" />
-    <param name="mwbe"/>
-    <param name="is_all_categories" type="string"/>
-    <sql>
-      SELECT
-      <exp op="IF" condition="&lt;&gt;" paramName="mwbe" compareValue="">
-        a.minority_type_id as prime_minority_type_id,
-      </exp>
-      a.year_id AS year,
-      a.vendor_id as prime_vendor_id,
-      b.legal_name AS prime_vendor_name,
-      SUM(COALESCE(total_spending_amount,0)) AS check_amount_sum,
-      MAX(COALESCE(total_contract_amount,0)) AS total_contract_amount_sum,
-      SUM(total_spending_amount)/MAX(total.check_amount)*100 as percent_spending
-      <exp op="IF" condition="&lt;&gt;" paramName="mwbe" compareValue="">
-        FROM aggregateon_mwbe_spending_vendor a
-      </exp>
-      <exp op="IF" condition="=" paramName="mwbe" compareValue="">
-        FROM aggregateon_spending_vendor a
-      </exp>
-      JOIN vendor b ON b.vendor_id = a.vendor_id
-      JOIN
-      (
-      SELECT SUM(total_spending_amount) AS check_amount
-      FROM aggregateon_mwbe_spending_vendor
-      <where>
-        <exp op="AND">
-          <exp op="=" dbField="year_id" paramName="year" />
-          <exp op="=" dbField="vendor_id" paramName="vendor" />
-          <exp op="=" dbField="vendor_id" paramName="fvendor" />
-          <!--<exp op="=" dbField="agency_id" paramName="agency" /> -->
-          <exp op="=" dbField="spending_category_id" paramName="category" />
-          <exp op="=" dbField="industry_type_id" paramName="industry" />
-          <exp op="IN" dbField="minority_type_id" paramName="mwbe" />
-          <exp op="=" dbField="is_all_categories" paramName="is_all_categories" />
-        </exp>
-      </where>
-      ) total on 1 = 1
-      <where>
-        <exp op="AND">
-          <exp op="=" dbField="a.year_id" paramName="year" />
-          <exp op="IN" dbField="a.minority_type_id" paramName="mwbe"/>
-          <exp op="=" dbField="a.spending_category_id" paramName="category" />
-          <exp op="=" dbField="a.vendor_id" paramName="vendor" />
-          <exp op="=" dbField="a.vendor_id" paramName="fvendor" />
-          <!--<exp op="=" dbField="agency_id" paramName="agency" /> -->
-          <exp op="=" dbField="a.industry_type_id" paramName="industry" />
-          <exp op="IN" dbField="minority_type_id" paramName="mwbe" />
-          <exp op="=" dbField="is_all_categories" paramName="is_all_categories" />
-        </exp>
-      </where>
-      <exp op="IF" condition="&lt;&gt;" paramName="mwbe" compareValue="">
-        GROUP BY a.vendor_id, a.year_id, b.legal_name, a.minority_type_id
-      </exp>
-      <exp op="IF" condition="=" paramName="mwbe" compareValue="">
-        GROUP BY a.vendor_id, a.year_id, b.legal_name
-      </exp>
     </sql>
   </statement>
   <!--GetNychaSpendingByContracts-->
@@ -179,53 +165,6 @@
       a.agency_name, v.legal_name, s0.document_code
     </sql>
   </statement>
-  <!--GetNychaSpendingByExpenseCategories-->
-  <statement name="GetNychaSpendingByExpenseCategories" datasource="checkbook">
-  <param name="year" required ="true" type="int" />
-  <param name="agency" type="int" />
-  <param name="vendor" type="int" />
-  <param name="fvendor" type="int" />
-  <param name="category" type="int" />
-  <param name="industry" type="int" />
-  <param name="mwbe"/>
-  <sql>
-    SELECT
-    s0.expenditure_object_code,
-    s1.original_expenditure_object_name AS expenditure_object_name,
-    SUM(total_spending_amount) AS check_amount_sum,
-    SUM(total_spending_amount)/MAX(total.check_amount)*100 as percent_spending
-    FROM aggregateon_mwbe_spending_coa_entities s0
-    JOIN ref_expenditure_object s1 ON s1.expenditure_object_code = s0.expenditure_object_code AND s1.expenditure_object_id= s0.expenditure_object_id
-    JOIN
-    (
-    SELECT SUM(total_spending_amount) AS check_amount
-    FROM aggregateon_mwbe_spending_coa_entities
-    <where>
-      <exp op="AND">
-        <exp op="=" dbField="year_id" paramName="year" />
-        <exp op="=" dbField="vendor_id" paramName="vendor" />
-        <exp op="=" dbField="vendor_id" paramName="fvendor" />
-        <exp op="=" dbField="spending_category_id" paramName="category" />
-        <exp op="=" dbField="industry_type_id" paramName="industry" />
-        <exp op="IN" dbField="minority_type_id" paramName="mwbe" />
-      </exp>
-    </where>
-    ) total on 1 = 1
-    <where>
-      <exp op="AND">
-        <exp op="=" dbField="s0.year_id" paramName="year" />
-        <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
-        <exp op="=" dbField="s0.vendor_id" paramName="fvendor" />
-        <exp op="=" dbField="s0.spending_category_id" paramName="category" />
-        <exp op="=" dbField="s0.industry_type_id" paramName="industry" />
-        <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
-      </exp>
-    </where>
-    GROUP BY s1.original_expenditure_object_name, s0.expenditure_object_code
-  </sql>
-    <!--GetNychaSpendingByIndustries-->
-    <!--Added sql of expense category citywide-->
-</statement>
   <statement name="GetNychaSpendingByIndustries" datasource="checkbook">
     <param name="year" required ="true" type="int" />
     <param name="agency" type="int" />
