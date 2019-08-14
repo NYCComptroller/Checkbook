@@ -1,7 +1,6 @@
 {
   "serviceName":"NychaSpendingWidgetService",
   "dataFunc":"GetNychaSpendingByFundingSource",
-  "countFunc":"GetCountContracts",
   "table_title":"Spending by Funding Source",
   "headerSubTitle":"Funding Sources",
   "table_columns":[
