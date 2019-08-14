@@ -1,7 +1,6 @@
 {
   "serviceName":"NychaSpendingWidgetService",
   "dataFunc":"GetNychaSpendingByIndustries",
-  "countFunc":"GetCountContracts",
   "table_title":"Spending by Industries",
   "headerSubTitle":"Industries",
   "table_columns":[

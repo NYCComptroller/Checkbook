@@ -5,11 +5,11 @@
   "headerTitle":"Contracts",
   "headerSubTitle":"Contracts",
   "table_columns":[
-    {"labelAlias":"contract_id","column":"agreement_id"},
+    {"labelAlias":"contract_id","column":"contract_id"},
     {"labelAlias":"contract_purpose","column":"contract_purpose"},
-    {"labelAlias":"vendor","column":"prime_vendor_name"},
-    {"labelAlias":"ytd_spending","column":"check_amount_sum","format":"dollar"},
-    {"labelAlias":"total_contract_amount","column":"total_contract_amount_sum","format":"dollar"},
+    {"labelAlias":"vendor","column":"vendor_name"},
+    {"labelAlias":"ytd_spending","column":"ytd_spending","format":"dollar"},
+    {"labelAlias":"total_contract_amount","column":"total_contract_amount","format":"dollar"},
     {"label":"","column":""}
   ],
   "dataTableOptions":{

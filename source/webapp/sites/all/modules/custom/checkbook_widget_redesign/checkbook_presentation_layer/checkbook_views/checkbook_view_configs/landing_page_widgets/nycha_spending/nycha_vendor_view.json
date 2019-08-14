@@ -1,7 +1,6 @@
 {
   "serviceName":"NychaSpendingWidgetService",
   "dataFunc":"GetNychaSpendingByVendors",
-  "countFunc":"GetCountVendors",
   "headerTitle":"Vendors",
   "headerSubTitle":"Vendors",
   "table_columns":[
