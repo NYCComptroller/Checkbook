@@ -30,6 +30,8 @@ class CheckbookSolrQuery
    */
   private $tags = [];
 
+  private $intervals = [];
+
   /**
    * @var string
    */
@@ -74,6 +76,7 @@ class CheckbookSolrQuery
    * @var array
    */
   private $paramMapping = [];
+  private $facetsConfig = [];
   /**
    * @var array
    */
@@ -94,13 +97,15 @@ class CheckbookSolrQuery
 
   /**
    * CheckbookSolrQuery constructor.
+   * @param string $solr_datasource
    * @param string $searchTerms
    * @param int $rows
    * @param int $page
    */
-  public function __construct($searchTerms = '', int $rows = 0, int $page = 0)
+  public function __construct($solr_datasource = '', $searchTerms = '', int $rows = 0, int $page = 0)
   {
     $this->paramMapping = (array)CheckbookSolr::getParamMapping();
+    $this->facetsConfig = (array)CheckbookSolr::getFacetConfigByDatasource($solr_datasource);
     $this->autocompleteMapping = (array)CheckbookSolr::getAutocompleteMapping();
 
     if ($searchTerms) {
@@ -194,9 +199,9 @@ class CheckbookSolrQuery
    * @param array $termFieldArray
    * @return CheckbookSolrQuery
    */
-  public function addTermFields(array $termFieldArray):CheckbookSolrQuery
+  public function addTermFields(array $termFieldArray): CheckbookSolrQuery
   {
-    foreach($termFieldArray as $term){
+    foreach ($termFieldArray as $term) {
       $this->addTermField($term);
     }
     return $this;
@@ -243,25 +248,39 @@ class CheckbookSolrQuery
 
     $fq = '';
     if (sizeof($this->fq)) {
-      foreach($this->fq as $f => $v) {
-        $tag = isset($this->tags[$f]) ? '{!tag='.$this->tags[$f].'}':'';
-        $fq .= '&fq='.$tag.$v;
+      foreach ($this->fq as $f => $v) {
+        $tag = isset($this->tags[$f]) ? '{!tag=' . $this->tags[$f] . '}' : '';
+        $fq .= '&fq=' . $tag . $v;
       }
     }
 
     $facets = '';
-    if (sizeof($this->facets)) {
+    $intervals = '';
+    if (sizeof($this->facets) || sizeof($this->intervals)) {
       $facets = '&' . http_build_query([
           'facet' => 'true',
           'facet.mincount' => 1,
           'facet.sort' => 'count',
           'facet.limit' => $this->facetLimit
         ]);
-      foreach ($this->facets as $facet) {
-        $tag = isset($this->tags[$facet]) ? '{!ex='.$this->tags[$facet].'}':'';
-        $facets .= '&' . http_build_query(['facet.field' => $tag.$facet]);
+      if ($this->facets) {
+        foreach ($this->facets as $facet) {
+          $tag = isset($this->tags[$facet]) ? '{!ex=' . $this->tags[$facet] . '}' : '';
+          $facets .= '&' . http_build_query(['facet.field' => $tag . $facet]);
+        }
+      }
+      if ($this->intervals) {
+        foreach ($this->intervals as $facet => $intervalArray) {
+          $tag = isset($this->tags[$facet]) ? '{!ex=' . $this->tags[$facet] . '}' : '';
+          $intervals .= '&facet.interval=' . $tag . $facet;
+          foreach ($intervalArray as $key => $interval) {
+            $intervals .= "&f.{$facet}.facet.interval.set={!key={$key}}{$interval}";
+          }
+        }
       }
     }
+
+//    http://sdw6.reisys.com:18983/solr/checkbook_nycha_dev.public.solr_nycha/select/?q=*:*&fq={!tag=tg0}annual_salary:[*%20TO%2025000]&facet=true&facet.mincount=1&facet.sort=count&facet.limit=30&facet.field=domain&facet.field=agreement_type_name&facet.field=payroll_type&facet.field=vendor_name&facet.field=responsibility_center_name&facet.field=funding_source_name&facet.field=grant_name&facet.field=fiscal_year&facet.field=facet_year_array&facet.field=contract_number&facet.field=release_number&facet.field=record_type&facet.field=display_industry_type_name&facet.field=civil_service_title&{!ex=tg0}facet.interval=annual_salary&f.annual_salary.facet.interval.set={!ex=tg0%20key=>200,000}(200000,*]&f.annual_salary.facet.interval.set={!ex=tg0%20key=150,000-200,000}(150000,200000]&f.annual_salary.facet.interval.set={!ex=tg0%20key=100,000-150,000}(100000,150000]&f.annual_salary.facet.interval.set={!ex=tg0%20key=75,000-100,000}(75000,100000]&f.annual_salary.facet.interval.set={!ex=tg0%20key=50,000-75,000}(50000,75000]&f.annual_salary.facet.interval.set={!ex=tg0%20key=25,000-50,000}(25000,50000]&f.annual_salary.facet.interval.set={!ex=tg0%20key=<25,000}[*,25000]&start=0&rows=0&sort=domain_ordering+asc%2Cdate_ordering+desc&wt=xml
 
     $sort = '';
     if ($this->sort) {
@@ -279,7 +298,7 @@ class CheckbookSolrQuery
      * http://sdw5.reisys.com:18983/solr/checkbook_dev.public.solr_index_full/select/?q=*:*&facet=true&facet.sort=count&facet.field=fiscal_year&wt=phps&facet.mincount=1
      */
 
-    $this->query = $q . $fq . $sort . $facets . '&' . http_build_query($query) . '&wt=' . $this->wt;
+    $this->query = $q . $fq . $sort . $facets . $intervals . '&' . http_build_query($query) . '&wt=' . $this->wt;
 
     return $this->query;
   }
@@ -354,19 +373,19 @@ class CheckbookSolrQuery
 
     if ('vendor_type' == $param) {
       $value = $this->get_vendor_type_mapping($value);
-    }elseif ('contract_status' == $param) {
+    } elseif ('contract_status' == $param) {
       $value = $this->get_contract_status_mapping($value);
-    }elseif('year' == $param) {
+    } elseif ('year' == $param) {
       $sub3 = substr($value, 0, 3);
-      if('fy~' == $sub3){
+      if ('fy~' == $sub3) {
         $param = 'fiscal_year_id';
-        $value = str_replace($sub3, '',$value);
-      }elseif('cy~' == $sub3){
+        $value = str_replace($sub3, '', $value);
+      } elseif ('cy~' == $sub3) {
         $param = 'calendar_fiscal_year_id';
-        $value = str_replace($sub3, '',$value);
+        $value = str_replace($sub3, '', $value);
       }
-    }elseif('department_name' == $param) {
-      $value = str_replace('__','/',$value);
+    } elseif ('department_name' == $param) {
+      $value = str_replace('__', '/', $value);
     }
 
     $values = explode('~', $value);
@@ -374,6 +393,14 @@ class CheckbookSolrQuery
     $fq = [];
     foreach ($values as $value) {
       $minus = $exclude ? '-' : '';
+
+      if ($this->facetsConfig[$param]->intervals) {
+        $value = $this->facetsConfig[$param]->intervals->$value;
+        $value = str_replace(',', '%20TO%20', $value);
+        $fq[] = $minus . $param . ':' . $value;
+        continue;
+      }
+
       $fq[] = $minus . $param . ':"' . self::escape($value) . '"';
     }
 
@@ -441,6 +468,12 @@ class CheckbookSolrQuery
     return $this;
   }
 
+  public function addInterval(string $facet, array $intervals): CheckbookSolrQuery
+  {
+    $this->intervals[$facet] = $intervals;
+    return $this;
+  }
+
 //  /**
 //   * @return CheckbookSolrQuery
 //   */
@@ -471,8 +504,8 @@ class CheckbookSolrQuery
    */
   public function tagFacets(array $facets): CheckbookSolrQuery
   {
-    foreach(arraY_keys($facets) as $facet){
-      $tag = 'tg'.sizeof($this->tags);
+    foreach (array_keys($facets) as $facet) {
+      $tag = 'tg' . sizeof($this->tags);
       $this->tags[$facet] = $tag;
     }
     return $this;
