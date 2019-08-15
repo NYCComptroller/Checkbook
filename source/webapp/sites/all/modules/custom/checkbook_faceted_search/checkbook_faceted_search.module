@@ -616,7 +616,7 @@ function checkbook_faceted_search_preprocess_individual_filter(&$variables)
   $variables['autocomplete_field_name'] = $data['autocomplete_field_name'];
   $variables['autocomplete_param_name'] = $data['autocomplete_param_name'];
 
-  if (in_array($node->nid,[518,540,566,709,702,768]) && !preg_match("/\/agency\//", $_GET['q'])) {
+  if (in_array($node->nid, [518, 540, 566, 709, 702, 768]) && !preg_match("/\/agency\//", $_GET['q'])) {
     $variables['hide_filter'] = ' style="display:none" ';
   } else {
     $variables['hide_filter'] = "";
@@ -664,11 +664,12 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables)
 
   $facets_render = [];
 
-  foreach($variables['facets'] as $facet => $results) {
+  foreach (array_merge($variables['facets']['facet_fields'], $variables['facets']['facet_intervals'])
+           as $facet => $results) {
     if (!$results) {
       continue;
     }
-    if(!isset($facet_config->$facet)){
+    if (!isset($facet_config->$facet)) {
       LogHelper::log_warn("Facet {$facet} is undefined");
     }
     $facets_render[$facet] = $facet_config->$facet;
@@ -681,7 +682,7 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables)
 
   $selected = $variables['selected_facet_results'];
   if (sizeof($selected)) {
-    foreach($selected as $facet=>$values){
+    foreach ($selected as $facet => $values) {
       $facets_render[$facet]->selected = $values;
     }
   }
