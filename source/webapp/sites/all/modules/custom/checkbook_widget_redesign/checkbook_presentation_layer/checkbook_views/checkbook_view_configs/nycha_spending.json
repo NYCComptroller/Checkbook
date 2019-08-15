@@ -22,9 +22,6 @@
       },
       "nycha_departments": {
         "widget_config":"nycha_departments_view"
-      },
-      "nycha_section8_spending": {
-        "widget_config":"nycha_section8_spending_view"
       }
     }
   }

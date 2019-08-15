@@ -1,13 +1,9 @@
 <?php
 
 class NychaSpendingDataService extends DataService implements INychaSpendingDataService {
-
-  /* Citywide Spending */
-  function GetNychaSpendingByChecks($parameters, $limit = null, $orderBy = null) {
-    return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
-  }
-    function GetNychaSpendingBySection8($parameters, $limit = null, $orderBy = null) {
-        return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
+  /* NYCHA Spending */
+    function GetNychaSpendingByChecks($parameters, $limit = null, $orderBy = null) {
+      return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
     }
     function  GetNychaSpendingByVendors($parameters, $limit = null, $orderBy = null){
         return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
@@ -26,9 +22,6 @@ class NychaSpendingDataService extends DataService implements INychaSpendingData
     }
     function GetNychaSpendingByFundingSource($parameters, $limit = null, $orderBy = null){
         return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
-    }
-    function GetCountVendors($parameters) {
-        return $this->configureNycha(__FUNCTION__,$parameters);
     }
     function GetCountContracts($parameters) {
         return $this->configureNycha(__FUNCTION__,$parameters);
