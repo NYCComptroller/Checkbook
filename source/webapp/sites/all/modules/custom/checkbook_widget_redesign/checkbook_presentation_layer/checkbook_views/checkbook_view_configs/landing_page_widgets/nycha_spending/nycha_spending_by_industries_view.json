@@ -4,7 +4,7 @@
   "table_title":"Spending by Industries",
   "headerSubTitle":"Industries",
   "table_columns":[
-    {"labelAlias":"industry_name","column":"industry_name"},
+    {"labelAlias":"industry_name","column":"industry_type_name"},
     {"labelAlias":"ytd_spending","column":"check_amount_sum","format":"dollar"},
     {"label":"","column":""}
   ],
