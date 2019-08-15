@@ -48,27 +48,6 @@ function _checkbook_smart_search_submit($form, &$form_state)
 
 /**
  * @param string $solr_datasource
- * @param CheckbookSolrQuery $solr_query
- * @param string $facet
- * @return array
- */
-function _checkbook_smart_search_load_unchecked_facets(string $solr_datasource, CheckbookSolrQuery $solr_query, string $facet): array
-{
-  $solr = CheckbookSolr::getInstance($solr_datasource);
-
-  $facet_query = clone $solr_query;
-  $facet_query
-    ->setRows(0)
-    ->clearFacets()
-    ->addFacet($facet)
-    ->excludeFqTermValues($facet);
-  $facet_results = $solr->request_phps('select/?' . $facet_query->buildQuery());
-
-  return $facet_results['facet_counts']['facet_fields'][$facet] ?? [];
-}
-
-/**
- * @param string $solr_datasource
  * @throws Exception
  */
 function _checkbook_smart_search_ajax_results(string $solr_datasource = 'citywide')
@@ -158,8 +137,20 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
   }
 
   if ($selected_facets) {
+    $solr_query
+      ->setRows(0)
+      ->tagFacets($selected_facets);
+    $unchecked_results = $solr->request_phps('select/?' . $solr_query->buildQuery());
+    $unchecked_results = $unchecked_results['facet_counts']['facet_fields'];
+
     foreach (array_keys($selected_facets) as $facet) {
-      $unchecked_facet_fields = _checkbook_smart_search_load_unchecked_facets($solr_datasource, $solr_query, $facet);
+      if(!sizeof($unchecked_results[$facet])){
+        continue;
+      }
+      $unchecked_facet_fields = array_diff($unchecked_results[$facet], $search_results['facet_counts']['facet_fields'][$facet]);
+      if (!sizeof($unchecked_facet_fields)) {
+        continue;
+      }
       if($sort = $datasource_facets[$facet]->sort_by_key??0){
         if ($sort > 0) {
           ksort($unchecked_facet_fields);
