@@ -4,7 +4,7 @@
   "headerTitle":"Vendors",
   "headerSubTitle":"Vendors",
   "table_columns":[
-    {"labelAlias":"vendor","column":"prime_vendor_name"},
+    {"labelAlias":"vendor","column":"vendor_name"},
     {"labelAlias":"ytd_spending","column":"check_amount_sum","format":"dollar"},
     {"labelAlias":"total_contract_amount","column":"total_contract_amount_sum","format":"dollar"},
     {"label":"","column":""}
