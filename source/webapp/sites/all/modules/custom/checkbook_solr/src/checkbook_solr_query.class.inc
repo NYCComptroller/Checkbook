@@ -394,7 +394,7 @@ class CheckbookSolrQuery
     foreach ($values as $value) {
       $minus = $exclude ? '-' : '';
 
-      if ($this->facetsConfig[$param]->intervals) {
+      if (isset($this->facetsConfig[$param]->intervals)) {
         $value = $this->facetsConfig[$param]->intervals->$value;
         $value = str_replace(',', '%20TO%20', $value);
         $fq[] = $minus . $param . ':' . $value;
