@@ -83,7 +83,7 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
   $selected_facets = $solr_query->getSelectedFacets();
 
   foreach ($datasource_facets as $facet_name => $facet) {
-    if ($facet->intervals){
+    if ($facet->intervals) {
       $solr_query->addInterval($facet_name, (array)$facet->intervals);
       continue;
     }
@@ -130,8 +130,8 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
   $expense_category_pages = floor($expense_categories_number / 100);
   drupal_add_js(array('checkbook_smart_search' => array('expense_category_pages' => $expense_category_pages)), 'setting');
 
-  foreach($search_results['facet_counts']['facet_fields'] as $facet => $v){
-    if($sort = $datasource_facets[$facet]->sort_by_key??0){
+  foreach ($search_results['facet_counts']['facet_fields'] as $facet => $v) {
+    if ($sort = $datasource_facets[$facet]->sort_by_key ?? 0) {
       if ($sort > 0) {
         ksort($search_results['facet_counts']['facet_fields'][$facet]);
       } else {
@@ -151,7 +151,7 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
     );
 
     foreach (array_keys($selected_facets) as $facet) {
-      if(!sizeof($unchecked_results[$facet])){
+      if (!sizeof($unchecked_results[$facet])) {
         continue;
       }
       if (isset($search_results['facet_counts']['facet_fields'][$facet])) {
@@ -168,7 +168,7 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
       if (!sizeof($unchecked_facet_fields)) {
         continue;
       }
-      if($sort = $datasource_facets[$facet]->sort_by_key??0){
+      if ($sort = $datasource_facets[$facet]->sort_by_key ?? 0) {
         if ($sort > 0) {
           ksort($unchecked_facet_fields);
         } else {
@@ -179,7 +179,7 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
         if (isset($search_results['facet_counts']['facet_fields'][$facet])) {
           $search_results['facet_counts']['facet_fields'][$facet] =
             ($search_results['facet_counts']['facet_fields'][$facet] ?? []) + ($unchecked_facet_fields ?? []);
-        } elseif(isset($search_results['facet_counts']['facet_intervals'][$facet])) {
+        } elseif (isset($search_results['facet_counts']['facet_intervals'][$facet])) {
           $search_results['facet_counts']['facet_intervals'][$facet] =
             ($search_results['facet_counts']['facet_intervals'][$facet] ?? []) + ($unchecked_facet_fields ?? []);
         }
@@ -189,17 +189,17 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
 
   // facet.mincount does not work with intervals/ranges in solr
   if (isset($search_results['facet_counts']['facet_intervals'])) {
-    foreach($search_results['facet_counts']['facet_intervals'] as $facet => $data) {
-      foreach($data as $k => $v){
+    foreach ($search_results['facet_counts']['facet_intervals'] as $facet => $data) {
+      foreach ($data as $k => $v) {
         if (!$v) {
           unset($search_results['facet_counts']['facet_intervals'][$facet][$k]);
         }
       }
-      if(!sizeof($search_results['facet_counts']['facet_intervals'][$facet])) {
+      if (!sizeof($search_results['facet_counts']['facet_intervals'][$facet])) {
         unset($search_results['facet_counts']['facet_intervals'][$facet]);
       }
     }
-    if(!sizeof($search_results['facet_counts']['facet_intervals'])) {
+    if (!sizeof($search_results['facet_counts']['facet_intervals'])) {
       unset($search_results['facet_counts']['facet_intervals']);
     }
   }
@@ -297,7 +297,7 @@ function _checkbook_smart_search_export_data(string $solr_datasource)
     /**
      * SOLR 7 (gptext) doesn't seem to understand csv.header=false
      */
-    $chunk = 'huerbuer'.substr($result, 0, 200);
+    $chunk = 'huerbuer' . substr($result, 0, 200);
     $column_keys = array_keys($fields);
     if (strpos($chunk, "\"{$column_keys[0]}\"")
       || strpos($chunk, "\"{$column_keys[1]}\"")
@@ -309,8 +309,8 @@ function _checkbook_smart_search_export_data(string $solr_datasource)
     }
 
 //    last page reached => exit
-    if (!$result){
-      $remaining=0;
+    if (!$result) {
+      $remaining = 0;
       continue;
     }
 
@@ -354,8 +354,8 @@ function _checkbook_smart_search_autocomplete_main_input($solr_datasource = 'cit
 
   $matches_render = [];
 
-  foreach($contents['terms'] as $term=>$matches){
-    foreach($matches as $match=>$count){
+  foreach ($contents['terms'] as $term => $matches) {
+    foreach ($matches as $match => $count) {
       $url = $smart_search_url . "?search_term=*!*{$term}=";
       $matches_render[] = [
         "url" => $url,
@@ -365,7 +365,7 @@ function _checkbook_smart_search_autocomplete_main_input($solr_datasource = 'cit
     }
   }
 
-  if (!sizeof($matches_render)){
+  if (!sizeof($matches_render)) {
     $matches_render = [
       "url" => "",
       "label" => '<span>' . "No matches found" . '</span>',

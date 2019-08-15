@@ -30,6 +30,9 @@ class CheckbookSolrQuery
    */
   private $tags = [];
 
+  /**
+   * @var array
+   */
   private $intervals = [];
 
   /**
@@ -76,6 +79,9 @@ class CheckbookSolrQuery
    * @var array
    */
   private $paramMapping = [];
+  /**
+   * @var array
+   */
   private $facetsConfig = [];
   /**
    * @var array
@@ -468,6 +474,11 @@ class CheckbookSolrQuery
     return $this;
   }
 
+  /**
+   * @param string $facet
+   * @param array $intervals
+   * @return CheckbookSolrQuery
+   */
   public function addInterval(string $facet, array $intervals): CheckbookSolrQuery
   {
     $this->intervals[$facet] = $intervals;
