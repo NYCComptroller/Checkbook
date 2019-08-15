@@ -27,7 +27,7 @@
       },
       "nycha_departments": {
         "widget_config":"nycha_departments_view",
-        "visibility_parameters":["-dept", "category:2", "category:3"]
+        "visibility_parameters":["-dept", "-category:1", "-category:4"]
       }
     }
   }
