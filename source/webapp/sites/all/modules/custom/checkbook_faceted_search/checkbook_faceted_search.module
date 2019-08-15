@@ -668,6 +668,9 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables)
     if (!$results) {
       continue;
     }
+    if(!isset($facet_config->$facet)){
+      LogHelper::log_warn("Facet {$facet} is undefined");
+    }
     $facets_render[$facet] = $facet_config->$facet;
     // apply json config `prepare_results` function
     if ($prepare_fn = $facet_config->$facet->prepare_results) {

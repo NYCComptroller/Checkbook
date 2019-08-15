@@ -26,6 +26,11 @@ class CheckbookSolrQuery
   private $fq = [];
 
   /**
+   * @var array
+   */
+  private $tags = [];
+
+  /**
    * @var string
    */
   private $sort = '';
@@ -150,14 +155,6 @@ class CheckbookSolrQuery
   /**
    * @return string
    */
-  public function getQ(): string
-  {
-    return $this->q;
-  }
-
-  /**
-   * @return string
-   */
   public function getWt(): string
   {
     return $this->wt;
@@ -246,7 +243,10 @@ class CheckbookSolrQuery
 
     $fq = '';
     if (sizeof($this->fq)) {
-      $fq = '&fq=' . join('&fq=', $this->fq);
+      foreach($this->fq as $f => $v) {
+        $tag = isset($this->tags[$f]) ? '{!tag='.$this->tags[$f].'}':'';
+        $fq .= '&fq='.$tag.$v;
+      }
     }
 
     $facets = '';
@@ -258,7 +258,8 @@ class CheckbookSolrQuery
           'facet.limit' => $this->facetLimit
         ]);
       foreach ($this->facets as $facet) {
-        $facets .= '&' . http_build_query(['facet.field' => $facet]);
+        $tag = isset($this->tags[$facet]) ? '{!ex='.$this->tags[$facet].'}':'';
+        $facets .= '&' . http_build_query(['facet.field' => $tag.$facet]);
       }
     }
 
@@ -440,27 +441,40 @@ class CheckbookSolrQuery
     return $this;
   }
 
-  /**
-   * @return CheckbookSolrQuery
-   */
-  public function clearFacets(): CheckbookSolrQuery
-  {
-    $this->facets = [];
-    return $this;
-  }
+//  /**
+//   * @return CheckbookSolrQuery
+//   */
+//  public function clearFacets(): CheckbookSolrQuery
+//  {
+//    $this->facets = [];
+//    return $this;
+//  }
+
+//  /**
+//   * @param string $facet
+//   * @return CheckbookSolrQuery
+//   */
+//  public function excludeFqTermValues(string $facet): CheckbookSolrQuery
+//  {
+//    $this->mapParam($facet);
+//
+//    if (isset($this->fq[$facet])) {
+//      $this->fq[$facet] = str_replace("$facet:", "-$facet:", $this->fq[$facet]);
+//    }
+//
+//    return $this;
+//  }
 
   /**
-   * @param string $facet
+   * @param array $facets
    * @return CheckbookSolrQuery
    */
-  public function excludeFqTermValues(string $facet): CheckbookSolrQuery
+  public function tagFacets(array $facets): CheckbookSolrQuery
   {
-    $this->mapParam($facet);
-
-    if (isset($this->fq[$facet])) {
-      $this->fq[$facet] = str_replace("$facet:", "-$facet:", $this->fq[$facet]);
+    foreach(arraY_keys($facets) as $facet){
+      $tag = 'tg'.sizeof($this->tags);
+      $this->tags[$facet] = $tag;
     }
-
     return $this;
   }
 
