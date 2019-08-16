@@ -1,3 +1,26 @@
 {
-
+  "widgetType":"phpparser",
+  "parentNid":1012,
+  "no_results_content":"No Results Found",
+  "limit":100,
+  "startWith":0,
+  "maxSelect":5,
+  "showAllRecords":true,
+  "autocomplete":false,
+  "columns":["section8_flag.section8_flag", "txcount"],
+  "orderBy":"-txcount",
+  "facetPager":true,
+  "filterName":"Section 8 Flag",
+  "urlParameterName":"section8_flag",
+  "autocompleteParamName":"section8_flag_auto",
+  "autocompleteID":"fSection8Flag",
+  "autocompleteField":"section8_flag.section8_flag",
+  "adjustParameters":"
+      if(function_exists('_checkbook_project_applyParameterFilters')){
+        $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+      }
+      $adjustedParameters['section8_flag.section8_flag'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+      return $adjustedParameters;
+  ",
+"template":"individual_filter"
 }
