@@ -1,3 +1,139 @@
 {
+  "widgetType":"data_tables",
+  "widgetSubType":"dataTableList",
+  "stickyHeader":true,
+  "cleanURLParameters":["year", "agency", "vendor"],
+  "urlParamMap":{"year":"issue_date_year_id", "agency":"agency_id", "vendor":"vendor_id"},
+  "paramTypeConfig": {
+    "vendornm": "like",
+    "vendornm_exact": "eqignorecase"
+  },
+  "header":"
+    $header = NULL;
+    $header .= widget_data_tables_export_link($node);
+    return $header;
+  ",
+  "useList":true,
+  "exportConfigNid":1025,
+  "getTotalDataCount":true,
+  "limit":"35",
+  "noDataInitialLoad":true,
+  "html_class":"initiative-table",
+  "no_results_content":"No Results Found",
+  "dataset":"checkbook_nycha:all_disbursement_transactions_by_invoice_by_line",
+  "columns": ["issue_date", "document_id", "section8_flag", "record_type", "agreement_type_name", "contract_id", "release_number",
+    "invoice_number", "check_amount", "invoice_amount", "invoice_discount", "tenant_share", "withholding_tax", "line_net_amount",
+    "vendor_name", "vendor_id", "vendor_site_address", "contract_purpose", "display_spending_category_name", "industry_type_name",
+    "department_name", "start_date", "end_date", "funding_source_description", "responsibility_center_description",
+    "expenditure_type_name", "program_phase_description", "gl_project_description"
+  ],
+  "caption":"",
+  "derivedColumns": {
 
+  },
+  "skipCustomPadding":true,
+  "table_columns": [
+    {"labelAlias":"issue_date","column":"issue_date"},
+    {"labelAlias":"document_id","column":"document_id"},
+    {"labelAlias":"section8_flag","column":"section8_flag"},
+    {"labelAlias":"record_type","column":"record_type"},
+    {"labelAlias":"purchase_order_type","column":"agreement_type_name"},
+    {"labelAlias":"contract_id","column":"contract_id"},
+    {"labelAlias":"release_number","column":"release_number"},
+    {"labelAlias":"invoice_number","column":"invoice_number"},
+    {"labelAlias":"check_amount","column":"check_amount"},
+    {"labelAlias":"billed_amount","column":"invoice_amount"},
+    {"labelAlias":"invoice_discount","column":"invoice_discount"},
+    {"labelAlias":"tenant_share","column":"tenant_share"},
+    {"labelAlias":"tax_withheld","column":"withholding_tax"},
+    {"labelAlias":"amount_spent","column":"line_net_amount"},
+    {"labelAlias":"vendor","column":"vendor_name"},
+    {"labelAlias":"vendor_address","column":"vendor_site_address"},
+    {"labelAlias":"contract_purpose","column":"contract_purpose"},
+    {"labelAlias":"spending_category","column":"display_spending_category_name"},
+    {"labelAlias":"industry_name","column":"industry_type_name"},
+    {"labelAlias":"dept_name","column":"department_name"},
+    {"labelAlias":"period_from","column":"start_date"},
+    {"labelAlias":"period_to","column":"end_date"},
+    {"labelAlias":"funding_source","column":"funding_source_description"},
+    {"labelAlias":"responsibility_center","column":"responsibility_center_description"},
+    {"labelAlias":"expense_category","column":"expenditure_type_name"},
+    {"labelAlias":"program","column":"program_phase_description"},
+    {"labelAlias":"project","column":"gl_project_description"},
+    {"label":"","column":"", "export":false}
+  ],
+  "adjustParameters":"
+    if(function_exists('_checkbook_project_applyParameterFilters')){
+    $parameters = _checkbook_project_applyParameterFilters($node,$parameters);
+    }
+    return $parameters;
+  ",
+  "adjustDataTableOptions":"
+    $adjustDataTableOptions = $node->widgetConfig->dataTableOptions;
+    $adjustDataTableOptions->fnInitComplete = '##function () { new FixedColumns( oTable, {\"iLeftColumns\": 1,\"iLeftWidth\": 125} );}##';
+  ",
+  "dataTableOptions":{
+    "bRetrieve":true,
+    "bServerSide":true,
+    "bProcessing":true,
+    "bFilter":false,
+    "bPaginate":true,
+    "iDisplayLength":35,
+    "sPaginationType":"full_numbers",
+    "sDom":"<pr><t><ip>",
+    "oLanguage": {
+    "sInfo":"Displaying transactions _START_ - _END_ of _TOTAL_",
+    "sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"
+    },
+    "bInfo":true,
+    "aoColumns": [
+      {"sClass":"number-center", "sWidth":"112px","asSorting":["asc","desc"]},
+      {"sClass":"number-center", "sWidth":"112px","asSorting":["asc","desc"]},
+      {"sClass":"number-center", "sWidth":"112px","asSorting":["asc","desc"]},
+      {"sClass":"number-center", "sWidth":"112px","asSorting":["asc","desc"]},
+      {"sClass":"number-center", "sWidth":"112px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"112px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"112px","asSorting":["asc","desc"]"},
+      {"sClass":"number-center", "sWidth":"112px","asSorting":["asc","desc"]"},
+      {"sClass":"text", "sWidth":"112px","asSorting":["asc","desc"]},
+      {"sClass":"number", "sWidth":"112px","asSorting":["asc","desc"]},
+      {"sClass":"number", "sWidth":"112px","asSorting":["asc","desc"]},
+      {"sClass":"number", "sWidth":"112px","asSorting":["asc","desc"]},
+      {"sClass":"number", "sWidth":"112px","asSorting":["asc","desc"]},
+      {"sClass":"number", "sWidth":"112px","asSorting":["asc","desc"]},
+      {"sClass":"number", "sWidth":"112px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"112px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"112px","asSorting":["asc","desc"]"},
+      {"sClass":"text", "sWidth":"112px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"112px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"112px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"112px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"112px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"112px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"112px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"112px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"112px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"112px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"112px","asSorting":["asc","desc"]},
+      {"bSortable":false,"sWidth":"2px"}
+    ],
+    "aaSorting":[[2,"asc"]],
+    "sScrollX":"100%",
+    "bScrollCollapse": true
+  },
+"customExternalJS":"
+
+function prepareTableListFilterUrl() {
+var oVendorNms = getNamedFilterCriteria('fvendorNm');
+var oVendorIds = getNamedFilterCriteria('fvendorId');
+var oRecordType = getNamedFilterCriteria('fRecordType');
+
+var cUrl = oTable.fnSettings().sAjaxSource;
+var cUrlArray = cUrl.split('/');
+
+cUrl = adjustUrlParameter(cUrl,'vendor',oVendorIds);
+cUrl = adjustUrlParameter(cUrl,'vendornm_exact',oVendorNms);
+cUrl = adjustUrlParameter(cUrl,'record_type',oRecordType);
+return cUrl;
+}"
 }
