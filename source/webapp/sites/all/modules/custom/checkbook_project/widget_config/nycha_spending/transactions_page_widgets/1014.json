@@ -1,3 +1,26 @@
 {
-
+  "widgetType":"phpparser",
+  "parentNid":1012,
+  "no_results_content":"No Results Found",
+  "limit":100,
+  "startWith":0,
+  "maxSelect":5,
+  "showAllRecords":true,
+  "autocomplete":false,
+  "columns":["agreement_type_code.agreement_type_code", "agreement_type_name.agreement_type_name","txcount"],
+  "orderBy":"-txcount",
+  "facetPager":true,
+  "filterName":"Purchase Order Type",
+  "urlParameterName":"agreement_type",
+  "autocompleteParamName":"agreement_type_auto",
+  "autocompleteID":"fAgreementType",
+  "autocompleteField":"agreement_type_code.agreement_type_code",
+  "adjustParameters":"
+    if(function_exists('_checkbook_project_applyParameterFilters')) {
+      $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+    }
+    $adjustedParameters['agreement_type_code.agreement_type_code'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+    return $adjustedParameters;
+  ",
+  "template":"individual_filter"
 }
