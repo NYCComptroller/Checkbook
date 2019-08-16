@@ -1,3 +1,22 @@
 {
-
+  "widgetType":"phpparser",
+  "parentNid":1012,
+  "limit":100,
+  "startWith":0,
+  "maxSelect":5,
+  "allowFacetDeselect":true,
+  "columns":["category.category", "display_spending_category_name.display_spending_category_name", "txcount"],
+  "orderBy":"-txcount",
+  "autocomplete":false,
+  "filterName":"Spending Category",
+  "urlParameterName":"category",
+  "autocompleteID":"fSpendCategoryId",
+  "adjustParameters":"
+    if(function_exists('_checkbook_project_applyParameterFilters')){
+      $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+    }
+    $adjustedParameters['category.category'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+   return $adjustedParameters;
+",
+"template":"individual_filter"
 }
