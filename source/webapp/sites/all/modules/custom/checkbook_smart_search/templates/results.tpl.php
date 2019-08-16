@@ -1,19 +1,19 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -53,7 +53,7 @@ if($noOfTotalResults > 0){
 
     print "<div class='smart-search-right'>" . theme('smart_search_filter', [
         'solr_datasource' => $solr_datasource,
-        'facets' => $search_results['facet_counts']['facet_fields'],
+        'facets' => $search_results['facet_counts'],
         'active_contracts' => $active_contracts,
         'registered_contracts' => $registered_contracts,
         'selected_facet_results' => $selected_facet_results
@@ -79,12 +79,12 @@ if($noOfTotalResults > 0){
    <li class="pager-current">1</li>
    <li class="pager-first next"><a href="" title="Go to Next page" class="pagerItemDisabled">Next</a></li>
    <li class="pager-first last"><a href="" title="Go to Last page" class="pagerItemDisabled">Last</a></li>
-   </ul></div>'; 
+   </ul></div>';
   }
   print $output;
 
-  
-  
+
+
   //End of Pagination at the top
   print "<div class='loading' style='display:none;'></div>";
   print "<ol class='search-results'>";
