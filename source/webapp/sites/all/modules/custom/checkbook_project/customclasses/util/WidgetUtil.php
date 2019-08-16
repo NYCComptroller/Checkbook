@@ -304,6 +304,7 @@ class WidgetUtil
         "invoice_discount" => "Invoice<br/>Discount",
         "tenant_share" => "Tenant<br/>Share",
         "tax_withheld" => "Tax<br/>Withheld",
+        "period_from" => "Period<br/>From",
         "period_to" => "Period<br/>To",
         "period_name" => "Peroid<br/>Name",
     );
