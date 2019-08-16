@@ -47,7 +47,7 @@ class CheckbookSolr
    * @param string $domain
    * @return mixed
    */
-  public static function getSearchFields(string $solr_datasource,string $domain): object
+  public static function getSearchFields(string $solr_datasource, string $domain): object
   {
     return self::getSmartSearchConfig()->search_results_fields->$solr_datasource->$domain ?? new StdClass();
   }
@@ -57,7 +57,7 @@ class CheckbookSolr
    * @param string $domain
    * @return mixed
    */
-  public static function getExportFields(string $solr_datasource,string $domain): object
+  public static function getExportFields(string $solr_datasource, string $domain): object
   {
     return self::getSmartSearchConfig()->export_fields->$solr_datasource->$domain ?? new StdClass();
   }
@@ -167,7 +167,6 @@ class CheckbookSolr
       $contents = file_get_contents($url);
     } catch (Exception $ex) {
       LogHelper::log_warn("Solr error: " . $ex->getMessage());
-//      drupal_set_message("Solr error: " . $ex->getMessage());
       $contents = '';
     }
     return $contents;
