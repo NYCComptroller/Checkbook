@@ -296,9 +296,17 @@ class WidgetUtil
         "category_type" => "Category<br/>Type",
         "record_type" => "Record<br/>Type",
         "number_of_releases" => "Number of<br/>Releases",
-        "invoiced_amount" => "Invoiced<br/>Amount",
+        "billed_amount" => "Billed<br/>Amount",
         "static_current_amount" => "Current Amount",
         "static_original_amount" => "Original Amount",
+        "section8_flag" => "Section 8",
+        "invoice_number" => "Invoice<br/>Number",
+        "invoice_discount" => "Invoice<br/>Discount",
+        "tenant_share" => "Tenant<br/>Share",
+        "tax_withheld" => "Tax<br/>Withheld",
+        "period_from" => "Period<br/>From",
+        "period_to" => "Period<br/>To",
+        "period_name" => "Peroid<br/>Name",
     );
 
     //For number cols, need to find out if they are uniform number of digits for formatting

@@ -15,6 +15,7 @@ class NychaSpendingUrlService{
     {
         $url = "/panel_html/nycha_spending_transactions/nycha_spending/transactions"
             . RequestUtilities::buildUrlFromParam('year')
+            . RequestUtilities::buildUrlFromParam('category')
             . RequestUtilities::buildUrlFromParam('agency')
             . RequestUtilities::buildUrlFromParam('vendor')
             . RequestUtilities::buildUrlFromParam('datasource');
@@ -31,6 +32,7 @@ class NychaSpendingUrlService{
     {
         $url = '/nycha_spending'
             . RequestUtilities::buildUrlFromParam('year')
+            . RequestUtilities::buildUrlFromParam('category')
             . RequestUtilities::buildUrlFromParam('agency')
             . RequestUtilities::buildUrlFromParam('vendor')
             . RequestUtilities::buildUrlFromParam('datasource')

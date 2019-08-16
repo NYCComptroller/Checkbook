@@ -3,6 +3,10 @@
     "all_disbursement_transactions": {
       "datasourceName": "main",
       "source": "all_disbursement_transactions"
+    },
+    "all_disbursement_transactions_by_invoice_by_line": {
+      "datasourceName": "main",
+      "source": "all_disbursement_transactions_by_invoice_by_line"
     }
   },
   "cubes": {
@@ -31,6 +35,118 @@
       "measures": {
         "check_amount_sum": {
           "function": "SUM(check_amount)"
+        }
+      }
+    },
+    "all_disbursement_transactions_by_invoice_by_line": {
+      "sourceDatasetName": "all_disbursement_transactions_by_invoice_by_line",
+      "dimensions": [
+        {
+          "name": "agency",
+          "levels": [
+            {
+              "name": "agency",
+              "sourceColumnName": "agency_id"
+            }
+          ]
+        },
+        {
+          "name": "agency_name",
+          "levels": [
+            {
+              "name": "agency_name",
+              "sourceColumnName": "agency_name"
+            }
+          ]
+        },
+        {
+          "name": "agreement_type_code",
+          "levels": [
+            {
+              "name": "agreement_type_code",
+              "sourceColumnName": "agreement_type_code"
+            }
+          ]
+        },
+        {
+          "name": "agreement_type_name",
+          "levels": [
+            {
+              "name": "agreement_type_name",
+              "sourceColumnName": "agreement_type_name"
+            }
+          ]
+        },
+        {
+          "name": "contract_id",
+          "levels": [
+            {
+              "name": "contract_id",
+              "sourceColumnName": "contract_id"
+            }
+          ]
+        },
+        {
+          "name": "record_type",
+          "levels": [
+            {
+              "name": "record_type",
+              "sourceColumnName": "record_type"
+            }
+          ]
+        },
+        {
+          "name": "section8_flag",
+          "levels": [
+            {
+              "name": "section8_flag",
+              "sourceColumnName": "section8_flag"
+            }
+          ]
+        },
+        {
+          "name": "vendor_id",
+          "levels": [
+            {
+              "name": "vendor_id",
+              "sourceColumnName": "vendor_id"
+            }
+          ]
+        },
+        {
+          "name": "vendor_name",
+          "levels": [
+            {
+              "name": "vendor_name",
+              "sourceColumnName": "vendor_name"
+            }
+          ]
+        }
+      ],
+      "measures": {
+        "check_amount_sum": {
+          "function": "SUM(check_amount)"
+        },
+        "txcount": {
+          "function":"COUNT(*)"
+        },
+        "g100m_check_amountcount": {
+          "function": "SUM(CASE WHEN COALESCE($COLUMN{check_amount},0) > 100000000 THEN 1 ELSE 0 END)"
+        },
+        "g50m_le100m_check_amountcount": {
+          "function": "SUM(CASE WHEN COALESCE($COLUMN{check_amount},0) > 50000000 AND COALESCE($COLUMN{check_amount},0) <= 100000000 THEN 1 ELSE 0 END)"
+        },
+        "g25m_le50m_check_amountcount": {
+          "function": "SUM(CASE WHEN COALESCE($COLUMN{check_amount},0) > 25000000 AND COALESCE($COLUMN{check_amount},0) <= 50000000 THEN 1 ELSE 0 END)"
+        },
+        "g10m_le25m_check_amountcount": {
+          "function": "SUM(CASE WHEN COALESCE($COLUMN{check_amount},0) > 10000000 AND COALESCE($COLUMN{check_amount},0) <= 25000000 THEN 1 ELSE 0 END)"
+        },
+        "ge1m_le10m_check_amountcount": {
+          "function": "SUM(CASE WHEN COALESCE($COLUMN{check_amount},0) >= 1000000 AND COALESCE($COLUMN{check_amount},0) <= 10000000 THEN 1 ELSE 0 END)"
+        },
+        "less1m_check_amountcount": {
+          "function": "SUM(CASE WHEN COALESCE($COLUMN{check_amount},0) < 1000000 THEN 1 ELSE 0 END)"
         }
       }
     }
