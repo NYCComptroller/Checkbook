@@ -2,11 +2,17 @@
   "widgetType":"data_tables",
   "widgetSubType":"dataTableList",
   "stickyHeader":true,
-  "cleanURLParameters":["year", "agency", "vendor"],
-  "urlParamMap":{"year":"issue_date_year_id", "agency":"agency_id", "vendor":"vendor_id"},
+  "cleanURLParameters":["year", "agency", "vendor", "agreement_type", "po_num_exact", "po_num", "record_type", "section8_flag",
+                        "vendornm", "vendornm_exact"],
+  "urlParamMap":{"year":"issue_date_year_id", "agency":"agency_id", "vendor":"vendor_id", "agreement_type":"agreement_type_code",
+                 "po_num_exact": "contract_id", "po_num":"contract_id", "record_type":"record_type", "section8_flag":"section8_flag",
+                 "vendornm":"vendor_name","vendornm_exact":"vendor_name"
+  },
   "paramTypeConfig": {
     "vendornm": "like",
-    "vendornm_exact": "eqignorecase"
+    "vendornm_exact": "eqignorecase",
+    "po_num": "like",
+    "po_num_exact": "eqignorecase"
   },
   "header":"
     $header = NULL;
@@ -167,19 +173,27 @@
     "sScrollX":"100%",
     "bScrollCollapse": true
   },
-"customExternalJS":"
+  "customExternalJS":"
+      function prepareTableListFilterUrl() {
+        var oAgencyIds = getNamedFilterCriteria('fAgencyId');
+        var oAgreementType = getNamedFilterCriteria('fAgreementType');
+        var oPONumber = getNamedFilterCriteria('fPONumber');
+        var oRecordType = getNamedFilterCriteria('fRecordType');
+        var oSection8Flag = getNamedFilterCriteria('fSection8Flag');
+        var oVendorIds = getNamedFilterCriteria('fvendorId');
+        var oVendorNms = getNamedFilterCriteria('fvendorNm');
 
-function prepareTableListFilterUrl() {
-var oVendorNms = getNamedFilterCriteria('fvendorNm');
-var oVendorIds = getNamedFilterCriteria('fvendorId');
-var oRecordType = getNamedFilterCriteria('fRecordType');
+        var cUrl = oTable.fnSettings().sAjaxSource;
+        var cUrlArray = cUrl.split('/');
 
-var cUrl = oTable.fnSettings().sAjaxSource;
-var cUrlArray = cUrl.split('/');
+        cUrl = adjustUrlParameter(cUrl,'agency',oAgencyIds);
+        cUrl = adjustUrlParameter(cUrl,'agreement_type',oAgreementType);
+        cUrl = adjustUrlParameter(cUrl,'po_num_exact',oPONumber);
+        cUrl = adjustUrlParameter(cUrl,'record_type',oRecordType);
+        cUrl = adjustUrlParameter(cUrl,'section8_flag',oSection8Flag);
+        cUrl = adjustUrlParameter(cUrl,'vendor',oVendorIds);
+        cUrl = adjustUrlParameter(cUrl,'vendornm_exact',oVendorNms);
 
-cUrl = adjustUrlParameter(cUrl,'vendor',oVendorIds);
-cUrl = adjustUrlParameter(cUrl,'vendornm_exact',oVendorNms);
-cUrl = adjustUrlParameter(cUrl,'record_type',oRecordType);
-return cUrl;
-}"
+        return cUrl;
+    }"
 }
