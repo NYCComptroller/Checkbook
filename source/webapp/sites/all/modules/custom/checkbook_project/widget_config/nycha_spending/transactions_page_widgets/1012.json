@@ -3,16 +3,21 @@
   "widgetSubType":"dataTableList",
   "stickyHeader":true,
   "cleanURLParameters":["year", "agency", "vendor", "agreement_type", "po_num_exact", "po_num", "record_type", "section8_flag",
-                        "vendornm", "vendornm_exact"],
+                        "vendornm", "vendornm_exact", "checkamt", "checkamtr", "funding_id", "invoice_number", "industry", "exp_cat",
+                        "category"],
   "urlParamMap":{"year":"issue_date_year_id", "agency":"agency_id", "vendor":"vendor_id", "agreement_type":"agreement_type_code",
                  "po_num_exact": "contract_id", "po_num":"contract_id", "record_type":"record_type", "section8_flag":"section8_flag",
-                 "vendornm":"vendor_name","vendornm_exact":"vendor_name"
+                 "vendornm":"vendor_name","vendornm_exact":"vendor_name", "checkamt":"check_amount", "checkamtr":"check_amount",
+                 "funding_id":"funding_source_id", "invoice_number":"invoice_number", "industry":"industry_type_name",
+                  "exp_cat":"expenditure_type_name","category":"spending_category_id"
   },
   "paramTypeConfig": {
     "vendornm": "like",
     "vendornm_exact": "eqignorecase",
     "po_num": "like",
-    "po_num_exact": "eqignorecase"
+    "po_num_exact": "eqignorecase",
+    "checkamtr": "rangeid",
+    "checkamt": "range"
   },
   "header":"
     $header = NULL;
@@ -28,7 +33,7 @@
   "dataset":"checkbook_nycha:all_disbursement_transactions_by_invoice_by_line",
   "columns": ["issue_date", "document_id", "section8_flag", "record_type", "agreement_type_name", "contract_id", "release_number",
     "invoice_number", "check_amount", "invoice_amount", "invoice_discount", "tenant_share", "withholding_tax", "line_net_amount",
-    "vendor_name", "vendor_id", "vendor_site_address", "contract_purpose", "display_spending_category_name", "industry_type_name",
+    "vendor_name", "vendor_id", "vendor_site_address", "contract_purpose", "display_spending_category_name", "display_industry_type_name",
     "department_name", "start_date", "end_date", "funding_source_description", "responsibility_center_description",
     "expenditure_type_name", "program_phase_description", "gl_project_description"
   ],
@@ -102,7 +107,7 @@
     {"labelAlias":"vendor_address","column":"vendor_address_formatted","sortSourceColumn":"vendor_site_address"},
     {"labelAlias":"contract_purpose","column":"purpose_formatted","sortSourceColumn":"contract_purpose"},
     {"labelAlias":"spending_category","column":"display_spending_category_name"},
-    {"labelAlias":"industry_name","column":"industry_type_name"},
+    {"labelAlias":"industry_name","column":"display_industry_type_name"},
     {"labelAlias":"dept_name","column":"dept_formatted","sortSourceColumn":"department_name"},
     {"labelAlias":"period_from","column":"start_date"},
     {"labelAlias":"period_to","column":"end_date"},
@@ -182,6 +187,12 @@
         var oSection8Flag = getNamedFilterCriteria('fSection8Flag');
         var oVendorIds = getNamedFilterCriteria('fvendorId');
         var oVendorNms = getNamedFilterCriteria('fvendorNm');
+        var oCheckAmount = getNamedFilterCriteria('fCheckAmount');
+        var oFundingIds = getNamedFilterCriteria('fFundingId');
+        var oInvoiceNumber = getNamedFilterCriteria('fInvoiceNumber');
+        var oIndustryIds = getNamedFilterCriteria('fIndustryId');
+        var oExpCatIds = getNamedFilterCriteria('fExpCat');
+        var oCatIds = getNamedFilterCriteria('fSpendCategoryId');
 
         var cUrl = oTable.fnSettings().sAjaxSource;
         var cUrlArray = cUrl.split('/');
@@ -193,6 +204,10 @@
         cUrl = adjustUrlParameter(cUrl,'section8_flag',oSection8Flag);
         cUrl = adjustUrlParameter(cUrl,'vendor',oVendorIds);
         cUrl = adjustUrlParameter(cUrl,'vendornm_exact',oVendorNms);
+        cUrl = adjustUrlParameter(cUrl,'checkamtr',oCheckAmount);
+        cUrl = adjustUrlParameter(cUrl,'funding_id',oFundingIds);
+        cUrl = adjustUrlParameter(cUrl,'invoice_number',oInvoiceNumber);
+        cUrl = adjustUrlParameter(cUrl,'category', oCatIds);
 
         return cUrl;
     }"
