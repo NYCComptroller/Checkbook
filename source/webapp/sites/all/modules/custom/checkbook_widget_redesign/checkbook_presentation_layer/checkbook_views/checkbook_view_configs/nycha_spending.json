@@ -1,35 +1,35 @@
 {
   "nycha": {
     "landing_page_widgets": {
-      "nycha_checks":{
+      "checks":{
         "widget_config":"nycha_checks_view",
         "visibility_parameters":["-category:2"]
       },
-      "nycha_vendor": {
+      "vendors": {
         "widget_config":"nycha_vendor_view",
         "visibility_parameters":["-vendor", "-category:2"]
       },
-      "nycha_contracts": {
+      "contracts": {
         "widget_config":"nycha_contracts_view",
         "visibility_parameters":["-category:2", "-category:1", "-category:4"]
       },
-      "nycha_expense_categories": {
+      "expense_categories": {
         "widget_config":"nycha_expense_categories_view",
         "visibility_parameters":["category:2", "category:3"]
       },
-      "nycha_exp_cats_horizantal":{
+      "expense_categories_horizantal":{
         "widget_config":"nycha_expense_categories_view",
         "visibility_parameters":["-category:2", "-category:3"]
       },
-      "nycha_spending_by_industries": {
+      "industries": {
         "widget_config":"nycha_spending_by_industries_view",
         "visibility_parameters":["-industry", "-category:2"]
       },
-      "nycha_spending_by_funding_source": {
+      "funding_source": {
         "widget_config":"nycha_spending_by_funding_source_view",
         "visibility_parameters":["-category:2"]
       },
-      "nycha_departments": {
+      "departments": {
         "widget_config":"nycha_departments_view",
         "visibility_parameters":["-dept", "category:2", "category:3"]
       }
