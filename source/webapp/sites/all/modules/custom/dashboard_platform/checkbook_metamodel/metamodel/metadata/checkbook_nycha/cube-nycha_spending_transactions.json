@@ -121,6 +121,87 @@
               "sourceColumnName": "vendor_name"
             }
           ]
+        },
+        {
+          "name": "funding_source_id",
+          "levels": [
+            {
+              "name": "funding_source_id",
+              "sourceColumnName": "funding_source_id"
+            }
+          ]
+        },
+        {
+          "name": "funding_source_description",
+          "levels": [
+            {
+              "name": "funding_source_description",
+              "sourceColumnName": "funding_source_description"
+            }
+          ]
+        },
+        {
+          "name": "invoice_number",
+          "levels": [
+            {
+              "name": "invoice_number",
+              "sourceColumnName": "invoice_number"
+            }
+          ]
+        },
+        {
+          "name": "industry_type_id",
+          "levels": [
+            {
+              "name": "industry_type_id",
+              "sourceColumnName": "industry_type_id"
+            }
+          ]
+        },
+        {
+          "name": "display_industry_type_name",
+          "levels": [
+            {
+              "name": "display_industry_type_name",
+              "sourceColumnName": "display_industry_type_name"
+            }
+          ]
+        },
+        {
+          "name": "expenditure_type_name",
+          "levels": [
+            {
+              "name": "expenditure_type_name",
+              "sourceColumnName": "expenditure_type_name"
+            }
+          ]
+        },
+        {
+          "name": "expenditure_type_id",
+          "levels": [
+            {
+              "name": "expenditure_type_id",
+              "sourceColumnName": "expenditure_type_id"
+            }
+          ]
+        },
+        {
+          "name": "category",
+          "levels": [
+            {
+              "name": "category",
+              "sourceColumnName": "spending_category_id"
+            }
+          ]
+        },
+        {
+          "name": "display_spending_category_name",
+          "levels": [
+            {
+              "name": "display_spending_category_name",
+              "sourceColumnName": "display_spending_category_name"
+            }
+          ]
         }
       ],
       "measures": {
@@ -130,22 +211,22 @@
         "txcount": {
           "function":"COUNT(*)"
         },
-        "g100m_check_amountcount": {
+        "g100m_count": {
           "function": "SUM(CASE WHEN COALESCE($COLUMN{check_amount},0) > 100000000 THEN 1 ELSE 0 END)"
         },
-        "g50m_le100m_check_amountcount": {
+        "g50m_le100m_count": {
           "function": "SUM(CASE WHEN COALESCE($COLUMN{check_amount},0) > 50000000 AND COALESCE($COLUMN{check_amount},0) <= 100000000 THEN 1 ELSE 0 END)"
         },
-        "g25m_le50m_check_amountcount": {
+        "g25m_le50m_count": {
           "function": "SUM(CASE WHEN COALESCE($COLUMN{check_amount},0) > 25000000 AND COALESCE($COLUMN{check_amount},0) <= 50000000 THEN 1 ELSE 0 END)"
         },
-        "g10m_le25m_check_amountcount": {
+        "g10m_le25m_count": {
           "function": "SUM(CASE WHEN COALESCE($COLUMN{check_amount},0) > 10000000 AND COALESCE($COLUMN{check_amount},0) <= 25000000 THEN 1 ELSE 0 END)"
         },
-        "ge1m_le10m_check_amountcount": {
+        "ge1m_le10m_count": {
           "function": "SUM(CASE WHEN COALESCE($COLUMN{check_amount},0) >= 1000000 AND COALESCE($COLUMN{check_amount},0) <= 10000000 THEN 1 ELSE 0 END)"
         },
-        "less1m_check_amountcount": {
+        "less1m_count": {
           "function": "SUM(CASE WHEN COALESCE($COLUMN{check_amount},0) < 1000000 THEN 1 ELSE 0 END)"
         }
       }

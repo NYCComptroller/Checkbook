@@ -1,3 +1,24 @@
 {
-
+  "widgetType":"phpparser",
+  "parentNid":1012,
+  "no_results_content":"No Results Found",
+  "limit":100,
+  "startWith":0,
+  "maxSelect":5,
+  "showAllRecords":true,
+  "allowFacetDeselect":true,
+  "autocomplete":false,
+  "filterName":"Check Amount",
+  "urlParameterName":"checkamtr",
+  "urlParameterType":"rangeid",
+  "autocompleteID":"fCheckAmount",
+  "columns":["g100m_count", "g50m_le100m_count", "g25m_le50m_count", "g10m_le25m_count", "ge1m_le10m_count", "less1m_count"],
+  "orderBy":"",
+  "adjustParameters":"
+      if(function_exists('_checkbook_project_applyParameterFilters')){
+        $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+      }
+      return $adjustedParameters;
+  ",
+  "template":"individual_filter"
 }
