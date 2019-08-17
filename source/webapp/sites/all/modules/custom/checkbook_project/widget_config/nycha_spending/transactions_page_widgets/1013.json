@@ -10,7 +10,7 @@
   "filterName":"Other Government Entity",
   "urlParameterName":"agency",
   "autocompleteParamName":"agency_auto",
-  "autocompleteID":"fagencyId",
+  "autocompleteID":"fAgencyId",
   "autocompleteField":"agency_name",
   "autocomplete":false,
   "adjustParameters":"
