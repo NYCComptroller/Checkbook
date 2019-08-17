@@ -14,10 +14,14 @@
         "visibility_parameters":["-category:2", "-category:1", "-category:4"]
       },
       "nycha_expense_categories": {
-        "widget_config":"nycha_expense_categories_view"
+        "widget_config":"nycha_expense_categories_view",
+        "visibility_parameters":["category:2", "category:3"]
       },
-      "nycha_spending_by_industries":
-      {
+      "nycha_exp_cats_horizantal":{
+        "widget_config":"nycha_expense_categories_view",
+        "visibility_parameters":["-category:2", "-category:3"]
+      },
+      "nycha_spending_by_industries": {
         "widget_config":"nycha_spending_by_industries_view",
         "visibility_parameters":["-industry", "-category:2"]
       },
@@ -27,7 +31,7 @@
       },
       "nycha_departments": {
         "widget_config":"nycha_departments_view",
-        "visibility_parameters":["-dept", "-category:1", "-category:4"]
+        "visibility_parameters":["-dept", "category:2", "category:3"]
       }
     }
   }
