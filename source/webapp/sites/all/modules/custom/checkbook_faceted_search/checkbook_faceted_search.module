@@ -705,7 +705,7 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables)
 
   $facets_render = [];
 
-  foreach (array_merge($variables['facets']['facet_fields'], $variables['facets']['facet_intervals'])
+  foreach (array_merge($variables['facets']['facet_fields'] ?? [], $variables['facets']['facet_intervals'] ?? [])
            as $facet => $results) {
     if (!$results) {
       continue;
