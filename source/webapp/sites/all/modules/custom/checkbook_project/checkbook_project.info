@@ -40,6 +40,7 @@ files[] = customclasses/contract/NychaContractDetails.php
 files[] = customclasses/contract/NychaContractAssocReleases.php
 files[] = customclasses/contract/NYCHAContractsUtil.php
 files[] = customclasses/spending/SpendingUtil.php
+files[] = customclasses/spending/NychaSpendingUtil.php
 files[] = customclasses/payroll/PayrollUtil.php
 files[] = customclasses/util/ChartUtil.php
 files[] = customclasses/util/NodeSummaryUtil.php
