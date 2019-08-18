@@ -44,27 +44,9 @@ class SpendingUtil{
      * @return string
      */
     static  public function getSpendingTransactionsTitle(){
-        $title = '';
-        if(preg_match('/category\/1/',current_path())){
-          $title = $title . ' Contract' ;
-        }
-        elseif(preg_match('/category\/2/',current_path())){
-          $title = $title. ' Payroll' ;
-        }
-        elseif(preg_match('/category\/3/',current_path())){
-          $title = $title . ' Capital' ;
-        }
-        elseif(preg_match('/category\/4/',current_path())){
-          $title = $title. ' Others' ;
-        }
-        elseif(preg_match('/category\/5/',current_path())){
-          $title = $title . ' Trust & Agency' ;
-        }
-        else{
-          $title = $title . ' Total' ;
-        }
-      $title = $title . " Spending Transactions";
-      return $title ;
+        $categories = array(1 => 'Contract', 2 => 'Payroll', 3 => 'Capital', 4 => 'Others', 5 => 'Trust & Agency' ,null => 'Total');
+        $title = $categories[ RequestUtilities::get('category')]. " Spending Transactions";
+        return $title ;
     }
 
     /**
