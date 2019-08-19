@@ -323,7 +323,7 @@
         "accrued_expense_amount": "Accrued Expense",
         "cash_expense_amount": "Cash Payments",
         "post_closing_adjustment_amount": "Post Adjustments",
-        "fiscal_year": "Year"
+        "calendar_fiscal_year": "Year"
       },
       "revenue": {
         "agency_name": "Agency Name",
@@ -518,9 +518,9 @@
         "accrued_expense_amount": "Accrued Expense",
         "cash_expense_amount": "Cash Payments",
         "post_closing_adjustment_amount": "Post Adjustments",
-        "fiscal_year": "Year"
+        "calendar_fiscal_year": "Year"
       },
-      "reveneue": {
+      "revenue": {
         "agency_name": "Agency Name",
         "fiscal_year": "Budget Fiscal Year",
         "display_fiscal_year": "Fiscal Year",
