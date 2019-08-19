@@ -30,7 +30,7 @@ if ($spending_results['fiscal_year_id'] != '') {
   $fiscal_year_id = _getCurrentYearID();
 }
 
-if ($IsOge) {
+if ($isOge) {
   $linkable_fields = array(
     "oge_agency_name" => "/spending_landing/category/" . $spending_results['spending_category_id'] . '/datasource/checkbook_oge' . "/year/" . _getFiscalYearID() . "/yeartype/B/agency/" . $spending_results["agency_id"],
     "vendor_name" => "/spending_landing/category/" . $spending_results['spending_category_id'] . '/datasource/checkbook_oge' . '/agency/' . $spending_results['agency_id'] . "/year/" . _getFiscalYearID() . "/yeartype/B/vendor/" . $spending_results["vendor_id"],
@@ -69,7 +69,7 @@ if ($IsOge) {
   }
 }
 
-if (!$IsOge) {
+if (!$isOge) {
   $date_fields = array("check_eft_issued_date");
 }
 
@@ -77,7 +77,7 @@ $amount_fields = array("check_amount");
 $count = 1;
 $row = array();
 $rows = array();
-$spending_results["check_eft_issued_date"] = ($IsOge) ? "N/A" : $spending_results["check_eft_issued_date"];
+$spending_results["check_eft_issued_date"] = ($isOge) ? "N/A" : $spending_results["check_eft_issued_date"];
 
 if ($fiscal_year_id < 111) {
   $linkable_fields = array();
@@ -106,12 +106,12 @@ foreach ($spending_parameter_mapping as $key => $title) {
   if ($key == 'contract_number' && $spending_results['agreement_id']) {
     if ($spending_results['is_prime_or_sub'] == 'Yes') {
       $value = "<a class=\"new_window\" href=\"/contract_details"
-        . (($IsOge) ? '/datasource/checkbook_oge' : '')
+        . (($isOge) ? '/datasource/checkbook_oge' : '')
         . _checkbook_project_get_contract_url($spending_results['contract_number'], $spending_results['contract_original_agreement_id']) . '/newwindow">'
         . $value . "</a>";
     } else {
       $value = "<a class=\"new_window\" href=\"/contract_details"
-        . (($IsOge) ? '/datasource/checkbook_oge' : '')
+        . (($isOge) ? '/datasource/checkbook_oge' : '')
         . _checkbook_project_get_contract_url($spending_results['contract_number'], $spending_results['agreement_id']) . '/newwindow">'
         . $value . "</a>";
     }
