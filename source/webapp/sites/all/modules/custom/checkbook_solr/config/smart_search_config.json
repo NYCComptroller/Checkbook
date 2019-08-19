@@ -46,6 +46,11 @@
     "spending_categories": "spending_category_name",
     "contract_categories": "contract_category_name"
   },
+  "sort_by": {
+    "citywide": "domain_ordering asc,date_ordering desc",
+    "edc": "domain_ordering asc,date_ordering desc",
+    "nycha": "domain_ordering asc,contract_number desc,release_number desc,line_number desc,agreement_type_name asc,agreement_id asc,release_id asc"
+  },
   "facets": {
     "citywide": {
       "domain": {

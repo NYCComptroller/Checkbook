@@ -24,12 +24,14 @@ class CheckbookSolrQueryTest extends \PHPUnit\Framework\TestCase
     {
         $searchTerms = 'rei';
         $query = new CheckbookSolrQuery('nycha', $searchTerms, 999, 7);
+        $query->setSort('');
         $start = 999 * 7;
         $this->assertEquals('q=text:rei*&start=' . $start . '&rows=999&wt=phps', $query->buildQuery());
 
         $searchTerms = 'rei*!*vendor_names=rei%2Bsystems%252C%2Binc.';
         $query = new CheckbookSolrQuery('nycha', $searchTerms, 9);
-        $this->assertEquals('q=text:rei*&fq=vendor_name:"rei%5C%2Bsystems%252c%5C%2Binc."&start=0&rows=9&wt=phps',
+        $query->setSort('asdf');
+        $this->assertEquals('q=text:rei*&fq=vendor_name:"rei%5C%2Bsystems%252c%5C%2Binc."&start=0&rows=9&sort=asdf&wt=phps',
             $query->buildQuery());
     }
 
@@ -51,7 +53,8 @@ class CheckbookSolrQueryTest extends \PHPUnit\Framework\TestCase
     {
         $query = new CheckbookSolrQuery('nycha');
         $query->setFq('vendor_name', 'vendor_name:rei systems');
-        $this->assertEquals('q=*:*&fq=vendor_name:rei systems&start=0&rows=0&wt=phps', $query->buildQuery());
+        $query->setSort('some_sort');
+        $this->assertEquals('q=*:*&fq=vendor_name:rei systems&start=0&rows=0&sort=some_sort&wt=phps', $query->buildQuery());
     }
 
     /**
@@ -61,10 +64,11 @@ class CheckbookSolrQueryTest extends \PHPUnit\Framework\TestCase
     {
         $query = new CheckbookSolrQuery('nycha');
         $query
+            ->setSort('777')
             ->setRows(9)
             ->setPage(7);
 
-        $this->assertEquals('q=*:*&start=63&rows=9&wt=phps', $query->buildQuery());
+        $this->assertEquals('q=*:*&start=63&rows=9&sort=777&wt=phps', $query->buildQuery());
     }
 
 }
