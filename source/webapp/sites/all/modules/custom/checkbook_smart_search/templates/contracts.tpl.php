@@ -184,7 +184,18 @@ $contracts_results["registration_date"] = ($IsOge)? "N/A" : $contracts_results["
 
 $date_fields = array("start_date_orig","end_date_orig","received_date","registration_date",
   "start_date", "end_date", "release_approved_date");
-$amount_fields = array("current_amount", "original_amount");
+$amount_fields = array("agreement_original_amount",
+	"agreement_total_amount",
+	"agreement_spend_to_date",
+	"release_original_amount",
+	"release_total_amount",
+	"release_spend_to_date",
+	"release_line_original_amount",
+	"release_line_total_amount",
+	"release_line_spend_to_date",
+	"current_amount",
+	"original_amount",
+	"invoiced_amount");
 
 $name_fields = array("agency_name", "vendor_name", "award_method_name", "contract_purpose", "expenditure_object_name");
 
