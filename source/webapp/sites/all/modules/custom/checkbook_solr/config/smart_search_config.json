@@ -577,6 +577,19 @@
         "spending_entity_contract_number": "Entity Contract#",
         "spending_budget_name": "Budget Name"
       },
+      "payroll": {
+        "civil_service_title": "Title",
+        "agency_name": "Agency",
+        "pay_frequency": "Pay Frequency",
+        "pay_date": "Pay Date",
+        "gross_pay": "Gross Pay",
+        "annual_salary": "Annual Salary",
+        "base_pay": "Base Pay",
+        "hourly_rate": "Hourly Rate",
+        "other_payments": "Other Payments",
+        "overtime_pay": "Overtime Payments",
+        "payroll_type": "Payroll Type"
+      },
       "contracts": {
         "contract_number": "Contract ID",
         "agreement_type_name": "Purchase Order Type",
