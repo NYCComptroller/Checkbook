@@ -30,6 +30,24 @@
               "sourceColumnName": "display_spending_category_name"
             }
           ]
+        },
+        {
+          "name": "issue_date_year",
+          "levels": [
+            {
+              "name": "issue_date_year",
+              "sourceColumnName": "issue_date_year"
+            }
+          ]
+        },
+        {
+          "name": "issue_date_year_id",
+          "levels": [
+            {
+              "name": "issue_date_year_id",
+              "sourceColumnName": "issue_date_year_id"
+            }
+          ]
         }
       ],
       "measures": {
