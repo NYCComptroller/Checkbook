@@ -1,19 +1,19 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -46,7 +46,7 @@ if($noOfTotalResults > 0){
    <li class="pager-current">1</li>
    <li class="pager-first next"><a href="" title="Go to Next page" class="pagerItemDisabled">Next</a></li>
    <li class="pager-first last"><a href="" title="Go to Last page" class="pagerItemDisabled">Last</a></li>
-   </ul></div>'; 
+   </ul></div>';
   }
   print $output;
   //End of Pagination at the top
@@ -54,13 +54,13 @@ if($noOfTotalResults > 0){
   print "<ol class='search-results'>";
   foreach($search_results['response']['docs'] as $key=>$value){
     print "<li>";
-    $domain_display = $value['domain'] ?? $value['domain1'];
+    $domain_display = $value['domain'];
     if($domain_display == "budget"){
       $domain_display = "Expense Budget";
     }
     print "<h3 class='title'>Transaction #". $transaction_no .": ". $domain_display ."</h3>";
     $transaction_no++;
-    switch(strtolower($domain_display)){
+    switch(strtolower($value['domain'])){
       case "revenue":
         print theme('revenue', ['revenue_results' => $value, 'searchTerm' => $searchTerms[0], 'solr_datasource' => $solr_datasource]);
         break;
