@@ -35,6 +35,15 @@ class CheckbookSolr
   }
 
   /**
+   * @param string $domain
+   * @return string
+   */
+  public static function getSortConfig(string $domain): string
+  {
+    return self::getSmartSearchConfig()->sort_by->$domain ?? '';
+  }
+
+  /**
    * @return mixed
    */
   public static function getParamMapping(): object
