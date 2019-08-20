@@ -11,7 +11,7 @@ class NychaSpendingUrlService{
      * @param $parameters
      * @return string
      */
-    static function getFooterUrl($parameters)
+    static function getFooterUrl($parameters = null)
     {
         $url = "/panel_html/nycha_spending_transactions/nycha_spending/transactions"
             . RequestUtilities::buildUrlFromParam('year')
