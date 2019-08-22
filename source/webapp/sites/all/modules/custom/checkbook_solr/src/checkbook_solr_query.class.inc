@@ -87,6 +87,10 @@ class CheckbookSolrQuery
    * @var array
    */
   private $autocompleteMapping = [];
+  /**
+   * @var string
+   */
+  private $sortConfig = '';
 
   /**
    * @var int
@@ -112,12 +116,16 @@ class CheckbookSolrQuery
   {
     $this->paramMapping = (array)CheckbookSolr::getParamMapping();
     $this->facetsConfig = (array)CheckbookSolr::getFacetConfigByDatasource($solr_datasource);
+    $this->sortConfig = CheckbookSolr::getSortConfig($solr_datasource);
     $this->autocompleteMapping = (array)CheckbookSolr::getAutocompleteMapping();
 
     if ($searchTerms) {
       $this
         ->setSearchTerms(explode('*!*', $searchTerms));
     }
+
+    $this
+      ->setSort($this->sortConfig);
 
     $this
       ->setRows($rows)

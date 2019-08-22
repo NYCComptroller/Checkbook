@@ -1,0 +1,95 @@
+{
+  "widgetType": "highcharts",
+  "header":"
+  $header = '<h2 class=\"chart-title\" style=\"display:none;\">' . $node->widgetConfig->chartTitle . '</h2>';
+  $header .= ChartUtil::generateGridViewLink($node);
+  return $header;
+  ",
+  "gridConfig":{
+    "template":"highchart_spending_agency_grid_view",
+    "html_class":"chart-grid-view-table two-columns",
+    "table_columns": [
+      {
+        "labelAlias": "Year",
+        "column": "issue_date_year_issue_date_year"
+      },
+      {
+        "labelAlias": "amount",
+        "column": "check_amount_sum"
+      }
+    ]
+  },
+  "dataset": "checkbook_nycha:all_disbursement_transactions",
+  "columns": ["issue_date_year_id.issue_date_year_id","issue_date_year.issue_date_year","check_amount_sum"],
+  "limit": 10,
+  "orderBy": "-check_amount_sum",
+  "cleanURLParameters":["agency","vendor","category"],
+  "defaultParameters":{"check_amount_sum":"0"},
+  "defaultParamTypeConfig":{"check_amount_sum":"ne"},
+  "adjustParameters":"
+  $adjustedParameters = $parameters;
+  if(function_exists('_checkbook_project_applyParameterFilters')){
+  $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+}
+return $adjustedParameters;
+",
+"urlParamMap":{"agency":"agency_id","vendor":"vendor_id","category":"spending_category_id"},
+"transformationPHP": "
+$data = array();
+$categories=array();
+foreach ($node->data as $row){
+$link = NychaSpendingUrlService::getFooterUrl();
+$categories[]=html_entity_decode($row['issue_date_year_issue_date_year'],ENT_QUOTES);
+$data[] = (object)array('year'=>$row['issue_date_year_id'],'y'=>$row['check_amount_sum'],'url'=>$link,'name'=>$row['issue_date_year_issue_date_year']);
+}
+$node->widgetConfig->chartConfig->series[0]->data = $data;
+$node->widgetConfig->chartConfig->xAxis->categories = $categories;
+$node->widgetConfig->chartConfig->series[0]->name = 'Spending Amount';
+$node->widgetConfig->chartTitle = 'Spending Across Years';
+return $node->data;
+",
+"chartConfig": {
+"chart": {"defaultSeriesType": "column"},
+"colors":["#7DB7E5"],
+"legend": {
+"enabled": false,
+"align": "left",
+"verticalAlign": "bottom",
+"floating": "true",
+"layout": "horizontal"
+},
+"xAxis": {
+"labels":{},
+"title": {"text": ""},
+"minPadding":0.1,
+"maxPadding":0.1
+},
+"yAxis": {
+"title": {"text": ""},
+"labels":{"rotation": 0,"function":"yAxisFormatter"}
+},
+"tooltip": {
+"function": "tooltipformatter"
+},
+"title": {
+"text": ""
+},
+"plotOptions": {
+"column": {"pointWidth": 30},
+"series": {
+"cursor": "pointer",
+"point": {
+"events": {
+"function": "clickEvent"
+}
+}
+}
+},
+"series": [],
+"title":{"text":""}
+}
+}
+<function>yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
+tooltipformatter^^"formatter": function(){return 'Year: FY '+ this.point.name+ '<br/>' +'Amount: '+abbrNum(this.y,2,'$')}##
+clickEvent^^"click": function(){location.href = Drupal.settings.basePath+this.url; }
+</function>
