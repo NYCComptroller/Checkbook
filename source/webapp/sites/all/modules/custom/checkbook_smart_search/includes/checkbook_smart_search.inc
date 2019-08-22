@@ -54,9 +54,6 @@ function _checkbook_smart_search_ajax_results(string $solr_datasource = 'citywid
 {
   $solr_query = new CheckbookSolrQuery($solr_datasource, $_REQUEST['search_term'], 10, $_REQUEST['page'] ?? 0);
 
-  $solr_query
-    ->setSort('domain_ordering asc,date_ordering desc');
-
   $solr = CheckbookSolr::getInstance($solr_datasource);
   $search_results = $solr->request_phps('select/?' . $solr_query->buildQuery());
 
@@ -74,9 +71,6 @@ function _checkbook_smart_search_ajax_results(string $solr_datasource = 'citywid
 function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide')
 {
   $solr_query = new CheckbookSolrQuery($solr_datasource, $_REQUEST['search_term'], 10, $_REQUEST['page'] ?? 0);
-
-  $solr_query
-    ->setSort('domain_ordering asc,date_ordering desc');
 
   $datasource_facets = (array)CheckbookSolr::getFacetConfigByDatasource($solr_datasource);
 
@@ -224,8 +218,7 @@ function _checkbook_smart_search_get_results_csv(string $solr_datasource, string
 {
   $solr_query = new CheckbookSolrQuery($solr_datasource, $search_terms, $no_of_results, $page_no);
   $solr_query
-    ->setWt('csv')
-    ->setSort('domain_ordering asc,date_ordering desc');
+    ->setWt('csv');
 
   $domain = $_REQUEST['domain'];
   $solr_query->setFq('domain', 'domain:' . $domain);
