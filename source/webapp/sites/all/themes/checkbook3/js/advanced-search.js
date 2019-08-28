@@ -1393,9 +1393,13 @@
             div.ele('date_filter_issue_date').attr('disabled', 'disabled');
           }
 
+          agency_id = parseInt((div.ele('agency').val()) ? div.ele('agency').val() : 0);
+
           //Both
-          div.ele('dept').attr("disabled", "disabled");
-          div.ele('exp_category').attr("disabled", "disabled");
+          if (!agency_id) {
+            div.ele('dept').attr("disabled", "disabled");
+            div.ele('exp_category').attr("disabled", "disabled");
+          }
           div.ele('spending_category').val('Total Spending');
           div.ele('contract_id').removeAttr("disabled");
           div.ele('payee_name').removeAttr("disabled");
@@ -1403,7 +1407,6 @@
           if (div.ele('date_filter_checked').val() === '0') {
             year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
           }
-          agency_id = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
           department_name = (div.ele('dept').val()) ? (div.ele('dept').val()) : 0;
           department_name = department_name.toString().replace(/\//g, "__");
           expenditure_object_code = (div.ele('exp_category').val()) ? (div.ele('exp_category').val()) : 0;
