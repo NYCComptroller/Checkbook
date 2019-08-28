@@ -221,7 +221,7 @@
         $(this).autocomplete({
           source: "/solr_autocomplete/" + solr_datasource + "/" + facet_name + "/" + search_term,
           focus: function (event, ui) {
-            if (ui.item.label.toLowerCase() === 'no matches found') {
+            if (ui.item.label.toString().toLowerCase() === 'no matches found') {
               return false;
             } else {
               $(event.target).val(ui.item.label);
@@ -229,7 +229,7 @@
             }
           },
           select: function (event, ui) {
-            if (ui.item.label.toLowerCase() === 'no matches found') {
+            if (ui.item.label.toString().toLowerCase() === 'no matches found') {
               return false;
             } else {
               var url = getFacetAutocompleteUrl(facet_name, encodeURIComponent(ui.item.value));

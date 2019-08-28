@@ -9,18 +9,19 @@
   "allowFacetDeselect":true,
   "autocomplete":false,
   "rangeColumnNameVariant":"prime_",
-  "filterName":"Current Amount",
+  "filterName":"Contract Current Amount",
   "urlParameterName":"curamtr",
   "urlParameterType":"rangeid",
   "autocompleteID":"fCurAmount",
   "columns":["g100m_prime_count", "g50m_le100m_prime_count", "g25m_le50m_prime_count", "g10m_le25m_prime_count", "ge1m_le10m_prime_count", "less1m_prime_count"],
   "orderBy":"",
   "adjustParameters":"
-  $parameters = NYCHAContractUtil::adjustYearParams($node, $parameters);
-  if(function_exists('_checkbook_project_applyParameterFilters')){
-  $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
-}
-return $adjustedParameters;
-",
+    $parameters = NYCHAContractUtil::adjustYearParams($node, $parameters);
+    if(function_exists('_checkbook_project_applyParameterFilters')){
+      $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+    }
+    $adjustedParameters['agreement_total_amount'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+    return $adjustedParameters;
+  ",
 "template":"individual_filter"
 }
