@@ -23,23 +23,24 @@
     <tbody>
     <tr>
       <?php
+      $category_names = array(2 => 'Payroll', 3 => 'Capital Contracts', 1 => 'Contracts', 5 => 'Trust & Agency', 4 => 'Others');
       $categories[0] = array('name' => 'Total', 'amount' => $total_spending);
       foreach($node->data as $key=>$row){
-        $categories[$row['category_category']] = array('name' => $row['category_category_spending_category_name'], 'amount' => $row['check_amount_sum']);
+        $categories[$row['category_category']] = array('amount' => $row['check_amount_sum']);
         $total_spending +=  $row['check_amount_sum'];
       }
       $categories[0]['amount'] = $total_spending;
-      foreach($categories as $category_id => $value){
+      foreach($category_names as $id => $name){
         $active_class = "";
-        if (RequestUtilities::get("category") == $category_id || (RequestUtilities::get("category") == "" && $category_id == 0)) {
+        if (RequestUtilities::get("category") == $id || (RequestUtilities::get("category") == "" && $id == 0)) {
           $active_class = ' class="active"';
         }
-        $link = RequestUtil::prepareSpendingBottomNavFilter("spending_landing", (($category_id == 0) ? null: $category_id));
-        $amount = "<span class='dollars'>" . custom_number_formatter_format($value['amount'],1,'$') . "</span>";
-        $category_name = $value['name'].'<br>Spending<br>';
+        $link = RequestUtil::prepareSpendingBottomNavFilter("spending_landing", (($id == 0) ? null: $id));
+        $amount = "<span class='dollars'>" . custom_number_formatter_format($categories[$id]['amount'],1,'$') . "</span>";
+        $category_name = $name .'<br>Spending<br>';
 
         echo "<td" . $active_class ."><div class='positioning'>";
-        if($value['amount'] != 0 ){
+        if($categories[$id] != 0 ){
           echo '<a href="/'.$link.'">' .$category_name .$amount . '</a>';
         }else{
           echo $category_name .$amount;
