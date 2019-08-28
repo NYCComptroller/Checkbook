@@ -157,25 +157,25 @@
           "function":"COUNT(*)"
         },
         "total_current_amount": {
-          "function": "SUM(COALESCE($COLUMN{release_line_total_amount},0))"
+          "function": "SUM(COALESCE($COLUMN{agreement_total_amount},0))"
         },
         "g100m_prime_count": {
-          "function": "SUM(CASE WHEN COALESCE($COLUMN{release_line_total_amount},0) > 100000000 THEN 1 ELSE 0 END)"
+          "function": "SUM(CASE WHEN COALESCE($COLUMN{agreement_total_amount},0) > 100000000 THEN 1 ELSE 0 END)"
         },
         "g50m_le100m_prime_count": {
-          "function": "SUM(CASE WHEN COALESCE($COLUMN{release_line_total_amount},0) > 50000000 AND COALESCE($COLUMN{release_line_total_amount},0) <= 100000000 THEN 1 ELSE 0 END)"
+          "function": "SUM(CASE WHEN COALESCE($COLUMN{agreement_total_amount},0) > 50000000 AND COALESCE($COLUMN{agreement_total_amount},0) <= 100000000 THEN 1 ELSE 0 END)"
         },
         "g25m_le50m_prime_count": {
-          "function": "SUM(CASE WHEN COALESCE($COLUMN{release_line_total_amount},0) > 25000000 AND COALESCE($COLUMN{release_line_total_amount},0) <= 50000000 THEN 1 ELSE 0 END)"
+          "function": "SUM(CASE WHEN COALESCE($COLUMN{agreement_total_amount},0) > 25000000 AND COALESCE($COLUMN{agreement_total_amount},0) <= 50000000 THEN 1 ELSE 0 END)"
         },
         "g10m_le25m_prime_count": {
-          "function": "SUM(CASE WHEN COALESCE($COLUMN{release_line_total_amount},0) > 10000000 AND COALESCE($COLUMN{release_line_total_amount},0) <= 25000000 THEN 1 ELSE 0 END)"
+          "function": "SUM(CASE WHEN COALESCE($COLUMN{agreement_total_amount},0) > 10000000 AND COALESCE($COLUMN{agreement_total_amount},0) <= 25000000 THEN 1 ELSE 0 END)"
         },
         "ge1m_le10m_prime_count": {
-          "function": "SUM(CASE WHEN COALESCE($COLUMN{release_line_total_amount},0) >= 1000000 AND COALESCE($COLUMN{release_line_total_amount},0) <= 10000000 THEN 1 ELSE 0 END)"
+          "function": "SUM(CASE WHEN COALESCE($COLUMN{agreement_total_amount},0) >= 1000000 AND COALESCE($COLUMN{agreement_total_amount},0) <= 10000000 THEN 1 ELSE 0 END)"
         },
         "less1m_prime_count": {
-          "function": "SUM(CASE WHEN COALESCE($COLUMN{release_line_total_amount},0) < 1000000 THEN 1 ELSE 0 END)"
+          "function": "SUM(CASE WHEN COALESCE($COLUMN{agreement_total_amount},0) < 1000000 THEN 1 ELSE 0 END)"
         }
       }
     },
@@ -365,22 +365,22 @@
           "function": "SUM(COALESCE($COLUMN{agreement_total_amount},0))"
         },
         "g100m_prime_count": {
-          "function": "SUM(CASE WHEN COALESCE($COLUMN{release_line_total_amount},0) > 100000000 THEN 1 ELSE 0 END)"
+          "function": "SUM(CASE WHEN COALESCE($COLUMN{agreement_total_amount},0) > 100000000 THEN 1 ELSE 0 END)"
         },
         "g50m_le100m_prime_count": {
-          "function": "SUM(CASE WHEN COALESCE($COLUMN{release_line_total_amount},0) > 50000000 AND COALESCE($COLUMN{release_line_total_amount},0) <= 100000000 THEN 1 ELSE 0 END)"
+          "function": "SUM(CASE WHEN COALESCE($COLUMN{agreement_total_amount},0) > 50000000 AND COALESCE($COLUMN{agreement_total_amount},0) <= 100000000 THEN 1 ELSE 0 END)"
         },
         "g25m_le50m_prime_count": {
-          "function": "SUM(CASE WHEN COALESCE($COLUMN{release_line_total_amount},0) > 25000000 AND COALESCE($COLUMN{release_line_total_amount},0) <= 50000000 THEN 1 ELSE 0 END)"
+          "function": "SUM(CASE WHEN COALESCE($COLUMN{agreement_total_amount},0) > 25000000 AND COALESCE($COLUMN{agreement_total_amount},0) <= 50000000 THEN 1 ELSE 0 END)"
         },
         "g10m_le25m_prime_count": {
-          "function": "SUM(CASE WHEN COALESCE($COLUMN{release_line_total_amount},0) > 10000000 AND COALESCE($COLUMN{release_line_total_amount},0) <= 25000000 THEN 1 ELSE 0 END)"
+          "function": "SUM(CASE WHEN COALESCE($COLUMN{agreement_total_amount},0) > 10000000 AND COALESCE($COLUMN{agreement_total_amount},0) <= 25000000 THEN 1 ELSE 0 END)"
         },
         "ge1m_le10m_prime_count": {
-          "function": "SUM(CASE WHEN COALESCE($COLUMN{release_line_total_amount},0) >= 1000000 AND COALESCE($COLUMN{release_line_total_amount},0) <= 10000000 THEN 1 ELSE 0 END)"
+          "function": "SUM(CASE WHEN COALESCE($COLUMN{agreement_total_amount},0) >= 1000000 AND COALESCE($COLUMN{agreement_total_amount},0) <= 10000000 THEN 1 ELSE 0 END)"
         },
         "less1m_prime_count": {
-          "function": "SUM(CASE WHEN COALESCE($COLUMN{release_line_total_amount},0) < 1000000 THEN 1 ELSE 0 END)"
+          "function": "SUM(CASE WHEN COALESCE($COLUMN{agreement_total_amount},0) < 1000000 THEN 1 ELSE 0 END)"
         }
       }
     }
