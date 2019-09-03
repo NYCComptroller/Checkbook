@@ -231,7 +231,7 @@ function _checkbook_smart_search_get_results_csv(string $solr_datasource, string
    * SOLR 7 (gptext) doesn't seem to pick this up
    */
   if ($skip_header) {
-    $query = $query . "&csv.header:false";
+    $query = $query . "&csv.header=false";
   }
 
   $solr = CheckbookSolr::getInstance($solr_datasource);
@@ -286,20 +286,6 @@ function _checkbook_smart_search_export_data(string $solr_datasource)
     $result = _checkbook_smart_search_get_results_csv($solr_datasource, $_REQUEST['search_terms'] ?? '', $page_num, $page_size, $fl, true);
     $page_num += 1;
     $remaining = $remaining - $page_size;
-
-    /**
-     * SOLR 7 (gptext) doesn't seem to understand csv.header=false
-     */
-    $chunk = 'huerbuer' . substr($result, 0, 200);
-    $column_keys = array_keys($fields);
-    if (strpos($chunk, "\"{$column_keys[0]}\"")
-      || strpos($chunk, "\"{$column_keys[1]}\"")
-      || strpos($chunk, "\"{$column_keys[2]}\"")
-    ) {
-      // csv header detected
-      // removing first line manually
-      $result = preg_replace('/^.+\n/', '', $result);
-    }
 
 //    last page reached => exit
     if (!$result) {
