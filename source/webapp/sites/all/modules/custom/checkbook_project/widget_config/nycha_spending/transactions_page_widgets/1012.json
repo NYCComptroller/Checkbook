@@ -39,8 +39,8 @@
   ],
   "caption":"",
   "derivedColumns": {
-    "dept_formatted":{
-      "expression": "_get_tooltip_markup($row['department_name'],36)"
+    "invoice_number_formatted":{
+      "expression": "_get_tooltip_markup($row['invoice_number'],24)"
     },
     "check_amount_formatted":{
       "expression": "custom_number_formatter_basic_format($row['check_amount'])"
@@ -72,6 +72,9 @@
     "purpose_formatted":{
       "expression": "_get_tooltip_markup($row['contract_purpose'],36)"
     },
+    "dept_formatted":{
+      "expression": "_get_tooltip_markup($row['department_name'],36)"
+    },
     "funding_source_formatted":{
       "expression": "_get_tooltip_markup($row['funding_source_description'],36)"
     },
@@ -95,7 +98,8 @@
     {"label":"","column":"", "export":false},
     {"labelAlias":"contract_id","column":"contract_id"},
     {"labelAlias":"release_number","column":"release_number"},
-    {"labelAlias":"invoice_number","column":"invoice_number"},
+    {"label":"","column":"", "export":false},
+    {"labelAlias":"invoice_number","column":"invoice_number_formatted", "sortSourceColumn":"invoice_number"},
     {"labelAlias":"check_amount","column":"check_amount_formatted", "sortSourceColumn":"check_amount"},
     {"labelAlias":"billed_amount","column":"billed_amount_formatted","sortSourceColumn":"invoice_amount"},
     {"labelAlias":"invoice_discount","column":"invoice_discount_formatted","sortSourceColumn":"invoice_discount"},
@@ -151,6 +155,7 @@
       {"bSortable":false,"sWidth":"20px"},
       {"sClass":"text", "sWidth":"100px","asSorting":["asc","desc"]},
       {"sClass":"number", "sWidth":"75px","asSorting":["asc","desc"]},
+      {"bSortable":false,"sWidth":"8px"},
       {"sClass":"number", "sWidth":"75px","asSorting":["asc","desc"]},
       {"sClass":"number", "sWidth":"112px","asSorting":["asc","desc"]},
       {"sClass":"number", "sWidth":"112px","asSorting":["asc","desc"]},
