@@ -63,15 +63,15 @@
                 var link = window.location.pathname;
                 if ((link.match(/contract/)) || (link.match(/payroll/)) || (link.match(/spending/)) || (link.match(/budget/)) || (link.match(/revenue/))) {
                     if (!link.match(/gridview/) && !link.match(/createalert/) && !link.match(/newwindow/) && !link.match(/admin/) && !link.match(/-api/)) {
-                        if (link.match(/contract/) && !link.match(/datasource/) && !link.match(/checkbook_oge/)) {
+                        if (link.match(/contract/) && !link.match(/datasource/) && !link.match(/checkbook_oge/) && !link.match(/checkbook_nycha/)) {
                             if ($.cookie(CookieDomainName) !== 'contract')
                                 $.cookie(CookieName, null, {path: '/'});
                             $.cookie(CookieDomainName, 'contract', {path: '/'});
-                        } else if (link.match(/payroll/)) {
+                        } else if (link.match(/payroll/) && !link.match(/datasource/) && !link.match(/checkbook_nycha/)) {
                             if ($.cookie(CookieDomainName) !== 'payroll')
                                 $.cookie(CookieName, null, {path: '/'});
                             $.cookie(CookieDomainName, 'payroll', {path: '/'});
-                        } else if (link.match(/spending/) && !link.match(/datasource/) && !link.match(/checkbook_oge/)) {
+                        } else if (link.match(/spending/) && !link.match(/datasource/) && !link.match(/checkbook_oge/) && !link.match(/checkbook_nycha/)) {
                             if ($.cookie(CookieDomainName) !== 'spending')
                                 $.cookie(CookieName, null, {path: '/'});
                             $.cookie(CookieDomainName, 'spending', {path: '/'});
@@ -91,6 +91,18 @@
                             if ($.cookie(CookieDomainName) !== 'oge_contract')
                                 $.cookie(CookieName, null, {path: '/'});
                             $.cookie(CookieDomainName, 'oge_contract', {path: '/'});
+                        } else if (link.match(/nycha_contracts/)) {
+                          if ($.cookie(CookieDomainName) !== 'nycha_contract')
+                            $.cookie(CookieName, null, {path: '/'});
+                          $.cookie(CookieDomainName, 'nycha_contract', {path: '/'});
+                        } else if (link.match(/nycha_spending/)) {
+                          if ($.cookie(CookieDomainName) !== 'nycha_spending')
+                            $.cookie(CookieName, null, {path: '/'});
+                          $.cookie(CookieDomainName, 'nycha_spending', {path: '/'});
+                        } else if (link.match(/payroll/) && link.match(/datasource/) && link.match(/checkbook_nycha/)) {
+                          if ($.cookie(CookieDomainName) !== 'nycha_payroll')
+                            $.cookie(CookieName, null, {path: '/'});
+                          $.cookie(CookieDomainName, 'nycha_payroll', {path: '/'});
                         }
                         GetCookie();
                         RecordCurrentPage();
