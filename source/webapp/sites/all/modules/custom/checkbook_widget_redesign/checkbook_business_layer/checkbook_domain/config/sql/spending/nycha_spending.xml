@@ -4,12 +4,13 @@
     <param name="year" required ="true" type="int" />
     <param name="vendor" type="int" />
     <param name="category" type="int" />
+    <param name="industry" type="int" />
+    <param name="fundsrc" type="int" />
     <sql>
       SELECT
         issue_date,
         vendor_name,
         vendor_id,
-        display_expenditure_object_name as expense_category,
         check_amount
       FROM all_disbursement_transactions
       <where>
@@ -17,9 +18,11 @@
           <exp op="=" dbField="issue_date_year_id" paramName="year" />
           <exp op="=" dbField="spending_category_id" paramName="category"/>
           <exp op="=" dbField="vendor_id" paramName="vendor" />
+          <exp op="=" dbField="industry_type_id" paramName="industry" />
+          <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
         </exp>
       </where>
-      GROUP BY issue_date, vendor_name, vendor_id, display_expenditure_object_name, check_amount
+      GROUP BY issue_date, vendor_name, vendor_id, check_amount
     </sql>
   </statement>
   <!--GetNychaSpendingByExpenseCategories-->
@@ -27,6 +30,8 @@
     <param name="year" required ="true" type="int" />
     <param name="vendor" type="int" />
     <param name="category" type="int" />
+    <param name="industry" type="int" />
+    <param name="fundsrc" type="int" />
     <sql>
       SELECT
         display_expenditure_object_name AS expenditure_object_name,
@@ -39,16 +44,20 @@
       <where>
         <exp op="AND">
           <exp op="=" dbField="issue_date_year_id" paramName="year" />
+          <exp op="=" dbField="spending_category_id" paramName="category"/>
           <exp op="=" dbField="vendor_id" paramName="vendor" />
-          <exp op="=" dbField="spending_category_id" paramName="category" />
+          <exp op="=" dbField="industry_type_id" paramName="industry" />
+          <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
         </exp>
       </where>
       ) total ON 1 = 1
       <where>
         <exp op="AND">
           <exp op="=" dbField="s0.issue_date_year_id" paramName="year" />
+          <exp op="=" dbField="s0.spending_category_id" paramName="category"/>
           <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
-          <exp op="=" dbField="s0.spending_category_id" paramName="category" />
+          <exp op="=" dbField="s0.industry_type_id" paramName="industry" />
+          <exp op="=" dbField="s0.funding_source_id" paramName="fundsrc" />
         </exp>
       </where>
       GROUP BY display_expenditure_object_name
@@ -59,6 +68,8 @@
     <param name="year" required ="true" type="int" />
     <param name="vendor" type="int" />
     <param name="category" type="int" />
+    <param name="industry" type="int" />
+    <param name="fundsrc" type="int" />
     <sql>
       SELECT
         vendor_name,
@@ -73,16 +84,20 @@
       <where>
         <exp op="AND">
           <exp op="=" dbField="issue_date_year_id" paramName="year" />
+          <exp op="=" dbField="spending_category_id" paramName="category"/>
           <exp op="=" dbField="vendor_id" paramName="vendor" />
-          <exp op="=" dbField="spending_category_id" paramName="category" />
+          <exp op="=" dbField="industry_type_id" paramName="industry" />
+          <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
         </exp>
       </where>
       ) total ON 1 = 1
       <where>
         <exp op="AND">
           <exp op="=" dbField="s0.issue_date_year_id" paramName="year" />
+          <exp op="=" dbField="s0.spending_category_id" paramName="category"/>
           <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
-          <exp op="=" dbField="s0.spending_category_id" paramName="category" />
+          <exp op="=" dbField="s0.industry_type_id" paramName="industry" />
+          <exp op="=" dbField="s0.funding_source_id" paramName="fundsrc" />
         </exp>
       </where>
       GROUP BY vendor_name, vendor_id
@@ -93,6 +108,8 @@
     <param name="year" required ="true" type="int" />
     <param name="vendor" type="int" />
     <param name="category" type="int" />
+    <param name="industry" type="int" />
+    <param name="fundsrc" type="int" />
     <sql>
       SELECT contract_id,
       description AS contract_purpose,
@@ -104,8 +121,10 @@
       <where>
         <exp op="AND">
           <exp op="=" dbField="issue_date_year_id" paramName="year" />
+          <exp op="=" dbField="spending_category_id" paramName="category"/>
           <exp op="=" dbField="vendor_id" paramName="vendor" />
-          <exp op="=" dbField="spending_category_id" paramName="category" />
+          <exp op="=" dbField="industry_type_id" paramName="industry" />
+          <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
         </exp>
       </where>
       GROUP BY contract_id, description, vendor_name, vendor_id
@@ -116,13 +135,17 @@
     <param name="year" required ="true" type="int" />
     <param name="vendor" type="int" />
     <param name="category" type="int" />
+    <param name="industry" type="int" />
+    <param name="fundsrc" type="int" />
     <sql>
       SELECT DISTINCT contract_id AS contract_id FROM all_disbursement_transactions
       <where>
         <exp op="AND">
           <exp op="=" dbField="issue_date_year_id" paramName="year" />
+          <exp op="=" dbField="spending_category_id" paramName="category"/>
           <exp op="=" dbField="vendor_id" paramName="vendor" />
-          <exp op="=" dbField="spending_category_id" paramName="category" />
+          <exp op="=" dbField="industry_type_id" paramName="industry" />
+          <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
         </exp>
       </where>
     </sql>
@@ -132,6 +155,8 @@
     <param name="year" required ="true" type="int" />
     <param name="vendor" type="int" />
     <param name="category" type="int" />
+    <param name="industry" type="int" />
+    <param name="fundsrc" type="int" />
     <sql>
       SELECT
         s0.industry_type_id,
@@ -144,16 +169,20 @@
       <where>
         <exp op="AND">
           <exp op="=" dbField="issue_date_year_id" paramName="year" />
+          <exp op="=" dbField="spending_category_id" paramName="category"/>
           <exp op="=" dbField="vendor_id" paramName="vendor" />
-          <exp op="=" dbField="spending_category_id" paramName="category" />
+          <exp op="=" dbField="industry_type_id" paramName="industry" />
+          <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
         </exp>
       </where>
       ) total on 1 = 1
       <where>
         <exp op="AND">
-          <exp op="=" dbField="issue_date_year_id" paramName="year" />
-          <exp op="=" dbField="vendor_id" paramName="vendor" />
-          <exp op="=" dbField="spending_category_id" paramName="category" />
+          <exp op="=" dbField="s0.issue_date_year_id" paramName="year" />
+          <exp op="=" dbField="s0.spending_category_id" paramName="category"/>
+          <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
+          <exp op="=" dbField="s0.industry_type_id" paramName="industry" />
+          <exp op="=" dbField="s0.funding_source_id" paramName="fundsrc" />
         </exp>
       </where>
       GROUP BY s0.industry_type_id, s0.display_industry_type_name
@@ -164,6 +193,8 @@
     <param name="year" required ="true" type="int" />
     <param name="vendor" type="int" />
     <param name="category" type="int" />
+    <param name="industry" type="int" />
+    <param name="fundsrc" type="int" />
     <sql>
       SELECT
       s0.funding_source_id,
@@ -176,16 +207,20 @@
       <where>
         <exp op="AND">
           <exp op="=" dbField="issue_date_year_id" paramName="year" />
+          <exp op="=" dbField="spending_category_id" paramName="category"/>
           <exp op="=" dbField="vendor_id" paramName="vendor" />
-          <exp op="=" dbField="spending_category_id" paramName="category" />
+          <exp op="=" dbField="industry_type_id" paramName="industry" />
+          <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
         </exp>
       </where>
       ) total on 1 = 1
       <where>
         <exp op="AND">
           <exp op="=" dbField="s0.issue_date_year_id" paramName="year" />
+          <exp op="=" dbField="s0.spending_category_id" paramName="category"/>
           <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
-          <exp op="=" dbField="s0.spending_category_id" paramName="category" />
+          <exp op="=" dbField="s0.industry_type_id" paramName="industry" />
+          <exp op="=" dbField="s0.funding_source_id" paramName="fundsrc" />
         </exp>
       </where>
       GROUP BY s0.funding_source_id, s0.display_funding_source_descr
@@ -196,6 +231,8 @@
     <param name="year" required ="true" type="int" />
     <param name="vendor" type="int" />
     <param name="category" type="int" />
+    <param name="industry" type="int" />
+    <param name="fundsrc" type="int" />
     <sql>
       SELECT
       s0.department_id,
@@ -208,16 +245,20 @@
       <where>
         <exp op="AND">
           <exp op="=" dbField="issue_date_year_id" paramName="year" />
+          <exp op="=" dbField="spending_category_id" paramName="category"/>
           <exp op="=" dbField="vendor_id" paramName="vendor" />
-          <exp op="=" dbField="spending_category_id" paramName="category" />
+          <exp op="=" dbField="industry_type_id" paramName="industry" />
+          <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
         </exp>
       </where>
       ) total on 1 = 1
       <where>
         <exp op="AND">
           <exp op="=" dbField="s0.issue_date_year_id" paramName="year" />
+          <exp op="=" dbField="s0.spending_category_id" paramName="category"/>
           <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
-          <exp op="=" dbField="s0.spending_category_id" paramName="category" />
+          <exp op="=" dbField="s0.industry_type_id" paramName="industry" />
+          <exp op="=" dbField="s0.funding_source_id" paramName="fundsrc" />
         </exp>
       </where>
       GROUP BY s0.department_id, s0.department_name
