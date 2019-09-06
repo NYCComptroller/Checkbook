@@ -5,14 +5,16 @@
     "headerSubTitle":"Checks",
     "table_columns":[
         {"labelAlias":"issue_date","column":"issue_date","format":"date"},
+        {"label":"","column":""},
         {"labelAlias":"vendor","column":"vendor_name","tooltip":36},
         {"labelAlias":"check_amount","column":"check_amount","format":"dollar"},
         {"label":"","column":""}
     ],
     "dataTableOptions":{
         "aoColumns": [
-          { "bSortable": true,"sClass":"text","sWidth":"100px","asSorting": ["asc","desc"]},
-          { "bSortable": false,"sClass":"text pad-left","sWidth":"250px"},
+          { "bSortable": true,"sClass":"text","sWidth":"250px","asSorting": ["asc","desc"]},
+          { "bSortable": false,"sWidth":"150px" },
+          { "bSortable": false,"sClass":"text"},
           { "sClass":"number","asSorting": [ "desc","asc" ]},
           { "bSortable": false,"sWidth":"15px" }
         ],
@@ -23,7 +25,7 @@
         "bLengthChange": false,
         "bInfo": false,
         "bAutoWidth": false,
-        "aaSorting": [[ 2, "desc"]],
+        "aaSorting": [[ 3, "desc"]],
         "fnServerParams":"##function ( aoData ) { reloadExpandCollapseWidget(this,aoData); }##",
     "oLanguage":{ "sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"}
    }
