@@ -556,3 +556,4 @@ class WidgetUtil
         return $label;
     }
 }
+

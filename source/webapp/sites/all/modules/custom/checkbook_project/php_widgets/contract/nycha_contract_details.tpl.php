@@ -297,8 +297,7 @@ $contract = $node->data;
 
 
 <div class="panel-separator"></div>
-
-  <?php if ($node->contractPO): ?>
+<?php if ($node->contractPO): ?>
     <div class="contracts-spending-top"><h3>SPENDING BY VENDOR</h3>
       <table class="dataTable cta-spending-history outerTable">
         <thead>
