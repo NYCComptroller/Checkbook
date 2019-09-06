@@ -112,7 +112,7 @@
     <param name="fundsrc" type="int" />
     <sql>
       SELECT contract_id,
-        purpose AS contract_purpose,
+        contract_purpose,
         vendor_id,
         vendor_name,
         SUM(COALESCE(ytd_spending, 0)) AS ytd_spending,
