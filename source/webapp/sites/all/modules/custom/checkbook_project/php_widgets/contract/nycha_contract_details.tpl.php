@@ -196,7 +196,7 @@ $contract = $node->data;
           </tr>
           <tr id="showHideNychaOrderRevisions<?= $year ?>"
               class="showHide <?= ($yi % 2 ? 'odd' : '') ?>" <?= ($hidden ? 'style="display:none"' : '') ?>>
-            <td colspan="4">
+            <td  colspan="4">
               <div class="scroll">
                 <table class="dataTable outerTable">
                   <thead>
