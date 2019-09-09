@@ -196,7 +196,7 @@ $contract = $node->data;
           </tr>
           <tr id="showHideNychaOrderRevisions<?= $year ?>"
               class="showHide <?= ($yi % 2 ? 'odd' : '') ?>" <?= ($hidden ? 'style="display:none"' : '') ?>>
-            <td colspan="4">
+            <td  colspan="4">
               <div class="scroll">
                 <table class="dataTable outerTable">
                   <thead>
@@ -297,146 +297,126 @@ $contract = $node->data;
 
 
 <div class="panel-separator"></div>
-
 <?php if ($node->contractPO): ?>
-  <div class="contracts-spending-top"><h3>SPENDING BY VENDOR</h3>
-    <table class="dataTable nycha-ct-spending-by-vendor outerTable">
-      <thead>
-      <tr>
-        <th>
-          <?= WidgetUtil::getLabelDiv('vendor_name') ?>
-        </th>
-        <th>
-          <?= WidgetUtil::getLabelDiv('current_amount') ?>
-        </th>
-        <th>
-          <?= WidgetUtil::getLabelDiv('original_amount') ?>
-        </th>
-        <th>
-          <?= WidgetUtil::getLabelDiv('invoiced_amount') ?>
-        </th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr class="even outer">
-        <td>
-          <div>
-                      <span>
-                    <a class="showHide  expandTwo"></a><?= htmlentities($contract['vendor_name']) ?></span>
-          </div>
-        </td>
-        <td class="number-center">
-          <div>
-                      <span>
-                    <?= custom_number_formatter_format($contract['current_amount'], 2, '$'); ?>
-                    </span>
-          </div>
-        </td>
-        <td class="number-center">
-          <div>
-                      <span>
-                    <?= custom_number_formatter_format($contract['original_amount'], 2, '$'); ?>
-                    </span>
-          </div>
-        </td>
-        <td class="number-center">
-          <div>
-                      <span>
-                    <?= custom_number_formatter_format($contract['spend_to_date'], 2, "$"); ?>
-                    </span>
-          </div>
-        </td>
-      </tr>
-      <tr class="showHide">
-        <td colspan="4">
-          <div>
+    <div class="contracts-spending-top"><h3>SPENDING BY VENDOR</h3>
+      <table class="dataTable cta-spending-history outerTable">
+        <thead>
+        <tr>
+          <th>
+            <?= WidgetUtil::getLabelDiv('vendor_name') ?>
+          </th>
+          <th>
+            <?= WidgetUtil::getLabelDiv('current_amount') ?>
+          </th>
+          <th>
+            <?= WidgetUtil::getLabelDiv('original_amount') ?>
+          </th>
+          <th>
+            <?= WidgetUtil::getLabelDiv('nypo_invoiced_amount') ?>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="even outer">
+          <td>
             <div>
-              <div>
-                <h3>
-                  Shipment and Distribution Details <!-- (<?= sizeof($node->shipments) ?>) -->
-                </h3>
-                <div class="scroll">
-                  <table
-                    class="dataTable cta-history outerTable">
-                    <thead>
-                    <tr>
-                      <th class="text ncc-item_category_descr">
-                        <?= WidgetUtil::getLabelDiv('item_category') ?>
-                      </th>
-                      <th class="text ncc-item_description">
-                        <?= WidgetUtil::getLabelDiv('item_description') ?>
-                      </th>
-                      <th class="number ncc-shipment_number">
-                        <?= WidgetUtil::getLabelDiv('shipment_number') ?>
-                      </th>
-                      <th class="number">
-                        <?= WidgetUtil::getLabelDiv('current_amount') ?>
-                      </th>
-                      <th class="number endCol">
-                        <?= WidgetUtil::getLabelDiv('original_amount') ?>
-                      </th>
-                      <th class="number endCol">
-                        <?= WidgetUtil::getLabelDiv('invoiced_amount') ?>
-                      </th>
-                      <th class="number endCol">
-                        <?= WidgetUtil::getLabelDiv('responsibility_center') ?>
-                      </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <?php
-                    $z = 0;
-                    foreach ($node->shipments as $shipment):?>
-                      <tr class="outer <?= ($z % 2 ? 'even' : 'odd') ?>">
-                        <td class="text ncc-item_category_descr">
-                          <div>
-                            <?= _get_tooltip_markup(htmlentities($shipment['commodity_category_descr']), 40) ?>
-                          </div>
-                        </td>
-                        <td class="text ncc-item_description">
-                          <div>
-                            <?= _get_tooltip_markup(htmlentities($shipment['item_description']), 20) ?>
-                          </div>
-                        </td>
-                        <td class="number ncc-shipment_number">
-                          <div>
-                            <?= htmlentities($shipment['shipment_number']) ?>
-                          </div>
-                        </td>
-                        <td class="number">
-                          <div>
-                            <?= custom_number_formatter_format($shipment['release_line_total_amount'], 2, "$"); ?>
-                          </div>
-                        </td>
-                        <td class="number endCol">
-                          <div>
-                            <?= custom_number_formatter_format($shipment['release_line_original_amount'], 2, "$"); ?>
-                          </div>
-                        </td>
-                        <td class="number endCol">
-                          <div>
-                            <?= custom_number_formatter_format($shipment['release_line_spend_to_date'], 2, "$"); ?>
-                          </div>
-                        </td>
-                        <td class="center">
-                          <div>
-                            <?= _get_tooltip_markup(htmlentities($shipment['responsibility_center_descr']), 24) ?>
-                          </div>
-                        </td>
+              <a class="showHide  expandTwo"></a><?= htmlentities($contract['vendor_name']) ?>
+            </div>
+
+          </td>
+          <td class="number-center">
+            <div>
+              <?= custom_number_formatter_format($contract['current_amount'], 2, '$'); ?>
+            </div>
+          </td>
+          <td class="number-center">
+            <div>
+              <?= custom_number_formatter_format($contract['original_amount'], 2, '$'); ?>
+            </div>
+          </td>
+          <td class="number-center">
+            <div>
+              <?= custom_number_formatter_format($contract['spend_to_date'], 2, "$"); ?>
+            </div>
+          </td>
+        </tr>
+        <tr class="showHide">
+          <td colspan="4">
+            <div>
+              <div id="contract_history">
+
+                <div>
+                  <h3>
+                    Shipment and Distribution Details
+                  </h3>
+                  <div class="scroll">
+                    <table class="dataTable cta-history outerTable">
+                      <thead>
+                      <tr>
+                        <th class="text ncc-item_category_descr">
+                          <?= WidgetUtil::getLabelDiv('item_category') ?>
+                        </th>
+                        <th class="text ncc-item_description">
+                          <?= WidgetUtil::getLabelDiv('item_description') ?>
+                        </th>
+                        <th class="center ncc-shipment_number">
+                          <?= WidgetUtil::getLabelDiv('shipment_number') ?>
+                        </th>
+                        <th class="center endcol">
+                          <?= WidgetUtil::getLabelDiv('current_amount') ?>
+                        </th>
+                        <th class="center endCol">
+                          <?= WidgetUtil::getLabelDiv('original_amount') ?>
+                        </th>
+                        <th class="center endCol">
+                          <?= WidgetUtil::getLabelDiv('nypo_invoiced_amount') ?>
+                        </th>
+                        <th class="text endCol">
+                          <?= WidgetUtil::getLabelDiv('responsibility_center') ?>
+                        </th>
                       </tr>
+                      </thead>
+                      <tbody>
                       <?php
-                      $z++;
-                    endforeach; ?>
-                  </table>
+                      $z = 0;
+                      foreach ($node->shipments as $shipment):?>
+                        <tr class="outer n_assoc_rel_shipments <?= ($z % 2 ? 'even' : 'odd') ?>">
+                          <td class="text ncc-item_category_descr" >
+                            <div><?= _get_tooltip_markup(htmlentities($shipment['commodity_category_descr']), 40) ?></div>
+                          </td>
+                          <td class="text ncc-item_description" >
+                            <div><?= _get_tooltip_markup(htmlentities($shipment['item_description']), 20) ?></div>
+                          </td>
+                          <td class="center ncc-shipment_number">
+                            <div><?= htmlentities($shipment['shipment_number']) ?></div>
+                          </td>
+                          <td class="center endcol">
+                            <div><?= custom_number_formatter_format($shipment['release_line_total_amount'], 2, "$"); ?></div>
+                          </td>
+                          <td class="center endCol">
+                            <div><?= custom_number_formatter_format($shipment['release_line_original_amount'], 2, "$"); ?></div>
+                          </td>
+                          <td class="center endCol">
+                            <div><?= custom_number_formatter_format($shipment['release_line_spend_to_date'], 2, "$"); ?></div>
+                          </td>
+                          <td class="text endCol">
+                            <div><?= _get_tooltip_markup(htmlentities($shipment['responsibility_center_descr']), 24) ?></div>
+                          </td>
+                        </tr>
+                        <?php
+                        $z++;
+                      endforeach; ?>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
 
   <div class="panel-separator"></div>
   <div>
