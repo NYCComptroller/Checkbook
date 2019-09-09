@@ -4,7 +4,7 @@
   "headerTitle":"Expense Categories",
   "headerSubTitle":"Expense Categories",
   "table_columns":[
-    {"labelAlias":"expense_category","column":"expenditure_object_name"},
+    {"labelAlias":"expense_category","column":"expenditure_type_name"},
     {"labelAlias":"ytd_spending","column":"check_amount_sum","format":"dollar"},
     {"label":"","column":""}
   ],
