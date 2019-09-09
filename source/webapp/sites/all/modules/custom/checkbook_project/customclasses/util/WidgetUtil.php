@@ -301,7 +301,7 @@ class WidgetUtil
         "static_original_amount" => "Original Amount",
         "invoiced_amount" => "Invoiced<br/>Amount",
         "section8_flag" => "Section 8",
-        "invoice_number" => "Invoice<br/>Number",
+         "invoice_number" => "Invoice<br/>Number",
         "invoice_discount" => "Invoice<br/>Discount",
         "tenant_share" => "Tenant<br/>Share",
         "tax_withheld" => "Tax<br/>Withheld",
