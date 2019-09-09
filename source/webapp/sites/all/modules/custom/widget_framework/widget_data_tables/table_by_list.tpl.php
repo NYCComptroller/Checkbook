@@ -23,9 +23,10 @@ if(isset($node->widgetConfig->headerConfig)){
     $headerConfig = eval($node->widgetConfig->headerConfig);
 }
 ?>
+
 <table id="table_<?php echo widget_unique_identifier($node) ?>" class="<?php echo $node->widgetConfig->html_class ?>">
   <?php
-  if (isset($node->widgetConfig->caption_column)) {
+   if (isset($node->widgetConfig->caption_column)) {
     echo '<caption>' . $node->data[0][$node->widgetConfig->caption_column] . '</caption>';
   }
   else {
@@ -36,17 +37,19 @@ if(isset($node->widgetConfig->headerConfig)){
   ?>
   <thead>
   <?php
-
+    $datasource = RequestUtilities::getRequestParamValue('datasource');
     foreach ($node->widgetConfig->table_columns as $row) {
       if(check_node_flag_visibilty($row->visibility_flag, $node)){
         if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == RequestUtilities::get('datasource')))){
-            $label = (isset($row->labelAlias))? (WidgetUtil::generateLabelMapping($row->labelAlias)) : $row->label;
+          $label = (isset($row->labelAlias))? (WidgetUtil::generateLabelMapping($row->labelAlias)) : $row->label;
             $fn = $row->adjustLabelFunction;
             if(isset($fn) && function_exists($fn)){
                 $label = $fn($label);
             }else if(isset($row->evalLabel) && $row->evalLabel){
                 $label = eval("return $row->label;");
             }
+            if ('checkbook_nycha' === $datasource ) {
+            if (preg_match("/Tax/",$label)){$label = "<div><span>Withheld<br/>Amount</span></div>";}}
             $headerClass = ($row->headerClass)? ' class="'.$row->headerClass.'"':'';
             $th .= "<th$headerClass>" . $label . "</th>";
         }
@@ -59,26 +62,21 @@ if(isset($node->widgetConfig->headerConfig)){
         }
         echo "<tr>".$th1."</tr>\n";
     }
-
     echo "<tr>".$th."</tr>\n";
-
   ?>
   </thead>
-
   <tbody>
-
   <?php
   if (isset($node->data) && is_array($node->data)) {
     foreach ($node->data as $datarow) {
       echo "<tr>";
       foreach ($node->widgetConfig->table_columns as $row) {
         if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == RequestUtilities::get('datasource')))){
-            echo '<td class="' . $datarow[$row->classColumn] . '">' . $datarow[$row->column] . '</td>';
+          echo '<td class="' . $datarow[$row->classColumn] . '">' . $datarow[$row->column] . '</td>';
         }
       }
       echo "</tr>";
     }
-
   }
   ?>
   </tbody>

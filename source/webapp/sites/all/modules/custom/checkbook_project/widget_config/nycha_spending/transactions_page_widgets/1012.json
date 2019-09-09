@@ -31,6 +31,7 @@
   "html_class":"initiative-table",
   "no_results_content":"No Results Found",
   "dataset":"checkbook_nycha:all_disbursement_transactions_by_invoice_by_line",
+  "uniqueSortColumn":["-sort_sequence"],
   "columns": ["issue_date", "document_id", "section8_flag", "record_type", "agreement_type_name", "contract_id", "release_number",
     "invoice_number", "check_amount", "invoice_amount", "invoice_discount", "tenant_share", "withholding_tax", "line_net_amount",
     "vendor_name", "vendor_id", "vendor_site_address", "contract_purpose", "display_spending_category_name", "display_industry_type_name",
@@ -179,7 +180,7 @@
       {"sClass":"text", "sWidth":"80px","asSorting":["asc","desc"]},
       {"bSortable":false,"sWidth":"2px"}
     ],
-    "aaSorting":[[2,"asc"]],
+    "aaSorting":[[10,"asc"]],
     "sScrollX":"100%",
     "bScrollCollapse": true
   },
