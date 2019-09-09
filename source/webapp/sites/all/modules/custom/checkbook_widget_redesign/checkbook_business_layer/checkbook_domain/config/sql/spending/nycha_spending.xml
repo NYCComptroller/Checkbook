@@ -175,8 +175,8 @@
     <param name="fundsrc" type="int" />
     <sql>
       SELECT
-        s0.industry_type_id,
-        s0.display_industry_type_name AS industry_type_name,
+        s0.industry_type_id AS industry_id,
+        s0.display_industry_type_name AS industry_name,
         SUM(check_amount) AS check_amount_sum
       FROM aggregation_spending_fy s0
       JOIN
