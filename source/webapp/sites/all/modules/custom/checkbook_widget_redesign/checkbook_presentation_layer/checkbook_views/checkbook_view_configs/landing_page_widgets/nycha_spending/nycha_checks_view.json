@@ -6,7 +6,7 @@
     "table_columns":[
         {"labelAlias":"issue_date","column":"issue_date","format":"date"},
         {"label":"","column":""},
-        {"labelAlias":"vendor","column":"vendor_name","tooltip":36},
+        {"labelAlias":"vendor","column":"vendor_name","derivedColumn":"vendor_link","tooltip":36},
         {"labelAlias":"check_amount","column":"check_amount","format":"dollar"},
         {"label":"","column":""}
     ],
