@@ -4,7 +4,7 @@
   "table_title":"Spending by Funding Source",
   "headerSubTitle":"Funding Sources",
   "table_columns":[
-    {"labelAlias":"funding_source","column":"funding_source_name"},
+    {"labelAlias":"funding_source","column":"funding_source_name","derivedColumn":"fundsrc_link"},
     {"labelAlias":"ytd_spending","column":"check_amount_sum","format":"dollar"},
     {"label":"","column":""}
   ],

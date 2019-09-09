@@ -18,6 +18,8 @@ class NychaSpendingUrlService{
             . RequestUtilities::buildUrlFromParam('category')
             . RequestUtilities::buildUrlFromParam('agency')
             . RequestUtilities::buildUrlFromParam('vendor')
+            . RequestUtilities::buildUrlFromParam('fundsrc')
+            . RequestUtilities::buildUrlFromParam('industry')
             . RequestUtilities::buildUrlFromParam('datasource');
         return $url;
     }
@@ -35,6 +37,8 @@ class NychaSpendingUrlService{
             . RequestUtilities::buildUrlFromParam('category')
             . RequestUtilities::buildUrlFromParam('agency')
             . RequestUtilities::buildUrlFromParam('vendor')
+            . RequestUtilities::buildUrlFromParam('fundsrc')
+            . RequestUtilities::buildUrlFromParam('industry')
             . RequestUtilities::buildUrlFromParam('datasource')
             . '/'.$urlParamName.'/'. $urlParamValue;
 

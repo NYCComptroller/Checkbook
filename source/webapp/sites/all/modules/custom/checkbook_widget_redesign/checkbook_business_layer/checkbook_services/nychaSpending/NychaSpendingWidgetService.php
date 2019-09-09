@@ -11,11 +11,20 @@ class NychaSpendingWidgetService extends WidgetDataService implements IWidgetSer
 
     public function implementDerivedColumn($column_name,$row) {
         $value = null;
-
         switch($column_name) {
             case "vendor_link":
                 $column = $row['vendor_name'];
                 $url = NychaSpendingUrlService::generateLandingPageUrl('vendor',$row['vendor_id']);
+                $value = "<a href='{$url}'>{$column}</a>";
+                break;
+            case "industry_link":
+                $column = $row['industry_name'];
+                $url = NychaSpendingUrlService::generateLandingPageUrl('industry',$row['industry_id']);
+                $value = "<a href='{$url}'>{$column}</a>";
+                break;
+            case "fundsrc_link":
+                $column = $row['funding_source_name'];
+                $url = NychaSpendingUrlService::generateLandingPageUrl('fundsrc',$row['funding_source_id']);
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
         }
