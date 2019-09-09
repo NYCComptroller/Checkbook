@@ -33,34 +33,50 @@
     <param name="industry" type="int" />
     <param name="fundsrc" type="int" />
     <sql>
-      SELECT
-      s0.expenditure_type_name,
-      SUM(s0.ytd_spending) AS check_amount_sum
-      FROM public.aggregation_spending_fy s0
-      JOIN
-      (
-      SELECT SUM(ytd_spending) AS ytd_spending
-      FROM public.aggregation_spending_fy
-      <where>
-        <exp op="AND">
-          <exp op="=" dbField="issue_date_year_id" paramName="year" />
-          <exp op="=" dbField="spending_category_id" paramName="category"/>
-          <exp op="=" dbField="vendor_id" paramName="vendor" />
-          <exp op="=" dbField="industry_type_id" paramName="industry" />
-          <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
-        </exp>
-      </where>
-      ) total ON 1 = 1
-      <where>
-        <exp op="AND">
-          <exp op="=" dbField="s0.issue_date_year_id" paramName="year" />
-          <exp op="=" dbField="s0.spending_category_id" paramName="category"/>
-          <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
-          <exp op="=" dbField="s0.industry_type_id" paramName="industry" />
-          <exp op="=" dbField="s0.funding_source_id" paramName="fundsrc" />
-        </exp>
-      </where>
-      GROUP BY expenditure_type_name
+      <exp op="IF" condition="&lt;&gt;" paramName="category" compareValue="2">
+        SELECT
+        s0.expenditure_type_name,
+        SUM(s0.ytd_spending) AS check_amount_sum
+        FROM public.aggregation_spending_fy s0
+        JOIN
+        (
+        SELECT SUM(ytd_spending) AS ytd_spending
+        FROM public.aggregation_spending_fy
+        <where>
+          <exp op="AND">
+            <exp op="=" dbField="issue_date_year_id" paramName="year" />
+            <exp op="=" dbField="spending_category_id" paramName="category"/>
+            <exp op="=" dbField="vendor_id" paramName="vendor" />
+            <exp op="=" dbField="industry_type_id" paramName="industry" />
+            <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
+          </exp>
+        </where>
+        ) total ON 1 = 1
+        <where>
+          <exp op="AND">
+            <exp op="=" dbField="s0.issue_date_year_id" paramName="year" />
+            <exp op="=" dbField="s0.spending_category_id" paramName="category"/>
+            <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
+            <exp op="=" dbField="s0.industry_type_id" paramName="industry" />
+            <exp op="=" dbField="s0.funding_source_id" paramName="fundsrc" />
+          </exp>
+        </where>
+        GROUP BY expenditure_type_name
+      </exp>
+      <exp op="IF" condition="=" paramName="category" compareValue="2">
+        SELECT
+          citywide_expenditure_object_id,
+          display_expenditure_object_name AS expenditure_type_name,
+          SUM(total_amount) AS check_amount_sum
+        FROM aggregation_spending_payroll_fy
+        <where>
+          <exp op="AND">
+            <exp op="=" dbField="issue_date_year_id" paramName="year" />
+            <exp op="=" dbField="spending_category_id" paramName="category"/>
+          </exp>
+        </where>
+        GROUP BY citywide_expenditure_object_id, display_expenditure_object_name
+      </exp>
     </sql>
   </statement>
   <!--GetNychaSpendingByVendors-->
@@ -112,7 +128,7 @@
     <param name="fundsrc" type="int" />
     <sql>
       SELECT contract_id,
-        purpose AS contract_purpose,
+        contract_purpose,
         vendor_id,
         vendor_name,
         SUM(COALESCE(ytd_spending, 0)) AS ytd_spending,
@@ -234,34 +250,50 @@
     <param name="industry" type="int" />
     <param name="fundsrc" type="int" />
     <sql>
-      SELECT
-      s0.department_id,
-      s0.department_name,
-      SUM(check_amount) AS check_amount_sum
-      FROM aggregation_spending_fy s0
-      JOIN
-      (
-      SELECT SUM(ytd_spending) AS check_amount FROM aggregation_spending_fy
-      <where>
-        <exp op="AND">
-          <exp op="=" dbField="issue_date_year_id" paramName="year" />
-          <exp op="=" dbField="spending_category_id" paramName="category"/>
-          <exp op="=" dbField="vendor_id" paramName="vendor" />
-          <exp op="=" dbField="industry_type_id" paramName="industry" />
-          <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
-        </exp>
-      </where>
-      ) total on 1 = 1
-      <where>
-        <exp op="AND">
-          <exp op="=" dbField="s0.issue_date_year_id" paramName="year" />
-          <exp op="=" dbField="s0.spending_category_id" paramName="category"/>
-          <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
-          <exp op="=" dbField="s0.industry_type_id" paramName="industry" />
-          <exp op="=" dbField="s0.funding_source_id" paramName="fundsrc" />
-        </exp>
-      </where>
-      GROUP BY s0.department_id, s0.department_name
+      <exp op="IF" condition="&lt;&gt;" paramName="category" compareValue="2">
+        SELECT
+          s0.department_id,
+          s0.department_name,
+          SUM(check_amount) AS check_amount_sum
+        FROM aggregation_spending_fy s0
+        JOIN
+        (
+        SELECT SUM(ytd_spending) AS check_amount FROM aggregation_spending_fy
+        <where>
+          <exp op="AND">
+            <exp op="=" dbField="issue_date_year_id" paramName="year" />
+            <exp op="=" dbField="spending_category_id" paramName="category"/>
+            <exp op="=" dbField="vendor_id" paramName="vendor" />
+            <exp op="=" dbField="industry_type_id" paramName="industry" />
+            <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
+          </exp>
+        </where>
+        ) total on 1 = 1
+        <where>
+          <exp op="AND">
+            <exp op="=" dbField="s0.issue_date_year_id" paramName="year" />
+            <exp op="=" dbField="s0.spending_category_id" paramName="category"/>
+            <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
+            <exp op="=" dbField="s0.industry_type_id" paramName="industry" />
+            <exp op="=" dbField="s0.funding_source_id" paramName="fundsrc" />
+          </exp>
+        </where>
+        GROUP BY s0.department_id, s0.department_name
+      </exp>
+      <exp op="IF" condition="=" paramName="category" compareValue="2">
+        SELECT
+          citywide_department_id AS department_id,
+          citywide_department_name AS department_name,
+          SUM(total_amount) AS check_amount_sum
+        FROM aggregation_spending_payroll_fy
+        <where>
+          <exp op="AND">
+            <exp op="=" dbField="issue_date_year_id" paramName="year" />
+            <exp op="=" dbField="spending_category_id" paramName="category"/>
+          </exp>
+        </where>
+        GROUP BY citywide_department_id, citywide_department_name
+      </exp>
     </sql>
   </statement>
 </statements>

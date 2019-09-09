@@ -15,9 +15,9 @@
       },
       "expense_categories": {
         "widget_config":"nycha_expense_categories_view",
-        "visibility_parameters":["category:2", "category:3"]
+        "visibility_parameters":["-category:1", "-category:4"]
       },
-      "expense_categories_horizantal":{
+      "expense_categories_horizontal":{
         "widget_config":"nycha_expense_categories_view",
         "visibility_parameters":["-category:2", "-category:3"]
       },
@@ -31,7 +31,7 @@
       },
       "departments": {
         "widget_config":"nycha_departments_view",
-        "visibility_parameters":["-dept", "category:2", "category:3"]
+        "visibility_parameters":["-dept", "-category:1", "-category:4"]
       }
     }
   }
