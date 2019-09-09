@@ -312,7 +312,7 @@ $contract = $node->data;
             <?= WidgetUtil::getLabelDiv('original_amount') ?>
           </th>
           <th>
-            <?= WidgetUtil::getLabelDiv('invoiced_amount') ?>
+            <?= WidgetUtil::getLabelDiv('nypo_invoiced_amount') ?>
           </th>
         </tr>
         </thead>
@@ -350,8 +350,7 @@ $contract = $node->data;
                     Shipment and Distribution Details
                   </h3>
                   <div class="scroll">
-                    <table
-                      class="dataTable cta-history outerTable">
+                    <table class="dataTable cta-history outerTable">
                       <thead>
                       <tr>
                         <th class="text ncc-item_category_descr">
@@ -370,7 +369,7 @@ $contract = $node->data;
                           <?= WidgetUtil::getLabelDiv('original_amount') ?>
                         </th>
                         <th class="center endCol">
-                          <?= WidgetUtil::getLabelDiv('invoiced_amount') ?>
+                          <?= WidgetUtil::getLabelDiv('nypo_invoiced_amount') ?>
                         </th>
                         <th class="text endCol">
                           <?= WidgetUtil::getLabelDiv('responsibility_center') ?>

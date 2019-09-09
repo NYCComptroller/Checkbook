@@ -299,7 +299,7 @@ class WidgetUtil
         "billed_amount" => "Billed<br/>Amount",
         "static_current_amount" => "Current Amount",
         "static_original_amount" => "Original Amount",
-        "invoiced_amount" => "Invoiced<br/>Amount",
+        "invoiced_amount" => "Invoiced Amount",
         "section8_flag" => "Section 8",
          "invoice_number" => "Invoice<br/>Number",
         "invoice_discount" => "Invoice<br/>Discount",
@@ -308,6 +308,7 @@ class WidgetUtil
         "period_from" => "Period<br/>From",
         "period_to" => "Period<br/>To",
         "period_name" => "Peroid<br/>Name",
+        "nypo_invoiced_amount" => "Invoiced<br/>Amount",
     );
 
     //For number cols, need to find out if they are uniform number of digits for formatting
