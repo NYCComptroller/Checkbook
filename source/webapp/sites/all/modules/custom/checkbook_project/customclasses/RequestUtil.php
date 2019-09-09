@@ -1438,6 +1438,12 @@ class RequestUtil
             case 'vendor':
               $title = _checkbook_project_get_name_for_argument("vendor_id", $value);
               break;
+            case 'industry':
+              $title = _checkbook_project_get_name_for_argument("industry_type_id", $value);
+              break;
+            case 'fundsrc':
+              $title = _checkbook_project_get_name_for_argument("funding_source_id", $value);
+              break;
             default:
               $title = "New York City Housing Authority";
           }
