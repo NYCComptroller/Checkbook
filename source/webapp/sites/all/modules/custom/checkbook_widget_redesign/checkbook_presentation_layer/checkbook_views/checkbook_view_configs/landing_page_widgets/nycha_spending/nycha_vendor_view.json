@@ -3,6 +3,7 @@
   "dataFunc":"GetNychaSpendingByVendors",
   "headerTitle":"Vendors",
   "headerSubTitle":"Vendors",
+  "footerUrl":"_widget_controller_footer_url($node).'/widget/vendors'",
   "table_columns":[
     {"labelAlias":"vendor","column":"vendor_name", "derivedColumn":"vendor_link"},
     {"labelAlias":"ytd_spending","column":"check_amount_sum","format":"dollar"},

@@ -3,6 +3,7 @@
   "dataFunc":"GetNychaSpendingByFundingSource",
   "table_title":"Spending by Funding Source",
   "headerSubTitle":"Funding Sources",
+  "footerUrl":"_widget_controller_footer_url($node).'/widget/funding_source'",
   "table_columns":[
     {"labelAlias":"funding_source","column":"funding_source_name","derivedColumn":"fundsrc_link"},
     {"labelAlias":"ytd_spending","column":"check_amount_sum","format":"dollar"},
