@@ -9,6 +9,18 @@ class NychaSpendingWidgetService extends WidgetDataService implements IWidgetSer
         return new NychaSpendingDataService();
     }
 
+    static $widget_titles = array('checks' => 'Checks', 'vendors' => 'Vendors', 'contracts' => 'Contracts',
+                                  'expense_categories' => 'Expense Categories', 'industries' => 'Industries',
+                                  'funding_source' => 'Funding Sources', 'departments' => 'Departments');
+
+    static public function getTransactionsTitle(){
+      $categories = array(3 => 'Contract', 2 => 'Payroll', 1 => 'Section 8', 4 => 'Others', null => 'Total');
+      $widget = RequestUtilities::get('widget');
+      $widget_titles = self::$widget_titles;
+      $title = $widget_titles[$widget].' '.$categories[ RequestUtilities::get('category')]. " Spending Transactions";
+      return $title ;
+    }
+
     public function implementDerivedColumn($column_name,$row) {
         $value = null;
         switch($column_name) {
