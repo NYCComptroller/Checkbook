@@ -1801,7 +1801,7 @@ input[type="url"], input[type="week"] {
 
 }
 .dataTables_wrapper .dataTables_scroll table{
-    border: none;
+    border:none;
 }
 .dataTables_wrapper th, .outerTable th{
     background-color: #48759d; /* Old browsers */
@@ -3952,3 +3952,14 @@ table.nycha_assoc_contracts_list {
   vertical-align: top;
 }
 
+/* Adjust the height for Nycha transactions table for proper display - NYCCHKBK-9146 */
+#table_979_wrapper .DTFC_LeftBodyWrapper table {
+  margin-top:17px;
+}
+
+#table_1012_wrapper .DTFC_LeftBodyWrapper table {
+  margin-top:17px;
+}
+#table_317_wrapper .DTFC_LeftBodyWrapper table {
+  margin-top:17px;
+}
