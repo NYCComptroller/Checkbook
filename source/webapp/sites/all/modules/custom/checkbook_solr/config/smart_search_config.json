@@ -591,6 +591,7 @@
         "annual_salary": "Annual Salary",
         "base_pay": "Base Pay",
         "hourly_rate": "Hourly Rate",
+        "daily_wage": "Daily Wage",
         "other_payments": "Other Payments",
         "overtime_pay": "Overtime Payments",
         "payroll_type": "Payroll Type"
