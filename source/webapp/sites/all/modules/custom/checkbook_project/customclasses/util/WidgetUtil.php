@@ -263,6 +263,7 @@ class WidgetUtil
         "purchase_order_number" => "Purchase<br/>Order Number",
         "purchase_order_type" => "Purchase<br/>Order Type",
         "release_number" => "Release<br/>Number",
+        "display_release_line_number" => "Line<br/>Number",
         "shipment_number" => "Shipment<br/>Number",
         "distribution_number" => "Distribution<br/>Number",
         "line_number" => "Line<br/>Number",
