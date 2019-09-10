@@ -32,7 +32,7 @@
   "exportConfigNid":997,
   "getTotalDataCount":true,
   "limit":"35",
-  "sortSourceByNull":["number_of_releases", "release_number","item_qty_ordered","shipment_number",
+  "sortSourceByNull":["number_of_releases", "release_number","display_release_line_number","item_qty_ordered","shipment_number",
                       "release_line_total_amount","release_line_original_amount", "release_line_spend_to_date",
                       "release_total_amount", "release_original_amount", "release_spend_to_date",
                       "agreement_total_amount", "agreement_original_amount", "agreement_spend_to_date",
@@ -41,7 +41,7 @@
   "html_class":"initiative-table",
   "no_results_content":"No Results Found",
   "dataset":"checkbook_nycha:all_agreement_transactions_hrcy",
-  "columns": ["number_of_releases", "item_description","contract_id", "agreement_type_name", "agreement_type_code", "release_number", "shipment_number",
+  "columns": ["number_of_releases", "item_description","contract_id", "agreement_type_name", "agreement_type_code", "release_number", "shipment_number", "display_release_line_number",
     "agreement_start_date", "agreement_end_date", "release_approved_date",
     "release_total_amount", "release_original_amount", "release_spend_to_date", "agreement_total_amount", "agreement_original_amount", "agreement_spend_to_date",
     "po_header_id", "purpose", "vendor_name", "location_descr", "contract_type_descr", "award_method_name", "grant_name","item_qty_ordered",
@@ -63,6 +63,9 @@
     },
     "release_number_formatted": {
       "expression":"($row['release_number'] == null) ? '-' : $row['release_number']"
+    },
+    "display_release_line_number_formatted": {
+      "expression":"($row['display_release_line_number'] == null) ? '-' : $row['display_release_line_number']"
     },
     "item_category_descr_formatted":{
       "expression": "_get_tooltip_markup($row['item_category_descr'],36)"
@@ -170,6 +173,7 @@
     {"label":"","column":"", "export":false},
     {"labelAlias":"number_of_releases", "column":"number_of_releases_formatted", "sortSourceColumn":"number_of_releases"},
     {"labelAlias":"release_number","column":"release_number_formatted","sortSourceColumn":"release_number"},
+    {"labelAlias":"display_release_line_number","column":"display_release_line_number_formatted","sortSourceColumn":"display_release_line_number"},
     {"labelAlias":"item_category","column":"item_category_descr_formatted","sortSourceColumn":"item_category_descr"},
     {"labelAlias":"item_description","column":"item_description_formatted","sortSourceColumn":"item_description"},
     {"labelAlias":"quantity_ordered","column":"item_qty_ordered_formatted", "sortSourceColumn":"item_qty_ordered"},
@@ -235,6 +239,7 @@
       {"sClass":"text", "sWidth":"150px","asSorting":["asc","desc"]},
       {"sClass":"number-center", "sWidth":"80px","asSorting":["asc","desc"]},
       {"bSortable":false,"sWidth":"10px"},
+      {"sClass":"number-center", "sWidth":"110px","asSorting":["asc","desc"]},
       {"sClass":"number-center", "sWidth":"110px","asSorting":["asc","desc"]},
       {"sClass":"number-center", "sWidth":"110px","asSorting":["asc","desc"]},
       {"sClass":"text", "sWidth":"175px","asSorting":["asc","desc"]},
