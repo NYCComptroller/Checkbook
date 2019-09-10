@@ -34,11 +34,19 @@
     <sql>
       <exp op="IF" condition="&lt;&gt;" paramName="category" compareValue="2">
         SELECT
-          expenditure_type_id,
-          expenditure_type_code,
-          expenditure_type_description AS expenditure_type_name,
-          SUM(ytd_spending) AS check_amount_sum
+            expenditure_type_id,
+            expenditure_type_code,
+            expenditure_type_description AS expenditure_type_name,
+            SUM(ytd_spending) AS check_amount_sum
         FROM public.aggregation_spending_fy
+      </exp>
+      <exp op="IF" condition="=" paramName="category" compareValue="2">
+        SELECT
+          citywide_expenditure_object_id AS expenditure_object_id,
+          display_expenditure_object_name AS expenditure_type_name,
+          SUM(total_amount) AS check_amount_sum
+        FROM aggregation_spending_payroll_fy
+      </exp>
         <where>
           <exp op="AND">
             <exp op="=" dbField="issue_date_year_id" paramName="year" />
@@ -48,20 +56,10 @@
             <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
           </exp>
         </where>
+      <exp op="IF" condition="&lt;&gt;" paramName="category" compareValue="2">
         GROUP BY expenditure_type_description, expenditure_type_id, expenditure_type_code
       </exp>
       <exp op="IF" condition="=" paramName="category" compareValue="2">
-        SELECT
-          citywide_expenditure_object_id AS expenditure_object_id,
-          display_expenditure_object_name AS expenditure_type_name,
-          SUM(total_amount) AS check_amount_sum
-        FROM aggregation_spending_payroll_fy
-        <where>
-          <exp op="AND">
-            <exp op="=" dbField="issue_date_year_id" paramName="year" />
-            <exp op="=" dbField="spending_category_id" paramName="category"/>
-          </exp>
-        </where>
         GROUP BY citywide_expenditure_object_id, display_expenditure_object_name
       </exp>
     </sql>
@@ -202,6 +200,14 @@
           department_name,
           SUM(ytd_spending) AS check_amount_sum
         FROM aggregation_spending_fy s0
+      </exp>
+      <exp op="IF" condition="=" paramName="category" compareValue="2">
+        SELECT
+        citywide_department_id AS department_id,
+        citywide_department_name AS department_name,
+        SUM(total_amount) AS check_amount_sum
+        FROM aggregation_spending_payroll_fy
+      </exp>
         <where>
           <exp op="AND">
             <exp op="=" dbField="issue_date_year_id" paramName="year" />
@@ -211,20 +217,10 @@
             <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
           </exp>
         </where>
+      <exp op="IF" condition="&lt;&gt;" paramName="category" compareValue="2">
         GROUP BY department_id, department_name
       </exp>
       <exp op="IF" condition="=" paramName="category" compareValue="2">
-        SELECT
-          citywide_department_id AS department_id,
-          citywide_department_name AS department_name,
-          SUM(total_amount) AS check_amount_sum
-        FROM aggregation_spending_payroll_fy
-        <where>
-          <exp op="AND">
-            <exp op="=" dbField="issue_date_year_id" paramName="year" />
-            <exp op="=" dbField="spending_category_id" paramName="category"/>
-          </exp>
-        </where>
         GROUP BY citywide_department_id, citywide_department_name
       </exp>
     </sql>
