@@ -21,9 +21,11 @@
 
 class NychaSpendingUtil
 {
-  static $widget_titles = array('checks' => 'Checks', 'vendors' => 'Vendors', 'contracts' => 'Contracts',
-    'expense_categories' => 'Expense Categories', 'industries' => 'Industries',
-    'funding_source' => 'Funding Sources', 'departments' => 'Departments');
+  static $widget_titles = array('checks' => 'Checks', 'ytd_check' => 'Check','vendors' => 'Vendors', 'ytd_vendor' => 'Vendor',
+    'contracts' => 'Contracts', 'ytd_contract' => 'Contract', 'expense_categories' => 'Expense Categories',
+    'ytd_expense_category' => 'Expense Category', 'industries' => 'Industries', 'ytd_industry' => 'Industry',
+    'funding_sources' => 'Funding Sources', 'ytd_funding_source' => 'Funding Source', 'departments' => 'Departments',
+    'ytd_department' => 'Department');
 
   static public function getTransactionsTitle(){
     $categories = array(3 => 'Contracts', 2 => 'Payroll', 1 => 'Section 8', 4 => 'Others', null => 'Total');
