@@ -242,6 +242,8 @@ class CheckbookSolrQuery
 
     $query = [];
 
+    $csv_mv_separator = ('csv' == $this->wt) ? '&csv.mv.separator=|' : '';
+
     if (sizeof($this->termFields)) {
       $terms = '';
       foreach ($this->termFields as $termField) {
@@ -251,7 +253,7 @@ class CheckbookSolrQuery
       $query['terms.regex.flag'] = 'case_insensitive';
       $query['terms.regex'] = $this->termsRegex;
 
-      $this->query = http_build_query($query) . $terms . '&wt=' . $this->wt;
+      $this->query = http_build_query($query) . $terms . '&wt=' . $this->wt . $csv_mv_separator;
       return $this->query;
     }
 
@@ -312,7 +314,7 @@ class CheckbookSolrQuery
      * http://sdw5.reisys.com:18983/solr/checkbook_dev.public.solr_index_full/select/?q=*:*&facet=true&facet.sort=count&facet.field=fiscal_year&wt=phps&facet.mincount=1
      */
 
-    $this->query = $q . $fq . $sort . $facets . $intervals . '&' . http_build_query($query) . '&wt=' . $this->wt;
+    $this->query = $q . $fq . $sort . $facets . $intervals . '&' . http_build_query($query) . '&wt=' . $this->wt . $csv_mv_separator;
 
     return $this->query;
   }
