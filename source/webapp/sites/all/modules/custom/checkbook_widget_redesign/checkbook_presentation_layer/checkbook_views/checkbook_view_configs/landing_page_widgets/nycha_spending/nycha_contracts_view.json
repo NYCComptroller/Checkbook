@@ -9,7 +9,7 @@
     {"labelAlias":"contract_id","column":"contract_id"},
     {"labelAlias":"contract_purpose","column":"contract_purpose", "tooltip":50},
     {"labelAlias":"vendor","column":"vendor_name", "derivedColumn":"vendor_link"},
-    {"labelAlias":"ytd_spending","column":"ytd_spending","format":"dollar"},
+    {"labelAlias":"ytd_spending","column":"check_amount_sum","format":"dollar", "derivedColumn":"contract_ytd_spending"},
     {"labelAlias":"total_contract_amount","column":"total_contract_amount","format":"dollar"},
     {"label":"","column":""}
   ],

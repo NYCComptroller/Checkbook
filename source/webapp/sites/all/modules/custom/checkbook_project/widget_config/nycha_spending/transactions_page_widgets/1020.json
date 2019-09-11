@@ -11,7 +11,7 @@
   "orderBy":"-txcount",
   "facetPager":true,
   "filterName":"Funding source ",
-  "urlParameterName":"funding_id",
+  "urlParameterName":"fundsrc",
   "autocompleteParamName":"fundingnm_exact_auto",
   "autocompleteID":"fFundingId",
   "autocompleteField":"funding_source_description",

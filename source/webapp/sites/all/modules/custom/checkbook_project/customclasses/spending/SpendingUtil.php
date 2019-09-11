@@ -43,7 +43,7 @@ class SpendingUtil{
     /**
      * @return string
      */
-    static  public function getSpendingTransactionsTitle(){
+    static public function getSpendingTransactionsTitle(){
         $categories = array(1 => 'Contract', 2 => 'Payroll', 3 => 'Capital', 4 => 'Others', 5 => 'Trust & Agency' ,null => 'Total');
         $title = $categories[ RequestUtilities::get('category')]. " Spending Transactions";
         return $title ;
