@@ -180,7 +180,7 @@
       {"sClass":"text", "sWidth":"80px","asSorting":["asc","desc"]},
       {"bSortable":false,"sWidth":"2px"}
     ],
-    "aaSorting":[[10,"asc"]],
+    "aaSorting":[[10,"desc"]],
     "sScrollX":"100%",
     "bScrollCollapse": true
   },
