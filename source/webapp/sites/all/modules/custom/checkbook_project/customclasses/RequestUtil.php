@@ -1429,7 +1429,9 @@ class RequestUtil
     public static function getNYCHASpendingBreadcrumbTitle()
     {
       $bottomURL = $_REQUEST['expandBottomContURL'];
-      if (!$bottomURL && preg_match('/^nycha_spending\/search\/transactions/', current_path()) || preg_match('/^nycha_spending\/all\/transactions/', current_path())) {
+      if (isset($bottomURL) && preg_match('/transactions/', $bottomURL)) {
+        $title = NychaSpendingUtil::getTransactionsTitle();
+      }else if (!$bottomURL && preg_match('/^nycha_spending\/search\/transactions/', current_path()) || preg_match('/^nycha_spending\/all\/transactions/', current_path())) {
         $title = 'NYCHA Spending Transactions';
       } else {
         $lastReqParam = _getLastRequestParamValue();
@@ -1450,7 +1452,7 @@ class RequestUtil
           $title .= ' Spending';
         }
       }
-      return $title;
+      return html_entity_decode($title);
     }
     public static function getTitleByCode($tcode){
         $summaryTitle='';
