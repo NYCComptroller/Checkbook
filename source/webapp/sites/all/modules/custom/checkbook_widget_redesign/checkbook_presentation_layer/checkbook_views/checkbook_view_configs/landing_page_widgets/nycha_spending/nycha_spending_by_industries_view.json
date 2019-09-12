@@ -3,9 +3,10 @@
   "dataFunc":"GetNychaSpendingByIndustries",
   "table_title":"Spending by Industries",
   "headerSubTitle":"Industries",
+  "footerUrl":"_widget_controller_footer_url($node).'/widget/industries'",
   "table_columns":[
     {"labelAlias":"industry_name","column":"industry_name", "derivedColumn":"industry_link"},
-    {"labelAlias":"ytd_spending","column":"check_amount_sum","format":"dollar"},
+    {"labelAlias":"ytd_spending","column":"check_amount_sum","format":"dollar", "derivedColumn":"industry_ytd_spending_link"},
     {"label":"","column":""}
   ],
   "dataTableOptions":{

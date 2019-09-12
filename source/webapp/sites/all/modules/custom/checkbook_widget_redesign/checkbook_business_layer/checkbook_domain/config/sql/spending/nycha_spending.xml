@@ -42,7 +42,7 @@
       </exp>
       <exp op="IF" condition="=" paramName="category" compareValue="2">
         SELECT
-          citywide_expenditure_object_id AS expenditure_object_id,
+          citywide_expenditure_object_id AS expenditure_type_id,
           display_expenditure_object_name AS expenditure_type_name,
           SUM(total_amount) AS check_amount_sum
         FROM aggregation_spending_payroll_fy
@@ -101,7 +101,7 @@
         contract_purpose,
         vendor_id,
         vendor_name,
-        SUM(COALESCE(ytd_spending, 0)) AS ytd_spending,
+        SUM(COALESCE(ytd_spending, 0)) AS check_amount_sum,
         SUM(COALESCE(total_contract_amount, 0)) AS total_contract_amount
       FROM aggregation_spending_contracts_fy
       <where>
