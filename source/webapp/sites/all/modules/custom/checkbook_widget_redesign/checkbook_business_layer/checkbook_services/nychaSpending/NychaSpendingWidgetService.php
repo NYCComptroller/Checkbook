@@ -27,6 +27,49 @@ class NychaSpendingWidgetService extends WidgetDataService implements IWidgetSer
                 $url = NychaSpendingUrlService::generateLandingPageUrl('fundsrc',$row['funding_source_id']);
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
+            /* YTD Spending links */
+            case "dept_ytd_spending_link":
+                $column = $row['check_amount_sum'];
+                $class = "bottomContainerReload";
+                $dynamic_parameter = "/dept/" . $row["department_id"];
+                $url = NYCHASpendingUrlService::ytdSpendingUrl($dynamic_parameter, 'ytd_department');
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+                break;
+            case "exp_cat_ytd_spending_link":
+                $column = $row['check_amount_sum'];
+                $class = "bottomContainerReload";
+                $dynamic_parameter = "/exp_cat/" . $row["expenditure_type_id"];
+                $url = NYCHASpendingUrlService::ytdSpendingUrl($dynamic_parameter, 'ytd_expense_category');
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+                break;
+            case "fundsrc_ytd_spending_link":
+                $column = $row['check_amount_sum'];
+                $class = "bottomContainerReload";
+                $dynamic_parameter = "/fundsrc/" . $row["funding_source_id"];
+                $url = NYCHASpendingUrlService::ytdSpendingUrl($dynamic_parameter, 'ytd_funding_source');
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+                break;
+            case "industry_ytd_spending_link":
+                $column = $row['check_amount_sum'];
+                $class = "bottomContainerReload";
+                $dynamic_parameter = "/industry/" . $row["industry_id"];
+                $url = NYCHASpendingUrlService::ytdSpendingUrl($dynamic_parameter, 'ytd_industry');
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+                break;
+            case "vendor_ytd_spending_link":
+                $column = $row['check_amount_sum'];
+                $class = "bottomContainerReload";
+                $dynamic_parameter = "/vendor/" . $row["vendor_id"];
+                $url = NYCHASpendingUrlService::ytdSpendingUrl($dynamic_parameter, 'ytd_vendor');
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+                break;
+            case "contract_ytd_spending":
+                 $column = $row['check_amount_sum'];
+                 $class = "bottomContainerReload";
+                 $dynamic_parameter = "/po_num_exact/" . $row["contract_id"];
+                 $url = NYCHASpendingUrlService::ytdSpendingUrl($dynamic_parameter, 'ytd_contract');
+                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+                 break;
         }
 
         if(isset($value)) {

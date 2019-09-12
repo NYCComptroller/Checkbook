@@ -21,10 +21,19 @@
 
 class NychaSpendingUtil
 {
-  static public function getTransactionsTitle()
-  {
-    $categories = array(1 => 'Section 8', 2 => 'Payroll', 3 => 'Contract Agreements', 4 => 'Other', null => 'Total');
-    $title = $categories[ RequestUtilities::get('category')]. " Spending Transactions";;
-    return $title;
+  static $widget_titles = array('checks' => 'Checks', 'ytd_check' => 'Check','vendors' => 'Vendors', 'ytd_vendor' => 'Vendor',
+    'contracts' => 'Contracts', 'ytd_contract' => 'Contract', 'expense_categories' => 'Expense Categories',
+    'ytd_expense_category' => 'Expense Category', 'industries' => 'Industries', 'ytd_industry' => 'Industry',
+    'funding_sources' => 'Funding Sources', 'ytd_funding_source' => 'Funding Source', 'departments' => 'Departments',
+    'ytd_department' => 'Department');
+
+  static public function getTransactionsTitle(){
+    $categories = array(3 => 'Contracts', 2 => 'Payroll', 1 => 'Section 8', 4 => 'Others', null => 'Total');
+    $url = $_SERVER['HTTP_REFERER'];
+    $widget = RequestUtil::getRequestKeyValueFromURL("widget", $url);
+    $widget_titles = self::$widget_titles;
+    $title = isset($widget) ? $widget_titles[$widget]: "";
+    $title = $title .' '.$categories[ RequestUtilities::get('category')]. " Spending Transactions";
+    return $title ;
   }
 }

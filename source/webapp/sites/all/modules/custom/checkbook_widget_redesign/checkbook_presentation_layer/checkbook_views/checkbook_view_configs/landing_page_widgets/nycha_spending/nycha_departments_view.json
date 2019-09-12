@@ -3,9 +3,10 @@
   "dataFunc":"GetNychaSpendingByDepartment",
   "headerTitle":"Departments",
   "headerSubTitle":"Departments",
+  "footerUrl":"_widget_controller_footer_url($node).'/widget/departments'",
   "table_columns":[
     {"labelAlias":"dept_name","column":"department_name"},
-    {"labelAlias":"ytd_spending","column":"check_amount_sum","format":"dollar"},
+    {"labelAlias":"ytd_spending","column":"check_amount_sum","format":"dollar","derivedColumn":"dept_ytd_spending_link"},
     {"label":"","column":""}
   ],
   "dataTableOptions":{
