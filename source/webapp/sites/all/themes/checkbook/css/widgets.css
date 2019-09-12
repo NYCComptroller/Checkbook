@@ -889,7 +889,13 @@ table.expense td.employees.active .expense-container a {
 table.initiative-table #no-records-datatable{
     text-align: left;
 }
+table.nycha-initiative-table {
+  margin-top: 17px;
+}
 
+table.nycha-initiative-table #no-records-datatable{
+  text-align: left;
+}
 .no-transactions {
   background: url('../images/notrans.png') no-repeat 0 0;
   width: 62px;
