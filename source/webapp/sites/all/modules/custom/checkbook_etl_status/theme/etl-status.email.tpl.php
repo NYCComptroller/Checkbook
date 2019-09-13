@@ -247,42 +247,9 @@
             <br/>
         <?php endif;
     endforeach; ?>
-    <?php /* if (!empty($solr_health_status) && isset($dev_mode) && $dev_mode):
-        $i = 0;
-        ?>
-        <br/>
-        <br/>
-        <table class="dbconnections" cellpadding="3">
-            <thead>
-            <tr>
-                <th colspan="2">
-                    SOLR HEALTH STATUS
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            <?php foreach ($solr_health_status as $solrServer => $cores): ?>
-                <?php foreach ($cores as $core => $health): ?>
-                    <tr class="<?php echo($i++ % 2 ? 'even' : 'odd'); ?>">
-                        <?php if ($i % 2): ?>
-                            <th class="env" rowspan="2"><?php echo $solrServer; ?></th>
-                        <?php endif; ?>
-                        <th><?php echo "<a target='_blank' href='{$health['url']}'>{$core}</a>"; ?></th>
-                        <td>
-                            <?php echo('OK' == $health['status'] ? '✅' : ('❌ </br >' . $health['status'])); ?>
-                    </tr>
-                <?php endforeach; ?>
-            <?php endforeach; ?>
-            </tbody>
-        </table>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-    <?php endif;  */ ?>
 
     <?php if (!empty($fisa_files)): $i=0; $oldPrefix='';?>
-    <table class="file">
+    <table class="file" cellpadding="5">
       <thead>
         <tr class="filename">
           <th colspan="3">FISA files (received by <?= $fisa_files['date'] ?> 10pm EST):</th>
@@ -308,7 +275,7 @@
       </tbody>
     </table>
     <?php else: ?>
-    <table class="file">
+    <table class="file" cellpadding="5">
       <thead>
         <tr class="filename" align="center"><th> FISA files: </th></tr>
       </thead>
