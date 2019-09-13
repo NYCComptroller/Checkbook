@@ -43,6 +43,10 @@ class CheckbookRefFiles
 
         date_default_timezone_set('America/New_York');
 
+        if (defined('SKIP_REF_FILES') && SKIP_REF_FILES) {
+          return false;
+        }
+
 //        always run cron for developer
         if (defined('CHECKBOOK_DEV')) {
             return $this->sendmail();
