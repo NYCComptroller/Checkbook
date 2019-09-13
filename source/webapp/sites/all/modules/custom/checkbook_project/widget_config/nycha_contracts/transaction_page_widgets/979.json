@@ -38,7 +38,7 @@
                       "agreement_total_amount", "agreement_original_amount", "agreement_spend_to_date",
                       "po_header_id"],
   "noDataInitialLoad":true,
-  "html_class":"nycha-initiative-table",
+  "html_class":"initiative-table",
   "no_results_content":"No Results Found",
   "dataset":"checkbook_nycha:all_agreement_transactions_hrcy",
   "columns": ["number_of_releases", "item_description","contract_id", "agreement_type_name", "agreement_type_code", "release_number", "shipment_number", "display_release_line_number",
@@ -217,7 +217,7 @@
     ",
   "adjustDataTableOptions":"
       $adjustDataTableOptions = $node->widgetConfig->dataTableOptions;
-      $adjustDataTableOptions->fnInitComplete = '##function () { new FixedColumns( oTable, {\"iLeftColumns\": 1,\"iLeftWidth\": 110} );}##';
+      $adjustDataTableOptions->fnInitComplete = '##function () { new FixedColumns( oTable, {\"iLeftColumns\": 1,\"iLeftWidth\": 125} );}##';
     ",
   "dataTableOptions":{
     "bRetrieve":true,
@@ -234,7 +234,7 @@
     },
     "bInfo":true,
     "aoColumns": [
-      {"sClass":"number-center", "sWidth":"110px","asSorting":["asc","desc"]},
+      {"sClass":"number-center", "sWidth":"112px","asSorting":["asc","desc"]},
       {"bSortable":false,"sWidth":"50px"},
       {"sClass":"text", "sWidth":"150px","asSorting":["asc","desc"]},
       {"sClass":"number-center", "sWidth":"80px","asSorting":["asc","desc"]},
@@ -249,8 +249,8 @@
       {"sClass":"text", "sWidth":"200px","asSorting":["asc","desc"]},
       {"sClass":"text", "sWidth":"100px","asSorting":["asc","desc"]},
       {"sClass":"text", "sWidth":"100px","asSorting":["asc","desc"]},
-      {"sClass":"number-center", "sWidth":"130px","asSorting":["asc","desc"]},
-      {"sClass":"number-center", "sWidth":"130px","asSorting":["asc","desc"]},
+      {"sClass":"number", "sWidth":"130px","asSorting":["asc","desc"]},
+      {"sClass":"number", "sWidth":"130px","asSorting":["asc","desc"]},
       {"sClass":"number", "sWidth":"130px","asSorting":["asc","desc"]},
       {"sClass":"number", "sWidth":"130px","asSorting":["asc","desc"]},
       {"sClass":"number", "sWidth":"130px","asSorting":["asc","desc"]},
@@ -284,7 +284,7 @@
     // Enable THEAD scroll bars
     jQuery('.dataTables_scrollHead').css('overflow', 'auto');
     // Sync THEAD scrolling with TBODY
-      jQuery('.dataTables_scrollHead').scroll(function () {
+    jQuery('.dataTables_scrollHead').scroll(function () {
       jQuery('.dataTables_scrollBody').scrollLeft(jQuery(this).scrollLeft());
     });
   ",
@@ -324,6 +324,7 @@
           cUrl = adjustUrlParameter(cUrl,'release_no',oReleaseNo);
           cUrl = adjustUrlParameter(cUrl,'item_descr',oItemDescr);
           cUrl = adjustUrlParameter(cUrl,'item_category',oItemCategory);
+
           return cUrl;
     }"
 }
