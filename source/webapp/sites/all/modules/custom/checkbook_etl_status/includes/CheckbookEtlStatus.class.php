@@ -307,35 +307,26 @@ class CheckbookEtlStatus
    */
   private function getFisaFileList()
   {
-    global $conf;
-    if (!extension_loaded('mongodb') || !isset($conf['checkbook_mongo_srv'])) {
+    if (!class_exists('CheckbookMongo') || !$db = CheckbookMongo::getDb()) {
+      LogHelper::log_notice('Could not init CheckbookMongo');
       return false;
     }
 
-    try {
-      require(__DIR__.'/../../checkbook_composer/vendor/autoload.php');
+    $collection = $db->selectCollection('etlstatuslogs');
 
-      $client = new MongoDB\Client($conf['checkbook_mongo_srv']);
-      $db = $client->checkbooknyc;
+    $yesterday = date('Ymd', time() - 24*60*60);
+    $files = $collection->findOne(['date' => $yesterday]);
 
-      $collection = $db->selectCollection('etlstatuslogs');
+    if (!$files) {return false;}
 
-      $yesterday = date('Ymd', time() - 24*60*60);
-      $files = $collection->findOne(['date' => $yesterday]);
-
-      if (!$files) {return false;}
-
-      $lines = [];
-      foreach($files['lines'] as $line) {
-        $row = [];
-        list($row['lines'], $row['bytes'], $row['filename']) = [$line[0], $line[1], basename($line[2])];
-        $lines[] = $row;
-      }
-      $files['lines'] = $lines;
-
-    } catch (Exception $ex1) {
-      error_log($ex1->getMessage());
+    $lines = [];
+    foreach($files['lines'] as $line) {
+      $row = [];
+      list($row['lines'], $row['bytes'], $row['filename']) = [$line[0], $line[1], basename($line[2])];
+      $lines[$row['filename']] = $row;
     }
+    ksort($lines);
+    $files['lines'] = $lines;
 
     return $files ?? false;
   }
@@ -354,14 +345,12 @@ class CheckbookEtlStatus
       $uat_status = $this->formatStatus($this->getUatStatus());
       $prod_status = $this->formatStatus($this->getProdStatus());
       $connections = $this->getConnectionConfigs();
-//      $solr_health_status = $this->getSolrHealthStatus();
 
       self::$message_body =
         [
           'uat_status' => $uat_status,
           'prod_status' => $prod_status,
           'subject' => self::$successSubject,
-//          'solr_health_status' => $solr_health_status,
           'connections' => $connections,
           'fisa_files' => $this->getFisaFileList(),
           'connection_keys' => self::CONNECTIONS_KEYS,
