@@ -2667,6 +2667,12 @@ function _checkbook_dmemcache_get($key, $bin = 'cache', $mc = NULL)
         global $phpunit_cache;
         return !empty($phpunit_cache[$key]) ? $phpunit_cache[$key] : false;
     }
+
+//    manually disabled, ex. during etl status
+    if (defined('CHECKBOOK_NO_DB_CACHE') && CHECKBOOK_NO_DB_CACHE) {
+      return false;
+    }
+
 //    NO CACHE FOR ADMINS
     if (user_is_logged_in()) {
         return false;
