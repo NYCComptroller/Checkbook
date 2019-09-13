@@ -261,7 +261,7 @@
         </tr>
       </thead>
       <tbody>
-        <?php foreach($fisa_files['lines'] as $line):
+        <?php foreach($fisa_files['contract_lines'] as $line):
           list($prefix,) = explode('_'.date('Y'), $line['filename']);
           $strong = (strpos($line['filename'], $fisa_files['date'])) ? 'today' : '';
           if ($prefix !== $oldPrefix) {$oldPrefix = $prefix; $i++;}
