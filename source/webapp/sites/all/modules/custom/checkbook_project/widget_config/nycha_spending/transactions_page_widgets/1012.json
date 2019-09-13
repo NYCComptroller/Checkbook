@@ -28,7 +28,7 @@
   "getTotalDataCount":true,
   "limit":"35",
   "noDataInitialLoad":true,
-  "html_class":"nycha-initiative-table",
+  "html_class":"initiative-table",
   "no_results_content":"No Results Found",
   "dataset":"checkbook_nycha:all_disbursement_transactions_by_invoice_by_line",
   "uniqueSortColumn":["-sort_sequence"],
@@ -184,14 +184,6 @@
     "sScrollX":"100%",
     "bScrollCollapse": true
   },
-  "customJS":"
-    // Enable THEAD scroll bars
-    jQuery('.dataTables_scrollHead').css('overflow', 'auto');
-    // Sync THEAD scrolling with TBODY
-    jQuery('.dataTables_scrollHead').scroll(function () {
-    jQuery('.dataTables_scrollBody').scrollLeft(jQuery(this).scrollLeft());
-    });
-  ",
   "customExternalJS":"
       function prepareTableListFilterUrl() {
         var oAgencyIds = getNamedFilterCriteria('fAgencyId');
