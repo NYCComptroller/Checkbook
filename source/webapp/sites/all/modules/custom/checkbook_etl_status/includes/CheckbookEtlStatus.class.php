@@ -8,7 +8,7 @@ class CheckbookEtlStatus
   /**
    * @var string
    */
-  private static $message_body = '';
+  public static $message_body = '';
 
   /**
    * @var string
@@ -301,30 +301,10 @@ class CheckbookEtlStatus
   }
 
   /**
-   * @return array
+   * @return array|bool|object|null
+   * @throws \MongoDB\Exception\InvalidArgumentException
+   * @throws \MongoDB\Exception\UnsupportedException
    */
-//  public function getSolrHealthStatus()
-//  {
-//    global $conf;
-//    $solr_health = [];
-//    if (empty($conf['check_book']['solr23']) || empty($conf['check_book']['solr24'])) {
-//      return $solr_health;
-//    }
-//    foreach (['solr23', 'solr24'] as $server) {
-//      foreach ($conf['check_book'][$server] as $core => $url) {
-//        try {
-//          $health = $this->get_contents($url . 'admin/ping?wt=json');
-//          $solr_health[$server][$core]['status'] = json_decode($health, true)['status'];
-//        } catch (Exception $e) {
-//          $solr_health[$server][$core]['status'] = $e->getMessage();
-//        }
-//        $solr_health[$server][$core]['url'] = $url . 'admin/ping';
-//      }
-//    }
-//
-//    return $solr_health;
-//  }
-
   private function getFisaFileList()
   {
     global $conf;
@@ -363,6 +343,8 @@ class CheckbookEtlStatus
   /**
    * @param $message
    * @return bool
+   * @throws \MongoDB\Exception\InvalidArgumentException
+   * @throws \MongoDB\Exception\UnsupportedException
    */
   public function gatherData(&$message)
   {
