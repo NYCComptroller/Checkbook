@@ -358,21 +358,7 @@ class CheckbookEtlStatus
       return false;
     }
 
-    $lines = [];
-    foreach ($files['lines'] as $line) {
-      $pass = false;
-      $row = [];
-      list($row['lines'], $row['bytes'], $row['filename']) = [$line[0], $line[1], basename($line[2])];
-      foreach($regex_rules['rules'] as $rule){
-        $pass += preg_match('/'.$rule['actual_pattern'].'/', $row['filename']);
-      }
-      if ($pass) {
-        $lines[$row['filename']] = $row;
-      }
-
-    }
-    ksort($lines);
-    $files['lines'] = $lines;
+    ksort($files['contract_lines']);
 
     return $files ?? false;
   }
