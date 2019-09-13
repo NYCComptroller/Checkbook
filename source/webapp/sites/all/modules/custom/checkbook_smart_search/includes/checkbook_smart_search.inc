@@ -145,7 +145,7 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
     );
 
     foreach (array_keys($selected_facets) as $facet) {
-      if (!sizeof($unchecked_results[$facet])) {
+      if (!sizeof($unchecked_results) || !isset($unchecked_results[$facet]) || !sizeof($unchecked_results[$facet])) {
         continue;
       }
       if (isset($search_results['facet_counts']['facet_fields'][$facet])) {
