@@ -141,7 +141,9 @@ class CheckbookEtlStatus
   {
     global $conf;
     if (empty($conf['CHECKBOOK_ENV']) || !in_array($conf['CHECKBOOK_ENV'], ['UAT', 'PHPUNIT'])) {
-      return false;
+      if (!($conf['get_direct_uat_etl_status'] ?? false)) {
+        return false;
+      }
     }
     $local_api = new \checkbook_json_api\CheckBookJsonApi();
     $result = $local_api->etl_status();
@@ -384,6 +386,10 @@ class CheckbookEtlStatus
   public function gatherData(&$message)
   {
     global $conf;
+
+    if (!defined('CHECKBOOK_NO_DB_CACHE')) {
+      define('CHECKBOOK_NO_DB_CACHE', true);
+    }
 
     if (!self::$message_body) {
       $uat_status = $this->formatStatus($this->getUatStatus());
