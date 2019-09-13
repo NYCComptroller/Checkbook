@@ -32,8 +32,7 @@
     "limit":"35",
     "stickyHeader":true,
     "noDataInitialLoad":true,
-    "html_class":"nycha-initiative-table",
-    //initiative-table transaction-table
+    "html_class": "initiative-table transaction-table",
     "no_results_content":"No Results Found",
     "dataset": "checkbook:payroll_employee_agency",
     "preProcessConfiguration":"
@@ -239,7 +238,7 @@ $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoCol
             {"sClass":"number","sWidth":"110px","asSorting": [ "desc","asc" ]},
             {"sClass":"number","sWidth":"110px","asSorting": [ "desc","asc" ]},
             {"sClass":"number","sWidth":"110px","asSorting": [ "desc","asc" ]},
-            {"sClass":"number-center","sWidth":"110px","asSorting": [ "desc","asc" ]},
+            {"sClass":"number","sWidth":"110px","asSorting": [ "desc","asc" ]},
             {"sClass":"text pad-left endCol","sWidth":"110px", "asSorting": [ "asc","desc" ]}
         ],
         "sScrollX": "100%",
@@ -251,14 +250,6 @@ $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoCol
         \"iLeftWidth\": 150
         } );}##"
     },
-    "customJS":"
-      // Enable THEAD scroll bars
-      jQuery('.dataTables_scrollHead').css('overflow', 'auto');
-      // Sync THEAD scrolling with TBODY
-      jQuery('.dataTables_scrollHead').scroll(function () {
-      jQuery('.dataTables_scrollBody').scrollLeft(jQuery(this).scrollLeft());
-      });
-    ",
     "customExternalJS":"function prepareTableListFilterUrl(){
         var oTitles = getNamedFilterCriteria('ftitle');
         var oAgencyIds = getNamedFilterCriteria('fagencyId');
