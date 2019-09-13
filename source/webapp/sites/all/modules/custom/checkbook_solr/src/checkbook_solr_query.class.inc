@@ -241,7 +241,11 @@ class CheckbookSolrQuery
     $this->query = '';
 
     $query = [];
-
+    /**
+     * NYCCHKBK-9184
+     * somehow multivalued CSV export keeps over-escaping commas after csv joining values
+     * and there is no way to put csv.mv.separator to NONE so | works somehow
+     */
     $csv_mv_separator = ('csv' == $this->wt) ? '&csv.mv.separator=|' : '';
 
     if (sizeof($this->termFields)) {

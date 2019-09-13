@@ -1,0 +1,6 @@
+{
+    "name": "checkbook_nyc/checkbook_nyc",
+    "require": {
+        "mongodb/mongodb": "^1.5"
+    }
+}
