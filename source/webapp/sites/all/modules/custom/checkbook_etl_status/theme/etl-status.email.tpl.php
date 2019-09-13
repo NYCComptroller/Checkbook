@@ -252,7 +252,7 @@
     <table class="file" cellpadding="5">
       <thead>
         <tr class="filename">
-          <th colspan="3">FISA files (received by <?= $fisa_files['date'] ?> 10pm EST):</th>
+          <th colspan="3">FISA contracts files (received by <?= $fisa_files['date'] ?> 10pm EST):</th>
         </tr>
         <tr class="header">
           <th>Bytesize</th>
