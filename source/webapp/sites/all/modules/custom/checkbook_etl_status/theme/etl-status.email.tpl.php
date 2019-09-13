@@ -29,7 +29,10 @@
             text-transform: uppercase;
             background: #3c6e95;
             color: #fff;
-            text-indent:
+        }
+
+        td.bytesize, tr.bytesize {
+          text-align: right;
         }
 
         table.dbconnections tr.header th, table.dbconnections th.env {
@@ -47,6 +50,10 @@
 
         tbody tr.odd {
             background: #eee;
+        }
+
+        tr.today td{
+          color: darkgreen;
         }
 
         footer {
@@ -240,7 +247,7 @@
             <br/>
         <?php endif;
     endforeach; ?>
-    <?php if (!empty($solr_health_status) && isset($dev_mode) && $dev_mode):
+    <?php /* if (!empty($solr_health_status) && isset($dev_mode) && $dev_mode):
         $i = 0;
         ?>
         <br/>
@@ -272,7 +279,48 @@
         <br/>
         <br/>
         <br/>
+    <?php endif;  */ ?>
+
+    <?php if (!empty($fisa_files)): $i=0; $oldPrefix='';?>
+    <table class="file">
+      <thead>
+        <tr class="filename">
+          <th colspan="3">FISA files (received by <?= $fisa_files['date'] ?> 10pm EST):</th>
+        </tr>
+        <tr class="header">
+          <th>Bytesize</th>
+          <th class="bytesize">Number of lines</th>
+          <th>Filename</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php foreach($fisa_files['lines'] as $line):
+          list($prefix,) = explode('_'.date('Y'), $line['filename']);
+          $strong = (strpos($line['filename'], $fisa_files['date'])) ? 'today' : '';
+          if ($prefix !== $oldPrefix) {$oldPrefix = $prefix; $i++;}
+          ?>
+        <tr class="<?php echo($i % 2 ? 'even' : 'odd'); ?> <?= $strong ?>">
+          <td><?= $line['bytes'] ?></td>
+          <td class="bytesize"><?= $line['lines'] ?></td>
+          <td><?= $line['filename'] ?></td>
+        </tr>
+        <?php endforeach; ?>
+      </tbody>
+    </table>
+    <?php else: ?>
+    <table class="file">
+      <thead>
+        <tr class="filename" align="center"><th> FISA files: </th></tr>
+      </thead>
+      <tbody>
+      <tr class="odd"><td> ❌ NO DATA ❌ </td></tr>
+      </tbody>
+    </table>
     <?php endif; ?>
+  <br/>
+  <br/>
+  <br/>
+
     <?php if (!empty($connections) && isset($dev_mode) && $dev_mode):
         $i = 0;
         ?>
