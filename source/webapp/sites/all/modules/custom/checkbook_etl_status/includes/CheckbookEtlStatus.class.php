@@ -301,29 +301,73 @@ class CheckbookEtlStatus
   }
 
   /**
-   * @return array|bool|object|null
+   * @return bool
    * @throws \MongoDB\Exception\InvalidArgumentException
    * @throws \MongoDB\Exception\UnsupportedException
    */
-  private function getFisaFileList()
+  private function updateContractRegexes()
   {
     if (!class_exists('CheckbookMongo') || !$db = CheckbookMongo::getDb()) {
       LogHelper::log_notice('Could not init CheckbookMongo');
       return false;
     }
 
+    $query = "select actual_pattern
+                from   etl.ref_file_name_pattern
+              where  data_source_code IN ('C','M','SC','SF','SS','SV');";
+
+    $regex_rules = _checkbook_project_execute_sql($query, 'etl');
+    if (!$regex_rules) {
+      return false;
+    }
+    $conf_collection = $db->selectCollection('configs');
+    $conf_collection->replaceOne(['_id' => 'fisa_contract_regex'], ['rules' => $regex_rules]);
+  }
+
+  /**
+   * @return array|bool|object|null
+   * @throws \MongoDB\Exception\InvalidArgumentException
+   * @throws \MongoDB\Exception\UnsupportedException
+   */
+  private function getFisaFileList()
+  {
+    global $conf;
+    if (!class_exists('CheckbookMongo') || !$db = CheckbookMongo::getDb()) {
+      LogHelper::log_notice('Could not init CheckbookMongo');
+      return false;
+    }
+
+    if ('UAT' == $conf['CHECKBOOK_ENV'] || ($conf['update_fisa_mongo_regex'] ?? false)) {
+      $this->updateContractRegexes();
+    }
+
     $collection = $db->selectCollection('etlstatuslogs');
 
-    $yesterday = date('Ymd', time() - 24*60*60);
+    $yesterday = date('Ymd', time() - 24 * 60 * 60);
     $files = $collection->findOne(['date' => $yesterday]);
 
-    if (!$files) {return false;}
+    if (!$files) {
+      return false;
+    }
+
+    $regex_rules = $db->selectCollection('configs')->findOne(['_id' => 'fisa_contract_regex']);
+    if (!$regex_rules) {
+      LogHelper::log_notice('Could not load regex rules from mongo');
+      return false;
+    }
 
     $lines = [];
-    foreach($files['lines'] as $line) {
+    foreach ($files['lines'] as $line) {
+      $pass = false;
       $row = [];
       list($row['lines'], $row['bytes'], $row['filename']) = [$line[0], $line[1], basename($line[2])];
-      $lines[$row['filename']] = $row;
+      foreach($regex_rules['rules'] as $rule){
+        $pass += preg_match('/'.$rule['actual_pattern'].'/', $row['filename']);
+      }
+      if ($pass) {
+        $lines[$row['filename']] = $row;
+      }
+
     }
     ksort($lines);
     $files['lines'] = $lines;
@@ -341,7 +385,7 @@ class CheckbookEtlStatus
   {
     global $conf;
 
-    if (!self::$message_body){
+    if (!self::$message_body) {
       $uat_status = $this->formatStatus($this->getUatStatus());
       $prod_status = $this->formatStatus($this->getProdStatus());
       $connections = $this->getConnectionConfigs();
