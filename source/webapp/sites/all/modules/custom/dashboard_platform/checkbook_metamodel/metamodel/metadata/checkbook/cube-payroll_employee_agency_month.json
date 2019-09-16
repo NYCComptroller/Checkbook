@@ -259,7 +259,13 @@
                 },
                 "annual_salary_less20k_count": {
                     "function": "SUM(CASE WHEN COALESCE(annual_salary,0) < 20000 THEN 1 ELSE 0 END)"
-                }
+                },
+                "max_hourly_rate":{
+                    "function": "MAX(hourly_rate)"
+                },
+                "max_daily_wage":{
+                    "function": "MAX(daily_wage)"
+              }
             }
         }
     },
