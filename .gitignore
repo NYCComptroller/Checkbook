@@ -11,7 +11,7 @@ source/tests/unit/reports
 source/tests/functional/NYCAutomationTest/*.xls
 *.swp
 *.cache
-
+venv/
 
 
 
