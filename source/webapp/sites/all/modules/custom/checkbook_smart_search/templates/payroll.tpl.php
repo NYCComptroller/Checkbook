@@ -77,7 +77,7 @@ foreach ($payroll_parameter_mapping as $key => $title){
   if(in_array($key, $amount_fields)){
     $value = custom_number_formatter_format($value, 2 , '$');
   }else if(in_array($key, $date_fields)){
-    $value = date("F j, Y", strtotime($value));
+    $value = date("F j, Y", strtotime(substr($value, 0, 10)));
   }else if(array_key_exists($key, $linkable_fields)){
     $value = "<a href='" .$linkable_fields[$key]."'>". _checkbook_smart_search_str_html_entities($value) ."</a>";
   }
