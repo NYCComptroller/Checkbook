@@ -35,7 +35,6 @@ class SpendingUtil{
         if(!isset($categoryId)){
             return NULL;
         }
-
         $categoryDetails = _checkbook_project_querydataset('checkbook:category',$columns, array('spending_category_id'=>$categoryId));
         return $categoryDetails;
     }
@@ -47,6 +46,22 @@ class SpendingUtil{
         $categories = array(1 => 'Contract', 2 => 'Payroll', 3 => 'Capital', 4 => 'Others', 5 => 'Trust & Agency' ,null => 'Total');
         $title = $categories[ RequestUtilities::get('category')]. " Spending Transactions";
         return $title ;
+    }
+
+    /** Returns Spending Category based on 'category' value from current path
+     * @param string $defaultName
+     * @return string
+   */
+    public static function getSpendingCategoryName($defaultName = 'Total Spending')
+    {
+      $categoryId = RequestUtilities::get('category');
+      if (isset($categoryId)) {
+        $categoryDetails = SpendingUtil::getSpendingCategoryDetails($categoryId, 'display_name');
+        if (is_array($categoryDetails)) {
+          return "Total " . $categoryDetails[0]['display_name'];
+        }
+      }
+      return $defaultName;
     }
 
     /**
@@ -554,28 +569,6 @@ class SpendingUtil{
         return '/' . self::getSpendingTransactionPageUrl($override_params);
     }
 
-//    /**
-//     * Given the prime vendor, gets a ~ separated list of sub vendors
-//     * @param $prime_vendor_id
-//     * @return array|null|string
-//     */
-//    static function getSubVendorIdsByPrime($prime_vendor_id){
-//
-//        $year_id = RequestUtilities::getRequestParamValue('year');
-//        $type_of_year = RequestUtilities::getRequestParamValue('yeartype');
-//
-//
-//        $parameters = array('prime_vendor_id'=>$prime_vendor_id,'type_of_year'=>$type_of_year,'year_id'=>$year_id);
-//        $results = _checkbook_project_querydataset( "checkbook:contracts_subven_vendor_spending",array('vendor_id'),$parameters);
-//
-//        foreach($results as $sub_vendor) {
-//            $sub_vendors[] = $sub_vendor['vendor_id'];
-//        }
-//        $sub_vendors = array_unique($sub_vendors);
-//        $sub_vendors = is_array($sub_vendors) ? implode("~", $sub_vendors) : null;
-//        return $sub_vendors;
-//
-//    }
 
     /**
      * Returns Department Amount Link Url based on values from current path & data row
@@ -901,9 +894,9 @@ class SpendingUtil{
      * @param array $override_params
      * @return string
      */
-  public static function getSpendingTransactionPageUrl($override_params = array()) {
-        return self::getSpendingUrl('panel_html/spending_transactions/spending/transactions',$override_params);
-  }
+    public static function getSpendingTransactionPageUrl($override_params = array()) {
+          return self::getSpendingUrl('panel_html/spending_transactions/spending/transactions',$override_params);
+    }
 
     /**
      *  Returns a spending contract details page Url with custom parameters appended but instead of persisted

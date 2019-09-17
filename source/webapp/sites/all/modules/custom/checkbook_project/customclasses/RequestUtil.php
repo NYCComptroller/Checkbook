@@ -74,7 +74,6 @@ class RequestUtil
     public static function isNewWindow()
     {
         $referer = $_SERVER['HTTP_REFERER'];
-
         return preg_match('/newwindow/i', $referer);
     }
 
@@ -113,6 +112,7 @@ class RequestUtil
     {
         return 0 === stripos($path, 'contracts_revenue_landing');
     }
+
     public static function isNYCHAContractPath($path)
     {
         return 0 === stripos($path, 'nycha_contracts');
@@ -342,23 +342,6 @@ class RequestUtil
         return html_entity_decode($title);
     }
 
-    /** Returns Spending Transaction page title based on 'category'/'featured dashboard' value from current path
-     * @param string $defaultName
-     * @return string
-     */
-    public static function getSpendingTransactionTitle($defaultName = 'Total Spending')
-    {
-        $categoryId = RequestUtilities::get('category');
-        if (isset($categoryId)) {
-            $categoryDetails = SpendingUtil::getSpendingCategoryDetails($categoryId, 'display_name');
-            if (is_array($categoryDetails)) {
-                return "Total " . $categoryDetails[0]['display_name'];
-            }
-        }
-
-        return $defaultName;
-    }
-
     /**
      * Returns chart title for a prime or sub vendor page based on 'category'/'featured dashboard'/'domain'
      * using values from current path.
@@ -400,8 +383,7 @@ class RequestUtil
         $title = $MWBE_certified
             ? '<p class="sub-chart-title">M/WBE Category: ' . $minority_category . '</p>'
             : $minority_category . ' ';
-        $title .= RequestUtil::getSpendingCategoryName($defaultTitle);
-
+        $title .= SpendingUtil::getSpendingCategoryName($defaultTitle);
         return html_entity_decode($title);
     }
 
@@ -436,23 +418,6 @@ class RequestUtil
         $minority_type_id = $minority_types[0]['minority_type_id'];
 
         return $minority_type_id;
-    }
-
-    /** Returns Spending Category based on 'category' value from current path
-     * @param string $defaultName
-     * @return string
-     */
-    public static function getSpendingCategoryName($defaultName = 'Total Spending')
-    {
-        $categoryId = RequestUtilities::get('category');
-        if (isset($categoryId)) {
-            $categoryDetails = SpendingUtil::getSpendingCategoryDetails($categoryId, 'display_name');
-            if (is_array($categoryDetails)) {
-                return $categoryDetails[0]['display_name'];
-            }
-        }
-
-        return $defaultName;
     }
 
     /** Returns Spending page title and Breadcrumb */
