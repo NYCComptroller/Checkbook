@@ -246,7 +246,7 @@ foreach ($contracts_parameter_mapping as $key => $title){
     $value = custom_number_formatter_format($value, 2 , '$');
   }else if(in_array($key, $date_fields)){
     if($value != null && $value != "N/A" ){
-      $value = date("F j, Y", strtotime($value));
+      $value = date("F j, Y", strtotime(substr($value, 0, 10)));
     }
   }else if(array_key_exists($key, $linkable_fields)){
     $value = "<a href='" . $linkable_fields[$key]. "'>". $value ."</a>";
