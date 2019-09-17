@@ -300,7 +300,7 @@ class RequestUtil
             $smnid = RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL);
             $payroll_type = RequestUtil::getRequestKeyValueFromURL("payroll_type", $bottomURL);
             if(isset($payroll_type)){
-                $title = RequestUtil::getPayrollTitlebyType($payroll_type);
+                $title = PayrollUtil::getPayrollTitlebyType($payroll_type);
             }
             else if ($smnid > 0) {
                 $title = NodeSummaryUtil::getInitNodeSummaryTitle($smnid);
@@ -1453,27 +1453,6 @@ class RequestUtil
         }
       }
       return html_entity_decode($title);
-    }
-
-    public static function getPayrollTitlebyType($type){
-        $title = '';
-        switch($type){
-            case "nonsalaried":
-                $title ="Payroll Summary by Number of Non-Salaried Employees";
-                break;
-        }
-        return $title;
-    }
-    public static function getPayrollType(){
-        $URL =  $_SERVER['HTTP_REFERER'];
-
-        $payroll_type = RequestUtil::getRequestKeyValueFromURL("payroll_type", $URL);
-        if($payroll_type){
-            return PayrollType::$NON_SALARIED;
-        }
-        else{
-            return PayrollType::$SALARIED;
-        }
     }
 }
 
