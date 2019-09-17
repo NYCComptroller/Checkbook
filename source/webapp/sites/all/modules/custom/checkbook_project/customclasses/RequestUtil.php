@@ -1394,7 +1394,7 @@ class RequestUtil
             $title = 'NYCHA Contracts Transactions';
         } else if(stripos($bottomURL, 'transactions')){
             $code= RequestUtil::getRequestKeyValueFromURL("tCode",$bottomURL);
-            $title = self::getTitleByCode($code). ' Contracts Transactions';
+            $title = NYCHAContractUtil::getTitleByCode($code). ' Contracts Transactions';
         } else if (preg_match('/contract/', $bottomURL)) {
             $title = RequestUtil::getRequestKeyValueFromURL("contract", $bottomURL);
         }else {
@@ -1454,46 +1454,7 @@ class RequestUtil
       }
       return html_entity_decode($title);
     }
-    public static function getTitleByCode($tcode){
-        $summaryTitle='';
 
-        switch($tcode){
-            case 'BA':
-                $summaryTitle = 'Blanket Agreements';
-                break;
-            case 'BAM':
-                $summaryTitle='Blanket Agreement Modifications';
-                break;
-            case 'PA':
-                $summaryTitle='Planned Agreements';
-                break;
-            case 'PAM':
-                $summaryTitle='Planned Agreement Modifications';
-                break;
-            case 'PO':
-                $summaryTitle='Purchase Orders';
-                break;
-            case 'VO':
-                $summaryTitle='Vendors';
-                break;
-            case 'AWD':
-                $summaryTitle='Award Methods';
-                break;
-            case 'IND':
-                $summaryTitle='Contracts by Industries';
-                break;
-            case 'RESC':
-                $summaryTitle='Responsibility Centers';
-                break;
-            case 'DEP':
-                $summaryTitle='Departments';
-                break;
-            case 'SZ':
-                $summaryTitle='Contracts by Size';
-                break;
-        }
-        return $summaryTitle;
-    }
     public static function getPayrollTitlebyType($type){
         $title = '';
         switch($type){
