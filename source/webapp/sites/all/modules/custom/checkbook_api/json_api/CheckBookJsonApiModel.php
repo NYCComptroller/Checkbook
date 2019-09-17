@@ -132,6 +132,9 @@ class CheckBookJsonApiModel
      */
     public function get_etl_status()//: array
     {
+        if (!defined('CHECKBOOK_NO_DB_CACHE')) {
+          define('CHECKBOOK_NO_DB_CACHE', true);
+        }
         $query = "SELECT DISTINCT 
                   MAX(refresh_end_date :: TIMESTAMP) AS last_successful_run
                 FROM etl.refresh_shards_status
