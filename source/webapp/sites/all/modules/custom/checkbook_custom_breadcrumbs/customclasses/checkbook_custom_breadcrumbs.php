@@ -8,7 +8,7 @@
 class CustomBreadcrumbs
 {
   /** Returns Revenue page title and Breadcrumb */
-  function getRevenueBreadcrumbTitle()
+  public static function getRevenueBreadcrumbTitle()
   {
     $bottomURL = isset($_REQUEST['expandBottomContURL']) ? $_REQUEST['expandBottomContURL'] : FALSE;
     $find = '_' . $bottomURL . current_path();

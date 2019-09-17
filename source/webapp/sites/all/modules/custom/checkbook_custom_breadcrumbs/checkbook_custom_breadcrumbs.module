@@ -612,7 +612,6 @@ function _checkbook_custom_breadcrumnb_add_breadcrumb_title()
   }
 }
 
-
 function _checkbook_custom_breadcrumb_is_hierarchical()
 {
   if (preg_match('/(contract-api)|(payroll-api)|(spending-api)|(budget-api)|(revenue-api)/', current_path())) {
