@@ -19,12 +19,7 @@
  */
 
 $agreement_type = RequestUtilities::get('agreement_type');
-if($agreement_type ){
-   $tcode = $agreement_type;
-}
-else {
-    $tcode = RequestUtilities::get('tCode');
-}
+$tcode = RequestUtilities::get('tCode');
 $summaryTitle = '';
 global $checkbook_breadcrumb_title;
 
