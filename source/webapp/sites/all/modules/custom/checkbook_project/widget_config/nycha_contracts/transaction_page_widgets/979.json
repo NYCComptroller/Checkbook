@@ -64,9 +64,6 @@
     "release_number_formatted": {
       "expression":"($row['release_number'] == null) ? '-' : $row['release_number']"
     },
-    "display_release_line_number_formatted": {
-      "expression":"($row['display_release_line_number'] == null) ? '-' : $row['display_release_line_number']"
-    },
     "item_category_descr_formatted":{
       "expression": "_get_tooltip_markup($row['item_category_descr'],36)"
     },
@@ -173,7 +170,6 @@
     {"label":"","column":"", "export":false},
     {"labelAlias":"number_of_releases", "column":"number_of_releases_formatted", "sortSourceColumn":"number_of_releases"},
     {"labelAlias":"release_number","column":"release_number_formatted","sortSourceColumn":"release_number"},
-    {"labelAlias":"display_release_line_number","column":"display_release_line_number_formatted","sortSourceColumn":"display_release_line_number"},
     {"labelAlias":"item_category","column":"item_category_descr_formatted","sortSourceColumn":"item_category_descr"},
     {"labelAlias":"item_description","column":"item_description_formatted","sortSourceColumn":"item_description"},
     {"labelAlias":"quantity_ordered","column":"item_qty_ordered_formatted", "sortSourceColumn":"item_qty_ordered"},
@@ -239,7 +235,6 @@
       {"sClass":"text", "sWidth":"150px","asSorting":["asc","desc"]},
       {"sClass":"number-center", "sWidth":"80px","asSorting":["asc","desc"]},
       {"bSortable":false,"sWidth":"10px"},
-      {"sClass":"number-center", "sWidth":"110px","asSorting":["asc","desc"]},
       {"sClass":"number-center", "sWidth":"110px","asSorting":["asc","desc"]},
       {"sClass":"number-center", "sWidth":"110px","asSorting":["asc","desc"]},
       {"sClass":"text", "sWidth":"175px","asSorting":["asc","desc"]},
