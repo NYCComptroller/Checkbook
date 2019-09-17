@@ -701,63 +701,75 @@ function widget_data_tables_add_js($node){
         }
     }
 
-if(isset($node->widgetConfig->stickyHeader)){
-    //<editor-fold desc="Sticky Headers">
+if(isset($node->widgetConfig->stickyHeader)) {
+  //<editor-fold desc="Sticky Headers">
 
-    /* NYCCHKBK-3724: hooks into fnDrawCallback and fnInitComplete for sticky header implementation */
+  /* NYCCHKBK-3724: hooks into fnDrawCallback and fnInitComplete for sticky header implementation */
 
-    //Append custom js to events
-    $fnInitComplete = $oldDataTableOptions["fnInitComplete"];
-    $fnInitCompleteExists = isset($fnInitComplete) ? true:false;
-    $fnInitComplete = str_replace("##","",$fnInitComplete);
-    $fnInitComplete = $fnInitComplete ? substr_replace($fnInitComplete,"fnCustomInitComplete();}",strlen($fnInitComplete)-1,1)  : "function () { new fnCustomInitComplete(); }";
-    $fnInitComplete = "##".$fnInitComplete."##";
+  //Append custom js to events
+  $fnInitComplete = $oldDataTableOptions["fnInitComplete"];
+  $fnInitCompleteExists = isset($fnInitComplete) ? true : false;
+  $fnInitComplete = str_replace("##", "", $fnInitComplete);
+  $fnInitComplete = $fnInitComplete ? substr_replace($fnInitComplete, "fnCustomInitComplete();}", strlen($fnInitComplete) - 1, 1) : "function () { new fnCustomInitComplete(); }";
+  $fnInitComplete = "##" . $fnInitComplete . "##";
 
-    $fnDrawCallback = $oldDataTableOptions["fnDrawCallback"];
-    $fnDrawCallbackExists = isset($fnDrawCallback);
-    $fnDrawCallback = str_replace("##","",$fnDrawCallback);
-    $fnDrawCallback = $fnDrawCallback ? substr_replace($fnDrawCallback,"fnCustomDrawCallback();}",strlen($fnDrawCallback)-1,1)  : "function () { new fnCustomDrawCallback(); }";
-    $fnDrawCallback = "##".$fnDrawCallback."##";
+  $fnDrawCallback = $oldDataTableOptions["fnDrawCallback"];
+  $fnDrawCallbackExists = isset($fnDrawCallback);
+  $fnDrawCallback = str_replace("##", "", $fnDrawCallback);
+  $fnDrawCallback = $fnDrawCallback ? substr_replace($fnDrawCallback, "fnCustomDrawCallback();}", strlen($fnDrawCallback) - 1, 1) : "function () { new fnCustomDrawCallback(); }";
+  $fnDrawCallback = "##" . $fnDrawCallback . "##";
 
 //    if the function exists, update it, else insert it to the front
-    if($fnDrawCallbackExists)
-        $oldDataTableOptions["fnDrawCallback"] = $fnDrawCallback;
-    else
-        $oldDataTableOptions = array_slice($oldDataTableOptions, 0, 0, true) +
-            array("fnDrawCallback" => $fnDrawCallback) +
-            array_slice($oldDataTableOptions, 0, NULL, true);
+  if ($fnDrawCallbackExists)
+    $oldDataTableOptions["fnDrawCallback"] = $fnDrawCallback;
+  else
+    $oldDataTableOptions = array_slice($oldDataTableOptions, 0, 0, true) +
+      array("fnDrawCallback" => $fnDrawCallback) +
+      array_slice($oldDataTableOptions, 0, NULL, true);
 
-    if($fnInitCompleteExists)
-        $oldDataTableOptions["fnInitComplete"] = $fnInitComplete;
-    else
-        $oldDataTableOptions = array_slice($oldDataTableOptions, 0, 0, true) +
-            array("fnInitComplete" => $fnInitComplete) +
-            array_slice($oldDataTableOptions, 0, NULL, true);
+  if ($fnInitCompleteExists)
+    $oldDataTableOptions["fnInitComplete"] = $fnInitComplete;
+  else
+    $oldDataTableOptions = array_slice($oldDataTableOptions, 0, 0, true) +
+      array("fnInitComplete" => $fnInitComplete) +
+      array_slice($oldDataTableOptions, 0, NULL, true);
 
-
-    //Custom js for sticky headers, top spacing will change if the drupal admin menu is present
-    $sticky_header_js = "
-    function fnCustomDrawCallback() {
-        jQuery('.dataTables_scrollHead').width(jQuery('.dataTables_scroll').width());
+  //Custom js for sticky headers, top spacing will change if the drupal admin menu is present
+  $datasource = RequestUtilities::getRequestParamValue('datasource');
+ //Custom js for nycha transcation pages top scroll and height adjustments
+  if ('checkbook_nycha' === $datasource) {
+    $scroller_header_js = "
+    function fnCustomDrawCallback() { 
+      jQuery('.dataTables_scrollHead').css('overflow', 'auto');
+      jQuery('.dataTables_scrollHead').scroll(function () {
+      jQuery('.dataTables_scrollBody').scrollLeft(jQuery(this).scrollLeft());
+          }); 
+      jQuery('.DTFC_LeftBodyWrapper').css('margin-top','17px');
+      }";
+  }
+  else{
+    $scroller_header_js = "
+    function fnCustomDrawCallback() { 
+      jQuery('.dataTables_scrollHead').width(jQuery('.dataTables_scroll').width());
     	jQuery('.dataTables_scrollHead').scrollLeft(0);
-    	jQuery('.dataTables_scrollBody').scrollLeft(0);	
-    }
-    function fnCustomInitComplete() {
-        var topSpacing = ".(user_is_logged_in() ? 66 : 0).";
+    	jQuery('.dataTables_scrollBody').scrollLeft(0);
+      }";
+  }
 
-        var tableOffsetTop = jQuery('.dataTables_scroll').offset().top;
-        var tableHeight = jQuery('.dataTables_scroll').height();
-        var docHeight = jQuery(document).height();
-        var bottomSpacing = docHeight - (tableOffsetTop + tableHeight);
-
-        jQuery('.dataTables_scrollHead').sticky({ topSpacing: topSpacing, bottomSpacing: bottomSpacing, getWidthFrom:'.dataTables_scroll' });
+  $sticky_header_js = "
+     function fnCustomInitComplete() {
+       var topSpacing = " . (user_is_logged_in() ? 66 : 0) . ";
+       var tableOffsetTop = jQuery('.dataTables_scroll').offset().top;
+       var tableHeight = jQuery('.dataTables_scroll').height();
+       var docHeight = jQuery(document).height();
+       var bottomSpacing = docHeight - (tableOffsetTop + tableHeight);
+       jQuery('.dataTables_scrollHead').sticky({ topSpacing: topSpacing, bottomSpacing: bottomSpacing, getWidthFrom:'.dataTables_scroll' });
 
         if( jQuery('.DTFC_ScrollWrapper') && jQuery('.DTFC_ScrollWrapper').offset()) {
-            jQuery('.DTFC_LeftHeadWrapper').sticky({ topSpacing: topSpacing, bottomSpacing: bottomSpacing, getWidthFrom:'.DTFC_LeftWrapper' });
-        }
+          jQuery('.DTFC_LeftHeadWrapper').sticky({ topSpacing: topSpacing, bottomSpacing: bottomSpacing, getWidthFrom:'.DTFC_LeftWrapper' });
+        } 
     }";
-    //</editor-fold desc="Sticky Headers">
-}
+  }
 
     $dataTableOptions = json_encode((object)$oldDataTableOptions);
 
@@ -776,7 +788,8 @@ if(isset($node->widgetConfig->stickyHeader)){
 		        oTable" . $id  .  ".initAjaxSource = '" . $node->widgetConfig->sAjaxSource . _checkbook_append_url_params() . "' ;
 
 	    		" . stripcslashes($node->widgetConfig->customJS) .
-        (isset($sticky_header_js) ? $sticky_header_js : '') . //append sticky headers js
+        (isset($sticky_header_js) ? $sticky_header_js : '') .//append sticky header js
+        (isset($scroller_header_js) ? $scroller_header_js : '') .//append scroller headers js
         "} );" .
         stripcslashes($node->widgetConfig->customExternalJS);
 
