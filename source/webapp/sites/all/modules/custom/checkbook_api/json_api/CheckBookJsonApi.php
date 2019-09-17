@@ -337,7 +337,7 @@ class CheckBookJsonApi
         global $conf;
 
         $return = [];
-        if ('UAT' == $conf['CHECKBOOK_ENV']) {
+        if ('UAT' == $conf['CHECKBOOK_ENV'] || ($conf['get_direct_uat_etl_status'] ?? false)) {
             $return = $this->Helper->getUatEtlStatus();
         } elseif ('PROD' == $conf['CHECKBOOK_ENV']) {
             $return = $this->Helper->getProdEtlStatus();
