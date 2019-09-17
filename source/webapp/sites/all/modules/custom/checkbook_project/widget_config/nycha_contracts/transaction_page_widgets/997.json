@@ -5,6 +5,7 @@
     {"labelAlias":"record_type","column":"record_type"},
     {"labelAlias":"number_of_releases","column":"number_of_releases"},
     {"labelAlias":"release_number","column":"release_number"},
+    {"labelAlias":"display_release_line_number","column":"display_release_line_number"},
     {"labelAlias":"item_category","column":"item_category_descr"},
     {"labelAlias":"item_description","column":"item_description"},
     {"labelAlias":"quantity_ordered","column":"item_qty_ordered"},
