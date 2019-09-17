@@ -235,30 +235,6 @@ class RequestUtil
     }*/
 
 
-    /** Prepares Payroll bottom navigation filter
-     * @param $page
-     * @param $category
-     * @return string
-     */
-    public static function prepareSpendingBottomNavFilter($page, $category)
-    {
-        $pathParams = explode('/', drupal_get_path_alias($_GET['q']));
-        $url = $page;
-        if (strlen($category) > 0) {
-            $url .= "/category/" . $category;
-        }
-        $url .= _checkbook_append_url_params();
-        $allowedFilters = array("year", "calyear", "agency", "yeartype", "vendor", "industry");
-        for ($i = 1; $i < count($pathParams); $i++) {
-            if (in_array($pathParams[$i], $allowedFilters)) {
-                $url .= '/' . $pathParams[$i] . '/' . $pathParams[($i + 1)];
-            }
-            $i++;
-        }
-        return $url;
-
-    }
-
     /**
      * @return string
      */
