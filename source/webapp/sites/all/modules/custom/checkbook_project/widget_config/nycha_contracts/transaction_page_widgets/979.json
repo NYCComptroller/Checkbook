@@ -275,14 +275,14 @@
     "sScrollX":"100%",
     "bScrollCollapse": true
   },
-  "customJS":"
+  //"customJS":"
     // Enable THEAD scroll bars
-    jQuery('.dataTables_scrollHead').css('overflow', 'auto');
+    //jQuery('.dataTables_scrollHead').css('overflow', 'auto');
     // Sync THEAD scrolling with TBODY
-    jQuery('.dataTables_scrollHead').scroll(function () {
-      jQuery('.dataTables_scrollBody').scrollLeft(jQuery(this).scrollLeft());
-    });
-  ",
+    //jQuery('.dataTables_scrollHead').scroll(function () {
+    //  jQuery('.dataTables_scrollBody').scrollLeft(jQuery(this).scrollLeft());
+    //});
+  //",
     "customExternalJS":"
     function prepareTableListFilterUrl() {
           var oVendorNms = getNamedFilterCriteria('fvendorNm');
