@@ -194,6 +194,15 @@
                             "sourceColumnName": "pay_date"
                         }
                     ]
+                },
+                {
+                  "name": "hourly_rate",
+                  "levels": [
+                    {
+                      "name": "hourly_rate",
+                      "sourceColumnName": "hourly_rate"
+                    }
+                  ]
                 }
             ],
             "measures":{
@@ -203,7 +212,7 @@
                 "payroll_type": {
                     "function": "MAX(CASE WHEN amount_basis_id = 1 THEN 'Salaried' ELSE 'Non-Salaried' END)"
                 },
-                "annual_salary_pay":{
+                /*"annual_salary_pay":{
                     "function": "CASE WHEN amount_basis_id = 1 THEN annual_salary ELSE NULL END"
                 },
                 "hourly_rate_pay":{
@@ -217,7 +226,7 @@
                 },
                 "hourly_rate_amount":{
                     "function": "CASE WHEN amount_basis_id = 3 THEN  annual_salary ELSE NULL END"
-                },
+                },*/
                 "total_gross_pay": {
                     "function": "SUM(gross_pay)"
                 },
