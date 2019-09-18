@@ -194,12 +194,6 @@
         "total_non_salaried_amount": {
           "function": "SUM( CASE WHEN type_of_employment = 'Salaried' THEN NULL else COALESCE(annual_salary,0) END)"
         },
-        "total_daily_wage_amount": {
-          "function": "SUM( CASE WHEN amount_basis_id = 2 THEN  COALESCE(annual_salary,0) else NULL END)"
-        },
-        "total_hourly_rate_amount": {
-          "function": "SUM( CASE WHEN amount_basis_id = 3 THEN  COALESCE(annual_salary,0) else NULL END)"
-        },
         "total_hourly_employees": {
           "function": "SUM( CASE WHEN type_of_employment = 'Salaried' THEN NULL else COALESCE(annual_salary,0) END)"
         },
