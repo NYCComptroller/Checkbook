@@ -39,8 +39,8 @@
     {"labelAlias":"project","column":"gl_project_descr"}
   ],
   "preProcessConfiguration":"
-    $contract_type = RequestUtil::getContractType();
-    $node->show_difference = ($contract_type= 'BAM'||$contract_type= 'PAM');
+    $contract_type = RequestUtilities::get('tCode', ['q' => $_SERVER['HTTP_REFERER']]);
+    $node->show_difference = ($contract_type == 'BAM'||$contract_type == 'PAM');
   ",
   "exportColumnSqlOverride":[
     {

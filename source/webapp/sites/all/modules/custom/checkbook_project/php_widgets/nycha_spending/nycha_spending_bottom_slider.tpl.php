@@ -34,7 +34,7 @@
               if (RequestUtilities::get("category") == $category_id || (RequestUtilities::get("category") == "" && $category_id == 0)) {
                   $active_class = ' class="active"';
               }
-              $link = RequestUtil::prepareSpendingBottomNavFilter("nycha_spending", (($category_id == 0) ? null: $category_id));
+              $link = SpendingUtil::prepareSpendingBottomNavFilter("nycha_spending", (($category_id == 0) ? null: $category_id));
               $amount = "<span class='dollars'>" . custom_number_formatter_format($categories[$category_id]['amount'],1,'$') . "</span>";
               $category_name = $categories[$category_id]['name'].'<br>Spending<br>';
 
