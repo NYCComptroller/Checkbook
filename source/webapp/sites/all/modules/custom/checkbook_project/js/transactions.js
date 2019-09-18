@@ -51,7 +51,7 @@ function getNamedFilterCriteria(filterName){
 }
 
 /**
- * 
+ *
  * Function to apply table filters
  *
  */
@@ -83,6 +83,8 @@ function fnCustomInitCompleteReload() {
 
     //NYCCHKBK-9146:Enable THEAD scroll bars for NYCHA Transactions Table
     jQuery('#table_979_wrapper .dataTables_scrollHead').css('overflow', 'auto');
+    jQuery('#table_1012_wrapper .dataTables_scrollHead').css('overflow', 'auto');
+    jQuery('#table_317_wrapper .dataTables_scrollHead').css('overflow', 'auto');
 
     jQuery('.dataTables_scrollHead').sticky({ 'topSpacing': topSpacing , 'bottomSpacing': bottomSpacing, getWidthFrom:'.dataTables_scroll' });
     jQuery('.dataTables_scrollHead').sticky('update');
@@ -101,7 +103,7 @@ function applyTableListFiltersAutocomplete(label, field){
     var value = replaceAllOccurrences('/', '__', label.item.value);
     value = replaceAllOccurrences('%2F', encodeURIComponent('__'), value);
     cUrl = updateURLForTableListFilters(cUrl, jQuery(field).attr("name"), value);
-    
+
     oTable.fnSettings().sAjaxSource = cUrl;
     oTable.fnClearTable(0);
     oTable.fnDraw();
@@ -118,7 +120,7 @@ function updateURLForTableListFilters(cUrl, id, value){
 	}else{
 		cUrl = cUrl + '/' + id + '/'+value;
 	}
-	
+
 	return cUrl;
 }
 

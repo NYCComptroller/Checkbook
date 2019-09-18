@@ -312,7 +312,7 @@ $contract = $node->data;
             <?= WidgetUtil::getLabelDiv('original_amount') ?>
           </th>
           <th>
-            <?= WidgetUtil::getLabelDiv('nypo_invoiced_amount') ?>
+            <?= WidgetUtil::getLabelDiv('invoiced_amount') ?>
           </th>
         </tr>
         </thead>
@@ -369,7 +369,7 @@ $contract = $node->data;
                           <?= WidgetUtil::getLabelDiv('original_amount') ?>
                         </th>
                         <th class="center endCol">
-                          <?= WidgetUtil::getLabelDiv('nypo_invoiced_amount') ?>
+                          <?= WidgetUtil::getLabelDiv('invoiced_amount') ?>
                         </th>
                         <th class="text endCol">
                           <?= WidgetUtil::getLabelDiv('responsibility_center') ?>
