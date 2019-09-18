@@ -51,3 +51,4 @@ files[] = customclasses/contract/PendingContractDetails.php
 files[] = customclasses/util/MappingUtil.php
 files[] = customclasses/util/CheckbookAPIUtil.php
 files[] = customclasses/budget/BudgetUtil.php
+files[] = customclasses/revenue/RevenueUtil.php

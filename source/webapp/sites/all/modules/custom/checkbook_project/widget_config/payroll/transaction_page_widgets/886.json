@@ -77,7 +77,7 @@
 
 
             $smnid = RequestUtilities::getRequestParamValue('smnid');
-            $payroll_type = RequestUtil::getPayrollType();
+            $payroll_type = PayrollUtil::getPayrollType();
             if(isset($smnid)){
                 switch($smnid){
                     case 322:
@@ -125,7 +125,7 @@ $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoCol
                 $node->widgetConfig->dataset = 'checkbook:payroll_employee_agency_title';
                 }
                 if(isset($parameters['employment_type.employment_type'])){
-                      $parameters['employment_type.employment_type']=RequestUtil::getPayrollType();
+                      $parameters['employment_type.employment_type']=PayrollUtil::getPayrollType();
                  }
 
                 $adjustedParameters = $parameters;

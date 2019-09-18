@@ -29,7 +29,7 @@
     $year = $yearLabel.$year;
     $amount = _checkbook_project_pre_process_aggregation($node,'check_amount_sum');
     $amount = custom_number_formatter_format($amount,2,'$');
-    $catname = RequestUtil::getSpendingTransactionTitle();
+    $catname = SpendingUtil::getSpendingCategoryName();
     $monthDetails = CheckbookDateUtil::getMonthDetails(RequestUtilities::get('month'));
     if(isset($monthDetails)){
         $month = strtoupper($monthDetails[0]['month_name']);
