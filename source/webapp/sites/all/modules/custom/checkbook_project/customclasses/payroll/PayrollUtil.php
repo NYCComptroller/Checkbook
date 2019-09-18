@@ -287,7 +287,26 @@ class PayrollUtil {
         catch (Exception $e) {
             log_error("Error in function getEmployeeCount() \nError getting data from controller: \n" . $e->getMessage());
         }
+    }
 
+    static function getPayrollTitlebyType($type){
+      $title = '';
+      switch($type){
+        case "nonsalaried":
+          $title ="Payroll Summary by Number of Non-Salaried Employees";
+          break;
+      }
+      return $title;
+    }
 
+    static function getPayrollType(){
+      $URL =  $_SERVER['HTTP_REFERER'];
+      $payroll_type = RequestUtil::getRequestKeyValueFromURL("payroll_type", $URL);
+      if($payroll_type){
+        return PayrollType::$NON_SALARIED;
+      }
+      else{
+        return PayrollType::$SALARIED;
+      }
     }
 }

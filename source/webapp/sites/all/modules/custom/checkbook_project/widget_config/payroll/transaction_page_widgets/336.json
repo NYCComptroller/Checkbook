@@ -112,7 +112,7 @@
     "adjustDataTableOptions":"
         $adjustDataTableOptions = $node->widgetConfig->dataTableOptions;
         $nid = RequestUtilities::getRequestParamValue('smnid');
-        $payroll_type = RequestUtil::getPayrollType();
+        $payroll_type = PayrollUtil::getPayrollType();
         $datasource = RequestUtilities::getRequestParamValue('datasource');
     foreach($node->widgetConfig->table_columns as $key => $table_column){
     //daily wage column must not be included in citywide

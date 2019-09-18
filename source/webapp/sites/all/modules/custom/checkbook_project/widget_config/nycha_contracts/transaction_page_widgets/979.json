@@ -50,8 +50,8 @@
     "agreement_amount_difference","agreement_percent_difference", "record_type" ],
   "uniqueSortColumn":["-sort_sequence"],
   "preProcessConfiguration":"
-      $contract_type = RequestUtil::getContractType();
-      $node->show_difference = ($contract_type== 'BAM'||$contract_type== 'PAM');
+      $contract_type = RequestUtilities::get('tCode', ['q' => $_SERVER['HTTP_REFERER']]);
+      $node->show_difference = ($contract_type == 'BAM'||$contract_type == 'PAM');
   ",
   "caption":"",
   "derivedColumns": {

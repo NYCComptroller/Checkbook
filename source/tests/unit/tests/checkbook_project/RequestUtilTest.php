@@ -1,6 +1,7 @@
 <?php
 
 include_once CUSTOM_MODULES_DIR . '/checkbook_project/customclasses/RequestUtil.php';
+include_once CUSTOM_MODULES_DIR . '/checkbook_custom_breadcrumbs/customclasses/checkbook_custom_breadcrumbs.php';
 
 use PHPUnit\Framework\TestCase;
 
@@ -133,15 +134,15 @@ class RequestUtilTest extends TestCase
         $mock_current_path = '/panel_html/budget_agency_perecent_difference_transactions/budget/agency_details/dtsmnid/560/yeartype/B/year/119';
         $_REQUEST['expandBottomContURL'] = 'budget/yeartype/B/year/119';
 
-        $this->assertEquals('53 Expense Budget', RequestUtil::getBudgetBreadcrumbTitle());
+        $this->assertEquals('53 Expense Budget', CustomBreadcrumbs::getBudgetBreadcrumbTitle());
 
         $mock_current_path = 'panel_html/budget_agency_perecent_difference_transactions/budget/agency_details/dtsmnid/560/yeartype/B/year/119';
         unset($_REQUEST['expandBottomContURL']);
 
-        $this->assertEquals('getInitNodeSummaryTitle :: 560', RequestUtil::getBudgetBreadcrumbTitle());
+        $this->assertEquals('getInitNodeSummaryTitle :: 560', CustomBreadcrumbs::getBudgetBreadcrumbTitle());
 
         $mock_current_path = 'budget/transactions/year/119';
         unset($_REQUEST['expandBottomContURL']);
-        $this->assertEquals('Expense Budget Transactions', RequestUtil::getBudgetBreadcrumbTitle());
+        $this->assertEquals('Expense Budget Transactions', CustomBreadcrumbs::getBudgetBreadcrumbTitle());
     }
 }

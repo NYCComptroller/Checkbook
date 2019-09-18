@@ -23,7 +23,7 @@ $tcode = RequestUtilities::get('tCode');
 $summaryTitle = '';
 global $checkbook_breadcrumb_title;
 
-$summaryTitle = RequestUtil::getTitleByCode($tcode);
+$summaryTitle = NYCHAContractUtil::getTitleByCode($tcode);
 if(empty($summaryTitle)){
     $summaryTitle = 'NYCHA';
 }

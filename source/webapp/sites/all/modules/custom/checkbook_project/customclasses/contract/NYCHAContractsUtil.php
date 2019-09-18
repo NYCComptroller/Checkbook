@@ -30,4 +30,48 @@ class NYCHAContractUtil
         }
         return $parameters;
     }
+
+    /**
+     * @param $tcode String -- Widget Key
+     * @return string -- Returns Widget Title for the given key
+     */
+    public static function getTitleByCode($tcode){
+      $summaryTitle='';
+      switch($tcode){
+        case 'BA':
+          $summaryTitle = 'Blanket Agreements';
+          break;
+        case 'BAM':
+          $summaryTitle='Blanket Agreement Modifications';
+          break;
+        case 'PA':
+          $summaryTitle='Planned Agreements';
+          break;
+        case 'PAM':
+          $summaryTitle='Planned Agreement Modifications';
+          break;
+        case 'PO':
+          $summaryTitle='Purchase Orders';
+          break;
+        case 'VO':
+          $summaryTitle='Vendors';
+          break;
+        case 'AWD':
+          $summaryTitle='Award Methods';
+          break;
+        case 'IND':
+          $summaryTitle='Contracts by Industries';
+          break;
+        case 'RESC':
+          $summaryTitle='Responsibility Centers';
+          break;
+        case 'DEP':
+          $summaryTitle='Departments';
+          break;
+        case 'SZ':
+          $summaryTitle='Contracts by Size';
+          break;
+      }
+      return $summaryTitle;
+    }
 }
