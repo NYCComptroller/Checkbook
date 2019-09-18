@@ -120,7 +120,7 @@
     "adjustDataTableOptions":"
             $adjustDataTableOptions = $node->widgetConfig->dataTableOptions;
             $nid = RequestUtilities::getRequestParamValue('smnid');
-            $payroll_type = RequestUtil::getPayrollType();
+            $payroll_type = PayrollUtil::getPayrollType();
             $datasource = RequestUtilities::getRequestParamValue('datasource');
              $monthId = RequestUtilities::getRequestParamValue('month');
 

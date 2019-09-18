@@ -582,19 +582,19 @@ function _checkbook_custom_breadcrumnb_add_breadcrumb_title()
     $links = array(l(t('Home'), ''), l(t('API'), 'data-feeds/api'), 'Revenue API');
     drupal_set_breadcrumb($links);
   } else if (preg_match('/^contract/', current_path())) {
-    $checkbook_breadcrumb_title = RequestUtil::getContractBreadcrumbTitle();
+    $checkbook_breadcrumb_title = CustomBreadcrumbs::getContractBreadcrumbTitle();
   } else if (preg_match('/^nycha_contracts/', current_path())) {
-    $checkbook_breadcrumb_title = RequestUtil::getNYCHAContractBreadcrumbTitle();
+    $checkbook_breadcrumb_title = CustomBreadcrumbs::getNYCHAContractBreadcrumbTitle();
   } elseif (preg_match('/^payroll/', current_path())) {
-    $checkbook_breadcrumb_title = RequestUtil::getPayrollBreadcrumbTitle();
+    $checkbook_breadcrumb_title = CustomBreadcrumbs::getPayrollBreadcrumbTitle();
   } elseif (preg_match('/^spending/', current_path())) {
-    $checkbook_breadcrumb_title = RequestUtil::getSpendingBreadcrumbTitle();
+    $checkbook_breadcrumb_title = CustomBreadcrumbs::getSpendingBreadcrumbTitle();
   } else if (preg_match('/^nycha_spending/', current_path())) {
-    $checkbook_breadcrumb_title = RequestUtil::getNYCHASpendingBreadcrumbTitle();
+    $checkbook_breadcrumb_title = CustomBreadcrumbs::getNYCHASpendingBreadcrumbTitle();
   } elseif (preg_match('/^budget/', current_path())) {
-    $checkbook_breadcrumb_title = RequestUtil::getBudgetBreadcrumbTitle();
+    $checkbook_breadcrumb_title = CustomBreadcrumbs::getBudgetBreadcrumbTitle();
   } elseif (preg_match('/^revenue/', current_path())) {
-    $checkbook_breadcrumb_title = RequestUtil::getRevenueBreadcrumbTitle();
+    $checkbook_breadcrumb_title = CustomBreadcrumbs::getRevenueBreadcrumbTitle();
   } elseif (preg_match('/smart_search/', current_path())) {
     $datasource = _checkbook_get_datasource();
     switch ($datasource) {
@@ -611,7 +611,6 @@ function _checkbook_custom_breadcrumnb_add_breadcrumb_title()
     drupal_set_breadcrumb($links);
   }
 }
-
 
 function _checkbook_custom_breadcrumb_is_hierarchical()
 {
