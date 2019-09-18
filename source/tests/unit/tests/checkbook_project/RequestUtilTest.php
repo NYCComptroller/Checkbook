@@ -1,6 +1,7 @@
 <?php
 
 include_once CUSTOM_MODULES_DIR . '/checkbook_project/customclasses/RequestUtil.php';
+include_once CUSTOM_MODULES_DIR . '/checkbook_custom_breadcrumbs/customclasses/checkbook_custom_breadcrumbs.php';
 
 use PHPUnit\Framework\TestCase;
 
