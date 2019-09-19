@@ -32,7 +32,10 @@
     "html_class": "initiative-table",
     "no_results_content":"No Results Found",
     "dataset": "checkbook:payroll",
-    "columns": ["employee_number.employee_number","payroll_id.payroll_id","agency_name.agency_name","civil_service_title.civil_service_title","annual_salary.annual_salary","amount_basis_id.amount_basis_id","payroll_type","pay_frequency.pay_frequency","pay_date.pay_date","gross_pay.gross_pay","base_pay.base_pay","other_payments.other_payments","overtime_pay.overtime_pay","gross_pay_cytd.gross_pay_cytd","calendar_fiscal_year_id.calendar_fiscal_year_id","agency_id.agency_id","annual_salary_pay","hourly_rate_pay"],
+    "columns": ["employee_number.employee_number","payroll_id.payroll_id","agency_name.agency_name","civil_service_title.civil_service_title","annual_salary.annual_salary",
+      "amount_basis_id.amount_basis_id","payroll_type","pay_frequency.pay_frequency","pay_date.pay_date",
+      "gross_pay.gross_pay","base_pay.base_pay","other_payments.other_payments","overtime_pay.overtime_pay",
+      "gross_pay_cytd.gross_pay_cytd","calendar_fiscal_year_id.calendar_fiscal_year_id","agency_id.agency_id","hourly_rate.hourly_rate"],
     "caption":"",
     "derivedColumns": {
         "formatted_daily_wage_amount": {
@@ -42,7 +45,7 @@
         "expression": "$row['amount_basis_id_amount_basis_id'] == 1 ? custom_number_formatter_basic_format($row['annual_salary_annual_salary'])  : '-'"
         },
         "formatted_hourly_rate": {
-        "expression":" $row['amount_basis_id_amount_basis_id'] == 3 ? '-'  : $row['hourly_rate_pay']"
+        "expression":" ($row['amount_basis_id_amount_basis_id'] == 3) ? '-'  : custom_number_formatter_basic_format($row['hourly_rate_hourly_rate'])"
         },
         "formatted_gross_pay_amount": {
         "expression": "custom_number_formatter_basic_format($row['gross_pay_gross_pay'])"
@@ -82,9 +85,9 @@
             {"labelAlias": "title","column": "title_name_formatted","sortSourceColumn": "civil_service_title.civil_service_title"},
             {"labelAlias": "agency_name","column": "agency_name_formatted","sortSourceColumn": "agency_name.agency_name"},
             {"labelAlias": "pay_date","column":"pay_date_formatted",  "sortSourceColumn":"pay_date.pay_date"},
-            {"labelAlias": "annual_salary","column": "formatted_annual_salary","sortSourceColumn": "annual_salary_pay"},
-            {"labelAlias": "hourly_rate","column": "formatted_hourly_rate","sortSourceColumn": "hourly_rate_pay"},
-             {"labelAlias": "daily_wage","column": "formatted_daily_wage_amount","sortSourceColumn": "daily_wage.daily_wage"},
+            {"labelAlias": "annual_salary","column": "formatted_annual_salary","sortSourceColumn": "annual_salary.annual_salary"},
+            {"labelAlias": "hourly_rate","column": "formatted_hourly_rate","sortSourceColumn": "hourly_rate.hourly_rate"},
+            {"labelAlias": "daily_wage","column": "formatted_daily_wage_amount","sortSourceColumn": "daily_wage.daily_wage"},
             {"labelAlias": "pay_frequency","column": "pay_frequency_formatted","sortSourceColumn":"pay_frequency.pay_frequency"},
             {"labelAlias": "gross_pay","column": "formatted_gross_pay_amount","sortSourceColumn": "gross_pay.gross_pay"},
             {"labelAlias": "base_pay","column": "formatted_base_pay_amount","sortSourceColumn": "base_pay.base_pay"},
