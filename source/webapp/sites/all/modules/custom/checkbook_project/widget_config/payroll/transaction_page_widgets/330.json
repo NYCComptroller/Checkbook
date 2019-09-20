@@ -47,6 +47,9 @@
         "formatted_hourly_rate": {
         "expression":" ($row['amount_basis_id_amount_basis_id'] == 3) ? '-'  : custom_number_formatter_basic_format($row['hourly_rate_hourly_rate'])"
         },
+        "nycha_hourly_rate":{
+          "expression":"$row['hourly_rate_pay'] == 0 ? '-'  : $row['hourly_rate_pay']"
+        },
         "formatted_gross_pay_amount": {
         "expression": "custom_number_formatter_basic_format($row['gross_pay_gross_pay'])"
         },
@@ -114,7 +117,11 @@
         $adjustDataTableOptions->aaSorting = array(array(11, 'desc'));
           $node->widgetConfig->columns[]='daily_wage.daily_wage';
 
+        }
       }
+      //hourly rate column must refer amount basis id for nycha
+      if(($table_column->labelAlias == 'hourly_rate' )&& ($datasource=='checkbook_nycha' )){
+        $table_column->column= 'nycha_hourly_rate';
       }
       $node->widgetConfig->table_columns = array_values($node->widgetConfig->table_columns);
       $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoColumns);",
