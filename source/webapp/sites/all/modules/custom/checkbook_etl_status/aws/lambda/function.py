@@ -23,8 +23,8 @@ def lambda_handler(event, context):
     folder, filename = key.split('/')
     if 'FISA' == folder:
       log_fisa_contracts(filename, content)
-    if 'FISA-GPG' == folder:
-      log_fisa_gpg_contracts(filename, content)
+    if 'FISA-PGP' == folder:
+      log_fisa_pgp_contracts(filename, content)
 
     return response['ContentType']
   except Exception as e:
@@ -69,7 +69,7 @@ def log_fisa_contracts(filename, content):
 
 
 def find_missing(date, contract_lines):
-  missing = checkbook_mongo_db().etlstatusgpglogs.find_one({"_id": date})
+  missing = checkbook_mongo_db().etlstatuspgplogs.find_one({"_id": date})
   missing = list(missing.get('contract_lines').keys())
   for line in contract_lines:
     if line in missing:
@@ -81,7 +81,7 @@ def find_missing(date, contract_lines):
 # find_missing('20190919', [])
 
 
-def log_fisa_gpg_contracts(filename, content):
+def log_fisa_pgp_contracts(filename, content):
   lines = [line.split() for line in content]
   total = lines.pop()
   (date, _, _) = filename.split('.')
@@ -91,10 +91,10 @@ def log_fisa_gpg_contracts(filename, content):
     "file": filename,
     "totalBytes": total[0],
     "lines": lines,
-    "contract_lines": filter_gpg(lines)
+    "contract_lines": filter_pgp(lines)
   }
 
-  checkbook_mongo_db().etlstatusgpglogs.replace_one(filter={"_id": date}, replacement=record, upsert=True)
+  checkbook_mongo_db().etlstatuspgplogs.replace_one(filter={"_id": date}, replacement=record, upsert=True)
   pass
 
 
@@ -116,7 +116,7 @@ def filter_contracts(lines: List[str]) -> Dict:
   return filtered
 
 
-def filter_gpg(lines: List[str]) -> Dict:
+def filter_pgp(lines: List[str]) -> Dict:
   rules = checkbook_mongo_db().configs.find_one({"_id": "fisa_contract_regex"})
   rules = rules.get('rules')
   filtered = {}
@@ -147,7 +147,7 @@ def test():
 # test()
 
 
-def test_gpg():
+def test_pgp():
   sample = [
     ["40900", "/filepath/AIE2_DLY_PCO_MA_20190912004414.pgp"],
     ["3028", "/filepath/AIE3_DLY_BUD_92L3_20190905004322.pgp"],
@@ -155,6 +155,6 @@ def test_gpg():
     ["2925", "/filepath/AIEG_DLY_SCNTRC_BTY_20190906012248.pgp"],
     ["447", "/filepath/AIE2_DLY_PCO_MA_20190913004554.pgp"]
   ]
-  print(filter_gpg(sample))
+  print(filter_pgp(sample))
 
-# test_gpg()
+# test_pgp()
