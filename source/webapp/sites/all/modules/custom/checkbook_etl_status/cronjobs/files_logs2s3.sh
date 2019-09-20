@@ -4,4 +4,5 @@
 
 DATE=`date +%Y%m%d`
 
-aws s3 cp $ETL_FISA_PATH/$DATE.log s3://$ETL_FISA_S3_BUCKET/$ETL_FISA_S3_PREFIX
+aws s3 cp $ETL_FISA_PATH/$DATE.log s3://$ETL_FISA_S3_BUCKET/FISA/
+aws s3 cp $ETL_FISA_PATH/$DATE.gpg.log s3://$ETL_FISA_S3_BUCKET/FISA-GPG/

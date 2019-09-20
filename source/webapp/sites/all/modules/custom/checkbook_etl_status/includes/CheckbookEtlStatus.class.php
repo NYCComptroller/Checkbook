@@ -344,9 +344,7 @@ class CheckbookEtlStatus
     }
 
     $collection = $db->selectCollection('etlstatuslogs');
-
-    $yesterday = date('Ymd', time() - 24 * 60 * 60);
-    $files = $collection->findOne(['date' => $yesterday]);
+    $files = $collection->findOne([],['sort'=>['date'=>-1]]);
 
     if (!$files) {
       return false;
