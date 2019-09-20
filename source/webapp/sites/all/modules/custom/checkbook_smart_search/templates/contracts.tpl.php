@@ -11,6 +11,8 @@ $contracts_parameter_mapping = CheckbookSolr::getSearchFields($solr_datasource, 
 $isNycha = ('nycha' === $solr_datasource);
 $isEdc = ('edc' === $solr_datasource);
 $isOge = $isNycha || $isEdc;
+$current_year_id = _getFiscalYearID();
+
 
 if(strtolower($contracts_results['contract_status']) == 'registered'){
 
@@ -56,8 +58,8 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
 
     if(strtolower($contracts_results['contract_category_name']) == 'expense'){
         if($isOge){
-            $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/datasource/checkbook_oge/year/". _getFiscalYearID() . '/agency/' . $contracts_results['agency_id'] .'/vendor/'.$contracts_results['vendor_id'];
-            $agency_link = "/contracts_landing/status/" .$status."/yeartype/B/datasource/checkbook_oge/year/"._getFiscalYearID().'/agency/'.$contracts_results['agency_id'];
+            $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/datasource/checkbook_oge/year/". $current_year_id . '/agency/' . $contracts_results['agency_id'] .'/vendor/'.$contracts_results['vendor_id'];
+            $agency_link = "/contracts_landing/status/" .$status."/yeartype/B/datasource/checkbook_oge/year/".$current_year_id.'/agency/'.$contracts_results['agency_id'];
 
         }
         else {
@@ -79,8 +81,8 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
 
     }else{
         if($isOge){
-            $vendor_link = "/contracts_revenue_landing/status/" .$status."/yeartype/B/datasource/checkbook_oge/year/"._getFiscalYearID() . '/agency/' . $contracts_results['agency_id'] .'/vendor/'.$contracts_results['vendor_id'];
-            $agency_link = "/contracts_revenue_landing/status/" .$status."/yeartype/B/datasource/checkbook_oge/year/"._getFiscalYearID().'/agency/'.$contracts_results['agency_id'];
+            $vendor_link = "/contracts_revenue_landing/status/" .$status."/yeartype/B/datasource/checkbook_oge/year/".$current_year_id . '/agency/' . $contracts_results['agency_id'] .'/vendor/'.$contracts_results['vendor_id'];
+            $agency_link = "/contracts_revenue_landing/status/" .$status."/yeartype/B/datasource/checkbook_oge/year/".$current_year_id.'/agency/'.$contracts_results['agency_id'];
         }
         else{
             if($contracts_results["is_minority_vendor"] == 'Y' && $contracts_results["is_prime_or_sub"] == 'Yes' && ContractUtil::getLatestMwbeCategoryByVendorByTransactionYear($contracts_results['vendor_id'],  $fiscal_year_id,'B') == ''){
@@ -124,7 +126,7 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
     }
 
 }else if(strtolower($contracts_results['contract_status']) == 'pending'){
-    $current_year = "/yeartype/B/year/". _getFiscalYearID();
+    $current_year = "/yeartype/B/year/". $current_year_id;
     if(strtolower($contracts_results['contract_category_name']) == 'expense'){
         $agency_link = "/contracts_pending_exp_landing".$current_year."/agency/".$contracts_results['agency_id'];
         $vendor_link = "/contracts_pending_exp_landing".$current_year."/vendor/".$contracts_results['vendor_id'];
@@ -174,14 +176,16 @@ if(($contract_status == 'Registered' && $reg_fiscal_year < 2010) || ($effective_
 }
 
 if($isNycha){
-  $contract_id_link = '/nycha_contracts/year/'._getFiscalYearID().
+  $contract_id_link = '/nycha_contracts/year/'.$current_year_id.
     '/datasource/checkbook_nycha/agency/162?expandBottomContURL=/panel_html/nycha_contract_details/contract/'.$contracts_results['contract_number'];
-  $vendor_link = '/nycha_contracts/year/'._getFiscalYearID().
-    '/agency/162/datasource/checkbook_nycha/vendor/'.$contracts_results['vendor_id'];
-
-  $linkable_fields = [
-    "vendor_name" => $vendor_link,
-  ];
+  //Year logic for NYCHA Vendor link
+  if($contracts_results['agreement_end_year_id'] > $current_year_id){
+    $nycha_year_id = $current_year_id;
+  }else{
+    $nycha_year_id = $contracts_results['agreement_end_year_id'];
+  }
+  $vendor_link = '/nycha_contracts/year/'.$nycha_year_id. '/agency/162/datasource/checkbook_nycha/vendor/'.$contracts_results['vendor_id'];
+  $linkable_fields = ["vendor_name" => $vendor_link,];
 }
 
 if($isOge && in_array($contracts_results['contract_type_code'],array('MMA1'))){
@@ -270,7 +274,7 @@ foreach ($contracts_parameter_mapping as $key => $title){
             }
             else{
                 if(strtolower($contracts_results['contract_status']) == 'pending'){
-                    $value = "<a href='/contracts_pending_exp_landing/yeartype/B/year/". _getFiscalYearID() ."/mwbe/".$id ."/dashboard/mp'>" .$contracts_results["minority_type_name"]."</a>";
+                    $value = "<a href='/contracts_pending_exp_landing/yeartype/B/year/". $current_year_id ."/mwbe/".$id ."/dashboard/mp'>" .$contracts_results["minority_type_name"]."</a>";
                 }else{
                     $value = "<a href='/contracts_landing/status/A/yeartype/B/year/". $fiscal_year_id ."/mwbe/".$id ."/dashboard/mp'>" .$contracts_results["minority_type_name"]."</a>";
                 }
