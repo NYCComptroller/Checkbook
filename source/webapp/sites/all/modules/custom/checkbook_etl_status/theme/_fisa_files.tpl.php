@@ -4,7 +4,7 @@
   <table class="file" cellpadding="5">
     <thead>
     <tr class="filename">
-      <th colspan="3">Missing Decrypted FISA contracts files:</th>
+      <th colspan="3">Missing Decrypted PGP FISA contracts files:</th>
     </tr>
     <?php if (isset($fisa_files['missing']) && sizeof($fisa_files['missing'])): ?>
     <tr class="header">
