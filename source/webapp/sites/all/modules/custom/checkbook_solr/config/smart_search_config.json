@@ -602,6 +602,7 @@
         "record_type": "Record Type",
         "number_of_releases": "Number of Releases",
         "release_number": "Release Number",
+        "line_number":"Line Number",
         "commodity_category_name": "Item Category",
         "item_description": "Item Description",
         "item_qty_ordered": "Quantity Ordered",
