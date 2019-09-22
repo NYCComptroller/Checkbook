@@ -85,6 +85,11 @@ function fnCustomInitCompleteReload() {
     jQuery('#table_979_wrapper .dataTables_scrollHead').css('overflow', 'auto');
     jQuery('#table_1012_wrapper .dataTables_scrollHead').css('overflow', 'auto');
     jQuery('#table_317_wrapper .dataTables_scrollHead').css('overflow', 'auto');
+    jQuery('#table_330_wrapper .dataTables_scrollHead').css('overflow', 'auto');
+    jQuery('#table_336_wrapper .dataTables_scrollHead').css('overflow', 'auto');
+    jQuery('#table_886_wrapper .dataTables_scrollHead').css('overflow', 'auto');
+
+
 
     jQuery('.dataTables_scrollHead').sticky({ 'topSpacing': topSpacing , 'bottomSpacing': bottomSpacing, getWidthFrom:'.dataTables_scroll' });
     jQuery('.dataTables_scrollHead').sticky('update');
