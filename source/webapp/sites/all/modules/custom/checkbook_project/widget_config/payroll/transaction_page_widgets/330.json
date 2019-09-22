@@ -123,8 +123,16 @@
       if(($table_column->labelAlias == 'hourly_rate' )&& ($datasource=='checkbook_nycha' )){
         $table_column->column= 'nycha_hourly_rate';
       }
+      //set nycha theming top scroller
+      if ($datasource=='checkbook_nycha')
+      {
+      $node->widgetConfig->stickyHeader='true';
+      $adjustDataTableOptions->fnInitComplete = '##function () { new FixedColumns( oTable, {\"iLeftColumns\": 1,\"iLeftWidth\": 115} );}##';
+      }
       $node->widgetConfig->table_columns = array_values($node->widgetConfig->table_columns);
-      $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoColumns);",
+      $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoColumns);
+
+    ",
     "adjustParameters":"
         $adjustedParameters = $parameters;
         if(function_exists('_checkbook_project_applyParameterFilters')){
