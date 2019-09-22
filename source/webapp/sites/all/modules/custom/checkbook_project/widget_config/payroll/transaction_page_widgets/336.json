@@ -129,6 +129,12 @@
     $adjustDataTableOptions->aaSorting = array(array(7, 'desc'));
     }
     }
+    //set nycha theming top scroller
+    if ($datasource=='checkbook_nycha')
+    {
+    $node->widgetConfig->stickyHeader='true';
+    $adjustDataTableOptions->fnInitComplete = '##function () { new FixedColumns( oTable, {\"iLeftColumns\": 1,\"iLeftWidth\": 115} );}##';
+    }
     $node->widgetConfig->table_columns = array_values($node->widgetConfig->table_columns);
     $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoColumns);",
     "exportColumnSqlOverride":[
