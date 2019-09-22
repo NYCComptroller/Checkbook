@@ -672,11 +672,14 @@ function widget_data_tables_widget_view(&$node) {
 function widget_data_tables_add_js($node){
 	require_once(realpath(drupal_get_path('module', 'data_controller')) .'/common/object/converter/handler/PHP2Json.php');
 	$theme_path =  drupal_get_path('theme',$GLOBALS['theme']);
+  $datasource = RequestUtilities::getRequestParamValue('datasource');
+  if ('checkbook_nycha'===$datasource){
+    if(!empty($node->widgetConfig->stickyHeader)){$node->widgetConfig->stickyHeader='true';}
+  }
 	$node->widgetConfig->dataTableOptions->oLanguage =
 	                 array("sProcessing"=>"<img src='/" . $theme_path . "/images/loading_large.gif' title='Processing...'/>",
 	                     "sZeroRecords"=>"<div class='clearfix' id='no-records-datatable'><span>No Matching Records Found</span></div>");
-
-    $oldDataTableOptions = get_object_vars($node->widgetConfig->dataTableOptions);
+	$oldDataTableOptions = get_object_vars($node->widgetConfig->dataTableOptions);
     if(isset($oldDataTableOptions['aoColumns'])) {
 
         $newAolcols = [];
@@ -735,7 +738,7 @@ if(isset($node->widgetConfig->stickyHeader)) {
       array_slice($oldDataTableOptions, 0, NULL, true);
 
   //Custom js for sticky headers, top spacing will change if the drupal admin menu is present
-  $datasource = RequestUtilities::getRequestParamValue('datasource');
+  //$datasource = RequestUtilities::getRequestParamValue('datasource');
  //Custom js for nycha transcation pages top scroll and height adjustments
   if ('checkbook_nycha' === $datasource) {
     $scroller_header_js = "
