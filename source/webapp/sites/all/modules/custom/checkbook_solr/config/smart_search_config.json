@@ -48,8 +48,8 @@
   },
   "sort_by": {
     "citywide": "domain_ordering asc,date_ordering desc",
-    "edc": "domain_ordering asc,date_ordering desc",
-    "nycha": "domain_ordering asc,contract_number desc,release_number desc,line_number desc,agreement_type_name asc,agreement_id asc,release_id asc"
+    "edc": "domain_ordering asc, date_ordering desc",
+    "nycha": "domain_ordering asc, sort_sequence asc, date_ordering desc"
   },
   "facets": {
     "citywide": {
@@ -601,7 +601,7 @@
         "record_type": "Record Type",
         "number_of_releases": "Number of Releases",
         "release_number": "Release Number",
-        "line_number":"Line Number",
+        "line_number": "Line Number",
         "commodity_category_name": "Item Category",
         "item_description": "Item Description",
         "item_qty_ordered": "Quantity Ordered",
