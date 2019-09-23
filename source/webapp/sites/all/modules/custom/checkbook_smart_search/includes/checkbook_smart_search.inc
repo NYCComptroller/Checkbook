@@ -91,21 +91,21 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
     }
   }
 
-  $search_terms = explode('*!*', $_REQUEST['search_term']); // array("Education", "domains=Payroll~Spending", "fiscal_years=2014~2013")
-  $reg_flag = false;
-//  $act_flag = false;
-  foreach ($search_terms as $id => $keyvaluepair) {
-    $keys = explode("=", $keyvaluepair);
-    if ($keys[1] == 'registered') {
-      $reg_flag = true;
-    }
-  }
-
-  if ($reg_flag && in_array('registered_fiscal_years', array_keys($datasource_facets))) {
-    $solr_query->addFacet('registered_fiscal_years');
-  } else {
-    $solr_query->addFacet('fiscal_years');
-  }
+//  $search_terms = explode('*!*', $_REQUEST['search_term']); // array("Education", "domains=Payroll~Spending", "fiscal_years=2014~2013")
+//  $reg_flag = false;
+////  $act_flag = false;
+//  foreach ($search_terms as $id => $keyvaluepair) {
+//    $keys = explode("=", $keyvaluepair);
+//    if ($keys[1] == 'registered') {
+//      $reg_flag = true;
+//    }
+//  }
+//
+//  if ($reg_flag && in_array('registered_fiscal_years', array_keys($datasource_facets))) {
+//    $solr_query->addFacet('registered_fiscal_years');
+//  } else {
+//    $solr_query->addFacet('fiscal_years');
+//  }
 
   $selected_facets = $solr_query->getSelectedFacets();
 

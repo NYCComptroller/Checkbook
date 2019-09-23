@@ -195,11 +195,6 @@
       "grant_name": {
         "title": "Grant Name"
       },
-      "fiscal_year": {
-        "title": "Fis Year",
-        "autocomplete": true,
-        "sort_by_key": -1
-      },
       "facet_year_array": {
         "title": "Fiscal Year",
         "autocomplete": true,
