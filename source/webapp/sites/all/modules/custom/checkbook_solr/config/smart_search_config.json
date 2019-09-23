@@ -216,7 +216,11 @@
         "autocomplete": true
       },
       "civil_service_title": {
-        "title": "Title"
+        "title": "Title",
+        "autocomplete": true
+      },
+      "pay_frequency": {
+        "title": "Pay Frequency"
       },
       "annual_salary": {
         "title": "Annual Salary",
