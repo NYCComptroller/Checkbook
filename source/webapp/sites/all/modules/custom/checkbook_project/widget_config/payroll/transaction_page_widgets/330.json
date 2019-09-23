@@ -48,7 +48,7 @@
         "expression":" ($row['amount_basis_id_amount_basis_id'] == 3) ? '-'  : custom_number_formatter_basic_format($row['hourly_rate_hourly_rate'])"
         },
         "nycha_hourly_rate":{
-          "expression":"$row['hourly_rate_hourly_rate'] == 0 ? '-'  : $row['hourly_rate_hourly_rate']"
+          "expression":"($row['hourly_rate_hourly_rate'] == 0  || $row['hourly_rate_hourly_rate'] == NULL) ? '-'  : $row['hourly_rate_hourly_rate']"
         },
         "formatted_gross_pay_amount": {
         "expression": "custom_number_formatter_basic_format($row['gross_pay_gross_pay'])"
