@@ -198,6 +198,7 @@ class CheckbookSolr
   }
 
   /**
+   * NYCCHKBK-9261
    * @param array $results
    * @return array
    */
