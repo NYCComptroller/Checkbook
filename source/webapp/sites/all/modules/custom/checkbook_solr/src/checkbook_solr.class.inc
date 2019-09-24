@@ -187,14 +187,25 @@ class CheckbookSolr
    */
   public function request_phps(string $query): array
   {
-    $results = [];
     $response = $this->raw_query($query);
-    if (stristr($query, 'wt=phps')) {
-      $results = unserialize($response);
-    }
+    $results = unserialize($response);
 
     if (!is_array($results)) {
       return [];
+    }
+
+    if ($results['facet_counts']['facet_fields'] ?? false) {
+      $fcff = $results['facet_counts']['facet_fields'];
+      foreach($fcff as $k => $values){
+        if ($values['-'] ?? false) {
+          unset($values['-']);
+        }
+        if (!sizeof($values)){
+          unset($results['facet_counts']['facet_fields'][$k]);
+        } else {
+          $results['facet_counts']['facet_fields'][$k] = $values;
+        }
+      }
     }
 
     return $results;
