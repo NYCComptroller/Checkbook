@@ -194,20 +194,28 @@ class CheckbookSolr
       return [];
     }
 
+    return $this->filterFacetValues($results);
+  }
+
+  /**
+   * @param array $results
+   * @return array
+   */
+  private function filterFacetValues(array $results): array
+  {
     if ($results['facet_counts']['facet_fields'] ?? false) {
       $fcff = $results['facet_counts']['facet_fields'];
-      foreach($fcff as $k => $values){
+      foreach ($fcff as $k => $values) {
         if ($values['-'] ?? false) {
           unset($values['-']);
         }
-        if (!sizeof($values)){
+        if (!sizeof($values)) {
           unset($results['facet_counts']['facet_fields'][$k]);
         } else {
           $results['facet_counts']['facet_fields'][$k] = $values;
         }
       }
     }
-
     return $results;
   }
 
