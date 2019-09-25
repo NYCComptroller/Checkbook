@@ -53,7 +53,7 @@
       "expression":"($row['invoice_number'] == null) ? '-' : _get_tooltip_markup($row['invoice_number'],24)"
     },
     "check_amount_formatted":{
-      "expression": "($row['check_amount'] == null) ? '-' : custom_number_formatter_basic_format($row['check_amount'])"
+      "expression": "(strtoupper($row['record_type']) == 'CHECK' ? (($row['check_amount'] == null) ? '-' : custom_number_formatter_basic_format($row['check_amount'])) : '-')"
     },
     "billed_amount_formatted":{
       "expression": "($row['billed_amount'] == null) ? '-' : custom_number_formatter_basic_format($row['billed_amount'])"
