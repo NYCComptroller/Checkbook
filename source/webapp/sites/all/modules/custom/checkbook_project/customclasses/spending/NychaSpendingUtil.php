@@ -32,7 +32,8 @@ class NychaSpendingUtil
   /**
    * @return null|string -- Returns transactions title for NYCHA Spending
    */
-  static public function getTransactionsTitle($url){
+  static public function getTransactionsTitle($url = null){
+    $url = isset($url) ? $url : drupal_get_path_alias($_GET['q']);
     $widget = RequestUtil::getRequestKeyValueFromURL('widget', $url);
     $widget_titles = self::$widget_titles;
     $title = isset($widget) ? $widget_titles[$widget]: "";
