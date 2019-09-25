@@ -184,6 +184,13 @@ if($isNycha){
   }else{
     $nycha_year_id = $contracts_results['agreement_end_year_id'];
   }
+  // display '-' for start-date and end-date nycchkbk - 9264
+  if($contracts_results['agreement_type_name'] == 'PURCHASE ORDER') {
+    $contracts_results['start_date'] = $contracts_results['agreement_start_date'];
+    $contracts_results['end_date'] = $contracts_results['agreement_end_date'];
+
+  }
+  
   $vendor_link = '/nycha_contracts/year/'.$nycha_year_id. '/agency/162/datasource/checkbook_nycha/vendor/'.$contracts_results['vendor_id'];
   $linkable_fields = ["vendor_name" => $vendor_link,];
 }
@@ -252,6 +259,7 @@ foreach ($contracts_parameter_mapping as $key => $title){
     if($value != null && $value != "N/A" ){
       $value = date("F j, Y", strtotime(substr($value, 0, 10)));
     }
+    elseif($value == null){$value ='-';}
   }else if(array_key_exists($key, $linkable_fields)){
     $value = "<a href='" . $linkable_fields[$key]. "'>". $value ."</a>";
   }
