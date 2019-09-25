@@ -144,6 +144,8 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
       $unchecked_results['facet_counts']['facet_intervals'] ?? []
     );
 
+    $unchecked_facet_fields = [];
+
     foreach (array_keys($selected_facets) as $facet) {
       if (!sizeof($unchecked_results) || !isset($unchecked_results[$facet]) || !sizeof($unchecked_results[$facet])) {
         continue;
@@ -159,24 +161,40 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
           $unchecked_facet_fields = array_diff($unchecked_results[$facet], $search_results['facet_counts']['facet_intervals'][$facet]);
         }
       }
-      if (!sizeof($unchecked_facet_fields)) {
-        continue;
+
+      // for multivalued arrays it's not that obvious
+      foreach ($selected_facets[$facet] as $v) {
+        if (isset($unchecked_facet_fields[$v])) {
+          unset($unchecked_facet_fields[$v]);
+        }
       }
+
+      $checked_facets = $search_results['facet_counts']['facet_fields'][$facet] ?? $search_results['facet_counts']['facet_intervals'][$facet];
+      $checked_facets_fields = [];
+      foreach ($selected_facets[$facet] as $v) {
+        $checked_facets_fields[$v] = $checked_facets[$v];
+        unset($checked_facets[$v]);
+      }
+
+      $unchecked_facet_fields = $checked_facets ?? [] + $unchecked_facet_fields ?? [];
+
+      // for sorted facet values like years DESC
       if ($sort = $datasource_facets[$facet]->sort_by_key ?? 0) {
         if ($sort > 0) {
           ksort($unchecked_facet_fields);
+          ksort($checked_facets_fields);
         } else {
           krsort($unchecked_facet_fields);
+          krsort($checked_facets_fields);
         }
       }
-      if ($unchecked_facet_fields) {
-        if (isset($search_results['facet_counts']['facet_fields'][$facet])) {
-          $search_results['facet_counts']['facet_fields'][$facet] =
-            ($search_results['facet_counts']['facet_fields'][$facet] ?? []) + ($unchecked_facet_fields ?? []);
-        } elseif (isset($search_results['facet_counts']['facet_intervals'][$facet])) {
-          $search_results['facet_counts']['facet_intervals'][$facet] =
-            ($search_results['facet_counts']['facet_intervals'][$facet] ?? []) + ($unchecked_facet_fields ?? []);
-        }
+
+      if (isset($search_results['facet_counts']['facet_fields'][$facet])) {
+        $search_results['facet_counts']['facet_fields'][$facet] =
+          ($checked_facets_fields ?? []) + ($unchecked_facet_fields ?? []);
+      } elseif (isset($search_results['facet_counts']['facet_intervals'][$facet])) {
+        $search_results['facet_counts']['facet_intervals'][$facet] =
+          ($checked_facets_fields ?? []) + ($unchecked_facet_fields ?? []);
       }
     }
   }
