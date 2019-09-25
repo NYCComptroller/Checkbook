@@ -32,8 +32,8 @@ class NychaSpendingUtil
   /**
    * @return null|string -- Returns transactions title for NYCHA Spending
    */
-  static public function getTransactionsTitle(){
-    $widget = RequestUtilities::get('widget', ['q' => $_SERVER['HTTP_REFERER']]);
+  static public function getTransactionsTitle($url){
+    $widget = RequestUtil::getRequestKeyValueFromURL('widget', $url);
     $widget_titles = self::$widget_titles;
     $title = isset($widget) ? $widget_titles[$widget]: "";
     $title = $title .' '. self::getCategoryName() . " Spending Transactions";

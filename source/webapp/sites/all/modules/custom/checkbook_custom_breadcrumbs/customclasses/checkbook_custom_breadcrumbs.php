@@ -315,10 +315,8 @@ class CustomBreadcrumbs
   {
     $bottomURL = $_REQUEST['expandBottomContURL'];
     if (isset($bottomURL) && preg_match('/transactions/', $bottomURL)) {
-      $title = NychaSpendingUtil::getTransactionsTitle();
-    }else if (!$bottomURL && preg_match('/^nycha_spending\/search\/transactions/', current_path()) || preg_match('/^nycha_spending\/all\/transactions/', current_path())) {
-      $title = 'NYCHA Spending Transactions';
-    } else {
+      $title = NychaSpendingUtil::getTransactionsTitle($bottomURL);
+    }else {
       $lastReqParam = _getLastRequestParamValue();
       foreach ($lastReqParam as $key => $value) {
         switch ($key) {
