@@ -7,8 +7,8 @@ include_once 'includes/CheckbookEtlStatus.class.php';
  */
 function checkbook_etl_status_cron()
 {
-    $CES = new CheckbookEtlStatus();
-    return $CES->run_cron();
+  $CES = new CheckbookEtlStatus();
+  return $CES->run_cron();
 }
 
 /**
@@ -17,55 +17,64 @@ function checkbook_etl_status_cron()
  * @param $key
  * @param $message
  * @param $params
+ * @throws \MongoDB\Exception\InvalidArgumentException
+ * @throws \MongoDB\Exception\UnsupportedException
  */
 function checkbook_etl_status_mail($key, &$message, $params)
 {
-    $CES = new CheckbookEtlStatus();
-    $CES->prepareMessage($message, $params);
+  $CES = new CheckbookEtlStatus();
+  $CES->gatherData($message);
 
-    $message['body'] = array_merge($message['body'], $params);
+  $message['body'] = array_merge($message['body'], $params);
 }
 
 /**
  * Implements hook_mail_alter().
  *
  * Adds priority headers to messages passing condition.
+ * @param $message
+ * @throws Exception
  */
 function checkbook_etl_status_mail_alter(&$message)
 {
-    // Apply this hook only for `checkbook_etl_status` module
-    if ('checkbook_etl_status' !== $message['module']) {
-        return;
-    }
-    if (stripos($message['subject'], 'Fail')) {
-        $message['headers']['X-Priority'] = '1 (Highest)';
-        $message['headers']['X-MSMail-Priority'] = 'High';
-        $message['headers']['Importance'] = 'High';
-    }
-    $message['headers']['Content-Type'] = 'text/html; charset=UTF-8; format=flowed; delsp=yes';
-    $message['body'] = theme('etl_status_email', $message['body']);
-    if (defined('CHECKBOOK_DEV')) {
-        echo($message['body']);
-        $message['send'] = false;
-    }
+  // Apply this hook only for `checkbook_etl_status` module
+  if ('checkbook_etl_status' !== $message['module']) {
+    return;
+  }
+  if (stripos($message['subject'], 'Fail')) {
+    $message['headers']['X-Priority'] = '1 (Highest)';
+    $message['headers']['X-MSMail-Priority'] = 'High';
+    $message['headers']['Importance'] = 'High';
+  }
+  $message['headers']['Content-Type'] = 'text/html; charset=UTF-8; format=flowed; delsp=yes';
+  $message['body'] = theme('etl_status_email', $message['body']);
+  if (defined('CHECKBOOK_DEV')) {
+    echo($message['body']);
+    $message['send'] = false;
+  }
 }
 
 /**
  * Implements hook_theme()
+ * @param $existing
+ * @param $type
+ * @param $theme
+ * @param $path
+ * @return array
  */
 function checkbook_etl_status_theme($existing, $type, $theme, $path)
 {
-    if ($type == 'module') {
-        return array(
-            'etl_status_email' => array(
-                'variables' => array(
-                    'uat_status' => NULL,
-                    'prod_status' => NULL,
-                ),
-                'template' => 'etl-status.email',
-                'path' => drupal_get_path('module', 'checkbook_etl_status') . '/theme',
-            ),
-        );
-    }
+  if ($type == 'module') {
+    return array(
+      'etl_status_email' => array(
+        'variables' => array(
+          'uat_status' => NULL,
+          'prod_status' => NULL,
+        ),
+        'template' => 'etl-status.email',
+        'path' => drupal_get_path('module', 'checkbook_etl_status') . '/theme',
+      ),
+    );
+  }
 }
 
