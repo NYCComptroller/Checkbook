@@ -23,7 +23,7 @@
     <tbody>
     <tr>
       <?php
-      $category_names = array(0 => 'Total', 2 => 'Payroll', 3 => 'Capital Contracts', 1 => 'Contracts', 5 => 'Trust & Agency', 4 => 'Others');
+      $category_names = SpendingUtil::$spendingCategories;
       foreach($node->data as $key=>$row){
         $categories[$row['category_category']] = array('amount' => $row['check_amount_sum']);
         $total_spending +=  $row['check_amount_sum'];

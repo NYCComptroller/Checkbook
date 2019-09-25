@@ -25,7 +25,7 @@ class SpendingUtil{
      * @var array
      */
     static $landingPageParams = array("category"=>"category","industry"=>"industry","mwbe"=>"mwbe","dashboard"=>"dashboard","agency"=>"agency","vendor"=>"vendor","subvendor"=>"subvendor");
-
+    static $spendingCategories = array(0 => 'Total', 2 => 'Payroll', 3 => 'Capital', 1 => 'Contract', 5 => 'Trust & Agency', 4 => 'Others',);
     /**
      * @param $categoryId
      * @param array $columns
@@ -43,7 +43,7 @@ class SpendingUtil{
      * @return string
      */
     static public function getSpendingTransactionsTitle(){
-        $categories = array(1 => 'Contract', 2 => 'Payroll', 3 => 'Capital', 4 => 'Others', 5 => 'Trust & Agency' ,null => 'Total');
+        $categories = self::$spendingCategories;
         $title = $categories[ RequestUtilities::get('category')]. " Spending Transactions";
         return $title ;
     }
@@ -55,11 +55,10 @@ class SpendingUtil{
     public static function getSpendingCategoryName($defaultName = 'Total Spending')
     {
       $categoryId = RequestUtilities::get('category');
-      if (isset($categoryId)) {
-        $categoryDetails = SpendingUtil::getSpendingCategoryDetails($categoryId, 'display_name');
-        if (is_array($categoryDetails)) {
-          return "Total " . $categoryDetails[0]['display_name'];
-        }
+      if ($categoryId) {
+        $categories = self::$spendingCategories;
+        $categoryName = $categories[$categoryId]. " Spending";
+        return $categoryName;
       }
       return $defaultName;
     }
