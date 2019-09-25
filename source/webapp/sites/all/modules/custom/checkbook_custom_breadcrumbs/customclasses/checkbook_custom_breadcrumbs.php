@@ -93,32 +93,10 @@ class CustomBreadcrumbs
         } elseif (preg_match("/\/magid/", $bottomURL)) {
           $title = _checkbook_project_get_name_for_argument("master_agreement_id", RequestUtil::getRequestKeyValueFromURL("magid", $bottomURL));
         }
-        if (preg_match('/\/category\/1/', $bottomURL)) {
-          $title = $title . ' ' . RequestUtil::getDashboardTitle() . ' Contract Spending Transactions';
-        } elseif (preg_match('/\/category\/2/', $bottomURL)) {
-          $title = $title . ' ' . RequestUtil::getDashboardTitle() . ' Payroll Spending Transactions';
-        } elseif (preg_match('/\/category\/3/', $bottomURL)) {
-          $title = $title . ' ' . RequestUtil::getDashboardTitle() . ' Capital Contracts Spending Transactions';
-        } elseif (preg_match('/\/category\/4/', $bottomURL)) {
-          $title = $title . ' ' . RequestUtil::getDashboardTitle() . ' Others Spending Transactions';
-        } elseif (preg_match('/\/category\/5/', $bottomURL)) {
-          $title = $title . ' ' . RequestUtil::getDashboardTitle() . ' Trust & Agency Spending Transactions';
-        } else {
-          $title = $title . ' ' . RequestUtil::getDashboardTitle() . ' Total Spending Transactions';
-        }
+        $title = $title . ' ' . RequestUtil::getDashboardTitle() . ' '.SpendingUtil::getSpendingCategoryName();
       }
-    } elseif (preg_match('/\/category\/1/', current_path())) {
-      $title = _get_spending_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() . ' Contract Spending';
-    } elseif (preg_match('/\/category\/2/', current_path())) {
-      $title = _get_spending_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() . ' Payroll Spending';
-    } elseif (preg_match('/\/category\/3/', current_path())) {
-      $title = _get_spending_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() . ' Capital Contracts Spending';
-    } elseif (preg_match('/\/category\/4/', current_path())) {
-      $title = _get_spending_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() . ' Others Spending';
-    } elseif (preg_match('/\/category\/5/', current_path())) {
-      $title = _get_spending_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() . ' Trust & Agency Spending';
     } else {
-      $title = _get_spending_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() . ' Total Spending';
+      $title = _get_spending_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() . ' '.SpendingUtil::getSpendingCategoryName();
     }
 
     return html_entity_decode($title);
