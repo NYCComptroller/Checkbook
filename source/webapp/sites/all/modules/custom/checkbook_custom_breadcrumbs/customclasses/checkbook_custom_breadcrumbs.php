@@ -334,7 +334,7 @@ class CustomBreadcrumbs
           default:
             $title = "New York City Housing Authority";
         }
-        $title .= ' Spending';
+        $title .= ' '. NYCHASpendingUtil::getCategoryName() .' Spending';
       }
     }
     return html_entity_decode($title);
