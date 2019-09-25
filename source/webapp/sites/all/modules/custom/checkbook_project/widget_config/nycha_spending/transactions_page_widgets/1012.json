@@ -40,26 +40,35 @@
   ],
   "caption":"",
   "derivedColumns": {
+    "agreement_type_name_formatted":{
+      "expression":"($row['agreement_type_name'] == null) ? '-' : $row['agreement_type_name']"
+    },
+    "contract_id_formatted":{
+      "expression":"($row['contract_id'] == null) ? '-' : $row['contract_id']"
+    },
+    "release_number_formatted":{
+      "expression":"($row['release_number'] == null) ? '-' : $row['release_number']"
+    },
     "invoice_number_formatted":{
-      "expression": "_get_tooltip_markup($row['invoice_number'],24)"
+      "expression":"($row['invoice_number'] == null) ? '-' : _get_tooltip_markup($row['invoice_number'],24)"
     },
     "check_amount_formatted":{
-      "expression": "custom_number_formatter_basic_format($row['check_amount'])"
+      "expression": "($row['check_amount'] == null) ? '-' : custom_number_formatter_basic_format($row['check_amount'])"
     },
     "billed_amount_formatted":{
-      "expression": "custom_number_formatter_basic_format($row['billed_amount'])"
+      "expression": "($row['billed_amount'] == null) ? '-' : custom_number_formatter_basic_format($row['billed_amount'])"
     },
     "invoice_discount_formatted":{
-      "expression": "custom_number_formatter_basic_format($row['invoice_discount'])"
+      "expression": "($row['invoice_discount'] == null) ? '-' : custom_number_formatter_basic_format($row['invoice_discount'])"
     },
     "tenant_share_formatted":{
-      "expression": "custom_number_formatter_basic_format($row['tenant_share'])"
+      "expression": "($row['tenant_share'] == null) ? '-' : custom_number_formatter_basic_format($row['tenant_share'])"
     },
     "tax_withheld_formatted":{
       "expression": "custom_number_formatter_basic_format($row['withholding_tax'])"
     },
     "amount_spent_formatted":{
-      "expression": "custom_number_formatter_basic_format($row['line_net_amount'])"
+      "expression": "($row['amount_spent'] == null) ? '-' : custom_number_formatter_basic_format($row['line_net_amount'])"
     },
     "vendor_name_formatted":{
       "expression": "_get_tooltip_markup($row['vendor_name'],36)"
@@ -71,16 +80,28 @@
       "expression": "_get_tooltip_markup($row['vendor_site_address'],36)"
     },
     "purpose_formatted":{
-      "expression": "_get_tooltip_markup($row['contract_purpose'],36)"
+      "expression": "($row['contract_purpose'] == null) ? '-' :  _get_tooltip_markup($row['contract_purpose'],36)"
+    },
+    "display_industry_type_name_formatted":{
+      "expression": "($row['display_industry_type_name'] == null) ? '-' :  $row['display_industry_type_name']"
     },
     "dept_formatted":{
-      "expression": "_get_tooltip_markup($row['department_name'],36)"
+      "expression": "($row['department_name'] == null) ? '-' :_get_tooltip_markup($row['department_name'],36)"
+    },
+    "start_date_formatted":{
+      "expression": "($row['start_date'] == null) ? '-' : $row['start_date']"
+    },
+    "end_date_formatted":{
+      "expression": "($row['end_date'] == null) ? '-' : $row['end_date']"
     },
     "funding_source_formatted":{
-      "expression": "_get_tooltip_markup($row['funding_source_description'],36)"
+      "expression": "($row['funding_source_description'] == null) ? '-' : _get_tooltip_markup($row['funding_source_description'],36)"
     },
     "responsibility_center_formatted":{
-      "expression": "_get_tooltip_markup($row['responsibility_center_description'],36)"
+      "expression": "($row['responsibility_center_description'] == null) ? '-' :_get_tooltip_markup($row['responsibility_center_description'],36)"
+    },
+    "expenditure_type_name_formatted":{
+      "expression": "($row['expenditure_type_name'] == null) ? '-' : $row['expenditure_type_name']"
     },
     "program_formatted":{
       "expression": "_get_tooltip_markup($row['program_phase_description'],36)"
@@ -95,10 +116,10 @@
     {"labelAlias":"document_id","column":"document_id"},
     {"labelAlias":"section8_flag","column":"section8_flag"},
     {"labelAlias":"record_type","column":"record_type"},
-    {"labelAlias":"purchase_order_type","column":"agreement_type_name"},
+    {"labelAlias":"purchase_order_type","column":"agreement_type_name_formatted"},
     {"label":"","column":"", "export":false},
-    {"labelAlias":"contract_id","column":"contract_id"},
-    {"labelAlias":"release_number","column":"release_number"},
+    {"labelAlias":"contract_id","column":"contract_id_formatted"},
+    {"labelAlias":"release_number","column":"release_number_formatted"},
     {"label":"","column":"", "export":false},
     {"labelAlias":"invoice_number","column":"invoice_number_formatted", "sortSourceColumn":"invoice_number"},
     {"labelAlias":"check_amount","column":"check_amount_formatted", "sortSourceColumn":"check_amount"},
@@ -112,13 +133,13 @@
     {"labelAlias":"vendor_address","column":"vendor_address_formatted","sortSourceColumn":"vendor_site_address"},
     {"labelAlias":"contract_purpose","column":"purpose_formatted","sortSourceColumn":"contract_purpose"},
     {"labelAlias":"spending_category","column":"display_spending_category_name"},
-    {"labelAlias":"industry_name","column":"display_industry_type_name"},
+    {"labelAlias":"industry_name","column":"display_industry_type_name_formatted"},
     {"labelAlias":"dept_name","column":"dept_formatted","sortSourceColumn":"department_name"},
-    {"labelAlias":"period_from","column":"start_date"},
-    {"labelAlias":"period_to","column":"end_date"},
+    {"labelAlias":"period_from","column":"start_date_formatted"},
+    {"labelAlias":"period_to","column":"end_date_formatted"},
     {"labelAlias":"funding_source","column":"funding_source_formatted","sortSourceColumn":"funding_source_description"},
-    {"labelAlias":"responsibility_center_formatted","column":"responsibility_center", "sortSourceColumn":"responsibility_center_description"},
-    {"labelAlias":"expense_category","column":"expenditure_type_name"},
+    {"labelAlias":"responsibility_center","column":"responsibility_center_formatted", "sortSourceColumn":"responsibility_center_description"},
+    {"labelAlias":"expense_category","column":"expenditure_type_name_formatted"},
     {"labelAlias":"program","column":"program_formatted", "sortSourceColumn":"program_phase_description"},
     {"labelAlias":"project","column":"project_formatted", "sortSourceColumn":"gl_project_description"},
     {"label":"","column":"", "export":false}
