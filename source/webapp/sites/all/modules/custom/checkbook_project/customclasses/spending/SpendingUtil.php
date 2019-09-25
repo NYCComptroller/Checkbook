@@ -25,7 +25,7 @@ class SpendingUtil{
      * @var array
      */
     static $landingPageParams = array("category"=>"category","industry"=>"industry","mwbe"=>"mwbe","dashboard"=>"dashboard","agency"=>"agency","vendor"=>"vendor","subvendor"=>"subvendor");
-    static $spendingCategories = array(1 => 'Contract', 2 => 'Payroll', 3 => 'Capital', 4 => 'Others', 5 => 'Trust & Agency' ,null => 'Total');
+    static $spendingCategories = array(0 => 'Total', 2 => 'Payroll', 3 => 'Capital', 1 => 'Contract', 5 => 'Trust & Agency', 4 => 'Others',);
     /**
      * @param $categoryId
      * @param array $columns
@@ -54,9 +54,10 @@ class SpendingUtil{
    */
     public static function getSpendingCategoryName($defaultName = 'Total Spending')
     {
-      if (!$defaultName) {
+      $categoryId = RequestUtilities::get('category');
+      if ($categoryId) {
         $categories = self::$spendingCategories;
-        $categoryName = $categories[ RequestUtilities::get('category')]. " Spending";
+        $categoryName = $categories[$categoryId]. " Spending";
         return $categoryName;
       }
       return $defaultName;
