@@ -126,7 +126,7 @@
     {"labelAlias":"billed_amount","column":"billed_amount_formatted","sortSourceColumn":"invoice_amount"},
     {"labelAlias":"invoice_discount","column":"invoice_discount_formatted","sortSourceColumn":"invoice_discount"},
     {"labelAlias":"tenant_share","column":"tenant_share_formatted","sortSourceColumn":"tenant_share"},
-    {"labelAlias":"tax_withheld","column":"tax_withheld_formatted","sortSourceColumn":"withholding_tax"},
+    {"labelAlias":"nycha_tax_withheld","column":"tax_withheld_formatted","sortSourceColumn":"withholding_tax"},
     {"labelAlias":"amount_spent","column":"amount_spent_formatted","sortSourceColumn":"line_net_amount"},
     {"label":"","column":"", "export":false},
     {"labelAlias":"vendor","column":"vendor_link", "sortSourceColumn":"vendor_name"},
