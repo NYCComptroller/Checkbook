@@ -45,6 +45,8 @@ class CheckbookEtlStatusModuleTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+        CheckbookEtlStatus::$successSubject = 'Success';
+        CheckbookEtlStatus::$message_body = '';
         $this->CES = new CheckbookEtlStatus();
     }
 
@@ -66,7 +68,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
     public function test_checkbook_etl_status_cron_wrong_env()
     {
         global $conf;
-        $env =  $conf['CHECKBOOK_ENV'];
+        $env = $conf['CHECKBOOK_ENV'];
         $conf['CHECKBOOK_ENV'] = 'wrong';
         $this->assertFalse($this->CES->run_cron());
         $conf['CHECKBOOK_ENV'] = $env;
@@ -266,7 +268,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
                 'data' => $this->fakeYesterday
             ]));
 
-        $CheckbookEtlStatus->prepareMessage($message);
+        $CheckbookEtlStatus->gatherData($message);
 
         $expected = [
             'subject' => 'Fail',
@@ -280,14 +282,12 @@ class CheckbookEtlStatusModuleTest extends TestCase
                 'data' => $this->fakeYesterday,
                 'hint' => 'Last success: ' . $CheckbookEtlStatus->niceDisplayDateDiff($this->fakeYesterday),
             ],
-            'connections' => false,
+            'connections' => null,
             'connection_keys' => CheckbookEtlStatus::CONNECTIONS_KEYS,
-            'solr_health_status' => [
-
-            ],
+            'fisa_files' => false,
         ];
 
-        $this->assertEquals('ETL Status: Fail (' . $this->fakeTodayYMD . ')', $message['subject']);
+        $this->assertEquals('[PHPUNIT] ETL Status: Fail (' . $this->fakeTodayYMD . ')', $message['subject']);
         $this->assertEquals($expected, $message['body']);
     }
 
@@ -323,7 +323,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
                 'data' => $this->fakeToday
             ]));
 
-        $CheckbookEtlStatus->prepareMessage($message);
+        $CheckbookEtlStatus->gatherData($message);
 
         $expected = [
             'subject' => 'Success',
@@ -342,10 +342,10 @@ class CheckbookEtlStatusModuleTest extends TestCase
             ],
             'connections' => null,
             'connection_keys' => CheckbookEtlStatus::CONNECTIONS_KEYS,
-            'solr_health_status' => []
+            'fisa_files' => false
         ];
 
-        $this->assertEquals('ETL Status: Success (' . $this->fakeTodayYMD . ')', $message['subject']);
+        $this->assertEquals('[PHPUNIT] ETL Status: Success (' . $this->fakeTodayYMD . ')', $message['subject']);
         $this->assertEquals($expected, $message['body']);
     }
 
@@ -402,7 +402,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
                 ]
             )));
 
-        $CheckbookEtlStatus->prepareMessage($message);
+        $CheckbookEtlStatus->gatherData($message);
 
         $expected = [
             'subject' => 'Success',
@@ -423,10 +423,10 @@ class CheckbookEtlStatusModuleTest extends TestCase
                 'fakeKey' => $fakeConnectionsConfig
             ],
             'connection_keys' => CheckbookEtlStatus::CONNECTIONS_KEYS,
-            'solr_health_status' => []
+            'fisa_files' => false
         ];
 
-        $this->assertEquals('ETL Status: Success (' . $this->fakeTodayYMD . ')', $message['subject']);
+        $this->assertEquals('[PHPUNIT] ETL Status: Success (' . $this->fakeTodayYMD . ')', $message['subject']);
         $this->assertEquals($expected, $message['body']);
     }
 
@@ -462,7 +462,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
                 'data' => $this->fakeToday
             ]));
 
-        $CheckbookEtlStatus->prepareMessage($message);
+        $CheckbookEtlStatus->gatherData($message);
 
         $expected = [
             'subject' => 'Needs attention',
@@ -481,10 +481,10 @@ class CheckbookEtlStatusModuleTest extends TestCase
             ],
             'connections' => null,
             'connection_keys' => CheckbookEtlStatus::CONNECTIONS_KEYS,
-            'solr_health_status' => [],
+            'fisa_files' => false,
         ];
 
-        $this->assertEquals('ETL Status: Needs attention (' . $this->fakeTodayYMD . ')', $message['subject']);
+        $this->assertEquals('[PHPUNIT] ETL Status: Needs attention (' . $this->fakeTodayYMD . ')', $message['subject']);
         $this->assertEquals($expected, $message['body']);
     }
 
@@ -522,7 +522,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
                 'invalid_records_timestamp' => ($this->fakeYesterdayTime),
             ]));
 
-        $CheckbookEtlStatus->prepareMessage($message);
+        $CheckbookEtlStatus->gatherData($message);
 
         $expected = [
             'subject' => 'Needs attention',
@@ -541,7 +541,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
             ],
             'connections' => null,
             'connection_keys' => CheckbookEtlStatus::CONNECTIONS_KEYS,
-            'solr_health_status' => [],
+            'fisa_files' => false,
         ];
         $this->assertEquals($expected, $message['body']);
     }
@@ -587,7 +587,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
                 'invalid_records_timestamp' => ($this->fakeYesterdayTime),
             ]));
 
-        $CheckbookEtlStatus->prepareMessage($message);
+        $CheckbookEtlStatus->gatherData($message);
 
         $expected = [
             'subject' => 'Needs attention',
@@ -607,7 +607,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
             ],
             'connections' => null,
             'connection_keys' => CheckbookEtlStatus::CONNECTIONS_KEYS,
-            'solr_health_status' => [],
+            'fisa_files' => false,
         ];
         $this->assertEquals($expected, $message['body']);
     }
@@ -655,7 +655,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
                 'invalid_records_timestamp' => ($this->fakeYesterdayTime),
             ]));
 
-        $CheckbookEtlStatus->prepareMessage($message);
+        $CheckbookEtlStatus->gatherData($message);
 
         $expected = [
             'subject' => 'Success',
@@ -672,7 +672,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
             ],
             'connections' => null,
             'connection_keys' => CheckbookEtlStatus::CONNECTIONS_KEYS,
-            'solr_health_status' => [],
+            'fisa_files' => false,
         ];
         $this->assertEquals($expected, $message['body']);
     }
@@ -720,7 +720,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
                 'invalid_records_timestamp' => ($this->fakeYesterdayTime),
             ]));
 
-        $CheckbookEtlStatus->prepareMessage($message);
+        $CheckbookEtlStatus->gatherData($message);
 
         $expected = [
             'subject' => 'Needs attention - too many invalid reasons skipped (11+)',
@@ -740,7 +740,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
             ],
             'connections' => null,
             'connection_keys' => CheckbookEtlStatus::CONNECTIONS_KEYS,
-            'solr_health_status' => [],
+            'fisa_files' => false,
         ];
         $this->assertEquals($expected, $message['body']);
     }
@@ -788,7 +788,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
                 'invalid_records_timestamp' => ($this->fakeYesterdayTime),
             ]));
 
-        $CheckbookEtlStatus->prepareMessage($message);
+        $CheckbookEtlStatus->gatherData($message);
 
         $expected = [
             'subject' => 'Success',
@@ -804,7 +804,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
             ],
             'connections' => null,
             'connection_keys' => CheckbookEtlStatus::CONNECTIONS_KEYS,
-            'solr_health_status' => [],
+            'fisa_files' => false,
         ];
         $this->assertEquals($expected, $message['body']);
     }
@@ -839,7 +839,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
                 'data' => $this->fakeToday
             ]));
 
-        $CheckbookEtlStatus->prepareMessage($message);
+        $CheckbookEtlStatus->gatherData($message);
 
         $expected = [
             'subject' => 'Fail',
@@ -855,7 +855,7 @@ class CheckbookEtlStatusModuleTest extends TestCase
             ],
             'connections' => false,
             'connection_keys' => CheckbookEtlStatus::CONNECTIONS_KEYS,
-            'solr_health_status' => [],
+            'fisa_files' => false,
         ];
         $this->assertEquals($expected, $message['body']);
     }
