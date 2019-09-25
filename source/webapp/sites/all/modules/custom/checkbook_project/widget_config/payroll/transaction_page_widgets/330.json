@@ -44,11 +44,11 @@
         "formatted_annual_salary": {
         "expression": "$row['amount_basis_id_amount_basis_id'] == 1 ? custom_number_formatter_basic_format($row['annual_salary_annual_salary'])  : '-'"
         },
-        "formatted_hourly_rate": {
-        "expression":" ($row['amount_basis_id_amount_basis_id'] == 3) ? '-'  : custom_number_formatter_basic_format($row['hourly_rate_hourly_rate'])"
-        },
+      "formatted_hourly_rate": {
+        "expression":" (isset($row['hourly_rate_hourly_rate']) && $row['hourly_rate_hourly_rate'] > 0) ? custom_number_formatter_basic_format($row['hourly_rate_hourly_rate'])  : '-'"
+      },
         "nycha_hourly_rate":{
-          "expression":"$row['hourly_rate_pay'] == 0 ? '-'  : $row['hourly_rate_pay']"
+          "expression":"(isset($row['hourly_rate_hourly_rate']) && $row['hourly_rate_hourly_rate'] > 0) ? custom_number_formatter_basic_format($row['hourly_rate_hourly_rate'])  : '-'"
         },
         "formatted_gross_pay_amount": {
         "expression": "custom_number_formatter_basic_format($row['gross_pay_gross_pay'])"
