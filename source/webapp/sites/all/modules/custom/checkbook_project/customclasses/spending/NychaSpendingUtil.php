@@ -27,13 +27,26 @@ class NychaSpendingUtil
     'funding_sources' => 'Funding Sources', 'ytd_funding_source' => 'Funding Source', 'departments' => 'Departments',
     'ytd_department' => 'Department');
 
-  static public function getTransactionsTitle(){
-    $categories = array(3 => 'Contracts', 2 => 'Payroll', 1 => 'Section 8', 4 => 'Others', null => 'Total');
-    $url = $_SERVER['HTTP_REFERER'];
-    $widget = RequestUtil::getRequestKeyValueFromURL("widget", $url);
+  static $categories = array(3 => 'Contracts', 2 => 'Payroll', 1 => 'Section 8', 4 => 'Others', null => 'Total');
+
+  /**
+   * @return null|string -- Returns transactions title for NYCHA Spending
+   */
+  static public function getTransactionsTitle($url = null){
+    $url = isset($url) ? $url : drupal_get_path_alias($_GET['q']);
+    $widget = RequestUtil::getRequestKeyValueFromURL('widget', $url);
     $widget_titles = self::$widget_titles;
     $title = isset($widget) ? $widget_titles[$widget]: "";
-    $title = $title .' '.$categories[ RequestUtilities::get('category')]. " Spending Transactions";
+    $title = $title .' '. self::getCategoryName() . " Spending Transactions";
     return $title ;
+  }
+
+  /**
+   * @return null|string -- Returns Spending Category
+   */
+  static public function getCategoryName(){
+    $categories = self::$categories;
+    $category_id = RequestUtilities::get('category');
+    return $categories[$category_id];
   }
 }

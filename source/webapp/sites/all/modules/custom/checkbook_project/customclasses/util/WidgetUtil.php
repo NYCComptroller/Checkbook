@@ -310,6 +310,7 @@ class WidgetUtil
         "period_to" => "Period<br/>To",
         "period_name" => "Peroid<br/>Name",
         "nypo_invoiced_amount" => "Invoiced<br/>Amount",
+        "nycha_tax_withheld" => "Withheld<br/>Amount",
     );
 
     //For number cols, need to find out if they are uniform number of digits for formatting
