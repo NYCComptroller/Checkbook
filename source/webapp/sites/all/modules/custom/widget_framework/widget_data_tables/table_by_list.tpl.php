@@ -48,8 +48,6 @@ if(isset($node->widgetConfig->headerConfig)){
             }else if(isset($row->evalLabel) && $row->evalLabel){
                 $label = eval("return $row->label;");
             }
-            if ('checkbook_nycha' === $datasource ) {
-            if (preg_match("/Tax/",$label)){$label = "<div><span>Withheld<br/>Amount</span></div>";}}
             $headerClass = ($row->headerClass)? ' class="'.$row->headerClass.'"':'';
             $th .= "<th$headerClass>" . $label . "</th>";
         }
