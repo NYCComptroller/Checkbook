@@ -3,7 +3,7 @@
     "dataFunc":"GetNychaSpendingByChecks",
     "headerTitle":"Checks",
     "headerSubTitle":"Checks",
-    "footerUrl":"_widget_controller_footer_url($node).'/widget/checks'",
+    "footerUrl":"_widget_controller_footer_url($node).'/widget/wt_checks'",
     "table_columns":[
         {"labelAlias":"issue_date","column":"issue_date","format":"date"},
         {"label":"","column":""},
