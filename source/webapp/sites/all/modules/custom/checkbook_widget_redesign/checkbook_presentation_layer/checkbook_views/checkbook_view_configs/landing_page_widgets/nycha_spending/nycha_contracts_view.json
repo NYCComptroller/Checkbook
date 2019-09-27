@@ -4,7 +4,7 @@
   "countFunc":"GetCountContracts",
   "headerTitle":"Contracts",
   "headerSubTitle":"Contracts",
-  "footerUrl":"_widget_controller_footer_url($node).'/widget/contracts'",
+  "footerUrl":"_widget_controller_footer_url($node).'/widget/wt_contracts'",
   "table_columns":[
     {"labelAlias":"contract_id","column":"contract_id"},
     {"labelAlias":"contract_purpose","column":"contract_purpose", "tooltip":50},
