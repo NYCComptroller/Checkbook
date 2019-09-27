@@ -21,19 +21,32 @@
 
 class NychaSpendingUtil
 {
-  static $widget_titles = array('checks' => 'Checks', 'ytd_check' => 'Check','vendors' => 'Vendors', 'ytd_vendor' => 'Vendor',
-    'contracts' => 'Contracts', 'ytd_contract' => 'Contract', 'expense_categories' => 'Expense Categories',
-    'ytd_expense_category' => 'Expense Category', 'industries' => 'Industries', 'ytd_industry' => 'Industry',
-    'funding_sources' => 'Funding Sources', 'ytd_funding_source' => 'Funding Source', 'departments' => 'Departments',
+  static $widget_titles = array('wt_checks' => 'Checks', 'ytd_check' => 'Check','wt_vendors' => 'Vendors', 'ytd_vendor' => 'Vendor',
+    'wt_contracts' => 'Contracts', 'ytd_contract' => 'Contract', 'wt_expense_categories' => 'Expense Categories',
+    'ytd_expense_category' => 'Expense Category', 'wt_industries' => 'Industries', 'ytd_industry' => 'Industry',
+    'wt_funding_sources' => 'Funding Sources', 'ytd_funding_source' => 'Funding Source', 'wt_departments' => 'Departments',
     'ytd_department' => 'Department');
 
-  static public function getTransactionsTitle(){
-    $categories = array(3 => 'Contracts', 2 => 'Payroll', 1 => 'Section 8', 4 => 'Others', null => 'Total');
-    $url = $_SERVER['HTTP_REFERER'];
-    $widget = RequestUtil::getRequestKeyValueFromURL("widget", $url);
+  static $categories = array(3 => 'Contracts', 2 => 'Payroll', 1 => 'Section 8', 4 => 'Others', null => 'Total');
+
+  /**
+   * @return null|string -- Returns transactions title for NYCHA Spending
+   */
+  static public function getTransactionsTitle($url = null){
+    $url = isset($url) ? $url : drupal_get_path_alias($_GET['q']);
+    $widget = RequestUtil::getRequestKeyValueFromURL('widget', $url);
     $widget_titles = self::$widget_titles;
     $title = isset($widget) ? $widget_titles[$widget]: "";
-    $title = $title .' '.$categories[ RequestUtilities::get('category')]. " Spending Transactions";
+    $title = $title .' '. self::getCategoryName() . " Spending Transactions";
     return $title ;
+  }
+
+  /**
+   * @return null|string -- Returns Spending Category
+   */
+  static public function getCategoryName(){
+    $categories = self::$categories;
+    $category_id = RequestUtilities::get('category');
+    return $categories[$category_id];
   }
 }
