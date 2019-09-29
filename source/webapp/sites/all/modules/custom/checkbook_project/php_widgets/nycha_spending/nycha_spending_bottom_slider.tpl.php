@@ -23,20 +23,21 @@
     <tbody>
     <tr>
       <?php
-          $categories_order = array(0, 2, 3, 1, 4);
+          $categories_order = array(null, 2, 3, 1, 4);
+          $category_names = NychaSpendingUtil::$categories;
           foreach($node->data as $key=>$row){
             $categories[$row['category_category']] = array('name' => $row['category_name_category_name'], 'amount' => $row['check_amount_sum']);
             $total_spending +=  $row['check_amount_sum'];
           }
-          $categories[0] = array('name' => 'Total', 'amount' => $total_spending);
+          $categories[null] = array('name' => 'Total', 'amount' => $total_spending);
           foreach($categories_order as $key => $category_id){
               $active_class = "";
-              if (RequestUtilities::get("category") == $category_id || (RequestUtilities::get("category") == "" && $category_id == 0)) {
+              if (RequestUtilities::get("category") == $category_id) {
                   $active_class = ' class="active"';
               }
-              $link = SpendingUtil::prepareSpendingBottomNavFilter("nycha_spending", (($category_id == 0) ? null: $category_id));
+              $link = SpendingUtil::prepareSpendingBottomNavFilter("nycha_spending", $category_id);
               $amount = "<span class='dollars'>" . custom_number_formatter_format($categories[$category_id]['amount'],1,'$') . "</span>";
-              $category_name = $categories[$category_id]['name'].'<br>Spending<br>';
+              $category_name = $category_names[$category_id].'<br>Spending<br>';
 
               echo "<td" . $active_class ."><div class='positioning'>";
               if($categories[$category_id]['amount'] != 0 ){
