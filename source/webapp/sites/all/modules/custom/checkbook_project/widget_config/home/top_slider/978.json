@@ -1,7 +1,7 @@
 {
   "widgetType": "phpparser",
   "no_results_content": "No Results Found",
-  "cleanURLParameters":["year","calyear","yeartype","awdmethod","vendor","csize","cindustry","magid","mwbe","subvendor","title"],
+  "cleanURLParameters":["year","calyear","yeartype","awdmethod","vendor","csize","cindustry","magid","mwbe","subvendor","title", "industry","fundsrc"],
   "widgetPreprocessJSON":"
     // Payroll amount should be calculated for 'Calendar Year' always for all the other domains
     if(!preg_match('/payroll/',request_uri())){
@@ -61,8 +61,8 @@ from   (SELECT C.contract_id
 {
 "dataset": "checkbook_nycha:all_disbursement_transactions",
 "columns":["check_amount_sum"],
-"seriesURLParamMap":{"vendor":"vendor_id","year":"issue_date_year_id","agency":"agency_id"},
-"allowedParams":["vendor_id","issue_date_year_id","agency_id"],
+"seriesURLParamMap":{"vendor":"vendor_id","year":"issue_date_year_id","agency":"agency_id","industry":"industry_type_id","fundsrc":"funding_source_id"},
+"allowedParams":["vendor_id","issue_date_year_id","agency_id","industry_type_id","funding_source_id"],
 "adjustSerieParameters":"
   return $serieParameters;
 "
