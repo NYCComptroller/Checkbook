@@ -17,6 +17,35 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-$categoryId = RequestUtilities::get('category');
-$categoryName = NychaSpendingUtil::getCategoryName() . " Spending Amount";
-print '<div class="dollar-amounts"><div class="total-spending-amount">$' . custom_number_formatter_format($node->data[0]['check_amount_sum'],2).'<div class="amount-title">'. $categoryName .'</div></div></div>';
+$url = isset($url) ? $url : drupal_get_path_alias($_GET['q']);
+$widget = RequestUtil::getRequestKeyValueFromURL('widget', $url);
+$widget_titles = self::$widget_titles;
+
+//Transactions Page main title
+$title = isset($widget) ? $widget_titles[$widget]: "";
+$categoryName = self::getCategoryName();
+$title = $title .' '. $categoryName . " Spending Transactions";
+
+//Transactions Page sub title for YTD Spending Transactions
+$subTitle = NULL;
+if(strpos($widget, 'ytd_') !== false){
+  $subTitle = self::getTransactionsSubTitle($widget, $url);
+}
+
+$titleSummary = "<div class='contract-details-heading'>
+                  <div class='contract-id'>
+                    <h2 class='contract-title'>{$title}</h2>
+                    <div class='spending-tx-subtitle'>{$subTitle}</div>
+                  </div>
+                </div>";
+
+//Transactions Page Aggegated Amounts Summary
+$aggregatedAmount = '$'.custom_number_formatter_format($node->data[0]['check_amount_sum'],2);
+$aggregatedAmountTitle = $categoryName. " Spending Amount";
+$amountsSummary = "<div class='dollar-amounts'>
+                        <div class='total-spending-amount'>{$aggregatedAmount}
+                          <div class='amount-title'>{$aggregatedAmountTitle}</div>
+                        </div>
+                      </div>";
+
+return $titleSummary . $amountsSummary;
