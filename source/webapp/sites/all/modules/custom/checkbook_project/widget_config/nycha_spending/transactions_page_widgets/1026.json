@@ -1,0 +1,65 @@
+{
+  "widgetType": "phpparser",
+  "cleanURLParameters":["agency","mcagency","agencyh","year","calyear","vendor","mcvendor",
+    "expcategory","category","checkamtr","dept","contnum","checkamt","chkdate",
+    "fundcls","bdgcodenm","captprj","expdoc","vendornm","deptnm","expcategorynm",
+    "syear","scalyear","magid","agid","cvendor","cagency","awdmethod","status","csize",
+    "cindustry","expcategorycode","month","scomline",
+    "comline","comline_exact","budname_exact","budname","entcontnum_exact","entcontnum","industry","mwbe","subvendor","vendortype","fvendor"
+  ],
+  "urlParamMap":{
+    "year":"check_eft_issued_nyc_year_id","calyear":"calendar_fiscal_year_id","agency":"agency_id",
+    "mcagency":"master_child_contract_agency_id","agencyh":"agency_history_id","vendor":"prime_vendor_id",
+    "mcvendor":"master_child_contract_vendor_id","expcategory":"expenditure_object_id",
+    "checkamtr":"check_amount","dept":"department_code","contnum":"reference_document_number",
+    "checkamt":"check_amount","chkdate":"check_eft_issued_date","fundcls":"fund_class_id",
+    "bdgcodenm":"budget_name","captprj":"reporting_code","category":"spending_category_id",
+    "expdoc":"disbursement_number","vendornm":"vendor_name","deptnm":"department_name",
+    "expcategorynm":"expenditure_object_name","syear":"check_eft_issued_nyc_year_id",
+    "scalyear":"calendar_fiscal_year_id","magid":"master_agreement_id","agid":"agreement_id",
+    "cvendor":"ctx.ctx.vendor_id","cagency":"ctx.ctx.document_agency_id","awdmethod":"ctx.ctx.award_method_id",
+    "status":"ctx.ctx.status_flag","csize":"ctx.ctx.award_size_id","cindustry":"ctx.ctx.industry_type_id",
+    "expcategorycode":"expenditure_object_code", "month":"check_eft_issued_cal_month_id",
+    "entcontnum_exact":"oge_contract_number",
+    "entcontnum":"oge_contract_number",
+    "comline_exact":"agreement_commodity_line_number",
+    "comline":"agreement_commodity_line_number",
+    "scomline":"agreement_commodity_line_number",
+    "budname_exact":"oge_budget_name",
+    "budname":"oge_budget_name",
+    "mwbe":"minority_type_id",
+    "industry":"industry_type_id",
+    "subvendor":"vendor_id","vendortype":"vendor_type","fvendor":"vendor_id"
+  },
+  "paramTypeConfig":{"checkamtr":"rangeid","checkamt":"range","chkdate":"range","captprj":"like","vendornm":"like",
+    "contnum":"like","bdgcodenm":"like","expdoc":"like","syear":"le","scalyear":"le",
+    "budname":"like","comline":"like","entcontnum":"like","scomline":"le",
+    "entcontnum_exact":"eqignorecase","comline_exact":"eqignorecase","budname_exact":"eqignorecase"},
+  "dataset": "checkbook:spending_transactions_all",
+  "adjustParameters":"
+  $cat = $parameters['spending_category_id'];
+if(isset($parameters['ctx.ctx.vendor_id'])  ||  isset($parameters['ctx.ctx.document_agency_id'])  ||  isset($parameters['ctx.ctx.award_method_id'])  || isset($parameters['ctx.ctx.award_size_id'])  ||  isset($parameters['ctx.ctx.industry_type_id']) ){
+$year = $parameters['check_eft_issued_nyc_year_id'];
+$calyear = $parameters['calendar_fiscal_year_id'];
+if(isset($year)){
+$parameters['ctx.ctx.fiscal_year_id'] = $year;
+$parameters['ctx.ctx.type_of_year'] = 'B';
+}else if(isset($calyear )){
+$parameters['ctx.ctx.fiscal_year_id'] = $calyear ;
+$parameters['ctx.ctx.type_of_year'] = 'C';
+}
+}
+
+if(function_exists('_checkbook_project_adjust_mwbe_spending_parameter_filters')){
+$parameters = _checkbook_project_adjust_mwbe_spending_parameter_filters($node, $parameters);
+}
+
+$adjustedParameters = $parameters;
+if(function_exists('_checkbook_project_applyParameterFilters')){
+$adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+}
+return $adjustedParameters;
+",
+"columns": ["check_amount_sum"],
+"template":"spending_transaction_total_amount"
+}
