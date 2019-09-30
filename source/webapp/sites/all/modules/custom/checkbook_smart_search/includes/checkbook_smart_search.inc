@@ -112,29 +112,14 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
   $solr = CheckbookSolr::getInstance($solr_datasource);
   $search_results = $solr->request_phps('select/?' . $solr_query->buildQuery());
 
-  $vendor_number = count($search_results['facet_counts']['facet_fields']['vendor_name'] ?? []);
-  $vendor_pages = floor($vendor_number / 100);
-  drupal_add_js(array('checkbook_smart_search' => array('vendor_pages' => $vendor_pages)), 'setting');
+  _inject_smart_search_drupal_settings($search_results);
 
-  $expense_categories_number = 0;
-  if ($search_results['facet_counts']['facet_fields']['expenditure_object_name'] ?? false) {
-    $expense_categories_number = sizeof($search_results['facet_counts']['facet_fields']['expenditure_object_name']);
-  }
-
-  $expense_category_pages = floor($expense_categories_number / 100);
-  drupal_add_js(array('checkbook_smart_search' => array('expense_category_pages' => $expense_category_pages)), 'setting');
-
-  foreach ($search_results['facet_counts']['facet_fields'] as $facet => $v) {
-    if ($sort = $datasource_facets[$facet]->sort_by_key ?? 0) {
-      if ($sort > 0) {
-        ksort($search_results['facet_counts']['facet_fields'][$facet]);
-      } else {
-        krsort($search_results['facet_counts']['facet_fields'][$facet]);
-      }
-    }
-  }
+  $search_results = _ckbk_ss_sort_results($search_results, $datasource_facets);
 
   if ($selected_facets) {
+    /**
+     * Get unchecked facet numbers for selected facets
+     */
     $solr_query
       ->setRows(0)
       ->tagFacets($selected_facets);
@@ -144,62 +129,92 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
       $unchecked_results['facet_counts']['facet_intervals'] ?? []
     );
 
-    $unchecked_facet_fields = [];
+    $unchecked_values = [];
 
     foreach (array_keys($selected_facets) as $facet) {
       if (!sizeof($unchecked_results) || !isset($unchecked_results[$facet]) || !sizeof($unchecked_results[$facet])) {
         continue;
       }
       if (isset($search_results['facet_counts']['facet_fields'][$facet])) {
-        $unchecked_facet_fields = array_diff($unchecked_results[$facet], $search_results['facet_counts']['facet_fields'][$facet]);
+        /**
+         * removing checked ones
+         */
+        $unchecked_values = array_diff_key($unchecked_results[$facet], array_flip($selected_facets[$facet]));
+        /**
+         * For multivalued facets overlap happens, we need to remove unchecked from selected manually
+         */
+        if ($search_results['facet_counts']['facet_fields'][$facet] ?? false) {
+          $search_results['facet_counts']['facet_fields'][$facet] =
+            array_intersect_key($search_results['facet_counts']['facet_fields'][$facet], array_flip($selected_facets[$facet]));
+        }
       } elseif (isset($search_results['facet_counts']['facet_intervals'][$facet])) {
         // facet.mincount does not work with intervals/ranges in solr
         foreach ($search_results['facet_counts']['facet_intervals'][$facet] as $k => $v) {
           if (!$v) {
             unset($search_results['facet_counts']['facet_intervals'][$facet][$k]);
           }
-          $unchecked_facet_fields = array_diff($unchecked_results[$facet], $search_results['facet_counts']['facet_intervals'][$facet]);
+          $unchecked_values = array_diff_key($unchecked_results[$facet], $search_results['facet_counts']['facet_intervals'][$facet]);
         }
       }
-
-      // for multivalued arrays it's not that obvious
-      foreach ($selected_facets[$facet] as $v) {
-        if (isset($unchecked_facet_fields[$v])) {
-          unset($unchecked_facet_fields[$v]);
-        }
-      }
-
-      $checked_facets = $search_results['facet_counts']['facet_fields'][$facet] ?? $search_results['facet_counts']['facet_intervals'][$facet];
-      $checked_facets_fields = [];
-      foreach ($selected_facets[$facet] as $v) {
-        $checked_facets_fields[$v] = $checked_facets[$v];
-        unset($checked_facets[$v]);
-      }
-
-      $unchecked_facet_fields = $checked_facets ?? [] + $unchecked_facet_fields ?? [];
 
       // for sorted facet values like years DESC
       if ($sort = $datasource_facets[$facet]->sort_by_key ?? 0) {
         if ($sort > 0) {
-          ksort($unchecked_facet_fields);
-          ksort($checked_facets_fields);
+          ksort($unchecked_values);
         } else {
-          krsort($unchecked_facet_fields);
-          krsort($checked_facets_fields);
+          krsort($unchecked_values);
         }
       }
 
       if (isset($search_results['facet_counts']['facet_fields'][$facet])) {
-        $search_results['facet_counts']['facet_fields'][$facet] =
-          ($checked_facets_fields ?? []) + ($unchecked_facet_fields ?? []);
+        $search_results['facet_counts']['facet_fields'][$facet] += ($unchecked_values ?? []);
       } elseif (isset($search_results['facet_counts']['facet_intervals'][$facet])) {
-        $search_results['facet_counts']['facet_intervals'][$facet] =
-          ($checked_facets_fields ?? []) + ($unchecked_facet_fields ?? []);
+        $search_results['facet_counts']['facet_intervals'][$facet] += ($unchecked_values ?? []);
       }
     }
   }
 
-  // facet.mincount does not work with intervals/ranges in solr
+  $search_results = _ckbk_remove_empty_intervals($search_results);
+
+  return theme('smart_search_results', [
+    'solr_datasource' => $solr_datasource,
+    'search_results' => $search_results,
+    'selected_facet_results' => $selected_facets,
+  ]);
+}
+
+/**
+ * @param array $search_results
+ * @param array $datasource_facets
+ * @return array
+ */
+function _ckbk_ss_sort_results(array $search_results, array $datasource_facets): array
+{
+  /**
+   * Sorting facet by value, like Fiscal Year desc
+   */
+  foreach ($search_results['facet_counts']['facet_fields'] as $facet => $v) {
+    if ($sort = $datasource_facets[$facet]->sort_by_key ?? 0) {
+      if ($sort > 0) {
+        ksort($search_results['facet_counts']['facet_fields'][$facet]);
+      } else {
+        krsort($search_results['facet_counts']['facet_fields'][$facet]);
+      }
+    }
+  }
+  return $search_results;
+}
+
+/**
+ * @param array $search_results
+ * @return array
+ */
+function _ckbk_remove_empty_intervals(array $search_results): array
+{
+  /**
+   * Manually getting rid of empty facet_intervals values because
+   * facet.mincount does not work with intervals/ranges in solr
+   */
   if (isset($search_results['facet_counts']['facet_intervals'])) {
     foreach ($search_results['facet_counts']['facet_intervals'] as $facet => $data) {
       foreach ($data as $k => $v) {
@@ -215,12 +230,25 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
       unset($search_results['facet_counts']['facet_intervals']);
     }
   }
+  return $search_results;
+}
 
-  return theme('smart_search_results', [
-    'solr_datasource' => $solr_datasource,
-    'search_results' => $search_results,
-    'selected_facet_results' => $selected_facets,
-  ]);
+/**
+ * @param array $search_results
+ */
+function _inject_smart_search_drupal_settings(array $search_results): void
+{
+  $vendor_number = count($search_results['facet_counts']['facet_fields']['vendor_name'] ?? []);
+  $vendor_pages = floor($vendor_number / 100);
+  drupal_add_js(array('checkbook_smart_search' => array('vendor_pages' => $vendor_pages)), 'setting');
+
+  $expense_categories_number = 0;
+  if ($search_results['facet_counts']['facet_fields']['expenditure_object_name'] ?? false) {
+    $expense_categories_number = sizeof($search_results['facet_counts']['facet_fields']['expenditure_object_name']);
+  }
+
+  $expense_category_pages = floor($expense_categories_number / 100);
+  drupal_add_js(array('checkbook_smart_search' => array('expense_category_pages' => $expense_category_pages)), 'setting');
 }
 
 /** Exports the smart search export data
