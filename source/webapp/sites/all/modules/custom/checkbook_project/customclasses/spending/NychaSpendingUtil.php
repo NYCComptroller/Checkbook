@@ -40,33 +40,9 @@ class NychaSpendingUtil
     //Transactions Page main title
     $title = isset($widget) ? $widget_titles[$widget]: "";
     $categoryName = self::getCategoryName();
-    $title = $title .' '. $categoryName . " Spending Transactions";
+    $title .= ' '. $categoryName . " Spending Transactions";
 
-    //Transactions Page sub title for YTD Spending Transactions
-    $subTitle = NULL;
-    if(strpos($widget, 'ytd_') !== false){
-      $subTitle = self::getTransactionsSubTitle($widget, $url);
-    }
-
-    $titleSummary = "<div class='contract-details-heading'>
-                  <div class='contract-id'>
-                    <h2 class='contract-title'>{$title}</h2>
-                    <div class='spending-tx-subtitle'>{$subTitle}</div>
-                  </div>
-                </div>";
-
-    //Transactions Page Aggegated Amounts Summary
-    $nid = 1026;
-    $node = node_load($nid);
-    $aggregatedAmount = '$'.custom_number_formatter_format($node->data[0]['check_amount_sum'],2);
-    $aggregatedAmountTitle = $categoryName. " Spending Amount";
-    $amountsSummary = "<div class='dollar-amounts'>
-                        <div class='total-spending-amount'>{$aggregatedAmount}
-                          <div class='amount-title'>{$aggregatedAmountTitle}</div>
-                        </div>
-                      </div>";
-
-    return $titleSummary . $amountsSummary;
+    return $title;
   }
 
   /**
@@ -84,32 +60,34 @@ class NychaSpendingUtil
    * @return null|string -- Returns Sub Tiltle for TYD Spending Transactions Details
    */
   static public function getTransactionsSubTitle($widget, $bottomURL){
-    $WidgetTitles = self::$widget_titles;
-    $subTitle = '<b>'.$WidgetTitles[$widget]. ':</b> ';
+    $widgetTitles = self::$widget_titles;
+    $title = '<b>'.$widgetTitles[$widget].': </b>';
+
     switch($widget){
       case 'ytd_vendor':
         $rqParam = RequestUtil::getRequestKeyValueFromURL('vendor', $bottomURL);
-        $title = $subTitle . _checkbook_project_get_name_for_argument("vendor_id", $rqParam);
+        $title .= _checkbook_project_get_name_for_argument("vendor_id", $rqParam);
         break;
       case 'ytd_contract':
         break;
       case 'ytd_industry':
         $rqParam = RequestUtil::getRequestKeyValueFromURL('industry', $bottomURL);
-        $title = $subTitle . _checkbook_project_get_name_for_argument("industry_type_id", $rqParam);
+        $title .= _checkbook_project_get_name_for_argument("industry_type_id", $rqParam);
         break;
       case 'ytd_expense_category':
         $rqParam = RequestUtil::getRequestKeyValueFromURL('exp_cat', $bottomURL);
-        $title = $subTitle . _checkbook_project_get_name_for_argument("expenditure_object_id", $rqParam);
+        $title .= _checkbook_project_get_name_for_argument("expenditure_object_id", $rqParam);
         break;
       case 'ytd_funding_source':
         $rqParam = RequestUtil::getRequestKeyValueFromURL('fundsrc', $bottomURL);
-        $title = $subTitle . _checkbook_project_get_name_for_argument("funding_source_id", $rqParam);
+        $title .= _checkbook_project_get_name_for_argument("funding_source_id", $rqParam);
         break;
       case 'ytd_department':
         $rqParam = RequestUtil::getRequestKeyValueFromURL('dept', $bottomURL);
-        $title = $subTitle . _checkbook_project_get_name_for_argument("department_id", $rqParam);
+        $title .= _checkbook_project_get_name_for_argument("department_id", $rqParam);
         break;
     }
-    return $subTitle;
+
+    return $title;
   }
 }

@@ -17,21 +17,21 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-$url = isset($url) ? $url : drupal_get_path_alias($_GET['q']);
-$widget = RequestUtil::getRequestKeyValueFromURL('widget', $url);
-$widget_titles = self::$widget_titles;
 
 //Transactions Page main title
-$title = isset($widget) ? $widget_titles[$widget]: "";
-$categoryName = self::getCategoryName();
-$title = $title .' '. $categoryName . " Spending Transactions";
+$title = NychaSpendingUtil::getTransactionsTitle();
 
-//Transactions Page sub title for YTD Spending Transactions
-$subTitle = NULL;
-if(strpos($widget, 'ytd_') !== false){
-  $subTitle = self::getTransactionsSubTitle($widget, $url);
+//Transactions Page sub title
+$url = $_REQUEST['expandBottomContURL'];
+$url = isset($url) ? $url : drupal_get_path_alias($_GET['q']);
+if(isset($url)) {
+  $widget = RequestUtil::getRequestKeyValueFromURL('widget', $url);
+  if (strpos($widget, 'ytd_') !== false) {
+    $subTitle = NychaSpendingUtil::getTransactionsSubTitle($widget, $url);
+  }
 }
 
+//Title section
 $titleSummary = "<div class='contract-details-heading'>
                   <div class='contract-id'>
                     <h2 class='contract-title'>{$title}</h2>
@@ -39,7 +39,7 @@ $titleSummary = "<div class='contract-details-heading'>
                   </div>
                 </div>";
 
-//Transactions Page Aggegated Amounts Summary
+//Aggregated Amounts section
 $aggregatedAmount = '$'.custom_number_formatter_format($node->data[0]['check_amount_sum'],2);
 $aggregatedAmountTitle = $categoryName. " Spending Amount";
 $amountsSummary = "<div class='dollar-amounts'>
@@ -48,4 +48,4 @@ $amountsSummary = "<div class='dollar-amounts'>
                         </div>
                       </div>";
 
-return $titleSummary . $amountsSummary;
+echo $titleSummary . $amountsSummary;
