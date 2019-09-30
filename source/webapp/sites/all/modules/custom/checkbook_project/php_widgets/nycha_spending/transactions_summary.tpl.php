@@ -18,6 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+$aggregatedAmountTitle = $categoryName. " Spending Amount";
+
 //Transactions Page main title
 $title = NychaSpendingUtil::getTransactionsTitle();
 
@@ -27,21 +29,41 @@ $url = isset($url) ? $url : drupal_get_path_alias($_GET['q']);
 if(isset($url)) {
   $widget = RequestUtil::getRequestKeyValueFromURL('widget', $url);
   if (strpos($widget, 'ytd_') !== false) {
+    $aggregatedAmountTitle = WidgetUtil::getLabel("ytd_spending");
     $subTitle = NychaSpendingUtil::getTransactionsSubTitle($widget, $url);
   }
+  $subTitle = "<div class='spending-tx-subtitle'>{$subTitle}</div>";
+}
+
+//Contract Summary section for Contract YTD Spending details
+if(isset($widget) && $widget == 'ytd_contract') {
+  $contractDetails = NychaSpendingUtil::getContractSummary();
+  $contractSummary = "<div class='contract-information contract-summary-block'>
+                        <ul>
+                          <li class=\"spendingtxsubtitle\">
+	                            <span class=\"gi-list-item\"><b>Contract ID:</b></span> {$contractDetails['contract_id']}
+                          </li>
+                          <li class=\"spendingtxsubtitle\">
+	                            <span class=\"gi-list-item\"><b>Purpose:</b></span> {$contractDetails['contract_purpose']}
+                          </li>
+                          <li class=\"spendingtxsubtitle\">
+                              <span class=\"gi-list-item\"><b>Vendor:</b></span> {$contractDetails['vendor_name']}
+                          </li>
+                        </ul>
+                      </div>";
+  $subTitle = $contractSummary;
 }
 
 //Title section
 $titleSummary = "<div class='contract-details-heading'>
                   <div class='contract-id'>
                     <h2 class='contract-title'>{$title}</h2>
-                    <div class='spending-tx-subtitle'>{$subTitle}</div>
+                    {$subTitle}
                   </div>
                 </div>";
 
 //Aggregated Amounts section
 $aggregatedAmount = '$'.custom_number_formatter_format($node->data[0]['check_amount_sum'],2);
-$aggregatedAmountTitle = $categoryName. " Spending Amount";
 $amountsSummary = "<div class='dollar-amounts'>
                         <div class='total-spending-amount'>{$aggregatedAmount}
                           <div class='amount-title'>{$aggregatedAmountTitle}</div>
@@ -49,3 +71,4 @@ $amountsSummary = "<div class='dollar-amounts'>
                       </div>";
 
 echo $titleSummary . $amountsSummary;
+
