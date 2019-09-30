@@ -25,5 +25,5 @@
       return $parameters;
   ",
   "columns": ["check_amount_sum"],
-  "template":"spending_transaction_total_amount"
+  "template":"nycha_spending_transactions_summary"
 }
