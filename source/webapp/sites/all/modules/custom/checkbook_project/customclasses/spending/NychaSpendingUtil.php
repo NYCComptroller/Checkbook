@@ -36,9 +36,13 @@ class NychaSpendingUtil
     $url = isset($url) ? $url : drupal_get_path_alias($_GET['q']);
     $widget = RequestUtil::getRequestKeyValueFromURL('widget', $url);
     $widget_titles = self::$widget_titles;
+
+    //Transactions Page main title
     $title = isset($widget) ? $widget_titles[$widget]: "";
-    $title = $title .' '. self::getCategoryName() . " Spending Transactions";
-    return $title ;
+    $categoryName = self::getCategoryName();
+    $title .= ' '. $categoryName . " Spending Transactions";
+
+    return $title;
   }
 
   /**
@@ -48,5 +52,42 @@ class NychaSpendingUtil
     $categories = self::$categories;
     $category_id = RequestUtilities::get('category');
     return $categories[$category_id];
+  }
+
+  /**
+   * @param $widget Widget Name
+   * @param $bottomURL
+   * @return null|string -- Returns Sub Tiltle for TYD Spending Transactions Details
+   */
+  static public function getTransactionsSubTitle($widget, $bottomURL){
+    $widgetTitles = self::$widget_titles;
+    $title = '<b>'.$widgetTitles[$widget].': </b>';
+
+    switch($widget){
+      case 'ytd_vendor':
+        $rqParam = RequestUtil::getRequestKeyValueFromURL('vendor', $bottomURL);
+        $title .= _checkbook_project_get_name_for_argument("vendor_id", $rqParam);
+        break;
+      case 'ytd_contract':
+        break;
+      case 'ytd_industry':
+        $rqParam = RequestUtil::getRequestKeyValueFromURL('industry', $bottomURL);
+        $title .= _checkbook_project_get_name_for_argument("industry_type_id", $rqParam);
+        break;
+      case 'ytd_expense_category':
+        $rqParam = RequestUtil::getRequestKeyValueFromURL('exp_cat', $bottomURL);
+        $title .= _checkbook_project_get_name_for_argument("expenditure_object_id", $rqParam);
+        break;
+      case 'ytd_funding_source':
+        $rqParam = RequestUtil::getRequestKeyValueFromURL('fundsrc', $bottomURL);
+        $title .= _checkbook_project_get_name_for_argument("funding_source_id", $rqParam);
+        break;
+      case 'ytd_department':
+        $rqParam = RequestUtil::getRequestKeyValueFromURL('dept', $bottomURL);
+        $title .= _checkbook_project_get_name_for_argument("department_id", $rqParam);
+        break;
+    }
+
+    return $title;
   }
 }
