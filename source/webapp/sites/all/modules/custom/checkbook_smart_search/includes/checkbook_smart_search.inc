@@ -353,6 +353,9 @@ function _checkbook_smart_search_autocomplete_main_input($solr_datasource = 'cit
 
   foreach ($contents['terms'] as $term => $matches) {
     foreach ($matches as $match => $count) {
+      if ('-' == $match) {
+        continue;
+      }
       $url = $smart_search_url . "?search_term=*!*{$term}=";
       $matches_render[] = [
         "url" => $url,
@@ -435,7 +438,7 @@ function _checkbook_autocomplete(string $solr_datasource, string $facet): array
   $solr = new CheckbookSolr($solr_datasource);
   $results = $solr->request_phps('select/?' . $solr_query);
 
-  if ($results['response']['numFound'] != 0) {
+  if ($results['response']['numFound'] != 0 && ($results['facet_counts']['facet_fields'] ?? false)) {
     $facet_results = array_shift($results['facet_counts']['facet_fields']);
     $matches = [];
     foreach (array_keys($facet_results) as $key) {
