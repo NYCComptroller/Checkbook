@@ -291,7 +291,7 @@ function _checkbook_smart_search_get_results_csv(string $solr_datasource, string
 function _checkbook_smart_search_export_form(string $solr_datasource)
 {
   if (!$solr_datasource) {
-    / 'unknown datasource';
+    echo 'unknown datasource';
   } else {
     echo theme('checkbook_smart_search_export_form', [
       'solr_datasource' => $solr_datasource
