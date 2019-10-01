@@ -350,7 +350,7 @@ function _checkbook_smart_search_export_data(string $solr_datasource)
       $result_modified = explode("\n", $result);
       for ($i = 0; $i <count($result_modified); $i++) {
         if (preg_match("/PURCHASE ORDER/i", $result_modified[$i])) {
-          $result_modified[$i] = preg_replace("/(\d{4})-(\d{2})-(\d{2})...:..:.../", "_", $result_modified[$i], 2);
+          $result_modified[$i] = preg_replace("/(\d{4})-(\d{2})-(\d{2})...:..:.../", "-", $result_modified[$i], 2);
           $result_modified[$i] = preg_replace("/(\d{4})-(\d{2})-(\d{2})...:..:.../", "$2/$3/$1", $result_modified[$i]);
           echo $result_modified[$i] . "\n";
         }
