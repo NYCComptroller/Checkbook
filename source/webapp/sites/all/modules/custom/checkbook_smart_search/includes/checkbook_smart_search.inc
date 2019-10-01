@@ -282,6 +282,10 @@ function _checkbook_smart_search_export_data(string $solr_datasource)
   $fl = implode(",", array_keys($fields));
   echo implode(",", array_values($fields)) . "\n";
 
+  //echo $solr_datasource."\n";
+  //echo $_REQUEST['domain']."\n";
+  //echo $_REQUEST['search_terms'];
+
   while ($remaining > 0) {
     $result = _checkbook_smart_search_get_results_csv($solr_datasource, $_REQUEST['search_terms'] ?? '', $page_num, $page_size, $fl, true);
     $page_num += 1;
@@ -293,11 +297,27 @@ function _checkbook_smart_search_export_data(string $solr_datasource)
       continue;
     }
 
+    // NYCCHKBK - 9264 display "-" only for nycha contracts purchase order transactions (start and end date) while exporting to csv
+
+    if (preg_match("/nycha/",$solr_datasource) && preg_match("/contracts/",$_REQUEST['domain']) && preg_match("/agreement_type_name\=purchase\+order/",$_REQUEST['search_terms'])) {
+      $result_modified = explode("\n", $result);
+      for ($i = 0; $i <count($result_modified); $i++) {
+        if (preg_match("/PURCHASE ORDER/i",$result_modified[$i])) {
+          $result_modified[$i] =preg_replace("/(\d{4})-(\d{2})-(\d{2})...:..:.../", "_", $result_modified[$i], 2);
+          $result_modified[$i] = preg_replace("/(\d{4})-(\d{2})-(\d{2})...:..:.../", "$2/$3/$1", $result_modified[$i]);
+          echo $result_modified[$i] . "\n";
+        }
+      }
+    }
+
+    else {
     $result = str_replace("Registered,Expense", "Active,Expense", $result);
     $result = str_replace("Registered,Revenue", "Active,Revenue", $result);
 
     $result = preg_replace("/1970-01-01T05:00:00Z/", "N/A", $result);
     echo preg_replace("/(\d{4})-(\d{2})-(\d{2})...:..:.../", "$2/$3/$1", $result);
+    }
+
     ob_flush();
     flush();
   }
