@@ -38,7 +38,6 @@ if(isset($node->widgetConfig->headerConfig)){
   <thead>
   <?php
     $datasource = RequestUtilities::getRequestParamValue('datasource');
-    //print '<p>'.$datasource.'</p>';
     foreach ($node->widgetConfig->table_columns as $row) {
       if(check_node_flag_visibilty($row->visibility_flag, $node)){
         if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == RequestUtilities::get('datasource')))){
@@ -49,8 +48,6 @@ if(isset($node->widgetConfig->headerConfig)){
             }else if(isset($row->evalLabel) && $row->evalLabel){
                 $label = eval("return $row->label;");
             }
-            //if ('checkbook_nycha' === $datasource ) {
-            //if (preg_match("/Tax/",$label)){$label = "<div><span>Withheld<br/>Amount</span></div>";}}
             $headerClass = ($row->headerClass)? ' class="'.$row->headerClass.'"':'';
             $th .= "<th$headerClass>" . $label . "</th>";
         }
