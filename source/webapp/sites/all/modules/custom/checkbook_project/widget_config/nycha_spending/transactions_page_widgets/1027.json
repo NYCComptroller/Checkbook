@@ -1,0 +1,203 @@
+{
+  "table_columns": [
+    {"labelAlias":"issue_date","column":"issue_date"},
+    {"labelAlias":"document_id","column":"document_id"},
+    {"labelAlias":"section8_flag","column":"section8_flag"},
+    {"labelAlias":"record_type","column":"record_type"},
+    {"labelAlias":"purchase_order_type","column":"agreement_type_name"},
+    {"labelAlias":"contract_id","column":"contract_id"},
+    {"labelAlias":"release_number","column":"release_number"},
+    {"labelAlias":"invoice_number", "column":"invoice_number"},
+    {"labelAlias":"check_amount", "column":"check_amount"},
+    {"labelAlias":"billed_amount","column":"invoice_amount"},
+    {"labelAlias":"invoice_discount","column":"invoice_discount"},
+    {"labelAlias":"tenant_share","column":"tenant_share"},
+    {"labelAlias":"nycha_tax_withheld","column":"withholding_tax"},
+    {"labelAlias":"amount_spent","column":"line_net_amount"},
+    {"labelAlias":"vendor","column":"vendor_name"},
+    {"labelAlias":"vendor_address","column":"vendor_site_address"},
+    {"labelAlias":"contract_purpose","column":"contract_purpose"},
+    {"labelAlias":"spending_category","column":"display_spending_category_name"},
+    {"labelAlias":"industry_name","column":"display_industry_type_name"},
+    {"labelAlias":"dept_name","column":"department_name"},
+    {"labelAlias":"period_from","column":"start_date"},
+    {"labelAlias":"period_to","column":"end_date"},
+    {"labelAlias":"funding_source","column":"funding_source_description"},
+    {"labelAlias":"responsibility_center", "column":"responsibility_center_description"},
+    {"labelAlias":"expense_category","column":"expenditure_type_name"},
+    {"labelAlias":"program", "column":"program_phase_description"},
+    {"labelAlias":"project", "column":"gl_project_description"}
+  ],
+  "exportColumnSqlOverride":[
+  {
+  "column":"agreement_type_name",
+  "sourceColumn":"agreement_type_name",
+  "sql":"
+      CASE
+      WHEN agreement_type_name IS NULL THEN '-'
+      ELSE agreement_type_name
+      END AS agreement_type_name
+  "
+  },
+  {
+  "column":"contract_id",
+  "sourceColumn":"contract_id",
+  "sql":"
+    CASE
+    WHEN contract_id IS NULL THEN '-'
+    ELSE contract_id
+    END AS contract_id
+  "
+  },
+  {
+  "column":"release_number",
+  "sourceColumn":"release_number",
+  "sql":"
+    CASE
+    WHEN release_number IS NULL THEN '-'
+    ELSE CAST(release_number AS TEXT)
+    END AS release_number
+  "
+  },
+  {
+  "column":"invoice_number",
+  "sourceColumn":"invoice_number",
+  "sql":"
+    CASE
+    WHEN invoice_number IS NULL THEN '-'
+    ELSE CAST(invoice_number AS TEXT)
+    END AS invoice_number
+  "
+  },
+  {
+  "column":"check_amount",
+  "sourceColumn":"check_amount",
+  "sql":"
+    CASE
+    WHEN check_amount IS NULL THEN '-'
+    ELSE CAST(check_amount AS TEXT)
+    END AS check_amount
+  "
+  },
+  {
+    "column":"billed_amount",
+    "sourceColumn":"billed_amount",
+    "sql":"
+      CASE
+      WHEN billed_amount IS NULL THEN '-'
+      ELSE CAST(billed_amount AS TEXT)
+      END AS billed_amount
+    "
+  },
+  {
+    "column":"invoice_discount",
+    "sourceColumn":"invoice_discount",
+    "sql":"
+      CASE
+      WHEN invoice_discount IS NULL THEN '-'
+      ELSE CAST(invoice_discount AS TEXT)
+      END AS invoice_discount
+    "
+  },
+  {
+    "column":"tenant_share",
+    "sourceColumn":"tenant_share",
+    "sql":"
+      CASE
+      WHEN tenant_share IS NULL THEN '-'
+      ELSE CAST(tenant_share AS TEXT)
+      END AS tenant_share
+    "
+  },
+  {
+    "column":"amount_spent",
+    "sourceColumn":"amount_spent",
+    "sql":"
+      CASE
+      WHEN amount_spent IS NULL THEN '-'
+      ELSE CAST(amount_spent AS TEXT)
+      END AS amount_spent
+    "
+  },
+    {
+      "column":"contract_purpose",
+      "sourceColumn":"contract_purpose",
+      "sql":"
+      CASE
+      WHEN contract_purpose IS NULL THEN '-'
+      ELSE contract_purpose
+      END AS contract_purpose
+      "
+    },
+    {
+      "column":"display_industry_type_name",
+      "sourceColumn":"display_industry_type_name",
+      "sql":"
+      CASE
+      WHEN display_industry_type_name IS NULL THEN '-'
+      ELSE display_industry_type_name
+      END AS display_industry_type_name
+      "
+    },
+    {
+      "column":"department_name",
+      "sourceColumn":"department_name",
+      "sql":"
+      CASE
+      WHEN department_name IS NULL THEN '-'
+      ELSE department_name
+      END AS department_name
+      "
+    },
+    {
+      "column":"start_date",
+      "sourceColumn":"start_date",
+      "sql":"
+        CASE
+        WHEN start_date IS NULL THEN '-'
+        ELSE TO_CHAR(start_date,'MM/DD/YYYY')
+        END AS start_date
+      "
+    },
+    {
+    "column":"end_date",
+    "sourceColumn":"end_date",
+    "sql":"
+      CASE
+      WHEN end_date IS NULL THEN '-'
+      ELSE TO_CHAR(end_date,'MM/DD/YYYY')
+      END AS end_date
+    "
+    },
+    {
+    "column":"funding_source_description",
+    "sourceColumn":"funding_source_description",
+    "sql":"
+      CASE
+      WHEN funding_source_description IS NULL THEN '-'
+      ELSE funding_source_description
+      END AS funding_source_description
+    "
+    },
+    {
+    "column":"responsibility_center_description",
+    "sourceColumn":"responsibility_center_description",
+    "sql":"
+      CASE
+      WHEN responsibility_center_description IS NULL THEN '-'
+      ELSE responsibility_center_description
+      END AS responsibility_center_description
+    "
+    },
+    {
+    "column":"expenditure_type_name",
+    "sourceColumn":"expenditure_type_name",
+    "sql":"
+      CASE
+      WHEN expenditure_type_name IS NULL THEN '-'
+      ELSE expenditure_type_name
+      END AS expenditure_type_name
+    "
+    }
+  ]
+}
