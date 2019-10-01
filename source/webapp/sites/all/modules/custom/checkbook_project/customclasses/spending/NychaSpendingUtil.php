@@ -36,9 +36,13 @@ class NychaSpendingUtil
     $url = isset($url) ? $url : drupal_get_path_alias($_GET['q']);
     $widget = RequestUtil::getRequestKeyValueFromURL('widget', $url);
     $widget_titles = self::$widget_titles;
+
+    //Transactions Page main title
     $title = isset($widget) ? $widget_titles[$widget]: "";
-    $title = $title .' '. self::getCategoryName() . " Spending Transactions";
-    return $title ;
+    $categoryName = self::getCategoryName();
+    $title .= ' '. $categoryName . " Spending Transactions";
+
+    return $title;
   }
 
   /**
@@ -48,5 +52,58 @@ class NychaSpendingUtil
     $categories = self::$categories;
     $category_id = RequestUtilities::get('category');
     return $categories[$category_id];
+  }
+
+  /**
+   * @param $widget Widget Name
+   * @param $bottomURL
+   * @return null|string -- Returns Sub Tiltle for TYD Spending Transactions Details
+   */
+  static public function getTransactionsSubTitle($widget, $bottomURL){
+    $widgetTitles = self::$widget_titles;
+    $title = '<b>'.$widgetTitles[$widget].': </b>';
+
+    switch($widget){
+      case 'ytd_vendor':
+        $reqParam = RequestUtil::getRequestKeyValueFromURL('vendor', $bottomURL);
+        $title .= _checkbook_project_get_name_for_argument("vendor_id", $reqParam);
+        break;
+      case 'ytd_contract':
+        return null;
+        break;
+      case 'ytd_industry':
+        $reqParam = RequestUtil::getRequestKeyValueFromURL('industry', $bottomURL);
+        $title .= _checkbook_project_get_name_for_argument("industry_type_id", $reqParam);
+        break;
+      case 'ytd_expense_category':
+        $reqParam = RequestUtil::getRequestKeyValueFromURL('exp_cat', $bottomURL);
+        $title .= _checkbook_project_get_name_for_argument("expenditure_object_id", $reqParam);
+        break;
+      case 'ytd_funding_source':
+        $reqParam = RequestUtil::getRequestKeyValueFromURL('fundsrc', $bottomURL);
+        $title .= _checkbook_project_get_name_for_argument("funding_source_id", $reqParam);
+        break;
+      case 'ytd_department':
+        $reqParam = RequestUtil::getRequestKeyValueFromURL('dept', $bottomURL);
+        $title .= _checkbook_project_get_name_for_argument("department_id", $reqParam);
+        break;
+    }
+
+    return $title;
+  }
+
+  /**
+   * @param $contractId
+   * @return null|string -- Returns contract Details
+   */
+  static public function getContractSummary(){
+    $contractId = RequestUtilities::get('po_num_exact');
+    if(isset($contractId)) {
+      $query = "SELECT DISTINCT contract_id, contract_purpose, vendor_name from aggregation_spending_contracts_fy 
+	              WHERE contract_id = '" . $contractId . "'";
+      $results = _checkbook_project_execute_sql_by_data_source($query, Datasource::NYCHA);
+      return $results[0];
+    }
+    return null;
   }
 }

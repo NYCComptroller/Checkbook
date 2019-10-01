@@ -5,8 +5,6 @@
   "limit":100,
   "startWith":0,
   "maxSelect":5,
-  "showAllRecords":true,
-  "allowFacetDeselect":true,
   "columns":["funding_source_id.funding_source_id","funding_source_description.funding_source_description","txcount"],
   "orderBy":"-txcount",
   "facetPager":true,
