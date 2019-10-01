@@ -5,7 +5,7 @@
   "headerSubTitle":"Expense Categories",
   "footerUrl":"_widget_controller_footer_url($node).'/widget/wt_expense_categories'",
   "table_columns":[
-    {"labelAlias":"expense_category","column":"expenditure_type_name"},
+    {"labelAlias":"expense_category","column":"expenditure_type_name","tooltip": 60},
     {"labelAlias":"ytd_spending","column":"check_amount_sum","format":"dollar", "derivedColumn":"exp_cat_ytd_spending_link"},
     {"label":"","column":""}
   ],
