@@ -193,7 +193,8 @@
         "autocomplete": true
       },
       "grant_name": {
-        "title": "Grant Name"
+        "title": "Grant Name",
+        "autocomplete": true
       },
       "facet_year_array": {
         "title": "Fiscal Year",
