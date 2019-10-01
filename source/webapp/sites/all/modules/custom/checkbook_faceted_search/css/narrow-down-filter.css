@@ -4,6 +4,7 @@
 #revenue-transactions .grid-3,
 #payroll-transactions .grid-3,
 #nycha-contracts-transactions .grid-3,
+#nycha-spending-transactions .grid-3,
 .page-node div.filter-content,
 .page-smart-search .smart-search-right{
     border: 1px solid #CACACA;
@@ -19,7 +20,8 @@
 #contract-details .grid-3{
     margin-top: 30px;
 }
-#nycha-contracts-transactions .grid-3{
+#nycha-contracts-transactions .grid-3,
+#nycha-spending-transactions .grid-3{
   margin-top: 47px;
 }
 
