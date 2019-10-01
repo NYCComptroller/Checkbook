@@ -221,7 +221,11 @@ function checkbook_project_theme($existing, $type, $theme, $path){
             'template' => 'php_widgets/nycha_spending/nycha_spending_bottom_slider',
             'arguments' => array('node' => NULL)
         ),
-
+        //NYCHA Spending Transactions
+        'nycha_spending_transactions_summary' => array(
+          'template' => 'php_widgets/nycha_spending/transactions_summary',
+          'arguments' => array('node' => NULL)
+        ),
         //Revenue
         'revenue_summary' => array(
             'template' => 'php_widgets/revenue/revenue_summary',
