@@ -291,7 +291,7 @@ function _checkbook_smart_search_get_results_csv(string $solr_datasource, string
 function _checkbook_smart_search_export_form(string $solr_datasource)
 {
   if (!$solr_datasource) {
-    echo 'unknown datasource';
+    / 'unknown datasource';
   } else {
     echo theme('checkbook_smart_search_export_form', [
       'solr_datasource' => $solr_datasource
@@ -328,10 +328,6 @@ function _checkbook_smart_search_export_data(string $solr_datasource)
   $fl = implode(",", array_keys($fields));
   echo implode(",", array_values($fields)) . "\n";
 
-  //echo $solr_datasource."\n";
-  //echo $_REQUEST['domain']."\n";
-  //echo $_REQUEST['search_terms'];
-
   while ($remaining > 0) {
     $result = _checkbook_smart_search_get_results_csv($solr_datasource, $_REQUEST['search_terms'] ?? '', $page_num, $page_size, $fl, true);
     $page_num += 1;
@@ -354,14 +350,12 @@ function _checkbook_smart_search_export_data(string $solr_datasource)
           echo $result_modified[$i] . "\n";
         }
       }
-    }
+    } else {
+      $result = str_replace("Registered,Expense", "Active,Expense", $result);
+      $result = str_replace("Registered,Revenue", "Active,Revenue", $result);
 
-    else {
-    $result = str_replace("Registered,Expense", "Active,Expense", $result);
-    $result = str_replace("Registered,Revenue", "Active,Revenue", $result);
-
-    $result = preg_replace("/1970-01-01T05:00:00Z/", "N/A", $result);
-    echo preg_replace("/(\d{4})-(\d{2})-(\d{2})...:..:.../", "$2/$3/$1", $result);
+      $result = preg_replace("/1970-01-01T05:00:00Z/", "N/A", $result);
+      echo preg_replace("/(\d{4})-(\d{2})-(\d{2})...:..:.../", "$2/$3/$1", $result);
     }
 
     ob_flush();
