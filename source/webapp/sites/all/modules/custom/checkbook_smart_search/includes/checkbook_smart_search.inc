@@ -328,6 +328,10 @@ function _checkbook_smart_search_export_data(string $solr_datasource)
   $fl = implode(",", array_keys($fields));
   echo implode(",", array_values($fields)) . "\n";
 
+  //echo $solr_datasource."\n";
+  //echo $_REQUEST['domain']."\n";
+  //echo $_REQUEST['search_terms'];
+
   while ($remaining > 0) {
     $result = _checkbook_smart_search_get_results_csv($solr_datasource, $_REQUEST['search_terms'] ?? '', $page_num, $page_size, $fl, true);
     $page_num += 1;
