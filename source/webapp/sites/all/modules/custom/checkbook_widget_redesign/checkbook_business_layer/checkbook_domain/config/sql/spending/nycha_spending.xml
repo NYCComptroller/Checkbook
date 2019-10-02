@@ -12,7 +12,7 @@
         issue_date,
         vendor_name,
         vendor_id,
-        max(check_amount) as check_amount
+        MAX(check_amount) as check_amount
       FROM all_disbursement_transactions
       <where>
         <exp op="AND">
@@ -23,8 +23,8 @@
           <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
         </exp>
       </where>
-      and check_status NOT IN ('VOIDED')
-      group by document_id,issue_date, vendor_name, vendor_id
+      AND check_status NOT IN ('VOIDED')
+      GROUP BY document_id,issue_date, vendor_name, vendor_id
     </sql>
   </statement>
   <!--GetNychaSpendingByExpenseCategories-->
@@ -105,7 +105,7 @@
         vendor_id,
         vendor_name,
         SUM(COALESCE(ytd_spending, 0)) AS check_amount_sum,
-        SUM(COALESCE(total_contract_amount, 0)) AS total_contract_amount
+        MAX(COALESCE(total_contract_amount, 0)) AS total_contract_amount
       FROM aggregation_spending_contracts_fy
       <where>
         <exp op="AND">
