@@ -8,10 +8,11 @@
     <param name="fundsrc" type="int" />
     <sql>
       SELECT
+        document_id,
         issue_date,
         vendor_name,
         vendor_id,
-        check_amount
+        max(check_amount) as check_amount
       FROM all_disbursement_transactions
       <where>
         <exp op="AND">
@@ -22,6 +23,8 @@
           <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
         </exp>
       </where>
+      and check_status NOT IN ('VOIDED')
+      group by document_id,issue_date, vendor_name, vendor_id
     </sql>
   </statement>
   <!--GetNychaSpendingByExpenseCategories-->
