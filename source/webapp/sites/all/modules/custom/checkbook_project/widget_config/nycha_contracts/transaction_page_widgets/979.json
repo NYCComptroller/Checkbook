@@ -8,7 +8,7 @@
   "urlParamMap":{"year":"release_year_id","releaseyear":"release_approved_year_id", "curamtr":"agreement_total_amount","industrynm_exact":"industry_type_id","fundingnm_exact":"funding_source_id","vendornm_exact":"vendor_name","agreement_type":"agreement_type_code",
                  "po_num":"contract_id","responsibilitynm_exact":"responsibility_center_id","po_num_exact":"contract_id", "agency":"agency_id", "award_method":"award_method_id", "awdmethod":"award_method_id","contract_type": "contract_type_code",
                   "pcontdesc":"purpose","appdate": "release_approved_date","startdate": "agreement_start_date","enddate": "agreement_end_date","vendornm": "vendor_name","vendor": "vendor_id","modamt": "agreement_amount_difference",
-                  "csize":"award_size_id","industry":"industry_type_id", "pin":"po_header_id","curamt": "release_line_total_amount","record_type":"record_type","release_no":"release_number",
+                  "csize":"award_size_id","industry":"industry_type_id", "pin":"po_header_id","curamt": "agreement_total_amount","record_type":"record_type","release_no":"release_number",
   "item_category":"item_category_descr","item_descr":"item_description"},
    "paramTypeConfig": {
     "po_num": "like",
