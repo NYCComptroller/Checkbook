@@ -36,7 +36,7 @@
   "uniqueSortColumn":["-sort_sequence"],
   "columns": ["issue_date", "document_id", "section8_flag", "record_type", "agreement_type_name", "contract_id", "release_number",
     "invoice_number", "check_amount", "invoice_amount", "invoice_discount", "tenant_share", "withholding_tax", "line_net_amount",
-    "vendor_name", "vendor_id", "vendor_site_address", "contract_purpose", "display_spending_category_name", "display_industry_type_name",
+    "vendor_name", "vendor_id", "contract_purpose", "display_spending_category_name", "display_industry_type_name",
     "department_name", "start_date", "end_date", "funding_source_description", "responsibility_center_description",
     "expenditure_type_name", "program_phase_description", "gl_project_description"
   ],
@@ -77,9 +77,6 @@
     },
     "vendor_link": {
       "expression": " '<a href=\"'.NychaSpendingUrlService::generateLandingPageUrl('vendor', $row['vendor_id']).'\">'.$row['vendor_name_formatted'].'</a>'"
-    },
-    "vendor_address_formatted":{
-      "expression": "_get_tooltip_markup($row['vendor_site_address'],36)"
     },
     "purpose_formatted":{
       "expression": "($row['contract_purpose'] == null) ? '-' :  _get_tooltip_markup($row['contract_purpose'],36)"
@@ -132,7 +129,6 @@
     {"labelAlias":"amount_spent","column":"amount_spent_formatted","sortSourceColumn":"line_net_amount"},
     {"label":"","column":"", "export":false},
     {"labelAlias":"vendor","column":"vendor_link", "sortSourceColumn":"vendor_name"},
-    {"labelAlias":"vendor_address","column":"vendor_address_formatted","sortSourceColumn":"vendor_site_address"},
     {"labelAlias":"contract_purpose","column":"purpose_formatted","sortSourceColumn":"contract_purpose"},
     {"labelAlias":"spending_category","column":"display_spending_category_name","sortSourceColumn":"display_spending_category_name"},
     {"labelAlias":"industry_name","column":"display_industry_type_name_formatted","sortSourceColumn":"display_industry_type_name"},
@@ -188,7 +184,6 @@
       {"sClass":"number", "sWidth":"112px","asSorting":["asc","desc"]},
       {"sClass":"number", "sWidth":"112px","asSorting":["asc","desc"]},
       {"bSortable":false,"sWidth":"20px"},
-      {"sClass":"text", "sWidth":"200px","asSorting":["asc","desc"]},
       {"sClass":"text", "sWidth":"200px","asSorting":["asc","desc"]},
       {"sClass":"text", "sWidth":"170px","asSorting":["asc","desc"]},
       {"sClass":"text", "sWidth":"180px","asSorting":["asc","desc"]},
