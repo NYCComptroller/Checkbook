@@ -13,7 +13,7 @@
     {"labelAlias":"invoice_discount","column":"invoice_discount"},
     {"labelAlias":"tenant_share","column":"tenant_share"},
     {"labelAlias":"nycha_tax_withheld","column":"withholding_tax"},
-    {"labelAlias":"amount_spent","column":"line_net_amount"},
+    {"labelAlias":"amount_spent","column":"invoice_net_amount"},
     {"labelAlias":"vendor","column":"vendor_name"},
     {"labelAlias":"contract_purpose","column":"contract_purpose"},
     {"labelAlias":"spending_category","column":"display_spending_category_name"},
@@ -111,13 +111,13 @@
     "
   },
   {
-    "column":"amount_spent",
-    "sourceColumn":"amount_spent",
+    "column":"invoice_net_amount",
+    "sourceColumn":"invoice_net_amount",
     "sql":"
       CASE
-      WHEN amount_spent IS NULL THEN '-'
-      ELSE CAST(amount_spent AS TEXT)
-      END AS amount_spent
+      WHEN invoice_net_amount IS NULL THEN '-'
+      ELSE CAST(invoice_net_amount AS TEXT)
+      END AS invoice_net_amount
     "
   },
     {
