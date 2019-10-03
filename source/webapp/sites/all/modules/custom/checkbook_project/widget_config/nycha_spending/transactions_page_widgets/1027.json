@@ -15,7 +15,6 @@
     {"labelAlias":"nycha_tax_withheld","column":"withholding_tax"},
     {"labelAlias":"amount_spent","column":"line_net_amount"},
     {"labelAlias":"vendor","column":"vendor_name"},
-    {"labelAlias":"vendor_address","column":"vendor_site_address"},
     {"labelAlias":"contract_purpose","column":"contract_purpose"},
     {"labelAlias":"spending_category","column":"display_spending_category_name"},
     {"labelAlias":"industry_name","column":"display_industry_type_name"},
@@ -74,7 +73,9 @@
   "sourceColumn":"check_amount",
   "sql":"
     CASE
-    WHEN check_amount IS NULL THEN '-'
+    WHEN upper(record_type) = 'CHECK' AND check_amount IS NULL THEN '-'
+    WHEN upper(record_type) = 'INVOICE' THEN '-'
+    WHEN upper(record_type) = 'AGREEMENT' THEN '-'
     ELSE CAST(check_amount AS TEXT)
     END AS check_amount
   "
