@@ -53,12 +53,23 @@
       "measures": {
         "check_amount_sum": {
           "function": "SUM(check_amount)"
+        },
+        "invoice_amount_sum": {
+          "function": "SUM(invoice_net_amount)"
         }
       }
     },
     "all_disbursement_transactions_by_invoice_by_line": {
       "sourceDatasetName": "all_disbursement_transactions_by_invoice_by_line",
       "dimensions": [
+        {
+          "name":"document_id",
+          "levels": [
+            {
+              "name":"document_id",
+              "sourceColumnName":"document_id"
+            }]
+        },
         {
           "name": "agency",
           "levels": [
@@ -225,6 +236,9 @@
       "measures": {
         "check_amount_sum": {
           "function": "SUM(check_amount)"
+        },
+        "invoice_amount_sum": {
+          "function": "SUM(invoice_net_amount)"
         },
         "txcount": {
           "function":"COUNT(*)"

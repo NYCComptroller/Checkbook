@@ -1622,18 +1622,18 @@
       }
 
       function autoCompleteSource(solr_datasource, facet, filters) {
-        var url = '/advanced_autocomplete/';
+        let url = '/advanced_autocomplete/';
 
-        var fq = '';
+        let fq = '';
 
         Object.keys(filters).forEach(function (key) {
-          var val = extractId(filters[key]);
+          let val = extractId(String(filters[key]));
           if (val && ("0" !== val)){
             fq += '*!*'+key+'='+val;
           }
         });
 
-        var search_term = '/?search_term=' + fq;
+        let search_term = '/?search_term=' + fq;
 
         return url+solr_datasource+'/'+facet+search_term;
       }
