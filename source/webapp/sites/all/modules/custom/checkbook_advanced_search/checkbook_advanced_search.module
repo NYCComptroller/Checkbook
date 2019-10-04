@@ -688,18 +688,15 @@ function _checkbook_advanced_search_filter_field_definition($domain, $data_sourc
   if ($data_source == DataSource::OtherGovernmentEntities) {
     $agencies = _checkbook_advanced_search_get_agencyname_and_id($data_source);
     $agency_attributes = _checkbook_advanced_search_get_agency_attributes($data_source);
+    $nycha_agencies = _checkbook_advanced_search_get_agencyname_and_id(DataSource::NYCHA);
+    $nycha_agency_attributes = _checkbook_advanced_search_get_agency_attributes(DataSource::NYCHA);
+    $agencies = $nycha_agencies + $agencies;
+    $agency_attributes = $nycha_agency_attributes + $agency_attributes;
 
-    if ($domain == Domain::Contracts) {
-      $nycha_agencies = _checkbook_advanced_search_get_agencyname_and_id(DataSource::NYCHA);
-      $nycha_agency_attributes = _checkbook_advanced_search_get_agency_attributes(DataSource::NYCHA);
-      $agencies = $nycha_agencies + $agencies;
-      $agency_attributes = $nycha_agency_attributes + $agency_attributes;
-
-      $nycha_responsibility_center_attributes = _checkbook_advanced_search_get_responsibility_centers(DataSource::NYCHA);
-      $nycha_contract_type_attributes = _checkbook_advanced_search_get_nycha_contract_types(DataSource::NYCHA);
-      $nycha_award_method_attributes = checkbook_advanced_search_get_nycha_award_methods(DataSource::NYCHA);
-      $nycha_industry_attributes = checkbook_advanced_search_get_nycha_industries(DataSource::NYCHA);
-    }
+    $nycha_responsibility_center_attributes = _checkbook_advanced_search_get_responsibility_centers(DataSource::NYCHA);
+    $nycha_contract_type_attributes = _checkbook_advanced_search_get_nycha_contract_types(DataSource::NYCHA);
+    $nycha_award_method_attributes = checkbook_advanced_search_get_nycha_award_methods(DataSource::NYCHA);
+    $nycha_industry_attributes = checkbook_advanced_search_get_nycha_industries(DataSource::NYCHA);
   } else if ($data_source == DataSource::CitywideAgency) {
     $mwbe_category_attributes = _checkbook_advanced_search_get_mwbe_category_and_id();
     $industry_attributes = _checkbook_advanced_search_get_industry_type_and_id();

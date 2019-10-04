@@ -1022,9 +1022,15 @@
             'spending_category': 'select[name=' + data_source + '_spending_expense_type]',
             'mwbe_category': 'select[name=' + data_source + '_spending_mwbe_category]',
             'industry': 'select[name=' + data_source + '_spending_industry]',
+            'fundsrc': 'select[name=' + data_source + '_spending_fundsrc]',
+            'resp_center': 'select[name=' + data_source + '_spending_responsibility_center]',
+            'po_type': 'select[name=' + data_source + '_spending_purchase_order_type]',
             'payee_name': 'input:text[name=' + data_source + '_spending_payee_name]',
+            'vendor_name': 'input:text[name=' + data_source + '_spending_vendor_name]',
             'check_amt_from': 'input:text[name="' + data_source + '_spending_check_amount_from[date]"]',
             'check_amt_to': 'input:text[name="' + data_source + '_spending_check_amount_to[date]"]',
+            'nycha_check_amt_from': 'input:text[name="' + data_source + '_spending_nycha_check_amount_from[date]"]',
+            'nycha_check_amt_to': 'input:text[name="' + data_source + '_spending_nycha_check_amount_to[date]"]',
             'contract_id': 'input:text[name=' + data_source + '_spending_contract_num]',
             'entity_contract_number': 'input:text[name=' + data_source + '_spending_entity_contract_number]',
             'document_id': 'input:text[name=' + data_source + '_spending_document_id]',
@@ -1079,7 +1085,12 @@
             var dept = (div.ele('dept').val()) ? (div.ele('dept').val()) : 0;
             dept = dept.toString().replace(/\//g, "__");
             var exptype = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
+
+            //Setting 'data souce' value
             var data_source = $('input:radio[name=spending_advanced_search_domain_filter]:checked').val();
+            if(data_source == 'checkbook_oge' && agency == 162){
+              data_source = 'checkbook_nycha';
+            }
             $.ajax({
               url: '/advanced-search/autocomplete/spending/expcategory/' + year + '/' + agency + '/' + dept + '/' + exptype + '/' + data_source
               , success: function (data) {
@@ -1192,7 +1203,11 @@
           var dept = (div.ele('dept').val()) ? (div.ele('dept').val()) : 0;
           dept = dept.toString().replace(/\//g, "__");
           var exptype = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
+          //Setting data source value
           var data_source = $('input:radio[name=spending_advanced_search_domain_filter]:checked').val();
+          if(data_source == 'checkbook_oge' && agency == 162){
+            data_source = 'checkbook_nycha';
+          }
           $.ajax({
             url: '/advanced-search/autocomplete/spending/expcategory/' + year + '/' + agency + '/' + dept + '/' + exptype + '/' + data_source
             , success: function (data) {
@@ -1250,7 +1265,11 @@
           var dept = (div.ele('dept').val()) ? (div.ele('dept').val()) : 0;
           dept = dept.toString().replace(/\//g, "__");
           var exptype = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
+          //Setting data source value
           var data_source = $('input:radio[name=spending_advanced_search_domain_filter]:checked').val();
+          if(data_source == 'checkbook_oge' && agency == 162){
+            data_source = 'checkbook_nycha';
+          }
           $.ajax({
             url: '/advanced-search/autocomplete/spending/expcategory/' + year + '/' + agency + '/' + dept + '/' + exptype + '/' + data_source
             , success: function (data) {
@@ -1389,12 +1408,16 @@
         }
 
         function initializeSpendingViewAutocomplete(div, data_source){
+          var solr_datasource = data_source;
+          agency_id = parseInt((div.ele('agency').val()) ? div.ele('agency').val() : 0);
+          if (('checkbook_oge' == data_source) && (162 == agency_id)){
+            data_source = "checkbook_oge";
+            solr_datasource = 'nycha'
+          }
+
           if (data_source === "checkbook_oge") {
             div.ele('date_filter_issue_date').attr('disabled', 'disabled');
           }
-
-          agency_id = parseInt((div.ele('agency').val()) ? div.ele('agency').val() : 0);
-
           //Both
           if (!agency_id) {
             div.ele('dept').attr("disabled", "disabled");
@@ -1414,10 +1437,6 @@
           minority_type_id = (div.ele('mwbe_category').val()) ? (div.ele('mwbe_category').val()) : 0;
           industry_type_id = (div.ele('industry').val()) ? (div.ele('industry').val()) : 0;
           datasource = $('input:radio[name=spending_advanced_search_domain_filter]:checked').val();
-
-          var solr_datasource = data_source;
-
-          if (('checkbook_oge' == data_source) && (162 == agency_id)){solr_datasource = 'nycha'}
 
           var filters = {
             department_name: department_name,
