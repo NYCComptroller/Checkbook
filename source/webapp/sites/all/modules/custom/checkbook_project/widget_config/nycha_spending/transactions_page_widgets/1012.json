@@ -73,7 +73,7 @@
       "expression": "custom_number_formatter_basic_format($row['withholding_tax'])"
     },
     "amount_spent_formatted":{
-      "expression": "($row['amount_spent'] == null) ? '-' : custom_number_formatter_basic_format($row['line_net_amount'])"
+      "expression": "($row['invoice_net_amount'] == null) ? '-' : custom_number_formatter_basic_format($row['invoice_net_amount'])"
     },
     "vendor_name_formatted":{
       "expression": "_get_tooltip_markup($row['vendor_name'],36)"
@@ -130,7 +130,7 @@
     {"labelAlias":"invoice_discount","column":"invoice_discount_formatted","sortSourceColumn":"invoice_discount"},
     {"labelAlias":"tenant_share","column":"tenant_share_formatted","sortSourceColumn":"tenant_share"},
     {"labelAlias":"nycha_tax_withheld","column":"tax_withheld_formatted","sortSourceColumn":"withholding_tax"},
-    {"labelAlias":"amount_spent","column":"amount_spent_formatted","sortSourceColumn":"line_net_amount"},
+    {"labelAlias":"amount_spent","column":"amount_spent_formatted","sortSourceColumn":"invoice_net_amount"},
     {"label":"","column":"", "export":false},
     {"labelAlias":"vendor","column":"vendor_link", "sortSourceColumn":"vendor_name"},
     {"labelAlias":"contract_purpose","column":"purpose_formatted","sortSourceColumn":"contract_purpose"},

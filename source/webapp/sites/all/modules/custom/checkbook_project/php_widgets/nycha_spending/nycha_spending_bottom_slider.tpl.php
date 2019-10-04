@@ -26,8 +26,8 @@
           $categories_order = array(null, 2, 3, 1, 4);
           $category_names = NychaSpendingUtil::$categories;
           foreach($node->data as $key=>$row){
-            $categories[$row['category_category']] = array('name' => $row['category_name_category_name'], 'amount' => $row['check_amount_sum']);
-            $total_spending +=  $row['check_amount_sum'];
+            $categories[$row['category_category']] = array('name' => $row['category_name_category_name'], 'amount' => $row['invoice_amount_sum']);
+            $total_spending +=  $row['invoice_amount_sum'];
           }
           $categories[null] = array('name' => 'Total', 'amount' => $total_spending);
           foreach($categories_order as $key => $category_id){
