@@ -341,11 +341,27 @@
         "options":"$nycha_industry_attributes"
       }
    },
-    "approved_date":{
-      "field_type":"range",
-      "field_name":"approved_date",
-      "attributes":{
-        "date_year_range":"$year_range"
-      }
+  "fundsrc":{
+    "field_type":"select",
+    "field_name":"fundsrc",
+    "attributes":{
+      "title":"Funding Source",
+      "options":"$fundsrc_attributes"
     }
+  },
+  "nycha_check_amount":{
+    "field_type":"rangefield",
+    "field_name":"nycha_check_amount",
+    "attributes":{
+      "size":30,
+      "maxlength":32
+    }
+  },
+  "approved_date":{
+    "field_type":"range",
+    "field_name":"approved_date",
+    "attributes":{
+      "date_year_range":"$year_range"
+    }
+  }
 }
