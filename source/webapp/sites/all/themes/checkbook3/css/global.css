@@ -2544,7 +2544,9 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
     width:100%;
 }
 .contract-information li{margin-bottom:16px;}
-#spending-transactions .contract-information li{margin-bottom:0px;}
+#spending-transactions .contract-information li,
+#nycha-spending-transactions .contract-information li
+{margin-bottom:0px;}
 #spending-transactions .contract-information {margin-top:0px;}
 .spending-tx-subtitle{margin-top:10px;}
 .contract-information li span{
@@ -2668,6 +2670,7 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 #contract-details .dollar-amounts,
 #nyc-payroll .dollar-amounts,
 #spending-transactions .contract-id,
+#nycha-spending-transactions .contract-id,
 #contract-details .contract-id,
 #nyc-payroll .contract-id,
 .inside .contract-details-heading,
@@ -2698,7 +2701,9 @@ h1.no-spending-transactions {width: 500px}
 .contract_transactions .inside .contract-details-heading,
 #nyc-expense-pending-contracts .inside .contract-details-heading,
 .inside #node-widget-545 .contract-details-heading,
-#spending-transactions .inside .contract-details-heading{
+#spending-transactions .inside .contract-details-heading,
+#nycha-spending-transactions .inside .contract-details-heading
+{
     width:100%;
 }
 .budget_agency_perecent_difference_transactions .inside .panel-pane.pane-custom.pane-1,
