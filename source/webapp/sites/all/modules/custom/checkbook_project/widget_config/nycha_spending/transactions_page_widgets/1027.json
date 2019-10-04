@@ -8,6 +8,7 @@
     {"labelAlias":"contract_id","column":"contract_id"},
     {"labelAlias":"release_number","column":"release_number"},
     {"labelAlias":"invoice_number", "column":"invoice_number"},
+    {"labelAlias":"check_status","column":"check_payment_status"},
     {"labelAlias":"check_amount", "column":"check_amount"},
     {"labelAlias":"billed_amount","column":"invoice_amount"},
     {"labelAlias":"invoice_discount","column":"invoice_discount"},
@@ -68,6 +69,18 @@
     END AS invoice_number
   "
   },
+    {
+      "column":"check_payment_status",
+      "sourceColumn":"check_payment_status",
+      "sql":"
+      CASE
+      WHEN upper(record_type) = 'CHECK' AND check_payment_status IS NULL THEN '-'
+      WHEN upper(record_type) = 'INVOICE' THEN '-'
+      WHEN upper(record_type) = 'AGREEMENT' THEN '-'
+      ELSE CAST(check_payment_status AS TEXT)
+      END AS check_payment_status
+      "
+    },
   {
   "column":"check_amount",
   "sourceColumn":"check_amount",
