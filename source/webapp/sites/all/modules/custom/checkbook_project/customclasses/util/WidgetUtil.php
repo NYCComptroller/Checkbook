@@ -311,6 +311,7 @@ class WidgetUtil
         "period_name" => "Peroid<br/>Name",
         "nypo_invoiced_amount" => "Invoiced<br/>Amount",
         "nycha_tax_withheld" => "Withheld<br/>Amount",
+        "check_status" => "Check<br/>Status",
     );
 
     //For number cols, need to find out if they are uniform number of digits for formatting
