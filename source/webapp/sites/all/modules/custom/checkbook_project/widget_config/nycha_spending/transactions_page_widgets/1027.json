@@ -12,7 +12,6 @@
     {"labelAlias":"check_amount", "column":"check_amount"},
     {"labelAlias":"billed_amount","column":"invoice_amount"},
     {"labelAlias":"invoice_discount","column":"invoice_discount"},
-    {"labelAlias":"tenant_share","column":"tenant_share"},
     {"labelAlias":"nycha_tax_withheld","column":"withholding_tax"},
     {"labelAlias":"amount_spent","column":"invoice_net_amount"},
     {"labelAlias":"vendor","column":"vendor_name"},
