@@ -35,7 +35,7 @@
   "dataset":"checkbook_nycha:all_disbursement_transactions_by_invoice_by_line",
   "uniqueSortColumn":["-sort_sequence"],
   "columns": ["issue_date", "document_id", "section8_flag", "record_type", "agreement_type_name", "contract_id", "release_number",
-    "invoice_number","check_payment_status", "check_amount", "invoice_amount", "invoice_discount", "tenant_share", "withholding_tax", "line_net_amount",
+    "invoice_number","check_payment_status", "check_amount", "invoice_amount", "invoice_discount", "withholding_tax", "line_net_amount",
     "vendor_name", "vendor_id", "contract_purpose", "display_spending_category_name", "display_industry_type_name",
     "department_name", "start_date", "end_date", "funding_source_description", "responsibility_center_description",
     "expenditure_type_name", "program_phase_description", "gl_project_description"
@@ -65,9 +65,6 @@
     },
     "invoice_discount_formatted":{
       "expression": "($row['invoice_discount'] == null) ? '-' : custom_number_formatter_basic_format($row['invoice_discount'])"
-    },
-    "tenant_share_formatted":{
-      "expression": "($row['tenant_share'] == null) ? '-' : custom_number_formatter_basic_format($row['tenant_share'])"
     },
     "tax_withheld_formatted":{
       "expression": "custom_number_formatter_basic_format($row['withholding_tax'])"
@@ -128,7 +125,6 @@
     {"labelAlias":"check_amount","column":"check_amount_formatted", "sortSourceColumn":"check_amount"},
     {"labelAlias":"billed_amount","column":"billed_amount_formatted","sortSourceColumn":"invoice_amount"},
     {"labelAlias":"invoice_discount","column":"invoice_discount_formatted","sortSourceColumn":"invoice_discount"},
-    {"labelAlias":"tenant_share","column":"tenant_share_formatted","sortSourceColumn":"tenant_share"},
     {"labelAlias":"nycha_tax_withheld","column":"tax_withheld_formatted","sortSourceColumn":"withholding_tax"},
     {"labelAlias":"amount_spent","column":"amount_spent_formatted","sortSourceColumn":"invoice_net_amount"},
     {"label":"","column":"", "export":false},
@@ -182,7 +178,6 @@
       {"bSortable":false,"sWidth":"8px"},
       {"sClass":"number-center", "sWidth":"75px","asSorting":["asc","desc"]},
       {"sClass":"number-center", "sWidth":"112px","asSorting":["asc","desc"]},
-      {"sClass":"number", "sWidth":"112px","asSorting":["asc","desc"]},
       {"sClass":"number", "sWidth":"112px","asSorting":["asc","desc"]},
       {"sClass":"number", "sWidth":"112px","asSorting":["asc","desc"]},
       {"sClass":"number", "sWidth":"112px","asSorting":["asc","desc"]},
