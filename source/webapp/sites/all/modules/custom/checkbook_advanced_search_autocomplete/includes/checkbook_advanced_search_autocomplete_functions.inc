@@ -71,34 +71,35 @@ function _get_spending_advanced_search_autocomplete_results($facet, $query, $yea
  *   Results from Query
  ***/
 function _get_spending_expense_cat_options($agency, $dept, $spendingCat, $year, $dataSource = 'checkbook') {
-    $yearId = (isset($year)) ? substr($year, 3, strlen($year)) : "all";
-    if($dataSource == Datasource::NYCHA){
-      $yearParam = ($yearId != 'all') ? "AND issue_date_year_id = '" . $yearId . "' " : "";
-      $query = "SELECT DISTINCT expenditure_type_description AS expenditure_object_name, 
-                                expenditure_type_code AS expenditure_object_code
-                FROM disbursement_line_item_details
-                WHERE 1=1 AND  {$yearParam} 
-                ORDER BY expenditure_object_name ASC";
-    }else{
-      $yearParam = ($yearId != 'all') ? "AND check_eft_issued_nyc_year_id = '" . $yearId . "' " : "";
-      $agencyParam = $agency ? "AND agency_id = '" . $agency . "' " : "";
-      $categoryParam = $spendingCat ? "AND spending_category_id = '" . $spendingCat . "' " : "";
-      $deptParam = $dept ? " AND department_name ILIKE '".trim($dept)."' ":"";
-      $query = "SELECT DISTINCT expenditure_object_code, expenditure_object_name 
-                FROM disbursement_line_item_details
-                WHERE 1=1 AND  {$categoryParam} {$yearParam} {$agencyParam} {$deptParam} 
-                ORDER BY expenditure_object_name ASC";
-    }
+  $yearId = (isset($year)) ? substr($year, 3, strlen($year)) : "all";
+  $categoryParam = $spendingCat ? "AND spending_category_id = '" . $spendingCat . "' " : "";
+  $deptParam = $dept ? " AND department_name ILIKE '".trim($dept)."' ":"";
 
-    $results = _checkbook_project_execute_sql($query, "main",  $dataSource);
-    if(count($results) == 0){
-        $output = array('label' => 'No Matches Found','value' => '');
-    }else{
-        foreach ($results as $result) {
-            $output[$result['expenditure_object_code']] = $result['expenditure_object_name'];
-        }
+  if($dataSource == Datasource::NYCHA){
+    $yearParam = ($yearId != 'all') ? " AND issue_date_year_id = '" . $yearId . "' " : "";
+    $query = "SELECT DISTINCT expenditure_type_description AS expenditure_object_name, 
+                              expenditure_type_code AS expenditure_object_code
+              FROM all_disbursement_transactions
+              WHERE 1=1 {$yearParam} {$categoryParam} {$deptParam} 
+              ORDER BY expenditure_object_name ASC";
+  }else{
+    $yearParam = ($yearId != 'all') ? " AND check_eft_issued_nyc_year_id = '" . $yearId . "' " : "";
+    $agencyParam = $agency ? " AND agency_id = '" . $agency . "' " : "";
+    $query = "SELECT DISTINCT expenditure_object_code, expenditure_object_name 
+              FROM disbursement_line_item_details
+              WHERE 1=1 {$categoryParam} {$yearParam} {$agencyParam} {$deptParam} 
+              ORDER BY expenditure_object_name ASC";
+  }
+
+  $results = _checkbook_project_execute_sql($query, "main",  $dataSource);
+  if(count($results) == 0){
+    $output = array('label' => 'No Matches Found','value' => '');
+  }else{
+    foreach ($results as $result) {
+        $output[$result['expenditure_object_code']] = $result['expenditure_object_name'];
     }
-    return $output;
+  }
+  return $output;
 }
 
 /**
@@ -119,17 +120,17 @@ function _get_spending_expense_cat_options($agency, $dept, $spendingCat, $year, 
  */
 function _checkbook_advanced_search_autocomplete_spending_department($year, $agency, $spendingCat, $dataSource = 'checkbook') {
   $yearId = (isset($year)) ? substr($year, 3, strlen($year)) : "all";
+  $spendingCatParam = $spendingCat ? " AND spending_category_id = '" . $spendingCat . "' " : "";
+
   if($dataSource == Datasource::NYCHA){
-      $yearParam = ($yearId != 'all') ? "AND issue_date_year_id = '" . $yearId . "' " : "";
+      $yearParam = ($yearId != 'all') ? " AND issue_date_year_id = '" . $yearId . "' " : "";
       $query = "SELECT DISTINCT department_name 
                 FROM all_disbursement_transactions 
                 WHERE 1=1 {$yearParam} 
                 ORDER BY department_name ASC";
   }else {
-      $yearParam = ($yearId != 'all') ? "AND check_eft_issued_nyc_year_id = '" . $yearId . "' " : "";
-      $agencyParam = $agency ? "AND agency_id = '" . $agency . "' " : "";
-      $spendingCatParam = $spendingCat ? "AND spending_category_id = '" . $spendingCat . "' " : "";
-
+      $yearParam = ($yearId != 'all') ? " AND check_eft_issued_nyc_year_id = '" . $yearId . "' " : "";
+      $agencyParam = $agency ? " AND agency_id = '" . $agency . "' " : "";
       $query = "SELECT DISTINCT department_name
                 FROM disbursement_line_item_details
                 WHERE 1 =1 {$agencyParam} {$yearParam} {$spendingCatParam} 
