@@ -75,7 +75,7 @@ function checkbook_advanced_search_form_submit($form, &$form_state) {
  * @param string $data_source
  * @return array
  */
-function _checkbook_advanced_search_get_year($domain = null, $form = null, $data_source = 'checkbook')
+function _checkbook_advanced_search_get_year($domain = null, $form = null, $data_source = DataSource::CITYWIDE)
 {
     try {
         $dataController = data_controller_get_instance();
@@ -132,14 +132,14 @@ function _checkbook_advanced_search_get_year($domain = null, $form = null, $data
  * @param string $data_source
  * @return array|void
  */
-function _checkbook_advanced_search_get_agencyname_and_id($data_source = 'checkbook')
+function _checkbook_advanced_search_get_agencyname_and_id($data_source = DataSource::CITYWIDE)
 {
     try {
         switch ($data_source) {
-            case 'checkbook_oge':
+            case DataSource::OGE:
                 $parameters = array("is_oge_agency" => "Y", "is_display" => "Y");
                 break;
-            case 'checkbook_nycha':
+            case DataSource::NYCHA:
                 $parameters = array("is_display" => "Y");
                 break;
             default:
@@ -169,14 +169,14 @@ function _checkbook_advanced_search_get_agencyname_and_id($data_source = 'checkb
  * @param string $data_source
  * @return array|void
  */
-function _checkbook_advanced_search_get_agency_attributes($data_source = 'checkbook')
+function _checkbook_advanced_search_get_agency_attributes($data_source = DataSource::CITYWIDE)
 {
     try {
         switch ($data_source) {
-            case 'checkbook_oge':
+          case DataSource::OGE:
                 $parameters = array("is_oge_agency" => "Y");
                 break;
-            case 'checkbook_nycha':
+            case DataSource::NYCHA:
                 $parameters = array("is_display" => "Y");
                 break;
             default:
@@ -584,7 +584,7 @@ function _checkbook_advanced_search_get_payroll_frequency()
  * @param string $data_source
  * @return array|void
  */
-function _checkbook_advanced_search_get_expensetype_and_id($data_source = 'checkbook')
+function _checkbook_advanced_search_get_expensetype_and_id($data_source = DataSource::CITYWIDE)
 {
     try {
         $dataController = data_controller_get_instance();
@@ -609,7 +609,7 @@ function _checkbook_advanced_search_get_expensetype_and_id($data_source = 'check
  * @param string $data_source
  * @return array|void
  */
-function _checkbook_advanced_search_get_contract_award_method_and_id($data_source = 'checkbook')
+function _checkbook_advanced_search_get_contract_award_method_and_id($data_source = DataSource::CITYWIDE)
 {
     try {
         $dataController = data_controller_get_instance();
@@ -633,7 +633,7 @@ function _checkbook_advanced_search_get_contract_award_method_and_id($data_sourc
  * @param string $data_source
  * @return array|void
  */
-function _checkbook_advanced_search_get_contract_award_method_attributes($data_source = 'checkbook')
+function _checkbook_advanced_search_get_contract_award_method_attributes($data_source = DataSource::CITYWIDE)
 {
     try {
         $dataController = data_controller_get_instance();
@@ -656,7 +656,7 @@ function _checkbook_advanced_search_get_contract_award_method_attributes($data_s
  * @param string $data_source
  * @return array|void
  */
-function _checkbook_advanced_search_get_contract_type_and_id($data_source = 'checkbook')
+function _checkbook_advanced_search_get_contract_type_and_id($data_source = DataSource::CITYWIDE)
 {
     try {
         $dataController = data_controller_get_instance();
@@ -680,7 +680,7 @@ function _checkbook_advanced_search_get_contract_type_and_id($data_source = 'che
  * @param bool $feeds
  * @return array|void
  */
-function _checkbook_advanced_search_get_responsibility_centers($data_source = 'checkbook_nycha', $feeds = false){
+function _checkbook_advanced_search_get_responsibility_centers($data_source = DataSource::NYCHA, $feeds = false){
     try {
         $query = "SELECT DISTINCT responsibility_center_id, responsibility_center_code, responsibility_center_description FROM ref_responsibility_center ORDER BY responsibility_center_description";
         $results = _checkbook_project_execute_sql_by_data_source($query, $data_source);
@@ -720,7 +720,7 @@ function _checkbook_advanced_search_get_responsibility_centers($data_source = 'c
  * @param bool $feeds
  * @return array|void
  */
-function _checkbook_advanced_search_get_nycha_contract_types($data_source = 'checkbook_nycha', $feeds = false){
+function _checkbook_advanced_search_get_nycha_contract_types($data_source = DataSource::NYCHA, $feeds = false){
     try {
         $query = "SELECT DISTINCT contract_type_id, contract_type_code, contract_type_name, contract_type_description FROM ref_contract_type ORDER BY contract_type_name";
         $results = _checkbook_project_execute_sql_by_data_source($query, $data_source);
@@ -759,7 +759,7 @@ function _checkbook_advanced_search_get_nycha_contract_types($data_source = 'che
  * @param bool $feeds
  * @return array|void
  */
-function checkbook_advanced_search_get_nycha_award_methods($data_source = 'checkbook_nycha', $feeds = false){
+function checkbook_advanced_search_get_nycha_award_methods($data_source = DataSource::NYCHA, $feeds = false){
     try {
         $query = "SELECT DISTINCT award_method_id, award_method_code, award_method_name FROM ref_award_method ORDER BY award_method_name";
         $results = _checkbook_project_execute_sql_by_data_source($query, $data_source);
@@ -799,7 +799,7 @@ function checkbook_advanced_search_get_nycha_award_methods($data_source = 'check
  * @param bool $feeds
  * @return array|void
  */
-function checkbook_advanced_search_get_nycha_industries($data_source = 'checkbook_nycha', $feeds = false){
+function checkbook_advanced_search_get_nycha_industries($data_source = DataSource::NYCHA, $feeds = false){
     try {
         $query = "SELECT DISTINCT display_industry_type_name, industry_type_id, industry_type_code FROM ref_industry_type ORDER BY display_industry_type_name";
         $results = _checkbook_project_execute_sql_by_data_source($query, $data_source);
@@ -832,7 +832,45 @@ function checkbook_advanced_search_get_nycha_industries($data_source = 'checkboo
     }
 }
 
+/**
+ * Get Nycha Funding Source options for NYCHA
+ * @param string $data_source
+ * @param bool $feeds
+ * @return array|void
+ */
+function checkbook_advanced_search_get_nycha_funding_sources($data_source = DataSource::NYCHA, $feeds = false){
+  try {
+    $query = "SELECT funding_source_id, funding_source_code, display_funding_source_descr FROM ref_funding_source 
+              ORDER BY display_funding_source_descr";
+    $results = _checkbook_project_execute_sql_by_data_source($query, $data_source);
 
+    $fundsrc_key_val_option_attributes = array('title' => 'Select Funding Source');
+    $fundsrc_key_val_options = array('Select Funding Source');
+
+    foreach ($results as $value) {
+      if($feeds){
+        $text = $value['display_funding_source_descr'].' ['.$value['funding_source_code'].']';
+        $fundsrc_key_val_option_attributes[$text] = array('title' => $text);
+        if (strlen($text) > 20)
+          $fundsrc_key_val_options[$text] = substr($text, 0, 20) . '...';
+        else
+          $fundsrc_key_val_options[$text] = $text;
+      }else {
+        $keys = 'id=>' . $value['funding_source_id'] . '~code=>' . $value['funding_source_code'];
+        $fundsrc_key_val_option_attributes[$keys] = array('title' => $value['display_funding_source_descr']);
+        if (strlen($value['display_funding_source_descr']) > 20)
+          $fundsrc_key_val_options[$keys] = substr($value['display_funding_source_descr'], 0, 20) . '...';
+        else
+          $fundsrc_key_val_options[$keys] = $value['display_funding_source_descr'];
+      }
+    }
+    return array('options' => $fundsrc_key_val_options, 'option_attributes' => $fundsrc_key_val_option_attributes);
+
+  } catch (Exception $e) {
+    log_error("Error getting data from controller: \n" . $e->getMessage());
+    return;
+  }
+}
 
 /**
  * Constructs the URL for Payroll based on the input by the users
@@ -910,7 +948,7 @@ function _checkbook_advanced_search_payroll_submit($form, &$form_state)
         $redirect_url .= _checkbook_advanced_search_year_arg($payroll_year);
     }
 
-    if($data_source == 'checkbook_oge'){
+    if($data_source == DataSource::OGE){
         $redirect_url .= '/datasource/checkbook_nycha'.Datasource::getNYCHAUrl();
     }
 
@@ -962,7 +1000,7 @@ function _checkbook_advanced_search_add_payroll_range_filter_param($from, $to, $
  * @param string $data_source
  * @return string
  */
-function _checkbook_advanced_search_nycha_contracts_submit($form, &$form_state, $data_source = 'checkbook_oge')
+function _checkbook_advanced_search_nycha_contracts_submit($form, &$form_state, $data_source = DataSource::OGE)
 {
     $filter_dimension = $data_source . '_contracts';
     $contracts_nycha_agency_id = Datasource::getNYCHAId();
@@ -1083,12 +1121,12 @@ function _checkbook_advanced_search_nycha_contracts_submit($form, &$form_state, 
  * @param string $data_source
  * @return string
  */
-function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_source = 'checkbook')
+function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_source = DataSource::CITYWIDE)
 {
     $filter_dimension = $data_source . '_contracts';
     $contracts_agency = trim($form[$filter_dimension][$data_source . '_contracts_agency']['#value']);
     if( $contracts_agency == Datasource::getNYCHAId()){
-     $redirect_url =   _checkbook_advanced_search_nycha_contracts_submit($form, $form_state,  'checkbook_oge');
+     $redirect_url =   _checkbook_advanced_search_nycha_contracts_submit($form, $form_state,  DataSource::OGE);
      return $redirect_url;
     }
 
@@ -1220,7 +1258,7 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
     }
     if (!empty($contracts_contract_type)) {
         switch ($data_source) {
-            case "checkbook_oge":
+            case DataSource::OGE:
                 $code_id_array = _checkbook_advanced_search_autocomplete_get_code_id($contracts_contract_type);
                 $redirect_url .= _checkbook_advanced_search_generate_redirect_url($code_id_array['code'], 'agrmnttypecode');
                 break;
@@ -1275,7 +1313,7 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
     $contracts_contract_registration_date_range_array = array('from' => $contracts_contract_registration_date_from, 'to' => $contracts_contract_registration_date_to, 'type' => 'date');
 
     //append data source if not default (checkbook)
-    if($data_source != 'checkbook') $redirect_url .= '/datasource/' . $data_source;
+    if($data_source != DataSource::CITYWIDE) $redirect_url .= '/datasource/' . $data_source;
 
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_registration_date_range_array, 'regdate', TRUE);
 
@@ -1290,7 +1328,7 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
  * @param string $data_source
  * @return string
  */
-function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_source = 'checkbook')
+function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_source = DataSource::CITYWIDE)
 {
     $filter_dimension = $data_source . '_spending';
 
@@ -1340,7 +1378,7 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_s
 
     $redirect_url = 'spending/search/transactions';
     //append data source if not default (checkbook)
-    if($data_source != 'checkbook') $redirect_url .= '/datasource/' . $data_source;
+    if($data_source != DataSource::CITYWIDE) $redirect_url .= '/datasource/' . $data_source;
 
     if (!empty($spending_mwbe_category)) {
         $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_mwbe_category, 'mwbe');
