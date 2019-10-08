@@ -22,7 +22,7 @@
                 {"field_name":"department","column":"column-left","disabled":true},
                 {"field_name":"expense_category","column":"column-left","disabled":true},
                 {"field_name":"expense_type","column":"column-left"},
-                {"field_name":"industry","column":"column-left"},
+                {"field_name":"nycha_industry","column":"column-left"},
                 {"field_name":"fundsrc","column":"column-left"},
                 {"field_name":"responsibility_center","column":"column-left"},
                 {"field_name":"payee_name","column":"column-left"},
