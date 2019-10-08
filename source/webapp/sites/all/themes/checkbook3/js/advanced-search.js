@@ -1416,42 +1416,42 @@
           switch (dataSource) {
             case "checkbook_oge":
               //Show OGE Fields
-              jQuery('div.form-item-checkbook-oge-spending-payee-name').show();
-              jQuery('checkbook-oge.form-item-check-amount').show();
-              jQuery('div.form-item-checkbook-oge-spending-commodity-line').show();
-              jQuery('div.form-item-checkbook-oge-spending-entity-contract-number').show();
-              jQuery('div.form-item-checkbook-oge-spending-capital-project').show();
-              jQuery('div.form-item-checkbook-oge-spending-budget-name').show();
+              $('div.form-item-checkbook-oge-spending-payee-name').show();
+              $('.checkbook-oge .form-item-check-amount').show();
+              $('div.form-item-checkbook-oge-spending-commodity-line').show();
+              $('div.form-item-checkbook-oge-spending-entity-contract-number').show();
+              $('div.form-item-checkbook-oge-spending-capital-project').show();
+              $('div.form-item-checkbook-oge-spending-budget-name').show();
 
               //Hide NYCHA Fields
-              jQuery('div.form-item-checkbook-oge-spending-industry').hide();
-              jQuery('div.form-item-checkbook-oge-spending-fundsrc').hide();
-              jQuery('div.form-item-checkbook-oge-spending-responsibility-center').hide();
-              jQuery('div.form-item-checkbook-oge-spending-vendor-name').hide();
-              jQuery('div.form-item-nycha-check-amount').hide();
-              jQuery('div.form-item-nycha-amount-spent').hide();
-              jQuery('div.form-item-checkbook-oge-spending-purchase-order-type').hide();
-              jQuery('div.form-item-checkbook-oge-spending-document-id').hide();
+              $('div.form-item-checkbook-oge-spending-fundsrc').hide();
+              $('div.form-item-checkbook-oge-spending-responsibility-center').hide();
+              $('div.form-item-checkbook-oge-spending-vendor-name').hide();
+              $('div.form-item-checkbook-oge-spending-nycha-industry').hide();
+              $('div.form-item-nycha-check-amount').hide();
+              $('div.form-item-nycha-amount-spent').hide();
+              $('div.form-item-checkbook-oge-spending-purchase-order-type').hide();
+              $('div.form-item-checkbook-oge-spending-document-id').hide();
 
               break;
             case "checkbook_nycha":
               //Hide OGE Fields
-              jQuery('div.form-item-checkbook-oge-spending-payee-name').hide();
-              jQuery('checkbook-oge.form-item-check-amount').hide();
-              jQuery('div.form-item-checkbook-oge-spending-commodity-line').hide();
-              jQuery('div.form-item-checkbook-oge-spending-entity-contract-number').hide();
-              jQuery('div.form-item-checkbook-oge-spending-capital-project').hide();
-              jQuery('div.form-item-checkbook-oge-spending-budget-name').hide();
+              $('div.form-item-checkbook-oge-spending-payee-name').hide();
+              $('.checkbook-oge .form-item-check-amount').hide();
+              $('div.form-item-checkbook-oge-spending-commodity-line').hide();
+              $('div.form-item-checkbook-oge-spending-entity-contract-number').hide();
+              $('div.form-item-checkbook-oge-spending-capital-project').hide();
+              $('div.form-item-checkbook-oge-spending-budget-name').hide();
 
-              //Hide NYCHA Fields
-              jQuery('div.form-item-checkbook-oge-spending-industry').show();
-              jQuery('div.form-item-checkbook-oge-spending-fundsrc').show();
-              jQuery('div.form-item-checkbook-oge-spending-responsibility-center').show();
-              jQuery('div.form-item-checkbook-oge-spending-vendor-name').show();
-              jQuery('div.form-item-nycha-check-amount').show();
-              jQuery('div.form-item-nycha-amount-spent').show();
-              jQuery('div.form-item-checkbook-oge-spending-purchase-order-type').show();
-              jQuery('div.form-item-checkbook-oge-spending-document-id').show();
+              //Show NYCHA Fields
+              $('div.form-item-checkbook-oge-spending-fundsrc').show();
+              $('div.form-item-checkbook-oge-spending-responsibility-center').show();
+              $('div.form-item-checkbook-oge-spending-vendor-name').show();
+              $('div.form-item-checkbook-oge-spending-nycha-industry').show();
+              $('div.form-item-nycha-check-amount').show();
+              $('div.form-item-nycha-amount-spent').show();
+              $('div.form-item-checkbook-oge-spending-purchase-order-type').show();
+              $('div.form-item-checkbook-oge-spending-document-id').show();
 
               break;
           }
