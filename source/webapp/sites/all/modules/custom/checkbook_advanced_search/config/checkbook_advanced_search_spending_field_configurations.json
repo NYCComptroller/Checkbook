@@ -29,6 +29,7 @@
                 {"field_name":"check_amount","column":"column-left"},
                 {"field_name":"vendor_name","column":"column-right"},
                 {"field_name":"nycha_check_amount","column":"column-right"},
+                {"field_name":"nycha_amount_spent","column":"column-right"},
                 {"field_name":"purchase_order_type","column":"column-right"},
                 {"field_name":"contract_id","column":"column-right"},
                 {"field_name":"document_id","column":"column-right"},

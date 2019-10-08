@@ -1086,11 +1086,13 @@
             dept = dept.toString().replace(/\//g, "__");
             var exptype = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
 
-            //Setting 'data souce' value
+            //Setting 'data source' value
             var data_source = $('input:radio[name=spending_advanced_search_domain_filter]:checked').val();
-            if(data_source == 'checkbook_oge' && agency == 162){
-              data_source = 'checkbook_nycha';
+            if(data_source == 'checkbook_oge') {
+              data_source = (agency == 162) ? 'checkbook_nycha' : data_source;
+              showHideOgeFields(data_source);
             }
+
             $.ajax({
               url: '/advanced-search/autocomplete/spending/expcategory/' + year + '/' + agency + '/' + dept + '/' + exptype + '/' + data_source
               , success: function (data) {
@@ -1396,6 +1398,9 @@
               initializeSpendingView(div_checkbook_spending_oge, dataSource);
               div_checkbook_spending.contents().hide();
               div_checkbook_spending_oge.contents().show();
+              agency_id = parseInt((div_checkbook_spending_oge.ele('agency').val()) ? div_checkbook_spending_oge.ele('agency').val() : 0);
+              dataSource = (162 == agency_id) ? 'checkbook_nycha' : 'checkbook_oge';
+              showHideOgeFields(dataSource);
               break;
 
             default:
@@ -1403,6 +1408,51 @@
               initializeSpendingView(div_checkbook_spending, dataSource);
               div_checkbook_spending.contents().show();
               div_checkbook_spending_oge.contents().hide();
+              break;
+          }
+        }
+
+        function showHideOgeFields(dataSource = 'checkbook_oge'){
+          switch (dataSource) {
+            case "checkbook_oge":
+              //Show OGE Fields
+              jQuery('div.form-item-checkbook-oge-spending-payee-name').show();
+              jQuery('checkbook-oge.form-item-check-amount').show();
+              jQuery('div.form-item-checkbook-oge-spending-commodity-line').show();
+              jQuery('div.form-item-checkbook-oge-spending-entity-contract-number').show();
+              jQuery('div.form-item-checkbook-oge-spending-capital-project').show();
+              jQuery('div.form-item-checkbook-oge-spending-budget-name').show();
+
+              //Hide NYCHA Fields
+              jQuery('div.form-item-checkbook-oge-spending-industry').hide();
+              jQuery('div.form-item-checkbook-oge-spending-fundsrc').hide();
+              jQuery('div.form-item-checkbook-oge-spending-responsibility-center').hide();
+              jQuery('div.form-item-checkbook-oge-spending-vendor-name').hide();
+              jQuery('div.form-item-nycha-check-amount').hide();
+              jQuery('div.form-item-nycha-amount-spent').hide();
+              jQuery('div.form-item-checkbook-oge-spending-purchase-order-type').hide();
+              jQuery('div.form-item-checkbook-oge-spending-document-id').hide();
+
+              break;
+            case "checkbook_nycha":
+              //Hide OGE Fields
+              jQuery('div.form-item-checkbook-oge-spending-payee-name').hide();
+              jQuery('checkbook-oge.form-item-check-amount').hide();
+              jQuery('div.form-item-checkbook-oge-spending-commodity-line').hide();
+              jQuery('div.form-item-checkbook-oge-spending-entity-contract-number').hide();
+              jQuery('div.form-item-checkbook-oge-spending-capital-project').hide();
+              jQuery('div.form-item-checkbook-oge-spending-budget-name').hide();
+
+              //Hide NYCHA Fields
+              jQuery('div.form-item-checkbook-oge-spending-industry').show();
+              jQuery('div.form-item-checkbook-oge-spending-fundsrc').show();
+              jQuery('div.form-item-checkbook-oge-spending-responsibility-center').show();
+              jQuery('div.form-item-checkbook-oge-spending-vendor-name').show();
+              jQuery('div.form-item-nycha-check-amount').show();
+              jQuery('div.form-item-nycha-amount-spent').show();
+              jQuery('div.form-item-checkbook-oge-spending-purchase-order-type').show();
+              jQuery('div.form-item-checkbook-oge-spending-document-id').show();
+
               break;
           }
         }
