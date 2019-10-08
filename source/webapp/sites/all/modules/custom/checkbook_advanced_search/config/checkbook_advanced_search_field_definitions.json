@@ -347,7 +347,7 @@
     "field_name":"fundsrc",
     "attributes":{
       "title":"Funding Source",
-      "options":"$fundsrc_attributes"
+      "options":"$nycha_fundsrc_attributes"
     }
   },
   "nycha_check_amount":{
