@@ -11,7 +11,7 @@
     {"labelAlias": "contract_purpose","column": "purpose","tooltip":32},
     {"labelAlias":"current_amount","column":"total_amount","format":"dollar"},
     {"labelAlias":"original_amount","column":"original_amount","format":"dollar"},
-    {"labelAlias":"contract_spend_to_date","column":"spend_to_date","format":"dollar"},
+    {"labelAlias":"contract_spend_to_date","column":"spend_to_date","format":"dollar","derivedColumn":"blanket_agreement_modifications_invoiced_amount_link"},
     {"labelAlias":"dollar_diff","column":"dollar_difference","format":"dollar"},
     {"labelAlias":"percent_diff","column":"percent_difference", "format":"percent"},
     {"label":"","column":""}
