@@ -24,39 +24,27 @@ $title = NychaSpendingUtil::getTransactionsTitle();
 //Transactions Page sub title
 $url = $_REQUEST['expandBottomContURL'];
 $url = isset($url) ? $url : drupal_get_path_alias($_GET['q']);
+
 if(isset($url)) {
   $widget = RequestUtil::getRequestKeyValueFromURL('widget', $url);
+
   if (strpos($widget, 'ytd_') !== false) {
     $aggregatedYtdTitle = WidgetUtil::getLabel("ytd_spending");
     $aggregatedAmountTitle = WidgetUtil::getLabel("total_contract_amount");
     $subTitle = NychaSpendingUtil::getTransactionsSubTitle($widget, $url);
+
   }
-    $subTitle = "<div class='spending-tx-subtitle'>{$subTitle}</div>";
-}
+  $subTitle = "<div class='spending-tx-subtitle'>{$subTitle}</div>";
 
-//Title section
-$titleSummary = "<div class='contract-details-heading'>
-                  <div class='contract-id'>
-                    <h2 class='contract-title'>{$title}</h2>
-                    {$subTitle}
-                  </div>";
-//Aggregated Amounts section
-$ytdAmount = '$'.custom_number_formatter_format($node->data[0]['check_amount_sum'],2);
-$aggregatedAmount = '$'.custom_number_formatter_format($node->data[0]['total_contract_amount'],2);
-$amountsSummary = "<div class='dollar-amounts'>
-                        <div class='total-spending-amount'>{$aggregatedAmount}
-                          <div class='amount-title'>{$aggregatedAmountTitle}</div>
-                        </div>
-                        <div class='ytd-spending-amount'>{$ytdAmount}
-                          <div class='amount-title'>{$aggregatedYtdTitle}</div>
-                        </div>
-                      </div></div>";
-echo $titleSummary . $amountsSummary;
+  $summaryDetails =  NychaSpendingUtil::getTransactionsTitleSummary($widget,$url);
+  $ytdAmount = '$'.custom_number_formatter_format($summaryDetails['check_amount_sum'],2);
+  $aggregatedAmount = '$'.custom_number_formatter_format($summaryDetails['total_contract_amount_sum'],2);
 
-//Contract Summary section for Contract YTD Spending details
-if(isset($widget) && $widget == 'ytd_contract') {
-  $contractDetails = NychaSpendingUtil::getContractSummary();
-  $contractSummary = "<div class='contract-information contract-summary-block'>
+  if(isset($widget) && $widget == 'ytd_contract') {
+    $contractDetails = NychaSpendingUtil::getTransactionsTitleSummary($widget,$url);
+    $ytdAmount = '$'.custom_number_formatter_format($contractDetails['check_amount_sum'],2);
+    $aggregatedAmount = '$'.custom_number_formatter_format($contractDetails['total_contract_amount'],2);
+    $contractSummary = "<div class='contract-information contract-summary-block'>
                         <ul>
                           <li class=\"spendingtxsubtitle\">
 	                            <span class=\"gi-list-item\"><b>Contract ID:</b></span> {$contractDetails['contract_id']}
@@ -69,6 +57,34 @@ if(isset($widget) && $widget == 'ytd_contract') {
                           </li>
                         </ul>
                       </div>";
-  $subTitle = $contractSummary;
+    $subTitle = $contractSummary;
+  }
+
 }
-echo $contractSummary;
+
+//Title section
+$titleSummary = "<div class='contract-details-heading'>
+                  <div class='contract-id'>
+                    <h2 class='contract-title'>{$title}</h2>
+                    {$subTitle}
+                  </div>";
+
+if (isset($widget) && ($widget == 'ytd_contract' || $widget == 'ytd_vendor')) {
+  $amountsSummary = "<div class='dollar-amounts'>
+                        <div class='total-spending-amount'>{$aggregatedAmount}
+                          <div class='amount-title'>{$aggregatedAmountTitle}</div>
+                        </div>
+                        <div class='ytd-spending-amount'>{$ytdAmount}
+                          <div class='amount-title'>{$aggregatedYtdTitle}</div>
+                        </div>
+                      </div></div>";
+}
+else{
+  $amountsSummary = "<div class='dollar-amounts'>
+                        <div class='ytd-spending-amount'>{$ytdAmount}
+                          <div class='amount-title'>{$aggregatedYtdTitle}</div>
+                        </div>
+                      </div></div>";
+}
+echo $titleSummary . $amountsSummary;
+
