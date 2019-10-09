@@ -93,17 +93,60 @@ class NychaSpendingUtil
   }
 
   /**
-   * @param $contractId
-   * @return null|string -- Returns contract Details
+   * @param $widget Widget Name
+   * @param $bottomURL
+   * @return null|string -- widget title summary details including ytd amount and total contract amount
    */
-  static public function getContractSummary(){
-    $contractId = RequestUtilities::get('po_num_exact');
-    if(isset($contractId)) {
-      $query = "SELECT DISTINCT contract_id, contract_purpose, vendor_name from aggregation_spending_contracts_fy 
-	              WHERE contract_id = '" . $contractId . "'";
-      $results = _checkbook_project_execute_sql_by_data_source($query, Datasource::NYCHA);
-      return $results[0];
+
+  static public function getTransactionsTitleSummary($widget, $bottomURL){
+    $results;
+    switch($widget){
+      case 'ytd_vendor':
+        $vendor_id = RequestUtil::getRequestKeyValueFromURL('vendor', $bottomURL);
+        $year_id = RequestUtil::getRequestKeyValueFromURL('year', $bottomURL);
+        if(isset($vendor_id)) {
+          $query = "SELECT SUM(ytd_spending) AS check_amount_sum,  SUM(total_contract_spending) AS total_contract_amount_sum FROM aggregation_spending_fy
+	                  WHERE (issue_date_year_id =".$year_id  ."AND vendor_id =". $vendor_id.")";
+          $results = _checkbook_project_execute_sql_by_data_source($query, Datasource::NYCHA);
+
+        }
+        break;
+      case 'ytd_contract':
+        $contractId = "'".RequestUtil::getRequestKeyValueFromURL('po_num_exact', $bottomURL)."'";
+        $year_id = RequestUtil::getRequestKeyValueFromURL('year', $bottomURL);
+        if(isset($contractId)) {
+          $query = "SELECT contract_id, contract_purpose, vendor_id, vendor_name, SUM(COALESCE(ytd_spending, 0)) AS check_amount_sum, MAX(COALESCE(total_contract_amount, 0)) AS total_contract_amount 
+                    FROM aggregation_spending_contracts_fy
+                    WHERE (issue_date_year_id =".$year_id ." AND contract_id=".$contractId . ")".
+                    "GROUP BY contract_id, contract_purpose, vendor_name, vendor_id";
+          $results = _checkbook_project_execute_sql_by_data_source($query, Datasource::NYCHA);
+        }
+        break;
+      case 'ytd_industry':
+        $industry_id = RequestUtil::getRequestKeyValueFromURL('industry', $bottomURL);
+        $year_id = RequestUtil::getRequestKeyValueFromURL('year', $bottomURL);
+        if(isset($industry_id)) {
+          $query = "SELECT industry_type_id AS industry_id, display_industry_type_name AS industry_name,SUM(ytd_spending) AS check_amount_sum
+                    FROM aggregation_spending_fy
+	                  WHERE (issue_date_year_id =".$year_id." AND industry_type_id =". $industry_id.")
+	                  GROUP BY industry_type_id, display_industry_type_name";
+          $results = _checkbook_project_execute_sql_by_data_source($query, Datasource::NYCHA);
+          //return $results[0];
+        }
+        break;
+      case 'ytd_funding_source':
+        $fundsrc_id = RequestUtil::getRequestKeyValueFromURL('fundsrc', $bottomURL);
+        $year_id = RequestUtil::getRequestKeyValueFromURL('year', $bottomURL);
+        if(isset($fundsrc_id)) {
+          $query = "SELECT funding_source_id,display_funding_source_descr AS funding_source_name,SUM(ytd_spending) AS check_amount_sum
+                    FROM aggregation_spending_fy
+	                  WHERE (issue_date_year_id =".$year_id." AND funding_source_id =". $fundsrc_id.")
+	                  GROUP BY funding_source_id, display_funding_source_descr";
+          $results = _checkbook_project_execute_sql_by_data_source($query, Datasource::NYCHA);
+        }
+        break;
     }
-    return null;
+    return $results[0];
   }
+
 }
