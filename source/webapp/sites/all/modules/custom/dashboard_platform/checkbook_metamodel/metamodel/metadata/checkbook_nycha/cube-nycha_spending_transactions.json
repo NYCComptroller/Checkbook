@@ -53,6 +53,9 @@
       "measures": {
         "check_amount_sum": {
           "function": "SUM(check_amount)"
+        },
+        "invoice_amount_sum": {
+          "function": "SUM(invoice_net_amount)"
         }
       }
     },
@@ -233,6 +236,9 @@
       "measures": {
         "check_amount_sum": {
           "function": "SUM(check_amount)"
+        },
+        "invoice_amount_sum": {
+          "function": "SUM(invoice_net_amount)"
         },
         "txcount": {
           "function":"COUNT(*)"
