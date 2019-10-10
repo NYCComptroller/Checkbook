@@ -27,24 +27,22 @@ $url = isset($url) ? $url : drupal_get_path_alias($_GET['q']);
 
 if(isset($url)) {
   $widget = RequestUtil::getRequestKeyValueFromURL('widget', $url);
-
+  // Display static content ytd link transaction pages
   if (strpos($widget, 'ytd_') !== false) {
     $aggregatedYtdTitle = WidgetUtil::getLabel("ytd_spending");
     $aggregatedAmountTitle = WidgetUtil::getLabel("total_contract_amount");
     $subTitle = NychaSpendingUtil::getTransactionsSubTitle($widget, $url);
 
-  }
-  $subTitle = "<div class='spending-tx-subtitle'>{$subTitle}</div>";
 
-  $summaryDetails =  NychaSpendingUtil::getTransactionsTitleSummary($widget,$url);
-  $ytdAmount = '$'.custom_number_formatter_format($summaryDetails['check_amount_sum'],2);
-  $aggregatedAmount = '$'.custom_number_formatter_format($summaryDetails['total_contract_amount_sum'],2);
+    $summaryDetails = NychaSpendingUtil::getTransactionsStaticSummary($widget, $url);
+    $ytdAmount = '$' . custom_number_formatter_format($summaryDetails['check_amount_sum'], 2);
+    $aggregatedAmount = '$' . custom_number_formatter_format($summaryDetails['total_contract_amount_sum'], 2);
 
-  if(isset($widget) && $widget == 'ytd_contract') {
-    $contractDetails = NychaSpendingUtil::getTransactionsTitleSummary($widget,$url);
-    $ytdAmount = '$'.custom_number_formatter_format($contractDetails['check_amount_sum'],2);
-    $aggregatedAmount = '$'.custom_number_formatter_format($contractDetails['total_contract_amount'],2);
-    $contractSummary = "<div class='contract-information contract-summary-block'>
+    if (isset($widget) && $widget == 'ytd_contract') {
+      $contractDetails = NychaSpendingUtil::getTransactionsStaticSummary($widget, $url);
+      $ytdAmount = '$' . custom_number_formatter_format($contractDetails['check_amount_sum'], 2);
+      $aggregatedAmount = '$' . custom_number_formatter_format($contractDetails['total_contract_amount'], 2);
+      $contractSummary = "<div class='contract-information contract-summary-block'>
                         <ul>
                           <li class=\"spendingtxsubtitle\">
 	                            <span class=\"gi-list-item\"><b>Contract ID:</b></span> {$contractDetails['contract_id']}
@@ -57,9 +55,16 @@ if(isset($url)) {
                           </li>
                         </ul>
                       </div>";
-    $subTitle = $contractSummary;
+      $subTitle = $contractSummary;
+    }
   }
+  // Display static content for details link transaction pages
+  else{
+    $subTitle = "<div class='spending-tx-subtitle'>{$subTitle}</div>";
+    $aggregatedAmountTitle = "Total Spending Amount";
+    $totalSpendingAmount = '$' . custom_number_formatter_format($node->data[0]['check_amount_sum'], 2);
 
+  }
 }
 
 //Title section
@@ -81,10 +86,9 @@ if (isset($widget) && ($widget == 'ytd_contract' || $widget == 'ytd_vendor')) {
 }
 else{
   $amountsSummary = "<div class='dollar-amounts'>
-                        <div class='ytd-spending-amount'>{$ytdAmount}
-                          <div class='amount-title'>{$aggregatedYtdTitle}</div>
+                        <div class='total-spending-amount'>{$totalSpendingAmount}
+                          <div class='amount-title'>{$aggregatedAmountTitle}</div>
                         </div>
                       </div></div>";
 }
 echo $titleSummary . $amountsSummary;
-
