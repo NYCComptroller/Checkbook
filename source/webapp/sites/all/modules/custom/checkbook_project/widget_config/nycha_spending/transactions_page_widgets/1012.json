@@ -70,7 +70,7 @@
       "expression": "($row['invoice_discount'] == null) ? '-' : custom_number_formatter_basic_format($row['invoice_discount'])"
     },
     "tax_withheld_formatted":{
-      "expression": "custom_number_formatter_basic_format($row['withholding_tax'])"
+      "expression": "($row['withholding_tax'] == null) ? '-' : custom_number_formatter_basic_format($row['withholding_tax'])"
     },
     "amount_spent_formatted":{
       "expression": "($row['invoice_net_amount'] == null) ? '-' : custom_number_formatter_basic_format($row['invoice_net_amount'])"
