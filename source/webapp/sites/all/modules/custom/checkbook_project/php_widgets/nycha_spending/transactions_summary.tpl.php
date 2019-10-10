@@ -32,8 +32,6 @@ if(isset($url)) {
     $aggregatedYtdTitle = WidgetUtil::getLabel("ytd_spending");
     $aggregatedAmountTitle = WidgetUtil::getLabel("total_contract_amount");
     $subTitle = NychaSpendingUtil::getTransactionsSubTitle($widget, $url);
-
-
     $summaryDetails = NychaSpendingUtil::getTransactionsStaticSummary($widget, $url);
     $ytdAmount = '$' . custom_number_formatter_format($summaryDetails['check_amount_sum'], 2);
     $aggregatedAmount = '$' . custom_number_formatter_format($summaryDetails['total_contract_amount_sum'], 2);
@@ -73,9 +71,9 @@ $titleSummary = "<div class='contract-details-heading'>
                     <h2 class='contract-title'>{$title}</h2>
                     {$subTitle}
                   </div>";
-
-if (isset($widget) && ($widget == 'ytd_contract' || $widget == 'ytd_vendor')) {
-  $amountsSummary = "<div class='dollar-amounts'>
+if (strpos($widget, 'ytd_') !== false) {
+  if (isset($widget) && ($widget == 'ytd_contract' || $widget == 'ytd_vendor')) {
+    $amountsSummary = "<div class='dollar-amounts'>
                         <div class='total-spending-amount'>{$aggregatedAmount}
                           <div class='amount-title'>{$aggregatedAmountTitle}</div>
                         </div>
@@ -83,6 +81,15 @@ if (isset($widget) && ($widget == 'ytd_contract' || $widget == 'ytd_vendor')) {
                           <div class='amount-title'>{$aggregatedYtdTitle}</div>
                         </div>
                       </div></div>";
+  }
+  else
+  {
+    $amountsSummary = "<div class='dollar-amounts'>
+                        <div class='ytd-spending-amount'>{$ytdAmount}
+                          <div class='amount-title'>{$aggregatedYtdTitle}</div>
+                        </div>
+                      </div></div>";
+  }
 }
 else{
   $amountsSummary = "<div class='dollar-amounts'>
