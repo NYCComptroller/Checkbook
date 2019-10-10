@@ -112,6 +112,16 @@
       END AS invoice_discount
     "
   },
+    {
+      "column":"withholding_tax",
+      "sourceColumn":"withholding_taxt",
+      "sql":"
+      CASE
+      WHEN withholding_tax IS NULL THEN '-'
+      ELSE CAST(withholding_tax AS TEXT)
+      END AS withholding_tax
+      "
+    },
   {
     "column":"tenant_share",
     "sourceColumn":"tenant_share",
