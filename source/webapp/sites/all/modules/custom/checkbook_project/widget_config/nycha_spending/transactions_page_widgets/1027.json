@@ -103,13 +103,13 @@
   "
   },
   {
-    "column":"billed_amount",
-    "sourceColumn":"billed_amount",
+    "column":"invoice_amount",
+    "sourceColumn":"invoice_amount",
     "sql":"
       CASE
-      WHEN billed_amount IS NULL THEN '-'
-      ELSE CAST(billed_amount AS TEXT)
-      END AS billed_amount
+      WHEN invoice_amount IS NULL THEN '-'
+      ELSE CAST(invoice_amount AS TEXT)
+      END AS invoice_amount
     "
   },
   {
@@ -124,7 +124,7 @@
   },
     {
       "column":"withholding_tax",
-      "sourceColumn":"withholding_taxt",
+      "sourceColumn":"withholding_tax",
       "sql":"
       CASE
       WHEN withholding_tax IS NULL THEN '-'
