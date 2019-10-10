@@ -98,7 +98,7 @@ class NychaSpendingUtil
    * @return null|string -- widget title summary details including ytd amount and total contract amount
    */
 
-  static public function getTransactionsTitleSummary($widget, $bottomURL){
+  static public function getTransactionsStaticSummary($widget, $bottomURL){
     $results;
     switch($widget){
       case 'ytd_vendor':
