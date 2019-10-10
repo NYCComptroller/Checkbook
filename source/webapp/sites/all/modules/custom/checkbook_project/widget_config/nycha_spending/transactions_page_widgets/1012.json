@@ -42,6 +42,9 @@
   ],
   "caption":"",
   "derivedColumns": {
+    "document_id_formatted":{
+      "expression":"($row['document_id'] == null) ? 'N/A' : $row['document_id']"
+    },
     "agreement_type_name_formatted":{
       "expression":"($row['agreement_type_name'] == null) ? '-' : $row['agreement_type_name']"
     },
@@ -103,16 +106,16 @@
       "expression": "($row['expenditure_type_name'] == null) ? '-' : $row['expenditure_type_name']"
     },
     "program_formatted":{
-      "expression": "_get_tooltip_markup($row['program_phase_description'],36)"
+      "expression": "($row['program_phase_description']== null) ? '-' :_get_tooltip_markup($row['program_phase_description'],36)"
     },
     "project_formatted":{
-      "expression": "_get_tooltip_markup($row['gl_project_description'],36)"
+      "expression": "($row['gl_project_description'] == null ) ? '-' :_get_tooltip_markup($row['gl_project_description'],36)"
     }
   },
   "skipCustomPadding":true,
   "table_columns": [
     {"labelAlias":"issue_date","column":"issue_date","sortSourceColumn":"issue_date"},
-    {"labelAlias":"document_id","column":"document_id","sortSourceColumn":"document_id"},
+    {"labelAlias":"document_id","column":"document_id_formatted","sortSourceColumn":"document_id"},
     {"labelAlias":"section8_flag","column":"section8_flag","sortSourceColumn":"section8_flag"},
     {"labelAlias":"record_type","column":"record_type","sortSourceColumn":"record_type"},
     {"labelAlias":"purchase_order_type","column":"agreement_type_name_formatted","sortSourceColumn":"agreement_type_name"},
@@ -198,7 +201,7 @@
       {"sClass":"text", "sWidth":"80px","asSorting":["asc","desc"]},
       {"bSortable":false,"sWidth":"2px"}
     ],
-    "aaSorting":[[11,"desc"]],
+    "aaSorting":[[0,"desc"]],
     "sScrollX":"100%",
     "bScrollCollapse": true
   },
