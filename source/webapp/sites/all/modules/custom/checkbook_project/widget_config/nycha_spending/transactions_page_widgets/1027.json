@@ -48,6 +48,16 @@
     END AS contract_id
   "
   },
+    {
+      "column":"document_id",
+      "sourceColumn":"document_id",
+      "sql":"
+      CASE
+      WHEN document_id IS NULL THEN 'N/A'
+      ELSE document_id
+      END AS document_id
+      "
+    },
   {
   "column":"release_number",
   "sourceColumn":"release_number",
@@ -93,13 +103,13 @@
   "
   },
   {
-    "column":"billed_amount",
-    "sourceColumn":"billed_amount",
+    "column":"invoice_amount",
+    "sourceColumn":"invoice_amount",
     "sql":"
       CASE
-      WHEN billed_amount IS NULL THEN '-'
-      ELSE CAST(billed_amount AS TEXT)
-      END AS billed_amount
+      WHEN invoice_amount IS NULL THEN '-'
+      ELSE CAST(invoice_amount AS TEXT)
+      END AS invoice_amount
     "
   },
   {
@@ -112,6 +122,16 @@
       END AS invoice_discount
     "
   },
+    {
+      "column":"withholding_tax",
+      "sourceColumn":"withholding_tax",
+      "sql":"
+      CASE
+      WHEN withholding_tax IS NULL THEN '-'
+      ELSE CAST(withholding_tax AS TEXT)
+      END AS withholding_tax
+      "
+    },
   {
     "column":"tenant_share",
     "sourceColumn":"tenant_share",
@@ -211,6 +231,26 @@
       ELSE expenditure_type_name
       END AS expenditure_type_name
     "
+    },
+    {
+      "column":"program_phase_description",
+      "sourceColumn":"program_phase_description",
+      "sql":"
+      CASE
+      WHEN program_phase_description IS NULL THEN '-'
+      ELSE program_phase_description
+      END AS program_phase_description
+      "
+    },
+    {
+      "column":"gl_project_description",
+      "sourceColumn":"gl_project_description",
+      "sql":"
+      CASE
+      WHEN gl_project_description IS NULL THEN '-'
+      ELSE gl_project_description
+      END AS gl_project_description
+      "
     }
   ]
 }
