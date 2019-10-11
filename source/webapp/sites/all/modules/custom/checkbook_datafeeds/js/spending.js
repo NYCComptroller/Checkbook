@@ -14,28 +14,22 @@
         //Clear all text fields and drop-downs
         $.fn.clearInput();
 
-
         //Reset the Spending Category
         $('select[name="expense_type"]').val('Total Spending [ts]');
         $('input[name="payee_name"]').removeAttr('disabled');
         $('input[name="contractno"]').removeAttr('disabled');
-
-        //reset the selected columns
-        $('#edit-column-select').multiSelect('deselect_all');
-        $('#edit-oge-column-select').multiSelect('deselect_all');
-
-        if(dataSource == 'checkbook_oge'){
-            $('.form-item-oge-column-select').show();
-            $('.form-item-column-select').hide();
-        }else{
-            $('.form-item-oge-column-select').hide();
-            $('.form-item-column-select').show();
-        }
     };
 
     //ShowHide fields based on selected data source
     $.fn.showHideFields = function (data_source) {
         $('.datafield.citywide').add('.datafield.nycha').add('.datafield.nycedc').hide();
+        $('#edit-columns .form-item').hide();
+
+        //reset the selected columns
+        $('#edit-column-select').multiSelect('deselect_all');
+        $('#edit-oge-column-select').multiSelect('deselect_all');
+        $('#edit-nycha-column-select').multiSelect('deselect_all');
+
         switch (data_source){
             case 'checkbook_oge':
                 $('.datafield.nycedc').show();
@@ -50,12 +44,11 @@
                 $('input[name="issuedto"]').attr('disabled', 'disabled');
 
                 $('.form-item-oge-column-select').show();
-                $('.form-item-column-select').hide();
 
                 //Move Issue Date fields to left column for OGE
-                $('.datafield.payeename').detach().appendTo($(".spending.data-feeds-wizard .column.column-left"));
+                $('#df-payeename').detach().appendTo($(".spending.data-feeds-wizard .column.column-left"));
                 $('label[for=edit-payee-name]').text('Payee Name');
-                $('.datafield.datarange.check_amount').detach().appendTo($(".spending.data-feeds-wizard .column.column-left"));
+                $('#df-check_amount').detach().appendTo($(".spending.data-feeds-wizard .column.column-left"));
                 break;
             case 'checkbook_nycha':
                 $('.datafield.nycha').show();
@@ -70,13 +63,12 @@
                 $('input[name="issuedto"]').val("");
                 $('input[name="issuedto"]').attr('disabled', 'disabled');
 
-                $('.form-item-oge-column-select').show();
-                $('.form-item-column-select').hide();
+                $('.form-item-nycha-column-select').show();
 
                 //Move Issue Date fields to left column for NYCHA
-              $('.datafield.datarange.check_amount').detach().prependTo($(".spending.data-feeds-wizard .column.column-right"));
-              $('.datafield.payeename').detach().prependTo($(".spending.data-feeds-wizard .column.column-right"));
-              $('label[for=edit-payee-name]').text('Vendor');
+                $('#df-check_amount').detach().prependTo($(".spending.data-feeds-wizard .column.column-right"));
+                $('#df-payeename').detach().prependTo($(".spending.data-feeds-wizard .column.column-right"));
+                $('label[for=edit-payee-name]').text('Vendor');
                 break;
             default:
                 $('.datafield.citywide').show();
@@ -95,12 +87,11 @@
                     $('select[name="year"]').attr('disabled', 'disabled');
                 }
 
-                $('.form-item-oge-column-select').hide();
                 $('.form-item-column-select').show();
 
                 //Move Issue Date fields to left column for Citywide
-                $('.datafield.datarange.check_amount').detach().prependTo($(".spending.data-feeds-wizard .column.column-right"));
-                $('.datafield.payeename').detach().appendTo($(".spending.data-feeds-wizard .column.column-left"));
+                $('#df-check_amount').detach().prependTo($(".spending.data-feeds-wizard .column.column-right"));
+                $('#df-payeename').detach().appendTo($(".spending.data-feeds-wizard .column.column-left"));
                 $('label[for=edit-payee-name]').text('Payee Name');
                 break;
         }
@@ -110,11 +101,6 @@
     //Load Agency Drop-Down
     $.fn.reloadAgencies = function(dataSource){
         //Change the Agency drop-down label
-        if(['checkbook_oge','checkbook_nycha'].includes(dataSource)) {
-            $("select[name = agency]").attr('disabled','disabled');
-        }else{
-            $("select[name = agency]").removeAttr('disabled');
-        }
         var agency_hidden = $('input:hidden[name="agency_hidden"]').val();
         $.ajax({
             url: '/datafeeds/spending/agency/' + dataSource + '/json'
@@ -273,6 +259,20 @@
             $('#ms-edit-oge-column-select a.deselect', context).click(function () {
                 $('#edit-oge-column-select', context).multiSelect('deselect_all');
             });
+
+
+          // Sets up multi-select/option transfer for nycha
+          $('#edit-nycha-column-select', context).multiSelect();
+          if(!$('#ms-edit-nycha-column-select .ms-selection', context).next().is("a")){
+            $('#ms-edit-nycha-column-select .ms-selection', context).after('<a class="deselect">Remove All</a>');
+            $('#ms-edit-nycha-column-select .ms-selection', context).after('<a class="select">Add All</a>');
+          }
+          $('#ms-edit-nycha-column-select a.select', context).click(function () {
+            $('#edit-nycha-column-select', context).multiSelect('select_all');
+          });
+          $('#ms-edit-nycha-column-select a.deselect', context).click(function () {
+            $('#edit-nycha-column-select', context).multiSelect('deselect_all');
+          });
 
             //Display or hide fields based on data source selection
             $.fn.showHideFields(dataSource);

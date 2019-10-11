@@ -1,0 +1,160 @@
+{
+    "spending_nycha":{
+        "searchCriteriaMap":{
+            "fiscal_year":"fiscal_year",
+            "payee_name":"vendor_name",
+            "agency_code":"agency_code",
+            "department_code":"department_code",
+            "check_amount":"check_amount",
+            "expense_category":"expenditure_object_code",
+            "contract_id":"reference_document_number",
+            "contract_purpose":"purpose",
+            "capital_project_code":"reporting_code",
+            "spending_category":"spending_category_code@checkbook_nycha:spending_category_oge",
+            "commodity_line":"agreement_commodity_line_number",
+            "entity_contract_number":"oge_contract_number@checkbook_nycha:oge_contract_oge",
+            "budget_name":"budget_name@checkbook_nycha:oge_contract_oge"
+        },
+        "dataset":{
+            "sortColumn":["-check_amount", "-disbursement_line_item_id"],
+            "name":"checkbook_nycha:all_disbursement_transactions",
+            "data_source":"checkbook_nycha",
+            "columnTypes":{
+                "reference_document_number":"like",
+                "reporting_code":"like",
+                "disbursement_number":"like",
+                "vendor_name":"like",
+                "commodity_line":"like",
+                "entity_contract_number":"like",
+                "budget_name@checkbook_nycha:oge_contract_oge":"contains",
+                "oge_contract_number@checkbook_nycha:oge_contract_oge":"like"
+            },
+            "displayConfiguration":{
+                "xml":{
+                    "rootElement":"spending_transactions",
+                    "rowParentElement":"transaction",
+                    "elementsColumn":{
+                        "other_government_entities":"agency_name",
+                        "fiscal_year":"fiscal_year",
+                        "payee_name":"vendor_name",
+                        "department":"department_name",
+                        "check_amount":"check_amount",
+                        "expense_category":"expenditure_object_name",
+                        "contract_id":"reference_document_number",
+                        "contract_purpose":"purpose",
+                        "capital_project":"reporting_code",
+                        "spending_category":"spending_category_name",
+                        "commodity_line":"agreement_commodity_line_number",
+                        "entity_contract_number":"oge_contract_number@checkbook_nycha:oge_contract_oge",
+                        "budget_name":"budget_name@checkbook_nycha:oge_contract_oge"
+                    },
+                    "rowElements":["other_government_entities", "fiscal_year",  "payee_name", "department", "check_amount", "expense_category"
+                        , "contract_id", "contract_purpose", "capital_project",  "spending_category","entity_contract_number","budget_name","commodity_line"]
+                },
+                "csv":{
+                    "elementsColumn":{
+                      "Amount Spent": "Amount Spent",
+                      "Billed Amount": "Billed Amount",
+                      "Check Amount": "check_amount",
+                      "Check Status": "Check Status",
+                      "Contract ID": "reference_document_number",
+                      "Department": "department_name",
+                      "Document ID": "Document ID",
+                      "Expense Category": "expenditure_object_name",
+                      "Funding Source": "Funding Source",
+                      "Industry": "Industry",
+                      "Invoice Number": "Invoice Number",
+                      "Invoice discount": "Invoice discount",
+                      "Issue Date": "Issue Date",
+                      "Program": "Program",
+                      "Project": "Project",
+                      "Purchase Order Type": "Purchase Order Type",
+                      "Purpose": "Purpose",
+                      "Record Type": "Record Type",
+                      "Release number": "Release number",
+                      "Responsibility Center": "Responsibility Center",
+                      "Section 8": "Section 8",
+                      "Spending Category": "spending_category_name",
+                      "Vendor": "vendor_name",
+                      "Withheld Amount": "Withheld Amount"
+                    }
+                }
+            }
+        },
+        "requestParameters":{
+            "fiscal_year":{
+                "valueType":"value",
+                "dataType":"year",
+                "maxLength":"4"
+            },
+            "payee_name":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"100"
+            },
+            "agency_code":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"3"
+            },
+            "department_code":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"9"
+            },
+            "check_amount":{
+                "valueType":"range",
+                "dataType":"amount",
+                "maxLength":"22"
+            },
+            "expense_category":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"4"
+            },
+            "contract_id":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"32"
+            },
+            "capital_project_code":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"15"
+            },
+            "spending_category":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"2"
+            },
+            "budget_name":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"75"
+            },
+            "entity_contract_number":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"15"
+            } ,
+            "commodity_line":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"3"
+            }
+        }
+    },
+    "validators":[
+        {
+            "name":"optionalSingleFilter",
+            "configKey":["spending"],
+            "config":{
+                "criteriaLevel":["value", "range"],
+                "validatorType":"filterName",
+                "validatorTypeConfig":{
+                    "filterNames":["fiscal_year"]
+                }
+            }
+        }
+    ]
+}
