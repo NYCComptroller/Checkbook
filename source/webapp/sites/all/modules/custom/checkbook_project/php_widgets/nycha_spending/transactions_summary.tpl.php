@@ -56,8 +56,56 @@ if(isset($url)) {
       $subTitle = $contractSummary;
     }
   }
+  //Nycha contract invoice amount links transaction pages
+  if (strpos($widget, 'inv_') !== false) {
+    $inv_contractDetails = NychaSpendingUtil::getContractsTransactionsStaticSummary($widget, $url);
+    $tcode = RequestUtil::getRequestKeyValueFromURL('tcode', $url);
+    $spendtodateTitle = WidgetUtil::getLabel("contract_spend_to_date");
+    $spendtodateAmount = '$' . custom_number_formatter_format($inv_contractDetails['spend_to_date'], 2);
+    $originalAmountTitle = WidgetUtil::getLabel("original_amount");
+    $originalAmount = '$' . custom_number_formatter_format($inv_contractDetails['original_amount'], 2);
+    $currentAmountTitle = WidgetUtil::getLabel("current_amount");
+    $currentAmount = '$' . custom_number_formatter_format($inv_contractDetails['total_amount'], 2);
+    $totalAmountTitle ="NYCHA Total Amount";
+    $totalAmount = '$' . custom_number_formatter_format($inv_contractDetails['test'], 2);
+    if ($tcode == 'BA' || $tcode == 'BAM' || $tcode == 'PA'|| $tcode == 'PAM'|| $tcode == 'PO') {
+      $inv_contractSummary = "<div class='contract-information contract-summary-block'>
+                        <ul>
+                          <li class=\"spendingtxsubtitle\">
+                      <span class=\"gi-list-item\"><b>Contract ID:</b></span> {$inv_contractDetails['contract_id']}
+                          </li>
+                          <li class=\"spendingtxsubtitle\">
+	                            <span class=\"gi-list-item\"><b>Purpose:</b></span> {$inv_contractDetails['purpose']}
+                          </li>
+                          <li class=\"spendingtxsubtitle\">
+                              <span class=\"gi-list-item\"><b>Vendor:</b></span> {$inv_contractDetails['vendor_name']}
+                          </li>
+                        </ul>
+                      </div>";
+      $subTitle = $inv_contractSummary;
+    }
+    if ($tcode == 'VO' || $tcode == 'AWD' || $tcode == 'DEP'|| $tcode == 'IND'|| $tcode == 'RESC' || $tcode == 'SZ') {
+      $tcode_title = NYCHAContractUtil::getTitleByCode($tcode);
+      if ( $tcode == 'VO'){ $inv_contractName = $inv_contractDetails['vendor_name'];}
+      if ( $tcode == 'AWD'){ $inv_contractName = $inv_contractDetails['award_method_name'];}
+      if ( $tcode == 'DEP'){ $inv_contractName = $inv_contractDetails['department_name'];}
+      if ( $tcode == 'IND'){ $inv_contractName = $inv_contractDetails['industry_type_name'];}
+      if ( $tcode == 'RESC'){ $inv_contractName = $inv_contractDetails['responsibility_center_descr'];}
+      if ( $tcode == 'SZ'){ $inv_contractName = $inv_contractDetails['award_size_name'];}
+
+      $inv_contractSummary = "<div class='contract-information contract-summary-block'>
+                        <ul>
+                          <li class=\"spendingtxsubtitle\">
+                            <span class=\"gi-list-item\"><b>{$tcode_title}:</b></span> {$inv_contractName}
+                          </li>
+                        </ul>
+                      </div>";
+      $subTitle = $inv_contractSummary;
+    }
+  }
   // Display static content for details link transaction pages
   else{
+    //$title = NychaSpendingUtil::getTransactionsTitle();
     $subTitle = "<div class='spending-tx-subtitle'>{$subTitle}</div>";
     $aggregatedAmountTitle = "Total Spending Amount";
     $totalSpendingAmount = '$' . custom_number_formatter_format($node->data[0]['check_amount_sum'], 2);
@@ -90,6 +138,23 @@ if (strpos($widget, 'ytd_') !== false) {
                         </div>
                       </div></div>";
   }
+}
+
+if (strpos($widget, 'inv_') !== false) {
+  $amountsSummary = "<div class='dollar-amounts'>
+                        <div class='spend-to-date'>{$spendtodateAmount}
+                          <div class='amount-title'>{$spendtodateTitle}</div>
+                        </div>
+                        <div class='original-amount'>{$originalAmount}
+                          <div class='amount-title'>{$originalAmountTitle}</div>
+                        </div>
+                        <div class='current-amount'>{$currentAmount}
+                          <div class='amount-title'>{$currentAmountTitle}</div>
+                        </div>
+                        <div class='total-spending-amount'>{$totalAmount}
+                          <div class='amount-title'>{$totalAmountTitle}</div>
+                        </div>
+                      </div></div>";
 }
 else{
   $amountsSummary = "<div class='dollar-amounts'>
