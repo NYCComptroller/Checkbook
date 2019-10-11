@@ -10,7 +10,7 @@
     {"labelAlias":"no_of_contracts","column":"purchase_order_count","format":"number"},
     {"labelAlias":"current_amount","column":"total_amount","format":"dollar"},
     {"labelAlias":"original_amount","column":"original_amount","format":"dollar"},
-    {"labelAlias":"contract_spend_to_date","column":"spend_to_date","format":"dollar","derivedColumn":"departments_invoiced_amount_link"},
+    {"labelAlias":"contract_spend_to_date","column":"spend_to_date","format":"dollar","derivedColumn":"dpt_inv_link"},
     {"label":"","column":""}
   ],
   "dataTableOptions":{
