@@ -53,7 +53,9 @@
                 $('.form-item-column-select').hide();
 
                 //Move Issue Date fields to left column for OGE
-                $('.datafield.datarange.check_amount').appendTo($(".spending.data-feeds-wizard .column.column-left"));
+                $('.datafield.payeename').detach().appendTo($(".spending.data-feeds-wizard .column.column-left"));
+                $('label[for=edit-payee-name]').text('Payee Name');
+                $('.datafield.datarange.check_amount').detach().appendTo($(".spending.data-feeds-wizard .column.column-left"));
                 break;
             case 'checkbook_nycha':
                 $('.datafield.nycha').show();
@@ -72,7 +74,9 @@
                 $('.form-item-column-select').hide();
 
                 //Move Issue Date fields to left column for NYCHA
-              $('.datafield.datarange.check_amount').prependTo($(".spending.data-feeds-wizard .column.column-right"));
+              $('.datafield.datarange.check_amount').detach().prependTo($(".spending.data-feeds-wizard .column.column-right"));
+              $('.datafield.payeename').detach().prependTo($(".spending.data-feeds-wizard .column.column-right"));
+              $('label[for=edit-payee-name]').text('Vendor');
                 break;
             default:
                 $('.datafield.citywide').show();
@@ -95,7 +99,10 @@
                 $('.form-item-column-select').show();
 
                 //Move Issue Date fields to left column for Citywide
-                $('.datafield.datarange.check_amount').prependTo($(".spending.data-feeds-wizard .column.column-right"));
+                $('.datafield.datarange.check_amount').detach().prependTo($(".spending.data-feeds-wizard .column.column-right"));
+                $('.datafield.payeename').detach().appendTo($(".spending.data-feeds-wizard .column.column-left"));
+                $('label[for=edit-payee-name]').text('Payee Name');
+                break;
         }
 
     };

@@ -4058,6 +4058,38 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     '#name' => 'check_amt_to',
     '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'check_amt_to', $first_time_load, ''),
   );
+  $form['filter']['spent_amt_from'] = array(
+    '#type' => 'textfield',
+    '#size' => 15,
+    '#maxlength' => 15,
+    '#prefix' => '<div class="datafield datarange spent_amount nycha"><label>Spent Amount:</label><div class="ranges">',
+    '#id' => 'edit-spent_amt_from',
+    '#name' => 'spent_amt_from',
+    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'spent_amt_from', $first_time_load, ''),
+  );
+  $form['filter']['spent_amt_to'] = array(
+    '#type' => 'textfield',
+    '#title' => t('to'),
+    '#size' => 15,
+    '#maxlength' => 15,
+    '#suffix' => '</div></div>',
+    '#id' => 'edit-spent_amt_to',
+    '#name' => 'spent_amt_to',
+    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'spent_amt_to', $first_time_load, ''),
+  );
+
+  $form['filter']['purchase_order_type'] = array(
+    '#type' => 'select',
+    '#title' => t('Purchase Order<br/>Type:'),
+    '#options' => array("All" => "All", "Blanket Agreement [BA]" => "Blanket Agreement [BA]", "Planned Agreement [PA]" => "Planned Agreement [PA]", "Purchase Order [PO]" => "Purchase Order [PO]"),
+    '#attributes' => array('class' => array('watch')),
+    '#prefix' => '<div class="column column-left"><div class="datafield purchase_order_type nycha">',
+    '#suffix' => '</div>',
+    '#id' => 'edit-purchase-order-type',
+    '#name' => 'purchase_order_type',
+    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'purchase_order_type', $first_time_load, 'All'),
+  );
+
   $form['filter']['contractno'] = array(
     '#type' => 'textfield',
     '#title' => t('Contract ID:'),

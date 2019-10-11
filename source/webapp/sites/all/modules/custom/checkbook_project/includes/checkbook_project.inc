@@ -2671,12 +2671,3 @@ function _checkbook_psql_command($database = 'checkbook')
 
   return $command;
 }
-
-/**
- * @param $year
- * @return int
- */
-function _checkbook_full_year($year)
-{
-  return CheckbookDateUtil::yearId2Year($year);
-}
