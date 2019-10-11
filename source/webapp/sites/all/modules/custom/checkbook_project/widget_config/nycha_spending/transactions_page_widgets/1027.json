@@ -19,8 +19,6 @@
     {"labelAlias":"spending_category","column":"display_spending_category_name"},
     {"labelAlias":"industry_name","column":"display_industry_type_name"},
     {"labelAlias":"dept_name","column":"department_name"},
-    {"labelAlias":"period_from","column":"start_date"},
-    {"labelAlias":"period_to","column":"end_date"},
     {"labelAlias":"funding_source","column":"funding_source_description"},
     {"labelAlias":"responsibility_center", "column":"responsibility_center_description"},
     {"labelAlias":"expense_category","column":"expenditure_type_name"},

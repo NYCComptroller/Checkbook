@@ -35,12 +35,17 @@ class NychaSpendingUtil
   static public function getTransactionsTitle($url = null){
     $url = isset($url) ? $url : drupal_get_path_alias($_GET['q']);
     $widget = RequestUtil::getRequestKeyValueFromURL('widget', $url);
+    $tcode = RequestUtil::getRequestKeyValueFromURL('tcode', $url);
     $widget_titles = self::$widget_titles;
 
     //Transactions Page main title
     $title = isset($widget) ? $widget_titles[$widget]: "";
     $categoryName = self::getCategoryName();
     $title .= ' '. $categoryName . " Spending Transactions";
+    if (strpos($widget, 'inv_') !== false) {
+      $tcode_value = NYCHAContractUtil::getTitleByCode($tcode);
+      $title = $tcode_value." Spending Transcations";
+    }
 
     return $title;
   }
@@ -149,4 +154,112 @@ class NychaSpendingUtil
     return $results[0];
   }
 
+  /**
+   * @param $widget Widget Name
+   * @param $bottomURL
+   * @return null|string -- widget title summary details for invoice amount links from NYCHA contracts landing page
+   */
+  static public function getContractsTransactionsStaticSummary($widget, $bottomURL)
+  {
+    //if ($widget == 'inv_contract'){
+      $inv_contractID = "'".RequestUtil::getRequestKeyValueFromURL('po_num_exact', $bottomURL)."'";
+      $inv_vendorID = RequestUtil::getRequestKeyValueFromURL('vendor', $bottomURL);
+      $inv_awdID = RequestUtil::getRequestKeyValueFromURL('awdmethod', $bottomURL);
+      $inv_depID = RequestUtil::getRequestKeyValueFromURL('department', $bottomURL);
+      $inv_csizeID = RequestUtil::getRequestKeyValueFromURL('csize', $bottomURL);
+      $inv_respID = RequestUtil::getRequestKeyValueFromURL('respcenter', $bottomURL);
+      $inv_indID = RequestUtil::getRequestKeyValueFromURL('industry', $bottomURL);
+      $inv_tcode = RequestUtil::getRequestKeyValueFromURL('tcode', $bottomURL);
+      if (isset($inv_tcode) && ($inv_tcode == 'BA' || $inv_tcode == "BAM")){$agreement_type_id = 1;}
+      if (isset($inv_tcode) && ($inv_tcode == 'PA' || $inv_tcode == "PAM")){$agreement_type_id = 2;}
+      if (isset($inv_tcode) && $inv_tcode == 'PO'){$agreement_type_id = 3;}
+      if (isset($inv_tcode) && ($inv_tcode == "BAM" || $inv_tcode == "PAM")){$sub_query = " HAVING  MAX(total_amount-original_amount)!= 0 ";}
+      $sub_query = isset($sub_query) ? $sub_query : '';
+      $year_id = RequestUtil::getRequestKeyValueFromURL('year', $bottomURL);
+      if ($inv_tcode == 'BA' || $inv_tcode == 'BAM' || $inv_tcode == 'PA'|| $inv_tcode == 'PAM'|| $inv_tcode == 'PO') {
+        if (isset($inv_contractID)) {
+          $query = "SELECT contract_id, purpose, vendor_name, vendor_id,
+                MAX(total_amount) AS total_amount,
+                MAX(original_amount) AS original_amount,
+                MAX(spend_to_date) AS spend_to_date,
+                MAX(total_amount-original_amount) AS dollar_difference,
+                ROUND( CASE COALESCE( MAX(total_amount), 0 :: NUMERIC ) WHEN 0 THEN -100 :: NUMERIC ELSE
+                (MAX(total_amount-original_amount) / MAX(total_amount) )* 100 END, 2) AS percent_difference
+                FROM contracts_widget_summary
+                WHERE (" . $year_id . " BETWEEN start_year_id AND  end_year_id AND agreement_type_id =" . $agreement_type_id . " AND contract_id=" . $inv_contractID .
+            ")GROUP BY  contract_id, purpose, vendor_name, vendor_id" . $sub_query;
+          $results = _checkbook_project_execute_sql_by_data_source($query, Datasource::NYCHA);
+        }
+      }
+      if ($inv_tcode == "RESC") {
+        if (isset($inv_respID)) {
+          $query = "SELECT responsibility_center_id, responsibility_center_code, responsibility_center_name as responsibility_center_descr,
+                 count(distinct contract_id) as contract_count,
+                 sum(total_amount) as total_amount,
+                 sum(original_amount) as original_amount,
+                 sum(spend_to_date) as spend_to_date 
+                 from ( select
+                 responsibility_center_id, responsibility_center_code, responsibility_center_name, contract_id,
+                 sum(line_total_amount) as total_amount,
+                 sum(line_original_amount) as original_amount,
+                 sum(line_spend_to_date) as spend_to_date
+                 from release_widget_summary
+                 WHERE (release_approved_year_id = " . $year_id . " AND responsibility_center_code IS NOT NULL AND responsibility_center_id = " . $inv_respID . " )
+                 group by responsibility_center_id, responsibility_center_code, responsibility_center_name, contract_id ) a
+                 group by responsibility_center_id, responsibility_center_code, responsibility_center_descr";
+          $results = _checkbook_project_execute_sql_by_data_source($query, Datasource::NYCHA);
+        }
+      }
+      if ($inv_tcode == "IND"){
+        if (isset($inv_indID)) {
+          $query = "select display_industry_type_name AS industry_type_name, industry_type_id,
+                  count(distinct contract_id) as purchase_order_count,
+                  sum(total_amount) as total_amount,
+                  sum(original_amount) as original_amount,
+                  sum(spend_to_date) as spend_to_date from (
+                  select display_industry_type_name, industry_type_id, contract_id,
+                  max(total_amount) as total_amount,
+                  max(original_amount) as original_amount,
+                  max(spend_to_date) as spend_to_date from contracts_widget_summary
+                  WHERE (" . $year_id . " BETWEEN start_year_id AND  end_year_id AND industry_type_id =" . $inv_indID . ")
+                  group by display_industry_type_name, industry_type_id, contract_id ) a
+                  group by industry_type_name, industry_type_id ";
+          $results = _checkbook_project_execute_sql_by_data_source($query, Datasource::NYCHA);
+        }
+      }
+    if ($inv_tcode == 'VO' || $inv_tcode == 'AWD' || $inv_tcode == 'DEP'|| $inv_tcode == 'SZ') {
+      if (isset($inv_vendorID)) {
+        $query_val1 = " vendor_id, vendor_name ";
+        $inv_id = "vendor_id=" . $inv_vendorID;
+      }
+      if (isset($inv_awdID)) {
+        $query_val1 = " award_method_id, award_method_name ";
+        $inv_id = "award_method_id=" . $inv_awdID;
+      }
+      if (isset($inv_depID)) {
+        $query_val1 = "  department_id, department_name ";
+        $inv_id = "department_id=" . $inv_depID;
+      }
+      if (isset($inv_csizeID)) {
+        $query_val1 = "  award_size_id, award_size_name ";
+        $inv_id = "award_size_id=" . $inv_csizeID;
+      }
+      $query = "SELECT " . $query_val1 .
+        " ,count(distinct contract_id) as purchase_order_count,
+                  sum(total_amount) as total_amount,
+                  sum(original_amount) as original_amount,
+                  sum(spend_to_date) as spend_to_date
+                  from (
+                  SELECT " . $query_val1 .
+        " , contract_id ,max(total_amount) as total_amount,
+                  max(original_amount) as original_amount,
+                  max(spend_to_date) as spend_to_date
+                  from contracts_widget_summary WHERE (" . $year_id . " BETWEEN  start_year_id AND  end_year_id AND " . $inv_id . ")
+                  group by " . $query_val1 . " , contract_id) a group by " . $query_val1;
+      $results = _checkbook_project_execute_sql_by_data_source($query, Datasource::NYCHA);
+    }
+    return $results[0];
+  }
 }
+
+
