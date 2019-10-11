@@ -65,4 +65,28 @@ class NychaSpendingUrlService{
 
           return $url;
       }
+
+      /* Gets the Invoice amount Spending link in a generic way for NYCHA Contracts
+    * @param $dynamic_parameter - custom dynamic parameters to be used in the URL
+    * @param null $legacy_node_id
+    * @return string
+    */
+      static function invContractSpendingUrl($dynamic_parameter, $widget,$agreement_type,$tcode) {
+        $dynamic_parameter = isset($dynamic_parameter) ? $dynamic_parameter : '';
+        $agreement_type = isset($agreement_type) ? $agreement_type : '';
+        $newwindow='/newwindow'; // open content in new window and also strip menu contents
+        $tcode = isset($tcode) ? $tcode : '';
+        $url = "/nycha_spending/transactions"
+          . RequestUtilities::buildUrlFromParam('year')
+          . RequestUtilities::buildUrlFromParam('category')
+          . RequestUtilities::buildUrlFromParam('agency')
+          . RequestUtilities::buildUrlFromParam('vendor')
+          . RequestUtilities::buildUrlFromParam('fundsrc')
+          . RequestUtilities::buildUrlFromParam('industry')
+          . RequestUtilities::buildUrlFromParam('datasource')
+          . '/widget/'. $widget
+          . $dynamic_parameter.$agreement_type.$tcode.$newwindow;
+
+        return $url;
+      }
 }
