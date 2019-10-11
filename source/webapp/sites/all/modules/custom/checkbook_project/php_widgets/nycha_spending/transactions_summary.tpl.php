@@ -106,7 +106,7 @@ if(isset($url)) {
   // Display static content for details link transaction pages
   else{
     //$title = NychaSpendingUtil::getTransactionsTitle();
-    $subTitle = "<div class='spending-tx-subtitle'>{$subTitle}</div>";
+    $subTitle2 = "<div class='spending-tx-subtitle'>{$subTitle}</div>";
     $aggregatedAmountTitle = "Total Spending Amount";
     $totalSpendingAmount = '$' . custom_number_formatter_format($node->data[0]['check_amount_sum'], 2);
 
@@ -117,7 +117,7 @@ if(isset($url)) {
 $titleSummary = "<div class='contract-details-heading'>
                   <div class='contract-id'>
                     <h2 class='contract-title'>{$title}</h2>
-                    {$subTitle}
+                    {$subTitle2}
                   </div>";
 if (strpos($widget, 'ytd_') !== false) {
   if (isset($widget) && ($widget == 'ytd_contract' || $widget == 'ytd_vendor')) {
