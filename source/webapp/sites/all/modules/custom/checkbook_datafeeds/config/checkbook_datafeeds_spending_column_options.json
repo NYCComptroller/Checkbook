@@ -1,80 +1,119 @@
 {
-    "data_source":{
-        "checkbook":{
-            "data_type":{
-                "csv":{
-                    "Agency":"Agency",
-                    "Associated Prime Vendor":"Associated Prime Vendor",
-                    "Capital Project":"Capital Project",
-                    "Check Amount":"Check Amount",
-                    "Contract ID":"Contract ID",
-                    "Contract Purpose":"Contract Purpose",
-                    "Department":"Department",
-                    "Document ID":"Document ID",
-                    "Expense Category":"Expense Category",
-                    "Fiscal year":"Fiscal year",
-                    "Industry":"Industry",
-                    "Issue Date":"Issue Date",
-                    "M/WBE Category":"M/WBE Category",
-                    "Payee Name":"Payee Name",
-                    "Spending Category":"Spending Category",
-                    "Sub Contract Reference ID":"Sub Contract Reference ID",
-                    "Sub Vendor":"Sub Vendor"
-                },
-                "xml":{
-                    "agency":"agency",
-                    "associated_prime_vendor":"associated_prime_vendor",
-                    "capital_project":"capital_project",
-                    "check_amount":"check_amount",
-                    "contract_ID":"contract_ID",
-                    "contract_purpose":"contract_purpose",
-                    "department":"department",
-                    "document_id":"document_id",
-                    "expense_category":"expense_category",
-                    "fiscal_year":"fiscal_year",
-                    "industry":"industry",
-                    "issue_date":"issue_date",
-                    "mwbe_category":"mwbe_category",
-                    "payee_name":"payee_name",
-                    "spending_category":"spending_category",
-                    "sub_contract_reference_id":"sub_contract_reference_id",
-                    "sub_vendor":"sub_vendor"
-                }
-            }
+  "data_source": {
+    "checkbook": {
+      "data_type": {
+        "csv": {
+          "Agency": "Agency",
+          "Associated Prime Vendor": "Associated Prime Vendor",
+          "Capital Project": "Capital Project",
+          "Check Amount": "Check Amount",
+          "Contract ID": "Contract ID",
+          "Contract Purpose": "Contract Purpose",
+          "Department": "Department",
+          "Document ID": "Document ID",
+          "Expense Category": "Expense Category",
+          "Fiscal year": "Fiscal year",
+          "Industry": "Industry",
+          "Issue Date": "Issue Date",
+          "M/WBE Category": "M/WBE Category",
+          "Payee Name": "Payee Name",
+          "Spending Category": "Spending Category",
+          "Sub Contract Reference ID": "Sub Contract Reference ID",
+          "Sub Vendor": "Sub Vendor"
         },
-        "checkbook_oge":{
-            "data_type":{
-                "csv":{
-                    "Budget Name":"Budget Name",
-                    "Capital Project":"Capital Project",
-                    "Check Amount":"Check Amount",
-                    "Commodity Line":"Commodity Line",
-                    "Contract ID":"Contract ID",
-                    "Contract Purpose":"Contract Purpose",
-                    "Department":"Department",
-                    "Entity Contract #":"Entity Contract #",
-                    "Expense Category":"Expense Category",
-                    "Fiscal year":"Fiscal year",
-                    "Other Government Entities":"Other Government Entities",
-                    "Payee Name":"Payee Name",
-                    "Spending Category":"Spending Category"
-                },
-                "xml":{
-                    "budget_name":"budget_name",
-                    "capital_project":"capital_project",
-                    "check_amount":"check_amount",
-                    "commodity_line":"commodity_line",
-                    "contract_ID":"contract_ID",
-                    "contract_purpose":"contract_purpose",
-                    "department":"department",
-                    "entity_contract_number":"entity_contract_number",
-                    "expense_category":"expense_category",
-                    "fiscal_year":"fiscal_year",
-                    "other_government_entities":"other_government_entities",
-                    "payee_name":"payee_name",
-                    "spending_category":"spending_category"
-                }
-            }
+        "xml": {
+          "agency": "agency",
+          "associated_prime_vendor": "associated_prime_vendor",
+          "capital_project": "capital_project",
+          "check_amount": "check_amount",
+          "contract_ID": "contract_ID",
+          "contract_purpose": "contract_purpose",
+          "department": "department",
+          "document_id": "document_id",
+          "expense_category": "expense_category",
+          "fiscal_year": "fiscal_year",
+          "industry": "industry",
+          "issue_date": "issue_date",
+          "mwbe_category": "mwbe_category",
+          "payee_name": "payee_name",
+          "spending_category": "spending_category",
+          "sub_contract_reference_id": "sub_contract_reference_id",
+          "sub_vendor": "sub_vendor"
         }
+      }
+    },
+    "checkbook_oge": {
+      "data_type": {
+        "csv": {
+          "Budget Name": "Budget Name",
+          "Capital Project": "Capital Project",
+          "Check Amount": "Check Amount",
+          "Commodity Line": "Commodity Line",
+          "Contract ID": "Contract ID",
+          "Contract Purpose": "Contract Purpose",
+          "Department": "Department",
+          "Entity Contract #": "Entity Contract #",
+          "Expense Category": "Expense Category",
+          "Fiscal year": "Fiscal year",
+          "Other Government Entities": "Other Government Entities",
+          "Payee Name": "Payee Name",
+          "Spending Category": "Spending Category"
+        },
+        "xml": {
+          "budget_name": "budget_name",
+          "capital_project": "capital_project",
+          "check_amount": "check_amount",
+          "commodity_line": "commodity_line",
+          "contract_ID": "contract_ID",
+          "contract_purpose": "contract_purpose",
+          "department": "department",
+          "entity_contract_number": "entity_contract_number",
+          "expense_category": "expense_category",
+          "fiscal_year": "fiscal_year",
+          "other_government_entities": "other_government_entities",
+          "payee_name": "payee_name",
+          "spending_category": "spending_category"
+        }
+      }
+    },
+    "checkbook_nycha": {
+      "data_type": {
+        "csv": {
+          "Agency": "Agency",
+          "Department": "Department",
+          "Expense Category": "Expense Category",
+          "Spending Category": "Spending Category",
+          "Industry": "Industry",
+          "Funding Source": "Funding Source",
+          "Responsibility Center": "Responsibility Center",
+          "Vendor": "Vendor",
+          "Check Amount": "Check Amount",
+          "Amount Spent": "Amount Spent",
+          "Purchase Order Type": "Purchase Order Type",
+          "Contract ID": "Contract ID",
+          "Document ID": "Document ID",
+          "Date Filter": "Date Filter"
+        },
+        "xml": {
+          "agency": "agency",
+          "associated_prime_vendor": "associated_prime_vendor",
+          "capital_project": "capital_project",
+          "check_amount": "check_amount",
+          "contract_ID": "contract_ID",
+          "contract_purpose": "contract_purpose",
+          "department": "department",
+          "document_id": "document_id",
+          "expense_category": "expense_category",
+          "fiscal_year": "fiscal_year",
+          "industry": "industry",
+          "issue_date": "issue_date",
+          "mwbe_category": "mwbe_category",
+          "payee_name": "payee_name",
+          "spending_category": "spending_category",
+          "sub_contract_reference_id": "sub_contract_reference_id",
+          "sub_vendor": "sub_vendor"
+        }
+      }
     }
+  }
 }

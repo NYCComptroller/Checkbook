@@ -19,8 +19,8 @@
 */
 $budget_parameter_mapping = CheckbookSolr::getSearchFields($solr_datasource, 'budget');
 
-$linkable_fields = array("agency_name" => "/budget/year/" . _getCurrentYearID() . "/yeartype/B/agency/".$budget_results["agency_id"],
-                         "expenditure_object_name" => "/budget/year/". _getCurrentYearID() . "/yeartype/B/expcategory/".$budget_results["expenditure_object_id"],
+$linkable_fields = array("agency_name" => "/budget/year/" . CheckbookDateUtil::getCurrentFiscalYearId() . "/yeartype/B/agency/".$budget_results["agency_id"],
+                         "expenditure_object_name" => "/budget/year/". CheckbookDateUtil::getCurrentFiscalYearId() . "/yeartype/B/expcategory/".$budget_results["expenditure_object_id"],
                         );
 if($budget_results['fiscal_year'][0] < 2010){
     $linkable_fields = array();

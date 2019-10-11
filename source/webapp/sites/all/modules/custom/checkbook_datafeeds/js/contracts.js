@@ -272,7 +272,7 @@
 
         $.ajax({
             //Need NYCHA and OGE agencies for Contracts Other Government Entities options
-            url: '/datafeeds/spending/agency/'+ dataSource +'/1'
+            url: '/datafeeds/spending/agency/'+ dataSource +'/json'
             ,success: function(data) {
                 var html = '';
                 if (data[0]) {
@@ -286,6 +286,7 @@
                 if(agency_hidden){
                     $('#edit-agency').val(agency_hidden);
                 }
+                $('#edit-agency').trigger('change');
             }
         });
     }

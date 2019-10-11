@@ -31,20 +31,14 @@
             $('.form-item-oge-column-select').hide();
             $('.form-item-column-select').show();
         }
-
     };
 
     //ShowHide fields based on selected data source
     $.fn.showHideFields = function (data_source) {
+        $('.datafield.citywide').add('.datafield.nycha').add('.datafield.nycedc').hide();
         switch (data_source){
             case 'checkbook_oge':
-                $('.datafield.industry').hide();
-                $('.datafield.mwbecategory').hide();
-                $('.datafield.expenseid').hide();
-
-                $('.datafield.commodityline').show();
-                $('.datafield.entity_contract_number').show();
-                $('.datafield.budgetname').show();
+                $('.datafield.nycedc').show();
 
                 $('input:radio[name=date_filter]')[0].checked = true;
                 $('select[name="year"]').removeAttr('disabled');
@@ -61,14 +55,27 @@
                 //Move Issue Date fields to left column for OGE
                 $('.datafield.datarange.check_amount').appendTo($(".spending.data-feeds-wizard .column.column-left"));
                 break;
-            default:
-                $('.datafield.industry').show();
-                $('.datafield.mwbecategory').show();
-                $('.datafield.expenseid').show();
+            case 'checkbook_nycha':
+                $('.datafield.nycha').show();
 
-                $('.datafield.commodityline').hide();
-                $('.datafield.entity_contract_number').hide();
-                $('.datafield.budgetname').hide();
+                // Date filter
+                $('input:radio[name=date_filter]')[0].checked = true;
+                $('select[name="year"]').removeAttr('disabled');
+                //Disable Issue date
+                $('input:radio[name=date_filter][value="1"]').attr('disabled', 'disabled');
+                $('input[name="issuedfrom"]').val("");
+                $('input[name="issuedfrom"]').attr('disabled', 'disabled');
+                $('input[name="issuedto"]').val("");
+                $('input[name="issuedto"]').attr('disabled', 'disabled');
+
+                $('.form-item-oge-column-select').show();
+                $('.form-item-column-select').hide();
+
+                //Move Issue Date fields to left column for NYCHA
+              $('.datafield.datarange.check_amount').prependTo($(".spending.data-feeds-wizard .column.column-right"));
+                break;
+            default:
+                $('.datafield.citywide').show();
 
                 //Date Filter
                 var datefilter = $('input:hidden[name="date_filter_hidden"]').val();
@@ -96,14 +103,14 @@
     //Load Agency Drop-Down
     $.fn.reloadAgencies = function(dataSource){
         //Change the Agency drop-down label
-        if(dataSource == 'checkbook_oge') {
-            $("label[for = edit-agency]").text("Other Government Entity:");
+        if(['checkbook_oge','checkbook_nycha'].includes(dataSource)) {
+            $("select[name = agency]").attr('disabled','disabled');
         }else{
-            $("label[for = edit-agency]").text("Agency:");
+            $("select[name = agency]").removeAttr('disabled');
         }
         var agency_hidden = $('input:hidden[name="agency_hidden"]').val();
         $.ajax({
-            url: '/datafeeds/spending/agency/' + dataSource + '/1'
+            url: '/datafeeds/spending/agency/' + dataSource + '/json'
             ,success: function(data) {
                 var html = '';
                 if (data[0]) {
@@ -117,11 +124,10 @@
                 if(agency_hidden){
                     $('#edit-agency').val(agency_hidden);
                 }
-            }
+                $('#edit-agency').trigger('change');
+          }
         });
-        $.fn.reloadDepartments();
-        $.fn.reloadExpenseCategories();
-    }
+    };
 
     // When Agency Filter is changed reload Department and Expense Category drop-downs
     $.fn.reloadDepartments = function reloadDepartments() {
@@ -227,7 +233,7 @@
              $('option[value="Contract ID"]').attr('disabled', 'disabled');
              $('option[value="contract_ID"]').attr('disabled', 'disabled');
         }
-    }
+    };
 
     Drupal.behaviors.spendingDataFeeds = {
         attach:function (context, settings) {
