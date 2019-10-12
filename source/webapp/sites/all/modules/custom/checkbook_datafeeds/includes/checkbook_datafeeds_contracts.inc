@@ -352,6 +352,14 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
                 $formatted_search_criteria['Current Amount'] = 'Greater Than Equal to: $' . $values['nycha_currentamtfrom'];
             }
 
+          if ($values['agency']) {
+            $form['filter']['agency'] = array(
+              '#markup' => '<div><strong>Other Government Entities:</strong> ' . $values['agency'] . '</div>',
+            );
+            $user_criteria['Other Government Entities'] = $values['agency'];
+            $formatted_search_criteria['Other Government Entities'] = $values['agency'];
+          }
+
             if ($values['nycha_purpose']) {
                 $form['filter']['nycha_purpose'] = array(
                     '#markup' => '<div><strong>Purpose:</strong> ' . $values['nycha_purpose'] . '</div>',
