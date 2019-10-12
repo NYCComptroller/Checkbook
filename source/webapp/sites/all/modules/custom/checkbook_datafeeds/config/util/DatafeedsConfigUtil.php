@@ -24,16 +24,20 @@
  */
 class DatafeedsConfigUtil
 {
-  public static function dataSourceRadio($data_source = null)
+  public static function dataSourceRadio($data_source, $domain)
   {
+    $options = [
+      'checkbook' => 'Citywide Agencies',
+      'checkbook_oge' => 'NYCEDC (New York City Economic Development Corporation)',
+      'checkbook_nycha' => 'NYCHA (New York City Housing Authority)'
+    ];
+    if ('payroll' == $domain) {
+      unset($options['checkbook_oge']);
+    }
     return [
       '#type' => 'radios',
       '#title' => 'Data source',
-      '#options' => [
-        'checkbook' => 'Citywide Agencies',
-        'checkbook_oge' => 'NYCEDC (New York City Economic Development Corporation)',
-        'checkbook_nycha' => 'NYCHA (New York City Housing Authority)'
-      ],
+      '#options' => $options,
       '#default_value' => !isset($data_source) ? 'checkbook' : $data_source,
       '#prefix' => '<div id="div_data_source">',
       '#suffix' => '</div><br/>',

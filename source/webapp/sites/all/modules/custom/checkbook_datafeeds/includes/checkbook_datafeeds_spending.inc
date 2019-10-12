@@ -51,7 +51,7 @@ function checkbook_datafeeds_spending($form, &$form_state)
 
   //<editor-fold desc="Filter">
 
-  $form['datafeeds-spending-domain-filter'] = DatafeedsConfigUtil::dataSourceRadio($data_source);
+  $form['datafeeds-spending-domain-filter'] = DatafeedsConfigUtil::dataSourceRadio($data_source, 'spending');
 
   $form['filter'] = array(
     '#type' => 'fieldset',
@@ -1011,7 +1011,6 @@ function checkbook_datafeeds_spending_validate($form, &$form_state)
   }
   //Vendor
   if ($vendor) {
-    //$pattern = '/\[(.*?)\]$/';
     $pattern = "/.*?(\\[.*?\\])/is";
     preg_match($pattern, $vendor, $vmatches);
     if (!$vmatches) {
