@@ -173,7 +173,7 @@
             . _checkbook_append_url_params()
             .(_checkbook_check_isEDCPage() ? ('/agency/'. $row['agency_id']) :'')
             . _checkbook_project_get_url_param_string('agency')
-            . ((_getRequestParamValue('year')!=null)?'/year/'._getRequestParamValue('year') : '/year/'._getCurrentYearID())
+            . ((_getRequestParamValue('year')!=null)?'/year/'._getRequestParamValue('year') : '/year/'.CheckbookDateUtil::getCurrentFiscalYearId())
             .  (isset($row['type_of_year']) ? '/yeartype/'.$row['type_of_year'] : '')
             .  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
             .  '/vendor/' . $row['vendor_id']
@@ -185,7 +185,7 @@
         "agency_name_link": {
             "expression": "($row['has_children'] != 'Y') ? ('<a href=\"/contracts_landing'
             ._checkbook_append_url_params()
-            . ((_getRequestParamValue('year')!=null)?'/year/'._getRequestParamValue('year') : '/year/'._getCurrentYearID())
+            . ((_getRequestParamValue('year')!=null)?'/year/'._getRequestParamValue('year') : '/year/'.CheckbookDateUtil::getCurrentFiscalYearId())
             .  (isset($row['type_of_year']) ? '/yeartype/'.$row['type_of_year'] : '')
             .  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
             . '/agency/' . $row['agency_id']

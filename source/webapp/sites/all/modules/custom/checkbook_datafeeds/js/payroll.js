@@ -1,7 +1,6 @@
 (function ($) {
     Drupal.behaviors.payrollDataFeeds = {
-        attach:function(context,settings){
-
+        attach:function(context){
             //Citywide multi-select
             $('#edit-column-select',context).multiSelect();
             $('#ms-edit-column-select .ms-selectable',context).after('<a class="deselect">Remove All</a>');
@@ -27,7 +26,7 @@
             //Sets up jQuery UI datepickers
             var currentYear = new Date().getFullYear();
             $('.datepicker', context).datepicker({dateFormat:"yy-mm-dd",
-                                                changeMonth:true,     
+                                                changeMonth:true,
                                                 changeYear:true,
                                                 yearRange:'-'+(currentYear-1900)+':+'+(2500-currentYear)});
             //Sets up autocompletes
@@ -49,7 +48,7 @@
                 });
             });
 
-            var dataSource = $('input:hidden[name="data_source"]', context).val();
+            var dataSource = $('input[name="datafeeds-payroll-domain-filter"]', context).val();
             $.fn.showHideFields(dataSource);
 
             //Data Source change event
@@ -58,13 +57,12 @@
                 $('div.messages', context).remove();
                 $('.error', context).removeClass('error');
 
-                $('input:hidden[name="data_source"]', context).val($(this, context).val());
                 $('input:hidden[name="hidden_multiple_value"]', context).val("");
                 $.fn.clearInputFields();
                 $.fn.onDataSourceChange($(this, context).val());
             });
         }
-    }
+    };
 
     //On Data Source Change
     $.fn.onDataSourceChange = function (dataSource) {
@@ -73,10 +71,10 @@
         $('#edit-oge-column-select').multiSelect('deselect_all');
 
         $.fn.showHideFields(dataSource);
-    }
+    };
 
     $.fn.showHideFields = function (dataSource) {
-        if(dataSource == 'checkbook_oge'){
+        if(dataSource == 'checkbook_nycha'){
             $('.datafield.agency').hide();
             $('.datafield.other_government_entity').show();
             $('.form-item-oge-column-select').show();

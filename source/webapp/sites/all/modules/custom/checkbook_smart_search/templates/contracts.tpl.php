@@ -49,11 +49,11 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
        $status = "A";
    }
     $effective_end_year_id = $contracts_results['effective_end_year_id'];
-    if($effective_end_year_id != '' && $effective_end_year_id < _getCurrentYearID()){
+    if($effective_end_year_id != '' && $effective_end_year_id < CheckbookDateUtil::getCurrentFiscalYearId()){
         $fiscal_year_id = $effective_end_year_id;
     }
     else{
-        $fiscal_year_id = _getCurrentYearID();
+        $fiscal_year_id = CheckbookDateUtil::getCurrentFiscalYearId();
     }
 
     if(strtolower($contracts_results['contract_category_name']) == 'expense'){

@@ -96,13 +96,13 @@ function checkbook_pending_contracts_default_page_manager_pages() {
       'body' => '<div class="nyc_totals_links">
 <ul>
 
-<li><a href="/contracts_landing/status/A/yeartype/B/year/<?php echo _getCurrentYearID() ; ?>">Active Expense Contracts</a>
+<li><a href="/contracts_landing/status/A/yeartype/B/year/<?php echo CheckbookDateUtil::getCurrentFiscalYearId() ; ?>">Active Expense Contracts</a>
 </li>
-<li><a href="/contracts_landing/status/R/yeartype/B/year/<?php echo _getCurrentYearID() ; ?>">Registered Expense Contracts</a>
+<li><a href="/contracts_landing/status/R/yeartype/B/year/<?php echo CheckbookDateUtil::getCurrentFiscalYearId() ; ?>">Registered Expense Contracts</a>
 </li>
-<li><a href="/contracts_revenue_landing/status/A/yeartype/B/year/<?php echo _getCurrentYearID(); ?>">Active Revenue Contracts</a>
+<li><a href="/contracts_revenue_landing/status/A/yeartype/B/year/<?php echo CheckbookDateUtil::getCurrentFiscalYearId(); ?>">Active Revenue Contracts</a>
 </li>
-<li><a href="/contracts_revenue_landing/status/R/yeartype/B/year/<?php echo _getCurrentYearID(); ?>">Registered Revenue Contracts</a>
+<li><a href="/contracts_revenue_landing/status/R/yeartype/B/year/<?php echo CheckbookDateUtil::getCurrentFiscalYearId(); ?>">Registered Revenue Contracts</a>
 </li>
 <?php 
 $class = "";
@@ -544,13 +544,13 @@ if( preg_match("/^contracts_pending_exp_landing/",$_GET[\'q\'])  ){
       'body' => '<div class="nyc_totals_links">
 <ul>
 
-<li><a href="/contracts_landing/status/A/yeartype/B/year/<?php echo _getCurrentYearID() ; ?>">Active Expense Contracts</a>
+<li><a href="/contracts_landing/status/A/yeartype/B/year/<?php echo CheckbookDateUtil::getCurrentFiscalYearId() ; ?>">Active Expense Contracts</a>
 </li>
-<li><a href="/contracts_landing/status/R/yeartype/B/year/<?php echo _getCurrentYearID() ; ?>">Registered Expense Contracts</a>
+<li><a href="/contracts_landing/status/R/yeartype/B/year/<?php echo CheckbookDateUtil::getCurrentFiscalYearId() ; ?>">Registered Expense Contracts</a>
 </li>
-<li><a href="/contracts_revenue_landing/status/A/yeartype/B/year/<?php echo _getCurrentYearID(); ?>">Active Revenue Contracts</a>
+<li><a href="/contracts_revenue_landing/status/A/yeartype/B/year/<?php echo CheckbookDateUtil::getCurrentFiscalYearId(); ?>">Active Revenue Contracts</a>
 </li>
-<li><a href="/contracts_revenue_landing/status/R/yeartype/B/year/<?php echo _getCurrentYearID(); ?>">Registered Revenue Contracts</a>
+<li><a href="/contracts_revenue_landing/status/R/yeartype/B/year/<?php echo CheckbookDateUtil::getCurrentFiscalYearId(); ?>">Registered Revenue Contracts</a>
 </li>
 <?php 
 $class = "";

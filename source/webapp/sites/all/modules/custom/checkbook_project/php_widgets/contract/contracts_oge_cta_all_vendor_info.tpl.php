@@ -46,7 +46,7 @@ if(count($node->vendors_list) > 0){
             $vendor_name = $vendor['vendor_name'];
         }
         else {
-            $vendor_name =  "<a href='/contracts_landing/status/A/year/" . _getCurrentYearID() . "/yeartype/B/agency/" . $vendor['agency_id'] .
+            $vendor_name =  "<a href='/contracts_landing/status/A/year/" . CheckbookDateUtil::getCurrentFiscalYearId() . "/yeartype/B/agency/" . $vendor['agency_id'] .
                 "/datasource/checkbook_oge/vendor/" . $vendor['vendor_id']  . "?expandBottomCont=true'>" . $vendor['vendor_name']  . "</a>";
         }
 

@@ -14,7 +14,7 @@ abstract class VendorService {
 
         $latest_minority_types = null;
         $type_of_year = 'B';
-        $year_id = RequestUtilities::get('year') ?:  _getCurrentYearID();
+        $year_id = RequestUtilities::get('year') ?:  CheckbookDateUtil::getCurrentFiscalYearId();
         $agency_id = $agency_id ?: RequestUtilities::get('agency');
         $domain = $domain ?: CheckbookDomain::getCurrent();
 
@@ -118,7 +118,7 @@ abstract class VendorService {
 
         $contstatus = RequestUtilities::get('contstatus')?:RequestUtilities::get('status');
         $status =  ($contstatus == null) ? $status : $contstatus;
-        $year_id = ($year_id == null) ? _getCurrentYearID() : $year_id;
+        $year_id = ($year_id == null) ? CheckbookDateUtil::getCurrentFiscalYearId() : $year_id;
         $vendor_id_param = (isset($vendor_id)) ? " AND s0.vendor_id = ".$vendor_id ." " : "";
 
       $query = "SELECT SUM(COALESCE(maximum_contract_amount,0)) AS current_amount_sum
@@ -137,7 +137,7 @@ abstract class VendorService {
     {
         $contstatus = RequestUtilities::get('contstatus')?:RequestUtilities::get('status');
         $status =  ($contstatus == null) ? $status : $contstatus;
-        $year_id = ($year_id == null) ? _getCurrentYearID() : $year_id;
+        $year_id = ($year_id == null) ? CheckbookDateUtil::getCurrentFiscalYearId() : $year_id;
         $prime_vendor_id_param = (isset($vendor_id)) ? " AND s0.prime_vendor_id = ".$vendor_id ." " : "";
         $query = "SELECT SUM(COALESCE(maximum_contract_amount,0)) AS current_amount_sum
                   FROM aggregateon_subven_contracts_cumulative_spending s0
