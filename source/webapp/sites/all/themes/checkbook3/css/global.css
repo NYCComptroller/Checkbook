@@ -3957,10 +3957,17 @@ table.nycha_assoc_contracts_list {
   vertical-align: top;
 }
 
-/*#table_979_wrapper .DTFC_LeftBodyWrapper table,
-#table_317_wrapper .DTFC_LeftBodyWrapper table,
-#table_1012_wrapper .DTFC_LeftBodyWrapper table
-{
-  margin-top:17px;
-}*/
+body.page-data-feeds #div_data_source{
+  border: 1px solid #CCCCCC;
+  border-radius: 5px;
+  padding: 10px;
+}
 
+body.page-data-feeds #div_data_source .form-item{
+  float:none;
+}
+
+body.page-data-feeds #div_data_source .form-radios .form-item{
+  float: none !important;
+  margin: 5px 10px;
+}

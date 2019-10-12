@@ -58,7 +58,7 @@ class NychaContractsUrlService
         if (!$just_bottom_url) {
           $year_id = RequestUtilities::getRequestParamValue('year');
           if(!isset($year_id)){
-            $year_id = _getCurrentYearID();
+            $year_id = CheckbookDateUtil::getCurrentFiscalYearId();
           }
           $url = '/nycha_contracts'
             . '/year/'.$year_id
@@ -113,7 +113,7 @@ class NychaContractsUrlService
     {
         $url = '/nycha_contracts'
             . '/datasource/checkbook_nycha'
-            . '/year/' . _getCurrentYearID()
+            . '/year/' . CheckbookDateUtil::getCurrentFiscalYearId()
             . '/agency/' . $agencyID;
         return $url;
     }

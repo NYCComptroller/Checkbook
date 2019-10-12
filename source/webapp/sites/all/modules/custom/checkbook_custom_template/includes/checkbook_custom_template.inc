@@ -30,7 +30,7 @@ function _checkbook_get_agency_budget_percent_difference_json($node, $param){
         $yr_index = array_search("year",$path_params);
         $req_year_id = $path_params[$yr_index+1];
     }else{
-        $req_year_id = _getCurrentYearID();
+        $req_year_id = CheckbookDateUtil::getCurrentFiscalYearId();
     }
     $req_year_value = _getYearValueFromID($req_year_id);
 
@@ -178,7 +178,7 @@ function _checkbook_revenue_get_data_json($node, $param){
         $yr_index = array_search("year",$path_params);
         $req_year_id = $path_params[$yr_index+1];
     }else{
-        $req_year_id = _getCurrentYearID();
+        $req_year_id = CheckbookDateUtil::getCurrentFiscalYearId();
     }
     $req_year_value = _getYearValueFromID($req_year_id);
 

@@ -74,7 +74,7 @@
     "caption":"",
     "adjustParameters":"
 
-        $year = !(RequestUtilities::getRequestParamValue('year')) ? _getCurrentYearID() : RequestUtilities::getRequestParamValue('year');
+        $year = !(RequestUtilities::getRequestParamValue('year')) ? CheckbookDateUtil::getCurrentFiscalYearId() : RequestUtilities::getRequestParamValue('year');
         $year_type = !(RequestUtilities::getRequestParamValue('yeartype')) ? 'B' : RequestUtilities::getRequestParamValue('yeartype');
 
         $node->year = $year;
