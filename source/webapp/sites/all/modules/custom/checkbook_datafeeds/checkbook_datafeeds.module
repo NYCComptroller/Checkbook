@@ -91,10 +91,7 @@ function checkbook_datafeeds_library()
       drupal_get_path('module', 'checkbook_datafeeds') . '/js/multi-select/js/jquery.multi-select.js' => array(),
     ),
     'css' => array(
-      drupal_get_path('module', 'checkbook_datafeeds') . '/js/multi-select/css/multi-select.css' => array(
-        'type' => 'file',
-        'media' => 'all',
-      ),
+      drupal_get_path('module', 'checkbook_datafeeds') . '/js/multi-select/css/multi-select.css' => array(),
     ),
   );
   return $libraries;
@@ -146,7 +143,6 @@ function checkbook_datafeeds_tracking_form()
   // Include the JavaScript for our pseudo-trigger.
   $form['#attached'] = array(
     'js' => array(
-      'type' => 'file',
       'data' => drupal_get_path('module', 'checkbook_datafeeds') . '/js/datafeeds.js',
     )
   );
@@ -812,7 +808,6 @@ function checkbook_datafeeds_budget($form, &$form_state)
       array('checkbook_datafeeds', 'jquery_multiselect', FALSE),
     ),
     'js' => array(
-      'type' => 'file',
       'data' => drupal_get_path('module', 'checkbook_datafeeds') . '/js/budget.js',
     ),
   );
@@ -1350,13 +1345,6 @@ function checkbook_datafeeds_contracts($form, &$form_state)
 
   $form['datafeeds-contracts-domain-filter'] = DatafeedsConfigUtil::dataSourceRadio($data_source);
 
-
-  $form['data_source'] = array(
-    '#title' => 'data_source',
-    '#value' => $data_source,
-    '#type' => 'hidden'
-  );
-
   $form['filter'] = array(
     '#type' => 'fieldset',
     '#title' => t('3. Filter the Data:'),
@@ -1494,7 +1482,6 @@ function checkbook_datafeeds_contracts($form, &$form_state)
       array('checkbook_datafeeds', 'jquery_multiselect', FALSE),
     ),
     'js' => array(
-      'type' => 'file',
       'data' => drupal_get_path('module', 'checkbook_datafeeds') . '/js/contracts.js',
     ),
   );
@@ -2470,7 +2457,6 @@ function checkbook_datafeeds_payroll($form, &$form_state)
       array('checkbook_datafeeds', 'jquery_multiselect', FALSE),
     ),
     'js' => array(
-      'type' => 'file',
       'data' => drupal_get_path('module', 'checkbook_datafeeds') . '/js/payroll.js',
     )
   );
@@ -3275,7 +3261,6 @@ function checkbook_datafeeds_revenue($form, &$form_state)
       array('checkbook_datafeeds', 'jquery_multiselect', FALSE),
     ),
     'js' => array(
-      'type' => 'file',
       'data' => drupal_get_path('module', 'checkbook_datafeeds') . '/js/revenue.js',
     )
   );

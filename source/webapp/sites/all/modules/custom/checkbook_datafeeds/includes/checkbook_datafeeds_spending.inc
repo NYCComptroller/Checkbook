@@ -53,12 +53,6 @@ function checkbook_datafeeds_spending($form, &$form_state)
 
   $form['datafeeds-spending-domain-filter'] = DatafeedsConfigUtil::dataSourceRadio($data_source);
 
-  $form['data_source'] = array(
-    '#title' => 'data_source',
-    '#value' => $data_source,
-    '#type' => 'hidden'
-  );
-
   $form['filter'] = array(
     '#type' => 'fieldset',
     '#title' => t('3. Filter the Data:'),
@@ -151,7 +145,6 @@ function checkbook_datafeeds_spending($form, &$form_state)
       array('checkbook_datafeeds', 'jquery_multiselect', FALSE),
     ),
     'js' => array(
-      'type' => 'file',
       'data' => drupal_get_path('module', 'checkbook_datafeeds') . '/js/spending.js',
     )
   );
@@ -981,7 +974,7 @@ function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_
 function checkbook_datafeeds_spending_validate($form, &$form_state)
 {
 
-  $data_source = $form_state['input']['data_source'];
+  $data_source = $form_state['input']['datafeeds-spending-domain-filter'];
   $agency = $form_state['values']['agency'];
   $agency_code = emptyToZero($agency);
   $checkfrom = $form_state['values']['check_amt_from'];
