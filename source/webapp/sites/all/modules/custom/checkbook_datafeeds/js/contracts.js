@@ -1,19 +1,4 @@
 (function ($) {
-
-    /** On agency change for OGE and NYCHA **/
-    $.fn.onAgencyChange = function(agency){
-        if(agency.toUpperCase() == 'NEW YORK CITY ECONOMIC DEVELOPMENT CORPORATION [Z81]'){
-          $('input:hidden[name="data_source"]').val('checkbook_oge');
-          $.fn.onDataSourceChange('checkbook_oge');
-        }else if(agency.toUpperCase() == 'NEW YORK CITY HOUSING AUTHORITY [996]'){
-          $('input:hidden[name="data_source"]').val('checkbook_nycha');
-          $.fn.onDataSourceChange('checkbook_nycha');
-        }else{
-          $('input:hidden[name="data_source"]').val('');
-        }
-        $('input:hidden[name="agency_hidden"]').val(agency);
-    }
-
     /**
      * Function will show or hide fields based on datasource selection
      * @param data_source
@@ -43,13 +28,15 @@
                 $('.default-fields .datafield.pin').insertAfter('.default-fields .datafield.purpose');
                 $('.default-fields .datafield.receiveddate.datarange').insertAfter('.default-fields .datafield.currentamt.datarange');
                 $('.default-fields .datafield.enddate.datarange').insertAfter('.default-fields .datafield.startdate.datarange');
-                $('.default-fields .datafield.agency').insertBefore('.default-fields .datafield.category');
+                $('.datafield.agency').detach().prependTo($(".contracts.data-feeds-wizard .default-fields .column.column-right")).show();
+                $('label[for=edit-agency]').html('Other Government <br />Entity:');
 
                 break;
             case 'checkbook_nycha':
                 $('.default-fields').hide();
                 $('.nycha-fields').show();
-                $('#edit-nycha-agency').val('NEW YORK CITY HOUSING AUTHORITY [996]');
+                $('.datafield.agency').detach().prependTo('.contracts.data-feeds-wizard .nycha-fields .column.column-right').show();
+                $('label[for=edit-agency]').html('Other Government <br />Entity:');
                 break;
             default:
                 $('.default-fields').show();
@@ -74,9 +61,10 @@
                 $('.default-fields .datafield.pin').insertBefore('.default-fields .datafield.currentamt.datarange');
                 $('.default-fields .datafield.enddate.datarange').insertAfter('.default-fields .datafield.currentamt.datarange');
                 $('.default-fields .datafield.receiveddate.datarange').insertAfter('.default-fields .datafield.startdate.datarange');
-                $('.default-fields .datafield.agency').insertBefore('.default-fields .datafield.industry');
+                $('label[for=edit-agency]').text('Agency:');
+                $('.datafield.agency').detach().insertBefore('.default-fields .datafield.industry').show();
         }
-    }
+    };
 
     /**
      * Function will add the asterisk icon css from a field
@@ -108,7 +96,7 @@
 
         var contract_status_val = jQuery("select[name=df_contract_status]").val();
         var category_val = jQuery("select[name=category]").val();
-        if(jQuery("input[name='datafeeds-contracts-domain-filter']:checked").val() == 'checkbook'){
+        if($("input[name='datafeeds-contracts-domain-filter']:checked").val() == 'checkbook'){
             // Add asterisk fields & note
             if((contract_status_val == 'active' || contract_status_val == 'registered')
                 && (category_val == 'expense' || category_val == 'all')){
@@ -160,10 +148,10 @@
         //Show or hide fields based on data-source selection
         $.fn.showHideFields(dataSource);
 
-        if(dataSource != 'checkbook_nycha') {
-            //Agency drop-down options
-            $.fn.reloadAgencies(dataSource);
+        //Agency drop-down options
+        $.fn.reloadAgencies(dataSource);
 
+        if(dataSource != 'checkbook_nycha') {
             //Change the Agency drop-down label
             var vendor_label = (dataSource == 'checkbook_oge') ? 'Prime Vendor:' : 'Vendor:';
             $("label[for = edit-vendor]").text(vendor_label);
@@ -255,23 +243,7 @@
      * @param dataSource
      */
     $.fn.reloadAgencies = function(dataSource){
-        //Change the Agency drop-down label
-        var agencyLabel = (dataSource == 'checkbook_oge') ? "Other Government<br/>Entity:" : "Agency:";
-        $("label[for = edit-agency]").html(agencyLabel);
-        var agency_hidden = $('input:hidden[name="agency_hidden"]').val();
-        //For OGE and NYCHA, populate agency drop-down options
-        if(dataSource == 'checkbook_oge'){
-          agency_hidden = 'NEW YORK CITY ECONOMIC DEVELOPMENT CORPORATION [z81]';
-          dataSource = 'checkbook_oge_nycha';
-        }else if(dataSource == 'checkbook_nycha') {
-          agency_hidden = 'NEW YORK CITY HOUSING AUTHORITY [996]';
-          dataSource = 'checkbook_oge_nycha';
-        }else{
-          dataSource = 'checkbook'
-        }
-
         $.ajax({
-            //Need NYCHA and OGE agencies for Contracts Other Government Entities options
             url: '/datafeeds/spending/agency/'+ dataSource +'/json'
             ,success: function(data) {
                 var html = '';
@@ -283,9 +255,6 @@
                     }
                 }
                 $('#edit-agency').html(html);
-                if(agency_hidden){
-                    $('#edit-agency').val(agency_hidden);
-                }
                 $('#edit-agency').trigger('change');
             }
         });
@@ -458,22 +427,17 @@
             }
         }
         $('#edit-contract_includes_sub_vendors_id').val(includes_sub_vendors);
-    }
+    };
 
     Drupal.behaviors.contractsDataFeeds = {
         attach:function (context, settings) {
-
             //This is to reset the radio button to citywide if the user refreshes browser
             var data_source = $('input:hidden[name="data_source"]', context).val();
             var $contractStatus = $('select[name="df_contract_status"]', context);
             var $category = $('#edit-category', context);
             var csval = $('select[name="df_contract_status"]', context).val();
             var catval = $('#edit-category', context).val();
-            var agency = $('input:hidden[name="agency_hidden"]', context).val();
-            if(agency.toUpperCase() == 'NEW YORK CITY ECONOMIC DEVELOPMENT CORPORATION [Z81]'){
-              data_source = 'checkbook_oge';
-              $('input:hidden[name="data_source"]', context).val('checkbook_oge');
-            }
+
             $.fn.reloadAgencies(data_source);
 
             //Show or hide fields based on data source selection
@@ -497,7 +461,6 @@
             //Data Source change event
             $('input:radio[name=datafeeds-contracts-domain-filter]', context).change(function (){
                 $('input:hidden[name="data_source"]', context).val($(this).val());
-                var agency_hidden = $('input:hidden[name="agency_hidden"]', context).val("");
                 $.fn.onDataSourceChange($(this).val());
             });
 
@@ -519,16 +482,6 @@
                 $.fn.resetSelectedColumns();
                 $.fn.hideShow(csval, catval, data_source);
                 $.fn.showHidePrimeAndSubIcon();
-            });
-
-            //Agnecy Drop-down
-            $('#edit-agency', context).change(function () {
-                $.fn.onAgencyChange($(this).val());
-            });
-
-            //Agnecy Drop-down
-            $('#edit-nycha-agency', context).change(function () {
-              $.fn.onAgencyChange($(this).val());
             });
 
             //Set up jQuery datepickers
@@ -669,19 +622,18 @@
             var nycha_contract_type = $.fn.emptyToZero($('select[name="nycha_contract_type"]', context).val());
             var nycha_award_method = $.fn.emptyToZero($('select[name="nycha_awd_method"]', context).val());
             var nycha_industry = $.fn.emptyToZero($('select[name="nycha_industry"]', context).val());
-            var nycha_agency = $.fn.emptyToZero($('select[name="nycha_agency"]', context).val());
             var nycha_year = $.fn.emptyToZero($('select[name="nycha_year"]', context).val());
 
             $('#edit-nycha-vendor', context).autocomplete({
-              source: '/autocomplete/nycha_contracts/vendor_name/' + purchase_order + '/' + responsibility_center + '/' + nycha_contract_type + '/' + nycha_award_method + '/' + nycha_industry + '/' + nycha_agency + '/' + nycha_year + '/' + data_source
+              source: '/autocomplete/nycha_contracts/vendor_name/' + purchase_order + '/' + responsibility_center + '/' + nycha_contract_type + '/' + nycha_award_method + '/' + nycha_industry + '/' + agency + '/' + nycha_year + '/' + data_source
             });
 
             $('#edit-nycha-contract-id', context).autocomplete({
-              source: '/autocomplete/nycha_contracts/contract_number/' + purchase_order + '/' + responsibility_center + '/' + nycha_contract_type + '/' + nycha_award_method + '/' + nycha_industry + '/' + nycha_agency + '/' + nycha_year + '/' + data_source
+              source: '/autocomplete/nycha_contracts/contract_number/' + purchase_order + '/' + responsibility_center + '/' + nycha_contract_type + '/' + nycha_award_method + '/' + nycha_industry + '/' + agency + '/' + nycha_year + '/' + data_source
             });
 
             $('#edit-nycha-apt-pin', context).autocomplete({
-              source: '/autocomplete/nycha_contracts/pin/' + purchase_order + '/' + responsibility_center + '/' + nycha_contract_type + '/' + nycha_award_method + '/' + nycha_industry + '/' + nycha_agency + '/' + nycha_year + '/' + data_source
+              source: '/autocomplete/nycha_contracts/pin/' + purchase_order + '/' + responsibility_center + '/' + nycha_contract_type + '/' + nycha_award_method + '/' + nycha_industry + '/' + agency + '/' + nycha_year + '/' + data_source
             });
 
             $('.watch:input', context).each(function () {
@@ -712,19 +664,18 @@
                 var nycha_contract_type = $.fn.emptyToZero($('select[name="nycha_contract_type"]', context).val());
                 var nycha_award_method = $.fn.emptyToZero($('select[name="nycha_awd_method"]', context).val());
                 var nycha_industry = $.fn.emptyToZero($('select[name="nycha_industry"]', context).val());
-                var nycha_agency = $.fn.emptyToZero($('select[name="nycha_agency"]', context).val());
                 var nycha_year = $('select[name="nycha_year"]', context).val();
 
                 $('#edit-nycha-vendor', context).autocomplete({
-                  source: '/autocomplete/nycha_contracts/vendor_name/' + purchase_order + '/' + responsibility_center + '/' + nycha_contract_type + '/' + nycha_award_method + '/' + nycha_industry + '/' + nycha_agency + '/' + nycha_year + '/' + data_source
+                  source: '/autocomplete/nycha_contracts/vendor_name/' + purchase_order + '/' + responsibility_center + '/' + nycha_contract_type + '/' + nycha_award_method + '/' + nycha_industry + '/' + agency + '/' + nycha_year + '/' + data_source
                 });
 
                 $('#edit-nycha-contract-id', context).autocomplete({
-                  source: '/autocomplete/nycha_contracts/contract_number/' + purchase_order + '/' + responsibility_center + '/' + nycha_contract_type + '/' + nycha_award_method + '/' + nycha_industry + '/' + nycha_agency + '/' + nycha_year + '/' + data_source
+                  source: '/autocomplete/nycha_contracts/contract_number/' + purchase_order + '/' + responsibility_center + '/' + nycha_contract_type + '/' + nycha_award_method + '/' + nycha_industry + '/' + agency + '/' + nycha_year + '/' + data_source
                 });
 
                 $('#edit-nycha-apt-pin', context).autocomplete({
-                  source: '/autocomplete/nycha_contracts/pin/' + purchase_order + '/' + responsibility_center + '/' + nycha_contract_type + '/' + nycha_award_method + '/' + nycha_industry + '/' + nycha_agency + '/' + nycha_year + '/' + data_source
+                  source: '/autocomplete/nycha_contracts/pin/' + purchase_order + '/' + responsibility_center + '/' + nycha_contract_type + '/' + nycha_award_method + '/' + nycha_industry + '/' + agency + '/' + nycha_year + '/' + data_source
                 });
 
               });

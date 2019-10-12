@@ -57,22 +57,18 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
     $values = $form_state['step_information']['contracts']['stored_values'];
     $response_type = $form_state['step_information']['type']['stored_values']['format'];
     $user_criteria = array();
-    //Get current data source
-    $agency = $values['nycha_agency'];
-    $agency_code = emptyToZero($agency);
     $year = $values['year'];
 
-    $data_source = !isset($form_state['input']['data_source']) ? 'checkbook' : $form_state['input']['data_source'];
-    //Set type/source of data by data_source
-    if($data_source == Datasource::NYCHA){
-        if($agency_code == 'z81'){
-            $data_source == Datasource::OGE;
-            $user_criteria['Type of Data'] = 'Contracts_OGE';
-        }else{
-            $user_criteria['Type of Data'] = 'Contracts_NYCHA';
-            $year = $values['nycha_year'];
-        }
-    }else{
+    $data_source = $form_state['input']['datafeeds-contracts-domain-filter'];
+
+    switch ($data_source) {
+      case Datasource::OGE:
+        $user_criteria['Type of Data'] = 'Contracts_OGE';
+        break;
+      case Datasource::NYCHA:
+        $user_criteria['Type of Data'] = 'Contracts_NYCHA';
+        break;
+      default:
         $user_criteria['Type of Data'] = 'Contracts';
     }
 
@@ -138,7 +134,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
     );
     $formatted_search_criteria['Type of File'] = $form_state['step_information']['type']['stored_values']['format'];
 
-    $agency = ($data_source == Datasource::OGE) ? ($values['agency'] == 'Select One' ? 'All' : $values['agency']) : $values['agency'];
+    $agency = $values['agency'];
     switch ($data_source) {
         case Datasource::OGE:
             if ($values['df_contract_status']) {
@@ -356,13 +352,6 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
                 $formatted_search_criteria['Current Amount'] = 'Greater Than Equal to: $' . $values['nycha_currentamtfrom'];
             }
 
-            if ($values['nycha_agency']) {
-                $form['filter']['nycha_agency'] = array(
-                    '#markup' => '<div><strong>Other Government Entities:</strong> ' . $values['nycha_agency'] . '</div>',
-                );
-                $user_criteria['Other Government Entities'] = $values['nycha_agency'];
-                $formatted_search_criteria['Other Government Entities'] = $values['nycha_agency'];
-            }
             if ($values['nycha_purpose']) {
                 $form['filter']['nycha_purpose'] = array(
                     '#markup' => '<div><strong>Purpose:</strong> ' . $values['nycha_purpose'] . '</div>',
@@ -894,10 +883,6 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
             if ($values['nycha_currentamtfrom'] !== '' || $values['nycha_currentamtto'] !== '') {
                 $criteria['range']['current_amount'] = array(checknull($values['nycha_currentamtfrom']), checknull($values['nycha_currentamtto']),);
             }
-            if ($values['nycha_agency'] != 'Select One') {
-                preg_match($pattern, $values['nycha_agency'], $amatches);
-                $criteria['value']['other_government_entities_code'] = trim($amatches[1], '[ ]');
-            }
             if ($values['nycha_purpose']) {
                 $criteria['value']['purpose'] = $values['nycha_purpose'];
             }
@@ -957,13 +942,6 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
 function checkbook_datafeeds_contracts_validate($form, &$form_state)
 {
     $data_source = $form_state['input']['datafeeds-contracts-domain-filter'];
-    $agency = $form_state['input']['agency'];
-    $agency_code = emptyToZero($agency);
-    if($data_source == Datasource::NYCHA){
-        if($agency_code == 'z81'){
-            $data_source = Datasource::OGE;
-        }
-    }
     if($data_source == Datasource::NYCHA){
         $startfrom = $form_state['values']['nycha_startdatefrom'];
         $startto = $form_state['values']['nycha_startdateto'];
@@ -1022,8 +1000,6 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
         if(!$nycha_multi_select){
             form_set_error('column_select_nycha', t('You must select at least one column.'));
         }
-
-        $form_state['complete form']['agency_hidden']['#value'] = $form_state['values']['nycha_agency'];
     }else {
         $startfrom = $form_state['values']['startdatefrom'];
         $startto = $form_state['values']['startdateto'];
@@ -1173,7 +1149,6 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
             $form_state['values']['sub_vendor_status_in_pip_id'] = 0;
             $form_state['complete form']['sub_vendor_status_in_pip_id']['#value'] = 0;
         }
-        $form_state['complete form']['agency_hidden']['#value'] = $form_state['values']['agency'];
     }
     // Vendor:
     if ($vendor) {
@@ -1215,8 +1190,6 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
         }
     }
 
-    //Hidden Field for data-source
-    $form_state['complete form']['data_source']['#value'] = $data_source;
     //Hidden Field for multi-select
     $form_state['complete form']['hidden_multiple_value']['#value'] = $multi_select_hidden;
 }
