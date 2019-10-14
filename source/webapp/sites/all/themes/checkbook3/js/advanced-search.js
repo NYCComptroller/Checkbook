@@ -1020,17 +1020,21 @@
             'dept': 'select[name=' + data_source + '_spending_department]',
             'exp_category': 'select[name=' + data_source + '_spending_expense_category]',
             'spending_category': 'select[name=' + data_source + '_spending_expense_type]',
+            'nycha_spending_category': 'select[name=' + data_source + '_spending_nycha_expense_type]',
             'mwbe_category': 'select[name=' + data_source + '_spending_mwbe_category]',
             'industry': 'select[name=' + data_source + '_spending_industry]',
+            'nycha_industry': 'select[name=' + data_source + '_spending_nycha_industry]',
             'fundsrc': 'select[name=' + data_source + '_spending_fundsrc]',
             'resp_center': 'select[name=' + data_source + '_spending_responsibility_center]',
             'po_type': 'select[name=' + data_source + '_spending_purchase_order_type]',
             'payee_name': 'input:text[name=' + data_source + '_spending_payee_name]',
             'vendor_name': 'input:text[name=' + data_source + '_spending_vendor_name]',
-            'check_amt_from': 'input:text[name="' + data_source + '_spending_check_amount_from[date]"]',
-            'check_amt_to': 'input:text[name="' + data_source + '_spending_check_amount_to[date]"]',
-            'nycha_check_amt_from': 'input:text[name="' + data_source + '_spending_nycha_check_amount_from[date]"]',
-            'nycha_check_amt_to': 'input:text[name="' + data_source + '_spending_nycha_check_amount_to[date]"]',
+            'check_amt_from': 'input:text[name=' + data_source + '_spending_check_amount_from]',
+            'check_amt_to': 'input:text[name=' + data_source + '_spending_check_amount_to]',
+            'nycha_check_amt_from': 'input:text[name=' + data_source + '_spending_nycha_check_amount_from]',
+            'nycha_check_amt_to': 'input:text[name=' + data_source + '_spending_nycha_check_amount_to]',
+            'nycha_amount_spent_from': 'input:text[name=' + data_source + '_spending_nycha_amount_spent_from]',
+            'nycha_amount_spent_to': 'input:text[name=' + data_source + '_spending_nycha_amount_spent_to]',
             'contract_id': 'input:text[name=' + data_source + '_spending_contract_num]',
             'entity_contract_number': 'input:text[name=' + data_source + '_spending_entity_contract_number]',
             'document_id': 'input:text[name=' + data_source + '_spending_document_id]',
@@ -1089,7 +1093,10 @@
             //Setting 'data source' value
             var data_source = $('input:radio[name=spending_advanced_search_domain_filter]:checked').val();
             if(data_source == 'checkbook_oge') {
-              data_source = (agency == 162) ? 'checkbook_nycha' : data_source;
+              if(agency == 162) {
+                data_source = 'checkbook_nycha';
+                exptype = (div.ele('nycha_spending_category').val()) ? (div.ele('nycha_spending_category').val()) : 0;
+              }
               showHideOgeFields(data_source);
             }
 
@@ -1152,7 +1159,11 @@
           dept = dept.toString().replace(/\//g, "__");
           var exptype = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
           var data_source = $('input:radio[name=spending_advanced_search_domain_filter]:checked').val();
-
+          //NYCHA Datasource and Spending Category
+          if(agency == 162 && data_source == 'checkbook_oge') {
+            data_source = 'checkbook_nycha';
+            exptype = (div.ele('nycha_spending_category').val()) ? (div.ele('nycha_spending_category').val()) : 0;
+          }
           $.ajax({
             url: '/advanced-search/autocomplete/spending/expcategory/' + year + '/' + agency + '/' + dept + '/' + exptype + '/' + data_source
             , success: function (data) {
@@ -1180,23 +1191,11 @@
           onExpenseTypeChange(div_checkbook_spending_oge);
         });
 
-        function onExpenseTypeChange(div) {
-          if (div.ele('spending_category').val() === '2') {
-            div.ele('contract_id').attr("disabled", "disabled");
-            div.ele('contract_id').val("");
-            div.ele('payee_name').attr("disabled", "disabled");
-            div.ele('payee_name').val("");
-          }
-          else if (div.ele('spending_category').val() === '4') {
-            div.ele('contract_id').attr("disabled", "disabled");
-            div.ele('contract_id').val("");
-            div.ele('payee_name').removeAttr("disabled");
-          }
-          else {
-            div.ele('contract_id').removeAttr("disabled");
-            div.ele('payee_name').removeAttr("disabled");
-          }
+        div_checkbook_spending_oge.ele('nycha_spending_category').change(function () {
+          onExpenseTypeChange(div_checkbook_spending_oge, 'checkbook_nycha');
+        });
 
+        function onExpenseTypeChange(div) {
           year = 0;
           if (div.ele('date_filter_checked').val() === '0') {
             year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
@@ -1207,9 +1206,50 @@
           var exptype = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
           //Setting data source value
           var data_source = $('input:radio[name=spending_advanced_search_domain_filter]:checked').val();
-          if(data_source == 'checkbook_oge' && agency == 162){
+          //NYCHA Datasource and Spending Category
+          if(data_source == 'checkbook_oge' && agency == 162) {
             data_source = 'checkbook_nycha';
+            exptype = (div.ele('nycha_spending_category').val()) ? (div.ele('nycha_spending_category').val()) : 0;
+            //NYCHA - disabling fields for Spending category
+            if (exptype === '2') {
+              disable_input([div.ele('vendor_name'), div.ele('contract_id'),div.ele('document_id'),
+                             div.ele('nycha_industry'), div.ele('fundsrc'), div.ele('resp_center'),
+                             div.ele('po_type'), div.ele('nycha_amount_spent_from'), div.ele('nycha_amount_spent_to')]);
+              enable_input([div.ele('dept'), div.ele('exp_category')]);
+              div.ele('contract_id').val("");
+              div.ele('vendor_name').val("");
+            }else if(exptype == 1) {
+              disable_input([div.ele('exp_category'), div.ele('dept'),div.ele('contract_id'),
+                             div.ele('nycha_industry'), div.ele('resp_center'), div.ele('po_type')]);
+              enable_input([div.ele('vendor_name'), div.ele('fundsrc'),
+                            div.ele('nycha_amount_spent_from'), div.ele('nycha_amount_spent_to')]);
+            }else if(exptype == 4) {
+              disable_input(div.ele('contract_id'));
+              enable_input([div.ele('dept'), div.ele('exp_category'),div.ele('vendor_name'),div.ele('document_id'),
+                div.ele('nycha_industry'), div.ele('fundsrc'), div.ele('resp_center'),
+                div.ele('po_type'), div.ele('nycha_amount_spent_from'), div.ele('nycha_amount_spent_to')]);
+            }else{
+              enable_input([div.ele('dept'), div.ele('exp_category'),div.ele('vendor_name'),div.ele('document_id'),
+                div.ele('nycha_industry'), div.ele('fundsrc'), div.ele('resp_center'), div.ele('contract_id'),
+                div.ele('po_type'), div.ele('nycha_amount_spent_from'), div.ele('nycha_amount_spent_to')]);
+            }
+          }else {
+            //CITYWIDE and OGE - disabling fields for Spending category
+            if (exptype === '2') {
+              disable_input([div.ele('contract_id'), div.ele('payee_name')]);
+              div.ele('contract_id').val("");
+              div.ele('payee_name').val("");
+            }
+            else if (exptype === '4') {
+              disable_input(div.ele('contract_id'));
+              div.ele('contract_id').val("");
+              enable_input(div.ele('payee_name'));
+            }
+            else {
+              enable_input([div.ele('contract_id'), div.ele('payee_name')]);
+            }
           }
+
           $.ajax({
             url: '/advanced-search/autocomplete/spending/expcategory/' + year + '/' + agency + '/' + dept + '/' + exptype + '/' + data_source
             , success: function (data) {
@@ -1271,6 +1311,7 @@
           var data_source = $('input:radio[name=spending_advanced_search_domain_filter]:checked').val();
           if(data_source == 'checkbook_oge' && agency == 162){
             data_source = 'checkbook_nycha';
+            exptype = (div.ele('nycha_spending_category').val()) ? (div.ele('nycha_spending_category').val()) : 0;
           }
           $.ajax({
             url: '/advanced-search/autocomplete/spending/expcategory/' + year + '/' + agency + '/' + dept + '/' + exptype + '/' + data_source
@@ -1422,6 +1463,7 @@
               $('div.form-item-checkbook-oge-spending-entity-contract-number').show();
               $('div.form-item-checkbook-oge-spending-capital-project').show();
               $('div.form-item-checkbook-oge-spending-budget-name').show();
+              $('div.form-item-checkbook-oge-spending-expense-type').show();
 
               //Hide NYCHA Fields
               $('div.form-item-checkbook-oge-spending-fundsrc').hide();
@@ -1432,6 +1474,7 @@
               $('div.form-item-nycha-amount-spent').hide();
               $('div.form-item-checkbook-oge-spending-purchase-order-type').hide();
               $('div.form-item-checkbook-oge-spending-document-id').hide();
+              $('div.form-item-checkbook-oge-spending-nycha-expense-type').hide();
 
               break;
             case "checkbook_nycha":
@@ -1442,6 +1485,7 @@
               $('div.form-item-checkbook-oge-spending-entity-contract-number').hide();
               $('div.form-item-checkbook-oge-spending-capital-project').hide();
               $('div.form-item-checkbook-oge-spending-budget-name').hide();
+              $('div.form-item-checkbook-oge-spending-expense-type').hide();
 
               //Show NYCHA Fields
               $('div.form-item-checkbook-oge-spending-fundsrc').show();
@@ -1452,6 +1496,7 @@
               $('div.form-item-nycha-amount-spent').show();
               $('div.form-item-checkbook-oge-spending-purchase-order-type').show();
               $('div.form-item-checkbook-oge-spending-document-id').show();
+              $('div.form-item-checkbook-oge-spending-nycha-expense-type').show();
 
               break;
           }
@@ -1465,7 +1510,8 @@
             solr_datasource = 'nycha'
           }
 
-          if (data_source === "checkbook_oge") {
+          //Disable issue date radio button only for OGE
+          if (data_source === "checkbook_oge" && (162 != agency_id)) {
             div.ele('date_filter_issue_date').attr('disabled', 'disabled');
           }
           //Both
@@ -2604,7 +2650,6 @@
     } else if (value === '1') {
       disable_input('select[name="'+spending_data_source+'_spending_fiscal_year"]');
     }
-
     /****************disabling Contracts fields*****************/
     var contracts_data_source = $('input:radio[name=contracts_advanced_search_domain_filter]:checked').val();
 
