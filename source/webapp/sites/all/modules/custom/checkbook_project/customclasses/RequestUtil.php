@@ -216,7 +216,7 @@ class RequestUtil
 
         if (empty($year_id)) $year_id = RequestUtilities::get('calyear');
         if (empty($type_of_year)) $type_of_year = 'B';
-        if (empty($year_id)) $year_id = _getCurrentYearID();
+        if (empty($year_id)) $year_id = CheckbookDateUtil::getCurrentFiscalYearId();
 
         $data_set = "";
         switch ($domain) {
@@ -433,7 +433,7 @@ class RequestUtil
     {
         $year = RequestUtilities::get("year|calyear");
         if (!$year) {
-            $year = _getCurrentYearID();
+            $year = CheckbookDateUtil::getCurrentFiscalYearId();
         }
 
         //For CY 2010 Payroll selection, other domains should be navigated to FY 2011
@@ -452,7 +452,7 @@ class RequestUtil
         } else if (RequestUtilities::get("calyear") != NULL) {
             $year = RequestUtilities::get("calyear");
         }
-        $currentCalYear = _getCurrentCalendarYearID();
+        $currentCalYear = CheckbookDateUtil::getCurrentCalendarYearId();
         if (is_null($year) || $year > $currentCalYear) {
             $year = $currentCalYear;
         }
@@ -506,7 +506,7 @@ class RequestUtil
     public static function getEDCURL()
     {
         $vendor = _checkbook_project_querydataset("checkbook:vendor", "vendor_id", array("vendor_customer_code" => "0000776804"));
-        $url = "contracts_landing/status/A/yeartype/B/year/" . _getCurrentYearID() . "/vendor/" . $vendor[0]['vendor_id'];
+        $url = "contracts_landing/status/A/yeartype/B/year/" . CheckbookDateUtil::getCurrentFiscalYearId() . "/vendor/" . $vendor[0]['vendor_id'];
         return $url;
     }
 
@@ -516,7 +516,7 @@ class RequestUtil
     public static function getSpendingEDCURL()
     {
         $vendor = _checkbook_project_querydataset("checkbook:vendor", "vendor_id", array("vendor_customer_code" => "0000776804"));
-        $url = "spending_landing/yeartype/B/year/" . _getCurrentYearID() . "/vendor/" . $vendor[0]['vendor_id'];
+        $url = "spending_landing/yeartype/B/year/" . CheckbookDateUtil::getCurrentFiscalYearId() . "/vendor/" . $vendor[0]['vendor_id'];
         return $url;
     }
 
@@ -852,7 +852,7 @@ class RequestUtil
     public static function getLandingPageUrl($domain, $year = null, $yearType = null)
     {
         $path = null;
-        $year = $year ?: _getCurrentYearID();
+        $year = $year ?: CheckbookDateUtil::getCurrentFiscalYearId();
         $yearType = $yearType ?: 'B';
 
         switch ($domain) {
