@@ -36,7 +36,9 @@ $oge_filter_highlight = (_checkbook_check_isEDCPage() || _checkbook_check_isNYCH
 $city_filter_highlight = (!(_checkbook_check_isEDCPage() || _checkbook_check_isNYCHAPage())) ? 'agency_filter_highlight' : '';
 
 $current_fy_year = (RequestUtilities::get('year')) ? RequestUtilities::get('year') :  _getFiscalYearID() ;
-$current_cal_year = (RequestUtilities::get('year')) ? RequestUtilities::get('year') : _getCurrentCalendarYearID();
+$current_cal_year = (RequestUtilities::get('year'))
+  ? min(RequestUtilities::get('year'), CheckbookDateUtil::getCurrentCalendarYearId())
+  : CheckbookDateUtil::getCurrentCalendarYearId();
 
 $current_url = explode('/',request_uri());
 $url = $current_url[1];

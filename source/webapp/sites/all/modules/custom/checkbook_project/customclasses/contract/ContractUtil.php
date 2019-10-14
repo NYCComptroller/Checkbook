@@ -313,7 +313,7 @@ namespace { //global
             }
             if($year_id == null){
                 $year_type = "B";
-                $year_id = _getCurrentYearID();
+                $year_id = CheckbookDateUtil::getCurrentFiscalYearId();
             }
 
 

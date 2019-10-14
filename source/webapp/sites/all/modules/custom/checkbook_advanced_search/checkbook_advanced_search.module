@@ -152,9 +152,9 @@ function checkbook_advanced_search_form($form, $form_state)
   $form['budget']['budget_fiscal_year'] = array(
     '#type' => 'select',
     '#title' => t('Year'),
-    '#default_value' => _getCurrentYearID(),
+    '#default_value' => CheckbookDateUtil::getCurrentFiscalYearId(),
     '#options' => _checkbook_advanced_search_get_year('budget'),
-    '#attributes' => array('default_selected_value' => _getCurrentYearID())
+    '#attributes' => array('default_selected_value' => CheckbookDateUtil::getCurrentFiscalYearId())
   );
   $form['budget']['budget_adopted_budget_from'] = array(
     '#type' => 'textfield',
@@ -284,8 +284,8 @@ function checkbook_advanced_search_form($form, $form_state)
     '#type' => 'select',
     '#title' => t('Budget FY'),
     '#options' => _checkbook_advanced_search_get_year('revenue'),
-    '#attributes' => array('default_selected_value' => _getCurrentYearID()),
-    '#default_value' => _getCurrentYearID(),
+    '#attributes' => array('default_selected_value' => CheckbookDateUtil::getCurrentFiscalYearId()),
+    '#default_value' => CheckbookDateUtil::getCurrentFiscalYearId(),
   );
   $form['revenue']['revenue_agencies'] = array(
     '#type' => 'select',
@@ -537,9 +537,9 @@ function checkbook_advanced_search_form($form, $form_state)
   $form['payroll']['payroll_year'] = array(
     '#type' => 'select',
     '#title' => t('Year'),
-    '#default_value' => 'cy~' . _getCurrentCalendarYearID(),
+    '#default_value' => 'cy~' . CheckbookDateUtil::getCurrentCalendarYearId(),
     '#options' => _checkbook_advanced_search_get_year('payroll'),
-    '#attributes' => array('default_selected_value' => 'cy~' . _getCurrentCalendarYearID())
+    '#attributes' => array('default_selected_value' => 'cy~' . CheckbookDateUtil::getCurrentCalendarYearId())
   );
   $form['payroll']['payroll_pay_date_from'] = array(
     '#type' => 'date_popup',

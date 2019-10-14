@@ -27,7 +27,7 @@ $isOge = $isNycha || $isEdc;
 if ($spending_results['fiscal_year_id'] != '') {
   $fiscal_year_id = $spending_results['fiscal_year_id'][0];
 } else {
-  $fiscal_year_id = _getCurrentYearID();
+  $fiscal_year_id = CheckbookDateUtil::getCurrentFiscalYearId();
 }
 
 if ($isOge) {

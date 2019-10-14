@@ -22,24 +22,46 @@
 /**
  * Class to load configuration used by datafeeds
  */
-class DatafeedsConfigUtil {
-    /**
-     * Get domain configuration.
-     *
-     * @static
-     *
-     * @param string $domain
-     *   domain
-     *
-     * @return mixed
-     *   configuration
-     */
-    static function getConfig($domain) {
-        $config_str = file_get_contents(realpath(drupal_get_path('module', 'checkbook_datafeeds')) . "/config/checkbook_datafeeds_".strtolower($domain)."_column_options.json");
-
-        $converter = new Json2PHPArray();
-        $configuration = $converter->convert($config_str);
-
-        return $configuration;
+class DatafeedsConfigUtil
+{
+  public static function dataSourceRadio($data_source, $domain)
+  {
+    $options = [
+      'checkbook' => 'Citywide Agencies',
+      'checkbook_oge' => 'NYCEDC (New York City Economic Development Corporation)',
+      'checkbook_nycha' => 'NYCHA (New York City Housing Authority)'
+    ];
+    if ('payroll' == $domain) {
+      unset($options['checkbook_oge']);
     }
+    return [
+      '#type' => 'radios',
+      '#title' => 'Data source',
+      '#options' => $options,
+      '#default_value' => !isset($data_source) ? 'checkbook' : $data_source,
+      '#prefix' => '<div id="div_data_source">',
+      '#suffix' => '</div><br/>',
+    ];
+  }
+
+  /**
+   * Get domain configuration.
+   *
+   * @static
+   *
+   * @param string $domain
+   *   domain
+   *
+   * @return mixed
+   *   configuration
+   */
+  static function getConfig($domain)
+  {
+    $config_str = file_get_contents(realpath(drupal_get_path('module', 'checkbook_datafeeds')) . "/config/checkbook_datafeeds_" . strtolower($domain) . "_column_options.json");
+
+    $converter = new Json2PHPArray();
+    $configuration = $converter->convert($config_str);
+
+    return $configuration;
+  }
 }
