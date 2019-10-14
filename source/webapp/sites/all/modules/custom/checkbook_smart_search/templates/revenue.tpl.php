@@ -46,7 +46,7 @@ foreach ($revenue_parameter_mapping as $key=>$title){
     if(in_array($key, $amount_fields)){
         $value = custom_number_formatter_format($value, 2 , '$');
     }else if(array_key_exists($key, $linkable_fields)){
-        $value = "<a href='/revenue/year/" . _getCurrentYearID() . $linkable_fields[$key] . "'>". $value ."</a>";
+        $value = "<a href='/revenue/year/" . CheckbookDateUtil::getCurrentFiscalYearId() . $linkable_fields[$key] . "'>". $value ."</a>";
     }
 
     if ($count % 2 == 0){

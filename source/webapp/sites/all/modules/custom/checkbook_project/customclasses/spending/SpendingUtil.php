@@ -244,7 +244,7 @@ class SpendingUtil{
         $year = RequestUtilities::get("year");
         $calyear = RequestUtilities::get("calyear");
         $year_type = isset($calyear) ? "C" : "B";
-        $year_id = isset($calyear) ? $calyear : (isset($year) ? $year : _getCurrentYearID());
+        $year_id = isset($calyear) ? $calyear : (isset($year) ? $year : CheckbookDateUtil::getCurrentFiscalYearId());
         $vendor_id = $row["vendor_id"];
         $agency_id = $row["agency"];
         $dashboard = RequestUtilities::get("dashboard");

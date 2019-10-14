@@ -1189,7 +1189,7 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
 
     //Pending Contracts should always be in the current FY.
     if($contracts_contract_status == "P") {
-        $contracts_year = "fy~" . _getCurrentYearID();
+        $contracts_year = "fy~" . CheckbookDateUtil::getCurrentFiscalYearId();
     }
 
     if (!empty($contracts_mwbe_category)) {

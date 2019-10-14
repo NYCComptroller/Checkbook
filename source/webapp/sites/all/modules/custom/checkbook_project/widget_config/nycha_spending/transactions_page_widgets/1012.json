@@ -35,13 +35,16 @@
   "dataset":"checkbook_nycha:all_disbursement_transactions_by_invoice_by_line",
   "uniqueSortColumn":["-sort_sequence"],
   "columns": ["issue_date", "document_id", "section8_flag", "record_type", "agreement_type_name", "contract_id", "release_number",
-    "invoice_number","check_payment_status", "check_amount", "invoice_amount", "invoice_discount", "tenant_share", "withholding_tax", "line_net_amount",
+    "invoice_number","check_payment_status", "check_amount", "invoice_amount", "invoice_discount", "withholding_tax", "line_net_amount",
     "vendor_name", "vendor_id", "contract_purpose", "display_spending_category_name", "display_industry_type_name",
     "department_name", "start_date", "end_date", "funding_source_description", "responsibility_center_description",
     "expenditure_type_name", "program_phase_description", "gl_project_description"
   ],
   "caption":"",
   "derivedColumns": {
+    "document_id_formatted":{
+      "expression":"($row['document_id'] == null) ? 'N/A' : $row['document_id']"
+    },
     "agreement_type_name_formatted":{
       "expression":"($row['agreement_type_name'] == null) ? '-' : $row['agreement_type_name']"
     },
@@ -66,11 +69,8 @@
     "invoice_discount_formatted":{
       "expression": "($row['invoice_discount'] == null) ? '-' : custom_number_formatter_basic_format($row['invoice_discount'])"
     },
-    "tenant_share_formatted":{
-      "expression": "($row['tenant_share'] == null) ? '-' : custom_number_formatter_basic_format($row['tenant_share'])"
-    },
     "tax_withheld_formatted":{
-      "expression": "custom_number_formatter_basic_format($row['withholding_tax'])"
+      "expression": "($row['withholding_tax'] == null) ? '-' : custom_number_formatter_basic_format($row['withholding_tax'])"
     },
     "amount_spent_formatted":{
       "expression": "($row['invoice_net_amount'] == null) ? '-' : custom_number_formatter_basic_format($row['invoice_net_amount'])"
@@ -106,16 +106,16 @@
       "expression": "($row['expenditure_type_name'] == null) ? '-' : $row['expenditure_type_name']"
     },
     "program_formatted":{
-      "expression": "_get_tooltip_markup($row['program_phase_description'],36)"
+      "expression": "($row['program_phase_description']== null) ? '-' :_get_tooltip_markup($row['program_phase_description'],36)"
     },
     "project_formatted":{
-      "expression": "_get_tooltip_markup($row['gl_project_description'],36)"
+      "expression": "($row['gl_project_description'] == null ) ? '-' :_get_tooltip_markup($row['gl_project_description'],36)"
     }
   },
   "skipCustomPadding":true,
   "table_columns": [
     {"labelAlias":"issue_date","column":"issue_date","sortSourceColumn":"issue_date"},
-    {"labelAlias":"document_id","column":"document_id","sortSourceColumn":"document_id"},
+    {"labelAlias":"document_id","column":"document_id_formatted","sortSourceColumn":"document_id"},
     {"labelAlias":"section8_flag","column":"section8_flag","sortSourceColumn":"section8_flag"},
     {"labelAlias":"record_type","column":"record_type","sortSourceColumn":"record_type"},
     {"labelAlias":"purchase_order_type","column":"agreement_type_name_formatted","sortSourceColumn":"agreement_type_name"},
@@ -128,7 +128,6 @@
     {"labelAlias":"check_amount","column":"check_amount_formatted", "sortSourceColumn":"check_amount"},
     {"labelAlias":"billed_amount","column":"billed_amount_formatted","sortSourceColumn":"invoice_amount"},
     {"labelAlias":"invoice_discount","column":"invoice_discount_formatted","sortSourceColumn":"invoice_discount"},
-    {"labelAlias":"tenant_share","column":"tenant_share_formatted","sortSourceColumn":"tenant_share"},
     {"labelAlias":"nycha_tax_withheld","column":"tax_withheld_formatted","sortSourceColumn":"withholding_tax"},
     {"labelAlias":"amount_spent","column":"amount_spent_formatted","sortSourceColumn":"invoice_net_amount"},
     {"label":"","column":"", "export":false},
@@ -137,8 +136,6 @@
     {"labelAlias":"spending_category","column":"display_spending_category_name","sortSourceColumn":"display_spending_category_name"},
     {"labelAlias":"industry_name","column":"display_industry_type_name_formatted","sortSourceColumn":"display_industry_type_name"},
     {"labelAlias":"dept_name","column":"dept_formatted","sortSourceColumn":"department_name"},
-    {"labelAlias":"period_from","column":"start_date_formatted","sortSourceColumn":"start_date"},
-    {"labelAlias":"period_to","column":"end_date_formatted","sortSourceColumn":"end_date"},
     {"labelAlias":"funding_source","column":"funding_source_formatted","sortSourceColumn":"funding_source_description"},
     {"labelAlias":"responsibility_center","column":"responsibility_center_formatted", "sortSourceColumn":"responsibility_center_description"},
     {"labelAlias":"expense_category","column":"expenditure_type_name_formatted","sortSourceColumn":"expenditure_type_name"},
@@ -187,14 +184,11 @@
       {"sClass":"number", "sWidth":"112px","asSorting":["asc","desc"]},
       {"sClass":"number", "sWidth":"112px","asSorting":["asc","desc"]},
       {"sClass":"number", "sWidth":"112px","asSorting":["asc","desc"]},
-      {"sClass":"number", "sWidth":"112px","asSorting":["asc","desc"]},
       {"bSortable":false,"sWidth":"20px"},
       {"sClass":"text", "sWidth":"200px","asSorting":["asc","desc"]},
       {"sClass":"text", "sWidth":"170px","asSorting":["asc","desc"]},
       {"sClass":"text", "sWidth":"180px","asSorting":["asc","desc"]},
       {"sClass":"text", "sWidth":"170px","asSorting":["asc","desc"]},
-      {"sClass":"text", "sWidth":"150px","asSorting":["asc","desc"]},
-      {"sClass":"text", "sWidth":"150px","asSorting":["asc","desc"]},
       {"sClass":"text", "sWidth":"150px","asSorting":["asc","desc"]},
       {"sClass":"text", "sWidth":"130px","asSorting":["asc","desc"]},
       {"sClass":"text", "sWidth":"100px","asSorting":["asc","desc"]},
@@ -203,7 +197,7 @@
       {"sClass":"text", "sWidth":"80px","asSorting":["asc","desc"]},
       {"bSortable":false,"sWidth":"2px"}
     ],
-    "aaSorting":[[11,"desc"]],
+    "aaSorting":[[0,"desc"]],
     "sScrollX":"100%",
     "bScrollCollapse": true
   },

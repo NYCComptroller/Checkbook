@@ -50,13 +50,6 @@ function checkbook_api_menu() {
     'type' => MENU_CALLBACK,
   );
 
-  $items['generate_ref_data'] = array(
-    'title' => 'Generate Reference Data',
-    'page callback' => 'checkbook_api_generate_ref_data',
-    'access callback' => TRUE,
-    'type' => MENU_CALLBACK,
-  );
-
   $items['ref_code_list/%'] = array(
     'title' => 'Load Reference Data',
     'page callback' => 'checkbook_api_load_ref_data',
@@ -203,13 +196,6 @@ function checkbook_api_load_ref_data_excel($code_list_name) {
     else {
         echo "Data is not generated.. Please contact support team.";
     }
-}
-
-/**
- *
- */
-function checkbook_api_generate_ref_data() {
-  include_once 'script/generateRefData.php';
 }
 
 /**
