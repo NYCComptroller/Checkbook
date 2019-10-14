@@ -649,6 +649,7 @@ function _checkbook_advanced_search_filter_field_definition($domain, $data_sourc
     $nycha_award_method_attributes = checkbook_advanced_search_get_nycha_award_methods(DataSource::NYCHA);
     $nycha_industry_attributes = checkbook_advanced_search_get_nycha_industries(DataSource::NYCHA);
     $nycha_fundsrc_attributes = checkbook_advanced_search_get_nycha_funding_sources(DataSource::NYCHA);
+    $nycha_expense_attributes = _checkbook_advanced_search_get_expensetype_and_id(DataSource::NYCHA);
 
   } else if ($data_source == DataSource::CitywideAgency) {
     $mwbe_category_attributes = _checkbook_advanced_search_get_mwbe_category_and_id();
@@ -677,6 +678,9 @@ function _checkbook_advanced_search_filter_field_definition($domain, $data_sourc
             break;
           case '$expense_attributes':
             $field_definition_configs[$i]['attributes']['options'] = $expense_attributes;
+            break;
+          case '$nycha_expense_attributes':
+            $field_definition_configs[$i]['attributes']['options'] = $nycha_expense_attributes;
             break;
           case'$year_attribute':
             $field_definition_configs[$i]['attributes']['options'] = $year_attribute;
