@@ -922,7 +922,7 @@
         var pay_frequency = $('#edit-payroll-pay-frequency').val() || 0;
         var year = $('#edit-payroll-year').val() || 0;
         var data_source = $('input[name=payroll_advanced_search_domain_filter]:checked').val();
-        var agency_id = $("#edit-"+ data_source.replace("_", "-") +"-payroll-agencies").val() || 0;
+        var agency_id = ('checkbook_oge' == data_source ) ? ($("#edit-checkbook-oge-payroll-agencies").val() || 0) :($("#edit-checkbook-payroll-agencies").val() || 0);
 
         var solr_datasource = data_source;
         if ('checkbook_oge' == data_source && 162 == agency_id) {solr_datasource = 'nycha'}
@@ -1073,97 +1073,22 @@
           onAgencyChange(div_checkbook_spending_oge);
         });
 
-        function onAgencyChange(div) {
-          if (div.ele('agency').val() === '0') {
-            div.ele('dept').val('0');
-            div.ele('exp_category').val('0');
-            div.ele('dept').attr("disabled", "disabled");
-            div.ele('exp_category').attr("disabled", "disabled");
-          }
-          else {
-            var year = 0;
-            if (div.ele('date_filter_checked').val() === '0') {
-              year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
-            }
-            var agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
-            var dept = (div.ele('dept').val()) ? (div.ele('dept').val()) : 0;
-            dept = dept.toString().replace(/\//g, "__");
-            var exptype = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
-
-            //Setting 'data source' value
-            var data_source = $('input:radio[name=spending_advanced_search_domain_filter]:checked').val();
-            if(data_source == 'checkbook_oge') {
-              if(agency == 162) {
-                data_source = 'checkbook_nycha';
-                exptype = (div.ele('nycha_spending_category').val()) ? (div.ele('nycha_spending_category').val()) : 0;
-              }
-              showHideOgeFields(data_source);
-            }
-
-            $.ajax({
-              url: '/advanced-search/autocomplete/spending/expcategory/' + year + '/' + agency + '/' + dept + '/' + exptype + '/' + data_source
-              , success: function (data) {
-                var html = '<option select="selected" value="0" >Select Expense Category</option>';
-                if (data[0]) {
-                  if (data[0] !== 'No Matches Found') {
-                    $.each(data, function (key, exp_cat) {
-                      html = html + '<option value="' + exp_cat.code + '">' + exp_cat.name + '</option>';
-                    });
-                  }
-                  else {
-                    html = html + '<option value="">' + data[0] + '</option>';
-                  }
-                }
-                div.ele('exp_category').html(html);
-              }
-            });
-            $.ajax({
-              url: '/advanced-search/autocomplete/spending/department/' + year + '/' + agency + '/' + exptype + '/' + data_source
-              , success: function (data) {
-                var html = '<option select="selected" value="0" >Select Department</option>';
-                if (data[0]) {
-                  if (data[0] !== 'No Matches Found') {
-                    for (var i = 0; i < data.length; i++) {
-                      html = html + '<option value="' + data[i] + ' ">' + data[i] + '</option>';
-                    }
-                  }
-                  else {
-                    html = html + '<option value="">' + data[0] + '</option>';
-                  }
-                }
-                div.ele('dept').html(html);
-              }
-            });
-
-            div.ele('dept').removeAttr("disabled");
-            div.ele('exp_category').removeAttr("disabled");
-
-          }
-        }
-
-        //On change of "Department"
-        div_checkbook_spending.ele('dept').change(function () {
-          onDeptChange(div_checkbook_spending);
-        });
-        div_checkbook_spending_oge.ele('dept').change(function () {
-          onDeptChange(div_checkbook_spending_oge);
-        });
-
-        function onDeptChange(div) {
-          year = 0;
+        //Populate Spending Domain Expense Categories drop-down
+        function loadSpendingExpenseCategories(div, data_source) {
+          var year = 0;
           if (div.ele('date_filter_checked').val() === '0') {
             year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
           }
           var agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
-          var dept = (div.ele('dept').val()) ? (div.ele('dept').val()) : 0;
-          dept = dept.toString().replace(/\//g, "__");
-          var exptype = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
-          var data_source = $('input:radio[name=spending_advanced_search_domain_filter]:checked').val();
-          //NYCHA Datasource and Spending Category
-          if(agency == 162 && data_source == 'checkbook_oge') {
-            data_source = 'checkbook_nycha';
+          var exptype = 0;
+          if(data_source == 'checkbook_nycha') {
+            exptype = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
+          } else {
             exptype = (div.ele('nycha_spending_category').val()) ? (div.ele('nycha_spending_category').val()) : 0;
           }
+          var dept = (div.ele('dept').val()) ? (div.ele('dept').val()) : 0;
+          dept = dept.toString().replace(/\//g, "__");
+
           $.ajax({
             url: '/advanced-search/autocomplete/spending/expcategory/' + year + '/' + agency + '/' + dept + '/' + exptype + '/' + data_source
             , success: function (data) {
@@ -1181,6 +1106,77 @@
               div.ele('exp_category').html(html);
             }
           });
+          div.ele('exp_category').removeAttr("disabled");
+        }
+
+        //Populate Spending Domain departments drop-down
+        function loadSpendingDepartments(div, data_source){
+          var year = 0;
+          if (div.ele('date_filter_checked').val() === '0') {
+            year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
+          }
+          var agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
+          var exptype = 0;
+          if(data_source == 'checkbook_nycha') {
+            exptype = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
+          } else {
+            exptype = (div.ele('nycha_spending_category').val()) ? (div.ele('nycha_spending_category').val()) : 0;
+          }
+          $.ajax({
+            url: '/advanced-search/autocomplete/spending/department/' + year + '/' + agency + '/' + exptype + '/' + data_source
+            , success: function (data) {
+              var html = '<option select="selected" value="0" >Select Department</option>';
+              if (data[0]) {
+                if (data[0] !== 'No Matches Found') {
+                  for (var i = 0; i < data.length; i++) {
+                    html = html + '<option value="' + data[i] + ' ">' + data[i] + '</option>';
+                  }
+                }
+                else {
+                  html = html + '<option value="">' + data[0] + '</option>';
+                }
+              }
+              div.ele('dept').html(html);
+            }
+          });
+          div.ele('dept').removeAttr("disabled");
+        }
+
+        //When agency is selected
+        function onAgencyChange(div) {
+          var agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
+          if(agency === '0') {
+            div.ele('dept').val('0');
+            div.ele('exp_category').val('0');
+            div.ele('dept').attr("disabled", "disabled");
+            div.ele('exp_category').attr("disabled", "disabled");
+          }else {
+            //Setting 'data source' value
+            var data_source = $('input:radio[name=spending_advanced_search_domain_filter]:checked').val();
+            data_source = (data_source == 'checkbook_oge' && agency == 162) ? 'checkbook_nycha': data_source;
+            if(data_source != 'checkbook') {
+              showHideOgeFields(data_source);
+            }
+            //Load departments and expense categories drop-downs
+            loadSpendingDepartments(div, data_source);
+            loadSpendingExpenseCategories(div, data_source);
+          }
+        }
+
+        //On change of "Department"
+        div_checkbook_spending.ele('dept').change(function () {
+          onDeptChange(div_checkbook_spending);
+        });
+        div_checkbook_spending_oge.ele('dept').change(function () {
+          onDeptChange(div_checkbook_spending_oge);
+        });
+
+        function onDeptChange(div) {
+          var data_source = $('input:radio[name=spending_advanced_search_domain_filter]:checked').val();
+          var agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
+          //NYCHA Datasource
+          data_source = (data_source == 'checkbook_oge' && agency == 162) ? 'checkbook_nycha': data_source;
+          loadSpendingExpenseCategories(div, data_source);
         }
 
         //On change of "Expense Type"
@@ -1201,8 +1197,6 @@
             year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
           }
           var agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
-          var dept = (div.ele('dept').val()) ? (div.ele('dept').val()) : 0;
-          dept = dept.toString().replace(/\//g, "__");
           var exptype = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
           //Setting data source value
           var data_source = $('input:radio[name=spending_advanced_search_domain_filter]:checked').val();
@@ -1250,40 +1244,8 @@
             }
           }
 
-          $.ajax({
-            url: '/advanced-search/autocomplete/spending/expcategory/' + year + '/' + agency + '/' + dept + '/' + exptype + '/' + data_source
-            , success: function (data) {
-              var html = '<option select="selected" value="0" >Select Expense Category</option>';
-              if (data[0]) {
-                if (data[0] !== 'No Matches Found') {
-                  $.each(data, function (key, exp_cat) {
-                    html = html + '<option value="' + exp_cat.code + '">' + exp_cat.name + '</option>';
-                  });
-                }
-                else {
-                  html = html + '<option value="">' + data[0] + '</option>';
-                }
-              }
-              div.ele('exp_category').html(html);
-            }
-          });
-          $.ajax({
-            url: '/advanced-search/autocomplete/spending/department/' + year + '/' + agency + '/' + exptype + '/' + data_source
-            , success: function (data) {
-              var html = '<option select="selected" value="0" >Select Department</option>';
-              if (data[0]) {
-                if (data[0] !== 'No Matches Found') {
-                  for (var i = 0; i < data.length; i++) {
-                    html = html + '<option value="' + data[i] + ' ">' + data[i] + '</option>';
-                  }
-                }
-                else {
-                  html = html + '<option value="">' + data[0] + '</option>';
-                }
-              }
-              div.ele('dept').html(html);
-            }
-          });
+          loadSpendingExpenseCategories(div, data_source);
+          loadSpendingDepartments(div, data_source);
         }
 
         //On change of "Fiscal Year"
@@ -1295,58 +1257,16 @@
         });
 
         function onFiscalYearChange(div) {
-          year = 0;
-          if (div.ele('date_filter_checked').val() === '0') {
-            year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
-          }
           var agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
-
           //Don't update drop downs if no agency is selected
           if (agency === 0) return;
-
-          var dept = (div.ele('dept').val()) ? (div.ele('dept').val()) : 0;
-          dept = dept.toString().replace(/\//g, "__");
-          var exptype = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
           //Setting data source value
           var data_source = $('input:radio[name=spending_advanced_search_domain_filter]:checked').val();
           if(data_source == 'checkbook_oge' && agency == 162){
             data_source = 'checkbook_nycha';
-            exptype = (div.ele('nycha_spending_category').val()) ? (div.ele('nycha_spending_category').val()) : 0;
           }
-          $.ajax({
-            url: '/advanced-search/autocomplete/spending/expcategory/' + year + '/' + agency + '/' + dept + '/' + exptype + '/' + data_source
-            , success: function (data) {
-              var html = '<option select="selected" value="0" >Select Expense Category</option>';
-              if (data[0]) {
-                if (data[0] !== 'No Matches Found') {
-                  $.each(data, function (key, exp_cat) {
-                    html = html + '<option value="' + exp_cat.code + '">' + exp_cat.name + '</option>';
-                  });
-                }
-                else {
-                  html = html + '<option value="">' + data[0] + '</option>';
-                }
-              }
-              div.ele('exp_category').html(html);
-            }
-          });
-          $.ajax({
-            url: '/advanced-search/autocomplete/spending/department/' + year + '/' + agency + '/' + exptype + '/' + data_source
-            , success: function (data) {
-              var html = '<option select="selected" value="0" >Select Department</option>';
-              if (data[0]) {
-                if (data[0] !== 'No Matches Found') {
-                  for (var i = 0; i < data.length; i++) {
-                    html = html + '<option value="' + data[i] + ' ">' + data[i] + '</option>';
-                  }
-                }
-                else {
-                  html = html + '<option value="">' + data[0] + '</option>';
-                }
-              }
-              div.ele('dept').html(html);
-            }
-          });
+          loadSpendingExpenseCategories(div, data_source);
+          loadSpendingDepartments(div, data_source);
         }
 
         //On clicking "Clear"
@@ -1442,6 +1362,9 @@
               agency_id = parseInt((div_checkbook_spending_oge.ele('agency').val()) ? div_checkbook_spending_oge.ele('agency').val() : 0);
               dataSource = (162 == agency_id) ? 'checkbook_nycha' : 'checkbook_oge';
               showHideOgeFields(dataSource);
+              //Load department and spending categories by default for OGE and NYCHA
+              loadSpendingDepartments(div_checkbook_spending_oge, dataSource);
+              loadSpendingExpenseCategories(div_checkbook_spending_oge, dataSource)
               break;
 
             default:
@@ -1679,7 +1602,7 @@
             active_accordion_window = 3;
             break;
           case "payroll":
-            active_accordion_window = 4;
+            active_accordion_wind89ow = 4;
             break;
           default: //spending
             active_accordion_window = 2;
