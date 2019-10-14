@@ -93,14 +93,12 @@ if(isset($url)) {
       if ( $tcode == 'RESC'){ $inv_contractName = $inv_contractDetails['responsibility_center_descr'];}
       if ( $tcode == 'SZ'){ $inv_contractName = $inv_contractDetails['award_size_name'];}
 
-      $inv_contractSummary = "<div class='contract-information contract-summary-block'>
-                        <ul>
+      $inv_contractSummary = "<ul>
                           <li class=\"spendingtxsubtitle\">
                             <span class=\"gi-list-item\"><b>{$tcode_title}:</b></span> {$inv_contractName}
                           </li>
-                        </ul>
-                      </div>";
-      $subTitle = $inv_contractSummary;
+                        </ul>";
+      $subTitle2 = $inv_contractSummary;
     }
   }
   // Display static content for details link transaction pages
