@@ -15,6 +15,14 @@
             "options":"$expense_attributes"
         }
     },
+    "nycha_expense_type":{
+      "field_type":"select",
+      "field_name":"nycha_expense_type",
+      "attributes":{
+        "title":"Spending Category",
+        "options":"$nycha_expense_attributes"
+      }
+    },
     "payee_name":{
         "field_type":"textfield",
         "field_name":"payee_name",

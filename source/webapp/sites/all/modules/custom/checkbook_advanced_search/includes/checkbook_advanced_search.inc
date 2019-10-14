@@ -588,13 +588,22 @@ function _checkbook_advanced_search_get_expensetype_and_id($data_source = DataSo
 {
     try {
         $dataController = data_controller_get_instance();
-        $data = $dataController->queryDataset($data_source.':spending_category', array(
+        if($data_source == DataSource::NYCHA){
+          $query = "SELECT spending_category_id, spending_category_code,  display_spending_category_name FROM ref_spending_category";
+          $data = _checkbook_project_execute_sql_by_data_source($query, $data_source);
+          $results = array('' => "Total Spending");
+          foreach ($data as $value){
+            $results[$value['spending_category_id']] = $value['display_spending_category_name'];
+          }
+        }else {
+          $data = $dataController->queryDataset($data_source . ':spending_category', array(
             'spending_category_id', 'spending_category_name'
-        ), NULL, 'display_order');
-        $results = array('' => "Total Spending");
-        foreach ($data as $row) {
+          ), NULL, 'display_order');
+          $results = array('' => "Total Spending");
+          foreach ($data as $row) {
             if ($row['spending_category_id'] != 6)
-                $results[$row['spending_category_id']] = $row['spending_category_name'];
+              $results[$row['spending_category_id']] = $row['spending_category_name'];
+          }
         }
         return array_unique($results);
     } catch (Exception $e) {
