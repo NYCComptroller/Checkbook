@@ -64,7 +64,7 @@ $url_year_type_value = (RequestUtilities::get('yeartype')) ? RequestUtilities::g
 
 //Set $year_id_value to current Fiscal Year ID for Pending Contracts
 if(preg_match("/contracts_pending_exp_landing/",$_GET['q']) || preg_match("/contracts_pending_rev_landing/",$_GET['q'])){
-    $url_year_id_value = _getFiscalYearID();
+    $url_year_id_value = CheckbookDateUtil::getCurrentFiscalYearId();
     $url_year_type_value = 'B';
 }
 
@@ -86,8 +86,6 @@ if(isset($bottomURL)){
 
 $fiscal_year_data_array = array();
 $calendar_year_data_array = array();
-$current_fy_id = _getCurrentYearID();
-
 $years = _checkbook_year_list();
 
 // 249.json
@@ -106,7 +104,7 @@ foreach($years as $year){
 
     //For Trends and Smart Search, set the default year value to current NYC fiscal year
     if($trends || $search){
-        if($year['year_id'] == $current_fy_id){
+        if($year['year_id'] == CheckbookDateUtil::getCurrentFiscalYearId()){
             $selected_fiscal_year = 'selected = yes';
         }
     }

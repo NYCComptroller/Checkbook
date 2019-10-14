@@ -228,7 +228,7 @@ class SqlModelFactory {
             $value = "'{$value}'";
         }
         if('yearfix' == $type) {
-            $value = _checkbook_full_year($value);
+            $value = CheckbookDateUtil::yearId2Year($value);
         }
         switch($operator) {
             case SqlOperator::EQUAL:
@@ -258,4 +258,4 @@ class SqlModelFactory {
         }
         return $where;
     }
-} 
+}

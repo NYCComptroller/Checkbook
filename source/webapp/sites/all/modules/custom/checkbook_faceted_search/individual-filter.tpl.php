@@ -420,7 +420,8 @@ $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
     $pages = ceil($node->totalDataCount/$node->widgetConfig->limit);
     if((isset($checked) && $node->widgetConfig->maxSelect == $checkedCount) || $checkedCount + $uncheckedCount == 0 || $disableFacet){
       $disabled = " DISABLED='true' " ;
-    }else{
+    }
+    else{
       $disabled = "" ;
     }
     if( !isset($node->widgetConfig->autocomplete) || $node->widgetConfig->autocomplete == true  ){ ?>
@@ -429,14 +430,24 @@ $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
         <?php } ?>
   <div class="checked-items">
     <?php
+    $query_string = $_GET['q'];
+
+
     if((isset($checked) && $node->widgetConfig->maxSelect == $checkedCount) || $checkedCount + $uncheckedCount == 0 ){
         $disabled = " DISABLED='true' " ;
     }else{
         $disabled = "" ;
     }
-    $disableFacet = $disableFacet ? " DISABLED='true' " : "";
-
+    // Check if links are from ytd(nycha spending) or inv (nycha contracts) and disable facet selection
+    if(preg_match('/ytd_contract/',$query_string) || preg_match('/inv_contract/',$query_string)){
+      $disableFacet = " DISABLED='true' ";
+      $disabled =  " DISABLED='true' ";
+      $unchecked = null;
+    }
+    else{$disableFacet = $disableFacet ? " DISABLED='true' " : "";}
+    //$disableFacet = $disableFacet ? " DISABLED='true' " : "";
     $ct = 0;
+
 //    if ($checked && is_array($checked)) {
     if (isset($checked) && $checked) {
       foreach ($checked as $row) {

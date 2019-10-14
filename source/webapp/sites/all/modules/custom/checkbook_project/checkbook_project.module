@@ -42,14 +42,14 @@ function checkbook_project_url_outbound_alter(&$path, &$options, $original_path)
         || ($path == 'spending/vendors') || ($path == 'mwbe_agency_grading')
         || ($path == 'mwbe_agency_grading/sub_vendor_data') || ($path == 'payroll')  || ($path == 'payroll/agency/%')){
 
-        $path .="/yeartype/B/year/"._getCurrentYearID();
+        $path .="/yeartype/B/year/".CheckbookDateUtil::getCurrentFiscalYearId();
 		return true;
 	}
 	elseif(($path == 'budget') || ($path == 'revenue')){
-		$path .="/year/"._getCurrentYearID();
+		$path .="/year/".CheckbookDateUtil::getCurrentFiscalYearId();
 	}
 	elseif($path == 'contracts_landing'){
-	  $path .="/status/A/yeartype/B/year/"._getCurrentYearID();
+	  $path .="/status/A/yeartype/B/year/".CheckbookDateUtil::getCurrentFiscalYearId();
 	  return true;
 	}
 
