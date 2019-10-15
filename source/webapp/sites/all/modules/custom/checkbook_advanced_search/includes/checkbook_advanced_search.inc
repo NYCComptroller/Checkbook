@@ -1340,14 +1340,16 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
 function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_source = DataSource::CITYWIDE)
 {
     $filter_dimension = $data_source . '_spending';
-
+    $spending_agencies = trim($form[$filter_dimension][$data_source . '_spending_agency']['#value']); //drop down
+    if($data_source == DataSource::OGE && $spending_agencies == 162){
+      return generateNYCHASpendingSearchUrl($form);
+    }
     $spending_payee_name = trim($form[$filter_dimension][$data_source . '_spending_payee_name']['#value']);
     $spending_payee_name_exact = trim($form[$filter_dimension][$data_source . '_spending_payee_name_exact']['#value']);
     $spending_contract_num = trim($form[$filter_dimension][$data_source . '_spending_contract_num']['#value']);
     $spending_contract_num_exact = trim($form[$filter_dimension][$data_source . '_spending_contract_num_exact']['#value']);
     $spending_document_id = trim($form[$filter_dimension][$data_source . '_spending_document_id']['#value']);
     $spending_document_id_exact = trim($form[$filter_dimension][$data_source . '_spending_document_id_exact']['#value']);
-    $spending_agencies = trim($form[$filter_dimension][$data_source . '_spending_agency']['#value']); //drop down
 
     $spending_expense_category = trim($form[$filter_dimension][$data_source . '_spending_expense_category']['#value']);
     $spending_expense_category = $spending_expense_category == "Select Expense Category" ? 0 : $spending_expense_category;
@@ -1477,6 +1479,41 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_s
     }
 
     return $redirect_url;
+}
+
+function generateNYCHASpendingSearchUrl($form){
+  $filterDimension = 'checkbook_oge_spending';
+  $redirectUrl = 'nycha_spending/search/transactions/datasource/' . DataSource::NYCHA;
+  //Agency
+  $agency = trim($form[$filterDimension][$filterDimension . '_agency']['#value']);
+  $redirectUrl .= _checkbook_advanced_search_generate_redirect_url($agency, 'agency');
+  //Department
+  $department = trim($form[$filterDimension][$filterDimension  . '_department']['#value']);
+  $redirectUrl .= ($department != "Select Department") ?  _checkbook_advanced_search_generate_redirect_url($department, 'deptnm'): "";
+  //Expense Category
+  $expenseCategory = trim($form[$filterDimension][$filterDimension . '_expense_category']['#value']);
+  $redirectUrl .= ($expenseCategory != "Select Expense Category") ?  _checkbook_advanced_search_generate_redirect_url($expenseCategory, 'expcategorycode'): "";
+  //Spending Category
+  $spendingCategory = trim($form[$filterDimension][$filterDimension . '_expense_type']['#value']);
+  $redirectUrl .= !empty($spendingCategory) ? _checkbook_advanced_search_generate_redirect_url($spendingCategory, 'category') : "";
+  //Industry
+  $industry = trim($form[$filterDimension][$filterDimension . '_nycha_industry']['#value']);
+  $industryCodeIdArray = _checkbook_advanced_search_autocomplete_get_code_id($industry);
+  $redirectUrl .= _checkbook_advanced_search_generate_redirect_url($industryCodeIdArray['id'], 'industry');
+  //Funding Source
+  $fundSrc = trim($form[$filterDimension][$filterDimension . '_fundsrc']['#value']);
+  $fundSrcCodeIdArray = _checkbook_advanced_search_autocomplete_get_code_id($fundSrc);
+  $redirectUrl .= _checkbook_advanced_search_generate_redirect_url($fundSrcCodeIdArray['id'], 'fundsrc');
+  //Responsibility Center
+  $respCenter = trim($form[$filterDimension][$filterDimension . '_responsibility_center']['#value']);
+  $respCenterCodeIdArray = _checkbook_advanced_search_autocomplete_get_code_id($respCenter);
+  $redirectUrl .= _checkbook_advanced_search_generate_redirect_url($respCenterCodeIdArray['id'], 'resp_center');
+
+  //Purchase Order Type
+  $nycha_po_type = trim($form[$filterDimension][$filterDimension . '_purchase_order_type']['#value']);
+  $redirectUrl .= !empty($nycha_po_type) ? _checkbook_advanced_search_generate_redirect_url($nycha_po_type, 'agreement_type') : "";
+
+  return $redirectUrl;
 }
 
 /**
