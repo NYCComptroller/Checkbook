@@ -1435,7 +1435,14 @@
 
           //Disable issue date radio button only for OGE
           if (data_source === "checkbook_oge" && (162 != agency_id)) {
-            div.ele('date_filter_issue_date').attr('disabled', 'disabled');
+            disable_input(div.ele('date_filter_issue_date'));
+          }else{
+            enable_input(div.ele('date_filter_issue_date'));
+          }
+          //Disable issue date inputs when year radio button is checked
+          if (div.ele('date_filter_checked').val() === '0') {
+            disable_input(div.ele('issue_date_from'));
+            disable_input(div.ele('issue_date_to'));
           }
           //Both
           if (!agency_id) {
@@ -1475,11 +1482,6 @@
           div.ele('entity_contract_number').autocomplete({source: autoCompleteSource(solr_datasource,'contract_entity_contract_number',filters)});
 
           $('.ui-autocomplete-input').bind('autocompleteselect', function (event, ui) {$(this).parent().next().val(ui.item.label);});
-
-          if (div.ele('date_filter_checked').val() === '0') {
-            div.ele('issue_date_from').attr('disabled', 'disabled');
-            div.ele('issue_date_to').attr('disabled', 'disabled');
-          }
 
           //prevent the auto-complete from wrapping un-necessarily
           fixAutoCompleteWrapping(div.contents());
