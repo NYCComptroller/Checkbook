@@ -55,6 +55,9 @@ if(isset($url)) {
                       </div>";
       $subTitle = $contractSummary;
     }
+    else{
+      $subTitle2 = "<div class='spending-tx-subtitle'>{$subTitle}</div>";
+    }
   }
   //Nycha contract invoice amount links transaction pages
   if (strpos($widget, 'inv_') !== false) {
@@ -106,7 +109,14 @@ if(isset($url)) {
     //$title = NychaSpendingUtil::getTransactionsTitle();
     $subTitle2 = "<div class='spending-tx-subtitle'>{$subTitle}</div>";
     $aggregatedAmountTitle = "Total Spending Amount";
-    $totalSpendingAmount = '$' . custom_number_formatter_format($node->data[0]['check_amount_sum'], 2);
+    $totalSpendingAmount = '$' . custom_number_formatter_format($node->data[0]['invoice_amount_sum'], 2);
+    $amountsSummary = "<div class='dollar-amounts'>
+                        <div class='total-spending-amount'>{$totalSpendingAmount}
+                         <span class='information' title='Amount displayed is the sum of ‘Amount spent’ by NYCHA for the selected FY' ></span> 
+                          <div class='amount-title'>{$aggregatedAmountTitle}                         
+                        </div>
+                        </div>
+                      </div></div>";
 
   }
 }
@@ -121,6 +131,7 @@ if (strpos($widget, 'ytd_') !== false) {
   if (isset($widget) && ($widget == 'ytd_contract' || $widget == 'ytd_vendor')) {
     $amountsSummary = "<div class='dollar-amounts'>
                         <div class='total-spending-amount'>{$aggregatedAmount}
+                        <span class='information' title='Amount displayed is the sum of ‘Amount spent’ by NYCHA for the selected FY' ></span>
                           <div class='amount-title'>{$aggregatedAmountTitle}</div>
                         </div>
                         <div class='ytd-spending-amount'>{$ytdAmount}
@@ -132,6 +143,7 @@ if (strpos($widget, 'ytd_') !== false) {
   {
     $amountsSummary = "<div class='dollar-amounts'>
                         <div class='ytd-spending-amount'>{$ytdAmount}
+                        <span class='information' title='Amount displayed is the sum of ‘Amount spent’ by NYCHA for the selected FY' ></span>
                           <div class='amount-title'>{$aggregatedYtdTitle}</div>
                         </div>
                       </div></div>";
@@ -154,11 +166,5 @@ if (strpos($widget, 'inv_') !== false) {
                         </div>
                       </div></div>";
 }
-else{
-  $amountsSummary = "<div class='dollar-amounts'>
-                        <div class='total-spending-amount'>{$totalSpendingAmount}
-                          <div class='amount-title'>{$aggregatedAmountTitle}</div>
-                        </div>
-                      </div></div>";
-}
+
 echo $titleSummary . $amountsSummary;
