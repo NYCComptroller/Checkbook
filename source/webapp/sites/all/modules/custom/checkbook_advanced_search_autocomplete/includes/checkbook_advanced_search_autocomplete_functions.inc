@@ -126,7 +126,7 @@ function _checkbook_advanced_search_autocomplete_spending_department($year, $age
       $yearParam = ($yearId != 'all') ? " AND issue_date_year_id = '" . $yearId . "' " : "";
       $query = "SELECT DISTINCT department_name 
                 FROM all_disbursement_transactions 
-                WHERE 1=1 {$yearParam} 
+                WHERE 1=1 {$yearParam} {$spendingCatParam}
                 ORDER BY department_name ASC";
   }else {
       $yearParam = ($yearId != 'all') ? " AND check_eft_issued_nyc_year_id = '" . $yearId . "' " : "";
