@@ -986,20 +986,6 @@ function checkbook_datafeeds_spending_validate($form, &$form_state)
   $oge_response_columns = $form_state['values']['oge_column_select'];
   $nycha_response_columns = $form_state['values']['nycha_column_select'];
 
-//  $agency_options = _agency_options($data_source);
-//  $form['filter']['agency'] = array(
-//    '#type' => 'select',
-//    '#title' => t('Agency:'),
-//    '#options' => $agency_options['options'],
-//    '#option_attributes' => $agency_options['options_attributes'],
-//    '#attributes' => array('class' => array('watch')),
-//    '#prefix' => '<div class="column column-left"><div class="datafield agency">',
-//    '#suffix' => '</div>',
-//    '#id' => 'edit-agency',
-//    '#name' => 'agency',
-//    '#default_value' => !empty($form_state['values']['agency']) ? $form_state['values']['agency'] : 'Citywide (All Agencies)',
-//  );
-
   if ($checkfrom && !is_numeric($checkfrom)) {
     form_set_error('check_amt_from', t('Check Amount must be a number.'));
   }
