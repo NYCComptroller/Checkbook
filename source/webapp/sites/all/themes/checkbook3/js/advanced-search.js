@@ -1215,11 +1215,11 @@
             }else if(exptype == 1) {
               disable_input([div.ele('exp_category'), div.ele('dept'),div.ele('contract_id'),
                              div.ele('nycha_industry'), div.ele('resp_center'), div.ele('po_type')]);
-              enable_input([div.ele('vendor_name'), div.ele('fundsrc'),
+              enable_input([div.ele('vendor_name'), div.ele('fundsrc'), div.ele('document_id'),
                             div.ele('nycha_amount_spent_from'), div.ele('nycha_amount_spent_to')]);
             }else if(exptype == 4) {
-              disable_input(div.ele('contract_id'));
-              enable_input([div.ele('dept'), div.ele('exp_category'),div.ele('vendor_name'),div.ele('document_id'),
+              disable_input([div.ele('dept'),div.ele('contract_id')]);
+              enable_input([ div.ele('exp_category'),div.ele('vendor_name'),div.ele('document_id'),
                 div.ele('nycha_industry'), div.ele('fundsrc'), div.ele('resp_center'),
                 div.ele('po_type'), div.ele('nycha_amount_spent_from'), div.ele('nycha_amount_spent_to')]);
             }else{
@@ -1435,7 +1435,14 @@
 
           //Disable issue date radio button only for OGE
           if (data_source === "checkbook_oge" && (162 != agency_id)) {
-            div.ele('date_filter_issue_date').attr('disabled', 'disabled');
+            disable_input(div.ele('date_filter_issue_date'));
+          }else{
+            enable_input(div.ele('date_filter_issue_date'));
+          }
+          //Disable issue date inputs when year radio button is checked
+          if (div.ele('date_filter_checked').val() === '0') {
+            disable_input(div.ele('issue_date_from'));
+            disable_input(div.ele('issue_date_to'));
           }
           //Both
           if (!agency_id) {
@@ -1475,11 +1482,6 @@
           div.ele('entity_contract_number').autocomplete({source: autoCompleteSource(solr_datasource,'contract_entity_contract_number',filters)});
 
           $('.ui-autocomplete-input').bind('autocompleteselect', function (event, ui) {$(this).parent().next().val(ui.item.label);});
-
-          if (div.ele('date_filter_checked').val() === '0') {
-            div.ele('issue_date_from').attr('disabled', 'disabled');
-            div.ele('issue_date_to').attr('disabled', 'disabled');
-          }
 
           //prevent the auto-complete from wrapping un-necessarily
           fixAutoCompleteWrapping(div.contents());
