@@ -2526,7 +2526,7 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 .dollar-amounts > div:first-child,
 .inside .transactions-container .transactions-total-amount,
 .contract-information .dollar-difference{
-    margin-right:0px;
+    margin-right:10px;
 }
 .dollar-amounts > div > div,
 .inside .transactions-container .transactions-total-amount > div,
@@ -2776,8 +2776,8 @@ span.export, span.summary_export {
     text-transform: uppercase;
 }
 span.information {
-  background: url("../images/information-icon-small.jpg") no-repeat scroll right 0 transparent;
-  height:16px;
+  background: url("../images/information-icon-small.png") no-repeat scroll right 0 transparent;
+  height:20px;
   width:123px;
   cursor: pointer;
   position: absolute;
