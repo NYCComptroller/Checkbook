@@ -215,6 +215,15 @@
           ]
         },
         {
+          "name": "expenditure_type_code",
+          "levels": [
+            {
+              "name": "expenditure_type_code",
+              "sourceColumnName": "expenditure_type_code"
+            }
+          ]
+        },
+        {
           "name": "category",
           "levels": [
             {
