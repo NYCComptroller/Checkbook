@@ -169,27 +169,27 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
   $first_time_load = checkbook_datafeeds_is_first_load($form_state, $data_source);
 
   $agency_default = $data_source == 'checkbook' ? 'Citywide (All Agencies)' : 'Select One';
-  $agency = checkbook_datafeeds_filter_get_default_value($form_state, 'agency', $first_time_load, $agency_default);
+//  $agency = checkbook_datafeeds_filter_get_default_value($form_state, 'agency', $first_time_load, $agency_default);
+//  $agency = isset($form_state['values']['agency']) ? $form_state['values']['agency'] : 'Citywide (All Agencies)';
   $sc = checkbook_datafeeds_filter_get_default_value($form_state, 'expense_type', $first_time_load, 'Select Expense Category');
-  $year = !$first_time_load ? (!empty($form_state['values']['year']) ? $form_state['values']['year'] : 'FY' . currentFiscalYear()) : 'FY' . currentFiscalYear();
+//  $year = !$first_time_load ? (!empty($form_state['values']['year']) ? $form_state['values']['year'] : 'FY' . currentFiscalYear()) : 'FY' . currentFiscalYear();
   $expense_type_options = _expense_type_options($data_source);
 
+  $agency_options = _agency_options($data_source);
   $form['filter']['agency'] = array(
     '#type' => 'select',
     '#title' => t('Agency:'),
+    '#options' => $agency_options['options'],
+    '#option_attributes' => $agency_options['options_attributes'],
+    '#attributes' => array('class' => array('watch')),
     '#prefix' => '<div class="column column-left"><div class="datafield agency">',
     '#suffix' => '</div>',
-    '#attributes' => array('class' => array('watch')),
-    '#default_value' => $agency,
     '#id' => 'edit-agency',
     '#name' => 'agency',
+    '#default_value' => !empty($form_state['values']['agency']) ? $form_state['values']['agency'] : 'Citywide (All Agencies)',
     '#validated' => true,
   );
-  $form['agency_hidden'] = array(
-    '#title' => 'agency_hidden',
-    '#value' => $form_state['values']['agency'],
-    '#type' => 'hidden'
-  );
+
   $form['filter']['dept'] = array(
     '#type' => 'select',
     '#title' => t('Department:'),
@@ -973,7 +973,6 @@ function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_
  */
 function checkbook_datafeeds_spending_validate($form, &$form_state)
 {
-
   $data_source = $form_state['input']['datafeeds-spending-domain-filter'];
   $agency = $form_state['values']['agency'];
   $agency_code = emptyToZero($agency);
@@ -986,6 +985,20 @@ function checkbook_datafeeds_spending_validate($form, &$form_state)
   $response_columns = $form_state['values']['column_select'];
   $oge_response_columns = $form_state['values']['oge_column_select'];
   $nycha_response_columns = $form_state['values']['nycha_column_select'];
+
+//  $agency_options = _agency_options($data_source);
+//  $form['filter']['agency'] = array(
+//    '#type' => 'select',
+//    '#title' => t('Agency:'),
+//    '#options' => $agency_options['options'],
+//    '#option_attributes' => $agency_options['options_attributes'],
+//    '#attributes' => array('class' => array('watch')),
+//    '#prefix' => '<div class="column column-left"><div class="datafield agency">',
+//    '#suffix' => '</div>',
+//    '#id' => 'edit-agency',
+//    '#name' => 'agency',
+//    '#default_value' => !empty($form_state['values']['agency']) ? $form_state['values']['agency'] : 'Citywide (All Agencies)',
+//  );
 
   if ($checkfrom && !is_numeric($checkfrom)) {
     form_set_error('check_amt_from', t('Check Amount must be a number.'));
@@ -1073,7 +1086,7 @@ function checkbook_datafeeds_spending_validate($form, &$form_state)
   }
 
   //Set the hidden filed values on Spending form
-  $form_state['complete form']['data_source']['#value'] = $data_source;
+//  $form_state['complete form']['datasource']['#value'] = $data_source;
   $form_state['complete form']['agency_hidden']['#value'] = $form_state['values']['agency'];
   $form_state['complete form']['dept_hidden']['#value'] = $form_state['values']['dept'];
   $form_state['complete form']['expense_category_hidden']['#value'] = $form_state['values']['expense_category'];
