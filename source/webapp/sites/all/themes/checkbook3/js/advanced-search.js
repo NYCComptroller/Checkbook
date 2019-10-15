@@ -1602,7 +1602,7 @@
             active_accordion_window = 3;
             break;
           case "payroll":
-            active_accordion_wind89ow = 4;
+            active_accordion_window = 4;
             break;
           default: //spending
             active_accordion_window = 2;
