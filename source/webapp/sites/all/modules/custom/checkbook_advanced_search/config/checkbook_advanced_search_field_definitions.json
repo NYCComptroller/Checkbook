@@ -15,6 +15,14 @@
             "options":"$expense_attributes"
         }
     },
+    "nycha_expense_type":{
+      "field_type":"select",
+      "field_name":"nycha_expense_type",
+      "attributes":{
+        "title":"Spending Category",
+        "options":"$nycha_expense_attributes"
+      }
+    },
     "payee_name":{
         "field_type":"textfield",
         "field_name":"payee_name",
@@ -321,6 +329,7 @@
       "field_type":"select",
       "field_name":"nycha_contract_type",
       "attributes":{
+        "title":"Contract Type",
         "options":"$nycha_contract_type_attributes",
         "title":"Contract Type"
       }
@@ -341,11 +350,38 @@
         "options":"$nycha_industry_attributes"
       }
    },
-    "approved_date":{
-      "field_type":"range",
-      "field_name":"approved_date",
-      "attributes":{
-        "date_year_range":"$year_range"
-      }
+  "fundsrc":{
+    "field_type":"select",
+    "field_name":"fundsrc",
+    "attributes":{
+      "title":"Funding Source",
+      "options":"$nycha_fundsrc_attributes"
     }
+  },
+  "nycha_check_amount":{
+    "field_type":"rangefield",
+    "field_name":"nycha_check_amount",
+    "attributes":{
+      "title":"Check Amount",
+      "size":30,
+      "maxlength":32
+    }
+  },
+  "nycha_amount_spent":{
+    "field_type":"rangefield",
+    "field_name":"nycha_amount_spent",
+    "attributes":{
+      "title":"Amount Spent",
+      "size":30,
+      "maxlength":32
+    }
+  },
+  "approved_date":{
+    "field_type":"range",
+    "field_name":"approved_date",
+    "attributes":{
+      "title":"Approved Date",
+      "date_year_range":"$year_range"
+    }
+  }
 }

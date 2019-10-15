@@ -33,124 +33,20 @@ function checkbook_advanced_search_autocomplete_menu()
     $items = array();
 
     //Spending autocomplete paths
-//    $items['advanced-search/autocomplete/spending/payee'] = array(
-//        'page callback' => '_checkbook_advanced_search_autocomplete_spending_payee',
-//        'access callback' => TRUE,
-//        'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
-//        'type' => MENU_CALLBACK
-//    );
-//    $items['advanced-search/autocomplete/spending/contractno'] = array(
-//        'page callback' => '_checkbook_advanced_search_autocomplete_spending_contractno',
-//        'access callback' => TRUE,
-//        'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
-//        'type' => MENU_CALLBACK
-//    );
     $items['advanced-search/autocomplete/spending/department'] = array(
         'page callback' => '_checkbook_advanced_search_autocomplete_spending_department',
         'access callback' => TRUE,
         'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
         'type' => MENU_CALLBACK
     );
-//    $items['advanced-search/autocomplete/spending/capitalproject'] = array(
-//        'page callback' => '_checkbook_advanced_search_autocomplete_spending_capitalproject',
-//        'access callback' => TRUE,
-//        'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
-//        'type' => MENU_CALLBACK
-//    );
     $items['advanced-search/autocomplete/spending/expcategory'] = array(
         'page callback' => '_checkbook_advanced_search_autocomplete_spending_expcategory',
         'access callback' => TRUE,
         'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
         'type' => MENU_CALLBACK
     );
-//    $items['advanced-search/autocomplete/spending/expenseid'] = array(
-//        'page callback' => '_checkbook_advanced_search_autocomplete_spending_expenseid',
-//        'access callback' => TRUE,
-//        'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
-//        'type' => MENU_CALLBACK
-//    );
-//    $items['advanced-search/autocomplete/spending/entitycontractnum'] = array(
-//        'page callback' => '_checkbook_advanced_search_autocomplete_spending_entitycontractnum',
-//        'access callback' => TRUE,
-//        'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
-//        'type' => MENU_CALLBACK
-//    );
-//    $items['advanced-search/autocomplete/spending/commodityline'] = array(
-//        'page callback' => '_checkbook_advanced_search_autocomplete_spending_commodityline',
-//        'access callback' => TRUE,
-//        'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
-//        'type' => MENU_CALLBACK
-//    );
-//    $items['advanced-search/autocomplete/spending/budgetname'] = array(
-//        'page callback' => '_checkbook_advanced_search_autocomplete_spending_budgetname',
-//        'access callback' => TRUE,
-//        'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
-//        'type' => MENU_CALLBACK
-//    );
-    //payroll autocomplete paths
-//    $items['advanced-search/autocomplete/payroll/employee-name'] = array(
-//        'page callback' => '_checkbook_advanced_search_autocomplete_payroll_employee_name',
-//        'access callback' => TRUE,
-//        'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
-//        'type' => MENU_CALLBACK
-//    );
-    //Contracts autocomplete paths
-//    $items['advanced-search/autocomplete/contracts/vendor-name'] = array(
-//        'page callback' => '_checkbook_advanced_search_autocomplete_contracts_vendor_name',
-//        'access callback' => TRUE,
-//        'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
-//        'type' => MENU_CALLBACK
-//    );
-//    $items['advanced-search/autocomplete/contracts/contract-num'] = array(
-//        'page callback' => '_checkbook_advanced_search_autocomplete_contracts_contract_number',
-//        'access callback' => TRUE,
-//        'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
-//        'type' => MENU_CALLBACK
-//    );
-//    $items['advanced-search/autocomplete/contracts/apt-pin'] = array(
-//        'page callback' => '_checkbook_advanced_search_autocomplete_contracts_apt_pin',
-//        'access callback' => TRUE,
-//        'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
-//        'type' => MENU_CALLBACK
-//    );
-//    $items['advanced-search/autocomplete/contracts/pin'] = array(
-//        'page callback' => '_checkbook_advanced_search_autocomplete_contracts_pin',
-//        'access callback' => TRUE,
-//        'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
-//        'type' => MENU_CALLBACK
-//    );
-//    $items['advanced-search/autocomplete/contracts/entity_contract_number'] = array(
-//        'page callback' => '_checkbook_advanced_search_autocomplete_contracts_entitycontractnum',
-//        'access callback' => TRUE,
-//        'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
-//        'type' => MENU_CALLBACK
-//    );
-//    $items['advanced-search/autocomplete/contracts/commodity_line'] = array(
-//        'page callback' => '_checkbook_advanced_search_autocomplete_contracts_commodityline',
-//        'access callback' => TRUE,
-//        'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
-//        'type' => MENU_CALLBACK
-//    );
-//    $items['advanced-search/autocomplete/contracts/budget_name'] = array(
-//        'page callback' => '_checkbook_advanced_search_autocomplete_contracts_budgetname',
-//        'access callback' => TRUE,
-//        'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
-//        'type' => MENU_CALLBACK
-//    );
-    //NYCHA Contracts Auto-completes
-//    $items['advanced-search/autocomplete/nycha_contracts'] = array(
-//        'page callback' => '_checkbook_autocomplete_nycha_contracts',
-//        'access callback' => TRUE,
-//        'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
-//        'type' => MENU_CALLBACK
-//    );
+
     // Budget autocomplete paths
-//    $items['advanced-search/autocomplete/budget/agency'] = array(
-//        'page callback' => '_checkbook_advanced_search_autocomplete_budget_agency',
-//        'access callback' => TRUE,
-//        'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
-//        'type' => MENU_CALLBACK
-//    );
     $items['advanced-search/autocomplete/budget/department'] = array(
         'page callback' => '_checkbook_advanced_search_autocomplete_budget_department',
         'access callback' => TRUE,
@@ -193,19 +89,5 @@ function checkbook_advanced_search_autocomplete_menu()
         'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
         'type' => MENU_CALLBACK
     );
-
-    //Revenue autocomplete paths
-//    $items['advanced-search/autocomplete/revenue/revenueclass'] = array(
-//        'page callback' => '_checkbook_advanced_search_autocomplete_revenue_revenueclass',
-//        'access callback' => TRUE,
-//        'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
-//        'type' => MENU_CALLBACK
-//    );
-//    $items['advanced-search/autocomplete/revenue/revenuesource'] = array(
-//        'page callback' => '_checkbook_advanced_search_autocomplete_revenue_revenuesource',
-//        'access callback' => TRUE,
-//        'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
-//        'type' => MENU_CALLBACK
-//    );
     return $items;
 }
