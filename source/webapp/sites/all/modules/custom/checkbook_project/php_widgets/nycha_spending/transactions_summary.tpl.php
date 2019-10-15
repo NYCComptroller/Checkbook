@@ -166,11 +166,5 @@ if (strpos($widget, 'inv_') !== false) {
                         </div>
                       </div></div>";
 }
-else{
-  $amountsSummary = "<div class='dollar-amounts'>
-                        <div class='total-spending-amount'>{$totalSpendingAmount}
-                          <div class='amount-title'>{$aggregatedAmountTitle}</div>
-                        </div>
-                      </div></div>";
-}
+
 echo $titleSummary . $amountsSummary;
