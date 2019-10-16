@@ -1326,7 +1326,7 @@ function checkbook_datafeeds_budget_validate($form, &$form_state)
 function checkbook_datafeeds_contracts($form, &$form_state)
 {
   $data_type = $form_state['step_information']['type']['stored_values']['format'];
-  $data_source = $form_state['values']['datafeeds-contracts-domain-filter'] ?? 'checkbook';
+  $data_source = $form_state['values']['datafeeds-contracts-domain-filter'] ?? Datasource::CITYWIDE;
 
   //<editor-fold desc="Heading">
 
@@ -1373,7 +1373,7 @@ function checkbook_datafeeds_contracts($form, &$form_state)
     '#type' => 'select',
     '#title' => t('Expense<span class="form-required" title="This field is required.">*</span>'),
     '#multiple' => TRUE,
-    '#options' => _checkbook_datafeeds_contracts_column_options('checkbook', 'default', 'expense', $data_type),
+    '#options' => _checkbook_datafeeds_contracts_column_options(Datasource::CITYWIDE, 'default', 'expense', $data_type),
     '#id' => 'edit-column-select-expense',
     '#default_value' => !empty($form_state['values']['column_select_expense']) ? $form_state['values']['column_select_expense'] : '',
   );
@@ -1381,7 +1381,7 @@ function checkbook_datafeeds_contracts($form, &$form_state)
     '#type' => 'select',
     '#title' => t('Revenue<span class="form-required" title="This field is required.">*</span>'),
     '#multiple' => TRUE,
-    '#options' => _checkbook_datafeeds_contracts_column_options('checkbook', 'default', 'revenue', $data_type),
+    '#options' => _checkbook_datafeeds_contracts_column_options(Datasource::CITYWIDE, 'default', 'revenue', $data_type),
     '#id' => 'edit-column-select-revenue',
     '#default_value' => !empty($form_state['values']['column_select_revenue']) ? $form_state['values']['column_select_revenue'] : '',
   );
@@ -1389,7 +1389,7 @@ function checkbook_datafeeds_contracts($form, &$form_state)
     '#type' => 'select',
     '#title' => t('All<span class="form-required" title="This field is required.">*</span>'),
     '#multiple' => TRUE,
-    '#options' => _checkbook_datafeeds_contracts_column_options('checkbook', 'default', 'all', $data_type),
+    '#options' => _checkbook_datafeeds_contracts_column_options(Datasource::CITYWIDE, 'default', 'all', $data_type),
     '#id' => 'edit-column-select-all',
     '#default_value' => !empty($form_state['values']['column_select_all']) ? $form_state['values']['column_select_all'] : '',
   );
@@ -1397,7 +1397,7 @@ function checkbook_datafeeds_contracts($form, &$form_state)
     '#type' => 'select',
     '#title' => t('Pending<span class="form-required" title="This field is required.">*</span>'),
     '#multiple' => TRUE,
-    '#options' => _checkbook_datafeeds_contracts_column_options('checkbook', 'pending', 'pending', $data_type),
+    '#options' => _checkbook_datafeeds_contracts_column_options(Datasource::CITYWIDE, 'pending', 'pending', $data_type),
     '#id' => 'edit-column-select-pending',
     '#default_value' => !empty($form_state['values']['column_select_pending']) ? $form_state['values']['column_select_pending'] : '',
   );
@@ -1405,7 +1405,7 @@ function checkbook_datafeeds_contracts($form, &$form_state)
     '#type' => 'select',
     '#title' => t('All<span class="form-required" title="This field is required.">*</span>'),
     '#multiple' => TRUE,
-    '#options' => _checkbook_datafeeds_contracts_column_options('checkbook', 'pending', 'pending', $data_type),
+    '#options' => _checkbook_datafeeds_contracts_column_options(Datasource::CITYWIDE, 'pending', 'pending', $data_type),
     '#id' => 'edit-column-select-pending-all',
     '#default_value' => !empty($form_state['values']['column_select_pending_all']) ? $form_state['values']['column_select_pending_all'] : '',
   );
@@ -1904,10 +1904,10 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
 function checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $first_time_load)
 {
   $agency_options = _agency_options('checkbook_oge_nycha');
-  $resp_center_options = _checkbook_advanced_search_get_responsibility_centers('checkbook_nycha', true);
-  $contract_types = _checkbook_advanced_search_get_nycha_contract_types('checkbook_nycha', true);
-  $award_methods = checkbook_advanced_search_get_nycha_award_methods('checkbook_nycha', true);
-  $industries = checkbook_advanced_search_get_nycha_industries('checkbook_nycha', true);
+  $resp_center_options = _checkbook_advanced_search_get_responsibility_centers(Datasource::NYCHA, true);
+  $contract_types = _checkbook_advanced_search_get_nycha_contract_types(Datasource::NYCHA, true);
+  $award_methods = checkbook_advanced_search_get_nycha_award_methods(Datasource::NYCHA, true);
+  $industries = checkbook_advanced_search_get_nycha_industries(Datasource::NYCHA, true);
 
   $form['filter']['purchase_order_type'] = array(
     '#type' => 'select',
@@ -2839,6 +2839,13 @@ function checkbook_datafeeds_is_first_load($form_state, $data_source)
   return !$first_load;
 }
 
+/**
+ * @param $form_state
+ * @param $field_name
+ * @param $first_time_load
+ * @param string $default_val
+ * @return mixed|string
+ */
 function checkbook_datafeeds_filter_get_default_value($form_state, $field_name, $first_time_load, $default_val = '')
 {
   return !$first_time_load ? (isset($form_state['values'][$field_name]) ? $form_state['values'][$field_name] : $default_val) : $default_val;
@@ -3014,13 +3021,13 @@ function _agency_options($data_source = null, $json_output = false)
   try {
     $dataController = data_controller_get_instance();
     switch ($data_source) {
-      case 'checkbook_oge':
+      case Datasource::OGE:
         $data = $dataController->queryDataset("checkbook_oge:agency", array(
           'agency_code',
           'agency_name',
         ), array("is_display" => "Y", "is_oge_agency" => "Y"), 'agency_name');
         break;
-      case 'checkbook_nycha':
+      case Datasource::NYCHA:
         $data = $dataController->queryDataset("checkbook_nycha:agency", array(
           'agency_code',
           'agency_name',
@@ -3063,7 +3070,7 @@ function _checkbook_datafeeds_agency_options($data, $data_source = null, $json_o
 {
 
   //IE8 - handle drop down width issue
-  if ($data_source == 'checkbook') {
+  if ($data_source == Datasource::CITYWIDE) {
     $menu_options = array('Citywide (All Agencies)' => 'Citywide (All Agencies)');
     $json_menu_options[] = array('label' => 'Citywide (All Agencies)', 'value' => 'Citywide (All Agencies)', 'code' => '');
     $title = 'Citywide (All Agencies)';
@@ -3204,23 +3211,36 @@ function _funding_class_options()
   }
 }
 
-function _funding_source_options()
+/**
+ * @param string $data_source
+ * @return array|void
+ */
+function _funding_source_options($data_source = Datasource::NYCHA)
 {
-  try {
-    $dataController = data_controller_get_instance();
-    $data = $dataController->queryDataset('checkbook_nycha:ref_funding_source', array(
-      'funding_source_code',
-      'funding_source_description',
-    ), NULL, 'funding_source_description');
-    $results = array('All Funding Sources' => 'All Funding Sources');
-    foreach ($data as $row) {
-      $results[$row['funding_source_description'] . ' [' . $row['funding_source_code'] . ']'] = $row['funding_source_description'] . ' [' . $row['funding_source_code'] . ']';
-    }
-    return array_unique($results);
-  } catch (Exception $e) {
-    log_error("Error getting data from controller: \n" . $e->getMessage());
-    return;
+  $sources =  ['All Funding Sources'];
+  switch($data_source) {
+    case Datasource::NYCHA:
+//      $sources += _ckbk_solr_get_all_options($data_source, 'spending', 'funding_source_name');
+      try {
+        $dataController = data_controller_get_instance();
+        $data = $dataController->queryDataset('checkbook_nycha:ref_funding_source', array(
+          'funding_source_code',
+          'funding_source_description',
+        ), NULL, 'funding_source_description');
+        $results = [];
+        foreach ($data as $row) {
+          $results[$row['funding_source_description'] . ' [' . $row['funding_source_code'] . ']'] = $row['funding_source_description'] . ' [' . $row['funding_source_code'] . ']';
+        }
+        $sources += array_unique($results);
+      } catch (Exception $e) {
+        log_error("Error getting data from controller: \n" . $e->getMessage());
+        return;
+      }
+      break;
+    default:
+      break;
   }
+  return $sources;
 }
 
 /**
@@ -3230,12 +3250,12 @@ function _funding_source_options()
  * @return mixed
  *   Spending category codes and display names
  */
-function _expense_type_options($data_source = 'checkbook')
+function _expense_type_options($data_source = Datasource::CITYWIDE)
 {
   try {
     $dataController = data_controller_get_instance();
     switch ($data_source) {
-      case 'checkbook_oge':
+      case Datasource::OGE:
         $data = $dataController->queryDataset('checkbook_oge:spending_category', array(
           'spending_category_code',
           'display_name',
@@ -3496,7 +3516,7 @@ function _budget_expcat_options($year, $agency, $dept)
 function _dept_options($agency, $sc, $year, $data_source = null)
 {
   switch ($data_source) {
-    case 'checkbook_oge':
+    case Datasource::OGE:
       $agency = emptyToZero($agency);
       $sc = emptyToZero($sc);
       if ($year && startsWith($year, 'F')) {
@@ -3585,7 +3605,7 @@ function _checkbook_datafeeds_dept_options($data, $data_source = null)
 function _expcat_options($agency, $dept, $sc, $year, $data_source = null)
 {
   switch ($data_source) {
-    case 'checkbook_oge':
+    case Datasource::OGE:
       $agency = emptyToZero($agency);
       $dept = emptyToZero($dept);
       $sc = emptyToZero($sc);
@@ -3606,7 +3626,7 @@ function _expcat_options($agency, $dept, $sc, $year, $data_source = null)
         $deptstring = "AND disbursement_line_item_details.department_code = '" . $dept . "' ";
       }
       $query = "SELECT DISTINCT expenditure_object_name|| '[' || expenditure_object_code || ']' expenditure_object_code FROM disbursement_line_item_details, ref_spending_category WHERE disbursement_line_item_details.spending_category_id = ref_spending_category.spending_category_id " . $yearstring . $agencystring . $scstring . $deptstring . "ORDER BY expenditure_object_code ASC";
-      $data = _checkbook_project_execute_sql_by_data_source($query, 'checkbook_oge');
+      $data = _checkbook_project_execute_sql_by_data_source($query, Datasource::OGE);
       break;
 
     default:
@@ -3689,21 +3709,29 @@ function _mwbe_category_options()
 
 /**
  * Get the industry type name and id using the data controller
+ * @param string $data_source
+ * @return array|void
  */
-function _industry_options()
+function _industry_options($data_source = Datasource::CITYWIDE)
 {
-  try {
-    $dataController = data_controller_get_instance();
-    $industry_types = $dataController->queryDataset('checkbook:industry_type', array('industry_type_id', 'industry_type_name'), NULL, 'industry_type_name', 0, 10, NULL);
-    $industry_types_val = array('Select Industry');
-    foreach ($industry_types as $industry_type) {
-      $industry_types_val[$industry_type['industry_type_name'] . ' [' . $industry_type['industry_type_id'] . ']'] = $industry_type['industry_type_name'];
-    }
-    return $industry_types_val;
-  } catch (Exception $e) {
-    log_error("Error getting data from controller: \n" . $e->getMessage());
-    return;
+  $industries =  ['Select Industry'];
+  switch($data_source){
+    case Datasource::NYCHA:
+      $industries += _ckbk_solr_get_all_options($data_source,'spending', 'industry_type_name');
+      break;
+    default:
+      try {
+        $dataController = data_controller_get_instance();
+        $industry_types = $dataController->queryDataset('checkbook:industry_type', array('industry_type_id', 'industry_type_name'), NULL, 'industry_type_name', 0, 10, NULL);
+        foreach ($industry_types as $industry_type) {
+          $industries[$industry_type['industry_type_name'] . ' [' . $industry_type['industry_type_id'] . ']'] = $industry_type['industry_type_name'];
+        }
+      } catch (Exception $e) {
+        log_error("Error getting data from controller: \n" . $e->getMessage());
+        return;
+      }
   }
+  return $industries;
 }
 
 /**
@@ -3806,7 +3834,7 @@ function checkbook_datafeeds_confirmation_queue_submit($form, &$form_state)
   $domain = strtolower($criteria['global']['type_of_data']);
   //Contracts Only
   if ($domain == 'contracts') {
-    $data_source = 'checkbook';
+    $data_source = Datasource::CITYWIDE;
     $category = $criteria['value']['category'];
     $status = $criteria['value']['status'];
     $year = $criteria['value']['fiscal_year'];
@@ -4187,6 +4215,10 @@ function checkbook_datafeeds_format_columns($domain = null, $data_source = null)
 /*
  * Function to hook into link to download the zip file for the data feeds from the server.
  * Used to track number of users that have downloaded the file.
+ */
+/**
+ * @param $token
+ * @return null
  */
 function checkbook_datafeeds_download_zip_ajax($token)
 {
