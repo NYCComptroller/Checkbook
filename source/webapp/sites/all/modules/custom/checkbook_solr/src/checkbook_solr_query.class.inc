@@ -98,6 +98,12 @@ class CheckbookSolrQuery
   private $facetLimit = 30;
 
   /**
+   * @var string
+   * count|index
+   */
+  private $facetSort = 'count';
+
+  /**
    * @return string
    */
   public function __toString()
@@ -186,6 +192,16 @@ class CheckbookSolrQuery
   public function setPage(int $page): CheckbookSolrQuery
   {
     $this->page = $page;
+    return $this;
+  }
+
+  /**
+   * @param string $facetSort
+   * @return CheckbookSolrQuery
+   */
+  public function setFacetSort(string $facetSort): CheckbookSolrQuery
+  {
+    $this->facetSort = $facetSort;
     return $this;
   }
 
@@ -280,7 +296,7 @@ class CheckbookSolrQuery
       $facets = '&' . http_build_query([
           'facet' => 'true',
           'facet.mincount' => 1,
-          'facet.sort' => 'count',
+          'facet.sort' => $this->facetSort,
           'facet.limit' => $this->facetLimit
         ]);
       if ($this->facets) {

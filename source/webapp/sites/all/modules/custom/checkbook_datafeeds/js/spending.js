@@ -98,7 +98,7 @@
 
   //Load Agency Drop-Down
   $.fn.reloadAgencies = function (dataSource) {
-    $('#edit-dept').addClass('loading');
+    $('#edit-agency').addClass('loading');
     $.ajax({
       url: '/datafeeds/spending/agency/' + dataSource + '/json'
       , success: function (data) {
@@ -111,6 +111,8 @@
           }
         }
         $('#edit-agency').html(html).trigger('change');
+      }
+      , complete: function () {
         $('#edit-agency').removeClass('loading');
       }
     });
@@ -152,6 +154,8 @@
           if (dept_hidden) {
             $('#edit-dept').val(dept_hidden);
           }
+        }
+        , complete: function () {
           $('#edit-dept').removeClass('loading');
         }
       });
@@ -165,8 +169,10 @@
   $.fn.reloadExpenseCategories = function reloadExpenseCategories() {
     let agency = $('#edit-agency').val();
     let expense_category_hidden = false;
+    let data_source = $('input[name="datafeeds-spending-domain-filter"]:checked').val();
 
-    if ($.inArray(agency, ["", null, 'Select One', 'Citywide (All Agencies)']) === -1) {
+    if ($.inArray(agency, ["", null, 'Select One', 'Citywide (All Agencies)']) === -1 && 'checkbook_nycha' !== data_source)
+    {
       $('#edit-expense-category').addClass('loading');
       let year = 0;
       if ($('input:radio[name=date_filter]:checked').val() === 0) {
@@ -175,7 +181,7 @@
       agency = emptyToZero(agency);
       const dept = encodeURIComponent($('input:hidden[name="dept_hidden"]').val());
       const spending_cat = emptyToZero($('#edit-expense-type').val());
-      let data_source = $('input[name="datafeeds-spending-domain-filter"]:checked').val();
+
       expense_category_hidden = $('input:hidden[name="expense_category_hidden"]').val();
 
       $.ajax({
@@ -194,6 +200,8 @@
           if (expense_category_hidden) {
             $('#edit-expense-category').val(expense_category_hidden);
           }
+        }
+        , complete: function () {
           $('#edit-expense-category').removeClass('loading');
         }
       });

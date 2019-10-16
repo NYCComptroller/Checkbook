@@ -58,7 +58,7 @@
  * @return array
  *   Results from Solr
  */
-function _get_contracts_datafeeds_autocomplete_results($facet, $query, $status = NULL, $category = NULL, $contract_type = NULL, $agency = NULL, $award_method = NULL, $year = NULL, $mwbe_category = NULL, $industry = NULL, $includes_sub_vendors = null, $sub_vendor_status = null, $data_source = 'checkbook')
+function _get_contracts_datafeeds_autocomplete_results($facet, $query, $status = NULL, $category = NULL, $contract_type = NULL, $agency = NULL, $award_method = NULL, $year = NULL, $mwbe_category = NULL, $industry = NULL, $includes_sub_vendors = null, $sub_vendor_status = null, $data_source = Datasource::CITYWIDE)
 {
   if ($status == 'pending') {
     $query .= '&fq=contract_status:pending';
@@ -90,8 +90,8 @@ function _get_contracts_datafeeds_autocomplete_results($facet, $query, $status =
   }
   if ($agency) {
     switch ($data_source) {
-      case 'checkbook_oge':
-        $agency_id = _get_contracts_datafeeds_autocomplete_agency_id($agency, 'checkbook_oge');
+      case Datasource::OGE:
+        $agency_id = _get_contracts_datafeeds_autocomplete_agency_id($agency, Datasource::OGE);
         $query .= '&fq=oge_agency_id:' . $agency_id;
         break;
 
@@ -148,17 +148,17 @@ function _get_contracts_datafeeds_autocomplete_results($facet, $query, $status =
  * @param string $data_source
  *   Data source (checkbook, checkbook_oge)
  */
-function _checkbook_autocomplete_contracts_vendor($status, $category, $contract_type, $agency, $award_method, $year, $mwbe_category, $industry, $includes_sub_vendors, $sub_vendor_status, $data_source = 'checkbook')
+function _checkbook_autocomplete_contracts_vendor($status, $category, $contract_type, $agency, $award_method, $year, $mwbe_category, $industry, $includes_sub_vendors, $sub_vendor_status, $data_source = Datasource::CITYWIDE)
 {
   $search_term = _get_autocomplete_search_term();
   if (!empty($search_term)) {
     switch ($data_source) {
-      case 'checkbook':
+      case Datasource::CITYWIDE:
         $query = 'select/?q=vendor_name_code_autocomplete:' . $search_term . '&facet=true&facet.field=vendor_name_code&fq=domain:contracts&wt=phps&facet.limit=10';
         $query .= '&fq=-agency_type:oge';
         $matches = _get_contracts_datafeeds_autocomplete_results('vendor_name_code', $query, $status, $category, $contract_type, $agency, $award_method, $year, $mwbe_category, $industry, $includes_sub_vendors, $sub_vendor_status, $data_source);
         break;
-      case 'checkbook_oge':
+      case Datasource::OGE:
         $query = 'select/?q=vendor_name_autocomplete:' . $search_term . '&facet=true&facet.field=vendor_name&fq=domain:contracts&wt=phps&facet.limit=10';
         $query .= '&fq=agency_type:oge';
         $matches = _get_contracts_datafeeds_autocomplete_results('vendor_name', $query, $status, $category, $contract_type, $agency, $award_method, $year, $mwbe_category, $industry, null, null, $data_source);
@@ -194,12 +194,12 @@ function _checkbook_autocomplete_contracts_vendor($status, $category, $contract_
  * @param string $data_source
  *   Data source (checkbook, checkbook_oge)
  */
-function _checkbook_autocomplete_contracts_contract_number($status, $category, $contract_type, $agency, $award_method, $year, $mwbe_category, $industry, $includes_sub_vendors, $sub_vendor_status, $data_source = 'checkbook')
+function _checkbook_autocomplete_contracts_contract_number($status, $category, $contract_type, $agency, $award_method, $year, $mwbe_category, $industry, $includes_sub_vendors, $sub_vendor_status, $data_source = Datasource::CITYWIDE)
 {
   $search_term = _get_autocomplete_search_term();
   if (!empty($search_term)) {
     $query = 'select/?q=contract_number:' . $search_term . '&facet=true&facet.field=contract_number&fq=domain:contracts&wt=phps&facet.limit=10';
-    $query .= $data_source == 'checkbook_oge' ? '&fq=agency_type:oge' : '&fq=-agency_type:oge';
+    $query .= $data_source == Datasource::OGE ? '&fq=agency_type:oge' : '&fq=-agency_type:oge';
     $matches = _get_contracts_datafeeds_autocomplete_results('contract_number', $query, $status, $category, $contract_type, $agency, $award_method, $year, $mwbe_category, $industry, $includes_sub_vendors, $sub_vendor_status, $data_source);
     drupal_json_output($matches);
   }
@@ -231,13 +231,13 @@ function _checkbook_autocomplete_contracts_contract_number($status, $category, $
  * @param string $data_source
  *   Data source (checkbook, checkbook_oge)
  */
-function _checkbook_autocomplete_contracts_apt_pin($status, $category, $contract_type, $agency, $award_method, $year, $mwbe_category, $industry, $includes_sub_vendors, $sub_vendor_status, $data_source = 'checkbook')
+function _checkbook_autocomplete_contracts_apt_pin($status, $category, $contract_type, $agency, $award_method, $year, $mwbe_category, $industry, $includes_sub_vendors, $sub_vendor_status, $data_source = Datasource::CITYWIDE)
 {
   $search_term = _get_autocomplete_search_term();
   if (!empty($search_term)) {
-    $apt_pin = $data_source == 'checkbook_oge' ? 'apt_pin' : 'prime_apt_pin';
+    $apt_pin = $data_source == Datasource::OGE ? 'apt_pin' : 'prime_apt_pin';
     $query = 'select/?q=' . $apt_pin . ':' . $search_term . '&facet=true&facet.field=' . $apt_pin . '&fq=domain:contracts&wt=phps&facet.limit=10';
-    $query .= $data_source == 'checkbook_oge' ? '&fq=agency_type:oge' : '&fq=-agency_type:oge';
+    $query .= $data_source == Datasource::OGE ? '&fq=agency_type:oge' : '&fq=-agency_type:oge';
     $matches = _get_contracts_datafeeds_autocomplete_results($apt_pin, $query, $status, $category, $contract_type, $agency, $award_method, $year, $mwbe_category, $industry, $includes_sub_vendors, $sub_vendor_status, $data_source);
     drupal_json_output($matches);
   }
@@ -269,13 +269,13 @@ function _checkbook_autocomplete_contracts_apt_pin($status, $category, $contract
  * @param string $data_source
  *   Data source (checkbook, checkbook_oge)
  */
-function _checkbook_autocomplete_contracts_pin($status, $category, $contract_type, $agency, $award_method, $year, $mwbe_category, $industry, $includes_sub_vendors, $sub_vendor_status, $data_source = 'checkbook')
+function _checkbook_autocomplete_contracts_pin($status, $category, $contract_type, $agency, $award_method, $year, $mwbe_category, $industry, $includes_sub_vendors, $sub_vendor_status, $data_source = Datasource::CITYWIDE)
 {
   $search_term = _get_autocomplete_search_term();
   if (!empty($search_term)) {
-    $pin = $data_source == 'checkbook_oge' ? 'pin' : 'prime_pin';
+    $pin = $data_source == Datasource::OGE ? 'pin' : 'prime_pin';
     $query = 'select/?q=' . $pin . ':' . $search_term . '&facet=true&facet.field=' . $pin . '&fq=domain:contracts&wt=phps&facet.limit=10';
-    $query .= $data_source == 'checkbook_oge' ? '&fq=agency_type:oge' : '&fq=-agency_type:oge';
+    $query .= $data_source == Datasource::OGE ? '&fq=agency_type:oge' : '&fq=-agency_type:oge';
     $matches = _get_contracts_datafeeds_autocomplete_results($pin, $query, $status, $category, $contract_type, $agency, $award_method, $year, $mwbe_category, $industry, $includes_sub_vendors, $sub_vendor_status, $data_source);
     drupal_json_output($matches);
   }
@@ -307,13 +307,13 @@ function _checkbook_autocomplete_contracts_pin($status, $category, $contract_typ
  * @param string $data_source
  *   Data source (checkbook, checkbook_oge)
  */
-function _checkbook_autocomplete_contracts_entitycontractnum($status, $category, $contract_type, $agency, $award_method, $year, $mwbe_category, $industry, $includes_sub_vendors, $sub_vendor_status, $data_source = 'checkbook')
+function _checkbook_autocomplete_contracts_entitycontractnum($status, $category, $contract_type, $agency, $award_method, $year, $mwbe_category, $industry, $includes_sub_vendors, $sub_vendor_status, $data_source = Datasource::CITYWIDE)
 {
   $search_term = _get_autocomplete_search_term();
   $facet_prefix = _get_autocomplete_search_term_facet_prefix();
   if (!empty($search_term)) {
     $query = 'select/?q=contract_entity_contract_number:' . $search_term . '&facet=true&facet.field=contract_entity_contract_number&facet.prefix=' . $facet_prefix . '&fq=domain:contracts&facet.limit=10&wt=phps';
-    $query .= $data_source == 'checkbook_oge' ? '&fq=agency_type:oge' : '&fq=-agency_type:oge';
+    $query .= $data_source == Datasource::OGE ? '&fq=agency_type:oge' : '&fq=-agency_type:oge';
     $matches = _get_contracts_datafeeds_autocomplete_results('contract_entity_contract_number', $query, $status, $category, $contract_type, $agency, $award_method, $year, $mwbe_category, $industry, $includes_sub_vendors, $sub_vendor_status, $data_source);
     drupal_json_output($matches);
   }
@@ -345,13 +345,13 @@ function _checkbook_autocomplete_contracts_entitycontractnum($status, $category,
  * @param string $data_source
  *   Data source (checkbook, checkbook_oge)
  */
-function _checkbook_autocomplete_contracts_commodityline($status, $category, $contract_type, $agency, $award_method, $year, $mwbe_category, $industry, $includes_sub_vendors, $sub_vendor_status, $data_source = 'checkbook')
+function _checkbook_autocomplete_contracts_commodityline($status, $category, $contract_type, $agency, $award_method, $year, $mwbe_category, $industry, $includes_sub_vendors, $sub_vendor_status, $data_source = Datasource::CITYWIDE)
 {
   $search_term = _get_autocomplete_search_term();
   $facet_prefix = _get_autocomplete_search_term_facet_prefix();
   if (!empty($search_term)) {
     $query = 'select/?q=contract_commodity_line:' . $search_term . '&facet=true&facet.field=contract_commodity_line&facet.prefix=' . $facet_prefix . '&fq=domain:contracts&facet.limit=10&wt=phps';
-    $query .= $data_source == 'checkbook_oge' ? '&fq=agency_type:oge' : '&fq=-agency_type:oge';
+    $query .= $data_source == Datasource::OGE ? '&fq=agency_type:oge' : '&fq=-agency_type:oge';
     $matches = _get_contracts_datafeeds_autocomplete_results('contract_commodity_line', $query, $status, $category, $contract_type, $agency, $award_method, $year, $mwbe_category, $industry, $includes_sub_vendors, $sub_vendor_status, $data_source);
     drupal_json_output($matches);
   }
@@ -383,12 +383,12 @@ function _checkbook_autocomplete_contracts_commodityline($status, $category, $co
  * @param string $data_source
  *   Data source (checkbook, checkbook_oge)
  */
-function _checkbook_autocomplete_contracts_budgetname($status, $category, $contract_type, $agency, $award_method, $year, $mwbe_category, $industry, $includes_sub_vendors, $sub_vendor_status, $data_source = 'checkbook')
+function _checkbook_autocomplete_contracts_budgetname($status, $category, $contract_type, $agency, $award_method, $year, $mwbe_category, $industry, $includes_sub_vendors, $sub_vendor_status, $data_source = Datasource::CITYWIDE)
 {
   $search_term = _get_autocomplete_search_term();
   if (!empty($search_term)) {
     $query = 'select/?q=contract_budget_name_autocomplete:' . $search_term . '&q.op=AND&rows=0&facet=true&facet.field=contract_budget_name&facet.mincount=1&facet.limit=10&wt=phps';
-    $query .= $data_source == 'checkbook_oge' ? '&fq=agency_type:oge' : '&fq=-agency_type:oge';
+    $query .= $data_source == Datasource::OGE ? '&fq=agency_type:oge' : '&fq=-agency_type:oge';
     $matches = _get_contracts_datafeeds_autocomplete_results('contract_budget_name', $query, $status, $category, $contract_type, $agency, $award_method, $year, $mwbe_category, $industry, $includes_sub_vendors, $sub_vendor_status, $data_source);
     drupal_json_output($matches);
   }
@@ -470,7 +470,7 @@ function _checkbook_autocomplete_datafeeds_nycha_contracts($solr_field, $purchas
  *   Data source (checkbook, checkbook_oge)
  * @return array
  */
-function _get_spending_datafeeds_autocomplete_results($facet, $query, $year = NULL, $agency = NULL, $expense_category = NULL, $dept = NULL, $exptype = NULL, $mwbe_category = NULL, $industry = NULL, $data_source = 'checkbook')
+function _get_spending_datafeeds_autocomplete_results($facet, $query, $year = NULL, $agency = NULL, $expense_category = NULL, $dept = NULL, $exptype = NULL, $mwbe_category = NULL, $industry = NULL, $data_source = Datasource::CITYWIDE)
 {
   if ($year) {
     $query .= _checkbook_autocomplete_get_start_end_dates($year, 'spending');
@@ -498,6 +498,14 @@ function _get_spending_datafeeds_autocomplete_results($facet, $query, $year = NU
   return $matches;
 }
 
+function _ckbk_solr_get_all_options($data_source, $domain, $facet)
+{
+  $query = new CheckbookSolrQuery($data_source);
+  $q = 'select/?';
+  $q .= $query->addFacet($facet)->setFacetSort('index')->buildQuery();
+  return _checkbook_autocomplete_solr_results($data_source, $q, $facet);
+}
+
 /**
  * Get autocomplete results for Payee from Solr.
  *
@@ -518,7 +526,7 @@ function _get_spending_datafeeds_autocomplete_results($facet, $query, $year = NU
  * @param string $data_source
  *   Data source (checkbook, checkbook_oge)
  */
-function _checkbook_autocomplete_spending_payee($year, $agency, $expense_category, $dept, $exptype = 0, $mwbe_category = 0, $industry, $data_source = 'checkbook')
+function _checkbook_autocomplete_spending_payee($year, $agency, $expense_category, $dept, $exptype = 0, $mwbe_category = 0, $industry, $data_source = Datasource::CITYWIDE)
 {
   $search_term = _get_autocomplete_search_term();
   $dept = _emptyToZero(urldecode($dept));
@@ -526,12 +534,12 @@ function _checkbook_autocomplete_spending_payee($year, $agency, $expense_categor
 
   if (!empty($search_term)) {
     switch ($data_source) {
-      case 'checkbook':
-                $query = 'select/?q=vendor_name_code_autocomplete:' . $search_term . '&facet=true&facet.field=vendor_name_code&fq=domain:spending&wt=phps&facet.limit=10';
+      case Datasource::CITYWIDE:
+        $query = 'select/?q=vendor_name_code_autocomplete:' . $search_term . '&facet=true&facet.field=vendor_name_code&fq=domain:spending&wt=phps&facet.limit=10';
         $query .= '&fq=-agency_type:oge';
-                $matches = _get_spending_datafeeds_autocomplete_results('vendor_name_code', $query, $year, $agency, $expense_category, $dept, $exptype, $mwbe_category, $industry, $data_source);
+        $matches = _get_spending_datafeeds_autocomplete_results('vendor_name_code', $query, $year, $agency, $expense_category, $dept, $exptype, $mwbe_category, $industry, $data_source);
         break;
-      case 'checkbook_oge':
+      case Datasource::OGE:
         $query = 'select/?q=vendor_name_autocomplete:' . $search_term . '&facet=true&facet.field=vendor_name&fq=domain:spending&wt=phps&facet.limit=10';
         $query .= '&fq=agency_type:oge';
         $matches = _get_spending_datafeeds_autocomplete_results('vendor_name', $query, $year, $agency, $expense_category, $dept, $exptype, $mwbe_category, $industry, $data_source);
@@ -561,14 +569,14 @@ function _checkbook_autocomplete_spending_payee($year, $agency, $expense_categor
  * @param string $data_source
  *   Data source (checkbook, checkbook_oge)
  */
-function _checkbook_autocomplete_spending_contractno($year, $agency, $expense_category, $dept, $exptype = 0, $mwbe_category = 0, $industry, $data_source = 'checkbook')
+function _checkbook_autocomplete_spending_contractno($year, $agency, $expense_category, $dept, $exptype = 0, $mwbe_category = 0, $industry, $data_source = Datasource::CITYWIDE)
 {
   $search_term = _get_autocomplete_search_term();
   $dept = _emptyToZero(urldecode($dept));
   $expense_category = _emptyToZero(urldecode($expense_category));
   if (!empty($search_term)) {
     $query = 'select/?q=contract_number:' . $search_term . '&facet=true&facet.field=contract_number&fq=domain:spending&facet.limit=10&wt=phps';
-    $query .= $data_source == 'checkbook_oge' ? '&fq=agency_type:oge' : '&fq=-agency_type:oge';
+    $query .= $data_source == Datasource::OGE ? '&fq=agency_type:oge' : '&fq=-agency_type:oge';
     $matches = _get_spending_datafeeds_autocomplete_results('contract_number', $query, $year, $agency, $expense_category, $dept, $exptype, $mwbe_category, $industry, $data_source);
     drupal_json_output($matches);
   }
@@ -594,14 +602,14 @@ function _checkbook_autocomplete_spending_contractno($year, $agency, $expense_ca
  * @param string $data_source
  *   Data source (checkbook, checkbook_oge)
  */
-function _checkbook_autocomplete_spending_capitalproject($year, $agency, $expense_category, $dept, $exptype = 0, $mwbe_category = 0, $industry, $data_source = 'checkbook')
+function _checkbook_autocomplete_spending_capitalproject($year, $agency, $expense_category, $dept, $exptype = 0, $mwbe_category = 0, $industry, $data_source = Datasource::CITYWIDE)
 {
   $search_term = _get_autocomplete_search_term();
   $dept = _emptyToZero(urldecode($dept));
   $expense_category = _emptyToZero(urldecode($expense_category));
   if (!empty($search_term)) {
     $query = 'select/?q=reporting_code_autocomplete:' . $search_term . '&facet=true&facet.field=reporting_code&fq=domain:spending&facet.limit=10&wt=phps';
-    if ($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
+    if ($data_source == Datasource::OGE) $query .= '&fq=agency_type:oge';
     $matches = _get_spending_datafeeds_autocomplete_results('reporting_code', $query, $year, $agency, $expense_category, $dept, $exptype, $mwbe_category, $industry, $data_source);
     drupal_json_output($matches);
   }
@@ -627,14 +635,14 @@ function _checkbook_autocomplete_spending_capitalproject($year, $agency, $expens
  * @param string $data_source
  *   Data source (checkbook, checkbook_oge)
  */
-function _checkbook_autocomplete_spending_documentid($year, $agency, $expense_category, $dept, $exptype = 0, $mwbe_category = 0, $industry, $data_source = 'checkbook')
+function _checkbook_autocomplete_spending_documentid($year, $agency, $expense_category, $dept, $exptype = 0, $mwbe_category = 0, $industry, $data_source = Datasource::CITYWIDE)
 {
   $search_term = _get_autocomplete_search_term();
   $dept = _emptyToZero(urldecode($dept));
   $expense_category = _emptyToZero(urldecode($expense_category));
   if (!empty($search_term)) {
     $query = 'select/?q=expense_id:' . $search_term . '&facet=true&facet.field=expense_id&fq=domain:spending&facet.limit=10&wt=phps';
-    if ($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
+    if ($data_source == Datasource::OGE) $query .= '&fq=agency_type:oge';
     $matches = _get_spending_datafeeds_autocomplete_results('expense_id', $query, $year, $agency,
       $expense_category, $dept, $exptype, $mwbe_category, $industry, $data_source);
     drupal_json_output($matches);
@@ -661,14 +669,14 @@ function _checkbook_autocomplete_spending_documentid($year, $agency, $expense_ca
  * @param string $data_source
  *   Data source (checkbook, checkbook_oge)
  */
-function _checkbook_autocomplete_spending_entitycontractnum($year, $agency, $expense_category, $dept, $exptype = 0, $mwbe_category = 0, $industry, $data_source = 'checkbook')
+function _checkbook_autocomplete_spending_entitycontractnum($year, $agency, $expense_category, $dept, $exptype = 0, $mwbe_category = 0, $industry, $data_source = Datasource::CITYWIDE)
 {
   $search_term = _get_autocomplete_search_term();
   $dept = _emptyToZero(urldecode($dept));
   $expense_category = _emptyToZero(urldecode($expense_category));
   if (!empty($search_term)) {
     $query = 'select/?q=spending_entity_contract_number:' . $search_term . '&facet=true&facet.field=spending_entity_contract_number&fq=domain:spending&facet.limit=10&wt=phps';
-    if ($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
+    if ($data_source == Datasource::OGE) $query .= '&fq=agency_type:oge';
     $matches = _get_spending_datafeeds_autocomplete_results('spending_entity_contract_number', $query, $year, $agency, $expense_category, $dept, $exptype, $mwbe_category, $industry, $data_source);
     drupal_json_output($matches);
   }
@@ -694,14 +702,14 @@ function _checkbook_autocomplete_spending_entitycontractnum($year, $agency, $exp
  * @param string $data_source
  *   Data source (checkbook, checkbook_oge)
  */
-function _checkbook_autocomplete_spending_commodityline($year, $agency, $expense_category, $dept, $exptype = 0, $mwbe_category = 0, $industry, $data_source = 'checkbook')
+function _checkbook_autocomplete_spending_commodityline($year, $agency, $expense_category, $dept, $exptype = 0, $mwbe_category = 0, $industry, $data_source = Datasource::CITYWIDE)
 {
   $search_term = _get_autocomplete_search_term();
   $dept = _emptyToZero(urldecode($dept));
   $expense_category = _emptyToZero(urldecode($expense_category));
   if (!empty($search_term)) {
     $query = 'select/?q=spending_commodity_line:' . $search_term . '&facet=true&facet.field=spending_commodity_line&fq=domain:spending&facet.limit=10&wt=phps';
-    if ($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
+    if ($data_source == Datasource::OGE) $query .= '&fq=agency_type:oge';
     $matches = _get_spending_datafeeds_autocomplete_results('spending_commodity_line', $query, $year, $agency, $expense_category, $dept, $exptype, $mwbe_category, $industry, $data_source);
     drupal_json_output($matches);
   }
@@ -727,14 +735,14 @@ function _checkbook_autocomplete_spending_commodityline($year, $agency, $expense
  * @param string $data_source
  *   Data source (checkbook, checkbook_oge)
  */
-function _checkbook_autocomplete_spending_budgetname($year, $agency, $expense_category, $dept, $exptype = 0, $mwbe_category = 0, $industry, $data_source = 'checkbook')
+function _checkbook_autocomplete_spending_budgetname($year, $agency, $expense_category, $dept, $exptype = 0, $mwbe_category = 0, $industry, $data_source = Datasource::CITYWIDE)
 {
   $search_term = _get_autocomplete_search_term();
   $dept = _emptyToZero(urldecode($dept));
   $expense_category = _emptyToZero(urldecode($expense_category));
   if (!empty($search_term)) {
     $query = 'select/?q=spending_budget_name_autocomplete:' . $search_term . '&facet=true&facet.field=spending_budget_name&fq=domain:spending&facet.limit=10&wt=phps';
-    if ($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
+    if ($data_source == Datasource::OGE) $query .= '&fq=agency_type:oge';
     $matches = _get_spending_datafeeds_autocomplete_results('spending_budget_name', $query, $year, $agency, $expense_category, $dept, $exptype, $mwbe_category, $industry, $data_source);
     drupal_json_output($matches);
   }
@@ -746,9 +754,9 @@ function _checkbook_autocomplete_spending_budgetname($year, $agency, $expense_ca
  * @param $spending_cat
  * @param string $data_source
  */
-function _checkbook_autocomplete_spending_dept($year, $agency, $spending_cat, $data_source = 'checkbook')
+function _checkbook_autocomplete_spending_dept($year, $agency, $spending_cat, $data_source = Datasource::CITYWIDE)
 {
-  if(!$agency){
+  if (!$agency) {
     return;
   }
 //  $search_term = _get_autocomplete_search_term();
@@ -767,7 +775,7 @@ function _checkbook_autocomplete_spending_dept($year, $agency, $spending_cat, $d
  * @param $year
  * @param string $data_source
  */
-function _checkbook_autocomplete_spending_expcategory($agency, $dept, $spending_cat, $year, $data_source = 'checkbook')
+function _checkbook_autocomplete_spending_expcategory($agency, $dept, $spending_cat, $year, $data_source = Datasource::CITYWIDE)
 {
   $year_string = $agency_string = $dept_string = null;
   $dept = _emptyToZero(urldecode($dept));
@@ -1483,12 +1491,12 @@ function _getCodeFromName($string)
  * @return array
  *   Spending category id from name
  */
-function _get_spending_datafeeds_autocomplete_expense_type_options($exptype, $data_source = 'checkbook')
+function _get_spending_datafeeds_autocomplete_expense_type_options($exptype, $data_source = Datasource::CITYWIDE)
 {
   try {
     $dataController = data_controller_get_instance();
     switch ($data_source) {
-      case 'checkbook_oge':
+      case Datasource::OGE:
         $results = $dataController->queryDataset('checkbook_oge:spending_category', array('spending_category_id'), array('spending_category_code' => $exptype));
         break;
 
@@ -1514,11 +1522,11 @@ function _get_spending_datafeeds_autocomplete_expense_type_options($exptype, $da
  * @return array
  *   Agency Ids
  */
-function _get_contracts_datafeeds_autocomplete_agency_id($agency_code, $data_source = 'checkbook')
+function _get_contracts_datafeeds_autocomplete_agency_id($agency_code, $data_source = Datasource::CITYWIDE)
 {
   try {
 
-    $parameters = $data_source == 'checkbook_oge' ? ['agency_code' => $agency_code, "is_oge_agency" => "Y"] : ['agency_code' => $agency_code];
+    $parameters = $data_source == Datasource::OGE ? ['agency_code' => $agency_code, "is_oge_agency" => "Y"] : ['agency_code' => $agency_code];
     $dataController = data_controller_get_instance();
     $results = $dataController->queryDataset($data_source . ':agency', ['agency_id'], $parameters);
 
