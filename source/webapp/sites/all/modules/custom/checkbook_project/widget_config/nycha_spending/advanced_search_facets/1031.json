@@ -1,0 +1,27 @@
+{
+  "widgetType":"phpparser",
+  "parentNid":1012,
+  "no_results_content":"No Results Found",
+  "limit":100,
+  "startWith":0,
+  "maxSelect":5,
+  "showAllRecords":true,
+  "allowFacetDeselect":true,
+  "columns":["vendor_name.vendor_name","txcount"],
+  "orderBy":"-txcount",
+  "facetPager":true,
+  "filterName":"Vendor",
+  "urlParameterName":"vendornm_exact",
+  "urlParameterNameType":"eqtext",
+  "autocompleteParamName":"vendor_auto",
+  "autocompleteID":"fVendorName",
+  "autocompleteField":"vendor_name.vendor_name",
+  "adjustParameters":"
+  if(function_exists('_checkbook_project_applyParameterFilters')){
+  $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+}
+$adjustedParameters['vendor_name.vendor_name'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+return $adjustedParameters;
+",
+"template":"individual_filter"
+}

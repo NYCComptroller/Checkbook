@@ -4,13 +4,15 @@
   "stickyHeader":true,
   "cleanURLParameters":["year", "agency", "vendor", "agreement_type", "po_num_exact", "po_num", "record_type", "section8_flag",
                         "vendornm", "vendornm_exact", "checkamt", "checkamtr", "funding_id", "invoice_number", "industry", "exp_cat",
-                        "category", "dept", "fundsrc", "doc_id","check_payment_status"],
+                        "category", "dept", "deptnm", "fundsrc", "doc_id","check_payment_status", "expcategorycode","resp_center",
+                        "amount_spent"],
   "urlParamMap":{"year":"issue_date_year_id", "agency":"agency_id", "vendor":"vendor_id", "agreement_type":"agreement_type_code",
                  "po_num_exact": "contract_id", "po_num":"contract_id", "record_type":"record_type", "section8_flag":"section8_flag",
                  "vendornm":"vendor_name","vendornm_exact":"vendor_name", "checkamt":"check_amount", "checkamtr":"check_amount",
                  "funding_id":"funding_source_id", "invoice_number":"invoice_number", "industry":"industry_type_id",
                  "exp_cat":"expenditure_type_id","category":"spending_category_id", "dept":"department_id", "fundsrc" :"funding_source_id",
-                 "doc_id":"document_id"
+                 "doc_id":"document_id", "deptnm":"department_name", "expcategorycode":"expenditure_type_code", "resp_center":"responsibility_center_id",
+                 "amount_spent":"invoice_net_amount"
   },
   "paramTypeConfig": {
     "vendornm": "like",
@@ -18,7 +20,9 @@
     "po_num": "like",
     "po_num_exact": "eqignorecase",
     "checkamtr": "rangeid",
-    "checkamt": "range"
+    "checkamt": "range",
+    "amount_spent": "range",
+    "deptnm": "like"
   },
   "header":"
     $header = NULL;
@@ -38,7 +42,7 @@
     "invoice_number","check_payment_status", "check_amount", "invoice_amount", "invoice_discount", "withholding_tax", "line_net_amount",
     "vendor_name", "vendor_id", "contract_purpose", "display_spending_category_name", "display_industry_type_name",
     "department_name", "start_date", "end_date", "funding_source_description", "responsibility_center_description",
-    "expenditure_type_name", "program_phase_description", "gl_project_description"
+    "expenditure_type_name", "program_phase_description", "gl_project_description", "invoice_net_amount"
   ],
   "caption":"",
   "derivedColumns": {
@@ -209,7 +213,7 @@
         var oRecordType = getNamedFilterCriteria('fRecordType');
         var oSection8Flag = getNamedFilterCriteria('fSection8Flag');
         var oVendorIds = getNamedFilterCriteria('fvendorId');
-        var oVendorNms = getNamedFilterCriteria('fvendorNm');
+        var oVendorNms = getNamedFilterCriteria('fVendorName');
         var oCheckAmount = getNamedFilterCriteria('fCheckAmount');
         var oFundingIds = getNamedFilterCriteria('fFundingId');
         var oInvoiceNumber = getNamedFilterCriteria('fInvoiceNumber');
@@ -217,6 +221,8 @@
         var oExpCatIds = getNamedFilterCriteria('fExpCat');
         var oCatIds = getNamedFilterCriteria('fSpendCategoryId');
         var oDocIds = getNamedFilterCriteria('fDocId');
+        var oExpCatCodes = getNamedFilterCriteria('fExpcategorycode');
+        var oRespCenterIds = getNamedFilterCriteria('fRespCenter');
 
         var cUrl = oTable.fnSettings().sAjaxSource;
         var cUrlArray = cUrl.split('/');
@@ -233,6 +239,8 @@
         cUrl = adjustUrlParameter(cUrl,'invoice_number',oInvoiceNumber);
         cUrl = adjustUrlParameter(cUrl,'category', oCatIds);
         cUrl = adjustUrlParameter(cUrl,'doc_id', oDocIds);
+        cUrl = adjustUrlParameter(cUrl,'expcategorycode', oExpCatCodes);
+        cUrl = adjustUrlParameter(cUrl,'resp_center', oRespCenterIds);
 
         return cUrl;
     }"
