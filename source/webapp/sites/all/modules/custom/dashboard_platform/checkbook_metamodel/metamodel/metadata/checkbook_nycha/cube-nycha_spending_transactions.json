@@ -206,6 +206,24 @@
           ]
         },
         {
+          "name": "responsibility_center_id",
+          "levels": [
+            {
+              "name": "responsibility_center_id",
+              "sourceColumnName": "responsibility_center_id"
+            }
+          ]
+        },
+        {
+          "name": "responsibility_center_name",
+          "levels": [
+            {
+              "name": "responsibility_center_name",
+              "sourceColumnName": "responsibility_center_description"
+            }
+          ]
+        },
+        {
           "name": "expenditure_type_id",
           "levels": [
             {
