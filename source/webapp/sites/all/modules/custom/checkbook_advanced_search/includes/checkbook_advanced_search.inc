@@ -1531,7 +1531,7 @@ function generateNYCHASpendingSearchUrl($form){
   //Purchase Order Type
   $nycha_po_type = trim($form[$filterDimension][$filterDimension . '_purchase_order_type']['#value']);
   $redirectUrl .= !empty($nycha_po_type) ? _checkbook_advanced_search_generate_redirect_url($nycha_po_type, 'agreement_type') : "";
-  //Contract Id
+  //Contract ID
   $contractId = trim($form[$filterDimension][$filterDimension . '_contract_num']['#value']);
   $contractId_exact = trim($form[$filterDimension][$filterDimension . '_contract_num_exact']['#value']);
   if (!empty($contractId)) {
@@ -1541,6 +1541,29 @@ function generateNYCHASpendingSearchUrl($form){
       $redirectUrl .= _checkbook_advanced_search_generate_redirect_url($contractId, 'po_num');
     }
   }
+  //Document ID
+  $documentId = trim($form[$filterDimension][$filterDimension . '_document_id']['#value']);
+  $documentIdExact = trim($form[$filterDimension][$filterDimension . '_document_id_exact']['#value']);
+  if (!empty($documentId)) {
+    if ($documentIdExact == $documentId) {
+      $redirectUrl .= _checkbook_advanced_search_generate_redirect_url($documentId, 'doc_id_exact');
+    } else {
+      $redirectUrl .= _checkbook_advanced_search_generate_redirect_url($documentId, 'doc_id');
+    }
+  }
+  //Date Filter
+  $dateFilter = trim($form[$filterDimension][$filterDimension . '_date_filter']['#value']);
+  //When Year is selected
+  $yearId = trim($form[$filterDimension][$filterDimension . '_fiscal_year']['#value']);
+  $redirectUrl .=  (!empty($yearId) && $dateFilter == 0 && $yearId != 'fy~all') ? _checkbook_advanced_search_year_arg($yearId, 'year') : "";
+  //When Issue Date is selected
+  $issueDateFrom = trim($form[$filterDimension][$filterDimension . '_issue_date_from']['#value']['date']);
+  $issueDateTo = trim($form[$filterDimension][$filterDimension . '_issue_date_to']['#value']['date']);
+  if ($dateFilter == 1) {
+    $issueDateRangeArray = array('from' => $issueDateFrom, 'to' => $issueDateTo, 'type' => 'date');
+    $redirectUrl .= _checkbook_advanced_search_generate_redirect_url($issueDateRangeArray, 'issue_date', TRUE);
+  }
+
   return $redirectUrl;
 }
 
