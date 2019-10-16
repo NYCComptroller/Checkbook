@@ -21,7 +21,7 @@
     {"labelAlias":"dept_name","column":"department_name"},
     {"labelAlias":"funding_source","column":"funding_source_description"},
     {"labelAlias":"responsibility_center", "column":"responsibility_center_description"},
-    {"labelAlias":"expense_category","column":"expenditure_type_name"},
+    {"labelAlias":"expense_category","column":"expenditure_type_description"},
     {"labelAlias":"program", "column":"program_phase_description"},
     {"labelAlias":"project", "column":"gl_project_description"}
   ],
@@ -224,8 +224,8 @@
     "
     },
     {
-    "column":"expenditure_type_name",
-    "sourceColumn":"expenditure_type_name",
+    "column":"expenditure_type_description",
+    "sourceColumn":"expenditure_type_description",
     "sql":"
       CASE
       WHEN expenditure_type_name IS NULL THEN '-'

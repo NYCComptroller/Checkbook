@@ -45,7 +45,7 @@
     "invoice_number","check_payment_status", "check_amount", "invoice_amount", "invoice_discount", "withholding_tax", "line_net_amount",
     "vendor_name", "vendor_id", "contract_purpose", "display_spending_category_name", "display_industry_type_name",
     "department_name", "start_date", "end_date", "funding_source_description", "responsibility_center_description",
-    "expenditure_type_name", "program_phase_description", "gl_project_description", "invoice_net_amount"
+    "expenditure_type_description", "program_phase_description", "gl_project_description", "invoice_net_amount"
   ],
   "caption":"",
   "derivedColumns": {
@@ -110,7 +110,7 @@
       "expression": "($row['responsibility_center_description'] == null) ? '-' :_get_tooltip_markup($row['responsibility_center_description'],36)"
     },
     "expenditure_type_name_formatted":{
-      "expression": "($row['expenditure_type_name'] == null) ? '-' : $row['expenditure_type_name']"
+      "expression": "($row['expenditure_type_description'] == null) ? '-' : $row['expenditure_type_description']"
     },
     "program_formatted":{
       "expression": "($row['program_phase_description']== null) ? '-' :_get_tooltip_markup($row['program_phase_description'],36)"
@@ -145,7 +145,7 @@
     {"labelAlias":"dept_name","column":"dept_formatted","sortSourceColumn":"department_name"},
     {"labelAlias":"funding_source","column":"funding_source_formatted","sortSourceColumn":"funding_source_description"},
     {"labelAlias":"responsibility_center","column":"responsibility_center_formatted", "sortSourceColumn":"responsibility_center_description"},
-    {"labelAlias":"expense_category","column":"expenditure_type_name_formatted","sortSourceColumn":"expenditure_type_name"},
+    {"labelAlias":"expense_category","column":"expenditure_type_name_formatted","sortSourceColumn":"expenditure_type_description"},
     {"labelAlias":"program","column":"program_formatted", "sortSourceColumn":"program_phase_description"},
     {"labelAlias":"project","column":"project_formatted", "sortSourceColumn":"gl_project_description"},
     {"label":"","column":"", "export":false}
