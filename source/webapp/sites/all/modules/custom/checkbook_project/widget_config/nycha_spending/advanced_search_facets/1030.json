@@ -1,0 +1,23 @@
+{
+  "widgetType":"phpparser",
+  "parentNid":1012,
+  "limit":100,
+  "startWith":0,
+  "maxSelect":5,
+  "columns":["responsibility_center_id.responsibility_center_id", "responsibility_center_name.responsibility_center_name", "txcount"],
+  "orderBy":["-txcount", "responsibility_center_name.responsibility_center_name"],
+  "facetPager":true,
+  "filterName":"Responsibility Center",
+  "urlParameterName":"resp_center",
+  "autocompleteParamName":"resp_center_auto",
+  "autocompleteID":"fRespCenter",
+  "autocompleteField":"responsibility_center_description",
+  "adjustParameters":"
+      if(function_exists('_checkbook_project_applyParameterFilters')){
+        $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+      }
+     $adjustedParameters['responsibility_center_name.responsibility_center_name'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+  return $adjustedParameters;
+  ",
+  "template":"individual_filter"
+}
