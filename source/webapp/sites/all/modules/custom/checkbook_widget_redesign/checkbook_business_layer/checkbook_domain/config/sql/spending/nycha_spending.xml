@@ -27,6 +27,57 @@
       GROUP BY document_id,issue_date, vendor_name, vendor_id
     </sql>
   </statement>
+  <!--GetNychaSpendingByVendors-->
+  <statement name="GetNychaSpendingByVendors" datasource="checkbook_nycha">
+    <param name="year" required ="true" type="int" />
+    <param name="vendor" type="int" />
+    <param name="category" type="int" />
+    <param name="industry" type="int" />
+    <param name="fundsrc" type="int" />
+    <sql>
+      SELECT vendor_id,
+      vendor_name ,
+      sum (sum_ytd_spending) as check_amount_sum,
+      sum (sum_total_contract_spending) as total_contract_amount_sum
+      FROM
+      (
+      SELECT vendor_id,
+      vendor_name,
+      '' as contract_id,
+      sum(ytd_spending) as sum_ytd_spending,
+      sum(0) as sum_total_contract_spending
+      FROM aggregation_spending_fy
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="issue_date_year_id" paramName="year" />
+          <exp op="=" dbField="spending_category_id" paramName="category"/>
+          <exp op="=" dbField="vendor_id" paramName="vendor" />
+          <exp op="=" dbField="industry_type_id" paramName="industry" />
+          <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
+        </exp>
+      </where>
+      AND spending_category_code!='CONTRACT'
+      GROUP BY vendor_id,vendor_name
+      UNION
+      SELECT vendor_id,
+      vendor_name,
+      contract_id,
+      sum(ytd_spending) sum_ytd_spending,
+      max(Total_Contract_Amount) sum_total_contract_spending
+      FROM aggregation_spending_contracts_fy
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="issue_date_year_id" paramName="year" />
+          <exp op="=" dbField="spending_category_id" paramName="category"/>
+          <exp op="=" dbField="vendor_id" paramName="vendor" />
+          <exp op="=" dbField="industry_type_id" paramName="industry" />
+          <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
+        </exp>
+      </where>
+      GROUP BY contract_id,vendor_id,vendor_name ) x
+      GROUP BY vendor_id,vendor_name
+    </sql>
+  </statement>
   <!--GetNychaSpendingByExpenseCategories-->
   <statement name="GetNychaSpendingByExpenseCategories" datasource="checkbook_nycha">
     <param name="year" required ="true" type="int" />
@@ -68,31 +119,6 @@
           </exp>
         </where>
         GROUP BY display_expenditure_object_name ) z
-    </sql>
-  </statement>
-  <!--GetNychaSpendingByVendors-->
-  <statement name="GetNychaSpendingByVendors" datasource="checkbook_nycha">
-    <param name="year" required ="true" type="int" />
-    <param name="vendor" type="int" />
-    <param name="category" type="int" />
-    <param name="industry" type="int" />
-    <param name="fundsrc" type="int" />
-    <sql>
-      SELECT vendor_id,
-             vendor_name,
-             SUM(ytd_spending) AS check_amount_sum,
-             SUM(total_contract_spending) AS total_contract_amount_sum
-      FROM public.aggregation_spending_fy
-      <where>
-        <exp op="AND">
-          <exp op="=" dbField="issue_date_year_id" paramName="year" />
-          <exp op="=" dbField="spending_category_id" paramName="category"/>
-          <exp op="=" dbField="vendor_id" paramName="vendor" />
-          <exp op="=" dbField="industry_type_id" paramName="industry" />
-          <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
-        </exp>
-      </where>
-      GROUP BY vendor_name, vendor_id
     </sql>
   </statement>
   <!--GetNychaSpendingByContracts-->
