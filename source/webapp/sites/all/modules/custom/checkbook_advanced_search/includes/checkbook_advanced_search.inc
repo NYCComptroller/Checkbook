@@ -1489,30 +1489,58 @@ function generateNYCHASpendingSearchUrl($form){
   $redirectUrl .= _checkbook_advanced_search_generate_redirect_url($agency, 'agency');
   //Department
   $department = trim($form[$filterDimension][$filterDimension  . '_department']['#value']);
-  $redirectUrl .= ($department != "Select Department") ?  _checkbook_advanced_search_generate_redirect_url($department, 'deptnm'): "";
+  $redirectUrl .= ($department != "Select Department" && !empty($department)) ?  _checkbook_advanced_search_generate_redirect_url($department, 'deptnm'): "";
   //Expense Category
   $expenseCategory = trim($form[$filterDimension][$filterDimension . '_expense_category']['#value']);
-  $redirectUrl .= ($expenseCategory != "Select Expense Category") ?  _checkbook_advanced_search_generate_redirect_url($expenseCategory, 'expcategorycode'): "";
+  $redirectUrl .= ($expenseCategory != "Select Expense Category" && !empty($expenseCategory)) ?  _checkbook_advanced_search_generate_redirect_url($expenseCategory, 'expcategorycode'): "";
   //Spending Category
   $spendingCategory = trim($form[$filterDimension][$filterDimension . '_expense_type']['#value']);
   $redirectUrl .= !empty($spendingCategory) ? _checkbook_advanced_search_generate_redirect_url($spendingCategory, 'category') : "";
   //Industry
   $industry = trim($form[$filterDimension][$filterDimension . '_nycha_industry']['#value']);
   $industryCodeIdArray = _checkbook_advanced_search_autocomplete_get_code_id($industry);
-  $redirectUrl .= _checkbook_advanced_search_generate_redirect_url($industryCodeIdArray['id'], 'industry');
+  $redirectUrl .= !empty($industryCodeIdArray['id']) ? _checkbook_advanced_search_generate_redirect_url($industryCodeIdArray['id'], 'industry') : "";
   //Funding Source
   $fundSrc = trim($form[$filterDimension][$filterDimension . '_fundsrc']['#value']);
   $fundSrcCodeIdArray = _checkbook_advanced_search_autocomplete_get_code_id($fundSrc);
-  $redirectUrl .= _checkbook_advanced_search_generate_redirect_url($fundSrcCodeIdArray['id'], 'fundsrc');
+  $redirectUrl .= !empty($fundSrcCodeIdArray['id']) ? _checkbook_advanced_search_generate_redirect_url($fundSrcCodeIdArray['id'], 'fundsrc') : "";
   //Responsibility Center
   $respCenter = trim($form[$filterDimension][$filterDimension . '_responsibility_center']['#value']);
   $respCenterCodeIdArray = _checkbook_advanced_search_autocomplete_get_code_id($respCenter);
-  $redirectUrl .= _checkbook_advanced_search_generate_redirect_url($respCenterCodeIdArray['id'], 'resp_center');
-
+  $redirectUrl .= !empty($respCenterCodeIdArray['id']) ? _checkbook_advanced_search_generate_redirect_url($respCenterCodeIdArray['id'], 'resp_center') : "";
+  //Vendor Name
+  $vendorName = trim($form[$filterDimension][$filterDimension . '_vendor_name']['#value']);
+  $vendorNameExact = trim($form[$filterDimension][$filterDimension . '_vendor_name_exact']['#value']);
+  if (!empty($vendorName)) {
+    if ($vendorNameExact == $vendorName) {
+      $redirectUrl .= _checkbook_advanced_search_generate_redirect_url($vendorName, 'vendornm_exact');
+    } else {
+      $redirectUrl .= _checkbook_advanced_search_generate_redirect_url($vendorName, 'vendornm');
+    }
+  }
+  //Check Amount
+  $checkAmountFrom = trim($form[$filterDimension][$filterDimension. '_nycha_check_amount_from']['#value']);
+  $checkAmountTo = trim($form[$filterDimension][$filterDimension. '_nycha_check_amount_to']['#value']);
+  $checkAmountRangeArray = array('from' => $checkAmountFrom, 'to' => $checkAmountTo, 'type' => 'amount');
+  $redirectUrl .= _checkbook_advanced_search_generate_redirect_url($checkAmountRangeArray, 'checkamt', TRUE);
+  //Amount Spent
+  $amountSpentFrom = trim($form[$filterDimension][$filterDimension. '_nycha_amount_spent_from']['#value']);
+  $amountSpentTo = trim($form[$filterDimension][$filterDimension. '_nycha_amount_spent_to']['#value']);
+  $amountSpentRangeArray = array('from' => $amountSpentFrom, 'to' => $amountSpentTo, 'type' => 'amount');
+  $redirectUrl .= _checkbook_advanced_search_generate_redirect_url($amountSpentRangeArray, 'amount_spent', TRUE);
   //Purchase Order Type
   $nycha_po_type = trim($form[$filterDimension][$filterDimension . '_purchase_order_type']['#value']);
   $redirectUrl .= !empty($nycha_po_type) ? _checkbook_advanced_search_generate_redirect_url($nycha_po_type, 'agreement_type') : "";
-
+  //Contract Id
+  $contractId = trim($form[$filterDimension][$filterDimension . '_contract_num']['#value']);
+  $contractId_exact = trim($form[$filterDimension][$filterDimension . '_contract_num_exact']['#value']);
+  if (!empty($contractId)) {
+    if ($contractId_exact == $contractId) {
+      $redirectUrl .= _checkbook_advanced_search_generate_redirect_url($contractId, 'po_num_exact');
+    } else {
+      $redirectUrl .= _checkbook_advanced_search_generate_redirect_url($contractId, 'po_num');
+    }
+  }
   return $redirectUrl;
 }
 
