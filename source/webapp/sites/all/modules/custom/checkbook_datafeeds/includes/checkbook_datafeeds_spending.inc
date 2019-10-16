@@ -545,8 +545,16 @@ function checkbook_datafeeds_spending_next_submit($form, &$form_state)
 function checkbook_datafeeds_spending_filter_selected_columns($selected_columns, $data_source, $response_type)
 {
   //Get column configurations
-  $domain = 'spending';
-  $domain = $data_source == Datasource::OGE ? $domain . '_oge' : $domain;
+  switch($data_source){
+    case Datasource::NYCHA:
+      $domain = 'spending_nycha';
+      break;
+    case Datasource::OGE:
+      $domain = 'spending_oge';
+      break;
+    default:
+      $domain='spending';
+  }
   $domain_config = ConfigUtil::getDomainConfiguration($domain);
   //Get columns which should be included for the current data source
   $columns_included = $domain_config->$domain->dataset->displayConfiguration->$response_type->elementsColumn;
