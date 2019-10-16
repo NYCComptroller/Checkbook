@@ -110,10 +110,21 @@ class NychaSpendingUtil
         $vendor_id = RequestUtil::getRequestKeyValueFromURL('vendor', $bottomURL);
         $year_id = RequestUtil::getRequestKeyValueFromURL('year', $bottomURL);
         if(isset($vendor_id)) {
-          $query = "SELECT SUM(ytd_spending) AS check_amount_sum,  SUM(total_contract_spending) AS total_contract_amount_sum FROM aggregation_spending_fy
-	                  WHERE (issue_date_year_id =".$year_id  ."AND vendor_id =". $vendor_id.")";
+          //$query = "SELECT SUM(ytd_spending) AS check_amount_sum,  SUM(total_contract_spending) AS total_contract_amount_sum FROM aggregation_spending_fy
+	        //          WHERE (issue_date_year_id =".$year_id  ."AND vendor_id =". $vendor_id.")";
+          $query = "SELECT vendor_id,vendor_name ,sum (sum_ytd_spending) as check_amount_sum,sum (sum_total_contract_spending) as total_contract_amount_sum
+                    FROM(
+                    SELECT vendor_id,vendor_name,'' as contract_id,sum(ytd_spending) as sum_ytd_spending,sum(0) as sum_total_contract_spending
+                    FROM aggregation_spending_fy
+                    WHERE (issue_date_year_id =". $year_id ." and vendor_id=".$vendor_id.") AND spending_category_code!='CONTRACT'
+                    GROUP BY vendor_id,vendor_name
+                    UNION
+                    SELECT vendor_id,vendor_name,contract_id,sum(ytd_spending) sum_ytd_spending,max(Total_Contract_Amount) sum_total_contract_spending
+                    FROM aggregation_spending_contracts_fy
+                    WHERE (issue_date_year_id = ". $year_id ." and vendor_id=".$vendor_id.")
+                    GROUP BY contract_id,vendor_id,vendor_name ) x
+                    GROUP BY vendor_id,vendor_name";
           $results = _checkbook_project_execute_sql_by_data_source($query, Datasource::NYCHA);
-
         }
         break;
       case 'ytd_contract':
