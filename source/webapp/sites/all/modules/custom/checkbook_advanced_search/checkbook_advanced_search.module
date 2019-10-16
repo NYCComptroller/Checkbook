@@ -64,17 +64,8 @@ function checkbook_advanced_search_display()
 
 function checkbook_advanced_search_display_ajax()
 {
-//    if ($cached = cache_get('advanced_search_form', 'cache_form')) {
-//        echo $cached->data;
-//    } else {
-//        $html = render(drupal_get_form('checkbook_advanced_search_form'));
-//        cache_set('advanced_search_form', $html, 'cache_form', 60*60+time());
-//        echo $html;
-//    }
   $html = render(drupal_get_form('checkbook_advanced_search_form'));
-//    cache_set('advanced_search_form', $html, 'cache_form', 60*60+time());
   echo $html;
-
   exit;
 }
 
@@ -90,8 +81,8 @@ function checkbook_advanced_search_form($form, $form_state)
   $create_alert_view = "<div class='create-alert-view'></div>";
   $agencies = _checkbook_advanced_search_get_agencyname_and_id();
   $agency_attributes = _checkbook_advanced_search_get_agency_attributes();
-  $nycha_agencies = _checkbook_advanced_search_get_agencyname_and_id('checkbook_nycha');
-  $nycha_agency_attributes = _checkbook_advanced_search_get_agency_attributes('checkbook_nycha');
+  $nycha_agencies = _checkbook_advanced_search_get_agencyname_and_id(DataSource::NYCHA);
+  $nycha_agency_attributes = _checkbook_advanced_search_get_agency_attributes(DataSource::NYCHA);
   $fund_class = _checkbook_advanced_search_get_fund_class_and_id();
   $year_range = "'-" . (date("Y") - 1900) . ":+" . (2500 - date("Y")) . "'";
   $revenue_fys = array(0 => "All Fiscal Years");
@@ -613,67 +604,27 @@ function checkbook_advanced_search_form($form, $form_state)
   );
 
   //</editor-fold>
-
-//    $form['#attached'] = array(
-//        'library' => array(
-//            array('system', 'ui.accordion', FALSE),
-//            array('system', 'ui.autocomplete', FALSE),
-//        ),
-//        'js' => array(
-//            array(
-//                'type' => 'file',
-//                'data' => drupal_get_path('module', 'checkbook_advanced_search') . '/js/checkbook_advanced_search_clear_button.js',
-//            ),
-//            array(
-//                'type' => 'file',
-//                'data' => drupal_get_path('module', 'checkbook_advanced_search') . '/js/checkbook_advanced_search_spending.js',
-//            ),
-//            array(
-//                'type' => 'file',
-//                'data' => drupal_get_path('module', 'checkbook_advanced_search') . '/js/checkbook_advanced_search_budget.js',
-//            ),
-//            array(
-//                'type' => 'file',
-//                'data' => drupal_get_path('module', 'checkbook_advanced_search') . '/js/checkbook_advanced_search_revenue.js',
-//            ),
-//            array(
-//                'type' => 'file',
-//                'data' => drupal_get_path('module', 'checkbook_advanced_search') . '/js/checkbook_advanced_search_payroll.js',
-//            ),
-//            array(
-//                'type' => 'file',
-//                'data' => drupal_get_path('module', 'checkbook_advanced_search') . '/js/checkbook_advanced_search_contracts.js',
-//            ),
-//        ),
-//    );
-
-
   return $form;
 }
 
 function _checkbook_advanced_search_get_form($form, $domain, $agencies, $agency_attributes, $year_range)
 {
   $field_configurations = _checkbook_advanced_search_get_field_configs($domain);
-
   $checkbook_form = new Form($domain);
 
   foreach ($field_configurations as $key => $value) {
     $data_source = $key;
     $field_configs = $value;
     $all_field_def = _checkbook_advanced_search_filter_field_definition($domain, $data_source, $agencies, $agency_attributes, $year_range);
-
     $checkbook_content = new Content($data_source);
 
     foreach ($field_configs as $field_config) {
-
       $field_name = $field_config['field_name'];
       $column = $field_config['column'];
       $field_def = $all_field_def[$field_name];
       $disabled = $field_def['disabled'];
-      if ((is_null($disabled)))
-        $disabled = FALSE;
+      $disabled = ((is_null($disabled))) ? FALSE : $disabled;
       $field = new Field($field_def['field_name'], $field_def['field_type'], $field_def['attributes'], $disabled);
-
       $checkbook_content->add_field($field, $column);
     }
     $checkbook_form->add_content($checkbook_content);
@@ -688,18 +639,17 @@ function _checkbook_advanced_search_filter_field_definition($domain, $data_sourc
   if ($data_source == DataSource::OtherGovernmentEntities) {
     $agencies = _checkbook_advanced_search_get_agencyname_and_id($data_source);
     $agency_attributes = _checkbook_advanced_search_get_agency_attributes($data_source);
+    $nycha_agencies = _checkbook_advanced_search_get_agencyname_and_id(DataSource::NYCHA);
+    $nycha_agency_attributes = _checkbook_advanced_search_get_agency_attributes(DataSource::NYCHA);
+    $agencies = $nycha_agencies + $agencies;
+    $agency_attributes = $nycha_agency_attributes + $agency_attributes;
 
-    if ($domain == Domain::Contracts) {
-      $nycha_agencies = _checkbook_advanced_search_get_agencyname_and_id(DataSource::NYCHA);
-      $nycha_agency_attributes = _checkbook_advanced_search_get_agency_attributes(DataSource::NYCHA);
-      $agencies = $nycha_agencies + $agencies;
-      $agency_attributes = $nycha_agency_attributes + $agency_attributes;
-
-      $nycha_responsibility_center_attributes = _checkbook_advanced_search_get_responsibility_centers(DataSource::NYCHA);
-      $nycha_contract_type_attributes = _checkbook_advanced_search_get_nycha_contract_types(DataSource::NYCHA);
-      $nycha_award_method_attributes = checkbook_advanced_search_get_nycha_award_methods(DataSource::NYCHA);
-      $nycha_industry_attributes = checkbook_advanced_search_get_nycha_industries(DataSource::NYCHA);
-    }
+    $nycha_responsibility_center_attributes = _checkbook_advanced_search_get_responsibility_centers(DataSource::NYCHA);
+    $nycha_contract_type_attributes = _checkbook_advanced_search_get_nycha_contract_types(DataSource::NYCHA);
+    $nycha_award_method_attributes = checkbook_advanced_search_get_nycha_award_methods(DataSource::NYCHA);
+    $nycha_industry_attributes = checkbook_advanced_search_get_nycha_industries(DataSource::NYCHA);
+    $nycha_fundsrc_attributes = checkbook_advanced_search_get_nycha_funding_sources(DataSource::NYCHA);
+    $nycha_expense_attributes = _checkbook_advanced_search_get_expensetype_and_id(DataSource::NYCHA);
   } else if ($data_source == DataSource::CitywideAgency) {
     $mwbe_category_attributes = _checkbook_advanced_search_get_mwbe_category_and_id();
     $industry_attributes = _checkbook_advanced_search_get_industry_type_and_id();
@@ -727,6 +677,9 @@ function _checkbook_advanced_search_filter_field_definition($domain, $data_sourc
             break;
           case '$expense_attributes':
             $field_definition_configs[$i]['attributes']['options'] = $expense_attributes;
+            break;
+          case '$nycha_expense_attributes':
+            $field_definition_configs[$i]['attributes']['options'] = $nycha_expense_attributes;
             break;
           case'$year_attribute':
             $field_definition_configs[$i]['attributes']['options'] = $year_attribute;
@@ -767,6 +720,10 @@ function _checkbook_advanced_search_filter_field_definition($domain, $data_sourc
           case '$nycha_industry_attributes':
             $field_definition_configs[$i]['attributes']['options'] = $nycha_industry_attributes['options'];
             $field_definition_configs[$i]['attributes']['option_attributes'] = $nycha_industry_attributes['option_attributes'];
+            break;
+          case '$nycha_fundsrc_attributes':
+            $field_definition_configs[$i]['attributes']['options'] = $nycha_fundsrc_attributes['options'];
+            $field_definition_configs[$i]['attributes']['option_attributes'] = $nycha_fundsrc_attributes['option_attributes'];
             break;
         }
       }
