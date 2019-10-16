@@ -137,9 +137,11 @@ class CheckbookSolr
     switch ($datasource) {
       case 'edc':
       case 'checkbook_oge':
+      case 'checkbook_nycedc':
         $solr_datasource = 'solr_edc';
         break;
       case 'nycha':
+      case 'checkbook_nycha':
         $solr_datasource = 'solr_nycha';
         break;
       case 'citywide':

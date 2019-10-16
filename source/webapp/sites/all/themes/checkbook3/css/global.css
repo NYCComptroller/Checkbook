@@ -3985,3 +3985,8 @@ body.page-data-feeds #div_data_source .form-radios .form-item{
   float: none !important;
   margin: 5px 10px;
 }
+
+body.page-data-feeds select.loading{
+  background: url(/sites/all/themes/checkbook/images/loading.gif) no-repeat right center;
+  color:#fff;
+}

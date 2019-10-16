@@ -48,7 +48,7 @@
                 });
             });
 
-            var dataSource = $('input[name="datafeeds-payroll-domain-filter"]', context).val();
+            var dataSource = $('input[name="datafeeds-payroll-domain-filter"]:checked', context).val();
             $.fn.showHideFields(dataSource);
 
             //Data Source change event

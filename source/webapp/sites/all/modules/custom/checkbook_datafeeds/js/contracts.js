@@ -430,7 +430,7 @@
   Drupal.behaviors.contractsDataFeeds = {
     attach: function (context) {
       //This is to reset the radio button to citywide if the user refreshes browser
-      let datasource = $('input[name="datafeeds-contracts-domain-filter"]', context).val();
+      let datasource = $('input[name="datafeeds-contracts-domain-filter"]:checked', context).val();
       const $contractStatus = $('select[name="df_contract_status"]', context);
       const $category = $('#edit-category', context);
       let csval = $('select[name="df_contract_status"]', context).val();
@@ -465,7 +465,7 @@
       $contractStatus.change(function () {
         csval = $('select[name="df_contract_status"]', context).val();
         catval = $('#edit-category', context).val();
-        datasource = $('input[name="datafeeds-contracts-domain-filter"]',context).val();
+        datasource = $('input[name="datafeeds-contracts-domain-filter"]:checked',context).val();
         $.fn.resetSelectedColumns();
         $.fn.hideShow(csval, catval, datasource);
         $.fn.showHidePrimeAndSubIcon();
@@ -475,7 +475,7 @@
       $category.change(function () {
         csval = $('select[name="df_contract_status"]', context).val();
         catval = $('#edit-category', context).val();
-        datasource = $('input[name="datafeeds-contracts-domain-filter"]',context).val();
+        datasource = $('input[name="datafeeds-contracts-domain-filter"]:checked',context).val();
         $.fn.resetSelectedColumns();
         $.fn.hideShow(csval, catval, datasource);
         $.fn.showHidePrimeAndSubIcon();
