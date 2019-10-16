@@ -20,18 +20,16 @@
 
 //Transactions Page main title
 $title = NychaSpendingUtil::getTransactionsTitle();
-
 //Transactions Page sub title
 $url = $_REQUEST['expandBottomContURL'];
 $url = isset($url) ? $url : drupal_get_path_alias($_GET['q']);
-
 if(isset($url)) {
   $widget = RequestUtil::getRequestKeyValueFromURL('widget', $url);
   // Display static content ytd link transaction pages
   if (strpos($widget, 'ytd_') !== false) {
     $aggregatedYtdTitle = WidgetUtil::getLabel("ytd_spending");
     $aggregatedAmountTitle = WidgetUtil::getLabel("total_contract_amount");
-    $subTitle = NychaSpendingUtil::getTransactionsSubTitle($widget, $url);
+    //$subTitle = NychaSpendingUtil::getTransactionsSubTitle($widget, $url);
     $summaryDetails = NychaSpendingUtil::getTransactionsStaticSummary($widget, $url);
     $ytdAmount = '$' . custom_number_formatter_format($summaryDetails['check_amount_sum'], 2);
     $aggregatedAmount = '$' . custom_number_formatter_format($summaryDetails['total_contract_amount_sum'], 2);
@@ -56,7 +54,8 @@ if(isset($url)) {
       $subTitle = $contractSummary;
     }
     else{
-      $subTitle2 = "<div class='spending-tx-subtitle'>{$subTitle}</div>";
+      $wtitle = NychaSpendingUtil::getTransactionsSubTitle($widget, $url);
+      $subTitle2 = "<div class='spending-tx-subtitle'>{$wtitle}</div>";
     }
   }
   //Nycha contract invoice amount links transaction pages
@@ -87,8 +86,8 @@ if(isset($url)) {
                       </div>";
       $subTitle = $inv_contractSummary;
     }
-    if ($tcode == 'VO' || $tcode == 'AWD' || $tcode == 'DEP'|| $tcode == 'IND'|| $tcode == 'RESC' || $tcode == 'SZ') {
-      $tcode_title = NYCHAContractUtil::getTitleByCode($tcode);
+   // if ($tcode == 'VO' || $tcode == 'AWD' || $tcode == 'DEP'|| $tcode == 'IND'|| $tcode == 'RESC' || $tcode == 'SZ') {
+     else{ $tcode_title = NYCHAContractUtil::getTitleByCode($tcode);
       if ( $tcode == 'VO'){ $inv_contractName = $inv_contractDetails['vendor_name'];}
       if ( $tcode == 'AWD'){ $inv_contractName = $inv_contractDetails['award_method_name'];}
       if ( $tcode == 'DEP'){ $inv_contractName = $inv_contractDetails['department_name'];}
@@ -96,18 +95,15 @@ if(isset($url)) {
       if ( $tcode == 'RESC'){ $inv_contractName = $inv_contractDetails['responsibility_center_descr'];}
       if ( $tcode == 'SZ'){ $inv_contractName = $inv_contractDetails['award_size_name'];}
 
-      $inv_contractSummary = "<ul>
-                          <li class=\"spendingtxsubtitle\">
-                            <span class=\"gi-list-item\"><b>{$tcode_title}:</b></span> {$inv_contractName}
-                          </li>
-                        </ul>";
-      $subTitle2 = $inv_contractSummary;
+      $inv_contractSummary = "<b>{$tcode_title}:</b> {$inv_contractName}";
+      $subTitle2 = "<div class='spending-tx-subtitle'>{$inv_contractSummary}</div>";
     }
   }
   // Display static content for details link transaction pages
   else{
     //$title = NychaSpendingUtil::getTransactionsTitle();
-    $subTitle2 = "<div class='spending-tx-subtitle'>{$subTitle}</div>";
+    $wtitle = NychaSpendingUtil::getTransactionsSubTitle($widget, $url);
+    $subTitle2 = "<div class='spending-tx-subtitle'>{$wtitle}</div>";
     $aggregatedAmountTitle = "Total Spending Amount";
     $totalSpendingAmount = '$' . custom_number_formatter_format($node->data[0]['invoice_amount_sum'], 2);
     $amountsSummary = "<div class='dollar-amounts'>
@@ -167,4 +163,4 @@ if (strpos($widget, 'inv_') !== false) {
                       </div></div>";
 }
 
-echo $titleSummary . $amountsSummary;
+echo $titleSummary . $amountsSummary . $subTitle;
