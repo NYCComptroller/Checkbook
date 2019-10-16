@@ -1498,7 +1498,7 @@ function generateNYCHASpendingSearchUrl($form){
   $redirectUrl .= !empty($spendingCategory) ? _checkbook_advanced_search_generate_redirect_url($spendingCategory, 'category') : "";
   //Industry
   $industry = trim($form[$filterDimension][$filterDimension . '_nycha_industry']['#value']);
-  $industryCodeIdArray = _checkbook_advanced_search_autocomplete_get_code_id($industry);log_error($industryCodeIdArray);
+  $industryCodeIdArray = _checkbook_advanced_search_autocomplete_get_code_id($industry);
   $redirectUrl .= (!empty($industryCodeIdArray['id']) && $industryCodeIdArray['code']) ? _checkbook_advanced_search_generate_redirect_url($industryCodeIdArray['id'], 'industry') : "";
   //Funding Source
   $fundSrc = trim($form[$filterDimension][$filterDimension . '_fundsrc']['#value']);
