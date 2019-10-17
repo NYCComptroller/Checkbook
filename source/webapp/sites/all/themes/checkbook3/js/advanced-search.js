@@ -1213,9 +1213,9 @@
               div.ele('contract_id').val("");
               div.ele('vendor_name').val("");
             }else if(exptype == 1) {
-              disable_input([div.ele('exp_category'), div.ele('dept'),div.ele('contract_id'),
-                             div.ele('nycha_industry'), div.ele('resp_center'), div.ele('po_type')]);
-              enable_input([div.ele('vendor_name'), div.ele('fundsrc'), div.ele('document_id'),
+              disable_input([div.ele('exp_category'), div.ele('dept'),div.ele('contract_id'), div.ele('fundsrc'),
+                             div.ele('nycha_industry'), div.ele('resp_center'), div.ele('po_type'),]);
+              enable_input([div.ele('vendor_name'),div.ele('document_id'),
                             div.ele('nycha_amount_spent_from'), div.ele('nycha_amount_spent_to')]);
             }else if(exptype == 4) {
               disable_input([div.ele('dept'),div.ele('contract_id')]);
