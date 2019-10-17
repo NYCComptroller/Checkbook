@@ -21,7 +21,7 @@
     {"labelAlias":"dept_name","column":"department_name"},
     {"labelAlias":"funding_source","column":"funding_source_description"},
     {"labelAlias":"responsibility_center", "column":"responsibility_center_description"},
-    {"labelAlias":"expense_category","column":"expenditure_type_name"},
+    {"labelAlias":"expense_category","column":"expenditure_type_description"},
     {"labelAlias":"program", "column":"program_phase_description"},
     {"labelAlias":"project", "column":"gl_project_description"}
   ],
@@ -105,7 +105,8 @@
     "sourceColumn":"invoice_amount",
     "sql":"
       CASE
-      WHEN invoice_amount IS NULL THEN '-'
+      WHEN upper(section8_flag) = 'N' OR upper(section8_flag) = 'Y' THEN '-'
+      WHEN invoice_amount IS NULL OR invoice_amount= '0' THEN '-'
       ELSE CAST(invoice_amount AS TEXT)
       END AS invoice_amount
     "
@@ -115,7 +116,8 @@
     "sourceColumn":"invoice_discount",
     "sql":"
       CASE
-      WHEN invoice_discount IS NULL THEN '-'
+      WHEN upper(section8_flag) = 'N' OR upper(section8_flag) = 'Y' THEN '-'
+      WHEN invoice_discount IS NULL OR invoice_discount= '0' THEN '-'
       ELSE CAST(invoice_discount AS TEXT)
       END AS invoice_discount
     "
@@ -125,6 +127,7 @@
       "sourceColumn":"withholding_tax",
       "sql":"
       CASE
+      WHEN upper(section8_flag) = 'N' OR upper(section8_flag) = 'Y' THEN '-'
       WHEN withholding_tax IS NULL THEN '-'
       ELSE CAST(withholding_tax AS TEXT)
       END AS withholding_tax
@@ -221,8 +224,8 @@
     "
     },
     {
-    "column":"expenditure_type_name",
-    "sourceColumn":"expenditure_type_name",
+    "column":"expenditure_type_description",
+    "sourceColumn":"expenditure_type_description",
     "sql":"
       CASE
       WHEN expenditure_type_name IS NULL THEN '-'
