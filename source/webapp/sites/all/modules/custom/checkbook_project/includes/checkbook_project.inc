@@ -2671,3 +2671,32 @@ function _checkbook_psql_command($database = 'checkbook')
 
   return $command;
 }
+
+/**
+ * Strips a value from brackets using RegEx else returns zero.
+ * @param string $input
+ * @return int|string
+ */
+function emptyToZero($input)
+{
+  if (is_numeric($input)) {
+    return $input;
+  }
+  $p = "/.*?(\\[.*?\\])/is";
+  $matches = array();
+  if ($input) {
+    preg_match($p, $input, $matches);
+    $output = trim($matches[1], '[ ]');
+  } else {
+    $output = 0;
+  }
+  return $output;
+}
+
+/**
+ * @param $input
+ * @return int|string
+ */
+function _emptyToZero($input){
+  return emptyToZero($input);
+}
