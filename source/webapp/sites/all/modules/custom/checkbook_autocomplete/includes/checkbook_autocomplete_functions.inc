@@ -753,8 +753,10 @@ function _checkbook_autocomplete_spending_budgetname($year, $agency, $expense_ca
  * @param $agency
  * @param $spending_cat
  * @param string $data_source
+ * @param bool $json
+ * @return array|void
  */
-function _checkbook_autocomplete_spending_dept($year, $agency, $spending_cat, $data_source = Datasource::CITYWIDE)
+function _checkbook_autocomplete_spending_dept($year, $agency, $spending_cat=null, $data_source = Datasource::CITYWIDE, $json = true)
 {
   if (!$agency) {
     return;
@@ -765,7 +767,11 @@ function _checkbook_autocomplete_spending_dept($year, $agency, $spending_cat, $d
   $query = 'select/?q=*:*&facet=true&facet.field=department_name_code&f.department_name_code.facet.sort=index&fq=domain:spending&facet.mincount=1&wt=phps&facet.limit=100';
   $matches = _get_spending_datafeeds_autocomplete_results('department_name_code', $query, $year, $agency, $expense_category, $dept, $exptype, $mwbe_category, $industry, $data_source);
 
-  drupal_json_output($matches);
+  if($json){
+    drupal_json_output($matches);
+  } else{
+    return $matches;
+  }
 }
 
 /**
@@ -774,8 +780,10 @@ function _checkbook_autocomplete_spending_dept($year, $agency, $spending_cat, $d
  * @param $spending_cat
  * @param $year
  * @param string $data_source
+ * @param bool $json
+ * @return array|bool|mixed|void
  */
-function _checkbook_autocomplete_spending_expcategory($agency, $dept, $spending_cat, $year, $data_source = Datasource::CITYWIDE)
+function _checkbook_autocomplete_spending_expcategory($agency, $dept, $spending_cat, $year, $data_source = Datasource::CITYWIDE, $json = true)
 {
   $year_string = $agency_string = $dept_string = null;
   $dept = _emptyToZero(urldecode($dept));
@@ -804,6 +812,10 @@ function _checkbook_autocomplete_spending_expcategory($agency, $dept, $spending_
 
   $db_name = "main";
   $results = _checkbook_project_execute_sql($query, $db_name, $data_source);
+
+  if (!$json) {
+    return $results;
+  }
 
   if (count($results) > 0) {
     $matches = array();
@@ -1007,23 +1019,6 @@ function _checkbook_autocomplete_budget_budgetcode($agency, $dept, $expense_cate
   }
   $matches = _checkbook_autocomplete_solr_results($solr_datasource, $query, 'budget_code_name_code');
   drupal_json_output($matches);
-}
-
-/**
- * @param $input
- * @return int|string
- */
-function _emptyToZero($input)
-{
-  $p = "/.*?(\\[.*?\\])/is";
-  $matches = array();
-  if ($input) {
-    $inputval = preg_match($p, $input, $matches);
-    $output = trim($matches[1], '[ ]');
-  } else {
-    $output = 0;
-  }
-  return $output;
 }
 
 /**
