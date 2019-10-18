@@ -4344,26 +4344,6 @@ function checkbook_datafeeds_confirmation_notification($key, &$message, $params)
 }
 
 /**
- * Strips a value from brackets using RegEx else returns zero.
- *
- * @param string $input
- *
- * @return int|string
- */
-function emptyToZero($input)
-{
-  $p = "/.*?(\\[.*?\\])/is";
-  $matches = array();
-  if ($input) {
-    $inputval = preg_match($p, $input, $matches);
-    $output = trim($matches[1], '[ ]');
-  } else {
-    $output = 0;
-  }
-  return $output;
-}
-
-/**
  * Gets the created date for records within a domain to display at the top of Data Feeds page.
  *
  * @param string $domain
