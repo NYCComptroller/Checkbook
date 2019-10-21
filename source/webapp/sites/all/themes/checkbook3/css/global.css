@@ -3977,16 +3977,25 @@ body.page-data-feeds #div_data_source{
   padding: 10px;
 }
 
-body.page-data-feeds #div_data_source .form-item{
-  float:none;
-}
-
-body.page-data-feeds #div_data_source .form-radios .form-item{
-  float: none !important;
-  margin: 5px 10px;
-}
-
 body.page-data-feeds select.loading{
   background: url(/sites/all/themes/checkbook/images/loading.gif) no-repeat right center;
   color:#fff;
+}
+
+#div_data_source #edit-datafeeds-spending-domain-filter .form-item{
+  margin-right:0;
+}
+#div_data_source #edit-datafeeds-spending-domain-filter .form-item:first-child{
+  width: 30%;
+  margin-top: 30px;
+  margin-left: 20px;
+}
+
+#edit-datafeeds-spending-domain-filter .oge-datasource-fieldset{
+  width: 60%;
+  float: right;
+}
+
+.clear2{
+  clear:both;
 }
