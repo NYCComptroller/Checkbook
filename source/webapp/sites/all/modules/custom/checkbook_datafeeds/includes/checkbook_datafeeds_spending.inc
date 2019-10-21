@@ -639,10 +639,10 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state)
   );
 
   //Used to maintain the order of the columns
-//  $selected_columns = checkbook_datafeeds_format_columns();
-//  //Filter columns for current data source
-//  $filtered_columns = checkbook_datafeeds_spending_filter_selected_columns($selected_columns, $data_source, $response_type);
-//
+  $selected_columns = checkbook_datafeeds_format_columns();
+  //Filter columns for current data source
+  $filtered_columns = checkbook_datafeeds_spending_filter_selected_columns($selected_columns, $data_source, $response_type);
+
 //  switch ($data_source) {
 //    case Datasource::OGE:
 //      $form_state['step_information']['spending']['stored_values']['oge_column_select'] = $filtered_columns;
@@ -654,10 +654,10 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state)
 //      $form_state['step_information']['spending']['stored_values']['column_select'] = $filtered_columns;
 //  }
 //
-//  foreach ($filtered_columns as $column) {
-//    $form['columns'][$column] = array('#markup' => '<div>' . $column . '</div>');
-//    $user_criteria['Columns'][] = $column;
-//  }
+  foreach ($filtered_columns as $column) {
+    $form['columns'][$column] = array('#markup' => '<div>' . $column . '</div>');
+    $user_criteria['Columns'][] = $column;
+  }
 
   $form['filter'] = array(
     '#type' => 'fieldset',
@@ -1121,23 +1121,21 @@ function checkbook_datafeeds_spending_validate(&$form, &$form_state)
   //Hidden Field for multi-select
   switch ($data_source) {
     case Datasource::OGE:
-      $multi_select_hidden = isset($form_state['values']['oge_column_select']) ? '|' . implode('||', $form_state['values']['oge_column_select']) . '|' : '';
+      $multi_select_hidden = isset($form_state['input']['oge_column_select']) ? '|' . implode('||', $form_state['input']['oge_column_select']) . '|' : '';
+      if (!$multi_select_hidden) {
+        form_set_error('oge_column_select', t('You must select at least one column.'));
+      }
       break;
     case Datasource::NYCHA:
-      $multi_select_hidden = isset($form_state['values']['nycha_column_select']) ? '|' . implode('||', $form_state['values']['nycha_column_select']) . '|' : '';
+      $multi_select_hidden = isset($form_state['input']['nycha_column_select']) ? '|' . implode('||', $form_state['input']['nycha_column_select']) . '|' : '';
+      if (!$multi_select_hidden){
+        form_set_error('nycha_column_select', t('You must select at least one column.'));
+      }
       break;
     default:
-      $multi_select_hidden = isset($form_state['values']['column_select']) ? '|' . implode('||', $form_state['values']['column_select']) . '|' : '';
-  }
-
-//  $form['filter']['hidden_multiple_value']['#value'] = $multi_select_hidden;
-
-  //Validate response columns
-  if (Datasource::OGE == $data_source && !$oge_response_columns) {
-    form_set_error('oge_column_select', t('You must select at least one column.'));
-  } else if (Datasource::NYCHA == $data_source && !$nycha_response_columns) {
-    form_set_error('nycha_column_select', t('You must select at least one column.'));
-  } else if (Datasource::CITYWIDE == $data_source && !$response_columns) {
-    form_set_error('column_select', t('You must select at least one column.'));
+      $multi_select_hidden = isset($form_state['input']['column_select']) ? '|' . implode('||', $form_state['input']['column_select']) . '|' : '';
+      if (!$multi_select_hidden){
+        form_set_error('column_select', t('You must select at least one column.'));
+      }
   }
 }
