@@ -36,6 +36,10 @@
   "useList":true,
   "getTotalDataCount":true,
   "limit":"35",
+  "sortSourceByNull":["agreement_type_name", "contract_id", "release_number", "invoice_number", "check_payment_status",
+    "check_amount", "invoice_amount", "invoice_discount", "withholding_tax", "line_net_amount", "invoice_net_amount", "contract_purpose",
+    "display_industry_type_name", "department_name", "start_date", "end_date", "funding_source_description", "responsibility_center_description",
+    "expenditure_type_description", "program_phase_description", "gl_project_description"],
   "noDataInitialLoad":true,
   "html_class":"initiative-table",
   "no_results_content":"No Results Found",
@@ -204,7 +208,7 @@
       {"sClass":"text", "sWidth":"80px","asSorting":["asc","desc"]},
       {"bSortable":false,"sWidth":"2px"}
     ],
-    "aaSorting":[[0,"desc"]],
+    "aaSorting":[[1,"desc"]],
     "sScrollX":"100%",
     "bScrollCollapse": true
   },
