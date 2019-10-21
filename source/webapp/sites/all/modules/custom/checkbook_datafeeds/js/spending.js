@@ -98,7 +98,6 @@
 
   //Load Agency Drop-Down
   let reloadSpendingAgencies = function (dataSource) {
-    $('#edit-agency').addClass('loading');
     $.ajax({
       url: '/datafeeds/spending/agency/' + dataSource + '/json'
       , success: function (data) {
@@ -112,7 +111,7 @@
         }
         $('#edit-agency').html(html).trigger('change');
 
-        spendingDatafeedsDis();
+        spendingDatafeedsDis(dataSource);
       }
       , complete: function () {
         $('#edit-agency').removeClass('loading');
@@ -167,8 +166,7 @@
     let agency = $('#edit-agency').val();
     let data_source = $('input[name="datafeeds-spending-domain-filter"]:checked').val();
 
-    if ($.inArray(agency, ["", null, 'Select One', 'Citywide (All Agencies)']) === -1 && 'checkbook_nycha' !== data_source)
-    {
+    if ($.inArray(agency, ["", null, 'Select One', 'Citywide (All Agencies)']) === -1 && 'checkbook_nycha' !== data_source) {
       $('#edit-expense-category').addClass('loading');
       let year = 0;
       if ($('input:radio[name=date_filter]:checked').val() === 0) {
@@ -229,34 +227,47 @@
     }
   };
 
-  let spendingDatafeedsDis = function()
-  {
-    if (1 === $('#edit-agency option').length){
-      $('#edit-agency').attr('disabled','disabled');
+  let spendingDatafeedsDis = function (dataSource) {
+    if (1 === $('#edit-agency option').length) {
+      $('#edit-agency').attr('disabled', 'disabled');
     } else {
       $('#edit-agency').removeAttr('disabled');
     }
 
     if (1 === $('#edit-dept option').length || 'Select Department' === $('#edit-dept').val()) {
-      $('#edit-dept').attr('disabled','disabled');
+      $('#edit-dept').attr('disabled', 'disabled');
     }
 
     if (1 === $('#edit-expense-category option').length || 'Select Expense Category' === $('#edit-dept').val()) {
-      $('#edit-expense-category').attr('disabled','disabled');
+      $('#edit-expense-category').attr('disabled', 'disabled');
+    }
+    if ('checkbook' === dataSource) {
+      $('.data-feeds-wizard .datafield.agency').show();
+    } else {
+      $('.data-feeds-wizard .datafield.agency').hide();
     }
   };
 
   Drupal.behaviors.spendingDataFeeds = {
     attach: function (context) {
-      const dataSource = $('input[name="datafeeds-spending-domain-filter"]:checked', context).val();
-      //Agency drop-down options
-      // reloadSpendingAgencies(dataSource);
+      let dataSource = $('input[name="datafeeds-spending-domain-filter"]:checked', context).val();
 
-      $('#checkbook-datafeeds-data-feed-wizard',context).submit(function(){
+      let oge_datasources = $("#edit-datafeeds-spending-domain-filter .form-item:not(:first-child)");
+      let oge_fieldset = $('<fieldset />').addClass('oge-datasource-fieldset');
+      let oge_fieldset_legend = $('<legend />').text('Other Government Entities:');
+      oge_fieldset.append(oge_fieldset_legend);
+      oge_datasources.detach();
+      oge_fieldset.append(oge_datasources);
+      $('#edit-datafeeds-spending-domain-filter').append(oge_fieldset);
+      $('#div_data_source').append($('<div />').addClass('clear2'));
+
+
+
+      $('#checkbook-datafeeds-data-feed-wizard', context).submit(function () {
         $('#edit-agency').removeAttr('disabled');
       });
 
-      spendingDatafeedsDis();
+      spendingDatafeedsDis(dataSource);
 
       // Sets up multi-select/option transfer for CityWide
       $('#edit-column-select', context).multiSelect();
