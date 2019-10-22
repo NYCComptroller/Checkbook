@@ -643,17 +643,17 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state)
   //Filter columns for current data source
   $filtered_columns = checkbook_datafeeds_spending_filter_selected_columns($selected_columns, $data_source, $response_type);
 
-//  switch ($data_source) {
-//    case Datasource::OGE:
-//      $form_state['step_information']['spending']['stored_values']['oge_column_select'] = $filtered_columns;
-//      break;
-//    case Datasource::NYCHA:
-//      $form_state['step_information']['spending']['stored_values']['nycha_column_select'] = $filtered_columns;
-//      break;
-//    default:
-//      $form_state['step_information']['spending']['stored_values']['column_select'] = $filtered_columns;
-//  }
-//
+  switch ($data_source) {
+    case Datasource::OGE:
+      $form_state['step_information']['spending']['stored_values']['oge_column_select'] = $filtered_columns;
+      break;
+    case Datasource::NYCHA:
+      $form_state['step_information']['spending']['stored_values']['nycha_column_select'] = $filtered_columns;
+      break;
+    default:
+      $form_state['step_information']['spending']['stored_values']['column_select'] = $filtered_columns;
+  }
+
   foreach ($filtered_columns as $column) {
     $form['columns'][$column] = array('#markup' => '<div>' . $column . '</div>');
     $user_criteria['Columns'][] = $column;
@@ -1033,9 +1033,9 @@ function checkbook_datafeeds_spending_validate(&$form, &$form_state)
   $dateto = $form_state['values']['issuedto'];
   $vendor = $form_state['values']['payee_name'];
   $contract_id = $form_state['values']['contractno'];
-  $response_columns = $form_state['values']['column_select'];
-  $oge_response_columns = $form_state['values']['oge_column_select'];
-  $nycha_response_columns = $form_state['values']['nycha_column_select'];
+//  $response_columns = $form_state['values']['column_select'];
+//  $oge_response_columns = $form_state['values']['oge_column_select'];
+//  $nycha_response_columns = $form_state['values']['nycha_column_select'];
 
   ckbk_datafeeds_spending_update_options_by_datasource($form, $form_state, $data_source);
 
