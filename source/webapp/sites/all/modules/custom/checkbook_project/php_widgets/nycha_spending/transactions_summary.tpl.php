@@ -84,7 +84,7 @@ if(isset($url)) {
                           </li>
                         </ul>
                       </div>";
-      $subTitle = $inv_contractSummary;
+      $subTitle2 = $inv_contractSummary;
     }
    // if ($tcode == 'VO' || $tcode == 'AWD' || $tcode == 'DEP'|| $tcode == 'IND'|| $tcode == 'RESC' || $tcode == 'SZ') {
      else{ $tcode_title = NYCHAContractUtil::getTitleByCode($tcode);
