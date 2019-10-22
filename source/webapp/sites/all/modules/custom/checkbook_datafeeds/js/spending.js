@@ -26,9 +26,9 @@
     $('#edit-columns .form-item').hide();
 
     //reset the selected columns
-    $('#edit-column-select').multiSelect('deselect_all');
-    $('#edit-oge-column-select').multiSelect('deselect_all');
-    $('#edit-nycha-column-select').multiSelect('deselect_all');
+    // $('#edit-column-select').multiSelect('deselect_all');
+    // $('#edit-oge-column-select').multiSelect('deselect_all');
+    // $('#edit-nycha-column-select').multiSelect('deselect_all');
 
     switch (data_source) {
       case 'checkbook_oge':
@@ -252,16 +252,7 @@
     attach: function (context) {
       let dataSource = $('input[name="datafeeds-spending-domain-filter"]:checked', context).val();
 
-      let oge_datasources = $("#edit-datafeeds-spending-domain-filter .form-item:not(:first-child)");
-      let oge_fieldset = $('<fieldset />').addClass('oge-datasource-fieldset');
-      let oge_fieldset_legend = $('<legend />').text('Other Government Entities:');
-      oge_fieldset.append(oge_fieldset_legend);
-      oge_datasources.detach();
-      oge_fieldset.append(oge_datasources);
-      $('#edit-datafeeds-spending-domain-filter').append(oge_fieldset);
-      $('#div_data_source').append($('<div />').addClass('clear2'));
-
-
+      $.fn.formatDatafeedsDatasourceRadio();
 
       $('#checkbook-datafeeds-data-feed-wizard', context).submit(function () {
         $('#edit-agency').removeAttr('disabled');
@@ -316,7 +307,6 @@
 
       //Data Source change event
       $('input:radio[name=datafeeds-spending-domain-filter]', context).change(function () {
-        $('input:hidden[name="hidden_multiple_value"]', context).val("");
         $('input:hidden[name="date_filter_hidden"]', context).val("");
         onSpendingDataSourceChange($(this, context).val());
       });
@@ -410,7 +400,6 @@
         });
       });
       fixAutoCompleteWrapping($("#dynamic-filter-data-wrapper").children());
-      // $('#edit-agency').trigger('change');
     }
   };
 
