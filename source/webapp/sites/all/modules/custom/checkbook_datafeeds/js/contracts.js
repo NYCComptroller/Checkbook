@@ -429,6 +429,9 @@
 
   Drupal.behaviors.contractsDataFeeds = {
     attach: function (context) {
+
+      $.fn.formatDatafeedsDatasourceRadio();
+
       //This is to reset the radio button to citywide if the user refreshes browser
       let datasource = $('input[name="datafeeds-contracts-domain-filter"]:checked', context).val();
       const $contractStatus = $('select[name="df_contract_status"]', context);

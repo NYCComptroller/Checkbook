@@ -125,6 +125,17 @@ jQuery(document).ready(function ($) {
         });
     };
 
+    $.fn.formatDatafeedsDatasourceRadio = function() {
+      let oge_datasources = $("#div_data_source .form-item:not(:first-child)");
+      let oge_fieldset = $('<fieldset />').addClass('oge-datasource-fieldset');
+      let oge_fieldset_legend = $('<legend />').text('Other Government Entities:');
+      oge_fieldset.append(oge_fieldset_legend);
+      oge_datasources.detach();
+      oge_fieldset.append(oge_datasources);
+      $('#div_data_source .form-radios').append(oge_fieldset);
+      $('#div_data_source').append($('<div />').addClass('clear2'));
+    };
+
     // Projects & Actions Table Styling
     Drupal.behaviors.styleOverrides = {
         attach: function (context, settings) {
@@ -947,7 +958,6 @@ jQuery(document).ready(function ($) {
 
 // end of disabling code
 
-
 //Datafeeds form freeze while loading
     Drupal.behaviors.datafeedspagefreeze = {
         attach: function (context, settings) {
@@ -1271,7 +1281,7 @@ function fasterSplit(str, len) {
         //if()
         ret.push(str.substr(off, len));
         off += len
-    } while (off < strlen)
+    } while (off < strlen);
     return ret
 }
 
