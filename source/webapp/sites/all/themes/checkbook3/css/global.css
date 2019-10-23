@@ -2695,6 +2695,10 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 
 
 h1.no-spending-transactions {width: 500px}
+.newwindow #page-title{
+  visibility: hidden;
+  height:0px;
+}
 .newwindow .inside .transactions-container,
 .newwindow .inside .contract-details-heading,
 .newwindow .inside .nycha-contract-details-heading,
