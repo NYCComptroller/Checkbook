@@ -1,0 +1,583 @@
+<?php
+/**
+ * @file
+ * Tests for Security Kit module.
+ */
+
+/**
+ * Functional tests for Security Kit.
+ */
+class SecKitTestCase extends DrupalWebTestCase {
+  /**
+   * Admin user for tests
+   * @var object
+   */
+  private $admin;
+
+  /**
+   * Implements getInfo().
+   * @see DrupalWebTestCase::getInfo()
+   */
+  public static function getInfo() {
+    return array(
+      'name' => t('Security Kit functionality'),
+      'description' => t('Tests functionality and settings page of Security Kit module.'),
+      'group' => t('Security Kit'),
+    );
+  }
+
+  /**
+   * Implements setUp().
+   * @see DrupalWebTestCase::setUp()
+   */
+  public function setUp() {
+    variable_set('clean_url', 1);
+    parent::setUp('seckit');
+    $this->admin = $this->drupalCreateUser(array('administer seckit'));
+    $this->drupalLogin($this->admin);
+  }
+
+  /**
+   * Tests disabled Content Security Policy.
+   */
+  public function testDisabledCSP() {
+    $form['seckit_xss[csp][checkbox]'] = FALSE;
+    $this->drupalPost('admin/config/system/seckit', $form, t('Save configuration'));
+    $this->assertFalse($this->drupalGetHeader('Content-Security-Policy'),
+      t('Content Security Policy is disabled.'));
+    $this->assertFalse($this->drupalGetHeader('X-Content-Security-Policy'),
+      t('Content Security Policy is disabled.'));
+    $this->assertFalse($this->drupalGetHeader('X-WebKit-CSP'),
+      t('Content Security Policy is disabled.'));
+  }
+
+  /**
+   * Tests Content Security Policy with all enabled directives.
+   */
+  public function testCSPHasAllDirectives() {
+    $form = array(
+      'seckit_xss[csp][checkbox]'              => TRUE,
+      'seckit_xss[csp][vendor-prefix][x]'      => TRUE,
+      'seckit_xss[csp][vendor-prefix][webkit]' => TRUE,
+      'seckit_xss[csp][default-src]'           => '*',
+      'seckit_xss[csp][script-src]'            => '*',
+      'seckit_xss[csp][object-src]'            => '*',
+      'seckit_xss[csp][style-src]'             => '*',
+      'seckit_xss[csp][img-src]'               => '*',
+      'seckit_xss[csp][media-src]'             => '*',
+      'seckit_xss[csp][frame-src]'             => '*',
+      'seckit_xss[csp][frame-ancestors]'       => '*',
+      'seckit_xss[csp][child-src]'             => '*',
+      'seckit_xss[csp][font-src]'              => '*',
+      'seckit_xss[csp][connect-src]'           => '*',
+      'seckit_xss[csp][report-uri]'            => SECKIT_CSP_REPORT_URL,
+      'seckit_xss[csp][upgrade-req]'           => TRUE,
+    );
+    $this->drupalPost('admin/config/system/seckit', $form, t('Save configuration'));
+    $expected = 'default-src *; script-src *; object-src *; style-src *; img-src *; media-src *; frame-src *; frame-ancestors *; child-src *; font-src *; connect-src *; report-uri ' . base_path() . SECKIT_CSP_REPORT_URL .'; upgrade-insecure-requests';
+    $this->assertEqual($expected, $this->drupalGetHeader('Content-Security-Policy'),
+      t('Content-Security-Policy has all the directves.'));
+    $this->assertEqual($expected, $this->drupalGetHeader('X-Content-Security-Policy'),
+      t('X-Content-Security-Policy has all the directves.'));
+    $this->assertEqual($expected, $this->drupalGetHeader('X-WebKit-CSP'),
+      t('X-WebKit-CSP has all the directves.'));
+  }
+
+  /**
+   * Tests Content Security Policy with policy-uri directive.
+   * In this case, only policy-uri directive should be present.
+   */
+  public function testCSPPolicyUriDirectiveOnly() {
+    $form = array(
+      'seckit_xss[csp][checkbox]'              => TRUE,
+      'seckit_xss[csp][vendor-prefix][x]'      => TRUE,
+      'seckit_xss[csp][vendor-prefix][webkit]' => TRUE,
+      'seckit_xss[csp][default-src]'           => '*',
+      'seckit_xss[csp][script-src]'            => '*',
+      'seckit_xss[csp][object-src]'            => '*',
+      'seckit_xss[csp][style-src]'             => '*',
+      'seckit_xss[csp][img-src]'               => '*',
+      'seckit_xss[csp][media-src]'             => '*',
+      'seckit_xss[csp][frame-src]'             => '*',
+      'seckit_xss[csp][frame-ancestors]'       => '*',
+      'seckit_xss[csp][child-src]'             => '*',
+      'seckit_xss[csp][font-src]'              => '*',
+      'seckit_xss[csp][connect-src]'           => '*',
+      'seckit_xss[csp][report-uri]'            => SECKIT_CSP_REPORT_URL,
+      'seckit_xss[csp][policy-uri]'            => 'csp.xml',
+    );
+    $this->drupalPost('admin/config/system/seckit', $form, t('Save configuration'));
+    $expected = 'policy-uri ' . base_path() . 'csp.xml';
+    $this->assertEqual($expected, $this->drupalGetHeader('Content-Security-Policy'),
+      t('Content-Security-Policy has only policy-uri.'));
+    $this->assertEqual($expected, $this->drupalGetHeader('X-Content-Security-Policy'),
+      t('X-Content-Security-Policy has only policy-uri.'));
+    $this->assertEqual($expected, $this->drupalGetHeader('X-WebKit-CSP'),
+      t('X-WebKit-CSP has only policy-uri(Chrome and Safari).'));
+  }
+
+  /**
+   * Tests for report-uri directive of Content Security Policy.
+   *
+   * report-uri can be relative to Drupal's base URI or it can be an absolute
+   * URI.
+   */
+  public function testCSPReportUriDirectiveOnly() {
+
+    // report-uri is report-csp-violation
+    $base_form = array(
+      'seckit_xss[csp][checkbox]'              => TRUE,
+      'seckit_xss[csp][vendor-prefix][x]'      => TRUE,
+      'seckit_xss[csp][vendor-prefix][webkit]' => TRUE,
+      'seckit_xss[csp][default-src]'           => '*',
+      'seckit_xss[csp][script-src]'            => '*',
+      'seckit_xss[csp][object-src]'            => '*',
+      'seckit_xss[csp][style-src]'             => '*',
+      'seckit_xss[csp][img-src]'               => '*',
+      'seckit_xss[csp][media-src]'             => '*',
+      'seckit_xss[csp][frame-src]'             => '*',
+      'seckit_xss[csp][frame-ancestors]'       => '*',
+      'seckit_xss[csp][child-src]'             => '*',
+      'seckit_xss[csp][font-src]'              => '*',
+      'seckit_xss[csp][connect-src]'           => '*',
+      'seckit_xss[csp][report-uri]'            => SECKIT_CSP_REPORT_URL,
+    );
+
+    // First test.  No report-uri has been specified.
+    $form_for_test0 = $base_form;
+    $this->drupalPost('admin/config/system/seckit', $form_for_test0, t('Save configuration'));
+
+    $expected = 'default-src *; script-src *; object-src *; style-src *; img-src *; media-src *; frame-src *; frame-ancestors *; child-src *; font-src *; connect-src *; report-uri ' . url(SECKIT_CSP_REPORT_URL);
+    $this->assertEqual($expected, $this->drupalGetHeader('Content-Security-Policy'),
+      t('Content-Security-Policy has default report-uri directive.'));
+    $this->assertEqual($expected, $this->drupalGetHeader('X-Content-Security-Policy'),
+      t('X-Content-Security-Policy has default report-uri directive.'));
+    $this->assertEqual($expected, $this->drupalGetHeader('X-WebKit-CSP'),
+      t('X-WebKit-CSP has default report-uri directive.'));
+
+    // Second test.  A valid internal path "node" has been specified as the
+    // report-uri.
+    $form_for_test1 = $base_form;
+    $report_uri_for_test1 = 'node';
+    $form_for_test1['seckit_xss[csp][report-uri]'] = $report_uri_for_test1;
+    $this->drupalPost('admin/config/system/seckit', $form_for_test1, t('Save configuration'));
+
+    $expected_report_uri_for_test1 = url($report_uri_for_test1);
+    $expected = 'default-src *; script-src *; object-src *; style-src *; img-src *; media-src *; frame-src *; frame-ancestors *; child-src *; font-src *; connect-src *; report-uri ' . $expected_report_uri_for_test1;
+    $this->assertEqual($expected, $this->drupalGetHeader('Content-Security-Policy'),
+      t('Content-Security-Policy has %uri as report-uri directive.', array(
+        '%uri' => $expected_report_uri_for_test1)));
+    $this->assertEqual($expected, $this->drupalGetHeader('X-Content-Security-Policy'),
+      t('X-Content-Security-Policy has %uri as report-uri directive.', array(
+        '%uri' => $expected_report_uri_for_test1)));
+    $this->assertEqual($expected, $this->drupalGetHeader('X-WebKit-CSP'),
+      t('X-WebKit-CSP has %uri as report-uri directive.', array(
+        '%uri' => $expected_report_uri_for_test1)));
+
+    // Third test.  A non-existent internal path "foo/bar/report-csp-violation"
+    // has been specified as the report-uri.
+    $form_for_test2       = $base_form;
+    $report_uri_for_test2 = 'foo/bar/report-csp-violation';
+    $form_for_test2['seckit_xss[csp][report-uri]'] = $report_uri_for_test2;
+    $this->drupalPost('admin/config/system/seckit', $form_for_test2, t('Save configuration'));
+
+    $expected_err_msg = t('Non-existent path for report-uri given: %uri', array(
+      '%uri' => $report_uri_for_test2));
+    $this->assertRaw($expected_err_msg, 'Non-existent report-uri path should be rejected.');
+
+    // Fourth test.  report-uri is https://report-uri.io/report/DrupalSeckitTest
+    $form_for_test3       = $base_form;
+    $report_uri_for_test3 = 'https://report-uri.io/report/DrupalSeckitTest';
+    $form_for_test3['seckit_xss[csp][report-uri]'] = $report_uri_for_test3;
+    $this->drupalPost('admin/config/system/seckit', $form_for_test3, t('Save configuration'));
+
+    $expected_report_uri_for_test3 = $report_uri_for_test3;
+    $expected = 'default-src *; script-src *; object-src *; style-src *; img-src *; media-src *; frame-src *; frame-ancestors *; child-src *; font-src *; connect-src *; report-uri ' . $expected_report_uri_for_test3;
+    $this->assertEqual($expected, $this->drupalGetHeader('Content-Security-Policy'),
+      t('Content-Security-Policy has %uri as report-uri directive.', array(
+        '%uri' => $expected_report_uri_for_test3)));
+    $this->assertEqual($expected, $this->drupalGetHeader('X-Content-Security-Policy'),
+      t('X-Content-Security-Policy has %uri as report-uri directive.', array(
+        '%uri' => $expected_report_uri_for_test3)));
+    $this->assertEqual($expected, $this->drupalGetHeader('X-WebKit-CSP'),
+      t('X-WebKit-CSP has %uri as report-uri directive.', array(
+        '%uri' => $expected_report_uri_for_test3)));
+
+    // Another test.  report-uri is http://report-uri.io/report/DrupalSeckitTest
+    $form_for_test4       = $base_form;
+    $report_uri_for_test4 = 'http://report-uri.io/report/DrupalSeckitTest';
+    $form_for_test4['seckit_xss[csp][report-uri]'] = $report_uri_for_test4;
+    $this->drupalPost('admin/config/system/seckit', $form_for_test4, t('Save configuration'));
+
+    $expected_report_uri_for_test4 = $report_uri_for_test4;
+    $expected = 'default-src *; script-src *; object-src *; style-src *; img-src *; media-src *; frame-src *; frame-ancestors *; child-src *; font-src *; connect-src *; report-uri ' . $expected_report_uri_for_test4;
+    $this->assertEqual($expected, $this->drupalGetHeader('Content-Security-Policy'),
+      t('Content-Security-Policy has %uri as report-uri directive.', array(
+        '%uri' => $expected_report_uri_for_test4)));
+    $this->assertEqual($expected, $this->drupalGetHeader('X-Content-Security-Policy'),
+      t('X-Content-Security-Policy has %uri as report-uri directive.', array(
+        '%uri' => $expected_report_uri_for_test4)));
+    $this->assertEqual($expected, $this->drupalGetHeader('X-WebKit-CSP'),
+      t('X-WebKit-CSP has %uri as report-uri directive.', array(
+        '%uri' => $expected_report_uri_for_test4)));
+
+    // Last test.  report-uri is //report-uri.io/report/DrupalSeckitTest
+    $form_for_test5       = $base_form;
+    $report_uri_for_test5 = '//report-uri.io/report/DrupalSeckitTest';
+    $form_for_test5['seckit_xss[csp][report-uri]'] = $report_uri_for_test5;
+    $this->drupalPost('admin/config/system/seckit', $form_for_test5, t('Save configuration'));
+
+    $expected_report_uri_for_test5 = $report_uri_for_test5;
+    $expected = 'default-src *; script-src *; object-src *; style-src *; img-src *; media-src *; frame-src *; frame-ancestors *; child-src *; font-src *; connect-src *; report-uri ' . $expected_report_uri_for_test5;
+    $this->assertEqual($expected, $this->drupalGetHeader('Content-Security-Policy'),
+      t('Content-Security-Policy has %uri as report-uri directive.', array(
+        '%uri' => $expected_report_uri_for_test5)));
+    $this->assertEqual($expected, $this->drupalGetHeader('X-Content-Security-Policy'),
+      t('X-Content-Security-Policy has %uri as report-uri directive.', array(
+        '%uri' => $expected_report_uri_for_test5)));
+    $this->assertEqual($expected, $this->drupalGetHeader('X-WebKit-CSP'),
+      t('X-WebKit-CSP has %uri as report-uri directive.', array(
+        '%uri' => $expected_report_uri_for_test5)));
+  }
+
+  /**
+   * Tests Content Security Policy with all directives empty.
+   * In this case, we should revert back to default values.
+   */
+  public function testCSPAllDirectivesEmpty() {
+    $form = array(
+      'seckit_xss[csp][checkbox]'              => TRUE,
+      'seckit_xss[csp][vendor-prefix][x]'      => FALSE,
+      'seckit_xss[csp][vendor-prefix][webkit]' => FALSE,
+      'seckit_xss[csp][default-src]'           => '',
+      'seckit_xss[csp][script-src]'            => '',
+      'seckit_xss[csp][object-src]'            => '',
+      'seckit_xss[csp][img-src]'               => '',
+      'seckit_xss[csp][media-src]'             => '',
+      'seckit_xss[csp][style-src]'             => '',
+      'seckit_xss[csp][frame-src]'             => '',
+      'seckit_xss[csp][frame-ancestors]'       => '',
+      'seckit_xss[csp][child-src]'             => '',
+      'seckit_xss[csp][font-src]'              => '',
+      'seckit_xss[csp][connect-src]'           => '',
+      'seckit_xss[csp][report-uri]'            => '',
+      'seckit_xss[csp][policy-uri]'            => '',
+    );
+    $this->drupalPost('admin/config/system/seckit', $form, t('Save configuration'));
+    $expected = "default-src 'self'; report-uri " . base_path() . SECKIT_CSP_REPORT_URL;
+    $this->assertEqual($expected, $this->drupalGetHeader('Content-Security-Policy'),
+      t('Content-Security-Policy has default directive.'));
+    $this->assertFalse($this->drupalGetHeader('X-Content-Security-Policy'),
+      t('Vendor prefixed X-Content-Security-Policy header is disabled.'));
+    $this->assertFalse($this->drupalGetHeader('X-WebKit-CSP'),
+      t('Vendor prefixed X-Webkit-CSP header is disabled.'));
+  }
+
+  /**
+   * Tests Content Security Policy with one vendor-prefixed header enabled.
+   *
+   * The enabled headers should contain default values.
+   */
+  public function testCSPVendorPrefixWebkitAllDirectivesEmpty() {
+    $form = array(
+      'seckit_xss[csp][checkbox]'              => TRUE,
+      'seckit_xss[csp][vendor-prefix][x]'      => FALSE,
+      'seckit_xss[csp][vendor-prefix][webkit]' => TRUE,
+      'seckit_xss[csp][default-src]'           => '',
+      'seckit_xss[csp][script-src]'            => '',
+      'seckit_xss[csp][object-src]'            => '',
+      'seckit_xss[csp][img-src]'               => '',
+      'seckit_xss[csp][media-src]'             => '',
+      'seckit_xss[csp][style-src]'             => '',
+      'seckit_xss[csp][frame-src]'             => '',
+      'seckit_xss[csp][frame-ancestors]'       => '',
+      'seckit_xss[csp][child-src]'             => '',
+      'seckit_xss[csp][font-src]'              => '',
+      'seckit_xss[csp][connect-src]'           => '',
+      'seckit_xss[csp][report-uri]'            => '',
+      'seckit_xss[csp][policy-uri]'            => '',
+    );
+    $this->drupalPost('admin/config/system/seckit', $form, t('Save configuration'));
+    $expected = "default-src 'self'; report-uri " . base_path() . SECKIT_CSP_REPORT_URL;
+    $this->assertEqual($expected, $this->drupalGetHeader('Content-Security-Policy'),
+      t('Content-Security-Policy has default directive.'));
+    $this->assertFalse($this->drupalGetHeader('X-Content-Security-Policy'),
+      t('Vendor prefixed X-Content-Security-Policy header is disabled.'));
+    $this->assertEqual($expected, $this->drupalGetHeader('X-WebKit-CSP'),
+      t('X-WebKit-CSP has default directve.'));
+  }
+
+  /**
+   * Tests Content Security Policy in report-only mode.
+   */
+  public function testReportOnlyCSP() {
+    $form['seckit_xss[csp][checkbox]'] = TRUE;
+    $form['seckit_xss[csp][report-only]'] = TRUE;
+    $this->drupalPost('admin/config/system/seckit', $form, t('Save configuration'));
+    $this->assertTrue($this->drupalGetHeader('Content-Security-Policy-Report-Only'),
+      t('Content Security Policy is in report-only mode.'));
+    $this->assertFalse($this->drupalGetHeader('X-Content-Security-Policy'),
+      t('Vendor prefixed X-Content-Security-Policy header is disabled.'));
+    $this->assertFalse($this->drupalGetHeader('X-WebKit-CSP'),
+      t('Vendor prefixed X-Webkit-CSP header is disabled.'));
+  }
+
+  /**
+   * Tests Content Security Policy with upgrade-insecure-requests directive.
+   * In this case, only upgrade-insecure-requests directive should be present.
+   */
+  public function testCSPUpgradeInsecureRequestsDirectiveOnly() {
+    $form['seckit_xss[csp][checkbox]'] = TRUE;
+    $form['seckit_xss[csp][upgrade-req]'] = TRUE;
+    $this->drupalPost('admin/config/system/seckit', $form, t('Save configuration'));
+    $expected = "default-src 'self'; report-uri " . base_path() . SECKIT_CSP_REPORT_URL . '; upgrade-insecure-requests';
+    $this->assertEqual($expected, $this->drupalGetHeader('Content-Security-Policy'),
+      t('Content-Security-Policy has defaults plus upgrade-insecure-requests.'));
+  }
+
+  /**
+   * Tests disabled X-XSS-Protection HTTP response header.
+   */
+  public function testXXSSProtectionIsDisabled() {
+    $form['seckit_xss[x_xss][select]'] = SECKIT_X_XSS_DISABLE;
+    $this->drupalPost('admin/config/system/seckit', $form, t('Save configuration'));
+    $this->assertFalse($this->drupalGetHeader('X-XSS-Protection'),
+      t('X-XSS-Protection is disabled.'));
+  }
+
+  /**
+   * Tests set to 0 X-XSS-Protection HTTP response header.
+   */
+  public function testXXSSProtectionIs0() {
+    $form['seckit_xss[x_xss][select]'] = SECKIT_X_XSS_0;
+    $this->drupalPost('admin/config/system/seckit', $form, t('Save configuration'));
+    $this->assertEqual(0, $this->drupalGetHeader('X-XSS-Protection'),
+      t('X-XSS-Protection is set to 0.'));
+  }
+
+  /**
+   * Tests set to 1 X-XSS-Protection HTTP response header.
+   */
+  public function testXXSSProtectionIs1() {
+    $form['seckit_xss[x_xss][select]'] = SECKIT_X_XSS_1;
+    $this->drupalPost('admin/config/system/seckit', $form, t('Save configuration'));
+    $this->assertEqual('1', $this->drupalGetHeader('X-XSS-Protection'),
+      t('X-XSS-Protection is set to 1.'));
+  }
+
+  /**
+   * Tests set to 1; mode=block X-XSS-Protection HTTP response header.
+   */
+  public function testXXSSProtectionIs1Block() {
+    $form['seckit_xss[x_xss][select]'] = SECKIT_X_XSS_1_BLOCK;
+    $this->drupalPost('admin/config/system/seckit', $form, t('Save configuration'));
+    $this->assertEqual('1; mode=block', $this->drupalGetHeader('X-XSS-Protection'),
+      t('X-XSS-Protection is set to 1; mode=block.'));
+  }
+
+  /**
+   * Tests HTTP Origin allows requests from the site.
+   */
+  public function testOriginAllowsSite() {
+    global $base_root;
+    $form['seckit_csrf[origin]'] = TRUE;
+    $this->drupalPost('admin/config/system/seckit', $form, t('Save configuration'));
+    $this->drupalPost('admin/config/system/seckit', $form, t('Save configuration'),
+      array(), array('Origin: ' . $base_root));
+    $this->assertResponse(200,
+      t('Request is allowed.'));
+  }
+
+  /**
+   * Tests HTTP Origin allows requests from the specified source.
+   */
+  public function testOriginAllowsSpecifiedSource() {
+    $form = array(
+      'seckit_csrf[origin]' => TRUE,
+      'seckit_csrf[origin_whitelist]' => 'http://www.example.com',
+    );
+    $this->drupalPost('admin/config/system/seckit', $form, t('Save configuration'));
+    $this->drupalPost('admin/config/system/seckit', $form, t('Save configuration'),
+      array(), array('Origin: http://www.example.com'));
+    $this->assertResponse(200,
+      t('Whitelisted request is allowed.'));
+  }
+
+  /**
+   * Tests HTTP Origin allows requests from the specified source, with multiple
+   * values in the whitelist.
+   */
+  public function testOriginAllowsSpecifiedSourceMultiWhitelist() {
+    $form = array(
+      'seckit_csrf[origin]' => TRUE,
+      'seckit_csrf[origin_whitelist]' => 'http://www.example.com, https://www.example.com, https://example.com:8080',
+    );
+    $this->drupalPost('admin/config/system/seckit', $form, t('Save configuration'));
+    $this->drupalPost('admin/config/system/seckit', $form, t('Save configuration'),
+      array(), array('Origin: https://www.example.com'));
+    $this->assertResponse(200,
+      t('Whitelisted request is allowed.'));
+  }
+
+  /**
+   * Tests HTTP Origin denies request.
+   */
+  public function testOriginDeny() {
+    $form['seckit_csrf[origin]'] = TRUE;
+    $this->drupalPost('admin/config/system/seckit', $form, t('Save configuration'));
+    $this->drupalPost('admin/config/system/seckit', $form, t('Save configuration'),
+      array(), array('Origin: http://www.example.com'));
+    $this->assertEqual(array(), $_POST,
+      t('POST is empty.'));
+    $this->assertResponse(403,
+      t('Request is denied.'));
+  }
+
+  /**
+   * Tests disabled X-Frame-Options HTTP response header.
+   */
+  public function testXFrameOptionsIsDisabled() {
+    $form['seckit_clickjacking[x_frame]'] = SECKIT_X_FRAME_DISABLE;
+    $this->drupalPost('admin/config/system/seckit', $form, t('Save configuration'));
+    $this->assertFalse($this->drupalGetHeader('X-Frame-Options'),
+      t('X-Frame-Options is disabled.'));
+  }
+
+  /**
+   * Tests set to SAMEORIGIN X-Frame-Options HTTP response header.
+   */
+  public function testXFrameOptionsIsSameOrigin() {
+    $form['seckit_clickjacking[x_frame]'] = SECKIT_X_FRAME_SAMEORIGIN;
+    $this->drupalPost('admin/config/system/seckit', $form, t('Save configuration'));
+    $this->assertEqual('SAMEORIGIN', $this->drupalGetHeader('X-Frame-Options'),
+      t('X-Frame-Options is set to SAMEORIGIN.'));
+  }
+
+  /**
+   * Tests set to DENY X-Frame-Options HTTP response header.
+   */
+  public function testXFrameOptionsIsDeny() {
+    $form['seckit_clickjacking[x_frame]'] = SECKIT_X_FRAME_DENY;
+    $this->drupalPost('admin/config/system/seckit', $form, t('Save configuration'));
+    $this->assertEqual('DENY', $this->drupalGetHeader('X-Frame-Options'),
+      t('X-Frame-Options is set to DENY.'));
+  }
+
+  /**
+   * Tests set to ALLOW-FROM X-Frame-Options HTTP response header.
+   */
+  public function testXFrameOptionsIsAllowFrom() {
+    $form['seckit_clickjacking[x_frame]'] = SECKIT_X_FRAME_ALLOW_FROM;
+    $form['seckit_clickjacking[x_frame_allow_from]'] = 'http://www.google.com';
+    $this->drupalPost('admin/config/system/seckit', $form, t('Save configuration'));
+    $this->assertEqual('ALLOW-FROM http://www.google.com', $this->drupalGetHeader('X-Frame-Options'),
+      t('X-Frame-Options is set to ALLOW-FROM.'));
+  }
+
+  /**
+   * Tests JS + CSS + Noscript protection.
+   */
+  public function testJSCSSNoscript() {
+    $form['seckit_clickjacking[js_css_noscript]'] = TRUE;
+    $form['seckit_clickjacking[noscript_message]'] = 'Sorry, your JavaScript is disabled.';
+    $this->drupalPost('admin/config/system/seckit', $form, t('Save configuration'));
+    // Reset settings.
+    _seckit_get_options(TRUE);
+
+    // Get the new JS code.
+    $code = _seckit_get_js_css_noscript_code();
+    $this->assertRaw($code,
+      t('JavaScript + CSS + Noscript protection is loaded.'));
+  }
+
+  /**
+   * Tests disabled HTTP Strict Transport Security.
+   */
+  public function testDisabledHSTS() {
+    $form['seckit_ssl[hsts]'] = FALSE;
+    $this->drupalPost('admin/config/system/seckit', $form, t('Save configuration'));
+    $this->assertFalse($this->drupalGetHeader('Strict-Transport-Security'),
+      t('HTTP Strict Transport Security is disabled.'));
+  }
+
+  /**
+   * Tests HTTP Strict Transport Security has all directives.
+   */
+  public function testHSTSAllDirectves() {
+    $form = array(
+      'seckit_ssl[hsts]' => TRUE,
+      'seckit_ssl[hsts_max_age]' => 1000,
+      'seckit_ssl[hsts_subdomains]' => 1,
+    );
+    $this->drupalPost('admin/config/system/seckit', $form, t('Save configuration'));
+    $expected = 'max-age=1000; includeSubDomains';
+    $this->assertEqual($expected, $this->drupalGetHeader('Strict-Transport-Security'),
+      t('HTTP Strict Transport Security has all the directives.'));
+  }
+
+  /**
+   * Tests disabled From-Origin.
+   */
+  public function testDisabledFromOrigin() {
+    $form['seckit_various[from_origin]'] = FALSE;
+    $this->drupalPost('admin/config/system/seckit', $form, t('Save configuration'));
+    $this->assertFalse($this->drupalGetHeader('From-Origin'),
+      t('From-Origin is disabled.'));
+  }
+
+  /**
+   * Tests enabled From-Origin.
+   */
+  public function testEnabledFromOrigin() {
+    $form = array(
+      'seckit_various[from_origin]' => TRUE,
+      'seckit_various[from_origin_destination]' => 'same',
+    );
+    $this->drupalPost('admin/config/system/seckit', $form, t('Save configuration'));
+    $this->assertEqual('same', $this->drupalGetHeader('From-Origin'),
+      t('From-Origin is enabled and set to same.'));
+  }
+
+  /**
+   * Tests disabled Referrer-Policy HTTP response header.
+   */
+  public function testReferrerPolicyIsDisabled() {
+    $form['seckit_various[referrer_policy]'] = FALSE;
+    $this->drupalPost('admin/config/system/seckit', $form, t('Save configuration'));
+    $this->assertFalse($this->drupalGetHeader('Referrer-Policy'),
+      t('Referrer-Policy is disabled.'));
+  }
+
+  /**
+   * Tests enabled Referrer-Policy HTTP response header.
+   */
+  public function testReferrerPolicyIsEnabled() {
+    $form['seckit_various[referrer_policy]'] = TRUE;
+    $form['seckit_various[referrer_policy_policy]'] = 'no-referrer-when-downgrade';
+    $this->drupalPost('admin/config/system/seckit', $form, t('Save configuration'));
+    $this->assertEqual('no-referrer-when-downgrade', $this->drupalGetHeader('Referrer-Policy'), t('Referrer-Policy is enabled and set to no-referrer-when-downgrade.'));
+  }
+
+  /**
+   * Tests disabled feature-policy.
+   */
+  public function testDisabledFeaturePolicy() {
+    $form['seckit_fp[feature_policy]'] = FALSE;
+    $this->drupalPost('admin/config/system/seckit', $form, t('Save configuration'));
+    $this->assertFalse($this->drupalGetHeader('Feature-Policy'), t('Feature-Policy is disabled.'));
+  }
+
+  /**
+   * Tests enabled feature-policy.
+   */
+  public function testEnabledFeaturePolicy() {
+    $form = array(
+      'seckit_fp[feature_policy]' => TRUE,
+      'seckit_fp[feature_policy_policy]' => "accelerometer 'none'; camera 'none'; geolocation 'none'; gyroscope 'none'; magnetometer 'none'; microphone 'none'; payment 'none'; usb 'none'",
+    );
+    $this->drupalPost('admin/config/system/seckit', $form, t('Save configuration'));
+    $expected = "accelerometer 'none'; camera 'none'; geolocation 'none'; gyroscope 'none'; magnetometer 'none'; microphone 'none'; payment 'none'; usb 'none'";
+    $this->assertEqual($expected, $this->drupalGetHeader('Feature-Policy'), t('The feature-policy header is correctly sent.'));
+    debug(array('expected' => $expected, 'received' => $this->drupalGetHeader('Feature-Policy'), 'headers' => $this->drupalGetHeaders()));
+  }
+}

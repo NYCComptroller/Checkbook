@@ -3986,16 +3986,16 @@ body.page-data-feeds select.loading{
   color:#fff;
 }
 
-#div_data_source #edit-datafeeds-spending-domain-filter .form-item{
+#div_data_source .form-type-radios .form-item{
   margin-right:0;
 }
-#div_data_source #edit-datafeeds-spending-domain-filter .form-item:first-child{
+#div_data_source .form-type-radios .form-item:first-child{
   width: 30%;
   margin-top: 30px;
   margin-left: 20px;
 }
 
-#edit-datafeeds-spending-domain-filter .oge-datasource-fieldset{
+#div_data_source .oge-datasource-fieldset{
   width: 60%;
   float: right;
 }
