@@ -2,11 +2,11 @@
   "widgetType":"data_tables",
   "widgetSubType":"dataTableList",
   "stickyHeader":true,
-  "cleanURLParameters":["year", "agency", "vendor", "agreement_type", "po_num_exact", "po_num", "record_type", "section8_flag",
+  "cleanURLParameters":["year","syear", "agency", "vendor", "agreement_type", "po_num_exact", "po_num", "record_type", "section8_flag",
                         "vendornm", "vendornm_exact", "checkamt", "checkamtr", "funding_id", "invoice_number", "industry", "exp_cat",
                         "category", "dept", "deptnm", "fundsrc", "doc_id","doc_id_exact","check_payment_status", "expcategorycode","resp_center",
                         "amount_spent", "issue_date"],
-  "urlParamMap":{"year":"issue_date_year_id", "agency":"agency_id", "vendor":"vendor_id", "agreement_type":"agreement_type_code",
+  "urlParamMap":{"year":"issue_date_year_id","syear":"issue_date_year_id", "agency":"agency_id", "vendor":"vendor_id", "agreement_type":"agreement_type_code",
                  "po_num_exact": "contract_id", "po_num":"contract_id", "record_type":"record_type", "section8_flag":"section8_flag",
                  "vendornm":"vendor_name","vendornm_exact":"vendor_name", "checkamt":"check_amount", "checkamtr":"check_amount",
                  "funding_id":"funding_source_id", "invoice_number":"invoice_number", "industry":"industry_type_id",
@@ -25,7 +25,8 @@
     "deptnm": "like",
     "doc_id": "like",
     "doc_id_exact" : "eqignorecase",
-    "issue_date" : "range"
+    "issue_date" : "range",
+    "syear":"le"
   },
   "header":"
     $header = NULL;
@@ -156,9 +157,9 @@
   ],
   "adjustParameters":"
     if(function_exists('_checkbook_project_applyParameterFilters')){
-    $parameters = _checkbook_project_applyParameterFilters($node,$parameters);
+    $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
     }
-    return $parameters;
+    return $adjustedParameters;
   ",
   "adjustDataTableOptions":"
     $adjustDataTableOptions = $node->widgetConfig->dataTableOptions;
