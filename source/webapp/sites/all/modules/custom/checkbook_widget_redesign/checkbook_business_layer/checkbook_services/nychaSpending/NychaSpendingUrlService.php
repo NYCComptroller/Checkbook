@@ -72,7 +72,14 @@ class NychaSpendingUrlService{
     * @return string
     */
       static function invContractSpendingUrl($dynamic_parameter, $widget,$agreement_type,$tcode) {
+        //$year_id = RequestUtil::getRequestKeyValueFromURL('year', $bottomURL);
+        //RequestUtilities::buildUrlFromParam('year')
+        $url = drupal_get_path_alias($_GET['q']);
+        $year = RequestUtil::getRequestKeyValueFromURL('year', $url);
         $dynamic_parameter = isset($dynamic_parameter) ? $dynamic_parameter : '';
+        if ($agreement_type != null){
+          $syear = "/syear/".$year;
+        }
         $agreement_type = isset($agreement_type) ? $agreement_type : '';
         $newwindow='/newwindow'; // open content in new window and also strip menu contents
         $tcode = isset($tcode) ? $tcode : '';
@@ -84,6 +91,7 @@ class NychaSpendingUrlService{
           . RequestUtilities::buildUrlFromParam('fundsrc')
           . RequestUtilities::buildUrlFromParam('industry')
           . RequestUtilities::buildUrlFromParam('datasource')
+          . $syear
           . '/widget/'. $widget
           . $dynamic_parameter.$agreement_type.$tcode.$newwindow;
 
