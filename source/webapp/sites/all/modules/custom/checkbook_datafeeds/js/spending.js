@@ -1,18 +1,18 @@
 (function ($) {
   //On Data Source Change
-  $.fn.onDataSourceChange = function (dataSource) {
+  let onSpendingDataSourceChange = function (dataSource) {
     //Remove all the validation errors when data source is changed
     $('div.messages').remove();
     $('.error').removeClass('error');
 
     //Reload Agency Drop-down Options
-    $.fn.reloadAgencies(dataSource);
+    reloadSpendingAgencies(dataSource);
 
     //Show Hide fields
-    $.fn.showHideFields(dataSource);
+    showHideSpendingFields(dataSource);
 
     //Clear all text fields and drop-downs
-    $.fn.clearInput();
+    clearSpendingInput();
 
     //Reset the Spending Category
     $('select[name="expense_type"]').val('Total Spending [ts]');
@@ -21,14 +21,14 @@
   };
 
   //ShowHide fields based on selected data source
-  $.fn.showHideFields = function (data_source) {
+  let showHideSpendingFields = function (data_source) {
     $('.datafield.citywide').add('.datafield.nycha').add('.datafield.nycedc').hide();
     $('#edit-columns .form-item').hide();
 
     //reset the selected columns
-    $('#edit-column-select').multiSelect('deselect_all');
-    $('#edit-oge-column-select').multiSelect('deselect_all');
-    $('#edit-nycha-column-select').multiSelect('deselect_all');
+    // $('#edit-column-select').multiSelect('deselect_all');
+    // $('#edit-oge-column-select').multiSelect('deselect_all');
+    // $('#edit-nycha-column-select').multiSelect('deselect_all');
 
     switch (data_source) {
       case 'checkbook_oge':
@@ -97,8 +97,7 @@
   };
 
   //Load Agency Drop-Down
-  $.fn.reloadAgencies = function (dataSource) {
-    $('#edit-agency').addClass('loading');
+  let reloadSpendingAgencies = function (dataSource) {
     $.ajax({
       url: '/datafeeds/spending/agency/' + dataSource + '/json'
       , success: function (data) {
@@ -111,6 +110,8 @@
           }
         }
         $('#edit-agency').html(html).trigger('change');
+
+        spendingDatafeedsDis(dataSource);
       }
       , complete: function () {
         $('#edit-agency').removeClass('loading');
@@ -119,10 +120,9 @@
   };
 
   // When Agency Filter is changed reload Department and Expense Category drop-downs
-  $.fn.reloadDepartments = function reloadDepartments() {
+  let reloadSpendingDepartments = function reloadDepartments() {
     let agency = $('#edit-agency').val();
     let html = '<option value="" selected="selected">Select Department</option>';
-    let dept_hidden = false;
 
     if ($.inArray(agency, ["", null, 'Select One', 'Citywide (All Agencies)']) === -1) {
       agency = emptyToZero(agency);
@@ -133,7 +133,6 @@
       }
       const spending_cat = emptyToZero($('#edit-expense-type').val());
       const data_source = $('input[name="datafeeds-spending-domain-filter"]:checked').val();
-      dept_hidden = $('input:hidden[name="dept_hidden"]').val();
 
       $.ajax({
         url: '/autocomplete/spending/dept/' + year + '/' + agency + '/' + spending_cat + '/' + data_source
@@ -151,9 +150,6 @@
           }
 
           $('#edit-dept').html(html);
-          if (dept_hidden) {
-            $('#edit-dept').val(dept_hidden);
-          }
         }
         , complete: function () {
           $('#edit-dept').removeClass('loading');
@@ -166,23 +162,19 @@
   };
 
   // When Department Filter is changed reload Expense category Drop-down
-  $.fn.reloadExpenseCategories = function reloadExpenseCategories() {
+  let reloadSpendingExpenceCategories = function reloadExpenseCategories() {
     let agency = $('#edit-agency').val();
-    let expense_category_hidden = false;
     let data_source = $('input[name="datafeeds-spending-domain-filter"]:checked').val();
 
-    if ($.inArray(agency, ["", null, 'Select One', 'Citywide (All Agencies)']) === -1 && 'checkbook_nycha' !== data_source)
-    {
+    if ($.inArray(agency, ["", null, 'Select One', 'Citywide (All Agencies)']) === -1 && 'checkbook_nycha' !== data_source) {
       $('#edit-expense-category').addClass('loading');
       let year = 0;
       if ($('input:radio[name=date_filter]:checked').val() === 0) {
         year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
       }
       agency = emptyToZero(agency);
-      const dept = encodeURIComponent($('input:hidden[name="dept_hidden"]').val());
-      const spending_cat = emptyToZero($('#edit-expense-type').val());
-
-      expense_category_hidden = $('input:hidden[name="expense_category_hidden"]').val();
+      let dept = emptyToZero($('#edit-dept').val());
+      let spending_cat = emptyToZero($('#edit-expense-type').val());
 
       $.ajax({
         url: '/autocomplete/spending/expcategory/' + agency + '/' + dept + '/' + spending_cat + '/' + year + '/' + data_source
@@ -197,9 +189,6 @@
           }
           $('#edit-expense-category').removeAttr('disabled');
           $('#edit-expense-category').html(html);
-          if (expense_category_hidden) {
-            $('#edit-expense-category').val(expense_category_hidden);
-          }
         }
         , complete: function () {
           $('#edit-expense-category').removeClass('loading');
@@ -212,7 +201,7 @@
     }
   };
 
-  $.fn.onSpendingCategoryChange = function onSpendingCategoryChange() {
+  let onSpendingCategoryChange = function onSpendingCategoryChange() {
     $('input[name="contractno"]').removeAttr('disabled');
     $('input[name="payee_name"]').removeAttr('disabled');
     $('option[value="Payee Name"]').removeAttr('disabled');
@@ -238,11 +227,38 @@
     }
   };
 
+  let spendingDatafeedsDis = function (dataSource) {
+    if (1 === $('#edit-agency option').length) {
+      $('#edit-agency').attr('disabled', 'disabled');
+    } else {
+      $('#edit-agency').removeAttr('disabled');
+    }
+
+    if (1 === $('#edit-dept option').length || 'Select Department' === $('#edit-dept').val()) {
+      $('#edit-dept').attr('disabled', 'disabled');
+    }
+
+    if (1 === $('#edit-expense-category option').length || 'Select Expense Category' === $('#edit-dept').val()) {
+      $('#edit-expense-category').attr('disabled', 'disabled');
+    }
+    if ('checkbook' === dataSource) {
+      $('.data-feeds-wizard .datafield.agency').show();
+    } else {
+      $('.data-feeds-wizard .datafield.agency').hide();
+    }
+  };
+
   Drupal.behaviors.spendingDataFeeds = {
     attach: function (context) {
-      const dataSource = $('input[name="datafeeds-spending-domain-filter"]:checked', context).val();
-      //Agency drop-down options
-      // $.fn.reloadAgencies(dataSource);
+      let dataSource = $('input[name="datafeeds-spending-domain-filter"]:checked', context).val();
+
+      $.fn.formatDatafeedsDatasourceRadio();
+
+      $('#checkbook-datafeeds-data-feed-wizard', context).submit(function () {
+        $('#edit-agency').removeAttr('disabled');
+      });
+
+      spendingDatafeedsDis(dataSource);
 
       // Sets up multi-select/option transfer for CityWide
       $('#edit-column-select', context).multiSelect();
@@ -284,36 +300,31 @@
       });
 
       //Display or hide fields based on data source selection
-      $.fn.showHideFields(dataSource);
+      showHideSpendingFields(dataSource);
 
       //Preserve field dsplay configuration based on Spending category value
-      $.fn.onSpendingCategoryChange();
+      onSpendingCategoryChange();
 
       //Data Source change event
       $('input:radio[name=datafeeds-spending-domain-filter]', context).change(function () {
-        $('input:hidden[name="hidden_multiple_value"]', context).val("");
         $('input:hidden[name="date_filter_hidden"]', context).val("");
-        $.fn.onDataSourceChange($(this, context).val());
+        onSpendingDataSourceChange($(this, context).val());
       });
 
       //Agency drop-down change event
       $('select[name="agency"]', context).change(function () {
-        $('input:hidden[name="dept_hidden"]', context).val("");
-        $('input:hidden[name="expense_category_hidden"]', context).val("");
-        $.fn.reloadDepartments();
-        $.fn.reloadExpenseCategories();
+        reloadSpendingDepartments();
+        reloadSpendingExpenceCategories();
       });
 
       //Department drop-down change event
       $('select[name="dept"]', context).change(function () {
-        $('input:hidden[name="dept_hidden"]', context).val($('#edit-dept', context).val());
-        $('input:hidden[name="expense_category_hidden"]', context).val("");
-        $.fn.reloadExpenseCategories();
+        reloadSpendingExpenceCategories();
       });
 
       //Spending Category change event
       $('select[name="expense_type"]', context).change(function () {
-        $.fn.onSpendingCategoryChange();
+        onSpendingCategoryChange();
       });
 
       //On Date Filter change
@@ -389,7 +400,6 @@
         });
       });
       fixAutoCompleteWrapping($("#dynamic-filter-data-wrapper").children());
-      $('#edit-agency').trigger('change');
     }
   };
 
@@ -413,7 +423,7 @@
   }
 
   //Function to clear text fields and drop-downs
-  $.fn.clearInput = function () {
+  let clearSpendingInput = function () {
     $('.fieldset-wrapper').find(':input').each(function () {
       switch (this.type) {
         case 'select-one':
