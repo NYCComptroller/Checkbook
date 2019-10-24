@@ -105,23 +105,27 @@
           "Withheld Amount": "Withheld Amount"
         },
         "xml": {
-          "agency": "agency",
-          "associated_prime_vendor": "associated_prime_vendor",
-          "capital_project": "capital_project",
+          "invoice_net_amount": "invoice_net_amount",
+          "invoice_amount": "invoice_amount",
           "check_amount": "check_amount",
-          "contract_ID": "contract_ID",
-          "contract_purpose": "contract_purpose",
-          "department": "department",
+          "department_name": "department_name",
+          "contract_id": "contract_id",
           "document_id": "document_id",
-          "expense_category": "expense_category",
-          "fiscal_year": "fiscal_year",
-          "industry": "industry",
+          "expenditure_type_description": "expenditure_type_description",
+          "display_funding_source_descr": "display_funding_source_descr",
+          "display_industry_type_name": "display_industry_type_name",
+          "invoice_number": "invoice_number",
+          "invoice_discount": "invoice_discount",
           "issue_date": "issue_date",
-          "mwbe_category": "mwbe_category",
-          "payee_name": "payee_name",
-          "spending_category": "spending_category",
-          "sub_contract_reference_id": "sub_contract_reference_id",
-          "sub_vendor": "sub_vendor"
+          "program_phase_description": "program_phase_description",
+          "gl_project_description": "gl_project_description",
+          "agreement_type_name": "agreement_type_name",
+          "release_number": "release_number",
+          "responsibility_center_description": "responsibility_center_description",
+          "section8_flag": "section8_flag",
+          "display_spending_category_name": "display_spending_category_name",
+          "vendor_name": "vendor_name",
+          "withholding_tax": "withholding_tax"
         }
       }
     }
