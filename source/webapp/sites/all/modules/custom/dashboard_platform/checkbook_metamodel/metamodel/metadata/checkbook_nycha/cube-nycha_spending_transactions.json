@@ -233,6 +233,15 @@
           ]
         },
         {
+          "name": "expenditure_type_description",
+          "levels": [
+            {
+              "name": "expenditure_type_description",
+              "sourceColumnName": "expenditure_type_description"
+            }
+          ]
+        },
+        {
           "name": "expenditure_type_code",
           "levels": [
             {

@@ -44,7 +44,7 @@ class NychaSpendingUtil
     $title .= ' '. $categoryName . " Spending Transactions";
     if (strpos($widget, 'inv_') !== false) {
       $tcode_value = NYCHAContractUtil::getTitleByCode($tcode);
-      $title = $tcode_value." Spending Transcations";
+      $title = $tcode_value." Spending Transactions";
     }
 
     return $title;
