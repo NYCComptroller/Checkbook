@@ -5,6 +5,7 @@
   "limit":100,
   "startWith":0,
   "maxSelect":5,
+  "allowFacetDeselect":true,
   "allowZeroValue":true,
   "columns":["industry_type_id.industry_type_id","display_industry_type_name.display_industry_type_name","txcount"],
   "orderBy":"-txcount",
