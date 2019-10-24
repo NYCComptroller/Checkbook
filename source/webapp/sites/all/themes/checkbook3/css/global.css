@@ -2695,6 +2695,10 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 
 
 h1.no-spending-transactions {width: 500px}
+.newwindow #page-title{
+  visibility: hidden;
+  height:0px;
+}
 .newwindow .inside .transactions-container,
 .newwindow .inside .contract-details-heading,
 .newwindow .inside .nycha-contract-details-heading,
@@ -3977,16 +3981,25 @@ body.page-data-feeds #div_data_source{
   padding: 10px;
 }
 
-body.page-data-feeds #div_data_source .form-item{
-  float:none;
-}
-
-body.page-data-feeds #div_data_source .form-radios .form-item{
-  float: none !important;
-  margin: 5px 10px;
-}
-
 body.page-data-feeds select.loading{
   background: url(/sites/all/themes/checkbook/images/loading.gif) no-repeat right center;
   color:#fff;
+}
+
+#div_data_source .form-type-radios .form-item{
+  margin-right:0;
+}
+#div_data_source .form-type-radios .form-item:first-child{
+  width: 30%;
+  margin-top: 30px;
+  margin-left: 20px;
+}
+
+#div_data_source .oge-datasource-fieldset{
+  width: 60%;
+  float: right;
+}
+
+.clear2{
+  clear:both;
 }
