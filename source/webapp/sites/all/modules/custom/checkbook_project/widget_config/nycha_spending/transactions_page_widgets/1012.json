@@ -249,6 +249,8 @@
         cUrl = adjustUrlParameter(cUrl,'doc_id', oDocIds);
         cUrl = adjustUrlParameter(cUrl,'expcategorycode', oExpCatCodes);
         cUrl = adjustUrlParameter(cUrl,'resp_center', oRespCenterIds);
+        cUrl = adjustUrlParameter(cUrl,'industry', oIndustryIds);
+        cUrl = adjustUrlParameter(cUrl,'exp_cat', oExpCatIds);
 
         return cUrl;
     }"
