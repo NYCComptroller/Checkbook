@@ -20,12 +20,14 @@ class NychaSpendingWidgetService extends WidgetDataService implements IWidgetSer
             case "industry_link":
                 $column = $row['industry_name'];
                 $url = NychaSpendingUrlService::generateLandingPageUrl('industry',$row['industry_id']);
-                $value = "<a href='{$url}'>{$column}</a>";
+                //$value = "<a href='{$url}'>{$column}</a>";
+                $value = $column;
                 break;
             case "fundsrc_link":
                 $column = $row['funding_source_name'];
                 $url = NychaSpendingUrlService::generateLandingPageUrl('fundsrc',$row['funding_source_id']);
-                $value = "<a href='{$url}'>{$column}</a>";
+                //$value = "<a href='{$url}'>{$column}</a>";
+                $value = $column;
                 break;
             /* YTD Spending links */
             case "dept_ytd_spending_link":
