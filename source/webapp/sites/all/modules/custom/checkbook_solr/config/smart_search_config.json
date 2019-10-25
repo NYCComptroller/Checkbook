@@ -30,8 +30,8 @@
       "vendor_name": "Vendors",
       "contract_number": "Contract ID",
       "grant_name": "Grant Name",
-      "funding_source_name": "Funding source",
-      "responsibility_center_name": "Responsibility center",
+      "funding_source_name": "Funding Source",
+      "responsibility_center_name": "Responsibility Center",
       "expenditure_type_name": "Expense Categories"
     }
   },
