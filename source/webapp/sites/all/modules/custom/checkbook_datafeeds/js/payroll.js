@@ -132,15 +132,12 @@
 
   //Function to retrieve values enclosed in brackets or return zero if none
   function emptyToZero(input) {
-    var p = /\[(.*?)\]$/;
-    var inputval, output;
-    inputval = p.exec(input);
-    if (inputval) {
-      output = inputval[1];
-    } else {
-      output = 0;
+    const p = /\[(.*?)]$/;
+    const code = p.exec(input.trim());
+    if (code) {
+      return code[1];
     }
-    return output;
+    return 0;
   }
 
 }(jQuery));

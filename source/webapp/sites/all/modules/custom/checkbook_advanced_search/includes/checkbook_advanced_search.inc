@@ -78,9 +78,9 @@ function checkbook_advanced_search_form_submit($form, &$form_state) {
 function _checkbook_advanced_search_get_year($domain = null, $form = null, $data_source = DataSource::CITYWIDE)
 {
     try {
-        $dataController = data_controller_get_instance();
-        $data = $dataController->queryDataset($data_source.":year", array('year_value', 'year_id'), array('year_value' => data_controller_get_operator_factory_instance()->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, 2010)), 'year_value', 0);
-
+//        $dataController = data_controller_get_instance();
+//        $data = $dataController->queryDataset($data_source.":year", array('year_value', 'year_id'), array('year_value' => data_controller_get_operator_factory_instance()->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, 2010)), 'year_value', 0);
+        $data = CheckbookDateUtil::getLast10Years();
 //        $current_fy_id = _getFiscalYearID();
         $max_years = _checkbook_max_data_year();
         $fiscal_year_array = [];
@@ -716,7 +716,7 @@ function _checkbook_advanced_search_get_responsibility_centers($data_source = Da
         }
 
         return array('options' => $res_center_key_val_options, 'option_attributes' => $res_center_key_val_option_attributes);
-        
+
     } catch (Exception $e) {
         log_error("Error getting data from controller: \n" . $e->getMessage());
         return;
@@ -736,7 +736,7 @@ function _checkbook_advanced_search_get_nycha_contract_types($data_source = Data
 
         $contract_type_key_val_option_attributes = array('title' => 'Select Contract Type');
         $contract_type_key_val_options = array('Select Contract Type');
-        
+
         foreach ($results as $value) {
             if($feeds){
                 $text = $value['contract_type_name'].' ['.$value['contract_type_code'].']';
@@ -772,7 +772,7 @@ function checkbook_advanced_search_get_nycha_award_methods($data_source = DataSo
     try {
         $query = "SELECT DISTINCT award_method_id, award_method_code, award_method_name FROM ref_award_method ORDER BY award_method_name";
         $results = _checkbook_project_execute_sql_by_data_source($query, $data_source);
-        
+
         $award_method_key_val_option_attributes = array('title' => 'Select Award Method');
         $award_method_key_val_options = array('Select Award Method');
 
@@ -1611,11 +1611,11 @@ function _checkbook_advanced_search_budget_submit($form, &$form_state)
     }
     if (!empty($budget_budget_code)) {
             $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_budget_code, 'bdgcode_code');
-    } 
+    }
     if (!empty($budget_budget_name)) {
             $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_budget_name, 'bdgcodenm');
     }
-    
+
 
     //URL for ranges
     $budget_adopted_budget_range_array = array('from' => $budget_adopted_budget_from, 'to' => $budget_adopted_budget_to, 'type' => 'amount');
@@ -1710,10 +1710,10 @@ function _checkbook_advanced_search_revenue_submit($form, &$form_state, $button 
     //URL for ranges
     $revenue_adopted_range_array = array('from' => $revenue_adopted_from, 'to' => $revenue_adopted_to, 'type' => 'amount');
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($revenue_adopted_range_array, 'adopted_amt', TRUE);
-    
+
     $revenue_recognized_range_array = array('from' => $revenue_recognized_from, 'to' => $revenue_recognized_to, 'type' => 'amount');
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($revenue_recognized_range_array, 'amt', TRUE);
-    
+
     $revenue_modified_range_array = array('from' => $revenue_modified_from, 'to' => $revenue_modified_to, 'type' => 'amount');
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($revenue_modified_range_array, 'modified_amt', TRUE);
 

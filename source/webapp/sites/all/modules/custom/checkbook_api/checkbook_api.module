@@ -112,7 +112,7 @@ function checkbook_api() {
     $search_criteria = new XMLSearchCriteria($document);
     $domain = $search_criteria->getTypeOfData();
     $request_xml = $document->saveXML();
-    $client_ip = get_public_ip_address();
+    $client_ip = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? ($_SERVER['REMOTE_ADDR'] ?? null);
     $client_location = checkbook_api_get_ip_info($client_ip, "Location");
     $checkbook_api_service = new CheckbookAPIService();
     $api = $checkbook_api_service->createCheckbookAPI($domain,$request_xml,$client_ip,$client_location);
@@ -782,26 +782,4 @@ function checkbook_api_get_ip_info($ip = NULL, $purpose = "location", $deep_dete
         }
     }
     return $output;
-}
-
-/**
- * Get the IP address used for public internet-facing applications.
- *
- * @author     Dotan Cohen
- * @version    2013-06-09
- *
- * @return string
- */
-function get_public_ip_address()
-{
-    // TODO: Add a fallback to http://httpbin.org/ip
-    // TODO: Add a fallback to http://169.254.169.254/latest/meta-data/public-ipv4
-    $url="simplesniff.com/ip";
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-    $data = curl_exec($ch);
-    curl_close($ch);
-    return $data;
 }

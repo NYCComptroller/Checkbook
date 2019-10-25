@@ -182,7 +182,7 @@ function ckbk_datafeeds_spending_update_options_by_datasource(&$form, $form_stat
   $depts = ['Select Department'];
   $agency = $form_state['values']['agency'] ?? null;
   $spending_cat = $form_state['values']['expense_category'] ?? null;
-  $year = $form_state['values']['year'] ?? 'FY' . currentFiscalYear();
+  $year = $form_state['values']['year'] ?? 'FY' . CheckbookDateUtil::getCurrentFiscalYear();
   $agency_code = _emptyToZero($agency);
   if($agency_code){
     $depts = _checkbook_autocomplete_spending_dept($year,$agency_code,$spending_cat,$datasource,false);
@@ -210,7 +210,6 @@ function ckbk_datafeeds_spending_update_options_by_datasource(&$form, $form_stat
     '#name' => 'dept',
     '#validated' => true,
   );
-
 
   $expcats = ['Select Expense Category'];
   if ($agency_code) {
@@ -246,7 +245,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
 //  $agency_default = $data_source == Datasource::CITYWIDE ? 'Citywide (All Agencies)' : 'Select One';
 //  $agency = checkbook_datafeeds_filter_get_default_value($form_state, 'agency', $first_time_load, $agency_default);
 //  $agency = isset($form_state['values']['agency']) ? $form_state['values']['agency'] : 'Citywide (All Agencies)';
-//  $year = !$first_time_load ? (!empty($form_state['values']['year']) ? $form_state['values']['year'] : 'FY' . currentFiscalYear()) : 'FY' . currentFiscalYear();
+//  $year = !$first_time_load ? (!empty($form_state['values']['year']) ? $form_state['values']['year'] : 'FY' . CheckbookDateUtil::getCurrentFiscalYear()) : 'FY' . CheckbookDateUtil::getCurrentFiscalYear();
   $sc = checkbook_datafeeds_filter_get_default_value($form_state, 'expense_type', $first_time_load, 'Select Expense Category');
   $expense_type_options = _expense_type_options($data_source);
 
@@ -464,19 +463,10 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     '#prefix' => '<div id="datefilter"><div class="datafield datefilter clearfix">',
     '#suffix' => '</div></div>',
     '#attributes' => array('class' => array('watch')),
-    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'date_filter', $first_time_load, 0),
+    '#default_value' => 0,
+    '#value' => $form_state['values']['date_filter'] ?? 0,
     '#id' => 'edit-date-filter',
     '#name' => 'date_filter',
-  );
-  $form['date_filter_hidden'] = array(
-    '#title' => 'date_filter_hidden',
-    '#value' => $form_state['values']['date_filter'],
-    '#type' => 'hidden'
-  );
-  $form['current_year_hidden'] = array(
-    '#title' => 'current_year_hidden',
-    '#value' => 'FY' . currentFiscalYear(),
-    '#type' => 'hidden'
   );
   $form['filter']['year_filter_start'] = array(
     '#markup' => '<div class="datafield year-filters last-item">',
@@ -484,13 +474,20 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
   $form['filter']['year'] = array(
     '#type' => 'select',
     '#options' => _year_options('all-years'),
-    '#attributes' => array('class' => array('watch')),
-    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'date_filter', $first_time_load, 0),
+    '#attributes' => [
+      'class' => ['watch'],
+      'default_selected_value' => 'FY' . CheckbookDateUtil::getCurrentFiscalYear()
+    ],
+    '#default_value' => 'FY' . CheckbookDateUtil::getCurrentFiscalYear(),
     '#prefix' => '<div id="year"><div class="datafield year">',
     '#suffix' => '</div></div>',
     '#id' => 'edit-year',
     '#name' => 'year',
   );
+  if (isset($form_state['values']['year'])) {
+    $form['filter']['year']['#value'] = $form_state['values']['year'];
+    $form['filter']['year']['#attrributes']['default_selected_value'] = $form_state['values']['year'];
+  }
   $form['filter']['issuedfrom'] = array(
     '#type' => 'textfield',
     '#size' => 10,
