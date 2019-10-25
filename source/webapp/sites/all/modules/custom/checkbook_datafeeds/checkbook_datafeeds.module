@@ -699,19 +699,7 @@ function _year_options($yeartype = NULL)
     case 'all-years':
       try {
         $filters = _checkbook_max_data_year();
-        $fiscal_year = $filters["year_value"];
-        $calendar_year = $filters["cal_year_value"];
-        $dataController = data_controller_get_instance();
-        $fydata = $dataController->queryDataset("checkbook:year", array(
-          'year_value',
-          'year_id',
-        ), array(
-          'year_value' => data_controller_get_operator_factory_instance()->initiateHandler(RangeOperatorHandler::$OPERATOR__NAME, array(
-            2011,
-            $fiscal_year,
-          ))
-        ), 'year_value', 0);
-        $fydata = array_reverse($fydata, true);
+        $fydata = CheckbookDateUtil::getLast10FiscalYearOptions();
         $fyarray = array();
         foreach ($fydata as $row) {
           $fyarray['FY' . $row['year_value']] = 'FY ' . $row['year_value'];
@@ -736,32 +724,9 @@ function _year_options($yeartype = NULL)
 
     default:
       try {
-        $filters = _checkbook_max_data_year();
-        $fiscal_year = $filters["year_value"];
-        $calendar_year = $filters["cal_year_value"];
-        $dataController = data_controller_get_instance();
-        $fydata = $dataController->queryDataset("checkbook:year", array(
-          'year_value',
-          'year_id',
-        ), array(
-          'year_value' => data_controller_get_operator_factory_instance()->initiateHandler(RangeOperatorHandler::$OPERATOR__NAME, array(
-            2011,
-            $fiscal_year,
-          ))
-        ), 'year_value', 0);
-        $fydata = array_reverse($fydata, true);
-        $cydata = $dataController->queryDataset("checkbook:year", array(
-          'year_value',
-          'year_id',
-        ), array(
-          'year_value' => data_controller_get_operator_factory_instance()->initiateHandler(RangeOperatorHandler::$OPERATOR__NAME, array(
-            2010,
-            $calendar_year,
-          ))
-        ), 'year_value', 0);
-        $cydata = array_reverse($cydata, true);
-        $fyarray = array();
-        $cyarray = array();
+        $fydata = CheckbookDateUtil::getLast10FiscalYearOptions();
+        $cydata = CheckbookDateUtil::getLast10CalendarYearOptions();
+        $fyarray = $cyarray = [];
         foreach ($fydata as $row) {
           $fyarray['FY ' . $row['year_value']] = 'FY ' . $row['year_value'];
         }
@@ -998,8 +963,10 @@ function _funding_source_options($data_source = Datasource::NYCHA)
           'funding_source_description',
         ), NULL, 'funding_source_description');
         $results = [];
-        foreach ($data as $row) {
-          $results[$row['funding_source_description'] . ' [' . $row['funding_source_code'] . ']'] = $row['funding_source_description'] . ' [' . $row['funding_source_code'] . ']';
+        if($data){
+          foreach ($data as $row) {
+            $results[$row['funding_source_description'] . ' [' . $row['funding_source_code'] . ']'] = $row['funding_source_description'] . ' [' . $row['funding_source_code'] . ']';
+          }
         }
         $sources += array_unique($results);
       } catch (Exception $e) {

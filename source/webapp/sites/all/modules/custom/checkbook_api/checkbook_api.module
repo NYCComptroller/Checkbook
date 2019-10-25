@@ -214,7 +214,7 @@ function checkbook_api_adjustBudgetParameterFilters(&$data_set, &$parameters, $c
         $parameters['budget_code_name'] = $data_controller_instance->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME, array($parameters['budget_code_name'], false, true));
     }
 
-    if(count($logicalOrColumns) > 0) {
+    if(isset($logicalOrColumns) && count($logicalOrColumns) > 0) {
         $parameters['logicalOrColumns'] = $logicalOrColumns;
     }
 }

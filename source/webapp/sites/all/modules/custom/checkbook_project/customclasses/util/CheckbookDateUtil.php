@@ -126,9 +126,25 @@ class CheckbookDateUtil
   /**
    * @return array
    */
-  public static function getLast10Years()
+  public static function getLast10FiscalYearOptions()
   {
     $last = self::getCurrentFiscalYear();
+    $results = [];
+    for ($year = $last; $year > $last - 10; $year--) {
+      $results[] = [
+        'year_id' => self::year2yearId($year),
+        'year_value' => $year
+      ];
+    }
+    return $results;
+  }
+
+  /**
+   * @return array
+   */
+  public static function getLast10CalendarYearOptions()
+  {
+    $last = self::getCurrentCalendarYear();
     $results = [];
     for ($year = $last; $year > $last - 10; $year--) {
       $results[] = [

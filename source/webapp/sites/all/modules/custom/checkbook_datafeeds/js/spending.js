@@ -167,7 +167,7 @@
     let dept = emptyToZero($('#edit-dept').val());
     let data_source = $('input[name="datafeeds-spending-domain-filter"]:checked').val();
 
-    if ($.inArray(agency, ["", null, 'Select One', 'Citywide (All Agencies)']) === -1 &&
+    if ($.inArray(agency, ["", null, 'Select One', 'Citywide (All Agencies)']) === -1 ||
       ('checkbook_nycha'==data_source && dept)) {
       $('#edit-expense-category').addClass('loading');
       let year = 0;
@@ -184,7 +184,7 @@
           if (data[0]) {
             if (data[0].label !== '') {
               for (let i = 0; i < data.length; i++) {
-                html = html + '<option title="' + data[i].value + '" value="' + data[i].value + ' ">' + data[i].label + '</option>';
+                html = html + '<option title="' + data[i].value + '" value="' + data[i].value + '">' + data[i].label + '</option>';
               }
             }
           }

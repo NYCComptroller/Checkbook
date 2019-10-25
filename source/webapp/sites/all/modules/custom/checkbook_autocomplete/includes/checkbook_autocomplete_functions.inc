@@ -783,7 +783,7 @@ function _checkbook_autocomplete_spending_dept($year, $agency, $spending_cat = n
  * @param bool $json
  * @return array|bool|mixed|void
  */
-function _checkbook_autocomplete_spending_expcategory(string $agency = '0', int $dept = 0, int $spending_cat = 0, $year, $data_source = Datasource::CITYWIDE, $json = true)
+function _checkbook_autocomplete_spending_expcategory(string $agency = '0', string $dept = '0', int $spending_cat = 0, $year, $data_source = Datasource::CITYWIDE, $json = true)
 {
   $year_string = $agency_string = $dept_string = null;
   $dept = _emptyToZero(urldecode($dept));
@@ -794,7 +794,7 @@ function _checkbook_autocomplete_spending_expcategory(string $agency = '0', int 
         $agency_string = " AND all_disbursement_transactions.agency_code = '" . $agency . "' ";
       }
 
-      if ($dept) {
+      if ($dept && ctype_alnum($dept)) {
         $dept_string = " AND all_disbursement_transactions.department_code = '" . $dept . "' ";
       } else {
         return;
@@ -832,18 +832,18 @@ function _checkbook_autocomplete_spending_expcategory(string $agency = '0', int 
   $db_name = "main";
   $results = _checkbook_project_execute_sql($query, $db_name, $data_source);
 
-  if (!$json) {
-    return $results;
-  }
-
   if (count($results) > 0) {
-    $matches = array();
+    $json_maches = $matches = array();
     foreach ($results as $key => $value) {
       $exp_obj_value = htmlentities($value['expenditure_object_code']);
       $exp_obj_text = (strlen($exp_obj_value) > 18) ? substr($exp_obj_value, 0, 18) . '...' : $exp_obj_value;
-      $matches[] = array('label' => $exp_obj_text, 'value' => $exp_obj_value);
+      $json_maches[] = array('label' => $exp_obj_text, 'value' => $exp_obj_value);
+      $matches[$exp_obj_value] = $exp_obj_text;
     }
-    drupal_json_output($matches);
+    if (!$json) {
+      return $matches;
+    }
+    drupal_json_output($json_maches);
   }
 }
 
