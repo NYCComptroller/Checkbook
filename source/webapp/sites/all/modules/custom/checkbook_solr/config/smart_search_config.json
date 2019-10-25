@@ -31,7 +31,8 @@
       "contract_number": "Contract ID",
       "grant_name": "Grant Name",
       "funding_source_name": "Funding source",
-      "responsibility_center_name": "Responsibility center"
+      "responsibility_center_name": "Responsibility center",
+      "expenditure_type_name": "Expense Categories"
     }
   },
   "param_mapping": {
