@@ -70,14 +70,10 @@
         "attributes":{
             "options":{
                 "checkbook":"Citywide Agencies",
-                "checkbook_oge":"Other Government Entities"
+                "checkbook_oge":"New York City Economic Development Corporation",
+                "checkbook_nycha":"New York City Housing Authority"
             },
-            "default_value":"checkbook",
-            "ajax":{
-                "event":"change",
-                "callback":"checkbook_advanced_search_filter_ajax",
-                "method":"replace"
-            }
+            "default_value":"checkbook"
         }
     },
     "status":{
