@@ -78,10 +78,7 @@ function checkbook_advanced_search_form_submit($form, &$form_state) {
 function _checkbook_advanced_search_get_year($domain = null, $form = null, $data_source = DataSource::CITYWIDE)
 {
     try {
-//        $dataController = data_controller_get_instance();
-//        $data = $dataController->queryDataset($data_source.":year", array('year_value', 'year_id'), array('year_value' => data_controller_get_operator_factory_instance()->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, 2010)), 'year_value', 0);
         $data = CheckbookDateUtil::getLast10FiscalYearOptions();
-//        $current_fy_id = _getFiscalYearID();
         $max_years = _checkbook_max_data_year();
         $fiscal_year_array = [];
         foreach ($data as $row) {
