@@ -482,12 +482,12 @@
           onChangeDataSource($('input[name=contracts_advanced_search_domain_filter]:checked').val());
         });
 
-        $('#edit-checkbook-oge-contracts-purchase-order-type').change(function(){
+        $('#edit-checkbook-nycha-contracts-purchase-order-type').change(function(){
           onAgreementTypeChange();
         });
 
         function onAgreementTypeChange(){
-          var agreement_type = $("#edit-checkbook-oge-contracts-purchase-order-type option:selected").val().toUpperCase();
+          var agreement_type = $("#edit-checkbook-nycha-contracts-purchase-order-type option:selected").val().toUpperCase();
           switch (agreement_type) {
             case 'PO':
               disable_input(['.form-item-start-date :input','.form-item-end-date :input']);
@@ -643,11 +643,11 @@
           if ('checkbook_nycha' == data_source){solr_datasource = 'nycha'}
 
           if('nycha' == solr_datasource){
-            var agreement_type_code_nycha = $('#edit-checkbook-oge-contracts-purchase-order-type').val() || 0;
-            var responsibility_center_nycha = $('#edit-checkbook-oge-contracts-responsibility-center').val() || 0;
-            var contract_type_id_nycha = $('#edit-checkbook-oge-contracts-nycha-contract-type').val() || 0;
-            var award_method_id_nycha = $('#edit-checkbook-oge-contracts-nycha-award-method').val() || 0;
-            var industry_type_id_nycha = $('#edit-checkbook-oge-contracts-nycha-industry').val() || 0;
+            var agreement_type_code_nycha = $('#edit-checkbook-nycha-contracts-purchase-order-type').val() || 0;
+            var responsibility_center_nycha = $('#edit-checkbook-nycha-contracts-responsibility-center').val() || 0;
+            var contract_type_id_nycha = $('#edit-checkbook-nycha-contracts-nycha-contract-type').val() || 0;
+            var award_method_id_nycha = $('#edit-checkbook-nycha-contracts-nycha-award-method').val() || 0;
+            var industry_type_id_nycha = $('#edit-checkbook-nycha-contracts-nycha-industry').val() || 0;
 
             var nycha_filters = {
               agreement_type_code: agreement_type_code_nycha,
@@ -1579,9 +1579,15 @@
 
       /* For oge, Budget, Revenue & Payroll are not applicable and are disabled */
       function disableAccordionSections(data_source) {
-        if (data_source === "checkbook_oge") {
+        //Disable Budget and Revenue for EDC/NYCHA
+        if (data_source === "checkbook_oge" || data_source === "checkbook_nycha") {
           disableAccordionSection('Budget');
           disableAccordionSection('Revenue');
+        }
+
+        //Disable Payroll for EDC
+        if(data_source === "checkbook_oge"){
+          disableAccordionSection('Payroll');
         }
       }
 
