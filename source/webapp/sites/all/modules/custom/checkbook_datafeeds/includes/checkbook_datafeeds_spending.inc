@@ -35,8 +35,6 @@ function checkbook_datafeeds_spending($form, &$form_state)
   $data_source = $form_state['values']['datafeeds-spending-domain-filter'];
   $data_source = !isset($data_source) ? Datasource::CITYWIDE : $data_source;
 
-  //<editor-fold desc="Heading">
-
   $form['loaded'] = array(
     '#markup' => '<div class="updated-date">Last updated: ' . _checkbook_datafeeds_get_updated_date('spending') . '</div>',
   );
@@ -90,7 +88,6 @@ function checkbook_datafeeds_spending($form, &$form_state)
     '#title' => t('Columns<span class="form-required" title="This field is required.">*</span>'),
     '#options' => _checkbook_datafeeds_spending_column_options(Datasource::NYCHA, $datatype),
     '#multiple' => TRUE,
-//    '#value' => $form_state['values']['nycha_column_select'] ?? '',
     '#default_value' => $form_state['values']['nycha_column_select'] ?? '',
     '#id' => 'edit-nycha-column-select',
   );
@@ -111,10 +108,6 @@ function checkbook_datafeeds_spending($form, &$form_state)
     '#value' => $multi_select_hidden,
     '#type' => 'hidden',
   );
-
-  //</editor-fold>
-
-  //<editor-fold desc="Submit Buttons">
 
   $form['feeds_spending_next'] = array(
     '#type' => 'submit',
@@ -231,11 +224,6 @@ function ckbk_datafeeds_spending_update_options_by_datasource(&$form, $form_stat
 function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_source)
 {
   $first_time_load = checkbook_datafeeds_is_first_load($form_state, $data_source);
-
-//  $agency_default = $data_source == Datasource::CITYWIDE ? 'Citywide (All Agencies)' : 'Select One';
-//  $agency = checkbook_datafeeds_filter_get_default_value($form_state, 'agency', $first_time_load, $agency_default);
-//  $agency = isset($form_state['values']['agency']) ? $form_state['values']['agency'] : 'Citywide (All Agencies)';
-//  $year = !$first_time_load ? (!empty($form_state['values']['year']) ? $form_state['values']['year'] : 'FY' . CheckbookDateUtil::getCurrentFiscalYear()) : 'FY' . CheckbookDateUtil::getCurrentFiscalYear();
   $sc = checkbook_datafeeds_filter_get_default_value($form_state, 'expense_type', $first_time_load, 'Select Expense Category');
   $expense_type_options = _expense_type_options($data_source);
 
@@ -454,7 +442,6 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     '#suffix' => '</div></div>',
     '#attributes' => array('class' => array('watch')),
     '#default_value' => 0,
-//    '#value' => $form_state['values']['date_filter'] ?? 0,
     '#id' => 'edit-date-filter',
     '#name' => 'date_filter',
   );
@@ -872,7 +859,6 @@ function checkbook_datafeeds_spending_confirmation_previous_submit($form, &$form
 function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_source)
 {
   $values = $form_state['step_information']['spending']['stored_values'];
-  //$pattern = '/\[(.*?)\]$/';
   $pattern = "/.*?(\\[.*?\\])/is";
   global $conf;
   switch ($data_source) {
@@ -1016,9 +1002,6 @@ function checkbook_datafeeds_spending_validate(&$form, &$form_state)
   $dateto = $form_state['values']['issuedto'];
   $vendor = $form_state['values']['payee_name'];
   $contract_id = $form_state['values']['contractno'];
-//  $response_columns = $form_state['values']['column_select'];
-//  $oge_response_columns = $form_state['values']['oge_column_select'];
-//  $nycha_response_columns = $form_state['values']['nycha_column_select'];
 
   ckbk_datafeeds_spending_update_options_by_datasource($form, $form_state, $data_source);
 
