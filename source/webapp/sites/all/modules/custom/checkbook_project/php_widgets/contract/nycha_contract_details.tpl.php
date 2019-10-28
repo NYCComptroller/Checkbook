@@ -28,10 +28,6 @@ $contract = $node->data;
           class="contract-number"><?= htmlentities($contract['contract_id']) ?></span></h2>
     </div>
     <div class="dollar-amounts">
-      <div class="spent-to-date">
-        <?= custom_number_formatter_format($contract['spend_to_date'], 2, "$"); ?>
-        <div class="amount-title"><?= WidgetUtil::getLabel('invoiced_amount') ?></div>
-      </div>
       <div class="original-amount">
         <?= custom_number_formatter_format($contract['original_amount'], 2, '$'); ?>
         <div class="amount-title"><?= WidgetUtil::getLabel('static_original_amount') ?></div>
@@ -46,6 +42,10 @@ $contract = $node->data;
           <div class="amount-title"><?= WidgetUtil::getLabel('assoc_releases') ?></div>
         </div>
       <?php endif; ?>
+      <div class="spent-to-date">
+        <?= custom_number_formatter_format($contract['spend_to_date'], 2, "$"); ?>
+        <div class="amount-title"><?= WidgetUtil::getLabel('invoiced_amount') ?></div>
+      </div>
     </div>
     <div class="contract-information">
       <div class="contract-details">
