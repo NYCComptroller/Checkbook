@@ -201,7 +201,7 @@ function checkbook_datafeeds_payroll($form, &$form_state)
     '#title' => t('Year:'),
     '#options' => _year_options(),
     '#attributes' => array('class' => array('watch')),
-    '#default_value' => !empty($form_state['values']['year']) ? $form_state['values']['year'] : 'CY ' . currentFiscalYear(),
+    '#default_value' => !empty($form_state['values']['year']) ? $form_state['values']['year'] : 'CY ' . CheckbookDateUtil::getCurrentFiscalYear(),
     '#prefix' => '<div class="datafield fiscalyear">',
     '#suffix' => '</div>',
   );

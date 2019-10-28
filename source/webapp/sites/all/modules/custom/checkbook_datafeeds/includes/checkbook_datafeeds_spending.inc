@@ -35,8 +35,6 @@ function checkbook_datafeeds_spending($form, &$form_state)
   $data_source = $form_state['values']['datafeeds-spending-domain-filter'];
   $data_source = !isset($data_source) ? Datasource::CITYWIDE : $data_source;
 
-  //<editor-fold desc="Heading">
-
   $form['loaded'] = array(
     '#markup' => '<div class="updated-date">Last updated: ' . _checkbook_datafeeds_get_updated_date('spending') . '</div>',
   );
@@ -46,10 +44,6 @@ function checkbook_datafeeds_spending($form, &$form_state)
   $form['description'] = array(
     '#markup' => '<h2 class="domain-title">Spending</h2>',
   );
-
-  //</editor-fold>
-
-  //<editor-fold desc="Filter">
 
   $form['datafeeds-spending-domain-filter'] = DatafeedsConfigUtil::dataSourceRadio($data_source, 'spending');
 
@@ -62,11 +56,7 @@ function checkbook_datafeeds_spending($form, &$form_state)
     '#id' => 'edit-filter',
   );
 
-  //</editor-fold>
-
   $form = checkbook_datafeeds_spending_filter_data($form, $form_state, $data_source);
-
-  //<editor-fold desc="Columns">
 
   $form['columns'] = array(
     '#type' => 'fieldset',
@@ -79,7 +69,6 @@ function checkbook_datafeeds_spending($form, &$form_state)
     '#title' => t('Columns<span class="form-required" title="This field is required.">*</span>'),
     '#options' => _checkbook_datafeeds_spending_column_options(Datasource::CITYWIDE, $datatype),
     '#multiple' => TRUE,
-    '#value' => $form_state['values']['column_select'] ?? '',
     '#default_value' => $form_state['values']['column_select'] ?? '',
     '#id' => 'edit-column-select',
     '#name' => 'column_select',
@@ -90,7 +79,6 @@ function checkbook_datafeeds_spending($form, &$form_state)
     '#title' => t('Columns<span class="form-required" title="This field is required.">*</span>'),
     '#options' => _checkbook_datafeeds_spending_column_options(Datasource::OGE, $datatype),
     '#multiple' => TRUE,
-    '#value' => $form_state['values']['oge_column_select'] ?? '',
     '#default_value' => $form_state['values']['oge_column_select'] ?? '',
     '#id' => 'edit-oge-column-select',
   );
@@ -100,7 +88,6 @@ function checkbook_datafeeds_spending($form, &$form_state)
     '#title' => t('Columns<span class="form-required" title="This field is required.">*</span>'),
     '#options' => _checkbook_datafeeds_spending_column_options(Datasource::NYCHA, $datatype),
     '#multiple' => TRUE,
-    '#value' => $form_state['values']['nycha_column_select'] ?? '',
     '#default_value' => $form_state['values']['nycha_column_select'] ?? '',
     '#id' => 'edit-nycha-column-select',
   );
@@ -122,10 +109,6 @@ function checkbook_datafeeds_spending($form, &$form_state)
     '#type' => 'hidden',
   );
 
-  //</editor-fold>
-
-  //<editor-fold desc="Submit Buttons">
-
   $form['feeds_spending_next'] = array(
     '#type' => 'submit',
     '#value' => t('Submit'),
@@ -138,8 +121,6 @@ function checkbook_datafeeds_spending($form, &$form_state)
     '#submit' => array('previous_submit'),
     '#limit_validation_errors' => array(),
   );
-
-  //</editor-fold>
 
   $form['#attached'] = array(
     'library' => array(
@@ -175,25 +156,27 @@ function ckbk_datafeeds_spending_update_options_by_datasource(&$form, $form_stat
     '#suffix' => '</div>',
     '#id' => 'edit-agency',
     '#name' => 'agency',
-    '#value' => !empty($form_state['values']['agency']) ? $form_state['values']['agency'] : 'Citywide (All Agencies)',
+    '#default_value' => $form_state['values']['agency'] ?? 'Citywide (All Agencies)',
     '#validated' => true,
   );
 
-  $depts = ['Select Department'];
-  $agency = $form_state['values']['agency'] ?? null;
-  $spending_cat = $form_state['values']['expense_category'] ?? null;
-  $year = $form_state['values']['year'] ?? 'FY' . currentFiscalYear();
+  $depts = ['0'=>'Select Department'];
+  $agency = $form_state['values']['agency'] ?? 0;
+  $spending_cat = $form_state['values']['expense_category'] ?? 0;
+  $year = $form_state['values']['year'] ?? 'FY' . CheckbookDateUtil::getCurrentFiscalYear();
   $agency_code = _emptyToZero($agency);
   if($agency_code){
     $depts = _checkbook_autocomplete_spending_dept($year,$agency_code,$spending_cat,$datasource,false);
-    $depts = array_map('strtoupper', $depts);
-    if(sizeof($depts)){
-      $kv_depts = [];
-      foreach($depts as $v) {
-        $val = strlen($v) > 20 ? substr($v,0,20).'...' : $v;
-        $kv_depts[$v] = $val;
+    if ($depts && !is_array($depts[0])){
+      $depts = array_map('strtoupper', $depts);
+      if(sizeof($depts)){
+        $kv_depts = [];
+        foreach($depts as $v) {
+          $val = strlen($v) > 20 ? substr($v,0,20).'...' : $v;
+          $kv_depts[$v] = $val;
+        }
+        $depts = $kv_depts;
       }
-      $depts = $kv_depts;
     }
   }
 
@@ -205,19 +188,19 @@ function ckbk_datafeeds_spending_update_options_by_datasource(&$form, $form_stat
     '#options' => $depts,
     '#attributes' => array('class' => array('watch')),
     '#default_value' => $form_state['values']['dept'] ?? 'Select Department',
-    '#value' => $form_state['values']['dept'] ?? 'Select Department',
     '#id' => 'edit-dept',
     '#name' => 'dept',
     '#validated' => true,
   );
 
-
-  $expcats = ['Select Expense Category'];
+  $expcats = ['0' => 'Select Expense Category'];
   if ($agency_code) {
-    $dept = $form_state['values']['dept'] ?? null;
-    $expcats = _checkbook_autocomplete_spending_expcategory($agency_code, $dept, null, $year, $datasource, false);
+    $dept = emptyToZero($form_state['values']['dept'] ?? 0);
+    $solr_expcats = _checkbook_autocomplete_spending_expcategory($agency_code, $dept, 0, $year, $datasource, false);
+    if ($solr_expcats){
+      $expcats = $expcats + $solr_expcats;
+    }
   }
-
   $form['filter']['expense_category'] = array(
     '#type' => 'select',
     '#title' => t('Expense Category:'),
@@ -228,7 +211,6 @@ function ckbk_datafeeds_spending_update_options_by_datasource(&$form, $form_stat
     '#name' => 'expense_category',
     '#options' => $expcats,
     '#default_value' => $form_state['values']['expense_category'] ?? 'Select Expense Category',
-    '#value' => $form_state['values']['expense_category'] ?? 'Select Expense Category',
     '#validated' => true
   );
 }
@@ -242,11 +224,6 @@ function ckbk_datafeeds_spending_update_options_by_datasource(&$form, $form_stat
 function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_source)
 {
   $first_time_load = checkbook_datafeeds_is_first_load($form_state, $data_source);
-
-//  $agency_default = $data_source == Datasource::CITYWIDE ? 'Citywide (All Agencies)' : 'Select One';
-//  $agency = checkbook_datafeeds_filter_get_default_value($form_state, 'agency', $first_time_load, $agency_default);
-//  $agency = isset($form_state['values']['agency']) ? $form_state['values']['agency'] : 'Citywide (All Agencies)';
-//  $year = !$first_time_load ? (!empty($form_state['values']['year']) ? $form_state['values']['year'] : 'FY' . currentFiscalYear()) : 'FY' . currentFiscalYear();
   $sc = checkbook_datafeeds_filter_get_default_value($form_state, 'expense_type', $first_time_load, 'Select Expense Category');
   $expense_type_options = _expense_type_options($data_source);
 
@@ -464,19 +441,9 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     '#prefix' => '<div id="datefilter"><div class="datafield datefilter clearfix">',
     '#suffix' => '</div></div>',
     '#attributes' => array('class' => array('watch')),
-    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'date_filter', $first_time_load, 0),
+    '#default_value' => 0,
     '#id' => 'edit-date-filter',
     '#name' => 'date_filter',
-  );
-  $form['date_filter_hidden'] = array(
-    '#title' => 'date_filter_hidden',
-    '#value' => $form_state['values']['date_filter'],
-    '#type' => 'hidden'
-  );
-  $form['current_year_hidden'] = array(
-    '#title' => 'current_year_hidden',
-    '#value' => 'FY' . currentFiscalYear(),
-    '#type' => 'hidden'
   );
   $form['filter']['year_filter_start'] = array(
     '#markup' => '<div class="datafield year-filters last-item">',
@@ -484,8 +451,11 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
   $form['filter']['year'] = array(
     '#type' => 'select',
     '#options' => _year_options('all-years'),
-    '#attributes' => array('class' => array('watch')),
-    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'date_filter', $first_time_load, 0),
+    '#attributes' => [
+      'class' => ['watch'],
+      'default_selected_value' => $form_state['values']['year'] ?? 'FY' . CheckbookDateUtil::getCurrentFiscalYear()
+    ],
+    '#default_value' => $form_state['values']['year'] ?? 'FY' . CheckbookDateUtil::getCurrentFiscalYear(),
     '#prefix' => '<div id="year"><div class="datafield year">',
     '#suffix' => '</div></div>',
     '#id' => 'edit-year',
@@ -889,7 +859,6 @@ function checkbook_datafeeds_spending_confirmation_previous_submit($form, &$form
 function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_source)
 {
   $values = $form_state['step_information']['spending']['stored_values'];
-  //$pattern = '/\[(.*?)\]$/';
   $pattern = "/.*?(\\[.*?\\])/is";
   global $conf;
   switch ($data_source) {
@@ -1033,9 +1002,6 @@ function checkbook_datafeeds_spending_validate(&$form, &$form_state)
   $dateto = $form_state['values']['issuedto'];
   $vendor = $form_state['values']['payee_name'];
   $contract_id = $form_state['values']['contractno'];
-//  $response_columns = $form_state['values']['column_select'];
-//  $oge_response_columns = $form_state['values']['oge_column_select'];
-//  $nycha_response_columns = $form_state['values']['nycha_column_select'];
 
   ckbk_datafeeds_spending_update_options_by_datasource($form, $form_state, $data_source);
 
