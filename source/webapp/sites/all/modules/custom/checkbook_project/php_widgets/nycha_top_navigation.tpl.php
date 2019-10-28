@@ -43,8 +43,14 @@ if($node->data[1]['total_maximum_contract_amount'] > 0  ) {
 }
 
 //Spending Link
-if($node->data[2]['invoice_amount_sum'] > 0  ) {
-  $spending_link = l('<span class="nav-title">Spending</span><br>' . custom_number_formatter_format($node->data[2]['invoice_amount_sum'], 1, '$'), RequestUtil::getTopNavURL("nycha_spending"), $options);
+$category_names = NychaSpendingUtil::$categories;
+foreach($node->data as $key=>$row){
+  if($row['category_name_category_name'] == 'Payroll'){$row['invoice_amount_sum'] = $row['check_amount_sum'];}
+  $categories[$row['category_category']] = array('name' => $row['category_name_category_name'], 'amount' => $row['invoice_amount_sum']);
+  $total_spending +=  $row['invoice_amount_sum'];
+}
+if($total_spending > 0  ) {
+  $spending_link = l('<span class="nav-title">Spending</span><br>' . custom_number_formatter_format($total_spending, 1, '$'), RequestUtil::getTopNavURL("nycha_spending"), $options);
 }
 
 $arg = arg(0);
