@@ -4,6 +4,7 @@
       "payee_name": "vendor_name",
       "agency_code": "agency_code",
       "department_code": "department_code",
+      "expense_category": "expenditure_type_code",
       "check_amount": "check_amount",
       "contract_id": "contract_id",
       "document_id": "document_id",
@@ -124,7 +125,12 @@
         "dataType": "text",
         "maxLength": "9"
       },
-      "check_amount": {
+      "expense_category": {
+        "valueType": "value",
+        "dataType": "text",
+        "maxLength": "9"
+      },
+      "expenditure_type_code": {
         "valueType": "range",
         "dataType": "amount",
         "maxLength": "22"
