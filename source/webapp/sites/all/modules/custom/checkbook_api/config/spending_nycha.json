@@ -4,11 +4,13 @@
       "payee_name": "vendor_name",
       "agency_code": "agency_code",
       "department_code": "department_code",
+      "expenditure_type_code": "expense_category",
       "check_amount": "check_amount",
       "contract_id": "contract_id",
       "document_id": "document_id",
       "funding_source_code": "funding_source_code",
-      "funding_source_description": "funding_source_description"
+      "funding_source_description": "funding_source_description",
+      "spending_category": "display_spending_category_name"
     },
     "dataset": {
       "sortColumn": [
@@ -124,10 +126,20 @@
         "dataType": "text",
         "maxLength": "9"
       },
-      "check_amount": {
+      "expense_category": {
+        "valueType": "value",
+        "dataType": "text",
+        "maxLength": "9"
+      },
+      "expenditure_type_code": {
         "valueType": "range",
         "dataType": "amount",
         "maxLength": "22"
+      },
+      "spending_category": {
+        "valueType": "value",
+        "dataType": "text",
+        "maxLength": "2"
       },
       "contract_id": {
         "valueType": "value",

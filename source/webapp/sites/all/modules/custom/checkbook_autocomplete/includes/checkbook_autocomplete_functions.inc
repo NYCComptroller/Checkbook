@@ -502,7 +502,7 @@ function _ckbk_solr_get_all_options($data_source, $domain, $facet)
 {
   $query = new CheckbookSolrQuery($data_source);
   $q = 'select/?';
-  $q .= $query->addFacet($facet)->setFacetSort('index')->buildQuery();
+  $q .= $query->addFacet($facet)->setFq('domain', 'domain:'.$domain)->setFacetSort('index')->buildQuery();
   return _checkbook_autocomplete_solr_results($data_source, $q, $facet);
 }
 
