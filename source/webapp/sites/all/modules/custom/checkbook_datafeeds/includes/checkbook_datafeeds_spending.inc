@@ -175,7 +175,7 @@ function ckbk_datafeeds_spending_update_options_by_datasource(&$form, $form_stat
           $val = strlen($v) > 20 ? substr($v,0,20).'...' : $v;
           $kv_depts[$v] = $val;
         }
-        $departments = $kv_depts;
+        $departments += $kv_depts;
       }
     }
   }
@@ -900,8 +900,8 @@ function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_
     $criteria['value']['commodity_line'] = $values['commodity_line'];
   }
   if ($values['dept'] && $values['dept'] != 'Select Department') {
-    preg_match($pattern, $values['dept'], $dcmatches);
-    $criteria['value']['department_code'] = trim($dcmatches[1], '[ ]');
+    preg_match($pattern, $values['dept'], $department_matches);
+    $criteria['value']['department_code'] = trim($department_matches[1], '[ ]');
   }
   if ($values['document_id']) {
     $criteria['value']['document_id'] = $values['document_id'];
@@ -910,8 +910,8 @@ function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_
     $criteria['value']['entity_contract_number'] = $values['entity_contract_number'];
   }
   if ($values['expense_category'] && $values['expense_category'] != 'Select Expense Category') {
-    preg_match($pattern, $values['expense_category'], $ecmatches);
-    $criteria['value']['expense_category'] = trim($ecmatches[1], '[ ]');
+    preg_match($pattern, $values['expense_category'], $expense_category_matches);
+    $criteria['value']['expense_category'] = trim($expense_category_matches[1], '[ ]');
   }
   if ($values['expense_type'] && $values['expense type'] != 'ts') {
     preg_match($pattern, $values['expense_type'], $etmatches);
@@ -921,16 +921,16 @@ function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_
   switch ($data_source) {
     case Datasource::OGE:
       if ($values['agency'] != 'Select One') {
-        preg_match($pattern, $values['agency'], $amatches);
-        $criteria['value']['other_government_entities_code'] = trim($amatches[1], '[ ]');
+        preg_match($pattern, $values['agency'], $agency_matches);
+        $criteria['value']['other_government_entities_code'] = trim($agency_matches[1], '[ ]');
       }
       if ($values['contractno']) {
         $criteria['value']['contract_id'] = $values['contractno'];
       }
       if ($values['payee_name']) {
-        preg_match($pattern, $values['payee_name'], $pmatches);
-        if ($pmatches) {
-          $criteria['value']['payee_name'] = trim($pmatches[1], '[ ]');
+        preg_match($pattern, $values['payee_name'], $payee_name_matches);
+        if ($payee_name_matches) {
+          $criteria['value']['payee_name'] = trim($payee_name_matches[1], '[ ]');
         } else {
           $criteria['value']['payee_name'] = $values['payee_name'];
         }
@@ -939,16 +939,16 @@ function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_
 
     default:
       if ($values['agency'] != 'Citywide (All Agencies)') {
-        preg_match($pattern, $values['agency'], $amatches);
-        $criteria['value']['agency_code'] = trim($amatches[1], '[ ]');
+        preg_match($pattern, $values['agency'], $agency_matches);
+        $criteria['value']['agency_code'] = trim($agency_matches[1], '[ ]');
       }
       if ($values['contractno']) {
         $criteria['value']['contract_ID'] = $values['contractno'];
       }
       if ($values['payee_name']) {
-        preg_match($pattern, $values['payee_name'], $pmatches);
-        if ($pmatches) {
-          $criteria['value']['payee_code'] = trim($pmatches[1], '[ ]');
+        preg_match($pattern, $values['payee_name'], $payee_name_matches);
+        if ($payee_name_matches) {
+          $criteria['value']['payee_code'] = trim($payee_name_matches[1], '[ ]');
         } else {
           $criteria['value']['payee_code'] = $values['payee_name'];
         }
@@ -996,31 +996,31 @@ function checkbook_datafeeds_spending_validate(&$form, &$form_state)
   $data_source = $form_state['input']['datafeeds-spending-domain-filter'];
   $agency = $form_state['values']['agency'];
   $agency_code = emptyToZero($agency);
-  $checkfrom = $form_state['values']['check_amt_from'];
-  $checkto = $form_state['values']['check_amt_to'];
-  $datefrom = $form_state['values']['issuedfrom'];
-  $dateto = $form_state['values']['issuedto'];
+  $check_from = $form_state['values']['check_amt_from'];
+  $check_to = $form_state['values']['check_amt_to'];
+  $date_from = $form_state['values']['issuedfrom'];
+  $date_to = $form_state['values']['issuedto'];
   $vendor = $form_state['values']['payee_name'];
   $contract_id = $form_state['values']['contractno'];
 
   ckbk_datafeeds_spending_update_options_by_datasource($form, $form_state, $data_source);
 
-  if ($checkfrom && !is_numeric($checkfrom)) {
+  if ($check_from && !is_numeric($check_from)) {
     form_set_error('check_amt_from', t('Check Amount must be a number.'));
   }
-  if ($checkto && !is_numeric($checkto)) {
+  if ($check_to && !is_numeric($check_to)) {
     form_set_error('check_amt_to', t('Check Amount must be a number.'));
   }
-  if ($checkfrom && $checkto && $checkto < $checkfrom) {
+  if ($check_from && $check_to && $check_to < $check_from) {
     form_set_error('check_amt_to', t('Invalid range for Check Amount.'));
   }
-  if ($datefrom && !checkDateFormat($datefrom)) {
+  if ($date_from && !checkDateFormat($date_from)) {
     form_set_error('issuedfrom', t('Issue Date must be a valid date (YYYY-MM-DD).'));
   }
-  if ($dateto && !checkDateFormat($dateto)) {
+  if ($date_to && !checkDateFormat($date_to)) {
     form_set_error('issuedto', t('Issue Date must be a valid date (YYYY-MM-DD).'));
   }
-  if ($datefrom && $dateto && strtotime($dateto) < strtotime($datefrom)) {
+  if ($date_from && $date_to && strtotime($date_to) < strtotime($date_from)) {
     form_set_error('issuedto', t('Invalid range for Issue Date.'));
   }
   //Contract ID
