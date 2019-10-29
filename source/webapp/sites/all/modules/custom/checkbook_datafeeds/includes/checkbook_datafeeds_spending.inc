@@ -701,6 +701,14 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state)
     $user_criteria['Industry'] = $industry_type_id;
     $formatted_search_criteria['Industry'] = $industry_type_name;
   }
+  if ($values['nycha_industry']) {
+    preg_match("/.*?(\\[.*?])/is", $values['nycha_industry'], $matches);
+    $industry_type_name = str_replace($matches[1], "", $matches[0]);
+    $industry_type_id = trim($matches[1], '[ ]');
+    $form['filter']['nycha_industry'] = array('#markup' => '<div><strong>Industry:</strong> ' . $industry_type_name . '</div>');
+    $user_criteria['Industry'] = $industry_type_id;
+    $formatted_search_criteria['Industry'] = $industry_type_name;
+  }
   if ($values['payee_name']) {
     $form['filter']['payee_name'] = array(
       '#markup' => '<div><strong>Payee Name:</strong> ' . $values['payee_name'] . '</div>',

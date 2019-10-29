@@ -1454,7 +1454,14 @@ function _industry_options($data_source = Datasource::CITYWIDE)
   $industries = ['Select Industry'];
   switch ($data_source) {
     case Datasource::NYCHA:
-      $industries += _ckbk_solr_get_all_options($data_source, 'spending', 'industry_type_name');
+//      $industries += _ckbk_solr_get_all_options($data_source, 'spending', 'industry_type_name');
+      $solr_industries = _ckbk_solr_get_all_options($data_source, 'spending', 'industry_type_name');
+      if($solr_industries){
+        foreach($solr_industries as $industry){
+          $industry = strtoupper($industry);
+          $industries[$industry] = $industry;
+        }
+      }
       break;
     default:
       try {
