@@ -958,7 +958,7 @@ function _funding_source_options($data_source = Datasource::NYCHA)
 //      $sources += _ckbk_solr_get_all_options($data_source, 'spending', 'funding_source_name');
       try {
         $dataController = data_controller_get_instance();
-        $data = $dataController->queryDataset('checkbook_nycha:ref_funding_source', array(
+        $data = $dataController->queryDataset('checkbook_nycha:funding_source', array(
           'funding_source_code',
           'funding_source_description',
         ), NULL, 'funding_source_description');
