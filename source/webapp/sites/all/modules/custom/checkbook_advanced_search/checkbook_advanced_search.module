@@ -622,6 +622,9 @@ function _checkbook_advanced_search_get_form($form, $domain, $agencies, $agency_
       $field_name = $field_config['field_name'];
       $column = $field_config['column'];
       $field_def = $all_field_def[$field_name];
+      if(!isset($field_def)){
+        LogHelper::log_notice('Could not find field definition for '. $domain .' domain field: '.$field_name);
+      }
       $disabled = $field_def['disabled'];
       $disabled = ((is_null($disabled))) ? FALSE : $disabled;
       $field = new Field($field_def['field_name'], $field_def['field_type'], $field_def['attributes'], $disabled);
