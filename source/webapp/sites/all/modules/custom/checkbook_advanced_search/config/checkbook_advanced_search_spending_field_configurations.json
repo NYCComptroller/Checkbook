@@ -18,7 +18,6 @@
             ],
     "checkbook_oge":
             [
-                {"field_name":"other_government_entities","column":"column-left"},
                 {"field_name":"department","column":"column-left","disabled":true},
                 {"field_name":"expense_category","column":"column-left","disabled":true},
                 {"field_name":"expense_type","column":"column-left"},
@@ -34,20 +33,19 @@
             ],
     "checkbook_nycha":
             [
-              {"field_name":"other_government_entities","column":"column-left"},
-              {"field_name":"department","column":"column-left","disabled":true},
-              {"field_name":"expense_category","column":"column-left","disabled":true},
-              {"field_name":"expense_type","column":"column-left"},
-              {"field_name":"industry","column":"column-left"},
-              {"field_name":"fundsrc","column":"column-left"},
-              {"field_name":"resp_center","column":"column-left"},
-              {"field_name":"vendor_name","column":"column-right"},
-              {"field_name":"check_amount","column":"column-right"},
-              {"field_name":"amount_spent","column":"column-right"},
-              {"field_name":"purchase_order_type","column":"column-right"},
-              {"field_name":"contract_id","column":"column-right"},
-              {"field_name":"document_id","column":"column-right"},
-              {"field_name":"date_filter","column":"column-right"},
-              {"field_name":"spending","column":"none"}
+                {"field_name":"department","column":"column-left","disabled":true},
+                {"field_name":"expense_category","column":"column-left","disabled":true},
+                {"field_name":"expense_type","column":"column-left"},
+                {"field_name":"industry","column":"column-left"},
+                {"field_name":"fundsrc","column":"column-left"},
+                {"field_name":"resp_center","column":"column-left"},
+                {"field_name":"vendor_name","column":"column-right"},
+                {"field_name":"check_amount","column":"column-right"},
+                {"field_name":"amount_spent","column":"column-right"},
+                {"field_name":"purchase_order_type","column":"column-right"},
+                {"field_name":"contract_id","column":"column-right"},
+                {"field_name":"document_id","column":"column-right"},
+                {"field_name":"date_filter","column":"column-right"},
+                {"field_name":"spending","column":"none"}
             ]
 }
