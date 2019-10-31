@@ -2526,7 +2526,7 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 .dollar-amounts > div:first-child,
 .inside .transactions-container .transactions-total-amount,
 .contract-information .dollar-difference{
-    margin-right:10px;
+    margin-right:0px;
 }
 .dollar-amounts > div > div,
 .inside .transactions-container .transactions-total-amount > div,
@@ -2786,7 +2786,7 @@ span.export, span.summary_export {
   cursor: pointer;
   position: relative;
   top:-65px;
-  right: 0px;
+  right: 10px;
   padding-top:6px;
 }
 
@@ -2798,7 +2798,7 @@ span.export, span.summary_export {
   text-align: left;
   border-radius: 1px;
   padding: 2px 4px;
-  
+
   /* Position the tooltip */
   position: absolute;
   z-index: 1;
