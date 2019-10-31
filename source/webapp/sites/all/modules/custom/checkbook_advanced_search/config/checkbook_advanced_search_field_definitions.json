@@ -306,13 +306,6 @@
         "default_value":"All"
       }
     },
-    "purchase_order_number":{
-      "field_type":"textfield",
-      "field_name":"purchase_order_number",
-      "attributes":{
-        "title":"Contract ID"
-      }
-    },
     "responsibility_center":{
       "field_type":"select",
       "field_name":"responsibility_center",
