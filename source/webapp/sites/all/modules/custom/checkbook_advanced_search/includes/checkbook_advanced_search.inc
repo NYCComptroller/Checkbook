@@ -1781,7 +1781,6 @@ function _checkbook_advanced_search_get_field_configs($domain)
 
     $converter = new Json2PHPArray();
     $configuration = $converter->convert($config_str);
-
     return $configuration;
 }
 

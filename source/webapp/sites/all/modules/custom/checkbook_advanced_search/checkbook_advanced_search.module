@@ -657,12 +657,12 @@ function _checkbook_advanced_search_filter_field_definition($domain, $data_sourc
     $sub_vendor_status_attributes = _checkbook_advanced_search_get_subcontract_approval_status_and_id('attributes');
     $includes_sub_vendors = _get_contract_includes_subvendors_data();
     $includes_sub_vendors_attributes = _get_contract_includes_subvendors_data('attributes');
+    $contract_type_attribute = _checkbook_advanced_search_get_contract_type_and_id($data_source);
   }
   $expense_attributes = _checkbook_advanced_search_get_expensetype_and_id($data_source);
   $year_attribute = _checkbook_advanced_search_get_year($domain, $data_source);
   $award_method = _checkbook_advanced_search_get_contract_award_method_and_id($data_source);
   $award_method_attributes = _checkbook_advanced_search_get_contract_award_method_attributes($data_source);
-  $contract_type_attribute = _checkbook_advanced_search_get_contract_type_and_id($data_source);
 
   $field_definition_configs = _checkbook_advanced_search_get_field_def_configs();
 
