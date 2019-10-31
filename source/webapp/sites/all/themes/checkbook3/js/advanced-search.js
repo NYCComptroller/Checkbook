@@ -426,34 +426,39 @@
 
         var contracts_div = function (data_source, div_contents) {
           this.div_elements = {
-            'agency': 'select[name=' + data_source + '_contracts_agency]',
             'status': 'select[name=' + data_source + '_contracts_status]',
-            'category': 'select[name=' + data_source + '_contracts_category]',
-            'contract_type': 'select[name=' + data_source + '_contracts_type]',
-            'award_method': 'select[name=' + data_source + '_contracts_award_method]',
-            'year': 'select[name="' + data_source + '_contracts_year"]',
-            'mwbe_category': 'select[name=' + data_source + '_contracts_mwbe_category]',
-            'industry': 'select[name=' + data_source + '_contracts_industry]',
             'vendor_name': 'input:text[name=' + data_source + '_contracts_vendor_name]',
+            'mwbe_category': 'select[name=' + data_source + '_contracts_mwbe_category]',
+            'contract_type': 'select[name=' + data_source + '_contracts_type]',
             'contract_id': 'input:text[name=' + data_source + '_contracts_contract_num]',
-            'apt_pin': 'input:text[name=' + data_source + '_contracts_apt_pin]',
-            'pin': 'input:text[name=' + data_source + '_contracts_pin]',
-            'registration_date_from': 'input:text[name="' + data_source + '_contracts_registration_date_from[date]"]',
-            'registration_date_to': 'input:text[name="' + data_source + '_contracts_registration_date_to[date]"]',
-            'received_date_from': 'input:text[name="' + data_source + '_contracts_received_date_from[date]"]',
-            'received_date_to': 'input:text[name="' + data_source + '_contracts_received_date_to[date]"]',
-            'entity_contract_number': 'input:text[name=' + data_source + '_contracts_entity_contract_number]',
-            'commodity_line': 'input:text[name=' + data_source + '_contracts_commodity_line]',
-            'budget_name': 'input:text[name=' + data_source + '_contracts_budget_name]',
             'includes_sub_vendors': 'select[name="' + data_source + '_contracts_includes_sub_vendors"]',
-            'sub_vendor_status': 'select[name="' + data_source + '_contracts_sub_vendor_status"]',
-            'purpose': 'input:text[name=' + data_source + '_contracts_purpose]',
+            'pin': 'input:text[name=' + data_source + '_contracts_pin]',
             'curremt_amount_from': 'input:text[name="' + data_source + '_contracts_current_contract_amount_from"]',
             'curremt_amount_to': 'input:text[name="' + data_source + '_contracts_current_contract_amount_to"]',
-            'purchase_order_type': 'input:text[name="' + data_source + '_contracts_purchase_order_type"]',
-            'purchase_order_number': 'input:text[name="' + data_source + '_contracts_purchase_order_number"]',
-            'responsibility_center': 'input:text[name="' + data_source + '_contracts_responsibility_center"]',
-            'nycha_award_method': 'input:text[name="' + data_source + '_contracts_nycha_award_method"]',
+            'end_date_from': 'input:text[name="' + data_source + '_contracts_end_date_from[date]"]',
+            'end_date_to': 'input:text[name="' + data_source + '_contracts_end_date_to[date]"]',
+            'registration_date_from': 'input:text[name="' + data_source + '_contracts_registration_date_from[date]"]',
+            'registration_date_to': 'input:text[name="' + data_source + '_contracts_registration_date_to[date]"]',
+            'category': 'select[name=' + data_source + '_contracts_category]',
+            'sub_vendor_status': 'select[name="' + data_source + '_contracts_sub_vendor_status"]',
+            'purpose': 'input:text[name=' + data_source + '_contracts_purpose]',
+            'agency': 'select[name=' + data_source + '_contracts_agency]',
+            'industry': 'select[name=' + data_source + '_contracts_industry]',
+            'apt_pin': 'input:text[name=' + data_source + '_contracts_apt_pin]',
+            'award_method': 'select[name=' + data_source + '_contracts_award_method]',
+            'start_date_from': 'input:text[name="' + data_source + '_contracts_start_date_from[date]"]',
+            'start_date_to': 'input:text[name="' + data_source + '_contracts_start_date_to[date]"]',
+            'received_date_from': 'input:text[name="' + data_source + '_contracts_received_date_from[date]"]',
+            'received_date_to': 'input:text[name="' + data_source + '_contracts_received_date_to[date]"]',
+            'year': 'select[name="' + data_source + '_contracts_year"]',
+            'commodity_line': 'input:text[name=' + data_source + '_contracts_commodity_line]',
+            'entity_contract_number': 'input:text[name=' + data_source + '_contracts_entity_contract_number]',
+            'budget_name': 'input:text[name=' + data_source + '_contracts_budget_name]',
+            'purchase_order_type': 'select[name="' + data_source + '_contracts_purchase_order_type"]',
+            'responsibility_center': 'select[name="' + data_source + '_contracts_responsibility_center"]',
+            'nycha_contract_type': 'select[name="' + data_source + '_contracts_nycha_contract_type"]',
+            'nycha_award_method': 'select[name="' + data_source + '_contracts_nycha_award_method"]',
+            'nycha_industry': 'select[name="' + data_source + '_contracts_nycha_industry"]',
             'approved_date': 'input:text[name="' + data_source + '_contracts_approved_date"]'
           };
 
@@ -601,7 +606,7 @@
               $(".prime-and-sub-note").remove();
               break;
             case "checkbook_nycha":
-              initializeContractsView(div_checkbook_contracts_oge);
+              initializeContractsView(div_checkbook_contracts_nycha);
               div_checkbook_contracts.contents().hide();
               div_checkbook_contracts_oge.contents().hide();
               div_checkbook_contracts_nycha.contents().show();
@@ -659,7 +664,7 @@
             };
 
             div.ele('vendor_name').autocomplete({source: autoCompleteSource(solr_datasource,'vendor_name', nycha_filters)});
-            div.ele('purchase_order_number').autocomplete({source: autoCompleteSource(solr_datasource,'contract_number', nycha_filters)});
+            div.ele('contract_id').autocomplete({source: autoCompleteSource(solr_datasource,'contract_number', nycha_filters)});
             div.ele('pin').autocomplete({source: autoCompleteSource(solr_datasource,'pin', nycha_filters)});
           }else {
             var filters = {
@@ -962,32 +967,31 @@
             'dept': 'select[name=' + data_source + '_spending_department]',
             'exp_category': 'select[name=' + data_source + '_spending_expense_category]',
             'spending_category': 'select[name=' + data_source + '_spending_expense_type]',
-            'mwbe_category': 'select[name=' + data_source + '_spending_mwbe_category]',
             'industry': 'select[name=' + data_source + '_spending_industry]',
-            'fundsrc': 'select[name=' + data_source + '_spending_fundsrc]',
-            'resp_center': 'select[name=' + data_source + '_spending_resp_center]',
-            'po_type': 'select[name=' + data_source + '_spending_purchase_order_type]',
+            'mwbe_category': 'select[name=' + data_source + '_spending_mwbe_category]',
             'payee_name': 'input:text[name=' + data_source + '_spending_payee_name]',
-            'vendor_name': 'input:text[name=' + data_source + '_spending_vendor_name]',
             'check_amt_from': 'input:text[name=' + data_source + '_spending_check_amount_from]',
             'check_amt_to': 'input:text[name=' + data_source + '_spending_check_amount_to]',
-            'amount_spent_from': 'input:text[name=' + data_source + '_spending_amount_spent_from]',
-            'amount_spent_to': 'input:text[name=' + data_source + '_spending_amount_spent_to]',
             'contract_id': 'input:text[name=' + data_source + '_spending_contract_num]',
-            'entity_contract_number': 'input:text[name=' + data_source + '_spending_entity_contract_number]',
             'document_id': 'input:text[name=' + data_source + '_spending_document_id]',
             'capital_project': 'input:text[name=' + data_source + '_spending_capital_project]',
-            'commodity_line': 'input:text[name=' + data_source + '_spending_commodity_line]',
-            'budget_name': 'input:text[name=' + data_source + '_spending_budget_name]',
             'date_filter': 'input:radio[name=' + data_source + '_spending_date_filter]',
             'date_filter_year': 'input:radio[name=' + data_source + '_spending_date_filter][value=0]',
             'date_filter_issue_date': 'input:radio[name=' + data_source + '_spending_date_filter][value=1]',
             'date_filter_checked': 'input:radio[name=' + data_source + '_spending_date_filter]:checked',
             'fiscal_year': 'select[name="' + data_source + '_spending_fiscal_year"]',
             'issue_date_from': 'input:text[name="' + data_source + '_spending_issue_date_from[date]"]',
-            'issue_date_to': 'input:text[name="' + data_source + '_spending_issue_date_to[date]"]'
+            'issue_date_to': 'input:text[name="' + data_source + '_spending_issue_date_to[date]"]',
+            'commodity_line': 'input:text[name=' + data_source + '_spending_commodity_line]',
+            'entity_contract_number': 'input:text[name=' + data_source + '_spending_entity_contract_number]',
+            'budget_name': 'input:text[name=' + data_source + '_spending_budget_name]',
+            'fundsrc': 'select[name=' + data_source + '_spending_fundsrc]',
+            'resp_center': 'select[name=' + data_source + '_spending_resp_center]',
+            'vendor_name': 'input:text[name=' + data_source + '_spending_vendor_name]',
+            'po_type': 'select[name=' + data_source + '_spending_purchase_order_type]',
+            'amount_spent_from': 'input:text[name=' + data_source + '_spending_amount_spent_from]',
+            'amount_spent_to': 'input:text[name=' + data_source + '_spending_amount_spent_to]'
           };
-
           this.data_source = data_source;
           this.div_contents = div_contents;
         };
