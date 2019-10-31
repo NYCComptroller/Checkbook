@@ -986,7 +986,7 @@
             'entity_contract_number': 'input:text[name=' + data_source + '_spending_entity_contract_number]',
             'budget_name': 'input:text[name=' + data_source + '_spending_budget_name]',
             'fundsrc': 'select[name=' + data_source + '_spending_fundsrc]',
-            'resp_center': 'select[name=' + data_source + '_spending_resp_center]',
+            'resp_center': 'select[name=' + data_source + '_spending_responsibility_center]',
             'vendor_name': 'input:text[name=' + data_source + '_spending_vendor_name]',
             'po_type': 'select[name=' + data_source + '_spending_purchase_order_type]',
             'amount_spent_from': 'input:text[name=' + data_source + '_spending_amount_spent_from]',
@@ -1012,9 +1012,6 @@
         div_checkbook_spending.ele('agency').change(function () {
           onAgencyChange(div_checkbook_spending);
         });
-        //div_checkbook_spending_oge.ele('agency').change(function () {
-        //  onAgencyChange(div_checkbook_spending_oge);
-        //});
 
         //Populate Spending Domain Expense Categories drop-down
         function loadSpendingExpenseCategories(div, data_source) {
