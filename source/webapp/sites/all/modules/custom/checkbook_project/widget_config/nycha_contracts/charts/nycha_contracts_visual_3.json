@@ -54,12 +54,12 @@ $node->widgetConfig->chartConfig->xAxis->categories = $categories;
 "type": "area"
  },
   "colors":["#D78E35","#7DB7E5","#122E46"],
-"legend": {"align": "right",  "verticalAlign": "top", "layout": "vertical", "x": 0, "y": 100, "symbolWidth": 25,
+"legend": {"align": "right",  "verticalAlign": "top", "layout": "vertical", "x": 11, "y": 100, "symbolWidth": 22,
 "padding": 3, "itemMarginTop": 3, "itemMarginBottom": 3},
 "xAxis":{"labels":{"enabled":true, "style": {"color": "black", "fontSize": "13px"}}},
 "tooltip": {
-"split": "true",
-"valueSuffix": " Contracts"
+"split":true,
+"function":"splittooltip"
 },
 "plotOptions": {
 "area": {
@@ -77,5 +77,15 @@ $node->widgetConfig->chartConfig->xAxis->categories = $categories;
 }
 }
 
-
+<function>
+splittooltip^^'formatter' :
+function() {
+  var s = [];
+  s.push(this.x);
+  this.points.forEach(function(point) {
+  s.push('<b>' + point.series.name + '</b>: ' +Highcharts.numberFormat(point.y, 0, '.', ',') + ' Contracts');
+  });
+return s;
+}
+</function>
 
