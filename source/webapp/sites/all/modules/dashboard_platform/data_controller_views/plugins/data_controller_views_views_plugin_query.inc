@@ -58,10 +58,10 @@ class data_controller_views_views_plugin_query extends views_plugin_query {
         if ($field == 'dataset') {
             $this->dataset = $value;
         }
-        elseif ($field == 'cube_or_list') {
-            if ($value == 'Cube')
-                $this->useCube = TRUE;
-        }
+//        elseif ($field == 'cube_or_list') {
+//            if ($value == 'Cube')
+//                $this->useCube = TRUE;
+//        }
         elseif ($field == 'row_flattener') {
             $this->rowFlattenerConfig = $value;
         }
