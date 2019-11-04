@@ -31,8 +31,8 @@ if(isset($url)) {
     $aggregatedAmountTitle = WidgetUtil::getLabel("total_contract_amount");
     $wtitle = NychaSpendingUtil::getTransactionsSubTitle($widget, $url);
     //echo $wtitle;
-    if ($widget != 'ytd_contract'){ 
-      
+    if ($widget != 'ytd_contract'){
+
       $subTitle2 = "<div class='spending-tx-subtitle'>{$wtitle}</div>";
 
     }
@@ -60,7 +60,7 @@ if(isset($url)) {
                       </div>";
       $subTitle2 = $contractSummary;
     }
-    
+
   }
   //Nycha contract invoice amount links transaction pages
   if (strpos($widget, 'inv_') !== false) {
@@ -72,7 +72,7 @@ if(isset($url)) {
     $originalAmount = '$' . custom_number_formatter_format($inv_contractDetails['original_amount'], 2);
     $currentAmountTitle = WidgetUtil::getLabel("current_amount");
     $currentAmount = '$' . custom_number_formatter_format($inv_contractDetails['total_amount'], 2);
-    $totalAmountTitle ="NYCHA Total Amount";
+    $totalAmountTitle ="NYCHA Amount Spent";
     $totalAmount = '$' . custom_number_formatter_format($inv_contractDetails['test'], 2);
     if ($tcode == 'BA' || $tcode == 'BAM' || $tcode == 'PA'|| $tcode == 'PAM'|| $tcode == 'PO') {
       $inv_contractSummary = "<div class='contract-information contract-summary-block'>
@@ -113,9 +113,9 @@ if(isset($url)) {
     $totalSpendingAmount = '$' . custom_number_formatter_format($node->data[0]['invoice_amount_sum'], 2);
     $amountsSummary = "<div class='dollar-amounts'>
                         <div class='total-spending-amount'>{$totalSpendingAmount}
-                          <div class='amount-title'>{$aggregatedAmountTitle} 
-                          <div class='information'><span class='tooltiptext'> 
-                        Amount displayed is the sum of ‘Amount spent’ by NYCHA for the selected FY</span></div></div>                        
+                          <div class='amount-title'>{$aggregatedAmountTitle}
+                          <div class='information'><span class='tooltiptext'>
+                        Amount displayed is the sum of ‘Amount spent’ by NYCHA for the selected FY</span></div></div>
                         </div>
                       </div></div>";
 
@@ -132,7 +132,7 @@ if (strpos($widget, 'ytd_') !== false) {
     $amountsSummary = "<div class='dollar-amounts'>
                         <div class='ytd-spending-amount'>{$ytdAmount}
                           <div class='amount-title'>{$aggregatedYtdTitle}
-                          <div class='information'><span class='tooltiptext'> 
+                          <div class='information'><span class='tooltiptext'>
                         Amount displayed is the sum of ‘Amount spent’ by NYCHA for the selected FY</span></div></div>
                         </div>
                         <div class='total-spending-amount'>{$aggregatedAmount}
@@ -145,7 +145,7 @@ if (strpos($widget, 'ytd_') !== false) {
     $amountsSummary = "<div class='dollar-amounts'>
                         <div class='ytd-spending-amount'>{$ytdAmount}
                           <div class='amount-title'>{$aggregatedYtdTitle}
-                          <div class='information'><span class='tooltiptext'> 
+                          <div class='information'><span class='tooltiptext'>
                         Amount displayed is the sum of ‘Amount spent’ by NYCHA for the selected FY</span></div></div>
                         </div>
                       </div></div>";
@@ -153,19 +153,22 @@ if (strpos($widget, 'ytd_') !== false) {
 }
 
 if (strpos($widget, 'inv_') !== false) {
-  $amountsSummary = "<div class='dollar-amounts'>
-                        <div class='spend-to-date'>{$spendtodateAmount}
+  $amountsSummary = "<div class='dollar-amounts' style='width:480px;margin-top:10px;'>
+                        <div class='total-spending-amount' style='margin-left:14px'>{$totalAmount}
+                          <div class='amount-title'>{$totalAmountTitle}
+                        <div class='information'><span class='tooltiptext' style='width:490px;left:-190%;margi-left:-190px;padding-bottom: 0px;'>
+                        Amount displayed is the sum of ‘Amount spent’ by NYCHA for the selected FY</span></div></div>
+                        </div>
+                        <div class='spend-to-date' style='margin-left:14px'>{$spendtodateAmount}
                           <div class='amount-title'>{$spendtodateTitle}</div>
                         </div>
-                        <div class='original-amount'>{$originalAmount}
+                        <div class='original-amount' style='margin-left:14px'>{$originalAmount}
                           <div class='amount-title'>{$originalAmountTitle}</div>
                         </div>
-                        <div class='current-amount'>{$currentAmount}
+                        <div class='current-amount' style='margin-left:14px'>{$currentAmount}
                           <div class='amount-title'>{$currentAmountTitle}</div>
                         </div>
-                        <div class='total-spending-amount'>{$totalAmount}
-                          <div class='amount-title'>{$totalAmountTitle}</div>
-                        </div>
+
                       </div></div>";
 }
 
