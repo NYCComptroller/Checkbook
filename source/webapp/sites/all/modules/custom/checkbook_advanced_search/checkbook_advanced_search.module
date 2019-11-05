@@ -640,15 +640,15 @@ function _checkbook_advanced_search_get_form($form, $domain, $agencies, $agency_
 
 function _checkbook_advanced_search_filter_field_definition($domain, $data_source, $agencies, $agency_attributes, $year_range)
 {
-  if ($data_source == DataSource::OtherGovernmentEntities) {
-    $agencies = _checkbook_advanced_search_get_agencyname_and_id($data_source);
-    $agency_attributes = _checkbook_advanced_search_get_agency_attributes($data_source);
-    $nycha_agencies = _checkbook_advanced_search_get_agencyname_and_id(DataSource::NYCHA);
-    $nycha_agency_attributes = _checkbook_advanced_search_get_agency_attributes(DataSource::NYCHA);
-    $agencies = $nycha_agencies + $agencies;
-    $agency_attributes = $nycha_agency_attributes + $agency_attributes;
 
-    $nycha_responsibility_center_attributes = _checkbook_advanced_search_get_responsibility_centers(DataSource::NYCHA);
+  if ($data_source == DataSource::OtherGovernmentEntities) {
+    //$agencies = _checkbook_advanced_search_get_agencyname_and_id($data_source);
+    //$agency_attributes = _checkbook_advanced_search_get_agency_attributes($data_source);
+    //$nycha_agencies = _checkbook_advanced_search_get_agencyname_and_id(DataSource::NYCHA);
+    //$nycha_agency_attributes = _checkbook_advanced_search_get_agency_attributes(DataSource::NYCHA);
+    //$agencies = $nycha_agencies + $agencies;
+    //$agency_attributes = $nycha_agency_attributes + $agency_attributes;
+
     $nycha_contract_type_attributes = _checkbook_advanced_search_get_nycha_contract_types(DataSource::NYCHA);
     $nycha_award_method_attributes = checkbook_advanced_search_get_nycha_award_methods(DataSource::NYCHA);
     $nycha_industry_attributes = checkbook_advanced_search_get_nycha_industries(DataSource::NYCHA);
@@ -663,10 +663,13 @@ function _checkbook_advanced_search_filter_field_definition($domain, $data_sourc
     $includes_sub_vendors_attributes = _get_contract_includes_subvendors_data('attributes');
     $contract_type_attribute = _checkbook_advanced_search_get_contract_type_and_id($data_source);
   }
+  $nycha_responsibility_center_attributes = _checkbook_advanced_search_get_responsibility_centers($data_source);
   $expense_attributes = _checkbook_advanced_search_get_expensetype_and_id($data_source);
   $year_attribute = _checkbook_advanced_search_get_year($domain, $data_source);
   $award_method = _checkbook_advanced_search_get_contract_award_method_and_id($data_source);
   $award_method_attributes = _checkbook_advanced_search_get_contract_award_method_attributes($data_source);
+  $nycha_contract_type_attributes = _checkbook_advanced_search_get_nycha_contract_types(DataSource::NYCHA);
+
 
   $field_definition_configs = _checkbook_advanced_search_get_field_def_configs();
 
