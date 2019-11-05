@@ -22,24 +22,29 @@
   "dataset": "checkbook_nycha:all_disbursement_transactions",
   "columns": ["issue_date_year_id.issue_date_year_id","issue_date_year.issue_date_year","check_amount_sum"],
   "limit": 10,
-  "orderBy": "-check_amount_sum",
+  "orderBy": "issue_date_year",
   "cleanURLParameters":["agency","vendor","category"],
-  "defaultParameters":{"check_amount_sum":"0"},
-  "defaultParamTypeConfig":{"check_amount_sum":"ne"},
   "adjustParameters":"
+  $year_id = RequestUtilities::getRequestParamValue('year');
+  //if(isset($year_id)){
+  $data_controller_instance = data_controller_get_operator_factory_instance();
+  $parameters['issue_date_year_id'] = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, $year_id);
+  //}
   $adjustedParameters = $parameters;
   if(function_exists('_checkbook_project_applyParameterFilters')){
   $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
-}
+  }
 return $adjustedParameters;
 ",
+"defaultParameters":{"check_amount_sum":"0"},
+"defaultParamTypeConfig":{"check_amount_sum":"ne"},
 "urlParamMap":{"agency":"agency_id","vendor":"vendor_id","category":"spending_category_id"},
 "transformationPHP": "
 $data = array();
-$categories=array();
+$categories = array();
 foreach ($node->data as $row){
 $link = NychaSpendingUrlService::getFooterUrl();
-$categories[]=html_entity_decode($row['issue_date_year_issue_date_year'],ENT_QUOTES);
+$categories[]=$row['issue_date_year_issue_date_year'];
 $data[] = (object)array('year'=>$row['issue_date_year_id'],'y'=>$row['check_amount_sum'],'url'=>$link,'name'=>$row['issue_date_year_issue_date_year']);
 }
 $node->widgetConfig->chartConfig->series[0]->data = $data;
@@ -59,7 +64,7 @@ return $node->data;
 "layout": "horizontal"
 },
 "xAxis": {
-"labels":{},
+"labels":{"enabled":true},
 "title": {"text": ""},
 "minPadding":0.1,
 "maxPadding":0.1
@@ -85,7 +90,7 @@ return $node->data;
 }
 }
 },
-"series": [],
+"series":[],
 "title":{"text":""}
 }
 }
