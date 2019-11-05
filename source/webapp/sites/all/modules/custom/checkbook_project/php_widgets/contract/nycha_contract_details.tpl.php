@@ -19,6 +19,9 @@
  */
 
 $contract = $node->data;
+$agreement_type='/agreement_type/'.$contract['agreement_type_code'];
+$tcode = '/tcode/'.$contract['agreement_type_code'];
+$dynamic_parameter = "/po_num_exact/" . $contract['contract_id'];
 ?>
 <!-----------------------------    Contract Details of POs       ------------------->
 <div class="content clearfix">
@@ -28,8 +31,8 @@ $contract = $node->data;
           class="contract-number"><?= htmlentities($contract['contract_id']) ?></span></h2>
     </div>
     <div class="dollar-amounts">
-      <div class="spent-to-date">
-        <?= custom_number_formatter_format($contract['spend_to_date'], 2, "$"); ?>
+      <div class="spent-to-date"><a class="new_window" href="<?=NYCHASpendingUrlService::invContractSpendingUrl($dynamic_parameter, 'inv_contract_id',$agreement_type,$tcode);?>">
+          <?= custom_number_formatter_format($contract['spend_to_date'], 2, "$"); ?></a>
         <div class="amount-title"><?= WidgetUtil::getLabel('invoiced_amount') ?></div>
       </div>
       <div class="original-amount">
