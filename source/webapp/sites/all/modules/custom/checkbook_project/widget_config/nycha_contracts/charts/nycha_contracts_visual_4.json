@@ -31,8 +31,9 @@
   $node->widgetConfig->defaultParameters = $node->widgetConfig->defaultParametersPending;
   $node->widgetConfig->cleanURLParameters = $node->widgetConfig->cleanURLParametersPending;
 }",
-"chartTitle":"Top 10 Responsibility Centers By Current Amount",
+"chartTitle":"Top 10 Responsibility Centers by Current Amount",
 "widgetDataLoader":"
+$year_id = RequestUtilities::getRequestParamValue('year');
 $where_filters = array();
 foreach($node->widgetConfig->requestParams as $param=>$value){
 
@@ -42,16 +43,17 @@ $where_filters[] = '('. $value . ' BETWEEN start_year_id AND end_year_id)';
 $where_filters[] = _widget_build_sql_condition( $param, $value);
 }
 }
-//if(count($where_filters) > 0){
-$where_filter = ' WHERE responsibility_center_code IS NOT NULL ' . implode(' AND ' , $where_filters) ;
-//}
+$where_filters[] = _widget_build_sql_condition( 'release_approved_year_id', $year_id);
+if(count($where_filters) > 0){
+$where_filter = ' WHERE  ' . implode(' AND ' , $where_filters) ;
+}
 $datasource = RequestUtilities::getRequestParamValue('datasource');
 $sql = 'SELECT responsibility_center_id, responsibility_center_code, responsibility_center_name as responsibility_center_descr,
 count(distinct contract_id) as contract_count,sum(total_amount) as total_amount,sum(original_amount) as original_amount, sum(spend_to_date) as spend_to_date
 from ( select responsibility_center_id, responsibility_center_code, responsibility_center_name, contract_id,
 sum(line_total_amount) as total_amount, sum(line_original_amount) as original_amount, sum(line_spend_to_date) as spend_to_date
 from release_widget_summary '
-. $where_filter .'group by responsibility_center_id, responsibility_center_code, responsibility_center_name, contract_id ) a
+. $where_filter .' AND responsibility_center_code IS NOT NULL group by responsibility_center_id, responsibility_center_code, responsibility_center_name, contract_id ) a
 group by responsibility_center_id, responsibility_center_code, responsibility_center_descr ORDER BY 5 DESC LIMIT 10';
 $node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
 ",
