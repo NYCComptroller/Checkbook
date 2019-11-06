@@ -124,6 +124,23 @@ if($node->widgetConfig->filterName == 'Sub Vendor Status in PIP') {
         }
     }
 }
+//Document ID filter display N/A for null values
+if($node->widgetConfig->filterName == 'Document ID') {
+  if ($unchecked && $unchecked)
+    foreach($unchecked as $key => $value) {
+      if($value[1] == null) {
+        $unchecked[$key][0] = "N/A";
+        $unchecked[$key][1] = "N/A";
+      }
+    }
+  if (isset($checked) && $checked)
+    foreach($checked as $key => $value) {
+      if($value[1] == null) {
+        $checked[$key][0] = "N/A";
+        $checked[$key][1] = "N/A";
+      }
+    }
+}
 
 $checkedCount = (isset($checked) && $checked) ? sizeof($checked) : 0;
 $uncheckedCount = (isset($unchecked) && $unchecked) ? sizeof($unchecked) : 0;
@@ -431,21 +448,23 @@ $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
   <div class="checked-items">
     <?php
     $query_string = $_GET['q'];
-
-
+    // Check if links are from ytd(nycha spending) or inv (nycha contracts) and disable facet selection
+    if ($checkedCount == 1)
+    {
+      if (preg_match('/ytd_contract/',$query_string) || preg_match('/po_num_exact/',$query_string)){
+      if($node->widgetConfig->filterName == 'Contract ID') {
+        $unchecked = null;
+        $disableFacet = " DISABLED='true' ";
+        $disabled = " DISABLED='true' ";
+      }
+      }
+    }
     if((isset($checked) && $node->widgetConfig->maxSelect == $checkedCount) || $checkedCount + $uncheckedCount == 0 ){
         $disabled = " DISABLED='true' " ;
     }else{
         $disabled = "" ;
     }
-    // Check if links are from ytd(nycha spending) or inv (nycha contracts) and disable facet selection
-    if(preg_match('/ytd_contract/',$query_string) || preg_match('/inv_contract/',$query_string)){
-      $disableFacet = " DISABLED='true' ";
-      $disabled =  " DISABLED='true' ";
-      $unchecked = null;
-    }
-    else{$disableFacet = $disableFacet ? " DISABLED='true' " : "";}
-    //$disableFacet = $disableFacet ? " DISABLED='true' " : "";
+    $disableFacet = $disableFacet ? " DISABLED='true' " : "";
     $ct = 0;
 
 //    if ($checked && is_array($checked)) {
@@ -460,7 +479,7 @@ $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
             <div class="row">
               <label for="{$id}">
                 <div class="checkbox">
-                            
+
 EOL;
             echo "  <input class='styled' id='" . $id . "' name= '" . $autocomplete_id . "' type='checkbox' " . $disableFacet . " checked='checked' value='" . urlencode(html_entity_decode($row[0], ENT_QUOTES)) . "' onClick=\"return applyTableListFilters();\" />" .
               "<label for=\"{$id}\" />";
@@ -486,31 +505,33 @@ EOL;
     <?php
     $ct = 0;
 //    if (isset($unchecked) && is_array($unchecked))
-    if (isset($unchecked) && $unchecked)
-    foreach ($unchecked as $row) {
-        if($row[2] > 0) {
+    if ($flag != 1) {
+      if (isset($unchecked) && $unchecked)
+        foreach ($unchecked as $row) {
+          if ($row[2] > 0) {
             $row[0] = str_replace('__', '/', $row[0]);
             $row[1] = str_replace('__', '/', $row[1]);
             $id = $id_filter_name . "_unchecked_" . $ct;
             echo <<<EOL
-  
+
               <div class="row">
                 <label for="{$id}">
                   <div class="checkbox">
-                              
+
 EOL;
             echo "<input class='styled' id='" . $id . "' name= '" . $autocomplete_id . "' type='checkbox' " . $disabled . "value='" . urlencode(html_entity_decode($row[0], ENT_QUOTES)) . "' onClick=\"return applyTableListFilters();\">" .
               " <label for='" . $id . "' />" .
               "</div>";
             if ($node->widgetConfig->filterName == 'Contract ID') {
-                echo '<div class="name">' . $row[1] . '</div>';
+              echo '<div class="name">' . $row[1] . '</div>';
             } else {
-                echo '<div class="name">' . _break_text_custom2($row[1], 15) . '</div>';
+              echo '<div class="name">' . _break_text_custom2($row[1], 15) . '</div>';
             }
             echo '    <div class="number"><span>' . number_format($row[2]) . '</span></div>';
             echo '  </label>';
             echo '</div>';
             $ct++;
+          }
         }
     }
     ?>

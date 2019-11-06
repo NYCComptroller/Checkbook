@@ -1,0 +1,150 @@
+{
+  "widgetType": "highcharts",
+  "widgetDatahandler": "highcharts",
+  "html_class":"",
+  "header":"
+  $header = '<h2 class=\"chart-title\" style=\"display:none;\">'. $node->widgetConfig->chartTitle . '</h2>';
+  $header .= ChartUtil::generateWidgetGridViewLink($node);
+  return $header;
+  ",
+  "gridConfig":{
+    "template":"chart_grid_view",
+    "domain":"contracts",
+    "html_class":"chart-grid-view-table four-columns",
+    "sortColumn":3,
+    "table_columns": [
+      {
+        "labelAlias": "Contract ID",
+        "columnType": "text"
+      },
+      {
+        "labelAlias": "Amount",
+        "columnType": "number",
+        "formatType": "amount"
+      },
+      {
+        "labelAlias": "Vendor",
+        "columnType": "text"
+      }
+
+    ]
+  },
+  "no_results_content":"No Results Found",
+
+  "cleanURLParameters":["awdmethod","vendor","csize","industry","year"],
+  "urlParamMap":{"year":"fiscal_year_id","awdmethod":"award_method_id","vendor":"vendor_id", "csize":"award_size_id",
+    "industry":"industry_type_id"},
+  "widgetPreprocessJSON":"
+  if(preg_match('/pending/',$_GET['q'])){
+  $node->widgetConfig->urlParamMap = $node->widgetConfig->urlParamMapPending;
+  $node->widgetConfig->defaultParameters = $node->widgetConfig->defaultParametersPending;
+  $node->widgetConfig->cleanURLParameters = $node->widgetConfig->cleanURLParametersPending;
+}
+
+",
+"chartTitle":"Top Ten Contracts by Disbursement Amount",
+"widgetDataLoader":"
+$year_id = RequestUtilities::getRequestParamValue('year');
+$where_filters = [];
+foreach($node->widgetConfig->requestParams as $param=>$value){
+if($param == 'fiscal_year_id'){
+$where_filters[] = '('. $value . ' BETWEEN start_year_id AND end_year_id)';
+}else{
+$where_filters[] = _widget_build_sql_condition( $param, $value);
+}
+}
+$where_filters[] = _widget_build_sql_condition( 'issue_date_year_id', $year_id);
+
+$where_filter = '';
+if(count($where_filters) > 0){
+$where_filter = ' WHERE ' . implode(' AND ' , $where_filters);
+}
+
+
+$datasource = RequestUtilities::getRequestParamValue('datasource');
+
+$sql = 'SELECT contract_id,contract_purpose,vendor_id,vendor_name,
+SUM(COALESCE(ytd_spending, 0)) AS check_amount_sum,
+SUM(billed_amount) AS billed_amount,
+MAX(COALESCE(total_contract_amount, 0)) AS total_contract_amount
+FROM aggregation_spending_contracts_fy'.
+$where_filter.
+' GROUP BY contract_id, contract_purpose, vendor_name, vendor_id ORDER BY check_amount_sum DESC LIMIT 10';
+$node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
+
+",
+"widgetUpdateJSONConfig":"
+
+$series_new = [];
+
+
+$index = 0;
+foreach($node->data as $row){
+$tooltip_label =
+'Contract ID: ' . $row['contract_id'] .  '<br/>' .
+'Amount: ' . custom_number_formatter_format($row['check_amount_sum'] ,2, '$').  '<br/>' .
+'Vendor: ' . $row['vendor_name'] .  '<br/>' ;
+
+list($link,) = explode('?',$_GET['q']);
+$link .= NychaContractsUrlService::contractDetailsUrl($row['contract_id'], true);
+
+$series_new[$index]->url = 	$link;
+$series_new[$index]->y = (float)$row['check_amount_sum'];
+$series_new[$index]->tooltip_label = $tooltip_label;
+$node->widgetConfig->gridConfig->data[] = array($row['contract_id'],$row['vendor_name'],'NYCHA',$row['check_amount_sum'] );
+$index += 1;
+}
+
+$node->widgetConfig->chartConfig->series[0]->name = 'Fiscal Years';
+$node->widgetConfig->chartConfig->series[0]->type = 'column';
+$node->widgetConfig->chartConfig->series[0]->pointWidth = 30;
+$node->widgetConfig->chartConfig->series[0]->data = $series_new;
+
+",
+"chartConfig" : {
+"colors":["#7DB7E5"],
+"plotOptions": {
+"series": {
+"cursor": "pointer"   ,
+"stacking": "normal",
+"dataLabels": {
+"enabled": false
+}  ,
+"point": {"events": {"function": "clickEvent"}}
+}
+},
+"xAxis": {
+"categories": [0,1,2,3,4,5,6,7,8,9],
+"labels": {"enabled": false}
+},
+"series": [
+{
+"name": "FY",
+"type": "column",
+"pointWidth": 50,
+"data": []
+}
+],
+"title": {"text": ""},
+"yAxis": {
+"min":0,
+"minRange": 0.1,
+"startOnTick":true,
+"title": {"text": ""},
+"labels":{"rotation": 0,"function":"yAxisFormatter"}
+} ,
+"legend": {
+"enabled": false
+},
+"tooltip":{"function":"tooltipformatter"}
+}
+}
+
+
+<function>
+yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
+tooltipformatter^^'formatter' :
+function() {return this.point.tooltip_label ;
+}##
+clickEvent^^"click": function(){location.href = Drupal.settings.basePath+this.url; }
+</function>

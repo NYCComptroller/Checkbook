@@ -1,6 +1,6 @@
 {
     "datasets": {
-        "ref_funding_source": {
+        "funding_source": {
             "datasourceName": "main",
             "source": "ref_funding_source",
             "columns": [

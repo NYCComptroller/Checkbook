@@ -409,7 +409,7 @@
             if (data[0]) {
               if (data[0].label !== 'No Matches Found') {
                 for (var i = 0; i < data.length; i++) {
-                  html = html + '<option title="' + data[i].value + '" value="' + data[i].value + ' ">' + data[i].label + '</option>';
+                  html = html + '<option title="' + data[i].value + '" value="' + data[i].value + '">' + data[i].label + '</option>';
                 }
               }
             }

@@ -502,7 +502,7 @@ function _ckbk_solr_get_all_options($data_source, $domain, $facet)
 {
   $query = new CheckbookSolrQuery($data_source);
   $q = 'select/?';
-  $q .= $query->addFacet($facet)->setFacetSort('index')->buildQuery();
+  $q .= $query->addFacet($facet)->setFq('domain', 'domain:'.$domain)->setFacetSort('index')->buildQuery();
   return _checkbook_autocomplete_solr_results($data_source, $q, $facet);
 }
 
@@ -756,7 +756,7 @@ function _checkbook_autocomplete_spending_budgetname($year, $agency, $expense_ca
  * @param bool $json
  * @return array|void
  */
-function _checkbook_autocomplete_spending_dept($year, $agency, $spending_cat=null, $data_source = Datasource::CITYWIDE, $json = true)
+function _checkbook_autocomplete_spending_dept($year, $agency, $spending_cat = null, $data_source = Datasource::CITYWIDE, $json = true)
 {
   if (!$agency) {
     return;
@@ -767,9 +767,9 @@ function _checkbook_autocomplete_spending_dept($year, $agency, $spending_cat=nul
   $query = 'select/?q=*:*&facet=true&facet.field=department_name_code&f.department_name_code.facet.sort=index&fq=domain:spending&facet.mincount=1&wt=phps&facet.limit=100';
   $matches = _get_spending_datafeeds_autocomplete_results('department_name_code', $query, $year, $agency, $expense_category, $dept, $exptype, $mwbe_category, $industry, $data_source);
 
-  if($json){
+  if ($json) {
     drupal_json_output($matches);
-  } else{
+  } else {
     return $matches;
   }
 }
@@ -783,48 +783,67 @@ function _checkbook_autocomplete_spending_dept($year, $agency, $spending_cat=nul
  * @param bool $json
  * @return array|bool|mixed|void
  */
-function _checkbook_autocomplete_spending_expcategory($agency, $dept, $spending_cat, $year, $data_source = Datasource::CITYWIDE, $json = true)
+function _checkbook_autocomplete_spending_expcategory(string $agency = '0', string $dept = '0', int $spending_cat = 0, $year, $data_source = Datasource::CITYWIDE, $json = true)
 {
   $year_string = $agency_string = $dept_string = null;
   $dept = _emptyToZero(urldecode($dept));
-  if ($year && startsWith($year, 'F')) {
-    $year = ltrim($year, 'FY');
-    $year_string = " AND disbursement_line_item_details.fiscal_year = " . $year . " ";
-  } elseif ($year && startsWith($year, 'C')) {
-    $year = ltrim($year, 'CY');
-    $year_string = " AND disbursement_line_item_details.calendar_fiscal_year = " . $year . " ";
-  }
-  if ($agency) {
-    $agency_string = " AND disbursement_line_item_details.agency_code = '" . $agency . "' ";
-  }
 
-  $spending_cat_string = ($spending_cat)
-    ? " ref_spending_category.spending_category_code = '" . $spending_cat . "' "
-    : " ref_spending_category.spending_category_id IN (1,2,3,4,5)";
+  switch ($data_source) {
+    case Datasource::NYCHA:
+      if ($agency && ctype_alnum($agency)) {
+        $agency_string = " AND all_disbursement_transactions.agency_code = '" . $agency . "' ";
+      }
 
-  if ($dept) {
-    $dept_string = " AND disbursement_line_item_details.department_code = '" . $dept . "' ";
-  }
-  $query = "SELECT DISTINCT expenditure_object_name|| '[' || expenditure_object_code || ']' expenditure_object_code
+      if ($dept && ctype_alnum($dept)) {
+        $dept_string = " AND all_disbursement_transactions.department_code = '" . $dept . "' ";
+      } else {
+        return;
+      }
+      $query = "SELECT DISTINCT expenditure_type_description|| '[' || expenditure_type_code || ']' expenditure_object_code
+              FROM all_disbursement_transactions
+              WHERE 1=1 {$agency_string} {$dept_string}
+              ORDER BY expenditure_object_code ASC";
+      break;
+    default:
+      if ($year && startsWith($year, 'F')) {
+        $year = intval(ltrim($year, 'FY'));
+        $year_string = " AND disbursement_line_item_details.fiscal_year = " . $year . " ";
+      } elseif ($year && startsWith($year, 'C')) {
+        $year = intval(ltrim($year, 'CY'));
+        $year_string = " AND disbursement_line_item_details.calendar_fiscal_year = " . $year . " ";
+      }
+      if ($agency) {
+        $agency_string = " AND disbursement_line_item_details.agency_code = '" . $agency . "' ";
+      }
+
+      $spending_cat_string = ($spending_cat)
+        ? " ref_spending_category.spending_category_code = '" . $spending_cat . "' "
+        : " ref_spending_category.spending_category_id IN (1,2,3,4,5)";
+
+      if ($dept) {
+        $dept_string = " AND disbursement_line_item_details.department_code = '" . $dept . "' ";
+      }
+      $query = "SELECT DISTINCT expenditure_object_name|| '[' || expenditure_object_code || ']' expenditure_object_code
               FROM disbursement_line_item_details, ref_spending_category
               WHERE disbursement_line_item_details.spending_category_id = ref_spending_category.spending_category_id AND " . $spending_cat_string . $year_string . $agency_string . $dept_string . "
               ORDER BY expenditure_object_code ASC";
+  }
 
   $db_name = "main";
   $results = _checkbook_project_execute_sql($query, $db_name, $data_source);
 
-  if (!$json) {
-    return $results;
-  }
-
   if (count($results) > 0) {
-    $matches = array();
+    $json_maches = $matches = array();
     foreach ($results as $key => $value) {
       $exp_obj_value = htmlentities($value['expenditure_object_code']);
       $exp_obj_text = (strlen($exp_obj_value) > 18) ? substr($exp_obj_value, 0, 18) . '...' : $exp_obj_value;
-      $matches[] = array('label' => $exp_obj_text, 'value' => $exp_obj_value);
+      $json_maches[] = array('label' => $exp_obj_text, 'value' => $exp_obj_value);
+      $matches[$exp_obj_value] = $exp_obj_text;
     }
-    drupal_json_output($matches);
+    if (!$json) {
+      return $matches;
+    }
+    drupal_json_output($json_maches);
   }
 }
 

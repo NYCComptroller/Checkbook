@@ -1,19 +1,19 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -78,14 +78,14 @@ function data_controller_views_views_data() {
     );
 
     //set up the cube/list filter
-    $data['data_controller']['cube_or_list'] = array(
-        'title' => t('Cube/List'),
-        'help' => t('Cube/List'),
-        'filter' => array(
-          'handler' => 'data_controller_views_filter_cube_or_list',
-          'dcapi' => array('filter_key' => 'cube_or_list'),
-        )
-    );
+//    $data['data_controller']['cube_or_list'] = array(
+//        'title' => t('Cube/List'),
+//        'help' => t('Cube/List'),
+//        'filter' => array(
+//          'handler' => 'data_controller_views_filter_cube_or_list',
+//          'dcapi' => array('filter_key' => 'cube_or_list'),
+//        )
+//    );
 
     //set up the row flattener filter
     $data['data_controller']['row_flattener'] = array(
@@ -216,9 +216,9 @@ function data_controller_views_views_handlers() {
           'data_controller_views_sort_dynamic_column' => array(
             'parent' => 'views_handler_sort',
           ),
-          'data_controller_views_filter_cube_or_list' => array(
-            'parent' => 'views_handler_filter',
-          )
+//          'data_controller_views_filter_cube_or_list' => array(
+//            'parent' => 'views_handler_filter',
+//          )
         ),
     );
 }
@@ -237,12 +237,12 @@ function _data_controller_views_options_list_all_dataset_fields($view) {
 
     //first find out if this uses cube or list
     $useCube = FALSE;
-    foreach ($filters as $name => $filter) {
-        if ($filter['field'] == 'cube_or_list') {
-            if ($filter['value'] == 'Cube')
-                $useCube = TRUE;
-        }
-    }
+//    foreach ($filters as $name => $filter) {
+//        if ($filter['field'] == 'cube_or_list') {
+//            if ($filter['value'] == 'Cube')
+//                $useCube = TRUE;
+//        }
+//    }
 
     //now find appropriate columns
     foreach ($filters as $name => $filter) {

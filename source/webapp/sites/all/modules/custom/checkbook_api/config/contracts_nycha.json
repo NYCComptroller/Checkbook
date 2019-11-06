@@ -242,6 +242,7 @@
             "contract_id":"contract_id",
             "purchase_order_type":"agreement_type_name",
             "record_type":"record_type",
+            "line_number":"line_number",
             "release_number":"release_number",
             "number_of_releases":"number_of_releases",
             "item_category":"commodity_category_descr",

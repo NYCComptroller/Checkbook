@@ -6,7 +6,7 @@
   "footerUrl":"_widget_controller_footer_url($node).'/widget/wt_funding_sources'",
   "table_columns":[
     {"labelAlias":"funding_source","column":"funding_source_name","derivedColumn":"fundsrc_link","tooltip":60},
-    {"labelAlias":"ytd_spending","column":"check_amount_sum","format":"dollar", "derivedColumn":"fundsrc_ytd_spending_link"},
+    {"labelAlias":"ytd_spending","column":"check_amount_sum","format":"dollar","derivedColumn":"fundsrc_ytd_spending_link"},
     {"label":"","column":""}
   ],
   "dataTableOptions":{
