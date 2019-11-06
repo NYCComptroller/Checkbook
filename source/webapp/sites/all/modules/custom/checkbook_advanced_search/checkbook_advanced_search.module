@@ -405,7 +405,7 @@ function checkbook_advanced_search_form($form, $form_state)
 
   $form['payroll']['payroll_advanced_search_domain_filter'] = array(
     '#type' => 'radios',
-    '#options' => array('checkbook' => 'Citywide Agencies', 'checkbook_oge' => 'Other Government Entities'),
+    '#options' => array('checkbook' => 'Citywide Agencies', 'checkbook_nycha' => 'New York City Housing Authority'),
     '#default_value' => !isset($data_source) ? 'checkbook' : $data_source,
     '#prefix' => '<h3><a href="#">Payroll</a></h3><div id="payroll-advanced-search">',
   );
