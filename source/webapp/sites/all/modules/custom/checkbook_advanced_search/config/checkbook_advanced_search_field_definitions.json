@@ -15,14 +15,14 @@
             "options":"$expense_attributes"
         }
     },
-    "nycha_expense_type":{
+   /* "nycha_expense_type":{
       "field_type":"select",
       "field_name":"nycha_expense_type",
       "attributes":{
         "title":"Spending Category",
         "options":"$nycha_expense_attributes"
       }
-    },
+    },*/
     "payee_name":{
         "field_type":"textfield",
         "field_name":"payee_name",
@@ -70,14 +70,10 @@
         "attributes":{
             "options":{
                 "checkbook":"Citywide Agencies",
-                "checkbook_oge":"Other Government Entities"
+                "checkbook_nycha":"New York City Housing Authority",
+                "checkbook_oge":"New York City Economic Development Corporation"
             },
-            "default_value":"checkbook",
-            "ajax":{
-                "event":"change",
-                "callback":"checkbook_advanced_search_filter_ajax",
-                "method":"replace"
-            }
+            "default_value":"checkbook"
         }
     },
     "status":{
@@ -310,13 +306,6 @@
         "default_value":"All"
       }
     },
-    "purchase_order_number":{
-      "field_type":"textfield",
-      "field_name":"purchase_order_number",
-      "attributes":{
-        "title":"Contract ID"
-      }
-    },
     "responsibility_center":{
       "field_type":"select",
       "field_name":"responsibility_center",
@@ -358,18 +347,9 @@
       "options":"$nycha_fundsrc_attributes"
     }
   },
-  "nycha_check_amount":{
+  "amount_spent":{
     "field_type":"rangefield",
-    "field_name":"nycha_check_amount",
-    "attributes":{
-      "title":"Check Amount",
-      "size":30,
-      "maxlength":32
-    }
-  },
-  "nycha_amount_spent":{
-    "field_type":"rangefield",
-    "field_name":"nycha_amount_spent",
+    "field_name":"amount_spent",
     "attributes":{
       "title":"Amount Spent",
       "size":30,
