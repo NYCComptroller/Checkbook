@@ -22,7 +22,7 @@
   "dataset": "checkbook_nycha:all_disbursement_transactions",
   "columns": ["issue_date_year_id.issue_date_year_id","issue_date_year.issue_date_year","check_amount_sum"],
   "limit": 10,
-  "orderBy": "issue_date_year",
+  "orderBy": "-check_amount_sum",
   "cleanURLParameters":["agency","vendor","category"],
   "adjustParameters":"
   $year_id = RequestUtilities::getRequestParamValue('year');
@@ -50,7 +50,7 @@ $data[] = (object)array('year'=>$row['issue_date_year_id'],'y'=>$row['check_amou
 $node->widgetConfig->chartConfig->series[0]->data = $data;
 $node->widgetConfig->chartConfig->xAxis->categories = $categories;
 $node->widgetConfig->chartConfig->series[0]->name = 'Spending Amount';
-$node->widgetConfig->chartTitle = 'Spending Across Years';
+$node->widgetConfig->chartTitle = 'Total Spending Across Years';
 return $node->data;
 ",
 "chartConfig": {
