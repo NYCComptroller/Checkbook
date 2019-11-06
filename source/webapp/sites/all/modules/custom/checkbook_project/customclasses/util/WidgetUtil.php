@@ -298,6 +298,7 @@ class WidgetUtil
         "record_type" => "Record<br/>Type",
         "number_of_releases" => "Number of<br/>Releases",
         "billed_amount" => "Billed<br/>Amount",
+        "nycha_billed_amount" => "Total Billed<br/>Amount",
         "static_current_amount" => "Current Amount",
         "static_original_amount" => "Original Amount",
         "invoiced_amount" => "Invoiced<br/> Amount",

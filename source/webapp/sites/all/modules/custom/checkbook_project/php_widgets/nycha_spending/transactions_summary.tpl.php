@@ -29,12 +29,19 @@ if(isset($url)) {
   if (strpos($widget, 'ytd_') !== false) {
     $aggregatedYtdTitle = WidgetUtil::getLabel("ytd_spending");
     $aggregatedAmountTitle = WidgetUtil::getLabel("total_contract_amount");
-    //$subTitle = NychaSpendingUtil::getTransactionsSubTitle($widget, $url);
+    $wtitle = NychaSpendingUtil::getTransactionsSubTitle($widget, $url);
+    //echo $wtitle;
+    if ($widget != 'ytd_contract'){
+
+      $subTitle2 = "<div class='spending-tx-subtitle'>{$wtitle}</div>";
+
+    }
+
     $summaryDetails = NychaSpendingUtil::getTransactionsStaticSummary($widget, $url);
     $ytdAmount = '$' . custom_number_formatter_format($summaryDetails['check_amount_sum'], 2);
     $aggregatedAmount = '$' . custom_number_formatter_format($summaryDetails['total_contract_amount_sum'], 2);
 
-    if (isset($widget) && $widget == 'ytd_contract') {
+    if ($widget == 'ytd_contract') {
       $contractDetails = NychaSpendingUtil::getTransactionsStaticSummary($widget, $url);
       $ytdAmount = '$' . custom_number_formatter_format($contractDetails['check_amount_sum'], 2);
       $aggregatedAmount = '$' . custom_number_formatter_format($contractDetails['total_contract_amount'], 2);
@@ -51,15 +58,12 @@ if(isset($url)) {
                           </li>
                         </ul>
                       </div>";
-      $subTitle = $contractSummary;
+      $subTitle2 = $contractSummary;
     }
-    else{
-      $wtitle = NychaSpendingUtil::getTransactionsSubTitle($widget, $url);
-      $subTitle2 = "<div class='spending-tx-subtitle'>{$wtitle}</div>";
-    }
+
   }
   //Nycha contract invoice amount links transaction pages
-  if (strpos($widget, 'inv_') !== false) {
+  if (strpos($widget, 'inv_contract') !== false) {
     $inv_contractDetails = NychaSpendingUtil::getContractsTransactionsStaticSummary($widget, $url);
     $tcode = RequestUtil::getRequestKeyValueFromURL('tcode', $url);
     $spendtodateTitle = WidgetUtil::getLabel("contract_spend_to_date");
@@ -68,7 +72,7 @@ if(isset($url)) {
     $originalAmount = '$' . custom_number_formatter_format($inv_contractDetails['original_amount'], 2);
     $currentAmountTitle = WidgetUtil::getLabel("current_amount");
     $currentAmount = '$' . custom_number_formatter_format($inv_contractDetails['total_amount'], 2);
-    $totalAmountTitle ="NYCHA Total Amount";
+    $totalAmountTitle ="NYCHA Amount Spent";
     $totalAmount = '$' . custom_number_formatter_format($inv_contractDetails['test'], 2);
     if ($tcode == 'BA' || $tcode == 'BAM' || $tcode == 'PA'|| $tcode == 'PAM'|| $tcode == 'PO') {
       $inv_contractSummary = "<div class='contract-information contract-summary-block'>
@@ -109,30 +113,46 @@ if(isset($url)) {
     $totalSpendingAmount = '$' . custom_number_formatter_format($node->data[0]['invoice_amount_sum'], 2);
     $amountsSummary = "<div class='dollar-amounts'>
                         <div class='total-spending-amount'>{$totalSpendingAmount}
-                         <span class='information' title='Amount displayed is the sum of ‘Amount spent’ by NYCHA for the selected FY' ></span> 
-                          <div class='amount-title'>{$aggregatedAmountTitle}                         
-                        </div>
+                          <div class='amount-title'>{$aggregatedAmountTitle}
+                          <div class='information'><span class='tooltiptext'>
+                        Amount displayed is the sum of ‘Amount spent’ by NYCHA for the selected FY</span></div></div>
                         </div>
                       </div></div>";
-
+  }
+  if ( $widget == 'inv_contract_id')
+  {
+    $inv_contractDetails = NychaSpendingUtil::getContractsTransactionsStaticSummary($widget, $url);
+    $id_title = 'Contract ID: '.$inv_contractDetails['contract_id'];
+    $spendtodateAmount = '$' . custom_number_formatter_format($inv_contractDetails['spend_to_date'], 2);
+    $totalAmountTitle ="NYCHA Amount Spent";
+    $totalAmount = '$' . custom_number_formatter_format($inv_contractDetails['test'], 2);
   }
 }
 
 //Title section
-$titleSummary = "<div class='contract-details-heading'>
+if ($widget != 'inv_contract_id') {
+  $titleSummary = "<div class='contract-details-heading'>
                   <div class='contract-id'>
                     <h2 class='contract-title'>{$title}</h2>
-                    {$subTitle2}
-                  </div>";
+                    {$subTitle2}</div>";
+}
+else{
+
+  $titleSummary = "<div class='contract-details-heading'>
+                  <div class='contract-id'>
+                    <h2 class='contract-title'>{$id_title}</h2>
+                    </div>";
+}
 if (strpos($widget, 'ytd_') !== false) {
   if (isset($widget) && ($widget == 'ytd_contract' || $widget == 'ytd_vendor')) {
     $amountsSummary = "<div class='dollar-amounts'>
-                        <div class='total-spending-amount'>{$aggregatedAmount}
-                        <span class='information' title='Amount displayed is the sum of ‘Amount spent’ by NYCHA for the selected FY' ></span>
-                          <div class='amount-title'>{$aggregatedAmountTitle}</div>
-                        </div>
                         <div class='ytd-spending-amount'>{$ytdAmount}
-                          <div class='amount-title'>{$aggregatedYtdTitle}</div>
+                          <div class='amount-title'>{$aggregatedYtdTitle}
+                          <div class='information'><span class='tooltiptext'>
+                        Amount displayed is the sum of ‘Amount spent’ by NYCHA for the selected FY</span></div></div>
+                        </div>
+                        <div class='total-spending-amount'>{$aggregatedAmount}
+                          <div class='amount-title'>{$aggregatedAmountTitle}</div>
                         </div>
                       </div></div>";
   }
@@ -140,26 +160,42 @@ if (strpos($widget, 'ytd_') !== false) {
   {
     $amountsSummary = "<div class='dollar-amounts'>
                         <div class='ytd-spending-amount'>{$ytdAmount}
-                        <span class='information' title='Amount displayed is the sum of ‘Amount spent’ by NYCHA for the selected FY' ></span>
-                          <div class='amount-title'>{$aggregatedYtdTitle}</div>
+                          <div class='amount-title'>{$aggregatedYtdTitle}
+                          <div class='information'><span class='tooltiptext'>
+                        Amount displayed is the sum of ‘Amount spent’ by NYCHA for the selected FY</span></div></div>
                         </div>
                       </div></div>";
   }
 }
 
-if (strpos($widget, 'inv_') !== false) {
-  $amountsSummary = "<div class='dollar-amounts'>
-                        <div class='spend-to-date'>{$spendtodateAmount}
+if (strpos($widget, 'inv_contract') !== false) {
+  $amountsSummary = "<div class='dollar-amounts' style='width:480px;margin-top:10px;'>
+                        <div class='total-spending-amount' style='margin-left:14px'>{$totalAmount}
+                          <div class='amount-title'>{$totalAmountTitle}
+                        <div class='information'><span class='tooltiptext' style='width:490px;left:-190%;margi-left:-190px;padding-bottom: 0px;'>
+                        Amount displayed is the sum of ‘Amount spent’ by NYCHA for the selected FY</span></div></div>
+                        </div>
+                        <div class='spend-to-date' style='margin-left:14px'>{$spendtodateAmount}
                           <div class='amount-title'>{$spendtodateTitle}</div>
                         </div>
-                        <div class='original-amount'>{$originalAmount}
+                        <div class='original-amount' style='margin-left:14px'>{$originalAmount}
                           <div class='amount-title'>{$originalAmountTitle}</div>
                         </div>
-                        <div class='current-amount'>{$currentAmount}
+                        <div class='current-amount' style='margin-left:14px'>{$currentAmount}
                           <div class='amount-title'>{$currentAmountTitle}</div>
                         </div>
-                        <div class='total-spending-amount'>{$totalAmount}
-                          <div class='amount-title'>{$totalAmountTitle}</div>
+
+                      </div></div>";
+}
+if (strpos($widget, 'inv_contract_id') !== false) {
+  $amountsSummary = "<div class='dollar-amounts' style='width:480px;margin-top:10px;'>
+                        <div class='total-spending-amount' style='margin-left:14px'>{$totalAmount}
+                          <div class='amount-title'>{$totalAmountTitle}
+                        <div class='information'><span class='tooltiptext' style='width:490px;left:-190%;margi-left:-190px;padding-bottom: 0px;'>
+                        Amount displayed is the sum of ‘Amount spent’ by NYCHA for the selected FY</span></div></div>
+                        </div>
+                        <div class='spend-to-date' style='margin-left:14px'>{$spendtodateAmount}
+                          <div class='amount-title'>{$spendtodateTitle}</div>
                         </div>
                       </div></div>";
 }
