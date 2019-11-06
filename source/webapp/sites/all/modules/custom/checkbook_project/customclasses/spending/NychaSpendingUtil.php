@@ -58,6 +58,24 @@ class NychaSpendingUtil
     $category_id = RequestUtilities::get('category');
     return $categories[$category_id];
   }
+  /**
+   * @return null|string -- Returns Total Spending amount for each category
+   * Required to extract payroll check amount sum
+   */
+  static public function getTotalSpendingAmount($categoryName,$bottomURL){
+    $year_id = RequestUtil::getRequestKeyValueFromURL('year', $bottomURL);
+    $query =  'SELECT display_spending_category_name,SUM(check_amount) AS check_amount_sum ,SUM(invoice_net_amount) AS invoice_amount_sum from all_disbursement_transactions
+              where  issue_date_year_id = '. $year_id .'group by display_spending_category_name';
+    $results = _checkbook_project_execute_sql_by_data_source($query, Datasource::NYCHA);
+      foreach ($results as $key => $row) {
+        if ($row['display_spending_category_name'] == 'Payroll') {
+          $row['invoice_amount_sum'] = $row['check_amount_sum'];
+        }
+        $total_spending += $row['invoice_amount_sum'];
+      }
+    //if ($categoryName == 'Payroll'){ $total_spending = $results['Payroll']['check_amount_sum'];}
+    return $total_spending;
+  }
 
   /**
    * @param $widget Widget Name
@@ -131,7 +149,7 @@ class NychaSpendingUtil
         $contractId = "'".RequestUtil::getRequestKeyValueFromURL('po_num_exact', $bottomURL)."'";
         $year_id = RequestUtil::getRequestKeyValueFromURL('year', $bottomURL);
         if(isset($contractId)) {
-          $query = "SELECT contract_id, contract_purpose, vendor_id, vendor_name, SUM(COALESCE(ytd_spending, 0)) AS check_amount_sum, MAX(COALESCE(total_contract_amount, 0)) AS total_contract_amount 
+          $query = "SELECT contract_id, contract_purpose, vendor_id, vendor_name, SUM(COALESCE(ytd_spending, 0)) AS check_amount_sum, MAX(COALESCE(total_contract_amount, 0)) AS total_contract_amount
                     FROM aggregation_spending_contracts_fy
                     WHERE (issue_date_year_id =".$year_id ." AND contract_id=".$contractId . ")".
                     "GROUP BY contract_id, contract_purpose, vendor_name, vendor_id";
@@ -208,7 +226,7 @@ class NychaSpendingUtil
                  count(distinct contract_id) as contract_count,
                  sum(total_amount) as total_amount,
                  sum(original_amount) as original_amount,
-                 sum(spend_to_date) as spend_to_date 
+                 sum(spend_to_date) as spend_to_date
                  from ( select
                  responsibility_center_id, responsibility_center_code, responsibility_center_name, contract_id,
                  sum(line_total_amount) as total_amount,
