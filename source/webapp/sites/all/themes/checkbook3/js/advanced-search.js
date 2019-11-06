@@ -1135,7 +1135,7 @@
           //Setting data source value
           var data_source = $('input:radio[name=spending_advanced_search_domain_filter]:checked').val();
           //NYCHA Datasource and Spending Category
-          if(data_source == 'checkbook_nycha') {
+          if(data_source === 'checkbook_nycha') {
             //NYCHA - disabling fields based on Spending category selected
             if (exptype === '2') {
               disable_input([div.ele('vendor_name'), div.ele('contract_id'),div.ele('document_id'),
@@ -1351,7 +1351,7 @@
               disable_input(div.ele('exp_category'));
             }
           }
-          div.ele('spending_category').val('Total Spending');
+         // div.ele('spending_category').val('Total Spending');
           enable_input(div.ele('contract_id'));
           enable_input(div.ele('payee_name'));
           year = 0;
