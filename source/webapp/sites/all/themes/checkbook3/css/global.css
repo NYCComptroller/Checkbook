@@ -1542,10 +1542,12 @@ div.create-alert-schedule-alert select{
 .spending-fieldset #datefilter{float:left;}
 #edit-date-filter .form-item,
 #edit-checkbook-spending-date-filter .form-item,
-#edit-checkbook-oge-spending-date-filter .form-item{position:relative;}
+#edit-checkbook-oge-spending-date-filter .form-item,
+#edit-checkbook-nycha-spending-date-filter .form-item {position:relative;}
 #edit-date-filter .form-item .ajax-progress.ajax-progress-throbber,
 #edit-checkbook-spending-date-filter .form-item .ajax-progress.ajax-progress-throbber,
-#edit-checkbook-oge-spending-date-filter .form-item .ajax-progress.ajax-progress-throbber{
+#edit-checkbook-oge-spending-date-filter .form-item .ajax-progress.ajax-progress-throbber,
+#edit-checkbook-nycha-spending-date-filter .form-item .ajax-progress.ajax-progress-throbber{
    position:absolute;
    right:-30px;
    top:0px;
@@ -1556,7 +1558,9 @@ div.create-alert-schedule-alert select{
 #edit-checkbook-spending-date-filter input,
 #edit-checkbook-spending-date-filter--2 input,
 #edit-checkbook-oge-spending-date-filter input,
-#edit-checkbook-oge-spending-date-filter--2 input
+#edit-checkbook-oge-spending-date-filter--2 input,
+#edit-checkbook-nycha-spending-date-filter input,
+#edit-checkbook-nycha-spending-date-filter--2 input
 {
     float: left;
     margin-right: 5px;
@@ -1567,25 +1571,31 @@ div.create-alert-schedule-alert select{
 #edit-checkbook-spending-date-filter label,
 #edit-checkbook-spending-date-filter--2 label,
 #edit-checkbook-oge-spending-date-filter label,
-#edit-checkbook-oge-spending-date-filter--2 label
+#edit-checkbook-oge-spending-date-filter--2 label,
+#edit-checkbook-nycha-spending-date-filter label,
+#edit-checkbook-nycha-spending-date-filter--2 label
 {
     float:left;
     clear:none;
 }
 #edit-checkbook-spending-date-filter,
-#edit-checkbook-oge-spending-date-filter{
+#edit-checkbook-oge-spending-date-filter,
+#edit-checkbook-nycha-spending-date-filter{
     clear:both;
 }
 #edit-checkbook-spending-date-filter > .form-item,
-#edit-checkbook-oge-spending-date-filter > .form-item{
+#edit-checkbook-oge-spending-date-filter > .form-item,
+#edit-checkbook-nycha-spending-date-filter > .form-item{
     float:left;
 }
 #edit-checkbook-spending-date-filter > .form-item.form-item-checkbook-spending-date-filter,
-#edit-checkbook-oge-spending-date-filter > .form-item.form-item-checkbook-oge-spending-date-filter{
+#edit-checkbook-oge-spending-date-filter > .form-item.form-item-checkbook-oge-spending-date-filter,
+#edit-checkbook-nycha-spending-date-filter > .form-item.form-item-checkbook-nycha-spending-date-filter{
     margin-right:104px;
 }
 #edit-checkbook-spending-date-filter > .form-item.form-item-checkbook-spending-date-filter + .form-item.form-item-checkbook-spending-date-filter,
-#edit-checkbook-oge-spending-date-filter > .form-item.form-item-checkbook-oge-spending-date-filter +.form-item.form-item-checkbook-oge-spending-date-filter{
+#edit-checkbook-oge-spending-date-filter > .form-item.form-item-checkbook-oge-spending-date-filter +.form-item.form-item-checkbook-oge-spending-date-filter,
+#edit-checkbook-nycha-spending-date-filter > .form-item.form-item-checkbook-nycha-spending-date-filter +.form-item.form-item-checkbook-nycha-spending-date-filter{
     margin-right:0px;
 }
 .datafield.year{
@@ -1616,7 +1626,9 @@ div.create-alert-schedule-alert select{
 #spending-advanced-search #edit-checkbook-spending-fiscal-year,
 #spending-advanced-search #edit-checkbook-spending-fiscal-year--2,
 #spending-advanced-search #edit-checkbook-oge-spending-fiscal-year,
-#spending-advanced-search #edit-checkbook-oge-spending-fiscal-year--2{
+#spending-advanced-search #edit-checkbook-oge-spending-fiscal-year--2,
+#spending-advanced-search #edit-checkbook-nycha-spending-fiscal-year,
+#spending-advanced-search #edit-checkbook-nycha-spending-fiscal-year--2{
     width: 90px;
 }
 #checkbook-advanced-search-form #edit-checkbook-spending-issue-date-from label,
@@ -1627,6 +1639,10 @@ div.create-alert-schedule-alert select{
 #checkbook-advanced-search-form #edit-checkbook-oge-spending-issue-date-to label,
 #checkbook-advanced-search-form #edit-checkbook-oge-spending-issue-date-from--2 label,
 #checkbook-advanced-search-form #edit-checkbook-oge-spending-issue-date-to--2 label,
+#checkbook-advanced-search-form #edit-checkbook-nycha-spending-issue-date-from label,
+#checkbook-advanced-search-form #edit-checkbook-nycha-spending-issue-date-to label,
+#checkbook-advanced-search-form #edit-checkbook-nycha-spending-issue-date-from--2 label,
+#checkbook-advanced-search-form #edit-checkbook-nycha-spending-issue-date-to--2 label,
 
 #checkbook-advanced-search-form #edit-contract-end-date-from label,
 #checkbook-advanced-search-form #edit-contract-end-date-to label,
@@ -1641,6 +1657,8 @@ div.create-alert-schedule-alert select{
 #checkbook-advanced-search-form #edit-checkbook-contracts-end-date-to label,
 #checkbook-advanced-search-form #edit-checkbook-oge-contracts-end-date-from label,
 #checkbook-advanced-search-form #edit-checkbook-oge-contracts-end-date-to label,
+#checkbook-advanced-search-form #edit-checkbook-nycha-contracts-end-date-from label,
+#checkbook-advanced-search-form #edit-checkbook-nycha-contracts-end-date-to label,
 #checkbook-advanced-search-form #edit-checkbook-contracts-registration-date-from label,
 #checkbook-advanced-search-form #edit-checkbook-contracts-registration-date-to label,
 #checkbook-advanced-search-form #edit-checkbook-oge-contracts-registration-date-from label,
@@ -1651,6 +1669,10 @@ div.create-alert-schedule-alert select{
 #checkbook-advanced-search-form #edit-checkbook-oge-contracts-start-date-to label,
 #checkbook-advanced-search-form #edit-checkbook-oge-contracts-approved-date-from label,
 #checkbook-advanced-search-form #edit-checkbook-oge-contracts-approved-date-to label,
+#checkbook-advanced-search-form #edit-checkbook-nycha-contracts-start-date-from label,
+#checkbook-advanced-search-form #edit-checkbook-nycha-contracts-start-date-to label,
+#checkbook-advanced-search-form #edit-checkbook-nycha-contracts-approved-date-from label,
+#checkbook-advanced-search-form #edit-checkbook-nycha-contracts-approved-date-to label,
 #checkbook-advanced-search-form #edit-checkbook-contracts-received-date-from label,
 #checkbook-advanced-search-form #edit-checkbook-contracts-received-date-to label,
 #checkbook-advanced-search-form #edit-checkbook-oge-contracts-received-date-from label,
