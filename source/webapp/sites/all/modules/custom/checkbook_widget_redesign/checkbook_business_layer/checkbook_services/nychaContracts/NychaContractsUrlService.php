@@ -79,7 +79,7 @@ class NychaContractsUrlService
           }
         }
 
-        $url .= '?expandBottomContURL=/panel_html/nycha_contract_details/contract/' . $contract_id;
+        $url .= '?expandBottomContURL=/panel_html/nycha_contract_details/year/'.$year_id.'/contract/' . $contract_id;
         return $url;
     }
 

@@ -28,15 +28,13 @@
         $('.default-fields .datafield.pin').insertAfter('.default-fields .datafield.purpose');
         $('.default-fields .datafield.receiveddate.datarange').insertAfter('.default-fields .datafield.currentamt.datarange');
         $('.default-fields .datafield.enddate.datarange').insertAfter('.default-fields .datafield.startdate.datarange');
-        $('.datafield.agency').detach().prependTo($(".contracts.data-feeds-wizard .default-fields .column.column-right")).show();
-        $('label[for=edit-agency]').html('Other Government <br />Entity:');
+        $('.datafield.agency').hide();
 
         break;
       case 'checkbook_nycha':
         $('.default-fields').hide();
         $('.nycha-fields').show();
-        $('.datafield.agency').detach().prependTo('.contracts.data-feeds-wizard .nycha-fields .column.column-right').show();
-        $('label[for=edit-agency]').html('Other Government <br />Entity:');
+        $('.datafield.agency').hide();
         break;
       default:
         $('.default-fields').show();
@@ -61,8 +59,7 @@
         $('.default-fields .datafield.pin').insertBefore('.default-fields .datafield.currentamt.datarange');
         $('.default-fields .datafield.enddate.datarange').insertAfter('.default-fields .datafield.currentamt.datarange');
         $('.default-fields .datafield.receiveddate.datarange').insertAfter('.default-fields .datafield.startdate.datarange');
-        $('label[for=edit-agency]').text('Agency:');
-        $('.datafield.agency').detach().insertBefore('.default-fields .datafield.industry').show();
+        $('.datafield.agency').show();
     }
   };
 

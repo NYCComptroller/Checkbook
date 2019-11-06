@@ -91,6 +91,7 @@
         ytd_spending AS check_amount_sum
       FROM
         (SELECT
+        expenditure_type_id,
         expenditure_type_description ,
         SUM(ytd_spending) AS ytd_spending
         FROM aggregation_spending_fy
@@ -103,9 +104,10 @@
             <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
           </exp>
         </where>
-        GROUP BY expenditure_type_description
+        GROUP BY expenditure_type_id,expenditure_type_description
         UNION
         SELECT
+        expenditure_type_id,
         display_expenditure_object_name ,
         SUM(total_amount) AS ytd_spending
         FROM aggregation_spending_payroll_fy
@@ -118,7 +120,8 @@
             <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
           </exp>
         </where>
-        GROUP BY display_expenditure_object_name ) z
+        AND citywide_expenditure_object_code IS NOT NUll
+        GROUP BY expenditure_type_id,display_expenditure_object_name ) z
     </sql>
   </statement>
   <!--GetNychaSpendingByContracts-->
@@ -134,6 +137,7 @@
         vendor_id,
         vendor_name,
         SUM(COALESCE(ytd_spending, 0)) AS check_amount_sum,
+        SUM(billed_amount) AS billed_amount,
         MAX(COALESCE(total_contract_amount, 0)) AS total_contract_amount
       FROM aggregation_spending_contracts_fy
       <where>
@@ -235,10 +239,10 @@
       </exp>
       <exp op="IF" condition="=" paramName="category" compareValue="2">
         SELECT
-        citywide_department_id AS department_id,
+        department_id AS department_id,
         citywide_department_name AS department_name,
         SUM(total_amount) AS check_amount_sum
-        FROM aggregation_spending_payroll_fy
+        FROM aggregation_spending_payroll_fy s
       </exp>
         <where>
           <exp op="AND">
@@ -253,7 +257,7 @@
         GROUP BY department_id, department_name
       </exp>
       <exp op="IF" condition="=" paramName="category" compareValue="2">
-        GROUP BY citywide_department_id, citywide_department_name
+        GROUP BY department_id, citywide_department_name
       </exp>
     </sql>
   </statement>

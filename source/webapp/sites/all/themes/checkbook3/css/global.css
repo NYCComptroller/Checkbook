@@ -2523,7 +2523,7 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
     font-weight: bold;
     text-align: center;
     width: 105px;
-    margin-left: 32px;
+    margin-left: 22px;
     margin-bottom: 0px;
 }
 
@@ -2548,7 +2548,7 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 .dollar-amounts > div:first-child,
 .inside .transactions-container .transactions-total-amount,
 .contract-information .dollar-difference{
-    margin-right:10px;
+    margin-right:0px;
 }
 .dollar-amounts > div > div,
 .inside .transactions-container .transactions-total-amount > div,
@@ -2801,18 +2801,36 @@ span.export, span.summary_export {
     font-weight: bold;
     text-transform: uppercase;
 }
-span.information {
+.information {
   background: url("../images/information-icon-small.png") no-repeat scroll right 0 transparent;
   height:20px;
   width:123px;
   cursor: pointer;
+  position: relative;
+  top:-65px;
+  right: 10px;
+  padding-top:6px;
+}
+
+.information .tooltiptext {
+  visibility: hidden;
+  width: 320px;
+  background-color: #f6f6f6b8;
+  color: #5C5C5C;
+  text-align: left;
+  border-radius: 1px;
+  padding: 2px 4px;
+
+  /* Position the tooltip */
   position: absolute;
-  top:-5px;
-  right: 0px;
-  padding-top:3px;
-  color: #209AD6;
-  font-weight: bold;
-  text-transform: uppercase;
+  z-index: 1;
+  bottom: 100%;
+  left: -40%;
+  margin-left: -160px;
+}
+
+.information:hover .tooltiptext {
+  visibility: visible;
 }
 
 span.alerts {

@@ -26,6 +26,8 @@
         $('#edit-oge-column-select', context).multiSelect('deselect_all');
       });
 
+      $('.datafield.other_government_entity').hide();
+
       //Sets up jQuery UI datepickers
       var currentYear = new Date().getFullYear();
       $('.datepicker', context).datepicker({
@@ -54,7 +56,7 @@
       });
 
       var dataSource = $('input[name="datafeeds-payroll-domain-filter"]:checked', context).val();
-      $.fn.showHideFields(dataSource);
+      datafeedsPayrollShowHideFields(dataSource);
 
       //Data Source change event
       $('input:radio[name=datafeeds-payroll-domain-filter]', context).change(function () {
@@ -64,24 +66,23 @@
 
         $('input:hidden[name="hidden_multiple_value"]', context).val("");
         $.fn.clearInputFields();
-        $.fn.onDataSourceChange($(this, context).val());
+        datafeedsParyllOnDataSourceChange($(this, context).val());
       });
     }
   };
 
   //On Data Source Change
-  $.fn.onDataSourceChange = function (dataSource) {
+  let datafeedsParyllOnDataSourceChange = function (dataSource) {
     //reset the selected columns
     $('#edit-column-select').multiSelect('deselect_all');
     $('#edit-oge-column-select').multiSelect('deselect_all');
 
-    $.fn.showHideFields(dataSource);
+    datafeedsPayrollShowHideFields(dataSource);
   };
 
-  $.fn.showHideFields = function (dataSource) {
+  let datafeedsPayrollShowHideFields = function (dataSource) {
     if (dataSource == 'checkbook_nycha') {
       $('.datafield.agency').hide();
-      $('.datafield.other_government_entity').show();
       $('.form-item-oge-column-select').show();
       $('.form-item-column-select').hide();
 
@@ -92,7 +93,6 @@
       });
     } else {
       $('.datafield.agency').show();
-      $('.datafield.other_government_entity').hide();
       $('.form-item-oge-column-select').hide();
       $('.form-item-column-select').show();
 
@@ -132,15 +132,12 @@
 
   //Function to retrieve values enclosed in brackets or return zero if none
   function emptyToZero(input) {
-    var p = /\[(.*?)\]$/;
-    var inputval, output;
-    inputval = p.exec(input);
-    if (inputval) {
-      output = inputval[1];
-    } else {
-      output = 0;
+    const p = /\[(.*?)]$/;
+    const code = p.exec(input.trim());
+    if (code) {
+      return code[1];
     }
-    return output;
+    return 0;
   }
 
 }(jQuery));

@@ -10,6 +10,8 @@ class NychaSpendingWidgetService extends WidgetDataService implements IWidgetSer
     }
 
     public function implementDerivedColumn($column_name,$row) {
+        $url_param = drupal_get_path_alias($_GET['q']);
+        $category_id  = RequestUtil::getRequestKeyValueFromURL('category', $url_param);
         $value = null;
         switch($column_name) {
             case "vendor_link":
@@ -20,12 +22,14 @@ class NychaSpendingWidgetService extends WidgetDataService implements IWidgetSer
             case "industry_link":
                 $column = $row['industry_name'];
                 $url = NychaSpendingUrlService::generateLandingPageUrl('industry',$row['industry_id']);
-                $value = "<a href='{$url}'>{$column}</a>";
+                //$value = "<a href='{$url}'>{$column}</a>";
+                $value = $column;
                 break;
             case "fundsrc_link":
                 $column = $row['funding_source_name'];
                 $url = NychaSpendingUrlService::generateLandingPageUrl('fundsrc',$row['funding_source_id']);
-                $value = "<a href='{$url}'>{$column}</a>";
+                //$value = "<a href='{$url}'>{$column}</a>";
+                $value = $column;
                 break;
             /* YTD Spending links */
             case "dept_ytd_spending_link":
@@ -40,21 +44,24 @@ class NychaSpendingWidgetService extends WidgetDataService implements IWidgetSer
                 $class = "bottomContainerReload";
                 $dynamic_parameter = "/exp_cat/" . $row["expenditure_type_id"];
                 $url = NYCHASpendingUrlService::ytdSpendingUrl($dynamic_parameter, 'ytd_expense_category');
-                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+                if ($category_id == '1'){$value = $column;}
+                else {$value = "<a class='{$class}' href='{$url}'>{$column}</a>";}
                 break;
             case "fundsrc_ytd_spending_link":
                 $column = $row['check_amount_sum'];
                 $class = "bottomContainerReload";
                 $dynamic_parameter = "/fundsrc/" . $row["funding_source_id"];
                 $url = NYCHASpendingUrlService::ytdSpendingUrl($dynamic_parameter, 'ytd_funding_source');
-                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+                if ($category_id == '1'){$value = $column;}
+                else {$value = "<a class='{$class}' href='{$url}'>{$column}</a>";}
                 break;
             case "industry_ytd_spending_link":
                 $column = $row['check_amount_sum'];
                 $class = "bottomContainerReload";
                 $dynamic_parameter = "/industry/" . $row["industry_id"];
                 $url = NYCHASpendingUrlService::ytdSpendingUrl($dynamic_parameter, 'ytd_industry');
-                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+                if ($category_id == '1'){$value = $column;}
+                else {$value = "<a class='{$class}' href='{$url}'>{$column}</a>";}
                 break;
             case "vendor_ytd_spending_link":
                 $column = $row['check_amount_sum'];
