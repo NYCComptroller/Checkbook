@@ -306,7 +306,7 @@ function _widget_ajax_wrapper($node){
         var callBackURL = "/widget_ajax_data/node/' .$node->nid . '/' . $urlPath . '";
          jQuery.ajax({
       	   url: callBackURL,
-      	   success: function(data) {		            		   
+      	   success: function(data) {
       	     jQuery("#' . widget_unique_identifier($node) . '").html(data);
       	   }
       	 });
@@ -1611,7 +1611,27 @@ function _widget_build_sql_condition($column, $value){
 	}
 
 }
+function _widget_build_sql_not_condition($column, $value){
 
+  $values_array = explode('~',$value);
+  if(count($values_array) > 1){
+    return  $column . ' in ' . '(\'' . implode('\',\'', $values_array) . '\')';
+  }else{
+    return  $column . '!=' . '\'' . $value . '\'';
+  }
+
+}
+
+function _widget_build_sql_add_null($column, $value){
+
+  $values_array = explode('~',$value);
+  if(count($values_array) > 1){
+    return  $column . ' in ' . '(\'' . implode('\',\'', $values_array) . '\')';
+  }else{
+    return   '\'' . $value . '\''. ' AS '. $column;
+  }
+
+}
 
 function _widget_join_merge_data($array1,$array2, $keys = array()){
 	foreach($array1 as $row1_key=>$row1){
