@@ -1,0 +1,13 @@
+name: phpunit
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Run PHPUnit
+        run: php7.3 source/tests/unit/vendor/bin/phpunit
