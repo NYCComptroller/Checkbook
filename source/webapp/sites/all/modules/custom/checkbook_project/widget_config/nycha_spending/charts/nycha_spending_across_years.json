@@ -2,20 +2,22 @@
   "widgetType": "highcharts",
   "header":"
   $header = '<h2 class=\"chart-title\" style=\"display:none;\">' . $node->widgetConfig->chartTitle . '</h2>';
-  $header .= ChartUtil::generateGridViewLink($node);
+  $header .= ChartUtil::generateWidgetGridViewLink($node);
   return $header;
   ",
   "gridConfig":{
-    "template":"highchart_spending_agency_grid_view",
+    "template":"chart_grid_view",
+    "domain":"spending",
     "html_class":"chart-grid-view-table two-columns",
+    "sortColumn":2,
     "table_columns": [
       {
         "labelAlias": "Year",
-        "column": "issue_date_year_issue_date_year"
+        "columnType": "text"
       },
       {
         "labelAlias": "amount",
-        "column": "check_amount_sum"
+        "columnType": "number"
       }
     ]
   },
@@ -46,6 +48,7 @@ foreach ($node->data as $row){
 $link = NychaSpendingUrlService::getFooterUrl();
 $categories[]=$row['issue_date_year_issue_date_year'];
 $data[] = (object)array('year'=>$row['issue_date_year_id'],'y'=>$row['check_amount_sum'],'url'=>$link,'name'=>$row['issue_date_year_issue_date_year']);
+$node->widgetConfig->gridConfig->data[] = array($row['issue_date_year_issue_date_year'],custom_number_formatter_format($row['check_amount_sum'] ,2, '$'));
 }
 $node->widgetConfig->chartConfig->series[0]->data = $data;
 $node->widgetConfig->chartConfig->xAxis->categories = $categories;
