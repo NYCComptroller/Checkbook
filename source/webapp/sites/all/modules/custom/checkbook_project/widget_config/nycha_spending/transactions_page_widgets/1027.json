@@ -10,7 +10,7 @@
     {"labelAlias":"invoice_number", "column":"invoice_number"},
     {"labelAlias":"check_status","column":"check_payment_status"},
     {"labelAlias":"check_amount", "column":"check_amount"},
-    {"labelAlias":"billed_amount","column":"invoice_amount"},
+    {"labelAlias":"billed_amount","column":"line_net_amount"},
     {"labelAlias":"invoice_discount","column":"invoice_discount"},
     {"labelAlias":"nycha_tax_withheld","column":"withholding_tax"},
     {"labelAlias":"amount_spent","column":"invoice_net_amount"},
@@ -100,6 +100,16 @@
     END AS check_amount
   "
   },
+    {
+      "column":"line_net_amount",
+      "sourceColumn":"line_net_amount",
+      "sql":"
+      CASE
+      WHEN upper(section8_flag) = 'Y' THEN '-'
+      ELSE CAST(line_net_amount AS TEXT)
+      END AS line_net_amount
+      "
+    },
   {
     "column":"invoice_amount",
     "sourceColumn":"invoice_amount",
@@ -116,8 +126,7 @@
     "sourceColumn":"invoice_discount",
     "sql":"
       CASE
-      WHEN upper(section8_flag) = 'N' OR upper(section8_flag) = 'Y' THEN '-'
-      WHEN invoice_discount IS NULL OR invoice_discount= '0' THEN '-'
+      WHEN upper(section8_flag) = 'Y' THEN '-'
       ELSE CAST(invoice_discount AS TEXT)
       END AS invoice_discount
     "
@@ -127,8 +136,7 @@
       "sourceColumn":"withholding_tax",
       "sql":"
       CASE
-      WHEN upper(section8_flag) = 'N' OR upper(section8_flag) = 'Y' THEN '-'
-      WHEN withholding_tax IS NULL THEN '-'
+      WHEN upper(section8_flag) = 'Y' THEN '-'
       ELSE CAST(withholding_tax AS TEXT)
       END AS withholding_tax
       "
