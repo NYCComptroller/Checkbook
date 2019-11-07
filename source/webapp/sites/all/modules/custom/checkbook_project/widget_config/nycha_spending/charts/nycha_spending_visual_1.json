@@ -9,24 +9,23 @@
   ",
   "gridConfig":{
     "template":"chart_grid_view",
-    "domain":"contracts",
-    "html_class":"chart-grid-view-table four-columns",
+    "domain":"spending",
+    "html_class":"chart-grid-view-table three-columns",
     "sortColumn":3,
     "table_columns": [
       {
         "labelAlias": "Contract ID",
         "columnType": "text"
       },
-      {
-        "labelAlias": "Amount",
-        "columnType": "number",
-        "formatType": "amount"
-      },
+
       {
         "labelAlias": "Vendor",
         "columnType": "text"
+      },
+      {
+        "labelAlias": "Amount",
+        "columnType": "number"
       }
-
     ]
   },
   "no_results_content":"No Results Found",
@@ -91,7 +90,7 @@ $link .= NychaContractsUrlService::contractDetailsUrl($row['contract_id'], true)
 $series_new[$index]->url = 	$link;
 $series_new[$index]->y = (float)$row['check_amount_sum'];
 $series_new[$index]->tooltip_label = $tooltip_label;
-$node->widgetConfig->gridConfig->data[] = array($row['contract_id'],$row['vendor_name'],'NYCHA',$row['check_amount_sum'] );
+$node->widgetConfig->gridConfig->data[] = array($row['contract_id'],$row['vendor_name'],custom_number_formatter_format($row['check_amount_sum'] ,2, '$') );
 $index += 1;
 }
 
