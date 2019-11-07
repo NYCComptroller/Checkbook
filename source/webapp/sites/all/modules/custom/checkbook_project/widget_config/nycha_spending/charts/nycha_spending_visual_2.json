@@ -9,8 +9,8 @@
   ",
   "gridConfig":{
     "template":"chart_grid_view",
-    "domain":"contracts",
-    "html_class":"chart-grid-view-table two-columns",
+    "domain":"spending",
+    "html_class":"chart-grid-view-table three-columns",
     "sortColumn":2,
     "table_columns": [
       {
