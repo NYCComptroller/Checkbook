@@ -76,13 +76,13 @@
       "expression": "(strtoupper($row['record_type']) == 'CHECK' ? (($row['check_amount'] == null) ? '-' : custom_number_formatter_basic_format($row['check_amount'])) : '-')"
     },
     "billed_amount_formatted":{
-      "expression": "((strtoupper($row['section8_flag']) == 'N' || strtoupper($row['section8_flag']) == 'Y') ? '-' : (($row['invoice_amount'] == null) ? '-' : $row['invoice_amount']))"
+      "expression":"strtoupper($row['section8_flag']) == 'Y' ? '-' : $row['line_net_amount']"
     },
     "invoice_discount_formatted":{
-      "expression": "($row['invoice_discount'] == null) ? '-' : custom_number_formatter_basic_format($row['invoice_discount'])"
+      "expression":"(strtoupper($row['section8_flag']) == 'Y' ? '-' : (($row['invoice_discount'] == null) ? ' ' : custom_number_formatter_basic_format($row['invoice_discount'])))"
     },
     "tax_withheld_formatted":{
-      "expression": "((strtoupper($row['section8_flag']) == 'Y' || strtoupper($row['section8_flag']) == 'N') ? '-' : (($row['withholding_tax'] == null) ? '-' : custom_number_formatter_basic_format($row['withholding_tax'])))"
+      "expression":"(strtoupper($row['section8_flag']) == 'Y' ?  '-' : (($row['withholding_tax'] == null) ? ' ' : custom_number_formatter_basic_format($row['withholding_tax']))) "
     },
     "amount_spent_formatted":{
       "expression": "($row['invoice_net_amount'] == null) ? '-' : custom_number_formatter_basic_format($row['invoice_net_amount'])"
