@@ -101,7 +101,7 @@
         "title": "Expense Category",
         "autocomplete": true
       },
-      "fiscal_year": {
+      "facet_year_array": {
         "title": "Fiscal Year",
         "autocomplete": true,
         "sort_by_key": -1

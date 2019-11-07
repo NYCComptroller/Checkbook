@@ -105,12 +105,12 @@ if(isset($url)) {
   }
   // Display static content for details link transaction pages
   else{
-    //$title = NychaSpendingUtil::getTransactionsTitle();
-    //$wtitle = NychaSpendingUtil::getTransactionsSubTitle($widget, $url);
-    //$subTitle2 = "<div class='spending-tx-subtitle'>{$wtitle}</div>";
     $categoryName = NychaSpendingUtil::getCategoryName();
+    $total_spending = $node->data[0]['invoice_amount_sum'];
+    if ($categoryName == 'Total'){$total_spending = NychaSpendingUtil::getTotalSpendingAmount($categoryName,$url);}
+    if ($categoryName == 'Payroll'){$total_spending = $node->data[0]['check_amount_sum'];}
     $aggregatedAmountTitle = $categoryName." Spending Amount";
-    $totalSpendingAmount = '$' . custom_number_formatter_format($node->data[0]['invoice_amount_sum'], 2);
+    $totalSpendingAmount = '$' . custom_number_formatter_format($total_spending, 2);
     $amountsSummary = "<div class='dollar-amounts'>
                         <div class='total-spending-amount'>{$totalSpendingAmount}
                           <div class='amount-title'>{$aggregatedAmountTitle}
