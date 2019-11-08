@@ -1,0 +1,117 @@
+{
+  "widgetType": "highcharts",
+  "widgetDatahandler": "highcharts",
+  "html_class":"",
+  "header":"
+  $header = '<h2 class=\"chart-title\" style=\"display:none;\">'. $node->widgetConfig->chartTitle . '</h2>';
+  $header .= ChartUtil::generateWidgetGridViewLink($node);
+  return $header;
+  ",
+  "gridConfig":{
+    "template":"chart_grid_view",
+    "domain":"spending",
+    "html_class":"chart-grid-view-table three-columns",
+    "sortColumn":2,
+    "table_columns": [
+      {
+        "labelAlias": "Title",
+        "columnType": "text"
+      },
+      {
+        "labelAlias": "Amount",
+        "columnType": "number",
+        "formatType": "amount"
+      }
+    ]
+  },
+  "no_results_content":"No Results Found",
+  "cleanURLParameters":["awdmethod","vendor","csize","industry","year"],
+  "urlParamMap":{"year":"fiscal_year_id","awdmethod":"award_method_id","vendor":"vendor_id", "csize":"award_size_id","industry":"industry_type_id"},
+  "widgetPreprocessJSON":"
+  if(preg_match('/pending/',$_GET['q'])){
+  $node->widgetConfig->urlParamMap = $node->widgetConfig->urlParamMapPending;
+  $node->widgetConfig->defaultParameters = $node->widgetConfig->defaultParametersPending;
+  $node->widgetConfig->cleanURLParameters = $node->widgetConfig->cleanURLParametersPending;
+}",
+"chartTitle":"Top Ten Titles by Annual Salary",
+"widgetDataLoader":"
+$year_id = RequestUtilities::getRequestParamValue('year');
+$where_filters = array();
+foreach($node->widgetConfig->requestParams as $param=>$value){
+$where_filters[] = _widget_build_sql_condition( $param, $value);
+}
+$where_filters[] = _widget_build_sql_condition( 'type_of_year', 'C');
+$where_filters[] = _widget_build_sql_condition( 'agency_id', '162');
+if(count($where_filters) > 0){
+$where_filter = ' WHERE ' . implode(' AND ' , $where_filters);
+}
+$and_filter =  _widget_build_sql_condition( 'type_of_employment', 'Salaried');
+$datasource = RequestUtilities::getRequestParamValue('datasource');
+$sql = 'select civil_service_title,fiscal_year_id,year_value,MAX(annual_salary) as max_annual_salary
+        FROM aggregateon_payroll_latest_employee_agency LEFT JOIN ref_year ON fiscal_year_id=year_id '. $where_filter . ' AND '.  $and_filter .
+        'GROUP BY civil_service_title,fiscal_year_id,year_value order by MAX(annual_salary) desc limit 10';
+$node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
+",
+"widgetUpdateJSONConfig":"
+$series_new = array();
+$index = 0;
+foreach($node->data as $row){
+$tooltip_label =
+'Title: ' . $row['civil_service_title'] .'<br/>' .
+'Year:' . $row['year_value'] .'<br/>'.
+'Amount: ' . custom_number_formatter_format($row['max_annual_salary'] ,2, '$').  '<br/>';
+$series_new[$index]->y = (float)$row['max_annual_salary'];
+$series_new[$index]->tooltip_label = $tooltip_label;
+$node->widgetConfig->gridConfig->data[] = array($row['civil_service_title'],$row['max_annual_salary'] );
+$index += 1;
+}
+$node->widgetConfig->chartConfig->series[0]->name = 'Fiscal Years';
+$node->widgetConfig->chartConfig->series[0]->type = 'column';
+$node->widgetConfig->chartConfig->series[0]->pointWidth = 30;
+$node->widgetConfig->chartConfig->series[0]->data = $series_new;
+",
+"chartConfig" : {
+"colors":["#7DB7E5"],
+"plotOptions": {
+"series": {
+"cursor": "pointer"   ,
+"stacking": "normal",
+"dataLabels": {
+"enabled": false
+}  ,
+"point": {"events": {"function": "clickEvent"}}
+}
+},
+"xAxis": {
+"categories": [0,1,2,3,4,5,6,7,8,9],
+"labels": {"enabled": false}
+},
+"series": [
+{
+"name": "FY",
+"type": "column",
+"pointWidth": 50,
+"data": []
+}
+],
+"title": {"text": ""},
+"yAxis": {
+"startOnTick":true,
+"title": {"text": ""},
+"labels":{"rotation": 0,"function":"yAxisFormatter"}
+} ,
+"legend": {
+"enabled": false
+},
+"tooltip":{"function":"tooltipformatter"}
+}
+}
+
+
+<function>
+yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
+tooltipformatter^^'formatter' :
+function() {return this.point.tooltip_label ;
+}##
+clickEvent^^"click": function(){location.href = Drupal.settings.basePath+this.url; }
+</function>
