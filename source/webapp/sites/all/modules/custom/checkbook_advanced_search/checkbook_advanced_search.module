@@ -24,6 +24,11 @@ module_load_include('php', 'checkbook_advanced_search', 'includes/classes/Field'
 module_load_include('php', 'checkbook_advanced_search', 'includes/classes/Content');
 module_load_include('php', 'checkbook_advanced_search', 'includes/classes/Form');
 module_load_include('inc', 'checkbook_advanced_search', 'includes/checkbook_advanced_search');
+module_load_include('inc', 'checkbook_advanced_search', 'includes/spending_advanced_search');
+module_load_include('inc', 'checkbook_advanced_search', 'includes/contracts_advanced_search');
+module_load_include('inc', 'checkbook_advanced_search', 'includes/payroll_advanced_search');
+module_load_include('inc', 'checkbook_advanced_search', 'includes/budget_advanced_search');
+module_load_include('inc', 'checkbook_advanced_search', 'includes/revenue_advanced_search');
 module_load_include('inc', 'checkbook_advanced_search_autocomplete', 'includes/checkbook_advanced_search_autocomplete_functions');
 
 use checkbook_advanced_search\DataSource as DataSource;
@@ -652,7 +657,6 @@ function _checkbook_advanced_search_filter_field_definition($domain, $data_sourc
     $includes_sub_vendors = _get_contract_includes_subvendors_data();
     $includes_sub_vendors_attributes = _get_contract_includes_subvendors_data('attributes');
     $contract_type_attribute = _checkbook_advanced_search_get_contract_type_and_id($data_source);
-    $award_method_attributes = _checkbook_advanced_search_get_contract_award_method_attributes($data_source);
   }
   $expense_attributes = _checkbook_advanced_search_get_expensetype_and_id($data_source);
   $year_attribute = _checkbook_advanced_search_get_year($domain, $data_source);
