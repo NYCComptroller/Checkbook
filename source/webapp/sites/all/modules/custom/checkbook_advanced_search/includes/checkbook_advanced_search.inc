@@ -221,26 +221,6 @@ function _checkbook_advanced_search_get_mwbe_category_and_id()
 }
 
 /**
- * Gets the industry types and id using the data controller
- * @return array
- */
-function _checkbook_advanced_search_get_industry_type_and_id()
-{
-    try {
-        $dataController = data_controller_get_instance();
-        $industry_types = $dataController->queryDataset('checkbook:industry_type', array('industry_type_id', 'industry_type_name'), NULL, 'industry_type_name', 0, 10, NULL);
-        $industry_types_val = array('Select Industry');
-        foreach ($industry_types as $industry_type) {
-            $industry_types_val[$industry_type['industry_type_id']] = $industry_type['industry_type_name'];
-        }
-        return $industry_types_val;
-    } catch (Exception $e) {
-        log_error("Error getting data from controller: \n" . $e->getMessage());
-        return;
-    }
-}
-
-/**
  * Get expense name and id using the data controller
  * @return array
  * @return array|void
@@ -610,32 +590,6 @@ function _checkbook_advanced_search_get_expensetype_and_id($data_source = DataSo
 }
 
 /**
- * Get agency name and id using the data controller
- *
- * @param string $data_source
- * @return array|void
- */
-function _checkbook_advanced_search_get_contract_award_method_and_id($data_source = DataSource::CITYWIDE)
-{
-    try {
-        $dataController = data_controller_get_instance();
-        $nyc_agencies = $dataController->queryDataset($data_source.':award_method', array('award_method_name', 'award_method_id', 'award_method_code'), NULL, 'award_method_name', 0, NULL, NULL);
-        $nyc_agencies_key_val = array('Select Award Method');
-        foreach ($nyc_agencies as $value) {
-            $keys = 'id=>' . $value['award_method_id'] . '~code=>' . $value['award_method_code'];
-            if (strlen($value['award_method_name']) > 20)
-                $nyc_agencies_key_val[$keys] = substr($value['award_method_name'], 0, 20) . '...';
-            else
-                $nyc_agencies_key_val[$keys] = $value['award_method_name'];
-        }
-        return $nyc_agencies_key_val;
-    } catch (Exception $e) {
-        log_error("Error getting data from controller: \n" . $e->getMessage());
-        return;
-    }
-}
-
-/**
  * @param string $data_source
  * @return array|void
  */
@@ -765,7 +719,7 @@ function _checkbook_advanced_search_get_nycha_contract_types($data_source = Data
  * @param bool $feeds
  * @return array|void
  */
-function checkbook_advanced_search_get_nycha_award_methods($data_source = DataSource::NYCHA, $feeds = false){
+function checkbook_advanced_search_get_award_methods($data_source = DataSource::NYCHA, $feeds = false){
     try {
         $query = "SELECT DISTINCT award_method_id, award_method_code, award_method_name FROM ref_award_method ORDER BY award_method_name";
         $results = _checkbook_project_execute_sql_by_data_source($query, $data_source);
@@ -805,9 +759,13 @@ function checkbook_advanced_search_get_nycha_award_methods($data_source = DataSo
  * @param bool $feeds
  * @return array|void
  */
-function checkbook_advanced_search_get_nycha_industries($data_source = DataSource::NYCHA, $feeds = false){
+function checkbook_advanced_search_get_industries($data_source, $feeds = false){
     try {
-        $query = "SELECT DISTINCT display_industry_type_name, industry_type_id, industry_type_code FROM ref_industry_type ORDER BY display_industry_type_name";
+        if($data_source == Datasource::NYCHA) {
+          $query = "SELECT DISTINCT display_industry_type_name, industry_type_id, industry_type_code FROM ref_industry_type ORDER BY display_industry_type_name";
+        } else{
+          $query = "SELECT DISTINCT industry_type_name AS display_industry_type_name, industry_type_id FROM ref_industry_type ORDER BY industry_type_name";
+        }
         $results = _checkbook_project_execute_sql_by_data_source($query, $data_source);
 
         $industry_key_val_option_attributes = array('title' => 'Select Industry');
@@ -822,7 +780,7 @@ function checkbook_advanced_search_get_nycha_industries($data_source = DataSourc
                 else
                     $industry_key_val_options[$text] = $text;
             }else {
-                $keys = 'id=>' . $value['industry_type_id'] . '~code=>' . $value['industry_type_code'];
+                $keys = $value['industry_type_id'];
                 $industry_key_val_option_attributes[$keys] = array('title' => $value['display_industry_type_name']);
                 if (strlen($value['display_industry_type_name']) > 20)
                     $industry_key_val_options[$keys] = substr($value['display_industry_type_name'], 0, 20) . '...';
