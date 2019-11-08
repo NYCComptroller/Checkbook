@@ -24,6 +24,11 @@ module_load_include('php', 'checkbook_advanced_search', 'includes/classes/Field'
 module_load_include('php', 'checkbook_advanced_search', 'includes/classes/Content');
 module_load_include('php', 'checkbook_advanced_search', 'includes/classes/Form');
 module_load_include('inc', 'checkbook_advanced_search', 'includes/checkbook_advanced_search');
+module_load_include('inc', 'checkbook_advanced_search', 'includes/spending_advanced_search');
+module_load_include('inc', 'checkbook_advanced_search', 'includes/contracts_advanced_search');
+module_load_include('inc', 'checkbook_advanced_search', 'includes/payroll_advanced_search');
+module_load_include('inc', 'checkbook_advanced_search', 'includes/budget_advanced_search');
+module_load_include('inc', 'checkbook_advanced_search', 'includes/revenue_advanced_search');
 module_load_include('inc', 'checkbook_advanced_search_autocomplete', 'includes/checkbook_advanced_search_autocomplete_functions');
 
 use checkbook_advanced_search\DataSource as DataSource;
@@ -641,38 +646,24 @@ function _checkbook_advanced_search_get_form($form, $domain, $agencies, $agency_
 function _checkbook_advanced_search_filter_field_definition($domain, $data_source, $agencies, $agency_attributes, $year_range)
 {
 
-  if ($data_source == DataSource::OtherGovernmentEntities) {
-    //$agencies = _checkbook_advanced_search_get_agencyname_and_id($data_source);
-    //$agency_attributes = _checkbook_advanced_search_get_agency_attributes($data_source);
-    //$nycha_agencies = _checkbook_advanced_search_get_agencyname_and_id(DataSource::NYCHA);
-    //$nycha_agency_attributes = _checkbook_advanced_search_get_agency_attributes(DataSource::NYCHA);
-    //$agencies = $nycha_agencies + $agencies;
-    //$agency_attributes = $nycha_agency_attributes + $agency_attributes;
-
-    $nycha_contract_type_attributes = _checkbook_advanced_search_get_nycha_contract_types(DataSource::NYCHA);
-    $nycha_award_method_attributes = checkbook_advanced_search_get_nycha_award_methods(DataSource::NYCHA);
-    $nycha_industry_attributes = checkbook_advanced_search_get_nycha_industries(DataSource::NYCHA);
-    $nycha_fundsrc_attributes = checkbook_advanced_search_get_nycha_funding_sources(DataSource::NYCHA);
-    $nycha_expense_attributes = _checkbook_advanced_search_get_expensetype_and_id(DataSource::NYCHA);
-  } else if ($data_source == DataSource::CitywideAgency) {
+  if ($data_source == DataSource::NYCHA) {
+    $responsibility_center_attributes = _checkbook_advanced_search_get_responsibility_centers($data_source);
+    $contract_type_attribute = _checkbook_advanced_search_get_nycha_contract_types($data_source);
+    $fundsrc_attributes = checkbook_advanced_search_get_nycha_funding_sources($data_source);
+  } else {
     $mwbe_category_attributes = _checkbook_advanced_search_get_mwbe_category_and_id();
-    $industry_attributes = _checkbook_advanced_search_get_industry_type_and_id();
     $sub_vendor_status = _checkbook_advanced_search_get_subcontract_approval_status_and_id();
     $sub_vendor_status_attributes = _checkbook_advanced_search_get_subcontract_approval_status_and_id('attributes');
     $includes_sub_vendors = _get_contract_includes_subvendors_data();
     $includes_sub_vendors_attributes = _get_contract_includes_subvendors_data('attributes');
     $contract_type_attribute = _checkbook_advanced_search_get_contract_type_and_id($data_source);
   }
-  $nycha_responsibility_center_attributes = _checkbook_advanced_search_get_responsibility_centers($data_source);
   $expense_attributes = _checkbook_advanced_search_get_expensetype_and_id($data_source);
   $year_attribute = _checkbook_advanced_search_get_year($domain, $data_source);
-  $award_method = _checkbook_advanced_search_get_contract_award_method_and_id($data_source);
-  $award_method_attributes = _checkbook_advanced_search_get_contract_award_method_attributes($data_source);
-  $nycha_contract_type_attributes = _checkbook_advanced_search_get_nycha_contract_types(DataSource::NYCHA);
-
+  $industry_attributes = checkbook_advanced_search_get_industries($data_source);
+  $award_method_attributes = checkbook_advanced_search_get_award_methods($data_source);
 
   $field_definition_configs = _checkbook_advanced_search_get_field_def_configs();
-
   foreach ($field_definition_configs as $i => $field_config) {
     if (!(is_null($field_config['attributes']))) {
       $attributes = $field_config['attributes'];
@@ -685,14 +676,12 @@ function _checkbook_advanced_search_filter_field_definition($domain, $data_sourc
           case '$expense_attributes':
             $field_definition_configs[$i]['attributes']['options'] = $expense_attributes;
             break;
-          case '$nycha_expense_attributes':
-            $field_definition_configs[$i]['attributes']['options'] = $nycha_expense_attributes;
-            break;
           case'$year_attribute':
             $field_definition_configs[$i]['attributes']['options'] = $year_attribute;
             break;
-          case'$award_method':
-            $field_definition_configs[$i]['attributes']['options'] = $award_method;
+          case'$award_method_attributes':
+            $field_definition_configs[$i]['attributes']['options'] = $award_method_attributes['options'];
+            $field_definition_configs[$i]['attributes']['option_attributes'] = $award_method_attributes['option_attributes'];
             break;
           case'$year_range':
             $field_definition_configs[$i]['attributes']['options'] = $year_range;
@@ -704,7 +693,8 @@ function _checkbook_advanced_search_filter_field_definition($domain, $data_sourc
             $field_definition_configs[$i]['attributes']['options'] = $mwbe_category_attributes;
             break;
           case '$industry_attributes':
-            $field_definition_configs[$i]['attributes']['options'] = $industry_attributes;
+            $field_definition_configs[$i]['attributes']['options'] = $industry_attributes['options'];
+            $field_definition_configs[$i]['attributes']['option_attributes'] = $industry_attributes['option_attributes'];
             break;
           case '$sub_vendor_status':
             $field_definition_configs[$i]['attributes']['options'] = $sub_vendor_status;
@@ -712,25 +702,13 @@ function _checkbook_advanced_search_filter_field_definition($domain, $data_sourc
           case '$includes_sub_vendors':
             $field_definition_configs[$i]['attributes']['options'] = $includes_sub_vendors;
             break;
-          case '$nycha_responsibility_center_attributes':
-            $field_definition_configs[$i]['attributes']['options'] = $nycha_responsibility_center_attributes['options'];
-            $field_definition_configs[$i]['attributes']['option_attributes'] = $nycha_responsibility_center_attributes['option_attributes'];
+          case '$responsibility_center_attributes':
+            $field_definition_configs[$i]['attributes']['options'] = $responsibility_center_attributes['options'];
+            $field_definition_configs[$i]['attributes']['option_attributes'] = $responsibility_center_attributes['option_attributes'];
             break;
-          case '$nycha_contract_type_attributes':
-            $field_definition_configs[$i]['attributes']['options'] = $nycha_contract_type_attributes['options'];
-            $field_definition_configs[$i]['attributes']['option_attributes'] = $nycha_contract_type_attributes['option_attributes'];
-            break;
-          case '$nycha_award_method_attributes':
-            $field_definition_configs[$i]['attributes']['options'] = $nycha_award_method_attributes['options'];
-            $field_definition_configs[$i]['attributes']['option_attributes'] = $nycha_award_method_attributes['option_attributes'];
-            break;
-          case '$nycha_industry_attributes':
-            $field_definition_configs[$i]['attributes']['options'] = $nycha_industry_attributes['options'];
-            $field_definition_configs[$i]['attributes']['option_attributes'] = $nycha_industry_attributes['option_attributes'];
-            break;
-          case '$nycha_fundsrc_attributes':
-            $field_definition_configs[$i]['attributes']['options'] = $nycha_fundsrc_attributes['options'];
-            $field_definition_configs[$i]['attributes']['option_attributes'] = $nycha_fundsrc_attributes['option_attributes'];
+          case '$fundsrc_attributes':
+            $field_definition_configs[$i]['attributes']['options'] = $fundsrc_attributes['options'];
+            $field_definition_configs[$i]['attributes']['option_attributes'] = $fundsrc_attributes['option_attributes'];
             break;
         }
       }
@@ -740,15 +718,14 @@ function _checkbook_advanced_search_filter_field_definition($domain, $data_sourc
           case '$agency_attributes':
             $field_definition_configs[$i]['attributes']['option_attributes'] = $agency_attributes;
             break;
-          case '$award_method_attributes':
-            $field_definition_configs[$i]['attributes']['option_attributes'] = $award_method_attributes;
-            break;
           case '$sub_vendor_status_attributes':
             $field_definition_configs[$i]['attributes']['option_attributes'] = $sub_vendor_status_attributes;
             break;
           case '$includes_sub_vendors_attributes':
             $field_definition_configs[$i]['attributes']['option_attributes'] = $includes_sub_vendors_attributes;
             break;
+          case '':
+            $field_definition_configs[$i]['attributes']['option_attributes'] = $industry_attributes;
         }
       }
     }
