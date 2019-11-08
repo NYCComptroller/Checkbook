@@ -1341,6 +1341,7 @@
             disable_input(div.ele('issue_date_to'));
           }
           //Both
+          var agency_id = 0;
           if(data_source === 'checkbook') {
             agency_id = parseInt((div.ele('agency').val()) ? div.ele('agency').val() : 0);
             if (!agency_id) {
@@ -1348,12 +1349,16 @@
               disable_input(div.ele('exp_category'));
             }
           }
-         // div.ele('spending_category').val('Total Spending');
+
           enable_input(div.ele('contract_id'));
           enable_input(div.ele('payee_name'));
           year = 0;
           if (div.ele('date_filter_checked').val() === '0') {
             year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
+            var year_id = 0;
+            if(year.indexOf("fy") >= 0){
+              year_id = year.split('~')[1];
+            }
           }
           department_name = (div.ele('dept').val()) ? (div.ele('dept').val()) : 0;
           department_name = department_name.toString().replace(/\//g, "__");
@@ -1369,7 +1374,8 @@
             expenditure_object_code:expenditure_object_code,
             spending_category_id:spending_category_id,
             minority_type_id:minority_type_id,
-            industry_type_id:industry_type_id
+            industry_type_id:industry_type_id,
+            fiscal_year_id: year_id
           };
 
           div.ele('payee_name').autocomplete({source: autoCompleteSource(solr_datasource,'vendor_name',filters)});
