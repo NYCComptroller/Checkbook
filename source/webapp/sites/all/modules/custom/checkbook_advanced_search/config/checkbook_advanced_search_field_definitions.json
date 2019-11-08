@@ -15,14 +15,6 @@
             "options":"$expense_attributes"
         }
     },
-   /* "nycha_expense_type":{
-      "field_type":"select",
-      "field_name":"nycha_expense_type",
-      "attributes":{
-        "title":"Spending Category",
-        "options":"$nycha_expense_attributes"
-      }
-    },*/
     "payee_name":{
         "field_type":"textfield",
         "field_name":"payee_name",
@@ -311,40 +303,15 @@
       "field_name":"responsibility_center",
       "attributes":{
         "title":"Responsibility<br/>Center",
-        "options":"$nycha_responsibility_center_attributes"
+        "options":"$responsibility_center_attributes"
       }
     },
-    "nycha_contract_type":{
-      "field_type":"select",
-      "field_name":"nycha_contract_type",
-      "attributes":{
-        "title":"Contract Type",
-        "options":"$nycha_contract_type_attributes",
-        "title":"Contract Type"
-      }
-    },
-   "nycha_award_method":{
-      "field_type":"select",
-      "field_name":"nycha_award_method",
-      "attributes":{
-        "title": "Award Method",
-        "options":"$nycha_award_method_attributes"
-      }
-   },
-   "nycha_industry":{
-      "field_type":"select",
-      "field_name":"nycha_industry",
-      "attributes":{
-        "title":"Industry",
-        "options":"$nycha_industry_attributes"
-      }
-   },
   "fundsrc":{
     "field_type":"select",
     "field_name":"fundsrc",
     "attributes":{
       "title":"Funding Source",
-      "options":"$nycha_fundsrc_attributes"
+      "options":"$fundsrc_attributes"
     }
   },
   "amount_spent":{

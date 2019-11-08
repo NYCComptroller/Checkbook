@@ -456,9 +456,6 @@
             'budget_name': 'input:text[name=' + data_source + '_contracts_budget_name]',
             'purchase_order_type': 'select[name="' + data_source + '_contracts_purchase_order_type"]',
             'responsibility_center': 'select[name="' + data_source + '_contracts_responsibility_center"]',
-            'nycha_contract_type': 'select[name="' + data_source + '_contracts_nycha_contract_type"]',
-            'nycha_award_method': 'select[name="' + data_source + '_contracts_nycha_award_method"]',
-            'nycha_industry': 'select[name="' + data_source + '_contracts_nycha_industry"]',
             'approved_date': 'input:text[name="' + data_source + '_contracts_approved_date"]'
           };
 
