@@ -1016,9 +1016,13 @@
           if (div.ele('date_filter_checked').val() === '0') {
             year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
           }
-          var agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
+          var agency = 0;
+          if(data_source == 'checkbook') {
+            agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
+            if(agency == 0)
+              return;
+          }
           var exptype = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
-
           var dept = (div.ele('dept').val()) ? (div.ele('dept').val()) : 0;
           dept = dept.toString().replace(/\//g, "__");
 
@@ -1048,7 +1052,12 @@
           if (div.ele('date_filter_checked').val() === '0') {
             year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
           }
-          var agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
+          var agency = 0;
+          if(data_source == 'checkbook') {
+            agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
+            if(agency == 0)
+              return;
+          }
           var exptype = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
 
           $.ajax({
@@ -1118,7 +1127,6 @@
         div_checkbook_spending_oge.ele('spending_category').change(function () {
           onExpenseTypeChange(div_checkbook_spending_oge);
         });
-
         div_checkbook_spending_nycha.ele('spending_category').change(function () {
           onExpenseTypeChange(div_checkbook_spending_nycha);
         });
@@ -1187,10 +1195,13 @@
         function onFiscalYearChange(div) {
           //Setting data source value
           var data_source = $('input:radio[name=spending_advanced_search_domain_filter]:checked').val();
-          var agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
-          //Don't update drop downs if no agency is selected
-          if(data_source == 'checkbook' && agency === 0)
-            return;
+          var agency = 0;
+          if(data_source == 'checkbook') {
+            agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
+            if(agency == 0)
+              return;
+          }
+          //Reload Department and Expense Category drop-downs for CityWide
           loadSpendingExpenseCategories(div, data_source);
           loadSpendingDepartments(div, data_source);
         }
