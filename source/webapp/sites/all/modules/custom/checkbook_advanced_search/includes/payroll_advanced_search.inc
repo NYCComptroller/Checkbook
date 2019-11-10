@@ -59,7 +59,7 @@ function _checkbook_advanced_search_payroll_submit($form, &$form_state)
       $redirect_url .= _checkbook_advanced_search_generate_redirect_url($payroll_employee_name, 'empnm');
     }
   }
-  if (!empty($payroll_agency)) {
+  if (!empty($payroll_agency) && $data_source != Datasource::NYCHA) {
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($payroll_agency, 'agency');
   }
   if (!empty($payroll_department)) {
