@@ -1033,7 +1033,7 @@
               if (data[0]) {
                 if (data[0] !== 'No Matches Found') {
                   $.each(data, function (key, exp_cat) {
-                    html = html + '<option value="' + exp_cat.code + '">' + exp_cat.name + '</option>';
+                    html = html + '<option value="' + exp_cat.code + '" title="' + exp_cat.title +'">' + exp_cat.name + '</option>';
                   });
                 }
                 else {
