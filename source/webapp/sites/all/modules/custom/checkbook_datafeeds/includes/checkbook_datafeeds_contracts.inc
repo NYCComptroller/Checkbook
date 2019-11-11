@@ -610,11 +610,10 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
  */
 function checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $first_time_load)
 {
-  $agency_options = _agency_options('checkbook_oge_nycha');
   $resp_center_options = _checkbook_advanced_search_get_responsibility_centers(Datasource::NYCHA, true);
   $contract_types = _checkbook_advanced_search_get_nycha_contract_types(Datasource::NYCHA, true);
-  $award_methods = checkbook_advanced_search_get_nycha_award_methods(Datasource::NYCHA, true);
-  $industries = checkbook_advanced_search_get_nycha_industries(Datasource::NYCHA, true);
+  $award_methods = checkbook_advanced_search_get_award_methods(Datasource::NYCHA, true);
+  $industries = checkbook_advanced_search_get_industries(Datasource::NYCHA, true);
 
   $form['filter']['purchase_order_type'] = array(
     '#type' => 'select',
