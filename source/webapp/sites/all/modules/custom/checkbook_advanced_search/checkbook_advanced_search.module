@@ -677,7 +677,8 @@ function _checkbook_advanced_search_filter_field_definition($domain, $data_sourc
             $field_definition_configs[$i]['attributes']['options'] = $year_range;
             break;
           case'$contract_type_attribute':
-            $field_definition_configs[$i]['attributes']['options'] = $contract_type_attribute;
+            $field_definition_configs[$i]['attributes']['options'] = $contract_type_attribute['options'];
+            $field_definition_configs[$i]['attributes']['option_attributes'] = $contract_type_attribute['option_attributes'];
             break;
           case '$mwbe_category_attributes':
             $field_definition_configs[$i]['attributes']['options'] = $mwbe_category_attributes;
