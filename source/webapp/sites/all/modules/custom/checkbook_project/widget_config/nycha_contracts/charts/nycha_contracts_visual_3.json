@@ -7,6 +7,26 @@
   $header .= ChartUtil::generateWidgetGridViewLink($node);
   return $header;
   ",
+  "gridConfig":{
+    "template":"chart_grid_view",
+    "domain":"contracts",
+    "html_class":"chart-grid-view-table four-columns",
+    "sortColumn":0,
+    "table_columns": [
+      {
+        "labelAlias": "Year",
+        "columnType": "text"
+      },
+      {
+        "labelAlias": "Agreement TYpe",
+        "columnType": "number"
+      },
+      {
+        "labelAlias": "Total Number of Contracts",
+        "columnType": "number"
+      }
+    ]
+  },
   "chartTitle":"Year Comparison By Agreement Types",
   "widgetDataLoader":"
       $where_filters = array();
@@ -21,9 +41,14 @@
         $where_filter = ' WHERE ' . implode(' AND ' , $where_filters);
       }
       $datasource = RequestUtilities::getRequestParamValue('datasource');
+$sql = 'select agreement_type_code, year,ct from
+        (select agreement_type_code,(year+1899) as year,count(distinct contract_id) as ct
+        from (select agreement_type_code,contract_id,generate_series(agreement_start_year_id,agreement_end_year_id) as year
+        from all_agreement_transactions_by_release_by_line)a
+        group by agreement_type_code,year) b where year between 2010 AND 2019 ';
+//$sql = ' select agreement_type_code, release_approved_year,release_approved_year_id , max(release_total_amount) as total_amount, count(contract_id) as total_contracts from all_agreement_transactions  where release_approved_year_id between  113 and 120 group by agreement_type_code,release_approved_year_id,release_approved_year';
 
-$sql = ' select agreement_type_code, release_approved_year,release_approved_year_id , max(release_total_amount) as total_amount, count(contract_id) as total_contracts from all_agreement_transactions  where release_approved_year_id between  113 and 120 group by agreement_type_code,release_approved_year_id,release_approved_year';
-      $node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
+$node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
   ",
 "widgetUpdateJSONConfig":"
 $series_previous_temp = array(array());
@@ -31,7 +56,13 @@ $series_previous_temp = array(array());
 $categories = array('2012','2013','2014','2015','2016','2017','2018','2019');
 $codes = array('BA','PO','PA');
 foreach($node->data as $row){
-$series_previous_temp[$row['agreement_type_code']][$row['release_approved_year']] = (float)$row['total_contracts'];
+$series_previous_temp[$row['agreement_type_code']][$row['year']] = (float)$row['ct'];
+foreach($categories as $category){
+  if ($row['year'] == $category){
+  $node->widgetConfig->gridConfig->data[] = array($row['year'],$row['agreement_type_code'],$row['ct']);
+}
+//$node->widgetConfig->gridConfig->data[] = array($row['year'],$row['agreement_type_code'],$row['ct']);
+}
 }
 $series_previous = array();
 foreach($codes as $code){
@@ -54,9 +85,10 @@ $node->widgetConfig->chartConfig->xAxis->categories = $categories;
 "type": "area"
  },
   "colors":["#D78E35","#7DB7E5","#122E46"],
-"legend": {"align": "right",  "verticalAlign": "top", "layout": "vertical", "x": 11, "y": 100, "symbolWidth": 22,
-"padding": 3, "itemMarginTop": 3, "itemMarginBottom": 3},
-"xAxis":{"labels":{"enabled":true, "style": {"color": "black", "fontSize": "13px"}}},
+"legend": {"align": "left",  "verticalAlign": "bottom", "layout": "horizontal",
+"padding":1, "itemMarginTop": 3, "itemMarginBottom": 3},
+"xAxis":{"labels":{"enabled":"true", "style": {"color": "black", "fontSize": "13px"}}},
+"yAxis": {"title": {"text": ""}} ,
 "tooltip": {
 "split":true,
 "function":"splittooltip"
