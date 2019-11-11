@@ -862,14 +862,13 @@
         var pay_frequency = $('#edit-payroll-pay-frequency').val() || 0;
         var year = $('#edit-payroll-year').val() || 0;
         var data_source = $('input[name=payroll_advanced_search_domain_filter]:checked').val();
-        var agency_id = $("#edit-checkbook-oge-payroll-agencies").val() || 0;
+        var agency_id = 0;
 
         var solr_datasource = data_source;
         if ('checkbook_nycha' == data_source) {
-          agency_id = 162;
           solr_datasource = 'nycha';
-        }else if('checkbook_oge' == data_source){
-          agency_id = 9000;
+        }else{
+          agency_id = $("edit-checkbook-payroll-agencies").val() || 0;
         }
 
         var filters = {
@@ -905,13 +904,15 @@
         function onChangeDataSource(dataSource) {
           /* Reset all the fields for the data source */
           clearInputFields("#payroll-advanced-search", 'payroll', dataSource);
-          /** Hide Fiscal Year values for OGE **/
-          if(dataSource == 'checkbook_oge'){
+          /** Hide Fiscal Year values for NYCHA **/
+          if(dataSource == 'checkbook_nycha'){
+            $(".form-item-checkbook-payroll-agencies").hide();
             $("#edit-payroll-year > option").each(function() {
               if($(this).val().indexOf("fy") >= 0)
                 $(this).hide();
             });
           }else{
+            $(".form-item-checkbook-payroll-agencies").show();
             $("#edit-payroll-year > option").each(function() {
               if($(this).val().indexOf("fy") >= 0)
                 $(this).show();
