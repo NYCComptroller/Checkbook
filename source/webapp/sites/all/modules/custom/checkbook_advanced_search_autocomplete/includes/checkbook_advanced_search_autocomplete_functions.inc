@@ -178,7 +178,9 @@ function _checkbook_advanced_search_autocomplete_spending_expcategory($year, $ag
     }
     else {
         foreach($options as $key => $value){
-            $matches[] = array("code" => $key, "name" => htmlentities($value));
+            $value = htmlentities($value);
+            $name = (strlen($value) > 18) ? substr($value, 0, 18) . '...' : $value;
+            $matches[] = array("code" => $key, "name" => $name, "title" => $value);
         }
     }
     drupal_json_output($matches);
