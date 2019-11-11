@@ -107,7 +107,10 @@ if(isset($url)) {
   else{
     $categoryName = NychaSpendingUtil::getCategoryName();
     $total_spending = $node->data[0]['invoice_amount_sum'];
-    if ($categoryName == 'Total'){$total_spending = NychaSpendingUtil::getTotalSpendingAmount($categoryName,$url);}
+    $vendor_value = RequestUtilities::get('vendor');
+    //echo RequestUtilities::get('vendor');
+
+    if ($categoryName == 'Total' && $vendor_value == null){$total_spending = NychaSpendingUtil::getTotalSpendingAmount($categoryName,$url);}
     if ($categoryName == 'Payroll'){$total_spending = $node->data[0]['check_amount_sum'];}
     $aggregatedAmountTitle = $categoryName." Spending Amount";
     $totalSpendingAmount = '$' . custom_number_formatter_format($total_spending, 2);
