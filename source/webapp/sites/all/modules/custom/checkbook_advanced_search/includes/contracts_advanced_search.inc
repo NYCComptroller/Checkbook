@@ -277,16 +277,14 @@ function _checkbook_advanced_search_nycha_contracts_submit($form, &$form_state)
       $redirect_url .= _checkbook_advanced_search_generate_redirect_url($purchase_order_type, 'agreement_type');
     }
   }
-  if(!empty( $type))
-  {
+  if(!empty( $type)) {
     $code_id_array = _checkbook_advanced_search_autocomplete_get_code_id($type);
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($code_id_array['code'], 'contract_type');
   }
 
   //Pending Contracts should always be in the current FY.
   if (!empty($industry_type_id)) {
-    $code_id_array = _checkbook_advanced_search_autocomplete_get_code_id($industry_type_id);
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($code_id_array['id'], 'industry');
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($industry_type_id, 'industry');
   }
 
   if (!empty($vendor_name)) {
@@ -302,15 +300,13 @@ function _checkbook_advanced_search_nycha_contracts_submit($form, &$form_state)
 
   if (!empty($contract_num)) {
     if ($contract_num_exact == $contract_num) {
-
       $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contract_num, 'po_num_exact');
     } else{
       $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contract_num, 'po_num');
     }
   }
   if (!empty($responsibility_center)) {
-    $code_id_array = _checkbook_advanced_search_autocomplete_get_code_id($responsibility_center);
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($code_id_array['id'], 'responsibilitynm_exact');
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($responsibility_center, 'responsibilitynm_exact');
   }
 
   if (!empty($pin)) {
