@@ -87,7 +87,7 @@ $node->widgetConfig->chartConfig->xAxis->categories = $categories;
   "colors":["#D78E35","#7DB7E5","#122E46"],
 "legend": {"align": "left",  "verticalAlign": "bottom", "layout": "horizontal",
 "padding":1, "itemMarginTop": 3, "itemMarginBottom": 3},
-"xAxis":{"labels":{"enabled":"true", "style": {"color": "black", "fontSize": "13px"}}},
+"xAxis":{"labels":{"enabled":"true"}},
 "yAxis": {"title": {"text": ""}} ,
 "tooltip": {
 "split":true,
