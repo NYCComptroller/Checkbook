@@ -86,8 +86,6 @@ function checkbook_advanced_search_form($form, $form_state)
   $create_alert_view = "<div class='create-alert-view'></div>";
   $agencies = _checkbook_advanced_search_get_agencyname_and_id();
   $agency_attributes = _checkbook_advanced_search_get_agency_attributes();
-  $nycha_agencies = _checkbook_advanced_search_get_agencyname_and_id(DataSource::NYCHA);
-  $nycha_agency_attributes = _checkbook_advanced_search_get_agency_attributes(DataSource::NYCHA);
   $fund_class = _checkbook_advanced_search_get_fund_class_and_id();
   $year_range = "'-" . (date("Y") - 1900) . ":+" . (2500 - date("Y")) . "'";
   $revenue_fys = array(0 => "All Fiscal Years");
@@ -415,20 +413,12 @@ function checkbook_advanced_search_form($form, $form_state)
     '#prefix' => '<h3><a href="#">Payroll</a></h3><div id="payroll-advanced-search">',
   );
 
-  $form['payroll']['checkbook_oge_payroll_agencies'] = array(
-    '#type' => 'select',
-    '#title' => t('Other Government<br/>Entities'),
-    '#default_value' => t('Select One)'),
-    '#options' => $nycha_agencies,
-    '#option_attributes' => $nycha_agency_attributes,
-    '#prefix' => '<div class="column column-left">',
-  );
-
   $form['payroll']['payroll_employee_name'] = array(
     '#type' => 'textfield',
     '#title' => t('Title'),
     '#size' => 30,
     '#maxlength' => 100,
+    '#prefix' => '<div class="column column-left">',
   );
   $form['payroll']['payroll_employee_name_exact'] = array(
     '#type' => 'hidden'
