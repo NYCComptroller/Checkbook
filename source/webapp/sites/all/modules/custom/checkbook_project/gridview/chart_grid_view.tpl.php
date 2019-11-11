@@ -26,6 +26,9 @@ switch($node->widgetConfig->gridConfig->domain){
 	case "contracts":
 		include_once('contracts_title.php');
 		break;
+  case "payroll":
+    include_once('payroll_title.php');
+    break;
 
 }
 
