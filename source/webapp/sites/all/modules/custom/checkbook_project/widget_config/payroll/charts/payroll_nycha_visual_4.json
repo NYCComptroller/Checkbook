@@ -1,0 +1,124 @@
+{
+  "widgetType": "highcharts",
+  "widgetDatahandler": "highcharts",
+  "html_class":"",
+  "header":"
+  $header = '<h2 class=\"chart-title\" style=\"display:none;\">'. $node->widgetConfig->chartTitle . '</h2>';
+  $header .= ChartUtil::generateWidgetGridViewLink($node);
+  return $header;
+  ",
+  "gridConfig":{
+    "template":"chart_grid_view",
+    "domain":"payroll",
+    "html_class":"chart-grid-view-table three-columns",
+    "sortColumn":1,
+    "table_columns": [
+      {
+        "labelAlias": "Year",
+        "columnType": "text"
+      },
+      {
+        "labelAlias": "Amount",
+        "columnType": "number",
+        "formatType": "amount"
+      }
+    ]
+  },
+  "no_results_content":"No Results Found",
+  "cleanURLParameters":["awdmethod","vendor","csize","industry","year"],
+  "urlParamMap":{"year":"fiscal_year_id","awdmethod":"award_method_id","vendor":"vendor_id", "csize":"award_size_id","industry":"industry_type_id"},
+  "widgetPreprocessJSON":"
+  if(preg_match('/pending/',$_GET['q'])){
+  $node->widgetConfig->urlParamMap = $node->widgetConfig->urlParamMapPending;
+  $node->widgetConfig->defaultParameters = $node->widgetConfig->defaultParametersPending;
+  $node->widgetConfig->cleanURLParameters = $node->widgetConfig->cleanURLParametersPending;
+}",
+"chartTitle":"Total Overtime Payments Across Years",
+"widgetDataLoader":"
+$year_id = RequestUtilities::getRequestParamValue('year');
+$where_filters = array();
+foreach($node->widgetConfig->requestParams as $param=>$value){
+if($param == 'fiscal_year_id'){
+$where_filters[] = _widget_build_sql_condition( $param.'<', $value);
+}else{
+$where_filters[] = _widget_build_sql_condition( $param, $value);
+}
+}
+$where_filters[] = _widget_build_sql_condition( 'type_of_year', 'C');
+$where_filters[] = _widget_build_sql_condition( 'agency_id', '162');
+if(count($where_filters) > 0){
+$where_filter = ' WHERE ' . implode(' AND ' , $where_filters);
+}
+$and_filter =  _widget_build_sql_not_condition( 'overtime_pay', '0');
+
+$datasource = RequestUtilities::getRequestParamValue('datasource');
+$sql ='SELECT j.total_overtime_pay, j2.year_value AS year_year_year_value
+       FROM (SELECT fiscal_year_id AS year_year, agency_id AS agency_agency, type_of_year AS year_type_year_type, sum(overtime_pay) AS total_overtime_pay
+       FROM aggregateon_payroll_employee_agency_month' . $where_filter. ' AND ' .$and_filter. ' GROUP BY agency_id, fiscal_year_id, type_of_year) j
+       LEFT OUTER JOIN ref_year j2 ON j2.year_id = j.year_year
+       ORDER BY total_overtime_pay DESC
+       LIMIT 10';
+$node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
+",
+"widgetUpdateJSONConfig":"
+$series_new = array();
+$index = 0;
+foreach($node->data as $row){
+$tooltip_label =
+'Year: CY ' . $row['year_year_year_value'] .'<br/>'.
+'Amount: ' . custom_number_formatter_format($row['total_overtime_pay'] ,2, '$') .'<br/>' ;
+$series_new[$index]->y = (float)$row['total_overtime_pay'];
+$series_new[$index]->tooltip_label = $tooltip_label;
+$node->widgetConfig->gridConfig->data[] = array($row['year_year_year_value'],$row['total_overtime_pay'] );
+$index += 1;
+}
+$node->widgetConfig->chartConfig->series[0]->name = 'Fiscal Years';
+$node->widgetConfig->chartConfig->series[0]->type = 'column';
+$node->widgetConfig->chartConfig->series[0]->pointWidth = 30;
+$node->widgetConfig->chartConfig->series[0]->data = $series_new;
+",
+"chartConfig" : {
+"colors":["#7DB7E5"],
+"plotOptions": {
+"series": {
+"cursor": "pointer"   ,
+"stacking": "normal",
+"dataLabels": {
+"enabled": false
+}  ,
+"point": {"events": {"function": "clickEvent"}}
+}
+},
+"xAxis": {
+"categories": [0,1,2,3,4,5,6,7,8,9],
+"labels": {"enabled": false}
+},
+"series": [
+{
+"name": "FY",
+"type": "column",
+"pointWidth": 50,
+"data": []
+}
+],
+"title": {"text": ""},
+"yAxis": {
+"startOnTick":true,
+"title": {"text": ""},
+"labels":{"rotation": 0,"function":"yAxisFormatter"}
+} ,
+"legend": {
+"enabled": false
+},
+"tooltip":{"function":"tooltipformatter"}
+}
+}
+
+
+<function>
+yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
+tooltipformatter^^'formatter' :
+function() {return this.point.tooltip_label ;
+}##
+clickEvent^^"click": function(){location.href = Drupal.settings.basePath+this.url; }
+</function>
