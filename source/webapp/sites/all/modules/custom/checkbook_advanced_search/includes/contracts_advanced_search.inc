@@ -42,192 +42,187 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
     return $redirect_url;
   }
 
-  $contracts_contract_status = trim($form[$filter_dimension][$filter_dimension .'_status']['#value']);
-  $contracts_contract_category = trim($form[$filter_dimension][$filter_dimension .'_category']['#value']);
-  $contracts_contract_vendor_name = trim($form[$filter_dimension][$filter_dimension .'_vendor_name']['#value']);
-  $contracts_contract_vendor_name_exact = trim($form[$filter_dimension][$filter_dimension .'_vendor_name_exact']['#value']);
-  $contracts_contract_purpose = trim($form[$filter_dimension][$filter_dimension .'_purpose']['#value']);
-  $contracts_contract_type = trim($form[$filter_dimension][$filter_dimension .'_type']['#value']);
-  $contracts_contract_agency = trim($form[$filter_dimension][$filter_dimension .'_agency']['#value']);
-  $contracts_contract_contract_num = trim($form[$filter_dimension][$filter_dimension .'_contract_num']['#value']);
-  $contracts_contract_contract_num_exact = trim($form[$filter_dimension][$filter_dimension .'_contract_num_exact']['#value']);
-  $contracts_contract_apt_pin = trim($form[$filter_dimension][$filter_dimension .'_apt_pin']['#value']);
-  $contracts_contract_pin = trim($form[$filter_dimension][$filter_dimension .'_pin']['#value']);
-  $contracts_contract_award_method = trim($form[$filter_dimension][$filter_dimension .'_award_method']['#value']);
-  $contracts_contract_current_contract_amount_from = trim($form[$filter_dimension][$filter_dimension .'_current_contract_amount_from']['#value']);
-  $contracts_contract_current_contract_amount_to = trim($form[$filter_dimension][$filter_dimension .'_current_contract_amount_to']['#value']);
-  $contracts_contract_start_date_from = trim($form[$filter_dimension][$filter_dimension .'_start_date_from']['#value']['date']);
-  $contracts_contract_start_date_to = trim($form[$filter_dimension][$filter_dimension .'_start_date_to']['#value']['date']);
-  $contracts_contract_end_date_from = trim($form[$filter_dimension][$filter_dimension .'_end_date_from']['#value']['date']);
-  $contracts_contract_end_date_to = trim($form[$filter_dimension][$filter_dimension .'_end_date_to']['#value']['date']);
-  $contracts_contract_received_date_from = trim($form_state['input'][$filter_dimension .'_received_date_from']['date']);
-  $contracts_contract_received_date_to = trim($form_state['input'][$filter_dimension .'_received_date_to']['date']);
-  $contracts_contract_registration_date_from = trim($form[$filter_dimension][$filter_dimension .'_registration_date_from']['#value']['date']);
-  $contracts_contract_registration_date_to = trim($form[$filter_dimension][$filter_dimension .'_registration_date_to']['#value']['date']);
-  $contracts_entity_contract_number = trim($form[$filter_dimension][$filter_dimension .'_entity_contract_number']['#value']);
-  $contracts_entity_contract_number_exact = trim($form[$filter_dimension][$filter_dimension .'_entity_contract_number_exact']['#value']);
-  $contracts_commodity_line = trim($form[$filter_dimension][$filter_dimension .'_commodity_line']['#value']);
-  $contracts_commodity_line_exact = trim($form[$filter_dimension][$filter_dimension .'_commodity_line_exact']['#value']);
-  $contracts_budget_name = trim($form[$filter_dimension][$filter_dimension .'_budget_name']['#value']);
-  $contracts_budget_name_exact = trim($form[$filter_dimension][$filter_dimension .'_budget_name_exact']['#value']);
-  $contracts_year = trim($form[$filter_dimension][$filter_dimension .'_year']['#value']);
-  $contracts_mwbe_category = trim($form[$filter_dimension][$filter_dimension .'_mwbe_category']['#value']);
-  $contracts_mwbe_category = $contracts_mwbe_category == "Select Category" ? 0 : $contracts_mwbe_category;
-  $contracts_industry_type_id = trim($form[$filter_dimension][$filter_dimension .'_industry']['#value']);
-  $contracts_industry_type_id = $contracts_industry_type_id == "Select Industry" ? 0 : $contracts_industry_type_id;
-  $contracts_includes_sub_vendors = trim($form[$filter_dimension][$filter_dimension .'_includes_sub_vendors']['#value']);
-  $contracts_includes_sub_vendors = $contracts_includes_sub_vendors == "Select Status" ||  $contracts_includes_sub_vendors == ""
-    ? 0 : $contracts_includes_sub_vendors;
-  $contracts_sub_vendor_status = trim($form[$filter_dimension][$filter_dimension .'_sub_vendor_status']['#value']);
-  $contracts_sub_vendor_status = $contracts_sub_vendor_status == "Select Status" ||  $contracts_sub_vendor_status == ""
-    ? 0 : $contracts_sub_vendor_status;
+  $status = trim($form[$filter_dimension][$filter_dimension .'_status']['#value']);
+  $category = trim($form[$filter_dimension][$filter_dimension .'_category']['#value']);
+  $vendor_name = trim($form[$filter_dimension][$filter_dimension .'_vendor_name']['#value']);
+  $vendor_name_exact = trim($form[$filter_dimension][$filter_dimension .'_vendor_name_exact']['#value']);
+  $purpose = trim($form[$filter_dimension][$filter_dimension .'_purpose']['#value']);
+  $type = trim($form[$filter_dimension][$filter_dimension .'_type']['#value']);
+  $agency = trim($form[$filter_dimension][$filter_dimension .'_agency']['#value']);
+  $contract_num = trim($form[$filter_dimension][$filter_dimension .'_contract_num']['#value']);
+  $contract_num_exact = trim($form[$filter_dimension][$filter_dimension .'_contract_num_exact']['#value']);
+  $apt_pin = trim($form[$filter_dimension][$filter_dimension .'_apt_pin']['#value']);
+  $pin = trim($form[$filter_dimension][$filter_dimension .'_pin']['#value']);
+  $award_method = trim($form[$filter_dimension][$filter_dimension .'_award_method']['#value']);
+  $current_contract_amount_from = trim($form[$filter_dimension][$filter_dimension .'_current_contract_amount_from']['#value']);
+  $current_contract_amount_to = trim($form[$filter_dimension][$filter_dimension .'_current_contract_amount_to']['#value']);
+  $start_date_from = trim($form[$filter_dimension][$filter_dimension .'_start_date_from']['#value']['date']);
+  $start_date_to = trim($form[$filter_dimension][$filter_dimension .'_start_date_to']['#value']['date']);
+  $end_date_from = trim($form[$filter_dimension][$filter_dimension .'_end_date_from']['#value']['date']);
+  $end_date_to = trim($form[$filter_dimension][$filter_dimension .'_end_date_to']['#value']['date']);
+  $received_date_from = trim($form_state['input'][$filter_dimension .'_received_date_from']['date']);
+  $received_date_to = trim($form_state['input'][$filter_dimension .'_received_date_to']['date']);
+  $registration_date_from = trim($form[$filter_dimension][$filter_dimension .'_registration_date_from']['#value']['date']);
+  $registration_date_to = trim($form[$filter_dimension][$filter_dimension .'_registration_date_to']['#value']['date']);
+  $entity_contract_number = trim($form[$filter_dimension][$filter_dimension .'_entity_contract_number']['#value']);
+  $entity_contract_number_exact = trim($form[$filter_dimension][$filter_dimension .'_entity_contract_number_exact']['#value']);
+  $commodity_line = trim($form[$filter_dimension][$filter_dimension .'_commodity_line']['#value']);
+  $commodity_line_exact = trim($form[$filter_dimension][$filter_dimension .'_commodity_line_exact']['#value']);
+  $budget_name = trim($form[$filter_dimension][$filter_dimension .'_budget_name']['#value']);
+  $budget_name_exact = trim($form[$filter_dimension][$filter_dimension .'_budget_name_exact']['#value']);
+  $year = trim($form[$filter_dimension][$filter_dimension .'_year']['#value']);
+  $mwbe_category = trim($form[$filter_dimension][$filter_dimension .'_mwbe_category']['#value']);
+  $mwbe_category = $mwbe_category == "Select Category" ? 0 : $mwbe_category;
+  $industry_type_id = trim($form[$filter_dimension][$filter_dimension .'_industry']['#value']);
+  $industry_type_id = $industry_type_id == "Select Industry" ? 0 : $industry_type_id;
+  $includes_sub_vendors = trim($form[$filter_dimension][$filter_dimension .'_includes_sub_vendors']['#value']);
+  $includes_sub_vendors = $includes_sub_vendors == "Select Status" ||  $includes_sub_vendors == ""
+    ? 0 : $includes_sub_vendors;
+  $sub_vendor_status = trim($form[$filter_dimension][$filter_dimension .'_sub_vendor_status']['#value']);
+  $sub_vendor_status = $sub_vendor_status == "Select Status" ||  $sub_vendor_status == ""
+    ? 0 : $sub_vendor_status;
 
 
-  if ($contracts_year == 'fy~all') {
+  if ($year == 'fy~all') {
     $redirect_url = 'contract/all/transactions';
-    $contracts_year = null;
+    $year = null;
   } else {
     $redirect_url = 'contract/search/transactions';
   }
 
   //Pending Contracts should always be in the current FY.
-  if($contracts_contract_status == "P") {
-    $contracts_year = "fy~" . CheckbookDateUtil::getCurrentFiscalYearId();
+  if($status == "P") {
+    $year = "fy~" . CheckbookDateUtil::getCurrentFiscalYearId();
   }
 
-  if (!empty($contracts_mwbe_category)) {
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_mwbe_category, 'mwbe');
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_mwbe_category, 'psmwbe');
+  if (!empty($mwbe_category)) {
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($mwbe_category, 'mwbe');
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($mwbe_category, 'psmwbe');
   }
-  if (!empty($contracts_industry_type_id)) {
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_industry_type_id, 'cindustry');
+  if (!empty($industry_type_id)) {
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($industry_type_id, 'cindustry');
   }
-  if (!empty($contracts_contract_status)) {
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_status, 'contstatus');
+  if (!empty($status)) {
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($status, 'contstatus');
   }
-  if($contracts_contract_status != "P" && $contracts_contract_category != 'revenue') {
-    if (!empty($contracts_includes_sub_vendors)) {
-      $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_includes_sub_vendors, 'subcontstatus');
+  if($status != "P" && $category != 'revenue') {
+    if (!empty($includes_sub_vendors)) {
+      $redirect_url .= _checkbook_advanced_search_generate_redirect_url($includes_sub_vendors, 'subcontstatus');
     }
-    if (!empty($contracts_sub_vendor_status)) {
-      $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_sub_vendor_status, 'subvendorstatus');
+    if (!empty($sub_vendor_status)) {
+      $redirect_url .= _checkbook_advanced_search_generate_redirect_url($sub_vendor_status, 'subvendorstatus');
     }
   }
-  if (!empty($contracts_contract_category)) {
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_category, 'contcat');
-    if ($contracts_contract_status != 'P'){
-      if($contracts_contract_category == 'revenue'){
+  if (!empty($category)) {
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($category, 'contcat');
+    if ($status != 'P'){
+      if($category == 'revenue'){
         $redirect_url .= '/doctype/RCT1';
-      }else if($contracts_contract_category == 'expense'){
+      }else if($category == 'expense'){
         $redirect_url .= '/doctype/MMA1~MA1~CTA1~CT1~DO1';
-      }
-      else {
+      }else {
         $redirect_url .= '/doctype/MMA1~MA1~CTA1~CT1~DO1~RCT1';
       }
-    }
-    else {
-      if($contracts_contract_category == 'revenue'){
+    } else {
+      if($category == 'revenue'){
         $redirect_url .= '/doctype/RCT1';
-      }else if($contracts_contract_category == 'expense'){
+      }else if($category == 'expense'){
         $redirect_url .= '/doctype/MMA1~MA1~MAR~CTA1~CT1~CTR~DO1';
-      }
-      else {
+      } else {
         $redirect_url .= '/doctype/MMA1~MA1~MAR~CTA1~CT1~CTR~DO1~RCT1';
       }
     }
   }
-  if (!empty($contracts_contract_vendor_name)) {
-    if ($contracts_contract_vendor_name_exact == $contracts_contract_vendor_name) {
-      $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_vendor_name_exact, 'vendornm_exact');
+  if (!empty($vendor_name)) {
+    if ($vendor_name_exact == $vendor_name) {
+      $redirect_url .= _checkbook_advanced_search_generate_redirect_url($vendor_name_exact, 'vendornm_exact');
     } else {
-      $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_vendor_name, 'vendornm');
+      $redirect_url .= _checkbook_advanced_search_generate_redirect_url($vendor_name, 'vendornm');
     }
   }
-  if (!empty($contracts_contract_purpose)) {
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_purpose, 'pcontdesc');
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_purpose, 'scontdesc');
+  if (!empty($purpose)) {
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($purpose, 'pcontdesc');
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($purpose, 'scontdesc');
   }
-  if (!empty($contracts_contract_agency)) {
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_agency, 'agency');
+  if (!empty($agency)) {
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($agency, 'agency');
   }
-  if (!empty($contracts_contract_contract_num)) {
-    if ($contracts_contract_contract_num_exact == $contracts_contract_contract_num) {
-      $redirect_url .= _checkbook_advanced_search_generate_redirect_url(strtoupper($contracts_contract_contract_num_exact), 'contnum_exact');
+  if (!empty($contract_num)) {
+    if ($contract_num_exact == $contract_num) {
+      $redirect_url .= _checkbook_advanced_search_generate_redirect_url(strtoupper($contract_num_exact), 'contnum_exact');
+    } else {
+      $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contract_num, 'contnum');
     }
-    else {
-      $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_contract_num, 'contnum');
-    }
   }
-  if (!empty($contracts_contract_apt_pin)) {
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_apt_pin, 'aptpin');
+  if (!empty($apt_pin)) {
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($apt_pin, 'aptpin');
   }
-  if (!empty($contracts_contract_pin)) {
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_pin, 'pin');
+  if (!empty($pin)) {
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($pin, 'pin');
   }
-  if (!empty($contracts_contract_award_method)) {
-    $code_id_array = _checkbook_advanced_search_autocomplete_get_code_id($contracts_contract_award_method);
+  if (!empty($award_method)) {
+    $code_id_array = _checkbook_advanced_search_autocomplete_get_code_id($award_method);
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($code_id_array['id'], 'awdmethod');
   }
-  if (!empty($contracts_contract_type)) {
+  if (!empty($type)) {
     switch ($data_source) {
       case DataSource::OGE:
-        $code_id_array = _checkbook_advanced_search_autocomplete_get_code_id($contracts_contract_type);
+        $code_id_array = _checkbook_advanced_search_autocomplete_get_code_id($type);
         $redirect_url .= _checkbook_advanced_search_generate_redirect_url($code_id_array['code'], 'agrmnttypecode');
         break;
       default:
-        $code_id_array = _checkbook_advanced_search_autocomplete_get_code_id($contracts_contract_type);
-        if ($contracts_contract_status == 'P') {
+        $code_id_array = _checkbook_advanced_search_autocomplete_get_code_id($type);
+        if ($status == 'P') {
           $redirect_url .= _checkbook_advanced_search_generate_redirect_url($code_id_array['code'], 'agrmnttypecode');
-        }
-        else {
+        } else {
           $redirect_url .= _checkbook_advanced_search_generate_redirect_url($code_id_array['id'], 'agrmnttype');
         }
         break;
     }
   }
-  if (!empty($contracts_year)) {
-    $redirect_url .= _checkbook_advanced_search_year_arg($contracts_year);
+  if (!empty($year)) {
+    $redirect_url .= _checkbook_advanced_search_year_arg($year);
   }
-  if (!empty($contracts_entity_contract_number)) {
-    if ($contracts_entity_contract_number_exact == $contracts_entity_contract_number) {
-      $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_entity_contract_number, 'entcontnum_exact');
+  if (!empty($entity_contract_number)) {
+    if ($entity_contract_number_exact == $entity_contract_number) {
+      $redirect_url .= _checkbook_advanced_search_generate_redirect_url($entity_contract_number, 'entcontnum_exact');
     } else {
-      $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_entity_contract_number, 'entcontnum');
+      $redirect_url .= _checkbook_advanced_search_generate_redirect_url($entity_contract_number, 'entcontnum');
     }
   }
-  if (!empty($contracts_commodity_line)) {
-    if ($contracts_commodity_line_exact == $contracts_commodity_line) {
-      $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_commodity_line, 'comline_exact');
+  if (!empty($commodity_line)) {
+    if ($commodity_line_exact == $commodity_line) {
+      $redirect_url .= _checkbook_advanced_search_generate_redirect_url($commodity_line, 'comline_exact');
     } else {
-      $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_commodity_line, 'comline');
+      $redirect_url .= _checkbook_advanced_search_generate_redirect_url($commodity_line, 'comline');
     }
   }
-  if (!empty($contracts_budget_name)) {
-    if ($contracts_budget_name_exact == $contracts_budget_name) {
-      $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_budget_name, 'budname_exact');
+  if (!empty($budget_name)) {
+    if ($budget_name_exact == $budget_name) {
+      $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_name, 'budname_exact');
     } else {
-      $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_budget_name, 'budname');
+      $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_name, 'budname');
     }
   }
 
-  $contracts_contract_current_contract_amount_range_array = array('from' => $contracts_contract_current_contract_amount_from, 'to' => $contracts_contract_current_contract_amount_to, 'type' => 'amount');
-  $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_current_contract_amount_range_array, 'curamt', TRUE);
+  $current_contract_amount_range_array = array('from' => $current_contract_amount_from, 'to' => $current_contract_amount_to, 'type' => 'amount');
+  $redirect_url .= _checkbook_advanced_search_generate_redirect_url($current_contract_amount_range_array, 'curamt', TRUE);
 
-  $contracts_contract_start_date_range_array = array('from' => $contracts_contract_start_date_from, 'to' => $contracts_contract_start_date_to, 'type' => 'date');
-  $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_start_date_range_array, 'startdate', TRUE);
+  $start_date_range_array = array('from' => $start_date_from, 'to' => $start_date_to, 'type' => 'date');
+  $redirect_url .= _checkbook_advanced_search_generate_redirect_url($start_date_range_array, 'startdate', TRUE);
 
-  $contracts_contract_end_date_range_array = array('from' => $contracts_contract_end_date_from, 'to' => $contracts_contract_end_date_to, 'type' => 'date');
-  $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_end_date_range_array, 'enddate', TRUE);
+  $end_date_range_array = array('from' => $end_date_from, 'to' => $end_date_to, 'type' => 'date');
+  $redirect_url .= _checkbook_advanced_search_generate_redirect_url($end_date_range_array, 'enddate', TRUE);
 
-  $contracts_contract_received_date_range_array = array('from' => $contracts_contract_received_date_from, 'to' => $contracts_contract_received_date_to, 'type' => 'date');
-  $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_received_date_range_array, 'recdate', TRUE);
+  $received_date_range_array = array('from' => $received_date_from, 'to' => $received_date_to, 'type' => 'date');
+  $redirect_url .= _checkbook_advanced_search_generate_redirect_url($received_date_range_array, 'recdate', TRUE);
 
-  $contracts_contract_registration_date_range_array = array('from' => $contracts_contract_registration_date_from, 'to' => $contracts_contract_registration_date_to, 'type' => 'date');
+  $registration_date_range_array = array('from' => $registration_date_from, 'to' => $registration_date_to, 'type' => 'date');
 
   //append data source if not default (checkbook)
   if($data_source != DataSource::CITYWIDE) $redirect_url .= '/datasource/' . $data_source;
 
-  $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_registration_date_range_array, 'regdate', TRUE);
+  $redirect_url .= _checkbook_advanced_search_generate_redirect_url($registration_date_range_array, 'regdate', TRUE);
 
   return $redirect_url;
 }
@@ -243,104 +238,104 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
 function _checkbook_advanced_search_nycha_contracts_submit($form, &$form_state)
 {
   $filter_dimension =  'checkbook_nycha_contracts';
-  $contracts_nycha_agency_id = Datasource::getNYCHAId();
-  $contracts_contract_type=trim($form[$filter_dimension][$filter_dimension .'_contract_type']['#value']);
-  $contracts_contract_vendor_name_exact = trim($form[$filter_dimension][$filter_dimension .'_vendor_name_exact']['#value']);
-  $contracts_responsibility_center=trim($form[$filter_dimension][$filter_dimension .'_responsibility_center']['#value']);
-  $contracts_purchase_order_type = trim($form[$filter_dimension][$filter_dimension .'_purchase_order_type']['#value']);
-  $contracts_contract_vendor_name = trim($form[$filter_dimension][$filter_dimension .'_vendor_name']['#value']);
-  $contracts_contract_purpose = trim($form[$filter_dimension][$filter_dimension .'_purpose']['#value']);
-  $contracts_contract_contract_num = trim($form[$filter_dimension][$filter_dimension .'_purchase_order_number']['#value']);
-  $contracts_contract_contract_num_exact = trim($form[$filter_dimension][$filter_dimension .'_purchase_order_number_exact']['#value']);
-  $contracts_contract_pin = trim($form[$filter_dimension][$filter_dimension .'_pin']['#value']);
-  $contracts_contract_award_method = trim($form[$filter_dimension][$filter_dimension .'_award_method']['#value']);
-  $contracts_contract_current_contract_amount_from = trim($form[$filter_dimension][$filter_dimension .'_current_contract_amount_from']['#value']);
-  $contracts_contract_current_contract_amount_to = trim($form[$filter_dimension][$filter_dimension .'_current_contract_amount_to']['#value']);
-  $contracts_contract_start_date_from = trim($form[$filter_dimension][$filter_dimension .'_start_date_from']['#value']['date']);
-  $contracts_contract_start_date_to = trim($form[$filter_dimension][$filter_dimension .'_start_date_to']['#value']['date']);
-  $contracts_contract_end_date_from = trim($form[$filter_dimension][$filter_dimension .'_end_date_from']['#value']['date']);
-  $contracts_contract_end_date_to = trim($form[$filter_dimension][$filter_dimension .'_end_date_to']['#value']['date']);
-  $contracts_contract_approved_date_from = trim($form_state['input'][$filter_dimension .'_approved_date_from']['date']);
-  $contracts_contract_approved_date_to = trim($form_state['input'][$filter_dimension .'_approved_date_to']['date']);
-  $contracts_year = trim($form[$filter_dimension][$filter_dimension .'_year']['#value']);
-  $contracts_industry_type_id = trim($form[$filter_dimension][$filter_dimension .'_industry']['#value']);
-  $contracts_industry_type_id = $contracts_industry_type_id == "Select Industry" ? 0 : $contracts_industry_type_id;
+  $nycha_agency_id = Datasource::getNYCHAId();
+  $type=trim($form[$filter_dimension][$filter_dimension .'_contract_type']['#value']);
+  $vendor_name_exact = trim($form[$filter_dimension][$filter_dimension .'_vendor_name_exact']['#value']);
+  $responsibility_center=trim($form[$filter_dimension][$filter_dimension .'_responsibility_center']['#value']);
+  $purchase_order_type = trim($form[$filter_dimension][$filter_dimension .'_purchase_order_type']['#value']);
+  $vendor_name = trim($form[$filter_dimension][$filter_dimension .'_vendor_name']['#value']);
+  $purpose = trim($form[$filter_dimension][$filter_dimension .'_purpose']['#value']);
+  $contract_num = trim($form[$filter_dimension][$filter_dimension .'_purchase_order_number']['#value']);
+  $contract_num_exact = trim($form[$filter_dimension][$filter_dimension .'_purchase_order_number_exact']['#value']);
+  $pin = trim($form[$filter_dimension][$filter_dimension .'_pin']['#value']);
+  $award_method = trim($form[$filter_dimension][$filter_dimension .'_award_method']['#value']);
+  $current_contract_amount_from = trim($form[$filter_dimension][$filter_dimension .'_current_contract_amount_from']['#value']);
+  $current_contract_amount_to = trim($form[$filter_dimension][$filter_dimension .'_current_contract_amount_to']['#value']);
+  $start_date_from = trim($form[$filter_dimension][$filter_dimension .'_start_date_from']['#value']['date']);
+  $start_date_to = trim($form[$filter_dimension][$filter_dimension .'_start_date_to']['#value']['date']);
+  $end_date_from = trim($form[$filter_dimension][$filter_dimension .'_end_date_from']['#value']['date']);
+  $end_date_to = trim($form[$filter_dimension][$filter_dimension .'_end_date_to']['#value']['date']);
+  $approved_date_from = trim($form_state['input'][$filter_dimension .'_approved_date_from']['date']);
+  $approved_date_to = trim($form_state['input'][$filter_dimension .'_approved_date_to']['date']);
+  $year = trim($form[$filter_dimension][$filter_dimension .'_year']['#value']);
+  $industry_type_id = trim($form[$filter_dimension][$filter_dimension .'_industry']['#value']);
+  $industry_type_id = $industry_type_id == "Select Industry" ? 0 : $industry_type_id;
 
-  if ($contracts_year == 'fy~all') {
+  if ($year == 'fy~all') {
     $redirect_url = 'nycha_contracts/all/transactions';
-    $contracts_year = null;
+    $year = null;
   } else {
     $redirect_url = 'nycha_contracts/search/transactions';
   }
 
-  if(!empty($contracts_nycha_agency_id)){
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_nycha_agency_id, 'agency');
+  if(!empty($nycha_agency_id)){
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($nycha_agency_id, 'agency');
   }
 
-  if(!empty($contracts_purchase_order_type)){
-    if($contracts_purchase_order_type!=="All"){
-      $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_purchase_order_type, 'agreement_type');
+  if(!empty($purchase_order_type)){
+    if($purchase_order_type!=="All"){
+      $redirect_url .= _checkbook_advanced_search_generate_redirect_url($purchase_order_type, 'agreement_type');
     }
   }
-  if(!empty( $contracts_contract_type))
+  if(!empty( $type))
   {
-    $code_id_array = _checkbook_advanced_search_autocomplete_get_code_id($contracts_contract_type);
+    $code_id_array = _checkbook_advanced_search_autocomplete_get_code_id($type);
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($code_id_array['code'], 'contract_type');
   }
 
   //Pending Contracts should always be in the current FY.
-  if (!empty($contracts_industry_type_id)) {
-    $code_id_array = _checkbook_advanced_search_autocomplete_get_code_id($contracts_industry_type_id);
+  if (!empty($industry_type_id)) {
+    $code_id_array = _checkbook_advanced_search_autocomplete_get_code_id($industry_type_id);
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($code_id_array['id'], 'industry');
   }
 
-  if (!empty($contracts_contract_vendor_name)) {
-    if ($contracts_contract_vendor_name_exact == $contracts_contract_vendor_name) {
-      $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_vendor_name_exact, 'vendornm_exact');
+  if (!empty($vendor_name)) {
+    if ($vendor_name_exact == $vendor_name) {
+      $redirect_url .= _checkbook_advanced_search_generate_redirect_url($vendor_name_exact, 'vendornm_exact');
     } else {
-      $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_vendor_name, 'vendornm');
+      $redirect_url .= _checkbook_advanced_search_generate_redirect_url($vendor_name, 'vendornm');
     }
   }
-  if (!empty($contracts_contract_purpose)) {
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_purpose, 'pcontdesc');
+  if (!empty($purpose)) {
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($purpose, 'pcontdesc');
   }
 
-  if (!empty($contracts_contract_contract_num)) {
-    if ($contracts_contract_contract_num_exact == $contracts_contract_contract_num) {
+  if (!empty($contract_num)) {
+    if ($contract_num_exact == $contract_num) {
 
-      $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_contract_num, 'po_num_exact');
+      $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contract_num, 'po_num_exact');
     } else{
-      $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_contract_num, 'po_num');
+      $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contract_num, 'po_num');
     }
   }
-  if (!empty($contracts_responsibility_center)) {
-    $code_id_array = _checkbook_advanced_search_autocomplete_get_code_id($contracts_responsibility_center);
+  if (!empty($responsibility_center)) {
+    $code_id_array = _checkbook_advanced_search_autocomplete_get_code_id($responsibility_center);
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($code_id_array['id'], 'responsibilitynm_exact');
   }
 
-  if (!empty($contracts_contract_pin)) {
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_pin, 'pin');
+  if (!empty($pin)) {
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($pin, 'pin');
   }
-  if (!empty($contracts_contract_award_method)) {
-    $code_id_array = _checkbook_advanced_search_autocomplete_get_code_id($contracts_contract_award_method);
+  if (!empty($award_method)) {
+    $code_id_array = _checkbook_advanced_search_autocomplete_get_code_id($award_method);
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($code_id_array['id'], 'awdmethod');
   }
 
-  if (!empty($contracts_year)) {
-    $redirect_url .= _checkbook_advanced_search_year_arg($contracts_year);
+  if (!empty($year)) {
+    $redirect_url .= _checkbook_advanced_search_year_arg($year);
   }
 
-  $contracts_contract_current_contract_amount_range_array = array('from' => $contracts_contract_current_contract_amount_from, 'to' => $contracts_contract_current_contract_amount_to, 'type' => 'amount');
-  $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_current_contract_amount_range_array, 'curamt', TRUE);
+  $current_contract_amount_range_array = array('from' => $current_contract_amount_from, 'to' => $current_contract_amount_to, 'type' => 'amount');
+  $redirect_url .= _checkbook_advanced_search_generate_redirect_url($current_contract_amount_range_array, 'curamt', TRUE);
 
-  $contracts_contract_start_date_range_array = array('from' => $contracts_contract_start_date_from, 'to' => $contracts_contract_start_date_to, 'type' => 'date');
-  $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_start_date_range_array, 'startdate', TRUE);
+  $start_date_range_array = array('from' => $start_date_from, 'to' => $start_date_to, 'type' => 'date');
+  $redirect_url .= _checkbook_advanced_search_generate_redirect_url($start_date_range_array, 'startdate', TRUE);
 
-  $contracts_contract_end_date_range_array = array('from' => $contracts_contract_end_date_from, 'to' => $contracts_contract_end_date_to, 'type' => 'date');
-  $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_end_date_range_array, 'enddate', TRUE);
+  $end_date_range_array = array('from' => $end_date_from, 'to' => $end_date_to, 'type' => 'date');
+  $redirect_url .= _checkbook_advanced_search_generate_redirect_url($end_date_range_array, 'enddate', TRUE);
 
-  $contracts_contract_approved_date_range_array = array('from' => $contracts_contract_approved_date_from, 'to' => $contracts_contract_approved_date_to, 'type' => 'date');
-  $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_approved_date_range_array, 'appdate', TRUE);
+  $approved_date_range_array = array('from' => $approved_date_from, 'to' => $approved_date_to, 'type' => 'date');
+  $redirect_url .= _checkbook_advanced_search_generate_redirect_url($approved_date_range_array, 'appdate', TRUE);
 
 
   $redirect_url .= '/datasource/checkbook_nycha';
