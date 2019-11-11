@@ -622,8 +622,6 @@
               div_checkbook_contracts.ele('sub_vendor_status').val('0');
               updateIncludeSubvendorsField(div_checkbook_contracts);
               showHidePrimeAndSubFields(div_checkbook_contracts);
-
-
               break;
           }
         }
@@ -636,7 +634,6 @@
           var agreement_type_id = div.ele('contract_type').val() || 0;
           var agency_id = div.ele('agency').val() || 0;
           var award_method_id = div.ele('award_method').val() || 0;
-          // var year = div.ele('year').val() || 0;
           var scntrc_status = div.ele('includes_sub_vendors').val() || 0;
           var aprv_sta = div.ele('sub_vendor_status').val() || 0;
           var data_source = $('input:radio[name=contracts_advanced_search_domain_filter]:checked').val();
@@ -689,13 +686,9 @@
         }
 
         function initializeContractsView(div) {
-
           autoCompletes(div);
-
-
           $('#contracts-advanced-search').each(function () {
             $(this).focusout(function () {
-
               autoCompletes(div);
             });
           });
@@ -743,7 +736,7 @@
             div.ele('year').attr("disabled", "disabled");
             div.ele('received_date_from').removeAttr("disabled");
             div.ele('received_date_to').removeAttr("disabled");
-          } else {
+          }  else {
             if (data_source === 'checkbook') {
               div.ele('registration_date_from').removeAttr("disabled");
               div.ele('registration_date_to').removeAttr("disabled");
@@ -774,9 +767,7 @@
 
           if (contract_status === 'P' || contract_category === 'revenue') {
             div.ele('includes_sub_vendors').attr("disabled", "disabled");
-            //div.ele('includes_sub_vendors').val('');
             div.ele('sub_vendor_status').attr("disabled", "disabled");
-            //div.ele('sub_vendor_status').val('');
           } else {
             div.ele('includes_sub_vendors').removeAttr("disabled");
             div.ele('sub_vendor_status').removeAttr("disabled");
@@ -795,10 +786,8 @@
 
         function updateSubvendorStatusField(div) {
           var includes_sub_vendors = div.ele('includes_sub_vendors').val();
-
           if (includes_sub_vendors === '3' || includes_sub_vendors === '1' || includes_sub_vendors === '4') {
             div.ele('sub_vendor_status').attr("disabled", "disabled");
-            // div.ele('sub_vendor_status').val('');
           } else {
             div.ele('sub_vendor_status').removeAttr("disabled");
           }
@@ -843,10 +832,8 @@
                 '<option value="4">Not Required</option>');
             }
           }
-
-
-
         }
+
         $("#edit-contracts-clear").click(function () {
           showHidePrimeAndSubFields(div_checkbook_contracts);
           div_checkbook_contracts.ele('includes_sub_vendors').html('<option value="0" selected>Select Status</option>' +
@@ -856,7 +843,6 @@
             '<option value="4">Not Required</option>');
         });
       }
-
 
       function advanced_search_payroll_init_autocomplete(){
         var pay_frequency = $('#edit-payroll-pay-frequency').val() || 0;
@@ -882,7 +868,7 @@
 
       }
 
-// advanced-search-payroll
+      // advanced-search-payroll
       function advanced_search_payroll_init() {
         advanced_search_payroll_init_autocomplete();
 

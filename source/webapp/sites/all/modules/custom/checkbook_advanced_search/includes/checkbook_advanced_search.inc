@@ -620,13 +620,15 @@ function _checkbook_advanced_search_get_contract_type_and_id($data_source = Data
 {
     try {
         $dataController = data_controller_get_instance();
-        $nyc_agencies = $dataController->queryDataset($data_source.':agreement_type', array('agreement_type_name', 'agreement_type_id', 'agreement_type_code'), NULL, 'agreement_type_name', 0, NULL, NULL);
-        $nyc_agencies_key_val = array('Select Contract Type');
-        foreach ($nyc_agencies as $value) {
+        $agreement_types = $dataController->queryDataset($data_source.':agreement_type', array('agreement_type_name', 'agreement_type_id', 'agreement_type_code'), NULL, 'agreement_type_name', 0, NULL, NULL);
+        $agreement_type_val = array('Select Contract Type');
+        $agreement_type_val_option_attributes = array('title' => 'Select Contract Type');
+        foreach ($agreement_types as $value) {
             $keys = 'id=>' . $value['agreement_type_id'] . '~code=>' . $value['agreement_type_code'];
-            $nyc_agencies_key_val[$keys] = $value['agreement_type_name'];
+            $agreement_type_val[$keys] = $value['agreement_type_name'];
+            $agreement_type_val_option_attributes[$keys] = array('title' => $value['agreement_type_name']);
         }
-        return $nyc_agencies_key_val;
+        return array('options' => $agreement_type_val, 'option_attributes' => $agreement_type_val_option_attributes);
     } catch (Exception $e) {
         log_error("Error getting data from controller: \n" . $e->getMessage());
         return;
@@ -705,7 +707,6 @@ function _checkbook_advanced_search_get_nycha_contract_types($data_source = Data
                     $contract_type_key_val_options[$keys] = $value['contract_type_name'];
             }
         }
-
         return array('options' => $contract_type_key_val_options, 'option_attributes' => $contract_type_key_val_option_attributes);
     } catch (Exception $e) {
         log_error("Error getting data from controller: \n" . $e->getMessage());
