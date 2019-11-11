@@ -9,9 +9,9 @@
   ",
   "gridConfig":{
     "template":"chart_grid_view",
-    "domain":"spending",
+    "domain":"payroll",
     "html_class":"chart-grid-view-table three-columns",
-    "sortColumn":2,
+    "sortColumn":1,
     "table_columns": [
       {
         "labelAlias": "Title",
@@ -67,7 +67,7 @@ $tooltip_label =
 'Year:' . $row['fiscal_year_id'] .'<br/>'.
 'Amount: ' . custom_number_formatter_format($row['non_salaried_rate'] ,2, '$').  '<br/>';
 $link =  strstr($_GET['q'],'/',true) .  NychaContractsUrlService::generateLandingPageUrl('title', $row['non_salaried_rate']) .'?expandBottomCont=true';
-$series_new[$index]->url = 	$link;
+//$series_new[$index]->url = 	$link;
 $series_new[$index]->y = (float)$row['non_salaried_rate'];
 $series_new[$index]->tooltip_label = $tooltip_label;
 $node->widgetConfig->gridConfig->data[] = array($row['civil_service_title'],$row['non_salaried_rate'] );
