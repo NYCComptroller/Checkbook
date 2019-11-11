@@ -9,15 +9,16 @@
     "template":"chart_grid_view",
     "domain":"spending",
     "html_class":"chart-grid-view-table two-columns",
-    "sortColumn":2,
+    "sortColumn":1,
     "table_columns": [
       {
         "labelAlias": "Year",
         "columnType": "text"
       },
       {
-        "labelAlias": "amount",
-        "columnType": "number"
+        "labelAlias": "Amount",
+        "columnType": "number",
+        "formatType": "amount"
       }
     ]
   },
@@ -48,7 +49,7 @@ foreach ($node->data as $row){
 $link = NychaSpendingUrlService::getFooterUrl();
 $categories[]=$row['issue_date_year_issue_date_year'];
 $data[] = (object)array('year'=>$row['issue_date_year_id'],'y'=>$row['check_amount_sum'],'url'=>$link,'name'=>$row['issue_date_year_issue_date_year']);
-$node->widgetConfig->gridConfig->data[] = array($row['issue_date_year_issue_date_year'],custom_number_formatter_format($row['check_amount_sum'] ,2, '$'));
+$node->widgetConfig->gridConfig->data[] = array($row['issue_date_year_issue_date_year'],$row['check_amount_sum']);
 }
 $node->widgetConfig->chartConfig->series[0]->data = $data;
 $node->widgetConfig->chartConfig->xAxis->categories = $categories;
