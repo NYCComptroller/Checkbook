@@ -96,8 +96,7 @@ $tooltip_label =
 
 list($link,) = explode('?',$_GET['q']);
 $link .= NychaContractsUrlService::contractDetailsUrl($row['contract_id'], true);
-
-$series_new[$index]->url = 	$link;
+//$series_new[$index]->url = 	$link;
 $series_new[$index]->y = (float)$row['total_amount'];
 $series_new[$index]->tooltip_label = $tooltip_label;
 $node->widgetConfig->gridConfig->data[] = array($row['contract_id'],$row['vendor_name'],'NYCHA',$row['total_amount'] );
