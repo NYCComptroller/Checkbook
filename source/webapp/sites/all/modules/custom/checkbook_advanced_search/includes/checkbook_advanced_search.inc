@@ -590,27 +590,6 @@ function _checkbook_advanced_search_get_expensetype_and_id($data_source = DataSo
 }
 
 /**
- * @param string $data_source
- * @return array|void
- */
-function _checkbook_advanced_search_get_contract_award_method_attributes($data_source = DataSource::CITYWIDE)
-{
-    try {
-        $dataController = data_controller_get_instance();
-        $nyc_agencies = $dataController->queryDataset($data_source.':award_method', array('award_method_name', 'award_method_id', 'award_method_code'), NULL, 'award_method_name', 0, NULL, NULL);
-        $nyc_agencies_key_val = array('title' => 'Select Award Method)');
-        foreach ($nyc_agencies as $value) {
-            $keys = 'id=>' . $value['award_method_id'] . '~code=>' . $value['award_method_code'];
-            $nyc_agencies_key_val[$keys] = array('title' => $value['award_method_name']);
-        }
-        return $nyc_agencies_key_val;
-    } catch (Exception $e) {
-        log_error("Error getting data from controller: \n" . $e->getMessage());
-        return;
-    }
-}
-
-/**
  * Get contract type name and id using the data controller
  *
  * @param string $data_source
@@ -720,7 +699,7 @@ function _checkbook_advanced_search_get_nycha_contract_types($data_source = Data
  * @param bool $feeds
  * @return array|void
  */
-function checkbook_advanced_search_get_award_methods($data_source = DataSource::NYCHA, $feeds = false){
+function checkbook_advanced_search_get_award_methods($data_source = DataSource::CITYWIDE, $feeds = false){
     try {
         $query = "SELECT DISTINCT award_method_id, award_method_code, award_method_name FROM ref_award_method ORDER BY award_method_name";
         $results = _checkbook_project_execute_sql_by_data_source($query, $data_source);
