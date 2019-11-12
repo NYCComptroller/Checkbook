@@ -27,24 +27,20 @@
   "no_results_content":"No Results Found",
   "cleanURLParameters":["awdmethod","vendor","csize","industry","year"],
   "urlParamMap":{"year":"fiscal_year_id","awdmethod":"award_method_id","vendor":"vendor_id", "csize":"award_size_id","industry":"industry_type_id"},
-  "widgetPreprocessJSON":"
-  if(preg_match('/pending/',$_GET['q'])){
-  $node->widgetConfig->urlParamMap = $node->widgetConfig->urlParamMapPending;
-  $node->widgetConfig->defaultParameters = $node->widgetConfig->defaultParametersPending;
-  $node->widgetConfig->cleanURLParameters = $node->widgetConfig->cleanURLParametersPending;
-}",
+
 "chartTitle":"Top Ten Vendors by Disbursement Amount",
 "widgetDataLoader":"
 $year_id = RequestUtilities::getRequestParamValue('year');
 $where_filters = array();
 foreach($node->widgetConfig->requestParams as $param=>$value){
 if($param == 'fiscal_year_id'){
-$where_filters[] = '('. $value . ' BETWEEN start_year_id AND end_year_id)';
+  $where_filters[] = _widget_build_sql_condition( 'issue_date_year_id', $year_id);
+//$where_filters[] = '('. $value . ' BETWEEN start_year_id AND end_year_id)';
 }else{
 $where_filters[] = _widget_build_sql_condition( $param, $value);
 }
 }
-$where_filters[] = _widget_build_sql_condition( 'issue_date_year_id', $year_id);
+
 if(count($where_filters) > 0){
 $where_filter = ' WHERE ' . implode(' AND ' , $where_filters);
 }
