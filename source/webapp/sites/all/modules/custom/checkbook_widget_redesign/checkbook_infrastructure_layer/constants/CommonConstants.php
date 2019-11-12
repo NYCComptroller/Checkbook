@@ -115,25 +115,18 @@ abstract class Datasource {
     }
 
     public static function isNYCHA() {
-        $bottomURL = $_REQUEST['expandBottomContURL'];
         return self::getCurrent() == Datasource::NYCHA;
     }
 
     public static function getNYCHAUrl() {
-
-            $nychaId = _checkbook_project_querydataset('checkbook_nycha:agency', array('agency_id'), array('agency_short_name' => 'HOUSING AUTH'));
-            $path =  (self::getCurrent() == Datasource::NYCHA) ? '/agency/' . $nychaId[0]['agency_id'] : '';
-
-            return $path;
-
+        $nychaId = _checkbook_project_querydataset('checkbook_nycha:agency', array('agency_id'), array('agency_short_name' => 'HOUSING AUTH'));
+        $path =  (self::getCurrent() == Datasource::NYCHA) ? '/agency/' . $nychaId[0]['agency_id'] : '';
+        return $path;
     }
     public static function getNYCHAId() {
-
         $nychaId = _checkbook_project_querydataset('checkbook_nycha:agency', array('agency_id'), array('agency_short_name' => 'HOUSING AUTH'));
         $agency_id= $nychaId[0]['agency_id'];
-
         return $agency_id;
-
     }
 }
 
