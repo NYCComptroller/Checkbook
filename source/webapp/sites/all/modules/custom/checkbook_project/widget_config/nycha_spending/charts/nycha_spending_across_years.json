@@ -23,8 +23,7 @@
     ]
   },
   "dataset": "checkbook_nycha:all_disbursement_transactions",
-  "columns": ["issue_date_year_id.issue_date_year_id","issue_date_year.issue_date_year","check_amount_sum"],
-  "limit": 10,
+  "columns": ["issue_date_year_id.issue_date_year_id","issue_date_year.issue_date_year","check_amount_sum","invoice_amount_sum","category.category", "category_name.category_name"],
   "orderBy": "-check_amount_sum",
   "cleanURLParameters":["agency","vendor","category"],
   "adjustParameters":"
@@ -45,12 +44,47 @@ return $adjustedParameters;
 "transformationPHP": "
 $data = array();
 $categories = array();
+$year_list = array('2010','2011','2012','2013','2014','2015','2016','2017','2018','2019');
+$cat = RequestUtilities::getRequestParamValue('category');
+
+if ($cat != null){
 foreach ($node->data as $row){
-$link = NychaSpendingUrlService::getFooterUrl();
+$link = NychaSpendingUrlService:: getFooterUrl();
+  if ($cat == '2'){$row['invoice_amount_sum'] = $row['check_amount_sum'];}
 $categories[]=$row['issue_date_year_issue_date_year'];
-$data[] = (object)array('year'=>$row['issue_date_year_id'],'y'=>$row['check_amount_sum'],'url'=>$link,'name'=>$row['issue_date_year_issue_date_year']);
-$node->widgetConfig->gridConfig->data[] = array($row['issue_date_year_issue_date_year'],$row['check_amount_sum']);
+$data[] = (object)array('year'=>$row['issue_date_year_id'], 'y'=>$row['invoice_amount_sum'], 'url'=>$link, 'name'=>$row['issue_date_year_issue_date_year']);
+$node->widgetConfig->gridConfig->data[] = array($row['issue_date_year_issue_date_year'], $row['invoice_amount_sum']);
 }
+}
+else{
+foreach ($year_list as $list) {
+
+  foreach ($node->data as $row){
+    if ($row['issue_date_year_issue_date_year'] == $list) {
+      $flag = 1;
+      if ($row['category_name_category_name'] == 'Payroll') {$row['invoice_amount_sum'] = $row['check_amount_sum'];}
+    $link = NychaSpendingUrlService:: getFooterUrl();
+    $year_value= $row['issue_date_year_issue_date_year'];
+    $year_id = $row['issue_date_year_id'];
+    $amount += $row['invoice_amount_sum'];
+    //$categories[]=$row['issue_date_year_issue_date_year'];
+    //$data[] = (object)array('year'=>$row['issue_date_year_id'], 'y'=>$row['invoice_amount_sum'], 'url'=>$link, 'name'=>$row['issue_date_year_issue_date_year']);
+    //$node->widgetConfig->gridConfig->data[] = array($row['issue_date_year_issue_date_year'], $row['invoice_amount_sum']);
+    }
+  }
+if ($flag == 1){
+$categories[]=$year_value;
+$data[] = (object)array('year'=>$year_id, 'y'=>$amount, 'url'=>$link, 'name'=>$year_value);
+$node->widgetConfig->gridConfig->data[] = array($year_value, $amount);}
+//$year_value="";
+//$year_id="";
+$amount = '';
+  $flag = 0;
+}
+
+}
+
+
 $node->widgetConfig->chartConfig->series[0]->data = $data;
 $node->widgetConfig->chartConfig->xAxis->categories = $categories;
 $node->widgetConfig->chartConfig->series[0]->name = 'Spending Amount';
@@ -68,7 +102,7 @@ return $node->data;
 "layout": "horizontal"
 },
 "xAxis": {
-"labels":{"enabled":true},
+"labels":{"enabled":false},
 "title": {"text": ""},
 "minPadding":0.1,
 "maxPadding":0.1
