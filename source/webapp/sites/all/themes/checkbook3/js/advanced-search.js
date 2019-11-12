@@ -1452,6 +1452,12 @@
           /* Remove focus */
           e.preventDefault();
         });
+        $('div.contracts-submit.checkbook-nycha').find('input:submit[value="Clear All"]').click(function (e) {
+          clearInputFieldByDataSource("#contracts-advanced-search", 'contracts', 'checkbook_nycha');
+          $(this).blur();
+          /* Remove focus */
+          e.preventDefault();
+        });
         $('div.contracts-submit.checkbook-oge').find('input:submit[value="Clear All"]').click(function (e) {
           clearInputFieldByDataSource("#contracts-advanced-search", 'contracts', 'checkbook_oge');
           $(this).blur();
