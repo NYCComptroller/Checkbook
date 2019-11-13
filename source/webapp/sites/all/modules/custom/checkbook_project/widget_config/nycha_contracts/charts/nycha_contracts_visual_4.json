@@ -34,7 +34,7 @@
   $node->widgetConfig->defaultParameters = $node->widgetConfig->defaultParametersPending;
   $node->widgetConfig->cleanURLParameters = $node->widgetConfig->cleanURLParametersPending;
 }",
-"chartTitle":"Top 10 Responsibility Centers by Current Amount",
+"chartTitle":"Top Ten Responsibility Centers by Current Amount",
 "widgetDataLoader":"
 $year_id = RequestUtilities::getRequestParamValue('year');
 $where_filters = [];
@@ -66,8 +66,8 @@ foreach($node->data as $row){
 $tooltip_label =
 'Responsibility Center: ' . $row['responsibility_center_descr'] .  '<br/>' .
 'Amount: ' . custom_number_formatter_format($row['total_amount'] ,2, '$').  '<br/>';
-list($link,) = explode('?',$_GET['q']);
-$link .= NychaContractsUrlService::contractDetailsUrl($row['contract_id'], true);
+//list($link,) = explode('?',$_GET['q']);
+//$link .= NychaContractsUrlService::contractDetailsUrl($row['contract_id'], true);
 
 //$series_new[$index]->url = 	$link;
 $series_new[$index]->y = (float)$row['total_amount'];
@@ -88,8 +88,8 @@ $node->widgetConfig->chartConfig->series[0]->data = $series_new;
 "stacking": "normal",
 "dataLabels": {
 "enabled": false
-}  ,
-"point": {"events": {"function": "clickEvent"}}
+}
+//"point": {"events": {"function": "clickEvent"}}
 }
 },
 "xAxis": {
