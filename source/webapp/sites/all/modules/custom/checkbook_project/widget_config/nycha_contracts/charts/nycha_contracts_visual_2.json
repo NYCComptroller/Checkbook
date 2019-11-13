@@ -35,8 +35,7 @@
   "no_results_content":"No Results Found",
 
   "cleanURLParameters":["awdmethod","vendor","csize","industry","year"],
-  "urlParamMap":{"year":"fiscal_year_id","awdmethod":"award_method_id","vendor":"vendor_id", "csize":"award_size_id",
-    "industry":"industry_type_id"},
+  "urlParamMap":{"year":"fiscal_year_id","awdmethod":"award_method_id","vendor":"vendor_id", "csize":"award_size_id","industry":"industry_type_id"},
   "widgetPreprocessJSON":"
   if(preg_match('/pending/',$_GET['q'])){
   $node->widgetConfig->urlParamMap = $node->widgetConfig->urlParamMapPending;
@@ -47,7 +46,6 @@
 ",
 "chartTitle":"Top Ten Blanket Agreements by Current Amount",
 "widgetDataLoader":"
-
   $where_filters = [];
   foreach($node->widgetConfig->requestParams as $param=>$value){
     if($param == 'fiscal_year_id'){
@@ -96,7 +94,7 @@ $tooltip_label =
 
 list($link,) = explode('?',$_GET['q']);
 $link .= NychaContractsUrlService::contractDetailsUrl($row['contract_id'], true);
-//$series_new[$index]->url = 	$link;
+$series_new[$index]->url = 	$link;
 $series_new[$index]->y = (float)$row['total_amount'];
 $series_new[$index]->tooltip_label = $tooltip_label;
 $node->widgetConfig->gridConfig->data[] = array($row['contract_id'],$row['vendor_name'],'NYCHA',$row['total_amount'] );
