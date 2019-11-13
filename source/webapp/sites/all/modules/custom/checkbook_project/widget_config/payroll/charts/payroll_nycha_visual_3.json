@@ -11,11 +11,15 @@
     "template":"chart_grid_view",
     "domain":"payroll",
     "html_class":"chart-grid-view-table three-columns",
-    "sortColumn":1,
+    "sortColumn":0,
     "table_columns": [
       {
-        "labelAlias": "Title",
+        "labelAlias": "Year",
         "columnType": "text"
+      },
+      {
+        "labelAlias": "Employment Type",
+        "columnType": "Text"
       },
       {
         "labelAlias": "Amount",
@@ -33,93 +37,108 @@
   $node->widgetConfig->defaultParameters = $node->widgetConfig->defaultParametersPending;
   $node->widgetConfig->cleanURLParameters = $node->widgetConfig->cleanURLParametersPending;
 }",
-"chartTitle":"Total Number Of Employees Across Years",
+"chartTitle":"Total Number of Employees Across Years",
 "widgetDataLoader":"
 $year_id = RequestUtilities::getRequestParamValue('year');
 $where_filters = array();
 foreach($node->widgetConfig->requestParams as $param=>$value){
-$where_filters[] = _widget_build_sql_condition( $param, $value);
+if($param == 'fiscal_year_id'){}
+else{$where_filters[] = _widget_build_sql_condition( $param, $value);}
 }
 $where_filters[] = _widget_build_sql_condition( 'type_of_year', 'C');
-$where_filters[] = _widget_build_sql_condition( 'agg.agency_id', '162');
+$where_filters[] = _widget_build_sql_condition( 'agency_id', '162');
 if(count($where_filters) > 0){
 $where_filter = ' WHERE ' . implode(' AND ' , $where_filters);
 }
-$and_filter =  _widget_build_sql_condition( 'agg.type_of_employment', 'Non-Salaried');
 $add_null = _widget_build_sql_add_null( 'contract_id', ' ');
 $datasource = RequestUtilities::getRequestParamValue('datasource');
 
-$sql = 'SELECT agg.employee_id as employee_id,ref.agency_name AS agency_name,agg.agency_id AS agency_id, ref.agency_short_name,agg.employee_number,agg. civil_service_title AS civil_service_title,
-agg.civil_service_title_code AS civil_service_title_code, COALESCE(MAX(agg.daily_wage), MAX(hourly_rate)) AS non_salaried_rate, SUM(agg.gross_pay) AS total_gross_pay,
-SUM(agg.base_pay) AS total_base_salary, SUM(agg.other_payments) AS total_other_payments, SUM(agg.overtime_pay) AS total_overtime_amount, agg.type_of_year AS type_of_year, agg.fiscal_year_id AS fiscal_year_id,
-agg.type_of_employment FROM aggregateon_payroll_latest_employee_agency agg JOIN ref_agency ref ON ref.agency_id = agg.agency_id' .$where_filter. ' AND ' . $and_filter .
-' GROUP BY agg.agency_id, agg.employee_id, agg.type_of_employment, agg.fiscal_year_id, agg.type_of_year, agg.civil_service_title, agg.civil_service_title_code, agg.employee_number, ref.agency_name, ref.agency_short_name
-ORDER BY non_salaried_rate DESC LIMIT 10';
+$sql = 'SELECT (emp.fiscal_year_id+1899) as Year,emp.type_of_employment,count(DISTINCT latest_emp.employee_number) CountE FROM aggregateon_payroll_employee_agency emp
+        JOIN (SELECT max(pay_date) as pay_date, employee_number,fiscal_year_id,type_of_year
+        FROM aggregateon_payroll_employee_agency ' . $where_filter .'
+        GROUP BY employee_number,fiscal_year_id,type_of_year) latest_emp
+        ON latest_emp.pay_date = emp.pay_date
+        AND latest_emp.employee_number = emp.employee_number
+        AND latest_emp.fiscal_year_id = emp.fiscal_year_id
+        AND latest_emp.type_of_year = emp.type_of_year
+        group by emp.fiscal_year_id,emp.type_of_employment';
+//$sql = 'SELECT agg.employee_id as employee_id,ref.agency_name AS agency_name,agg.agency_id AS agency_id, ref.agency_short_name,agg.employee_number,agg. civil_service_title AS civil_service_title,
+//agg.civil_service_title_code AS civil_service_title_code, COALESCE(MAX(agg.daily_wage), MAX(hourly_rate)) AS non_salaried_rate, SUM(agg.gross_pay) AS total_gross_pay,
+//SUM(agg.base_pay) AS total_base_salary, SUM(agg.other_payments) AS total_other_payments, SUM(agg.overtime_pay) AS total_overtime_amount, agg.type_of_year AS type_of_year, agg.fiscal_year_id AS fiscal_year_id,
+//agg.type_of_employment FROM aggregateon_payroll_latest_employee_agency agg JOIN ref_agency ref ON ref.agency_id = agg.agency_id' .$where_filter. ' AND ' . $and_filter .
+//' GROUP BY agg.agency_id, agg.employee_id, agg.type_of_employment, agg.fiscal_year_id, agg.type_of_year, agg.civil_service_title, agg.civil_service_title_code, agg.employee_number, ref.agency_name, ref.agency_short_name
+//ORDER BY non_salaried_rate DESC LIMIT 10';
 
 $node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
 ",
 "widgetUpdateJSONConfig":"
-$series_new = array();
-$index = 0;
+$series_previous_temp = array(array());
+
+$categories = array('2010','2011','2012','2013','2014','2015','2016','2017','2018','2019');
+$codes = array('Salaried','Non-Salaried');
 foreach($node->data as $row){
-$tooltip_label =
-'Title: ' . $row['civil_service_title'] .'<br/>' .
-'Year:' . $row['fiscal_year_id'] .'<br/>'.
-'Amount: ' . custom_number_formatter_format($row['non_salaried_rate'] ,2, '$').  '<br/>';
-$link =  strstr($_GET['q'],'/',true) .  NychaContractsUrlService::generateLandingPageUrl('title', $row['non_salaried_rate']) .'?expandBottomCont=true';
-//$series_new[$index]->url = 	$link;
-$series_new[$index]->y = (float)$row['non_salaried_rate'];
-$series_new[$index]->tooltip_label = $tooltip_label;
-$node->widgetConfig->gridConfig->data[] = array($row['civil_service_title'],$row['non_salaried_rate'] );
-$index += 1;
+$series_previous_temp[$row['type_of_employment']][$row['year']] = (float)$row['counte'];
+foreach($categories as $category){
+if ($row['year'] == $category){
+$node->widgetConfig->gridConfig->data[] = array($row['year'],$row['type_of_employment'],$row['counte']);
 }
-$node->widgetConfig->chartConfig->series[0]->name = 'Fiscal Years';
-$node->widgetConfig->chartConfig->series[0]->type = 'column';
-$node->widgetConfig->chartConfig->series[0]->pointWidth = 30;
-$node->widgetConfig->chartConfig->series[0]->data = $series_new;
+//$node->widgetConfig->gridConfig->data[] = array($row['year'],$row['agreement_type_code'],$row['ct']);
+}
+}
+$series_previous = array();
+foreach($codes as $code){
+$prev_series_obj = new stdClass();
+foreach($categories as $category){
+$series_previous[] = $series_previous_temp[$code][$category] ;
+}
+$prev_series_obj->name = $code;
+$prev_series_obj->data = $series_previous;
+$node->widgetConfig->chartConfig->series[] = $prev_series_obj;
+unset($series_previous);
+}
+$node->widgetConfig->chartConfig->xAxis->categories = $categories;
+
+
+
 ",
 "chartConfig" : {
-"colors":["#7DB7E5"],
+"chart": {
+"type": "column"
+},
+"colors":["#D78E35","#7DB7E5","#122E46"],
+"legend": {"align": "left",  "verticalAlign": "bottom", "layout": "horizontal",
+"padding":1, "itemMarginTop": 3, "itemMarginBottom": 3},
+"xAxis":{"labels":{"enabled":false}},
+"yAxis": {"title": {"text": ""}} ,
+"tooltip": {
+"shared":true,
+"function":"splittooltip"
+},
 "plotOptions": {
-"series": {
-"cursor": "pointer"   ,
+"column": {
 "stacking": "normal",
-"dataLabels": {
-"enabled": false
-}  ,
-"point": {"events": {"function": "clickEvent"}}
+"lineColor": "#666666",
+"lineWidth": 1,
+"marker": {
+"lineWidth": 1,
+"lineColor": "#666666"
+}
 }
 },
-"xAxis": {
-"categories": [0,1,2,3,4,5,6,7,8,9],
-"labels": {"enabled": false}
-},
-"series": [
-{
-"name": "FY",
-"type": "column",
-"pointWidth": 50,
-"data": []
-}
-],
-"title": {"text": ""},
-"yAxis": {
-"startOnTick":true,
-"title": {"text": ""},
-"labels":{"rotation": 0,"function":"yAxisFormatter"}
-} ,
-"legend": {
-"enabled": false
-},
-"tooltip":{"function":"tooltipformatter"}
-}
-}
 
+"title": {"text": ""}
+}
+}
 
 <function>
-yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
-tooltipformatter^^'formatter' :
-function() {return this.point.tooltip_label ;
-}##
-clickEvent^^"click": function(){location.href = Drupal.settings.basePath+this.url; }
+splittooltip^^'formatter' :
+function() {
+var s = [];
+s.push('<b>Year:</b> ' + this.x + '<br/>');
+this.points.forEach(function(point) {
+s.push('<b>No.of ' + point.series.name + ' Employees :</b> ' +Highcharts.numberFormat(point.y, 0, '.', ',') +'<br/>' );
+});
+return s;
+}
 </function>
+
