@@ -10,7 +10,7 @@
   "gridConfig":{
     "template":"chart_grid_view",
     "domain":"payroll",
-    "html_class":"chart-grid-view-table three-columns",
+    "html_class":"chart-grid-view-table two-columns",
     "sortColumn":1,
     "table_columns": [
       {
@@ -81,7 +81,6 @@ $node->widgetConfig->chartConfig->series[0]->data = $series_new;
 "colors":["#7DB7E5"],
 "plotOptions": {
 "series": {
-"cursor": "pointer"   ,
 "stacking": "normal",
 "dataLabels": {
 "enabled": false
