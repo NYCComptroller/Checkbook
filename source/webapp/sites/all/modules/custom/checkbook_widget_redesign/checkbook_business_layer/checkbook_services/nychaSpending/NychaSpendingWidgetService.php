@@ -19,6 +19,13 @@ class NychaSpendingWidgetService extends WidgetDataService implements IWidgetSer
                 $url = NychaSpendingUrlService::generateLandingPageUrl('vendor',$row['vendor_id']);
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
+          case "contract_link":
+                $contract_id = isset($row['contract_id']) && $row['contract_id'] ? $row['contract_id']: $row['purchase_order_number'];
+                $year_id = RequestUtilities::getRequestParamValue('year');
+                $class = "new_window";
+                $url ='/nycha_contract_details' . '/year/'.$year_id.$year_id.'/contract/' . $contract_id .'/newwindow';
+                $value = "<a class='{$class}' href='{$url}'>{$contract_id}</a>";
+                break;
             case "industry_link":
                 $column = $row['industry_name'];
                 $url = NychaSpendingUrlService::generateLandingPageUrl('industry',$row['industry_id']);
