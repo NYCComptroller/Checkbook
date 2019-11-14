@@ -10,7 +10,7 @@
   "gridConfig":{
     "template":"chart_grid_view",
     "domain":"payroll",
-    "html_class":"chart-grid-view-table three-columns",
+    "html_class":"chart-grid-view-table two-columns",
     "sortColumn":1,
     "table_columns": [
       {
@@ -48,9 +48,9 @@ $where_filter = ' WHERE ' . implode(' AND ' , $where_filters);
 $and_filter =  _widget_build_sql_condition( 'type_of_employment', 'Non-Salaried');
 $add_null = _widget_build_sql_add_null( 'contract_id', ' ');
 $datasource = RequestUtilities::getRequestParamValue('datasource');
-$sql ='select civil_service_title,fiscal_year_id,year_value,COALESCE(MAX(daily_wage),MAX(hourly_rate)) AS non_salaried_rate
+$sql ='select civil_service_title,civil_service_title_code,fiscal_year_id,year_value,COALESCE(MAX(daily_wage),MAX(hourly_rate)) AS non_salaried_rate
        FROM aggregateon_payroll_latest_employee_agency LEFT JOIN ref_year ON fiscal_year_id=year_id'.$where_filter. ' AND ' . $and_filter.
-      'GROUP BY civil_service_title,fiscal_year_id,year_value order by COALESCE(MAX(daily_wage),MAX(hourly_rate)) desc limit 10';
+      'GROUP BY civil_service_title,civil_service_title_code,fiscal_year_id,year_value order by COALESCE(MAX(daily_wage),MAX(hourly_rate)) desc limit 10';
 $node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
 ",
 "widgetUpdateJSONConfig":"
@@ -61,9 +61,11 @@ $tooltip_label =
 'Title: ' . $row['civil_service_title'] .'<br/>' .
 'Year:' . $row['year_value'] .'<br/>'.
 'Amount: ' . custom_number_formatter_format($row['non_salaried_rate'] ,2, '$').  '<br/>';
+$link= strstr($_GET['q'],'/',true) .PayrollUrlService::titleAgencyUrl('162', $row['civil_service_title_code']);
+$series_new[$index]->url = 	$link;
 $series_new[$index]->y = (float)$row['non_salaried_rate'];
 $series_new[$index]->tooltip_label = $tooltip_label;
-$node->widgetConfig->gridConfig->data[] = array($row['civil_service_title'],$row['non_salaried_rate'] );
+$node->widgetConfig->gridConfig->data[] = array($row['civil_service_title'],$row['non_salaried_rate']);
 $index += 1;
 }
 $node->widgetConfig->chartConfig->series[0]->name = 'Fiscal Years';
