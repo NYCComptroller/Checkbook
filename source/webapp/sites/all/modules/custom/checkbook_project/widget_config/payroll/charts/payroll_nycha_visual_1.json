@@ -10,7 +10,7 @@
   "gridConfig":{
     "template":"chart_grid_view",
     "domain":"payroll",
-    "html_class":"chart-grid-view-table three-columns",
+    "html_class":"chart-grid-view-table two-columns",
     "sortColumn":1,
     "table_columns": [
       {
@@ -25,8 +25,8 @@
     ]
   },
   "no_results_content":"No Results Found",
-  "cleanURLParameters":["awdmethod","vendor","csize","industry","year"],
-  "urlParamMap":{"year":"fiscal_year_id","awdmethod":"award_method_id","vendor":"vendor_id", "csize":"award_size_id","industry":"industry_type_id"},
+  "cleanURLParameters":["year","calyear","agency","yeartype","title"],
+  "urlParamMap":{"calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year","title":"civil_service_title_code"},
   "widgetPreprocessJSON":"
   if(preg_match('/pending/',$_GET['q'])){
   $node->widgetConfig->urlParamMap = $node->widgetConfig->urlParamMapPending;
@@ -47,9 +47,9 @@ $where_filter = ' WHERE ' . implode(' AND ' , $where_filters);
 }
 $and_filter =  _widget_build_sql_condition( 'type_of_employment', 'Salaried');
 $datasource = RequestUtilities::getRequestParamValue('datasource');
-$sql = 'select civil_service_title,fiscal_year_id,year_value,MAX(annual_salary) as max_annual_salary
+$sql = 'select civil_service_title,civil_service_title_code,fiscal_year_id,year_value,MAX(annual_salary) as max_annual_salary
         FROM aggregateon_payroll_latest_employee_agency LEFT JOIN ref_year ON fiscal_year_id=year_id '. $where_filter . ' AND '.  $and_filter .
-        'GROUP BY civil_service_title,fiscal_year_id,year_value order by MAX(annual_salary) desc limit 10';
+        'GROUP BY civil_service_title,civil_service_title_code,fiscal_year_id,year_value order by MAX(annual_salary) desc limit 10';
 $node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
 ",
 "widgetUpdateJSONConfig":"
@@ -60,6 +60,8 @@ $tooltip_label =
 'Title: ' . $row['civil_service_title'] .'<br/>' .
 'Year:' . $row['year_value'] .'<br/>'.
 'Amount: ' . custom_number_formatter_format($row['max_annual_salary'] ,2, '$').  '<br/>';
+$link= strstr($_GET['q'],'/',true) .PayrollUrlService::titleAgencyUrl('162', $row['civil_service_title_code']);
+$series_new[$index]->url = 	$link;
 $series_new[$index]->y = (float)$row['max_annual_salary'];
 $series_new[$index]->tooltip_label = $tooltip_label;
 $node->widgetConfig->gridConfig->data[] = array($row['civil_service_title'],$row['max_annual_salary'] );
