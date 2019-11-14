@@ -6,7 +6,7 @@
   "headerSubTitle":"Contracts",
   "footerUrl":"_widget_controller_footer_url($node).'/widget/wt_contracts'",
   "table_columns":[
-    {"labelAlias":"contract_id","column":"contract_id"},
+    {"labelAlias":"contract_id","column":"contract_id","derivedColumn":"contract_link"},
     {"labelAlias":"contract_purpose","column":"contract_purpose", "tooltip":50},
     {"labelAlias":"vendor","column":"vendor_name", "derivedColumn":"vendor_link","tooltip": 60},
     {"labelAlias":"ytd_spending","column":"check_amount_sum","format":"dollar", "derivedColumn":"contract_ytd_spending"},
