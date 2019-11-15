@@ -23,7 +23,7 @@ class NychaSpendingWidgetService extends WidgetDataService implements IWidgetSer
                 $contract_id = isset($row['contract_id']) && $row['contract_id'] ? $row['contract_id']: $row['purchase_order_number'];
                 $year_id = RequestUtilities::getRequestParamValue('year');
                 $class = "new_window";
-                $url ='/nycha_contract_details' . '/year/'.$year_id.$year_id.'/contract/' . $contract_id .'/newwindow';
+                $url ='/nycha_contract_details' . '/year/'.$year_id.'/contract/' . $contract_id .'/newwindow';
                 $value = "<a class='{$class}' href='{$url}'>{$contract_id}</a>";
                 break;
             case "industry_link":
