@@ -59,13 +59,10 @@ FROM aggregation_spending_contracts_fy'.
 $where_filter.
 ' GROUP BY contract_id, contract_purpose, vendor_name, vendor_id ORDER BY check_amount_sum DESC LIMIT 10';
 $node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
-
 ",
 "widgetUpdateJSONConfig":"
-
 $series_new = [];
-
-
+$year_id = RequestUtilities::getRequestParamValue('year');
 $index = 0;
 foreach($node->data as $row){
 $tooltip_label =
@@ -73,12 +70,14 @@ $tooltip_label =
 'Amount: ' . custom_number_formatter_format($row['check_amount_sum'] ,2, '$').  '<br/>' .
 'Vendor: ' . $row['vendor_name'] .  '<br/>' ;
 
-list($link,) = explode('?',$_GET['q']);
-$link .= NychaContractsUrlService::contractDetailsUrl($row['contract_id'], true);
+ // $val = $_SERVER['SERVER_NAME'].'abcd'
+$link = 'nycha_contract_details' . '/year/'.$year_id.'/contract/' . $row['contract_id'] .'/newwindow';
+
+
 $series_new[$index]->url = 	$link;
 $series_new[$index]->y = (float)$row['check_amount_sum'];
 $series_new[$index]->tooltip_label = $tooltip_label;
-$node->widgetConfig->gridConfig->data[] = array($row['contract_id'],$row['vendor_name'],custom_number_formatter_format($row['check_amount_sum'] ,2, '$'),$link );
+$node->widgetConfig->gridConfig->data[] = array($row['contract_id'],$row['vendor_name'],custom_number_formatter_format($row['check_amount_sum'] ,2, '$'));
 $index += 1;
 }
 
@@ -133,5 +132,23 @@ yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
 tooltipformatter^^'formatter' :
 function() {return this.point.tooltip_label ;
 }##
-clickEvent^^"click": function(){location.href = Drupal.settings.basePath+this.url; }
+##clickEvent^^"click": function(){
+var newWindow = window.open(Drupal.settings.basePath+this.options.url, '_blank', 'menubar=no,toolbar=no,location=no,resizable=yes,scrollbars=yes,personalbar=no,chrome=yes,height=700,width=980');
+function disableClicks(){
+(function ($) {
+$('body', newWindow.document).addClass('newwindow');
+$('body', newWindow.document).delegate('a', 'click', function () {
+if($(this).hasClass('showHide'))
+return true;
+else
+return false;
+});
+}(jQuery));
+}
+if(newWindow.addEventListener){
+newWindow.addEventListener('load',disableClicks)
+} else if (newWindow.attachEvent){
+newWindow.attachEvent('onload',disableClicks);
+}
+}
 </function>
