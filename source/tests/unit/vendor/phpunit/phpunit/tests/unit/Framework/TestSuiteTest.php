@@ -9,7 +9,10 @@
  */
 namespace PHPUnit\Framework;
 
-class TestSuiteTest extends TestCase
+/**
+ * @small
+ */
+final class TestSuiteTest extends TestCase
 {
     /**
      * @var TestResult
@@ -204,31 +207,6 @@ class TestSuiteTest extends TestCase
         $result = $suite->run();
 
         $this->assertCount(2, $result);
-    }
-
-    public function testCreateTestForConstructorlessTestClass(): void
-    {
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('No valid test provided.');
-
-        $reflection = $this->getMockBuilder(\ReflectionClass::class)
-            ->setConstructorArgs([$this])
-            ->getMock();
-
-        $reflection->expects($this->once())
-            ->method('getConstructor')
-            ->willReturn(null);
-        $reflection->expects($this->once())
-            ->method('isInstantiable')
-            ->willReturn(true);
-        $reflection->expects($this->once())
-            ->method('getName')
-            ->willReturn(__CLASS__);
-
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('No valid test provided.');
-
-        TestSuite::createTest($reflection, 'TestForConstructorlessTestClass');
     }
 
     /**
