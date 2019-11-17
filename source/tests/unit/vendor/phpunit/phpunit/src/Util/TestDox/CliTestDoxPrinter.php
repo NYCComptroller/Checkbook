@@ -53,12 +53,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
         " \e[36m◒\e[0m running tests",
     ];
 
-    /**
-     * @var int[]
-     */
-    private $nonSuccessfulTestResults = [];
-
-    private $statusStyles = [
+    private const STATUS_STYLES = [
         BaseTestRunner::STATUS_PASSED     => [
             'symbol' => '✔',
             'color'  => 'fg-green',
@@ -101,6 +96,11 @@ class CliTestDoxPrinter extends TestDoxPrinter
     ];
 
     /**
+     * @var int[]
+     */
+    private $nonSuccessfulTestResults = [];
+
+    /**
      * @throws \SebastianBergmann\Timer\RuntimeException
      */
     public function printResult(TestResult $result): void
@@ -130,7 +130,6 @@ class CliTestDoxPrinter extends TestDoxPrinter
     }
 
     /**
-     * @throws \ReflectionException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     protected function registerTestResult(Test $test, ?\Throwable $t, int $status, float $time, bool $verbose): void
@@ -143,7 +142,6 @@ class CliTestDoxPrinter extends TestDoxPrinter
     }
 
     /**
-     * @throws \ReflectionException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     protected function formatTestName(Test $test): string
@@ -160,27 +158,29 @@ class CliTestDoxPrinter extends TestDoxPrinter
         // spacer line for new suite headers and after verbose messages
         if ($prevResult['testName'] !== '' &&
             (!empty($prevResult['message']) || $prevResult['className'] !== $result['className'])) {
-            $this->write("\n");
+            $this->write(\PHP_EOL);
         }
 
         // suite header
         if ($prevResult['className'] !== $result['className']) {
-            $this->write($this->colorizeTextBox('underlined', $result['className']) . "\n");
+            $this->write($this->colorizeTextBox('underlined', $result['className']) . \PHP_EOL);
         }
 
         // test result line
-        if ($this->colors && $result['className'] == PhptTestCase::class) {
+        if ($this->colors && $result['className'] === PhptTestCase::class) {
             $testName = Color::colorizePath($result['testName'], $prevResult['testName'], true);
         } else {
             $testName = $result['testMethod'];
         }
-        $style = $this->statusStyles[$result['status']];
+
+        $style = self::STATUS_STYLES[$result['status']];
         $line  = \sprintf(
-            " %s %s%s\n",
+            ' %s %s%s' . \PHP_EOL,
             $this->colorizeTextBox($style['color'], $style['symbol']),
             $testName,
             $this->verbose ? ' ' . $this->formatRuntime($result['time'], $style['color']) : ''
         );
+
         $this->write($line);
 
         // additional information when verbose
@@ -207,9 +207,9 @@ class CliTestDoxPrinter extends TestDoxPrinter
             if (!$insideDiff) {
                 $message[] = $line;
             } else {
-                if (\substr($line, 0, 1) === '-') {
+                if (\strpos($line, '-') === 0) {
                     $line = Color::colorize('fg-red', Color::visualizeWhitespace($line, true));
-                } elseif (\substr($line, 0, 1) === '+') {
+                } elseif (\strpos($line, '+') === 0) {
                     $line = Color::colorize('fg-green', Color::visualizeWhitespace($line, true));
                 } elseif ($line === '@@ @@') {
                     $line = Color::colorize('fg-cyan', $line);
@@ -226,9 +226,6 @@ class CliTestDoxPrinter extends TestDoxPrinter
         return [$message, $diff];
     }
 
-    /**
-     * @throws \ReflectionException
-     */
     protected function formatStacktrace(\Throwable $t): string
     {
         $trace = \PHPUnit\Util\Filter::getFilteredStacktrace($t);
@@ -256,23 +253,18 @@ class CliTestDoxPrinter extends TestDoxPrinter
         return \implode('', $lines);
     }
 
-    /**
-     * @throws \ReflectionException
-     */
     protected function formatTestResultMessage(\Throwable $t, array $result, ?string $prefix = null): string
     {
         $message = $this->formatThrowable($t, $result['status']);
         $diff    = '';
 
-        if ($message) {
-            if ($this->colors) {
-                $style            = $this->statusStyles[$result['status']]['message'] ?? '';
-                [$message, $diff] = $this->colorizeMessageAndDiff($style, $message);
-            }
-        }
-
         if (!($this->verbose || $result['verbose'])) {
             return '';
+        }
+
+        if ($message && $this->colors) {
+            $style            = self::STATUS_STYLES[$result['status']]['message'] ?? '';
+            [$message, $diff] = $this->colorizeMessageAndDiff($style, $message);
         }
 
         if ($prefix === null || !$this->colors) {
@@ -280,8 +272,8 @@ class CliTestDoxPrinter extends TestDoxPrinter
         }
 
         if ($this->colors) {
-            $color  = $this->statusStyles[$result['status']]['color'] ?? '';
-            $prefix = \array_map(function ($p) use ($color) {
+            $color  = self::STATUS_STYLES[$result['status']]['color'] ?? '';
+            $prefix = \array_map(static function ($p) use ($color) {
                 return Color::colorize($color, $p);
             }, self::PREFIX_DECORATED);
         }
