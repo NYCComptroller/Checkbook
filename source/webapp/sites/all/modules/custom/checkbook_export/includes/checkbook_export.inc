@@ -69,67 +69,60 @@ function _checkbook_export_grid_transactions($nodeId){
     }
 
     if(isset($node->widgetConfig->gridConfig->data)){
-    	foreach($node->widgetConfig->gridConfig->table_columns as $column){
-            $data .= $column->labelAlias . ",";
-    	}
+      foreach($node->widgetConfig->gridConfig->table_columns as $column){
+        $data .= $column->labelAlias . ",";
+      }
+      //Remove comma at the end of header to avoid empty column
+      $data = rtrim($data, ',');
+      $data .= "\r\n";
+      $sort_index = $_REQUEST['iSortCol_0'];
+      $sort_index_format = $node->widgetConfig->gridConfig->table_columns[$sort_index]->formatType;
+
+      foreach($node->widgetConfig->gridConfig->data as &$dataRecord){
+        $dataRecord['sort_column'] = $sort_index;
+        if(isset($sort_index_format)){
+          $dataRecord['formatType'] = $sort_index_format;
+        }
+      }
+      $order = $isAsc ? 'asc' : 'desc';
+      _checkbook_export_grid_sort($node, $order);
+
+      foreach ($node->widgetConfig->gridConfig->data as $data_row) {
+        $index = 0;
+        while($index <count($node->widgetConfig->gridConfig->table_columns)){
+          $columnValue = html_entity_decode($data_row[$index]);
+          $columnValue = str_replace('"',chr(34).'"',$columnValue);
+          if($node->widgetConfig->gridConfig->table_columns[$index]->formatType =="amount"){
+            $columnValue = ($columnValue == null) ? 0:$columnValue;
+          }
+          $data .= (($index == 0) ? ('"'.$columnValue.'"') : (',"'.$columnValue.'"'));
+          $index +=1;
+        }
         $data .= "\r\n";
-
-        $sort_index = $_REQUEST['iSortCol_0'];
-
-    	$sort_index_format = $node->widgetConfig->gridConfig->table_columns[$sort_index]->formatType;
-    	foreach($node->widgetConfig->gridConfig->data as &$dataRecord){
-    		$dataRecord['sort_column'] = $sort_index;
-    		if(isset($sort_index_format)){
-    			$dataRecord['formatType'] = $sort_index_format;
-    		}
-    	}
-
-        $order = $isAsc ? 'asc' : 'desc';
-
-    	_checkbook_export_grid_sort($node, $order);
-    	foreach ($node->widgetConfig->gridConfig->data as $data_row) {
-    		$index = 0;
-    		while($index <count($node->widgetConfig->gridConfig->table_columns)){
-    			$columnValue = html_entity_decode($data_row[$index]);
-    			$columnValue = str_replace('"',chr(34).'"',$columnValue);
-				if($node->widgetConfig->gridConfig->table_columns[$index]->formatType =="amount"){
-					$columnValue = ($columnValue == null) ? 0:$columnValue;
-				}
-                $data .= (($index == 0) ? ('"'.$columnValue.'"') : (',"'.$columnValue.'"'));
-    			$index +=1;
-    		}
-            $data .= "\r\n";
-    	}
-
-    } else if(is_array($node->data) and count($node->data) > 0){
+      }
+    }else if(is_array($node->data) and count($node->data) > 0){
         $dataRecords = $node->data;
-
         //Custom column for ordering
         $i=1;
         foreach($dataRecords as &$dataRecord){
-            $dataRecord['sort_order'] = $i;
-            $i++;
+          $dataRecord['sort_order'] = $i;
+          $i++;
         }
-
         sort_records($dataRecords, new PropertyBasedComparator_DefaultSortingConfiguration($sortColumn,$isAsc));
-
         foreach($dataRecords as $dataRec){
-            $data .= PHP_EOL;
-            $i = 0;
-            $rowData = NULL;
-            foreach($columns as $column){
-
-                $columnValue = html_entity_decode($dataRec[$column->column], ENT_QUOTES);;
-                $columnValue = str_replace('"',chr(34).'"',$columnValue);
-                $rowData .= (($i == 0) ? ('"'.$columnValue.'"') : (',"'.$columnValue.'"'));
-                $i++;
-            }
-
-            $rowData = str_replace(array("\r\n", "\n", "\r"),'',$rowData);
-            $data .= $rowData;
+          $data .= PHP_EOL;
+          $i = 0;
+          $rowData = NULL;
+          foreach($columns as $column){
+            $columnValue = html_entity_decode($dataRec[$column->column], ENT_QUOTES);;
+            $columnValue = str_replace('"',chr(34).'"',$columnValue);
+            $rowData .= (($i == 0) ? ('"'.$columnValue.'"') : (',"'.$columnValue.'"'));
+            $i++;
+          }
+          $rowData = str_replace(array("\r\n", "\n", "\r"),'',$rowData);
+          $data .= $rowData;
         }
     }
-
     drupal_add_http_header("Content-Type", "text/csv");
     drupal_add_http_header("Content-Length",strlen($data));
     drupal_add_http_header("Content-Disposition", "attachment; filename=TransactionsData.csv");
