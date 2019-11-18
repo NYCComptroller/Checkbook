@@ -4019,7 +4019,10 @@ table.nycha_assoc_contracts_list {
   vertical-align: top;
 }
 
-body.page-data-feeds #div_data_source{
+body.page-data-feeds #div_data_source,
+#checkbook-advanced-search-form #div_spending_data_source,
+#checkbook-advanced-search-form #div_contracts_data_source,
+#checkbook-advanced-search-form #div_payroll_data_source{
   border: 1px solid #CCCCCC;
   border-radius: 5px;
   padding: 10px;
@@ -4030,20 +4033,39 @@ body.page-data-feeds select.loading{
   color:#fff;
 }
 
-#div_data_source .form-type-radios .form-item{
+#div_data_source .form-type-radios .form-item,
+#checkbook-advanced-search-form #div_spending_data_source .form-type-radios .form-item,
+#checkbook-advanced-search-form #div_contracts_data_source .form-type-radios .form-item,
+#checkbook-advanced-search-form #div_payroll_data_source .form-type-radios .form-item{
   margin-right:0;
 }
-#div_data_source .form-type-radios .form-item:first-child{
+#div_data_source .form-type-radios .form-item:first-child,
+#checkbook-advanced-search-form #div_spending_data_source .form-type-radios .form-item:first-child,
+#checkbook-advanced-search-form #div_contracts_data_source .form-type-radios .form-item:first-child,
+#checkbook-advanced-search-form #div_payroll_data_source .form-type-radios .form-item:first-child{
   width: 30%;
   margin-top: 30px;
   margin-left: 20px;
 }
 
-#div_data_source .oge-datasource-fieldset{
+#div_data_source .oge-datasource-fieldset,
+#checkbook-advanced-search-form #div_spending_data_source .oge-datasource-fieldset,
+#checkbook-advanced-search-form #div_contracts_data_source .oge-datasource-fieldset,
+#checkbook-advanced-search-form #div_payroll_data_source .oge-datasource-fieldset{
   width: 60%;
   float: right;
 }
 
 .clear2{
   clear:both;
+}
+
+#checkbook-advanced-search-form fieldset legend{
+  font: bold 13px 'roboto';
+  margin-bottom: 10px;
+}
+#checkbook-advanced-search-form fieldset{
+  border: 1px solid #CCCCCC;
+  border-radius: 5px 5px 5px 5px;
+  padding: 10px;
 }
