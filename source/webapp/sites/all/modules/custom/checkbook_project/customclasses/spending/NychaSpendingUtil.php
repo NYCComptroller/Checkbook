@@ -196,7 +196,7 @@ class NychaSpendingUtil
       $inv_awdID = RequestUtil::getRequestKeyValueFromURL('awdmethod', $bottomURL);
       $inv_depID = RequestUtil::getRequestKeyValueFromURL('department', $bottomURL);
       $inv_csizeID = RequestUtil::getRequestKeyValueFromURL('csize', $bottomURL);
-      $inv_respID = RequestUtil::getRequestKeyValueFromURL('respcenter', $bottomURL);
+      $inv_respID = RequestUtil::getRequestKeyValueFromURL('resp_center', $bottomURL);
       $inv_indID = RequestUtil::getRequestKeyValueFromURL('industry', $bottomURL);
       $inv_tcode = RequestUtil::getRequestKeyValueFromURL('tcode', $bottomURL);
       if (isset($inv_tcode) && ($inv_tcode == 'BA' || $inv_tcode == "BAM")){$agreement_type_id = 1;}
