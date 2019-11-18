@@ -16,6 +16,7 @@ use PHPUnit\Framework\Warning;
 
 /**
  * @group testdox
+ * @small
  */
 final class CliTestDoxPrinterTest extends TestCase
 {
@@ -46,7 +47,7 @@ final class CliTestDoxPrinterTest extends TestCase
         $this->printer->startTest($this);
         $this->printer->endTest($this, 0);
 
-        $this->assertStringStartsWith('PHPUnit\Util\TestDox\CliTestDoxPrinter', $this->printer->getBuffer());
+        $this->assertStringStartsWith('Cli Test Dox Printer (PHPUnit\Util\TestDox\CliTestDoxPrinter)', $this->printer->getBuffer());
     }
 
     public function testPrintsThePrettifiedMethodName(): void
