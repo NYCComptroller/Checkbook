@@ -124,7 +124,7 @@ class NychaContractsWidgetService extends WidgetDataService implements IWidgetSe
               $rsp_inv_amount = $row['spend_to_date'];
               $agreement_type="";
               $tcode = '/tcode/RESC';
-              $dynamic_parameter = "/respcenter/" . $row['responsibility_center_id'];
+              $dynamic_parameter = "/resp_center/" . $row['responsibility_center_id'];
               $class = "bottomContainerReload";
               $class = "new_window";
               $url = NYCHASpendingUrlService::invContractSpendingUrl($dynamic_parameter, 'inv_contract',$agreement_type,$tcode);
