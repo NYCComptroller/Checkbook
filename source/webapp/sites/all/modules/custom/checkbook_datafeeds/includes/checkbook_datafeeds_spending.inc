@@ -446,7 +446,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     '#type' => 'textfield',
     '#title' => t('Document ID:'),
     '#maxlength' => 30,
-    '#prefix' => '<div class="datafield expenseid">',
+    '#prefix' => '<div class="datafield expenseid citywide nycha">',
     '#suffix' => '</div>',
     '#attributes' => array('class' => array('watch')),
     '#id' => 'edit-document-id',
