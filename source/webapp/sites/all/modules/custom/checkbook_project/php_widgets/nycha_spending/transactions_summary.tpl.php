@@ -125,7 +125,8 @@ if(isset($url)) {
   if ( $widget == 'inv_contract_id')
   {
     $inv_contractDetails = NychaSpendingUtil::getContractsTransactionsStaticSummary($widget, $url);
-    $id_title = 'Contract ID: '.$inv_contractDetails['contract_id'];
+    //$id_title = 'Contract ID: '.$inv_contractDetails['contract_id'];
+    $id_title = 'NYCHA Spending Transactions';
     $spendtodateAmount = '$' . custom_number_formatter_format($inv_contractDetails['spend_to_date'], 2);
     $totalAmountTitle ="NYCHA Amount Spent";
     $totalAmount = '$' . custom_number_formatter_format($inv_contractDetails['test'], 2);
