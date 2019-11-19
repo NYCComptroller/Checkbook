@@ -1610,18 +1610,7 @@ div.create-alert-schedule-alert select{
     clear: none;
     float: left;
 }
-#spending-advanced-search .form-item.form-item-spending-advanced-search-domain-filter,
-#contracts-advanced-search .form-item.form-item-contracts-advanced-search-domain-filter,
-#payroll-advanced-search .form-item.form-item-payroll-advanced-search-domain-filter{
-    width:205px;
-    float: left;
-}
-#spending-advanced-search .form-item.form-item-spending-advanced-search-domain-filter input[type="radio"],
-#payroll-advanced-search .form-item.form-item-payroll-advanced-search-domain-filter input[type="radio"]{
-    width: auto;
-    float: left;
-    margin-right: 5px;
-}
+
 #contracts-advanced-search .form-item-checkbook-oge-contracts-received-date-to-date label{
     display: none;
 }
@@ -4033,25 +4022,16 @@ body.page-data-feeds select.loading{
   color:#fff;
 }
 
-#div_data_source .form-type-radios .form-item,
-#checkbook-advanced-search-form #div_spending_data_source .form-type-radios .form-item,
-#checkbook-advanced-search-form #div_contracts_data_source .form-type-radios .form-item,
-#checkbook-advanced-search-form #div_payroll_data_source .form-type-radios .form-item{
+#div_data_source .form-type-radios .form-item{
   margin-right:0;
 }
-#div_data_source .form-type-radios .form-item:first-child,
-#checkbook-advanced-search-form #div_spending_data_source .form-type-radios .form-item:first-child,
-#checkbook-advanced-search-form #div_contracts_data_source .form-type-radios .form-item:first-child,
-#checkbook-advanced-search-form #div_payroll_data_source .form-type-radios .form-item:first-child{
+#div_data_source .form-type-radios .form-item:first-child{
   width: 30%;
   margin-top: 30px;
   margin-left: 20px;
 }
 
-#div_data_source .oge-datasource-fieldset,
-#checkbook-advanced-search-form #div_spending_data_source .oge-datasource-fieldset,
-#checkbook-advanced-search-form #div_contracts_data_source .oge-datasource-fieldset,
-#checkbook-advanced-search-form #div_payroll_data_source .oge-datasource-fieldset{
+#div_data_source .oge-datasource-fieldset{
   width: 60%;
   float: right;
 }
@@ -4060,12 +4040,30 @@ body.page-data-feeds select.loading{
   clear:both;
 }
 
-#checkbook-advanced-search-form fieldset legend{
-  font: bold 13px 'roboto';
-  margin-bottom: 10px;
-}
 #checkbook-advanced-search-form fieldset{
   border: 1px solid #CCCCCC;
   border-radius: 5px 5px 5px 5px;
   padding: 10px;
+}
+
+#checkbook-advanced-search-form fieldset label {
+  float: none;
+}
+
+#checkbook-advanced-search-form #div_spending_data_source .form-item,
+#checkbook-advanced-search-form #div_contracts_data_source .form-item,
+#checkbook-advanced-search-form #div_payroll_data_source .form-item {
+  height: 25px;
+  float: left;
+  margin-right: 70px;
+}
+
+#checkbook-advanced-search-form #div_spending_data_source,
+#checkbook-advanced-search-form #div_contracts_data_source,
+#checkbook-advanced-search-form #div_payroll_data_source{
+  font-size: 12px;
+}
+
+#checkbook-advanced-search-form .data_source-label{
+  font-weight: bold;
 }
