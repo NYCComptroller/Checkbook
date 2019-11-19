@@ -1,0 +1,111 @@
+{
+"widgetType": "highcharts",
+"header":"
+       $header = '<h2 class=\"chart-title\" style=\"display:none;\">'. $node->widgetConfig->chartTitle . '</h2>';
+       $header .= ChartUtil::generateGridViewLink($node);
+       return $header;
+    ",
+ "gridConfig":{
+        "template":"highchart_spending_fy_grid_view",
+        "html_class":"chart-grid-view-table three-columns",
+        "table_columns": [
+            {
+                  "labelAlias": "month",
+              "column": "month_month_month_name",
+                  "sortColumn":"sort_order"
+             },
+            {
+                  "colLabel": "$node->widgetConfig->chartConfig->series[0]->name",
+              "column": "previous_spending",
+                   "eval":true
+            },
+            {
+                  "colLabel": "$node->widgetConfig->chartConfig->series[1]->name",
+              "column": "current_spending",
+                   "eval":true
+            }
+        ]
+},
+"no_results_content":"No Results Found",
+"cleanURLParameters":["awdmethod","vendor","csize","industry","year"],
+"urlParamMap":{"year":"fiscal_year_id","awdmethod":"award_method_id","vendor":"vendor_id", "csize":"award_size_id","industry":"industry_type_id"},
+"widgetDataLoader":"
+  $current_year_id = RequestUtilities::getRequestParamValue('year');
+  $previous_year_id = $current_year_id -1;
+  $where_filters = [];
+    foreach($node->widgetConfig->requestParams as $param=>$value){
+      if($param == 'fiscal_year_id'){
+          $where_filters[] = 'issue_date_year_id BETWEEN '. $previous_year_id . ' AND ' .$current_year_id;
+      }else{
+$where_filters[] = _widget_build_sql_condition( $param, $value);
+}
+}
+
+if(count($where_filters) > 0){
+$where_filter = ' WHERE ' . implode(' AND ' , $where_filters);
+}
+$datasource = RequestUtilities::getRequestParamValue('datasource');
+$sql = 'SELECT issue_date_year,issue_date_year_id,issue_date_month_number,issue_date_month_name ,  SUM(total_spending) AS spent_amount
+        from aggregation_spending_contracts_month '. $where_filter .
+        ' group by issue_date_year,issue_date_month_number,issue_date_month_name ,issue_date_year_id
+        ORDER BY issue_date_month_number ';
+$node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
+",
+"widgetUpdateJSONConfig":"
+$current_series_data = [];
+$previous_series_data = [];
+$current_year_id = RequestUtilities::getRequestParamValue('year');
+$previous_year_id = $current_year_id -1;
+$index = 1;
+foreach($node->data as $row){
+      $categories[]=$row['issue_date_month_name'];
+      $current_series_data[] = (object)array('y' => $row['spent_amount'],'url'=> $row['issue_date_month_number']);
+  }
+$node->widgetConfig->chartConfig->series[0]->data = $current_series_data[];
+$node->widgetConfig->chartConfig->xAxis->categories = $categories;
+",
+"chartConfig": {
+"chart": {"defaultSeriesType": "column"},
+"colors":["#7DB7E5"],
+"legend": {
+"enabled": false,
+"align": "left",
+"verticalAlign": "bottom",
+"floating": "true",
+"layout": "horizontal"
+},
+"xAxis": {
+"labels":{"enabled":false},
+"title": {"text": ""},
+"minPadding":0.1,
+"maxPadding":0.1
+},
+"yAxis": {
+"title": {"text": ""},
+"labels":{"rotation": 0,"function":"yAxisFormatter"}
+},
+"tooltip": {
+"function": "tooltipformatter"
+},
+"title": {
+"text": ""
+},
+"plotOptions": {
+"column": {"pointWidth": 30},
+"series": {
+"cursor": "pointer",
+"point": {
+"events": {
+"function": "clickEvent"
+}
+}
+}
+},
+"series":[],
+"title":{"text":""}
+}
+}
+<function>yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
+tooltipformatter^^"formatter": function(){return 'Year: FY '+ this.point.name+ '<br/>' +'Amount: '+abbrNum(this.y,2,'$')}##
+clickEvent^^"click": function(){location.href = Drupal.settings.basePath+this.url; }
+</function>
