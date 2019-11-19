@@ -24,9 +24,7 @@ final class Xml
 {
     public static function import(DOMElement $element): DOMElement
     {
-        $document = new DOMDocument;
-
-        return $document->importNode($element, true);
+        return (new DOMDocument)->importNode($element, true);
     }
 
     /**
@@ -221,8 +219,15 @@ final class Xml
                         }
                     }
 
-                    $class    = new ReflectionClass($className);
-                    $variable = $class->newInstanceArgs($constructorArgs);
+                    try {
+                        $variable = (new ReflectionClass($className))->newInstanceArgs($constructorArgs);
+                    } catch (\ReflectionException $e) {
+                        throw new Exception(
+                            $e->getMessage(),
+                            (int) $e->getCode(),
+                            $e
+                        );
+                    }
                 } else {
                     $variable = new $className;
                 }

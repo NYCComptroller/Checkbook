@@ -12,7 +12,10 @@ namespace PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 
-class IsEmptyTest extends ConstraintTestCase
+/**
+ * @small
+ */
+final class IsEmptyTest extends ConstraintTestCase
 {
     public function testConstraintIsEmpty(): void
     {
@@ -63,5 +66,15 @@ EOF
         }
 
         $this->fail();
+    }
+
+    /**
+     * @ticket https://github.com/sebastianbergmann/phpunit/issues/3743
+     */
+    public function test_EmptyIterator_is_handled_correctly(): void
+    {
+        $constraint = new IsEmpty;
+
+        $this->assertTrue($constraint->evaluate(new \EmptyIterator, '', true));
     }
 }

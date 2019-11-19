@@ -160,19 +160,19 @@ function ckbk_datafeeds_spending_update_options_by_datasource(&$form, $form_stat
     '#validated' => true,
   );
 
-  $departments = ['0'=>'Select Department'];
+  $departments = ['0' => 'Select Department'];
   $agency = $form_state['values']['agency'] ?? 0;
   $spending_cat = $form_state['values']['expense_category'] ?? 0;
   $year = $form_state['values']['year'] ?? 'FY' . CheckbookDateUtil::getCurrentFiscalYear();
   $agency_code = _emptyToZero($agency);
-  if($agency_code){
-    $solr_departments = _checkbook_autocomplete_spending_dept(/**$year**/0,$agency_code,$spending_cat,$datasource,false);
-    if ($solr_departments && !is_array($solr_departments[0])){
+  if ($agency_code) {
+    $solr_departments = _checkbook_autocomplete_spending_dept(/**$year**/ 0, $agency_code, $spending_cat, $datasource, false);
+    if ($solr_departments && !is_array($solr_departments[0])) {
       $solr_departments = array_map('strtoupper', $solr_departments);
-      if(sizeof($solr_departments)){
+      if (sizeof($solr_departments)) {
         $kv_depts = [];
-        foreach($solr_departments as $v) {
-          $val = strlen($v) > 20 ? substr($v,0,20).'...' : $v;
+        foreach ($solr_departments as $v) {
+          $val = strlen($v) > 20 ? substr($v, 0, 20) . '...' : $v;
           $kv_depts[$v] = $val;
         }
         $departments += $kv_depts;
@@ -197,7 +197,7 @@ function ckbk_datafeeds_spending_update_options_by_datasource(&$form, $form_stat
   if ($agency_code) {
     $dept = emptyToZero($form_state['values']['dept'] ?? 0);
     $solr_expcats = _checkbook_autocomplete_spending_expcategory($agency_code, $dept, 0, $year, $datasource, false);
-    if ($solr_expcats){
+    if ($solr_expcats) {
       $expcats = $expcats + $solr_expcats;
     }
   }
@@ -224,22 +224,65 @@ function ckbk_datafeeds_spending_update_options_by_datasource(&$form, $form_stat
 function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_source)
 {
   $first_time_load = checkbook_datafeeds_is_first_load($form_state, $data_source);
-  $sc = checkbook_datafeeds_filter_get_default_value($form_state, 'expense_type', $first_time_load, 'Select Expense Category');
-  $expense_type_options = _expense_type_options($data_source);
+  $citywide_sc = checkbook_datafeeds_filter_get_default_value($form_state, 'expense_type', $first_time_load, 'Select Expense Category');
+  $oge_sc = checkbook_datafeeds_filter_get_default_value($form_state, 'oge_expense_type', $first_time_load, 'Select Expense Category');
+  $nycha_sc = checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_expense_type', $first_time_load, 'Select Expense Category');
+
+  $citywide_expense_type_options = _expense_type_options(Datasource::CITYWIDE);
+  $oge_expense_type_options = _expense_type_options(Datasource::OGE);
+  $nycha_expense_type_default_option = ['' => 'Select Spending Category'];
+  $nycha_expense_type_options = _expense_type_options(Datasource::NYCHA);
+  $nycha_expense_type_options['options'] = $nycha_expense_type_default_option + $nycha_expense_type_options['options'];
 
   ckbk_datafeeds_spending_update_options_by_datasource($form, $form_state, $data_source);
 
   $form['filter']['expense_type'] = array(
     '#type' => 'select',
     '#title' => t('Spending Category:'),
-    '#options' => $expense_type_options['options'],
-    '#option_attributes' => $expense_type_options['options_attributes'],
-    '#prefix' => '<div class="datafield expensetype">',
+    '#options' => $citywide_expense_type_options['options'],
+    '#option_attributes' => $citywide_expense_type_options['options_attributes'],
+    '#prefix' => '<div class="datafield expensetype citywide">',
     '#suffix' => '</div>',
-    '#attributes' => array('class' => array('watch')),
-    '#default_value' => $sc,
-    '#id' => 'edit-expense-type',
+    '#attributes' => [
+      'class' => [
+        'watch',
+        'edit-expense-type'
+      ]
+    ],
+    '#default_value' => $citywide_sc,
     '#name' => 'expense_type',
+  );
+  $form['filter']['nycedc_expense_type'] = array(
+    '#type' => 'select',
+    '#title' => t('Spending Category:'),
+    '#options' => $oge_expense_type_options['options'],
+    '#option_attributes' => $oge_expense_type_options['options_attributes'],
+    '#prefix' => '<div class="datafield expensetype nycedc">',
+    '#suffix' => '</div>',
+    '#attributes' => [
+      'class' => [
+        'watch',
+        'edit-expense-type'
+      ]
+    ],
+    '#default_value' => $oge_sc,
+    '#name' => 'nycedc_expense_type',
+  );
+  $form['filter']['nycha_expense_type'] = array(
+    '#type' => 'select',
+    '#title' => t('Spending Category:'),
+    '#options' => $nycha_expense_type_options['options'],
+    '#option_attributes' => $nycha_expense_type_options['options_attributes'],
+    '#prefix' => '<div class="datafield expensetype nycha">',
+    '#suffix' => '</div>',
+    '#attributes' => [
+      'class' => [
+        'watch',
+        'edit-expense-type'
+      ]
+    ],
+    '#default_value' => $nycha_sc,
+    '#name' => 'nycha_expense_type',
   );
 
   $form['filter']['industry'] = array(
@@ -403,7 +446,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     '#type' => 'textfield',
     '#title' => t('Document ID:'),
     '#maxlength' => 30,
-    '#prefix' => '<div class="datafield expenseid">',
+    '#prefix' => '<div class="datafield expenseid citywide nycha">',
     '#suffix' => '</div>',
     '#attributes' => array('class' => array('watch')),
     '#id' => 'edit-document-id',
@@ -545,7 +588,7 @@ function checkbook_datafeeds_spending_next_submit($form, &$form_state)
 function checkbook_datafeeds_spending_filter_selected_columns($selected_columns, $data_source, $response_type)
 {
   //Get column configurations
-  switch($data_source){
+  switch ($data_source) {
     case Datasource::NYCHA:
       $domain = 'spending_nycha';
       break;
@@ -553,7 +596,7 @@ function checkbook_datafeeds_spending_filter_selected_columns($selected_columns,
       $domain = 'spending_oge';
       break;
     default:
-      $domain='spending';
+      $domain = 'spending';
   }
   $domain_config = ConfigUtil::getDomainConfiguration($domain);
   //Get columns which should be included for the current data source
@@ -678,21 +721,7 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state)
     $user_criteria['Expense Category'] = $values['expense_category'];
     $formatted_search_criteria['Expense Category'] = $values['expense_category'];
   }
-  if ($values['expense_type']) {
-    preg_match("/.*?(\\[.*?])/is", $values['expense_type'], $matches);
-    $expense_type_name = str_replace($matches[1], "", $matches[0]);
-    $form['filter']['expense_type'] = array('#markup' => '<div><strong>Spending Category:</strong> ' . $expense_type_name . '</div>');
-    $user_criteria['Expense Type'] = $values['expense_type'];
-    $formatted_search_criteria['Spending Category'] = $expense_type_name;
-  } else {
-    $form['filter']['expense_type'] = array('#markup' => '<div><strong>Spending Category:</strong> Total Spending</div>');
-    $formatted_search_criteria['Spending Category'] = 'Total Spending';
-  }
-  if ($values['mwbe_category']) {
-    $form['filter']['mwbe_category'] = array('#markup' => '<div><strong>M/WBE Category:</strong> ' . MappingUtil::getCurrenEthnicityName(explode('~', $values['mwbe_category'])) . '</div>');
-    $user_criteria['M/WBE Category'] = $values['mwbe_category'];
-    $formatted_search_criteria['M/WBE Category'] = MappingUtil::getCurrenEthnicityName(explode('~', $values['mwbe_category']));
-  }
+
   if ($values['industry']) {
     preg_match("/.*?(\\[.*?])/is", $values['industry'], $matches);
     $industry_type_name = str_replace($matches[1], "", $matches[0]);
@@ -701,14 +730,57 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state)
     $user_criteria['Industry'] = $industry_type_id;
     $formatted_search_criteria['Industry'] = $industry_type_name;
   }
-  if ($values['nycha_industry']) {
-    preg_match("/.*?(\\[.*?])/is", $values['nycha_industry'], $matches);
-    $industry_type_name = str_replace($matches[1], "", $matches[0]);
-    $industry_type_id = trim($matches[1], '[ ]');
-    $form['filter']['nycha_industry'] = array('#markup' => '<div><strong>Industry:</strong> ' . $industry_type_name . '</div>');
-    $user_criteria['Industry'] = $industry_type_id;
-    $formatted_search_criteria['Industry'] = $industry_type_name;
+
+  switch($data_source){
+    case Datasource::OGE:
+      if ($values['oge_expense_type']) {
+        preg_match("/.*?(\\[.*?])/is", $values['oge_expense_type'], $matches);
+        $expense_type_name = str_replace($matches[1], "", $matches[0]);
+        $form['filter']['oge_expense_type'] = array('#markup' => '<div><strong>Spending Category:</strong> ' . $expense_type_name . '</div>');
+        $user_criteria['Expense Type'] = $values['oge_expense_type'];
+        $formatted_search_criteria['Spending Category'] = $expense_type_name;
+      } else {
+        $form['filter']['expense_type'] = array('#markup' => '<div><strong>Spending Category:</strong> Total Spending</div>');
+        $formatted_search_criteria['Spending Category'] = 'Total Spending';
+      }
+      break;
+    case Datasource::NYCHA:
+      if ($values['nycha_expense_type'] && $values['nycha_expense_type'] !== 'Select Spending Category') {
+        preg_match("/.*?(\\[.*?])/is", $values['nycha_expense_type'], $matches);
+        $expense_type_name = str_replace($matches[1], "", $matches[0]);
+        $form['filter']['nycha_expense_type'] = array('#markup' => '<div><strong>Spending Category:</strong> ' . $expense_type_name . '</div>');
+        $user_criteria['Expense Type'] = $values['nycha_expense_type'];
+        $formatted_search_criteria['Spending Category'] = $expense_type_name;
+      }
+      if ($values['nycha_industry']) {
+        preg_match("/.*?(\\[.*?])/is", $values['nycha_industry'], $matches);
+        $industry_type_name = str_replace($matches[1], "", $matches[0]);
+        $industry_type_id = trim($matches[1], '[ ]');
+        $form['filter']['nycha_industry'] = array('#markup' => '<div><strong>Industry:</strong> ' . $industry_type_name . '</div>');
+        $user_criteria['Industry'] = $industry_type_id;
+        $formatted_search_criteria['Industry'] = $industry_type_name;
+      }
+      break;
+    default:
+      if ($values['expense_type']) {
+        preg_match("/.*?(\\[.*?])/is", $values['expense_type'], $matches);
+        $expense_type_name = str_replace($matches[1], "", $matches[0]);
+        $form['filter']['expense_type'] = array('#markup' => '<div><strong>Spending Category:</strong> ' . $expense_type_name . '</div>');
+        $user_criteria['Expense Type'] = $values['expense_type'];
+        $formatted_search_criteria['Spending Category'] = $expense_type_name;
+      } else {
+        $form['filter']['expense_type'] = array('#markup' => '<div><strong>Spending Category:</strong> Total Spending</div>');
+        $formatted_search_criteria['Spending Category'] = 'Total Spending';
+      }
+      break;
   }
+
+  if ($values['mwbe_category']) {
+    $form['filter']['mwbe_category'] = array('#markup' => '<div><strong>M/WBE Category:</strong> ' . MappingUtil::getCurrenEthnicityName(explode('~', $values['mwbe_category'])) . '</div>');
+    $user_criteria['M/WBE Category'] = $values['mwbe_category'];
+    $formatted_search_criteria['M/WBE Category'] = MappingUtil::getCurrenEthnicityName(explode('~', $values['mwbe_category']));
+  }
+
   if ($values['payee_name']) {
     $form['filter']['payee_name'] = array(
       '#markup' => '<div><strong>Payee Name:</strong> ' . $values['payee_name'] . '</div>',
@@ -921,13 +993,20 @@ function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_
     preg_match($pattern, $values['expense_category'], $expense_category_matches);
     $criteria['value']['expense_category'] = trim($expense_category_matches[1], '[ ]');
   }
-  if ($values['expense_type'] && $values['expense type'] != 'ts') {
-    preg_match($pattern, $values['expense_type'], $etmatches);
-    $criteria['value']['spending_category'] = trim($etmatches[1], '[ ]');
-  }
+
   //By data source
   switch ($data_source) {
+    case Datasource::NYCHA:
+      if ($values['nycha_expense_type'] && $values['expense type'] != 'ts') {
+        preg_match($pattern, $values['nycha_expense_type'], $etmatches);
+        $criteria['value']['spending_category'] = trim($etmatches[1], '[ ]');
+      }
+      break;
     case Datasource::OGE:
+      if ($values['nycedc_expense_type'] && $values['expense type'] != 'ts') {
+        preg_match($pattern, $values['nycedc_expense_type'], $etmatches);
+        $criteria['value']['spending_category'] = trim($etmatches[1], '[ ]');
+      }
       if ($values['agency'] != 'Select One') {
         preg_match($pattern, $values['agency'], $agency_matches);
         $criteria['value']['other_government_entities_code'] = trim($agency_matches[1], '[ ]');
@@ -944,8 +1023,11 @@ function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_
         }
       }
       break;
-
     default:
+      if ($values['expense_type'] && $values['expense type'] != 'ts') {
+        preg_match($pattern, $values['expense_type'], $etmatches);
+        $criteria['value']['spending_category'] = trim($etmatches[1], '[ ]');
+      }
       if ($values['agency'] != 'Citywide (All Agencies)') {
         preg_match($pattern, $values['agency'], $agency_matches);
         $criteria['value']['agency_code'] = trim($agency_matches[1], '[ ]');
@@ -1102,13 +1184,13 @@ function checkbook_datafeeds_spending_validate(&$form, &$form_state)
       break;
     case Datasource::NYCHA:
       $multi_select_hidden = isset($form_state['input']['nycha_column_select']) ? '|' . implode('||', $form_state['input']['nycha_column_select']) . '|' : '';
-      if (!$multi_select_hidden){
+      if (!$multi_select_hidden) {
         form_set_error('nycha_column_select', t('You must select at least one column.'));
       }
       break;
     default:
       $multi_select_hidden = isset($form_state['input']['column_select']) ? '|' . implode('||', $form_state['input']['column_select']) . '|' : '';
-      if (!$multi_select_hidden){
+      if (!$multi_select_hidden) {
         form_set_error('column_select', t('You must select at least one column.'));
       }
   }

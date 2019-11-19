@@ -11,6 +11,7 @@ namespace PHPUnit\TextUI;
 
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\InvalidArgumentException;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestFailure;
@@ -20,7 +21,6 @@ use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\Color;
-use PHPUnit\Util\InvalidArgumentHelper;
 use PHPUnit\Util\Printer;
 use SebastianBergmann\Environment\Console;
 use SebastianBergmann\Timer\Timer;
@@ -126,14 +126,14 @@ class ResultPrinter extends Printer implements TestListener
         parent::__construct($out);
 
         if (!\in_array($colors, self::AVAILABLE_COLORS, true)) {
-            throw InvalidArgumentHelper::factory(
+            throw InvalidArgumentException::create(
                 3,
                 \vsprintf('value from "%s", "%s" or "%s"', self::AVAILABLE_COLORS)
             );
         }
 
         if (!\is_int($numberOfColumns) && $numberOfColumns !== 'max') {
-            throw InvalidArgumentHelper::factory(5, 'integer or "max"');
+            throw InvalidArgumentException::create(5, 'integer or "max"');
         }
 
         $console            = new Console;
@@ -516,7 +516,7 @@ class ResultPrinter extends Printer implements TestListener
             return $buffer;
         }
 
-        $lines   = \explode("\n", $buffer);
+        $lines   = \preg_split('/\r\n|\r|\n/', $buffer);
         $padding = \max(\array_map('\strlen', $lines));
 
         $styledLines = [];
@@ -525,7 +525,7 @@ class ResultPrinter extends Printer implements TestListener
             $styledLines[] = Color::colorize($color, \str_pad($line, $padding));
         }
 
-        return \implode("\n", $styledLines);
+        return \implode(\PHP_EOL, $styledLines);
     }
 
     /**
@@ -536,7 +536,7 @@ class ResultPrinter extends Printer implements TestListener
         $this->write($this->colorizeTextBox($color, $buffer));
 
         if ($lf) {
-            $this->write("\n");
+            $this->write(\PHP_EOL);
         }
     }
 
