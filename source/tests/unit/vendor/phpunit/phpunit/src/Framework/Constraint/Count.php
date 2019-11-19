@@ -53,6 +53,10 @@ class Count extends Constraint
             return \count($other);
         }
 
+        if ($other instanceof \EmptyIterator) {
+            return 0;
+        }
+
         if ($other instanceof Traversable) {
             while ($other instanceof IteratorAggregate) {
                 $other = $other->getIterator();
@@ -83,6 +87,8 @@ class Count extends Constraint
 
             return $count;
         }
+
+        return null;
     }
 
     /**
