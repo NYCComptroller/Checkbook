@@ -25,6 +25,14 @@ module_load_include('inc', 'checkbook_datafeeds', 'includes/checkbook_datafeeds_
 module_load_include('inc', 'checkbook_datafeeds', 'includes/checkbook_datafeeds_budget');
 module_load_include('inc', 'checkbook_datafeeds', 'includes/checkbook_datafeeds_revenue');
 
+spl_autoload_register(function ($class) {
+  if (FALSE !== strpos($class, 'checkbook_datafeeds')) {
+    list(,$class) = explode('\\',$class);
+    include 'includes/'.$class.'.php';
+  }
+});
+
+
 /**
  * Implements hook_menu().
  */
@@ -1488,7 +1496,7 @@ function checkbook_datafeeds_confirmation_download_submit($form, &$form_state)
 {
   $data = $form_state['step_information']['confirmation']['response'];
   global $conf;
-  $query_records_limit = isset($conf['check_book']['data_feeds']['query_records_limit']) ? $conf['check_book']['data_feeds']['query_records_limit'] : 10000;
+  $query_records_limit = $conf['check_book']['data_feeds']['query_records_limit'] ?? 10000;
 
   //Store request in db
   $criteria = $form_state['step_information']['confirmation']['stored_values']['criteria'];
@@ -1746,8 +1754,8 @@ function checkbook_datafeeds_end_of_confirmation_form($form, &$form_state, $crit
 {
   $searchCriteria = new SearchCriteria($criteria, $responsetype);
   global $conf;
-  $query_records_limit = isset($conf['check_book']['data_feeds']['query_records_limit']) ? $conf['check_book']['data_feeds']['query_records_limit'] : 10000;
-  $max_record_limit = isset($conf['check_book']['data_feeds']['max_record_limit']) ? $conf['check_book']['data_feeds']['max_record_limit'] : 200000;
+  $query_records_limit = $conf['check_book']['data_feeds']['query_records_limit'] ?? 10000;
+  $max_record_limit = $conf['check_book']['data_feeds']['max_record_limit'] ?? 200000;
 
   try {
     $checkBookApi = new CheckBookAPI($searchCriteria);
