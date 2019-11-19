@@ -10,7 +10,8 @@
       "document_id": "document_id",
       "funding_source_code": "funding_source_code",
       "funding_source_description": "funding_source_description",
-      "spending_category": "display_spending_category_name"
+      "spending_category": "spending_category_id",
+      "fiscal_year": "issue_date_year"
     },
     "dataset": {
       "sortColumn": [
