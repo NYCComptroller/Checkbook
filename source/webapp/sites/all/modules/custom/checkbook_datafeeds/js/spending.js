@@ -119,8 +119,19 @@
     });
   };
 
+  let getSpendingExpenseType = function(data_source){
+    switch(data_source){
+      case 'checkbook_nycha':
+        return emptyToZero($('select[name="nycha_expense_type"]').val());
+      case 'checkbook_oge':
+        return emptyToZero($('select[name="nycedc_expense_type"]').val());
+      default:
+        return emptyToZero($('select[name="expense_type"]').val());
+    }
+  };
+
   // When Agency Filter is changed reload Department and Expense Category drop-downs
-  let reloadSpendingDepartments = function reloadDepartments() {
+  let reloadSpendingDepartments = function () {
     let agency = $('#edit-agency').val();
     let html = '<option value="" selected="selected">Select Department</option>';
 
@@ -128,11 +139,8 @@
       agency = emptyToZero(agency);
       $('#edit-dept').addClass('loading');
       let year = 0;
-      // if ($('input:radio[name=date_filter]:checked').val() === '0') {
-      //   year = $('#edit-year').val() ? $('#edit-year').val() : 0;
-      // }
-      const spending_cat = emptyToZero($('#edit-expense-type').val());
       const data_source = $('input[name="datafeeds-spending-domain-filter"]:checked').val();
+      const spending_cat = getSpendingExpenseType(data_source);
 
       $.ajax({
         url: '/autocomplete/spending/dept/' + year + '/' + agency + '/' + spending_cat + '/' + data_source
@@ -162,7 +170,7 @@
   };
 
   // When Department Filter is changed reload Expense category Drop-down
-  let reloadSpendingExpenceCategories = function reloadExpenseCategories() {
+  let reloadSpendingExpenceCategories = function () {
     let agency = $('#edit-agency').val();
     let dept = emptyToZero($('#edit-dept').val());
     let data_source = $('input[name="datafeeds-spending-domain-filter"]:checked').val();
@@ -175,7 +183,7 @@
       //   year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
       // }
       agency = emptyToZero(agency);
-      let spending_cat = emptyToZero($('#edit-expense-type').val());
+      let spending_cat = getSpendingExpenseType(data_source);
 
       $.ajax({
         url: '/autocomplete/spending/expcategory/' + agency + '/' + dept + '/' + spending_cat + '/' + year + '/' + data_source
@@ -202,7 +210,7 @@
     }
   };
 
-  let onSpendingCategoryChange = function onSpendingCategoryChange() {
+  let onSpendingCategoryChange = function() {
     $('input[name="contractno"]').removeAttr('disabled');
     $('input[name="payee_name"]').removeAttr('disabled');
     $('option[value="Payee Name"]').removeAttr('disabled');
@@ -359,13 +367,13 @@
         year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
       }
 
+      let data_source = $('input[name="datafeeds-spending-domain-filter"]:checked', context).val();
       let dept = encodeURIComponent($('#edit-dept', context).val());
       let agency = emptyToZero($('#edit-agency', context).val());
       let expcategory = encodeURIComponent($('#edit-expense-category', context).val());
-      let exptype = emptyToZero($('#edit-expense-type', context).val());
+      let exptype = getSpendingExpenseType(data_source);
       let mwbecat = emptyToZero($('#edit-mwbe-category', context).val());
       let industry = emptyToZero($('#edit-industry', context).val());
-      let data_source = $('input[name="datafeeds-spending-domain-filter"]:checked', context).val()
 
       //Sets up jQuery UI autocompletes and autocomplete filtering functionality
       $('#edit-payee-name', context).autocomplete({source: '/autocomplete/spending/payee/' + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype + '/' + mwbecat + '/' + industry + '/' + data_source});
@@ -386,10 +394,10 @@
           agency = emptyToZero($('#edit-agency', context).val());
 
           expcategory = encodeURIComponent($('#edit-expense-category', context).val());
-          exptype = emptyToZero($('#edit-expense-type', context).val());
           mwbecat = emptyToZero($('#edit-mwbe-category', context).val());
           industry = emptyToZero($('#edit-industry', context).val());
           data_source = $('input[name="datafeeds-spending-domain-filter"]:checked', context).val();
+          exptype = getSpendingExpenseType(data_source);
 
           $("#edit-payee-name", context).autocomplete("option", "source", '/autocomplete/spending/payee/' + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype + '/' + mwbecat + '/' + industry + '/' + data_source);
           $('#edit-contractno', context).autocomplete("option", "source", '/autocomplete/spending/contractno/' + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype + '/' + mwbecat + '/' + industry + '/' + data_source);
