@@ -159,9 +159,7 @@ final class CodeCoverage
     public function getReport(): Directory
     {
         if ($this->report === null) {
-            $builder = new Builder;
-
-            $this->report = $builder->build($this);
+            $this->report = (new Builder)->build($this);
         }
 
         return $this->report;
@@ -663,8 +661,7 @@ final class CodeCoverage
 
             $firstMethod          = \array_shift($classOrTrait['methods']);
             $firstMethodStartLine = $firstMethod['startLine'];
-            $firstMethodEndLine   = $firstMethod['endLine'];
-            $lastMethodEndLine    = $firstMethodEndLine;
+            $lastMethodEndLine    = $firstMethod['endLine'];
 
             do {
                 $lastMethod = \array_pop($classOrTrait['methods']);
@@ -764,6 +761,7 @@ final class CodeCoverage
                 case \PHP_Token_OPEN_TAG::class:
                 case \PHP_Token_CLOSE_TAG::class:
                 case \PHP_Token_USE::class:
+                case \PHP_Token_USE_FUNCTION::class:
                     $this->ignoredLines[$fileName][] = $token->getLine();
 
                     break;
@@ -907,7 +905,7 @@ final class CodeCoverage
         }
 
         if ($runtime->hasPCOV()) {
-            return new PCOV($filter);
+            return new PCOV;
         }
 
         throw new RuntimeException('No code coverage driver available');
@@ -962,10 +960,9 @@ final class CodeCoverage
                 }
             }
 
-            $data     = [];
-            $coverage = $this->driver->stop();
+            $data = [];
 
-            foreach ($coverage as $file => $fileCoverage) {
+            foreach ($this->driver->stop() as $file => $fileCoverage) {
                 if ($this->filter->isFiltered($file)) {
                     continue;
                 }

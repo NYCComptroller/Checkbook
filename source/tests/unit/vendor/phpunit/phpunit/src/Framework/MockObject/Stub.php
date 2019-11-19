@@ -9,18 +9,16 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
-use PHPUnit\Framework\SelfDescribing;
+use PHPUnit\Framework\MockObject\Builder\InvocationStubber;
 
 /**
- * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ * @method InvocationStubber method($constraint)
  */
-interface Stub extends SelfDescribing
+interface Stub
 {
-    /**
-     * Fakes the processing of the invocation $invocation by returning a
-     * specific value.
-     *
-     * @param Invocation $invocation The invocation which was mocked and matched by the current method and argument matchers
-     */
-    public function invoke(Invocation $invocation);
+    public function __phpunit_getInvocationHandler(): InvocationHandler;
+
+    public function __phpunit_hasMatchers(): bool;
+
+    public function __phpunit_setReturnValueGeneration(bool $returnValueGeneration): void;
 }
