@@ -12,6 +12,7 @@
     "domain":"payroll",
     "html_class":"chart-grid-view-table three-columns",
     "sortColumn":0,
+    "sortOrder": "asc",
     "table_columns": [
       {
         "labelAlias": "Year",
@@ -134,9 +135,9 @@ $node->widgetConfig->chartConfig->xAxis->categories = $categories;
 splittooltip^^'formatter' :
 function() {
 var s = [];
-s.push('<b>Year:</b> ' + this.x + '<br/>');
+s.push('Year: CY ' + this.x + '<br/>');
 this.points.forEach(function(point) {
-s.push('<b>No.of ' + point.series.name + ' Employees :</b> ' +Highcharts.numberFormat(point.y, 0, '.', ',') +'<br/>' );
+s.push('No.of ' + point.series.name + ' Employees: ' +Highcharts.numberFormat(point.y, 0, '.', ',') +'<br/>' );
 });
 return s;
 }
