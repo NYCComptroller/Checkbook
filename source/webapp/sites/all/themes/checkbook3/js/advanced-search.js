@@ -198,6 +198,7 @@
         $.each(dataSourceDomains, function( index, value ) {
           $("#edit-"+ value +"-advanced-search-domain-filter").wrap("<div id='div_"+ value +"_data_source'></div>" );
           let dataSourceDiv = "div_" + value + "_data_source";
+          $("#"+ dataSourceDiv + " .form-radios").before("<span class='data_source-label'>Data Source</span><br/><br/>")
           $("#"+ dataSourceDiv).after('<br/>');
           let oge_datasources = $("#"+ dataSourceDiv + " .form-item:not(:first-child)");
           let oge_fieldset = $('<fieldset />').addClass('oge-datasource-fieldset');
