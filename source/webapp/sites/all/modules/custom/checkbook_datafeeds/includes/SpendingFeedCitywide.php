@@ -27,7 +27,7 @@ class SpendingFeedCitywide extends SpendingFeed
   protected $type_of_data = 'Spending';
   protected $filtered_columns_container = 'column_select';
 
-  protected function process_expense_type()
+  protected function _process_expense_type_by_datasource()
   {
     if ($this->values['expense_type']) {
       preg_match("/.*?(\\[.*?])/is", $this->values['expense_type'], $matches);
@@ -68,6 +68,14 @@ class SpendingFeedCitywide extends SpendingFeed
     if ($this->values['industry'] && $this->values['industry'] != 'Select Industry') {
       preg_match($this->bracket_value_pattern, $this->values['industry'], $imatches);
       $this->criteria['value']['industry_type_id'] = trim($imatches[1], '[ ]');
+    }
+  }
+
+  protected function _validate_by_datasource(&$form, &$form_state)
+  {
+    $multi_select_hidden = isset($form_state['input']['column_select']) ? '|' . implode('||', $form_state['input']['column_select']) . '|' : '';
+    if (!$multi_select_hidden) {
+      form_set_error('column_select', t('You must select at least one column.'));
     }
   }
 }
