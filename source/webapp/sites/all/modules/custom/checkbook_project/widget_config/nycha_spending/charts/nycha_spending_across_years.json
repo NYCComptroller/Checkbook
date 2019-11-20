@@ -10,7 +10,7 @@
     "domain":"spending",
     "html_class":"chart-grid-view-table two-columns",
     "sortColumn":0,
-    "sortOrder": "asc",
+    "sortOrder": "desc",
     "table_columns": [
       {
         "labelAlias": "Year",
