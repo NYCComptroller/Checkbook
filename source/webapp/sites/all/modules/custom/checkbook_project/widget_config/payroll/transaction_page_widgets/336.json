@@ -37,10 +37,10 @@
             "expression":  "$row['amount_basis_id'] === 3 ? custom_number_formatter_basic_format($row['non_salaried_amount'])  : '-'  "
         },
         "daily_wage_link": {
-            "expression": " $row['amount_basis_id'] === 2 ?  '<a href=/payroll'.((RequestUtilities::getRequestParamValue(UrlParameter::AGENCY)) ? '/agency_landing' : '').'/yeartype/C/year/' . $row['calendar_fiscal_year_id'] . _checkbook_project_get_url_param_string('datasource'). Datasource::getNYCHAUrl() . '?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/' . $row['agency_id'] . '/yeartype/C/year/' . $row['calendar_fiscal_year_id'] . _checkbook_project_get_url_param_string('datasource'). Datasource::getNYCHAUrl() . '/salamttype/' . $row['amount_basis_id'] . '/abc/' . $row['employee_id'] . '>'. $row['formatted_daily_wage_amount'] .'</a>': '-'  "
+            "expression": "PayrollUtil::getDailyWageLink($row)"
         },
         "hourly_rate_link": {
-            "expression": " $row['amount_basis_id'] === 3 ? '<a href=/payroll'.((RequestUtilities::getRequestParamValue(UrlParameter::AGENCY)) ? '/agency_landing' : '').'/yeartype/C/year/' . $row['calendar_fiscal_year_id'] . _checkbook_project_get_url_param_string('datasource'). Datasource::getNYCHAUrl() . '?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/' . $row['agency_id'] . '/yeartype/C/year/' . $row['calendar_fiscal_year_id'] . _checkbook_project_get_url_param_string('datasource'). Datasource::getNYCHAUrl() . '/salamttype/' . $row['amount_basis_id'] . '/abc/' . $row['employee_id'] . '>'. $row['formatted_hourly_rate_amount'] .'</a>': '-'  "
+            "expression": "PayrollUtil::getHourlyRateLink($row)"
         },
         "employee_name_formatted": {
             "expression": "_get_tooltip_markup($row['civil_service_title'],30)"
@@ -58,13 +58,13 @@
             "expression": " $row['amount_basis_id'] === 1 ? custom_number_formatter_basic_format($row['salaried_amount'])  : '-'  "
         },
         "annual_salary_link": {
-            "expression": " $row['amount_basis_id'] === 1 ? '<a href=/payroll'.((RequestUtilities::getRequestParamValue(UrlParameter::AGENCY)) ? '/agency_landing' : '').'/yeartype/C/year/' . $row['calendar_fiscal_year_id'] . _checkbook_project_get_url_param_string('datasource') . '?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/' . $row['agency_id'] . '/yeartype/C/year/' . $row['calendar_fiscal_year_id'] . _checkbook_project_get_url_param_string('datasource'). Datasource::getNYCHAUrl(). '/salamttype/' . $row['amount_basis_id'] . '/abc/' . $row['employee_id'] . '>'. $row['formatted_salary_amount'] .'</a>' : '-'"
+            "expression": "PayrollUtil::getAnnualSalaryLink($row)"
         },
         "formatted_non_salary_amount": {
             "expression": " custom_number_formatter_basic_format($row['non_salaried_amount'])"
         },
         "non_salary_link": {
-            "expression": " $row['amount_basis_id'] === 1 ? '-' : '<a href=/payroll'.((RequestUtilities::getRequestParamValue(UrlParameter::AGENCY)) ? '/agency_landing' : '').'/yeartype/C/year/' . $row['calendar_fiscal_year_id'] . _checkbook_project_get_url_param_string('datasource') . '?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/' . $row['agency_id'] . '/yeartype/C/year/' . $row['calendar_fiscal_year_id'] . _checkbook_project_get_url_param_string('datasource'). Datasource::getNYCHAUrl() . '/salamttype/' . $row['amount_basis_id'] . '/abc/' . $row['employee_id'] . '>'. $row['formatted_non_salary_amount'] .'</a>'"
+          "expression": "PayrollUtil::getNonSalaryLink($row)"
         },
         "export_salary_amount": {
             "expression": " $row['amount_basis_id'] === 1 ? $row['salaried_amount']  : NULL "

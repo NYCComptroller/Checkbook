@@ -48,6 +48,7 @@ class PayrollUtil {
 
         return $data;
     }
+
     static function updateRateTypeFacetData($node) {
 
         $data = array();
@@ -259,6 +260,7 @@ class PayrollUtil {
         }
         return null;
     }
+
     static function getTitleByEmployeeId($employeeId,$agency_id,$year_type,$year){
         $data_source = Datasource::getCurrent();
         $where = "WHERE fiscal_year_id = $year AND type_of_year = '$year_type'";
@@ -309,4 +311,55 @@ class PayrollUtil {
         return PayrollType::$SALARIED;
       }
     }
+
+    static function getAmountUrl($row){
+      $landingPageUrl = '/payroll'.((RequestUtilities::getRequestParamValue(UrlParameter::AGENCY) || DataSource::isNYCHA()) ? '/agency_landing' : '')
+        . '/yeartype/C/year/' . $row['calendar_fiscal_year_id'] . _checkbook_project_get_url_param_string('datasource')
+        . ((DataSource::isNYCHA()) ? '/agency/' . $row['agency_id'] : '');
+      $bottomUrl = '?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/' . $row['agency_id']
+        . '/yeartype/C/year/' . $row['calendar_fiscal_year_id'] . _checkbook_project_get_url_param_string('datasource')
+        . '/salamttype/' . $row['amount_basis_id'] . '/abc/' . $row['employee_id'] ;
+
+      return $landingPageUrl . $bottomUrl;
+    }
+
+    static function getAnnualSalaryLink($row){
+      if($row['amount_basis_id'] === 1){
+        $url = self::getAmountUrl($row);
+        $link = '<a href='. $url . '>'. $row['formatted_salary_amount'] .'</a>';
+        return $link;
+      }else{
+        return'-';
+      }
+    }
+
+  static function getNonSalaryLink($row){
+    if($row['amount_basis_id'] === 1){
+      return'-';
+    }else{
+      $url = self::getAmountUrl($row);
+      $link = '<a href='. $url . '>'. $row['formatted_non_salary_amount'] .'</a>';
+      return $link;
+    }
+  }
+
+  static function getDailyWageLink($row){
+    if($row['amount_basis_id'] === 2 ){
+      $url = self::getAmountUrl($row);
+      $link = '<a href='. $url . '>'. $row['formatted_daily_wage_amount'] .'</a>';
+      return $link;
+    }else{
+      return'-';
+    }
+  }
+
+  static function getHourlyRateLink($row){
+    if($row['amount_basis_id'] === 3 ){
+      $url = self::getAmountUrl($row);
+      $link = '<a href='. $url . '>'. $row['formatted_hourly_rate_amount'] .'</a>';
+      return $link;
+    }else{
+      return'-';
+    }
+  }
 }
