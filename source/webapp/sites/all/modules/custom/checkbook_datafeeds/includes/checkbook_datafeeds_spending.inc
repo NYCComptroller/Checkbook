@@ -32,8 +32,7 @@
 function checkbook_datafeeds_spending($form, &$form_state)
 {
   $datatype = $form_state['step_information']['type']['stored_values']['format'];
-  $data_source = $form_state['values']['datafeeds-spending-domain-filter'];
-  $data_source = !isset($data_source) ? Datasource::CITYWIDE : $data_source;
+  $data_source = $form_state['values']['datafeeds-spending-domain-filter'] ?? Datasource::CITYWIDE;
 
   $form['loaded'] = array(
     '#markup' => '<div class="updated-date">Last updated: ' . _checkbook_datafeeds_get_updated_date('spending') . '</div>',
