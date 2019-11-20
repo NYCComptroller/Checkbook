@@ -18,11 +18,11 @@
         "columnType": "text"
       },
       {
-        "labelAlias": "Agreement TYpe",
+        "labelAlias": "Agreement<br>Type",
         "columnType": "number"
       },
       {
-        "labelAlias": "Total Number of Contracts",
+        "labelAlias": "Number of <br>Contracts",
         "columnType": "number"
       }
     ]
@@ -61,7 +61,7 @@
 "widgetUpdateJSONConfig":"
 $series_previous_temp = array(array());
 
-$categories = array('2012','2013','2014','2015','2016','2017','2018','2019');
+$categories = array('2010','2011','2012','2013','2014','2015','2016','2017','2018','2019');
 $codes = array('PO','BA','PA');
 foreach($node->data as $row){
 $series_previous_temp[$row['agreement_type_code']][$row['year']] = (float)$row['ct'];
