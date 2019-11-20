@@ -156,7 +156,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
 
   $citywide_expense_type_options = _expense_type_options(Datasource::CITYWIDE);
   $oge_expense_type_options = _expense_type_options(Datasource::OGE);
-  $nycha_expense_type_default_option = ['' => 'Select Spending Category'];
+  $nycha_expense_type_default_option = ['' => 'Total Spending'];
   $nycha_expense_type_options = _expense_type_options(Datasource::NYCHA);
   $nycha_expense_type_options['options'] = $nycha_expense_type_default_option + $nycha_expense_type_options['options'];
 
