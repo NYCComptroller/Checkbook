@@ -29,7 +29,7 @@ class SpendingFeedNycha extends SpendingFeed
 
   protected function _process_expense_type_by_datasource()
   {
-    if ($this->values['nycha_expense_type'] && $this->values['nycha_expense_type'] !== 'Select Spending Category') {
+    if ($this->values['nycha_expense_type'] && $this->values['nycha_expense_type'] !== 'Total Spending') {
       preg_match("/.*?(\\[.*?])/is", $this->values['nycha_expense_type'], $matches);
       $expense_type_name = str_replace($matches[1], "", $matches[0]);
       $this->form['filter']['nycha_expense_type'] = array('#markup' => '<div><strong>Spending Category:</strong> ' . $expense_type_name . '</div>');
