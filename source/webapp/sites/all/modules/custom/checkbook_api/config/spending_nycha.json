@@ -8,15 +8,17 @@
       "check_amount": "check_amount",
       "contract_id": "contract_id",
       "document_id": "document_id",
+      "industry_type_code": "industry_type_code",
       "funding_source_code": "funding_source_code",
       "funding_source_description": "funding_source_description",
-      "spending_category": "display_spending_category_name"
+      "spending_category": "spending_category_id",
+      "fiscal_year": "issue_date_year"
     },
     "dataset": {
       "sortColumn": [
-        "-check_amount"
+        "sort_sequence"
       ],
-      "name": "checkbook_nycha:all_disbursement_transactions",
+      "name": "checkbook_nycha:all_disbursement_transactions_by_invoice_by_line",
       "data_source": "checkbook_nycha",
       "columnTypes": {
         "reference_document_number": "like",
@@ -64,6 +66,7 @@
             "invoice_number",
             "invoice_discount",
             "issue_date",
+            "industry_type_code",
             "program_phase_description",
             "gl_project_description",
             "agreement_type_name",
@@ -140,6 +143,11 @@
         "valueType": "value",
         "dataType": "text",
         "maxLength": "2"
+      },
+      "industry_type_code": {
+        "valueType": "value",
+        "dataType": "text",
+        "maxLength": "3"
       },
       "contract_id": {
         "valueType": "value",

@@ -797,6 +797,7 @@ function _checkbook_autocomplete_spending_expcategory(string $agency = '0', stri
       if ($dept && ctype_alnum($dept)) {
         $dept_string = " AND all_disbursement_transactions.department_code = '" . $dept . "' ";
       } else {
+        // Too many results, you don't want to go there
         return;
       }
       $query = "SELECT DISTINCT expenditure_type_description|| '[' || expenditure_type_code || ']' expenditure_object_code
