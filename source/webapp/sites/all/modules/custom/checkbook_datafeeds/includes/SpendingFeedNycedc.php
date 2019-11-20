@@ -28,7 +28,7 @@ class SpendingFeedNycedc extends SpendingFeed
   protected $agency_label = 'Other Government Entity';
   protected $filtered_columns_container = 'oge_column_select';
 
-  protected function process_expense_type()
+  protected function _process_expense_type_by_datasource()
   {
     if ($this->values['oge_expense_type']) {
       preg_match("/.*?(\\[.*?])/is", $this->values['oge_expense_type'], $matches);
@@ -65,6 +65,24 @@ class SpendingFeedNycedc extends SpendingFeed
       } else {
         $this->criteria['value']['payee_name'] = $this->values['payee_name'];
       }
+    }
+  }
+
+  protected function _validate_by_datasource(&$form, &$form_state)
+  {
+    //Validate Commodity Line
+    $entity_contractno = $form_state['values']['entity_contract_number'];
+    $commodity_line = $form_state['values']['commodity_line'];
+    if ($commodity_line && !is_numeric($commodity_line)) {
+      form_set_error('commodity_line', t('Commodity Line must be a number.'));
+    }
+    if ($entity_contractno && !is_numeric($entity_contractno)) {
+      form_set_error('entity_contract_number', t('Entity Contract # must be a number'));
+    }
+
+    $multi_select_hidden = isset($form_state['input']['oge_column_select']) ? '|' . implode('||', $form_state['input']['oge_column_select']) . '|' : '';
+    if (!$multi_select_hidden) {
+      form_set_error('oge_column_select', t('You must select at least one column.'));
     }
   }
 }

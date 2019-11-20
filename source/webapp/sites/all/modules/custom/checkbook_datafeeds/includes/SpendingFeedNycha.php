@@ -27,7 +27,7 @@ class SpendingFeedNycha extends SpendingFeed
   protected $type_of_data = 'Spending_NYCHA';
   protected $filtered_columns_container = 'nycha_column_select';
 
-  protected function process_expense_type()
+  protected function _process_expense_type_by_datasource()
   {
     if ($this->values['nycha_expense_type'] && $this->values['nycha_expense_type'] !== 'Select Spending Category') {
       preg_match("/.*?(\\[.*?])/is", $this->values['nycha_expense_type'], $matches);
@@ -38,7 +38,7 @@ class SpendingFeedNycha extends SpendingFeed
     }
   }
 
-  protected function process_industry()
+  protected function _process_industry_by_datasource()
   {
     if ($this->values['nycha_industry']) {
       preg_match("/.*?(\\[.*?])/is", $this->values['nycha_industry'], $matches);
@@ -60,6 +60,14 @@ class SpendingFeedNycha extends SpendingFeed
     if ($this->values['nycha_industry'] && $this->values['nycha_industry'] != 'Select Industry') {
       preg_match($this->bracket_value_pattern, $this->values['nycha_industry'], $imatches);
       $this->criteria['value']['industry_type_code'] = trim($imatches[1], '[ ]');
+    }
+  }
+
+  protected function _validate_by_datasource(&$form, &$form_state)
+  {
+    $multi_select_hidden = isset($form_state['input']['nycha_column_select']) ? '|' . implode('||', $form_state['input']['nycha_column_select']) . '|' : '';
+    if (!$multi_select_hidden) {
+      form_set_error('nycha_column_select', t('You must select at least one column.'));
     }
   }
 }
