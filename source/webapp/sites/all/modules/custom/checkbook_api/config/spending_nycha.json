@@ -16,9 +16,9 @@
     },
     "dataset": {
       "sortColumn": [
-        "-check_amount"
+        "sort_sequence"
       ],
-      "name": "checkbook_nycha:all_disbursement_transactions",
+      "name": "checkbook_nycha:all_disbursement_transactions_by_invoice_by_line",
       "data_source": "checkbook_nycha",
       "columnTypes": {
         "reference_document_number": "like",
