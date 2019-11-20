@@ -59,7 +59,6 @@ $index = 0;
 foreach($node->data as $row){
 $tooltip_label =
 'Title: ' . $row['civil_service_title'] .'<br/>' .
-'Year:' . $row['year_value'] .'<br/>'.
 'Amount: ' . custom_number_formatter_format($row['non_salaried_rate'] ,2, '$').  '<br/>';
 $link= strstr($_GET['q'],'/',true) .PayrollUrlService::titleAgencyUrl('162', $row['civil_service_title_code']);
 $series_new[$index]->url = 	$link;
