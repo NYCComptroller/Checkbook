@@ -12,7 +12,10 @@ namespace PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 
-class ArrayHasKeyTest extends ConstraintTestCase
+/**
+ * @small
+ */
+final class ArrayHasKeyTest extends ConstraintTestCase
 {
     public function testConstraintArrayHasKey(): void
     {
@@ -60,5 +63,23 @@ EOF
         }
 
         $this->fail();
+    }
+
+    public function testConstraintArrayHasKey0(): void
+    {
+        $contraint = new ArrayHasKey(0);
+
+        try {
+            $contraint->evaluate(0, '');
+        } catch (ExpectationFailedException  $e) {
+            $this->assertEquals(
+                <<<EOF
+Failed asserting that an array has the key 0.
+
+EOF
+                ,
+                TestFailure::exceptionToString($e)
+            );
+        }
     }
 }

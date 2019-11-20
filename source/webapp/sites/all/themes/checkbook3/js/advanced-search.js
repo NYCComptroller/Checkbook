@@ -194,6 +194,21 @@
         advanced_search_revenue_init();
         advanced_search_spending_init();
         advanced_search_buttons_init();
+        var dataSourceDomains = ["spending", "contracts", "payroll"];
+        $.each(dataSourceDomains, function( index, value ) {
+          $("#edit-"+ value +"-advanced-search-domain-filter").wrap("<div id='div_"+ value +"_data_source'></div>" );
+          let dataSourceDiv = "div_" + value + "_data_source";
+          $("#"+ dataSourceDiv + " .form-radios").before("<span class='data_source-label'>Data Source</span><br/><br/>")
+          $("#"+ dataSourceDiv).after('<br/>');
+          let oge_datasources = $("#"+ dataSourceDiv + " .form-item:not(:first-child)");
+          let oge_fieldset = $('<fieldset />').addClass('oge-datasource-fieldset');
+          let oge_fieldset_legend = $('<legend />').text('Other Government Entities:');
+          oge_fieldset.append(oge_fieldset_legend);
+          oge_datasources.detach();
+          oge_fieldset.append(oge_datasources);
+          $("#"+ dataSourceDiv + " .form-radios").append(oge_fieldset);
+          $("#"+ dataSourceDiv).append($('<div />').addClass('clear2'));
+        });
       }
 
 // advanced-search-budget
@@ -537,7 +552,7 @@
           var category_val = div.ele('category').val();
 
           if ((contract_status_val == 'A' || contract_status_val == 'R') && (category_val == 'expense' || category_val == 'all')) {
-            $("<div class='prime-and-sub-note'>All Fields are searchable by Prime data, unless designated as Prime & Sub (<img src='/sites/all/themes/checkbook3/images/prime-and-sub.png' />).</div>").insertBefore($("#edit-contracts-advanced-search-domain-filter"));
+            $("<div class='prime-and-sub-note'>All Fields are searchable by Prime data, unless designated as Prime & Sub (<img src='/sites/all/themes/checkbook3/images/prime-and-sub.png' />).</div>").insertBefore($("#edit-contracts-advanced-search-domain-filter").parent());
             addPrimeAndSubIcon(contract_status);
             addPrimeAndSubIcon(vendor);
             addPrimeAndSubIcon(mwbe_category);

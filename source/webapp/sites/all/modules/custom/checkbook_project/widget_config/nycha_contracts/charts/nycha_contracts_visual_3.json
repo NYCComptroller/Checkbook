@@ -10,7 +10,7 @@
   "gridConfig":{
     "template":"chart_grid_view",
     "domain":"contracts",
-    "html_class":"chart-grid-view-table four-columns",
+    "html_class":"chart-grid-view-table three-columns",
     "sortColumn":0,
     "table_columns": [
       {
@@ -18,21 +18,31 @@
         "columnType": "text"
       },
       {
-        "labelAlias": "Agreement TYpe",
+        "labelAlias": "Agreement<br>Type",
         "columnType": "number"
       },
       {
-        "labelAlias": "Total Number of Contracts",
+        "labelAlias": "Number of <br>Contracts",
         "columnType": "number"
       }
     ]
   },
-  "chartTitle":"Year Comparison By Agreement Types",
-  "widgetDataLoader":"
+  "no_results_content":"No Results Found",
+  "cleanURLParameters":["awdmethod","vendor","csize","industry","year"],
+  "urlParamMap":{"year":"fiscal_year_id","awdmethod":"award_method_id","vendor":"vendor_id", "csize":"award_size_id","industry":"industry_type_id"},
+  "widgetPreprocessJSON":"
+  if(preg_match('/pending/',$_GET['q'])){
+  $node->widgetConfig->urlParamMap = $node->widgetConfig->urlParamMapPending;
+  $node->widgetConfig->defaultParameters = $node->widgetConfig->defaultParametersPending;
+  $node->widgetConfig->cleanURLParameters = $node->widgetConfig->cleanURLParametersPending;
+}",
+
+"chartTitle":"Year Comparison By Agreement Types",
+"widgetDataLoader":"
       $where_filters = array();
       foreach($node->widgetConfig->requestParams as $param=>$value){
         if($param == 'fiscal_year_id'){
-            $where_filters[] = '('. $value . ' BETWEEN agreement_start_year_id and agreement_end_year_id )';
+            //$where_filters[] = '(year BETWEEN 2010 and 2019)';
         }else{
           $where_filters[] = _widget_build_sql_condition( $param, $value);
         }
@@ -41,20 +51,18 @@
         $where_filter = ' WHERE ' . implode(' AND ' , $where_filters);
       }
       $datasource = RequestUtilities::getRequestParamValue('datasource');
-$sql = 'select agreement_type_code, year,ct from
+      $sql = 'select agreement_type_code, year,ct from
         (select agreement_type_code,(year+1899) as year,count(distinct contract_id) as ct
         from (select agreement_type_code,contract_id,generate_series(agreement_start_year_id,agreement_end_year_id) as year
-        from all_agreement_transactions_by_release_by_line)a
+        from all_agreement_transactions_by_release_by_line  '. $where_filter .')a
         group by agreement_type_code,year) b where year between 2010 AND 2019 ';
-//$sql = ' select agreement_type_code, release_approved_year,release_approved_year_id , max(release_total_amount) as total_amount, count(contract_id) as total_contracts from all_agreement_transactions  where release_approved_year_id between  113 and 120 group by agreement_type_code,release_approved_year_id,release_approved_year';
-
-$node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
-  ",
+      $node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
+",
 "widgetUpdateJSONConfig":"
 $series_previous_temp = array(array());
 
-$categories = array('2012','2013','2014','2015','2016','2017','2018','2019');
-$codes = array('BA','PO','PA');
+$categories = array('2010','2011','2012','2013','2014','2015','2016','2017','2018','2019');
+$codes = array('PO','BA','PA');
 foreach($node->data as $row){
 $series_previous_temp[$row['agreement_type_code']][$row['year']] = (float)$row['ct'];
 foreach($categories as $category){
@@ -76,11 +84,8 @@ $node->widgetConfig->chartConfig->series[] = $prev_series_obj;
 unset($series_previous);
 }
 $node->widgetConfig->chartConfig->xAxis->categories = $categories;
-
-
-
 ",
-  "chartConfig" : {
+"chartConfig" : {
 "chart": {
 "type": "area"
  },

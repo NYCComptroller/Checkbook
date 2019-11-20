@@ -25,6 +25,14 @@ module_load_include('inc', 'checkbook_datafeeds', 'includes/checkbook_datafeeds_
 module_load_include('inc', 'checkbook_datafeeds', 'includes/checkbook_datafeeds_budget');
 module_load_include('inc', 'checkbook_datafeeds', 'includes/checkbook_datafeeds_revenue');
 
+spl_autoload_register(function ($class) {
+  if (FALSE !== strpos($class, 'checkbook_datafeeds')) {
+    list(,$class) = explode('\\',$class);
+    include 'includes/'.$class.'.php';
+  }
+});
+
+
 /**
  * Implements hook_menu().
  */
@@ -597,9 +605,6 @@ function checkbook_datafeeds_override_column_order(array $selectedColumns, array
 }
 
 
-//<editor-fold desc="Spending section">
-
-
 /**
  * Function to figure out where to pre-populate data from.
  * This is in the case where the data source is switching from/to
@@ -655,7 +660,7 @@ function checkbook_datafeeds_is_first_load($form_state, $data_source)
  */
 function checkbook_datafeeds_filter_get_default_value($form_state, $field_name, $first_time_load, $default_val = '')
 {
-  if ($first_time_load){
+  if ($first_time_load) {
     return $default_val;
   }
   return $form_state['values'][$field_name] ?? $default_val;
@@ -804,6 +809,7 @@ function _agency_options($data_source = Datasource::CITYWIDE, $json_output = fal
  */
 function _checkbook_datafeeds_agency_options($data, $data_source = Datasource::CITYWIDE, $json_output = false)
 {
+  $title = '';
   //IE8 - handle drop down width issue
   if ($data_source == Datasource::CITYWIDE) {
     $menu_options = array('Citywide (All Agencies)' => 'Citywide (All Agencies)');
@@ -825,9 +831,9 @@ function _checkbook_datafeeds_agency_options($data, $data_source = Datasource::C
   $results['options_attributes'] = $menu_options_attributes;
   if ($json_output) {
     drupal_json_output($json_menu_options);
-  } else {
-    return $results;
+    return;
   }
+  return $results;
 }
 
 
@@ -963,7 +969,7 @@ function _funding_source_options($data_source = Datasource::NYCHA)
           'funding_source_description',
         ), NULL, 'funding_source_description');
         $results = [];
-        if($data){
+        if ($data) {
           foreach ($data as $row) {
             $results[$row['funding_source_description'] . ' [' . $row['funding_source_code'] . ']'] = $row['funding_source_description'] . ' [' . $row['funding_source_code'] . ']';
           }
@@ -991,23 +997,20 @@ function _expense_type_options($data_source = Datasource::CITYWIDE)
 {
   try {
     $dataController = data_controller_get_instance();
+
     switch ($data_source) {
-      case Datasource::OGE:
-        $data = $dataController->queryDataset('checkbook_oge:spending_category', array(
+      case Datasource::NYCHA:
+        $data = $dataController->queryDataset($data_source . ':spending_category', array(
+          'spending_category_id',
+          'display_spending_category_name',
+        ), null, 'spending_category_code');
+        break;
+      default:
+        $data = $dataController->queryDataset($data_source . ':spending_category', array(
           'spending_category_code',
           'display_name',
           'spending_category_name',
         ), null, 'display_order');
-
-        break;
-
-      default:
-        $data = $dataController->queryDataset('checkbook:spending_category', array(
-          'spending_category_code',
-          'display_name',
-          'spending_category_name',
-        ), NULL, 'display_order');
-        break;
     }
 
     $results = _checkbook_datafeeds_expense_type_options($data, $data_source);
@@ -1029,7 +1032,7 @@ function _checkbook_datafeeds_expense_type_options($data, $data_source = null)
 
   //IE8 - handle drop down width issue
   foreach ($data as $row) {
-    $option = $row['spending_category_name'] . ' [' . $row['spending_category_code'] . ']';
+    $option = ($row['spending_category_name'] ?? $row['display_spending_category_name']) . ' [' . ($row['spending_category_code'] ?? $row['spending_category_id']) . ']';
     if ($row['spending_category_code'] == 'ts') {
       $display_option = 'Total Spending';
       //Menu options
@@ -1037,7 +1040,7 @@ function _checkbook_datafeeds_expense_type_options($data, $data_source = null)
       //Menu option titles
       $menu_options_attributes[$option] = array('title' => $option);
     } else {
-      $display_option = $row['spending_category_name'];
+      $display_option = $row['spending_category_name'] ?? $row['display_spending_category_name'];
       //Menu options
       $menu_options[$option] = $display_option;
       //Menu option titles
@@ -1456,8 +1459,8 @@ function _industry_options($data_source = Datasource::CITYWIDE)
     case Datasource::NYCHA:
 //      $industries += _ckbk_solr_get_all_options($data_source, 'spending', 'industry_type_name');
       $solr_industries = _ckbk_solr_get_all_options($data_source, 'spending', 'industry_type_name');
-      if($solr_industries){
-        foreach($solr_industries as $industry){
+      if ($solr_industries) {
+        foreach ($solr_industries as $industry) {
           $industry = strtoupper($industry);
           $industries[$industry] = $industry;
         }
@@ -1490,7 +1493,7 @@ function checkbook_datafeeds_confirmation_download_submit($form, &$form_state)
 {
   $data = $form_state['step_information']['confirmation']['response'];
   global $conf;
-  $query_records_limit = isset($conf['check_book']['data_feeds']['query_records_limit']) ? $conf['check_book']['data_feeds']['query_records_limit'] : 10000;
+  $query_records_limit = $conf['check_book']['data_feeds']['query_records_limit'] ?? 10000;
 
   //Store request in db
   $criteria = $form_state['step_information']['confirmation']['stored_values']['criteria'];
@@ -1748,8 +1751,8 @@ function checkbook_datafeeds_end_of_confirmation_form($form, &$form_state, $crit
 {
   $searchCriteria = new SearchCriteria($criteria, $responsetype);
   global $conf;
-  $query_records_limit = isset($conf['check_book']['data_feeds']['query_records_limit']) ? $conf['check_book']['data_feeds']['query_records_limit'] : 10000;
-  $max_record_limit = isset($conf['check_book']['data_feeds']['max_record_limit']) ? $conf['check_book']['data_feeds']['max_record_limit'] : 200000;
+  $query_records_limit = $conf['check_book']['data_feeds']['query_records_limit'] ?? 10000;
+  $max_record_limit = $conf['check_book']['data_feeds']['max_record_limit'] ?? 200000;
 
   try {
     $checkBookApi = new CheckBookAPI($searchCriteria);

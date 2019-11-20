@@ -15,6 +15,7 @@ use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\IncompleteTestError;
 use PHPUnit\Framework\PHPTAssertionFailedError;
 use PHPUnit\Framework\SelfDescribing;
+use PHPUnit\Framework\SkippedTestError;
 use PHPUnit\Framework\SyntheticSkippedError;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestResult;
@@ -26,7 +27,7 @@ use Throwable;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class PhptTestCase implements Test, SelfDescribing
+final class PhptTestCase implements SelfDescribing, Test
 {
     /**
      * @var string[]
@@ -37,17 +38,17 @@ final class PhptTestCase implements Test, SelfDescribing
         'auto_prepend_file=',
         'disable_functions=',
         'display_errors=1',
-        'docref_root=',
         'docref_ext=.html',
+        'docref_root=',
         'error_append_string=',
         'error_prepend_string=',
         'error_reporting=-1',
         'html_errors=0',
         'log_errors=0',
         'magic_quotes_runtime=0',
-        'output_handler=',
         'open_basedir=',
         'output_buffering=Off',
+        'output_handler=',
         'report_memleaks=0',
         'report_zend_debug=0',
         'safe_mode=0',
@@ -101,7 +102,6 @@ final class PhptTestCase implements Test, SelfDescribing
      * Runs a test and collects its result in a TestResult instance.
      *
      * @throws Exception
-     * @throws \ReflectionException
      * @throws \SebastianBergmann\CodeCoverage\CoveredCodeNotExecutedException
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
      * @throws \SebastianBergmann\CodeCoverage\MissingCoversAnnotationException
@@ -111,13 +111,21 @@ final class PhptTestCase implements Test, SelfDescribing
      */
     public function run(TestResult $result = null): TestResult
     {
-        $sections = $this->parse();
-        $code     = $this->render($sections['FILE']);
-
         if ($result === null) {
             $result = new TestResult;
         }
 
+        try {
+            $sections = $this->parse();
+        } catch (Exception $e) {
+            $result->startTest($this);
+            $result->addFailure($this, new SkippedTestError($e->getMessage()), 0);
+            $result->endTest($this, 0);
+
+            return $result;
+        }
+
+        $code     = $this->render($sections['FILE']);
         $xfail    = false;
         $settings = $this->parseIniSection(self::SETTINGS);
 
@@ -171,30 +179,31 @@ final class PhptTestCase implements Test, SelfDescribing
         }
 
         try {
-            $this->assertPhptExpectation($sections, $jobResult['stdout']);
+            $this->assertPhptExpectation($sections, $this->output);
         } catch (AssertionFailedError $e) {
             $failure = $e;
 
             if ($xfail !== false) {
                 $failure = new IncompleteTestError($xfail, 0, $e);
-            } else {
-                if ($e instanceof ExpectationFailedException) {
-                    if ($e->getComparisonFailure()) {
-                        $diff = $e->getComparisonFailure()->getDiff();
-                    } else {
-                        $diff = $e->getMessage();
-                    }
+            } elseif ($e instanceof ExpectationFailedException) {
+                $comparisonFailure = $e->getComparisonFailure();
 
-                    $hint    = $this->getLocationHintFromDiff($diff, $sections);
-                    $trace   = \array_merge($hint, \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS));
-                    $failure = new PHPTAssertionFailedError(
-                        $e->getMessage(),
-                        0,
-                        $trace[0]['file'],
-                        $trace[0]['line'],
-                        $trace
-                    );
+                if ($comparisonFailure) {
+                    $diff = $comparisonFailure->getDiff();
+                } else {
+                    $diff = $e->getMessage();
                 }
+
+                $hint    = $this->getLocationHintFromDiff($diff, $sections);
+                $trace   = \array_merge($hint, \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS));
+                $failure = new PHPTAssertionFailedError(
+                    $e->getMessage(),
+                    0,
+                    $trace[0]['file'],
+                    $trace[0]['line'],
+                    $trace,
+                    $comparisonFailure ? $diff : ''
+                );
             }
 
             $result->addFailure($this, $failure, $time);
@@ -202,7 +211,7 @@ final class PhptTestCase implements Test, SelfDescribing
             $result->addError($this, $t, $time);
         }
 
-        if ($result->allCompletelyImplemented() && $xfail !== false) {
+        if ($xfail !== false && $result->allCompletelyImplemented()) {
             $result->addFailure($this, new IncompleteTestError('XFAIL section but test passes'), $time);
         }
 
@@ -388,20 +397,20 @@ final class PhptTestCase implements Test, SelfDescribing
         $section  = '';
 
         $unsupportedSections = [
-            'REDIRECTTEST',
-            'REQUEST',
-            'POST',
-            'PUT',
-            'POST_RAW',
-            'GZIP_POST',
-            'DEFLATE_POST',
-            'GET',
-            'COOKIE',
-            'HEADERS',
             'CGI',
+            'COOKIE',
+            'DEFLATE_POST',
             'EXPECTHEADERS',
             'EXTENSIONS',
+            'GET',
+            'GZIP_POST',
+            'HEADERS',
             'PHPDBG',
+            'POST',
+            'POST_RAW',
+            'PUT',
+            'REDIRECTTEST',
+            'REQUEST',
         ];
 
         $lineNr = 0;
@@ -418,7 +427,7 @@ final class PhptTestCase implements Test, SelfDescribing
             }
 
             if (empty($section)) {
-                throw new Exception('Invalid PHPT file');
+                throw new Exception('Invalid PHPT file: empty section header');
             }
 
             $sections[$section] .= $line;
@@ -438,7 +447,7 @@ final class PhptTestCase implements Test, SelfDescribing
         foreach ($unsupportedSections as $section) {
             if (isset($sections[$section])) {
                 throw new Exception(
-                    'PHPUnit does not support this PHPT file'
+                    "PHPUnit does not support PHPT $section sections"
                 );
             }
         }
@@ -567,9 +576,9 @@ final class PhptTestCase implements Test, SelfDescribing
 
         if (!empty($GLOBALS['__PHPUNIT_BOOTSTRAP'])) {
             $globals = '$GLOBALS[\'__PHPUNIT_BOOTSTRAP\'] = ' . \var_export(
-                    $GLOBALS['__PHPUNIT_BOOTSTRAP'],
-                    true
-                ) . ";\n";
+                $GLOBALS['__PHPUNIT_BOOTSTRAP'],
+                true
+            ) . ";\n";
         }
 
         $template->setVar(
@@ -639,13 +648,13 @@ final class PhptTestCase implements Test, SelfDescribing
             }
 
             if ($block === 'diff') {
-                if (\substr($line, 0, 1) === '+') {
+                if (\strpos($line, '+') === 0) {
                     $needle = $this->getCleanDiffLine($previousLine);
 
                     break;
                 }
 
-                if (\substr($line, 0, 1) === '-') {
+                if (\strpos($line, '-') === 0) {
                     $needle = $this->getCleanDiffLine($line);
 
                     break;
@@ -714,9 +723,7 @@ final class PhptTestCase implements Test, SelfDescribing
             $sectionOffset = $sections[$section . '_offset'] ?? 0;
             $offset        = $sectionOffset + 1;
 
-            $lines = \preg_split('/\r\n|\r|\n/', $sections[$section]);
-
-            foreach ($lines as $line) {
+            foreach (\preg_split('/\r\n|\r|\n/', $sections[$section]) as $line) {
                 if (\strpos($line, $needle) !== false) {
                     return [[
                         'file' => \realpath($this->filename),

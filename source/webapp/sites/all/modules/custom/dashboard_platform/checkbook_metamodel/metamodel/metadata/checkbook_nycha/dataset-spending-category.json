@@ -1,0 +1,12 @@
+{
+    "datasets": {
+		"spending_category": {
+            "datasourceName": "main",
+            "source": "ref_spending_category",
+            "columns": [
+                {
+                    "name": "spending_category_id",
+                    "key": true}
+            ]}            
+    }
+}
