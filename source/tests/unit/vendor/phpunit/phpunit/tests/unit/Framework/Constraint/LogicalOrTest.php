@@ -12,6 +12,9 @@ namespace PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 
+/**
+ * @small
+ */
 final class LogicalOrTest extends ConstraintTestCase
 {
     public function testSetConstraintsDecoratesNonConstraintWithIsEqual(): void
@@ -90,9 +93,7 @@ final class LogicalOrTest extends ConstraintTestCase
      */
     public function testEvaluateReturnsTrueIfAnyOfTheComposedConstraintsEvaluateToTrue(array $constraints): void
     {
-        $constraint = new LogicalOr;
-
-        $constraint->setConstraints($constraints);
+        $constraint = LogicalOr::fromConstraints(...$constraints);
 
         $this->assertTrue($constraint->evaluate('whatever', '', true));
     }

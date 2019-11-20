@@ -14,7 +14,7 @@
     "sortColumn":3,
     "table_columns": [
       {
-        "labelAlias": "Contract ID",
+        "labelAlias": "Contract<br>ID",
         "columnType": "text"
       },
       {
@@ -22,8 +22,8 @@
         "columnType": "text"
       },
       {
-        "labelAlias": "Contracting Agency",
-        "columnType": "text"
+        "labelAlias": "Contracting<br>Agency",
+        "columnType": "number"
       },
       {
         "labelAlias": "Amount",
@@ -80,10 +80,7 @@ $node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
 
 ",
 "widgetUpdateJSONConfig":"
-
 $series_new = [];
-
-
 $index = 0;
 foreach($node->data as $row){
 $tooltip_label =

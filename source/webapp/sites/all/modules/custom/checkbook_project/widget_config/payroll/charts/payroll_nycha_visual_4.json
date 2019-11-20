@@ -10,8 +10,9 @@
   "gridConfig":{
     "template":"chart_grid_view",
     "domain":"payroll",
+    "sortColumn": 0,
+    "sortOrder": "desc",
     "html_class":"chart-grid-view-table two-columns",
-    "sortColumn":1,
     "table_columns": [
       {
         "labelAlias": "Year",
@@ -56,8 +57,7 @@ $sql ='SELECT j.total_overtime_pay, j2.year_value AS year_year_year_value
        FROM (SELECT fiscal_year_id AS year_year, agency_id AS agency_agency, type_of_year AS year_type_year_type, sum(overtime_pay) AS total_overtime_pay
        FROM aggregateon_payroll_employee_agency_month' . $where_filter. ' AND ' .$and_filter. ' GROUP BY agency_id, fiscal_year_id, type_of_year) j
        LEFT OUTER JOIN ref_year j2 ON j2.year_id = j.year_year
-       ORDER BY total_overtime_pay DESC
-       LIMIT 10';
+       ORDER BY year_year_year_value ';
 $node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
 ",
 "widgetUpdateJSONConfig":"
@@ -67,6 +67,7 @@ foreach($node->data as $row){
 $tooltip_label =
 'Year: CY ' . $row['year_year_year_value'] .'<br/>'.
 'Amount: ' . custom_number_formatter_format($row['total_overtime_pay'] ,2, '$') .'<br/>' ;
+$categories[] = $row['year_year'];
 $series_new[$index]->y = (float)$row['total_overtime_pay'];
 $series_new[$index]->tooltip_label = $tooltip_label;
 $node->widgetConfig->gridConfig->data[] = array($row['year_year_year_value'],$row['total_overtime_pay'] );
@@ -76,6 +77,7 @@ $node->widgetConfig->chartConfig->series[0]->name = 'Fiscal Years';
 $node->widgetConfig->chartConfig->series[0]->type = 'column';
 $node->widgetConfig->chartConfig->series[0]->pointWidth = 30;
 $node->widgetConfig->chartConfig->series[0]->data = $series_new;
+$node->widgetConfig->chartConfig->xAxis->categories = $categories;
 ",
 "chartConfig" : {
 "colors":["#7DB7E5"],
@@ -84,12 +86,10 @@ $node->widgetConfig->chartConfig->series[0]->data = $series_new;
 "stacking": "normal",
 "dataLabels": {
 "enabled": false
-}  ,
-"point": {"events": {"function": "clickEvent"}}
+}
 }
 },
 "xAxis": {
-"categories": [0,1,2,3,4,5,6,7,8,9],
 "labels": {"enabled": false}
 },
 "series": [

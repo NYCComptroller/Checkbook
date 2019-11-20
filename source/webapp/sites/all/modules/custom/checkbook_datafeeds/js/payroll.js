@@ -28,6 +28,8 @@
 
       $('.datafield.other_government_entity').hide();
 
+      var dataSource = $('input[name="datafeeds-payroll-domain-filter"]:checked', context).val();
+
       //Sets up jQuery UI datepickers
       var currentYear = new Date().getFullYear();
       $('.datepicker', context).datepicker({
@@ -40,22 +42,25 @@
       var year = $('#edit-year', context).val();
       var agency = ($('#edit-agency', context).val() === 'Citywide (All Agencies)') ? 0 : encodeURIComponent($('#edit-agency', context).val());
       var payfrequency = ($('#edit-payfrequency', context).val() === 'All Pay Frequencies') ? 0 : $('#edit-payfrequency', context).val();
-      $('#edit-title').autocomplete({
-        source: '/autocomplete/payroll/title/' + agency + '/' + payfrequency + '/' + year,
-        select: function (event, ui) {
-          $(this).parent().next().val(ui.item.label);
-        }
-      });
+
       $('.watch:input').each(function () {
         $(this).focusin(function () {
           year = $('#edit-year', context).val();
           agency = ($('#edit-agency', context).val() === 'Citywide (All Agencies)') ? 0 : encodeURIComponent($('#edit-agency', context).val());
           payfrequency = ($('#edit-payfrequency', context).val() === 'All Pay Frequencies') ? 0 : $('#edit-payfrequency', context).val();
-          $("#edit-title").autocomplete("option", "source", '/autocomplete/payroll/title/' + agency + '/' + payfrequency + '/' + year);
+          dataSource = $('input[name="datafeeds-payroll-domain-filter"]:checked', context).val();
+
+          $("#edit-title").autocomplete({
+            source: '/solr_autocomplete/'+dataSource+'/civil_service_title',
+            select: function (event, ui) {
+              ui.item.value = ui.item.label;
+              $(this).parent().next().val(ui.item.label);
+            }
+          });
         });
       });
 
-      var dataSource = $('input[name="datafeeds-payroll-domain-filter"]:checked', context).val();
+
       datafeedsPayrollShowHideFields(dataSource);
 
       //Data Source change event
