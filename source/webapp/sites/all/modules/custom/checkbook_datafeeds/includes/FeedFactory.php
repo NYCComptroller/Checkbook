@@ -36,7 +36,7 @@ class FeedFactory
   /**
    * @param $data_source
    * @param $domain
-   * @return mixed
+   * @return SpendingFeed|bool
    */
   public static function getFeed($data_source, $domain)
   {
