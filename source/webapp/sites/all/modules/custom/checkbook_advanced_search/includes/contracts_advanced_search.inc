@@ -245,8 +245,8 @@ function _checkbook_advanced_search_nycha_contracts_submit($form, &$form_state)
   $purchase_order_type = trim($form[$filter_dimension][$filter_dimension .'_purchase_order_type']['#value']);
   $vendor_name = trim($form[$filter_dimension][$filter_dimension .'_vendor_name']['#value']);
   $purpose = trim($form[$filter_dimension][$filter_dimension .'_purpose']['#value']);
-  $contract_num = trim($form[$filter_dimension][$filter_dimension .'_purchase_order_number']['#value']);
-  $contract_num_exact = trim($form[$filter_dimension][$filter_dimension .'_purchase_order_number_exact']['#value']);
+  $contract_num = trim($form[$filter_dimension][$filter_dimension .'_contract_num']['#value']);
+  $contract_num_exact = trim($form[$filter_dimension][$filter_dimension .'_contract_num_exact']['#value']);
   $pin = trim($form[$filter_dimension][$filter_dimension .'_pin']['#value']);
   $award_method = trim($form[$filter_dimension][$filter_dimension .'_award_method']['#value']);
   $current_contract_amount_from = trim($form[$filter_dimension][$filter_dimension .'_current_contract_amount_from']['#value']);
