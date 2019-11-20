@@ -343,7 +343,7 @@ jQuery(document).ready(function ($) {
 
             var el;
             var longSelects = '#ie #checkbook-datafeeds-data-feed-wizard #edit-agency, #ie #checkbook-datafeeds-data-feed-wizard #edit-dept, ' +
-                '#ie #checkbook-datafeeds-data-feed-wizard #edit-expense-category, #ie #checkbook-datafeeds-data-feed-wizard #edit-expense-type, ' +
+                '#ie #checkbook-datafeeds-data-feed-wizard #edit-expense-category, #ie #checkbook-datafeeds-data-feed-wizard .edit-expense-type, ' +
                 '#ie #checkbook-datafeeds-data-feed-wizard #edit-contract-type, #ie #checkbook-datafeeds-data-feed-wizard #edit-award-method';
             $(longSelects)
                 .each(function () {
