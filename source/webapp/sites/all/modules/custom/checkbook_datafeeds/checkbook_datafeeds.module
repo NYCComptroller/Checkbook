@@ -605,9 +605,6 @@ function checkbook_datafeeds_override_column_order(array $selectedColumns, array
 }
 
 
-//<editor-fold desc="Spending section">
-
-
 /**
  * Function to figure out where to pre-populate data from.
  * This is in the case where the data source is switching from/to
