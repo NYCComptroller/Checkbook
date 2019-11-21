@@ -61,6 +61,10 @@ class SpendingFeedNycha extends SpendingFeed
       preg_match($this->bracket_value_pattern, $this->values['nycha_industry'], $imatches);
       $this->criteria['value']['industry_type_code'] = trim($imatches[1], '[ ]');
     }
+
+    if ($this->values['contractno']) {
+      $this->criteria['value']['contract_id'] = strtoupper($this->values['contractno']);
+    }
   }
 
   protected function _validate_by_datasource(&$form, &$form_state)
