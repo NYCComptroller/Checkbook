@@ -30,6 +30,8 @@
     // $('#edit-oge-column-select').multiSelect('deselect_all');
     // $('#edit-nycha-column-select').multiSelect('deselect_all');
 
+    let datefilter = $('input:radio[name=date_filter]:checked').val();
+
     switch (data_source) {
       case 'checkbook_oge':
         $('.datafield.nycedc').show();
@@ -58,9 +60,16 @@
         $('input:radio[name=date_filter]')[0].checked = true;
         $('select[name="year"]').removeAttr('disabled');
         //Disable Issue date
-        $('input:radio[name=date_filter][value="1"]').attr('disabled', 'disabled');
-        $('input[name="issuedfrom"]').val("").attr('disabled', 'disabled');
-        $('input[name="issuedto"]').val("").attr('disabled', 'disabled');
+        $('input:radio[name=date_filter][value="1"]').removeAttr('disabled');
+        //Date Filter
+
+        if (datefilter === '0') {
+          $('input[name="issuedfrom"]').val("").attr('disabled', 'disabled');
+          $('input[name="issuedto"]').val("").attr('disabled', 'disabled');
+        } else {
+          $('input:radio[name=date_filter]')[1].checked = true;
+          $('select[name="year"]').attr('disabled', 'disabled');
+        }
 
         $('.form-item-nycha-column-select').show();
 
@@ -74,7 +83,6 @@
         $('.datafield.citywide').show();
 
         //Date Filter
-        const datefilter = $('input:radio[name=date_filter]:checked').val();
         $('input:radio[name=date_filter][value="1"]').removeAttr('disabled');
 
         if (datefilter === '0') {
