@@ -89,7 +89,12 @@ class CheckbookDateUtil
   public static function getCurrentFiscalYearId()
   {
     self::setCurrentYears();
-    return self::$currentFiscalYearId;
+    //For NYCHA, Fiscal Year is Calender Year
+    if(Datasource::isNYCHA()) {
+      return self::$currentCalendarYearId;
+    }else{
+      return self::$currentFiscalYearId;
+    }
   }
 
   /**
