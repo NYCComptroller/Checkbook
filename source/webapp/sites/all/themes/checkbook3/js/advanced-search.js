@@ -196,21 +196,20 @@
         advanced_search_buttons_init();
         var dataSourceDomains = ["spending", "contracts", "payroll"];
         $.each(dataSourceDomains, function( index, value ) {
-          $("#edit-"+ value +"-advanced-search-domain-filter").wrap("<div id='div_"+ value +"_data_source'></div>" );
           let dataSourceDiv = "div_" + value + "_data_source";
-          $("#"+ dataSourceDiv + " .form-radios").before("<span class='data_source-label'>Data Source</span><br/><br/>")
-          $("#"+ dataSourceDiv).after('<br/>');
-          let oge_datasources = "";
-          oge_datasources = $("#"+ dataSourceDiv + " .form-item:not(:first-child)");
-          let oge_fieldset = "";
-          oge_fieldset = $('<fieldset />').addClass('oge-datasource-fieldset');
-          let oge_fieldset_legend = "";
-          oge_fieldset_legend = $('<legend />').text('Other Government Entities:');
-          oge_fieldset.append(oge_fieldset_legend);
-          oge_datasources.detach();
-          oge_fieldset.append(oge_datasources);
-          $("#"+ dataSourceDiv + " .form-radios").append(oge_fieldset);
-          $("#"+ dataSourceDiv).append($('<div />').addClass('clear2'));
+          if($("#"+ dataSourceDiv).length <= 0) {
+            $("#edit-" + value + "-advanced-search-domain-filter").wrap("<div id='div_" + value + "_data_source'></div>");
+            $("#" + dataSourceDiv + " .form-radios").before("<span class='data_source-label'>Data Source</span><br/><br/>")
+            $("#" + dataSourceDiv).after('<br/>');
+            let oge_datasources = $("#" + dataSourceDiv + " .form-item:not(:first-child)");
+            let oge_fieldset = $('<fieldset />').addClass('oge-datasource-fieldset');
+            let oge_fieldset_legend = $('<legend />').text('Other Government Entities:');
+            oge_fieldset.append(oge_fieldset_legend);
+            oge_datasources.detach();
+            oge_fieldset.append(oge_datasources);
+            $("#" + dataSourceDiv + " .form-radios").append(oge_fieldset);
+            $("#" + dataSourceDiv).append($('<div />').addClass('clear2'));
+          }
         });
       }
 
