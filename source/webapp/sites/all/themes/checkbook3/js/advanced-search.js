@@ -656,6 +656,11 @@
           var aprv_sta = div.ele('sub_vendor_status').val() || 0;
           var data_source = $('input:radio[name=contracts_advanced_search_domain_filter]:checked').val();
           var solr_datasource = data_source;
+          var year = div.ele('year').val() || 0;
+          var year_id = 0;
+          if(year.indexOf("fy") >= 0){
+            year_id = year.split('~')[1];
+          }
 
           if ('checkbook_nycha' == data_source){solr_datasource = 'nycha'}
 
@@ -672,7 +677,8 @@
               contract_type_id: contract_type_id_nycha,
               award_method_id: award_method_id_nycha,
               industry_type_id: industry_type_id_nycha,
-              agency_id: agency_id
+              agency_id: agency_id,
+              fiscal_year_id: year_id
             };
 
             div.ele('vendor_name').autocomplete({source: autoCompleteSource(solr_datasource,'vendor_name', nycha_filters)});
@@ -688,7 +694,8 @@
               minority_type_id: minority_type_id,
               industry_type_id: industry_type_id,
               scntrc_status: scntrc_status,
-              aprv_sta: aprv_sta
+              aprv_sta: aprv_sta,
+              fiscal_year_id: year_id
             };
 
             div.ele('vendor_name').autocomplete({source: autoCompleteSource(solr_datasource,'vendor_name',filters)});
