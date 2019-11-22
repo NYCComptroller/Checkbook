@@ -2130,11 +2130,11 @@ function _checkbook_year_list()
 /**
  * @return array
  */
-function _checkbook_max_data_year()
+function _checkbook_max_data_year($data_source = Datasource::CITYWIDE)
 {
   return [
-    'year_value' => CheckbookDateUtil::getCurrentFiscalYear(),
-    'year_id' => CheckbookDateUtil::getCurrentFiscalYearId(),
+    'year_value' => CheckbookDateUtil::getCurrentFiscalYear($data_source),
+    'year_id' => CheckbookDateUtil::getCurrentFiscalYearId($data_source),
     'cal_year_value' => CheckbookDateUtil::getCurrentCalendarYear(),
     'cal_year_id' => CheckbookDateUtil::getCurrentCalendarYearId()
   ];
