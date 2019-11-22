@@ -535,7 +535,7 @@ function _agency_options($data_source = Datasource::CITYWIDE, $json_output = fal
 {
   if ($json_output) {
     $data = CheckbookGuruOptionsJson::get_instance($data_source)
-      ->get_all('agency_name_id');
+      ->get_all('agency_name_code');
     if ($data_source == Datasource::CITYWIDE) {
       $data = [['label' => 'Citywide (All Agencies)', 'value' => 'Citywide (All Agencies)', 'code' => '']] + $data;
     }
@@ -544,7 +544,7 @@ function _agency_options($data_source = Datasource::CITYWIDE, $json_output = fal
   }
 
   $data = CheckbookGuruOptions::get_instance($data_source)
-    ->get_all('agency_name_id');
+    ->get_all('agency_name_code');
   if ($data_source == Datasource::CITYWIDE && ($data['options'] ?? false)) {
     $data['options'] = ['Citywide (All Agencies)' => 'Citywide (All Agencies)'] + $data['options'];
     $data['options_attributes'] = ['Citywide (All Agencies)' => ['title' => 'Citywide (All Agencies)']]
