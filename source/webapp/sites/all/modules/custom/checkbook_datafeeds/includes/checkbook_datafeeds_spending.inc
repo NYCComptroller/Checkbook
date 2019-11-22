@@ -582,7 +582,7 @@ function checkbook_datafeeds_spending_confirmation_previous_submit($form, &$form
 function checkbook_datafeeds_spending_validate(&$form, &$form_state)
 {
   $data_source = $form_state['input']['datafeeds-spending-domain-filter'];
-  $feed = \checkbook_datafeeds\FeedFactory::getFeed($data_source, Domain::$SPENDING);
+  $feed = checkbook_datafeeds\FeedFactory::getFeed($data_source, Domain::$SPENDING);
   $feed->checkbook_datafeeds_spending_validate($form, $form_state);
 }
 

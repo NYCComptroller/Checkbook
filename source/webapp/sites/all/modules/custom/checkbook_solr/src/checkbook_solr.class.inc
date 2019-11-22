@@ -9,7 +9,6 @@
  */
 class CheckbookSolr
 {
-
   /**
    * @var string
    */
