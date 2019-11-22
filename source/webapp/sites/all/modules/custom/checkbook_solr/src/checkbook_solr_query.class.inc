@@ -9,7 +9,14 @@
  */
 class CheckbookSolrQuery
 {
-
+  /**
+   *
+   */
+  const FACET_SORT_INDEX = 'index';
+  /**
+   *
+   */
+  const FACET_SORT_COUNT = 'count';
   /**
    * @var array
    */
@@ -101,7 +108,7 @@ class CheckbookSolrQuery
    * @var string
    * count|index
    */
-  private $facetSort = 'count';
+  private $facetSort = self::FACET_SORT_COUNT;
 
   /**
    * @return string
@@ -222,6 +229,16 @@ class CheckbookSolrQuery
   public function setWt(string $wt): CheckbookSolrQuery
   {
     $this->wt = $wt;
+    return $this;
+  }
+
+  /**
+   * @param int $limit
+   * @return CheckbookSolrQuery
+   */
+  public function setFacetLimit(int $limit = 30): CheckbookSolrQuery
+  {
+    $this->facetLimit = $limit;
     return $this;
   }
 
@@ -473,7 +490,7 @@ class CheckbookSolrQuery
 
     $this->addFacet($facet);
 
-    $this->facetLimit = 10;
+    $this->setFacetLimit(10);
 
     return $this;
   }

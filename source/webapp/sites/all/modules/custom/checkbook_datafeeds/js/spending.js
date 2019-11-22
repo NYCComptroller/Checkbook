@@ -25,11 +25,6 @@
     $('.datafield.citywide').add('.datafield.nycha').add('.datafield.nycedc').hide();
     $('#edit-columns .form-item').hide();
 
-    //reset the selected columns
-    // $('#edit-column-select').multiSelect('deselect_all');
-    // $('#edit-oge-column-select').multiSelect('deselect_all');
-    // $('#edit-nycha-column-select').multiSelect('deselect_all');
-
     let datefilter = $('input:radio[name=date_filter]:checked').val();
 
     switch (data_source) {
