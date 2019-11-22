@@ -77,20 +77,27 @@ class CheckbookDateUtil
   /**
    * @return mixed
    */
-  public static function getCurrentFiscalYear()
+  public static function getCurrentFiscalYear($data_source = Datasource::CITYWIDE)
   {
     self::setCurrentYears();
-    return self::$currentFiscalYear;
+    //For NYCHA, Fiscal Year is Calender Year
+    $isNYCHA = ($data_source == Datasource::NYCHA || Datasource::isNYCHA()) ? true : false;
+    if($isNYCHA) {
+      return self::$currentCalendarYear;
+    }else{
+      return self::$currentFiscalYear;
+    }
   }
 
   /**
    * @return mixed
    */
-  public static function getCurrentFiscalYearId()
+  public static function getCurrentFiscalYearId($data_source = Datasource::CITYWIDE)
   {
     self::setCurrentYears();
     //For NYCHA, Fiscal Year is Calender Year
-    if(Datasource::isNYCHA()) {
+    $isNYCHA = ($data_source == Datasource::NYCHA || Datasource::isNYCHA()) ? true : false;
+    if($isNYCHA) {
       return self::$currentCalendarYearId;
     }else{
       return self::$currentFiscalYearId;
