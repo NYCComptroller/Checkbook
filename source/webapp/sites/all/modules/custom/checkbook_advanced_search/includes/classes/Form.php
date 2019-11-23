@@ -157,7 +157,7 @@ class Form
                 $domain_field = "{$data_source}_{$this->domain_name}_fiscal_year";
 
                 $form[$domain][$domain_field]['#type'] = FieldType::DropDown;
-                $form[$domain][$domain_field]['#options'] = _checkbook_advanced_search_get_year($this->domain_name, $data_source);
+                $form[$domain][$domain_field]['#options'] = _checkbook_advanced_search_get_year($this->domain_name, null, $data_source);
                 $form[$domain][$domain_field]['#default_value'] = 'fy~all' ;
                 $form[$domain][$domain_field]['#attributes'] = array('class' => array('watch'), 'default_selected_value' => 'fy~all');
                 $form[$domain][$domain_field]['#prefix'] = '<div class="datafield year">';

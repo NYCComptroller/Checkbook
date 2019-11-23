@@ -196,18 +196,20 @@
         advanced_search_buttons_init();
         var dataSourceDomains = ["spending", "contracts", "payroll"];
         $.each(dataSourceDomains, function( index, value ) {
-          $("#edit-"+ value +"-advanced-search-domain-filter").wrap("<div id='div_"+ value +"_data_source'></div>" );
           let dataSourceDiv = "div_" + value + "_data_source";
-          $("#"+ dataSourceDiv + " .form-radios").before("<span class='data_source-label'>Data Source</span><br/><br/>")
-          $("#"+ dataSourceDiv).after('<br/>');
-          let oge_datasources = $("#"+ dataSourceDiv + " .form-item:not(:first-child)");
-          let oge_fieldset = $('<fieldset />').addClass('oge-datasource-fieldset');
-          let oge_fieldset_legend = $('<legend />').text('Other Government Entities:');
-          oge_fieldset.append(oge_fieldset_legend);
-          oge_datasources.detach();
-          oge_fieldset.append(oge_datasources);
-          $("#"+ dataSourceDiv + " .form-radios").append(oge_fieldset);
-          $("#"+ dataSourceDiv).append($('<div />').addClass('clear2'));
+          if($("#"+ dataSourceDiv).length <= 0) {
+            $("#edit-" + value + "-advanced-search-domain-filter").wrap("<div id='div_" + value + "_data_source'></div>");
+            $("#" + dataSourceDiv + " .form-radios").before("<span class='data_source-label'>Data Source</span><br/><br/>")
+            $("#" + dataSourceDiv).after('<br/>');
+            let oge_datasources = $("#" + dataSourceDiv + " .form-item:not(:first-child)");
+            let oge_fieldset = $('<fieldset />').addClass('oge-datasource-fieldset');
+            let oge_fieldset_legend = $('<legend />').text('Other Government Entities:');
+            oge_fieldset.append(oge_fieldset_legend);
+            oge_datasources.detach();
+            oge_fieldset.append(oge_datasources);
+            $("#" + dataSourceDiv + " .form-radios").append(oge_fieldset);
+            $("#" + dataSourceDiv).append($('<div />').addClass('clear2'));
+          }
         });
       }
 
@@ -653,6 +655,11 @@
           var aprv_sta = div.ele('sub_vendor_status').val() || 0;
           var data_source = $('input:radio[name=contracts_advanced_search_domain_filter]:checked').val();
           var solr_datasource = data_source;
+          var year = div.ele('year').val() || 0;
+          var year_id = 0;
+          if(year.indexOf("fy") >= 0){
+            year_id = year.split('~')[1];
+          }
 
           if ('checkbook_nycha' == data_source){solr_datasource = 'nycha'}
 
@@ -669,7 +676,8 @@
               contract_type_id: contract_type_id_nycha,
               award_method_id: award_method_id_nycha,
               industry_type_id: industry_type_id_nycha,
-              agency_id: agency_id
+              agency_id: agency_id,
+              fiscal_year_id: year_id
             };
 
             div.ele('vendor_name').autocomplete({source: autoCompleteSource(solr_datasource,'vendor_name', nycha_filters)});
@@ -685,7 +693,8 @@
               minority_type_id: minority_type_id,
               industry_type_id: industry_type_id,
               scntrc_status: scntrc_status,
-              aprv_sta: aprv_sta
+              aprv_sta: aprv_sta,
+              fiscal_year_id: year_id
             };
 
             div.ele('vendor_name').autocomplete({source: autoCompleteSource(solr_datasource,'vendor_name',filters)});
