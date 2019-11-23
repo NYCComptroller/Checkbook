@@ -37,6 +37,11 @@ class CheckbookGuru
   private $solr_query;
 
   /**
+   * @var bool
+   */
+  private $parsed = FALSE;
+
+  /**
    * @param string $solr_datasource
    * @return static::class
    */
@@ -66,7 +71,6 @@ class CheckbookGuru
   {
     $data = [];
     $this->solr_query
-      ->setFq($facet,"-{$facet}:<unknown*")
       ->addFacet($facet)
       ->setFacetLimit(500)
       ->setFacetSort(CheckbookSolrQuery::FACET_SORT_INDEX);
@@ -81,6 +85,10 @@ class CheckbookGuru
     return $data;
   }
 
+  /**
+   * @param $data
+   * @return array
+   */
   private function remove_duplicates($data)
   {
     $seen = [];
@@ -94,11 +102,30 @@ class CheckbookGuru
           continue;
         }
         $seen[] = $id;
-        $out[] = $facet;
+        if ($this->parsed) {
+          $out[] = [
+            'id' => $id,
+            'title' => trim(substr($facet,0,$idx)),
+            'value' => $facet
+          ];
+        } else{
+          $out[] = $facet;
+        }
       }
 
       return array_reverse($out);
     }
     return $data;
+  }
+
+  /**
+   * @param string $facet
+   * @param array $filter
+   * @return array
+   */
+  public function get_all_parsed(string $facet, array $filter = [])
+  {
+    $this->parsed = TRUE;
+    return $this->get_all($facet, $filter);
   }
 }
