@@ -54,6 +54,7 @@ class NychaSpendingUrlService{
         $dynamic_parameter = isset($dynamic_parameter) ? $dynamic_parameter : '';
         $url = "/panel_html/nycha_spending_transactions/nycha_spending/transactions"
           . RequestUtilities::buildUrlFromParam('year')
+          . RequestUtilities::buildUrlFromParam('issue_date')
           . RequestUtilities::buildUrlFromParam('category')
           . RequestUtilities::buildUrlFromParam('agency')
           . RequestUtilities::buildUrlFromParam('vendor')
