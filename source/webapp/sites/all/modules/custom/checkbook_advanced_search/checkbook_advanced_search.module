@@ -606,7 +606,6 @@ function _checkbook_advanced_search_get_form($form, $domain, $agencies, $agency_
 {
   $field_configurations = _checkbook_advanced_search_get_field_configs($domain);
   $checkbook_form = new Form($domain);
-
   foreach ($field_configurations as $key => $value) {
     $data_source = $key;
     $field_configs = $value;
@@ -635,11 +634,11 @@ function _checkbook_advanced_search_get_form($form, $domain, $agencies, $agency_
 
 function _checkbook_advanced_search_filter_field_definition($domain, $data_source, $agencies, $agency_attributes, $year_range)
 {
-
   if ($data_source == DataSource::NYCHA) {
     $responsibility_center_attributes = _checkbook_advanced_search_get_responsibility_centers($data_source);
     $contract_type_attribute = _checkbook_advanced_search_get_nycha_contract_types($data_source);
     $fundsrc_attributes = checkbook_advanced_search_get_nycha_funding_sources($data_source);
+    $year_attribute = _checkbook_advanced_search_get_year($domain, null, $data_source);
   } else {
     $mwbe_category_attributes = _checkbook_advanced_search_get_mwbe_category_and_id();
     $sub_vendor_status = _checkbook_advanced_search_get_subcontract_approval_status_and_id();
@@ -647,9 +646,9 @@ function _checkbook_advanced_search_filter_field_definition($domain, $data_sourc
     $includes_sub_vendors = _get_contract_includes_subvendors_data();
     $includes_sub_vendors_attributes = _get_contract_includes_subvendors_data('attributes');
     $contract_type_attribute = _checkbook_advanced_search_get_contract_type_and_id($data_source);
+    $year_attribute = _checkbook_advanced_search_get_year($domain, null, $data_source);
   }
   $expense_attributes = _checkbook_advanced_search_get_expensetype_and_id($data_source);
-  $year_attribute = _checkbook_advanced_search_get_year($domain, $data_source);
   $industry_attributes = checkbook_advanced_search_get_industries($data_source);
   $award_method_attributes = checkbook_advanced_search_get_award_methods($data_source);
 

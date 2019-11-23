@@ -1,5 +1,24 @@
 <?php
 /**
+ * This file is part of the Checkbook NYC financial transparency software.
+ *
+ * Copyright (C) 2019 New York City
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
 *	GNU AFFERO GENERAL PUBLIC LICENSE
 *	   Version 3, 19 November 2007
 * This software is licensed under the GNU AGPL Version 3
@@ -63,11 +82,11 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
 
         }
         else {
-            if($contracts_results["is_minority_vendor"] == 'Y' && $contracts_results["is_prime_or_sub"] == 'Yes' && ContractUtil::getLatestMwbeCategoryByVendorByTransactionYear($contracts_results['vendor_id'], $fiscal_year_id,'B') == ''){
+            if($contracts_results["is_minority_vendor"] == 'Y' && $contracts_results["is_prime_or_sub"] == 'Yes'){
                 $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/year/". $fiscal_year_id .'/subvendor/'.$contracts_results['vendor_id']."/dashboard/ss";
-            }else if($contracts_results["is_minority_vendor"] == 'Y' && $contracts_results["is_prime_or_sub"] == 'No' && ContractUtil::getLatestMwbeCategoryByVendorByTransactionYear($contracts_results['vendor_id'],  $fiscal_year_id,'B') != ''){
+            }else if($contracts_results["is_minority_vendor"] == 'Y' && $contracts_results["is_prime_or_sub"] == 'No'){
                 $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/year/" . $fiscal_year_id . "/mwbe/2~3~4~5~9/dashboard/mp/vendor/".$contracts_results["vendor_id"];
-            }else if($contracts_results["is_minority_vendor"] == 'Y' && $contracts_results["is_prime_or_sub"] == 'Yes' && ContractUtil::getLatestMwbeCategoryByVendorByTransactionYear($contracts_results['vendor_id'],  $fiscal_year_id,'B') != ''){
+            }else if($contracts_results["is_minority_vendor"] == 'Y' && $contracts_results["is_prime_or_sub"] == 'Yes'){
                 $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/year/" . $fiscal_year_id . "/mwbe/2~3~4~5~9/dashboard/ms/subvendor/".$contracts_results["vendor_id"];
             }else if($contracts_results["is_minority_vendor"] == 'N' && $contracts_results["is_prime_or_sub"] == 'Yes'){
                 $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/year/" . $fiscal_year_id . "/subvendor/".$contracts_results["vendor_id"]."/dashboard/ss";
@@ -85,11 +104,11 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
             $agency_link = "/contracts_revenue_landing/status/" .$status."/yeartype/B/datasource/checkbook_oge/year/".$current_year_id.'/agency/'.$contracts_results['agency_id'];
         }
         else{
-            if($contracts_results["is_minority_vendor"] == 'Y' && $contracts_results["is_prime_or_sub"] == 'Yes' && ContractUtil::getLatestMwbeCategoryByVendorByTransactionYear($contracts_results['vendor_id'],  $fiscal_year_id,'B') == ''){
+            if($contracts_results["is_minority_vendor"] == 'Y' && $contracts_results["is_prime_or_sub"] == 'Yes'){
                 $vendor_link = "/contracts_revenue_landing/status/" .$status."/yeartype/B/year/". $fiscal_year_id .'/subvendor/'.$contracts_results['vendor_id']."/dashboard/ss";
-            }else if($contracts_results["is_minority_vendor"] == 'Y' && $contracts_results["is_prime_or_sub"] == 'No' && ContractUtil::getLatestMwbeCategoryByVendorByTransactionYear($contracts_results['vendor_id'],  $fiscal_year_id,'B') != ''){
+            }else if($contracts_results["is_minority_vendor"] == 'Y' && $contracts_results["is_prime_or_sub"] == 'No'){
                 $vendor_link = "/contracts_revenue_landing/status/" .$status."/yeartype/B/year/" . $fiscal_year_id . "/mwbe/2~3~4~5~9/dashboard/mp/vendor/".$contracts_results["vendor_id"];
-            }else if($contracts_results["is_minority_vendor"] == 'Y' && $contracts_results["is_prime_or_sub"] == 'Yes' && ContractUtil::getLatestMwbeCategoryByVendorByTransactionYear($contracts_results['vendor_id'],  $fiscal_year_id,'B') != ''){
+            }else if($contracts_results["is_minority_vendor"] == 'Y' && $contracts_results["is_prime_or_sub"] == 'Yes'){
                 $vendor_link = "/contracts_revenue_landing/status/" .$status."/yeartype/B/year/" . $fiscal_year_id . "/mwbe/2~3~4~5~9/dashboard/ms/subvendor/".$contracts_results["vendor_id"];
             }else if($contracts_results["is_minority_vendor"] == 'N' && $contracts_results["is_prime_or_sub"] == 'Yes'){
                 $vendor_link = "/contracts_revenue_landing/status/" .$status."/yeartype/B/year/" . $fiscal_year_id . "/subvendor/".$contracts_results["vendor_id"]."/dashboard/ss";
@@ -190,7 +209,7 @@ if($isNycha){
     $contracts_results['end_date'] = $contracts_results['agreement_end_date'];
 
   }
-  
+
   $vendor_link = '/nycha_contracts/year/'.$nycha_year_id. '/agency/162/datasource/checkbook_nycha/vendor/'.$contracts_results['vendor_id'];
   $linkable_fields = ["vendor_name" => $vendor_link,];
 }

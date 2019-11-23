@@ -2,7 +2,7 @@
 /**
  * This file is part of the Checkbook NYC financial transparency software.
  *
- * Copyright (C) 2012, 2013 New York City
+ * Copyright (C) 2019 New York City
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -46,17 +46,17 @@ if ($isOge) {
       "agency_name" => "/spending_landing/category/" . $spending_results['spending_category_id'] . "/year/" . $fiscal_year_id . "/yeartype/B/agency/" . $spending_results["agency_id"],
       "vendor_name" => "/spending_landing/category/" . $spending_results['spending_category_id'] . "/year/" . $fiscal_year_id . "/yeartype/B/vendor/" . $spending_results["vendor_id"],
     );
-  } elseif ($spending_results['is_prime_or_sub'] == 'Yes' && SpendingUtil::getLatestMwbeCategoryBySpendingVendorByTransactionYear($spending_results["vendor_id"], $fiscal_year_id, 'B') == '') {
+  } elseif (strtolower($spending_results['is_prime_or_sub']) == 'yes' && strtolower($spending_results['is_minority_vendor'])=='y') {
     $linkable_fields = array(
       "agency_name" => "/spending_landing/category/" . $spending_results['spending_category_id'] . "/year/" . $fiscal_year_id . "/yeartype/B/agency/" . $spending_results["agency_id"],
       "vendor_name" => "/spending_landing/category/" . $spending_results['spending_category_id'] . "/year/" . $fiscal_year_id . "/yeartype/B/subvendor/" . $spending_results["vendor_id"] . "/dashboard/ss",
     );
-  } elseif ($spending_results['is_prime_or_sub'] == 'No' && SpendingUtil::getLatestMwbeCategoryBySpendingVendorByTransactionYear($spending_results["vendor_id"], $fiscal_year_id, 'B') != '') {
+  } elseif (strtolower($spending_results['is_prime_or_sub']) == 'no' && strtolower($spending_results['is_minority_vendor'])=='y') {
     $linkable_fields = array(
       "agency_name" => "/spending_landing/category/" . $spending_results['spending_category_id'] . "/year/" . $fiscal_year_id . "/yeartype/B/agency/" . $spending_results["agency_id"],
       "vendor_name" => "/spending_landing/yeartype/B/year/" . $fiscal_year_id . "/category/" . $spending_results['spending_category_id'] . "/mwbe/2~3~4~5~9/dashboard/mp/vendor/" . $spending_results["vendor_id"],
     );
-  } elseif ($spending_results['is_prime_or_sub'] == 'Yes' && SpendingUtil::getLatestMwbeCategoryBySpendingVendorByTransactionYear($spending_results["vendor_id"], $fiscal_year_id, 'B') != '') {
+  } elseif (strtolower($spending_results['is_prime_or_sub']) == 'yes' && strtolower($spending_results['is_minority_vendor'])=='y') {
     $linkable_fields = array(
       "agency_name" => "/spending_landing/category/" . $spending_results['spending_category_id'] . "/year/" . $fiscal_year_id . "/yeartype/B/agency/" . $spending_results["agency_id"],
       "vendor_name" => "/spending_landing/yeartype/B/year/" . $fiscal_year_id . "/category/" . $spending_results['spending_category_id'] . "/mwbe/2~3~4~5~9/dashboard/ms/subvendor/" . $spending_results["vendor_id"],
