@@ -105,6 +105,7 @@ END;
       if ($facet->selected) {
         $checked = $facet->selected && in_array(strtolower($facet_value), $lowercase_selected);
         $checked = $checked ? ' checked="checked" ' : '';
+        $active = $checked ? ' class="active" ' : '';
       }
       echo '<input type="checkbox" id="'.$id.'" '.$checked . ' facet="'.$facet_name.'" value="'.
         htmlentities(urlencode($facet_value)).'" />';
@@ -148,6 +149,7 @@ END;
             if ($sub_facet->selected) {
               $checked = in_array($sub_facet_value, $sub_facet->selected);
               $checked = $checked ? ' checked="checked" ' : '';
+              $active = $checked ? ' class="active" ' : '';
             }
             echo '<input type="checkbox" id="'.$id.'" '.$checked . ' facet="'.$sub_facet_name.'" value="'.
               htmlentities(urlencode($sub_facet_value)).'" />';

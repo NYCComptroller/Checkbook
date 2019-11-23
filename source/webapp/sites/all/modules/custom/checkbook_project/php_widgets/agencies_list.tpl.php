@@ -2,7 +2,7 @@
 /**
  * This file is part of the Checkbook NYC financial transparency software.
  *
- * Copyright (C) 2012, 2013 New York City
+ * Copyright (C) 2019 New York City
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -18,19 +18,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+//145 = {array} [3]
+// agency_id = {int} 9000
+// agency_name = "NEW YORK CITY ECONOMIC DEVELOPMENT CORPORATION"
+// is_oge_agency = "Y"
 
-$city_agencies = array();
-$edc_agencies = array();
-$nycha_agencies= array();
-foreach($node->data as $key=>$value){
-    if($value['is_oge_agency'] == 'Y'){
-        $edc_agencies[$key] = $value;
-    }else if($value['is_oge_agency'] == 'N'){
-        $city_agencies[$key] = $value;
-    }else{
-        $nycha_agencies[$key] = $value;
-    }
-}
+$city_agencies = $node->data[Datasource::CITYWIDE];
+$edc_agencies = $node->data[Datasource::OGE];
+$nycha_agencies= $node->data[Datasource::NYCHA];
 
 $oge_filter_highlight = (_checkbook_check_isEDCPage() || _checkbook_check_isNYCHAPage()) ? 'agency_filter_highlight' : '';
 $city_filter_highlight = (!(_checkbook_check_isEDCPage() || _checkbook_check_isNYCHAPage())) ? 'agency_filter_highlight' : '';
@@ -59,9 +54,9 @@ if($current_url[1] == 'contracts_landing' || $current_url[1] == 'contracts_reven
 
 $selected_text = 'Citywide Agencies';
 
-foreach($city_agencies as $key => $value){
-    if($value['agency_id'] == $agency_id_value){
-        $selected_text = $value['agency_name'];
+foreach($city_agencies as $key => $agency){
+    if($agency['id'] == $agency_id_value){
+        $selected_text = $agency['title'];
     }
 }
 
@@ -78,11 +73,11 @@ foreach($agencies as $key => $agencies_chunck){
     foreach($agencies_chunck as $a => $agency){
         $agency_url ="";
 
-        $agency_url = ($current_url[1] == 'payroll')?'payroll/agency_landing/agency/'.$agency['agency_id'].'/yeartype/C/year/'.$current_cal_year
-            : $url.'/agency/'.$agency['agency_id'];
+        $agency_url = ($current_url[1] == 'payroll')?'payroll/agency_landing/agency/'.$agency['id'].'/yeartype/C/year/'.$current_cal_year
+            : $url.'/agency/'.$agency['id'];
 
-        $agency_list .= "<li id=agency-list-id-".$agency['agency_id'].">
-                            <a href='/".$agency_url. "'>".$agency['agency_name']."</a>
+        $agency_list .= "<li id=agency-list-id-".$agency['id'].">
+                            <a href='/".$agency_url. "'>".$agency['title']."</a>
                         </li>";
     }
     $agency_list .= "</ul>";
@@ -103,7 +98,7 @@ else
     $edc_url = "spending_landing";
 
 //NYCHA Agencies: Set NYCHA default URL to Contracts
-$nycha_url = "nycha_contracts/year/".$current_cal_year."/datasource/checkbook_nycha";
+$nycha_url = "nycha_spending/year/".$current_cal_year."/datasource/checkbook_nycha";
 
 $agency_list_other = "<div id='agency-list-other' class='agency-nav-dropdowns'>
   <div class='agency-list-open'><span id='other-agency-list-open' class='".$oge_filter_highlight."'>Other Government Entities</span></div>
@@ -112,10 +107,10 @@ $agency_list_other = "<div id='agency-list-other' class='agency-nav-dropdowns'>
         <div class='agency-slide'>
           <ul class='listCol'>";
 foreach($edc_agencies as $key => $edc_agency){
-    $agency_list_other .= "<li><a href='/". $edc_url .'/yeartype/B/year/'.$current_fy_year."/datasource/checkbook_oge/agency/".$edc_agency['agency_id']. "'>". $edc_agency['agency_name'] ."</a></li>";
+    $agency_list_other .= "<li><a href='/". $edc_url .'/yeartype/B/year/'.$current_fy_year."/datasource/checkbook_oge/agency/".$edc_agency['id']. "'>". $edc_agency['title'] ."</a></li>";
 }
 foreach($nycha_agencies as $key => $nycha_agency){
-    $agency_list_other .= "<li><a href='/". $nycha_url .'/agency/'.$nycha_agency['agency_id'] ."'>". $nycha_agency['agency_name'] ."</a></li>";
+    $agency_list_other .= "<li><a href='/". $nycha_url .'/agency/'.$nycha_agency['id'] ."'>". $nycha_agency['title'] ."</a></li>";
 }
 $agency_list_other .= "</ul>
         </div>
