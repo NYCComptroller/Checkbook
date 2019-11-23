@@ -23,6 +23,8 @@ $hidePrevLabel = (isset($node->widgetConfig->chartConfig->series[0]->showInLegen
 
 $SeriesPreviousYearLabel = $node->widgetConfig->chartConfig->series[0]->name;
 $SeriesCurrentYearLabel = $node->widgetConfig->chartConfig->series[1]->name;
+//check if grid data is set (NYCHA spending by month grid dispaly)
+if (isset($node->widgetConfig->gridConfig->data)){$node->data = $node->widgetConfig->gridConfig->data;}
 
 include_once('spending_title.php');
 include_once('page_title.php');
