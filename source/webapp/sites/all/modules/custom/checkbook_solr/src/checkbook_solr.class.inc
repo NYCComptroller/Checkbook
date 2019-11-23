@@ -1,4 +1,23 @@
 <?php
+/**
+ * This file is part of the Checkbook NYC financial transparency software.
+ *
+ * Copyright (C) 2019 New York City
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 /*
  * Redirects to the search results page upon submitting the search form
  *
@@ -170,11 +189,20 @@ class CheckbookSolr
       return $result;
     }
 
-    ini_set('default_socket_timeout', 120);
     $url = $this->solr_url . $query;
+
+    if ($cached = $this->cached($query)) {
+      LogHelper::log_notice("Cache hit: " . $url);
+      return $cached;
+    }
+
+    ini_set('default_socket_timeout', 120);
     LogHelper::log_notice("Getting solr: " . $url);
     try {
       $contents = file_get_contents($url);
+      if ($contents && strlen($contents) < 100000){
+        $this->cache($query, $contents);
+      }
     } catch (Exception $ex) {
       LogHelper::log_warn("Solr error: " . $ex->getMessage());
       $contents = '';
@@ -248,5 +276,26 @@ class CheckbookSolr
   public function request_csv(string $query): string
   {
     return $this->raw_query($query);
+  }
+
+  private function cache_key(string $query)
+  {
+    return '_solr_'.$this->datasource.'_'.md5($query);
+  }
+
+  private function cache(string $query, $value)
+  {
+    $cacheKey = $this->cache_key($query);
+    _checkbook_dmemcache_set($cacheKey, $value);
+  }
+
+  private function cached(string $query)
+  {
+    $cacheKey = $this->cache_key($query);
+    $cached = _checkbook_dmemcache_get($cacheKey);
+    if ($cached) {
+      return $cached;
+    }
+    return FALSE;
   }
 }
