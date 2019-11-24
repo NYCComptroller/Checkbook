@@ -52,3 +52,4 @@ files[] = customclasses/util/MappingUtil.php
 files[] = customclasses/util/CheckbookAPIUtil.php
 files[] = customclasses/budget/BudgetUtil.php
 files[] = customclasses/revenue/RevenueUtil.php
+files[] = customclasses/AgencyList.php
