@@ -3,16 +3,12 @@
     {"labelAlias":"issue_date","column":"issue_date"},
     {"labelAlias":"document_id","column":"document_id"},
     {"labelAlias":"section8_flag","column":"section8_flag"},
-    {"labelAlias":"record_type","column":"record_type"},
     {"labelAlias":"purchase_order_type","column":"agreement_type_name"},
     {"labelAlias":"contract_id","column":"contract_id"},
     {"labelAlias":"release_number","column":"release_number"},
     {"labelAlias":"invoice_number", "column":"invoice_number"},
     {"labelAlias":"check_status","column":"check_payment_status"},
     {"labelAlias":"check_amount", "column":"check_amount"},
-    {"labelAlias":"billed_amount","column":"line_net_amount"},
-    {"labelAlias":"invoice_discount","column":"invoice_discount"},
-    {"labelAlias":"nycha_tax_withheld","column":"withholding_tax"},
     {"labelAlias":"amount_spent","column":"invoice_net_amount"},
     {"labelAlias":"vendor","column":"vendor_name"},
     {"labelAlias":"contract_purpose","column":"contract_purpose"},
@@ -26,26 +22,26 @@
     {"labelAlias":"project", "column":"gl_project_description"}
   ],
   "exportColumnSqlOverride":[
-  {
-  "column":"agreement_type_name",
-  "sourceColumn":"agreement_type_name",
-  "sql":"
+    {
+      "column":"agreement_type_name",
+      "sourceColumn":"agreement_type_name",
+      "sql":"
       CASE
       WHEN agreement_type_name IS NULL THEN '-'
       ELSE agreement_type_name
       END AS agreement_type_name
-  "
-  },
-  {
-  "column":"contract_id",
-  "sourceColumn":"contract_id",
-  "sql":"
-    CASE
-    WHEN contract_id IS NULL THEN '-'
-    ELSE contract_id
-    END AS contract_id
-  "
-  },
+      "
+    },
+    {
+      "column":"contract_id",
+      "sourceColumn":"contract_id",
+      "sql":"
+      CASE
+      WHEN contract_id IS NULL THEN '-'
+      ELSE contract_id
+      END AS contract_id
+      "
+    },
     {
       "column":"document_id",
       "sourceColumn":"document_id",
@@ -56,111 +52,46 @@
       END AS document_id
       "
     },
-  {
-  "column":"release_number",
-  "sourceColumn":"release_number",
-  "sql":"
-    CASE
-    WHEN release_number IS NULL THEN '-'
-    ELSE CAST(release_number AS TEXT)
-    END AS release_number
-  "
-  },
-  {
-  "column":"invoice_number",
-  "sourceColumn":"invoice_number",
-  "sql":"
-    CASE
-    WHEN invoice_number IS NULL THEN '-'
-    ELSE CAST(invoice_number AS TEXT)
-    END AS invoice_number
-  "
-  },
+    {
+      "column":"release_number",
+      "sourceColumn":"release_number",
+      "sql":"
+      CASE
+      WHEN release_number IS NULL THEN '-'
+      ELSE CAST(release_number AS TEXT)
+      END AS release_number
+      "
+    },
+    {
+      "column":"invoice_number",
+      "sourceColumn":"invoice_number",
+      "sql":"
+      CASE
+      WHEN invoice_number IS NULL THEN '-'
+      ELSE CAST(invoice_number AS TEXT)
+      END AS invoice_number
+      "
+    },
     {
       "column":"check_payment_status",
       "sourceColumn":"check_payment_status",
       "sql":"
       CASE
-      WHEN upper(record_type) = 'CHECK' AND check_payment_status IS NULL THEN '-'
-      WHEN upper(record_type) = 'INVOICE' THEN '-'
-      WHEN upper(record_type) = 'AGREEMENT' THEN '-'
+      WHEN check_payment_status IS NULL THEN '-'
       ELSE CAST(check_payment_status AS TEXT)
       END AS check_payment_status
       "
     },
-  {
-  "column":"check_amount",
-  "sourceColumn":"check_amount",
-  "sql":"
-    CASE
-    WHEN upper(record_type) = 'CHECK' AND check_amount IS NULL THEN '-'
-    WHEN upper(record_type) = 'INVOICE' THEN '-'
-    WHEN upper(record_type) = 'AGREEMENT' THEN '-'
-    ELSE CAST(check_amount AS TEXT)
-    END AS check_amount
-  "
-  },
     {
-      "column":"line_net_amount",
-      "sourceColumn":"line_net_amount",
+      "column":"check_amount",
+      "sourceColumn":"check_amount",
       "sql":"
       CASE
-      WHEN upper(section8_flag) = 'Y' THEN '-'
-      ELSE CAST(line_net_amount AS TEXT)
-      END AS line_net_amount
+      WHEN check_amount IS NULL THEN '-'
+      ELSE CAST(check_amount AS TEXT)
+      END AS check_amount
       "
     },
-  {
-    "column":"invoice_amount",
-    "sourceColumn":"invoice_amount",
-    "sql":"
-      CASE
-      WHEN upper(section8_flag) = 'N' OR upper(section8_flag) = 'Y' THEN '-'
-      WHEN invoice_amount IS NULL OR invoice_amount= '0' THEN '-'
-      ELSE CAST(invoice_amount AS TEXT)
-      END AS invoice_amount
-    "
-  },
-  {
-    "column":"invoice_discount",
-    "sourceColumn":"invoice_discount",
-    "sql":"
-      CASE
-      WHEN upper(section8_flag) = 'Y' THEN '-'
-      ELSE CAST(invoice_discount AS TEXT)
-      END AS invoice_discount
-    "
-  },
-    {
-      "column":"withholding_tax",
-      "sourceColumn":"withholding_tax",
-      "sql":"
-      CASE
-      WHEN upper(section8_flag) = 'Y' THEN '-'
-      ELSE CAST(withholding_tax AS TEXT)
-      END AS withholding_tax
-      "
-    },
-  {
-    "column":"tenant_share",
-    "sourceColumn":"tenant_share",
-    "sql":"
-      CASE
-      WHEN tenant_share IS NULL THEN '-'
-      ELSE CAST(tenant_share AS TEXT)
-      END AS tenant_share
-    "
-  },
-  {
-    "column":"invoice_net_amount",
-    "sourceColumn":"invoice_net_amount",
-    "sql":"
-      CASE
-      WHEN invoice_net_amount IS NULL THEN '-'
-      ELSE CAST(invoice_net_amount AS TEXT)
-      END AS invoice_net_amount
-    "
-  },
     {
       "column":"contract_purpose",
       "sourceColumn":"contract_purpose",
@@ -192,54 +123,34 @@
       "
     },
     {
-      "column":"start_date",
-      "sourceColumn":"start_date",
+      "column":"funding_source_description",
+      "sourceColumn":"funding_source_description",
       "sql":"
-        CASE
-        WHEN start_date IS NULL THEN '-'
-        ELSE TO_CHAR(start_date,'MM/DD/YYYY')
-        END AS start_date
-      "
-    },
-    {
-    "column":"end_date",
-    "sourceColumn":"end_date",
-    "sql":"
-      CASE
-      WHEN end_date IS NULL THEN '-'
-      ELSE TO_CHAR(end_date,'MM/DD/YYYY')
-      END AS end_date
-    "
-    },
-    {
-    "column":"funding_source_description",
-    "sourceColumn":"funding_source_description",
-    "sql":"
       CASE
       WHEN funding_source_description IS NULL THEN '-'
       ELSE funding_source_description
       END AS funding_source_description
-    "
+      "
     },
     {
-    "column":"responsibility_center_description",
-    "sourceColumn":"responsibility_center_description",
-    "sql":"
+      "column":"responsibility_center_description",
+      "sourceColumn":"responsibility_center_description",
+      "sql":"
       CASE
       WHEN responsibility_center_description IS NULL THEN '-'
       ELSE responsibility_center_description
       END AS responsibility_center_description
-    "
+      "
     },
     {
-    "column":"expenditure_type_description",
-    "sourceColumn":"expenditure_type_description",
-    "sql":"
+      "column":"expenditure_type_description",
+      "sourceColumn":"expenditure_type_description",
+      "sql":"
       CASE
       WHEN expenditure_type_name IS NULL THEN '-'
       ELSE expenditure_type_name
       END AS expenditure_type_name
-    "
+      "
     },
     {
       "column":"program_phase_description",
