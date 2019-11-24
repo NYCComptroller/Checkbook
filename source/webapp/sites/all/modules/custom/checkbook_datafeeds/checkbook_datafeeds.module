@@ -28,8 +28,8 @@ module_load_include('inc', 'checkbook_datafeeds', 'includes/checkbook_datafeeds_
 
 spl_autoload_register(function ($class) {
   if (FALSE !== strpos($class, 'checkbook_datafeeds')) {
-    list(,$class) = explode('\\',$class);
-    include 'includes/'.$class.'.php';
+    list(, $class) = explode('\\', $class);
+    include_once 'includes/' . $class . '.class.inc';
   }
 });
 
@@ -140,7 +140,6 @@ function checkbook_datafeeds_api_page()
   $node = node_view($node);
   return $node;
 }
-
 
 
 /**
@@ -534,45 +533,65 @@ function _year_options($yeartype = NULL)
  */
 function _agency_options($data_source = Datasource::CITYWIDE, $json_output = false)
 {
-  try {
-    $dataController = data_controller_get_instance();
-    switch ($data_source) {
-      case Datasource::OGE:
-        $data = $dataController->queryDataset("checkbook_oge:agency", array(
-          'agency_code',
-          'agency_name',
-        ), array("is_display" => "Y", "is_oge_agency" => "Y"), 'agency_name');
-        break;
-      case Datasource::NYCHA:
-        $data = $dataController->queryDataset("checkbook_nycha:agency", array(
-          'agency_code',
-          'agency_name',
-        ), array("is_display" => "Y"), 'agency_name');
-        break;
-      case 'checkbook_oge_nycha':
-        $oge_data = $dataController->queryDataset("checkbook_oge:agency", array(
-          'agency_code',
-          'agency_name',
-        ), array("is_display" => "Y", "is_oge_agency" => "Y"), 'agency_name');
-
-        $nycha_data = $dataController->queryDataset("checkbook_nycha:agency", array(
-          'agency_code',
-          'agency_name',
-        ), array("is_display" => "Y"), 'agency_name');
-        $data = array_merge($nycha_data, $oge_data);
-        break;
-      default:
-        $data = $dataController->queryDataset("checkbook:agency", array(
-          'agency_code',
-          'agency_name',
-        ), array("is_display" => "Y"), 'agency_name');
-        break;
+  if ($json_output) {
+    $data = CheckbookGuruOptionsJson::get_instance($data_source)
+      ->get_all('agency_name_code');
+    if ($data_source == Datasource::CITYWIDE) {
+      $data = [['label' => 'Citywide (All Agencies)', 'value' => 'Citywide (All Agencies)', 'code' => '']] + $data;
     }
-    return _checkbook_datafeeds_agency_options($data, $data_source, (bool)$json_output);
-  } catch (Exception $e) {
-    log_error("Error getting data from controller: \n" . $e->getMessage());
+    drupal_json_output($data);
     return;
   }
+
+  $data = CheckbookGuruOptions::get_instance($data_source)
+    ->get_all('agency_name_code');
+  if ($data_source == Datasource::CITYWIDE && ($data['options'] ?? false)) {
+    $data['options'] = ['Citywide (All Agencies)' => 'Citywide (All Agencies)'] + $data['options'];
+    $data['options_attributes'] = ['Citywide (All Agencies)' => ['title' => 'Citywide (All Agencies)']]
+      + $data['options_attributes'];
+  }
+
+  return $data;
+
+//  try {
+//    $dataController = data_controller_get_instance();
+//    switch ($data_source) {
+//      case Datasource::OGE:
+//        $data = $dataController->queryDataset("checkbook_oge:agency", array(
+//          'agency_code',
+//          'agency_name',
+//        ), array("is_display" => "Y", "is_oge_agency" => "Y"), 'agency_name');
+//        break;
+//      case Datasource::NYCHA:
+//        $data = $dataController->queryDataset("checkbook_nycha:agency", array(
+//          'agency_code',
+//          'agency_name',
+//        ), array("is_display" => "Y"), 'agency_name');
+//        break;
+//      case 'checkbook_oge_nycha':
+//        $oge_data = $dataController->queryDataset("checkbook_oge:agency", array(
+//          'agency_code',
+//          'agency_name',
+//        ), array("is_display" => "Y", "is_oge_agency" => "Y"), 'agency_name');
+//
+//        $nycha_data = $dataController->queryDataset("checkbook_nycha:agency", array(
+//          'agency_code',
+//          'agency_name',
+//        ), array("is_display" => "Y"), 'agency_name');
+//        $data = array_merge($nycha_data, $oge_data);
+//        break;
+//      default:
+//        $data = $dataController->queryDataset("checkbook:agency", array(
+//          'agency_code',
+//          'agency_name',
+//        ), array("is_display" => "Y"), 'agency_name');
+//        break;
+//    }
+//    return _checkbook_datafeeds_agency_options($data, $data_source, (bool)$json_output);
+//  } catch (Exception $e) {
+//    log_error("Error getting data from controller: \n" . $e->getMessage());
+//    return;
+//  }
 }
 
 /**
@@ -582,34 +601,34 @@ function _agency_options($data_source = Datasource::CITYWIDE, $json_output = fal
  * @param bool $json_output
  * @return mixed
  */
-function _checkbook_datafeeds_agency_options($data, $data_source = Datasource::CITYWIDE, $json_output = false)
-{
-  $title = '';
-  //IE8 - handle drop down width issue
-  if ($data_source == Datasource::CITYWIDE) {
-    $menu_options = array('Citywide (All Agencies)' => 'Citywide (All Agencies)');
-    $json_menu_options[] = array('label' => 'Citywide (All Agencies)', 'value' => 'Citywide (All Agencies)', 'code' => '');
-    $title = 'Citywide (All Agencies)';
-  }
-
-  $menu_options_attributes = array($title => array('title' => $title));
-
-  foreach ($data as $row) {
-    $option = $row['agency_name'] . ' [' . $row['agency_code'] . ']';
-    //Menu options
-    $menu_options[$option] = (strlen($option) > 20) ? substr($option, 0, 20) . '...' : $option;
-    $json_menu_options[] = array('label' => $menu_options[$option], 'value' => $option, 'code' => $option);
-    //Menu option titles
-    $menu_options_attributes[$option] = array('title' => $option);
-  }
-  $results['options'] = $menu_options;
-  $results['options_attributes'] = $menu_options_attributes;
-  if ($json_output) {
-    drupal_json_output($json_menu_options);
-    return;
-  }
-  return $results;
-}
+//function _checkbook_datafeeds_agency_options($data, $data_source = Datasource::CITYWIDE, $json_output = false)
+//{
+//  $title = '';
+//  //IE8 - handle drop down width issue
+//  if ($data_source == Datasource::CITYWIDE) {
+//    $menu_options = array('Citywide (All Agencies)' => 'Citywide (All Agencies)');
+//    $json_menu_options[] = array('label' => 'Citywide (All Agencies)', 'value' => 'Citywide (All Agencies)', 'code' => '');
+//    $title = 'Citywide (All Agencies)';
+//  }
+//
+//  $menu_options_attributes = array($title => array('title' => $title));
+//
+//  foreach ($data as $row) {
+//    $option = $row['agency_name'] . ' [' . $row['agency_code'] . ']';
+//    //Menu options
+//    $menu_options[$option] = (strlen($option) > 20) ? substr($option, 0, 20) . '...' : $option;
+//    $json_menu_options[] = array('label' => $menu_options[$option], 'value' => $option, 'code' => $option);
+//    //Menu option titles
+//    $menu_options_attributes[$option] = array('title' => $option);
+//  }
+//  $results['options'] = $menu_options;
+//  $results['options_attributes'] = $menu_options_attributes;
+//  if ($json_output) {
+//    drupal_json_output($json_menu_options);
+//    return;
+//  }
+//  return $results;
+//}
 
 
 /**

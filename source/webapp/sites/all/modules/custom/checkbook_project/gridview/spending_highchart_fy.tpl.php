@@ -23,7 +23,6 @@ $hidePrevLabel = (isset($node->widgetConfig->chartConfig->series[0]->showInLegen
 
 $SeriesPreviousYearLabel = $node->widgetConfig->chartConfig->series[0]->name;
 $SeriesCurrentYearLabel = $node->widgetConfig->chartConfig->series[1]->name;
-
 include_once('spending_title.php');
 include_once('page_title.php');
 include_once('export_link.php');
