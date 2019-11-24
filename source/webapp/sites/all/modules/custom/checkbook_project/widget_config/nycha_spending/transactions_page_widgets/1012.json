@@ -62,6 +62,9 @@
     "contract_id_formatted":{
       "expression":"($row['contract_id'] == null) ? '-' : $row['contract_id']"
     },
+    "contract_id_link":{
+      "expression":"($row['contract_id'] != null) ? NychaSpendingUrlService::generateContractIdLink($row['contract_id']) : $row['contract_id_formatted']"
+    },
     "release_number_formatted":{
       "expression":"($row['release_number'] == null) ? '-' : $row['release_number']"
     },
@@ -115,7 +118,7 @@
     {"labelAlias":"section8_flag","column":"section8_flag","sortSourceColumn":"section8_flag"},
     {"labelAlias":"purchase_order_type","column":"agreement_type_name_formatted","sortSourceColumn":"agreement_type_name"},
     {"label":"","column":"", "export":false},
-    {"labelAlias":"contract_id","column":"contract_id_formatted","sortSourceColumn":"contract_id"},
+    {"labelAlias":"contract_id","column":"contract_id_link","sortSourceColumn":"contract_id"},
     {"labelAlias":"release_number","column":"release_number_formatted","sortSourceColumn":"release_number"},
     {"label":"","column":"", "export":false},
     {"labelAlias":"invoice_number","column":"invoice_number_formatted", "sortSourceColumn":"invoice_number"},

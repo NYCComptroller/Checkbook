@@ -117,4 +117,16 @@ class NychaSpendingUrlService{
 
         return $url;
       }
+
+      /** Builds Contract ID link for Spending widgets
+       * @param $contract_id contract number
+       ***/
+      static function generateContractIdLink($contract_id){
+        $year_id = RequestUtilities::getRequestParamValue('year');
+        $year_id = (isset($year_id)) ? $year_id : CheckbookDateUtil::getCurrentFiscalYear(Datasource::NYCHA);
+        $class = "new_window";
+        $url ='/nycha_contract_details' . '/year/'.$year_id.'/contract/' . $contract_id .'/newwindow';
+        $value = "<a class='{$class}' href='{$url}'>{$contract_id}</a>";
+        return $value;
+      }
 }
