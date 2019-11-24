@@ -101,18 +101,26 @@
 
   //Load Agency Drop-Down
   let reloadSpendingAgencies = function (dataSource) {
+    html = '';
+    if ('citywide' == dataSource) {
+      html = '<option value="0" selected="selected">Citywide (All Agencies)</option>';
+    }
     $.ajax({
-      url: '/datafeeds/spending/agency/' + dataSource + '/json'
+      url: '/solr_options/'+dataSource+'/spending/agency_name_code/'
       , success: function (data) {
-        let html = '';
+        $('#edit-agency').html(html);
         if (data[0]) {
-          if (data[0].label !== 'No Matches Found') {
-            for (let i = 0; i < data.length; i++) {
-              html = html + '<option title="' + data[i].value + '" value="' + data[i].value + '">' + data[i].label + '</option>';
-            }
+          for (let i = 0; i < data.length; i++) {
+            $('#edit-agency').append(
+              $('<option>').attr('title',data[i].value)
+                .val(data[i].value)
+                .text(data[i].label)
+            );
           }
+        } else {
+          $('#edit-agency').attr('disabled', 'disabled');
         }
-        $('#edit-agency').html(html).trigger('change');
+        $('#edit-agency').trigger('change');
 
         spendingDatafeedsDis(dataSource);
       }
@@ -136,31 +144,44 @@
   // When Agency Filter is changed reload Department and Expense Category drop-downs
   let reloadSpendingDepartments = function () {
     let agency = $('#edit-agency').val();
-    let html = '<option value="" selected="selected">Select Department</option>';
+    let html = '<option value="0" selected="selected">Select Department</option>';
 
-    if ($.inArray(agency, ["", null, 'Select One', 'Citywide (All Agencies)']) === -1) {
+    if ($.inArray(agency, ["", null, 'Select One', 'Citywide (All Agencies)', 0]) === -1) {
       agency = emptyToZero(agency);
       $('#edit-dept').addClass('loading');
       let year = 0;
+      if ($('input:radio[name=date_filter]:checked').val() === '0') {
+        year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
+        year = year.replace('ALL','').replace('FY','').trim();
+        if(year){
+          console.log(year);
+          year = year.match(/\d+/)[0];
+        }
+      }
       const data_source = $('input[name="datafeeds-spending-domain-filter"]:checked').val();
       const spending_cat = getSpendingExpenseType(data_source);
 
+      let filter = new URLSearchParams();
+      if(agency){filter.set('agency_code',agency)}
+      if(year){filter.set('fiscal_year',year)}
+      if(spending_cat){filter.set('spending_category_id', spending_cat)}
+
       $.ajax({
-        url: '/autocomplete/spending/dept/' + year + '/' + agency + '/' + spending_cat + '/' + data_source
+        url: '/solr_options/'+data_source+'/spending/department_name_code/?'+filter
         , success: function (data) {
-          if (data[0] && data[0].label !== 'No Matches Found') {
-            html = '<option select="selected" value="0" >Select Department</option>';
+          $('#edit-dept').html(html);
+          if (data[0]) {
             for (let i = 0; i < data.length; i++) {
-              let dept = data[i].toUpperCase();
-              html = html + '<option title="' + dept + '" value="' + dept + '">' + dept + '</option>';
+              $('#edit-dept').append(
+                $('<option>').attr('title',data[i].value.toUpperCase())
+                  .val(data[i].value)
+                  .text(data[i].label)
+              );
             }
-            //Reload Department Drop-down
             $('#edit-dept').removeAttr('disabled');
           } else {
             $('#edit-dept').attr('disabled', 'disabled');
           }
-
-          $('#edit-dept').html(html);
         }
         , complete: function () {
           $('#edit-dept').removeClass('loading');
@@ -182,32 +203,49 @@
       ('checkbook_nycha'==data_source && dept)) {
       $('#edit-expense-category').addClass('loading');
       let year = 0;
-      // if ($('input:radio[name=date_filter]:checked').val() === '0') {
-      //   year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
-      // }
+      if ($('input:radio[name=date_filter]:checked').val() === '0') {
+        year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
+        year = year.replace('ALL','').replace('FY','').trim();
+        if(year){
+          console.log(year);
+          year = year.match(/\d+/)[0];
+        }
+      }
       agency = emptyToZero(agency);
       let spending_cat = getSpendingExpenseType(data_source);
 
+      let filter = new URLSearchParams();
+      if(agency){filter.set('agency_code',agency)}
+      if(dept){filter.set('department_code',dept)}
+      if(spending_cat){filter.set('spending_category_id', spending_cat)}
+      if(year){filter.set('fiscal_year',year)}
+
       $.ajax({
-        url: '/autocomplete/spending/expcategory/' + agency + '/' + dept + '/' + spending_cat + '/' + year + '/' + data_source
+        url: '/solr_options/'+data_source+'/spending/expenditure_object_name_code/?'+filter
         , success: function (data) {
           let html = '<option select="selected" value="0" >Select Expense Category</option>';
+          $('#edit-expense-category').html(html);
           if (data[0]) {
             if (data[0].label !== '') {
               for (let i = 0; i < data.length; i++) {
-                html = html + '<option title="' + data[i].value + '" value="' + data[i].value + '">' + data[i].label + '</option>';
+                $('#edit-expense-category').append(
+                  $('<option>').attr('title',data[i].value.toUpperCase())
+                    .val(data[i].value)
+                    .text(data[i].label)
+                );
               }
             }
+            $('#edit-expense-category').removeAttr('disabled');
+          } else {
+            $('#edit-expense-category').attr('disabled', 'disabled');
           }
-          $('#edit-expense-category').removeAttr('disabled');
-          $('#edit-expense-category').html(html);
         }
         , complete: function () {
           $('#edit-expense-category').removeClass('loading');
         }
       });
     } else {
-      let html = '<option value="" selected="selected">Select Expense Category</option>';
+      let html = '<option value="0" selected="selected">Select Expense Category</option>';
       $('#edit-expense-category').html(html);
       $('#edit-expense-category').attr('disabled', 'disabled');
     }
@@ -328,6 +366,12 @@
         reloadSpendingExpenceCategories();
       });
 
+      //Agency drop-down change event
+      $('select[name="year"]', context).change(function () {
+        reloadSpendingDepartments();
+        reloadSpendingExpenceCategories();
+      });
+
       //Department drop-down change event
       $('select[name="dept"]', context).change(function () {
         reloadSpendingExpenceCategories();
@@ -426,6 +470,7 @@
 
   //Function to retrieve values enclosed in brackets or return zero if none
   function emptyToZero(input) {
+    if (null === input) {return 0}
     const p = /\[(.*?)]$/;
     const code = p.exec(input.trim());
     if (code) {
