@@ -1,6 +1,0 @@
-2014/07/08 12:10:17 - EXE ETL PL SCRIPT - Found 0 previous result rows
-2014/07/08 12:10:17 - EXE ETL PL SCRIPT - Running on platform : Linux
-2014/07/08 12:10:17 - EXE ETL PL SCRIPT - Executing command : /vol2share/NYC/NYC_ETL_JOBS/CHECKBOOK_MASTER_JOB_POSTGRESQL_DB_OGE/PreProcessing_DataFiles/master_preprocess.sh NYCEDC EDC_feed.csv
-2014/07/08 12:10:17 - EXE ETL PL SCRIPT - (stdout) NYCEDC
-2014/07/08 12:10:17 - EXE ETL PL SCRIPT - (stdout) EDC_feed.csv
-2014/07/08 12:10:17 - EXE ETL PL SCRIPT - Command /vol2share/NYC/NYC_ETL_JOBS/CHECKBOOK_MASTER_JOB_POSTGRESQL_DB_OGE/PreProcessing_DataFiles/master_preprocess.sh NYCEDC EDC_feed.csv has finished

@@ -45,7 +45,7 @@ function checkbook_solr_options(string $data_source, string $domain, string $fac
 
   foreach($facets as $fq => $value){
     if ('term' == $fq) {
-      if ($value) {
+      if ($value = trim($value)) {
         $Guru->setFqAutocompleteTerm($facet, $value);
       }
       $is_autocomplete = TRUE;

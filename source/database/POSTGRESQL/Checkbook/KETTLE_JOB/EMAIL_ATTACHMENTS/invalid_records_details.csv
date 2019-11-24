@@ -1,4 +1,0 @@
-Data Source Name,Data File Name,Total Invalid records,Invalid Reason
-COADepartment,AIE7_DLY_COA_APPR_20140405205803.txt, 1,Duplicate
-FMSV,AIE6_DLY_VEND_BTYP_20140405205753.txt, 2,Inconsistent minority type
-FMSV,AIE6_DLY_VEND_BTYP_20140405205753.txt, 1,Invalid component - business type

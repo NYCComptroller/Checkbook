@@ -1,1 +1,0 @@
-/usr/bin/nohup /bin/sh /usr/local/data-integration/kitchen.sh -file /home/gpadmin/GREENPLUM/Checkbook_ogent/KETTLE_JOB/NYC_Master_OGE_OS.kjb -norep -level:Minimal > /usr/local/data-integration/NYCETLMaster.out &

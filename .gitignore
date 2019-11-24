@@ -3,6 +3,9 @@
 .recommenders/
 nbproject/
 tmp/
+data/
+source/database/
+documentation/
 source/webapp/.buildpath
 source/webapp/.project
 source/webapp/.settings/
