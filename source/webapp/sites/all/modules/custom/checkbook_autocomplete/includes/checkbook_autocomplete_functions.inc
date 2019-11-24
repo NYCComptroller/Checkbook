@@ -761,7 +761,28 @@ function _checkbook_autocomplete_spending_dept($year, $agency, $spending_cat = n
   if (!$agency) {
     return;
   }
-//  $search_term = _get_autocomplete_search_term();
+
+//  if ($json) {
+//    $data = CheckbookGuruOptionsJson::get_instance($data_source)
+//      ->get_all('department_name_code');
+////    if ($data_source == Datasource::CITYWIDE) {
+////      $data = [['label' => 'Citywide (All Agencies)', 'value' => 'Citywide (All Agencies)', 'code' => '']] + $data;
+////    }
+//    drupal_json_output($data);
+//    return;
+//  }
+//
+//  $data = CheckbookGuruOptions::get_instance($data_source)
+//    ->get_all('department_name_code');
+////  if ($data_source == Datasource::CITYWIDE && ($data['options'] ?? false)) {
+////    $data['options'] = ['Citywide (All Agencies)' => 'Citywide (All Agencies)'] + $data['options'];
+////    $data['options_attributes'] = ['Citywide (All Agencies)' => ['title' => 'Citywide (All Agencies)']]
+////      + $data['options_attributes'];
+////  }
+//  return $data;
+
+
+  $search_term = _get_autocomplete_search_term();
   $dept = $expense_category = $exptype = $mwbe_category = $industry = null;
 
   $query = 'select/?q=*:*&facet=true&facet.field=department_name_code&f.department_name_code.facet.sort=index&fq=domain:spending&facet.mincount=1&wt=phps&facet.limit=100';

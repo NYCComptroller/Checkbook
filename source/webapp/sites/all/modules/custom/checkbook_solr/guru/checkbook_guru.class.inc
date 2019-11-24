@@ -128,4 +128,9 @@ class CheckbookGuru
     $this->parsed = TRUE;
     return $this->get_all($facet, $filter);
   }
+
+  public function setFq(string $key, string $facet_value_pair)
+  {
+    $this->solr_query->setFq($key, $facet_value_pair);
+  }
 }

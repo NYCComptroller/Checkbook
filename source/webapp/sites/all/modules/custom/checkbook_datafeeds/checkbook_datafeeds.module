@@ -550,7 +550,6 @@ function _agency_options($data_source = Datasource::CITYWIDE, $json_output = fal
     $data['options_attributes'] = ['Citywide (All Agencies)' => ['title' => 'Citywide (All Agencies)']]
       + $data['options_attributes'];
   }
-
   return $data;
 
 //  try {
