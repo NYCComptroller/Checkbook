@@ -80,8 +80,8 @@ class CheckbookDateUtil
   public static function getCurrentFiscalYear($data_source = Datasource::CITYWIDE)
   {
     self::setCurrentYears();
-    //For NYCHA, Fiscal Year is Calender Year
     $isNYCHA = ($data_source == Datasource::NYCHA || Datasource::isNYCHA()) ? true : false;
+    //For NYCHA, Fiscal Year is Calender Year
     if($isNYCHA) {
       return self::$currentCalendarYear;
     }else{
@@ -95,8 +95,8 @@ class CheckbookDateUtil
   public static function getCurrentFiscalYearId($data_source = Datasource::CITYWIDE)
   {
     self::setCurrentYears();
-    //For NYCHA, Fiscal Year is Calender Year
     $isNYCHA = ($data_source == Datasource::NYCHA || Datasource::isNYCHA()) ? true : false;
+    //For NYCHA, Fiscal Year is Calender Year
     if($isNYCHA) {
       return self::$currentCalendarYearId;
     }else{
@@ -138,9 +138,10 @@ class CheckbookDateUtil
   /**
    * @return array
    */
-  public static function getLast10FiscalYearOptions()
+  public static function getLast10FiscalYearOptions($datasource = Datasource::CITYWIDE)
   {
-    $last = self::getCurrentFiscalYear();
+    // For NYCHA Fiscal Year is Calendar Year
+    $last = ($datasource == Datasource::NYCHA) ? self::getCurrentCalendarYear() : self::getCurrentFiscalYear();
     $results = [];
     for ($year = $last; $year > $last - 10; $year--) {
       $results[] = [

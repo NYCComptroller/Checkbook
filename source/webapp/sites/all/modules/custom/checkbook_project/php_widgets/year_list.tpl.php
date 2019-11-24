@@ -110,7 +110,7 @@ foreach($years as $year){
         }
     }
     /*********  Begining of Fiscal Year Options   ********/
-    if($year['year_value'] <= $filter_years['year_value'] && $year['year_value'] != '2010'){
+    if($year['year_value'] <= $filter_years['year_value']){
 
         $display_text = 'FY '.$year['year_value'].' (Jul 1, '.($year['year_value']-1).' - Jun 30, '.$year['year_value'].')';
 
@@ -158,7 +158,7 @@ foreach($years as $year){
     }
     /*********  End of Fiscal Year Options   ********/
 
-    /*********  Beginning of Calendar Year Options (Applicable for Payroll domain only)   ********/
+    /*********  Beginning of Calendar Year Options ********/
     if(preg_match('/payroll/',request_uri())){
         if($year['year_value'] <= $filter_years['cal_year_value']){
             if(RequestUtilities::get("calyear")){
@@ -199,7 +199,7 @@ foreach($years as $year){
                                                     );
         }
     }
-    /*********  End of Calendar Year Options (Applicable for Payroll domain only)   ********/
+    /*********  End of Calendar Year Options ********/
 
     /****** Beginning of Year options for NYCHA****/
     if(Datasource::isNYCHA()){
