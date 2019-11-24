@@ -39,11 +39,30 @@ function checkbook_solr_menu()
 function checkbook_solr_options(string $data_source, string $domain, string $facet)
 {
   $Guru = CheckbookGuruOptionsJson::get_instance($data_source);
+  $Guru->setFq('domain',"domain:{$domain}");
   $facets = drupal_get_query_parameters();
+  $is_autocomplete = FALSE;
+
   foreach($facets as $fq => $value){
+    if ('term' == $fq) {
+      if ($value) {
+        $Guru->setFqAutocompleteTerm($facet, $value);
+      }
+      $is_autocomplete = TRUE;
+      continue;
+    }
     $Guru->setFq($fq,"{$fq}:{$value}");
   }
   $data = $Guru->get_all($facet);
+  if ($is_autocomplete) {
+    if (!$data) {
+      $data = [['label' => 'No Matches Found', 'value' => '']];
+    } else {
+      foreach ($data as &$line) {
+        $line['value'] = urlencode($line['value']);
+      }
+    }
+  }
   drupal_json_output($data);
   return;
 }

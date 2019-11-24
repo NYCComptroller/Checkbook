@@ -93,11 +93,11 @@ class CheckbookGuru
   {
     $seen = [];
     $out = [];
-    if (strpos($data[0],']') && ']' == substr($data[0],-1)) {
-      while($data){
+    if (strpos($data[0], ']') && ']' == substr($data[0], -1)) {
+      while ($data) {
         $facet = array_pop($data);
-        $idx = strrpos($facet,'[');
-        $id = substr($facet,$idx+1,-1);
+        $idx = strrpos($facet, '[');
+        $id = substr($facet, $idx + 1, -1);
         if (in_array($id, $seen)) {
           continue;
         }
@@ -105,10 +105,10 @@ class CheckbookGuru
         if ($this->parsed) {
           $out[] = [
             'id' => $id,
-            'title' => trim(substr($facet,0,$idx)),
+            'title' => trim(substr($facet, 0, $idx)),
             'value' => $facet
           ];
-        } else{
+        } else {
           $out[] = $facet;
         }
       }
@@ -129,8 +129,21 @@ class CheckbookGuru
     return $this->get_all($facet, $filter);
   }
 
+  /**
+   * @param string $key
+   * @param string $facet_value_pair
+   */
   public function setFq(string $key, string $facet_value_pair)
   {
     $this->solr_query->setFq($key, $facet_value_pair);
+  }
+
+  /**
+   * @param string $facet
+   * @param string $term
+   */
+  public function setFqAutocompleteTerm(string $facet, string $term)
+  {
+    $this->solr_query->setFqAutocompleteTerm($facet, $term);
   }
 }

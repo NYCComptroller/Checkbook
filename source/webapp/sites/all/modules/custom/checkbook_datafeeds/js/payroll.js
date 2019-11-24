@@ -46,12 +46,21 @@
       $('.watch:input').each(function () {
         $(this).focusin(function () {
           year = $('#edit-year', context).val();
+          year = year.replace('ALL','').replace('FY','').trim();
+          if(year){
+            year = year.match(/\d+/)[0];
+          }
           agency = ($('#edit-agency', context).val() === 'Citywide (All Agencies)') ? 0 : encodeURIComponent($('#edit-agency', context).val());
           payfrequency = ($('#edit-payfrequency', context).val() === 'All Pay Frequencies') ? 0 : $('#edit-payfrequency', context).val();
           dataSource = $('input[name="datafeeds-payroll-domain-filter"]:checked', context).val();
 
+          let filter = new URLSearchParams();
+          if(agency){filter.set('agency_code',agency)}
+          if(payfrequency){filter.set('pay_frequency', payfrequency)}
+          if(year){filter.set('calendar_fiscal_year',year)}
+
           $("#edit-title").autocomplete({
-            source: '/solr_autocomplete/'+dataSource+'/civil_service_title',
+            source: '/solr_options/'+dataSource+'/payroll/civil_service_title?'+filter,
             select: function (event, ui) {
               ui.item.value = ui.item.label;
               $(this).parent().next().val(ui.item.label);

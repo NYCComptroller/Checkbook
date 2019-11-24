@@ -154,7 +154,6 @@
         year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
         year = year.replace('ALL','').replace('FY','').trim();
         if(year){
-          console.log(year);
           year = year.match(/\d+/)[0];
         }
       }
@@ -207,7 +206,6 @@
         year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
         year = year.replace('ALL','').replace('FY','').trim();
         if(year){
-          console.log(year);
           year = year.match(/\d+/)[0];
         }
       }
