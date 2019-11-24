@@ -3,10 +3,6 @@
     "all_disbursement_transactions": {
       "datasourceName": "main",
       "source": "all_disbursement_transactions"
-    },
-    "all_disbursement_transactions_by_invoice_by_line": {
-      "datasourceName": "main",
-      "source": "all_disbursement_transactions_by_invoice_by_line"
     }
   },
   "cubes": {
