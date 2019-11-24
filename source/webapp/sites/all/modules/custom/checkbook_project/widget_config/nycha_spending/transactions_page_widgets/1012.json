@@ -44,8 +44,7 @@
   "noDataInitialLoad":true,
   "html_class":"initiative-table",
   "no_results_content":"No Results Found",
-  "dataset":"checkbook_nycha:all_disbursement_transactions_by_invoice_by_line",
-  "uniqueSortColumn":["-sort_sequence"],
+  "dataset":"checkbook_nycha:all_disbursement_transactions",
   "columns": ["issue_date", "document_id", "section8_flag", "agreement_type_name", "contract_id", "release_number",
     "invoice_number","check_payment_status", "check_amount", "vendor_name", "vendor_id",
     "contract_purpose", "display_spending_category_name", "display_industry_type_name",
@@ -63,6 +62,9 @@
     "contract_id_formatted":{
       "expression":"($row['contract_id'] == null) ? '-' : $row['contract_id']"
     },
+    "contract_id_link":{
+      "expression":"($row['contract_id'] != null) ? NychaSpendingUrlService::generateContractIdLink($row['contract_id']) : $row['contract_id_formatted']"
+    },
     "release_number_formatted":{
       "expression":"($row['release_number'] == null) ? '-' : $row['release_number']"
     },
@@ -73,7 +75,7 @@
       "expression": "($row['check_payment_status'] == null) ? '-' : $row['check_payment_status']"
     },
     "check_amount_formatted":{
-      "expression": "($row['check_amount'] == null) ? '-' : custom_number_formatter_basic_format($row['check_amount']"
+      "expression": "($row['check_amount'] == null) ? '-' : custom_number_formatter_basic_format($row['check_amount'])"
     },
     "amount_spent_formatted":{
       "expression": "($row['invoice_net_amount'] == null) ? '-' : custom_number_formatter_basic_format($row['invoice_net_amount'])"
@@ -116,7 +118,7 @@
     {"labelAlias":"section8_flag","column":"section8_flag","sortSourceColumn":"section8_flag"},
     {"labelAlias":"purchase_order_type","column":"agreement_type_name_formatted","sortSourceColumn":"agreement_type_name"},
     {"label":"","column":"", "export":false},
-    {"labelAlias":"contract_id","column":"contract_id_formatted","sortSourceColumn":"contract_id"},
+    {"labelAlias":"contract_id","column":"contract_id_link","sortSourceColumn":"contract_id"},
     {"labelAlias":"release_number","column":"release_number_formatted","sortSourceColumn":"release_number"},
     {"label":"","column":"", "export":false},
     {"labelAlias":"invoice_number","column":"invoice_number_formatted", "sortSourceColumn":"invoice_number"},

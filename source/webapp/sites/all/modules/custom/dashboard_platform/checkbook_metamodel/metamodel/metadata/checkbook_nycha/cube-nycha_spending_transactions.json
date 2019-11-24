@@ -3,10 +3,6 @@
     "all_disbursement_transactions": {
       "datasourceName": "main",
       "source": "all_disbursement_transactions"
-    },
-    "all_disbursement_transactions_by_invoice_by_line": {
-      "datasourceName": "main",
-      "source": "all_disbursement_transactions_by_invoice_by_line"
     }
   },
   "cubes": {
@@ -48,20 +44,7 @@
               "sourceColumnName": "issue_date_year_id"
             }
           ]
-        }
-      ],
-      "measures": {
-        "check_amount_sum": {
-          "function": "SUM(check_amount)"
         },
-        "invoice_amount_sum": {
-          "function": "SUM(invoice_net_amount)"
-        }
-      }
-    },
-    "all_disbursement_transactions_by_invoice_by_line": {
-      "sourceDatasetName": "all_disbursement_transactions_by_invoice_by_line",
-      "dimensions": [
         {
           "name":"document_id",
           "levels": [
@@ -247,15 +230,6 @@
             {
               "name": "expenditure_type_code",
               "sourceColumnName": "expenditure_type_code"
-            }
-          ]
-        },
-        {
-          "name": "category",
-          "levels": [
-            {
-              "name": "category",
-              "sourceColumnName": "spending_category_id"
             }
           ]
         },
