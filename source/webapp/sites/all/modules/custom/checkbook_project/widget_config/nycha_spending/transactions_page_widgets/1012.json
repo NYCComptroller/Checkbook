@@ -44,7 +44,7 @@
   "noDataInitialLoad":true,
   "html_class":"initiative-table",
   "no_results_content":"No Results Found",
-  "dataset":"checkbook_nycha:all_disbursement_transactions_by_invoice_by_line",
+  "dataset":"checkbook_nycha:all_disbursement_transactions",
   "uniqueSortColumn":["-sort_sequence"],
   "columns": ["issue_date", "document_id", "section8_flag", "agreement_type_name", "contract_id", "release_number",
     "invoice_number","check_payment_status", "check_amount", "vendor_name", "vendor_id",
