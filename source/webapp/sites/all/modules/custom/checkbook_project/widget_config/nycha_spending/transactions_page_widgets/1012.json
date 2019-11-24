@@ -73,7 +73,7 @@
       "expression": "($row['check_payment_status'] == null) ? '-' : $row['check_payment_status']"
     },
     "check_amount_formatted":{
-      "expression": "($row['check_amount'] == null) ? '-' : custom_number_formatter_basic_format($row['check_amount']"
+      "expression": "($row['check_amount'] == null) ? '-' : custom_number_formatter_basic_format($row['check_amount'])"
     },
     "amount_spent_formatted":{
       "expression": "($row['invoice_net_amount'] == null) ? '-' : custom_number_formatter_basic_format($row['invoice_net_amount'])"
