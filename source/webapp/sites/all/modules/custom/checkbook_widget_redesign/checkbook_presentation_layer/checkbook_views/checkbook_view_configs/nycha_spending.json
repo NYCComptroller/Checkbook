@@ -19,7 +19,7 @@
       },
       "expense_categories_sideby_fundsrc": {
         "widget_config":"nycha_expense_categories_view",
-        "visibility_parameters":["category","-category:2", "category:3"]
+        "visibility_parameters":["category","-category:2", "-category:3"]
       },
       "expense_categories_horizontal":{
         "widget_config":"nycha_expense_categories_view",
