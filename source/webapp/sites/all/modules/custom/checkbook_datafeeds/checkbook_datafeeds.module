@@ -472,13 +472,13 @@ function checkbook_datafeeds_year_ajax($form, &$form_state)
  * @return mixed
  *   Array of years formatted for FAPI select box #options
  */
-function _year_options($yeartype = NULL)
+function _year_options($yeartype = NULL, $datasource = Datasource::CITYWIDE)
 {
   switch ($yeartype) {
     case 'all-years':
       try {
-        $filters = _checkbook_max_data_year();
-        $fydata = CheckbookDateUtil::getLast10FiscalYearOptions();
+        $filters = _checkbook_max_data_year($datasource);
+        $fydata = CheckbookDateUtil::getLast10FiscalYearOptions($datasource);
         $fyarray = array();
         foreach ($fydata as $row) {
           $fyarray['FY' . $row['year_value']] = 'FY ' . $row['year_value'];
@@ -503,8 +503,8 @@ function _year_options($yeartype = NULL)
 
     default:
       try {
-        $fydata = CheckbookDateUtil::getLast10FiscalYearOptions();
-        $cydata = CheckbookDateUtil::getLast10CalendarYearOptions();
+        $fydata = CheckbookDateUtil::getLast10FiscalYearOptions($datasource);
+        $cydata = CheckbookDateUtil::getLast10CalendarYearOptions($datasource);
         $fyarray = $cyarray = [];
         foreach ($fydata as $row) {
           $fyarray['FY ' . $row['year_value']] = 'FY ' . $row['year_value'];
