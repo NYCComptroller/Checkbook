@@ -98,7 +98,7 @@ if ($node->widgetConfig->deferredRendering == TRUE) {
   widget_data_tables_add_js_setting($node);
 }
 else {
-  widget_data_tables_add_js($node);
+    widget_data_tables_add_js($node);
 }
 if (isset($node->widgetConfig->table_footnote_column)) {
   echo $node->data[0][$node->widgetConfig->table_footnote_column];
