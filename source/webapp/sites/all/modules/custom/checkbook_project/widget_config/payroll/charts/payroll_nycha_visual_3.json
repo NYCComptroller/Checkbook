@@ -29,15 +29,8 @@
       ]
   },
   "no_results_content":"No Results Found",
-  "cleanURLParameters":["awdmethod","vendor","csize","industry","year"],
-  "urlParamMap":{"year":"fiscal_year_id","awdmethod":"award_method_id","vendor":"vendor_id",
-                  "csize":"award_size_id","industry":"industry_type_id"},
-  "widgetPreprocessJSON":"
-        if(preg_match('/pending/',$_GET['q'])){
-        $node->widgetConfig->urlParamMap = $node->widgetConfig->urlParamMapPending;
-        $node->widgetConfig->defaultParameters = $node->widgetConfig->defaultParametersPending;
-        $node->widgetConfig->cleanURLParameters = $node->widgetConfig->cleanURLParametersPending;
-}",
+  "cleanURLParameters":["year","calyear","agency","yeartype","title"],
+  "urlParamMap":{"calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year","title":"civil_service_title_code"},
 "chartTitle":"Total Number of Employees Across Years",
 "widgetDataLoader":"
         $year_id = RequestUtilities::getRequestParamValue('year');
@@ -46,8 +39,6 @@
         if($param == 'fiscal_year_id'){}
         else{$where_filters[] = _widget_build_sql_condition( $param, $value);}
         }
-        $where_filters[] = _widget_build_sql_condition( 'type_of_year', 'C');
-        $where_filters[] = _widget_build_sql_condition( 'agency_id', '162');
         if(count($where_filters) > 0){
         $where_filter = ' WHERE ' . implode(' AND ' , $where_filters);
         }
@@ -98,7 +89,10 @@ $node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
         "legend": {"align": "left",  "verticalAlign": "bottom", "layout": "horizontal",
         "padding":1, "itemMarginTop": 3, "itemMarginBottom": 3},
         "xAxis":{"labels":{"enabled":false}},
-        "yAxis": {"title": {"text": ""}} ,
+        "yAxis": {
+        "allowDecimals":false,
+        "min":0,
+        "title": {"text": ""}} ,
         "tooltip": {
         "shared":true,
         "function":"splittooltip"
