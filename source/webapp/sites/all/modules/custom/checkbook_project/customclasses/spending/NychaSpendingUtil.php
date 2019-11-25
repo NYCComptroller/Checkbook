@@ -179,6 +179,27 @@ class NychaSpendingUtil
           $results = _checkbook_project_execute_sql_by_data_source($query, Datasource::NYCHA);
         }
         break;
+      case 'ytd_expense_category':
+        $exp_cat_id = RequestUtil::getRequestKeyValueFromURL('exp_cat', $bottomURL);
+        $year_id = RequestUtil::getRequestKeyValueFromURL('year', $bottomURL);
+        if(isset($exp_cat_id )) {
+          $query =  "SELECT expenditure_type_id, expenditure_type_description AS expenditure_type_name,ytd_spending AS check_amount_sum
+                     FROM
+                     (SELECT expenditure_type_id, expenditure_type_description ,SUM(ytd_spending) AS ytd_spending 
+                     FROM aggregation_spending_fy
+                     WHERE (issue_date_year_id = ".$year_id. " AND expenditure_type_id=".$exp_cat_id.")
+                     GROUP BY expenditure_type_id,expenditure_type_description
+                     UNION
+                     SELECT expenditure_type_id, display_expenditure_object_name ,SUM(total_amount) AS ytd_spending
+                     FROM aggregation_spending_payroll_fy
+                     WHERE (issue_date_year_id = ".$year_id. " AND expenditure_type_id=".$exp_cat_id.")
+                     AND citywide_expenditure_object_code IS NOT NUll
+                     GROUP BY expenditure_type_id,display_expenditure_object_name ) z";
+          $results = _checkbook_project_execute_sql_by_data_source($query, Datasource::NYCHA);
+        }
+        break;
+
+
     }
     return $results[0];
   }

@@ -87,6 +87,7 @@
     <param name="fundsrc" type="int" />
     <sql>
       SELECT
+        expenditure_type_id,
         expenditure_type_description AS expenditure_type_name,
         ytd_spending AS check_amount_sum
       FROM
