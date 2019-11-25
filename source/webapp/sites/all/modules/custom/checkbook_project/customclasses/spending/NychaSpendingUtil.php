@@ -215,7 +215,7 @@ class NychaSpendingUtil
       $inv_contractID = "'".RequestUtil::getRequestKeyValueFromURL('po_num_exact', $bottomURL)."'";
       $inv_vendorID = RequestUtil::getRequestKeyValueFromURL('vendor', $bottomURL);
       $inv_awdID = RequestUtil::getRequestKeyValueFromURL('awdmethod', $bottomURL);
-      $inv_depID = RequestUtil::getRequestKeyValueFromURL('department', $bottomURL);
+      $inv_depID = RequestUtil::getRequestKeyValueFromURL('dept', $bottomURL);
       $inv_csizeID = RequestUtil::getRequestKeyValueFromURL('csize', $bottomURL);
       $inv_respID = RequestUtil::getRequestKeyValueFromURL('resp_center', $bottomURL);
       $inv_indID = RequestUtil::getRequestKeyValueFromURL('industry', $bottomURL);
