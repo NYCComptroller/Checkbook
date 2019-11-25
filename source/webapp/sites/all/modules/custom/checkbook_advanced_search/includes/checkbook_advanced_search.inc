@@ -79,18 +79,18 @@ function _checkbook_advanced_search_get_year($domain = null, $form = null, $data
 {
     try {
         $data = CheckbookDateUtil::getLast10FiscalYearOptions($data_source);
-        $max_years = _checkbook_max_data_year($data_source);
+        $max_year = _checkbook_max_data_year($data_source);
         $fiscal_year_array = [];
         foreach ($data as $row) {
             if ($domain != 'revenue' && $domain != 'budget') {
-                if ($row['year_value'] <= $max_years['year_value']) {
+                if ($row['year_value'] <= $max_year['year_value']) {
                     $fiscal_year_array['fy~' . $row['year_id']] = 'FY ' . $row['year_value'];
                 }
-                if ($row['year_value'] <= $max_years['cal_year_value']) {
+                if ($row['year_value'] <= $max_year['cal_year_value']) {
                     $calendar_year_array['cy~' . $row['year_id']] = 'CY ' . $row['year_value'];
                 }
             } else {
-                if ($row['year_value'] <= $max_years['year_value']) {
+                if ($row['year_value'] <= $max_year['year_value']) {
                     if ($form == 'datafeeds')
                         $fiscal_year_array[$row['year_value']] = $row['year_value'];
                     else
@@ -107,8 +107,12 @@ function _checkbook_advanced_search_get_year($domain = null, $form = null, $data
           arsort($calendar_year_array);
         }
 
-        if ($domain == 'payroll' && isset($calendar_year_array)) {
-            $fiscal_year_array = array_merge($calendar_year_array, $fiscal_year_array);
+        if ($domain == 'payroll') {
+            if($data_source == Datasource::NYCHA) {
+              $fiscal_year_array = $calendar_year_array;
+            }else{
+              $fiscal_year_array = isset($calendar_year_array) ? array_merge($calendar_year_array, $fiscal_year_array) : $fiscal_year_array;
+            }
         }
 
         if ($domain == 'contracts' || $domain == 'spending') {
