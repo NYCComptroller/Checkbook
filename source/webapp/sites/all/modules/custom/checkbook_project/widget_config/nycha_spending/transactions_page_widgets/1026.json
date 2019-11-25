@@ -4,7 +4,7 @@
     "vendornm", "vendornm_exact", "checkamt", "checkamtr", "funding_id", "invoice_number", "industry", "exp_cat",
     "category", "dept", "fundsrc"],
   "urlParamMap":{"year":"issue_date_year_id", "agency":"agency_id", "vendor":"vendor_id", "agreement_type":"agreement_type_code",
-    "po_num_exact": "contract_id", "po_num":"contract_id", "record_type":"record_type", "section8_flag":"section8_flag",
+    "po_num_exact": "contract_id", "po_num":"contract_id", "section8_flag":"section8_flag",
     "vendornm":"vendor_name","vendornm_exact":"vendor_name", "checkamt":"check_amount", "checkamtr":"check_amount",
     "funding_id":"funding_source_id", "invoice_number":"invoice_number", "industry":"industry_type_id",
     "exp_cat":"expenditure_type_id","category":"spending_category_id", "dept":"department_id", "fundsrc" :"funding_source_id"

@@ -21,7 +21,7 @@ class NychaSpendingWidgetService extends WidgetDataService implements IWidgetSer
                 break;
           case "contract_link":
                 $contract_id = isset($row['contract_id']) && $row['contract_id'] ? $row['contract_id']: $row['purchase_order_number'];
-                $value = NychaSpendingUrlService::generateContractIdLink($contract_id, $year_id);
+                $value = NychaSpendingUrlService::generateContractIdLink($contract_id);
                 break;
             case "industry_link":
                 $value = $row['industry_name'];

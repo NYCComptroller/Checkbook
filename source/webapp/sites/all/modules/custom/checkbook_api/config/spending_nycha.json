@@ -15,9 +15,6 @@
       "fiscal_year": "issue_date_year"
     },
     "dataset": {
-      "sortColumn": [
-        "sort_sequence"
-      ],
       "name": "checkbook_nycha:all_disbursement_transactions",
       "data_source": "checkbook_nycha",
       "columnTypes": {

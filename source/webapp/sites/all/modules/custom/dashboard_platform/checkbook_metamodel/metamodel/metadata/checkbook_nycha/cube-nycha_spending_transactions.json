@@ -99,15 +99,6 @@
           ]
         },
         {
-          "name": "record_type",
-          "levels": [
-            {
-              "name": "record_type",
-              "sourceColumnName": "record_type"
-            }
-          ]
-        },
-        {
           "name": "section8_flag",
           "levels": [
             {
