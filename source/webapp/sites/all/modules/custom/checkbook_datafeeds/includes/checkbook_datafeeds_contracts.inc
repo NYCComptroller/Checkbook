@@ -868,7 +868,7 @@ function checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $fi
   $form['filter']['nycha_year'] = array(
     '#type' => 'select',
     '#title' => t('Year:'),
-    '#options' => _year_options('all-years'),
+    '#options' => _year_options('all-years', Datasource::NYCHA),
     '#attributes' => array('class' => array('watch')),
     '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_year', $first_time_load, 'ALL'),
     '#prefix' => '<div class="datafield nycha-year last-item">',

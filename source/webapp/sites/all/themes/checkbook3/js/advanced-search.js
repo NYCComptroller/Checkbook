@@ -911,22 +911,36 @@
           onChangeDataSource($('input[name=payroll_advanced_search_domain_filter]:checked').val());
         });
 
+        function getPayrollYears(data_source){
+          $.ajax({
+            url: '/payroll/years/' + data_source
+            , success: function (data) {
+              var html = '';
+              if (data[0]) {
+                if (data[0] !== 'No Matches Found') {
+                  $.each(data, function (key, year) {
+                    html = html + '<option value="' + year.value + '" title="' + year.label +'">' + year.label + '</option>';
+                  });
+                }
+                else {
+                  html = html + '<option value="">' + data[0] + '</option>';
+                }
+              }
+              $("#edit-payroll-year").html(html);
+            }
+          });
+        }
+
         function onChangeDataSource(dataSource) {
           /* Reset all the fields for the data source */
           clearInputFields("#payroll-advanced-search", 'payroll', dataSource);
+          getPayrollYears(dataSource);
+
           /** Hide Fiscal Year values for NYCHA **/
           if(dataSource == 'checkbook_nycha'){
             $(".form-item-checkbook-payroll-agencies").hide();
-            $("#edit-payroll-year > option").each(function() {
-              if($(this).val().indexOf("fy") >= 0)
-                $(this).hide();
-            });
           }else{
             $(".form-item-checkbook-payroll-agencies").show();
-            $("#edit-payroll-year > option").each(function() {
-              if($(this).val().indexOf("fy") >= 0)
-                $(this).show();
-            });
           }
         }
       }

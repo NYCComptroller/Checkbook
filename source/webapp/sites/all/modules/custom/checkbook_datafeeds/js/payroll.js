@@ -95,27 +95,38 @@
   };
 
   let datafeedsPayrollShowHideFields = function (dataSource) {
+    getPayrollYears(dataSource);
     if (dataSource == 'checkbook_nycha') {
       $('.datafield.agency').hide();
       $('.form-item-oge-column-select').show();
       $('.form-item-column-select').hide();
-
-      /** Hide Fiscal Year values for OGE **/
-      $("#edit-year > option").each(function () {
-        if ($(this).val().toLowerCase().indexOf("fy") >= 0)
-          $(this).hide();
-      });
     } else {
       $('.datafield.agency').show();
       $('.form-item-oge-column-select').hide();
       $('.form-item-column-select').show();
-
-      $("#edit-year > option").each(function () {
-        if ($(this).val().toLowerCase().indexOf("fy") >= 0)
-          $(this).show();
-      });
     }
   };
+
+  let getPayrollYears = function (dataSource) {
+    var form = 'datafeeds';
+    $.ajax({
+      url: '/payroll/years/' + dataSource + '/' + form
+      , success: function (data) {
+        var html = '';
+        if (data[0]) {
+          if (data[0] !== 'No Matches Found') {
+            $.each(data, function (key, year) {
+              html = html + '<option value="' + year.value + '" title="' + year.label +'">' + year.label + '</option>';
+            });
+          }
+          else {
+            html = html + '<option value="">' + data[0] + '</option>';
+          }
+        }
+        $("#edit-year").html(html);
+      }
+    });
+  }
 
   $.fn.clearInputFields = function () {
     $('.fieldset-wrapper').find(':input').each(function () {

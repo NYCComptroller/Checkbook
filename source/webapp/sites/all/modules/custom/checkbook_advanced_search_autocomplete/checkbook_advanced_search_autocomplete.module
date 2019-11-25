@@ -89,5 +89,13 @@ function checkbook_advanced_search_autocomplete_menu()
         'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
         'type' => MENU_CALLBACK
     );
+
+    //Payroll Years
+    $items['payroll/years'] = array(
+      'page callback' => '_checkbook_advanced_search_get_payroll_years',
+      'access callback' => TRUE,
+      'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
+      'type' => MENU_CALLBACK
+    );
     return $items;
 }
