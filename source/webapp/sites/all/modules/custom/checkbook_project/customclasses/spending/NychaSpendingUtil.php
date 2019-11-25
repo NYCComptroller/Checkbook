@@ -76,7 +76,17 @@ class NychaSpendingUtil
     //if ($categoryName == 'Payroll'){ $total_spending = $results['Payroll']['check_amount_sum'];}
     return $total_spending;
   }
-
+  /**
+   * @return null|string -- Returns NYCHA amount spent for each year
+   * Required to extract payroll check amount sum
+   */
+  static public function getAmountSpent($bottomURL){
+    $year_id = RequestUtil::getRequestKeyValueFromURL('year', $bottomURL);
+    $query =  'SELECT sum(invoice_net_amount) AS amount_spent from all_disbursement_transactions
+               where  issue_date_year_id = '. $year_id ;
+    $results = _checkbook_project_execute_sql_by_data_source($query, Datasource::NYCHA);
+    return $results;
+  }
   /**
    * @param $widget Widget Name
    * @param $bottomURL
