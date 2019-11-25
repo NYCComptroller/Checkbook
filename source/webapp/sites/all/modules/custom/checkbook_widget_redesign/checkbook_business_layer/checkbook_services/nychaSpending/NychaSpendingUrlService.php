@@ -110,6 +110,8 @@ class NychaSpendingUrlService{
           . RequestUtilities::buildUrlFromParam('vendor')
           . RequestUtilities::buildUrlFromParam('fundsrc')
           . RequestUtilities::buildUrlFromParam('industry')
+          . RequestUtilities::buildUrlFromParam('dept')
+          . RequestUtilities::buildUrlFromParam('resp_center')
           . RequestUtilities::buildUrlFromParam('datasource')
           . $syear
           . '/widget/'. $widget
