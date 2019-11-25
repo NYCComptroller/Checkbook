@@ -20,11 +20,14 @@
 
 //Transactions Page main title
 $title = NychaSpendingUtil::getTransactionsTitle();
+
 //Transactions Page sub title
 $url = $_REQUEST['expandBottomContURL'];
 $url = isset($url) ? $url : drupal_get_path_alias($_GET['q']);
+$AmountSpent = NychaSpendingUtil::getAmountSpent($url);
 if(isset($url)) {
   $widget = RequestUtil::getRequestKeyValueFromURL('widget', $url);
+
   // Display static content ytd link transaction pages
   if (strpos($widget, 'ytd_') !== false) {
     $aggregatedYtdTitle = WidgetUtil::getLabel("ytd_spending");
@@ -32,9 +35,7 @@ if(isset($url)) {
     $wtitle = NychaSpendingUtil::getTransactionsSubTitle($widget, $url);
     //echo $wtitle;
     if ($widget != 'ytd_contract'){
-
       $subTitle2 = "<div class='spending-tx-subtitle'>{$wtitle}</div>";
-
     }
 
     $summaryDetails = NychaSpendingUtil::getTransactionsStaticSummary($widget, $url);
@@ -73,7 +74,7 @@ if(isset($url)) {
     $currentAmountTitle = WidgetUtil::getLabel("current_amount");
     $currentAmount = '$' . custom_number_formatter_format($inv_contractDetails['total_amount'], 2);
     $totalAmountTitle ="NYCHA Amount Spent";
-    $totalAmount = '$' . custom_number_formatter_format($inv_contractDetails['test'], 2);
+    $totalAmount = '$' . custom_number_formatter_format($AmountSpent[0]['amount_spent'], 2);
     if ($tcode == 'BA' || $tcode == 'BAM' || $tcode == 'PA'|| $tcode == 'PAM'|| $tcode == 'PO') {
       $inv_contractSummary = "<div class='contract-information contract-summary-block'>
                         <ul>
@@ -129,7 +130,7 @@ if(isset($url)) {
     $id_title = 'NYCHA Spending Transactions';
     $spendtodateAmount = '$' . custom_number_formatter_format($inv_contractDetails['spend_to_date'], 2);
     $totalAmountTitle ="NYCHA Amount Spent";
-    $totalAmount = '$' . custom_number_formatter_format($inv_contractDetails['test'], 2);
+    $totalAmount = '$' . custom_number_formatter_format($AmountSpent[0]['amount_spent'], 2);
   }
 }
 
