@@ -77,6 +77,7 @@ function checkbook_export_theme($existing, $type, $theme, $path){
 
 /**
  * Implements hook_cron()
+ * @return bool
  */
 function checkbook_export_cron()
 {
@@ -92,5 +93,5 @@ function checkbook_export_cron()
     LogHelper::log_notice("Running checkbook_export_cron");
     _checkbook_project_clean_files();
     variable_set($variable_name, $now);
-    return;
+    return true;
 }

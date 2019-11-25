@@ -158,7 +158,9 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
   $oge_expense_type_options = _expense_type_options(Datasource::OGE);
   $nycha_expense_type_default_option = ['' => 'Total Spending'];
   $nycha_expense_type_options = _expense_type_options(Datasource::NYCHA);
-  $nycha_expense_type_options['options'] = $nycha_expense_type_default_option + $nycha_expense_type_options['options'];
+  if (isset($nycha_expense_type_options['options'])) {
+    $nycha_expense_type_options['options'] = $nycha_expense_type_default_option + $nycha_expense_type_options['options'];
+  }
 
   ckbk_datafeeds_spending_update_options_by_datasource($form, $form_state, $data_source);
 
@@ -600,51 +602,53 @@ function ckbk_datafeeds_spending_update_options_by_datasource(&$form, $form_stat
     '#suffix' => '</div>',
     '#id' => 'edit-agency',
     '#name' => 'agency',
-    '#default_value' => $form_state['values']['agency'] ?? 'Citywide (All Agencies)',
+    '#default_value' => $form_state['values']['agency'] ?? 0,
     '#validated' => true,
   );
 
-  $departments = ['0' => 'Select Department'];
+//  Select Department
   $agency = $form_state['values']['agency'] ?? 0;
   $spending_cat = $form_state['values']['expense_category'] ?? 0;
   $year = $form_state['values']['year'] ?? 'FY' . \CheckbookDateUtil::getCurrentFiscalYear();
   $agency_code = _emptyToZero($agency);
-  if ($agency_code) {
-    $solr_departments = _checkbook_autocomplete_spending_dept(/**$year**/ 0, $agency_code, $spending_cat, $data_source, false);
-    if ($solr_departments && !is_array($solr_departments[0])) {
-      $solr_departments = array_map('strtoupper', $solr_departments);
-      if (sizeof($solr_departments)) {
-        $kv_depts = [];
-        foreach ($solr_departments as $v) {
-          $val = strlen($v) > 20 ? substr($v, 0, 20) . '...' : $v;
-          $kv_depts[$v] = $val;
-        }
-        $departments += $kv_depts;
-      }
-    }
-  }
+  $spending_cat_code = _emptyToZero($spending_cat);
+
+  $filters = [
+    'agency_code' => $agency_code,
+    'fiscal_year' => str_replace(['FY', 'CY'], '', $year),
+    'expenditure_type_code' => $spending_cat_code
+  ];
+
+  $departments = checkbook_solr_options_attributes($data_source, 'spending', 'department_name_code', $filters);
 
   $form['filter']['dept'] = array(
     '#type' => 'select',
     '#title' => t('Department:'),
     '#prefix' => '<div id="dynamic-fields"><div class="datafield department">',
     '#suffix' => '</div>',
-    '#options' => $departments,
+    '#options' => (['0' => 'Select Department'] + ($departments['options'] ?? [])),
+    '#option_attributes' => (['0' => ['title'=>'Select Department']] + ($departments['options_attributes'] ?? [])),
     '#attributes' => array('class' => array('watch')),
-    '#default_value' => $form_state['values']['dept'] ?? 'Select Department',
+    '#default_value' => $form_state['values']['dept'] ?? 0,
     '#id' => 'edit-dept',
     '#name' => 'dept',
     '#validated' => true,
   );
 
-  $expcats = ['0' => 'Select Expense Category'];
+
+//  Select Expense Category
+  $department_code = 0;
   if ($agency_code) {
-    $dept = emptyToZero($form_state['values']['dept'] ?? 0);
-    $solr_expcats = _checkbook_autocomplete_spending_expcategory($agency_code, $dept, 0, $year, $data_source, false);
-    if ($solr_expcats) {
-      $expcats = $expcats + $solr_expcats;
-    }
+    $department_code = emptyToZero($form_state['values']['dept'] ?? 0);
   }
+
+  $filters = [
+    'agency_code' => $agency_code,
+    'fiscal_year' => str_replace(['FY', 'CY'], '', $year),
+    'department_code' => $department_code
+  ];
+
+  $expcats = checkbook_solr_options_attributes($data_source, 'spending', 'expenditure_object_name_code', $filters);
 
   $form['filter']['expense_category'] = array(
     '#type' => 'select',
@@ -654,8 +658,9 @@ function ckbk_datafeeds_spending_update_options_by_datasource(&$form, $form_stat
     '#attributes' => array('class' => array('watch')),
     '#id' => 'edit-expense-category',
     '#name' => 'expense_category',
-    '#options' => $expcats,
-    '#default_value' => $form_state['values']['expense_category'] ?? 'Select Expense Category',
+    '#options' => (['0' => 'Select Expense Category'] + ($expcats['options'] ?? [])),
+    '#option_attributes' => (['0' => ['title'=>'Select Expense Category']] + ($expcats['options_attributes'] ?? [])),
+    '#default_value' => $form_state['values']['expense_category'] ?? 0,
     '#validated' => true
   );
 }

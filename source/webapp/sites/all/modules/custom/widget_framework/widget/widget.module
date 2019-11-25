@@ -102,7 +102,7 @@ function widget_access($op, $node, $account) {
 			return TRUE;
 		}
 	}
-	return;
+	return FALSE;
 }
 
 function widget_perm() {
@@ -128,7 +128,7 @@ function _widget_node_load($key, $type='node'){
 			return _widget_node_load_file($key);
 
 	}
-	return;
+	return FALSE;
 }
 
 function _widget_node_view_page($key){
@@ -181,7 +181,7 @@ function widget_node_load($nodes,$types){
       }
     }
   }
-  return;
+  return FALSE;
 }
 
 function widget_form(&$node) {
@@ -223,7 +223,7 @@ function widget_node_validate(&$node) {
 function widget_node_view($node, $nodata = true) {
 
 	if($node->type != 'widget')
-		return ;
+		return FALSE;
 
 //	log_debug("Request to view widget " . $node->nid . " teaser " . $teaser . " page " . $page);
 
@@ -343,7 +343,7 @@ function widget_invoke(&$node, $hook, $a2 = NULL, $a3 = NULL, $a4 = NULL) {
 		$function = $module .'_'. $hook;
 		return ($function($node, $a2, $a3, $a4));
 	}
-	return;
+	return FALSE;
 }
 
 function widget_get_types($op = 'types', $node = NULL, $reset = FALSE) {
@@ -376,7 +376,7 @@ function widget_get_types($op = 'types', $node = NULL, $reset = FALSE) {
 		case 'name':
 			return isset($_widget_names[$type]) ? $_widget_names[$type] : FALSE;
 	}
-	return;
+	return FALSE;
 }
 
 function _widget_types_build() {
