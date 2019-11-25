@@ -184,13 +184,13 @@ function generateNYCHASpendingSearchUrl($form){
   $redirectUrl .= !empty($spendingCategory) ? _checkbook_advanced_search_generate_redirect_url($spendingCategory, 'category') : "";
   //Industry
   $industry = trim($form[$filterDimension][$filterDimension . '_industry']['#value']);
-  $redirectUrl .= !empty($industry) ? _checkbook_advanced_search_generate_redirect_url($industry, 'industry') : "";
+  $redirectUrl .= (!empty($industry) && strtolower($industry) != 'select industry') ? _checkbook_advanced_search_generate_redirect_url($industry, 'industry') : "";
   //Funding Source
   $fundSrc = trim($form[$filterDimension][$filterDimension . '_fundsrc']['#value']);
-  $redirectUrl .= !empty($fundSrc) ? _checkbook_advanced_search_generate_redirect_url($fundSrc, 'fundsrc') : "";
+  $redirectUrl .= (!empty($fundSrc) && strtolower($fundSrc) != 'select funding source') ? _checkbook_advanced_search_generate_redirect_url($fundSrc, 'fundsrc') : "";
   //Responsibility Center
   $respCenter = trim($form[$filterDimension][$filterDimension . '_responsibility_center']['#value']);
-  $redirectUrl .= !empty($respCenter) ? _checkbook_advanced_search_generate_redirect_url($respCenter, 'resp_center') : "";
+  $redirectUrl .= (!empty($respCenter) && strtolower($respCenter) != 'select responsibility center') ? _checkbook_advanced_search_generate_redirect_url($respCenter, 'resp_center') : "";
   //Vendor Name
   $vendorName = trim($form[$filterDimension][$filterDimension . '_vendor_name']['#value']);
   $vendorNameExact = trim($form[$filterDimension][$filterDimension . '_vendor_name_exact']['#value']);
