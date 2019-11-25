@@ -42,16 +42,6 @@ class CheckbookGuru
   private $parsed = FALSE;
 
   /**
-   * @param string $solr_datasource
-   * @return static::class
-   */
-  public static function get_instance(string $solr_datasource)
-  {
-    $cls = static::class;
-    return new $cls($solr_datasource);
-  }
-
-  /**
    * CheckbookGuru constructor.
    * @param string $solr_datasource
    */
@@ -64,10 +54,9 @@ class CheckbookGuru
 
   /**
    * @param string $facet
-   * @param array $filter
    * @return array
    */
-  public function get_all(string $facet, array $filter = [])
+  public function get_all(string $facet)
   {
     $data = [];
     $this->solr_query
@@ -129,21 +118,23 @@ class CheckbookGuru
     return $this->get_all($facet, $filter);
   }
 
-  /**
-   * @param string $key
-   * @param string $facet_value_pair
-   */
-  public function setFq(string $key, string $facet_value_pair)
+  public function get_options(string $domain, string $facet, array $filters=[])
   {
-    $this->solr_query->setFq($key, $facet_value_pair);
-  }
+    $this->solr_query->setFq('domain',"domain:{$domain}");
 
-  /**
-   * @param string $facet
-   * @param string $term
-   */
-  public function setFqAutocompleteTerm(string $facet, string $term)
-  {
-    $this->solr_query->setFqAutocompleteTerm($facet, $term);
+    foreach($filters as $fq => $value){
+      $value = trim($value);
+      if(!$value) {continue;}
+      if ('term' == $fq) {
+        if ($value) {
+          $this->solr_query->setFqAutocompleteTerm($facet, $value);
+        }
+        continue;
+      }
+      if ($value) {
+        $this->solr_query->setFq($fq,"{$fq}:{$value}");
+      }
+    }
+    return $this->get_all($facet);
   }
 }
