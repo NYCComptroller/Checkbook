@@ -407,8 +407,8 @@ function _checkbook_advanced_search_autocomplete_budget_budgetname($fiscal_year,
     }
 }
 
-function _checkbook_advanced_search_get_payroll_years($dataSource){
-  $yearList = _checkbook_advanced_search_get_year(Domain::$PAYROLL, NULL, $dataSource);
+function _checkbook_advanced_search_get_payroll_years($dataSource, $form = null){
+  $yearList = _checkbook_advanced_search_get_year(Domain::$PAYROLL, $form, $dataSource);
   if(count($yearList) > 0){
     $matches = array();
     foreach($yearList as $key => $value){
