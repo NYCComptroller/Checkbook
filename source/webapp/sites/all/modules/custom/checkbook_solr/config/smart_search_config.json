@@ -17,11 +17,11 @@
         }
       },
       "contract_category_name": {
-        "title": "Contract Category",
+        "title": "Category",
         "child": true
       },
       "contract_status": {
-        "title": "Contract Status",
+        "title": "Status",
         "child": true
       },
       "spending_category_name": {
