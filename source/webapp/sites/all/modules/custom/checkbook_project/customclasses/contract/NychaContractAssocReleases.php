@@ -45,9 +45,8 @@ class NychaContractAssocReleases
         if ($node->assocReleases && sizeof($node->assocReleases)) {
             $this->loadBapaReleaseHistory($node->assocReleases);
             NychaContractDetails::loadShipmentDistributionDetails($node, $contract_id);
+            $node->spendingByRelease = $this->getSpendingByRelease($contract_id);
         }
-
-        $node->spendingByRelease = $this->getSpendingByRelease($contract_id);log_error($node->spendingByRelease);
     }
 
     private function splitHistoryByYears($history)
@@ -139,25 +138,28 @@ SQL;
                 	SELECT issue_date_year, release_number, issue_date, document_id , check_amount, invoice_net_amount, expenditure_type_description
                   FROM all_disbursement_transactions where contract_id = '{$contract_id}'
                   GROUP BY release_number, issue_date_year, issue_date, document_id , check_amount, invoice_net_amount, expenditure_type_description
-                  ORDER BY release_number, issue_date_year, issue_date
+                  ORDER BY release_number, issue_date_year, issue_date DESC
             
 SQL;
       $results = _checkbook_project_execute_sql_by_data_source($sql, Datasource::NYCHA);
-      $spendingByRelease = [];
       $releaseSpendingData = [];
       $releases = [];
       $years = [];
       foreach($results as $result){
         $releases[] = $result['release_number'];
-        $years[] = $result['issue_date_year'];
-        $releaseSpendingData[$result['release_number']][$result['issue_date_year']][$result['issue_date']][] = array('issue_date'=>$result['issue_date'], 'document_id'=>$result['document_id'],
+        $years[$result['release_number']][] = $result['issue_date_year'];
+        $releaseSpendingData[$result['release_number']][$result['issue_date_year']][] = array('issue_date'=>$result['issue_date'], 'document_id'=>$result['document_id'],
           'check_amount' => $result['check_amount'], 'amount_spent'=>$result['invoice_net_amount'], 'expense_category'=>$result['expenditure_type_description']);
       }
-
       sort($releases);
-      arsort($years);
+      $releases = array_unique($releases);
+      foreach($releases as $key => $release_number){
+          arsort($years[$release_number]);
+          $years = array_unique($years[$release_number]);
+          $yearList[$release_number][] = array('year_list'=>$years);
+      }
 
-      $spendingByRelease[] = array('releases' => array_unique($releases), 'years' => array_unique($years), 'release_spending_data'=>$releaseSpendingData);
+      $spendingByRelease = array('years_list'=>$yearList, 'spending_by_release'=>$releaseSpendingData);log_error($spendingByRelease);
       return $spendingByRelease;
     }
 
