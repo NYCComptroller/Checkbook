@@ -75,33 +75,64 @@ class CheckbookDateUtil
   }
 
   /**
+   * @param string $data_source
    * @return mixed
    */
   public static function getCurrentFiscalYear($data_source = Datasource::CITYWIDE)
   {
     self::setCurrentYears();
-    $isNYCHA = ($data_source == Datasource::NYCHA || Datasource::isNYCHA()) ? true : false;
+    $isNYCHA = (bool)($data_source == Datasource::NYCHA || Datasource::isNYCHA());
     //For NYCHA, Fiscal Year is Calender Year
-    if($isNYCHA) {
-      return self::$currentCalendarYear;
-    }else{
+    if ($isNYCHA) {
+      return self::getCurrentDatasourceFiscalYear(Datasource::NYCHA);
+    } else {
       return self::$currentFiscalYear;
     }
   }
 
   /**
-   * @return mixed
+   * @param string $data_source
+   * @return string
    */
-  public static function getCurrentFiscalYearId($data_source = Datasource::CITYWIDE)
+  public static function getCurrentFiscalYearId($data_source = Datasource::CITYWIDE): string
+  {
+    return self::year2yearId(self::getCurrentFiscalYear($data_source));
+  }
+
+
+  /**
+   * @param $data_source
+   *
+   * SET THESE VARS ON SERVER:
+   * drush vset current_checkbook_fy 2020
+   * drush vset current_checkbook_oge_fy 2020
+   * drush vset current_checkbook_nycha_fy 2019
+   *
+   * @return string
+   */
+  public static function getCurrentDatasourceFiscalYear(string $data_source): string
   {
     self::setCurrentYears();
-    $isNYCHA = ($data_source == Datasource::NYCHA || Datasource::isNYCHA()) ? true : false;
-    //For NYCHA, Fiscal Year is Calender Year
-    if($isNYCHA) {
-      return self::$currentCalendarYearId;
-    }else{
-      return self::$currentFiscalYearId;
+    $key = 'current_' . $data_source . '_fy';
+    if ($year = _checkbook_dmemcache_get($key)) {
+      return $year;
     }
+    $year = variable_get($key, FALSE);
+    if (FALSE === $year) {
+      LogHelper::log_warn('Drush variable ' . $key . ' not found!');
+      $year = self::$currentFiscalYear;
+    }
+    _checkbook_dmemcache_set($key, $year);
+    return $year;
+  }
+
+  /**
+   * @param string $data_source
+   * @return string
+   */
+  public static function getCurrentDatasourceFiscalYearId(string $data_source): string
+  {
+    return self::year2yearId(self::getCurrentDatasourceFiscalYear($data_source));
   }
 
   /**
@@ -136,12 +167,13 @@ class CheckbookDateUtil
   }
 
   /**
+   * @param string $data_source
    * @return array
    */
-  public static function getLast10FiscalYearOptions($datasource = Datasource::CITYWIDE)
+  public static function getLast10FiscalYearOptions($data_source = Datasource::CITYWIDE)
   {
     // For NYCHA Fiscal Year is Calendar Year
-    $last = ($datasource == Datasource::NYCHA) ? self::getCurrentCalendarYear() : self::getCurrentFiscalYear();
+    $last = self::getCurrentDatasourceFiscalYear($data_source);
     $results = [];
     for ($year = $last; $year > $last - 10; $year--) {
       $results[] = [
