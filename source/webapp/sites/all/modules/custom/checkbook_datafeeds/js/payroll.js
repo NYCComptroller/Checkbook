@@ -57,7 +57,7 @@
           let filter = new URLSearchParams();
           if(agency){filter.set('agency_code',agency)}
           if(payfrequency){filter.set('pay_frequency', payfrequency)}
-          if(year){filter.set('calendar_fiscal_year',year)}
+          if(year){filter.set('calendar_fiscal_year_id',year)}
 
           $("#edit-title").autocomplete({
             source: '/solr_options/'+dataSource+'/payroll/civil_service_title?'+filter,
