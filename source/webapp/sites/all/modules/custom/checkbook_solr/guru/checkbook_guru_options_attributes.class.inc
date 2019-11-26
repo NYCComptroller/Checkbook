@@ -25,14 +25,13 @@ class CheckbookGuruOptionsAttributes extends CheckbookGuru
 {
   /**
    * @param string $facet
-   * @param array $filter
    * @return array
    */
-  public function get_all(string $facet, array $filter = [])
+  public function get_all(string $facet)
   {
     $out = [];
     $attributes = [];
-    $facet_results = parent::get_all($facet, $filter);
+    $facet_results = parent::get_all($facet);
     if(!$facet_results) {
       return $out;
     }
