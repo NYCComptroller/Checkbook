@@ -616,7 +616,8 @@ function ckbk_datafeeds_spending_update_options_by_datasource(&$form, $form_stat
   $filters = [
     'agency_code' => $agency_code,
     'fiscal_year' => str_replace(['FY', 'CY'], '', $year),
-    'expenditure_type_code' => $spending_cat_code
+//    'expenditure_type_code' => $spending_cat_code
+    'expenditure_object_code' => $spending_cat_code
   ];
 
   $departments = checkbook_solr_options_attributes($data_source, 'spending', 'department_name_code', $filters);
@@ -648,7 +649,8 @@ function ckbk_datafeeds_spending_update_options_by_datasource(&$form, $form_stat
     'department_code' => $department_code
   ];
 
-  $expcats = checkbook_solr_options_attributes($data_source, 'spending', 'expenditure_object_name_code', $filters);
+//  $expcats = checkbook_solr_options_attributes($data_source, 'spending', 'expenditure_object_name_code', $filters);
+  $expcats = checkbook_solr_options_attributes($data_source, 'spending', 'expenditure_object_code', $filters);
 
   $form['filter']['expense_category'] = array(
     '#type' => 'select',

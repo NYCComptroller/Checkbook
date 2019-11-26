@@ -15,19 +15,23 @@
       },
       "expense_categories": {
         "widget_config":"nycha_expense_categories_view",
-        "visibility_parameters":["-category:1", "-category:4"]
+        "visibility_parameters":["category","-category:1", "-category:4"]
+      },
+      "expense_categories_sideby_fundsrc": {
+        "widget_config":"nycha_expense_categories_view",
+        "visibility_parameters":["category","-category:2", "-category:3"]
       },
       "expense_categories_horizontal":{
         "widget_config":"nycha_expense_categories_view",
-        "visibility_parameters":["-category:2", "-category:3"]
+        "visibility_parameters":["-category", "-category:1", "-category:2", "-category:3", "-category:4"]
       },
       "industries": {
         "widget_config":"nycha_spending_by_industries_view",
-        "visibility_parameters":["-industry", "-category:2","-fundsrc"]
+        "visibility_parameters":["-industry", "-category:1", "-category:2", "-category:4","-fundsrc"]
       },
       "industries_horizantal": {
         "widget_config":"nycha_spending_by_industries_view",
-        "visibility_parameters":["-industry", "-category:2","fundsrc"]
+        "visibility_parameters":["-industry", "-category","fundsrc"]
       },
       "funding_source": {
         "widget_config":"nycha_spending_by_funding_source_view",
