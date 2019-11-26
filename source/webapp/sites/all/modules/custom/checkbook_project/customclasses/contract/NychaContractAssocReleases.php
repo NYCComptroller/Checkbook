@@ -159,7 +159,7 @@ SQL;
           $yearList[$release_number][] = array('year_list'=>$years);
       }
 
-      $spendingByRelease = array('years_list'=>$yearList, 'spending_by_release'=>$releaseSpendingData);log_error($spendingByRelease);
+      $spendingByRelease = array('years_list'=>$yearList, 'spending_by_release'=>$releaseSpendingData);
       return $spendingByRelease;
     }
 
