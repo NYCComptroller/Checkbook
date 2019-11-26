@@ -424,52 +424,6 @@ foreach ($node->assocReleases as $release): ?>
 
                                         </div>
                                     </div>
-                                    <div class="panel-separator"></div>
-
-
-                                    <h3>Spending by Expense Category</h3>
-                                    <table class="dataTable outerTable">
-                                        <thead>
-                                        <tr>
-                                            <th >
-                                                <?= WidgetUtil::getLabelDiv('expense_category'); ?>
-                                            </th>
-                                            <th >
-                                                <?= WidgetUtil::getLabelDiv('category_type'); ?>
-                                            </th>
-                                            <th >
-                                                <?= WidgetUtil::getLabelDiv('encumbered_amount'); ?>
-                                            </th>
-                                            <th >
-                                                <?= WidgetUtil::getLabelDiv('invoiced_amount'); ?>
-                                            </th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr class="even outer">
-                                            <td class="center">
-                                                    <div>
-                                                        CONSTRUCTION-BUILDINGS
-                                                    </div>
-                                            </td>
-                                            <td class="center">
-                                                <div>
-                                                    OTHER
-                                                </div>
-                                            </td>
-                                            <td class="number-center">
-                                                <div>
-                                                    $14.17M
-                                                </div>
-                                            </td>
-                                            <td class="number-center">
-                                                <div>
-                                                    $12.74M
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
                                 </div>
                             </div>
                         </div>
