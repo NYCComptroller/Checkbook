@@ -33,6 +33,9 @@
 
         $('input:radio[name=date_filter]')[0].checked = true;
         $('select[name="year"]').removeAttr('disabled');
+        $('select[name="year"]').val(Drupal.settings.datafeeds.default_year.checkbook_oge);
+        $('select[name="year"]').attr('default_selected_value', Drupal.settings.datafeeds.default_year.checkbook_oge);
+        $('select[name="year"] option[value="'+Drupal.settings.datafeeds.default_year.checkbook+'"]').show();
         //Disable Issue date
         $('input:radio[name=date_filter][value="1"]').attr('disabled', 'disabled');
         $('input[name="issuedfrom"]').val("");
@@ -54,6 +57,11 @@
         // Date filter
         $('input:radio[name=date_filter]')[0].checked = true;
         $('select[name="year"]').removeAttr('disabled');
+        $('select[name="year"]').val(0);
+        $('select[name="year"]').attr('default_selected_value', 0);
+        if (Drupal.settings.datafeeds.default_year.checkbook_nycha !== Drupal.settings.datafeeds.default_year.checkbook) {
+          $('select[name="year"] option[value="'+Drupal.settings.datafeeds.default_year.checkbook+'"]').hide();
+        }
         //Disable Issue date
         $('input:radio[name=date_filter][value="1"]').removeAttr('disabled');
         //Date Filter
@@ -87,6 +95,9 @@
           $('input:radio[name=date_filter]')[1].checked = true;
           $('select[name="year"]').attr('disabled', 'disabled');
         }
+        $('select[name="year"]').val(Drupal.settings.datafeeds.default_year.checkbook);
+        $('select[name="year"]').attr('default_selected_value', Drupal.settings.datafeeds.default_year.checkbook);
+        $('select[name="year"] option[value="'+Drupal.settings.datafeeds.default_year.checkbook+'"]').show();
 
         $('.form-item-column-select').show();
 
