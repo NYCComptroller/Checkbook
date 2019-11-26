@@ -133,10 +133,13 @@ class NychaSpendingUtil
 
   static public function getTransactionsStaticSummary($widget, $bottomURL){
     $results;
+    $year_id = RequestUtil::getRequestKeyValueFromURL('year', $bottomURL);
+    $cat_id = RequestUtil::getRequestKeyValueFromURL('category', $bottomURL);
     switch($widget){
       case 'ytd_vendor':
         $vendor_id = RequestUtil::getRequestKeyValueFromURL('vendor', $bottomURL);
-        $year_id = RequestUtil::getRequestKeyValueFromURL('year', $bottomURL);
+        if (isset($cat_id)){ $spend_category = "spending_category_code=".$cat_id; }
+        else{$spend_category = "spending_category_code!='CONTRACT'"; }
         if(isset($vendor_id)) {
           //$query = "SELECT SUM(ytd_spending) AS check_amount_sum,  SUM(total_contract_spending) AS total_contract_amount_sum FROM aggregation_spending_fy
 	        //          WHERE (issue_date_year_id =".$year_id  ."AND vendor_id =". $vendor_id.")";
@@ -157,7 +160,6 @@ class NychaSpendingUtil
         break;
       case 'ytd_contract':
         $contractId = "'".RequestUtil::getRequestKeyValueFromURL('po_num_exact', $bottomURL)."'";
-        $year_id = RequestUtil::getRequestKeyValueFromURL('year', $bottomURL);
         if(isset($contractId)) {
           $query = "SELECT contract_id, contract_purpose, vendor_id, vendor_name, SUM(COALESCE(ytd_spending, 0)) AS check_amount_sum, MAX(COALESCE(total_contract_amount, 0)) AS total_contract_amount
                     FROM aggregation_spending_contracts_fy
@@ -168,7 +170,6 @@ class NychaSpendingUtil
         break;
       case 'ytd_industry':
         $industry_id = RequestUtil::getRequestKeyValueFromURL('industry', $bottomURL);
-        $year_id = RequestUtil::getRequestKeyValueFromURL('year', $bottomURL);
         if(isset($industry_id)) {
           $query = "SELECT industry_type_id AS industry_id, display_industry_type_name AS industry_name,SUM(ytd_spending) AS check_amount_sum
                     FROM aggregation_spending_fy
@@ -180,7 +181,6 @@ class NychaSpendingUtil
         break;
       case 'ytd_funding_source':
         $fundsrc_id = RequestUtil::getRequestKeyValueFromURL('fundsrc', $bottomURL);
-        $year_id = RequestUtil::getRequestKeyValueFromURL('year', $bottomURL);
         if(isset($fundsrc_id)) {
           $query = "SELECT funding_source_id,display_funding_source_descr AS funding_source_name,SUM(ytd_spending) AS check_amount_sum
                     FROM aggregation_spending_fy
@@ -191,7 +191,6 @@ class NychaSpendingUtil
         break;
       case 'ytd_expense_category':
         $exp_cat_id = RequestUtil::getRequestKeyValueFromURL('exp_cat', $bottomURL);
-        $year_id = RequestUtil::getRequestKeyValueFromURL('year', $bottomURL);
         if(isset($exp_cat_id )) {
           $query =  "SELECT expenditure_type_id, expenditure_type_description AS expenditure_type_name,ytd_spending AS check_amount_sum
                      FROM
@@ -208,7 +207,16 @@ class NychaSpendingUtil
           $results = _checkbook_project_execute_sql_by_data_source($query, Datasource::NYCHA);
         }
         break;
-
+      case 'ytd_department':
+        $dept_id = RequestUtil::getRequestKeyValueFromURL('dept', $bottomURL);
+        if(isset($dept_id )) {
+          $query =  " SELECT department_id AS department_id, citywide_department_name AS department_name,SUM(total_amount) AS check_amount_sum
+                      FROM aggregation_spending_payroll_fy s
+                      WHERE (issue_date_year_id = ".$year_id." AND spending_category_id = ".$cat_id." AND department_id =".$dept_id.")
+                      GROUP BY department_id, citywide_department_name";
+          $results = _checkbook_project_execute_sql_by_data_source($query, Datasource::NYCHA);
+        }
+        break;
 
     }
     return $results[0];
@@ -222,13 +230,13 @@ class NychaSpendingUtil
   static public function getContractsTransactionsStaticSummary($widget, $bottomURL)
   {
     //if ($widget == 'inv_contract'){
-      $inv_contractID = "'".RequestUtil::getRequestKeyValueFromURL('po_num_exact', $bottomURL)."'";
-      $inv_vendorID = RequestUtil::getRequestKeyValueFromURL('vendor', $bottomURL);
+      $inv_contractID = "'".RequestUtil::getRequestKeyValueFromURL('po_num_inv', $bottomURL)."'";
+      $inv_vendorID = RequestUtil::getRequestKeyValueFromURL('vendor_inv', $bottomURL);
       $inv_awdID = RequestUtil::getRequestKeyValueFromURL('awdmethod', $bottomURL);
       $inv_depID = RequestUtil::getRequestKeyValueFromURL('dept', $bottomURL);
       $inv_csizeID = RequestUtil::getRequestKeyValueFromURL('csize', $bottomURL);
       $inv_respID = RequestUtil::getRequestKeyValueFromURL('resp_center', $bottomURL);
-      $inv_indID = RequestUtil::getRequestKeyValueFromURL('industry', $bottomURL);
+      $inv_indID = RequestUtil::getRequestKeyValueFromURL('industry_inv', $bottomURL);
       $inv_tcode = RequestUtil::getRequestKeyValueFromURL('tcode', $bottomURL);
       if (isset($inv_tcode) && ($inv_tcode == 'BA' || $inv_tcode == "BAM")){$agreement_type_id = 1;}
       if (isset($inv_tcode) && ($inv_tcode == 'PA' || $inv_tcode == "PAM")){$agreement_type_id = 2;}
