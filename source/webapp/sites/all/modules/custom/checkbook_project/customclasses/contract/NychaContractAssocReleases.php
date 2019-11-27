@@ -154,12 +154,15 @@ SQL;
       sort($releases);
       $releases = array_unique($releases);
       foreach($releases as $key => $release_number){
-          arsort($years[$release_number]);
-          $years = array_unique($years[$release_number]);
-          $yearList[$release_number][] = array('year_list'=>$years);
+          $data = [];
+          $yearList = array_unique($years[$release_number]);
+          arsort($yearList);
+          foreach($yearList as $key=>$year){
+            $data[$year] = $releaseSpendingData[$release_number][$year];
+          }
+          $spendingByRelease[$release_number]['year_list'] = $yearList;
+          $spendingByRelease[$release_number]['spending_by_release'] = $data;
       }
-
-      $spendingByRelease = array('years_list'=>$yearList, 'spending_by_release'=>$releaseSpendingData);
       return $spendingByRelease;
     }
 
