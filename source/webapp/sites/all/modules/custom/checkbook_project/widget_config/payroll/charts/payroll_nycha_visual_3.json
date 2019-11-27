@@ -15,15 +15,15 @@
       "sortOrder": "desc",
       "table_columns": [
         {
-          "labelAlias": "Year",
+          "labelAlias": "year",
           "columnType": "text"
         },
         {
-          "labelAlias": "No of <br> Salaried Employees",
+          "labelAlias": "no_of_sal_employees",
           "columnType": "number"
         },
         {
-          "labelAlias": "No of<br> Non-Salaried Employees",
+          "labelAlias": "no_of_non_sal_employees",
           "columnType": "number"
         }
       ]
