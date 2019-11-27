@@ -25,5 +25,5 @@ files[] = src/checkbook_solr.class.inc
 files[] = src/checkbook_solr_query.class.inc
 
 files[] = guru/checkbook_guru.class.inc
-files[] = guru/checkbook_guru_options.class.inc
-files[] = guru/checkbook_guru_options_json.class.inc
+files[] = guru/checkbook_guru_options_attributes.class.inc
+files[] = guru/checkbook_guru_options_labels.class.inc

@@ -41,12 +41,10 @@ class SpendingFeedNycha extends SpendingFeed
   protected function _process_industry_by_datasource()
   {
     if ($this->values['nycha_industry']) {
-      preg_match("/.*?(\\[.*?])/is", $this->values['nycha_industry'], $matches);
-      $industry_type_name = str_replace($matches[1], "", $matches[0]);
-      $industry_type_code = trim($matches[1], '[ ]');
-      $this->form['filter']['nycha_industry'] = array('#markup' => '<div><strong>Industry:</strong> ' . $industry_type_name . '</div>');
-      $this->user_criteria['Industry'] = $industry_type_code;
-      $this->formatted_search_criteria['Industry'] = $industry_type_name;
+      $industry_type = trim($this->values['nycha_industry']);
+      $this->form['filter']['nycha_industry'] = array('#markup' => '<div><strong>Industry:</strong> ' . $industry_type . '</div>');
+      $this->user_criteria['Industry'] = $industry_type;
+      $this->formatted_search_criteria['Industry'] = $industry_type;
     }
   }
 

@@ -19,20 +19,18 @@
  */
 
 /**
- * Class CheckbookGuruOptions
+ * Class CheckbookGuruOptionsLabels
  */
-class CheckbookGuruOptions extends CheckbookGuru
+class CheckbookGuruOptionsLabels extends CheckbookGuru
 {
   /**
    * @param string $facet
-   * @param array $filter
    * @return array
    */
-  public function get_all(string $facet, array $filter = [])
+  public function get_all(string $facet)
   {
     $out = [];
-    $attributes = [];
-    $facet_results = parent::get_all($facet, $filter);
+    $facet_results = parent::get_all($facet);
     if(!$facet_results) {
       return $out;
     }
@@ -44,21 +42,15 @@ class CheckbookGuruOptions extends CheckbookGuru
         $title = trim(substr($facet_value,0,$idx));
         $label = (strlen($title) > 20) ? substr($title, 0, 20) . '...' : $title;
         $id = substr($facet_value,$idx+1,-1);
-//        $out[$v] = [
-//          'label' => $label,
-//          'value' => $v,
-//          'code' => $id,
-//        ];
-        $out[$facet_value] = $label;
-        $attributes[$facet_value] = ['title' => $title];
+        $out[] = [
+          'label' => $label,
+          'value' => $facet_value,
+          'code' => $id,
+        ];
       } else {
-        $out[$facet_value] = $facet_value;
-        $attributes[$facet_value] = $facet_value;
+        $out[] = $facet_value;
       }
     }
-    return [
-      'options' => $out,
-      'options_attributes' => $attributes
-    ];
+    return $out;
   }
 }

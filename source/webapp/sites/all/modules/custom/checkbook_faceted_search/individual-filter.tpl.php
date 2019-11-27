@@ -447,18 +447,6 @@ $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
         <?php } ?>
   <div class="checked-items">
     <?php
-    $query_string = $_GET['q'];
-    // Check if links are from ytd(nycha spending) or inv (nycha contracts) and disable facet selection
-    if ($checkedCount == 1)
-    {
-      if (preg_match('/ytd_contract/',$query_string) || preg_match('/po_num_exact/',$query_string)){
-      if($node->widgetConfig->filterName == 'Contract ID') {
-        $unchecked = null;
-        $disableFacet = " DISABLED='true' ";
-        $disabled = " DISABLED='true' ";
-      }
-      }
-    }
     if((isset($checked) && $node->widgetConfig->maxSelect == $checkedCount) || $checkedCount + $uncheckedCount == 0 ){
         $disabled = " DISABLED='true' " ;
     }else{
@@ -505,7 +493,7 @@ EOL;
     <?php
     $ct = 0;
 //    if (isset($unchecked) && is_array($unchecked))
-    if ($flag != 1) {
+
       if (isset($unchecked) && $unchecked)
         foreach ($unchecked as $row) {
           if ($row[2] > 0) {
@@ -533,7 +521,7 @@ EOL;
             $ct++;
           }
         }
-    }
+
     ?>
     </div>
   </div>

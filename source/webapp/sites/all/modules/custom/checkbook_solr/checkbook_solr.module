@@ -2,7 +2,7 @@
 /**
  * This file is part of the Checkbook NYC financial transparency software.
  *
- * Copyright (C) 2012, 2013 New York City
+ * Copyright (C) 2019 New York City
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -23,7 +23,7 @@ function checkbook_solr_menu()
 {
   $items['solr_options'] = array(
     'title' => '',
-    'page callback' => 'checkbook_solr_options',
+    'page callback' => 'checkbook_print_solr_options_json',
     'access callback' => TRUE,
     'type' => MENU_CALLBACK
   );
@@ -31,30 +31,11 @@ function checkbook_solr_menu()
   return $items;
 }
 
-/**
- * @param string $data_source
- * @param string $domain
- * @param string $facet
- */
-function checkbook_solr_options(string $data_source, string $domain, string $facet)
+function checkbook_print_solr_options_json(string $data_source, string $domain, string $facet)
 {
-  $Guru = CheckbookGuruOptionsJson::get_instance($data_source);
-  $Guru->setFq('domain',"domain:{$domain}");
-  $facets = drupal_get_query_parameters();
-  $is_autocomplete = FALSE;
-
-  foreach($facets as $fq => $value){
-    if ('term' == $fq) {
-      if ($value = trim($value)) {
-        $Guru->setFqAutocompleteTerm($facet, $value);
-      }
-      $is_autocomplete = TRUE;
-      continue;
-    }
-    $Guru->setFq($fq,"{$fq}:{$value}");
-  }
-  $data = $Guru->get_all($facet);
-  if ($is_autocomplete) {
+  $filters = drupal_get_query_parameters();
+  $data = checkbook_solr_options_labels($data_source, $domain, $facet, $filters);
+  if (isset($filters['term'])) {
     if (!$data) {
       $data = [['label' => 'No Matches Found', 'value' => '']];
     } else {
@@ -64,5 +45,30 @@ function checkbook_solr_options(string $data_source, string $domain, string $fac
     }
   }
   drupal_json_output($data);
-  return;
+  exit(0);
+}
+
+/**
+ * @param string $data_source
+ * @param string $domain
+ * @param string $facet
+ * @param array $filters
+ * @return array
+ */
+function checkbook_solr_options_labels(string $data_source, string $domain, string $facet, array $filters=[])
+{
+  $Guru = new CheckbookGuruOptionsLabels($data_source);
+  return $Guru->get_options($domain, $facet, $filters);
+}
+/**
+ * @param string $data_source
+ * @param string $domain
+ * @param string $facet
+ * @param array $filters
+ * @return array
+ */
+function checkbook_solr_options_attributes(string $data_source, string $domain, string $facet, array $filters=[])
+{
+  $Guru = new CheckbookGuruOptionsAttributes($data_source);
+  return $Guru->get_options($domain, $facet, $filters);
 }

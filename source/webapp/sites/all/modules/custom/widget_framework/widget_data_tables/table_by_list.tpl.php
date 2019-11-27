@@ -73,7 +73,8 @@ if(isset($node->widgetConfig->headerConfig)){
       echo "<tr>";
       foreach ($node->widgetConfig->table_columns as $row) {
         if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == RequestUtilities::get('datasource')))){
-          echo '<td class="' . $datarow[$row->classColumn] . '">' . $datarow[$row->column] . '</td>';
+          // This line was generation dummy values before data display .
+          // echo '<td class="' . $datarow[$row->classColumn] . '">' . $datarow[$row->column] . '</td>';
         }
       }
       echo "</tr>";
@@ -97,7 +98,7 @@ if ($node->widgetConfig->deferredRendering == TRUE) {
   widget_data_tables_add_js_setting($node);
 }
 else {
-  widget_data_tables_add_js($node);
+    widget_data_tables_add_js($node);
 }
 if (isset($node->widgetConfig->table_footnote_column)) {
   echo $node->data[0][$node->widgetConfig->table_footnote_column];

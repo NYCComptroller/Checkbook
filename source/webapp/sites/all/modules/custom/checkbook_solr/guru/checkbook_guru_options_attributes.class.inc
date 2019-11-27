@@ -19,19 +19,19 @@
  */
 
 /**
- * Class CheckbookGuruOptionsJson
+ * Class CheckbookGuruOptionsAttributes
  */
-class CheckbookGuruOptionsJson extends CheckbookGuru
+class CheckbookGuruOptionsAttributes extends CheckbookGuru
 {
   /**
    * @param string $facet
-   * @param array $filter
    * @return array
    */
-  public function get_all(string $facet, array $filter = [])
+  public function get_all(string $facet)
   {
     $out = [];
-    $facet_results = parent::get_all($facet, $filter);
+    $attributes = [];
+    $facet_results = parent::get_all($facet);
     if(!$facet_results) {
       return $out;
     }
@@ -42,16 +42,16 @@ class CheckbookGuruOptionsJson extends CheckbookGuru
         $idx = strrpos($facet_value,'[');
         $title = trim(substr($facet_value,0,$idx));
         $label = (strlen($title) > 20) ? substr($title, 0, 20) . '...' : $title;
-        $id = substr($facet_value,$idx+1,-1);
-        $out[] = [
-          'label' => $label,
-          'value' => $facet_value,
-          'code' => $id,
-        ];
+        $out[$facet_value] = $label;
+        $attributes[$facet_value] = ['title' => $title];
       } else {
-        $out[] = $facet_value;
+        $out[$facet_value] = $facet_value;
+        $attributes[$facet_value] = $facet_value;
       }
     }
-    return $out;
+    return [
+      'options' => $out,
+      'options_attributes' => $attributes
+    ];
   }
 }

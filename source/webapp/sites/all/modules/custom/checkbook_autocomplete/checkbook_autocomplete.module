@@ -161,18 +161,18 @@ function checkbook_autocomplete_menu()
         'file' => '/includes/checkbook_autocomplete_functions.inc',
         'type' => MENU_CALLBACK
     );
-    $items['autocomplete/spending/dept'] = array(
-        'page callback' => '_checkbook_autocomplete_spending_dept',
-        'access callback' => TRUE,
-        'file' => '/includes/checkbook_autocomplete_functions.inc',
-        'type' => MENU_CALLBACK
-    );
-    $items['autocomplete/spending/expcategory'] = array(
-        'page callback' => '_checkbook_autocomplete_spending_expcategory',
-        'access callback' => TRUE,
-        'file' => '/includes/checkbook_autocomplete_functions.inc',
-        'type' => MENU_CALLBACK
-    );
+//    $items['autocomplete/spending/dept'] = array(
+//        'page callback' => '_checkbook_autocomplete_spending_dept',
+//        'access callback' => TRUE,
+//        'file' => '/includes/checkbook_autocomplete_functions.inc',
+//        'type' => MENU_CALLBACK
+//    );
+//    $items['autocomplete/spending/expcategory'] = array(
+//        'page callback' => '_checkbook_autocomplete_spending_expcategory',
+//        'access callback' => TRUE,
+//        'file' => '/includes/checkbook_autocomplete_functions.inc',
+//        'type' => MENU_CALLBACK
+//    );
 
     //Payroll autocomplete paths
     $items['autocomplete/payroll/title'] = array(

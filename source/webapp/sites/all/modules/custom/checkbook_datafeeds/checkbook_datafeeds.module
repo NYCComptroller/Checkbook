@@ -472,13 +472,13 @@ function checkbook_datafeeds_year_ajax($form, &$form_state)
  * @return mixed
  *   Array of years formatted for FAPI select box #options
  */
-function _year_options($yeartype = NULL)
+function _year_options($yeartype = NULL, $datasource = Datasource::CITYWIDE)
 {
   switch ($yeartype) {
     case 'all-years':
       try {
-        $filters = _checkbook_max_data_year();
-        $fydata = CheckbookDateUtil::getLast10FiscalYearOptions();
+        $filters = _checkbook_max_data_year($datasource);
+        $fydata = CheckbookDateUtil::getLast10FiscalYearOptions($datasource);
         $fyarray = array();
         foreach ($fydata as $row) {
           $fyarray['FY' . $row['year_value']] = 'FY ' . $row['year_value'];
@@ -503,8 +503,8 @@ function _year_options($yeartype = NULL)
 
     default:
       try {
-        $fydata = CheckbookDateUtil::getLast10FiscalYearOptions();
-        $cydata = CheckbookDateUtil::getLast10CalendarYearOptions();
+        $fydata = CheckbookDateUtil::getLast10FiscalYearOptions($datasource);
+        $cydata = CheckbookDateUtil::getLast10CalendarYearOptions($datasource);
         $fyarray = $cyarray = [];
         foreach ($fydata as $row) {
           $fyarray['FY ' . $row['year_value']] = 'FY ' . $row['year_value'];
@@ -534,8 +534,8 @@ function _year_options($yeartype = NULL)
 function _agency_options($data_source = Datasource::CITYWIDE, $json_output = false)
 {
   if ($json_output) {
-    $data = CheckbookGuruOptionsJson::get_instance($data_source)
-      ->get_all('agency_name_code');
+    $Guru = new CheckbookGuruOptionsLabels($data_source);
+    $data = $Guru->get_all('agency_name_code');
     if ($data_source == Datasource::CITYWIDE) {
       $data = [['label' => 'Citywide (All Agencies)', 'value' => 'Citywide (All Agencies)', 'code' => '']] + $data;
     }
@@ -543,8 +543,8 @@ function _agency_options($data_source = Datasource::CITYWIDE, $json_output = fal
     return;
   }
 
-  $data = CheckbookGuruOptions::get_instance($data_source)
-    ->get_all('agency_name_code');
+  $Guru = new CheckbookGuruOptionsAttributes($data_source);
+  $data = $Guru->get_all('agency_name_code');
   if ($data_source == Datasource::CITYWIDE && ($data['options'] ?? false)) {
     $data['options'] = ['Citywide (All Agencies)' => 'Citywide (All Agencies)'] + $data['options'];
     $data['options_attributes'] = ['Citywide (All Agencies)' => ['title' => 'Citywide (All Agencies)']]
@@ -1248,29 +1248,25 @@ function _mwbe_category_options()
 function _industry_options($data_source = Datasource::CITYWIDE)
 {
   $industries = ['Select Industry'];
-  switch ($data_source) {
-    case Datasource::NYCHA:
-//      $industries += _ckbk_solr_get_all_options($data_source, 'spending', 'industry_type_name');
-      $solr_industries = _ckbk_solr_get_all_options($data_source, 'spending', 'industry_type_name');
-      if ($solr_industries) {
-        foreach ($solr_industries as $industry) {
-          $industry = strtoupper($industry);
-          $industries[$industry] = $industry;
-        }
-      }
-      break;
-    default:
-      try {
-        $dataController = data_controller_get_instance();
-        $industry_types = $dataController->queryDataset('checkbook:industry_type', array('industry_type_id', 'industry_type_name'), NULL, 'industry_type_name', 0, 10, NULL);
-        foreach ($industry_types as $industry_type) {
-          $industries[$industry_type['industry_type_name'] . ' [' . $industry_type['industry_type_id'] . ']'] = $industry_type['industry_type_name'];
-        }
-      } catch (Exception $e) {
-        log_error("Error getting data from controller: \n" . $e->getMessage());
-        return;
-      }
+
+  $industry_id_column = 'industry_type_id';
+  $industry_name_column = 'industry_type_name';
+  if (Datasource::NYCHA == $data_source) {
+    $industry_id_column = 'industry_type_code';
+    $industry_name_column = 'display_industry_type_name';
   }
+
+  try {
+    $dataController = data_controller_get_instance();
+    $industry_types = $dataController->queryDataset($data_source.':industry_type', array($industry_id_column, $industry_name_column), NULL, $industry_name_column, 0, 10, NULL);
+    foreach ($industry_types as $industry_type) {
+      $industries[$industry_type[$industry_name_column] . ' [' . $industry_type[$industry_id_column] . ']'] = $industry_type[$industry_name_column];
+    }
+  } catch (Exception $e) {
+    log_error("Error getting data from controller: \n" . $e->getMessage());
+    return;
+  }
+
   return $industries;
 }
 

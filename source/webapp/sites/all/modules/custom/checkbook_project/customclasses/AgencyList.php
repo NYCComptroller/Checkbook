@@ -23,15 +23,18 @@ class AgencyList
 
   public function getData(&$node)
   {
+    $CWGuru = new CheckbookGuru(Datasource::CITYWIDE);
+    $citywide_agencies = $CWGuru->get_all_parsed('agency_name_id');
 
-    $citywide_agencies = CheckbookGuru::get_instance(Datasource::CITYWIDE)->get_all_parsed('agency_name_id');
-
-//    $edc_agencies = CheckbookGuru::get_instance(Datasource::OGE)->get_all_parsed('agency_name_id');
+//    $EDCGuru = new CheckbookGuru(Datasource::OGE);
+//    $edc_agencies = $EDCGuru->get_all_parsed('agency_name_id');
 //    cached
     $edc_agencies = [[
       'title' => 'NEW YORK CITY ECONOMIC DEVELOPMENT CORPORATION',
       'id' => 9000]];
-//    $nycha_agencies = CheckbookGuru::get_instance(Datasource::NYCHA)->get_all_parsed('agency_name_id');
+
+//    $NYCHAGuru = new CheckbookGuru(Datasource::NYCHA);
+//    $nycha_agencies = $NYCHAGuru->get_all_parsed('agency_name_id');
 //    cached
     $nycha_agencies = [['title' => 'NEW YORK CITY HOUSING AUTHORITY',
       'id' => 162]];
