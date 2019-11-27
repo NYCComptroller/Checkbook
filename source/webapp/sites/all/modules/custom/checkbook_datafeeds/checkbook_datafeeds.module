@@ -1248,29 +1248,25 @@ function _mwbe_category_options()
 function _industry_options($data_source = Datasource::CITYWIDE)
 {
   $industries = ['Select Industry'];
-  switch ($data_source) {
-    case Datasource::NYCHA:
-//      $industries += _ckbk_solr_get_all_options($data_source, 'spending', 'industry_type_name');
-      $solr_industries = _ckbk_solr_get_all_options($data_source, 'spending', 'industry_type_name');
-      if ($solr_industries) {
-        foreach ($solr_industries as $industry) {
-          $industry = strtoupper($industry);
-          $industries[$industry] = $industry;
-        }
-      }
-      break;
-    default:
-      try {
-        $dataController = data_controller_get_instance();
-        $industry_types = $dataController->queryDataset('checkbook:industry_type', array('industry_type_id', 'industry_type_name'), NULL, 'industry_type_name', 0, 10, NULL);
-        foreach ($industry_types as $industry_type) {
-          $industries[$industry_type['industry_type_name'] . ' [' . $industry_type['industry_type_id'] . ']'] = $industry_type['industry_type_name'];
-        }
-      } catch (Exception $e) {
-        log_error("Error getting data from controller: \n" . $e->getMessage());
-        return;
-      }
+
+  $industry_id_column = 'industry_type_id';
+  $industry_name_column = 'industry_type_name';
+  if (Datasource::NYCHA == $data_source) {
+    $industry_id_column = 'industry_type_code';
+    $industry_name_column = 'display_industry_type_name';
   }
+
+  try {
+    $dataController = data_controller_get_instance();
+    $industry_types = $dataController->queryDataset($data_source.':industry_type', array($industry_id_column, $industry_name_column), NULL, $industry_name_column, 0, 10, NULL);
+    foreach ($industry_types as $industry_type) {
+      $industries[$industry_type[$industry_name_column] . ' [' . $industry_type[$industry_id_column] . ']'] = $industry_type[$industry_name_column];
+    }
+  } catch (Exception $e) {
+    log_error("Error getting data from controller: \n" . $e->getMessage());
+    return;
+  }
+
   return $industries;
 }
 
