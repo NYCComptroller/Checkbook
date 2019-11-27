@@ -23,7 +23,8 @@
     <tbody>
 <?php
 $first = (bool)!$node->page;
-foreach ($node->assocReleases as $release): ?>
+$spendingByRelease = $node->spendingByRelease;
+foreach ($node->assocReleases as $release):?>
         <tr>
             <td class="assoc_item">
                 <div class="contract-title clearfix">
@@ -333,8 +334,11 @@ foreach ($node->assocReleases as $release): ?>
                                                     </thead>
                                                     <tbody>
                                                     <?php
+                                                    $yearList = $spendingByRelease[$release['release_number']]['year_list'];
+                                                    $spendingData =  $spendingByRelease[$release['release_number']]['spending_by_release'];
                                                     $year_cnt = 0;
-                                                    foreach ([2019, 2018, 2017, 2016, 2015] as $year): ?>
+                                                    foreach ($yearList as $year): $yearSpending = $spendingData[$year];
+                                                    ?>
                                                         <tr class="outer <?= ($year_cnt % 2 ? 'even' : 'odd') ?>">
                                                             <td class="text">
                                                                 <div>
@@ -342,10 +346,14 @@ foreach ($node->assocReleases as $release): ?>
                                                                     FY <?= $year ?></div>
                                                             </td>
                                                             <td class="text">
-                                                                <div>7 Transactions</div>
+                                                                <div><?= count($yearSpending); ?> Transactions</div>
                                                             </td>
                                                             <td class="number endCol">
-                                                                <div>$3.38M</div>
+                                                                <div><?php $amount_spent = 0;
+                                                                  foreach($yearSpending as $key=>$value){
+                                                                    $amount_spent +=  $value['amount_spent'];
+                                                                  }
+                                                                  echo custom_number_formatter_format($amount_spent, 2, '$'); ?></div>
                                                             </td>
                                                         </tr>
                                                         <tr id="showHidectaspe<?= $year ?>" class="showHide odd cta-r-data"
@@ -356,56 +364,42 @@ foreach ($node->assocReleases as $release): ?>
                                                                         <thead>
                                                                         <tr>
                                                                             <th class="text th1">
-                                                                                <?= WidgetUtil::getLabelDiv('date') ?>
+                                                                                <?= WidgetUtil::getLabelDiv('issue_date') ?>
                                                                             </th>
                                                                             <th class="text th2">
                                                                                 <?= WidgetUtil::getLabelDiv('document_id') ?>
                                                                             </th>
                                                                             <th class="number th3">
-                                                                                <?= WidgetUtil::getLabelDiv('current_amount') ?>
+                                                                                <?= WidgetUtil::getLabelDiv('check_amount') ?>
                                                                             </th>
-                                                                            <th class="text th4">
-                                                                                <?= WidgetUtil::getLabelDiv('expense_category') ?>
+                                                                            <th class="number th4">
+                                                                                <?= WidgetUtil::getLabelDiv('amount_spent') ?>
                                                                             </th>
+                                                                            <th><div></div></th>
                                                                             <th class="text th5">
-                                                                                <?= WidgetUtil::getLabelDiv('nycha_payment') ?>
-                                                                            </th>
-                                                                            <th class="text th6">
-                                                                                <?= WidgetUtil::getLabelDiv('agency_name') ?>
-                                                                            </th>
-                                                                            <th class="text th7">
-                                                                                <?= WidgetUtil::getLabelDiv('dept_name') ?>
+                                                                                  <?= WidgetUtil::getLabelDiv('expense_category') ?>
                                                                             </th>
                                                                         </tr>
                                                                         </thead>
                                                                         <tbody>
                                                                         <?php $revision_cnt = 0;
-                                                                        for ($i = 1; $i < 11; $i++): ?>
+                                                                        for ($i = 0; $i < count($yearSpending); $i++): ?>
                                                                             <tr class="<?= ($i % 2 ? 'odd' : 'even') ?>">
                                                                                 <td class="text td1">
-                                                                                    <div>
-                                                                                        07/18/<?= $year ?></div>
+                                                                                    <div><?= format_string_to_date($yearSpending[$i]['issue_date']); ?></div>
                                                                                 </td>
                                                                                 <td class="text td2">
-                                                                                    <div>428758926</div>
+                                                                                    <div><?= $yearSpending[$i]['document_id']; ?></div>
                                                                                 </td>
                                                                                 <td class="number td3">
-                                                                                    <div>$3.14B</div>
+                                                                                    <div><?= custom_number_formatter_format($yearSpending[$i]['check_amount'], 2, '$'); ?></div>
                                                                                 </td>
-                                                                                <td class="text td4">
-                                                                                    <div>CONSTRUCTION
-                                                                                        BUILDINGS
-                                                                                    </div>
+                                                                                <td class="number td4">
+                                                                                    <div><?= custom_number_formatter_format($yearSpending[$i]['amount_spent'], 2, '$'); ?></div>
                                                                                 </td>
+                                                                                <td><div></div></td>
                                                                                 <td class="text td5">
-                                                                                    <div>$2.58M</div>
-                                                                                </td>
-                                                                                <td class="text td6">
-                                                                                    <div>HEALTH AND HOSPITALS
-                                                                                    </div>
-                                                                                </td>
-                                                                                <td class="text td7">
-                                                                                    <div>400-819-303</div>
+                                                                                    <div><?= $yearSpending[$i]['expense_category']; ?></div>
                                                                                 </td>
                                                                             </tr>
                                                                         <?php endfor; ?>
