@@ -38,10 +38,6 @@ function checkbook_print_solr_options_json(string $data_source, string $domain, 
   if (isset($filters['term'])) {
     if (!$data) {
       $data = [['label' => 'No Matches Found', 'value' => '']];
-    } else {
-      foreach ($data as &$line) {
-        $line['value'] = urlencode($line['value']);
-      }
     }
   }
   drupal_json_output($data);
