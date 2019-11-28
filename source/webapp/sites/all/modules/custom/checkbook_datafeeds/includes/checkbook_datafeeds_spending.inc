@@ -643,7 +643,7 @@ function ckbk_datafeeds_spending_update_options_by_datasource(&$form, $form_stat
 
   $filters = [
     'agency_code' => $agency_code,
-    'fiscal_year' => str_replace(['FY', 'CY'], '', $year),
+    'fiscal_year' => str_replace(['FY', 'CY','all','ALL'], '', $year),
     'expenditure_object_code' => $expense_cat_code,
     'spending_category_id' => $spending_cat_id
   ];
@@ -673,7 +673,7 @@ function ckbk_datafeeds_spending_update_options_by_datasource(&$form, $form_stat
 
   $filters = [
     'agency_code' => $agency_code,
-    'fiscal_year' => str_replace(['FY', 'CY'], '', $year),
+    'fiscal_year' => str_replace(['FY', 'CY','ALL','all'], '', $year),
     'department_code' => $department_code,
     'spending_category_id' => $spending_cat_id
   ];
