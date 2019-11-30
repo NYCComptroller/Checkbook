@@ -12,7 +12,7 @@
   "item_category":"item_category_descr","item_descr":"item_description"},
    "paramTypeConfig": {
     "po_num": "like",
-    "po_num_exact": "eqignorecase",
+    "po_num_exact": "capitalize",
     "vendornm": "like",
     "vendornm_exact": "eqignorecase",
     "curamtr": "rangeid",

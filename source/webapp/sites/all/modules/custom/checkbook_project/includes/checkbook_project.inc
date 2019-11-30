@@ -1083,6 +1083,11 @@ function _checkbook_project_applyParameterFilters($node, $parameters)
 
     foreach ($paramConfigTypes as $paramConfigType => $paramValues) {
       switch ($paramConfigType) {
+        case "capitalize":
+          foreach($paramValues as $value) {
+            $conditions[] = strtoupper($value);
+          }
+          break;
         case "like":
           $localValue = (is_array($paramValues) && count($paramValues) > 1) ? implode('~', $paramValues) : $paramValues[0];
           $conditions[] = $data_controller_instance->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME, array($localValue, FALSE, TRUE));
