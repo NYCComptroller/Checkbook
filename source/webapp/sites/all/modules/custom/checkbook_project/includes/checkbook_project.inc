@@ -1088,6 +1088,13 @@ function _checkbook_project_applyParameterFilters($node, $parameters)
             $conditions[] = strtoupper($value);
           }
           break;
+        case "necapitalize":
+          $vals = [];
+          foreach($paramValues as $value) {
+            $vals[] = strtoupper($value);
+          }
+          $conditions[] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, $vals);
+          break;
         case "like":
           $localValue = (is_array($paramValues) && count($paramValues) > 1) ? implode('~', $paramValues) : $paramValues[0];
           $conditions[] = $data_controller_instance->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME, array($localValue, FALSE, TRUE));
