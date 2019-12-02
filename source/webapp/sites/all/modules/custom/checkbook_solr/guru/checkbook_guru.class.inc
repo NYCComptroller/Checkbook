@@ -66,7 +66,7 @@ class CheckbookGuru
     $results = $this->solr
       ->request_phps('select/?' . $this->solr_query);
 
-    if ($facets = ($results['facet_counts']['facet_fields'][$facet] ?? FALSE)) {
+    if ($facets = ($results['facet_counts']['facet_fields'][$facet] ?? [])) {
       $data = array_keys($facets);
       $data = $this->remove_duplicates($data);
     }
@@ -109,13 +109,12 @@ class CheckbookGuru
 
   /**
    * @param string $facet
-   * @param array $filter
    * @return array
    */
-  public function get_all_parsed(string $facet, array $filter = [])
+  public function get_all_parsed(string $facet)
   {
     $this->parsed = TRUE;
-    return $this->get_all($facet, $filter);
+    return $this->get_all($facet);
   }
 
   public function get_options(string $domain, string $facet, array $filters=[])
@@ -123,7 +122,7 @@ class CheckbookGuru
     $this->solr_query->setFq('domain',"domain:{$domain}");
 
     foreach($filters as $fq => $value){
-      $value = trim($value);
+      $value = CheckbookSolrQuery::escape(trim($value));
       if(!$value) {continue;}
       if ('term' == $fq) {
         if ($value) {

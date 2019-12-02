@@ -59,7 +59,7 @@ function _checkbook_export_grid_transactions($nodeId){
         if($column->eval) {
             $label = eval("return $label;");
         }
-    $label = str_replace('<br/>',' ', $label);
+        $label = str_replace('<br/>',' ', $label);
         if($i == 0)
             $data .= $label;
         else{
@@ -70,7 +70,9 @@ function _checkbook_export_grid_transactions($nodeId){
 
     if(isset($node->widgetConfig->gridConfig->data)){
       foreach($node->widgetConfig->gridConfig->table_columns as $column){
-        $data .= $column->labelAlias . ",";
+        $colTitle = str_replace('<br/>',' ',WidgetUtil::$labels[$column->labelAlias]);
+        $colTitle = isset($colTitle) ? $colTitle : $column->labelAlias;
+        $data .= $colTitle . ",";
       }
       //Remove comma at the end of header to avoid empty column
       $data = rtrim($data, ',');

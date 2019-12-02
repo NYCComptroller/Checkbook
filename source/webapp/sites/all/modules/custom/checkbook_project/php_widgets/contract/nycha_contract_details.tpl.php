@@ -22,6 +22,7 @@ $contract = $node->data;
 $agreement_type='/agreement_type/'.$contract['agreement_type_code'];
 $tcode = '/tcode/'.$contract['agreement_type_code'];
 $dynamic_parameter = "/po_num_exact/" . $contract['contract_id'];
+$spendingByVendor = $node->spendingByVendor;
 ?>
 <!-----------------------------    Contract Details of POs       ------------------->
 <div class="content clearfix">
@@ -442,137 +443,100 @@ $dynamic_parameter = "/po_num_exact/" . $contract['contract_id'];
       </thead>
       <tbody>
       <?php
-      $year_cnt = 0;
-      foreach ([2019, 2018, 2017, 2016, 2015] as $year): ?>
-        <tr class="outer <?= ($year_cnt % 2 ? 'even' : 'odd') ?>">
-          <td class="text">
-            <div>
-              <a class="showHide <?= ($year_cnt ? 'open' : '') ?>"></a>
-              FY <?= $year ?></div>
-          </td>
-          <td class="text">
-            <div>7 Transactions</div>
-          </td>
-          <td class="number endCol">
-            <div>$3.38M</div>
-          </td>
-        </tr>
-        <tr id="showHidectaspe<?= $year ?>" class="showHide odd"
-            style="<?= ($year_cnt ? 'display:none' : '') ?>">
-          <td colspan="3">
-            <div class="scroll">
-              <table class="dataTable outerTable">
-                <thead>
-                <tr>
-                  <th class="text th1">
-                    <?= WidgetUtil::getLabelDiv('date') ?>
-                  </th>
-                  <th class="text th2">
-                    <?= WidgetUtil::getLabelDiv('document_id') ?>
-                  </th>
-                  <th class="number th3">
-                    <?= WidgetUtil::getLabelDiv('check_amount') ?>
-                  </th>
-                  <th class="text th4">
-                    <?= WidgetUtil::getLabelDiv('expense_category') ?>
-                  </th>
-                  <th class="text th5">
-                    <?= WidgetUtil::getLabelDiv('nycha_payment') ?>
-                  </th>
-                  <th class="text th6">
-                    <?= WidgetUtil::getLabelDiv('agency_name') ?>
-                  </th>
-                  <th class="text th7">
-                    <?= WidgetUtil::getLabelDiv('dept_name') ?>
-                  </th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php $revision_cnt = 0;
-                for ($i = 1; $i < 11; $i++): ?>
-                  <tr class="<?= ($i % 2 ? 'odd' : 'even') ?>">
-                    <td class="text td1">
-                      <div>07/18/<?= $year ?></div>
-                    </td>
-                    <td class="text td2">
-                      <div>428758926</div>
-                    </td>
-                    <td class="number td3">
-                      <div>$3.14B</div>
-                    </td>
-                    <td class="text td4">
-                      <div>CONSTRUCTION BUILDINGS</div>
-                    </td>
-                    <td class="text td5">
-                      <div>$2.58M</div>
-                    </td>
-                    <td class="text td6">
-                      <div>HEALTH AND HOSPITALS</div>
-                    </td>
-                    <td class="text td7">
-                      <div>400-819-303</div>
-                    </td>
+      $yearList = $spendingByVendor['year_list'];
+      if(count($yearList) > 0) {
+        $year_cnt = 0;
+        foreach ($yearList as $year): $yearSpending = $spendingByVendor[$year]; ?>
+          <tr class="outer <?= ($year_cnt % 2 ? 'even' : 'odd') ?>">
+            <td class="text">
+              <div>
+                <a class="showHide <?= ($year_cnt ? 'open' : '') ?>"></a>
+                FY <?= $year ?></div>
+            </td>
+            <td class="text">
+              <div><?= count($yearSpending); ?> Transactions</div>
+            </td>
+            <td class="number endCol">
+              <div><?php $amount_spent = 0;
+                foreach ($yearSpending as $key => $value) {
+                  $amount_spent += $value['amount_spent'];
+                }
+                echo custom_number_formatter_format($amount_spent, 2, '$'); ?></div>
+            </td>
+          </tr>
+          <tr id="showHidectaspe<?= $year ?>" class="showHide odd"
+              style="<?= ($year_cnt ? 'display:none' : '') ?>">
+            <td colspan="3">
+              <div class="scroll">
+                <table class="dataTable outerTable">
+                  <thead>
+                  <tr>
+                    <th class="text th1">
+                      <?= WidgetUtil::getLabelDiv('issue_date') ?>
+                    </th>
+                    <th class="text th2">
+                      <?= WidgetUtil::getLabelDiv('document_id') ?>
+                    </th>
+                    <th class="number th3">
+                      <?= WidgetUtil::getLabelDiv('check_amount') ?>
+                    </th>
+                    <th class="number th4">
+                      <?= WidgetUtil::getLabelDiv('amount_spent') ?>
+                    </th>
+                    <th>
+                      <div></div>
+                    </th>
+                    <th class="text th5">
+                      <?= WidgetUtil::getLabelDiv('expense_category') ?>
+                    </th>
                   </tr>
-                <?php endfor; ?>
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                  <?php $revision_cnt = 0;
+                  for ($i = 0; $i < count($yearSpending); $i++): ?>
+                    <tr class="<?= ($i % 2 ? 'odd' : 'even') ?>">
+                      <td class="text td1">
+                        <div><?= format_string_to_date($yearSpending[$i]['issue_date']); ?></div>
+                      </td>
+                      <td class="text td2">
+                        <div><?= $yearSpending[$i]['document_id']; ?></div>
+                      </td>
+                      <td class="number td3">
+                        <div><?= custom_number_formatter_format($yearSpending[$i]['check_amount'], 2, '$'); ?></div>
+                      </td>
+                      <td class="number td4">
+                        <div><?= custom_number_formatter_format($yearSpending[$i]['amount_spent'], 2, '$'); ?></div>
+                      </td>
+                      <td>
+                        <div></div>
+                      </td>
+                      <td class="text td5">
+                        <div><?= $yearSpending[$i]['expense_category']; ?></div>
+                      </td>
+                    </tr>
+                  <?php endfor; ?>
+                  </tbody>
+                </table>
+              </div>
+            </td>
+          </tr>
+          <?php
+          $year_cnt++;
+        endforeach;
+        } else{?>
+        <tr>
+          <td class="dataTables_empty" valign="top" colspan="3">
+            <div id="no-records-datatable" class="clearfix">
+              <span>No Matching Records Found</span>
             </div>
           </td>
         </tr>
-        <?php
-        $year_cnt++;
-      endforeach;
-      ?>
+        <?php } ?>
       </tbody>
     </table>
   </div>
 
   <div class="panel-separator"></div>
-
-  <h3>Spending by Expense Category</h3>
-  <table class="dataTable outerTable">
-    <thead>
-    <tr>
-      <th>
-        <?= WidgetUtil::getLabelDiv('expense_category'); ?>
-      </th>
-      <th>
-        <?= WidgetUtil::getLabelDiv('category_type'); ?>
-      </th>
-      <th>
-        <?= WidgetUtil::getLabelDiv('encumbered_amount'); ?>
-      </th>
-      <th>
-        <?= WidgetUtil::getLabelDiv('invoiced_amount'); ?>
-      </th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr class="even outer">
-      <td class="center">
-        <div>
-          CONSTRUCTION-BUILDINGS
-        </div>
-      </td>
-      <td class="center">
-        <div>
-          OTHER
-        </div>
-      </td>
-      <td class="number-center">
-        <div>
-          $14.17M
-        </div>
-      </td>
-      <td class="number-center">
-        <div>
-          $12.74M
-        </div>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-
 <?php endif; ?>
 
 <?php if ($node->contractBAPA && $node->assoc_releases_count): ?>

@@ -1332,7 +1332,11 @@
               div_checkbook_spending_nycha.contents().hide();
               //Load department and spending categories by default for OGE
               loadSpendingDepartments(div_checkbook_spending_oge, dataSource);
-              loadSpendingExpenseCategories(div_checkbook_spending_oge, dataSource)
+              loadSpendingExpenseCategories(div_checkbook_spending_oge, dataSource);
+
+              //Disable issue date radio button for OGE
+              disable_input(div_checkbook_spending_oge.ele('date_filter_issue_date'));
+
               break;
             case "checkbook_nycha":
               resetFields(div_checkbook_spending_nycha.contents());
@@ -1342,7 +1346,21 @@
               div_checkbook_spending_nycha.contents().show();
               //Load department and spending categories by default for NYCHA
               loadSpendingDepartments(div_checkbook_spending_nycha, dataSource);
-              loadSpendingExpenseCategories(div_checkbook_spending_nycha, dataSource)
+              loadSpendingExpenseCategories(div_checkbook_spending_nycha, dataSource);
+
+              enable_input(div_checkbook_spending_nycha.ele('date_filter_issue_date'));
+              //Disable issue date inputs when year radio button is checked
+              if (div_checkbook_spending_nycha.ele('date_filter_checked').val() === '0') {
+                disable_input([div_checkbook_spending_nycha.ele('issue_date_from'), div_checkbook_spending_nycha.ele('issue_date_to')]);
+              }
+              //Enable NYCHA Spending fields
+              enable_input([div_checkbook_spending_nycha.ele('dept'), div_checkbook_spending_nycha.ele('exp_category'),
+                div_checkbook_spending_nycha.ele('vendor_name'), div_checkbook_spending_nycha.ele('document_id'),
+                div_checkbook_spending_nycha.ele('industry'), div_checkbook_spending_nycha.ele('fundsrc'),
+                div_checkbook_spending_nycha.ele('resp_center'), div_checkbook_spending_nycha.ele('contract_id'),
+                div_checkbook_spending_nycha.ele('po_type'), div_checkbook_spending_nycha.ele('amount_spent_from'),
+                div_checkbook_spending_nycha.ele('amount_spent_to')]);
+
               break;
 
             default:
@@ -1351,37 +1369,31 @@
               div_checkbook_spending.contents().show();
               div_checkbook_spending_oge.contents().hide();
               div_checkbook_spending_nycha.contents().hide();
+
+              enable_input(div_checkbook_spending.ele('date_filter_issue_date'));
+              //Disable issue date inputs when year radio button is checked
+              if (div_checkbook_spending.ele('date_filter_checked').val() === '0') {
+                disable_input([div_checkbook_spending.ele('issue_date_from'), div_checkbook_spending.ele('issue_date_to')]);
+              }
+              //Disable Department and Expense Category drop-downs when agency is not selected
+              agency_id = parseInt((div_checkbook_spending.ele('agency').val()) ? div_checkbook_spending.ele('agency').val() : 0);
+              if (!agency_id) {
+                disable_input([div_checkbook_spending.ele('dept'), div_checkbook_spending.ele('exp_category')]);
+              }
+
               break;
           }
         }
 
         function initializeSpendingViewAutocomplete(div, data_source){
-
-          //Disable issue date radio button only for OGE
-          if (data_source === "checkbook_oge") {
-            disable_input(div.ele('date_filter_issue_date'));
-          }else{
-            enable_input(div.ele('date_filter_issue_date'));
-          }
-          //Disable issue date inputs when year radio button is checked
-          if (div.ele('date_filter_checked').val() === '0') {
-            disable_input(div.ele('issue_date_from'));
-            disable_input(div.ele('issue_date_to'));
-          }
-          //Disable Department and Expense Category drop-downs when agency is not selected
-          var agency_id = 0;
-          if(data_source === 'checkbook') {
-            agency_id = parseInt((div.ele('agency').val()) ? div.ele('agency').val() : 0);
-            if (!agency_id) {
-              disable_input(div.ele('dept'));
-              disable_input(div.ele('exp_category'));
-            }
-          }
-
           //Set Solr datasource for auto-complete
           var solr_datasource = data_source;
           if (data_source === 'checkbook_nycha'){
             solr_datasource = 'nycha'
+          }
+          var agency_id = 0;
+          if(data_source === 'checkbook') {
+            agency_id = parseInt((div.ele('agency').val()) ? div.ele('agency').val() : 0);
           }
           year = 0;
           if (div.ele('date_filter_checked').val() === '0') {

@@ -41,7 +41,9 @@ include_once('export_link.php');
     <tr>
     <?php
     	foreach($node->widgetConfig->gridConfig->table_columns as $column){
-			echo "<th class='" . $column->columnType . "'><div><span>" . $column->labelAlias . "</div></span></th>";
+        $colTitle = WidgetUtil::generateLabelMappingNoDiv($column->labelAlias);
+        $colTitle = isset($colTitle) ? $colTitle : $column->labelAlias;
+			  echo "<th class='" . $column->columnType . "'><div><span>" . $colTitle . "</div></span></th>";
 		}
     ?>
       <th>&nbsp;</th>
