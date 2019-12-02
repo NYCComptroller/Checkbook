@@ -35,13 +35,9 @@ function checkbook_print_solr_options_json(string $data_source, string $domain, 
 {
   $filters = drupal_get_query_parameters();
   $data = checkbook_solr_options_labels($data_source, $domain, $facet, $filters);
-  if (isset($filters['terms'])) {
+  if (isset($filters['term'])) {
     if (!$data) {
       $data = [['label' => 'No Matches Found', 'value' => '']];
-    } else {
-      foreach ($data as &$line) {
-        $line['value'] = urlencode($line['value']);
-      }
     }
   }
   drupal_json_output($data);

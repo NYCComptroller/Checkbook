@@ -562,6 +562,10 @@ function _checkbook_project_get_name_for_argument($keyword, $id)
       $exp_categorys = _checkbook_project_querydataset($data_source . ':expenditure_object', array('expenditure_object_name', 'expenditure_object_id'), array($keyword => $id));
       return ucwords(strtolower($exp_categorys[0]['expenditure_object_name']));
       break;
+    case "expenditure_type_id":
+      $exp_categorys = _checkbook_project_querydataset($data_source . ':expenditure_type', array('expenditure_type_name', 'expenditure_type_id'), array($keyword => $id));
+      return ucwords(strtolower($exp_categorys[0]['expenditure_type_name']));
+      break;
     case "agreement_id":
       $contracts = _checkbook_project_querydataset($data_source . ':history_agreement', array('contract_number', 'agreement_id'), array($keyword => $id));
       return ucwords(strtolower($contracts[0]['contract_number']));
@@ -1083,6 +1087,18 @@ function _checkbook_project_applyParameterFilters($node, $parameters)
 
     foreach ($paramConfigTypes as $paramConfigType => $paramValues) {
       switch ($paramConfigType) {
+        case "capitalize":
+          foreach($paramValues as $value) {
+            $conditions[] = strtoupper($value);
+          }
+          break;
+        case "necapitalize":
+          $vals = [];
+          foreach($paramValues as $value) {
+            $vals[] = strtoupper($value);
+          }
+          $conditions[] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, $vals);
+          break;
         case "like":
           $localValue = (is_array($paramValues) && count($paramValues) > 1) ? implode('~', $paramValues) : $paramValues[0];
           $conditions[] = $data_controller_instance->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME, array($localValue, FALSE, TRUE));

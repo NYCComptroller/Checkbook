@@ -195,6 +195,7 @@
           <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
         </exp>
       </where>
+      AND industry_type_id IS NOT NULL
       GROUP BY industry_type_id, display_industry_type_name
     </sql>
   </statement>

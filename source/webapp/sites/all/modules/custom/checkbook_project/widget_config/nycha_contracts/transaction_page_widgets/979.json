@@ -11,8 +11,8 @@
                   "csize":"award_size_id","industry":"industry_type_id", "pin":"po_header_id","curamt": "agreement_total_amount","record_type":"record_type","release_no":"release_number",
   "item_category":"item_category_descr","item_descr":"item_description"},
    "paramTypeConfig": {
-    "po_num": "like",
-    "po_num_exact": "eqignorecase",
+    "po_num": "capitalize",
+    "po_num_exact": "capitalize",
     "vendornm": "like",
     "vendornm_exact": "eqignorecase",
     "curamtr": "rangeid",
