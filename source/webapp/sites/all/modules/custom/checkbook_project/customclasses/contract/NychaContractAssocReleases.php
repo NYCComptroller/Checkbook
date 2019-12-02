@@ -45,11 +45,9 @@ class NychaContractAssocReleases
         if ($node->assocReleases && sizeof($node->assocReleases)) {
             $this->loadBapaReleaseHistory($node->assocReleases);
             NychaContractDetails::loadShipmentDistributionDetails($node, $contract_id);
+            $node->spendingByRelease = $this->getSpendingByRelease($contract_id);
         }
     }
-
-
-
 
     private function splitHistoryByYears($history)
     {
@@ -84,7 +82,7 @@ class NychaContractAssocReleases
             ORDER BY release_number
             LIMIT 10 OFFSET {$page}
 SQL;
-        return _checkbook_project_execute_sql_by_data_source($releases_sql, 'checkbook_nycha');
+        return _checkbook_project_execute_sql_by_data_source($releases_sql, Datasource::NYCHA);
 
     }
 
@@ -114,7 +112,7 @@ SQL;
                 and revision_number <> 0
             ORDER BY revision_number DESC;
 SQL;
-        $release_history = _checkbook_project_execute_sql_by_data_source($rh_sql, 'checkbook_nycha');
+        $release_history = _checkbook_project_execute_sql_by_data_source($rh_sql, Datasource::NYCHA);
 
         if (!$release_history) {
             return;
@@ -131,4 +129,41 @@ SQL;
             $release['history'] = $this->splitHistoryByYears($history[$release['release_id']]);
         }
     }
+
+    /**** Returns Spending by release data for the given contract ID
+     * @param $contract_id
+     *******/
+    private function getSpendingByRelease($contract_id){
+      $sql = <<<SQL
+                	SELECT issue_date_year, release_number, issue_date, document_id , check_amount, invoice_net_amount, expenditure_type_description
+                  FROM all_disbursement_transactions where contract_id = '{$contract_id}'
+                  GROUP BY release_number, issue_date_year, issue_date, document_id , check_amount, invoice_net_amount, expenditure_type_description
+                  ORDER BY release_number, issue_date_year, issue_date DESC
+            
+SQL;
+      $results = _checkbook_project_execute_sql_by_data_source($sql, Datasource::NYCHA);
+      $releaseSpendingData = [];
+      $releases = [];
+      $years = [];
+      foreach($results as $result){
+        $releases[] = $result['release_number'];
+        $years[$result['release_number']][] = $result['issue_date_year'];
+        $releaseSpendingData[$result['release_number']][$result['issue_date_year']][] = array('issue_date'=>$result['issue_date'], 'document_id'=>$result['document_id'],
+          'check_amount' => $result['check_amount'], 'amount_spent'=>$result['invoice_net_amount'], 'expense_category'=>$result['expenditure_type_description']);
+      }
+      sort($releases);
+      $releases = array_unique($releases);
+      foreach($releases as $key => $release_number){
+          $data = [];
+          $yearList = array_unique($years[$release_number]);
+          arsort($yearList);
+          foreach($yearList as $key=>$year){
+            $data[$year] = $releaseSpendingData[$release_number][$year];
+          }
+          $spendingByRelease[$release_number]['year_list'] = $yearList;
+          $spendingByRelease[$release_number]['spending_by_release'] = $data;
+      }
+      return $spendingByRelease;
+    }
+
 }

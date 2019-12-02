@@ -7,7 +7,7 @@
     "csize":"award_size_id","industry":"industry_type_id", "pin":"po_header_id","curamt": "release_line_total_amount"},
   "paramTypeConfig": {
     "po_num": "like",
-    "po_num_exact": "eqignorecase",
+    "po_num_exact": "capitalize",
     "vendornm": "like",
     "vendornm_exact": "eqignorecase",
     "curamtr": "rangeid",
