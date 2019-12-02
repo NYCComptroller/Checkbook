@@ -1324,12 +1324,17 @@ function widget_merge_config($parent_config, $child_config){
   }
   $urlParameterName = $child_config->urlParameterName;
 
-    if(isset($child_config->urlParameterNameType)){
-        $child_config->paramTypeConfig->$urlParameterName = "neqignorecase";
-    }
-    else{
-        $child_config->paramTypeConfig->$urlParameterName = "ne";
-    }
+  $paramNameType = $child_config->urlParameterNameType ?? 'ne';
+  switch ($paramNameType) {
+    case 'eqtext':
+      $child_config->paramTypeConfig->$urlParameterName = "neqignorecase";
+      break;
+    case 'capitalize':
+      $child_config->paramTypeConfig->$urlParameterName = "necapitalize";
+      break;
+    default:
+      $child_config->paramTypeConfig->$urlParameterName = "ne";
+  }
 
     if (isset($child_config->urlParamMap) && $child_config->urlParamMap)
     foreach($child_config->urlParamMap as $key=>$value){

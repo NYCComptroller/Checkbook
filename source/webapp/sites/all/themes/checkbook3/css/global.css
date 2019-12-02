@@ -2733,6 +2733,10 @@ h1.no-spending-transactions {width: 500px}
     float:left !important;
     width:50% !important;
 }
+.nycha_assoc_contracts_list .inside .panel-pane.pane-custom.pane-1{
+  margin-left: 10px !important;
+  margin-right:10px !important;
+}
 .page-revenue #revenue-transactions .inside .panel-pane.pane-custom.pane-2.noDataShowFull,
 .page-budget .inside .panel-pane.pane-custom.pane-2.noDataShowFull{
     width:100% !important;
@@ -2765,7 +2769,7 @@ h1.no-spending-transactions {width: 500px}
     width:auto;
 }
 .newwindow #spending-transactions .grid-3, #contract-details .grid-3,
-#budget-transactions .grid-3,
+#budget-transactions .grid-3,#nycha-contract-details .grid-3,
 #revenue-transactions .grid-3
 {
     margin-top: 46px;
