@@ -23,6 +23,7 @@ abstract class UrlParameter {
     const CONTRACT_INDUSTRY = "cindustry";
     const CONTRACT_STATUS = "status";
     const SPENDING_CATEGORY = "category";
+    const SMART_SEARCH = "smart_search";
 }
 
 abstract class CheckbookDomain {
@@ -101,6 +102,9 @@ abstract class Datasource {
     const CITYWIDE = "checkbook";
     const OGE = "checkbook_oge";
     const NYCHA = "checkbook_nycha";
+    const SOLR_CITYWIDE = 'citywide';
+    const SOLR_EDC = 'edc';
+    const SOLR_NYCHA = 'nycha';
 
      public static function getCurrent() {
         $datasource = RequestUtilities::get(UrlParameter::DATASOURCE);
@@ -115,7 +119,7 @@ abstract class Datasource {
     }
 
     public static function isNYCHA() {
-        return self::getCurrent() == Datasource::NYCHA;
+        return (self::getCurrent() == Datasource::NYCHA || self::smartSearchDataSource() == Datasource::NYCHA);
     }
 
     public static function getNYCHAUrl() {
@@ -127,6 +131,15 @@ abstract class Datasource {
         $nychaId = _checkbook_project_querydataset('checkbook_nycha:agency', array('agency_id'), array('agency_short_name' => 'HOUSING AUTH'));
         $agency_id= $nychaId[0]['agency_id'];
         return $agency_id;
+    }
+
+    public static function smartSearchDataSource(){
+      $solr_datasource = _checkbook_get_datasource();
+      switch($solr_datasource) {
+        case self::SOLR_EDC: return self::OGE;
+        case self::SOLR_NYCHA: return self::NYCHA;
+        default: return self::CITYWIDE;
+      }
     }
 }
 
@@ -210,6 +223,7 @@ abstract class PageType {
     const LANDING_PAGE = "landing_page";
     const TRANSACTION_PAGE = "transaction_page";
     const ADVANCED_SEARCH_PAGE = "advanced_search_page";
+    const SMART_SEARCH_PAGE = "smart_search";
 
     public static function getCurrent() {
         $urlPath = $_GET['q'];

@@ -50,6 +50,7 @@ class NychaContractDetails
             $node->contractPO = true;
             $this->loadPurchaseOrder($node, $contract_id);
             NychaContractDetails::loadShipmentDistributionDetails($node, $contract_id);
+            $this->getSpendingByVendor($contract_id, $node);
         }
 
         $node->contract_history_by_years = $this->getContractHistory($node->data['contract_id'] ?? '');
@@ -349,4 +350,29 @@ SQL;
             $release['shipments'] = $return[$release['release_id']];
         }
     }
+
+  /**** Returns Spending by release data for the given contract ID
+   * @param $contract_id
+   *******/
+  private function getSpendingByVendor($contract_id, &$node){
+    $vendor_id = $node->data['vendor_id'];
+    if ($vendor_id) {
+      $sql = <<<SQL
+                    SELECT issue_date_year, issue_date, document_id , check_amount, invoice_net_amount, expenditure_type_description
+                    FROM all_disbursement_transactions where contract_id = '{$contract_id}' AND vendor_id = {$vendor_id}
+                    GROUP BY issue_date_year, issue_date, document_id , check_amount, invoice_net_amount, expenditure_type_description
+                    ORDER BY issue_date_year, issue_date DESC             
+SQL;
+      $results = _checkbook_project_execute_sql_by_data_source($sql, Datasource::NYCHA);
+      foreach ($results as $result) {
+        $years[] = $result['issue_date_year'];
+        $spendingByVendor[$result['issue_date_year']][] = array('issue_date' => $result['issue_date'], 'document_id' => $result['document_id'],
+          'check_amount' => $result['check_amount'], 'amount_spent' => $result['invoice_net_amount'], 'expense_category' => $result['expenditure_type_description']);
+      }
+      $yearList = array_unique($years);
+      arsort($yearList);
+      $spendingByVendor['year_list'] = $yearList;
+      $node->spendingByVendor = $spendingByVendor;
+    }
+  }
 }
