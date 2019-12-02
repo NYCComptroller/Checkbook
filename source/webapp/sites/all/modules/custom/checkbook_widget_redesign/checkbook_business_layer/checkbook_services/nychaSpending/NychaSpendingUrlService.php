@@ -97,9 +97,7 @@ class NychaSpendingUrlService{
         $url = drupal_get_path_alias($_GET['q']);
         $year = RequestUtil::getRequestKeyValueFromURL('year', $url);
         $dynamic_parameter = isset($dynamic_parameter) ? $dynamic_parameter : '';
-        if ($agreement_type != null){
-          $syear = "/syear/".$year;
-        }
+        $syear = "/syear/".$year;
         $agreement_type = isset($agreement_type) ? $agreement_type : '';
         $newwindow='/newwindow'; // open content in new window and also strip menu contents
         $tcode = isset($tcode) ? $tcode : '';
