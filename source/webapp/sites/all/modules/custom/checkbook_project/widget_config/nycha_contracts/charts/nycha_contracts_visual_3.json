@@ -37,7 +37,7 @@
   $node->widgetConfig->cleanURLParameters = $node->widgetConfig->cleanURLParametersPending;
 }",
 
-"chartTitle":"Year Comparison By Agreement Types",
+"chartTitle":"Year Comparison by Agreement Types",
 "widgetDataLoader":"
       $where_filters = array();
       foreach($node->widgetConfig->requestParams as $param=>$value){
