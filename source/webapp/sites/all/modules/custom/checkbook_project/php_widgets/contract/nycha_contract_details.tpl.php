@@ -21,8 +21,7 @@
 $contract = $node->data;
 $agreement_type='/agreement_type/'.$contract['agreement_type_code'];
 $tcode = '/tcode/'.$contract['agreement_type_code'];
-$dynamic_parameter = "/po_num_exact/" . $contract['contract_id'];
-$spendingByVendor = $node->spendingByVendor;
+$dynamic_parameter = "/po_num_inv/" . $contract['contract_id'];
 ?>
 <!-----------------------------    Contract Details of POs       ------------------->
 <div class="content clearfix">

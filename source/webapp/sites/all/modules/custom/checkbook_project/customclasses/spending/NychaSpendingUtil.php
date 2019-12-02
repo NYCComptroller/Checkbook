@@ -77,13 +77,48 @@ class NychaSpendingUtil
     return $total_spending;
   }
   /**
-   * @return null|string -- Returns NYCHA amount spent for each year
-   * Required to extract payroll check amount sum
+   * @return null|string -- Returns NYCHA amount spent for each year invoiced amount link
+   *
    */
   static public function getAmountSpent($bottomURL){
     $year_id = RequestUtil::getRequestKeyValueFromURL('year', $bottomURL);
-    $query =  'SELECT sum(invoice_net_amount) AS amount_spent from all_disbursement_transactions
-               where  issue_date_year_id = '. $year_id ;
+    $inv_contractID = "'".RequestUtil::getRequestKeyValueFromURL('po_num_inv', $bottomURL)."'";
+    $inv_vendorID = RequestUtil::getRequestKeyValueFromURL('vendor_inv', $bottomURL);
+    $inv_awdID = RequestUtil::getRequestKeyValueFromURL('awdmethod', $bottomURL);
+    $inv_depID = RequestUtil::getRequestKeyValueFromURL('dept', $bottomURL);
+    $inv_csizeID = RequestUtil::getRequestKeyValueFromURL('csize', $bottomURL);
+    $inv_respID = RequestUtil::getRequestKeyValueFromURL('resp_center', $bottomURL);
+    $inv_indID = RequestUtil::getRequestKeyValueFromURL('industry_inv', $bottomURL);
+    if (isset($inv_contractID) || isset($contractID)) {
+      $reqParam = $inv_contractID;
+      $query_param = "contract_id";
+    }
+    if (isset($inv_vendorID)) {
+        $reqParam = $inv_vendorID;
+        $query_param = "vendor_id";
+    }
+    if (isset($inv_awdID)) {
+      $reqParam = $inv_awdID;
+      $query_param = "award_method_id";
+    }
+    if (isset($inv_depID)) {
+      $reqParam = $inv_depID;
+      $query_param = "department_id";
+    }
+    if (isset($inv_csizeID)) {
+      $reqParam = $inv_csizeID;
+      $query_param = "award_size_id";
+    }
+    if (isset($inv_respID)) {
+      $reqParam = $inv_respID;
+      $query_param = "responsibility_center_id";
+    }
+    if (isset($inv_indID)) {
+      $reqParam = $inv_indID;
+      $query_param = "industry_type_id";
+    }
+    $query =  'SELECT '. $query_param .' ,sum(invoice_net_amount) AS amount_spent from all_disbursement_transactions
+               where  issue_date_year_id = '. $year_id .' AND '. $query_param.'='.$reqParam .' GROUP BY '. $query_param ;
     $results = _checkbook_project_execute_sql_by_data_source($query, Datasource::NYCHA);
     return $results;
   }
@@ -132,7 +167,6 @@ class NychaSpendingUtil
    */
 
   static public function getTransactionsStaticSummary($widget, $bottomURL){
-    $results;
     $year_id = RequestUtil::getRequestKeyValueFromURL('year', $bottomURL);
     $cat_id = RequestUtil::getRequestKeyValueFromURL('category', $bottomURL);
     switch($widget){
@@ -141,16 +175,20 @@ class NychaSpendingUtil
         if (isset($cat_id)){ $spend_category = "spending_category_code=".$cat_id; }
         else{$spend_category = "spending_category_code!='CONTRACT'"; }
         if(isset($vendor_id)) {
-          //$query = "SELECT SUM(ytd_spending) AS check_amount_sum,  SUM(total_contract_spending) AS total_contract_amount_sum FROM aggregation_spending_fy
-	        //          WHERE (issue_date_year_id =".$year_id  ."AND vendor_id =". $vendor_id.")";
-          $query = "SELECT vendor_id,vendor_name ,sum (sum_ytd_spending) as check_amount_sum,sum (sum_total_contract_spending) as total_contract_amount_sum
+          $query = "SELECT vendor_id,vendor_name ,
+                    sum (sum_ytd_spending) as check_amount_sum,
+                    sum (sum_total_contract_spending) as total_contract_amount_sum
                     FROM(
-                    SELECT vendor_id,vendor_name,'' as contract_id,sum(ytd_spending) as sum_ytd_spending,sum(0) as sum_total_contract_spending
+                    SELECT vendor_id,vendor_name,'' as contract_id,
+                    sum(ytd_spending) as sum_ytd_spending,
+                    sum(0) as sum_total_contract_spending
                     FROM aggregation_spending_fy
                     WHERE (issue_date_year_id =". $year_id ." and vendor_id=".$vendor_id.") AND spending_category_code!='CONTRACT'
                     GROUP BY vendor_id,vendor_name
                     UNION
-                    SELECT vendor_id,vendor_name,contract_id,sum(ytd_spending) sum_ytd_spending,max(Total_Contract_Amount) sum_total_contract_spending
+                    SELECT vendor_id,vendor_name,contract_id,
+                    sum(ytd_spending) sum_ytd_spending,
+                    max(Total_Contract_Amount) sum_total_contract_spending
                     FROM aggregation_spending_contracts_fy
                     WHERE (issue_date_year_id = ". $year_id ." and vendor_id=".$vendor_id.")
                     GROUP BY contract_id,vendor_id,vendor_name ) x
@@ -161,59 +199,15 @@ class NychaSpendingUtil
       case 'ytd_contract':
         $contractId = "'".RequestUtil::getRequestKeyValueFromURL('po_num_exact', $bottomURL)."'";
         if(isset($contractId)) {
-          $query = "SELECT contract_id, contract_purpose, vendor_id, vendor_name, SUM(COALESCE(ytd_spending, 0)) AS check_amount_sum, MAX(COALESCE(total_contract_amount, 0)) AS total_contract_amount
+          $query = "SELECT contract_id, 
+                           contract_purpose, 
+                           vendor_id, 
+                           vendor_name, 
+                           SUM(COALESCE(ytd_spending, 0)) AS check_amount_sum, 
+                           MAX(COALESCE(total_contract_amount, 0)) AS total_contract_amount_sum
                     FROM aggregation_spending_contracts_fy
                     WHERE (issue_date_year_id =".$year_id ." AND contract_id=".$contractId . ")".
                     "GROUP BY contract_id, contract_purpose, vendor_name, vendor_id";
-          $results = _checkbook_project_execute_sql_by_data_source($query, Datasource::NYCHA);
-        }
-        break;
-      case 'ytd_industry':
-        $industry_id = RequestUtil::getRequestKeyValueFromURL('industry', $bottomURL);
-        if(isset($industry_id)) {
-          $query = "SELECT industry_type_id AS industry_id, display_industry_type_name AS industry_name,SUM(ytd_spending) AS check_amount_sum
-                    FROM aggregation_spending_fy
-	                  WHERE (issue_date_year_id =".$year_id." AND industry_type_id =". $industry_id.")
-	                  GROUP BY industry_type_id, display_industry_type_name";
-          $results = _checkbook_project_execute_sql_by_data_source($query, Datasource::NYCHA);
-          //return $results[0];
-        }
-        break;
-      case 'ytd_funding_source':
-        $fundsrc_id = RequestUtil::getRequestKeyValueFromURL('fundsrc', $bottomURL);
-        if(isset($fundsrc_id)) {
-          $query = "SELECT funding_source_id,display_funding_source_descr AS funding_source_name,SUM(ytd_spending) AS check_amount_sum
-                    FROM aggregation_spending_fy
-	                  WHERE (issue_date_year_id =".$year_id." AND funding_source_id =". $fundsrc_id.")
-	                  GROUP BY funding_source_id, display_funding_source_descr";
-          $results = _checkbook_project_execute_sql_by_data_source($query, Datasource::NYCHA);
-        }
-        break;
-      case 'ytd_expense_category':
-        $exp_cat_id = RequestUtil::getRequestKeyValueFromURL('exp_cat', $bottomURL);
-        if(isset($exp_cat_id )) {
-          $query =  "SELECT expenditure_type_id, expenditure_type_description AS expenditure_type_name,ytd_spending AS check_amount_sum
-                     FROM
-                     (SELECT expenditure_type_id, expenditure_type_description ,SUM(ytd_spending) AS ytd_spending 
-                     FROM aggregation_spending_fy
-                     WHERE (issue_date_year_id = ".$year_id. " AND expenditure_type_id=".$exp_cat_id.")
-                     GROUP BY expenditure_type_id,expenditure_type_description
-                     UNION
-                     SELECT expenditure_type_id, display_expenditure_object_name ,SUM(total_amount) AS ytd_spending
-                     FROM aggregation_spending_payroll_fy
-                     WHERE (issue_date_year_id = ".$year_id. " AND expenditure_type_id=".$exp_cat_id.")
-                     AND citywide_expenditure_object_code IS NOT NUll
-                     GROUP BY expenditure_type_id,display_expenditure_object_name ) z";
-          $results = _checkbook_project_execute_sql_by_data_source($query, Datasource::NYCHA);
-        }
-        break;
-      case 'ytd_department':
-        $dept_id = RequestUtil::getRequestKeyValueFromURL('dept', $bottomURL);
-        if(isset($dept_id )) {
-          $query =  " SELECT department_id AS department_id, citywide_department_name AS department_name,SUM(total_amount) AS check_amount_sum
-                      FROM aggregation_spending_payroll_fy s
-                      WHERE (issue_date_year_id = ".$year_id." AND spending_category_id = ".$cat_id." AND department_id =".$dept_id.")
-                      GROUP BY department_id, citywide_department_name";
           $results = _checkbook_project_execute_sql_by_data_source($query, Datasource::NYCHA);
         }
         break;
@@ -229,7 +223,6 @@ class NychaSpendingUtil
    */
   static public function getContractsTransactionsStaticSummary($widget, $bottomURL)
   {
-    //if ($widget == 'inv_contract'){
       $inv_contractID = "'".RequestUtil::getRequestKeyValueFromURL('po_num_inv', $bottomURL)."'";
       $inv_vendorID = RequestUtil::getRequestKeyValueFromURL('vendor_inv', $bottomURL);
       $inv_awdID = RequestUtil::getRequestKeyValueFromURL('awdmethod', $bottomURL);
