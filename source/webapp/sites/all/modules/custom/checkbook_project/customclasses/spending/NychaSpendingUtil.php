@@ -110,7 +110,7 @@ class NychaSpendingUtil
         break;
       case 'ytd_expense_category':
         $reqParam = RequestUtil::getRequestKeyValueFromURL('exp_cat', $bottomURL);
-        $title .= _checkbook_project_get_name_for_argument("expenditure_object_id", $reqParam);
+        $title .= _checkbook_project_get_name_for_argument("expenditure_type_id", $reqParam);
         break;
       case 'ytd_funding_source':
         $reqParam = RequestUtil::getRequestKeyValueFromURL('fundsrc', $bottomURL);
