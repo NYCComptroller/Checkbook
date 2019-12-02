@@ -156,12 +156,25 @@ function _checkbook_faceted_search_update_data($node)
           $urlParamMap = ( array )$node->widgetConfig->urlParamMap;
           if (isset($node->widgetConfig->urlParameterNameType)) {
             $paramValues = explode('~', $param);
-            $patterns = array();
-            foreach ($paramValues as $value) {
-              $value = checkbook_faceted_search_replaceSlash($value);
-              $patterns[] = "(^" . _checkbook_regex_replace_pattern($value) . "$)";
+            switch($node->widgetConfig->urlParameterNameType){
+              case 'capitalize':
+                $values = [];
+                foreach ($paramValues as $value){
+                  $values[] = strtoupper($value);
+                }
+                $parameters[$urlParamMap[$node->widgetConfig->urlParameterName]] = array(data_controller_get_operator_factory_instance()->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, $values));
+                break;
+              case 'eqtext':
+              default:
+                $patterns = array();
+                foreach ($paramValues as $value) {
+                  $value = checkbook_faceted_search_replaceSlash($value);
+                  $patterns[] = "(^" . _checkbook_regex_replace_pattern($value) . "$)";
+                }
+                $parameters[$urlParamMap[$node->widgetConfig->urlParameterName]] = array(data_controller_get_operator_factory_instance()->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, implode($patterns, "|")));
+                break;
             }
-            $parameters[$urlParamMap[$node->widgetConfig->urlParameterName]] = array(data_controller_get_operator_factory_instance()->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, implode($patterns, "|")));
+
           } else {
             $param = checkbook_faceted_search_replaceSlash($param);
             $parameters[$urlParamMap[$node->widgetConfig->urlParameterName]] = array(data_controller_get_operator_factory_instance()->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, $param));

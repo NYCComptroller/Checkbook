@@ -1,57 +1,4 @@
 {
-  "autocomplete_mapping": {
-    "agency_name": "agency_name_autocomplete",
-    "oge_agency_name": "oge_agency_name_autocomplete",
-    "vendor_name": "vendor_name_autocomplete",
-    "expenditure_object_name": "expenditure_object_name_autocomplete",
-    "display_industry_type_name": "industry_type_name_autocomplete",
-    "budget_code_name_code": "budget_code_name_code_autocomplete",
-    "vendor_name_code": "vendor_name_code_autocomplete",
-    "contract_budget_name": "contract_budget_name_autocomplete",
-    "reporting_code": "reporting_code_autocomplete",
-    "spending_budget_name": "spending_budget_name_autocomplete",
-    "civil_service_title": "civil_service_title_autocomplete",
-    "revenue_class_name_code": "revenue_class_name_code_autocomplete",
-    "revenue_source_name_code": "revenue_source_name_code_autocomplete",
-    "revenue_class_name": "revenue_class_name_autocomplete",
-    "revenue_source_name": "revenue_source_name_autocomplete"
-  },
-  "autocomplete_terms": {
-    "citywide": {
-      "agency_name": "Agencies",
-      "vendor_name": "Vendors (Prime Vendor, Sub Vendor, M/WBE Vendor)",
-      "minority_type_name": "M/WBE Category",
-      "expenditure_object_name": "Expense Categories"
-    },
-    "edc": {
-      "vendor_name": "Vendors"
-    },
-    "nycha": {
-      "vendor_name": "Vendors",
-      "contract_number": "Contract ID",
-      "grant_name": "Grant Name",
-      "funding_source_name": "Funding Source",
-      "responsibility_center_name": "Responsibility Center",
-      "expenditure_type_name": "Expense Categories"
-    }
-  },
-  "param_mapping": {
-    "oge_agency_names": "oge_agency_name",
-    "agency_names": "agency_name",
-    "fiscal_years": "fiscal_year",
-    "registered_fiscal_years": "registered_fiscal_year",
-    "domains": "domain",
-    "vendor_names": "vendor_name",
-    "expense_categories": "expenditure_object_name",
-    "revenue_categories": "revenue_category_name",
-    "spending_categories": "spending_category_name",
-    "contract_categories": "contract_category_name"
-  },
-  "sort_by": {
-    "citywide": "domain_ordering asc,date_ordering desc",
-    "edc": "domain_ordering asc, date_ordering desc",
-    "nycha": "domain_ordering asc, sort_sequence asc, date_ordering desc"
-  },
   "facets": {
     "citywide": {
       "domain": {
@@ -70,11 +17,11 @@
         }
       },
       "contract_category_name": {
-        "title": "Contract Category",
+        "title": "Category",
         "child": true
       },
       "contract_status": {
-        "title": "Contract Status",
+        "title": "Status",
         "child": true
       },
       "spending_category_name": {
@@ -324,7 +271,7 @@
         "accrued_expense_amount": "Accrued Expense",
         "cash_expense_amount": "Cash Payments",
         "post_closing_adjustment_amount": "Post Adjustments",
-        "calendar_fiscal_year": "Year"
+        "fiscal_year": "Year"
       },
       "revenue": {
         "agency_name": "Agency Name",
@@ -637,5 +584,58 @@
         "gl_project_name": "Project"
       }
     }
+  },
+  "autocomplete_mapping": {
+    "agency_name": "agency_name_autocomplete",
+    "oge_agency_name": "oge_agency_name_autocomplete",
+    "vendor_name": "vendor_name_autocomplete",
+    "expenditure_object_name": "expenditure_object_name_autocomplete",
+    "display_industry_type_name": "industry_type_name_autocomplete",
+    "budget_code_name_code": "budget_code_name_code_autocomplete",
+    "vendor_name_code": "vendor_name_code_autocomplete",
+    "contract_budget_name": "contract_budget_name_autocomplete",
+    "reporting_code": "reporting_code_autocomplete",
+    "spending_budget_name": "spending_budget_name_autocomplete",
+    "civil_service_title": "civil_service_title_autocomplete",
+    "revenue_class_name_code": "revenue_class_name_code_autocomplete",
+    "revenue_source_name_code": "revenue_source_name_code_autocomplete",
+    "revenue_class_name": "revenue_class_name_autocomplete",
+    "revenue_source_name": "revenue_source_name_autocomplete"
+  },
+  "autocomplete_terms": {
+    "citywide": {
+      "agency_name": "Agencies",
+      "vendor_name": "Vendors (Prime Vendor, Sub Vendor, M/WBE Vendor)",
+      "minority_type_name": "M/WBE Category",
+      "expenditure_object_name": "Expense Categories"
+    },
+    "edc": {
+      "vendor_name": "Vendors"
+    },
+    "nycha": {
+      "vendor_name": "Vendors",
+      "contract_number": "Contract ID",
+      "grant_name": "Grant Name",
+      "funding_source_name": "Funding Source",
+      "responsibility_center_name": "Responsibility Center",
+      "expenditure_type_name": "Expense Categories"
+    }
+  },
+  "param_mapping": {
+    "oge_agency_names": "oge_agency_name",
+    "agency_names": "agency_name",
+    "fiscal_years": "fiscal_year",
+    "registered_fiscal_years": "registered_fiscal_year",
+    "domains": "domain",
+    "vendor_names": "vendor_name",
+    "expense_categories": "expenditure_object_name",
+    "revenue_categories": "revenue_category_name",
+    "spending_categories": "spending_category_name",
+    "contract_categories": "contract_category_name"
+  },
+  "sort_by": {
+    "citywide": "domain_ordering asc,date_ordering desc",
+    "edc": "domain_ordering asc, date_ordering desc",
+    "nycha": "domain_ordering asc, sort_sequence asc, date_ordering desc"
   }
 }

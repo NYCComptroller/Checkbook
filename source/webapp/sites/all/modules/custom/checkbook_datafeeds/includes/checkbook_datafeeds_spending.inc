@@ -32,7 +32,6 @@
 function checkbook_datafeeds_spending($form, &$form_state)
 {
   $datatype = $form_state['step_information']['type']['stored_values']['format'];
-  $data_source = $form_state['values']['datafeeds-spending-domain-filter'] ?? Datasource::CITYWIDE;
 
   $form['loaded'] = array(
     '#markup' => '<div class="updated-date">Last updated: ' . _checkbook_datafeeds_get_updated_date('spending') . '</div>',
@@ -44,6 +43,7 @@ function checkbook_datafeeds_spending($form, &$form_state)
     '#markup' => '<h2 class="domain-title">Spending</h2>',
   );
 
+  $data_source = $form_state['values']['datafeeds-spending-domain-filter'] ?? Datasource::CITYWIDE;
   $form['datafeeds-spending-domain-filter'] = DatafeedsConfigUtil::dataSourceRadio($data_source, 'spending');
 
   $form['filter'] = array(
@@ -180,6 +180,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     '#default_value' => $citywide_sc,
     '#name' => 'expense_type',
   );
+//  NYC EDC
   $form['filter']['nycedc_expense_type'] = array(
     '#type' => 'select',
     '#title' => t('Spending Category:'),
@@ -196,6 +197,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     '#default_value' => $oge_sc,
     '#name' => 'nycedc_expense_type',
   );
+//  NYCHA
   $form['filter']['nycha_expense_type'] = array(
     '#type' => 'select',
     '#title' => t('Spending Category:'),
@@ -419,19 +421,31 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
   $form['filter']['year_filter_start'] = array(
     '#markup' => '<div class="datafield year-filters last-item">',
   );
+
+  //  drush vset current_citywide_fy 2020
+  $year_settings = [
+    'default_year' => [
+      Datasource::CITYWIDE => 'FY'.CheckbookDateUtil::getCurrentDatasourceFiscalYear(Datasource::CITYWIDE),
+      Datasource::OGE => 'FY'.CheckbookDateUtil::getCurrentDatasourceFiscalYear(Datasource::OGE),
+      Datasource::NYCHA => 'FY'.CheckbookDateUtil::getCurrentDatasourceFiscalYear(Datasource::NYCHA),
+    ]
+  ];
+  drupal_add_js(array('datafeeds' => $year_settings), 'setting');
+
   $form['filter']['year'] = array(
     '#type' => 'select',
     '#options' => _year_options('all-years'),
     '#attributes' => [
       'class' => ['watch'],
-      'default_selected_value' => $form_state['values']['year'] ?? 'FY' . CheckbookDateUtil::getCurrentFiscalYear()
+      'default_selected_value' => $form_state['values']['year'] ?? $year_settings['default_year'][$data_source]
     ],
-    '#default_value' => $form_state['values']['year'] ?? 'FY' . CheckbookDateUtil::getCurrentFiscalYear(),
+    '#default_value' => $form_state['values']['year'] ?? $year_settings['default_year'][$data_source],
     '#prefix' => '<div id="year"><div class="datafield year">',
     '#suffix' => '</div></div>',
     '#id' => 'edit-year',
     '#name' => 'year',
   );
+
   $form['filter']['issuedfrom'] = array(
     '#type' => 'textfield',
     '#size' => 10,
@@ -608,15 +622,30 @@ function ckbk_datafeeds_spending_update_options_by_datasource(&$form, $form_stat
 
 //  Select Department
   $agency = $form_state['values']['agency'] ?? 0;
-  $spending_cat = $form_state['values']['expense_category'] ?? 0;
+  $expense_cat = $form_state['values']['expense_category'] ?? 0;
   $year = $form_state['values']['year'] ?? 'FY' . \CheckbookDateUtil::getCurrentFiscalYear();
   $agency_code = _emptyToZero($agency);
-  $spending_cat_code = _emptyToZero($spending_cat);
+  $expense_cat_code = _emptyToZero($expense_cat);
+
+  switch ($data_source) {
+    case Datasource::OGE:
+      $spend_cat_key = 'nycedc_expense_type';
+      break;
+    case Datasource::NYCHA:
+      $spend_cat_key = 'nycha_expense_type';
+      break;
+    default:
+      $spend_cat_key = 'expense_type';
+      break;
+  }
+
+  $spending_cat_id = _emptyToZero($form_state['values'][$spend_cat_key] ?? 0);
 
   $filters = [
     'agency_code' => $agency_code,
-    'fiscal_year' => str_replace(['FY', 'CY'], '', $year),
-    'expenditure_type_code' => $spending_cat_code
+    'fiscal_year' => str_replace(['FY', 'CY','all','ALL'], '', $year),
+    'expenditure_object_code' => $expense_cat_code,
+    'spending_category_id' => $spending_cat_id
   ];
 
   $departments = checkbook_solr_options_attributes($data_source, 'spending', 'department_name_code', $filters);
@@ -627,7 +656,7 @@ function ckbk_datafeeds_spending_update_options_by_datasource(&$form, $form_stat
     '#prefix' => '<div id="dynamic-fields"><div class="datafield department">',
     '#suffix' => '</div>',
     '#options' => (['0' => 'Select Department'] + ($departments['options'] ?? [])),
-    '#option_attributes' => (['0' => ['title'=>'Select Department']] + ($departments['options_attributes'] ?? [])),
+    '#option_attributes' => (['0' => ['title' => 'Select Department']] + ($departments['options_attributes'] ?? [])),
     '#attributes' => array('class' => array('watch')),
     '#default_value' => $form_state['values']['dept'] ?? 0,
     '#id' => 'edit-dept',
@@ -644,8 +673,9 @@ function ckbk_datafeeds_spending_update_options_by_datasource(&$form, $form_stat
 
   $filters = [
     'agency_code' => $agency_code,
-    'fiscal_year' => str_replace(['FY', 'CY'], '', $year),
-    'department_code' => $department_code
+    'fiscal_year' => str_replace(['FY', 'CY','ALL','all'], '', $year),
+    'department_code' => $department_code,
+    'spending_category_id' => $spending_cat_id
   ];
 
   $expcats = checkbook_solr_options_attributes($data_source, 'spending', 'expenditure_object_name_code', $filters);
@@ -659,7 +689,7 @@ function ckbk_datafeeds_spending_update_options_by_datasource(&$form, $form_stat
     '#id' => 'edit-expense-category',
     '#name' => 'expense_category',
     '#options' => (['0' => 'Select Expense Category'] + ($expcats['options'] ?? [])),
-    '#option_attributes' => (['0' => ['title'=>'Select Expense Category']] + ($expcats['options_attributes'] ?? [])),
+    '#option_attributes' => (['0' => ['title' => 'Select Expense Category']] + ($expcats['options_attributes'] ?? [])),
     '#default_value' => $form_state['values']['expense_category'] ?? 0,
     '#validated' => true
   );
