@@ -337,6 +337,7 @@ foreach ($node->assocReleases as $release):?>
                                                     $yearList = $spendingByRelease[$release['release_number']]['year_list'];
                                                     $spendingData =  $spendingByRelease[$release['release_number']]['spending_by_release'];
                                                     $year_cnt = 0;
+                                                    if(count($spendingData) > 0):
                                                     foreach ($yearList as $year): $yearSpending = $spendingData[$year];
                                                     ?>
                                                         <tr class="outer <?= ($year_cnt % 2 ? 'even' : 'odd') ?>">
@@ -411,7 +412,16 @@ foreach ($node->assocReleases as $release):?>
                                                         <?php
                                                         $year_cnt++;
                                                     endforeach;
+                                                    else:
                                                     ?>
+                                                      <tr>
+                                                        <td class="dataTables_empty" valign="top" colspan="3">
+                                                          <div id="no-records-datatable" class="clearfix">
+                                                            <span>No Matching Records Found</span>
+                                                          </div>
+                                                        </td>
+                                                      </tr>
+                                                    <?php endif; ?>
                                                     </tbody>
                                                 </table>
                                             </div>
