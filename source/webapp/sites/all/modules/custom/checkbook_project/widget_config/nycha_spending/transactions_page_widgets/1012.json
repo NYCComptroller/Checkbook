@@ -164,7 +164,7 @@
     "bInfo":true,
     "aoColumns": [
       {"sClass":"text", "sWidth":"112px","asSorting":["asc","desc"]},
-      {"sClass":"text", "sWidth":"130px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"150px","asSorting":["asc","desc"]},
       {"sClass":"number-center", "sWidth":"112px","asSorting":["asc","desc"]},
       {"sClass":"text", "sWidth":"130px","asSorting":["asc","desc"]},
       {"bSortable":false,"sWidth":"20px"},
@@ -182,10 +182,10 @@
       {"sClass":"text", "sWidth":"170px","asSorting":["asc","desc"]},
       {"sClass":"text", "sWidth":"150px","asSorting":["asc","desc"]},
       {"sClass":"text", "sWidth":"130px","asSorting":["asc","desc"]},
-      {"sClass":"text", "sWidth":"100px","asSorting":["asc","desc"]},
-      {"sClass":"text", "sWidth":"120px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"130px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"130px","asSorting":["asc","desc"]},
       {"sClass":"text", "sWidth":"150px","asSorting":["asc","desc"]},
-      {"sClass":"text", "sWidth":"80px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"130px","asSorting":["asc","desc"]},
       {"bSortable":false,"sWidth":"2px"}
     ],
     "aaSorting":[[0,"desc"]],
