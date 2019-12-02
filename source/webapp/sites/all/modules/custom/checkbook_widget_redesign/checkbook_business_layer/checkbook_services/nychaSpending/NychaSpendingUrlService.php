@@ -32,8 +32,10 @@ class NychaSpendingUrlService{
      */
     static function generateLandingPageUrl($urlParamName, $urlParamValue)
     {
+        $yearId = RequestUtilities::getRequestParamValue('year');
+        $yearURL = '/year/'. ((isset($yearId)) ? $yearId : CheckbookDateUtil::getCurrentFiscalYearId(Datasource::NYCHA));
         $url = '/nycha_spending'
-            . RequestUtilities::buildUrlFromParam('year')
+            . $yearURL
             . RequestUtilities::buildUrlFromParam('category')
             . RequestUtilities::buildUrlFromParam('agency')
             . RequestUtilities::buildUrlFromParam('vendor')
@@ -44,25 +46,6 @@ class NychaSpendingUrlService{
 
         return $url;
     }
-  /**
-   * Returns NYCHA Spending Landing page URL vendorname
-   * @param $urlParamName
-   * @param $urlParamValue
-   * @return string
-   */
-  static function generateVendorLandingPageUrl($urlParamName, $urlParamValue)
-  {
-    $url = RequestUtilities::buildUrlFromParam('year')
-      . RequestUtilities::buildUrlFromParam('category')
-      . RequestUtilities::buildUrlFromParam('agency')
-      . RequestUtilities::buildUrlFromParam('vendor')
-      . RequestUtilities::buildUrlFromParam('fundsrc')
-      . RequestUtilities::buildUrlFromParam('industry')
-      . RequestUtilities::buildUrlFromParam('datasource')
-      . '/'.$urlParamName.'/'. $urlParamValue;
-
-    return $url;
-  }
 
     /* Gets the YTD Spending link in a generic way
     * @param $dynamic_parameter - custom dynamic parameters to be used in the URL
