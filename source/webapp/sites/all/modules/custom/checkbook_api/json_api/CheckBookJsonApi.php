@@ -213,7 +213,7 @@ class CheckBookJsonApi
             if (!empty($response) && $response[0]['total_gross_pay']) {
                 $this->data = $response[0]['total_gross_pay'];
                 $this->data = round($this->data, -6);
-                $this->data = money_format('%i', $this->data);
+                $this->data = number_format($this->data,2);
             }
 
             $this->message = 'Total payroll for ' . $this->Helper->get_verbal_year_type($year_type) .
@@ -246,7 +246,7 @@ class CheckBookJsonApi
             if (!empty($response) && $response[0]['total']) {
                 $this->data = $response[0]['total'];
                 $this->data = round($this->data, -6);
-                $this->data = money_format('%i', $this->data);
+                $this->data = number_format($this->data,2);
             }
 
             $this->message = 'Total spending for ' . $this->Helper->get_verbal_year_type($year_type) .
@@ -278,7 +278,7 @@ class CheckBookJsonApi
             if (!empty($response) && $response[0]['total']) {
                 $this->data = $response[0]['total'];
                 $this->data = round($this->data, -6);
-                $this->data = money_format('%i', $this->data);
+                $this->data = number_format($this->data,2);
             }
 
             $this->message = 'Total budget for year ' . $year . ' is ' . $this->data;
@@ -309,7 +309,7 @@ class CheckBookJsonApi
             if (!empty($response) && $response[0]['total']) {
                 $this->data = $response[0]['total'];
                 $this->data = round($this->data, -6);
-                $this->data = money_format('%i', $this->data);
+                $this->data = number_format($this->data,2);
             }
 
             $this->message = 'Total revenue for year ' . $year . ' is ' . $this->data;

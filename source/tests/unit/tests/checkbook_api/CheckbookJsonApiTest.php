@@ -146,12 +146,12 @@ class CheckbookJsonApiTest extends TestCase
         $this->api = new CheckBookJsonApi(['', '2017', 'C']);
         $result = $this->api->total_payroll();
         $this->assertEquals(true, $result['success']);
-        $this->assertEquals('123457000000.00', $result['data']);
+        $this->assertEquals('123,457,000,000.00', $result['data']);
 
         $this->api = new CheckBookJsonApi(['', '2016']);
         $result = $this->api->total_payroll();
         $this->assertEquals(true, $result['success']);
-        $this->assertEquals('123457000000.00', $result['data']);
+        $this->assertEquals('123,457,000,000.00', $result['data']);
     }
 
     /**
@@ -162,12 +162,12 @@ class CheckbookJsonApiTest extends TestCase
         $this->api = new CheckBookJsonApi(['', '2017', 'C']);
         $result = $this->api->total_spending();
         $this->assertEquals(true, $result['success']);
-        $this->assertEquals('777555000000.00', $result['data']);
+        $this->assertEquals('777,555,000,000.00', $result['data']);
 
         $this->api = new CheckBookJsonApi(['', '2016']);
         $result = $this->api->total_spending();
         $this->assertEquals(true, $result['success']);
-        $this->assertEquals('777555000000.00', $result['data']);
+        $this->assertEquals('777,555,000,000.00', $result['data']);
     }
 
     /**
@@ -178,12 +178,12 @@ class CheckbookJsonApiTest extends TestCase
         $this->api = new CheckBookJsonApi(['', '2017', 'C']);
         $result = $this->api->total_budget();
         $this->assertEquals(true, $result['success']);
-        $this->assertEquals('777555000000.00', $result['data']);
+        $this->assertEquals('777,555,000,000.00', $result['data']);
 
         $this->api = new CheckBookJsonApi(['', '2016']);
         $result = $this->api->total_budget();
         $this->assertEquals(true, $result['success']);
-        $this->assertEquals('777555000000.00', $result['data']);
+        $this->assertEquals('777,555,000,000.00', $result['data']);
     }
 
     /**
@@ -194,11 +194,11 @@ class CheckbookJsonApiTest extends TestCase
         $this->api = new CheckBookJsonApi(['', '2017', 'C']);
         $result = $this->api->total_revenue();
         $this->assertEquals(true, $result['success']);
-        $this->assertEquals('777555000000.00', $result['data']);
+        $this->assertEquals('777,555,000,000.00', $result['data']);
 
         $this->api = new CheckBookJsonApi(['', '2016']);
         $result = $this->api->total_revenue();
         $this->assertEquals(true, $result['success']);
-        $this->assertEquals('777555000000.00', $result['data']);
+        $this->assertEquals('777,555,000,000.00', $result['data']);
     }
 }
