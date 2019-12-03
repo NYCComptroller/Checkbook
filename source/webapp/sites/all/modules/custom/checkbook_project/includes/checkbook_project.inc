@@ -2468,10 +2468,7 @@ function _get_contract_includes_subvendors_data($attributes = NULL)
         $statuses[$value['scntrc_status']] = array('title' => $value['scntrc_status_name']);
       } else {
         if ($value['display_flag'] == 1) {
-          if (strlen($value['scntrc_status_name']) > 20)
-            $statuses[$value['scntrc_status']] = substr($value['scntrc_status_name'], 0, 20) . '...';
-          else
-            $statuses[$value['scntrc_status']] = $value['scntrc_status_name'];
+          $statuses[$value['scntrc_status']] = _ckbk_excerpt($value['scntrc_status_name']);
         }
       }
     }
@@ -2715,4 +2712,14 @@ function emptyToZero($input)
  */
 function _emptyToZero($input){
   return emptyToZero($input);
+}
+
+/**
+ * @param string $text
+ * @param int $len
+ * @return string
+ */
+function _ckbk_excerpt(string $text='', int $len=20):string
+{
+  return (strlen($text) > 18) ? substr($text, 0, $len) . '...' : $text;
 }

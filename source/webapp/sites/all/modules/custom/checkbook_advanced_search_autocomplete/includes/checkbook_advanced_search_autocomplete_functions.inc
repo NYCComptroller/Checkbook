@@ -179,7 +179,7 @@ function _checkbook_advanced_search_autocomplete_spending_expcategory($year, $ag
     else {
         foreach($options as $key => $value){
             $value = htmlentities($value);
-            $name = (strlen($value) > 18) ? substr($value, 0, 18) . '...' : $value;
+            $name = _ckbk_excerpt($value);
             $matches[] = array("code" => $key, "name" => $name, "title" => $value);
         }
     }
@@ -335,7 +335,7 @@ function _checkbook_advanced_search_autocomplete_budget_expcategory($fiscal_year
  * @return mixed for budget code based on selected agency, department, expense category, year and budget name
  */
 function _checkbook_advanced_search_autocomplete_budget_budgetcode($fiscal_year, $agency, $dept, $expcategory, $budget_name) {
-   
+
     $params =  array("budget_fiscal_year_id"=>$fiscal_year);
     if($agency != '0' ) {
         $params["agency_id"] = $agency;
@@ -397,7 +397,7 @@ function _checkbook_advanced_search_autocomplete_budget_budgetname($fiscal_year,
         $matches = array();
         foreach ($results as $key=>$value) {
             $budget_name_value = $value['budget_code_name.budget_code_name'];
-            $budget_name_text = (strlen($budget_name_value) > 18) ? substr($budget_name_value, 0, 18) . '...' : $budget_name_value;
+            $budget_name_text = _ckbk_excerpt($budget_name_value);
             $matches[] = array('label'=> $budget_name_text,'value' => $budget_name_value, 'code' => $value["budget_code_code.budget_code_code"]);
         }
         drupal_json_output($matches);

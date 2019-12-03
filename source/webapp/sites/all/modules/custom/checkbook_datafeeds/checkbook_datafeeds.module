@@ -653,7 +653,7 @@ function _sub_vendor_status_in_pip()
       if ($row['aprv_sta_id'] != "7") {
         $option = $row['aprv_sta_value'];
         //Menu options
-        $menu_options[$row['aprv_sta_id']] = (strlen($option) > 20) ? substr($option, 0, 20) . '...' : $option;
+        $menu_options[$row['aprv_sta_id']] = _ckbk_excerpt($option);
         //Menu option titles
         $menu_options_attributes[$row['aprv_sta_id']] = array('title' => $option);
       }
@@ -764,7 +764,7 @@ function _funding_source_options($data_source = Datasource::NYCHA)
         $results = [];
         if ($data) {
           foreach ($data as $row) {
-            $results[$row['funding_source_description'] . ' [' . $row['funding_source_code'] . ']'] = $row['funding_source_description'] . ' [' . $row['funding_source_code'] . ']';
+            $results[$row['funding_source_description'] . ' [' . $row['funding_source_code'] . ']'] = _ckbk_excerpt($row['funding_source_description']);
           }
         }
         $sources += array_unique($results);
@@ -900,7 +900,7 @@ function _checkbook_datafeeds_contract_type_options($data)
   foreach ($data as $row) {
     $option = $row['agreement_type_name'] . ' [' . $row['agreement_type_code'] . ']';
     //Menu options
-    $menu_options[$option] = (strlen($option) > 18) ? substr($option, 0, 18) . '...' : $option;
+    $menu_options[$option] = _ckbk_excerpt($option);
     //Menu option titles
     $menu_options_attributes[$option] = array('title' => $option);
   }
@@ -948,7 +948,7 @@ function _checkbook_datafeeds_award_method_options($data)
   foreach ($data as $row) {
     $option = $row['award_method_name'] . ' [' . $row['award_method_code'] . ']';
     //Menu options
-    $menu_options[$option] = (strlen($option) > 18) ? substr($option, 0, 18) . '...' : $option;
+    $menu_options[$option] = _ckbk_excerpt($option);
     //Menu option titles
     $menu_options_attributes[$option] = array('title' => $option);
   }
@@ -1110,7 +1110,7 @@ function _checkbook_datafeeds_dept_options($data, $data_source = null)
   foreach ($data as $row) {
     $option = $row['department_name'];
     //Menu options
-    $menu_options[$option] = (strlen($option) > 20) ? substr($option, 0, 20) . '...' : $option;
+    $menu_options[$option] = _ckbk_excerpt($option);
     //Menu option titles
     $menu_options_attributes[$option] = array('title' => $option);
   }
@@ -1208,7 +1208,7 @@ function _checkbook_datafeeds_expcat_options($data, $data_source = null)
   foreach ($data as $row) {
     $option = $row['expenditure_object_code'];
     //Menu options
-    $menu_options[$option] = (strlen($option) > 20) ? substr($option, 0, 20) . '...' : $option;
+    $menu_options[$option] = _ckbk_excerpt($option);
     //Menu option titles
     $menu_options_attributes[$option] = array('title' => $option);
   }

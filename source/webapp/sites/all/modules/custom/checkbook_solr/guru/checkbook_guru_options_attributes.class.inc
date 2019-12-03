@@ -41,7 +41,7 @@ class CheckbookGuruOptionsAttributes extends CheckbookGuru
       if (strpos($facet_value,']') && ']' == substr($facet_value,-1)) {
         $idx = strrpos($facet_value,'[');
         $title = trim(substr($facet_value,0,$idx));
-        $label = (strlen($title) > 20) ? substr($title, 0, 20) . '...' : $title;
+        $label = _ckbk_excerpt($title);
         $out[$facet_value] = $label;
         $attributes[$facet_value] = ['title' => $title];
       } else {

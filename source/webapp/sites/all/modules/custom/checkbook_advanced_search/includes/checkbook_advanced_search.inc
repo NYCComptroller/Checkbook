@@ -154,10 +154,7 @@ function _checkbook_advanced_search_get_agencyname_and_id($data_source = DataSou
             $nyc_agencies_key_val = array($title);
         }
         foreach ($nyc_agencies as $value) {
-            if (strlen($value['agency_name']) > 20)
-                $nyc_agencies_key_val[$value['agency_id']] = substr($value['agency_name'], 0, 20) . '...';
-            else
-                $nyc_agencies_key_val[$value['agency_id']] = $value['agency_name'];
+          $nyc_agencies_key_val[$value['agency_id']] = _ckbk_excerpt($value['agency_name']);
         }
         return $nyc_agencies_key_val;
     } catch (Exception $e) {
@@ -266,10 +263,7 @@ function _checkbook_advanced_search_get_subcontract_approval_status_and_id($attr
                 if ($attributes) {
                     $statuses[$value['aprv_sta_id']] = array('title' => $value['aprv_sta_value']);
                 } else {
-                    if (strlen($value['aprv_sta_value']) > 20)
-                        $statuses[$value['aprv_sta_id']] = substr($value['aprv_sta_value'], 0, 20) . '...';
-                    else
-                        $statuses[$value['aprv_sta_id']] = $value['aprv_sta_value'];
+                  $statuses[$value['aprv_sta_id']] = _ckbk_excerpt($value['aprv_sta_value']);
                 }
             }
         }
@@ -304,10 +298,7 @@ function _checkbook_advanced_search_get_contract_includes_subvendors_status($att
                 $statuses[$value['scntrc_status']] = array('title' => $value['scntrc_status_name']);
             }else{
                 if($value['display_flag'] == 1) {
-                    if(strlen($value['scntrc_status_name']) > 20)
-                        $statuses[$value['scntrc_status']] = substr($value['scntrc_status_name'], 0, 20) . '...';
-                    else
-                        $statuses[$value['scntrc_status']] = $value['scntrc_status_name'];
+                  $statuses[$value['scntrc_status']] = _ckbk_excerpt($value['scntrc_status_name']);
                 }
             }
         }
@@ -637,17 +628,11 @@ function _checkbook_advanced_search_get_responsibility_centers($data_source = Da
             if($feeds){
                 $text = $value['responsibility_center_description'].' ['.$value['responsibility_center_code'].']';
                 $res_center_key_val_option_attributes[$text] = array('title' => $text);
-                if (strlen($text) > 20)
-                    $res_center_key_val_options[$text] = substr($text, 0, 20) . '...';
-                else
-                    $res_center_key_val_options[$text] = $text;
+                $res_center_key_val_options[$text] = _ckbk_excerpt($text);
             } else {
                 $keys = $value['responsibility_center_id'];
                 $res_center_key_val_option_attributes[$keys] = array('title' => $value['responsibility_center_description']);
-                if (strlen($value['responsibility_center_description']) > 20)
-                    $res_center_key_val_options[$keys] = substr($value['responsibility_center_description'], 0, 20) . '...';
-                else
-                    $res_center_key_val_options[$keys] = $value['responsibility_center_description'];
+                $res_center_key_val_options[$keys] = _ckbk_excerpt($value['responsibility_center_description']);
             }
         }
 
@@ -677,17 +662,11 @@ function _checkbook_advanced_search_get_nycha_contract_types($data_source = Data
             if($feeds){
                 $text = $value['contract_type_name'].' ['.$value['contract_type_code'].']';
                 $contract_type_key_val_option_attributes[$text] = array('title' => $text);
-                if (strlen($text) > 20)
-                    $contract_type_key_val_options[$text] = substr($text, 0, 20) . '...';
-                else
-                    $contract_type_key_val_options[$text] = $text;
+                $contract_type_key_val_options[$text] = _ckbk_excerpt($text);
             }else {
                 $keys = 'id=>' . $value['contract_type_id'] . '~code=>' . $value['contract_type_code'];
                 $contract_type_key_val_option_attributes[$keys] = array('title' => $value['contract_type_name']);
-                if (strlen($value['contract_type_name']) > 20)
-                    $contract_type_key_val_options[$keys] = substr($value['contract_type_name'], 0, 20) . '...';
-                else
-                    $contract_type_key_val_options[$keys] = $value['contract_type_name'];
+                $contract_type_key_val_options[$keys] = _ckbk_excerpt($value['contract_type_name']);
             }
         }
         return array('options' => $contract_type_key_val_options, 'option_attributes' => $contract_type_key_val_option_attributes);
@@ -715,17 +694,11 @@ function checkbook_advanced_search_get_award_methods($data_source = DataSource::
             if($feeds){
                 $text = $value['award_method_name'].' ['.$value['award_method_code'].']';
                 $award_method_key_val_option_attributes[$text] = array('title' => $text);
-                if (strlen($text) > 20)
-                    $award_method_key_val_options[$text] = substr($text, 0, 20) . '...';
-                else
-                    $award_method_key_val_options[$text] = $text;
+                $award_method_key_val_options[$text] = _ckbk_excerpt($text);
             }else {
                 $keys = 'id=>' . $value['award_method_id'] . '~code=>' . $value['award_methode_code'];
                 $award_method_key_val_option_attributes[$keys] = array('title' => $value['award_method_name']);
-                if (strlen($value['award_method_name']) > 20)
-                    $award_method_key_val_options[$keys] = substr($value['award_method_name'], 0, 20) . '...';
-                else
-                    $award_method_key_val_options[$keys] = $value['award_method_name'];
+                $award_method_key_val_options[$keys] = _ckbk_excerpt($value['award_method_name']);
             }
         }
 
@@ -759,17 +732,11 @@ function checkbook_advanced_search_get_industries($data_source, $feeds = false){
             if($feeds){
                 $text = $value['display_industry_type_name'].' ['.$value['industry_type_code'].']';
                 $industry_key_val_option_attributes[$text] = array('title' => $text);
-                if (strlen($text) > 20)
-                    $industry_key_val_options[$text] = substr($text, 0, 20) . '...';
-                else
-                    $industry_key_val_options[$text] = $text;
+                $industry_key_val_options[$text] = _ckbk_excerpt($text);
             }else {
                 $keys = $value['industry_type_id'];
                 $industry_key_val_option_attributes[$keys] = array('title' => $value['display_industry_type_name']);
-                if (strlen($value['display_industry_type_name']) > 20)
-                    $industry_key_val_options[$keys] = substr($value['display_industry_type_name'], 0, 20) . '...';
-                else
-                    $industry_key_val_options[$keys] = $value['display_industry_type_name'];
+                $industry_key_val_options[$keys] = _ckbk_excerpt($value['display_industry_type_name']);
             }
         }
         return array('options' => $industry_key_val_options, 'option_attributes' => $industry_key_val_option_attributes);
@@ -799,17 +766,11 @@ function checkbook_advanced_search_get_nycha_funding_sources($data_source = Data
       if($feeds){
         $text = $value['display_funding_source_descr'].' ['.$value['funding_source_code'].']';
         $fundsrc_key_val_option_attributes[$text] = array('title' => $text);
-        if (strlen($text) > 20)
-          $fundsrc_key_val_options[$text] = substr($text, 0, 20) . '...';
-        else
-          $fundsrc_key_val_options[$text] = $text;
+        $fundsrc_key_val_options[$text] = _ckbk_excerpt($text);
       }else {
         $keys = $value['funding_source_id'];
         $fundsrc_key_val_option_attributes[$keys] = array('title' => $value['display_funding_source_descr']);
-        if (strlen($value['display_funding_source_descr']) > 20)
-          $fundsrc_key_val_options[$keys] = substr($value['display_funding_source_descr'], 0, 20) . '...';
-        else
-          $fundsrc_key_val_options[$keys] = $value['display_funding_source_descr'];
+        $fundsrc_key_val_options[$keys] = _ckbk_excerpt($value['display_funding_source_descr']);
       }
     }
     return array('options' => $fundsrc_key_val_options, 'option_attributes' => $fundsrc_key_val_option_attributes);
