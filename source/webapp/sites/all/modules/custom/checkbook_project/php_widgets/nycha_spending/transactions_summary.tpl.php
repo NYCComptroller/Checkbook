@@ -31,7 +31,7 @@ if(isset($url)) {
   $cat_id = RequestUtilities::get('category');
   $categoryName = NychaSpendingUtil::getCategoryName();
   $total_spending = $node->data[0]['invoice_amount_sum'];
-  $vendor_value = RequestUtilities::get('vendor');
+  $vendor_value = RequestUtilities::get('vendor_inv');
 
   // Widget Details page static text
   if (strpos($widget, 'wt_') !== false) {
@@ -182,4 +182,4 @@ if ($titleSummary == null) {
 
 //DISPLAY Static text
 echo $titleSummary . $amountsSummary . $subTitle;
- /* $widget = RequestUtil::getRequestKeyValueFromURL('widget', $url);
+
