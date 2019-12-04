@@ -2722,5 +2722,5 @@ function _emptyToZero($input){
 function _ckbk_excerpt($text='', int $len=20):string
 {
   if(!$text){return '';}
-  return (strlen($text) > 18) ? substr($text, 0, $len) . '...' : $text;
+  return (strlen($text) > $len) ? substr($text, 0, $len) . '...' : $text;
 }

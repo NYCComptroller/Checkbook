@@ -751,23 +751,24 @@ function _funding_class_options()
  */
 function _funding_source_options($data_source = Datasource::NYCHA)
 {
-  $sources = ['All Funding Sources'];
+  $options = ['All Funding Sources' => 'All Funding Sources'];
+  $menu_options_attributes = ['All Funding Sources' =>['title'=> 'All Funding Sources']];
+
   switch ($data_source) {
     case Datasource::NYCHA:
-//      $sources += _ckbk_solr_get_all_options($data_source, 'spending', 'funding_source_name');
       try {
         $dataController = data_controller_get_instance();
         $data = $dataController->queryDataset('checkbook_nycha:funding_source', array(
           'funding_source_code',
           'funding_source_description',
         ), NULL, 'funding_source_description');
-        $results = [];
         if ($data) {
           foreach ($data as $row) {
-            $results[$row['funding_source_description'] . ' [' . $row['funding_source_code'] . ']'] = _ckbk_excerpt($row['funding_source_description']);
+            $key = $row['funding_source_description'] . ' [' . $row['funding_source_code'] . ']';
+            $options[$key] = _ckbk_excerpt($row['funding_source_description']);
+            $menu_options_attributes[$key] = ['title' => $row['funding_source_description']];
           }
         }
-        $sources += array_unique($results);
       } catch (Exception $e) {
         log_error("Error getting data from controller: \n" . $e->getMessage());
         return;
@@ -776,7 +777,10 @@ function _funding_source_options($data_source = Datasource::NYCHA)
     default:
       break;
   }
-  return $sources;
+  return [
+    'options' => $options,
+    'option_attributes' => $menu_options_attributes
+  ];
 }
 
 /**
