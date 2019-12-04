@@ -241,10 +241,12 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_industry', $first_time_load, ''),
   );
 
+  $funding_source_options = _funding_source_options(Datasource::NYCHA);
   $form['filter']['funding_source'] = array(
     '#type' => 'select',
     '#title' => t('Funding Source:'),
-    '#options' => _funding_source_options(Datasource::NYCHA),
+    '#options' => $funding_source_options['options'],
+    '#option_attributes' => $funding_source_options['option_attributes'],
     '#prefix' => '<div class="datafield fundingsource nycha">',
     '#suffix' => '</div>',
     '#attributes' => array('class' => array('watch')),
