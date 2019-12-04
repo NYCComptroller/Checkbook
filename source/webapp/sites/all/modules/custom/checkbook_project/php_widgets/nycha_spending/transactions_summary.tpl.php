@@ -25,7 +25,7 @@ $title = NychaSpendingUtil::getTransactionsTitle();
 $url = $_REQUEST['expandBottomContURL'];
 $url = isset($url) ? $url : drupal_get_path_alias($_GET['q']);
 $AmountSpent = NychaSpendingUtil::getAmountSpent($url);
-//print_r($node->data);
+
 if(isset($url)) {
   $widget = RequestUtil::getRequestKeyValueFromURL('widget', $url);
   $cat_id = RequestUtilities::get('category');
@@ -37,6 +37,22 @@ if(isset($url)) {
   if (strpos($widget, 'wt_') !== false) {
     if ($categoryName == 'Total'){$total_spending = NychaSpendingUtil::getTotalSpendingAmount($categoryName,$url);}
     if ($categoryName == 'Payroll'){$total_spending = $node->data[0]['check_amount_sum'];}
+    if ($widget == 'wt_issue_date')
+    {
+      $issue_date_details = NychaSpendingUtil::getTransactionsStaticSummaryIssueDate($widget, $url);
+      $issuedateSummary = "<div class='contract-information contract-summary-block'>
+                        <ul>
+                          <li class=\"spendingtxsubtitle\">
+	                            <span class=\"gi-list-item\"><b>Year :</b></span> FY{$issue_date_details['issue_date_year']}
+                          </li>
+                          <li class=\"spendingtxsubtitle\">
+	                            <span class=\"gi-list-item\"><b>Month:</b></span> {$issue_date_details['month_name']}
+                          </li>
+                        </ul>
+                      </div>";
+      $subTitle2 = $issuedateSummary;
+      $total_spending = $issue_date_details['spent_amount'];
+    }
     $aggregatedAmountTitle = $categoryName." Spending Amount";
   }
   // Widget YTD page static text
@@ -72,6 +88,9 @@ if(isset($url)) {
         "<div class=\'amount-title\'>".$aggregateTotalContractTitle."</div>
                                       </div>";
     }
+
+    // Display issue date details
+
 
   }
 
