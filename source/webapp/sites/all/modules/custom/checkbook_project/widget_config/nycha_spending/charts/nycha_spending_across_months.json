@@ -77,7 +77,8 @@
     if ($code == $prev_year_id){$codeyear = $prev_year ;}
     $issue_date= $codeyear.'-'.$category.'-01~'.$codeyear.'-'.$category.'-31';
     $dynamic_parameter = '/issue_date/' . $issue_date;
-    $url = $_GET['q'].'?expandBottomContURL='.NYCHASpendingUrlService::ytdSpendingUrl($dynamic_parameter, 'ytd_issue_date');
+    $year_parameter = '/year/'.$code;
+    $url = $_GET['q'].'?expandBottomContURL='.NYCHASpendingUrlService::idateSpendingUrl($dynamic_parameter,$year_parameter ,'wt_issue_date');
     $series_previous[] = (object)array('y'=>$series_previous_temp[$code][$category], 'url'=>$url);
     }
     if ($code == $year_id){$code = $curr_year ;}

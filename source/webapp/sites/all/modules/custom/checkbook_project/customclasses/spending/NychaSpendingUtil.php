@@ -118,7 +118,7 @@ class NychaSpendingUtil
       $query_param = "industry_type_id";
     }
     $query =  'SELECT '. $query_param .' ,sum(invoice_net_amount) AS amount_spent from all_disbursement_transactions
-               where  issue_date_year_id = '. $year_id .' AND '. $query_param.'='.$reqParam .' GROUP BY '. $query_param ;
+               where  issue_date_year_id <= '. $year_id .' AND '. $query_param.'='.$reqParam .' GROUP BY '. $query_param ;
     $results = _checkbook_project_execute_sql_by_data_source($query, Datasource::NYCHA);
     return $results;
   }
@@ -216,6 +216,26 @@ class NychaSpendingUtil
     return $results[0];
   }
 
+  /**
+   * @param $widget Widget Name,issuedate
+   * @param $bottomURL
+   * @return null|string -- widget title summary details for issue date
+   */
+
+  static public function getTransactionsStaticSummaryIssueDate($widget, $bottomURL){
+    $year_id = RequestUtil::getRequestKeyValueFromURL('year', $bottomURL);
+    $category_id = RequestUtil::getRequestKeyValueFromURL('category', $bottomURL);
+    $issue_date =  RequestUtil::getRequestKeyValueFromURL('issue_date', $bottomURL);
+    $date_value = explode("~",$issue_date);
+    $month = date("n",strtotime($date_value[0]));
+    $category_param = ' AND spending_category_id ='.$category_id;
+    $category_parameter = isset($category_id) ? $category_param : '';
+    $query = "SELECT issue_date_year,month_name, SUM(total_spending) AS spent_amount 
+              FROM aggregation_spending_month  WHERE issue_date_year_id= ".$year_id." AND month_number =".$month.$category_parameter.
+              " GROUP BY issue_date_year,month_name";
+    $results = _checkbook_project_execute_sql_by_data_source($query, Datasource::NYCHA);
+    return $results[0];
+  }
   /**
    * @param $widget Widget Name
    * @param $bottomURL

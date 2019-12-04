@@ -74,6 +74,23 @@ class NychaSpendingUrlService{
           return $url;
       }
 
+  /* Gets the issue date Spending link in a generic way
+* @param $dynamic_parameter - custom dynamic parameters to be used in the URL
+* @param null $legacy_node_id
+* @return string
+*/
+  static function idateSpendingUrl($dynamic_parameter,$year_parameter, $widget) {
+    $year_parameter = isset($year_parameter) ? $year_parameter : '';
+    $dynamic_parameter = isset($dynamic_parameter) ? $dynamic_parameter : '';
+    $url = "/panel_html/nycha_spending_transactions/nycha_spending/transactions"
+      . RequestUtilities::buildUrlFromParam('datasource')
+      . $year_parameter
+      . RequestUtilities::buildUrlFromParam('category')
+      . RequestUtilities::buildUrlFromParam('vendor')
+      . '/widget/'. $widget
+      . $dynamic_parameter;
+    return $url;
+  }
       /* Gets the Invoice amount Spending link in a generic way for NYCHA Contracts
     * @param $dynamic_parameter - custom dynamic parameters to be used in the URL
     * @param null $legacy_node_id
