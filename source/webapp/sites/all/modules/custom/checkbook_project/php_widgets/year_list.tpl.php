@@ -70,9 +70,6 @@ if(preg_match("/contracts_pending_exp_landing/",$_GET['q']) || preg_match("/cont
 }
 
 $bottomURL = $_REQUEST['expandBottomContURL'];
-
-$dept_Ids = SpendingUtil::getDepartmentIds();
-$expCatIds = SpendingUtil::getExpenseCatIds();
 if(isset($bottomURL)){
     $pathParams = explode('/', $bottomURL);
     if(preg_match("/dept/",$bottomURL)){
@@ -124,9 +121,6 @@ foreach($years as $year){
                 $link = preg_replace("/year\/" . $url_year_id_value . "/","year/" .  $year['year_id'],$q);
             }
 
-          // $link = str_replace("/dept/".$deptId,"/dept/".$dept_Ids[$value['year_id']],$link);
-            $link = str_replace("/expcategory/".$expCatId,"/expcategory/".$expCatIds[$year['year_id']],$link);
-
             //For Transaction pages replace the year ID and Year type in 'expandBottomContURL'
             if(preg_match("/expandBottomContURL/",$link) && (preg_match("/spending/",$link) || preg_match("/payroll/",$link))){
                 $link_parts = explode("?expandBottomContURL=",$link);
@@ -166,9 +160,6 @@ foreach($years as $year){
             }else{
                 $link = preg_replace("/year\/" . $url_year_id_value . "/","year/" .  $year['year_id'],$q);
             }
-            $link = str_replace("/dept/".$deptId,"/dept/".$dept_Ids[$year['year_id']],$link);
-            $link = str_replace("/expcategory/".$expCatId,"/expcategory/".$expCatIds[$year['year_id']],$link);
-
             //For Transaction pages replace the year ID and Year type in 'expandBottomContURL'
             if(preg_match("/expandBottomContURL/",$link) && (preg_match("/spending/",$link) || preg_match("/payroll/",$link))){
                 $link_parts = explode("?expandBottomContURL=",$link);
@@ -191,7 +182,6 @@ foreach($years as $year){
 
             //Set year type 'C' for all calendar year options
             $link = preg_replace("/yeartype\/./","yeartype/C",$link);
-
             $calendar_year_data_array[] = array('display_text' => 'CY '.$year['year_value'].' (Jan 1, '.$year['year_value'].' - Dec 31, '.$year['year_value'].')',
                                                     'value' => $year['year_id'].'~C',
                                                     'link' => $link,
