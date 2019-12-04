@@ -79,7 +79,7 @@
       "expression": "($row['check_amount'] == null) ? '-' : custom_number_formatter_basic_format($row['check_amount'])"
     },
     "amount_spent_formatted":{
-      "expression": "($row['invoice_net_amount'] == null) ? '-' : custom_number_formatter_basic_format($row['invoice_net_amount'])"
+      "expression": "($row['invoice_net_amount'] == null) ? '-' : custom_number_formatter_basic_format($row['invoice_net_amount'], 4)"
     },
     "vendor_name_formatted":{
       "expression": "_get_tooltip_markup($row['vendor_name'],36)"
