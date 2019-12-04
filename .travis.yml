@@ -10,7 +10,7 @@ git:
 
 before_script:
   - phpenv versions
-  - phpenv config-rm xdebug.ini
+  - phpenv config-rm xdebug.ini || echo "xdebug not available"
 
 script:
   - phpunit --no-logging
