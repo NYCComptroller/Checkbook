@@ -2715,11 +2715,12 @@ function _emptyToZero($input){
 }
 
 /**
- * @param string $text
+ * @param $text
  * @param int $len
  * @return string
  */
-function _ckbk_excerpt(string $text='', int $len=20):string
+function _ckbk_excerpt($text='', int $len=20):string
 {
+  if(!$text){return '';}
   return (strlen($text) > 18) ? substr($text, 0, $len) . '...' : $text;
 }
