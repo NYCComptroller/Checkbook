@@ -19,6 +19,12 @@
  */
 $spendingParameterMapping = CheckbookSolr::getSearchFields($solr_datasource, 'spending');
 
+//Display hyphen for the following fields based on spending category
+$hyphenFields = array(1 => array("agreement_type_name", "contract_number", "release_number", "contract_purpose", "industry_type_name", "department_name"),
+                      4 => array("agreement_type_name", "contract_number", "release_number", "contract_purpose", "industry_type_name", "department_name"),
+                      2 => array("agreement_type_name", "contract_number", "release_number", "invoice_number", "contract_spent_amount", "contract_purpose",
+                                 "industry_type_name", "funding_source_name", "responsibility_center_name", "program_phase_name", "gl_project_name"));
+
 //Amount Fields and decimals to be displayed
 $amountFields = array("check_amount" => 2, "contract_spent_amount" => 4);
 $dateFields = array("check_issue_date");
@@ -30,18 +36,22 @@ $linkableFields = array("contract_number" => $contractIdLink, "vendor_name" => $
 
 $count = 1;
 foreach ($spendingParameterMapping as $key => $title) {
-  $value = $spending_results[$key];
-  //Date Fields
-  if(in_array($key, $dateFields)){
-    $value = date("F j, Y", strtotime(substr($value, 0, 10)));
-  }
-  //Amount Fields
-  if(array_key_exists($key, $amountFields)){
-    $value = custom_number_formatter_basic_format($value, $amountFields[$key]);
-  }
-  //Hyperlink Fields
-  if (array_key_exists($key, $linkableFields)) {
-    $value = $linkableFields[$key];
+  if(in_array($key, $hyphenFields[$spending_results['spending_category_id']])){
+    $value = "-";
+  }else {
+    $value = $spending_results[$key];
+    //Date Fields
+    if (in_array($key, $dateFields)) {
+      $value = date("F j, Y", strtotime(substr($value, 0, 10)));
+    }
+    //Amount Fields
+    if (array_key_exists($key, $amountFields)) {
+      $value = custom_number_formatter_basic_format($value, $amountFields[$key]);
+    }
+    //Hyperlink Fields
+    if (array_key_exists($key, $linkableFields)) {
+      $value = $linkableFields[$key];
+    }
   }
 
   if ($count % 2 == 0) {
