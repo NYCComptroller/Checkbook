@@ -7,6 +7,7 @@
  */
 
 class NychaSpendingUrlService{
+
     /**
      * @param $parameters
      * @return string
@@ -81,12 +82,15 @@ class NychaSpendingUrlService{
 * @return string
 */
   static function idateSpendingUrl($dynamic_parameter,$year_parameter, $widget) {
+    $url = drupal_get_path_alias($_GET['q']);
     $year_parameter = isset($year_parameter) ? $year_parameter : '';
+    $category = $vendor = RequestUtilities::buildUrlFromParam('category');
+    $category = str_replace("category", "category_inv", $category);
     $dynamic_parameter = isset($dynamic_parameter) ? $dynamic_parameter : '';
     $url = "/panel_html/nycha_spending_transactions/nycha_spending/transactions"
       . RequestUtilities::buildUrlFromParam('datasource')
-      . $year_parameter
-      . RequestUtilities::buildUrlFromParam('category')
+      . $year_parameter.$category
+      //. RequestUtilities::buildUrlFromParam('category')
       . RequestUtilities::buildUrlFromParam('vendor')
       . '/widget/'. $widget
       . $dynamic_parameter;
