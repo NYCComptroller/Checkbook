@@ -360,7 +360,6 @@ SQL;
       $sql = <<<SQL
                     SELECT issue_date_year, issue_date, document_id , check_amount, invoice_net_amount, expenditure_type_description
                     FROM all_disbursement_transactions where contract_id = '{$contract_id}' AND vendor_id = {$vendor_id}
-                    GROUP BY issue_date_year, issue_date, document_id , check_amount, invoice_net_amount, expenditure_type_description
                     ORDER BY issue_date_year, issue_date DESC             
 SQL;
       $results = _checkbook_project_execute_sql_by_data_source($sql, Datasource::NYCHA);
