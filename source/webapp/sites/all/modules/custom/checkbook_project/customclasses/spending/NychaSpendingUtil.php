@@ -56,6 +56,7 @@ class NychaSpendingUtil
   static public function getCategoryName(){
     $categories = self::$categories;
     $category_id = RequestUtilities::get('category');
+    $category_id = RequestUtilities::get('category_inv');
     return $categories[$category_id];
   }
   /**
@@ -153,7 +154,9 @@ class NychaSpendingUtil
         break;
       case 'ytd_department':
         $reqParam = RequestUtil::getRequestKeyValueFromURL('dept_inv', $bottomURL);
-        $title .= _checkbook_project_get_name_for_argument("department_id", $reqParam);
+        $result = _checkbook_project_get_name_for_argument("department_id", $reqParam);
+        $result = preg_replace("/unknown/", 'Unknown', $result);
+        $title .= htmlentities($result);
         break;
     }
 
