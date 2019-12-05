@@ -128,7 +128,7 @@ if(isset($url)) {
       if ( $tcode == 'VO'){ $inv_contractName = $inv_contractDetails['vendor_name'];}
       if ( $tcode == 'AWD'){ $inv_contractName = $inv_contractDetails['award_method_name'];}
       if ( $tcode == 'DEP'){ $inv_contractName = $inv_contractDetails['department_name'];}
-      if ( $tcode == 'IND'){ $inv_contractName = $inv_contractDetails['industry_type_name'];}
+      if ( $tcode == 'IND'){ $inv_contractName = $inv_contractDetails['display_industry_type_name'];}
       if ( $tcode == 'RESC'){ $inv_contractName = $inv_contractDetails['responsibility_center_descr'];}
       if ( $tcode == 'SZ'){ $inv_contractName = $inv_contractDetails['award_size_name'];}
       $inv_contractSummary = "<b>{$tcode_title}:</b> {$inv_contractName}";
