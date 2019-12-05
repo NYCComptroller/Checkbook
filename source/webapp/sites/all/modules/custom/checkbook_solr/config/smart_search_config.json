@@ -117,11 +117,18 @@
           ],
           "payroll": [
             "payroll_type"
+          ],
+          "spending": [
+            "spending_category"
           ]
         }
       },
       "agreement_type_name": {
         "title": "Purchase Order Type",
+        "child": true
+      },
+      "spending_category": {
+        "title": "Spending Category",
         "child": true
       },
       "payroll_type": {
@@ -132,16 +139,24 @@
         "title": "Vendor",
         "autocomplete": true
       },
+      "document_id":{
+        "title" :"Document ID",
+        "autocomplete": true
+      },
+      "invoice_number":{
+        "title" :"Invoice Number",
+        "autocomplete": true
+      },
+      "expenditure_type_name":{
+        "title" :"Expense Category",
+        "autocomplete": true
+      },
       "responsibility_center_name": {
         "title": "Responsibility Center",
         "autocomplete": true
       },
       "funding_source_name": {
         "title": "Funding Source",
-        "autocomplete": true
-      },
-      "grant_name": {
-        "title": "Grant Name",
         "autocomplete": true
       },
       "facet_year_array": {
@@ -160,7 +175,7 @@
       "record_type": {
         "title": "Record Type"
       },
-      "display_industry_type_name": {
+      "industry_type_name": {
         "title": "Industry",
         "autocomplete": true
       },
