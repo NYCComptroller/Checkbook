@@ -665,6 +665,6 @@
   "sort_by": {
     "citywide": "domain_ordering asc,date_ordering desc",
     "edc": "domain_ordering asc, date_ordering desc",
-    "nycha": "domain_ordering asc, sort_sequence asc, date_ordering desc, check_issue_date asc"
+    "nycha": "domain_ordering asc, sort_sequence asc, date_ordering desc, check_issue_date desc"
   }
 }
