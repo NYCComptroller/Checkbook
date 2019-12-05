@@ -28,8 +28,7 @@ $hyphenFields = array(1 => array("agreement_type_name", "contract_number", "rele
 //Amount Fields and decimals to be displayed
 $amountFields = array("check_amount" => 2, "contract_spent_amount" => 4);
 $dateFields = array("check_issue_date");
-
-$yearId = isset($spending_results['fiscal_year_id']) ? isset($spending_results['fiscal_year_id']) : CheckbookDateUtil::getCurrentFiscalYear(Datasource::NYCHA);
+$yearId = isset($spending_results['fiscal_year_id']) ? $spending_results['fiscal_year_id'] : CheckbookDateUtil::getCurrentFiscalYear(Datasource::NYCHA);
 $contractIdLink = NychaSpendingUrlService::generateContractIdLink($spending_results['contract_number'], $yearId);
 $vendorLink = "<a href='/nycha_spending/datasource/checkbook_nycha/year/".$yearId."/vendor/".$spending_results['vendor_id']."'>".$spending_results['vendor_name']."</a>";
 $linkableFields = array("contract_number" => $contractIdLink, "vendor_name" => $vendorLink);
