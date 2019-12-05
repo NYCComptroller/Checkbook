@@ -57,7 +57,8 @@ if(isset($url)) {
   }
   // Widget YTD page static text
   if(strpos($widget, 'ytd_') !== false){
-    if ($categoryName == 'Payroll'){$total_spending = $node->data[0]['check_amount_sum'];}
+    $exp_cat_id = RequestUtilities::get('exp_cat_inv');
+    if ($categoryName == 'Payroll' || $exp_cat_id = '2937'){$total_spending = $node->data[0]['check_amount_sum'];}
     $aggregatedAmountTitle = WidgetUtil::getLabel("ytd_spending");
     $wtitle = NychaSpendingUtil::getTransactionsSubTitle($widget, $url);
     if ($widget != 'ytd_contract'){
@@ -140,7 +141,7 @@ if(isset($url)) {
                         <div class='total-spending-amount' style='margin-left:14px'>{$totalAmount}
                           <div class='amount-title'>{$totalAmountTitle}
                         <div class='information'><span class='tooltiptext' style='width:490px;left:-190%;margi-left:-190px;padding-bottom: 0px;'>
-                        Amount displayed is the sum of ‘Amount spent’ by NYCHA for the selected FY</span></div></div>
+                        Amount displayed is the ‘Amount spent’ by NYCHA up until the selected FY</span></div></div>
                         </div>
                         <div class='spend-to-date' style='margin-left:14px'>{$spendtodateAmount}
                           <div class='amount-title'>{$spendtodateTitle}</div>
@@ -187,7 +188,7 @@ if ($amountsSummary == null) {
   $amountsSummary = "<div class='dollar-amounts' style='width:480px;margin-top:10px;'>
                         <div class='total-spending-amount'>{$totalSpendingAmount}
                           <div class='amount-title'>{$aggregatedAmountTitle}
-                          <div class='information'><span class='tooltiptext'>
+                          <div class='information'><span class='tooltiptext' style='width:490px;left:-190%;margi-left:-190px;padding-bottom: 0px;'>
                         Amount displayed is the sum of ‘Amount spent’ by NYCHA for the selected FY</span></div></div>
                         </div>" . $amountSummaryTotalContract .
     "</div></div>";
