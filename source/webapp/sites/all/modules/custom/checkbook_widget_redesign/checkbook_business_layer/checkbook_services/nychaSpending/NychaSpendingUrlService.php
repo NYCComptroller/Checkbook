@@ -28,11 +28,12 @@ class NychaSpendingUrlService{
      * Returns NYCHA Spending Landing page URL
      * @param $urlParamName
      * @param $urlParamValue
+     * @param $yearId parameter
      * @return string
      */
-    static function generateLandingPageUrl($urlParamName, $urlParamValue)
+    static function generateLandingPageUrl($urlParamName, $urlParamValue, $yearId = null)
     {
-        $yearId = RequestUtilities::getRequestParamValue('year');
+        $yearId = (isset($yearId)) ? $yearId : RequestUtilities::getRequestParamValue('year');
         $yearURL = '/year/'. ((isset($yearId)) ? $yearId : CheckbookDateUtil::getCurrentFiscalYearId(Datasource::NYCHA));
         $url = '/nycha_spending'
             . $yearURL
@@ -127,9 +128,10 @@ class NychaSpendingUrlService{
 
       /** Builds Contract ID link for Spending widgets
        * @param $contract_id contract number
+       * @param $year_id year parameter
        ***/
-      static function generateContractIdLink($contract_id){
-        $year_id = RequestUtilities::getRequestParamValue('year');
+      static function generateContractIdLink($contract_id, $year_id = null){
+        $year_id = (isset($year_id)) ? $year_id : RequestUtilities::getRequestParamValue('year');
         $year_id = (isset($year_id)) ? $year_id : CheckbookDateUtil::getCurrentFiscalYear(Datasource::NYCHA);
         $class = "new_window";
         $url ='/nycha_contract_details' . '/year/'.$year_id.'/contract/' . $contract_id .'/newwindow';

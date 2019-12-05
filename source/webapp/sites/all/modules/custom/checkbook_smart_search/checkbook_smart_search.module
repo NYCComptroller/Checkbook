@@ -204,6 +204,10 @@ function checkbook_smart_search_theme(){
             'template' => 'templates/spending',
             'arguments' => array('spending_results' => NULL)
         ),
+        'nycha_spending' => array(
+          'template' => 'templates/nycha_spending',
+          'arguments' => array('spending_results' => NULL)
+        ),
         'payroll' => array(
             'template' => 'templates/payroll',
             'arguments' => array('payroll_results' => NULL)

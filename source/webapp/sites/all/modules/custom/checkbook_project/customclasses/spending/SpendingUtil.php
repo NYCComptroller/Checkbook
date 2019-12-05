@@ -66,7 +66,7 @@ class SpendingUtil{
     /**
      * @return array
      */
-    public static function getDepartmentIds(){
+    /*public static function getDepartmentIds(){
         $bottomURL = $_REQUEST['expandBottomContURL'];
         $deptId = NULL;$deptIds = array();
 
@@ -79,6 +79,10 @@ class SpendingUtil{
         if($deptId){
             $query1 = "SELECT agency_id, fund_class_id, department_code FROM ref_department WHERE department_id = " .$deptId;
             $deptInfo = _checkbook_project_execute_sql($query1);
+
+            if($deptInfo[0]['agency_id']){
+
+            }
 
             $query2 = "SELECT department_id, fiscal_year, year_id FROM ref_department d
                        LEFT JOIN ref_year y ON d.fiscal_year = y.year_value
@@ -96,12 +100,12 @@ class SpendingUtil{
 
         return $deptIds;
 
-    }
+    }*/
 
     /**
      * @return array
      */
-    public static function getExpenseCatIds(){
+    /*public static function getExpenseCatIds(){
         $bottomURL = $_REQUEST['expandBottomContURL'];
         $expCatId = NULL;$expCatIds = array();
 
@@ -129,7 +133,7 @@ class SpendingUtil{
 
         return $expCatIds;
 
-    }
+    }*/
 
     /**
      * Returns Spending Footer Url based on values from current path
