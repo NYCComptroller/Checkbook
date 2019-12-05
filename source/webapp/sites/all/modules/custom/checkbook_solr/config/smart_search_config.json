@@ -367,8 +367,8 @@
         "department_name": "Department",
         "vendor_name": "Vendor",
         "program_phase_name": "Program",
-        "gl_project_name":"Project",
-        "contract_purpose":"Purpose"
+        "contract_purpose":"Purpose",
+        "gl_project_name":"Project"
       },
       "contracts": {
         "agreement_type_name": "Purchase Order Type",
@@ -558,8 +558,8 @@
         "department_name": "Department",
         "vendor_name": "Vendor",
         "program_phase_name": "Program",
-        "gl_project_name":"Project",
-        "contract_purpose":"Purpose"
+        "contract_purpose":"Purpose",
+        "gl_project_name":"Project"
       },
       "payroll": {
         "civil_service_title": "Title",
