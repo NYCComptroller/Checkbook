@@ -139,27 +139,19 @@
         "title": "Vendor",
         "autocomplete": true
       },
-      "document_id":{
-        "title" :"Document ID",
-        "autocomplete": true
-      },
-      "check_amount": {
-        "title": "Check Amount",
-        "intervals": {
-          ">100M": "[100000000,*]",
-          "51M-100M": "[50000000,100000000]",
-          "26M-50M": "[25000000,50000000]",
-          "11M-25M": "[10000000,25000000]",
-          "1M-10M": "[1000000,10000000]",
-          "<1M": "[*,999999.99]"
-        }
-      },
-      "invoice_number":{
-        "title" :"Invoice Number",
-        "autocomplete": true
-      },
       "expenditure_type_name":{
         "title" :"Expense Category",
+        "autocomplete": true
+      },
+      "record_type": {
+        "title": "Record Type"
+      },
+      "contract_number": {
+        "title": "Contract ID",
+        "autocomplete": true
+      },
+      "release_number": {
+        "title": "Release Number",
         "autocomplete": true
       },
       "responsibility_center_name": {
@@ -170,24 +162,16 @@
         "title": "Funding Source",
         "autocomplete": true
       },
-      "facet_year_array": {
-        "title": "Fiscal Year",
-        "autocomplete": true,
-        "sort_by_key": -1
-      },
-      "contract_number": {
-        "title": "Contract ID",
-        "autocomplete": true
-      },
-      "release_number": {
-        "title": "Release Number",
-        "autocomplete": true
-      },
-      "record_type": {
-        "title": "Record Type"
-      },
       "industry_type_name": {
         "title": "Industry",
+        "autocomplete": true
+      },
+      "document_id":{
+        "title" :"Document ID",
+        "autocomplete": true
+      },
+      "invoice_number":{
+        "title" :"Invoice Number",
         "autocomplete": true
       },
       "civil_service_title": {
@@ -229,6 +213,22 @@
           "250-500": "[250,499.99]",
           "<250": "[1,249.99]"
         }
+      },
+      "check_amount": {
+        "title": "Check Amount",
+        "intervals": {
+          ">100M": "[100000000,*]",
+          "51M-100M": "[50000000,100000000]",
+          "26M-50M": "[25000000,50000000]",
+          "11M-25M": "[10000000,25000000]",
+          "1M-10M": "[1000000,10000000]",
+          "<1M": "[*,999999.99]"
+        }
+      },
+      "facet_year_array": {
+        "title": "Fiscal Year",
+        "autocomplete": true,
+        "sort_by_key": -1
       }
     }
   },
