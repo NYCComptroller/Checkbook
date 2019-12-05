@@ -97,10 +97,12 @@ class NychaSpendingUrlService{
     * @return string
     */
       static function invContractSpendingUrl($dynamic_parameter, $widget,$agreement_type,$tcode) {
-        //$year_id = RequestUtil::getRequestKeyValueFromURL('year', $bottomURL);
-        //RequestUtilities::buildUrlFromParam('year')
         $url = drupal_get_path_alias($_GET['q']);
         $year = RequestUtil::getRequestKeyValueFromURL('year', $url);
+        $vendor = RequestUtilities::buildUrlFromParam('vendor');
+        $industry = RequestUtilities::buildUrlFromParam('industry');
+        $vendor = str_replace("vendor", "vendor_inv", $vendor);
+        $industry = str_replace("industry", "industry_inv", $industry);
         $dynamic_parameter = isset($dynamic_parameter) ? $dynamic_parameter : '';
         $syear = "/syear/".$year;
         $agreement_type = isset($agreement_type) ? $agreement_type : '';
@@ -108,13 +110,13 @@ class NychaSpendingUrlService{
         $tcode = isset($tcode) ? $tcode : '';
         $url = "/nycha_spending/transactions"
           . RequestUtilities::buildUrlFromParam('year')
+          .$vendor.$industry
           . RequestUtilities::buildUrlFromParam('category')
           . RequestUtilities::buildUrlFromParam('agency')
-          . RequestUtilities::buildUrlFromParam('vendor')
-          . RequestUtilities::buildUrlFromParam('fundsrc')
-          . RequestUtilities::buildUrlFromParam('industry')
           . RequestUtilities::buildUrlFromParam('dept')
           . RequestUtilities::buildUrlFromParam('resp_center')
+          . RequestUtilities::buildUrlFromParam('csize')
+          . RequestUtilities::buildUrlFromParam('awdmethod')
           . RequestUtilities::buildUrlFromParam('datasource')
           . $syear
           . '/widget/'. $widget
