@@ -258,6 +258,7 @@ class NychaSpendingUtil
       $inv_respID = RequestUtil::getRequestKeyValueFromURL('resp_center', $bottomURL);
       $inv_indID = RequestUtil::getRequestKeyValueFromURL('industry_inv', $bottomURL);
       $inv_tcode = RequestUtil::getRequestKeyValueFromURL('tcode', $bottomURL);
+
       // Include widget level filters
       $where_filter=[];
       if (isset ($inv_vendorID)){ $where_filter[]= "vendor_id = ".$inv_vendorID ;}
