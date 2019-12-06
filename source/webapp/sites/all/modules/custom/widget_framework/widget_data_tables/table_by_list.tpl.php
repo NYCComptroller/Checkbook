@@ -74,7 +74,7 @@ if(isset($node->widgetConfig->headerConfig)){
       foreach ($node->widgetConfig->table_columns as $row) {
         if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == RequestUtilities::get('datasource')))){
           // This line was generation dummy values before data display .
-          // echo '<td class="' . $datarow[$row->classColumn] . '">' . $datarow[$row->column] . '</td>';
+           echo '<td class="' . $datarow[$row->classColumn] . '">' . $datarow[$row->column] . '</td>';
         }
       }
       echo "</tr>";

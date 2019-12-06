@@ -90,6 +90,9 @@ class NychaSpendingUtil
     $inv_csizeID = RequestUtil::getRequestKeyValueFromURL('csize', $bottomURL);
     $inv_respID = RequestUtil::getRequestKeyValueFromURL('resp_center', $bottomURL);
     $inv_indID = RequestUtil::getRequestKeyValueFromURL('industry_inv', $bottomURL);
+    if(isset($year_id)){
+      $year_filter = "issue_date_year_id <=".$year_id . " AND ";
+    }
     if (isset($inv_contractID) || isset($contractID)) {
       $reqParam = $inv_contractID;
       $query_param = "contract_id";
@@ -118,8 +121,9 @@ class NychaSpendingUtil
       $reqParam = $inv_indID;
       $query_param = "industry_type_id";
     }
+    $year_filter = isset($year_id) ? $year_filter : '';
     $query =  'SELECT '. $query_param .' ,sum(invoice_net_amount) AS amount_spent from all_disbursement_transactions
-               where  issue_date_year_id <= '. $year_id .' AND '. $query_param.'='.$reqParam .' GROUP BY '. $query_param ;
+               where '. $year_filter . $query_param.'='.$reqParam .' GROUP BY '. $query_param ;
     $results = _checkbook_project_execute_sql_by_data_source($query, Datasource::NYCHA);
     return $results;
   }
@@ -270,7 +274,13 @@ class NychaSpendingUtil
       if (isset($inv_tcode) && $inv_tcode == 'PO'){$agreement_type_id = 3;}
       if (isset($inv_tcode) && ($inv_tcode == "BAM" || $inv_tcode == "PAM")){$sub_query = " HAVING  MAX(total_amount-original_amount)!= 0 ";}
       $sub_query = isset($sub_query) ? $sub_query : '';
+
+      // Specific to spending transactions for contact id from contract id details page
       $year_id = RequestUtil::getRequestKeyValueFromURL('year', $bottomURL);
+      if(isset($year_id)){
+      $year_filter = $year_id . " BETWEEN start_year_id AND  end_year_id AND";
+      }
+      $year_filter = isset($year_id) ? $year_filter : '';
       if ($inv_tcode == 'BA' || $inv_tcode == 'BAM' || $inv_tcode == 'PA'|| $inv_tcode == 'PAM'|| $inv_tcode == 'PO') {
         if (isset($inv_contractID)) {
           $query = "SELECT contract_id, purpose, vendor_name, vendor_id,
@@ -281,7 +291,7 @@ class NychaSpendingUtil
                 ROUND( CASE COALESCE( MAX(total_amount), 0 :: NUMERIC ) WHEN 0 THEN -100 :: NUMERIC ELSE
                 (MAX(total_amount-original_amount) / MAX(total_amount) )* 100 END, 2) AS percent_difference
                 FROM contracts_widget_summary
-                WHERE (" . $year_id . " BETWEEN start_year_id AND  end_year_id AND agreement_type_id =" . $agreement_type_id . " AND contract_id=" . $inv_contractID .
+                WHERE (" . $year_filter . " agreement_type_id =" . $agreement_type_id . " AND contract_id=" . $inv_contractID .
             ")GROUP BY  contract_id, purpose, vendor_name, vendor_id" . $sub_query;
           $results = _checkbook_project_execute_sql_by_data_source($query, Datasource::NYCHA);
         }

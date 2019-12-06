@@ -45,7 +45,6 @@ class NychaContractsWidgetService extends WidgetDataService implements IWidgetSe
               $agreement_type='/agg_type/BA';
               $tcode = '/tcode/BA';
               $dynamic_parameter = "/po_num_inv/" . $row["contract_id"];
-              //$class = "bottomContainerReload";
               $class = "new_window";
               $url = NYCHASpendingUrlService::invContractSpendingUrl($dynamic_parameter, 'inv_contract',$agreement_type,$tcode);
               $value = "<a class='{$class}' href='{$url}'>{$ba_inv_amount}</a>";
@@ -55,7 +54,6 @@ class NychaContractsWidgetService extends WidgetDataService implements IWidgetSe
               $agreement_type='/agg_type/BA';
               $tcode = '/tcode/BAM';
               $dynamic_parameter = "/po_num_inv/" . $row["contract_id"];
-              $class = "bottomContainerReload";
               $class = "new_window";
               $url = NYCHASpendingUrlService::invContractSpendingUrl($dynamic_parameter, 'inv_contract',$agreement_type,$tcode);
               $value = "<a class='{$class}' href='{$url}'>{$bam_inv_amount}</a>";
@@ -65,7 +63,6 @@ class NychaContractsWidgetService extends WidgetDataService implements IWidgetSe
               $agreement_type='/agg_type/PA';
               $tcode = '/tcode/PA';
               $dynamic_parameter = "/po_num_inv/" . $row["contract_id"];
-              $class = "bottomContainerReload";
               $class = "new_window";
               $url = NYCHASpendingUrlService::invContractSpendingUrl($dynamic_parameter, 'inv_contract',$agreement_type,$tcode);
               $value = "<a class='{$class}' href='{$url}'>{$pa_inv_amount}</a>";
@@ -75,7 +72,6 @@ class NychaContractsWidgetService extends WidgetDataService implements IWidgetSe
               $agreement_type='/agg_type/PA';
               $tcode = '/tcode/PAM';
               $dynamic_parameter = "/po_num_inv/" . $row["contract_id"];
-              $class = "bottomContainerReload";
               $class = "new_window";
               $url = NYCHASpendingUrlService::invContractSpendingUrl($dynamic_parameter, 'inv_contract',$agreement_type,$tcode);
               $value = "<a class='{$class}' href='{$url}'>{$pam_inv_amount}</a>";
@@ -85,7 +81,6 @@ class NychaContractsWidgetService extends WidgetDataService implements IWidgetSe
               $agreement_type='/agg_type/PO';
               $tcode = '/tcode/PO';
               $dynamic_parameter = "/po_num_inv/" . $row["contract_id"];
-              $class = "bottomContainerReload";
               $class = "new_window";
               $url = NYCHASpendingUrlService::invContractSpendingUrl($dynamic_parameter, 'inv_contract',$agreement_type,$tcode);
               $value = "<a class='{$class}' href='{$url}'>{$po_inv_amount}</a>";
@@ -95,7 +90,6 @@ class NychaContractsWidgetService extends WidgetDataService implements IWidgetSe
               $agreement_type="";
               $tcode = '/tcode/VO';
               $dynamic_parameter = "/vendor_inv/" . $row['vendor_id'];
-              $class = "bottomContainerReload";
               $class = "new_window";
               $url = NYCHASpendingUrlService::invContractSpendingUrl($dynamic_parameter, 'inv_contract',$agreement_type,$tcode);
               $value = "<a class='{$class}' href='{$url}'>{$vendor_inv_amount}</a>";
@@ -105,7 +99,6 @@ class NychaContractsWidgetService extends WidgetDataService implements IWidgetSe
               $agreement_type="";
               $tcode = '/tcode/AWD';
               $dynamic_parameter = "/awdmethod/" . $row['award_method_id'];
-              $class = "bottomContainerReload";
               $class = "new_window";
               $url = NYCHASpendingUrlService::invContractSpendingUrl($dynamic_parameter, 'inv_contract',$agreement_type,$tcode);
               $value = "<a class='{$class}' href='{$url}'>{$awd_inv_amount}</a>";
@@ -115,7 +108,6 @@ class NychaContractsWidgetService extends WidgetDataService implements IWidgetSe
               $agreement_type="";
               $tcode = '/tcode/DEP';
               $dynamic_parameter = "/dept/" . $row['department_id'];
-              $class = "bottomContainerReload";
               $class = "new_window";
               $url = NYCHASpendingUrlService::invContractSpendingUrl($dynamic_parameter, 'inv_contract',$agreement_type,$tcode);
               $value = "<a class='{$class}' href='{$url}'>{$dpt_inv_amount}</a>";
@@ -125,7 +117,6 @@ class NychaContractsWidgetService extends WidgetDataService implements IWidgetSe
               $agreement_type="";
               $tcode = '/tcode/RESC';
               $dynamic_parameter = "/resp_center/" . $row['responsibility_center_id'];
-              $class = "bottomContainerReload";
               $class = "new_window";
               $url = NYCHASpendingUrlService::invContractSpendingUrl($dynamic_parameter, 'inv_contract',$agreement_type,$tcode);
               $value = "<a class='{$class}' href='{$url}'>{$rsp_inv_amount}</a>";
@@ -135,7 +126,6 @@ class NychaContractsWidgetService extends WidgetDataService implements IWidgetSe
               $agreement_type="";
               $tcode = '/tcode/IND';
               $dynamic_parameter = "/industry_inv/" . $row['industry_type_id'];
-              $class = "bottomContainerReload";
               $class = "new_window";
               $url = NYCHASpendingUrlService::invContractSpendingUrl($dynamic_parameter, 'inv_contract',$agreement_type,$tcode);
               $value = "<a class='{$class}' href='{$url}'>{$ind_inv_amount}</a>";
@@ -145,7 +135,6 @@ class NychaContractsWidgetService extends WidgetDataService implements IWidgetSe
               $agreement_type="";
               $tcode = '/tcode/SZ';
               $dynamic_parameter = "/csize/" . $row['award_size_id'];
-              $class = "bottomContainerReload";
               $class = "new_window";
               $url = NYCHASpendingUrlService::invContractSpendingUrl($dynamic_parameter, 'inv_contract',$agreement_type,$tcode);
               $value = "<a class='{$class}' href='{$url}'>{$award_size_inv_amount}</a>";

@@ -170,7 +170,7 @@ if(isset($url)) {
                         <div class='total-spending-amount' style='margin-left:14px'>{$totalAmount}
                           <div class='amount-title'>{$totalAmountTitle}
                         <div class='information'><span class='tooltiptext' style='width:490px;left:-190%;margi-left:-190px;padding-bottom: 0px;'>
-                        Amount displayed is the sum of ‘Amount spent’ by NYCHA for the selected FY</span></div></div>
+                        Amount displayed is the sum of ‘Amount spent’ by NYCHA across years</span></div></div>
                         </div>
                         <div class='spend-to-date' style='margin-left:14px'>{$spendtodateAmount}
                           <div class='amount-title'>{$spendtodateTitle}</div>

@@ -1176,10 +1176,16 @@ span.dollars{
 #nyc-spending .nyc_totals_links a,
 #nyc-spending .nyc_totals_links a:link,
 #nyc-spending .nyc_totals_links a:visited,
-#nyc-spending .nyc_totals_links a:hover{
+#nyc-spending .nyc_totals_links a:hover
+#nycha-spending-landing .nyc_totals_links a,
+#nycha-spending-landing .nyc_totals_links a:link,
+#nycha-spending-landing .nyc_totals_links a:visited,
+#nycha-spending-landing .nyc_totals_links a:hover
+{
     padding: 7px 10px;
 }
-#nyc-spending .nyc_totals_links td{
+#nyc-spending .nyc_totals_links td,
+#nycha-spending-landing .nyc_totals_links td{
     width:16.66%;
 }
 
