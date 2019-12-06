@@ -149,11 +149,11 @@ function checkbook_datafeeds_payroll($form, &$form_state)
   $form['filter']['salary_type'] = array(
     '#type' => 'radios',
     '#options' => array(
-      'ALL' => 'All',
+      '' => 'All',
       'ANNUAL' => 'Annual',
       'RATE' => 'Rate'
     ),
-    '#default_value' => !empty($form_state['values']['salary_type']) ? $form_state['values']['salary_type'] : 'ALL',
+    '#default_value' => !empty($form_state['values']['salary_type']) ? $form_state['values']['salary_type'] : '',
     '#prefix' => '<div class="datafield salarytype">',
     '#suffix' => '</div></div>',
   );
@@ -306,7 +306,7 @@ function _checkbook_datafeeds_payroll_column_options($datatype, $data_source = "
       "Pay Frequency", "Payroll Type", "Title",)),
       "checkbook_nycha" => drupal_map_assoc(array("Annual Salary", "Base Pay", "Calendar Year", "Daily Wage",
         "Gross Pay", "Gross Pay YTD", "Hourly Rate",
-        "Other Government Entities", "Other Payments", "Overtime Payments", "Pay Date",
+        "Other Payments", "Overtime Payments", "Pay Date",
         "Pay Frequency", "Payroll Type", "Title",))
     );
   } else if ($datatype == 'xml') {
@@ -314,7 +314,7 @@ function _checkbook_datafeeds_payroll_column_options($datatype, $data_source = "
       "gross_pay", "gross_pay_ytd", "hourly_rate", "other_payments", "overtime_payments",
       "pay_date", "pay_frequency", "payroll_type", "title",)),
       "checkbook_nycha" => drupal_map_assoc(array("annual_salary", "base_pay", "calendar_year", "daily_wage",
-        "gross_pay", "gross_pay_ytd", "hourly_rate", "other_government_entities",
+        "gross_pay", "gross_pay_ytd", "hourly_rate",
         "overtime_payments", "pay_date", "pay_frequency", "payroll_type", "title",)),
     );
   }
@@ -538,11 +538,14 @@ function checkbook_datafeeds_payroll_confirmation($form, &$form_state)
     $user_criteria['Gross Pay YTD Greater Than'] = $values['totalgrossfrom'];
     $formatted_search_criteria['Gross Pay YTD'] = 'Greater Than Equal to: $' . $values['totalgrossfrom'];
   }
-  $form['filter']['salary_type'] = array(
-    '#markup' => '<div><strong>Salary Type:</strong> ' . $values['salary_type'] . '</div>'
-  );
-  $user_criteria['Salary Type'] = $values['salary_type'];
-  $formatted_search_criteria['Salary Type'] = $values['salary_type'];
+  if($values['salary_type']) {
+    $form['filter']['salary_type'] = array(
+      '#markup' => '<div><strong>Salary Type:</strong> ' . $values['salary_type'] . '</div>'
+    );
+    $user_criteria['Salary Type'] = $values['salary_type'];
+    $formatted_search_criteria['Salary Type'] = $values['salary_type'];
+  }
+
   if ($values['salaryfrom'] && $values['salaryto']) {
     $form['filter']['annual_salary'] = array('#markup' => '<div><strong>Amount:</strong> Greater Than Equal to: $' . $values['salaryfrom'] . ' Less Than Equal to: $' . $values['salaryto'] . '</div>');
     $user_criteria['Amount Greater Than'] = $values['salaryfrom'];
@@ -592,6 +595,8 @@ function checkbook_datafeeds_payroll_confirmation($form, &$form_state)
     $user_criteria['Pay Frequency'] = $values['payfrequency'];
     $formatted_search_criteria['Pay Frequency'] = $values['payfrequency'];
   }
+
+  $values['year'] = ckbk_datafeeds_payroll_fix_year($values['year']);
   if (startsWith($values['year'], 'F')) {
     $form['filter']['year'] = array(
       '#markup' => '<div><strong>Year:</strong> ' . $values['year'] . '</div>',
@@ -657,6 +662,7 @@ function checkbook_datafeeds_payroll_confirmation($form, &$form_state)
   $criteria = checkbook_datafeeds_process_payroll_values($form, $form_state, $data_source);
   $form_state['step_information']['confirmation']['stored_values']['criteria'] = $criteria;
   $form_state['step_information']['confirmation']['stored_values']['user_criteria'] = $user_criteria;
+
   $modified_form = checkbook_datafeeds_end_of_confirmation_form($form, $form_state, $criteria, $responsetype, 'payroll');
   return $modified_form;
 }
@@ -704,18 +710,14 @@ function checkbook_datafeeds_process_payroll_values($form, &$form_state, $data_s
     ),
     'responseColumns' => ($data_source == 'checkbook_nycha') ? $values['oge_column_select'] : $values['column_select'],
   );
+  $values['year'] = ckbk_datafeeds_payroll_fix_year($values['year']);
   if (startsWith($values['year'], 'F')) {
     $criteria['value']['fiscal_year'] = ltrim($values['year'], 'FY ');
   } elseif (startsWith($values['year'], 'C')) {
     $criteria['value']['calendar_year'] = ltrim($values['year'], 'CY ');
   }
 
-  if ($data_source == 'checkbook_nycha') {
-    if ($values['other_government_entity'] != 'Select One') {
-      preg_match($pattern, $values['other_government_entity'], $amatches);
-      $criteria['value']['other_government_entities_code'] = trim($amatches[1], '[ ]');
-    }
-  } else {
+  if ($data_source !== 'checkbook_nycha') {
     if ($values['agency'] != 'Citywide (All Agencies)') {
       preg_match($pattern, $values['agency'], $amatches);
       $criteria['value']['agency_code'] = trim($amatches[1], '[ ]');
@@ -895,4 +897,13 @@ function checkbook_datafeeds_payroll_validate($form, &$form_state)
   }
   $form_state['complete form']['data_source']['#value'] = $data_source;
   $form_state['complete form']['hidden_multiple_value']['#value'] = $multi_select_hidden;
+}
+
+
+function ckbk_datafeeds_payroll_fix_year($year){
+  if (strpos($year, '~')) {
+    list($pref,$y) = explode('~',$year);
+    return  strtoupper($pref).' '.CheckbookDateUtil::yearId2Year($y);
+  }
+  return $year;
 }

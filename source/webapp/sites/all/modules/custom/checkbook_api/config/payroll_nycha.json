@@ -2,7 +2,6 @@
     "payroll_nycha_calendar_year":{
         "searchCriteriaMap":{
             "calendar_year":"calendar_fiscal_year",
-            "other_government_entities_code":"agency_code",
             "pay_frequency":"pay_frequency",
             "pay_date":"pay_date",
             "amount":"annual_salary",
@@ -27,7 +26,6 @@
                     "rootElement":"payroll_transactions",
                     "rowParentElement":"transaction",
                     "elementsColumn":{
-                        "other_government_entities":"agency_name",
                         "title":"civil_service_title",
                         "pay_frequency":"pay_frequency",
                         "pay_date":"pay_date",
@@ -42,12 +40,11 @@
                         "gross_pay_ytd":"gross_pay_cytd",
                         "calendar_year":"calendar_fiscal_year"
                     },
-                    "rowElements":["other_government_entities", "title", "pay_frequency", "pay_date", "payroll_type", "annual_salary", "hourly_rate", "daily_wage",
+                    "rowElements":["title", "pay_frequency", "pay_date", "payroll_type", "annual_salary", "hourly_rate", "daily_wage",
                                    "gross_pay", "base_pay", "other_payments", "overtime_payments", "gross_pay_ytd", "calendar_year"]
                 },
                 "csv":{
                     "elementsColumn":{
-                        "Other Government Entities":"agency_name",
                         "Title":"civil_service_title",
                         "Pay Frequency":"pay_frequency",
                         "Pay Date":"pay_date",
@@ -73,11 +70,6 @@
                 "valueType":"value",
                 "dataType":"year",
                 "maxLength":"4"
-            },
-            "other_government_entities_code":{
-                "valueType":"value",
-                "dataType":"text",
-                "maxLength":"3"
             },
             "pay_frequency":{
                 "valueType":"value",
@@ -149,19 +141,5 @@
                 "maxLength":"100"
             }
         }
-    },
-    "validators":[
-        {
-            "name":"optionalSingleFilter",
-            "configKey":["payroll_nycha_calendar_year"],
-            "config":{
-                "criteriaLevel":"value",
-                "validatorType":"filterName",
-                "validatorTypeConfig":{
-                    "required":true,
-                    "filterNames":["calendar_year"]
-                }
-            }
-        }
-    ]
+    }
 }

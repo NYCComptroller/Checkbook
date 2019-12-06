@@ -395,9 +395,11 @@
   };
 
   $.fn.subVendorStatusInPipChange = function (sub_vendor_status, includes_sub_vendors) {
-    const valid_status = [6, 1, 4, 3, 2, 5];
-    if ($.inArray(sub_vendor_status, valid_status)) {
-      if (includes_sub_vendors === 2) {
+    const valid_status = [6,1,4,3,2,5];
+    sub_vendor_status = parseInt(sub_vendor_status);
+    includes_sub_vendors = parseInt(includes_sub_vendors);
+    if($.inArray(sub_vendor_status, valid_status)) {
+      if(includes_sub_vendors === 2){
         $('#edit-contract_includes_sub_vendors_id').html('<option value="0">Select Status</option>' +
           '<option value="2" selected>Yes</option>');
       } else {
@@ -406,8 +408,8 @@
       }
     }
 
-    if (sub_vendor_status === 0) {
-      if (includes_sub_vendors === 2) {
+    if(sub_vendor_status === 0) {
+      if(includes_sub_vendors === 2){
         $('#edit-contract_includes_sub_vendors_id').html('<option value="0">Select Status</option>' +
           '<option value="2" selected>Yes</option>' +
           '<option value="3">No</option>' +

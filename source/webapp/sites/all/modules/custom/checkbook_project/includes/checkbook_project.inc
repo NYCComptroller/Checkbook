@@ -2457,19 +2457,17 @@ function _get_contract_includes_subvendors_data($attributes = NULL)
     $values = $dataController->queryDataset('checkbook:ref_subcontract_status',
       array('scntrc_status', 'scntrc_status_name', 'display_flag'),
       NULL, 'sort_order', 0, 10, NULL);
-
     if ($attributes) {
-      $statuses = array('title' => 'Select Status');
+      $statuses = ['' => ['title' => 'Select Status']];
     } else {
-      $statuses = array('Select Status');
+      $statuses = ['' => 'Select Status'];
     }
     foreach ($values as $value) {
+      if($value['display_flag'] !== 1) {continue;}
       if ($attributes) {
         $statuses[$value['scntrc_status']] = array('title' => $value['scntrc_status_name']);
       } else {
-        if ($value['display_flag'] == 1) {
-          $statuses[$value['scntrc_status']] = _ckbk_excerpt($value['scntrc_status_name']);
-        }
+        $statuses[$value['scntrc_status']] = _ckbk_excerpt($value['scntrc_status_name']);
       }
     }
     return $statuses;
