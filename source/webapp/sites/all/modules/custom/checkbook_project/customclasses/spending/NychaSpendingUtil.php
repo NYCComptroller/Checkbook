@@ -227,7 +227,7 @@ class NychaSpendingUtil
 
   static public function getTransactionsStaticSummaryIssueDate($widget, $bottomURL){
     $year_id = RequestUtil::getRequestKeyValueFromURL('year', $bottomURL);
-    $category_id = RequestUtil::getRequestKeyValueFromURL('category', $bottomURL);
+    $category_id = RequestUtil::getRequestKeyValueFromURL('category_inv', $bottomURL);
     $issue_date =  RequestUtil::getRequestKeyValueFromURL('issue_date', $bottomURL);
     $date_value = explode("~",$issue_date);
     $month = date("n",strtotime($date_value[0]));
