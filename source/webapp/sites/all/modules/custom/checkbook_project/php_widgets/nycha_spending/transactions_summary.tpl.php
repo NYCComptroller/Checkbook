@@ -166,6 +166,7 @@ if(isset($url)) {
     $id_title = 'NYCHA Spending Transactions';
     $spendtodateAmount = '$' . custom_number_formatter_format($inv_contractDetails['spend_to_date'], 2);
     $totalAmountTitle ="NYCHA Amount Spent";
+    $spendtodateTitle ="Invoiced Amount";
     $AmountSpent = NychaSpendingUtil::getAmountSpent($url);
     $totalAmount = '$' . custom_number_formatter_format($AmountSpent[0]['amount_spent'], 2);
     $amountsSummary = "<div class='dollar-amounts' style='width:480px;margin-top:10px;'>
