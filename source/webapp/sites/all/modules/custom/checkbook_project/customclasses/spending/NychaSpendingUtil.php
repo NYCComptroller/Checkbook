@@ -83,47 +83,28 @@ class NychaSpendingUtil
    */
   static public function getAmountSpent($bottomURL){
     $year_id = RequestUtil::getRequestKeyValueFromURL('year', $bottomURL);
-    $inv_contractID = "'".RequestUtil::getRequestKeyValueFromURL('po_num_inv', $bottomURL)."'";
+    $inv_contractID =RequestUtil::getRequestKeyValueFromURL('po_num_inv', $bottomURL);
     $inv_vendorID = RequestUtil::getRequestKeyValueFromURL('vendor_inv', $bottomURL);
     $inv_awdID = RequestUtil::getRequestKeyValueFromURL('awdmethod', $bottomURL);
     $inv_depID = RequestUtil::getRequestKeyValueFromURL('dept', $bottomURL);
     $inv_csizeID = RequestUtil::getRequestKeyValueFromURL('csize', $bottomURL);
     $inv_respID = RequestUtil::getRequestKeyValueFromURL('resp_center', $bottomURL);
     $inv_indID = RequestUtil::getRequestKeyValueFromURL('industry_inv', $bottomURL);
-    if(isset($year_id)){
-      $year_filter = "issue_date_year_id <=".$year_id . " AND ";
+    // Include widget level filters
+    $where_filter=[];
+    if(isset($year_id)){$where_filter[]= "issue_date_year_id <=".$year_id ;}
+    if (isset ($inv_vendorID)){ $where_filter[]= " vendor_id = ".$inv_vendorID ;}
+    if (isset ($inv_awdID)){ $where_filter[] = " award_method_id = ".$inv_awdID ;}
+    if (isset ($inv_csizeID)){ $where_filter[] = " award_size_id = ".$inv_csizeID ;}
+    if (isset ($inv_indID)){ $where_filter[] = " industry_type_id = ".$inv_indID ;}
+    if (isset($inv_contractID) || isset($contractID)) {$where_filter[] = " contract_id = '".$inv_contractID."'" ;}
+    if (isset($inv_depID)) { $where_filter[] = " department_id = ".$inv_depID ;}
+    if (isset($inv_respID)) { $where_filter[] = " responsibility_center_id = ".$inv_respID ;}
+    if(count($where_filter) > 0){
+      $filter = implode(' AND ' , $where_filter);
     }
-    if (isset($inv_contractID) || isset($contractID)) {
-      $reqParam = $inv_contractID;
-      $query_param = "contract_id";
-    }
-    if (isset($inv_vendorID)) {
-        $reqParam = $inv_vendorID;
-        $query_param = "vendor_id";
-    }
-    if (isset($inv_awdID)) {
-      $reqParam = $inv_awdID;
-      $query_param = "award_method_id";
-    }
-    if (isset($inv_depID)) {
-      $reqParam = $inv_depID;
-      $query_param = "department_id";
-    }
-    if (isset($inv_csizeID)) {
-      $reqParam = $inv_csizeID;
-      $query_param = "award_size_id";
-    }
-    if (isset($inv_respID)) {
-      $reqParam = $inv_respID;
-      $query_param = "responsibility_center_id";
-    }
-    if (isset($inv_indID)) {
-      $reqParam = $inv_indID;
-      $query_param = "industry_type_id";
-    }
-    $year_filter = isset($year_id) ? $year_filter : '';
-    $query =  'SELECT '. $query_param .' ,sum(invoice_net_amount) AS amount_spent from all_disbursement_transactions
-               where '. $year_filter . $query_param.'='.$reqParam .' GROUP BY '. $query_param ;
+    $query =  'SELECT sum(invoice_net_amount) AS amount_spent from all_disbursement_transactions
+               where '. $filter;
     $results = _checkbook_project_execute_sql_by_data_source($query, Datasource::NYCHA);
     return $results;
   }
@@ -261,10 +242,10 @@ class NychaSpendingUtil
 
       // Include widget level filters
       $where_filter=[];
-      if (isset ($inv_vendorID)){ $where_filter[]= "vendor_id = ".$inv_vendorID ;}
-      if (isset ($inv_awdID)){ $where_filter[] = "award_method_id = ".$inv_awdID ;}
-      if (isset ($inv_csizeID)){ $where_filter[] = "award_size_id = ".$inv_csizeID ;}
-      if (isset ($inv_indID)){ $where_filter[] = "industry_type_id = ".$inv_indID ;}
+      if (isset ($inv_vendorID)){ $where_filter[]= " vendor_id = ".$inv_vendorID ;}
+      if (isset ($inv_awdID)){ $where_filter[] = " award_method_id = ".$inv_awdID ;}
+      if (isset ($inv_csizeID)){ $where_filter[] = " award_size_id = ".$inv_csizeID ;}
+      if (isset ($inv_indID)){ $where_filter[] = " industry_type_id = ".$inv_indID ;}
         if(count($where_filter) > 0){
           $filter = implode(' AND ' , $where_filter);
         }
