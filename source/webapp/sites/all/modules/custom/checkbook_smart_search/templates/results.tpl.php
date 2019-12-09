@@ -106,12 +106,11 @@ if($noOfTotalResults > 0){
         print theme('budget', ['budget_results'=> $value, 'searchTerm' => $searchTerms[0], 'solr_datasource' => $solr_datasource]);
         break;
       case "spending":
-        if($solr_datasource = Datasource::SOLR_NYCHA) {
+        if($solr_datasource == Datasource::SOLR_NYCHA) {
           print theme('nycha_spending', ['spending_results' => $value, 'searchTerm' => $searchTerms[0], 'solr_datasource' => $solr_datasource]);
         }else{
           print theme('spending', ['spending_results' => $value, 'searchTerm' => $searchTerms[0], 'solr_datasource' => $solr_datasource]);
         }
-
         break;
       case "payroll":
         print theme('payroll', ['payroll_results'=> $value, 'searchTerm' => $searchTerms[0], 'solr_datasource' => $solr_datasource]);
