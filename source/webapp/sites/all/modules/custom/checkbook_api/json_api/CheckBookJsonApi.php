@@ -323,29 +323,4 @@ class CheckBookJsonApi
                 'like /json_api/total_revenue ; current year will be used'
         ];
     }
-
-    /**
-     * @SWG\Get(
-     *     path="/json_api/etl_status",
-     *     @SWG\Response(response="200", description="etl_status")
-     * )
-     */
-    public function etl_status()
-    {
-        drupal_page_is_cacheable(FALSE);
-
-        global $conf;
-
-        $return = [];
-        if ('UAT' == $conf['CHECKBOOK_ENV'] || ($conf['get_direct_uat_etl_status'] ?? false)) {
-            $return = $this->Helper->getUatEtlStatus();
-        } elseif ('PROD' == $conf['CHECKBOOK_ENV']) {
-            $return = $this->Helper->getProdEtlStatus();
-        }
-
-        $return['connections'] = $this->Helper->get_connections_info();
-
-        return $return;
-    }
-
 }
