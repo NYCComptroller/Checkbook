@@ -38,13 +38,10 @@ if(!isset($_REQUEST['expandBottomContURL']) && $url_parts['query']){
   $q = str_replace('?'.$url_parts['query'], "", $q);
 }
 
-//Set the default Domain to be 'Spending' for Trends and Smart Search
+//Set the default Domain to be 'Spending' for Trends
 if(preg_match("/trends/",$q)){
     $q = "/spending_landing/yeartype/B/year/" ;
     $trends = true;
-}else if(preg_match("/smart_search/",$q)){
-    $q = "/spending_landing/yeartype/B/year/" ;
-    $search = true;
 }
 
 //Pending Contracts do not have year filter applicable, so the Date Filter options are set to navigate to Active Expense Contracts landing page for the latest Fiscal Year
@@ -100,8 +97,8 @@ foreach($years as $year){
         }
     }
 
-    //For Trends and Smart Search, set the default year value to current NYC fiscal year
-    if($trends || $search){
+    //For TrendsNYCCHKBK-9474, set the default year value to current NYC fiscal year
+    if($trends){
         if($year['year_id'] == CheckbookDateUtil::getCurrentFiscalYearId()){
             $selected_fiscal_year = 'selected = yes';
         }
@@ -111,8 +108,8 @@ foreach($years as $year){
 
         $display_text = 'FY '.$year['year_value'].' (Jul 1, '.($year['year_value']-1).' - Jun 30, '.$year['year_value'].')';
 
-        //For Trends and Smart Search append the year value for 'Spending' link
-        if($trends || $search){
+        //For Trends, append the year value for 'Spending' link
+        if($trends){
             $link = $q .$year['year_id'] ;
         }else{
             if(RequestUtilities::get("calyear")){
