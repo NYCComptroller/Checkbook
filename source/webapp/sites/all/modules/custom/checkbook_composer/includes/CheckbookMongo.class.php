@@ -18,9 +18,15 @@ class CheckbookMongo
   public static function getDb($db = 'checkbooknyc')
   {
     global $conf;
-    if (!extension_loaded('mongodb') || !isset($conf['checkbook_mongo_srv'])) {
+    if (!extension_loaded('mongodb')) {
+      LogHelper::log_warn('php extension mongodb not found');
       return false;
     }
+
+   if (!isset($conf['checkbook_mongo_srv'])) {
+     LogHelper::log_warn('checkbook_mongo_srv not configured');
+     return false;
+   }
 
     if (isset(self::$instances[$db])) {
       return self::$instances[$db];
