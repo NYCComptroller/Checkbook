@@ -25,7 +25,7 @@ class CheckBookJsonApiModel
                 FROM aggregateon_mwbe_contracts_cumulative_spending a
                   LEFT JOIN (SELECT contract_number, aprv_sta FROM subcontract_details WHERE latest_flag='Y') sd ON a.contract_number=sd.contract_number
                   LEFT JOIN ref_document_code c ON a.document_code_id=c.document_code_id
-                
+
                 WHERE (a.fiscal_year = '{$year}' AND a.type_of_year = '{$year_type}' AND a.status_flag = 'A' AND c.document_code IN ('CTA1','CT1','CT2') AND a.scntrc_status = 2)";
         $response = _checkbook_project_execute_sql($query);
         return $response;
@@ -123,23 +123,6 @@ class CheckBookJsonApiModel
                   FROM revenue_details s0
                 WHERE s0.budget_fiscal_year = '{$year}'";
         $response = _checkbook_project_execute_sql($query);
-        return $response;
-    }
-
-    /**
-     * @return array
-     * @throws \Exception
-     */
-    public function get_etl_status()//: array
-    {
-        if (!defined('CHECKBOOK_NO_DB_CACHE')) {
-          define('CHECKBOOK_NO_DB_CACHE', true);
-        }
-        $query = "SELECT DISTINCT 
-                  MAX(refresh_end_date :: TIMESTAMP) AS last_successful_run
-                FROM etl.refresh_shards_status
-                WHERE latest_flag = 1";
-        $response = _checkbook_project_execute_sql($query, 'etl');
         return $response;
     }
 }
