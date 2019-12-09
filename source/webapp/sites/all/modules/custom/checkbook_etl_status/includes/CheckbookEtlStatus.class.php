@@ -24,6 +24,8 @@ class CheckbookEtlStatus
    *
    */
   const CRON_LAST_RUN_DRUPAL_VAR = 'checkbook_etl_status_last_run';
+  const CRON_LAST_PROD_PUSH = 'checkbook_etl_status_prod_pushed';
+  const CRON_LAST_UAT_PUSH = 'checkbook_etl_status_uat_pushed';
 
   /**
    * List of conf db connections
@@ -71,30 +73,47 @@ class CheckbookEtlStatus
     global $conf;
 
     date_default_timezone_set('America/New_York');
+    $today = $this->get_date('Y-m-d');
+    $current_hour = (int)$this->get_date('H');
+    $current_minute = (int)$this->get_date('i');
+
+    $env = $conf['CHECKBOOK_ENV'] ?? false;
+
+    if (in_array($env, ['PROD']) && $current_hour > 9 && $current_hour < 10 && $current_minute < 20) {
+      if (variable_get(self::CRON_LAST_PROD_PUSH) !== $today) {
+        variable_set(self::CRON_LAST_PROD_PUSH, $today);
+        ProdEtlStatus::pushStatus();
+      }
+    }
+
+    if (in_array($env, ['UAT']) && $current_hour > 9 && $current_hour < 10 && $current_minute < 20) {
+      if (variable_get(self::CRON_LAST_UAT_PUSH) !== $today) {
+        variable_set(self::CRON_LAST_UAT_PUSH, $today);
+        UatEtlStatus::pushStatus();
+      }
+    }
 
 //        always run cron for developer
-    if (defined('ETL_STATUS_OUT') && ETL_STATUS_OUT) {
+    if (defined('ETL_FORCE_RUN') && ETL_FORCE_RUN) {
       return $this->sendmail();
     }
+
     if (!isset($conf['checkbook_dev_group_email'])) {
       //error_log("ETL STATUS MAIL CRON skips. Reason: \$conf['checkbook_dev_group_email'] not defined");
       return false;
     }
 
-    if (empty($conf['CHECKBOOK_ENV']) || !in_array($conf['CHECKBOOK_ENV'], ['UAT', 'PHPUNIT'])) {
+    if (!in_array($env, ['UAT', 'PHPUNIT'])) {
       // we run this cron only on UAT and PHPUNIT
       return false;
     }
-
-    $today = $this->get_date('Y-m-d');
-    $current_hour = (int)$this->get_date('H');
 
     if (variable_get(self::CRON_LAST_RUN_DRUPAL_VAR) == $today) {
       //error_log("ETL STATUS MAIL CRON skips. Reason: already ran today :: $today :: ".variable_get($variable_name));
       return false;
     }
 
-    if ($current_hour < 9 || $current_hour > 10) {
+    if ($current_hour < 9 || $current_hour > 10 || $current_minute < 20) {
       //error_log("ETL STATUS MAIL CRON skips. Reason: will run between 9 AM and 11 AM EST :: current hour: $current_hour");
       return false;
     }
@@ -132,39 +151,6 @@ class CheckbookEtlStatus
     }
 
     return true;
-  }
-
-  /**
-   * @return array
-   */
-  public function getUatStatus()
-  {
-    global $conf;
-    if (empty($conf['CHECKBOOK_ENV']) || !in_array($conf['CHECKBOOK_ENV'], ['UAT', 'PHPUNIT'])) {
-      if (!($conf['get_direct_uat_etl_status'] ?? false)) {
-        return false;
-      }
-    }
-    $local_api = new \checkbook_json_api\CheckBookJsonApi();
-    $result = $local_api->etl_status();
-    $result['source'] = 'UAT';
-    return $result;
-  }
-
-  /**
-   * @return bool|mixed
-   */
-  public function getProdStatus()
-  {
-    try {
-      $prod_json_status = $this->get_contents('https://www.checkbooknyc.com/json_api/etl_status');
-      $prod_status = json_decode($prod_json_status, true);
-      $prod_status['source'] = 'PROD';
-      return $prod_status;
-    } catch (Exception $e) {
-      error_log($e->getMessage());
-    }
-    return false;
   }
 
   /**
@@ -344,7 +330,7 @@ class CheckbookEtlStatus
     }
 
     $collection = $db->selectCollection('etlstatuslogs');
-    $files = $collection->findOne([],['sort'=>['date'=>-1]]);
+    $files = $collection->findOne([], ['sort' => ['date' => -1]]);
 
     if (!$files) {
       return false;
@@ -371,13 +357,13 @@ class CheckbookEtlStatus
   {
     global $conf;
 
-    if (!defined('CHECKBOOK_NO_DB_CACHE')) {
-      define('CHECKBOOK_NO_DB_CACHE', true);
-    }
+//    if (!defined('CHECKBOOK_NO_DB_CACHE')) {
+//      define('CHECKBOOK_NO_DB_CACHE', true);
+//    }
 
     if (!self::$message_body) {
-      $uat_status = $this->formatStatus($this->getUatStatus());
-      $prod_status = $this->formatStatus($this->getProdStatus());
+      $uat_status = $this->formatStatus(UatEtlStatus::getStatus());
+      $prod_status = $this->formatStatus(ProdEtlStatus::getStatus());
       $connections = $this->getConnectionConfigs();
 
       self::$message_body =
