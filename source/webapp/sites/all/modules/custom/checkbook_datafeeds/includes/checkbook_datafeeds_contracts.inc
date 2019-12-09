@@ -324,7 +324,7 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
     '#suffix' => '</div>',
     '#id' => 'edit-contract_includes_sub_vendors_id',
     '#name' => 'contract_includes_sub_vendors_id',
-    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'contract_includes_sub_vendors_id', $first_time_load, 0),
+    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'contract_includes_sub_vendors_id', $first_time_load, ''),
     '#states' => array(
       'disabled' => array(
         array(
@@ -1321,13 +1321,11 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
         $user_criteria['Contract ID'] = $values['contractno'];
         $formatted_search_criteria[''] = null;
       }
-      if ($values['contract_includes_sub_vendors_id']) {
-        if ($values['contract_includes_sub_vendors_id'] != 'Select Status') {
-          $scntrc_status_name = MappingUtil::getscntrc_status_name($values['contract_includes_sub_vendors_id']);
-          $form['filter']['contract_includes_sub_vendors_id'] = array('#markup' => '<div><strong>Contract Includes Sub Vendors:</strong> ' . $scntrc_status_name . '</div>');
-          $user_criteria['Contract Includes Sub Vendors'] = $values['contract_includes_sub_vendors_id'];
-          $formatted_search_criteria['Contract Includes Sub Vendors'] = $scntrc_status_name;
-        }
+      if ($values['contract_includes_sub_vendors_id'] !== '') {
+        $scntrc_status_name = MappingUtil::getscntrc_status_name($values['contract_includes_sub_vendors_id']);
+        $form['filter']['contract_includes_sub_vendors_id'] = array('#markup' => '<div><strong>Contract Includes Sub Vendors:</strong> ' . $scntrc_status_name . '</div>');
+        $user_criteria['Contract Includes Sub Vendors'] = $values['contract_includes_sub_vendors_id'];
+        $formatted_search_criteria['Contract Includes Sub Vendors'] = $scntrc_status_name;
       }
       if ($values['pin']) {
         $form['filter']['pin'] = array(
@@ -1638,7 +1636,7 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
     if ($values['contractno']) {
       $criteria['value']['contract_id'] = $values['contractno'];
     }
-    if ($values['contract_includes_sub_vendors_id'] != 'Select Status' && $values['contract_includes_sub_vendors_id'] != 0) {
+    if ($values['contract_includes_sub_vendors_id'] !== '' && $values['contract_includes_sub_vendors_id'] !== '0') {
       $criteria['value']['contract_includes_sub_vendors_id'] = $values['contract_includes_sub_vendors_id'];
     }
     if ($values['sub_vendor_status_in_pip_id'] != 'Select Status' && $values['sub_vendor_status_in_pip_id'] != 0) {
@@ -2010,7 +2008,7 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
       }
     }
 
-    if (in_array($form_state['values']['contract_includes_sub_vendors_id'], array(1, 3, 4))) {
+    if (in_array(intval($form_state['values']['contract_includes_sub_vendors_id']), array(1, 3, 4))) {
       $form_state['values']['sub_vendor_status_in_pip_id'] = 0;
       $form_state['complete form']['sub_vendor_status_in_pip_id']['#value'] = 0;
     }
