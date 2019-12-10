@@ -139,7 +139,7 @@
         "title": "Vendor",
         "autocomplete": true
       },
-      "expenditure_type_name":{
+      "expenditure_type_description":{
         "title" :"Expense Category",
         "autocomplete": true
       },
@@ -629,7 +629,8 @@
     "revenue_class_name_code": "revenue_class_name_code_autocomplete",
     "revenue_source_name_code": "revenue_source_name_code_autocomplete",
     "revenue_class_name": "revenue_class_name_autocomplete",
-    "revenue_source_name": "revenue_source_name_autocomplete"
+    "revenue_source_name": "revenue_source_name_autocomplete",
+    "expenditure_type_description": "expenditure_type_description_autocomplete"
   },
   "autocomplete_terms": {
     "citywide": {
@@ -647,7 +648,7 @@
       "grant_name": "Grant Name",
       "funding_source_name": "Funding Source",
       "responsibility_center_name": "Responsibility Center",
-      "expenditure_type_name": "Expense Categories"
+      "expenditure_type_description": "Expense Categories"
     }
   },
   "param_mapping": {
