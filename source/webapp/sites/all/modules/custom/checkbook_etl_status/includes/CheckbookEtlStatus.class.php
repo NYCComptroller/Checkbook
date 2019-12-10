@@ -79,14 +79,16 @@ class CheckbookEtlStatus
 
     $env = $conf['CHECKBOOK_ENV'] ?? false;
 
-    if (in_array($env, ['PROD']) && $current_hour > 9 && $current_hour < 10 && $current_minute < 20) {
+    // Push PROD ETL Status to Mongo
+    if (in_array($env, ['PROD']) && $current_hour == 9 && $current_minute < 20) {
       if (variable_get(self::CRON_LAST_PROD_PUSH) !== $today) {
         variable_set(self::CRON_LAST_PROD_PUSH, $today);
         ProdEtlStatus::pushStatus();
       }
     }
 
-    if (in_array($env, ['UAT']) && $current_hour > 9 && $current_hour < 10 && $current_minute < 20) {
+    // Push UAT ETL Status to Mongo
+    if (in_array($env, ['UAT']) && $current_hour == 9 && $current_minute < 20) {
       if (variable_get(self::CRON_LAST_UAT_PUSH) !== $today) {
         variable_set(self::CRON_LAST_UAT_PUSH, $today);
         UatEtlStatus::pushStatus();
