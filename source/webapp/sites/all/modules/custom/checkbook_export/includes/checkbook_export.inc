@@ -79,6 +79,7 @@ function _checkbook_export_grid_transactions($nodeId){
       $data .= "\r\n";
       $sort_index = $_REQUEST['iSortCol_0'];
       $sort_index_format = $node->widgetConfig->gridConfig->table_columns[$sort_index]->formatType;
+      $sort_for_export = isset($node->widgetConfig->gridConfig->table_columns[$sort_index]->sortExport) ? $node->widgetConfig->gridConfig->table_columns[$sort_index]->sortExport : true;
 
       foreach($node->widgetConfig->gridConfig->data as &$dataRecord){
         $dataRecord['sort_column'] = $sort_index;
@@ -86,8 +87,10 @@ function _checkbook_export_grid_transactions($nodeId){
           $dataRecord['formatType'] = $sort_index_format;
         }
       }
-      $order = $isAsc ? 'asc' : 'desc';
-      _checkbook_export_grid_sort($node, $order);
+      if($sort_for_export) {
+        $order = $isAsc ? 'asc' : 'desc';
+        _checkbook_export_grid_sort($node, $order);
+      }
 
       foreach ($node->widgetConfig->gridConfig->data as $data_row) {
         $index = 0;
