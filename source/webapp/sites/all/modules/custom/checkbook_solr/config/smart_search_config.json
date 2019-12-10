@@ -663,8 +663,8 @@
     "contract_categories": "contract_category_name"
   },
   "sort_by": {
-    "citywide": "domain_ordering asc,date_ordering desc",
-    "edc": "domain_ordering asc, date_ordering desc",
-    "nycha": "domain_ordering asc, sort_sequence asc, date_ordering desc, check_issue_date desc"
+    "citywide": "domain_ordering asc,check_eft_issued_date desc, date_ordering desc",
+    "edc": "domain_ordering asc, check_eft_issued_date_export desc, date_ordering desc",
+    "nycha": "domain_ordering asc, sort_sequence asc, check_issue_date desc, date_ordering desc"
   }
 }
