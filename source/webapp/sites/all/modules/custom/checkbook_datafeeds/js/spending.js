@@ -113,7 +113,7 @@
   //Load Agency Drop-Down
   let reloadSpendingAgencies = function (dataSource) {
     html = '';
-    if ('citywide' == dataSource) {
+    if ('checkbook' == dataSource) {
       html = '<option value="0" selected="selected">Citywide (All Agencies)</option>';
     }
     $.ajax({
