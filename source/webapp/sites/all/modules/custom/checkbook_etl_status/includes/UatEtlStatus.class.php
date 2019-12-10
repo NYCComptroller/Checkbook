@@ -26,7 +26,7 @@ class UatEtlStatus extends AbstractEtlStatus
       $response = self::get_etl_status();
     } catch (Exception $e) {
       self::$success = FALSE;
-      self::$errors[] = 'Error getting UAT ETL status: '.$e->getMessage();
+      self::$errors[] = 'Error getting UAT ETL status: ' . $e->getMessage();
     }
 
     if (!empty($response) && $response[0]['last_successful_run']) {
@@ -80,14 +80,17 @@ class UatEtlStatus extends AbstractEtlStatus
   {
     $out = [];
     $solr_url = 'http://sdw6.reisys.com:18984/solr/';
-    try{
-      $collections = unserialize(file_get_contents($solr_url.'admin/collections?action=LIST&wt=phps'));
-      foreach($collections['collections'] as $collection) {
-        $data = unserialize(file_get_contents($solr_url.$collection.'/select?facet.field=domain&facet=on&q=*:*&rows=0&wt=phps'));
-        $out[$collection] = $data['facet_counts']['facet_fields']['domain'];
+    try {
+      $collections = unserialize(file_get_contents($solr_url . 'admin/collections?action=LIST&wt=phps'));
+      foreach ($collections['collections'] as $collection) {
+        $data = unserialize(file_get_contents($solr_url . $collection . '/select?facet.field=domain&facet=on&q=*:*&rows=0&wt=phps'));
+        $out[] = [
+          'collection' => $collection,
+          'stats' => $data['facet_counts']['facet_fields']['domain']
+        ];
       }
     } catch (\Exception $exception) {
-      self::$errors[] = "Could not get SOLR Cloud health status: ".$exception->getMessage();
+      self::$errors[] = "Could not get SOLR Cloud health status: " . $exception->getMessage();
     }
     return $out;
   }
