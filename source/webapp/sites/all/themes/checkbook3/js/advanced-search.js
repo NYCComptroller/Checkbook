@@ -1396,9 +1396,9 @@
             agency_id = parseInt((div.ele('agency').val()) ? div.ele('agency').val() : 0);
           }
           year = 0;
+          var year_id = 0;
           if (div.ele('date_filter_checked').val() === '0') {
             year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
-            var year_id = 0;
             if(year.indexOf("fy") >= 0){
               year_id = year.split('~')[1];
             }
