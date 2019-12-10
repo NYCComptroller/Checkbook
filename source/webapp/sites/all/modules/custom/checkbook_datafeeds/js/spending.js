@@ -62,17 +62,21 @@
         if (Drupal.settings.datafeeds.default_year.checkbook_nycha !== Drupal.settings.datafeeds.default_year.checkbook) {
           $('select[name="year"] option[value="'+Drupal.settings.datafeeds.default_year.checkbook+'"]').hide();
         }
-        //Disable Issue date
+        //Reset Issue date on choosing NYCHA datasource
         $('input:radio[name=date_filter][value="1"]').removeAttr('disabled');
+        $('input[name="issuedfrom"]').val("");
+        $('input[name="issuedfrom"]').attr('disabled', 'disabled');
+        $('input[name="issuedto"]').val("");
+        $('input[name="issuedto"]').attr('disabled', 'disabled');
         //Date Filter
 
-        if (datefilter === '0') {
-          $('input[name="issuedfrom"]').val("").attr('disabled', 'disabled');
-          $('input[name="issuedto"]').val("").attr('disabled', 'disabled');
-        } else {
-          $('input:radio[name=date_filter]')[1].checked = true;
-          $('select[name="year"]').attr('disabled', 'disabled');
-        }
+        //if (datefilter === '0') {
+        //  $('input[name="issuedfrom"]').val("").attr('disabled', 'disabled');
+        //  $('input[name="issuedto"]').val("").attr('disabled', 'disabled');
+        //} else {
+        //  $('input:radio[name=date_filter]')[1].checked = true;
+        //  $('select[name="year"]').attr('disabled', 'disabled');
+        //}
 
         $('.form-item-nycha-column-select').show();
 
@@ -85,19 +89,25 @@
       default:
         $('.datafield.citywide').show();
 
-        //Date Filter
-        $('input:radio[name=date_filter][value="1"]').removeAttr('disabled');
-
-        if (datefilter === '0') {
+        /*if (datefilter === '0') {
           $('input[name="issuedfrom"]').val("").attr('disabled', 'disabled');
           $('input[name="issuedto"]').val("").attr('disabled', 'disabled');
         } else {
           $('input:radio[name=date_filter]')[1].checked = true;
           $('select[name="year"]').attr('disabled', 'disabled');
-        }
+        }*/
+        $('input:radio[name=date_filter]')[0].checked = true;
+        $('select[name="year"]').removeAttr('disabled');
         $('select[name="year"]').val(Drupal.settings.datafeeds.default_year.checkbook);
         $('select[name="year"]').attr('default_selected_value', Drupal.settings.datafeeds.default_year.checkbook);
         $('select[name="year"] option[value="'+Drupal.settings.datafeeds.default_year.checkbook+'"]').show();
+
+        //Reset Issue date on choosing citywide datasource
+        $('input:radio[name=date_filter][value="1"]').removeAttr('disabled');
+        $('input[name="issuedfrom"]').val("");
+        $('input[name="issuedfrom"]').attr('disabled', 'disabled');
+        $('input[name="issuedto"]').val("");
+        $('input[name="issuedto"]').attr('disabled', 'disabled');
 
         $('.form-item-column-select').show();
 
