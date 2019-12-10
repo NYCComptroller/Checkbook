@@ -3,21 +3,18 @@
   "widgetDatahandler": "highcharts",
   "html_class":"",
   "header":"
-  $header = '<h2 class=\"chart-title\" style=\"display:none;\">'. $node->widgetConfig->chartTitle . '</h2>';
-  $header .= ChartUtil::generateWidgetGridViewLink($node);
-  return $header;
+    $header = '<h2 class=\"chart-title\" style=\"display:none;\">'. $node->widgetConfig->chartTitle . '</h2>';
+    $header .= ChartUtil::generateWidgetGridViewLink($node);
+    return $header;
   ",
   "gridConfig":{
-    "template":"chart_grid_view",
-    "domain":"spending",
+    "template":"highchart_nycha_spending_by_month_grid_view",
     "html_class":"chart-grid-view-table three-columns",
-    "sortColumn": 0,
     "table_columns": [
       {
         "labelAlias": "Month",
-        "formatType": "month"
+        "sortExport": false
       },
-
       {
         "colLabel": "$node->widgetConfig->chartConfig->series[0]->name",
         "columnType": "number",
@@ -33,115 +30,121 @@
   "no_results_content":"No Results Found",
   "cleanURLParameters":["vendor","category","year"],
   "urlParamMap":{"vendor":"vendor_id","category":"spending_category_id","year":"issue_date_year_id"},
-  "chartTitle":"Spending Across Months",
   "widgetDataLoader":"
-  $year_id = RequestUtilities::getRequestParamValue('year');
-  $prev_year_id = $year_id-1;
-  $datasource = RequestUtilities::getRequestParamValue('datasource');
-  $where_filters = array();
-  foreach($node->widgetConfig->requestParams as $param=>$value){
-  if($param == 'issue_date_year_id'){
-  $where_filters[] = $param .' BETWEEN '. $prev_year_id . ' AND '. $year_id;
-    }else{
-    $where_filters[] = _widget_build_sql_condition( $param, $value);
-    }
+    $year_id = RequestUtilities::getRequestParamValue('year');
+    $prev_year_id = $year_id-1;
+    $datasource = RequestUtilities::getRequestParamValue('datasource');
+    $where_filters = array();
+    foreach($node->widgetConfig->requestParams as $param=>$value){
+        if($param == 'issue_date_year_id'){
+          $where_filters[] = $param .' BETWEEN '. $prev_year_id . ' AND '. $year_id;
+        }else{
+          $where_filters[] = _widget_build_sql_condition( $param, $value);
+        }
     }
     if(count($where_filters) > 0){
-    $where_filter = ' WHERE ' . implode(' AND ' , $where_filters);
+      $where_filter = ' WHERE ' . implode(' AND ' , $where_filters);
     }
-    $sql = 'SELECT issue_date_year,issue_date_year_id,month_number,month_name, SUM(total_spending) AS spent_amount
-    from aggregation_spending_month '. $where_filter .
-    ' group by issue_date_year,month_number,month_name ,issue_date_year_id ORDER BY month_number ';
-    $node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
-    ",
-    "widgetUpdateJSONConfig":"
+    $sql = 'SELECT issue_date_year, issue_date_year_id, month_number,month_name, SUM(total_spending) AS spent_amount
+            FROM aggregation_spending_month '. $where_filter .' GROUP BY issue_date_year, month_number, month_name, issue_date_year_id ORDER BY month_number ';
+            $node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
+  ",
+  "widgetUpdateJSONConfig":"
     $series_previous_temp = array(array());
     $year_id = RequestUtilities::getRequestParamValue('year');
     $prev_year_id = $year_id-1;
     $datasource = RequestUtilities::getRequestParamValue('datasource');
+
     $categories = array('1','2','3','4','5','6','7','8','9','10','11','12');
     $months = array('January', 'February', 'March', 'April', 'May', 'June', 'July ', 'August', 'September', 'October', 'November', 'December');
+
     $codes = array($prev_year_id,$year_id);
     $categoryName = NychaSpendingUtil::getCategoryName();
-    $node->widgetConfig->chartTitle = $categoryName.' Spending by Month';
+    $node->widgetConfig->chartTitle = $categoryName.' Spending';
+
     foreach($node->data as $row){
-    if ($row['issue_date_year_id'] == $year_id){$curr_year = $row['issue_date_year'];}
-    if ($row['issue_date_year_id'] == $prev_year_id){$prev_year = $row['issue_date_year'];}
-    $series_previous_temp[$row['issue_date_year_id']][$row['month_number']] = (float)$row['spent_amount'];
-    }
-    $series_previous = array();
-    foreach($codes as $code){
-    $prev_series_obj = new stdClass();
-    foreach($categories as $category){
-    if ($code == $year_id){$codeyear = $curr_year ;}
-    if ($code == $prev_year_id){$codeyear = $prev_year ;}
-    $issue_date= $codeyear.'-'.$category.'-01~'.$codeyear.'-'.$category.'-31';
-    $dynamic_parameter = '/issue_date/' . $issue_date;
-    $year_parameter = '/year/'.$code;
-    $url = $_GET['q'].'?expandBottomContURL='.NYCHASpendingUrlService::idateSpendingUrl($dynamic_parameter,$year_parameter ,'wt_issue_date');
-    $series_previous[] = (object)array('y'=>$series_previous_temp[$code][$category], 'url'=>$url);
-    }
-    if ($code == $year_id){$code = $curr_year ;}
-    if ($code == $prev_year_id){$code = $prev_year ;}
-    $prev_series_obj->name = 'FY '.$code;
-    $prev_series_obj->data = $series_previous;
-    $node->widgetConfig->chartConfig->series[] = $prev_series_obj;
-    unset($series_previous);
+      if ($row['issue_date_year_id'] == $year_id){
+        $curr_year = $row['issue_date_year'];
+      }
+      if ($row['issue_date_year_id'] == $prev_year_id){
+        $prev_year = $row['issue_date_year'];
+      }
+      $series_previous_temp[$row['issue_date_year_id']][$row['month_number']] = (float)$row['spent_amount'];
     }
 
-    $node->widgetConfig->gridConfig->table_columns[2]->labelAlias= $node->widgetConfig->chartConfig->series[0]->name;
-    $node->widgetConfig->gridConfig->table_columns[1]->labelAlias= $node->widgetConfig->chartConfig->series[1]->name;
+    $series_previous = array();
+    foreach($codes as $code){
+      $prev_series_obj = new stdClass();
+      foreach($categories as $category){
+        if ($code == $year_id){
+            $codeyear = $curr_year;
+        }
+        if ($code == $prev_year_id){
+            $codeyear = $prev_year;
+        }
+        $issue_date= $codeyear.'-'.$category.'-01~'.$codeyear.'-'.$category.'-31';
+        $dynamic_parameter = '/issue_date/' . $issue_date;
+        $year_parameter = '/year/'.$code;
+        $url = $_GET['q'].'?expandBottomContURL='.NYCHASpendingUrlService::idateSpendingUrl($dynamic_parameter,$year_parameter ,'wt_issue_date');
+        $series_previous[] = (object)array('y'=>$series_previous_temp[$code][$category], 'url'=>$url);
+      }
+
+      if ($code == $year_id){
+        $code = $curr_year ;
+      }
+      if ($code == $prev_year_id){
+        $code = $prev_year;
+      }
+      $prev_series_obj->name = 'FY '.$code;
+      $prev_series_obj->data = $series_previous;
+      $node->widgetConfig->chartConfig->series[] = $prev_series_obj;
+      unset($series_previous);
+    }
+
+    $node->widgetConfig->gridConfig->table_columns[1]->labelAlias= $node->widgetConfig->chartConfig->series[0]->name;
+    $node->widgetConfig->gridConfig->table_columns[2]->labelAlias= $node->widgetConfig->chartConfig->series[1]->name;
     $node->widgetConfig->chartConfig->xAxis->categories = $months;
-    foreach($categories as $category){
-    $node->widgetConfig->gridConfig->data[] = array(
-    //$node->data=array(
-    $months[$category-1],
-    $series_previous_temp[$year_id][$category],
-    $series_previous_temp[$prev_year_id][$category],
-    );
-    }
+
+    foreach($months as $key=>$month){
+      $node->widgetConfig->gridConfig->data[] = array($month,
+                                                      $series_previous_temp[$prev_year_id][$key+1],
+                                                      $series_previous_temp[$year_id][$key+1],);
+    } 
     if($curr_year == 2010){
-    $node->widgetConfig->chartConfig->series[0]->showInLegend = false;
-    $node->widgetConfig->chartConfig->series[0]->visible = false;
-    unset($node->widgetConfig->gridConfig->table_columns[1]);
+      $node->widgetConfig->chartConfig->series[0]->showInLegend = false;
+      $node->widgetConfig->chartConfig->series[0]->visible = false;
+      unset($node->widgetConfig->gridConfig->table_columns[1]);
     }
-    //if (isset($node->widgetConfig->gridConfig->data)){
-    //  unset($node->data);
-    //$node->data = $node->widgetConfig->gridConfig->data;
-    //$node->widgetConfig->gridConfig->data=array();
-    //}
-    //return $node->data;
-",
-    "chartConfig" : {
+  ",
+  "chartConfig" : {
     "chart": {
-    "type": "column"
+      "type": "column"
     },
     "plotOptions": {
-    "series": {
-    "cursor": "pointer",
-    "point": {"events": {"function": "clickEvent"}}
-    }
+      "series": {
+        "cursor": "pointer",
+        "point": {"events": {"function": "clickEvent"}}
+      }
     },
     "xAxis": {
-    "labels": {"enabled": false}
+      "labels": {"enabled": false}
     },
-    "series": [
-    ],
+    "series": [],
     "title": {"text": ""},
     "yAxis": {
-    "min":0,
-    "minRange": 0.1,
-    "startOnTick":true,
-    "title": {"text": ""},
-    "labels":{"rotation": 0,"function":"yAxisFormatter"}
+      "min":0,
+      "minRange": 0.1,
+      "startOnTick":true,
+      "title": {"text": ""},
+      "labels":{"rotation": 0,"function":"yAxisFormatter"}
     } ,
     "legend": {
-    "enabled": true,
-    "align":"left"
+      "enabled": true,
+      "align":"left"
     },
     "tooltip":{"function":"tooltipformatter"}
-    }
-    }
+  }
+}
 
 <function>
 yaxisformatter^^'formatter' : function() {

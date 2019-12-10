@@ -454,6 +454,10 @@ function checkbook_project_theme($existing, $type, $theme, $path){
             'template' => 'gridview/nychacontracts_highchart_vendor',
             'arguments' => array('node' => NULL)
         ),
+        'highchart_nycha_spending_by_month_grid_view' => array(
+          'template' => 'gridview/nycha_spending_by_month',
+          'arguments' => array('node' => NULL)
+        ),
 
 
     	//Generic Grid views template.
