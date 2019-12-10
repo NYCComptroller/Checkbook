@@ -11,11 +11,11 @@
   "orderBy":"-txcount",
   "facetPager":true,
   "filterName":"Document ID",
-  "urlParameterName":"doc_id",
-  "autocompleteParamName":"doc_id_auto",
+  "urlParameterName":"doc_id_exact",
+  "autocompleteParamName":"doc_id_exact_auto",
   "autocompleteID":"fDocId",
   "urlParameterNameType":"eqtext",
-  "autocompleteField":"document_id.document_id",
+  "autocompleteField":"document_id",
   "adjustParameters":"
   if(function_exists('_checkbook_project_applyParameterFilters')){
   $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
