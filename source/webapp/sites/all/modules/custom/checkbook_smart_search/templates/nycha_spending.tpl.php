@@ -35,7 +35,7 @@ $linkableFields = array("contract_number" => $contractIdLink, "vendor_name" => $
 
 $count = 1;
 foreach ($spendingParameterMapping as $key => $title) {
-  if(in_array($key, $hyphenFields[$spending_results['spending_category_id']])){
+  if (in_array($key, $hyphenFields[$spending_results['spending_category_id']] ?? [])) {
     $value = "-";
   }else {
     $value = $spending_results[$key];
