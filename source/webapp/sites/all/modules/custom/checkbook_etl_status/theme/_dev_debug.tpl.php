@@ -30,7 +30,7 @@
 <?php endif; ?>
 
 
-<?php if (!empty($connections) && isset($dev_mode) && $dev_mode): $i = 0; ?>
+<?php if (!empty($connections)): $i = 0; ?>
   <table class="dbconnections" cellpadding="3">
     <thead>
     <tr>

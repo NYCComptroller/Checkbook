@@ -103,7 +103,7 @@
   <br/>
   <br/>
 
-  <?php include("_dev_debug.tpl.php"); ?>
+  <?php if ($dev_mode ?? false) { include("_dev_debug.tpl.php"); } ?>
 </main>
 
 <footer>
