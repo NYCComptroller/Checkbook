@@ -39,6 +39,7 @@ class UatEtlStatus extends AbstractEtlStatus
       'success' => self::$success,
       'data' => $data,
       'errors' => self::$errors,
+      'solr_stats' => self::getSolrStats(),
       'info' => 'Last successful UAT ETL run date'
     ];
 
@@ -70,5 +71,24 @@ class UatEtlStatus extends AbstractEtlStatus
   public static function getStatus()
   {
     return self::getStatusByEnv('UAT');
+  }
+
+  /**
+   * @return array
+   */
+  private static function getSolrStats()
+  {
+    $out = [];
+    $solr_url = 'http://sdw6.reisys.com:18984/solr/';
+    try{
+      $collections = unserialize(file_get_contents($solr_url.'admin/collections?action=LIST&wt=phps'));
+      foreach($collections['collections'] as $collection) {
+        $data = unserialize(file_get_contents($solr_url.$collection.'/select?facet.field=domain&facet=on&q=*:*&rows=0&wt=phps'));
+        $out[$collection] = $data['facet_counts']['facet_fields']['domain'];
+      }
+    } catch (\Exception $exception) {
+      self::$errors[] = "Could not get SOLR Cloud health status: ".$exception->getMessage();
+    }
+    return $out;
   }
 }
