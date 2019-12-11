@@ -27,7 +27,7 @@
     "amount_spent": "range",
     "deptnm": "like",
     "doc_id": "like",
-    "doc_id_exact" : "eqignorecase",
+    "doc_id_exact" : "capitalize",
     "issue_date" : "range",
     "syear":"le"
   },
@@ -227,7 +227,7 @@
         cUrl = adjustUrlParameter(cUrl,'fundsrc',oFundingIds);
         cUrl = adjustUrlParameter(cUrl,'invoice_number',oInvoiceNumber);
         cUrl = adjustUrlParameter(cUrl,'category', oCatIds);
-        cUrl = adjustUrlParameter(cUrl,'doc_id', oDocIds);
+        cUrl = adjustUrlParameter(cUrl,'doc_id_exact', oDocIds);
         cUrl = adjustUrlParameter(cUrl,'expcategorycode', oExpCatCodes);
         cUrl = adjustUrlParameter(cUrl,'resp_center', oRespCenterIds);
         cUrl = adjustUrlParameter(cUrl,'industry', oIndustryIds);
