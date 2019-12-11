@@ -37,8 +37,11 @@
     <sql>
       SELECT vendor_id,
       vendor_name ,
-      sum (sum_ytd_spending) as check_amount_sum,
-      sum (sum_total_contract_spending) as total_contract_amount_sum
+      CASE
+        WHEN SUM(sum_ytd_spending) IS NULL THEN 0
+        ELSE SUM(sum_ytd_spending)
+      END AS check_amount_sum,
+      SUM(sum_total_contract_spending) AS total_contract_amount_sum
       FROM
       (
       SELECT vendor_id,
@@ -89,7 +92,10 @@
       SELECT
         expenditure_type_id,
         expenditure_type_description AS expenditure_type_name,
-        ytd_spending AS check_amount_sum
+        CASE
+          WHEN ytd_spending IS NULL THEN 0
+          ELSE ytd_spending
+        END AS check_amount_sum
       FROM
         (SELECT
         expenditure_type_id,
@@ -184,7 +190,10 @@
       SELECT
         industry_type_id AS industry_id,
         display_industry_type_name AS industry_name,
-        SUM(ytd_spending) AS check_amount_sum
+        CASE
+          WHEN SUM(ytd_spending) IS NULL THEN 0
+          ELSE SUM(ytd_spending)
+        END AS check_amount_sum
       FROM aggregation_spending_fy
       <where>
         <exp op="AND">
@@ -210,7 +219,10 @@
       SELECT
       funding_source_id,
       display_funding_source_descr AS funding_source_name,
-      SUM(ytd_spending) AS check_amount_sum
+      CASE
+        WHEN SUM(ytd_spending) IS NULL THEN 0
+        ELSE SUM(ytd_spending)
+      END AS check_amount_sum
       FROM aggregation_spending_fy
       <where>
         <exp op="AND">
@@ -236,7 +248,10 @@
         SELECT
           department_id,
           department_name,
-          SUM(ytd_spending) AS check_amount_sum
+          CASE
+            WHEN SUM(ytd_spending) IS NULL THEN 0
+            ELSE SUM(ytd_spending)
+          END AS check_amount_sum
         FROM aggregation_spending_fy s0
       </exp>
       <exp op="IF" condition="=" paramName="category" compareValue="2">
