@@ -14,9 +14,14 @@ class NychaSpendingUrlService{
      */
     static function getFooterUrl($parameters = null)
     {
+        $link= drupal_get_path_alias($_GET['q']);
+        $category_id = RequestUtil::getRequestKeyValueFromURL('category', $link);
+        $category_param = '/category_inv/'.$category_id;
+        $category_parameter = isset($category_id) ? $category_param : '';
         $url = "/panel_html/nycha_spending_transactions/nycha_spending/transactions"
             . RequestUtilities::buildUrlFromParam('year')
-            . RequestUtilities::buildUrlFromParam('category')
+            . $category_parameter
+           // . RequestUtilities::buildUrlFromParam('category_inv')
             . RequestUtilities::buildUrlFromParam('agency')
             . RequestUtilities::buildUrlFromParam('vendor')
             . RequestUtilities::buildUrlFromParam('fundsrc')
