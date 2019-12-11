@@ -109,7 +109,7 @@
       $node->widgetConfig->gridConfig->data[] = array($month,
                                                       $series_previous_temp[$prev_year_id][$key+1],
                                                       $series_previous_temp[$year_id][$key+1],);
-    } 
+    }
     if($curr_year == 2010){
       $node->widgetConfig->chartConfig->series[0]->showInLegend = false;
       $node->widgetConfig->chartConfig->series[0]->visible = false;
