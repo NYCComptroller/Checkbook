@@ -288,7 +288,7 @@ abstract class SpendingFeed
     }
 
     //Year Filter
-    if ($this->values['date_filter'] == 0) {
+    if ($this->values['date_filter'] == 0 && $this->values['year']) {
       if (startsWith($this->values['year'], 'F')) {
         $this->form['filter']['year'] = array(
           '#markup' => '<div><strong>Year:</strong> ' . $this->values['year'] . '</div>',
