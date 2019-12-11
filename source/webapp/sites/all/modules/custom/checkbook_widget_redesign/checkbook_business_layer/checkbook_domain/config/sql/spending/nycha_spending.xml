@@ -37,8 +37,11 @@
     <sql>
       SELECT vendor_id,
       vendor_name ,
-      COALESCE(sum_ytd_spending, 0) AS check_amount_sum,
-      COALESCE(sum_total_contract_spending, 0) AS total_contract_amount_sum
+      CASE
+        WHEN SUM(sum_ytd_spending) IS NULL THEN 0
+        ELSE SUM(sum_ytd_spending)
+      END AS check_amount_sum,
+      SUM(sum_total_contract_spending) AS total_contract_amount_sum
       FROM
       (
       SELECT vendor_id,
@@ -75,7 +78,7 @@
         </exp>
       </where>
       GROUP BY contract_id,vendor_id,vendor_name ) x
-      GROUP BY vendor_id,vendor_name, sum_ytd_spending, sum_total_contract_spending
+      GROUP BY vendor_id,vendor_name
     </sql>
   </statement>
   <!--GetNychaSpendingByExpenseCategories-->
@@ -89,7 +92,10 @@
       SELECT
         expenditure_type_id,
         expenditure_type_description AS expenditure_type_name,
-        COALESCE(ytd_spending, 0) AS check_amount_sum
+        CASE
+          WHEN ytd_spending IS NULL THEN 0
+          ELSE ytd_spending
+        END AS check_amount_sum
       FROM
         (SELECT
         expenditure_type_id,
@@ -184,7 +190,10 @@
       SELECT
         industry_type_id AS industry_id,
         display_industry_type_name AS industry_name,
-        COALESCE(ytd_spending, 0) AS check_amount_sum
+        CASE
+          WHEN SUM(ytd_spending) IS NULL THEN 0
+          ELSE SUM(ytd_spending)
+        END AS check_amount_sum
       FROM aggregation_spending_fy
       <where>
         <exp op="AND">
@@ -196,7 +205,7 @@
         </exp>
       </where>
       AND industry_type_id IS NOT NULL
-      GROUP BY industry_type_id, display_industry_type_name, ytd_spending
+      GROUP BY industry_type_id, display_industry_type_name
     </sql>
   </statement>
   <!--GetNychaSpendingByFundingSource-->
@@ -210,7 +219,10 @@
       SELECT
       funding_source_id,
       display_funding_source_descr AS funding_source_name,
-      COALESCE(ytd_spending, 0) AS check_amount_sum
+      CASE
+        WHEN SUM(ytd_spending) IS NULL THEN 0
+        ELSE SUM(ytd_spending)
+      END AS check_amount_sum
       FROM aggregation_spending_fy
       <where>
         <exp op="AND">
@@ -221,7 +233,7 @@
           <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
         </exp>
       </where>
-      GROUP BY funding_source_id, display_funding_source_descr, ytd_spending
+      GROUP BY funding_source_id, display_funding_source_descr
     </sql>
   </statement>
   <!--GetNychaSpendingByDepartment-->
@@ -236,15 +248,18 @@
         SELECT
           department_id,
           department_name,
-          COALESCE(ytd_spending, 0) AS check_amount_sum
-        FROM aggregation_spending_fy
+          CASE
+            WHEN SUM(ytd_spending) IS NULL THEN 0
+            ELSE SUM(ytd_spending)
+          END AS check_amount_sum
+        FROM aggregation_spending_fy s0
       </exp>
       <exp op="IF" condition="=" paramName="category" compareValue="2">
         SELECT
         department_id AS department_id,
         citywide_department_name AS department_name,
         SUM(total_amount) AS check_amount_sum
-        FROM aggregation_spending_payroll_fy
+        FROM aggregation_spending_payroll_fy s
       </exp>
         <where>
           <exp op="AND">
@@ -256,10 +271,10 @@
           </exp>
         </where>
       <exp op="IF" condition="&lt;&gt;" paramName="category" compareValue="2">
-        GROUP BY department_id, department_name, ytd_spending
+        GROUP BY department_id, department_name
       </exp>
       <exp op="IF" condition="=" paramName="category" compareValue="2">
-        GROUP BY department_id, citywide_department_name, ytd_spending
+        GROUP BY department_id, citywide_department_name
       </exp>
     </sql>
   </statement>
