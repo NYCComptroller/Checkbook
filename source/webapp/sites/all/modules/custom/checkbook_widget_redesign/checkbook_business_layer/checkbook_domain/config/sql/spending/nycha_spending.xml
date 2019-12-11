@@ -237,14 +237,14 @@
           department_id,
           department_name,
           COALESCE(ytd_spending, 0) AS check_amount_sum
-        FROM aggregation_spending_fy s0
+        FROM aggregation_spending_fy
       </exp>
       <exp op="IF" condition="=" paramName="category" compareValue="2">
         SELECT
         department_id AS department_id,
         citywide_department_name AS department_name,
         SUM(total_amount) AS check_amount_sum
-        FROM aggregation_spending_payroll_fy s
+        FROM aggregation_spending_payroll_fy
       </exp>
         <where>
           <exp op="AND">
@@ -256,7 +256,7 @@
           </exp>
         </where>
       <exp op="IF" condition="&lt;&gt;" paramName="category" compareValue="2">
-        GROUP BY department_id, department_name
+        GROUP BY department_id, department_name, ytd_spending
       </exp>
       <exp op="IF" condition="=" paramName="category" compareValue="2">
         GROUP BY department_id, citywide_department_name, ytd_spending
