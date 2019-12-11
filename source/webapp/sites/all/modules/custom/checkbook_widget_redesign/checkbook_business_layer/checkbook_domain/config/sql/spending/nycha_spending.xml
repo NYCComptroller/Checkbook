@@ -259,7 +259,7 @@
         GROUP BY department_id, department_name
       </exp>
       <exp op="IF" condition="=" paramName="category" compareValue="2">
-        GROUP BY department_id, citywide_department_name
+        GROUP BY department_id, citywide_department_name, ytd_spending
       </exp>
     </sql>
   </statement>
