@@ -382,7 +382,7 @@ abstract class SpendingFeed
     }
 
     if ($this->values['date_filter'] == '0') {
-      if ($this->values['year'] && $this->values['year'] != 'ALL') {
+      if ($this->values['year'] && $this->values['year'] != '0') {
         if (startsWith($this->values['year'], 'F')) {
           $this->criteria['value']['fiscal_year'] = ltrim($this->values['year'], 'FY');
         } elseif (startsWith($this->values['year'], 'C')) {
