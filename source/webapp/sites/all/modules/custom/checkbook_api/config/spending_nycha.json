@@ -16,6 +16,7 @@
     },
     "dataset": {
       "name": "checkbook_nycha:all_disbursement_transactions",
+      "sortColumn":["issue_date", "document_id"],
       "data_source": "checkbook_nycha",
       "columnTypes": {
         "reference_document_number": "like",
