@@ -4,6 +4,8 @@
   "limit":100,
   "startWith":0,
   "maxSelect":5,
+  "showAllRecords":true,
+  "allowFacetDeselect":true,
   "columns":["responsibility_center_id.responsibility_center_id", "responsibility_center_name.responsibility_center_name", "txcount"],
   "orderBy":["-txcount", "responsibility_center_name.responsibility_center_name"],
   "facetPager":true,
@@ -17,7 +19,7 @@
         $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
       }
      $adjustedParameters['responsibility_center_name.responsibility_center_name'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
-  return $adjustedParameters;
+      return $adjustedParameters;
   ",
   "template":"individual_filter"
 }

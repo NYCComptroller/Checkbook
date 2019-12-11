@@ -5,6 +5,7 @@
   "startWith":0,
   "maxSelect":5,
   "allowFacetDeselect":true,
+  "showAllRecords":true,
   "columns":["expenditure_type_code.expenditure_type_code","expenditure_type_description.expenditure_type_description", "txcount"],
   "orderBy":["-txcount", "expenditure_type_description.expenditure_type_description"],
   "facetPager":true,
