@@ -138,6 +138,7 @@ div.filter-content-fdomainName div.options{
     max-width: 110px;
     text-transform: uppercase;
     cursor: pointer;
+    word-break: break-word;
 }
 .grid-3 div.number,
 .page-node div.number,
