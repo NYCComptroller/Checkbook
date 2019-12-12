@@ -12,7 +12,8 @@
       "funding_source_code": "funding_source_code",
       "funding_source_description": "funding_source_description",
       "spending_category": "spending_category_id",
-      "fiscal_year": "issue_date_year"
+      "fiscal_year": "issue_date_year",
+      "issue_date":"issue_date"
     },
     "dataset": {
       "name": "checkbook_nycha:all_disbursement_transactions",
@@ -149,6 +150,11 @@
         "valueType": "value",
         "dataType": "text",
         "maxLength": "32"
+      },
+      "issue_date":{
+        "valueType":"range",
+        "dataType":"date",
+        "format":"YYYY-MM-DD"
       }
     }
   },
@@ -156,7 +162,7 @@
     {
       "name": "optionalSingleFilter",
       "configKey": [
-        "spending"
+        "spending_nycha"
       ],
       "config": {
         "criteriaLevel": [
@@ -165,9 +171,12 @@
         ],
         "validatorType": "filterName",
         "validatorTypeConfig": {
-          "filterNames": [
-            "fiscal_year"
-          ]
+          "filterNames": {
+            "filterNames": [
+              "fiscal_year",
+              "issue_date"
+            ]
+          }
         }
       }
     }
