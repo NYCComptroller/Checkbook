@@ -2667,6 +2667,8 @@ function _checkbook_psql_command($database = 'checkbook')
   if (!isset($databases[$database])) {
     LogHelper::log_warn('$databases[' . $database . '] not found');
     return '';
+  } else {
+    LogHelper::log_notice('Using $databases[' . $database . '] database');
   }
 
   $command = 'PGPASSWORD=%PWD% %PSQL% -h %HOST% -U %USER% %DATABASE% ';
