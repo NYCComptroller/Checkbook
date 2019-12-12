@@ -75,7 +75,7 @@ class QueueJob {
                 case "xml":
                     $filename = $this->prepareFileName();
                     $commands = $this->getXMLJobCommands($filename);
-                    $commands[$filename][] = $this->getMoveCommand($filename);
+                    $commands[$filename][] = $this->getMoveCommand($filename, 'xml.zip');
                     $this->processCommands($commands);
                     break;
             }
@@ -269,7 +269,7 @@ class QueueJob {
         $close_tags = "</".$rootElement."></result_records></response>";
 
         $file = $this->getFullPathToFile($filename,$this->tmpFileOutputDir);
-        $commands = array();
+        $commands = [];
 
         $database = 'checkbook';
         if(stripos($this->jobDetails['name'], '_nycha')) {
@@ -285,6 +285,7 @@ class QueueJob {
         $command .= " -c \"\\\\COPY (" . $query . ") TO '"
                     . $file
                     . "' \" ";
+        $filenameZip = $filename.'.zip';
         $commands[$filename][] = $command;
 
         //prepend open tags command
@@ -295,15 +296,18 @@ class QueueJob {
         $command = "sed -i '$"."a" . $close_tags . "' " . $file;
         $commands[$filename][] = $command;
 
-        //xmllint command to format the xml
-        $formatted_filename = $this->tmpFileOutputDir .'/formatted_'. $filename . '.xml';
-        $maxmem = 1024 * 1024 * 500;  // 500 MB
-        $command = "xmllint --format $file --output $formatted_filename --maxmem $maxmem";
-        $commands[$filename][] = $command;
+//        //xmllint command to format the xml
+//        $formatted_filename = $this->tmpFileOutputDir .'/formatted_'. $filename . '.xml';
+//        $maxmem = 1024 * 1024 * 1024 * 8;  // 8 GB
+//        $command = "xmllint --format $file --output $formatted_filename --maxmem $maxmem";
+//        $commands[$filename][] = $command;
 
-        //move the formatted file back
-        $command = "mv $formatted_filename $file";
-        $commands[$filename][] = $command;
+        $commands[$filename][] = "zip $file.zip $file";
+
+//        $command = "rm $formatted_filename";
+//        $commands[$filename][] = $command;
+//
+        $commands[$filename][] = "rm $file";
 
         return $commands;
     }
@@ -394,7 +398,7 @@ class QueueJob {
                 $app_file_name = $this->prepareFilePath() . '/' . $this->prepareFileName() . '.zip';
             }
             else {
-                $app_file_name = $this->prepareFilePath() . '/' . $this->prepareFileName() . '.' . $this->responseFormat;
+                $app_file_name = $this->prepareFilePath() . '/' . $this->prepareFileName() . '.' . $this->responseFormat.'.zip';
             }
         }
 
