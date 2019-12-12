@@ -157,5 +157,33 @@
     "force_quote": [
       "responsibility_center_description"
     ]
+  },
+  "nycha_spending_category_code_list": {
+    "database": "checkbook_nycha",
+    "sql": "SELECT DISTINCT spending_category_code, display_spending_category_name AS spending_category_name FROM ref_spending_category order by 1",
+    "force_quote": [
+      "spending_category_name"
+    ]
+  },
+  "nycha_department_code_list": {
+    "database": "checkbook_nycha",
+    "sql": "SELECT DISTINCT l.department_code, h.department_name from ref_department_history h join ref_department l on l.department_id = h.department_id order by 1",
+    "force_quote": [
+      "department_code"
+    ]
+  },
+  "nycha_funding_source_code_list": {
+    "database": "checkbook_nycha",
+    "sql": "SELECT DISTINCT l.funding_source_code, h.display_funding_source_descr AS funding_source_description from ref_funding_source_history h join ref_funding_source l on l.funding_source_id = h.funding_source_id order by 1",
+    "force_quote": [
+      "funding_source_code"
+    ]
+  },
+  "nycha_expense_category_code_list": {
+    "database": "checkbook_nycha",
+    "sql": "SELECT DISTINCT l.expenditure_type_code, h.expenditure_type_name, h.expenditure_type_description from ref_expenditure_type_history h join ref_expenditure_type l on l.expenditure_type_id = h.expenditure_type_id order by 1",
+    "force_quote": [
+      "expenditure_type_code"
+    ]
   }
 }
