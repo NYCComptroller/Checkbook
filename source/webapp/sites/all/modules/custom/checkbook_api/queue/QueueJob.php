@@ -75,7 +75,7 @@ class QueueJob {
                 case "xml":
                     $filename = $this->prepareFileName();
                     $commands = $this->getXMLJobCommands($filename);
-                    $commands[$filename][] = $this->getMoveCommand($filename);
+                    $commands[$filename][] = $this->getMoveCommand($filename, 'xml.zip');
                     $this->processCommands($commands);
                     break;
             }
@@ -102,6 +102,15 @@ class QueueJob {
 
             $db_name = "main";
             $data_source = "checkbook";
+
+            if(stripos($this->jobDetails['name'], '_nycha')) {
+              $data_source = "checkbook_nycha";
+            }
+
+            if(stripos($this->jobDetails['name'], '_oge')) {
+              $data_source = "checkbook_oge";
+            }
+
             $results = _checkbook_project_execute_sql($query, $db_name,  $data_source);
             $this->recordCount =  $results[0]["record_count"];
         }
@@ -150,7 +159,16 @@ class QueueJob {
         $query = $this->jobDetails['data_command'];
         $query .= " LIMIT " . $limit . " OFFSET " . $offset;
 
-        $command = _checkbook_psql_command();
+        $database = 'checkbook';
+        if(stripos($this->jobDetails['name'], '_nycha')) {
+          $database = "checkbook_nycha";
+        }
+
+        if(stripos($this->jobDetails['name'], '_oge')) {
+          $database = "checkbook_oge";
+        }
+
+        $command = _checkbook_psql_command($database);
         $command .= " -c \"\\\\COPY (" . $query . ") TO '"
                 . $file
                 . "'  WITH DELIMITER ',' CSV QUOTE '\\\"' ESCAPE '\\\"' \" ";
@@ -251,13 +269,23 @@ class QueueJob {
         $close_tags = "</".$rootElement."></result_records></response>";
 
         $file = $this->getFullPathToFile($filename,$this->tmpFileOutputDir);
-        $commands = array();
+        $commands = [];
+
+        $database = 'checkbook';
+        if(stripos($this->jobDetails['name'], '_nycha')) {
+          $database = "checkbook_nycha";
+        }
+
+        if(stripos($this->jobDetails['name'], '_oge')) {
+          $database = "checkbook_oge";
+        }
 
         //sql command
-        $command = _checkbook_psql_command();
+        $command = _checkbook_psql_command($database);
         $command .= " -c \"\\\\COPY (" . $query . ") TO '"
                     . $file
                     . "' \" ";
+        $filenameZip = $filename.'.zip';
         $commands[$filename][] = $command;
 
         //prepend open tags command
@@ -268,15 +296,18 @@ class QueueJob {
         $command = "sed -i '$"."a" . $close_tags . "' " . $file;
         $commands[$filename][] = $command;
 
-        //xmllint command to format the xml
-        $formatted_filename = $this->tmpFileOutputDir .'/formatted_'. $filename . '.xml';
-        $maxmem = 1024 * 1024 * 500;  // 500 MB
-        $command = "xmllint --format $file --output $formatted_filename --maxmem $maxmem";
-        $commands[$filename][] = $command;
+//        //xmllint command to format the xml
+//        $formatted_filename = $this->tmpFileOutputDir .'/formatted_'. $filename . '.xml';
+//        $maxmem = 1024 * 1024 * 1024 * 8;  // 8 GB
+//        $command = "xmllint --format $file --output $formatted_filename --maxmem $maxmem";
+//        $commands[$filename][] = $command;
 
-        //move the formatted file back
-        $command = "mv $formatted_filename $file";
-        $commands[$filename][] = $command;
+        $commands[$filename][] = "zip $file.zip $file";
+
+//        $command = "rm $formatted_filename";
+//        $commands[$filename][] = $command;
+//
+        $commands[$filename][] = "rm $file";
 
         return $commands;
     }
@@ -367,7 +398,7 @@ class QueueJob {
                 $app_file_name = $this->prepareFilePath() . '/' . $this->prepareFileName() . '.zip';
             }
             else {
-                $app_file_name = $this->prepareFilePath() . '/' . $this->prepareFileName() . '.' . $this->responseFormat;
+                $app_file_name = $this->prepareFilePath() . '/' . $this->prepareFileName() . '.' . $this->responseFormat.'.zip';
             }
         }
 

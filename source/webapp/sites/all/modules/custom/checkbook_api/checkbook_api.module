@@ -31,6 +31,13 @@ use checkbook_api\CheckbookAPIService as CheckbookAPIService;
 use checkbook_api\ResponseStatus as ResponseStatus;
 use checkbook_json_api\CheckBookJsonApi as CheckBookJsonApi;
 
+function checkbook_api_cron()
+{
+  if(defined('CHECKBOOK_DEV')) {
+    module_load_include('php', 'checkbook_api', 'script/processQueueJob');
+  }
+}
+
 /**
  * Implements hook_menu().
  */
@@ -609,21 +616,21 @@ function checkbook_api_adjustSpendingSql(&$sql_query) {
     $column = 'minority_type_name';
     $minority_check = <<<SQLEND
     CASE
-        WHEN {$alias}{$column}= 2 THEN 'Black American' 
-        WHEN {$alias}{$column}= 3 THEN 'Hispanic American' 
-        WHEN {$alias}{$column}= 4 THEN 'Asian American' 
-        WHEN {$alias}{$column}= 5 THEN 'Asian American' 
-        WHEN {$alias}{$column}= 7 THEN 'Non-M/WBE' 
-        WHEN {$alias}{$column}= 9 THEN 'Women' 
-        WHEN {$alias}{$column}= 11 THEN 'Individuals and Others' 
-        WHEN {$alias}{$column}= 'African American' THEN 'Black American' 
-        WHEN {$alias}{$column}= 'Hispanic American' THEN 'Hispanic American' 
-        WHEN {$alias}{$column}= 'Asian-Pacific' THEN 'Asian American' 
-        WHEN {$alias}{$column}= 'Asian-Indian' THEN 'Asian American' 
-        WHEN {$alias}{$column}= 'Non-Minority' THEN 'Non-M/WBE' 
-        WHEN {$alias}{$column}= 'Caucasian Woman' THEN 'Women' 
+        WHEN {$alias}{$column}= 2 THEN 'Black American'
+        WHEN {$alias}{$column}= 3 THEN 'Hispanic American'
+        WHEN {$alias}{$column}= 4 THEN 'Asian American'
+        WHEN {$alias}{$column}= 5 THEN 'Asian American'
+        WHEN {$alias}{$column}= 7 THEN 'Non-M/WBE'
+        WHEN {$alias}{$column}= 9 THEN 'Women'
+        WHEN {$alias}{$column}= 11 THEN 'Individuals and Others'
+        WHEN {$alias}{$column}= 'African American' THEN 'Black American'
+        WHEN {$alias}{$column}= 'Hispanic American' THEN 'Hispanic American'
+        WHEN {$alias}{$column}= 'Asian-Pacific' THEN 'Asian American'
+        WHEN {$alias}{$column}= 'Asian-Indian' THEN 'Asian American'
+        WHEN {$alias}{$column}= 'Non-Minority' THEN 'Non-M/WBE'
+        WHEN {$alias}{$column}= 'Caucasian Woman' THEN 'Women'
         WHEN {$alias}{$column}= 'Individuals & Others' THEN 'Individuals and Others'
-    END 
+    END
 SQLEND;
     $sql_query = str_replace("{$alias}minority_type_name", $minority_check . " AS minority_type_name", $sql_query);
     return $sql_query;
