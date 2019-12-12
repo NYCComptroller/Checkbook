@@ -271,8 +271,17 @@ class QueueJob {
         $file = $this->getFullPathToFile($filename,$this->tmpFileOutputDir);
         $commands = array();
 
+        $database = 'checkbook';
+        if(stripos($this->jobDetails['name'], '_nycha')) {
+          $database = "checkbook_nycha";
+        }
+
+        if(stripos($this->jobDetails['name'], '_oge')) {
+          $database = "checkbook_oge";
+        }
+
         //sql command
-        $command = _checkbook_psql_command();
+        $command = _checkbook_psql_command($database);
         $command .= " -c \"\\\\COPY (" . $query . ") TO '"
                     . $file
                     . "' \" ";
