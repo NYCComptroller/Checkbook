@@ -102,6 +102,15 @@ class QueueJob {
 
             $db_name = "main";
             $data_source = "checkbook";
+
+            if(stripos($this->jobDetails['name'], '_nycha')) {
+              $data_source = "checkbook_nycha";
+            }
+
+            if(stripos($this->jobDetails['name'], '_oge')) {
+              $data_source = "checkbook_oge";
+            }
+
             $results = _checkbook_project_execute_sql($query, $db_name,  $data_source);
             $this->recordCount =  $results[0]["record_count"];
         }
@@ -150,7 +159,16 @@ class QueueJob {
         $query = $this->jobDetails['data_command'];
         $query .= " LIMIT " . $limit . " OFFSET " . $offset;
 
-        $command = _checkbook_psql_command();
+        $database = 'checkbook';
+        if(stripos($this->jobDetails['name'], '_nycha')) {
+          $database = "checkbook_nycha";
+        }
+
+        if(stripos($this->jobDetails['name'], '_oge')) {
+          $database = "checkbook_oge";
+        }
+
+        $command = _checkbook_psql_command($database);
         $command .= " -c \"\\\\COPY (" . $query . ") TO '"
                 . $file
                 . "'  WITH DELIMITER ',' CSV QUOTE '\\\"' ESCAPE '\\\"' \" ";
