@@ -119,22 +119,22 @@ class NychaSpendingUtil
 
     switch($widget){
       case 'ytd_vendor':
-        $reqParam = RequestUtil::getRequestKeyValueFromURL('vendor_inv', $bottomURL);
+        $reqParam = RequestUtil::getRequestKeyValueFromURL('vendor', $bottomURL);
         $title .= _checkbook_project_get_name_for_argument("vendor_id", $reqParam);
         break;
       case 'ytd_contract':
         return null;
         break;
       case 'ytd_industry':
-        $reqParam = RequestUtil::getRequestKeyValueFromURL('industry_inv', $bottomURL);
+        $reqParam = RequestUtil::getRequestKeyValueFromURL('industry', $bottomURL);
         $title .= _checkbook_project_get_name_for_argument("industry_type_id", $reqParam);
         break;
       case 'ytd_expense_category':
-        $reqParam = RequestUtil::getRequestKeyValueFromURL('exp_cat_inv', $bottomURL);
+        $reqParam = RequestUtil::getRequestKeyValueFromURL('exp_cat', $bottomURL);
         $title .= _checkbook_project_get_name_for_argument("expenditure_type_id", $reqParam);
         break;
       case 'ytd_funding_source':
-        $reqParam = RequestUtil::getRequestKeyValueFromURL('fundsrc_inv', $bottomURL);
+        $reqParam = RequestUtil::getRequestKeyValueFromURL('fundsrc', $bottomURL);
         $title .= _checkbook_project_get_name_for_argument("funding_source_id", $reqParam);
         break;
       case 'ytd_department':
@@ -156,10 +156,10 @@ class NychaSpendingUtil
 
   static public function getTransactionsStaticSummary($widget, $bottomURL){
     $year_id = RequestUtil::getRequestKeyValueFromURL('year', $bottomURL);
-    $cat_id = RequestUtil::getRequestKeyValueFromURL('category_inv', $bottomURL);
+    $cat_id = RequestUtil::getRequestKeyValueFromURL('category', $bottomURL);
     switch($widget){
       case 'ytd_vendor':
-        $vendor_id = RequestUtil::getRequestKeyValueFromURL('vendor_inv', $bottomURL);
+        $vendor_id = RequestUtil::getRequestKeyValueFromURL('vendor', $bottomURL);
         if (isset($cat_id)){ $spend_category = "spending_category_code=".$cat_id; }
         else{$spend_category = "spending_category_code!='CONTRACT'"; }
         if(isset($vendor_id)) {
@@ -185,7 +185,7 @@ class NychaSpendingUtil
         }
         break;
       case 'ytd_contract':
-        $contractId = "'".RequestUtil::getRequestKeyValueFromURL('po_num', $bottomURL)."'";
+        $contractId = "'".RequestUtil::getRequestKeyValueFromURL('po_num_exact', $bottomURL)."'";
         if(isset($contractId)) {
           $query = "SELECT contract_id, 
                            contract_purpose, 

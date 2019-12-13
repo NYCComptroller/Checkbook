@@ -6,7 +6,6 @@
   "startWith":0,
   "maxSelect":5,
   "showAllRecords":true,
-  "allowFacetDeselect":true,
   "columns":["contract_id.contract_id","txcount"],
   "orderBy":"-txcount",
   "facetPager":true,
