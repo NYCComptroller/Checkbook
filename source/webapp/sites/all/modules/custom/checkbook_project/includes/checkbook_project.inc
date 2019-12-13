@@ -2458,9 +2458,9 @@ function _get_contract_includes_subvendors_data($attributes = NULL)
       array('scntrc_status', 'scntrc_status_name', 'display_flag'),
       NULL, 'sort_order', 0, 10, NULL);
     if ($attributes) {
-      $statuses = ['' => ['title' => 'Select Status']];
+      $statuses = [0 => ['title' => 'Select Status']];
     } else {
-      $statuses = ['' => 'Select Status'];
+      $statuses = [0 => 'Select Status'];
     }
     foreach ($values as $value) {
       if($value['display_flag'] !== 1) {continue;}

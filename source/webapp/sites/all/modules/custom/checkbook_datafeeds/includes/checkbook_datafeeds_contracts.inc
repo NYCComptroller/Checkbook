@@ -324,7 +324,7 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
     '#suffix' => '</div>',
     '#id' => 'edit-contract_includes_sub_vendors_id',
     '#name' => 'contract_includes_sub_vendors_id',
-    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'contract_includes_sub_vendors_id', $first_time_load, ''),
+    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'contract_includes_sub_vendors_id', $first_time_load, 0),
     '#states' => array(
       'disabled' => array(
         array(
@@ -581,7 +581,7 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
     '#title' => t('Year:'),
     '#options' => _year_options('all-years'),
     '#attributes' => array('class' => array('watch')),
-    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'year', $first_time_load, 'ALL'),
+    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'year', $first_time_load, '0'),
     '#prefix' => '<div class="datafield year last-item">',
     '#suffix' => '</div></div></div>',
     '#id' => 'edit-year',
@@ -870,7 +870,7 @@ function checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $fi
     '#title' => t('Year:'),
     '#options' => _year_options('all-years', Datasource::NYCHA),
     '#attributes' => array('class' => array('watch')),
-    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_year', $first_time_load, 'ALL'),
+    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_year', $first_time_load, '0'),
     '#prefix' => '<div class="datafield nycha-year last-item">',
     '#suffix' => '</div></div></div>',
     '#id' => 'edit-nycha-year',
@@ -1142,7 +1142,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
         $formatted_search_criteria['End Date'] = 'Greater Than Equal to: ' . $values['enddatefrom'];
       }
       if ($values['year']) {
-        if ($values['year'] == 'ALL') {
+        if ($values['year'] == '0') {
           $form['filter']['year'] = array(
             '#markup' => '<div><strong>Year:</strong> All Years</div>',
           );
@@ -1280,7 +1280,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
       }
 
       if ($values['nycha_year']) {
-        if ($values['nycha_year'] == 'ALL') {
+        if ($values['nycha_year'] == '0') {
           $form['filter']['nycha_year'] = array('#markup' => '<div><strong>Year:</strong> All Years</div>',);
           $formatted_search_criteria['Year'] = 'All Years';
         } else {
@@ -1321,7 +1321,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
         $user_criteria['Contract ID'] = $values['contractno'];
         $formatted_search_criteria[''] = null;
       }
-      if ($values['contract_includes_sub_vendors_id'] !== '') {
+      if ($values['contract_includes_sub_vendors_id'] !== '' && $values['contract_includes_sub_vendors_id'] !== 0) {
         $scntrc_status_name = MappingUtil::getscntrc_status_name($values['contract_includes_sub_vendors_id']);
         $form['filter']['contract_includes_sub_vendors_id'] = array('#markup' => '<div><strong>Contract Includes Sub Vendors:</strong> ' . $scntrc_status_name . '</div>');
         $user_criteria['Contract Includes Sub Vendors'] = $values['contract_includes_sub_vendors_id'];
@@ -1454,7 +1454,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
         $formatted_search_criteria['Received Date'] = 'Greater Than Equal to: ' . $values['recdatefrom'];
       }
       if ($values['year']) {
-        if ($values['year'] == 'ALL') {
+        if ($values['year'] == '0') {
           $form['filter']['year'] = array(
             '#markup' => '<div><strong>Year:</strong> All Years</div>',
           );
@@ -1615,7 +1615,7 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
   }
 
   if ($data_source != Datasource::NYCHA) {
-    if ($values['year'] && $values['year'] != 'ALL') {
+    if ($values['year'] && $values['year'] != '0') {
       if (startsWith($values['year'], 'F')) {
         $criteria['value']['fiscal_year'] = ltrim($values['year'], 'FY');
       } elseif (startsWith($values['year'], 'C')) {
@@ -1636,7 +1636,7 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
     if ($values['contractno']) {
       $criteria['value']['contract_id'] = $values['contractno'];
     }
-    if ($values['contract_includes_sub_vendors_id'] !== '' && $values['contract_includes_sub_vendors_id'] !== '0') {
+    if ($values['contract_includes_sub_vendors_id'] !== '' && $values['contract_includes_sub_vendors_id'] !== 0) {
       $criteria['value']['contract_includes_sub_vendors_id'] = $values['contract_includes_sub_vendors_id'];
     }
     if ($values['sub_vendor_status_in_pip_id'] != 'Select Status' && $values['sub_vendor_status_in_pip_id'] != 0) {
@@ -1762,7 +1762,7 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
       if ($values['nycha_appr_datefrom'] !== '' || $values['nycha_appr_dateto'] !== '') {
         $criteria['range']['approved_date'] = array(checknull($values['nycha_appr_datefrom']), checknull($values['nycha_appr_dateto']),);
       }
-      if ($values['nycha_year'] && $values['nycha_year'] != 'ALL') {
+      if ($values['nycha_year'] && $values['nycha_year'] != '0') {
         if (startsWith($values['nycha_year'], 'F')) {
           $criteria['value']['fiscal_year'] = ltrim($values['nycha_year'], 'FY');
         }
@@ -2135,11 +2135,11 @@ function checkbook_datafeeds_get_configuration_key($domain, $data_source, $statu
 {
   $domain_filter = $domain;
   if ($data_source == Datasource::NYCHA) {
-    $domain_filter .= ($year == 'ALL') ? "_all_years" : "";
+    $domain_filter .= ($year == '0') ? "_all_years" : "";
   } else {
     $domain_filter .= $status == 'pending' ? '_pending' : '_active';
     $domain_filter .= $status == 'pending' ? '' : '_' . $expense_category;
-    $domain_filter .= ($year == 'All Years' || $year == 'ALL') ? "_all_years" : "";
+    $domain_filter .= ($year == 'All Years' || $year == '0') ? "_all_years" : "";
   }
   return $domain_filter;
 }
