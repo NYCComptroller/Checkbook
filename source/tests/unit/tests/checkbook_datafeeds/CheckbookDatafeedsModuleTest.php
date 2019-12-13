@@ -5,6 +5,7 @@ include_once CUSTOM_MODULES_DIR . '/checkbook_datafeeds/includes/checkbook_dataf
 include_once CUSTOM_MODULES_DIR . '/checkbook_datafeeds/includes/checkbook_datafeeds_tracking.inc';
 include_once CUSTOM_MODULES_DIR . '/checkbook_widget_redesign/checkbook_infrastructure_layer/constants/CommonConstants.php';
 include_once CUSTOM_MODULES_DIR . '/checkbook_project/includes/checkbook_project.inc';
+include_once CUSTOM_MODULES_DIR . '/checkbook_project/checkbook_project.module';
 
 use PHPUnit\Framework\TestCase;
 
