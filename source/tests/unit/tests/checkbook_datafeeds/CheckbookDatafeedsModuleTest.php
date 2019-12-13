@@ -4,6 +4,7 @@ include_once CUSTOM_MODULES_DIR . '/checkbook_datafeeds/includes/checkbook_dataf
 include_once CUSTOM_MODULES_DIR . '/checkbook_datafeeds/includes/checkbook_datafeeds_contracts.inc';
 include_once CUSTOM_MODULES_DIR . '/checkbook_datafeeds/includes/checkbook_datafeeds_tracking.inc';
 include_once CUSTOM_MODULES_DIR . '/checkbook_widget_redesign/checkbook_infrastructure_layer/constants/CommonConstants.php';
+include_once CUSTOM_MODULES_DIR . '/checkbook_project/includes/checkbook_project.inc';
 
 use PHPUnit\Framework\TestCase;
 
@@ -233,7 +234,7 @@ class CheckbookDatafeedsModuleTest extends TestCase
             'commodity_line' => '',
             'entity_contract_number' => '',
             'budget_name' => '',
-            'contract_includes_sub_vendors_id' => '0',
+            'contract_includes_sub_vendors_id' => 0,
             'pin' => '',
             'currentamtfrom' => '',
             'currentamtto' => '',
