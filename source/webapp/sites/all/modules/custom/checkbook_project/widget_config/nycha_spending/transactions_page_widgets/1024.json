@@ -4,7 +4,7 @@
   "limit":100,
   "startWith":0,
   "maxSelect":5,
-  "showAllRecords":true,
+  "allowFacetDeselect":true,
   "columns":["category.category", "display_spending_category_name.display_spending_category_name", "txcount"],
   "orderBy":"-txcount",
   "autocomplete":false,
