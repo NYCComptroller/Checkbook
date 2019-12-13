@@ -1174,10 +1174,10 @@
               div.ele('contract_id').val("");
               div.ele('vendor_name').val("");
             }else if(exptype == 1) {
-              disable_input([div.ele('exp_category'), div.ele('dept'),div.ele('contract_id'), div.ele('fundsrc'),
-                             div.ele('industry'), div.ele('resp_center'), div.ele('po_type'),]);
-              enable_input([div.ele('vendor_name'),div.ele('document_id'),
-                            div.ele('amount_spent_from'), div.ele('amount_spent_to')]);
+              disable_input([ div.ele('dept'),div.ele('contract_id'),
+                             div.ele('industry'), div.ele('po_type'),]);
+              enable_input([div.ele('vendor_name'),div.ele('document_id'),div.ele('resp_center'),
+                            div.ele('amount_spent_from'), div.ele('amount_spent_to'),div.ele('exp_category'),div.ele('fundsrc')]);
             }else if(exptype == 4) {
               disable_input([div.ele('dept'),div.ele('contract_id')]);
               enable_input([ div.ele('exp_category'),div.ele('vendor_name'),div.ele('document_id'),
