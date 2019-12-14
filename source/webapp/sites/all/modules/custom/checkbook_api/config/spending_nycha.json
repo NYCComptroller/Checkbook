@@ -2,7 +2,7 @@
   "spending_nycha": {
     "searchCriteriaMap": {
       "payee_name": "vendor_name",
-      "agency_code": "agency_code",
+      "other_government_entities_code": "agency_code",
       "department_code": "department_code",
       "expenditure_type_code": "expense_category",
       "check_amount": "check_amount",
@@ -111,7 +111,7 @@
         "dataType": "text",
         "maxLength": "100"
       },
-      "agency_code": {
+      "other_government_entities_code": {
         "valueType": "value",
         "dataType": "text",
         "maxLength": "3"
