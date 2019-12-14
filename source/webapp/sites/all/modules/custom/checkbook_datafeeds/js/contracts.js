@@ -493,7 +493,7 @@
       });
 
       //Disable Year option for All Years
-      if ($('#edit-year', context).val() === 'ALL') {
+      if ($('#edit-year', context).val() === '0') {
         $('#edit-column-select-expense option[value="Year"]', context).attr('disabled', 'disabled');
         $('#edit-column-select-oge-expense option[value="Year"]', context).attr('disabled', 'disabled');
         $('#edit-column-select-revenue option[value="Year"]', context).attr('disabled', 'disabled');
@@ -505,7 +505,7 @@
         $('#edit-column-select-all option[value="Year"]', context).attr('disabled', '');
       }
       //Disable Year option for All Years - for NYCHA
-      if ($('#edit-nycha-year', context).val() === 'ALL') {
+      if ($('#edit-nycha-year', context).val() === '0') {
         $('#edit-column-select-nycha option[value="Year"]').attr('disabled', 'disabled');
       } else {
         $('#edit-column-select-nycha option[value="Year"]').attr('disabled', '');
@@ -683,7 +683,7 @@
       });
       //Year Drop-down
       $('#edit-nycha-year', context).change(function () {
-        if ($(this).val() === 'ALL') {
+        if ($(this).val() === '0') {
           $('#edit-column-select-nycha option[value="Year"]', context).attr('disabled', 'disabled');
         } else {
           $('#edit-column-select-nycha option[value="Year"]', context).attr('disabled', '');
@@ -702,7 +702,7 @@
       });
       //Year Drop-down
       $('#edit-year', context).change(function () {
-        if ($(this).val() === 'ALL') {
+        if ($(this).val() === '0') {
           $('#edit-column-select-expense option[value="Year"]', context).attr('disabled', 'disabled');
           $('#edit-column-select-oge-expense option[value="Year"]', context).attr('disabled', 'disabled');
           $('#edit-column-select-revenue option[value="Year"]', context).attr('disabled', 'disabled');
