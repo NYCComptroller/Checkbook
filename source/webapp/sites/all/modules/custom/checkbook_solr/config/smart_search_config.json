@@ -323,7 +323,8 @@
         "check_amount": "Check Amount",
         "check_eft_issued_date": "Issue Date",
         "spending_entity_contract_number": "Entity Contract#",
-        "spending_budget_name": "Budget Name"
+        "spending_budget_name": "Budget Name",
+        "":""
       },
       "contracts": {
         "contract_status": "Status",
@@ -344,7 +345,8 @@
         "apt_pin": "APT PIN",
         "expense_category_name": "Expense Category",
         "contract_entity_contract_number": "Entity Contract#",
-        "contract_budget_name": "Budget Name"
+        "contract_budget_name": "Budget Name",
+        "":""
       }
     },
     "nycha": {
