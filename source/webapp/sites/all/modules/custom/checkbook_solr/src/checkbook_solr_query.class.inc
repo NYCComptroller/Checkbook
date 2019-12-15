@@ -102,7 +102,7 @@ class CheckbookSolrQuery
   /**
    * @var int
    */
-  private $facetLimit = 30;
+  public $facetLimit = 30;
 
   /**
    * @var string
@@ -490,7 +490,7 @@ class CheckbookSolrQuery
 
     $this->addFacet($facet);
 
-    $this->setFacetLimit(10);
+    $this->autoSuggestionLimit = 10;
 
     return $this;
   }
