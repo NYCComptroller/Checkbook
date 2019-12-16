@@ -1075,10 +1075,8 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
       }
       if ($values['agency']) {
         $form['filter']['agency'] = array(
-          '#markup' => '<div><strong>Other Government Entities:</strong> ' . $agency . '</div>',
+          '#markup' => '<div><strong>Other Government Entities:</strong> NEW YORK CITY ECONOMIC DEVELOPMENT CORPORATION</div>',
         );
-        $user_criteria['Other Government Entities'] = $values['agency'];
-        $formatted_search_criteria['Other Government Entities'] = $values['agency'];
       }
       if ($values['category']) {
         $form['filter']['category'] = array('#markup' => '<div><strong>Category:</strong> ' . $values['category'] . '</div>');
@@ -1636,12 +1634,6 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
     if ($values['contractno']) {
       $criteria['value']['contract_id'] = $values['contractno'];
     }
-    if ($values['contract_includes_sub_vendors_id'] !== '' && $values['contract_includes_sub_vendors_id'] !== 0) {
-      $criteria['value']['contract_includes_sub_vendors_id'] = $values['contract_includes_sub_vendors_id'];
-    }
-    if ($values['sub_vendor_status_in_pip_id'] != 'Select Status' && $values['sub_vendor_status_in_pip_id'] != 0) {
-      $criteria['value']['sub_vendor_status_in_pip_id'] = $values['sub_vendor_status_in_pip_id'];
-    }
     if ($values['contract_type'] != 'No Contract Type Selected') {
       preg_match($pattern, $values['contract_type'], $ctypematches);
       $criteria['value']['contract_type'] = trim($ctypematches[1], '[ ]');
@@ -1691,10 +1683,10 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
   //By data source
   switch ($data_source) {
     case Datasource::OGE:
-      if ($values['agency'] != 'Select One') {
-        preg_match($pattern, $values['agency'], $amatches);
-        $criteria['value']['other_government_entities_code'] = trim($amatches[1], '[ ]');
-      }
+      //if ($values['agency'] != 'Select One') {
+      //  preg_match($pattern, $values['agency'], $amatches);
+      ///  $criteria['value']['other_government_entities_code'] = trim($amatches[1], '[ ]');
+      //}
       if ($values['entity_contract_number']) {
         $criteria['value']['entity_contract_number'] = $values['entity_contract_number'];
       }
@@ -1787,6 +1779,12 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
       if ($values['industry'] && $values['industry'] != 'Select Industry') {
         preg_match($pattern, $values['industry'], $imatches);
         $criteria['value']['industry_type_id'] = trim($imatches[1], '[ ]');
+      }
+      if ($values['contract_includes_sub_vendors_id'] !== '' && $values['contract_includes_sub_vendors_id'] !== 0) {
+        $criteria['value']['contract_includes_sub_vendors_id'] = $values['contract_includes_sub_vendors_id'];
+      }
+      if ($values['sub_vendor_status_in_pip_id'] != 'Select Status' && $values['sub_vendor_status_in_pip_id'] != 0) {
+        $criteria['value']['sub_vendor_status_in_pip_id'] = $values['sub_vendor_status_in_pip_id'];
       }
       break;
   }
