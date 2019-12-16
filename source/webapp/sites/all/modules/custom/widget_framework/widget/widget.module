@@ -1318,6 +1318,9 @@ function widget_merge_config($parent_config, $child_config){
   $child_config->cleanURLParameters[] = $child_config->autocompleteParamName;
   $child_config->paramTypeConfig = $parent_config->paramTypeConfig;
   $child_config->preProcessConfiguration = $parent_config->preProcessConfiguration;
+  if(isset($child_config->widgetConfig->adjustFacetOptions)){
+    eval($child_config->widgetConfig->adjustFacetOptions);
+  }
   $autocompleteParamName = $child_config->autocompleteParamName;
   if(isset($autocompleteParamName)){
     $child_config->paramTypeConfig->$autocompleteParamName = "autocomplete";
@@ -1358,9 +1361,10 @@ function widget_merge_config($parent_config, $child_config){
   if(!isset($child_config->logicalOrColumns)){
     $child_config->logicalOrColumns = $parent_config->logicalOrColumns;
   }
-    if(!isset($child_config->sortSourceByNull)){
-        $child_config->sortSourceByNull= $parent_config->sortSourceByNull;
-    }
+  if(!isset($child_config->sortSourceByNull)){
+      $child_config->sortSourceByNull= $parent_config->sortSourceByNull;
+  }
+
   return (object) $child_config;
 }
 
