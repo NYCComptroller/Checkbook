@@ -56,7 +56,8 @@ class NychaSpendingUtil
   static public function getCategoryName(){
     $categories = self::$categories;
     $category_id = RequestUtilities::get('category');
-    $category_id = RequestUtilities::get('category_inv');
+    $category_id_inv = RequestUtilities::get('category_inv');
+    $category_id = isset($category_id) ? $category_id : $category_id_inv;
     return $categories[$category_id];
   }
   /**
@@ -130,15 +131,15 @@ class NychaSpendingUtil
         $title .= _checkbook_project_get_name_for_argument("industry_type_id", $reqParam);
         break;
       case 'ytd_expense_category':
-        $reqParam = RequestUtil::getRequestKeyValueFromURL('exp_cat', $bottomURL);
-        $title .= _checkbook_project_get_name_for_argument("expenditure_type_id", $reqParam);
+        $reqParam = RequestUtil::getRequestKeyValueFromURL('expcategorycode', $bottomURL);
+        $title .= _checkbook_project_get_name_for_argument("expenditure_type_code", $reqParam);
         break;
       case 'ytd_funding_source':
         $reqParam = RequestUtil::getRequestKeyValueFromURL('fundsrc', $bottomURL);
         $title .= _checkbook_project_get_name_for_argument("funding_source_id", $reqParam);
         break;
       case 'ytd_department':
-        $reqParam = RequestUtil::getRequestKeyValueFromURL('dept_inv', $bottomURL);
+        $reqParam = RequestUtil::getRequestKeyValueFromURL('dept', $bottomURL);
         $result = _checkbook_project_get_name_for_argument("department_id", $reqParam);
         $result = preg_replace("/unknown/", 'Unknown', $result);
         $title .= htmlentities($result);

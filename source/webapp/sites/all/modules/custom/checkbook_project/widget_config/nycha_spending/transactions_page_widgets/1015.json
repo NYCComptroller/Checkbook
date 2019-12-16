@@ -23,5 +23,6 @@
       $adjustedParameters['contract_id.contract_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
       return $adjustedParameters;
   ",
+
   "template":"individual_filter"
 }

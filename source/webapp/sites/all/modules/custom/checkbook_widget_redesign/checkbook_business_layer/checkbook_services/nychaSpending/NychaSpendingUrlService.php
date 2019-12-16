@@ -60,11 +60,7 @@ class NychaSpendingUrlService{
     * @return string
     */
       static function ytdSpendingUrl($dynamic_parameter, $widget) {
-        //$url = drupal_get_path_alias($_GET['q']);
         $dynamic_parameter = isset($dynamic_parameter) ? $dynamic_parameter : '';
-        //$category_id = RequestUtil::getRequestKeyValueFromURL('category', $url);
-        //$category_param = '/category_inv/'.$category_id;
-        //$category_parameter = isset($category_id) ? $category_param : '';
         $url = "/panel_html/nycha_spending_transactions/nycha_spending/transactions"
           . RequestUtilities::buildUrlFromParam('year')
           . RequestUtilities::buildUrlFromParam('issue_date')

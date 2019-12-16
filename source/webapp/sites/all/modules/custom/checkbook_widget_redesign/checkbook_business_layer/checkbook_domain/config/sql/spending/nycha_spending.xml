@@ -90,7 +90,7 @@
     <param name="fundsrc" type="int" />
     <sql>
       SELECT
-        expenditure_type_id,
+        expenditure_type_id,expenditure_type_code,
         expenditure_type_description AS expenditure_type_name,
         CASE
           WHEN ytd_spending IS NULL THEN 0
@@ -98,7 +98,7 @@
         END AS check_amount_sum
       FROM
         (SELECT
-        expenditure_type_id,
+        expenditure_type_id,expenditure_type_code,
         expenditure_type_description ,
         SUM(ytd_spending) AS ytd_spending
         FROM aggregation_spending_fy
@@ -111,10 +111,10 @@
             <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
           </exp>
         </where>
-        GROUP BY expenditure_type_id,expenditure_type_description
+        GROUP BY expenditure_type_id,expenditure_type_code,expenditure_type_description
         UNION
         SELECT
-        expenditure_type_id,
+        expenditure_type_id,expenditure_type_code,
         display_expenditure_object_name ,
         SUM(total_amount) AS ytd_spending
         FROM aggregation_spending_payroll_fy
@@ -128,7 +128,7 @@
           </exp>
         </where>
         AND citywide_expenditure_object_code IS NOT NUll
-        GROUP BY expenditure_type_id,display_expenditure_object_name ) z
+        GROUP BY expenditure_type_id,expenditure_type_code,display_expenditure_object_name ) z
     </sql>
   </statement>
   <!--GetNychaSpendingByContracts-->

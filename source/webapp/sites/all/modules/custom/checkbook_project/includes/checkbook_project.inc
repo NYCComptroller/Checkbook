@@ -562,8 +562,8 @@ function _checkbook_project_get_name_for_argument($keyword, $id)
       $exp_categorys = _checkbook_project_querydataset($data_source . ':expenditure_object', array('expenditure_object_name', 'expenditure_object_id'), array($keyword => $id));
       return ucwords(strtolower($exp_categorys[0]['expenditure_object_name']));
       break;
-    case "expenditure_type_id":
-      $exp_categorys = _checkbook_project_querydataset($data_source . ':expenditure_type', array('expenditure_type_description', 'expenditure_type_id'), array($keyword => $id));
+    case "expenditure_type_code":
+      $exp_categorys = _checkbook_project_querydataset($data_source . ':expenditure_type', array('expenditure_type_description', 'expenditure_type_code'), array($keyword => $id));
       return ucwords(strtolower($exp_categorys[0]['expenditure_type_description']));
       break;
     case "agreement_id":
