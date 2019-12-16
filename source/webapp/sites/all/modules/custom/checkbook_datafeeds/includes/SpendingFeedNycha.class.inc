@@ -26,6 +26,8 @@ class SpendingFeedNycha extends SpendingFeed
   protected $data_source = 'checkbook_nycha';
   protected $type_of_data = 'Spending_NYCHA';
   protected $filtered_columns_container = 'nycha_column_select';
+  const oge_label = 'Other Government Entity';
+  const oge_name = "NEW YORK CITY HOUSING AUTHORITY";
 
   protected function _process_expense_type_by_datasource()
   {

@@ -25,8 +25,9 @@ class SpendingFeedNycedc extends SpendingFeed
 {
   protected $data_source = 'checkbook_oge';
   protected $type_of_data = 'Spending_OGE';
-  protected $agency_label = 'Other Government Entity';
   protected $filtered_columns_container = 'oge_column_select';
+  const oge_label = 'Other Government Entity';
+  const oge_name = "NEW YORK CITY ECONOMIC DEVELOPMENT CORPORATION";
 
   protected function _process_expense_type_by_datasource()
   {
@@ -49,10 +50,10 @@ class SpendingFeedNycedc extends SpendingFeed
       $this->criteria['value']['spending_category'] = trim($etmatches[1], '[ ]');
     }
 
-    if ($this->values['agency'] != 'Select One') {
-      preg_match($this->bracket_value_pattern, $this->values['agency'], $agency_matches);
-      $this->criteria['value']['other_government_entities_code'] = trim($agency_matches[1], '[ ]');
-    }
+    //if ($this->values['agency'] != 'Select One') {
+    //  preg_match($this->bracket_value_pattern, $this->values['agency'], $agency_matches);
+    // $this->criteria['value']['other_government_entities_code'] = trim($agency_matches[1], '[ ]');
+    // }
 
     if ($this->values['contractno']) {
       $this->criteria['value']['contract_id'] = $this->values['contractno'];
