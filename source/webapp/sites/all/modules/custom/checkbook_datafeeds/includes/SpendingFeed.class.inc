@@ -157,13 +157,23 @@ abstract class SpendingFeed
     );
     $this->formatted_search_criteria['Type of File'] = $this->form_state['step_information']['type']['stored_values']['format'];
 
-    if ($this->values['agency']) {
-      $agency = $this->values['agency'];
-      $this->form['filter']['fund_class'] = array(
-        '#markup' => '<div><strong>' . $this->agency_label . ':</strong> ' . $agency . '</div>',
+    if($this->data_source ==  \Datasource::NYCHA){
+      $this->form['filter']['agency'] = array(
+        '#markup' => '<div><strong>' . SpendingFeedNycha::oge_label .':</strong> ' . SpendingFeedNycha::oge_name . '</div>',
       );
-      $this->user_criteria['Agency'] = $this->values['agency'];
-      $this->formatted_search_criteria[$this->agency_label] = $agency;
+    }else if($this->data_source ==  \Datasource::OGE){
+      $this->form['filter']['agency'] = array(
+        '#markup' => '<div><strong>' . SpendingFeedNycedc::oge_label .':</strong> ' . SpendingFeedNycedc::oge_name . '</div>',
+      );
+    }else {
+      if ($this->values['agency']) {
+        $this->agency_name = $this->values['agency'];
+        $this->form['filter']['agency'] = array(
+          '#markup' => '<div><strong>' . $this->agency_label . ':</strong> ' . $this->agency_name . '</div>',
+        );
+        $this->user_criteria['Agency'] = $this->values['agency'];
+        $this->formatted_search_criteria[$this->agency_label] = $this->agency_name;
+      }
     }
     if ($this->values['dept'] && $this->values['dept'] != 'Select Department') {
       // converts special characters to HTML entities
