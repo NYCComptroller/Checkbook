@@ -21,7 +21,7 @@
       "data_source":"checkbook_nycha",
       "sortColumn":["sort_sequence"],
       "columnTypes":{
-        "contract_id":"capitalize",
+        "contract_id":"like",
         "vendor":"like",
         "purpose":"contains"
       },
@@ -229,7 +229,7 @@
       "data_source":"checkbook_nycha",
       "sortColumn":["sort_sequence"],
       "columnTypes":{
-        "contract_id":"capitalize",
+        "contract_id":"like",
         "vendor":"like",
         "purpose":"contains"
       },
