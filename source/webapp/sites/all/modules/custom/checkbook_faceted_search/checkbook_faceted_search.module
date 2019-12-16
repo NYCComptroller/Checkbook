@@ -257,10 +257,18 @@ function _checkbook_faceted_search_update_data($node)
     }
   }
 
+  // Facet preselection for
+  $query_string = $_GET['q'];
+  $widget = RequestUtil::getRequestKeyValueFromURL('widget', $query_string);
+
+  if(strpos($widget, 'ytd_') !== false) {
+    $node->widgetConfig->allowFacetDeselect = false;
+  }
   //Facets that have Url parameters that match the current Url will be disabled and show only the default checked items
   $disableFacet = !(isset($node->widgetConfig->allowFacetDeselect) ? $node->widgetConfig->allowFacetDeselect : false);
   if ($disableFacet) { //only URL parameters count and can be disabled
     $query_string = $_GET['q'];
+    //print $query_string;
     $is_new_window = preg_match('/newwindow/i', $query_string);
     $currentPath = current_path();
     //To show only default checked items for nycha contracts advanced search

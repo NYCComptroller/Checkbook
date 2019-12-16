@@ -21,5 +21,12 @@
       $adjustedParameters['vendor_id.vendor_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
       return $adjustedParameters;
   ",
+  "adjustFacetOptions":"
+  $query_string = $_GET['q'];
+  $widget = RequestUtil::getRequestKeyValueFromURL('widget', $query_string);
+  if(strpos($widget, 'ytd_') !== false) {
+  $node->widgetConfig->allowFacetDeselect = false;
+  }
+  ",
   "template":"individual_filter"
 }

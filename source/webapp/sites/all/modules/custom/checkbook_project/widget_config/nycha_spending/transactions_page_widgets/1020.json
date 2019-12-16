@@ -6,7 +6,6 @@
   "startWith":0,
   "maxSelect":5,
   "showAllRecords":true,
-  "allowFacetDeselect":true,
   "columns":["funding_source_id.funding_source_id","funding_source_description.funding_source_description","txcount"],
   "orderBy":"-txcount",
   "facetPager":true,
@@ -21,6 +20,14 @@
       }
       $adjustedParameters['funding_source_id.funding_source_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
       return $adjustedParameters;
+  ",
+  "adjustFacetOptions":"
+  $query_string = $_GET['q'];
+  $widget = RequestUtil::getRequestKeyValueFromURL('widget', $query_string);
+  if(strpos($widget, 'ytd_') !== false) {
+  $node->widgetConfig->allowFacetDeselect = false;
+  }
+  else{$node->widgetConfig->allowFacetDeselect = true; }
   ",
   "template":"individual_filter"
 }

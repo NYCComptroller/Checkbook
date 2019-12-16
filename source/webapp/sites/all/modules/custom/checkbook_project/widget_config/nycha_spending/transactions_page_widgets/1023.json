@@ -4,7 +4,6 @@
   "limit":100,
   "startWith":0,
   "maxSelect":5,
-  "allowFacetDeselect":true,
   "showAllRecords":true,
   "columns":["expenditure_type_code.expenditure_type_code","expenditure_type_description.expenditure_type_description", "txcount"],
   "orderBy":["-txcount", "expenditure_type_description.expenditure_type_description"],
@@ -20,6 +19,14 @@
     }
     $adjustedParameters['expenditure_type_description.expenditure_type_description'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
     return $adjustedParameters;
+  ",
+  "adjustFacetOptions":"
+  $query_string = $_GET['q'];
+  $widget = RequestUtil::getRequestKeyValueFromURL('widget', $query_string);
+  if(strpos($widget, 'ytd_') !== false) {
+  $node->widgetConfig->allowFacetDeselect = false;
+  }
+  else{$node->widgetConfig->allowFacetDeselect = true; }
   ",
   "template":"individual_filter"
 }
