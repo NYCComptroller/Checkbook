@@ -22,11 +22,11 @@
       return $adjustedParameters;
   ",
   "adjustFacetOptions":"
-    $query_string = $_GET['q'];
-    $widget = RequestUtil::getRequestKeyValueFromURL('widget', $query_string);
-    if(strpos($widget, 'ytd_') !== false) {
-      $node->widgetConfig->allowFacetDeselect = false;
-    }
+  $query_string = $_GET['q'];
+  $widget = RequestUtil::getRequestKeyValueFromURL('widget', $query_string);
+  if(strpos($widget, 'ytd_') !== false) {
+  $node->widgetConfig->allowFacetDeselect = false;
+  }
   ",
   "template":"individual_filter"
 }
