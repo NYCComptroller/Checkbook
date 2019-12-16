@@ -54,7 +54,7 @@ foreach ($node->data as $row){
 //$link = NychaSpendingUrlService:: getFooterUrl();
   if ($cat == '2'){$row['invoice_amount_sum'] = $row['check_amount_sum'];}
 $categories[]=$row['issue_date_year_issue_date_year'];
-$data[] = (object)array('year'=>$row['issue_date_year_id'], 'y'=>$row['invoice_amount_sum'], 'url'=>$link, 'name'=>$row['issue_date_year_issue_date_year']);
+$data[] = (object)array('year'=>$row['issue_date_year_id'], 'y'=>$row['invoice_amount_sum'], 'name'=>$row['issue_date_year_issue_date_year']);
 $node->widgetConfig->gridConfig->data[] = array($row['issue_date_year_issue_date_year'], $row['invoice_amount_sum']);
 }
 }
@@ -76,7 +76,7 @@ foreach ($year_list as $list) {
   }
 if ($flag == 1){
 $categories[]=$year_value;
-$data[] = (object)array('year'=>$year_id, 'y'=>$amount, 'url'=>$link, 'name'=>$year_value);
+$data[] = (object)array('year'=>$year_id, 'y'=>$amount, 'name'=>$year_value);
 $node->widgetConfig->gridConfig->data[] = array($year_value, $amount);}
 //$year_value="";
 //$year_id="";
@@ -120,14 +120,7 @@ return $node->data;
 "text": ""
 },
 "plotOptions": {
-"column": {"pointWidth": 30},
-"series": {
-"point": {
-"events": {
-"function": "clickEvent"
-}
-}
-}
+"column": {"pointWidth": 30}
 },
 "series":[],
 "title":{"text":""}
