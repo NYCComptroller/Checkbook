@@ -28,8 +28,8 @@ class DatafeedsConfigUtil
   {
     $options = [
       'checkbook' => 'Citywide Agencies',
-      'checkbook_oge' => 'NYCEDC (New York City Economic Development Corporation)',
-      'checkbook_nycha' => 'NYCHA (New York City Housing Authority)'
+      'checkbook_oge' => 'New York City Economic Development Corporation',
+      'checkbook_nycha' => 'New York City Housing Authority'
     ];
     if ('payroll' == $domain) {
       unset($options['checkbook_oge']);
