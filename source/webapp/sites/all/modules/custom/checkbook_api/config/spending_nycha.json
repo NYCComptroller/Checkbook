@@ -49,7 +49,8 @@
             "responsibility_center": "responsibility_center_description",
             "expense_category": "expenditure_type_description",
             "program": "program_phase_description",
-            "project": "gl_project_description"
+            "project": "gl_project_description",
+            "year":"issue_date_year"
           },
           "rowElements": [
             "issue_date",
@@ -71,7 +72,8 @@
             "responsibility_center_description",
             "expenditure_type_description",
             "program_phase_description",
-            "gl_project_description"
+            "gl_project_description",
+            "issue_date_year"
           ]
         },
         "csv": {
@@ -95,7 +97,8 @@
             "Responsibility Center": "responsibility_center_description",
             "Expense Category": "expenditure_type_description",
             "Program": "program_phase_description",
-            "Project": "gl_project_description"
+            "Project": "gl_project_description",
+            "Year": "issue_date_year"
           }
         }
       }

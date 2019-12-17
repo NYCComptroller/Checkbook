@@ -98,7 +98,8 @@
           "Responsibility Center": "Responsibility Center",
           "Expense Category": "Expense Category",
           "Program": "Program",
-          "Project": "Project"
+          "Project": "Project",
+          "Year":"Year"
         },
         "xml": {
           "issue_date": "issue_date",
@@ -120,7 +121,8 @@
           "responsibility_center": "responsibility_center",
           "expense_category": "expense_category",
           "program": "program",
-          "project": "project"
+          "project": "project",
+          "year":"year"
         }
       }
     }
