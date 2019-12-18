@@ -139,8 +139,8 @@ class NychaSpendingUtil
         $title .= _checkbook_project_get_name_for_argument("funding_source_id", $reqParam);
         break;
       case 'ytd_department':
-        $reqParam = RequestUtil::getRequestKeyValueFromURL('dept', $bottomURL);
-        $result = _checkbook_project_get_name_for_argument("department_id", $reqParam);
+        $reqParam = RequestUtil::getRequestKeyValueFromURL('dept_code', $bottomURL);
+        $result = _checkbook_project_get_name_for_argument("department_code", $reqParam);
         $result = preg_replace("/unknown/", 'Unknown', $result);
         $title .= htmlentities($result);
         break;

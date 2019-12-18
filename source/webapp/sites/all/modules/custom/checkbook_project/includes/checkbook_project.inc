@@ -524,8 +524,12 @@ function _checkbook_project_get_name_for_argument($keyword, $id)
       return ucwords(strtolower($depts[0]['department_name']));
       break;
     case "department_code":
+      if ($data_source == Datasource::NYCHA) {
+        $deptcodes = _checkbook_project_querydataset($data_source . ':department', array('department_code', 'department_name'), array($keyword => $id));
+        return ucwords(strtolower($deptcodes[0]['department_name']));
+      }else{
       $deptcodes = _checkbook_project_querydataset($data_source . ':budget', array('department_code', 'department_name'), array($keyword => $id));
-      return ucwords(strtolower($deptcodes[0]['department_name']));
+      return ucwords(strtolower($deptcodes[0]['department_name']));}
       break;
     case "award_method_id":
       $award_methods = _checkbook_project_querydataset($data_source . ':award_method', array('award_method_id', 'award_method_name'), array($keyword => $id));

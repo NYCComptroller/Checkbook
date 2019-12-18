@@ -59,7 +59,7 @@ if(isset($url)) {
   if(strpos($widget, 'ytd_') !== false){
     $exp_cat_id = RequestUtilities::get('expcategorycode');
     if ($categoryName == 'Payroll'){$total_spending = $node->data[0]['check_amount_sum'];}
-    elseif($widget == 'ytd_expense_category'&& $exp_cat_id == null ){$total_spending = $node->data[0]['check_amount_sum'];}
+    elseif($widget == 'ytd_expense_category'&& $exp_cat_id == 0 ){$total_spending = $node->data[0]['check_amount_sum'];}
     else{$total_spending = $node->data[0]['invoice_amount_sum'];}
     $aggregatedAmountTitle = WidgetUtil::getLabel("ytd_spending");
     $wtitle = NychaSpendingUtil::getTransactionsSubTitle($widget, $url);
