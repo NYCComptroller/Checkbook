@@ -3,7 +3,7 @@
    * Function will show or hide fields based on datasource selection
    * @param datasource
    */
-    //ShowHide fields based on selected data source
+
   let showHideSpendingFields = function (data_source) {
       $('.datafield.citywide').add('.datafield.nycha').add('.datafield.nycedc').hide();
       $('#edit-columns .form-item').hide();
