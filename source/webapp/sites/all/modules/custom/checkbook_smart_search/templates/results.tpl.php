@@ -25,7 +25,7 @@ $clear_icon = '/'.$theme_path."/images/filter-close-icon.png";
 
 //Begin of displaying filter criteria
 
-$clearUrl = _checkbook_smart_search_clear_url("search_term");
+$clearUrl = _checkbook_smart_search_clear_url($solr_datasource,"search_term");
 $searchTerm = urldecode($searchTerms[0]);
 
 if($searchTerm != ""){
