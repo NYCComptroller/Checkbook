@@ -23,7 +23,7 @@ $searchTerms = explode('*!*', $_REQUEST['search_term']);
 $theme_path =  drupal_get_path('theme',$GLOBALS['theme']);
 $clear_icon = '/'.$theme_path."/images/filter-close-icon.png";
 
-//Begin of displaying filter criteria
+//Begin of displaying filter criteria update url to include solr datasource
 $clearUrl = _checkbook_smart_search_clear_url($solr_datasource,"search_term");
 $searchTerm = urldecode($searchTerms[0]);
 

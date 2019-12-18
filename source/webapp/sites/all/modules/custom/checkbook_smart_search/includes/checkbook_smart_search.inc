@@ -368,7 +368,6 @@ function _checkbook_smart_search_export_data(string $solr_datasource)
       $result = preg_replace("/1970-01-01T05:00:00Z/", "N/A", $result);
       echo preg_replace("/(\d{4})-(\d{2})-(\d{2})...:..:.../", "$2/$3/$1", $result);
     //}
-
     ob_flush();
     flush();
   }
@@ -569,11 +568,10 @@ function _checkbook_vendor_type_prepare_labels($results)
  * @param null $count
  * @return string
  */
-function _checkbook_smart_search_clear_url(string $solr_datasource,$facetName,$facetValue = null, $count = null)
+function _checkbook_smart_search_clear_url(string $datasource,$facetName,$facetValue = null, $count = null)
 {
-
   $searchArgs = $_REQUEST['search_term'];
-  $clearArgURL = "/smart_search/".$solr_datasource."?search_term=";
+  $clearArgURL = "/smart_search/".$datasource."?search_term=";
   $clearURL = "";
   $searchTerms = explode('*!*', $searchArgs);
   if ($facetName == 'search_term') {
