@@ -33,7 +33,7 @@ class NychaSpendingWidgetService extends WidgetDataService implements IWidgetSer
             case "dept_ytd_spending_link":
                 $column = $row['check_amount_sum'];
                 $class = "bottomContainerReload";
-                $dynamic_parameter = "/dept/" . $row["department_id"];
+                $dynamic_parameter = "/dept_code/" . $row["department_code"];
                 $url = NYCHASpendingUrlService::ytdSpendingUrl($dynamic_parameter, 'ytd_department');
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
