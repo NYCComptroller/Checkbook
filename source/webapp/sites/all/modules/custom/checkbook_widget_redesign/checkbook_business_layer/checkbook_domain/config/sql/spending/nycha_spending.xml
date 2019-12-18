@@ -248,6 +248,7 @@
         SELECT
           department_id,
           department_name,
+          department_code,
           CASE
             WHEN SUM(ytd_spending) IS NULL THEN 0
             ELSE SUM(ytd_spending)
@@ -256,7 +257,7 @@
       </exp>
       <exp op="IF" condition="=" paramName="category" compareValue="2">
         SELECT
-        department_id AS department_id,
+        department_id AS department_id,department_code,
         citywide_department_name AS department_name,
         SUM(total_amount) AS check_amount_sum
         FROM aggregation_spending_payroll_fy s
@@ -271,10 +272,10 @@
           </exp>
         </where>
       <exp op="IF" condition="&lt;&gt;" paramName="category" compareValue="2">
-        GROUP BY department_id, department_name
+        GROUP BY department_id, department_code,department_name
       </exp>
       <exp op="IF" condition="=" paramName="category" compareValue="2">
-        GROUP BY department_id, citywide_department_name
+        GROUP BY department_id, department_code,citywide_department_name
       </exp>
     </sql>
   </statement>
