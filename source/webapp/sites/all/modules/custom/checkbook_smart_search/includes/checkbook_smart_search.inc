@@ -569,11 +569,11 @@ function _checkbook_vendor_type_prepare_labels($results)
  * @param null $count
  * @return string
  */
-function _checkbook_smart_search_clear_url($facetName, $facetValue = null, $count = null)
+function _checkbook_smart_search_clear_url(string $solr_datasource,$facetName, $facetValue = null, $count = null)
 {
 
   $searchArgs = $_REQUEST['search_term'];
-  $clearArgURL = "/smart_search/?search_term=";
+  $clearArgURL = "/smart_search/".$solr_datasource."?search_term=";
   $clearURL = "";
   $searchTerms = explode('*!*', $searchArgs);
   if ($facetName == 'search_term') {
