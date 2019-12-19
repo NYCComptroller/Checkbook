@@ -55,8 +55,8 @@ class NychaContractsUrlService
     static function contractDetailsUrl($contract_id, $just_bottom_url = false)
     {
         $url = '';
+        $year_id = RequestUtilities::getRequestParamValue('year');
         if (!$just_bottom_url) {
-          $year_id = RequestUtilities::getRequestParamValue('year');
           if(!isset($year_id)){
             $year_id = CheckbookDateUtil::getCurrentFiscalYearId();
           }
