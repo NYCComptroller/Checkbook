@@ -343,7 +343,7 @@ class CheckbookSolrQuery
     if ('*:*' == $this->q) {
       $q = 'q=*:*';
     } else {
-      $q = 'q=text:' . $this->q . '*';
+      $q = 'q=text:"' . $this->q . '*"';
     }
 
     /**
