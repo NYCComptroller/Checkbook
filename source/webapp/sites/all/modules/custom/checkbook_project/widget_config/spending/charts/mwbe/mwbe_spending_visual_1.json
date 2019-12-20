@@ -170,7 +170,12 @@ echo '<div class=\"chart-right\">
             "series": {
                 "dataLabels": {
                     "enabled": true,
+                    "color":"#606060",
+                    "fill":"#606060",
                     "format": "{point.custom_label}",
+                    "style":{
+                    "fontWeight":"normal"
+                    },
                     "crop": false,
                 	"overflow": "none"
                 },
@@ -195,9 +200,11 @@ echo '<div class=\"chart-right\">
             "name": "FY",
             "type": "column",
             "pointWidth": 150,
+            "fontWeight":"normal",
             "data": [
             		{
             			"name": "Point 1",
+                  "fontWeight":"normal",
             			"y":100,
             			"custom_label":"",
             			"tooltip_label":""
