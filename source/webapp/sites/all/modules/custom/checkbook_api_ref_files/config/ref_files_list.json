@@ -160,7 +160,7 @@
   },
   "nycha_spending_category_code_list": {
     "database": "checkbook_nycha",
-    "sql": "SELECT DISTINCT spending_category_code, display_spending_category_name AS spending_category_name FROM ref_spending_category order by 1",
+    "sql": "SELECT DISTINCT spending_category_code,spending_category_id, display_spending_category_name AS spending_category_name FROM ref_spending_category order by 1",
     "force_quote": [
       "spending_category_name"
     ]
