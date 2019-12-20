@@ -216,7 +216,7 @@ class CheckbookSolr
    */
   public function request_phps(string $query): array
   {
-    $response = $this->raw_query($query);
+    $response = $this->raw_query($query);log_error($query);
     $results = unserialize($response);
 
     if (!is_array($results)) {
