@@ -181,7 +181,7 @@
   },
   "nycha_expense_category_code_list": {
     "database": "checkbook_nycha",
-    "sql": "SELECT DISTINCT l.expenditure_type_code, h.expenditure_type_name, h.expenditure_type_description from ref_expenditure_type_history h join ref_expenditure_type l on l.expenditure_type_id = h.expenditure_type_id order by 1",
+    "sql": "SELECT DISTINCT l.expenditure_type_code,h.expenditure_type_description from ref_expenditure_type_history h join ref_expenditure_type l on l.expenditure_type_id = h.expenditure_type_id order by 1",
     "force_quote": [
       "expenditure_type_code"
     ]
