@@ -1139,8 +1139,8 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
         $user_criteria['End Date Greater Than'] = $values['enddatefrom'];
         $formatted_search_criteria['End Date'] = 'Greater Than Equal to: ' . $values['enddatefrom'];
       }
-      if ($values['year']) {
-        if ($values['year'] == '0') {
+      if (isset($values['year'])) {
+        if ($values['year'] == 0) {
           $form['filter']['year'] = array(
             '#markup' => '<div><strong>Year:</strong> All Years</div>',
           );
@@ -1154,6 +1154,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
       }
       break;
     case Datasource::NYCHA:
+
       if ($values['purchase_order_type']) {
         $form['filter']['purchase_order_type'] = array('#markup' => '<div><strong>Purchase Order Type:</strong> ' . $values['purchase_order_type'] . '</div>');
         $user_criteria['Purchase Order Type'] = $values['purchase_order_type'];
@@ -1277,8 +1278,8 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
         $formatted_search_criteria['Approved Date'] = 'Greater Than Equal to: ' . $values['nycha_appr_datefrom'];
       }
 
-      if ($values['nycha_year']) {
-        if ($values['nycha_year'] == '0') {
+      if (isset($values['nycha_year'])) {
+        if ($values['nycha_year'] == 0) {
           $form['filter']['nycha_year'] = array('#markup' => '<div><strong>Year:</strong> All Years</div>',);
           $formatted_search_criteria['Year'] = 'All Years';
         } else {
@@ -1319,12 +1320,12 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
         $user_criteria['Contract ID'] = $values['contractno'];
         $formatted_search_criteria[''] = null;
       }
-      if ($values['contract_includes_sub_vendors_id'] !== '' && $values['contract_includes_sub_vendors_id'] !== 0) {
-        $scntrc_status_name = MappingUtil::getscntrc_status_name($values['contract_includes_sub_vendors_id']);
-        $form['filter']['contract_includes_sub_vendors_id'] = array('#markup' => '<div><strong>Contract Includes Sub Vendors:</strong> ' . $scntrc_status_name . '</div>');
-        $user_criteria['Contract Includes Sub Vendors'] = $values['contract_includes_sub_vendors_id'];
-        $formatted_search_criteria['Contract Includes Sub Vendors'] = $scntrc_status_name;
-      }
+      if ($values['contract_includes_sub_vendors_id'] != '' && $values['contract_includes_sub_vendors_id'] != 0) {
+          $scntrc_status_name = MappingUtil::getscntrc_status_name($values['contract_includes_sub_vendors_id']);
+          $form['filter']['contract_includes_sub_vendors_id'] = array('#markup' => '<div><strong>Contract Includes Sub Vendors:</strong> ' . $scntrc_status_name . '</div>');
+          $user_criteria['Contract Includes Sub Vendors'] = $values['contract_includes_sub_vendors_id'];
+          $formatted_search_criteria['Contract Includes Sub Vendors'] = $scntrc_status_name;
+        }
       if ($values['pin']) {
         $form['filter']['pin'] = array(
           '#markup' => '<div><strong>PIN:</strong> ' . $values['pin'] . '</div>',
@@ -1451,7 +1452,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
         $user_criteria['Received Date Greater Than'] = $values['recdatefrom'];
         $formatted_search_criteria['Received Date'] = 'Greater Than Equal to: ' . $values['recdatefrom'];
       }
-      if ($values['year']) {
+      if (isset($values['year'])) {
         if ($values['year'] == '0') {
           $form['filter']['year'] = array(
             '#markup' => '<div><strong>Year:</strong> All Years</div>',
