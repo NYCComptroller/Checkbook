@@ -2716,7 +2716,7 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 
 
 h1.no-spending-transactions {width: 500px}
-.newwindow #page-title{
+.newwindow #page-title h1{
   visibility: hidden;
   height:0px;
 }
@@ -2911,6 +2911,12 @@ table.outerTable.ma-history{
 #budget-transactions > div:first-child,
 #revenue-transactions > div:first-child {
     margin: 18px 10px 5px;
+}
+
+#nycha-spending-transactions > div:first-child
+{
+  margin: 18px 10px 5px;
+  height:60px;
 }
 
 /*********************************
