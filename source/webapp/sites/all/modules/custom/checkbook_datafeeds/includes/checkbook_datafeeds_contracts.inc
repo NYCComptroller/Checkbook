@@ -918,19 +918,20 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
   $values = $form_state['step_information']['contracts']['stored_values'];
   $response_type = $form_state['step_information']['type']['stored_values']['format'];
   $user_criteria = array();
-  $year = $values['year'];
-
   $data_source = $form_state['input']['datafeeds-contracts-domain-filter'];
 
   switch ($data_source) {
     case Datasource::OGE:
       $user_criteria['Type of Data'] = 'Contracts_OGE';
+      $year = $values['year'];
       break;
     case Datasource::NYCHA:
       $user_criteria['Type of Data'] = 'Contracts_NYCHA';
+      $year = $values['nycha_year'];
       break;
     default:
       $user_criteria['Type of Data'] = 'Contracts';
+      $year = $values['year'];
   }
 
   $form['download_feeds'] = array(
@@ -1140,7 +1141,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
         $formatted_search_criteria['End Date'] = 'Greater Than Equal to: ' . $values['enddatefrom'];
       }
       if (isset($values['year'])) {
-        if ($values['year'] == 0) {
+        if ($values['year'] == '0') {
           $form['filter']['year'] = array(
             '#markup' => '<div><strong>Year:</strong> All Years</div>',
           );
@@ -1279,7 +1280,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
       }
 
       if (isset($values['nycha_year'])) {
-        if ($values['nycha_year'] == 0) {
+        if ($values['nycha_year'] == '0') {
           $form['filter']['nycha_year'] = array('#markup' => '<div><strong>Year:</strong> All Years</div>',);
           $formatted_search_criteria['Year'] = 'All Years';
         } else {
@@ -2021,8 +2022,8 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
         $dataController = data_controller_get_instance();
         switch ($data_source) {
           case Datasource::NYCHA:
-            $query = "SELECT vendor_name FROM all_agreement_transactions 
-                                        WHERE latest_flag = 'Y' 
+            $query = "SELECT vendor_name FROM all_agreement_transactions
+                                        WHERE latest_flag = 'Y'
                                         AND vendor_name ILIKE '" . $vendor . "'";
             $results = _checkbook_project_execute_sql($query, "main", $data_source);
             if (!$results[0]) {
@@ -2030,9 +2031,9 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
             }
             break;
           case Datasource::OGE:
-            $query = "SELECT DISTINCT display_vendor_name 
+            $query = "SELECT DISTINCT display_vendor_name
                                     FROM contracts_detailed_transactions
-                                    WHERE status_flag = 'A' 
+                                    WHERE status_flag = 'A'
                                     AND display_vendor_name ILIKE '" . $vendor . "'";
             $results = _checkbook_project_execute_sql($query, "main", $data_source);
             if (!$results[0]) {
