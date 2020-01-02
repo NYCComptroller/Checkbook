@@ -13,7 +13,9 @@
       "funding_source_description": "funding_source_description",
       "spending_category": "spending_category_id",
       "fiscal_year": "issue_date_year",
-      "issue_date":"issue_date"
+      "issue_date":"issue_date",
+      "responsibility_center":"responsibility_center_code",
+      "funding_source": ""
     },
     "dataset": {
       "name": "checkbook_nycha:all_disbursement_transactions",
@@ -104,61 +106,18 @@
       }
     },
     "requestParameters": {
-      "fiscal_year": {
-        "valueType": "value",
-        "dataType": "year",
-        "maxLength": "4"
-      },
-      "payee_name": {
-        "valueType": "value",
-        "dataType": "text",
-        "maxLength": "100"
-      },
-      "other_government_entities_code": {
-        "valueType": "value",
-        "dataType": "text",
-        "maxLength": "3"
-      },
-      "department_code": {
-        "valueType": "value",
-        "dataType": "text",
-        "maxLength": "9"
-      },
-      "expense_category": {
-        "valueType": "value",
-        "dataType": "text",
-        "maxLength": "9"
-      },
-      "expenditure_type_code": {
-        "valueType": "range",
-        "dataType": "amount",
-        "maxLength": "22"
-      },
-      "spending_category": {
-        "valueType": "value",
-        "dataType": "text",
-        "maxLength": "2"
-      },
-      "industry_type_code": {
-        "valueType": "value",
-        "dataType": "text",
-        "maxLength": "3"
-      },
-      "contract_id": {
-        "valueType": "value",
-        "dataType": "text",
-        "maxLength": "32"
-      },
-      "document_id": {
-        "valueType": "value",
-        "dataType": "text",
-        "maxLength": "32"
-      },
-      "issue_date":{
-        "valueType":"range",
-        "dataType":"date",
-        "format":"YYYY-MM-DD"
-      }
+      "fiscal_year": {"valueType": "value", "dataType": "year", "maxLength": "4"},
+      "payee_name": {"valueType": "value", "dataType": "text", "maxLength": "100"},
+      "other_government_entities_code": {"valueType": "value", "dataType": "text", "maxLength": "3"},
+      "department_code": {"valueType": "value", "dataType": "text", "maxLength": "9"},
+      "expense_category": {"valueType": "value", "dataType": "text", "maxLength": "9"},
+      "expenditure_type_code": {"valueType": "range", "dataType": "amount", "maxLength": "22"},
+      "spending_category": {"valueType": "value", "dataType": "text", "maxLength": "2"},
+      "industry_type_code": {"valueType": "value", "dataType": "text", "maxLength": "3"},
+      "contract_id": {"valueType": "value", "dataType": "text", "maxLength": "32"},
+      "document_id": {"valueType": "value", "dataType": "text", "maxLength": "32"},
+      "issue_date":{"valueType":"range", "dataType":"date", "format":"YYYY-MM-DD"},
+      "responsibility_center":{"valueType":"value", "dataType":"text", "maxLength":"10"}
     }
   },
   "validators": [
