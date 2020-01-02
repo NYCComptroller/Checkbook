@@ -115,11 +115,10 @@ class CheckbookEtlStatus
       return false;
     }
 
-    if ($current_hour < 9 || $current_hour > 10 || $current_minute < 20) {
+    /*if ($current_hour < 9 || $current_hour > 10 || $current_minute < 20) {
       //error_log("ETL STATUS MAIL CRON skips. Reason: will run between 9 AM and 11 AM EST :: current hour: $current_hour");
       return false;
-    }
-
+    }*/
     variable_set(self::CRON_LAST_RUN_DRUPAL_VAR, $today);
     return $this->sendmail();
   }
