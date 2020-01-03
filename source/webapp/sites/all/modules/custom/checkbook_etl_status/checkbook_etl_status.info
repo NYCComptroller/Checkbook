@@ -19,6 +19,12 @@
 ;
 name = "Checkbook ETL Status Mailing"
 description = "Module to email ETL Status every morning"
+php = 7.2
 package = NYC Checkbook
 core = 7.x
 dependencies[] = checkbook_mail_system
+
+files[] = includes/CheckbookEtlStatus.class.php
+files[] = includes/AbstractEtlStatus.class.php
+files[] = includes/ProdEtlStatus.class.php
+files[] = includes/UatEtlStatus.class.php
