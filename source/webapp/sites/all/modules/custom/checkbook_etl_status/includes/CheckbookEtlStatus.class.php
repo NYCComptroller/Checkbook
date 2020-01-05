@@ -88,37 +88,36 @@ class CheckbookEtlStatus
     }
 
     // Push UAT ETL Status to Mongo
-    //if (in_array($env, ['UAT']) && $current_hour == 9 && $current_minute < 20) {
+    if (in_array($env, ['UAT']) && $current_hour == 9 && $current_minute < 20) {
       if (variable_get(self::CRON_LAST_UAT_PUSH) !== $today) {
         variable_set(self::CRON_LAST_UAT_PUSH, $today);
         UatEtlStatus::pushStatus();
       }
-    //}
+    }
 
 //        always run cron for developer
     if (defined('ETL_FORCE_RUN') && ETL_FORCE_RUN) {
       return $this->sendmail();
     }
 
-    /*if (!isset($conf['checkbook_dev_group_email'])) {
+    if (!isset($conf['checkbook_dev_group_email'])) {
       //error_log("ETL STATUS MAIL CRON skips. Reason: \$conf['checkbook_dev_group_email'] not defined");
       return false;
-    }*/
+    }
 
     if (!in_array($env, ['UAT', 'PHPUNIT'])) {
       // we run this cron only on UAT and PHPUNIT
       return false;
     }
 
-    /*if (variable_get(self::CRON_LAST_RUN_DRUPAL_VAR) == $today) {
+    if (variable_get(self::CRON_LAST_RUN_DRUPAL_VAR) == $today) {
       //error_log("ETL STATUS MAIL CRON skips. Reason: already ran today :: $today :: ".variable_get($variable_name));
       return false;
-    }*/
-
-    /*if ($current_hour < 9 || $current_hour > 10 || $current_minute < 20) {
+    }
+    if ($current_hour < 9 || $current_hour > 10 || $current_minute < 20) {
       //error_log("ETL STATUS MAIL CRON skips. Reason: will run between 9 AM and 11 AM EST :: current hour: $current_hour");
       return false;
-    }*/
+    }
     variable_set(self::CRON_LAST_RUN_DRUPAL_VAR, $today);
     return $this->sendmail();
   }
