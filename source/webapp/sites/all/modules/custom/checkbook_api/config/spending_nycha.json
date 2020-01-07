@@ -1,31 +1,32 @@
 {
   "spending_nycha": {
     "searchCriteriaMap": {
-      "payee_name": "vendor_name",
       "other_government_entities_code": "agency_code",
       "department_code": "department_code",
-      "expenditure_type_code": "expense_category",
+      "expense_category": "expenditure_type_code",
+      "spending_category": "spending_category_code",
+      "industry_type": "industry_type_code",
+      "funding_source": "funding_source_code",
+      "responsibility_center":"responsibility_center_code",
+      "payee_name": "vendor_name",
+      "payee_code": "vendor_code",
       "check_amount": "check_amount",
+      "amount_spent":"invoice_net_amount",
+      "purchase_order_type":"agreement_type_code",
       "contract_id": "contract_id",
       "document_id": "document_id",
-      "industry_type_code": "industry_type_code",
-      "funding_source_code": "funding_source_code",
-      "funding_source_description": "funding_source_description",
-      "spending_category": "spending_category_id",
       "fiscal_year": "issue_date_year",
-      "issue_date":"issue_date",
-      "responsibility_center":"responsibility_center_code",
-      "funding_source": ""
+      "issue_date":"issue_date"
     },
     "dataset": {
       "name": "checkbook_nycha:all_disbursement_transactions",
       "sortColumn":["issue_date", "document_id"],
       "data_source": "checkbook_nycha",
       "columnTypes": {
-        "reference_document_number": "like",
-        "reporting_code": "like",
-        "disbursement_number": "like",
-        "vendor_name": "like"
+        "vendor_name": "like",
+        "invoice_net_amount": "range",
+        "check_amount": "range",
+        "issue_date" : "range"
       },
       "displayConfiguration": {
         "xml": {
@@ -106,18 +107,22 @@
       }
     },
     "requestParameters": {
-      "fiscal_year": {"valueType": "value", "dataType": "year", "maxLength": "4"},
-      "payee_name": {"valueType": "value", "dataType": "text", "maxLength": "100"},
       "other_government_entities_code": {"valueType": "value", "dataType": "text", "maxLength": "3"},
       "department_code": {"valueType": "value", "dataType": "text", "maxLength": "9"},
-      "expense_category": {"valueType": "value", "dataType": "text", "maxLength": "9"},
-      "expenditure_type_code": {"valueType": "range", "dataType": "amount", "maxLength": "22"},
+      "expense_category": {"valueType": "value", "dataType": "text", "maxLength": "22"},
       "spending_category": {"valueType": "value", "dataType": "text", "maxLength": "2"},
-      "industry_type_code": {"valueType": "value", "dataType": "text", "maxLength": "3"},
+      "industry_type": {"valueType": "value", "dataType": "text", "maxLength": "3"},
+      "funding_source":{"valueType": "value", "dataType": "text", "maxLength": "9"},
+      "responsibility_center":{"valueType":"value", "dataType":"text", "maxLength":"10"},
+      "payee_name": {"valueType": "value", "dataType": "text", "maxLength": "100"},
+      "payee_code": {"valueType": "value", "dataType": "text", "maxLength": "10"},
+      "check_amount":{"valueType":"range", "dataType":"amount", "maxLength":"22"},
+      "amount_spent":{"valueType":"range", "dataType":"amount", "maxLength":"22"},
+      "purchase_order_type":{"valueType": "value", "dataType": "text", "maxLength": "9"},
       "contract_id": {"valueType": "value", "dataType": "text", "maxLength": "32"},
       "document_id": {"valueType": "value", "dataType": "text", "maxLength": "32"},
-      "issue_date":{"valueType":"range", "dataType":"date", "format":"YYYY-MM-DD"},
-      "responsibility_center":{"valueType":"value", "dataType":"text", "maxLength":"10"}
+      "fiscal_year": {"valueType": "value", "dataType": "year", "maxLength": "4"},
+      "issue_date":{"valueType":"range", "dataType":"date", "format":"YYYY-MM-DD"}
     }
   },
   "validators": [

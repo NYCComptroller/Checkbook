@@ -674,8 +674,8 @@ function _funding_class_options()
  */
 function _funding_source_options($data_source = Datasource::NYCHA)
 {
-  $options = ['All Funding Sources' => 'All Funding Sources'];
-  $menu_options_attributes = ['All Funding Sources' =>['title'=> 'All Funding Sources']];
+  $options = ['Select Funding Source' => 'Select Funding Source'];
+  $menu_options_attributes = ['Select Funding Source' =>['title'=> 'Select Funding Source']];
 
   switch ($data_source) {
     case Datasource::NYCHA:
