@@ -91,10 +91,10 @@ function _get_contracts_datafeeds_autocomplete_results($facet, $query, $status =
   if ($agency) {
     switch ($data_source) {
       case Datasource::OGE:
-        $agency_id = _get_contracts_datafeeds_autocomplete_agency_id($agency, Datasource::OGE);
-        $query .= '&fq=oge_agency_id:' . $agency_id;
+          //$agency_id = _get_contracts_datafeeds_autocomplete_agency_id($agency, Datasource::OGE);
+          //$query .= '&fq=oge_agency_id:' . $agency_id;
+          $query .= '&fq=oge_agency_id:9000';
         break;
-
       default:
         $query .= '&fq=agency_code:' . $agency;
         break;
@@ -159,7 +159,7 @@ function _checkbook_autocomplete_contracts_vendor($status, $category, $contract_
         $matches = _get_contracts_datafeeds_autocomplete_results('vendor_name_code', $query, $status, $category, $contract_type, $agency, $award_method, $year, $mwbe_category, $industry, $includes_sub_vendors, $sub_vendor_status, $data_source);
         break;
       case Datasource::OGE:
-        $query = 'select/?q=vendor_name_autocomplete:' . $search_term . '&facet=true&facet.field=vendor_name&fq=domain:contracts&wt=phps&facet.limit=10';
+        $query = 'select/?q=vendor_name:' . $search_term . '&facet=true&facet.field=vendor_name&fq=domain:contracts&wt=phps&facet.limit=10';
         $query .= '&fq=agency_type:oge';
         $matches = _get_contracts_datafeeds_autocomplete_results('vendor_name', $query, $status, $category, $contract_type, $agency, $award_method, $year, $mwbe_category, $industry, null, null, $data_source);
         break;
