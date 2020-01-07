@@ -64,7 +64,7 @@ function _get_contracts_datafeeds_autocomplete_results($facet, $query, $status =
     $query .= '&fq=contract_status:pending';
   }
   if ($status == 'active') {
-    if (strtolower($year) != 'all') {
+    if ($year != '0') {
       $query .= _checkbook_autocomplete_get_start_end_dates($year, 'contracts', 'A');
     } else {
       $query .= '&fq=-contract_status:pending';
