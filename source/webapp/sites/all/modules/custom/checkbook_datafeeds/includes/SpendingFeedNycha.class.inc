@@ -89,7 +89,7 @@ class SpendingFeedNycha extends SpendingFeed
     }
 
     if ($this->values['contractno']) {
-      $this->criteria['value']['contract_id'] = strtoupper($this->values['contractno']);log_error($this->criteria);
+      $this->criteria['value']['contract_id'] = strtoupper($this->values['contractno']);
     }
   }
 
