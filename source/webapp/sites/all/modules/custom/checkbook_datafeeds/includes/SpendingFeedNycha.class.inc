@@ -59,7 +59,33 @@ class SpendingFeedNycha extends SpendingFeed
 
     if ($this->values['nycha_industry'] && $this->values['nycha_industry'] != 'Select Industry') {
       preg_match($this->bracket_value_pattern, $this->values['nycha_industry'], $imatches);
-      $this->criteria['value']['industry_type_code'] = trim($imatches[1], '[ ]');
+      $this->criteria['value']['industry_type'] = trim($imatches[1], '[ ]');
+    }
+
+    if ($this->values['funding_source'] && $this->values['funding_source'] != 'Select Funding Source') {
+      preg_match($this->bracket_value_pattern, $this->values['funding_source'], $imatches);
+      $this->criteria['value']['funding_source'] = trim($imatches[1], '[ ]');
+    }
+
+    if ($this->values['resp_center'] && $this->values['resp_center'] != 'Select Responsibility Center') {
+      preg_match($this->bracket_value_pattern, $this->values['resp_center'], $imatches);
+      $this->criteria['value']['responsibility_center'] = trim($imatches[1], '[ ]');
+    }
+
+    if ($this->values['payee_name']) {
+      preg_match($this->bracket_value_pattern, $this->values['payee_name'], $payee_name_matches);
+      if ($payee_name_matches) {
+        $this->criteria['value']['payee_code'] = trim($payee_name_matches[1], '[ ]');
+      } else {
+        $this->criteria['value']['payee_name'] = $this->values['payee_name'];
+      }
+    }
+
+    if ($this->values['spent_amt_from'] !== '' || $this->values['spent_amt_to'] !== '') {
+      $this->criteria['range']['amount_spent'] = array(
+        checknull($this->values['spent_amt_from']),
+        checknull($this->values['spent_amt_to']),
+      );
     }
 
     if ($this->values['contractno']) {
