@@ -5,22 +5,24 @@
     let agency = $('#edit-agency').val();
     let html = '<option value="0" selected="selected">Select Department</option>';
     let old_val = $('#edit-dept').val();
-    let exp_cat = $('#edit-expense-category').val();
+    let data_source = $('input[name="datafeeds-spending-domain-filter"]:checked').val();
 
-    if ($.inArray(agency, ["", null, 'Select One', 'Citywide (All Agencies)', 0]) === -1) {
-      agency = emptyToZero(agency);
-      exp_cat = emptyToZero(exp_cat);
+    if(data_source === 'checkbook' && $.inArray(agency, ["", null, "0", 'Select One', 'Citywide (All Agencies)']) != -1){
+      $('#edit-dept').html(html);
+      $('#edit-dept').attr('disabled', 'disabled');
+    }else{
       $('#edit-dept').addClass('loading');
-      let year = dfSpendingGetYearDigitValue();
-
-      const data_source = $('input[name="datafeeds-spending-domain-filter"]:checked').val();
-      const spending_cat = getSpendingExpenseType(data_source);
+      agency = emptyToZero(agency);
+      let year = 0;
+      if ($('input:radio[name=date_filter]:checked').val() == 0) {
+        year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
+      }
+      let spending_cat = getSpendingExpenseType(data_source);
 
       let filter = new URLSearchParams();
-      if(agency){filter.set('agency_code',agency)}
-      if(year){filter.set('fiscal_year',year)}
-      if(spending_cat){filter.set('spending_category_id', spending_cat)}
-      if(exp_cat){filter.set('expenditure_object_code', exp_cat)}
+      if(agency){filter.set('agency_code',agency);}
+      if(year){filter.set('fiscal_year',dfSpendingGetYearDigitValue(year));}
+      if(spending_cat){filter.set('spending_category_id', spending_cat);}
 
       $.ajax({
         url: '/solr_options/'+data_source+'/spending/department_name_code/?'+filter
@@ -37,38 +39,41 @@
             if($('#edit-dept option[value="'+old_val+'"]').length) {
               $('#edit-dept').val(old_val);
             }
-            $('#edit-dept').removeAttr('disabled');
           }
+            $('#edit-dept').removeAttr('disabled');
         }, complete: function () {
           $('#edit-dept').removeClass('loading');
         }
       });
-    } else {
-      $('#edit-dept').html(html);
-      $('#edit-dept').attr('disabled', 'disabled');
     }
   };
 
   // When Department Filter is changed reload Expense category Drop-down
   let reloadSpendingExpenceCategories = function () {
     let agency = $('#edit-agency').val();
-    let dept = emptyToZero($('#edit-dept').val());
     let data_source = $('input[name="datafeeds-spending-domain-filter"]:checked').val();
-    let old_val = $('#edit-expense-category').val();
-    let year = dfSpendingGetYearDigitValue();
+    let html = '<option value="0" selected="selected">Select Expense Category</option>';
 
-    if ($.inArray(agency, ["", null, 'Select One', 'Citywide (All Agencies)']) === -1 ||
-      ('checkbook_nycha'==data_source && dept)) {
+    if(data_source == 'checkbook' && $.inArray(agency, ["", null, "0", 'Select One', 'Citywide (All Agencies)']) != -1){
+      $('#edit-expense-category').html(html);
+      $('#edit-expense-category').attr('disabled', 'disabled');
+    }else{
       $('#edit-expense-category').addClass('loading');
 
       agency = emptyToZero(agency);
+      let dept = emptyToZero($('#edit-dept').val());
+      let old_val = $('#edit-expense-category').val();
+      let year = $('#edit-year').val();
+      if ($('input:radio[name=date_filter]:checked').val() == 0) {
+        year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
+      }
       let spending_cat = getSpendingExpenseType(data_source);
 
       let filter = new URLSearchParams();
-      if(agency){filter.set('agency_code',agency)}
-      if(dept){filter.set('department_code',dept)}
-      if(spending_cat){filter.set('spending_category_id', spending_cat)}
-      if(year){filter.set('fiscal_year',year)}
+      if(agency){filter.set('agency_code', agency);}
+      if(dept){filter.set('department_code', dept);}
+      if(spending_cat){filter.set('spending_category_id', spending_cat);}
+      if(year){filter.set('fiscal_year', dfSpendingGetYearDigitValue(year));}
 
       $.ajax({
         url: '/solr_options/'+data_source+'/spending/expenditure_object_name_code/?'+filter
@@ -88,18 +93,12 @@
             if(0 != $('#edit-expense-category option[value="'+old_val+'"]').length) {
               $('#edit-expense-category').val(old_val);
             }
-            $('#edit-expense-category').removeAttr('disabled');
-          } else {
-            $('#edit-expense-category').attr('disabled', 'disabled');
           }
+            $('#edit-expense-category').removeAttr('disabled');
         }, complete: function () {
           $('#edit-expense-category').removeClass('loading');
         }
       });
-    } else {
-      let html = '<option value="0" selected="selected">Select Expense Category</option>';
-      $('#edit-expense-category').html(html);
-      $('#edit-expense-category').attr('disabled', 'disabled');
     }
   };
 
@@ -114,6 +113,9 @@
 
     //Clear all text fields and drop-downs
     clearSpendingInput();
+
+    reloadSpendingDepartments();
+    reloadSpendingExpenceCategories();
 
     //Reset the Spending Category
     $('select[name="expense_type"]').val('Total Spending [ts]');
@@ -131,9 +133,9 @@
     switch (data_source) {
       case 'checkbook_oge':
         $('.datafield.nycedc').show();
+
+        //Hide agency and enable and get department and expense category drop-down option
         $('.data-feeds-wizard .datafield.agency').hide();
-        $('#edit-dept').removeAttr('disabled');
-        $('#edit-expense-category').removeAttr('disabled');
 
         $('input:radio[name=date_filter]')[0].checked = true;
         $('select[name="year"]').removeAttr('disabled');
@@ -157,9 +159,9 @@
         break;
       case 'checkbook_nycha':
         $('.datafield.nycha').show();
+
+        //Hide agency and enable and get department and expense category drop-down option
         $('.data-feeds-wizard .datafield.agency').hide();
-        $('#edit-dept').removeAttr('disabled');
-        $('#edit-expense-category').removeAttr('disabled');
 
         // Date filter
         $('input:radio[name=date_filter]')[0].checked = true;
@@ -172,7 +174,6 @@
         //Disable Issue date
         $('input:radio[name=date_filter][value="1"]').removeAttr('disabled');
         //Date Filter
-
         if (datefilter === '0') {
           $('input[name="issuedfrom"]').val("").attr('disabled', 'disabled');
           $('input[name="issuedto"]').val("").attr('disabled', 'disabled');
@@ -191,6 +192,8 @@
         break;
       default:
         $('.datafield.citywide').show();
+
+        //Show agency drop-down and disable department and expense category drop-downs
         $('.data-feeds-wizard .datafield.agency').show();
         $('#edit-dept').attr('disabled', 'disabled');
         $('#edit-expense-category').attr('disabled', 'disabled');
