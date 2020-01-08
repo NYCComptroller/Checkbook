@@ -114,9 +114,6 @@
     //Clear all text fields and drop-downs
     clearSpendingInput();
 
-    reloadSpendingDepartments();
-    reloadSpendingExpenceCategories();
-
     //Reset the Spending Category
     $('select[name="expense_type"]').val('Total Spending [ts]');
     $('input[name="payee_name"]').removeAttr('disabled');
@@ -127,8 +124,11 @@
   let showHideSpendingFields = function (data_source) {
     $('.datafield.citywide').add('.datafield.nycha').add('.datafield.nycedc').hide();
     $('#edit-columns .form-item').hide();
-
     let datefilter = $('input:radio[name=date_filter]:checked').val();
+
+    // Department and Expense Category drop-downs are reset
+    reloadSpendingDepartments();
+    reloadSpendingExpenceCategories();
 
     switch (data_source) {
       case 'checkbook_oge':
