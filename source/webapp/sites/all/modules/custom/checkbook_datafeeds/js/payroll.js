@@ -3,8 +3,7 @@
     attach: function (context) {
 
       $.fn.formatDatafeedsDatasourceRadio();
-      //Agency drop-down options
-      $.fn.reloadAgencies(dataSource);
+
       //Citywide multi-select
       $('#edit-column-select', context).multiSelect();
       $('#ms-edit-column-select .ms-selectable', context).after('<a class="deselect">Remove All</a>');
@@ -128,28 +127,7 @@
       }
     });
   }
-  /**
-   * Function will make changes to the form based on dataSource selection
-   * @param dataSource
-   */
-  $.fn.reloadAgencies = function (dataSource) {
-    $.ajax({
-      url: '/datafeeds/spending/agency/' + dataSource + '/json'
-      , success: function (data) {
-        let html = '';
-        if (data[0]) {
-          if (data[0].label !== 'No Matches Found') {
-            html = html +'<option value="0" selected="selected">Citywide (All Agencies)</option>';
-            for (let i = 0; i < data.length; i++) {
-              html = html + '<option title="' + data[i].value + '" value="' + data[i].value + '">' +data[i].label +  '</option>';
-            }
-          }
-        }
-        $('#edit-agency').html(html);
-        $('#edit-agency').trigger('change');
-      }
-    });
-  };
+
   $.fn.clearInputFields = function () {
     $('.fieldset-wrapper').find(':input').each(function () {
       switch (this.type) {
