@@ -4,7 +4,7 @@ body {
 h1 {
     font-family: 'RobotoCondensed';
 }
-.page-contracts-landing h1,.page-nycha-contracts h1,.page-nycha-spending-landing h1, .page-budget-year h1, .page-payroll h1, .page-revenue h1,
+.page-contracts-landing h1,.page-nycha-contracts h1,.page-nycha-spending h1, .page-budget-year h1, .page-payroll h1, .page-revenue h1,
 .page-featured-trends h1, .page-contract-transactions h1, .page-budget-yeartype h1,
 .page-budget-transactions h1, .page-budget-revenue-transactions h1, .page-contracts-revenue-landing h1,
 .page-contracts-pending-exp-landing h1, .page-spending-landing h1, .page-contracts-pending-rev-landing h1 {
