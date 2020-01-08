@@ -1,156 +1,4 @@
 (function ($) {
-  //On Data Source Change
-  let onSpendingDataSourceChange = function (dataSource) {
-    //Remove all the validation errors when data source is changed
-    $('div.messages').remove();
-    $('.error').removeClass('error');
-
-    //Reload Agency Drop-down Options
-    reloadSpendingAgencies(dataSource);
-
-    //Show Hide fields
-    showHideSpendingFields(dataSource);
-
-    //Clear all text fields and drop-downs
-    clearSpendingInput();
-
-    //Reset the Spending Category
-    $('select[name="expense_type"]').val('Total Spending [ts]');
-    $('input[name="payee_name"]').removeAttr('disabled');
-    $('input[name="contractno"]').removeAttr('disabled');
-  };
-
-  //ShowHide fields based on selected data source
-  let showHideSpendingFields = function (data_source) {
-    $('.datafield.citywide').add('.datafield.nycha').add('.datafield.nycedc').hide();
-    $('#edit-columns .form-item').hide();
-
-    let datefilter = $('input:radio[name=date_filter]:checked').val();
-
-    switch (data_source) {
-      case 'checkbook_oge':
-        $('.datafield.nycedc').show();
-
-        $('input:radio[name=date_filter]')[0].checked = true;
-        $('select[name="year"]').removeAttr('disabled');
-        $('select[name="year"]').val(Drupal.settings.datafeeds.default_year.checkbook_oge);
-        $('select[name="year"]').attr('default_selected_value', Drupal.settings.datafeeds.default_year.checkbook_oge);
-        $('select[name="year"] option[value="'+Drupal.settings.datafeeds.default_year.checkbook+'"]').show();
-        //Disable Issue date
-        $('input:radio[name=date_filter][value="1"]').attr('disabled', 'disabled');
-        $('input[name="issuedfrom"]').val("");
-        $('input[name="issuedfrom"]').attr('disabled', 'disabled');
-        $('input[name="issuedto"]').val("");
-        $('input[name="issuedto"]').attr('disabled', 'disabled');
-
-        $('.form-item-oge-column-select').show();
-
-        //Move Issue Date fields to left column for OGE
-        $('#df-payeename').detach().appendTo('.spending.data-feeds-wizard .column.column-left');
-        $('label[for=edit-payee-name]').text('Payee Name');
-        $('#df-check_amount').detach().appendTo('.spending.data-feeds-wizard .column.column-left');
-        $('label[for=edit-agency]').text('Other Government Entity:');
-        break;
-      case 'checkbook_nycha':
-        $('.datafield.nycha').show();
-
-        // Date filter
-        $('input:radio[name=date_filter]')[0].checked = true;
-        $('select[name="year"]').removeAttr('disabled');
-        $('select[name="year"]').val(0);
-        $('select[name="year"]').attr('default_selected_value', 0);
-        if (Drupal.settings.datafeeds.default_year.checkbook_nycha !== Drupal.settings.datafeeds.default_year.checkbook) {
-          $('select[name="year"] option[value="'+Drupal.settings.datafeeds.default_year.checkbook+'"]').hide();
-        }
-        //Disable Issue date
-        $('input:radio[name=date_filter][value="1"]').removeAttr('disabled');
-        //Date Filter
-
-        if (datefilter === '0') {
-          $('input[name="issuedfrom"]').val("").attr('disabled', 'disabled');
-          $('input[name="issuedto"]').val("").attr('disabled', 'disabled');
-        } else {
-          $('input:radio[name=date_filter]')[1].checked = true;
-          $('select[name="year"]').attr('disabled', 'disabled');
-        }
-
-        $('.form-item-nycha-column-select').show();
-
-        //Move Issue Date fields to left column for NYCHA
-        $('#df-check_amount').detach().prependTo('.spending.data-feeds-wizard .column.column-right');
-        $('#df-payeename').detach().prependTo('.spending.data-feeds-wizard .column.column-right');
-        $('label[for=edit-payee-name]').text('Vendor');
-        $('label[for=edit-agency]').text('Other Government Entity:');
-        break;
-      default:
-        $('.datafield.citywide').show();
-
-        //Date Filter
-        $('input:radio[name=date_filter][value="1"]').removeAttr('disabled');
-
-        if (datefilter === '0') {
-          $('input[name="issuedfrom"]').val("").attr('disabled', 'disabled');
-          $('input[name="issuedto"]').val("").attr('disabled', 'disabled');
-        } else {
-          $('input:radio[name=date_filter]')[1].checked = true;
-          $('select[name="year"]').attr('disabled', 'disabled');
-        }
-        $('select[name="year"]').val(Drupal.settings.datafeeds.default_year.checkbook);
-        $('select[name="year"]').attr('default_selected_value', Drupal.settings.datafeeds.default_year.checkbook);
-        $('select[name="year"] option[value="'+Drupal.settings.datafeeds.default_year.checkbook+'"]').show();
-
-        $('.form-item-column-select').show();
-
-        //Move Issue Date fields to left column for Citywide
-        $('#df-check_amount').detach().prependTo('.spending.data-feeds-wizard .column.column-right');
-        $('#df-payeename').detach().appendTo('.spending.data-feeds-wizard .column.column-left');
-        $('label[for=edit-payee-name]').text('Payee Name');
-        $('label[for=edit-agency]').text('Agency:');
-        break;
-    }
-  };
-
-  //Load Agency Drop-Down
-  let reloadSpendingAgencies = function (dataSource) {
-    html = '';
-    if ('checkbook' == dataSource) {
-      html = '<option value="0" selected="selected">Citywide (All Agencies)</option>';
-    }
-    $.ajax({
-      url: '/solr_options/'+dataSource+'/spending/agency_name_code/'
-      , success: function (data) {
-        $('#edit-agency').html(html);
-        if (data[0]) {
-          for (let i = 0; i < data.length; i++) {
-            $('#edit-agency').append(
-              $('<option>').attr('title',data[i].value)
-                .val(data[i].value)
-                .text(data[i].label)
-            );
-          }
-        } else {
-          $('#edit-agency').attr('disabled', 'disabled');
-        }
-        $('#edit-agency').trigger('change');
-
-        spendingDatafeedsDis(dataSource);
-      }
-      , complete: function () {
-        $('#edit-agency').removeClass('loading');
-      }
-    });
-  };
-
-  let getSpendingExpenseType = function(data_source){
-    switch(data_source){
-      case 'checkbook_nycha':
-        return emptyToZero($('select[name="nycha_expense_type"]').val());
-      case 'checkbook_oge':
-        return emptyToZero($('select[name="nycedc_expense_type"]').val());
-      default:
-        return emptyToZero($('select[name="expense_type"]').val());
-    }
-  };
 
   // When Agency Filter is changed reload Department and Expense Category drop-downs
   let reloadSpendingDepartments = function () {
@@ -190,11 +38,8 @@
               $('#edit-dept').val(old_val);
             }
             $('#edit-dept').removeAttr('disabled');
-          } else {
-            $('#edit-dept').attr('disabled', 'disabled');
           }
-        }
-        , complete: function () {
+        }, complete: function () {
           $('#edit-dept').removeClass('loading');
         }
       });
@@ -202,18 +47,6 @@
       $('#edit-dept').html(html);
       $('#edit-dept').attr('disabled', 'disabled');
     }
-  };
-
-  let dfSpendingGetYearDigitValue = function(){
-    let year = 0;
-    if ($('input:radio[name=date_filter]:checked').val() === '0') {
-      year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
-      year = year.replace('ALL','').replace('FY','').trim();
-      if(year){
-        year = year.match(/\d+/)[0];
-      }
-    }
-    return year;
   };
 
   // When Department Filter is changed reload Expense category Drop-down
@@ -255,13 +88,11 @@
             if(0 != $('#edit-expense-category option[value="'+old_val+'"]').length) {
               $('#edit-expense-category').val(old_val);
             }
-
             $('#edit-expense-category').removeAttr('disabled');
           } else {
             $('#edit-expense-category').attr('disabled', 'disabled');
           }
-        }
-        , complete: function () {
+        }, complete: function () {
           $('#edit-expense-category').removeClass('loading');
         }
       });
@@ -270,6 +101,146 @@
       $('#edit-expense-category').html(html);
       $('#edit-expense-category').attr('disabled', 'disabled');
     }
+  };
+
+  //On Data Source Change
+  let onSpendingDataSourceChange = function (dataSource) {
+    //Remove all the validation errors when data source is changed
+    $('div.messages').remove();
+    $('.error').removeClass('error');
+
+    //Show Hide fields
+    showHideSpendingFields(dataSource);
+
+    //Clear all text fields and drop-downs
+    clearSpendingInput();
+
+    //Reset the Spending Category
+    $('select[name="expense_type"]').val('Total Spending [ts]');
+    $('input[name="payee_name"]').removeAttr('disabled');
+    $('input[name="contractno"]').removeAttr('disabled');
+  };
+
+  //ShowHide fields based on selected data source
+  let showHideSpendingFields = function (data_source) {
+    $('.datafield.citywide').add('.datafield.nycha').add('.datafield.nycedc').hide();
+    $('#edit-columns .form-item').hide();
+
+    let datefilter = $('input:radio[name=date_filter]:checked').val();
+
+    switch (data_source) {
+      case 'checkbook_oge':
+        $('.datafield.nycedc').show();
+        $('.data-feeds-wizard .datafield.agency').hide();
+        $('#edit-dept').removeAttr('disabled');
+        $('#edit-expense-category').removeAttr('disabled');
+
+        $('input:radio[name=date_filter]')[0].checked = true;
+        $('select[name="year"]').removeAttr('disabled');
+        $('select[name="year"]').val(Drupal.settings.datafeeds.default_year.checkbook_oge);
+        $('select[name="year"]').attr('default_selected_value', Drupal.settings.datafeeds.default_year.checkbook_oge);
+        $('select[name="year"] option[value="'+Drupal.settings.datafeeds.default_year.checkbook+'"]').show();
+        //Disable Issue date
+        $('input:radio[name=date_filter][value="1"]').attr('disabled', 'disabled');
+        $('input[name="issuedfrom"]').val("");
+        $('input[name="issuedfrom"]').attr('disabled', 'disabled');
+        $('input[name="issuedto"]').val("");
+        $('input[name="issuedto"]').attr('disabled', 'disabled');
+
+        $('.form-item-oge-column-select').show();
+
+        //Move Issue Date fields to left column for OGE
+        $('#df-payeename').detach().appendTo('.spending.data-feeds-wizard .column.column-left');
+        $('label[for=edit-payee-name]').text('Payee Name');
+        $('#df-check_amount').detach().appendTo('.spending.data-feeds-wizard .column.column-left');
+        $('label[for=edit-agency]').text('Other Government Entity:');
+        break;
+      case 'checkbook_nycha':
+        $('.datafield.nycha').show();
+        $('.data-feeds-wizard .datafield.agency').hide();
+        $('#edit-dept').removeAttr('disabled');
+        $('#edit-expense-category').removeAttr('disabled');
+
+        // Date filter
+        $('input:radio[name=date_filter]')[0].checked = true;
+        $('select[name="year"]').removeAttr('disabled');
+        $('select[name="year"]').val(0);
+        $('select[name="year"]').attr('default_selected_value', 0);
+        if (Drupal.settings.datafeeds.default_year.checkbook_nycha !== Drupal.settings.datafeeds.default_year.checkbook) {
+          $('select[name="year"] option[value="'+Drupal.settings.datafeeds.default_year.checkbook+'"]').hide();
+        }
+        //Disable Issue date
+        $('input:radio[name=date_filter][value="1"]').removeAttr('disabled');
+        //Date Filter
+
+        if (datefilter === '0') {
+          $('input[name="issuedfrom"]').val("").attr('disabled', 'disabled');
+          $('input[name="issuedto"]').val("").attr('disabled', 'disabled');
+        } else {
+          $('input:radio[name=date_filter]')[1].checked = true;
+          $('select[name="year"]').attr('disabled', 'disabled');
+        }
+
+        $('.form-item-nycha-column-select').show();
+
+        //Move Issue Date fields to left column for NYCHA
+        $('#df-check_amount').detach().prependTo('.spending.data-feeds-wizard .column.column-right');
+        $('#df-payeename').detach().prependTo('.spending.data-feeds-wizard .column.column-right');
+        $('label[for=edit-payee-name]').text('Vendor');
+        $('label[for=edit-agency]').text('Other Government Entity:');
+        break;
+      default:
+        $('.datafield.citywide').show();
+        $('.data-feeds-wizard .datafield.agency').show();
+        $('#edit-dept').attr('disabled', 'disabled');
+        $('#edit-expense-category').attr('disabled', 'disabled');
+
+        //Date Filter
+        $('input:radio[name=date_filter][value="1"]').removeAttr('disabled');
+
+        if (datefilter === '0') {
+          $('input[name="issuedfrom"]').val("").attr('disabled', 'disabled');
+          $('input[name="issuedto"]').val("").attr('disabled', 'disabled');
+        } else {
+          $('input:radio[name=date_filter]')[1].checked = true;
+          $('select[name="year"]').attr('disabled', 'disabled');
+        }
+        $('select[name="year"]').val(Drupal.settings.datafeeds.default_year.checkbook);
+        $('select[name="year"]').attr('default_selected_value', Drupal.settings.datafeeds.default_year.checkbook);
+        $('select[name="year"] option[value="'+Drupal.settings.datafeeds.default_year.checkbook+'"]').show();
+
+        $('.form-item-column-select').show();
+
+        //Move Issue Date fields to left column for Citywide
+        $('#df-check_amount').detach().prependTo('.spending.data-feeds-wizard .column.column-right');
+        $('#df-payeename').detach().appendTo('.spending.data-feeds-wizard .column.column-left');
+        $('label[for=edit-payee-name]').text('Payee Name');
+        $('label[for=edit-agency]').text('Agency:');
+        break;
+    }
+  };
+
+  let getSpendingExpenseType = function(data_source){
+    switch(data_source){
+      case 'checkbook_nycha':
+        return emptyToZero($('select[name="nycha_expense_type"]').val());
+      case 'checkbook_oge':
+        return emptyToZero($('select[name="nycedc_expense_type"]').val());
+      default:
+        return emptyToZero($('select[name="expense_type"]').val());
+    }
+  };
+
+  let dfSpendingGetYearDigitValue = function(){
+    let year = 0;
+    if ($('input:radio[name=date_filter]:checked').val() === '0') {
+      year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
+      year = year.replace('ALL','').replace('FY','').trim();
+      if(year){
+        year = year.match(/\d+/)[0];
+      }
+    }
+    return year;
   };
 
   let onSpendingCategoryChange = function() {
@@ -298,27 +269,6 @@
     }
   };
 
-  let spendingDatafeedsDis = function (dataSource) {
-    if (1 === $('#edit-agency option').length) {
-      $('#edit-agency').attr('disabled', 'disabled');
-    } else {
-      $('#edit-agency').removeAttr('disabled');
-    }
-
-    if (1 === $('#edit-dept option').length || 'Select Department' === $('#edit-dept').val()) {
-      $('#edit-dept').attr('disabled', 'disabled');
-    }
-
-    if (1 === $('#edit-expense-category option').length || 'Select Expense Category' === $('#edit-dept').val()) {
-      $('#edit-expense-category').attr('disabled', 'disabled');
-    }
-    if ('checkbook' === dataSource) {
-      $('.data-feeds-wizard .datafield.agency').show();
-    } else {
-      $('.data-feeds-wizard .datafield.agency').hide();
-    }
-  };
-
   Drupal.behaviors.spendingDataFeeds = {
     attach: function (context) {
       let dataSource = $('input[name="datafeeds-spending-domain-filter"]:checked', context).val();
@@ -328,8 +278,6 @@
       $('#checkbook-datafeeds-data-feed-wizard', context).submit(function () {
         $('#edit-agency').removeAttr('disabled');
       });
-
-      spendingDatafeedsDis(dataSource);
 
       // Sets up multi-select/option transfer for CityWide
       $('#edit-column-select', context).multiSelect();

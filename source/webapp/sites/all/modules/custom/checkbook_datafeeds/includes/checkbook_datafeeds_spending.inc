@@ -664,6 +664,7 @@ function ckbk_datafeeds_spending_update_options_by_datasource(&$form, $form_stat
     '#id' => 'edit-dept',
     '#name' => 'dept',
     '#validated' => true,
+    '#disabled' => TRUE
   );
 
 
@@ -693,6 +694,7 @@ function ckbk_datafeeds_spending_update_options_by_datasource(&$form, $form_stat
     '#options' => (['0' => 'Select Expense Category'] + ($expcats['options'] ?? [])),
     '#option_attributes' => (['0' => ['title' => 'Select Expense Category']] + ($expcats['options_attributes'] ?? [])),
     '#default_value' => $form_state['values']['expense_category'] ?? 0,
-    '#validated' => true
+    '#validated' => true,
+    '#disabled' => TRUE
   );
 }
