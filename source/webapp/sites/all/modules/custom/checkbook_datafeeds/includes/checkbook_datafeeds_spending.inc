@@ -604,10 +604,9 @@ function checkbook_datafeeds_spending_validate(&$form, &$form_state)
   $feed->checkbook_datafeeds_spending_validate($form, $form_state);
 }
 
-function ckbk_datafeeds_spending_update_options_by_datasource(&$form, $form_state, $data_source)
+function ckbk_datafeeds_spending_update_options_by_datasource(&$form, $form_state, $data_source = Datasource::CITYWIDE)
 {
   $agency_options = _agency_options($data_source);
-
   $form['filter']['agency'] = array(
     '#type' => 'select',
     '#title' => t('Agency:'),
