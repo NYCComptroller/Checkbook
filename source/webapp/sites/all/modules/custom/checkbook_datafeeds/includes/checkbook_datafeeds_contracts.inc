@@ -1717,7 +1717,8 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
       if ($values['nycha_vendor']) {
         preg_match($pattern, $values['nycha_vendor'], $vmatches);
         if ($vmatches) {
-          $criteria['value']['vendor'] = trim($vmatches[1], '[ ]');
+          $vname_matches = explode("[",$vmatches[0]);
+          $criteria['value']['vendor'] = trim($vname_matches[0], '[ ]');
         } else {
           $criteria['value']['vendor'] = $values['nycha_vendor'];
         }

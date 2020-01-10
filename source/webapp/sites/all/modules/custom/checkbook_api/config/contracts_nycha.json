@@ -23,6 +23,7 @@
       "columnTypes":{
         "contract_id":"like",
         "vendor":"like",
+        "vendor_name":"contains",
         "purpose":"contains"
       },
       "displayConfiguration":{
@@ -231,6 +232,7 @@
       "columnTypes":{
         "contract_id":"like",
         "vendor":"like",
+        "vendor_name": "contains",
         "purpose":"contains"
       },
       "displayConfiguration":{
