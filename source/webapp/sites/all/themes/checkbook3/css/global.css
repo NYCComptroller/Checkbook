@@ -67,7 +67,7 @@ h2 {
     color: #3c5e7c;
 }
 h2.contract-title{
-    width:475px;
+    width:480px;
 }
 #node-widget-429 h2.contract-title {
     width: 550px;
@@ -2718,7 +2718,7 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 
 
 h1.no-spending-transactions {width: 500px}
-.newwindow #page-title h1{
+.newwindow h1{
   visibility: hidden;
   height:0px;
 }
@@ -2915,12 +2915,17 @@ table.outerTable.ma-history{
     margin: 18px 10px 5px;
 }
 
+.newwindow #nycha-spending-transactions > div:first-child
+{
+  margin: 18px 10px 5px;
+  height:95px;
+}
+
 #nycha-spending-transactions > div:first-child
 {
   margin: 18px 10px 5px;
-  height:60px;
+  height: 60px;
 }
-
 /*********************************
 ***   PAYROLL DETAILS STYLES   ***
 *********************************/
