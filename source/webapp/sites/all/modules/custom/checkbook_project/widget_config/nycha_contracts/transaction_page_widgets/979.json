@@ -21,7 +21,8 @@
     "startdate": "range",
     "enddate": "range",
     "appdate": "range",
-    "modamt": "ne"
+    "modamt": "ne",
+     "po_num": "contains"
    },
   "header":"
       $header = NULL;
