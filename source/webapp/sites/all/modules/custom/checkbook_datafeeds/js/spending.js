@@ -226,6 +226,9 @@
         $('label[for=edit-agency]').text('Agency:');
         break;
     }
+
+    //Reset enabling/disabling fields
+     onSpendingCategoryChange();
   };
 
   let getSpendingExpenseType = function(data_source){
@@ -239,7 +242,7 @@
     }
   };
 
-  let dfSpendingGetYearDigitValue = function(){
+  /*let dfSpendingGetYearDigitValue = function(){
     let year = 0;
     if ($('input:radio[name=date_filter]:checked').val() === '0') {
       year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
@@ -249,31 +252,52 @@
       }
     }
     return year;
-  };
+  };*/
 
   let onSpendingCategoryChange = function() {
-    $('input[name="contractno"]').removeAttr('disabled');
-    $('input[name="payee_name"]').removeAttr('disabled');
-    $('option[value="Payee Name"]').removeAttr('disabled');
-    $('option[value="payee_name"]').removeAttr('disabled');
-    $('option[value="Contract ID"]').removeAttr('disabled');
-    $('option[value="contract_ID"]').removeAttr('disabled');
+    //Data source value
+    let data_source = $('input[name="datafeeds-spending-domain-filter"]:checked').val();
 
-    const exptypeval = $('select[name="expense_type"]').val();
-    if (exptypeval === 'Payroll [p]') {
-      //Disable Payee Name and ContractID fields for Payroll Spending Category
-      $('input[name="contractno"]').attr('disabled', 'disabled');
-      $('input[name="payee_name"]').attr('disabled', 'disabled');
-      $('option[value="Payee Name"]').attr('disabled', 'disabled');
-      $('option[value="payee_name"]').attr('disabled', 'disabled');
-      $('option[value="Contract ID"]').attr('disabled', 'disabled');
-      $('option[value="contract_ID"]').attr('disabled', 'disabled');
-    }
-    if (exptypeval === 'Others [o]') {
-      //Disable ContractID field for Others Spending Category
-      $('input[name="contractno"]').attr('disabled', 'disabled');
-      $('option[value="Contract ID"]').attr('disabled', 'disabled');
-      $('option[value="contract_ID"]').attr('disabled', 'disabled');
+    if(data_source === 'checkbook_nycha') {
+      let exptype = $('select[name="nycha_expense_type"]').val();
+      //NYCHA - disabling fields based on Spending category selected
+      if (exptype === "Payroll [PAYROLL]") {
+        disable_input([$('#edit-payee-name'), $('#edit-contractno'), $('#edit-document-id'),$('#edit-nycha-industry'),
+                       $('#edit-funding-source'),$('#edit-resp-center'), $('#edit-purchase-order-type'), $('#edit-spent_amt_from'),
+                       $('#edit-spent_amt_to')]);
+        enable_input([$('#edit-dept'), $('#edit-expense-category')]);
+        $('#edit-contractno').val("");
+        $('#edit-payee-name').val("");
+      }else if(exptype == "Section 8 [SECTION8]") {
+        disable_input([ $('#edit-dept'),$('#edit-contractno'), $('#edit-nycha-industry'), $('#edit-purchase-order-type'),]);
+        enable_input([$('#edit-payee-name'),$('#edit-document-id'),$('#edit-resp-center'), $('#edit-spent_amt_from'),
+                      $('#edit-spent_amt_to'),$('#edit-expense-category'),$('#edit-funding-source')]);
+      }else if(exptype == "Other [OTHER]") {
+        disable_input([$('#edit-dept'),$('#edit-contractno')]);
+        enable_input([ $('#edit-expense-category'),$('#edit-payee-name'),$('#edit-document-id'),
+          $('#edit-nycha-industry'), $('#edit-funding-source'), $('#edit-resp-center'),
+          $('#edit-purchase-order-type'), $('#edit-spent_amt_from'), $('#edit-spent_amt_to')]);
+      }else{
+        enable_input([$('#edit-dept'), $('#edit-expense-category'),$('#edit-payee-name'),$('#edit-document-id'),
+          $('#edit-nycha-industry'), $('#edit-funding-source'),$('#edit-resp-center'), $('#edit-contractno'),
+          $('#edit-purchase-order-type'), $('#edit-spent_amt_from'), $('#edit-spent_amt_to')]);
+      }
+    }else{
+      //CITYWIDE and OGE - disabling fields based on Spending category selected
+      let exptype = $('select[name="expense_type"]').val();
+      enable_input([$('input[name="contractno"]'), $('input[name="payee_name"]'), $('option[value="Payee Name"]'),
+                    $('option[value="payee_name"]'),$('option[value="Contract ID"]'), $('option[value="contract_ID"]'),
+                    $('#edit-document-id')]);
+      if (exptype === 'Payroll [p]') {
+        //Disable Payee Name and ContractID fields for Payroll Spending Category
+        disable_input([$('input[name="contractno"]'), $('input[name="payee_name"]'), $('option[value="Payee Name"]'),
+                        $('option[value="Contract ID"]'),$('option[value="contract_ID"]')]);
+
+      }
+      if (exptype === 'Others [o]') {
+        //Disable ContractID field for Others Spending Category
+        disable_input([$('input[name="contractno"]'),$('option[value="Contract ID"]'), $('option[value="contract_ID"]')]);
+      }
     }
   };
 
@@ -355,13 +379,18 @@
       });
 
       //Spending Category change event
-      $('select[name="expense_type"]', context)
-        .add('select[name="nycha_expense_type"]', context)
-        .add('select[name="nycedc_expense_type"]', context)
-        .change(function () {
-        reloadSpendingDepartments();
-        reloadSpendingExpenceCategories();
+      $('select[name="expense_type"]', context).change(function () {
+          onSpendingCategoryChange();
       });
+
+      $('select[name="nycedc_expense_type"]', context).change(function () {
+        onSpendingCategoryChange();
+      });
+
+      $('select[name="nycha_expense_type"]', context).change(function () {
+        onSpendingCategoryChange();
+      });
+
 
       //On Date Filter change
       $("#edit-date-filter", context).change(function () {
@@ -477,6 +506,42 @@
           break;
       }
     });
+  }
+
+  function disable_input(selector){
+    if(Array.isArray(selector)) {
+      selector.forEach(disable_input);
+      return;
+    }
+    $(selector).each(function () {
+      $(this).attr('disabled','disabled');
+      // store value
+      if ('text' == $(this).attr('type')) {
+        if ($(this).val()){
+          $(this).attr('storedvalue', $(this).val());
+        }
+        $(this).val('');
+      }
+    })
+  }
+
+  function enable_input(selector){
+    if(Array.isArray(selector)) {
+      selector.forEach(enable_input);
+      return;
+    }
+
+    $(selector).each(function () {
+      $(this).removeAttr('disabled');
+
+      // restore value
+      if ('text' == $(this).attr('type')) {
+        if ($(this).attr('storedvalue')){
+          $(this).val($(this).attr('storedvalue'));
+        }
+        $(this).removeAttr('storedvalue');
+      }
+    })
   }
 
 }(jQuery));
