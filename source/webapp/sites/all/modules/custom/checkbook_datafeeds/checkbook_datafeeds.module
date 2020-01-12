@@ -721,7 +721,7 @@ function _expense_type_options($data_source = Datasource::CITYWIDE)
     switch ($data_source) {
       case Datasource::NYCHA:
         $data = $dataController->queryDataset($data_source . ':spending_category', array(
-          'spending_category_id',
+          'spending_category_code',
           'display_spending_category_name',
         ), null, 'spending_category_code');
         break;
@@ -752,17 +752,17 @@ function _checkbook_datafeeds_expense_type_options($data, $data_source = null)
 
   //IE8 - handle drop down width issue
   foreach ($data as $row) {
-    $option = ($row['spending_category_name'] ?? $row['display_spending_category_name']) . ' [' . ($row['spending_category_code'] ?? $row['spending_category_id']) . ']';
+    $option = ($row['spending_category_name'] ?? $row['display_spending_category_name']) . ' [' . $row['spending_category_code'] . ']';
     if ($row['spending_category_code'] == 'ts') {
-      $display_option = 'Total Spending';
+      $option = 'Total Spending [ts]';
       //Menu options
-      $menu_options[''] = $display_option;
+      $menu_options[''] = 'Total Spending [ts]';
       //Menu option titles
       $menu_options_attributes[$option] = array('title' => $option);
     } else {
-      $display_option = $row['spending_category_name'] ?? $row['display_spending_category_name'];
+      //$display_option = $row['spending_category_name'] ?? $row['display_spending_category_name'];
       //Menu options
-      $menu_options[$option] = $display_option;
+      $menu_options[$option] = $option;
       //Menu option titles
       $menu_options_attributes[$option] = array('title' => $option);
     }

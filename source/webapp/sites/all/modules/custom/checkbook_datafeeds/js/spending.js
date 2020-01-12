@@ -12,36 +12,37 @@
       $('#edit-dept').attr('disabled', 'disabled');
     }else{
       $('#edit-dept').addClass('loading');
-      agency = emptyToZero(agency);
       let year = 0;
       if ($('input:radio[name=date_filter]:checked').val() == 0) {
         year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
       }
+      //We need agency filter only for citywide
+      if(data_source === 'checkbook'){agency = emptyToZero(agency);}else{agency = 0;}
       let spending_cat = getSpendingExpenseType(data_source);
 
-      let filter = new URLSearchParams();
-      if(agency){filter.set('agency_code',agency);}
-      if(year){filter.set('fiscal_year',dfSpendingGetYearDigitValue(year));}
-      if(spending_cat){filter.set('spending_category_id', spending_cat);}
+      //let filter = new URLSearchParams();
+      //if(agency){filter.set('agency_code',agency);}
+      //if(year){filter.set('fiscal_year',dfSpendingGetYearDigitValue(year));}
+      //if(spending_cat){filter.set('spending_category_id', spending_cat);}
 
       $.ajax({
-        url: '/solr_options/'+data_source+'/spending/department_name_code/?'+filter
+        //url: '/solr_options/'+data_source+'/spending/department_name_code/?'+filter
+        url: '/advanced-search/autocomplete/spending/department/' + year + '/' + agency + '/' + spending_cat + '/' + data_source + '/feeds'
         , success: function (data) {
-          $('#edit-dept').html(html);
-          if (data[0]) {
-            for (let i = 0; i < data.length; i++) {
-              $('#edit-dept').append(
-                $('<option>').attr('title',data[i].value.toUpperCase())
-                  .val(data[i].value)
-                  .text(data[i].label)
-              );
-            }
-            if($('#edit-dept option[value="'+old_val+'"]').length) {
-              $('#edit-dept').val(old_val);
+        var html = '<option select="selected" value="0" >Select Department</option>';
+        if (data[0]) {
+          if (data[0] !== 'No Matches Found') {
+            for (var i = 0; i < data.length; i++) {
+              html = html + '<option value="' + data[i] + ' ">' + data[i] + '</option>';
             }
           }
-            $('#edit-dept').removeAttr('disabled');
+          else {
+            html = html + '<option value="">' + data[0] + '</option>';
+          }
+        }
+        $('#edit-dept').html(html);
         }, complete: function () {
+          $('#edit-dept').removeAttr('disabled');
           $('#edit-dept').removeClass('loading');
         }
       });
@@ -139,9 +140,9 @@
 
         $('input:radio[name=date_filter]')[0].checked = true;
         $('select[name="year"]').removeAttr('disabled');
-        $('select[name="year"]').val(Drupal.settings.datafeeds.default_year.checkbook_oge);
-        $('select[name="year"]').attr('default_selected_value', Drupal.settings.datafeeds.default_year.checkbook_oge);
-        $('select[name="year"] option[value="'+Drupal.settings.datafeeds.default_year.checkbook+'"]').show();
+        //$('select[name="year"]').val(Drupal.settings.datafeeds.default_year.checkbook_oge);
+        //$('select[name="year"]').attr('default_selected_value', Drupal.settings.datafeeds.default_year.checkbook_oge);
+        //$('select[name="year"] option[value="'+Drupal.settings.datafeeds.default_year.checkbook+'"]').show();
         //Disable Issue date
         $('input:radio[name=date_filter][value="1"]').attr('disabled', 'disabled');
         $('input[name="issuedfrom"]').val("");
@@ -167,10 +168,10 @@
         $('input:radio[name=date_filter]')[0].checked = true;
         $('select[name="year"]').removeAttr('disabled');
         $('select[name="year"]').val(0);
-        $('select[name="year"]').attr('default_selected_value', 0);
-        if (Drupal.settings.datafeeds.default_year.checkbook_nycha !== Drupal.settings.datafeeds.default_year.checkbook) {
-          $('select[name="year"] option[value="'+Drupal.settings.datafeeds.default_year.checkbook+'"]').hide();
-        }
+        //$('select[name="year"]').attr('default_selected_value', 0);
+        //if (Drupal.settings.datafeeds.default_year.checkbook_nycha !== Drupal.settings.datafeeds.default_year.checkbook) {
+        //  $('select[name="year"] option[value="'+Drupal.settings.datafeeds.default_year.checkbook+'"]').hide();
+        //}
         //Disable Issue date
         $('input:radio[name=date_filter][value="1"]').removeAttr('disabled');
         //Date Filter
@@ -208,9 +209,9 @@
           $('input:radio[name=date_filter]')[1].checked = true;
           $('select[name="year"]').attr('disabled', 'disabled');
         }
-        $('select[name="year"]').val(Drupal.settings.datafeeds.default_year.checkbook);
-        $('select[name="year"]').attr('default_selected_value', Drupal.settings.datafeeds.default_year.checkbook);
-        $('select[name="year"] option[value="'+Drupal.settings.datafeeds.default_year.checkbook+'"]').show();
+        //$('select[name="year"]').val(Drupal.settings.datafeeds.default_year.checkbook);
+        //$('select[name="year"]').attr('default_selected_value', Drupal.settings.datafeeds.default_year.checkbook);
+        //$('select[name="year"] option[value="'+Drupal.settings.datafeeds.default_year.checkbook+'"]').show();
 
         $('.form-item-column-select').show();
 
