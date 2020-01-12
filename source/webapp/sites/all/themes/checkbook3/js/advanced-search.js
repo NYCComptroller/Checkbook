@@ -1336,6 +1336,8 @@
 
               //Disable issue date radio button for OGE
               disable_input(div_checkbook_spending_oge.ele('date_filter_issue_date'));
+              disable_input(div.ele('issue_date_from'));
+              disable_input(div.ele('issue_date_to'));
 
               break;
             case "checkbook_nycha":
