@@ -9,7 +9,7 @@
 
     if(data_source === 'checkbook' && $.inArray(agency, ["", null, "0", 'Select One', 'Citywide (All Agencies)']) != -1){
       $('#edit-dept').html(html);
-      $('#edit-dept').attr('disabled', 'disabled');
+      disable_input($('#edit-dept'));
     }else{
       $('#edit-dept').addClass('loading');
       let year = 0;
@@ -60,7 +60,7 @@
 
     if(data_source == 'checkbook' && $.inArray(agency, ["", null, "0", 'Select One', 'Citywide (All Agencies)']) != -1){
       $('#edit-expense-category').html(html);
-      $('#edit-expense-category').attr('disabled', 'disabled');
+      disable_input($('#edit-expense-category'));
     }else{
       $('#edit-expense-category').addClass('loading');
 
@@ -148,11 +148,11 @@
         //$('select[name="year"]').attr('default_selected_value', Drupal.settings.datafeeds.default_year.checkbook_oge);
         //$('select[name="year"] option[value="'+Drupal.settings.datafeeds.default_year.checkbook+'"]').show();
         //Disable Issue date
-        $('input:radio[name=date_filter][value="1"]').attr('disabled', 'disabled');
+        disable_input($('input:radio[name=date_filter][value="1"]'));
         $('input[name="issuedfrom"]').val("");
-        $('input[name="issuedfrom"]').attr('disabled', 'disabled');
+        disable_input($('input[name="issuedfrom"]'));
         $('input[name="issuedto"]').val("");
-        $('input[name="issuedto"]').attr('disabled', 'disabled');
+        disable_input($('input[name="issuedto"]'));
 
         $('.form-item-oge-column-select').show();
 
@@ -180,11 +180,13 @@
         $('input:radio[name=date_filter][value="1"]').removeAttr('disabled');
         //Date Filter
         if (datefilter === '0') {
-          $('input[name="issuedfrom"]').val("").attr('disabled', 'disabled');
-          $('input[name="issuedto"]').val("").attr('disabled', 'disabled');
+          disable_input($('input[name="issuedfrom"]'));
+          $('input[name="issuedfrom"]').val("");
+          disable_input($('input[name="issuedto"]'));
+          $('input[name="issuedto"]').val("");
         } else {
           $('input:radio[name=date_filter]')[1].checked = true;
-          $('select[name="year"]').attr('disabled', 'disabled');
+          disable_input($('select[name="year"]'));
         }
 
         $('.form-item-nycha-column-select').show();
@@ -200,18 +202,18 @@
 
         //Show agency drop-down and disable department and expense category drop-downs
         $('.data-feeds-wizard .datafield.agency').show();
-        $('#edit-dept').attr('disabled', 'disabled');
-        $('#edit-expense-category').attr('disabled', 'disabled');
+        disable_input($('#edit-dept'));
+        disable_input($('#edit-expense-category'));
 
         //Date Filter
         $('input:radio[name=date_filter][value="1"]').removeAttr('disabled');
 
         if (datefilter === '0') {
-          $('input[name="issuedfrom"]').val("").attr('disabled', 'disabled');
-          $('input[name="issuedto"]').val("").attr('disabled', 'disabled');
+          disable_input($('input[name="issuedfrom"]').val(""));
+          disable_input($('input[name="issuedto"]').val(""));
         } else {
           $('input:radio[name=date_filter]')[1].checked = true;
-          $('select[name="year"]').attr('disabled', 'disabled');
+          disable_input($('select[name="year"]'));
         }
         //$('select[name="year"]').val(Drupal.settings.datafeeds.default_year.checkbook);
         //$('select[name="year"]').attr('default_selected_value', Drupal.settings.datafeeds.default_year.checkbook);
@@ -396,16 +398,16 @@
       $("#edit-date-filter", context).change(function () {
         if ($('input:radio[name=date_filter]:checked', context).val() === '1') {
           // issue date
-          $('select[name="year"]', context).attr('disabled', 'disabled');
-          $('input[name="issuedfrom"]', context).removeAttr("disabled");
-          $('input[name="issuedto"]', context).removeAttr("disabled");
+          disable_input($('select[name="year"]', context));
+          enable_input($('input[name="issuedfrom"]', context));
+          enable_input($('input[name="issuedto"]', context));
         } else{
           // year
-          $('select[name="year"]', context).removeAttr("disabled");
+          enable_input($('select[name="year"]', context));
           $('input[name="issuedfrom"]', context).val("");
-          $('input[name="issuedfrom"]', context).attr('disabled', 'disabled');
+          disable_input($('input[name="issuedfrom"]', context));
           $('input[name="issuedto"]', context).val("");
-          $('input[name="issuedto"]', context).attr('disabled', 'disabled');
+          disable_input($('input[name="issuedto"]', context));
         }
       });
 
