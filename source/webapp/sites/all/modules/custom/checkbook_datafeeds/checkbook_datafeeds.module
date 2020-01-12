@@ -688,8 +688,8 @@ function _funding_source_options($data_source = Datasource::NYCHA)
         if ($data) {
           foreach ($data as $row) {
             $key = $row['funding_source_description'] . ' [' . $row['funding_source_code'] . ']';
-            $options[$key] = _ckbk_excerpt($row['funding_source_description']);
-            $menu_options_attributes[$key] = ['title' => $row['funding_source_description']];
+            $options[$key] = _ckbk_excerpt($key);
+            $menu_options_attributes[$key] = ['title' => $key];
           }
         }
       } catch (Exception $e) {
@@ -1187,7 +1187,7 @@ function _industry_options($data_source = Datasource::CITYWIDE)
     $dataController = data_controller_get_instance();
     $industry_types = $dataController->queryDataset($data_source.':industry_type', array($industry_id_column, $industry_name_column), NULL, $industry_name_column, 0, 10, NULL);
     foreach ($industry_types as $industry_type) {
-      $industries[$industry_type[$industry_name_column] . ' [' . $industry_type[$industry_id_column] . ']'] = $industry_type[$industry_name_column];
+      $industries[$industry_type[$industry_name_column] . ' [' . $industry_type[$industry_id_column] . ']'] = $industry_type[$industry_name_column] . ' [' . $industry_type[$industry_id_column] . ']';
     }
   } catch (Exception $e) {
     log_error("Error getting data from controller: \n" . $e->getMessage());
