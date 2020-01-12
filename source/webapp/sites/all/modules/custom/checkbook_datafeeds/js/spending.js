@@ -46,6 +46,9 @@
           $('#edit-dept').removeClass('loading');
         }
       });
+      if(0 != $('#edit-dept option[value="'+old_val+'"]').length) {
+        $('#edit-dept').val(old_val);
+      }
     }
   };
 
@@ -61,45 +64,46 @@
     }else{
       $('#edit-expense-category').addClass('loading');
 
-      agency = emptyToZero(agency);
       let dept = emptyToZero($('#edit-dept').val());
       let old_val = $('#edit-expense-category').val();
-      let year = $('#edit-year').val();
+      let year = 0;
       if ($('input:radio[name=date_filter]:checked').val() == 0) {
         year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
       }
+      //We need agency filter only for citywide
+      if(data_source === 'checkbook'){agency = emptyToZero(agency);}else{agency = 0;}
       let spending_cat = getSpendingExpenseType(data_source);
 
-      let filter = new URLSearchParams();
+      /*let filter = new URLSearchParams();
       if(agency){filter.set('agency_code', agency);}
       if(dept){filter.set('department_code', dept);}
       if(spending_cat){filter.set('spending_category_id', spending_cat);}
-      if(year){filter.set('fiscal_year', dfSpendingGetYearDigitValue(year));}
+      if(year){filter.set('fiscal_year', dfSpendingGetYearDigitValue(year));}*/
 
       $.ajax({
-        url: '/solr_options/'+data_source+'/spending/expenditure_object_name_code/?'+filter
+        //url: '/solr_options/'+data_source+'/spending/expenditure_object_name_code/?'+filter
+        url: '/advanced-search/autocomplete/spending/expcategory/' + year + '/' + agency + '/' + dept + '/' + spending_cat + '/' + data_source + '/feeds'
         , success: function (data) {
           let html = '<option select="selected" value="0" >Select Expense Category</option>';
-          $('#edit-expense-category').html(html);
           if (data[0]) {
-            if (data[0].label !== '') {
-              for (let i = 0; i < data.length; i++) {
-                $('#edit-expense-category').append(
-                  $('<option>').attr('title',data[i].value.toUpperCase())
-                    .val(data[i].value)
-                    .text(data[i].label)
-                );
-              }
+            if (data[0] !== 'No Matches Found') {
+              $.each(data, function (key, exp_cat) {
+                html = html + '<option value="' + exp_cat.code + '" title="' + exp_cat.title +'">' + exp_cat.name + '</option>';
+              });
             }
-            if(0 != $('#edit-expense-category option[value="'+old_val+'"]').length) {
-              $('#edit-expense-category').val(old_val);
+            else {
+              html = html + '<option value="">' + data[0] + '</option>';
             }
           }
-            $('#edit-expense-category').removeAttr('disabled');
+          $('#edit-expense-category').html(html);
         }, complete: function () {
+          $('#edit-expense-category').removeAttr('disabled');
           $('#edit-expense-category').removeClass('loading');
         }
       });
+      if(0 != $('#edit-expense-category option[value="'+old_val+'"]').length) {
+        $('#edit-expense-category').val(old_val);
+      }
     }
   };
 
