@@ -70,7 +70,7 @@ function _get_spending_advanced_search_autocomplete_results($facet, $query, $yea
  * @return array
  *   Results from Query
  ***/
-function _get_spending_expense_cat_options($agency, $dept, $spendingCat, $year, $dataSource = 'checkbook') {
+function _get_spending_expense_cat_options($agency, $dept, $spendingCat, $year, $dataSource = Datasource::CITYWIDE, $feeds = false) {
   $yearId = (isset($year)) ? substr($year, 3, strlen($year)) : "all";
   $categoryParam = $spendingCat ? "AND spending_category_id = '" . $spendingCat . "' " : "";
   $deptParam = $dept ? " AND department_name ILIKE '".trim($dept)."' ":"";
@@ -118,20 +118,30 @@ function _get_spending_expense_cat_options($agency, $dept, $spendingCat, $year, 
  *   Results from Solr
  *
  */
-function _checkbook_advanced_search_autocomplete_spending_department($year, $agency, $spendingCat, $dataSource = 'checkbook') {
-  $yearId = (isset($year)) ? substr($year, 3, strlen($year)) : "all";
-  $spendingCatParam = $spendingCat ? " AND spending_category_id = '" . $spendingCat . "' " : "";
+function _checkbook_advanced_search_autocomplete_spending_department($year, $agency, $spendingCat, $dataSource = Datasource::CITYWIDE, $feeds = false) {
+  if($feeds){
+    $year = (isset($year) && $year != 0) ? substr($year, 2, strlen($year)) : "all";
+    $spendingCatParam = $spendingCat ? " AND spending_category_id = " .
+                        _checkbook_project_get_name_for_argument('spending_category_code', $spendingCat, $dataSource) : "";
+    $agencyParam = $agency ? " AND agency_code = '" . $agency . "' " : "";
+  } else {
+    $yearId = (isset($year)) ? substr($year, 3, strlen($year)) : "all";
+    $spendingCatParam = $spendingCat ? " AND spending_category_id = '" . $spendingCat . "' " : "";
+    $agencyParam = $agency ? " AND agency_id = '" . $agency . "' " : "";
+  }
 
   if($dataSource == Datasource::NYCHA){
-      $yearParam = ($yearId != 'all') ? " AND issue_date_year_id = '" . $yearId . "' " : "";
-      $query = "SELECT DISTINCT department_name 
+      $yearParam = ($feeds) ? (($year != 'all') ? " AND issue_date_year = '" . $year . "' " : "")
+                   :(($yearId != 'all') ? " AND issue_date_year_id = '" . $yearId . "' " : "");
+      $query = "SELECT DISTINCT department_name, department_code 
                 FROM all_disbursement_transactions 
                 WHERE 1=1 {$yearParam} {$spendingCatParam}
                 ORDER BY department_name ASC";
   }else {
-      $yearParam = ($yearId != 'all') ? " AND check_eft_issued_nyc_year_id = '" . $yearId . "' " : "";
-      $agencyParam = $agency ? " AND agency_id = '" . $agency . "' " : "";
-      $query = "SELECT DISTINCT department_name
+    $yearParam = ($feeds) ? (($year != 'all') ? " AND fiscal_year = '" . $year . "' " : "")
+                 : (($yearId != 'all') ? " AND check_eft_issued_nyc_year_id = '" . $yearId . "' " : "");
+
+      $query = "SELECT DISTINCT department_name, department_code
                 FROM disbursement_line_item_details
                 WHERE 1 =1 {$agencyParam} {$yearParam} {$spendingCatParam} 
                 ORDER BY department_name ASC";
@@ -142,7 +152,11 @@ function _checkbook_advanced_search_autocomplete_spending_department($year, $age
       $options = array('label' => 'No Matches Found','value' => '');
   }else{
       foreach ($results as $result) {
-          $options[$result['department_name']] = $result['department_name'];
+         if($feeds){
+           $options[$result['department_name'].'['.$result['department_code'].']'] = $result['department_name'].'['.$result['department_code'].']';
+         }else {
+           $options[$result['department_name']] = $result['department_name'];
+         }
       }
   }
   $matches = array();

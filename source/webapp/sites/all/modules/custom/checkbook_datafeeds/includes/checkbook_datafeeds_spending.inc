@@ -425,23 +425,19 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
   );
 
   //  drush vset current_citywide_fy 2020
-  $year_settings = [
+  /*$year_settings = [
     'default_year' => [
       Datasource::CITYWIDE => 'FY'.CheckbookDateUtil::getCurrentDatasourceFiscalYear(Datasource::CITYWIDE),
       Datasource::OGE => 'FY'.CheckbookDateUtil::getCurrentDatasourceFiscalYear(Datasource::OGE),
       Datasource::NYCHA => 'FY'.CheckbookDateUtil::getCurrentDatasourceFiscalYear(Datasource::NYCHA),
     ]
   ];
-  drupal_add_js(array('datafeeds' => $year_settings), 'setting');
+  drupal_add_js(array('datafeeds' => $year_settings), 'setting');*/
 
   $form['filter']['year'] = array(
     '#type' => 'select',
     '#options' => _year_options('all-years'),
-    '#attributes' => [
-      'class' => ['watch'],
-      'default_selected_value' => $form_state['values']['year'] ?? $year_settings['default_year'][$data_source]
-    ],
-    '#default_value' => $form_state['values']['year'] ?? $year_settings['default_year'][$data_source],
+    '#default_value' => $form_state['values']['year'] ?? "0",
     '#prefix' => '<div id="year"><div class="datafield year">',
     '#suffix' => '</div></div>',
     '#id' => 'edit-year',
