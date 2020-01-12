@@ -42,7 +42,7 @@
         }
         $('#edit-dept').html(html);
         }, complete: function () {
-          $('#edit-dept').removeAttr('disabled');
+          enable_input($('#edit-dept'));
           $('#edit-dept').removeClass('loading');
         }
       });
@@ -97,7 +97,7 @@
           }
           $('#edit-expense-category').html(html);
         }, complete: function () {
-          $('#edit-expense-category').removeAttr('disabled');
+          enable_input($('#edit-expense-category'));
           $('#edit-expense-category').removeClass('loading');
         }
       });
@@ -121,15 +121,15 @@
 
     //Reset the Spending Category
     $('select[name="expense_type"]').val('Total Spending [ts]');
-    $('input[name="payee_name"]').removeAttr('disabled');
-    $('input[name="contractno"]').removeAttr('disabled');
+    enable_input($('input[name="payee_name"]'));
+    enable_input($('input[name="contractno"]'));
   };
 
   //ShowHide fields based on selected data source
   let showHideSpendingFields = function (data_source) {
     $('.datafield.citywide').add('.datafield.nycha').add('.datafield.nycedc').hide();
     $('#edit-columns .form-item').hide();
-    let datefilter = $('input:radio[name=date_filter]:checked').val();
+    //let datefilter = $('input:radio[name=date_filter]:checked').val();
 
     // Department and Expense Category drop-downs are reset
     reloadSpendingDepartments();
@@ -142,11 +142,10 @@
         //Hide agency and enable and get department and expense category drop-down option
         $('.data-feeds-wizard .datafield.agency').hide();
 
+        // Enable year
         $('input:radio[name=date_filter]')[0].checked = true;
-        $('select[name="year"]').removeAttr('disabled');
-        //$('select[name="year"]').val(Drupal.settings.datafeeds.default_year.checkbook_oge);
-        //$('select[name="year"]').attr('default_selected_value', Drupal.settings.datafeeds.default_year.checkbook_oge);
-        //$('select[name="year"] option[value="'+Drupal.settings.datafeeds.default_year.checkbook+'"]').show();
+        enable_input($('select[name="year"]'));
+        $('select[name="year"]').val(0);
         //Disable Issue date
         disable_input($('input:radio[name=date_filter][value="1"]'));
         $('input[name="issuedfrom"]').val("");
@@ -170,24 +169,12 @@
 
         // Date filter
         $('input:radio[name=date_filter]')[0].checked = true;
-        $('select[name="year"]').removeAttr('disabled');
+        enable_input($('select[name="year"]'));
         $('select[name="year"]').val(0);
-        //$('select[name="year"]').attr('default_selected_value', 0);
-        //if (Drupal.settings.datafeeds.default_year.checkbook_nycha !== Drupal.settings.datafeeds.default_year.checkbook) {
-        //  $('select[name="year"] option[value="'+Drupal.settings.datafeeds.default_year.checkbook+'"]').hide();
-        //}
-        //Disable Issue date
-        $('input:radio[name=date_filter][value="1"]').removeAttr('disabled');
-        //Date Filter
-        if (datefilter === '0') {
-          disable_input($('input[name="issuedfrom"]'));
-          $('input[name="issuedfrom"]').val("");
-          disable_input($('input[name="issuedto"]'));
-          $('input[name="issuedto"]').val("");
-        } else {
-          $('input:radio[name=date_filter]')[1].checked = true;
-          disable_input($('select[name="year"]'));
-        }
+        //enable Issue date
+        enable_input($('input:radio[name=date_filter][value="1"]'));
+        disable_input($('input[name="issuedfrom"]'));
+        disable_input($('input[name="issuedto"]'));
 
         $('.form-item-nycha-column-select').show();
 
@@ -206,18 +193,13 @@
         disable_input($('#edit-expense-category'));
 
         //Date Filter
-        $('input:radio[name=date_filter][value="1"]').removeAttr('disabled');
-
-        if (datefilter === '0') {
-          disable_input($('input[name="issuedfrom"]').val(""));
-          disable_input($('input[name="issuedto"]').val(""));
-        } else {
-          $('input:radio[name=date_filter]')[1].checked = true;
-          disable_input($('select[name="year"]'));
-        }
-        //$('select[name="year"]').val(Drupal.settings.datafeeds.default_year.checkbook);
-        //$('select[name="year"]').attr('default_selected_value', Drupal.settings.datafeeds.default_year.checkbook);
-        //$('select[name="year"] option[value="'+Drupal.settings.datafeeds.default_year.checkbook+'"]').show();
+        $('input:radio[name=date_filter]')[0].checked = true;
+        enable_input($('select[name="year"]'));
+        $('select[name="year"]').val(0);
+        //enable Issue date
+        enable_input($('input:radio[name=date_filter][value="1"]'));
+        disable_input($('input[name="issuedfrom"]'));
+        disable_input($('input[name="issuedto"]'));
 
         $('.form-item-column-select').show();
 
@@ -243,18 +225,6 @@
         return emptyToZero($('select[name="expense_type"]').val());
     }
   };
-
-  /*let dfSpendingGetYearDigitValue = function(){
-    let year = 0;
-    if ($('input:radio[name=date_filter]:checked').val() === '0') {
-      year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
-      year = year.replace('ALL','').replace('FY','').trim();
-      if(year){
-        year = year.match(/\d+/)[0];
-      }
-    }
-    return year;
-  };*/
 
   let onSpendingCategoryChange = function() {
     //Data source value
@@ -310,7 +280,7 @@
       $.fn.formatDatafeedsDatasourceRadio();
 
       $('#checkbook-datafeeds-data-feed-wizard', context).submit(function () {
-        $('#edit-agency').removeAttr('disabled');
+        enable_input($('#edit-agency'));
       });
 
       // Sets up multi-select/option transfer for CityWide
