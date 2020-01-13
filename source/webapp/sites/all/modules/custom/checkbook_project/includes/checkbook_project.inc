@@ -470,12 +470,10 @@ function _checkbook_project_node_display($node)
  * @param $id
  * @return string
  */
-function _checkbook_project_get_name_for_argument($keyword, $id)
+function _checkbook_project_get_name_for_argument($keyword, $id, $data_source = null)
 {
-  if (_checkbook_check_isNYCHAPage()) {
-    $data_source = Datasource::NYCHA;
-  } else {
-    $data_source = Datasource::CITYWIDE;
+  if(!isset($data_source)) {
+    $data_source = _checkbook_check_isNYCHAPage() ? Datasource::NYCHA : Datasource::CITYWIDE;
   }
   switch ($keyword) {
     case "agency_id":
@@ -599,6 +597,10 @@ function _checkbook_project_get_name_for_argument($keyword, $id)
     case "title":
       $title_code = RequestUtil::getRequestKeyValueFromURL("title", current_path());
       return htmlentities(ucwords(PayrollUtil::getTitleByCode($title_code)));
+      break;
+    case "spending_category_code":
+      $spending_category_code = _checkbook_project_querydataset($data_source . ':spending_category', array('spending_category_id', "spending_category_code"), array($keyword => $id));
+      return htmlentities(ucwords(strtolower($spending_category_code[0]['spending_category_id'])));
       break;
 
     default:
