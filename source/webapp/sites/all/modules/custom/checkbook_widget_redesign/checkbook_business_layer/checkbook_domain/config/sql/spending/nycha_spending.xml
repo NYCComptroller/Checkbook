@@ -27,6 +27,33 @@
       GROUP BY document_id,issue_date, vendor_name, vendor_id
     </sql>
   </statement>
+  <!--GetNychaSpendingByResponsibilityCenters-->
+  <statement name="GetNychaSpendingByResponsibilityCenters" datasource="checkbook_nycha">
+    <param name="year" required ="true" type="int" />
+    <param name="vendor" type="int" />
+    <param name="category" type="int" />
+    <param name="industry" type="int" />
+    <param name="fundsrc" type="int" />
+    <sql>
+      SELECT
+      responsibility_center_id,
+      responsibility_center_code,
+      responsibility_center_description,
+      sum(invoice_net_amount) as check_amount_sum
+      FROM all_disbursement_transactions
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="issue_date_year_id" paramName="year" />
+          <exp op="=" dbField="spending_category_id" paramName="category"/>
+          <exp op="=" dbField="vendor_id" paramName="vendor" />
+          <exp op="=" dbField="industry_type_id" paramName="industry" />
+          <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
+        </exp>
+      </where>
+      AND check_status NOT IN ('VOIDED')
+      GROUP BY responsibility_center_id,responsibility_center_code, responsibility_center_description
+    </sql>
+  </statement>
   <!--GetNychaSpendingByVendors-->
   <statement name="GetNychaSpendingByVendors" datasource="checkbook_nycha">
     <param name="year" required ="true" type="int" />
