@@ -257,18 +257,15 @@
     }else{
       //CITYWIDE and OGE - disabling fields based on Spending category selected
       let exptype = $('select[name="expense_type"]').val();
-      enable_input([$('input[name="contractno"]'), $('input[name="payee_name"]'), $('option[value="Payee Name"]'),
-                    $('option[value="payee_name"]'),$('option[value="Contract ID"]'), $('option[value="contract_ID"]'),
-                    $('#edit-document-id')]);
+      enable_input([$('input[name="contractno"]'), $('input[name="payee_name"]'), $('#edit-document-id')]);
       if (exptype === 'Payroll [p]') {
         //Disable Payee Name and ContractID fields for Payroll Spending Category
-        disable_input([$('input[name="contractno"]'), $('input[name="payee_name"]'), $('option[value="Payee Name"]'),
-                        $('option[value="Contract ID"]'),$('option[value="contract_ID"]')]);
+        disable_input([$('input[name="contractno"]'), $('input[name="payee_name"]')]);
 
       }
       if (exptype === 'Others [o]') {
         //Disable ContractID field for Others Spending Category
-        disable_input([$('input[name="contractno"]'),$('option[value="Contract ID"]'), $('option[value="contract_ID"]')]);
+        disable_input([$('input[name="contractno"]')]);
       }
     }
   };
