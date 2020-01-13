@@ -688,8 +688,8 @@ function _funding_source_options($data_source = Datasource::NYCHA)
         if ($data) {
           foreach ($data as $row) {
             $key = $row['funding_source_description'] . ' [' . $row['funding_source_code'] . ']';
-            $options[$key] = _ckbk_excerpt($row['funding_source_description']);
-            $menu_options_attributes[$key] = ['title' => $row['funding_source_description']];
+            $options[$key] = _ckbk_excerpt($key);
+            $menu_options_attributes[$key] = ['title' => $key];
           }
         }
       } catch (Exception $e) {
@@ -721,7 +721,7 @@ function _expense_type_options($data_source = Datasource::CITYWIDE)
     switch ($data_source) {
       case Datasource::NYCHA:
         $data = $dataController->queryDataset($data_source . ':spending_category', array(
-          'spending_category_id',
+          'spending_category_code',
           'display_spending_category_name',
         ), null, 'spending_category_code');
         break;
@@ -752,17 +752,17 @@ function _checkbook_datafeeds_expense_type_options($data, $data_source = null)
 
   //IE8 - handle drop down width issue
   foreach ($data as $row) {
-    $option = ($row['spending_category_name'] ?? $row['display_spending_category_name']) . ' [' . ($row['spending_category_code'] ?? $row['spending_category_id']) . ']';
+    $option = ($row['spending_category_name'] ?? $row['display_spending_category_name']) . ' [' . $row['spending_category_code'] . ']';
     if ($row['spending_category_code'] == 'ts') {
-      $display_option = 'Total Spending';
+      $option = 'Total Spending [ts]';
       //Menu options
-      $menu_options[''] = $display_option;
+      $menu_options[''] = 'Total Spending [ts]';
       //Menu option titles
       $menu_options_attributes[$option] = array('title' => $option);
     } else {
-      $display_option = $row['spending_category_name'] ?? $row['display_spending_category_name'];
+      //$display_option = $row['spending_category_name'] ?? $row['display_spending_category_name'];
       //Menu options
-      $menu_options[$option] = $display_option;
+      $menu_options[$option] = $option;
       //Menu option titles
       $menu_options_attributes[$option] = array('title' => $option);
     }
@@ -1187,7 +1187,7 @@ function _industry_options($data_source = Datasource::CITYWIDE)
     $dataController = data_controller_get_instance();
     $industry_types = $dataController->queryDataset($data_source.':industry_type', array($industry_id_column, $industry_name_column), NULL, $industry_name_column, 0, 10, NULL);
     foreach ($industry_types as $industry_type) {
-      $industries[$industry_type[$industry_name_column] . ' [' . $industry_type[$industry_id_column] . ']'] = $industry_type[$industry_name_column];
+      $industries[$industry_type[$industry_name_column] . ' [' . $industry_type[$industry_id_column] . ']'] = $industry_type[$industry_name_column] . ' [' . $industry_type[$industry_id_column] . ']';
     }
   } catch (Exception $e) {
     log_error("Error getting data from controller: \n" . $e->getMessage());
