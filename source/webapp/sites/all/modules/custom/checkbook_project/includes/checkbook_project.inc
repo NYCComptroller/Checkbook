@@ -320,7 +320,7 @@ function _checkbook_project_grid_view_popup($node)
  * @param $node
  *
  * @return string
- * @throws \Exception
+ * @throws Exception
  */
 function _checkbook_project_grid_view_widget_popup($node)
 {
@@ -505,6 +505,10 @@ function _checkbook_project_get_name_for_argument($keyword, $id)
     case "funding_source_id":
       $fundsrc_ids = _checkbook_project_querydataset($data_source . ':funding_source', array('funding_source_id', 'display_funding_source_descr'), array($keyword => $id));
       return ucwords(strtolower($fundsrc_ids[0]['display_funding_source_descr']));
+      break;
+    case "responsibility_center_id":
+      $respcenter_ids = _checkbook_project_querydataset($data_source . ':resp_centers', array('responsibility_center_id', 'responsibility_center_description'), array($keyword => $id));
+      return ucwords(strtolower($respcenter_ids[0]['responsibility_center_description']));
       break;
     case "vendor_id":
       if ($data_source == Datasource::NYCHA) {
