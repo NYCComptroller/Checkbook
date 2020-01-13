@@ -17,6 +17,14 @@
         "widget_config":"nycha_expense_categories_view",
         "visibility_parameters":["category","-category:1", "-category:4"]
       },
+      "resp_centers": {
+        "widget_config":"nycha_resp_centers_view",
+        "visibility_parameters":["-category", "-category:2"]
+      },
+      "resp_centers_cat": {
+        "widget_config":"nycha_resp_centers_view",
+        "visibility_parameters":["category", "-category:2"]
+      },
       "expense_categories_sideby_fundsrc": {
         "widget_config":"nycha_expense_categories_view",
         "visibility_parameters":["category","-category:2", "-category:3"]
