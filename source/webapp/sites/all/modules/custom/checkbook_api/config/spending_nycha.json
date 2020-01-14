@@ -33,6 +33,7 @@
           "rootElement": "spending_transactions",
           "rowParentElement": "transaction",
           "elementsColumn": {
+            "year":"issue_date_year",
             "issue_date": "issue_date",
             "document_id": "document_id",
             "section_8": "section8_flag",
@@ -52,10 +53,10 @@
             "responsibility_center": "responsibility_center_description",
             "expense_category": "expenditure_type_description",
             "program": "program_phase_description",
-            "project": "gl_project_description",
-            "year":"issue_date_year"
+            "project": "gl_project_description"
           },
           "rowElements": [
+            "year",
             "issue_date",
             "document_id",
             "section_8",
@@ -75,12 +76,12 @@
             "responsibility_center",
             "expense_category",
             "program",
-            "project",
-            "year"
+            "project"
           ]
         },
         "csv": {
           "elementsColumn": {
+            "Year": "issue_date_year",
             "Issue Date": "issue_date",
             "Document ID": "document_id",
             "Section 8": "section8_flag",
@@ -100,8 +101,7 @@
             "Responsibility Center": "responsibility_center_description",
             "Expense Category": "expenditure_type_description",
             "Program": "program_phase_description",
-            "Project": "gl_project_description",
-            "Year": "issue_date_year"
+            "Project": "gl_project_description"
           }
         }
       }
