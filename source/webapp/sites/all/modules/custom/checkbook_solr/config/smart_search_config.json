@@ -642,7 +642,9 @@
       "expenditure_object_name": "Expense Categories"
     },
     "edc": {
-      "vendor_name": "Vendors"
+      "vendor_name": "Vendors",
+      "expenditure_object_name": "Expense Category",
+      "contract_number": "Contract ID"
     },
     "nycha": {
       "vendor_name": "Vendors",
