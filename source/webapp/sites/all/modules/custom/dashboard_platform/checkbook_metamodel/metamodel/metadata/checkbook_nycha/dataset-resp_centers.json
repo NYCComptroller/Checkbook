@@ -1,0 +1,13 @@
+{
+  "datasets": {
+    "resp_centers": {
+      "datasourceName": "main",
+      "source": "ref_responsibility_center",
+      "columns": [
+        {
+          "name": "responsibility_center_id",
+          "key": true}
+      ]
+    }
+  }
+}

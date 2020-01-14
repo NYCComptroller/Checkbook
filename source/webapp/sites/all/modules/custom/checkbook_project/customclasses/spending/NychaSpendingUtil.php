@@ -23,9 +23,9 @@ class NychaSpendingUtil
 {
   static $widget_titles = array('wt_checks' => 'Checks', 'ytd_check' => 'Check','wt_vendors' => 'Vendors', 'ytd_vendor' => 'Vendor',
     'wt_contracts' => 'Contracts', 'ytd_contract' => 'Contract', 'wt_expense_categories' => 'Expense Categories',
-    'ytd_expense_category' => 'Expense Category', 'wt_industries' => 'Industries', 'ytd_industry' => 'Industry',
+    'wt_resp_centers' => 'Responsibility Center','ytd_expense_category' => 'Expense Category', 'wt_industries' => 'Industries', 'ytd_industry' => 'Industry',
     'wt_funding_sources' => 'Funding Sources', 'ytd_funding_source' => 'Funding Source', 'wt_departments' => 'Departments',
-    'ytd_department' => 'Department');
+    'ytd_department' => 'Department','ytd_resp_center' => 'Responsibility Center');
 
   static $categories = array(3 => 'Contracts', 2 => 'Payroll', 1 => 'Section 8', 4 => 'Others', null => 'Total');
 
@@ -144,6 +144,10 @@ class NychaSpendingUtil
         $result = preg_replace("/unknown/", 'Unknown', $result);
         $title .= htmlentities($result);
         break;
+      case 'ytd_resp_center':
+        $reqParam = RequestUtil::getRequestKeyValueFromURL('resp_center', $bottomURL);
+        $title .= _checkbook_project_get_name_for_argument("responsibility_center_id", $reqParam);
+        break;
     }
 
     return $title;
@@ -188,11 +192,11 @@ class NychaSpendingUtil
       case 'ytd_contract':
         $contractId = "'".RequestUtil::getRequestKeyValueFromURL('po_num_exact', $bottomURL)."'";
         if(isset($contractId)) {
-          $query = "SELECT contract_id, 
-                           contract_purpose, 
-                           vendor_id, 
-                           vendor_name, 
-                           SUM(COALESCE(ytd_spending, 0)) AS check_amount_sum, 
+          $query = "SELECT contract_id,
+                           contract_purpose,
+                           vendor_id,
+                           vendor_name,
+                           SUM(COALESCE(ytd_spending, 0)) AS check_amount_sum,
                            MAX(COALESCE(total_contract_amount, 0)) AS total_contract_amount_sum
                     FROM aggregation_spending_contracts_fy
                     WHERE (issue_date_year_id =".$year_id ." AND contract_id=".$contractId . ")".
@@ -219,7 +223,7 @@ class NychaSpendingUtil
     $month = date("n",strtotime($date_value[0]));
     $category_param = ' AND spending_category_id ='.$category_id;
     $category_parameter = isset($category_id) ? $category_param : '';
-    $query = "SELECT issue_date_year,month_name, SUM(total_spending) AS spent_amount 
+    $query = "SELECT issue_date_year,month_name, SUM(total_spending) AS spent_amount
               FROM aggregation_spending_month  WHERE issue_date_year_id= ".$year_id." AND month_number =".$month.$category_parameter.
               " GROUP BY issue_date_year,month_name";
     $results = _checkbook_project_execute_sql_by_data_source($query, Datasource::NYCHA);
