@@ -56,7 +56,7 @@
       "minority_type_name": {
         "title": "M/WBE Category"
       },
-      "display_industry_type_name": {
+      "industry_type_name": {
         "title": "Industry",
         "autocomplete": true
       },
@@ -240,7 +240,7 @@
         "department_name": "Department",
         "vendor_name": "Payee Name",
         "expenditure_object_name": "Expense Category",
-        "display_industry_type_name": "Industry",
+        "industry_type_name": "Industry",
         "contract_number": "Contract ID",
         "check_amount": "Check Amount",
         "check_eft_issued_date": "Issue Date",
@@ -267,7 +267,7 @@
         "apt_pin": "APT PIN",
         "registration_date": "Registration date",
         "expense_category_name": "Expense Category",
-        "display_industry_type_name": "Industry",
+        "industry_type_name": "Industry",
         "received_date": "Received date",
         "minority_type_name": "M/WBE Category",
         "prime_vendor_name": "Associated Prime Vendor"
@@ -432,7 +432,7 @@
         "department_name": "Department",
         "vendor_name": "Payee Name",
         "expenditure_object_name": "Expense Category",
-        "display_industry_type_name": "Industry",
+        "industry_type_name": "Industry",
         "contract_number": "Contract ID",
         "check_amount": "Check Amount",
         "check_eft_issued_date_export": "Issue Date",
@@ -460,7 +460,7 @@
         "apt_pin": "APT PIN",
         "registration_date": "Registration date",
         "expense_category_name": "Expense Category",
-        "display_industry_type_name": "Industry",
+        "industry_type_name": "Industry",
         "received_date": "Received date",
         "minority_type_name": "M/WBE Category",
         "prime_vendor_name": "Associated Prime Vendor"
