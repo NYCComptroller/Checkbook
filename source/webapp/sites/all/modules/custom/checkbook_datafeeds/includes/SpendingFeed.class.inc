@@ -311,12 +311,12 @@ abstract class SpendingFeed
         );
         $this->user_criteria['Calendar Year'] = $this->values['year'];
         $this->formatted_search_criteria['Year'] = $this->values['year'];
-      } else {
-        $this->form['filter']['year'] = array(
-          '#markup' => '<div><strong>Year:</strong> All Years</div>',
-        );
-        $this->formatted_search_criteria['Year'] = $this->values['year'];
       }
+    }else if($this->values['date_filter'] == 0 && !$this->values['year']){
+      $this->form['filter']['year'] = array(
+        '#markup' => '<div><strong>Year:</strong> All Years</div>',
+      );
+      $this->formatted_search_criteria['Year'] = $this->values['year'];
     }
 
     return;
