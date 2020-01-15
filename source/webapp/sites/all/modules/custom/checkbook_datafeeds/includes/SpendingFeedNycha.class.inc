@@ -75,24 +75,11 @@ class SpendingFeedNycha extends SpendingFeed
       $this->criteria['value']['responsibility_center'] = trim($imatches[1], '[ ]');
     }
 
-    if ($this->values['payee_name']) {
-      preg_match($this->bracket_value_pattern, $this->values['payee_name'], $payee_name_matches);
-      if ($payee_name_matches) {
-        $this->criteria['value']['payee_code'] = trim($payee_name_matches[1], '[ ]');
-      } else {
-        $this->criteria['value']['payee_name'] = $this->values['payee_name'];
-      }
-    }
-
     if ($this->values['spent_amt_from'] !== '' || $this->values['spent_amt_to'] !== '') {
       $this->criteria['range']['amount_spent'] = array(
         checknull($this->values['spent_amt_from']),
         checknull($this->values['spent_amt_to']),
       );
-    }
-
-    if ($this->values['contractno']) {
-      $this->criteria['value']['contract_id'] = strtoupper($this->values['contractno']);
     }
   }
 

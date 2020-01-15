@@ -50,22 +50,16 @@ class SpendingFeedNycedc extends SpendingFeed
       $this->criteria['value']['spending_category'] = trim($etmatches[1], '[ ]');
     }
 
-    //if ($this->values['agency'] != 'Select One') {
-    //  preg_match($this->bracket_value_pattern, $this->values['agency'], $agency_matches);
-    // $this->criteria['value']['other_government_entities_code'] = trim($agency_matches[1], '[ ]');
-    // }
-
-    if ($this->values['contractno']) {
-      $this->criteria['value']['contract_id'] = $this->values['contractno'];
+    if ($this->values['capital_project']) {
+      $this->criteria['value']['capital_project_code'] = $this->values['capital_project'];
     }
 
-    if ($this->values['payee_name']) {
-      preg_match($this->bracket_value_pattern, $this->values['payee_name'], $payee_name_matches);
-      if ($payee_name_matches) {
-        $this->criteria['value']['payee_name'] = trim($payee_name_matches[1], '[ ]');
-      } else {
-        $this->criteria['value']['payee_name'] = $this->values['payee_name'];
-      }
+    if ($this->values['commodity_line']) {
+      $this->criteria['value']['commodity_line'] = $this->values['commodity_line'];
+    }
+
+    if ($this->values['budget_name']) {
+      $this->criteria['value']['budget_name'] = $this->values['budget_name'];
     }
   }
 

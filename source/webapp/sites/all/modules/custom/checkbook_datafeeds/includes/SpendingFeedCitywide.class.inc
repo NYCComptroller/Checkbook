@@ -51,23 +51,26 @@ class SpendingFeedCitywide extends SpendingFeed
       preg_match($this->bracket_value_pattern, $this->values['agency'], $agency_matches);
       $this->criteria['value']['agency_code'] = trim($agency_matches[1], '[ ]');
     }
-    if ($this->values['contractno']) {
-      $this->criteria['value']['contract_ID'] = $this->values['contractno'];
-    }
-    if ($this->values['payee_name']) {
-      preg_match($this->bracket_value_pattern, $this->values['payee_name'], $payee_name_matches);
-      if ($payee_name_matches) {
-        $this->criteria['value']['payee_code'] = trim($payee_name_matches[1], '[ ]');
-      } else {
-        $this->criteria['value']['payee_code'] = $this->values['payee_name'];
-      }
-    }
+
     if ($this->values['mwbe_category'] && $this->values['mwbe_category'] != 'Select Category') {
       $this->criteria['value']['mwbe_category'] = $this->values['mwbe_category'];
     }
     if ($this->values['industry'] && $this->values['industry'] != 'Select Industry') {
       preg_match($this->bracket_value_pattern, $this->values['industry'], $imatches);
       $this->criteria['value']['industry_type_id'] = trim($imatches[1], '[ ]');
+    }
+
+    if ($this->values['capital_project']) {
+      $this->criteria['value']['capital_project_code'] = $this->values['capital_project'];
+    }
+
+    if ($this->values['industry']) {
+      preg_match("/.*?(\\[.*?])/is", $this->values['industry'], $matches);
+      $industry_type_name = str_replace($matches[1], "", $matches[0]);
+      $industry_type_id = trim($matches[1], '[ ]');
+      $this->form['filter']['industry'] = array('#markup' => '<div><strong>Industry:</strong> ' . $industry_type_name . '</div>');
+      $this->user_criteria['Industry'] = $industry_type_id;
+      $this->formatted_search_criteria['Industry'] = $industry_type_name;
     }
   }
 
@@ -78,4 +81,5 @@ class SpendingFeedCitywide extends SpendingFeed
       form_set_error('column_select', t('You must select at least one column.'));
     }
   }
+
 }

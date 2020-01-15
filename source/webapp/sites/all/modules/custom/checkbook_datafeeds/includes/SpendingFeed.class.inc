@@ -351,12 +351,23 @@ abstract class SpendingFeed
       'responseColumns' => $this->filtered_columns
     ];
 
-    if ($this->values['capital_project']) {
-      $this->criteria['value']['capital_project_code'] = $this->values['capital_project'];
+    if ($this->values['dept'] && $this->values['dept'] != 'Select Department') {
+      preg_match($this->bracket_value_pattern, $this->values['dept'], $department_matches);
+      $this->criteria['value']['department_code'] = trim($department_matches[1], '[ ]');
     }
 
-    if ($this->values['budget_name']) {
-      $this->criteria['value']['budget_name'] = $this->values['budget_name'];
+    if ($this->values['expense_category'] && $this->values['expense_category'] != 'Select Expense Category') {
+      preg_match($this->bracket_value_pattern, $this->values['expense_category'], $expense_category_matches);
+      $this->criteria['value']['expense_category'] = trim($expense_category_matches[1], '[ ]');
+    }
+
+    if ($this->values['payee_name']) {
+      preg_match($this->bracket_value_pattern, $this->values['payee_name'], $payee_name_matches);
+      if ($payee_name_matches) {
+        $this->criteria['value']['payee_code'] = trim($payee_name_matches[1], '[ ]');
+      } else {
+        $this->criteria['value']['vendor'] = $this->values['payee_name'];
+      }
     }
 
     if ($this->values['check_amt_from'] !== '' || $this->values['check_amt_to'] !== '') {
@@ -366,13 +377,8 @@ abstract class SpendingFeed
       );
     }
 
-    if ($this->values['commodity_line']) {
-      $this->criteria['value']['commodity_line'] = $this->values['commodity_line'];
-    }
-
-    if ($this->values['dept'] && $this->values['dept'] != 'Select Department') {
-      preg_match($this->bracket_value_pattern, $this->values['dept'], $department_matches);
-      $this->criteria['value']['department_code'] = trim($department_matches[1], '[ ]');
+    if ($this->values['contractno']) {
+      $this->criteria['value']['contract_id'] = strtoupper($this->values['contractno']);
     }
 
     if ($this->values['document_id']) {
@@ -381,11 +387,6 @@ abstract class SpendingFeed
 
     if ($this->values['entity_contract_number']) {
       $this->criteria['value']['entity_contract_number'] = $this->values['entity_contract_number'];
-    }
-
-    if ($this->values['expense_category'] && $this->values['expense_category'] != 'Select Expense Category') {
-      preg_match($this->bracket_value_pattern, $this->values['expense_category'], $expense_category_matches);
-      $this->criteria['value']['expense_category'] = trim($expense_category_matches[1], '[ ]');
     }
 
     if ($this->values['date_filter'] == '0') {
