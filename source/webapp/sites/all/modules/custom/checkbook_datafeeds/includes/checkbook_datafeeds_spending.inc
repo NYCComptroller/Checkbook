@@ -544,8 +544,18 @@ function checkbook_datafeeds_spending_filter_selected_columns($selected_columns,
   $domain_config = ConfigUtil::getDomainConfiguration($domain);
   //Get columns which should be included for the current data source
   $columns_included = $domain_config->$domain->dataset->displayConfiguration->$response_type->elementsColumn;
+
   //Filter out selected columns which are not configured to show for this data source
-  $filtered_columns = array_intersect_key($selected_columns, (array)$columns_included);
+  if($data_source == Datasource::NYCHA) {
+    $filtered_columns = [];
+    foreach ($columns_included as $key => $value) {
+      if (in_array($key, $selected_columns)) {
+        $filtered_columns[$key] = $key;
+      }
+    }
+  }else{
+    $filtered_columns = array_intersect_key($selected_columns, (array)$columns_included);
+  }
   return $filtered_columns;
 }
 

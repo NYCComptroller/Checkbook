@@ -311,12 +311,12 @@ abstract class SpendingFeed
         );
         $this->user_criteria['Calendar Year'] = $this->values['year'];
         $this->formatted_search_criteria['Year'] = $this->values['year'];
-      } else {
-        $this->form['filter']['year'] = array(
-          '#markup' => '<div><strong>Year:</strong> All Years</div>',
-        );
-        $this->formatted_search_criteria['Year'] = $this->values['year'];
       }
+    }else if($this->values['date_filter'] == 0 && !$this->values['year']){
+      $this->form['filter']['year'] = array(
+        '#markup' => '<div><strong>Year:</strong> All Years</div>',
+      );
+      $this->formatted_search_criteria['Year'] = $this->values['year'];
     }
 
     return;
@@ -342,8 +342,6 @@ abstract class SpendingFeed
   private function _checkbook_datafeeds_process_spending_values()
   {
     global $conf;
-    $response_columns = $this->values[$this->filtered_columns_container];
-
     $this->criteria = [
       'global' => [
         //Set data source for query
@@ -351,7 +349,7 @@ abstract class SpendingFeed
         'records_from' => 1,
         'max_records' => $conf['check_book']['data_feeds']['max_record_limit'] ?? 200000,
       ],
-      'responseColumns' => $response_columns
+      'responseColumns' => $this->filtered_columns
     ];
 
     if ($this->values['capital_project']) {
