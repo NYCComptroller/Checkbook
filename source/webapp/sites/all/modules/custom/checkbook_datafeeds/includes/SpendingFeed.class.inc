@@ -311,7 +311,7 @@ abstract class SpendingFeed
       if ($payee_name_matches) {
         $this->criteria['value']['payee_code'] = trim($payee_name_matches[1], '[ ]');
       } else {
-        $this->criteria['value']['vendor'] = $this->values['payee_name'];
+        $this->criteria['value']['payee_name'] = $this->values['payee_name'];
       }
     }
 
