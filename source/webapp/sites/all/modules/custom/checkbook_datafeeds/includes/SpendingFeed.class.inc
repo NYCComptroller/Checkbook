@@ -20,7 +20,6 @@
 
 namespace checkbook_datafeeds;
 
-
 /**
  * Class SpendingFeed
  * @package checkbook_datafeeds
@@ -157,11 +156,11 @@ abstract class SpendingFeed
     );
     $this->formatted_search_criteria['Type of File'] = $this->form_state['step_information']['type']['stored_values']['format'];
 
-    if($this->data_source ==  \Datasource::NYCHA){
+    if($this->data_source == \Datasource::NYCHA){
       $this->form['filter']['agency'] = array(
         '#markup' => '<div><strong>' . SpendingFeedNycha::oge_label .':</strong> ' . SpendingFeedNycha::oge_name . '</div>',
       );
-    }else if($this->data_source ==  \Datasource::OGE){
+    }else if($this->data_source == \Datasource::OGE){
       $this->form['filter']['agency'] = array(
         '#markup' => '<div><strong>' . SpendingFeedNycedc::oge_label .':</strong> ' . SpendingFeedNycedc::oge_name . '</div>',
       );
@@ -198,9 +197,9 @@ abstract class SpendingFeed
     $this->_process_industry_by_datasource();
 
     if ($this->values['mwbe_category']) {
-      $this->form['filter']['mwbe_category'] = array('#markup' => '<div><strong>M/WBE Category:</strong> ' . MappingUtil::getCurrenEthnicityName(explode('~', $this->values['mwbe_category'])) . '</div>');
+      $this->form['filter']['mwbe_category'] = array('#markup' => '<div><strong>M/WBE Category:</strong> ' . \MappingUtil::getCurrenEthnicityName(explode('~', $this->values['mwbe_category'])) . '</div>');
       $this->user_criteria['M/WBE Category'] = $this->values['mwbe_category'];
-      $this->formatted_search_criteria['M/WBE Category'] = MappingUtil::getCurrenEthnicityName(explode('~', $this->values['mwbe_category']));
+      $this->formatted_search_criteria['M/WBE Category'] = \MappingUtil::getCurrenEthnicityName(explode('~', $this->values['mwbe_category']));
     }
 
     if ($this->values['payee_name']) {
