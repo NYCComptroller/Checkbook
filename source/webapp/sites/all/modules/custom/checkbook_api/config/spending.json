@@ -17,7 +17,8 @@
             "mwbe_category":"minority_type_id",
             "associated_prime_vendor":"associated_prime_vendor",
             "sub_contract_reference_id":"sub_contract_id",
-            "sub_vendor":"sub_vendor"
+            "sub_vendor":"sub_vendor",
+            "payee_name":"vendor_name"
         },
         "dataset":{
             "sortColumn":["-check_amount", "-disbursement_line_item_id"],
@@ -27,7 +28,8 @@
                 "reporting_code":"like",
                 "disbursement_number":"like",
                 "minority_type_id":"in",
-                "industry_type_id":"in"
+                "industry_type_id":"in",
+                "vendor_name":"contains"
             },
             "displayConfiguration":{
                 "xml":{
@@ -111,6 +113,11 @@
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"20"
+            },
+            "payee_name":{
+              "valueType":"value",
+              "dataType":"text",
+              "maxLength":"100"
             },
             "document_id":{
                 "valueType":"value",
