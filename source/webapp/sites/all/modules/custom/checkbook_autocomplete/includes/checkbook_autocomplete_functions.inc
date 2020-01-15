@@ -432,8 +432,10 @@ function _checkbook_autocomplete_datafeeds_nycha_contracts($solr_field, $purchas
       $year = ltrim($year, 'FY');
       $facetquery .= '&(' . $year . ':[*%20TO%20agreement_start_year]%20AND%20' . $year . ':[agreement_end_year%20TO%20*])';
     }
+    // Update vendor name to vendor code to include code in auto complete
     if ($solr_field == 'vendor_name') {
-      $query = "select/?q=vendor_name_autocomplete:" . $search_term
+      $solr_field = 'vendor_name_code';
+      $query = "select/?q=vendor_name_code_autocomplete:" . $search_term
         . "&facet.field=".$solr_field. $facetquery
         . "&q.op=AND&rows=0&facet=true&facet.mincount=1&facet.limit=10&wt=phps";
     } else {
@@ -1532,6 +1534,8 @@ function _get_spending_datafeeds_autocomplete_expense_type_options($exptype, $da
   }
   return null;
 }
+
+;
 
 
 /**
