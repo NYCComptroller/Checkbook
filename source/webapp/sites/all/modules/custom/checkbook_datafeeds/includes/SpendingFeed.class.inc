@@ -97,9 +97,9 @@ abstract class SpendingFeed
   {
     $this->form = $form;
     $this->form_state = $form_state;
-    $this->_process_confirmation_common();
+    $this->_process_user_criteria_confirmation();
     $this->user_criteria['Formatted'] = $this->formatted_search_criteria;
-    $this->_checkbook_datafeeds_process_spending_values();
+    $this->_process_criteria();
     $this->form_state['step_information']['confirmation']['stored_values']['criteria'] = $this->criteria;
     $this->form_state['step_information']['confirmation']['stored_values']['user_criteria'] = $this->user_criteria;
     $modified_form = checkbook_datafeeds_end_of_confirmation_form($this->form, $this->form_state, $this->criteria, $this->response_type, 'spending');
@@ -107,7 +107,7 @@ abstract class SpendingFeed
     return $modified_form;
   }
 
-  protected function _process_confirmation_common()
+  protected function _process_user_criteria_confirmation()
   {
     $this->values = $this->form_state['step_information']['spending']['stored_values'];
     $this->response_type = $this->form_state['step_information']['type']['stored_values']['format'];
@@ -156,34 +156,19 @@ abstract class SpendingFeed
     );
     $this->formatted_search_criteria['Type of File'] = $this->form_state['step_information']['type']['stored_values']['format'];
 
-    if($this->data_source == \Datasource::NYCHA){
-      $this->form['filter']['agency'] = array(
-        '#markup' => '<div><strong>' . SpendingFeedNycha::oge_label .':</strong> ' . SpendingFeedNycha::oge_name . '</div>',
-      );
-    }else if($this->data_source == \Datasource::OGE){
-      $this->form['filter']['agency'] = array(
-        '#markup' => '<div><strong>' . SpendingFeedNycedc::oge_label .':</strong> ' . SpendingFeedNycedc::oge_name . '</div>',
-      );
-    }else {
-      if ($this->values['agency']) {
-        $this->agency_name = $this->values['agency'];
-        $this->form['filter']['agency'] = array(
-          '#markup' => '<div><strong>' . $this->agency_label . ':</strong> ' . $this->agency_name . '</div>',
-        );
-        $this->user_criteria['Agency'] = $this->values['agency'];
-        $this->formatted_search_criteria[$this->agency_label] = $this->agency_name;
-      }
-    }
-    if ($this->values['dept'] && $this->values['dept'] != 'Select Department') {
+    //Department
+    if ($this->values['dept'] && $this->values['dept'] != 'Select Department' && $this->values['dept'] != '0') {
       // converts special characters to HTML entities
       if (preg_match('/[\'^£$%&*()}{@#~?><,|=_+¬-]/', $this->values['dept'])) {
         $this->values['dept'] = htmlspecialchars($this->values['dept']);
       }
-      $this->form['filter']['department'] = array('#markup' => '<div><strong>Department:</strong>' . $this->values['dept'] . '</div>');
+      $this->form['filter']['dept'] = array('#markup' => '<div><strong>Department:</strong>' . $this->values['dept'] . '</div>');
       $this->user_criteria['Department'] = $this->values['dept'];
       $this->formatted_search_criteria['Department'] = $this->values['dept'];
     }
-    if ($this->values['expense_category'] && $this->values['expense_category'] != 'Select Expense Category') {
+
+    //Expense Category
+    if ($this->values['expense_category'] && $this->values['expense_category'] != 'Select Expense Category' && $this->values['expense_category'] != '0') {
       // converts special characters to HTML entities
       if (preg_match('/[\'^£$%&*()}{@#~?><,|=_+¬-]/', $this->values['expense_category'])) {
         $this->values['expense_category'] = htmlspecialchars($this->values['expense_category']);
@@ -193,15 +178,7 @@ abstract class SpendingFeed
       $this->formatted_search_criteria['Expense Category'] = $this->values['expense_category'];
     }
 
-    $this->_process_expense_type_by_datasource();
-    $this->_process_industry_by_datasource();
-
-    if ($this->values['mwbe_category']) {
-      $this->form['filter']['mwbe_category'] = array('#markup' => '<div><strong>M/WBE Category:</strong> ' . \MappingUtil::getCurrenEthnicityName(explode('~', $this->values['mwbe_category'])) . '</div>');
-      $this->user_criteria['M/WBE Category'] = $this->values['mwbe_category'];
-      $this->formatted_search_criteria['M/WBE Category'] = \MappingUtil::getCurrenEthnicityName(explode('~', $this->values['mwbe_category']));
-    }
-
+    //Vendor
     if ($this->values['payee_name']) {
       $this->form['filter']['payee_name'] = array(
         '#markup' => '<div><strong>Payee Name:</strong> ' . $this->values['payee_name'] . '</div>',
@@ -209,6 +186,8 @@ abstract class SpendingFeed
       $this->user_criteria['Payee Name'] = $this->values['payee_name'];
       $this->formatted_search_criteria['Payee Name'] = $this->values['payee_name'];
     }
+
+    //Check Amount
     if ($this->values['check_amt_from'] && $this->values['check_amt_to']) {
       $this->form['filter']['chkamount'] = array(
         '#markup' => '<div><strong>Check Amount:</strong> Greater Than Equal to: $' . $this->values['check_amt_from'] . ' Less Than Equal to: $' . $this->values['check_amt_to'] . '</div>',
@@ -229,6 +208,8 @@ abstract class SpendingFeed
       $this->user_criteria['Check Amount Greater Than'] = $this->values['check_amt_to'];
       $this->formatted_search_criteria['Check Amount'] = 'Greater Than Equal to: $' . $this->values['check_amt_from'];
     }
+
+    //Contract ID
     if ($this->values['contractno']) {
       $this->form['filter']['contractno'] = array(
         '#markup' => '<div><strong>Contract ID:</strong> ' . $this->values['contractno'] . '</div>',
@@ -236,40 +217,14 @@ abstract class SpendingFeed
       $this->user_criteria['Contract ID'] = $this->values['contractno'];
       $this->formatted_search_criteria['Contract ID'] = $this->values['contractno'];
     }
+
+    //Document ID
     if ($this->values['document_id']) {
       $this->form['filter']['document_id'] = array(
         '#markup' => '<div><strong>Document ID:</strong> ' . $this->values['document_id'] . '</div>',
       );
       $this->user_criteria['Document ID'] = $this->values['document_id'];
       $this->formatted_search_criteria['Document ID'] = $this->values['document_id'];
-    }
-    if ($this->values['commodity_line']) {
-      $this->form['filter']['commodity_line'] = array(
-        '#markup' => '<div><strong>Commodity Line:</strong> ' . $this->values['commodity_line'] . '</div>',
-      );
-      $this->user_criteria['Commodity Line'] = $this->values['commodity_line'];
-      $this->formatted_search_criteria['Commodity Line'] = $this->values['commodity_line'];
-    }
-    if ($this->values['entity_contract_number']) {
-      $this->form['filter']['entity_contract_number'] = array(
-        '#markup' => '<div><strong>Entity Contract #:</strong> ' . $this->values['entity_contract_number'] . '</div>',
-      );
-      $this->user_criteria['Entity Contract #'] = $this->values['entity_contract_number'];
-      $this->formatted_search_criteria['Entity Contract #'] = $this->values['entity_contract_number'];
-    }
-    if ($this->values['capital_project']) {
-      $this->form['filter']['capital_project'] = array(
-        '#markup' => '<div><strong>Capital Project:</strong> ' . $this->values['capital_project'] . '</div>',
-      );
-      $this->user_criteria['Capital Project'] = $this->values['capital_project'];
-      $this->formatted_search_criteria['Capital Project'] = $this->values['capital_project'];
-    }
-    if ($this->values['budget_name']) {
-      $this->form['filter']['budget_name'] = array(
-        '#markup' => '<div><strong>Budget Name:</strong> ' . $this->values['budget_name'] . '</div>',
-      );
-      $this->user_criteria['Budget Name'] = $this->values['budget_name'];
-      $this->formatted_search_criteria['Budget Name'] = $this->values['budget_name'];
     }
 
     //Issued Date
@@ -318,27 +273,17 @@ abstract class SpendingFeed
       $this->formatted_search_criteria['Year'] = $this->values['year'];
     }
 
+    $this->_process_user_criteria_by_datasource();
+
     return;
   }
 
-  abstract protected function _process_expense_type_by_datasource();
-
-  protected function _process_industry_by_datasource()
-  {
-    if ($this->values['industry']) {
-      preg_match("/.*?(\\[.*?])/is", $this->values['industry'], $matches);
-      $industry_type_name = str_replace($matches[1], "", $matches[0]);
-      $industry_type_id = trim($matches[1], '[ ]');
-      $this->form['filter']['industry'] = array('#markup' => '<div><strong>Industry:</strong> ' . $industry_type_name . '</div>');
-      $this->user_criteria['Industry'] = $industry_type_id;
-      $this->formatted_search_criteria['Industry'] = $industry_type_name;
-    }
-  }
+  abstract protected function _process_user_criteria_by_datasource();
 
   /**
    * Convert values from Spending section of form to an array format expected by API SearchCriteria.
    */
-  private function _checkbook_datafeeds_process_spending_values()
+  private function _process_criteria()
   {
     global $conf;
     $this->criteria = [
@@ -351,12 +296,12 @@ abstract class SpendingFeed
       'responseColumns' => $this->filtered_columns
     ];
 
-    if ($this->values['dept'] && $this->values['dept'] != 'Select Department') {
+    if ($this->values['dept'] && $this->values['dept'] != 'Select Department' && $this->values['dept'] != '0') {
       preg_match($this->bracket_value_pattern, $this->values['dept'], $department_matches);
       $this->criteria['value']['department_code'] = trim($department_matches[1], '[ ]');
     }
 
-    if ($this->values['expense_category'] && $this->values['expense_category'] != 'Select Expense Category') {
+    if ($this->values['expense_category'] && $this->values['expense_category'] != 'Select Expense Category' && $this->values['expense_category'] != '0') {
       preg_match($this->bracket_value_pattern, $this->values['expense_category'], $expense_category_matches);
       $this->criteria['value']['expense_category'] = trim($expense_category_matches[1], '[ ]');
     }
