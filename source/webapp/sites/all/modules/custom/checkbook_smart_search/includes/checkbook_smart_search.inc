@@ -364,7 +364,8 @@ function _checkbook_smart_search_export_data(string $solr_datasource)
     } else {*/
       $result = str_replace("Registered,Expense", "Active,Expense", $result);
       $result = str_replace("Registered,Revenue", "Active,Revenue", $result);
-
+      // replacing '\,' to ',' in export results to match UI results
+      $result = str_replace("\,", ",", $result);
       $result = preg_replace("/1970-01-01T05:00:00Z/", "N/A", $result);
       echo preg_replace("/(\d{4})-(\d{2})-(\d{2})...:..:.../", "$2/$3/$1", $result);
     //}
