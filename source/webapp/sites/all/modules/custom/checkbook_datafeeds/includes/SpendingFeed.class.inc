@@ -374,8 +374,6 @@ abstract class SpendingFeed
     $vendor = $form_state['values']['payee_name'];
     $contract_id = $form_state['values']['contractno'];
 
-    ckbk_datafeeds_spending_update_options_by_datasource($form, $form_state, $this->data_source);
-
     if ($check_from && !is_numeric($check_from)) {
       form_set_error('check_amt_from', t('Check Amount must be a number.'));
     }
