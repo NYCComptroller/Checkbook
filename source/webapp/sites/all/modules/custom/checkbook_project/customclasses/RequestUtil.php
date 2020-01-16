@@ -346,8 +346,8 @@ class RequestUtil
             break;
             case "payroll":
                 $year = static::getCalYearIdForTopNavigation();
-                //Payroll is always redirected to the respective Calendar Year irrespective of the 'yeartpe' paramenter in the URL for all the other Domains
-                if (!preg_match('/payroll/', request_uri())) {
+                //CityWide Payroll is always redirected to the respective Calendar Year irrespective of the 'yeartpe' paramenter in the URL for all the other Domains
+                if (!preg_match('/payroll/', request_uri()) && !Datasource::isNYCHA()) {
                     $yeartype = 'C';
                 } else {
                     $yeartype = RequestUtilities::get("yeartype");
