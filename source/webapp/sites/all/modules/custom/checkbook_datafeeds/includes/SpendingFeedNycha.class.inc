@@ -59,22 +59,30 @@ class SpendingFeedNycha extends SpendingFeed
   {
     if ($this->values['nycha_expense_type'] && $this->values['expense type'] != 'ts') {
       preg_match($this->bracket_value_pattern, $this->values['nycha_expense_type'], $etmatches);
-      $this->criteria['value']['spending_category'] = trim($etmatches[1], '[ ]');
+      if($etmatches) {
+        $this->criteria['value']['spending_category'] = trim($etmatches[1], '[ ]');
+      }
     }
 
     if ($this->values['nycha_industry'] && $this->values['nycha_industry'] != 'Select Industry') {
       preg_match($this->bracket_value_pattern, $this->values['nycha_industry'], $imatches);
-      $this->criteria['value']['industry_type'] = trim($imatches[1], '[ ]');
+      if($imatches) {
+        $this->criteria['value']['industry_type'] = trim($imatches[1], '[ ]');
+      }
     }
 
     if ($this->values['funding_source'] && $this->values['funding_source'] != 'Select Funding Source') {
       preg_match($this->bracket_value_pattern, $this->values['funding_source'], $imatches);
-      $this->criteria['value']['funding_source'] = trim($imatches[1], '[ ]');
+      if($imatches) {
+        $this->criteria['value']['funding_source'] = trim($imatches[1], '[ ]');
+      }
     }
 
     if ($this->values['resp_center'] && $this->values['resp_center'] != 'Select Responsibility Center') {
       preg_match($this->bracket_value_pattern, $this->values['resp_center'], $imatches);
-      $this->criteria['value']['responsibility_center'] = trim($imatches[1], '[ ]');
+      if($imatches) {
+        $this->criteria['value']['responsibility_center'] = trim($imatches[1], '[ ]');
+      }
     }
 
     if ($this->values['spent_amt_from'] !== '' || $this->values['spent_amt_to'] !== '') {
