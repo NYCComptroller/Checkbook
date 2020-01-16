@@ -162,7 +162,8 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     $nycha_expense_type_options['options'] = $nycha_expense_type_default_option + $nycha_expense_type_options['options'];
   }
 
-  $agency_options = _agency_options($data_source);
+  //Agency drop-down contains CityWide options
+  $agency_options = _agency_options(Datasource::CITYWIDE);
   $form['filter']['agency'] = array(
     '#type' => 'select',
     '#title' => t('Agency:'),
@@ -173,7 +174,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     '#suffix' => '</div>',
     '#id' => 'edit-agency',
     '#name' => 'agency',
-    '#default_value' => $form_state['values']['agency'] ?? 0,
+    '#default_value' => !empty($form_state['values']['agency']) ? $form_state['values']['agency'] : 'Citywide (All Agencies)',
     '#validated' => true,
   );
 
@@ -474,7 +475,8 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
   $form['filter']['year'] = array(
     '#type' => 'select',
     '#options' => _year_options('all-years'),
-    '#default_value' => $form_state['values']['year'] ?? "0",
+    '#attributes' => array('class' => array('watch')),
+    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'date_filter', $first_time_load, 0),
     '#prefix' => '<div id="year"><div class="datafield year">',
     '#suffix' => '</div></div>',
     '#id' => 'edit-year',
