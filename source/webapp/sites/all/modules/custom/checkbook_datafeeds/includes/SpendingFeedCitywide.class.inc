@@ -38,6 +38,28 @@ class SpendingFeedCitywide extends SpendingFeed
       $this->formatted_search_criteria[$this->agency_label] = $this->agency_name;
     }
 
+    //Department
+    if ($this->values['dept'] && $this->values['dept'] != 'Select Department' && $this->values['dept'] != '0') {
+      // converts special characters to HTML entities
+      if (preg_match('/[\'^£$%&*()}{@#~?><,|=_+¬-]/', $this->values['dept'])) {
+        $this->values['dept'] = htmlspecialchars($this->values['dept']);
+      }
+      $this->form['filter']['dept'] = array('#markup' => '<div><strong>Department:</strong>' . $this->values['dept'] . '</div>');
+      $this->user_criteria['Department'] = $this->values['dept'];
+      $this->formatted_search_criteria['Department'] = $this->values['dept'];
+    }
+
+    //Expense Category
+    if ($this->values['expense_category'] && $this->values['expense_category'] != 'Select Expense Category' && $this->values['expense_category'] != '0') {
+      // converts special characters to HTML entities
+      if (preg_match('/[\'^£$%&*()}{@#~?><,|=_+¬-]/', $this->values['expense_category'])) {
+        $this->values['expense_category'] = htmlspecialchars($this->values['expense_category']);
+      }
+      $this->form['filter']['expense_category'] = array('#markup' => '<div><strong>Expense Category:</strong> ' . $this->values['expense_category'] . '</div>');
+      $this->user_criteria['Expense Category'] = $this->values['expense_category'];
+      $this->formatted_search_criteria['Expense Category'] = $this->values['expense_category'];
+    }
+
     //Spending Category
     if ($this->values['expense_type']) {
       preg_match("/.*?(\\[.*?])/is", $this->values['expense_type'], $matches);
@@ -50,13 +72,6 @@ class SpendingFeedCitywide extends SpendingFeed
       $this->formatted_search_criteria['Spending Category'] = 'Total Spending';
     }
 
-    //M/WBE Category
-    if ($this->values['mwbe_category']) {
-      $this->form['filter']['mwbe_category'] = array('#markup' => '<div><strong>M/WBE Category:</strong> ' . \MappingUtil::getCurrenEthnicityName(explode('~', $this->values['mwbe_category'])) . '</div>');
-      $this->user_criteria['M/WBE Category'] = $this->values['mwbe_category'];
-      $this->formatted_search_criteria['M/WBE Category'] = \MappingUtil::getCurrenEthnicityName(explode('~', $this->values['mwbe_category']));
-    }
-
     //Industry
     if ($this->values['industry']) {
       preg_match("/.*?(\\[.*?])/is", $this->values['industry'], $matches);
@@ -65,6 +80,62 @@ class SpendingFeedCitywide extends SpendingFeed
       $this->form['filter']['industry'] = array('#markup' => '<div><strong>Industry:</strong> ' . $industry_type_name . '</div>');
       $this->user_criteria['Industry'] = $industry_type_id;
       $this->formatted_search_criteria['Industry'] = $industry_type_name;
+    }
+
+    //M/WBE Category
+    if ($this->values['mwbe_category']) {
+      $this->form['filter']['mwbe_category'] = array('#markup' => '<div><strong>M/WBE Category:</strong> ' . \MappingUtil::getCurrenEthnicityName(explode('~', $this->values['mwbe_category'])) . '</div>');
+      $this->user_criteria['M/WBE Category'] = $this->values['mwbe_category'];
+      $this->formatted_search_criteria['M/WBE Category'] = \MappingUtil::getCurrenEthnicityName(explode('~', $this->values['mwbe_category']));
+    }
+
+    //Vendor
+    if ($this->values['payee_name']) {
+      $this->form['filter']['payee_name'] = array(
+        '#markup' => '<div><strong>Payee Name:</strong> ' . $this->values['payee_name'] . '</div>',
+      );
+      $this->user_criteria['Payee Name'] = $this->values['payee_name'];
+      $this->formatted_search_criteria['Payee Name'] = $this->values['payee_name'];
+    }
+
+    //Check Amount
+    if ($this->values['check_amt_from'] && $this->values['check_amt_to']) {
+      $this->form['filter']['chkamount'] = array(
+        '#markup' => '<div><strong>Check Amount:</strong> Greater Than Equal to: $' . $this->values['check_amt_from'] . ' Less Than Equal to: $' . $this->values['check_amt_to'] . '</div>',
+      );
+      $this->user_criteria['Check Amount Greater Than'] = $this->values['check_amt_from'];
+      $this->user_criteria['Check Amount Less Than'] = $this->values['check_amt_to'];
+      $this->formatted_search_criteria['Check Amount'] = 'Greater Than Equal to: $' . $this->values['check_amt_from'] . ' Less Than Equal to: $' . $this->values['check_amt_to'];
+    } elseif (!$this->values['check_amt_from'] && $this->values['check_amt_to']) {
+      $this->form['filter']['chkamount'] = array(
+        '#markup' => '<div><strong>Check Amount:</strong> Less Than Equal to: $' . $this->values['check_amt_to'] . '</div>',
+      );
+      $this->user_criteria['Check Amount Less Than'] = $this->values['check_amt_to'];
+      $this->formatted_search_criteria['Check Amount'] = 'Less Than Equal to: $' . $this->values['check_amt_to'];
+    } elseif ($this->values['check_amt_from'] && !$this->values['check_amt_from']) {
+      $this->form['filter']['chkamount'] = array(
+        '#markup' => '<div><strong>Check Amount:</strong> Greater Than Equal to: $' . $this->values['check_amt_from'] . '</div>',
+      );
+      $this->user_criteria['Check Amount Greater Than'] = $this->values['check_amt_to'];
+      $this->formatted_search_criteria['Check Amount'] = 'Greater Than Equal to: $' . $this->values['check_amt_from'];
+    }
+
+    //Contract ID
+    if ($this->values['contractno']) {
+      $this->form['filter']['contractno'] = array(
+        '#markup' => '<div><strong>Contract ID:</strong> ' . $this->values['contractno'] . '</div>',
+      );
+      $this->user_criteria['Contract ID'] = $this->values['contractno'];
+      $this->formatted_search_criteria['Contract ID'] = $this->values['contractno'];
+    }
+
+    //Document ID
+    if ($this->values['document_id']) {
+      $this->form['filter']['document_id'] = array(
+        '#markup' => '<div><strong>Document ID:</strong> ' . $this->values['document_id'] . '</div>',
+      );
+      $this->user_criteria['Document ID'] = $this->values['document_id'];
+      $this->formatted_search_criteria['Document ID'] = $this->values['document_id'];
     }
 
     //capital Project
