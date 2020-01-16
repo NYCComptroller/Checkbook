@@ -162,7 +162,45 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     $nycha_expense_type_options['options'] = $nycha_expense_type_default_option + $nycha_expense_type_options['options'];
   }
 
-  ckbk_datafeeds_spending_update_options_by_datasource($form, $form_state, $data_source);
+  //Agency drop-down contains CityWide options
+  $agency_options = _agency_options(Datasource::CITYWIDE);
+  $form['filter']['agency'] = array(
+    '#type' => 'select',
+    '#title' => t('Agency:'),
+    '#options' => $agency_options['options'],
+    '#option_attributes' => $agency_options['options_attributes'],
+    '#attributes' => array('class' => array('watch')),
+    '#prefix' => '<div class="column column-left"><div class="datafield agency">',
+    '#suffix' => '</div>',
+    '#id' => 'edit-agency',
+    '#name' => 'agency',
+    '#default_value' => !empty($form_state['values']['agency']) ? $form_state['values']['agency'] : 'Citywide (All Agencies)',
+    '#validated' => true,
+  );
+
+  $form['filter']['dept'] = array(
+    '#type' => 'select',
+    '#title' => t('Department:'),
+    '#prefix' => '<div id="dynamic-fields"><div class="datafield department">',
+    '#suffix' => '</div>',
+    '#attributes' => array('class' => array('watch')),
+    '#default_value' => !empty($form_state['values']['dept']) ? $form_state['values']['dept'] : 'Select Department',
+    '#id' => 'edit-dept',
+    '#name' => 'dept',
+    '#validated' => true,
+  );
+
+  $form['filter']['expense_category'] = array(
+    '#type' => 'select',
+    '#title' => t('Expense Category:'),
+    '#prefix' => '<div id="expense-category"><div class="datafield expensecategory">',
+    '#suffix' => '</div></div></div>',
+    '#attributes' => array('class' => array('watch')),
+    '#id' => 'edit-expense-category',
+    '#name' => 'expense_category',
+    '#default_value' => !empty($form_state['values']['expense_category']) ? $form_state['values']['expense_category'] : 'Select Expense Category',
+    '#validated' => true
+  );
 
   $form['filter']['expense_type'] = array(
     '#type' => 'select',
@@ -437,7 +475,8 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
   $form['filter']['year'] = array(
     '#type' => 'select',
     '#options' => _year_options('all-years'),
-    '#default_value' => $form_state['values']['year'] ?? "0",
+    '#attributes' => array('class' => array('watch')),
+    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'date_filter', $first_time_load, 0),
     '#prefix' => '<div id="year"><div class="datafield year">',
     '#suffix' => '</div></div>',
     '#id' => 'edit-year',
@@ -610,96 +649,3 @@ function checkbook_datafeeds_spending_validate(&$form, &$form_state)
   $feed->checkbook_datafeeds_spending_validate($form, $form_state);
 }
 
-function ckbk_datafeeds_spending_update_options_by_datasource(&$form, $form_state, $data_source = Datasource::CITYWIDE)
-{
-  $agency_options = _agency_options($data_source);
-  $form['filter']['agency'] = array(
-    '#type' => 'select',
-    '#title' => t('Agency:'),
-    '#options' => $agency_options['options'],
-    '#option_attributes' => $agency_options['options_attributes'],
-    '#attributes' => array('class' => array('watch')),
-    '#prefix' => '<div class="column column-left"><div class="datafield agency">',
-    '#suffix' => '</div>',
-    '#id' => 'edit-agency',
-    '#name' => 'agency',
-    '#default_value' => $form_state['values']['agency'] ?? 0,
-    '#validated' => true,
-  );
-
-//  Select Department
-  $agency = $form_state['values']['agency'] ?? 0;
-  $expense_cat = $form_state['values']['expense_category'] ?? 0;
-  $year = $form_state['values']['year'] ?? 'FY' . \CheckbookDateUtil::getCurrentFiscalYear();
-  $agency_code = _emptyToZero($agency);
-  $expense_cat_code = _emptyToZero($expense_cat);
-
-  switch ($data_source) {
-    case Datasource::OGE:
-      $spend_cat_key = 'nycedc_expense_type';
-      break;
-    case Datasource::NYCHA:
-      $spend_cat_key = 'nycha_expense_type';
-      break;
-    default:
-      $spend_cat_key = 'expense_type';
-      break;
-  }
-
-  $spending_cat_id = _emptyToZero($form_state['values'][$spend_cat_key] ?? 0);
-
-  $filters = [
-    'agency_code' => $agency_code,
-    'fiscal_year' => str_replace(['FY', 'CY','all','ALL'], '', $year),
-    'expenditure_object_code' => $expense_cat_code,
-    'spending_category_id' => $spending_cat_id
-  ];
-
-  $departments = checkbook_solr_options_attributes($data_source, 'spending', 'department_name_code', $filters);
-
-  $form['filter']['dept'] = array(
-    '#type' => 'select',
-    '#title' => t('Department:'),
-    '#prefix' => '<div id="dynamic-fields"><div class="datafield department">',
-    '#suffix' => '</div>',
-    '#options' => (['0' => 'Select Department'] + ($departments['options'] ?? [])),
-    '#option_attributes' => (['0' => ['title' => 'Select Department']] + ($departments['options_attributes'] ?? [])),
-    '#attributes' => array('class' => array('watch')),
-    '#default_value' => $form_state['values']['dept'] ?? 0,
-    '#id' => 'edit-dept',
-    '#name' => 'dept',
-    '#validated' => true,
-    '#disabled' => TRUE
-  );
-
-
-//  Select Expense Category
-  $department_code = 0;
-  if ($agency_code) {
-    $department_code = emptyToZero($form_state['values']['dept'] ?? 0);
-  }
-
-  $filters = [
-    'agency_code' => $agency_code,
-    'fiscal_year' => str_replace(['FY', 'CY','ALL','all'], '', $year),
-    'department_code' => $department_code,
-    'spending_category_id' => $spending_cat_id
-  ];
-
-  $expcats = checkbook_solr_options_attributes($data_source, 'spending', 'expenditure_object_name_code', $filters);
-
-  $form['filter']['expense_category'] = array(
-    '#type' => 'select',
-    '#title' => t('Expense Category:'),
-    '#prefix' => '<div id="expense-category"><div class="datafield expensecategory">',
-    '#suffix' => '</div></div></div>',
-    '#attributes' => array('class' => array('watch')),
-    '#id' => 'edit-expense-category',
-    '#name' => 'expense_category',
-    '#options' => (['0' => 'Select Expense Category'] + ($expcats['options'] ?? [])),
-    '#option_attributes' => (['0' => ['title' => 'Select Expense Category']] + ($expcats['options_attributes'] ?? [])),
-    '#default_value' => $form_state['values']['expense_category'] ?? 0,
-    '#validated' => true,
-    '#disabled' => TRUE
-  );
-}
