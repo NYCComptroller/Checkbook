@@ -3,18 +3,18 @@
   "widgetSubType":"dataTableList",
   "stickyHeader":true,
   "cleanURLParameters":["year","syear", "agency", "vendor", "agreement_type", "po_num_exact", "po_num","po_num_inv", "section8_flag",
-                        "vendornm", "vendornm_exact","vendor_inv", "checkamt", "checkamtr", "funding_id", "invoice_number", "industry",
+                        "vendornm", "vendornm_exact","vendor_inv", "checkamt", "checkamtr", "funding_id", "invoice_number","invoice_line_number", "industry",
                         "industry_inv", "exp_cat","exp_cat_inv", "category", "dept","dept_code","dept_inv", "deptnm", "fundsrc","fundsrc_inv", "doc_id","doc_id_exact",
                         "check_payment_status", "expcategorycode","resp_center", "amount_spent", "issue_date","agg_type","awdmethod","csize",
                         "category_inv"],
   "urlParamMap":{"year":"issue_date_year_id","syear":"issue_date_year_id", "agency":"agency_id", "vendor":"vendor_id", "agreement_type":"agreement_type_code",
                  "agg_type":"agreement_type_code","po_num_inv":"contract_id","po_num_exact": "contract_id", "po_num":"contract_id", "section8_flag":"section8_flag",
                  "vendornm":"vendor_name","vendor_inv":"vendor_id","vendornm_exact":"vendor_name", "checkamt":"check_amount", "checkamtr":"check_amount",
-                 "funding_id":"funding_source_id", "invoice_number":"invoice_number", "industry":"industry_type_id","industry_inv": "industry_type_id",
-                 "exp_cat":"expenditure_type_id","exp_cat_inv":"expenditure_type_id","dept_code":"department_code","category":"spending_category_id","category_inv":"spending_category_id",
-                 "dept":"department_id","dept_inv":"department_id", "fundsrc" :"funding_source_id","fundsrc_inv":"funding_source_id","doc_id":"document_id", "doc_id_exact":"document_id",
-                 "deptnm":"department_name", "expcategorycode":"expenditure_type_code", "resp_center":"responsibility_center_id",
-                 "amount_spent":"invoice_net_amount", "issue_date" : "issue_date","awdmethod":"award_method_id","csize": "award_size_id"
+                 "funding_id":"funding_source_id", "invoice_number":"invoice_number","invoice_line_number":"invoice_line_number", "distribution_line_number": "distribution_line_number",
+                 "industry":"industry_type_id","industry_inv": "industry_type_id","exp_cat":"expenditure_type_id","exp_cat_inv":"expenditure_type_id","dept_code":"department_code",
+                 "category":"spending_category_id","category_inv":"spending_category_id","dept":"department_id","dept_inv":"department_id", "fundsrc" :"funding_source_id",
+                 "fundsrc_inv":"funding_source_id","doc_id":"document_id","doc_id_exact":"document_id", "deptnm":"department_name", "expcategorycode":"expenditure_type_code",
+                 "resp_center":"responsibility_center_id","amount_spent":"adj_distribution_line_amount", "issue_date" : "issue_date","awdmethod":"award_method_id","csize": "award_size_id"
   },
   "paramTypeConfig": {
     "vendornm": "like",
@@ -40,20 +40,20 @@
   "useList":true,
   "getTotalDataCount":true,
   "limit":"35",
-  "sortSourceByNull":["document_id","agreement_type_name", "contract_id", "release_number", "invoice_number", "check_payment_status",
-    "check_amount", "invoice_net_amount", "contract_purpose",
-    "display_industry_type_name", "department_name", "funding_source_description", "responsibility_center_description",
-    "expenditure_type_description", "program_phase_description", "gl_project_description"],
+  "sortSourceByNull":["document_id","agreement_type_name", "contract_id", "release_number", "invoice_number","invoice_line_number",
+                      "distribution_line_number", "check_payment_status", "check_amount", "adj_distribution_line_amount", "contract_purpose",
+                      "display_industry_type_name", "department_name", "funding_source_description", "responsibility_center_description",
+                      "expenditure_type_description", "program_phase_description", "gl_project_description"],
   "noDataInitialLoad":true,
   "html_class":"initiative-table",
   "no_results_content":"No Results Found",
   "dataset":"checkbook_nycha:all_disbursement_transactions",
   "uniqueSortColumn":["issue_date", "document_id"],
   "columns": ["issue_date", "document_id", "section8_flag", "agreement_type_name", "contract_id", "release_number",
-    "invoice_number","check_payment_status", "check_amount", "vendor_name", "vendor_id",
-    "contract_purpose", "display_spending_category_name", "display_industry_type_name",
-    "department_name", "funding_source_description", "responsibility_center_description",
-    "expenditure_type_description", "program_phase_description", "gl_project_description", "invoice_net_amount"
+              "invoice_number","invoice_line_number","distribution_line_number","check_payment_status", "check_amount", "vendor_name", "vendor_id",
+              "contract_purpose", "display_spending_category_name", "display_industry_type_name",
+              "department_name", "funding_source_description", "responsibility_center_description",
+              "expenditure_type_description", "program_phase_description", "gl_project_description", "adj_distribution_line_amount"
   ],
   "caption":"",
   "derivedColumns": {
@@ -82,7 +82,7 @@
       "expression": "($row['check_amount'] == null) ? '-' : custom_number_formatter_basic_format($row['check_amount'])"
     },
     "amount_spent_formatted":{
-      "expression": "($row['invoice_net_amount'] == null) ? '-' : custom_number_formatter_basic_format($row['invoice_net_amount'], 4)"
+      "expression": "($row['adj_distribution_line_amount'] == null) ? '-' : custom_number_formatter_basic_format($row['adj_distribution_line_amount'], 4)"
     },
     "vendor_name_formatted":{
       "expression": "_get_tooltip_markup($row['vendor_name'],36)"
@@ -126,9 +126,11 @@
     {"labelAlias":"release_number","column":"release_number_formatted","sortSourceColumn":"release_number"},
     {"label":"","column":"", "export":false},
     {"labelAlias":"invoice_number","column":"invoice_number_formatted", "sortSourceColumn":"invoice_number"},
+    {"labelAlias":"invoice_line_number","column":"invoice_line_number", "sortSourceColumn":"invoice_line_number"},
+    {"labelAlias":"distribution_line_number","column":"distribution_line_number", "sortSourceColumn":"distribution_line_number"},
     {"labelAlias":"check_status","column":"check_payment_status_formatted", "sortSourceColumn":"check_payment_status"},
     {"labelAlias":"check_amount","column":"check_amount_formatted", "sortSourceColumn":"check_amount"},
-    {"labelAlias":"amount_spent","column":"amount_spent_formatted","sortSourceColumn":"invoice_net_amount"},
+    {"labelAlias":"amount_spent","column":"amount_spent_formatted","sortSourceColumn":"adj_distribution_line_amount"},
     {"label":"","column":"", "export":false},
     {"labelAlias":"vendor","column":"vendor_link", "sortSourceColumn":"vendor_name"},
     {"labelAlias":"contract_purpose","column":"purpose_formatted","sortSourceColumn":"contract_purpose"},
@@ -176,6 +178,8 @@
       {"sClass":"number", "sWidth":"75px","asSorting":["asc","desc"]},
       {"bSortable":false,"sWidth":"8px"},
       {"sClass":"number-center", "sWidth":"75px","asSorting":["asc","desc"]},
+      {"sClass":"number-center", "sWidth":"100px","asSorting":["asc","desc"]},
+      {"sClass":"number-center", "sWidth":"100px","asSorting":["asc","desc"]},
       {"sClass":"number-center", "sWidth":"112px","asSorting":["asc","desc"]},
       {"sClass":"number", "sWidth":"112px","asSorting":["asc","desc"]},
       {"sClass":"number", "sWidth":"112px","asSorting":["asc","desc"]},

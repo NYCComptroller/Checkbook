@@ -39,7 +39,7 @@
       responsibility_center_id,
       responsibility_center_code,
       responsibility_center_description,
-      sum(invoice_net_amount) as check_amount_sum
+      sum(adj_distribution_line_amount) as check_amount_sum
       FROM all_disbursement_transactions
       <where>
         <exp op="AND">

@@ -153,6 +153,24 @@
           ]
         },
         {
+          "name": "invoice_line_number",
+          "levels": [
+            {
+              "name": "invoice_line_number",
+              "sourceColumnName": "invoice_line_number"
+            }
+          ]
+        },
+        {
+          "name": "distribution_line_number",
+          "levels": [
+            {
+              "name": "distribution_line_number",
+              "sourceColumnName": "distribution_line_number"
+            }
+          ]
+        },
+        {
           "name": "industry_type_id",
           "levels": [
             {
@@ -239,7 +257,7 @@
           "function": "SUM(check_amount)"
         },
         "invoice_amount_sum": {
-          "function": "SUM(invoice_net_amount)"
+          "function": "SUM(adj_distribution_line_amount)"
         },
         "txcount": {
           "function":"COUNT(*)"
