@@ -26,11 +26,15 @@ class SpendingFeedNycha extends SpendingFeed
   protected $data_source = 'checkbook_nycha';
   protected $type_of_data = 'Spending_NYCHA';
   protected $filtered_columns_container = 'nycha_column_select';
-  const oge_label = 'Other Government Entity';
-  const oge_name = "NEW YORK CITY HOUSING AUTHORITY";
+  protected $oge_label = 'Other Government Entity';
+  protected $oge_name = "NEW YORK CITY HOUSING AUTHORITY";
 
-  protected function _process_expense_type_by_datasource()
-  {
+  protected function _process_user_criteria_by_datasource(){
+
+    //OGE Display
+    $this->form['filter']['agency'] = array('#markup' => '<div><strong>' . $this->oge_label .':</strong> ' . $this->oge_name . '</div>',);
+
+    //Spending Category
     if ($this->values['nycha_expense_type'] && $this->values['nycha_expense_type'] !== 'Total Spending') {
       preg_match("/.*?(\\[.*?])/is", $this->values['nycha_expense_type'], $matches);
       $expense_type_name = str_replace($matches[1], "", $matches[0]);
@@ -41,10 +45,8 @@ class SpendingFeedNycha extends SpendingFeed
       $this->form['filter']['nycha_expense_type'] = array('#markup' => '<div><strong>Spending Category:</strong> Total Spending</div>');
       $this->formatted_search_criteria['Spending Category'] = 'Total Spending';
     }
-  }
 
-  protected function _process_industry_by_datasource()
-  {
+    //Industry
     if ($this->values['nycha_industry']) {
       $industry_type = trim($this->values['nycha_industry']);
       $this->form['filter']['nycha_industry'] = array('#markup' => '<div><strong>Industry:</strong> ' . $industry_type . '</div>');
@@ -75,24 +77,11 @@ class SpendingFeedNycha extends SpendingFeed
       $this->criteria['value']['responsibility_center'] = trim($imatches[1], '[ ]');
     }
 
-    if ($this->values['payee_name']) {
-      preg_match($this->bracket_value_pattern, $this->values['payee_name'], $payee_name_matches);
-      if ($payee_name_matches) {
-        $this->criteria['value']['payee_code'] = trim($payee_name_matches[1], '[ ]');
-      } else {
-        $this->criteria['value']['payee_name'] = $this->values['payee_name'];
-      }
-    }
-
     if ($this->values['spent_amt_from'] !== '' || $this->values['spent_amt_to'] !== '') {
       $this->criteria['range']['amount_spent'] = array(
         checknull($this->values['spent_amt_from']),
         checknull($this->values['spent_amt_to']),
       );
-    }
-
-    if ($this->values['contractno']) {
-      $this->criteria['value']['contract_id'] = strtoupper($this->values['contractno']);
     }
   }
 

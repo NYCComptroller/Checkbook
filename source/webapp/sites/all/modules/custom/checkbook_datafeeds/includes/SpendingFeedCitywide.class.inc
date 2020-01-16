@@ -27,8 +27,18 @@ class SpendingFeedCitywide extends SpendingFeed
   protected $type_of_data = 'Spending';
   protected $filtered_columns_container = 'column_select';
 
-  protected function _process_expense_type_by_datasource()
-  {
+  protected function _process_user_criteria_by_datasource(){
+    //Agency
+    if ($this->values['agency']) {
+      $this->agency_name = $this->values['agency'];
+      $this->form['filter']['agency'] = array(
+        '#markup' => '<div><strong>' . $this->agency_label . ':</strong> ' . $this->agency_name . '</div>',
+      );
+      $this->user_criteria['Agency'] = $this->values['agency'];
+      $this->formatted_search_criteria[$this->agency_label] = $this->agency_name;
+    }
+
+    //Spending Category
     if ($this->values['expense_type']) {
       preg_match("/.*?(\\[.*?])/is", $this->values['expense_type'], $matches);
       $expense_type_name = str_replace($matches[1], "", $matches[0]);
@@ -38,6 +48,32 @@ class SpendingFeedCitywide extends SpendingFeed
     } else {
       $this->form['filter']['expense_type'] = array('#markup' => '<div><strong>Spending Category:</strong> Total Spending</div>');
       $this->formatted_search_criteria['Spending Category'] = 'Total Spending';
+    }
+
+    //M/WBE Category
+    if ($this->values['mwbe_category']) {
+      $this->form['filter']['mwbe_category'] = array('#markup' => '<div><strong>M/WBE Category:</strong> ' . \MappingUtil::getCurrenEthnicityName(explode('~', $this->values['mwbe_category'])) . '</div>');
+      $this->user_criteria['M/WBE Category'] = $this->values['mwbe_category'];
+      $this->formatted_search_criteria['M/WBE Category'] = \MappingUtil::getCurrenEthnicityName(explode('~', $this->values['mwbe_category']));
+    }
+
+    //Industry
+    if ($this->values['industry']) {
+      preg_match("/.*?(\\[.*?])/is", $this->values['industry'], $matches);
+      $industry_type_name = str_replace($matches[1], "", $matches[0]);
+      $industry_type_id = trim($matches[1], '[ ]');
+      $this->form['filter']['industry'] = array('#markup' => '<div><strong>Industry:</strong> ' . $industry_type_name . '</div>');
+      $this->user_criteria['Industry'] = $industry_type_id;
+      $this->formatted_search_criteria['Industry'] = $industry_type_name;
+    }
+
+    //capital Project
+    if ($this->values['capital_project']) {
+      $this->form['filter']['capital_project'] = array(
+        '#markup' => '<div><strong>Capital Project:</strong> ' . $this->values['capital_project'] . '</div>',
+      );
+      $this->user_criteria['Capital Project'] = $this->values['capital_project'];
+      $this->formatted_search_criteria['Capital Project'] = $this->values['capital_project'];
     }
   }
 
@@ -51,23 +87,17 @@ class SpendingFeedCitywide extends SpendingFeed
       preg_match($this->bracket_value_pattern, $this->values['agency'], $agency_matches);
       $this->criteria['value']['agency_code'] = trim($agency_matches[1], '[ ]');
     }
-    if ($this->values['contractno']) {
-      $this->criteria['value']['contract_ID'] = $this->values['contractno'];
-    }
-    if ($this->values['payee_name']) {
-      preg_match($this->bracket_value_pattern, $this->values['payee_name'], $payee_name_matches);
-      if ($payee_name_matches) {
-        $this->criteria['value']['payee_code'] = trim($payee_name_matches[1], '[ ]');
-      } else {
-        $this->criteria['value']['payee_code'] = $this->values['payee_name'];
-      }
-    }
+
     if ($this->values['mwbe_category'] && $this->values['mwbe_category'] != 'Select Category') {
       $this->criteria['value']['mwbe_category'] = $this->values['mwbe_category'];
     }
     if ($this->values['industry'] && $this->values['industry'] != 'Select Industry') {
       preg_match($this->bracket_value_pattern, $this->values['industry'], $imatches);
       $this->criteria['value']['industry_type_id'] = trim($imatches[1], '[ ]');
+    }
+
+    if ($this->values['capital_project']) {
+      $this->criteria['value']['capital_project_code'] = $this->values['capital_project'];
     }
   }
 
@@ -78,4 +108,5 @@ class SpendingFeedCitywide extends SpendingFeed
       form_set_error('column_select', t('You must select at least one column.'));
     }
   }
+
 }
