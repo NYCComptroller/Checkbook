@@ -365,6 +365,7 @@
       $("#edit-date-filter", context).change(function () {
         if ($('input:radio[name=date_filter]:checked', context).val() === '1') {
           // issue date
+          $('select[name="year"]', context).val(0);
           disable_input($('select[name="year"]', context));
           enable_input($('input[name="issuedfrom"]', context));
           enable_input($('input[name="issuedto"]', context));
