@@ -441,6 +441,8 @@ function _checkbook_advanced_search_get_payroll_years($dataSource, $form = null)
   if(count($yearList) > 0){
     $matches = array();
     foreach($yearList as $key => $value){
+      $value = (Datasource::NYCHA == $dataSource) ? str_ireplace('CY', 'FY', $value) : $value;
+      $key = (Datasource::NYCHA == $dataSource) ? str_ireplace('cy', 'fy', $key) : $key;
       $matches[] = array('label'=> $value,'value' => $key);
     }
     drupal_json_output($matches);
