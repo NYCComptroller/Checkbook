@@ -34,6 +34,29 @@ class SpendingFeedNycedc extends SpendingFeed
     $this->form['filter']['agency'] = array(
       '#markup' => '<div><strong>' . $this->oge_label .':</strong> ' . $this->oge_name . '</div>',
     );
+
+    //Department
+    if ($this->values['dept'] && $this->values['dept'] != 'Select Department' && $this->values['dept'] != '0') {
+      // converts special characters to HTML entities
+      if (preg_match('/[\'^£$%&*()}{@#~?><,|=_+¬-]/', $this->values['dept'])) {
+        $this->values['dept'] = htmlspecialchars($this->values['dept']);
+      }
+      $this->form['filter']['dept'] = array('#markup' => '<div><strong>Department:</strong>' . $this->values['dept'] . '</div>');
+      $this->user_criteria['Department'] = $this->values['dept'];
+      $this->formatted_search_criteria['Department'] = $this->values['dept'];
+    }
+
+    //Expense Category
+    if ($this->values['expense_category'] && $this->values['expense_category'] != 'Select Expense Category' && $this->values['expense_category'] != '0') {
+      // converts special characters to HTML entities
+      if (preg_match('/[\'^£$%&*()}{@#~?><,|=_+¬-]/', $this->values['expense_category'])) {
+        $this->values['expense_category'] = htmlspecialchars($this->values['expense_category']);
+      }
+      $this->form['filter']['expense_category'] = array('#markup' => '<div><strong>Expense Category:</strong> ' . $this->values['expense_category'] . '</div>');
+      $this->user_criteria['Expense Category'] = $this->values['expense_category'];
+      $this->formatted_search_criteria['Expense Category'] = $this->values['expense_category'];
+    }
+
     //Spending Category
     if ($this->values['oge_expense_type']) {
       preg_match("/.*?(\\[.*?])/is", $this->values['oge_expense_type'], $matches);
@@ -44,6 +67,46 @@ class SpendingFeedNycedc extends SpendingFeed
     } else {
       $this->form['filter']['expense_type'] = array('#markup' => '<div><strong>Spending Category:</strong> Total Spending</div>');
       $this->formatted_search_criteria['Spending Category'] = 'Total Spending';
+    }
+
+    //Vendor
+    if ($this->values['payee_name']) {
+      $this->form['filter']['payee_name'] = array(
+        '#markup' => '<div><strong>Payee Name:</strong> ' . $this->values['payee_name'] . '</div>',
+      );
+      $this->user_criteria['Payee Name'] = $this->values['payee_name'];
+      $this->formatted_search_criteria['Payee Name'] = $this->values['payee_name'];
+    }
+
+    //Check Amount
+    if ($this->values['check_amt_from'] && $this->values['check_amt_to']) {
+      $this->form['filter']['chkamount'] = array(
+        '#markup' => '<div><strong>Check Amount:</strong> Greater Than Equal to: $' . $this->values['check_amt_from'] . ' Less Than Equal to: $' . $this->values['check_amt_to'] . '</div>',
+      );
+      $this->user_criteria['Check Amount Greater Than'] = $this->values['check_amt_from'];
+      $this->user_criteria['Check Amount Less Than'] = $this->values['check_amt_to'];
+      $this->formatted_search_criteria['Check Amount'] = 'Greater Than Equal to: $' . $this->values['check_amt_from'] . ' Less Than Equal to: $' . $this->values['check_amt_to'];
+    } elseif (!$this->values['check_amt_from'] && $this->values['check_amt_to']) {
+      $this->form['filter']['chkamount'] = array(
+        '#markup' => '<div><strong>Check Amount:</strong> Less Than Equal to: $' . $this->values['check_amt_to'] . '</div>',
+      );
+      $this->user_criteria['Check Amount Less Than'] = $this->values['check_amt_to'];
+      $this->formatted_search_criteria['Check Amount'] = 'Less Than Equal to: $' . $this->values['check_amt_to'];
+    } elseif ($this->values['check_amt_from'] && !$this->values['check_amt_from']) {
+      $this->form['filter']['chkamount'] = array(
+        '#markup' => '<div><strong>Check Amount:</strong> Greater Than Equal to: $' . $this->values['check_amt_from'] . '</div>',
+      );
+      $this->user_criteria['Check Amount Greater Than'] = $this->values['check_amt_to'];
+      $this->formatted_search_criteria['Check Amount'] = 'Greater Than Equal to: $' . $this->values['check_amt_from'];
+    }
+
+    //Contract ID
+    if ($this->values['contractno']) {
+      $this->form['filter']['contractno'] = array(
+        '#markup' => '<div><strong>Contract ID:</strong> ' . $this->values['contractno'] . '</div>',
+      );
+      $this->user_criteria['Contract ID'] = $this->values['contractno'];
+      $this->formatted_search_criteria['Contract ID'] = $this->values['contractno'];
     }
 
     //Commodity Line
