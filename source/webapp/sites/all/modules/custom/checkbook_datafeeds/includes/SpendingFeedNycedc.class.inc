@@ -26,11 +26,15 @@ class SpendingFeedNycedc extends SpendingFeed
   protected $data_source = 'checkbook_oge';
   protected $type_of_data = 'Spending_OGE';
   protected $filtered_columns_container = 'oge_column_select';
-  const oge_label = 'Other Government Entity';
-  const oge_name = "NEW YORK CITY ECONOMIC DEVELOPMENT CORPORATION";
+  protected $oge_label = 'Other Government Entity';
+  protected $oge_name = "NEW YORK CITY ECONOMIC DEVELOPMENT CORPORATION";
 
-  protected function _process_expense_type_by_datasource()
-  {
+  protected function _process_user_criteria_by_datasource(){
+    //EDC
+    $this->form['filter']['agency'] = array(
+      '#markup' => '<div><strong>' . $this->oge_label .':</strong> ' . $this->oge_name . '</div>',
+    );
+    //Spending Category
     if ($this->values['oge_expense_type']) {
       preg_match("/.*?(\\[.*?])/is", $this->values['oge_expense_type'], $matches);
       $expense_type_name = str_replace($matches[1], "", $matches[0]);
@@ -41,6 +45,43 @@ class SpendingFeedNycedc extends SpendingFeed
       $this->form['filter']['expense_type'] = array('#markup' => '<div><strong>Spending Category:</strong> Total Spending</div>');
       $this->formatted_search_criteria['Spending Category'] = 'Total Spending';
     }
+
+    //Commodity Line
+    if ($this->values['commodity_line']) {
+      $this->form['filter']['commodity_line'] = array(
+        '#markup' => '<div><strong>Commodity Line:</strong> ' . $this->values['commodity_line'] . '</div>',
+      );
+      $this->user_criteria['Commodity Line'] = $this->values['commodity_line'];
+      $this->formatted_search_criteria['Commodity Line'] = $this->values['commodity_line'];
+    }
+
+    //Entity Contract Number
+    if ($this->values['entity_contract_number']) {
+      $this->form['filter']['entity_contract_number'] = array(
+        '#markup' => '<div><strong>Entity Contract #:</strong> ' . $this->values['entity_contract_number'] . '</div>',
+      );
+      $this->user_criteria['Entity Contract #'] = $this->values['entity_contract_number'];
+      $this->formatted_search_criteria['Entity Contract #'] = $this->values['entity_contract_number'];
+    }
+
+    //capital Project
+    if ($this->values['capital_project']) {
+      $this->form['filter']['capital_project'] = array(
+        '#markup' => '<div><strong>Capital Project:</strong> ' . $this->values['capital_project'] . '</div>',
+      );
+      $this->user_criteria['Capital Project'] = $this->values['capital_project'];
+      $this->formatted_search_criteria['Capital Project'] = $this->values['capital_project'];
+    }
+
+    //Budget Name
+    if ($this->values['budget_name']) {
+      $this->form['filter']['budget_name'] = array(
+        '#markup' => '<div><strong>Budget Name:</strong> ' . $this->values['budget_name'] . '</div>',
+      );
+      $this->user_criteria['Budget Name'] = $this->values['budget_name'];
+      $this->formatted_search_criteria['Budget Name'] = $this->values['budget_name'];
+    }
+
   }
 
   protected function _process_datasource_values()
@@ -50,22 +91,16 @@ class SpendingFeedNycedc extends SpendingFeed
       $this->criteria['value']['spending_category'] = trim($etmatches[1], '[ ]');
     }
 
-    //if ($this->values['agency'] != 'Select One') {
-    //  preg_match($this->bracket_value_pattern, $this->values['agency'], $agency_matches);
-    // $this->criteria['value']['other_government_entities_code'] = trim($agency_matches[1], '[ ]');
-    // }
-
-    if ($this->values['contractno']) {
-      $this->criteria['value']['contract_id'] = $this->values['contractno'];
+    if ($this->values['capital_project']) {
+      $this->criteria['value']['capital_project_code'] = $this->values['capital_project'];
     }
 
-    if ($this->values['payee_name']) {
-      preg_match($this->bracket_value_pattern, $this->values['payee_name'], $payee_name_matches);
-      if ($payee_name_matches) {
-        $this->criteria['value']['payee_name'] = trim($payee_name_matches[1], '[ ]');
-      } else {
-        $this->criteria['value']['payee_name'] = $this->values['payee_name'];
-      }
+    if ($this->values['commodity_line']) {
+      $this->criteria['value']['commodity_line'] = $this->values['commodity_line'];
+    }
+
+    if ($this->values['budget_name']) {
+      $this->criteria['value']['budget_name'] = $this->values['budget_name'];
     }
   }
 
