@@ -606,12 +606,15 @@ function checkbook_api_adjustSpendingSql(&$sql_query) {
     if (strpos($sql_query,'l1.') !== false) {
         $alias = 'l1.';
     }
-    $sql_query =  str_replace("{$alias}prime_vendor_name", "CASE WHEN {$alias}is_prime_or_sub = 'S' THEN {$alias}prime_vendor_name ELSE 'N/A' END AS prime_vendor_name",$sql_query);
-    $sql_query =  str_replace("{$alias}vendor_type", "CASE WHEN {$alias}is_prime_or_sub = 'P' THEN 'No' ELSE 'Yes' END AS vendor_type",$sql_query);
-    $sql_query =  str_replace("{$alias}reporting_code", "CASE WHEN {$alias}is_prime_or_sub = 'P' THEN {$alias}reporting_code ELSE 'N/A' END AS reporting_code",$sql_query);
-    $sql_query =  str_replace("{$alias}department_name", "CASE WHEN {$alias}is_prime_or_sub = 'P' THEN {$alias}department_name ELSE 'N/A' END AS department_name",$sql_query);
-    $sql_query =  str_replace("{$alias}disbursement_number", "CASE WHEN {$alias}is_prime_or_sub = 'P' THEN {$alias}disbursement_number ELSE 'N/A' END AS disbursement_number",$sql_query);
-    $sql_query =  str_replace("{$alias}expenditure_object_name", "CASE WHEN {$alias}is_prime_or_sub = 'P' THEN {$alias}expenditure_object_name ELSE 'N/A' END AS expenditure_object_name",$sql_query);
+    $sql_parts = explode("WHERE", $sql_query);
+    $select_part = $sql_parts[0];
+    $where_part = $sql_parts[1];
+    $select_part =  str_replace("{$alias}prime_vendor_name", "CASE WHEN {$alias}is_prime_or_sub = 'S' THEN {$alias}prime_vendor_name ELSE 'N/A' END AS prime_vendor_name",$select_part);
+    $select_part =  str_replace("{$alias}vendor_type", "CASE WHEN {$alias}is_prime_or_sub = 'P' THEN 'No' ELSE 'Yes' END AS vendor_type",$select_part);
+    $select_part =  str_replace("{$alias}reporting_code", "CASE WHEN {$alias}is_prime_or_sub = 'P' THEN {$alias}reporting_code ELSE 'N/A' END AS reporting_code",$select_part);
+    $select_part =  str_replace("{$alias}department_name", "CASE WHEN {$alias}is_prime_or_sub = 'P' THEN {$alias}department_name ELSE 'N/A' END AS department_name",$select_part);
+    $select_part =  str_replace("{$alias}disbursement_number", "CASE WHEN {$alias}is_prime_or_sub = 'P' THEN {$alias}disbursement_number ELSE 'N/A' END AS disbursement_number",$select_part);
+    $select_part =  str_replace("{$alias}expenditure_object_name", "CASE WHEN {$alias}is_prime_or_sub = 'P' THEN {$alias}expenditure_object_name ELSE 'N/A' END AS expenditure_object_name",$select_part);
 
     $column = 'minority_type_name';
     $minority_check = <<<SQLEND
@@ -632,7 +635,8 @@ function checkbook_api_adjustSpendingSql(&$sql_query) {
         WHEN {$alias}{$column}= 'Individuals & Others' THEN 'Individuals and Others'
     END
 SQLEND;
-    $sql_query = str_replace("{$alias}minority_type_name", $minority_check . " AS minority_type_name", $sql_query);
+    $select_part = str_replace("{$alias}minority_type_name", $minority_check . " AS minority_type_name", $select_part);
+    $sql_query = implode(' WHERE ', array($select_part, $where_part));
     return $sql_query;
 
 }
