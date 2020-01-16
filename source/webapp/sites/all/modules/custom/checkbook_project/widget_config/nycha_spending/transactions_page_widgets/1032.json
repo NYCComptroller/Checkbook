@@ -1,0 +1,33 @@
+{
+  "widgetType":"phpparser",
+  "parentNid":1012,
+  "no_results_content":"No Results Found",
+  "limit":100,
+  "startWith":0,
+  "maxSelect":5,
+  "allowZeroValue":true,
+  "columns":["responsibility_center_id.responsibility_center_id","responsibility_center_name.responsibility_center_name","txcount"],
+  "orderBy":"-txcount",
+  "facetPager":true,
+  "filterName":"Responsibility Center",
+  "urlParameterName":"resp_center",
+  "autocompleteParamName":"responsibility_center_name_auto",
+  "autocompleteID":"fRespCenter",
+  "autocompleteField":"responsibility_center_name",
+  "adjustParameters":"
+  if(function_exists('_checkbook_project_applyParameterFilters')){
+  $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+}
+$adjustedParameters['responsibility_center_id.responsibility_center_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+return $adjustedParameters;
+",
+"adjustFacetOptions":"
+$query_string = $_GET['q'];
+$widget = RequestUtil::getRequestKeyValueFromURL('widget', $query_string);
+if(strpos($widget, 'ytd_') !== false) {
+$node->widgetConfig->allowFacetDeselect = false;
+}
+else{$node->widgetConfig->allowFacetDeselect = true; }
+",
+"template":"individual_filter"
+}
