@@ -1685,10 +1685,6 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
   //By data source
   switch ($data_source) {
     case Datasource::OGE:
-      //if ($values['agency'] != 'Select One') {
-      //  preg_match($pattern, $values['agency'], $amatches);
-      ///  $criteria['value']['other_government_entities_code'] = trim($amatches[1], '[ ]');
-      //}
       if ($values['entity_contract_number']) {
         $criteria['value']['entity_contract_number'] = $values['entity_contract_number'];
       }
@@ -1717,10 +1713,9 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
       if ($values['nycha_vendor']) {
         preg_match($pattern, $values['nycha_vendor'], $vmatches);
         if ($vmatches) {
-          $vname_matches = explode("[",$vmatches[0]);
-          $criteria['value']['vendor'] = trim($vname_matches[0], '[ ]');
+          $criteria['value']['vendor'] = trim($vmatches[1], '[ ]');
         } else {
-          $criteria['value']['vendor'] = $values['nycha_vendor'];
+          $criteria['value']['vendor_name'] = $values['nycha_vendor'];
         }
       }
       if ($values['resp_center']) {

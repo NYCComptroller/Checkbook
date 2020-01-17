@@ -3,7 +3,8 @@
     "searchCriteriaMap":{
       "purchase_order_type":"agreement_type_code",
       "contract_id":"contract_id",
-      "vendor":"vendor_name",
+      "vendor":"vendor_number",
+      "vendor_name":"vendor_name",
       "responsibility_center":"responsibility_center_code",
       "contract_type":"contract_type_code",
       "award_method":"award_method_code",
@@ -22,7 +23,7 @@
       "sortColumn":["sort_sequence"],
       "columnTypes":{
         "contract_id":"like",
-        "vendor":"like",
+        //"vendor":"like",
         "vendor_name":"contains",
         "purpose":"contains"
       },
@@ -193,7 +194,8 @@
       "fiscal_year":{"valueType":"value","dataType":"year","maxLength":"4"},
       "purchase_order_type":{"valueType":"value","dataType":"text","maxLength":"4"},
       "contract_id":{"valueType":"value","dataType":"text","maxLength":"32"},
-      "vendor":{"valueType":"value","dataType":"text","maxLength":"100"},
+      "vendor_name":{"valueType":"value","dataType":"text","maxLength":"100"},
+      "vendor":{"valueType":"value","dataType":"text","maxLength":"9"},
       "responsibility_center":{"valueType":"value","dataType":"text","maxLength":"10"},
       "contract_type":{"valueType":"value","dataType":"text","maxLength":"10"},
       "award_method":{"valueType":"value","dataType":"text","maxLength":"10"},
@@ -211,7 +213,8 @@
     "searchCriteriaMap":{
       "purchase_order_type":"agreement_type_code",
       "contract_id":"contract_id",
-      "vendor":"vendor_name",
+      "vendor":"vendor_number",
+      "vendor_name":"vendor_name",
       "responsibility_center":"responsibility_center_code",
       "contract_type":"contract_type_code",
       "award_method":"award_method_code",
@@ -231,7 +234,7 @@
       "sortColumn":["sort_sequence"],
       "columnTypes":{
         "contract_id":"like",
-        "vendor":"like",
+        //"vendor":"like",
         "vendor_name": "contains",
         "purpose":"contains"
       },
@@ -406,7 +409,8 @@
       "fiscal_year":{"valueType":"value","dataType":"year","maxLength":"4"},
       "purchase_order_type":{"valueType":"value","dataType":"text","maxLength":"4"},
       "contract_id":{"valueType":"value","dataType":"text","maxLength":"32"},
-      "vendor":{"valueType":"value","dataType":"text","maxLength":"100"},
+      "vendor_name":{"valueType":"value","dataType":"text","maxLength":"100"},
+      "vendor":{"valueType":"value","dataType":"text","maxLength":"9"},
       "responsibility_center":{"valueType":"value","dataType":"text","maxLength":"10"},
       "contract_type":{"valueType":"value","dataType":"text","maxLength":"10"},
       "award_method":{"valueType":"value","dataType":"text","maxLength":"10"},
