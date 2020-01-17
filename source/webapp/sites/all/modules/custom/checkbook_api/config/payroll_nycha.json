@@ -1,7 +1,7 @@
 {
-    "payroll_nycha_calendar_year":{
+    "payroll_nycha_fiscal_year":{
         "searchCriteriaMap":{
-            "calendar_year":"calendar_fiscal_year",
+            "fiscal_year":"calendar_fiscal_year",
             "pay_frequency":"pay_frequency",
             "pay_date":"pay_date",
             "amount":"annual_salary",
@@ -38,10 +38,10 @@
                         "other_payments":"other_payments",
                         "overtime_payments":"overtime_pay",
                         "gross_pay_ytd":"gross_pay_cytd",
-                        "calendar_year":"calendar_fiscal_year"
+                        "fiscal_year":"calendar_fiscal_year"
                     },
                     "rowElements":["title", "pay_frequency", "pay_date", "payroll_type", "annual_salary", "hourly_rate", "daily_wage",
-                                   "gross_pay", "base_pay", "other_payments", "overtime_payments", "gross_pay_ytd", "calendar_year"]
+                                   "gross_pay", "base_pay", "other_payments", "overtime_payments", "gross_pay_ytd", "fiscal_year"]
                 },
                 "csv":{
                     "elementsColumn":{
@@ -57,7 +57,7 @@
                         "Other Payments":"other_payments",
                         "Overtime Payments":"overtime_pay",
                         "Gross Pay YTD":"gross_pay_ytd",
-                        "Calendar Year":"calendar_fiscal_year"
+                        "Fiscal Year":"calendar_fiscal_year"
                     }
                 }
             },
@@ -66,7 +66,7 @@
             "adjustSql":"if(function_exists('checkbook_api_adjustPayrollSql')){checkbook_api_adjustPayrollSql($sql_query);}"
         },
         "requestParameters":{
-            "calendar_year":{
+            "fiscal_year":{
                 "valueType":"value",
                 "dataType":"year",
                 "maxLength":"4"

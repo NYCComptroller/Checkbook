@@ -616,7 +616,7 @@ abstract class AbstractAPISearchCriteria {
          }
         break;
       case "payroll_nycha":
-        $config_key .= "_calendar_year";
+        $config_key .= "_fiscal_year";
         break;
       case "contracts":
           $category = $this->criteria['value']['category'];
