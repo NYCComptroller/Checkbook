@@ -20,11 +20,6 @@
       if(data_source === 'checkbook'){agency = emptyToZero(agency);}else{agency = 0;}
       let spending_cat = getSpendingExpenseType(data_source);
 
-      //let filter = new URLSearchParams();
-      //if(agency){filter.set('agency_code',agency);}
-      //if(year){filter.set('fiscal_year',dfSpendingGetYearDigitValue(year));}
-      //if(spending_cat){filter.set('spending_category_id', spending_cat);}
-
       $.ajax({
         //url: '/solr_options/'+data_source+'/spending/department_name_code/?'+filter
         url: '/advanced-search/autocomplete/spending/department/' + year + '/' + agency + '/' + spending_cat + '/' + data_source + '/feeds'
@@ -73,12 +68,6 @@
       //We need agency filter only for citywide
       if(data_source === 'checkbook'){agency = emptyToZero(agency);}else{agency = 0;}
       let spending_cat = getSpendingExpenseType(data_source);
-
-      /*let filter = new URLSearchParams();
-      if(agency){filter.set('agency_code', agency);}
-      if(dept){filter.set('department_code', dept);}
-      if(spending_cat){filter.set('spending_category_id', spending_cat);}
-      if(year){filter.set('fiscal_year', dfSpendingGetYearDigitValue(year));}*/
 
       $.ajax({
         //url: '/solr_options/'+data_source+'/spending/expenditure_object_name_code/?'+filter
@@ -142,17 +131,7 @@
         //Hide agency and enable and get department and expense category drop-down option
         $('.data-feeds-wizard .datafield.agency').hide();
 
-        // Enable year
-        $('input:radio[name=date_filter]')[0].checked = true;
-        enable_input($('select[name="year"]'));
-        $('select[name="year"]').val(0);
-        //Disable Issue date
-        disable_input($('input:radio[name=date_filter][value="1"]'));
-        $('input[name="issuedfrom"]').val("");
-        disable_input($('input[name="issuedfrom"]'));
-        $('input[name="issuedto"]').val("");
-        disable_input($('input[name="issuedto"]'));
-
+        //Multi-select
         $('.form-item-oge-column-select').show();
 
         //Move Issue Date fields to left column for OGE
@@ -167,15 +146,7 @@
         //Hide agency and enable and get department and expense category drop-down option
         $('.data-feeds-wizard .datafield.agency').hide();
 
-        // Date filter
-        $('input:radio[name=date_filter]')[0].checked = true;
-        enable_input($('select[name="year"]'));
-        $('select[name="year"]').val(0);
-        //enable Issue date
-        enable_input($('input:radio[name=date_filter][value="1"]'));
-        disable_input($('input[name="issuedfrom"]'));
-        disable_input($('input[name="issuedto"]'));
-
+        //Multi-select
         $('.form-item-nycha-column-select').show();
 
         //Move Issue Date fields to left column for NYCHA
@@ -192,15 +163,7 @@
         disable_input($('#edit-dept'));
         disable_input($('#edit-expense-category'));
 
-        //Date Filter
-        $('input:radio[name=date_filter]')[0].checked = true;
-        enable_input($('select[name="year"]'));
-        $('select[name="year"]').val(0);
-        //enable Issue date
-        enable_input($('input:radio[name=date_filter][value="1"]'));
-        disable_input($('input[name="issuedfrom"]'));
-        disable_input($('input[name="issuedto"]'));
-
+        //Multi-select
         $('.form-item-column-select').show();
 
         //Move Issue Date fields to left column for Citywide
@@ -213,8 +176,12 @@
 
     //Reset enabling/disabling fields
      onSpendingCategoryChange();
+
+    //Reset Date Filter filelds
+    resetDateFilter(data_source);
   };
 
+  //Get Spending Category based on Data Source
   let getSpendingExpenseType = function(data_source){
     switch(data_source){
       case 'checkbook_nycha':
@@ -226,6 +193,7 @@
     }
   };
 
+  //On Spending Category change, enable/disable fields applicable
   let onSpendingCategoryChange = function() {
     //Data source value
     let data_source = $('input[name="datafeeds-spending-domain-filter"]:checked').val();
@@ -267,6 +235,34 @@
         //Disable ContractID field for Others Spending Category
         disable_input([$('input[name="contractno"]')]);
       }
+    }
+  };
+
+  //On Date filter change
+  let resetDateFilter = function(data_source){
+    //Enable Year
+    $('input:radio[name=date_filter]')[0].checked = true;
+    enable_input($('select[name="year"]'));
+    $('select[name="year"]').val(0);
+
+    //Disable Issue Date input fields
+    $('input[name="issuedfrom"]').val("");
+    $('input[name="issuedto"]').val("");
+    disable_input($('input[name="issuedfrom"]'));
+    disable_input($('input[name="issuedto"]'));
+
+    switch(data_source) {
+      case 'checkbook_nycha':
+        //enable Issue date
+        enable_input($('input:radio[name=date_filter][value="1"]'));
+        break;
+      case 'checkbook_oge':
+        //Disable Issue date
+        disable_input($('input:radio[name=date_filter][value="1"]'));
+        break;
+      default:
+        //enable Issue date
+        enable_input($('input:radio[name=date_filter][value="1"]'));
     }
   };
 
