@@ -23,7 +23,7 @@ class NychaSpendingUtil
 {
   static $widget_titles = array('wt_checks' => 'Checks', 'ytd_check' => 'Check','wt_vendors' => 'Vendors', 'ytd_vendor' => 'Vendor',
     'wt_contracts' => 'Contracts', 'ytd_contract' => 'Contract', 'wt_expense_categories' => 'Expense Categories',
-    'wt_resp_centers' => 'Responsibility Center','ytd_expense_category' => 'Expense Category', 'wt_industries' => 'Industries', 'ytd_industry' => 'Industry',
+    'wt_resp_centers' => 'Responsibility Centers','ytd_expense_category' => 'Expense Category', 'wt_industries' => 'Industries', 'ytd_industry' => 'Industry',
     'wt_funding_sources' => 'Funding Sources', 'ytd_funding_source' => 'Funding Source', 'wt_departments' => 'Departments',
     'ytd_department' => 'Department','ytd_resp_center' => 'Responsibility Center');
 
@@ -66,7 +66,7 @@ class NychaSpendingUtil
    */
   static public function getTotalSpendingAmount($categoryName,$bottomURL){
     $year_id = RequestUtil::getRequestKeyValueFromURL('year', $bottomURL);
-    $query =  'SELECT display_spending_category_name,SUM(check_amount) AS check_amount_sum ,SUM(invoice_net_amount) AS invoice_amount_sum from all_disbursement_transactions
+    $query =  'SELECT display_spending_category_name,SUM(check_amount) AS check_amount_sum ,SUM(adj_distribution_line_amount) AS invoice_amount_sum from all_disbursement_transactions
               where  issue_date_year_id = '. $year_id .'group by display_spending_category_name';
     $results = _checkbook_project_execute_sql_by_data_source($query, Datasource::NYCHA);
       foreach ($results as $key => $row) {
@@ -104,7 +104,7 @@ class NychaSpendingUtil
     if(count($where_filter) > 0){
       $filter = implode(' AND ' , $where_filter);
     }
-    $query =  'SELECT sum(invoice_net_amount) AS amount_spent from all_disbursement_transactions
+    $query =  'SELECT sum(adj_distribution_line_amount) AS amount_spent from all_disbursement_transactions
                where '. $filter;
     $results = _checkbook_project_execute_sql_by_data_source($query, Datasource::NYCHA);
     return $results;
