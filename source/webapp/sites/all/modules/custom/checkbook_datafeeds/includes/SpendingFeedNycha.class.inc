@@ -27,7 +27,7 @@ class SpendingFeedNycha extends SpendingFeed
   protected $type_of_data = 'Spending_NYCHA';
   protected $filtered_columns_container = 'nycha_column_select';
   protected $oge_label = 'Other Government Entity';
-  protected $oge_name = "NEW YORK CITY HOUSING AUTHORITY";
+  protected $oge_name = "NEW YORK CITY HOUSING AUTHORITY[996]";
 
   protected function _process_user_criteria_by_datasource(){
 
@@ -57,36 +57,34 @@ class SpendingFeedNycha extends SpendingFeed
     }
 
     //Spending Category
-    if ($this->values['nycha_expense_type'] && $this->values['nycha_expense_type'] !== 'Total Spending') {
-      preg_match("/.*?(\\[.*?])/is", $this->values['nycha_expense_type'], $matches);
-      $expense_type_name = str_replace($matches[1], "", $matches[0]);
-      $this->form['filter']['nycha_expense_type'] = array('#markup' => '<div><strong>Spending Category:</strong> ' . $expense_type_name . '</div>');
+    if ($this->values['nycha_expense_type']) {
+      $this->form['filter']['nycha_expense_type'] = array('#markup' => '<div><strong>Spending Category:</strong> ' . $this->values['nycha_expense_type'] . '</div>');
       $this->user_criteria['Expense Type'] = $this->values['nycha_expense_type'];
-      $this->formatted_search_criteria['Spending Category'] = $expense_type_name;
+      $this->formatted_search_criteria['Spending Category'] = $this->values['nycha_expense_type'];
     }else{
       $this->form['filter']['nycha_expense_type'] = array('#markup' => '<div><strong>Spending Category:</strong> Total Spending</div>');
       $this->formatted_search_criteria['Spending Category'] = 'Total Spending';
     }
 
     //Industry
-    if ($this->values['nycha_industry']) {
-      $industry_type = trim($this->values['nycha_industry']);
+    if ($this->values['nycha_industry'] && $this->values['nycha_industry'] != 'Select Industry') {
+      $industry_type = $this->values['nycha_industry'];
       $this->form['filter']['nycha_industry'] = array('#markup' => '<div><strong>Industry:</strong> ' . $industry_type . '</div>');
       $this->user_criteria['Industry'] = $industry_type;
       $this->formatted_search_criteria['Industry'] = $industry_type;
     }
 
     //Funding Source
-    if ($this->values['funding_source']) {
-      $funding_source = trim($this->values['funding_source']);
+    if ($this->values['funding_source'] && $this->values['funding_source'] != 'Select Funding Source') {
+      $funding_source = $this->values['funding_source'];
       $this->form['filter']['funding_source'] = array('#markup' => '<div><strong>Funding Source:</strong> ' . $funding_source . '</div>');
       $this->user_criteria['funding_source'] = $funding_source;
       $this->formatted_search_criteria['funding_source'] = $funding_source;
     }
 
     //Responsibility Center
-    if ($this->values['resp_center']) {
-      $resp_center = trim($this->values['resp_center']);
+    if ($this->values['resp_center'] && $this->values['resp_center'] != 'Select Responsibility Center') {
+      $resp_center = $this->values['resp_center'];
       $this->form['filter']['resp_center'] = array('#markup' => '<div><strong>Responsibility Center:</strong> ' . $resp_center . '</div>');
       $this->user_criteria['resp_center'] = $resp_center;
       $this->formatted_search_criteria['resp_center'] = $resp_center;
@@ -150,7 +148,7 @@ class SpendingFeedNycha extends SpendingFeed
       $po_type = trim($this->values['purchase_order_type']);
       $this->form['filter']['purchase_order_type'] = array('#markup' => '<div><strong>Purchase Order Type:</strong> ' . $po_type . '</div>');
       $this->user_criteria['purchase_order_type'] = $po_type;
-      $this->formatted_search_criteria['resp_center'] = $po_type;
+      $this->formatted_search_criteria['purchase_order_type'] = $po_type;
     }
 
     //Contract ID
