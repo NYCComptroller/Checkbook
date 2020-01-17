@@ -27,7 +27,7 @@ class SpendingFeedNycedc extends SpendingFeed
   protected $type_of_data = 'Spending_OGE';
   protected $filtered_columns_container = 'oge_column_select';
   protected $oge_label = 'Other Government Entity';
-  protected $oge_name = "NEW YORK CITY ECONOMIC DEVELOPMENT CORPORATION";
+  protected $oge_name = "NEW YORK CITY ECONOMIC DEVELOPMENT CORPORATION[z81]";
 
   protected function _process_user_criteria_by_datasource(){
     //EDC
@@ -59,11 +59,9 @@ class SpendingFeedNycedc extends SpendingFeed
 
     //Spending Category
     if ($this->values['oge_expense_type']) {
-      preg_match("/.*?(\\[.*?])/is", $this->values['oge_expense_type'], $matches);
-      $expense_type_name = str_replace($matches[1], "", $matches[0]);
-      $this->form['filter']['oge_expense_type'] = array('#markup' => '<div><strong>Spending Category:</strong> ' . $expense_type_name . '</div>');
+      $this->form['filter']['oge_expense_type'] = array('#markup' => '<div><strong>Spending Category:</strong> ' . $this->values['oge_expense_type'] . '</div>');
       $this->user_criteria['Expense Type'] = $this->values['oge_expense_type'];
-      $this->formatted_search_criteria['Spending Category'] = $expense_type_name;
+      $this->formatted_search_criteria['Spending Category'] = $this->values['oge_expense_type'];
     } else {
       $this->form['filter']['expense_type'] = array('#markup' => '<div><strong>Spending Category:</strong> Total Spending</div>');
       $this->formatted_search_criteria['Spending Category'] = 'Total Spending';
