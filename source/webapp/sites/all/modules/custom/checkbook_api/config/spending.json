@@ -10,7 +10,7 @@
             "department_code":"department_code",
             "check_amount":"check_amount",
             "expense_category":"expenditure_object_code",
-            "contract_ID":"reference_document_number",
+            "contract_id":"reference_document_number",
             "contract_purpose":"purpose",
             "capital_project_code":"reporting_code",
             "spending_category":"spending_category_code@checkbook:spending_category_subven",
@@ -40,7 +40,7 @@
                         "associated_prime_vendor":"prime_vendor_name",
                         "capital_project":"reporting_code",
                         "check_amount":"check_amount",
-                        "contract_ID":"reference_document_number",
+                        "contract_id":"reference_document_number",
                         "contract_purpose":"purpose",
                         "expense_category":"expenditure_object_name",
                         "department":"department_name",
@@ -58,7 +58,7 @@
                         "agency",
                         "associated_prime_vendor",
                         "capital_project",
-                        "contract_ID",
+                        "contract_id",
                         "contract_purpose",
                         "check_amount",
                         "department",
@@ -149,7 +149,7 @@
                 "dataType":"text",
                 "maxLength":"4"
             },
-            "contract_ID":{
+            "contract_id":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"32"
