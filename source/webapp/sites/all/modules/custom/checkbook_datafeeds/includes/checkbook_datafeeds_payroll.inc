@@ -302,20 +302,17 @@ function _checkbook_datafeeds_payroll_column_options($datatype, $data_source = "
   if ($datatype == 'csv') {
     $options = array("checkbook" => drupal_map_assoc(array("Agency", "Annual Salary", "Base Pay", "Calendar Year",
       "Fiscal year", "Gross Pay", "Gross Pay YTD", "Hourly Rate",
-      "Other Payments", "Overtime Payments", "Pay Date",
-      "Pay Frequency", "Payroll Type", "Title",)),
-      "checkbook_nycha" => drupal_map_assoc(array("Annual Salary", "Base Pay", "Calendar Year", "Daily Wage",
+      "Other Payments", "Overtime Payments", "Pay Date", "Pay Frequency", "Payroll Type", "Title",)),
+      "checkbook_nycha" => drupal_map_assoc(array("Annual Salary", "Base Pay", "Fiscal Year", "Daily Wage",
         "Gross Pay", "Gross Pay YTD", "Hourly Rate",
-        "Other Payments", "Overtime Payments", "Pay Date",
-        "Pay Frequency", "Payroll Type", "Title",))
+        "Other Payments", "Overtime Payments", "Pay Date", "Pay Frequency", "Payroll Type", "Title",))
     );
   } else if ($datatype == 'xml') {
     $options = array("checkbook" => drupal_map_assoc(array("agency", "annual_salary", "base_pay", "calendar_year", "fiscal_year",
       "gross_pay", "gross_pay_ytd", "hourly_rate", "other_payments", "overtime_payments",
       "pay_date", "pay_frequency", "payroll_type", "title",)),
-      "checkbook_nycha" => drupal_map_assoc(array("annual_salary", "base_pay", "calendar_year", "daily_wage",
-        "gross_pay", "gross_pay_ytd", "hourly_rate",
-        "overtime_payments", "pay_date", "pay_frequency", "payroll_type", "title",)),
+      "checkbook_nycha" => drupal_map_assoc(array("annual_salary", "base_pay", "fiscal_year", "daily_wage",
+        "gross_pay", "gross_pay_ytd", "hourly_rate", "overtime_payments", "pay_date", "pay_frequency", "payroll_type", "title",)),
     );
   }
 
