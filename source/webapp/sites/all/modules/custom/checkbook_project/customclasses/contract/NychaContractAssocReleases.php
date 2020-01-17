@@ -135,11 +135,11 @@ SQL;
      *******/
     private function getSpendingByRelease($contract_id){
       $sql = <<<SQL
-                	SELECT issue_date_year, release_number, issue_date, document_id , check_amount, invoice_net_amount, expenditure_type_description
+                	SELECT issue_date_year, release_number, issue_date, document_id , check_amount, adj_distribution_line_amount, expenditure_type_description
                   FROM all_disbursement_transactions where contract_id = '{$contract_id}'
-                  GROUP BY release_number, issue_date_year, issue_date, document_id , check_amount, invoice_net_amount, expenditure_type_description
+                  GROUP BY release_number, issue_date_year, issue_date, document_id , check_amount, adj_distribution_line_amount, expenditure_type_description
                   ORDER BY release_number, issue_date_year, issue_date DESC
-            
+
 SQL;
       $results = _checkbook_project_execute_sql_by_data_source($sql, Datasource::NYCHA);
       $releaseSpendingData = [];
@@ -149,7 +149,7 @@ SQL;
         $releases[] = $result['release_number'];
         $years[$result['release_number']][] = $result['issue_date_year'];
         $releaseSpendingData[$result['release_number']][$result['issue_date_year']][] = array('issue_date'=>$result['issue_date'], 'document_id'=>$result['document_id'],
-          'check_amount' => $result['check_amount'], 'amount_spent'=>$result['invoice_net_amount'], 'expense_category'=>$result['expenditure_type_description']);
+          'check_amount' => $result['check_amount'], 'amount_spent'=>$result['adj_distribution_line_amount'], 'expense_category'=>$result['expenditure_type_description']);
       }
       sort($releases);
       $releases = array_unique($releases);

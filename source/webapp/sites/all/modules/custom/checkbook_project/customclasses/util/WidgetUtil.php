@@ -304,7 +304,7 @@ class WidgetUtil
         "invoiced_amount" => "Invoiced<br/> Amount",
         "section8_flag" => "Section 8",
         "invoice_number" => "Invoice<br/>Number",
-        "invoice_line_number" => "Invoice Line<br/>Number",
+        "invoice_line_number" => "Line<br/>Number",
         "distribution_line_number" => "Distribution Line<br/> Number",
         "invoice_discount" => "Invoice<br/>Discount",
         "tenant_share" => "Tenant<br/>Share",

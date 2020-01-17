@@ -223,7 +223,7 @@ SQL;
         if ($vendor_id) {
             $total_number_contracts_query = <<<EOQ2
             SELECT SUM(count)
-            FROM (SELECT COUNT(DISTINCT contract_id) 
+            FROM (SELECT COUNT(DISTINCT contract_id)
                   FROM all_agreements
                   WHERE vendor_id = '{$vendor_id}'
                   UNION ALL
@@ -315,7 +315,7 @@ SQL;
     public static function loadShipmentDistributionDetails(&$node, $contract_id)
     {
         $sd_sql = <<<SQL
-            SELECT DISTINCT 
+            SELECT DISTINCT
                 release_id,
                 shipment_number,
                 line_number,
@@ -358,15 +358,15 @@ SQL;
     $vendor_id = $node->data['vendor_id'];
     if ($vendor_id) {
       $sql = <<<SQL
-                    SELECT issue_date_year, issue_date, document_id , check_amount, invoice_net_amount, expenditure_type_description
+                    SELECT issue_date_year, issue_date, document_id , check_amount, adj_distribution_line_amount, expenditure_type_description
                     FROM all_disbursement_transactions where contract_id = '{$contract_id}' AND vendor_id = {$vendor_id}
-                    ORDER BY issue_date_year, issue_date DESC             
+                    ORDER BY issue_date_year, issue_date DESC
 SQL;
       $results = _checkbook_project_execute_sql_by_data_source($sql, Datasource::NYCHA);
       foreach ($results as $result) {
         $years[] = $result['issue_date_year'];
         $spendingByVendor[$result['issue_date_year']][] = array('issue_date' => $result['issue_date'], 'document_id' => $result['document_id'],
-          'check_amount' => $result['check_amount'], 'amount_spent' => $result['invoice_net_amount'], 'expense_category' => $result['expenditure_type_description']);
+          'check_amount' => $result['check_amount'], 'amount_spent' => $result['adj_distribution_line_amount'], 'expense_category' => $result['expenditure_type_description']);
       }
       $yearList = array_unique($years);
       arsort($yearList);
