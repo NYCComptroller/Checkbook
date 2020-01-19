@@ -189,7 +189,11 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     '#name' => 'dept',
     '#validated' => true,
   );
-
+  $form['dept_hidden'] = array(
+    '#title' => 'dept_hidden',
+    '#value' => $form_state['values']['dept'],
+    '#type' => 'hidden'
+  );
   $form['filter']['expense_category'] = array(
     '#type' => 'select',
     '#title' => t('Expense Category:'),
@@ -201,7 +205,11 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     '#default_value' => !empty($form_state['values']['expense_category']) ? $form_state['values']['expense_category'] : 'Select Expense Category',
     '#validated' => true
   );
-
+  $form['expense_category_hidden'] = array(
+    '#title' => 'expense_category_hidden',
+    '#value' => $form_state['values']['expense_category'],
+    '#type' => 'hidden'
+  );
   $form['filter']['expense_type'] = array(
     '#type' => 'select',
     '#title' => t('Spending Category:'),
@@ -457,6 +465,11 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     '#default_value' => 0,
     '#id' => 'edit-date-filter',
     '#name' => 'date_filter',
+  );
+  $form['date_filter_hidden'] = array(
+    '#title' => 'date_filter_hidden',
+    '#value' => $form_state['values']['date_filter'],
+    '#type' => 'hidden'
   );
   $form['filter']['year_filter_start'] = array(
     '#markup' => '<div class="datafield year-filters last-item">',
