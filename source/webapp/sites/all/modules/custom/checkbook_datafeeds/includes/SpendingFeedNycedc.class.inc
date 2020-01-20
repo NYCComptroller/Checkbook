@@ -90,7 +90,7 @@ class SpendingFeedNycedc extends SpendingFeed
       );
       $this->user_criteria['Check Amount Less Than'] = $this->values['check_amt_to'];
       $this->formatted_search_criteria['Check Amount'] = 'Less Than Equal to: $' . $this->values['check_amt_to'];
-    } elseif ($this->values['check_amt_from'] && !$this->values['check_amt_from']) {
+    } elseif ($this->values['check_amt_from'] && !$this->values['check_amt_to']) {
       $this->form['filter']['chkamount'] = array(
         '#markup' => '<div><strong>Check Amount:</strong> Greater Than Equal to: $' . $this->values['check_amt_from'] . '</div>',
       );
