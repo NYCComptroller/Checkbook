@@ -383,9 +383,16 @@ class RequestUtil
                         $path .= RequestUtilities::buildUrlFromParam('title');
                         $path .= RequestUtilities::buildUrlFromParam('agency');
                     }
-                        else{
+                    else{
+                        // NYCHA level
+                        $datasource = RequestUtilities::getRequestParamValue('datasource');
+                        if($datasource == 'checkbook_nycha') {
+                          $path = "payroll/agency_landing/yeartype/" . $yeartype . "/year/" . $year . RequestUtilities::buildUrlFromParam('datasource').Datasource::getNYCHAUrl();
+                        }
                         //Nyc Level
-                            $path = "payroll/yeartype/" . $yeartype . "/year/" . $year . RequestUtilities::buildUrlFromParam('datasource');
+                        else{
+                          $path = "payroll/yeartype/" . $yeartype . "/year/" . $year . RequestUtilities::buildUrlFromParam('datasource');
+                        }
                     }
                 }
                 break;
