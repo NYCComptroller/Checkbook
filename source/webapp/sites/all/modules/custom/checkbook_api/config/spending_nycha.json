@@ -24,6 +24,8 @@
       "data_source": "checkbook_nycha",
       "columnTypes": {
         "vendor_name": "like",
+        "contract_id": "like",
+        "document_id": "like",
         "adj_distribution_line_amount": "range",
         "check_amount": "range",
         "issue_date" : "range"
