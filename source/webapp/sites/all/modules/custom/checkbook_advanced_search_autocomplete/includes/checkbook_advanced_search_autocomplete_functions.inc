@@ -207,7 +207,7 @@ function _checkbook_advanced_search_autocomplete_spending_expcategory($year, $ag
     }
     else {
         foreach($options as $key => $value){
-          $value = ($feeds) ? $value : htmlentities($value);
+          $value = htmlentities($value);
           $name = ($feeds) ? $value :_ckbk_excerpt($value);
           $matches[] = array("code" => $key, "name" => $name, "title" => $value);
         }

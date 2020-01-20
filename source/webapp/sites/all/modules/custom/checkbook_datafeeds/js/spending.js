@@ -133,6 +133,8 @@
 
         //Multi-select
         $('.form-item-oge-column-select').show();
+        $('#edit-column-select').multiSelect('deselect_all');
+        $('#edit-nycha-column-select').multiSelect('deselect_all');
 
         //Move Issue Date fields to left column for OGE
         $('#df-payeename').detach().appendTo('.spending.data-feeds-wizard .column.column-left');
@@ -148,6 +150,8 @@
 
         //Multi-select
         $('.form-item-nycha-column-select').show();
+        $('#edit-column-select').multiSelect('deselect_all');
+        $('#edit-oge-column-select').multiSelect('deselect_all');
 
         //Move Issue Date fields to left column for NYCHA
         $('#df-check_amount').detach().prependTo('.spending.data-feeds-wizard .column.column-right');
@@ -165,6 +169,8 @@
 
         //Multi-select
         $('.form-item-column-select').show();
+        $('#edit-nycha-column-select').multiSelect('deselect_all');
+        $('#edit-oge-column-select').multiSelect('deselect_all');
 
         //Move Issue Date fields to left column for Citywide
         $('#df-check_amount').detach().prependTo('.spending.data-feeds-wizard .column.column-right');
@@ -273,8 +279,8 @@
 
   //Clear date filter input fields
   let clearDateFilterInputs = function(){
-    $('input[name="issuedfrom"]').val();
-    $('input[name="issuedto"]').val();
+    $('input[name="issuedfrom"]').val("");
+    $('input[name="issuedto"]').val("");
     $('select[name="year"]').val("0");
   }
 
@@ -335,6 +341,7 @@
 
       //Data Source change event
       $('input:radio[name=datafeeds-spending-domain-filter]', context).change(function () {
+        $('input:hidden[name="hidden_multiple_value"]', context).val("");
         $('input:hidden[name="dept_hidden"]', context).val("");
         $('input:hidden[name="expense_category_hidden"]', context).val("");
         $('input:hidden[name="date_filter_hidden"]', context).val("0");
