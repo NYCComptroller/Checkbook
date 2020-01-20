@@ -378,6 +378,19 @@ abstract class SpendingFeed
     $form_state['complete form']['expense_category_hidden']['#value'] = $form_state['values']['expense_category'];
     $form_state['complete form']['date_filter_hidden']['#value'] = $form_state['values']['date_filter'];
 
+    //Hidden Field for multi-select
+    switch ($this->data_source) {
+      case \Datasource::OGE:
+        $multi_select_hidden = isset($form_state['input']['oge_column_select']) ? '|' . implode('||', $form_state['input']['oge_column_select']) . '|' : '';
+        break;
+      case \Datasource::NYCHA:
+        $multi_select_hidden = isset($form_state['input']['nycha_column_select']) ? '|' . implode('||', $form_state['input']['nycha_column_select']) . '|' : '';
+        break;
+      default:
+        $multi_select_hidden = isset($form_state['input']['column_select']) ? '|' . implode('||', $form_state['input']['column_select']) . '|' : '';
+    }
+    $form_state['complete form']['hidden_multiple_value']['#value'] = $multi_select_hidden;
+
     $this->_validate_by_datasource($form, $form_state);
   }
 

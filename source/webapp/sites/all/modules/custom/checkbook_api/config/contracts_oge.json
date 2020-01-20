@@ -43,7 +43,9 @@
                 "budget_name":"contains",
                 "oge_contract_number":"like",
                 "description":"contains",
-                "display_vendor_name":"like"
+                "display_vendor_name":"like",
+                "maximum_contract_amount": "range",
+                "tracking_number": "like"
             },
             "displayConfiguration":{
                 "xml":{
@@ -173,7 +175,9 @@
                 "budget_name":"contains",
                 "oge_contract_number":"like",
                 "description":"contains",
-                "display_vendor_name":"like"
+                "display_vendor_name":"like",
+                "maximum_contract_amount": "range",
+                "tracking_number": "like"
             },
             "displayConfiguration":{
                 "xml":{
