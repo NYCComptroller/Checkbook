@@ -273,8 +273,8 @@
 
   //Clear date filter input fields
   let clearDateFilterInputs = function(){
-    $('input[name="issuedfrom"]').val();
-    $('input[name="issuedto"]').val();
+    $('input[name="issuedfrom"]').val("");
+    $('input[name="issuedto"]').val("");
     $('select[name="year"]').val("0");
   }
 
