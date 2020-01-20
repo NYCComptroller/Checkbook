@@ -9,7 +9,7 @@
       "funding_source": "funding_source_code",
       "responsibility_center":"responsibility_center_code",
       "payee_name": "vendor_name",
-      "payee_code": "vendor_code",
+      "payee_code": "vendor_customer_code",
       "check_amount": "check_amount",
       "amount_spent":"adj_distribution_line_amount",
       "purchase_order_type":"agreement_type_code",

@@ -4,7 +4,7 @@
   let reloadSpendingDepartments = function () {
     let agency = $('#edit-agency').val();
     let html = '<option value="0" selected="selected">Select Department</option>';
-    let old_val = $('#edit-dept').val();
+    let dept_hidden = $('input:hidden[name="dept_hidden"]').val();
     let data_source = $('input[name="datafeeds-spending-domain-filter"]:checked').val();
 
     if(data_source === 'checkbook' && $.inArray(agency, ["", null, "0", 'Select One', 'Citywide (All Agencies)']) != -1){
@@ -36,14 +36,14 @@
           }
         }
         $('#edit-dept').html(html);
+        if(dept_hidden) {
+          $('#edit-dept').val(dept_hidden);
+        }
         }, complete: function () {
           enable_input($('#edit-dept'));
           $('#edit-dept').removeClass('loading');
         }
       });
-      if(0 != $('#edit-dept option[value="'+old_val+'"]').length) {
-        $('#edit-dept').val(old_val);
-      }
     }
   };
 
@@ -52,6 +52,8 @@
     let agency = $('#edit-agency').val();
     let data_source = $('input[name="datafeeds-spending-domain-filter"]:checked').val();
     let html = '<option value="0" selected="selected">Select Expense Category</option>';
+    let dept = emptyToZero($('input:hidden[name="dept_hidden"]').val());
+    let expense_category_hidden = $('input:hidden[name="expense_category_hidden"]').val();
 
     if(data_source == 'checkbook' && $.inArray(agency, ["", null, "0", 'Select One', 'Citywide (All Agencies)']) != -1){
       $('#edit-expense-category').html(html);
@@ -59,8 +61,6 @@
     }else{
       $('#edit-expense-category').addClass('loading');
 
-      let dept = emptyToZero($('#edit-dept').val());
-      let old_val = $('#edit-expense-category').val();
       let year = 0;
       if ($('input:radio[name=date_filter]:checked').val() == 0) {
         year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
@@ -85,14 +85,14 @@
             }
           }
           $('#edit-expense-category').html(html);
+          if (expense_category_hidden) {
+            $('#edit-expense-category').val(expense_category_hidden);
+          }
         }, complete: function () {
           enable_input($('#edit-expense-category'));
           $('#edit-expense-category').removeClass('loading');
         }
       });
-      if(0 != $('#edit-expense-category option[value="'+old_val+'"]').length) {
-        $('#edit-expense-category').val(old_val);
-      }
     }
   };
 
@@ -177,8 +177,8 @@
     //Reset enabling/disabling fields
      onSpendingCategoryChange();
 
-    //Reset Date Filter filelds
-    resetDateFilter(data_source);
+    //Disable/Enable Date Filter fields
+    onDateFilterChange();
   };
 
   //Get Spending Category based on Data Source
@@ -238,18 +238,10 @@
     }
   };
 
-  //On Date filter change
-  let resetDateFilter = function(data_source){
-    //Enable Year
-    $('input:radio[name=date_filter]')[0].checked = true;
-    enable_input($('select[name="year"]'));
-    $('select[name="year"]').val(0);
-
-    //Disable Issue Date input fields
-    $('input[name="issuedfrom"]').val("");
-    $('input[name="issuedto"]').val("");
-    disable_input($('input[name="issuedfrom"]'));
-    disable_input($('input[name="issuedto"]'));
+  //On Date Filter change
+  let onDateFilterChange = function(){
+    let dateFilter = $('input:hidden[name="date_filter_hidden"]').val();
+    let data_source = $('input[name="datafeeds-spending-domain-filter"]:checked').val();
 
     switch(data_source) {
       case 'checkbook_nycha':
@@ -264,7 +256,27 @@
         //enable Issue date
         enable_input($('input:radio[name=date_filter][value="1"]'));
     }
-  };
+
+    if (dateFilter === '1') {
+      disable_input($('select[name="year"]'));
+      enable_input($('input[name="issuedfrom"]'));
+      enable_input($('input[name="issuedto"]'));
+    } else{
+      enable_input($('select[name="year"]'));
+      disable_input($('input[name="issuedfrom"]'));
+      disable_input($('input[name="issuedto"]'));
+    }
+
+    //Set default value for Date-filter radios
+    $('#edit-date-filter-'+dateFilter).attr('checked', true);
+  }
+
+  //Clear date filter input fields
+  let clearDateFilterInputs = function(){
+    $('input[name="issuedfrom"]').val();
+    $('input[name="issuedto"]').val();
+    $('select[name="year"]').val("0");
+  }
 
   Drupal.behaviors.spendingDataFeeds = {
     attach: function (context) {
@@ -323,16 +335,22 @@
 
       //Data Source change event
       $('input:radio[name=datafeeds-spending-domain-filter]', context).change(function () {
+        $('input:hidden[name="dept_hidden"]', context).val("");
+        $('input:hidden[name="expense_category_hidden"]', context).val("");
+        $('input:hidden[name="date_filter_hidden"]', context).val("0");
+        clearDateFilterInputs();
         onSpendingDataSourceChange($(this, context).val());
       });
 
       //Agency drop-down change event
       $('select[name="agency"]', context).change(function () {
+        $('input:hidden[name="dept_hidden"]', context).val("");
+        $('input:hidden[name="expense_category_hidden"]', context).val("");
         reloadSpendingDepartments();
         reloadSpendingExpenceCategories();
       });
 
-      //Agency drop-down change event
+      //Year drop-down change event
       $('select[name="year"]', context).change(function () {
         reloadSpendingDepartments();
         reloadSpendingExpenceCategories();
@@ -340,6 +358,7 @@
 
       //Department drop-down change event
       $('select[name="dept"]', context).change(function () {
+        $('input:hidden[name="dept_hidden"]', context).val($(this, context).val());
         reloadSpendingExpenceCategories();
       });
 
@@ -359,20 +378,9 @@
 
       //On Date Filter change
       $("#edit-date-filter", context).change(function () {
-        if ($('input:radio[name=date_filter]:checked', context).val() === '1') {
-          // issue date
-          $('select[name="year"]', context).val(0);
-          disable_input($('select[name="year"]', context));
-          enable_input($('input[name="issuedfrom"]', context));
-          enable_input($('input[name="issuedto"]', context));
-        } else{
-          // year
-          enable_input($('select[name="year"]', context));
-          $('input[name="issuedfrom"]', context).val("");
-          disable_input($('input[name="issuedfrom"]', context));
-          $('input[name="issuedto"]', context).val("");
-          disable_input($('input[name="issuedto"]', context));
-        }
+        $('input:hidden[name="date_filter_hidden"]', context).val($('input:radio[name=date_filter]:checked', context).val());
+        clearDateFilterInputs();
+        onDateFilterChange();
       });
 
       //Sets up jQuery UI datepickers

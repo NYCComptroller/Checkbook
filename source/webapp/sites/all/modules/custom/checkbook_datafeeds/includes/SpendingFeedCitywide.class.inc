@@ -62,11 +62,9 @@ class SpendingFeedCitywide extends SpendingFeed
 
     //Spending Category
     if ($this->values['expense_type']) {
-      preg_match("/.*?(\\[.*?])/is", $this->values['expense_type'], $matches);
-      $expense_type_name = str_replace($matches[1], "", $matches[0]);
-      $this->form['filter']['expense_type'] = array('#markup' => '<div><strong>Spending Category:</strong> ' . $expense_type_name . '</div>');
+      $this->form['filter']['expense_type'] = array('#markup' => '<div><strong>Spending Category:</strong> ' . $this->values['expense_type'] . '</div>');
       $this->user_criteria['Expense Type'] = $this->values['expense_type'];
-      $this->formatted_search_criteria['Spending Category'] = $expense_type_name;
+      $this->formatted_search_criteria['Spending Category'] = $this->values['expense_type'];
     } else {
       $this->form['filter']['expense_type'] = array('#markup' => '<div><strong>Spending Category:</strong> Total Spending</div>');
       $this->formatted_search_criteria['Spending Category'] = 'Total Spending';
