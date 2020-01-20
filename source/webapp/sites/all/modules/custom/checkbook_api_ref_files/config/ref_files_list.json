@@ -118,7 +118,7 @@
   },
   "nycha_vendor_code_list": {
     "database": "checkbook_nycha",
-    "sql": "SELECT DISTINCT vendor_customer_code, vendor_name FROM vendor ORDER BY vendor_customer_code",
+    "sql": "SELECT DISTINCT t1.vendor_customer_code, t1.vendor_name FROM vendor t1 WHERE EXISTS ( select 1 from all_disbursement_transactions t2 where t2.vendor_id = t1.vendor_id ) ORDER BY t1.vendor_customer_code",
     "force_quote": [
       "vendor_customer_code"
     ]

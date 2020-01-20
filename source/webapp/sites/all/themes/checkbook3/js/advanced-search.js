@@ -1295,6 +1295,9 @@
 
         function onDateFilterClick(div) {
           var value = div.ele('date_filter_checked').val();
+          div.ele('fiscal_year').val(0);
+          div.ele('issue_date_from').val("");
+          div.ele('issue_date_to').val("");
           if (value === "0") {
             enable_input(div.ele('fiscal_year'));
             disable_input(div.ele('issue_date_from'));

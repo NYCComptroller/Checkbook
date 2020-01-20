@@ -374,7 +374,8 @@ abstract class SpendingFeed
     }
 
     //Set the hidden filed values on Spending form
-    $form_state['complete form']['agency_hidden']['#value'] = $form_state['values']['agency'];
+    $form_state['complete form']['dept_hidden']['#value'] = $form_state['values']['dept'];
+    $form_state['complete form']['expense_category_hidden']['#value'] = $form_state['values']['expense_category'];
     $form_state['complete form']['date_filter_hidden']['#value'] = $form_state['values']['date_filter'];
 
     $this->_validate_by_datasource($form, $form_state);

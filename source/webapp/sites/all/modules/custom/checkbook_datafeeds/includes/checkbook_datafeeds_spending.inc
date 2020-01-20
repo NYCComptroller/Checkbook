@@ -189,7 +189,11 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     '#name' => 'dept',
     '#validated' => true,
   );
-
+  $form['dept_hidden'] = array(
+    '#title' => 'dept_hidden',
+    '#value' => $form_state['values']['dept'],
+    '#type' => 'hidden'
+  );
   $form['filter']['expense_category'] = array(
     '#type' => 'select',
     '#title' => t('Expense Category:'),
@@ -201,7 +205,11 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     '#default_value' => !empty($form_state['values']['expense_category']) ? $form_state['values']['expense_category'] : 'Select Expense Category',
     '#validated' => true
   );
-
+  $form['expense_category_hidden'] = array(
+    '#title' => 'expense_category_hidden',
+    '#value' => $form_state['values']['expense_category'],
+    '#type' => 'hidden'
+  );
   $form['filter']['expense_type'] = array(
     '#type' => 'select',
     '#title' => t('Spending Category:'),
@@ -458,25 +466,20 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     '#id' => 'edit-date-filter',
     '#name' => 'date_filter',
   );
+  $form['date_filter_hidden'] = array(
+    '#title' => 'date_filter_hidden',
+    '#value' => $form_state['values']['date_filter'],
+    '#type' => 'hidden'
+  );
   $form['filter']['year_filter_start'] = array(
     '#markup' => '<div class="datafield year-filters last-item">',
   );
-
-  //  drush vset current_citywide_fy 2020
-  /*$year_settings = [
-    'default_year' => [
-      Datasource::CITYWIDE => 'FY'.CheckbookDateUtil::getCurrentDatasourceFiscalYear(Datasource::CITYWIDE),
-      Datasource::OGE => 'FY'.CheckbookDateUtil::getCurrentDatasourceFiscalYear(Datasource::OGE),
-      Datasource::NYCHA => 'FY'.CheckbookDateUtil::getCurrentDatasourceFiscalYear(Datasource::NYCHA),
-    ]
-  ];
-  drupal_add_js(array('datafeeds' => $year_settings), 'setting');*/
 
   $form['filter']['year'] = array(
     '#type' => 'select',
     '#options' => _year_options('all-years'),
     '#attributes' => array('class' => array('watch')),
-    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'date_filter', $first_time_load, 0),
+    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'year', $first_time_load, 0),
     '#prefix' => '<div id="year"><div class="datafield year">',
     '#suffix' => '</div></div>',
     '#id' => 'edit-year',
