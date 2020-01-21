@@ -27,13 +27,15 @@ class SpendingFeedNycedc extends SpendingFeed
   protected $type_of_data = 'Spending_OGE';
   protected $filtered_columns_container = 'oge_column_select';
   protected $oge_label = 'Other Government Entity';
-  protected $oge_name = "NEW YORK CITY ECONOMIC DEVELOPMENT CORPORATION[z81]";
+  protected $oge_name_code = "NEW YORK CITY ECONOMIC DEVELOPMENT CORPORATION[z81]";
+  protected $oge_name = "NEW YORK CITY ECONOMIC DEVELOPMENT CORPORATION";
 
   protected function _process_user_criteria_by_datasource(){
     //EDC
     $this->form['filter']['agency'] = array(
-      '#markup' => '<div><strong>' . $this->oge_label .':</strong> ' . $this->oge_name . '</div>',
+      '#markup' => '<div><strong>' . $this->oge_label .':</strong> ' . $this->oge_name_code . '</div>',
     );
+    $this->formatted_search_criteria[$this->oge_label] = $this->oge_name;
 
     //Department
     if ($this->values['dept'] && $this->values['dept'] != 'Select Department' && $this->values['dept'] != '0') {
