@@ -1778,7 +1778,7 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
         preg_match($pattern, $values['industry'], $imatches);
         $criteria['value']['industry_type_id'] = trim($imatches[1], '[ ]');
       }
-      if ($values['contract_includes_sub_vendors_id'] !== '' && $values['contract_includes_sub_vendors_id'] !== 0) {
+      if ($values['contract_includes_sub_vendors_id'] != '' && $values['contract_includes_sub_vendors_id'] != 0) {
         $criteria['value']['contract_includes_sub_vendors_id'] = $values['contract_includes_sub_vendors_id'];
       }
       if ($values['sub_vendor_status_in_pip_id'] != 'Select Status' && $values['sub_vendor_status_in_pip_id'] != 0) {
