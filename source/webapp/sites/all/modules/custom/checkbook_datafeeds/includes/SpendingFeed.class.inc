@@ -311,7 +311,7 @@ abstract class SpendingFeed
       form_set_error('check_amt_to', t('Check Amount must be a number.'));
     }
 
-    if ($check_from && $check_to && $check_to < $check_from) {
+    if (is_numeric($check_from) && is_numeric($check_to) && $check_to < $check_from) {
       form_set_error('check_amt_to', t('Invalid range for Check Amount.'));
     }
 

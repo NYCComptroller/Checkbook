@@ -219,7 +219,6 @@ class SpendingFeedNycha extends SpendingFeed
 
   protected function _validate_by_datasource(&$form, &$form_state)
   {
-    log_error($form_state['values']);
     $spent_amount_from = $form_state['values']['spent_amt_from'];
     $spent_amount_to = $form_state['values']['spent_amt_to'];
 
@@ -230,8 +229,7 @@ class SpendingFeedNycha extends SpendingFeed
     if ($spent_amount_to && !is_numeric($spent_amount_to)) {
       form_set_error('spent_amt_to', t('Spent Amount must be a number.'));
     }
-    log_error($spent_amount_from);log_error($spent_amount_to);log_error($spent_amount_to < $spent_amount_from);
-    if ($spent_amount_from && $spent_amount_to && $spent_amount_to < $spent_amount_from) {
+    if (is_numeric($spent_amount_from) && is_numeric($spent_amount_to) && $spent_amount_to < $spent_amount_from) {
       form_set_error('spent_amt_to', t('Invalid range for Spent Amount.'));
     }
 
