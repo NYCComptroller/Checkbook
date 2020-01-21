@@ -814,7 +814,7 @@ function checkbook_datafeeds_payroll_validate($form, &$form_state)
   if ($basepayto && !is_numeric($basepayto)) {
     form_set_error('basepayto', t('Base Pay To value must be a number.'));
   }
-  if ($basepayfrom && $basepayto && $basepayto < $basepayfrom) {
+  if (is_numeric($basepayfrom) && is_numeric($basepayto) && $basepayto < $basepayfrom) {
     form_set_error('basepayto', t('Invalid range for Base Pay.'));
   }
   // Overtime Pay:
@@ -824,7 +824,7 @@ function checkbook_datafeeds_payroll_validate($form, &$form_state)
   if ($overtimeto && !is_numeric($overtimeto)) {
     form_set_error('overtimeto', t('Overtime Payments To value must be a number.'));
   }
-  if ($overtimefrom && $overtimeto && $overtimeto < $overtimefrom) {
+  if (is_numeric($overtimefrom) && is_numeric($overtimeto) && $overtimeto < $overtimefrom) {
     form_set_error('overtimeto', t('Invalid range for Overtime Payments.'));
   }
   // Other Pay:
@@ -834,7 +834,7 @@ function checkbook_datafeeds_payroll_validate($form, &$form_state)
   if ($otherto && !is_numeric($otherto)) {
     form_set_error('otherto', t('Other Payments To value must be a number.'));
   }
-  if ($otherfrom && $otherto && $otherto < $otherfrom) {
+  if (is_numeric($otherfrom) && is_numeric($otherto) && $otherto < $otherfrom) {
     form_set_error('otherto', t('Invalid range for Other Payments.'));
   }
   // Gross Pay:
@@ -844,7 +844,7 @@ function checkbook_datafeeds_payroll_validate($form, &$form_state)
   if ($grossto && !is_numeric($grossto)) {
     form_set_error('grossto', t('Gross Pay To value must be a number.'));
   }
-  if ($grossfrom && $grossto && $grossto < $grossfrom) {
+  if (is_numeric($grossfrom) && is_numeric($grossto) && $grossto < $grossfrom) {
     form_set_error('grossto', t('Invalid range for Gross Pay'));
   }
   // Pay Date:
@@ -864,7 +864,7 @@ function checkbook_datafeeds_payroll_validate($form, &$form_state)
   if ($totalgrossto && !is_numeric($totalgrossto)) {
     form_set_error('totalgrossto', t('Gross Pay YTD To value must be a number.'));
   }
-  if ($totalgrossfrom && $totalgrossto && $totalgrossto < $totalgrossfrom) {
+  if (is_numeric($totalgrossfrom) && is_numeric($totalgrossto) && $totalgrossto < $totalgrossfrom) {
     form_set_error('totalgrossto', t('Invalid range for Gross Pay YTD.'));
   }
   // Annual Salary:
@@ -874,7 +874,7 @@ function checkbook_datafeeds_payroll_validate($form, &$form_state)
   if ($salaryto && !is_numeric($salaryto)) {
     form_set_error('salaryto', t('Amount To value must be a number.'));
   }
-  if ($salaryfrom && $salaryto && $salaryto < $salaryfrom) {
+  if (is_numeric($salaryfrom) && is_numeric($salaryto) && $salaryto < $salaryfrom) {
     form_set_error('salaryto', t('Invalid range for Amount.'));
   }
   //Validate response columns

@@ -582,7 +582,7 @@ function checkbook_datafeeds_revenue_validate($form, &$form_state)
   if ($adoptedto && !is_numeric($adoptedto)) {
     form_set_error('adoptedto', t('Adopted To value must be a number.'));
   }
-  if ($adoptedfrom && $adoptedto && $adoptedto < $adoptedfrom) {
+  if (is_numeric($adoptedfrom) && is_numeric($adoptedto) && $adoptedto < $adoptedfrom) {
     form_set_error('adoptedto', t('Invalid range for Adopted.'));
   }
 
@@ -594,7 +594,7 @@ function checkbook_datafeeds_revenue_validate($form, &$form_state)
   if ($modifiedto && !is_numeric($modifiedto)) {
     form_set_error('modifiedto', t('Modified To value must be a number.'));
   }
-  if ($modifiedfrom && $modifiedto && $modifiedto < $modifiedfrom) {
+  if (is_numeric($modifiedfrom) && is_numeric($modifiedto) && $modifiedto < $modifiedfrom) {
     form_set_error('modifiedto', t('Invalid range for Modified.'));
   }
 
@@ -606,7 +606,7 @@ function checkbook_datafeeds_revenue_validate($form, &$form_state)
   if ($recognizedto && !is_numeric($recognizedto)) {
     form_set_error('recognizedto', t('Recognized To value must be a number.'));
   }
-  if ($recognizedfrom && $recognizedto && $recognizedto < $recognizedfrom) {
+  if (is_numeric($recognizedfrom) && is_numeric($recognizedto) && $recognizedto < $recognizedfrom) {
     form_set_error('recognizedto', t('Invalid range for Recognized.'));
   }
 }
