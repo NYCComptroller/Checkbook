@@ -50,7 +50,7 @@
           <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
         </exp>
       </where>
-      AND check_status NOT IN ('VOIDED')
+      AND responsibility_center_id is not null
       GROUP BY responsibility_center_id,responsibility_center_code, responsibility_center_description
     </sql>
   </statement>
