@@ -23,7 +23,7 @@
       "sortColumn":["sort_sequence"],
       "columnTypes":{
         "contract_id":"like",
-        "po_header_id": "like",
+        //"po_header_id": "like",
         "vendor_name":"contains",
         "purpose":"contains"
       },
