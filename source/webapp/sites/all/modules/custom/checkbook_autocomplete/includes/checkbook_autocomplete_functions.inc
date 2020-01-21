@@ -637,15 +637,9 @@ function _checkbook_autocomplete_spending_documentid($year, $agency, $expense_ca
   $dept = _emptyToZero(urldecode($dept));
   $expense_category = _emptyToZero(urldecode($expense_category));
   if (!empty($search_term)) {
-    if($data_source == Datasource::NYCHA){
-      $query = 'select/?q=document_id:' . $search_term . '&facet=true&facet.field=document_id&fq=domain:spending&facet.limit=10&wt=phps';
-      $matches = _get_spending_datafeeds_autocomplete_results('document_id', $query, $year, $agency,
-        $expense_category, $dept, $exptype, $mwbe_category, $industry, $data_source);
-    }else {
-      $query = 'select/?q=expense_id:' . $search_term . '&facet=true&facet.field=expense_id&fq=domain:spending&facet.limit=10&wt=phps';
-      $matches = _get_spending_datafeeds_autocomplete_results('expense_id', $query, $year, $agency,
-        $expense_category, $dept, $exptype, $mwbe_category, $industry, $data_source);
-    }
+    $query = 'select/?q=document_id:' . $search_term . '&facet=true&facet.field=document_id&fq=domain:spending&facet.limit=10&wt=phps';
+    $matches = _get_spending_datafeeds_autocomplete_results('document_id', $query, $year, $agency,
+      $expense_category, $dept, $exptype, $mwbe_category, $industry, $data_source);
     drupal_json_output($matches);
   }
 }
