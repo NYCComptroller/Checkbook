@@ -27,12 +27,14 @@ class SpendingFeedNycha extends SpendingFeed
   protected $type_of_data = 'Spending_NYCHA';
   protected $filtered_columns_container = 'nycha_column_select';
   protected $oge_label = 'Other Government Entity';
-  protected $oge_name = "NEW YORK CITY HOUSING AUTHORITY[996]";
+  protected $oge_name_code = "NEW YORK CITY HOUSING AUTHORITY[996]";
+  protected $oge_name = "NEW YORK CITY HOUSING AUTHORITY";
 
   protected function _process_user_criteria_by_datasource(){
 
     //OGE Display
-    $this->form['filter']['agency'] = array('#markup' => '<div><strong>' . $this->oge_label .':</strong> ' . $this->oge_name . '</div>',);
+    $this->form['filter']['agency'] = array('#markup' => '<div><strong>' . $this->oge_label .':</strong> ' . $this->oge_name_code . '</div>',);
+    $this->formatted_search_criteria[$this->oge_label] = $this->oge_name;
 
     //Department
     if ($this->values['dept'] && $this->values['dept'] != 'Select Department' && $this->values['dept'] != '0') {
@@ -217,6 +219,22 @@ class SpendingFeedNycha extends SpendingFeed
 
   protected function _validate_by_datasource(&$form, &$form_state)
   {
+    log_error($form_state['values']);
+    $spent_amount_from = $form_state['values']['spent_amt_from'];
+    $spent_amount_to = $form_state['values']['spent_amt_to'];
+
+    if ($spent_amount_from && !is_numeric($spent_amount_from)) {
+      form_set_error('spent_amt_from', t('Spent Amount must be a number.'));
+    }
+
+    if ($spent_amount_to && !is_numeric($spent_amount_to)) {
+      form_set_error('spent_amt_to', t('Spent Amount must be a number.'));
+    }
+    log_error($spent_amount_from);log_error($spent_amount_to);log_error($spent_amount_to < $spent_amount_from);
+    if ($spent_amount_from && $spent_amount_to && $spent_amount_to < $spent_amount_from) {
+      form_set_error('spent_amt_to', t('Invalid range for Spent Amount.'));
+    }
+
     $multi_select_hidden = isset($form_state['input']['nycha_column_select']) ? '|' . implode('||', $form_state['input']['nycha_column_select']) . '|' : '';
     if (!$multi_select_hidden) {
       form_set_error('nycha_column_select', t('You must select at least one column.'));

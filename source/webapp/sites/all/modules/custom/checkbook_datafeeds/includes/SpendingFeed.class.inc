@@ -201,7 +201,7 @@ abstract class SpendingFeed
       $this->form['filter']['year'] = array(
         '#markup' => '<div><strong>Year:</strong> All Years</div>',
       );
-      $this->formatted_search_criteria['Year'] = $this->values['year'];
+      $this->formatted_search_criteria['Year'] = ' All Years';
     }
 
     return;
