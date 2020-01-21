@@ -1076,7 +1076,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
       }
       if ($values['agency']) {
         $form['filter']['agency'] = array(
-          '#markup' => '<div><strong>Other Government Entities:</strong> NEW YORK CITY ECONOMIC DEVELOPMENT CORPORATION</div>',
+          '#markup' => '<div><strong>Other Government Entities:</strong> '.$values['agency'].'</div>',
         );
       }
       if ($values['category']) {

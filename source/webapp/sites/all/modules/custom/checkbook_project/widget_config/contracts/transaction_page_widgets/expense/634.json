@@ -297,7 +297,7 @@
         {"sClass":"number-center", "sWidth":"100px","asSorting": [ "asc","desc" ]},
         {"bSortable":false,"sWidth":"50px"},
         {"sClass":"text", "sWidth":"210px","asSorting": [ "asc","desc" ]},
-        {"sClass":"text","bSortable": false, "sWidth":"155px","asSorting": [ "asc","desc" ]},
+        {"sClass":"text", "sWidth":"155px","asSorting": [ "asc","desc" ]},
         {"sClass":"number","sWidth":"130px","asSorting": [ "desc","asc" ]},
         {"sClass":"number","sWidth":"130px","asSorting": [ "desc","asc" ]},
         {"sClass":"number","sWidth":"130px","asSorting": [ "desc","asc" ]},
