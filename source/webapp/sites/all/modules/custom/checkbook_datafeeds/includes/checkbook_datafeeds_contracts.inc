@@ -1822,7 +1822,7 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
     if ($currentto && !is_numeric($currentto)) {
       form_set_error('nycha_currentamtto', t('Current Amount must be a number.'));
     }
-    if ($currentfrom && $currentto && $currentto < $currentfrom) {
+    if (is_numeric($currentfrom) && is_numeric($currentto) && $currentto < $currentfrom) {
       form_set_error('nycha_currentamtto', t('Invalid range for Current Amount.'));
     }
     // Start Date:
@@ -1943,7 +1943,7 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
     if ($currentto && !is_numeric($currentto)) {
       form_set_error('currentamtto', t('Current Amount must be a number.'));
     }
-    if ($currentfrom && $currentto && $currentto < $currentfrom) {
+    if (is_numeric($currentfrom) && is_numeric($currentto) && $currentto < $currentfrom) {
       form_set_error('currentamtto', t('Invalid range for Current Amount.'));
     }
 

@@ -654,8 +654,6 @@ function checkbook_datafeeds_process_budget_values($form, $form_state)
  */
 function checkbook_datafeeds_budget_validate($form, &$form_state)
 {
-  $numbermessage = ' must be a number.';
-  $gtmessage = 'Invalid range for ';
   $adoptedfrom = $form_state['values']['adoptedfrom'];
   $adoptedto = $form_state['values']['adoptedto'];
   $currentfrom = $form_state['values']['currentfrom'];
@@ -678,7 +676,7 @@ function checkbook_datafeeds_budget_validate($form, &$form_state)
   if ($adoptedto && !is_numeric($adoptedto)) {
     form_set_error('adoptedto', t('Adopted Budget To value must be a number.'));
   }
-  if ($adoptedfrom && $adoptedto && $adoptedto < $adoptedfrom) {
+  if (is_numeric($adoptedfrom) && is_numeric($adoptedto) && $adoptedto < $adoptedfrom) {
     form_set_error('adoptedto', t('Invalid range for Adopted Budget.'));
   }
   // Current:
@@ -688,7 +686,7 @@ function checkbook_datafeeds_budget_validate($form, &$form_state)
   if ($currentto && !is_numeric($currentto)) {
     form_set_error('currentto', t('Modified Budget To value must be a number.'));
   }
-  if ($currentfrom && $currentto && $currentto < $currentfrom) {
+  if (is_numeric($currentfrom) && is_numeric($currentto) && $currentto < $currentfrom) {
     form_set_error('currentto', t('Invalid range for Modified Budget.'));
   }
   // Preencumbered:
@@ -698,7 +696,7 @@ function checkbook_datafeeds_budget_validate($form, &$form_state)
   if ($preencto && !is_numeric($preencto)) {
     form_set_error('preencumberedto', t('Pre-encumbered To value must be a number.'));
   }
-  if ($preencfrom && $preencto && $preencto < $preencfrom) {
+  if (is_numeric($preencfrom) && is_numeric($preencto) && $preencto < $preencfrom) {
     form_set_error('preencumberedto', t('Invalid range for Pre-encumbered.'));
   }
   // Encumbered:
@@ -708,7 +706,7 @@ function checkbook_datafeeds_budget_validate($form, &$form_state)
   if ($encto && !is_numeric($encto)) {
     form_set_error('encumberedto', t('Encumbered To value must be a number.'));
   }
-  if ($encfrom && $encto && $encto < $encfrom) {
+  if (is_numeric($encfrom) && is_numeric($encto) && $encto < $encfrom) {
     form_set_error('encumberedto', t('Invalid range for Encumbered.'));
   }
   // Cash:
@@ -718,7 +716,7 @@ function checkbook_datafeeds_budget_validate($form, &$form_state)
   if ($cashto && !is_numeric($cashto)) {
     form_set_error('cashto', t('Cash Expense To value must be a number.'));
   }
-  if ($cashfrom && $cashto && $cashto < $cashfrom) {
+  if (is_numeric($cashfrom) && is_numeric($cashto) && $cashto < $cashfrom) {
     form_set_error('cashto', t('Invalid range for Cash Expense.'));
   }
   // Post Adjustments:
@@ -728,7 +726,7 @@ function checkbook_datafeeds_budget_validate($form, &$form_state)
   if ($postto && !is_numeric($postto)) {
     form_set_error('postadjustmentsto', t('Post Adjustment To value must be a number.'));
   }
-  if ($postfrom && $postto && $postto < $postfrom) {
+  if (is_numeric($postfrom) && is_numeric($postto) && $postto < $postfrom) {
     form_set_error('postadjustmentsto', t('Invalid range for Post Adjustment.'));
   }
   // Accrued Expense:
@@ -738,7 +736,7 @@ function checkbook_datafeeds_budget_validate($form, &$form_state)
   if ($accruedto && !is_numeric($accruedto)) {
     form_set_error('accruedexpenseto', t('Accrued Expense To value must be a number.'));
   }
-  if ($accruedfrom && $accruedto && $accruedto < $accruedfrom) {
+  if (is_numeric($accruedfrom) && is_numeric($accruedto) && $accruedto < $accruedfrom) {
     form_set_error('accruedexpenseto', t('Invalid range for Accrued Expense.'));
   }
   // Columns:
