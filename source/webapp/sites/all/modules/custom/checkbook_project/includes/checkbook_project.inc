@@ -2670,10 +2670,11 @@ function _checkbook_psql_command($database = 'checkbook')
     $database = 'checkbook';
   }
 
-  $psql_path = '/usr/bin/psql';  // default
-  if (isset($conf['check_book']['psql_path'])) {
-    $psql_path = $conf['check_book']['psql_path'];
-  }
+  //$psql_path = '/usr/bin/psql';  // default
+  //if (isset($conf['check_book']['psql_path'])) {
+  //  $psql_path = $conf['check_book']['psql_path'];
+  //}
+
   if (!isset($databases[$database])) {
     LogHelper::log_warn('$databases[' . $database . '] not found');
     return '';
@@ -2681,17 +2682,7 @@ function _checkbook_psql_command($database = 'checkbook')
     LogHelper::log_notice('Using $databases[' . $database . '] database');
   }
 
-  $command = 'PGPASSWORD=%PWD% %PSQL% -h %HOST% -U %USER% %DATABASE% ';
-  $search = ['%PWD%', '%PSQL%', '%HOST%', '%USER%', '%DATABASE%'];
-  $replace = [
-    $databases[$database]['main']['password'],
-    $psql_path,
-    $databases[$database]['main']['host'],
-    $databases[$database]['main']['username'],
-    $databases[$database]['main']['database'],
-  ];
-  $command = str_replace($search, $replace, $command);
-
+  $command = $conf['check_book']['data_feeds']['command'] ." ".$databases[$database]['main']['database']." ";;
   return $command;
 }
 
