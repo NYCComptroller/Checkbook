@@ -34,7 +34,7 @@ function checkbook_datafeeds_revenue($form, &$form_state)
   $datatype = $form_state['step_information']['type']['stored_values']['format'];
   $revenue_fys = array('' => "All Fiscal Years");
   $revenue_fys = $revenue_fys + _checkbook_advanced_search_get_year('revenue', 'datafeeds');
-  $agency_options = _agency_options();
+  $agency_options = _agency_options(Datasource::CITYWIDE);
 
   //<editor-fold desc="Heading">
 

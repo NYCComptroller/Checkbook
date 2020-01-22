@@ -37,7 +37,7 @@ function checkbook_datafeeds_budget($form, &$form_state)
   $dept = !empty($form_state['values']['dept']) ? $form_state['values']['dept'] : '';
   $expcat = !empty($form_state['values']['expense_category']) ? $form_state['values']['expense_category'] : '';
   $year = !empty($form_state['values']['fiscal_year']) ? $form_state['values']['fiscal_year'] : 'FY' . CheckbookDateUtil::getCurrentFiscalYear();
-  $agency_options = _agency_options();
+  $agency_options = _agency_options(Datasource::CITYWIDE);
 
   //<editor-fold desc="Heading">
 
