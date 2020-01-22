@@ -194,6 +194,9 @@ $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoCol
         else if($sortingCol == 4){//daily wage
         array_unshift($config->orderBy, 'employment_type.employment_type');
         }
+
+
+
         $monthId = RequestUtilities::getRequestParamValue('month');
         $datasource = RequestUtilities::getRequestParamValue('datasource');
 
@@ -203,11 +206,8 @@ $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoCol
         else if(isset($monthId)){
         $node->widgetConfig->dataset = 'checkbook:payroll_employee_agency_month';
         }
-        $adjustedParameters = $parameters;
-        // Temp Fix nsetting the type_of_year for checkbook_nycha to display transactions (needs to be taken care of on DB)
-        if($datasource == 'checkbook_nycha'){
-        unset($parameters['type_of_year']);
-        }
+
+  $adjustedParameters = $parameters;
         if(isset($parameters['annual_salary.annual_salary'])){
             $parameters['type_of_employment'] = 'Salaried';
         }
