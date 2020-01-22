@@ -363,18 +363,20 @@
         "section8_flag": "Section 8",
         "spending_category": "Spending Category",
         "agreement_type_name": "Purchase Order Type",
-        "funding_source_name": "Funding Source",
-        "contract_number": "Contract ID",
-        "industry_type_name": "Industry",
-        "release_number": "Release number",
-        "responsibility_center_name": "Responsibility Center",
-        "invoice_number": "Invoice Number",
-        "expenditure_type_description": "Expense Category",
-        "check_payment_status": "Check Status",
-        "department_name": "Department",
-        "vendor_name": "Vendor",
-        "program_phase_name": "Program",
         "contract_purpose":"Purpose",
+        "contract_number": "Contract ID",
+        "funding_source_name": "Funding Source",
+        "release_number": "Release number",
+        "industry_type_name": "Industry",
+        "invoice_number": "Invoice Number",
+        "responsibility_center_name": "Responsibility Center",
+        "invoice_line_number":"Line Number",
+        "expenditure_type_description": "Expense Category",
+        "distribution_line_number": "Distribution Line Number",
+        "department_name": "Department",
+        "check_payment_status": "Check Status",
+        "program_phase_name": "Program",
+        "vendor_name": "Vendor",
         "gl_project_name":"Project"
       },
       "contracts": {
@@ -554,6 +556,8 @@
         "contract_number": "Contract ID",
         "release_number": "Release number",
         "invoice_number": "Invoice Number",
+        "invoice_line_number": "Line Number",
+        "distribution_line_number": "Distribution Line Number",
         "check_payment_status": "Check Status",
         "check_amount": "Check Amount",
         "check_invoice_net_amount":"Amount Spent",
@@ -675,6 +679,6 @@
   "sort_by": {
     "citywide": "domain_ordering asc,check_eft_issued_date desc, date_ordering desc,revenue_budget_fiscal_year desc",
     "edc": "domain_ordering asc, check_eft_issued_date_export desc, date_ordering desc",
-    "nycha": "domain_ordering asc, sort_sequence asc, check_issue_date desc, document_id desc, date_ordering desc"
+    "nycha": "domain_ordering asc, sort_sequence asc, check_issue_date desc, document_id desc, date_ordering desc, invoice_number desc, invoice_line_number desc, distribution_line_number desc"
   }
 }
