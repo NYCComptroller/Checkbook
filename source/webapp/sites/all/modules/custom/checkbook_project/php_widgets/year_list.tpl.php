@@ -217,8 +217,11 @@ foreach($years as $year){
     /****** End of Year options for NYCHA ****/
 }
 
-$year_data_array = (Datasource::isNYCHA() ? $nycha_year_data_array : array_merge($calendar_year_data_array, $fiscal_year_data_array));
-
+if(Datasource::isNYCHA() && preg_match('/payroll/',request_uri())){
+    $year_data_array = $calendar_year_data_array;
+}else {
+    $year_data_array = (Datasource::isNYCHA() ? $nycha_year_data_array : array_merge($calendar_year_data_array, $fiscal_year_data_array));
+}
 
 //HTML for Date Filter
 $year_list = "<select id='year_list'>";
