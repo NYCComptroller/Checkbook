@@ -43,55 +43,49 @@ return $adjustedParameters;
 "defaultParamTypeConfig":{"check_amount_sum":"ne"},
 "urlParamMap":{"agency":"agency_id","vendor":"vendor_id","category":"spending_category_id"},
 "transformationPHP": "
-$data = array();
-$categories = array();
-$year_list = array('2010','2011','2012','2013','2014','2015','2016','2017','2018','2019');
-$cat = RequestUtilities::getRequestParamValue('category');
-$cat_name = 'Total';
-if ($cat != null){
-foreach ($node->data as $row){
-  $cat_name = $row['category_name_category_name'];
-//$link = NychaSpendingUrlService:: getFooterUrl();
-  if ($cat == '2'){$row['invoice_amount_sum'] = $row['check_amount_sum'];}
-$categories[]=$row['issue_date_year_issue_date_year'];
-$data[] = (object)array('year'=>$row['issue_date_year_id'], 'y'=>$row['invoice_amount_sum'], 'name'=>$row['issue_date_year_issue_date_year']);
-$node->widgetConfig->gridConfig->data[] = array($row['issue_date_year_issue_date_year'], $row['invoice_amount_sum']);
-}
-}
-else{
-foreach ($year_list as $list) {
-
+  $data = array();
+  $categories = array();
+  $url = drupal_get_path_alias($_GET['q']);
+  $year_id = RequestUtil::getRequestKeyValueFromURL('year', $url);
+  $datasource = RequestUtil::getRequestKeyValueFromURL('datasource', $url);
+  $sql = 'select year_value from ref_year where year_id between 111 and '.$year_id.' order by year_value asc';
+  $year_list = _checkbook_project_execute_sql($sql,'main',$datasource);
+  $cat = RequestUtilities::getRequestParamValue('category');
+  $cat_name = 'Total';
+  if ($cat != null){
   foreach ($node->data as $row){
-    if ($row['issue_date_year_issue_date_year'] == $list) {
-      $flag = 1;
-      if ($row['category_name_category_name'] == 'Payroll') {$row['invoice_amount_sum'] = $row['check_amount_sum'];}
-    //$link = NychaSpendingUrlService:: getFooterUrl();
-    $year_value= $row['issue_date_year_issue_date_year'];
-    $year_id = $row['issue_date_year_id'];
-    $amount += $row['invoice_amount_sum'];
-    //$categories[]=$row['issue_date_year_issue_date_year'];
-    //$data[] = (object)array('year'=>$row['issue_date_year_id'], 'y'=>$row['invoice_amount_sum'], 'url'=>$link, 'name'=>$row['issue_date_year_issue_date_year']);
-    //$node->widgetConfig->gridConfig->data[] = array($row['issue_date_year_issue_date_year'], $row['invoice_amount_sum']);
+    $cat_name = $row['category_name_category_name'];
+    if ($cat == '2'){
+      $row['invoice_amount_sum'] = $row['check_amount_sum'];}
+      $categories[]=$row['issue_date_year_issue_date_year'];
+      $data[] = (object)array('year'=>$row['issue_date_year_id'], 'y'=>$row['invoice_amount_sum'], 'name'=>$row['issue_date_year_issue_date_year']);
+      $node->widgetConfig->gridConfig->data[] = array($row['issue_date_year_issue_date_year'], $row['invoice_amount_sum']);
     }
   }
-if ($flag == 1){
-$categories[]=$year_value;
-$data[] = (object)array('year'=>$year_id, 'y'=>$amount, 'name'=>$year_value);
-$node->widgetConfig->gridConfig->data[] = array($year_value, $amount);}
-//$year_value="";
-//$year_id="";
-$amount = '';
-  $flag = 0;
-}
-
-}
-
-
-$node->widgetConfig->chartConfig->series[0]->data = $data;
-$node->widgetConfig->chartConfig->xAxis->categories = $categories;
-$node->widgetConfig->chartConfig->series[0]->name = 'Spending Amount';
-$node->widgetConfig->chartTitle = $cat_name.' Spending Across Years';
-return $node->data;
+  else{
+  foreach ($year_list as $list) {
+    foreach ($node->data as $row){
+      if ($row['issue_date_year_issue_date_year'] == $list['year_value']) {
+        $flag = 1;
+        if ($row['category_name_category_name'] == 'Payroll') {$row['invoice_amount_sum'] = $row['check_amount_sum'];}
+          $year_value= $row['issue_date_year_issue_date_year'];
+          $year_id = $row['issue_date_year_id'];
+          $amount += $row['invoice_amount_sum'];
+      }
+    }
+  if ($flag == 1){
+  $categories[]=$year_value;
+  $data[] = (object)array('year'=>$year_id, 'y'=>$amount, 'name'=>$year_value);
+  $node->widgetConfig->gridConfig->data[] = array($year_value, $amount);}
+  $amount = '';
+    $flag = 0;
+  }
+  }
+  $node->widgetConfig->chartConfig->series[0]->data = $data;
+  $node->widgetConfig->chartConfig->xAxis->categories = $categories;
+  $node->widgetConfig->chartConfig->series[0]->name = 'Spending Amount';
+  $node->widgetConfig->chartTitle = $cat_name.' Spending Across Years';
+  return $node->data;
 ",
 "chartConfig": {
 "chart": {"defaultSeriesType": "column"},
