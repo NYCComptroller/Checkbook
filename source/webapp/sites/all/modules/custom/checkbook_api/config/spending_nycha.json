@@ -2,7 +2,6 @@
   "spending_nycha": {
     "searchCriteriaMap": {
       "other_government_entities_code": "agency_code",
-      "department_code": "department_code",
       "expense_category": "expenditure_type_code",
       "spending_category": "spending_category_code",
       "industry_type": "industry_type_code",
@@ -52,7 +51,6 @@
             "purpose": "contract_purpose",
             "spending_category": "display_spending_category_name",
             "industry": "display_industry_type_name",
-            "department": "department_name",
             "funding_source": "display_funding_source_descr",
             "responsibility_center": "responsibility_center_description",
             "expense_category": "expenditure_type_description",
@@ -75,7 +73,6 @@
             "purpose",
             "spending_category",
             "industry",
-            "department",
             "funding_source",
             "responsibility_center",
             "expense_category",
@@ -102,7 +99,6 @@
             "Purpose": "contract_purpose",
             "Spending Category": "display_spending_category_name",
             "Industry": "display_industry_type_name",
-            "Department": "department_name",
             "Funding Source": "display_funding_source_descr",
             "Responsibility Center": "responsibility_center_description",
             "Expense Category": "expenditure_type_description",
@@ -114,7 +110,6 @@
     },
     "requestParameters": {
       "other_government_entities_code": {"valueType": "value", "dataType": "text", "maxLength": "3"},
-      "department_code": {"valueType": "value", "dataType": "text", "maxLength": "9"},
       "expense_category": {"valueType": "value", "dataType": "text", "maxLength": "22"},
       "spending_category": {"valueType": "value", "dataType": "text", "maxLength": "10"},
       "industry_type": {"valueType": "value", "dataType": "text", "maxLength": "4"},

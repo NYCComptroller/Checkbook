@@ -181,7 +181,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
   $form['filter']['dept'] = array(
     '#type' => 'select',
     '#title' => t('Department:'),
-    '#prefix' => '<div id="dynamic-fields"><div class="datafield department">',
+    '#prefix' => '<div id="dynamic-fields"><div class="datafield department citywide nycedc">',
     '#suffix' => '</div>',
     '#attributes' => array('class' => array('watch')),
     '#default_value' => !empty($form_state['values']['dept']) ? $form_state['values']['dept'] : 'Select Department',

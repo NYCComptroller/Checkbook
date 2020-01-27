@@ -36,17 +36,6 @@ class SpendingFeedNycha extends SpendingFeed
     $this->form['filter']['agency'] = array('#markup' => '<div><strong>' . $this->oge_label .':</strong> ' . $this->oge_name_code . '</div>',);
     $this->formatted_search_criteria[$this->oge_label] = $this->oge_name;
 
-    //Department
-    if ($this->values['dept'] && $this->values['dept'] != 'Select Department' && $this->values['dept'] != '0') {
-      // converts special characters to HTML entities
-      if (preg_match('/[\'^£$%&*()}{@#~?><,|=_+¬-]/', $this->values['dept'])) {
-        $this->values['dept'] = htmlspecialchars($this->values['dept']);
-      }
-      $this->form['filter']['dept'] = array('#markup' => '<div><strong>Department:</strong>' . $this->values['dept'] . '</div>');
-      $this->user_criteria['Department'] = $this->values['dept'];
-      $this->formatted_search_criteria['Department'] = $this->values['dept'];
-    }
-
     //Expense Category
     if ($this->values['expense_category'] && $this->values['expense_category'] != 'Select Expense Category' && $this->values['expense_category'] != '0') {
       // converts special characters to HTML entities
