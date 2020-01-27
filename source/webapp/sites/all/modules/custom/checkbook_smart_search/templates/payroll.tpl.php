@@ -39,6 +39,8 @@ $title = urlencode($payroll_results['civil_service_title']);
 
 switch($solr_datasource){
   case 'nycha':
+    // This should be updated when the yeartype DB changes from C to B.
+    $yeartype="C";
   case 'oge':
     $linkable_fields = [
       "oge_agency_name" => "/payroll/agency_landing/datasource/checkbook_nycha/yeartype/C/year/" . $fiscal_year_id . "/agency/" . $agency_id,
@@ -48,6 +50,7 @@ switch($solr_datasource){
   $dataSourceUrl = "/datasource/checkbook_nycha/agency/" . $agency_id;
     break;
   default:
+    $yeartype="B";
     $linkable_fields = [
       "agency_name" => "/payroll/agency_landing/yeartype/C/year/" . $fiscal_year_id . "/agency/" . $agency_id,
     ];
@@ -86,10 +89,10 @@ foreach ($payroll_parameter_mapping as $key => $title){
 //    $url = PayrollUrlService::annualSalaryPerAgencyUrl($agency_id, $emp_id);
     if (('Annual Salary' == $title && $salaried == 1)
       || (in_array($title, ['Hourly Rate', 'Daily Wage']) && $salaried !== 1 && $value)) {
-      $value = "<a  href='/payroll".$agencyLandingUrl."/yeartype/B/year/" . $fiscal_year_id . $dataSourceUrl
+      $value = "<a  href='/payroll".$agencyLandingUrl."/yeartype/".$yeartype."/year/" . $fiscal_year_id . $dataSourceUrl
         . "?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/"
         .$agency_id . $dataSourceUrl . "/abc/" .$emp_id. "/salamttype/".$salaried."/year/"
-        . $fiscal_year_id . "/yeartype/B'>". custom_number_formatter_format($value, 2 , '$') ."</a>";
+        . $fiscal_year_id . "/yeartype/".$yeartype."'>". custom_number_formatter_format($value, 2 , '$') ."</a>";
     } else {
       $value = '';
     }
