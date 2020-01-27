@@ -2,10 +2,14 @@
 
   // When Agency Filter is changed reload Department and Expense Category drop-downs
   let reloadSpendingDepartments = function () {
+    let data_source = $('input[name="datafeeds-spending-domain-filter"]:checked').val();
+    //Departments drop-down is not applicable for NYCHA
+    if(data_source == 'checkbook_nycha'){
+      return;
+    }
     let agency = $('#edit-agency').val();
     let html = '<option value="0" selected="selected">Select Department</option>';
     let dept_hidden = $('input:hidden[name="dept_hidden"]').val();
-    let data_source = $('input[name="datafeeds-spending-domain-filter"]:checked').val();
 
     if(data_source === 'checkbook' && $.inArray(agency, ["", null, "0", 'Select One', 'Citywide (All Agencies)']) != -1){
       $('#edit-dept').html(html);
@@ -49,10 +53,13 @@
 
   // When Department Filter is changed reload Expense category Drop-down
   let reloadSpendingExpenceCategories = function () {
-    let agency = $('#edit-agency').val();
     let data_source = $('input[name="datafeeds-spending-domain-filter"]:checked').val();
+    let agency = $('#edit-agency').val();
     let html = '<option value="0" selected="selected">Select Expense Category</option>';
-    let dept = emptyToZero($('input:hidden[name="dept_hidden"]').val());
+    let dept = 0;
+    if(data_source != 'checkbook_nycha') {
+      dept = emptyToZero($('input:hidden[name="dept_hidden"]').val());
+    }
     let expense_category_hidden = $('input:hidden[name="expense_category_hidden"]').val();
 
     if(data_source == 'checkbook' && $.inArray(agency, ["", null, "0", 'Select One', 'Citywide (All Agencies)']) != -1){
@@ -145,7 +152,7 @@
 
         //Move Issue Date fields to left column for NYCHA
         $('#df-check_amount').detach().prependTo('.spending.data-feeds-wizard .column.column-right');
-        $('#df-payeename').detach().prependTo('.spending.data-feeds-wizard .column.column-right');
+       // $('#df-payeename').detach().prependTo('.spending.data-feeds-wizard .column.column-right');
         $('label[for=edit-payee-name]').text('Vendor');
         $('label[for=edit-agency]').text('Other Government Entity:');
         break;
