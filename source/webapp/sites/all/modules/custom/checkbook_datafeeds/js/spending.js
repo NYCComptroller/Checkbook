@@ -131,11 +131,6 @@
         //Hide agency and enable and get department and expense category drop-down option
         $('.data-feeds-wizard .datafield.agency').hide();
 
-        //Multi-select
-        $('.form-item-oge-column-select').show();
-        $('#edit-column-select').multiSelect('deselect_all');
-        $('#edit-nycha-column-select').multiSelect('deselect_all');
-
         //Move Issue Date fields to left column for OGE
         $('#df-payeename').detach().appendTo('.spending.data-feeds-wizard .column.column-left');
         $('label[for=edit-payee-name]').text('Payee Name');
@@ -147,11 +142,6 @@
 
         //Hide agency and enable and get department and expense category drop-down option
         $('.data-feeds-wizard .datafield.agency').hide();
-
-        //Multi-select
-        $('.form-item-nycha-column-select').show();
-        $('#edit-column-select').multiSelect('deselect_all');
-        $('#edit-oge-column-select').multiSelect('deselect_all');
 
         //Move Issue Date fields to left column for NYCHA
         $('#df-check_amount').detach().prependTo('.spending.data-feeds-wizard .column.column-right');
@@ -167,24 +157,77 @@
         disable_input($('#edit-dept'));
         disable_input($('#edit-expense-category'));
 
-        //Multi-select
-        $('.form-item-column-select').show();
-        $('#edit-nycha-column-select').multiSelect('deselect_all');
-        $('#edit-oge-column-select').multiSelect('deselect_all');
-
         //Move Issue Date fields to left column for Citywide
         $('#df-check_amount').detach().prependTo('.spending.data-feeds-wizard .column.column-right');
         $('#df-payeename').detach().appendTo('.spending.data-feeds-wizard .column.column-left');
         $('label[for=edit-payee-name]').text('Payee Name');
         $('label[for=edit-agency]').text('Agency:');
-        break;
     }
+
+    //Multi-select options
+     resetMultiselect(data_source)
 
     //Reset enabling/disabling fields
      onSpendingCategoryChange();
 
     //Disable/Enable Date Filter fields
-    onDateFilterChange();
+     onDateFilterChange();
+  };
+
+  //
+  let resetMultiselect = function (dataSource){
+    switch (dataSource) {
+      case 'checkbook_oge':
+        $('#edit-column-select').multiSelect('deselect_all');
+        $('#edit-nycha-column-select').multiSelect('deselect_all');
+
+        $('.form-item-oge-column-select').show();
+        $('#edit-oge-column-select').multiSelect('refresh');
+        if (!$('#ms-edit-oge-column-select .ms-selection').next().is("a")) {
+          $('#ms-edit-oge-column-select .ms-selection').after('<a class="deselect">Remove All</a>');
+          $('#ms-edit-oge-column-select .ms-selection').after('<a class="select">Add All</a>');
+        }
+        $('#ms-edit-oge-column-select a.select').click(function () {
+          $('#edit-oge-column-select').multiSelect('select_all');
+        });
+        $('#ms-edit-oge-column-select a.deselect').click(function () {
+          $('#edit-oge-column-select').multiSelect('deselect_all');
+        });
+        break;
+      case 'checkbook_nycha':
+        $('#edit-column-select').multiSelect('deselect_all');
+        $('#edit-oge-column-select').multiSelect('deselect_all');
+
+        $('.form-item-nycha-column-select').show();
+        $('#edit-nycha-column-select').multiSelect('refresh');
+        if (!$('#ms-edit-nycha-column-select .ms-selection').next().is("a")) {
+          $('#ms-edit-nycha-column-select .ms-selection').after('<a class="deselect">Remove All</a>');
+          $('#ms-edit-nycha-column-select .ms-selection').after('<a class="select">Add All</a>');
+        }
+        $('#ms-edit-nycha-column-select a.select').click(function () {
+          $('#edit-nycha-column-select').multiSelect('select_all');
+        });
+        $('#ms-edit-nycha-column-select a.deselect').click(function () {
+          $('#edit-nycha-column-select').multiSelect('deselect_all');
+        });
+        break;
+      default:
+        $('#edit-nycha-column-select').multiSelect('deselect_all');
+        $('#edit-oge-column-select').multiSelect('deselect_all');
+
+        $('.form-item-column-select').show();
+        $('#edit-column-select').multiSelect('refresh');
+        if (!$('#ms-edit-column-select .ms-selection').next().is("a")) {
+          $('#ms-edit-column-select .ms-selection').after('<a class="deselect">Remove All</a>');
+          $('#ms-edit-column-select .ms-selection').after('<a class="select">Add All</a>');
+        }
+        $('#ms-edit-column-select a.select').click(function () {
+          $('#edit-column-select').multiSelect('select_all');
+        });
+        $('#ms-edit-column-select a.deselect').click(function () {
+          $('#edit-column-select').multiSelect('deselect_all');
+        });
+    }
   };
 
   //Get Spending Category based on Data Source
