@@ -315,15 +315,15 @@ abstract class SpendingFeed
       form_set_error('check_amt_to', t('Invalid range for Check Amount.'));
     }
 
-    if ($date_from && !checkDateFormat($date_from)) {
+    if (strlen($date_from) > 0 && !checkDateFormat($date_from)) {
       form_set_error('issuedfrom', t('Issue Date must be a valid date (YYYY-MM-DD).'));
     }
 
-    if ($date_to && !checkDateFormat($date_to)) {
+    if (strlen($date_to) > 0 && !checkDateFormat($date_to)) {
       form_set_error('issuedto', t('Issue Date must be a valid date (YYYY-MM-DD).'));
     }
 
-    if ($date_from && $date_to && strtotime($date_to) < strtotime($date_from)) {
+    if (strlen($date_from) > 0 && strlen($date_to) > 0 && strtotime($date_to) < strtotime($date_from)) {
       form_set_error('issuedto', t('Invalid range for Issue Date.'));
     }
 

@@ -1836,23 +1836,23 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
       form_set_error('nycha_startdateto', t('Invalid date range for Start Date.'));
     }
     // End Date:
-    if ($enddatefrom && !checkDateFormat($enddatefrom)) {
+    if (strlen($enddatefrom) > 0 && !checkDateFormat($enddatefrom)) {
       form_set_error('nycha_enddatefrom', t('End Date must be a valid date (YYYY-MM-DD).'));
     }
-    if ($enddateto && !checkDateFormat($enddateto)) {
+    if (strlen($enddateto) > 0 && !checkDateFormat($enddateto)) {
       form_set_error('nycha_enddateto', t('End Date must be a valid date (YYYY-MM-DD).'));
     }
-    if ($enddatefrom && $enddateto && strtotime($enddateto) < strtotime($enddatefrom)) {
+    if (strlen($enddatefrom) > 0 && strlen($enddateto) > 0 && strtotime($enddateto) < strtotime($enddatefrom)) {
       form_set_error('nycha_enddateto', t('Invalid date range for End Date.'));
     }
     // Registered Date:
-    if ($appr_date_from && !checkDateFormat($appr_date_from)) {
+    if (strlen($appr_date_from) > 0 && !checkDateFormat($appr_date_from)) {
       form_set_error('nycha_appr_datefrom', t('Approved Date must be a valid date (YYYY-MM-DD).'));
     }
-    if ($appr_date_to && !checkDateFormat($appr_date_to)) {
+    if (strlen($appr_date_to) > 0 && !checkDateFormat($appr_date_to)) {
       form_set_error('nycha_appr_dateto', t('Approved Date must be a valid date (YYYY-MM-DD).'));
     }
-    if ($appr_date_from && $appr_date_to && strtotime($appr_date_to) < strtotime($appr_date_from)) {
+    if (strlen($appr_date_from) > 0 && strlen($appr_date_to) > 0 && strtotime($appr_date_to) < strtotime($appr_date_from)) {
       form_set_error('nycha_appr_dateto', t('Invalid Date range for Approved Date.'));
     }
     //multi-select
@@ -1897,43 +1897,43 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
     }
 
     // Start Date:
-    if ($startfrom && !checkDateFormat($startfrom)) {
+    if (strlen($startfrom) > 0 && !checkDateFormat($startfrom)) {
       form_set_error('startdatefrom', t('Start Date must be a valid date (YYYY-MM-DD).'));
     }
-    if ($startto && !checkDateFormat($startto)) {
+    if (strlen($startto) > 0 && !checkDateFormat($startto)) {
       form_set_error('startdateto', t('Start Date must be a valid date (YYYY-MM-DD).'));
     }
-    if ($startfrom && $startto && strtotime($startto) < strtotime($startfrom)) {
+    if (strlen($startfrom) > 0 && $startto && strtotime($startto) < strtotime($startfrom)) {
       form_set_error('startdateto', t('Invalid date range for Start Date.'));
     }
     // End Date:
-    if ($enddatefrom && !checkDateFormat($enddatefrom)) {
+    if (strlen($enddatefrom) > 0 && !checkDateFormat($enddatefrom)) {
       form_set_error('enddatefrom', t('End Date must be a valid date (YYYY-MM-DD).'));
     }
-    if ($enddateto && !checkDateFormat($enddateto)) {
+    if (strlen($enddateto) > 0 && !checkDateFormat($enddateto)) {
       form_set_error('enddateto', t('End Date must be a valid date (YYYY-MM-DD).'));
     }
-    if ($enddatefrom && $enddateto && strtotime($enddateto) < strtotime($enddatefrom)) {
+    if (strlen($enddatefrom) > 0 && strlen($enddateto) > 0 && strtotime($enddateto) < strtotime($enddatefrom)) {
       form_set_error('enddateto', t('Invalid date range for End Date.'));
     }
     // Registered Date:
-    if ($regdatefrom && !checkDateFormat($regdatefrom)) {
+    if (strlen($regdatefrom) > 0 && !checkDateFormat($regdatefrom)) {
       form_set_error('regdatefrom', t('Registered Date must be a valid date (YYYY-MM-DD).'));
     }
-    if ($regdateto && !checkDateFormat($regdateto)) {
+    if (strlen($regdateto) > 0 && !checkDateFormat($regdateto)) {
       form_set_error('regdateto', t('Registered Date must be a valid date (YYYY-MM-DD).'));
     }
-    if ($regdatefrom && $regdateto && strtotime($regdateto) < strtotime($regdatefrom)) {
+    if (strlen($regdatefrom) > 0 && strlen($regdateto) > 0 && strtotime($regdateto) < strtotime($regdatefrom)) {
       form_set_error('regdateto', t('Invalid Date range for Registered Date.'));
     }
     // Received Date:
-    if ($recdatefrom && !checkDateFormat($recdatefrom)) {
+    if (strlen($recdatefrom) > 0 && !checkDateFormat($recdatefrom)) {
       form_set_error('recdatefrom', t('Received Date must be a valid date (YYYY-MM-DD).'));
     }
-    if ($recdateto && !checkDateFormat($recdateto)) {
+    if (strlen($recdateto) > 0 && !checkDateFormat($recdateto)) {
       form_set_error('recdateto', t('Received Date must be a valid date (YYYY-MM-DD).'));
     }
-    if ($recdatefrom && $recdateto && strtotime($recdateto) < strtotime($recdatefrom)) {
+    if (strlen($recdatefrom) > 0 && strlen($recdateto) > 0 && strtotime($recdateto) < strtotime($recdatefrom)) {
       form_set_error('recdateto', t('Invalid Date range for Received Date.'));
     }
     // Current Amount:
