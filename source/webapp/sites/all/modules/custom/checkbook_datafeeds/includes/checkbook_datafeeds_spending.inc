@@ -570,8 +570,7 @@ function checkbook_datafeeds_spending_next_submit($form, &$form_state)
  *   response type (i.e. csv, xml)
  * @return array
  */
-function checkbook_datafeeds_spending_filter_selected_columns($selected_columns, $data_source, $response_type)
-{
+function checkbook_datafeeds_spending_filter_selected_columns($selected_columns, $data_source, $response_type, $export_order = null){
   //Get column configurations
   switch ($data_source) {
     case Datasource::NYCHA:
@@ -588,15 +587,16 @@ function checkbook_datafeeds_spending_filter_selected_columns($selected_columns,
   $columns_included = $domain_config->$domain->dataset->displayConfiguration->$response_type->elementsColumn;
 
   //Filter out selected columns which are not configured to show for this data source
-  if($data_source == Datasource::NYCHA) {
+  $filtered_columns = array_intersect_key($selected_columns, (array)$columns_included);
+
+  //Only for NYCHA, export order is not same as multi-select options
+  if($data_source == Datasource::NYCHA && isset($export_order)) {
     $filtered_columns = [];
     foreach ($columns_included as $key => $value) {
       if (in_array($key, $selected_columns)) {
         $filtered_columns[$key] = $key;
       }
     }
-  }else{
-    $filtered_columns = array_intersect_key($selected_columns, (array)$columns_included);
   }
   return $filtered_columns;
 }

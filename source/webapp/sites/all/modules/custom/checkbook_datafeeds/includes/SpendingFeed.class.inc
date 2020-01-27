@@ -133,12 +133,12 @@ abstract class SpendingFeed
     //Filter columns for current data source
     $this->filtered_columns = checkbook_datafeeds_spending_filter_selected_columns($this->selected_columns, $this->data_source, $this->response_type);
 
-    $this->form_state['step_information']['spending']['stored_values'][$this->filtered_columns_container] = $this->filtered_columns;
-
     foreach ($this->filtered_columns as $column) {
       $this->form['columns'][$column] = array('#markup' => '<div>' . $column . '</div>');
       $this->user_criteria['Columns'][] = $column;
     }
+
+    $this->filtered_columns = checkbook_datafeeds_spending_filter_selected_columns($this->selected_columns, $this->data_source, $this->response_type, 'nycha_export');
 
     $this->form['filter'] = array(
       '#type' => 'fieldset',
