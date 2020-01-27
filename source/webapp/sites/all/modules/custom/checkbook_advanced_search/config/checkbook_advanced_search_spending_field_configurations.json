@@ -33,13 +33,12 @@
             ],
     "checkbook_nycha":
             [
-                {"field_name":"department","column":"column-left"},
                 {"field_name":"expense_category","column":"column-left"},
                 {"field_name":"expense_type","column":"column-left"},
                 {"field_name":"industry","column":"column-left"},
                 {"field_name":"fundsrc","column":"column-left"},
                 {"field_name":"responsibility_center","column":"column-left"},
-                {"field_name":"vendor_name","column":"column-right"},
+                {"field_name":"vendor_name","column":"column-left"},
                 {"field_name":"check_amount","column":"column-right"},
                 {"field_name":"amount_spent","column":"column-right"},
                 {"field_name":"purchase_order_type","column":"column-right"},
