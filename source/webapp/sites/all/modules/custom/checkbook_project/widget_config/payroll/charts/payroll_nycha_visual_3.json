@@ -60,25 +60,31 @@ $node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
 ",
 "widgetUpdateJSONConfig":"
         $series_previous_temp = array(array());
-        $categories = array('2010','2011','2012','2013','2014','2015','2016','2017','2018','2019');
+        $url = drupal_get_path_alias($_GET['q']);
+        $year_id = RequestUtil::getRequestKeyValueFromURL('year', $url);
+        $datasource = RequestUtil::getRequestKeyValueFromURL('datasource', $url);
+        $sql = 'select year_value from ref_year where year_id between 111 and '. $year_id .' order by year_value asc';
+        $categories = _checkbook_project_execute_sql($sql,'main',$datasource);
         $codes = array('Salaried','Non-Salaried');
         foreach($node->data as $row){$series_previous_temp[$row['type_of_employment']][$row['year']] = (float)$row['counte'];}
         $series_previous = array();
         foreach($codes as $code){
-        $prev_series_obj = new stdClass();
-        foreach($categories as $category){
-        $series_previous[] = $series_previous_temp[$code][$category] ;}
-        $prev_series_obj->name = $code;
-        $prev_series_obj->data = $series_previous;
-        $node->widgetConfig->chartConfig->series[] = $prev_series_obj;
-        unset($series_previous);
+          $prev_series_obj = new stdClass();
+          foreach($categories as $category){
+            $series_previous[] = $series_previous_temp[$code][$category['year_value']] ;
+            $node->widgetConfig->chartConfig->xAxis->categories[] = $category['year_value'];
+          }
+          $prev_series_obj->name = $code;
+          $prev_series_obj->data = $series_previous;
+          $node->widgetConfig->chartConfig->series[] = $prev_series_obj;
+          unset($series_previous);
         }
-        $node->widgetConfig->chartConfig->xAxis->categories = $categories;
+
         foreach($categories as $category){
         $node->widgetConfig->gridConfig->data[] = array(
-        $category,
-        number_format($series_previous_temp['Salaried'][$category]),
-        number_format($series_previous_temp['Non-Salaried'][$category]));
+        $category['year_value'],
+        number_format($series_previous_temp['Salaried'][$category['year_value']]),
+        number_format($series_previous_temp['Non-Salaried'][$category['year_value']]));
         }
 ",
 "chartConfig" : {
