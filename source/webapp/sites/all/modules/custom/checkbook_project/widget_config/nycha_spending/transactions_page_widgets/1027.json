@@ -149,9 +149,9 @@
       "sourceColumn":"expenditure_type_description",
       "sql":"
       CASE
-      WHEN expenditure_type_name IS NULL THEN '-'
-      ELSE expenditure_type_name
-      END AS expenditure_type_name
+      WHEN expenditure_type_description IS NULL THEN '-'
+      ELSE expenditure_type_description
+      END AS expenditure_type_description
       "
     },
     {
