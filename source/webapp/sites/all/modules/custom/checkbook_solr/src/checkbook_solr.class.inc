@@ -39,26 +39,36 @@ class CheckbookSolr
   private static $smart_search_config_json;
 
   /**
+   * @var
+   */
+  private static $auto_complete_config_json = 'autocomeplete';
+
+  /**
+   * @var
+   */
+  private static $parameter_config_json = 'parameter';
+
+  /**
    * @var string
    */
   private $datasource;
 
   /**
-   * @param string $domain
+   * @param string $dataSource
    * @return mixed
    */
-  public static function getFacetConfigByDatasource(string $domain): object
+  public static function getFacetConfigByDatasource(string $solr_datasource): object
   {
-    return self::getSmartSearchConfig()->facets->$domain ?? new StdClass();
+    return self::getSmartSearchConfig($solr_datasource)->facets ?? new StdClass();
   }
 
   /**
-   * @param string $domain
+   * @param string $dataSource
    * @return string
    */
-  public static function getSortConfig(string $domain): string
+  public static function getSortConfig(string $solr_datasource): string
   {
-    return self::getSmartSearchConfig()->sort_by->$domain ?? '';
+    return self::getSmartSearchConfig($solr_datasource)->sort_by ?? '';
   }
 
   /**
@@ -66,7 +76,7 @@ class CheckbookSolr
    */
   public static function getParamMapping(): object
   {
-    return self::getSmartSearchConfig()->param_mapping ?? new StdClass();
+    return self::getSmartSearchConfig(self::$parameter_config_json)->param_mapping ?? new StdClass();
   }
 
   /**
@@ -76,7 +86,7 @@ class CheckbookSolr
    */
   public static function getSearchFields(string $solr_datasource, string $domain): object
   {
-    return self::getSmartSearchConfig()->search_results_fields->$solr_datasource->$domain ?? new StdClass();
+    return self::getSmartSearchConfig($solr_datasource)->search_results_fields->$domain ?? new StdClass();
   }
 
   /**
@@ -86,7 +96,7 @@ class CheckbookSolr
    */
   public static function getExportFields(string $solr_datasource, string $domain): object
   {
-    return self::getSmartSearchConfig()->export_fields->$solr_datasource->$domain ?? new StdClass();
+    return self::getSmartSearchConfig($solr_datasource)->export_fields->$domain ?? new StdClass();
   }
 
   /**
@@ -95,7 +105,7 @@ class CheckbookSolr
    */
   public static function getAutocompleteTerms(string $solr_datasource): object
   {
-    return self::getSmartSearchConfig()->autocomplete_terms->$solr_datasource ?? new StdClass();
+    return self::getSmartSearchConfig($solr_datasource)->autocomplete_terms ?? new StdClass();
   }
 
   /**
@@ -103,23 +113,23 @@ class CheckbookSolr
    */
   public static function getAutocompleteMapping(): object
   {
-    return self::getSmartSearchConfig()->autocomplete_mapping ?? new StdClass();
+    return self::getSmartSearchConfig(self::$auto_complete_config_json)->autocomplete_mapping ?? new StdClass();
   }
 
   /**
    * @return object
    */
-  private static function getSmartSearchConfig(): object
+  private static function getSmartSearchConfig($config): object
   {
     if (isset(self::$smart_search_config_json)) {
       return self::$smart_search_config_json;
     }
 
-    $facet_json_config = file_get_contents(__DIR__ . '/../config/smart_search_config.json');
+    $facet_json_config = file_get_contents(__DIR__ . '/../config/'. $config .'.json');
     $config = json_decode($facet_json_config);
 
     if (is_null($config)) {
-      LogHelper::log_warn('Could not json decode smart_search_config.json because: ' . json_last_error_msg());
+      LogHelper::log_warn('Could not json decode '. $config .'.json because: ' . json_last_error_msg());
       return new StdClass();
     }
     return self::$smart_search_config_json = $config;
