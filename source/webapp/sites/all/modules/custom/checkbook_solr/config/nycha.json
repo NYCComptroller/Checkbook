@@ -281,5 +281,7 @@
     "responsibility_center_name": "Responsibility Center",
     "expenditure_type_description": "Expense Categories"
   },
-  "sort_by": ["domain_ordering asc, sort_sequence asc, check_issue_date desc, document_id desc, date_ordering desc, invoice_number desc, invoice_line_number desc, distribution_line_number desc"]
+  "sort": {
+    "sort_by": "domain_ordering asc, sort_sequence asc, check_issue_date desc, document_id desc, date_ordering desc, invoice_number desc, invoice_line_number desc, distribution_line_number desc"
+  }
 }

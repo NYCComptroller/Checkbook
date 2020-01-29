@@ -122,5 +122,7 @@
     "contract_number": "Contract ID"
 
   },
-  "sort_by": ["domain_ordering asc, check_eft_issued_date_export desc, date_ordering desc"]
+  "sort": {
+    "sort_by":"domain_ordering asc, check_eft_issued_date_export desc, date_ordering desc",
+  }
 }
