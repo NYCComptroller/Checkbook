@@ -38,6 +38,7 @@
               }
               $link = SpendingUtil::prepareSpendingBottomNavFilter("nycha_spending", $category_id);
               $amount = "<span class='dollars'>" . custom_number_formatter_format($categories[$category_id]['amount'],1,'$') . "</span>";
+              if ($category_names[$category_id] == 'Others'){$category_names[$category_id] = substr_replace($category_names[$category_id],"",-1);}
               $category_name = $category_names[$category_id].'<br>Spending<br>';
 
               echo "<td" . $active_class ."><div class='positioning'>";
