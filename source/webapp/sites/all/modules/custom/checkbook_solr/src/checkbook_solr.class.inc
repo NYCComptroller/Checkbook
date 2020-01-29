@@ -41,7 +41,7 @@ class CheckbookSolr
   /**
    * @var
    */
-  private static $auto_complete_config_json = 'autocomeplete';
+  private static $auto_complete_config_json = 'autocomplete';
 
   /**
    * @var
