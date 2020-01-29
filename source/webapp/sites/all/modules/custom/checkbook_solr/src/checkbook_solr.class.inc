@@ -68,7 +68,7 @@ class CheckbookSolr
    */
   public static function getSortConfig(string $solr_datasource): string
   {
-    return self::getSmartSearchConfig($solr_datasource)->sort_by ?? '';
+    return self::getSmartSearchConfig($solr_datasource)->sort->sort_by ?? '';
   }
 
   /**
@@ -121,10 +121,6 @@ class CheckbookSolr
    */
   private static function getSmartSearchConfig($config): object
   {
-    if (isset(self::$smart_search_config_json)) {
-      return self::$smart_search_config_json;
-    }
-
     $facet_json_config = file_get_contents(__DIR__ . '/../config/'. $config .'.json');
     $config = json_decode($facet_json_config);
 
