@@ -25,7 +25,7 @@ class SpendingUtil{
      * @var array
      */
     static $landingPageParams = array("category"=>"category","industry"=>"industry","mwbe"=>"mwbe","dashboard"=>"dashboard","agency"=>"agency","vendor"=>"vendor","subvendor"=>"subvendor");
-    static $spendingCategories = array(0 => 'Total', 2 => 'Payroll', 3 => 'Capital', 1 => 'Contract', 5 => 'Trust & Agency', 4 => 'Others',);
+    static $spendingCategories = array(0 => 'Total', 2 => 'Payroll', 3 => 'Capital', 1 => 'Contract', 5 => 'Trust & Agency', 4 => 'Other',);
     /**
      * @param $categoryId
      * @param array $columns
@@ -444,21 +444,21 @@ class SpendingUtil{
 
          $query = "SELECT minority_type_id FROM(
             SELECT a.*, row_number() OVER (PARTITION BY a.vendor_id, a.year_id, a.type_of_year ORDER BY chk_date DESC) AS flag FROM(
-                SELECT a.vendor_id, 
-                    a.year_id, 
+                SELECT a.vendor_id,
+                    a.year_id,
                     a.type_of_year,
                     CASE WHEN a.minority_type_id IS NULL OR a.minority_type_id = 11 THEN 7 ELSE a.minority_type_id END minority_type_id,
                     MAX(d.check_eft_issued_date ) AS chk_date
                 FROM aggregateon_mwbe_spending_coa_entities a
-                JOIN disbursement_line_item_details d ON a.vendor_id = d.vendor_id AND a.agency_id = d.agency_id 
+                JOIN disbursement_line_item_details d ON a.vendor_id = d.vendor_id AND a.agency_id = d.agency_id
                         AND a.minority_type_id = d.minority_type_id AND a.year_id = d.check_eft_issued_nyc_year_id
-                WHERE a.vendor_id = ".$vendor_id." AND a.year_id = ".$year_id." AND a.type_of_year = '".$year_type."' 
-                GROUP BY CASE WHEN a.minority_type_id IS NULL OR a.minority_type_id = 11 THEN 7 ELSE a.minority_type_id END, 
+                WHERE a.vendor_id = ".$vendor_id." AND a.year_id = ".$year_id." AND a.type_of_year = '".$year_type."'
+                GROUP BY CASE WHEN a.minority_type_id IS NULL OR a.minority_type_id = 11 THEN 7 ELSE a.minority_type_id END,
                 a.vendor_id, a.year_id, a.type_of_year ) a ) a WHERE flag = 2 AND a.minority_type_id IN (2,3,4,5,9)
-            UNION 
-            SELECT DISTINCT minority_type_id 
-            FROM spending_vendor_latest_mwbe_category 
-            WHERE vendor_id = ".$vendor_id." AND is_prime_or_sub = '".$is_prime_or_sub."' AND type_of_year = '".$year_type."' 
+            UNION
+            SELECT DISTINCT minority_type_id
+            FROM spending_vendor_latest_mwbe_category
+            WHERE vendor_id = ".$vendor_id." AND is_prime_or_sub = '".$is_prime_or_sub."' AND type_of_year = '".$year_type."'
                   AND year_id = ".$year_id." AND minority_type_id <> 7 ";
         $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
         if($results[0]['minority_type_id'] != ''){
@@ -1142,7 +1142,7 @@ class SpendingUtil{
     			<div class="legend-title"><span>NYC Total M/WBE</span></div>
     			<div class="legend-item"><span>M/WBE Share: ' . $mwbe_share . ' </span></div>
     			<div class="legend-item"><span>M/WBE Spending: ' .$mwbe_spending . ' </span></div>
-    			<div class="legend-item"><span>Non M/WBE: ' . $non_mwbe . '</span></div>    			
+    			<div class="legend-item"><span>Non M/WBE: ' . $non_mwbe . '</span></div>
     			</div>
     			';
 

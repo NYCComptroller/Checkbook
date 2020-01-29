@@ -36,7 +36,6 @@
         }
         $link = SpendingUtil::prepareSpendingBottomNavFilter("spending_landing", (($id == 0) ? null: $id));
         $amount = "<span class='dollars'>" . custom_number_formatter_format($categories[$id]['amount'],1,'$') . "</span>";
-        if ($name == 'Others'){$name = substr_replace($name,"",-1);}
         $category_name = $name .'<br>Spending<br>';
 
         echo "<td" . $active_class ."><div class='positioning'>";
