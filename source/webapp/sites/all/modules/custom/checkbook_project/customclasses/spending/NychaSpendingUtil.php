@@ -30,6 +30,7 @@ class NychaSpendingUtil
   static $categories = array(3 => 'Contract', 2 => 'Payroll', 1 => 'Section 8', 4 => 'Other', null => 'Total');
 
   /**
+   * @param $url
    * @return null|string -- Returns transactions title for NYCHA Spending
    */
   static public function getTransactionsTitle($url = null){
@@ -64,26 +65,32 @@ class NychaSpendingUtil
     return $categories[$category_id];
   }
   /**
+   * @param $categoryName
+   * @param $bottomURL
    * @return null|string -- Returns Total Spending amount for each category
    * Required to extract payroll check amount sum
    */
-  static public function getTotalSpendingAmount($categoryName,$bottomURL){
+  static public function getTotalSpendingAmount($categoryName, $bottomURL){
     $year_id = RequestUtil::getRequestKeyValueFromURL('year', $bottomURL);
     $vendor_id = RequestUtil::getRequestKeyValueFromURL('vendor', $bottomURL);
-    if (isset($vendor_id)){$vendor = "AND vendor_id=".$vendor_id;}
-    $query =  'SELECT display_spending_category_name,SUM(check_amount) AS check_amount_sum ,SUM(adj_distribution_line_amount) AS invoice_amount_sum from all_disbursement_transactions
-              where  issue_date_year_id = '. $year_id .$vendor.'group by display_spending_category_name';
+    $vendor = isset($vendor_id) ? $vendor = " AND vendor_id = ". $vendor_id : "";
+    $total_spending = 0;
+
+    $query =  'SELECT display_spending_category_name,SUM(check_amount) AS check_amount_sum, 
+                SUM(adj_distribution_line_amount) AS invoice_amount_sum from all_disbursement_transactions
+              WHERE issue_date_year_id = '. $year_id .$vendor.'group by display_spending_category_name';
     $results = _checkbook_project_execute_sql_by_data_source($query, Datasource::NYCHA);
-      foreach ($results as $key => $row) {
-        if ($row['display_spending_category_name'] == 'Payroll') {
-          $row['invoice_amount_sum'] = $row['check_amount_sum'];
-        }
-        $total_spending += $row['invoice_amount_sum'];
+    foreach ($results as $key => $row) {
+      if ($row['display_spending_category_name'] == 'Payroll') {
+        $row['invoice_amount_sum'] = $row['check_amount_sum'];
       }
+      $total_spending += $row['invoice_amount_sum'];
+    }
     //if ($categoryName == 'Payroll'){ $total_spending = $results['Payroll']['check_amount_sum'];}
     return $total_spending;
   }
   /**
+   * @param $bottomURL bottom container URL
    * @return null|string -- Returns NYCHA amount spent for each year invoiced amount link
    *
    */
@@ -97,27 +104,27 @@ class NychaSpendingUtil
     $inv_respID = RequestUtil::getRequestKeyValueFromURL('resp_center', $bottomURL);
     $inv_indID = RequestUtil::getRequestKeyValueFromURL('industry_inv', $bottomURL);
     // Include widget level filters
-    $where_filter=[];
-    if(isset($year_id)){$where_filter[]= "issue_date_year_id <=".$year_id ;}
-    if (isset ($inv_vendorID)){ $where_filter[]= " vendor_id = ".$inv_vendorID ;}
-    if (isset ($inv_awdID)){ $where_filter[] = " award_method_id = ".$inv_awdID ;}
-    if (isset ($inv_csizeID)){ $where_filter[] = " award_size_id = ".$inv_csizeID ;}
-    if (isset ($inv_indID)){ $where_filter[] = " industry_type_id = ".$inv_indID ;}
-    if (isset($inv_contractID) || isset($contractID)) {$where_filter[] = " contract_id = '".$inv_contractID."'" ;}
-    if (isset($inv_depID)) { $where_filter[] = " department_id = ".$inv_depID ;}
-    if (isset($inv_respID)) { $where_filter[] = " responsibility_center_id = ".$inv_respID ;}
-    if(count($where_filter) > 0){
-      $filter = implode(' AND ' , $where_filter);
-    }
-    $query =  'SELECT sum(adj_distribution_line_amount) AS amount_spent from all_disbursement_transactions
-               where '. $filter;
+    $where_filter = [];
+    $where_filter[] = isset($year_id) ? "issue_date_year_id <=".$year_id : "";
+    $where_filter[] = isset($inv_vendorID) ? " vendor_id = ".$inv_vendorID : "";
+    $where_filter[] = isset($inv_awdID) ? " award_method_id = ".$inv_awdID : "";
+    $where_filter[] = isset($inv_csizeID) ? " award_size_id = ".$inv_csizeID : "";
+    $where_filter[] = isset($inv_indID) ? " industry_type_id = ".$inv_indID : "";
+    $where_filter[] = isset($inv_contractID) ? " contract_id = '".$inv_contractID."'" : "";
+    $where_filter[] = isset($inv_depID) ? " department_id = ".$inv_depID : "";
+    $where_filter[] = isset($inv_respID) ? " responsibility_center_id = ".$inv_respID : "";
+
+    $filter = (count($where_filter) > 0) ? implode(' AND ' , $where_filter) : "";
+
+    $query =  'SELECT SUM(adj_distribution_line_amount) AS amount_spent FROM all_disbursement_transactions
+               WHERE '. $filter;
     $results = _checkbook_project_execute_sql_by_data_source($query, Datasource::NYCHA);
     return $results;
   }
   /**
    * @param $widget Widget Name
    * @param $bottomURL
-   * @return null|string -- Returns Sub Tiltle for TYD Spending Transactions Details
+   * @return null|string -- Returns Sub Title for TYD Spending Transactions Details
    */
   static public function getTransactionsSubTitle($widget, $bottomURL){
     $widgetTitles = self::$widget_titles;
@@ -260,7 +267,7 @@ class NychaSpendingUtil
           $filter = implode(' AND ' , $where_filter);
         }
 
-        // Set aggreement id values for contract widgets transactions
+        // Set agreement id values for contract widgets transactions
       if (isset($inv_tcode) && ($inv_tcode == 'BA' || $inv_tcode == "BAM")){$agreement_type_id = 1;}
       if (isset($inv_tcode) && ($inv_tcode == 'PA' || $inv_tcode == "PAM")){$agreement_type_id = 2;}
       if (isset($inv_tcode) && $inv_tcode == 'PO'){$agreement_type_id = 3;}
