@@ -2917,14 +2917,12 @@ table.outerTable.ma-history{
 
 .newwindow #nycha-spending-transactions > div:first-child
 {
-  margin: 18px 10px 5px;
-  height:95px;
+  margin: 18px 10px 1px;
 }
 
 #nycha-spending-transactions > div:first-child
 {
-  margin: 18px 10px 5px;
-  height: 60px;
+  margin: 0px 10px 1px;
 }
 /*********************************
 ***   PAYROLL DETAILS STYLES   ***
