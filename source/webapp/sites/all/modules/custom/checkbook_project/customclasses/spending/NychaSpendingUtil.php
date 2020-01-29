@@ -27,7 +27,7 @@ class NychaSpendingUtil
     'wt_funding_sources' => 'Funding Sources', 'ytd_funding_source' => 'Funding Source', 'wt_departments' => 'Departments',
     'ytd_department' => 'Department','ytd_resp_center' => 'Responsibility Center');
 
-  static $categories = array(3 => 'Contract', 2 => 'Payroll', 1 => 'Section 8', 4 => 'Others', null => 'Total');
+  static $categories = array(3 => 'Contract', 2 => 'Payroll', 1 => 'Section 8', 4 => 'Other', null => 'Total');
 
   /**
    * @return null|string -- Returns transactions title for NYCHA Spending
@@ -41,8 +41,9 @@ class NychaSpendingUtil
     //Transactions Page main title
     $title = isset($widget) ? $widget_titles[$widget]: "";
     $categoryName = self::getCategoryName();
-    if (($widget == "wt_contracts") && ($categoryName == "Contract" )){$categoryName = "";}
-    if ($categoryName == 'Others'){$categoryName = substr_replace($categoryName,"",-1);}
+
+    // Exception to remove Contracts displayed twice in the title
+    if ((($widget == "wt_contracts") || ($widget == "ytd_contract")) && ($categoryName == "Contract" )){$categoryName = "";}
     $title .= ' '. $categoryName . " Spending Transactions";
     if (strpos($widget, 'inv_') !== false) {
       $tcode_value = NYCHAContractUtil::getTitleByCode($tcode);
