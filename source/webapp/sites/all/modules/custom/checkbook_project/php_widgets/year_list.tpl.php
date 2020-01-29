@@ -24,7 +24,7 @@
 //on Pending Contracts Advanced Search page
 if((preg_match('/^spending\/search\/transactions/',$_GET['q']) && (RequestUtilities::get('chkdate') || !RequestUtilities::get('year')))
     || RequestUtilities::get('contstatus') == 'P' || preg_match('/^contract\/all\/transactions/',$_GET['q']) || preg_match('/^nycha_contracts\/all\/transactions/',$_GET['q'])
-    || preg_match('/^nycha_spending\/search\/transactions/',$_GET['q'])){
+    || (preg_match('/^nycha_spending\/search\/transactions/',$_GET['q']) && (RequestUtilities::get('issue_date') || !RequestUtilities::get('year')))){
     return;
 }
 
