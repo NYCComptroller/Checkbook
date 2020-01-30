@@ -15,8 +15,8 @@
   ],
   "dataTableOptions":{
     "aoColumns":[
-      { "bSortable": false,"sWidth":"150px","sClass":"text" },
-      { "bSortable": true,"sWidth":"127px","sClass":"number","asSorting": [ "desc","asc"  ] },
+      { "bSortable": false,"sWidth":"170px","sClass":"text" },
+      { "bSortable": true,"sWidth":"130px","sClass":"number","asSorting": [ "desc","asc"  ] },
       { "bSortable": true,"sWidth":"130px","sClass":"number","asSorting": [ "desc","asc"  ] },
       { "bSortable": true,"sWidth":"130px" ,"sClass":"number","asSorting": [ "desc" ,"asc" ]},
       { "bSortable": true,"sWidth":"130px","sClass":"number","asSorting": [ "desc","asc"  ] },

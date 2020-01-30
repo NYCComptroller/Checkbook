@@ -14,11 +14,11 @@
     ],
     "dataTableOptions":{
         "aoColumns":[
-            {"sClass":"text","sWidth":"249px","bSortable":false},
-            {"sClass":"number","sWidth":"170px","asSorting":["desc","asc"]},
-            {"sClass":"number","sWidth":"177px","asSorting":["desc","asc"]},
-            {"sClass":"number","sWidth":"177px","asSorting":["desc","asc"]},
-            {"sClass":"number","sWidth":"177px","asSorting":["desc","asc"]},
+            {"sClass":"text","sWidth":"170px","bSortable":false},
+            {"sClass":"number","sWidth":"130px","asSorting":["desc","asc"]},
+            {"sClass":"number","sWidth":"130px","asSorting":["desc","asc"]},
+            {"sClass":"number","sWidth":"130px","asSorting":["desc","asc"]},
+            {"sClass":"number","sWidth":"130px","asSorting":["desc","asc"]},
             {"sWidth":"15px","bSortable":false}
         ],
         "bServerSide":true,
