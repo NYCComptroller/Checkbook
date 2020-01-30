@@ -516,8 +516,10 @@ function _checkbook_export_generateExportFile($node, $headers, $exportConfigNode
 
         //Escaping double quotes explicitly in parameters
         $queryParts = explode('WHERE', $node->data);
-        $queryParts[1] = str_replace('"', '\"', $queryParts[1]);
-        $node->data = implode(' WHERE ', array($queryParts[0], $queryParts[1]));
+        if(strlen($queryParts[1]) > 0) {
+          $queryParts[1] = str_replace('"', '\"', $queryParts[1]);
+          $node->data = implode(' WHERE ', array($queryParts[0], $queryParts[1]));
+        }
 
         LogHelper::log_notice("Exporting to file via SQL: \n".$node->data);
 
@@ -527,7 +529,7 @@ function _checkbook_export_generateExportFile($node, $headers, $exportConfigNode
                 . $tempOutputFile
                 . "'  WITH DELIMITER ',' CSV QUOTE '\\\"' ESCAPE '\\\"' \" ";
 
-//        log_error($command);
+        //log_error($command);
         LogHelper::log_notice($command);
 
         shell_exec($command);
