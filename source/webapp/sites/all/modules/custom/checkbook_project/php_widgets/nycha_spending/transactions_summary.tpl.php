@@ -87,8 +87,8 @@ if(isset($url)) {
       }
       $aggregatedAmount = '$' . custom_number_formatter_format($summaryDetails['total_contract_amount_sum'], 2);
       $aggregateTotalContractTitle = WidgetUtil::getLabel("total_contract_amount");
-      $amountSummaryTotalContract =  "<div class=\'total-spending-amount\'>".$aggregatedAmount.
-        "<div class=\'amount-title\'>".$aggregateTotalContractTitle."</div>
+      $amountSummaryTotalContract =  "<div class='total-spending-amount'>".$aggregatedAmount.
+        "<div class='amount-title'>".$aggregateTotalContractTitle."</div>
                                       </div>";
     }
 
