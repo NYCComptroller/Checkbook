@@ -141,10 +141,11 @@
       "invoice_line_number":"Line Number",
       "expenditure_type_description": "Expense Category",
       "distribution_line_number": "Distribution Line Number",
-      "check_payment_status": "Check Status",
       "program_phase_name": "Program",
+      "check_payment_status": "Check Status",
+      "gl_project_name":"Project",
       "vendor_name": "Vendor",
-      "gl_project_name":"Project"
+      "":""
     },
     "contracts": {
       "agreement_type_name": "Purchase Order Type",
