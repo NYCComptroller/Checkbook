@@ -78,17 +78,25 @@ function fnCustomInitCompleteReload() {
     var tableHeight = jQuery('.dataTables_scroll').height();
     var docHeight = jQuery(document).height();
     var bottomSpacing = docHeight - (tableOffsetTop + tableHeight)  ;
+    // Get Datasource value
+    var url = oTable.fnSettings().sAjaxSource;
+    var urlParts = url.split('/');
+    var index = urlParts.indexOf('datasource');
+    var UrlValue = urlParts[index + 1];
+
     jQuery('.dataTables_scrollHead').unstick();
     jQuery('.dataTables_scrollHead').css('overflow','hidden');
 
-    //NYCCHKBK-9146:Enable THEAD scroll bars for NYCHA Transactions Table
-    jQuery('#table_979_wrapper .dataTables_scrollHead').css('overflow', 'auto');
-    jQuery('#table_1012_wrapper .dataTables_scrollHead').css('overflow', 'auto');
-    jQuery('#table_317_wrapper .dataTables_scrollHead').css('overflow', 'auto');
-    jQuery('#table_330_wrapper .dataTables_scrollHead').css('overflow', 'auto');
-    jQuery('#table_336_wrapper .dataTables_scrollHead').css('overflow', 'auto');
-    jQuery('#table_886_wrapper .dataTables_scrollHead').css('overflow', 'auto');
-
+    // Scroll bar only when datasource is checkbook_nycha for payroll
+      if (UrlValue != null && UrlValue == 'checkbook_nycha') {
+        //NYCCHKBK-9146:Enable THEAD scroll bars for NYCHA Transactions Table
+        jQuery('#table_979_wrapper .dataTables_scrollHead').css('overflow', 'auto');
+        jQuery('#table_1012_wrapper .dataTables_scrollHead').css('overflow', 'auto');
+        jQuery('#table_317_wrapper .dataTables_scrollHead').css('overflow', 'auto');
+        jQuery('#table_330_wrapper .dataTables_scrollHead').css('overflow', 'auto');
+        jQuery('#table_336_wrapper .dataTables_scrollHead').css('overflow', 'auto');
+        jQuery('#table_886_wrapper .dataTables_scrollHead').css('overflow', 'auto');
+      }
 
 
     jQuery('.dataTables_scrollHead').sticky({ 'topSpacing': topSpacing , 'bottomSpacing': bottomSpacing, getWidthFrom:'.dataTables_scroll' });
