@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Checkbook NYC financial transparency software.
  *
@@ -92,14 +93,11 @@ if(isset($url)) {
                                       </div>";
     }
 
-    // Display issue date details
-
-
   }
 
   //Widget Invoiced Amount Link static text
   if ($widget == 'inv_contract') {
-    $inv_contractDetails = NychaSpendingUtil::getContractsTransactionsStaticSummary($widget, $url);
+    $inv_contractDetails = NYCHAContractUtil::getContractsTransactionsStaticSummary($widget, $url);
     $tcode = RequestUtil::getRequestKeyValueFromURL('tcode', $url);
     $spendtodateTitle = WidgetUtil::getLabel("contract_spend_to_date");
     $spendtodateAmount = '$' . custom_number_formatter_format($inv_contractDetails['spend_to_date'], 2);
@@ -162,7 +160,7 @@ if(isset($url)) {
   //Contract ID detials link static text
   if ( $widget == 'inv_contract_id')
   {
-    $inv_contractDetails = NychaSpendingUtil::getContractsTransactionsStaticSummary($widget, $url);
+    $inv_contractDetails = NYCHAContractUtil::getContractsTransactionsStaticSummary($widget, $url);
     $id_title = 'NYCHA Spending Transactions';
     $spendtodateAmount = '$' . custom_number_formatter_format($inv_contractDetails['spend_to_date'], 2);
     $totalAmountTitle ="NYCHA Amount Spent";
