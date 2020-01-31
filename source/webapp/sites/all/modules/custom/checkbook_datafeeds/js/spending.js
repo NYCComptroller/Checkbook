@@ -140,7 +140,7 @@
 
         //Move Issue Date fields to left column for OGE
         $('#df-payeename').detach().appendTo('.spending.data-feeds-wizard .column.column-left');
-        $('label[for=edit-payee-name]').text('Payee Name');
+        $('label[for=edit-payee-name]').text('Payee Name:');
         $('#df-check_amount').detach().appendTo('.spending.data-feeds-wizard .column.column-left');
         $('label[for=edit-agency]').text('Other Government Entity:');
         break;
@@ -153,7 +153,7 @@
         //Move Issue Date fields to left column for NYCHA
         $('#df-check_amount').detach().prependTo('.spending.data-feeds-wizard .column.column-right');
        // $('#df-payeename').detach().prependTo('.spending.data-feeds-wizard .column.column-right');
-        $('label[for=edit-payee-name]').text('Vendor');
+        $('label[for=edit-payee-name]').text('Vendor:');
         $('label[for=edit-agency]').text('Other Government Entity:');
         break;
       default:
@@ -167,12 +167,12 @@
         //Move Issue Date fields to left column for Citywide
         $('#df-check_amount').detach().prependTo('.spending.data-feeds-wizard .column.column-right');
         $('#df-payeename').detach().appendTo('.spending.data-feeds-wizard .column.column-left');
-        $('label[for=edit-payee-name]').text('Payee Name');
+        $('label[for=edit-payee-name]').text('Payee Name:');
         $('label[for=edit-agency]').text('Agency:');
     }
 
     //Multi-select options
-     resetMultiselect(data_source)
+     resetMultiselect(data_source);
 
     //Reset enabling/disabling fields
      onSpendingCategoryChange();
@@ -325,14 +325,14 @@
 
     //Set default value for Date-filter radios
     $('#edit-date-filter-'+dateFilter).attr('checked', true);
-  }
+  };
 
   //Clear date filter input fields
   let clearDateFilterInputs = function(){
     $('input[name="issuedfrom"]').val("");
     $('input[name="issuedto"]').val("");
     $('select[name="year"]').val("0");
-  }
+  };
 
   Drupal.behaviors.spendingDataFeeds = {
     attach: function (context) {
@@ -537,7 +537,7 @@
           break;
       }
     });
-  }
+  };
 
   function disable_input(selector){
     if(Array.isArray(selector)) {
