@@ -14,7 +14,7 @@
     "sortColumn":1,
     "table_columns": [
       {
-        "labelAlias": "Responsibility<br>Center",
+        "labelAlias": "responsibility_center",
         "columnType": "text"
       },
       {

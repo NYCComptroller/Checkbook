@@ -14,7 +14,7 @@
     "sortColumn":3,
     "table_columns": [
       {
-        "labelAlias": "Contract<br>ID",
+        "labelAlias": "contract_id",
         "columnType": "text"
       },
       {
@@ -22,7 +22,7 @@
         "columnType": "text"
       },
       {
-        "labelAlias": "Contracting<br>Agency",
+        "labelAlias": "contract_agency",
         "columnType": "number"
       },
       {

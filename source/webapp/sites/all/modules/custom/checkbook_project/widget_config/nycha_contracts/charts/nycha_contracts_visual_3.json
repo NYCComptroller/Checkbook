@@ -18,18 +18,18 @@
         "columnType": "text"
       },
       {
-        "labelAlias": "Agreement<br>Type",
+        "labelAlias": "agreement_type",
         "columnType": "number"
       },
       {
-        "labelAlias": "Number of <br>Contracts",
+        "labelAlias": "no_of_contracts",
         "columnType": "number"
       }
     ]
   },
   "no_results_content":"No Results Found",
   "cleanURLParameters":["awdmethod","vendor","csize","industry","year"],
-  "urlParamMap":{"year":"fiscal_year_id","awdmethod":"award_method_id","vendor":"vendor_id", "csize":"award_size_id","industry":"industry_type_id"},
+  "urlParamMap":{"year":"agreement_start_year_id","awdmethod":"award_method_id","vendor":"vendor_id", "csize":"award_size_id","industry":"industry_type_id"},
   "widgetPreprocessJSON":"
   if(preg_match('/pending/',$_GET['q'])){
   $node->widgetConfig->urlParamMap = $node->widgetConfig->urlParamMapPending;
@@ -40,17 +40,15 @@
 "chartTitle":"Year Comparison by Agreement Types",
 "widgetDataLoader":"
       $where_filters = array();
-      $url = drupal_get_path_alias($_GET['q']);
-      $year_id = RequestUtil::getRequestKeyValueFromURL('year', $url);
-      $year_value = _getYearValueFromID($year_id);
       foreach($node->widgetConfig->requestParams as $param=>$value){
-          if ($param == 'fiscal_year_id'){}
+          if ($param == 'agreement_start_year_id'){$year_id = $value;}
           else {$where_filters[] = _widget_build_sql_condition( $param, $value);}
       }
       if(count($where_filters) > 0){
         $where_filter = ' WHERE ' . implode(' AND ' , $where_filters);
       }
       $datasource = RequestUtilities::getRequestParamValue('datasource');
+      $year_value = _getYearValueFromID($year_id);
       $sql = 'select agreement_type_code, year,ct from
         (select agreement_type_code,(year+1899) as year,count(distinct contract_id) as ct
         from (select agreement_type_code,contract_id,generate_series(agreement_start_year_id,agreement_end_year_id) as year
@@ -60,32 +58,33 @@
 ",
 "widgetUpdateJSONConfig":"
       $series_previous_temp = array(array());
-      $url = drupal_get_path_alias($_GET['q']);
-      $year_id = RequestUtil::getRequestKeyValueFromURL('year', $url);
-      $datasource = RequestUtil::getRequestKeyValueFromURL('datasource', $url);
-      $sql = 'select year_value from ref_year where year_id between 111 and '.$year_id.' order by year_value asc';
-      $categories = _checkbook_project_execute_sql($sql,'main',$datasource);
+      $current_url = drupal_get_path_alias($_GET['q']);
+      $year_id = RequestUtil::getRequestKeyValueFromURL('year', $current_url);
+      $datasource = RequestUtilities::getRequestParamValue('datasource');
+      $year_value = _getYearValueFromID($year_id);
+      $categories = range(2010,$year_value);
       $codes = array('PO','BA','PA');
       foreach($node->data as $row){
       $series_previous_temp[$row['agreement_type_code']][$row['year']] = (float)$row['ct'];
       foreach($categories as $category){
-        if ($row['year'] == $category['year_value']){
+        if ($row['year'] == $category){
         $node->widgetConfig->gridConfig->data[] = array($row['year'],$row['agreement_type_code'],$row['ct']);
       }
-      $node->widgetConfig->chartConfig->xAxis->categories[] = $category['year_value'];
+      $node->widgetConfig->chartConfig->xAxis->categories[] = $category;
       }
       }
       $series_previous = array();
       foreach($codes as $code){
       $prev_series_obj = new stdClass();
         foreach($categories as $category){
-           $series_previous[] = $series_previous_temp[$code][$category['year_value']] ;
+           $series_previous[] = $series_previous_temp[$code][$category] ;
          }
       $prev_series_obj->name = $code;
       $prev_series_obj->data = $series_previous;
       $node->widgetConfig->chartConfig->series[] = $prev_series_obj;
       unset($series_previous);
       }
+$node->widgetConfig->chartConfig->xAxis->categories = $categories;
 
 ",
 "chartConfig" : {
