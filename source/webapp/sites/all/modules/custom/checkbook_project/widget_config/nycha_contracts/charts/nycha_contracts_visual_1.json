@@ -18,7 +18,7 @@
         "columnType": "text"
       },
       {
-        "labelAlias": "Number of<br>Contracts",
+        "labelAlias": "no_of_contracts",
         "columnType": "number",
         "formatType": "number"
       },

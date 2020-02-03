@@ -60,32 +60,31 @@ $node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
 ",
 "widgetUpdateJSONConfig":"
         $series_previous_temp = array(array());
-        $url = drupal_get_path_alias($_GET['q']);
-        $year_id = RequestUtil::getRequestKeyValueFromURL('year', $url);
-        $datasource = RequestUtil::getRequestKeyValueFromURL('datasource', $url);
-        $sql = 'select year_value from ref_year where year_id between 111 and '. $year_id .' order by year_value asc';
-        $categories = _checkbook_project_execute_sql($sql,'main',$datasource);
+        $current_url = drupal_get_path_alias($_GET['q']);
+        $year_id = RequestUtil::getRequestKeyValueFromURL('year', $current_url);
+        $year_value = _getYearValueFromID($year_id);
+        $categories = range(2010,$year_value);
         $codes = array('Salaried','Non-Salaried');
         foreach($node->data as $row){$series_previous_temp[$row['type_of_employment']][$row['year']] = (float)$row['counte'];}
         $series_previous = array();
         foreach($codes as $code){
           $prev_series_obj = new stdClass();
           foreach($categories as $category){
-            $series_previous[] = $series_previous_temp[$code][$category['year_value']] ;
-            $node->widgetConfig->chartConfig->xAxis->categories[] = $category['year_value'];
+            $series_previous[] = $series_previous_temp[$code][$category] ;
+            $node->widgetConfig->chartConfig->xAxis->categories[] = $category;
           }
           $prev_series_obj->name = $code;
           $prev_series_obj->data = $series_previous;
           $node->widgetConfig->chartConfig->series[] = $prev_series_obj;
           unset($series_previous);
         }
-
         foreach($categories as $category){
         $node->widgetConfig->gridConfig->data[] = array(
-        $category['year_value'],
-        number_format($series_previous_temp['Salaried'][$category['year_value']]),
-        number_format($series_previous_temp['Non-Salaried'][$category['year_value']]));
+        $category,
+        number_format($series_previous_temp['Salaried'][$category]),
+        number_format($series_previous_temp['Non-Salaried'][$category]));
         }
+$node->widgetConfig->chartConfig->xAxis->categories = $categories;
 ",
 "chartConfig" : {
         "chart": {
