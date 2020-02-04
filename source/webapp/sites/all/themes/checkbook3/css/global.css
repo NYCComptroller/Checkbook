@@ -2718,10 +2718,10 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 
 
 h1.no-spending-transactions {width: 500px}
-.newwindow h1{
+/*.newwindow h1{
   visibility: hidden;
   height:0px;
-}
+}*/
 .newwindow .inside .transactions-container,
 .newwindow .inside .contract-details-heading,
 .newwindow .inside .nycha-contract-details-heading,
@@ -3697,7 +3697,8 @@ p.pieCount {
 }
 
 #nice-menu-1 li.menu-path-node-975 a.disabled{
-    color:#808080;
+    /*color:#808080;*/
+    color:#389be2;
 }
 #nice-menu-1 li.menu-path-node-975 a:hover,
 #nice-menu-1 li.menu-path-node-975 a.active{
