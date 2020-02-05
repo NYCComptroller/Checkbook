@@ -199,7 +199,7 @@
           let dataSourceDiv = "div_" + value + "_data_source";
           if($("#"+ dataSourceDiv).length <= 0) {
             $("#edit-" + value + "-advanced-search-domain-filter").wrap("<div id='div_" + value + "_data_source'></div>");
-            $("#" + dataSourceDiv + " .form-radios").before("<span class='data_source-label'>Data Source</span><br/><br/>")
+            $("#" + dataSourceDiv + " .form-radios").before("<span class='data_source-label'>Data Source</span><br/><br/>");
             $("#" + dataSourceDiv).after('<br/>');
             let oge_datasources = $("#" + dataSourceDiv + " .form-item:not(:first-child)");
             let oge_fieldset = $('<fieldset />').addClass('oge-datasource-fieldset');
@@ -1415,7 +1415,7 @@
           minority_type_id = (div.ele('mwbe_category').val()) ? (div.ele('mwbe_category').val()) : 0;
           industry_type_id = (div.ele('industry').val()) ? (div.ele('industry').val()) : 0;
           datasource = $('input:radio[name=spending_advanced_search_domain_filter]:checked').val();
-
+          agg_type = (div.ele('po_type').val()) ? (div.ele('po_type').val()) : 0;
           var filters = {
             department_name: department_name,
             agency_id:agency_id,
@@ -1434,7 +1434,10 @@
           div.ele('budget_name').autocomplete({source: autoCompleteSource(solr_datasource,'spending_budget_name',filters)});
           div.ele('entity_contract_number').autocomplete({source: autoCompleteSource(solr_datasource,'contract_entity_contract_number',filters)});
           div.ele('vendor_name').autocomplete({source: autoCompleteSource(solr_datasource,'vendor_name',filters)});
-          div.ele('document_id').autocomplete({source: autoCompleteSource(solr_datasource,'document_id',filters)});
+          // Show autocomplete document id only for purchase order type all for nycha
+          if ((datasource === 'checkbook_nycha' && agg_type === '0') || (datasource === 'checkbook')) {
+            div.ele('document_id').autocomplete({source: autoCompleteSource(solr_datasource, 'document_id', filters)});
+          }
 
           $('.ui-autocomplete-input').bind('autocompleteselect', function (event, ui) {$(this).parent().next().val(ui.item.label);});
 
@@ -2401,7 +2404,7 @@
                       alert_minimum_days: alertMinimumDays,
                       alert_end: alertEnd,
                       userURL: window.location.href
-                    }
+                    };
                     $this = $(this);
                     $.get(url, data, function (data) {
                       data = JSON.parse(data);
