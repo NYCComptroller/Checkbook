@@ -88,7 +88,7 @@
       "expression": "_get_tooltip_markup($row['vendor_name'],36)"
     },
     "vendor_link": {
-      "expression": "RequestUtil::isNewWindow() ? $row['vendor_name_formatted'] : '<a href=\"'.NychaSpendingUrlService::generateLandingPageUrl('vendor', $row['vendor_id']).'\">'.$row['vendor_name_formatted'].'</a>'"
+      "expression": "(($row['display_spending_category_name'] == 'Payroll') || RequestUtil::isNewWindow()) ? $row['vendor_name_formatted'] : '<a href=\"'.NychaSpendingUrlService::generateLandingPageUrl('vendor', $row['vendor_id']).'\">'.$row['vendor_name_formatted'].'</a>'"
     },
     "purpose_formatted":{
       "expression": "($row['contract_purpose'] == null) ? '-' :  _get_tooltip_markup($row['contract_purpose'],36)"
