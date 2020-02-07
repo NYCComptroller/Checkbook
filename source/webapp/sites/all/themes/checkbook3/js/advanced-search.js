@@ -1415,31 +1415,33 @@
           minority_type_id = (div.ele('mwbe_category').val()) ? (div.ele('mwbe_category').val()) : 0;
           industry_type_id = (div.ele('industry').val()) ? (div.ele('industry').val()) : 0;
           datasource = $('input:radio[name=spending_advanced_search_domain_filter]:checked').val();
-          agg_type = (div.ele('po_type').val()) ? (div.ele('po_type').val()) : 0;
+          // enable purchase order filter for nycha
+          let agreement_type_code = (div.ele('po_type').val()) ? (div.ele('po_type').val()) : 0;
           var filters = {
             department_name: department_name,
-            agency_id:agency_id,
-            expenditure_object_code:expenditure_object_code,
-            spending_category_id:spending_category_id,
-            minority_type_id:minority_type_id,
-            industry_type_id:industry_type_id,
-            fiscal_year_id: year_id
+            agency_id: agency_id,
+            expenditure_object_code: expenditure_object_code,
+            spending_category_id: spending_category_id,
+            minority_type_id: minority_type_id,
+            industry_type_id: industry_type_id,
+            fiscal_year_id: year_id,
+            agreement_type_code: agreement_type_code
           };
 
-          div.ele('payee_name').autocomplete({source: autoCompleteSource(solr_datasource,'vendor_name',filters)});
-          div.ele('contract_id').autocomplete({source: autoCompleteSource(solr_datasource,'contract_number',filters)});
-          div.ele('capital_project').autocomplete({source: autoCompleteSource(solr_datasource,'reporting_code',filters)});
-          div.ele('document_id').autocomplete({source: autoCompleteSource(solr_datasource,'expense_id',filters)});
-          div.ele('commodity_line').autocomplete({source: autoCompleteSource(solr_datasource,'spending_commodity_line',filters)});
-          div.ele('budget_name').autocomplete({source: autoCompleteSource(solr_datasource,'spending_budget_name',filters)});
-          div.ele('entity_contract_number').autocomplete({source: autoCompleteSource(solr_datasource,'contract_entity_contract_number',filters)});
-          div.ele('vendor_name').autocomplete({source: autoCompleteSource(solr_datasource,'vendor_name',filters)});
-          // Show autocomplete document id only for purchase order type all for nycha
-          if ((datasource === 'checkbook_nycha' && agg_type === '0') || (datasource === 'checkbook')) {
-            div.ele('document_id').autocomplete({source: autoCompleteSource(solr_datasource, 'document_id', filters)});
-          }
+          div.ele('payee_name').autocomplete({source: autoCompleteSource(solr_datasource, 'vendor_name', filters)});
+          div.ele('contract_id').autocomplete({source: autoCompleteSource(solr_datasource, 'contract_number', filters)});
+          div.ele('capital_project').autocomplete({source: autoCompleteSource(solr_datasource, 'reporting_code', filters)});
+          div.ele('document_id').autocomplete({source: autoCompleteSource(solr_datasource, 'expense_id', filters)});
+          div.ele('commodity_line').autocomplete({source: autoCompleteSource(solr_datasource, 'spending_commodity_line', filters)});
+          div.ele('budget_name').autocomplete({source: autoCompleteSource(solr_datasource, 'spending_budget_name', filters)});
+          div.ele('entity_contract_number').autocomplete({source: autoCompleteSource(solr_datasource, 'contract_entity_contract_number', filters)});
+          div.ele('vendor_name').autocomplete({source: autoCompleteSource(solr_datasource, 'vendor_name', filters)});
+          div.ele('document_id').autocomplete({source: autoCompleteSource(solr_datasource, 'document_id', filters)});
 
-          $('.ui-autocomplete-input').bind('autocompleteselect', function (event, ui) {$(this).parent().next().val(ui.item.label);});
+
+          $('.ui-autocomplete-input').bind('autocompleteselect', function (event, ui) {
+            $(this).parent().next().val(ui.item.label);
+          });
 
           //prevent the auto-complete from wrapping un-necessarily
           fixAutoCompleteWrapping(div.contents());
