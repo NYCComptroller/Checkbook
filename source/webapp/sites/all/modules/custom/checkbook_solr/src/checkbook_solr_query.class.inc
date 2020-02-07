@@ -343,7 +343,7 @@ class CheckbookSolrQuery
     if ('*:*' == $this->q) {
       $q = 'q=*:*';
     } else {
-      $q = 'q=text:' . $this->q . '*';
+      $q = 'q=text:' . $this->q;
     }
 
     /**
@@ -532,29 +532,6 @@ class CheckbookSolrQuery
     return $this;
   }
 
-//  /**
-//   * @return CheckbookSolrQuery
-//   */
-//  public function clearFacets(): CheckbookSolrQuery
-//  {
-//    $this->facets = [];
-//    return $this;
-//  }
-
-//  /**
-//   * @param string $facet
-//   * @return CheckbookSolrQuery
-//   */
-//  public function excludeFqTermValues(string $facet): CheckbookSolrQuery
-//  {
-//    $this->mapParam($facet);
-//
-//    if (isset($this->fq[$facet])) {
-//      $this->fq[$facet] = str_replace("$facet:", "-$facet:", $this->fq[$facet]);
-//    }
-//
-//    return $this;
-//  }
 
   /**
    * @param array $facets
