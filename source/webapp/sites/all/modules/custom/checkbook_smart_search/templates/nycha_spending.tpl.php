@@ -21,23 +21,41 @@ $spendingParameterMapping = CheckbookSolr::getSearchFields($solr_datasource, 'sp
 
 //Display hyphen for the following fields based on spending category
 $hyphenFields = array(1 => array("agreement_type_name", "contract_number", "release_number", "contract_purpose", "industry_type_name", "department_name"),
-                      4 => array("agreement_type_name", "contract_number", "release_number", "contract_purpose", "industry_type_name", "department_name"),
-                      2 => array("agreement_type_name", "contract_number", "release_number", "invoice_number", "contract_spent_amount", "contract_purpose",
-                                 "industry_type_name", "funding_source_name", "responsibility_center_name", "program_phase_name", "gl_project_name"));
+  4 => array("agreement_type_name", "contract_number", "release_number", "contract_purpose", "industry_type_name", "department_name"),
+  2 => array("agreement_type_name", "contract_number", "release_number", "invoice_number", "contract_spent_amount", "contract_purpose",
+    "industry_type_name", "funding_source_name", "responsibility_center_name", "program_phase_name", "gl_project_name"));
 
 //Amount Fields and decimals to be displayed
 $amountFields = array("check_amount" => 2, "check_line_net_amount" => 4);
 $dateFields = array("check_issue_date");
 $yearId = isset($spending_results['fiscal_year_id']) ? $spending_results['fiscal_year_id'] : CheckbookDateUtil::getCurrentFiscalYear(Datasource::NYCHA);
 $contractIdLink = NychaSpendingUrlService::generateContractIdLink($spending_results['contract_number'], $yearId);
-$vendorLink = "<a href='/nycha_spending/datasource/checkbook_nycha/year/".$yearId."/category/".$spending_results['spending_category_id']."/vendor/".$spending_results['vendor_id']."'>".$spending_results['vendor_name']."</a>";
+
+// Add '-' for null values for the following fields
+if ($spending_results['document_id'] == null) {
+  $spending_results['document_id'] = "N/A";
+}
+if ($spending_results['check_invoice_net_amount'] == null) {
+  $spending_results['check_invoice_net_amount'] = "-";
+}
+if ($spending_results['distribution_line_number'] == null) {
+  $spending_results['distribution_line_number'] = "-";
+}
+if ($spending_results['invoice_line_number'] == null) {
+  $spending_results['invoice_line_number'] = "-";
+}
+if ($spending_results['vendor_id'] == 1) {
+  $vendorLink = htmlspecialchars($spending_results['vendor_name']);
+} else {
+  $vendorLink = "<a href='/nycha_spending/datasource/checkbook_nycha/year/" . $yearId . "/category/" . $spending_results['spending_category_id'] . "/vendor/" . $spending_results['vendor_id'] . "'>" . htmlspecialchars($spending_results['vendor_name']) . "</a>";
+}
 $linkableFields = array("contract_number" => $contractIdLink, "vendor_name" => $vendorLink);
 
 $count = 1;
 foreach ($spendingParameterMapping as $key => $title) {
   if (in_array($key, $hyphenFields[$spending_results['spending_category_id']] ?? [])) {
     $value = "-";
-  }else {
+  } else {
     $value = $spending_results[$key];
     //Date Fields
     if (in_array($key, $dateFields)) {
