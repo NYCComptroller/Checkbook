@@ -239,33 +239,15 @@ return $header;
     {
       "column": "issue_date_formatted",
       "sourceColumn": "check_eft_issued_date",
-      "sql": "
-      CASE
-      WHEN
-      l1.agency_id
-      =
-      9000
-      THEN
-      CAST(
-      'N/A'
-      AS
-      VARCHAR)
-      ELSE
-      CAST
-      (check_eft_issued_date
-      AS
-      VARCHAR)
-      END
-      AS
-      issue_date_formated
-      "
+      "sql": " CASE WHEN l1.agency_id = 9000 THEN CAST( 'N/A' AS VARCHAR) ELSE CAST (check_eft_issued_date AS VARCHAR) END AS issue_date_formatted "
     }
   ],
   "adjustParameters": "
-
   $cat
   =
-  $parameters['spending_category_id'];
+  $parameters[
+  'spending_category_id'
+];
 if(  isset($parameters['vendor_id@checkbook:contracts_spending_transactions'])  ||  isset($parameters['document_agency_id@checkbook:contracts_spending_transactions'])  ||  isset($parameters['award_method_id@checkbook:contracts_spending_transactions'])
 ||  isset($parameters['award_size_id@checkbook:contracts_spending_transactions'])  ||  isset($parameters['industry_type_id@checkbook:contracts_spending_transactions'])
 ){
