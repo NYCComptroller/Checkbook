@@ -534,9 +534,9 @@ function _checkbook_advanced_search_autocomplete(string $solr_datasource, string
  */
 function _checkbook_vendor_type_prepare_labels($results)
 {
-  $pv = $results['p'] ?? 0 + $results['pm'] ?? 0;
-  $sv = $results['s'] ?? 0 + $results['sm'] ?? 0;
-  $mv = $results['sm'] ?? 0 + $results['pm'] ?? 0;
+  $pv = $results['p'] + $results['pm'];
+  $sv = $results['s'] + $results['sm'];
+  $mv = $results['sm'] + $results['pm'];
   $return = [];
   if ($pv) {
     $return['pv'] = ['Prime Vendor', $pv];
@@ -549,20 +549,6 @@ function _checkbook_vendor_type_prepare_labels($results)
   }
   return $return;
 }
-
-/**
- *
- *
- * ██╗  ██╗███████╗██╗     ██╗         ██████╗ ███████╗██╗      ██████╗ ██╗    ██╗    ████████╗██╗  ██╗██╗███████╗    ██╗     ██╗███╗   ██╗███████╗
- * ██║  ██║██╔════╝██║     ██║         ██╔══██╗██╔════╝██║     ██╔═══██╗██║    ██║    ╚══██╔══╝██║  ██║██║██╔════╝    ██║     ██║████╗  ██║██╔════╝
- * ███████║█████╗  ██║     ██║         ██████╔╝█████╗  ██║     ██║   ██║██║ █╗ ██║       ██║   ███████║██║███████╗    ██║     ██║██╔██╗ ██║█████╗
- * ██╔══██║██╔══╝  ██║     ██║         ██╔══██╗██╔══╝  ██║     ██║   ██║██║███╗██║       ██║   ██╔══██║██║╚════██║    ██║     ██║██║╚██╗██║██╔══╝
- * ██║  ██║███████╗███████╗███████╗    ██████╔╝███████╗███████╗╚██████╔╝╚███╔███╔╝       ██║   ██║  ██║██║███████║    ███████╗██║██║ ╚████║███████╗
- * ╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝    ╚═════╝ ╚══════╝╚══════╝ ╚═════╝  ╚══╝╚══╝        ╚═╝   ╚═╝  ╚═╝╚═╝╚══════╝    ╚══════╝╚═╝╚═╝  ╚═══╝╚══════╝
- *
- *
- */
-
 
 /** Returns the URL for clear functionality for each Search Term
  * @param $facetName
