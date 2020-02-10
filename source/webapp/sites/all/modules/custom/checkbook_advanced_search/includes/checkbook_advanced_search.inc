@@ -618,17 +618,20 @@ function _checkbook_advanced_search_get_contract_type_and_id($data_source = Data
  */
 function _checkbook_advanced_search_get_responsibility_centers($data_source = DataSource::NYCHA, $feeds = false){
     try {
-        $query = "SELECT DISTINCT responsibility_center_id, responsibility_center_code, responsibility_center_description FROM ref_responsibility_center ORDER BY responsibility_center_description";
-        $results = _checkbook_project_execute_sql_by_data_source($query, $data_source);
+      // Query update to remove null and junk data from drop down display
+      $query = "SELECT DISTINCT responsibility_center_id, responsibility_center_code, responsibility_center_description FROM ref_responsibility_center
+                  WHERE responsibility_center_description IS NOT NULL AND responsibility_center_id NOT IN (1032,2066)
+                  ORDER BY responsibility_center_description";
+      $results = _checkbook_project_execute_sql_by_data_source($query, $data_source);
 
-        $res_center_key_val_option_attributes = array('title' => 'Select Responsibility Center');
-        $res_center_key_val_options = array('Select Responsibility Center');
+      $res_center_key_val_option_attributes = array('title' => 'Select Responsibility Center');
+      $res_center_key_val_options = array('Select Responsibility Center');
 
-        foreach ($results as $value) {
-            if($feeds){
-                $text = $value['responsibility_center_description'].' ['.$value['responsibility_center_code'].']';
-                $res_center_key_val_option_attributes[$text] = array('title' => $text);
-                $res_center_key_val_options[$text] = _ckbk_excerpt($text);
+      foreach ($results as $value) {
+        if ($feeds) {
+          $text = $value['responsibility_center_description'] . ' [' . $value['responsibility_center_code'] . ']';
+          $res_center_key_val_option_attributes[$text] = array('title' => $text);
+          $res_center_key_val_options[$text] = _ckbk_excerpt($text);
             } else {
                 $keys = $value['responsibility_center_id'];
                 $res_center_key_val_option_attributes[$keys] = array('title' => $value['responsibility_center_description']);
@@ -755,7 +758,7 @@ function checkbook_advanced_search_get_industries($data_source, $feeds = false){
  */
 function checkbook_advanced_search_get_nycha_funding_sources($data_source = DataSource::NYCHA, $feeds = false){
   try {
-    $query = "SELECT funding_source_id, funding_source_code, display_funding_source_descr FROM ref_funding_source 
+    $query = "SELECT funding_source_id, funding_source_code, display_funding_source_descr FROM ref_funding_source
               ORDER BY display_funding_source_descr";
     $results = _checkbook_project_execute_sql_by_data_source($query, $data_source);
 
