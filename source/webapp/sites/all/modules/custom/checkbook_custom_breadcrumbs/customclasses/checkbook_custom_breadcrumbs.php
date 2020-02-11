@@ -70,7 +70,13 @@ class CustomBreadcrumbs
     $title = '';
     $bottomURL = $_REQUEST['expandBottomContURL'];
     if (preg_match('/transactions/', current_path())) {
-      $title = SpendingUtil::getSpendingTransactionsTitle();
+      $data_source = RequestUtilities::get("datasource");
+      if ($data_source == 'checkbook_oge') {
+        $title = "New York City Economic Development Corporation";
+      } else {
+        $title = "New York City";
+      }
+      $title .= ' ' . SpendingUtil::getSpendingTransactionsTitle();
     } elseif (isset($bottomURL) && preg_match('/transactions/', $bottomURL)) {
       $dtsmnid = RequestUtil::getRequestKeyValueFromURL("dtsmnid", $bottomURL);
       $smnid = RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL);
