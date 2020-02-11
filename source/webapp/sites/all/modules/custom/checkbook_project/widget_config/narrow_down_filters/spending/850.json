@@ -1,24 +1,38 @@
 {
-    "widgetType":"phpparser",
-    "parentNid":652,
-    "limit":100,
-    "maxSelect":5,
-    "startWith":0,
-    "allowFacetDeselect":true,
-    "columns":["deptname.deptname", "txcount"],
-    "orderBy":["-txcount","deptname.deptname"],    
-	"facetPager":true,
-    "filterName":"Department",
-    "urlParameterName":"deptnm",
-    "urlParameterNameType":"eqtext",
-    "autocompleteParamName":"deptnm_auto",    
-    "autocompleteID":"fdeptNm", 	
-    "autocompleteField":"department_name",
-    "adjustParameters":"
-	checkbook_faceted_search_adjust_param($node);
-    if(function_exists('_checkbook_project_adjust_spending_parameter_filters')){
-    	$parameters = _checkbook_project_adjust_spending_parameter_filters($node, $parameters);
-    }
+  "widgetType": "phpparser",
+  "parentNid": 652,
+  "limit": 100,
+  "maxSelect": 5,
+  "startWith": 0,
+  "allowFacetDeselect": true,
+  "columns": [
+    "deptname.deptname",
+    "txcount"
+  ],
+  "orderBy": [
+    "-txcount",
+    "deptname.deptname"
+  ],
+  "facetPager": true,
+  "filterName": "Department",
+  "urlParameterName": "deptnm",
+  "urlParameterNameType": "eqtext",
+  "autocompleteParamName": "deptnm_auto",
+  "autocompleteID": "fdeptNm",
+  "autocompleteField": "department_name",
+  "autocomplete": false,
+  "adjustParameters": "
+  checkbook_faceted_search_adjust_param($node)
+  ;
+  if(function_exists(
+  '_checkbook_project_adjust_spending_parameter_filters'
+  )){
+  $parameters
+  =
+  _checkbook_project_adjust_spending_parameter_filters($node,
+  $parameters)
+  ;
+}
     if(function_exists('_checkbook_project_applyParameterFilters')){
         $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
     }
@@ -33,6 +47,6 @@
         }
     }
     return $adjustedParameters;
-    ",        
-    "template":"individual_filter"
+",
+"template":"individual_filter"
 }
