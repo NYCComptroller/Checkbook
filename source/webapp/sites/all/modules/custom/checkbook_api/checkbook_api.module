@@ -636,7 +636,7 @@ function checkbook_api_adjustSpendingSql(&$sql_query) {
     END
 SQLEND;
     $select_part = str_replace("{$alias}minority_type_name", $minority_check . " AS minority_type_name", $select_part);
-    $sql_query = implode(' WHERE ', array($select_part, $where_part));
+    $sql_query = (count($sql_parts) > 1) ? implode(' WHERE ', array($select_part, $where_part)) : $select_part;
     return $sql_query;
 
 }
@@ -661,7 +661,7 @@ function checkbook_api_adjustContractSql(&$sql_query) {
       $select_part =  str_replace("expenditure_object_names", "CASE WHEN is_prime_or_sub = 'P' THEN expenditure_object_names ELSE 'N/A' END AS expenditure_object_name",$select_part);
     }
 
-    $sql_query = implode(' WHERE ', array($select_part, $where_part));
+  $sql_query = (count($sql_parts) > 1) ? implode(' WHERE ', array($select_part, $where_part)) : $select_part;
 }
 
 function checkbook_api_adjustNYCHAContractSql(&$sql_query){
@@ -707,7 +707,7 @@ function checkbook_api_adjustNYCHAContractSql(&$sql_query){
                                                     ELSE TO_CHAR(release_approved_date, 'MM/DD/YYYY')
                                                    END AS release_approved_date", $select_part);
 
-    $sql_query = implode(' WHERE ', array($select_part, $where_part));
+    $sql_query = (count($sql_parts) > 1) ? implode(' WHERE ', array($select_part, $where_part)) : $select_part;
 }
 
 function checkbook_api_adjustPayrollSql(&$sql_query) {
