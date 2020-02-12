@@ -778,8 +778,8 @@ function load_widget_data($node, $resultFormatter) {
             }*/
 
             $node->data = $joinedRecords;
-            log_debug('Joined records:');
-            log_debug($joinedRecords);
+            //log_debug('Joined records:');
+            //log_debug($joinedRecords);
         } else {
             if(!isset($node->widgetConfig->getData) || (isset($node->widgetConfig->getData) && $node->widgetConfig->getData)){
                 $node->data = $isList
