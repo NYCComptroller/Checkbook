@@ -172,7 +172,7 @@ class QueueJob {
         $command .= " -c \"\\\\COPY (" . $query . ") TO '"
                 . $file
                 . "'  WITH DELIMITER ',' CSV QUOTE '\\\"' ESCAPE '\\\"' \" ";
-
+        LogHelper::log_notice("DataFeeds :: QueueJob::getCSVJobCommand() cmd: ".$command);
         return $command;
     }
 
@@ -191,6 +191,7 @@ class QueueJob {
         $csv_headers = '"' . implode('","', $response_columns) . '"';
         $file = $this->getFullPathToFile($filename,$this->tmpFileOutputDir);
         $command = "sed -i '1s;^;" . $csv_headers . "\\".PHP_EOL.";' " . $file;
+        LogHelper::log_notice("DataFeeds :: QueueJob::getCSVHeaderCommand() cmd: ".$command);
         return $command;
     }
 
@@ -285,6 +286,7 @@ class QueueJob {
         $command .= " -c \"\\\\COPY (" . $query . ") TO '"
                     . $file
                     . "' \" ";
+        LogHelper::log_notice("DataFeeds :: QueueJob::getXMLJobCommands() cmd: ".$command);
         $filenameZip = $filename.'.zip';
         $commands[$filename][] = $command;
 
