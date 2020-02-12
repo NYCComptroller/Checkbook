@@ -42,29 +42,21 @@ class SpendingUtil{
     /**
      * @return string
      */
-    static public function getSpendingTransactionsTitle($defaultName = 'Total')
-    {
-      $categories = self::$spendingCategories;
-      $categoryId = RequestUtilities::get('category');
-      if ($categoryId) {
-        $title = $categories[$categoryId] . " Spending Transactions";
-        return $title;
-      } else {
-        $title = $defaultName . " Spending Transactions";
-        return $title;
-      }
-
+    static public function getSpendingTransactionsTitle(){
+        $categories = self::$spendingCategories;
+        $title = $categories[ RequestUtilities::get('category')]. " Spending Transactions";
+        return $title ;
     }
 
-  /** Returns Spending Category based on 'category' value from current path
-   * @param string $defaultName
-   * @return string
+    /** Returns Spending Category based on 'category' value from current path
+     * @param string $defaultName
+     * @return string
    */
-  public static function getSpendingCategoryName($defaultName = 'Total Spending')
-  {
-    $categoryId = RequestUtilities::get('category');
-    if ($categoryId) {
-      $categories = self::$spendingCategories;
+    public static function getSpendingCategoryName($defaultName = 'Total Spending')
+    {
+      $categoryId = RequestUtilities::get('category');
+      if ($categoryId) {
+        $categories = self::$spendingCategories;
         $categoryName = $categories[$categoryId]. " Spending";
         return $categoryName;
       }
