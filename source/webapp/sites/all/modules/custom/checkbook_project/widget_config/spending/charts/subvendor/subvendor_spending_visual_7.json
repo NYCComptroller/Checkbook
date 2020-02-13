@@ -150,27 +150,32 @@
 
 ",
 "chartConfig" : {
-	"colors":["#7DB7E5"],
-    "plotOptions": {
-            "series": {
-                "minPointLength":40 ,
-                "stacking": "normal",
-                "dataLabels": {
-                    "enabled": true,
-                    "format": "{point.custom_label}",
-                    "style": {
-                		"color": "#FFFFFF",
-                		"fontSize": "24px"
-            		}
-                }
-            }
-    },
-    "xAxis": {
-        "categories": [],
-        "labels": {"enabled": false}
-    },
-    "series": [
-        {
+"colors":["#7DB7E5"],
+"plotOptions": {
+"series": {
+"minPointLength": 40 ,
+"stacking": "normal",
+"dataLabels": {
+"enabled": true,
+"format": "{point.custom_label}",
+"style": {
+"color": "#FFFFFF",
+"fontSize": "24px",
+"fontWeight": "normal",
+"textShadow": false,
+"textOutline": false
+}
+}
+}
+},
+"xAxis": {
+"categories": [],
+"labels": {
+"enabled": false
+}
+},
+"series": [
+{
             "name": "FY",
             "type": "column",
             "pointWidth": 50,

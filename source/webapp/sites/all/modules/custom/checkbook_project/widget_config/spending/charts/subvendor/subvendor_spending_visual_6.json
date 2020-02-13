@@ -159,29 +159,35 @@ echo '<div class=\"chart-right\">
 										custom_number_formatter_format($mwbe_data['w']/($total_mwbe + $toal_non_mwbe)*100,1,null,'%'));
 	$node->widgetConfig->gridConfig->data[] = array('Hispanic American',$mwbe_data['ha'],
 										custom_number_formatter_format($mwbe_data['ha']/($total_mwbe + $toal_non_mwbe)*100,1,null,'%'));
-	$node->widgetConfig->gridConfig->data[] = array('Non-M/WBE',$toal_non_mwbe,
-										custom_number_formatter_format(($toal_non_mwbe)/($total_mwbe + $toal_non_mwbe)*100,1,null,'%'));
+$node->widgetConfig->gridConfig->data[] = array('Non-M/WBE', $toal_non_mwbe,
+custom_number_formatter_format(($toal_non_mwbe)/($total_mwbe + $toal_non_mwbe)*100,1, null, '%'));
 
 ",
-"chartConfig" : {
-	"colors":["#7DB7E5"],
-    "plotOptions": {
-            "series": {
-                "dataLabels": {
-                    "enabled": true,
-                    "format": "{point.custom_label}",
-                    "crop": false,
-                	"overflow": "none"
-                },
-                "states": {
-                    "hover": {
-                        "enabled": false
-                    }
-                }
-            }
-    },
-    "chart" : {"width":480, "marginBottom": 70},
-    "xAxis": {
+"chartConfig": {
+"colors":["#7DB7E5"],
+"plotOptions": {
+"series": {
+"dataLabels": {
+"enabled": true,
+"color": "#606060",
+"fill":"#606060",
+"format": "{point.custom_label}",
+"style": {
+"fontWeight": "normal"
+},
+"crop": false,
+"overflow": "none"
+},
+"states": {
+"hover": {
+"enabled": false
+}
+}
+}
+},
+"chart": {"width": 480, "marginBottom": 70
+},
+"xAxis": {
         "categories": ["M/WBE","Non-M/WBE"],
         "lineWidth": 0,
    		"minorGridLineWidth": 0,
@@ -190,19 +196,21 @@ echo '<div class=\"chart-right\">
         "labels": {"enabled": true}
     },
     "series": [
-        {
-            "name": "FY",
-            "type": "column",
-            "pointWidth": 150,
-            "data": [
-            		{
-            			"name": "Point 1",
-            			"y":100,
-            			"custom_label":"",
-            			"tooltip_label":""
-            		},
-            		{
-            			"name": "Point 2",
+{
+"name": "FY",
+"type": "column",
+"pointWidth": 150,
+"fontWeight": "normal",
+"data": [
+{
+"name": "Point 1",
+"fontWeight": "normal",
+"y": 100,
+"custom_label": "",
+"tooltip_label": ""
+},
+{
+"name": "Point 2",
             			"y":200,
             			"custom_label":"",
             			"tooltip_label":""
