@@ -1054,7 +1054,7 @@
           $.ajax({
             url: '/advanced-search/autocomplete/spending/expcategory/' + year + '/' + agency + '/' + dept + '/' + exptype + '/' + data_source
             , success: function (data) {
-              var html = '<option select="selected" value="0" >Select Expense Categoryyy</option>';
+              var html = '<option select="selected" value="0" >Select Expense Category</option>';
               if (data[0]) {
                 if (data[0] !== 'No Matches Found') {
                   $.each(data, function (key, exp_cat) {
