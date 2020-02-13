@@ -84,10 +84,12 @@
           if (data[0]) {
             if (data[0] !== 'No Matches Found') {
               $.each(data, function (key, exp_cat) {
-                html = html + '<option value="' + exp_cat.code + '" title="' + exp_cat.title +'">' + exp_cat.name + '</option>';
+                // Remove null data from drop down
+                if (exp_cat.name !== '\[\]') {
+                  html = html + '<option value="' + exp_cat.code + '" title="' + exp_cat.title + '">' + exp_cat.name + '</option>';
+                }
               });
-            }
-            else {
+            } else {
               html = html + '<option value="">' + data[0] + '</option>';
             }
           }
