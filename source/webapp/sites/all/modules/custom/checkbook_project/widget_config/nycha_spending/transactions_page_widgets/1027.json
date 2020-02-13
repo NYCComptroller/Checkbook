@@ -67,82 +67,22 @@
     {
       "column": "invoice_number",
       "sourceColumn": "invoice_number",
-      "sql": "
-      CASE
-      WHEN
-      invoice_number
-      IS
-      NULL
-      THEN
-      '-'
-      ELSE
-      CAST(invoice_number
-      AS
-      TEXT)
-      END
-      AS
-      invoice_number
-      "
+      "sql": " CASE WHEN invoice_number IS NULL THEN '-' ELSE CAST(invoice_number AS TEXT) END AS invoice_number "
     },
     {
       "column": "invoice_line_number",
       "sourceColumn": "invoice_line_number",
-      "sql": "
-      CASE
-      WHEN
-      invoice_line_number
-      IS
-      NULL
-      THEN
-      '-'
-      ELSE
-      CAST(invoice_line_number
-      AS
-      TEXT)
-      END
-      AS
-      invoice_line_number
-      "
+      "sql": " CASE WHEN invoice_line_number IS NULL THEN '-' ELSE CAST(invoice_line_number AS TEXT) END AS invoice_line_number "
     },
     {
       "column": "distribution_line_number",
       "sourceColumn": "distribution_line_number",
-      "sql": "
-      CASE
-      WHEN
-      distribution_line_number
-      IS
-      NULL
-      THEN
-      '-'
-      ELSE
-      CAST(distribution_line_number
-      AS
-      TEXT)
-      END
-      AS
-      distribution_line_number
-      "
+      "sql": " CASE WHEN distribution_line_number IS NULL THEN '-' ELSE CAST(distribution_line_number AS TEXT) END AS distribution_line_number "
     },
     {
       "column": "check_payment_status",
       "sourceColumn": "check_payment_status",
-      "sql": "
-      CASE
-      WHEN
-      check_payment_status
-      IS
-      NULL
-      THEN
-      '-'
-      ELSE
-      CAST(check_payment_status
-      AS
-      TEXT)
-      END
-      AS
-      check_payment_status
-      "
+      "sql": " CASE WHEN check_payment_status IS NULL THEN '-' ELSE CAST(check_payment_status AS TEXT) END AS check_payment_status "
     },
     {
       "column":"check_amount",
