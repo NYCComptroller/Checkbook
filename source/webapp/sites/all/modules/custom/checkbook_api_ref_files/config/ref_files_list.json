@@ -153,7 +153,7 @@
   },
   "nycha_responsibility_center_code_list": {
     "database": "checkbook_nycha",
-    "sql": "SELECT DISTINCT responsibility_center_code, responsibility_center_description FROM ref_responsibility_center ORDER BY responsibility_center_code",
+    "sql": "SELECT DISTINCT responsibility_center_code, responsibility_center_description FROM ref_responsibility_center WHERE responsibility_center_description IS NOT NULL AND responsibility_center_id NOT IN (1032,2066) ORDER BY responsibility_center_code",
     "force_quote": [
       "responsibility_center_description"
     ]
