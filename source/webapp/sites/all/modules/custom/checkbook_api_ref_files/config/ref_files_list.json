@@ -153,7 +153,7 @@
   },
   "nycha_responsibility_center_code_list": {
     "database": "checkbook_nycha",
-    "sql": "SELECT DISTINCT responsibility_center_code, responsibility_center_description FROM ref_responsibility_center ORDER BY responsibility_center_code",
+    "sql": "SELECT DISTINCT responsibility_center_code, responsibility_center_description FROM ref_responsibility_center WHERE responsibility_center_description IS NOT NULL AND responsibility_center_id NOT IN (1032,2066) ORDER BY responsibility_center_code",
     "force_quote": [
       "responsibility_center_description"
     ]
@@ -181,7 +181,7 @@
   },
   "nycha_expense_category_code_list": {
     "database": "checkbook_nycha",
-    "sql": "SELECT DISTINCT l.expenditure_type_code,h.expenditure_type_description from ref_expenditure_type_history h join ref_expenditure_type l on l.expenditure_type_id = h.expenditure_type_id order by 1",
+    "sql": "SELECT DISTINCT l.expenditure_type_code,h.expenditure_type_description from ref_expenditure_type_history h join ref_expenditure_type l on l.expenditure_type_id = h.expenditure_type_id where h.expenditure_type_description IS NOT NULL order by 1",
     "force_quote": [
       "expenditure_type_code"
     ]
