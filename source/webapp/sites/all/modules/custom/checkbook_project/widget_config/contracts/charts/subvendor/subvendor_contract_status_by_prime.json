@@ -67,11 +67,12 @@
         $node->widgetConfig->chartSubTitle =  'Total Number of Sub Vendor Contracts Submitted: '.number_format($total_contracts);
 ",
 "chartConfig": {
-        "chart": {
-            "defaultSeriesType": "pie",
-            "plotBackgroundColor": null,
-            "plotBorderWidth": null,
-            "plotShadow": false
+"chart": {
+"marginRight": 40,
+"defaultSeriesType": "pie",
+"plotBackgroundColor": null,
+"plotBorderWidth": null,
+"plotShadow": false
         },
         "colors": ["#78b5e9", "#f79d60", "#8dea84","#434448"],
         "tooltip": {
