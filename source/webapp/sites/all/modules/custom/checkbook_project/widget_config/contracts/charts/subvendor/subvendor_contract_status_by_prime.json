@@ -86,26 +86,25 @@
                         "cursor": "pointer",
                         "dataLabels": {
                             "enabled": false
-                        },
-                        "showInLegend": true
-                    }
-        },
-        "legend":{
-            "layout": "vertical",
-            "align": "right",
-            "verticalAlign": "middle",
-            "y":-25,
-            "x":7,
-            "useHTML": true,
-            "itemMarginTop": 3,
-            "itemMarginBottom": 3
-        }
+},
+"showInLegend": true
+}
+},
+"legend": {
+"layout": "vertical",
+"align": "right",
+"verticalAlign": "middle",
+"y": -25,
+"x": 7,
+"useHTML":false,
+"itemMarginTop": 3,
+"itemMarginBottom": 3
+}
 
-    }
+}
 }
 <function>
-tooltipformatter^^'formatter' :
-function() {
-    return (this.point.name).replace(' Sub Vendor','<br/>Sub Vendor') + ': <b>'+ (this.point.y).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +'</b>';
+tooltipformatter^^'formatter': function() {
+return (this.point.name).replace(' Sub Vendor', '<br/>Sub Vendor') + ': <b>'+ (this.point.y).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +'</b>';
 }
 </function>
