@@ -38,20 +38,11 @@
     "vendor",
     "category"
   ],
+
   "adjustParameters": "
-  $year_id
-  =
-  RequestUtilities:
-  :
-  getRequestParamValue(
-  'year'
-  )
-  ;
+  $year_id=RequestUtilities::getRequestParamValue('year');
   //if(isset($year_id)){
-  $data_controller_instance
-  =
-  data_controller_get_operator_factory_instance()
-  ;
+  $data_controller_instance=data_controller_get_operator_factory_instance();
   $parameters['issue_date_year_id'] = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, $year_id);
   //}
   $adjustedParameters = $parameters;
