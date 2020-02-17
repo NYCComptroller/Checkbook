@@ -24,34 +24,13 @@
     ]
   },
   "dataset": "checkbook_nycha:all_disbursement_transactions",
-  "columns": [
-    "issue_date_year_id.issue_date_year_id",
-    "issue_date_year.issue_date_year",
-    "check_amount_sum",
-    "invoice_amount_sum",
-    "category.category",
-    "category_name.category_name"
-  ],
-  "orderBy": "issue_date_year.issue_date_year",
-  "cleanURLParameters": [
-    "agency",
-    "vendor",
-    "category"
-  ],
-  "adjustParameters": "
-  $year_id
-  =
-  RequestUtilities:
-  :
-  getRequestParamValue(
-  'year'
-  )
-  ;
+  "columns": ["issue_date_year_id.issue_date_year_id","issue_date_year.issue_date_year","check_amount_sum","invoice_amount_sum","category.category", "category_name.category_name"],
+  "orderBy": "-check_amount_sum",
+  "cleanURLParameters":["agency","vendor","category"],
+  "adjustParameters":"
+  $year_id = RequestUtilities::getRequestParamValue('year');
   //if(isset($year_id)){
-  $data_controller_instance
-  =
-  data_controller_get_operator_factory_instance()
-  ;
+  $data_controller_instance = data_controller_get_operator_factory_instance();
   $parameters['issue_date_year_id'] = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, $year_id);
   //}
   $adjustedParameters = $parameters;
