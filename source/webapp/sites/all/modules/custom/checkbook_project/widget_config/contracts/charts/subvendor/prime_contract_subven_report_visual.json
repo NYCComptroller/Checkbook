@@ -54,14 +54,15 @@
             $node->data = null;
         }
         $node->widgetConfig->chartTitle =  MappingUtil::getCurrenEthnicityName() . ' Sub Vendor Reporting by Prime Contracts';
-        $node->widgetConfig->chartSubTitle =  'Total Number of Contracts: '.number_format($total_contracts);
+$node->widgetConfig->chartSubTitle =  'Total Number of Contracts: '.number_format($total_contracts);
 ",
 "chartConfig": {
-        "chart": {
-            "defaultSeriesType": "pie",
-            "plotBackgroundColor": null,
-            "plotBorderWidth": null,
-            "plotShadow": false
+"chart": {
+"marginRight": 40,
+"defaultSeriesType": "pie",
+"plotBackgroundColor": null,
+"plotBorderWidth": null,
+"plotShadow": false
         },
         "colors": ["#78b5e9", "#8ca2de","#f79d60", "#8dea84"],
         "tooltip": {
@@ -75,28 +76,27 @@
                         "allowPointSelect": true,
                         "cursor": "pointer",
                         "dataLabels": {
-                            "enabled": false
-                        },
-                        "showInLegend": true
-                    }
-        },
-        "legend":{
-            "layout": "vertical",
-            "align": "right",
-            "verticalAlign": "middle",
-            "y":-25,
-            "x":75,
-            "useHTML": true,
-            "itemMarginTop": 3,
-            "itemMarginBottom": 3
-        }
+"enabled": false
+},
+"showInLegend": true
+}
+},
+"legend": {
+"layout": "vertical",
+"align": "right",
+"verticalAlign": "middle",
+"y": -25,
+"x": 45,
+"useHTML": false,
+"itemMarginTop": 3,
+"itemMarginBottom": 3
+}
 
-    }
+}
 }
 <function>
-tooltipformatter^^'formatter' :
-function() {
-    var statusName = new Array();
+tooltipformatter^^'formatter': function() {
+var statusName = new Array();
     statusName['Contracts with No Response by Prime'] = 'Contracts with No Response<br/>by Prime';
     statusName['Contracts with Response Not Required by Prime'] = 'Contracts with Response<br/>Not Required by Prime';
     statusName['Reported Contracts with Sub Vendors'] = 'Reported Contracts with<br/>Sub Vendors';
