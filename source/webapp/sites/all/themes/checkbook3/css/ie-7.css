@@ -1250,11 +1250,11 @@ select{height:1.8em !important;}
 
 /* help pages */
 ul#site-overview li {
-    display: block;
-    float: left;
-    text-align: center;
-    vertical-align: middle;
-    width: 33%;
+  display: block;
+  float: left;
+  text-align: center;
+  vertical-align: middle;
+  width: 31%;
 }
 .api-td-right{
     vertical-align:top;

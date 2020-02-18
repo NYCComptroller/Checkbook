@@ -78,10 +78,10 @@ ul#site-overview {
     margin-top: 40px;
 }
 ul#site-overview li {
-    display: inline-block;
-    text-align: center;
-    vertical-align: middle;
-    width: 16%;
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  width: 14%;
 }
 ul#site-overview li a {
     color: #3C5E7C;
