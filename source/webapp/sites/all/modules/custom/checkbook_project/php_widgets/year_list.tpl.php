@@ -78,10 +78,10 @@ if(isset($bottomURL)){
         $expCatId =  filter_xss($pathParams[($index+1)]);
     }
 }
-
+$datasource = RequestUtilities::get('datasource');
 $fiscal_year_data_array = array();
 $calendar_year_data_array = array();
-$years = _checkbook_year_list();
+$years = _checkbook_year_list($datasource);
 
 // 249.json
 foreach($years as $year){
