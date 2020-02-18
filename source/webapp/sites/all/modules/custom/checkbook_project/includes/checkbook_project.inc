@@ -2137,11 +2137,13 @@ function _checkbook_get_year_id($year)
 /**
  * @return array
  */
-function _checkbook_year_list()
+function _checkbook_year_list($datasource)
 {
   $year = CheckbookDateUtil::getCurrentFiscalYear();
   $return = [];
-  $min = $year - 10;
+  $yearCount = 10;
+  if ($datasource == 'checkbook_nycha'){ $yearCount = 11;}
+  $min = $year - $yearCount;
   while ($year > $min) {
     $return[] = [
       'year_value' => $year,
@@ -2682,7 +2684,7 @@ function _checkbook_psql_command($database = 'checkbook')
     LogHelper::log_notice('Using $databases[' . $database . '] database');
   }
 
-  $command = $conf['check_book']['data_feeds']['command'] ." ".$databases[$database]['main']['database']." ";;
+  $command = $conf['check_book']['data_feeds']['command'] ." ".$databases[$database]['main']['database']." ";
   return $command;
 }
 
