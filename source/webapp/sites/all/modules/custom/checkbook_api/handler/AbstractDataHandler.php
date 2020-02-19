@@ -307,8 +307,20 @@ abstract class AbstractDataHandler {
   private function getDataRecords() {
     DateDataTypeHandler::$MASK_CUSTOM = 'Y-m-d';
     ini_set('max_execution_time',0);
-    $records = get_db_results(TRUE, $this->requestDataSet->name, $this->requestDataSet->columns,
+    //Get Data Source from Data set name
+    $dataset = explode(':', $this->requestDataSet->name);
+    $data_source = $dataset[0];
+
+    if (isset($this->requestDataSet->adjustSql)) {
+      $sql_query = get_db_query(TRUE, $this->requestDataSet->name, $this->requestDataSet->columns,
       $this->requestDataSet->parameters, $this->requestDataSet->sortColumn, $this->requestDataSet->startWith, $this->requestDataSet->limit, NULL);
+      eval($this->requestDataSet->adjustSql);
+      log_error($sql_query);
+      $records = _checkbook_project_execute_sql_by_data_source($sql_query, $data_source);
+    }else{
+      $records = get_db_results(TRUE, $this->requestDataSet->name, $this->requestDataSet->columns,
+      $this->requestDataSet->parameters, $this->requestDataSet->sortColumn, $this->requestDataSet->startWith, $this->requestDataSet->limit, NULL);
+    }
 
     return $records;
   }

@@ -525,20 +525,6 @@ function checkbook_api_adjustContractDataSetResults(&$data_records) {
 }
 
 /**
- * Used to adjust columns in the data set after sql call.  This is to handle derived columns
- * @param $data_records
- */
-function checkbook_api_adjustNychaContractDataSetResults(&$data_records)
-{
-  foreach ($data_records as $key => $data_record) {
-    // Set aggreemment start and end date as '-' for PO type
-    if (isset($data_record['agreement_type_name']) && strtoupper($data_record['agreement_type_name']) == "PURCHASE ORDER" ) {
-      $data_records[$key]['agreement_start_date'] = '-';
-      $data_records[$key]['agreement_end_date'] = '-';
-    }
-  }
-}
-/**
  * Function to adjust the parameters before for the api sql call for payroll
  *
  * @param $data_set
