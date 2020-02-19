@@ -334,6 +334,8 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     '#attributes' => array('class' => array('watch')),
     '#id' => 'edit-payee-name',
     '#name' => 'payee_name',
+    '#size' => 100,
+    '#maxlength' => 100,
     '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'payee_name', $first_time_load, ''),
   );
   $form['filter']['check_amt_from'] = array(
