@@ -26,7 +26,7 @@ $hyphenFields = array(1 => array("agreement_type_name", "contract_number", "rele
     "industry_type_name", "funding_source_name", "responsibility_center_name", "program_phase_name", "gl_project_name"));
 
 //Amount Fields and decimals to be displayed
-$amountFields = array("check_amount" => 2, "check_line_net_amount" => 4);
+$amountFields = array("check_amount", "check_invoice_net_amount");
 $dateFields = array("check_issue_date");
 $yearId = isset($spending_results['fiscal_year_id']) ? $spending_results['fiscal_year_id'] : CheckbookDateUtil::getCurrentFiscalYear(Datasource::NYCHA);
 $contractIdLink = NychaSpendingUrlService::generateContractIdLink($spending_results['contract_number'], $yearId);
@@ -62,8 +62,8 @@ foreach ($spendingParameterMapping as $key => $title) {
       $value = date("F j, Y", strtotime(substr($value, 0, 10)));
     }
     //Amount Fields
-    if (array_key_exists($key, $amountFields)) {
-      $value = custom_number_formatter_basic_format($value, $amountFields[$key]);
+    if(in_array($key, $amountFields)){
+      $value = custom_number_formatter_format($value, 2 , '$');
     }
     //Hyperlink Fields
     if (array_key_exists($key, $linkableFields)) {
