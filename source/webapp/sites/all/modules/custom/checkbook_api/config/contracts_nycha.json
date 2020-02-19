@@ -188,7 +188,7 @@
         }
       },
       "adjustParameters":"if(function_exists('checkbook_api_adjustNYCHAContractsParams')){checkbook_api_adjustNYCHAContractsParams($data_set,$parameters,$criteria);}",
-      "adjustDataSetResults":"if(function_exists('checkbook_api_adjustNychaContractDataSetResults')){checkbook_api_adjustNychaContractDataSetResults($data_records);}"
+      "adjustSql":"if(function_exists('checkbook_api_adjustNYCHAContractSql')){checkbook_api_adjustNYCHAContractSql($sql_query);}"
     },
     "requestParameters":{
       "fiscal_year":{"valueType":"value","dataType":"year","maxLength":"4"},
@@ -403,7 +403,7 @@
         }
       },
       "adjustParameters":"if(function_exists('checkbook_api_adjustNYCHAContractsParams')){checkbook_api_adjustNYCHAContractsParams($data_set,$parameters,$criteria);}",
-      "adjustDataSetResults":"if(function_exists('checkbook_api_adjustNychaContractDataSetResults')){checkbook_api_adjustNychaContractDataSetResults($data_records);}"
+      "adjustSql":"if(function_exists('checkbook_api_adjustNYCHAContractSql')){checkbook_api_adjustNYCHAContractSql($sql_query);}"
     },
     "requestParameters":{
       "fiscal_year":{"valueType":"value","dataType":"year","maxLength":"4"},
