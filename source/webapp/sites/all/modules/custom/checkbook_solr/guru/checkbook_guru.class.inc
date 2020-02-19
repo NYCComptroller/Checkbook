@@ -59,10 +59,8 @@ class CheckbookGuru
   public function get_all(string $facet)
   {
     $data = [];
-    $limit = ((object)$this->solr_query)->autoSuggestionLimit ? ((object)$this->solr_query)->autoSuggestionLimit : 500;
     $this->solr_query
       ->addFacet($facet)
-      ->setFacetLimit($limit)
       ->setFacetSort(CheckbookSolrQuery::FACET_SORT_INDEX);
     $results = $this->solr
       ->request_phps('select/?' . $this->solr_query);
