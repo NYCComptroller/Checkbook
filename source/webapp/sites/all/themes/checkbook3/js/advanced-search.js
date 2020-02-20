@@ -1645,7 +1645,8 @@
         Object.keys(filters).forEach(function (key) {
           let val = extractId(String(filters[key]));
           if (val && ("0" !== val)){
-            fq += '*!*'+key+'='+val;
+            // remove trailing space from search terms
+            fq += '*!*'+key+'='+val.trim();
           }
         });
 
