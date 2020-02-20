@@ -1713,7 +1713,7 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
       if ($values['nycha_vendor']) {
         preg_match($pattern, $values['nycha_vendor'], $vmatches);
         if ($vmatches) {
-          $criteria['value']['vendor'] = trim($vmatches[1], '[ ]');
+          $criteria['value']['vendor_code'] = trim($vmatches[1], '[ ]');
         } else {
           $criteria['value']['vendor_name'] = $values['nycha_vendor'];
         }
@@ -1782,7 +1782,7 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
         $criteria['value']['contract_includes_sub_vendors_id'] = $values['contract_includes_sub_vendors_id'];
       }
       if ($values['sub_vendor_status_in_pip_id'] != 'Select Status' && $values['sub_vendor_status_in_pip_id'] != 0) {
-        $criteria['value']['sub_vendor_status_in_pip_id'] = $values['sub_vendor_status_in_pip_id'];
+        $criteria['value']['sub_vendor_status_in_pip'] = $values['sub_vendor_status_in_pip_id'];
       }
       break;
   }
