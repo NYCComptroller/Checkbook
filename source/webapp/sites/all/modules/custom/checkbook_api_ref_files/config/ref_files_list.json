@@ -19,7 +19,6 @@
     ]
   },
   "mwbe_code_list": {
-    "disabled": true,
     "sql": "SELECT DISTINCT minority_type_id, minority_type_name FROM ref_minority_type ORDER BY minority_type_id"
   },
   "industry_code_list": {
@@ -139,9 +138,9 @@
   },
   "nycha_industry_code_list": {
     "database": "checkbook_nycha",
-    "sql": "SELECT DISTINCT t1.industry_type_id, t1.industry_type_name FROM ref_industry_type t1 WHERE EXISTS ( select 1 from all_agreement_transactions t2 where t2.industry_type_id = t1.industry_type_id ) ORDER BY t1.industry_type_id",
+    "sql": "SELECT DISTINCT t1.industry_type_code, t1.display_industry_type_name FROM ref_industry_type t1 WHERE EXISTS ( select 1 from all_agreement_transactions t2 where t2.industry_type_code = t1.industry_type_code ) ORDER BY t1.industry_type_code",
     "force_quote": [
-      "industry_type_name"
+      "display_industry_type_name"
     ]
   },
   "nycha_purchase_order_code_list": {
