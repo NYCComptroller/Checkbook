@@ -19,7 +19,7 @@
     },
     "dataset": {
       "name": "checkbook_nycha:all_disbursement_transactions",
-      "sortColumn":["issue_date", "document_id", "invoice_number", "invoice_line_number", "distribution_line_number"],
+      "sortColumn":["-issue_date", "document_id", "invoice_number", "invoice_line_number", "distribution_line_number"],
       "data_source": "checkbook_nycha",
       "columnTypes": {
         "vendor_name": "like",
