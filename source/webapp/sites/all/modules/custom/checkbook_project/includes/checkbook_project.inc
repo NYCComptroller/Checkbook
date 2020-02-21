@@ -2333,7 +2333,7 @@ function _checkbook_get_datasource()
 {
   $url = '//' . current_path();
 
-  if (Datasource::isNYCHA()) {
+  if (strpos($url, '/nycha') || strpos($url, 'agency/162') || strpos($url, '/checkbook_nycha')) {
     return 'nycha';
   }
 
