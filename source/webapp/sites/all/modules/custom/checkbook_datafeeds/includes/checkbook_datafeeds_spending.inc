@@ -151,7 +151,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
 {
   $first_time_load = checkbook_datafeeds_is_first_load($form_state, $data_source);
   $citywide_sc = checkbook_datafeeds_filter_get_default_value($form_state, 'expense_type', $first_time_load, 'Select Expense Category');
-  $oge_sc = checkbook_datafeeds_filter_get_default_value($form_state, 'oge_expense_type', $first_time_load, 'Select Expense Category');
+  $oge_sc = checkbook_datafeeds_filter_get_default_value($form_state, 'nycedc_expense_type', $first_time_load, 'Select Expense Category');
   $nycha_sc = checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_expense_type', $first_time_load, 'Select Expense Category');
 
   $citywide_expense_type_options = _expense_type_options(Datasource::CITYWIDE);

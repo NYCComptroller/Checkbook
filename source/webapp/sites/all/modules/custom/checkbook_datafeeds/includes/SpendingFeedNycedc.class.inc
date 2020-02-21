@@ -60,12 +60,12 @@ class SpendingFeedNycedc extends SpendingFeed
     }
 
     //Spending Category
-    if ($this->values['oge_expense_type']) {
-      $this->form['filter']['oge_expense_type'] = array('#markup' => '<div><strong>Spending Category:</strong> ' . $this->values['oge_expense_type'] . '</div>');
-      $this->user_criteria['Expense Type'] = $this->values['oge_expense_type'];
-      $this->formatted_search_criteria['Spending Category'] = $this->values['oge_expense_type'];
+    if ($this->values['nycedc_expense_type']) {
+      $this->form['filter']['nycedc_expense_type'] = array('#markup' => '<div><strong>Spending Category:</strong> ' . $this->values['nycedc_expense_type'] . '</div>');
+      $this->user_criteria['Expense Type'] = $this->values['nycedc_expense_type'];
+      $this->formatted_search_criteria['Spending Category'] = $this->values['nycedc_expense_type'];
     } else {
-      $this->form['filter']['expense_type'] = array('#markup' => '<div><strong>Spending Category:</strong> Total Spending</div>');
+      $this->form['filter']['nycedc_expense_type'] = array('#markup' => '<div><strong>Spending Category:</strong> Total Spending</div>');
       $this->formatted_search_criteria['Spending Category'] = 'Total Spending';
     }
 
