@@ -14,7 +14,7 @@
             "category":"document_code",
             "pin":"prime_pin",
             "apt_pin":"prime_apt_pin",
-            "industry_type_id":"industry_type_id",
+            "industry":"industry_type_id",
             "associated_prime_vendor":"prime_vendor_name",
             "sub_contract_reference_id":"sub_contract_id",
             "sub_vendor":"sub_vendor_name",
@@ -267,7 +267,7 @@
                 "dataType":"text",
                 "maxLength":"9"
             },
-            "industry_type_id":{
+            "industry":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"2"
@@ -298,7 +298,7 @@
             "category":"document_code",
             "pin":"prime_pin",
             "apt_pin":"prime_apt_pin",
-            "industry_type_id":"industry_type_id",
+            "industry":"industry_type_id",
             "sub_vendor_status_in_pip" :"aprv_sta",
             "contract_includes_sub_vendors":"scntrc_status",
             "vendor_code":"vendor_code",
@@ -589,7 +589,7 @@
                 "dataType":"text",
                 "maxLength":"9"
             },
-            "industry_type_id":{
+            "industry":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"2"
@@ -623,7 +623,7 @@
             "pin":"tracking_number",
             "apt_pin":"brd_awd_no",
             "mwbe_category":"minority_type_id",
-            "industry_type_id":"industry_type_id",
+            "industry":"industry_type_id",
             "associated_prime_vendor":"associated_prime_vendor"
         },
         "dataset":{
@@ -786,7 +786,7 @@
                 "dataType":"text",
                 "maxLength":"9"
             },
-            "industry_type_id":{
+            "industry":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"2"
@@ -819,7 +819,7 @@
             "pin":"tracking_number",
             "apt_pin":"brd_awd_no",
             "mwbe_category":"minority_type_id",
-            "industry_type_id":"industry_type_id",
+            "industry":"industry_type_id",
             "associated_prime_vendor":"associated_prime_vendor"
         },
         "dataset":{
@@ -974,7 +974,7 @@
                 "dataType":"text",
                 "maxLength":"9"
             },
-            "industry_type_id":{
+            "industry":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"2"
@@ -996,7 +996,7 @@
             "category":"document_code",
             "pin":"prime_pin",
             "apt_pin":"prime_apt_pin",
-            "industry_type_id":"industry_type_id",
+            "industry":"industry_type_id",
             "associated_prime_vendor":"prime_vendor_name",
             "sub_contract_reference_id":"sub_contract_id",
             "sub_vendor":"sub_vendor_name",
@@ -1250,7 +1250,7 @@
                 "dataType":"text",
                 "maxLength":"9"
             },
-            "industry_type_id":{
+            "industry":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"2"
@@ -1281,7 +1281,7 @@
             "category":"document_code",
             "pin":"prime_pin",
             "apt_pin":"prime_apt_pin",
-            "industry_type_id":"industry_type_id",
+            "industry":"industry_type_id",
             "associated_prime_vendor":"prime_vendor_name",
             "sub_vendor_status_in_pip" :"aprv_sta",
             "contract_includes_sub_vendors_id":"scntrc_status",
@@ -1573,7 +1573,7 @@
                 "dataType":"text",
                 "maxLength":"9"
             },
-            "industry_type_id":{
+            "industry":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"2"
@@ -1606,7 +1606,7 @@
             "apt_pin":"board_award_number",
             "purpose":"description",
             "mwbe_category":"minority_type_id",
-            "industry_type_id":"industry_type_id"
+            "industry":"industry_type_id"
         },
         "dataset":{
             "sortColumn":["-cif_received_date","-contract_number","-version_number"],
@@ -1767,7 +1767,7 @@
                 "dataType":"text",
                 "maxLength":"9"
             },
-            "industry_type_id":{
+            "industry":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"2"
