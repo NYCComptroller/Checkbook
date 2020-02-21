@@ -477,7 +477,19 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     '#markup' => '<div class="datafield year-filters last-item">',
   );
 
+// Updating the year filter for ajax year data load
   $form['filter']['year'] = array(
+    '#type' => 'select',
+    '#prefix' => '<div id="year"><div class="datafield year">',
+    '#suffix' => '</div></div>',
+    '#attributes' => array('class' => array('watch')),
+    '#id' => 'edit-year',
+    '#name' => 'year',
+    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'year', $first_time_load, 0),
+    '#validated' => true
+  );
+
+  /*$form['filter']['year'] = array(
     '#type' => 'select',
     '#options' => _year_options('all-years'),
     '#attributes' => array('class' => array('watch')),
@@ -486,7 +498,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     '#suffix' => '</div></div>',
     '#id' => 'edit-year',
     '#name' => 'year',
-  );
+  );*/
 
   $form['filter']['issuedfrom'] = array(
     '#type' => 'textfield',

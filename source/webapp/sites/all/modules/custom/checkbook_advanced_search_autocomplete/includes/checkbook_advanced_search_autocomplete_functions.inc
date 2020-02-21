@@ -87,18 +87,18 @@ function _get_spending_expense_cat_options($agency, $dept, $spendingCat, $year, 
   if($dataSource == Datasource::NYCHA){
     $yearParam = ($feeds) ? (($year != 'all') ? " AND issue_date_year = '" . $year . "' " : "")
       :(($yearId != 'all') ? " AND issue_date_year_id = '" . $yearId . "' " : "");
-    $query = "SELECT DISTINCT expenditure_type_description AS expenditure_object_name, 
+    $query = "SELECT DISTINCT expenditure_type_description AS expenditure_object_name,
                               expenditure_type_code AS expenditure_object_code
               FROM all_disbursement_transactions
-              WHERE 1=1 {$yearParam} {$spendingCatParam} {$deptParam} 
+              WHERE 1=1 {$yearParam} {$spendingCatParam} {$deptParam}
               ORDER BY expenditure_object_name ASC";
   }else{
     $yearParam = ($feeds) ? (($year != 'all') ? " AND fiscal_year = '" . $year . "' " : "")
       : (($yearId != 'all') ? " AND check_eft_issued_nyc_year_id = '" . $yearId . "' " : "");
 
-    $query = "SELECT DISTINCT expenditure_object_code, expenditure_object_name 
+    $query = "SELECT DISTINCT expenditure_object_code, expenditure_object_name
               FROM disbursement_line_item_details
-              WHERE 1=1 {$spendingCatParam} {$yearParam} {$agencyParam} {$deptParam} 
+              WHERE 1=1 {$spendingCatParam} {$yearParam} {$agencyParam} {$deptParam}
               ORDER BY expenditure_object_name ASC";
   }
 
@@ -148,8 +148,8 @@ function _checkbook_advanced_search_autocomplete_spending_department($year, $age
   if($dataSource == Datasource::NYCHA){
       $yearParam = ($feeds) ? (($year != 'all') ? " AND issue_date_year = '" . $year . "' " : "")
                    :(($yearId != 'all') ? " AND issue_date_year_id = '" . $yearId . "' " : "");
-      $query = "SELECT DISTINCT department_name, department_code 
-                FROM all_disbursement_transactions 
+      $query = "SELECT DISTINCT department_name, department_code
+                FROM all_disbursement_transactions
                 WHERE 1=1 {$yearParam} {$spendingCatParam}
                 ORDER BY department_name ASC";
   }else {
@@ -158,7 +158,7 @@ function _checkbook_advanced_search_autocomplete_spending_department($year, $age
 
       $query = "SELECT DISTINCT department_name, department_code
                 FROM disbursement_line_item_details
-                WHERE 1 =1 {$agencyParam} {$yearParam} {$spendingCatParam} 
+                WHERE 1 =1 {$agencyParam} {$yearParam} {$spendingCatParam}
                 ORDER BY department_name ASC";
   }
 
@@ -215,6 +215,37 @@ function _checkbook_advanced_search_autocomplete_spending_expcategory($year, $ag
     drupal_json_output($matches);
 }
 
+// Year drop down to include 2010 for NYCHA
+function _checkbook_advanced_search_autocomplete_spending_year($data_source = Datasource::CITYWIDE, $feeds = null) {
+  $options = _get_spending_year_options($data_source);
+  $matches = array();
+  if(isset($options['label'])) {
+    $matches[] = $options['label'];
+  }
+  else {
+    foreach($options as $key => $value){
+      $value = htmlentities($value);
+      $name = ($feeds) ? $value :_ckbk_excerpt($value);
+      $matches[] = array("code" => $key, "name" => $name);
+    }
+  }
+  drupal_json_output($matches);
+}
+
+function _get_spending_year_options($dataSource) {
+  try {
+  $fydata = CheckbookDateUtil::getLast10FiscalYearOptions($dataSource);
+  $fyarray = array();
+  foreach ($fydata as $row) {
+    $fyarray['FY' . $row['year_value']] = 'FY ' . $row['year_value'];
+  }
+  $results = array_merge(array('0' => 'All Years'), $fyarray);
+  return $results;
+  } catch (Exception $e) {
+    log_error("Error getting data from controller: \n" . $e->getMessage());
+    return;
+  }
+}
 
 //Contracts autocomplete menu callback functions
 /**
