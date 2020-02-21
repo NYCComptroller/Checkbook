@@ -2333,13 +2333,11 @@ function _checkbook_get_datasource()
 {
   $url = '//' . current_path();
 
-  if (strpos($url, '/nycha')
-    || strpos($url, 'agency/162')) {
+  if (strpos($url, '/nycha') || strpos($url, 'agency/162') || strpos($url, '/checkbook_nycha')) {
     return 'nycha';
   }
 
-  if (strpos($url, 'agency/9000')
-    || strpos($url, '/edc')) {
+  if (strpos($url, 'agency/9000') || strpos($url, '/edc')) {
     return 'edc';
   }
 
