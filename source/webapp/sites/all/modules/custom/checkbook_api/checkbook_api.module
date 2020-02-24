@@ -684,17 +684,38 @@ function checkbook_api_adjustNYCHAContractSql(&$sql_query){
       $select_part =  str_replace("release_approved_year", $year." AS release_approved_year",$select_part);
     }
 
+    $agreement_level_hyphens = array('release_number', 'line_number', 'item_description', 'commodity_category_descr', 'item_qty_ordered',
+      'shipment_number', 'responsibility_center_descr', 'release_approved_date', 'release_line_total_amount',
+      'release_line_original_amount', 'release_line_spend_to_date', 'release_total_amount', 'release_original_amount',
+      'release_spend_to_date', 'location_descr', 'grant_name', 'expenditure_type_descr', 'display_funding_source_descr',
+      'program_phase_descr', 'gl_project_descr');
+    $release_level_hyphens = array('number_of_releases', 'line_number', 'item_description', 'commodity_category_descr', 'item_qty_ordered',
+      'shipment_number', 'responsibility_center_descr','release_line_total_amount',
+      'release_line_original_amount', 'release_line_spend_to_date', 'agreement_total_amount', 'agreement_original_amount',
+      'agreement_spend_to_date', 'location_descr', 'grant_name', 'expenditure_type_descr', 'display_funding_source_descr',
+      'program_phase_descr', 'gl_project_descr');
+    $line_level_hyphens = array('number_of_releases', 'release_total_amount', 'release_original_amount', 'release_spend_to_date', 'agreement_total_amount',
+    'agreement_original_amount', 'agreement_spend_to_date');
+
     $text_columns = array('number_of_releases', 'release_number', 'shipment_number', 'item_qty_ordered',
-                     'release_line_total_amount', 'release_line_original_amount', 'release_line_spend_to_date',
+                      'release_line_total_amount', 'release_line_original_amount', 'release_line_spend_to_date',
                      'release_total_amount', 'release_original_amount', 'release_spend_to_date',
                      'agreement_total_amount', 'agreement_original_amount', 'agreement_spend_to_date',
                      'po_header_id');
+
     foreach($text_columns as $key => $value){
-      $select_part =  str_replace($value, "CASE WHEN " .$value." IS NULL THEN '-'
-                                                  ELSE CAST(".$value." AS TEXT)
-                                                 END AS ".$value, $select_part);
+      $select_part = str_replace($value, "CASE WHEN ((LOWER(record_type) = 'agreement' AND ". ((in_array($value, $agreement_level_hyphens))? 'TRUE' : 'FALSE') .") OR 
+                                                            (LOWER(record_type) = 'release' AND ". ((in_array($value, $release_level_hyphens)) ? 'TRUE' : 'FALSE') .") OR
+                                                            (LOWER(record_type) = 'line' AND ". ((in_array($value, $line_level_hyphens)) ? 'TRUE' : 'FALSE') .")) AND "  . $value . " IS NULL
+                                                        THEN '-'
+                                                      ELSE CAST(" . $value . " AS TEXT)
+                                                  END AS " . $value, $select_part);
     }
 
+    // Set release_approved_date to hyphen when NULL (only at Agreement level)
+    $select_part =  str_replace('release_approved_date', "CASE WHEN record_type = 'Agreement' AND release_approved_date IS NULL THEN '-'
+                                                    ELSE TO_CHAR(release_approved_date, 'MM/DD/YYYY')
+                                                   END AS release_approved_date", $select_part);
     //Set '-' to Start Date and End Date to POs
     $po_date_columns = array('agreement_start_date', 'agreement_end_date');
     foreach($po_date_columns as $key => $value){
@@ -702,10 +723,6 @@ function checkbook_api_adjustNYCHAContractSql(&$sql_query){
                                                     ELSE TO_CHAR(".$value.",'MM/DD/YYYY')
                                                    END AS ".$value, $select_part);
     }
-    // Set release_approved_date to hyphen when NULL
-    $select_part =  str_replace('release_approved_date', "CASE WHEN release_approved_date IS NULL THEN '-'
-                                                    ELSE TO_CHAR(release_approved_date, 'MM/DD/YYYY')
-                                                   END AS release_approved_date", $select_part);
 
     $sql_query = (count($sql_parts) > 1) ? implode(' WHERE ', array($select_part, $where_part)) : $select_part;
 }
