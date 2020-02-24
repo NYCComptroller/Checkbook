@@ -173,7 +173,7 @@ class SpendingFeedNycha extends SpendingFeed
     if ($this->values['nycha_industry'] && $this->values['nycha_industry'] != 'Select Industry') {
       preg_match($this->bracket_value_pattern, $this->values['nycha_industry'], $imatches);
       if($imatches) {
-        $this->criteria['value']['industry_type'] = trim($imatches[1], '[ ]');
+        $this->criteria['value']['industry'] = trim($imatches[1], '[ ]');
       }
     }
 
