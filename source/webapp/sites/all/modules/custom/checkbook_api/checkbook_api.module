@@ -681,7 +681,7 @@ function checkbook_api_adjustNYCHAContractSql(&$sql_query){
 
     // Alter SELECT columns
     if(isset($year)){
-      $select_part =  str_replace("release_approved_year,", $year." AS release_approved_year,",$select_part);
+      $select_part =  str_replace("release_approved_year", $year." AS release_approved_year",$select_part);
     }
 
     $text_columns = array('number_of_releases', 'release_number', 'shipment_number', 'item_qty_ordered',

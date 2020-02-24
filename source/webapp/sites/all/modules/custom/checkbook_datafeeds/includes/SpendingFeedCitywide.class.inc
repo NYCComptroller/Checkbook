@@ -162,7 +162,7 @@ class SpendingFeedCitywide extends SpendingFeed
     }
     if ($this->values['industry'] && $this->values['industry'] != 'Select Industry') {
       preg_match($this->bracket_value_pattern, $this->values['industry'], $imatches);
-      $this->criteria['value']['industry_type_id'] = trim($imatches[1], '[ ]');
+      $this->criteria['value']['industry'] = trim($imatches[1], '[ ]');
     }
 
     if ($this->values['capital_project']) {

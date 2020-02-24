@@ -1406,9 +1406,9 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
       if ($values['industry']) {
         preg_match("/.*?(\\[.*?\\])/is", $values['industry'], $matches);
         $industry_type_name = str_replace($matches[1], "", $matches[0]);
-        $industry_type_id = trim($matches[1], '[ ]');
+        $industry = trim($matches[1], '[ ]');
         $form['filter']['industry'] = array('#markup' => '<div><strong>Industry:</strong> ' . $industry_type_name . '</div>');
-        $user_criteria['Industry'] = $industry_type_id;
+        $user_criteria['Industry'] = $industry;
         $formatted_search_criteria['Industry'] = $industry_type_name;
       }
       if ($values['apt_pin']) {
@@ -1776,7 +1776,7 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
       }
       if ($values['industry'] && $values['industry'] != 'Select Industry') {
         preg_match($pattern, $values['industry'], $imatches);
-        $criteria['value']['industry_type_id'] = trim($imatches[1], '[ ]');
+        $criteria['value']['industry'] = trim($imatches[1], '[ ]');
       }
       if ($values['contract_includes_sub_vendors_id'] != '' && $values['contract_includes_sub_vendors_id'] != 0) {
         $criteria['value']['contract_includes_sub_vendors_id'] = $values['contract_includes_sub_vendors_id'];
