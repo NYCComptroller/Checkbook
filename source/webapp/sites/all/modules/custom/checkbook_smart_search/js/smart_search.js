@@ -326,15 +326,31 @@
  */
 function applySearchFilters() {
   jQuery('.smart-search-right input[type=checkbox]').attr("disabled", true);
+  var subFacet = ["spending_category",
+                  "spending_category_name",
+                  "agreement_type_name",
+                  "payroll_type",
+                  "contract_category_name",
+                   "contract_status"];
 
   // adding checked checkboxes to the query string
   var fq = [];
   jQuery('.smart-search-right .narrow-down-filter input:checkbox:checked').each(function () {
+
     var facet_name = jQuery(this).attr('facet');
     if (!(facet_name in fq)) {
       fq[facet_name] = [];
     }
-    fq[facet_name].push(jQuery(this).val());
+    //Remove subfacets from url query string when domain is unchecked
+    if (subFacet.includes(facet_name) == true){
+      if(fq["domain"] == undefined){
+        delete fq[facet_name];
+      }
+      else{ fq[facet_name].push(jQuery(this).val());}
+    }
+    else {
+      fq[facet_name].push(jQuery(this).val());
+    }
   });
 
   var fq_string = '';

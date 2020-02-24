@@ -1242,7 +1242,7 @@ function _industry_options($data_source = Datasource::CITYWIDE)
 
   try {
     $dataController = data_controller_get_instance();
-    $industry_types = $dataController->queryDataset($data_source.':industry_type', array($industry_id_column, $industry_name_column), NULL, $industry_name_column, 0, 10, NULL);
+    $industry_types = $dataController->queryDataset($data_source.':industry_type', array($industry_id_column, $industry_name_column), NULL, $industry_name_column);
     foreach ($industry_types as $industry_type) {
       $industries[$industry_type[$industry_name_column] . ' [' . $industry_type[$industry_id_column] . ']'] = $industry_type[$industry_name_column] . ' [' . $industry_type[$industry_id_column] . ']';
     }

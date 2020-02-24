@@ -4,7 +4,7 @@
       "other_government_entities_code": "agency_code",
       "expense_category": "expenditure_type_code",
       "spending_category": "spending_category_code",
-      "industry_type": "industry_type_code",
+      "industry": "industry_type_code",
       "funding_source": "funding_source_code",
       "responsibility_center":"responsibility_center_code",
       "payee_name": "vendor_name",
@@ -19,7 +19,7 @@
     },
     "dataset": {
       "name": "checkbook_nycha:all_disbursement_transactions",
-      "sortColumn":["issue_date", "document_id", "invoice_number", "invoice_line_number", "distribution_line_number"],
+      "sortColumn":["-issue_date", "-document_id", "invoice_number", "invoice_line_number", "distribution_line_number"],
       "data_source": "checkbook_nycha",
       "columnTypes": {
         "vendor_name": "like",
@@ -112,7 +112,7 @@
       "other_government_entities_code": {"valueType": "value", "dataType": "text", "maxLength": "3"},
       "expense_category": {"valueType": "value", "dataType": "text", "maxLength": "22"},
       "spending_category": {"valueType": "value", "dataType": "text", "maxLength": "10"},
-      "industry_type": {"valueType": "value", "dataType": "text", "maxLength": "4"},
+      "industry": {"valueType": "value", "dataType": "text", "maxLength": "4"},
       "funding_source":{"valueType": "value", "dataType": "text", "maxLength": "9"},
       "responsibility_center":{"valueType":"value", "dataType":"text", "maxLength":"10"},
       "payee_name": {"valueType": "value", "dataType": "text", "maxLength": "100"},

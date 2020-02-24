@@ -170,12 +170,15 @@ class CheckbookDateUtil
    * @param string $data_source
    * @return array
    */
-  public static function getLast10FiscalYearOptions($data_source = Datasource::CITYWIDE)
+  public static function getLast10FiscalYearOptions($data_source)
   {
     // For NYCHA Fiscal Year is Calendar Year
     $last = self::getCurrentDatasourceFiscalYear($data_source);
+    $yearCount = 10;
+    $isNYCHA = (bool)($data_source == Datasource::NYCHA || Datasource::isNYCHA());
+    if ($isNYCHA){ $yearCount =11;}
     $results = [];
-    for ($year = $last; $year > $last - 10; $year--) {
+    for ($year = $last; $year > $last - $yearCount; $year--) {
       $results[] = [
         'year_id' => self::year2yearId($year),
         'year_value' => $year
@@ -187,11 +190,14 @@ class CheckbookDateUtil
   /**
    * @return array
    */
-  public static function getLast10CalendarYearOptions()
+  public static function getLast10CalendarYearOptions($data_source)
   {
     $last = self::getCurrentCalendarYear();
+    $yearCount = 10;
+    $isNYCHA = (bool)($data_source == Datasource::NYCHA || Datasource::isNYCHA());
+    if ($isNYCHA){ $yearCount =11;}
     $results = [];
-    for ($year = $last; $year > $last - 10; $year--) {
+    for ($year = $last; $year > $last - $yearCount; $year--) {
       $results[] = [
         'year_id' => self::year2yearId($year),
         'year_value' => $year
