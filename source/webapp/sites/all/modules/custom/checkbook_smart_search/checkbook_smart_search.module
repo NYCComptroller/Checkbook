@@ -216,13 +216,17 @@ function checkbook_smart_search_theme(){
             'template' => 'templates/contracts',
             'arguments' => array('contracts_results' => NULL)
         ),
+        'nycha_contracts' => array(
+        'template' => 'templates/nycha_contracts',
+        'arguments' => array('contracts_results' => NULL)
+        ),
         'ajax_results' => array(
             'template' => 'templates/ajax_results',
             'arguments' => array('results' => NULL,'name' => NULL)
         ),
         'checkbook_smart_search_export_form' => array(
             'template' => 'templates/export_dialog'
-        ) 
+        )
     );
 }
 
