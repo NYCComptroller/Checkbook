@@ -5,7 +5,7 @@
             "payee_code":"vendor_customer_code",
             "document_id":"disbursement_number",
             "agency_code":"agency_code",
-            "industry_type_id":"industry_type_id",
+            "industry":"industry_type_id",
             "issue_date":"check_eft_issued_date",
             "department_code":"department_code",
             "check_amount":"check_amount",
@@ -169,7 +169,7 @@
                 "dataType":"text",
                 "maxLength":"9"
             },
-            "industry_type_id":{
+            "industry":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"2"
