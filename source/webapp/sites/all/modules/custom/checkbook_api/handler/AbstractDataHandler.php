@@ -359,11 +359,15 @@ abstract class AbstractDataHandler {
         $limit = $this->requestDataSet->limit;
         $resultFormatter = null;
 
-        $query = widget_get_db_query($isList, $dataSetName, $columns, $parameters, $orderBy, $startWith, $limit, $resultFormatter);
+        $sql_query = widget_get_db_query($isList, $dataSetName, $columns, $parameters, $orderBy, $startWith, $limit, $resultFormatter);
 
-        LogHelper::log_notice("DataFeeds :: generateFile() query: ".$query);
+        LogHelper::log_notice("DataFeeds :: generateFile() query: ".$sql_query);
 
-        $filename = $this->getJobCommand($query);
+        //When CSV/XML file is generated apply query alteration if applicable
+        if (isset($this->requestDataSet->adjustSql)) {
+          eval($this->requestDataSet->adjustSql);
+        }
+        $filename = $this->getJobCommand($sql_query);
 
         return $filename;
     }
