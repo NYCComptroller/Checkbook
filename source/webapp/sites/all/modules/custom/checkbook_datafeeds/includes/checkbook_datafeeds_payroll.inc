@@ -51,7 +51,7 @@ function checkbook_datafeeds_payroll($form, &$form_state)
 
   //</editor-fold>
 
-  $form['datafeeds-payroll-domain-filter'] = DatafeedsConfigUtil::dataSourceRadio($data_source, 'payroll');
+  //$form['datafeeds-payroll-domain-filter'] = DatafeedsConfigUtil::dataSourceRadio($data_source, 'payroll');
 
   $form['filter'] = array(
     '#type' => 'fieldset',
