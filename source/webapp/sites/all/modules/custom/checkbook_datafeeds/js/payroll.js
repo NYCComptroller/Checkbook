@@ -40,7 +40,7 @@
       });
       //Sets up autocompletes
       var year = $('#edit-year', context).val();
-      var agency = ($('#edit-agency', context).val() === 'Citywide (All Agencies)') ? 0 : encodeURIComponent($('#edit-agency', context).val());
+      var agency = ($('#edit-agency', context).val() === 'Citywide (All Agencies)') ? 0 : emptyToZero($('#edit-agency', context).val());
       var payfrequency = ($('#edit-payfrequency', context).val() === 'All Pay Frequencies') ? 0 : $('#edit-payfrequency', context).val();
 
       $('.watch:input').each(function () {
@@ -50,7 +50,7 @@
           if(year){
             year = year.match(/\d+/)[0];
           }
-          agency = ($('#edit-agency', context).val() === 'Citywide (All Agencies)') ? 0 : encodeURIComponent($('#edit-agency', context).val());
+          agency = ($('#edit-agency', context).val() === 'Citywide (All Agencies)') ? 0 : emptyToZero($('#edit-agency', context).val());
           payfrequency = ($('#edit-payfrequency', context).val() === 'All Pay Frequencies') ? 0 : $('#edit-payfrequency', context).val();
           dataSource = $('input[name="datafeeds-payroll-domain-filter"]:checked', context).val();
 
@@ -126,7 +126,7 @@
         $("#edit-year").html(html);
       }
     });
-  }
+  };
 
   $.fn.clearInputFields = function () {
     $('.fieldset-wrapper').find(':input').each(function () {
@@ -153,7 +153,7 @@
           break;
       }
     });
-  }
+  };
 
   //Function to retrieve values enclosed in brackets or return zero if none
   function emptyToZero(input) {

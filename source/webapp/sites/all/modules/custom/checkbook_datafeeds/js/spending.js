@@ -505,10 +505,10 @@
       $('#edit-payee-name', context).autocomplete({source: '/autocomplete/spending/payee/' + year + '/' + agency + '/' + exp_cat + '/' + dept + '/' + spend_cat + '/' + mwbe_cat + '/' + industry + '/'+ agg_type + '/' + data_source});
       $('#edit-contractno', context).autocomplete({source: '/autocomplete/spending/contractno/' + year + '/' + agency + '/' + exp_cat + '/' + dept + '/' + spend_cat + '/' + mwbe_cat + '/' + industry + '/'+ agg_type +'/'+ data_source});
       $('#edit-document-id', context).autocomplete({source: '/autocomplete/spending/documentid/' + year + '/' + agency + '/' + exp_cat + '/' + dept + '/' + spend_cat + '/' + mwbe_cat + '/' + industry + '/' + agg_type +'/'+ data_source});
-      $('#edit-capital-project', context).autocomplete({source: '/autocomplete/spending/capitalproject/' + year + '/' + agency + '/' + exp_cat + '/' + dept + '/' + spend_cat + '/' + mwbe_cat + '/' + industry + '/' + agg_type +'/'+ data_source});
-      $('#edit-entity-contract-number', context).autocomplete({source: '/autocomplete/spending/entitycontractnum/' + year + '/' + agency + '/' + exp_cat + '/' + dept + '/' + spend_cat + '/' + mwbe_cat + '/' + industry + '/' + agg_type +'/' + data_source});
+      $('#edit-capital-project', context).autocomplete({source: '/autocomplete/spending/capitalproject/' + year + '/' + agency + '/' + exp_cat + '/' + dept + '/' + spend_cat + '/' + mwbe_cat + '/' + industry + '/'+ agg_type +'/'+ data_source});
+      $('#edit-entity-contract-number', context).autocomplete({source: '/autocomplete/spending/entitycontractnum/' + year + '/' + agency + '/' + exp_cat + '/' + dept + '/' + spend_cat + '/' + mwbe_cat + '/' + industry + '/' + agg_type + '/' + data_source});
       $('#edit-commodity-line', context).autocomplete({source: '/autocomplete/spending/commodityline/' + year + '/' + agency + '/' + exp_cat + '/' + dept + '/' + spend_cat + '/' + mwbe_cat + '/' + '/' + industry +'/'+ agg_type +'/'+ data_source});
-      $('#edit-budget-name', context).autocomplete({source: '/autocomplete/spending/budgetname/' + year + '/' + agency + '/' + exp_cat + '/' + dept + '/' + spend_cat + '/' + mwbe_cat + '/' + '/' + industry + '/' + agg_type +'/'+ data_source});
+      $('#edit-budget-name', context).autocomplete({source: '/autocomplete/spending/budgetname/' + year + '/' + agency + '/' + exp_cat + '/' + dept + '/' + spend_cat + '/' + mwbe_cat + '/' + '/' + industry + '/'+ agg_type +'/'+ data_source});
       $('.watch:input', context).each(function () {
         $(this).focusin(function () {
           //set variables for each field's value
@@ -529,9 +529,9 @@
           $("#edit-payee-name", context).autocomplete("option", "source", '/autocomplete/spending/payee/' + year + '/' + agency + '/' + exp_cat + '/' + dept + '/' + spend_cat + '/' + mwbe_cat + '/' + industry + '/' + agg_type +'/' + data_source);
           $('#edit-contractno', context).autocomplete("option", "source", '/autocomplete/spending/contractno/' + year + '/' + agency + '/' + exp_cat + '/' + dept + '/' + spend_cat + '/' + mwbe_cat + '/' + industry + '/' + agg_type +'/'+ data_source);
           $('#edit-document-id', context).autocomplete("option", "source", '/autocomplete/spending/documentid/' + year + '/' + agency + '/' + exp_cat + '/' + dept + '/' + spend_cat + '/' + mwbe_cat + '/' + industry + '/'+ agg_type +'/' + data_source);
-          $('#edit-capital-project', context).autocomplete("option", "source", '/autocomplete/spending/capitalproject/' + year + '/' + agency + '/' + exp_cat + '/' + dept + '/' + spend_cat + '/' + mwbe_cat + '/' + industry + '/'+ agg_type +'/' + data_source);
-          $('#edit-entity-contract-number', context).autocomplete("option", "source", '/autocomplete/spending/entitycontractnum/' + year + '/' + agency + '/' + exp_cat + '/' + dept + '/' + spend_cat + '/' + mwbe_cat + '/' + industry + '/'+ agg_type +'/' + data_source);
-          $('#edit-commodity-line', context).autocomplete("option", "source", '/autocomplete/spending/commodityline/' + year + '/' + agency + '/' + exp_cat + '/' + dept + '/' + spend_cat + '/' + mwbe_cat + '/' + industry + '/'+ agg_type +'/' + data_source);
+          $('#edit-capital-project', context).autocomplete("option", "source", '/autocomplete/spending/capitalproject/' + year + '/' + agency + '/' + exp_cat + '/' + dept + '/' + spend_cat + '/' + mwbe_cat + '/' + industry + '/'+agg_type +'/' + data_source);
+          $('#edit-entity-contract-number', context).autocomplete("option", "source", '/autocomplete/spending/entitycontractnum/' + year + '/' + agency + '/' + exp_cat + '/' + dept + '/' + spend_cat + '/' + mwbe_cat + '/' + industry + '/'+ agg_type + '/' + data_source);
+          $('#edit-commodity-line', context).autocomplete("option", "source", '/autocomplete/spending/commodityline/' + year + '/' + agency + '/' + exp_cat + '/' + dept + '/' + spend_cat + '/' + mwbe_cat + '/' + industry + '/' + agg_type +'/' + data_source);
           $('#edit-budget-name', context).autocomplete("option", "source", '/autocomplete/spending/budgetname/' + year + '/' + agency + '/' + exp_cat + '/' + dept + '/' + spend_cat + '/' + mwbe_cat + '/' + industry + '/'+ agg_type +'/' + data_source);
         });
       });
