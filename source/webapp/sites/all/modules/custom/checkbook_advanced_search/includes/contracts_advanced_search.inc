@@ -239,7 +239,7 @@ function _checkbook_advanced_search_nycha_contracts_submit($form, &$form_state)
 {
   $filter_dimension =  'checkbook_nycha_contracts';
   $nycha_agency_id = Datasource::getNYCHAId();
-  $type=trim($form[$filter_dimension][$filter_dimension .'_contract_type']['#value']);
+  $type=trim($form[$filter_dimension][$filter_dimension .'_type']['#value']);
   $vendor_name_exact = trim($form[$filter_dimension][$filter_dimension .'_vendor_name_exact']['#value']);
   $responsibility_center=trim($form[$filter_dimension][$filter_dimension .'_responsibility_center']['#value']);
   $purchase_order_type = trim($form[$filter_dimension][$filter_dimension .'_purchase_order_type']['#value']);
